@@ -41,12 +41,8 @@ constexpr bool IsHostLittleEndian = !IsHostBigEndian;
 inline
 std::uint16_t SwapTwoBytes(std::uint16_t n) 
 {
-# ifdef __llvm__
-	return __builtin_bswap16(n);
-# else
 	return ((n & 0x00ffU) << 8) | 
 	       ((n & 0xff00U) >> 8);
-# endif
 }
 
 /// \return 32-bit value with byte order swapped.
@@ -68,7 +64,7 @@ inline
 std::uint64_t SwapEightBytes(std::uint64_t n) 
 {
 # ifdef __llvm__
-	return __builtin__bswap64(n);
+	return __builtin_bswap64(n);
 # else
 	return ((n & 0x00000000000000ffULL) << 56) |
 		   ((n & 0x000000000000ff00ULL) << 40) |
@@ -121,7 +117,7 @@ private:
 
 /// \brief Types for big endian integers (aligned).
 
-using ubig8_t  = uint8_t;
+using ubig8_t  = std::uint8_t;
 using ubig16_t = detail::BigEndianInt<std::uint16_t>;
 using ubig32_t = detail::BigEndianInt<std::uint32_t>;
 using ubig64_t = detail::BigEndianInt<std::uint64_t>;
