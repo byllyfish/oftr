@@ -15,7 +15,7 @@ TEST(openflow_header, test_layout)
 	hdr.xid = 0xDEADBEEF;
 	
 	ofp_header expected;
-	sys::HexToRawData("010D 1122 DEAD BEEF", &expected, sizeof(expected));
+	HexToRawData("010D 1122 DEAD BEEF", &expected, sizeof(expected));
 	EXPECT_EQ(expected, hdr);
 	
 	EXPECT_EQ(OFP_VERSION_1_0, hdr.version);

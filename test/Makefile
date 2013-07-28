@@ -23,8 +23,9 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 CPPFLAGS += -I ../include -I ofp
 
-# Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -stdlib=libc++
+# Flags passed to the C++ compiler. Google test uses global constructors.
+WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-global-constructors
+CXXFLAGS += -g $(WARNINGS) -pthread -std=c++11 -stdlib=libc++
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.

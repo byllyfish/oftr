@@ -14,39 +14,53 @@
 #include <cstddef>				// for std::size_t, etc.
 #include <cstdint>				// for std::uint8_t, etc.
 #include <cstdlib>				// for std::memcpy, etc.
+#include <type_traits>			// for std::is_integral<T>, etc.
 #include <string>
 
 namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
 
-//using std::size_t;
-//using std::uint8_t;
-//using std::uint16_t;
-//using std::uint32_t;
-//using std::uint64_t;
+// Be careful when using UInt8 and UInt16. By default, C++ will promote these
+// to an `int` for bitwise and arithmetic operations, so you need to be
+// alert for sign extension. Prefer operations against `unsigned int` types.
+// See 10.5.1 in TC++PL, 4th ed.
+ 
+using UInt8  = std::uint8_t;
+using UInt16 = std::uint16_t;
+using UInt32 = std::uint32_t;
+using UInt64 = std::uint64_t;
 
 template <class T>
-inline constexpr 
-uint8_t uint8_cast(T v) {
-	return static_cast<uint8_t>(v);
+inline constexpr
+bool IsIntegralType() {
+	return std::is_integral<T>() || std::is_enum<T>();
 }
 
 template <class T>
 inline constexpr 
-uint16_t uint16_cast(T v) {
-	return static_cast<uint16_t>(v);
+UInt8 UInt8_cast(T value) {
+	static_assert(IsIntegralType<T>(), "Type must be integral.");
+	return static_cast<UInt8>(value);
 }
 
 template <class T>
 inline constexpr 
-uint32_t uint32_cast(T v) {
-	return static_cast<uint32_t>(v);
+UInt16 UInt16_cast(T value) {
+	static_assert(IsIntegralType<T>(), "Type must be integral.");
+	return static_cast<UInt16>(value);
+}
+
+template <class T>
+inline constexpr 
+UInt32 UInt32_cast(T value) {
+	static_assert(IsIntegralType<T>(), "Type must be integral.");
+	return static_cast<UInt32>(value);
 }
 
 template <class T>
 inline constexpr
-uint64_t uint64_cast(T v) {
-	return static_cast<uint64_t>(v);
+UInt64 UInt64_cast(T value) {
+	static_assert(IsIntegralType<T>(), "Type must be integral.");
+	return static_cast<UInt64>(value);
 }
 
 // Return the number of items in an array.
@@ -66,7 +80,6 @@ std::string RawDataToHex(const void *data, size_t len);
 // last hex digit.
 size_t HexToRawData(const std::string &hex, void *data, size_t maxlen);
 
-} // </namespace sys>
 } // </namespace ofp>
 
 #endif // OFP_TYPES

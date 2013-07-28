@@ -20,7 +20,6 @@
 #endif
 
 namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
 namespace detail { // <namespace detail> 
 
 /// \brief True if host is big endian.
@@ -36,15 +35,15 @@ constexpr bool IsHostLittleEndian = !IsHostBigEndian;
 
 /// \return 16-bit value with byte order swapped.
 inline constexpr
-uint16_t SwapTwoBytes(uint16_t n) 
+UInt16 SwapTwoBytes(UInt16 n) 
 {
-	return ((n & 0x00ffU) << 8) | 
-	       ((n & 0xff00U) >> 8);
+	return UInt16_cast(((n & 0x00ffU) << 8) | 
+	    			   ((n & 0xff00U) >> 8));
 }
 
 /// \return 32-bit value with byte order swapped.
 inline constexpr
-uint32_t SwapFourBytes(uint32_t n)
+UInt32 SwapFourBytes(UInt32 n)
 {
 # ifdef __llvm__
 	return __builtin_bswap32(n);
@@ -58,7 +57,7 @@ uint32_t SwapFourBytes(uint32_t n)
 
 /// \return 64-bit value with byte order swapped.
 inline constexpr
-uint64_t SwapEightBytes(uint64_t n) 
+UInt64 SwapEightBytes(UInt64 n) 
 {
 # ifdef __llvm__
 	return __builtin_bswap64(n);
@@ -86,9 +85,9 @@ Type SwapByteOrder(Type n)
 				  "Type must be 8-bit, 16-bit, 32-bit or 64-bit.");
 
 	return sizeof(Type) == 1 ? n :
-		sizeof(Type) == 2 ? static_cast<Type>(SwapTwoBytes(uint16_cast(n))) :
-		sizeof(Type) == 4 ? static_cast<Type>(SwapFourBytes(uint32_cast(n))) :
-		   			  		static_cast<Type>(SwapEightBytes(uint64_cast(n)));
+		sizeof(Type) == 2 ? static_cast<Type>(SwapTwoBytes(UInt16_cast(n))) :
+		sizeof(Type) == 4 ? static_cast<Type>(SwapFourBytes(UInt32_cast(n))) :
+		   			  		static_cast<Type>(SwapEightBytes(UInt64_cast(n)));
 }
 
 /// \brief Concrete class for big-endian integer types (aligned).
@@ -123,7 +122,7 @@ public:
 	}
 
 private:
-	alignas(1) uint8_t b_[sizeof(Type)];
+	alignas(1) UInt8 b_[sizeof(Type)];
 };
 
 } // </namespace detail>
@@ -131,17 +130,18 @@ private:
 /// \brief Types for big endian integers (aligned).
 
 template <class T>
-using big = detail::BigEndianAligned<T>;
+using Big = detail::BigEndianAligned<T>;
 
-using big8  = uint8_t;
-using big16 = big<uint16_t>;
-using big32 = big<uint32_t>;
-using big64 = big<uint64_t>;
+using Big8  = UInt8;
+using Big16 = Big<UInt16>;
+using Big32 = Big<UInt32>;
+using Big64 = Big<UInt64>;
+
+/// \brief Types for big endian integers (unaligned).
 
 template <class T>
-using big_unaligned = detail::BigEndianUnaligned<T>;
+using Big_unaligned = detail::BigEndianUnaligned<T>;
 
-} // </namespace sys>
 } // </namespace ofp>
 
 #endif //OFP_BYTEORDER_H

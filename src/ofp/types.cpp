@@ -6,25 +6,25 @@ constexpr char HexDigits[17] = "0123456789ABCDEF";
 
 
 inline
-uint8_t FromHex(char hex) {
+ofp::UInt8 FromHex(char hex) {
 	assert(std::isxdigit(hex));
 	return hex <= '9' ? hex - '0' : (hex & ~0x20) - 'A' + 10;
 }
 
 inline
-char ToHex(uint8_t value) {
+char ToHex(ofp::UInt8 value) {
 	assert(value < 16);
 	return HexDigits[value];
 }
 
 
-std::string ofp::sys::RawDataToHex(const void *data, size_t len)
+std::string ofp::RawDataToHex(const void *data, size_t len)
 {
 	std::string result;
 	result.reserve(2*len);
 
-	const uint8_t *pos = reinterpret_cast<const uint8_t*>(data);
-	const uint8_t *end = pos + len;
+	const UInt8 *pos = reinterpret_cast<const UInt8*>(data);
+	const UInt8 *end = pos + len;
 	
 	char buf[2];
 	while (pos < end) {
@@ -36,14 +36,14 @@ std::string ofp::sys::RawDataToHex(const void *data, size_t len)
 	return result;	
 }
 
-size_t ofp::sys::HexToRawData(const std::string &hex, void *data, size_t maxlen)
+size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen)
 {
-	uint8_t *begin = reinterpret_cast<uint8_t*>(data);
-	uint8_t *end = begin + maxlen;
+	UInt8 *begin = reinterpret_cast<UInt8*>(data);
+	UInt8 *end = begin + maxlen;
 	
-	uint8_t ch[2];
+	UInt8 ch[2];
 	unsigned idx = 0;
-	uint8_t *out = begin;
+	UInt8 *out = begin;
 	for (auto inp = hex.c_str(); *inp; ++inp) {
 		if (std::isxdigit(*inp)) {
 			ch[idx++] = *inp;

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "ofp/types.h"
 
-using namespace ofp::sys;
+using namespace ofp;
 
 TEST(types, ArrayLength)
 {

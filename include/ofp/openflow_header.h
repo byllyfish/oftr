@@ -19,14 +19,14 @@ namespace spec { // <namespace spec>
 /// \brief Each OpenFlow message begins with the OpenFlow header. 
 /// \see {7.1}
 
-enum ofp_version : uint8_t {
+enum ofp_version : UInt8 {
 	OFP_VERSION_1_0 = 0x01,			// 1.0
 	OFP_VERSION_1_1 = 0x02,			// 1.1
 	OFP_VERSION_1_2 = 0x03,			// 1.2
 	OFP_VERSION_1_3 = 0x04,			// 1.3
 };
 
-enum ofp_type : uint8_t {
+enum ofp_type : UInt8 {
 	OFPT_HELLO 				= 0,  	// Symmetric message
 	OFPT_ERROR 				= 1,  	// Symmetric message
 	OFPT_ECHO_REQUEST 		= 2,  	// Symmetric message
@@ -78,10 +78,10 @@ enum ofp_type : uint8_t {
 };
 
 struct ofp_header {
-	sys::big<ofp_version> version;		// OFP_VERSION.
-	sys::big<ofp_type> type;			// One of the OFPT_ constants.
-	sys::big16 length;					// Length including this ofp_header.
-	sys::big32 xid;						// Transaction id for this packet.
+	Big<ofp_version> version;			// OFP_VERSION.
+	Big<ofp_type> type;					// One of the OFPT_ constants.
+	Big16 length;						// Length including this ofp_header.
+	Big32 xid;							// Transaction id for this packet.
    										// Replies use the same id as was in the
    										// request to facilitate pairing.
 };
