@@ -21,7 +21,7 @@ GTEST_DIR = ../external/googletest
 # the compiler doesn't generate warnings in Google Test headers.
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
-CPPFLAGS += -I ../include
+CPPFLAGS += -I ../include -I ofp
 
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -stdlib=libc++
@@ -29,7 +29,9 @@ CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11 -stdlib=libc++
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
 TESTS = ofp_test
-TEST_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard ofp/*.cpp))
+TEST_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard ofp/*_unittest.cpp))
+
+SRC_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard ../src/ofp/*.cpp))
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -72,7 +74,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # function.
 
 
-ofp_test : $(TEST_OBJECTS) gtest_main.a
+ofp_test : $(TEST_OBJECTS) $(SRC_OBJECTS) gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 

@@ -6,17 +6,13 @@
 //
 // Define integral types for dealing with host byteorder.
 //
-//   ubig8_t
-//   ubig16_t
-//   ubig32_t
-//   ubig64_t
-//
 //===----------------------------------------------------------------------===//
 
 #ifndef OFP_BYTEORDER_H
 #define OFP_BYTEORDER_H
 
-#include <cstdint>
+#include "ofp/types.h"
+
 #if defined(__linux__) || defined(__GNU__)
 # include <endian.h>
 #elif !defined(BYTE_ORDER)
@@ -37,17 +33,18 @@ namespace detail { // <namespace detail>
 /// \brief True if host is little endian.
 constexpr bool IsHostLittleEndian = !IsHostBigEndian;
 
+
 /// \return 16-bit value with byte order swapped.
-inline
-std::uint16_t SwapTwoBytes(std::uint16_t n) 
+inline constexpr
+uint16_t SwapTwoBytes(uint16_t n) 
 {
 	return ((n & 0x00ffU) << 8) | 
 	       ((n & 0xff00U) >> 8);
 }
 
 /// \return 32-bit value with byte order swapped.
-inline
-std::uint32_t SwapFourBytes(std::uint32_t n)
+inline constexpr
+uint32_t SwapFourBytes(uint32_t n)
 {
 # ifdef __llvm__
 	return __builtin_bswap32(n);
@@ -60,8 +57,8 @@ std::uint32_t SwapFourBytes(std::uint32_t n)
 }
 
 /// \return 64-bit value with byte order swapped.
-inline
-std::uint64_t SwapEightBytes(std::uint64_t n) 
+inline constexpr
+uint64_t SwapEightBytes(uint64_t n) 
 {
 # ifdef __llvm__
 	return __builtin_bswap64(n);
@@ -77,50 +74,72 @@ std::uint64_t SwapEightBytes(std::uint64_t n)
 # endif
 }
 
+
 /// \return Integer with byte order swapped.
 
-inline
-std::uint16_t SwapByteOrder(std::uint16_t n)
+template <class Type>
+inline constexpr
+Type SwapByteOrder(Type n)
 {
-	return SwapTwoBytes(n);
+	static_assert(sizeof(Type) == 1 || sizeof(Type) == 2 ||
+				  sizeof(Type) == 4 || sizeof(Type) == 8, 
+				  "Type must be 8-bit, 16-bit, 32-bit or 64-bit.");
+
+	return sizeof(Type) == 1 ? n :
+		sizeof(Type) == 2 ? static_cast<Type>(SwapTwoBytes(uint16_cast(n))) :
+		sizeof(Type) == 4 ? static_cast<Type>(SwapFourBytes(uint32_cast(n))) :
+		   			  		static_cast<Type>(SwapEightBytes(uint64_cast(n)));
 }
 
-inline
-std::uint32_t SwapByteOrder(std::uint32_t n)
-{
-	return SwapFourBytes(n);
-}
-
-inline
-std::uint64_t SwapByteOrder(std::uint64_t n)
-{
-	return SwapEightBytes(n);
-}
-
-/// \brief Concrete class for big-endian integers (aligned).
-template <class IntType>
-class BigEndianInt {
+/// \brief Concrete class for big-endian integer types (aligned).
+template <class Type>
+class BigEndianAligned {
 public:
-	operator IntType() const { 
-		return IsHostLittleEndian ? SwapByteOrder(n_) : n_;
+	operator Type() const { 
+		return sizeof(Type) > 1 && IsHostLittleEndian ? SwapByteOrder(n_) : n_;
 	}
 
-	void operator=(IntType n) {
-		n_ = IsHostLittleEndian ? SwapByteOrder(n) : n;
+	void operator=(Type n) {
+		n_ = sizeof(Type) > 1 && IsHostLittleEndian ? SwapByteOrder(n) : n;
 	}
 
 private:
-	IntType n_;
+	Type n_;
+};
+
+template <class Type>
+class BigEndianUnaligned {
+public:
+	operator Type() const { 
+		Type n;
+		std::memcpy(&n, b_, sizeof(n));
+		return IsHostLittleEndian ? SwapByteOrder(n) : n;
+	}
+
+	void operator=(Type n) {
+		if (IsHostLittleEndian) 
+			n = SwapByteOrder(n);
+		std::memcpy(b_, &n, sizeof(b_));
+	}
+
+private:
+	alignas(1) uint8_t b_[sizeof(Type)];
 };
 
 } // </namespace detail>
 
 /// \brief Types for big endian integers (aligned).
 
-using ubig8_t  = std::uint8_t;
-using ubig16_t = detail::BigEndianInt<std::uint16_t>;
-using ubig32_t = detail::BigEndianInt<std::uint32_t>;
-using ubig64_t = detail::BigEndianInt<std::uint64_t>;
+template <class T>
+using big = detail::BigEndianAligned<T>;
+
+using big8  = uint8_t;
+using big16 = big<uint16_t>;
+using big32 = big<uint32_t>;
+using big64 = big<uint64_t>;
+
+template <class T>
+using big_unaligned = detail::BigEndianUnaligned<T>;
 
 } // </namespace sys>
 } // </namespace ofp>
