@@ -2,12 +2,12 @@
 #include "ofp/openflow_header.h"
 #include "openflow_test.h"
 
-
-TEST(openflow_header, test_layout)
-{
-	using namespace ofp;
-	using namespace spec;
+using namespace ofp;
+using namespace spec;
 	
+
+TEST(openflow_header, ofp_header)
+{
 	ofp_header hdr;
 	hdr.version = OFP_VERSION_1_0;
 	hdr.type = OFPT_PACKET_OUT;

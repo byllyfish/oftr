@@ -161,6 +161,8 @@ TEST(byteorder, Big8_unaligned)
 {
 	using Big8_unaligned = Big_unaligned<UInt8>;
 	
+	static_assert(sizeof(Big8_unaligned) == 1, "Unexpected size.");
+	
 	UInt8 buf[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 	UInt8 val[] = { 0x00, 0x01, 0x02, 0x03, 
 						0x04, 0x05, 0x06, 0x07,
@@ -183,6 +185,8 @@ TEST(byteorder, Big8_unaligned)
 TEST(byteorder, Big16_unaligned)
 {
 	using Big16_unaligned = Big_unaligned<UInt16>;
+	
+	static_assert(sizeof(Big16_unaligned) == 2, "Unexpected size.");
 	
 	UInt8 buf[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 	UInt16 val[] = { 0x0001, 0x0102, 0x0203, 0x0304, 
@@ -208,6 +212,8 @@ TEST(byteorder, Big32_unaligned)
 {
 	using Big32_unaligned = Big_unaligned<UInt32>;
 	
+	static_assert(sizeof(Big32_unaligned) == 4, "Unexpected size.");
+	
 	UInt8 buf[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 	UInt32 val[] = { 0x00010203, 0x01020304, 0x02030405, 0x03040506, 
 						0x04050607, 0x05060708, 0x06070809, 0x0708090a,
@@ -229,6 +235,8 @@ TEST(byteorder, Big32_unaligned)
 TEST(byteorder, Big64_unaligned)
 {
 	using Big64_unaligned = Big_unaligned<UInt64>;
+	
+	static_assert(sizeof(Big64_unaligned) == 8, "Unexpected size.");
 	
 	UInt8 buf[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 	UInt64 val[] = { 0x0001020304050607, 0x0102030405060708, 0x0203040506070809, 0x030405060708090a, 
