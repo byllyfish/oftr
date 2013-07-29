@@ -14,10 +14,19 @@
 #include <cstddef>				// for std::size_t, etc.
 #include <cstdint>				// for std::uint8_t, etc.
 #include <cstdlib>				// for std::memcpy, etc.
-#include <type_traits>			// for std::is_integral<T>, etc.
+#include <type_traits>			// for std::make_unsigned<T>, etc.
 #include <string>
 
 namespace ofp { // <namespace ofp>
+
+// Metaprogramming Utilities
+
+template<bool B, typename T>
+using EnableIf = typename std::enable_if<B,T>::type;
+
+template<typename T>
+using MakeUnsigned = typename std::make_unsigned<T>::type;
+
 
 // Be careful when using UInt8 and UInt16. By default, C++ will promote these
 // to an `int` for bitwise and arithmetic operations, so you need to be
@@ -31,36 +40,57 @@ using UInt64 = std::uint64_t;
 
 template <class T>
 inline constexpr
-bool IsIntegralType() {
-	return std::is_integral<T>() || std::is_enum<T>();
+MakeUnsigned<T> Unsigned_cast(T value) {
+	return static_cast<MakeUnsigned<T>>(value);
 }
 
 template <class T>
 inline constexpr 
 UInt8 UInt8_cast(T value) {
-	static_assert(IsIntegralType<T>(), "Type must be integral.");
-	return static_cast<UInt8>(value);
+	static_assert(sizeof(T) == sizeof(UInt8), "Use UInt8_narrow_cast().");
+	return static_cast<UInt8>(Unsigned_cast(value));
 }
 
 template <class T>
 inline constexpr 
 UInt16 UInt16_cast(T value) {
-	static_assert(IsIntegralType<T>(), "Type must be integral.");
-	return static_cast<UInt16>(value);
+	static_assert(sizeof(T) <= sizeof(UInt16), "Use UInt16_narrow_cast().");
+	return static_cast<UInt16>(Unsigned_cast(value));
 }
 
 template <class T>
 inline constexpr 
 UInt32 UInt32_cast(T value) {
-	static_assert(IsIntegralType<T>(), "Type must be integral.");
-	return static_cast<UInt32>(value);
+	static_assert(sizeof(T) <= sizeof(UInt32), "Use UInt32_narrow_cast().");
+	return static_cast<UInt32>(Unsigned_cast(value));
 }
 
 template <class T>
 inline constexpr
 UInt64 UInt64_cast(T value) {
-	static_assert(IsIntegralType<T>(), "Type must be integral.");
-	return static_cast<UInt64>(value);
+	static_assert(sizeof(T) <= sizeof(UInt64), "No UInt64 narrow casts.");
+	return static_cast<UInt64>(Unsigned_cast(value));
+}
+
+template <class T>
+inline constexpr 
+UInt8 UInt8_narrow_cast(T value) {
+	static_assert(sizeof(T) != sizeof(UInt8), "Use UInt8_cast().");
+	return static_cast<UInt8>(value);
+}
+
+template <class T>
+inline constexpr 
+UInt16 UInt16_narrow_cast(T value) {
+	static_assert(sizeof(T) != sizeof(UInt16), "Use UInt16_cast().");
+	return static_cast<UInt16>(value);
+}
+
+template <class T>
+inline constexpr 
+UInt16 UInt32_narrow_cast(T value) {
+	static_assert(sizeof(T) != sizeof(UInt32), "Use UInt32_cast().");
+	return static_cast<UInt32>(value);
 }
 
 // Return the number of items in an array.

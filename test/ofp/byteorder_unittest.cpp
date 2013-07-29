@@ -171,11 +171,11 @@ TEST(byteorder, Big8_unaligned)
 		EXPECT_EQ(val[i], *p);
 		*p = ~val[i];
 		// Be careful about promotion from UInt8 to int.
-		EXPECT_EQ(UInt8_cast(~val[i]), *p);
+		EXPECT_EQ(UInt8_narrow_cast(~val[i]), *p);
 		Big8 temp;
 		std::memcpy(&temp, &buf[i], sizeof(temp));
 		EXPECT_EQ(temp, *p);
-		EXPECT_EQ(temp, UInt8_cast(~val[i]));
+		EXPECT_EQ(temp, UInt8_narrow_cast(~val[i]));
 		*p = ~*p;
 	}
 }
@@ -194,11 +194,11 @@ TEST(byteorder, Big16_unaligned)
 		EXPECT_EQ(val[i], *p);
 		*p = ~val[i];
 		// Be careful about promotion from UInt16 to int.
-		EXPECT_EQ(UInt16_cast(~val[i]), *p);
+		EXPECT_EQ(UInt16_narrow_cast(~val[i]), *p);
 		Big16 temp;
 		std::memcpy(&temp, &buf[i], sizeof(temp));
 		EXPECT_EQ(temp, *p);
-		EXPECT_EQ(temp, UInt16_cast(~val[i]));
+		EXPECT_EQ(temp, UInt16_narrow_cast(~val[i]));
 		*p = ~*p;
 	}
 }

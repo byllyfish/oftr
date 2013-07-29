@@ -3,6 +3,37 @@
 
 using namespace ofp;
 
+
+TEST(types, Unsigned_cast)
+{
+	int a[] = { 1, 2, 3 };
+	
+	size_t diff1 = Unsigned_cast(&a[3] - &a[0]);
+	EXPECT_EQ(3UL, diff1);
+	
+	size_t diff2 = Unsigned_cast(&a[0] - &a[3]); 	// huge number
+	EXPECT_LT(3, diff2);
+	
+	std::int16_t b = -25;
+	EXPECT_EQ(65511, Unsigned_cast(b));
+	EXPECT_EQ(4294967246, Unsigned_cast(b << 1));
+	
+	std::int8_t c = -25;
+	EXPECT_EQ(231, Unsigned_cast(c));
+	EXPECT_EQ(4294967246, Unsigned_cast(c << 1));	
+}
+
+TEST(types, UInt16_cast)
+{
+	std::int16_t a = -25;
+	EXPECT_EQ(65511, UInt16_cast(a));
+	EXPECT_EQ(65486, UInt16_narrow_cast(a << 1));
+	
+	std::int8_t b = -25;
+	EXPECT_EQ(231, UInt16_cast(b));  // result different from static_cast.
+	EXPECT_EQ(65486, UInt16_narrow_cast(b << 1));
+}
+
 TEST(types, ArrayLength)
 {
 	int a[] = { 1, 2, 3 };

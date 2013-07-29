@@ -37,8 +37,8 @@ constexpr bool IsHostLittleEndian = !IsHostBigEndian;
 inline constexpr
 UInt16 SwapTwoBytes(UInt16 n) 
 {
-	return UInt16_cast(((n & 0x00ffU) << 8) | 
-	    			   ((n & 0xff00U) >> 8));
+	return UInt16_narrow_cast(((n & 0x00ffU) << 8) | 
+	    			   		  ((n & 0xff00U) >> 8));
 }
 
 /// \return 32-bit value with byte order swapped.
@@ -73,33 +73,46 @@ UInt64 SwapEightBytes(UInt64 n)
 # endif
 }
 
-
 /// \return Integer with byte order swapped.
 
 template <class Type>
 inline constexpr
-Type SwapByteOrder(Type n)
+EnableIf<sizeof(Type) == sizeof(UInt8), Type> SwapByteOrder(Type n) 
 {
-	static_assert(sizeof(Type) == 1 || sizeof(Type) == 2 ||
-				  sizeof(Type) == 4 || sizeof(Type) == 8, 
-				  "Type must be 8-bit, 16-bit, 32-bit or 64-bit.");
+	return n;
+}
 
-	return sizeof(Type) == 1 ? n :
-		sizeof(Type) == 2 ? static_cast<Type>(SwapTwoBytes(UInt16_cast(n))) :
-		sizeof(Type) == 4 ? static_cast<Type>(SwapFourBytes(UInt32_cast(n))) :
-		   			  		static_cast<Type>(SwapEightBytes(UInt64_cast(n)));
+template <class Type>
+inline constexpr
+EnableIf<sizeof(Type) == sizeof(UInt16), Type> SwapByteOrder(Type n) 
+{
+	return static_cast<Type>(SwapTwoBytes(UInt16_cast(n)));
+}
+
+template <class Type>
+inline constexpr
+EnableIf<sizeof(Type) == sizeof(UInt32), Type> SwapByteOrder(Type n)
+{
+	return static_cast<Type>(SwapFourBytes(UInt32_cast(n)));
+}
+
+template <class Type>
+inline constexpr
+EnableIf<sizeof(Type) == sizeof(UInt64), Type> SwapByteOrder(Type n)
+{
+	return static_cast<Type>(SwapEightBytes(UInt64_cast(n)));
 }
 
 /// \brief Concrete class for big-endian integer types (aligned).
 template <class Type>
 class BigEndianAligned {
 public:
-	operator Type() const { 
-		return sizeof(Type) > 1 && IsHostLittleEndian ? SwapByteOrder(n_) : n_;
+	constexpr operator Type() const { 
+		return IsHostLittleEndian ? SwapByteOrder(n_) : n_;
 	}
 
 	void operator=(Type n) {
-		n_ = sizeof(Type) > 1 && IsHostLittleEndian ? SwapByteOrder(n) : n;
+		n_ = IsHostLittleEndian ? SwapByteOrder(n) : n;
 	}
 
 private:
