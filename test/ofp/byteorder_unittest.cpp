@@ -41,34 +41,46 @@ TEST(byteorder, SwapEightBytes)
 
 TEST(byteorder, Big8)
 {
-	Big8 a;
-	a = 0x05;
+	Big8 a{2};
+	EXPECT_EQ(0, std::memcmp(&a, "\2", 1));
+	EXPECT_EQ(2, a);
 	
+	a = 5;
 	EXPECT_EQ(0, std::memcmp(&a, "\5", 1));
+	EXPECT_EQ(5, a);
 }
 
 TEST(byteorder, Big16)
 {
-	Big16 a;
+	Big16 a{0x0201U};
+	EXPECT_EQ(0, std::memcmp(&a, "\2\1", 2));
+	EXPECT_EQ(0x0201U, a);
+	
 	a = 0x0102U;
-
 	EXPECT_EQ(0, std::memcmp(&a, "\1\2", 2));
+	EXPECT_EQ(0x0102U, a);
 }
 
 TEST(byteorder, Big32)
 {
-	Big32 a;
-	a = 0x01020304UL;
+	Big32 a{0x04050607};
+	EXPECT_EQ(0, std::memcmp(&a, "\4\5\6\7", 4));
+	EXPECT_EQ(0x04050607, a);
 	
-	EXPECT_EQ(0, std::memcmp(&a, "\1\2\3\4", 2));
+	a = 0x01020304UL;
+	EXPECT_EQ(0, std::memcmp(&a, "\1\2\3\4", 4));
+	EXPECT_EQ(0x01020304UL, a);
 }
 
 TEST(byteorder, Big64)
 {
-	Big64 a;
-	a = 0x0102030405060708ULL;
+	Big64 a{0x0807060504030201ULL};
+	EXPECT_EQ(0, std::memcmp(&a, "\10\7\6\5\4\3\2\1", 8));
+	EXPECT_EQ(0x0807060504030201ULL, a);
 	
-	EXPECT_EQ(0, std::memcmp(&a, "\1\2\3\4\5\6\7\10", 2));
+	a = 0x0102030405060708ULL;
+	EXPECT_EQ(0, std::memcmp(&a, "\1\2\3\4\5\6\7\10", 8));
+	EXPECT_EQ(0x0102030405060708ULL, a);
 }
 
 TEST(byteorder, BigEnum8)

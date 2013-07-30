@@ -103,16 +103,29 @@ EnableIf<sizeof(Type) == sizeof(UInt64), Type> SwapByteOrder(Type n)
 	return static_cast<Type>(SwapEightBytes(UInt64_cast(n)));
 }
 
+
+template <class Type>
+inline constexpr
+Type HostSwapByteOrder(Type n)
+{
+	return IsHostLittleEndian ? SwapByteOrder(n) : n;
+}
+
 /// \brief Concrete class for big-endian integer types (aligned).
 template <class Type>
 class BigEndianAligned {
 public:
+	using NativeType = Type;
+
+	constexpr BigEndianAligned() = default;
+	constexpr BigEndianAligned(Type n) : n_{ HostSwapByteOrder(n) } {}
+	
 	constexpr operator Type() const { 
-		return IsHostLittleEndian ? SwapByteOrder(n_) : n_;
+		return HostSwapByteOrder(n_);
 	}
 
 	void operator=(Type n) {
-		n_ = IsHostLittleEndian ? SwapByteOrder(n) : n;
+		n_ = HostSwapByteOrder(n);
 	}
 
 private:
@@ -125,13 +138,12 @@ public:
 	operator Type() const { 
 		Type n;
 		std::memcpy(&n, b_, sizeof(n));
-		return IsHostLittleEndian ? SwapByteOrder(n) : n;
+		return HostSwapByteOrder(n);
 	}
 
 	void operator=(Type n) {
-		if (IsHostLittleEndian) 
-			n = SwapByteOrder(n);
-		std::memcpy(b_, &n, sizeof(b_));
+		Type v = HostSwapByteOrder(n);
+		std::memcpy(b_, &v, sizeof(b_));
 	}
 
 private:
@@ -154,6 +166,22 @@ using Big64 = Big<UInt64>;
 
 template <class T>
 using Big_unaligned = detail::BigEndianUnaligned<T>;
+
+// Traits for obtaining big-endian types for primitives.
+
+
+
+template <class T>
+struct BigEndianTraits {
+	using NativeType = void;
+};
+
+template <>
+struct BigEndianTraits<Big16> {
+	using NativeType = UInt16;
+};
+
+
 
 } // </namespace ofp>
 
