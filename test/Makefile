@@ -15,20 +15,21 @@
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
 GTEST_DIR = ../external/googletest
+BOOST_DIR = ../external/boost_1_54_0_asio
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
 # the compiler doesn't generate warnings in Google Test headers.
 CPPFLAGS += -isystem $(GTEST_DIR)/include 
 
-BOOST_ROOT=/Users/bfish/code/ofp/external/boost_1_54_0
-CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_ROOT) -std=c++11
+CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_DIR) -std=c++11
+
+# Needed on Mac OS X.
+CPPFLAGS += -stdlib=libc++
 
 # Flags passed to the C++ compiler.
-WARNINGS = -Wall -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
+WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
 CXXFLAGS += -g $(WARNINGS) -pthread 
-
-CPP11_MIGRATE = /Users/bfish/code/llvm-build/Debug+Asserts/bin/cpp11-migrate
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -54,9 +55,6 @@ all : $(TESTS)
 .PHONY : clean
 clean :
 	rm -f $(TESTS) gtest.a gtest_main.a $(TEST_OBJECTS) $(LIB_OBJECTS) $(TEST_DEPEND) $(LIB_DEPEND)
-
-migrate : 
-	$(CPP11_MIGRATE) -final-syntax-check -summary $(LIB_SOURCES) -- $(CPPFLAGS) $(CXXFLAGS)
 
 # Builds gtest.a and gtest_main.a.
 
