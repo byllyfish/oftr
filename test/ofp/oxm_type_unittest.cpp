@@ -51,3 +51,25 @@ TEST(oxm_type, use_in_switch_stmt)
 	
 	EXPECT_TRUE(found);
 }
+
+TEST(oxm_type, withMask)
+{
+	constexpr oxm_type a{2, 2, 8};
+	EXPECT_FALSE(a.hasMask());
+	
+	constexpr oxm_type b = a.withMask();
+	EXPECT_TRUE(b.hasMask());
+	
+	EXPECT_NE(a, b);
+	EXPECT_EQ(a.oxmClass(), b.oxmClass());
+	EXPECT_EQ(a.oxmField(), b.oxmField());
+	EXPECT_EQ(a.length(), b.length());
+	EXPECT_NE(a.hasMask(), b.hasMask());
+	
+	EXPECT_EQ(a.withMask(), b.withMask());
+	
+	constexpr oxm_type c = b.withoutMask();
+	EXPECT_NE(b.hasMask(), c.hasMask());
+	EXPECT_EQ(a, c);
+	EXPECT_EQ(a.withoutMask(), c.withoutMask());
+}
