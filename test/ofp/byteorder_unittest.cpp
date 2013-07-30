@@ -290,3 +290,24 @@ TEST(byteorder, BigEnum32_Unaligned)
 		*p = static_cast<Foo>(~*p);
 	}
 }
+
+// Make sure we can use BigEndianFromNative in a constexpr.
+constexpr UInt32 ConvertToBigEndian(UInt32 value)
+{	
+	return BigEndianFromNative(value);
+}
+
+TEST(byteorder, BigEndianFromNative)
+{
+	UInt32 val = ConvertToBigEndian(0x01020304U);
+	EXPECT_EQ(0, std::memcmp(&val, "\1\2\3\4", 4));
+}
+
+TEST(byteorder, BigEndianToNative)
+{
+	auto a = BigEndianFromNative(0x80000000UL);
+	auto b = BigEndianToNative(a);
+	
+	EXPECT_EQ(0x80000000UL, b);
+}
+

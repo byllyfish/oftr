@@ -110,6 +110,14 @@ std::string RawDataToHex(const void *data, size_t len);
 // last hex digit.
 size_t HexToRawData(const std::string &hex, void *data, size_t maxlen);
 
+template <class Type>
+Type ReadMemory(const void *data)
+{
+	Type value;
+	std::memcpy(&value, data, sizeof(value));
+	return value;
+}
+
 } // </namespace ofp>
 
 #endif // OFP_TYPES

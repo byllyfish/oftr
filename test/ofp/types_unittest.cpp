@@ -63,3 +63,9 @@ TEST(types, HexToRawData)
 	EXPECT_EQ(0, std::memcmp(buf, "\xaa\xbb\0\0\0\0\0", 7));
 }
 
+TEST(types, ReadMemory)
+{
+	const char *buf = "abcdef";
+	UInt32 value = ReadMemory<UInt32>(buf);
+	EXPECT_EQ(0, std::memcmp(buf, &value, sizeof(value)));
+}

@@ -135,6 +135,8 @@ private:
 template <class Type>
 class BigEndianUnaligned {
 public:
+	// TODO: add constexpr constructors.
+
 	operator Type() const { 
 		Type n;
 		std::memcpy(&n, b_, sizeof(n));
@@ -167,21 +169,20 @@ using Big64 = Big<UInt64>;
 template <class T>
 using Big_unaligned = detail::BigEndianUnaligned<T>;
 
-// Traits for obtaining big-endian types for primitives.
+// For compile-time conversions.
+template <class Type>
+constexpr inline
+EnableIf<std::is_integral<Type>::value, Type> BigEndianFromNative(Type value)
+{
+	return detail::HostSwapByteOrder(value);
+}
 
-
-
-template <class T>
-struct BigEndianTraits {
-	using NativeType = void;
-};
-
-template <>
-struct BigEndianTraits<Big16> {
-	using NativeType = UInt16;
-};
-
-
+template <class Type>
+constexpr inline
+EnableIf<std::is_integral<Type>::value, Type> BigEndianToNative(Type value)
+{
+	return detail::HostSwapByteOrder(value);
+}
 
 } // </namespace ofp>
 
