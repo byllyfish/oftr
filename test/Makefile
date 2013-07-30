@@ -19,14 +19,14 @@ GTEST_DIR = ../external/googletest
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
 # the compiler doesn't generate warnings in Google Test headers.
-CPPFLAGS += -isystem $(GTEST_DIR)/include -stdlib=libc++
+CPPFLAGS += -isystem $(GTEST_DIR)/include 
 
 BOOST_ROOT=/Users/bfish/code/ofp/external/boost_1_54_0
-CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_ROOT)
+CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_ROOT) -std=c++11
 
 # Flags passed to the C++ compiler.
-WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
-CXXFLAGS += -g $(WARNINGS) -pthread -std=c++11
+WARNINGS = -Wall -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
+CXXFLAGS += -g $(WARNINGS) -pthread 
 
 CPP11_MIGRATE = /Users/bfish/code/llvm-build/Debug+Asserts/bin/cpp11-migrate
 
