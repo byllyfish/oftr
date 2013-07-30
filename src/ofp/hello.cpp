@@ -126,9 +126,13 @@ ofp::UInt32 ofp::HelloBuilder::send(Channel *channel)
 {
     log::debug(__PRETTY_FUNCTION__);
     
+	UInt8 version = channel->version();
 	UInt32 xid = channel->nextXid();
 
-	size_t msgLen = sizeof(msg_) + sizeof(elem_) + sizeof(bitmap_);
+	size_t msgLen = sizeof(msg_);
+        if (version > 0x01) {
+	    msgLen += sizeof(elem_) + sizeof(bitmap_);
+	}
 
 	Header &hdr = msg_.header_;
 	hdr.setLength(UInt16_narrow_cast(msgLen));
@@ -137,7 +141,7 @@ ofp::UInt32 ofp::HelloBuilder::send(Channel *channel)
 	elem_.setType(OFPHET_VERSIONBITMAP);
 	elem_.setLength(sizeof(elem_) + sizeof(bitmap_));
 
-	channel->write(this, sizeof(HelloBuilder));
+	channel->write(this, msgLen);
     channel->flush();
 
 	return xid;

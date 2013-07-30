@@ -55,6 +55,8 @@ void ofp::FeaturesReplyBuilder::setFeatures(const Features &features)
 
 void ofp::FeaturesReplyBuilder::send(Writable *channel)
 {
+    UInt8 version = channel->version();
+    msg_.header_.setVersion(version);
     msg_.header_.setLength(sizeof(msg_));
 
     channel->write(&msg_, sizeof(msg_));

@@ -11,4 +11,6 @@ ofp::ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code)
 void ofp::ErrorBuilder::send(Channel *channel)
 {
 	log::debug(__PRETTY_FUNCTION__);
+	channel->write(&msg_, sizeof(msg_));
+	channel->flush();
 }

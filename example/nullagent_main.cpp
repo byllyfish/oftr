@@ -16,6 +16,7 @@ public:
 
 private:
     void onFeaturesRequest(const Message *message);
+    void sendError(const Message *message, UInt16 type, UInt16 code);
 };
 
 
@@ -27,6 +28,7 @@ void NullAgent::onMessage(const Message *message)
         break;
 
     default:
+	sendError(message, 1, 1);
         break;
     }
 }
@@ -38,13 +40,23 @@ void NullAgent::onFeaturesRequest(const Message *message)
     msg.send(message->source());
 }
 
+void NullAgent::sendError(const Message *message, UInt16 type, UInt16 code)
+{
+    ErrorBuilder msg{type, code};
+    msg.send(message->source());
+}
+
 int main(int argc, const char **argv)
 {
     std::vector<std::string> args{argv + 1, argv + argc};
 
     IPv6Address addr{};
+    ProtocolVersions version{};
     if (!args.empty()) {
         addr = IPv6Address{args[0]};
+	if (args.size() == 2) {
+	    version = ProtocolVersions{UInt8_narrow_cast(std::stoi(args[1]))};
+	}
     }
 
     Driver driver;
@@ -54,13 +66,13 @@ int main(int argc, const char **argv)
     };
 
     if (addr.valid()) {
-        auto result = driver.connect(Driver::Agent, addr, Driver::DefaultPort, ProtocolVersions{}, lambda);
+        auto result = driver.connect(Driver::Agent, addr, Driver::DefaultPort, version, lambda);
         result.get([](Exception ex) {
             std::cout << "Result: " << ex << '\n';
         });
 
     } else {
-        driver.listen(Driver::Agent, IPv6Address{}, Driver::DefaultPort, ProtocolVersions{}, lambda);
+        driver.listen(Driver::Agent, IPv6Address{}, Driver::DefaultPort, version, lambda);
     }
 
     driver.run();

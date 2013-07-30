@@ -8,6 +8,7 @@
 #include "ofp/features.h"
 #include "ofp/featuresrequest.h"
 #include "ofp/featuresreply.h"
+#include "ofp/error.h"
 #include "ofp/exception.h"
 
 namespace ofp { // <namespace ofp>
