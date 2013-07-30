@@ -23,7 +23,7 @@ class EchoReplyBuilder {
 public:
 	explicit EchoReplyBuilder(const EchoRequest *request);
 
-	void send(Writable channel);
+	void send(Writable *channel);
 
 private:
 	EchoReply msg_;

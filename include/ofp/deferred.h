@@ -2,6 +2,7 @@
 #define OFP_DEFERRED_H
 
 #include "ofp/log.h"
+#include <memory>
 
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>
