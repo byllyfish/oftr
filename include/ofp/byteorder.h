@@ -151,7 +151,7 @@ public:
 	}
 
 private:
-	alignas(1) UInt8 b_[sizeof(Type)];
+	OFP_ALIGNAS(1) UInt8 b_[sizeof(Type)];
 };
 
 

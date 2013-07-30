@@ -31,6 +31,12 @@
 # define OFP_END_IGNORE_PADDING
 #endif
 
+#if defined(__clang__)
+# define OFP_ALIGNAS(x)     alignas(x) 
+#else
+# define OFP_ALIGNAS(x)     __attribute__((aligned (x))) 
+#endif
+
 namespace ofp { // <namespace ofp>
 
 // Metaprogramming Utilities
