@@ -1,17 +1,14 @@
 #include <gtest/gtest.h>
-#include "ofp/oxm_value.h"
+#include "ofp/oxmvalue.h"
 
 using namespace ofp;
 
-using ofb_in_port = oxm_value<0x8000, 0, Big16, 16, false>;
-using ofb_vlan_vid = oxm_value<0x8000, 6, Big16, 13, true>;
-
-using ofb_tcp_src_port = oxm_value<0x8000, 19, Big16, 16, false>;
-
-//Range<UInt8*> Prereq<ofb_tcp_src_port>();
+using ofb_in_port = OXMValue<0x8000, 0, Big16, 16, false>;
+using ofb_vlan_vid = OXMValue<0x8000, 6, Big16, 13, true>;
+using ofb_tcp_src_port = OXMValue<0x8000, 19, Big16, 16, false>;
 
 
-TEST(oxm_value, ofb_in_port)
+TEST(OXMValue, ofb_in_port)
 {	
 	ofb_in_port port{80};
 	EXPECT_EQ(2, sizeof(port));
@@ -28,7 +25,7 @@ TEST(oxm_value, ofb_in_port)
 	EXPECT_FALSE(ofb_in_port::maskSupported());
 }
 
-TEST(oxm_value, ofb_vlan_vid)
+TEST(OXMValue, ofb_vlan_vid)
 {
 	ofb_vlan_vid vid{100};
 	EXPECT_EQ(2, sizeof(vid));
@@ -45,10 +42,10 @@ TEST(oxm_value, ofb_vlan_vid)
 	EXPECT_TRUE(ofb_vlan_vid::maskSupported());
 }
 
-TEST(oxm_value, use_in_switch_stmt)
+TEST(OXMValue, use_in_switch_stmt)
 {
 	bool found = false;
-	auto type = oxm_type{0x8000, 6, 13};
+	auto type = OXMType{0x8000, 6, 13};
 	
 	switch (type) {
 		case ofb_in_port::type():

@@ -96,10 +96,13 @@ sample1_unittest : sample1.o sample1_unittest.o gtest_main.a
 
 
 %.d : %.cpp
-	@set -e; rm -f $@; \
-	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+	$(CC) -MM -MT '$*.o $@' -MF $@ $(CPPFLAGS) $<
+	
+#	rm -f $@; \
+#	$(CC) -MM -MT '$*.o,$@' -MF $@.$$$$ $(CPPFLAGS) $< ; \
+#	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+#	rm -f $@.$$$$
 
-include $(TEST_SOURCES:.cpp=.d)
-include $(LIB_SOURCES:.cpp=.d)
+
+-include $(TEST_SOURCES:.cpp=.d)
+-include $(LIB_SOURCES:.cpp=.d)

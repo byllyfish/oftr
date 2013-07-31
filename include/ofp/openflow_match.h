@@ -55,7 +55,7 @@ enum ofp_oxm_class : UInt16 {
 
 
 struct ofp_oxm {
-	Big_unaligned<ofp_oxm_class> oxm_type;	// 
+	Big_unaligned<ofp_oxm_class> OXMType;	// 
 	Big8 		    	oxm_field;   // includes mask bit
 	Big8 		    	oxm_length;
 //  Big8 				oxm_data[0];

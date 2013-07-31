@@ -3,17 +3,15 @@
 
 #include "ofp/byteorder.h"
 
-
 namespace ofp { // <namespace ofp>
 
-
-class oxm_type {
+class OXMType {
 public:
 
-	constexpr oxm_type(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
+	constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
 		: value32_{make(oxmClass, oxmField, oxmBits)} {}
 	
-	explicit oxm_type(const UInt8 *data) 
+	explicit OXMType(const UInt8 *data) 
 		: value32_{ReadMemory<UInt32>(data)} {}
 	
 	// Return `opaque` identifier. Value depends on host's byte order.
@@ -23,12 +21,12 @@ public:
 	constexpr bool hasMask() const { return value32_ & MaskBits; }
 	
 	// When we add the mask, double the length.
-	constexpr oxm_type withMask() const { 
-		return hasMask() ? *this : oxm_type((value32_ & ~End8Bits) | MaskBits | ((value32_ & End7Bits) << 1)); 
+	constexpr OXMType withMask() const { 
+		return hasMask() ? *this : OXMType((value32_ & ~End8Bits) | MaskBits | ((value32_ & End7Bits) << 1)); 
 	}
 	
-	constexpr oxm_type withoutMask() const { 
-		return hasMask() ? oxm_type((value32_ & ~End8Bits & ~MaskBits) | ((value32_ & End8Bits) >> 1)) : *this; 
+	constexpr OXMType withoutMask() const { 
+		return hasMask() ? OXMType((value32_ & ~End8Bits & ~MaskBits) | ((value32_ & End8Bits) >> 1)) : *this; 
 	}
 	
 	constexpr UInt16 oxmClass() const  { return oxmNative() >> 16; }
@@ -47,7 +45,7 @@ private:
 		End8Bits = BigEndianFromNative(0x00FFU)
 	};
 	
-	constexpr explicit oxm_type(const UInt32 &value) : value32_{value} {}
+	constexpr explicit OXMType(const UInt32 &value) : value32_{value} {}
 	
 	constexpr static
 	UInt32 make(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
@@ -58,7 +56,7 @@ private:
 	}
 };
 
-static_assert(std::is_literal_type<oxm_type>::value, "Literal type expected.");
+static_assert(std::is_literal_type<OXMType>::value, "Literal type expected.");
 
 } // </namespace ofp>
 
