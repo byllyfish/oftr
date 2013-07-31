@@ -65,3 +65,25 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen)
 	assert(out >= begin);
 	return Unsigned_cast(out - begin);
 }
+
+
+std::string ofp::HexToRawData(const std::string &hex)
+{
+	std::string result;
+	result.reserve(hex.size() / 2);
+	
+	unsigned ch[2];
+	unsigned idx = 0;
+	for (auto inp = hex.c_str(); *inp; ++inp) {
+		if (std::isxdigit(*inp)) {
+			ch[idx++] = FromHex(*inp);
+			if (idx >= 2) {
+				assert(ch[0] < 16 && ch[1] < 16);
+				result.push_back(static_cast<char>((ch[0] << 4) | ch[1]));
+				idx = 0;
+			}
+		}
+	}
+	
+	return result;
+}

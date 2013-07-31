@@ -109,14 +109,7 @@ std::string RawDataToHex(const void *data, size_t len);
 // zero. Ignore non-hex digits. If the number of hex digits is odd, ignore the 
 // last hex digit.
 size_t HexToRawData(const std::string &hex, void *data, size_t maxlen);
-
-template <class Type>
-Type ReadMemory(const void *data)
-{
-	Type value;
-	std::memcpy(&value, data, sizeof(value));
-	return value;
-}
+std::string HexToRawData(const std::string &hex);
 
 } // </namespace ofp>
 

@@ -21,7 +21,13 @@ public:
 	constexpr static inline UInt16	bits() { return Bits; }
 	constexpr static inline bool maskSupported() { return Mask; }
 	
-	OXMValue(NativeType value) : value_{value} {}
+	explicit OXMValue(NativeType value) : value_{value} {}
+	
+	explicit OXMValue(const UInt8 *data) 
+	{
+		std::memcpy(&value_, data, sizeof(value_));
+	}
+	
 	operator NativeType() const { return value_; }
 	void operator=(NativeType value) { value_ = value; }
 

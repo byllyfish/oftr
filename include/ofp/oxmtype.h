@@ -11,13 +11,14 @@ public:
 	constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
 		: value32_{make(oxmClass, oxmField, oxmBits)} {}
 	
-	explicit OXMType(const UInt8 *data) 
-		: value32_{ReadMemory<UInt32>(data)} {}
+	explicit OXMType(const UInt8 *data) {
+		std::memcpy(&value32_, data, sizeof(value32_));
+	}
 	
 	// Return `opaque` identifier. Value depends on host's byte order.
 	constexpr operator UInt32() const { return value32_; }
 	
-	constexpr size_t length() const { return value8_[3]; }
+	constexpr size_t length() const { return (value32_ & End8Bits) >> End8RightShift; }
 	constexpr bool hasMask() const { return value32_ & MaskBits; }
 	
 	// When we add the mask, double the length.
@@ -34,15 +35,13 @@ public:
 	constexpr UInt32 oxmNative() const { return BigEndianToNative(value32_); }
 		
 private:
-	union {
-		const UInt32 value32_;
-		const UInt8  value8_[4];
-	};
+	UInt32 value32_;
 	
 	enum : UInt32 {
 		MaskBits = BigEndianFromNative(0x0100U),
 		End7Bits = BigEndianFromNative(0x007FU),
-		End8Bits = BigEndianFromNative(0x00FFU)
+		End8Bits = BigEndianFromNative(0x00FFU),
+		End8RightShift = (End8Bits == 0x00FFU ? 0 : 24)
 	};
 	
 	constexpr explicit OXMType(const UInt32 &value) : value32_{value} {}

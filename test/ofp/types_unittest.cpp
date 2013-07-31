@@ -63,9 +63,9 @@ TEST(types, HexToRawData)
 	EXPECT_EQ(0, std::memcmp(buf, "\xaa\xbb\0\0\0\0\0", 7));
 }
 
-TEST(types, ReadMemory)
+TEST(types, HexToRawData2)
 {
-	const char *buf = "abcdef";
-	UInt32 value = ReadMemory<UInt32>(buf);
-	EXPECT_EQ(0, std::memcmp(buf, &value, sizeof(value)));
+	auto raw = HexToRawData("01-02:03\n04 z 05 = 06 _ 07 08 09");
+	EXPECT_EQ(9, raw.length());
+	EXPECT_EQ(0, std::memcmp(raw.data(), "\1\2\3\4\5\6\7\x08\x09", 9));
 }

@@ -73,3 +73,16 @@ TEST(OXMType, withMask)
 	EXPECT_EQ(a, c);
 	EXPECT_EQ(a.withoutMask(), c.withoutMask());
 }
+
+TEST(OXMType, constructFromMemory)
+{
+	const UInt8 raw[] = { 0x80, 0xFF, 0xAA, 0x02 };
+	
+	OXMType type{raw};
+	EXPECT_EQ(0, std::memcmp(&type, "\x80\xFF\xAA\x02", 4));
+	EXPECT_EQ(0x80FFAA02UL, type.oxmNative());
+	EXPECT_EQ(0x80FF, type.oxmClass());
+	EXPECT_EQ(0xAA >> 1, type.oxmField());
+	EXPECT_EQ(2, type.length());
+	EXPECT_FALSE(type.hasMask());
+}

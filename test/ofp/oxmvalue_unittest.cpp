@@ -59,3 +59,12 @@ TEST(OXMValue, use_in_switch_stmt)
 	
 	EXPECT_TRUE(found);
 }
+
+
+TEST(OXMValue, construct_from_memory)
+{
+	const UInt8 raw[] = { 0x00, 0x65 };
+	
+	ofb_tcp_src_port srcPort{raw};
+	EXPECT_EQ(101, srcPort);
+}
