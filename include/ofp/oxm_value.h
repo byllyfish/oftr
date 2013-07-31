@@ -25,6 +25,7 @@ public:
 	operator NativeType() const { return value_; }
 	void operator=(NativeType value) { value_ = value; }
 
+	
 private:
 	ValueType value_;
 	

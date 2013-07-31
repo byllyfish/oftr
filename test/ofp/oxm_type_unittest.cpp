@@ -63,7 +63,7 @@ TEST(oxm_type, withMask)
 	EXPECT_NE(a, b);
 	EXPECT_EQ(a.oxmClass(), b.oxmClass());
 	EXPECT_EQ(a.oxmField(), b.oxmField());
-	EXPECT_EQ(a.length(), b.length());
+	EXPECT_EQ(2*a.length(), b.length());
 	EXPECT_NE(a.hasMask(), b.hasMask());
 	
 	EXPECT_EQ(a.withMask(), b.withMask());

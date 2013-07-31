@@ -19,20 +19,24 @@ GTEST_DIR = ../external/googletest
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
 # the compiler doesn't generate warnings in Google Test headers.
-CPPFLAGS += -isystem $(GTEST_DIR)/include
+CPPFLAGS += -isystem $(GTEST_DIR)/include -stdlib=libc++
 
 CPPFLAGS += -I ../include -I ofp
 
 # Flags passed to the C++ compiler. Google test uses global constructors.
 WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-global-constructors
-CXXFLAGS += -g $(WARNINGS) -pthread -std=c++11 -stdlib=libc++
+CXXFLAGS += -g $(WARNINGS) -pthread -std=c++11
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
 TESTS = ofp_test
-TEST_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard ofp/*_unittest.cpp))
+TEST_SOURCES := $(wildcard ofp/*_unittest.cpp)
+TEST_OBJECTS := $(patsubst %.cpp,%.o,$(TEST_SOURCES))
+TEST_DEPEND  := $(patsubst %.cpp,%.d,$(TEST_SOURCES))
 
-SRC_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard ../src/ofp/*.cpp))
+LIB_SOURCES := $(wildcard ../src/ofp/*.cpp)
+LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
+LIB_DEPEND  := $(patsubst %.cpp,%.d,$(LIB_SOURCES))
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -44,7 +48,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 all : $(TESTS)
 
 clean :
-	rm -f $(TESTS) gtest.a gtest_main.a $(TEST_OBJECTS)
+	rm -f $(TESTS) gtest.a gtest_main.a $(TEST_OBJECTS) $(LIB_OBJECTS) $(TEST_DEPEND) $(LIB_DEPEND)
 
 # Builds gtest.a and gtest_main.a.
 
@@ -75,7 +79,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # function.
 
 
-ofp_test : $(TEST_OBJECTS) $(SRC_OBJECTS) gtest_main.a
+ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 
@@ -89,3 +93,13 @@ sample1_unittest.o : $(USER_DIR)/sample1_unittest.cc \
 
 sample1_unittest : sample1.o sample1_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+
+%.d : %.cpp
+	@set -e; rm -f $@; \
+	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+include $(TEST_SOURCES:.cpp=.d)
+include $(LIB_SOURCES:.cpp=.d)
