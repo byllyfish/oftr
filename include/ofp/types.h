@@ -93,6 +93,7 @@ UInt16 UInt32_narrow_cast(T value) {
 	return static_cast<UInt32>(value);
 }
 
+
 // Return the number of items in an array.
 template<class T, size_t N>
 inline constexpr 

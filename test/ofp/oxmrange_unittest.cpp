@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "ofp/oxmrange.h"
+#include "ofp/oxmvalue.h"
 
 using namespace ofp;
 
@@ -18,8 +19,7 @@ const char *buffer = "8000 0002 0100"
 TEST(oxmrange, test)
 {
 	auto buf = HexToRawData(buffer);
-	
-	OXMRange range{buf.data(), buf.size()};
+	OXMRange range{&buf};
 	
 	UInt16 port = 0;
 	for (auto item : range) {

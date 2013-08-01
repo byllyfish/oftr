@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+#include "ofp/oxmvalue.h"
 #include "ofp/oxmiterator.h"
+#include "ofp/oxmrange.h"
 
 using namespace ofp;
 
@@ -19,8 +21,9 @@ TEST(oxmiterator, test)
 {
 	auto buf = HexToRawData(buffer);
 	
-	OXMIterator begin{buf.data()};
-	OXMIterator end{buf.data() + buf.size()};
+	OXMRange data{buf.data(), buf.size()};
+	OXMIterator begin = data.begin();
+	OXMIterator end = data.end();
 	
 	for (auto iter = begin; iter != end; ++iter) {
 		auto item = *iter;

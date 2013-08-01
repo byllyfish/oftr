@@ -2,7 +2,7 @@
 #define OFP_OXMITERATOR_H
 
 #include "ofp/oxmtype.h"
-#include "ofp/oxmvalue.h"
+//#include "ofp/oxmvalue.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -25,10 +25,6 @@ public:
 	private:
 		const UInt8 *position_;
 	};
-	
-	explicit OXMIterator(const void *pos)
-		: position_{static_cast<const UInt8 *>(pos)} {}
-
 
 	Item operator*() const 
 	{
@@ -36,6 +32,7 @@ public:
 	}
 	
 	// No operator ->
+	// No postfix ++
 	
 	void operator++() 
 	{
@@ -47,11 +44,19 @@ public:
 	}
 	
 	bool operator!=(const OXMIterator &rhs) {
-		return position_ != rhs.position_;
+		return !(*this == rhs);
 	}
+	
+	const UInt8 *data() const { return position_; }
 	
 private:
 	const UInt8 *position_;
+	
+	explicit OXMIterator(const void *pos)
+		: position_{static_cast<const UInt8 *>(pos)} {}
+		
+	friend class OXMRange;
+	friend class OXMList;
 };
 
 } // </namespace ofp>

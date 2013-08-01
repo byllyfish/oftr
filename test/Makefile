@@ -34,7 +34,8 @@ TEST_SOURCES := $(wildcard ofp/*_unittest.cpp)
 TEST_OBJECTS := $(patsubst %.cpp,%.o,$(TEST_SOURCES))
 TEST_DEPEND  := $(patsubst %.cpp,%.d,$(TEST_SOURCES))
 
-LIB_SOURCES := $(wildcard ../src/ofp/*.cpp)
+MAINS := $(wildcard ../src/ofp/*_main.cpp)
+LIB_SOURCES := $(filter-out $(MAINS),$(wildcard ../src/ofp/*.cpp))
 LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
 LIB_DEPEND  := $(patsubst %.cpp,%.d,$(LIB_SOURCES))
 
@@ -80,7 +81,10 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 
 ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+
+oxmfields_compile : $(LIB_OBJECTS) ../src/ofp/oxmfields_compile_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
 
 

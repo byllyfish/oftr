@@ -3,6 +3,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/oxmtype.h"
+#include "ofp/oxmrange.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -11,7 +12,8 @@ template <
 	UInt8 Field,
 	class ValueType,
 	UInt16 Bits,
-	bool Mask
+	bool Mask,
+	const OXMRange *Prereqs = nullptr
 >
 class OXMValue {
 public:
@@ -20,6 +22,7 @@ public:
 	constexpr static inline OXMType type() { return OXMType{Class, Field, Bits}; }
 	constexpr static inline UInt16	bits() { return Bits; }
 	constexpr static inline bool maskSupported() { return Mask; }
+	static inline const OXMRange *prerequisites() { return Prereqs; }
 	
 	explicit OXMValue(NativeType value) : value_{value} {}
 	
