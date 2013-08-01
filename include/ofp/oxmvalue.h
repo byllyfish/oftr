@@ -17,7 +17,8 @@ template <
 >
 class OXMValue {
 public:
-	using NativeType = typename ValueType::NativeType;
+	
+	using NativeType = typename NativeTypeOf<ValueType>::type;
 
 	constexpr static inline OXMType type() { return OXMType{Class, Field, Bits}; }
 	constexpr static inline UInt16	bits() { return Bits; }
@@ -26,8 +27,9 @@ public:
 	
 	explicit OXMValue(NativeType value) : value_{value} {}
 	
-	explicit OXMValue(const UInt8 *data) 
+	explicit OXMValue(const UInt8 *data, size_t) 
 	{
+		// FIXME length ignored. Same as OXMType.
 		std::memcpy(&value_, data, sizeof(value_));
 	}
 	

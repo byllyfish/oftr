@@ -11,7 +11,8 @@ public:
 	constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
 		: value32_{make(oxmClass, oxmField, oxmBits)} {}
 	
-	explicit OXMType(const UInt8 *data) {
+	explicit OXMType(const UInt8 *data, size_t) {
+		// FIXME length ignored. Use RawMem interface?
 		std::memcpy(&value32_, data, sizeof(value32_));
 	}
 	
@@ -56,6 +57,7 @@ private:
 };
 
 static_assert(std::is_literal_type<OXMType>::value, "Literal type expected.");
+
 
 } // </namespace ofp>
 

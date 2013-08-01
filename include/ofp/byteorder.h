@@ -152,6 +152,20 @@ private:
 	alignas(1) UInt8 b_[sizeof(Type)];
 };
 
+
+template <class Type>
+struct NativeTypeOf {
+
+	template <class X>
+	static typename X::NativeType check(const X &x);
+	
+	static Type check(...);
+	
+	using type = decltype(check(std::declval<Type>()));
+	
+};
+
+
 } // </namespace detail>
 
 /// \brief Types for big endian integers (aligned).
@@ -183,6 +197,9 @@ EnableIf<std::is_integral<Type>::value, Type> BigEndianToNative(Type value)
 {
 	return detail::HostSwapByteOrder(value);
 }
+
+template <class T>
+using NativeTypeOf = detail::NativeTypeOf<T>;
 
 } // </namespace ofp>
 

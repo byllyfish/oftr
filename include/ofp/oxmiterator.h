@@ -14,12 +14,12 @@ public:
 		explicit Item(const UInt8 *pos) : position_{pos} {}
 		
 		OXMType type() const {
-			return OXMType(position_);
+			return OXMType(position_, 0);
 		}
 	
 		template <class ValueType>
 		ValueType value() {
-			return ValueType{position_ + sizeof(OXMType)};
+			return ValueType{position_ + sizeof(OXMType), 0};
 		}
 		
 	private:

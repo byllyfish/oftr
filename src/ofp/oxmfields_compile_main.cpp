@@ -5,8 +5,7 @@
 
 using namespace std;
 
-static vector<string> SplitLine(const string &line, char delimiter);
-static void Trim(string &s);
+static vector<string> Split(const string &str, char delimiter, bool trim);
 
 class OXMField {
 public:
@@ -14,9 +13,6 @@ public:
 
 	explicit OXMField(const vector<string> fields) : fields_{fields} 
 	{
-		for (auto &f : fields_) {
-			Trim(f);
-		}
 	}
 	
 	const string &name() const { return fields_.at(0); }
@@ -25,9 +21,14 @@ public:
 	const string &bits() const { return fields_.at(3); }
 	const string &valueType() const { return fields_.at(4); }
 	const string &mask() const { return fields_.at(5); }
-	const string &prereqs() const { return fields_.at(6); }
+	const string &prereqStr() const { return fields_.at(6); }
 	
-	bool hasPrereqs() const { return !prereqs().empty(); }
+	bool hasPrereqs() const { return !prereqStr().empty(); }
+	
+	vector<string> prereqs() const 
+	{
+		return Split(prereqStr(), ',', true);
+	}
 	
 	void defineOXMValue(ostream &s)
 	{
@@ -50,9 +51,29 @@ public:
 		s << "extern const OXMRange OXMPrereq_" << name() << ";\n";
 	}
 	
-	void writeGlobalPrereq(ostream &s)
+	void writePrereqCode(ostream &s)
 	{
-		s << "  Prereq(\"" << name() << "\", " << prereqs() << ");\n";
+		s << "{\n";
+		s << "OXMList list;\n";
+		for (auto preq : prereqs()) {
+			if (preq.find('&') != string::npos) {
+				auto vec = Split(preq, '&', true);
+				if (vec.size() == 2) {
+					// Prereqs must be written twice. That's the signal.
+					for (int i = 0; i < 2; ++i) 
+						s << "list.addPrereq(" << vec[0] << "," << vec[1] << ");\n";
+				} else {
+					s << "/*\n";
+					s << "$$$$$ Unexpected prereq: " << preq << '\n';
+					s << "$$$$$ Aborting.\n";
+					abort();
+				}
+			} else {
+				s << "list.add(" << preq << ");\n";
+			}
+		}
+		s << "WritePrereq(\"" << name() << "\", list.data(), list.size());\n";
+		s << "}\n";
 	}
 	
 private:
@@ -67,7 +88,7 @@ static void WriteSourceFile(ostream &stream, vector<OXMField> &fields);
 
 int main(int argc, char **argv)
 {
-	vector<string> args{&argv[0], &argv[argc]};
+	vector<string> args{argv, argv + argc};
 	
 	bool header = (args.size() > 1) && args[1] == "-h";
 	
@@ -89,7 +110,7 @@ static vector<OXMField> ReadInput(istream &stream)
 	while (std::getline(stream, line)) {
 		if (++lineNum == 1)						// skip first line
 			continue;
-		auto fields = SplitLine(line, '\t');
+		auto fields = Split(line, '\t', true);
 		if (fields.size() >= OXMField::NumFields) {
 			records.push_back(OXMField{fields});
 		} else {
@@ -132,69 +153,41 @@ static void WriteHeaderFile(ostream &stream, vector<OXMField> &fields)
 }
 
 
-const char *PrereqFunctionPreamble = R"+++(
+const char *PrereqFunctionPreamble = R"""(
 
 #include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"
 #include <iostream>
 
-void WritePrereq(const char *name, const UInt *data, size_t len)
+using namespace ofp;
+
+static void WritePrereq(const char *name, const UInt8 *data, size_t len)
 {
-  cout << "static const UInt8 data_" << name << "[" << len << "]={";
+  std::cout << "static const ofp::UInt8 data_" << name << "[" << len << "]={";
   for (size_t i = 0; i < len; ++i) {
-    cout << data[i] << ",";
+    std::cout << unsigned(data[i]) << ",";
   }
-  cout << "};\n";
-  cout << "ofp::OXMRange OXMPrereq_" << name << "{data_" << name << "," << len <<"};\n";
+  std::cout << "};\n";
+  std::cout << "const ofp::OXMRange ofp::OXMPrereq_" << name << "{data_" << name << "," << len <<"};\n";
 }
 
-template <class T1, class T2>
-void Prereq(const char *name, T1 a) {
-  OXMList list;
-  list.add(a);
-  WritePrereq(name, list.data(), list.size());
-}
-
-template <class T1, class T2>
-void Prereq(const char *name, T1 a, T2 c) {
-  OXMList list;
-  list.add(a);
-  list.add(b);
-  WritePrereq(name, list.data(), list.size());
-}
-
-template <class T1, class T2, class T3>
-void Prereq(const char *name, T1 a, T2 c, T3 c) {
-  OXMList list;
-  list.add(a);
-  list.add(b);
-  list.add(c);
-  WritePrereqFunction(name, list.data(), list.size());
-}
-
-)+++";
+int main() {
+  std::cout << "#include \"ofp/oxmfields.h\"\n";
+  
+)""";
 
 
 static void WriteSourceFile(ostream &stream, vector<OXMField> &fields)
 {	
 	stream << PrereqFunctionPreamble;
-	stream << "int main() {\n";
+	//stream << "int main() {\n";
+	//stream << "
+	
 	for (auto field : fields) {
 		if (field.hasPrereqs())
-			field.writeGlobalPrereq(stream);
+			field.writePrereqCode(stream);
 	}
 	stream << "}\n";
-}
-
-
-static vector<string> SplitLine(const string &line, char delimiter)
-{
-	vector<string> result;
-	istringstream iss{line};
-	for (string f; getline(iss, f, delimiter); ) {
-		result.push_back(f);
-	}
-	return result;
 }
 
 static void Trim(string &s)
@@ -206,5 +199,17 @@ static void Trim(string &s)
 		s.erase(0, first);
 		s.erase(s.find_last_not_of(" \t\n\v\f\r")+1);
 	}
+}
+
+static vector<string> Split(const string &str, char delimiter, bool trim)
+{
+	vector<string> result;
+	istringstream iss{str};
+	for (string f; getline(iss, f, delimiter); ) {
+		if (trim)
+			Trim(f);
+		result.push_back(f);
+	}
+	return result;
 }
 

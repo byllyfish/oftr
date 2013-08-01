@@ -35,7 +35,7 @@ TEST_OBJECTS := $(patsubst %.cpp,%.o,$(TEST_SOURCES))
 TEST_DEPEND  := $(patsubst %.cpp,%.d,$(TEST_SOURCES))
 
 MAINS := $(wildcard ../src/ofp/*_main.cpp)
-LIB_SOURCES := $(filter-out $(MAINS),$(wildcard ../src/ofp/*.cpp))
+LIB_SOURCES := $(filter-out $(MAINS) ../src/ofp/oxmfields.cpp,$(wildcard ../src/ofp/*.cpp))
 LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
 LIB_DEPEND  := $(patsubst %.cpp,%.d,$(LIB_SOURCES))
 
@@ -80,13 +80,25 @@ gtest_main.a : gtest-all.o gtest_main.o
 # function.
 
 
-ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) gtest_main.a
+ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) ../src/ofp/oxmfields.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
 oxmfields_compile : $(LIB_OBJECTS) ../src/ofp/oxmfields_compile_main.o
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
+oxmfields_compile2 : $(LIB_OBJECTS) ../src/ofp/oxmfields_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
+oxmfields : ../include/ofp/oxmfields.h ../src/ofp/oxmfields.cpp
+
+../src/ofp/oxmfields_main.cpp : oxmfields_compile ../src/ofp/oxmfields.tab
+	./oxmfields_compile < ../src/ofp/oxmfields.tab > $@
+
+../include/ofp/oxmfields.h : oxmfields_compile ../src/ofp/oxmfields.tab
+	./oxmfields_compile -h < ../src/ofp/oxmfields.tab > ../include/ofp/oxmfields.h
+
+../src/ofp/oxmfields.cpp : oxmfields_compile2
+	./oxmfields_compile2 > ../src/ofp/oxmfields.cpp
 
 sample1.o : $(USER_DIR)/sample1.cc $(USER_DIR)/sample1.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/sample1.cc

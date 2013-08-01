@@ -65,6 +65,6 @@ TEST(OXMValue, construct_from_memory)
 {
 	const UInt8 raw[] = { 0x00, 0x65 };
 	
-	ofb_tcp_src_port srcPort{raw};
+	ofb_tcp_src_port srcPort{raw, 0};
 	EXPECT_EQ(101, srcPort);
 }

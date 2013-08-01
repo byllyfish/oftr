@@ -24,6 +24,9 @@ namespace ofp { // <namespace ofp>
 template<bool B, typename T>
 using EnableIf = typename std::enable_if<B,T>::type;
 
+template<bool B, typename T, typename F>
+using Conditional = typename std::conditional<B,T,F>::type;
+
 template<typename T>
 using MakeUnsigned = typename std::make_unsigned<T>::type;
 
