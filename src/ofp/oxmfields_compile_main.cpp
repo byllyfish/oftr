@@ -65,7 +65,7 @@ public:
 				if (vec.size() == 2) {
 					// Prereqs must be written twice. That's the signal.
 					for (int i = 0; i < 2; ++i) 
-						s << "list.addPrereq(" << vec[0] << "," << vec[1] << ");\n";
+						s << "list.add(" << vec[0] << "," << vec[1] << ");\n";
 				} else {
 					s << "/*\n";
 					s << "$$$$$ Unexpected prereq: " << preq << '\n';

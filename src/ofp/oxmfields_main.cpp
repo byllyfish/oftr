@@ -21,14 +21,14 @@ int main() {
   
 {
 OXMList list;
-list.addPrereq(OFB_IN_PORT{0},OFB_IN_PORT{0});
-list.addPrereq(OFB_IN_PORT{0},OFB_IN_PORT{0});
+list.add(OFB_IN_PORT{0},OFB_IN_PORT{0});
+list.add(OFB_IN_PORT{0},OFB_IN_PORT{0});
 WritePrereq("OFB_IN_PHY_PORT", list.data(), list.size());
 }
 {
 OXMList list;
-list.addPrereq(OFB_VLAN_VID{0x1000},OFB_VLAN_VID{0x1000});
-list.addPrereq(OFB_VLAN_VID{0x1000},OFB_VLAN_VID{0x1000});
+list.add(OFB_VLAN_VID{0x1000},OFB_VLAN_VID{0x1000});
+list.add(OFB_VLAN_VID{0x1000},OFB_VLAN_VID{0x1000});
 WritePrereq("OFB_VLAN_PCP", list.data(), list.size());
 }
 {

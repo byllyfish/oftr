@@ -8,6 +8,8 @@ namespace ofp { // <namespace ofp>
 class OXMType {
 public:
 
+	constexpr OXMType() : value32_{0} {}
+	
 	constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
 		: value32_{make(oxmClass, oxmField, oxmBits)} {}
 	

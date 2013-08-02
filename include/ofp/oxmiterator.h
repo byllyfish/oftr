@@ -31,6 +31,10 @@ public:
 		return Item{position_};
 	}
 	
+	OXMType type() const {
+		return OXMType(position_, 0);
+	}
+	
 	// No operator ->
 	// No postfix ++
 	

@@ -32,3 +32,51 @@ void ofp::OXMList::add(OXMType type, const void *data, const void *mask, size_t 
 	add(data, len);
 	add(mask, len);
 }
+
+
+void ofp::OXMList::insertPrerequisites(const OXMRange *values)
+{
+	// No prerequisites? Make a quick exit.
+	if (values == nullptr)
+		return;
+
+	auto iter = begin();
+	auto iterEnd = end();
+
+	auto preqIter = values->begin();
+	auto preqIterEnd = values->end();
+	
+	while (preqIter != preqIterEnd) {
+		OXMType preqType = preqIter.type();
+		printf("%u\n", preqType);
+		OXMType iterType{};
+	
+		while (iter != iterEnd) {
+			iterType = iter.type();
+			printf("%u\n", iterType);
+			if (iterType >= preqType)
+				break;
+			++iter;
+		}
+			
+		if (iter == iterEnd) {
+			// Case 1: iter == end
+			// Insert [preqIter, preqIterEnd) at end of list.
+			buf_.insert(buf_.end(), preqIter.data(), preqIterEnd.data());
+			// We're done.
+			return;
+		} else if (iterType > preqType) {
+			// Case 2: iter.type() > preq.type()
+			// Insert [preqIter, preqIter+1) into list before iter.
+			auto pos = buf_.begin() + (iter.data() - begin().data());
+			buf_.insert(pos, preqIter.data(), preqIter.data() + sizeof(preqType) + preqType.length());
+			// TODO may be able to extend preqIter+1...
+		} else {
+			// Case 3: iter == preq
+			assert(iterType == preqType);
+			// Ignore this prereq; it's already in the list.
+		}
+		
+		++preqIter;
+	}
+}

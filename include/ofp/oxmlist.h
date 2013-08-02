@@ -29,10 +29,9 @@ public:
 	template <class ValueType>
 	void add(ValueType value, ValueType mask);
 	
-	template <class ValueType>
-	void addPrereq(ValueType value, ValueType mask);
+	void insertPrerequisites(const OXMRange *values);
 	
-	void remove(OXMIterator pos);
+	//void remove(OXMIterator pos);
 	
 	OXMRange toRange() const { return OXMRange{&buf_[0], buf_.size()}; }
 	
@@ -65,20 +64,8 @@ inline
 void ofp::OXMList::add(ValueType value, ValueType mask)
 {
 	static_assert(sizeof(value) < 128, "oxm_length must be <= 255.");
-	static_assert(ValueType::maskSupported(), "mask not supported.");
 	
 	add(ValueType::type().withMask(), &value, &mask, sizeof(value));
 }
-
-
-template <class ValueType>
-inline
-void ofp::OXMList::addPrereq(ValueType value, ValueType mask)
-{
-	static_assert(sizeof(value) < 128, "oxm_length must be <= 255.");
-	
-	add(ValueType::type().withMask(), &value, &mask, sizeof(value));
-}
-
 
 #endif // OFP_OXMLIST_H
