@@ -34,7 +34,7 @@ public:
 	
 	void remove(OXMIterator pos);
 	
-	OXMRange toRange() const { return OXMRange(&buf_); }
+	OXMRange toRange() const { return OXMRange{&buf_[0], buf_.size()}; }
 	
 	bool operator==(const OXMList &rhs) const { return buf_ == rhs.buf_; }
 	bool operator!=(const OXMList &rhs) const { return !(*this == rhs); }

@@ -21,10 +21,9 @@ public:
 		: begin_{data}, end_{data + length} {}
 	
 
-	// Construct from string, vector, etc.
-	template <class Type>
-	OXMRange(const Type *s) 
-		: OXMRange{&(*s)[0], s->size()} {}
+	// Construct from vector, etc.
+	//OXMRange(const std::vector<UInt8> *v) 
+	//	: OXMRange{&v->[0], v->size()} {}
 	
 	OXMIterator begin() const { return OXMIterator{begin_}; }
 	OXMIterator end() const { return OXMIterator{end_}; }

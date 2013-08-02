@@ -61,41 +61,57 @@ WritePrereq("OFB_IPV4_DST", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{6});
 WritePrereq("OFB_TCP_SRC", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{6});
 WritePrereq("OFB_TCP_DST", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{17});
 WritePrereq("OFB_UDP_SRC", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{17});
 WritePrereq("OFB_UDP_DST", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{132});
 WritePrereq("OFB_SCTP_SRC", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{132});
 WritePrereq("OFB_SCTP_DST", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{1});
 WritePrereq("OFB_ICMPV4_TYPE", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{1});
 WritePrereq("OFB_ICMPV4_CODE", list.data(), list.size());
 }
@@ -141,27 +157,40 @@ WritePrereq("OFB_IPV6_FLABEL", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{58});
 WritePrereq("OFB_ICMPV6_TYPE", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
 list.add(OFB_IP_PROTO{58});
 WritePrereq("OFB_ICMPV6_CODE", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
+list.add(OFB_IP_PROTO{58});
 list.add(OFB_ICMPV6_TYPE{135});
 list.add(OFB_ICMPV6_TYPE{136});
 WritePrereq("OFB_IPV6_ND_TARGET", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
+list.add(OFB_IP_PROTO{58});
 list.add(OFB_ICMPV6_TYPE{135});
 WritePrereq("OFB_IPV6_ND_SLL", list.data(), list.size());
 }
 {
 OXMList list;
+list.add(OFB_ETH_TYPE{0x0800});
+list.add(OFB_ETH_TYPE{0x86dd});
+list.add(OFB_IP_PROTO{58});
 list.add(OFB_ICMPV6_TYPE{136});
 WritePrereq("OFB_IPV6_ND_TLL", list.data(), list.size());
 }

@@ -19,7 +19,7 @@ const char *buffer = "8000 0002 0100"
 TEST(oxmrange, test)
 {
 	auto buf = HexToRawData(buffer);
-	OXMRange range{&buf};
+	OXMRange range{buf.data(), buf.size()};
 	
 	UInt16 port = 0;
 	for (auto item : range) {

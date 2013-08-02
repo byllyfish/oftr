@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -21,7 +23,9 @@ public:
 	const string &bits() const { return fields_.at(3); }
 	const string &valueType() const { return fields_.at(4); }
 	const string &mask() const { return fields_.at(5); }
+	
 	const string &prereqStr() const { return fields_.at(6); }
+	string &prereqStr() { return fields_.at(6); }
 	
 	bool hasPrereqs() const { return !prereqStr().empty(); }
 	
@@ -84,6 +88,7 @@ private:
 static vector<OXMField> ReadInput(istream &stream);
 static void WriteHeaderFile(ostream &stream, vector<OXMField> &fields);
 static void WriteSourceFile(ostream &stream, vector<OXMField> &fields);
+static void CompilePrereqs(vector<OXMField> &fields);
 
 
 int main(int argc, char **argv)
@@ -96,6 +101,7 @@ int main(int argc, char **argv)
 	if (header) {
 		WriteHeaderFile(cout, fields);
 	} else {
+		CompilePrereqs(fields);
 		WriteSourceFile(cout, fields);
 	}
 }
@@ -180,8 +186,6 @@ int main() {
 static void WriteSourceFile(ostream &stream, vector<OXMField> &fields)
 {	
 	stream << PrereqFunctionPreamble;
-	//stream << "int main() {\n";
-	//stream << "
 	
 	for (auto field : fields) {
 		if (field.hasPrereqs())
@@ -189,6 +193,43 @@ static void WriteSourceFile(ostream &stream, vector<OXMField> &fields)
 	}
 	stream << "}\n";
 }
+
+
+static string Identifier(const string &s)
+{
+	auto first = s.find_first_of(" {[(&");
+	return s.substr(0, first);
+}
+
+
+// Compile prerequisites.
+static void CompilePrereqs(vector<OXMField> &fields)
+{
+	unordered_map<string,const OXMField*> map;
+	
+	for (auto &field : fields) {
+		map[field.name()] = &field;
+	}
+	
+	for (auto &field : fields) {
+		vector<string> preqs = field.prereqs();
+		// Find prereqStr for each preq and append it to preqresStr.
+		unordered_set<string> processed;
+		for (auto preq : preqs) {
+			auto id = Identifier(preq);
+			if (processed.find(id) == processed.end()) {
+				processed.insert(id);
+				auto pstr = map.find(id);
+				if (pstr != map.end()) {
+					if (pstr->second->hasPrereqs()) {
+						field.prereqStr() = pstr->second->prereqStr() + ',' + field.prereqStr();
+					}
+				}
+			}
+		}
+	}
+}
+
 
 static void Trim(string &s)
 {

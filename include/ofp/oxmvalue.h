@@ -33,6 +33,7 @@ public:
 		std::memcpy(&value_, data, sizeof(value_));
 	}
 	
+	NativeType value() const { return value_; }
 	operator NativeType() const { return value_; }
 	void operator=(NativeType value) { value_ = value; }
 

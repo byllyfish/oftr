@@ -39,11 +39,11 @@ public:
 		position_ += sizeof(OXMType) + position_[3];
 	}
 		
-	bool operator==(const OXMIterator &rhs) {
+	bool operator==(const OXMIterator &rhs) const {
 		return position_ == rhs.position_;
 	}
 	
-	bool operator!=(const OXMIterator &rhs) {
+	bool operator!=(const OXMIterator &rhs) const {
 		return !(*this == rhs);
 	}
 	

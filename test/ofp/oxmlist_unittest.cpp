@@ -28,7 +28,7 @@ TEST(oxmlist, test)
 	EXPECT_EQ(buf.size(), list.size());
 	EXPECT_EQ(0, std::memcmp(list.data(), buf.data(), list.size()));
 	
-	OXMRange r{&buf};
+	OXMRange r{buf.data(), buf.size()};
 	OXMRange s = list.toRange();
 	EXPECT_EQ(r, s);
 	
