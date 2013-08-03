@@ -25,7 +25,7 @@ public:
 	constexpr static inline bool maskSupported() { return Mask; }
 	static inline const OXMRange *prerequisites() { return Prereqs; }
 	
-	explicit OXMValue(NativeType value) : value_{value} {}
+	/* implicit */ OXMValue(NativeType value) : value_{value} {}
 	
 	explicit OXMValue(const UInt8 *data, size_t) 
 	{

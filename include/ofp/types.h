@@ -96,6 +96,13 @@ UInt16 UInt32_narrow_cast(T value) {
 	return static_cast<UInt32>(value);
 }
 
+// Convenience function to check for literal type.
+template<typename T>
+constexpr bool IsLiteralType() { return std::is_literal_type<T>::value; }
+
+// Convenience function to check for standard layout.
+template<typename T>
+constexpr bool IsStandardLayout() { return std::is_standard_layout<T>::value; }
 
 // Return the number of items in an array.
 template<class T, size_t N>

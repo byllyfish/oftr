@@ -19,6 +19,7 @@ public:
 	
 		template <class ValueType>
 		ValueType value() {
+			// FIXME needs to work with primitive types.
 			return ValueType{position_ + sizeof(OXMType), 0};
 		}
 		

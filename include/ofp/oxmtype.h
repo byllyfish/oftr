@@ -15,6 +15,7 @@ public:
 	
 	explicit OXMType(const UInt8 *data, size_t) {
 		// FIXME length ignored. Use RawMem interface?
+		// If I remove this, can I make value32_ const?
 		std::memcpy(&value32_, data, sizeof(value32_));
 	}
 	
@@ -58,8 +59,8 @@ private:
 	}
 };
 
-static_assert(std::is_literal_type<OXMType>::value, "Literal type expected.");
-
+static_assert(IsLiteralType<OXMType>(), "Literal type expected.");
+static_assert(IsStandardLayout<OXMType>(), "Layout type expected.");
 
 } // </namespace ofp>
 
