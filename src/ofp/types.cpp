@@ -38,6 +38,31 @@ std::string ofp::RawDataToHex(const void *data, size_t len)
 	return result;	
 }
 
+
+std::string ofp::RawDataToHex(const void *data, size_t len, char delimiter, int word)
+{
+	std::string result;
+	result.reserve(2*len);
+
+	const UInt8 *pos = static_cast<const UInt8*>(data);
+	const UInt8 *end = pos + len;
+	
+	int cnt = 0;
+	char buf[2];
+	while (pos < end) {
+		if (++cnt > word) {
+			result.push_back(delimiter);
+			cnt = 1;
+		}
+		buf[0] = ToHex(*pos >> 4);
+		buf[1] = ToHex(*pos++ & 0x0F);
+		result.append(buf, sizeof(buf));
+	}
+	
+	return result;	
+}
+
+
 size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen)
 {
 	UInt8 *begin = static_cast<UInt8*>(data);
@@ -86,4 +111,14 @@ std::string ofp::HexToRawData(const std::string &hex)
 	}
 	
 	return result;
+}
+
+
+bool ofp::MemFilled(const void *data, size_t len, char ch)
+{
+	const UInt8 *p = static_cast<const UInt8 *>(data);
+	while (len-- > 0) {
+		if (*p++ != ch) return false;
+	}
+	return true;
 }

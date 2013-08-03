@@ -10,7 +10,14 @@ public:
 	enum { Length = 6 };
 	
 	EnetAddress() = default;
-	
+	explicit EnetAddress(const std::string &s);
+
+	bool valid() const {
+		return !MemFilled(addr_, sizeof(addr_), '\0');
+	}
+
+	std::string toString() const;
+
 	bool operator==(const EnetAddress &rhs) const {
 		return std::memcmp(addr_, rhs.addr_, Length) == 0;
 	}

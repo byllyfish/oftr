@@ -243,7 +243,7 @@ template <class ValueType>
 class AT_SET_FIELD {
 public:
 
-	constexpr static ActionType type() { return ActionType(ActionType::AT_SET_FIELD, 8 + PadLength(sizeof(ValueType))); }
+	constexpr static ActionType type() { return ActionType(ActionType::AT_SET_FIELD, 8 + sizeof(Padded<ValueType>)); }
 	
 	constexpr AT_SET_FIELD(const ValueType &value) 
 		: value_{value} {}
@@ -253,9 +253,9 @@ public:
 private:
 	const ActionType type_ = type();
 	const OXMType omxtype_ = ValueType::type();
-	const ValueType value_;
-	const Padding<8 - sizeof(ValueType) % 8> pad;
+	const Padded<ValueType> value_;
 };
+
 
 } // </namespace ofp>
 

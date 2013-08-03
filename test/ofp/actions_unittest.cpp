@@ -5,6 +5,8 @@
 using namespace ofp;
 
 
+#define PRINT(d, s)  printf("%s\n", RawDataToHex(d, s).data());
+
 TEST(actions, AT_COPY_TTL_OUT)
 {
 	AT_COPY_TTL_OUT act;
@@ -175,17 +177,89 @@ TEST(actions, AT_EXPERIMENTER)
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
 }
 
-TEST(actions, AT_SET_FIELD)
+TEST(actions, AT_SET_FIELD_8bit)
+{
+	AT_SET_FIELD<OFB_IP_PROTO> act{5};
+	EXPECT_EQ(5, act.value());
+	EXPECT_EQ(16, sizeof(act));
+	EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IP_PROTO>::type().length());
+
+	auto expected = HexToRawData("0019 0010 8000 1401 05 00000000000000");
+	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+
+	PRINT(&act, sizeof(act));
+}
+
+TEST(actions, AT_SET_FIELD_16bit)
 {
 	AT_SET_FIELD<OFB_UDP_DST> act{5};
+
 	EXPECT_EQ(5, act.value());
 	EXPECT_EQ(16, sizeof(act));
 	EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_UDP_DST>::type().length());
 
 	auto expected = HexToRawData("0019 0010 8000 2002 0005 000000000000");
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+
+	PRINT(&act, sizeof(act));
 }
 
 
+TEST(actions, AT_SET_FIELD_32bit)
+{
+	AT_SET_FIELD<OFB_IN_PORT> act{5};
 
+	EXPECT_EQ(5, act.value());
+	EXPECT_EQ(16, sizeof(act));
+	EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IN_PORT>::type().length());
+
+	auto expected = HexToRawData("0019 0010 8000 0004 0000 0005 00000000");
+	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+
+	PRINT(&act, sizeof(act));
+}
+
+TEST(actions, AT_SET_FIELD_48bit)
+{
+	EnetAddress addr{"01-02-03-04-05-06"};
+	AT_SET_FIELD<OFB_ETH_DST> act{addr};
+
+	EXPECT_EQ(addr, act.value());
+	EXPECT_EQ(16, sizeof(act));
+	EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_ETH_DST>::type().length());
+
+	auto expected = HexToRawData("0019 0010 8000 0606 010203040506 0000");
+	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+
+	PRINT(&act, sizeof(act));
+}
+
+TEST(actions, AT_SET_FIELD_64bit)
+{
+	AT_SET_FIELD<OFB_METADATA> act{5};
+
+	EXPECT_EQ(5, act.value());
+	EXPECT_EQ(16, sizeof(act));
+	EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_METADATA>::type().length());
+
+	auto expected = HexToRawData("0019 0010 8000 0408 0000000000000005");
+	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+
+	PRINT(&act, sizeof(act));
+}
+
+TEST(actions, AT_SET_FIELD_128bit)
+{
+	IPv6Address addr{"::1"};
+	AT_SET_FIELD<OFB_IPV6_SRC> act{addr};
+
+	EXPECT_EQ(addr, act.value());
+	EXPECT_EQ(24, sizeof(act));
+	EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IPV6_SRC>::type().length());
+
+	auto expected = HexToRawData("0019 0018 8000 3410 00000000000000000000000000000001");
+	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+
+	PRINT(&act, sizeof(act));
+}
 

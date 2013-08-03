@@ -9,7 +9,7 @@ namespace ofp { // <namespace ofp>
 template <size_t N>
 struct Padding {
 	constexpr Padding() {}
-	const UInt8 pad_[N] = {};
+	UInt8 pad_[N] = {};
 };
 
 
@@ -17,6 +17,48 @@ constexpr size_t PadLength(size_t length)
 {
 	return 8 * ((length + 7) / 8);
 }
+
+
+namespace detail { // <namespace detail>
+
+template <class ContentType>
+class PaddedWithPadding {
+public:
+	PaddedWithPadding(const ContentType &content) : content_{content} {}
+	operator const ContentType&() const { return content_; }
+	operator ContentType&() { return content_; }
+
+	void operator=(const ContentType &content) { content_ = content; }
+
+	const ContentType &content() const { return content_; }
+
+private:
+	ContentType content_;
+	Padding<8 - sizeof(ContentType) % 8> pad;
+};
+
+template <class ContentType>
+class PaddedNoPadding {
+public:
+	PaddedNoPadding(const ContentType &content) : content_{content} {}
+	operator const ContentType&() const { return content_; }
+	operator ContentType&() { return content_; }
+
+	void operator=(const ContentType &content) { content_ = content; }
+
+	const ContentType &content() const { return content_; }
+
+private:
+	ContentType content_;
+};
+
+} // </namespace detail>
+
+
+template <class ContentType>
+using Padded = Conditional<sizeof(ContentType) % 8 != 0, 
+							detail::PaddedWithPadding<ContentType>,
+							detail::PaddedNoPadding<ContentType>>;
 
 
 } // </namespace ofp>

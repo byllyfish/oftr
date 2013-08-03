@@ -34,6 +34,18 @@ TEST(types, UInt16_cast)
 	EXPECT_EQ(65486, UInt16_narrow_cast(b << 1));
 }
 
+TEST(types, Unsigned_difference) 
+{
+	UInt32 a = 6;
+	UInt32 b = 5;
+
+	EXPECT_EQ(1, Unsigned_difference(a, b));
+	EXPECT_EQ(1, a - b);
+
+	EXPECT_EQ(0, Unsigned_difference(b, a));
+	EXPECT_NE(0, b - a);
+}
+
 TEST(types, ArrayLength)
 {
 	int a[] = { 1, 2, 3 };
@@ -45,6 +57,18 @@ TEST(types, RawDataToHex)
 	std::string s{"abcdef"};
 	EXPECT_EQ("616263646566", RawDataToHex(s.data(), s.length()));
 	EXPECT_EQ("", RawDataToHex(s.data(), 0));
+}
+
+TEST(types, RawDataToHex2)
+{
+	std::string s{"abcdef"};
+	EXPECT_EQ("61-62-63-64-65-66", RawDataToHex(s.data(), s.length(), '-'));
+	EXPECT_EQ("", RawDataToHex(s.data(), 0, '-'));
+
+	EXPECT_EQ("6162 6364 6566", RawDataToHex(s.data(), s.length(), ' ', 2));
+	EXPECT_EQ("616263 646566", RawDataToHex(s.data(), s.length(), ' ', 3));
+	EXPECT_EQ("61626364 6566", RawDataToHex(s.data(), s.length(), ' ', 4));
+	EXPECT_EQ(" 61 62 63 64 65 66", RawDataToHex(s.data(), s.length(), ' ', 0));
 }
 
 TEST(types, HexToRawData) 
@@ -69,3 +93,19 @@ TEST(types, HexToRawData2)
 	EXPECT_EQ(9, raw.length());
 	EXPECT_EQ(0, std::memcmp(raw.data(), "\1\2\3\4\5\6\7\x08\x09", 9));
 }
+
+
+TEST(types, MemFilled) 
+{
+	EXPECT_TRUE(MemFilled("", 0, 'a'));
+	EXPECT_TRUE(MemFilled(nullptr, 0, 'a'));
+
+	EXPECT_TRUE(MemFilled("a", 1, 'a'));
+	EXPECT_TRUE(MemFilled("aa", 2, 'a'));
+	EXPECT_TRUE(MemFilled("aaa", 3, 'a'));
+
+	EXPECT_FALSE(MemFilled("b", 1, 'a'));
+	EXPECT_FALSE(MemFilled("ab", 2, 'a'));
+	EXPECT_FALSE(MemFilled("aba", 3, 'a'));
+}
+

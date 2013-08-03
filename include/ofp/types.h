@@ -96,6 +96,13 @@ UInt16 UInt32_narrow_cast(T value) {
 	return static_cast<UInt32>(value);
 }
 
+// Use Unsigned_difference() to subtract unsigned integers.
+template <class T>
+inline
+T Unsigned_difference(T lhs, T rhs) {
+	return lhs >= rhs ? lhs - rhs : 0;
+}
+
 // Convenience function to check for literal type.
 template<typename T>
 constexpr bool IsLiteralType() { return std::is_literal_type<T>::value; }
@@ -114,13 +121,17 @@ size_t ArrayLength(T (&)[N])
 
 // Convert a raw struct/buffer to a hexadecimal string.
 std::string RawDataToHex(const void *data, size_t len);
+std::string RawDataToHex(const void *data, size_t len, char delimiter, int word = 1);
 
 // Convert a hexadecimal string to a raw struct/buffer. Only write up to maxlen
-// bytes. Return the number of bytes used. Set remaining bytes, if any, to 
+// bytes. Return the number of bytes written. Set remaining bytes, if any, to 
 // zero. Ignore non-hex digits. If the number of hex digits is odd, ignore the 
 // last hex digit.
 size_t HexToRawData(const std::string &hex, void *data, size_t maxlen);
 std::string HexToRawData(const std::string &hex);
+
+// Return true if every byte in block is set to char.
+bool MemFilled(const void *data, size_t len, char ch);
 
 } // </namespace ofp>
 
