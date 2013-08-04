@@ -22,19 +22,19 @@
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail> 
 
-/// \brief True if host is big endian.
+/// True if host is big endian.
 #if defined(BYTE_ORDER) && defined(BIG_ENDIAN) && BYTE_ORDER == BIG_ENDIAN
   constexpr bool IsHostBigEndian = true;
 #else
   constexpr bool IsHostBigEndian = false;
 #endif
 
-/// \brief True if host is little endian.
+/// True if host is little endian.
 constexpr bool IsHostLittleEndian = !IsHostBigEndian;
 
 
 /// \return 16-bit value with byte order swapped.
-inline constexpr
+constexpr
 UInt16 SwapTwoBytes(UInt16 n) 
 {
 	return UInt16_narrow_cast(((n & 0x00ffU) << 8) | 
@@ -42,7 +42,7 @@ UInt16 SwapTwoBytes(UInt16 n)
 }
 
 /// \return 32-bit value with byte order swapped.
-inline constexpr
+constexpr
 UInt32 SwapFourBytes(UInt32 n)
 {
 # ifdef __llvm__
@@ -56,7 +56,7 @@ UInt32 SwapFourBytes(UInt32 n)
 }
 
 /// \return 64-bit value with byte order swapped.
-inline constexpr
+constexpr
 UInt64 SwapEightBytes(UInt64 n) 
 {
 # ifdef __llvm__
@@ -76,28 +76,28 @@ UInt64 SwapEightBytes(UInt64 n)
 /// \return Integer with byte order swapped.
 
 template <class Type>
-inline constexpr
+constexpr
 EnableIf<sizeof(Type) == sizeof(UInt8), Type> SwapByteOrder(Type n) 
 {
 	return n;
 }
 
 template <class Type>
-inline constexpr
+constexpr
 EnableIf<sizeof(Type) == sizeof(UInt16), Type> SwapByteOrder(Type n) 
 {
 	return static_cast<Type>(SwapTwoBytes(UInt16_cast(n)));
 }
 
 template <class Type>
-inline constexpr
+constexpr
 EnableIf<sizeof(Type) == sizeof(UInt32), Type> SwapByteOrder(Type n)
 {
 	return static_cast<Type>(SwapFourBytes(UInt32_cast(n)));
 }
 
 template <class Type>
-inline constexpr
+constexpr
 EnableIf<sizeof(Type) == sizeof(UInt64), Type> SwapByteOrder(Type n)
 {
 	return static_cast<Type>(SwapEightBytes(UInt64_cast(n)));
@@ -105,7 +105,7 @@ EnableIf<sizeof(Type) == sizeof(UInt64), Type> SwapByteOrder(Type n)
 
 
 template <class Type>
-inline constexpr
+constexpr
 Type HostSwapByteOrder(Type n)
 {
 	return IsHostLittleEndian ? SwapByteOrder(n) : n;
@@ -191,15 +191,13 @@ using Big_unaligned = detail::BigEndianUnaligned<T>;
 
 // For compile-time conversions.
 template <class Type>
-constexpr inline
-EnableIf<std::is_integral<Type>::value, Type> BigEndianFromNative(Type value)
+constexpr EnableIf<std::is_integral<Type>::value, Type> BigEndianFromNative(Type value)
 {
 	return detail::HostSwapByteOrder(value);
 }
 
 template <class Type>
-constexpr inline
-EnableIf<std::is_integral<Type>::value, Type> BigEndianToNative(Type value)
+constexpr EnableIf<std::is_integral<Type>::value, Type> BigEndianToNative(Type value)
 {
 	return detail::HostSwapByteOrder(value);
 }

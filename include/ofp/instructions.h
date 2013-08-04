@@ -105,7 +105,6 @@ private:
 	const Big32 experimenterid_;
 };
 
-
 } // </namespace ofp>
 
 #endif // OFP_INSTRUCTIONS_H

@@ -30,7 +30,7 @@ TEST(types, UInt16_cast)
 	EXPECT_EQ(65486, UInt16_narrow_cast(a << 1));
 	
 	std::int8_t b = -25;
-	EXPECT_EQ(231, UInt16_cast(b));  // result different from static_cast.
+	EXPECT_EQ(231, UInt16_cast(b));  // result is different from static_cast.
 	EXPECT_EQ(65486, UInt16_narrow_cast(b << 1));
 }
 
@@ -44,6 +44,15 @@ TEST(types, Unsigned_difference)
 
 	EXPECT_EQ(0, Unsigned_difference(b, a));
 	EXPECT_NE(0, b - a);
+
+	// Doesn't compile; UInt32 and UInt16 are different types.
+	// UInt16 c = 2;
+	// EXPECT_EQ(4, Unsigned_difference(a, c));
+
+	// Doesn't compile; Unsigned_difference only accepts unsigned types.
+	// int x = 10;
+	// int y = 9;
+	// EXPECT_EQ(1, Unsigned_difference(x, y));
 }
 
 TEST(types, ArrayLength)
@@ -95,17 +104,17 @@ TEST(types, HexToRawData2)
 }
 
 
-TEST(types, MemFilled) 
+TEST(types, IsMemFilled) 
 {
-	EXPECT_TRUE(MemFilled("", 0, 'a'));
-	EXPECT_TRUE(MemFilled(nullptr, 0, 'a'));
+	EXPECT_TRUE(IsMemFilled("", 0, 'a'));
+	EXPECT_TRUE(IsMemFilled(nullptr, 0, 'a'));
 
-	EXPECT_TRUE(MemFilled("a", 1, 'a'));
-	EXPECT_TRUE(MemFilled("aa", 2, 'a'));
-	EXPECT_TRUE(MemFilled("aaa", 3, 'a'));
+	EXPECT_TRUE(IsMemFilled("a", 1, 'a'));
+	EXPECT_TRUE(IsMemFilled("aa", 2, 'a'));
+	EXPECT_TRUE(IsMemFilled("aaa", 3, 'a'));
 
-	EXPECT_FALSE(MemFilled("b", 1, 'a'));
-	EXPECT_FALSE(MemFilled("ab", 2, 'a'));
-	EXPECT_FALSE(MemFilled("aba", 3, 'a'));
+	EXPECT_FALSE(IsMemFilled("b", 1, 'a'));
+	EXPECT_FALSE(IsMemFilled("ab", 2, 'a'));
+	EXPECT_FALSE(IsMemFilled("aba", 3, 'a'));
 }
 

@@ -48,12 +48,10 @@ void ofp::OXMList::insertPrerequisites(const OXMRange *values)
 	
 	while (preqIter != preqIterEnd) {
 		OXMType preqType = preqIter.type();
-		printf("%u\n", preqType);
 		OXMType iterType{};
 	
 		while (iter != iterEnd) {
 			iterType = iter.type();
-			printf("%u\n", iterType);
 			if (iterType >= preqType)
 				break;
 			++iter;

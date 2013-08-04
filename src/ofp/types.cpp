@@ -114,7 +114,7 @@ std::string ofp::HexToRawData(const std::string &hex)
 }
 
 
-bool ofp::MemFilled(const void *data, size_t len, char ch)
+bool ofp::IsMemFilled(const void *data, size_t len, char ch)
 {
 	const UInt8 *p = static_cast<const UInt8 *>(data);
 	while (len-- > 0) {

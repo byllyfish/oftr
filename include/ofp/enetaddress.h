@@ -13,7 +13,7 @@ public:
 	explicit EnetAddress(const std::string &s);
 
 	bool valid() const {
-		return !MemFilled(addr_, sizeof(addr_), '\0');
+		return !IsMemFilled(addr_, sizeof(addr_), '\0');
 	}
 
 	std::string toString() const;

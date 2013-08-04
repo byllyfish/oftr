@@ -5,8 +5,6 @@
 using namespace ofp;
 
 
-#define PRINT(d, s)  printf("%s\n", RawDataToHex(d, s).data());
-
 TEST(actions, AT_COPY_TTL_OUT)
 {
 	AT_COPY_TTL_OUT act;
@@ -186,8 +184,6 @@ TEST(actions, AT_SET_FIELD_8bit)
 
 	auto expected = HexToRawData("0019 0010 8000 1401 05 00000000000000");
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
-
-	PRINT(&act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_16bit)
@@ -200,8 +196,6 @@ TEST(actions, AT_SET_FIELD_16bit)
 
 	auto expected = HexToRawData("0019 0010 8000 2002 0005 000000000000");
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
-
-	PRINT(&act, sizeof(act));
 }
 
 
@@ -215,8 +209,6 @@ TEST(actions, AT_SET_FIELD_32bit)
 
 	auto expected = HexToRawData("0019 0010 8000 0004 0000 0005 00000000");
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
-
-	PRINT(&act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_48bit)
@@ -230,8 +222,6 @@ TEST(actions, AT_SET_FIELD_48bit)
 
 	auto expected = HexToRawData("0019 0010 8000 0606 010203040506 0000");
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
-
-	PRINT(&act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_64bit)
@@ -244,8 +234,6 @@ TEST(actions, AT_SET_FIELD_64bit)
 
 	auto expected = HexToRawData("0019 0010 8000 0408 0000000000000005");
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
-
-	PRINT(&act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_128bit)
@@ -259,7 +247,5 @@ TEST(actions, AT_SET_FIELD_128bit)
 
 	auto expected = HexToRawData("0019 0018 8000 3410 00000000000000000000000000000001");
 	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
-
-	PRINT(&act, sizeof(act));
 }
 
