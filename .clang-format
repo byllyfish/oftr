@@ -1,0 +1,6 @@
+BasedOnStyle: llvm
+
+IndentWidth: 4
+Standard: C++11
+BreakBeforeBraces: Stroustrup
+
