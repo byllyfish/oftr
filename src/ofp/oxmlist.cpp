@@ -27,9 +27,9 @@ void ofp::OXMList::add(OXMType type, const void *data, size_t len)
 void ofp::OXMList::add(OXMType type, const void *data, const void *mask, size_t len)
 {
 	assert(type.length() == 2*len);
-	
+
 	add(&type, sizeof(type));
-	add(data, len);
+	add(data, len);					//TODO - apply mask here?
 	add(mask, len);
 }
 
