@@ -16,10 +16,14 @@ public:
 		return !IsMemFilled(addr_, sizeof(addr_), '\0');
 	}
 
+	void setAllOnes() {
+		std::memset(addr_, 0xFF, sizeof(addr_));
+	}
+
 	std::string toString() const;
 
 	bool operator==(const EnetAddress &rhs) const {
-		return std::memcmp(addr_, rhs.addr_, Length) == 0;
+		return std::memcmp(addr_, rhs.addr_, sizeof(addr_)) == 0;
 	}
 	
 	bool operator!=(const EnetAddress &rhs) const {

@@ -29,15 +29,22 @@ public:
 	template <class ValueType>
 	void add(ValueType value, ValueType mask);
 	
+	void add(OXMIterator iter);
+	void addSignal(OXMType signal);
+
+	#if 0
 	void insertPrerequisites(const OXMRange *values);
-	
+	#endif
+
 	//void remove(OXMIterator pos);
+	
+	void replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len);
 	
 	OXMRange toRange() const { return OXMRange{&buf_[0], buf_.size()}; }
 	
 	bool operator==(const OXMList &rhs) const { return buf_ == rhs.buf_; }
 	bool operator!=(const OXMList &rhs) const { return !(*this == rhs); }
-	
+
 private:
 	std::vector<UInt8> buf_;
 	
@@ -67,5 +74,17 @@ void ofp::OXMList::add(ValueType value, ValueType mask)
 	
 	add(ValueType::type().withMask(), &value, &mask, sizeof(value));
 }
+
+
+inline void ofp::OXMList::add(OXMIterator iter)
+{
+	add(iter.data(), iter.size());
+}
+
+inline void ofp::OXMList::addSignal(OXMType signal)
+{
+	add(signal, nullptr, 0);
+}
+
 
 #endif // OFP_OXMLIST_H

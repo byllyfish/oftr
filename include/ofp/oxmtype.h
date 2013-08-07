@@ -2,8 +2,12 @@
 #define OFP_OXM_TYPE_H
 
 #include "ofp/byteorder.h"
+#include "ofp/padding.h"
 
 namespace ofp { // <namespace ofp>
+
+class OXMRange;
+struct OXMTypeInfo;
 
 class OXMType {
 public:
@@ -24,6 +28,7 @@ public:
 	
 	constexpr size_t length() const { return (value32_ & End8Bits) >> End8RightShift; }
 	constexpr bool hasMask() const { return value32_ & MaskBits; }
+	constexpr bool isIllegal() const { return hasMask() && length() == 0; }
 	
 	// When we add the mask, double the length.
 	constexpr OXMType withMask() const { 
@@ -37,7 +42,9 @@ public:
 	constexpr UInt16 oxmClass() const  { return oxmNative() >> 16; }
 	constexpr UInt8  oxmField() const { return (oxmNative() >> 9) & 0x07FU; }
 	constexpr UInt32 oxmNative() const { return BigEndianToNative(value32_); }
-		
+	
+	const OXMTypeInfo *lookupInfo();
+
 private:
 	UInt32 value32_;
 	
@@ -61,6 +68,23 @@ private:
 
 static_assert(IsLiteralType<OXMType>(), "Literal type expected.");
 static_assert(IsStandardLayout<OXMType>(), "Layout type expected.");
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+
+/**
+ *  OXMTypeInfo stores information about OXMTypes, such as prerequisites.
+ */
+struct OXMTypeInfo {
+	const char *name;
+	const OXMRange *prerequisites;
+	UInt32 value32;
+	bool isMaskSupported;
+	// Implicit Padding<3> pad_;
+};
+
+#pragma clang diagnostic pop
+
 
 } // </namespace ofp>
 

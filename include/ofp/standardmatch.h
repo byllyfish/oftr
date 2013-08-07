@@ -107,6 +107,30 @@ struct StandardMatch {
     Big64 metadata;
     Big64 metadata_mask;
 
+
+    void fromOXMList(const OXMList &list) {
+        UInt32 wc = wildcards;
+        for (auto item : list) {
+            switch (item.type()) {
+                case OFB_IN_PORT::type():
+                    in_port = item.value<OFB_IN_PORT>();
+                    wc &= ~OFPFW_IN_PORT; 
+                    break;
+                case OFB_ETH_SRC::type():
+                    dl_src = item.value<OFB_ETH_SRC>();
+                    dl_src_mask.setAllOnes();
+                    break;
+                case OFB_ETH_SRC::typeWithMask():
+                    dl_src = item.value<OFB_ETH_SRC>();
+                    dl_src_mask = item.mask<OFB_ETH_SRC>();
+                    break;
+                default:
+                    break;
+            }
+        }
+        wildcards = wc;
+    }
+
     OXMList toOXMList() const
     {
         OXMList list;

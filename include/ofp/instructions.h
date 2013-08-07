@@ -50,7 +50,7 @@ public:
 	enum { VariableSize = true };
 	enum { HeaderSize = 8 };
 
-	explicit IT_WithActions(const ActionList *actions) : length_{HeaderSize + actions->size()}, actions_{actions} {}
+	explicit IT_WithActions(const ActionList *actions) : length_{UInt16_narrow_cast(HeaderSize + actions->size())}, actions_{actions} {}
 
 	const UInt8 *data() const { return actions_->data(); }
 	size_t size() const { return actions_->size(); }
@@ -71,7 +71,7 @@ using IT_APPLY_ACTIONS = detail::IT_WithActions<InstructionType::IT_APPLY_ACTION
 
 class IT_CLEAR_ACTIONS {
 public:
-	constexpr IT_CLEAR_ACTIONS() = default;
+	constexpr IT_CLEAR_ACTIONS() {}
 
 private:
 	const InstructionType type_{InstructionType::IT_CLEAR_ACTIONS};

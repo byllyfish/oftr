@@ -2,12 +2,16 @@
 #define OFP_OXMRANGE_H
 
 #include "ofp/oxmiterator.h"
-
+#include <ostream>
 
 namespace ofp { // <namespace ofp>
 
 class OXMRange {
 public:
+
+	constexpr OXMRange(OXMIterator begin, OXMIterator end)
+		: begin_{begin.data()}, end_{end.data()} {}
+
 	constexpr OXMRange(const void *begin, const void *end)
 		: begin_{static_cast<const UInt8*>(begin)}, 
 		  end_{static_cast<const UInt8*>(end)} {}
@@ -40,13 +44,25 @@ public:
 		return !(*this == rhs);
 	}
 	
-	bool isSubsetOf(const OXMRange &rhs) const; // TODO
+	///bool validate() const;
 	
 private:
 	const UInt8 *begin_;
 	const UInt8 *end_;
 };
 
+
+std::ostream &operator<<(std::ostream &stream, const OXMRange &range);
+
+
 } // </namespace ofp>
+
+
+inline
+std::ostream &ofp::operator<<(std::ostream &stream, const OXMRange &)
+{
+	return stream << "<OXMRange>";
+}
+
 
 #endif // OFP_OXMRANGE_H

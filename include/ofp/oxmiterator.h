@@ -22,6 +22,14 @@ public:
 			// FIXME needs to work with primitive types.
 			return ValueType{position_ + sizeof(OXMType), 0};
 		}
+
+		template <class ValueType>
+		ValueType mask() {
+			// FIXME needs to work with primitive types.
+			return ValueType{position_ + sizeof(OXMType) + sizeof(ValueType), 0};
+		}
+
+		OXMIterator position() const { return OXMIterator{position_}; }
 		
 	private:
 		const UInt8 *position_;
@@ -41,7 +49,7 @@ public:
 	
 	void operator++() 
 	{
-		position_ += sizeof(OXMType) + position_[3];
+		position_ += size();
 	}
 		
 	bool operator==(const OXMIterator &rhs) const {
@@ -52,12 +60,13 @@ public:
 		return !(*this == rhs);
 	}
 	
-	const UInt8 *data() const { return position_; }
-	
+	constexpr const UInt8 *data() const { return position_; }
+	size_t size() const { return sizeof(OXMType) + position_[3]; }
+
 private:
 	const UInt8 *position_;
 	
-	explicit OXMIterator(const void *pos)
+	constexpr explicit OXMIterator(const void *pos)
 		: position_{static_cast<const UInt8 *>(pos)} {}
 		
 	friend class OXMRange;

@@ -16,6 +16,8 @@
 #include <cstdlib>     // for std::memcpy, etc.
 #include <type_traits> // for std::make_unsigned<T>, etc.
 #include <string>
+#include <cassert>
+#include <ostream>
 
 namespace ofp { // <namespace ofp>
 

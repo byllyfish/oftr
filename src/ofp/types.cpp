@@ -1,5 +1,4 @@
 #include "ofp/types.h"
-#include <cassert>
 
 
 constexpr char HexDigits[17] = "0123456789ABCDEF";

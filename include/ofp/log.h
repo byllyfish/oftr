@@ -2,6 +2,7 @@
 #define OFP_LOG_H
 
 #include <string>
+#include <sstream>
 
 
 namespace ofp { // <namespace ofp>
@@ -9,21 +10,15 @@ namespace ofp { // <namespace ofp>
 namespace log { // <namespace log>
 
 
-void info(const std::string &msg)
-{
-	std::cout << msg << '\n';
-}
+void info(const std::string &msg);
 
 template <class Type>
 void info(const std::string &msg, Type value) 
 {
-	std::cout << msg << " " << value << '\n';
-}
-
-template <>
-void info(const std::string &msg, const std::string &param)
-{
-	std::cout << msg << " " << param << '\n';
+	std::stringstream ss;
+	ss << msg;
+	ss << value;
+	info(ss.str());
 }
 
 } // </namespace log>

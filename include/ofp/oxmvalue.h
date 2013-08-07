@@ -20,9 +20,10 @@ public:
 	
 	using NativeType = typename NativeTypeOf<ValueType>::type;
 
-	constexpr static inline OXMType type() { return OXMType{Class, Field, Bits}; }
-	constexpr static inline UInt16	bits() { return Bits; }
-	constexpr static inline bool maskSupported() { return Mask; }
+	constexpr static OXMType type() { return OXMType{Class, Field, Bits}; }
+	constexpr static OXMType typeWithMask() { return type().withMask(); }
+	constexpr static UInt16	bits() { return Bits; }
+	constexpr static bool maskSupported() { return Mask; }
 	static inline const OXMRange *prerequisites() { return Prereqs; }
 	
 	/* implicit */ OXMValue(NativeType value) : value_{value} {}

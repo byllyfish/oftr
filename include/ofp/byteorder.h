@@ -120,6 +120,8 @@ public:
 	constexpr BigEndianAligned() = default;
 	constexpr BigEndianAligned(Type n) : n_{ HostSwapByteOrder(n) } {}
 	
+	// TODO: add assignment and copy constructors?
+
 	constexpr operator Type() const { 
 		return HostSwapByteOrder(n_);
 	}

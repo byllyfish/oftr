@@ -1,5 +1,4 @@
 #include "ofp/oxmlist.h"
-#include <cassert>
 
 
 inline void ofp::OXMList::add(const void *data, size_t len) 
@@ -34,6 +33,31 @@ void ofp::OXMList::add(OXMType type, const void *data, const void *mask, size_t 
 }
 
 
+void ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len)
+{
+	assert(type.length() == len);
+	assert(end.data() > pos.data());
+
+	size_t origlen = Unsigned_cast(end.data() - pos.data());
+	size_t newlen = sizeof(OXMType) + len;
+
+	auto ipos = (pos.data() - &buf_[0]);
+	auto iend = (end.data() - &buf_[0]);
+
+	if (newlen > origlen) {
+		buf_.insert(buf_.begin() + iend, newlen - origlen, 0);
+	} else if (newlen < origlen) {
+		buf_.erase(buf_.begin() + ipos, buf_.begin() + ipos + (origlen - newlen));
+	}
+
+	const UInt8 *tptr = reinterpret_cast<const UInt8 *>(&type);
+	std::copy(tptr, tptr + sizeof(type), buf_.begin() + ipos);
+	const UInt8 *dptr = static_cast<const UInt8 *>(data);
+	std::copy(dptr, dptr + len, buf_.begin() + ipos + sizeof(type));
+}
+
+
+#if 0
 void ofp::OXMList::insertPrerequisites(const OXMRange *values)
 {
 	// No prerequisites? Make a quick exit.
@@ -78,3 +102,4 @@ void ofp::OXMList::insertPrerequisites(const OXMRange *values)
 		++preqIter;
 	}
 }
+#endif

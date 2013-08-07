@@ -13,7 +13,7 @@ InstructionSet MakeInstructions(T1 v1, T2 v2) {
 }
 #endif
 
-void MakeInstructionSet(InstructionSet &set) {}
+static void MakeInstructionSet(InstructionSet &) {}
 
 template <class Type, class... Args>
 void MakeInstructionSet(InstructionSet &set, Type value, Args... args)

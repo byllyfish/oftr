@@ -38,20 +38,20 @@ private:
 } // </namespace ofp>
 
 template <class Type>
-void ofp::InstructionSet::add(const Type &instruction)
+inline void ofp::InstructionSet::add(const Type &instruction)
 {
     add(&instruction, sizeof(instruction));
 }
 
 template <>
-void ofp::InstructionSet::add(const IT_WRITE_ACTIONS &instruction)
+inline void ofp::InstructionSet::add(const IT_WRITE_ACTIONS &instruction)
 {
     add(&instruction, IT_WRITE_ACTIONS::HeaderSize);
     add(instruction.data(), instruction.size());
 }
 
 template <>
-void ofp::InstructionSet::add(const IT_APPLY_ACTIONS &instruction)
+inline void ofp::InstructionSet::add(const IT_APPLY_ACTIONS &instruction)
 {
     add(&instruction, IT_APPLY_ACTIONS::HeaderSize);
     add(instruction.data(), instruction.size());

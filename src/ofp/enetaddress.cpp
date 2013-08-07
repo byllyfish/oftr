@@ -1,5 +1,4 @@
 #include "ofp/enetaddress.h"
-#include <cassert>
 
 
 ofp::EnetAddress::EnetAddress(const std::string &s)
