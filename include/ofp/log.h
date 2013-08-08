@@ -21,6 +21,10 @@ void info(const std::string &msg, Type value)
 	info(ss.str());
 }
 
+
+void exception(const std::string &msg);
+
+
 } // </namespace log>
 
 } // </namespace ofp>

@@ -1,10 +1,18 @@
 #include "ofp/oxmlist.h"
 
 
-inline void ofp::OXMList::add(const void *data, size_t len) 
+void ofp::OXMList::add(const void *data, size_t len) 
 {
 	const UInt8 *p = static_cast<const UInt8*>(data);
 	buf_.insert(buf_.end(), p, p + len);
+}
+
+
+void ofp::OXMList::insert(OXMIterator pos, const void *data, size_t len)
+{
+	const UInt8 *p = static_cast<const UInt8*>(data);
+	auto i = buf_.begin() + (pos.data() - &buf_[0]);
+	buf_.insert(i, p, p + len);
 }
 
 
@@ -33,7 +41,11 @@ void ofp::OXMList::add(OXMType type, const void *data, const void *mask, size_t 
 }
 
 
-void ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len)
+/**
+ *  After replacement, check remaining items to make sure there are entries that
+ *  duplicate the inserted item. If so, insert poison.
+ */
+ofp::OXMIterator ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len)
 {
 	assert(type.length() == len);
 	assert(end.data() > pos.data());
@@ -54,6 +66,14 @@ void ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type, const
 	std::copy(tptr, tptr + sizeof(type), buf_.begin() + ipos);
 	const UInt8 *dptr = static_cast<const UInt8 *>(data);
 	std::copy(dptr, dptr + len, buf_.begin() + ipos + sizeof(type));
+
+	// Return an iterator to the rest of the entries.
+	
+	OXMIterator rest{&buf_[ipos + sizeof(type) + len]};
+	assert(rest <= this->end());
+	assert(this->begin() <= rest);
+
+	return rest;
 }
 
 

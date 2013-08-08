@@ -31,6 +31,7 @@ public:
 	
 	void add(OXMIterator iter);
 	void addSignal(OXMType signal);
+	void insertSignal(OXMIterator pos, OXMType signal);
 
 	#if 0
 	void insertPrerequisites(const OXMRange *values);
@@ -38,7 +39,7 @@ public:
 
 	//void remove(OXMIterator pos);
 	
-	void replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len);
+	OXMIterator replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len);
 	
 	OXMRange toRange() const { return OXMRange{&buf_[0], buf_.size()}; }
 	
@@ -49,6 +50,8 @@ private:
 	std::vector<UInt8> buf_;
 	
 	void add(const void *data, size_t len);
+	void insert(OXMIterator pos, const void *data, size_t len);
+
 	void add(OXMType type, const void *data, size_t len);
 	void add(OXMType type, const void *data, const void *mask, size_t len);
 };
@@ -83,7 +86,12 @@ inline void ofp::OXMList::add(OXMIterator iter)
 
 inline void ofp::OXMList::addSignal(OXMType signal)
 {
-	add(signal, nullptr, 0);
+	add(&signal, sizeof(signal));
+}
+
+inline void ofp::OXMList::insertSignal(OXMIterator pos, OXMType signal)
+{
+	insert(pos, &signal, sizeof(signal));
 }
 
 

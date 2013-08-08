@@ -6,5 +6,14 @@
 
 void ofp::log::info(const std::string &msg)
 {
-	std::cout << msg << '\n';
+	std::cerr << "[info] " << msg << '\n';
+}
+
+
+/**
+ *  Log when an API is used incorrectly.
+ */
+void ofp::log::exception(const std::string &msg)
+{
+	std::cerr << "[exception] " << msg << '\n';
 }

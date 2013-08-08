@@ -30,17 +30,21 @@ private:
 	bool check(OXMIterator begin, OXMIterator end) const;
 
 	void insertPreqMasked(OXMType preqTypeMasked, OXMIterator preq, OXMList *list) const;
-	void insertPreqValue(OXMType preqType, OXMIterator preq, OXMList *list) const;
+	void insertPreqValue(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd, OXMList *list) const;
 
 	bool checkPreqMasked(OXMType preqTypeMasked, OXMIterator preq, OXMIterator begin, OXMIterator end) const;
-	bool checkPreqValue(OXMType preqType, OXMIterator preq, OXMIterator begin, OXMIterator end) const;
+	bool checkPreqValue(OXMType preqType, OXMIterator preq, OXMIterator preqEnd, OXMIterator begin, OXMIterator end, bool *conflict) const;
+
 	static bool matchValueWithMask(size_t length, OXMIterator pos, OXMIterator preq);
 	static bool matchValueWithMask(size_t length, const void *data, OXMIterator preq);
 	static bool matchMaskWithMask(size_t length, OXMIterator pos, OXMIterator preq);
 	static bool matchValueWithValue(size_t length, OXMIterator pos, OXMIterator preq);
+	static bool matchValueWithValue(size_t length, const void *data, OXMIterator preq);
 	static bool matchMaskWithValue(size_t length, OXMIterator pos, OXMIterator preq);
 
-	static void advancePreq(OXMIterator *preq) { ++(*preq); }
+	static void advancePreq(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd);
+
+	static void poisonDuplicatesAfterSubstitution(OXMList *list, OXMType type, OXMIterator rest);
 };
 
 } // </namespace ofp>

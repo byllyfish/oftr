@@ -5,10 +5,11 @@
 
 // Use an OXMType that can't possibly exist to signal placeholders
 // for prerequisites. We assume an OXMType with the mask bit set, but
-// a zero length will not legally appear in the protocol.
+// a zero length will not legally appear in the wire protocol.
 
 constexpr const ofp::OXMType kMaskedPrereqSignal = ofp::OXMType(0x7FF1, 0, 0).withMask();
 constexpr const ofp::OXMType kValuePrereqSignal = ofp::OXMType(0x7FF2, 0, 0).withMask();
+constexpr const ofp::OXMType kPoisonPrereqSignal = ofp::OXMType(0x7FF3, 0, 0).withMask();
 
 
 void ofp::Prerequisites::insertAll(OXMList *list, const OXMRange *preqs)
@@ -36,11 +37,10 @@ void ofp::Prerequisites::insert(OXMList *list) const
 
 		if (preqType.hasMask()) {
 			insertPreqMasked(preqType, preq, list);
+			advancePreq(preqType, preq, preqEnd);
 		} else {
-			insertPreqValue(preqType, preq, list);
+			insertPreqValue(preqType, preq, preqEnd, list);
 		}
-
-		advancePreq(&preq);
 	}
 }
 
@@ -54,10 +54,45 @@ void ofp::Prerequisites::insertPreqMasked(OXMType preqTypeMasked, OXMIterator pr
 	}
 }
 
-void ofp::Prerequisites::insertPreqValue(OXMType preqType, OXMIterator preq, OXMList *list) const
+// Advances the preq.
+void ofp::Prerequisites::insertPreqValue(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd, OXMList *list) const
 {
-	if (!checkPreqValue(preqType, preq, list->begin(), list->end())) {
-		list->add(preq);
+	bool conflict = false;
+
+	if (!checkPreqValue(preqType, preq, preqEnd, list->begin(), list->end(), &conflict)) {
+		// If there is only one value preq, insert it without the preq signal.
+		// Otherwise, we need to insert the signal to indicate the presence of
+		// multiple preq values.
+		
+		OXMIterator next = preq;
+		++next;
+		if (next != preqEnd && next.type() == preqType) {
+			// There are multiple preq values. Add the first preq with the 
+			// signal, then insert the remaining preqs.
+			list->addSignal(kValuePrereqSignal);
+			list->add(preq);
+			list->add(next);
+			preq = next;
+
+			++preq;
+			while (preq != preqEnd && preq.type() == preqType) {
+				list->add(preq);
+				++preq;
+			}
+
+		} else {
+			// There is only one preq value. Insert it without a signal, if
+			// there was no value conflict. Otherwise, add poison.
+			if (!conflict) {
+				list->add(preq);
+			} else {
+				list->addSignal(kPoisonPrereqSignal);
+			}
+			preq = next;
+		}
+
+	} else {
+		advancePreq(preqType, preq, preqEnd);
 	}
 }
 
@@ -105,7 +140,7 @@ bool ofp::Prerequisites::checkAll(const OXMRange &oxm)
 		if (typeInfo->prerequisites != nullptr) {
 			Prerequisites preqs{typeInfo->prerequisites};
 			if (!preqs.check(oxm.begin(), item.position())) {
-				log::info("Prerequisite check failed for ", type);
+				log::info("Prerequisite check failed for type ", type);
 				goto FAILURE;
 			}
 		}
@@ -114,7 +149,7 @@ bool ofp::Prerequisites::checkAll(const OXMRange &oxm)
 	return true;
 
 FAILURE:
-	log::info("Prerequiste check failed for ", oxm);
+	log::info("Prerequisite check failed for ", oxm);
 	return false;
 }
 
@@ -125,6 +160,7 @@ bool ofp::Prerequisites::check(OXMIterator begin, OXMIterator end) const
 
 	OXMIterator preq = preqs_->begin();
 	OXMIterator preqEnd = preqs_->end();
+	bool conflict = false;
 
 	while (preq != preqEnd) {
 		OXMType preqType = preq.type();
@@ -132,13 +168,12 @@ bool ofp::Prerequisites::check(OXMIterator begin, OXMIterator end) const
 		if (preqType.hasMask()) {
 			if (checkPreqMasked(preqType, preq, begin, end))
 				return true;
-			
+			advancePreq(preqType, preq, preqEnd);
+
 		} else {
-			if (checkPreqValue(preqType, preq, begin, end))
+			if (checkPreqValue(preqType, preq, preqEnd, begin, end, &conflict))
 				return true;
 		}
-
-		advancePreq(&preq);
 	}
 
 	return false;
@@ -177,9 +212,10 @@ bool ofp::Prerequisites::checkPreqMasked(OXMType preqTypeMasked, OXMIterator pre
 }
 
 
-bool ofp::Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preq, OXMIterator begin, OXMIterator end) const
+bool ofp::Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin, OXMIterator preqEnd, OXMIterator begin, OXMIterator end, bool *conflict) const
 {
 	assert(!preqType.hasMask());
+	assert(conflict != nullptr);
 
 	OXMType preqTypeMasked = preqType.withMask();
 	size_t valueLength = preqType.length();
@@ -188,19 +224,36 @@ bool ofp::Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preq, OXMI
 	OXMIterator pos = begin;
 	while (pos != end) {
 		OXMType posType = pos.type();
-		if (posType == preqType) {
-			// Match `pos` value against prerequisite's value.
-			if (matchValueWithValue(valueLength, pos, preq)) {
-				return true;
+
+		OXMIterator preq = preqBegin;
+		while (true) {
+
+			if (posType == preqType) {
+				// Match `pos` value against prerequisite's value.
+				if (matchValueWithValue(valueLength, pos, preq)) {
+					return true;
+				}
+
+			} else if (posType == preqTypeMasked) {
+				// Match `pos` value & mask against prerequisite's value.
+				if (matchMaskWithValue(valueLength, pos, preq)) {
+					return true;
+				}
+			} else {
+				// Type doesn't match preq. Try again with next element.
+				break;
 			}
-		} else if (posType == preqTypeMasked) {
-			// Match `pos` value & mask against prerequisite's value.
-			if (matchMaskWithValue(valueLength, pos, preq)) {
-				return true;
+
+			// Type matched preq, but value didn't. Try again with next preq
+			// value of same type, if there is one.
+			*conflict = true;
+			++preq;
+			if (preq == preqEnd || preq.type() != preqType) {
+				break;
 			}
-		} else {
-			// Type doesn't match preq. Keep going.
 		}
+
+		++pos;
 	}
 
 	return false;
@@ -277,11 +330,35 @@ bool ofp::Prerequisites::matchMaskWithMask(size_t length, OXMIterator pos, OXMIt
 bool ofp::Prerequisites::matchValueWithValue(size_t length, OXMIterator pos, OXMIterator preq)
 {
 	assert(length == pos.type().length());
+
+	return matchValueWithValue(length, pos.data() + sizeof(OXMType), preq);
+
+	#if 0
 	assert(length == preq.type().length());
 
 	// Return true if values are identical.
 
 	const UInt8 *value = pos.data() + sizeof(OXMType);
+	const UInt8 *preqValue = preq.data() + sizeof(OXMType);
+	
+	for (size_t i = 0; i < length; ++i) {
+		if (*value++ != *preqValue++) {
+			return false;
+		}
+	}
+
+	return true;
+	#endif
+}
+
+
+bool ofp::Prerequisites::matchValueWithValue(size_t length, const void *data, OXMIterator preq)
+{
+	assert(length == preq.type().length());
+
+	// Return true if values are identical.
+
+	const UInt8 *value = static_cast<const UInt8 *>(data);
 	const UInt8 *preqValue = preq.data() + sizeof(OXMType);
 	
 	for (size_t i = 0; i < length; ++i) {
@@ -325,7 +402,17 @@ bool ofp::Prerequisites::substitute(OXMList *list, OXMType type, const void *val
 
 	while (iter != iterEnd) {
 		auto escType = iter.type();
-		if (escType != kMaskedPrereqSignal) {
+
+		if (escType == type) {
+			// If type is already in the list. Check if value conflicts.
+			if (!matchValueWithValue(len, value, iter)) {
+				log::info("Value conflict detected in substitute; insert poison.", type);
+				list->insertSignal(iter, kPoisonPrereqSignal);
+			}
+			return true;
+		}
+		
+		if (escType != kMaskedPrereqSignal && escType != kValuePrereqSignal) {
 			++iter;
 			continue;
 		}
@@ -337,20 +424,58 @@ bool ofp::Prerequisites::substitute(OXMList *list, OXMType type, const void *val
 		}
 
 		auto preqType = iter.type();
-		assert(preqType.hasMask());
+		if (escType == kMaskedPrereqSignal) {
+			assert(preqType.hasMask());
 
-		if (preqType.withoutMask() == type && matchValueWithMask(len, value, iter)) {
+			if (preqType.withoutMask() == type && matchValueWithMask(len, value, iter)) {
+				++iter;
+				// Perform substitution into OXMList. 
+				OXMIterator rest = list->replace(start, iter, type, value, len);
+				// Check for duplicate items afer the inserted item.
+				poisonDuplicatesAfterSubstitution(list, type, rest);
+				return true;
+			}
 			++iter;
-			// Perform substitution into OXMList. 
-			// N.B. This may invalidate iterators.
-			list->replace(start, iter, type, value, len);
-			return true;
+
+		} else {
+			assert(escType == kValuePrereqSignal);
+			assert(!preqType.hasMask());
+
+			while (preqType == type) {
+
+				if (matchValueWithValue(len, value, iter)) {
+					advancePreq(preqType, iter, iterEnd);
+					// Perform substituion into OXMList.
+					OXMIterator rest = list->replace(start, iter, type, value, len);
+					// Check for duplicate items after the inserted item.
+					poisonDuplicatesAfterSubstitution(list, type, rest);
+					return true;
+				}
+				++iter;
+				if (iter == iterEnd)
+					break;
+			}
 		}
-		++iter;
 	}
 
 	return false;
 }
+
+
+void ofp::Prerequisites::poisonDuplicatesAfterSubstitution(OXMList *list, OXMType type, OXMIterator rest)
+{
+	OXMIterator restEnd = list->end();
+	while (rest != restEnd) {
+		if (rest.type() == type) {
+			log::exception("Duplicate item detected after substitution. Insert poison.");
+			list->insertSignal(rest, kPoisonPrereqSignal);
+			break;
+		}
+		++rest;
+	}
+}
+
+
 
 
 bool ofp::Prerequisites::substitute(OXMList *list, OXMType type, const void *value, const void *mask, size_t len)
@@ -375,4 +500,13 @@ bool ofp::Prerequisites::duplicateFieldsDetected(const OXMRange &oxm)
 	}
 
 	return false;
+}
+
+
+void ofp::Prerequisites::advancePreq(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd) 
+{ 
+	++preq;
+	while (preq != preqEnd && preq.type() == preqType) {
+		++preq;
+	}
 }

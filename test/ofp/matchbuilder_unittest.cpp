@@ -109,6 +109,143 @@ TEST(matchbuilder, OFB_VLAN_VID_alt3)
 
 	match.add(OFB_VLAN_VID{5 | OFPVID_PRESENT});
 
-	EXPECT_HEX("8000-0C02-1005 8000-0E01-02 8000-0C02-000F", match.data(), match.size());
+	//"80000C021005 80000E0102 80000C02000F"
+	EXPECT_HEX("8000-0C02-1005 8000-0E01-02 7FF3-0100 8000-0C02-000F", match.data(), match.size());
 	EXPECT_FALSE(match.validate());
 }
+
+
+TEST(matchbuilder, OFB_IP_DSCP) 
+{
+	MatchBuilder match;
+
+	match.add(OFB_IP_DSCP{1});
+	EXPECT_HEX("7FF2-0100 8000-0A02-0800 8000-0A02-86DD 8000-1001-01", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+
+	match.add(OFB_ETH_TYPE{0x0800});
+
+	EXPECT_HEX("8000-0A02-0800 8000-1001-01", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+}
+
+
+TEST(matchbuilder, OFB_IP_DSCP_alt1) 
+{
+	MatchBuilder match;
+
+	match.add(OFB_ETH_TYPE{0x0800});
+	EXPECT_HEX("8000-0A02-0800", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	match.add(OFB_IP_DSCP{1});
+	EXPECT_HEX("8000-0A02-0800 8000-1001-01", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+}
+
+TEST(matchbuilder, OFB_IP_DSCP_alt2) 
+{
+	MatchBuilder match;
+
+	match.add(OFB_ETH_TYPE{0x9000});
+	EXPECT_HEX("8000-0A02-9000", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	match.add(OFB_IP_DSCP{1});
+	EXPECT_HEX("8000-0A02-9000 7FF2-0100 8000-0A02-0800 8000-0A02-86DD 8000-1001-01", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+}
+
+
+TEST(matchbuilder, OFB_TCP_SRC) 
+{
+	MatchBuilder match;
+
+	match.add(OFB_ETH_TYPE{0x0800});
+	EXPECT_HEX("[8000-0A02-0800]", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	match.add(OFB_IP_PROTO{6});
+	EXPECT_HEX("8000-0A02-0800 [8000-1401-06]", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	match.add(OFB_TCP_SRC{80});
+	EXPECT_HEX("8000-0A02-0800 8000-1401-06 [8000-1A02-0050]", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	match.add(OFB_UDP_SRC{80});
+	// The UDP_SRC field conflicts with the TCP_SRC field. 
+	EXPECT_HEX("8000-0A02-0800 8000-1401-06 8000-1A02-0050 [7FF3-0100 8000-1E02-0050]", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+
+	match.add(OFB_IP_PROTO{17});
+	// Attempting to specify the UDP protocol for IP_PROTO now poisons the first IP_PROTO field.
+	EXPECT_HEX("8000-0A02-0800 [7FF3-0100] 8000-1401-06 8000-1A02-0050 7FF3-0100 8000-1E02-0050", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+}
+
+
+TEST(matchbuilder, OFB_TCP_SRC_alt1) 
+{
+	MatchBuilder match;
+
+	match.add(OFB_TCP_SRC{80});
+	EXPECT_HEX("[(7FF2-0100 8000-0A02-0800 8000-0A02-86DD) 8000-1401-06 8000-1A02-0050]", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+
+	match.add(OFB_UDP_SRC{80});
+	EXPECT_HEX("(7FF2-0100 8000-0A02-0800 8000-0A02-86DD) 8000-1401-06 8000-1A02-0050 [7FF3-01-00] 8000-1E02-0050", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+
+	match.add(OFB_ETH_TYPE{0x0800});
+	EXPECT_HEX("[8000-0A02-0800] 8000-1401-06 8000-1A02-0050 7FF3-01-00 8000-1E02-0050", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+
+	match.add(OFB_IP_PROTO{6});
+	EXPECT_HEX("8000-0A02-0800 8000-1401-06 8000-1A02-0050 7FF3-01-00 8000-1E02-0050", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+}
+
+
+TEST(matchbuilder, OFB_TCP_SRC_alt2) 
+{
+	MatchBuilder match;
+
+	match.add(OFB_ETH_TYPE{0x86DD});
+	EXPECT_HEX("[8000-0A02-86DD]", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	match.add(OFB_TCP_SRC{80});
+	EXPECT_HEX("8000-0A02-86DD [8000-1401-06 8000-1A02-0050]", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	// Adding IP_PROTO{TCP} field shouldn't change anything.
+	match.add(OFB_IP_PROTO{6});
+	EXPECT_HEX("8000-0A02-86DD 8000-1401-06 8000-1A02-0050", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	// Adding IP_PROTO{UDP} field should now insert poison.
+	match.add(OFB_IP_PROTO{17});
+	EXPECT_HEX("8000-0A02-86DD [7FF3-0100] 8000-1401-06 8000-1A02-0050", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+}
+
+TEST(matchbuilder, OFB_IN_PORT_alt1) 
+{
+	MatchBuilder match;
+
+	match.add(OFB_IN_PORT{7});
+	EXPECT_HEX("[8000-0004-0000-0007]", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	// Adding it again shouldn't change anything.
+	match.add(OFB_IN_PORT{7});
+	EXPECT_HEX("8000-0004-0000-0007", match.data(), match.size());
+	EXPECT_TRUE(match.validate());
+
+	// Adding a different value should insert poison.
+	match.add(OFB_IN_PORT{9});
+	EXPECT_HEX("[7FF3-0100] 8000-0004-0000-0007", match.data(), match.size());
+	EXPECT_FALSE(match.validate());
+}
+
