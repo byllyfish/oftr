@@ -26,13 +26,12 @@ TEST(standardmatch, toOXMList)
 }
 
 
-TEST(standardmatch, fromOXMList) {
-	StandardMatch match{};
-
+TEST(standardmatch, fromOXMList) 
+{
 	std::string s = HexToRawData("8000000400000005");
 	OXMRange range{ s.data(), s.size() };
 
-	match.fromOXMList(range);
+	StandardMatch match{range};
 
 	EXPECT_EQ(OFPMT_STANDARD_LENGTH, sizeof(match));
 	EXPECT_EQ(OFPMT_STANDARD, match.type);

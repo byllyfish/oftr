@@ -8,12 +8,12 @@
 #include "ofp/oxmlist.h"
 #include "ofp/padding.h"
 #include "ofp/log.h"
+#include "ofp/oxmconstants.h"
 
 namespace ofp {        // <namespace ofp>
 namespace deprecated { // <namespace deprecated>
 
 enum {
-    OFPMT_STANDARD = 0,
     OFPMT_STANDARD_LENGTH = 88
 };
 
@@ -107,10 +107,15 @@ struct StandardMatch {
     Big64 metadata;
     Big64 metadata_mask;
 
+    StandardMatch() = default;
 
-    void fromOXMList(const OXMList &list) {
+    StandardMatch(const OXMRange &range) 
+    {
+        in_port = 0;
+        std::memset(&dl_src, 0, sizeof(StandardMatch) - 12);
+
         UInt32 wc = wildcards;
-        for (auto item : list) {
+        for (auto item : range) {
             switch (item.type()) {
                 case OFB_IN_PORT::type():
                     in_port = item.value<OFB_IN_PORT>();
@@ -125,6 +130,7 @@ struct StandardMatch {
                     dl_src_mask = item.mask<OFB_ETH_SRC>();
                     break;
                 default:
+                    // FIXME
                     break;
             }
         }
@@ -230,6 +236,8 @@ struct StandardMatch {
         return list;
     }
 };
+
+static_assert(sizeof(StandardMatch) == OFPMT_STANDARD_LENGTH, "Unexpected size.");
 
 } // </namespace deprecated>
 } // </namespace ofp>

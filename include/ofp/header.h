@@ -61,13 +61,33 @@ class Header {
 public:
 	Header() = default;
 
+	void setVersion(UInt8 version);
+	void setType(UInt8 type);
+	void setLength(UInt16 length);
+	void setXid(UInt32 xid);
+
 private:
-	Big8 version;			// OFP_VERSION.
-	Big8 type;				// One of the OFPT_ constants.
-	Big16 length;			// Length including this ofp_header.
-	Big32 xid;				// Transaction id for this packet.
+	Big8 version_ = 0;			// OFP_VERSION.
+	Big8 type_ = 0;				// One of the OFPT_ constants.
+	Big16 length_ = 0;			// Length including this ofp_header.
+	Big32 xid_ = 0;				// Transaction id for this packet.
 };
 
 } // </namespace ofp>
+
+
+void ofp::Header::setVersion(UInt8 version){
+	version_ = version;
+}
+void ofp::Header::setType(UInt8 type) {
+	type_ = type;
+}
+void ofp::Header::setLength(UInt16 length) {
+	length_ = length;
+}
+void ofp::Header::setXid(UInt32 xid) {
+	xid_ = xid;
+}
+
 
 #endif // OFP_HEADER_H

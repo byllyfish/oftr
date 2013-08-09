@@ -23,6 +23,7 @@ private:
 		UInt16 oxmClass;
 	};
 
+	// TODO replace with std::array?
 	ClassEntry classes_[MaxOXMClasses];
 	unsigned classCount_ = 0;
 };

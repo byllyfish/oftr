@@ -30,6 +30,9 @@ template <bool B, class T, class F>
 using Conditional = typename std::conditional<B, T, F>::type;
 
 template <class T>
+using MakeSigned = typename std::make_signed<T>::type;
+
+template <class T>
 using MakeUnsigned = typename std::make_unsigned<T>::type;
 
 // Be careful when using UInt8 and UInt16. By default, C++ will promote these
@@ -41,6 +44,12 @@ using UInt8 = std::uint8_t;
 using UInt16 = std::uint16_t;
 using UInt32 = std::uint32_t;
 using UInt64 = std::uint64_t;
+
+template <class T>
+constexpr MakeSigned<T> Signed_cast(T value)
+{
+    return static_cast<MakeSigned<T>>(value);
+}
 
 template <class T>
 constexpr MakeUnsigned<T> Unsigned_cast(T value)
@@ -144,6 +153,14 @@ template <class T, size_t N>
 constexpr size_t ArrayLength(T(&)[N])
 {
     return N;
+}
+
+/**
+ *  Return byte pointer for any memory address.
+ */
+constexpr const UInt8 *BytePtr(const void *data)
+{
+    return static_cast<const UInt8 *>(data);
 }
 
 /**

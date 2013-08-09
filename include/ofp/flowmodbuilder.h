@@ -4,6 +4,7 @@
 #include "ofp/flowmod.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionset.h"
+#include "ofp/standardmatch.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -31,12 +32,73 @@ public:
 		instructions_ = instructions;
 	}
 	
-	#if 0
-	void send(const Channel *channel);
-	#endif
+	template <class Type>
+	UInt32 write(Type channel) {
+		UInt8  version = channel->version();
+		if (version <= 0x02) {
+			return writeStandard(channel);
+		}
 
-	std::string serialize() {
-		return "";
+		// Calculate length of FlowMod message up to end of match section. Then 
+		// pad it to a multiple of 8 bytes.
+		size_t msgMatchLen = FlowMod::UnpaddedSizeWithMatchHeader + match_.size();
+		size_t msgMatchLenPadded = PadLength(msgMatchLen);
+
+		// Calculate length of instruction section. Then, pad it to a multiple
+		// of 8 bytes.
+		size_t instrLen = instructions_.size();
+		size_t instrLenPadded = PadLength(instrLen);
+
+		// Calculate the total FlowMod message length.
+		size_t msgLen = msgMatchLenPadded + instrLenPadded;
+
+		// Fill in the message header.
+		UInt32 xid = channel->nextXid();
+		Header &hdr = msg_.header_;
+		hdr.setVersion(version);
+		hdr.setType(FlowMod::Type);
+		hdr.setLength(UInt16_narrow_cast(msgLen));
+		hdr.setXid(xid);
+
+		// Fill in the match header.
+		msg_.matchType_ = OFPMT_OXM;
+		msg_.matchLength_ = UInt16_narrow_cast(PadLength(match_.size()));
+
+		// Write the message with padding in the correct spots.
+		Padding<8> pad;
+		channel->write(&msg_, FlowMod::UnpaddedSizeWithMatchHeader);
+		channel->write(match_.data(), match_.size());
+		channel->write(&pad, msgMatchLenPadded - msgMatchLen);
+		channel->write(instructions_.data(), instructions_.size());
+
+		return xid;
+	}
+
+	template <class Type>
+	UInt32 writeStandard(Type channel)
+	{
+		UInt8 version = channel->version();
+		assert(version <= 0x02);
+
+		deprecated::StandardMatch stdMatch{match_.toRange()};
+
+		size_t msgMatchLen = FlowMod::SizeWithoutMatchHeader + sizeof(stdMatch);
+		size_t instrLen = instructions_.size();
+		size_t instrLenPadded = PadLength(instrLen);
+		size_t msgLen = msgMatchLen + instrLenPadded;
+
+		UInt32 xid = channel->nextXid();
+		Header &hdr = msg_.header_;
+		hdr.setVersion(version);
+		hdr.setType(FlowMod::Type);
+		hdr.setLength(msgLen);
+		hdr.setXid(xid);
+
+		channel->write(&msg_, FlowMod::SizeWithoutMatchHeader);
+		channel->write(&stdMatch, sizeof(stdMatch));
+		channel->write(instructions_.data(), instrLen);
+
+		return xid;
 	}
 
 private:

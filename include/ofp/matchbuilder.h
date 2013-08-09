@@ -38,7 +38,10 @@ public:
 				!Prerequisites::duplicateFieldsDetected(list_.toRange());
 	}
 
+	OXMRange toRange() const { return list_.toRange(); }
+
 private:
+
 	OXMList list_;
 };
 

@@ -12,6 +12,8 @@ public:
         Type = OFPT_FLOW_MOD
     };
 
+    FlowMod() = default;
+
     const Header *header() const { return &header_; }
 
     UInt64 cookie() const { return cookie_; }
@@ -33,23 +35,30 @@ public:
     
 private:
     Header header_;
-    Big64 cookie_;
-    Big64 cookieMask_;
-    Big8 tableId_;
-    Big8 command_;
-    Big16 idleTimeout_;
-    Big16 hardTimeout_;
-    Big16 priority_;
-    Big32 bufferId_;
-    Big32 outPort_;
-    Big32 outGroup_;
-    Big16 flags_;
-    Padding<2> pad_;
+    Big64 cookie_ = 0;
+    Big64 cookieMask_ = 0;
+    Big8 tableId_ = 0;
+    Big8 command_ = 0;
+    Big16 idleTimeout_ = 0;
+    Big16 hardTimeout_ = 0;
+    Big16 priority_ = 0;
+    Big32 bufferId_ = 0;
+    Big32 outPort_ = 0;
+    Big32 outGroup_ = 0;
+    Big16 flags_ = 0;
+    Padding<2> pad_1;
+
+    Big16 matchType_ = 0;
+    Big16 matchLength_ = 0;
+    Padding<4> pad_2;
+
+    enum { UnpaddedSizeWithMatchHeader = 52 };
+    enum { SizeWithoutMatchHeader = 48 };
 
     friend class FlowModBuilder;
-    //MatchRef match_;
-    //InstructionListRef instructions_;
 };
+
+static_assert(sizeof(FlowMod) == 56, "Unexpected FlowMod size.");
 
 } // </namespace ofp>
 
