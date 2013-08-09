@@ -27,6 +27,8 @@ CPPFLAGS += -I ../include -I ofp
 WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-global-constructors
 CXXFLAGS += -g $(WARNINGS) -pthread -std=c++11
 
+CPP11_MIGRATE = /Users/bfish/code/llvm-build/Debug+Asserts/bin/cpp11-migrate
+
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
 TESTS = ofp_test
@@ -50,6 +52,9 @@ all : $(TESTS)
 
 clean :
 	rm -f $(TESTS) gtest.a gtest_main.a $(TEST_OBJECTS) $(LIB_OBJECTS) $(TEST_DEPEND) $(LIB_DEPEND)
+
+migrate : 
+	$(CPP11_MIGRATE) -final-syntax-check -summary $(LIB_SOURCES) -- $(CPPFLAGS) $(CXXFLAGS)
 
 # Builds gtest.a and gtest_main.a.
 
