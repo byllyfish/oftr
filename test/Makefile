@@ -21,7 +21,8 @@ GTEST_DIR = ../external/googletest
 # the compiler doesn't generate warnings in Google Test headers.
 CPPFLAGS += -isystem $(GTEST_DIR)/include -stdlib=libc++
 
-CPPFLAGS += -I ../include -I ofp
+BOOST_ROOT=/Users/bfish/code/ofp/external/boost_1_54_0
+CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_ROOT)
 
 # Flags passed to the C++ compiler. Google test uses global constructors.
 WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-global-constructors
@@ -86,13 +87,13 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 
 ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) ../src/ofp/oxmfields.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lboost_system $^ -o $@
 
 oxmfields_compile : $(LIB_OBJECTS) ../src/ofp/oxmfields_compile_main.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lboost_system $^ -o $@
 
 oxmfields_compile2 : $(LIB_OBJECTS) ../src/ofp/oxmfields_main.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lboost_system $^ -o $@
 
 oxmfields : ../include/ofp/oxmfields.h ../src/ofp/oxmfields.cpp
 

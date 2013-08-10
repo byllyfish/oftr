@@ -4,6 +4,9 @@
 #include "ofp/oxmtype.h"
 #include <bitset>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpadded"
+
 namespace ofp { // <namespace ofp>
 
 class OXMTypeSet {
@@ -29,5 +32,7 @@ private:
 };
 
 } // </namespace ofp>
+
+#pragma clang diagnostic pop // ignored "-Wpadded"
 
 #endif // OFP_OXMTYPESET_H

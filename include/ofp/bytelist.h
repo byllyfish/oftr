@@ -28,6 +28,8 @@ public:
     const UInt8 *end() const;
 
     const UInt8 *data() const;
+    UInt8 *mutableData();
+
     size_t size() const;
     ptrdiff_t index(const UInt8 *pos) const;
     ByteRange toRange() const;
@@ -45,6 +47,7 @@ public:
     void replaceUninitialized(const UInt8 *pos, const UInt8 *posEnd,
                               size_t length);
 
+    void resize(size_t length);
     void clear();
 
 private:
@@ -85,6 +88,15 @@ inline const ofp::UInt8 *ofp::ByteList::end() const
  *  Return pointer to beginning of byte buffer.
  */
 inline const ofp::UInt8 *ofp::ByteList::data() const
+{
+    return &buf_[0];
+}
+
+/**
+ *  Return pointer to beginning of byte buffer. Contents of buffer may be
+ *  changed.
+ */
+inline ofp::UInt8 *ofp::ByteList::mutableData()
 {
 	return &buf_[0];
 }
@@ -218,6 +230,15 @@ inline void ofp::ByteList::replaceUninitialized(const UInt8 *pos,
         buf_.erase(iter, iter + Signed_cast(oldlen - length));
     }
 }
+
+/**
+ *  Resize buffer to specified length.
+ */
+inline void ofp::ByteList::resize(size_t length)
+{
+    buf_.resize(length);
+}
+
 
 /**
  *  Set size of byte buffer to zero.

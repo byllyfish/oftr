@@ -61,6 +61,8 @@ class Header {
 public:
 	Header() = default;
 
+	UInt16 length() const;
+
 	void setVersion(UInt8 version);
 	void setType(UInt8 type);
 	void setLength(UInt16 length);
@@ -76,16 +78,20 @@ private:
 } // </namespace ofp>
 
 
-void ofp::Header::setVersion(UInt8 version){
+inline ofp::UInt16 ofp::Header::length() const {
+	return length_;
+}
+
+inline void ofp::Header::setVersion(UInt8 version){
 	version_ = version;
 }
-void ofp::Header::setType(UInt8 type) {
+inline void ofp::Header::setType(UInt8 type) {
 	type_ = type;
 }
-void ofp::Header::setLength(UInt16 length) {
+inline void ofp::Header::setLength(UInt16 length) {
 	length_ = length;
 }
-void ofp::Header::setXid(UInt32 xid) {
+inline void ofp::Header::setXid(UInt32 xid) {
 	xid_ = xid;
 }
 

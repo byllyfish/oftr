@@ -10,6 +10,11 @@ void ofp::log::info(const std::string &msg)
 }
 
 
+void ofp::log::debug(const std::string &msg)
+{
+	std::cerr << "[debug] " << msg << '\n';
+}
+
 /**
  *  Log when an API is used incorrectly.
  */
