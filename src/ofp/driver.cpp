@@ -1,7 +1,8 @@
 #include "ofp/driver.h"
 #include "ofp/driver_impl.h"
 
-ofp::Driver::Driver() : impl_{new impl::Driver_Impl}
+ofp::Driver::Driver(DriverOptions *options)
+    : impl_{new impl::Driver_Impl{options}}
 {
 }
 
@@ -10,26 +11,18 @@ ofp::Driver::~Driver()
     delete impl_;
 }
 
-void ofp::Driver::setProtocolVersions(const ProtocolVersions &versions)
-{
-    impl_->setProtocolVersions(versions);
-}
-
-void ofp::Driver::setDriverOptions(const DriverOptions &options)
-{
-    impl_->setDriverOptions(options);
-}
-
-void ofp::Driver::listen(Role role, UInt16 port,
+void ofp::Driver::listen(Role role, const IPv6Address &localAddress,
+                         UInt16 localPort, ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory)
 {
-    impl_->listen(role, port, listenerFactory);
+    impl_->listen(role, localAddress, localPort, versions, listenerFactory);
 }
 
-void ofp::Driver::connect(Role role, const std::string &host, UInt16 port,
+void ofp::Driver::connect(Role role, const IPv6Address &remoteAddress,
+                          UInt16 remotePort, ProtocolVersions versions,
                           ChannelListener::Factory listenerFactory)
 {
-    impl_->connect(role, host, port, listenerFactory);
+    impl_->connect(role, remoteAddress, remotePort, versions, listenerFactory);
 }
 
 void ofp::Driver::run()
@@ -37,7 +30,3 @@ void ofp::Driver::run()
     impl_->run();
 }
 
-void ofp::Driver::testRun()
-{
-	impl_->testRun();
-}

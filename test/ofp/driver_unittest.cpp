@@ -3,23 +3,30 @@
 
 using namespace ofp;
 
-
 class MockChannelListener : public ChannelListener {
 public:
-	void onChannelUp(Channel *channel) override {}
-	void onChannelDown() override {}
-	void onMessage(const Message *message) override {}
-	void onError(const Error *error) override {}
+    void onChannelUp(Channel *channel) override
+    {
+    }
+    void onChannelDown() override
+    {
+    }
+    void onMessage(const Message *message) override
+    {
+    }
+    void onException(const Exception *error) override
+    {
+    }
 };
 
-
-TEST(driver, test) 
+TEST(driver, test)
 {
-	Driver driver;
+    Driver driver;
 
-	driver.listen(Driver::Controller, Driver::DefaultPort, []{
-		return new MockChannelListener;
-	});
+    driver.listen(Driver::Controller, IPv6Address{}, Driver::DefaultPort,
+                  ProtocolVersions{}, []{
+        return new MockChannelListener;
+    });
 
-	driver.run();
+    driver.run();
 }

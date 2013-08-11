@@ -11,16 +11,12 @@ class TCP_Server;
 
 class Driver_Impl {
 public:
-	Driver_Impl();
+	Driver_Impl(DriverOptions *options);
 
-	void setProtocolVersions(const ProtocolVersions &versions);
-	void setDriverOptions(const DriverOptions &options);
-
-	void listen(Driver::Role role, UInt16 port, ChannelListener::Factory listenerFactory);
-	void connect(Driver::Role role, const std::string &host, UInt16 port, ChannelListener::Factory listenerFactory);
+	void listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+	void connect(Driver::Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 
 	void run();
-	void testRun();
 	
 	/////
 	

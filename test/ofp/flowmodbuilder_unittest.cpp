@@ -56,7 +56,7 @@ TEST(flowmodbuilder, version1_3)
     flowMod.setInstructions(instructions);
 
     MockChannel channel{0x04};
-    UInt32 xid = flowMod.write(&channel);
+    UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
     EXPECT_EQ(72, channel.size());
@@ -82,7 +82,7 @@ TEST(flowmodbuilder, version1_0)
     flowMod.setInstructions(instructions);
 
     MockChannel channel{0x01};
-    UInt32 xid = flowMod.write(&channel);
+    UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
     EXPECT_EQ(144, channel.size());

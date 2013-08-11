@@ -2,6 +2,7 @@
 #define OFP_IPV6ADDRESS_H
 
 #include "ofp/types.h"
+#include <array>
 
 namespace ofp { // <namespace ofp>
 
@@ -17,6 +18,12 @@ public:
 	}
 
 	std::string toString() const;
+
+	std::array<UInt8,Length> toBytes() const {
+		std::array<UInt8,Length> result;
+		std::copy(addr_, addr_ + Length, result.begin());
+		return result;
+	}
 
 	bool operator==(const IPv6Address &rhs) const {
 		return std::memcmp(addr_, rhs.addr_, Length) == 0;

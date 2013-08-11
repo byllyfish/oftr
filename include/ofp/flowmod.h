@@ -12,7 +12,7 @@ public:
         Type = OFPT_FLOW_MOD
     };
 
-    FlowMod() = default;
+    FlowMod() : header_{Type} {}
 
     const Header *header() const { return &header_; }
 

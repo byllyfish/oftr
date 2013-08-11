@@ -13,7 +13,7 @@ class Driver_Impl;
 class TCP_Server {
 public:
 
-    TCP_Server(Driver_Impl *driver, const tcp::endpoint &endpt);
+    TCP_Server(Driver_Impl *driver, Driver::Role role, const tcp::endpoint &endpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
     ~TCP_Server();
 
     Driver_Impl *driver() const { return driver_; }
@@ -22,9 +22,11 @@ private:
 	Driver_Impl *driver_;
     tcp::acceptor acceptor_;
     tcp::socket socket_;
+    Driver::Role role_;
+    ProtocolVersions versions_;
+    ChannelListener::Factory factory_;
 
     void asyncAccept();
-    //void onAccept(TCP_SharedConnPtr conn, const error_code &error);
 };
 
 } // </namespace impl>

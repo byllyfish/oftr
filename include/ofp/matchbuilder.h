@@ -4,7 +4,7 @@
 #include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"
 #include "ofp/prerequisites.h"
-#include "ofp/oxmconstants.h"
+#include "ofp/constants.h"
 
 namespace ofp { // <namespace ofp>
 

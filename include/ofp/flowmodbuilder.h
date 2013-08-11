@@ -33,7 +33,7 @@ public:
 	}
 	
 	template <class Type>
-	UInt32 write(Type channel) {
+	UInt32 send(Type channel) {
 		UInt8  version = channel->version();
 		if (version <= 0x02) {
 			return writeStandard(channel);
