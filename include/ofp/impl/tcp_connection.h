@@ -1,8 +1,8 @@
-#ifndef OFP_TCP_CONNECTION_IMPL_H
-#define OFP_TCP_CONNECTION_IMPL_H
+#ifndef OFP_IMPL_TCP_CONNECTION_H
+#define OFP_IMPL_TCP_CONNECTION_H
 
 #include "ofp/types.h"
-#include "ofp/boost_impl.h"
+#include "ofp/impl/boost_impl.h"
 #include "ofp/message.h"
 #include "ofp/internalchannel.h"
 #include "ofp/features.h"
@@ -113,4 +113,4 @@ private:
 } // </namespace impl>
 } // </namespace ofp>
 
-#endif // OFP_TCP_CONNECTION_IMPL_H
+#endif // OFP_IMPL_TCP_CONNECTION_H

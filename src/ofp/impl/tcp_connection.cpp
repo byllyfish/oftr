@@ -1,17 +1,11 @@
-#include "ofp/tcp_connection_impl.h"
-#include "ofp/tcp_server_impl.h"
-#include "ofp/driver_impl.h"
+#include "ofp/impl/tcp_connection.h"
+#include "ofp/impl/tcp_server.h"
+#include "ofp/impl/driver_impl.h"
 #include "ofp/log.h"
 #include "ofp/controllerhandshake.h"
 
 using namespace boost;
 
-/*
-static SharedPtr create(TCP_Server *server)
-    {
-        return SharedPtr{new TCP_Connection{server}};
-    }
-*/
 
 ofp::impl::TCP_Connection::TCP_Connection(TCP_Server *server,
                                           tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)

@@ -38,7 +38,7 @@ TEST_OBJECTS := $(patsubst %.cpp,%.o,$(TEST_SOURCES))
 TEST_DEPEND  := $(patsubst %.cpp,%.d,$(TEST_SOURCES))
 
 MAINS := $(wildcard ../src/ofp/*_main.cpp)
-LIB_SOURCES := $(filter-out $(MAINS) ../src/ofp/oxmfields.cpp,$(wildcard ../src/ofp/*.cpp))
+LIB_SOURCES := $(filter-out $(MAINS) ../src/ofp/oxmfields.cpp,$(wildcard ../src/ofp/*.cpp) $(wildcard ../src/ofp/impl/*.cpp))
 LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
 LIB_DEPEND  := $(patsubst %.cpp,%.d,$(LIB_SOURCES))
 

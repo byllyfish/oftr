@@ -2,7 +2,7 @@
 #define OFP_DRIVER_IMPL_H
 
 #include "ofp/driver.h"
-#include "ofp/boost_impl.h"
+#include "ofp/impl/boost_impl.h"
 
 namespace ofp { // <namespace ofp>
 namespace impl { // <namespace impl>

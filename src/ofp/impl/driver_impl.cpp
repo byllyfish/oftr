@@ -1,6 +1,6 @@
-#include "ofp/driver_impl.h"
+#include "ofp/impl/driver_impl.h"
 #include "ofp/log.h"
-#include "ofp/tcp_server_impl.h"
+#include "ofp/impl/tcp_server.h"
 
 using namespace boost::asio;
 

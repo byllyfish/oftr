@@ -1,5 +1,5 @@
 #include "ofp/driver.h"
-#include "ofp/driver_impl.h"
+#include "ofp/impl/driver_impl.h"
 
 ofp::Driver::Driver(DriverOptions *options)
     : impl_{new impl::Driver_Impl{options}}

@@ -1,9 +1,9 @@
-#ifndef OFP_TCP_SERVER_IMPL_H
-#define OFP_TCP_SERVER_IMPL_H
+#ifndef OFP_IMPL_TCP_SERVER_H
+#define OFP_IMPL_TCP_SERVER_H
 
 #include "ofp/types.h"
-#include "ofp/boost_impl.h"
-#include "ofp/tcp_connection_impl.h"
+#include "ofp/impl/boost_impl.h"
+#include "ofp/impl/tcp_connection.h"
 
 namespace ofp {  // <namespace ofp>
 namespace impl { // <namespace impl>
@@ -32,4 +32,4 @@ private:
 } // </namespace impl>
 } // </namespace ofp>
 
-#endif // OFP_TCP_SERVER_IMPL_H
+#endif // OFP_IMPL_TCP_SERVER_H

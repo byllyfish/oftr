@@ -1,5 +1,5 @@
-#include "ofp/tcp_server_impl.h"
-#include "ofp/driver_impl.h"
+#include "ofp/impl/tcp_server.h"
+#include "ofp/impl/driver_impl.h"
 #include "ofp/log.h"
 
 ofp::impl::TCP_Server::TCP_Server(Driver_Impl *driver, Driver::Role role,
