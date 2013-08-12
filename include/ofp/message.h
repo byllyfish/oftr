@@ -31,7 +31,8 @@ public:
 
 	UInt8 type() const { return header()->type(); }
 	
-	const Channel *channel() const;
+	Channel *source() const;
+	UInt32 xid() const { return header()->xid(); }
 
 	#if 0
 	UInt8 auxiliaryID() const { return auxiliaryID_; }

@@ -35,6 +35,10 @@ public:
 		return capabilities_;
 	}
 
+	UInt32 reserved() const {
+		return reserved_;
+	}
+
 
 	void setDatapathID(DatapathID datapathID) {
 		datapathID_ = datapathID;
@@ -56,6 +60,10 @@ public:
 		capabilities_ = capabilities;
 	}
 
+	void setReserved(UInt32 reserved) {
+		reserved_ = reserved;
+	}
+
 private:
 	DatapathID datapathID_;
 	UInt32 bufferCount_;
@@ -63,6 +71,7 @@ private:
 	UInt8	auxiliaryID_;
 	Padding<2> pad_;
 	UInt32  capabilities_;
+	UInt32 reserved_;
 };
 
 } // </namespace ofp>

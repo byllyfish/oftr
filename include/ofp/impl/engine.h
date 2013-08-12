@@ -1,20 +1,20 @@
-#ifndef OFP_DRIVER_IMPL_H
-#define OFP_DRIVER_IMPL_H
+#ifndef OFP_IMPL_ENGINE_H
+#define OFP_IMPL_ENGINE_H
 
 #include "ofp/driver.h"
-#include "ofp/impl/boost_impl.h"
+#include "ofp/impl/boost_asio.h"
 
 namespace ofp { // <namespace ofp>
 namespace impl { // <namespace impl>
 
 class TCP_Server;
 
-class Driver_Impl {
+class Engine {
 public:
-	Driver_Impl(DriverOptions *options);
+	Engine(DriverOptions *options);
 
 	void listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
-	void connect(Driver::Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+	Deferred<Exception> connect(Driver::Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 
 	void run();
 	
@@ -24,10 +24,9 @@ public:
 	
 private:
 	io_service io_;
-	std::vector<TCP_Server *> servers_;
 };
 
 } // </namespace impl>
 } // </namespace ofp>
 
-#endif // OFP_DRIVER_IMPL_H
+#endif // OFP_IMPL_ENGINE_H

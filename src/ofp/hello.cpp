@@ -21,10 +21,17 @@ void ofp::detail::HelloElement::setLength(UInt16 length) {
 
 ofp::ProtocolVersions ofp::detail::HelloElement::versionBitMap() const
 {
-	// FIXME
-	UInt32 bitmap = 0;
-	log::debug("versionBitMap not implemented");
-	return ProtocolVersions::fromBitmap(bitmap);
+	if (length_ - sizeof(HelloElement) >= sizeof(UInt32)) {
+        // Grab the first bit map.
+        log::debug(RawDataToHex(BytePtr(this), length_));
+	    const Big32 *bitmap = reinterpret_cast<const Big32 *>(BytePtr(this) + sizeof(HelloElement));
+        log::debug("versionBitMap is ", unsigned(*bitmap));
+        return ProtocolVersions::fromBitmap(*bitmap);
+    }
+	
+    log::info("versionBitMap not big enough");
+
+	return ProtocolVersions::fromBitmap(0);
 }
 
 bool ofp::detail::HelloElement::validateLength(size_t remaining) const

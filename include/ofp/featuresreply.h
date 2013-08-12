@@ -12,6 +12,8 @@ class FeaturesReply {
 public:
 	enum { Type = OFPT_FEATURES_REPLY };
 
+	FeaturesReply() : header_{Type} {}
+	
 	static const FeaturesReply *cast(const Message *message);
 
 	void getFeatures(Features *features) const;
@@ -35,10 +37,13 @@ static_assert(sizeof(FeaturesReply) == 32, "Unexpected size.");
 
 class FeaturesReplyBuilder {
 public:
-	
+	explicit FeaturesReplyBuilder(const Message *request);
+
+	void setFeatures(const Features &features);
+	void send(Channel *channel);
 
 private:
-	
+	FeaturesReply msg_;
 };
 
 } // </namespace ofp>

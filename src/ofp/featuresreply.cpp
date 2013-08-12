@@ -1,4 +1,5 @@
 #include "ofp/featuresreply.h"
+#include "ofp/channel.h"
 
 
 const ofp::FeaturesReply *ofp::FeaturesReply::cast(const Message *message)
@@ -22,6 +23,7 @@ void ofp::FeaturesReply::getFeatures(Features *features) const
 	features->setTableCount(tableCount_);
 	features->setAuxiliaryID(auxiliaryID_);
 	features->setCapabilities(capabilities_);
+	features->setReserved(reserved_);
 }
 
 
@@ -29,3 +31,29 @@ bool ofp::FeaturesReply::validateLength(size_t length) const
 {
 	return length == sizeof(FeaturesReply);
 }
+
+
+ofp::FeaturesReplyBuilder::FeaturesReplyBuilder(const Message *request)
+{
+	// Set xid of reply to request's xid.
+	msg_.header_.setXid(request->xid());
+}
+
+void ofp::FeaturesReplyBuilder::setFeatures(const Features &features)
+{
+	msg_.datapathID_ = features.datapathID();
+	msg_.bufferCount_ = features.bufferCount();
+	msg_.tableCount_ = features.tableCount();
+	msg_.auxiliaryID_ = features.auxiliaryID();
+	msg_.capabilities_ = features.capabilities();
+	msg_.reserved_ = features.reserved();
+}
+
+void ofp::FeaturesReplyBuilder::send(Channel *channel)
+{
+	msg_.header_.setLength(sizeof(msg_));
+
+	channel->write(&msg_, sizeof(msg_));
+	channel->flush();
+}
+

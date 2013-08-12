@@ -1,32 +1,32 @@
 #include "ofp/driver.h"
-#include "ofp/impl/driver_impl.h"
+#include "ofp/impl/engine.h"
 
 ofp::Driver::Driver(DriverOptions *options)
-    : impl_{new impl::Driver_Impl{options}}
+    : engine_{new impl::Engine{options}}
 {
 }
 
 ofp::Driver::~Driver()
 {
-    delete impl_;
+    delete engine_;
 }
 
 void ofp::Driver::listen(Role role, const IPv6Address &localAddress,
                          UInt16 localPort, ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory)
 {
-    impl_->listen(role, localAddress, localPort, versions, listenerFactory);
+    engine_->listen(role, localAddress, localPort, versions, listenerFactory);
 }
 
-void ofp::Driver::connect(Role role, const IPv6Address &remoteAddress,
+ofp::Deferred<ofp::Exception> ofp::Driver::connect(Role role, const IPv6Address &remoteAddress,
                           UInt16 remotePort, ProtocolVersions versions,
                           ChannelListener::Factory listenerFactory)
 {
-    impl_->connect(role, remoteAddress, remotePort, versions, listenerFactory);
+    return engine_->connect(role, remoteAddress, remotePort, versions, listenerFactory);
 }
 
 void ofp::Driver::run()
 {
-    impl_->run();
+    engine_->run();
 }
 

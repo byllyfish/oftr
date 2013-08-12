@@ -1,19 +1,19 @@
-#ifndef OFP_CONTROLLERHANDSHAKE_H
-#define OFP_CONTROLLERHANDSHAKE_H
+#ifndef OFP_DEFAULTHANDSHAKE_H
+#define OFP_DEFAULTHANDSHAKE_H
 
 #include "ofp/channellistener.h"
 #include "ofp/protocolversions.h"
+#include "ofp/driver.h"
 
 namespace ofp { // <namespace ofp>
 
-class ProtocolVersions;
 class InternalChannel;
 
 
-class ControllerHandshake : public ChannelListener {
+class DefaultHandshake : public ChannelListener {
 public:
 
-	ControllerHandshake(InternalChannel *channel, ProtocolVersions versions, Factory listenerFactory);
+	DefaultHandshake(InternalChannel *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory);
 
 	void onChannelUp(Channel *channel) override;
 	void onChannelDown() override;
@@ -24,13 +24,15 @@ private:
 	InternalChannel *channel_;
 	ProtocolVersions versions_;
 	Factory listenerFactory_;
+	Driver::Role role_;
 
 	void onHello(const Message *message);
 	void onFeaturesReply(const Message *message);
 	void onError(const Message *message);
 
+	void installNewChannelListener();
 };
 
 } // </namespace ofp>
 
-#endif // OFP_CONTROLLERHANDSHAKE_H
+#endif // OFP_DEFAULTHANDSHAKE_H

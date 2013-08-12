@@ -4,11 +4,12 @@
 #include "ofp/channellistener.h"
 #include "ofp/ipv6address.h"
 #include "ofp/protocolversions.h"
+#include "ofp/deferred.h"
 
 namespace ofp { // <namespace ofp>
 
 namespace impl {
-	class Driver_Impl;
+	class Engine;
 }
 
 class DriverOptions;
@@ -31,12 +32,17 @@ public:
 	// FIXME Should return Exception?
 	// // Use Result<bool> or Exception
 	void listen(Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
-	void connect(Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+
+	// Connect to specified address.
+	// If there is an error establishing the connection, or the connection is established 
+
+	Deferred<Exception> connect(Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 
 	void run();
 
 private:
-	impl::Driver_Impl *impl_;
+	impl::Engine *engine_;
+	log::Lifetime lifetime{"Driver"};
 };
 
 } // </namespace ofp>

@@ -32,7 +32,7 @@ ofp::UInt32 ofp::ProtocolVersions::bitmap() const
 
 ofp::ProtocolVersions ofp::ProtocolVersions::intersection(ProtocolVersions versions) const
 {
-	return ProtocolVersions{bitmap_ & versions.bitmap_};
+	return fromBitmap(bitmap_ & versions.bitmap_);
 }
 
 

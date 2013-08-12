@@ -1,23 +1,22 @@
 #include "ofp/impl/tcp_connection.h"
 #include "ofp/impl/tcp_server.h"
-#include "ofp/impl/driver_impl.h"
+#include "ofp/impl/engine.h"
 #include "ofp/log.h"
-#include "ofp/controllerhandshake.h"
+#include "ofp/defaulthandshake.h"
 
 using namespace boost;
 
 
-ofp::impl::TCP_Connection::TCP_Connection(TCP_Server *server,
-                                          tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
-    : server_{server}, socket_{std::move(socket)}, message_{this}
+ofp::impl::TCP_Connection::TCP_Connection(impl::Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
+    : engine_{engine}, message_{this}, socket_{engine->io()}, listener_{new DefaultHandshake{this, role, versions, factory}}
+{
+    log::debug(__PRETTY_FUNCTION__, this);  
+}
+
+ofp::impl::TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
+    : engine_{engine}, message_{this}, socket_{std::move(socket)}, listener_{new DefaultHandshake{this, role, versions, factory}}
 {
     log::debug(__PRETTY_FUNCTION__, this);
-
-    if (role == Driver::Controller) {
-        listener_ = new ControllerHandshake{this, versions, factory};
-    } else {
-        // TODO
-    }
 }
 
 ofp::impl::TCP_Connection::~TCP_Connection()
@@ -27,12 +26,47 @@ ofp::impl::TCP_Connection::~TCP_Connection()
     ChannelListener::dispose(listener_);
 }
 
-ofp::impl::Driver_Impl *ofp::impl::TCP_Connection::driver() const
+
+ofp::Deferred<ofp::Exception> ofp::impl::TCP_Connection::asyncConnect(const tcp::endpoint &endpt)
+{
+    log::debug(__PRETTY_FUNCTION__);
+
+    assert(deferredExc_ == nullptr);
+
+    deferredExc_ = Deferred<Exception>::makeResult();
+
+    auto self(shared_from_this());
+    socket_.async_connect(endpt, [this, self](const error_code &err) {
+
+        log::debug("lambda from asyncConnect");
+        log::debug(__PRETTY_FUNCTION__);
+
+        deferredExc_->set(makeException(err));
+        deferredExc_ = nullptr;
+
+        if (!err) {
+            channelUp();
+        }
+    });
+
+    return deferredExc_;
+}
+
+
+void ofp::impl::TCP_Connection::asyncAccept()
+{
+    channelUp();
+}
+
+
+#if 0
+ofp::impl::Engine *ofp::impl::TCP_Connection::driver() const
 {
     return server_->driver();
 }
+#endif
 
-void ofp::impl::TCP_Connection::start()
+void ofp::impl::TCP_Connection::channelUp()
 {
     log::debug(__PRETTY_FUNCTION__);
 
@@ -42,12 +76,14 @@ void ofp::impl::TCP_Connection::start()
     asyncReadHeader();
 }
 
+/**
 void ofp::impl::TCP_Connection::stop()
 {
 	log::debug(__PRETTY_FUNCTION__);
 
 	socket_.close();
 }
+**/
 
 void ofp::impl::TCP_Connection::asyncReadHeader()
 {
@@ -89,11 +125,12 @@ void ofp::impl::TCP_Connection::asyncReadMessage(size_t msgLength)
     auto self(shared_from_this());
 
     asio::async_read(socket_, asio::buffer(message_.mutableData(msgLength) + sizeof(Header), msgLength - sizeof(Header)),
-                                [this, self](error_code err, size_t length) {
+                                [this, self](const error_code &err, size_t bytes_transferred) {
         
         if (!err) {
-        	assert(length == message_.size() - sizeof(Header));
+        	assert(bytes_transferred == message_.size() - sizeof(Header));
 
+            log::debug("Read: ", RawDataToHex(message_.data(), message_.size(), ' ', 2));
         	postMessage(this, &message_);
         	asyncReadHeader();
 
@@ -119,7 +156,10 @@ void ofp::impl::TCP_Connection::asyncWrite()
     log::debug("Write: ", RawDataToHex(data, size, ' ', 2));
 
     auto self(shared_from_this());
-    ::asio::async_write(socket_, asio::buffer(data, size), [this, self](error_code err, size_t length) {
+
+    ::asio::async_write(socket_, asio::buffer(data, size), [this, self](const error_code &err, size_t bytes_transferred) {
+        assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
+
         writing_ = false;
         outgoing_[!outgoingIdx_].clear();
         if (outgoing_[outgoingIdx_].size() > 0) {

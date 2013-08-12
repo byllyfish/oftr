@@ -1,4 +1,4 @@
-#include "ofp/controllerhandshake.h"
+#include "ofp/defaulthandshake.h"
 #include "ofp/internalchannel.h"
 #include "ofp/hello.h"
 #include "ofp/message.h"
@@ -10,12 +10,12 @@
 #include "ofp/constants.h"
 
 
-ofp::ControllerHandshake::ControllerHandshake(InternalChannel *channel, ProtocolVersions versions, Factory listenerFactory)
-	: channel_{channel}, versions_{versions}, listenerFactory_{listenerFactory} 
+ofp::DefaultHandshake::DefaultHandshake(InternalChannel *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
+	: channel_{channel}, role_{role}, versions_{versions}, listenerFactory_{listenerFactory} 
 {
 }
 
-void ofp::ControllerHandshake::onChannelUp(Channel *channel) 
+void ofp::DefaultHandshake::onChannelUp(Channel *channel) 
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -28,14 +28,14 @@ void ofp::ControllerHandshake::onChannelUp(Channel *channel)
 	msg.send(channel_);
 }
 
-void ofp::ControllerHandshake::onChannelDown() 
+void ofp::DefaultHandshake::onChannelDown() 
 {
 	log::debug(__PRETTY_FUNCTION__);
 
 	log::info("Channel down before controller handshake could complete.");
 }
 
-void ofp::ControllerHandshake::onMessage(const Message *message) 
+void ofp::DefaultHandshake::onMessage(const Message *message) 
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -59,7 +59,7 @@ void ofp::ControllerHandshake::onMessage(const Message *message)
 
 }
 
-void ofp::ControllerHandshake::onException(const Exception *exception)
+void ofp::DefaultHandshake::onException(const Exception *exception)
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -67,25 +67,32 @@ void ofp::ControllerHandshake::onException(const Exception *exception)
 }
 
 
-void ofp::ControllerHandshake::onHello(const Message *message)
+void ofp::DefaultHandshake::onHello(const Message *message)
 {
 	const Hello *msg = Hello::cast(message);
 	if (!msg)
 		return;
 
-	ProtocolVersions versions = msg->protocolVersions().intersection(versions_);
+	ProtocolVersions versions = msg->protocolVersions();
+	versions = versions.intersection(versions_);
+	log::debug("bitmap ", versions.bitmap());
 
 	if (versions.empty()) {
 		ErrorBuilder{OFPET_HELLO_FAILED, OFPHFC_INCOMPATIBLE}.send(channel_);
 		channel_->close();
-	} else {
+
+	} else if (role_ == Driver::Controller) {
 		channel_->setProtocolVersion(versions.highestVersion());
 		FeaturesRequestBuilder{}.send(channel_);
+		
+	} else {
+		channel_->setProtocolVersion(versions.highestVersion());
+		installNewChannelListener();
 	}
 }
 
 
-void ofp::ControllerHandshake::onFeaturesReply(const Message *message)
+void ofp::DefaultHandshake::onFeaturesReply(const Message *message)
 {
 	const FeaturesReply *msg = FeaturesReply::cast(message);
 	if (!msg)
@@ -95,18 +102,24 @@ void ofp::ControllerHandshake::onFeaturesReply(const Message *message)
 	msg->getFeatures(&features);
 	channel_->setFeatures(features);
 
-	// Install new ChannelListener.
+	installNewChannelListener();
+}
+
+
+void ofp::DefaultHandshake::onError(const Message *message) 
+{
+	// FIXME log it
+}
+
+
+void ofp::DefaultHandshake::installNewChannelListener()
+{
 	ChannelListener *newListener = listenerFactory_();
 	assert(newListener);
+
 	channel_->setChannelListener(newListener);
 	newListener->onChannelUp(channel_);
 
 	delete this;
-}
-
-
-void ofp::ControllerHandshake::onError(const Message *message) 
-{
-	// FIXME log it
 }
 

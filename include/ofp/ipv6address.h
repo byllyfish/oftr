@@ -2,6 +2,7 @@
 #define OFP_IPV6ADDRESS_H
 
 #include "ofp/types.h"
+#include "ofp/ipv4address.h"
 #include <array>
 
 namespace ofp { // <namespace ofp>
@@ -17,11 +18,22 @@ public:
 		return !IsMemFilled(addr_, sizeof(addr_), '\0');
 	}
 
+	bool isV4Mapped() const {
+		return IsMemFilled(&addr_[0], 11, '\0') && (addr_[11] == 0xFF);
+	}
+
+	IPv4Address toV4() const {
+		assert(isV4Mapped());
+		IPv4Address addr;
+		std::memcpy(&addr, &addr_[12], sizeof(addr));
+		return addr;
+	}
+
 	std::string toString() const;
 
 	std::array<UInt8,Length> toBytes() const {
 		std::array<UInt8,Length> result;
-		std::copy(addr_, addr_ + Length, result.begin());
+		std::memcpy(&result, addr_, Length);
 		return result;
 	}
 

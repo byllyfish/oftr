@@ -31,6 +31,21 @@ void debug(const std::string &msg, Type value)
 
 void exception(const std::string &msg);
 
+
+class Lifetime {
+public:
+	 Lifetime(const char *description) : description_{description}
+	 {
+	 	debug("Create ", description_);
+	 }
+
+	~Lifetime() {
+		debug("Dispose ", description_);
+	}
+
+private:
+	const char *description_;
+};
 } // </namespace log>
 } // </namespace ofp>
 

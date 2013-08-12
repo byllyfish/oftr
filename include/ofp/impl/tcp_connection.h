@@ -2,25 +2,31 @@
 #define OFP_IMPL_TCP_CONNECTION_H
 
 #include "ofp/types.h"
-#include "ofp/impl/boost_impl.h"
+#include "ofp/impl/boost_asio.h"
+#include "ofp/impl/engine.h"
 #include "ofp/message.h"
 #include "ofp/internalchannel.h"
 #include "ofp/features.h"
 #include "ofp/driver.h"
+#include "ofp/deferred.h"
+#include "ofp/exception.h"
 
 namespace ofp {  // <namespace ofp>
 namespace impl { // <namespace impl>
 
 class TCP_Server;
-class Driver_Impl;
 
 class TCP_Connection : public std::enable_shared_from_this<TCP_Connection>, public InternalChannel {
 public:
-     TCP_Connection(TCP_Server *server, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);
+	 TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);
+     TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);
     ~TCP_Connection();
 
-    void start();
-    void stop();
+    Deferred<Exception> asyncConnect(const tcp::endpoint &endpt);
+    void asyncAccept();
+
+    void channelUp();
+    //void stop();
 
 	const Features *features() const override {
 		return &features_;
@@ -35,6 +41,7 @@ public:
 	}
 
 	void setProtocolVersion(UInt8 version) override {
+		log::debug("protocol version ", int(version));
 		protocolVersion_ = version;
 	}
 
@@ -74,7 +81,8 @@ public:
 	}
 
 	void postMessage(InternalChannel *source, Message *message) override {
-		
+		if (listener_)
+			listener_->onMessage(message);
 	}
 
 	InternalChannel *mainConnection() override { return nullptr; }
@@ -84,17 +92,17 @@ public:
 	void setNextAuxiliaryConnection(InternalChannel *channel) override {}
 
     tcp::socket &socket();
-    Driver_Impl *driver() const;
+    ///Engine *driver() const;
 
 private:
-    TCP_Server *server_;
-    tcp::socket socket_;
+    Engine *engine_;
     Message message_;
-    Features features_;
-    //DatapathID dpid_;
+    tcp::socket socket_;
+    Features features_{};
 	UInt32 nextXid_ = 0;
 	UInt8 protocolVersion_ = 0;
 	ChannelListener *listener_ = nullptr;
+	DeferredResultPtr<Exception> deferredExc_ = nullptr;
 
 	// Use a two buffer strategy for async-writes. We queue up data in one
 	// buffer while we're in the process of writing the other buffer.

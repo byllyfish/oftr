@@ -1,6 +1,8 @@
 #ifndef OFP_BYTERANGE_H
 #define OFP_BYTERANGE_H
 
+#include "ofp/types.h"
+
 namespace ofp { // <namespace ofp>
 
 class ByteRange {
