@@ -2,7 +2,7 @@
 #include "ofp/impl/engine.h"
 
 ofp::Driver::Driver(DriverOptions *options)
-    : engine_{new impl::Engine{options}}
+    : engine_{new impl::Engine{this, options}}
 {
 }
 

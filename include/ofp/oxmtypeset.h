@@ -4,10 +4,9 @@
 #include "ofp/oxmtype.h"
 #include <bitset>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpadded"
-
 namespace ofp { // <namespace ofp>
+
+OFP_BEGIN_IGNORE_PADDING
 
 class OXMTypeSet {
 public:
@@ -31,8 +30,8 @@ private:
 	unsigned classCount_ = 0;
 };
 
-} // </namespace ofp>
+OFP_END_IGNORE_PADDING
 
-#pragma clang diagnostic pop // ignored "-Wpadded"
+} // </namespace ofp>
 
 #endif // OFP_OXMTYPESET_H

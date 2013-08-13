@@ -1,9 +1,15 @@
 #ifndef OFP_UNITTEST_H
 #define OFP_UNITTEST_H
-		
+
 #include <gtest/gtest.h>
 #include "ofp/types.h"
 #include <cstdio>
+
+
+#if defined(__clang__)
+# pragma clang diagnostic ignored "-Wglobal-constructors"
+#endif
+
 
 inline std::string TOHEX(const void *data, size_t len)
 {

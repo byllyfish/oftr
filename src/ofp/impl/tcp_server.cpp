@@ -25,8 +25,10 @@ void ofp::impl::TCP_Server::asyncAccept()
 
     acceptor_.async_accept(socket_, [this](error_code err) {
         if (!err) {
-            std::make_shared<TCP_Connection>(engine_, std::move(socket_), role_,
-                                             versions_, factory_)->asyncAccept();
+            auto conn = std::make_shared<TCP_Connection>(engine_, std::move(socket_), role_,
+                                             versions_, factory_);
+            conn->asyncAccept();
+            
         } else {
             Exception exc = makeException(err);
             log::info("exception ", exc.toString());

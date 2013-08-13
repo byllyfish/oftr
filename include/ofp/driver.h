@@ -13,6 +13,8 @@ namespace impl {
 }
 
 class DriverOptions;
+class ThreadManager;
+
 
 class Driver {
 public:
@@ -37,6 +39,11 @@ public:
 	// If there is an error establishing the connection, or the connection is established 
 
 	Deferred<Exception> connect(Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+
+
+	template <class Type>
+	Deferred<Type> schedule(std::chrono::milliseconds when, Type value);
+	//Deferred<Timeout> timeout(std::chrono::milliseconds timeout);
 
 	void run();
 

@@ -8,7 +8,7 @@ public:
     void onChannelUp(Channel *channel) override
     {
     }
-    void onChannelDown() override
+    void onChannelDown(Channel *channel) override
     {
     }
     void onMessage(const Message *message) override

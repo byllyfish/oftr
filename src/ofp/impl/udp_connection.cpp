@@ -1,0 +1,30 @@
+#include "ofp/impl/udp_connection.h"
+#include "ofp/defaulthandshake.h"
+#include "ofp/impl/udp_server.h"
+#include "ofp/log.h"
+
+
+ofp::impl::UDP_Connection::UDP_Connection(UDP_Server *server, Driver::Role role, ProtocolVersions versions, udp::endpoint endpt) 
+: InternalChannel{server->engine(), new DefaultHandshake{this, role, versions, nullptr}}, server_{server}
+{
+	server_->add(this);
+}
+
+ofp::impl::UDP_Connection::~UDP_Connection() {
+	server_->remove(this);
+}
+
+void ofp::impl::UDP_Connection::write(const void *data, size_t length) {
+	server_->write(data, length);
+}
+
+void ofp::impl::UDP_Connection::flush() {
+	server_->flush(endpt_);
+}
+
+void ofp::impl::UDP_Connection::close() 
+{
+	log::info("close the 'connection' to this udp endpoint");
+
+	// call delete this?
+}

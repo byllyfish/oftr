@@ -5,6 +5,7 @@
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionset.h"
 #include "ofp/standardmatch.h"
+#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -32,8 +33,7 @@ public:
 		instructions_ = instructions;
 	}
 	
-	template <class Type>
-	UInt32 send(Type channel) {
+	UInt32 send(Writable *channel) {
 		UInt8  version = channel->version();
 		if (version <= 0x02) {
 			return writeStandard(channel);
@@ -74,8 +74,7 @@ public:
 		return xid;
 	}
 
-	template <class Type>
-	UInt32 writeStandard(Type channel)
+	UInt32 writeStandard(Writable *channel)
 	{
 		UInt8 version = channel->version();
 		assert(version <= 0x02);
@@ -91,7 +90,7 @@ public:
 		Header &hdr = msg_.header_;
 		hdr.setVersion(version);
 		hdr.setType(FlowMod::Type);
-		hdr.setLength(msgLen);
+		hdr.setLength(UInt16_narrow_cast(msgLen));
 		hdr.setXid(xid);
 
 		channel->write(&msg_, FlowMod::SizeWithoutMatchHeader);

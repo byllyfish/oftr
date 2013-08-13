@@ -11,7 +11,7 @@
 
 
 ofp::DefaultHandshake::DefaultHandshake(InternalChannel *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
-	: channel_{channel}, role_{role}, versions_{versions}, listenerFactory_{listenerFactory} 
+	: channel_{channel}, versions_{versions}, listenerFactory_{listenerFactory}, role_{role}
 {
 }
 
@@ -28,7 +28,7 @@ void ofp::DefaultHandshake::onChannelUp(Channel *channel)
 	msg.send(channel_);
 }
 
-void ofp::DefaultHandshake::onChannelDown() 
+void ofp::DefaultHandshake::onChannelDown(Channel *channel) 
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -82,11 +82,11 @@ void ofp::DefaultHandshake::onHello(const Message *message)
 		channel_->close();
 
 	} else if (role_ == Driver::Controller) {
-		channel_->setProtocolVersion(versions.highestVersion());
+		channel_->setVersion(versions.highestVersion());
 		FeaturesRequestBuilder{}.send(channel_);
 		
 	} else {
-		channel_->setProtocolVersion(versions.highestVersion());
+		channel_->setVersion(versions.highestVersion());
 		installNewChannelListener();
 	}
 }
@@ -114,11 +114,15 @@ void ofp::DefaultHandshake::onError(const Message *message)
 
 void ofp::DefaultHandshake::installNewChannelListener()
 {
-	ChannelListener *newListener = listenerFactory_();
-	assert(newListener);
+	assert(channel_->channelListener() == this);
 
-	channel_->setChannelListener(newListener);
-	newListener->onChannelUp(channel_);
+	if (listenerFactory_) {
+		ChannelListener *newListener = listenerFactory_();
+		channel_->setChannelListener(newListener);
+		newListener->onChannelUp(channel_);
+	} else {
+		channel_->setChannelListener(nullptr);
+	}
 
 	delete this;
 }

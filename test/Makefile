@@ -24,8 +24,8 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include -stdlib=libc++
 BOOST_ROOT=/Users/bfish/code/ofp/external/boost_1_54_0
 CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_ROOT)
 
-# Flags passed to the C++ compiler. Google test uses global constructors.
-WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-global-constructors
+# Flags passed to the C++ compiler.
+WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
 CXXFLAGS += -g $(WARNINGS) -pthread -std=c++11
 
 CPP11_MIGRATE = /Users/bfish/code/llvm-build/Debug+Asserts/bin/cpp11-migrate

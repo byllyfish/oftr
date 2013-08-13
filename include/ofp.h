@@ -10,4 +10,12 @@
 #include "ofp/featuresreply.h"
 #include "ofp/exception.h"
 
+namespace ofp { // <namespace ofp>
+
+void runDefaultController(ChannelListener::Factory listenerFactory);
+void runDefaultAgent(const IPv6Address &remoteAddress, UInt16 remotePort,
+                     ChannelListener::Factory listenerFactory);
+
+} // </namespace ofp>
+
 #endif // OFP_OFP_H

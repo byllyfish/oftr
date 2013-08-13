@@ -14,13 +14,19 @@ using io_service = boost::asio::io_service;
 using error_code = boost::system::error_code;
 
 
+inline bool isEOF(const error_code &error) {
+	using namespace boost::asio::error;
+	return error.value() == eof && error.category() == misc_category;
+}
+
+
 inline Exception makeException(const error_code &error)
 {
 	Exception::Category category{ {'*', '*', '*', '*'} };
 
 	const char *name = error.category().name();
 	if (name != nullptr) {
-		int len = std::strlen(name);
+		size_t len = std::strlen(name);
 		if (len >= 9 && name[4] == '.') {
 			// Skip "asio."
 			std::copy(name+5, name+9, category.begin());
@@ -32,6 +38,11 @@ inline Exception makeException(const error_code &error)
 
 	return Exception{category, error.value()};
 }
+
+
+struct HashEndpoint {
+	size_t operator()(const udp::endpoint &endpt) const;
+};
 
 
 } // </namespace impl>

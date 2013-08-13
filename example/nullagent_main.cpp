@@ -10,6 +10,9 @@ class NullAgent : public AbstractChannelListener {
 public:
     void onChannelUp(Channel *channel) override {
         log::debug(__PRETTY_FUNCTION__);
+
+        channel->openAuxChannel();
+        channel->close();
     }
     
     void onMessage(const Message *message) override;

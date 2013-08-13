@@ -11,7 +11,7 @@ class TCP_Server;
 
 class Engine {
 public:
-	Engine(DriverOptions *options);
+	Engine(Driver *driver, DriverOptions *options);
 
 	void listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 	Deferred<Exception> connect(Driver::Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
@@ -20,10 +20,15 @@ public:
 	
 	/////
 	
+	void openAuxChannel(Channel *main, tcp::endpoint endpt) {}
+	void openAuxChannel(Channel *main, udp::endpoint endpt) {}
+
 	io_service &io() { return io_; }
+	Driver *driver() const { return driver_; }
 	
 private:
 	io_service io_;
+	Driver *driver_;
 };
 
 } // </namespace impl>

@@ -19,6 +19,17 @@
 #include <cassert>
 #include <ostream>
 
+#if defined(__clang__)
+# define OFP_BEGIN_IGNORE_PADDING \
+    _Pragma("clang diagnostic push") \
+    _Pragma("clang diagnostic ignored \"-Wpadded\"")
+# define OFP_END_IGNORE_PADDING \
+    _Pragma("clang diagnostic pop")
+#else
+# define OFP_BEGIN_IGNORE_PADDING
+# define OFP_END_IGNORE_PADDING
+#endif
+
 namespace ofp { // <namespace ofp>
 
 // Metaprogramming Utilities

@@ -4,9 +4,9 @@
 #include "ofp/log.h"
 
 namespace ofp { // <namespace ofp>
-
 namespace detail { // <namespace detail>
 
+OFP_BEGIN_IGNORE_PADDING
 template <class Type>
 class DeferredResult : public std::enable_shared_from_this<DeferredResult<Type>> {
 public:
@@ -26,6 +26,7 @@ private:
 	Callback callback_{nullptr};
 	log::Lifetime lifetime_{"DeferredResult"};
 };
+OFP_END_IGNORE_PADDING
 
 template <class Type>
 using DeferredResultCallback = typename DeferredResult<Type>::Callback;

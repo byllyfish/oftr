@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "ofp/unittest.h"
 #include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"
 

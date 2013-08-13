@@ -69,22 +69,19 @@ private:
 static_assert(IsLiteralType<OXMType>(), "Literal type expected.");
 static_assert(IsStandardLayout<OXMType>(), "Layout type expected.");
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpadded"
-
 /**
  *  OXMTypeInfo stores information about OXMTypes, such as prerequisites.
  */
+OFP_BEGIN_IGNORE_PADDING
+
 struct OXMTypeInfo {
 	const char *name;
 	const OXMRange *prerequisites;
 	UInt32 value32;
 	bool isMaskSupported;
-	// Implicit Padding<3> pad_;
 };
 
-#pragma clang diagnostic pop
-
+OFP_END_IGNORE_PADDING
 
 } // </namespace ofp>
 

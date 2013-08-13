@@ -6,7 +6,6 @@
 #include "ofp/impl/engine.h"
 #include "ofp/message.h"
 #include "ofp/internalchannel.h"
-#include "ofp/features.h"
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
 #include "ofp/exception.h"
@@ -16,6 +15,7 @@ namespace impl { // <namespace impl>
 
 class TCP_Server;
 
+OFP_BEGIN_IGNORE_PADDING
 class TCP_Connection : public std::enable_shared_from_this<TCP_Connection>, public InternalChannel {
 public:
 	 TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);
@@ -26,32 +26,10 @@ public:
     void asyncAccept();
 
     void channelUp();
+    void channelException(const Exception &exc);
+    void channelDown();
     //void stop();
-
-	const Features *features() const override {
-		return &features_;
-	}
-
-	void setFeatures(const Features &features) override {
-		features_ = features;
-	}
-
-	UInt8 protocolVersion() const override {
-		return protocolVersion_;
-	}
-
-	void setProtocolVersion(UInt8 version) override {
-		log::debug("protocol version ", int(version));
-		protocolVersion_ = version;
-	}
-
-	UInt32 nextXid() override {
-		return ++nextXid_;
-	}
-
-	UInt8 auxiliaryID() const override {
-		return features_.auxiliaryID();
-	}
+	
 
 	void write(const void *data, size_t length) override 
 	{
@@ -65,43 +43,22 @@ public:
 		}
 	}
 
-	//void sendError(UInt16 type, UInt16 code) override 
-	//{
-//
-	//}
-
 	void close() override {
-
+		log::debug(__PRETTY_FUNCTION__);
+		socket_.close();
 	}
 
-	ChannelListener *setChannelListener(ChannelListener *listener) override {
-		ChannelListener *old = listener_;
-		listener_ = listener;
-		return old;
+	void openAuxChannel() override {
+		//TODO   engine()->openAuxChannel(this, endpt);
 	}
-
-	void postMessage(InternalChannel *source, Message *message) override {
-		if (listener_)
-			listener_->onMessage(message);
-	}
-
-	InternalChannel *mainConnection() override { return nullptr; }
-	void setMainConnection(InternalChannel *channel) override {}
-
-	InternalChannel *nextAuxiliaryConnection() override { return nullptr;}
-	void setNextAuxiliaryConnection(InternalChannel *channel) override {}
-
-    tcp::socket &socket();
-    ///Engine *driver() const;
 
 private:
-    Engine *engine_;
     Message message_;
     tcp::socket socket_;
-    Features features_{};
-	UInt32 nextXid_ = 0;
-	UInt8 protocolVersion_ = 0;
-	ChannelListener *listener_ = nullptr;
+    //Features features_{};
+	//UInt32 nextXid_ = 0;
+	//UInt8 protocolVersion_ = 0;
+	//ChannelListener *listener_ = nullptr;
 	DeferredResultPtr<Exception> deferredExc_ = nullptr;
 
 	// Use a two buffer strategy for async-writes. We queue up data in one
@@ -110,13 +67,15 @@ private:
 	int outgoingIdx_ = 0;
 	bool writing_ = false;
 
-	//UInt8 auxiliaryID_ = 0;
+	log::Lifetime lifetime_{"TCP_Connection"};
 
     void asyncReadHeader();
     void asyncReadMessage(size_t length);
 
     void asyncWrite();
+
 };
+OFP_END_IGNORE_PADDING
 
 } // </namespace impl>
 } // </namespace ofp>

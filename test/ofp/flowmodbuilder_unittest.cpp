@@ -3,10 +3,11 @@
 #include "ofp/matchbuilder.h"
 #include "ofp/instructions.h"
 #include "ofp/bytelist.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 
-class MockChannel {
+class MockChannel : public Writable {
 public:
     MockChannel(UInt8 version) : version_{version}
     {
@@ -22,26 +23,37 @@ public:
         return buf_.size();
     }
 
-    UInt8 version() const
+    UInt8 version() const override
     {
         return version_;
     }
 
-    void write(const void *data, size_t length)
+    void write(const void *data, size_t length) override
     {
         buf_.add(data, length);
     }
 
-    UInt32 nextXid()
+    void flush() override
     {
-        return ++nextXid_;
     }
+
+    void close() override
+    {
+    }
+
+    UInt32 nextXid() override;
 
 private:
     ByteList buf_;
     UInt32 nextXid_ = 0;
     UInt8 version_;
+    Padding<3> pad_;
 };
+
+UInt32 MockChannel::nextXid()
+{
+    return ++nextXid_;
+}
 
 TEST(flowmodbuilder, version1_3)
 {

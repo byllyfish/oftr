@@ -12,6 +12,8 @@ CXXFLAGS += -g -std=c++11 $(WARNINGS)
 # FIXME: which boost_system is this using?
 LDLIBS += -lboost_system
 
+all : nullagent nullcontroller
+
 nullagent : nullagent_main.o $(LIB_OBJECTS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDLIBS) $^ -o $@
 

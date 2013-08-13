@@ -56,6 +56,8 @@ private:
     void assertInRange(const UInt8 *pos) const;
 };
 
+std::ostream &operator<<(std::ostream &os, const ByteList &value);
+
 } // </namespace ofp>
 
 
@@ -255,6 +257,14 @@ inline void ofp::ByteList::assertInRange(const UInt8 *pos) const
 {
     assert(pos != nullptr && "position is null");
     assert((pos >= begin() && pos <= end()) && "position out of range");
+}
+
+/**
+ *  Write buffer to stream in hexadecimal format.
+ */
+inline std::ostream &ofp::operator<<(std::ostream &os, const ByteList &value)
+{
+    return os << RawDataToHex(value.data(), value.size(), ' ', 2);
 }
 
 #endif // OFP_BYTELIST_H

@@ -25,7 +25,8 @@ private:
     Driver::Role role_;
     ProtocolVersions versions_;
     ChannelListener::Factory factory_;
-
+    log::Lifetime lifetime_{"TCP_Server"};
+    
     void asyncAccept();
 };
 

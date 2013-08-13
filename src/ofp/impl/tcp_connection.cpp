@@ -8,13 +8,13 @@ using namespace boost;
 
 
 ofp::impl::TCP_Connection::TCP_Connection(impl::Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
-    : engine_{engine}, message_{this}, socket_{engine->io()}, listener_{new DefaultHandshake{this, role, versions, factory}}
+    : InternalChannel{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{engine->io()}
 {
-    log::debug(__PRETTY_FUNCTION__, this);  
+    log::debug(__PRETTY_FUNCTION__, this);
 }
 
 ofp::impl::TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
-    : engine_{engine}, message_{this}, socket_{std::move(socket)}, listener_{new DefaultHandshake{this, role, versions, factory}}
+    : InternalChannel{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{std::move(socket)}
 {
     log::debug(__PRETTY_FUNCTION__, this);
 }
@@ -22,8 +22,6 @@ ofp::impl::TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket, Dr
 ofp::impl::TCP_Connection::~TCP_Connection()
 {
     log::debug(__PRETTY_FUNCTION__, this);
-
-    ChannelListener::dispose(listener_);
 }
 
 
@@ -38,13 +36,13 @@ ofp::Deferred<ofp::Exception> ofp::impl::TCP_Connection::asyncConnect(const tcp:
     auto self(shared_from_this());
     socket_.async_connect(endpt, [this, self](const error_code &err) {
 
-        log::debug("lambda from asyncConnect");
-        log::debug(__PRETTY_FUNCTION__);
+        log::debug("async_connect ", err);
 
         deferredExc_->set(makeException(err));
         deferredExc_ = nullptr;
 
         if (!err) {
+            assert(socket_.is_open());
             channelUp();
         }
     });
@@ -59,22 +57,26 @@ void ofp::impl::TCP_Connection::asyncAccept()
 }
 
 
-#if 0
-ofp::impl::Engine *ofp::impl::TCP_Connection::driver() const
-{
-    return server_->driver();
-}
-#endif
-
 void ofp::impl::TCP_Connection::channelUp()
 {
     log::debug(__PRETTY_FUNCTION__);
 
-    if (listener_)
-        listener_->onChannelUp(this);
-
+    channelListener()->onChannelUp(this);
     asyncReadHeader();
 }
+
+
+void ofp::impl::TCP_Connection::channelException(const Exception &exc)
+{
+    channelListener()->onException(&exc);
+}
+
+void ofp::impl::TCP_Connection::channelDown()
+{
+    channelListener()->onChannelDown(this);
+    close();
+}
+
 
 /**
 void ofp::impl::TCP_Connection::stop()
@@ -113,7 +115,14 @@ void ofp::impl::TCP_Connection::asyncReadHeader()
         		log::debug("Message too short.");
         	}
         } else {
-        	log::debug("asyncReadHeader err ", err);
+        	
+
+            if (!isEOF(err)) {
+                auto exc = makeException(err);
+                log::debug("asyncReadHeader err ", exc);
+                channelException(makeException(err));   
+            }
+            channelDown();
         }
     });
 }
@@ -135,7 +144,12 @@ void ofp::impl::TCP_Connection::asyncReadMessage(size_t msgLength)
         	asyncReadHeader();
 
         } else {
-        	log::debug("asyncReadMessage err ", err);
+            if (!isEOF(err)) {
+                auto exc = makeException(err);
+                log::info("asyncReadMessage err ", exc);
+                channelException(makeException(err));   
+            }
+            channelDown();
         }
     });
 }
@@ -158,18 +172,18 @@ void ofp::impl::TCP_Connection::asyncWrite()
     auto self(shared_from_this());
 
     ::asio::async_write(socket_, asio::buffer(data, size), [this, self](const error_code &err, size_t bytes_transferred) {
-        assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
 
-        writing_ = false;
-        outgoing_[!outgoingIdx_].clear();
-        if (outgoing_[outgoingIdx_].size() > 0) {
-            asyncWrite();
+        if (!err) {
+            assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
+
+            writing_ = false;
+            outgoing_[!outgoingIdx_].clear();
+            if (outgoing_[outgoingIdx_].size() > 0) {
+                asyncWrite();
+            }
+        } else {
+            log::debug("Write error ", makeException(err));
         }
     });
-}
-
-ofp::impl::tcp::socket &ofp::impl::TCP_Connection::socket()
-{
-    return socket_;
 }
 

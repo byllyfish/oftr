@@ -6,6 +6,8 @@
 
 namespace ofp { // <namespace ofp>
 
+class Channel;
+
 /**
  *  0 means no exception.
  */
@@ -13,7 +15,7 @@ class Exception {
 public:
 	using Category = std::array<char,4>;
 
-	explicit Exception(Category category, int code) : code_{code} {
+	explicit Exception(Category category, int code, Channel *channel = nullptr) : code_{code}, channel_{channel} {
 		category_ = category;
 	}
 
@@ -24,6 +26,7 @@ public:
 private:
 	Category category_;
 	int code_;
+	Channel *channel_;
 };
 
 std::ostream &operator<<(std::ostream &os, const Exception &ex);

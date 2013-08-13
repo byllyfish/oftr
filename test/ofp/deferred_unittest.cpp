@@ -3,6 +3,10 @@
 
 using namespace ofp;
 
+#if defined(__clang__)
+# pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
+
 static ofp::DeferredResultPtr<int> saveForLater = nullptr;
 
 static Deferred<int> start() 

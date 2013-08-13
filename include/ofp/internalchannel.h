@@ -2,8 +2,12 @@
 #define OFP_INTERNALCHANNEL_H
 
 #include "ofp/channel.h"
+#include "ofp/features.h"
+#include "ofp/impl/engine.h"
 
 namespace ofp { // <namespace ofp>
+
+class Message;
 
 /**
  *  InternalChannel is an interface for a channel that can receive messages
@@ -11,21 +15,68 @@ namespace ofp { // <namespace ofp>
  *  auxillary connections to their main connection, and a main connection to a
  *  a linked list of auxiliary connections.
  */
+OFP_BEGIN_IGNORE_PADDING
 class InternalChannel : public Channel {
 public:
-	virtual void postMessage(InternalChannel *source, Message *message) = 0;
+	InternalChannel(impl::Engine *engine, ChannelListener *listener) :engine_{engine}, listener_{listener} {}
+	virtual ~InternalChannel();
 
-	virtual UInt8 auxiliaryID() const = 0;
-	
-	virtual void  setProtocolVersion(UInt8 version) = 0;
-	virtual void  setFeatures(const Features &features) = 0;
+	Driver *driver() const override {
+    	return engine_->driver();
+    }
 
-	virtual InternalChannel *mainConnection() = 0;
-	virtual void setMainConnection(InternalChannel *channel) = 0;
+	UInt8 version() const override;
+	void  setVersion(UInt8 version);
 
-	virtual InternalChannel *nextAuxiliaryConnection() = 0;
-	virtual void setNextAuxiliaryConnection(InternalChannel *channel) = 0;
+	const Features &features() const override;
+	void setFeatures(const Features &features);
+
+	InternalChannel *mainConnection() const 
+	{ return mainConn_; }
+
+	void setMainConnection(InternalChannel *channel) {
+		mainConn_ = channel;
+	}
+
+	InternalChannel *nextAuxiliaryConnection() const {
+		return nextAuxConn_;
+	}
+
+	void setNextAuxiliaryConnection(InternalChannel *channel) {
+		nextAuxConn_ = channel;
+	}
+
+	UInt32 nextXid() override {
+		return ++nextXid_;
+	}
+
+	ChannelListener *channelListener() const override {
+		return listener_;
+	}
+	void setChannelListener(ChannelListener *listener) override {
+		listener_ = listener;
+	}
+
+	void postMessage(InternalChannel *source, Message *message) {
+		if (listener_) {
+			listener_->onMessage(message);
+		} else {
+			log::info("No listener. Message dropped.");
+		}
+	}
+
+	impl::Engine *engine() { return engine_; }
+
+private:
+	impl::Engine *engine_;
+	ChannelListener *listener_ = nullptr;
+	InternalChannel *mainConn_ = nullptr;
+	InternalChannel *nextAuxConn_ = nullptr;
+	Features features_{};
+	UInt32 nextXid_ = 0;
+	UInt8 version_ = 0;
 };
+OFP_END_IGNORE_PADDING
 
 } // </namespace ofp>
 
