@@ -26,7 +26,7 @@ public:
 	};
 
 	enum {
-		DefaultPort = 6663
+		DefaultPort = 6633
 	};
 
 	 Driver(DriverOptions *options = nullptr);
