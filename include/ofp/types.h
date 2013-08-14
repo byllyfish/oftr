@@ -13,11 +13,12 @@
 
 #include <cstddef>     // for std::size_t, etc.
 #include <cstdint>     // for std::uint8_t, etc.
-#include <cstdlib>     // for std::memcpy, etc.
+#include <cstring>     // for std::strlen, std::memcpy, etc.
+#include <cstdlib>     // for std::malloc, etc.
 #include <type_traits> // for std::make_unsigned<T>, etc.
-#include <string>
-#include <cassert>
-#include <ostream>
+#include <string>      // for std::string
+#include <cassert>     // for assert macro
+#include <ostream>     // for std::ostream
 
 #if defined(__clang__)
 # define OFP_BEGIN_IGNORE_PADDING \
