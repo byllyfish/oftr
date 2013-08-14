@@ -16,6 +16,7 @@
 # Remember to tweak this if you move this file.
 GTEST_DIR = ../external/googletest
 BOOST_DIR = ../external/boost_1_54_0_asio
+BOOST_OBJ = ../external/boost_1_54_0_asio/libs/system/src/error_code.o
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
@@ -85,14 +86,14 @@ gtest_main.a : gtest-all.o gtest_main.o
 # function.
 
 
-ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) ../src/ofp/oxmfields.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lboost_system $^ -o $@
+ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) ../src/ofp/oxmfields.o gtest_main.a $(BOOST_OBJ)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
-oxmfields_compile : $(LIB_OBJECTS) ../src/ofp/oxmfields_compile_main.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lboost_system $^ -o $@
+oxmfields_compile : $(LIB_OBJECTS) ../src/ofp/oxmfields_compile_main.o $(BOOST_OBJ)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
-oxmfields_compile2 : $(LIB_OBJECTS) ../src/ofp/oxmfields_main.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lboost_system $^ -o $@
+oxmfields_compile2 : $(LIB_OBJECTS) ../src/ofp/oxmfields_main.o $(BOOST_OBJ)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
 oxmfields : ../include/ofp/oxmfields.h ../src/ofp/oxmfields.cpp
 
