@@ -29,15 +29,16 @@ bool ofp::FeaturesRequest::validateLength(size_t length) const
 
 /*  ----  FeaturesRequestBuilder  ------------------------------------------  */
 
-void ofp::FeaturesRequestBuilder::send(Writable *channel)
+ofp::UInt32 ofp::FeaturesRequestBuilder::send(Writable *channel)
 {
-    log::debug(__PRETTY_FUNCTION__);
-
     UInt32 xid = channel->nextXid();
 
-    msg_.header_.setLength(sizeof(FeaturesRequest));
+    msg_.header_.setVersion(channel->version());
+    msg_.header_.setLength(sizeof(msg_));
     msg_.header_.setXid(xid);
 
     channel->write(&msg_, sizeof(msg_));
     channel->flush();
+
+    return xid;
 }

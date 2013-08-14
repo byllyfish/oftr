@@ -50,7 +50,8 @@ public:
     explicit FeaturesReplyBuilder(const Message *request);
 
     void setFeatures(const Features &features);
-    void send(Writable *channel);
+    
+    UInt32 send(Writable *channel);
 
 private:
     FeaturesReply msg_;

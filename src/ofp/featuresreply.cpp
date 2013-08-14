@@ -53,12 +53,13 @@ void ofp::FeaturesReplyBuilder::setFeatures(const Features &features)
     msg_.reserved_ = features.reserved();
 }
 
-void ofp::FeaturesReplyBuilder::send(Writable *channel)
+ofp::UInt32 ofp::FeaturesReplyBuilder::send(Writable *channel)
 {
-    UInt8 version = channel->version();
-    msg_.header_.setVersion(version);
+    msg_.header_.setVersion(channel->version());
     msg_.header_.setLength(sizeof(msg_));
 
     channel->write(&msg_, sizeof(msg_));
     channel->flush();
+
+    return msg_.header_.xid();
 }

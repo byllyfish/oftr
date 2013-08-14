@@ -38,7 +38,7 @@ class FeaturesRequestBuilder {
 public:
     FeaturesRequestBuilder() = default;
 
-    void send(Writable *channel);
+    UInt32 send(Writable *channel);
 
 private:
     FeaturesRequest msg_;

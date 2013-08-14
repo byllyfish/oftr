@@ -3,22 +3,24 @@
 
 using namespace ofp;
 
- 
 static Features gFeatures{};
 
 class NullAgent : public AbstractChannelListener {
 public:
-    void onChannelUp(Channel *channel) override {
+
+    static NullAgent *Factory() { return new NullAgent; }
+
+    void onChannelUp(Channel *channel) override
+    {
         log::debug(__PRETTY_FUNCTION__);
     }
-    
+
     void onMessage(const Message *message) override;
 
 private:
     void onFeaturesRequest(const Message *message);
     void sendError(const Message *message, UInt16 type, UInt16 code);
 };
-
 
 void NullAgent::onMessage(const Message *message)
 {
@@ -28,7 +30,7 @@ void NullAgent::onMessage(const Message *message)
         break;
 
     default:
-	sendError(message, 1, 1);
+        sendError(message, 1, 1);
         break;
     }
 }
@@ -54,25 +56,24 @@ int main(int argc, const char **argv)
     ProtocolVersions version{};
     if (!args.empty()) {
         addr = IPv6Address{args[0]};
-	if (args.size() == 2) {
-	    version = ProtocolVersions{UInt8_narrow_cast(std::stoi(args[1]))};
-	}
+        if (args.size() == 2) {
+            int num = std::stoi(args[1]);
+            version = ProtocolVersions{UInt8_narrow_cast(num)};
+        }
     }
 
     Driver driver;
 
-    auto lambda = []{
-        return new NullAgent;
-    };
-
     if (addr.valid()) {
-        auto result = driver.connect(Driver::Agent, addr, Driver::DefaultPort, version, lambda);
+        auto result = driver.connect(Driver::Agent, addr, Driver::DefaultPort,
+                                     version, NullAgent::Factory);
         result.get([](Exception ex) {
             std::cout << "Result: " << ex << '\n';
         });
 
     } else {
-        driver.listen(Driver::Agent, IPv6Address{}, Driver::DefaultPort, version, lambda);
+        driver.listen(Driver::Agent, IPv6Address{}, Driver::DefaultPort,
+                      version, NullAgent::Factory);
     }
 
     driver.run();
