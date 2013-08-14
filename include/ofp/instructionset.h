@@ -35,26 +35,26 @@ private:
     }
 };
 
-} // </namespace ofp>
-
 template <class Type>
-inline void ofp::InstructionSet::add(const Type &instruction)
+inline void InstructionSet::add(const Type &instruction)
 {
     add(&instruction, sizeof(instruction));
 }
 
 template <>
-inline void ofp::InstructionSet::add(const IT_WRITE_ACTIONS &instruction)
+inline void InstructionSet::add(const IT_WRITE_ACTIONS &instruction)
 {
     add(&instruction, IT_WRITE_ACTIONS::HeaderSize);
     add(instruction.data(), instruction.size());
 }
 
 template <>
-inline void ofp::InstructionSet::add(const IT_APPLY_ACTIONS &instruction)
+inline void InstructionSet::add(const IT_APPLY_ACTIONS &instruction)
 {
     add(&instruction, IT_APPLY_ACTIONS::HeaderSize);
     add(instruction.data(), instruction.size());
 }
+
+} // </namespace ofp>
 
 #endif // OFP_INSTRUCTIONSET_H
