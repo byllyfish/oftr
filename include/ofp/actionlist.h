@@ -2,7 +2,8 @@
 #define OFP_ACTIONLIST_H
 
 #include "ofp/types.h"
-#include <vector>
+#include "ofp/bytelist.h"
+#include "ofp/actionrange.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -13,7 +14,7 @@ class ActionList {
 
     const UInt8 *data() const
     {
-        return &buf_[0];
+        return buf_.data();
     }
     
     size_t size() const
@@ -23,17 +24,13 @@ class ActionList {
 
     template <class Type> void add(const Type &action)
     {
-        add(&action, sizeof(action));
+        buf_.add(&action, sizeof(action));
     }
+
+    ActionRange toRange() const { return ActionRange{buf_.toRange()}; }
 
   private:
-    std::vector<UInt8> buf_;
-
-    void add(const void *data, size_t len)
-    {
-        const UInt8 *p = static_cast<const UInt8 *>(data);
-        buf_.insert(buf_.end(), p, p + len);
-    }
+    ByteList buf_;
 };
 
 } // </namespace ofp>

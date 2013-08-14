@@ -4,6 +4,10 @@
 namespace ofp { // <namespace ofp> 
 
 enum {
+    OFP_NO_BUFFER = 0xFFFFFFFFUL
+};
+
+enum {
     OFPVID_PRESENT = 0x1000,
     OFPVID_NONE = 0x0000
 };

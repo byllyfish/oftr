@@ -5,6 +5,7 @@
 #include "ofp/message.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
+#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -37,8 +38,8 @@ private:
     Big16 matchLength_ = 0;
     Padding<4> pad_2;
 
-	enum { UnpaddedSizeWithMatchHeader = 52 };
-    enum { SizeWithoutMatchHeader = 48 };
+	enum { UnpaddedSizeWithMatchHeader = 28 };
+    enum { SizeWithoutMatchHeader = 24 };
 
 	bool validateLength(size_t length) const;
 
@@ -50,7 +51,7 @@ static_assert(IsStandardLayout<PacketIn>(), "Expected standard layout.");
 
 class PacketInBuilder {
 public:
-	PacketInBuilder() : enetFrame_{nullptr, 0} {}
+	PacketInBuilder() = default;
 
 	void setBufferID(UInt32 bufferID);
 	void setTotalLen(UInt16 totalLen);
@@ -80,7 +81,7 @@ public:
         // Calculate length of ethernet frame section (preceded by 2 byte pad.)
         size_t enetFrameLen = enetFrame_.size() + 2;
 
-        // Calculate the total FlowMod message length.
+        // Calculate the total PacketIn message length.
         size_t msgLen = msgMatchLenPadded + enetFrameLen;
 
         // Fill in the message header.
@@ -142,5 +143,6 @@ private:
 };
 
 } // </namespace ofp>
+
 
 #endif // OFP_PACKETIN_H
