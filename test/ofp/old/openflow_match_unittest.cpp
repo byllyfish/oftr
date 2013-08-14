@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "ofp/unittest.h"
 #include "ofp/openflow_match.h"
 #include "openflow_test.h"
 

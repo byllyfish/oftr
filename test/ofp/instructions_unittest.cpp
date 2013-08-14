@@ -1,11 +1,9 @@
-#include <gtest/gtest.h>
+#include "ofp/unittest.h"
 #include "ofp/instructions.h"
 #include "ofp/actions.h"
 #include "ofp/actionlist.h"
 
 using namespace ofp;
-
-static const char *HEX(const char *data) { return HexToRawData(data).data(); }
 
 
 TEST(instructions, IT_GOTO_TABLE) {

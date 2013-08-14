@@ -7,6 +7,7 @@
 
 namespace ofp { // <namespace ofp>
 
+class Writable;
 class Channel;
 class InternalChannel;
 

@@ -80,8 +80,8 @@ private:
 	Big32 xid_ = 0;				// Transaction id for this packet.
 };
 
-static_assert(IsStandardLayout<Header>(), "Expected standard layout.");
 static_assert(sizeof(Header) == 8, "Unexpected size.");
+static_assert(IsStandardLayout<Header>(), "Expected standard layout.");
 
 } // </namespace ofp>
 
@@ -118,6 +118,5 @@ inline void ofp::Header::setLength(UInt16 length) {
 inline void ofp::Header::setXid(UInt32 xid) {
 	xid_ = xid;
 }
-
 
 #endif // OFP_HEADER_H

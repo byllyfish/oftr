@@ -8,42 +8,52 @@
 
 namespace ofp { // <namespace ofp>
 
+/**
+ *  FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
+ */
 class FeaturesReply {
 public:
-	enum { Type = OFPT_FEATURES_REPLY };
+    static const FeaturesReply *cast(const Message *message);
 
-	FeaturesReply() : header_{Type} {}
-	
-	static const FeaturesReply *cast(const Message *message);
+    enum {
+        Type = OFPT_FEATURES_REPLY
+    };
 
-	void getFeatures(Features *features) const;
+    FeaturesReply();
+
+    void getFeatures(Features *features) const;
 
 private:
-	Header header_;
-	DatapathID datapathID_;
-	Big32 bufferCount_;
-	Big8 tableCount_;
-	Big8 auxiliaryID_;
-	Padding<2> pad_;
-	Big32 capabilities_;
-	Big32 reserved_;
+    Header header_;
+    DatapathID datapathID_;
+    Big32 bufferCount_;
+    Big8 tableCount_;
+    Big8 auxiliaryID_;
+    Padding<2> pad_;
+    Big32 capabilities_;
+    Big32 reserved_;
 
-	bool validateLength(size_t length) const;
+    bool validateLength(size_t length) const;
 
-	friend class FeaturesReplyBuilder;
+    friend class FeaturesReplyBuilder;
 };
 
 static_assert(sizeof(FeaturesReply) == 32, "Unexpected size.");
+static_assert(IsStandardLayout<FeaturesReply>(), "Expected standard layout.");
 
+/**
+ *  FeaturesReplyBuilder is a concrete class for building an OFPT_FEATURES_REPLY
+ *  message.
+ */
 class FeaturesReplyBuilder {
 public:
-	explicit FeaturesReplyBuilder(const Message *request);
+    explicit FeaturesReplyBuilder(const Message *request);
 
-	void setFeatures(const Features &features);
-	void send(Channel *channel);
+    void setFeatures(const Features &features);
+    void send(Writable *channel);
 
 private:
-	FeaturesReply msg_;
+    FeaturesReply msg_;
 };
 
 } // </namespace ofp>

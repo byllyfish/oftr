@@ -7,7 +7,6 @@ namespace ofp { // <namespace ofp>
 
 class ByteRange {
 public:
-	constexpr ByteRange(const UInt8 *begin, const UInt8 *end);
 	constexpr ByteRange(const void *data, size_t length);
 
 	constexpr const UInt8 *data() const;
@@ -24,9 +23,9 @@ private:
 } // </namespace ofp>
 
 
-constexpr ofp::ByteRange::ByteRange(const UInt8 *begin, const UInt8 *end) : begin_{begin}, end_{end} {}
+//constexpr ofp::ByteRange::ByteRange(const UInt8 *begin, const UInt8 *end) : begin_{begin}, end_{end} {}
 
-constexpr ofp::ByteRange::ByteRange(const void *data, size_t length) : ByteRange{BytePtr(data), BytePtr(data) + length} {}
+constexpr ofp::ByteRange::ByteRange(const void *data, size_t length) : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
 
 constexpr const ofp::UInt8 *ofp::ByteRange::data() const
 {

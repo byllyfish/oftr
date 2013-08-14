@@ -51,6 +51,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 
 all : $(TESTS)
 
+.PHONY : clean
 clean :
 	rm -f $(TESTS) gtest.a gtest_main.a $(TEST_OBJECTS) $(LIB_OBJECTS) $(TEST_DEPEND) $(LIB_DEPEND)
 

@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "ofp/unittest.h"
 #include "ofp/ipv4address.h"
 
 using namespace ofp;

@@ -127,7 +127,7 @@ inline ptrdiff_t ofp::ByteList::index(const UInt8 *pos) const
  */
 inline ofp::ByteRange ofp::ByteList::toRange() const
 {
-	return ByteRange{begin(), end()};
+	return ByteRange{data(), size()};
 }
 
 /**

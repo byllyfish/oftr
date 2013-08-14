@@ -59,7 +59,7 @@ ofp::OXMIterator ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType
 	if (newlen > origlen) {
 		buf_.insert(buf_.begin() + iend, newlen - origlen, 0);
 	} else if (newlen < origlen) {
-		buf_.erase(buf_.begin() + ipos, buf_.begin() + ipos + (origlen - newlen));
+		buf_.erase(buf_.begin() + ipos, buf_.begin() + Unsigned_cast(ipos) + (origlen - newlen));
 	}
 
 	const UInt8 *tptr = reinterpret_cast<const UInt8 *>(&type);
@@ -69,7 +69,7 @@ ofp::OXMIterator ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType
 
 	// Return an iterator to the rest of the entries.
 	
-	OXMIterator rest{&buf_[ipos + sizeof(type) + len]};
+	OXMIterator rest{&buf_[Unsigned_cast(ipos) + sizeof(type) + len]};
 	assert(rest <= this->end());
 	assert(this->begin() <= rest);
 

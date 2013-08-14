@@ -1,6 +1,8 @@
 #ifndef OFP_FLOWMATCHBUILDER_H
 #define OFP_FLOWMATCHBUILDER_H
 
+#error "deprecated"
+
 #include "ofp/oxmlist.h"
 
 namespace ofp { // <namespace ofp>

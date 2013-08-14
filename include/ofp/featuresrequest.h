@@ -2,33 +2,47 @@
 #define OFP_FEATURESREQUEST_H
 
 #include "ofp/header.h"
+#include "ofp/message.h"
 
 namespace ofp { // <namespace ofp>
 
-class Channel;
-
+/**
+ *  FeaturesRequest is a concrete class for an OFPT_FEATURES_REQUEST message.
+ */
 class FeaturesRequest {
 public:
-	enum { Type = OFPT_FEATURES_REQUEST };
+    static const FeaturesRequest *cast(const Message *message);
 
-	FeaturesRequest() : header_{Type} {}
+    enum {
+        Type = OFPT_FEATURES_REQUEST
+    };
+
+    FeaturesRequest();
 
 private:
-	Header header_;
+    Header header_;
 
-	friend class FeaturesRequestBuilder;
+    bool validateLength(size_t length) const;
+
+    friend class FeaturesRequestBuilder;
 };
 
+static_assert(sizeof(FeaturesRequest) == 8, "Unexpected size.");
+static_assert(IsStandardLayout<FeaturesRequest>(), "Expected standard layout.");
 
+/**
+ *  FeaturesRequestBuilder is a concrete class for building an
+ *  OFPT_FEATURES_REQUEST message.
+ */
 class FeaturesRequestBuilder {
 public:
-	
-	void send(Channel *channel);
+    FeaturesRequestBuilder() = default;
+
+    void send(Writable *channel);
 
 private:
-	FeaturesRequest msg_;
+    FeaturesRequest msg_;
 };
-
 
 } // </namespace ofp>
 

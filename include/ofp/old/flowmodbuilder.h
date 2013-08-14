@@ -1,6 +1,8 @@
 #ifndef OFP_FLOWMODBUILDER_H
 #define OFP_FLOWMODBUILDER_H
 
+#error "deprecated; see FlowMod.h"
+
 #include "ofp/flowmod.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionset.h"
