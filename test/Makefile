@@ -25,11 +25,15 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_DIR) -std=c++11
 
-# Needed on Mac OS X.
-CPPFLAGS += -stdlib=libc++
+# Need -stdlib on Mac OS X.
+ifeq ($(shell uname -s),Darwin)
+ CPPFLAGS += -stdlib=libc++
+ WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
+else
+ WARNINGS = -Wall
+endif
 
 # Flags passed to the C++ compiler.
-WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
 CXXFLAGS += -g $(WARNINGS) -pthread 
 
 # All tests produced by this Makefile.  Remember to add new tests you
