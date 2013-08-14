@@ -16,7 +16,7 @@
 # Remember to tweak this if you move this file.
 GTEST_DIR = ../external/googletest
 BOOST_DIR = ../external/boost_1_54_0_asio
-BOOST_OBJ = ../external/boost_1_54_0_asio/libs/system/src/error_code.o
+BOOST_OBJ = $(BOOST_DIR)/libs/system/src/error_code.o
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
