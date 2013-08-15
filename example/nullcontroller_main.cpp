@@ -33,7 +33,7 @@ int main(int argc, char **argv)
         auto result = driver.connect(Driver::Controller, addr, Driver::DefaultPort,
                   ProtocolVersions{}, NullController::Factory);
 
-        result.get([](Exception ex) {
+        result.done([](Exception ex) {
             std::cout << "Result " << ex << '\n';
         });
 

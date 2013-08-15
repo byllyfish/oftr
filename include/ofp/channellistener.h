@@ -67,6 +67,7 @@ public:
 	void onChannelDown(Channel *channel) override {}
 	void onMessage(const Message *message) override {}
 	void onException(const Exception *exception) override {}
+	void onTimer(UInt32 timerID) override {}
 };
 
 

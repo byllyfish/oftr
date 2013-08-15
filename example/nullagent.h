@@ -3,17 +3,24 @@
 
 #include "ofp.h"
 
+using ofp::UInt16;
+using ofp::Message;
+using ofp::Channel;
 
-static Features gFeatures{};
 
-class NullAgent : public AbstractChannelListener {
+class NullAgent : public ofp::AbstractChannelListener {
 public:
 
     static NullAgent *Factory() { return new NullAgent; }
 
     void onChannelUp(Channel *channel) override
     {
-        log::debug(__PRETTY_FUNCTION__);
+        ofp::log::debug("NullAgent channel up.");
+    }
+
+    void onChannelDown(Channel *channel) override
+    {
+        ofp::log::debug("NullAgent channel down.");
     }
 
     void onMessage(const Message *message) override;
@@ -22,12 +29,14 @@ private:
     void onFeaturesRequest(const Message *message);
     void onFlowMod(const Message *message);
     void sendError(const Message *message, UInt16 type, UInt16 code);
+
+    static ofp::Features gFeatures;
 };
 
 void NullAgent::onMessage(const Message *message)
 {
     switch (message->type()) {
-    case FeaturesRequest::Type:
+    case ofp::FeaturesRequest::Type:
         onFeaturesRequest(message);
         break;
 
@@ -39,25 +48,26 @@ void NullAgent::onMessage(const Message *message)
 
 void NullAgent::onFeaturesRequest(const Message *message)
 {
-    FeaturesReplyBuilder msg{message};
+    ofp::FeaturesReplyBuilder msg{message};
     msg.setFeatures(gFeatures);
     msg.send(message->source());
 }
 
 
-void onFlowMod(const Message *message)
+void NullAgent::onFlowMod(const Message *message)
 {
-    const FlowMod *flowMod = FlowMod::cast(message);
+    auto flowMod = ofp::FlowMod::cast(message);
     if (!flowMod) {
-        sendError(message, OFPET_BAD_REQUEST, )
+        sendError(message, ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE);
         return;
     }
-}
 
+    
+}
 
 void NullAgent::sendError(const Message *message, UInt16 type, UInt16 code)
 {
-    ErrorBuilder msg{message, type, code};
+    ofp::ErrorBuilder msg{type, code, message};
     msg.send(message->source());
 }
 

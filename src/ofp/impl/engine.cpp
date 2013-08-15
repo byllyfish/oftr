@@ -29,17 +29,17 @@ ofp::Deferred<ofp::Exception> ofp::impl::Engine::listen(Driver::Role role, const
 
 	auto result = Deferred<Exception>::makeResult();
 
-	TCP_Server *tcpServer = nullptr;
 	try {
-		tcpServer = new TCP_Server{this, role, tcpEndpt, versions, listenerFactory};
+		auto tcpsvr = std::unique_ptr<TCP_Server>{new TCP_Server{this, role, tcpEndpt, versions, listenerFactory}};
+		auto udpsvr = std::unique_ptr<UDP_Server>{new UDP_Server{this, role, udpEndpt, versions}};
 
-	} catch (std::exception &ex) {
-		log::debug("Caught exception in engine! ");
+		(void) tcpsvr.release();
+		(void) udpsvr.release();
 
-		// FIXME
+	} catch (const boost::system::system_error &ex) {
+		log::debug("System error caught in Engine::listen: ", ex.code());
+		result->done(makeException(ex.code()));
 	}
-
-	UDP_Server *udpServer = new UDP_Server{this, role, udpEndpt, versions};
 
 	return result;
 }
@@ -63,13 +63,22 @@ ofp::Deferred<ofp::Exception> ofp::impl::Engine::connect(Driver::Role role, cons
 	return std::make_shared<TCP_Connection>(this, role, versions, listenerFactory)->asyncConnect(endpt);
 }
 
-void ofp::impl::Engine::run()
+ofp::Exception ofp::impl::Engine::run()
 {
 	log::debug(__PRETTY_FUNCTION__);
 
+	Exception result;
+
 	try {
 		io_.run();
+
+	} catch (const boost::system::system_error &ex) {
+		log::debug("System error caught in Engine::run(): ", ex.code());
+		result = makeException(ex.code());
+
 	} catch (const std::exception &ex) {
-		std::cout << ex.what() << '\n';
+		log::debug("Unexpected exception caught in Engine::run(): ", ex.what());
 	}
+
+	return result;
 }

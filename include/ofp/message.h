@@ -12,8 +12,6 @@ class Channel;
 class InternalChannel;
 
 
-// TODO split into MessageBuilder and Message?
-
 class Message {
 public:
 
@@ -43,23 +41,24 @@ public:
 	Channel *source() const;
 	UInt32 xid() const { return header()->xid(); }
 
-	#if 0
-	UInt8 auxiliaryID() const { return auxiliaryID_; }
-	void setAuxiliaryID(UInt8 auxiliaryID) { auxiliaryID_ = auxiliaryID; }
 
-	bool isTransportUnreliable() const { return isTransportUnreliable_; }
+	// Provides convenient implementation of message cast.
+	template <class MsgType>
+	const MsgType *cast() const 
+	{
+		assert(type() == MsgType::Type);
+		
+		const MsgType *msg = reinterpret_cast<const MsgType *>(data());
+    	if (!msg->validateLength(size())) {
+        	return nullptr;
+    	}
 
-	DatapathID datapathID() const { return dpid_; }
-	void setDatapathID(const DatapathID &dpid) { dpid_ = dpid; }
-	#endif
+    	return msg;
+	}
 
 private:
 	ByteList buf_;
 	InternalChannel *channel_;
-
-	//DatapathID dpid_;
-	//UInt8 auxiliaryID_ = 0;
-	//bool isTransportUnreliable_ = false;
 
 	friend std::ostream &operator<<(std::ostream &os, const Message &msg);
 };

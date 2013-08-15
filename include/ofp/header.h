@@ -5,6 +5,13 @@
 
 namespace ofp { // <namespace ofp>
 
+enum : UInt8 {
+	VERSION_1_0 = 0x01,
+	VERSION_1_1 = 0x02,
+	VERSION_1_2 = 0x03,
+	VERSION_1_3 = 0x04,
+};
+
 // FIXME: strong typing?
 enum : UInt8 {
 	OFPT_HELLO 				= 0,  	// Symmetric message

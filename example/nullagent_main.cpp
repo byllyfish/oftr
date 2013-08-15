@@ -1,8 +1,13 @@
 #include "ofp.h"
+#include "nullagent.h"
 #include <iostream>
 #include <vector>
 
 using namespace ofp;
+
+
+ofp::Features NullAgent::gFeatures;
+
 
 int main(int argc, const char **argv)
 {
