@@ -13,13 +13,12 @@ class Engine {
 public:
 	Engine(Driver *driver, DriverOptions *options);
 
-	void listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+	Deferred<Exception> listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 	Deferred<Exception> connect(Driver::Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 
 	void run();
 	
-	/////
-	
+	// TODO
 	void openAuxChannel(Channel *main, tcp::endpoint endpt) {}
 	void openAuxChannel(Channel *main, udp::endpoint endpt) {}
 

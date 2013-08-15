@@ -78,7 +78,8 @@ void ofp::DefaultHandshake::onHello(const Message *message)
 	log::debug("bitmap ", versions.bitmap());
 
 	if (versions.empty()) {
-		ErrorBuilder{OFPET_HELLO_FAILED, OFPHFC_INCOMPATIBLE}.send(channel_);
+		ErrorBuilder error{OFPET_HELLO_FAILED, OFPHFC_INCOMPATIBLE, message};
+		error.send(channel_);
 		channel_->close();
 
 	} else if (role_ == Driver::Controller) {

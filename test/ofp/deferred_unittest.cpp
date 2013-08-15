@@ -21,16 +21,23 @@ static Deferred<int> startUnsaved()
 	return Deferred<int>::makeResult();
 }
 
+static Deferred<int> startImmediately(int value) 
+{
+	auto result = Deferred<int>::makeResult();
+	result->done(value);
+	return result;
+}
+
 TEST(deferred, lifetimeTest1) 
 {
 	{
 		auto result = start();
 
-		result.get([](int value) {
-			std::cout << "Result set to " << value << '\n';
+		result.done([](int value) {
+			EXPECT_EQ(1, value);
 		});
 
-		saveForLater->set(1);
+		saveForLater->done(1);
 		saveForLater = nullptr;
 	}
 }
@@ -41,12 +48,12 @@ TEST(deferred, lifetimeTest2)
 	{
 		auto result = start();
 
-		result.get([](int value) {
-			std::cout << "Result set to " << value << '\n';
+		result.done([](int value) {
+			EXPECT_EQ(2, value);
 		});
 	}
 
-	saveForLater->set(2);
+	saveForLater->done(2);
 	saveForLater = nullptr;
 }
 
@@ -55,8 +62,9 @@ TEST(deferred, lifetimeTest3)
 	{
 		auto result = startUnsaved();
 
-		result.get([](int value) {
-			std::cout << "Result set to " << value << '\n';
+		result.done([](int value) {
+			// Must never be called.
+			EXPECT_TRUE(false);
 		});
 	}
 }
@@ -67,15 +75,32 @@ TEST(deferred, lifetimeTest4)
 	{
 		auto result = start();
 
-		// This set is lost.
-		saveForLater->set(-2);
+		saveForLater->done(-2);
 
-		result.get([](int value) {
-			std::cout << "Result set to " << value << '\n';
+		result.done([](int value) {
+			EXPECT_EQ(-2, value);
 		});
 
-		saveForLater->set(4);
+		// Must not be called again.
+		saveForLater->done(4);
 	}
 
 	saveForLater = nullptr;
+}
+
+
+TEST(deferred, testImmediateCall) 
+{
+	{
+		auto result = startImmediately(5);
+
+		result.done([](int value) {
+			EXPECT_EQ(5, value);
+		});
+
+		result.done([](int value) {
+			// Must never be called.
+			EXPECT_TRUE(false);
+		});
+	}
 }

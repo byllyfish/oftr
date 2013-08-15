@@ -12,7 +12,7 @@ ofp::impl::Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driv
 
 }
 
-void ofp::impl::Engine::listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
+ofp::Deferred<ofp::Exception> ofp::impl::Engine::listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -27,8 +27,21 @@ void ofp::impl::Engine::listen(Driver::Role role, const IPv6Address &localAddres
 		udpEndpt = udp::endpoint{addr, localPort};
 	}
 
-	(void) new TCP_Server{this, role, tcpEndpt, versions, listenerFactory};
-	(void) new UDP_Server{this, role, udpEndpt, versions};
+	auto result = Deferred<Exception>::makeResult();
+
+	TCP_Server *tcpServer = nullptr;
+	try {
+		tcpServer = new TCP_Server{this, role, tcpEndpt, versions, listenerFactory};
+
+	} catch (std::exception &ex) {
+		log::debug("Caught exception in engine! ");
+
+		// FIXME
+	}
+
+	UDP_Server *udpServer = new UDP_Server{this, role, udpEndpt, versions};
+
+	return result;
 }
 
 

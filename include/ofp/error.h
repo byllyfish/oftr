@@ -6,6 +6,8 @@
 
 namespace ofp { // <namespace ofp>
 
+class Message;
+
 class Error {
 public:
 	enum { Type = OFPT_ERROR };
@@ -26,7 +28,7 @@ static_assert(sizeof(Error) == 12, "Unexpected size.");
 
 class ErrorBuilder {
 public:
-	ErrorBuilder(UInt16 type, UInt16 code);
+	ErrorBuilder(UInt16 type, UInt16 code, const Message *message);
 
 	void send(Channel *channel);
 

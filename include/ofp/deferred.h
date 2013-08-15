@@ -14,17 +14,34 @@ public:
 	using SharedPtr = std::shared_ptr<DeferredResult<Type>>;
 	using Callback = std::function<void(Type)>;
 
-	void set(const Type &result) {
-		if (callback_ != nullptr)
-			callback_(result);
+	void done(const Type &result) {
+		if (isDone)
+			return;
+		isDone = true;
+		if (callback_ != nullptr) {
+			if (!isCalled) {
+				isCalled = true;
+				callback_(result);
+			}
+		} else {
+			// Callback may not have been set yet. Save value.
+			result_ = result;
+		}
 	}
 
 	void setCallback(const Callback &callback) {
 		callback_ = callback;
+		if (isDone && callback_ != nullptr && !isCalled) {
+			isCalled = true;
+			callback_(result_);
+		}
 	}
 
 private:
 	Callback callback_{nullptr};
+	Type result_{};
+	bool isDone = false;
+	bool isCalled = false;
 	log::Lifetime lifetime_{"DeferredResult"};
 };
 OFP_END_IGNORE_PADDING
@@ -45,7 +62,7 @@ public:
 
 	/* implicit */ Deferred(const DeferredResultPtr<Type> &result) : result_{result} {}
 
-	void get(const detail::DeferredResultCallback<Type> &callback) {
+	void done(const detail::DeferredResultCallback<Type> &callback) {
 		result_->setCallback(callback);
 	}
 

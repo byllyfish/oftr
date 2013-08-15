@@ -67,6 +67,14 @@ public:
 
 	impl::Engine *engine() { return engine_; }
 
+	void scheduleTimer(UInt32 timerID, std::chrono::milliseconds when) {
+		// TODO
+	}
+
+	void cancelTimer(UInt32 timerID) {
+		// TODO
+	}
+
 private:
 	impl::Engine *engine_;
 	ChannelListener *listener_ = nullptr;

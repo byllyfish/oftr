@@ -2,6 +2,7 @@
 #define OFP_CHANNEL_H
 
 #include "ofp/writable.h"
+#include <chrono>
 
 namespace ofp { // <namespace ofp>
 
@@ -19,8 +20,12 @@ public:
 	virtual ChannelListener *channelListener() const = 0;
 	virtual void setChannelListener(ChannelListener *listener) = 0;
 
+	virtual void scheduleTimer(UInt32 timerID, std::chrono::milliseconds when) = 0;
+	virtual void cancelTimer(UInt32 timerID) = 0;
+
 	// The failure to open an auxiliary channel will be reported to the main listener via onException.
-	// Returns the auxiliary ID of the connection.
+	// Returns the auxiliary ID of the connection? This method is intended to be used by agents who
+	// want to open an auxiliary channel to a controller. NOT IMPLEMENTED IN THIS RELEASE.
 	virtual void openAuxChannel() = 0;
 };
 

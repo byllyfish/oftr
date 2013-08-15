@@ -38,7 +38,7 @@ ofp::Deferred<ofp::Exception> ofp::impl::TCP_Connection::asyncConnect(const tcp:
 
         log::debug("async_connect ", err);
 
-        deferredExc_->set(makeException(err));
+        deferredExc_->done(makeException(err));
         deferredExc_ = nullptr;
 
         if (!err) {

@@ -2,8 +2,10 @@
 #include "ofp/log.h"
 
 
-ofp::ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code)
+ofp::ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code, const Message *message)
 {
+	// message is included because we might send part of it back someday.
+	// 
 	msg_.type_ = type;
 	msg_.code_ = code;
 }

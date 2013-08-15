@@ -11,11 +11,11 @@ ofp::Driver::~Driver()
     delete engine_;
 }
 
-void ofp::Driver::listen(Role role, const IPv6Address &localAddress,
+ofp::Deferred<ofp::Exception> ofp::Driver::listen(Role role, const IPv6Address &localAddress,
                          UInt16 localPort, ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory)
 {
-    engine_->listen(role, localAddress, localPort, versions, listenerFactory);
+    return engine_->listen(role, localAddress, localPort, versions, listenerFactory);
 }
 
 ofp::Deferred<ofp::Exception> ofp::Driver::connect(Role role, const IPv6Address &remoteAddress,

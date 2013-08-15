@@ -1,5 +1,6 @@
 #include "ofp/unittest.h"
 #include "ofp/driver.h"
+#include "ofp/exception.h"
 
 using namespace ofp;
 
@@ -15,6 +16,8 @@ public:
 
     void onException(const Exception *error) override
     {
+    }
+    void onTimer(UInt32 timerID) override {
     }
 };
 

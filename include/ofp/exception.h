@@ -15,6 +15,8 @@ class Exception {
 public:
 	using Category = std::array<char,4>;
 
+	Exception() : category_{}, code_{}, channel_{nullptr} {}
+	
 	explicit Exception(Category category, int code, Channel *channel = nullptr) : code_{code}, channel_{channel} {
 		category_ = category;
 	}

@@ -31,6 +31,7 @@ public:
 	virtual void onChannelDown(Channel *channel) = 0;
 	virtual void onMessage(const Message *message) = 0;
 	virtual void onException(const Exception *exception) = 0;
+	virtual void onTimer(UInt32 timerID) = 0;
 
 	// When a controller identifies an incoming connection as an auxiliary 
 	// connection, the driver will transparently tie the auxiliary connection
