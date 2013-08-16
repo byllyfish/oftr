@@ -16,17 +16,8 @@ ofp::Deferred<ofp::Exception> ofp::impl::Engine::listen(Driver::Role role, const
 {
 	log::debug(__PRETTY_FUNCTION__);
 
-	tcp::endpoint tcpEndpt;
-	udp::endpoint udpEndpt;
-	if (!localAddress.valid()) {
-		tcpEndpt = tcp::endpoint{tcp::v6(), localPort};
-		udpEndpt = udp::endpoint{udp::v6(), localPort};
-	} else {
-		ip::address_v6 addr{localAddress.toBytes()};
-		tcpEndpt = tcp::endpoint{addr, localPort};
-		udpEndpt = udp::endpoint{addr, localPort};
-	}
-
+	auto tcpEndpt = makeTCPEndpoint(localAddress, localPort);
+	auto udpEndpt = makeUDPEndpoint(localAddress, localPort);
 	auto result = Deferred<Exception>::makeResult();
 
 	try {
@@ -49,15 +40,7 @@ ofp::Deferred<ofp::Exception> ofp::impl::Engine::connect(Driver::Role role, cons
 {
 	log::debug(__PRETTY_FUNCTION__);
 
-	tcp::endpoint endpt;
-	if (remoteAddress.isV4Mapped()) {
-		ip::address_v4 addr{ remoteAddress.toV4().toBytes() };
-		endpt = tcp::endpoint{addr, remotePort};
-	} else {
-		ip::address_v6 addr{remoteAddress.toBytes()};
-		endpt = tcp::endpoint{addr, remotePort};
-	}
-
+	tcp::endpoint endpt = makeTCPEndpoint(remoteAddress, remotePort);
 	log::debug("connect endpt: ", endpt);
 
 	return std::make_shared<TCP_Connection>(this, role, versions, listenerFactory)->asyncConnect(endpt);

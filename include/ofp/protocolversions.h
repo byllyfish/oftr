@@ -2,6 +2,7 @@
 #define OFP_PROTOCOL_VERSIONS_H
 
 #include "ofp/types.h"
+#include <initializer_list>
 
 namespace ofp { // <namespace ofp>
 
@@ -12,13 +13,14 @@ public:
 		MaxVersion = 0x04
 	};
 
-	enum { 
+	enum Setting : UInt32 { 
 		All = ~(~0U << (MaxVersion+1)) & ~1U,
 		None = 0U
 	};
 
-	ProtocolVersions();
-	explicit ProtocolVersions(UInt8 version);
+ 	ProtocolVersions();
+	ProtocolVersions(Setting setting);
+	ProtocolVersions(std::initializer_list<UInt8> versions);
 
 	bool empty() const;
 	UInt8 highestVersion() const;

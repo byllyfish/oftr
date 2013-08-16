@@ -3,7 +3,7 @@
 #include "ofp/hello.h"
 #include "ofp/message.h"
 #include "ofp/features.h"
-#include "ofp/featuresrequest.h"
+#include "ofp/headeronly.h"
 #include "ofp/featuresreply.h"
 #include "ofp/error.h"
 #include "ofp/log.h"

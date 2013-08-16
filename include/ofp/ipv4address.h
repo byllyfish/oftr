@@ -10,23 +10,24 @@ class IPv4Address {
 public:
 	enum { Length = 4 };
 	
+	using ArrayType = std::array<UInt8,Length>;
+
 	IPv4Address() = default;
+	explicit IPv4Address(const ArrayType &a);
 	explicit IPv4Address(const std::string &s);
 
 	bool valid() const {
-		return !IsMemFilled(addr_, sizeof(addr_), '\0');
+		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');
 	}
 
 	std::string toString() const;
 
-	std::array<UInt8,Length> toBytes() const {
-		std::array<UInt8,Length> result;
-		std::memcpy(&result, addr_, Length);
-		return result;
+	ArrayType toArray() const {
+		return addr_;
 	}
 
 	bool operator==(const IPv4Address &rhs) const {
-		return std::memcmp(addr_, rhs.addr_, Length) == 0;
+		return addr_ == rhs.addr_;
 	}
 	
 	bool operator!=(const IPv4Address &rhs) const {
@@ -34,7 +35,7 @@ public:
 	}
 
 private:
-	UInt8 addr_[Length];
+	ArrayType addr_;
 };
 
 } // </namespace ofp>

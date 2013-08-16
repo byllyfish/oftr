@@ -116,8 +116,7 @@ void ofp::impl::TCP_Connection::asyncReadHeader()
         	}
         } else {
         	
-
-            if (!isEOF(err)) {
+            if (!isAsioEOF(err)) {
                 auto exc = makeException(err);
                 log::debug("asyncReadHeader err ", exc);
                 channelException(makeException(err));   
@@ -144,7 +143,7 @@ void ofp::impl::TCP_Connection::asyncReadMessage(size_t msgLength)
         	asyncReadHeader();
 
         } else {
-            if (!isEOF(err)) {
+            if (!isAsioEOF(err)) {
                 auto exc = makeException(err);
                 log::info("asyncReadMessage err ", exc);
                 channelException(makeException(err));   

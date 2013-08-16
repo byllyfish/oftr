@@ -34,7 +34,7 @@ bool ofp::FlowMod::validateLength(size_t length) const
 ofp::UInt32 ofp::FlowModBuilder::send(Writable *channel)
 {
     UInt8 version = channel->version();
-    if (version <= VERSION_1_2) {
+    if (version <= OFP_VERSION_2) {
         return sendStandard(channel);
     }
 
@@ -76,7 +76,7 @@ ofp::UInt32 ofp::FlowModBuilder::send(Writable *channel)
 ofp::UInt32 ofp::FlowModBuilder::sendStandard(Writable *channel)
 {
     UInt8 version = channel->version();
-    assert(version <= VERSION_1_2);
+    assert(version <= OFP_VERSION_2);
 
     deprecated::StandardMatch stdMatch{match_.toRange()};
 

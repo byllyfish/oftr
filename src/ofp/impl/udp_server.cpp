@@ -15,13 +15,13 @@ ofp::impl::UDP_Server::UDP_Server(Engine *engine, Driver::Role role, const udp::
 
 
 void ofp::impl::UDP_Server::add(UDP_Connection *conn){
-	connMap_.insert(std::make_pair(conn->endpoint(), conn));
+	connMap_.insert(std::make_pair(conn->remoteEndpoint(), conn));
 }
 
 void ofp::impl::UDP_Server::remove(UDP_Connection *conn) {
 
 	if (!shuttingDown_) {
-		auto iter = connMap_.find(conn->endpoint());
+		auto iter = connMap_.find(conn->remoteEndpoint());
 		if (iter != connMap_.end()) {
 			connMap_.erase(iter);
 

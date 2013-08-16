@@ -11,34 +11,36 @@ class IPv6Address {
 public:
 	enum { Length = 16 };
 	
+	using ArrayType = std::array<UInt8,Length>;
+
 	IPv6Address() = default;
+	IPv6Address(const IPv4Address &addr);
+	explicit IPv6Address(const ArrayType &a);
 	explicit IPv6Address(const std::string &s);
 
 	bool valid() const {
-		return !IsMemFilled(addr_, sizeof(addr_), '\0');
+		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');
 	}
 
 	bool isV4Mapped() const {
-		return IsMemFilled(&addr_[0], 11, '\0') && (addr_[11] == 0xFF);
+		return IsMemFilled(addr_.data(), 11, '\0') && (addr_[11] == 0xFF);
 	}
 
 	IPv4Address toV4() const {
 		assert(isV4Mapped());
-		IPv4Address addr;
-		std::memcpy(&addr, &addr_[12], sizeof(addr));
-		return addr;
+		IPv4Address v4;
+		std::memcpy(&v4, &addr_[12], sizeof(v4));
+		return v4;
 	}
 
 	std::string toString() const;
 
-	std::array<UInt8,Length> toBytes() const {
-		std::array<UInt8,Length> result;
-		std::memcpy(&result, addr_, Length);
-		return result;
+	ArrayType toArray() const {
+		return addr_;
 	}
 
 	bool operator==(const IPv6Address &rhs) const {
-		return std::memcmp(addr_, rhs.addr_, Length) == 0;
+		return addr_ == rhs.addr_;
 	}
 	
 	bool operator!=(const IPv6Address &rhs) const {
@@ -46,9 +48,18 @@ public:
 	}
 
 private:
-	UInt8 addr_[Length];
+	ArrayType addr_;
 };
 
+
+std::ostream &operator<<(std::ostream &os, const IPv6Address &value);
+
 } // </namespace ofp>
+
+
+inline std::ostream &ofp::operator<<(std::ostream &os, const ofp::IPv6Address &value)
+{
+	return os << value.toString();
+}
 
 #endif //OFP_IPV6ADDRESS_H

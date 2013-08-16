@@ -10,9 +10,10 @@ namespace log { // <namespace log>
 void write(const char *type, const std::string &msg);
 
 template <class Type>
-void write(const char *type, const std::string &msg, Type value) {
+void write(const char *type, const std::string &msg, const Type &value) {
     std::stringstream ss;
     ss << msg;
+    ss << ' ';
     ss << value;
     write(type, ss.str());
 }
@@ -21,7 +22,7 @@ void info(const std::string &msg);
 
 
 template <class Type>
-void info(const std::string &msg, Type value)
+void info(const std::string &msg, const Type &value)
 {
 	write("[info] ", msg, value);
 }
@@ -29,7 +30,7 @@ void info(const std::string &msg, Type value)
 void debug(const std::string &msg);
 
 template <class Type>
-void debug(const std::string &msg, Type value)
+void debug(const std::string &msg, const Type &value)
 {
     write("[debug]", msg, value);
 }
@@ -37,7 +38,7 @@ void debug(const std::string &msg, Type value)
 void error(const std::string &msg);
 
 template <class Type>
-void error(const std::string &msg, Type value) {
+void error(const std::string &msg, const Type &value) {
 	write("[error] ", msg, value);
 }
 

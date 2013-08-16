@@ -4,8 +4,17 @@ ofp::ProtocolVersions::ProtocolVersions() : bitmap_{All}
 {
 }
 
-ofp::ProtocolVersions::ProtocolVersions(UInt8 version) : bitmap_{1U << version}
+ofp::ProtocolVersions::ProtocolVersions(Setting setting) : bitmap_{setting}
 {
+}
+
+ofp::ProtocolVersions::ProtocolVersions(std::initializer_list<UInt8> versions)
+{
+    for (auto v : versions) {
+        assert(v <= MaxVersion);
+        if (v <= MaxVersion)
+            bitmap_ |= (1 << v);
+    }
 }
 
 bool ofp::ProtocolVersions::empty() const

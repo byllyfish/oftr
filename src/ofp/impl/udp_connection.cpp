@@ -4,8 +4,8 @@
 #include "ofp/log.h"
 
 
-ofp::impl::UDP_Connection::UDP_Connection(UDP_Server *server, Driver::Role role, ProtocolVersions versions, udp::endpoint endpt) 
-: InternalChannel{server->engine(), new DefaultHandshake{this, role, versions, nullptr}}, server_{server}
+ofp::impl::UDP_Connection::UDP_Connection(UDP_Server *server, Driver::Role role, ProtocolVersions versions, udp::endpoint remoteEndpt) 
+: InternalChannel{server->engine(), new DefaultHandshake{this, role, versions, nullptr}}, server_{server}, remoteEndpt_{remoteEndpt}
 {
 	server_->add(this);
 }
@@ -19,7 +19,7 @@ void ofp::impl::UDP_Connection::write(const void *data, size_t length) {
 }
 
 void ofp::impl::UDP_Connection::flush() {
-	server_->flush(endpt_);
+	server_->flush(remoteEndpt_);
 }
 
 void ofp::impl::UDP_Connection::close() 

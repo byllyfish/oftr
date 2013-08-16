@@ -28,7 +28,14 @@ public:
     void channelUp();
     void channelException(const Exception &exc);
     void channelDown();
-    //void stop();
+
+	IPv6Address remoteAddress() const override {
+		return makeIPv6Address(socket_.remote_endpoint().address());
+	}
+
+	UInt16 remotePort() const override {
+		return socket_.remote_endpoint().port();
+	}
 	
 
 	void write(const void *data, size_t length) override 
@@ -48,9 +55,13 @@ public:
 		socket_.close();
 	}
 
-	void openAuxChannel() override {
+	Transport transport() const { return Transport::TCP; }
+
+	void openAuxChannel(UInt8 auxID, Transport transport) override {
 		//TODO   engine()->openAuxChannel(this, endpt);
 	}
+
+	Channel *findAuxChannel(UInt8 auxID) const override { return nullptr; }
 
 private:
     Message message_;

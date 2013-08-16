@@ -27,11 +27,11 @@ public:
 	// Call onException one time. onChannelDown called immediately after. onException
 	// is only called *after* onChannelUp been called.
 	// 
-	virtual void onChannelUp(Channel *channel) = 0;
-	virtual void onChannelDown(Channel *channel) = 0;
+	virtual void onChannelUp(Channel *channel);
+	virtual void onChannelDown(Channel *channel);
 	virtual void onMessage(const Message *message) = 0;
-	virtual void onException(const Exception *exception) = 0;
-	virtual void onTimer(UInt32 timerID) = 0;
+	virtual void onException(const Exception *exception);
+	virtual void onTimer(UInt32 timerID);
 
 	// When a controller identifies an incoming connection as an auxiliary 
 	// connection, the driver will transparently tie the auxiliary connection
@@ -60,24 +60,6 @@ protected:
 	friend class InternalChannel;
 };
 
-
-class AbstractChannelListener : public ChannelListener {
-public:
-	void onChannelUp(Channel *channel) override {}
-	void onChannelDown(Channel *channel) override {}
-	void onMessage(const Message *message) override {}
-	void onException(const Exception *exception) override {}
-	void onTimer(UInt32 timerID) override {}
-};
-
-
 } // </namespace ofp>
-
-
-inline void ofp::ChannelListener::dispose(ChannelListener *listener)
-{
-	delete listener;
-}
-
 
 #endif // OFP_CHANNELLISTENER_H
