@@ -1,14 +1,19 @@
 #ifndef OFP_FEATURESREQUEST_H
 #define OFP_FEATURESREQUEST_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/headeronly.h"
 
 namespace ofp { // <namespace ofp>
 
 /**
  *  FeaturesRequest is a concrete class for an OFPT_FEATURES_REQUEST message.
  */
+
+//using FeaturesRequest = detail::HeaderOnly<OFPT_FEATURES_REQUEST>;
+//using FeaturesRequestBuilder = detail::HeaderOnlyBuilder<FeaturesRequest>;
+
+
+#if 0
 class FeaturesRequest {
 public:
     static const FeaturesRequest *cast(const Message *message);
@@ -43,6 +48,8 @@ public:
 private:
     FeaturesRequest msg_;
 };
+
+#endif
 
 } // </namespace ofp>
 
