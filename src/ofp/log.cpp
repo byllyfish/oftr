@@ -1,10 +1,24 @@
 #include "ofp/log.h"
-#include <iostream>
 
-// TODO replace std::cerr with a way to set a logging ostream.
+namespace ofp { // <namespace ofp>
+namespace log { // <namespace log>
 
+static std::ostream *GlobalLogStream = nullptr;
 
-void ofp::log::write(const char *type, const std::string &msg)
-{
-	std::cerr << type << msg << '\n';
+std::ostream *get() {
+	return GlobalLogStream;
 }
+
+void set(std::ostream *logStream) {
+	GlobalLogStream = logStream;
+}
+
+void write(const char *type, const std::string &msg)
+{
+	if (GlobalLogStream) {
+		*GlobalLogStream << type << msg << '\n';
+	}
+}
+
+} // </namespace log>
+} // </namespace ofp>

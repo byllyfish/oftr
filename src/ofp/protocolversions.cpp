@@ -1,14 +1,20 @@
+//  ===== ---- ofp/protocolversions.cpp --------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Implements a concrete class that represents a set of OpenFlow
+/// protocol versions.
+//  ===== ------------------------------------------------------------ =====  //
+
 #include "ofp/protocolversions.h"
 
-ofp::ProtocolVersions::ProtocolVersions() : bitmap_{All}
-{
-}
+namespace ofp { // <namespace ofp>
 
-ofp::ProtocolVersions::ProtocolVersions(Setting setting) : bitmap_{setting}
-{
-}
-
-ofp::ProtocolVersions::ProtocolVersions(std::initializer_list<UInt8> versions)
+ProtocolVersions::ProtocolVersions(std::initializer_list<UInt8> versions)
+    : bitmap_{0}
 {
     for (auto v : versions) {
         assert(v <= MaxVersion);
@@ -17,12 +23,7 @@ ofp::ProtocolVersions::ProtocolVersions(std::initializer_list<UInt8> versions)
     }
 }
 
-bool ofp::ProtocolVersions::empty() const
-{
-	return (bitmap_ == 0);
-}
-
-ofp::UInt8 ofp::ProtocolVersions::highestVersion() const
+UInt8 ProtocolVersions::highestVersion() const
 {
     UInt32 bits = bitmap_;
     for (unsigned i = MaxVersion; i > 0; --i) {
@@ -33,21 +34,11 @@ ofp::UInt8 ofp::ProtocolVersions::highestVersion() const
     return 0;
 }
 
-ofp::UInt32 ofp::ProtocolVersions::bitmap() const
-{
-    return bitmap_;
-}
-
-
-ofp::ProtocolVersions ofp::ProtocolVersions::intersection(ProtocolVersions versions) const
-{
-	return fromBitmap(bitmap_ & versions.bitmap_);
-}
-
-
-ofp::ProtocolVersions ofp::ProtocolVersions::fromBitmap(UInt32 bitmap)
+ProtocolVersions ofp::ProtocolVersions::fromBitmap(UInt32 bitmap)
 {
     ProtocolVersions versions;
     versions.bitmap_ = bitmap;
     return versions;
 }
+
+} // </namespace ofp>

@@ -24,6 +24,9 @@ TEST(protocolversions, versionConstructor)
 	EXPECT_EQ(0x04, versions.highestVersion());
 	EXPECT_EQ(0x10, versions.bitmap());
 	EXPECT_FALSE(versions.empty());
+
+	ProtocolVersions b{1, 3, 4};
+	
 }
 
 

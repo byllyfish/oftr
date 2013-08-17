@@ -3,7 +3,7 @@
 
 #include "ofp/header.h"
 #include "ofp/message.h"
-#include "ofp/asyncconfig.h"
+#include "ofp/getasyncreply.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -38,7 +38,7 @@ static_assert(IsStandardLayout<GetAsyncReply>(), "Expected standard layout.");
 
 class GetAsyncReplyBuilder {
 public:
-	explicit GetAsyncReplyBuilder(const GetAsyncRequest *request) = default;
+	explicit GetAsyncReplyBuilder(const GetAsyncRequest *request);
 
 	void setMasterPacketInMask(UInt32 mask);
 	void setSlavePacketInMask(UInt32 mask);

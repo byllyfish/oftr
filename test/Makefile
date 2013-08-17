@@ -28,7 +28,7 @@ CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_DIR) -std=c++11
 # Need -stdlib on Mac OS X.
 ifeq ($(shell uname -s),Darwin)
  CPPFLAGS += -stdlib=libc++
- WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
+ WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-documentation
 else
  WARNINGS = -Wall
 endif

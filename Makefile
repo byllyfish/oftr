@@ -1,19 +1,33 @@
 
+DOXYGEN_EXE = /Applications/Doxygen.app/Contents/Resources/doxygen
+CLANG_WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-documentation
+WARNINGS = -Wall
 
-# Points to the root of Google Test, relative to where this file is.
-GTEST_DIR = external/googletest
+IGNORED_SRCS := $(wildcard src/ofp/*_main.cpp)
+LIB_SOURCES := $(filter-out $(IGNORED_SRCS),$(wildcard src/ofp/*.cpp) $(wildcard src/ofp/impl/*.cpp))
+LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
+LIB_DEPENDS := $(patsubst %.cpp,%.d,$(LIB_SOURCES))
 
-# Flags passed to the preprocessor.
-# Set Google Test's header directory as a system directory, such that
-# the compiler doesn't generate warnings in Google Test headers.
-CPPFLAGS += -isystem $(GTEST_DIR)/include
+BOOST_ROOT = external/boost_1_54_0_asio
+BOOST_OBJECTS = $(BOOST_ROOT)/libs/system/src/error_code.o
 
-# Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CPPFLAGS += -I include -I ofp -isystem $(BOOST_ROOT) -std=c++11
+# Need -stdlib on Mac OS X.
+ifeq ($(shell uname -s),Darwin)
+ CPPFLAGS += -stdlib=libc++
+ WARNINGS = $(CLANG_WARNINGS)
+endif
+CXXFLAGS += -g $(WARNINGS)
 
 
-OBJECTS := $(patsubst %.cpp,%.o,$(wildcard src/*.cpp))
-TEST_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard test/*.cpp))
+libofp: $(LIB_OBJECTS) $(BOOST_OBJECTS)
+	$(AR) $(ARFLAGS) $@ $^
 
-test: $(TEST_OBJECTS)
-	$(CC) -o ofp_test $(TEST_OBJECTS)
+.PHONY: docs
+docs:
+	$(DOXYGEN_EXE) Doxyfile
+
+
+.PHONY: clean
+	rm $(LIB_OBJECTS)
+	rm $(BOOST_OBJECTS)

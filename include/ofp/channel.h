@@ -45,13 +45,11 @@ public:
 
 std::ostream &operator<<(std::ostream &os, Channel *channel);
 
-
-} // </namespace ofp>
-
-
-inline std::ostream &ofp::operator<<(std::ostream &os, ofp::Channel *channel)
+inline std::ostream &operator<<(std::ostream &os, Channel *channel)
 {
 	return os << "[Channel to=" << channel->remoteAddress() << ':' << channel->remotePort() << ']';
 }
+
+} // </namespace ofp>
 
 #endif // OFP_CHANNEL_H

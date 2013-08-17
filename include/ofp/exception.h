@@ -1,3 +1,13 @@
+//  ===== ---- ofp/exception.h -----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines a common class for representing error codes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_EXCEPTION_H
 #define OFP_EXCEPTION_H
 
@@ -8,17 +18,24 @@ namespace ofp { // <namespace ofp>
 
 class Channel;
 
-/**
- *  0 means no exception.
- */
+/// \brief Represents an error code in the system.
+/// This class is named `Exception` because the word `Error` is used to refer to
+/// a specific message in the OpenFlow protocol. Exception objects may be 
+/// returned from functions, but they will never be thrown; this library is 
+/// designed for use with exceptions disabled in the compiler.
 class Exception {
 public:
+	/// \brief Represents the error category with a 4-char code.
 	using Category = std::array<char,4>;
 
 	Exception() : category_{}, code_{}, channel_{nullptr} {}
 	
 	explicit Exception(Category category, int code, Channel *channel = nullptr) : code_{code}, channel_{channel} {
 		category_ = category;
+	}
+
+	operator bool() const {
+		return code_ != 0;
 	}
 
 	std::string toString() const {
@@ -33,14 +50,11 @@ private:
 
 std::ostream &operator<<(std::ostream &os, const Exception &ex);
 
-} // </namespace ofp>
-
-
-
-inline std::ostream &ofp::operator<<(std::ostream &os, const Exception &ex)
+inline std::ostream &operator<<(std::ostream &os, const Exception &ex)
 {
 	return os << ex.toString();
 }
 
+} // </namespace ofp>
 
 #endif // OFP_EXCEPTION_H

@@ -1,3 +1,6 @@
+/// \file headeronly.h
+/// \brief Defines message classes containing only the OpenFlow header.
+
 #ifndef OFP_HEADERONLY_H
 #define OFP_HEADERONLY_H
 
@@ -8,11 +11,11 @@
 namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
 
+/// \brief Used to implement header-only messages.
 template <UInt8 MsgType>
 class HeaderOnly {
 public:
     /// Cast message to this type after validating contents.
-    ///
     /// \returns pointer to message or nullptr if not valid.
     static const HeaderOnly *cast(const Message *message);
 
@@ -48,38 +51,90 @@ private:
 
 } // </namespace detail>
 
-/// Represents an immutable OFPT_FEATURES_REQUEST message.
+/// \class ofp::FeaturesRequest
+/// \brief Represents an immutable OFPT_FEATURES_REQUEST message.
+/// This request contains the header only.
+///
+/// \enum { Type = OFPT_FEATURES_REQUEST };
+/// \memberof ofp::FeaturesRequest
+///
+/// \fn bool validateLength(size_t length) const
+/// \memberof ofp::FeaturesRequest
+/// \returns true if message length matches length in header.
+///
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::FeaturesRequest
+/// \returns xid assigned to sent message.
 using FeaturesRequest = detail::HeaderOnly<OFPT_FEATURES_REQUEST>;
 
-/// Builds a mutable OFPT_FEATURES_REQUEST message and delivers it to a channel.
+/// @class ofp::FeaturesRequestBuilder
+/// @brief Builds a mutable OFPT_FEATURES_REQUEST message and delivers it to a
+/// channel.
+///
+/// @fn UInt32 send(Writable *channel);
+/// @memberof ofp::FeaturesRequestBuilder
+/// @returns xid assigned to sent message.
 using FeaturesRequestBuilder = detail::HeaderOnlyBuilder<FeaturesRequest>;
 
 static_assert(sizeof(FeaturesRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<FeaturesRequest>(), "Expected standard layout.");
 
-/// Concrete class that parses an immmutable OFPT_GET_ASYNC_REQUEST
-/// message.
+/// \class ofp::GetAsyncRequest
+/// \brief Represents an immutable OFPT_GET_ASYNC_REQUEST message.
+/// This request contains the header only.
+///
+/// \enum { Type = OFPT_GET_ASYNC_REQUEST };
+/// \memberof ofp::GetAsyncRequest
+///
+/// \fn bool validateLength(size_t length) const
+/// \memberof ofp::GetAsyncRequest
+/// \returns true if message length matches length in header.
+///
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::GetAsyncRequest
+/// \returns xid assigned to sent message.
 using GetAsyncRequest = detail::HeaderOnly<OFPT_GET_ASYNC_REQUEST>;
 
-/// Concrete class that builds a mutable OFPT_GET_ASYNC_REQUEST message
-/// and delivers it to a channel.
+/// @class ofp::GetAsyncRequestBuilder
+/// @brief Builds a mutable OFPT_GET_ASYNC_REQUEST message and delivers it to a
+/// channel.
+///
+/// @fn UInt32 send(Writable *channel);
+/// @memberof ofp::GetAsyncRequestBuilder
+/// @returns xid assigned to sent message.
 using GetAsyncRequestBuilder = detail::HeaderOnlyBuilder<GetAsyncRequest>;
 
 static_assert(sizeof(GetAsyncRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<GetAsyncRequest>(), "Expected standard layout.");
 
-/// Concrete class that parses an immutable OFPT_GET_CONFIG_REQUEST message.
+/// \class ofp::GetConfigRequest
+/// \brief Represents an immutable OFPT_GET_CONFIG_REQUEST message.
+/// This request contains the header only.
+///
+/// \enum { Type = OFPT_GET_CONFIG_REQUEST };
+/// \memberof ofp::GetConfigRequest
+///
+/// \fn bool validateLength(size_t length) const
+/// \memberof ofp::GetConfigRequest
+/// \returns true if message length matches length in header.
+///
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::GetConfigRequest
+/// \returns xid assigned to sent message.
 using GetConfigRequest = detail::HeaderOnly<OFPT_GET_CONFIG_REQUEST>;
 
-/// Concrete class that builds a mutable OFPT_GET_CONFIG_REQUEST message and
-/// delivers it to a channel.
+/// @class ofp::GetConfigRequestBuilder
+/// @brief Builds a mutable OFPT_GET_CONFIG_REQUEST message and delivers it to a
+/// channel.
+///
+/// @fn UInt32 send(Writable *channel);
+/// @memberof ofp::GetConfigRequestBuilder
+/// @returns xid assigned to sent message.
 using GetConfigRequestBuilder = detail::HeaderOnlyBuilder<GetConfigRequest>;
 
 static_assert(sizeof(GetConfigRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<GetConfigRequest>(),
               "Expected standard layout.");
-
-// ^^^^^^^^^^^^^^^^^^^^^^ I M P L E M E N T A T I O N ^^^^^^^^^^^^^^^^^^^^^^^ //
 
 namespace detail { // <namespace detail>
 

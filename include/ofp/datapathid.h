@@ -1,20 +1,30 @@
 #ifndef OFP_DATAPATHID_H
 #define OFP_DATAPATHID_H
 
-#include "ofp/byteorder.h"
-
+#include "ofp/types.h"
+#include <array>
 
 namespace ofp { // <namespace ofp>
 
 class DatapathID {
 public:
+    enum {
+        Length = 8
+    };
 
-	explicit DatapathID(UInt64 dpid = 0) : dpid_{dpid} {}
+    using ArrayType = std::array<UInt8, Length>;
 
-	std::string toString() const;
-	
+    DatapathID() = default;
+
+    DatapathID(const ArrayType dpid)
+    {
+    	dpid_ = dpid;
+    }
+
+    std::string toString() const;
+
 private:
-	Big64 dpid_;
+    ArrayType dpid_;
 };
 
 } // </namespace ofp>

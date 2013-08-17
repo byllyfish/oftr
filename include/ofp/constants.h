@@ -1,7 +1,23 @@
+//  ===== ---- ofp/constants.h -----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines all OpenFlow constants.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_CONSTANTS_H
 #define OFP_CONSTANTS_H
 
+#include "ofp/types.h"
+
 namespace ofp { // <namespace ofp>
+
+enum {
+    OFP_MAX_PORT_NAME_LEN = 16
+};
 
 enum : UInt8 {
     OFP_VERSION_1 = 0x01,

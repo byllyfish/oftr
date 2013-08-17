@@ -7,6 +7,13 @@
 namespace ofp { // <namespace ofp>
 namespace log { // <namespace log>
 
+/// \returns the global log output stream or nullptr if none is set.
+std::ostream *get();
+
+/// \brief Sets the global log output stream.
+/// Set `logStream` to nullptr to disable logging entirely.
+void set(std::ostream *logStream);
+
 void write(const char *type, const std::string &msg);
 
 template <class Type>
