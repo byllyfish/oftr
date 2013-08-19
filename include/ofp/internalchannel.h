@@ -2,11 +2,14 @@
 #define OFP_INTERNALCHANNEL_H
 
 #include "ofp/channel.h"
+#include "ofp/channellistener.h"
 #include "ofp/features.h"
-#include "ofp/impl/engine.h"
 
 namespace ofp { // <namespace ofp>
 
+namespace impl { // <namespace impl>
+class Engine;
+} // </namespace impl>
 class Message;
 
 /**
@@ -21,9 +24,7 @@ public:
 	InternalChannel(impl::Engine *engine, ChannelListener *listener) :engine_{engine}, listener_{listener} {}
 	virtual ~InternalChannel();
 
-	Driver *driver() const override {
-    	return engine_->driver();
-    }
+	Driver *driver() const override;
 
 	UInt8 version() const override;
 	void  setVersion(UInt8 version);
@@ -57,13 +58,7 @@ public:
 		listener_ = listener;
 	}
 
-	void postMessage(InternalChannel *source, Message *message) {
-		if (listener_) {
-			listener_->onMessage(message);
-		} else {
-			log::info("No listener. Message dropped.");
-		}
-	}
+	void postMessage(InternalChannel *source, Message *message);
 
 	impl::Engine *engine() { return engine_; }
 

@@ -28,19 +28,30 @@ public:
 	
 	/* implicit */ OXMValue(NativeType value) : value_{value} {}
 	
+	#if 0
 	explicit OXMValue(const UInt8 *data, size_t) 
 	{
 		// FIXME length ignored. Same as OXMType.
 		std::memcpy(&value_, data, sizeof(value_));
 	}
+	#endif
 	
 	NativeType value() const { return value_; }
 	operator NativeType() const { return value_; }
 	void operator=(NativeType value) { value_ = value; }
 
+	static OXMValue fromBytes(const UInt8 *data) {
+		OXMValue result{};
+		std::memcpy(&result.value_, data, sizeof(value_));
+		return result;
+	}
+
 private:
 	ValueType value_;
 	
+	// Used by fromBytes().
+	OXMValue() = default;
+
 	static_assert(8*sizeof(ValueType) >= Bits, "Unexpected oxm_value size.");
 	static_assert(Bits <= 8*127, "Unexpected size in bits.");
 };

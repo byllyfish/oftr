@@ -85,3 +85,10 @@ ofp/
     UDP_Server
     UDP_Connection
 
+
+References
+
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3388.pdf
+http://llvm.org/docs/YamlIO.html
+
+

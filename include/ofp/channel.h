@@ -19,7 +19,8 @@ public:
 	virtual const Features &features() const = 0;
 	virtual IPv6Address remoteAddress() const = 0;
 	virtual UInt16 remotePort() const = 0;
-
+	virtual void close() = 0;
+	
 	virtual ChannelListener *channelListener() const = 0;
 	virtual void setChannelListener(ChannelListener *listener) = 0;
 

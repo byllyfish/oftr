@@ -78,7 +78,7 @@ TEST(OXMType, constructFromMemory)
 {
 	const UInt8 raw[] = { 0x80, 0xFF, 0xAA, 0x02 };
 	
-	OXMType type{raw, 0};
+	OXMType type = OXMType::fromBytes(raw);
 	EXPECT_EQ(0, std::memcmp(&type, "\x80\xFF\xAA\x02", 4));
 	EXPECT_EQ(0x80FFAA02UL, type.oxmNative());
 	EXPECT_EQ(0x80FF, type.oxmClass());

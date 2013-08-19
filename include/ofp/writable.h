@@ -14,7 +14,6 @@ public:
 
 	virtual void write(const void *data, size_t length) = 0;
 	virtual void flush() = 0;
-	virtual void close() = 0;
 };
 
 } // </namespace ofp>

@@ -4,6 +4,16 @@
 #include "ofp/byteorder.h"
 #include "ofp/constants.h"
 
+namespace llvm { // <namespace llvm>
+namespace yaml { // <namespace yaml>
+
+template<class T>
+struct MappingTraits;
+
+} // </namespace yaml>
+} // </namespace llvm>
+
+
 namespace ofp { // <namespace ofp>
 
 class Header {

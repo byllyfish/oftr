@@ -4,6 +4,7 @@
 #include "ofp/header.h"
 #include "ofp/message.h"
 #include "ofp/padding.h"
+#include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionset.h"
 #include "ofp/standardmatch.h"
@@ -32,8 +33,9 @@ public:
     UInt32 outGroup() const { return outGroup_; }
     UInt16 flags() const { return flags_; }
 
-    #if 0
     Match match() const;
+
+    #if 0
     Instructions instructions() const;
     #endif
     
@@ -62,6 +64,7 @@ private:
     enum { SizeWithoutMatchHeader = 48 };
 
     friend class FlowModBuilder;
+    friend struct llvm::yaml::MappingTraits<FlowMod>;
 };
 
 static_assert(sizeof(FlowMod) == 56, "Unexpected size.");

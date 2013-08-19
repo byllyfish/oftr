@@ -11,7 +11,7 @@ class GetAsyncReply {
 public:
 	enum { Type = OFPT_GET_ASYNC_REPLY };
 
-	static const GetAsyncReply *cast(const Message *message);
+	static const GetAsyncReply *cast(const Message *message) { return message->cast<GetAsyncReply>(); }
 
 	GetAsyncReply() : header_{Type} {}
 
@@ -22,13 +22,13 @@ public:
 	UInt32 masterFlowRemovedMask() const;
 	UInt32 slaveFlowRemovedMask() const;
 
+	bool validateLength(size_t length) const { return length == sizeof(GetAsyncReply); }
+
 private:
 	Header header_;
 	Big32 packetInMask_[2];
 	Big32 portStatusMask_[2];
 	Big32 flowRemovedMask_[2];
-
-	bool validateLength(size_t length) const;
 
 	friend class GetAsyncReplyBuilder;
 };

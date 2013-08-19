@@ -10,7 +10,10 @@ public:
     explicit Match(OXMRange range) : oxm_{range} {}
     explicit Match(const deprecated::StandardMatch *match) : oxm_{match->toOXMList()} {}
 
+    size_t size() const { return oxm_.size(); }
 
+    OXMIterator begin() const { return oxm_.begin(); }
+    OXMIterator end() const { return oxm_.end(); }
 
 private:
     OXMList oxm_;

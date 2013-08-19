@@ -18,7 +18,7 @@
 #include <type_traits> // for std::make_unsigned<T>, etc.
 #include <string>      // for std::string
 #include <cassert>     // for assert macro
-#include <ostream>     // for std::ostream
+#include <ostream>     // for std::ostream (used for now)
 
 #if defined(__clang__)
 # define OFP_BEGIN_IGNORE_PADDING \

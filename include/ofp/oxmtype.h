@@ -17,11 +17,19 @@ public:
 	constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
 		: value32_{make(oxmClass, oxmField, oxmBits)} {}
 	
+	static OXMType fromBytes(const UInt8 *data) {
+		OXMType result;
+		std::memcpy(&result, data, sizeof(result));
+		return result;
+	}
+
+	#if 0
 	explicit OXMType(const UInt8 *data, size_t) {
 		// FIXME length ignored. Use RawMem interface?
 		// If I remove this, can I make value32_ const?
 		std::memcpy(&value32_, data, sizeof(value32_));
 	}
+	#endif
 	
 	// Return `opaque` identifier. Value depends on host's byte order.
 	constexpr operator UInt32() const { return value32_; }

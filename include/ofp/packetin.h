@@ -13,7 +13,7 @@ class PacketIn {
 public:
 	enum { Type = OFPT_PACKET_IN };
 
-	static const PacketIn *cast(const Message *message);
+	static const PacketIn *cast(const Message *message) { return message->cast<PacketIn>(); }
 
 	PacketIn() : header_{Type} {}
 
@@ -25,6 +25,8 @@ public:
 
 	Match match() const;
 	ByteRange enetFrame() const;
+
+    bool validateLength(size_t length) const;
 
 private:
 	Header header_;
@@ -40,8 +42,6 @@ private:
 
 	enum { UnpaddedSizeWithMatchHeader = 28 };
     enum { SizeWithoutMatchHeader = 24 };
-
-	bool validateLength(size_t length) const;
 
 	friend class PacketInBuilder;
 };

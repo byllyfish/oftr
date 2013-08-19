@@ -1,5 +1,6 @@
 #include "ofp/impl/udp_server.h"
 #include "ofp/impl/udp_connection.h"
+#include "ofp/impl/engine.h"
 #include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
 #include "ofp/hello.h"

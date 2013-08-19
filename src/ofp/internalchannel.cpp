@@ -1,27 +1,45 @@
 #include "ofp/internalchannel.h"
+#include "ofp/impl/engine.h"
+#include "ofp/message.h"
 
-ofp::InternalChannel::~InternalChannel()
+namespace ofp { // <namespace ofp>
+
+Driver *InternalChannel::driver() const
 {
-	ChannelListener::dispose(listener_);
+    return engine_->driver();
 }
 
-
-ofp::UInt8 ofp::InternalChannel::version() const
+InternalChannel::~InternalChannel()
 {
-	return version_;
+    ChannelListener::dispose(listener_);
 }
 
-void ofp::InternalChannel::setVersion(UInt8 version)
+UInt8 InternalChannel::version() const
 {
-	version_ = version;
+    return version_;
 }
 
-const ofp::Features &ofp::InternalChannel::features() const 
+void InternalChannel::setVersion(UInt8 version)
 {
-	return features_;
+    version_ = version;
 }
 
-void ofp::InternalChannel::setFeatures(const Features &features)
+const Features &InternalChannel::features() const
 {
-	features_ = features;
+    return features_;
 }
+
+void InternalChannel::setFeatures(const Features &features)
+{
+    features_ = features;
+}
+
+void InternalChannel::postMessage(InternalChannel *source, Message *message)
+{
+    log::debug("Read: ", RawDataToHex(message->data(), message->size(), ' ', 2));
+    if (listener_) {
+        listener_->onMessage(message);
+    }
+}
+
+} // </namespace ofp>

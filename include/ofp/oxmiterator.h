@@ -14,19 +14,22 @@ public:
 		explicit Item(const UInt8 *pos) : position_{pos} {}
 		
 		OXMType type() const {
-			return OXMType(position_, 0);
+			return OXMType::fromBytes(position_);
+			//return OXMType(position_, 0);
 		}
 	
 		template <class ValueType>
 		ValueType value() {
+			return ValueType::fromBytes(position_ + sizeof(OXMType));
 			// FIXME needs to work with primitive types.
-			return ValueType{position_ + sizeof(OXMType), 0};
+			//return ValueType{position_ + sizeof(OXMType), 0};
 		}
 
 		template <class ValueType>
 		ValueType mask() {
+			return ValueType::fromBytes(position_ + sizeof(OXMType) + sizeof(ValueType));
 			// FIXME needs to work with primitive types.
-			return ValueType{position_ + sizeof(OXMType) + sizeof(ValueType), 0};
+			//return ValueType{position_ + sizeof(OXMType) + sizeof(ValueType), 0};
 		}
 
 		OXMIterator position() const { return OXMIterator{position_}; }
@@ -41,7 +44,7 @@ public:
 	}
 	
 	OXMType type() const {
-		return OXMType(position_, 0);
+		return OXMType::fromBytes(position_);
 	}
 	
 	// No operator ->

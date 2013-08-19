@@ -1,33 +1,72 @@
+################################################################################
+#  
+#  Makefile for libofp
+# 
+#  Targets to make:
+# 
+#    libofp.a
+#    docs
+#    clean
+#
+################################################################################
 
-DOXYGEN_EXE = /Applications/Doxygen.app/Contents/Resources/doxygen
-CLANG_WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-documentation
-WARNINGS = -Wall
+# To use `make docs`, specify the full path to your doxygen executable here.
 
-IGNORED_SRCS := $(wildcard src/ofp/*_main.cpp)
-LIB_SOURCES := $(filter-out $(IGNORED_SRCS),$(wildcard src/ofp/*.cpp) $(wildcard src/ofp/impl/*.cpp))
-LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
-LIB_DEPENDS := $(patsubst %.cpp,%.d,$(LIB_SOURCES))
+DOXYGEN = /Applications/Doxygen.app/Contents/Resources/doxygen
+
+LIB_SRCS = $(wildcard src/ofp/*.cpp) $(wildcard src/ofp/impl/*.cpp)
+LIB_OBJS = $(LIB_SRCS:.cpp=.o)
+LIB_DEPS = $(LIB_SRCS:.cpp=.d)
 
 BOOST_ROOT = external/boost_1_54_0_asio
 BOOST_OBJECTS = $(BOOST_ROOT)/libs/system/src/error_code.o
 
-CPPFLAGS += -I include -I ofp -isystem $(BOOST_ROOT) -std=c++11
-# Need -stdlib on Mac OS X.
-ifeq ($(shell uname -s),Darwin)
+export CPPFLAGS += -I include -I ofp -isystem $(BOOST_ROOT) -std=c++11
+export CXXFLAGS += -g
+
+# There are some command-line differences between Clang and GCC. GCC doesn't 
+# understand the stdlib option. We also want to enable all of Clang's warnings.
+ 
+CXX_VERSION = $(shell $(CXX) --version)
+ifeq (clang,$(findstring clang,$(CXX_VERSION)))
  CPPFLAGS += -stdlib=libc++
- WARNINGS = $(CLANG_WARNINGS)
+ ALL_WARNINGS += -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic 
+ ALL_WARNINGS += -Wno-unused-parameter -Wno-documentation
+else
+ ALL_WARNINGS += -Wall
 endif
-CXXFLAGS += -g $(WARNINGS)
+CXXFLAGS += $(ALL_WARNINGS)
 
 
-libofp: $(LIB_OBJECTS) $(BOOST_OBJECTS)
+libofp.a: $(LIB_OBJS) $(BOOST_OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
 
 .PHONY: docs
 docs:
-	$(DOXYGEN_EXE) Doxyfile
-
+	$(DOXYGEN) Doxyfile
 
 .PHONY: clean
-	rm $(LIB_OBJECTS)
-	rm $(BOOST_OBJECTS)
+clean:
+	rm -f libofp.a
+	rm -f $(LIB_OBJS)
+	rm -f $(BOOST_OBJECTS)
+
+
+
+oxmfields: include/ofp/oxmfields.h src/ofp/oxmfields.cpp
+
+./oxm/oxmfields_compile: oxm/oxmfields_compile_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+
+./oxm/oxmfields_compile2: src/ofp/oxmlist.o oxm/oxmfields_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+
+./oxm/oxmfields_main.cpp: oxm/oxmfields_compile oxm/oxmfields.tab
+	./oxm/oxmfields_compile < oxm/oxmfields.tab > $@
+
+./include/ofp/oxmfields.h: oxm/oxmfields_compile oxm/oxmfields.tab
+	./oxm/oxmfields_compile -h < oxm/oxmfields.tab > include/ofp/oxmfields.h
+
+./src/ofp/oxmfields.cpp: oxm/oxmfields_compile2
+	./oxm/oxmfields_compile2 > src/ofp/oxmfields.cpp
+

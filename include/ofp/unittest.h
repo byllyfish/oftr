@@ -119,10 +119,6 @@ public:
     {
     }
 
-    void close() override
-    {
-    }
-
     UInt32 nextXid() override;
 
 private:

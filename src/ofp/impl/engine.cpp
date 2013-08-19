@@ -59,8 +59,9 @@ ofp::Exception ofp::impl::Engine::run()
 		log::debug("System error caught in Engine::run(): ", ex.code());
 		result = makeException(ex.code());
 
-	} catch (const std::exception &ex) {
+	} catch (std::exception &ex) {
 		log::debug("Unexpected exception caught in Engine::run(): ", ex.what());
+		// FIXME - set result here?
 	}
 
 	return result;
