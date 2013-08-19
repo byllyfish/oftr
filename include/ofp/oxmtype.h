@@ -51,7 +51,7 @@ public:
 	constexpr UInt8  oxmField() const { return (oxmNative() >> 9) & 0x07FU; }
 	constexpr UInt32 oxmNative() const { return BigEndianToNative(value32_); }
 	
-	const OXMTypeInfo *lookupInfo();
+	const OXMTypeInfo *lookupInfo() const;
 
 private:
 	UInt32 value32_;

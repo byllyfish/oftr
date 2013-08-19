@@ -10,7 +10,8 @@ public:
     explicit Match(OXMRange range) : oxm_{range} {}
     explicit Match(const deprecated::StandardMatch *match) : oxm_{match->toOXMList()} {}
 
-    size_t size() const { return oxm_.size(); }
+	/// \returns number of items in the match.
+    size_t size() const { return OXMIterator::distance(oxm_.begin(), oxm_.end()); }
 
     OXMIterator begin() const { return oxm_.begin(); }
     OXMIterator end() const { return oxm_.end(); }

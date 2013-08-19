@@ -26,18 +26,29 @@ private:
 template <class MesgBuilderType>
 void serialize(MesgBuilderType &msg, ByteList *data)
 {
-	WriteToByteList writer{1, 1, data};
+	WriteToByteList writer{4, 1, data};
 	msg.send(&writer);
 }
 
 
 TEST(yaml_flowmod, test) 
 {
-	FlowModBuilder builder;
+	log::set(&std::cerr);
+
+	MatchBuilder match;
+    match.add(OFB_IN_PORT{13});
+
+    InstructionSet instructions;
+    instructions.add(IT_GOTO_TABLE{3});
+
+    FlowModBuilder flowMod;
+    flowMod.setMatch(match);
+    flowMod.setInstructions(instructions);
 
 	ByteList buf;
-	serialize(builder, &buf);
+	serialize(flowMod, &buf);
 	log::debug("size:", buf.size());
+	log::debug(RawDataToHex(buf.data(), buf.size()));
 
 	const FlowMod *msg = reinterpret_cast<const FlowMod *>(buf.data());
 	ByteList output;

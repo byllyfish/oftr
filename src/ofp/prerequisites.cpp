@@ -105,7 +105,7 @@ bool ofp::Prerequisites::checkAll(const OXMRange &oxm)
 	// FIXME: Make sure this check can't loop indefinitely.
 	// TODO: Improve algorithm and/or data structures.
 
-	for (auto item : oxm) {
+	for (auto &item : oxm) {
 		auto type = item.type();
 
 		// Check for a type of length 0, but has the mask bit set. This is
@@ -491,7 +491,7 @@ bool ofp::Prerequisites::duplicateFieldsDetected(const OXMRange &oxm)
 {
 	OXMTypeSet typeSet;
 
-	for (auto item : oxm) {
+	for (auto &item : oxm) {
 		OXMType type = item.type();
 		if (!typeSet.add(type)) {
 			log::info("Duplicate field detected: ", type);

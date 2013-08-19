@@ -22,7 +22,7 @@ TEST(oxmrange, test)
 	OXMRange range{buf.data(), buf.size()};
 	
 	UInt16 port = 0;
-	for (auto item : range) {
+	for (auto &item : range) {
 		switch (item.type())
 		{
 			case OFB_TCPSrcPort::type():

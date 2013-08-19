@@ -115,7 +115,7 @@ struct StandardMatch {
         std::memset(&dl_src, 0, sizeof(StandardMatch) - 12);
 
         UInt32 wc = wildcards;
-        for (auto item : range) {
+        for (auto &item : range) {
             switch (item.type()) {
                 case OFB_IN_PORT::type():
                     in_port = item.value<OFB_IN_PORT>();

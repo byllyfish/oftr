@@ -11,36 +11,33 @@ public:
 
 	class Item {
 	public:
-		explicit Item(const UInt8 *pos) : position_{pos} {}
 		
+		const Item(const Item &) = delete;
+		Item &operator=(const Item &) = delete;
+
 		OXMType type() const {
-			return OXMType::fromBytes(position_);
-			//return OXMType(position_, 0);
+			return OXMType::fromBytes(BytePtr(this));
 		}
 	
 		template <class ValueType>
-		ValueType value() {
-			return ValueType::fromBytes(position_ + sizeof(OXMType));
-			// FIXME needs to work with primitive types.
-			//return ValueType{position_ + sizeof(OXMType), 0};
+		ValueType value() const {
+			return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType));
 		}
 
 		template <class ValueType>
-		ValueType mask() {
-			return ValueType::fromBytes(position_ + sizeof(OXMType) + sizeof(ValueType));
-			// FIXME needs to work with primitive types.
-			//return ValueType{position_ + sizeof(OXMType) + sizeof(ValueType), 0};
+		ValueType mask() const {
+			return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) + sizeof(ValueType));
 		}
 
-		OXMIterator position() const { return OXMIterator{position_}; }
+		OXMIterator position() const { return OXMIterator{BytePtr(this)}; }
 		
 	private:
-		const UInt8 *position_;
+		Item() = default;
 	};
 
-	Item operator*() const 
+	const Item &operator*() const 
 	{
-		return Item{position_};
+		return *reinterpret_cast<const Item *>(position_);
 	}
 	
 	OXMType type() const {
@@ -70,6 +67,16 @@ public:
 	constexpr const UInt8 *data() const { return position_; }
 	size_t size() const { return sizeof(OXMType) + position_[3]; }
 
+	static size_t distance(OXMIterator begin, OXMIterator end)
+	{
+		size_t dist = 0;
+		while (begin != end) {
+			++dist;
+			++begin;
+		}
+		return dist;
+	}
+
 private:
 	const UInt8 *position_;
 	
@@ -79,6 +86,7 @@ private:
 	friend class OXMRange;
 	friend class OXMList;
 };
+
 
 } // </namespace ofp>
 

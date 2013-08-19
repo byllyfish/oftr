@@ -16,7 +16,7 @@ TEST(oxmfields, OFB_TCP_DST)
 	
 	OXMType types[] = { OFB_ETH_TYPE::type(), OFB_ETH_TYPE::type(), OFB_IP_PROTO::type() };
 	unsigned i = 0;
-	for (auto x : *OFB_TCP_DST::prerequisites()) {
+	for (auto &x : *OFB_TCP_DST::prerequisites()) {
 		EXPECT_EQ(types[i], x.type());
 		++i;
 	}

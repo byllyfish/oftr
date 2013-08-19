@@ -8,6 +8,25 @@ const ofp::FlowMod *ofp::FlowMod::cast(const Message *message)
 }
 
 
+ofp::Match ofp::FlowMod::match() const
+{
+    UInt16 type = matchType_;
+
+    if (type == OFPMT_OXM) {
+        OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_};
+        return Match{range};
+
+    } else if (type == OFPMT_STANDARD) {
+        const deprecated::StandardMatch *stdMatch = reinterpret_cast<const deprecated::StandardMatch *>(BytePtr(this) + SizeWithoutMatchHeader);
+        return Match{stdMatch};
+
+    } else {
+        log::debug("Unknown matchType:", type);
+        return Match{OXMRange{nullptr, 0}};
+    }
+}
+
+
 bool ofp::FlowMod::validateLength(size_t length) const
 {
     if (length < UnpaddedSizeWithMatchHeader) {

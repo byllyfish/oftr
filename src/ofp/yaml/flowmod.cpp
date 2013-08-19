@@ -31,28 +31,66 @@ struct llvm::yaml::SequenceTraits<ofp::Match> {
 
     static size_t size(IO &io, ofp::Match &match)
     {
+        ofp::log::debug("match yaml size");
         return match.size();
     }
 
     static ofp::OXMIterator::Item &element(IO &io, ofp::Match &match, size_t index)
     {
+        ofp::log::debug("match yaml item", index);
+
         ofp::OXMIterator iter = match.begin();
         for (size_t i = 0; i < index; ++i)
             ++iter;
-        return *iter;  //FIXME
+        return YamlRemoveConst_cast(*iter);
     }
 };
 
 
 template <>
-struct llvm::yaml::MappingTraits<ofp::OXMIterator> {
+struct llvm::yaml::MappingTraits<ofp::OXMIterator::Item> {
 
-    static void mapping(llvm::yaml::IO &io, ofp::OXMIterator &iter)
+    static void mapping(llvm::yaml::IO &io, ofp::OXMIterator::Item &item)
     {
-        ofp::OXMType type = iter.type();
+        ofp::OXMType type = item.type();
         io.mapRequired("type", type);
+
+        switch (type) 
+        {
+            case ofp::OFB_IN_PORT::type():
+                auto val = item.value<ofp::OFB_IN_PORT>().value();
+                io.mapRequired("value", val);
+                break;
+        }
+
+        if (type.hasMask()) {
+            //io.mapRequired("mask", item.mask<)
+        }
     }
 };
+
+
+template <>
+struct llvm::yaml::ScalarTraits<ofp::OXMType> {
+    static void output(const ofp::OXMType &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+        const ofp::OXMTypeInfo *info = value.lookupInfo();
+        if (info) {
+            out << info->name;
+        } else {
+            out << value.oxmNative();
+        }
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt, ofp::OXMType &value)
+    {
+        ofp::log::debug("OXMType scalar unimplemented");
+        return StringRef{"huh?"};
+    }
+};
+
+
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -66,11 +104,11 @@ Exception read(const ByteRange &input, FlowModBuilder *msg)
 //
 // Encode a FlowMod message as follows:
 //
-//    msg:
+//      ---
 //      version: $header.version()
 //      type: $header.type()
 //      xid: $header.xid()
-//      body:
+//      msg:
 //          cookie: $cookie_
 //          cookie_mask: $cookieMask_
 //          table_id: $tableId_
@@ -95,13 +133,8 @@ Exception read(const ByteRange &input, FlowModBuilder *msg)
 //                    value:
 //                      - port: 2
 //                      - maxlen: 70
-//
+//      ...
 
-template <class Type>
-Type &YamlRemoveConst_cast(const Type &v)
-{
-    return const_cast<Type &>(v);
-}
 
 template <>
 void write(const FlowMod *msg, ByteList *output)

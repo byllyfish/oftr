@@ -12,9 +12,9 @@ public:
 	constexpr OXMRange(OXMIterator begin, OXMIterator end)
 		: begin_{begin.data()}, end_{end.data()} {}
 
-	constexpr OXMRange(const void *begin, const void *end)
-		: begin_{static_cast<const UInt8*>(begin)}, 
-		  end_{static_cast<const UInt8*>(end)} {}
+	//constexpr OXMRange(const void *begin, const void *end)
+	//	: begin_{static_cast<const UInt8*>(begin)}, 
+	//	  end_{static_cast<const UInt8*>(end)} {}
 
 	constexpr OXMRange(const void *data, size_t length)
 		: begin_{static_cast<const UInt8*>(data)}, 

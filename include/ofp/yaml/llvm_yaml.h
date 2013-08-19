@@ -8,4 +8,12 @@
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
 
+
+template <class Type>
+Type &YamlRemoveConst_cast(const Type &v)
+{
+    return const_cast<Type &>(v);
+}
+
+
 #endif // OFP_YAML_LLVM_YAML_H

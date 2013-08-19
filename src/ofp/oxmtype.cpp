@@ -11,7 +11,7 @@ namespace ofp {
 };
 
 
-const ofp::OXMTypeInfo *ofp::OXMType::lookupInfo()
+const ofp::OXMTypeInfo *ofp::OXMType::lookupInfo() const
 {
 	// Get unmasked value before we search for it.
 	UInt32 value32 = hasMask() ? withoutMask() : value32_;
