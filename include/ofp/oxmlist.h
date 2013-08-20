@@ -18,7 +18,7 @@ public:
 	OXMList(const OXMRange &range);
 
 	OXMIterator begin() const { return OXMIterator(data()); }
-	OXMIterator end() const { return OXMIterator(&buf_[size()]); }
+	OXMIterator end() const { return OXMIterator(data() + size()); }
 
 	const UInt8 *data() const { return &buf_[0]; }
 	size_t size() const { return buf_.size(); }

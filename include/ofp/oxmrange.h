@@ -44,7 +44,23 @@ public:
 		return !(*this == rhs);
 	}
 	
-	///bool validate() const;
+	bool validateLength() const {
+		assert(begin_ <= end_);
+		const UInt8 *pos = begin_;
+		int left = static_cast<int>(end_ - begin_);
+		while (pos < end_) {
+			if (left < 4)
+				return false;
+			UInt8 len = sizeof(OXMType) + pos[3];
+			if (left < len)
+				return false;
+			pos += len;
+			left -= len;
+		}
+		assert(pos == end_);
+		assert(left == 0);
+		return true;
+	}
 	
 private:
 	const UInt8 *begin_;
@@ -59,9 +75,9 @@ std::ostream &operator<<(std::ostream &stream, const OXMRange &range);
 
 
 inline
-std::ostream &ofp::operator<<(std::ostream &stream, const OXMRange &)
+std::ostream &ofp::operator<<(std::ostream &stream, const OXMRange &range)
 {
-	return stream << "<OXMRange>";
+	return stream << "[OXMRange size=" << range.size() << " data=" << RawDataToHex(range.data(), range.size()) << ']';
 }
 
 

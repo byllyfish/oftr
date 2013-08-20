@@ -10,6 +10,8 @@ const ofp::FlowMod *ofp::FlowMod::cast(const Message *message)
 
 ofp::Match ofp::FlowMod::match() const
 {
+    assert(validateLength(header_.length()));
+
     UInt16 type = matchType_;
 
     if (type == OFPMT_OXM) {
@@ -41,14 +43,24 @@ bool ofp::FlowMod::validateLength(size_t length) const
         return false;
     }
 
-    // Verify the length is a multiple of 8.
-    if ((length % 8) != 0) {
-        log::debug("FlowMod size is not multiple of 8");
-        return false;
+    UInt16 matchType = matchType_;
+    if (matchType == OFPMT_OXM) {
+        OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLen};
+        if (!range.validateLength()) {
+            log::debug("FlowMod OXM list has length mismatch");
+            return false;
+        }
+
+    } else if (matchType == OFPMT_STANDARD) {
+        if (matchLen != deprecated::OFPMT_STANDARD_LENGTH) {
+            log::debug("FlowMod StandardMatch unexpected length");
+            return false;
+        }
     }
 
     return true;
 }
+
 
 ofp::UInt32 ofp::FlowModBuilder::send(Writable *channel)
 {
@@ -80,7 +92,7 @@ ofp::UInt32 ofp::FlowModBuilder::send(Writable *channel)
 
     // Fill in the match header.
     msg_.matchType_ = OFPMT_OXM;
-    msg_.matchLength_ = UInt16_narrow_cast(PadLength(match_.size()));
+    msg_.matchLength_ = UInt16_narrow_cast(match_.size());
 
     // Write the message with padding in the correct spots.
     Padding<8> pad;

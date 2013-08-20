@@ -69,6 +69,8 @@ public:
 
 	static size_t distance(OXMIterator begin, OXMIterator end)
 	{
+		assert(begin <= end);
+		
 		size_t dist = 0;
 		while (begin != end) {
 			++dist;

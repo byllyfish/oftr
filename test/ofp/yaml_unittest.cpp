@@ -37,6 +37,7 @@ TEST(yaml_flowmod, test)
 
 	MatchBuilder match;
     match.add(OFB_IN_PORT{13});
+    match.add(OFB_IPV4_DST{IPv4Address{"192.168.1.1"}});
 
     InstructionSet instructions;
     instructions.add(IT_GOTO_TABLE{3});
@@ -51,6 +52,8 @@ TEST(yaml_flowmod, test)
 	log::debug(RawDataToHex(buf.data(), buf.size()));
 
 	const FlowMod *msg = reinterpret_cast<const FlowMod *>(buf.data());
+	EXPECT_TRUE(msg->validateLength(buf.size()));
+	
 	ByteList output;
 	yaml::write(msg, &output);
 }
