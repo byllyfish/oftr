@@ -52,13 +52,15 @@ clean:
 	rm -f $(BOOST_OBJECTS)
 
 
-
-oxmfields: include/ofp/oxmfields.h src/ofp/oxmfields.cpp
+oxmfields: include/ofp/oxmfields.h src/ofp/oxmfields.cpp src/ofp/oxmfieldsid.cpp
 
 ./oxm/oxmfields_compile: oxm/oxmfields_compile_main.o
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
 ./oxm/oxmfields_compile2: src/ofp/oxmlist.o oxm/oxmfields_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+
+./oxm/oxmfields_compile3: src/ofp/oxmlist.o src/ofp/oxmfields.o oxm/oxmfields_compile3_main.o
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
 ./oxm/oxmfields_main.cpp: oxm/oxmfields_compile oxm/oxmfields.tab
@@ -69,4 +71,8 @@ oxmfields: include/ofp/oxmfields.h src/ofp/oxmfields.cpp
 
 ./src/ofp/oxmfields.cpp: oxm/oxmfields_compile2
 	./oxm/oxmfields_compile2 > src/ofp/oxmfields.cpp
+
+./src/ofp/oxmfieldsid.cpp: oxm/oxmfields_compile3
+	./oxm/oxmfields_compile3 > src/ofp/oxmfieldsdata.cpp
+
 

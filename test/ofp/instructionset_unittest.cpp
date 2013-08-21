@@ -1,46 +1,46 @@
 #include "ofp/unittest.h"
-#include "ofp/instructionset.h"
+#include "ofp/instructionlist.h"
 
 using namespace ofp;
 
 #if 0
 template <class T1, class T2>
-InstructionSet MakeInstructions(T1 v1, T2 v2) {
-	InstructionSet set;
+InstructionList MakeInstructions(T1 v1, T2 v2) {
+	InstructionList set;
 	set.add(v1);
 	set.add(v2);
 	return set;
 }
 #endif
 
-static void MakeInstructionSet(InstructionSet &) {}
+static void MakeInstructionList(InstructionList &) {}
 
 template <class Type, class... Args>
-void MakeInstructionSet(InstructionSet &set, Type value, Args... args)
+void MakeInstructionList(InstructionList &set, Type value, Args... args)
 {
 	set.add(value);
-	MakeInstructionSet(set, args...);
+	MakeInstructionList(set, args...);
 }
 
 template <class Type, class... Args>
-InstructionSet MakeInstructions(Type value, Args... args) {
-	InstructionSet set;
-	MakeInstructionSet(set, value, args...);
+InstructionList MakeInstructions(Type value, Args... args) {
+	InstructionList set;
+	MakeInstructionList(set, value, args...);
 	return set;
 }
 
 //
 //
 template <class Head, class... Tail>
-void MakeInstructionSetFromTuple(InstructionSet &set, std::tuple<Head, Tail...> tuple) {
+void MakeInstructionListFromTuple(InstructionList &set, std::tuple<Head, Tail...> tuple) {
 	set.add(std::get<0>(tuple));
-	MakeInstructionSetFromTuple(set, tuple);
+	MakeInstructionListFromTuple(set, tuple);
 }
 
 template <class Head, class... Tail>
-InstructionSet MakeInstructionsFromTuple(std::tuple<Head, Tail...> tuple) {
-	InstructionSet set;
-	MakeInstructionSetFromTuple(tuple);
+InstructionList MakeInstructionsFromTuple(std::tuple<Head, Tail...> tuple) {
+	InstructionList set;
+	MakeInstructionListFromTuple(tuple);
 	return set;
 }
 
@@ -53,9 +53,9 @@ InstructionSet MakeInstructionsFromTuple(std::tuple<Head, Tail...> tuple) {
 
 
 
-TEST(instructionset, test)
+TEST(instructionlist, test)
 {
-    InstructionSet set;
+    InstructionList set;
 
     set.add(IT_GOTO_TABLE{5});
     set.add(IT_CLEAR_ACTIONS{});
@@ -67,7 +67,7 @@ TEST(instructionset, test)
 }
 
 
-TEST(instructionset, MakeInstructions) {
+TEST(instructionlist, MakeInstructions) {
 	auto set = MakeInstructions(IT_GOTO_TABLE{5}, IT_CLEAR_ACTIONS{});
 
     auto expected = "0001-0008-05-000000  0005-0008-00000000";
@@ -76,18 +76,18 @@ TEST(instructionset, MakeInstructions) {
 }
 
 
-TEST(instructionset, MakeInstructionSet) {
-	InstructionSet set;
-	MakeInstructionSet(set, IT_GOTO_TABLE{5}, IT_CLEAR_ACTIONS{});
+TEST(instructionlist, MakeInstructionList) {
+	InstructionList set;
+	MakeInstructionList(set, IT_GOTO_TABLE{5}, IT_CLEAR_ACTIONS{});
 
     auto expected = "0001-0008-05-000000  0005-0008-00000000";
     EXPECT_HEX(expected, set.data(), set.size());
 }
 
 #if 0
-TEST(instructionset, MakeInstructionSetFromTuple) {
-	InstructionSet set;
-	MakeInstructionSetFromTuple(set, { IT_GOTO_TABLE{5}, IT_CLEAR_ACTIONS{}} );
+TEST(instructionlist, MakeInstructionListFromTuple) {
+	InstructionList set;
+	MakeInstructionListFromTuple(set, { IT_GOTO_TABLE{5}, IT_CLEAR_ACTIONS{}} );
 
     auto expected = "0001-0008-05-000000  0005-0008-00000000";
     EXPECT_HEX(expected, set.data(), set.size());
@@ -95,8 +95,8 @@ TEST(instructionset, MakeInstructionSetFromTuple) {
 #endif
 
 
-TEST(instructionset, ostreamlike) {
-	InstructionSet set;
+TEST(instructionlist, ostreamlike) {
+	InstructionList set;
 
 #if 0
 	set << { IT_GOTO_TABLE{5}, IT_CLEAR_ACTIONS{} };

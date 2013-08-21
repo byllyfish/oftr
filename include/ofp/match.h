@@ -18,7 +18,7 @@ public:
     }
 
     /// \returns number of items in the match.
-    size_t size() const
+    size_t itemCount() const
     {
         return OXMIterator::distance(oxm_.begin(), oxm_.end());
     }

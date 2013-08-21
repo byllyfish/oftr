@@ -6,9 +6,11 @@ using namespace ofp;
 
 namespace {
 
-using OFB_InPort = OXMValue<0x8000, 0, Big16, 16, false>;
-using OFB_VlanVid = OXMValue<0x8000, 6, Big16, 13, true>;
-using OFB_TCPSrcPort = OXMValue<0x8000, 19, Big16, 16, false>;
+constexpr OXMInternalID cast(int n) { return static_cast<OXMInternalID>(n); }
+
+using OFB_InPort = OXMValue<cast(0), 0x8000, 0, Big16, 16, false>;
+using OFB_VlanVid = OXMValue<cast(1), 0x8000, 6, Big16, 13, true>;
+using OFB_TCPSrcPort = OXMValue<cast(2), 0x8000, 19, Big16, 16, false>;
 
 
 const char *buffer = "8000 0002 0100"

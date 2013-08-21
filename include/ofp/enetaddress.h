@@ -12,6 +12,8 @@ public:
 	EnetAddress() = default;
 	explicit EnetAddress(const std::string &s);
 
+	bool parse(const std::string &s);
+	
 	bool valid() const {
 		return !IsMemFilled(addr_, sizeof(addr_), '\0');
 	}

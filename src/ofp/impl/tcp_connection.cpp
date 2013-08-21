@@ -12,13 +12,13 @@ using namespace boost;
 
 
 TCP_Connection::TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
-    : InternalChannel{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{engine->io()}
+    : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{engine->io()}
 {
     log::debug(__PRETTY_FUNCTION__, this);
 }
 
 TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
-    : InternalChannel{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{std::move(socket)}
+    : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{std::move(socket)}
 {
     log::debug(__PRETTY_FUNCTION__, this);
 }

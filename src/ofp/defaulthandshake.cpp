@@ -1,5 +1,5 @@
 #include "ofp/defaulthandshake.h"
-#include "ofp/internalchannel.h"
+#include "ofp/connection.h"
 #include "ofp/hello.h"
 #include "ofp/message.h"
 #include "ofp/features.h"
@@ -10,7 +10,7 @@
 #include "ofp/constants.h"
 
 
-ofp::DefaultHandshake::DefaultHandshake(InternalChannel *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
+ofp::DefaultHandshake::DefaultHandshake(Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
 	: channel_{channel}, versions_{versions}, listenerFactory_{listenerFactory}, role_{role}
 {
 }

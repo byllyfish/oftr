@@ -6,10 +6,12 @@
 #include "ofp/padding.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
-#include "ofp/instructionset.h"
+#include "ofp/instructionlist.h"
 #include "ofp/standardmatch.h"
 
 namespace ofp { // <namespace ofp>
+
+class FlowModBuilder;
 
 class FlowMod {
 public:
@@ -65,6 +67,7 @@ private:
 
     friend class FlowModBuilder;
     friend struct llvm::yaml::MappingTraits<FlowMod>;
+    friend struct llvm::yaml::MappingTraits<FlowModBuilder>;
 };
 
 static_assert(sizeof(FlowMod) == 56, "Unexpected size.");
@@ -89,7 +92,7 @@ public:
         match_ = match;
     }
 
-    void setInstructions(const InstructionSet &instructions) {
+    void setInstructions(const InstructionList &instructions) {
         instructions_ = instructions;
     }
     
@@ -98,9 +101,11 @@ public:
 private:
     FlowMod msg_;
     MatchBuilder match_;
-    InstructionSet instructions_;
+    InstructionList instructions_;
 
     UInt32 sendStandard(Writable *channel);
+
+    friend struct llvm::yaml::MappingTraits<FlowModBuilder>;
 };
 
 } // </namespace ofp>

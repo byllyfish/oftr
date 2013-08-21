@@ -6,51 +6,49 @@
 
 using namespace ofp;
 
-struct FlowModMesg {
-    FlowModMesg(const ofp::FlowMod *m) : msg{const_cast<FlowMod *>(m)}
+
+static void readHeader(llvm::yaml::IO &io, Header *header)
+{
+    UInt8 type;
+    UInt8 version;
+    UInt32 xid;
+
+    io.mapRequired("type", type);
+    io.mapRequired("xid", xid);
+    io.mapRequired("version", version); 
+
+    header->setType(type);
+    header->setVersion(version);
+    header->setXid(xid); 
+}
+
+static void writeHeader(llvm::yaml::IO &io, const Header *header)
+{
+    UInt8 version = header->version();
+    UInt8 type = header->type();
+    UInt32 xid = header->xid();
+
+    io.mapRequired("type", type);
+    io.mapRequired("version", version);
+    io.mapRequired("xid", xid);
+}
+
+
+struct FlowModWrap {
+    FlowModWrap(const ofp::FlowMod *m) : msg{const_cast<FlowMod *>(m)}
     {
     }
 
     ofp::FlowMod *msg;
 };
 
-
-static void mapHeader(llvm::yaml::IO &io, const Header *header)
-{
-    UInt8 version = header->version();
-    UInt8 type = header->type();
-    UInt32 xid = header->xid();
-
-    io.mapRequired("version", version);
-    io.mapRequired("type", type);
-    io.mapRequired("xid", xid);
-}
-
-
 template <>
-struct llvm::yaml::MappingTraits<FlowModMesg> {
+struct llvm::yaml::MappingTraits<FlowModWrap> {
 
-    static void mapping(llvm::yaml::IO &io, FlowModMesg &msg)
+    static void mapping(llvm::yaml::IO &io, FlowModWrap &msg)
     {
-        mapHeader(io, reinterpret_cast<Header*>(msg.msg));
+        writeHeader(io, reinterpret_cast<Header *>(msg.msg));
         io.mapRequired("msg", *msg.msg);
-
-#if 0
-        io.mapRequired("cookie", msg.cookie_);
-        io.mapRequired("cookie_mask", msg.cookieMask_);
-        io.mapRequired("table_id", msg.tableId_);
-        io.mapRequired("command", msg.command_);
-        io.mapRequired("idle_timeout", msg.idleTimeout_);
-        io.mapRequired("hard_timeout", msg.hardTimeout_);
-        io.mapRequired("priority", msg.priority_);
-        io.mapRequired("buffer_id", msg.bufferId_);
-        io.mapRequired("out_port", msg.outPort_);
-        io.mapRequired("out_group", msg.outGroup_);
-        io.mapRequired("flags", msg.flags_);
-
-        ofp::Match m = msg.match();
-        io.mapRequired("match", m);
-#endif
     }
 };
 
@@ -81,8 +79,7 @@ struct llvm::yaml::SequenceTraits<ofp::Match> {
 
     static size_t size(IO &io, ofp::Match &match)
     {
-        ofp::log::debug("match yaml size");
-        return match.size();
+        return match.itemCount();
     }
 
     static ofp::OXMIterator::Item &element(IO &io, ofp::Match &match,
@@ -97,6 +94,28 @@ struct llvm::yaml::SequenceTraits<ofp::Match> {
     }
 };
 
+
+class OXMItemReader {
+public:
+    OXMItemReader(llvm::yaml::IO &io, OXMIterator::Item &item, OXMType type) : io_{io}, item_{item}, type_{type} {}
+
+    template <class ValueType>
+    void visit() {
+        auto val = item_.value<ValueType>().value();
+        io_.mapRequired("value", val);
+        if (type_.hasMask()) {
+            auto mask = item_.mask<ValueType>().value();
+            io_.mapRequired("mask", mask);
+        }
+    }
+
+private:
+    llvm::yaml::IO &io_;
+    OXMIterator::Item &item_;
+    OXMType type_;
+};
+
+
 template <>
 struct llvm::yaml::MappingTraits<ofp::OXMIterator::Item> {
 
@@ -105,29 +124,9 @@ struct llvm::yaml::MappingTraits<ofp::OXMIterator::Item> {
         ofp::OXMType type = item.type();
         io.mapRequired("type", type);
 
-        switch (type) {
-        case ofp::OFB_IN_PORT::type() : {
-            auto val = item.value<ofp::OFB_IN_PORT>().value();
-            io.mapRequired("value", val);
-            break;
-        }
-
-        case ofp::OFB_ETH_TYPE::type() : {
-            llvm::yaml::Hex16 val = item.value<ofp::OFB_ETH_TYPE>().value();
-            io.mapRequired("value", val);
-            break;
-        }
-
-        case ofp::OFB_IPV4_DST::type() : {
-            auto val = item.value<ofp::OFB_IPV4_DST>().value();
-            io.mapRequired("value", val);
-            break;
-        }
-        }
-
-        if (type.hasMask()) {
-            // io.mapRequired("mask", item.mask<)
-        }
+        OXMItemReader reader{io, item, type};
+        OXMInternalID id = type.internalID();
+        OXMDispatch(id, &reader);
     }
 };
 
@@ -146,11 +145,13 @@ struct llvm::yaml::ScalarTraits<ofp::OXMType> {
 
     static StringRef input(StringRef scalar, void *ctxt, ofp::OXMType &value)
     {
-        ofp::log::debug("OXMType scalar unimplemented");
-        return StringRef{"huh?"};
+        if (!value.parse(scalar)) {
+            return "Invalid OXM type.";
+        }
+        
+        return "";
     }
 };
-
 
 template <>
 struct llvm::yaml::ScalarTraits<ofp::IPv4Address> {
@@ -160,19 +161,175 @@ struct llvm::yaml::ScalarTraits<ofp::IPv4Address> {
         out << value.toString();
     }
 
-    static StringRef input(StringRef scalar, void *ctxt, ofp::IPv4Address &value)
+    static StringRef input(StringRef scalar, void *ctxt,
+                           ofp::IPv4Address &value)
     {
-        ofp::log::debug("IPv4Address scalar unimplemented");
-        return StringRef{"huh?"};
+        if (!value.parse(scalar)) {
+            return "Invalid IPv4 address.";
+        }
+        return "";
     }
 };
+
+template <>
+struct llvm::yaml::ScalarTraits<ofp::IPv6Address> {
+    static void output(const ofp::IPv6Address &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+        out << value.toString();
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt,
+                           ofp::IPv6Address &value)
+    {
+        if (!value.parse(scalar)) {
+            return "Invalid IPv6 address.";
+        }
+        return "";
+    }
+};
+
+
+template <>
+struct llvm::yaml::ScalarTraits<ofp::EnetAddress> {
+    static void output(const ofp::EnetAddress &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+        out << value.toString();
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt,
+                           ofp::EnetAddress &value)
+    {
+        if (!value.parse(scalar)) {
+            return "Invalid Ethernet address.";
+        }
+        return "";
+    }
+};
+
+struct FlowModBuilderWrap {
+    FlowModBuilderWrap(ofp::FlowModBuilder *m) : msg{m} {}
+    ofp::FlowModBuilder *msg;
+};
+
+template <>
+struct llvm::yaml::MappingTraits<FlowModBuilderWrap> {
+
+    static void mapping(llvm::yaml::IO &io, FlowModBuilderWrap &msg)
+    {
+        readHeader(io, reinterpret_cast<Header *>(msg.msg));
+        io.mapRequired("msg", *msg.msg);
+    }
+};
+
+
+template <>
+struct llvm::yaml::MappingTraits<FlowModBuilder> {
+
+    static void mapping(llvm::yaml::IO &io, FlowModBuilder &msg)
+    {
+        io.mapRequired("cookie", msg.msg_.cookie_);
+        io.mapRequired("cookie_mask", msg.msg_.cookieMask_);
+        io.mapRequired("table_id", msg.msg_.tableId_);
+        io.mapRequired("command", msg.msg_.command_);
+        io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
+        io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);
+        io.mapRequired("priority", msg.msg_.priority_);
+        io.mapRequired("buffer_id", msg.msg_.bufferId_);
+        io.mapRequired("out_port", msg.msg_.outPort_);
+        io.mapRequired("out_group", msg.msg_.outGroup_);
+        io.mapRequired("flags", msg.msg_.flags_);
+
+        io.mapRequired("match", msg.match_);
+    }
+};
+
+
+struct MatchBuilderItem 
+{
+};
+
+template <>
+struct llvm::yaml::SequenceTraits<ofp::MatchBuilder> {
+
+    static size_t size(IO &io, ofp::MatchBuilder &match)
+    {
+        return match.itemCount();
+    }
+
+    static MatchBuilderItem &element(IO &io, ofp::MatchBuilder &match,
+                                           size_t index)
+    {
+        return reinterpret_cast<MatchBuilderItem&>(match);
+    }
+};
+
+
+class MatchBuilderInserter {
+public:
+    MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder, OXMType type) : io_{io}, builder_{builder}, type_{type} {}
+
+    template <class ValueType>
+    void visit() {
+        if (type_.hasMask()) {
+            typename ValueType::NativeType value;
+            typename ValueType::NativeType mask;
+            io_.mapRequired("value", value);
+            io_.mapRequired("mask", mask);
+            builder_.add(ValueType{value}, ValueType{mask});
+        } else {
+            typename ValueType::NativeType value;
+            io_.mapRequired("value", value);
+            builder_.add(ValueType{value});
+        }
+    }
+
+private:
+    llvm::yaml::IO &io_;
+    MatchBuilder &builder_;
+    OXMType type_;
+};
+
+
+template <>
+struct llvm::yaml::MappingTraits<MatchBuilderItem> {
+
+    static void mapping(llvm::yaml::IO &io, MatchBuilderItem &item)
+    {
+        MatchBuilder &builder = reinterpret_cast<MatchBuilder &>(item);
+
+        ofp::OXMType type;
+        io.mapRequired("type", type);
+
+        OXMInternalID id = type.internalID();
+        if (id != OXMInternalID::UNKNOWN) {
+            MatchBuilderInserter inserter{io, builder, type};
+            OXMDispatch(id, &inserter);
+
+        } else {
+            log::debug("Unknown oxmtype: ", type);
+        }
+    }
+};
+
+
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
 template <>
-Exception read(const ByteRange &input, FlowModBuilder *msg)
+Exception read(const std::string &input, FlowModBuilder *msg)
 {
+    llvm::yaml::Input yin(input);
+
+    FlowModBuilderWrap wrap{msg};
+    yin >> wrap;
+
+    if (yin.error()) {
+        return Exception{}; //FIXME
+    }
+
     return Exception{};
 }
 
@@ -211,14 +368,15 @@ Exception read(const ByteRange &input, FlowModBuilder *msg)
 //      ...
 
 template <>
-void write(const FlowMod *msg, ByteList *output)
+std::string write(const FlowMod *msg)
 {
-    using llvm::yaml::Output;
+    std::string result;
+    llvm::raw_string_ostream rss{result};
+    llvm::yaml::Output yout{rss};
 
-    Output yout{llvm::outs()};
-
-    //
-    yout << YamlRemoveConst_cast(FlowModMesg{msg});
+    FlowModWrap wrap{msg};
+    yout << wrap;
+    return rss.str();
 }
 
 } // </namespace yaml>

@@ -9,13 +9,13 @@ namespace ofp { // <namespace ofp>
 
 class Writable;
 class Channel;
-class InternalChannel;
+class Connection;
 
 
 class Message {
 public:
 
-	Message(InternalChannel *channel) : channel_{channel} {
+	Message(Connection *channel) : channel_{channel} {
 		buf_.resize(sizeof(Header));
 	}
 
@@ -58,7 +58,7 @@ public:
 
 private:
 	ByteList buf_;
-	InternalChannel *channel_;
+	Connection *channel_;
 
 	friend std::ostream &operator<<(std::ostream &os, const Message &msg);
 };

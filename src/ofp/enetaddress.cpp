@@ -3,9 +3,15 @@
 
 ofp::EnetAddress::EnetAddress(const std::string &s)
 {
-	if (HexToRawData(s, addr_, sizeof(addr_)) < sizeof(addr_)) {
+	if (!parse(s)) {
 		std::memset(addr_, 0, sizeof(addr_));
 	}
+}
+
+
+bool ofp::EnetAddress::parse(const std::string &s)
+{
+	return HexToRawData(s, addr_, sizeof(addr_)) >= sizeof(addr_);
 }
 
 

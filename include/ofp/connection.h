@@ -1,5 +1,5 @@
-#ifndef OFP_INTERNALCHANNEL_H
-#define OFP_INTERNALCHANNEL_H
+#ifndef OFP_CONNECTION_H
+#define OFP_CONNECTION_H
 
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
@@ -13,16 +13,16 @@ class Engine;
 class Message;
 
 /**
- *  InternalChannel is an interface for a channel that can receive messages
- *  posted from other InternalChannels. This interface also supports binding
+ *  Connection is an interface for a channel that can receive messages
+ *  posted from other Connections. This interface also supports binding
  *  auxillary connections to their main connection, and a main connection to a
  *  a linked list of auxiliary connections.
  */
 OFP_BEGIN_IGNORE_PADDING
-class InternalChannel : public Channel {
+class Connection : public Channel {
 public:
-	InternalChannel(impl::Engine *engine, ChannelListener *listener) :engine_{engine}, listener_{listener} {}
-	virtual ~InternalChannel();
+	Connection(impl::Engine *engine, ChannelListener *listener) :engine_{engine}, listener_{listener} {}
+	virtual ~Connection();
 
 	Driver *driver() const override;
 
@@ -32,18 +32,18 @@ public:
 	const Features &features() const override;
 	void setFeatures(const Features &features);
 
-	InternalChannel *mainConnection() const 
+	Connection *mainConnection() const 
 	{ return mainConn_; }
 
-	void setMainConnection(InternalChannel *channel) {
+	void setMainConnection(Connection *channel) {
 		mainConn_ = channel;
 	}
 
-	InternalChannel *nextAuxiliaryConnection() const {
+	Connection *nextAuxiliaryConnection() const {
 		return nextAuxConn_;
 	}
 
-	void setNextAuxiliaryConnection(InternalChannel *channel) {
+	void setNextAuxiliaryConnection(Connection *channel) {
 		nextAuxConn_ = channel;
 	}
 
@@ -58,7 +58,7 @@ public:
 		listener_ = listener;
 	}
 
-	void postMessage(InternalChannel *source, Message *message);
+	void postMessage(Connection *source, Message *message);
 
 	impl::Engine *engine() { return engine_; }
 
@@ -73,8 +73,8 @@ public:
 private:
 	impl::Engine *engine_;
 	ChannelListener *listener_ = nullptr;
-	InternalChannel *mainConn_ = nullptr;
-	InternalChannel *nextAuxConn_ = nullptr;
+	Connection *mainConn_ = nullptr;
+	Connection *nextAuxConn_ = nullptr;
 	Features features_{};
 	UInt32 nextXid_ = 0;
 	UInt8 version_ = 0;
@@ -83,4 +83,4 @@ OFP_END_IGNORE_PADDING
 
 } // </namespace ofp>
 
-#endif // OFP_INTERNALCHANNEL_H
+#endif // OFP_CONNECTION_H

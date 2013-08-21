@@ -18,6 +18,8 @@ public:
 	explicit IPv6Address(const ArrayType &a);
 	explicit IPv6Address(const std::string &s);
 
+	bool parse(const std::string &s);
+	
 	bool valid() const {
 		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');
 	}

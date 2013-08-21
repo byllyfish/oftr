@@ -16,6 +16,22 @@ public:
 	const UInt8 *data() const { return list_.data(); }
 	size_t size() const { return list_.size(); }
 
+	/// \returns number of items in the match.
+    size_t itemCount() const
+    {
+        return OXMIterator::distance(list_.begin(), list_.end());
+    }
+
+	OXMIterator begin() const
+    {
+        return list_.begin();
+    }
+    
+    OXMIterator end() const
+    {
+        return list_.end();
+    }
+
 	template <class ValueType>
 	void add(ValueType value) {
 		Prerequisites::insertAll(&list_, ValueType::prerequisites());
@@ -26,9 +42,9 @@ public:
 	
 	template <class ValueType>
 	void add(ValueType value, ValueType mask) {
-		static_assert(ValueType::isMaskSupported(), "mask not supported.");
+		assert(ValueType::maskSupported());
 		Prerequisites::insertAll(&list_, ValueType::prerequisites());
-		if (!Prerequisites::substitute(&list_, value, mask)) {
+		if (!Prerequisites::substitute(&list_, ValueType::type(), &value, &mask, sizeof(value))) {
 			list_.add(value, mask);
 		}
 	}
@@ -41,7 +57,6 @@ public:
 	OXMRange toRange() const { return list_.toRange(); }
 
 private:
-
 	OXMList list_;
 };
 

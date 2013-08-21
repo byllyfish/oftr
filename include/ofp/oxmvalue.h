@@ -7,7 +7,10 @@
 
 namespace ofp { // <namespace ofp>
 
+enum class OXMInternalID : UInt16;
+
 template <
+	OXMInternalID ID,
 	UInt16 Class,
 	UInt8 Field,
 	class ValueType,
@@ -20,6 +23,7 @@ public:
 	
 	using NativeType = typename NativeTypeOf<ValueType>::type;
 
+	constexpr static OXMInternalID internalId() { return ID; }
 	constexpr static OXMType type() { return OXMType{Class, Field, Bits}; }
 	constexpr static OXMType typeWithMask() { return type().withMask(); }
 	constexpr static UInt16	bits() { return Bits; }
@@ -27,14 +31,6 @@ public:
 	static inline const OXMRange *prerequisites() { return Prereqs; }
 	
 	/* implicit */ OXMValue(NativeType value) : value_{value} {}
-	
-	#if 0
-	explicit OXMValue(const UInt8 *data, size_t) 
-	{
-		// FIXME length ignored. Same as OXMType.
-		std::memcpy(&value_, data, sizeof(value_));
-	}
-	#endif
 	
 	NativeType value() const { return value_; }
 	operator NativeType() const { return value_; }

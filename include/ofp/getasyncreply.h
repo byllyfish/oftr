@@ -3,7 +3,6 @@
 
 #include "ofp/header.h"
 #include "ofp/message.h"
-#include "ofp/getasyncreply.h"
 
 namespace ofp { // <namespace ofp>
 

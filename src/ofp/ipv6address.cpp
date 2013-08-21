@@ -16,24 +16,31 @@ ofp::IPv6Address::IPv6Address(const ArrayType &a) : addr_(a)
 
 ofp::IPv6Address::IPv6Address(const std::string &s)
 {
-	using namespace boost::asio;
+	if (!parse(s))
+		addr_.fill(0);
+}
 
+bool ofp::IPv6Address::parse(const std::string &s)
+{
+	using namespace boost::asio;
 	boost::system::error_code err;
-	addr_.fill(0);
 
 	ip::address_v6 addr6 = ip::address_v6::from_string(s, err);
 	if (!err) {
 		addr_ = addr6.to_bytes();
-	} else {
-		ip::address_v4 addr4 = ip::address_v4::from_string(s, err);
-		if (!err) {
-			auto a = addr4.to_bytes();
-			std::copy(a.data(), a.data()+4, &addr_[12]);
-			addr_[11] = 0xFF;
-		} else {
-			log::debug("IPv4Address ", err);
-		}
+		return true;
 	}
+
+	ip::address_v4 addr4 = ip::address_v4::from_string(s, err);
+	if (!err) {
+		auto a = addr4.to_bytes();
+		std::copy(a.data(), a.data()+4, &addr_[12]);
+		addr_[11] = 0xFF;
+		std::memset(addr_.data(), 0, 11);
+		return true;
+	}
+
+	return false;
 }
 
 

@@ -1,7 +1,7 @@
 #ifndef OFP_UDP_CONNECTION_H
 #define OFP_UDP_CONNECTION_H
 
-#include "ofp/internalchannel.h"
+#include "ofp/connection.h"
 #include "ofp/driver.h"
 #include "ofp/impl/boost_asio.h"
 #include "ofp/protocolversions.h"
@@ -12,7 +12,7 @@ namespace impl { // <namespace impl>
 class UDP_Server;
 
 OFP_BEGIN_IGNORE_PADDING
-class UDP_Connection : public InternalChannel {
+class UDP_Connection : public Connection {
 public:
     UDP_Connection(UDP_Server *server, Driver::Role role, ProtocolVersions versions, udp::endpoint remoteEndpt);
     ~UDP_Connection();

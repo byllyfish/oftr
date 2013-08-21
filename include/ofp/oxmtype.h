@@ -8,6 +8,7 @@ namespace ofp { // <namespace ofp>
 
 class OXMRange;
 struct OXMTypeInfo;
+enum class OXMInternalID : UInt16;
 
 class OXMType {
 public:
@@ -22,14 +23,6 @@ public:
 		std::memcpy(&result, data, sizeof(result));
 		return result;
 	}
-
-	#if 0
-	explicit OXMType(const UInt8 *data, size_t) {
-		// FIXME length ignored. Use RawMem interface?
-		// If I remove this, can I make value32_ const?
-		std::memcpy(&value32_, data, sizeof(value32_));
-	}
-	#endif
 	
 	// Return `opaque` identifier. Value depends on host's byte order.
 	constexpr operator UInt32() const { return value32_; }
@@ -52,7 +45,10 @@ public:
 	constexpr UInt32 oxmNative() const { return BigEndianToNative(value32_); }
 	
 	const OXMTypeInfo *lookupInfo() const;
+	OXMInternalID internalID() const;
 
+	bool parse(const std::string &s);
+	
 private:
 	UInt32 value32_;
 	

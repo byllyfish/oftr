@@ -5,7 +5,7 @@
 #include "ofp/impl/boost_asio.h"
 #include "ofp/impl/engine.h"
 #include "ofp/message.h"
-#include "ofp/internalchannel.h"
+#include "ofp/connection.h"
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
 #include "ofp/exception.h"
@@ -16,7 +16,7 @@ namespace impl { // <namespace impl>
 class TCP_Server;
 
 OFP_BEGIN_IGNORE_PADDING
-class TCP_Connection : public std::enable_shared_from_this<TCP_Connection>, public InternalChannel {
+class TCP_Connection : public std::enable_shared_from_this<TCP_Connection>, public Connection {
 public:
 	 TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);
      TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);

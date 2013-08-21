@@ -7,8 +7,17 @@ TEST(ipv6address, basic)
 {
 	IPv6Address addr{"::1"};
 
+	EXPECT_HEX("0000 0000 0000 0000 0000 0000 0000 0001", &addr, sizeof(addr));
 	EXPECT_TRUE(addr.valid());
 	EXPECT_EQ("::1", addr.toString());
+}
+
+
+TEST(ipv6address, v4)
+{
+	IPv6Address addr{"192.168.1.1"};
+
+	EXPECT_HEX("0000 0000 0000 0000 0000 00FF C0A8 0101", &addr, sizeof(addr));
 }
 
 

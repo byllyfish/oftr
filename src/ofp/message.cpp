@@ -1,5 +1,5 @@
 #include "ofp/message.h"
-#include "ofp/internalchannel.h"
+#include "ofp/connection.h"
 
 
 ofp::Channel *ofp::Message::source() const

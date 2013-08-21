@@ -17,7 +17,7 @@ TEST(flowmodbuilder, version1_3)
     MatchBuilder match;
     match.add(OFB_IN_PORT{27});
 
-    InstructionSet instructions;
+    InstructionList instructions;
     instructions.add(IT_GOTO_TABLE{3});
 
     FlowModBuilder flowMod;
@@ -43,7 +43,7 @@ TEST(flowmodbuilder, version1_0)
     MatchBuilder match;
     match.add(OFB_IN_PORT{27});
 
-    InstructionSet instructions;
+    InstructionList instructions;
     instructions.add(IT_GOTO_TABLE{3});
 
     FlowModBuilder flowMod;

@@ -22,7 +22,7 @@ class Channel;
 /// This class is named `Exception` because the word `Error` is used to refer to
 /// a specific message in the OpenFlow protocol. Exception objects may be 
 /// returned from functions, but they will never be thrown; this library is 
-/// designed for use with exceptions disabled in the compiler.
+/// designed to be compiled with exceptions disabled.
 class Exception {
 public:
 	/// \brief Represents the error category with a 4-char code.

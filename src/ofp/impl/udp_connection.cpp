@@ -5,7 +5,7 @@
 
 
 ofp::impl::UDP_Connection::UDP_Connection(UDP_Server *server, Driver::Role role, ProtocolVersions versions, udp::endpoint remoteEndpt) 
-: InternalChannel{server->engine(), new DefaultHandshake{this, role, versions, nullptr}}, server_{server}, remoteEndpt_{remoteEndpt}
+: Connection{server->engine(), new DefaultHandshake{this, role, versions, nullptr}}, server_{server}, remoteEndpt_{remoteEndpt}
 {
 	server_->add(this);
 }

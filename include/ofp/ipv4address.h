@@ -20,6 +20,8 @@ public:
 		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');
 	}
 
+	bool parse(const std::string &s);
+
 	std::string toString() const;
 
 	ArrayType toArray() const {
@@ -33,6 +35,8 @@ public:
 	bool operator!=(const IPv4Address &rhs) const {
 		return !(*this == rhs);
 	}
+
+	bool fromString(const std::string &s);
 
 private:
 	ArrayType addr_;

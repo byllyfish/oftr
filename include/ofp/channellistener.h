@@ -60,7 +60,7 @@ protected:
 
     static void dispose(ChannelListener *listener);
 
-    friend class InternalChannel;
+    friend class Connection;
 };
 
 } // </namespace ofp>

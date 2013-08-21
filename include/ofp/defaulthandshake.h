@@ -7,13 +7,13 @@
 
 namespace ofp { // <namespace ofp>
 
-class InternalChannel;
+class Connection;
 
 OFP_BEGIN_IGNORE_PADDING
 class DefaultHandshake : public ChannelListener {
 public:
 
-	DefaultHandshake(InternalChannel *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory);
+	DefaultHandshake(Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory);
 
 	void onChannelUp(Channel *channel) override;
 	void onChannelDown(Channel *channel) override;
@@ -22,7 +22,7 @@ public:
 	void onTimer(UInt32 timerID) override {}
 	
 private:
-	InternalChannel *channel_;
+	Connection *channel_;
 	ProtocolVersions versions_;
 	Factory listenerFactory_;
 	Driver::Role role_;

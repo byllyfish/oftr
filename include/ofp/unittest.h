@@ -121,6 +121,14 @@ public:
 
     UInt32 nextXid() override;
 
+    template <class MesgBuilderType>
+    static ByteList serialize(MesgBuilderType &msg, UInt8 version)
+    {
+        MockChannel writer{version};
+        msg.send(&writer);
+        return writer.buf_;
+    }
+
 private:
     ByteList buf_;
     UInt32 nextXid_ = 0;
