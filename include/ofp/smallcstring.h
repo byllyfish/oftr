@@ -12,6 +12,7 @@
 #define OFP_SMALLCSTRING_H
 
 #include <array>
+#include <algorithm>
 
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>

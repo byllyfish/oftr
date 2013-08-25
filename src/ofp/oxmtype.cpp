@@ -1,6 +1,7 @@
 #include "ofp/oxmtype.h"
 #include "ofp/log.h"
 #include "ofp/oxmfields.h"
+#include <algorithm>
 
 namespace ofp { // <namespace ofp>
 
