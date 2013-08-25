@@ -35,7 +35,7 @@
 #define GCC_INSTALL_PREFIX ""
 
 /* Define to 1 if you have the `arc4random' function. */
-#define HAVE_ARC4RANDOM 1
+//#define HAVE_ARC4RANDOM 1
 
 /* Define to 1 if you have the `argz_append' function. */
 /* #undef HAVE_ARGZ_APPEND */
@@ -247,7 +247,7 @@
 #define HAVE_LONGJMP 1
 
 /* Define to 1 if you have the <mach/mach.h> header file. */
-#define HAVE_MACH_MACH_H 1
+//#define HAVE_MACH_MACH_H 1
 
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 #define HAVE_MACH_O_DYLD_H 1
@@ -259,10 +259,10 @@
 /* #undef HAVE_MALLOC_H */
 
 /* Define to 1 if you have the <malloc/malloc.h> header file. */
-#define HAVE_MALLOC_MALLOC_H 1
+//#define HAVE_MALLOC_MALLOC_H 1
 
 /* Define to 1 if you have the `malloc_zone_statistics' function. */
-#define HAVE_MALLOC_ZONE_STATISTICS 1
+//#define HAVE_MALLOC_ZONE_STATISTICS 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -463,7 +463,7 @@
 /* #undef HAVE_U_INT64_T */
 
 /* Define to 1 if you have the <valgrind/valgrind.h> header file. */
-#define HAVE_VALGRIND_VALGRIND_H 1
+//#define HAVE_VALGRIND_VALGRIND_H 1
 
 /* Define to 1 if you have the `writev' function. */
 #define HAVE_WRITEV 1
@@ -696,7 +696,7 @@
 /* #undef const */
 
 /* Define to a type to use for `error_t' if it is not otherwise available. */
-#define error_t int
+//#define error_t int
 
 /* Define to `int' if <sys/types.h> does not define. */
 /* #undef pid_t */
