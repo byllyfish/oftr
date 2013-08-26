@@ -1,6 +1,6 @@
-#include "ofp/impl/udp_server.h"
-#include "ofp/impl/udp_connection.h"
-#include "ofp/impl/engine.h"
+#include "ofp/sys/udp_server.h"
+#include "ofp/sys/udp_connection.h"
+#include "ofp/sys/engine.h"
 #include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
 #include "ofp/hello.h"
@@ -8,18 +8,18 @@
 using namespace boost;
 
 
-ofp::impl::UDP_Server::UDP_Server(Engine *engine, Driver::Role role, const udp::endpoint &endpt, ProtocolVersions versions)
+ofp::sys::UDP_Server::UDP_Server(Engine *engine, Driver::Role role, const udp::endpoint &endpt, ProtocolVersions versions)
     : engine_{engine}, role_{role}, versions_{versions}, socket_{engine->io(), endpt}, message_{nullptr}
 {
     asyncReceive();
 }
 
 
-void ofp::impl::UDP_Server::add(UDP_Connection *conn){
+void ofp::sys::UDP_Server::add(UDP_Connection *conn){
 	connMap_.insert(std::make_pair(conn->remoteEndpoint(), conn));
 }
 
-void ofp::impl::UDP_Server::remove(UDP_Connection *conn) {
+void ofp::sys::UDP_Server::remove(UDP_Connection *conn) {
 
 	if (!shuttingDown_) {
 		auto iter = connMap_.find(conn->remoteEndpoint());
@@ -33,18 +33,18 @@ void ofp::impl::UDP_Server::remove(UDP_Connection *conn) {
 }
 
 
-void ofp::impl::UDP_Server::write(const void *data, size_t length)
+void ofp::sys::UDP_Server::write(const void *data, size_t length)
 {
     // write to buffer
 }
 
-void ofp::impl::UDP_Server::flush(udp::endpoint endpt)
+void ofp::sys::UDP_Server::flush(udp::endpoint endpt)
 {
     asyncSend();
 }
 
 
-void ofp::impl::UDP_Server::asyncReceive()
+void ofp::sys::UDP_Server::asyncReceive()
 {
     log::debug(__PRETTY_FUNCTION__);
     
@@ -70,12 +70,12 @@ void ofp::impl::UDP_Server::asyncReceive()
     });
 }
 
-void ofp::impl::UDP_Server::asyncSend()
+void ofp::sys::UDP_Server::asyncSend()
 {
 
 }
 
-void ofp::impl::UDP_Server::dispatchMessage()
+void ofp::sys::UDP_Server::dispatchMessage()
 {
     log::debug("Receive datagram:", message_);
 

@@ -2,8 +2,8 @@
 #define OFP_IMPL_TCP_CONNECTION_H
 
 #include "ofp/types.h"
-#include "ofp/impl/boost_asio.h"
-#include "ofp/impl/engine.h"
+#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/engine.h"
 #include "ofp/message.h"
 #include "ofp/connection.h"
 #include "ofp/driver.h"
@@ -11,7 +11,7 @@
 #include "ofp/exception.h"
 
 namespace ofp {  // <namespace ofp>
-namespace impl { // <namespace impl>
+namespace sys { // <namespace sys>
 
 class TCP_Server;
 
@@ -20,6 +20,7 @@ class TCP_Connection : public std::enable_shared_from_this<TCP_Connection>, publ
 public:
 	 TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);
      TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory);
+     TCP_Connection(Engine *engine, DefaultHandshake *handshake);
     ~TCP_Connection();
 
     Deferred<Exception> asyncConnect(const tcp::endpoint &endpt);
@@ -29,12 +30,31 @@ public:
     void channelException(const Exception &exc);
     void channelDown();
 
+    bool isOutgoing() const { return endpoint_.port() != 0; }
+    bool wantsReconnect() const { return handshake()->role() == Driver::Agent && isOutgoing(); }
+
 	IPv6Address remoteAddress() const override {
-		return makeIPv6Address(socket_.remote_endpoint().address());
+		try {
+			if (isOutgoing()) {
+				return makeIPv6Address(endpoint_.address());
+			}
+			return makeIPv6Address(socket_.remote_endpoint().address());
+		} catch (std::exception &ex) {
+			log::debug("remoteAddress:", ex.what());
+			return IPv6Address{};
+		}
 	}
 
 	UInt16 remotePort() const override {
-		return socket_.remote_endpoint().port();
+		try {
+			if (isOutgoing()) {
+				return endpoint_.port();
+			}
+			return socket_.remote_endpoint().port();
+		} catch (std::exception &ex) {
+			log::debug("remotePort:", ex.what());
+			return 0;
+		}
 	}
 	
 
@@ -66,10 +86,7 @@ public:
 private:
     Message message_;
     tcp::socket socket_;
-    //Features features_{};
-	//UInt32 nextXid_ = 0;
-	//UInt8 protocolVersion_ = 0;
-	//ChannelListener *listener_ = nullptr;
+    tcp::endpoint endpoint_;
 	DeferredResultPtr<Exception> deferredExc_ = nullptr;
 
 	// Use a two buffer strategy for async-writes. We queue up data in one
@@ -86,10 +103,12 @@ private:
     void asyncWrite();
     void asyncEchoReply(const Header *header, size_t length);
     void asyncRelay(size_t length);
+
+    void reconnect();
 };
 OFP_END_IGNORE_PADDING
 
-} // </namespace impl>
+} // </namespace sys>
 } // </namespace ofp>
 
 #endif // OFP_IMPL_TCP_CONNECTION_H

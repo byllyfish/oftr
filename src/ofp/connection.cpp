@@ -1,5 +1,5 @@
 #include "ofp/connection.h"
-#include "ofp/impl/engine.h"
+#include "ofp/sys/engine.h"
 #include "ofp/message.h"
 
 namespace ofp { // <namespace ofp>
@@ -11,7 +11,10 @@ Driver *Connection::driver() const
 
 Connection::~Connection()
 {
-    ChannelListener::dispose(listener_);
+    if (listener_ != handshake_) {
+        ChannelListener::dispose(listener_);
+    }
+    ChannelListener::dispose(handshake_);
 }
 
 UInt8 Connection::version() const

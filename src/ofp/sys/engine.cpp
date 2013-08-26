@@ -1,21 +1,23 @@
-#include "ofp/impl/engine.h"
+#include "ofp/sys/engine.h"
 #include "ofp/log.h"
-#include "ofp/impl/tcp_server.h"
-#include "ofp/impl/udp_server.h"
+#include "ofp/sys/tcp_server.h"
+#include "ofp/sys/udp_server.h"
 
 using namespace boost::asio;
 
-ofp::impl::Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}
+namespace ofp { // <namespace ofp>
+namespace sys { // <namespace sys>
+
+
+Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}
 {
 	log::debug(__PRETTY_FUNCTION__);
 
 
 }
 
-ofp::Deferred<ofp::Exception> ofp::impl::Engine::listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
+Deferred<Exception> Engine::listen(Driver::Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
 {
-	log::debug(__PRETTY_FUNCTION__);
-
 	auto tcpEndpt = makeTCPEndpoint(localAddress, localPort);
 	auto udpEndpt = makeUDPEndpoint(localAddress, localPort);
 	auto result = Deferred<Exception>::makeResult();
@@ -36,20 +38,26 @@ ofp::Deferred<ofp::Exception> ofp::impl::Engine::listen(Driver::Role role, const
 }
 
 
-ofp::Deferred<ofp::Exception> ofp::impl::Engine::connect(Driver::Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
+Deferred<Exception> Engine::connect(Driver::Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
 {
 	log::debug(__PRETTY_FUNCTION__);
 
 	tcp::endpoint endpt = makeTCPEndpoint(remoteAddress, remotePort);
-	log::debug("connect endpt: ", endpt);
 
 	return std::make_shared<TCP_Connection>(this, role, versions, listenerFactory)->asyncConnect(endpt);
 }
 
-ofp::Exception ofp::impl::Engine::run()
-{
-	log::debug(__PRETTY_FUNCTION__);
 
+void Engine::reconnect(DefaultHandshake *handshake, const IPv6Address &remoteAddress, UInt16 remotePort)
+{
+	tcp::endpoint endpt = makeTCPEndpoint(remoteAddress, remotePort);
+
+	(void) std::make_shared<TCP_Connection>(this, handshake)->asyncConnect(endpt);
+}
+
+
+Exception Engine::run()
+{
 	Exception result;
 
 	try {
@@ -66,3 +74,8 @@ ofp::Exception ofp::impl::Engine::run()
 
 	return result;
 }
+
+
+} // </namespace sys>
+} // </namespace ofp>
+

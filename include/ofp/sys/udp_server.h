@@ -2,14 +2,14 @@
 #define OFP_IMPL_UDP_SERVER_H
 
 #include "ofp/types.h"
-#include "ofp/impl/boost_asio.h"
+#include "ofp/sys/boost_asio.h"
 #include "ofp/ipv6address.h"
 #include "ofp/message.h"
 #include "ofp/driver.h"
 #include <unordered_map>
 
 namespace ofp { // <namespace ofp>
-namespace impl { // <namespace impl>
+namespace sys { // <namespace sys>
 
 class Engine;
 class UDP_Connection;
@@ -51,7 +51,7 @@ private:
 };
 OFP_END_IGNORE_PADDING
 
-} // </namespace impl>
+} // </namespace sys>
 } // </namespace ofp>
 
 #endif // OFP_IMPL_UDP_SERVER_H

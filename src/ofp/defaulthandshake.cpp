@@ -8,34 +8,44 @@
 #include "ofp/error.h"
 #include "ofp/log.h"
 #include "ofp/constants.h"
+#include "ofp/exception.h"
+
+namespace ofp { // <namespace ofp>
 
 
-ofp::DefaultHandshake::DefaultHandshake(Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
+DefaultHandshake::DefaultHandshake(Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
 	: channel_{channel}, versions_{versions}, listenerFactory_{listenerFactory}, role_{role}
 {
+	assert(listenerFactory_ != nullptr);
 }
 
-void ofp::DefaultHandshake::onChannelUp(Channel *channel) 
+void DefaultHandshake::onChannelUp(Channel *channel) 
 {
 	log::debug(__PRETTY_FUNCTION__);
 
 	assert(channel == channel_);
 
-	// We have a brand new connection. Send a OFPT_HELLO message to mutually agree
-	// on a version.
+	channel->setStartingXid(startingXid_);
+
+	ProtocolVersions useVersion = versions_;
+	if (startingVersion_ == OFP_VERSION_1) {
+		// If the starting version is set to 1, we'll use this version on the
+		// reconnect.
+		useVersion = ProtocolVersions{startingVersion_};
+	}
 	
-	HelloBuilder msg{versions_};
+	HelloBuilder msg{useVersion};
 	msg.send(channel_);
 }
 
-void ofp::DefaultHandshake::onChannelDown(Channel *channel) 
+void DefaultHandshake::onChannelDown(Channel *channel) 
 {
 	log::debug(__PRETTY_FUNCTION__);
 
 	log::info("Channel down before controller handshake could complete.");
 }
 
-void ofp::DefaultHandshake::onMessage(const Message *message) 
+void DefaultHandshake::onMessage(const Message *message) 
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -59,7 +69,7 @@ void ofp::DefaultHandshake::onMessage(const Message *message)
 
 }
 
-void ofp::DefaultHandshake::onException(const Exception *exception)
+void DefaultHandshake::onException(const Exception *exception)
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -67,7 +77,7 @@ void ofp::DefaultHandshake::onException(const Exception *exception)
 }
 
 
-void ofp::DefaultHandshake::onHello(const Message *message)
+void DefaultHandshake::onHello(const Message *message)
 {
 	const Hello *msg = Hello::cast(message);
 	if (!msg)
@@ -93,7 +103,7 @@ void ofp::DefaultHandshake::onHello(const Message *message)
 }
 
 
-void ofp::DefaultHandshake::onFeaturesReply(const Message *message)
+void DefaultHandshake::onFeaturesReply(const Message *message)
 {
 	const FeaturesReply *msg = FeaturesReply::cast(message);
 	if (!msg)
@@ -107,24 +117,21 @@ void ofp::DefaultHandshake::onFeaturesReply(const Message *message)
 }
 
 
-void ofp::DefaultHandshake::onError(const Message *message) 
+void DefaultHandshake::onError(const Message *message) 
 {
 	// FIXME log it
 }
 
 
-void ofp::DefaultHandshake::installNewChannelListener()
+void DefaultHandshake::installNewChannelListener()
 {
 	assert(channel_->channelListener() == this);
+	assert(listenerFactory_ != nullptr);
 
-	if (listenerFactory_) {
-		ChannelListener *newListener = listenerFactory_();
-		channel_->setChannelListener(newListener);
-		newListener->onChannelUp(channel_);
-	} else {
-		channel_->setChannelListener(nullptr);
-	}
-
-	delete this;
+	ChannelListener *newListener = listenerFactory_();
+	channel_->setChannelListener(newListener);
+	newListener->onChannelUp(channel_);
 }
 
+
+} // </namespace ofp>

@@ -10,17 +10,19 @@ CPPFLAGS += -I ../include -isystem $(BOOST_ROOT) -std=c++11
 
 ifeq ($(shell uname -s),Darwin)
  CPPFLAGS += -stdlib=libc++
- WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter
+ WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-documentation
 else
  WARNINGS = -Wall
 endif
 
 CXXFLAGS += -g $(WARNINGS)
 
+LDFLAGS += -L .. -lofp
+
 all : nullagent nullcontroller
 
-nullagent : nullagent_main.o $(LIB_OBJECTS) $(BOOST_OBJ)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+nullagent : nullagent_main.o 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
 
-nullcontroller : nullcontroller_main.o $(LIB_OBJECTS) $(BOOST_OBJ)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+nullcontroller : nullcontroller_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@

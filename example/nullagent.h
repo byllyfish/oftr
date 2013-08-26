@@ -8,7 +8,7 @@ using ofp::Message;
 using ofp::Channel;
 
 
-class NullAgent : public ofp::AbstractChannelListener {
+class NullAgent : public ofp::ChannelListener {
 public:
 
     static NullAgent *Factory() { return new NullAgent; }

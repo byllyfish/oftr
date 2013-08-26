@@ -23,6 +23,8 @@ int main(int argc, const char **argv)
         }
     }
 
+    ofp::log::set(&std::cerr);
+    
     Driver driver;
 
     if (addr.valid()) {

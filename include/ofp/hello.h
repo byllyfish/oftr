@@ -60,7 +60,7 @@ public:
 		msg_.header_.setVersion(versions.highestVersion());
 	}
 
-	UInt32 send(Channel *channel);
+	UInt32 send(Writable *channel);
 
 private:
 	Hello msg_;

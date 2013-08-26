@@ -4,13 +4,15 @@
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
 #include "ofp/features.h"
+#include "ofp/defaulthandshake.h"
 
 namespace ofp { // <namespace ofp>
 
-namespace impl { // <namespace impl>
+namespace sys { // <namespace sys>
 class Engine;
-} // </namespace impl>
+} // </namespace sys>
 class Message;
+
 
 /**
  *  Connection is an interface for a channel that can receive messages
@@ -21,7 +23,7 @@ class Message;
 OFP_BEGIN_IGNORE_PADDING
 class Connection : public Channel {
 public:
-	Connection(impl::Engine *engine, ChannelListener *listener) :engine_{engine}, listener_{listener} {}
+	Connection(sys::Engine *engine, DefaultHandshake *handshake) :engine_{engine}, listener_{handshake}, handshake_{handshake} {}
 	virtual ~Connection();
 
 	Driver *driver() const override;
@@ -58,21 +60,30 @@ public:
 		listener_ = listener;
 	}
 
+	DefaultHandshake *handshake() const { return handshake_; }
+	void setHandshake(DefaultHandshake *handshake) { handshake_ = handshake; }
+
 	void postMessage(Connection *source, Message *message);
 
-	impl::Engine *engine() { return engine_; }
+	sys::Engine *engine() const { return engine_; }
+	
 
-	void scheduleTimer(UInt32 timerID, std::chrono::milliseconds when) {
+	void scheduleTimer(UInt32 timerID, std::chrono::milliseconds when) override {
 		// TODO
 	}
 
-	void cancelTimer(UInt32 timerID) {
+	void cancelTimer(UInt32 timerID) override {
 		// TODO
+	}
+
+	void setStartingXid(UInt32 xid) override {
+		nextXid_ = xid;
 	}
 
 private:
-	impl::Engine *engine_;
+	sys::Engine *engine_;
 	ChannelListener *listener_ = nullptr;
+	DefaultHandshake *handshake_ = nullptr;
 	Connection *mainConn_ = nullptr;
 	Connection *nextAuxConn_ = nullptr;
 	Features features_{};

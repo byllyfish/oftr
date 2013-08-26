@@ -122,19 +122,22 @@ const ofp::detail::HelloElement *ofp::Hello::helloElements() const
     return reinterpret_cast<const ofp::detail::HelloElement *>(BytePtr(&header_) + sizeof(header_));
 }
 
-ofp::UInt32 ofp::HelloBuilder::send(Channel *channel)
-{
-    log::debug(__PRETTY_FUNCTION__);
-    
-	UInt8 version = channel->version();
+ofp::UInt32 ofp::HelloBuilder::send(Writable *channel)
+{   
+    // HelloRequest is the only message type that doesn't use the channel's
+    // version number. If the highest version number is 1, don't send any 
+    // HelloElements; POX doesn't support the extended part of the Hello
+    // request.
+
 	UInt32 xid = channel->nextXid();
 
+    Header &hdr = msg_.header_;
 	size_t msgLen = sizeof(msg_);
-        if (version > 0x01) {
+    if (hdr.version() > OFP_VERSION_1) {
+        // Include our hello element.
 	    msgLen += sizeof(elem_) + sizeof(bitmap_);
 	}
-
-	Header &hdr = msg_.header_;
+	
 	hdr.setLength(UInt16_narrow_cast(msgLen));
 	hdr.setXid(xid);
 

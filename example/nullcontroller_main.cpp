@@ -3,42 +3,48 @@
 
 using namespace ofp;
 
-
-class NullController : public AbstractChannelListener {
+class NullController : public ChannelListener {
 public:
 
-    void onChannelUp(Channel *channel) override {
+    void onChannelUp(Channel *channel) override
+    {
         log::debug(__PRETTY_FUNCTION__);
     }
-    
+
     void onMessage(const Message *message) override
     {
     }
 
-    static ChannelListener *Factory() { return new NullController; }
+    static ChannelListener *Factory()
+    {
+        return new NullController;
+    }
 };
 
 int main(int argc, char **argv)
 {
-   std::vector<std::string> args{argv + 1, argv + argc};
+    std::vector<std::string> args{argv + 1, argv + argc};
 
     IPv6Address addr{};
     if (!args.empty()) {
         addr = IPv6Address{args[0]};
     }
 
-	Driver driver;
+    log::set(&std::cerr);
+    Driver driver;
 
     if (addr.valid()) {
-        auto result = driver.connect(Driver::Controller, addr, Driver::DefaultPort,
-                  ProtocolVersions{}, NullController::Factory);
+        auto result =
+            driver.connect(Driver::Controller, addr, Driver::DefaultPort,
+                           ProtocolVersions{}, NullController::Factory);
 
         result.done([](Exception ex) {
             std::cout << "Result " << ex << '\n';
         });
 
     } else {
-        driver.listen(Driver::Controller, IPv6Address{}, Driver::DefaultPort, ProtocolVersions{}, NullController::Factory);
+        driver.listen(Driver::Controller, IPv6Address{}, Driver::DefaultPort,
+                      ProtocolVersions{}, NullController::Factory);
     }
 
     driver.run();

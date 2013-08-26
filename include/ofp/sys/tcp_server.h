@@ -2,11 +2,11 @@
 #define OFP_IMPL_TCP_SERVER_H
 
 #include "ofp/types.h"
-#include "ofp/impl/boost_asio.h"
-#include "ofp/impl/tcp_connection.h"
+#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/tcp_connection.h"
 
 namespace ofp {  // <namespace ofp>
-namespace impl { // <namespace impl>
+namespace sys { // <namespace sys>
 
 class Engine;
 
@@ -30,7 +30,7 @@ private:
 };
 OFP_END_IGNORE_PADDING
 
-} // </namespace impl>
+} // </namespace sys>
 } // </namespace ofp>
 
 #endif // OFP_IMPL_TCP_SERVER_H

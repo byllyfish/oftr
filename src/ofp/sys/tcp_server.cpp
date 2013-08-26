@@ -1,8 +1,8 @@
-#include "ofp/impl/tcp_server.h"
-#include "ofp/impl/engine.h"
+#include "ofp/sys/tcp_server.h"
+#include "ofp/sys/engine.h"
 #include "ofp/log.h"
 
-ofp::impl::TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
+ofp::sys::TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
                                   const tcp::endpoint &endpt,
                                   ProtocolVersions versions,
                                   ChannelListener::Factory listenerFactory)
@@ -14,12 +14,12 @@ ofp::impl::TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
     asyncAccept();
 }
 
-ofp::impl::TCP_Server::~TCP_Server()
+ofp::sys::TCP_Server::~TCP_Server()
 {
     log::debug(__PRETTY_FUNCTION__);
 }
 
-void ofp::impl::TCP_Server::asyncAccept()
+void ofp::sys::TCP_Server::asyncAccept()
 {
     log::debug(__PRETTY_FUNCTION__);
 

@@ -1,5 +1,5 @@
 #include "ofp/ipv6address.h"
-#include "ofp/impl/boost_asio.h"
+#include "ofp/sys/boost_asio.h"
 #include <arpa/inet.h>
 #include "ofp/log.h"
 
@@ -8,6 +8,7 @@ ofp::IPv6Address::IPv6Address(const IPv4Address &addr)
 {
 	std::memcpy(&addr_[12], &addr, 4);
 	addr_[11] = 0xFF;
+	std::memset(addr_.data(), 0, 11);
 }
 
 ofp::IPv6Address::IPv6Address(const ArrayType &a) : addr_(a)
@@ -46,6 +47,11 @@ bool ofp::IPv6Address::parse(const std::string &s)
 
 std::string ofp::IPv6Address::toString() const
 {
+	if (isV4Mapped()) {
+		IPv4Address v4 = toV4();
+		return v4.toString();
+	}
+
 	char ipv6str[INET6_ADDRSTRLEN] = {};
 	const char *result = inet_ntop(AF_INET6, addr_.data(), ipv6str, sizeof(ipv6str));
 	return result ? ipv6str : "<inet_ntop_error6>";

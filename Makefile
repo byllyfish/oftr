@@ -14,7 +14,7 @@
 
 DOXYGEN = /Applications/Doxygen.app/Contents/Resources/doxygen
 
-LIB_SRCS = $(wildcard src/ofp/*.cpp) $(wildcard src/ofp/impl/*.cpp)
+LIB_SRCS = $(wildcard src/ofp/*.cpp) $(wildcard src/ofp/sys/*.cpp)
 LIB_OBJS = $(LIB_SRCS:.cpp=.o)
 LIB_DEPS = $(LIB_SRCS:.cpp=.d)
 
@@ -43,7 +43,7 @@ libofp.a: $(LIB_OBJS) $(BOOST_OBJECTS)
 
 .PHONY: docs
 docs:
-	$(DOXYGEN) Doxyfile
+	cd docs; $(DOXYGEN) Doxyfile
 
 .PHONY: clean
 clean:

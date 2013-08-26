@@ -1,8 +1,8 @@
 #include "ofp/driver.h"
-#include "ofp/impl/engine.h"
+#include "ofp/sys/engine.h"
 
 ofp::Driver::Driver(DriverOptions *options)
-    : engine_{new impl::Engine{this, options}}
+    : engine_{new sys::Engine{this, options}}
 {
 }
 

@@ -12,7 +12,10 @@ ofp::ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code, const Message *message
 
 void ofp::ErrorBuilder::send(Channel *channel)
 {
-	log::debug(__PRETTY_FUNCTION__);
+	msg_.header_.setVersion(channel->version());
+    msg_.header_.setLength(sizeof(msg_));
+    msg_.header_.setXid(channel->nextXid());
+
 	channel->write(&msg_, sizeof(msg_));
 	channel->flush();
 }

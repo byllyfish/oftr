@@ -25,17 +25,20 @@ public:
         MaxVersion = 0x04
     };
 
-    enum Setting : UInt32{All = ~(~0U << (MaxVersion + 1)) & ~1U, None = 0U};
+    enum Setting : UInt32 {
+        All = ~(~0U << (MaxVersion + 1)) & ~1U, 
+        None = 0U
+    };
 
     ProtocolVersions() : bitmap_{All}
     {
     }
 
-    ProtocolVersions(Setting setting) : bitmap_{setting}
+    /* implicit */ ProtocolVersions(Setting setting) : bitmap_{setting}
     {
     }
 
-    ProtocolVersions(std::initializer_list<UInt8> versions);
+    /* implicit */ ProtocolVersions(std::initializer_list<UInt8> versions);
 
     bool empty() const
     {

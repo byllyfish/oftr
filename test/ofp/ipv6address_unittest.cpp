@@ -32,3 +32,13 @@ TEST(ipv6address, equals)
 
 	EXPECT_TRUE(y == z);
 }
+
+
+TEST(ipv6address, fromv4) 
+{
+	IPv4Address addr{"192.168.1.1"};
+	IPv6Address v6{addr};
+
+	EXPECT_HEX("0000 0000 0000 0000 0000 00FF C0A8 0101", &v6, sizeof(v6));
+	EXPECT_EQ("192.168.1.1", v6.toString());
+}

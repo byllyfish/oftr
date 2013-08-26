@@ -1,12 +1,11 @@
-#include "ofp/impl/tcp_connection.h"
-#include "ofp/impl/tcp_server.h"
-#include "ofp/impl/engine.h"
+#include "ofp/sys/tcp_connection.h"
+#include "ofp/sys/tcp_server.h"
+#include "ofp/sys/engine.h"
 #include "ofp/log.h"
 #include "ofp/defaulthandshake.h"
 
 namespace ofp { // <namespace ofp>
-namespace impl { // <namespace impl>
-
+namespace sys { // <namespace sys>
 
 using namespace boost;
 
@@ -23,9 +22,15 @@ TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role 
     log::debug(__PRETTY_FUNCTION__, this);
 }
 
+/// \brief Construct connection object for reconnect attempt.
+TCP_Connection::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
+: Connection{engine, handshake}, message_{this}, socket_{engine->io()}
+{
+    handshake->setConnection(this);
+}
+
 TCP_Connection::~TCP_Connection()
 {
-    //log::debug(__PRETTY_FUNCTION__, this);
 }
 
 
@@ -35,6 +40,7 @@ Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt
 
     assert(deferredExc_ == nullptr);
 
+    endpoint_ = endpt;
     deferredExc_ = Deferred<Exception>::makeResult();
 
     auto self(shared_from_this());
@@ -47,6 +53,9 @@ Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt
         if (!err) {
             assert(socket_.is_open());
             channelUp();
+
+        } else if (wantsReconnect()) {
+            reconnect();
         }
     });
 
@@ -62,6 +71,8 @@ void TCP_Connection::asyncAccept()
 
 void TCP_Connection::channelUp()
 {
+    assert(channelListener());
+
     channelListener()->onChannelUp(this);
     asyncReadHeader();
 }
@@ -69,17 +80,27 @@ void TCP_Connection::channelUp()
 
 void TCP_Connection::channelException(const Exception &exc)
 {
+    assert(channelListener());
+
     channelListener()->onException(&exc);
 }
 
 void TCP_Connection::channelDown()
 {
+    log::debug("TCP_Connection::channelDown()");
+
+    assert(channelListener());
+
     channelListener()->onChannelDown(this);
+
+    if (wantsReconnect()) {
+        reconnect();
+    }
 }
 
 
 /**
-void ofp::impl::TCP_Connection::stop()
+void ofp::sys::TCP_Connection::stop()
 {
 	log::debug(__PRETTY_FUNCTION__);
 
@@ -277,5 +298,29 @@ void TCP_Connection::asyncRelay(size_t length)
 }
 
 
-} // </namespace impl>
+void TCP_Connection::reconnect()
+{
+    DefaultHandshake *hs = handshake();
+    assert(hs);
+
+    hs->setStartingVersion(version());
+    hs->setStartingXid(nextXid());
+
+    // FIXME should wait at least a second? Perhaps it would depend on the
+    // frequency of reconnects?
+
+    log::debug("reconnecting...", remoteAddress());
+
+    engine()->reconnect(hs, remoteAddress(), remotePort());
+    setHandshake(nullptr);
+
+    if (channelListener() == hs) {
+        setChannelListener(nullptr);
+    }
+
+    assert(channelListener() != hs);
+}
+
+
+} // </namespace sys>
 } // </namespace ofp>

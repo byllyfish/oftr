@@ -3,11 +3,11 @@
 
 #include "ofp/connection.h"
 #include "ofp/driver.h"
-#include "ofp/impl/boost_asio.h"
+#include "ofp/sys/boost_asio.h"
 #include "ofp/protocolversions.h"
 
 namespace ofp { // <namespace ofp>
-namespace impl { // <namespace impl>
+namespace sys { // <namespace sys>
 
 class UDP_Server;
 
@@ -42,11 +42,11 @@ private:
 };
 OFP_END_IGNORE_PADDING
 
-} // </namespace impl>
+} // </namespace sys>
 } // </namespace ofp>
 
 
-inline ofp::impl::udp::endpoint ofp::impl::UDP_Connection::remoteEndpoint() const
+inline ofp::sys::udp::endpoint ofp::sys::UDP_Connection::remoteEndpoint() const
 {
 	return remoteEndpt_;
 }

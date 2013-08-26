@@ -7,7 +7,7 @@
 #include "ofp/ipv6address.h"
 
 namespace ofp {  // <namespace ofp>
-namespace impl { // <namespace impl>
+namespace sys { // <namespace sys>
 
 using tcp = boost::asio::ip::tcp;
 using udp = boost::asio::ip::udp;
@@ -84,7 +84,7 @@ inline udp::endpoint makeUDPEndpoint(const IPv6Address &addr, UInt16 port)
     }
 }
 
-} // </namespace impl>
+} // </namespace sys>
 } // </namespace ofp>
 
 #endif // OFP_BOOST_ASIO_H

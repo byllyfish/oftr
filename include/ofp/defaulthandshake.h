@@ -21,12 +21,20 @@ public:
 	void onException(const Exception *exception) override;
 	void onTimer(UInt32 timerID) override {}
 	
+	Driver::Role role() const { return role_; }
+	
+	void setStartingVersion(UInt8 version) { startingVersion_ = version; }
+	void setStartingXid(UInt32 xid) { startingXid_ = xid; }
+	void setConnection(Connection *channel) { channel_ = channel; }
+
 private:
 	Connection *channel_;
 	ProtocolVersions versions_;
 	Factory listenerFactory_;
 	Driver::Role role_;
-	
+	UInt32 startingXid_ = 0;
+	UInt8 startingVersion_ = 0;
+
 	void onHello(const Message *message);
 	void onFeaturesReply(const Message *message);
 	void onError(const Message *message);

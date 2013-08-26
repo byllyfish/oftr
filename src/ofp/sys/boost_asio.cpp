@@ -1,10 +1,10 @@
-#include "ofp/impl/boost_asio.h"
+#include "ofp/sys/boost_asio.h"
 
 
 using namespace boost::asio;
 
 
-size_t ofp::impl::HashEndpoint::operator()(const udp::endpoint &endpt) const
+size_t ofp::sys::HashEndpoint::operator()(const udp::endpoint &endpt) const
 {
 	// FIXME - check literature for better hash function.
 	

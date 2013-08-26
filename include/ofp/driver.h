@@ -9,7 +9,7 @@
 
 namespace ofp { // <namespace ofp>
 
-namespace impl {
+namespace sys {
 	class Engine;
 }
 
@@ -39,7 +39,7 @@ public:
 	void run();
 
 private:
-	impl::Engine *engine_;
+	sys::Engine *engine_;
 	log::Lifetime lifetime{"Driver"};
 };
 
