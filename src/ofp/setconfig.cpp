@@ -17,7 +17,7 @@ const ofp::SetConfig *ofp::SetConfig::cast(const Message *message)
 
 bool ofp::SetConfig::validateLength(size_t length) const
 {
-	return (header_.length() == sizeof(SetConfig));
+	return (length == sizeof(SetConfig));
 }
 
 

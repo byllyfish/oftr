@@ -5,7 +5,6 @@
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
-
 Driver *Connection::driver() const
 {
     return engine_->driver();
@@ -18,39 +17,69 @@ Connection::~Connection()
     }
     ChannelListener::dispose(handshake_);
 
-    if (dpidWasPosted_) {
+    if (dpidWasPosted_ && engine()->isRunning()) {
         engine()->releaseDatapathID(this);
+
+        if (mainConn_ == this) {
+            // Main connection is going down. Terminate all of our auxiliary 
+            // connections.
+            for (auto conn : auxList_) {
+                conn->mainConn_ = conn;
+                conn->shutdown();
+            }
+
+        } else {
+            assert(mainConn_ != this);
+
+            // Remove ourselves from the auxiliary connection list of our main
+            // connection.
+            assert(mainConn_ != nullptr);
+            AuxiliaryList &auxList = mainConn_->auxList_;
+            auto iter = std::find(auxList.begin(), auxList.end(), this);
+            if (iter != auxList.end()) {
+                auxList.erase(iter);
+            } else {
+                log::debug("~Connection: Missing pointer to auxiliary connection.");
+            }
+        }
     }
 }
 
-UInt8 Connection::version() const
+void Connection::setMainConnection(Connection *channel)
 {
-    return version_;
-}
+    assert(channel != nullptr);
+    assert(mainConn_ == this);
+    assert(channel != this);
+    assert(auxiliaryID() != 0);
 
-void Connection::setVersion(UInt8 version)
-{
-    version_ = version;
-}
+    log::debug("setMainConnection");
+    mainConn_ = channel;
 
-const Features &Connection::features() const
-{
-    return features_;
-}
+    UInt8 auxID = auxiliaryID();
+    AuxiliaryList &auxList = mainConn_->auxList_;
 
-void Connection::setFeatures(const Features &features)
-{
-    features_ = features;
+    // Check if there is already an auxiliary connection with the same ID.
+    // If so, close it so we can replace it with this one.
+
+    auto iter = std::find_if(auxList.begin(), auxList.end(), [auxID](Connection *conn) {
+        return conn->auxiliaryID() == auxID;
+    });
+    if (iter != auxList.end()) {
+        log::info("setMainConnection: Auxiliary connection found with same ID.");
+        (*iter)->shutdown();
+    }
+
+    auxList.push_back(this);
 }
 
 void Connection::postMessage(Connection *source, Message *message)
 {
-    log::debug("Read: ", RawDataToHex(message->data(), message->size(), ' ', 2));
+    log::debug("Read: ",
+               RawDataToHex(message->data(), message->size(), ' ', 2));
     if (listener_) {
         listener_->onMessage(message);
     }
 }
-
 
 void Connection::postTimerExpired(ConnectionTimer *timer)
 {
@@ -72,7 +101,6 @@ void Connection::postIdle()
     log::debug("postIdle() ==========");
 }
 
-
 void Connection::postDatapathID()
 {
     assert(!dpidWasPosted_);
@@ -81,16 +109,18 @@ void Connection::postDatapathID()
     dpidWasPosted_ = true;
 }
 
-
 /// \brief Schedule a timer event on the channel and give it the specified ID.
-/// If there is already a timer with the same ID, this method will cancel the 
+/// If there is already a timer with the same ID, this method will cancel the
 /// old timer and replace it.
-void Connection::scheduleTimer(UInt32 timerID, milliseconds interval, bool repeat) 
+void Connection::scheduleTimer(UInt32 timerID, milliseconds interval,
+                               bool repeat)
 {
-    timers_[timerID] = std::unique_ptr<ConnectionTimer>(new ConnectionTimer{this, timerID, interval, repeat});
+    timers_[timerID] = std::unique_ptr<ConnectionTimer>(
+        new ConnectionTimer{this, timerID, interval, repeat});
 }
 
-void Connection::cancelTimer(UInt32 timerID) {
+void Connection::cancelTimer(UInt32 timerID)
+{
     size_t n = timers_.erase(timerID);
     assert(n == 1);
 }

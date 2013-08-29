@@ -23,16 +23,16 @@ class Engine;
 OFP_BEGIN_IGNORE_PADDING
 class Connection : public Channel {
 public:
-	Connection(Engine *engine, DefaultHandshake *handshake) :engine_{engine}, listener_{handshake}, handshake_{handshake} {}
+	Connection(Engine *engine, DefaultHandshake *handshake) :engine_{engine}, listener_{handshake}, handshake_{handshake}, mainConn_{this} {}
 	virtual ~Connection();
 
 	Driver *driver() const override;
 
-	UInt8 version() const override;
-	void  setVersion(UInt8 version);
+	UInt8 version() const override { return version_; }
+	void  setVersion(UInt8 version) { version_ = version; }
 
-	const Features &features() const override;
-	void setFeatures(const Features &features);
+	const Features &features() const override { return features_; }
+	void setFeatures(const Features &features) { features_ = features; }
 
 	DatapathID datapathID() const override { return features_.datapathID(); }
 	UInt8 auxiliaryID() const override { return features_.auxiliaryID(); }
@@ -40,17 +40,15 @@ public:
 	Connection *mainConnection() const 
 	{ return mainConn_; }
 
-	void setMainConnection(Connection *channel) {
-		mainConn_ = channel;
-	}
+	void setMainConnection(Connection *channel);
 
-	Connection *nextAuxiliaryConnection() const {
-		return nextAuxConn_;
-	}
+	//Connection *nextAuxiliaryConnection() const {
+	//	return nextAuxConn_;
+	//}
 
-	void setNextAuxiliaryConnection(Connection *channel) {
-		nextAuxConn_ = channel;
-	}
+	//void setNextAuxiliaryConnection(Connection *channel) {
+	//	nextAuxConn_ = channel;
+	//}
 
 	UInt32 nextXid() override {
 		return ++nextXid_;
@@ -81,13 +79,15 @@ public:
 	}
 
 private:
+	using AuxiliaryList = std::vector<Connection*>;
+
 	sys::Engine *engine_;
 	ChannelListener *listener_ = nullptr;
 	DefaultHandshake *handshake_ = nullptr;
-	Connection *mainConn_ = nullptr;
-	Connection *nextAuxConn_ = nullptr;
+	Connection *mainConn_;
+	AuxiliaryList auxList_;
 	ConnectionTimerMap timers_;
-	Features features_{};
+	Features features_;
 	UInt32 nextXid_ = 0;
 	UInt8 version_ = 0;
 	bool dpidWasPosted_ = false;

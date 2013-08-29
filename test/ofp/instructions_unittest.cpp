@@ -33,6 +33,6 @@ TEST(instructions, IT_WRITE_ACTIONS) {
 
 	IT_WRITE_ACTIONS wa{&list};
 	EXPECT_EQ(8, IT_WRITE_ACTIONS::HeaderSize);
-	EXPECT_EQ(0, std::memcmp(HEX("0003 0010 0000 0000"), &wa, IT_WRITE_ACTIONS::HeaderSize));
-	EXPECT_EQ(0, std::memcmp(HEX("000B 0008 0000 0000"), wa.data(), wa.size()));
+	EXPECT_HEX("0003 0010 0000 0000", &wa, IT_WRITE_ACTIONS::HeaderSize);
+	EXPECT_HEX("000B 0008 0000 0000", wa.data(), wa.size());
 }

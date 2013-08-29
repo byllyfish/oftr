@@ -31,8 +31,9 @@ public:
 
     void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, milliseconds delay);
 
-    Exception run();
+    void run();
     void quit();
+    bool isRunning() const { return isRunning_; }
     
     void openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Connection *mainConnection);
 
@@ -64,6 +65,7 @@ private:
     // The io_service must be the first object to be destroyed when engine
     // destructor runs.
     io_service io_;
+    bool isRunning_ = false;
 };
 
 } // </namespace sys>

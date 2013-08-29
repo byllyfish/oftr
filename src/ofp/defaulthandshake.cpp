@@ -9,6 +9,7 @@
 #include "ofp/log.h"
 #include "ofp/constants.h"
 #include "ofp/exception.h"
+#include "ofp/defaultauxiliarylistener.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -149,7 +150,11 @@ void DefaultHandshake::onFeaturesReply(const Message *message)
 
 	channel_->postDatapathID();
 
-	installNewChannelListener();
+	if (role_ == Driver::Controller && channel_->mainConnection() != channel_) {
+		installAuxiliaryChannelListener();
+	} else {
+		installNewChannelListener();
+	}
 }
 
 
@@ -174,6 +179,16 @@ void DefaultHandshake::installNewChannelListener()
 	assert(listenerFactory_ != nullptr);
 
 	ChannelListener *newListener = listenerFactory_();
+	channel_->setChannelListener(newListener);
+	newListener->onChannelUp(channel_);
+}
+
+
+void DefaultHandshake::installAuxiliaryChannelListener()
+{
+	assert(channel_->channelListener() == this);
+	
+	ChannelListener *newListener = new DefaultAuxiliaryListener;
 	channel_->setChannelListener(newListener);
 	newListener->onChannelUp(channel_);
 }

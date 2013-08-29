@@ -9,6 +9,22 @@ using namespace boost::asio;
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
+namespace detail { // <namespace detail>
+
+/// \brief Protects a variable's value using RAII. When the scope of exits, the
+/// protected variable is restored to its value at entry.
+template <class Type>
+class VarProtect {
+public:
+	explicit VarProtect(Type *ptr) : ptr_{ptr}, val_{*ptr} {}
+	~VarProtect() { *ptr_ = val_; }
+
+private:
+	Type *ptr_;
+	Type val_;
+};
+
+} // </namespace detail>
 
 Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}
 {
@@ -28,9 +44,6 @@ Engine::~Engine()
 	for (auto svr : servers) {
 		delete svr;
 	}
-
-	// Clearing this map here will make destruction of TCP_Connectons go faster.
-	dpidMap_.clear();
 }
 
 Deferred<Exception> Engine::listen(Driver::Role role, const Features *features, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
@@ -81,23 +94,24 @@ void Engine::reconnect(DefaultHandshake *handshake, const Features *features, co
 }
 
 
-Exception Engine::run()
+void Engine::run()
 {
-	Exception result;
+	if (!isRunning_) {
+		detail::VarProtect<bool> protect{&isRunning_};
+		isRunning_ = true;
 
-	try {
-		io_.run();
+		// Set isRunning_ to true when we are in io.run(). This guards against
+		// re-entry and provides a flag to test when shutting down.
 
-	} catch (const boost::system::system_error &ex) {
-		log::debug("System error caught in Engine::run(): ", ex.code());
-		result = makeException(ex.code());
+		try {
+			io_.run();
 
-	} catch (std::exception &ex) {
-		log::debug("Unexpected exception caught in Engine::run(): ", ex.what());
-		// FIXME - set result here?
+		} catch (std::exception &ex) {
+			log::debug("Unexpected exception caught in Engine::run(): ", ex.what());
+		}
+
+		isRunning_ = false;
 	}
-
-	return result;
 }
 
 
@@ -123,9 +137,10 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Conne
 		ProtocolVersions versions = hs->versions();
 
 		ChannelListener::Factory listenerFactory = [](){
-			return new DefaultAuxiliaryListener();
+			return new DefaultAuxiliaryListener;
 		};
 
+		// FIXME should Auxiliary connections use a null listenerFactory? (Use defaultauxiliarylistener by default?)
 		auto connPtr = std::make_shared<TCP_Connection>(this, Driver::Auxiliary, versions, listenerFactory);
 		
 		Features features = mainConnection->features();
@@ -135,6 +150,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Conne
 
 		Deferred<Exception> result = connPtr->asyncConnect(endpt);
 
+		// FIXME where does the exception go?
 		//result.done([mainConnection](Exception exc){
 		//	mainConnection
 		//});
@@ -148,25 +164,37 @@ void Engine::postDatapathID(Connection *channel)
 	UInt8 auxID = channel->auxiliaryID();
 
 	if (auxID == 0) {
-		// Insert main connection's datapathID into the dpidMap.
+		// Insert main connection's datapathID into the dpidMap, if not present
+		// already.
 		auto pair = dpidMap_.insert({dpid, channel});
 		if (!pair.second) {
 			// DatapathID already exists in map. If the existing channel is 
 			// different, close it and replace it with the new one.
 			auto item = pair.first;
 			if (item->second != channel) {
-				log::info("Engine.postDatapathID: Conflict between main connections detected.", dpid);
+				log::info("Engine.postDatapathID: Conflict between main connections detected. Closing old.", dpid);
 				Connection *old = item->second;
 				item->second = channel;
 				old->shutdown();
 
 			} else {
-				log::debug("Engine.postDatapathID called twice for channel.", dpid);
+				log::info("Engine.postDatapathID: DatapathID is already registered.", dpid);
 			}
 		}
 		
 	} else {
-		log::debug("Engine::postDatapathID called for auxID", auxID);
+		assert(auxID != 0);
+
+		// Look up main connection and assign auxiliary connection to it. If we
+		// don't find a main connection, close the auxiliary channel.
+		auto item = dpidMap_.find(dpid);
+		if (item != dpidMap_.end()) {
+			channel->setMainConnection(item->second);
+
+		} else {
+			log::info("Engine.postDatapathID: Main connection not found.", dpid);
+			channel->shutdown();
+		}
 	}
 }
 
@@ -182,7 +210,7 @@ void Engine::releaseDatapathID(Connection *channel)
 		if (item != dpidMap_.end()) {
 		 	if (item->second == channel)
 				dpidMap_.erase(item);
-		} else {
+		} else if (isRunning_) {
 			log::debug("Engine.releaseDatapathID: Unable to find datapathID.", dpid);
 		}
 	} else {

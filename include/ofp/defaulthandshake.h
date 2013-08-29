@@ -22,7 +22,7 @@ public:
 	void onChannelDown(Channel *channel) override;
 	void onMessage(const Message *message) override;
 	void onException(const Exception *exception) override;
-	void onTimer(UInt32 timerID) override {}
+	void onTimer(UInt32 /* timerID */) override {}
 	
 	Driver::Role role() const { return role_; }
 	ProtocolVersions versions() const { return versions_; }
@@ -46,6 +46,7 @@ private:
 
 	void replyError(UInt16 type, UInt16 code, const Message *message);
 	void installNewChannelListener();
+	void installAuxiliaryChannelListener();
 };
 OFP_END_IGNORE_PADDING
 
