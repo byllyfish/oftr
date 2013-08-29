@@ -15,7 +15,7 @@ void ofp::ChannelListener::onChannelUp(Channel *channel)
 
 void ofp::ChannelListener::onChannelDown(Channel *channel)
 {
-	log::debug("ChannelListener - onChannelUp ignored:", channel);
+	log::debug("ChannelListener - onChannelDown ignored:", channel);
 }
 
 void ofp::ChannelListener::onException(const Exception *exception) 

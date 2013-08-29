@@ -29,9 +29,11 @@ void MockChannelListener::onMessage(const Message *message)
 
 TEST(driver, test)
 {
+    log::set(&std::cerr);
+    
     Driver driver;
 
-    driver.listen(Driver::Controller, IPv6Address{}, Driver::DefaultPort,
+    driver.listen(Driver::Controller, nullptr, IPv6Address{}, Driver::DefaultPort,
                   ProtocolVersions{}, []{
         return new MockChannelListener;
     });

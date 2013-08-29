@@ -6,9 +6,6 @@
 using namespace ofp;
 
 
-ofp::Features NullAgent::gFeatures;
-
-
 int main(int argc, const char **argv)
 {
     std::vector<std::string> args{argv + 1, argv + argc};
@@ -25,17 +22,25 @@ int main(int argc, const char **argv)
 
     ofp::log::set(&std::cerr);
     
+    EnetAddress enetAddr{"01-02-03-04-05-00"};
+
+    Features features;
+    features.setDatapathID(DatapathID{0, enetAddr});
+    features.setBufferCount(1);
+    features.setTableCount(1);
+    features.setCapabilities(0);
+
     Driver driver;
 
     if (addr.valid()) {
-        auto result = driver.connect(Driver::Agent, addr, Driver::DefaultPort,
+        auto result = driver.connect(Driver::Agent, &features, addr, Driver::DefaultPort,
                                      version, NullAgent::Factory);
         result.done([](Exception ex) {
             std::cout << "Result: " << ex << '\n';
         });
 
     } else {
-        auto result = driver.listen(Driver::Agent, IPv6Address{}, Driver::DefaultPort,
+        auto result = driver.listen(Driver::Agent, &features, IPv6Address{}, Driver::DefaultPort,
                                     version, NullAgent::Factory);
 
         result.done([](Exception ex) {

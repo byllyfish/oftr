@@ -10,6 +10,10 @@ class Channel;
 class Message;
 class Exception;
 
+namespace sys { // <namespace sys>
+class Connection;
+} // </namespace sys>
+
 /// \brief An abstract class for listening to events and messages from a
 /// Channel.
 class ChannelListener {
@@ -60,7 +64,7 @@ protected:
 
     static void dispose(ChannelListener *listener);
 
-    friend class Connection;
+    friend class sys::Connection;
 };
 
 } // </namespace ofp>

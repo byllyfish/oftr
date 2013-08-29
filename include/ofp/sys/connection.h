@@ -1,29 +1,29 @@
-#ifndef OFP_CONNECTION_H
-#define OFP_CONNECTION_H
+#ifndef OFP_SYS_CONNECTION_H
+#define OFP_SYS_CONNECTION_H
 
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
 #include "ofp/features.h"
 #include "ofp/defaulthandshake.h"
+#include "ofp/sys/connectiontimer.h"
 
 namespace ofp { // <namespace ofp>
 
-namespace sys { // <namespace sys>
-class Engine;
-} // </namespace sys>
 class Message;
 
+namespace sys { // <namespace sys>
+class Engine;
 
 /**
  *  Connection is an interface for a channel that can receive messages
  *  posted from other Connections. This interface also supports binding
  *  auxillary connections to their main connection, and a main connection to a
- *  a linked list of auxiliary connections.
+ *  a linked list of auxiliary connections. It also supports a connection timer.
  */
 OFP_BEGIN_IGNORE_PADDING
 class Connection : public Channel {
 public:
-	Connection(sys::Engine *engine, DefaultHandshake *handshake) :engine_{engine}, listener_{handshake}, handshake_{handshake} {}
+	Connection(Engine *engine, DefaultHandshake *handshake) :engine_{engine}, listener_{handshake}, handshake_{handshake} {}
 	virtual ~Connection();
 
 	Driver *driver() const override;
@@ -34,6 +34,9 @@ public:
 	const Features &features() const override;
 	void setFeatures(const Features &features);
 
+	DatapathID datapathID() const override { return features_.datapathID(); }
+	UInt8 auxiliaryID() const override { return features_.auxiliaryID(); }
+	
 	Connection *mainConnection() const 
 	{ return mainConn_; }
 
@@ -64,17 +67,14 @@ public:
 	void setHandshake(DefaultHandshake *handshake) { handshake_ = handshake; }
 
 	void postMessage(Connection *source, Message *message);
+	void postTimerExpired(ConnectionTimer *timer);
+	void postIdle();
+	void postDatapathID();
 
 	sys::Engine *engine() const { return engine_; }
 	
-
-	void scheduleTimer(UInt32 timerID, std::chrono::milliseconds when) override {
-		// TODO
-	}
-
-	void cancelTimer(UInt32 timerID) override {
-		// TODO
-	}
+	void scheduleTimer(UInt32 timerID, milliseconds when, bool repeat) override;
+	void cancelTimer(UInt32 timerID) override;
 
 	void setStartingXid(UInt32 xid) override {
 		nextXid_ = xid;
@@ -86,12 +86,15 @@ private:
 	DefaultHandshake *handshake_ = nullptr;
 	Connection *mainConn_ = nullptr;
 	Connection *nextAuxConn_ = nullptr;
+	ConnectionTimerMap timers_;
 	Features features_{};
 	UInt32 nextXid_ = 0;
 	UInt8 version_ = 0;
+	bool dpidWasPosted_ = false;
 };
 OFP_END_IGNORE_PADDING
 
+} // </namespace sys>
 } // </namespace ofp>
 
-#endif // OFP_CONNECTION_H
+#endif // OFP_SYS_CONNECTION_H

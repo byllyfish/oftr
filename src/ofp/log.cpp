@@ -1,9 +1,10 @@
 #include "ofp/log.h"
-#include <chrono>
 #include <ctime>
 
 namespace ofp { // <namespace ofp>
 namespace log { // <namespace log>
+
+using milliseconds = std::chrono::milliseconds;
 
 static std::ostream *GlobalLogStream = nullptr;
 
@@ -15,7 +16,7 @@ void set(std::ostream *logStream) {
 	GlobalLogStream = logStream;
 }
 
-using Time = std::pair<std::time_t,std::chrono::milliseconds>;
+using Time = std::pair<std::time_t, milliseconds>;
 
 static Time currentTime()
 {

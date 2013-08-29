@@ -7,13 +7,16 @@
 
 namespace ofp { // <namespace ofp>
 
+namespace sys { // <namespace sys>
 class Connection;
+} // </namespace sys>
+
 
 OFP_BEGIN_IGNORE_PADDING
 class DefaultHandshake : public ChannelListener {
 public:
 
-	DefaultHandshake(Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory);
+	DefaultHandshake(sys::Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory);
 
 	void onChannelUp(Channel *channel) override;
 	void onChannelDown(Channel *channel) override;
@@ -22,13 +25,14 @@ public:
 	void onTimer(UInt32 timerID) override {}
 	
 	Driver::Role role() const { return role_; }
+	ProtocolVersions versions() const { return versions_; }
 	
 	void setStartingVersion(UInt8 version) { startingVersion_ = version; }
 	void setStartingXid(UInt32 xid) { startingXid_ = xid; }
-	void setConnection(Connection *channel) { channel_ = channel; }
+	void setConnection(sys::Connection *channel) { channel_ = channel; }
 
 private:
-	Connection *channel_;
+	sys::Connection *channel_;
 	ProtocolVersions versions_;
 	Factory listenerFactory_;
 	Driver::Role role_;
@@ -36,9 +40,11 @@ private:
 	UInt8 startingVersion_ = 0;
 
 	void onHello(const Message *message);
+	void onFeaturesRequest(const Message *message);
 	void onFeaturesReply(const Message *message);
 	void onError(const Message *message);
 
+	void replyError(UInt16 type, UInt16 code, const Message *message);
 	void installNewChannelListener();
 };
 OFP_END_IGNORE_PADDING

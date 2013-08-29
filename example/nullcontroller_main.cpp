@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 
     if (addr.valid()) {
         auto result =
-            driver.connect(Driver::Controller, addr, Driver::DefaultPort,
+            driver.connect(Driver::Controller, nullptr, addr, Driver::DefaultPort,
                            ProtocolVersions{}, NullController::Factory);
 
         result.done([](Exception ex) {
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
         });
 
     } else {
-        driver.listen(Driver::Controller, IPv6Address{}, Driver::DefaultPort,
+        driver.listen(Driver::Controller, nullptr, IPv6Address{}, Driver::DefaultPort,
                       ProtocolVersions{}, NullController::Factory);
     }
 

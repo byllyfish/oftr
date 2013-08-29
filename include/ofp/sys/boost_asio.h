@@ -1,7 +1,9 @@
-#ifndef OFP_BOOST_ASIO_H
-#define OFP_BOOST_ASIO_H
+#ifndef OFP_SYS_BOOST_ASIO_H
+#define OFP_SYS_BOOST_ASIO_H
 
 #include <boost/asio.hpp>
+#include <boost/asio/steady_timer.hpp>
+
 #include "ofp/exception.h"
 #include "ofp/log.h"
 #include "ofp/ipv6address.h"
@@ -13,11 +15,19 @@ using tcp = boost::asio::ip::tcp;
 using udp = boost::asio::ip::udp;
 using io_service = boost::asio::io_service;
 using error_code = boost::system::error_code;
+using steady_timer = boost::asio::steady_timer;
+
 
 inline bool isAsioEOF(const error_code &error)
 {
     using namespace boost::asio::error;
     return error.value() == eof && error.category() == misc_category;
+}
+
+inline bool isAsioCanceled(const error_code &error)
+{
+    using namespace boost::asio::error;
+    return error.value() == ECANCELED && error.category() == system_category;
 }
 
 inline Exception makeException(const boost::system::error_code &error)
@@ -87,4 +97,4 @@ inline udp::endpoint makeUDPEndpoint(const IPv6Address &addr, UInt16 port)
 } // </namespace sys>
 } // </namespace ofp>
 
-#endif // OFP_BOOST_ASIO_H
+#endif // OFP_SYS_BOOST_ASIO_H

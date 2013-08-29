@@ -19,6 +19,7 @@
 #include <string>      // for std::string
 #include <cassert>     // for assert macro
 #include <ostream>     // for std::ostream (used for now)
+#include <chrono>
 
 #if defined(__clang__)
 # define OFP_BEGIN_IGNORE_PADDING \
@@ -62,6 +63,14 @@ using UInt8 = std::uint8_t;
 using UInt16 = std::uint16_t;
 using UInt32 = std::uint32_t;
 using UInt64 = std::uint64_t;
+
+using milliseconds = std::chrono::milliseconds;
+
+// Literal type `ms` is not supported until C++14. Use _ms for now.
+
+constexpr milliseconds operator"" _ms(unsigned long long msec) {
+    return milliseconds{msec};
+}
 
 template <class T>
 constexpr MakeSigned<T> Signed_cast(T value)

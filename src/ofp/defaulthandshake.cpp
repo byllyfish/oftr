@@ -1,5 +1,5 @@
 #include "ofp/defaulthandshake.h"
-#include "ofp/connection.h"
+#include "ofp/sys/connection.h"
 #include "ofp/hello.h"
 #include "ofp/message.h"
 #include "ofp/features.h"
@@ -12,6 +12,7 @@
 
 namespace ofp { // <namespace ofp>
 
+using sys::Connection;
 
 DefaultHandshake::DefaultHandshake(Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
 	: channel_{channel}, versions_{versions}, listenerFactory_{listenerFactory}, role_{role}
@@ -55,6 +56,10 @@ void DefaultHandshake::onMessage(const Message *message)
 			onHello(message);
 			break;
 
+		case FeaturesRequest::Type:
+			onFeaturesRequest(message);
+			break;
+
 		case FeaturesReply::Type:
 			onFeaturesReply(message);
 			break;
@@ -85,33 +90,64 @@ void DefaultHandshake::onHello(const Message *message)
 
 	ProtocolVersions versions = msg->protocolVersions();
 	versions = versions.intersection(versions_);
-	log::debug("bitmap ", versions.bitmap());
 
 	if (versions.empty()) {
-		ErrorBuilder error{OFPET_HELLO_FAILED, OFPHFC_INCOMPATIBLE, message};
-		error.send(channel_);
-		channel_->close();
+		replyError(OFPET_HELLO_FAILED, OFPHFC_INCOMPATIBLE, message);
 
 	} else if (role_ == Driver::Controller) {
 		channel_->setVersion(versions.highestVersion());
 		FeaturesRequestBuilder{}.send(channel_);
 		
 	} else {
+		assert(role_ == Driver::Agent || role_ == Driver::Auxiliary);
+
 		channel_->setVersion(versions.highestVersion());
-		installNewChannelListener();
+		// Agent connections wait for FeaturesRequest message.
 	}
+
+	// TODO handle cast where we reconnected with a startingVersion of 1 but
+	// the other end supports a higher version number.
+}
+
+
+void DefaultHandshake::onFeaturesRequest(const Message *message)
+{
+	// A controller shouuld not receive a features request message.
+	if (role_ == Driver::Controller) {
+		return; // FIXME error
+	}
+
+	const FeaturesRequest *request = FeaturesRequest::cast(message);
+	if (!request)
+		return;  // FIXME log
+
+	FeaturesReplyBuilder reply{message};
+	reply.setFeatures(channel_->features());
+	reply.send(channel_);
+
+	installNewChannelListener();
 }
 
 
 void DefaultHandshake::onFeaturesReply(const Message *message)
 {
+	// Only a controller should be receiving a features reply message.
+	if (role_ != Driver::Controller) {
+		return;
+	}
+
 	const FeaturesReply *msg = FeaturesReply::cast(message);
 	if (!msg)
-		return;
+		return;  // FIXME log
 
 	Features features;
 	msg->getFeatures(&features);
 	channel_->setFeatures(features);
+
+	// Registering the connection allows us to attach auxiliary connections to 
+	// their main connections.
+
+	channel_->postDatapathID();
 
 	installNewChannelListener();
 }
@@ -120,6 +156,15 @@ void DefaultHandshake::onFeaturesReply(const Message *message)
 void DefaultHandshake::onError(const Message *message) 
 {
 	// FIXME log it
+}
+
+
+
+void DefaultHandshake::replyError(UInt16 type, UInt16 code, const Message *message)
+{
+	ErrorBuilder error{type, code, message};
+	error.send(channel_);
+	channel_->shutdown();
 }
 
 

@@ -1,32 +1,42 @@
 #include "ofp/driver.h"
 #include "ofp/sys/engine.h"
 
-ofp::Driver::Driver(DriverOptions *options)
+namespace ofp { // <namespace ofp>
+
+Driver::Driver(DriverOptions *options)
     : engine_{new sys::Engine{this, options}}
 {
 }
 
-ofp::Driver::~Driver()
+Driver::~Driver()
 {
     delete engine_;
 }
 
-ofp::Deferred<ofp::Exception> ofp::Driver::listen(Role role, const IPv6Address &localAddress,
+Deferred<Exception> Driver::listen(Role role, const Features *features, const IPv6Address &localAddress,
                          UInt16 localPort, ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory)
 {
-    return engine_->listen(role, localAddress, localPort, versions, listenerFactory);
+    return engine_->listen(role, features, localAddress, localPort, versions, listenerFactory);
 }
 
-ofp::Deferred<ofp::Exception> ofp::Driver::connect(Role role, const IPv6Address &remoteAddress,
+Deferred<Exception> Driver::connect(Role role, const Features *features, const IPv6Address &remoteAddress,
                           UInt16 remotePort, ProtocolVersions versions,
                           ChannelListener::Factory listenerFactory)
 {
-    return engine_->connect(role, remoteAddress, remotePort, versions, listenerFactory);
+    return engine_->connect(role, features, remoteAddress, remotePort, versions, listenerFactory);
 }
 
-void ofp::Driver::run()
+void Driver::run()
 {
     engine_->run();
 }
 
+
+void Driver::quit()
+{
+	engine_->quit();
+}
+
+
+} // </namespace ofp>

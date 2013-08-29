@@ -1,56 +1,72 @@
-#ifndef OFP_IMPL_ENGINE_H
-#define OFP_IMPL_ENGINE_H
+#ifndef OFP_SYS_ENGINE_H
+#define OFP_SYS_ENGINE_H
 
 #include "ofp/driver.h"
 #include "ofp/sys/boost_asio.h"
 #include "ofp/defaulthandshake.h"
+#include "ofp/channel.h"
+#include "ofp/datapathid.h"
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
+class Server;
 class TCP_Server;
+class TCP_Connection; // FIXME can I use Connection here?
 
 class Engine {
 public:
-    Engine(Driver *driver, DriverOptions *options);
+     Engine(Driver *driver, DriverOptions *options);
+    ~Engine();
 
-    Deferred<Exception> listen(Driver::Role role,
+    Deferred<Exception> listen(Driver::Role role, const Features *features,
                                const IPv6Address &localAddress,
                                UInt16 localPort, ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory);
 
-    Deferred<Exception> connect(Driver::Role role,
+    Deferred<Exception> connect(Driver::Role role, const Features *features,
                                 const IPv6Address &remoteAddress,
                                 UInt16 remotePort, ProtocolVersions versions,
                                 ChannelListener::Factory listenerFactory);
 
-    void reconnect(DefaultHandshake *handshake, const IPv6Address &remoteAddress, UInt16 remotePort);
+    void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, milliseconds delay);
 
     Exception run();
-
-    // TODO
-    void openAuxChannel(Channel *main, tcp::endpoint endpt)
-    {
-    }
-    void openAuxChannel(Channel *main, udp::endpoint endpt)
-    {
-    }
+    void quit();
+    
+    void openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Connection *mainConnection);
 
     io_service &io()
     {
         return io_;
     }
+
     Driver *driver() const
     {
         return driver_;
     }
 
+    void postDatapathID(Connection *channel);
+    void releaseDatapathID(Connection *channel);
+
+    void registerServer(Server *server);
+    void releaseServer(Server *server);
+
 private:
-    io_service io_;
     Driver *driver_;
+
+    using DatapathMap = std::map<DatapathID,Connection *>;
+    using ServerList = std::vector<Server *>;
+
+    DatapathMap dpidMap_;
+    ServerList serverList_;
+    
+    // The io_service must be the first object to be destroyed when engine
+    // destructor runs.
+    io_service io_;
 };
 
 } // </namespace sys>
 } // </namespace ofp>
 
-#endif // OFP_IMPL_ENGINE_H
+#endif // OFP_SYS_ENGINE_H

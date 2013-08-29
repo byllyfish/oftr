@@ -7,19 +7,39 @@
 
 using namespace boost;
 
+namespace ofp { // <namespace ofp>
+namespace sys { // <namespace sys>
 
-ofp::sys::UDP_Server::UDP_Server(Engine *engine, Driver::Role role, const udp::endpoint &endpt, ProtocolVersions versions)
+
+UDP_Server::UDP_Server(Engine *engine, Driver::Role role, const Features *features, const udp::endpoint &endpt, ProtocolVersions versions)
     : engine_{engine}, role_{role}, versions_{versions}, socket_{engine->io(), endpt}, message_{nullptr}
 {
+    if (features) {
+        features_ = *features;
+    }
+    
     asyncReceive();
+
+    engine_->registerServer(this);
+
+    log::info("Start UDP listening on", endpt);
+}
+
+UDP_Server::~UDP_Server()
+{
+    error_code err;
+    udp::endpoint endpt = socket_.local_endpoint(err);
+    log::info("Stop UDP listening on", endpt);
+
+    engine_->releaseServer(this);
 }
 
 
-void ofp::sys::UDP_Server::add(UDP_Connection *conn){
+void UDP_Server::add(UDP_Connection *conn){
 	connMap_.insert(std::make_pair(conn->remoteEndpoint(), conn));
 }
 
-void ofp::sys::UDP_Server::remove(UDP_Connection *conn) {
+void UDP_Server::remove(UDP_Connection *conn) {
 
 	if (!shuttingDown_) {
 		auto iter = connMap_.find(conn->remoteEndpoint());
@@ -33,21 +53,19 @@ void ofp::sys::UDP_Server::remove(UDP_Connection *conn) {
 }
 
 
-void ofp::sys::UDP_Server::write(const void *data, size_t length)
+void UDP_Server::write(const void *data, size_t length)
 {
     // write to buffer
 }
 
-void ofp::sys::UDP_Server::flush(udp::endpoint endpt)
+void UDP_Server::flush(udp::endpoint endpt)
 {
     asyncSend();
 }
 
 
-void ofp::sys::UDP_Server::asyncReceive()
-{
-    log::debug(__PRETTY_FUNCTION__);
-    
+void UDP_Server::asyncReceive()
+{   
     socket_.async_receive_from(
         asio::buffer(message_.mutableData(MaxDatagramLength), MaxDatagramLength),
         sender_, [this](error_code err, size_t bytes_recvd) {
@@ -70,12 +88,12 @@ void ofp::sys::UDP_Server::asyncReceive()
     });
 }
 
-void ofp::sys::UDP_Server::asyncSend()
+void UDP_Server::asyncSend()
 {
 
 }
 
-void ofp::sys::UDP_Server::dispatchMessage()
+void UDP_Server::dispatchMessage()
 {
     log::debug("Receive datagram:", message_);
 
@@ -116,4 +134,7 @@ void ofp::sys::UDP_Server::dispatchMessage()
     	iter->second->postMessage(nullptr, &message_);
     }
 }
+
+} // </namespace sys>
+} // </namespace ofp>
 

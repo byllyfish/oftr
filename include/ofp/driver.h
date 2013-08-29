@@ -5,7 +5,6 @@
 #include "ofp/ipv6address.h"
 #include "ofp/protocolversions.h"
 #include "ofp/deferred.h"
-#include <chrono>
 
 namespace ofp { // <namespace ofp>
 
@@ -13,7 +12,16 @@ namespace sys {
 	class Engine;
 }
 
-class DriverOptions;
+struct DriverOptions {
+	// Settings for reliable connections
+	milliseconds agentReconnectDelay = 500_ms;
+	milliseconds agentIdleInterval = 5000_ms;
+	milliseconds agentEchoTimeout = 1000_ms;
+	milliseconds controllerIdleInterval = 5500_ms;
+	milliseconds controllerEchoTimeout = 1000_ms;
+};
+
+class Features;
 class ThreadManager;
 
 
@@ -22,7 +30,8 @@ public:
 
 	enum Role {
 		Agent = 0,
-		Controller
+		Controller,
+		Auxiliary  // for internal use only FIXME (assert in listen and connect)
 	};
 
 	enum {
@@ -32,11 +41,14 @@ public:
 	 Driver(DriverOptions *options = nullptr);
 	~Driver();
 
-	Deferred<Exception> listen(Role role, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+	Deferred<Exception> listen(Role role, const Features *features, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 
-	Deferred<Exception> connect(Role role, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+	Deferred<Exception> connect(Role role, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
 
 	void run();
+
+	/// \brief Tells the driver to stop running.
+	void quit();
 
 private:
 	sys::Engine *engine_;

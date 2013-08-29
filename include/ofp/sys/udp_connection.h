@@ -1,7 +1,7 @@
 #ifndef OFP_UDP_CONNECTION_H
 #define OFP_UDP_CONNECTION_H
 
-#include "ofp/connection.h"
+#include "ofp/sys/connection.h"
 #include "ofp/driver.h"
 #include "ofp/sys/boost_asio.h"
 #include "ofp/protocolversions.h"
@@ -19,7 +19,7 @@ public:
 
     void write(const void *data, size_t length) override;
 	void flush() override;
-	void close() override;
+	void shutdown() override;
 	
     IPv6Address remoteAddress() const override {
         return makeIPv6Address(remoteEndpoint().address());

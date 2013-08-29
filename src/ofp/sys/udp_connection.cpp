@@ -22,7 +22,7 @@ void ofp::sys::UDP_Connection::flush() {
 	server_->flush(remoteEndpt_);
 }
 
-void ofp::sys::UDP_Connection::close() 
+void ofp::sys::UDP_Connection::shutdown() 
 {
 	log::info("close the 'connection' to this udp endpoint");
 

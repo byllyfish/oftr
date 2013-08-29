@@ -4,8 +4,10 @@
 #include "ofp.h"
 
 using ofp::UInt16;
+using ofp::UInt32;
 using ofp::Message;
 using ofp::Channel;
+using std::chrono::milliseconds;
 
 
 class NullAgent : public ofp::ChannelListener {
@@ -16,6 +18,9 @@ public:
     void onChannelUp(Channel *channel) override
     {
         ofp::log::debug("NullAgent channel up.");
+
+        channel->openAuxChannel(1, Channel::Transport::TCP);
+        //channel->scheduleTimer(0, milliseconds{1290}, true);
     }
 
     void onChannelDown(Channel *channel) override
@@ -25,32 +30,24 @@ public:
 
     void onMessage(const Message *message) override;
 
-private:
-    void onFeaturesRequest(const Message *message);
-    void onFlowMod(const Message *message);
-    void sendError(const Message *message, UInt16 type, UInt16 code);
+    void onTimer(UInt32 timerID) override 
+    {
+        ofp::log::debug("NullAgent timer", timerID);
+    }
 
-    static ofp::Features gFeatures;
+private:
+    void onFlowMod(const Message *message);
+    void sendError(UInt16 type, UInt16 code, const Message *message);
 };
+
 
 void NullAgent::onMessage(const Message *message)
 {
     switch (message->type()) {
-    case ofp::FeaturesRequest::Type:
-        onFeaturesRequest(message);
-        break;
-
     default:
-        sendError(message, 1, 1);
+        sendError(1, 1, message);
         break;
     }
-}
-
-void NullAgent::onFeaturesRequest(const Message *message)
-{
-    ofp::FeaturesReplyBuilder msg{message};
-    msg.setFeatures(gFeatures);
-    msg.send(message->source());
 }
 
 
@@ -58,14 +55,14 @@ void NullAgent::onFlowMod(const Message *message)
 {
     auto flowMod = ofp::FlowMod::cast(message);
     if (!flowMod) {
-        sendError(message, ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE);
+        sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
         return;
     }
 
     
 }
 
-void NullAgent::sendError(const Message *message, UInt16 type, UInt16 code)
+void NullAgent::sendError(UInt16 type, UInt16 code, const Message *message)
 {
     ofp::ErrorBuilder msg{type, code, message};
     msg.send(message->source());

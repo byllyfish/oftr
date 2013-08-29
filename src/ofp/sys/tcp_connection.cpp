@@ -11,20 +11,20 @@ using namespace boost;
 
 
 TCP_Connection::TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{engine->io()}
+    : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{engine->io()}, idleTimer_{engine->io()}
 {
     log::debug(__PRETTY_FUNCTION__, this);
 }
 
 TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{std::move(socket)}
+    : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{std::move(socket)}, idleTimer_{engine->io()}
 {
     log::debug(__PRETTY_FUNCTION__, this);
 }
 
 /// \brief Construct connection object for reconnect attempt.
 TCP_Connection::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
-: Connection{engine, handshake}, message_{this}, socket_{engine->io()}
+: Connection{engine, handshake}, message_{this}, socket_{engine->io()}, idleTimer_{engine->io()}
 {
     handshake->setConnection(this);
 }
@@ -34,7 +34,7 @@ TCP_Connection::~TCP_Connection()
 }
 
 
-Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt)
+Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt, milliseconds delay)
 {
     log::debug(__PRETTY_FUNCTION__);
 
@@ -43,21 +43,12 @@ Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt
     endpoint_ = endpt;
     deferredExc_ = Deferred<Exception>::makeResult();
 
-    auto self(shared_from_this());
-    socket_.async_connect(endpt, [this, self](const error_code &err) {
-        log::Lifetime lifetime{"asyncConnect callback"};
+    if (delay > 0_ms) {
+        asyncDelayConnect(delay);
 
-        deferredExc_->done(makeException(err));
-        deferredExc_ = nullptr;
-
-        if (!err) {
-            assert(socket_.is_open());
-            channelUp();
-
-        } else if (wantsReconnect()) {
-            reconnect();
-        }
-    });
+    } else {
+        asyncConnect();
+    }
 
     return deferredExc_;
 }
@@ -75,6 +66,9 @@ void TCP_Connection::channelUp()
 
     channelListener()->onChannelUp(this);
     asyncReadHeader();
+
+    updateLatestActivity();
+    asyncIdleCheck();
 }
 
 
@@ -110,6 +104,10 @@ void ofp::sys::TCP_Connection::stop()
 
 void TCP_Connection::asyncReadHeader()
 {
+    // Do nothing if socket is not open.
+    if (!socket_.is_open())
+        return;
+
     log::debug(__PRETTY_FUNCTION__);
 
     auto self(shared_from_this());
@@ -159,6 +157,8 @@ void TCP_Connection::asyncReadHeader()
 
             channelDown();
         }
+
+        updateLatestActivity();
     });
 }
 
@@ -188,6 +188,8 @@ void TCP_Connection::asyncReadMessage(size_t msgLength)
             }
             channelDown();
         }
+
+        updateLatestActivity();
     });
 }
 
@@ -228,6 +230,8 @@ void TCP_Connection::asyncWrite()
         } else {
             log::debug("Write error ", makeException(err));
         }
+
+        updateLatestActivity();
     });
 }
 
@@ -298,6 +302,65 @@ void TCP_Connection::asyncRelay(size_t length)
 }
 
 
+void TCP_Connection::asyncConnect()
+{
+    auto self(shared_from_this());
+
+    socket_.async_connect(endpoint_, [this, self](const error_code &err) {
+        log::Lifetime lifetime{"asyncConnect callback"};
+
+        deferredExc_->done(makeException(err));
+        deferredExc_ = nullptr;
+
+        if (!err) {
+            assert(socket_.is_open());
+            channelUp();
+
+        } else if (wantsReconnect()) {
+            reconnect();
+        }
+    });
+}
+
+
+void TCP_Connection::asyncDelayConnect(milliseconds delay)
+{
+    auto self(shared_from_this());
+
+    idleTimer_.expires_from_now(delay);
+    idleTimer_.async_wait([this, self](const error_code &err) {
+        if (err != boost::asio::error::operation_aborted) {
+            asyncConnect();
+        } else {
+            assert(deferredExc_ != nullptr);
+            deferredExc_->done(makeException(err));
+            deferredExc_ = nullptr;
+        }
+    });
+}
+
+void TCP_Connection::asyncIdleCheck()
+{
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    auto interval = std::chrono::duration_cast<milliseconds>(now - latestActivity_);
+
+    milliseconds delay;
+    if (interval >= 5000_ms) {
+        postIdle();
+        delay = 5000_ms;
+    } else {
+        delay = 5000_ms - interval;
+    }
+
+    idleTimer_.expires_from_now(delay);
+    idleTimer_.async_wait([this](const error_code &err) {
+        if (err != boost::asio::error::operation_aborted) {
+            asyncIdleCheck();
+        }
+    });
+}
+
+
 void TCP_Connection::reconnect()
 {
     DefaultHandshake *hs = handshake();
@@ -306,19 +369,22 @@ void TCP_Connection::reconnect()
     hs->setStartingVersion(version());
     hs->setStartingXid(nextXid());
 
-    // FIXME should wait at least a second? Perhaps it would depend on the
-    // frequency of reconnects?
-
     log::debug("reconnecting...", remoteAddress());
 
-    engine()->reconnect(hs, remoteAddress(), remotePort());
-    setHandshake(nullptr);
+    engine()->reconnect(hs, &features(), remoteAddress(), remotePort(), 750_ms);
 
+    setHandshake(nullptr);
     if (channelListener() == hs) {
         setChannelListener(nullptr);
     }
 
     assert(channelListener() != hs);
+}
+
+
+void TCP_Connection::updateLatestActivity()
+{
+    latestActivity_ = std::chrono::steady_clock::now();
 }
 
 

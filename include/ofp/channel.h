@@ -3,6 +3,7 @@
 
 #include "ofp/writable.h"
 #include "ofp/ipv6address.h"
+#include "ofp/datapathid.h"
 #include <chrono>
 
 namespace ofp { // <namespace ofp>
@@ -10,6 +11,7 @@ namespace ofp { // <namespace ofp>
 class Driver;
 class Features;
 class ChannelListener;
+class DatapathID;
 
 class Channel : public Writable {
 public:
@@ -17,14 +19,16 @@ public:
 	
 	virtual Driver *driver() const = 0;
 	virtual const Features &features() const = 0;
+	virtual DatapathID datapathID() const = 0;
+	virtual UInt8 auxiliaryID() const = 0;
 	virtual IPv6Address remoteAddress() const = 0;
 	virtual UInt16 remotePort() const = 0;
-	virtual void close() = 0;
+	virtual void shutdown() = 0;
 	
 	virtual ChannelListener *channelListener() const = 0;
 	virtual void setChannelListener(ChannelListener *listener) = 0;
 
-	virtual void scheduleTimer(UInt32 timerID, std::chrono::milliseconds when) = 0;
+	virtual void scheduleTimer(UInt32 timerID, milliseconds when, bool repeat = false) = 0;
 	virtual void cancelTimer(UInt32 timerID) = 0;
 
 	// The following methods are provided for OpenFlow agents.

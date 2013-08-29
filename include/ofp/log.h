@@ -1,3 +1,14 @@
+//  ===== ---- ofp/log.h -----------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Implements logging for the library. Provides hooks to customize
+/// where the log output goes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_LOG_H
 #define OFP_LOG_H
 
@@ -66,31 +77,31 @@ public:
 private:
 	const char *description_;
 };
-} // </namespace log>
-} // </namespace ofp>
 
 
-
-inline void ofp::log::info(const std::string &msg)
+inline void info(const std::string &msg)
 {
 	write("[info] ", msg);
 }
 
 
-inline void ofp::log::debug(const std::string &msg) {
+inline void debug(const std::string &msg) {
 	write("[debug]", msg);
 }
 
 
-inline void ofp::log::error(const std::string &msg) {
+inline void error(const std::string &msg) {
 	write("[error] ", msg);
 }
 
 
-inline void ofp::log::exception(const std::string &msg)
+inline void exception(const std::string &msg)
 {
 	write("[exception] ", msg);
 }
 
+
+} // </namespace log>
+} // </namespace ofp>
 
 #endif // OFP_LOG_H

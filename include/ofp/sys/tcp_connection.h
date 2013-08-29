@@ -1,11 +1,11 @@
-#ifndef OFP_IMPL_TCP_CONNECTION_H
-#define OFP_IMPL_TCP_CONNECTION_H
+#ifndef OFP_SYS_TCP_CONNECTION_H
+#define OFP_SYS_TCP_CONNECTION_H
 
 #include "ofp/types.h"
 #include "ofp/sys/boost_asio.h"
 #include "ofp/sys/engine.h"
 #include "ofp/message.h"
-#include "ofp/connection.h"
+#include "ofp/sys/connection.h"
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
 #include "ofp/exception.h"
@@ -23,7 +23,7 @@ public:
      TCP_Connection(Engine *engine, DefaultHandshake *handshake);
     ~TCP_Connection();
 
-    Deferred<Exception> asyncConnect(const tcp::endpoint &endpt);
+    Deferred<Exception> asyncConnect(const tcp::endpoint &endpt, milliseconds delay = 0_ms);
     void asyncAccept();
 
     void channelUp();
@@ -33,6 +33,8 @@ public:
     bool isOutgoing() const { return endpoint_.port() != 0; }
     bool wantsReconnect() const { return handshake()->role() == Driver::Agent && isOutgoing(); }
 
+    tcp::endpoint endpoint() const { return endpoint_; }
+    
 	IPv6Address remoteAddress() const override {
 		try {
 			if (isOutgoing()) {
@@ -70,15 +72,18 @@ public:
 		}
 	}
 
-	void close() override {
+	void shutdown() override {
 		log::debug(__PRETTY_FUNCTION__);
+
+		// FIXME -- this should stop reading data and close connection when 
+		// all outgoing data existing at this point is sent.
 		socket_.close();
 	}
 
 	Transport transport() const { return Transport::TCP; }
 
 	void openAuxChannel(UInt8 auxID, Transport transport) override {
-		//TODO   engine()->openAuxChannel(this, endpt);
+		engine()->openAuxChannel(auxID, transport, this);
 	}
 
 	Channel *findAuxChannel(UInt8 auxID) const override { return nullptr; }
@@ -88,6 +93,8 @@ private:
     tcp::socket socket_;
     tcp::endpoint endpoint_;
 	DeferredResultPtr<Exception> deferredExc_ = nullptr;
+	steady_timer idleTimer_;
+	std::chrono::steady_clock::time_point latestActivity_;
 
 	// Use a two buffer strategy for async-writes. We queue up data in one
 	// buffer while we're in the process of writing the other buffer.
@@ -103,12 +110,16 @@ private:
     void asyncWrite();
     void asyncEchoReply(const Header *header, size_t length);
     void asyncRelay(size_t length);
+    void asyncConnect();
+    void asyncDelayConnect(milliseconds delay);
+    void asyncIdleCheck();
 
     void reconnect();
+    void updateLatestActivity();
 };
 OFP_END_IGNORE_PADDING
 
 } // </namespace sys>
 } // </namespace ofp>
 
-#endif // OFP_IMPL_TCP_CONNECTION_H
+#endif // OFP_SYS_TCP_CONNECTION_H

@@ -37,13 +37,13 @@ Exception runController(ChannelListener::Factory listenerFactory,
 /// \brief Connects to an OpenFlow controller at the specified address on the 
 /// default port. 
 /// After connecting, uses listenerFactory to create a ChannelListener.
-/// (TODO: retry the connection)
 /// 
+/// \param  features 		Agent information including datapath ID.
 /// \param  remoteAddress   IPv6 (possibly IPv4-mapped) address of controller
 /// \param  listenerFactory no-arg function that create a ChannelListener
 /// \param  versions set of protocol versions to accept
 /// \return error result
-Exception runAgent(const IPv6Address &remoteAddress,
+Exception runAgent(const Features &features, const IPv6Address &remoteAddress,
                    ChannelListener::Factory listenerFactory,
                    ProtocolVersions versions = ProtocolVersions::All);
 
