@@ -21,7 +21,7 @@ public:
 	class Item {
 	public:
 		
-		const Item(const Item &) = delete;
+		Item(const Item &) = delete;
 		Item &operator=(const Item &) = delete;
 
 		OXMType type() const {

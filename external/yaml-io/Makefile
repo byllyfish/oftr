@@ -114,5 +114,5 @@ test: test/testit
 	./test/testit
 
 test/testit: test/testit.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -L . -lyamlio $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -L . -lyamlio
 

@@ -12,8 +12,11 @@ struct TestStruct {
     string b;
 };
 
+namespace llvm {
+namespace yaml {
+
 template <>
-struct llvm::yaml::ScalarTraits<string> {
+struct ScalarTraits<string> {
     static void output(const string &value, void *ctxt, llvm::raw_ostream &out)
     {
         out << value;
@@ -27,13 +30,16 @@ struct llvm::yaml::ScalarTraits<string> {
 };
 
 template <>
-struct llvm::yaml::MappingTraits<TestStruct> {
+struct MappingTraits<TestStruct> {
     static void mapping(llvm::yaml::IO &io, TestStruct &item)
     {
         io.mapRequired("a", item.a);
         io.mapRequired("b", item.b);
     }
 };
+
+}
+}
 
 int main()
 {
