@@ -17,9 +17,10 @@
 GTEST_DIR = ../external/googletest
 BOOST_DIR = ../external/boost_1_54_0_asio
 BOOST_OBJ = $(BOOST_DIR)/libs/system/src/error_code.o
+YAML_DIR = ../external/yaml-io/include
 
-LLVM_DIR = ../../llvm/include
-LLVM_BUILD_DIR = ../../llvm-build/include
+#LLVM_DIR = ../../llvm/include
+#LLVM_BUILD_DIR = ../../llvm-build/include
 #LLVM_LIB = $(LLVM_DIR)/../lib
 #LLVM_OBJ = $(LLVM_LIB)/Support/YAMLParser.o $(LLVM_LIB)/Support/YAMLTraits.o \
 #   $(LLVM_LIB)/Support/raw_ostream.o $(LLVM_LIB)/Support/SmallVector.o \
@@ -38,13 +39,13 @@ LLVM_BUILD_DIR = ../../llvm-build/include
 # the compiler doesn't generate warnings in Google Test headers.
 CPPFLAGS += -isystem $(GTEST_DIR)/include 
 
-CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_DIR) -std=c++11
+CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_DIR) -isystem $(YAML_DIR) -std=c++11
 #CPPFLAGS += -isystem $(LLVM_DIR) -isystem $(LLVM_BUILD_DIR)
 
 # Need -stdlib on Mac OS X.
 ifeq ($(shell uname -s),Darwin)
  CPPFLAGS += -stdlib=libc++
- WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-documentation
+ WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-documentation -Wno-weak-vtables
 else
  WARNINGS = -Wall
 endif
@@ -113,7 +114,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 
 ofp_test : $(TEST_OBJECTS) $(LIB_OBJECTS) gtest_main.a $(BOOST_OBJ)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) 
 
 #oxmfields_compile : $(LIB_OBJECTS) ../src/ofp/oxmfields_compile_main.o $(BOOST_OBJ)
 #	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@

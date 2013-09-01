@@ -6,6 +6,7 @@
 
 using namespace ofp;
 
+namespace { // <namespace>
 
 static void readHeader(llvm::yaml::IO &io, Header *header)
 {
@@ -15,11 +16,11 @@ static void readHeader(llvm::yaml::IO &io, Header *header)
 
     io.mapRequired("type", type);
     io.mapRequired("xid", xid);
-    io.mapRequired("version", version); 
+    io.mapRequired("version", version);
 
     header->setType(type);
     header->setVersion(version);
-    header->setXid(xid); 
+    header->setXid(xid);
 }
 
 static void writeHeader(llvm::yaml::IO &io, const Header *header)
@@ -33,7 +34,6 @@ static void writeHeader(llvm::yaml::IO &io, const Header *header)
     io.mapRequired("xid", xid);
 }
 
-
 struct FlowModWrap {
     FlowModWrap(const ofp::FlowMod *m) : msg{const_cast<FlowMod *>(m)}
     {
@@ -41,6 +41,75 @@ struct FlowModWrap {
 
     ofp::FlowMod *msg;
 };
+
+struct FlowModBuilderWrap {
+    FlowModBuilderWrap(ofp::FlowModBuilder *m) : msg{m}
+    {
+    }
+    ofp::FlowModBuilder *msg;
+};
+
+class OXMItemReader {
+public:
+    OXMItemReader(llvm::yaml::IO &io, OXMIterator::Item &item, OXMType type)
+        : io_{io}, item_{item}, type_{type}
+    {
+    }
+
+    template <class ValueType>
+    void visit()
+    {
+        auto val = item_.value<ValueType>().value();
+        io_.mapRequired("value", val);
+        if (type_.hasMask()) {
+            auto mask = item_.mask<ValueType>().value();
+            io_.mapRequired("mask", mask);
+        }
+    }
+
+private:
+    llvm::yaml::IO &io_;
+    OXMIterator::Item &item_;
+    OXMType type_;
+};
+
+class MatchBuilderInserter {
+public:
+    MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder,
+                         OXMType type)
+        : io_{io}, builder_{builder}, type_{type}
+    {
+    }
+
+    template <class ValueType>
+    void visit()
+    {
+        if (type_.hasMask()) {
+            typename ValueType::NativeType value;
+            typename ValueType::NativeType mask;
+            io_.mapRequired("value", value);
+            io_.mapRequired("mask", mask);
+            builder_.add(ValueType{value}, ValueType{mask});
+        } else {
+            typename ValueType::NativeType value;
+            io_.mapRequired("value", value);
+            builder_.add(ValueType{value});
+        }
+    }
+
+private:
+    llvm::yaml::IO &io_;
+    MatchBuilder &builder_;
+    OXMType type_;
+};
+
+struct MatchBuilderItem {
+};
+
+} // </namespace>
+
+namespace llvm { // <namespace llvm>
+namespace yaml { // <namespace yaml>
 
 template <>
 struct llvm::yaml::MappingTraits<FlowModWrap> {
@@ -94,28 +163,6 @@ struct llvm::yaml::SequenceTraits<ofp::Match> {
     }
 };
 
-
-class OXMItemReader {
-public:
-    OXMItemReader(llvm::yaml::IO &io, OXMIterator::Item &item, OXMType type) : io_{io}, item_{item}, type_{type} {}
-
-    template <class ValueType>
-    void visit() {
-        auto val = item_.value<ValueType>().value();
-        io_.mapRequired("value", val);
-        if (type_.hasMask()) {
-            auto mask = item_.mask<ValueType>().value();
-            io_.mapRequired("mask", mask);
-        }
-    }
-
-private:
-    llvm::yaml::IO &io_;
-    OXMIterator::Item &item_;
-    OXMType type_;
-};
-
-
 template <>
 struct llvm::yaml::MappingTraits<ofp::OXMIterator::Item> {
 
@@ -148,7 +195,7 @@ struct llvm::yaml::ScalarTraits<ofp::OXMType> {
         if (!value.parse(scalar)) {
             return "Invalid OXM type.";
         }
-        
+
         return "";
     }
 };
@@ -189,7 +236,6 @@ struct llvm::yaml::ScalarTraits<ofp::IPv6Address> {
     }
 };
 
-
 template <>
 struct llvm::yaml::ScalarTraits<ofp::EnetAddress> {
     static void output(const ofp::EnetAddress &value, void *ctxt,
@@ -208,11 +254,6 @@ struct llvm::yaml::ScalarTraits<ofp::EnetAddress> {
     }
 };
 
-struct FlowModBuilderWrap {
-    FlowModBuilderWrap(ofp::FlowModBuilder *m) : msg{m} {}
-    ofp::FlowModBuilder *msg;
-};
-
 template <>
 struct llvm::yaml::MappingTraits<FlowModBuilderWrap> {
 
@@ -222,7 +263,6 @@ struct llvm::yaml::MappingTraits<FlowModBuilderWrap> {
         io.mapRequired("msg", *msg.msg);
     }
 };
-
 
 template <>
 struct llvm::yaml::MappingTraits<FlowModBuilder> {
@@ -245,11 +285,6 @@ struct llvm::yaml::MappingTraits<FlowModBuilder> {
     }
 };
 
-
-struct MatchBuilderItem 
-{
-};
-
 template <>
 struct llvm::yaml::SequenceTraits<ofp::MatchBuilder> {
 
@@ -259,38 +294,11 @@ struct llvm::yaml::SequenceTraits<ofp::MatchBuilder> {
     }
 
     static MatchBuilderItem &element(IO &io, ofp::MatchBuilder &match,
-                                           size_t index)
+                                     size_t index)
     {
-        return reinterpret_cast<MatchBuilderItem&>(match);
+        return reinterpret_cast<MatchBuilderItem &>(match);
     }
 };
-
-
-class MatchBuilderInserter {
-public:
-    MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder, OXMType type) : io_{io}, builder_{builder}, type_{type} {}
-
-    template <class ValueType>
-    void visit() {
-        if (type_.hasMask()) {
-            typename ValueType::NativeType value;
-            typename ValueType::NativeType mask;
-            io_.mapRequired("value", value);
-            io_.mapRequired("mask", mask);
-            builder_.add(ValueType{value}, ValueType{mask});
-        } else {
-            typename ValueType::NativeType value;
-            io_.mapRequired("value", value);
-            builder_.add(ValueType{value});
-        }
-    }
-
-private:
-    llvm::yaml::IO &io_;
-    MatchBuilder &builder_;
-    OXMType type_;
-};
-
 
 template <>
 struct llvm::yaml::MappingTraits<MatchBuilderItem> {
@@ -313,7 +321,8 @@ struct llvm::yaml::MappingTraits<MatchBuilderItem> {
     }
 };
 
-
+} // </namespace yaml>
+} // </namespace llvm>
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -327,7 +336,7 @@ Exception read(const std::string &input, FlowModBuilder *msg)
     yin >> wrap;
 
     if (yin.error()) {
-        return Exception{}; //FIXME
+        return Exception{}; // FIXME
     }
 
     return Exception{};
