@@ -1,6 +1,6 @@
-#include <cassert>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
 
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
@@ -12,8 +12,8 @@ struct TestStruct {
     string b;
 };
 
-namespace llvm {
-namespace yaml {
+namespace llvm { // <namespace llvm>
+namespace yaml { // <namespace yaml>
 
 template <>
 struct ScalarTraits<string> {
@@ -38,43 +38,55 @@ struct MappingTraits<TestStruct> {
     }
 };
 
+} // </namespace yaml>
+} // </namespace llvm>
+
+inline void testFailed(const char *condition, const char *file, int linenum)
+{
+    cerr << "TEST FAILED: `" << condition << "`  (" << file << ":" << linenum
+         << ")\n";
+    std::exit(1);
 }
-}
+
+#define EXPECT(condition)                                                      \
+    {                                                                          \
+        if (!(condition))                                                      \
+            testFailed(#condition, __FILE__, __LINE__);                        \
+    }
 
 int main()
 {
-	{
-	    TestStruct s = {-54, "it works"};
+    {
+        TestStruct s = {-54, "it works"};
 
-	    string result;
-	    llvm::raw_string_ostream rss{result};
+        string result;
+        llvm::raw_string_ostream rss{result};
 
-	    llvm::yaml::Output yout{rss};
-	    yout << s;
+        llvm::yaml::Output yout{rss};
+        yout << s;
 
-	    const char *expected = 
-R"""(---
+        const char *expected = R"""(---
 a:               -54
 b:               it works
 ...
 )""";
 
-		assert(result.empty());
+        EXPECT(result.empty());
 
-		string ans = rss.str();
-		assert(ans == result);
-	    
-	    cout << result;
-	    assert(ans == expected);
+        string ans = rss.str();
+        EXPECT(ans == result);
 
-	    TestStruct t;
-	    llvm::yaml::Input yin(result);
-    	yin >> t;
+        cout << result;
+        EXPECT(ans == expected);
 
-    	assert(!yin.error());
-    	assert(t.a == -54);
-    	assert(t.b == "it works");
-	}
+        TestStruct t;
+        llvm::yaml::Input yin(result);
+        yin >> t;
 
-	return 0;
+        EXPECT(!yin.error());
+        EXPECT(t.a == -54);
+        EXPECT(t.b == "it works");
+    }
+
+    return 0;
 }
