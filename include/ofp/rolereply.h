@@ -1,3 +1,13 @@
+//  ===== ---- ofp/rolereply.h -----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the RoleReply and RoleReplyBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_ROLEREPLY_H
 #define OFP_ROLEREPLY_H
 

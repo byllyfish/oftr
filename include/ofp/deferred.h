@@ -1,3 +1,13 @@
+//  ===== ---- ofp/deferred.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Deferred class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_DEFERRED_H
 #define OFP_DEFERRED_H
 

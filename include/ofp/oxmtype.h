@@ -1,3 +1,13 @@
+//  ===== ---- ofp/oxmtype.h -------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the OXMType class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_OXM_TYPE_H
 #define OFP_OXM_TYPE_H
 
@@ -15,8 +25,8 @@ public:
 
 	constexpr OXMType() : value32_{0} {}
 	
-	constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
-		: value32_{make(oxmClass, oxmField, oxmBits)} {}
+	constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmSize)
+		: value32_{make(oxmClass, oxmField, oxmSize)} {}
 	
 	static OXMType fromBytes(const UInt8 *data) {
 		OXMType result;
@@ -62,11 +72,11 @@ private:
 	constexpr explicit OXMType(const UInt32 &value) : value32_{value} {}
 	
 	constexpr static
-	UInt32 make(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmBits)
+	UInt32 make(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmSize)
 	{
 		return BigEndianFromNative((UInt32_cast(oxmClass) << 16) | 
 							(UInt32_cast(oxmField & 0x7F) << 9) | 
-				 			((oxmBits >> 3) + ((oxmBits & 0x07) != 0)));
+				 			 oxmSize);
 	}
 };
 

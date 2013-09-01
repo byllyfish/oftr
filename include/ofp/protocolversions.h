@@ -5,8 +5,7 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines a concrete class that represents a set of OpenFlow
-/// protocol versions.
+/// \brief Defines the ProtocolVersions class.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_PROTOCOL_VERSIONS_H
@@ -17,7 +16,7 @@
 
 namespace ofp { // <namespace ofp>
 
-/// \brief Represents a set of OpenFloe protocol versions.
+/// \brief Represents a set of OpenFlow protocol versions.
 class ProtocolVersions {
 public:
 

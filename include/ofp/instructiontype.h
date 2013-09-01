@@ -1,3 +1,13 @@
+//  ===== ---- ofp/instructiontype.h -----------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the InstructionType class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_INSTRUCTIONTYPE_H
 #define OFP_INSTRUCTIONTYPE_H
 
@@ -18,7 +28,7 @@ public:
 		IT_EXPERIMENTER = 0xFFFF
 	};
 
-	constexpr explicit InstructionType(UInt16 type) : type_{type} {}
+	constexpr InstructionType(UInt16 type) : type_{type} {}
 
 	constexpr UInt16 type() const { return type_; }
 

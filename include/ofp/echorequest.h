@@ -1,3 +1,13 @@
+//  ===== ---- ofp/echorequest.h ---------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the EchoRequest and EchoRequestBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_ECHOREQUEST_H
 #define OFP_ECHOREQUEST_H
 

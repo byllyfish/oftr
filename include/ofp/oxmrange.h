@@ -1,3 +1,13 @@
+//  ===== ---- ofp/oxmrange.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the OXMRange class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_OXMRANGE_H
 #define OFP_OXMRANGE_H
 

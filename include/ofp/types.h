@@ -1,12 +1,12 @@
-//===- ofp/types.h ----------------------------------------------*- C++ -*-===//
+//  ===== ---- ofp/types.h ---------------------------------*- C++ -*- =====  //
 //
-// Copyright (c) 2013, Bill Fisher. See LICENSE.txt for details.
-//
-//===----------------------------------------------------------------------===//
-//
-// Include common headers. Define useful constants, types and functions.
-//
-//===----------------------------------------------------------------------===//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Define globally useful constants, types and functions.
+//  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_TYPES_H
 #define OFP_TYPES_H

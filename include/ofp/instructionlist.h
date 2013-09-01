@@ -1,3 +1,13 @@
+//  ===== ---- ofp/instructionlist.h -----------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the InstructionList class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_INSTRUCTIONLIST_H
 #define OFP_INSTRUCTIONLIST_H
 

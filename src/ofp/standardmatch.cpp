@@ -1,0 +1,187 @@
+#include "ofp/standardmatch.h"
+#include "ofp/oxmlist.h"
+#include "ofp/originalmatch.h"
+
+namespace ofp { // <namespace ofp>
+namespace deprecated { // <namespace deprecated>
+
+
+StandardMatch::StandardMatch()
+{
+    in_port = 0;
+    std::memset(&dl_src, 0, sizeof(StandardMatch) - 12);
+}
+
+
+StandardMatch::StandardMatch(const OXMRange &range)
+{
+    in_port = 0;
+    std::memset(&dl_src, 0, sizeof(StandardMatch) - 12);
+
+    UInt32 wc = wildcards;
+    for (auto &item : range) {
+        switch (item.type()) {
+        case OFB_IN_PORT::type() :
+            in_port = item.value<OFB_IN_PORT>();
+            wc &= ~OFPFW_IN_PORT;
+            break;
+        case OFB_ETH_SRC::type() :
+            dl_src = item.value<OFB_ETH_SRC>();
+            dl_src_mask.setAllOnes();
+            break;
+        case OFB_ETH_SRC::typeWithMask() :
+            dl_src = item.value<OFB_ETH_SRC>();
+            dl_src_mask = item.mask<OFB_ETH_SRC>();
+            break;
+        default:
+            // FIXME
+            break;
+        }
+    }
+    wildcards = wc;
+}
+
+StandardMatch::StandardMatch(const OriginalMatch &match)
+{
+    UInt32 origWildcards = match.wildcards;
+
+	in_port = match.in_port;
+	wildcards = match.standardWildcards();
+
+	dl_src = match.dl_src;
+    if (!(origWildcards & OriginalMatch::OFPFW_DL_SRC)) {
+	    dl_src_mask.setAllOnes();
+    } else {
+        dl_src_mask.clear();
+    }
+    
+	dl_dst = match.dl_dst;
+    if (!(origWildcards & OriginalMatch::OFPFW_DL_SRC)) {
+        dl_dst_mask.setAllOnes();
+    } else {
+        dl_dst_mask.clear();
+    }
+
+	dl_vlan = match.dl_vlan;		// TODO check flags
+	dl_vlan_pcp = match.dl_vlan_pcp;
+	dl_type = match.dl_type;
+	nw_tos = match.nw_tos;
+	nw_proto = match.nw_proto;
+	nw_src = match.nw_src;
+	nw_src_mask = match.nw_src_mask();
+	nw_dst = match.nw_dst;
+	nw_dst_mask = match.nw_dst_mask();
+	tp_src = match.tp_src;
+	tp_dst = match.tp_dst;
+	mpls_label = 0;					// must be wildcarded
+	mpls_tc = 0;					// must be wildcarded
+	metadata = 0;
+	metadata_mask = 0;
+}
+
+OXMList StandardMatch::toOXMList() const
+{
+    OXMList list;
+    UInt32 wc = wildcards;
+
+    if (!(wc & OFPFW_IN_PORT)) {
+        list.add(OFB_IN_PORT{in_port});
+    }
+
+    if (metadata_mask) {
+        list.add(OFB_METADATA{metadata}, OFB_METADATA{metadata_mask});
+    }
+
+    if (dl_src_mask.valid())
+        list.add(OFB_ETH_SRC{dl_src}, OFB_ETH_SRC{dl_src_mask});
+
+    if (dl_dst_mask.valid())
+        list.add(OFB_ETH_DST{dl_dst}, OFB_ETH_DST{dl_dst_mask});
+
+    if (!(wc & OFPFW_DL_VLAN)) {
+        list.add(OFB_VLAN_VID{dl_vlan});
+    }
+
+    if (!(wc & OFPFW_DL_VLAN_PCP)) {
+        list.add(OFB_VLAN_PCP{dl_vlan_pcp});
+    }
+
+    if (!(wc & OFPFW_DL_TYPE)) {
+        list.add(OFB_ETH_TYPE{dl_type});
+    } else {
+        // DataLink type is wildcarded. None of the remaining NW settings apply.
+        return list;
+    }
+
+    if (!(wc & OFPFW_NW_TOS)) {
+        list.add(OFB_IP_DSCP{nw_tos});
+    }
+
+    if (!(wc & OFPFW_NW_PROTO)) {
+        list.add(OFB_IP_PROTO{nw_proto});
+    }
+
+    if (nw_src_mask.valid())
+        list.add(OFB_IPV4_SRC{nw_src}, OFB_IPV4_SRC{nw_src_mask});
+
+    if (nw_dst_mask.valid())
+        list.add(OFB_IPV4_DST{nw_dst}, OFB_IPV4_DST{nw_dst_mask});
+
+    if (!(wc & OFPFW_TP_SRC)) {
+        if (wc & nw_proto) {
+            log::info("OFPFW_TP_SRC is missing OFPFW_NW_PROTO.");
+        } else {
+            switch (nw_proto) {
+            case TCP:
+                list.add(OFB_TCP_SRC{tp_src});
+                break;
+            case UDP:
+                list.add(OFB_UDP_SRC{tp_src});
+                break;
+            case SCTP:
+                list.add(OFB_SCTP_SRC{tp_src});
+                break;
+            default:
+                log::info("OFPFW_TP_SRC has unsupported OFPFW_NW_PROTO:",
+                          nw_proto);
+                break;
+            }
+        }
+    }
+
+    if (!(wc & OFPFW_TP_DST)) {
+        if ((wc & nw_proto)) {
+            log::info("OFPFW_TP_DST is missing OFPFW_NW_PROTO.");
+        } else {
+            switch (nw_proto) {
+            case TCP:
+                list.add(OFB_TCP_DST{tp_dst});
+                break;
+            case UDP:
+                list.add(OFB_UDP_DST{tp_dst});
+                break;
+            case SCTP:
+                list.add(OFB_SCTP_DST{tp_dst});
+                break;
+            default:
+                log::info("OFPFW_TP_DST has unsupported OFPFW_NW_PROTO:",
+                          nw_proto);
+                break;
+            }
+        }
+    }
+
+    if (!(wc & OFPFW_MPLS_LABEL)) {
+        list.add(OFB_MPLS_LABEL{mpls_label});
+    }
+
+    if (!(wc & OFPFW_MPLS_TC)) {
+        list.add(OFB_MPLS_TC{mpls_tc});
+    }
+
+    return list;
+}
+
+
+} // </namespace deprecated>
+} // </namespace ofp>

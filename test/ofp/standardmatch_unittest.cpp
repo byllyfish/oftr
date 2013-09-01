@@ -1,48 +1,70 @@
 #include "ofp/unittest.h"
 #include "ofp/standardmatch.h"
+#include "ofp/originalmatch.h"
 
 using namespace ofp;
 using namespace deprecated;
 
-TEST(standardmatch, toOXMList) 
+TEST(standardmatch, constructor)
 {
-	StandardMatch match{};
+    StandardMatch match;
 
-	EXPECT_EQ(OFPMT_STANDARD_LENGTH, sizeof(match));
-	EXPECT_EQ(OFPMT_STANDARD, match.type);
-	EXPECT_EQ(OFPMT_STANDARD_LENGTH, match.length);
-	EXPECT_EQ(0, match.in_port);
+    EXPECT_EQ(OFPMT_STANDARD_LENGTH, sizeof(match));
+    EXPECT_EQ(OFPMT_STANDARD, match.type);
+    EXPECT_EQ(OFPMT_STANDARD_LENGTH, match.length);
+    EXPECT_EQ(0, match.in_port);
 
-	EXPECT_TRUE(IsMemFilled(&match.dl_src, sizeof(match) - 12, '\0'));
+    const char *hex =
+        "0000005800000000000003FF0000000000000000000000000000000000000000000000"
+        "0000000000000000000000000000000000000000000000000000000000000000000000"
+        "000000000000000000000000000000000000";
+    EXPECT_HEX(hex, &match, sizeof(match));
+}
 
-	UInt32 wc = OFPFW_ALL;
-	match.in_port = 5;
-	wc &= ~OFPFW_IN_PORT;
-	match.wildcards = wc;
+TEST(standardmatch, toOXMList)
+{
+    StandardMatch match;
 
-	OXMList list = match.toOXMList();
+    UInt32 wc = StandardMatch::OFPFW_ALL;
+    match.in_port = 5;
+    wc &= ~StandardMatch::OFPFW_IN_PORT;
+    match.wildcards = wc;
 
-	EXPECT_HEX("8000 0004 00000005", list.data(), list.size());
+    OXMList list = match.toOXMList();
+
+    EXPECT_HEX("8000 0004 00000005", list.data(), list.size());
+}
+
+TEST(standardmatch, fromOXMList)
+{
+    std::string s = HexToRawData("8000000400000005");
+    OXMRange range{s.data(), s.size()};
+
+    StandardMatch match{range};
+
+    EXPECT_EQ(OFPMT_STANDARD_LENGTH, sizeof(match));
+    EXPECT_EQ(OFPMT_STANDARD, match.type);
+    EXPECT_EQ(OFPMT_STANDARD_LENGTH, match.length);
+    EXPECT_EQ(StandardMatch::OFPFW_ALL & ~StandardMatch::OFPFW_IN_PORT,
+              match.wildcards);
+    EXPECT_EQ(5, match.in_port);
+
+    EXPECT_TRUE(IsMemFilled(&match.dl_src, sizeof(match) - 12, '\0'));
+
+    OXMList list = match.toOXMList();
+    EXPECT_HEX("8000000400000005", list.data(), list.size());
 }
 
 
-TEST(standardmatch, fromOXMList) 
+TEST(standardmatch, fromOriginalMatch) 
 {
-	std::string s = HexToRawData("8000000400000005");
-	OXMRange range{ s.data(), s.size() };
+    OriginalMatch origMatch;
 
-	StandardMatch match{range};
+    auto data = HexToRawData("0010001F000000000000000000000000000000000000000000000000000000000000000000000000");
+    EXPECT_EQ(sizeof(origMatch), data.length());
+    std::memcpy(&origMatch, data.data(), data.length());
 
-	EXPECT_EQ(OFPMT_STANDARD_LENGTH, sizeof(match));
-	EXPECT_EQ(OFPMT_STANDARD, match.type);
-	EXPECT_EQ(OFPMT_STANDARD_LENGTH, match.length);
-	EXPECT_EQ(OFPFW_ALL & ~OFPFW_IN_PORT, match.wildcards);
-	EXPECT_EQ(5, match.in_port);
-
-	EXPECT_TRUE(IsMemFilled(&match.dl_src, sizeof(match) - 12, '\0'));
-
-	OXMList list = match.toOXMList();
-	EXPECT_HEX("8000000400000005", list.data(), list.size());
+    StandardMatch stdMatch{origMatch};
+    EXPECT_HEX("00000058000000000000000F00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", &stdMatch, sizeof(stdMatch));
 }
-
 

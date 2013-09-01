@@ -1,3 +1,13 @@
+//  ===== ---- ofp/packetout.h -----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the PacketOut and PacketOutBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_PACKETOUT_H
 #define OFP_PACKETOUT_H
 

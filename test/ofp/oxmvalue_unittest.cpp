@@ -5,9 +5,9 @@ using namespace ofp;
 
 constexpr OXMInternalID cast(int n) { return static_cast<OXMInternalID>(n); }
 
-using ofb_in_port = OXMValue<cast(0), 0x8000, 0, Big16, 16, false>;
-using ofb_vlan_vid = OXMValue<cast(1), 0x8000, 6, Big16, 13, true>;
-using ofb_tcp_src_port = OXMValue<cast(2), 0x8000, 19, Big16, 16, false>;
+using ofb_in_port = OXMValue<cast(0), 0x8000, 0, Big16, 2, false>;
+using ofb_vlan_vid = OXMValue<cast(1), 0x8000, 6, Big16, 2, true>;
+using ofb_tcp_src_port = OXMValue<cast(2), 0x8000, 19, Big16, 2, false>;
 
 
 TEST(OXMValue, ofb_in_port)
@@ -23,7 +23,7 @@ TEST(OXMValue, ofb_in_port)
 	
 	UInt32 nativeValue = BigEndianFromNative(0x80000002);
 	EXPECT_EQ(nativeValue, ofb_in_port::type());
-	EXPECT_EQ(16, ofb_in_port::bits());
+	EXPECT_EQ(2, sizeof(ofb_in_port));
 	EXPECT_FALSE(ofb_in_port::maskSupported());
 }
 
@@ -40,14 +40,13 @@ TEST(OXMValue, ofb_vlan_vid)
 	
 	UInt32 nativeValue = BigEndianFromNative(0x80000c02);
 	EXPECT_EQ(nativeValue, ofb_vlan_vid::type());
-	EXPECT_EQ(13, ofb_vlan_vid::bits());
 	EXPECT_TRUE(ofb_vlan_vid::maskSupported());
 }
 
 TEST(OXMValue, use_in_switch_stmt)
 {
 	bool found = false;
-	auto type = OXMType{0x8000, 6, 13};
+	auto type = OXMType{0x8000, 6, 2};
 	
 	switch (type) {
 		case ofb_in_port::type():

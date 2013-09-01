@@ -1,3 +1,13 @@
+//  ===== ---- ofp/message.h -------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Message class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_MESSAGE_H
 #define OFP_MESSAGE_H
 
@@ -14,7 +24,7 @@ namespace sys { // <namespace sys>
 class Connection;
 } // </namespace sys>
 
-
+/// \brief Implements a protocol message buffer.
 class Message {
 public:
 
@@ -58,6 +68,8 @@ public:
 
     	return msg;
 	}
+
+	void transmogrify();
 
 private:
 	ByteList buf_;

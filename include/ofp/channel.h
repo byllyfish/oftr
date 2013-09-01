@@ -1,10 +1,19 @@
+//  ===== ---- ofp/channel.h -------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the abstract Channel class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_CHANNEL_H
 #define OFP_CHANNEL_H
 
 #include "ofp/writable.h"
 #include "ofp/ipv6address.h"
 #include "ofp/datapathid.h"
-#include <chrono>
 
 namespace ofp { // <namespace ofp>
 

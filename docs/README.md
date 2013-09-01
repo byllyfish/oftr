@@ -15,12 +15,14 @@ Dependencies
   - External
     - Latest Boost.ASIO 1.54 (included) { Boost Open Source License }
     - Latest Google Test (included; required for unit tests only)
+    - YAML IO (llvm.org)
 
 Specs
 -----
 
 - Supports all versions of OpenFlow.
   - Supports specifications 1.0, 1.1, 1.2 and 1.3 (wire formats 0x01, 0x02, 0x03, 0x04).
+  - Client interface uses OpenFlow Spec 1.3.2.
   - Inversion of Control Pub/Sub listener interface for clients.
   - Supports TCP and UDP over IPv4 and IPv6.
   - Optionally supports TLS over TCP.
@@ -34,7 +36,7 @@ Specs
 
 - Implemented in C++11.
   - Relies on concrete classes and templates; minimal use of inheritance.
-  - No use of exceptionsor  RTTI (except for boost.asio).
+  - No use of exceptions or  RTTI (except for boost.asio).
   - Modern use of namespaces.
   - Uses Boost ASIO for event-driven network engine. (The boost api's are quarantined to the network engine only; the network engine is designed to be replaceable.)
 

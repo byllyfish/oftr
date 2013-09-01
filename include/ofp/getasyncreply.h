@@ -1,3 +1,13 @@
+//  ===== ---- ofp/getasyncreply.h -------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the GetAsyncReply and GetAsyncReplyBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_GETASYNCREPLY_H
 #define OFP_GETASYNCREPLY_H
 

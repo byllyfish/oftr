@@ -1,3 +1,13 @@
+//  ===== ---- ofp/unittest.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines useful functions and classes for unit tests.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_UNITTEST_H
 #define OFP_UNITTEST_H
 
@@ -20,27 +30,11 @@ inline std::string hexclean(const char *data)
 
 #define EXPECT_HEX(hexstr, data, length)                                       \
     {                                                                          \
-        auto hex = hexclean(hexstr);                                           \
-        EXPECT_EQ(hex, ofp::RawDataToHex(data, length));                       \
+        auto hex_tmp__ = hexclean(hexstr);                                     \
+        EXPECT_EQ(hex_tmp__, ofp::RawDataToHex(data, length));                 \
     }
 
 namespace ofp { // <namespace ofp>
-
-#if 0
-namespace spec { // <namespace spec>
-
-// Define operator == for structs for use in EXPECT_EQ. Due to C++ lookup rules,
-// operator == must be defined in ofp::spec.
-
-template <class T>
-inline
-bool operator==(T a, T b)
-{
-    return std::memcmp(&a, &b, sizeof(b)) == 0;
-}
-
-} // </namespace spec>
-#endif
 
 class MockChannel : public Writable {
 public:

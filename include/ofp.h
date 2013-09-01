@@ -1,5 +1,12 @@
-/// \file ofp.h
-/// \brief Top-level header for the ofp library.
+//  ===== ---- ofp/ofp.h -----------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Top-level header for the ofp library..
+//  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_OFP_H
 #define OFP_OFP_H
@@ -18,6 +25,7 @@
 #include "ofp/getasyncreply.h"
 #include "ofp/getconfigreply.h"
 #include "ofp/error.h"
+#include "ofp/setconfig.h"
 #include "ofp/exception.h"
 
 namespace ofp { // <namespace ofp>

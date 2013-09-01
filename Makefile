@@ -15,6 +15,8 @@
 DOXYGEN = /Applications/Doxygen.app/Contents/Resources/doxygen
 
 LIB_SRCS = $(wildcard src/ofp/*.cpp) $(wildcard src/ofp/sys/*.cpp)
+LIB_SRCS += $(wildcard src/ofp/yaml/*.cpp)
+
 LIB_OBJS = $(LIB_SRCS:.cpp=.o)
 LIB_DEPS = $(LIB_SRCS:.cpp=.d)
 
@@ -22,6 +24,7 @@ BOOST_ROOT = external/boost_1_54_0_asio
 BOOST_OBJECTS = $(BOOST_ROOT)/libs/system/src/error_code.o
 
 export CPPFLAGS += -I include -I ofp -isystem $(BOOST_ROOT) -std=c++11
+export CPPFLAGS += -isystem external/yaml-io/include
 export CXXFLAGS += -g
 
 # There are some command-line differences between Clang and GCC. GCC doesn't 
@@ -31,7 +34,7 @@ CXX_VERSION = $(shell $(CXX) --version)
 ifeq (clang,$(findstring clang,$(CXX_VERSION)))
  CPPFLAGS += -stdlib=libc++
  ALL_WARNINGS += -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic 
- ALL_WARNINGS += -Wno-unused-parameter -Wno-documentation
+ ALL_WARNINGS += -Wno-unused-parameter -Wno-documentation -Wno-weak-vtables
 else
  ALL_WARNINGS += -Wall
 endif

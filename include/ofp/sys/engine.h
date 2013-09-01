@@ -14,6 +14,8 @@ class Server;
 class TCP_Server;
 class TCP_Connection; // FIXME can I use Connection here?
 
+OFP_BEGIN_IGNORE_PADDING
+
 class Engine {
 public:
      Engine(Driver *driver, DriverOptions *options);
@@ -67,6 +69,8 @@ private:
     io_service io_;
     bool isRunning_ = false;
 };
+
+OFP_END_IGNORE_PADDING
 
 } // </namespace sys>
 } // </namespace ofp>

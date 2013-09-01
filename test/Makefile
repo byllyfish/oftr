@@ -38,7 +38,8 @@ LLVM_BUILD_DIR = ../../llvm-build/include
 # the compiler doesn't generate warnings in Google Test headers.
 CPPFLAGS += -isystem $(GTEST_DIR)/include 
 
-CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_DIR) -isystem $(LLVM_DIR) -isystem $(LLVM_BUILD_DIR) -std=c++11
+CPPFLAGS += -I ../include -I ofp -isystem $(BOOST_DIR) -std=c++11
+#CPPFLAGS += -isystem $(LLVM_DIR) -isystem $(LLVM_BUILD_DIR)
 
 # Need -stdlib on Mac OS X.
 ifeq ($(shell uname -s),Darwin)

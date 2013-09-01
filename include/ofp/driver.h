@@ -1,3 +1,13 @@
+//  ===== ---- ofp/driver.h --------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Driver class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_DRIVER_H
 #define OFP_DRIVER_H
 

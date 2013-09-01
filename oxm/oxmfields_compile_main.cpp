@@ -21,7 +21,7 @@ public:
 	const string &name() const { return fields_.at(0); }
 	const string &clas() const { return fields_.at(1); }
 	const string &field() const { return fields_.at(2); }
-	const string &bits() const { return fields_.at(3); }
+	const string &size() const { return fields_.at(3); }
 	const string &valueType() const { return fields_.at(4); }
 	const string &mask() const { return fields_.at(5); }
 
@@ -30,7 +30,7 @@ public:
 
 	const string oxmType() const { 
 		std::stringstream ss;
-		ss << "OXMType{" << clas() << "," << field() << "," << bits() << "}";
+		ss << "OXMType{" << clas() << "," << field() << "," << size() << "}";
 		return ss.str();
 	}
 
@@ -54,7 +54,7 @@ public:
 			clas() << ',' <<
 			field() << ',' <<
 			valueType() << ',' <<
-		    bits() << ',' <<
+		    size() << ',' <<
 			mask();
 			
 		if (hasPrereqs()) {

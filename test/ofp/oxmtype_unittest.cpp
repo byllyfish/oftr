@@ -6,7 +6,7 @@ using namespace ofp;
 
 TEST(OXMType, constructor)
 {
-	OXMType a{2, 1, 32};
+	OXMType a{2, 1, 4};
 	EXPECT_EQ(0, std::memcmp(&a, "\0\2\2\4", 4));
 	EXPECT_EQ(0x00020204UL, a.oxmNative());
 	EXPECT_EQ(2, a.oxmClass());
@@ -14,7 +14,7 @@ TEST(OXMType, constructor)
 	EXPECT_EQ(4, a.length());
 	EXPECT_FALSE(a.hasMask());
 
-	OXMType b{0x8000, 0xFF, 64};
+	OXMType b{0x8000, 0xFF, 8};
 	EXPECT_EQ(0, std::memcmp(&b, "\x80\x00\xFE\x08", 4));
 	EXPECT_EQ(0x8000FE08UL, b.oxmNative());
 	EXPECT_EQ(0x8000, b.oxmClass());
@@ -22,7 +22,7 @@ TEST(OXMType, constructor)
 	EXPECT_EQ(8, b.length());
 	EXPECT_FALSE(b.hasMask());
 	
-	OXMType c{0xDEAD, 0x7F, 128};
+	OXMType c{0xDEAD, 0x7F, 16};
 	EXPECT_EQ(0, std::memcmp(&c, "\xDE\xAD\xFE\x10", 4));
 	EXPECT_EQ(0xDEADFE10UL, c.oxmNative());
 	EXPECT_EQ(0xDEAD, c.oxmClass());

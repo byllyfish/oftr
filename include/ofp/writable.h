@@ -1,3 +1,13 @@
+//  ===== ---- ofp/writable.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the abstract Writable class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_WRITABLE_H
 #define OFP_WRITABLE_H
 

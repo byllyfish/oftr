@@ -1,14 +1,17 @@
 #include "ofp/flowmod.h"
 #include "ofp/writable.h"
+#include "ofp/originalmatch.h"
+
+namespace ofp { // <namespace ofp>
 
 
-const ofp::FlowMod *ofp::FlowMod::cast(const Message *message)
+const FlowMod *FlowMod::cast(const Message *message)
 {
 	return message->cast<FlowMod>();
 }
 
 
-ofp::Match ofp::FlowMod::match() const
+Match FlowMod::match() const
 {
     assert(validateLength(header_.length()));
 
@@ -29,7 +32,7 @@ ofp::Match ofp::FlowMod::match() const
 }
 
 
-bool ofp::FlowMod::validateLength(size_t length) const
+bool FlowMod::validateLength(size_t length) const
 {
     if (length < UnpaddedSizeWithMatchHeader) {
         log::debug("FlowMod too small");
@@ -53,7 +56,7 @@ bool ofp::FlowMod::validateLength(size_t length) const
 
     } else if (matchType == OFPMT_STANDARD) {
         if (matchLen != deprecated::OFPMT_STANDARD_LENGTH) {
-            log::debug("FlowMod StandardMatch unexpected length");
+            log::debug("FlowMod StandardMatch unexpected length", matchLen);
             return false;
         }
     }
@@ -62,10 +65,12 @@ bool ofp::FlowMod::validateLength(size_t length) const
 }
 
 
-ofp::UInt32 ofp::FlowModBuilder::send(Writable *channel)
+UInt32 FlowModBuilder::send(Writable *channel)
 {
     UInt8 version = channel->version();
-    if (version <= OFP_VERSION_2) {
+    if (version <= OFP_VERSION_1) {
+        return sendOriginal(channel);
+    } else if (version == OFP_VERSION_2) {
         return sendStandard(channel);
     }
 
@@ -104,10 +109,10 @@ ofp::UInt32 ofp::FlowModBuilder::send(Writable *channel)
     return xid;
 }
 
-ofp::UInt32 ofp::FlowModBuilder::sendStandard(Writable *channel)
+UInt32 FlowModBuilder::sendStandard(Writable *channel)
 {
     UInt8 version = channel->version();
-    assert(version <= OFP_VERSION_2);
+    assert(version >= OFP_VERSION_2);
 
     deprecated::StandardMatch stdMatch{match_.toRange()};
 
@@ -129,3 +134,40 @@ ofp::UInt32 ofp::FlowModBuilder::sendStandard(Writable *channel)
 
     return xid;
 }
+
+
+UInt32 FlowModBuilder::sendOriginal(Writable *channel)
+{
+    UInt8 version = channel->version();
+    assert(version <= OFP_VERSION_1);
+
+    deprecated::OriginalMatch origMatch{match_.toRange()};
+
+    UInt16 msgLen = 72;         // FIXME
+
+    UInt32 xid = channel->nextXid();
+    Header &hdr = msg_.header_;
+    hdr.setVersion(version);
+    hdr.setType(FlowMod::Type);
+    hdr.setLength(msgLen);
+    hdr.setXid(xid);
+
+    if (msg_.tableId_ != 0) {
+        log::info("FlowModBuilder: tableId not supported in version 1.");
+        msg_.tableId_ = 0;
+    }
+
+    channel->write(&msg_, sizeof(Header));
+    channel->write(&origMatch, sizeof(origMatch));
+    channel->write(&msg_.cookie_, 8);
+    channel->write(&msg_.tableId_, 12);
+    channel->write(BytePtr(&msg_.outPort_) + 2, 2);
+    channel->write(&msg_.flags_, 2);
+
+    // Insert action list from instructions.
+    // // FIXME
+    
+    return xid;
+}
+
+} // </namespace ofp>

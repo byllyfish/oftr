@@ -1,6 +1,8 @@
 #include "ofp/unittest.h"
 #include "ofp/oxmlist.h"
 #include "ofp/oxmvalue.h"
+#include "ofp/oxmfields.h"
+#include "ofp/log.h"
 
 using namespace ofp;
 
@@ -8,9 +10,9 @@ namespace {
 
 constexpr OXMInternalID cast(int n) { return static_cast<OXMInternalID>(n); }
 
-using OFB_InPort = OXMValue<cast(0), 0x8000, 0, Big16, 16, false>;
-using OFB_VlanVid = OXMValue<cast(1), 0x8000, 6, Big16, 13, true>;
-using OFB_TCPSrcPort = OXMValue<cast(2), 0x8000, 19, Big16, 16, false>;
+using OFB_InPort = OXMValue<cast(0), 0x8000, 0, Big16, 2, false>;
+using OFB_VlanVid = OXMValue<cast(1), 0x8000, 6, Big16, 2, true>;
+using OFB_TCPSrcPort = OXMValue<cast(2), 0x8000, 19, Big16, 2, false>;
 
 
 const char *buffer = "8000 0002 012c"
@@ -39,4 +41,18 @@ TEST(oxmlist, test)
 	
 	OXMList list3{list2};
 	EXPECT_EQ(list, list3);
+}
+
+TEST(oxmlist, mpls) 
+{
+	OXMList list;
+
+	OXMType t = OFB_MPLS_LABEL::type();
+	EXPECT_HEX("80004404", &t, sizeof(t));
+
+    list.add(OFB_MPLS_LABEL{2});
+    list.add(OFB_MPLS_TC{1});
+    
+    EXPECT_EQ(13, list.size());
+    EXPECT_HEX("80004404-00000002 80004601-01", list.data(), list.size());
 }

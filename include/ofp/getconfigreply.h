@@ -1,3 +1,13 @@
+//  ===== ---- ofp/getconfigreply.h ------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the GetConfigReply and GetConfigReplyBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_GETCONFIGREPLY_H
 #define OFP_GETCONFIGREPLY_H
 

@@ -1,3 +1,13 @@
+//  ===== ---- ofp/padding.h -------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Provides utilties for padding structures to 8 byte boundaries.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_PADDING_H
 #define OFP_PADDING_H
 

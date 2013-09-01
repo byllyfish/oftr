@@ -1,3 +1,13 @@
+//  ===== ---- ofp/setasync.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the SetAsync and SetAsyncBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_SETASYNC_H
 #define OFP_SETASYNC_H
 
@@ -29,7 +39,7 @@ private:
 
 	bool validateLength(size_t length) const;
 
-	friend class SetAsyncRequestBuilder;
+	friend class SetAsyncBuilder;
 };
 
 static_assert(sizeof(SetAsync) == 32, "Unexpected size.");

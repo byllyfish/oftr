@@ -1,5 +1,12 @@
-/// \file headeronly.h
-/// \brief Defines message classes containing only the OpenFlow header.
+//  ===== ---- ofp/headeronly.h ----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines message classes containing only the OpenFlow header..
+//  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_HEADERONLY_H
 #define OFP_HEADERONLY_H

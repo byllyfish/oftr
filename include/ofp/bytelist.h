@@ -1,3 +1,13 @@
+//  ===== ---- ofp/bytelist.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the ByteList class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_BYTELIST_H
 #define OFP_BYTELIST_H
 

@@ -1,3 +1,13 @@
+//  ===== ---- ofp/oxmtypeset.h ----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the OXMTypeSet class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_OXMTYPESET_H
 #define OFP_OXMTYPESET_H
 

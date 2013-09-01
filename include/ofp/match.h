@@ -1,3 +1,13 @@
+//  ===== ---- ofp/match.h ---------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Match class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_MATCH_H
 #define OFP_MATCH_H
 

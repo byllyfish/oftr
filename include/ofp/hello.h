@@ -1,3 +1,13 @@
+//  ===== ---- ofp/hello.h ---------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Hello and HelloBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_HELLO_H
 #define OFP_HELLO_H
 

@@ -1,3 +1,13 @@
+//  ===== ---- ofp/actiontype.h ----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the ActionType class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_ACTION_H
 #define OFP_ACTION_H
 

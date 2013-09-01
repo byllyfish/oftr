@@ -1,4 +1,12 @@
-
+//  ===== ---- ofp/portstatus.h ----------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the PortStatus and PortStatusBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_PORTSTATUS_H
 #define OFP_PORTSTATUS_H

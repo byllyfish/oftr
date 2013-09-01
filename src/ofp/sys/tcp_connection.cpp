@@ -93,15 +93,6 @@ void TCP_Connection::channelDown()
 }
 
 
-/**
-void ofp::sys::TCP_Connection::stop()
-{
-	log::debug(__PRETTY_FUNCTION__);
-
-	socket_.close();
-}
-**/
-
 void TCP_Connection::asyncReadHeader()
 {
     // Do nothing if socket is not open.
@@ -309,16 +300,20 @@ void TCP_Connection::asyncConnect()
     socket_.async_connect(endpoint_, [this, self](const error_code &err) {
         log::Lifetime lifetime{"asyncConnect callback"};
 
-        deferredExc_->done(makeException(err));
-        deferredExc_ = nullptr;
+        // `async_connect` may not report an error when the connection attempt
+        // fails. We need to double-check that we are connected.
 
-        if (!err) {
-            assert(socket_.is_open());
+        error_code actualErr = err;
+
+        if (!actualErr && checkAsioConnected(socket_, endpoint_, actualErr)) {
             channelUp();
 
         } else if (wantsReconnect()) {
             reconnect();
         }
+
+        deferredExc_->done(makeException(actualErr));
+        deferredExc_ = nullptr;
     });
 }
 

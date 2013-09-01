@@ -1,3 +1,13 @@
+//  ===== ---- ofp/channellistener.h -----------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the abstract ChannelListener class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_CHANNELLISTENER_H
 #define OFP_CHANNELLISTENER_H
 

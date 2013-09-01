@@ -5,8 +5,7 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements logging for the library. Provides hooks to customize
-/// where the log output goes.
+/// \brief Implements logging hooks for the library.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_LOG_H

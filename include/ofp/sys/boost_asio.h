@@ -8,7 +8,7 @@
 #include "ofp/log.h"
 #include "ofp/ipv6address.h"
 
-namespace ofp {  // <namespace ofp>
+namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
 using tcp = boost::asio::ip::tcp;
@@ -16,7 +16,6 @@ using udp = boost::asio::ip::udp;
 using io_service = boost::asio::io_service;
 using error_code = boost::system::error_code;
 using steady_timer = boost::asio::steady_timer;
-
 
 inline bool isAsioEOF(const error_code &error)
 {
@@ -28,6 +27,19 @@ inline bool isAsioCanceled(const error_code &error)
 {
     using namespace boost::asio::error;
     return error.value() == ECANCELED && error.category() == system_category;
+}
+
+/// \returns True if socket is connected to given endpoint. We need this
+/// function because `async_connect` may not return an error on a failed 
+/// connection attempt.
+inline bool checkAsioConnected(const tcp::socket &socket,
+                               const tcp::endpoint &endpt,
+                               error_code &error)
+{
+    assert(socket.is_open());
+
+    tcp::endpoint actual = socket.remote_endpoint(error);
+    return !error && endpt == actual;
 }
 
 inline Exception makeException(const boost::system::error_code &error)
@@ -55,18 +67,18 @@ struct HashEndpoint {
 
 inline IPv6Address makeIPv6Address(const boost::asio::ip::address &addr)
 {
-	if (addr.is_v6()) {
-		return IPv6Address{addr.to_v6().to_bytes()};
-	} else {
-		assert(addr.is_v4());
-		IPv4Address v4{addr.to_v4().to_bytes()};
-		return IPv6Address{v4};
-	}
+    if (addr.is_v6()) {
+        return IPv6Address{addr.to_v6().to_bytes()};
+    } else {
+        assert(addr.is_v4());
+        IPv4Address v4{addr.to_v4().to_bytes()};
+        return IPv6Address{v4};
+    }
 }
 
 inline tcp::endpoint makeTCPEndpoint(const IPv6Address &addr, UInt16 port)
 {
-	using namespace boost::asio;
+    using namespace boost::asio;
 
     if (!addr.valid()) {
         return tcp::endpoint{tcp::v6(), port};
@@ -81,7 +93,7 @@ inline tcp::endpoint makeTCPEndpoint(const IPv6Address &addr, UInt16 port)
 
 inline udp::endpoint makeUDPEndpoint(const IPv6Address &addr, UInt16 port)
 {
-	using namespace boost::asio;
+    using namespace boost::asio;
 
     if (!addr.valid()) {
         return udp::endpoint{udp::v6(), port};

@@ -1,3 +1,13 @@
+//  ===== ---- ofp/actions.h -------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines classes for OpenFlow Actions.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_ACTIONS_H
 #define OFP_ACTIONS_H
 

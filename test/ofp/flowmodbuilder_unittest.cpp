@@ -3,6 +3,7 @@
 #include "ofp/matchbuilder.h"
 #include "ofp/instructions.h"
 #include "ofp/bytelist.h"
+#include "ofp/actions.h"
 
 using namespace ofp;
 
@@ -38,7 +39,7 @@ TEST(flowmodbuilder, version1_3)
     EXPECT_HEX(expected, channel.data(), channel.size());
 }
 
-TEST(flowmodbuilder, version1_0)
+TEST(flowmodbuilder, version1_1)
 {
     MatchBuilder match;
     match.add(OFB_IN_PORT{27});
@@ -50,13 +51,13 @@ TEST(flowmodbuilder, version1_0)
     flowMod.setMatch(match);
     flowMod.setInstructions(instructions);
 
-    MockChannel channel{0x01};
+    MockChannel channel{0x02};
     UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
     EXPECT_EQ(144, channel.size());
 
-    const char *expected = "010E-0090-0000-0001-0000-0000-0000-0000"
+    const char *expected = "020E-0090-0000-0001-0000-0000-0000-0000"
                            "0000-0000-0000-0000-0000-0000-0000-0000"
                            "0000-0000-0000-0000-0000-0000-0000-0000"
                            "0000-0058-0000-001B-0000-03FE-0000-0000"
@@ -65,5 +66,34 @@ TEST(flowmodbuilder, version1_0)
                            "0000-0000-0000-0000-0000-0000-0000-0000"
                            "0000-0000-0000-0000-0000-0000-0000-0000"
                            "0000-0000-0000-0000-0001-0008-0300-0000";
+    EXPECT_HEX(expected, channel.data(), channel.size());
+}
+
+TEST(flowmodbuilder, version1_0)
+{
+    MatchBuilder match;
+    match.add(OFB_IN_PORT{27});
+
+    ActionList actions;
+    actions.add(AT_SET_FIELD<OFB_UDP_SRC>{OFB_UDP_SRC{80}});
+
+    InstructionList instructions;
+    instructions.add(IT_APPLY_ACTIONS{&actions});
+
+    FlowModBuilder flowMod;
+
+    flowMod.setMatch(match);
+    flowMod.setInstructions(instructions);
+
+    MockChannel channel{0x01};
+    UInt32 xid = flowMod.send(&channel);
+
+    EXPECT_EQ(1, xid);
+    EXPECT_EQ(72, channel.size());
+
+    const char *expected = "010E00480000000100000000001B00000000000000000000000"
+                           "000000000000000000000000000000000000000000000000000"
+                           "000000000000000000000000000000000000000000";
+
     EXPECT_HEX(expected, channel.data(), channel.size());
 }

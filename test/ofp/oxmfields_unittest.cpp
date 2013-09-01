@@ -11,7 +11,7 @@ TEST(oxmfields, OFB_TCP_DST)
 	
 	EXPECT_EQ(80, tcpdst);
 	EXPECT_EQ(0x80001c02, OFB_TCP_DST::type().oxmNative());
-	EXPECT_EQ(16, OFB_TCP_DST::bits());
+	EXPECT_EQ(2, sizeof(OFB_TCP_DST));
 	EXPECT_FALSE(OFB_TCP_DST::maskSupported());
 	
 	OXMType types[] = { OFB_ETH_TYPE::type(), OFB_ETH_TYPE::type(), OFB_IP_PROTO::type() };

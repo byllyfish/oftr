@@ -9,9 +9,9 @@ namespace {
 
 constexpr OXMInternalID cast(int n) { return static_cast<OXMInternalID>(n); }
 
-using ofb_in_port = OXMValue<cast(0), 0x8000, 0, Big16, 16, false>;
-using ofb_vlan_vid = OXMValue<cast(1), 0x8000, 6, Big16, 13, true>;
-using ofb_tcp_src_port = OXMValue<cast(2), 0x8000, 19, Big16, 16, false>;
+using ofb_in_port = OXMValue<cast(0), 0x8000, 0, Big16, 2, false>;
+using ofb_vlan_vid = OXMValue<cast(1), 0x8000, 6, Big16, 2, true>;
+using ofb_tcp_src_port = OXMValue<cast(2), 0x8000, 19, Big16, 2, false>;
 
 const char *buffer = "8000 0002 0100"
                      "8000 0c02 FFFF"

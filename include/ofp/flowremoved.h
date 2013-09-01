@@ -1,3 +1,13 @@
+//  ===== ---- ofp/flowremoved.h ---------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the FlowRemoved and FlowRemovedBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_FLOWREMOVED_H
 #define OFP_FLOWREMOVED_H
 

@@ -18,6 +18,7 @@ endif
 CXXFLAGS += -g $(WARNINGS)
 
 LDFLAGS += -L .. -lofp
+LDFLAGS += -L ../external/yaml-io/ -lyamlio
 
 all : nullagent nullcontroller
 

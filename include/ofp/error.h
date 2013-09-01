@@ -1,3 +1,13 @@
+//  ===== ---- ofp/error.h ---------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Error and ErrorBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_ERROR_H
 #define OFP_ERROR_H
 

@@ -1,3 +1,13 @@
+//  ===== ---- ofp/bytedata.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the ByteData class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_BYTEDATA_H
 #define OFP_BYTEDATA_H
 

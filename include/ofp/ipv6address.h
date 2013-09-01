@@ -1,3 +1,13 @@
+//  ===== ---- ofp/ipv6address.h ---------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the IPv6Address class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_IPV6ADDRESS_H
 #define OFP_IPV6ADDRESS_H
 

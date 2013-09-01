@@ -1,3 +1,13 @@
+//  ===== ---- ofp/features.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Features class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_FEATURES_H
 #define OFP_FEATURES_H
 
@@ -6,9 +16,8 @@
 
 namespace ofp { // <namespace ofp>
 
-/**
- *  Features is a concrete class representing the features of a switch. {7.3.1}
- */
+/// \brief Represents the features of a switch. {7.3.1}
+// FIXME Need to handle version 1!
 class Features {
 public:
     Features() = default;

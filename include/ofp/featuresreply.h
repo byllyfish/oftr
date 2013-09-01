@@ -1,3 +1,13 @@
+//  ===== ---- ofp/featuresreply.h -------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the FeaturesReply and FeaturesReplyBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_FEATURESREPLY_H
 #define OFP_FEATURESREPLY_H
 

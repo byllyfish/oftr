@@ -1,3 +1,12 @@
+//  ===== ---- ofp/flowmod.h -------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the FlowMod and FlowModBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
 #ifndef OFP_FLOWMOD_H
 #define OFP_FLOWMOD_H
 
@@ -104,7 +113,8 @@ private:
     InstructionList instructions_;
 
     UInt32 sendStandard(Writable *channel);
-
+    UInt32 sendOriginal(Writable *channel);
+    
     friend struct llvm::yaml::MappingTraits<FlowModBuilder>;
 };
 

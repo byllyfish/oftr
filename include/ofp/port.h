@@ -1,3 +1,13 @@
+//  ===== ---- ofp/port.h ----------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the Port class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_PORT_H
 #define OFP_PORT_H
 

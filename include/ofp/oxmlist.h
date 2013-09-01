@@ -1,3 +1,13 @@
+//  ===== ---- ofp/oxmlist.h -------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the OXMList class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_OXMLIST_H
 #define OFP_OXMLIST_H
 

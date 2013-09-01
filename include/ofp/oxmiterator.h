@@ -1,8 +1,17 @@
+//  ===== ---- ofp/oxmiterator.h ---------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the OXMIterator class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_OXMITERATOR_H
 #define OFP_OXMITERATOR_H
 
 #include "ofp/oxmtype.h"
-//#include "ofp/oxmvalue.h"
 
 namespace ofp { // <namespace ofp>
 

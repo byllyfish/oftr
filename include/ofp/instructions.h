@@ -1,3 +1,13 @@
+//  ===== ---- ofp/instructions.h --------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the instruction classes for the OpenFlow protocol.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_INSTRUCTIONS_H
 #define OFP_INSTRUCTIONS_H
 
@@ -6,7 +16,20 @@
 #include "ofp/actionlist.h"
 
 namespace ofp { // <namespace ofp>
+namespace detail { // <namespace detail>
 
+struct InstructionHeaderWithPadding {
+	InstructionType type_;
+	Big16 length_;
+	Padding<4> pad_;
+
+	InstructionHeaderWithPadding(InstructionType type, UInt16 length)
+		: type_{type}, length_{length} {}
+};
+
+static_assert(IsStandardLayout<InstructionHeaderWithPadding>(), "Expected standard layout type.");
+
+} // </namespace detail>
 
 class IT_GOTO_TABLE {
 public:

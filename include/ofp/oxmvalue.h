@@ -1,3 +1,13 @@
+//  ===== ---- ofp/oxmvalue.h ------------------------------*- C++ -*- =====  //
+//
+//  This file is licensed under the Apache License, Version 2.0.
+//  See LICENSE.txt for details.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the OXMValue template class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_OXM_VALUE_H
 #define OFP_OXM_VALUE_H
 
@@ -14,7 +24,7 @@ template <
 	UInt16 Class,
 	UInt8 Field,
 	class ValueType,
-	UInt16 Bits,
+	UInt16 Size,
 	bool Mask,
 	const OXMRange *Prereqs = nullptr
 >
@@ -24,9 +34,8 @@ public:
 	using NativeType = typename NativeTypeOf<ValueType>::type;
 
 	constexpr static OXMInternalID internalId() { return ID; }
-	constexpr static OXMType type() { return OXMType{Class, Field, Bits}; }
+	constexpr static OXMType type() { return OXMType{Class, Field, Size}; }
 	constexpr static OXMType typeWithMask() { return type().withMask(); }
-	constexpr static UInt16	bits() { return Bits; }
 	constexpr static bool maskSupported() { return Mask; }
 	static inline const OXMRange *prerequisites() { return Prereqs; }
 	
@@ -47,9 +56,6 @@ private:
 	
 	// Used by fromBytes().
 	OXMValue() = default;
-
-	static_assert(8*sizeof(ValueType) >= Bits, "Unexpected oxm_value size.");
-	static_assert(Bits <= 8*127, "Unexpected size in bits.");
 };
 
 } // </namespace ofp>
