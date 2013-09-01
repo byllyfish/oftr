@@ -1,5 +1,6 @@
 # Makefile for yaml-io
 
+# Path to `llvm` and `llvm-build` directories.
 LLVM_DIST_PATH = ../../../llvm
 LLVM_DIST_BUILD_PATH = ../../../llvm-build
 
@@ -48,7 +49,7 @@ LLVM_OBJECTS = $(LLVM_SOURCES:.cpp=.o)
 WARNINGS = -Wall
 
 CPPFLAGS += -I include -std=c++11 -D NDEBUG
-# llvm files expect these...
+# llvm files expect these macros.
 CPPFLAGS += -D __STDC_LIMIT_MACROS -D __STDC_CONSTANT_MACROS 
 # Need -stdlib on Mac OS X.
 ifeq ($(shell uname -s),Darwin)
@@ -56,6 +57,8 @@ ifeq ($(shell uname -s),Darwin)
 endif
 
 CXXFLAGS += -O2 $(WARNINGS)
+
+all: libyamlio.a test
 
 libyamlio.a: $(LLVM_OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
@@ -67,6 +70,14 @@ clean:
 	rm -f test/testit
 	rm -f test/testit.o
 
+.PHONY: test
+test: test/testit
+	./test/testit
+
+test/testit: test/testit.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -L . -lyamlio
+
+# Use `make dist` to produce a distribution from existing LLVM sources.
 .PHONY: dist
 dist:
 	mkdir -p src/Support/Unix
@@ -83,11 +94,3 @@ dist:
 	done
 	patch include/llvm/Config/config.h src/Config.diff
 	patch src/Support/SourceMgr.cpp src/SourceMgr.diff
-
-.PHONY: test
-test: test/testit
-	./test/testit
-
-test/testit: test/testit.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ -L . -lyamlio
-
