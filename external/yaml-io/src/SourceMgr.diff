@@ -1,0 +1,14 @@
+--- SourceMgr.cpp	2013-08-31 19:09:56.000000000 -0700
++++ SourceMgr.cpp	2013-08-31 19:09:21.000000000 -0700
+@@ -293,8 +293,10 @@
+     // FIXME: This assertion is intended to catch unintended use of multibyte
+     // characters in fixits. If we decide to do this, we'll have to track
+     // separate byte widths for the source and fixit lines.
++#if 0
+     assert((size_t)llvm::sys::locale::columnWidth(I->getText()) ==
+            I->getText().size());
++#endif
+ 
+     // This relies on one byte per column in our fixit hints.
+     unsigned LastColumnModified = HintCol + I->getText().size();
+

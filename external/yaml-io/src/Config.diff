@@ -1,0 +1,11 @@
+--- config.h	2013-08-31 18:59:40.000000000 -0700
++++ config.h	2013-08-31 19:01:17.000000000 -0700
+@@ -442,7 +442,7 @@
+ #define HAVE_SYS_WAIT_H 1
+ 
+ /* Define if the setupterm() function is supported this platform. */
+-#define HAVE_TERMINFO 1
++///#define HAVE_TERMINFO 1
+ 
+ /* Define to 1 if you have the <termios.h> header file. */
+ #define HAVE_TERMIOS_H 1
