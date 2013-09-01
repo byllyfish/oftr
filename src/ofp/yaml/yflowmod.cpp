@@ -54,7 +54,7 @@ OFP_BEGIN_IGNORE_PADDING
 class OXMItemReader {
 public:
     OXMItemReader(llvm::yaml::IO &io, OXMIterator::Item &item, OXMType type)
-        : io_{io}, item_{item}, type_{type}
+        : io_(io), item_{item}, type_{type}
     {
     }
 
@@ -79,7 +79,7 @@ class MatchBuilderInserter {
 public:
     MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder,
                          OXMType type)
-        : io_{io}, builder_{builder}, type_{type}
+        : io_(io), builder_{builder}, type_{type}
     {
     }
 
