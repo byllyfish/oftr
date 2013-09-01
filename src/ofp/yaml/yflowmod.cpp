@@ -6,7 +6,7 @@
 
 using namespace ofp;
 
-namespace { // <namespace>
+namespace { // <namespace anonymous>
 
 static void readHeader(llvm::yaml::IO &io, Header *header)
 {
@@ -48,6 +48,8 @@ struct FlowModBuilderWrap {
     }
     ofp::FlowModBuilder *msg;
 };
+
+OFP_BEGIN_IGNORE_PADDING
 
 class OXMItemReader {
 public:
@@ -103,18 +105,20 @@ private:
     OXMType type_;
 };
 
+OFP_END_IGNORE_PADDING
+
 struct MatchBuilderItem {
 };
 
-} // </namespace>
+} // </namespace anonymous>
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
 template <>
-struct llvm::yaml::MappingTraits<FlowModWrap> {
+struct MappingTraits<FlowModWrap> {
 
-    static void mapping(llvm::yaml::IO &io, FlowModWrap &msg)
+    static void mapping(IO &io, FlowModWrap &msg)
     {
         writeHeader(io, reinterpret_cast<Header *>(msg.msg));
         io.mapRequired("msg", *msg.msg);
@@ -122,9 +126,9 @@ struct llvm::yaml::MappingTraits<FlowModWrap> {
 };
 
 template <>
-struct llvm::yaml::MappingTraits<FlowMod> {
+struct MappingTraits<FlowMod> {
 
-    static void mapping(llvm::yaml::IO &io, FlowMod &msg)
+    static void mapping(IO &io, FlowMod &msg)
     {
         io.mapRequired("cookie", msg.cookie_);
         io.mapRequired("cookie_mask", msg.cookieMask_);
@@ -144,7 +148,7 @@ struct llvm::yaml::MappingTraits<FlowMod> {
 };
 
 template <>
-struct llvm::yaml::SequenceTraits<ofp::Match> {
+struct SequenceTraits<ofp::Match> {
 
     static size_t size(IO &io, ofp::Match &match)
     {
@@ -164,9 +168,9 @@ struct llvm::yaml::SequenceTraits<ofp::Match> {
 };
 
 template <>
-struct llvm::yaml::MappingTraits<ofp::OXMIterator::Item> {
+struct MappingTraits<ofp::OXMIterator::Item> {
 
-    static void mapping(llvm::yaml::IO &io, ofp::OXMIterator::Item &item)
+    static void mapping(IO &io, ofp::OXMIterator::Item &item)
     {
         ofp::OXMType type = item.type();
         io.mapRequired("type", type);
@@ -178,7 +182,7 @@ struct llvm::yaml::MappingTraits<ofp::OXMIterator::Item> {
 };
 
 template <>
-struct llvm::yaml::ScalarTraits<ofp::OXMType> {
+struct ScalarTraits<ofp::OXMType> {
     static void output(const ofp::OXMType &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
@@ -201,7 +205,7 @@ struct llvm::yaml::ScalarTraits<ofp::OXMType> {
 };
 
 template <>
-struct llvm::yaml::ScalarTraits<ofp::IPv4Address> {
+struct ScalarTraits<ofp::IPv4Address> {
     static void output(const ofp::IPv4Address &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
@@ -219,7 +223,7 @@ struct llvm::yaml::ScalarTraits<ofp::IPv4Address> {
 };
 
 template <>
-struct llvm::yaml::ScalarTraits<ofp::IPv6Address> {
+struct ScalarTraits<ofp::IPv6Address> {
     static void output(const ofp::IPv6Address &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
@@ -237,7 +241,7 @@ struct llvm::yaml::ScalarTraits<ofp::IPv6Address> {
 };
 
 template <>
-struct llvm::yaml::ScalarTraits<ofp::EnetAddress> {
+struct ScalarTraits<ofp::EnetAddress> {
     static void output(const ofp::EnetAddress &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
@@ -255,9 +259,9 @@ struct llvm::yaml::ScalarTraits<ofp::EnetAddress> {
 };
 
 template <>
-struct llvm::yaml::MappingTraits<FlowModBuilderWrap> {
+struct MappingTraits<FlowModBuilderWrap> {
 
-    static void mapping(llvm::yaml::IO &io, FlowModBuilderWrap &msg)
+    static void mapping(IO &io, FlowModBuilderWrap &msg)
     {
         readHeader(io, reinterpret_cast<Header *>(msg.msg));
         io.mapRequired("msg", *msg.msg);
@@ -265,9 +269,9 @@ struct llvm::yaml::MappingTraits<FlowModBuilderWrap> {
 };
 
 template <>
-struct llvm::yaml::MappingTraits<FlowModBuilder> {
+struct MappingTraits<FlowModBuilder> {
 
-    static void mapping(llvm::yaml::IO &io, FlowModBuilder &msg)
+    static void mapping(IO &io, FlowModBuilder &msg)
     {
         io.mapRequired("cookie", msg.msg_.cookie_);
         io.mapRequired("cookie_mask", msg.msg_.cookieMask_);
@@ -286,7 +290,7 @@ struct llvm::yaml::MappingTraits<FlowModBuilder> {
 };
 
 template <>
-struct llvm::yaml::SequenceTraits<ofp::MatchBuilder> {
+struct SequenceTraits<ofp::MatchBuilder> {
 
     static size_t size(IO &io, ofp::MatchBuilder &match)
     {
@@ -301,9 +305,9 @@ struct llvm::yaml::SequenceTraits<ofp::MatchBuilder> {
 };
 
 template <>
-struct llvm::yaml::MappingTraits<MatchBuilderItem> {
+struct MappingTraits<MatchBuilderItem> {
 
-    static void mapping(llvm::yaml::IO &io, MatchBuilderItem &item)
+    static void mapping(IO &io, MatchBuilderItem &item)
     {
         MatchBuilder &builder = reinterpret_cast<MatchBuilder &>(item);
 

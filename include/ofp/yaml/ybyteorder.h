@@ -5,11 +5,16 @@
 #include "ofp/byteorder.h"
 
 
+namespace llvm { // <namespace llvm>
+namespace yaml { // <namespace yaml>
+
+
 template <>
-struct llvm::yaml::ScalarTraits<ofp::Big16> {
+struct ScalarTraits<ofp::Big16> {
     static void output(const ofp::Big16 &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
+        // Output Big16 in hexadecimal.
         uint16_t num = value;
         ScalarTraits<Hex16>::output(num, ctxt, out);
     }
@@ -27,10 +32,11 @@ struct llvm::yaml::ScalarTraits<ofp::Big16> {
 
 
 template <>
-struct llvm::yaml::ScalarTraits<ofp::Big32> {
+struct ScalarTraits<ofp::Big32> {
     static void output(const ofp::Big32 &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
+        // Output Big32 in hexadecimal.
         uint32_t num = value;
         ScalarTraits<Hex32>::output(num, ctxt, out);
     }
@@ -48,10 +54,11 @@ struct llvm::yaml::ScalarTraits<ofp::Big32> {
 
 
 template <>
-struct llvm::yaml::ScalarTraits<ofp::Big64> {
+struct ScalarTraits<ofp::Big64> {
     static void output(const ofp::Big64 &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
+        // Output Big64 in hexadecimal.
         uint64_t num = value;
         ScalarTraits<Hex64>::output(num, ctxt, out);
     }
@@ -66,5 +73,9 @@ struct llvm::yaml::ScalarTraits<ofp::Big64> {
         return err;
     }
 };
+
+
+} // </namespace yaml>
+} // </namespace llvm>
 
 #endif // OFP_YAML_YBYTEORDER_H
