@@ -65,13 +65,11 @@ LLVM_OBJECTS = $(LLVM_OBJECTS1:.cpp=.o)
 CPPFLAGS += -I ../include -I ofp -std=c++11
 #CPPFLAGS += -isystem $(LLVM_DIR) -isystem $(LLVM_BUILD_DIR)
 CPPFLAGS += -I include -I ofp -std=c++11
+WARNINGS = -Wall
 
 # Need -stdlib on Mac OS X.
 ifeq ($(shell uname -s),Darwin)
  CPPFLAGS += -stdlib=libc++
- WARNINGS = -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-unused-parameter -Wno-documentation -Wno-sign-conversion -Wno-weak-vtables -Wno-padded
-else
- WARNINGS = -Wall
 endif
 
 # llvm files expect these...
