@@ -5,4 +5,5 @@
 *.d
 *_test
 .~lock.*
+docs/html
 
