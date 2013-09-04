@@ -1,13 +1,14 @@
 #include "ofp/featuresreply.h"
 #include "ofp/channel.h"
+#include "ofp/log.h"
 
-/*  -----  FeaturesReply ---------------------------------------------------  */
+namespace ofp { // <namespace ofp>
 
-ofp::FeaturesReply::FeaturesReply() : header_{Type}
+FeaturesReply::FeaturesReply() : header_{Type}
 {
 }
 
-const ofp::FeaturesReply *ofp::FeaturesReply::cast(const Message *message)
+const FeaturesReply *ofp::FeaturesReply::cast(const Message *message)
 {
     assert(message->type() == OFPT_FEATURES_REPLY);
 
@@ -20,7 +21,7 @@ const ofp::FeaturesReply *ofp::FeaturesReply::cast(const Message *message)
     return msg;
 }
 
-void ofp::FeaturesReply::getFeatures(Features *features) const
+void FeaturesReply::getFeatures(Features *features) const
 {
     features->setDatapathID(DatapathID{datapathID_});
     features->setBufferCount(bufferCount_);
@@ -30,20 +31,25 @@ void ofp::FeaturesReply::getFeatures(Features *features) const
     features->setReserved(reserved_);
 }
 
-bool ofp::FeaturesReply::validateLength(size_t length) const
+bool FeaturesReply::validateLength(size_t length) const
 {
-    return length == sizeof(FeaturesReply);
+    if (length < sizeof(FeaturesReply)) {
+        log::info("FeatureReply validateLength failed.");
+        return false;
+    }
+
+    // TODO check number of ports in reply if version < 4.
+
+    return true;
 }
 
-/*  -----  FeaturesReplyBuilder --------------------------------------------  */
-
-ofp::FeaturesReplyBuilder::FeaturesReplyBuilder(const Message *request)
+FeaturesReplyBuilder::FeaturesReplyBuilder(const Message *request)
 {
     // Set xid of reply to request's xid.
     msg_.header_.setXid(request->xid());
 }
 
-void ofp::FeaturesReplyBuilder::setFeatures(const Features &features)
+void FeaturesReplyBuilder::setFeatures(const Features &features)
 {
     msg_.datapathID_ = features.datapathID();
     msg_.bufferCount_ = features.bufferCount();
@@ -53,7 +59,7 @@ void ofp::FeaturesReplyBuilder::setFeatures(const Features &features)
     msg_.reserved_ = features.reserved();
 }
 
-ofp::UInt32 ofp::FeaturesReplyBuilder::send(Writable *channel)
+UInt32 FeaturesReplyBuilder::send(Writable *channel)
 {
     msg_.header_.setVersion(channel->version());
     msg_.header_.setLength(sizeof(msg_));
@@ -63,3 +69,5 @@ ofp::UInt32 ofp::FeaturesReplyBuilder::send(Writable *channel)
 
     return msg_.header_.xid();
 }
+
+} // </namespace ofp>

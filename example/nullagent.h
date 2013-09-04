@@ -2,8 +2,8 @@
 #define NULLAGENT_H
 
 #include "ofp.h"
-#include "ofp/yaml/ofp_yaml.h"
-#include "ofp/yaml/flowmod.h"
+#include "ofp/yaml.h"
+#include "ofp/yaml/yflowmod.h"
 
 using ofp::UInt16;
 using ofp::UInt32;
@@ -22,7 +22,7 @@ public:
         ofp::log::debug("NullAgent channel up.");
 
         // FIXME support binding of related connections.
-        channel->openAuxChannel(1, Channel::Transport::TCP);
+        //channel->openAuxChannel(1, Channel::Transport::TCP);
         
     }
 
@@ -41,6 +41,10 @@ public:
 private:
     void onSetConfig(const Message *message);
     void onFlowMod(const Message *message);
+    void onGetAsyncRequest(const Message *message);
+    void onGetConfigRequest(const Message *message);
+    void onBarrierRequest(const Message *message);
+
     void sendError(UInt16 type, UInt16 code, const Message *message);
 };
 
@@ -56,7 +60,20 @@ void NullAgent::onMessage(const Message *message)
         onFlowMod(message);
         break;
 
+    case ofp::GetAsyncRequest::Type:
+        onGetAsyncRequest(message);
+        break;
+
+    case ofp::GetConfigRequest::Type:
+        onGetConfigRequest(message);
+        break;
+
+    case ofp::BarrierRequest::Type:
+        onBarrierRequest(message);
+        break;
+
     default:
+        ofp::log::debug("Unknown message type", int(message->type()));
         sendError(1, 1, message);
         break;
     }
@@ -71,7 +88,7 @@ void NullAgent::onSetConfig(const Message *message)
         return;
     }
 
-    ofp::log::debug(ofp::yaml::write(setConfig));
+    //ofp::log::debug(ofp::yaml::write(setConfig));
 }
 
 
@@ -84,6 +101,43 @@ void NullAgent::onFlowMod(const Message *message)
     }
 
     ofp::log::debug(ofp::yaml::write(flowMod));
+}
+
+void NullAgent::onGetAsyncRequest(const Message *message)
+{
+    auto getAsyncReq = ofp::GetAsyncRequest::cast(message);
+    if (!getAsyncReq) {
+        sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+        return;
+    }
+
+    ofp::log::debug("GetAsyncRequest");
+}
+
+
+void NullAgent::onGetConfigRequest(const Message *message)
+{
+    auto getConfigReq = ofp::GetConfigRequest::cast(message);
+    if (!getConfigReq) {
+        sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+        return;
+    }
+
+    ofp::log::debug("GetConfigRequest");
+}
+
+
+void NullAgent::onBarrierRequest(const Message *message)
+{
+    ofp::log::debug("BarrierRequest");
+
+    auto barrierReq = ofp::BarrierRequest::cast(message);
+    if (!barrierReq) {
+        sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+        return;
+    }
+
+    (void) ofp::BarrierReplyBuilder{message}.send(message->source());
 }
 
 void NullAgent::sendError(UInt16 type, UInt16 code, const Message *message)

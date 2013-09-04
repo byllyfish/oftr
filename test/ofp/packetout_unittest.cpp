@@ -20,7 +20,7 @@ TEST(packetout, test)
     msg.setActions(actions.toRange());
     msg.setEnetFrame(enetFrame);
 
-    MockChannel channel{0x04};
+    MemoryChannel channel{0x04};
     UInt32 xid = msg.send(&channel);
 
     EXPECT_EQ(1, xid);

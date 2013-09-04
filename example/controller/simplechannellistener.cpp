@@ -7,11 +7,27 @@ void SimpleChannelListener::onChannelUp(Channel *channel)
 {
     UInt32 xid;
 
-    xid = GetAsyncRequestBuilder{}.send(channel);
-    trackReply(xid, &SimpleChannelListener::onGetAsyncReply);
+    log::debug("SimpleChannelListener UP");
 
-    xid = GetConfigRequestBuilder{}.send(channel);
-    trackReply(xid, &SimpleChannelListener::onGetConfigReply);
+    (void) SetConfigBuilder{}.send(channel);
+    // No Reply expected.
+
+    FlowModBuilder flowMod;
+    flowMod.setCommand(OFPFC_DELETE);
+    flowMod.setPriority(0x8000);
+    flowMod.setBufferId(0xFFFFFFFF);
+    flowMod.setOutPort(0xFFFFFFFF);
+    (void) flowMod.send(channel);
+    // No reply expected.
+
+    //xid = GetAsyncRequestBuilder{}.send(channel);
+    //trackReply(xid, &SimpleChannelListener::onGetAsyncReply);
+
+    //xid = GetConfigRequestBuilder{}.send(channel);
+    //trackReply(xid, &SimpleChannelListener::onGetConfigReply);
+    
+    xid = BarrierRequestBuilder{}.send(channel);
+    trackReply(xid, &SimpleChannelListener::onBarrierReply);
 }
 
 void SimpleChannelListener::onMessage(const Message *message)
@@ -31,13 +47,19 @@ void SimpleChannelListener::onMessage(const Message *message)
 
 void SimpleChannelListener::onGetAsyncReply(const GetAsyncReply *msg)
 {
-
+    log::debug("GetAsyncReply");
 }
 
 
 void SimpleChannelListener::onGetConfigReply(const GetConfigReply *msg)
 {
+    log::debug("GetConfigReply");
+}
 
+
+void SimpleChannelListener::onBarrierReply(const BarrierReply *msg)
+{
+    log::debug("BarrierReply");
 }
 
 

@@ -12,7 +12,7 @@ int main(int argc, char **argv)
         return new controller::SimpleChannelListener;
     };
 
-    auto ex = runController(factory, {OFP_VERSION_1, OFP_VERSION_4});
+    auto ex = runController(factory);
 
     if (ex) {
     	log::error("Error running controller:", ex);

@@ -62,12 +62,12 @@ LDFLAGS += -L ../external/yaml-io/ -lyamlio
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
 TESTS = ofp_test
-TEST_SOURCES := $(wildcard ofp/*_unittest.cpp)
+TEST_SOURCES := $(wildcard ofp/*_unittest.cpp) $(wildcard ofp-c/*_unittest.cpp)
 TEST_OBJECTS := $(patsubst %.cpp,%.o,$(TEST_SOURCES))
 TEST_DEPEND  := $(patsubst %.cpp,%.d,$(TEST_SOURCES))
 
 MAINS := $(wildcard ../src/ofp/*_main.cpp)
-LIB_SOURCES := $(filter-out $(MAINS),$(wildcard ../src/ofp/*.cpp) $(wildcard ../src/ofp/sys/*.cpp) $(wildcard ../src/ofp/yaml/*.cpp))
+LIB_SOURCES := $(filter-out $(MAINS),$(wildcard ../src/ofp/*.cpp) $(wildcard ../src/ofp/sys/*.cpp) $(wildcard ../src/ofp/yaml/*.cpp)) $(wildcard ../src/ofp-c/*.cpp)
 LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
 LIB_DEPEND  := $(patsubst %.cpp,%.d,$(LIB_SOURCES))
 

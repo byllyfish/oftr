@@ -3,7 +3,7 @@
 
 using namespace ofp;
 
-TEST(packetin, test)
+TEST(packetin, version4)
 {
     MatchBuilder match;
     match.add(OFB_IN_PORT{27});
@@ -21,7 +21,7 @@ TEST(packetin, test)
     msg.setMatch(match);
     msg.setEnetFrame(enetFrame);
 
-    MockChannel channel{0x04};
+    MemoryChannel channel{OFP_VERSION_4};
     UInt32 xid = msg.send(&channel);
 
     EXPECT_EQ(1, xid);
@@ -33,4 +33,55 @@ TEST(packetin, test)
                            "(00000102-03040506,07080102-03040506,0708)";
 
     EXPECT_HEX(expected, channel.data(), channel.size());
+}
+
+TEST(packetin, version1)
+{
+    PacketInBuilder builder;
+    builder.setBufferID(0x01020304);
+    builder.setTotalLen(0x0101);
+    builder.setInPort(0x22);
+    builder.setInPhyPort(0x0333);
+    builder.setReason(0x09);
+    builder.setTableID(0xAA);
+    builder.setCookie(0x05060708090a0b0c);
+
+    ByteRange pkt("77777777777777777777", 20);
+    builder.setEnetFrame(pkt);
+
+    MemoryChannel channel{OFP_VERSION_1};
+    builder.send(&channel);
+
+    EXPECT_EQ(0x0026, channel.size());
+
+    const char *expected = "(01-0A-0026-00000001)"
+                           "01020304-0101-0022-09-00"
+                           "3737373737373737373737373737373737373737";
+
+    EXPECT_HEX(expected, channel.data(), channel.size());
+
+    // Now check parsing.
+
+    Message message{channel.data(), channel.size()};
+    EXPECT_EQ(OFP_VERSION_1, message.version());
+    EXPECT_EQ(PacketIn::Type, message.type());
+
+    const PacketIn *msg = PacketIn::cast(&message);
+    EXPECT_TRUE(msg);
+
+    if (msg) {
+        EXPECT_EQ(OFP_VERSION_1, msg->version());
+        EXPECT_EQ(0x01020304, msg->bufferID());
+        EXPECT_EQ(0x0101, msg->totalLen());
+        EXPECT_EQ(0x22, msg->inPort());
+        EXPECT_EQ(0x09, msg->reason());
+
+        ByteRange enetFrame = msg->enetFrame();
+        EXPECT_HEX("3737373737373737373737373737373737373737", enetFrame.data(), enetFrame.size());
+
+        // Not supported in v1.
+        EXPECT_EQ(0, msg->inPhyPort());
+        EXPECT_EQ(0, msg->tableID());
+        EXPECT_EQ(0, msg->cookie());
+    }
 }

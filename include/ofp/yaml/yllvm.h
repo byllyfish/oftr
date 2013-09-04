@@ -7,7 +7,10 @@
 
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
+#include "ofp/Header.h"
 
+namespace ofp {    // <namespace ofp>
+namespace detail { // <namespace detail>
 
 template <class Type>
 Type &YamlRemoveConst_cast(const Type &v)
@@ -15,5 +18,38 @@ Type &YamlRemoveConst_cast(const Type &v)
     return const_cast<Type &>(v);
 }
 
+void readHeader(llvm::yaml::IO &io, Header *header);
+void writeHeader(llvm::yaml::IO &io, const Header *header);
+
+inline void readHeader(llvm::yaml::IO &io, Header *header)
+{
+    UInt8 type;
+    UInt8 version;
+    UInt32 xid;
+
+    // FIXME - is this right? What happens if msg comes first?
+
+    io.mapRequired("type", type);
+    io.mapRequired("xid", xid);
+    io.mapRequired("version", version);
+
+    header->setType(type);
+    header->setVersion(version);
+    header->setXid(xid);
+}
+
+inline void writeHeader(llvm::yaml::IO &io, const Header *header)
+{
+    UInt8 version = header->version();
+    UInt8 type = header->type();
+    UInt32 xid = header->xid();
+
+    io.mapRequired("type", type);
+    io.mapRequired("version", version);
+    io.mapRequired("xid", xid);
+}
+
+} // </namespace detail>
+} // </namespace ofp>
 
 #endif // OFP_YAML_YLLVM_H

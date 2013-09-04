@@ -22,6 +22,14 @@ namespace ofp { // <namespace ofp>
 
 class FlowModBuilder;
 
+enum FlowModCommand : UInt8 {
+    OFPFC_ADD = 0,
+    OFPFC_MODIFY = 1,
+    OFPFC_MODIFY_STRICT = 2,
+    OFPFC_DELETE = 3,
+    OFPFC_DELETE_STRICT = 4
+};
+
 class FlowMod {
 public:
     static const FlowMod *cast(const Message *message);
@@ -35,7 +43,7 @@ public:
     UInt64 cookie() const { return cookie_; }
     UInt64 cookieMask() const { return cookieMask_; }
     UInt8  tableId() const { return tableId_; }
-    UInt8  command() const { return command_; }
+    FlowModCommand command() const { return static_cast<FlowModCommand>(command_); }
     UInt16 idleTimeout() const { return idleTimeout_; }
     UInt16 hardTimeout() const  { return hardTimeout_; }
     UInt16 priority() const { return priority_; }
@@ -86,16 +94,17 @@ class FlowModBuilder {
 public:
     FlowModBuilder() = default;
     
-    void setCookie(UInt64 cookie, UInt64 cookieMask);
-    void setTableId(UInt8 tableId);
-    void setCommand(UInt8 command);
-    void setIdleTimeout(UInt32 idleTimeout);
-    void setHardTimeout(UInt32 hardTimeout);
-    void setPriority(UInt16 priority);
-    void setBufferId(UInt32 bufferId);
-    void setOutPort(UInt32 outPort);
-    void setOutGroup(UInt32 outGroup);
-    void setFlags(UInt16 flags);
+    void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
+    void setCookieMask(UInt64 cookieMask) { msg_.cookieMask_ = cookieMask; }
+    void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+    void setCommand(FlowModCommand command) { msg_.command_ = command; }
+    void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
+    void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
+    void setPriority(UInt16 priority) { msg_.priority_ = priority; }
+    void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
+    void setOutPort(UInt32 outPort) { msg_.outPort_ = outPort; }
+    void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
+    void setFlags(UInt16 flags) { msg_.flags_ = flags; }
     
     void setMatch(const MatchBuilder &match) {
         match_ = match;

@@ -31,10 +31,12 @@ TEST(message, transmogrify)
     EXPECT_HEX(hexAfter, msg.data(), msg.size());
 }
 
-
 TEST(message, transmogrify_flow_mod)
 {
-    const char *hexBefore = "010E 0048 0000 0060 0010 001F 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 0000 8000 FFFF FFFF FFFF 0000";
+    const char *hexBefore = "010E 0048 0000 0060 0010 001F 0000 0000 0000 0000 "
+                            "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 "
+                            "0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 "
+                            "0000 8000 FFFF FFFF FFFF 0000";
 
     auto s = HexToRawData(hexBefore);
 
@@ -59,4 +61,41 @@ TEST(message, transmogrify_flow_mod)
         EXPECT_EQ(0, msg->outGroup());
         EXPECT_EQ(0, msg->flags());
     }
+}
+
+TEST(message, translateType)
+{
+    for (UInt8 type = 0; type <= OFPT_LAST; ++type) {
+        EXPECT_EQ(type, Header::translateType(4, type, 4));
+    }
+
+    for (UInt8 type = 0; type <= OFPT_FLOW_MOD; ++type) {
+        EXPECT_EQ(type, Header::translateType(1, type, 4));
+        EXPECT_EQ(type, Header::translateType(2, type, 4));
+        EXPECT_EQ(type, Header::translateType(3, type, 4));
+        EXPECT_EQ(type, Header::translateType(4, type, 1));
+        EXPECT_EQ(type, Header::translateType(4, type, 2));
+        EXPECT_EQ(type, Header::translateType(4, type, 3));
+    }
+
+    EXPECT_EQ(UInt8_cast(deprecated::v1::OFPT_PORT_MOD),
+              Header::translateType(4, OFPT_PORT_MOD, 1));
+    EXPECT_EQ(UInt8_cast(deprecated::v2::OFPT_PORT_MOD),
+              Header::translateType(4, OFPT_PORT_MOD, 2));
+    EXPECT_EQ(UInt8_cast(deprecated::v3::OFPT_PORT_MOD),
+              Header::translateType(4, OFPT_PORT_MOD, 3));
+
+    EXPECT_EQ(OFPT_PORT_MOD,
+              Header::translateType(
+                  1, UInt8_cast(deprecated::v1::OFPT_PORT_MOD), 4));
+    EXPECT_EQ(OFPT_PORT_MOD,
+              Header::translateType(
+                  2, UInt8_cast(deprecated::v2::OFPT_PORT_MOD), 4));
+    EXPECT_EQ(OFPT_PORT_MOD,
+              Header::translateType(
+                  3, UInt8_cast(deprecated::v3::OFPT_PORT_MOD), 4));
+
+    EXPECT_EQ(OFPT_UNSUPPORTED, Header::translateType(4, OFPT_SET_ASYNC, 1));
+    EXPECT_EQ(OFPT_UNSUPPORTED, Header::translateType(4, OFPT_SET_ASYNC, 2));
+    EXPECT_EQ(OFPT_UNSUPPORTED, Header::translateType(4, OFPT_SET_ASYNC, 3));
 }

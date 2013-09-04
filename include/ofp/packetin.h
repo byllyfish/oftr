@@ -2,7 +2,7 @@
 //
 //  This file is licensed under the Apache License, Version 2.0.
 //  See LICENSE.txt for details.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the PacketIn and PacketInBuilder classes.
@@ -21,39 +21,69 @@ namespace ofp { // <namespace ofp>
 
 class PacketIn {
 public:
-	enum { Type = OFPT_PACKET_IN };
+    enum {
+        Type = OFPT_PACKET_IN
+    };
 
-	static const PacketIn *cast(const Message *message) { return message->cast<PacketIn>(); }
+    static const PacketIn *cast(const Message *message)
+    {
+        return message->cast<PacketIn>();
+    }
 
-	PacketIn() : header_{Type} {}
+    PacketIn() : header_{Type}
+    {
+    }
 
-	UInt32 bufferID() const;
-	UInt16 totalLen() const;
-	UInt8 reason() const;
-	UInt8 tableID() const;
-	UInt64 cookie() const;
+    UInt8 version() const { return header_.version(); }
 
-	Match match() const;
-	ByteRange enetFrame() const;
+    UInt32 bufferID() const
+    {
+        return bufferID_;
+    }
+
+    UInt16 totalLen() const;
+    UInt32 inPort() const;
+    UInt32 inPhyPort() const;
+    UInt64 metadata() const;
+    UInt8 reason() const;
+    UInt8 tableID() const;
+    UInt64 cookie() const;
+
+    Match match() const;
+    ByteRange enetFrame() const;
 
     bool validateLength(size_t length) const;
 
 private:
-	Header header_;
-	Big32 bufferID_;
-	Big16 totalLen_;
-	Big8 reason_;
-	Big8 tableID_;
-	Big64 cookie_;
+    Header header_;
+    Big32 bufferID_;
+    Big16 totalLen_;
+    Big8 reason_;
+    Big8 tableID_;
+    Big64 cookie_;
 
-	Big16 matchType_ = 0;
+    Big16 matchType_ = 0;
     Big16 matchLength_ = 0;
-    Padding<4> pad_2;
+    Padding<4> pad_;
 
-	enum { UnpaddedSizeWithMatchHeader = 28 };
-    enum { SizeWithoutMatchHeader = 24 };
+    OXMRange oxmRange() const;
 
-	friend class PacketInBuilder;
+    template <class Type>
+    Type offset(size_t offset) const
+    {
+        return *reinterpret_cast<const Type *>(BytePtr(this) + offset);
+    }
+
+    bool validateLengthV1(size_t length) const;
+    bool validateLengthV2(size_t length) const;
+    bool validateLengthV3(size_t length) const;
+
+    enum {
+        UnpaddedSizeWithMatchHeader = 28,
+        SizeWithoutMatchHeader = 24
+    };
+
+    friend class PacketInBuilder;
 };
 
 static_assert(sizeof(PacketIn) == 32, "Unexpected size.");
@@ -61,98 +91,42 @@ static_assert(IsStandardLayout<PacketIn>(), "Expected standard layout.");
 
 class PacketInBuilder {
 public:
-	PacketInBuilder() = default;
+    PacketInBuilder() = default;
 
-	void setBufferID(UInt32 bufferID);
-	void setTotalLen(UInt16 totalLen);
-	void setReason(UInt8 reason);
-	void setTableID(UInt8 tableID);
-	void setCookie(UInt64 cookie);
+    void setBufferID(UInt32 bufferID) { msg_.bufferID_ = bufferID; }
+    void setTotalLen(UInt16 totalLen) { msg_.totalLen_ = totalLen; }
+    void setInPort(UInt32 inPort) { inPort_ = inPort; }
+    void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }
+    void setMetadata(UInt64 metadata) { metadata_ = metadata; }
+    void setReason(UInt8 reason) { msg_.reason_ = reason; }
+    void setTableID(UInt8 tableID) { msg_.tableID_ = tableID; }
+    void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
 
-	void setMatch(const MatchBuilder &match) {
+    void setMatch(const MatchBuilder &match)
+    {
         match_ = match;
     }
 
-    void setEnetFrame(const ByteRange &enetFrame) {
-    	enetFrame_ = enetFrame;
+    void setEnetFrame(const ByteRange &enetFrame)
+    {
+        enetFrame_ = enetFrame;
     }
 
-	UInt32 send(Writable *channel) {
-		UInt8  version = channel->version();
-        if (version <= 0x02) {
-            return sendStandard(channel);
-        }
-
-        // Calculate length of PacketIn message up to end of match section. Then 
-        // pad it to a multiple of 8 bytes.
-        size_t msgMatchLen = PacketIn::UnpaddedSizeWithMatchHeader + match_.size();
-        size_t msgMatchLenPadded = PadLength(msgMatchLen);
-
-        // Calculate length of ethernet frame section (preceded by 2 byte pad.)
-        size_t enetFrameLen = enetFrame_.size() + 2;
-
-        // Calculate the total PacketIn message length.
-        size_t msgLen = msgMatchLenPadded + enetFrameLen;
-
-        // Fill in the message header.
-        UInt32 xid = channel->nextXid();
-        Header &hdr = msg_.header_;
-        hdr.setVersion(version);
-        hdr.setType(PacketIn::Type);
-        hdr.setLength(UInt16_narrow_cast(msgLen));
-        hdr.setXid(xid);
-
-        // Fill in the match header.
-        msg_.matchType_ = OFPMT_OXM;
-        msg_.matchLength_ = UInt16_narrow_cast(PadLength(match_.size()));
-
-        // Write the message with padding in the correct spots.
-        Padding<8> pad;
-        channel->write(&msg_, PacketIn::UnpaddedSizeWithMatchHeader);
-        channel->write(match_.data(), match_.size());
-        channel->write(&pad, msgMatchLenPadded - msgMatchLen);
-        channel->write(&pad, 2);
-        channel->write(enetFrame_.data(), enetFrame_.size());
-        channel->flush();
-
-        return xid;
-	}
-
-	UInt32 sendStandard(Writable *channel) 
-	{
-        UInt8 version = channel->version();
-        assert(version <= 0x02);
-
-        deprecated::StandardMatch stdMatch{match_.toRange()};
-
-        size_t msgMatchLen = PacketIn::SizeWithoutMatchHeader + sizeof(stdMatch);
-        size_t enetFrameLen = enetFrame_.size() + 2;
-        size_t msgLen = msgMatchLen + enetFrameLen;
-
-        UInt32 xid = channel->nextXid();
-        Header &hdr = msg_.header_;
-        hdr.setVersion(version);
-        hdr.setType(PacketIn::Type);
-        hdr.setLength(UInt16_narrow_cast(msgLen));
-        hdr.setXid(xid);
-
-        Padding<8> pad;
-        channel->write(&msg_, PacketIn::SizeWithoutMatchHeader);
-        channel->write(&stdMatch, sizeof(stdMatch));
-        channel->write(&pad, 2);
-        channel->write(enetFrame_.data(), enetFrame_.size());
-        channel->flush();
-
-        return xid;
-	}
+    UInt32 send(Writable *channel);
 
 private:
-	PacketIn msg_;
-	MatchBuilder match_;
-	ByteRange enetFrame_;
+    PacketIn msg_;
+    Big32 inPort_;
+    Big32 inPhyPort_;
+    Big64 metadata_;
+    MatchBuilder match_;
+    ByteRange enetFrame_;
+
+    UInt32 sendV1(Writable *channel);
+    UInt32 sendV2(Writable *channel);
+    UInt32 sendV3(Writable *channel);
 };
 
 } // </namespace ofp>
-
 
 #endif // OFP_PACKETIN_H

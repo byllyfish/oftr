@@ -6,7 +6,7 @@ LIB_OBJECTS := $(patsubst %.cpp,%.o,$(LIB_SOURCES))
 BOOST_ROOT = ../external/boost_1_54_0_asio
 BOOST_OBJ = $(BOOST_ROOT)/libs/system/src/error_code.o
 
-CPPFLAGS += -I ../include -isystem $(BOOST_ROOT) -std=c++11
+CPPFLAGS += -I ../include -isystem $(BOOST_ROOT) -isystem ../external/yaml-io/include -std=c++11
 
 ifeq ($(shell uname -s),Darwin)
  CPPFLAGS += -stdlib=libc++
@@ -23,7 +23,7 @@ LDFLAGS += -L ../external/yaml-io/ -lyamlio
 all : nullagent nullcontroller
 
 nullagent : nullagent_main.o 
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
 nullcontroller : nullcontroller_main.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) 

@@ -2,7 +2,7 @@
 //
 //  This file is licensed under the Apache License, Version 2.0.
 //  See LICENSE.txt for details.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the Port class.
@@ -19,27 +19,49 @@ namespace ofp { // <namespace ofp>
 
 class Port {
 public:
-	Port();
+    Port();
 
 private:
-	Big32 portNo_;
-	Padding<4> pad1_;
-	EnetAddress hwAddr_;
-	Padding<2> pad2_;
-	SmallCString<OFP_MAX_PORT_NAME_LEN> name_;
-	Big32 config_;
-	Big32 state_;
-	Big32 curr_;
-	Big32 advertised_;
-	Big32 supported_;
-	Big32 peer_;
-	Big32 currSpeed_;
-	Big32 maxSpeed_;
+    Big32 portNo_;
+    Padding<4> pad1_;
+    EnetAddress hwAddr_;
+    Padding<2> pad2_;
+    SmallCString<OFP_MAX_PORT_NAME_LEN> name_;
+    Big32 config_;
+    Big32 state_;
+    Big32 curr_;
+    Big32 advertised_;
+    Big32 supported_;
+    Big32 peer_;
+    Big32 currSpeed_;
+    Big32 maxSpeed_;
 };
 
 static_assert(sizeof(Port) == 64, "Unexpected size.");
 static_assert(IsStandardLayout<Port>(), "Expected standard layout.");
 
+namespace deprecated { // <namespace deprecated>
+
+class V1Port {
+public:
+    V1Port();
+
+private:
+    Big16 portNo_;
+    EnetAddress hwAddr_;
+    SmallCString<OFP_MAX_PORT_NAME_LEN> name_;
+    Big32 config_;
+    Big32 state_;
+    Big32 curr_;
+    Big32 advertised_;
+    Big32 supported_;
+    Big32 peer_;
+};
+
+static_assert(sizeof(V1Port) == 48, "Unexpected size.");
+static_assert(IsStandardLayout<V1Port>(), "Expected standard layout.");
+
+} // </namespace deprecated>
 } // </namespace ofp>
 
 #endif // OFP_PORT_H

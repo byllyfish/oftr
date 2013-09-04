@@ -32,6 +32,7 @@ public:
     FeaturesReply();
 
     void getFeatures(Features *features) const;
+    //PortRange ports() const;
 
 private:
     Header header_;

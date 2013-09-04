@@ -14,12 +14,17 @@
 #include "ofp/header.h"
 #include "ofp/message.h"
 #include "ofp/writable.h"
+#include "ofp/log.h"
 
 namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
 
+template <class HeaderOnlyType>
+class HeaderOnlyBuilder;
+
+
 /// \brief Used to implement header-only messages.
-template <UInt8 MsgType>
+template <OFPType MsgType>
 class HeaderOnly {
 public:
     /// Cast message to this type after validating contents.
@@ -42,6 +47,8 @@ public:
 
 private:
     Header header_;
+
+    friend class HeaderOnlyBuilder<HeaderOnly>;
 };
 
 template <class HeaderOnlyType>
@@ -49,11 +56,18 @@ class HeaderOnlyBuilder {
 public:
     HeaderOnlyBuilder() = default;
 
+    explicit HeaderOnlyBuilder(const Message *request) : isReply_{true}
+    {
+        msg_.header_.setXid(request->xid());
+
+    }
+
     /// \returns xid assigned to sent message.
     UInt32 send(Writable *channel);
 
 private:
     HeaderOnlyType msg_;
+    bool isReply_ = false;
 };
 
 } // </namespace detail>
@@ -143,9 +157,19 @@ static_assert(sizeof(GetConfigRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<GetConfigRequest>(),
               "Expected standard layout.");
 
+
+using BarrierRequest = detail::HeaderOnly<OFPT_BARRIER_REQUEST>;
+
+using BarrierRequestBuilder = detail::HeaderOnlyBuilder<BarrierRequest>;
+
+using BarrierReply = detail::HeaderOnly<OFPT_BARRIER_REPLY>;
+
+using BarrierReplyBuilder = detail::HeaderOnlyBuilder<BarrierReply>;
+
+
 namespace detail { // <namespace detail>
 
-template <UInt8 MsgType>
+template <OFPType MsgType>
 const HeaderOnly<MsgType> *HeaderOnly<MsgType>::cast(const Message *message)
 {
     assert(message->type() == MsgType);
@@ -163,15 +187,29 @@ const HeaderOnly<MsgType> *HeaderOnly<MsgType>::cast(const Message *message)
 template <class HeaderOnlyType>
 UInt32 HeaderOnlyBuilder<HeaderOnlyType>::send(Writable *channel)
 {
-    UInt32 xid = channel->nextXid();
-
     Header *header = reinterpret_cast<Header *>(&msg_);
-    header->setVersion(channel->version());
-    header->setLength(sizeof(msg_));
-    header->setXid(xid);
+    UInt32 xid = isReply_ ? header->xid() : channel->nextXid();
 
-    channel->write(&msg_, sizeof(msg_));
-    channel->flush();
+    UInt8 origType = header->type();
+    UInt8 version = channel->version();
+    UInt8 newType = Header::translateType(OFP_VERSION_4, origType, version);
+
+    if (newType != OFPT_UNSUPPORTED) {
+        header->setType(newType);
+        header->setVersion(version);
+        header->setLength(sizeof(msg_));
+        if (!isReply_)
+            header->setXid(xid);
+
+        channel->write(&msg_, sizeof(msg_));
+        channel->flush();
+
+        // Restore original type in case Send() is called twice for same builder.
+        header->setType(origType);
+
+    } else {
+        log::info("Message not supported on this channel version.", origType);
+    }
 
     return xid;
 }

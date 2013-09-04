@@ -21,10 +21,10 @@ TEST(yaml_flowmod, write)
     flowMod.setMatch(match);
     flowMod.setInstructions(instructions);
 
-    ByteList buf = MockChannel::serialize(flowMod, 4);
+    ByteList buf = MemoryChannel::serialize(flowMod, 4);
 
-    log::debug("size:", buf.size());
-    log::debug(RawDataToHex(buf.data(), buf.size()));
+    EXPECT_EQ(88, buf.size());
+    EXPECT_HEX("040E0058000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000010016800000040000000D80000A02080080001804C0A801010000000000000001000803000000", buf.data(), buf.size());
 
     const FlowMod *msg = reinterpret_cast<const FlowMod *>(buf.data());
     EXPECT_TRUE(msg->validateLength(buf.size()));
@@ -63,7 +63,7 @@ msg:
     FlowModBuilder builder;
     yaml::read(result, &builder);
 
-    ByteList buf2 = MockChannel::serialize(builder, 4);
+    ByteList buf2 = MemoryChannel::serialize(builder, 4);
 
     log::debug("size:", buf2.size());
     log::debug(RawDataToHex(buf2.data(), buf2.size()));

@@ -17,7 +17,8 @@ public:
     // Callbacks for replies we expect to receive during setup.
     void onGetAsyncReply(const GetAsyncReply *msg);
     void onGetConfigReply(const GetConfigReply *msg);
-
+    void onBarrierReply(const BarrierReply *msg);
+    
 private:
 	// Our controller object handles PacketIn messages.
     SimpleController controller_;

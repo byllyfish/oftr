@@ -2,7 +2,7 @@
 //
 //  This file is licensed under the Apache License, Version 2.0.
 //  See LICENSE.txt for details.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines all OpenFlow constants.
@@ -19,11 +19,12 @@ enum {
     OFP_MAX_PORT_NAME_LEN = 16
 };
 
-enum : UInt8 {
+enum {
     OFP_VERSION_1 = 0x01,
     OFP_VERSION_2 = 0x02,
     OFP_VERSION_3 = 0x03,
     OFP_VERSION_4 = 0x04,
+    OFP_VERSION_LAST = OFP_VERSION_4
 };
 
 enum {
@@ -40,57 +41,235 @@ enum {
     OFPMT_OXM = 1
 };
 
+// Version:                    v1     v2     v3     v4
+// ------------                --     --     --     --
+// HELLO                        0      0      0      0
+// ERROR                        1      1      1      1
+// ECHO_REQUEST                 2      2      2      2
+// ECHO_REPLY                   3      3      3      3
+// VENDOR                       4 *    -      -      -
+// EXPERIMENTER                 -      4      4      4
+// FEATURES_REQUEST             5      5      5      5
+// FEATURES_REPLY               6      6      6      6
+// GET_CONFIG_REQUEST           7      7      7      7
+// GET_CONFIG_REPLY             8      8      8      8
+// SET_CONFIG                   9      9      9      9
+// PACKET_IN                   10     10     10     10
+// FLOW_REMOVED                11     11     11     11
+// PORT_STATUS                 12     12     12     12
+// PACKET_OUT                  13     13     13     13
+// FLOW_MOD                    14 ^   14     14     14
+// GROUP_MOD                    -     15     15     15
+// PORT_MOD                    15 *   16     16     16
+// TABLE_MOD                    -     17     17     17
+// STATS_REQUEST               16 *   18     18      -
+// STATS_REPLY                 17 *   19     19      -
+// MULTIPART_REQUEST            -      -      -     18
+// MULTIPART_REPLY              -      -      -     19
+// BARRIER_REQUEST             18 *   20     20     20
+// BARRIER_REPLY               19 *   21     21     21
+// QUEUE_GET_CONFIG_REQUEST    20 *   22     22     22
+// QUEUE_GET_CONFIG_REPLY      21 *   23     23     23
+// ROLE_REQUEST                 -      -     24     24
+// ROLE_REPLY                   -      -     25     25
+// GET_ASYNC_REQUEST            -      -      -     26
+// GET_ASYNC_REPLY              -      -      -     27
+// SET_ASYNC                    -      -      -     28
+// METER_MOD                    -      -      -     29
+//
 // FIXME: strong typing?
-enum : UInt8 {
-    OFPT_HELLO              = 0,    // Symmetric message
-    OFPT_ERROR              = 1,    // Symmetric message
-    OFPT_ECHO_REQUEST       = 2,    // Symmetric message
-    OFPT_ECHO_REPLY         = 3,    // Symmetric message
-    OFPT_EXPERIMENTER       = 4,    // Symmetric message
+enum OFPType : UInt8{
+    OFPT_HELLO = 0,        // Symmetric message
+    OFPT_ERROR = 1,        // Symmetric message
+    OFPT_ECHO_REQUEST = 2, // Symmetric message
+    OFPT_ECHO_REPLY = 3,   // Symmetric message
+    OFPT_EXPERIMENTER = 4, // Symmetric message
 
     // Switch configuration messages.
-    OFPT_FEATURES_REQUEST   = 5,    // Controller -> switch message
-    OFPT_FEATURES_REPLY     = 6,    // Controller -> switch message
-    OFPT_GET_CONFIG_REQUEST = 7,    // Controller -> switch message
-    OFPT_GET_CONFIG_REPLY   = 8,    // Controller -> switch message
-    OFPT_SET_CONFIG         = 9,    // Controller -> switch message
+    OFPT_FEATURES_REQUEST = 5,   // Controller -> switch message
+    OFPT_FEATURES_REPLY = 6,     // Controller -> switch message
+    OFPT_GET_CONFIG_REQUEST = 7, // Controller -> switch message
+    OFPT_GET_CONFIG_REPLY = 8,   // Controller -> switch message
+    OFPT_SET_CONFIG = 9,         // Controller -> switch message
 
     // Asynchronous messages.
-    OFPT_PACKET_IN          = 10,   // Switch -> controller message
-    OFPT_FLOW_REMOVED       = 11,   // Switch -> controller message
-    OFPT_PORT_STATUS        = 12,   // Switch -> controller message
+    OFPT_PACKET_IN = 10,    // Switch -> controller message
+    OFPT_FLOW_REMOVED = 11, // Switch -> controller message
+    OFPT_PORT_STATUS = 12,  // Switch -> controller message
 
     // Controller command messages.
-    OFPT_PACKET_OUT         = 13,   // Controller -> switch message 
-    OFPT_FLOW_MOD           = 14,   // Controller -> switch message 
-    OFPT_GROUP_MOD          = 15,   // Controller -> switch message 
-    OFPT_PORT_MOD           = 16,   // Controller -> switch message 
-    OFPT_TABLE_MOD          = 17,   // Controller -> switch message 
+    OFPT_PACKET_OUT = 13, // Controller -> switch message
+    OFPT_FLOW_MOD = 14,   // Controller -> switch message
+    OFPT_GROUP_MOD = 15,  // Controller -> switch message
+    OFPT_PORT_MOD = 16,   // Controller -> switch message
+    OFPT_TABLE_MOD = 17,  // Controller -> switch message
 
     // Multipart messages.
-    OFPT_MULTIPART_REQUEST  = 18,   // Controller -> switch message 
-    OFPT_MULTIPART_REPLY    = 19,   // Controller -> switch message 
+    OFPT_MULTIPART_REQUEST = 18, // Controller -> switch message
+    OFPT_MULTIPART_REPLY = 19,   // Controller -> switch message
 
     // Barrier messages.
-    OFPT_BARRIER_REQUEST    = 20,   // Controller -> switch message 
-    OFPT_BARRIER_REPLY      = 21,   // Controller -> switch message 
+    OFPT_BARRIER_REQUEST = 20, // Controller -> switch message
+    OFPT_BARRIER_REPLY = 21,   // Controller -> switch message
 
     // Queue Configuration messages.
-    OFPT_QUEUE_GET_CONFIG_REQUEST = 22,  // Controller -> switch message 
-    OFPT_QUEUE_GET_CONFIG_REPLY   = 23,  // Controller -> switch message 
+    OFPT_QUEUE_GET_CONFIG_REQUEST = 22, // Controller -> switch message
+    OFPT_QUEUE_GET_CONFIG_REPLY = 23,   // Controller -> switch message
 
     // Controller role change request messages.
-    OFPT_ROLE_REQUEST       = 24,   // Controller -> switch message 
-    OFPT_ROLE_REPLY         = 25,   // Controller -> switch message 
+    OFPT_ROLE_REQUEST = 24, // Controller -> switch message
+    OFPT_ROLE_REPLY = 25,   // Controller -> switch message
 
     // Asynchronous message configuration.
-    OFPT_GET_ASYNC_REQUEST  = 26,   // Controller -> switch message 
-    OFPT_GET_ASYNC_REPLY    = 27,   // Controller -> switch message 
-    OFPT_SET_ASYNC          = 28,   // Controller -> switch message
+    OFPT_GET_ASYNC_REQUEST = 26, // Controller -> switch message
+    OFPT_GET_ASYNC_REPLY = 27,   // Controller -> switch message
+    OFPT_SET_ASYNC = 28,         // Controller -> switch message
 
     // Meters and rate limiters configuration messages.
-    OFPT_METER_MOD          = 29,   // Controller -> switch message
-};
+    OFPT_METER_MOD = 29, // Controller -> switch message
+    OFPT_LAST = OFPT_METER_MOD,
+    /// Used internally to flag denote an improper version/type combination.
+    OFPT_UNSUPPORTED = 0xF9};
+
+namespace deprecated { // <namespace deprecated>
+
+// There are differences in message types between versions. Here is a summary
+// listing the differences between v4 and each of the earlier versions:
+//
+//   v3: 0-25 are the same; v3 does not support 26-29.
+//       OFPT_MULTIPART_REQUEST replaces OFPT_STATS_REQUEST
+//       OFPT_MULTIPART_REPLY replaces OFPT_STATS_REPLY
+//   v2: 0-23 are the same; v2 does not support 24-29.
+//   v1: 0-14 are the same; 15-21 are different; does not support 22-29.
+//       OFPT_EXPERIMENTER replaces OFPT_VENDOR
+//       OFPT_PORT_MOD changes to 15; no OFPT_GROUP_MOD or OFPT_TABLE_MOD
+//       STATS_REQUEST/REPLY, BARRIER_REQUEST/REPLY, and
+//       QUEUE_GET_CONFIG_REQUEST/REPLY are all different.
+//
+enum class v1
+    : UInt8{OFPT_HELLO = 0,        // Symmetric message
+            OFPT_ERROR = 1,        // Symmetric message
+            OFPT_ECHO_REQUEST = 2, // Symmetric message
+            OFPT_ECHO_REPLY = 3,   // Symmetric message
+            OFPT_VENDOR = 4,       // Symmetric message (OFPT_EXPERIMENTER)
+
+            /* Switch configuration messages. */
+            OFPT_FEATURES_REQUEST = 5,   /* Controller/switch message */
+            OFPT_FEATURES_REPLY = 6,     /* Controller/switch message */
+            OFPT_GET_CONFIG_REQUEST = 7, /* Controller/switch message */
+            OFPT_GET_CONFIG_REPLY = 8,   /* Controller/switch message */
+            OFPT_SET_CONFIG = 9,         /* Controller/switch message */
+            /* Asynchronous messages. */
+            OFPT_PACKET_IN = 10,                    OFPT_FLOW_REMOVED = 11,
+            OFPT_PORT_STATUS = 12,
+            /* Controller command messages. */
+            OFPT_PACKET_OUT = 13,                   OFPT_FLOW_MOD = 14,
+            OFPT_PORT_MOD = 15,
+            /* Statistics messages. */
+            OFPT_STATS_REQUEST = 16,                OFPT_STATS_REPLY = 17,
+            /* Barrier messages. */
+            OFPT_BARRIER_REQUEST = 18,              OFPT_BARRIER_REPLY = 19,
+            /* Queue Configuration messages. */
+            OFPT_QUEUE_GET_CONFIG_REQUEST = 20, /* Controller/switch message */
+            OFPT_QUEUE_GET_CONFIG_REPLY = 21,   /* Controller/switch message */
+            OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY};
+
+enum class v2 : UInt8{
+    /* Immutable messages. */
+    OFPT_HELLO = 0,                         OFPT_ERROR = 1,
+    OFPT_ECHO_REQUEST = 2,                  OFPT_ECHO_REPLY = 3,
+    OFPT_EXPERIMENTER = 4,
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Switch configuration messages. */
+    OFPT_FEATURES_REQUEST = 5,   /* Controller/switch message */
+    OFPT_FEATURES_REPLY = 6,     /* Controller/switch message */
+    OFPT_GET_CONFIG_REQUEST = 7, /* Controller/switch message */
+    OFPT_GET_CONFIG_REPLY = 8,   /* Controller/switch message */
+    OFPT_SET_CONFIG = 9,         /* Controller/switch message */
+
+    /* Asynchronous messages. */
+    OFPT_PACKET_IN = 10,                    OFPT_FLOW_REMOVED = 11,
+    OFPT_PORT_STATUS = 12,
+    /* Async message */
+    /* Async message */
+    /* Async message */
+    /* Controller command messages. */
+    OFPT_PACKET_OUT = 13,                   OFPT_FLOW_MOD = 14,
+    OFPT_GROUP_MOD = 15,                    OFPT_PORT_MOD = 16,
+    OFPT_TABLE_MOD = 17,
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Statistics messages. */
+    OFPT_STATS_REQUEST = 18,                OFPT_STATS_REPLY = 19,
+    /* Barrier messages. */
+    OFPT_BARRIER_REQUEST = 20,              OFPT_BARRIER_REPLY = 21,
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Queue Configuration messages. */
+    OFPT_QUEUE_GET_CONFIG_REQUEST = 22, /* Controller/switch message */
+    OFPT_QUEUE_GET_CONFIG_REPLY = 23,   /* Controller/switch message */
+    OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY};
+
+enum class v3 : UInt8{
+    /* Immutable messages. */
+    OFPT_HELLO = 0,                     OFPT_ERROR = 1,
+    OFPT_ECHO_REQUEST = 2,              OFPT_ECHO_REPLY = 3,
+    OFPT_EXPERIMENTER = 4,
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Symmetric message */
+    /* Switch configuration messages. */
+    OFPT_FEATURES_REQUEST = 5,   /* Controller/switch message */
+    OFPT_FEATURES_REPLY = 6,     /* Controller/switch message */
+    OFPT_GET_CONFIG_REQUEST = 7, /* Controller/switch message */
+    OFPT_GET_CONFIG_REPLY = 8,   /* Controller/switch message */
+    OFPT_SET_CONFIG = 9,         /* Controller/switch message */
+
+    /* Asynchronous messages. */
+    OFPT_PACKET_IN = 10,                OFPT_FLOW_REMOVED = 11,
+    OFPT_PORT_STATUS = 12,
+    /* Async message */
+    /* Async message */
+    /* Async message */
+    /* Controller command messages. */
+    OFPT_PACKET_OUT = 13,               OFPT_FLOW_MOD = 14,
+    OFPT_GROUP_MOD = 15,                OFPT_PORT_MOD = 16,
+    OFPT_TABLE_MOD = 17,
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Statistics messages. */
+    OFPT_STATS_REQUEST = 18,            OFPT_STATS_REPLY = 19,
+    /* Barrier messages. */
+    OFPT_BARRIER_REQUEST = 20,          OFPT_BARRIER_REPLY = 21,
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Controller/switch message */
+    /* Queue Configuration messages. */
+    OFPT_QUEUE_GET_CONFIG_REQUEST = 22, /* Controller/switch message */
+    OFPT_QUEUE_GET_CONFIG_REPLY = 23,   /* Controller/switch message */
+
+    /* Controller role change request messages. */
+    OFPT_ROLE_REQUEST = 24, /* Controller/switch message */
+    OFPT_ROLE_REPLY = 25,   /* Controller/switch message */
+    OFPT_LAST = OFPT_ROLE_REPLY};
+
+} // </namespace deprecated>
+
 
 
 #if 0
@@ -365,7 +544,7 @@ enum ofp_meter_mod_failed_code {
     OFPMMFC_BAD_BAND_VALUE = 9, /* Band value unsupported. */
     OFPMMFC_OUT_OF_METERS = 10, /* No more meters available. */
     OFPMMFC_OUT_OF_BANDS = 11,  /* The maximum number of properties
-                                   for a meter has been exceeded. */
+                              for a meter has been exceeded. */
 };
 
 /* ofp_error_msg 'code' values for OFPET_TABLE_FEATURES_FAILED. 'data' contains

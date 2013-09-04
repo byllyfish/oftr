@@ -17,6 +17,8 @@ namespace ofp { // <namespace ofp>
 
 class FlowMod;
 class FlowModBuilder;
+class SetConfig;
+class SetConfigBuilder;
 
 namespace yaml { // <namespace yaml>
 
@@ -30,12 +32,20 @@ template <class MesgType>
 std::string write(const MesgType *msg);
 
 
+#if 0
 template <>
 Exception read(const std::string &input, FlowModBuilder *msg);
 
 template <>
 std::string write(const FlowMod *msg);
 
+
+template <>
+Exception read(const std::string &input, SetConfigBuilder *msg);
+
+template <>
+std::string write(const SetConfig *msg);
+#endif
 
 } // </namespace yaml>
 } // </namespace ofp>

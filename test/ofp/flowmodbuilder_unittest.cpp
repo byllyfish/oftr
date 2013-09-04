@@ -7,11 +7,6 @@
 
 using namespace ofp;
 
-// Put this here ... to get the vtable generated once.
-UInt32 MockChannel::nextXid()
-{
-    return ++nextXid_;
-}
 
 TEST(flowmodbuilder, version1_3)
 {
@@ -25,7 +20,7 @@ TEST(flowmodbuilder, version1_3)
     flowMod.setMatch(match);
     flowMod.setInstructions(instructions);
 
-    MockChannel channel{0x04};
+    MemoryChannel channel{0x04};
     UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
@@ -51,7 +46,7 @@ TEST(flowmodbuilder, version1_1)
     flowMod.setMatch(match);
     flowMod.setInstructions(instructions);
 
-    MockChannel channel{0x02};
+    MemoryChannel channel{0x02};
     UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
@@ -85,7 +80,7 @@ TEST(flowmodbuilder, version1_0)
     flowMod.setMatch(match);
     flowMod.setInstructions(instructions);
 
-    MockChannel channel{0x01};
+    MemoryChannel channel{0x01};
     UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);

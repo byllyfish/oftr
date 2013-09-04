@@ -29,8 +29,8 @@ public:
 
 private:
 	Header header_;
-	Big16 flags_;
-	Big16 missSendLen_;
+	Big16 flags_ = 0;
+	Big16 missSendLen_ = 128;
 
 	bool validateLength(size_t length) const;
 

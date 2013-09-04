@@ -28,8 +28,13 @@ class Connection;
 class Message {
 public:
 
-	Message(sys::Connection *channel) : channel_{channel} {
+	explicit Message(sys::Connection *channel) : channel_{channel} {
 		buf_.resize(sizeof(Header));
+	}
+
+	Message(const void *data, size_t size) : channel_{nullptr}
+	{
+		buf_.add(data, size);
 	}
 
 	UInt8 *mutableData(size_t size) { 
@@ -53,7 +58,7 @@ public:
 
 	Channel *source() const;
 	UInt32 xid() const { return header()->xid(); }
-
+	UInt8 version() const { return header()->version(); }
 
 	// Provides convenient implementation of message cast.
 	template <class MsgType>
