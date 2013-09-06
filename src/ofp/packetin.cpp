@@ -256,7 +256,8 @@ UInt32 PacketInBuilder::sendV1(Writable *channel)
 
     // Write out enet frame.
     channel->write(enetFrame_.data(), enetFrame_.size());
-
+    channel->flush();
+    
     return xid;
 }
 

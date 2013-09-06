@@ -36,10 +36,10 @@ static std::ostream &operator<<(std::ostream &os, const Time &t)
 	return os << t.first << '.' << t.second.count();
 }
 
-void write(const char *type, const std::string &msg)
+void write(const std::string &msg)
 {
 	if (GlobalLogStream) {
-		*GlobalLogStream << currentTime() << ' ' << type << ' ' << msg << '\n';
+		*GlobalLogStream << currentTime() << ' ' << msg << '\n';
 	}
 }
 

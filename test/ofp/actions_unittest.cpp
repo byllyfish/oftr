@@ -80,11 +80,10 @@ TEST(actions, AT_OUTPUT)
 	AT_OUTPUT act{5, 9};
 	EXPECT_EQ(5, act.port());
 	EXPECT_EQ(9, act.maxlen());
-	EXPECT_EQ(8, sizeof(act));
+	EXPECT_EQ(16, sizeof(act));
 	EXPECT_EQ(sizeof(act), AT_OUTPUT::type().length());
 
-	auto expected = HexToRawData("0000 0008 0005 0009");
-	EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+	EXPECT_HEX("0000 0010 0000 0005 0009 000000000000", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_MPLS_TTL)

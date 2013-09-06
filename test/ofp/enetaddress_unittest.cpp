@@ -25,3 +25,16 @@ TEST(enetaddress, invalid)
 	EXPECT_FALSE(enet.valid());
 	EXPECT_EQ("00-00-00-00-00-00", enet.toString());
 }
+
+
+TEST(enetaddress, hash) 
+{
+	EnetAddress enet1{"01-02-03-04-05-06"};
+
+	std::hash<EnetAddress> hasher;
+	EXPECT_EQ(176514621, hasher(enet1));
+
+	EnetAddress enet2{"01-02-03-04-05-07"};
+
+	EXPECT_EQ(205143772, hasher(enet2));
+}

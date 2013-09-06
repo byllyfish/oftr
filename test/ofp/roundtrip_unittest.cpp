@@ -3,6 +3,7 @@
 
 using namespace ofp;
 
+const UInt16 kTestingPort = 6666;
 
 
 class TestController : public ChannelListener {
@@ -113,7 +114,7 @@ TEST(roundtrip, basic_test)
 		Driver driver;
 		IPv6Address localhost{"127.0.0.1"};
 
-		auto result1 = driver.listen(Driver::Controller, nullptr, localhost, Driver::DefaultPort, ProtocolVersions{}, TestController::factory);
+		auto result1 = driver.listen(Driver::Controller, nullptr, localhost, kTestingPort, ProtocolVersions{}, TestController::factory);
 
 		result1.done([](Exception exc) {
 			EXPECT_FALSE(exc);
@@ -122,7 +123,7 @@ TEST(roundtrip, basic_test)
 		DatapathID dpid{ 0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
 		Features features{dpid};
 
-		auto result2 = driver.connect(Driver::Agent, &features, localhost, Driver::DefaultPort, ProtocolVersions{}, TestAgent::factory);
+		auto result2 = driver.connect(Driver::Agent, &features, localhost, kTestingPort, ProtocolVersions{}, TestAgent::factory);
 
 		result2.done([](Exception exc) {
 			EXPECT_FALSE(exc);
@@ -153,7 +154,7 @@ TEST(roundtrip, reconnect_test)
 		Driver driver;
 		IPv6Address localhost{"127.0.0.1"};
 
-		auto result1 = driver.listen(Driver::Controller, nullptr, localhost, Driver::DefaultPort, ProtocolVersions{}, TestController::factory);
+		auto result1 = driver.listen(Driver::Controller, nullptr, localhost, kTestingPort, ProtocolVersions{}, TestController::factory);
 
 		result1.done([](Exception exc) {
 			EXPECT_FALSE(exc);
@@ -162,7 +163,7 @@ TEST(roundtrip, reconnect_test)
 		DatapathID dpid{ 0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
 		Features features{dpid};
 
-		auto result2 = driver.connect(Driver::Agent, &features, localhost, Driver::DefaultPort, ProtocolVersions{}, TestAgent::factory);
+		auto result2 = driver.connect(Driver::Agent, &features, localhost, kTestingPort, ProtocolVersions{}, TestAgent::factory);
 
 		result2.done([](Exception exc) {
 			EXPECT_FALSE(exc);
@@ -193,7 +194,7 @@ TEST(roundtrip, auxiliary_test)
 		Driver driver;
 		IPv6Address localhost{"127.0.0.1"};
 
-		auto result1 = driver.listen(Driver::Controller, nullptr, localhost, Driver::DefaultPort, ProtocolVersions{}, TestController::factory);
+		auto result1 = driver.listen(Driver::Controller, nullptr, localhost, kTestingPort, ProtocolVersions{}, TestController::factory);
 
 		result1.done([](Exception exc) {
 			EXPECT_FALSE(exc);
@@ -202,7 +203,7 @@ TEST(roundtrip, auxiliary_test)
 		DatapathID dpid{ 0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
 		Features features{dpid};
 
-		auto result2 = driver.connect(Driver::Agent, &features, localhost, Driver::DefaultPort, ProtocolVersions{}, TestAgent::factory);
+		auto result2 = driver.connect(Driver::Agent, &features, localhost, kTestingPort, ProtocolVersions{}, TestAgent::factory);
 
 		result2.done([](Exception exc) {
 			EXPECT_FALSE(exc);

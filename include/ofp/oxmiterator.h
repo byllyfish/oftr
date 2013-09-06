@@ -53,7 +53,7 @@ public:
 		return OXMType::fromBytes(position_);
 	}
 	
-	// No operator ->
+	// No operator -> (FIXME?)
 	// No postfix ++
 	
 	void operator++() 
@@ -76,6 +76,7 @@ public:
 	constexpr const UInt8 *data() const { return position_; }
 	size_t size() const { return sizeof(OXMType) + position_[3]; }
 
+	/// \returns Number of OXM elements between begin and end.
 	static size_t distance(OXMIterator begin, OXMIterator end)
 	{
 		assert(begin <= end);

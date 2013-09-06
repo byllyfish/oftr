@@ -44,9 +44,6 @@ public:
     ptrdiff_t index(const UInt8 *pos) const;
     ByteRange toRange() const;
 
-    const UInt8 &operator[](size_t idx) const;
-    UInt8 &operator[](size_t idx);
-
     void add(const void *data, size_t length);
     void insert(const UInt8 *pos, const void *data, size_t length);
     void replace(const UInt8 *pos, const UInt8 *posEnd, const void *data,
@@ -59,6 +56,14 @@ public:
 
     void resize(size_t length);
     void clear();
+
+    bool operator==(const ByteList &rhs) const {
+        return buf_ == rhs.buf_;
+    }
+
+    bool operator!=(const ByteList &rhs) const {
+        return !operator==(rhs);
+    }
 
 private:
     std::vector<UInt8> buf_;
@@ -142,23 +147,25 @@ inline ofp::ByteRange ofp::ByteList::toRange() const
 
 /**
  *  Return immutable byte at specified index.
- */
+ 
 inline const ofp::UInt8 &ofp::ByteList::operator[](size_t idx) const
 {
     assert(idx < size());
 
     return buf_[idx];
 }
+**/
 
 /**
  *  Return mutable byte at specified index.
- */
+ 
 inline ofp::UInt8 &ofp::ByteList::operator[](size_t idx)
 {
     assert(idx < size());
 
     return buf_[idx];
 }
+**/
 
 /**
  *  Append data to the end of the byte buffer. This method may move memory.
@@ -194,11 +201,12 @@ inline void ofp::ByteList::replace(const UInt8 *pos, const UInt8 *posEnd,
 {
     assert(data != nullptr || length == 0);
 
+    auto idx = index(pos);
     replaceUninitialized(pos, posEnd, length);
 
     // N.B. Memory might have moved.
     auto bp = BytePtr(data);
-    std::copy(bp, bp + length, buf_.begin() + index(pos));
+    std::copy(bp, bp + length, buf_.begin() + idx);
 }
 
 /**
@@ -265,7 +273,7 @@ inline void ofp::ByteList::clear()
  */
 inline void ofp::ByteList::assertInRange(const UInt8 *pos) const
 {
-    assert(pos != nullptr && "position is null");
+    assert((pos != nullptr) && "position is null");
     assert((pos >= begin() && pos <= end()) && "position out of range");
 }
 

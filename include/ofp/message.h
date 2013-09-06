@@ -80,6 +80,9 @@ private:
 	ByteList buf_;
 	sys::Connection *channel_;
 
+	void transmogrifyFlowModV1();
+	void transmogrifyPortStatusV1();
+
 	friend std::ostream &operator<<(std::ostream &os, const Message &msg);
 };
 

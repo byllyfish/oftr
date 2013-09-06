@@ -2,7 +2,7 @@
 //
 //  This file is licensed under the Apache License, Version 2.0.
 //  See LICENSE.txt for details.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the PortStatus and PortStatusBuilder classes.
@@ -12,26 +12,38 @@
 #define OFP_PORTSTATUS_H
 
 #include "ofp/port.h"
+#include "ofp/header.h"
+#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
 
+class Message;
+
+
 class PortStatus {
 public:
-	enum { Type = OFPT_PORT_STATUS };
+    enum {
+        Type = OFPT_PORT_STATUS
+    };
 
-	static const PortStatus *cast(const Message *message);
+    static const PortStatus *cast(const Message *message);
 
-	PortStatus() : header_{Type} {}
+    PortStatus() : header_{ Type }
+    {
+    }
+
+    UInt8 reason() const { return reason_; }
+    const Port &port() const { return port_; }
+    
+    bool validateLength(size_t length) const;
 
 private:
-	Header header_;
-	UInt8 reason_;
-	Padding<7> pad_;
-	Port port_;
+    Header header_;
+    UInt8 reason_;
+    Padding<7> pad_;
+    Port port_;
 
-	bool validateLength(size_t length) const;
-
-	friend class PortStatusBuilder;
+    friend class PortStatusBuilder;
 };
 
 static_assert(sizeof(PortStatus) == 80, "Unexpected size.");
@@ -39,12 +51,15 @@ static_assert(IsStandardLayout<PortStatus>(), "Expected standard layout.");
 
 class PortStatusBuilder {
 public:
-	PortStatusBuilder() = default;
+    PortStatusBuilder() = default;
 
-	UInt32 send(Writable *channel);
+    void setReason(UInt8 reason) { msg_.reason_ = reason; }
+    void setPort(const Port &port) { msg_.port_ = port; }
+
+    UInt32 send(Writable *channel);
 
 private:
-	PortStatus msg_;
+    PortStatus msg_;
 };
 
 } // </namespace ofp>

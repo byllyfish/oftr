@@ -16,7 +16,6 @@ TEST(bytelist, basic)
 	EXPECT_EQ(1, list.size());
 	EXPECT_NE(nullptr, list.begin());
 	EXPECT_NE(nullptr, list.end());
-	EXPECT_EQ('a', list[0]);
 
 	int cnt = 0;
 	for (auto i : list) {
@@ -52,3 +51,36 @@ TEST(bytelist, copy)
 	ByteList list2{list};
 	EXPECT_EQ(3, list2.size());
 }
+
+TEST(bytelist, compare) 
+{
+	ByteList list1;
+	ByteList list2;
+
+	EXPECT_TRUE(list1 == list2);
+	EXPECT_FALSE(list1 != list2);
+
+	list1.add("foo", 3);
+	EXPECT_FALSE(list1 == list2);
+	EXPECT_TRUE(list1 != list2);
+
+	list2.add("foo", 3);
+	EXPECT_TRUE(list1 == list2);
+	EXPECT_FALSE(list1 != list2);
+}
+
+
+TEST(bytelist, replace) 
+{
+	ByteList list;
+	list.add("\x00\x11\x22", 3);
+
+	EXPECT_EQ(3, list.size());
+	EXPECT_HEX("00 11 22", list.data(), list.size());
+
+	list.replace(list.data() + 1, list.data() + 3, "\x44\x55\x66\x77", 4);
+
+	EXPECT_EQ(5, list.size());
+	EXPECT_HEX("00 44 55 66 77", list.data(), list.size());
+}
+

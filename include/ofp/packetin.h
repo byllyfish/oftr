@@ -36,9 +36,9 @@ public:
 
     UInt8 version() const { return header_.version(); }
 
-    UInt32 bufferID() const
+    UInt32 bufferId() const
     {
-        return bufferID_;
+        return bufferId_;
     }
 
     UInt16 totalLen() const;
@@ -56,7 +56,7 @@ public:
 
 private:
     Header header_;
-    Big32 bufferID_;
+    Big32 bufferId_;
     Big16 totalLen_;
     Big8 reason_;
     Big8 tableID_;
@@ -93,7 +93,7 @@ class PacketInBuilder {
 public:
     PacketInBuilder() = default;
 
-    void setBufferID(UInt32 bufferID) { msg_.bufferID_ = bufferID; }
+    void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
     void setTotalLen(UInt16 totalLen) { msg_.totalLen_ = totalLen; }
     void setInPort(UInt32 inPort) { inPort_ = inPort; }
     void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }

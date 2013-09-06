@@ -14,6 +14,7 @@
 #include "ofp/actiontype.h"
 #include "ofp/padding.h"
 #include "ofp/oxmtype.h"
+#include "ofp/constants.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -57,10 +58,32 @@ static_assert(IsStandardLayout<AT_COPY_TTL_OUT>(), "Unexpected layout.");
 class AT_OUTPUT {
 public:
 
+	constexpr static ActionType type() { return ActionType(ActionType::AT_OUTPUT, 16); }
+
+	constexpr AT_OUTPUT(UInt32 port, UInt16 maxlen = 0)
+		: port_{port}, maxlen_{maxlen} {}
+		
+	UInt32 port() const { return port_; }
+	UInt16 maxlen() const { return maxlen_; }
+
+private:
+	const ActionType type_ = type();
+	const Big32 port_;
+	const Big16	maxlen_;
+	Padding<6> pad_;
+};
+
+static_assert(sizeof(AT_OUTPUT) == 16, "Unexpected size.");
+static_assert(IsStandardLayout<AT_OUTPUT>(), "Unexpected layout");
+
+
+namespace deprecated { // <namespace deprecated>
+
+class AT_OUTPUT_V1 {
+public:
 	constexpr static ActionType type() { return ActionType(ActionType::AT_OUTPUT, 8); }
 
-	constexpr AT_OUTPUT(UInt16 port, UInt16 maxlen)
-		: port_{port}, maxlen_{maxlen} {}
+	constexpr AT_OUTPUT_V1(const AT_OUTPUT *output) : port_{UInt16_narrow_cast(output->port())}, maxlen_{output->maxlen()} {}
 		
 	UInt16 port() const { return port_; }
 	UInt16 maxlen() const { return maxlen_; }
@@ -71,9 +94,11 @@ private:
 	const Big16	maxlen_;
 };
 
-static_assert(sizeof(AT_OUTPUT) == 8, "Unexpected size.");
-static_assert(IsStandardLayout<AT_OUTPUT>(), "Unexpected layout");
+static_assert(sizeof(AT_OUTPUT_V1) == 8, "Unexpected size.");
+static_assert(IsStandardLayout<AT_OUTPUT_V1>(), "Unexpected layout");
 
+
+} // </namespace deprecated>
 /*-------------------------------------------------------------------------*//**
  \brief Concrete type for AT_SET_MPLS_TTL action.
  *-------------------------------------------------------------------------*///*

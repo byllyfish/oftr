@@ -1,55 +1,75 @@
 #include "ofp/oxmlist.h"
 
+namespace ofp { // <namespace ofp>
 
+
+#if 0
 void ofp::OXMList::add(const void *data, size_t len) 
 {
 	const UInt8 *p = static_cast<const UInt8*>(data);
 	buf_.insert(buf_.end(), p, p + len);
 }
+#endif //0
 
 
-void ofp::OXMList::insert(OXMIterator pos, const void *data, size_t len)
+void OXMList::insert(OXMIterator pos, const void *data, size_t len)
 {
+	buf_.insert(pos.data(), data, len);
+	#if 0
 	const UInt8 *p = static_cast<const UInt8*>(data);
 	auto i = buf_.begin() + (pos.data() - &buf_[0]);
 	buf_.insert(i, p, p + len);
+	#endif //0
 }
 
 
-ofp::OXMList::OXMList(const OXMRange &range)
+OXMList::OXMList(const OXMRange &range)
 {
-	add(range.data(), range.size());
+	buf_.add(range.data(), range.size());
 }
 
 
-void ofp::OXMList::add(OXMType type, const void *data, size_t len)
+void OXMList::add(OXMType type, const void *data, size_t len)
 {
 	assert(type.length() == len);
 	
-	add(&type, sizeof(type));
-	add(data, len);
+	buf_.add(&type, sizeof(type));
+	buf_.add(data, len);
 }
 
 
-void ofp::OXMList::add(OXMType type, const void *data, const void *mask, size_t len)
+void OXMList::add(OXMType type, const void *data, const void *mask, size_t len)
 {
 	assert(type.length() == 2*len);
 
-	add(&type, sizeof(type));
-	add(data, len);					//TODO - apply mask here?
-	add(mask, len);
+	buf_.add(&type, sizeof(type));
+	buf_.add(data, len);					// FIXME - apply mask here.
+	buf_.add(mask, len);
 }
 
 
-/**
- *  After replacement, check remaining items to make sure there are entries that
- *  duplicate the inserted item. If so, insert poison.
- */
-ofp::OXMIterator ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len)
+
+OXMIterator OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len)
 {
 	assert(type.length() == len);
 	assert(end.data() > pos.data());
 
+	ptrdiff_t idx = buf_.index(pos.data());
+	size_t newlen = sizeof(OXMType) + len;
+	buf_.replaceUninitialized(pos.data(), end.data(), newlen);
+
+	const UInt8 *tptr = reinterpret_cast<const UInt8 *>(&type);
+	std::copy(tptr, tptr + sizeof(type), buf_.mutableData() + idx);
+	const UInt8 *dptr = static_cast<const UInt8 *>(data);
+	std::copy(dptr, dptr + len, buf_.mutableData() + idx + sizeof(type));
+
+	OXMIterator rest{buf_.data() + idx + newlen};
+	assert(rest <= this->end());
+	assert(this->begin() <= rest);
+
+	return rest;
+
+#if 0
 	size_t origlen = Unsigned_cast(end.data() - pos.data());
 	size_t newlen = sizeof(OXMType) + len;
 
@@ -74,6 +94,7 @@ ofp::OXMIterator ofp::OXMList::replace(OXMIterator pos, OXMIterator end, OXMType
 	assert(this->begin() <= rest);
 
 	return rest;
+#endif //0
 }
 
 
@@ -123,3 +144,7 @@ void ofp::OXMList::insertPrerequisites(const OXMRange *values)
 	}
 }
 #endif
+
+
+} // </namespace ofp>
+

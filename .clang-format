@@ -7,4 +7,4 @@ DerivePointerBinding: false
 Standard: C++11
 BreakBeforeBraces: Stroustrup
 AlwaysBreakTemplateDeclarations: true
-Cpp11BracedListStyle: true
+ExperimentalAutoDetectBinPacking: true

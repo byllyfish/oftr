@@ -13,13 +13,11 @@ using namespace boost;
 TCP_Connection::TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{engine->io()}, idleTimer_{engine->io()}
 {
-    log::debug(__PRETTY_FUNCTION__, this);
 }
 
 TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role, ProtocolVersions versions, ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}}, message_{this}, socket_{std::move(socket)}, idleTimer_{engine->io()}
 {
-    log::debug(__PRETTY_FUNCTION__, this);
 }
 
 /// \brief Construct connection object for reconnect attempt.
@@ -36,8 +34,6 @@ TCP_Connection::~TCP_Connection()
 
 Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt, milliseconds delay)
 {
-    log::debug(__PRETTY_FUNCTION__);
-
     assert(deferredExc_ == nullptr);
 
     endpoint_ = endpt;
@@ -81,8 +77,6 @@ void TCP_Connection::channelException(const Exception &exc)
 
 void TCP_Connection::channelDown()
 {
-    log::debug("TCP_Connection::channelDown()");
-
     assert(channelListener());
 
     channelListener()->onChannelDown(this);
@@ -99,13 +93,10 @@ void TCP_Connection::asyncReadHeader()
     if (!socket_.is_open())
         return;
 
-    log::debug(__PRETTY_FUNCTION__);
-
     auto self(shared_from_this());
 
     asio::async_read(socket_, asio::buffer(message_.mutableData(sizeof(Header)), sizeof(Header)),
                                 [this, self](error_code err, size_t length) {
-        log::Lifetime lifetime("asyncReadHeader callback");
 
         if (!err) {
         	assert(length == sizeof(Header));
@@ -157,13 +148,10 @@ void TCP_Connection::asyncReadMessage(size_t msgLength)
 {
     assert(msgLength > sizeof(Header));
 
-    log::debug(__PRETTY_FUNCTION__, msgLength);
-
     auto self(shared_from_this());
 
     asio::async_read(socket_, asio::buffer(message_.mutableData(msgLength) + sizeof(Header), msgLength - sizeof(Header)),
                                 [this, self](const error_code &err, size_t bytes_transferred) {
-        log::Lifetime lifetime{"asyncReadMessage callback"};
 
         if (!err) {
         	assert(bytes_transferred == message_.size() - sizeof(Header));
@@ -188,7 +176,6 @@ void TCP_Connection::asyncReadMessage(size_t msgLength)
 void TCP_Connection::asyncWrite()
 {
     assert(!writing_);
-    log::debug(__PRETTY_FUNCTION__);
 
     int idx = outgoingIdx_;
     outgoingIdx_ = !outgoingIdx_;
@@ -197,12 +184,11 @@ void TCP_Connection::asyncWrite()
     const UInt8 *data = outgoing_[idx].data();
     size_t size = outgoing_[idx].size();
 
-    log::debug("Write: ", RawDataToHex(data, size, ' ', 2));
+    log::trace("asyncWrite", data, size);
 
     auto self(shared_from_this());
 
     asio::async_write(socket_, asio::buffer(data, size), [this, self](const error_code &err, size_t bytes_transferred) {
-        log::Lifetime lifetime{"asyncWrite callback"};
 
         if (!err) {
             assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
@@ -245,8 +231,6 @@ void TCP_Connection::asyncEchoReply(const Header *header, size_t length)
 
         auto self(shared_from_this());
         flushCallback_ = [this, self, length]() {
-            log::Lifetime lifetime{"asyncEchoReply callback"};
-
             // Immediately write back the next `length` bytes we receive.
             // When we're done, go back to asyncReadHeader.
             asyncRelay(length);
@@ -259,20 +243,16 @@ void TCP_Connection::asyncEchoReply(const Header *header, size_t length)
 
 void TCP_Connection::asyncRelay(size_t length)
 {
-    log::debug("asyncRelay:", length);
-
     if (length > 0) {
         auto self(shared_from_this());
 
         size_t len = std::min(length, message_.size());
         socket_.async_read_some(asio::buffer(message_.mutableData(128), len), 
             [this, self, length](const error_code &readErr, size_t bytesRead) {
-            log::Lifetime lifetime{"async_read_some callback"};
 
             if (!readErr) {
                 asio::async_write(socket_, asio::buffer(message_.data(), bytesRead),
                     [this, self, length](const error_code &writeErr, size_t bytesWritten) {
-                    log::Lifetime lifetime{"async_write_some callback"};
 
                     if (!writeErr) {
                         assert(bytesWritten <= length);
@@ -298,8 +278,6 @@ void TCP_Connection::asyncConnect()
     auto self(shared_from_this());
 
     socket_.async_connect(endpoint_, [this, self](const error_code &err) {
-        log::Lifetime lifetime{"asyncConnect callback"};
-
         // `async_connect` may not report an error when the connection attempt
         // fails. We need to double-check that we are connected.
 

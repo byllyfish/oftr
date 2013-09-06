@@ -95,10 +95,12 @@ enum class OXMInternalID : UInt16 {
   UNKNOWN = 0xFFFFU
 };
 
-struct OXMTypeInternalMapEntry {
-  UInt32 value32;
-  OXMInternalID id;
-};
+OFP_BEGIN_IGNORE_PADDING
+  struct OXMTypeInternalMapEntry {
+    UInt32 value32;
+    OXMInternalID id;
+  };
+OFP_END_IGNORE_PADDING
 
 /// \brief Ingress port. Numerical representation of incoming port, starting at 1. This may be a physical or switch-defined logical port.
 using OFB_IN_PORT = OXMValue<OXMInternalID::OFB_IN_PORT,0x8000,0,Big32,4,false>;

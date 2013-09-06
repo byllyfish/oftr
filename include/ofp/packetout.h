@@ -28,15 +28,15 @@ public:
 
 	PacketOut() : header_{Type} {}
 
-	UInt32 bufferID() const;
-	UInt32 inPort() const;
+	UInt32 bufferId() const { return bufferId_; }
+	UInt32 inPort() const { return inPort_; }
 
 	ActionRange actions() const;
 	ByteRange enetFrame() const;
 
 private:
 	Header header_;
-	Big32 bufferID_ = OFP_NO_BUFFER;
+	Big32 bufferId_ = OFP_NO_BUFFER;
 	Big32 inPort_ = 0;
 	Big16 actionsLen_ = 0;
 	Padding<6> pad_;
@@ -53,40 +53,12 @@ class PacketOutBuilder {
 public:
 	PacketOutBuilder() = default;
 
-	void setBufferID(UInt32 bufferID);
-	void setInPort(UInt32 inPort);
-	void setActions(ActionRange actions);
-	void setEnetFrame(ByteRange enetFrame);
+	void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
+	void setInPort(UInt32 inPort) { msg_.inPort_ = inPort; }
+	void setActions(ActionRange actions) {actions_ = actions;}
+	void setEnetFrame(ByteRange enetFrame) {enetFrame_ = enetFrame;}
 
-	UInt32 send(Writable *channel)
-	{
-		UInt8  version = channel->version();
-
-		size_t msgLen = sizeof(msg_) + actions_.size();
-		if (msg_.bufferID_ != OFP_NO_BUFFER) {
-			msgLen += enetFrame_.size();
-		}
-		
-        // Fill in the message header.
-        UInt32 xid = channel->nextXid();
-        Header &hdr = msg_.header_;
-        hdr.setVersion(version);
-        hdr.setType(PacketOut::Type);
-        hdr.setLength(UInt16_narrow_cast(msgLen));
-        hdr.setXid(xid);
-
-        // Fill in length of actions section.
-        msg_.actionsLen_ = UInt16_narrow_cast(actions_.size());
-
-        channel->write(&msg_, sizeof(msg_));
-        channel->write(actions_.data(), actions_.size());
-        if (msg_.bufferID_ != OFP_NO_BUFFER) {
-        	channel->write(enetFrame_.data(), enetFrame_.size());
-        }
-        channel->flush();
-
-        return xid;
-	}
+	UInt32 send(Writable *channel);
 
 private:
 	PacketOut msg_;

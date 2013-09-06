@@ -9,7 +9,7 @@ TEST(hello, HelloBuilder1)
 
     auto buf = MemoryChannel::serialize(msg, 99);
 
-    EXPECT_EQ(16, buf.size());
+    EXPECT_EQ(0x10, buf.size());
     EXPECT_HEX("0400-0010-00000001 00010008-0000001E", buf.data(), buf.size());
 }
 
@@ -19,7 +19,7 @@ TEST(hello, HelloBuilder2)
 
     auto buf = MemoryChannel::serialize(msg, 1);
 
-    EXPECT_EQ(16, buf.size());
+    EXPECT_EQ(0x10, buf.size());
     EXPECT_HEX("0400-0010-00000001 00010008-00000012", buf.data(), buf.size());
 }
 
@@ -29,6 +29,6 @@ TEST(hello, HelloBuilder3)
 
     auto buf = MemoryChannel::serialize(msg, 4);
 
-    EXPECT_EQ(8, buf.size());
+    EXPECT_EQ(0x08, buf.size());
     EXPECT_HEX("0100-0008-00000001", buf.data(), buf.size());
 }

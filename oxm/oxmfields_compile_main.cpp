@@ -195,8 +195,10 @@ static void WriteHeaderFile(ostream &stream, vector<OXMField> &fields)
 	stream << "  UNKNOWN = 0xFFFFU\n";
 	stream << "};\n\n";
 	
-	stream << "struct OXMTypeInternalMapEntry {\n";
-	stream << "  UInt32 value32;\n  OXMInternalID id;\n};\n\n";
+	stream << "OFP_BEGIN_IGNORE_PADDING\n";
+	stream << "  struct OXMTypeInternalMapEntry {\n";
+	stream << "    UInt32 value32;\n    OXMInternalID id;\n  };\n";
+	stream << "OFP_END_IGNORE_PADDING\n\n";
 
 	for (auto field : fields) {
 		field.defineOXMValue(stream);

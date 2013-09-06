@@ -23,9 +23,7 @@ ofp::ProtocolVersions ofp::detail::HelloElement::versionBitMap() const
 {
 	if (length_ - sizeof(HelloElement) >= sizeof(UInt32)) {
         // Grab the first bit map.
-        log::debug(RawDataToHex(BytePtr(this), length_));
 	    const Big32 *bitmap = reinterpret_cast<const Big32 *>(BytePtr(this) + sizeof(HelloElement));
-        log::debug("versionBitMap is ", unsigned(*bitmap));
         return ProtocolVersions::fromBitmap(*bitmap);
     }
 	

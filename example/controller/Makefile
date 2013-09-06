@@ -1,6 +1,6 @@
 
 CPPFLAGS += -I ../../include -std=c++11
-CXXFLAGS += -g -Wall
+CXXFLAGS += -Wall
 LDFLAGS  += -L ../.. -lofp
 
 ifeq ($(shell uname -s),Darwin)

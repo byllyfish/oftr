@@ -25,7 +25,7 @@ BOOST_OBJECTS = $(BOOST_ROOT)/libs/system/src/error_code.o
 
 export CPPFLAGS += -I include -I ofp -isystem $(BOOST_ROOT) -std=c++11
 export CPPFLAGS += -isystem external/yaml-io/include
-export CXXFLAGS += -g
+export CXXFLAGS += -fstrict-aliasing
 
 # There are some command-line differences between Clang and GCC. GCC doesn't 
 # understand the stdlib option. We also want to enable all of Clang's warnings.
@@ -55,7 +55,8 @@ clean:
 	rm -f $(BOOST_OBJECTS)
 
 
-oxmfields: include/ofp/oxmfields.h src/ofp/oxmfields.cpp src/ofp/oxmfieldsid.cpp
+.PHONY: oxm
+oxm: include/ofp/oxmfields.h src/ofp/oxmfields.cpp src/ofp/oxmfieldsid.cpp
 
 ./oxm/oxmfields_compile: oxm/oxmfields_compile_main.o
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@

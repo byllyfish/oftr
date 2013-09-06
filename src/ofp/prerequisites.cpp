@@ -467,7 +467,7 @@ void ofp::Prerequisites::poisonDuplicatesAfterSubstitution(OXMList *list, OXMTyp
 	OXMIterator restEnd = list->end();
 	while (rest != restEnd) {
 		if (rest.type() == type) {
-			log::exception("Duplicate item detected after substitution. Insert poison.");
+			log::error("Duplicate item detected after substitution. Insert poison.");
 			list->insertSignal(rest, kPoisonPrereqSignal);
 			break;
 		}

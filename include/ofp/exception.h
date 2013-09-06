@@ -28,9 +28,9 @@ public:
 	/// \brief Represents the error category with a 4-char code.
 	using Category = std::array<char,4>;
 
-	Exception() : category_{}, code_{}, channel_{nullptr} {}
+	Exception() : category_{}, code_{} {}
 	
-	explicit Exception(Category category, int code, Channel *channel = nullptr) : code_{code}, channel_{channel} {
+	explicit Exception(Category category, int code) : code_{code} {
 		category_ = category;
 	}
 
@@ -45,7 +45,6 @@ public:
 private:
 	Category category_;
 	int code_;
-	Channel *channel_;
 };
 
 std::ostream &operator<<(std::ostream &os, const Exception &ex);

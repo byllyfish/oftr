@@ -36,7 +36,9 @@ public:
         str_.back() = 0;
     }
 
-    SmallCString(const char *cstr);
+    SmallCString(const char *cstr) {
+        operator=(cstr);
+    }
 
     constexpr size_t capacity() const
     {
@@ -58,12 +60,30 @@ public:
         return str_.data();
     }
 
-    void operator=(const SmallCString &rhs);
+    const ArrayType &toArray() const {
+        return str_;
+    }
+
+    void operator=(const SmallCString &rhs)
+    {
+        str_ = rhs.str_;
+    }
+
     void operator=(const char *cstr);
 
 private:
     ArrayType str_;
 };
+
+template <size_t Size>
+bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size> &rhs);
+
+template <size_t Size>
+inline bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size> &rhs)
+
+{
+    return lhs.toArray() == rhs.toArray();
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
@@ -77,6 +97,7 @@ inline size_t strlen(const char *s, size_t maxlen)
 
 } // </namespace detail>
 
+#if 0
 /// Copies C string and sets the remaining bytes to zero. The last byte will 
 /// always be zero.
 template <size_t Size>
@@ -84,6 +105,19 @@ inline SmallCString<Size>::SmallCString(const char *cstr)
 {
 	size_t len = detail::strlen(cstr, capacity());
 	assert(len <= capacity());
+    std::memcpy(&str_, cstr, len);
+    std::memset(&str_[len], 0, capacity() - len);
+    str_.back() = 0;
+}
+#endif
+
+/// Copies C string and sets the remaining bytes to zero. The last byte will 
+/// always be zero.
+template <size_t Size>
+inline void SmallCString<Size>::operator=(const char *cstr)
+{
+    size_t len = detail::strlen(cstr, capacity());
+    assert(len <= capacity());
     std::memcpy(&str_, cstr, len);
     std::memset(&str_[len], 0, capacity() - len);
     str_.back() = 0;

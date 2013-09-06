@@ -11,6 +11,7 @@ namespace sys { // <namespace sys>
 
 namespace detail { // <namespace detail>
 
+OFP_BEGIN_IGNORE_PADDING
 /// \brief Protects a variable's value using RAII. When the scope of exits, the
 /// protected variable is restored to its value at entry.
 template <class Type>
@@ -23,6 +24,7 @@ private:
 	Type *ptr_;
 	Type val_;
 };
+OFP_END_IGNORE_PADDING
 
 } // </namespace detail>
 

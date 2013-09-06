@@ -24,7 +24,7 @@ TEST(flowmodbuilder, version1_3)
     UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
-    EXPECT_EQ(72, channel.size());
+    EXPECT_EQ(0x048, channel.size());
 
     const char *expected = "040E-0048-0000-0001-0000-0000-0000-0000"
                            "0000-0000-0000-0000-0000-0000-0000-0000"
@@ -50,7 +50,7 @@ TEST(flowmodbuilder, version1_1)
     UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
-    EXPECT_EQ(144, channel.size());
+    EXPECT_EQ(0x090, channel.size());
 
     const char *expected = "020E-0090-0000-0001-0000-0000-0000-0000"
                            "0000-0000-0000-0000-0000-0000-0000-0000"
@@ -66,17 +66,18 @@ TEST(flowmodbuilder, version1_1)
 
 TEST(flowmodbuilder, version1_0)
 {
+    log::set(&std::cerr);
+
     MatchBuilder match;
     match.add(OFB_IN_PORT{27});
 
     ActionList actions;
-    actions.add(AT_SET_FIELD<OFB_UDP_SRC>{OFB_UDP_SRC{80}});
+    actions.add(AT_OUTPUT{0xaaaa});
 
     InstructionList instructions;
     instructions.add(IT_APPLY_ACTIONS{&actions});
 
     FlowModBuilder flowMod;
-
     flowMod.setMatch(match);
     flowMod.setInstructions(instructions);
 
@@ -84,11 +85,12 @@ TEST(flowmodbuilder, version1_0)
     UInt32 xid = flowMod.send(&channel);
 
     EXPECT_EQ(1, xid);
-    EXPECT_EQ(72, channel.size());
+    EXPECT_EQ(0x050, channel.size());
 
-    const char *expected = "010E00480000000100000000001B00000000000000000000000"
+    const char *expected = "010E005000000001003FFFFE001B00000000000000000000000"
                            "000000000000000000000000000000000000000000000000000"
-                           "000000000000000000000000000000000000000000";
+                           "000000000000000000000000000000000000000000"
+                           "00000008AAAA0000";
 
     EXPECT_HEX(expected, channel.data(), channel.size());
 }

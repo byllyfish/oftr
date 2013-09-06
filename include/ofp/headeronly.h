@@ -68,6 +68,7 @@ public:
 private:
     HeaderOnlyType msg_;
     bool isReply_ = false;
+    Padding<3> pad_;
 };
 
 } // </namespace detail>

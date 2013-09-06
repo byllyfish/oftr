@@ -33,6 +33,7 @@ static_assert(IsStandardLayout<InstructionHeaderWithPadding>(), "Expected standa
 
 class IT_GOTO_TABLE {
 public:
+	constexpr static InstructionType type() { return InstructionType{InstructionType::IT_GOTO_TABLE}; }
 
 	constexpr explicit IT_GOTO_TABLE(UInt8 table) : table_{table} {}
 
@@ -40,7 +41,7 @@ public:
 	constexpr UInt8	table() const { return table_; }
 
 private:
-	const InstructionType type_{InstructionType::IT_GOTO_TABLE};
+	const InstructionType type_ = type();
 	const Big16 length_{8};
 	const Big8 table_;
 	const Padding<3> pad_;
@@ -49,13 +50,15 @@ private:
 
 class IT_WRITE_METADATA {
 public:
+	constexpr static InstructionType type() { return InstructionType{InstructionType::IT_WRITE_METADATA}; }
+
 	constexpr explicit IT_WRITE_METADATA(UInt64 metadata, UInt64 mask) : metadata_{metadata}, mask_{mask} {}
 
 	constexpr UInt64 metadata() const { return metadata_; }
 	constexpr UInt64 mask() const { return mask_; }
 
 private:
-	const InstructionType type_{InstructionType::IT_WRITE_METADATA};
+	const InstructionType type_ = type();
 	const Big16 length_{24};
 	const Padding<4> pad_;
 	const Big64	metadata_;
@@ -73,16 +76,18 @@ public:
 	enum { VariableSize = true };
 	enum { HeaderSize = 8 };
 
+	constexpr static InstructionType type() { return InstructionType{InstrType}; }
+
 	explicit IT_WithActions(const ActionList *actions) : length_{UInt16_narrow_cast(HeaderSize + actions->size())}, actions_{actions} {}
 
 	const UInt8 *data() const { return actions_->data(); }
 	size_t size() const { return actions_->size(); }
 
 private:
-	const InstructionType type_{InstrType};
+	const InstructionType type_ = type();
 	const Big16 length_;
 	const Padding<4> pad_;
-	const ActionList *actions_;
+	const ActionList *actions_;  // FIXME - use ActionRange?
 };
 
 } // </namespace detail>
@@ -94,10 +99,12 @@ using IT_APPLY_ACTIONS = detail::IT_WithActions<InstructionType::IT_APPLY_ACTION
 
 class IT_CLEAR_ACTIONS {
 public:
+	constexpr static InstructionType type() { return InstructionType{InstructionType::IT_CLEAR_ACTIONS}; }
+
 	constexpr IT_CLEAR_ACTIONS() {}
 
 private:
-	const InstructionType type_{InstructionType::IT_CLEAR_ACTIONS};
+	const InstructionType type_ = type();
 	const Big16 length_{8};
 	const Padding<4> pad_;
 };
@@ -105,12 +112,14 @@ private:
 
 class IT_METER {
 public:
+	constexpr static InstructionType type() { return InstructionType{InstructionType::IT_METER}; }
+
 	constexpr explicit IT_METER(UInt32 meter) : meter_{meter} {}
 
 	constexpr UInt32 meter() const { return meter_; }
 
 private:
-	const InstructionType type_{InstructionType::IT_METER};
+	const InstructionType type_ = type();
 	const Big16 length_{8};
 	const Big32 meter_;
 };
@@ -118,12 +127,14 @@ private:
 
 class IT_EXPERIMENTER {
 public:
+	constexpr static InstructionType type() { return InstructionType{InstructionType::IT_EXPERIMENTER}; }
+
 	constexpr explicit IT_EXPERIMENTER(UInt32 experimenterid) : experimenterid_{experimenterid} {}
 
 	constexpr UInt32 experimenterid() const { return experimenterid_; }
 	
 private:
-	const InstructionType type_{InstructionType::IT_EXPERIMENTER};
+	const InstructionType type_ = type();
 	const Big16 length_{8};
 	const Big32 experimenterid_;
 };

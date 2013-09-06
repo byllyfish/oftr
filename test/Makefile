@@ -55,7 +55,7 @@ endif
 CPPFLAGS += -D __STDC_LIMIT_MACROS -D __STDC_CONSTANT_MACROS
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g $(WARNINGS) -pthread 
+CXXFLAGS += -g $(WARNINGS) -pthread -fstrict-aliasing
 
 LDFLAGS += -L ../external/yaml-io/ -lyamlio
 

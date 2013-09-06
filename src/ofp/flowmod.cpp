@@ -105,6 +105,7 @@ UInt32 FlowModBuilder::send(Writable *channel)
     channel->write(match_.data(), match_.size());
     channel->write(&pad, msgMatchLenPadded - msgMatchLen);
     channel->write(instructions_.data(), instructions_.size());
+    channel->flush();
 
     return xid;
 }
@@ -131,6 +132,7 @@ UInt32 FlowModBuilder::sendStandard(Writable *channel)
     channel->write(&msg_, FlowMod::SizeWithoutMatchHeader);
     channel->write(&stdMatch, sizeof(stdMatch));
     channel->write(instructions_.data(), instrLen);
+    channel->flush();
 
     return xid;
 }
@@ -142,8 +144,12 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel)
     assert(version <= OFP_VERSION_1);
 
     deprecated::OriginalMatch origMatch{match_.toRange()};
-
-    UInt16 msgLen = 72;         // FIXME
+    ActionRange actions = instructions_.toActions();
+    
+    UInt16 msgLen = 72;
+    if (actions.size() > 0) {
+        msgLen += actions.writeSize(channel);
+    }
 
     UInt32 xid = channel->nextXid();
     Header &hdr = msg_.header_;
@@ -164,8 +170,11 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel)
     channel->write(BytePtr(&msg_.outPort_) + 2, 2);
     channel->write(&msg_.flags_, 2);
 
-    // Insert action list from instructions.
-    // // FIXME
+    if (actions.size() > 0) {
+        actions.write(channel);
+    }
+
+    channel->flush();
     
     return xid;
 }

@@ -12,7 +12,7 @@ TEST(packetin, version4)
     ByteRange enetFrame{s.data(), s.size()};
 
     PacketInBuilder msg;
-    msg.setBufferID(1);
+    msg.setBufferId(1);
     msg.setTotalLen(2);
     msg.setReason(3);
     msg.setTableID(4);
@@ -25,7 +25,7 @@ TEST(packetin, version4)
     UInt32 xid = msg.send(&channel);
 
     EXPECT_EQ(1, xid);
-    EXPECT_EQ(58, channel.size());
+    EXPECT_EQ(0x3A, channel.size());
 
     const char *expected = "(04-0A-003A-00000001), "
                            "(00000001-0002-03-04,0000000000000005), "
@@ -38,7 +38,7 @@ TEST(packetin, version4)
 TEST(packetin, version1)
 {
     PacketInBuilder builder;
-    builder.setBufferID(0x01020304);
+    builder.setBufferId(0x01020304);
     builder.setTotalLen(0x0101);
     builder.setInPort(0x22);
     builder.setInPhyPort(0x0333);
@@ -71,7 +71,7 @@ TEST(packetin, version1)
 
     if (msg) {
         EXPECT_EQ(OFP_VERSION_1, msg->version());
-        EXPECT_EQ(0x01020304, msg->bufferID());
+        EXPECT_EQ(0x01020304, msg->bufferId());
         EXPECT_EQ(0x0101, msg->totalLen());
         EXPECT_EQ(0x22, msg->inPort());
         EXPECT_EQ(0x09, msg->reason());

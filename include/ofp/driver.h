@@ -24,11 +24,15 @@ namespace sys {
 
 struct DriverOptions {
 	// Settings for reliable connections
-	milliseconds agentReconnectDelay = 500_ms;
+	milliseconds agentReconnectDelay = 500_ms;  // FIXME - support
 	milliseconds agentIdleInterval = 5000_ms;
 	milliseconds agentEchoTimeout = 1000_ms;
 	milliseconds controllerIdleInterval = 5500_ms;
 	milliseconds controllerEchoTimeout = 1000_ms;
+
+	/// Platform-specific context for TLS implementation (certificates, etc).
+	/// Pass a pointer to a `boost::asio::ssl::context`.
+	void *tlsContext = nullptr;
 };
 
 class Features;

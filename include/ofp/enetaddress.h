@@ -12,7 +12,8 @@
 #define OFP_ENETADDRESS_H
 
 #include "ofp/types.h"
-#include <array>
+#include "ofp/array.h"
+#include "ofp/log.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -31,6 +32,10 @@ public:
 		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');
 	}
 
+	bool isMulticast() const {
+		return (addr_[0] & 0x01);
+	}
+
 	void setAllOnes() {
 		std::memset(addr_.data(), 0xFF, sizeof(addr_));
 	}
@@ -41,7 +46,7 @@ public:
 
 	std::string toString() const;
 
-	ArrayType toArray() const {
+	const ArrayType &toArray() const {
 		return addr_;
 	}
 
@@ -59,5 +64,19 @@ private:
 
 
 } // </namespace ofp>
+
+
+namespace std { // <namespace std>
+  template <> struct hash<ofp::EnetAddress>
+  {
+    size_t operator()(const ofp::EnetAddress &rhs) const
+    {
+    	std::hash<ofp::EnetAddress::ArrayType> hasher;
+      	return hasher(rhs.toArray());
+    }
+  };
+} // </namespace std>
+
+
 
 #endif //OFP_ENETADDRESS_H

@@ -16,6 +16,7 @@ public:
 
     const UInt8 *data() const
     {
+        assert(flushed_);
         return buf_.data();
     }
 
@@ -36,6 +37,7 @@ public:
 
     void flush() override
     {
+        flushed_ = true;
     }
 
     UInt32 nextXid() override
@@ -55,7 +57,8 @@ private:
     ByteList buf_;
     UInt32 nextXid_ = 1;
     UInt8 version_;
-    Padding<3> pad_;
+    bool flushed_ = false;
+    Padding<2> pad_;
 };
 
 } // </namespace ofp>

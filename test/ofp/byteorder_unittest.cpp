@@ -311,3 +311,12 @@ TEST(byteorder, BigEndianToNative)
 	EXPECT_EQ(0x80000000UL, b);
 }
 
+
+TEST(byteorder, equals) 
+{
+	Big16 a{3};
+	Big16 b{3};
+
+	EXPECT_TRUE(a == b);
+}
+

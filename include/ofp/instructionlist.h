@@ -13,6 +13,7 @@
 
 #include "ofp/types.h"
 #include "ofp/instructions.h"
+#include "ofp/instructioniterator.h"
 #include <vector>
 
 namespace ofp { // <namespace ofp>
@@ -21,6 +22,14 @@ class InstructionList {
 public:
 
     InstructionList() = default;
+
+    InstructionIterator begin() const {
+        return InstructionIterator{data()};
+    }
+
+    InstructionIterator end() const {
+        return InstructionIterator{data() + size()};
+    }
 
     const UInt8 *data() const
     {
@@ -35,6 +44,8 @@ public:
     template <class Type>
     void add(const Type &instruction);
 
+    ActionRange toActions() const;
+    
 private:
     std::vector<UInt8> buf_;
 
@@ -48,6 +59,7 @@ private:
 template <class Type>
 inline void InstructionList::add(const Type &instruction)
 {
+    // FIXME - defend against calling this with non-instructions!
     add(&instruction, sizeof(instruction));
 }
 
@@ -63,6 +75,13 @@ inline void InstructionList::add(const IT_APPLY_ACTIONS &instruction)
 {
     add(&instruction, IT_APPLY_ACTIONS::HeaderSize);
     add(instruction.data(), instruction.size());
+}
+
+
+template <>
+inline void InstructionList::add(const ActionList &actions)
+{
+    add(IT_APPLY_ACTIONS{&actions});
 }
 
 } // </namespace ofp>

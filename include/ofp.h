@@ -20,6 +20,7 @@
 #include "ofp/featuresreply.h"
 #include "ofp/flowmod.h"
 #include "ofp/packetin.h"
+#include "ofp/packetout.h"
 #include "ofp/flowremoved.h"
 #include "ofp/portstatus.h"
 #include "ofp/getasyncreply.h"
@@ -27,10 +28,12 @@
 #include "ofp/error.h"
 #include "ofp/setconfig.h"
 #include "ofp/exception.h"
+#include "ofp/actions.h"
 
 namespace ofp { // <namespace ofp>
 
 /// \brief Listens for incoming OpenFlow connections on the default port.
+///
 /// When a switch connects, uses listenerFactory to create a ChannelListener.
 /// Once the driver begins listening for incoming connections, it will run
 /// forever. (TODO: provide a way to shutdown the driver). If the driver fails
@@ -44,6 +47,7 @@ Exception runController(ChannelListener::Factory listenerFactory,
 
 /// \brief Connects to an OpenFlow controller at the specified address on the 
 /// default port. 
+///
 /// After connecting, uses listenerFactory to create a ChannelListener.
 /// 
 /// \param  features 		Agent information including datapath ID.

@@ -74,8 +74,8 @@ void Connection::setMainConnection(Connection *channel)
 
 void Connection::postMessage(Connection *source, Message *message)
 {
-    log::debug("postMessage: ",
-               RawDataToHex(message->data(), message->size(), ' ', 2));
+    log::trace("postMessage", message->data(), message->size());
+    
     if (listener_) {
         message->transmogrify();
         listener_->onMessage(message);

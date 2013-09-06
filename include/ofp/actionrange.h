@@ -12,6 +12,8 @@
 #define OFP_ACTIONRANGE_H
 
 #include "ofp/byterange.h"
+#include "ofp/writable.h"
+#include "ofp/actioniterator.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -20,9 +22,15 @@ public:
 	ActionRange() = default;
 	ActionRange(const ByteRange &range) : range_{range} {}
 
+	ActionIterator begin() const { return ActionIterator{data()}; }
+	ActionIterator end() const { return ActionIterator{data() + size()}; }
+
 	const UInt8 *data() const { return range_.data(); }
 	size_t size() const { return range_.size(); }
 	
+	size_t writeSize(Writable *channel);
+	void write(Writable *channel);
+
 private:
 	ByteRange range_;
 };

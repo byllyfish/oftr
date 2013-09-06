@@ -10,6 +10,7 @@ TEST(headeronly, barrierrequestbuilder_v1)
 	MemoryChannel channel{OFP_VERSION_1};
 	builder.send(&channel);
 
+	EXPECT_EQ(0x08, channel.size());
 	EXPECT_HEX("0112000800000001", channel.data(), channel.size());
 
 	Message message{channel.data(), channel.size()};
@@ -29,6 +30,7 @@ TEST(headeronly, barrierrequestbuilder_v4)
 	MemoryChannel channel{OFP_VERSION_4};
 	builder.send(&channel);
 
+	EXPECT_EQ(0x08, channel.size());
 	EXPECT_HEX("0414000800000001", channel.data(), channel.size());
 
 	Message message{channel.data(), channel.size()};
