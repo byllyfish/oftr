@@ -53,8 +53,8 @@ public:
 	const UInt8 *data() const { return buf_.data(); }
 	size_t size() const { return buf_.size(); }
 
-	UInt8 type() const { return header()->type(); }
-	void setType(UInt8 type) { header()->setType(type); }
+	OFPType type() const { return header()->type(); }
+	void setType(OFPType type) { header()->setType(type); }
 
 	Channel *source() const;
 	UInt32 xid() const { return header()->xid(); }
@@ -64,7 +64,7 @@ public:
 	template <class MsgType>
 	const MsgType *cast() const 
 	{
-		assert(type() == MsgType::Type);
+		assert(type() == MsgType::type());
 		
 		const MsgType *msg = reinterpret_cast<const MsgType *>(data());
     	if (!msg->validateLength(size())) {

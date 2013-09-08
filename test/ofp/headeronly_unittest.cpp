@@ -15,7 +15,7 @@ TEST(headeronly, barrierrequestbuilder_v1)
 
 	Message message{channel.data(), channel.size()};
 	message.transmogrify();
-	EXPECT_EQ(BarrierRequest::Type, message.type());
+	EXPECT_EQ(BarrierRequest::type(), message.type());
 
 	const BarrierRequest *req = BarrierRequest::cast(&message);
 	EXPECT_TRUE(req);
@@ -35,7 +35,7 @@ TEST(headeronly, barrierrequestbuilder_v4)
 
 	Message message{channel.data(), channel.size()};
 	message.transmogrify();
-	EXPECT_EQ(BarrierRequest::Type, message.type());
+	EXPECT_EQ(BarrierRequest::type(), message.type());
 
 	const BarrierRequest *req = BarrierRequest::cast(&message);
 	EXPECT_TRUE(req);

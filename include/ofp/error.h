@@ -2,7 +2,7 @@
 //
 //  This file is licensed under the Apache License, Version 2.0.
 //  See LICENSE.txt for details.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the Error and ErrorBuilder classes.
@@ -13,6 +13,7 @@
 
 #include "ofp/header.h"
 #include "ofp/channel.h"
+#include "ofp/message.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -20,30 +21,36 @@ class Message;
 
 class Error {
 public:
-	enum { Type = OFPT_ERROR };
+    static constexpr OFPType type() { return OFPT_ERROR; }
+    static const Error *cast(const Message *message)
+    {
+        return message->cast<Error>();
+    }
 
-	Error() : header_{Type} {}
+    Error() : header_{type()}
+    {
+    }
+
+    bool validateLength(size_t length) const;
 
 private:
-	Header header_;
-	Big16 type_;
-	Big16 code_;
+    Header header_;
+    Big16 type_;
+    Big16 code_;
 
-	friend class ErrorBuilder;
+    friend class ErrorBuilder;
 };
-
 
 static_assert(sizeof(Error) == 12, "Unexpected size.");
 
-
 class ErrorBuilder {
 public:
-	ErrorBuilder(UInt16 type, UInt16 code, const Message *message);
+    ErrorBuilder(UInt16 type, UInt16 code, const Message *message);
 
-	void send(Channel *channel);
+    void send(Channel *channel);
 
 private:
-	Error msg_;
+    Error msg_;
 };
 
 } // </namespace ofp>

@@ -18,11 +18,10 @@ namespace ofp { // <namespace ofp>
 
 class GetConfigReply {
 public:
-	enum { Type = OFPT_GET_CONFIG_REPLY };
-
+	static constexpr OFPType type() { return OFPT_GET_CONFIG_REPLY; }
 	static const GetConfigReply *cast(const Message *message);
 
-	GetConfigReply() : header_{Type} {}
+	GetConfigReply() : header_{type()} {}
 
 	UInt16 flags() const { return flags_; }
 	UInt16 missSendLen() const { return missSendLen_; }

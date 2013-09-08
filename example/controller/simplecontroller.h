@@ -16,6 +16,7 @@ public:
 
 	void onPacketIn(Channel *channel, const PacketIn *msg);
 	void onPortStatus(Channel *channel, const PortStatus *msg);
+	void onError(Channel *channel, const Error *msg);
 	
 private:
 	using FwdTable = std::unordered_map<EnetAddress,UInt32>;

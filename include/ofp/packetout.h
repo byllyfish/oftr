@@ -22,11 +22,11 @@ namespace ofp { // <namespace ofp>
 
 class PacketOut {
 public:
-	enum { Type = OFPT_PACKET_OUT };
+	static constexpr OFPType type() { return OFPT_PACKET_OUT; }
 
 	static const PacketOut *cast(const Message *message);
 
-	PacketOut() : header_{Type} {}
+	PacketOut() : header_{type()} {}
 
 	UInt32 bufferId() const { return bufferId_; }
 	UInt32 inPort() const { return inPort_; }

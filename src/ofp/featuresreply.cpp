@@ -4,10 +4,6 @@
 
 namespace ofp { // <namespace ofp>
 
-FeaturesReply::FeaturesReply() : header_{Type}
-{
-}
-
 const FeaturesReply *ofp::FeaturesReply::cast(const Message *message)
 {
     assert(message->type() == OFPT_FEATURES_REPLY);

@@ -18,11 +18,10 @@ namespace ofp { // <namespace ofp>
 
 class SetConfig {
 public:
-	enum { Type = OFPT_SET_CONFIG };
-
+	static constexpr OFPType type() { return OFPT_SET_CONFIG; }
 	static const SetConfig *cast(const Message *message);
 
-	SetConfig() : header_{Type} {}
+	SetConfig() : header_{type()} {}
 
 	UInt16 flags() const { return flags_; }
 	UInt16 missSendLen() const { return missSendLen_; }

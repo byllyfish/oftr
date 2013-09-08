@@ -21,7 +21,7 @@ UInt32 PacketOutBuilder::send(Writable *channel)
     UInt32 xid = channel->nextXid();
     Header &hdr = msg_.header_;
     hdr.setVersion(version);
-    hdr.setType(PacketOut::Type);
+    hdr.setType(PacketOut::type());
     hdr.setLength(UInt16_narrow_cast(msgLen));
     hdr.setXid(xid);
 

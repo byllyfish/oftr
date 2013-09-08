@@ -92,5 +92,8 @@ References
 
 http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3388.pdf
 http://llvm.org/docs/YamlIO.html
+http://blip.tv/boostcon/thinking-asynchronously-designing-applications-with-boost-asio-5250947
 
+Tells how to upgrade MiniNet to openvswitch 1.3!
 
+https://wiki.opendaylight.org/view/Openflow_Protocol_Library:OpenVirtualSwitch

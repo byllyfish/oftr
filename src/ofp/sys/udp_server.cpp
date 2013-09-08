@@ -100,10 +100,10 @@ void UDP_Server::dispatchMessage()
     // If the message is an EchoRequest, reply immediately; it doesn't matter
     // if there is an existing connection or not.
     
-    if (message_.type() == EchoRequest::Type) {
+    if (message_.type() == EchoRequest::type()) {
     	auto request = EchoRequest::cast(&message_);
     	if (request) {
-            message_.setType(EchoReply::Type);
+            message_.setType(EchoReply::type());
             write(message_.data(), message_.size());
             flush(sender_);
     	} else {
@@ -121,7 +121,7 @@ void UDP_Server::dispatchMessage()
 
     if (iter == connMap_.end()) {
     	
-    	if (message_.type() == Hello::Type) {
+    	if (message_.type() == Hello::type()) {
     		auto conn = new UDP_Connection(this, role_, versions_, sender_);
     		conn->postMessage(nullptr, &message_);
 

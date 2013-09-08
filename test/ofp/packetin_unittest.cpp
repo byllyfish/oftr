@@ -64,7 +64,7 @@ TEST(packetin, version1)
 
     Message message{channel.data(), channel.size()};
     EXPECT_EQ(OFP_VERSION_1, message.version());
-    EXPECT_EQ(PacketIn::Type, message.type());
+    EXPECT_EQ(PacketIn::type(), message.type());
 
     const PacketIn *msg = PacketIn::cast(&message);
     EXPECT_TRUE(msg);

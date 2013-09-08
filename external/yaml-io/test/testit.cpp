@@ -88,5 +88,16 @@ b:               it works
         EXPECT(t.b == "it works");
     }
 
+    {
+        const char *json = R"""({ 'a': 72, 'b':'it still works'})""";
+        TestStruct t;
+        llvm::yaml::Input yin(json);
+        yin >> t;
+
+        EXPECT(!yin.error());
+        EXPECT(t.a == 72);
+        EXPECT(t.b == "it still works");
+    }
+
     return 0;
 }

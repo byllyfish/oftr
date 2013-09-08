@@ -18,11 +18,10 @@ namespace ofp { // <namespace ofp>
 
 class EchoReply {
 public:
-	enum { Type = OFPT_ECHO_REPLY };
-
+	static constexpr OFPType type() { return OFPT_ECHO_REPLY; }
 	const EchoReply *cast(const Message *message);
 	
-	EchoReply() : header_{Type} {}
+	EchoReply() : header_{type()} {}
 
 private:
 	Header header_;

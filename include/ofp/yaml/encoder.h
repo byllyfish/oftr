@@ -6,6 +6,7 @@
 #include "ofp/header.h"
 #include "ofp/bytelist.h"
 #include "ofp/memorychannel.h"
+#include "ofp/log.h"
 
 namespace ofp { // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -30,6 +31,7 @@ private:
     llvm::raw_string_ostream errorStream_;
 
     void addDiagnostic(const llvm::SMDiagnostic &diag) {
+    	ofp::log::debug("addDiagnostic");
 		diag.print("", errorStream_, false);
 	}
 };
@@ -45,7 +47,7 @@ struct MappingTraits<ofp::yaml::Encoder> {
 
     static void mapping(IO &io, ofp::yaml::Encoder &encoder)
     {
-    	ofp::Header header{0};
+    	ofp::Header header{ofp::OFPT_UNSUPPORTED};
     	io.mapRequired("type", header.type_);
     	io.mapRequired("xid", header.xid_);
     	io.mapRequired("version", header.version_);

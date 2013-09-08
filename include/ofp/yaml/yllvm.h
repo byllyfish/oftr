@@ -7,6 +7,7 @@
 
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
+#include "ofp/yaml/yconstants.h"
 #include "ofp/Header.h"
 
 namespace ofp {    // <namespace ofp>
@@ -23,7 +24,7 @@ void writeHeader(llvm::yaml::IO &io, const Header *header);
 
 inline void readHeader(llvm::yaml::IO &io, Header *header)
 {
-    UInt8 type;
+    OFPType type;
     UInt8 version;
     UInt32 xid;
 
@@ -41,7 +42,7 @@ inline void readHeader(llvm::yaml::IO &io, Header *header)
 inline void writeHeader(llvm::yaml::IO &io, const Header *header)
 {
     UInt8 version = header->version();
-    UInt8 type = header->type();
+    OFPType type = header->type();
     UInt32 xid = header->xid();
 
     io.mapRequired("type", type);

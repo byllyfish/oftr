@@ -53,19 +53,19 @@ void DefaultHandshake::onMessage(const Message *message)
 
 	switch (message->type())
 	{
-		case Hello::Type:
+		case Hello::type():
 			onHello(message);
 			break;
 
-		case FeaturesRequest::Type:
+		case FeaturesRequest::type():
 			onFeaturesRequest(message);
 			break;
 
-		case FeaturesReply::Type:
+		case FeaturesReply::type():
 			onFeaturesReply(message);
 			break;
 
-		case Error::Type:
+		case Error::type():
 			onError(message);
 			break;
 			

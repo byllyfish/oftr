@@ -30,12 +30,9 @@ public:
     /// Cast message to this type after validating contents.
     /// \returns pointer to message or nullptr if not valid.
     static const HeaderOnly *cast(const Message *message);
+    static constexpr OFPType type() { return MsgType; }
 
-    enum {
-        Type = MsgType
-    };
-
-    HeaderOnly() : header_{Type}
+    HeaderOnly() : header_{type()}
     {
     }
 
@@ -191,9 +188,9 @@ UInt32 HeaderOnlyBuilder<HeaderOnlyType>::send(Writable *channel)
     Header *header = reinterpret_cast<Header *>(&msg_);
     UInt32 xid = isReply_ ? header->xid() : channel->nextXid();
 
-    UInt8 origType = header->type();
+    OFPType origType = header->type();
     UInt8 version = channel->version();
-    UInt8 newType = Header::translateType(OFP_VERSION_4, origType, version);
+    OFPType newType = Header::translateType(OFP_VERSION_4, origType, version);
 
     if (newType != OFPT_UNSUPPORTED) {
         header->setType(newType);

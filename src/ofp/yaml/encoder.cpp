@@ -1,4 +1,5 @@
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/yhello.h"
 #include "ofp/yaml/yflowmod.h"
 
 namespace ofp {  // <namespace ofp>
@@ -15,13 +16,17 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
     log::debug("Encoder::encodeMsg");
 
     switch (header.type()) {
-    case FlowMod::Type: {
+    case Hello::type(): {
+        HelloBuilder hello{header};
+        hello.send(&channel_);
+        break;
+    }
+    case FlowMod::type(): {
         FlowModBuilder flowMod;
         io.mapRequired("msg", flowMod);
         flowMod.send(&channel_);
         break;
     }
-
     default:
         break;
     }

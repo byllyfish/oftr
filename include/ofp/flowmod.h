@@ -32,13 +32,13 @@ enum FlowModCommand : UInt8 {
 
 class FlowMod {
 public:
-    static const FlowMod *cast(const Message *message);
+    static const FlowMod *cast(const Message *message) {
+        return message->cast<FlowMod>();
+    }
+    
+    static constexpr OFPType type() { return OFPT_FLOW_MOD; }
 
-    enum {
-        Type = OFPT_FLOW_MOD
-    };
-
-    FlowMod() : header_{Type} {}
+    FlowMod() : header_{type()} {}
 
     UInt64 cookie() const { return cookie_; }
     UInt64 cookieMask() const { return cookieMask_; }

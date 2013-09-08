@@ -23,13 +23,10 @@ namespace ofp { // <namespace ofp>
  */
 class FeaturesReply {
 public:
+    static constexpr OFPType type() { return OFPT_FEATURES_REPLY; }
     static const FeaturesReply *cast(const Message *message);
 
-    enum {
-        Type = OFPT_FEATURES_REPLY
-    };
-
-    FeaturesReply();
+    FeaturesReply() : header_{type()} {}
 
     void getFeatures(Features *features) const;
     //PortRange ports() const;

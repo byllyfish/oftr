@@ -38,14 +38,12 @@ private:
 } // </namespace detail>
 
 
+/// \brief Immutable OpenFlow `Hello` protocol message.
 class Hello {
 public:
+	static constexpr OFPType type() { return OFPT_HELLO; }
 
-	enum {
-		Type = OFPT_HELLO
-	};
-
-	Hello() : header_{Type} {}
+	Hello() : header_{type()} {}
 
 	static const Hello *cast(const Message *message);
 
@@ -61,10 +59,15 @@ private:
 };
 
 static_assert(sizeof(Hello) == 8, "Unexpected size.");
+static_assert(IsStandardLayout<Hello>(), "Expected standard layout.");
 
-
+/// \brief Mutable builder for an OpenFlow `Hello` protocol message.
 class HelloBuilder {
 public:
+
+	HelloBuilder(const Header &header) {
+		msg_.header_ = header;
+	}
 
 	HelloBuilder(ProtocolVersions versions) : bitmap_{versions.bitmap()} {
 		msg_.header_.setVersion(versions.highestVersion());

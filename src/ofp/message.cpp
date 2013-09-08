@@ -26,16 +26,16 @@ void Message::transmogrify()
     Header *hdr = header();
 
     // Translate type of message from earlier version into latest enum.
-    UInt8 type = Header::translateType(hdr->version(), hdr->type(), OFP_VERSION_4);
+    OFPType type = Header::translateType(hdr->version(), hdr->type(), OFP_VERSION_4);
     if (type == OFPT_UNSUPPORTED) {
         log::info("Unsupported type for protocol version:", hdr->type());
     }
     hdr->setType(type);
     
     if (hdr->version() == OFP_VERSION_1) {
-        if (hdr->type() == FlowMod::Type) {
+        if (hdr->type() == FlowMod::type()) {
             transmogrifyFlowModV1();
-        } else if (hdr->type() == PortStatus::Type) {
+        } else if (hdr->type() == PortStatus::type()) {
             transmogrifyPortStatusV1();
         }
     }

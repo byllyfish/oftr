@@ -631,6 +631,29 @@ enum ofp_table_features_failed_code {
     OFPTFFC_EPERM = 5,        /* Permissions error. */
 };
 
+
+/* Table numbering. Tables can use any number up to OFPT_MAX. */
+enum ofp_table {
+    /* Last usable table number. */
+    OFPTT_MAX        = 0xfe,
+    /* Fake tables. */
+    OFPTT_ALL        = 0xff   /* Wildcard table used for table config,
+                                 flow stats and flow deletes. */
+};
+
+/* Group numbering. Groups can use any number up to OFPG_MAX. */
+enum ofp_group {
+    /* Last usable group number. */
+    OFPG_MAX        = 0xffffff00,
+    /* Fake groups. */
+OFPG_ALL= 0xfffffffc,  /* Represents all groups for group delete
+                  commands. */
+OFPG_ANY= 0xffffffff
+/* Wildcard group used only for flow stats
+   requests. Selects all flows regardless of
+   group (including flows with no group).
+   */
+  };
 } // </namespace ofp>
 
 #endif // OFP_CONSTANTS_H

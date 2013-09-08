@@ -1,8 +1,16 @@
 #include "ofp/error.h"
 #include "ofp/log.h"
 
+namespace ofp { // <namespace ofp>
 
-ofp::ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code, const Message *message)
+
+bool Error::validateLength(size_t length) const
+{
+	return (length >= sizeof(Error));
+}
+
+
+ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code, const Message *message)
 {
 	// message is included because we might send part of it back someday.
 	// 
@@ -10,7 +18,7 @@ ofp::ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code, const Message *message
 	msg_.code_ = code;
 }
 
-void ofp::ErrorBuilder::send(Channel *channel)
+void ErrorBuilder::send(Channel *channel)
 {
 	msg_.header_.setVersion(channel->version());
     msg_.header_.setLength(sizeof(msg_));
@@ -19,3 +27,6 @@ void ofp::ErrorBuilder::send(Channel *channel)
 	channel->write(&msg_, sizeof(msg_));
 	channel->flush();
 }
+
+} // </namespace ofp>
+

@@ -22,13 +22,11 @@ class Message;
 
 class PortStatus {
 public:
-    enum {
-        Type = OFPT_PORT_STATUS
-    };
+    static constexpr OFPType type() { return OFPT_PORT_STATUS; }
 
     static const PortStatus *cast(const Message *message);
 
-    PortStatus() : header_{ Type }
+    PortStatus() : header_{ type() }
     {
     }
 

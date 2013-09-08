@@ -20,11 +20,10 @@ class Writable;
 
 class EchoRequest {
 public:
-	enum { Type = OFPT_ECHO_REQUEST };
-
+	static constexpr OFPType type() { return OFPT_ECHO_REQUEST; }
 	static const EchoRequest *cast(const Message *message);
 
-	EchoRequest() : header_{Type} {}
+	EchoRequest() : header_{type()} {}
 
 private:
 	Header header_;

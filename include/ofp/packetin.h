@@ -21,16 +21,14 @@ namespace ofp { // <namespace ofp>
 
 class PacketIn {
 public:
-    enum {
-        Type = OFPT_PACKET_IN
-    };
+    static constexpr OFPType type() { return OFPT_PACKET_IN; }
 
     static const PacketIn *cast(const Message *message)
     {
         return message->cast<PacketIn>();
     }
 
-    PacketIn() : header_{Type}
+    PacketIn() : header_{type()}
     {
     }
 

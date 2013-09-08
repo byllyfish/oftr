@@ -33,7 +33,7 @@ TEST(yaml_flowmod, write)
 
     const char *expected =
         R"""(---
-type:            14
+type:            OFPT_FLOW_MOD
 version:         4
 xid:             1
 msg:             

@@ -48,7 +48,8 @@ LLVM_OBJECTS = $(LLVM_SOURCES:.cpp=.o)
 
 WARNINGS = -Wall
 
-CPPFLAGS += -I include -std=c++11 -D NDEBUG
+CPPFLAGS += -I include -std=c++11 
+#CPPFLAGS += -D NDEBUG
 # llvm files expect these macros.
 CPPFLAGS += -D __STDC_LIMIT_MACROS -D __STDC_CONSTANT_MACROS 
 # Need -stdlib on Mac OS X.
@@ -56,7 +57,7 @@ ifeq ($(shell uname -s),Darwin)
  CPPFLAGS += -stdlib=libc++
 endif
 
-CXXFLAGS += -O2 $(WARNINGS)
+CXXFLAGS += -g $(WARNINGS)
 
 all: libyamlio.a test
 

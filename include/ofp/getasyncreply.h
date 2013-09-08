@@ -18,11 +18,10 @@ namespace ofp { // <namespace ofp>
 
 class GetAsyncReply {
 public:
-	enum { Type = OFPT_GET_ASYNC_REPLY };
-
+	static constexpr OFPType type() { return OFPT_GET_ASYNC_REPLY; }
 	static const GetAsyncReply *cast(const Message *message) { return message->cast<GetAsyncReply>(); }
 
-	GetAsyncReply() : header_{Type} {}
+	GetAsyncReply() : header_{type()} {}
 
 	UInt32 masterPacketInMask() const;
 	UInt32 slavePacketInMask() const;

@@ -8,7 +8,7 @@ static UInt8 MaxTypeByVersion[] = {0,
                                    UInt8_cast(deprecated::v3::OFPT_LAST),
                                    UInt8_cast(OFPT_LAST)};
 
-static UInt8 translateTypeToVersion(UInt8 type, UInt8 version)
+static OFPType translateTypeToVersion(UInt8 type, UInt8 version)
 {
     assert(type > OFPT_FLOW_MOD);
     assert(version <= OFP_VERSION_3);
@@ -23,10 +23,10 @@ static UInt8 translateTypeToVersion(UInt8 type, UInt8 version)
         return OFPT_UNSUPPORTED;
     }
 
-    return type;
+    return OFPType(type);
 }
 
-static UInt8 translateTypeFromVersion(UInt8 type, UInt8 version)
+static OFPType translateTypeFromVersion(UInt8 type, UInt8 version)
 {
     assert(type > OFPT_FLOW_MOD);
     assert(version <= OFP_VERSION_3);
@@ -43,23 +43,23 @@ static UInt8 translateTypeFromVersion(UInt8 type, UInt8 version)
         }
     }
 
-    return type;
+    return OFPType(type);
 }
 
-UInt8 Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion)
+OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion)
 {
     assert(version >= OFP_VERSION_1);
 
     if (version == newVersion)
-        return type;
+        return OFPType(type);
 
     assert(version == OFP_VERSION_4 || newVersion == OFP_VERSION_4);
 
     if (version > OFP_VERSION_4 || newVersion > OFP_VERSION_4)
-        return type;
+        return OFPType(type);
 
     if (type <= OFPT_FLOW_MOD)
-        return type;
+        return OFPType(type);
 
     if (version == OFP_VERSION_4) {
         return translateTypeToVersion(type, newVersion);

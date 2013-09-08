@@ -43,7 +43,7 @@ bool PacketIn::validateLength(size_t length) const
 
     // Check the match length.
     UInt16 matchLen = matchLength_;
-    if (length != UnpaddedSizeWithMatchHeader + matchLen) {
+    if (length < UnpaddedSizeWithMatchHeader + matchLen) {
         log::debug("PacketIn has mismatched lengths.");
         return false;
     }
@@ -56,8 +56,6 @@ bool PacketIn::validateLengthV1(size_t length) const
     if (length < 18) {
         return false;
     }
-
-    // FIXME: what is the minimum frame length to expect?
 
     return true;
 }
@@ -208,7 +206,7 @@ UInt32 PacketInBuilder::send(Writable *channel)
     UInt32 xid = channel->nextXid();
     Header &hdr = msg_.header_;
     hdr.setVersion(version);
-    hdr.setType(PacketIn::Type);
+    hdr.setType(PacketIn::type());
     hdr.setLength(UInt16_narrow_cast(msgLen));
     hdr.setXid(xid);
 
@@ -240,7 +238,7 @@ UInt32 PacketInBuilder::sendV1(Writable *channel)
     UInt32 xid = channel->nextXid();
     Header &hdr = msg_.header_;
     hdr.setVersion(version);
-    hdr.setType(PacketIn::Type);
+    hdr.setType(PacketIn::type());
     hdr.setLength(UInt16_narrow_cast(msgLen));
     hdr.setXid(xid);
 

@@ -5,12 +5,6 @@
 namespace ofp { // <namespace ofp>
 
 
-const FlowMod *FlowMod::cast(const Message *message)
-{
-	return message->cast<FlowMod>();
-}
-
-
 Match FlowMod::match() const
 {
     assert(validateLength(header_.length()));
@@ -91,7 +85,7 @@ UInt32 FlowModBuilder::send(Writable *channel)
     UInt32 xid = channel->nextXid();
     Header &hdr = msg_.header_;
     hdr.setVersion(version);
-    hdr.setType(FlowMod::Type);
+    hdr.setType(FlowMod::type());
     hdr.setLength(UInt16_narrow_cast(msgLen));
     hdr.setXid(xid);
 
@@ -125,7 +119,7 @@ UInt32 FlowModBuilder::sendStandard(Writable *channel)
     UInt32 xid = channel->nextXid();
     Header &hdr = msg_.header_;
     hdr.setVersion(version);
-    hdr.setType(FlowMod::Type);
+    hdr.setType(FlowMod::type());
     hdr.setLength(UInt16_narrow_cast(msgLen));
     hdr.setXid(xid);
 
@@ -154,7 +148,7 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel)
     UInt32 xid = channel->nextXid();
     Header &hdr = msg_.header_;
     hdr.setVersion(version);
-    hdr.setType(FlowMod::Type);
+    hdr.setType(FlowMod::type());
     hdr.setLength(msgLen);
     hdr.setXid(xid);
 

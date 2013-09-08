@@ -15,11 +15,10 @@ namespace ofp { // <namespace ofp>
 
 class FlowRemoved {
 public:
-	enum { Type = OFPT_FLOW_REMOVED };
-
+	static constexpr OFPType type() { return OFPT_FLOW_REMOVED; }
 	static const FlowRemoved *cast(const Message *message);
 
-	FlowRemoved() : header_{Type} {}
+	FlowRemoved() : header_{type()} {}
 
 	/// Opaque controller-issued identifier.
 	UInt64 cookie() const { return cookie_; }
