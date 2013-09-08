@@ -12,23 +12,21 @@ TEST(decoder, test)
     Message msg{s.data(), s.size()};
     msg.transmogrify();
 
-    std::string result;
-    llvm::raw_string_ostream rss{result};
-    llvm::yaml::Output yout{rss};
+    //std::string result;
+   // llvm::raw_string_ostream rss{result};
+    //llvm::yaml::Output yout{rss};
 
     Decoder decoder{&msg};
-    yout << decoder;
-    (void)rss.str();
+    //yout << decoder;
+   // (void)rss.str();
 
     EXPECT_EQ("", decoder.error());
     EXPECT_EQ("---\ntype:            OFPT_HELLO\nxid:             "
               "0x00000001\nversion:         1\nmsg:             \n  versions:  "
               "      [ 1 ]\n...\n",
-              result);
+              decoder.result());
 
-    llvm::yaml::Input yin{result};
-    Encoder encoder;
-    yin >> encoder;
+    Encoder encoder{decoder.result()};
 
     EXPECT_EQ("", encoder.error());
     EXPECT_HEX("0100000800000001", encoder.data(), encoder.size());
@@ -41,25 +39,29 @@ TEST(decoder, test2)
     Message msg{s.data(), s.size()};
     msg.transmogrify();
 
-    std::string result;
-    llvm::raw_string_ostream rss{result};
-    llvm::yaml::Output yout{rss};
+    //std::string result;
+    //llvm::raw_string_ostream rss{result};
+    //llvm::yaml::Output yout{rss};
 
     Decoder decoder{&msg};
-    yout << decoder;
-    (void)rss.str();
+    //yout << decoder;
+    //(void)rss.str();
 
     EXPECT_EQ("", decoder.error());
     EXPECT_EQ("---\ntype:            OFPT_HELLO\nxid:             "
               "0x00000001\nversion:         4\nmsg:             \n  versions:  "
               "      [ 1, 4 ]\n...\n",
-              result);
+              decoder.result());
 
-    llvm::yaml::Input yin{result};
-    Encoder encoder;
-    yin >> encoder;
+    Encoder encoder{decoder.result()};
 
     EXPECT_EQ("", encoder.error());
     EXPECT_HEX(
         "04000010000000010001000800000012", encoder.data(), encoder.size());
+}
+
+
+TEST(decoder, error1) 
+{
+    //"0101000C0000006200010001FFFF1234567890"
 }

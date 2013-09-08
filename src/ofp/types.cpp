@@ -62,11 +62,12 @@ std::string ofp::RawDataToHex(const void *data, size_t len, char delimiter, int 
 }
 
 
-size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen)
+size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen, bool *error)
 {
 	UInt8 *begin = static_cast<UInt8*>(data);
 	UInt8 *end = begin + maxlen;
 	
+	bool nonhex = false;
 	unsigned ch[2];
 	unsigned idx = 0;
 	UInt8 *out = begin;
@@ -74,15 +75,21 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen)
 		if (std::isxdigit(*inp)) {
 			ch[idx++] = FromHex(*inp);
 			if (idx >= 2) {
+				idx = 0;
 				assert(ch[0] < 16 && ch[1] < 16);
 				*out++ = UInt8_narrow_cast((ch[0] << 4) | ch[1]);
 				if (out >= end)
 					break;
-				idx = 0;
 			}
+		} else {
+			nonhex = true;
 		}
 	}
 	
+	if (error != nullptr) {
+		*error = nonhex || (idx != 0);
+	}
+
 	assert(end >= out);
 	std::memset(out, 0, Unsigned_cast(end - out));
 	

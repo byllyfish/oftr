@@ -167,7 +167,8 @@ void DefaultHandshake::onError(const Message *message)
 
 void DefaultHandshake::replyError(UInt16 type, UInt16 code, const Message *message)
 {
-	ErrorBuilder error{type, code, message};
+	ErrorBuilder error{type, code};
+	error.setErrorData(message);
 	error.send(channel_);
 	channel_->shutdown();
 }

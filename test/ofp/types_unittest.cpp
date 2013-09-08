@@ -118,3 +118,30 @@ TEST(types, IsMemFilled)
 	EXPECT_FALSE(IsMemFilled("aba", 3, 'a'));
 }
 
+
+TEST(types, HexToRawData3) 
+{
+	bool error = false;
+
+	char buf[7];
+	EXPECT_EQ(6, HexToRawData("616263646566", buf, sizeof(buf), &error));
+	EXPECT_EQ(0, std::memcmp(buf, "abcdef\0", 7));
+	EXPECT_FALSE(error);
+
+	EXPECT_EQ(5, HexToRawData("61626364656", buf, sizeof(buf), &error));
+	EXPECT_EQ(0, std::memcmp(buf, "abcde\0", 6));
+	EXPECT_TRUE(error);
+
+	EXPECT_EQ(7, HexToRawData("0102 0304 05 0607", buf, sizeof(buf), &error));
+	EXPECT_EQ(0, std::memcmp(buf, "\1\2\3\4\5\6\7", 7));
+	EXPECT_TRUE(error);
+
+	EXPECT_EQ(7, HexToRawData("01-02:03\n04 z 05 = 06 _ 07 08 09", buf, sizeof(buf)));
+	EXPECT_EQ(0, std::memcmp(buf, "\1\2\3\4\5\6\7", 7));
+	EXPECT_TRUE(error);
+	
+	EXPECT_EQ(2, HexToRawData("aa bb c", buf, sizeof(buf)));
+	EXPECT_EQ(0, std::memcmp(buf, "\xaa\xbb\0\0\0\0\0", 7));
+	EXPECT_TRUE(error);
+}
+

@@ -44,6 +44,7 @@ public:
     ptrdiff_t index(const UInt8 *pos) const;
     ByteRange toRange() const;
 
+    void set(const void *Data, size_t length);
     void add(const void *data, size_t length);
     void insert(const UInt8 *pos, const void *data, size_t length);
     void replace(const UInt8 *pos, const UInt8 *posEnd, const void *data,
@@ -145,27 +146,13 @@ inline ofp::ByteRange ofp::ByteList::toRange() const
 	return ByteRange{data(), size()};
 }
 
-/**
- *  Return immutable byte at specified index.
- 
-inline const ofp::UInt8 &ofp::ByteList::operator[](size_t idx) const
+/// \brief Set contents of the byte buffer. This method may move memory.
+inline void ofp::ByteList::set(const void *data, size_t length)
 {
-    assert(idx < size());
-
-    return buf_[idx];
+    assert(data != nullptr || length == 0);
+    clear();
+    add(data, length);
 }
-**/
-
-/**
- *  Return mutable byte at specified index.
- 
-inline ofp::UInt8 &ofp::ByteList::operator[](size_t idx)
-{
-    assert(idx < size());
-
-    return buf_[idx];
-}
-**/
 
 /**
  *  Append data to the end of the byte buffer. This method may move memory.

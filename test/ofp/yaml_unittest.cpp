@@ -21,13 +21,14 @@ TEST(yaml_flowmod, write)
     flowMod.setMatch(match);
     flowMod.setInstructions(instructions);
 
-    ByteList buf = MemoryChannel::serialize(flowMod, 4);
+    MemoryChannel channel{OFP_VERSION_4};
+    flowMod.send(&channel);
 
-    EXPECT_EQ(88, buf.size());
-    EXPECT_HEX("040E0058000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000010016800000040000000D80000A02080080001804C0A801010000000000000001000803000000", buf.data(), buf.size());
+    EXPECT_EQ(88, channel.size());
+    EXPECT_HEX("040E0058000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000010016800000040000000D80000A02080080001804C0A801010000000000000001000803000000", channel.data(), channel.size());
 
-    const FlowMod *msg = reinterpret_cast<const FlowMod *>(buf.data());
-    EXPECT_TRUE(msg->validateLength(buf.size()));
+    const FlowMod *msg = reinterpret_cast<const FlowMod *>(channel.data());
+    EXPECT_TRUE(msg->validateLength(channel.size()));
 
     auto result = yaml::write(msg);
 
@@ -63,8 +64,9 @@ msg:
     FlowModBuilder builder;
     yaml::read(result, &builder);
 
-    ByteList buf2 = MemoryChannel::serialize(builder, 4);
+    MemoryChannel channel2{OFP_VERSION_4};
+    builder.send(&channel2);
 
-    log::debug("size:", buf2.size());
-    log::debug(RawDataToHex(buf2.data(), buf2.size()));
+    log::debug("size:", channel2.size());
+    log::debug(RawDataToHex(channel2.data(), channel2.size()));
 }

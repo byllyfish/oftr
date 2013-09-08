@@ -14,26 +14,27 @@ namespace yaml { // <namespace yaml>
 class Encoder {
 public:
 
-	Encoder() : errorStream_{error_} {}
+	Encoder(const std::string &input);
 
 	const UInt8 *data() const { return channel_.data(); }
 	size_t size() const { return channel_.size(); }
 
 	const std::string &error() { errorStream_.str(); return error_; }
 
-	static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
-
-	void encodeMsg(llvm::yaml::IO &io, Header &header);
-
 private:
 	MemoryChannel channel_;
 	std::string error_;
     llvm::raw_string_ostream errorStream_;
 
+    static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
+
     void addDiagnostic(const llvm::SMDiagnostic &diag) {
-    	ofp::log::debug("addDiagnostic");
 		diag.print("", errorStream_, false);
 	}
+
+    void encodeMsg(llvm::yaml::IO &io, Header &header);
+
+    friend struct llvm::yaml::MappingTraits<ofp::yaml::Encoder>;
 };
 
 } // </namespace yaml>

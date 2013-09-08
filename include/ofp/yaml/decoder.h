@@ -5,31 +5,36 @@
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/message.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
-
 
 class Decoder {
 public:
 
-	Decoder(Message *msg) : msg_{msg} {
-		assert(msg->size() >= sizeof(Header));
-	}
+    Decoder(Message *msg);
 
-	Header *header() { return msg_->header(); }
+    const std::string &result() const 
+    {
+        return result_;
+    }
 
-	void decodeMsg(llvm::yaml::IO &io);
-
-	const std::string &error() const { return error_; }
+    const std::string &error() const
+    {
+        return error_;
+    }
 
 private:
-	Message *msg_;
-	std::string error_;
+    Message *msg_;
+    std::string result_;
+    std::string error_;
+
+    void decodeMsg(llvm::yaml::IO &io);
+
+    friend struct llvm::yaml::MappingTraits<ofp::yaml::Decoder>;
 };
 
 } // </namespace yaml>
 } // </namespace ofp>
-
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
@@ -39,15 +44,16 @@ struct MappingTraits<ofp::yaml::Decoder> {
 
     static void mapping(IO &io, ofp::yaml::Decoder &decoder)
     {
-    	ofp::Header *header = decoder.header();
-		io.mapRequired("type", header->type_);
-		io.mapRequired("xid", header->xid_);
-		io.mapRequired("version", header->version_);
+        ofp::Header *header = decoder.msg_->header();
+        io.mapRequired("type", header->type_);
+        io.mapRequired("xid", header->xid_);
+        io.mapRequired("version", header->version_);
 
-    	decoder.decodeMsg(io);
+        decoder.decodeMsg(io);
     }
 };
 
 } // </namespace yaml>
 } // </namespace llvm>
+
 #endif // OFP_YAML_DECODER_H

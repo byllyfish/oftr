@@ -219,13 +219,15 @@ std::string RawDataToHex(const void* data, size_t length, char delimiter,
  *  Convert a hexadecimal string to raw memory. Only write up to `length` bytes.
  *  Ignore non-hex digits and the odd final hex digit. If there are fewer than
  *  `length` bytes converted from the hex string, set the remaining bytes to
- *  zero.
+ *  zero. If `error` is not null, set value to true when there are non-hex
+ *  digits or an odd number of hex digits.
  *  @param  hex string containing hexadecimal characters
  *  @param  data output buffer
  *  @param  length size of output buffer
+ *  @param  error ptr to optional boolean error result
  *  @return number of bytes resulting from hexadecimal string
  */
-size_t HexToRawData(const std::string& hex, void* data, size_t length);
+size_t HexToRawData(const std::string& hex, void* data, size_t length, bool *error = nullptr);
 
 /**
  *  Convert a hexadecimal string to raw memory. Ignore non-hex digits and the

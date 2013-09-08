@@ -29,14 +29,11 @@ int ofpProtocolEncode(OFPString *inMessage, OFPString *outBinary,
 		return 0;
 	}
 
-	Encoder encoder;
 	llvm::StringRef input{inMessage->data, Unsigned_cast(inMessage->length)};
-	llvm::yaml::Input yin(input);
-	yin.setDiagHandler(Encoder::diagnosticHandler, &encoder);
-	yin >> encoder;
+	Encoder encoder{input};
 
-	if (yin.error()) {
-		const std::string &err = encoder.error();
+	const std::string &err = encoder.error();
+	if (!err.empty()) {
 		ofpStringClear(outBinary);
 		ofpStringSet(outError, err.data(), err.length());
 		return 0;

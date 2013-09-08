@@ -30,6 +30,11 @@ public:
         return version_;
     }
 
+    void setVersion(UInt8 version)
+    {
+        version_ = version;
+    }
+
     void write(const void *data, size_t length) override
     {
         buf_.add(data, length);
@@ -45,6 +50,12 @@ public:
         return nextXid_++;
     }
 
+    void setNextXid(UInt32 xid)
+    {
+        nextXid_ = xid;
+    }
+
+#if 0
     template <class MesgBuilderType>
     static ByteList serialize(MesgBuilderType &msg, UInt8 version)
     {
@@ -52,6 +63,7 @@ public:
         msg.send(&writer);
         return writer.buf_;
     }
+#endif
 
 private:
     ByteList buf_;
