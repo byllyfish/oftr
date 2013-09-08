@@ -7,9 +7,8 @@ TEST(encoder, flowMod)
 {
 	const char *input = "{ type: OFPT_FLOW_MOD, version: 4, xid: 1 }";
 
-	llvm::yaml::Input yin(input);
-    Encoder encoder;
-    yin.setDiagHandler(Encoder::diagnosticHandler, &encoder);
+	Encoder encoder;
+	llvm::yaml::Input yin(input, nullptr, Encoder::diagnosticHandler, &encoder);
 
     yin >> encoder;
     const std::string &err = encoder.error();
@@ -22,10 +21,9 @@ TEST(encoder, hellov1)
 {
 	const char *input = "{ type: OFPT_HELLO, version: 1, xid: 1 }";
 
-	llvm::yaml::Input yin(input);
-    Encoder encoder;
-    yin.setDiagHandler(Encoder::diagnosticHandler, &encoder);
-
+	Encoder encoder;
+	llvm::yaml::Input yin(input, nullptr, Encoder::diagnosticHandler, &encoder);
+ 
     yin >> encoder;
     const std::string &err = encoder.error();
 
@@ -35,24 +33,32 @@ TEST(encoder, hellov1)
     EXPECT_HEX("0100000800000001", encoder.data(), encoder.size());
 }
 
-#if 0
+
+TEST(encoder, hellov4err) 
+{
+	const char *input = "{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, 4}} }";
+
+	Encoder encoder;
+	llvm::yaml::Input yin{input, nullptr, Encoder::diagnosticHandler, &encoder};
+
+	EXPECT_TRUE(yin.error());
+    EXPECT_EQ("YAML:1:43: error: Found unexpected ':' while scanning a plain scalar\n{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, 4}} }\n                                          ^\n", encoder.error());
+}
+
+
 TEST(encoder, hellov4) 
 {
-	const char *input = "{ type: OFPT_HELLO, version: 1, xid: 1 msg:{versions{1, 4}} }";
+	const char *input = "{ 'type': 'OFPT_HELLO', 'version': 4, 'xid': 1, 'msg':{ 'versions': [1,4] } }";
 
-	llvm::yaml::Input yin(input);
+	Encoder encoder;
+	llvm::yaml::Input yin{input, nullptr, Encoder::diagnosticHandler, &encoder};
+
 	EXPECT_FALSE(yin.error());
 
-    Encoder encoder;
-    yin.setDiagHandler(Encoder::diagnosticHandler, &encoder);
-    if (!yin.error()) {
-    	yin >> encoder;
-    	const std::string &err = encoder.error();
+    yin >> encoder;
 
-    	EXPECT_FALSE(yin.error());
-    	EXPECT_EQ("", err);
-
-    	EXPECT_HEX("0100000800000001", encoder.data(), encoder.size());
-    }
+    EXPECT_FALSE(yin.error());
+	EXPECT_EQ("", encoder.error());
+    EXPECT_HEX("04000010000000010001000800000012", encoder.data(), encoder.size());
 }
-#endif
+

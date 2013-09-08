@@ -73,6 +73,10 @@ public:
 		msg_.header_.setVersion(versions.highestVersion());
 	}
 
+	void setProtocolVersions(ProtocolVersions versions) {
+		bitmap_ = versions.bitmap();
+	}
+
 	UInt32 send(Writable *channel);
 
 private:

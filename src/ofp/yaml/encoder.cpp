@@ -18,6 +18,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
     switch (header.type()) {
     case Hello::type(): {
         HelloBuilder hello{header};
+        io.mapOptional("msg", hello);
         hello.send(&channel_);
         break;
     }

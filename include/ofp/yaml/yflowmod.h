@@ -10,6 +10,15 @@
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>
 
+#if 0
+template <class Type>
+struct MessageWrap {
+    MessageWrap(const Type *m) : msg{const_cast<Type *>(m)} {}
+    Type *msg;
+};
+
+#endif
+
 struct FlowModWrap {
     FlowModWrap(const ofp::FlowMod *m) : msg{const_cast<FlowMod *>(m)}
     {

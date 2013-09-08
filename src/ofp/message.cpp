@@ -21,6 +21,8 @@ Channel *Message::source() const
 
 void Message::transmogrify()
 {
+    assert(size() >= sizeof(Header));
+    
     // Caution! Many magic numbers ahead...
 
     Header *hdr = header();

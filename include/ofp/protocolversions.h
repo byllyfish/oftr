@@ -13,6 +13,7 @@
 
 #include "ofp/types.h"
 #include <initializer_list>
+#include <vector>
 
 namespace ofp { // <namespace ofp>
 
@@ -39,6 +40,8 @@ public:
 
     /* implicit */ ProtocolVersions(std::initializer_list<UInt8> versions);
 
+    explicit ProtocolVersions(const std::vector<UInt8> &versions);
+
     bool empty() const
     {
         return (bitmap_ == 0);
@@ -57,6 +60,8 @@ public:
     }
 
     static ProtocolVersions fromBitmap(UInt32 bitmap);
+
+    std::vector<UInt8> versions() const;
 
 private:
     UInt32 bitmap_;
