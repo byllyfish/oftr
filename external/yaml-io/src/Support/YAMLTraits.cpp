@@ -40,11 +40,19 @@ void IO::setContext(void *Context) {
 //  Input
 //===----------------------------------------------------------------------===//
 
-Input::Input(StringRef InputContent, void *Ctxt) 
+Input::Input(StringRef InputContent, void *Ctxt, 
+             llvm::SourceMgr::DiagHandlerTy Handler, void *HandlerCtxt) 
   : IO(Ctxt), 
     Strm(new Stream(InputContent, SrcMgr)),
     CurrentNode(NULL) {
+  // Set handler before parsing begins.
+  if (Handler) {
+    SrcMgr.setDiagHandler(Handler, HandlerCtxt);
+  }
   DocIterator = Strm->begin();
+  if (Strm->failed()) {
+    EC = make_error_code(errc::invalid_argument);
+  }
 }
 
 Input::~Input() {

@@ -685,9 +685,10 @@ private:
 class Input : public IO {
 public:
   // Construct a yaml Input object from a StringRef and optional user-data.
-  Input(StringRef InputContent, void *Ctxt=NULL);
+  Input(StringRef InputContent, void *Ctxt=NULL, 
+        llvm::SourceMgr::DiagHandlerTy Handler=NULL, void *HandlerCtxt=NULL);
   ~Input();
-  
+
   // Check if there was an syntax or semantic error during parsing.
   llvm::error_code error();
 
