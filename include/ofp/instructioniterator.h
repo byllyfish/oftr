@@ -66,7 +66,7 @@ public:
 		return position_ <= rhs.position_;
 	}
 	
-	/// \returns Number of OXM elements between begin and end.
+	/// \returns Number of instructions between begin and end.
 	static size_t distance(InstructionIterator begin, InstructionIterator end)
 	{
 		assert(begin <= end);

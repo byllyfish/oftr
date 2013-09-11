@@ -3,11 +3,12 @@
 
 #include "ofp/instructionlist.h"
 #include "ofp/yaml/ybyteorder.h"
+#include "ofp/yaml/yactions.h"
 
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>
 
-struct InstructionBuilder 
+struct InstructionInserter 
 {
 };
 
@@ -52,6 +53,7 @@ struct MappingTraits<ofp::IT_WRITE_METADATA> {
     }
 };
 
+#if 0
 template <>
 struct MappingTraits<ofp::IT_WRITE_ACTIONS> {
     static void mapping(IO &io, ofp::IT_WRITE_ACTIONS &instr)
@@ -68,12 +70,14 @@ struct MappingTraits<ofp::IT_APPLY_ACTIONS> {
     }
 };
 
+
 template <>
 struct MappingTraits<ofp::IT_CLEAR_ACTIONS> {
     static void mapping(IO &io, ofp::IT_CLEAR_ACTIONS &instr)
     {
     }
 };
+#endif //0
 
 template <>
 struct MappingTraits<ofp::IT_METER*> {
@@ -130,20 +134,19 @@ struct MappingTraits<ofp::InstructionIterator::Item> {
                 break;
             }
             case IT_WRITE_ACTIONS::type(): {
-                ActionList actions;
-                //FIXME io.mapRequired("value", actions);
+                IT_WRITE_ACTIONS *instr = RemoveConst_cast(item.instruction<IT_WRITE_ACTIONS>());
+                ActionRange actions{instr->dataRange()};
+                io.mapRequired("value", actions);
                 break;
             }
             case IT_APPLY_ACTIONS::type(): {
-                ActionList actions;
-                //FIXME io.mapRequired("value", actions);
+                IT_APPLY_ACTIONS *instr = RemoveConst_cast(item.instruction<IT_APPLY_ACTIONS>());
+                ActionRange actions{instr->dataRange()};
+                io.mapRequired("value", actions);
                 break;
             }
             case IT_CLEAR_ACTIONS::type(): {
                 // No value.
-                //io.mapOptional("value", EmptyStruct);
-                //IT_CLEAR_ACTIONS *instr = RemoveConst_cast(item.instruction<IT_CLEAR_ACTIONS>());
-                //io.mapRequired("value", instr);
                 break;
             }
             case IT_METER::type(): {
@@ -161,9 +164,9 @@ struct MappingTraits<ofp::InstructionIterator::Item> {
 };
 
 template <>
-struct MappingTraits<ofp::detail::InstructionBuilder> {
+struct MappingTraits<ofp::detail::InstructionInserter> {
 
-    static void mapping(IO &io, ofp::detail::InstructionBuilder &builder)
+    static void mapping(IO &io, ofp::detail::InstructionInserter &builder)
     {
     	using namespace ofp;
 
@@ -187,19 +190,19 @@ struct MappingTraits<ofp::detail::InstructionBuilder> {
     		}
     		case IT_WRITE_ACTIONS::type(): {
     			ActionList actions;
-    			//FIXME io.mapRequired("value", actions);
+    			io.mapRequired("value", actions);
     			list.add(IT_WRITE_ACTIONS{&actions});
     			break;
     		}
     		case IT_APPLY_ACTIONS::type(): {
     			ActionList actions;
-    			//FIXME io.mapRequired("value", actions);
+    			io.mapRequired("value", actions);
     			list.add(IT_APPLY_ACTIONS{&actions});
     			break;
     		}
     		case IT_CLEAR_ACTIONS::type(): {
     			IT_CLEAR_ACTIONS instr;
-    			io.mapRequired("value", instr);
+    			//io.mapRequired("value", instr);
     			list.add(instr);
     			break;
     		}
@@ -248,10 +251,10 @@ struct SequenceTraits<ofp::InstructionList> {
         return 0;
     }
 
-    static ofp::detail::InstructionBuilder &element(IO &io, ofp::InstructionList &list,
+    static ofp::detail::InstructionInserter &element(IO &io, ofp::InstructionList &list,
                                      size_t index)
     {
-        return reinterpret_cast<ofp::detail::InstructionBuilder &>(list);
+        return reinterpret_cast<ofp::detail::InstructionInserter &>(list);
     }
 };
 

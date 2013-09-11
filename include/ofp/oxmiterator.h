@@ -97,6 +97,7 @@ private:
 		
 	friend class OXMRange;
 	friend class OXMList;
+	friend class ActionIterator;
 };
 
 

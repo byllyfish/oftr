@@ -22,6 +22,8 @@ public:
 	ActionRange() = default;
 	ActionRange(const ByteRange &range) : range_{range} {}
 
+	size_t itemCount() const { return ActionIterator::distance(begin(), end()); }
+	
 	ActionIterator begin() const { return ActionIterator{data()}; }
 	ActionIterator end() const { return ActionIterator{data() + size()}; }
 

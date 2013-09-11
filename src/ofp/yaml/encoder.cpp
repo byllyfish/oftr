@@ -19,6 +19,9 @@ Encoder::Encoder(const std::string &input) : errorStream_{error_}
     if (!yin.error()) {
         yin >> *this;
     }
+    if (yin.error()) {
+        channel_.clear();
+    }
 }
 
 void Encoder::diagnosticHandler(const llvm::SMDiagnostic &diag, void *context)

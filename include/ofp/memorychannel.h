@@ -55,6 +55,11 @@ public:
         nextXid_ = xid;
     }
 
+    void clear() 
+    {
+        buf_.clear();
+    }
+
 #if 0
     template <class MesgBuilderType>
     static ByteList serialize(MesgBuilderType &msg, UInt8 version)

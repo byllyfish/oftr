@@ -166,14 +166,14 @@ enum ofp_port_no {
                      used in packet-out messages. */
     OFPP_NORMAL = 0xfffffffa, /* Process with normal L2/L3 switching. */
     OFPP_FLOOD = 0xfffffffb,  /* All physical ports in VLAN, except input
-                    port and those blocked or link down. */
+                   port and those blocked or link down. */
     OFPP_ALL = 0xfffffffc,        /* All physical ports except input port. */
     OFPP_CONTROLLER = 0xfffffffd, /* Send to controller. */
     OFPP_LOCAL = 0xfffffffe,      /* Local openflow "port". */
     OFPP_ANY = 0xffffffff         /* Wildcard port used only for flow mod
-                     (delete) and flow stats requests. Selects
-                   all flows regardless of output port
-               (including flows with no output port). */
+             (delete) and flow stats requests. Selects
+           all flows regardless of output port
+       (including flows with no output port). */
 };
 
 /* Features of ports available in a datapath. */
@@ -637,7 +637,7 @@ enum ofp_meter_mod_failed_code {
     OFPMMFC_BAD_BAND_VALUE = 9, /* Band value unsupported. */
     OFPMMFC_OUT_OF_METERS = 10, /* No more meters available. */
     OFPMMFC_OUT_OF_BANDS = 11,  /* The maximum number of properties
-                            for a meter has been exceeded. */
+                           for a meter has been exceeded. */
 };
 
 /* ofp_error_msg 'code' values for OFPET_TABLE_FEATURES_FAILED. 'data' contains
@@ -750,6 +750,26 @@ enum OFPInstructionType : UInt16 {
     OFPIT_CLEAR_ACTIONS = 5,
     OFPIT_METER = 6,
     OFPIT_EXPERIMENTER = 0xFFFF
+};
+
+enum OFPActionType : UInt16 {
+    OFPAT_OUTPUT = 0,
+    OFPAT_COPY_TTL_OUT = 11,
+    OFPAT_COPY_TTL_IN = 12,
+    OFPAT_SET_MPLS_TTL = 15,
+    OFPAT_DEC_MPLS_TTL = 16,
+    OFPAT_PUSH_VLAN = 17,
+    OFPAT_POP_VLAN = 18,
+    OFPAT_PUSH_MPLS = 19,
+    OFPAT_POP_MPLS = 20,
+    OFPAT_SET_QUEUE = 21,
+    OFPAT_GROUP = 22,
+    OFPAT_SET_NW_TTL = 23,
+    OFPAT_DEC_NW_TTL = 24,
+    OFPAT_SET_FIELD = 25, // 32 possible lengths: 8, 16, 24, 32, 40, ..., 256
+    OFPAT_PUSH_PBB = 26,
+    OFPAT_POP_PBB = 27,
+    OFPAT_EXPERIMENTER = 0xFFFF // possible lengths: 8, 16, 24, 32, 40, ...
 };
 
 } // </namespace ofp>

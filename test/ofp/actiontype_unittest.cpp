@@ -7,10 +7,10 @@ using namespace ofp;
 
 TEST(actiontype, AT_OUTPUT)
 {
-	ActionType type{ActionType::AT_OUTPUT, 8};
+	ActionType type{OFPAT_OUTPUT, 8};
 
 	EXPECT_EQ(4, sizeof(type));
-	EXPECT_EQ(ActionType::AT_OUTPUT, type.type());
+	EXPECT_EQ(OFPAT_OUTPUT, type.type());
 	EXPECT_EQ(8, type.length());
 	EXPECT_EQ(0x08, type.nativeType());
 
@@ -21,10 +21,10 @@ TEST(actiontype, AT_OUTPUT)
 
 TEST(actiontype, AT_EXPERIMENTER)
 {
-	ActionType type{ActionType::AT_EXPERIMENTER, 64};
+	ActionType type{OFPAT_EXPERIMENTER, 64};
 
 	EXPECT_EQ(4, sizeof(type));
-	EXPECT_EQ(ActionType::AT_EXPERIMENTER, type.type());
+	EXPECT_EQ(OFPAT_EXPERIMENTER, type.type());
 	EXPECT_EQ(64, type.length());
 	EXPECT_EQ(0xFFFF0040, type.nativeType());
 	
@@ -34,10 +34,10 @@ TEST(actiontype, AT_EXPERIMENTER)
 
 TEST(actiontype, AT_EXPERIMENTER_2)
 {
-	ActionType type{ActionType::AT_EXPERIMENTER, 65530};
+	ActionType type{OFPAT_EXPERIMENTER, 65530};
 
 	EXPECT_EQ(4, sizeof(type));
-	EXPECT_EQ(ActionType::AT_EXPERIMENTER, type.type());
+	EXPECT_EQ(OFPAT_EXPERIMENTER, type.type());
 	EXPECT_EQ(65530, type.length());
 	EXPECT_EQ(0xFFFFFFFA, type.nativeType());
 	

@@ -90,14 +90,17 @@ public:
 	const UInt8 *data() const { return actions_->data(); }
 	size_t size() const { return actions_->size(); }
 
+	ByteRange dataRange() const { return ByteRange{BytePtr(this) + SizeWithoutActions, length_ - SizeWithoutActions}; }
+
 private:
 	InstructionType type_ = type();
 	Big16 length_;
 	Padding<4> pad_;
 	ActionList *actions_;  // FIXME - use ActionRange?
 
-	friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>>;
-	friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>*>;
+	enum { SizeWithoutActions = 8 };
+	//friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>>;
+	//friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>*>;
 };
 
 } // </namespace detail>

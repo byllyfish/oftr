@@ -98,8 +98,7 @@ msg:
     EXPECT_EQ("YAML:8:9: error: Invalid hexadecimal text.\n  data: 'Not Hex'\n "
               "       ^~~~~~~~~\n",
               encoder.error());
-    EXPECT_EQ(0x0C, encoder.size());
-    EXPECT_HEX("0101000C0000006200010001", encoder.data(), encoder.size());
+    EXPECT_EQ(0x00, encoder.size());
 }
 
 TEST(encoder, echorequest)
@@ -428,4 +427,43 @@ TEST(encoder, multipartreply2)
 
     testEncoderSuccess(input, 0x0A4,
                        "041300A4112233440001000000000000003C0100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A00010008800000041234567800581100000000220000003300440055006600770000000000000000000000889999999999999999AAAAAAAAAAAAAAAA0001001C80000004123456788000080610203040506080000606AABBCCDDEEFF0001000801000000");
+}
+
+
+TEST(encoder, multipartreply3)
+{
+    const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 4
+   xid: 0x11223344
+   msg:
+     type: OFPMP_FLOW
+     flags: 0
+     body:
+        - table_id: 1
+          duration_sec: 2
+          duration_nsec: 3
+          priority: 4
+          idle_timeout: 5
+          hard_timeout: 6
+          flags: 7
+          cookie: 8
+          packet_count: 9
+          byte_count: 10
+          match:
+          instructions:
+            - type: OFPIT_APPLY_ACTIONS
+              value:
+                 - action: OFPAT_OUTPUT
+                   port: 1
+                   maxlen: 0xFFFF
+                 - action: OFPAT_SET_NW_TTL
+                   ttl: 64
+   )""";
+
+    const char *hex = "0413006411223344000100000000000000540100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A0001000000040020000000000000001000000001FFFF0000000000000017000840000000";
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x64, encoder.size());
+    EXPECT_HEX(hex, encoder.data(), encoder.size());
 }

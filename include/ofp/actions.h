@@ -21,7 +21,7 @@ namespace ofp { // <namespace ofp>
 
 namespace detail { // <namespace detail>
 
-template <UInt32 ActType>
+template <OFPActionType ActType>
 class EmptyAction {
 public:
 	constexpr static ActionType type() { return ActionType(ActType, 8); }
@@ -40,13 +40,13 @@ private:
  \brief Concrete types for various empty actions.
  *-------------------------------------------------------------------------*///*
 
-using AT_COPY_TTL_OUT = detail::EmptyAction<ActionType::AT_COPY_TTL_OUT>;
-using AT_COPY_TTL_IN = detail::EmptyAction<ActionType::AT_COPY_TTL_IN>;
-using AT_DEC_MPLS_TTL = detail::EmptyAction<ActionType::AT_DEC_MPLS_TTL>;
-using AT_POP_VLAN = detail::EmptyAction<ActionType::AT_POP_VLAN>;
-using AT_POP_MPLS = detail::EmptyAction<ActionType::AT_POP_MPLS>;
-using AT_DEC_NW_TTL = detail::EmptyAction<ActionType::AT_DEC_NW_TTL>;
-using AT_POP_PBB = detail::EmptyAction<ActionType::AT_POP_PBB>;
+using AT_COPY_TTL_OUT = detail::EmptyAction<OFPAT_COPY_TTL_OUT>;
+using AT_COPY_TTL_IN = detail::EmptyAction<OFPAT_COPY_TTL_IN>;
+using AT_DEC_MPLS_TTL = detail::EmptyAction<OFPAT_DEC_MPLS_TTL>;
+using AT_POP_VLAN = detail::EmptyAction<OFPAT_POP_VLAN>;
+using AT_POP_MPLS = detail::EmptyAction<OFPAT_POP_MPLS>;
+using AT_DEC_NW_TTL = detail::EmptyAction<OFPAT_DEC_NW_TTL>;
+using AT_POP_PBB = detail::EmptyAction<OFPAT_POP_PBB>;
 
 static_assert(sizeof(AT_COPY_TTL_OUT) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_COPY_TTL_OUT>(), "Unexpected layout.");
@@ -58,7 +58,7 @@ static_assert(IsStandardLayout<AT_COPY_TTL_OUT>(), "Unexpected layout.");
 class AT_OUTPUT {
 public:
 
-	constexpr static ActionType type() { return ActionType(ActionType::AT_OUTPUT, 16); }
+	constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 16); }
 
 	constexpr AT_OUTPUT(UInt32 port, UInt16 maxlen = 0)
 		: port_{port}, maxlen_{maxlen} {}
@@ -81,7 +81,7 @@ namespace deprecated { // <namespace deprecated>
 
 class AT_OUTPUT_V1 {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_OUTPUT, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 8); }
 
 	constexpr AT_OUTPUT_V1(const AT_OUTPUT *output) : port_{UInt16_narrow_cast(output->port())}, maxlen_{output->maxlen()} {}
 		
@@ -105,7 +105,7 @@ static_assert(IsStandardLayout<AT_OUTPUT_V1>(), "Unexpected layout");
 
 class AT_SET_MPLS_TTL {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_SET_MPLS_TTL, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_SET_MPLS_TTL, 8); }
 
 	constexpr explicit AT_SET_MPLS_TTL(UInt16 ttl)
 		: ttl_{ttl} {}
@@ -127,7 +127,7 @@ static_assert(IsStandardLayout<AT_SET_MPLS_TTL>(), "Unexpected layout");
 
 class AT_PUSH_VLAN {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_PUSH_VLAN, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_PUSH_VLAN, 8); }
 
 	constexpr explicit AT_PUSH_VLAN(UInt16 vlan)
 		: vlan_{vlan} {}
@@ -149,7 +149,7 @@ static_assert(IsStandardLayout<AT_PUSH_VLAN>(), "Unexpected layout");
 
 class AT_PUSH_MPLS {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_PUSH_MPLS, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_PUSH_MPLS, 8); }
 
 	constexpr explicit AT_PUSH_MPLS(UInt32 mpls)
 		: mpls_{mpls} {}
@@ -170,7 +170,7 @@ static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
 
 class AT_SET_QUEUE {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_SET_QUEUE, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_SET_QUEUE, 8); }
 
 	constexpr explicit AT_SET_QUEUE(UInt8 queue)
 		: queue_{queue} {}
@@ -192,7 +192,7 @@ static_assert(IsStandardLayout<AT_SET_QUEUE>(), "Unexpected layout");
 
 class AT_GROUP {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_GROUP, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_GROUP, 8); }
 
 	constexpr explicit AT_GROUP(UInt8 group)
 		: group_{group} {}
@@ -214,7 +214,7 @@ static_assert(IsStandardLayout<AT_GROUP>(), "Unexpected layout");
 
 class AT_SET_NW_TTL {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_SET_NW_TTL, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_SET_NW_TTL, 8); }
 
 	constexpr explicit AT_SET_NW_TTL(UInt8 ttl)
 		: ttl_{ttl} {}
@@ -236,7 +236,7 @@ static_assert(IsStandardLayout<AT_SET_NW_TTL>(), "Unexpected layout");
 
 class AT_PUSH_PBB {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_PUSH_PBB, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_PUSH_PBB, 8); }
 
 	constexpr explicit AT_PUSH_PBB(UInt16 ethertype)
 		: ethertype_{ethertype} {}
@@ -258,7 +258,7 @@ static_assert(IsStandardLayout<AT_PUSH_PBB>(), "Unexpected layout");
 
 class AT_EXPERIMENTER {
 public:
-	constexpr static ActionType type() { return ActionType(ActionType::AT_EXPERIMENTER, 8); }
+	constexpr static ActionType type() { return ActionType(OFPAT_EXPERIMENTER, 8); }
 
 	constexpr explicit AT_EXPERIMENTER(UInt32 experimenterid)
 		: experimenterid_{experimenterid} {}
@@ -278,7 +278,7 @@ template <class ValueType>
 class AT_SET_FIELD {
 public:
 
-	constexpr static ActionType type() { return ActionType(ActionType::AT_SET_FIELD, 8 + sizeof(Padded<ValueType>)); }
+	constexpr static ActionType type() { return ActionType(OFPAT_SET_FIELD, 8 + sizeof(Padded<ValueType>)); }
 	
 	constexpr AT_SET_FIELD(const ValueType &value) 
 		: value_{value} {}
