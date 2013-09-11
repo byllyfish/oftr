@@ -767,10 +767,92 @@ enum OFPActionType : UInt16 {
     OFPAT_SET_NW_TTL = 23,
     OFPAT_DEC_NW_TTL = 24,
     OFPAT_SET_FIELD = 25, // 32 possible lengths: 8, 16, 24, 32, 40, ..., 256
-    OFPAT_PUSH_PBB = 26,
-    OFPAT_POP_PBB = 27,
+    OFPAT_PUSH_PBB = 26,   // New in v4
+    OFPAT_POP_PBB = 27,     // New in v4
     OFPAT_EXPERIMENTER = 0xFFFF // possible lengths: 8, 16, 24, 32, 40, ...
 };
+
+
+namespace deprecated { // <namespace deprecated>
+
+enum class ATv1 : UInt16 {
+    OFPAT_OUTPUT = 0
+    OFPAT_SET_VLAN_VID = 1,
+    OFPAT_SET_VLAN_PCP = 2,
+    OFPAT_STRIP_VLAN = 3,
+    OFPAT_SET_DL_SRC = 4,
+    OFPAT_SET_DL_DST = 5,
+    OFPAT_SET_NW_SRC = 6,
+    OFPAT_SET_NW_DST = 7,
+    OFPAT_SET_NW_TOS = 8,
+    OFPAT_SET_TP_SRC = 9,
+    OFPAT_SET_TP_DST = 10,
+    OFPAT_ENQUEUE = 11
+};
+
+enum class ATv2 : UInt16 {
+    OFPAT_OUTPUT = 0
+    OFPAT_SET_VLAN_VID = 1,
+    OFPAT_SET_VLAN_PCP = 2,
+    OFPAT_SET_DL_SRC = 3,    // different from v1
+    OFPAT_SET_DL_DST = 4,
+    OFPAT_SET_NW_SRC = 5,
+    OFPAT_SET_NW_DST = 6,
+    OFPAT_SET_NW_TOS = 7,
+    OFPAT_SET_NW_ECN = 8,    // new in v2
+    OFPAT_SET_TP_SRC = 9,
+    OFPAT_SET_TP_DST = 10,
+    OFPAT_COPY_TTL_OUT = 11,  // changed in v2
+    OFPAT_COPY_TTL_IN = 12,     // new in v2 from here on...
+    OFPAT_SET_MPLS_LABEL = 13,  
+    OFPAT_SET_MPLS_TC = 14,
+    OFPAT_SET_MPLS_TTL = 15,
+    OFPAT_DEC_MPLS_TTL = 16,
+    OFPAT_PUSH_VLAN = 17,
+    OFPAT_POP_VLAN = 18,
+    OFPAT_PUSH_MPLS = 19,
+    OFPAT_POP_MPLS = 20,
+    OFPAT_SET_QUEUE = 21,
+    OFPAT_GROUP = 22,
+    OFPAT_SET_NW_TTL = 23,
+    OFPAT_DEC_NW_TTL = 24,
+
+    OFPAT_EXPERIMENTER = 0xFFFF
+};
+
+
+enum class ATv3 : UInt16 {
+    OFPAT_OUTPUT = 0
+    // -OFPAT_SET_VLAN_VID = 1,
+    // -OFPAT_SET_VLAN_PCP = 2,
+    // -OFPAT_SET_DL_SRC = 3,
+    // -OFPAT_SET_DL_DST = 4,
+    // -OFPAT_SET_NW_SRC = 5,
+    // -OFPAT_SET_NW_DST = 6,
+    // -OFPAT_SET_NW_TOS = 7,
+    // -OFPAT_SET_NW_ECN = 8,
+    // -OFPAT_SET_TP_SRC = 9,
+    // -OFPAT_SET_TP_DST = 10,
+    OFPAT_COPY_TTL_OUT = 11,
+    OFPAT_COPY_TTL_IN = 12,
+    // -OFPAT_SET_MPLS_LABEL = 13,  
+    // -OFPAT_SET_MPLS_TC = 14,
+    OFPAT_SET_MPLS_TTL = 15,
+    OFPAT_DEC_MPLS_TTL = 16,
+    OFPAT_PUSH_VLAN = 17,
+    OFPAT_POP_VLAN = 18,
+    OFPAT_PUSH_MPLS = 19,
+    OFPAT_POP_MPLS = 20,
+    OFPAT_SET_QUEUE = 21,
+    OFPAT_GROUP = 22,
+    OFPAT_SET_NW_TTL = 23,
+    OFPAT_DEC_NW_TTL = 24,
+    OFPAT_SET_FIELD = 25,
+
+    OFPAT_EXPERIMENTER = 0xFFFF
+};
+
+} // </namespace deprecated>
 
 } // </namespace ofp>
 
