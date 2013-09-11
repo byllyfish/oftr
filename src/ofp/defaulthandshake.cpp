@@ -122,7 +122,7 @@ void DefaultHandshake::onFeaturesRequest(const Message *message)
 	if (!request)
 		return;  // FIXME log
 
-	FeaturesReplyBuilder reply{message};
+	FeaturesReplyBuilder reply{message->xid()};
 	reply.setFeatures(channel_->features());
 	reply.send(channel_);
 

@@ -29,14 +29,22 @@ public:
     FeaturesReply() : header_{type()} {}
 
     void getFeatures(Features *features) const;
+
+    const DatapathID &datapathId() const { return datapathId_; }
+    UInt32 bufferCount() const { return bufferCount_; }
+    UInt8 tableCount() const { return tableCount_; }
+    UInt8 auxiliaryId() const { return auxiliaryId_; }
+    UInt32 capabilities() const { return capabilities_; }
+    UInt32 reserved() const { return reserved_; }
+
     //PortRange ports() const;
 
 private:
     Header header_;
-    DatapathID datapathID_;
+    DatapathID datapathId_;
     Big32 bufferCount_;
     Big8 tableCount_;
-    Big8 auxiliaryID_;
+    Big8 auxiliaryId_;
     Padding<2> pad_;
     Big32 capabilities_;
     Big32 reserved_;
@@ -55,9 +63,16 @@ static_assert(IsStandardLayout<FeaturesReply>(), "Expected standard layout.");
  */
 class FeaturesReplyBuilder {
 public:
-    explicit FeaturesReplyBuilder(const Message *request);
+    explicit FeaturesReplyBuilder(UInt32 xid);
 
     void setFeatures(const Features &features);
+    
+    void setDatapathId(const DatapathID &datapathId) { msg_.datapathId_ = datapathId; }
+    void setBufferCount(UInt32 bufferCount) { msg_.bufferCount_ = bufferCount; }
+    void setTableCount(UInt8 tableCount) { msg_.tableCount_ = tableCount; }
+    void setAuxiliaryId(UInt8 auxiliaryId) { msg_.auxiliaryId_ = auxiliaryId; }
+    void setCapabilities(UInt32 capabilities) { msg_.capabilities_ = capabilities; }
+    void setReserved(UInt32 reserved) { msg_.reserved_ = reserved; }
     
     UInt32 send(Writable *channel);
 

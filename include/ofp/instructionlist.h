@@ -59,7 +59,7 @@ private:
 template <class Type>
 inline void InstructionList::add(const Type &instruction)
 {
-    // FIXME - defend against calling this with non-instructions!
+    static_assert(Type::type().type() != 0, "Type is not an instruction?");
     add(&instruction, sizeof(instruction));
 }
 
@@ -77,12 +77,13 @@ inline void InstructionList::add(const IT_APPLY_ACTIONS &instruction)
     add(instruction.data(), instruction.size());
 }
 
-
+#if 0
 template <>
 inline void InstructionList::add(const ActionList &actions)
 {
     add(IT_APPLY_ACTIONS{&actions});
 }
+#endif
 
 } // </namespace ofp>
 

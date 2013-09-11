@@ -123,7 +123,7 @@ const ofp::detail::HelloElement *ofp::Hello::helloElements() const
 ofp::UInt32 ofp::HelloBuilder::send(Writable *channel)
 {   
     // HelloRequest is the only message type that doesn't use the channel's
-    // version number. If the highest version number is 1, don't send any 
+    // version number. If the highest version number is 4, don't send any 
     // HelloElements; POX doesn't support the extended part of the Hello
     // request.
 
@@ -131,7 +131,7 @@ ofp::UInt32 ofp::HelloBuilder::send(Writable *channel)
 
     Header &hdr = msg_.header_;
 	size_t msgLen = sizeof(msg_);
-    if (hdr.version() > OFP_VERSION_1) {
+    if (hdr.version() >= OFP_VERSION_4) {
         // Include our hello element.
 	    msgLen += sizeof(elem_) + sizeof(bitmap_);
 	}

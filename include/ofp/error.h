@@ -12,17 +12,18 @@
 #define OFP_ERROR_H
 
 #include "ofp/header.h"
-#include "ofp/writable.h"
-#include "ofp/message.h"
+#include "ofp/padding.h"
+#include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
 
 class Message;
+class Writable;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E r r o r
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-/// \brief Implements immutable Error protocol message.
+/// \brief Implements Error protocol message.
 
 class Error {
 public:
@@ -31,10 +32,7 @@ public:
         return OFPT_ERROR;
     }
 
-    static const Error *cast(const Message *message)
-    {
-        return message->cast<Error>();
-    }
+    static const Error *cast(const Message *message);
 
     Error() : header_{type()}
     {
@@ -55,6 +53,7 @@ private:
 };
 
 static_assert(sizeof(Error) == 12, "Unexpected size.");
+static_assert(IsStandardLayout<Error>(), "Expected standard layout.");
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E r r o r B u i l d e r
@@ -86,6 +85,8 @@ public:
 
 private:
     Error msg_;
+
+    Padding<4> padNotPartOfPkt_;
     ByteList data_;
 };
 

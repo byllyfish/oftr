@@ -146,7 +146,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Conne
 		auto connPtr = std::make_shared<TCP_Connection>(this, Driver::Auxiliary, versions, listenerFactory);
 		
 		Features features = mainConnection->features();
-		features.setAuxiliaryID(auxID);
+		features.setAuxiliaryId(auxID);
 		connPtr->setFeatures(features);
 		connPtr->setMainConnection(mainConnection);
 
@@ -162,8 +162,8 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Conne
 
 void Engine::postDatapathID(Connection *channel)
 {
-	DatapathID dpid = channel->datapathID();
-	UInt8 auxID = channel->auxiliaryID();
+	DatapathID dpid = channel->datapathId();
+	UInt8 auxID = channel->auxiliaryId();
 
 	if (auxID == 0) {
 		// Insert main connection's datapathID into the dpidMap, if not present
@@ -202,8 +202,8 @@ void Engine::postDatapathID(Connection *channel)
 
 void Engine::releaseDatapathID(Connection *channel)
 {
-	DatapathID dpid = channel->datapathID();
-	UInt8 auxID = channel->auxiliaryID();
+	DatapathID dpid = channel->datapathId();
+	UInt8 auxID = channel->auxiliaryId();
 
 	if (auxID == 0) {
 		// When releasing the datapathID for a main connection, we need to

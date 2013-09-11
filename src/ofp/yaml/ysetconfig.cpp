@@ -27,7 +27,7 @@ std::string write(const SetConfig *msg)
     llvm::raw_string_ostream rss{result};
     llvm::yaml::Output yout{rss};
 
-    yout << ofp::detail::YamlRemoveConst_cast(*msg);
+    yout << RemoveConst_cast(*msg);
     return rss.str();
 }
 

@@ -39,6 +39,8 @@ public:
     EnetAddress macAddress() const;
     std::string toString() const;
 
+    bool parse(const std::string &s);
+    
     bool operator<(const DatapathID &rhs) const {
         return dpid_ < rhs.dpid_;
     }

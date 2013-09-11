@@ -77,7 +77,7 @@ enum {
 // SET_ASYNC                    -      -      -     28
 // METER_MOD                    -      -      -     29
 
-enum OFPType : UInt8{
+enum OFPType : UInt8 {
     OFPT_HELLO = 0,        // Symmetric message
     OFPT_ERROR = 1,        // Symmetric message
     OFPT_ECHO_REQUEST = 2, // Symmetric message
@@ -128,7 +128,8 @@ enum OFPType : UInt8{
     OFPT_METER_MOD = 29, // Controller -> switch message
     OFPT_LAST = OFPT_METER_MOD,
     /// Used internally to flag denote an improper version/type combination.
-    OFPT_UNSUPPORTED = 0xF9};
+    OFPT_UNSUPPORTED = 0xF9
+};
 
 /* Flags to indicate behavior of the physical port.  These flags are
  * used in ofp_port to describe the current configuration.  They are
@@ -165,14 +166,14 @@ enum ofp_port_no {
                      used in packet-out messages. */
     OFPP_NORMAL = 0xfffffffa, /* Process with normal L2/L3 switching. */
     OFPP_FLOOD = 0xfffffffb,  /* All physical ports in VLAN, except input
-                     port and those blocked or link down. */
+                    port and those blocked or link down. */
     OFPP_ALL = 0xfffffffc,        /* All physical ports except input port. */
     OFPP_CONTROLLER = 0xfffffffd, /* Send to controller. */
     OFPP_LOCAL = 0xfffffffe,      /* Local openflow "port". */
     OFPP_ANY = 0xffffffff         /* Wildcard port used only for flow mod
-                             (delete) and flow stats requests. Selects
-                           all flows regardless of output port
-                       (including flows with no output port). */
+                     (delete) and flow stats requests. Selects
+                   all flows regardless of output port
+               (including flows with no output port). */
 };
 
 /* Features of ports available in a datapath. */
@@ -196,13 +197,12 @@ enum ofp_port_features {
     OFPPF_PAUSE_ASYM = 1 << 15 /* Asymmetric pause. */
 };
 
-
 enum ofp_controller_max_len {
-OFPCML_MAX       = 0xffe5, /* maximum max_len value which can be used
-                              to request a specific byte length. */
-OFPCML_NO_BUFFER = 0xffff  /* indicates that no buffering should be
-                              applied and the whole packet is to be
-                              sent to the controller. */
+    OFPCML_MAX = 0xffe5, /* maximum max_len value which can be used
+                            to request a specific byte length. */
+    OFPCML_NO_BUFFER = 0xffff /* indicates that no buffering should be
+                                 applied and the whole packet is to be
+                                 sent to the controller. */
 };
 
 namespace deprecated { // <namespace deprecated>
@@ -220,38 +220,45 @@ namespace deprecated { // <namespace deprecated>
 //       STATS_REQUEST/REPLY, BARRIER_REQUEST/REPLY, and
 //       QUEUE_GET_CONFIG_REQUEST/REPLY are all different.
 //
-enum class v1
-    : UInt8{OFPT_HELLO = 0,        // Symmetric message
-            OFPT_ERROR = 1,        // Symmetric message
-            OFPT_ECHO_REQUEST = 2, // Symmetric message
-            OFPT_ECHO_REPLY = 3,   // Symmetric message
-            OFPT_VENDOR = 4,       // Symmetric message (OFPT_EXPERIMENTER)
+enum class v1 : UInt8 {
+    OFPT_HELLO = 0,        // Symmetric message
+    OFPT_ERROR = 1,        // Symmetric message
+    OFPT_ECHO_REQUEST = 2, // Symmetric message
+    OFPT_ECHO_REPLY = 3,   // Symmetric message
+    OFPT_VENDOR = 4,       // Symmetric message (OFPT_EXPERIMENTER)
 
-            /* Switch configuration messages. */
-            OFPT_FEATURES_REQUEST = 5,   /* Controller/switch message */
-            OFPT_FEATURES_REPLY = 6,     /* Controller/switch message */
-            OFPT_GET_CONFIG_REQUEST = 7, /* Controller/switch message */
-            OFPT_GET_CONFIG_REPLY = 8,   /* Controller/switch message */
-            OFPT_SET_CONFIG = 9,         /* Controller/switch message */
-            /* Asynchronous messages. */
-            OFPT_PACKET_IN = 10,                    OFPT_FLOW_REMOVED = 11,
-            OFPT_PORT_STATUS = 12,
-            /* Controller command messages. */
-            OFPT_PACKET_OUT = 13,                   OFPT_FLOW_MOD = 14,
-            OFPT_PORT_MOD = 15,
-            /* Statistics messages. */
-            OFPT_STATS_REQUEST = 16,                OFPT_STATS_REPLY = 17,
-            /* Barrier messages. */
-            OFPT_BARRIER_REQUEST = 18,              OFPT_BARRIER_REPLY = 19,
-            /* Queue Configuration messages. */
-            OFPT_QUEUE_GET_CONFIG_REQUEST = 20, /* Controller/switch message */
-            OFPT_QUEUE_GET_CONFIG_REPLY = 21,   /* Controller/switch message */
-            OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY};
+    /* Switch configuration messages. */
+    OFPT_FEATURES_REQUEST = 5,   /* Controller/switch message */
+    OFPT_FEATURES_REPLY = 6,     /* Controller/switch message */
+    OFPT_GET_CONFIG_REQUEST = 7, /* Controller/switch message */
+    OFPT_GET_CONFIG_REPLY = 8,   /* Controller/switch message */
+    OFPT_SET_CONFIG = 9,         /* Controller/switch message */
+    /* Asynchronous messages. */
+    OFPT_PACKET_IN = 10,
+    OFPT_FLOW_REMOVED = 11,
+    OFPT_PORT_STATUS = 12,
+    /* Controller command messages. */
+    OFPT_PACKET_OUT = 13,
+    OFPT_FLOW_MOD = 14,
+    OFPT_PORT_MOD = 15,
+    /* Statistics messages. */
+    OFPT_STATS_REQUEST = 16,
+    OFPT_STATS_REPLY = 17,
+    /* Barrier messages. */
+    OFPT_BARRIER_REQUEST = 18,
+    OFPT_BARRIER_REPLY = 19,
+    /* Queue Configuration messages. */
+    OFPT_QUEUE_GET_CONFIG_REQUEST = 20, /* Controller/switch message */
+    OFPT_QUEUE_GET_CONFIG_REPLY = 21,   /* Controller/switch message */
+    OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
+};
 
-enum class v2 : UInt8{
+enum class v2 : UInt8 {
     /* Immutable messages. */
-    OFPT_HELLO = 0,                         OFPT_ERROR = 1,
-    OFPT_ECHO_REQUEST = 2,                  OFPT_ECHO_REPLY = 3,
+    OFPT_HELLO = 0,
+    OFPT_ERROR = 1,
+    OFPT_ECHO_REQUEST = 2,
+    OFPT_ECHO_REPLY = 3,
     OFPT_EXPERIMENTER = 4,
     /* Symmetric message */
     /* Symmetric message */
@@ -266,14 +273,17 @@ enum class v2 : UInt8{
     OFPT_SET_CONFIG = 9,         /* Controller/switch message */
 
     /* Asynchronous messages. */
-    OFPT_PACKET_IN = 10,                    OFPT_FLOW_REMOVED = 11,
+    OFPT_PACKET_IN = 10,
+    OFPT_FLOW_REMOVED = 11,
     OFPT_PORT_STATUS = 12,
     /* Async message */
     /* Async message */
     /* Async message */
     /* Controller command messages. */
-    OFPT_PACKET_OUT = 13,                   OFPT_FLOW_MOD = 14,
-    OFPT_GROUP_MOD = 15,                    OFPT_PORT_MOD = 16,
+    OFPT_PACKET_OUT = 13,
+    OFPT_FLOW_MOD = 14,
+    OFPT_GROUP_MOD = 15,
+    OFPT_PORT_MOD = 16,
     OFPT_TABLE_MOD = 17,
     /* Controller/switch message */
     /* Controller/switch message */
@@ -281,9 +291,11 @@ enum class v2 : UInt8{
     /* Controller/switch message */
     /* Controller/switch message */
     /* Statistics messages. */
-    OFPT_STATS_REQUEST = 18,                OFPT_STATS_REPLY = 19,
+    OFPT_STATS_REQUEST = 18,
+    OFPT_STATS_REPLY = 19,
     /* Barrier messages. */
-    OFPT_BARRIER_REQUEST = 20,              OFPT_BARRIER_REPLY = 21,
+    OFPT_BARRIER_REQUEST = 20,
+    OFPT_BARRIER_REPLY = 21,
     /* Controller/switch message */
     /* Controller/switch message */
     /* Controller/switch message */
@@ -291,12 +303,15 @@ enum class v2 : UInt8{
     /* Queue Configuration messages. */
     OFPT_QUEUE_GET_CONFIG_REQUEST = 22, /* Controller/switch message */
     OFPT_QUEUE_GET_CONFIG_REPLY = 23,   /* Controller/switch message */
-    OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY};
+    OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
+};
 
-enum class v3 : UInt8{
+enum class v3 : UInt8 {
     /* Immutable messages. */
-    OFPT_HELLO = 0,                     OFPT_ERROR = 1,
-    OFPT_ECHO_REQUEST = 2,              OFPT_ECHO_REPLY = 3,
+    OFPT_HELLO = 0,
+    OFPT_ERROR = 1,
+    OFPT_ECHO_REQUEST = 2,
+    OFPT_ECHO_REPLY = 3,
     OFPT_EXPERIMENTER = 4,
     /* Symmetric message */
     /* Symmetric message */
@@ -311,14 +326,17 @@ enum class v3 : UInt8{
     OFPT_SET_CONFIG = 9,         /* Controller/switch message */
 
     /* Asynchronous messages. */
-    OFPT_PACKET_IN = 10,                OFPT_FLOW_REMOVED = 11,
+    OFPT_PACKET_IN = 10,
+    OFPT_FLOW_REMOVED = 11,
     OFPT_PORT_STATUS = 12,
     /* Async message */
     /* Async message */
     /* Async message */
     /* Controller command messages. */
-    OFPT_PACKET_OUT = 13,               OFPT_FLOW_MOD = 14,
-    OFPT_GROUP_MOD = 15,                OFPT_PORT_MOD = 16,
+    OFPT_PACKET_OUT = 13,
+    OFPT_FLOW_MOD = 14,
+    OFPT_GROUP_MOD = 15,
+    OFPT_PORT_MOD = 16,
     OFPT_TABLE_MOD = 17,
     /* Controller/switch message */
     /* Controller/switch message */
@@ -326,9 +344,11 @@ enum class v3 : UInt8{
     /* Controller/switch message */
     /* Controller/switch message */
     /* Statistics messages. */
-    OFPT_STATS_REQUEST = 18,            OFPT_STATS_REPLY = 19,
+    OFPT_STATS_REQUEST = 18,
+    OFPT_STATS_REPLY = 19,
     /* Barrier messages. */
-    OFPT_BARRIER_REQUEST = 20,          OFPT_BARRIER_REPLY = 21,
+    OFPT_BARRIER_REQUEST = 20,
+    OFPT_BARRIER_REPLY = 21,
     /* Controller/switch message */
     /* Controller/switch message */
     /* Controller/switch message */
@@ -340,7 +360,8 @@ enum class v3 : UInt8{
     /* Controller role change request messages. */
     OFPT_ROLE_REQUEST = 24, /* Controller/switch message */
     OFPT_ROLE_REPLY = 25,   /* Controller/switch message */
-    OFPT_LAST = OFPT_ROLE_REPLY};
+    OFPT_LAST = OFPT_ROLE_REPLY
+};
 
 } // </namespace deprecated>
 
@@ -616,7 +637,7 @@ enum ofp_meter_mod_failed_code {
     OFPMMFC_BAD_BAND_VALUE = 9, /* Band value unsupported. */
     OFPMMFC_OUT_OF_METERS = 10, /* No more meters available. */
     OFPMMFC_OUT_OF_BANDS = 11,  /* The maximum number of properties
-                             for a meter has been exceeded. */
+                            for a meter has been exceeded. */
 };
 
 /* ofp_error_msg 'code' values for OFPET_TABLE_FEATURES_FAILED. 'data' contains
@@ -631,29 +652,106 @@ enum ofp_table_features_failed_code {
     OFPTFFC_EPERM = 5,        /* Permissions error. */
 };
 
-
 /* Table numbering. Tables can use any number up to OFPT_MAX. */
 enum ofp_table {
     /* Last usable table number. */
-    OFPTT_MAX        = 0xfe,
+    OFPTT_MAX = 0xfe,
     /* Fake tables. */
-    OFPTT_ALL        = 0xff   /* Wildcard table used for table config,
-                                 flow stats and flow deletes. */
+    OFPTT_ALL = 0xff /* Wildcard table used for table config,
+                        flow stats and flow deletes. */
 };
 
 /* Group numbering. Groups can use any number up to OFPG_MAX. */
 enum ofp_group {
     /* Last usable group number. */
-    OFPG_MAX        = 0xffffff00,
+    OFPG_MAX = 0xffffff00,
     /* Fake groups. */
-OFPG_ALL= 0xfffffffc,  /* Represents all groups for group delete
-                  commands. */
-OFPG_ANY= 0xffffffff
-/* Wildcard group used only for flow stats
-   requests. Selects all flows regardless of
-   group (including flows with no group).
-   */
-  };
+    OFPG_ALL = 0xfffffffc, /* Represents all groups for group delete
+                      commands. */
+    OFPG_ANY = 0xffffffff
+    /* Wildcard group used only for flow stats
+       requests. Selects all flows regardless of
+       group (including flows with no group).
+       */
+};
+
+enum OFPMultipartType : UInt16 {
+    /* Description of this OpenFlow switch.
+     * The request body is empty.
+     * The reply body is struct ofp_desc. */
+    OFPMP_DESC = 0,
+    /* Individual flow statistics.
+     * The request body is struct ofp_flow_stats_request.
+     * The reply body is an array of struct ofp_flow_stats. */
+    OFPMP_FLOW = 1,
+    /* Aggregate flow statistics.
+     * The request body is struct ofp_aggregate_stats_request.
+     * The reply body is struct ofp_aggregate_stats_reply. */
+    OFPMP_AGGREGATE = 2,
+    /* Flow table statistics.
+     * The request body is empty.
+     * The reply body is an array of struct ofp_table_stats. */
+    OFPMP_TABLE = 3,
+    /* Port statistics.
+     * The request body is struct ofp_port_stats_request.
+     * The reply body is an array of struct ofp_port_stats. */
+    OFPMP_PORT_STATS = 4,
+    /* Queue statistics for a port
+     * The request body is struct ofp_queue_stats_request.
+     * The reply body is an array of struct ofp_queue_stats */
+    OFPMP_QUEUE = 5,
+    /* Group counter statistics.
+     * The request body is struct ofp_group_stats_request.
+     * The reply is an array of struct ofp_group_stats. */
+    OFPMP_GROUP = 6,
+    /* Group description.
+     * The request body is empty.
+     * The reply body is an array of struct ofp_group_desc. */
+    OFPMP_GROUP_DESC = 7,
+    /* Group features.
+     * The request body is empty.
+     * The reply body is struct ofp_group_features. */
+    OFPMP_GROUP_FEATURES = 8,
+    /* Meter statistics.
+     * The request body is struct ofp_meter_multipart_requests.
+     * The reply body is an array of struct ofp_meter_stats. */
+    OFPMP_METER = 9,
+    /* Meter configuration.
+     * The request body is struct ofp_meter_multipart_requests.
+     * The reply body is an array of struct ofp_meter_config. */
+    OFPMP_METER_CONFIG = 10,
+    /* Meter features.
+     * The request body is empty.
+     * The reply body is struct ofp_meter_features. */
+    OFPMP_METER_FEATURES = 11,
+    /* Table features.
+     * The request body is either empty or contains an array of
+     * struct ofp_table_features containing the controller's
+     * desired view of the switch. If the switch is unable to
+     * set the specified view an error is returned.
+     * The reply body is an array of struct ofp_table_features. */
+    OFPMP_TABLE_FEATURES = 12,
+    /* Port description.
+     * The request body is empty.
+     * The reply body is an array of struct ofp_port. */
+    OFPMP_PORT_DESC = 13,
+    /* Experimenter extension.
+     * The request and reply bodies begin with
+     * struct ofp_experimenter_multipart_header.
+     * The request and reply bodies are otherwise experimenter-defined. */
+    OFPMP_EXPERIMENTER = 0xffff
+};
+
+enum OFPInstructionType : UInt16 {
+    OFPIT_GOTO_TABLE = 1,
+    OFPIT_WRITE_METADATA = 2,
+    OFPIT_WRITE_ACTIONS = 3,
+    OFPIT_APPLY_ACTIONS = 4,
+    OFPIT_CLEAR_ACTIONS = 5,
+    OFPIT_METER = 6,
+    OFPIT_EXPERIMENTER = 0xFFFF
+};
+
 } // </namespace ofp>
 
 #endif // OFP_CONSTANTS_H

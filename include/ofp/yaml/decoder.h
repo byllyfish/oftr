@@ -28,7 +28,7 @@ private:
     std::string result_;
     std::string error_;
 
-    void decodeMsg(llvm::yaml::IO &io);
+    bool decodeMsg(llvm::yaml::IO &io);
 
     friend struct llvm::yaml::MappingTraits<ofp::yaml::Decoder>;
 };
@@ -49,7 +49,9 @@ struct MappingTraits<ofp::yaml::Decoder> {
         io.mapRequired("xid", header->xid_);
         io.mapRequired("version", header->version_);
 
-        decoder.decodeMsg(io);
+        if (!decoder.decodeMsg(io)) {
+            decoder.error_ = "Invalid data.";
+        }
     }
 };
 

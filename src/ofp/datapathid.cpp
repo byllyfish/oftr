@@ -27,4 +27,10 @@ std::string DatapathID::toString() const
 	return RawDataToHex(dpid_.data(), sizeof(dpid_), '-', 2);
 }
 
+
+bool DatapathID::parse(const std::string &s)
+{
+	return HexToRawData(s, dpid_.data(), sizeof(dpid_)) >= sizeof(dpid_);
+}
+
 } // </namespace ofp>

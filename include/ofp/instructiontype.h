@@ -12,27 +12,25 @@
 #define OFP_INSTRUCTIONTYPE_H
 
 #include "ofp/byteorder.h"
+#include "ofp/constants.h"
 
 namespace ofp { // <namespace ofp>
 
 class InstructionType {
 public:
 
-    enum : UInt16{ IT_GOTO_TABLE = 1,       IT_WRITE_METADATA = 2,
-                   IT_WRITE_ACTIONS = 3,    IT_APPLY_ACTIONS = 4,
-                   IT_CLEAR_ACTIONS = 5,    IT_METER = 6,
-                   IT_EXPERIMENTER = 0xFFFF };
-
-    constexpr InstructionType(UInt16 type) : type_{ type }
+    constexpr InstructionType(OFPInstructionType type) : type_{type}
     {
     }
 
     static InstructionType fromBytes(const UInt8 *data);
 
-    constexpr UInt16 type() const
+    constexpr OFPInstructionType type() const
     {
         return type_;
     }
+
+    constexpr operator OFPInstructionType() const { return type_; }
 
     bool operator==(const InstructionType &rhs) const
     {
@@ -43,9 +41,9 @@ public:
     {
         return !operator==(rhs);
     }
-
+    
 private:
-    const Big16 type_;
+    const Big<OFPInstructionType> type_;
 };
 
 static_assert(IsLiteralType<InstructionType>(), "Literal type expected.");
@@ -54,14 +52,14 @@ std::ostream &operator<<(std::ostream &os, const InstructionType &value);
 
 inline InstructionType InstructionType::fromBytes(const UInt8 *data)
 {
-    InstructionType type{ 0 };
+    InstructionType type{OFPIT_GOTO_TABLE};
     std::memcpy(&type, data, sizeof(type));
     return type;
 }
 
 inline std::ostream &operator<<(std::ostream &os, const InstructionType &value)
 {
-    return os << value.type();
+    return os << static_cast<unsigned>(value.type());
 }
 
 } // </namespace ofp>

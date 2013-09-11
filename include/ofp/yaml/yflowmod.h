@@ -145,10 +145,11 @@ struct SequenceTraits<ofp::Match> {
     {
         ofp::log::debug("match yaml item", index);
 
+        // FIXME
         ofp::OXMIterator iter = match.begin();
         for (size_t i = 0; i < index; ++i)
             ++iter;
-        return ofp::detail::YamlRemoveConst_cast(*iter);
+        return RemoveConst_cast(*iter);
     }
 };
 

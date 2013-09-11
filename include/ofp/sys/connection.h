@@ -34,8 +34,8 @@ public:
 	const Features &features() const override { return features_; }
 	void setFeatures(const Features &features) { features_ = features; }
 
-	DatapathID datapathID() const override { return features_.datapathID(); }
-	UInt8 auxiliaryID() const override { return features_.auxiliaryID(); }
+	DatapathID datapathId() const override { return features_.datapathId(); }
+	UInt8 auxiliaryId() const override { return features_.auxiliaryId(); }
 	
 	Connection *mainConnection() const 
 	{ return mainConn_; }

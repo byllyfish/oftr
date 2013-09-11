@@ -12,11 +12,16 @@
 #define OFP_ECHOREQUEST_H
 
 #include "ofp/header.h"
+#include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
 
 class Message;
 class Writable;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
+//   E c h o R e q u e s t
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
 class EchoRequest {
 public:
@@ -25,23 +30,33 @@ public:
 
 	EchoRequest() : header_{type()} {}
 
-private:
-	Header header_;
+	ByteRange echoData() const;
 
 	bool validateLength(size_t length) const;
+	
+private:
+	Header header_;
 
 	friend class EchoRequestBuilder;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
+//   E c h o R e q u e s t B u i l d e r
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
 class EchoRequestBuilder {
 public:
 	EchoRequestBuilder() = default;
 
-	void send(Writable *channel);
+	void setEchoData(const void *data, size_t length) {
+		data_.set(data, length);
+	}
+
+	UInt32 send(Writable *channel);
 	
 private:
 	EchoRequest msg_;
+	ByteList data_;
 };
 
 } // </namespace ofp>

@@ -50,19 +50,19 @@ void Connection::setMainConnection(Connection *channel)
     assert(channel != nullptr);
     assert(mainConn_ == this);
     assert(channel != this);
-    assert(auxiliaryID() != 0);
+    assert(auxiliaryId() != 0);
 
     log::debug("setMainConnection");
     mainConn_ = channel;
 
-    UInt8 auxID = auxiliaryID();
+    UInt8 auxID = auxiliaryId();
     AuxiliaryList &auxList = mainConn_->auxList_;
 
     // Check if there is already an auxiliary connection with the same ID.
     // If so, close it so we can replace it with this one.
 
     auto iter = std::find_if(auxList.begin(), auxList.end(), [auxID](Connection *conn) {
-        return conn->auxiliaryID() == auxID;
+        return conn->auxiliaryId() == auxID;
     });
     if (iter != auxList.end()) {
         log::info("setMainConnection: Auxiliary connection found with same ID.");

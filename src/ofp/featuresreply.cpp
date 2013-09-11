@@ -19,10 +19,10 @@ const FeaturesReply *ofp::FeaturesReply::cast(const Message *message)
 
 void FeaturesReply::getFeatures(Features *features) const
 {
-    features->setDatapathID(DatapathID{datapathID_});
+    features->setDatapathId(datapathId_);
     features->setBufferCount(bufferCount_);
     features->setTableCount(tableCount_);
-    features->setAuxiliaryID(auxiliaryID_);
+    features->setAuxiliaryId(auxiliaryId_);
     features->setCapabilities(capabilities_);
     features->setReserved(reserved_);
 }
@@ -39,18 +39,18 @@ bool FeaturesReply::validateLength(size_t length) const
     return true;
 }
 
-FeaturesReplyBuilder::FeaturesReplyBuilder(const Message *request)
+FeaturesReplyBuilder::FeaturesReplyBuilder(UInt32 xid)
 {
     // Set xid of reply to request's xid.
-    msg_.header_.setXid(request->xid());
+    msg_.header_.setXid(xid);
 }
 
 void FeaturesReplyBuilder::setFeatures(const Features &features)
 {
-    msg_.datapathID_ = features.datapathID();
+    msg_.datapathId_ = features.datapathId();
     msg_.bufferCount_ = features.bufferCount();
     msg_.tableCount_ = features.tableCount();
-    msg_.auxiliaryID_ = features.auxiliaryID();
+    msg_.auxiliaryId_ = features.auxiliaryId();
     msg_.capabilities_ = features.capabilities();
     msg_.reserved_ = features.reserved();
 }

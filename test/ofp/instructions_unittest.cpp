@@ -9,7 +9,7 @@ using namespace ofp;
 TEST(instructions, IT_GOTO_TABLE) {
 	IT_GOTO_TABLE gt{5};
 
-	EXPECT_EQ(5, gt.table());
+	EXPECT_EQ(5, gt.tableId());
 	EXPECT_EQ(8, sizeof(gt));
 
 	auto expected = HexToRawData("0001 0008 05 000000");

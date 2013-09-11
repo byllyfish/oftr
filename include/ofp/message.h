@@ -35,6 +35,7 @@ public:
 	Message(const void *data, size_t size) : channel_{nullptr}
 	{
 		buf_.add(data, size);
+		assert(header()->length() == size);
 	}
 
 	UInt8 *mutableData(size_t size) { 
@@ -82,6 +83,7 @@ private:
 
 	void transmogrifyFlowModV1();
 	void transmogrifyPortStatusV1();
+	void transmogrifyExperimenterV1();
 
 	friend std::ostream &operator<<(std::ostream &os, const Message &msg);
 };

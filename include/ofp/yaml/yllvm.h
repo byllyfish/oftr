@@ -11,13 +11,8 @@
 #include "ofp/Header.h"
 
 namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
 
-template <class Type>
-Type &YamlRemoveConst_cast(const Type &v)
-{
-    return const_cast<Type &>(v);
-}
+namespace detail { // <namespace detail>
 
 void readHeader(llvm::yaml::IO &io, Header *header);
 void writeHeader(llvm::yaml::IO &io, const Header *header);

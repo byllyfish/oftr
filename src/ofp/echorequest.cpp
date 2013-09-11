@@ -1,22 +1,39 @@
 #include "ofp/echorequest.h"
 #include "ofp/message.h"
+#include "ofp/writable.h"
 
+namespace ofp { // <namespace ofp>
 
-const ofp::EchoRequest *ofp::EchoRequest::cast(const Message *message)
+const EchoRequest *EchoRequest::cast(const Message *message)
 {
-	assert(message->type() == OFPT_ECHO_REQUEST);
-
-	const EchoRequest *msg = reinterpret_cast<const EchoRequest *>(message->data());
-    if (!msg->validateLength(message->size())) {
-        return nullptr;
-    }
-
-    return msg;
+    return message->cast<EchoRequest>();
 }
 
-
-
-bool ofp::EchoRequest::validateLength(size_t length) const
+ByteRange EchoRequest::echoData() const
 {
-	return (header_.length() == length);
+    return ByteRange{BytePtr(this) + sizeof(Header),
+                     header_.length() - sizeof(Header)};
 }
+
+bool EchoRequest::validateLength(size_t length) const
+{
+    return (length >= sizeof(Header));
+}
+
+UInt32 EchoRequestBuilder::send(Writable *channel)
+{
+    UInt8 version = channel->version();
+    UInt32 xid = channel->nextXid();
+    size_t msgLen = sizeof(Header) + data_.size();
+    msg_.header_.setVersion(version);
+    msg_.header_.setXid(xid);
+    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+
+    channel->write(&msg_, sizeof(msg_));
+    channel->write(data_.data(), data_.size());
+    channel->flush();
+
+    return xid;
+}
+
+} // </namespace ofp>

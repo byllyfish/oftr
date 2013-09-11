@@ -142,13 +142,13 @@ static_assert(IsStandardLayout<GetAsyncRequest>(), "Expected standard layout.");
 /// \returns xid assigned to sent message.
 using GetConfigRequest = detail::HeaderOnly<OFPT_GET_CONFIG_REQUEST>;
 
-/// @class ofp::GetConfigRequestBuilder
-/// @brief Builds a mutable OFPT_GET_CONFIG_REQUEST message and delivers it to a
+/// \class ofp::GetConfigRequestBuilder
+/// \brief Builds a mutable OFPT_GET_CONFIG_REQUEST message and delivers it to a
 /// channel.
 ///
-/// @fn UInt32 send(Writable *channel);
-/// @memberof ofp::GetConfigRequestBuilder
-/// @returns xid assigned to sent message.
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::GetConfigRequestBuilder
+/// \returns xid assigned to sent message.
 using GetConfigRequestBuilder = detail::HeaderOnlyBuilder<GetConfigRequest>;
 
 static_assert(sizeof(GetConfigRequest) == 8, "Unexpected size.");

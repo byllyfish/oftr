@@ -22,8 +22,8 @@ public:
 		channel_ = channel;
 
 		DatapathID dpid{ 0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
-		EXPECT_EQ(dpid, channel->datapathID());
-		EXPECT_EQ(0, channel->auxiliaryID());
+		EXPECT_EQ(dpid, channel->datapathId());
+		EXPECT_EQ(0, channel->auxiliaryId());
 
 		channel->scheduleTimer(0x5678, 1000_ms);
 		if (shutdownCount > 0) {
@@ -75,8 +75,8 @@ public:
 	void onChannelUp(Channel *channel) override 
 	{
 		DatapathID dpid{ 0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
-		EXPECT_EQ(channel->datapathID(), dpid);
-		EXPECT_EQ(0, channel->auxiliaryID());
+		EXPECT_EQ(channel->datapathId(), dpid);
+		EXPECT_EQ(0, channel->auxiliaryId());
 
 		for (UInt8 i = 1; i <= auxCount; ++i) {
 			channel->openAuxChannel(i, Channel::Transport::TCP);

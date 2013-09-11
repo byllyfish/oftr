@@ -20,6 +20,14 @@ public:
 	constexpr ByteRange();
 	constexpr ByteRange(const void *data, size_t length);
 
+	constexpr const UInt8 *begin() const {
+		return begin_;
+	}
+
+    constexpr const UInt8 *end() const {
+    	return end_;
+    }
+
 	constexpr const UInt8 *data() const;
 	constexpr size_t size() const;
 

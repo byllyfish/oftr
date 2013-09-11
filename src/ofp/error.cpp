@@ -1,7 +1,14 @@
 #include "ofp/error.h"
+#include "ofp/message.h"
+#include "ofp/writable.h"
 #include "ofp/log.h"
 
 namespace ofp { // <namespace ofp>
+
+const Error *Error::cast(const Message *message)
+{
+    return message->cast<Error>();
+}
 
 bool Error::validateLength(size_t length) const
 {
@@ -31,14 +38,14 @@ void ErrorBuilder::setErrorData(const Message *message)
 
 void ErrorBuilder::send(Writable *channel)
 {
+    size_t msgLen = sizeof(msg_) + data_.size();
+
     msg_.header_.setVersion(channel->version());
-    msg_.header_.setLength(sizeof(msg_));
+    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
     msg_.header_.setXid(channel->nextXid());
 
     channel->write(&msg_, sizeof(msg_));
-    if (data_.size() > 0) {
-        channel->write(data_.data(), data_.size());
-    }
+    channel->write(data_.data(), data_.size());
     channel->flush();
 }
 

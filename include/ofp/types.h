@@ -190,6 +190,21 @@ constexpr const UInt8 *BytePtr(const void *data)
     return static_cast<const UInt8 *>(data);
 }
 
+/// Removes a `const` qualifier from a reference. This is necessary in rare 
+/// cases when interacting with important external API's that are less 
+/// `const-strict`. No other instances of const_cast should appear in the code.
+template <class T>
+T &RemoveConst_cast(const T &v)
+{
+    return const_cast<T &>(v);
+}
+
+template <class T>
+T *RemoveConst_cast(const T *v) 
+{
+    return const_cast<T *>(v);
+}
+
 /**
  *  Convert raw buffer to a hexadecimal string. The resulting string contains
  *  only hexadecimal characters.
@@ -247,5 +262,16 @@ std::string HexToRawData(const std::string& hex);
 bool IsMemFilled(const void* data, size_t length, char fill);
 
 } // </namespace ofp>
+
+// Place forward declarations of YAML classes here.
+
+namespace llvm { // <namespace llvm>
+namespace yaml { // <namespace yaml>
+
+template<class T>
+struct MappingTraits;
+
+} // </namespace yaml>
+} // </namespace llvm>
 
 #endif // OFP_TYPES_H

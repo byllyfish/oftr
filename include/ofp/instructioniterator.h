@@ -8,6 +8,32 @@ namespace ofp { // <namespace ofp>
 class InstructionIterator {
 public:
 
+	class Item {
+	public:
+		
+		Item(const Item &) = delete;
+		Item &operator=(const Item &) = delete;
+
+		InstructionType type() const {
+			return position().type();
+		}
+
+		template <class Type>
+		const Type *instruction() {
+			return position().instruction<Type>();
+		}
+
+		InstructionIterator position() const { return InstructionIterator{BytePtr(this)}; }
+		
+	private:
+		Item() = default;
+	};
+
+	const Item &operator*() const 
+	{
+		return *reinterpret_cast<const Item *>(position_);
+	}
+
 	InstructionType type() const {
 		return InstructionType::fromBytes(position_);
 	}
@@ -36,6 +62,23 @@ public:
 		return !(*this == rhs);
 	}
 
+	bool operator<=(const InstructionIterator &rhs) const {
+		return position_ <= rhs.position_;
+	}
+	
+	/// \returns Number of OXM elements between begin and end.
+	static size_t distance(InstructionIterator begin, InstructionIterator end)
+	{
+		assert(begin <= end);
+		
+		size_t dist = 0;
+		while (begin != end) {
+			++dist;
+			++begin;
+		}
+		return dist;
+	}
+
 private:
 	const UInt8 *position_;
 
@@ -43,6 +86,7 @@ private:
 		: position_{static_cast<const UInt8 *>(pos)} {}
 
 	friend class InstructionList;
+	friend class InstructionRange;
 };
 
 } // </namespace ofp>

@@ -28,8 +28,8 @@ public:
 	
 	virtual Driver *driver() const = 0;
 	virtual const Features &features() const = 0;
-	virtual DatapathID datapathID() const = 0;
-	virtual UInt8 auxiliaryID() const = 0;
+	virtual DatapathID datapathId() const = 0;
+	virtual UInt8 auxiliaryId() const = 0;
 	virtual IPv6Address remoteAddress() const = 0;
 	virtual UInt16 remotePort() const = 0;
 	virtual void shutdown() = 0;

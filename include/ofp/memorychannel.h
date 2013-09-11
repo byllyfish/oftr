@@ -16,7 +16,7 @@ public:
 
     const UInt8 *data() const
     {
-        assert(flushed_);
+        assert(flushed_ || size() == 0);
         return buf_.data();
     }
 

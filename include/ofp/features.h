@@ -21,16 +21,16 @@ namespace ofp { // <namespace ofp>
 class Features {
 public:
     Features() = default;
-    Features(const DatapathID &datapathID, UInt32 bufferCount = 1,
+    Features(const DatapathID &datapathId, UInt32 bufferCount = 1,
              UInt8 tableCount = 1)
-        : datapathID_{datapathID}, bufferCount_{bufferCount},
+        : datapathId_{datapathId}, bufferCount_{bufferCount},
           tableCount_{tableCount}
     {
     }
 
-    DatapathID datapathID() const
+    DatapathID datapathId() const
     {
-        return datapathID_;
+        return datapathId_;
     }
 
     UInt32 bufferCount() const
@@ -43,9 +43,9 @@ public:
         return tableCount_;
     }
 
-    UInt8 auxiliaryID() const
+    UInt8 auxiliaryId() const
     {
-        return auxiliaryID_;
+        return auxiliaryId_;
     }
 
     UInt32 capabilities() const
@@ -58,9 +58,9 @@ public:
         return reserved_;
     }
 
-    void setDatapathID(DatapathID datapathID)
+    void setDatapathId(DatapathID datapathId)
     {
-        datapathID_ = datapathID;
+        datapathId_ = datapathId;
     }
 
     void setBufferCount(UInt32 bufferCount)
@@ -73,9 +73,9 @@ public:
         tableCount_ = tableCount;
     }
 
-    void setAuxiliaryID(UInt8 auxiliaryID)
+    void setAuxiliaryId(UInt8 auxiliaryId)
     {
-        auxiliaryID_ = auxiliaryID;
+        auxiliaryId_ = auxiliaryId;
     }
 
     void setCapabilities(UInt32 capabilities)
@@ -89,10 +89,10 @@ public:
     }
 
 private:
-    DatapathID datapathID_;
+    DatapathID datapathId_;
     UInt32 bufferCount_ = 0;
     UInt8 tableCount_ = 0;
-    UInt8 auxiliaryID_ = 0;
+    UInt8 auxiliaryId_ = 0;
     Padding<2> pad_;
     UInt32 capabilities_ = 0;
     UInt32 reserved_ = 0;

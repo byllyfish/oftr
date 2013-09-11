@@ -2,6 +2,7 @@
 #include "ofp/sys/connection.h"
 #include "ofp/flowmod.h"
 #include "ofp/portstatus.h"
+#include "ofp/experimenter.h"
 #include "ofp/instructions.h"
 #include "ofp/originalmatch.h"
 
@@ -39,6 +40,8 @@ void Message::transmogrify()
             transmogrifyFlowModV1();
         } else if (hdr->type() == PortStatus::type()) {
             transmogrifyPortStatusV1();
+        } else if (hdr->type() == Experimenter::type()) {
+            transmogrifyExperimenterV1();
         }
     }
 }
@@ -110,7 +113,7 @@ void Message::transmogrifyFlowModV1()
     assert(origSize >= 72);
     UInt16 actLen = UInt16_narrow_cast(origSize - 72);
     detail::InstructionHeaderWithPadding insHead{
-        InstructionType::IT_APPLY_ACTIONS, actLen};
+        OFPIT_APPLY_ACTIONS, actLen};
 
     std::memcpy(pkt + 120, &insHead, sizeof(insHead));
 
@@ -142,6 +145,24 @@ void Message::transmogrifyPortStatusV1()
     std::memcpy(pkt + 16, &port, sizeof(Port));
 
     assert(buf_.size() == sizeof(PortStatus));
+}
+
+void Message::transmogrifyExperimenterV1()
+{
+    Header *hdr = header();
+
+    if (hdr->length() < 12) {
+        log::info("Experimenter v1 message is too short.", hdr->length());
+        hdr->setType(OFPT_UNSUPPORTED);
+        return;
+    }
+
+    // Insert four zero bytes at position 12.
+    Padding<4> pad;
+    buf_.insert(buf_.data() + 12, &pad, sizeof(pad));
+
+    // Update header length. N.B. Make sure we use current header ptr.
+    header()->setLength(UInt16_narrow_cast(size()));
 }
 
 
