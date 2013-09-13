@@ -30,11 +30,19 @@ public:
 	const UInt8 *data() const { return range_.data(); }
 	size_t size() const { return range_.size(); }
 	
+	/// \returns Size of action list when written to channel using the specified
+	/// protocol version.
 	size_t writeSize(Writable *channel);
+
+	/// \brief Writes action list to the channel using the specified protocol
+	/// version.
 	void write(Writable *channel);
 
 private:
 	ByteRange range_;
+
+	static unsigned writeSizeMinusSetFieldV1(ActionIterator iter);
+	static void writeSetFieldV1(ActionIterator iter, Writable *channel);
 };
 
 } // </namespace ofp>

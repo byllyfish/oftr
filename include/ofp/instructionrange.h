@@ -1,6 +1,7 @@
 #ifndef OFP_INSTRUCTIONRANGE_H
 #define OFP_INSTRUCTIONRANGE_H
 
+#include "ofp/byterange.h"
 #include "ofp/instructioniterator.h"
 
 namespace ofp { // <namespace ofp>
@@ -26,6 +27,9 @@ public:
         return InstructionIterator{range_.end()};
     }
 
+    const UInt8 *data() const { return range_.data(); }
+    size_t size() const { return range_.size(); }
+    
 private:
 	ByteRange range_;
 };

@@ -85,18 +85,25 @@ private:
 	void transmogrifyPortStatusV1();
 	void transmogrifyExperimenterV1();
 
+#if 0
+	int transmogrifyInstructionsV1orV2(const InstructionRange &instr);
+	int transmogrifyActionsV1orV2(const ActionRange &actions);
+	int transmogrifyActionV1orV2(UInt16 type, ActionIterator *iter, ActionIterator *iterEnd);
+#endif //0
+#
 	friend std::ostream &operator<<(std::ostream &os, const Message &msg);
+
+	friend class Transmogrify;
 };
 
 
 std::ostream &operator<<(std::ostream &os, const Message &msg);
 
-} // </namespace ofp>
-
-
-inline std::ostream &ofp::operator<<(std::ostream &os, const Message &msg)
+inline std::ostream &operator<<(std::ostream &os, const Message &msg)
 {
 	return os << msg.buf_;
 }
+
+} // </namespace ofp>
 
 #endif // OFP_MESSAGE_H

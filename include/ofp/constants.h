@@ -15,6 +15,14 @@
 
 namespace ofp { // <namespace ofp>
 
+// Internet Protocol Transport Types
+enum : UInt8 {
+    ICMP = 1,
+    TCP = 6,
+    UDP = 17,
+    SCTP = 132
+};
+
 enum {
     OFP_MAX_PORT_NAME_LEN = 16
 };
@@ -219,8 +227,9 @@ namespace deprecated { // <namespace deprecated>
 //       OFPT_PORT_MOD changes to 15; no OFPT_GROUP_MOD or OFPT_TABLE_MOD
 //       STATS_REQUEST/REPLY, BARRIER_REQUEST/REPLY, and
 //       QUEUE_GET_CONFIG_REQUEST/REPLY are all different.
-//
-enum class v1 : UInt8 {
+
+namespace v1 { // <namespace v1>
+enum : UInt8 {
     OFPT_HELLO = 0,        // Symmetric message
     OFPT_ERROR = 1,        // Symmetric message
     OFPT_ECHO_REQUEST = 2, // Symmetric message
@@ -252,8 +261,10 @@ enum class v1 : UInt8 {
     OFPT_QUEUE_GET_CONFIG_REPLY = 21,   /* Controller/switch message */
     OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
 };
+} // </namespace v1>
 
-enum class v2 : UInt8 {
+namespace v2 { // <namespace v2>
+enum : UInt8 {
     /* Immutable messages. */
     OFPT_HELLO = 0,
     OFPT_ERROR = 1,
@@ -305,8 +316,10 @@ enum class v2 : UInt8 {
     OFPT_QUEUE_GET_CONFIG_REPLY = 23,   /* Controller/switch message */
     OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
 };
+} // </namespace v2>
 
-enum class v3 : UInt8 {
+namespace v3 { // <namespace v3>
+enum : UInt8 {
     /* Immutable messages. */
     OFPT_HELLO = 0,
     OFPT_ERROR = 1,
@@ -362,6 +375,7 @@ enum class v3 : UInt8 {
     OFPT_ROLE_REPLY = 25,   /* Controller/switch message */
     OFPT_LAST = OFPT_ROLE_REPLY
 };
+} // </namespace v3>
 
 } // </namespace deprecated>
 
@@ -769,29 +783,73 @@ enum OFPActionType : UInt16 {
     OFPAT_SET_FIELD = 25, // 32 possible lengths: 8, 16, 24, 32, 40, ..., 256
     OFPAT_PUSH_PBB = 26,   // New in v4
     OFPAT_POP_PBB = 27,     // New in v4
+
+    // "Fake" Version 1 actions.
+    OFPAT_STRIP_VLAN_V1 = 0x7FF1,
+    OFPAT_ENQUEUE_V1 = 0x7FF2,
+
     OFPAT_EXPERIMENTER = 0xFFFF // possible lengths: 8, 16, 24, 32, 40, ...
 };
 
 
 namespace deprecated { // <namespace deprecated>
 
-enum class ATv1 : UInt16 {
-    OFPAT_OUTPUT = 0
+// Version               1       2      3      4
+// ----------------------------------------------
+// OFPAT_OUTPUT          0.8     0.16   0.16   0.16   (*)
+// OFPAT_SET_VLAN_VID    1.8     1.8    -      -
+// OFPAT_SET_VLAN_PCP    2.8     2.8    -      -
+// OFPAT_STRIP_VLAN      3.8     -      -      -     <---- Not Implemented
+// OFPAT_SET_DL_SRC      4.16    3.16   -      -
+// OFPAT_SET_DL_DST      5.16    4.16   -      -
+// OFPAT_SET_NW_SRC      6       5      -      -
+// OFPAT_SET_NW_DST      7       6      -      -
+// OFPAT_SET_NW_TOS      8       7      -      -
+// OFPAT_SET_NW_ECN      -       8      -      -
+// OFPAT_SET_TP_SRC      9       9      -      -
+// OFPAT_SET_TP_DST     10      10      -      -
+// OFPAT_ENQUEUE        11       -      -      -     <---- Not Implemented
+// OFPAT_COPY_TTL_OUT    -      11     11     11
+// OFPAT_COPY_TTL_IN     -      12     12     12
+// OFPAT_SET_MPLS_LABEL  -      13      -      -
+// OFPAT_SET_MPLS_TC     -      14      -      -
+// OFPAT_SET_MPLS_TTL    -      15     15     15
+// OFPAT_DEC_MPLS_TTL    -      16     16     16
+// OFPAT_PUSH_VLAN       -      17     17     17
+// OFPAT_POP_VLAN        -      18     18     18
+// OFPAT_PUSH_MPLS       -      19     19     19
+// OFPAT_POP_MPLS        -      20     20     20
+// OFPAT_SET_QUEUE       -      21     21     21
+// OFPAT_GROUP           -      22     22     22
+// OFPAT_SET_NW_TTL      -      23     23     23
+// OFPAT_DEC_NW_TTL      -      24     24     24
+// OFPAT_SET_FIELD       -       -     25     25
+// OFPAT_PUSH_PBB        -       -      -     26
+// OFPAT_POP_PBB         -       -      -     27
+// OFPAT_EXPERIMENTER    -     0xFFFF 0xFFFF 0xFFFF
+//
+// (*) Port field changed from 16 to 32 bits in v2.
+
+namespace v1 { // <namespace v1>
+enum : UInt16 {
+    OFPAT_OUTPUT = 0,
     OFPAT_SET_VLAN_VID = 1,
     OFPAT_SET_VLAN_PCP = 2,
-    OFPAT_STRIP_VLAN = 3,
-    OFPAT_SET_DL_SRC = 4,
+    OFPAT_STRIP_VLAN = 3,   // only present in v1
+    OFPAT_SET_DL_SRC = 4,   // these constants differ from later versions
     OFPAT_SET_DL_DST = 5,
     OFPAT_SET_NW_SRC = 6,
     OFPAT_SET_NW_DST = 7,
     OFPAT_SET_NW_TOS = 8,
     OFPAT_SET_TP_SRC = 9,
     OFPAT_SET_TP_DST = 10,
-    OFPAT_ENQUEUE = 11
+    OFPAT_ENQUEUE = 11      // only present in v1
 };
+} // </namespace v1>
 
-enum class ATv2 : UInt16 {
-    OFPAT_OUTPUT = 0
+namespace v2 { // <namespace v2>
+enum : UInt16 {
+    OFPAT_OUTPUT = 0,
     OFPAT_SET_VLAN_VID = 1,
     OFPAT_SET_VLAN_PCP = 2,
     OFPAT_SET_DL_SRC = 3,    // different from v1
@@ -819,10 +877,11 @@ enum class ATv2 : UInt16 {
 
     OFPAT_EXPERIMENTER = 0xFFFF
 };
+} // </namespace v2>
 
-
-enum class ATv3 : UInt16 {
-    OFPAT_OUTPUT = 0
+namespace v3 { // <namespace v3>
+enum : UInt16 {
+    OFPAT_OUTPUT = 0,
     // -OFPAT_SET_VLAN_VID = 1,
     // -OFPAT_SET_VLAN_PCP = 2,
     // -OFPAT_SET_DL_SRC = 3,
@@ -851,6 +910,7 @@ enum class ATv3 : UInt16 {
 
     OFPAT_EXPERIMENTER = 0xFFFF
 };
+} // </namespace v3>
 
 } // </namespace deprecated>
 

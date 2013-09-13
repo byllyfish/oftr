@@ -3,6 +3,7 @@
 
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
+#include "ofp/yaml/ymatch.h"
 
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>
@@ -23,7 +24,8 @@ public:
     	assert(!type_.hasMask());
         typename ValueType::NativeType value;
         io_.mapRequired("value", value);
-        list_.add(ValueType{value});
+        AT_SET_FIELD<ValueType> action{ValueType{value}};
+        list_.add(action);
     }
 
 private:
@@ -125,7 +127,9 @@ struct MappingTraits<ofp::ActionIterator::Item> {
         		OXMDispatch(id, &reader);
 				break;
 			}
-
+			default:
+				log::info("MappingTraits: Unknown action type:", int(type));
+				break;
     	}
     }
 };
@@ -253,6 +257,9 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         		}
 				break;
 			}
+			default:
+				log::info("MappingTraits<Inserter>: Unknown Action type:", int(type));
+				break;
     	}
     }
 };

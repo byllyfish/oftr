@@ -54,7 +54,7 @@ OXMIterator OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type, con
 	assert(type.length() == len);
 	assert(end.data() > pos.data());
 
-	ptrdiff_t idx = buf_.index(pos.data());
+	ptrdiff_t idx = buf_.offset(pos.data());
 	size_t newlen = sizeof(OXMType) + len;
 	buf_.replaceUninitialized(pos.data(), end.data(), newlen);
 

@@ -33,8 +33,84 @@ StandardMatch::StandardMatch(const OXMRange &range)
             dl_src = item.value<OFB_ETH_SRC>();
             dl_src_mask = item.mask<OFB_ETH_SRC>();
             break;
+        case OFB_ETH_DST::type():
+            dl_dst = item.value<OFB_ETH_DST>();
+            dl_dst_mask.setAllOnes();
+            break;
+        case OFB_ETH_DST::typeWithMask():
+            dl_dst = item.value<OFB_ETH_DST>();
+            dl_dst_mask = item.mask<OFB_ETH_DST>();
+            break;
+        case OFB_VLAN_VID::type():
+            dl_vlan = item.value<OFB_VLAN_VID>();
+            wc &= ~OFPFW_DL_VLAN;
+            break;
+        case OFB_VLAN_PCP::type():
+            dl_vlan_pcp = item.value<OFB_VLAN_PCP>();
+            wc &= ~OFPFW_DL_VLAN_PCP;
+            break;
+        case OFB_ETH_TYPE::type():
+            dl_type = item.value<OFB_ETH_TYPE>();
+            wc &= ~OFPFW_DL_TYPE;
+            break;
+        case OFB_IP_DSCP::type():
+            nw_tos = item.value<OFB_IP_DSCP>();
+            wc &= ~OFPFW_NW_TOS;
+            break;
+        case OFB_IP_PROTO::type():
+            nw_proto = item.value<OFB_IP_PROTO>();
+            wc &= ~OFPFW_NW_PROTO;
+            break;
+        case OFB_IPV4_SRC::type():
+            nw_src = item.value<OFB_IPV4_SRC>();
+            nw_src_mask.setAllOnes();
+            break;
+        case OFB_IPV4_SRC::typeWithMask():
+            nw_src = item.value<OFB_IPV4_SRC>();
+            nw_src_mask = item.mask<OFB_IPV4_SRC>();
+            break;
+        case OFB_IPV4_DST::type():
+            nw_dst = item.value<OFB_IPV4_DST>();
+            nw_dst_mask.setAllOnes();
+            break;
+        case OFB_IPV4_DST::typeWithMask():
+            nw_dst = item.value<OFB_IPV4_DST>();
+            nw_dst_mask = item.mask<OFB_IPV4_DST>();
+            break;
+        case OFB_TCP_SRC::type():
+            tp_src = item.value<OFB_TCP_SRC>();
+            wc &= ~OFPFW_TP_SRC;
+            break;
+        case OFB_UDP_SRC::type():
+            tp_src = item.value<OFB_UDP_SRC>();
+            wc &= ~OFPFW_TP_SRC;
+            break;
+        case OFB_TCP_DST::type():
+            tp_dst = item.value<OFB_TCP_DST>();
+            wc &= ~OFPFW_TP_SRC;
+            break;
+        case OFB_UDP_DST::type():
+            tp_dst = item.value<OFB_UDP_DST>();
+            wc &= ~OFPFW_TP_SRC;
+            break;            
+        case OFB_MPLS_LABEL::type():
+            mpls_label = item.value<OFB_MPLS_LABEL>();
+            wc &= ~OFPFW_MPLS_LABEL;
+            break;
+        case OFB_MPLS_TC::type():
+            mpls_tc = item.value<OFB_MPLS_TC>();
+            wc &= ~OFPFW_MPLS_TC;
+            break;
+        case OFB_METADATA::type():
+            metadata = item.value<OFB_METADATA>();
+            metadata_mask = ~0ULL;
+            break;
+        case OFB_METADATA::typeWithMask():
+            metadata = item.value<OFB_METADATA>();
+            metadata_mask = item.mask<OFB_METADATA>();
+            break;
         default:
-            // FIXME
+            log::debug("StandardMatch: Unexpected oxm type.");
             break;
         }
     }
@@ -121,11 +197,21 @@ OXMList StandardMatch::toOXMList() const
         list.add(OFB_IP_PROTO{nw_proto});
     }
 
-    if (nw_src_mask.valid())
-        list.add(OFB_IPV4_SRC{nw_src}, OFB_IPV4_SRC{nw_src_mask});
+    if (nw_src_mask.valid()) {
+        if (nw_src_mask.isBroadcast()) {
+            list.add(OFB_IPV4_SRC{nw_src});
+        } else {
+            list.add(OFB_IPV4_SRC{nw_src}, OFB_IPV4_SRC{nw_src_mask});
+        }
+    }
 
-    if (nw_dst_mask.valid())
-        list.add(OFB_IPV4_DST{nw_dst}, OFB_IPV4_DST{nw_dst_mask});
+    if (nw_dst_mask.valid()) {
+        if (nw_dst_mask.isBroadcast()) {
+            list.add(OFB_IPV4_DST{nw_dst});
+        } else {
+            list.add(OFB_IPV4_DST{nw_dst}, OFB_IPV4_DST{nw_dst_mask});
+        }
+    }
 
     if (!(wc & OFPFW_TP_SRC)) {
         if (wc & nw_proto) {

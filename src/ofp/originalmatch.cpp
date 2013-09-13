@@ -8,6 +8,22 @@ namespace deprecated { // <namespace deprecated>
 using OW = OriginalMatch::Wildcards;
 using SW = StandardMatch::Wildcards;
 
+static void set_nw_src_mask(UInt32 &wc, unsigned prefix)
+{
+    if (prefix > 32)
+        prefix = 32;
+
+    wc = (wc & ~OW::OFPFW_NW_SRC_MASK) | ((32U - prefix) << OW::OFPFW_NW_SRC_SHIFT);
+}
+
+static void set_nw_dst_mask(UInt32 &wc, unsigned prefix)
+{
+    if (prefix > 32)
+        prefix = 32;
+
+    wc = (wc & ~OW::OFPFW_NW_DST_MASK) | ((32U - prefix) << OW::OFPFW_NW_DST_SHIFT);
+}
+
 OriginalMatch::OriginalMatch(const OXMRange &range)
 {
     std::memset(this, 0, sizeof(OriginalMatch));
@@ -49,19 +65,19 @@ OriginalMatch::OriginalMatch(const OXMRange &range)
             break;
         case OFB_IPV4_SRC::type() :
             nw_src = item.value<OFB_IPV4_SRC>();
-            set_nw_src_mask(32);
+            set_nw_src_mask(wc, 32);
             break;
         case OFB_IPV4_SRC::type().withMask() :
             nw_src = item.value<OFB_IPV4_SRC>();
-            set_nw_src_mask(item.mask<OFB_IPV4_SRC>().value().prefix());
+            set_nw_src_mask(wc, item.mask<OFB_IPV4_SRC>().value().prefix());
             break;
         case OFB_IPV4_DST::type() :
             nw_dst = item.value<OFB_IPV4_DST>();
-            set_nw_dst_mask(32);
+            set_nw_dst_mask(wc, 32);
             break;
         case OFB_IPV4_DST::type().withMask() :
             nw_dst = item.value<OFB_IPV4_DST>();
-            set_nw_dst_mask(item.mask<OFB_IPV4_DST>().value().prefix());
+            set_nw_dst_mask(wc, item.mask<OFB_IPV4_DST>().value().prefix());
             break;
         case OFB_TCP_SRC::type() :
             tp_src = item.value<OFB_TCP_SRC>();
@@ -80,9 +96,12 @@ OriginalMatch::OriginalMatch(const OXMRange &range)
             wc &= ~OFPFW_TP_DST;
             break;
         default:
+            log::info("OriginalMatch: Unrecognized oxm type.");
             break;
         }
     }
+
+    // Don't overwrite 
     wildcards = wc;
 }
 
@@ -113,7 +132,9 @@ UInt32 OriginalMatch::standardWildcards() const
         }
     }
 
-    // TODO Handle OW::OFPFW_DL_SRC and OW::OFPFW_DL_DST
+    result |= (SW::OFPFW_MPLS_TC | SW::OFPFW_MPLS_LABEL);
+
+    // Client must still check OW::OFPFW_DL_SRC and OW::OFPFW_DL_DST
 
     return result;
 }

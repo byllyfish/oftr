@@ -1,61 +1,43 @@
+#include "ofp/transmogrify.h"
 #include "ofp/message.h"
-#include "ofp/sys/connection.h"
 #include "ofp/flowmod.h"
 #include "ofp/portstatus.h"
 #include "ofp/experimenter.h"
 #include "ofp/instructions.h"
 #include "ofp/instructionrange.h"
 #include "ofp/originalmatch.h"
-#include "ofp/transmogrify.h"
 
 namespace ofp { // <namespace ofp>
 
-Channel *Message::source() const
-{
-    return channel_;
-}
+Transmogrify::Transmogrify(Message *message) : buf_{message->buf_} {}
 
-void Message::transmogrify()
+void Transmogrify::normalize()
 {
-    Transmogrify tr{this};
-    tr.normalize();
-}
+    assert(buf_.size() >= sizeof(Header));
 
-#if 0
-/// \brief Modify the binary representation of the message to fit our standard
-/// layout protocol interface. This method changes a version 1 FlowMod
-/// representation into the version 2+ FlowMod representation. It leaves other
-/// messages untouched. (This strategy assumes that the v1 and v2 protocol specs
-/// will not change retroactively.)
-///
-
-void Message::transmogrify()
-{
-    assert(size() >= sizeof(Header));
-    
     // Caution! Many magic numbers ahead...
-
     Header *hdr = header();
 
     // Translate type of message from earlier version into latest enum.
-    OFPType type = Header::translateType(hdr->version(), hdr->type(), OFP_VERSION_4);
+    OFPType type =
+        Header::translateType(hdr->version(), hdr->type(), OFP_VERSION_4);
     if (type == OFPT_UNSUPPORTED) {
         log::info("Unsupported type for protocol version:", hdr->type());
     }
     hdr->setType(type);
-    
+
     if (hdr->version() == OFP_VERSION_1) {
         if (hdr->type() == FlowMod::type()) {
-            transmogrifyFlowModV1();
+            normalizeFlowModV1();
         } else if (hdr->type() == PortStatus::type()) {
-            transmogrifyPortStatusV1();
+            normalizePortStatusV1();
         } else if (hdr->type() == Experimenter::type()) {
-            transmogrifyExperimenterV1();
+            normalizeExperimenterV1();
         }
     }
 }
 
-void Message::transmogrifyFlowModV1()
+void Transmogrify::normalizeFlowModV1()
 {
     using deprecated::OriginalMatch;
     using deprecated::StandardMatch;
@@ -79,6 +61,7 @@ void Message::transmogrifyFlowModV1()
 
     UInt8 *pkt = buf_.mutableData();
     size_t origSize = buf_.size();
+    assert(origSize >= 72);
 
     OriginalMatch *origMatch =
         reinterpret_cast<OriginalMatch *>(pkt + sizeof(Header));
@@ -109,30 +92,48 @@ void Message::transmogrifyFlowModV1()
     // Actions start at pkt + 72.
     // We need to convert this actionlist into an ApplyActions instruction.
     //   1. Insert type, length and 4 bytes (8 bytes total)
-    // We need to insert 64 bytes + 8 bytes.
+    // We need to insert 64 bytes + optionally 8 bytes.
 
-    buf_.insertUninitialized(pkt + 48, 72);
+    UInt16 actLen = UInt16_narrow_cast(origSize - 72);
+    size_t needed = 64;
+    if (actLen > 0) {
+        needed += 8;
+    }
 
+    log::debug("TRANSMOGRIFY0: size=", buf_.size());
+    // insertUninitialized() may move memory.
+    buf_.insertUninitialized(pkt + 48, needed);
+
+    log::debug("TRANSMOGRIFY0.a: size=", buf_.size());
+    
     // This insertion may move memory; update pkt ptr just in case.
     // Copy in StandardMatch.
 
     pkt = buf_.mutableData();
     std::memcpy(pkt + 48, &stdMatch, sizeof(stdMatch));
 
-    assert(origSize >= 72);
-    UInt16 actLen = UInt16_narrow_cast(origSize - 72);
-    detail::InstructionHeaderWithPadding insHead{
-        OFPIT_APPLY_ACTIONS, actLen};
+    log::debug("TRANSMOGRIFY1: ", RawDataToHex(buf_.data(), buf_.size()));
 
-    std::memcpy(pkt + 120, &insHead, sizeof(insHead));
+    if (actLen > 0) {
+        // Normalize actions may move memory.
+        int delta = normActionsV1orV2(ActionRange{ByteRange{pkt + 144, actLen}}, stdMatch.nw_proto);
+
+        pkt = buf_.mutableData();
+        detail::InstructionHeaderWithPadding insHead{
+            OFPIT_APPLY_ACTIONS, actLen + 8 + delta};
+        std::memcpy(pkt + 136, &insHead, sizeof(insHead));
+    }
 
     // Update header length. N.B. Make sure we use current header ptr.
-    header()->setLength(UInt16_narrow_cast(size()));
+    header()->setLength(UInt16_narrow_cast(buf_.size()));
+
+
+    log::debug("TRANSMOGRIFY2: ", RawDataToHex(buf_.data(), buf_.size()));
 }
 
-void Message::transmogrifyPortStatusV1()
+void Transmogrify::normalizePortStatusV1()
 {
-    using deprecated::PortV1;
+	using deprecated::PortV1;
 
     Header *hdr = header();
 
@@ -156,7 +157,7 @@ void Message::transmogrifyPortStatusV1()
     assert(buf_.size() == sizeof(PortStatus));
 }
 
-void Message::transmogrifyExperimenterV1()
+void Transmogrify::normalizeExperimenterV1()
 {
     Header *hdr = header();
 
@@ -171,20 +172,16 @@ void Message::transmogrifyExperimenterV1()
     buf_.insert(buf_.data() + 12, &pad, sizeof(pad));
 
     // Update header length. N.B. Make sure we use current header ptr.
-    header()->setLength(UInt16_narrow_cast(size()));
+    header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
-
-#if 0
-int Message::transmogrifyInstructionsV1orV2(const InstructionRange &instr)
+int Transmogrify::normInstructionsV1orV2(const InstructionRange &instr, UInt8 ipProto)
 {
-    // Return change in length of instructions list.
-    
-
+	// Return change in length of instructions list.
+    return 0; 
 }
 
-// This method may move memory.
-int Message::transmogrifyActionsV1orV2(const ActionRange &actions)
+int Transmogrify::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto)
 {
     using namespace deprecated;
 
@@ -196,11 +193,11 @@ int Message::transmogrifyActionsV1orV2(const ActionRange &actions)
 
     while (iter < iterEnd) {
         ActionType actType = iter.type();
-        OFPActionType type = actType.type();
+        UInt16 type = actType.type();
 
-        if (type >= ATv1::OFPAT_SET_VLAN_VID && type <= ATv1::OFPAT_ENQUEUE ||
-             type == ATv2::OFPAT_SET_MPLS_LABEL || type == ATv2::OFPAT_SET_MPLS_TC) {
-            lengthChange += transmogrifyActionV1orV2(type, &iter, &iterEnd);
+        if ((type >= UInt16_cast(v1::OFPAT_SET_VLAN_VID) && type <= UInt16_cast(v1::OFPAT_ENQUEUE)) ||
+             type == UInt16_cast(v2::OFPAT_SET_MPLS_LABEL) || type == UInt16_cast(v2::OFPAT_SET_MPLS_TC)) {
+            lengthChange += normActionV1orV2(type, &iter, &iterEnd, ipProto);
         }
         ++iter;
     }
@@ -208,19 +205,19 @@ int Message::transmogrifyActionsV1orV2(const ActionRange &actions)
     return lengthChange;
 }
 
-
-int Message::transmogrifyActionV1orV2(UInt16 type, ActionIterator *iter, ActionIterator *iterEnd)
+int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter, ActionIterator *iterEnd, UInt8 ipProto)
 {
     using namespace deprecated;
 
-    UInt8 version = version();
+    UInt8 version = header()->version();
+
     if (version == OFP_VERSION_1) {
         // Normalize action type code to the V2+ schema.
-        if (type == ATv1::OFPAT_STRIP_VLAN) {
+        if (type == UInt16_cast(v1::OFPAT_STRIP_VLAN)) {
             type = OFPAT_STRIP_VLAN_V1;
-        } else if (type == ATv1::OFPAT_ENQUEUE) {
+        } else if (type == UInt16_cast(v1::OFPAT_ENQUEUE)) {
             type = OFPAT_ENQUEUE_V1;
-        } else if (type >= ATv1::OFPAT_SET_DL_SRC && type <= OFPAT_SET_NW_TOS) {
+        } else if (type >= UInt16_cast(v1::OFPAT_SET_DL_SRC) && type <= UInt16_cast(v1::OFPAT_SET_NW_TOS)) {
             --type;
         }
     }
@@ -228,47 +225,57 @@ int Message::transmogrifyActionV1orV2(UInt16 type, ActionIterator *iter, ActionI
     int lengthChange = 0;
     switch (type)
     {
-        case ATv2::OFPAT_SET_VLAN_VID:
-            lengthChange += transmogrifyToSetField<OFB_VLAN_VID>(iter);
+        case v2::OFPAT_SET_VLAN_VID:
+            lengthChange += normSetField<OFB_VLAN_VID>(iter, iterEnd);
             break;
+        case v2::OFPAT_SET_VLAN_PCP:
+            lengthChange += normSetField<OFB_VLAN_PCP>(iter, iterEnd);
+            break;
+        case v2::OFPAT_SET_DL_SRC:
+            lengthChange += normSetField<OFB_ETH_SRC>(iter, iterEnd);
+            break;
+        case v2::OFPAT_SET_DL_DST:
+            lengthChange += normSetField<OFB_ETH_DST>(iter, iterEnd);
+            break;
+        case v2::OFPAT_SET_NW_SRC:
+            lengthChange += normSetField<OFB_IPV4_SRC>(iter, iterEnd);
+            break;
+        case v2::OFPAT_SET_NW_DST:
+            lengthChange += normSetField<OFB_IPV4_DST>(iter, iterEnd);
+            break;
+        case v2::OFPAT_SET_NW_TOS:
+            lengthChange += normSetField<OFB_IP_DSCP>(iter, iterEnd);
+            break;
+        case v2::OFPAT_SET_NW_ECN:
+            lengthChange += normSetField<OFB_IP_ECN>(iter, iterEnd);
+            break;
+        case v2::OFPAT_SET_TP_SRC:
+            if (ipProto == TCP) {
+                lengthChange += normSetField<OFB_TCP_SRC>(iter, iterEnd);
+            } else if (ipProto == UDP) {
+                lengthChange += normSetField<OFB_UDP_SRC>(iter, iterEnd);
+            } else if (ipProto == ICMP) {
+                lengthChange += normSetField<OFB_ICMPV4_TYPE>(iter, iterEnd);
+            } else {
+                log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
+            }
+            break;
+        case v2::OFPAT_SET_TP_DST:
+            if (ipProto == TCP) {
+                lengthChange += normSetField<OFB_TCP_DST>(iter, iterEnd);
+            } else if (ipProto == UDP) {
+                lengthChange += normSetField<OFB_UDP_DST>(iter, iterEnd);
+            } else if (ipProto == ICMP) {
+                lengthChange += normSetField<OFB_ICMPV4_CODE>(iter, iterEnd);
+            } else {
+                log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
+            }
+            break;
+            
     }
 
     return lengthChange;
 }
 
-template <class Type>
-int Message::transmogrifyToSetField(UInt16 type, ActionIterator *iter, ActionIterator *iterEnd)
-{
-    size_t valueLen = iter->valueSize();
-
-    if (valueLen == sizeof(Type)) {
-        Type::NativeValue value;
-        memcpy(&value, iter->valuePtr(), valueLen);
-        
-        OXMList list;
-        list.add(Type{value});
-        list.pad();
-
-        int lengthChange = list.size() - valueLen
-        if (lengthChange > 0) {
-            ByteListPreservePtr m1{buf_, iter};
-            buf_.insertUninitialized(iter->valuePtr(), lengthChange);
-            *iterEnd = buf_.end();
-        } else if (lengthChange < 0) {
-            ByteListPreservePtr m1{buf_, iter};
-            buf_.remove(-lengthChange);
-            *iterEnd = buf_.end();
-        }
-
-        memcpy(iter->valuePtr(), list.data(), list.size());
-        ActionType setField{OFPAT_SET_FIELD, list.size()};
-        memcpy(iter->data(), &setField, sizeof(ActionType));
-
-    } else {
-        log::info("transmogrifyToSetField: Unexpected value size.")
-    }
-}
-#endif //0
-#endif //0
 
 } // </namespace ofp>

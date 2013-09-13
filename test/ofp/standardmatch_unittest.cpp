@@ -1,6 +1,8 @@
 #include "ofp/unittest.h"
 #include "ofp/standardmatch.h"
 #include "ofp/originalmatch.h"
+#include "ofp/matchbuilder.h"
+#include "ofp/oxmfields.h"
 
 using namespace ofp;
 using namespace deprecated;
@@ -65,6 +67,17 @@ TEST(standardmatch, fromOriginalMatch)
     std::memcpy(&origMatch, data.data(), data.length());
 
     StandardMatch stdMatch{origMatch};
-    EXPECT_HEX("00000058000000000000000F00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", &stdMatch, sizeof(stdMatch));
+    EXPECT_HEX("00000058000000000000030F000000000000000000000000000000000000000000000000000000000000000000000000FFFFFFFF00000000FFFFFFFF00000000000000000000000000000000000000000000000000000000", &stdMatch, sizeof(stdMatch));
+}
+
+
+TEST(standardmatch, oxm2)
+{
+    MatchBuilder match;
+    match.add(OFB_IN_PORT{0xCCCCCCCC});
+    match.add(OFB_IPV4_DST{IPv4Address{"192.168.1.1"}});
+
+    StandardMatch stdMatch{match.toRange()};
+    EXPECT_HEX("00000058CCCCCCCC000003F600000000000000000000000000000000000000000000000000000000080000000000000000000000C0A80101FFFFFFFF00000000000000000000000000000000000000000000000000000000", &stdMatch, sizeof(stdMatch));
 }
 

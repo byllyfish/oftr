@@ -12,10 +12,11 @@ Match FlowMod::match() const
     UInt16 type = matchType_;
 
     if (type == OFPMT_OXM) {
-        OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_};
+        OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_ - MatchHeaderSize};
         return Match{range};
 
     } else if (type == OFPMT_STANDARD) {
+        assert(matchLength_ == deprecated::OFPMT_STANDARD_LENGTH);
         const deprecated::StandardMatch *stdMatch = reinterpret_cast<const deprecated::StandardMatch *>(BytePtr(this) + SizeWithoutMatchHeader);
         return Match{stdMatch};
 
@@ -25,24 +26,37 @@ Match FlowMod::match() const
     }
 }
 
+InstructionRange FlowMod::instructions() const
+{
+    size_t offset = PadLength(SizeWithoutMatchHeader + matchLength_);
+    assert(header_.length() >= offset);
+
+    return InstructionRange{ByteRange{BytePtr(this) + offset, header_.length() - offset}}; 
+}
+
 
 bool FlowMod::validateLength(size_t length) const
 {
     if (length < UnpaddedSizeWithMatchHeader) {
-        log::debug("FlowMod too small");
+        log::debug("FlowMod too small", length);
         return false;
     }
 
     // Check the match length.
     UInt16 matchLen = matchLength_;
-    if (length < UnpaddedSizeWithMatchHeader + matchLen) {
-        log::debug("FlowMod too small with match");
+    if (matchLen < MatchHeaderSize) {
+        log::debug("Match header size too small", matchLen);
+        return false;
+    }
+
+    if (length < SizeWithoutMatchHeader + matchLen) {
+        log::debug("FlowMod too small with match", length);
         return false;
     }
 
     UInt16 matchType = matchType_;
     if (matchType == OFPMT_OXM) {
-        OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLen};
+        OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLen - MatchHeaderSize};
         if (!range.validateLength()) {
             log::debug("FlowMod OXM list has length mismatch");
             return false;
@@ -91,7 +105,7 @@ UInt32 FlowModBuilder::send(Writable *channel)
 
     // Fill in the match header.
     msg_.matchType_ = OFPMT_OXM;
-    msg_.matchLength_ = UInt16_narrow_cast(match_.size());
+    msg_.matchLength_ = UInt16_narrow_cast(FlowMod::MatchHeaderSize + match_.size());
 
     // Write the message with padding in the correct spots.
     Padding<8> pad;

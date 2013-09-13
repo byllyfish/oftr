@@ -51,6 +51,8 @@ public:
 	
 	void operator++() 
 	{
+		auto sz = size();
+		assert(sz >= 4);
 		position_ += size();
 	}
 		
@@ -65,6 +67,10 @@ public:
 	bool operator<=(const InstructionIterator &rhs) const {
 		return position_ <= rhs.position_;
 	}
+
+	bool operator<(const InstructionIterator &rhs) const {
+		return position_ < rhs.position_;
+	}
 	
 	/// \returns Number of instructions between begin and end.
 	static size_t distance(InstructionIterator begin, InstructionIterator end)
@@ -72,7 +78,7 @@ public:
 		assert(begin <= end);
 		
 		size_t dist = 0;
-		while (begin != end) {
+		while (begin < end) {
 			++dist;
 			++begin;
 		}

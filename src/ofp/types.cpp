@@ -124,7 +124,7 @@ bool ofp::IsMemFilled(const void *data, size_t len, char ch)
 {
 	const UInt8 *p = static_cast<const UInt8 *>(data);
 	while (len-- > 0) {
-		if (*p++ != ch) return false;
+		if (*p++ != UInt8_cast(ch)) return false;
 	}
 	return true;
 }

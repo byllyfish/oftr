@@ -43,7 +43,15 @@ TEST(ipv4address, mask)
 	IPv4Address j = IPv4Address::mask(32);
 	EXPECT_EQ("255.255.255.255", j.toString());
 
-	// IPv4Address k = IPv4Address::Mask(33);
-	// EXPECT_EQ("255.255.255.255", j.toString());
+	EXPECT_FALSE(i.isBroadcast());
+	EXPECT_TRUE(j.isBroadcast());
+}
 
+
+TEST(ipv4address, prefix) 
+{
+	for (unsigned i = 0; i < 33; ++i) {
+		IPv4Address addr = IPv4Address::mask(i);
+		EXPECT_EQ(i, addr.prefix());
+	}
 }

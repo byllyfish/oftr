@@ -116,6 +116,8 @@ TEST(types, IsMemFilled)
 	EXPECT_FALSE(IsMemFilled("b", 1, 'a'));
 	EXPECT_FALSE(IsMemFilled("ab", 2, 'a'));
 	EXPECT_FALSE(IsMemFilled("aba", 3, 'a'));
+
+	EXPECT_TRUE(IsMemFilled("\xFF\xFF\xFF", 3, '\xFF'));
 }
 
 

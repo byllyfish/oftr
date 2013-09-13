@@ -15,6 +15,7 @@
 #include "ofp/padding.h"
 #include "ofp/oxmtype.h"
 #include "ofp/constants.h"
+#include "ofp/oxmfields.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -277,7 +278,6 @@ private:
 template <class ValueType>
 class AT_SET_FIELD {
 public:
-
 	constexpr static ActionType type() { return ActionType(OFPAT_SET_FIELD, 8 + sizeof(Padded<ValueType>)); }
 	
 	constexpr AT_SET_FIELD(const ValueType &value) 
@@ -291,6 +291,67 @@ private:
 	const Padded<ValueType> value_;
 };
 
+namespace deprecated { // <namespace deprecated>
+
+template <UInt16 Code, class ValueType>
+class AT_SET_FIELD_V {
+public:
+	constexpr static ActionType type() { return ActionType(static_cast<OFPActionType>(Code), PadLength(4 + sizeof(ValueType))); }
+
+	constexpr AT_SET_FIELD_V(const AT_SET_FIELD<ValueType> *action) : value_{action->value()} {}
+
+private:
+	const ActionType type_ = type();
+	const ValueType value_;
+	Padding<8 - (4 + sizeof(ValueType)) % 8> pad_;
+};
+
+template <UInt16 Code, class ValueType>
+class AT_SET_FIELD_V_NPAD {
+public:
+	constexpr static ActionType type() { return ActionType(static_cast<OFPActionType>(Code), PadLength(4 + sizeof(ValueType))); }
+
+	constexpr AT_SET_FIELD_V_NPAD(const AT_SET_FIELD<ValueType> *action) : value_{action->value()} {}
+
+private:
+	const ActionType type_ = type();
+	const ValueType value_;
+	// No padding.
+};
+
+// N.B. V1 and V2 OpenFlow's OFPAT_SET_TP_XXX actions do not make a distinction
+// between type of transport protocol (TCP, UDP, SCTP), but later versions do. 
+// We need to map the V3 and V4 model back to V1 and V2. To do this, we 
+// recognize that all protocols have in common a 16-bit port number. We 
+// introduce an alias, OFB_TP_PORT to represent something with a 16-bit port 
+// number. This loss of fidelity has consequences; a client could ask that the 
+// source port be modified in a TCP packet using a v4 OFB_UDP_DST set-field 
+// action.
+
+using OFB_TP_PORT = OFB_TCP_SRC;
+
+// FIXME check that vid meaning is correct for extra flags.
+using AT_SET_VLAN_VID_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_VLAN_VID,OFB_VLAN_VID>;
+using AT_SET_VLAN_PCP_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_VLAN_PCP,OFB_VLAN_PCP>;
+using AT_SET_DL_SRC_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_DL_SRC,OFB_ETH_SRC>;
+using AT_SET_DL_DST_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_DL_DST,OFB_ETH_DST>;
+using AT_SET_NW_SRC_V1 = AT_SET_FIELD_V_NPAD<v1::OFPAT_SET_NW_SRC,OFB_IPV4_SRC>;
+using AT_SET_NW_DST_V1 = AT_SET_FIELD_V_NPAD<v1::OFPAT_SET_NW_DST,OFB_IPV4_DST>;
+using AT_SET_NW_TOS_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_NW_TOS,OFB_IP_DSCP>;
+using AT_SET_TP_SRC_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_TP_SRC,OFB_TP_PORT>;
+using AT_SET_TP_DST_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_TP_DST,OFB_TP_PORT>;
+
+static_assert(sizeof(AT_SET_VLAN_VID_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_VLAN_PCP_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_DL_SRC_V1) == 16, "Unexpected size.");
+static_assert(sizeof(AT_SET_DL_DST_V1) == 16, "Unexpected size.");
+static_assert(sizeof(AT_SET_NW_SRC_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_NW_DST_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_NW_TOS_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_TP_SRC_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_TP_DST_V1) == 8, "Unexpected size.");
+
+} // </namespace deprecated>
 
 } // </namespace ofp>
 

@@ -467,3 +467,122 @@ TEST(encoder, multipartreply3)
     EXPECT_EQ(0x64, encoder.size());
     EXPECT_HEX(hex, encoder.data(), encoder.size());
 }
+
+
+TEST(encoder, flowmodv4)
+{
+    const char *input = R"""(
+      type:            OFPT_FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x0000000000000000
+        cookie_mask:     0x0000000000000000
+        table_id:        0
+        command:         0
+        idle_timeout:    0x0000
+        hard_timeout:    0x0000
+        priority:        0x0000
+        buffer_id:       0x00000000
+        out_port:        0x00000000
+        out_group:       0x00000000
+        flags:           0x0000
+        match:           
+          - type:            OFB_IN_PORT
+            value:           13
+          - type:            OFB_ETH_TYPE
+            value:           2048
+          - type:            OFB_IPV4_DST
+            value:           192.168.1.1
+        instructions:
+          - type:    OFPIT_APPLY_ACTIONS
+            value:
+               - action: OFPAT_SET_FIELD
+                 type: OFB_IPV4_DST
+                 value: 192.168.2.1
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x68, encoder.size());
+    EXPECT_HEX("040E006800000001000000000000000000000000000000000000000000000000000000000000000000000000000000000001001A800000040000000D80000A02080080001804C0A8010100000000000000040018000000000019001080001804C0A8020100000000", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, flowmodv4_2)
+{
+    const char *input = R"""(
+      type:            OFPT_FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111111
+        cookie_mask:     0x2222222222222222
+        table_id:        0x33
+        command:         0x44
+        idle_timeout:    0x5555
+        hard_timeout:    0x6666
+        priority:        0x7777
+        buffer_id:       0x88888888
+        out_port:        0x99999999
+        out_group:       0xAAAAAAAA
+        flags:           0xBBBB
+        match:           
+          - type:            OFB_IN_PORT
+            value:           0xCCCCCCCC
+          - type:            OFB_ETH_TYPE
+            value:           2048
+          - type:            OFB_IPV4_DST
+            value:           192.168.1.1
+        instructions:
+          - type:    OFPIT_APPLY_ACTIONS
+            value:
+               - action: OFPAT_SET_FIELD
+                 type: OFB_IPV4_DST
+                 value: 192.168.2.1
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x68, encoder.size());
+    EXPECT_HEX("040E0068000000011111111111111111222222222222222233445555666677778888888899999999AAAAAAAABBBB00000001001A80000004CCCCCCCC80000A02080080001804C0A8010100000000000000040018000000000019001080001804C0A8020100000000", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, flowmodv1)
+{
+    const char *input = R"""(
+      type:            OFPT_FLOW_MOD
+      version:         1
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111111
+        cookie_mask:     0x2222222222222222
+        table_id:        0x33
+        command:         0x44
+        idle_timeout:    0x5555
+        hard_timeout:    0x6666
+        priority:        0x7777
+        buffer_id:       0x88888888
+        out_port:        0x99999999
+        out_group:       0xAAAAAAAA
+        flags:           0xBBBB
+        match:           
+          - type:            OFB_IN_PORT
+            value:           0xCCCCCCCC
+          - type:            OFB_IPV4_DST
+            value:           192.168.1.1
+        instructions:
+          - type:    OFPIT_APPLY_ACTIONS
+            value:
+               - action: OFPAT_SET_FIELD
+                 type: OFB_IPV4_DST
+                 value: 192.168.2.1
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x050, encoder.size());
+    EXPECT_HEX("010E00500000000100303FEECCCC0000000000000000000000000000000008000000000000000000C0A801010000000011111111111111110044555566667777888888889999BBBB00070008C0A80201", encoder.data(), encoder.size());
+}
+

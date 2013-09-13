@@ -29,12 +29,6 @@ enum {
     OFPMT_STANDARD_LENGTH = 88
 };
 
-enum {
-	TCP = 6,
-	UDP = 17,
-	SCTP = 132
-};
-
 struct StandardMatch {
 
     enum Wildcards : UInt32 {

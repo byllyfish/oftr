@@ -15,12 +15,16 @@ namespace yaml { // <namespace yaml>
 
 Encoder::Encoder(const std::string &input) : errorStream_{error_} 
 {
-    llvm::yaml::Input yin{input, nullptr, Encoder::diagnosticHandler, this};
-    if (!yin.error()) {
-        yin >> *this;
-    }
-    if (yin.error()) {
-        channel_.clear();
+    if (input.empty()) {
+        error_ = "No input.";
+    } else {
+        llvm::yaml::Input yin{input, nullptr, Encoder::diagnosticHandler, this};
+        if (!yin.error()) {
+            yin >> *this;
+        }
+        if (yin.error()) {
+            channel_.clear();
+        }
     }
 }
 

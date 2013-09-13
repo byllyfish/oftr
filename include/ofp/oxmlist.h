@@ -33,6 +33,8 @@ public:
 	const UInt8 *data() const { return buf_.begin(); }
 	size_t size() const { return buf_.size(); }
 	
+	OXMRange toRange() const { return OXMRange{buf_.data(), buf_.size()}; }
+
 	template <class ValueType>
 	void add(ValueType value);
 	
@@ -42,10 +44,9 @@ public:
 	void add(OXMIterator iter);
 	void addSignal(OXMType signal);
 	void insertSignal(OXMIterator pos, OXMType signal);
-	
+	void pad8(unsigned offset);
+
 	OXMIterator replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len);
-	
-	OXMRange toRange() const { return OXMRange{buf_.data(), buf_.size()}; }
 	
 	bool operator==(const OXMList &rhs) const { return buf_ == rhs.buf_; }
 	bool operator!=(const OXMList &rhs) const { return !(*this == rhs); }
@@ -92,6 +93,16 @@ inline void OXMList::addSignal(OXMType signal)
 inline void OXMList::insertSignal(OXMIterator pos, OXMType signal)
 {
 	insert(pos, &signal, sizeof(signal));
+}
+
+inline void OXMList::pad8(unsigned n)
+{
+	size_t len = PadLength(n + size()) - (n + size());
+	if (len > 0) {
+		assert(len < 8);
+		Padding<8> padding;
+		buf_.add(&padding, len);
+	}
 }
 
 } // </namespace ofp>

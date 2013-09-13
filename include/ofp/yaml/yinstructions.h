@@ -4,6 +4,7 @@
 #include "ofp/instructionlist.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yactions.h"
+#include "ofp/instructionrange.h"
 
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>
@@ -159,6 +160,9 @@ struct MappingTraits<ofp::InstructionIterator::Item> {
                 io.mapRequired("value", instr);
                 break;
             }
+            default:
+                log::info("MappingTraits: Unknown instruction type.");
+                break;
         }
     }
 };
@@ -228,6 +232,7 @@ struct SequenceTraits<ofp::InstructionRange> {
 
     static size_t size(IO &io, ofp::InstructionRange &range)
     {
+        ofp::log::debug("Sequence::INstructionRange: ", ofp::RawDataToHex(range.data(), range.size()));
         return range.itemCount();
     }
 
@@ -235,7 +240,7 @@ struct SequenceTraits<ofp::InstructionRange> {
                                      size_t index)
     {
         ofp::log::debug("instruction yaml item", index);
-        // FIXME
+        // FIXME - iterates every time!
         ofp::InstructionIterator iter = range.begin();
         for (size_t i = 0; i < index; ++i)
             ++iter;

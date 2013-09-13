@@ -8,88 +8,124 @@ namespace ofp { // <namespace ofp>
 
 class ActionIterator {
 public:
-	
-	class Item {
-	public:
-		
-		Item(const Item &) = delete;
-		Item &operator=(const Item &) = delete;
 
-		ActionType type() const {
-			return position().type();
-		}
+    class Item {
+    public:
 
-		template <class Type>
-		const Type *action() {
-			return position().action<Type>();
-		}
+        Item(const Item &) = delete;
+        Item &operator=(const Item &) = delete;
 
-		OXMIterator oxmIterator() const {
-			return OXMIterator{BytePtr(this) + sizeof(ActionType)};
-		}
+        ActionType type() const
+        {
+            return position().type();
+        }
 
-		ActionIterator position() const { return ActionIterator{BytePtr(this)}; }
-		
-	private:
-		Item() = default;
-	};
+        template <class Type>
+        const Type *action()
+        {
+            return position().action<Type>();
+        }
 
-	const Item &operator*() const 
-	{
-		return *reinterpret_cast<const Item *>(position_);
-	}
+        OXMIterator oxmIterator() const
+        {
+            return position().oxmIterator();
+        }
 
-	ActionType type() const {
-		return ActionType::fromBytes(position_);
-	}
-	
-	const UInt8 *data() const { return position_; }
+        ActionIterator position() const
+        {
+            return ActionIterator{BytePtr(this)};
+        }
 
-	template <class Type>
-	const Type *action() {
-		return reinterpret_cast<const Type *>(position_);
-	}
-	
-	// No operator -> (FIXME?)
-	// No postfix ++
-	
-	void operator++() 
-	{
-		position_ += type().length();
-	}
-		
-	bool operator==(const ActionIterator &rhs) const {
-		return position_ == rhs.position_;
-	}
-	
-	bool operator!=(const ActionIterator &rhs) const {
-		return !(*this == rhs);
-	}
+    private:
+        Item() = default;
+    };
 
-	bool operator<=(const ActionIterator &rhs) const {
-		return position_ <= rhs.position_;
-	}
+	explicit ActionIterator(const UInt8 *pos)
+        : position_{pos}
+    {
+    }
 
-	/// \returns Number of actions between begin and end.
-	static size_t distance(ActionIterator begin, ActionIterator end)
-	{
-		assert(begin <= end);
-		
-		size_t dist = 0;
-		while (begin != end) {
-			++dist;
-			++begin;
-		}
-		return dist;
-	}
+    const Item &operator*() const
+    {
+        return *reinterpret_cast<const Item *>(position_);
+    }
+
+    ActionType type() const
+    {
+        return ActionType::fromBytes(position_);
+    }
+
+    const UInt8 *data() const
+    {
+        return position_;
+    }
+
+    template <class Type>
+    const Type *action()
+    {
+        return reinterpret_cast<const Type *>(position_);
+    }
+
+    OXMIterator oxmIterator() const {
+        return OXMIterator{BytePtr(position_) + sizeof(ActionType)};
+    }
+
+    const UInt8 *valuePtr() const
+    {
+        return data() + sizeof(ActionType);
+    }
+
+    size_t valueSize() const
+    {
+        return type().length() - sizeof(ActionType);
+    }
+    // No operator -> (FIXME?)
+    // No postfix ++
+
+    void operator++()
+    {
+        position_ += *reinterpret_cast<const Big_unaligned<UInt16> *>(
+                          position_ + 2); // type().length();
+    }
+
+    bool operator==(const ActionIterator &rhs) const
+    {
+        return position_ == rhs.position_;
+    }
+
+    bool operator!=(const ActionIterator &rhs) const
+    {
+        return !(*this == rhs);
+    }
+
+    bool operator<=(const ActionIterator &rhs) const
+    {
+        return position_ <= rhs.position_;
+    }
+
+    bool operator<(const ActionIterator &rhs) const
+    {
+    	return position_ < rhs.position_;
+    }
+
+    /// \returns Number of actions between begin and end.
+    static size_t distance(ActionIterator begin, ActionIterator end)
+    {
+        assert(begin <= end);
+
+        size_t dist = 0;
+        while (begin < end) {
+            ++dist;
+            ++begin;
+        }
+        assert(begin == end);
+        
+        return dist;
+    }
+
 
 private:
-	const UInt8 *position_;
-
-	explicit ActionIterator(const void *pos)
-		: position_{static_cast<const UInt8 *>(pos)} {}
-		
-	friend class ActionRange;
+    const UInt8 *position_;
 };
 
 } // </namespace ofp>

@@ -15,24 +15,21 @@ TEST(message, transmogrify)
     Message msg{nullptr};
     std::memcpy(msg.mutableData(s.length()), s.data(), s.length());
 
-    EXPECT_EQ(72, msg.size());
+    EXPECT_EQ(0x48, msg.size());
     EXPECT_HEX(hexBefore, msg.data(), msg.size());
 
     msg.transmogrify();
 
-    const char *hexAfter =
-        "010E00900000002C0000000000000000FFFFFFFFFFFFFFFF0003000000008000FFFFFF"
-        "FFFFFFFFFF000000000000000000000058000000000000000F00000000000000000000"
-        "0000000000000000000000000000000000000000000000000000000000000000000000"
-        "00000000000000000000000000000000040000000000000000000000000000FFFFFFFF"
-        "FFFF0000";
+    const char *hexAfter = "010E00880000002C0000000000000000FFFFFFFFFFFFFFFF0003000000008000FFFFFFFFFFFFFFFF000000000000000000000058000000000000030F000000000000000000000000000000000000000000000000000000000000000000000000FFFFFFFF00000000FFFFFFFF00000000000000000000000000000000000000000000000000000000";
 
-    EXPECT_EQ(144, msg.size());
+    EXPECT_EQ(0x088, msg.size());
     EXPECT_HEX(hexAfter, msg.data(), msg.size());
 }
 
 TEST(message, transmogrify_flow_mod)
 {
+    log::set(&std::cerr);
+    
     const char *hexBefore = "010E 0048 0000 0060 0010 001F 0000 0000 0000 0000 "
                             "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 "
                             "0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 "
@@ -85,15 +82,15 @@ TEST(message, translateType)
     EXPECT_EQ(UInt8_cast(deprecated::v3::OFPT_PORT_MOD),
               Header::translateType(4, OFPT_PORT_MOD, 3));
 
-    EXPECT_EQ(OFPT_PORT_MOD,
-              Header::translateType(
-                  1, UInt8_cast(deprecated::v1::OFPT_PORT_MOD), 4));
-    EXPECT_EQ(OFPT_PORT_MOD,
-              Header::translateType(
-                  2, UInt8_cast(deprecated::v2::OFPT_PORT_MOD), 4));
-    EXPECT_EQ(OFPT_PORT_MOD,
-              Header::translateType(
-                  3, UInt8_cast(deprecated::v3::OFPT_PORT_MOD), 4));
+    EXPECT_EQ(
+        OFPT_PORT_MOD,
+        Header::translateType(1, UInt8_cast(deprecated::v1::OFPT_PORT_MOD), 4));
+    EXPECT_EQ(
+        OFPT_PORT_MOD,
+        Header::translateType(2, UInt8_cast(deprecated::v2::OFPT_PORT_MOD), 4));
+    EXPECT_EQ(
+        OFPT_PORT_MOD,
+        Header::translateType(3, UInt8_cast(deprecated::v3::OFPT_PORT_MOD), 4));
 
     EXPECT_EQ(OFPT_UNSUPPORTED, Header::translateType(4, OFPT_SET_ASYNC, 1));
     EXPECT_EQ(OFPT_UNSUPPORTED, Header::translateType(4, OFPT_SET_ASYNC, 2));

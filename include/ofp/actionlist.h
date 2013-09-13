@@ -34,6 +34,8 @@ class ActionList {
 
     template <class Type> void add(const Type &action)
     {
+        // Make sure it's an action.
+        assert(Type::type() != 0);
         buf_.add(&action, sizeof(action));
     }
 

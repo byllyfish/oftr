@@ -199,3 +199,39 @@ TEST(decoder, multipartreply2)
 {
     testDecodeEncode("0413006411223344000100000000000000540100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A0001000000040020000000000000001000000001FFFF0000000000000017000840000000", "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             0x11223344\nversion:         4\nmsg:             \n  type:            OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    - table_id:        1\n      duration_sec:    0x00000002\n      duration_nsec:   0x00000003\n      priority:        0x0004\n      idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:           0x0007\n      cookie:          0x0000000000000008\n      packet_count:    0x0000000000000009\n      byte_count:      0x000000000000000A\n      match:           \n      instructions:    \n        - type:            OFPIT_APPLY_ACTIONS\n          value:           \n            - action:          OFPAT_OUTPUT\n              port:            1\n              maxlen:          65535\n            - action:          OFPAT_SET_NW_TTL\n              ttl:             64\n...\n");
 }
+
+TEST(decoder, flowmodv4) 
+{
+    testDecodeEncode("040E006800000001000000000000000000000000000000000000000000000000000000000000000000000000000000000001001A800000040000000D80000A02080080001804C0A8010100000000000000040018000000000019001080001804C0A8020100000000", 
+        "---\ntype:            OFPT_FLOW_MOD\nxid:             0x00000001\nversion:         4\nmsg:             \n  cookie:          0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:        0\n  command:         0\n  idle_timeout:    0x0000\n  hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  out_port:        0x00000000\n  out_group:       0x00000000\n  flags:           0x0000\n  match:           \n    - type:            OFB_IN_PORT\n      value:           13\n    - type:            OFB_ETH_TYPE\n      value:           2048\n    - type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n    - type:            OFPIT_APPLY_ACTIONS\n      value:           \n        - action:          OFPAT_SET_FIELD\n          type:            OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
+}
+
+TEST(decoder, flowmodv4_2)
+{
+    testDecodeEncode("040E0068000000011111111111111111222222222222222233445555666677778888888899999999AAAAAAAABBBB00000001001A80000004CCCCCCCC80000A02080080001804C0A8010100000000000000040018000000000019001080001804C0A8020100000000", "---\ntype:            OFPT_FLOW_MOD\nxid:             0x00000001\nversion:         4\nmsg:             \n  cookie:          0x1111111111111111\n  cookie_mask:     0x2222222222222222\n  table_id:        51\n  command:         68\n  idle_timeout:    0x5555\n  hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       0x88888888\n  out_port:        0x99999999\n  out_group:       0xAAAAAAAA\n  flags:           0xBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           3435973836\n    - type:            OFB_ETH_TYPE\n      value:           2048\n    - type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n    - type:            OFPIT_APPLY_ACTIONS\n      value:           \n        - action:          OFPAT_SET_FIELD\n          type:            OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
+}
+
+TEST(decoder, flowmodv1)
+{
+    ofp::log::set(&std::cerr);
+
+    const char *hex = "010E00500000000100303FEECCCC0000000000000000000000000000000008000000000000000000C0A801010000000011111111111111110044555566667777888888889999BBBB00070008C0A80201";
+    const char *yaml = "---\ntype:            OFPT_FLOW_MOD\nxid:             0x00000001\nversion:         1\nmsg:             \n  cookie:          0x1111111111111111\n  cookie_mask:     0xFFFFFFFFFFFFFFFF\n  table_id:        0\n  command:         68\n  idle_timeout:    0x5555\n  hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       0x88888888\n  out_port:        0x00009999\n  out_group:       0x00000000\n  flags:           0xBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           52428\n    - type:            OFB_ETH_TYPE\n      value:           2048\n    - type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n    - type:            OFPIT_APPLY_ACTIONS\n      value:           \n        - action:          OFPAT_SET_FIELD\n          type:            OFB_IPV4_DST\n          value:           192.168.2.1\n...\n";
+    
+    auto s = HexToRawData(hex);
+
+    Message msg{s.data(), s.size()};
+    msg.transmogrify();
+    EXPECT_EQ(0xA0, msg.size());
+    EXPECT_HEX("010E00A0000000011111111111111111FFFFFFFFFFFFFFFF0044555566667777888888880000999900000000BBBB0000000000580000CCCC000003F600000000000000000000000000000000000000000000000000000000080000000000000000000000C0A80101FFFFFFFF0000000000000000000000000000000000000000000000000000000000040018000000000019001080001804C0A8020100000000", msg.data(), msg.size());
+
+    Decoder decoder{&msg};
+
+    EXPECT_EQ("", decoder.error());
+    EXPECT_EQ(yaml, decoder.result());
+
+    Encoder encoder{decoder.result()};
+
+    EXPECT_EQ("", encoder.error());
+    EXPECT_HEX(hex, encoder.data(), encoder.size());
+}

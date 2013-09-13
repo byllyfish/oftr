@@ -17,6 +17,7 @@
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionlist.h"
 #include "ofp/standardmatch.h"
+#include "ofp/instructionrange.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -53,10 +54,7 @@ public:
     UInt16 flags() const { return flags_; }
 
     Match match() const;
-
-    #if 0
-    Instructions instructions() const;
-    #endif
+    InstructionRange instructions() const;
     
     bool validateLength(size_t length) const;
 
@@ -81,7 +79,8 @@ private:
 
     enum { UnpaddedSizeWithMatchHeader = 52 };
     enum { SizeWithoutMatchHeader = 48 };
-
+    enum { MatchHeaderSize = 4 };
+    
     friend class FlowModBuilder;
     friend struct llvm::yaml::MappingTraits<FlowMod>;
     friend struct llvm::yaml::MappingTraits<FlowModBuilder>;

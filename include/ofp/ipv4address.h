@@ -33,7 +33,8 @@ public:
 	}
 
 	unsigned prefix() const;
-
+	bool isBroadcast() const { return IsMemFilled(addr_.data(), sizeof(addr_), '\xff'); }
+	
 	void setAllOnes() {
 		std::memset(addr_.data(), 0xFF, sizeof(addr_));
 	}

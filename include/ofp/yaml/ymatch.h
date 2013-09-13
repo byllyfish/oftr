@@ -1,40 +1,15 @@
-#ifndef OFP_YAML_YFLOWMOD_H
-#define OFP_YAML_YFLOWMOD_H
+#ifndef OFP_YAML_YMATCH_H
+#define OFP_YAML_YMATCH_H
 
-#include "ofp/yaml.h"
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
-#include "ofp/yaml/yinstructions.h"
-#include "ofp/flowmod.h"
+#include "ofp/yaml/yaddress.h"
 #include "ofp/match.h"
+#include "ofp/matchbuilder.h"
 
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>
 
-#if 0
-template <class Type>
-struct MessageWrap {
-    MessageWrap(const Type *m) : msg{const_cast<Type *>(m)} {}
-    Type *msg;
-};
-
-#endif
-
-struct FlowModWrap {
-    FlowModWrap(const ofp::FlowMod *m) : msg{const_cast<FlowMod *>(m)}
-    {
-    }
-    ofp::FlowMod *msg;
-};
-
-struct FlowModBuilderWrap {
-    FlowModBuilderWrap(ofp::FlowModBuilder *m) : msg{m}
-    {
-    }
-    ofp::FlowModBuilder *msg;
-};
-
-#if 0
 OFP_BEGIN_IGNORE_PADDING
 
 class OXMItemReader {
@@ -95,50 +70,15 @@ OFP_END_IGNORE_PADDING
 
 struct MatchBuilderItem {
 };
-#endif //0
-#
+
 } // </namespace detail>
 } // </namespace ofp>
+
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
-template <>
-struct MappingTraits<ofp::detail::FlowModWrap> {
 
-    static void mapping(IO &io, ofp::detail::FlowModWrap &msg)
-    {
-        ofp::detail::writeHeader(io, reinterpret_cast<ofp::Header *>(msg.msg));
-        io.mapRequired("msg", *msg.msg);
-    }
-};
-
-template <>
-struct MappingTraits<ofp::FlowMod> {
-
-    static void mapping(IO &io, ofp::FlowMod &msg)
-    {
-        io.mapRequired("cookie", msg.cookie_);
-        io.mapRequired("cookie_mask", msg.cookieMask_);
-        io.mapRequired("table_id", msg.tableId_);
-        io.mapRequired("command", msg.command_);
-        io.mapRequired("idle_timeout", msg.idleTimeout_);
-        io.mapRequired("hard_timeout", msg.hardTimeout_);
-        io.mapRequired("priority", msg.priority_);
-        io.mapRequired("buffer_id", msg.bufferId_);
-        io.mapRequired("out_port", msg.outPort_);
-        io.mapRequired("out_group", msg.outGroup_);
-        io.mapRequired("flags", msg.flags_);
-
-        ofp::Match m = msg.match();
-        io.mapRequired("match", m);
-
-        ofp::InstructionRange instr = msg.instructions();
-        io.mapRequired("instructions", instr);
-    }
-};
-
-#if 0
 template <>
 struct SequenceTraits<ofp::Match> {
 
@@ -196,43 +136,7 @@ struct ScalarTraits<ofp::OXMType> {
         return "";
     }
 };
-#endif //0
 
-template <>
-struct MappingTraits<ofp::detail::FlowModBuilderWrap> {
-
-    static void mapping(IO &io, ofp::detail::FlowModBuilderWrap &msg)
-    {
-        ofp::detail::readHeader(io, reinterpret_cast<ofp::Header *>(msg.msg));
-        io.mapRequired("msg", *msg.msg);
-    }
-};
-
-template <>
-struct MappingTraits<ofp::FlowModBuilder> {
-
-    static void mapping(IO &io, ofp::FlowModBuilder &msg)
-    {
-        io.mapRequired("cookie", msg.msg_.cookie_);
-        io.mapRequired("cookie_mask", msg.msg_.cookieMask_);
-        io.mapRequired("table_id", msg.msg_.tableId_);
-        io.mapRequired("command", msg.msg_.command_);
-        io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
-        io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);
-        io.mapRequired("priority", msg.msg_.priority_);
-        io.mapRequired("buffer_id", msg.msg_.bufferId_);
-        io.mapRequired("out_port", msg.msg_.outPort_);
-        io.mapRequired("out_group", msg.msg_.outGroup_);
-        io.mapRequired("flags", msg.msg_.flags_);
-
-        io.mapRequired("match", msg.match_);
-
-        ofp::log::debug("INSTRUCTIONS=", ofp::RawDataToHex(msg.instructions_.data(), msg.instructions_.size()));
-        io.mapRequired("instructions", msg.instructions_);
-    }
-};
-
-#if 0
 template <>
 struct SequenceTraits<ofp::MatchBuilder> {
 
@@ -268,9 +172,8 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
         }
     }
 };
-#endif //0
 
 } // </namespace yaml>
 } // </namespace llvm>
 
-#endif // OFP_YAML_YFLOWMOD_H
+#endif // OFP_YAML_YMATCH_H
