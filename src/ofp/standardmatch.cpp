@@ -85,14 +85,22 @@ StandardMatch::StandardMatch(const OXMRange &range)
             tp_src = item.value<OFB_UDP_SRC>();
             wc &= ~OFPFW_TP_SRC;
             break;
+        case OFB_ICMPV4_TYPE::type():
+            tp_src = item.value<OFB_ICMPV4_TYPE>();
+            wc &= ~OFPFW_TP_SRC;
+            break;
         case OFB_TCP_DST::type():
             tp_dst = item.value<OFB_TCP_DST>();
-            wc &= ~OFPFW_TP_SRC;
+            wc &= ~OFPFW_TP_DST;
             break;
         case OFB_UDP_DST::type():
             tp_dst = item.value<OFB_UDP_DST>();
-            wc &= ~OFPFW_TP_SRC;
-            break;            
+            wc &= ~OFPFW_TP_DST;
+            break;
+        case OFB_ICMPV4_CODE::type():
+            tp_dst = item.value<OFB_ICMPV4_CODE>();
+            wc &= ~OFPFW_TP_DST;
+            break;     
         case OFB_MPLS_LABEL::type():
             mpls_label = item.value<OFB_MPLS_LABEL>();
             wc &= ~OFPFW_MPLS_LABEL;
@@ -215,7 +223,7 @@ OXMList StandardMatch::toOXMList() const
 
     if (!(wc & OFPFW_TP_SRC)) {
         if (wc & nw_proto) {
-            log::info("OFPFW_TP_SRC is missing OFPFW_NW_PROTO.");
+            log::info("StandardMatch::toOXMList: OFPFW_TP_SRC is missing OFPFW_NW_PROTO.");
         } else {
             switch (nw_proto) {
             case TCP:
@@ -224,11 +232,14 @@ OXMList StandardMatch::toOXMList() const
             case UDP:
                 list.add(OFB_UDP_SRC{tp_src});
                 break;
+            case ICMP:
+                list.add(OFB_ICMPV4_TYPE{UInt8_narrow_cast(tp_src)});
+                break;
             case SCTP:
                 list.add(OFB_SCTP_SRC{tp_src});
                 break;
             default:
-                log::info("OFPFW_TP_SRC has unsupported OFPFW_NW_PROTO:",
+                log::info("StandardMatch::toOXMList: OFPFW_TP_SRC has unsupported OFPFW_NW_PROTO:",
                           nw_proto);
                 break;
             }
@@ -237,7 +248,7 @@ OXMList StandardMatch::toOXMList() const
 
     if (!(wc & OFPFW_TP_DST)) {
         if ((wc & nw_proto)) {
-            log::info("OFPFW_TP_DST is missing OFPFW_NW_PROTO.");
+            log::info("StandardMatch::toOXMList: OFPFW_TP_DST is missing OFPFW_NW_PROTO.");
         } else {
             switch (nw_proto) {
             case TCP:
@@ -246,11 +257,14 @@ OXMList StandardMatch::toOXMList() const
             case UDP:
                 list.add(OFB_UDP_DST{tp_dst});
                 break;
+            case ICMP:
+                list.add(OFB_ICMPV4_CODE{UInt8_narrow_cast(tp_dst)});
+                break;
             case SCTP:
                 list.add(OFB_SCTP_DST{tp_dst});
                 break;
             default:
-                log::info("OFPFW_TP_DST has unsupported OFPFW_NW_PROTO:",
+                log::info("StandardMatch::toOXMList: OFPFW_TP_DST has unsupported OFPFW_NW_PROTO:",
                           nw_proto);
                 break;
             }

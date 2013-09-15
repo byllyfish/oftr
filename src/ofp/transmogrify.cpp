@@ -3,9 +3,11 @@
 #include "ofp/flowmod.h"
 #include "ofp/portstatus.h"
 #include "ofp/experimenter.h"
+#include "ofp/packetout.h"
 #include "ofp/instructions.h"
 #include "ofp/instructionrange.h"
 #include "ofp/originalmatch.h"
+#include "ofp/actions.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -15,7 +17,6 @@ void Transmogrify::normalize()
 {
     assert(buf_.size() >= sizeof(Header));
 
-    // Caution! Many magic numbers ahead...
     Header *hdr = header();
 
     // Translate type of message from earlier version into latest enum.
@@ -27,12 +28,14 @@ void Transmogrify::normalize()
     hdr->setType(type);
 
     if (hdr->version() == OFP_VERSION_1) {
-        if (hdr->type() == FlowMod::type()) {
+        if (type == FlowMod::type()) {
             normalizeFlowModV1();
-        } else if (hdr->type() == PortStatus::type()) {
+        } else if (type == PortStatus::type()) {
             normalizePortStatusV1();
-        } else if (hdr->type() == Experimenter::type()) {
+        } else if (type == Experimenter::type()) {
             normalizeExperimenterV1();
+        } else if (type == PacketOut::type()) {
+            normalizePacketOutV1();
         }
     }
 }
@@ -50,6 +53,8 @@ void Transmogrify::normalizeFlowModV1()
         return;
     }
 
+    // Caution! Many magic numbers ahead...
+    // 
     // To convert a v1 FlowMod into v2:
     //  1. Copy OriginalMatch into StandardMatch.
     //  1. Add 64-bit cookie_mask field after cookie.
@@ -71,13 +76,8 @@ void Transmogrify::normalizeFlowModV1()
     // Specify cookieMask as all 1's.
     UInt64 cookie_mask = ~0ULL;
 
-    Big16 *out_port16 = reinterpret_cast<Big16 *>(pkt + 68);
-    UInt32 out_port32 = *out_port16;
-    if (out_port32 > 0xFF00U) {
-        // Sign extend to 32-bits the "fake" ports.
-        out_port32 |= 0xFFFF0000U;
-    }
-    Big32 out_port = out_port32;
+    // Convert port number from 16 to 32 bits.
+    Big32 out_port = normPortNumberV1(pkt+68);
 
     std::memcpy(pkt + 8, pkt + 48, 8);      // set cookie
     std::memcpy(pkt + 16, &cookie_mask, 8); // set cookie_mask
@@ -175,6 +175,70 @@ void Transmogrify::normalizeExperimenterV1()
     header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
+
+void Transmogrify::normalizePacketOutV1()
+{
+    Header *hdr = header();
+
+    if (hdr->length() < 16) {
+        log::info("PacketOut v1 message is too short.", hdr->length());
+        hdr->setType(OFPT_UNSUPPORTED);
+        return;
+    }
+
+    // 1. Convert inPort from 16 to 32 bits.
+    // 2. Insert 6 pad bytes after 32 bit inPort.
+    // 3. Normalize actions, if present.
+    
+    UInt8 *pkt = buf_.mutableData();
+    Big32 inPort = normPortNumberV1(pkt + 12);
+    UInt16 actionLen = *reinterpret_cast<Big16*>(pkt + 14);
+
+    // Insert 8 bytes at position 12 (2 for port, 6 pad).
+    buf_.insertUninitialized(pkt + 12, 8);
+    pkt = buf_.mutableData();
+
+    // Replace inPort. Set pad bytes to zero.
+    std::memcpy(pkt + 12, &inPort, sizeof(inPort));
+    std::memset(pkt + 18, 0, 6);
+
+    // Normalize actions.
+    UInt16 actLen = actionLen;
+    if (actLen > 0) {
+        // N.B. Later versions break out the different types of TCP, UDP, ICMP,
+        // and SCTP ports. Unfortunately, there is not enough information in a
+        // a PacketOut message to divine the IP protocol type. In this case, we 
+        // do not normalize the OFPAT_SET_TP_SRC and OFPAT_SET_TP_DST actions.
+        // To do this, we pass an ipProto value of 0.
+        
+        ActionRange actions{ByteRange{pkt + 24, actLen}};
+        int lengthChange = normActionsV1orV2(actions, 0);
+        pkt = buf_.mutableData();
+
+        actionLen += lengthChange;
+    }
+
+    Big16 bigLen = actionLen;
+    std::memcpy(pkt + 16, &bigLen, sizeof(bigLen));
+
+    // Update header length. N.B. Make sure we use current header ptr.
+    header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+
+UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr)
+{
+    const Big16 *port16 = reinterpret_cast<const Big16 *>(ptr);
+
+    UInt32 port32 = *port16;
+    if (port32 > 0xFF00U) {
+        // Sign extend to 32-bits the "fake" ports.
+        port32 |= 0xFFFF0000UL;
+    }
+
+    return port32;
+}
+
 int Transmogrify::normInstructionsV1orV2(const InstructionRange &instr, UInt8 ipProto)
 {
 	// Return change in length of instructions list.
@@ -195,7 +259,7 @@ int Transmogrify::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto)
         ActionType actType = iter.type();
         UInt16 type = actType.type();
 
-        if ((type >= UInt16_cast(v1::OFPAT_SET_VLAN_VID) && type <= UInt16_cast(v1::OFPAT_ENQUEUE)) ||
+        if (type <= UInt16_cast(v1::OFPAT_ENQUEUE) ||
              type == UInt16_cast(v2::OFPAT_SET_MPLS_LABEL) || type == UInt16_cast(v2::OFPAT_SET_MPLS_TC)) {
             lengthChange += normActionV1orV2(type, &iter, &iterEnd, ipProto);
         }
@@ -225,6 +289,9 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter, ActionIter
     int lengthChange = 0;
     switch (type)
     {
+        case v1::OFPAT_OUTPUT:
+            lengthChange += normOutput(iter, iterEnd);
+            break;
         case v2::OFPAT_SET_VLAN_VID:
             lengthChange += normSetField<OFB_VLAN_VID>(iter, iterEnd);
             break;
@@ -271,11 +338,33 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter, ActionIter
                 log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
             }
             break;
-            
     }
 
     return lengthChange;
 }
 
+
+int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd)
+{
+    if (iter->type() != deprecated::AT_OUTPUT_V1::type())
+        return 0;
+
+    // Change port number from 16 to 32 bits.
+    UInt32 port = normPortNumberV1(iter->valuePtr());
+    UInt16 maxlen = *reinterpret_cast<const Big16*>(iter->valuePtr() + 2);
+
+    AT_OUTPUT output{port, maxlen};
+
+    ptrdiff_t offset = buf_.offset(iter->data());
+    buf_.insertUninitialized(iter->valuePtr(), 8);
+    *iter = ActionIterator{buf_.data() + offset};
+    *iterEnd = ActionIterator{buf_.end()};
+
+    std::memcpy(RemoveConst_cast(iter->data()), &output, sizeof(output));
+
+    assert(iter->type() == AT_OUTPUT::type());
+
+    return 8;
+}
 
 } // </namespace ofp>

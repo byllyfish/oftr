@@ -226,8 +226,6 @@ struct MappingTraits<ofp::FlowModBuilder> {
         io.mapRequired("flags", msg.msg_.flags_);
 
         io.mapRequired("match", msg.match_);
-
-        ofp::log::debug("INSTRUCTIONS=", ofp::RawDataToHex(msg.instructions_.data(), msg.instructions_.size()));
         io.mapRequired("instructions", msg.instructions_);
     }
 };

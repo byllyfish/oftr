@@ -21,6 +21,9 @@ public:
 	void normalizeFlowModV1();
 	void normalizePortStatusV1();
 	void normalizeExperimenterV1();
+    void normalizePacketOutV1();
+
+    UInt32 normPortNumberV1(const UInt8 *ptr);
 
 	int normInstructionsV1orV2(const InstructionRange &instr, UInt8 ipProto);
 	int normActionsV1orV2(const ActionRange &actions, UInt8 ipProto);
@@ -28,6 +31,8 @@ public:
 
 	template <class Type>
 	int normSetField(ActionIterator *iter, ActionIterator *iterEnd);
+
+    int normOutput(ActionIterator *iter, ActionIterator *iterEnd);
 
 private:
 	ByteList &buf_;
@@ -40,10 +45,10 @@ template <class Type>
 int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd)
 {
     size_t valueLen = iter->valueSize();
-
-    if (valueLen == sizeof(Type)) {
+    
+    if (valueLen >= sizeof(Type)) {
         typename Type::NativeType value;
-        memcpy(&value, iter->valuePtr(), valueLen);
+        memcpy(&value, iter->valuePtr(), sizeof(value));
         
         OXMList list;
         list.add(Type{value});
@@ -69,7 +74,8 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd)
         return lengthChange;
 
     } else {
-        log::info("transmogrifyToSetField: Unexpected value size.");
+        log::info("Transmogrify::normSetField: Unexpected value size.", valueLen);
+        log::info(" actiontype:", iter->type());
     }
 
     return 0;

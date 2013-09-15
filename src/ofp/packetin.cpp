@@ -1,5 +1,7 @@
 #include "ofp/packetin.h"
 
+using namespace ofp;
+
 // Offset Table for backward compatibility (offset, name, size)
 //
 // Version 1:               Version 2:                  Version 3: (*)
@@ -21,7 +23,7 @@
 // (*) Version 3 is same as version 4, but without the 64 bit cookie field
 // between table_id and match_type.
 
-namespace ofp { // <namespace ofp>
+
 
 bool PacketIn::validateLength(size_t length) const
 {
@@ -62,11 +64,13 @@ bool PacketIn::validateLengthV1(size_t length) const
 
 bool PacketIn::validateLengthV2(size_t length) const
 {
+    // FIXME - Unimplemented
     return false;
 }
 
 bool PacketIn::validateLengthV3(size_t length) const
 {
+    // FIXME - Unimplemented
     return false;
 }
 
@@ -80,13 +84,13 @@ UInt16 PacketIn::totalLen() const
     }
 }
 
-UInt8 PacketIn::reason() const
+OFPPacketInReason PacketIn::reason() const
 {
     switch (version()) {
     case OFP_VERSION_1:
-        return offset<Big8>(16);
+        return offset<OFPPacketInReason>(16);
     case OFP_VERSION_2:
-        return offset<Big8>(22);
+        return offset<OFPPacketInReason>(22);
     default:
         return reason_;
     }
@@ -151,11 +155,17 @@ UInt64 PacketIn::cookie() const
     }
 }
 
+
 ByteRange PacketIn::enetFrame() const
 {
+    size_t offset;
+
     switch (version()) {
     case OFP_VERSION_1:
         return ByteRange{BytePtr(this) + 18, header_.length() - 18};
+    case OFP_VERSION_4:
+        offset = PadLength(SizeWithoutMatchHeader + matchLength_) + 2;
+        return ByteRange{BytePtr(this) + offset, header_.length() - offset};
     default:
         return ByteRange{};
     }
@@ -191,6 +201,12 @@ UInt32 PacketInBuilder::send(Writable *channel)
         break;
     }
 
+    // Construct the match. CHECK: all three fields are in every packet?
+    match_.clear();
+    match_.add(OFB_IN_PORT{inPort_});
+    match_.add(OFB_IN_PHY_PORT{inPhyPort_});
+    match_.add(OFB_METADATA{metadata_});
+    
     // Calculate length of PacketIn message up to end of match section. Then
     // pad it to a multiple of 8 bytes.
     size_t msgMatchLen = PacketIn::UnpaddedSizeWithMatchHeader + match_.size();
@@ -212,7 +228,7 @@ UInt32 PacketInBuilder::send(Writable *channel)
 
     // Fill in the match header.
     msg_.matchType_ = OFPMT_OXM;
-    msg_.matchLength_ = UInt16_narrow_cast(PadLength(match_.size()));
+    msg_.matchLength_ = UInt16_narrow_cast(PacketIn::MatchHeaderSize + match_.size());
 
     // Write the message with padding in the correct spots.
     Padding<8> pad;
@@ -266,6 +282,8 @@ UInt32 PacketInBuilder::sendV2(Writable *channel)
 
     UInt32 xid = channel->nextXid();
 
+    // FIXME - Unimplemented
+    
     return xid;
 }
 
@@ -276,37 +294,8 @@ UInt32 PacketInBuilder::sendV3(Writable *channel)
 
     UInt32 xid = channel->nextXid();
 
+    // FIXME - Unimplemented
+    
     return xid;
 }
 
-#if 0
-UInt32 PacketIn::sendStandard(Writable *channel)
-{
-    UInt8 version = channel->version();
-    assert(version <= 0x02);
-
-    deprecated::StandardMatch stdMatch{match_.toRange()};
-
-    size_t msgMatchLen = PacketIn::SizeWithoutMatchHeader + sizeof(stdMatch);
-    size_t enetFrameLen = enetFrame_.size() + 2;
-    size_t msgLen = msgMatchLen + enetFrameLen;
-
-    UInt32 xid = channel->nextXid();
-    Header &hdr = msg_.header_;
-    hdr.setVersion(version);
-    hdr.setType(PacketIn::Type);
-    hdr.setLength(UInt16_narrow_cast(msgLen));
-    hdr.setXid(xid);
-
-    Padding<8> pad;
-    channel->write(&msg_, PacketIn::SizeWithoutMatchHeader);
-    channel->write(&stdMatch, sizeof(stdMatch));
-    channel->write(&pad, 2);
-    channel->write(enetFrame_.data(), enetFrame_.size());
-    channel->flush();
-
-    return xid;
-}
-#endif
-
-} // </namespace ofp>

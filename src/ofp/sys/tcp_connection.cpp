@@ -52,6 +52,13 @@ Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt
 
 void TCP_Connection::asyncAccept()
 {
+    // Do nothing if socket is not open.
+    if (!socket_.is_open())
+        return;
+
+    // We always send and receive complete messages; disable Nagle algorithm.
+    socket_.set_option(tcp::no_delay(true));
+
     channelUp();
 }
 
@@ -284,6 +291,7 @@ void TCP_Connection::asyncConnect()
         error_code actualErr = err;
 
         if (!actualErr && checkAsioConnected(socket_, endpoint_, actualErr)) {
+            socket_.set_option(tcp::no_delay(true));
             channelUp();
 
         } else if (wantsReconnect()) {

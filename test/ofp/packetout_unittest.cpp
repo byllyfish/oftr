@@ -13,11 +13,11 @@ TEST(packetout, v4)
     actions.add(AT_OUTPUT{0x77777777, 0x2222});
 
     auto s = HexToRawData("0102 0304 0506 0708 0102 0304 0506 0708");
-    ByteRange enetFrame{s.data(), s.size()};
+    ByteList enetFrame{s.data(), s.size()};
 
     msg.setBufferId(0x33333333);
     msg.setInPort(0x44444444);
-    msg.setActions(actions.toRange());
+    msg.setActions(actions);
     msg.setEnetFrame(enetFrame);
 
     MemoryChannel channel{OFP_VERSION_4};
@@ -43,11 +43,11 @@ TEST(packetout, v1)
     actions.add(AT_OUTPUT{0x7777, 0x2222});
 
     auto s = HexToRawData("0102 0304 0506 0708 0102 0304 0506 0708");
-    ByteRange enetFrame{s.data(), s.size()};
+    ByteList enetFrame{s.data(), s.size()};
 
     msg.setBufferId(0x33333333);
     msg.setInPort(0x4444);
-    msg.setActions(actions.toRange());
+    msg.setActions(actions);
     msg.setEnetFrame(enetFrame);
 
     MemoryChannel channel{OFP_VERSION_1};
@@ -75,7 +75,7 @@ TEST(packetout, v1flood)
     PacketOutBuilder packetOut;
     packetOut.setBufferId(0x11111111);
     packetOut.setInPort(0x22222222);
-    packetOut.setActions(actions.toRange());
+    packetOut.setActions(actions);
     packetOut.send(&channel);
 
     EXPECT_EQ(0x018, channel.size());

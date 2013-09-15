@@ -8,6 +8,8 @@
 #include "ofp/yaml/yfeaturesreply.h"
 #include "ofp/yaml/ymultipartrequest.h"
 #include "ofp/yaml/ymultipartreply.h"
+#include "ofp/yaml/ypacketin.h"
+#include "ofp/yaml/ypacketout.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -123,6 +125,18 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
         MultipartReplyBuilder multi;
         io.mapRequired("msg", multi);
         multi.send(&channel_);
+        break;
+    }
+    case PacketIn::type(): {
+        PacketInBuilder packetIn;
+        io.mapRequired("msg", packetIn);
+        packetIn.send(&channel_);
+        break;
+    }
+    case PacketOut::type(): {
+        PacketOutBuilder packetOut;
+        io.mapRequired("msg", packetOut);
+        packetOut.send(&channel_);
         break;
     }
     default:

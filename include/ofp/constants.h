@@ -914,6 +914,12 @@ enum : UInt16 {
 
 } // </namespace deprecated>
 
+enum OFPPacketInReason : UInt8 {
+    OFPR_NO_MATCH    = 0,       //< No matching flow (table-miss flow entry)
+    OFPR_ACTION      = 1,       //< Action explicitly output to controller
+    OFPR_INVALID_TTL = 2,       //< Packet has invalid TTL (added in v1.2)
+};
+
 } // </namespace ofp>
 
 #endif // OFP_CONSTANTS_H

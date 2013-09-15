@@ -3,7 +3,9 @@
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
+#include "ofp/yaml/ydatapathid.h"
 #include "ofp/message.h"
+#include "ofp/channel.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -13,7 +15,7 @@ public:
 
     Decoder(Message *msg);
 
-    const std::string &result() const 
+    const std::string &result() const
     {
         return result_;
     }
@@ -44,10 +46,20 @@ struct MappingTraits<ofp::yaml::Decoder> {
 
     static void mapping(IO &io, ofp::yaml::Decoder &decoder)
     {
-        ofp::Header *header = decoder.msg_->header();
+        using namespace ofp;
+
+        Header *header = decoder.msg_->header();
         io.mapRequired("type", header->type_);
         io.mapRequired("xid", header->xid_);
         io.mapRequired("version", header->version_);
+
+        Channel *source = decoder.msg_->source();
+        if (source) {
+            DatapathID dpid = source->datapathId();
+            UInt8 auxID = source->auxiliaryId();
+            io.mapRequired("datapath_id", dpid);
+            io.mapRequired("auxiliary_id", auxID);
+        }
 
         if (!decoder.decodeMsg(io)) {
             decoder.error_ = "Invalid data.";

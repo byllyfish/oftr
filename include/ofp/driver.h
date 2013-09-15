@@ -64,6 +64,9 @@ public:
 	/// \brief Tells the driver to stop running.
 	void quit();
 
+	
+	sys::Engine *engine() { return engine_; }
+
 private:
 	sys::Engine *engine_;
 	log::Lifetime lifetime{"Driver"};

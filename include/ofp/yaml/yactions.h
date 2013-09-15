@@ -21,7 +21,6 @@ public:
     template <class ValueType>
     void visit()
     {
-    	assert(!type_.hasMask());
         typename ValueType::NativeType value;
         io_.mapRequired("value", value);
         AT_SET_FIELD<ValueType> action{ValueType{value}};

@@ -95,13 +95,20 @@ OriginalMatch::OriginalMatch(const OXMRange &range)
             tp_dst = item.value<OFB_UDP_DST>();
             wc &= ~OFPFW_TP_DST;
             break;
+        case OFB_ICMPV4_TYPE::type():
+            tp_src = item.value<OFB_ICMPV4_TYPE>();
+            wc &= ~OFPFW_TP_SRC;
+            break;
+        case OFB_ICMPV4_CODE::type():
+            tp_dst = item.value<OFB_ICMPV4_CODE>();
+            wc &= ~OFPFW_TP_DST;
+            break;
         default:
-            log::info("OriginalMatch: Unrecognized oxm type.");
+            log::info("OriginalMatch: Unrecognized oxm type.", item.type());
             break;
         }
     }
 
-    // Don't overwrite 
     wildcards = wc;
 }
 

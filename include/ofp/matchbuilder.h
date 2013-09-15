@@ -59,6 +59,8 @@ public:
 		}
 	}
 
+	void clear() { list_.clear(); }
+	
 	bool validate() const {
 		return Prerequisites::checkAll(list_.toRange()) &&
 				!Prerequisites::duplicateFieldsDetected(list_.toRange());

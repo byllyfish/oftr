@@ -48,3 +48,14 @@ TEST(yaml_flowmod, write)
     log::debug("size:", channel2.size());
     log::debug(RawDataToHex(channel2.data(), channel2.size()));
 }
+
+
+TEST(yaml_unittest, escape_chars)
+{
+    const char *input = "---\ntype: OFPT_FLOW_MOD\x08\x08\n...\n";
+
+    FlowModBuilder builder;
+    yaml::read(input, &builder);
+}
+
+

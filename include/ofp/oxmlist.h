@@ -45,6 +45,10 @@ public:
 	void addSignal(OXMType signal);
 	void insertSignal(OXMIterator pos, OXMType signal);
 	void pad8(unsigned offset);
+	
+	void clear() {
+		buf_.clear();
+	}
 
 	OXMIterator replace(OXMIterator pos, OXMIterator end, OXMType type, const void *data, size_t len);
 	

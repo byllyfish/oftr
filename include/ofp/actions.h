@@ -326,9 +326,10 @@ private:
 // introduce an alias, OFB_TP_PORT to represent something with a 16-bit port 
 // number. This loss of fidelity has consequences; a client could ask that the 
 // source port be modified in a TCP packet using a v4 OFB_UDP_DST set-field 
-// action.
+// action. OFP_TP_CODE serves the same purpose for ICMP and its 8-bit codes.
 
 using OFB_TP_PORT = OFB_TCP_SRC;
+using OFB_TP_CODE = OFB_ICMPV4_CODE;
 
 // FIXME check that vid meaning is correct for extra flags.
 using AT_SET_VLAN_VID_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_VLAN_VID,OFB_VLAN_VID>;
@@ -340,6 +341,8 @@ using AT_SET_NW_DST_V1 = AT_SET_FIELD_V_NPAD<v1::OFPAT_SET_NW_DST,OFB_IPV4_DST>;
 using AT_SET_NW_TOS_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_NW_TOS,OFB_IP_DSCP>;
 using AT_SET_TP_SRC_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_TP_SRC,OFB_TP_PORT>;
 using AT_SET_TP_DST_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_TP_DST,OFB_TP_PORT>;
+using AT_SET_TP_TYPE_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_TP_SRC,OFB_TP_CODE>;
+using AT_SET_TP_CODE_V1 = AT_SET_FIELD_V<v1::OFPAT_SET_TP_DST,OFB_TP_CODE>;
 
 static_assert(sizeof(AT_SET_VLAN_VID_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_VLAN_PCP_V1) == 8, "Unexpected size.");
@@ -350,6 +353,9 @@ static_assert(sizeof(AT_SET_NW_DST_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_NW_TOS_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_TP_SRC_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_TP_DST_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_TP_TYPE_V1) == 8, "Unexpected size.");
+static_assert(sizeof(AT_SET_TP_CODE_V1) == 8, "Unexpected size.");
+
 
 } // </namespace deprecated>
 

@@ -12,13 +12,15 @@
 #define OFP_PACKETOUT_H
 
 #include "ofp/header.h"
-#include "ofp/message.h"
-#include "ofp/actionrange.h"
+#include "ofp/actionlist.h"
 #include "ofp/padding.h"
 #include "ofp/constants.h"
 #include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
+
+class Message;
+class PacketOutBuilder;
 
 class PacketOut {
 public:
@@ -34,6 +36,8 @@ public:
 	ActionRange actions() const;
 	ByteRange enetFrame() const;
 
+	bool validateLength(size_t length) const;
+	
 private:
 	Header header_;
 	Big32 bufferId_ = OFP_NO_BUFFER;
@@ -41,9 +45,8 @@ private:
 	Big16 actionsLen_ = 0;
 	Padding<6> pad_;
 
-	bool validateLength(size_t length) const;
-
 	friend class PacketOutBuilder;
+	friend struct llvm::yaml::MappingTraits<PacketOutBuilder>;
 };
 
 static_assert(sizeof(PacketOut) == 24, "Unexpected size.");
@@ -55,15 +58,17 @@ public:
 
 	void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
 	void setInPort(UInt32 inPort) { msg_.inPort_ = inPort; }
-	void setActions(ActionRange actions) {actions_ = actions;}
-	void setEnetFrame(ByteRange enetFrame) {enetFrame_ = enetFrame;}
+	void setActions(const ActionList &actions) {actions_ = actions;}
+	void setEnetFrame(const ByteList &enetFrame) {enetFrame_ = enetFrame;}
 
 	UInt32 send(Writable *channel);
 
 private:
 	PacketOut msg_;
-	ActionRange actions_;
-	ByteRange enetFrame_;
+	ActionList actions_;
+	ByteList enetFrame_;
+
+	friend struct llvm::yaml::MappingTraits<PacketOutBuilder>;
 };
 
 } // </namespace ofp>

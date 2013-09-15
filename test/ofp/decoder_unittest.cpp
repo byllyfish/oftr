@@ -235,3 +235,66 @@ TEST(decoder, flowmodv1)
     EXPECT_EQ("", encoder.error());
     EXPECT_HEX(hex, encoder.data(), encoder.size());
 }
+
+TEST(decoder, flowmod1_2)
+{
+    testDecodeEncode("010E00580000000100303F8ECCCC0000000000000000000000000000000008000001000000000000C0A8010100DD000011111111111111110044555566667777888888889999BBBB000A0008EE000000000B000800000000", "---\ntype:            OFPT_FLOW_MOD\nxid:             0x00000001\nversion:         1\nmsg:             \n  cookie:          0x1111111111111111\n  cookie_mask:     0xFFFFFFFFFFFFFFFF\n  table_id:        0\n  command:         68\n  idle_timeout:    0x5555\n  hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       0x88888888\n  out_port:        0x00009999\n  out_group:       0x00000000\n  flags:           0xBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           52428\n    - type:            OFB_ETH_TYPE\n      value:           2048\n    - type:            OFB_IP_PROTO\n      value:           1\n    - type:            OFB_IPV4_DST\n      value:           192.168.1.1\n    - type:            OFB_ICMPV4_TYPE\n      value:           221\n  instructions:    \n    - type:            OFPIT_APPLY_ACTIONS\n      value:           \n        - action:          OFPAT_SET_FIELD\n          type:            OFB_ICMPV4_CODE\n          value:           238\n        - action:          OFPAT_COPY_TTL_OUT\n...\n");
+}
+
+TEST(decoder, packetinv4)
+{
+    testDecodeEncode("040A0064000000013333333344440188999999999999999900010020 800000045555555580000204666666668000040877777777777777770000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000001\nversion:         4\nmsg:             \n  buffer_id:       858993459\n  total_len:       17476\n  in_port:         1431655765\n  in_phy_port:     1717986918\n  metadata:        8608480567731124087\n  reason:          OFPR_ACTION\n  table_id:        136\n  cookie:          11068046444225730969\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
+}
+
+TEST(decoder, packetinv1)
+{
+    testDecodeEncode("010A003C0000000233333333444455550100FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000002\nversion:         1\nmsg:             \n  buffer_id:       858993459\n  total_len:       17476\n  in_port:         21845\n  in_phy_port:     0\n  metadata:        0\n  reason:          OFPR_ACTION\n  table_id:        0\n  cookie:          0\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
+}
+
+TEST(decoder, packetoutv4) 
+{
+    #if 0
+    const char *hex = "040D00620000000133333333444444440020000000000000000000100000000500140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002";
+    const char *yaml = "---\ntype:            OFPT_PACKET_OUT\nxid:             0x00000001\nversion:         4\nmsg:             \n  buffer_id:       858993459\n  in_port:         1145324612\n  actions:         \n    - action:          OFPAT_OUTPUT\n      port:            5\n      maxlen:          20\n    - action:          OFPAT_SET_FIELD\n      type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n";
+
+    auto s = HexToRawData(hex);
+
+    Message msg{s.data(), s.size()};
+    msg.transmogrify();
+
+    Decoder decoder{&msg};
+
+    EXPECT_EQ("", decoder.error());
+    EXPECT_EQ(yaml, decoder.result());
+
+    Encoder encoder{decoder.result()};
+
+    EXPECT_EQ("", encoder.error());
+    EXPECT_HEX(hex, encoder.data(), encoder.size());
+#endif
+    testDecodeEncode("040D00620000000133333333444444440020000000000000000000100000000500140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", "---\ntype:            OFPT_PACKET_OUT\nxid:             0x00000001\nversion:         4\nmsg:             \n  buffer_id:       858993459\n  in_port:         1145324612\n  actions:         \n    - action:          OFPAT_OUTPUT\n      port:            5\n      maxlen:          20\n    - action:          OFPAT_SET_FIELD\n      type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
+}
+
+TEST(decoder, packetoutv1)
+{
+   const char *hex = "010D004A000000013333333344440010000000080005001400070008C0A80101FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002";
+    const char *yaml = "---\ntype:            OFPT_PACKET_OUT\nxid:             0x00000001\nversion:         1\nmsg:             \n  buffer_id:       858993459\n  in_port:         17476\n  actions:         \n    - action:          OFPAT_OUTPUT\n      port:            5\n      maxlen:          20\n    - action:          OFPAT_SET_FIELD\n      type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n";
+
+    auto s = HexToRawData(hex);
+
+    Message msg{s.data(), s.size()};
+    msg.transmogrify();
+    EXPECT_HEX("010D00620000000133333333000044440020000000000000000000100000000500140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", msg.data(), msg.size());
+
+    Decoder decoder{&msg};
+
+    EXPECT_EQ("", decoder.error());
+    EXPECT_EQ(yaml, decoder.result());
+
+    Encoder encoder{decoder.result()};
+
+    EXPECT_EQ("", encoder.error());
+    EXPECT_HEX(hex, encoder.data(), encoder.size());
+    //testDecodeEncode("010D004A000000013333333344440010000000080005001400070008C0A80101FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", "");
+}
+

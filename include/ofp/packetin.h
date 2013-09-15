@@ -19,6 +19,8 @@
 
 namespace ofp { // <namespace ofp>
 
+class PacketInBuilder;
+
 class PacketIn {
 public:
     static constexpr OFPType type() { return OFPT_PACKET_IN; }
@@ -43,11 +45,10 @@ public:
     UInt32 inPort() const;
     UInt32 inPhyPort() const;
     UInt64 metadata() const;
-    UInt8 reason() const;
+    OFPPacketInReason reason() const;
     UInt8 tableID() const;
     UInt64 cookie() const;
 
-    Match match() const;
     ByteRange enetFrame() const;
 
     bool validateLength(size_t length) const;
@@ -56,7 +57,7 @@ private:
     Header header_;
     Big32 bufferId_;
     Big16 totalLen_;
-    Big8 reason_;
+    OFPPacketInReason reason_;
     Big8 tableID_;
     Big64 cookie_;
 
@@ -78,10 +79,12 @@ private:
 
     enum {
         UnpaddedSizeWithMatchHeader = 28,
-        SizeWithoutMatchHeader = 24
+        SizeWithoutMatchHeader = 24,
+        MatchHeaderSize = 4,
     };
 
     friend class PacketInBuilder;
+    friend struct llvm::yaml::MappingTraits<PacketInBuilder>;
 };
 
 static_assert(sizeof(PacketIn) == 32, "Unexpected size.");
@@ -96,16 +99,11 @@ public:
     void setInPort(UInt32 inPort) { inPort_ = inPort; }
     void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }
     void setMetadata(UInt64 metadata) { metadata_ = metadata; }
-    void setReason(UInt8 reason) { msg_.reason_ = reason; }
+    void setReason(OFPPacketInReason reason) { msg_.reason_ = reason; }
     void setTableID(UInt8 tableID) { msg_.tableID_ = tableID; }
     void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
 
-    void setMatch(const MatchBuilder &match)
-    {
-        match_ = match;
-    }
-
-    void setEnetFrame(const ByteRange &enetFrame)
+    void setEnetFrame(const ByteList &enetFrame)
     {
         enetFrame_ = enetFrame;
     }
@@ -114,15 +112,17 @@ public:
 
 private:
     PacketIn msg_;
-    Big32 inPort_;
-    Big32 inPhyPort_;
-    Big64 metadata_;
+    Big32 inPort_ = 0;
+    Big32 inPhyPort_ = 0;
+    Big64 metadata_ = 0;
     MatchBuilder match_;
-    ByteRange enetFrame_;
+    ByteList enetFrame_;
 
     UInt32 sendV1(Writable *channel);
     UInt32 sendV2(Writable *channel);
     UInt32 sendV3(Writable *channel);
+
+    friend struct llvm::yaml::MappingTraits<PacketInBuilder>;
 };
 
 } // </namespace ofp>

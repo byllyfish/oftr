@@ -48,4 +48,27 @@ inline void writeHeader(llvm::yaml::IO &io, const Header *header)
 } // </namespace detail>
 } // </namespace ofp>
 
+
+namespace llvm { // <namespace llvm>
+namespace yaml { // <namespace yaml>
+
+template <>
+struct ScalarTraits<std::string> {
+    static void output(const std::string &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+        out << value;
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt,
+                           std::string &value)
+    {
+        value = scalar;
+        return "";
+    }
+};
+
+} // </namespace yaml>
+} // </namespace llvm>
+
 #endif // OFP_YAML_YLLVM_H

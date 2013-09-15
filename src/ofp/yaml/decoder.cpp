@@ -8,6 +8,8 @@
 #include "ofp/yaml/yfeaturesreply.h"
 #include "ofp/yaml/ymultipartrequest.h"
 #include "ofp/yaml/ymultipartreply.h"
+#include "ofp/yaml/ypacketin.h"
+#include "ofp/yaml/ypacketout.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -67,7 +69,12 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<BarrierReply>(io, msg_);
     case GetAsyncRequest::type() :
         return decode<GetAsyncRequest>(io, msg_);
+    case PacketIn::type():
+        return decode<PacketIn>(io, msg_);
+    case PacketOut::type():
+        return decode<PacketOut>(io, msg_);
     default:
+        log::debug("Decoder::decodeMsg: Unknown msg type", msg_->type());
         break;
     }
 

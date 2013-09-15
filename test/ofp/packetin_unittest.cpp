@@ -5,32 +5,25 @@ using namespace ofp;
 
 TEST(packetin, version4)
 {
-    MatchBuilder match;
-    match.add(OFB_IN_PORT{27});
-
     auto s = HexToRawData("0102 0304 0506 0708 0102 0304 0506 0708");
-    ByteRange enetFrame{s.data(), s.size()};
+    ByteList enetFrame{s.data(), s.size()};
 
     PacketInBuilder msg;
     msg.setBufferId(1);
     msg.setTotalLen(2);
-    msg.setReason(3);
+    msg.setReason(OFPR_NO_MATCH);
     msg.setTableID(4);
     msg.setCookie(5);
-
-    msg.setMatch(match);
+    msg.setInPort(27);
     msg.setEnetFrame(enetFrame);
 
     MemoryChannel channel{OFP_VERSION_4};
     UInt32 xid = msg.send(&channel);
 
     EXPECT_EQ(1, xid);
-    EXPECT_EQ(0x3A, channel.size());
+    EXPECT_EQ(0x4A, channel.size());
 
-    const char *expected = "(04-0A-003A-00000001), "
-                           "(00000001-0002-03-04,0000000000000005), "
-                           "(00010008-80000004,0000001B|00000000), "
-                           "(00000102-03040506,07080102-03040506,0708)";
+    const char *expected = "040A004A000000010000000100020004000000000000000500010020800000040000001B8000020400000000800004080000000000000000000001020304050607080102030405060708";
 
     EXPECT_HEX(expected, channel.data(), channel.size());
 }
@@ -40,13 +33,13 @@ TEST(packetin, version1)
     PacketInBuilder builder;
     builder.setBufferId(0x01020304);
     builder.setTotalLen(0x0101);
-    builder.setInPort(0x22);
-    builder.setInPhyPort(0x0333);
-    builder.setReason(0x09);
+    builder.setInPort(0x2222);
+    builder.setInPhyPort(0x3333);
+    builder.setReason(OFPR_NO_MATCH);
     builder.setTableID(0xAA);
     builder.setCookie(0x05060708090a0b0c);
 
-    ByteRange pkt("77777777777777777777", 20);
+    ByteList pkt("77777777777777777777", 20);
     builder.setEnetFrame(pkt);
 
     MemoryChannel channel{OFP_VERSION_1};
@@ -55,7 +48,7 @@ TEST(packetin, version1)
     EXPECT_EQ(0x0026, channel.size());
 
     const char *expected = "(01-0A-0026-00000001)"
-                           "01020304-0101-0022-09-00"
+                           "01020304-0101-2222-00-00"
                            "3737373737373737373737373737373737373737";
 
     EXPECT_HEX(expected, channel.data(), channel.size());
@@ -73,8 +66,8 @@ TEST(packetin, version1)
         EXPECT_EQ(OFP_VERSION_1, msg->version());
         EXPECT_EQ(0x01020304, msg->bufferId());
         EXPECT_EQ(0x0101, msg->totalLen());
-        EXPECT_EQ(0x22, msg->inPort());
-        EXPECT_EQ(0x09, msg->reason());
+        EXPECT_EQ(0x2222, msg->inPort());
+        EXPECT_EQ(OFPR_NO_MATCH, msg->reason());
 
         ByteRange enetFrame = msg->enetFrame();
         EXPECT_HEX("3737373737373737373737373737373737373737", enetFrame.data(), enetFrame.size());
