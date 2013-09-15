@@ -10,7 +10,7 @@ endif
 OBJECTS = simple_main.o simplechannellistener.o simplecontroller.o
 
 simple : $(OBJECTS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $^ -o $@ -lofp
 
 .PHONY: clean
 clean:

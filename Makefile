@@ -17,8 +17,9 @@
 
 DOXYGEN = /Applications/Doxygen.app/Contents/Resources/doxygen
 
-LIB_SRCS = $(wildcard src/ofp/*.cpp) $(wildcard src/ofp/sys/*.cpp)
-LIB_SRCS += $(wildcard src/ofp/yaml/*.cpp)
+LIB_MAINS := $(wildcard src/ofp/*_main.cpp)
+LIB_SRCS = $(filter-out $(LIB_MAINS),$(wildcard src/ofp/*.cpp))
+LIB_SRCS += $(wildcard src/ofp/sys/*.cpp) $(wildcard src/ofp/yaml/*.cpp)
 
 LIB_OBJS = $(LIB_SRCS:.cpp=.o)
 LIB_DEPS = $(LIB_SRCS:.cpp=.d)
@@ -51,8 +52,8 @@ all: oxm libofp.a external/yaml-io/libyamlio.a libofpexec
 libofp.a: $(LIB_OBJS) $(BOOST_OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
 
-libofpexec: libofp.a external/yaml-io/libyamlio.a src/ofp/libofpexec_main.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+libofpexec: external/yaml-io/libyamlio.a libofp.a src/ofp/libofpexec_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@ libofp.a external/yaml-io/libyamlio.a
 
 external/yaml-io/libyamlio.a:
 	cd external/yaml-io; make
