@@ -21,14 +21,7 @@ void SimpleChannelListener::onChannelUp(Channel *channel)
     flowMod.setOutPort(OFPP_ANY);
     flowMod.setOutGroup(OFPG_ANY);
     (void)flowMod.send(channel);
-
     // No reply expected.
-
-    // xid = GetAsyncRequestBuilder{}.send(channel);
-    // trackReply(xid, &SimpleChannelListener::onGetAsyncReply);
-
-    // xid = GetConfigRequestBuilder{}.send(channel);
-    // trackReply(xid, &SimpleChannelListener::onGetConfigReply);
 
     BarrierRequestBuilder barrier;
     xid = barrier.send(channel);
@@ -38,17 +31,17 @@ void SimpleChannelListener::onChannelUp(Channel *channel)
 void SimpleChannelListener::onMessage(const Message *message)
 {
     switch (message->type()) {
-    case PacketIn::Type:
+    case PacketIn::type():
         if (auto msg = PacketIn::cast(message))
             controller_.onPacketIn(message->source(), msg);
         break;
 
-    case PortStatus::Type:
+    case PortStatus::type():
         if (auto msg = PortStatus::cast(message))
             controller_.onPortStatus(message->source(), msg);
         break;
 
-    case Error::Type:
+    case Error::type():
         if (auto msg = Error::cast(message))
             controller_.onError(message->source(), msg);
         break;

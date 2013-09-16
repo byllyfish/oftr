@@ -21,6 +21,8 @@ Running the Simple Controller with MiniNet Using the Pyretic VM
 
   sudo mn --topo single,3  --controller=remote,ip=192.168.56.1,port=6633 --switch ovsk,protocols=OpenFlow13
 
+  sudo mn --controller=remote,ip=192.168.56.1,port=6633 --switch ovsk,protocols=OpenFlow13
+
 Runing pox:
 
 cd into the pox directory and type:

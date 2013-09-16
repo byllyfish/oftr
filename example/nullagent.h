@@ -11,19 +11,20 @@ using ofp::Message;
 using ofp::Channel;
 using ofp::milliseconds;
 
-
 class NullAgent : public ofp::ChannelListener {
 public:
 
-    static NullAgent *Factory() { return new NullAgent; }
+    static NullAgent *Factory()
+    {
+        return new NullAgent;
+    }
 
     void onChannelUp(Channel *channel) override
     {
         ofp::log::debug("NullAgent channel up.");
 
         // FIXME support binding of related connections.
-        //channel->openAuxChannel(1, Channel::Transport::TCP);
-        
+        // channel->openAuxChannel(1, Channel::Transport::TCP);
     }
 
     void onChannelDown(Channel *channel) override
@@ -33,7 +34,7 @@ public:
 
     void onMessage(const Message *message) override;
 
-    void onTimer(UInt32 timerID) override 
+    void onTimer(UInt32 timerID) override
     {
         ofp::log::debug("NullAgent timer", timerID);
     }
@@ -48,27 +49,26 @@ private:
     void sendError(UInt16 type, UInt16 code, const Message *message);
 };
 
-
 void NullAgent::onMessage(const Message *message)
 {
     switch (message->type()) {
-    case ofp::SetConfig::Type:
+    case ofp::SetConfig::type() :
         onSetConfig(message);
         break;
 
-    case ofp::FlowMod::Type:
+    case ofp::FlowMod::type() :
         onFlowMod(message);
         break;
 
-    case ofp::GetAsyncRequest::Type:
+    case ofp::GetAsyncRequest::type() :
         onGetAsyncRequest(message);
         break;
 
-    case ofp::GetConfigRequest::Type:
+    case ofp::GetConfigRequest::type() :
         onGetConfigRequest(message);
         break;
 
-    case ofp::BarrierRequest::Type:
+    case ofp::BarrierRequest::type() :
         onBarrierRequest(message);
         break;
 
@@ -79,7 +79,6 @@ void NullAgent::onMessage(const Message *message)
     }
 }
 
-
 void NullAgent::onSetConfig(const Message *message)
 {
     auto setConfig = ofp::SetConfig::cast(message);
@@ -88,9 +87,8 @@ void NullAgent::onSetConfig(const Message *message)
         return;
     }
 
-    //ofp::log::debug(ofp::yaml::write(setConfig));
+    // ofp::log::debug(ofp::yaml::write(setConfig));
 }
-
 
 void NullAgent::onFlowMod(const Message *message)
 {
@@ -100,7 +98,8 @@ void NullAgent::onFlowMod(const Message *message)
         return;
     }
 
-    ofp::log::debug(ofp::yaml::write(flowMod));
+    ofp::log::debug("FlowMod: ",
+                    ofp::RawDataToHex(message->data(), message->size()));
 }
 
 void NullAgent::onGetAsyncRequest(const Message *message)
@@ -114,7 +113,6 @@ void NullAgent::onGetAsyncRequest(const Message *message)
     ofp::log::debug("GetAsyncRequest");
 }
 
-
 void NullAgent::onGetConfigRequest(const Message *message)
 {
     auto getConfigReq = ofp::GetConfigRequest::cast(message);
@@ -126,7 +124,6 @@ void NullAgent::onGetConfigRequest(const Message *message)
     ofp::log::debug("GetConfigRequest");
 }
 
-
 void NullAgent::onBarrierRequest(const Message *message)
 {
     ofp::log::debug("BarrierRequest");
@@ -137,12 +134,17 @@ void NullAgent::onBarrierRequest(const Message *message)
         return;
     }
 
-    (void) ofp::BarrierReplyBuilder{message}.send(message->source());
+    ofp::BarrierReplyBuilder reply{message};
+    reply.send(message->source());
 }
 
 void NullAgent::sendError(UInt16 type, UInt16 code, const Message *message)
 {
-    ofp::ErrorBuilder msg{type, code, message};
+    ofp::ErrorBuilder msg{type, code};
+    size_t len = message->size();
+    if (len > 128)
+        len = 128;
+    msg.setErrorData(message->data(), len);
     msg.send(message->source());
 }
 

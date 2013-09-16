@@ -46,7 +46,7 @@ template <class MesgType>
 void SimpleChannelListener::trackReply(UInt32 xid, PtrMemFunc<MesgType> mbf)
 {
 	auto handler = [this, mbf](const Message *message) {
-		if (message->type() == MesgType::Type) {
+		if (message->type() == MesgType::type()) {
 			if (const MesgType *msg = MesgType::cast(message)) {
 				// Call pointer to member function.
 				(this->*mbf)(msg);

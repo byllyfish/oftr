@@ -69,7 +69,7 @@ void SimpleController::flood(Channel *channel, const PacketIn *msg)
     PacketOutBuilder packetOut;
     packetOut.setBufferId(msg->bufferId());
     packetOut.setInPort(msg->inPort());
-    packetOut.setActions(actions.toRange());
+    packetOut.setActions(actions);
     packetOut.send(channel);
 }
 

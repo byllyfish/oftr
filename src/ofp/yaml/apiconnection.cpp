@@ -164,8 +164,6 @@ void ApiConnection::asyncWrite()
     const UInt8 *data = outgoing_[idx].data();
     size_t size = outgoing_[idx].size();
 
-    log::trace("ApiConnection::asyncWrite", data, size);
-
     auto self(shared_from_this());
 
     boost::asio::async_write(socket_, boost::asio::buffer(data, size), [this, self](const error_code &err, size_t bytes_transferred) {

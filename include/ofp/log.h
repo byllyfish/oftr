@@ -51,7 +51,7 @@ void write(const char *type, const Type1 &a, const Type2 &b)
 
 inline void trace(const char *type, const void *data, size_t length)
 {
-    //write(type, RawDataToHex(data, length));
+    write(type, RawDataToHex(data, length));
 }
 
 template <class Type1>
@@ -69,13 +69,13 @@ void info(const Type1 &a, const Type2 &b)
 template <class Type1>
 void debug(const Type1 &a)
 {
-    //write("[debug]", a);
+    write("[debug]", a);
 }
 
 template <class Type1, class Type2>
 void debug(const Type1 &a, const Type2 &b)
 {
-    //write("[debug]", a, b);
+    write("[debug]", a, b);
 }
 
 template <class Type1>
