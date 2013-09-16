@@ -134,7 +134,8 @@ to stderr. Open another terminal and type:
 
     telnet localhost 9191
 
-Type (or paste) the following into Telnet. Both case and indentation are important.
+Type the following into Telnet. Both case and indentation are important.
+The "---" and "..." lines must not be indented.
 
 ---
   event: LIBOFP_LISTEN_REQUEST
