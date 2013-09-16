@@ -2,8 +2,8 @@ LibOFP Version 0.1
 ==================
 
 LibOFP is a library that implements the OpenFlow protocol. It handles the 
-wire protocol and connection details for controller and agent applications. A 
-client can program to the latest version of the OpenFlow spec; backward 
+wire protocol and connection details for controller and agent applications. With
+LibOFP, a client can program to the latest version of the OpenFlow spec; backward 
 compatibility is handled automatically.
 
 LibOFP is written in C++11. The library provides an efficient C++ API for 
@@ -228,6 +228,8 @@ To run a program that uses the YAML API, check out the `Python.Tutorial.md`.
 
 To see the C++ API in action, check out the `C++.Tutorial.md`.
 
+To see how to add custom fields, check out the `OXM.Tutorial.md`.
+
 Feedback
 --------
 
@@ -251,10 +253,6 @@ References
   - http://blip.tv/boostcon/thinking-asynchronously-designing-applications-with-boost-asio-5250947
   - http://llvm.org/docs/YamlIO.html
   - https://code.google.com/p/googletest/
-
-  Tells how to upgrade MiniNet to openvswitch 1.3!
-
-  - https://wiki.opendaylight.org/view/Openflow_Protocol_Library:OpenVirtualSwitch
 
 
 

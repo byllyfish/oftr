@@ -252,10 +252,5 @@ References
   - http://llvm.org/docs/YamlIO.html
   - https://code.google.com/p/googletest/
 
-  Tells how to upgrade MiniNet to openvswitch 1.3!
-
-  - https://wiki.opendaylight.org/view/Openflow_Protocol_Library:OpenVirtualSwitch
-
-
 
 
