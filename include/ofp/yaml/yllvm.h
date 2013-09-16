@@ -8,7 +8,7 @@
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
 #include "ofp/yaml/yconstants.h"
-#include "ofp/Header.h"
+#include "ofp/header.h"
 
 #if 0
 namespace ofp {    // <namespace ofp>

@@ -11,7 +11,7 @@
 
 namespace ofp { // <namespace ofp>
 
-Transmogrify::Transmogrify(Message *message) : buf_{message->buf_} {}
+Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
 
 void Transmogrify::normalize()
 {

@@ -64,8 +64,8 @@ public:
 	constexpr AT_OUTPUT(UInt32 port, UInt16 maxlen = 0)
 		: port_{port}, maxlen_{maxlen} {}
 		
-	UInt32 port() const { return port_; }
-	UInt16 maxlen() const { return maxlen_; }
+	constexpr UInt32 port() const { return port_; }
+	constexpr UInt16 maxlen() const { return maxlen_; }
 
 private:
 	const ActionType type_ = type();
@@ -86,8 +86,8 @@ public:
 
 	constexpr AT_OUTPUT_V1(const AT_OUTPUT *output) : port_{UInt16_narrow_cast(output->port())}, maxlen_{output->maxlen()} {}
 		
-	UInt16 port() const { return port_; }
-	UInt16 maxlen() const { return maxlen_; }
+	constexpr UInt16 port() const { return port_; }
+	constexpr UInt16 maxlen() const { return maxlen_; }
 
 private:
 	const ActionType type_ = type();
