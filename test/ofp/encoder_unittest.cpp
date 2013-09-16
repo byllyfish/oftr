@@ -728,3 +728,22 @@ TEST(encoder, packetoutv4)
 }
 
 
+TEST(encoder, setconfigv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_SET_CONFIG
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        flags: 0xAAAA
+        miss_send_len: 0xBBBB
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x0C, encoder.size());
+    EXPECT_HEX("0409000C11111111AAAABBBB", encoder.data(), encoder.size());
+}
+
+

@@ -61,6 +61,9 @@ Deferred<Exception> Engine::listen(Driver::Role role, const Features *features, 
 		(void) tcpsvr.release();
 		(void) udpsvr.release();
 
+		// Pass back success.
+		result->done(Exception{});
+
 	} catch (const boost::system::system_error &ex) {
 		log::debug("System error caught in Engine::listen: ", ex.code());
 		result->done(makeException(ex.code()));

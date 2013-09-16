@@ -93,6 +93,11 @@ void Input::nextDocument() {
 void Input::beginMapping() {
   if (EC)
     return;
+  if (CurrentNode == nullptr) {             // bfish temp fix.
+    EC = make_error_code(errc::invalid_argument);
+    return;
+  }
+  assert(CurrentNode);        //bfish
   MapHNode *MN = dyn_cast<MapHNode>(CurrentNode);
   if (MN) {
     MN->ValidKeys.clear();
@@ -315,6 +320,11 @@ Input::HNode *Input::createHNodes(Node *N) {
         memcpy(Buf, &StringStorage[0], Len);
         KeyStr = StringRef(Buf, Len);
       }
+      if (i->getValue() == nullptr) {       // bfish temp fix.          
+        EC = make_error_code(errc::invalid_argument);
+        break;
+      }
+      assert(i->getValue());   //bfish
       HNode *ValueHNode = this->createHNodes(i->getValue());
       if (EC)
         break;

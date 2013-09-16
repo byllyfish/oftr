@@ -49,6 +49,8 @@ void ApiServer::asyncAccept()
                 auto conn =
                     std::make_shared<ApiConnection>(this, std::move(socket_));
                 conn->asyncAccept();
+            } else {
+                socket_.close();
             }
 
         } else {
@@ -76,14 +78,29 @@ void ApiServer::onDisconnect(ApiConnection *conn)
 void ApiServer::onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq)
 {   
     Driver *driver = engine_->driver();
+    UInt16 listenPort = listenReq->msg.listenPort;
 
-    auto exc = driver->listen(Driver::Controller, nullptr, IPv6Address{}, listenReq->msg.listenPort, ProtocolVersions{}, [this]() {
+    auto exc = driver->listen(Driver::Controller, nullptr, IPv6Address{}, listenPort, ProtocolVersions{}, [this]() {
         return new ApiChannelListener{this};
     });
 
-    exc.done([](Exception ex) {
-        log::debug("Result of onListenRequest", ex);
+
+    exc.done([this,listenPort](Exception ex) {
+        ApiListenReply reply;
+        reply.msg.listenPort = listenPort;
+        if (ex) {
+            reply.msg.error = ex.toString();
+        }
+        onListenReply(&reply);
     });
+}
+
+
+void ApiServer::onListenReply(ApiListenReply *listenReply)
+{
+    if (oneConn_) {
+        oneConn_->onListenReply(listenReply);
+    }
 }
 
 void ApiServer::onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer)
@@ -135,5 +152,16 @@ void ApiServer::registerChannel(Channel *channel)
 void ApiServer::unregisterChannel(Channel *channel)
 {
     datapathMap_.erase(channel->datapathId());
+}
+
+
+ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId)
+{
+    auto iter = datapathMap_.find(datapathId);
+    if (iter != datapathMap_.end()) {
+        return iter->second;
+    }
+
+    return nullptr;
 }
 

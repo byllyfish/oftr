@@ -1,8 +1,8 @@
 #ifndef OFP_YAML_APIEVENTS_H
 #define OFP_YAML_APIEVENTS_H
 
-#include "ofp/datapathid.h"
 #include "ofp/yaml/yllvm.h"
+#include "ofp/datapathid.h"
 #include "ofp/yaml/ydatapathid.h"
 #include "ofp/driver.h"
 #include "ofp/padding.h"

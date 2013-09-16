@@ -10,6 +10,7 @@
 #include "ofp/yaml/ymultipartreply.h"
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
+#include "ofp/yaml/ysetconfig.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -73,8 +74,10 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<PacketIn>(io, msg_);
     case PacketOut::type():
         return decode<PacketOut>(io, msg_);
+    case SetConfig::type():
+        return decode<SetConfig>(io, msg_);
     default:
-        log::debug("Decoder::decodeMsg: Unknown msg type", msg_->type());
+        log::info("Decoder::decodeMsg: Unknown msg type", msg_->type());
         break;
     }
 

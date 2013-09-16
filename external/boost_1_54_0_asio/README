@@ -1,0 +1,2 @@
+This subset of Boost source files was assembled using bcp. This subset of files should permit libofp.a
+to compile successfully.

@@ -105,7 +105,7 @@ int TestAgent::auxCount = 0;
 
 TEST(roundtrip, basic_test) 
 {
-	log::set(&std::cerr);
+	//log::set(&std::cerr);
 
 	EXPECT_EQ(0, TestController::controllerCount);
 	EXPECT_EQ(0, TestAgent::agentCount);
@@ -145,7 +145,7 @@ TEST(roundtrip, basic_test)
 
 TEST(roundtrip, reconnect_test) 
 {
-	log::set(&std::cerr);
+	//log::set(&std::cerr);
 
 	EXPECT_EQ(0, TestController::controllerCount);
 	EXPECT_EQ(0, TestAgent::agentCount);
@@ -185,7 +185,7 @@ TEST(roundtrip, reconnect_test)
 
 TEST(roundtrip, auxiliary_test) 
 {
-	log::set(&std::cerr);
+	//log::set(&std::cerr);
 
 	EXPECT_EQ(0, TestController::controllerCount);
 	EXPECT_EQ(0, TestAgent::agentCount);

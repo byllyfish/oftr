@@ -120,7 +120,7 @@ void Transmogrify::normalizeFlowModV1()
 
         pkt = buf_.mutableData();
         detail::InstructionHeaderWithPadding insHead{
-            OFPIT_APPLY_ACTIONS, actLen + 8 + delta};
+            OFPIT_APPLY_ACTIONS, UInt16_narrow_cast(actLen + 8 + delta)};
         std::memcpy(pkt + 136, &insHead, sizeof(insHead));
     }
 

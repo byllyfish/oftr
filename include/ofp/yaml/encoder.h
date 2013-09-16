@@ -8,14 +8,17 @@
 #include "ofp/bytelist.h"
 #include "ofp/memorychannel.h"
 #include "ofp/log.h"
+#include "ofp/channel.h"
 
 namespace ofp { // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
+
 class Encoder {
 public:
+    using ChannelFinder = std::function<Channel*(const DatapathID &datapathId)>;
 
-	Encoder(const std::string &input);
+	Encoder(const std::string &input, ChannelFinder finder = NullChannelFinder);
 
 	const UInt8 *data() const { return channel_.data(); }
 	size_t size() const { return channel_.size(); }
@@ -30,6 +33,7 @@ private:
 	std::string error_;
     llvm::raw_string_ostream errorStream_;
     DatapathID datapathId_;
+    ChannelFinder finder_;
     UInt8 auxiliaryId_ = 0;
 
     static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
@@ -39,6 +43,8 @@ private:
 	}
 
     void encodeMsg(llvm::yaml::IO &io, Header &header);
+
+    static Channel *NullChannelFinder(const DatapathID &datapathId);
 
     friend struct llvm::yaml::MappingTraits<ofp::yaml::Encoder>;
 };
@@ -57,9 +63,9 @@ struct MappingTraits<ofp::yaml::Encoder> {
         using namespace ofp;
 
     	Header header{OFPT_UNSUPPORTED};
-        io.mapRequired("version", header.version_);
+        io.mapOptional("version", header.version_);
     	io.mapRequired("type", header.type_);
-    	io.mapRequired("xid", header.xid_);
+    	io.mapOptional("xid", header.xid_);
     	io.mapOptional("datapath_id", encoder.datapathId_, DatapathID{});
 
         UInt8 defaultAuxId = 0;

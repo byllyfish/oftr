@@ -3,6 +3,7 @@
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
+#if 0
 template <>
 Exception read(const std::string &input, FlowModBuilder *msg)
 {
@@ -17,6 +18,7 @@ Exception read(const std::string &input, FlowModBuilder *msg)
 
     return Exception{};
 }
+#endif //0
 
 //
 // Encode a FlowMod message as follows:
@@ -52,6 +54,7 @@ Exception read(const std::string &input, FlowModBuilder *msg)
 //                      - maxlen: 70
 //      ...
 
+#if 0
 template <>
 std::string write(const FlowMod *msg)
 {
@@ -63,6 +66,7 @@ std::string write(const FlowMod *msg)
     yout << wrap;
     return rss.str();
 }
+#endif //0
 
 } // </namespace yaml>
 } // </namespace ofp>

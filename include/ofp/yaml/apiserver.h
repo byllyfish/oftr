@@ -11,6 +11,7 @@
 #ifndef OFP_YAML_APISERVER_H
 #define OFP_YAML_APISERVER_H
 
+#include "ofp/yaml/yllvm.h"
 #include "ofp/sys/boost_asio.h"
 #include "ofp/driver.h"
 #include "ofp/yaml/apievents.h"
@@ -40,6 +41,7 @@ public:
 
 	// These methods are used to bridge ApiConnections to ApiChannelListeners.
     void onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq);
+    void onListenReply(ApiListenReply *listenReply);
 	void onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer);
 
 	// These methods are used to bridge ApiChannelListeners to ApiConnections.
@@ -49,6 +51,8 @@ public:
 	void onException(Channel *channel, const Exception *exception);
 	void onTimer(Channel *channel, UInt32 timerID);
 
+	Channel *findChannel(const DatapathID &datapathId);
+	
 private:
 	using DatapathMap = std::map<DatapathID,Channel*>;
 

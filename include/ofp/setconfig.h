@@ -16,6 +16,8 @@
 
 namespace ofp { // <namespace ofp>
 
+class SetConfigBuilder;
+
 class SetConfig {
 public:
 	static constexpr OFPType type() { return OFPT_SET_CONFIG; }
@@ -34,6 +36,8 @@ private:
 	bool validateLength(size_t length) const;
 
 	friend class SetConfigBuilder;
+	friend struct llvm::yaml::MappingTraits<SetConfig>;
+	friend struct llvm::yaml::MappingTraits<SetConfigBuilder>;
 };
 
 static_assert(sizeof(SetConfig) == 12, "Unexpected size.");
@@ -50,6 +54,8 @@ public:
 
 private:
 	SetConfig msg_;
+
+	friend struct llvm::yaml::MappingTraits<SetConfigBuilder>;
 };
 
 } // </namespace ofp>

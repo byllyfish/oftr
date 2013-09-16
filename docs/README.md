@@ -17,8 +17,8 @@ Dependencies
     - Latest Google Test (included; required for unit tests only)
     - YAML IO (llvm.org)
 
-Specs
------
+Driver Specs
+============
 
 - Supports all versions of OpenFlow.
   - Supports specifications 1.0, 1.1, 1.2 and 1.3 (wire formats 0x01, 0x02, 0x03, 0x04).

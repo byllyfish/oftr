@@ -54,7 +54,7 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd)
         list.add(Type{value});
         list.pad8(4);
 
-        int lengthChange = list.size() - valueLen;
+        int lengthChange = static_cast<int>(Signed_cast(list.size()) - Signed_cast(valueLen));
         if (lengthChange > 0) {
             ptrdiff_t offset = buf_.offset(iter->data());
             buf_.insertUninitialized(iter->valuePtr(), Unsigned_cast(lengthChange));

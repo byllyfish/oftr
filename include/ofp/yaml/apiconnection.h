@@ -1,6 +1,7 @@
 #ifndef OFP_YAML_APICONNECTION_H
 #define OFP_YAML_APICONNECTION_H
 
+#include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/apiserver.h"
 #include "ofp/bytelist.h"
 
@@ -53,6 +54,8 @@ private:
 	void handleEvent();
 
 	static void cleanInputLine(std::string *line);
+	static bool isEmptyEvent(const std::string &s);
+	static std::string escape(const std::string &s);
 };
 
 } // </namespace yaml>

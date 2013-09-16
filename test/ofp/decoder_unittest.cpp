@@ -213,8 +213,6 @@ TEST(decoder, flowmodv4_2)
 
 TEST(decoder, flowmodv1)
 {
-    ofp::log::set(&std::cerr);
-
     const char *hex = "010E00500000000100303FEECCCC0000000000000000000000000000000008000000000000000000C0A801010000000011111111111111110044555566667777888888889999BBBB00070008C0A80201";
     const char *yaml = "---\ntype:            OFPT_FLOW_MOD\nxid:             0x00000001\nversion:         1\nmsg:             \n  cookie:          0x1111111111111111\n  cookie_mask:     0xFFFFFFFFFFFFFFFF\n  table_id:        0\n  command:         68\n  idle_timeout:    0x5555\n  hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       0x88888888\n  out_port:        0x00009999\n  out_group:       0x00000000\n  flags:           0xBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           52428\n    - type:            OFB_ETH_TYPE\n      value:           2048\n    - type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n    - type:            OFPIT_APPLY_ACTIONS\n      value:           \n        - action:          OFPAT_SET_FIELD\n          type:            OFB_IPV4_DST\n          value:           192.168.2.1\n...\n";
     
@@ -296,5 +294,11 @@ TEST(decoder, packetoutv1)
     EXPECT_EQ("", encoder.error());
     EXPECT_HEX(hex, encoder.data(), encoder.size());
     //testDecodeEncode("010D004A000000013333333344440010000000080005001400070008C0A80101FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", "");
+}
+
+
+TEST(decoder, setconfigv4) 
+{
+    testDecodeEncode("0409000C11111111AAAABBBB", "---\ntype:            OFPT_SET_CONFIG\nxid:             0x11111111\nversion:         4\nmsg:             \n  flags:           0xAAAA\n  miss_send_len:   0xBBBB\n...\n");
 }
 

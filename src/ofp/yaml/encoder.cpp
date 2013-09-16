@@ -10,12 +10,13 @@
 #include "ofp/yaml/ymultipartreply.h"
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
+#include "ofp/yaml/ysetconfig.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
 
-Encoder::Encoder(const std::string &input) : errorStream_{error_} 
+Encoder::Encoder(const std::string &input, ChannelFinder finder) : errorStream_{error_}, finder_{finder}
 {
     if (input.empty()) {
         error_ = "No input.";
@@ -39,8 +40,22 @@ void Encoder::diagnosticHandler(const llvm::SMDiagnostic &diag, void *context)
 
 void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
 {
-    channel_.setVersion(header.version());
-    channel_.setNextXid(header.xid());
+    // At this point, we know the datapathID. The YAML message may not contain
+    // the version and xid, and even if it does, we still need to override the
+    // version if the channel corresponds to an actual channel. Use the channel
+    // finder to locate the channel for the given datapathID so we can set the
+    // correct protocol version and possibly override the xid.
+    
+    Channel *actualChannel = finder_(datapathId_);
+    if (actualChannel) {
+        channel_.setVersion(actualChannel->version());
+        if (header.xid() == 0) {
+            channel_.setNextXid(actualChannel->nextXid());
+        }
+    } else {
+        channel_.setVersion(header.version());
+        channel_.setNextXid(header.xid());
+    }
 
     switch (header.type()) {
     case Hello::type(): {
@@ -139,9 +154,21 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
         packetOut.send(&channel_);
         break;
     }
-    default:
+    case SetConfig::type(): {
+        SetConfigBuilder setConfig;
+        io.mapRequired("msg", setConfig);
+        setConfig.send(&channel_);
         break;
     }
+    default:
+        log::info("yaml::Encoder::encodeMsg: Unsupported message type:", int(header.type()));
+        break;
+    }
+}
+
+Channel *Encoder::NullChannelFinder(const DatapathID &datapathId)
+{
+    return nullptr;
 }
 
 } // </namespace yaml>

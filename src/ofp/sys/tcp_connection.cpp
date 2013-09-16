@@ -32,6 +32,61 @@ TCP_Connection::~TCP_Connection()
 }
 
 
+IPv6Address TCP_Connection::remoteAddress() const
+{
+    try
+    {
+        if (isOutgoing()) {
+            return makeIPv6Address(endpoint_.address());
+        }
+        return makeIPv6Address(socket_.remote_endpoint().address());
+    }
+    catch (std::exception &ex)
+    {
+        log::debug("remoteAddress:", ex.what());
+        return IPv6Address{};
+    }
+}
+
+
+UInt16 TCP_Connection::remotePort() const
+{
+    try
+    {
+        if (isOutgoing()) {
+            return endpoint_.port();
+        }
+        return socket_.remote_endpoint().port();
+    }
+    catch (std::exception &ex)
+    {
+        log::debug("remotePort:", ex.what());
+        return 0;
+    }
+}
+
+void TCP_Connection::write(const void *data, size_t length)
+{
+    outgoing_[outgoingIdx_].add(data, length);
+}
+
+void TCP_Connection::flush()
+{
+    if (!writing_) {
+        asyncWrite();
+    }
+}
+
+void TCP_Connection::shutdown()
+{
+    log::debug(__PRETTY_FUNCTION__);
+
+    // FIXME -- this should stop reading data and close connection when
+    // all outgoing data existing at this point is sent.
+    socket_.close();
+}
+
+
 Deferred<ofp::Exception> TCP_Connection::asyncConnect(const tcp::endpoint &endpt, milliseconds delay)
 {
     assert(deferredExc_ == nullptr);
@@ -222,8 +277,6 @@ void TCP_Connection::asyncWrite()
 void TCP_Connection::asyncEchoReply(const Header *header, size_t length)
 {
     assert(length >= sizeof(Header));
-
-    log::debug("asyncEchoReply");
 
     Header replyHeader = *header;
     replyHeader.setType(OFPT_ECHO_REPLY);

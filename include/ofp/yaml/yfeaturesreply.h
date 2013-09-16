@@ -1,8 +1,8 @@
 #ifndef OFP_YAML_YFEATURESREPLY_H
 #define OFP_YAML_YFEATURESREPLY_H
 
-#include "ofp/featuresreply.h"
 #include "ofp/yaml/yllvm.h"
+#include "ofp/featuresreply.h"
 #include "ofp/yaml/ydatapathid.h"
 
 namespace llvm { // <namespace llvm>

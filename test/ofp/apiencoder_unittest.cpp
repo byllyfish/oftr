@@ -5,8 +5,6 @@ using namespace ofp::yaml;
 
 TEST(apiencoder, dumptokens)
 {
-	ofp::log::set(&std::cerr);
-
 	const char *hex = "2D2D2D0A6576656E743A204C49424F46505F4C495354454E5F5245504C590A6D73673A0A2020706F727420393008080A2D2D2D0A";
 	std::string data = ofp::HexToRawData(hex);
 

@@ -2,17 +2,23 @@
 #include "ofp/yaml/apievents.h"
 #include "ofp/yaml/apiencoder.h"
 #include "ofp/yaml/decoder.h"
+#include "ofp/yaml/encoder.h"
 #include "ofp/channel.h"
 #include "ofp/features.h"
 
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
+// Return true if first non-whitespace substring in `s` exactly equals `cs`.
 static bool startsWith(const std::string &s, const char *cs)
 {
-    size_t len = strlen(cs);
-    if (len < s.length()) {
-        return std::memcmp(cs, s.data(), len) == 0;
+    size_t pos = s.find_first_not_of(" \t\f\v");
+    if (pos != std::string::npos && s[pos] == *cs) {
+        size_t left = s.length() - pos;
+        size_t len = strlen(cs);
+        if (len <= left) {
+            return std::memcmp(cs, &s[pos], len) == 0;
+        }
     }
     return false;
 }
@@ -45,9 +51,13 @@ void ApiConnection::onSetTimer(ApiSetTimer *setTimer)
 
 void ApiConnection::onYamlError(const std::string &error, const std::string &text)
 {
+    // YAMLIO doesn't really output strings with newlines AFAICT that well.
+    // I am escaping the newlines with \n for error messages and original
+    // event text.
+
     ApiYamlError reply;
-    reply.msg.error = error;
-    reply.msg.text = text;
+    reply.msg.error = escape(error);
+    reply.msg.text = escape(text);
     write(reply.toString());
 }
 
@@ -103,8 +113,6 @@ void ApiConnection::onTimer(Channel *channel, UInt32 timerID)
 
 void ApiConnection::write(const std::string &msg)
 {
-    log::debug("WRITE", msg);
-
     outgoing_[outgoingIdx_].add(msg.data(), msg.length());
     if (!writing_) {
         asyncWrite();
@@ -201,8 +209,29 @@ void ApiConnection::handleEvent()
 {
     if (isLibEvent_) {
         ApiEncoder encoder{text_, this};
+
     } else {
-        log::debug("openflow:", text_);
+        // Ignore event if there is no data.
+        if (isEmptyEvent(text_))
+            return;
+
+        Encoder encoder(text_, [this](const DatapathID &datapathId) {
+            return server_->findChannel(datapathId);
+        });
+
+        if (encoder.error().empty()) {
+            Channel *channel = server_->findChannel(encoder.datapathId());
+
+            if (channel) {
+                channel->write(encoder.data(), encoder.size());
+                channel->flush();
+            } else {
+                onYamlError("Unknown Datapath ID.", text_);
+            }
+
+        } else {
+            onYamlError(encoder.error(), text_);
+        }
     }
 }
 
@@ -223,5 +252,35 @@ void ApiConnection::cleanInputLine(std::string *line)
             ch = '\n';
         }
     }
+}
 
+
+bool ApiConnection::isEmptyEvent(const std::string &s)
+{
+    // String should have the format:  "---\n(...)\n---\n"
+    // Return true if string is too short or there is no colon.
+    
+    if (s.size() < 12) 
+        return true;
+
+    if (s.find(':') == std::string::npos)
+        return true;
+
+    return false;
+}
+
+// Replace newlines in `s` with explicit '\n' escape sequence.
+std::string ApiConnection::escape(const std::string &s)
+{
+    std::string result;
+    result.reserve(s.length());
+
+    for (auto ch : s) {
+        if (ch == '\n') {
+            result += "\\n";
+        } else {
+            result += ch;
+        }
+    }
+    return result;
 }

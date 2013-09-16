@@ -10,8 +10,8 @@
 #include "ofp/yaml/yconstants.h"
 #include "ofp/Header.h"
 
+#if 0
 namespace ofp {    // <namespace ofp>
-
 namespace detail { // <namespace detail>
 
 void readHeader(llvm::yaml::IO &io, Header *header);
@@ -47,7 +47,7 @@ inline void writeHeader(llvm::yaml::IO &io, const Header *header)
 
 } // </namespace detail>
 } // </namespace ofp>
-
+#endif //0
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>

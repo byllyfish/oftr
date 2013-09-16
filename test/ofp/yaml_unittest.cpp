@@ -6,6 +6,8 @@
 
 using namespace ofp;
 
+#if 0
+
 TEST(yaml_flowmod, write)
 {
     log::set(&std::cerr);
@@ -58,4 +60,5 @@ TEST(yaml_unittest, escape_chars)
     yaml::read(input, &builder);
 }
 
+#endif //0
 

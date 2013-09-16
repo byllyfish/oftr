@@ -103,6 +103,7 @@ struct MatchBuilderItem {
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
+#if 0
 template <>
 struct MappingTraits<ofp::detail::FlowModWrap> {
 
@@ -112,6 +113,7 @@ struct MappingTraits<ofp::detail::FlowModWrap> {
         io.mapRequired("msg", *msg.msg);
     }
 };
+#endif //0
 
 template <>
 struct MappingTraits<ofp::FlowMod> {
@@ -198,6 +200,7 @@ struct ScalarTraits<ofp::OXMType> {
 };
 #endif //0
 
+#if 0
 template <>
 struct MappingTraits<ofp::detail::FlowModBuilderWrap> {
 
@@ -207,6 +210,7 @@ struct MappingTraits<ofp::detail::FlowModBuilderWrap> {
         io.mapRequired("msg", *msg.msg);
     }
 };
+#endif //0
 
 template <>
 struct MappingTraits<ofp::FlowModBuilder> {

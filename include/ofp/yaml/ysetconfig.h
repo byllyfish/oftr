@@ -14,7 +14,8 @@ struct MappingTraits<ofp::SetConfig> {
 
     static void mapping(IO &io, ofp::SetConfig &msg)
     {
-        ofp::detail::writeHeader(io, reinterpret_cast<ofp::Header *>(&msg));
+        io.mapRequired("flags", msg.flags_);
+        io.mapRequired("miss_send_len", msg.missSendLen_);
     }
 };
 
@@ -23,7 +24,8 @@ struct MappingTraits<ofp::SetConfigBuilder> {
 
     static void mapping(IO &io, ofp::SetConfigBuilder &msg)
     {
-        ofp::detail::writeHeader(io, reinterpret_cast<ofp::Header *>(&msg));
+        io.mapRequired("flags", msg.msg_.flags_);
+        io.mapRequired("miss_send_len", msg.msg_.missSendLen_);
     }
 };
 

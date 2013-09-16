@@ -4,9 +4,12 @@
 # 
 #  Targets to make:
 # 
-#    libofp.a
+#    all
+#    test
 #    docs
 #    clean
+#    
+#  !!! This Makefile does NOT handle all dependencies!
 #
 ################################################################################
 
@@ -35,14 +38,31 @@ ifeq (clang,$(findstring clang,$(CXX_VERSION)))
  CPPFLAGS += -stdlib=libc++
  ALL_WARNINGS += -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic 
  ALL_WARNINGS += -Wno-unused-parameter -Wno-documentation -Wno-weak-vtables
+ ALL_WARNINGS += -Wno-switch-enum -Wno-switch -Wno-covered-switch-default
+ ALL_WARNINGS += -Wno-unreachable-code -Wno-padded   #Temporarily turned off.
 else
  ALL_WARNINGS += -Wall
 endif
 CXXFLAGS += $(ALL_WARNINGS)
 
 
+all: oxm libofp.a external/yaml-io/libyamlio.a libofpexec
+
 libofp.a: $(LIB_OBJS) $(BOOST_OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
+
+libofpexec: libofp.a external/yaml-io/libyamlio.a src/ofp/libofpexec_main.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
+
+external/yaml-io/libyamlio.a:
+	cd external/yaml-io; make
+
+.PHONY: test
+test: test/ofp_test
+	./test/ofp_test
+
+test/ofp_test:
+	cd test; $(MAKE)
 
 .PHONY: docs
 docs:
@@ -51,6 +71,7 @@ docs:
 .PHONY: clean
 clean:
 	rm -f libofp.a
+	rm -f libofpexec
 	rm -f $(LIB_OBJS)
 	rm -f $(BOOST_OBJECTS)
 

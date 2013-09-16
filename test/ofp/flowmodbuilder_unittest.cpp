@@ -66,8 +66,6 @@ TEST(flowmodbuilder, version1_1)
 
 TEST(flowmodbuilder, version1_0)
 {
-    log::set(&std::cerr);
-
     MatchBuilder match;
     match.add(OFB_IN_PORT{27});
 
