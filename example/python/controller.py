@@ -20,7 +20,7 @@ def setConfig(datapath, len):
 
 
 def isMulticast(enetAddr):
-    return enetAddr[1] in "13579BD" 
+    return enetAddr[1] in "13579BDF" 
 
 # Tell switch to send the packet out all ports.
 def flood(ofp, event):
