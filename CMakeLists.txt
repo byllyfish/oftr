@@ -13,6 +13,13 @@
 cmake_minimum_required (VERSION 2.6)
 project(libofp)
 
+
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(FATAL_ERROR "In-source builds are not allowed. Please run cmake inside a source directory.
+This process created the file 'CMakeCache.txt' and the directory 'CMakeFiles'.
+Please delete them.")
+endif()
+
 #-------------------------------------------------------------------------------
 # Settings
 #-------------------------------------------------------------------------------
@@ -47,7 +54,11 @@ set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/boost_1_54_0
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_CXX_FLAGS "-std=c++11 -stdlib=libc++ -fstrict-aliasing")
+set(LIBOFP_CXX_FLAGS "-std=c++11 -fstrict-aliasing")
+
+if (APPLE AND UNIX)
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
+endif()
 
 # Add new library source files here. Add unittest source files to 
 # test/CMakeLists.txt.
@@ -121,6 +132,18 @@ set(LIBOFP_SOURCES
 # Specify the libofpexec main source file.
 
 set(LIBOFPEXEC_SOURCES src/ofp/libofpexec_main.cpp)
+
+# Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
+# 'debug', set the build type to 'debug', otherwise set to release build. The
+# comparison test for 'debug' is case-insensitive.
+
+string(TOLOWER "${CMAKE_BINARY_DIR}" temp)
+if ("${temp}" MATCHES "/[^/]*debug[^/]*$")
+  set(CMAKE_BUILD_TYPE debug)
+else()
+  set(CMAKE_BUILD_TYPE release)
+endif()
+
 
 #-------------------------------------------------------------------------------
 # Build
