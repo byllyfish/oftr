@@ -6,4 +6,6 @@
 *_test
 .~lock.*
 docs/html
+Build_Debug/
+Build_Release/
 
