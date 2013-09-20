@@ -1,5 +1,6 @@
 #include "ofp/log.h"
 #include "ofp/yaml/apiserver.h"
+#include <iostream>
 
 using namespace ofp;
 using namespace yaml;
