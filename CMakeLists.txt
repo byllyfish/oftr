@@ -35,10 +35,6 @@ set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak
 
 set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 
-# Specify our final warning set.
-
-set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
-
 # Specify the include directory for the library. Don't include the directories
 # for third party headers. (See next setting)
 
@@ -134,16 +130,25 @@ set(LIBOFP_SOURCES
 set(LIBOFPEXEC_SOURCES src/ofp/libofpexec_main.cpp)
 
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
-# 'debug', set the build type to 'debug', otherwise set to release build. The
-# comparison test for 'debug' is case-insensitive.
+# '+debug', set the build type to 'debug', otherwise set to release build. The
+# comparison test for '+debug' is case-insensitive.
 
-string(TOLOWER "${CMAKE_BINARY_DIR}" temp)
-if ("${temp}" MATCHES "/[^/]*debug[^/]*$")
+string(TOLOWER "${CMAKE_BINARY_DIR}" binary_dir)
+if ("${binary_dir}" MATCHES "/[^/]*\\+debug[^/]*$")
+  message(STATUS "Setting build type to DEBUG.")
   set(CMAKE_BUILD_TYPE debug)
 else()
+  message(STATUS "Setting build type to RELEASE.")
   set(CMAKE_BUILD_TYPE release)
 endif()
 
+# Specify our final warning set.  Clang supports -Weverything, but GCC does not.
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
+else()
+  set(LIBOFP_WARNINGS "-Wall")
+endif()
 
 #-------------------------------------------------------------------------------
 # Build
