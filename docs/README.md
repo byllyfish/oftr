@@ -232,12 +232,10 @@ Feedback
 --------
 
 No software product is successful without the input of others. I greatly value 
-your feedback. If you find this software useful, appealing, stupid, crappy, 
-incomplete, or downright buggy, please let me know:
+your feedback. If you find this software useful, promising, incomplete, or 
+buggy, please let me know:
 
     william.w.fisher+libofp@gmail.com
-
-I may not always reply immediately, but I will always listen. Thanks.
 
 References
 ----------
@@ -251,6 +249,6 @@ References
   - http://blip.tv/boostcon/thinking-asynchronously-designing-applications-with-boost-asio-5250947
   - http://llvm.org/docs/YamlIO.html
   - https://code.google.com/p/googletest/
-
+  - http://www.net-snmp.org/wiki/index.php/DTLS_Implementation_Notes
 
 
