@@ -389,4 +389,12 @@ endforeach(HEADER)
 
 install(FILES ${LIBOFP_HEADERS_GENERATED} DESTINATION include/ofp)
 
+#-------------------------------------------------------------------------------
+# CPack Installer Support
+#-------------------------------------------------------------------------------
 
+include(InstallRequiredSystemLibraries)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_VERSION_MAJOR "${libofp_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${libofp_VERSION_MINOR}")
+include(CPack)
