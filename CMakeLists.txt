@@ -88,8 +88,6 @@ set(LIBOFP_SOURCES
 	src/ofp/multipartrequest.cpp
 	src/ofp/ofp.cpp
 	src/ofp/originalmatch.cpp
-	src/ofp/oxmfields.cpp
-	src/ofp/oxmfieldsdata.cpp
 	src/ofp/oxmlist.cpp
 	src/ofp/oxmtype.cpp
 	src/ofp/oxmtypeset.cpp
@@ -125,6 +123,14 @@ set(LIBOFP_SOURCES
 	src/ofp-c/ofpstring.cpp
 )
 
+# These source files are generated.
+
+set(LIBOFP_SOURCES_GENERATED
+  ${CMAKE_BINARY_DIR}/oxm/oxmfields.h
+  ${CMAKE_BINARY_DIR}/oxm/oxmfields.cpp
+  ${CMAKE_BINARY_DIR}/oxm/oxmfieldsdata.cpp
+)
+
 # Specify the libofpexec main source file.
 
 set(LIBOFPEXEC_SOURCES src/ofp/libofpexec_main.cpp)
@@ -142,7 +148,17 @@ else()
   set(CMAKE_BUILD_TYPE release)
 endif()
 
-# Specify our final warning set.  Clang supports -Weverything, but GCC does not.
+# If binary_dir contains +32bit or +64bit set the -m32 or -m64 flag respectively.
+
+if ("${binary_dir}" MATCHES "/[^/]*\\+64bit[^/]*$")
+  message(STATUS "Adding -m64 build option.")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m64")
+elseif("${binary_dir}" MATCHES "/[^/]*\\+32bit[^/]*$")
+  message(STATUS "Adding -m32 build option.")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m32")
+endif()
+
+# Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
@@ -180,11 +196,24 @@ set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WA
 
 include_directories(${LIBOFP_INCLUDES})
 
+# Before we can build libofp.a, we need to build oxmfields.h, oxmfields.cpp,
+# and oxmfieldsdata.cpp.
+
+add_subdirectory(oxm)
+
+# Tell CMake the oxm source files won't be available until build time.
+
+set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
+
 # Build libofp.a and libofpexec.
 
-add_library(ofp ${LIBOFP_SOURCES})
+add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
 add_executable(libofpexec ${LIBOFPEXEC_SOURCES})
 target_link_libraries(libofpexec ofp yamlio boostasio)
+
+# Make sure the source is generated before the executable builds.
+
+add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdata_cpp)
 
 #-------------------------------------------------------------------------------
 # Test
