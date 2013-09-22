@@ -25,6 +25,11 @@ endif()
 # Settings
 #-------------------------------------------------------------------------------
 
+# Set the version number of the library.
+
+set(libofp_VERSION_MAJOR 0)
+set(libofp_VERSION_MINOR 2)
+
 # Specify the set of warnings to enable. The philosophy of this project is to
 # compile with every clang warning enabled, then disable a few that don't add
 # anything except to clutter up the build logs. Put disabled warnings into 
@@ -35,11 +40,6 @@ set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak
 # LibOFP is a C++11-only project. Disable warnings about C++98 compatibility.
 
 set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
-
-# Specify the include directory for the library. Don't include the directories
-# for third party headers. (See next setting)
-
-set(LIBOFP_INCLUDES "include")
 
 # Specify include directories for third party headers. We use -isystem instead
 # of -I because we don't want to receive compiler warnings from these headers.
@@ -109,7 +109,6 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/udp_server.cpp
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp
-	src/ofp/version.cpp
 	src/ofp/writable.cpp
 	src/ofp/yaml/apichannellistener.cpp
 	src/ofp/yaml/apiconnection.cpp
@@ -123,6 +122,11 @@ set(LIBOFP_SOURCES
 	src/ofp-c/ofpstring.cpp
 )
 
+# Specify the config.h.in file.
+
+set(LIBOFP_CONFIG_IN ${CMAKE_SOURCE_DIR}/src/config.h.in)
+set(LIBOFP_CONFIG ${CMAKE_BINARY_DIR}/include/ofp/config.h)
+
 # These source files are generated.
 
 set(LIBOFP_SOURCES_GENERATED
@@ -133,7 +137,7 @@ set(LIBOFP_SOURCES_GENERATED
 
 # Specify the libofpexec main source file.
 
-set(LIBOFPEXEC_SOURCES src/ofp/libofpexec_main.cpp)
+set(LIBOFP_EXEC_SOURCES src/ofp/libofpexec_main.cpp)
 
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
 # '+debug', set the build type to 'debug', otherwise set to release build. The
@@ -174,6 +178,10 @@ endif()
 
 include(CTest)
 
+# Specify auto-generated config.h file.
+
+configure_file ("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
+
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
@@ -194,14 +202,14 @@ set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WA
 # Set up the source include directory. N.B. Includes for third-party sources are
 # baked into CMAKE_CXX_FLAGS using -isystem.
 
-include_directories(${LIBOFP_INCLUDES})
+include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
 # Before we can build libofp.a, we need to build oxmfields.h, oxmfields.cpp,
 # and oxmfieldsdata.cpp. Generated source files are built into directory 'oxm'
 # in the cmake binary directory.
 
 add_subdirectory(oxm)
-include_directories(${CMAKE_BINARY_DIR}/oxm)
+######include_directories(${CMAKE_BINARY_DIR}/oxm)
 
 # Tell CMake the oxm source files won't be available until build time.
 
@@ -210,7 +218,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a and libofpexec.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-add_executable(libofpexec ${LIBOFPEXEC_SOURCES})
+add_executable(libofpexec ${LIBOFP_EXEC_SOURCES})
 target_link_libraries(libofpexec ofp yamlio boostasio)
 
 # Make sure the source is generated before the executable builds.

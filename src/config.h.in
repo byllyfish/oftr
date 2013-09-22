@@ -1,0 +1,10 @@
+// Configuration file for LibOFP.
+// Should remain compatible with C.
+
+#ifndef OFP_CONFIG_H
+#define OFP_CONFIG_H
+
+#define LIBOFP_VERSION_MAJOR		@libofp_VERSION_MAJOR@
+#define LIBOFP_VERSION_MINOR 		@libofp_VERSION_MINOR@
+
+#endif // OFP_CONFIG_H

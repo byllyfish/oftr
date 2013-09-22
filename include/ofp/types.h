@@ -11,6 +11,7 @@
 #ifndef OFP_TYPES_H
 #define OFP_TYPES_H
 
+#include "ofp/config.h"
 #include <cstddef>     // for std::size_t, etc.
 #include <cstdint>     // for std::uint8_t, etc.
 #include <cstring>     // for std::strlen, std::memcpy, etc.

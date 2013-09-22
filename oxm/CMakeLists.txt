@@ -1,6 +1,6 @@
 
 
-set(oxmfields_h "${CMAKE_CURRENT_BINARY_DIR}/ofp/oxmfields.h")
+set(oxmfields_h "${CMAKE_BINARY_DIR}/include/ofp/oxmfields.h")
 set(oxmfields_cpp "${CMAKE_CURRENT_BINARY_DIR}/oxmfields.cpp")
 set(oxmfieldsdata_cpp ${CMAKE_CURRENT_BINARY_DIR}/oxmfieldsdata.cpp)
 set(oxmfields_main_cpp ${CMAKE_CURRENT_BINARY_DIR}/oxmfields_main.cpp)
@@ -34,7 +34,7 @@ add_custom_command(
 
 # Add the binary directory to the search path for include files.
 
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+#####include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 add_executable(oxmfields_compile2 ${oxmfields_main_cpp} ${oxmlist_cpp} ${oxmfields_h})
 
