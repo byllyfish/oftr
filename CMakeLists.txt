@@ -11,7 +11,7 @@
 #
 #=====--------------------------------------------------------------------=====#
 
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 project(libofp)
 
 
@@ -173,7 +173,7 @@ endif()
 
 # Prepare for testing. Subdirectories can add tests.
 
-enable_testing(true)
+include(CTest)
 
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
@@ -223,6 +223,4 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 #-------------------------------------------------------------------------------
 
 add_subdirectory(test)
-
-
 
