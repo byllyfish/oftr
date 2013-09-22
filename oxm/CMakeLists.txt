@@ -1,6 +1,6 @@
 
 
-set(oxmfields_h "${CMAKE_CURRENT_BINARY_DIR}/oxmfields.h")
+set(oxmfields_h "${CMAKE_CURRENT_BINARY_DIR}/ofp/oxmfields.h")
 set(oxmfields_cpp "${CMAKE_CURRENT_BINARY_DIR}/oxmfields.cpp")
 set(oxmfieldsdata_cpp ${CMAKE_CURRENT_BINARY_DIR}/oxmfieldsdata.cpp)
 set(oxmfields_main_cpp ${CMAKE_CURRENT_BINARY_DIR}/oxmfields_main.cpp)
@@ -9,6 +9,12 @@ set(oxmfields_tab ${CMAKE_CURRENT_SOURCE_DIR}/oxmfields.tab)
 set(oxmfields_compile_cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxmfields_compile_main.cpp)
 set(oxmfields_compile3_cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxmfields_compile3_main.cpp)
 set(oxmlist_cpp "${CMAKE_SOURCE_DIR}/src/ofp/oxmlist.cpp")
+
+# Make ofp sub-directory for oxmfields.h
+
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ofp)
+
+# Build `oxmfields_compile`.
 
 add_executable(oxmfields_compile "${oxmfields_compile_cpp}")
 
@@ -26,7 +32,11 @@ add_custom_command(
   DEPENDS oxmfields_compile ${oxmfields_tab}
 )
 
-add_executable(oxmfields_compile2 ${oxmfields_main_cpp} ${oxmlist_cpp})
+# Add the binary directory to the search path for include files.
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+add_executable(oxmfields_compile2 ${oxmfields_main_cpp} ${oxmlist_cpp} ${oxmfields_h})
 
 add_custom_command(
   OUTPUT "${oxmfields_cpp}"
@@ -43,10 +53,6 @@ add_custom_command(
   DEPENDS oxmfields_compile3
 )
 
-
-# Add the binary directory to the search path for include files.
-
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 add_custom_target(libofp_oxmfields_h DEPENDS ${oxmfields_h})
 add_custom_target(libofp_oxmfields_cpp DEPENDS "${oxmfields_cpp}")

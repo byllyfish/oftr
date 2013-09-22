@@ -6,6 +6,7 @@
 #    - external/yaml-io/CMakeLists.txt
 #    - external/boost_1_54_0_asio/CMakeLists.txt
 #    - external/googletest/CMakeLists.txt
+#    - oxm/CMakeLists.txt
 #    - test/CMakeLists.txt
 #
 #=====--------------------------------------------------------------------=====#
@@ -197,9 +198,11 @@ set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WA
 include_directories(${LIBOFP_INCLUDES})
 
 # Before we can build libofp.a, we need to build oxmfields.h, oxmfields.cpp,
-# and oxmfieldsdata.cpp.
+# and oxmfieldsdata.cpp. Generated source files are built into directory 'oxm'
+# in the cmake binary directory.
 
 add_subdirectory(oxm)
+include_directories(${CMAKE_BINARY_DIR}/oxm)
 
 # Tell CMake the oxm source files won't be available until build time.
 
