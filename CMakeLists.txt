@@ -30,7 +30,7 @@ endif()
 # anything except to clutter up the build logs. Put disabled warnings into 
 # LIB_OFP_WARNINGS_DISABLED.
 
-set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables")
+set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum")
 
 # LibOFP is a C++11-only project. Disable warnings about C++98 compatibility.
 
@@ -118,7 +118,6 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/apiserver.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
-	src/ofp/yaml/yflowmod.cpp
 	src/ofp/yaml/ysetconfig.cpp
 	src/ofp-c/ofpprotocol.cpp
 	src/ofp-c/ofpstring.cpp

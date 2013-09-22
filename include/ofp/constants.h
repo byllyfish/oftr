@@ -134,6 +134,7 @@ enum OFPType : UInt8 {
 
     // Meters and rate limiters configuration messages.
     OFPT_METER_MOD = 29, // Controller -> switch message
+    
     OFPT_LAST = OFPT_METER_MOD,
     /// Used internally to flag denote an improper version/type combination.
     OFPT_UNSUPPORTED = 0xF9

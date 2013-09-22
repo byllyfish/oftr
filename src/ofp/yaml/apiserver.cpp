@@ -16,6 +16,8 @@
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
+OFP_BEGIN_IGNORE_PADDING
+
 void ApiServer::run(const IPv6Address &localAddress, UInt16 localPort)
 {
     Driver driver;
@@ -165,3 +167,5 @@ ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId)
     return nullptr;
 }
 
+
+OFP_END_IGNORE_PADDING

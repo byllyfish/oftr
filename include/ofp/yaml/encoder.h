@@ -13,6 +13,7 @@
 namespace ofp { // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
+OFP_BEGIN_IGNORE_PADDING
 
 class Encoder {
 public:
@@ -48,6 +49,8 @@ private:
 
     friend struct llvm::yaml::MappingTraits<ofp::yaml::Encoder>;
 };
+
+OFP_END_IGNORE_PADDING
 
 } // </namespace yaml>
 } // </namespace ofp>

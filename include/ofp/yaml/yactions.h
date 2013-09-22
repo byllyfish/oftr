@@ -10,6 +10,8 @@ namespace detail { // <namespace detail>
 
 struct ActionInserter {};
 
+OFP_BEGIN_IGNORE_PADDING
+
 class SetFieldInserter {
 public:
     SetFieldInserter(llvm::yaml::IO &io, ActionList &list, OXMType type)
@@ -33,6 +35,7 @@ private:
     OXMType type_;
 };
 
+OFP_END_IGNORE_PADDING
 
 } // </namespace detail>
 } // </namespace ofp>

@@ -42,9 +42,7 @@ void DefaultHandshake::onChannelUp(Channel *channel)
 
 void DefaultHandshake::onChannelDown(Channel *channel) 
 {
-	log::debug(__PRETTY_FUNCTION__);
-
-	log::info("Channel down before controller handshake could complete.");
+	log::info("DefaultHandshake: Channel down before controller handshake could complete.");
 }
 
 void DefaultHandshake::onMessage(const Message *message) 
@@ -68,8 +66,9 @@ void DefaultHandshake::onMessage(const Message *message)
 		case Error::type():
 			onError(message);
 			break;
-			
+		
 		default:
+			log::info("DefaultHandshake ignored message type", message->type());
 			break;
 	}
 
@@ -77,9 +76,7 @@ void DefaultHandshake::onMessage(const Message *message)
 
 void DefaultHandshake::onException(const Exception *exception)
 {
-	log::debug(__PRETTY_FUNCTION__);
-
-	// TODO
+	log::info("DefaultHandshake: protocol exception", *exception);
 }
 
 

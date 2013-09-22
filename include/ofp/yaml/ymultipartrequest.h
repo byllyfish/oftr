@@ -34,6 +34,11 @@ struct MappingTraits<ofp::MultipartRequest> {
             // io.mapOptional("body", EmptyRequest);
             break;
         }
+
+        default:
+            // FIXME - implement the rest.
+            log::debug("MultipartRequest MappingTraits not fully implemented.");
+            break;
         }
     }
 };
@@ -62,7 +67,11 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         case OFPMP_PORT_DESC:
             // io.mapOptional("body", EmptyRequest);
             break;
-        };
+        default:
+            // FIXME - implement the rest.
+            log::debug("MultipartRequestBuilder MappingTraits not fully implemented.");
+            break;
+        }
     }
 };
 

@@ -41,6 +41,7 @@ private:
     const UInt8 *position_;
 };
 
+OFP_BEGIN_IGNORE_PADDING
 
 template <class Type>
 class MPReplyBuilderSeq {
@@ -66,6 +67,8 @@ private:
     Type item_;
     bool init_;
 };
+
+OFP_END_IGNORE_PADDING
 
 } // </namespace detail>
 } // </namespace ofp>
@@ -125,6 +128,10 @@ struct MappingTraits<ofp::MultipartReply> {
                 //io.mapOptional("body", EmptyRequest);
                 break;
             }
+            default:
+                // FIXME
+                log::info("MultiPartReply: MappingTraits not fully implemented.", int(type));
+                break;
         }
     }
 };
@@ -154,6 +161,10 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
                 //io.mapOptional("body", EmptyRequest);
                 break;
             }
+            default:
+                // FIXME
+                log::info("MultiPartReplyBuilder: MappingTraits not fully implemented.", int(type));
+                break;
         };
     }
 };

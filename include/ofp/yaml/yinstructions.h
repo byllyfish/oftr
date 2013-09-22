@@ -160,9 +160,6 @@ struct MappingTraits<ofp::InstructionIterator::Item> {
                 io.mapRequired("value", instr);
                 break;
             }
-            default:
-                log::info("MappingTraits: Unknown instruction type.");
-                break;
         }
     }
 };

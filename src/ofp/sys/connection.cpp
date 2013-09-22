@@ -92,8 +92,7 @@ void Connection::postTimerExpired(ConnectionTimer *timer)
 
     if (!timer->repeating()) {
         // Delete timer.
-        size_t n = timers_.erase(timer->id());
-        assert(n == 1);
+        (void) timers_.erase(timer->id());
     }
 }
 
@@ -122,8 +121,7 @@ void Connection::scheduleTimer(UInt32 timerID, milliseconds interval,
 
 void Connection::cancelTimer(UInt32 timerID)
 {
-    size_t n = timers_.erase(timerID);
-    assert(n == 1);
+    (void) timers_.erase(timerID);
 }
 
 } // </namespace sys>

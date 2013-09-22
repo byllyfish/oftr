@@ -77,9 +77,9 @@ private:
     Big16 matchLength_ = 0;
     Padding<4> pad_2;
 
-    enum { UnpaddedSizeWithMatchHeader = 52 };
-    enum { SizeWithoutMatchHeader = 48 };
-    enum { MatchHeaderSize = 4 };
+    enum : size_t { UnpaddedSizeWithMatchHeader = 52 };
+    enum : size_t { SizeWithoutMatchHeader = 48 };
+    enum : size_t { MatchHeaderSize = 4 };
     
     friend class FlowModBuilder;
     friend struct llvm::yaml::MappingTraits<FlowMod>;

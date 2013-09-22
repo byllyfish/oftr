@@ -53,7 +53,7 @@ public:
 	{
 		auto sz = size();
 		assert(sz >= 4);
-		position_ += size();
+		position_ += sz;
 	}
 		
 	bool operator==(const InstructionIterator &rhs) const {

@@ -77,7 +77,7 @@ private:
     bool validateLengthV2(size_t length) const;
     bool validateLengthV3(size_t length) const;
 
-    enum {
+    enum : size_t {
         UnpaddedSizeWithMatchHeader = 28,
         SizeWithoutMatchHeader = 24,
         MatchHeaderSize = 4,

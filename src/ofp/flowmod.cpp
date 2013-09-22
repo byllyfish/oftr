@@ -12,6 +12,7 @@ Match FlowMod::match() const
     UInt16 type = matchType_;
 
     if (type == OFPMT_OXM) {
+        assert(matchLength_ >= MatchHeaderSize);
         OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_ - MatchHeaderSize};
         return Match{range};
 

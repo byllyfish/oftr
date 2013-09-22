@@ -67,7 +67,7 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd)
             *iterEnd = ActionIterator{buf_.end()};
         }
 
-        ActionType setField{OFPAT_SET_FIELD, 4 + UInt16_narrow_cast(list.size())};
+        ActionType setField{OFPAT_SET_FIELD, UInt16_narrow_cast(4 + list.size())};
         std::memcpy(RemoveConst_cast(iter->data()), &setField, sizeof(ActionType));
         std::memcpy(RemoveConst_cast(iter->valuePtr()), list.data(), list.size());
 

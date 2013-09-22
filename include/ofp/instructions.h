@@ -80,8 +80,8 @@ namespace detail { // <namespace detail>
 template<OFPInstructionType InstrType>
 class IT_WithActions {
 public:
-	enum { VariableSize = true };
-	enum { HeaderSize = 8 };
+	enum : bool { VariableSize = true };
+	enum : size_t { HeaderSize = 8 };
 
 	constexpr static InstructionType type() { return InstructionType{InstrType}; }
 
