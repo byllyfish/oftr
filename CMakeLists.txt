@@ -130,9 +130,142 @@ set(LIBOFP_CONFIG ${CMAKE_BINARY_DIR}/include/ofp/config.h)
 # These source files are generated.
 
 set(LIBOFP_SOURCES_GENERATED
-  ${CMAKE_BINARY_DIR}/oxm/oxmfields.h
+  #${CMAKE_BINARY_DIR}/oxm/oxmfields.h
   ${CMAKE_BINARY_DIR}/oxm/oxmfields.cpp
   ${CMAKE_BINARY_DIR}/oxm/oxmfieldsdata.cpp
+)
+
+set(LIBOFP_HEADERS_GENERATED
+  ${CMAKE_BINARY_DIR}/include/ofp/config.h
+  ${CMAKE_BINARY_DIR}/include/ofp/oxmfields.h
+ )
+
+# Specify list of libofp's header files. This list is used during installs.
+# Note: Two header files are generated during the build -- they are not included.
+# Generate list using `find . -name '*.h' -print
+
+set(LIBOFP_HEADER_FILES
+  include/ofp/actioniterator.h
+  include/ofp/actionlist.h
+  include/ofp/actionrange.h
+  include/ofp/actions.h
+  include/ofp/actiontype.h
+  include/ofp/array.h
+  include/ofp/bytedata.h
+  include/ofp/bytelist.h
+  include/ofp/byteorder.h
+  include/ofp/byterange.h
+  include/ofp/channel.h
+  include/ofp/channellistener.h
+  include/ofp/constants.h
+  include/ofp/datapathid.h
+  include/ofp/defaultauxiliarylistener.h
+  include/ofp/defaulthandshake.h
+  include/ofp/deferred.h
+  include/ofp/driver.h
+  include/ofp/echoreply.h
+  include/ofp/echorequest.h
+  include/ofp/enetaddress.h
+  include/ofp/error.h
+  include/ofp/exception.h
+  include/ofp/experimenter.h
+  include/ofp/export.h
+  include/ofp/features.h
+  include/ofp/featuresreply.h
+  include/ofp/flowmod.h
+  include/ofp/flowremoved.h
+  include/ofp/flowstatsreply.h
+  include/ofp/flowstatsrequest.h
+  include/ofp/getasyncreply.h
+  include/ofp/getconfigreply.h
+  include/ofp/header.h
+  include/ofp/headeronly.h
+  include/ofp/hello.h
+  include/ofp/instructioniterator.h
+  include/ofp/instructionlist.h
+  include/ofp/instructionrange.h
+  include/ofp/instructions.h
+  include/ofp/instructiontype.h
+  include/ofp/ipv4address.h
+  include/ofp/ipv6address.h
+  include/ofp/log.h
+  include/ofp/match.h
+  include/ofp/matchbuilder.h
+  include/ofp/memorychannel.h
+  include/ofp/message.h
+  include/ofp/multipartbody.h
+  include/ofp/multipartreply.h
+  include/ofp/multipartrequest.h
+  include/ofp/originalmatch.h
+  include/ofp/oxmiterator.h
+  include/ofp/oxmlist.h
+  include/ofp/oxmrange.h
+  include/ofp/oxmtype.h
+  include/ofp/oxmtypeset.h
+  include/ofp/oxmvalue.h
+  include/ofp/packetin.h
+  include/ofp/packetout.h
+  include/ofp/padding.h
+  include/ofp/port.h
+  include/ofp/portlist.h
+  include/ofp/portstatus.h
+  include/ofp/prerequisites.h
+  include/ofp/protocolversions.h
+  include/ofp/rolereply.h
+  include/ofp/rolerequest.h
+  include/ofp/setasync.h
+  include/ofp/setconfig.h
+  include/ofp/smallcstring.h
+  include/ofp/standardmatch.h
+  include/ofp/sys/boost_asio.h
+  include/ofp/sys/connection.h
+  include/ofp/sys/connectiontimer.h
+  include/ofp/sys/engine.h
+  include/ofp/sys/server.h
+  include/ofp/sys/tcp_connection.h
+  include/ofp/sys/tcp_server.h
+  include/ofp/sys/udp_connection.h
+  include/ofp/sys/udp_server.h
+  include/ofp/transmogrify.h
+  include/ofp/types.h
+  include/ofp/unittest.h
+  include/ofp/writable.h
+  include/ofp/yaml/apichannellistener.h
+  include/ofp/yaml/apiconnection.h
+  include/ofp/yaml/apiencoder.h
+  include/ofp/yaml/apievents.h
+  include/ofp/yaml/apiserver.h
+  include/ofp/yaml/decoder.h
+  include/ofp/yaml/encoder.h
+  include/ofp/yaml/old_flowmod.h
+  include/ofp/yaml/yactions.h
+  include/ofp/yaml/yaddress.h
+  include/ofp/yaml/ybytelist.h
+  include/ofp/yaml/ybyteorder.h
+  include/ofp/yaml/yconstants.h
+  include/ofp/yaml/ydatapathid.h
+  include/ofp/yaml/yecho.h
+  include/ofp/yaml/yerror.h
+  include/ofp/yaml/yexperimenter.h
+  include/ofp/yaml/yfeaturesreply.h
+  include/ofp/yaml/yflowmod.h
+  include/ofp/yaml/yflowstatsreply.h
+  include/ofp/yaml/yflowstatsrequest.h
+  include/ofp/yaml/yheaderonly.h
+  include/ofp/yaml/yhello.h
+  include/ofp/yaml/yinstructions.h
+  include/ofp/yaml/yllvm.h
+  include/ofp/yaml/ymatch.h
+  include/ofp/yaml/ymultipartbody.h
+  include/ofp/yaml/ymultipartreply.h
+  include/ofp/yaml/ymultipartrequest.h
+  include/ofp/yaml/ypacketin.h
+  include/ofp/yaml/ypacketout.h
+  include/ofp/yaml/ysetconfig.h
+  include/ofp/yaml.h
+  include/ofp-c/ofpprotocol.h
+  include/ofp-c/ofpstring.h
+  include/ofp.h  
 )
 
 # Specify the libofpexec main source file.
@@ -209,7 +342,6 @@ include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 # in the cmake binary directory.
 
 add_subdirectory(oxm)
-######include_directories(${CMAKE_BINARY_DIR}/oxm)
 
 # Tell CMake the oxm source files won't be available until build time.
 
@@ -230,4 +362,31 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 #-------------------------------------------------------------------------------
 
 add_subdirectory(test)
+
+#-------------------------------------------------------------------------------
+# Install
+#-------------------------------------------------------------------------------
+
+# Set install prefix to local if CMAKE_BUILD_TYPE is debug.
+
+if(CMAKE_BUILD_TYPE STREQUAL "debug")
+  set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/local)
+endif()
+
+# Install libofp.a and libofpexec.
+
+install(TARGETS ofp DESTINATION lib)
+install(TARGETS libofpexec DESTINATION bin)
+
+# Preserve directory structure of header files when installing.
+
+foreach(HEADER ${LIBOFP_HEADER_FILES})
+  string(REGEX MATCH "(.*)/" DIR ${HEADER})
+  install(FILES ${HEADER} DESTINATION ${DIR})
+endforeach(HEADER)
+
+# Install generated headers also.
+
+install(FILES ${LIBOFP_HEADERS_GENERATED} DESTINATION include/ofp)
+
 
