@@ -14,9 +14,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(libofp)
 
+# Require out of source builds.
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
-  message(FATAL_ERROR "In-source builds are not allowed. Please run cmake inside a source directory.
+  message(FATAL_ERROR "In-source builds are not allowed.
+Please create a build sub-directory, cd into that directory then type 'cmake ..'
 This process created the file 'CMakeCache.txt' and the directory 'CMakeFiles'.
 Please delete them.")
 endif()
@@ -130,7 +132,6 @@ set(LIBOFP_CONFIG ${CMAKE_BINARY_DIR}/include/ofp/config.h)
 # These source files are generated.
 
 set(LIBOFP_SOURCES_GENERATED
-  #${CMAKE_BINARY_DIR}/oxm/oxmfields.h
   ${CMAKE_BINARY_DIR}/oxm/oxmfields.cpp
   ${CMAKE_BINARY_DIR}/oxm/oxmfieldsdata.cpp
 )
@@ -143,6 +144,8 @@ set(LIBOFP_HEADERS_GENERATED
 # Specify list of libofp's header files. This list is used during installs.
 # Note: Two header files are generated during the build -- they are not included.
 # Generate list using `find . -name '*.h' -print
+# TODO: Not all of these headers are required by library clients. We could just
+# require files included from ofp.h.
 
 set(LIBOFP_HEADER_FILES
   include/ofp/actioniterator.h

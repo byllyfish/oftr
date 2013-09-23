@@ -194,7 +194,7 @@ void ApiConnection::handleInputLine(const std::string &line)
         isLibEvent_ = false;
         lineCount_ = 0;
     } else if (lineCount_ == 1 && startsWith(line, "event:")) {
-        // If first line starts with 'event:', with no indentation, we have
+        // If first line starts with 'event:', we have
         // a library event, not an OpenFlow message.
         isLibEvent_ = true;
     }
@@ -224,7 +224,8 @@ void ApiConnection::handleEvent()
                 channel->write(encoder.data(), encoder.size());
                 channel->flush();
             } else {
-                onYamlError("Unknown Datapath ID.", text_);
+                std::string errorMsg = "Unknown Datapath ID: " + encoder.datapathId().toString();
+                onYamlError(errorMsg, RawDataToHex(encoder.data(), encoder.size()));
             }
 
         } else {
