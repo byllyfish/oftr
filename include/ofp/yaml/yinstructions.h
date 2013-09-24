@@ -1,3 +1,26 @@
+//  ===== ---- ofp/yaml/yinstructions.h --------------------*- C++ -*- =====  //
+//
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the llvm::yaml::MappingTraits for all instructions and
+/// InstructionIterator::Item and the llvm::yaml::SequenceTraits for 
+/// InstructionRange and InstructionList.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_YAML_YINSTRUCTIONS_H
 #define OFP_YAML_YINSTRUCTIONS_H
 
@@ -229,14 +252,12 @@ struct SequenceTraits<ofp::InstructionRange> {
 
     static size_t size(IO &io, ofp::InstructionRange &range)
     {
-        ofp::log::debug("Sequence::INstructionRange: ", ofp::RawDataToHex(range.data(), range.size()));
         return range.itemCount();
     }
 
     static ofp::InstructionIterator::Item &element(IO &io, ofp::InstructionRange &range,
                                      size_t index)
     {
-        ofp::log::debug("instruction yaml item", index);
         // FIXME - iterates every time!
         ofp::InstructionIterator iter = range.begin();
         for (size_t i = 0; i < index; ++i)

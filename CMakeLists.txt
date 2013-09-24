@@ -64,7 +64,6 @@ endif()
 
 set(LIBOFP_SOURCES
 	src/ofp/actionrange.cpp
-	src/ofp/channel.cpp
 	src/ofp/channellistener.cpp
 	src/ofp/connectiontimer.cpp
 	src/ofp/datapathid.cpp
@@ -111,7 +110,6 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/udp_server.cpp
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp
-	src/ofp/writable.cpp
 	src/ofp/yaml/apichannellistener.cpp
 	src/ofp/yaml/apiconnection.cpp
 	src/ofp/yaml/apiencoder.cpp
@@ -119,7 +117,6 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/apiserver.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
-	src/ofp/yaml/ysetconfig.cpp
 	src/ofp-c/ofpprotocol.cpp
 	src/ofp-c/ofpstring.cpp
 )

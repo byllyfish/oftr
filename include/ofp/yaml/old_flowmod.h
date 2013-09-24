@@ -1,3 +1,5 @@
+#error "Deprecated."
+
 #ifndef OFP_YAML_FLOWMOD_H
 #define OFP_YAML_FLOWMOD_H
 

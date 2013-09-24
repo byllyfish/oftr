@@ -1,8 +1,31 @@
+//  ===== ---- ofp/setconfig.cpp ---------------------------*- C++ -*- =====  //
+//
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Implements SetConfig and SetConfigBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #include "ofp/setconfig.h"
 #include "ofp/writable.h"
 
+using namespace ofp;
 
-const ofp::SetConfig *ofp::SetConfig::cast(const Message *message)
+
+const SetConfig *SetConfig::cast(const Message *message)
 {
 	assert(message->type() == OFPT_SET_CONFIG);
 
@@ -15,23 +38,23 @@ const ofp::SetConfig *ofp::SetConfig::cast(const Message *message)
 }
 
 
-bool ofp::SetConfig::validateLength(size_t length) const
+bool SetConfig::validateLength(size_t length) const
 {
 	return (length == sizeof(SetConfig));
 }
 
 
-void ofp::SetConfigBuilder::setFlags(UInt16 flags)
+void SetConfigBuilder::setFlags(UInt16 flags)
 {
 	msg_.flags_ = flags;
 }
 
-void ofp::SetConfigBuilder::setMissSendLen(UInt16 missSendLen)
+void SetConfigBuilder::setMissSendLen(UInt16 missSendLen)
 {
 	msg_.missSendLen_ = missSendLen;
 }
 
-ofp::UInt32 ofp::SetConfigBuilder::send(Writable *channel)
+UInt32 SetConfigBuilder::send(Writable *channel)
 {
 	UInt32 xid = channel->nextXid();
 

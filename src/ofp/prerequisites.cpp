@@ -1,18 +1,41 @@
+//  ===== ---- ofp/prerequisites.cpp -----------------------*- C++ -*- =====  //
+//
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Implements Prerequisites class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #include "ofp/prerequisites.h"
 #include "ofp/oxmlist.h"
 #include "ofp/log.h"
 #include "ofp/oxmtypeset.h"
 
+using namespace ofp;
+
 // Use an OXMType that can't possibly exist to signal placeholders
 // for prerequisites. We assume an OXMType with the mask bit set, but
 // a zero length will not legally appear in the wire protocol.
 
-constexpr const ofp::OXMType kMaskedPrereqSignal = ofp::OXMType(0x7FF1, 0, 0).withMask();
-constexpr const ofp::OXMType kValuePrereqSignal = ofp::OXMType(0x7FF2, 0, 0).withMask();
-constexpr const ofp::OXMType kPoisonPrereqSignal = ofp::OXMType(0x7FF3, 0, 0).withMask();
+constexpr const OXMType kMaskedPrereqSignal = OXMType(0x7FF1, 0, 0).withMask();
+constexpr const OXMType kValuePrereqSignal = OXMType(0x7FF2, 0, 0).withMask();
+constexpr const OXMType kPoisonPrereqSignal = OXMType(0x7FF3, 0, 0).withMask();
 
 
-void ofp::Prerequisites::insertAll(OXMList *list, const OXMRange *preqs)
+void Prerequisites::insertAll(OXMList *list, const OXMRange *preqs)
 {
 	if (preqs != nullptr) {
 		Prerequisites p{preqs};
@@ -21,7 +44,7 @@ void ofp::Prerequisites::insertAll(OXMList *list, const OXMRange *preqs)
 }
 
 
-void ofp::Prerequisites::insert(OXMList *list) const
+void Prerequisites::insert(OXMList *list) const
 {
 	assert(list != nullptr);
 
@@ -45,7 +68,7 @@ void ofp::Prerequisites::insert(OXMList *list) const
 }
 
 
-void ofp::Prerequisites::insertPreqMasked(OXMType preqTypeMasked, OXMIterator preq, OXMList *list) const
+void Prerequisites::insertPreqMasked(OXMType preqTypeMasked, OXMIterator preq, OXMList *list) const
 {	
 	if (!checkPreqMasked(preqTypeMasked, preq, list->begin(), list->end())) {
 		// We add the masked prereq with a signal.
@@ -55,7 +78,7 @@ void ofp::Prerequisites::insertPreqMasked(OXMType preqTypeMasked, OXMIterator pr
 }
 
 // Advances the preq.
-void ofp::Prerequisites::insertPreqValue(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd, OXMList *list) const
+void Prerequisites::insertPreqValue(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd, OXMList *list) const
 {
 	bool conflict = false;
 
@@ -96,7 +119,7 @@ void ofp::Prerequisites::insertPreqValue(OXMType preqType, OXMIterator &preq, OX
 	}
 }
 
-bool ofp::Prerequisites::checkAll(const OXMRange &oxm)
+bool Prerequisites::checkAll(const OXMRange &oxm)
 {
 	// For each OXM entry, we will check if its prerequisites are met.
 	// Complexity: If there are n items and each item has m prerequisites, this
@@ -154,7 +177,7 @@ FAILURE:
 }
 
 
-bool ofp::Prerequisites::check(OXMIterator begin, OXMIterator end) const
+bool Prerequisites::check(OXMIterator begin, OXMIterator end) const
 {
 	// Check this oxm range against our sequence of prerequisites.
 
@@ -180,7 +203,7 @@ bool ofp::Prerequisites::check(OXMIterator begin, OXMIterator end) const
 }
 
 
-bool ofp::Prerequisites::checkPreqMasked(OXMType preqTypeMasked, OXMIterator preq, OXMIterator begin, OXMIterator end) const
+bool Prerequisites::checkPreqMasked(OXMType preqTypeMasked, OXMIterator preq, OXMIterator begin, OXMIterator end) const
 {
 	assert(preqTypeMasked.hasMask());
 
@@ -212,7 +235,7 @@ bool ofp::Prerequisites::checkPreqMasked(OXMType preqTypeMasked, OXMIterator pre
 }
 
 
-bool ofp::Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin, OXMIterator preqEnd, OXMIterator begin, OXMIterator end, bool *conflict) const
+bool Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin, OXMIterator preqEnd, OXMIterator begin, OXMIterator end, bool *conflict) const
 {
 	assert(!preqType.hasMask());
 	assert(conflict != nullptr);
@@ -260,7 +283,7 @@ bool ofp::Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin,
 }
 
 
-bool ofp::Prerequisites::matchValueWithMask(size_t length, OXMIterator pos, OXMIterator preq)
+bool Prerequisites::matchValueWithMask(size_t length, OXMIterator pos, OXMIterator preq)
 {
 	assert(length == pos.type().length());
 
@@ -285,7 +308,7 @@ bool ofp::Prerequisites::matchValueWithMask(size_t length, OXMIterator pos, OXMI
 }
 
 
-bool ofp::Prerequisites::matchValueWithMask(size_t length, const void *data, OXMIterator preq)
+bool Prerequisites::matchValueWithMask(size_t length, const void *data, OXMIterator preq)
 {
 	assert(2 * length == preq.type().length());
 
@@ -304,7 +327,7 @@ bool ofp::Prerequisites::matchValueWithMask(size_t length, const void *data, OXM
 }
 
 
-bool ofp::Prerequisites::matchMaskWithMask(size_t length, OXMIterator pos, OXMIterator preq)
+bool Prerequisites::matchMaskWithMask(size_t length, OXMIterator pos, OXMIterator preq)
 {
 	assert(2 * length == pos.type().length());
 	assert(2 * length == preq.type().length());
@@ -327,7 +350,7 @@ bool ofp::Prerequisites::matchMaskWithMask(size_t length, OXMIterator pos, OXMIt
 }
 
 
-bool ofp::Prerequisites::matchValueWithValue(size_t length, OXMIterator pos, OXMIterator preq)
+bool Prerequisites::matchValueWithValue(size_t length, OXMIterator pos, OXMIterator preq)
 {
 	assert(length == pos.type().length());
 
@@ -352,7 +375,7 @@ bool ofp::Prerequisites::matchValueWithValue(size_t length, OXMIterator pos, OXM
 }
 
 
-bool ofp::Prerequisites::matchValueWithValue(size_t length, const void *data, OXMIterator preq)
+bool Prerequisites::matchValueWithValue(size_t length, const void *data, OXMIterator preq)
 {
 	assert(length == preq.type().length());
 
@@ -371,7 +394,7 @@ bool ofp::Prerequisites::matchValueWithValue(size_t length, const void *data, OX
 }
 
 
-bool ofp::Prerequisites::matchMaskWithValue(size_t length, OXMIterator pos, OXMIterator preq)
+bool Prerequisites::matchMaskWithValue(size_t length, OXMIterator pos, OXMIterator preq)
 {
 	assert(2*length == pos.type().length());
 	assert(length == preq.type().length());
@@ -392,7 +415,7 @@ bool ofp::Prerequisites::matchMaskWithValue(size_t length, OXMIterator pos, OXMI
 }
 
 
-bool ofp::Prerequisites::substitute(OXMList *list, OXMType type, const void *value, size_t len)
+bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value, size_t len)
 {
 	// Substitute value for prereq placeholder if we find one that matches the type.
 	assert(!type.hasMask());
@@ -462,7 +485,7 @@ bool ofp::Prerequisites::substitute(OXMList *list, OXMType type, const void *val
 }
 
 
-void ofp::Prerequisites::poisonDuplicatesAfterSubstitution(OXMList *list, OXMType type, OXMIterator rest)
+void Prerequisites::poisonDuplicatesAfterSubstitution(OXMList *list, OXMType type, OXMIterator rest)
 {
 	OXMIterator restEnd = list->end();
 	while (rest != restEnd) {
@@ -478,7 +501,7 @@ void ofp::Prerequisites::poisonDuplicatesAfterSubstitution(OXMList *list, OXMTyp
 
 
 
-bool ofp::Prerequisites::substitute(OXMList *list, OXMType type, const void *value, const void *mask, size_t len)
+bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value, const void *mask, size_t len)
 {
     // FIXME
 	return false;
@@ -488,7 +511,7 @@ bool ofp::Prerequisites::substitute(OXMList *list, OXMType type, const void *val
 /**
  *  Check for the presence of duplicate fields in the oxm list.
  */
-bool ofp::Prerequisites::duplicateFieldsDetected(const OXMRange &oxm)
+bool Prerequisites::duplicateFieldsDetected(const OXMRange &oxm)
 {
 	OXMTypeSet typeSet;
 
@@ -504,7 +527,7 @@ bool ofp::Prerequisites::duplicateFieldsDetected(const OXMRange &oxm)
 }
 
 
-void ofp::Prerequisites::advancePreq(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd) 
+void Prerequisites::advancePreq(OXMType preqType, OXMIterator &preq, OXMIterator preqEnd) 
 { 
 	++preq;
 	while (preq != preqEnd && preq.type() == preqType) {

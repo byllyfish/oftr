@@ -32,11 +32,11 @@ add_custom_command(
   DEPENDS oxmfields_compile ${oxmfields_tab}
 )
 
-# Add the binary directory to the search path for include files.
-
-#####include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+# Build `oxmfields_compile2`.
 
 add_executable(oxmfields_compile2 ${oxmfields_main_cpp} ${oxmlist_cpp} ${oxmfields_h})
+
+# Use `oxmfields_compile2` to produce oxmfields.cpp.
 
 add_custom_command(
   OUTPUT "${oxmfields_cpp}"
@@ -44,8 +44,11 @@ add_custom_command(
   DEPENDS oxmfields_compile2
 )
 
+# Build `oxmfields_compile3`.
 
 add_executable(oxmfields_compile3 ${oxmlist_cpp} ${oxmfields_cpp} ${oxmfields_compile3_cpp})
+
+# Use `oxmfields_compile3` to produce oxmfieldsdata.cpp.
 
 add_custom_command(
   OUTPUT "${oxmfieldsdata_cpp}"
@@ -57,29 +60,3 @@ add_custom_command(
 add_custom_target(libofp_oxmfields_h DEPENDS ${oxmfields_h})
 add_custom_target(libofp_oxmfields_cpp DEPENDS "${oxmfields_cpp}")
 add_custom_target(libofp_oxmfieldsdata_cpp DEPENDS "${oxmfieldsdata_cpp}")
-
-#####
-
-
-# oxm: include/ofp/oxmfields.h src/ofp/oxmfields.cpp src/ofp/oxmfieldsid.cpp
-# 
-# ./oxm/oxmfields_compile: oxm/oxmfields_compile_main.o
-#     $(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
-# 
-# ./oxm/oxmfields_compile2: src/ofp/oxmlist.o oxm/oxmfields_main.o
-#     $(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
-# 
-# ./oxm/oxmfields_compile3: src/ofp/oxmlist.o src/ofp/oxmfields.o oxm/oxmfields_compile3_main.o
-#     $(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
-# 
-# ./oxm/oxmfields_main.cpp: oxm/oxmfields_compile oxm/oxmfields.tab
-#     ./oxm/oxmfields_compile < oxm/oxmfields.tab > $@
-# 
-# ./include/ofp/oxmfields.h: oxm/oxmfields_compile oxm/oxmfields.tab
-#     ./oxm/oxmfields_compile -h < oxm/oxmfields.tab > include/ofp/oxmfields.h
-# 
-# ./src/ofp/oxmfields.cpp: oxm/oxmfields_compile2
-#     ./oxm/oxmfields_compile2 > src/ofp/oxmfields.cpp
-# 
-# ./src/ofp/oxmfieldsid.cpp: oxm/oxmfields_compile3
-#     ./oxm/oxmfields_compile3 > src/ofp/oxmfieldsdata.cpp

@@ -1,11 +1,24 @@
 //  ===== ---- ofp/headeronly.h ----------------------------*- C++ -*- =====  //
 //
-//  This file is licensed under the Apache License, Version 2.0.
-//  See LICENSE.txt for details.
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines message classes containing only the OpenFlow header..
+/// \brief Defines message classes containing only the OpenFlow header:
+/// OFPT_FEATURES_REQUEST, OFPT_GET_ASYNC_REQUEST, OFPT_GET_CONFIG_REQUEST,
+/// OFPT_BARRIER_REQUEST, OFPT_BARRIER_REPLY.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_HEADERONLY_H
@@ -80,19 +93,16 @@ private:
 /// \fn bool validateLength(size_t length) const
 /// \memberof ofp::FeaturesRequest
 /// \returns true if message length matches length in header.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::FeaturesRequest
-/// \returns xid assigned to sent message.
+
 using FeaturesRequest = detail::HeaderOnly<OFPT_FEATURES_REQUEST>;
 
-/// @class ofp::FeaturesRequestBuilder
-/// @brief Builds a mutable OFPT_FEATURES_REQUEST message and delivers it to a
-/// channel.
+/// \class ofp::FeaturesRequestBuilder
+/// \brief Builds a mutable OFPT_FEATURES_REQUEST message.
 ///
-/// @fn UInt32 send(Writable *channel);
-/// @memberof ofp::FeaturesRequestBuilder
-/// @returns xid assigned to sent message.
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::FeaturesRequestBuilder
+/// \returns xid assigned to sent message.
+
 using FeaturesRequestBuilder = detail::HeaderOnlyBuilder<FeaturesRequest>;
 
 static_assert(sizeof(FeaturesRequest) == 8, "Unexpected size.");
@@ -108,19 +118,16 @@ static_assert(IsStandardLayout<FeaturesRequest>(), "Expected standard layout.");
 /// \fn bool validateLength(size_t length) const
 /// \memberof ofp::GetAsyncRequest
 /// \returns true if message length matches length in header.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::GetAsyncRequest
-/// \returns xid assigned to sent message.
+
 using GetAsyncRequest = detail::HeaderOnly<OFPT_GET_ASYNC_REQUEST>;
 
-/// @class ofp::GetAsyncRequestBuilder
-/// @brief Builds a mutable OFPT_GET_ASYNC_REQUEST message and delivers it to a
-/// channel.
+/// \class ofp::GetAsyncRequestBuilder
+/// \brief Builds a mutable OFPT_GET_ASYNC_REQUEST message.
 ///
-/// @fn UInt32 send(Writable *channel);
-/// @memberof ofp::GetAsyncRequestBuilder
-/// @returns xid assigned to sent message.
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::GetAsyncRequestBuilder
+/// \returns xid assigned to sent message.
+
 using GetAsyncRequestBuilder = detail::HeaderOnlyBuilder<GetAsyncRequest>;
 
 static_assert(sizeof(GetAsyncRequest) == 8, "Unexpected size.");
@@ -136,34 +143,74 @@ static_assert(IsStandardLayout<GetAsyncRequest>(), "Expected standard layout.");
 /// \fn bool validateLength(size_t length) const
 /// \memberof ofp::GetConfigRequest
 /// \returns true if message length matches length in header.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::GetConfigRequest
-/// \returns xid assigned to sent message.
+
 using GetConfigRequest = detail::HeaderOnly<OFPT_GET_CONFIG_REQUEST>;
 
 /// \class ofp::GetConfigRequestBuilder
-/// \brief Builds a mutable OFPT_GET_CONFIG_REQUEST message and delivers it to a
-/// channel.
+/// \brief Builds a mutable OFPT_GET_CONFIG_REQUEST message.
 ///
 /// \fn UInt32 send(Writable *channel);
 /// \memberof ofp::GetConfigRequestBuilder
 /// \returns xid assigned to sent message.
+
 using GetConfigRequestBuilder = detail::HeaderOnlyBuilder<GetConfigRequest>;
 
 static_assert(sizeof(GetConfigRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<GetConfigRequest>(),
               "Expected standard layout.");
 
+/// \class ofp::BarrierRequest
+/// \brief Represents an immutable OFPT_BARRIER_REQUEST message.
+/// This request contains the header only.
+///
+/// \enum { Type = OFPT_BARRIER_REQUEST };
+/// \memberof ofp::BarrierRequest
+///
+/// \fn bool validateLength(size_t length) const
+/// \memberof ofp::BarrierRequest
+/// \returns true if message length matches length in header.
 
 using BarrierRequest = detail::HeaderOnly<OFPT_BARRIER_REQUEST>;
 
+/// \class ofp::BarrierRequestBuilder
+/// \brief Builds a mutable OFPT_BARRIER_REQUEST message.
+///
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::BarrierRequestBuilder
+/// \returns xid assigned to sent message.
+
 using BarrierRequestBuilder = detail::HeaderOnlyBuilder<BarrierRequest>;
+
+static_assert(sizeof(BarrierRequest) == 8, "Unexpected size.");
+static_assert(IsStandardLayout<BarrierRequest>(),
+              "Expected standard layout.");
+
+/// \class ofp::BarrierReply
+/// \brief Represents an immutable OFPT_BARRIER_REPLY message.
+/// This request contains the header only.
+///
+/// \enum { Type = OFPT_BARRIER_REPLY };
+/// \memberof ofp::BarrierReply
+///
+/// \fn bool validateLength(size_t length) const
+/// \memberof ofp::BarrierReply
 
 using BarrierReply = detail::HeaderOnly<OFPT_BARRIER_REPLY>;
 
+/// \class ofp::BarrierReplyBuilder
+/// \brief Builds a mutable OFPT_BARRIER_REPLY message.
+///
+/// \fn UInt32 send(Writable *channel);
+/// \memberof ofp::BarrierReplyBuilder
+/// \returns xid assigned to sent message.
+
 using BarrierReplyBuilder = detail::HeaderOnlyBuilder<BarrierReply>;
 
+static_assert(sizeof(BarrierReply) == 8, "Unexpected size.");
+static_assert(IsStandardLayout<BarrierReply>(),
+              "Expected standard layout.");
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
 namespace detail { // <namespace detail>
 

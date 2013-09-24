@@ -1,3 +1,24 @@
+//  ===== ---- ofp/sys/connection.h ------------------------*- C++ -*- =====  //
+//
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Defines the sys::Connection class.
+//  ===== ------------------------------------------------------------ =====  //
+
 #ifndef OFP_SYS_CONNECTION_H
 #define OFP_SYS_CONNECTION_H
 
@@ -14,13 +35,15 @@ class Message;
 namespace sys { // <namespace sys>
 class Engine;
 
+OFP_BEGIN_IGNORE_PADDING
+
 /**
  *  Connection is an interface for a channel that can receive messages
  *  posted from other Connections. This interface also supports binding
  *  auxillary connections to their main connection, and a main connection to a
  *  a linked list of auxiliary connections. It also supports a connection timer.
  */
-OFP_BEGIN_IGNORE_PADDING
+
 class Connection : public Channel {
 public:
 	Connection(Engine *engine, DefaultHandshake *handshake) :engine_{engine}, listener_{handshake}, handshake_{handshake}, mainConn_{this} {}
@@ -92,6 +115,7 @@ private:
 	UInt8 version_ = 0;
 	bool dpidWasPosted_ = false;
 };
+
 OFP_END_IGNORE_PADDING
 
 } // </namespace sys>

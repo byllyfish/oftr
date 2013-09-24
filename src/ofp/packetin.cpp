@@ -1,3 +1,24 @@
+//  ===== ---- ofp/packetin.cpp ----------------------------*- C++ -*- =====  //
+//
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Implements PacketIn and PacketInBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #include "ofp/packetin.h"
 
 using namespace ofp;
@@ -277,8 +298,7 @@ UInt32 PacketInBuilder::sendV1(Writable *channel)
 
 UInt32 PacketInBuilder::sendV2(Writable *channel)
 {
-    UInt8 version = channel->version();
-    assert(version == OFP_VERSION_2);
+    assert(channel->version() == OFP_VERSION_2);
 
     UInt32 xid = channel->nextXid();
 
@@ -289,8 +309,7 @@ UInt32 PacketInBuilder::sendV2(Writable *channel)
 
 UInt32 PacketInBuilder::sendV3(Writable *channel)
 {
-    UInt8 version = channel->version();
-    assert(version == OFP_VERSION_3);
+    assert(channel->version() == OFP_VERSION_3);
 
     UInt32 xid = channel->nextXid();
 

@@ -1,25 +1,49 @@
+//  ===== ---- ofp/hello.cpp -------------------------------*- C++ -*- =====  //
+//
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//  
+//  ===== ------------------------------------------------------------ =====  //
+/// \file
+/// \brief Implements Hello and HelloBuilder classes.
+//  ===== ------------------------------------------------------------ =====  //
+
 #include "ofp/hello.h"
 #include "ofp/log.h"
 #include "ofp/constants.h"
 #include "ofp/channel.h"
 
-ofp::UInt16 ofp::detail::HelloElement::type() const
+using namespace ofp;
+
+
+UInt16 detail::HelloElement::type() const
 {
 	return type_;
 }
 
 
-void ofp::detail::HelloElement::setType(UInt16 type) {
+void detail::HelloElement::setType(UInt16 type) {
 	type_ = type;
 }
 
-void ofp::detail::HelloElement::setLength(UInt16 length) {
+void detail::HelloElement::setLength(UInt16 length) {
 	length_ = length;
 }
 
 
 
-ofp::ProtocolVersions ofp::detail::HelloElement::versionBitMap() const
+ProtocolVersions detail::HelloElement::versionBitMap() const
 {
 	if (length_ - sizeof(HelloElement) >= sizeof(UInt32)) {
         // Grab the first bit map.
@@ -32,7 +56,7 @@ ofp::ProtocolVersions ofp::detail::HelloElement::versionBitMap() const
 	return ProtocolVersions::fromBitmap(0);
 }
 
-bool ofp::detail::HelloElement::validateLength(size_t remaining) const
+bool detail::HelloElement::validateLength(size_t remaining) const
 {
     if (length_ > remaining || (length_ % 8) != 0) {
         log::info("HelloElement validateLength failed", length_);
@@ -41,14 +65,14 @@ bool ofp::detail::HelloElement::validateLength(size_t remaining) const
     return true;
 }
 
-const ofp::detail::HelloElement *ofp::detail::HelloElement::next(size_t *remaining) const
+const detail::HelloElement *detail::HelloElement::next(size_t *remaining) const
 {
 	assert(*remaining >= length_);
 	*remaining -= length_;
 	return reinterpret_cast<const HelloElement *>(BytePtr(this) + length_);
 }
 
-const ofp::Hello *ofp::Hello::cast(const Message *message)
+const Hello *Hello::cast(const Message *message)
 {
     assert(message->type() == OFPT_HELLO);
 
@@ -60,7 +84,7 @@ const ofp::Hello *ofp::Hello::cast(const Message *message)
     return msg;
 }
 
-bool ofp::Hello::validateLength(size_t length) const
+bool Hello::validateLength(size_t length) const
 {
 	using namespace detail;
 
@@ -88,7 +112,7 @@ bool ofp::Hello::validateLength(size_t length) const
     return true;
 }
 
-ofp::ProtocolVersions ofp::Hello::protocolVersions() const
+ProtocolVersions Hello::protocolVersions() const
 {
 	using namespace detail;
 
@@ -115,12 +139,12 @@ ofp::ProtocolVersions ofp::Hello::protocolVersions() const
 }
 
 
-const ofp::detail::HelloElement *ofp::Hello::helloElements() const
+const detail::HelloElement *Hello::helloElements() const
 {
-    return reinterpret_cast<const ofp::detail::HelloElement *>(BytePtr(&header_) + sizeof(header_));
+    return reinterpret_cast<const detail::HelloElement *>(BytePtr(&header_) + sizeof(header_));
 }
 
-ofp::UInt32 ofp::HelloBuilder::send(Writable *channel)
+UInt32 HelloBuilder::send(Writable *channel)
 {   
     // HelloRequest is the only message type that doesn't use the channel's
     // version number. If the highest version number is 4, don't send any 

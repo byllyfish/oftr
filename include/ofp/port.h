@@ -1,7 +1,18 @@
 //  ===== ---- ofp/port.h ----------------------------------*- C++ -*- =====  //
 //
-//  This file is licensed under the Apache License, Version 2.0.
-//  See LICENSE.txt for details.
+//  Copyright (c) 2013 William W. Fisher
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
@@ -20,7 +31,7 @@
 namespace ofp { // <namespace ofp>
 
 namespace deprecated { // <namespace deprecated>
-class PortV1;
+  class PortV1;
 } // </namespace deprecated>
 
 using PortName = SmallCString<OFP_MAX_PORT_NAME_LEN>;
@@ -34,6 +45,7 @@ public:
     {
         return portNo_;
     }
+
     void setPortNo(UInt32 portNo)
     {
         portNo_ = portNo;
@@ -43,6 +55,7 @@ public:
     {
         return hwAddr_;
     }
+
     void setHwAddr(const EnetAddress &hwAddr)
     {
         hwAddr_ = hwAddr;
@@ -52,6 +65,7 @@ public:
     {
         return name_;
     }
+
     void setName(const PortName &name)
     {
         name_ = name;
@@ -61,6 +75,7 @@ public:
     {
         return config_;
     }
+
     void setConfig(UInt32 config)
     {
         config_ = config;
@@ -70,6 +85,7 @@ public:
     {
         return state_;
     }
+
     void setState(UInt32 state)
     {
         state_ = state;
@@ -79,6 +95,7 @@ public:
     {
         return curr_;
     }
+
     void setCurr(UInt32 curr)
     {
         curr_ = curr;
@@ -88,6 +105,7 @@ public:
     {
         return advertised_;
     }
+
     void setAdvertised(UInt32 advertised)
     {
         advertised_ = advertised;
@@ -97,6 +115,7 @@ public:
     {
         return supported_;
     }
+
     void setSupported(UInt32 supported)
     {
         supported_ = supported;
@@ -106,6 +125,7 @@ public:
     {
         return peer_;
     }
+
     void setPeer(UInt32 peer)
     {
         peer_ = peer;
@@ -115,6 +135,7 @@ public:
     {
         return currSpeed_;
     }
+
     void setCurrSpeed(UInt32 currSpeed)
     {
         currSpeed_ = currSpeed;
@@ -124,6 +145,7 @@ public:
     {
         return maxSpeed_;
     }
+
     void setMaxSpeed(UInt32 maxSpeed)
     {
         maxSpeed_ = maxSpeed;
@@ -159,6 +181,7 @@ public:
     {
         return portNo_;
     }
+
     void setPortNo(UInt16 portNo)
     {
         portNo_ = portNo;
@@ -168,6 +191,7 @@ public:
     {
         return hwAddr_;
     }
+
     void setHwAddr(const EnetAddress &hwAddr)
     {
         hwAddr_ = hwAddr;
@@ -177,6 +201,7 @@ public:
     {
         return name_;
     }
+
     void setName(const PortName &name)
     {
         name_ = name;
@@ -186,6 +211,7 @@ public:
     {
         return config_;
     }
+
     void setConfig(UInt32 config)
     {
         config_ = config;
@@ -195,6 +221,7 @@ public:
     {
         return state_;
     }
+
     void setState(UInt32 state)
     {
         state_ = state;
@@ -204,6 +231,7 @@ public:
     {
         return curr_;
     }
+
     void setCurr(UInt32 curr)
     {
         curr_ = curr;
@@ -213,6 +241,7 @@ public:
     {
         return advertised_;
     }
+
     void setAdvertised(UInt32 advertised)
     {
         advertised_ = advertised;
@@ -222,6 +251,7 @@ public:
     {
         return supported_;
     }
+
     void setSupported(UInt32 supported)
     {
         supported_ = supported;
@@ -231,6 +261,7 @@ public:
     {
         return peer_;
     }
+    
     void setPeer(UInt32 peer)
     {
         peer_ = peer;
