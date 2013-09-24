@@ -4,7 +4,6 @@
 # relies on these sub-directory files:
 # 
 #    - external/yaml-io/CMakeLists.txt
-#    - external/boost_1_54_0_asio/CMakeLists.txt
 #    - external/googletest/CMakeLists.txt
 #    - oxm/CMakeLists.txt
 #    - test/CMakeLists.txt
@@ -119,6 +118,7 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/encoder.cpp
 	src/ofp-c/ofpprotocol.cpp
 	src/ofp-c/ofpstring.cpp
+  external/boost_1_54_0_asio/libs/system/src/error_code.cpp
 )
 
 # Specify the config.h.in file.
@@ -136,7 +136,7 @@ set(LIBOFP_SOURCES_GENERATED
 set(LIBOFP_HEADERS_GENERATED
   ${CMAKE_BINARY_DIR}/include/ofp/config.h
   ${CMAKE_BINARY_DIR}/include/ofp/oxmfields.h
- )
+)
 
 # Specify list of libofp's header files. This list is used during installs.
 # Note: Two header files are generated during the build -- they are not included.
@@ -304,7 +304,7 @@ else()
 endif()
 
 #-------------------------------------------------------------------------------
-# Build
+# Build Library
 #-------------------------------------------------------------------------------
 
 # Prepare for testing. Subdirectories can add tests.
@@ -324,7 +324,6 @@ set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-add_subdirectory(external/boost_1_54_0_asio)
 add_subdirectory(external/googletest)
 
 # Modify flags for compiling our code. Here, we change the warning flags to
@@ -351,11 +350,18 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
 add_executable(libofpexec ${LIBOFP_EXEC_SOURCES})
-target_link_libraries(libofpexec ofp yamlio boostasio)
+target_link_libraries(libofpexec ofp yamlio)
 
 # Make sure the source is generated before the executable builds.
 
 add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdata_cpp)
+
+#-------------------------------------------------------------------------------
+# Build Examples
+#-------------------------------------------------------------------------------
+
+add_subdirectory(example/nulldemo)
+add_subdirectory(example/controller)
 
 #-------------------------------------------------------------------------------
 # Test
@@ -364,7 +370,7 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 add_subdirectory(test)
 
 #-------------------------------------------------------------------------------
-# Install
+# Install Library
 #-------------------------------------------------------------------------------
 
 # Set install prefix to local if CMAKE_BUILD_TYPE is debug.
