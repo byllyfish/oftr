@@ -22,17 +22,15 @@
 #include "ofp/log.h"
 #include "ofp/yaml/apiserver.h"
 #include <iostream>
+#include <deque>
 
 using namespace ofp;
 using namespace yaml;
 
 int main(int argc, char **argv)
 {
-	// TODO daemonize, support command-line arguments...
-
 	log::set(&std::cerr);
-
-	ApiServer::run(IPv6Address{}, 9191);
+	ApiServer::run(IPv6Address{}, 0);
 
 	return 0;
 }

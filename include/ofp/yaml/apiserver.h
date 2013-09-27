@@ -39,7 +39,7 @@ class ApiConnection;
 //   A p i S e r v e r
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
-/// \brief Implments a TCP server that lets a client control and monitor an 
+/// \brief Implements a TCP server that lets a client control and monitor an 
 /// OpenFlow driver.
 /// The driver is controlled using YAML messages.
 class ApiServer {
@@ -51,6 +51,7 @@ public:
 	// Called by ApiConnection to update oneConn_.
 	void onConnect(ApiConnection *conn);
 	void onDisconnect(ApiConnection *conn);
+	void onLoopback(ApiConnection *conn, ApiLoopback *loopback);
 
 	// These methods are used to bridge ApiConnections to ApiChannelListeners.
     void onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq);
@@ -76,8 +77,7 @@ private:
     ApiConnection *oneConn_ = nullptr;
     DatapathMap datapathMap_;
 
-    ApiServer(Driver *driver, const IPv6Address &localAddress,
-              UInt16 localPort);
+    ApiServer(Driver *driver, const IPv6Address &localAddress, UInt16 localPort);
 
     void asyncAccept();
 

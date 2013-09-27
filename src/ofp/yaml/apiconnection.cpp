@@ -44,8 +44,8 @@ static bool startsWith(const std::string &s, const char *cs)
     return false;
 }
 
-ApiConnection::ApiConnection(ApiServer *server, sys::tcp::socket socket)
-    : server_{server}, socket_{std::move(socket)}
+ApiConnection::ApiConnection(ApiServer *server)
+    : server_{server}
 {
     server_->onConnect(this);
 }
@@ -55,13 +55,32 @@ ApiConnection::~ApiConnection()
     server_->onDisconnect(this);
 }
 
+void ApiConnection::onLoopback(ApiLoopback *loopback)
+{
+    ByteList &buf = loopback->msg.data;
+    Message message{buf.mutableData(), buf.size()};
+    Decoder decoder{&message};
+
+    if (decoder.error().empty()) {
+        write(decoder.result());
+    } else {
+        ApiDecodeError reply;
+        reply.msg.error = decoder.error();
+        reply.msg.data = RawDataToHex(message.data(), message.size());
+        write(reply.toString());
+    }
+}
+
 void ApiConnection::onListenRequest(ApiListenRequest *listenReq)
 {
     server_->onListenRequest(this, listenReq);
+    isListening_ = true;
 }
 
 void ApiConnection::onListenReply(ApiListenReply *listenReply)
 {
+    log::debug("ApiConnection::onListenReply");
+    
     write(listenReply->toString());
 }
 
@@ -132,89 +151,19 @@ void ApiConnection::onTimer(Channel *channel, UInt32 timerID)
     write(timer.toString());
 }
 
-void ApiConnection::write(const std::string &msg)
+void ApiConnection::handleInputLine(std::string *line)
 {
-    outgoing_[outgoingIdx_].add(msg.data(), msg.length());
-    if (!writing_) {
-        asyncWrite();
-    }
-}
+    // Line is modified by this method.
+    cleanInputLine(line);
 
-void ApiConnection::asyncAccept()
-{
-    // Do nothing if socket is not open.
-    if (!socket_.is_open())
-        return;
+    text_ += *line + '\n';
 
-    // We always send and receive complete messages; disable Nagle algorithm.
-    socket_.set_option(tcp::no_delay(true));
-
-    // Start first async read.
-    asyncRead();
-}
-
-void ApiConnection::asyncRead()
-{
-    auto self(shared_from_this());
-
-    boost::asio::async_read_until(
-        socket_, streambuf_, '\n',
-        [this, self](const error_code & err, size_t bytes_transferred) {
-            if (!err) {
-                std::istream is(&streambuf_);
-                std::string line;
-                std::getline(is, line);
-                cleanInputLine(&line);
-                handleInputLine(line);
-                asyncRead();
-            } else if (!isAsioEOF(err)) {
-                auto exc = makeException(err);
-                log::info("ApiConnection::asyncRead err", exc);
-            }
-        });
-}
-
-void ApiConnection::asyncWrite()
-{
-    assert(!writing_);
-
-    int idx = outgoingIdx_;
-    outgoingIdx_ = !outgoingIdx_;
-    writing_ = true;
-
-    const UInt8 *data = outgoing_[idx].data();
-    size_t size = outgoing_[idx].size();
-
-    auto self(shared_from_this());
-
-    boost::asio::async_write(socket_, boost::asio::buffer(data, size), [this, self](const error_code &err, size_t bytes_transferred) {
-
-        if (!err) {
-            assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
-
-            writing_ = false;
-            outgoing_[!outgoingIdx_].clear();
-            if (outgoing_[outgoingIdx_].size() > 0) {
-                // Start another async write for the other output buffer.
-                asyncWrite();
-            }
-
-        } else {
-            log::debug("Write error ", makeException(err));
-        }
-    });
-}
-
-void ApiConnection::handleInputLine(const std::string &line)
-{
-    text_ += line + '\n';
-
-    if (line == "---" || line == "...") {
+    if (*line == "---" || *line == "...") {
         handleEvent();
         text_ = "---\n";
         isLibEvent_ = false;
         lineCount_ = 0;
-    } else if (lineCount_ == 1 && startsWith(line, "event:")) {
+    } else if (lineCount_ == 1 && startsWith(*line, "event:")) {
         // If first line starts with 'event:', we have
         // a library event, not an OpenFlow message.
         isLibEvent_ = true;
@@ -239,14 +188,26 @@ void ApiConnection::handleEvent()
         });
 
         if (encoder.error().empty()) {
-            Channel *channel = server_->findChannel(encoder.datapathId());
 
-            if (channel) {
-                channel->write(encoder.data(), encoder.size());
-                channel->flush();
+            if (isListening_) {
+                Channel *channel = server_->findChannel(encoder.datapathId());
+
+                if (channel) {
+                    channel->write(encoder.data(), encoder.size());
+                    channel->flush();
+                } else {
+                    std::string errorMsg = "Unknown Datapath ID: " + encoder.datapathId().toString();
+                    onYamlError(errorMsg, RawDataToHex(encoder.data(), encoder.size()));
+                }
+
             } else {
-                std::string errorMsg = "Unknown Datapath ID: " + encoder.datapathId().toString();
-                onYamlError(errorMsg, RawDataToHex(encoder.data(), encoder.size()));
+                assert(!isListening_);
+
+                // If an OpenFlow YAML message is received before we start
+                // listening, return its binary value in a loopback message.
+                ApiLoopback reply;
+                reply.msg.data.set(encoder.data(), encoder.size());
+                write(reply.toString());
             }
 
         } else {
@@ -254,7 +215,6 @@ void ApiConnection::handleEvent()
         }
     }
 }
-
 
 void ApiConnection::cleanInputLine(std::string *line)
 {

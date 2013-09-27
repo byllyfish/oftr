@@ -39,6 +39,11 @@ std::string convertToString(Type *event)
 
 } // </namespace>
 
+/// \returns YAML representation of LIBOFP_LOOPBACK event.
+std::string ApiLoopback::toString()
+{
+	return convertToString(this);
+}
 
 /// \returns YAML representation of LIBOFP_LISTEN_REPLY event.
 std::string ApiListenReply::toString()

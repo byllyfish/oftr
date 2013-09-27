@@ -1,0 +1,45 @@
+---
+type:            OFPT_ERROR
+xid:             0x00000000
+version:         1
+msg:             
+  type:            1
+  code:            1
+  data:            0123456789
+...
+---
+type:            OFPT_ERROR
+xid:             0x00000000
+version:         0
+msg:             
+  type:            1
+  code:            1
+  data:            0123456789
+...
+---
+type:            OFPT_ERROR
+xid:             0x00000000
+version:         2
+msg:             
+  type:            1
+  code:            1
+  data:            0123456789
+...
+---
+type:            OFPT_ERROR
+xid:             0x00000000
+version:         3
+msg:             
+  type:            1
+  code:            1
+  data:            0123456789
+...
+---
+type:            OFPT_ERROR
+xid:             0x00000000
+version:         4
+msg:             
+  type:            1
+  code:            1
+  data:            0123456789
+...

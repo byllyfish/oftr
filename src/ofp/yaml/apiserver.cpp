@@ -20,19 +20,25 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/yaml/apiserver.h"
-#include "ofp/yaml/apiconnection.h"
+#include "ofp/yaml/apiconnectiontcp.h"
+#include "ofp/yaml/apiconnectionstdio.h"
 #include "ofp/sys/engine.h"
 #include "ofp/yaml/apichannellistener.h"
 
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
+// Unix Stdio descriptors.
+const int STDIN = 0;
+const int STDOUT = 1;
+const int STDERR = 2;
+
 OFP_BEGIN_IGNORE_PADDING
 
 void ApiServer::run(const IPv6Address &localAddress, UInt16 localPort)
 {
     Driver driver;
-    ApiServer server{&driver, IPv6Address{}, 9191};
+    ApiServer server{&driver, localAddress, localPort};
 
     driver.run();
 }
@@ -41,10 +47,16 @@ ApiServer::ApiServer(Driver *driver, const IPv6Address &localAddress,
                      UInt16 localPort)
     : engine_{driver->engine()},
       endpt_{makeTCPEndpoint(localAddress, localPort)},
-      acceptor_{engine_->io(), endpt_}, socket_{engine_->io()}
+      acceptor_{engine_->io()}, socket_{engine_->io()}
 {
-    asyncAccept();
-    log::info("Start TCP listening on", endpt_);
+    auto conn = std::make_shared<ApiConnectionStdio>(this, stream_descriptor{engine_->io(), STDIN}, stream_descriptor{engine_->io(), STDOUT});
+    conn->asyncAccept();
+
+    if (localPort != 0) {
+        acceptor_.bind(endpt_);
+        asyncAccept();
+        log::info("Start TCP listening on", endpt_);
+    }
 }
 
 void ApiServer::asyncAccept()
@@ -60,7 +72,7 @@ void ApiServer::asyncAccept()
             // Only allow one connection at a time.
             if (oneConn_ == nullptr) {
                 auto conn =
-                    std::make_shared<ApiConnection>(this, std::move(socket_));
+                    std::make_shared<ApiConnectionTCP>(this, std::move(socket_));
                 conn->asyncAccept();
             } else {
                 socket_.close();

@@ -36,11 +36,12 @@ struct ApiSetTimer;
 
 class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
 public:
-	 ApiConnection(ApiServer *server, sys::tcp::socket socket);
-	~ApiConnection();
+	ApiConnection(ApiServer *server);
+	virtual ~ApiConnection();
 
-	void asyncAccept();
-
+	virtual void asyncAccept() = 0;
+	
+	void onLoopback(ApiLoopback *loopback);
 	void onListenRequest(ApiListenRequest *listenReq);
 	void onListenReply(ApiListenReply *listenReply);
 	void onSetTimer(ApiSetTimer *setTimer);
@@ -52,26 +53,28 @@ public:
 	void onException(Channel *channel, const Exception *exception);
 	void onTimer(Channel *channel, UInt32 timerID);
 
-	void write(const std::string &msg);
+protected:
+	virtual void write(const std::string &msg) = 0;
+	virtual void asyncRead() = 0;
+	virtual void asyncWrite() = 0;
+
+	void handleInputLine(std::string *line);
 
 private:
 	ApiServer *server_;
-	sys::tcp::socket socket_;
-	boost::asio::streambuf streambuf_;
+	//sys::tcp::socket socket_;
+	//boost::asio::streambuf streambuf_;
 	std::string text_;
 	unsigned lineCount_ = 0;
 	bool isLibEvent_ = false;
+	bool isListening_ = false;
 
 	// Use a two buffer strategy for async-writes. We queue up data in one
 	// buffer while we're in the process of writing the other buffer.
-	ByteList outgoing_[2];
-	int outgoingIdx_ = 0;
-	bool writing_ = false;
+	//ByteList outgoing_[2];
+	//int outgoingIdx_ = 0;
+	//bool writing_ = false;
 	
-	void asyncRead();
-	void asyncWrite();
-
-	void handleInputLine(const std::string &line);
 	void handleEvent();
 
 	static void cleanInputLine(std::string *line);

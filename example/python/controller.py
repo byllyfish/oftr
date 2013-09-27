@@ -24,6 +24,7 @@ def isMulticast(enetAddr):
 
 # Tell switch to send the packet out all ports.
 def flood(ofp, event):
+    print 'flood'
     return '''
 ---
       type:            OFPT_PACKET_OUT
@@ -42,6 +43,7 @@ def flood(ofp, event):
 
 # Tell the switch to drop the packet.
 def drop(ofp, event):
+    print 'drop'
     return '''
 ---
       type:            OFPT_PACKET_OUT
@@ -91,6 +93,7 @@ def addFlow(ofp, event, ethSource, ethDest, outPort):
    
       
 def handlePacketIn(ofp, event):
+    print 'handlePacketIn'
     ethDest = event.msg.enet_frame[0:12]
     ethSource = event.msg.enet_frame[12:24]
     ethType = event.msg.enet_frame[24:28]
@@ -116,10 +119,10 @@ def handlePacketIn(ofp, event):
 if __name__ == '__main__':
     forwardTable = {}
     
-    ofp = libofp.LibOFP()
+    ofp = libofp.LibOFP('/Users/bfish/code/ofp/Build+Debug/libofpexec')
     while True:
         event = ofp.waitNextEvent()
-        print event.text
+        #print event.text
         
         if event.type == 'LIBOFP_DATAPATH_UP':
             ofp.send(setConfig(event.msg.datapath_id, 14))
