@@ -1,0 +1,46 @@
+---
+datapath_id: '1234567890abcdef'
+auxiliary_id: 1
+type: OFPT_HELLO
+version: 4
+xid: 0x01020304
+msg:
+  versions: [1, 2, 3, 4]
+---
+type: OFPT_HELLO
+xid: 0x01020304
+version: 1
+---
+type: OFPT_HELLO
+---
+type: OFPT_HELLO
+msg:
+  versions: [1]
+---
+type: OFPT_HELLO
+version: 1
+msg:
+  versions: [1, 2]
+---
+type: OFPT_HELLO
+version: 2
+msg:
+  versions: [1, 4]
+---
+type: OFPT_HELLO
+version: 3
+msg:
+  versions: [1, 3]
+---
+type: OFPT_HELLO
+version: 5
+msg:
+  versions: [1,3]
+---
+type: OFPT_HELLO
+version: 5
+msg:
+  versions: [0]
+---
+type: OFPT_HELLO
+---

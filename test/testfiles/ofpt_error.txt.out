@@ -1,0 +1,25 @@
+---
+event:           LIBOFP_LOOPBACK
+msg:             
+  data:            0101001100000000000100010123456789
+...
+---
+event:           LIBOFP_LOOPBACK
+msg:             
+  data:            0001001100000000000100010123456789
+...
+---
+event:           LIBOFP_LOOPBACK
+msg:             
+  data:            0201001100000000000100010123456789
+...
+---
+event:           LIBOFP_LOOPBACK
+msg:             
+  data:            0301001100000000000100010123456789
+...
+---
+event:           LIBOFP_LOOPBACK
+msg:             
+  data:            0401001100000000000100010123456789
+...

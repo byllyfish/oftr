@@ -6,9 +6,11 @@ Requires:  PyYAML
 
 import yaml
 import socket
+import subprocess
 
+DEFAULT_OPENFLOW_PORT = 6633
+DEFAULT_DRIVER_PORT = 9191
 
-OPENFLOW_PORT = 6633
 MESSAGE_BEGIN = '---\n'
 MESSAGE_END = '...\n'
 
@@ -42,7 +44,6 @@ class LibOFP(object):
     To send a message:
     
        ofp.send('''
----
           type:            OFPT_PACKET_OUT
           datapath_id:     0000-0000-0000-0001
           msg:             
@@ -56,8 +57,7 @@ class LibOFP(object):
                 type:   OFB_IPV4_DST
                 value:  192.168.1.1
             enet_frame: FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
-...
-'''
+       '''
           
         
     To schedule a "wake up call":
@@ -71,24 +71,69 @@ class LibOFP(object):
     When the timer expires, you will receive a LIBOFP_TIMER_EVENT.
     """
     
-    def __init__(self, host='localhost', port=9191):
-        self._sockInput = None
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._sock.connect((host, port))
-        self._sockInput = self._sock.makefile()
-        self._sendListenRequest()
-        self._eventGenerator = self._makeEventGenerator()
+    def __init__(self, driverPath='/usr/local/bin/libofpexec',
+                       openflowAddr=('', DEFAULT_OPENFLOW_PORT),
+                       driverAddr=None,
+                       listen=True):
+        """
+        Open a connection to the driver and prepare to receive events.
         
+        openflowAddr - Address for OpenFlow driver to listen on. Specified
+                    as a 2-tuple (host, port). Specify host of '' for all
+                    local addresses. Specify port of 0 for default 
+                    openflow port.
+        driverAddr - Address for driver to listen on. Specified as a 
+                    2-tuple (host, port). Specify None to disable YAML
+                    TCP server.
+        """
+
+        self._sockInput = None
+        self._sockOutput = None
+        self._sock = None
+        self._process = None
+        self._openDriver(driverPath, driverAddr)
+
+        if listen:
+            self._sendListenRequest(openflowAddr)
+        self._eventGenerator = self._makeEventGenerator()
+    
+    def _openDriver(self, driverPath, driverAddr):
+
+        if driverPath:
+            # Driver's path is specified, so launch the executable.
+            if driverAddr:
+                # We're connecting to the driver over TCP. 
+                self._process = subprocess.Popen([driverPath])
+            else:
+                # We're not connecting over TCP, so communicate with the driver
+                # using stdin and stdout (in line mode).
+                self._process = subprocess.Popen([driverPath],
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                
+        if driverAddr:
+            self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self._sock.connect(driverAddr)
+            self._sockInput = self._sock.makefile()
+            self._write = self._writeToSocket
+            
+        else:
+            # Our input is the other process's stdout.
+            self._sockInput = self._process.stdout
+            self._sockOutput = self._process.stdin
+            self._write = self._writeToFile
+
     def __del__(self):
         if self._sockInput:
             self._sockInput.close()
-        self._sock.close()
+        if self._sockOutput and self._sockOutput is not self._sockInput:
+            self._sockOutput.close()
+        if self._sock:
+            self._sock.close()
 
     def send(self, data):
         msg = yaml.dump(data) if not isinstance(data, str) else data
         msg = MESSAGE_BEGIN + msg + MESSAGE_END
-        print msg
-        self._sock.sendall(msg)
+        self._write(msg)
         
     def waitNextEvent(self):
         return self._eventGenerator.next()
@@ -97,15 +142,16 @@ class LibOFP(object):
         self._send(_libofp('LIBOFP_SET_TIMER', datapath_id=datapath, 
                             timer_id=timerID, timeout=timeout))
         
-    def _sendListenRequest(self):
-        self.send(_libofp('LIBOFP_LISTEN_REQUEST', port=OPENFLOW_PORT))
+    def _sendListenRequest(self, openflowAddr):
+        self.send(_libofp('LIBOFP_LISTEN_REQUEST', port=openflowAddr[1]))
 
     def _makeEventGenerator(self):
         msgLines = []
-        for line in self._sockInput:
+        # Simply using `for line in self._sockInput:` doesn't work for pipes in 
+        # Python 2.7.2.
+        for line in iter(self._sockInput.readline, ''):
             if line == '...\n' and msgLines:
                 msg = ''.join(msgLines)
-                print msg
                 obj = _toObj(yaml.safe_load(msg))
                 obj.text = msg
                 if hasattr(obj,'event') and not hasattr(obj,'type'):
@@ -113,4 +159,18 @@ class LibOFP(object):
                 yield obj
                 msgLines = []
             else:
-                msgLines.append(line)    
+                msgLines.append(line)
+
+    def _writeToSocket(self, msg):
+        self._sock.sendall(msg)
+        
+    def _writeToFile(self, msg):
+        self._sockOutput.write(msg)
+
+
+if __name__ == '__main__':
+    ofp = LibOFP('/Users/bfish/code/ofp/Build+Debug/libofpexec')
+    while True:
+        event = ofp.waitNextEvent()
+        print event
+    

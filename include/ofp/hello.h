@@ -98,8 +98,10 @@ public:
     }
 
     explicit HelloBuilder(UInt8 version)
-    	: bitmap_{ProtocolVersions{}.bitmap()}
+    	: bitmap_{ProtocolVersions{version}.bitmap()}
     {
+        if (version == 0)
+            version = OFP_VERSION_LAST;
     	msg_.header_.setVersion(version);
     }
 

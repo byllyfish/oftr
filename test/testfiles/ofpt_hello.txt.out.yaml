@@ -1,0 +1,70 @@
+---
+type:            OFPT_HELLO
+xid:             0x01020304
+version:         4
+msg:             
+  versions:        [ 1, 2, 3, 4 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x01020304
+version:         1
+msg:             
+  versions:        [ 1 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         4
+msg:             
+  versions:        [ 1, 2, 3, 4 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         1
+msg:             
+  versions:        [ 1 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         2
+msg:             
+  versions:        [ 2 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         4
+msg:             
+  versions:        [ 1, 4 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         3
+msg:             
+  versions:        [ 3 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         3
+msg:             
+  versions:        [ 3 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         4
+msg:             
+  versions:        [ 1, 2, 3, 4 ]
+...
+---
+type:            OFPT_HELLO
+xid:             0x00000000
+version:         4
+msg:             
+  versions:        [ 1, 2, 3, 4 ]
+...

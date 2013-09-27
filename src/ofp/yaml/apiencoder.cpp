@@ -27,8 +27,6 @@ using namespace ofp::yaml;
 ApiEncoder::ApiEncoder(const std::string &input, ApiConnection *conn)
     : conn_{conn}, errorStream_{error_}
 {
-    ofp::log::debug("ApiEncoder: ", ofp::RawDataToHex(input.data(), input.length()));
-
     if (!input.empty()) {
         llvm::yaml::Input yin{input, nullptr,
                               ApiEncoder::diagnosticHandler, this};
@@ -51,6 +49,12 @@ void ApiEncoder::diagnosticHandler(const llvm::SMDiagnostic &diag,
 void ApiEncoder::encodeMsg(llvm::yaml::IO &io, ApiEvent event)
 {
     switch (event) {
+    case LIBOFP_LOOPBACK: {
+        ApiLoopback loopback;
+        io.mapRequired("msg", loopback.msg);
+        conn_->onLoopback(&loopback);
+        break;
+    }
     case LIBOFP_LISTEN_REQUEST: {
         ApiListenRequest listenReq;
         io.mapRequired("msg", listenReq.msg);

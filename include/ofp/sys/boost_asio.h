@@ -40,6 +40,7 @@ using udp = boost::asio::ip::udp;
 using io_service = boost::asio::io_service;
 using error_code = boost::system::error_code;
 using steady_timer = boost::asio::steady_timer;
+using stream_descriptor = boost::asio::posix::stream_descriptor;
 
 inline bool isAsioEOF(const error_code &error)
 {

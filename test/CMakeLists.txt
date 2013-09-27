@@ -54,4 +54,12 @@ target_link_libraries(ofp_unittest gtest gtest_main ofp yamlio)
 
 # Add tests here.
 
-add_test(ofp_unittest ofp_unittest)
+add_test(
+  NAME unittests 
+  COMMAND ofp_unittest
+)
+
+add_test(
+  NAME runtests 
+  COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/runtests.sh ${CMAKE_BINARY_DIR}/libofpexec ${CMAKE_CURRENT_BINARY_DIR}
+)

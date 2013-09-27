@@ -27,6 +27,7 @@
 #include "ofp/yaml/ydatapathid.h"
 #include "ofp/driver.h"
 #include "ofp/padding.h"
+#include "ofp/yaml/ybytelist.h"
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -35,6 +36,7 @@ namespace yaml { // <namespace yaml>
 
 enum ApiEvent : UInt32 {
     LIBOFP_INVALID = 0,
+    LIBOFP_LOOPBACK,                // Server -> client, client -> server
     LIBOFP_LISTEN_REQUEST,			// Client -> server
     LIBOFP_LISTEN_REPLY,            // Server -> client
     LIBOFP_YAML_ERROR,			    // Server -> client
@@ -43,6 +45,18 @@ enum ApiEvent : UInt32 {
     LIBOFP_DATAPATH_DOWN,			// Server -> client
     LIBOFP_TIMER, 					// Server -> client
     LIBOFP_SET_TIMER,				// Client -> server
+};
+
+/// Api message to translate binary to YAML.
+struct ApiLoopback {
+    ApiEvent event = LIBOFP_LOOPBACK;
+
+    struct Message {
+        ByteList data;
+    };
+    Message msg;
+
+    std::string toString();
 };
 
 /// Api request to listen as a controller on a specified port.
@@ -161,6 +175,7 @@ namespace yaml { // <namespace yaml>
 template <>
 struct ScalarEnumerationTraits<ofp::yaml::ApiEvent> {
   static void enumeration(IO &io, ofp::yaml::ApiEvent &value) {
+    OFP_YAML_ENUMCASE(LIBOFP_LOOPBACK);
     OFP_YAML_ENUMCASE(LIBOFP_LISTEN_REQUEST);
     OFP_YAML_ENUMCASE(LIBOFP_LISTEN_REPLY);
     OFP_YAML_ENUMCASE(LIBOFP_YAML_ERROR);
@@ -173,6 +188,23 @@ struct ScalarEnumerationTraits<ofp::yaml::ApiEvent> {
 };
 
 #undef OFP_YAML_ENUMCASE
+
+template <>
+struct MappingTraits<ofp::yaml::ApiLoopback> {
+    static void mapping(IO &io, ofp::yaml::ApiLoopback &msg)
+    {
+        io.mapRequired("event", msg.event);
+        io.mapRequired("msg", msg.msg);
+    }
+};
+
+template <>
+struct MappingTraits<ofp::yaml::ApiLoopback::Message> {
+    static void mapping(IO &io, ofp::yaml::ApiLoopback::Message &msg)
+    {
+        io.mapRequired("data", msg.data);
+    }
+};
 
 template <>
 struct MappingTraits<ofp::yaml::ApiListenRequest> {

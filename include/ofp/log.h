@@ -80,13 +80,13 @@ void info(const Type1 &a, const Type2 &b)
 template <class Type1>
 void debug(const Type1 &a)
 {
-    //write("[debug]", a);
+    write("[debug]", a);
 }
 
 template <class Type1, class Type2>
 void debug(const Type1 &a, const Type2 &b)
 {
-    //write("[debug]", a, b);
+    write("[debug]", a, b);
 }
 
 template <class Type1>
