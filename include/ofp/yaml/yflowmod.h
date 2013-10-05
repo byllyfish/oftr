@@ -42,6 +42,7 @@ struct MessageWrap {
 
 #endif
 
+#if 0
 struct FlowModWrap {
     FlowModWrap(const ofp::FlowMod *m) : msg{const_cast<FlowMod *>(m)}
     {
@@ -55,6 +56,7 @@ struct FlowModBuilderWrap {
     }
     ofp::FlowModBuilder *msg;
 };
+#endif
 
 #if 0
 OFP_BEGIN_IGNORE_PADDING

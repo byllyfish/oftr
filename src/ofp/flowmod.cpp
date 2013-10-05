@@ -94,6 +94,11 @@ bool FlowMod::validateLength(size_t length) const
     return true;
 }
 
+FlowModBuilder::FlowModBuilder(const FlowMod *msg) : msg_{*msg}
+{
+    setMatch(msg->match());
+    setInstructions(msg->instructions());
+}
 
 UInt32 FlowModBuilder::send(Writable *channel)
 {

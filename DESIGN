@@ -1,6 +1,11 @@
 Design
 ======
 
+Information Hiding
+
+Public API does not expose boost or any low-level details.
+
+Buffers (ByteList, ByteRange)
 
 Class for each Message
 

@@ -45,10 +45,6 @@ public:
 
     static const Experimenter *cast(const Message *message);
 
-    Experimenter() : header_{type()}
-    {
-    }
-
     UInt32 experimenter() const
     {
         return experimenter_;
@@ -68,11 +64,17 @@ private:
     Big32 experimenter_;
     Big32 expType_;
 
+    // Only ExperimenterBuilder can construct an actual instance.
+    Experimenter() : header_{type()}
+    {
+    }
+
     friend class ExperimenterBuilder;
 };
 
 static_assert(sizeof(Experimenter) == 16, "Unexpected size.");
 static_assert(IsStandardLayout<Experimenter>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<Experimenter>(), "Expected trivially copyable.");
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E x p e r i m e n t e r B u i l d e r
@@ -83,6 +85,8 @@ class ExperimenterBuilder {
 public:
 
     ExperimenterBuilder() {}
+
+    explicit ExperimenterBuilder(const Experimenter *msg);
 
     void setExperimenter(UInt32 experimenter)
     {

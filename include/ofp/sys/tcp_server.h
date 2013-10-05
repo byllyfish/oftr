@@ -27,12 +27,14 @@
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/server.h"
 
+OFP_BEGIN_IGNORE_PADDING
+
 namespace ofp {  // <namespace ofp>
 namespace sys { // <namespace sys>
 
 class Engine;
 
-OFP_BEGIN_IGNORE_PADDING
+
 class TCP_Server : public Server {
 public:
 
@@ -51,9 +53,10 @@ private:
     
     void asyncAccept();
 };
-OFP_END_IGNORE_PADDING
 
 } // </namespace sys>
 } // </namespace ofp>
+
+OFP_END_IGNORE_PADDING
 
 #endif // OFP_SYS_TCP_SERVER_H

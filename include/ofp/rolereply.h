@@ -26,11 +26,11 @@ namespace ofp { // <namespace ofp>
 
 class RoleReply {
 public:
-	enum { Type = OFPT_ROLE_REPLY };
+	static constexpr OFPType type() { return OFPT_ROLE_REPLY; }
 
 	static const RoleReply *cast(const Message *message);
 
-	RoleReply() : header_{Type} {}
+	RoleReply() : header_{type()} {}
 
 	UInt32 role() const;
 	UInt64 generationID() const;

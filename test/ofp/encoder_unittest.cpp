@@ -144,7 +144,7 @@ xid: 0x18
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  data: 'ABCDEF0123456789'
+  experimenter_data: 'ABCDEF0123456789'
 )""";
 
     testEncoderSuccess(input, 0x18,
@@ -160,7 +160,7 @@ xid: 0x1B
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  data: 'ABCDEF0123456789'
+  experimenter_data: 'ABCDEF0123456789'
 )""";
 
     testEncoderSuccess(input, 0x14, "010400140000001BDEADBEEFABCDEF0123456789");
@@ -175,7 +175,7 @@ xid: 0xFF
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  data: 'ABCDEF0123456789'
+  experimenter_data: 'ABCDEF0123456789'
 )""";
 
     testEncoderSuccess(input, 0x18,
@@ -746,4 +746,102 @@ TEST(encoder, setconfigv4)
     EXPECT_HEX("0409000C11111111AAAABBBB", encoder.data(), encoder.size());
 }
 
+
+TEST(encoder, portstatusv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_PORT_STATUS
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        reason: 0x22
+        port:
+          port_no: 0x33333333
+          hw_addr: 'aabbccddeeff'
+          name: 'Port 1'
+          config: 0x44444444
+          state: 0x55555555
+          curr: 0x66666666
+          advertised: 0x77777777
+          supported: 0x88888888
+          peer: 0x99999999
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x50, encoder.size());
+    EXPECT_HEX("040C00501111111122000000000000003333333300000000AABBCCDDEEFF0000506F7274203100000000000000000000444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, portstatusv1)
+{
+    const char *input = R"""(
+      version: 1
+      type: OFPT_PORT_STATUS
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        reason: 0x22
+        port:
+          port_no: 0x33333333
+          hw_addr: 'aabbccddeeff'
+          name: 'Port 1'
+          config: 0x44444444
+          state: 0x55555555
+          curr: 0x66666666
+          advertised: 0x77777777
+          supported: 0x88888888
+          peer: 0x99999999
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x40, encoder.size());
+    EXPECT_HEX("010C00401111111122000000000000003333AABBCCDDEEFF506F7274203100000000000000000000444444445555555566666666777777778888888899999999", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, groupmodv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_GROUP_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        command: 0x2222
+        type: 0x33
+        group_id: 0x44444444
+        buckets:
+          - weight: 0x5555
+            watch_port: 0x66666666
+            watch_group: 0x77777777
+            actions:
+              - action: OFPAT_OUTPUT
+                port: 5
+                maxlen: 20
+              - action: OFPAT_SET_FIELD
+                type:   OFB_IPV4_DST
+                value:  192.168.1.1
+          - weight: 0x8888
+            watch_port: 0x99999999
+            watch_group: 0xAAAAAAAA
+            actions:
+              - action: OFPAT_SET_FIELD
+                type: OFB_ICMPV4_CODE
+                value: 0xEE
+              - action: OFPAT_COPY_TTL_OUT
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x68, encoder.size());
+    EXPECT_HEX("040F006811111111222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A80101000000000028888899999999AAAAAAAA000000000019001080002801EE00000000000000000B000800000000", encoder.data(), encoder.size());
+}
 

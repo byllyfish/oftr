@@ -30,11 +30,11 @@ namespace ofp { // <namespace ofp>
 
 class RoleRequest {
 public:
-	enum { Type = OFPT_ROLE_REQUEST };
+	static constexpr OFPType type() { return OFPT_ROLE_REQUEST; }
 
 	static const RoleRequest *cast(const Message *message);
 
-	RoleRequest() : header_{Type} {}
+	RoleRequest() : header_{type()} {}
 
 	UInt32 role() const;
 	UInt64 generationID() const;

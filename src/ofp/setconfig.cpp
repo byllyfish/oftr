@@ -44,6 +44,10 @@ bool SetConfig::validateLength(size_t length) const
 }
 
 
+SetConfigBuilder::SetConfigBuilder(const SetConfig *msg) : msg_{*msg}
+{
+}
+
 void SetConfigBuilder::setFlags(UInt16 flags)
 {
 	msg_.flags_ = flags;

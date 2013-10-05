@@ -55,3 +55,9 @@ TEST(ipv4address, prefix)
 		EXPECT_EQ(i, addr.prefix());
 	}
 }
+
+TEST(ipv4address, valid)
+{
+	IPv4Address addr;
+	EXPECT_FALSE(addr.valid());
+}

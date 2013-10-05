@@ -26,7 +26,7 @@ private:
 
     static void flood(Channel *channel, const PacketIn *msg);
     static void drop(Channel *channel, const PacketIn *msg,
-                     const EnetFrame *frame, unsigned timeout);
+                     const EnetFrame *frame, UInt16 timeout);
     static void addFlow(Channel *channel, const PacketIn *msg,
                         const EnetFrame *frame, UInt32 outPort);
 };

@@ -41,10 +41,6 @@ public:
         return message->cast<PacketIn>();
     }
 
-    PacketIn() : header_{type()}
-    {
-    }
-
     UInt8 version() const { return header_.version(); }
 
     UInt32 bufferId() const
@@ -76,6 +72,11 @@ private:
     Big16 matchLength_ = 0;
     Padding<4> pad_;
 
+    // Only PacketInBuilder can construct an instance.
+    PacketIn() : header_{type()}
+    {
+    }
+
     OXMRange oxmRange() const;
 
     template <class Type>
@@ -100,10 +101,12 @@ private:
 
 static_assert(sizeof(PacketIn) == 32, "Unexpected size.");
 static_assert(IsStandardLayout<PacketIn>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<PacketIn>(), "Expected trivially copyable.");
 
 class PacketInBuilder {
 public:
     PacketInBuilder() = default;
+    explicit PacketInBuilder(const PacketIn *msg);
 
     void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
     void setTotalLen(UInt16 totalLen) { msg_.totalLen_ = totalLen; }
@@ -114,7 +117,7 @@ public:
     void setTableID(UInt8 tableID) { msg_.tableID_ = tableID; }
     void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
 
-    void setEnetFrame(const ByteList &enetFrame)
+    void setEnetFrame(const ByteRange &enetFrame)
     {
         enetFrame_ = enetFrame;
     }

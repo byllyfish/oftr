@@ -59,6 +59,8 @@ void ApiConnection::onLoopback(ApiLoopback *loopback)
 {
     ByteList &buf = loopback->msg.data;
     Message message{buf.mutableData(), buf.size()};
+    message.transmogrify();
+
     Decoder decoder{&message};
 
     if (decoder.error().empty()) {

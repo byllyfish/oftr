@@ -42,6 +42,11 @@ bool GetConfigReply::validateLength(size_t length) const
 	return length == sizeof(GetConfigReply);
 }
 
+GetConfigReplyBuilder::GetConfigReplyBuilder(const GetConfigReply *msg)
+    : msg_{*msg}
+{
+}
+
 void GetConfigReplyBuilder::setFlags(UInt16 flags)
 {
 	msg_.flags_ = flags;

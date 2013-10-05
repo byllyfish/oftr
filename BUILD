@@ -2,24 +2,24 @@
 Build Instructions
 ==================
 
-Before you can build the software, you need `cmake`:
-
-	sudo apt-get install cmake
-
 To obtain the software:
 
    git clone --recursive git://...
-   cd ofp
 
 If you cloned the repository without the --recursive option, you must initialize
-the submodule manually. 
+the googletest submodule manually. 
 
+   cd ofp
    git submodule update --init
 
-Create a directory named "Build" and enter it.
+Before you can build the software, you need `cmake`:
 
-   mkdir Build
-   cd Build
+  sudo apt-get install cmake
+
+Create a directory named "Build+Release" and enter it.
+
+   mkdir Build+Release
+   cd Build+Release
 
 On Mac OS X, I like to exclude my build files from Time Machine.
 
@@ -63,7 +63,7 @@ The "+debug" in the directory tells CMake to prepare a debug build instead of
 a release build.
 
 ============================
-Cross-Compiling Instructions
+Other Compiling Instructions
 ============================
 
 The CMakeLists.txt file supports building 32 or 64 bit builds. To set the options,
@@ -92,7 +92,6 @@ Q.1: When I build a 32-bit version on 64-bit Ubuntu, I get one of these errors?
 
 A.1: Install the 32-bit versions of libc and libstdc++:
 
-  {sudo apt-get install libc6-dev-i386}
   sudo apt-get install g++-multilib
 
 

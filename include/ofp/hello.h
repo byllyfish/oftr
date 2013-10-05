@@ -22,6 +22,7 @@
 #ifndef OFP_HELLO_H
 #define OFP_HELLO_H
 
+#include "ofp/protocolmsg.h"
 #include "ofp/header.h"
 #include "ofp/protocolversions.h"
 #include "ofp/message.h"
@@ -54,40 +55,45 @@ private:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   H e l l o 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 /// \brief Immutable OpenFlow `Hello` protocol message.
-class Hello {
+
+class Hello : public ProtocolMsg<Hello,OFPT_HELLO> {
 public:
+#if 0
     static constexpr OFPType type()
     {
         return OFPT_HELLO;
     }
 
-    Hello() : header_{type()}
-    {
-    }
-
     static const Hello *cast(const Message *message);
+#endif //0
 
     ProtocolVersions protocolVersions() const;
+
+    bool validateLength(size_t length) const;
 
 private:
     Header header_;
 
-    bool validateLength(size_t length) const;
     const detail::HelloElement *helloElements() const;
+
+    // Only HelloBuilder can construct an actual instance.
+    Hello() : header_{type()}
+    {
+    }
 
     friend class HelloBuilder;
 };
 
 static_assert(sizeof(Hello) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<Hello>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<Hello>(), "Expected trivially copyable.");
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   H e l l o B u i l d e r
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 /// \brief Mutable builder for an OpenFlow `Hello` protocol message.
+
 class HelloBuilder {
 public:
 
@@ -104,6 +110,8 @@ public:
             version = OFP_VERSION_LAST;
     	msg_.header_.setVersion(version);
     }
+
+    explicit HelloBuilder(const Hello *msg);
 
     void setProtocolVersions(ProtocolVersions versions)
     {

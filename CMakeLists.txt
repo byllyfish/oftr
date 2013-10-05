@@ -63,6 +63,10 @@ endif()
 
 set(LIBOFP_SOURCES
 	src/ofp/actionrange.cpp
+  src/ofp/bucket.cpp
+  src/ofp/bucketlist.cpp
+  src/ofp/bytelist.cpp
+  src/ofp/byterange.cpp
 	src/ofp/channellistener.cpp
 	src/ofp/connectiontimer.cpp
 	src/ofp/datapathid.cpp
@@ -75,9 +79,11 @@ set(LIBOFP_SOURCES
 	src/ofp/experimenter.cpp
 	src/ofp/featuresreply.cpp
 	src/ofp/flowmod.cpp
+  src/ofp/flowremoved.cpp
 	src/ofp/flowstatsreply.cpp
 	src/ofp/flowstatsrequest.cpp
 	src/ofp/getconfigreply.cpp
+  src/ofp/groupmod.cpp
 	src/ofp/header.cpp
 	src/ofp/hello.cpp
 	src/ofp/instructionlist.cpp
@@ -313,6 +319,10 @@ endif()
 
 include(CTest)
 
+# Boost may pull in pthreads.
+
+find_package(Threads)
+
 # Specify auto-generated config.h file.
 
 configure_file ("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
@@ -352,7 +362,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
 add_executable(libofpexec ${LIBOFP_EXEC_SOURCES})
-target_link_libraries(libofpexec ofp yamlio)
+target_link_libraries(libofpexec ofp yamlio ${CMAKE_THREAD_LIBS_INIT})
 
 # Make sure the source is generated before the executable builds.
 
@@ -364,6 +374,7 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 
 add_subdirectory(example/nulldemo)
 add_subdirectory(example/controller)
+add_subdirectory(example/bridgeofp)
 
 #-------------------------------------------------------------------------------
 # Test

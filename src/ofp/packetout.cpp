@@ -22,7 +22,7 @@
 #include "ofp/packetout.h"
 #include "ofp/message.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
 
 const PacketOut *PacketOut::cast(const Message *message)
 {
@@ -52,6 +52,12 @@ ByteRange PacketOut::enetFrame() const
 {   
     size_t offset = sizeof(PacketOut) + actionsLen_;
     return ByteRange{BytePtr(this) + offset, header_.length() - offset};
+}
+
+PacketOutBuilder::PacketOutBuilder(const PacketOut *msg) : msg_{*msg}
+{
+    setActions(msg->actions());
+    setEnetFrame(msg->enetFrame());
 }
 
 UInt32 PacketOutBuilder::send(Writable *channel)
@@ -102,4 +108,3 @@ UInt32 PacketOutBuilder::send(Writable *channel)
     return xid;
 }
 
-} // </namespace ofp>

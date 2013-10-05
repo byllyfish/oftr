@@ -43,6 +43,7 @@ namespace ofp { // <namespace ofp>
 class ByteList {
 public:
     ByteList() = default;
+    ByteList(const ByteRange &range);
     ByteList(const void *data, size_t length);
 
     const UInt8 *begin() const;
@@ -55,7 +56,7 @@ public:
     ptrdiff_t offset(const UInt8 *pos) const;
     ByteRange toRange() const;
 
-    void set(const void *Data, size_t length);
+    void set(const void *data, size_t length);
     void add(const void *data, size_t length);
     void insert(const UInt8 *pos, const void *data, size_t length);
     void replace(const UInt8 *pos, const UInt8 *posEnd, const void *data,
@@ -77,6 +78,8 @@ public:
     bool operator!=(const ByteList &rhs) const {
         return !operator==(rhs);
     }
+
+    void operator=(const ByteRange &range);
 
 private:
     std::vector<UInt8> buf_;
@@ -149,14 +152,6 @@ inline ptrdiff_t ofp::ByteList::offset(const UInt8 *pos) const
     assertInRange(pos);
 
     return pos - &buf_[0];
-}
-
-/**
- *  Return range of bytes.
- */
-inline ofp::ByteRange ofp::ByteList::toRange() const
-{
-	return ByteRange{data(), size()};
 }
 
 /// \brief Set contents of the byte buffer. This method may move memory.

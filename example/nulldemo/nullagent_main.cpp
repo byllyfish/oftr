@@ -30,7 +30,8 @@ int main(int argc, const char **argv)
     features.setCapabilities(0);
 
     Driver driver;
-
+    driver.installSignalHandlers();
+    
     if (addr.valid()) {
         auto result =
             driver.connect(Driver::Agent, &features, addr, Driver::DefaultPort,

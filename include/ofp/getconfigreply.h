@@ -32,27 +32,30 @@ public:
 	static constexpr OFPType type() { return OFPT_GET_CONFIG_REPLY; }
 	static const GetConfigReply *cast(const Message *message);
 
-	GetConfigReply() : header_{type()} {}
-
 	UInt16 flags() const { return flags_; }
 	UInt16 missSendLen() const { return missSendLen_; }
+
+	bool validateLength(size_t length) const;
 
 private:
 	Header header_;
 	Big16 flags_;
 	Big16 missSendLen_;
 
-	bool validateLength(size_t length) const;
+	// Only GetConfigReplyBuilder can construct an instance.
+	GetConfigReply() : header_{type()} {}
 
 	friend class GetConfigReplyBuilder;
 };
 
 static_assert(sizeof(GetConfigReply) == 12, "Unexpected size.");
 static_assert(IsStandardLayout<GetConfigReply>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<GetConfigReply>(), "Expected trivially copyable.");
 
 class GetConfigReplyBuilder {
 public:
 	GetConfigReplyBuilder() = default;
+	explicit GetConfigReplyBuilder(const GetConfigReply *msg);
 
 	void setFlags(UInt16 flags);
 	void setMissSendLen(UInt16 missSendLen);

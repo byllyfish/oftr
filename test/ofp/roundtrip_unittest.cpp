@@ -46,7 +46,7 @@ public:
 	{
 		EXPECT_EQ(0x5678, timerID);
 
-		channel_->driver()->quit();
+		channel_->driver()->stop();
 	}
 
 	static ChannelListener *factory() { return new TestController; }

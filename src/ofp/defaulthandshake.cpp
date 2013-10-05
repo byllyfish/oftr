@@ -32,8 +32,7 @@
 #include "ofp/exception.h"
 #include "ofp/defaultauxiliarylistener.h"
 
-namespace ofp { // <namespace ofp>
-
+using namespace ofp;
 using sys::Connection;
 
 DefaultHandshake::DefaultHandshake(Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory)
@@ -44,8 +43,6 @@ DefaultHandshake::DefaultHandshake(Connection *channel, Driver::Role role, Proto
 
 void DefaultHandshake::onChannelUp(Channel *channel) 
 {
-	log::debug(__PRETTY_FUNCTION__);
-
 	assert(channel == channel_);
 
 	channel->setStartingXid(startingXid_);
@@ -68,8 +65,6 @@ void DefaultHandshake::onChannelDown(Channel *channel)
 
 void DefaultHandshake::onMessage(const Message *message) 
 {
-	log::debug(__PRETTY_FUNCTION__);
-
 	switch (message->type())
 	{
 		case Hello::type():
@@ -116,7 +111,11 @@ void DefaultHandshake::onHello(const Message *message)
 	} else if (role_ == Driver::Controller) {
 		channel_->setVersion(versions.highestVersion());
 		FeaturesRequestBuilder{}.send(channel_);
-		
+	
+	} else if (role_ == Driver::Bridge) {
+		channel_->setVersion(versions.highestVersion());
+		installNewChannelListener();
+
 	} else {
 		assert(role_ == Driver::Agent || role_ == Driver::Auxiliary);
 
@@ -124,7 +123,7 @@ void DefaultHandshake::onHello(const Message *message)
 		// Agent connections wait for FeaturesRequest message.
 	}
 
-	// TODO handle cast where we reconnected with a startingVersion of 1 but
+	// TODO handle case where we reconnected with a startingVersion of 1 but
 	// the other end supports a higher version number.
 }
 
@@ -212,5 +211,3 @@ void DefaultHandshake::installAuxiliaryChannelListener()
 	newListener->onChannelUp(channel_);
 }
 
-
-} // </namespace ofp>

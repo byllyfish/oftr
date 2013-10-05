@@ -73,6 +73,9 @@ private:
 	ArrayType  addr_;
 };
 
+static_assert(sizeof(EnetAddress) == 6, "Unexpected size.");
+static_assert(IsStandardLayout<EnetAddress>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<EnetAddress>(), "Expected trivially copyable.");
 
 } // </namespace ofp>
 

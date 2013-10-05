@@ -14,7 +14,7 @@ for input in $SOURCE_TEST_DIR/testfiles/*.txt ; do
   diff $output "$SOURCE_TEST_DIR/testfiles/$name.out"
 done
 
-# Test convertion of binary OpenFlow packets to YAML and back.
+# Test conversion of binary OpenFlow packets to YAML and back.
 for input in $SOURCE_TEST_DIR/testfiles/*.out ; do
   name=`basename "$input"`
   output="$BINARY_TEST_DIR/$name.yaml"

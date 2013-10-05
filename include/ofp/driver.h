@@ -47,6 +47,7 @@ public:
     enum Role {
         Agent = 0,
         Controller,
+        Bridge,
         Auxiliary // for internal use only
     };
 
@@ -70,7 +71,10 @@ public:
     void run();
 
     /// \brief Tells the driver to stop running.
-    void quit();
+    void stop();
+
+    /// \brief Installs signal handlers to tell the driver to stop.
+    void installSignalHandlers();
 
     sys::Engine *engine()
     {

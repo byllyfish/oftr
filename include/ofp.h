@@ -40,6 +40,14 @@
 #include "ofp/setconfig.h"
 #include "ofp/exception.h"
 #include "ofp/actions.h"
+#include "ofp/hello.h"
+#include "ofp/experimenter.h"
+#include "ofp/multipartrequest.h"
+#include "ofp/multipartreply.h"
+#include "ofp/rolerequest.h"
+#include "ofp/rolereply.h"
+#include "ofp/setasync.h"
+#include "ofp/groupmod.h"
 
 namespace ofp { // <namespace ofp>
 

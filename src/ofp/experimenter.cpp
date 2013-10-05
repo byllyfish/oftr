@@ -43,6 +43,12 @@ bool Experimenter::validateLength(size_t length) const
 	return length >= sizeof(Experimenter);
 }
 
+ExperimenterBuilder::ExperimenterBuilder(const Experimenter *msg)
+    : msg_{*msg}
+{
+    ByteRange expData = msg->expData();
+    setExpData(expData.data(), expData.size());
+}
 
 UInt32 ExperimenterBuilder::send(Writable *channel)
 {

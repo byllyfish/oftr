@@ -25,14 +25,17 @@
 #include "ofp/types.h"
 #include "ofp/instructions.h"
 #include "ofp/instructioniterator.h"
-#include <vector>
+#include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
+
+class InstructionRange;
 
 class InstructionList {
 public:
 
     InstructionList() = default;
+    InstructionList(const InstructionRange &range);
 
     InstructionIterator begin() const {
         return InstructionIterator{data()};
@@ -44,7 +47,7 @@ public:
 
     const UInt8 *data() const
     {
-        return &buf_[0];
+        return buf_.data();
     }
     
     size_t size() const
@@ -58,43 +61,37 @@ public:
     ActionRange toActions() const;
     
 private:
-    std::vector<UInt8> buf_;
+    ByteList buf_;
 
+#if 0
     void add(const void *data, size_t length)
     {
         const UInt8 *ptr = static_cast<const UInt8 *>(data);
         buf_.insert(buf_.end(), ptr, ptr + length);
     }
+#endif
 };
 
 template <class Type>
 inline void InstructionList::add(const Type &instruction)
 {
     static_assert(Type::type().type() != 0, "Type is not an instruction?");
-    add(&instruction, sizeof(instruction));
+    buf_.add(&instruction, sizeof(instruction));
 }
 
 template <>
 inline void InstructionList::add(const IT_WRITE_ACTIONS &instruction)
 {
-    add(&instruction, IT_WRITE_ACTIONS::HeaderSize);
-    add(instruction.data(), instruction.size());
+    buf_.add(&instruction, IT_WRITE_ACTIONS::HeaderSize);
+    buf_.add(instruction.data(), instruction.size());
 }
 
 template <>
 inline void InstructionList::add(const IT_APPLY_ACTIONS &instruction)
 {
-    add(&instruction, IT_APPLY_ACTIONS::HeaderSize);
-    add(instruction.data(), instruction.size());
+    buf_.add(&instruction, IT_APPLY_ACTIONS::HeaderSize);
+    buf_.add(instruction.data(), instruction.size());
 }
-
-#if 0
-template <>
-inline void InstructionList::add(const ActionList &actions)
-{
-    add(IT_APPLY_ACTIONS{&actions});
-}
-#endif
 
 } // </namespace ofp>
 

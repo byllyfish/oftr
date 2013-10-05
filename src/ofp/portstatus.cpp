@@ -22,7 +22,8 @@
 #include "ofp/portstatus.h"
 #include "ofp/message.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
+
 
 const PortStatus *PortStatus::cast(const Message *message)
 {
@@ -40,6 +41,10 @@ bool PortStatus::validateLength(size_t length) const
     return true;
 }
 
+
+PortStatusBuilder::PortStatusBuilder(const PortStatus *msg) : msg_{*msg}
+{
+}
 
 UInt32 PortStatusBuilder::send(Writable *channel)
 {
@@ -67,5 +72,3 @@ UInt32 PortStatusBuilder::send(Writable *channel)
 
     return xid;
 }
-
-} // </namespace ofp>

@@ -84,3 +84,18 @@ TEST(bytelist, replace)
 	EXPECT_HEX("00 44 55 66 77", list.data(), list.size());
 }
 
+
+TEST(bytelist, byterange)
+{
+	ByteList list;
+	list.add("123", 3);
+
+	ByteRange range = list.toRange();
+
+	ByteList list2{range};
+	ByteList list3;
+	list3 = range;
+
+	EXPECT_EQ(list2, list3);
+}
+

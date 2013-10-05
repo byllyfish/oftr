@@ -39,7 +39,7 @@ struct MappingTraits<ofp::Experimenter> {
         ofp::ByteRange data = msg.expData();
         io.mapRequired("experimenter", experimenter);
         io.mapRequired("exp_type", expType);
-        io.mapRequired("data", data);
+        io.mapRequired("experimenter_data", data);
     }
 };
 
@@ -54,7 +54,7 @@ struct MappingTraits<ofp::ExperimenterBuilder> {
         ofp::ByteList data;
         io.mapRequired("experimenter", experimenter);
         io.mapRequired("exp_type", expType);
-        io.mapRequired("data", data);
+        io.mapRequired("experimenter_data", data);
         msg.setExperimenter(experimenter);
         msg.setExpType(expType);
         msg.setExpData(data.data(), data.size());

@@ -21,7 +21,12 @@
 
 #include "ofp/instructionlist.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
+
+InstructionList::InstructionList(const InstructionRange &range)
+{
+
+}
 
 /// \brief Retrieve action list from OFPIT_APPLY_ACTIONS instruction.
 ActionRange InstructionList::toActions() const
@@ -40,4 +45,3 @@ ActionRange InstructionList::toActions() const
     return ByteRange{};
 }
 
-} // </namespace ofp>

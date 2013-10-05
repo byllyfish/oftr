@@ -22,8 +22,14 @@
 #include "ofp/actionrange.h"
 #include "ofp/actions.h"
 #include "ofp/oxmfields.h"
+#include "ofp/actionlist.h"
 
 namespace ofp { // <namespace ofp>
+
+// Delegating constructor.
+ActionRange::ActionRange(const ActionList &list) : ActionRange{list.toRange()}
+{
+}
 
 /// \returns Size of action list when written to channel.
 size_t ActionRange::writeSize(Writable *channel)

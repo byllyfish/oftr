@@ -51,8 +51,6 @@ public:
     
     static constexpr OFPType type() { return OFPT_FLOW_MOD; }
 
-    FlowMod() : header_{type()} {}
-
     UInt64 cookie() const { return cookie_; }
     UInt64 cookieMask() const { return cookieMask_; }
     UInt8  tableId() const { return tableId_; }
@@ -93,6 +91,9 @@ private:
     enum : size_t { SizeWithoutMatchHeader = 48 };
     enum : size_t { MatchHeaderSize = 4 };
     
+    // Only FlowModBuilder can construct an instance.
+    FlowMod() : header_{type()} {}
+
     friend class FlowModBuilder;
     friend struct llvm::yaml::MappingTraits<FlowMod>;
     friend struct llvm::yaml::MappingTraits<FlowModBuilder>;
@@ -100,11 +101,13 @@ private:
 
 static_assert(sizeof(FlowMod) == 56, "Unexpected size.");
 static_assert(IsStandardLayout<FlowMod>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<FlowMod>(), "Expected trivially copyable.");
 
 class FlowModBuilder {
 public:
     FlowModBuilder() = default;
-    
+    explicit FlowModBuilder(const FlowMod *msg);
+
     void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
     void setCookieMask(UInt64 cookieMask) { msg_.cookieMask_ = cookieMask; }
     void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }

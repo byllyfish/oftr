@@ -70,28 +70,19 @@ TEST(decoder, echoReply)
 TEST(decoder, experimenterv4)
 {
     testDecodeEncode("0404001800000018DEADBEEFAABBCCDDABCDEF0123456789",
-                     "---\ntype:            OFPT_EXPERIMENTER\nxid:            "
-                     " 0x00000018\nversion:         4\nmsg:             \n  "
-                     "experimenter:    3735928559\n  exp_type:        "
-                     "2864434397\n  data:            ABCDEF0123456789\n...\n");
+                     "---\ntype:            OFPT_EXPERIMENTER\nxid:             0x00000018\nversion:         4\nmsg:             \n  experimenter:    3735928559\n  exp_type:        2864434397\n  experimenter_data: ABCDEF0123456789\n...\n");
 }
 
 TEST(decoder, experimenterv1)
 {
     testDecodeEncode("010400140000001BDEADBEEFABCDEF0123456789",
-                     "---\ntype:            OFPT_EXPERIMENTER\nxid:            "
-                     " 0x0000001B\nversion:         1\nmsg:             \n  "
-                     "experimenter:    3735928559\n  exp_type:        0\n  "
-                     "data:            ABCDEF0123456789\n...\n");
+                     "---\ntype:            OFPT_EXPERIMENTER\nxid:             0x0000001B\nversion:         1\nmsg:             \n  experimenter:    3735928559\n  exp_type:        0\n  experimenter_data: ABCDEF0123456789\n...\n");
 }
 
 TEST(decoder, experimenterv2)
 {
     testDecodeEncode("02040018000000FFDEADBEEF00000000ABCDEF0123456789",
-                     "---\ntype:            OFPT_EXPERIMENTER\nxid:            "
-                     " 0x000000FF\nversion:         2\nmsg:             \n  "
-                     "experimenter:    3735928559\n  exp_type:        0\n  "
-                     "data:            ABCDEF0123456789\n...\n");
+                     "---\ntype:            OFPT_EXPERIMENTER\nxid:             0x000000FF\nversion:         2\nmsg:             \n  experimenter:    3735928559\n  exp_type:        0\n  experimenter_data: ABCDEF0123456789\n...\n");
 }
 
 TEST(decoder, featuresrequest)
@@ -300,5 +291,15 @@ TEST(decoder, packetoutv1)
 TEST(decoder, setconfigv4) 
 {
     testDecodeEncode("0409000C11111111AAAABBBB", "---\ntype:            OFPT_SET_CONFIG\nxid:             0x11111111\nversion:         4\nmsg:             \n  flags:           0xAAAA\n  miss_send_len:   0xBBBB\n...\n");
+}
+
+TEST(decoder, portstatusv4)
+{
+    testDecodeEncode("040C00501111111122000000000000003333333300000000AABBCCDDEEFF0000506F7274203100000000000000000000444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB", "---\ntype:            OFPT_PORT_STATUS\nxid:             0x11111111\nversion:         4\nmsg:             \n  reason:          34\n  port:            \n    port_no:         0x33333333\n    hw_addr:         AA-BB-CC-DD-EE-FF\n    name:            Port 1\n    config:          0x44444444\n    state:           0x55555555\n    curr:            0x66666666\n    advertised:      0x77777777\n    supported:       0x88888888\n    peer:            0x99999999\n    curr_speed:      0xAAAAAAAA\n    max_speed:       0xBBBBBBBB\n...\n");
+}
+
+TEST(decoder, portstatusv1)
+{
+    testDecodeEncode("010C00401111111122000000000000003333AABBCCDDEEFF506F7274203100000000000000000000444444445555555566666666777777778888888899999999", "---\ntype:            OFPT_PORT_STATUS\nxid:             0x11111111\nversion:         1\nmsg:             \n  reason:          34\n  port:            \n    port_no:         0x00003333\n    hw_addr:         AA-BB-CC-DD-EE-FF\n    name:            Port 1\n    config:          0x44444444\n    state:           0x55555555\n    curr:            0x66666666\n    advertised:      0x77777777\n    supported:       0x88888888\n    peer:            0x99999999\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n...\n");
 }
 

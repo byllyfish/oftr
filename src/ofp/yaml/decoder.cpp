@@ -32,6 +32,7 @@
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
 #include "ofp/yaml/ysetconfig.h"
+#include "ofp/yaml/yportstatus.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -97,6 +98,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<PacketOut>(io, msg_);
     case SetConfig::type():
         return decode<SetConfig>(io, msg_);
+    case PortStatus::type():
+        return decode<PortStatus>(io, msg_);
     default:
         log::info("Decoder::decodeMsg: Unknown msg type", msg_->type());
         break;

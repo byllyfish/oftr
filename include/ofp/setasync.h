@@ -29,11 +29,11 @@ namespace ofp { // <namespace ofp>
 
 class SetAsync {
 public:
-	enum { Type = OFPT_SET_ASYNC };
+	static constexpr OFPType type() { return OFPT_SET_ASYNC; }
 
 	static const SetAsync *cast(const Message *message);
 
-	SetAsync() : header_{Type} {}
+	SetAsync() : header_{type()} {}
 
 	UInt32 masterPacketInMask() const;
 	UInt32 slavePacketInMask() const;

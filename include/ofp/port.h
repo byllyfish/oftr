@@ -36,6 +36,10 @@ namespace deprecated { // <namespace deprecated>
 
 using PortName = SmallCString<OFP_MAX_PORT_NAME_LEN>;
 
+static_assert(sizeof(PortName) == OFP_MAX_PORT_NAME_LEN, "Unexpected size.");
+static_assert(IsStandardLayout<PortName>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<PortName>(), "Expected trivially copyable.");
+
 class Port {
 public:
     Port() = default;
@@ -165,10 +169,14 @@ private:
     Big32 peer_;
     Big32 currSpeed_;
     Big32 maxSpeed_;
+
+    template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(Port) == 64, "Unexpected size.");
 static_assert(IsStandardLayout<Port>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<Port>(), "Expected trivially copyable.");
 
 namespace deprecated { // <namespace deprecated>
 
@@ -281,6 +289,7 @@ private:
 
 static_assert(sizeof(PortV1) == 48, "Unexpected size.");
 static_assert(IsStandardLayout<PortV1>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<PortV1>(), "Expected trivially copyable.");
 
 } // </namespace deprecated>
 } // </namespace ofp>

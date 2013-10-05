@@ -42,3 +42,10 @@ TEST(ipv6address, fromv4)
 	EXPECT_HEX("0000 0000 0000 0000 0000 00FF C0A8 0101", &v6, sizeof(v6));
 	EXPECT_EQ("192.168.1.1", v6.toString());
 }
+
+TEST(ipv6address, valid)
+{
+	IPv6Address addr;
+
+	EXPECT_FALSE(addr.valid());
+}

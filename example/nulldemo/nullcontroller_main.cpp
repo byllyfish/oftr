@@ -43,6 +43,7 @@ int main(int argc, char **argv)
         });
 
     } else {
+        driver.installSignalHandlers();
         driver.listen(Driver::Controller, nullptr, IPv6Address{}, Driver::DefaultPort,
                       ProtocolVersions{}, NullController::Factory);
     }

@@ -49,9 +49,8 @@ OFP_END_IGNORE_PADDING
 
 } // </namespace detail>
 
-Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}
+Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}, signals_{io_}
 {
-	log::debug(__PRETTY_FUNCTION__);
 }
 
 Engine::~Engine()
@@ -96,8 +95,6 @@ Deferred<Exception> Engine::listen(Driver::Role role, const Features *features, 
 
 Deferred<Exception> Engine::connect(Driver::Role role, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
 {
-	log::debug(__PRETTY_FUNCTION__);
-
 	tcp::endpoint endpt = makeTCPEndpoint(remoteAddress, remotePort);
 
 	auto connPtr = std::make_shared<TCP_Connection>(this, role, versions, listenerFactory);
@@ -141,7 +138,7 @@ void Engine::run()
 }
 
 
-void Engine::quit()
+void Engine::stop()
 {	
 	io_.stop();
 }
@@ -255,6 +252,19 @@ void Engine::releaseServer(Server *server)
 	auto iter = std::find(serverList_.begin(), serverList_.end(), server);
 	if (iter != serverList_.end()) {
 		serverList_.erase(iter);
+	}
+}
+
+
+void Engine::installSignalHandlers()
+{
+	if (!isSignalsInited_) {
+		signals_.add(SIGINT);
+		signals_.add(SIGTERM);
+		signals_.async_wait([this](error_code error, int signum) {
+			if (!error) 
+				this->stop();
+		});
 	}
 }
 

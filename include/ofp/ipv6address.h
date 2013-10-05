@@ -34,7 +34,7 @@ public:
 	
 	using ArrayType = std::array<UInt8,Length>;
 
-	IPv6Address() = default;
+	IPv6Address() : addr_{} {}
 	IPv6Address(const IPv4Address &addr);
 	explicit IPv6Address(const ArrayType &a);
 	explicit IPv6Address(const std::string &s);

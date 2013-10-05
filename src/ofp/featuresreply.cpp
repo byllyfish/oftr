@@ -60,6 +60,10 @@ bool FeaturesReply::validateLength(size_t length) const
     return true;
 }
 
+FeaturesReplyBuilder::FeaturesReplyBuilder(const FeaturesReply *msg) : msg_{*msg}
+{
+}
+
 FeaturesReplyBuilder::FeaturesReplyBuilder(UInt32 xid)
 {
     // Set xid of reply to request's xid.

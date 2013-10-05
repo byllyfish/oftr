@@ -52,7 +52,7 @@ TEST(smallcstring, constructor)
 	EXPECT_FALSE(s.empty());
 	EXPECT_EQ(4, s.length());
 	EXPECT_HEX("74 65 73 74 00 00 00 00", &s, sizeof(s));
-	EXPECT_EQ("test", std::string{s.c_str()});
+	EXPECT_EQ("test", s.toString());
 }
 
 
@@ -61,17 +61,20 @@ TEST(smallcstring, copyconstructor)
 	const char *stuff = "stuffstuff";
 	const SmallCString<8> *s = reinterpret_cast<const SmallCString<8> *>(stuff);
 
-	// Nothing we can do about this c_str(). It is what it is.
-	EXPECT_EQ("stuffstuff", s->c_str());
-	// Length can only be 7!
+	EXPECT_EQ("stuffst", s->toString());
 	EXPECT_EQ(7, s->length());
 	EXPECT_HEX("73 74 75 66 66 73 74 75", s, sizeof(*s));
 
 	SmallCString<8> copy{*s};
 
-	// We can fix up the null termination when we make a copy.
-	EXPECT_EQ(std::string{"stuffst"}, copy.c_str());
+	// We do not fix up the null termination when we make a copy.
+	// SmallCString needs to have a trivial copy constructor.
+	
 	EXPECT_EQ(7, copy.length());
-	EXPECT_HEX("73 74 75 66 66 73 74 00", &copy, sizeof(copy));
+	EXPECT_HEX("73 74 75 66 66 73 74 75", &copy, sizeof(copy));
+
+	SmallCString<8> copy2{"stuffstuff"};
+	EXPECT_EQ(7, copy2.length());
+	EXPECT_HEX("73 74 75 66 66 73 74 00", &copy2, sizeof(copy2));
 }
 
