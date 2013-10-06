@@ -115,9 +115,9 @@ void BridgeListener::translateAndForward(const Message *message,
         CASE_MSG(PacketOut);
         CASE_MSG(FlowMod);
         CASE_MSG(GroupMod);
+        CASE_MSG(PortMod);
+        CASE_MSG(TableMod);
 #if 0
-        //CASE_MSG(PortMod);
-        //CASE_MSG(TableMod);
         CASE_MSG(MultipartRequest);
         CASE_MSG(MultipartReply);
         CASE_MSG(BarrierRequest);

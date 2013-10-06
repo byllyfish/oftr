@@ -9,11 +9,12 @@ namespace ofp { // <namespace ofp>
 class BucketRange {
 public:
 	BucketRange() = default;
+	explicit BucketRange(const ByteRange &range) : range_{range} {}
 
-	BucketIterator begin() const;
-	BucketIterator end() const;
+	size_t itemCount() const { return BucketIterator::distance(begin(), end()); }
 
-	size_t itemCount() const;
+	BucketIterator begin() const { return BucketIterator{range_.begin()}; }
+	BucketIterator end() const { return BucketIterator{range_.end()}; }
 
 private:
 	ByteRange range_;

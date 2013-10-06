@@ -14,7 +14,7 @@ public:
 	const UInt8 *data() const { return buf_.data(); }
 	size_t size() const { return buf_.size(); }
 	
-	void add(const Bucket &bucket);
+	void add(const BucketBuilder &bucket);
 
 private:
 	ByteList buf_;

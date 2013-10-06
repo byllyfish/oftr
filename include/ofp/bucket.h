@@ -29,18 +29,10 @@ namespace ofp { // <namespace ofp>
 
 class Bucket {
 public:
-	explicit Bucket(const ActionRange &actions);
-
 	UInt16 weight() const { return weight_; }
-	void setWeight(UInt16 weight) { weight_ = weight; }
-
 	UInt32 watchPort() const { return watchPort_; }
-	void setWatchPort(UInt32 watchPort) { watchPort_ = watchPort; }
-
 	UInt32 watchGroup() const { return watchGroup_; }
-	void setWatchGroup(UInt32 watchGroup) { watchGroup_ = watchGroup; }
-
-	ActionRange actions() const { return actions_; }
+	ActionRange actions() const;
 
 private:
 	Big16 len_;
@@ -48,18 +40,40 @@ private:
 	Big32 watchPort_ = 0;
 	Big32 watchGroup_ = 0;
 	Padding<4> pad_;
+
+	// Only a BucketBuilder can create an instance.
+	Bucket() {}
+
+	friend class BucketBuilder;
+};
+
+static_assert(sizeof(Bucket) == 16, "Unexpected size.");
+static_assert(IsStandardLayout<Bucket>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<Bucket>(), "Expected trivially copyable.");
+
+
+class BucketBuilder {
+public:
+	BucketBuilder() = default;
+
+	void setWeight(UInt16 weight) { bkt_.weight_ = weight; }
+	void setWatchPort(UInt32 watchPort) { bkt_.watchPort_ = watchPort; }
+	void setWatchGroup(UInt32 watchGroup) { bkt_.watchGroup_ = watchGroup; }
+
+	ActionRange actions() const { return actions_; }
+	void setActions(ActionRange actions);
+
+private:
+	Bucket bkt_;
 	ActionRange actions_;
 
 	enum {
-		SizeWithoutActionRange = 16
+		SizeWithoutActionRange = sizeof(bkt_)
 	};
 
 	friend class BucketList;
 };
 
-static_assert(sizeof(Bucket) - sizeof(ActionRange) == 16, "Unexpected size.");
-static_assert(IsStandardLayout<Bucket>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<Bucket>(), "Expected trivially copyable.");
 
 } // </namespace ofp>
 

@@ -34,6 +34,8 @@
 #include "ofp/yaml/ysetconfig.h"
 #include "ofp/yaml/yportstatus.h"
 #include "ofp/yaml/ygroupmod.h"
+#include "ofp/yaml/yportmod.h"
+#include "ofp/yaml/ytablemod.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -193,6 +195,18 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
         GroupModBuilder groupMod;
         io.mapRequired("msg", groupMod);
         groupMod.send(&channel_);
+        break;
+    }
+    case PortMod::type(): {
+        PortModBuilder portMod;
+        io.mapRequired("msg", portMod);
+        portMod.send(&channel_);
+        break;
+    }
+    case TableMod::type(): {
+        TableModBuilder tableMod;
+        io.mapRequired("msg", tableMod);
+        tableMod.send(&channel_);
         break;
     }
     default:

@@ -3,8 +3,17 @@
 using namespace ofp;
 
 
-Bucket::Bucket(const ActionRange &actions)
-	: len_{SizeWithoutActionRange + actions.size()}, actions_{actions}
+ActionRange Bucket::actions() const
 {
+	assert(len_ >= sizeof(Bucket));
+
+	size_t actLen = len_ - sizeof(Bucket);
+	return ActionRange{ByteRange{BytePtr(this) + sizeof(Bucket), actLen}};
 }
 
+
+void BucketBuilder::setActions(ActionRange actions)
+{
+	bkt_.len_ = sizeof(Bucket) + actions.size();
+	actions_ = actions;
+}

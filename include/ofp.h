@@ -48,6 +48,8 @@
 #include "ofp/rolereply.h"
 #include "ofp/setasync.h"
 #include "ofp/groupmod.h"
+#include "ofp/portmod.h"
+#include "ofp/tablemod.h"
 
 namespace ofp { // <namespace ofp>
 

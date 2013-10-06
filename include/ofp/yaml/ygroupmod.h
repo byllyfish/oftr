@@ -16,8 +16,8 @@ struct MappingTraits<ofp::GroupMod> {
         io.mapRequired("type", msg.groupType_);
         io.mapRequired("group_id", msg.groupId_);
 
-        //ofp::BucketRange buckets = msg.buckets();
-        //io.mapRequired("buckets", buckets);
+        ofp::BucketRange buckets = msg.buckets();
+        io.mapRequired("buckets", buckets);
     }
 };
 
@@ -26,7 +26,6 @@ struct MappingTraits<ofp::GroupModBuilder> {
 
     static void mapping(IO &io, ofp::GroupModBuilder &msg)
     {
-        ofp::log::debug("GroupModBuilderMappingTraits");
         io.mapRequired("command", msg.msg_.command_);
         io.mapRequired("type", msg.msg_.groupType_);
         io.mapRequired("group_id", msg.msg_.groupId_);

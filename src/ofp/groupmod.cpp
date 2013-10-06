@@ -3,9 +3,22 @@
 
 using namespace ofp;
 
+
+BucketRange GroupMod::buckets() const
+{
+    size_t len = header_.length();
+    assert(len >= sizeof(GroupMod));
+
+    return BucketRange{ByteRange{BytePtr(this) + sizeof(GroupMod), len - sizeof(GroupMod)}};
+}
+
 bool GroupMod::validateLength(size_t length) const
 {
-	return false;
+	if (length < sizeof(GroupMod)) {
+        return false;
+    }
+
+    return ((length - sizeof(GroupMod)) % 8) == 0;
 }
 
 

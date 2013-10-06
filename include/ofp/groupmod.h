@@ -1,19 +1,14 @@
 #ifndef OFP_GROUPMOD_H
 #define OFP_GROUPMOD_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/bucketlist.h"
 #include "ofp/bucketrange.h"
 
 namespace ofp { // <namespace ofp>
 
-class Message;
-
-class GroupMod {
+class GroupMod : public ProtocolMsg<GroupMod,OFPT_GROUP_MOD> {
 public:
-	static constexpr OFPType type() { return OFPT_GROUP_MOD; }
-    static const GroupMod *cast(const Message *message);
-
     UInt16 command() const { return command_; }
     UInt8 groupType() const { return groupType_; }
     UInt32 groupId() const { return groupId_; }

@@ -101,6 +101,7 @@ set(LIBOFP_SOURCES
 	src/ofp/packetin.cpp
 	src/ofp/packetout.cpp
 	src/ofp/port.cpp
+  src/ofp/portmod.cpp
 	src/ofp/portstatus.cpp
 	src/ofp/prerequisites.cpp
 	src/ofp/protocolversions.cpp
@@ -113,6 +114,7 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/tcp_server.cpp
 	src/ofp/sys/udp_connection.cpp
 	src/ofp/sys/udp_server.cpp
+  src/ofp/tablemod.cpp
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp
 	src/ofp/yaml/apichannellistener.cpp

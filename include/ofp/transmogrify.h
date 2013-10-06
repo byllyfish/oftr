@@ -43,6 +43,7 @@ public:
 	void normalizePortStatusV1();
 	void normalizeExperimenterV1();
     void normalizePacketOutV1();
+    void normalizePortModV1();
 
     UInt32 normPortNumberV1(const UInt8 *ptr);
 

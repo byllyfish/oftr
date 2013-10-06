@@ -8,6 +8,8 @@ public:
 
 	using Item = Bucket;
 
+	explicit BucketIterator(const UInt8 *pos) : position_{pos} {}
+
 	const Item &operator*() const 
 	{
 		return *reinterpret_cast<const Item *>(position_);

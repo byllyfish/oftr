@@ -3,12 +3,10 @@
 using namespace ofp;
 
 
-void BucketList::add(const Bucket &bucket)
+void BucketList::add(const BucketBuilder &bucket)
 {
 	ActionRange actions = bucket.actions();
-	
-	assert(bucket.len_ == Bucket::SizeWithoutActionRange + actions.size());
 
-	buf_.add(&bucket, Bucket::SizeWithoutActionRange);
+	buf_.add(&bucket, BucketBuilder::SizeWithoutActionRange);
 	buf_.add(actions.data(), actions.size());
 }

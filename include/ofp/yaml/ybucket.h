@@ -38,13 +38,35 @@ struct MappingTraits<ofp::detail::BucketInserter> {
         ActionList actions;
         io.mapRequired("actions", actions);
 
-        Bucket bkt{actions};
+        BucketBuilder bkt;
         bkt.setWeight(weight);
         bkt.setWatchPort(watchPort);
         bkt.setWatchGroup(watchGroup);
+        bkt.setActions(actions);
         buckets.add(bkt);
     }
 };
+
+
+template <>
+struct MappingTraits<ofp::Bucket> {
+
+    static void mapping(IO &io, ofp::Bucket &bucket)
+    {
+        using namespace ofp;
+
+        UInt16 weight = bucket.weight();
+        UInt32 watchPort = bucket.watchPort();
+        UInt32 watchGroup = bucket.watchGroup();
+        io.mapRequired("weight", weight);
+        io.mapRequired("watch_port", watchPort);
+        io.mapRequired("watch_group", watchGroup);
+
+        ActionRange actions = bucket.actions();
+        io.mapRequired("actions", actions);
+    }
+};
+
 
 template <>
 struct SequenceTraits<ofp::BucketRange> {

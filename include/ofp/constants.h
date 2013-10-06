@@ -241,7 +241,7 @@ namespace deprecated { // <namespace deprecated>
 //       QUEUE_GET_CONFIG_REQUEST/REPLY are all different.
 
 namespace v1 { // <namespace v1>
-enum : UInt8 {
+enum OFPType : UInt8 {
     OFPT_HELLO = 0,        // Symmetric message
     OFPT_ERROR = 1,        // Symmetric message
     OFPT_ECHO_REQUEST = 2, // Symmetric message

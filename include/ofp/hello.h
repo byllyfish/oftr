@@ -59,15 +59,6 @@ private:
 
 class Hello : public ProtocolMsg<Hello,OFPT_HELLO> {
 public:
-#if 0
-    static constexpr OFPType type()
-    {
-        return OFPT_HELLO;
-    }
-
-    static const Hello *cast(const Message *message);
-#endif //0
-
     ProtocolVersions protocolVersions() const;
 
     bool validateLength(size_t length) const;

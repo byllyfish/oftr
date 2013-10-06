@@ -303,3 +303,29 @@ TEST(decoder, portstatusv1)
     testDecodeEncode("010C00401111111122000000000000003333AABBCCDDEEFF506F7274203100000000000000000000444444445555555566666666777777778888888899999999", "---\ntype:            OFPT_PORT_STATUS\nxid:             0x11111111\nversion:         1\nmsg:             \n  reason:          34\n  port:            \n    port_no:         0x00003333\n    hw_addr:         AA-BB-CC-DD-EE-FF\n    name:            Port 1\n    config:          0x44444444\n    state:           0x55555555\n    curr:            0x66666666\n    advertised:      0x77777777\n    supported:       0x88888888\n    peer:            0x99999999\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n...\n");
 }
 
+TEST(decoder, groupmodv4)
+{
+    testDecodeEncode("040F006811111111222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A80101000000000028888899999999AAAAAAAA000000000019001080002801EE00000000000000000B000800000000", "---\ntype:            OFPT_GROUP_MOD\nxid:             0x11111111\nversion:         4\nmsg:             \n  command:         0x2222\n  type:            51\n  group_id:        0x44444444\n  buckets:         \n    - weight:          21845\n      watch_port:      1717986918\n      watch_group:     2004318071\n      actions:         \n        - action:          OFPAT_OUTPUT\n          port:            5\n          maxlen:          20\n        - action:          OFPAT_SET_FIELD\n          type:            OFB_IPV4_DST\n          value:           192.168.1.1\n    - weight:          34952\n      watch_port:      2576980377\n      watch_group:     2863311530\n      actions:         \n        - action:          OFPAT_SET_FIELD\n          type:            OFB_ICMPV4_CODE\n          value:           238\n        - action:          OFPAT_COPY_TTL_OUT\n...\n");
+}
+
+TEST(decoder, portmodv4)
+{
+    testDecodeEncode("04100028111111112222222200000000333333333333000044444444555555556666666600000000", "---\ntype:            OFPT_PORT_MOD\nxid:             0x11111111\nversion:         4\nmsg:             \n  port_no:         0x22222222\n  hw_addr:         33-33-33-33-33-33\n  config:          0x44444444\n  mask:            0x55555555\n  advertise:       0x66666666\n...\n");
+}
+
+TEST(decoder, portmodv1)
+{
+    testDecodeEncode("010F002011111111222233333333333344444444555555556666666600000000", "---\ntype:            OFPT_PORT_MOD\nxid:             0x11111111\nversion:         1\nmsg:             \n  port_no:         0x00002222\n  hw_addr:         33-33-33-33-33-33\n  config:          0x44444444\n  mask:            0x55555555\n  advertise:       0x66666666\n...\n");
+}
+
+TEST(decoder, tablemodv4)
+{
+    testDecodeEncode("04110010111111112200000033333333", "---\ntype:            OFPT_TABLE_MOD\nxid:             0x11111111\nversion:         4\nmsg:             \n  table_id:        34\n  config:          0x33333333\n...\n");
+}
+
+TEST(decoder, tablemodv2)
+{
+    testDecodeEncode("02110010111111112200000033333333", "---\ntype:            OFPT_TABLE_MOD\nxid:             0x11111111\nversion:         2\nmsg:             \n  table_id:        34\n  config:          0x33333333\n...\n");
+}
+
+
