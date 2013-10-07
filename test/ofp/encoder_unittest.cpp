@@ -963,4 +963,83 @@ TEST(encoder, tablemodv2)
     EXPECT_HEX("02110010111111112200000033333333", encoder.data(), encoder.size());
 }
 
+TEST(encoder, rolerequestv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_ROLE_REQUEST
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        role: 0x22222222
+        generation_id: 0x3333333333333333
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x18, encoder.size());
+    EXPECT_HEX("041800181111111122222222000000003333333333333333", encoder.data(), encoder.size());    
+}
+
+
+TEST(encoder, rolereplyv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_ROLE_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        role: 0x22222222
+        generation_id: 0x3333333333333333
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x18, encoder.size());
+    EXPECT_HEX("041900181111111122222222000000003333333333333333", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, getasyncreplyv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_GET_ASYNC_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        packet_in_mask_master: 0x22222222
+        packet_in_mask_slave: 0x33333333
+        port_status_mask_master: 0x44444444
+        port_status_mask_slave: 0x55555555
+        flow_removed_mask_master: 0x66666666
+        flow_removed_mask_slave: 0x77777777
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x20, encoder.size());
+    EXPECT_HEX("041B002011111111222222223333333344444444555555556666666677777777", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, queuegetconfigrequestv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_QUEUE_GET_CONFIG_REQUEST
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port: 0x22222222
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x10, encoder.size());
+    EXPECT_HEX("04160010111111112222222200000000", encoder.data(), encoder.size());
+}
+
+
 

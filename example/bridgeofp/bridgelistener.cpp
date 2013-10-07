@@ -120,9 +120,10 @@ void BridgeListener::translateAndForward(const Message *message,
 #if 0
         CASE_MSG(MultipartRequest);
         CASE_MSG(MultipartReply);
+#endif //0
         CASE_MSG(BarrierRequest);
         CASE_MSG(BarrierReply);
-        //CASE_MSG(QueueGetConfigRequest);
+        CASE_MSG(QueueGetConfigRequest);
         //CASE_MSG(QueueGetConfigReply);
         CASE_MSG(RoleRequest);
         CASE_MSG(RoleReply);
@@ -130,7 +131,7 @@ void BridgeListener::translateAndForward(const Message *message,
         CASE_MSG(GetAsyncReply);
         CASE_MSG(SetAsync);
         //CASE_MSG(MeterMod);
-#endif //0
+//#endif //0
     default:
         log::info("Unrecognized message type:", message->type());
         break;

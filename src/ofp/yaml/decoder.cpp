@@ -36,6 +36,10 @@
 #include "ofp/yaml/ygroupmod.h"
 #include "ofp/yaml/yportmod.h"
 #include "ofp/yaml/ytablemod.h"
+#include "ofp/yaml/yrolerequest.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -109,6 +113,14 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<PortMod>(io, msg_);
     case TableMod::type():
         return decode<TableMod>(io, msg_);
+    case RoleRequest::type():
+        return decode<RoleRequest>(io, msg_);
+    case RoleReply::type():
+        return decode<RoleReply>(io, msg_);
+    case GetAsyncReply::type():
+        return decode<GetAsyncReply>(io, msg_);
+    case QueueGetConfigRequest::type():
+        return decode<QueueGetConfigRequest>(io, msg_);
     default:
         log::info("Decoder::decodeMsg: Unknown msg type", msg_->type());
         break;

@@ -22,19 +22,12 @@
 #ifndef OFP_SETASYNC_H
 #define OFP_SETASYNC_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp { // <namespace ofp>
 
-class SetAsync {
+class SetAsync : public ProtocolMsg<SetAsync,OFPT_SET_ASYNC> {
 public:
-	static constexpr OFPType type() { return OFPT_SET_ASYNC; }
-
-	static const SetAsync *cast(const Message *message);
-
-	SetAsync() : header_{type()} {}
-
 	UInt32 masterPacketInMask() const;
 	UInt32 slavePacketInMask() const;
 	UInt32 masterPortStatusMask() const;
@@ -42,23 +35,28 @@ public:
 	UInt32 masterFlowRemovedMask() const;
 	UInt32 slaveFlowRemovedMask() const;
 
+	bool validateLength(size_t length) const;
+
 private:
 	Header header_;
 	Big32 packetInMask_[2];
 	Big32 portStatusMask_[2];
 	Big32 flowRemovedMask_[2];
 
-	bool validateLength(size_t length) const;
+	// Only SetAsyncBuilder can construct an instance.
+	SetAsync() : header_{type()} {}
 
 	friend class SetAsyncBuilder;
 };
 
 static_assert(sizeof(SetAsync) == 32, "Unexpected size.");
 static_assert(IsStandardLayout<SetAsync>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<SetAsync>(), "Expected trivially copyable.");
 
 class SetAsyncBuilder {
 public:
 	SetAsyncBuilder() = default;
+	explicit SetAsyncBuilder(const SetAsync *msg);
 
 	void setMasterPacketInMask(UInt32 mask);
 	void setSlavePacketInMask(UInt32 mask);
@@ -67,7 +65,7 @@ public:
 	void setMasterFlowRemovedMask(UInt32 mask);
 	void setSlaveFlowRemovedMask(UInt32 mask);
 	
-	void send(Writable *channel);
+	UInt32 send(Writable *channel);
 
 private:
 	SetAsync msg_;

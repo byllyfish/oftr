@@ -328,4 +328,23 @@ TEST(decoder, tablemodv2)
     testDecodeEncode("02110010111111112200000033333333", "---\ntype:            OFPT_TABLE_MOD\nxid:             0x11111111\nversion:         2\nmsg:             \n  table_id:        34\n  config:          0x33333333\n...\n");
 }
 
+TEST(decoder, rolerequestv4)
+{
+    testDecodeEncode("041800181111111122222222000000003333333333333333", "---\ntype:            OFPT_ROLE_REQUEST\nxid:             0x11111111\nversion:         4\nmsg:             \n  role:            0x22222222\n  generation_id:   0x3333333333333333\n...\n");
+}
+
+TEST(decoder, rolereplyv4)
+{
+    testDecodeEncode("041900181111111122222222000000003333333333333333", "---\ntype:            OFPT_ROLE_REPLY\nxid:             0x11111111\nversion:         4\nmsg:             \n  role:            0x22222222\n  generation_id:   0x3333333333333333\n...\n");
+}
+
+TEST(decoder, getasyncreplyv4)
+{
+    testDecodeEncode("041B002011111111222222223333333344444444555555556666666677777777", "---\ntype:            OFPT_GET_ASYNC_REPLY\nxid:             0x11111111\nversion:         4\nmsg:             \n  packet_in_mask_master: 0x22222222\n  packet_in_mask_slave: 0x33333333\n  port_status_mask_master: 0x44444444\n  port_status_mask_slave: 0x55555555\n  flow_removed_mask_master: 0x66666666\n  flow_removed_mask_slave: 0x77777777\n...\n");
+}
+
+TEST(decoder, queuegetconfigrequestv4)
+{
+    testDecodeEncode("04160010111111112222222200000000", "---\ntype:            OFPT_QUEUE_GET_CONFIG_REQUEST\nxid:             0x11111111\nversion:         4\nmsg:             \n  port:            0x22222222\n...\n");
+}
 

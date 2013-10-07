@@ -82,6 +82,7 @@ set(LIBOFP_SOURCES
   src/ofp/flowremoved.cpp
 	src/ofp/flowstatsreply.cpp
 	src/ofp/flowstatsrequest.cpp
+  src/ofp/getasyncreply.cpp
 	src/ofp/getconfigreply.cpp
   src/ofp/groupmod.cpp
 	src/ofp/header.cpp
@@ -105,6 +106,10 @@ set(LIBOFP_SOURCES
 	src/ofp/portstatus.cpp
 	src/ofp/prerequisites.cpp
 	src/ofp/protocolversions.cpp
+  src/ofp/queuegetconfigrequest.cpp
+  src/ofp/rolerequest.cpp
+  src/ofp/rolereply.cpp
+  src/ofp/setasync.cpp
 	src/ofp/setconfig.cpp
 	src/ofp/standardmatch.cpp
 	src/ofp/sys/boost_asio.cpp

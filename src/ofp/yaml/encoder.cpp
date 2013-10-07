@@ -36,6 +36,10 @@
 #include "ofp/yaml/ygroupmod.h"
 #include "ofp/yaml/yportmod.h"
 #include "ofp/yaml/ytablemod.h"
+#include "ofp/yaml/yrolerequest.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -207,6 +211,30 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
         TableModBuilder tableMod;
         io.mapRequired("msg", tableMod);
         tableMod.send(&channel_);
+        break;
+    }
+    case RoleRequest::type(): {
+        RoleRequestBuilder roleReq;
+        io.mapRequired("msg", roleReq);
+        roleReq.send(&channel_);
+        break;
+    }
+    case RoleReply::type(): {
+        RoleReplyBuilder roleReply{header.xid()};
+        io.mapRequired("msg", roleReply);
+        roleReply.send(&channel_);
+        break;
+    }
+    case GetAsyncReply::type(): {
+        GetAsyncReplyBuilder asyncReply{header.xid()};
+        io.mapRequired("msg", asyncReply);
+        asyncReply.send(&channel_);
+        break;
+    }
+    case QueueGetConfigRequest::type(): {
+        QueueGetConfigRequestBuilder queueGetConfig;
+        io.mapRequired("msg", queueGetConfig);
+        queueGetConfig.send(&channel_);
         break;
     }
     default:

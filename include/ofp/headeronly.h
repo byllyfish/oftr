@@ -27,6 +27,7 @@
 #include "ofp/header.h"
 #include "ofp/message.h"
 #include "ofp/writable.h"
+#include "ofp/padding.h"
 #include "ofp/log.h"
 
 namespace ofp {    // <namespace ofp>
@@ -45,6 +46,10 @@ public:
     static const HeaderOnly *cast(const Message *message);
 
     static constexpr OFPType type() { return MsgType; }
+
+
+    /// \returns xid in the header.
+    UInt32 xid() const { return header_.xid(); }
 
     /// \returns true if message length matches length in header.
     bool validateLength(size_t length) const
