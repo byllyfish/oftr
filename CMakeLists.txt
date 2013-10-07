@@ -332,7 +332,7 @@ find_package(Threads)
 
 # Specify auto-generated config.h file.
 
-configure_file ("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
+configure_file("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
 
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
@@ -388,6 +388,12 @@ add_subdirectory(example/bridgeofp)
 #-------------------------------------------------------------------------------
 
 add_subdirectory(test)
+
+#-------------------------------------------------------------------------------
+# Documentation
+#-------------------------------------------------------------------------------
+
+add_subdirectory(docs)
 
 #-------------------------------------------------------------------------------
 # Install Library
