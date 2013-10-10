@@ -91,6 +91,11 @@ bool IPv4Address::parse(const std::string &s)
 	return (result > 0);
 }
 
+void IPv4Address::clear()
+{
+	std::memset(addr_.data(), 0, sizeof(addr_));
+}
+
 
 std::string IPv4Address::toString() const
 {

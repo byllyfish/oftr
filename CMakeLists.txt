@@ -90,6 +90,7 @@ set(LIBOFP_SOURCES
 	src/ofp/instructionlist.cpp
 	src/ofp/ipv4address.cpp
 	src/ofp/ipv6address.cpp
+  src/ofp/ipv6endpoint.cpp
 	src/ofp/log.cpp
 	src/ofp/message.cpp
 	src/ofp/multipartreply.cpp

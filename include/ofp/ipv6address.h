@@ -37,9 +37,10 @@ public:
 	IPv6Address() : addr_{} {}
 	IPv6Address(const IPv4Address &addr);
 	explicit IPv6Address(const ArrayType &a);
-	explicit IPv6Address(const std::string &s);
+	IPv6Address(const std::string &s);
 
 	bool parse(const std::string &s);
+	void clear();
 	
 	bool valid() const {
 		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');

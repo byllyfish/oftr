@@ -35,7 +35,7 @@ public:
 
 	IPv4Address() : addr_{} {}
 	explicit IPv4Address(const ArrayType &a);
-	explicit IPv4Address(const std::string &s);
+	IPv4Address(const std::string &s);
 
 	static IPv4Address mask(unsigned prefix);
 
@@ -51,7 +51,8 @@ public:
 	}
 
 	bool parse(const std::string &s);
-
+	void clear();
+	
 	std::string toString() const;
 
 	ArrayType toArray() const {

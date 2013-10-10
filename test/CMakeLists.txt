@@ -24,6 +24,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/instructionset_unittest.cpp
 	ofp/ipv4address_unittest.cpp
 	ofp/ipv6address_unittest.cpp
+	ofp/ipv6endpoint_unittest.cpp
 	ofp/matchbuilder_unittest.cpp
 	ofp/message_unittest.cpp
 	ofp/originalmatch_unittest.cpp
