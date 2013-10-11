@@ -183,7 +183,7 @@ ByteRange PacketIn::enetFrame() const
 
     switch (version()) {
     case OFP_VERSION_1:
-        return ByteRange{BytePtr(this) + 18, header_.length() - 18};
+        return ByteRange{BytePtr(this) + 18, header_.length() - 18U};
     case OFP_VERSION_4:
         offset = PadLength(SizeWithoutMatchHeader + matchLength_) + 2;
         return ByteRange{BytePtr(this) + offset, header_.length() - offset};

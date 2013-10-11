@@ -109,7 +109,7 @@ private:
 	Padding<4> pad_;
 	ActionList *actions_;  // FIXME - use ActionRange?
 
-	enum { SizeWithoutActions = 8U };
+	enum : size_t { SizeWithoutActions = 8 };
 	//friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>>;
 	//friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>*>;
 };
