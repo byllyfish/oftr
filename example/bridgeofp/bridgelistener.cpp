@@ -6,11 +6,11 @@ using namespace bridge;
 BridgeListener::BridgeListener(BridgeListener *otherBridge)
     : otherBridge_{otherBridge}
 {
-    assert(!remoteAddr_.valid());
+    assert(!remoteEndpoint_.valid());
 }
 
-BridgeListener::BridgeListener(const IPv6Address &remoteAddr)
-    : remoteAddr_{remoteAddr}
+BridgeListener::BridgeListener(const IPv6Endpoint &remoteEndpoint)
+    : remoteEndpoint_{remoteEndpoint}
 {
     assert(otherBridge_ == nullptr);
 }
@@ -29,7 +29,7 @@ void BridgeListener::onChannelUp(Channel *channel)
 
     channel_ = channel;
 
-    if (remoteAddr_.valid()) {
+    if (remoteEndpoint_.valid()) {
         assert(otherBridge_ == nullptr);
 
         // If we're the incoming side, connect to remote address and set
@@ -44,8 +44,7 @@ void BridgeListener::onChannelUp(Channel *channel)
         BridgeListener *bridge = new BridgeListener(this);
         otherBridge_ = bridge;
 
-        auto exc = driver->connect(Driver::Bridge, nullptr, remoteAddr_,
-                                   Driver::DefaultPort, ProtocolVersions::All,
+        auto exc = driver->connect(Driver::Bridge, nullptr, remoteEndpoint_, ProtocolVersions::All,
                                    [bridge]() { return bridge; });
 
         exc.done([bridge](Exception ex) {

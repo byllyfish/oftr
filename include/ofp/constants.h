@@ -47,6 +47,10 @@ enum {
 };
 
 enum {
+    OFP_DEFAULT_PORT = 6633
+};
+
+enum {
     OFP_NO_BUFFER = 0xFFFFFFFFUL
 };
 

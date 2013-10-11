@@ -3,6 +3,8 @@
 
 #include "ofp.h"
 
+OFP_BEGIN_IGNORE_PADDING
+
 namespace bridge { // <namespace bridge>
 
 using namespace ofp;
@@ -10,7 +12,7 @@ using namespace ofp;
 class BridgeListener : public ChannelListener {
 public:
 	explicit BridgeListener(BridgeListener *otherBridge);
-	explicit BridgeListener(const IPv6Address &remoteAddr);
+	explicit BridgeListener(const IPv6Endpoint &remoteEndpoint);
 	~BridgeListener();
 
     void onChannelUp(Channel *channel) override;
@@ -23,7 +25,7 @@ public:
 
 private:
 	Channel *channel_ = nullptr;
-	IPv6Address remoteAddr_;
+	IPv6Endpoint remoteEndpoint_;
 	BridgeListener *otherBridge_ = nullptr;
 
 	void forget(BridgeListener *other);
@@ -32,5 +34,7 @@ private:
 };
 
 } // </namespace bridge>
+
+OFP_END_IGNORE_PADDING
 
 #endif // BRIDGELISTENER_H

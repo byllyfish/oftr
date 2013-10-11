@@ -30,24 +30,6 @@ using namespace boost::asio;
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
-namespace detail { // <namespace detail>
-
-OFP_BEGIN_IGNORE_PADDING
-/// \brief Protects a variable's value using RAII. When the scope of exits, the
-/// protected variable is restored to its value at entry.
-template <class Type>
-class VarProtect {
-public:
-	explicit VarProtect(Type *ptr) : ptr_{ptr}, val_{*ptr} {}
-	~VarProtect() { *ptr_ = val_; }
-
-private:
-	Type *ptr_;
-	Type val_;
-};
-OFP_END_IGNORE_PADDING
-
-} // </namespace detail>
 
 Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}, signals_{io_}
 {
@@ -68,10 +50,10 @@ Engine::~Engine()
 	}
 }
 
-Deferred<Exception> Engine::listen(Driver::Role role, const Features *features, const IPv6Address &localAddress, UInt16 localPort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
+Deferred<Exception> Engine::listen(Driver::Role role, const Features *features, const IPv6Endpoint &localEndpoint, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
 {
-	auto tcpEndpt = makeTCPEndpoint(localAddress, localPort);
-	auto udpEndpt = makeUDPEndpoint(localAddress, localPort);
+	auto tcpEndpt = makeTCPEndpoint(localEndpoint.address(), localEndpoint.port());
+	auto udpEndpt = makeUDPEndpoint(localEndpoint.address(), localEndpoint.port());
 	auto result = Deferred<Exception>::makeResult();
 
 	try {
@@ -93,9 +75,9 @@ Deferred<Exception> Engine::listen(Driver::Role role, const Features *features, 
 }
 
 
-Deferred<Exception> Engine::connect(Driver::Role role, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
+Deferred<Exception> Engine::connect(Driver::Role role, const Features *features, const IPv6Endpoint &remoteEndpoint, ProtocolVersions versions, ChannelListener::Factory listenerFactory)
 {
-	tcp::endpoint endpt = makeTCPEndpoint(remoteAddress, remotePort);
+	tcp::endpoint endpt = makeTCPEndpoint(remoteEndpoint.address(), remoteEndpoint.port());
 
 	auto connPtr = std::make_shared<TCP_Connection>(this, role, versions, listenerFactory);
 	if (features != nullptr) {
@@ -105,9 +87,9 @@ Deferred<Exception> Engine::connect(Driver::Role role, const Features *features,
 }
 
 
-void Engine::reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, std::chrono::milliseconds delay)
+void Engine::reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Endpoint &remoteEndpoint, std::chrono::milliseconds delay)
 {
-	tcp::endpoint endpt = makeTCPEndpoint(remoteAddress, remotePort);
+	tcp::endpoint endpt = makeTCPEndpoint(remoteEndpoint.address(), remoteEndpoint.port());
 
 	auto connPtr = std::make_shared<TCP_Connection>(this, handshake);
 	if (features != nullptr) {
@@ -120,7 +102,6 @@ void Engine::reconnect(DefaultHandshake *handshake, const Features *features, co
 void Engine::run()
 {
 	if (!isRunning_) {
-		detail::VarProtect<bool> protect{&isRunning_};
 		isRunning_ = true;
 
 		// Set isRunning_ to true when we are in io.run(). This guards against

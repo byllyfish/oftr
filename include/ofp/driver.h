@@ -23,7 +23,7 @@
 #define OFP_DRIVER_H
 
 #include "ofp/channellistener.h"
-#include "ofp/ipv6address.h"
+#include "ofp/ipv6endpoint.h"
 #include "ofp/protocolversions.h"
 #include "ofp/deferred.h"
 
@@ -51,21 +51,18 @@ public:
         Auxiliary // for internal use only
     };
 
-    enum {
-        DefaultPort = 6633
-    };
-
     Driver(DriverOptions *options = nullptr);
     ~Driver();
 
     Deferred<Exception> listen(Role role, const Features *features,
-                               const IPv6Address &localAddress,
-                               UInt16 localPort, ProtocolVersions versions,
+                               const IPv6Endpoint &localEndpoint,
+                               ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory);
 
+    // TODO this should take an array of remote endpoints...
     Deferred<Exception> connect(Role role, const Features *features,
-                                const IPv6Address &remoteAddress,
-                                UInt16 remotePort, ProtocolVersions versions,
+                                const IPv6Endpoint &remoteEndpoint, 
+                                ProtocolVersions versions,
                                 ChannelListener::Factory listenerFactory);
 
     void run();

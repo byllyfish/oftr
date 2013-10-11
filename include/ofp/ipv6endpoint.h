@@ -10,6 +10,7 @@ public:
 	IPv6Endpoint() = default;
 	IPv6Endpoint(const IPv6Address &addr, UInt16 port) : addr_{addr}, port_{port} {}
 	IPv6Endpoint(const std::string &addr, UInt16 port) : addr_{addr}, port_{port} {}
+	explicit IPv6Endpoint(UInt16 port) : addr_{}, port_{port} {}
 
 	bool parse(const std::string &s);
 	void clear();

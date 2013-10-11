@@ -21,7 +21,7 @@ UInt32 QueueGetConfigRequestBuilder::send(Writable *channel)
 
 	msg_.header_.setVersion(version);
 	msg_.header_.setXid(xid);
-	msg_.header_.setLength(msgLen);
+	msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
 	channel->write(&msg_, sizeof(msg_));
 	channel->flush();

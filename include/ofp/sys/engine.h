@@ -43,16 +43,16 @@ public:
     ~Engine();
 
     Deferred<Exception> listen(Driver::Role role, const Features *features,
-                               const IPv6Address &localAddress,
-                               UInt16 localPort, ProtocolVersions versions,
+                               const IPv6Endpoint &localEndpoint,
+                               ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory);
 
     Deferred<Exception> connect(Driver::Role role, const Features *features,
-                                const IPv6Address &remoteAddress,
-                                UInt16 remotePort, ProtocolVersions versions,
+                                const IPv6Endpoint &remoteEndpoint,
+                                ProtocolVersions versions,
                                 ChannelListener::Factory listenerFactory);
 
-    void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, milliseconds delay);
+    void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Endpoint &remoteEndpoint, milliseconds delay);
 
     void run();
     void stop();

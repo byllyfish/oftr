@@ -34,21 +34,20 @@ Driver::~Driver()
 }
 
 Deferred<Exception> Driver::listen(Role role, const Features *features,
-                                   const IPv6Address &localAddress,
-                                   UInt16 localPort, ProtocolVersions versions,
+                                   const IPv6Endpoint &localEndpoint,
+                                   ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory)
 {
-    return engine_->listen(role, features, localAddress, localPort, versions,
+    return engine_->listen(role, features, localEndpoint, versions,
                            listenerFactory);
 }
 
 Deferred<Exception> Driver::connect(Role role, const Features *features,
-                                    const IPv6Address &remoteAddress,
-                                    UInt16 remotePort,
+                                    const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory)
 {
-    return engine_->connect(role, features, remoteAddress, remotePort, versions,
+    return engine_->connect(role, features, remoteEndpoint, versions,
                             listenerFactory);
 }
 

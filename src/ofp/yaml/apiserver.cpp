@@ -105,7 +105,7 @@ void ApiServer::onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq
     Driver *driver = engine_->driver();
     UInt16 listenPort = listenReq->msg.listenPort;
 
-    auto exc = driver->listen(Driver::Controller, nullptr, IPv6Address{}, listenPort, ProtocolVersions{}, [this]() {
+    auto exc = driver->listen(Driver::Controller, nullptr, IPv6Endpoint{listenPort}, ProtocolVersions{}, [this]() {
         return new ApiChannelListener{this};
     });
 

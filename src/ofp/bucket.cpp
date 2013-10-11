@@ -14,6 +14,6 @@ ActionRange Bucket::actions() const
 
 void BucketBuilder::setActions(ActionRange actions)
 {
-	bkt_.len_ = sizeof(Bucket) + actions.size();
+	bkt_.len_ = UInt16_narrow_cast(sizeof(Bucket) + actions.size());
 	actions_ = actions;
 }
