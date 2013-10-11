@@ -12,8 +12,9 @@ int main()
     log::set(&std::cerr);
 
     driver.listen(Driver::Bridge, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT},
-                  ProtocolVersions::All,
-                  [remoteEndpoint]() { return new BridgeListener(remoteEndpoint); });
+                  ProtocolVersions::All, [remoteEndpoint]() {
+        return new BridgeListener(remoteEndpoint);
+    });
 
     driver.run();
 
