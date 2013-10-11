@@ -22,48 +22,53 @@
 #ifndef OFP_ROLEREQUEST_H
 #define OFP_ROLEREQUEST_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
 namespace ofp { // <namespace ofp>
 
-class RoleRequest {
+class RoleRequest : public ProtocolMsg<RoleRequest,OFPT_ROLE_REQUEST> {
 public:
-	enum { Type = OFPT_ROLE_REQUEST };
-
-	static const RoleRequest *cast(const Message *message);
-
-	RoleRequest() : header_{Type} {}
-
-	UInt32 role() const;
-	UInt64 generationID() const;
+	UInt32 role() const { return role_; }
+	UInt64 generationId() const { return generationId_; }
 	
+	UInt32 xid() const { return header_.xid(); }
+	
+	bool validateLength(size_t length) const;
+
 private:
 	Header header_;
 	Big32 role_;
 	Padding<4> pad_;
-	Big64 generationID_;
+	Big64 generationId_;
 
-	bool validateLength(size_t length) const;
+	// Only RoleRequestBuilder can construct an instance.
+	RoleRequest() : header_{type()} {}
 
 	friend class RoleRequestBuilder;
+	template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(RoleRequest) == 24, "Unexpected size.");
 static_assert(IsStandardLayout<RoleRequest>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<RoleRequest>(), "Expected trivially copyable.");
 
 class RoleRequestBuilder {
 public:
 	RoleRequestBuilder() = default;
+	explicit RoleRequestBuilder(const RoleRequest *msg);
 
-	void setRole(UInt32 role);
-	void setGenerationID(UInt64 generationID);
+	void setRole(UInt32 role) { msg_.role_ = role; }
+	void setGenerationId(UInt64 generationId) { msg_.generationId_ = generationId; }
 
 	UInt32 send(Writable *channel);
 
 private:
 	RoleRequest msg_;
+
+	template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

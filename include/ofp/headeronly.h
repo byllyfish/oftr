@@ -27,6 +27,7 @@
 #include "ofp/header.h"
 #include "ofp/message.h"
 #include "ofp/writable.h"
+#include "ofp/padding.h"
 #include "ofp/log.h"
 
 namespace ofp {    // <namespace ofp>
@@ -43,11 +44,12 @@ public:
     /// Cast message to this type after validating contents.
     /// \returns pointer to message or nullptr if not valid.
     static const HeaderOnly *cast(const Message *message);
+
     static constexpr OFPType type() { return MsgType; }
 
-    HeaderOnly() : header_{type()}
-    {
-    }
+
+    /// \returns xid in the header.
+    UInt32 xid() const { return header_.xid(); }
 
     /// \returns true if message length matches length in header.
     bool validateLength(size_t length) const
@@ -57,6 +59,11 @@ public:
 
 private:
     Header header_;
+
+    // Only HeaderOnlyBuilder can construct an actual instance.
+    HeaderOnly() : header_{type()}
+    {
+    }
 
     friend class HeaderOnlyBuilder<HeaderOnly>;
 };
@@ -69,7 +76,10 @@ public:
     explicit HeaderOnlyBuilder(const Message *request) : isReply_{true}
     {
         msg_.header_.setXid(request->xid());
+    }
 
+    explicit HeaderOnlyBuilder(const HeaderOnlyType *msg) : msg_{*msg}, isReply_{true}
+    {
     }
 
     /// \returns xid assigned to sent message.
@@ -107,6 +117,7 @@ using FeaturesRequestBuilder = detail::HeaderOnlyBuilder<FeaturesRequest>;
 
 static_assert(sizeof(FeaturesRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<FeaturesRequest>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<FeaturesRequest>(), "Expected trivially copyable.");
 
 /// \class ofp::GetAsyncRequest
 /// \brief Represents an immutable OFPT_GET_ASYNC_REQUEST message.
@@ -132,6 +143,7 @@ using GetAsyncRequestBuilder = detail::HeaderOnlyBuilder<GetAsyncRequest>;
 
 static_assert(sizeof(GetAsyncRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<GetAsyncRequest>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<GetAsyncRequest>(), "Expected trivially copyable.");
 
 /// \class ofp::GetConfigRequest
 /// \brief Represents an immutable OFPT_GET_CONFIG_REQUEST message.
@@ -158,6 +170,7 @@ using GetConfigRequestBuilder = detail::HeaderOnlyBuilder<GetConfigRequest>;
 static_assert(sizeof(GetConfigRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<GetConfigRequest>(),
               "Expected standard layout.");
+static_assert(IsTriviallyCopyable<GetConfigRequest>(), "Expected trivially copyable.");
 
 /// \class ofp::BarrierRequest
 /// \brief Represents an immutable OFPT_BARRIER_REQUEST message.
@@ -184,6 +197,7 @@ using BarrierRequestBuilder = detail::HeaderOnlyBuilder<BarrierRequest>;
 static_assert(sizeof(BarrierRequest) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<BarrierRequest>(),
               "Expected standard layout.");
+static_assert(IsTriviallyCopyable<BarrierRequest>(), "Expected trivially copyable.");
 
 /// \class ofp::BarrierReply
 /// \brief Represents an immutable OFPT_BARRIER_REPLY message.
@@ -209,6 +223,8 @@ using BarrierReplyBuilder = detail::HeaderOnlyBuilder<BarrierReply>;
 static_assert(sizeof(BarrierReply) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<BarrierReply>(),
               "Expected standard layout.");
+static_assert(IsTriviallyCopyable<BarrierReply>(), "Expected trivially copyable.");
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 

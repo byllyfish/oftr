@@ -66,6 +66,10 @@ bool IPv6Address::parse(const std::string &s)
 	return false;
 }
 
+void IPv6Address::clear()
+{
+	std::memset(addr_.data(), 0, sizeof(addr_));
+}
 
 std::string IPv6Address::toString() const
 {

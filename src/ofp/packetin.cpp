@@ -208,6 +208,21 @@ OXMRange PacketIn::oxmRange() const
     }
 }
 
+PacketInBuilder::PacketInBuilder(const PacketIn *msg)
+{
+    // Use accessor functions only; PacketIn uses cross-wired accessors.
+    
+    setBufferId(msg->bufferId());
+    setTotalLen(msg->totalLen());
+    setInPort(msg->inPort());
+    setInPhyPort(msg->inPhyPort());
+    setMetadata(msg->metadata());
+    setReason(msg->reason());
+    setTableID(msg->tableID());
+    setCookie(msg->cookie());
+    setEnetFrame(msg->enetFrame());
+}
+
 UInt32 PacketInBuilder::send(Writable *channel)
 {
     UInt8 version = channel->version();

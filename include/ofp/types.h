@@ -175,13 +175,26 @@ constexpr bool IsLiteralType()
 }
 
 /**
- *  Convenience function to check for standard layout.
- *  @return true if type's layout is compatible with C.
+ *  Convenience function to check for standard layout type. A type is standard
+ *  layout if it has an obvious equivalent in C.
+ *  @return true if type has standard layout.
  */
 template <class T>
 constexpr bool IsStandardLayout()
 {
     return std::is_standard_layout<T>::value;
+}
+
+/**
+ * Convenience function to check for type that is "trivially copyable". That is,
+ * T is a type that can be copied, moved and destroyed as a simple collection of
+ * bits.
+ * @return true if type is trivially copyable.
+ */
+template <class T>
+constexpr bool IsTriviallyCopyable()
+{
+    return std::is_trivially_copyable<T>::value;
 }
 
 /**

@@ -22,14 +22,19 @@
 #ifndef OFP_FLOWREMOVED_H
 #define OFP_FLOWREMOVED_H
 
+#include "ofp/header.h"
+#include "ofp/constants.h"
+#include "ofp/padding.h"
+
 namespace ofp { // <namespace ofp>
+
+class Message;
+class Writable;
 
 class FlowRemoved {
 public:
 	static constexpr OFPType type() { return OFPT_FLOW_REMOVED; }
 	static const FlowRemoved *cast(const Message *message);
-
-	FlowRemoved() : header_{type()} {}
 
 	/// Opaque controller-issued identifier.
 	UInt64 cookie() const { return cookie_; }
@@ -80,15 +85,20 @@ private:
     Big16 matchLength_ = 0;
     Padding<4> pad_2;
 
+    // Only FlowRemovedBuilder can create an instance.
+    FlowRemoved() : header_{type()} {}
+
 	friend class FlowRemovedBuilder;
 };
 
 static_assert(sizeof(FlowRemoved) == 56, "Unexpected size.");
 static_assert(IsStandardLayout<FlowRemoved>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<FlowRemoved>(), "Expected trivially copyable.");
 
 class FlowRemovedBuilder {
 public:
 	FlowRemovedBuilder() = default;
+	explicit FlowRemovedBuilder(const FlowRemoved *msg);
 
 	// TODO setters
 

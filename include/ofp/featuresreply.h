@@ -37,8 +37,6 @@ public:
     static constexpr OFPType type() { return OFPT_FEATURES_REPLY; }
     static const FeaturesReply *cast(const Message *message);
 
-    FeaturesReply() : header_{type()} {}
-
     void getFeatures(Features *features) const;
 
     const DatapathID &datapathId() const { return datapathId_; }
@@ -50,6 +48,8 @@ public:
 
     //PortRange ports() const;
 
+    bool validateLength(size_t length) const;
+
 private:
     Header header_;
     DatapathID datapathId_;
@@ -60,13 +60,15 @@ private:
     Big32 capabilities_;
     Big32 reserved_;
 
-    bool validateLength(size_t length) const;
+    // Only FeaturesReplyBuilder can construct an actual instance.
+    FeaturesReply() : header_{type()} {}
 
     friend class FeaturesReplyBuilder;
 };
 
 static_assert(sizeof(FeaturesReply) == 32, "Unexpected size.");
 static_assert(IsStandardLayout<FeaturesReply>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<FeaturesReply>(), "Expected trivially copyable.");
 
 /**
  *  FeaturesReplyBuilder is a concrete class for building an OFPT_FEATURES_REPLY
@@ -75,6 +77,7 @@ static_assert(IsStandardLayout<FeaturesReply>(), "Expected standard layout.");
 class FeaturesReplyBuilder {
 public:
     explicit FeaturesReplyBuilder(UInt32 xid);
+    explicit FeaturesReplyBuilder(const FeaturesReply *msg);
 
     void setFeatures(const Features &features);
     

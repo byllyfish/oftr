@@ -219,7 +219,7 @@ template <>
 struct MappingTraits<ofp::yaml::ApiListenRequest::Message> {
     static void mapping(IO &io, ofp::yaml::ApiListenRequest::Message &msg)
     {
-        ofp::UInt16 defaultPort = ofp::Driver::DefaultPort;
+        ofp::UInt16 defaultPort = ofp::OFP_DEFAULT_PORT;
         io.mapOptional("port", msg.listenPort, defaultPort);
     }
 };

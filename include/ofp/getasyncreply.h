@@ -22,26 +22,22 @@
 #ifndef OFP_GETASYNCREPLY_H
 #define OFP_GETASYNCREPLY_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/protocolmsg.h"
+#include "ofp/headeronly.h"
 
 namespace ofp { // <namespace ofp>
 
-class GetAsyncReply {
+class GetAsyncReply : public ProtocolMsg<GetAsyncReply,OFPT_GET_ASYNC_REPLY> {
 public:
-	static constexpr OFPType type() { return OFPT_GET_ASYNC_REPLY; }
-	static const GetAsyncReply *cast(const Message *message) { return message->cast<GetAsyncReply>(); }
 
-	GetAsyncReply() : header_{type()} {}
+	UInt32 masterPacketInMask() const { return packetInMask_[0]; }
+	UInt32 slavePacketInMask() const { return packetInMask_[1]; }
+	UInt32 masterPortStatusMask() const { return portStatusMask_[0]; }
+	UInt32 slavePortStatusMask() const { return portStatusMask_[1]; }
+	UInt32 masterFlowRemovedMask() const { return flowRemovedMask_[0]; }
+	UInt32 slaveFlowRemovedMask() const { return flowRemovedMask_[1]; }
 
-	UInt32 masterPacketInMask() const;
-	UInt32 slavePacketInMask() const;
-	UInt32 masterPortStatusMask() const;
-	UInt32 slavePortStatusMask() const;
-	UInt32 masterFlowRemovedMask() const;
-	UInt32 slaveFlowRemovedMask() const;
-
-	bool validateLength(size_t length) const { return length == sizeof(GetAsyncReply); }
+	bool validateLength(size_t length) const;
 
 private:
 	Header header_;
@@ -49,27 +45,38 @@ private:
 	Big32 portStatusMask_[2];
 	Big32 flowRemovedMask_[2];
 
+	// Only GetAsyncReplyBuilder can construct an instance.
+	GetAsyncReply() : header_{type()} {}
+
 	friend class GetAsyncReplyBuilder;
+	template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(GetAsyncReply) == 32, "Unexpected size.");
 static_assert(IsStandardLayout<GetAsyncReply>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<GetAsyncReply>(), "Expected trivially copyable.");
 
 class GetAsyncReplyBuilder {
 public:
+	explicit GetAsyncReplyBuilder(UInt32 xid);
 	explicit GetAsyncReplyBuilder(const GetAsyncRequest *request);
+	explicit GetAsyncReplyBuilder(const GetAsyncReply *msg);
 
-	void setMasterPacketInMask(UInt32 mask);
-	void setSlavePacketInMask(UInt32 mask);
-	void setMasterPortStatusMask(UInt32 mask);
-	void setSlavePortStatusMask(UInt32 mask);
-	void setMasterFlowRemovedMask(UInt32 mask);
-	void setSlaveFlowRemovedMask(UInt32 mask);
+	void setMasterPacketInMask(UInt32 mask) { msg_.packetInMask_[0] = mask; }
+	void setSlavePacketInMask(UInt32 mask) { msg_.packetInMask_[1] = mask; }
+	void setMasterPortStatusMask(UInt32 mask) { msg_.portStatusMask_[0] = mask; }
+	void setSlavePortStatusMask(UInt32 mask) { msg_.portStatusMask_[1] = mask; }
+	void setMasterFlowRemovedMask(UInt32 mask) { msg_.flowRemovedMask_[0] = mask; }
+	void setSlaveFlowRemovedMask(UInt32 mask) { msg_.flowRemovedMask_[1] = mask; }
 
 	UInt32 send(Writable *channel);
 
 private:
 	GetAsyncReply msg_;
+
+	template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

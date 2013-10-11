@@ -32,17 +32,23 @@ class Message;
 
 class PortStatus {
 public:
-    static constexpr OFPType type() { return OFPT_PORT_STATUS; }
+    static constexpr OFPType type()
+    {
+        return OFPT_PORT_STATUS;
+    }
 
     static const PortStatus *cast(const Message *message);
 
-    PortStatus() : header_{ type() }
+    UInt8 reason() const
     {
+        return reason_;
     }
 
-    UInt8 reason() const { return reason_; }
-    const Port &port() const { return port_; }
-    
+    const Port &port() const
+    {
+        return port_;
+    }
+
     bool validateLength(size_t length) const;
 
 private:
@@ -51,23 +57,42 @@ private:
     Padding<7> pad_;
     Port port_;
 
+    // Only PortStatusBuilder can create an instance.
+    PortStatus() : header_{type()}
+    {
+    }
+
     friend class PortStatusBuilder;
+    template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(PortStatus) == 80, "Unexpected size.");
 static_assert(IsStandardLayout<PortStatus>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<PortStatus>(),
+              "Expected trivially copyable.");
 
 class PortStatusBuilder {
 public:
     PortStatusBuilder() = default;
+    explicit PortStatusBuilder(const PortStatus *msg);
 
-    void setReason(UInt8 reason) { msg_.reason_ = reason; }
-    void setPort(const Port &port) { msg_.port_ = port; }
+    void setReason(UInt8 reason)
+    {
+        msg_.reason_ = reason;
+    }
+    void setPort(const Port &port)
+    {
+        msg_.port_ = port;
+    }
 
     UInt32 send(Writable *channel);
 
 private:
     PortStatus msg_;
+
+    template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

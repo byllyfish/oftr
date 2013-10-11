@@ -81,42 +81,6 @@ and restrictions which apply to that code.
   Source: https://code.google.com/p/googletest/
 
 
-Build
------
-
-The software requires the following tools:
-
-	- Make (GNUMake specifically)
-	- C++11 Compiler. The following are known to work:
-	   - Clang (LLVM-3.2svn or later) on Mac OS X 10.8
-	   - GCC 4.7 on Ubuntu 12.10
-
-Files produced:
-
-    - libofp.a (library)
-    - libofpexec (executable)
-
-To build:
-
-	make
-
-To run test cases:
-
-	make test
-
-To produce a 32-bit build on a 64-bit system:
-
-	CXXFLAGS=-m32 make
-
-To produce a debug build:
-
-    CXXFLAGS=-g make
-
-To clean up:
-
-    make clean
-
-
 Instant Tutorial
 ----------------
 
@@ -234,12 +198,10 @@ Feedback
 --------
 
 No software product is successful without the input of others. I greatly value 
-your feedback. If you find this software useful, appealing, stupid, crappy, 
-incomplete, or downright buggy, please let me know:
+your feedback. If you find this software useful or promising, please let me 
+know:
 
     william.w.fisher+libofp@gmail.com
-
-I may not always reply immediately, but I will always listen. Thanks.
 
 References
 ----------

@@ -11,7 +11,7 @@ msg:
 ---
 event:           LIBOFP_LOOPBACK
 msg:             
-  data:            0400001000000000000100080000001E
+  data:            04000010000000000001000800000010
 ...
 ---
 event:           LIBOFP_LOOPBACK
@@ -46,5 +46,5 @@ msg:
 ---
 event:           LIBOFP_LOOPBACK
 msg:             
-  data:            0400001000000000000100080000001E
+  data:            04000010000000000001000800000010
 ...

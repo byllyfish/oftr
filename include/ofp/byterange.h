@@ -26,10 +26,17 @@
 
 namespace ofp { // <namespace ofp>
 
+class ByteList;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
+//   B y t e R a n g e
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
+
 class ByteRange {
 public:
 	constexpr ByteRange();
 	constexpr ByteRange(const void *data, size_t length);
+	ByteRange(const ByteList &data);
 
 	constexpr const UInt8 *begin() const {
 		return begin_;

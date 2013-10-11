@@ -48,6 +48,13 @@ ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code)
     msg_.code_ = code;
 }
 
+ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg}
+{
+    // Only data is left to copy.
+    ByteRange data = msg->errorData();
+    setErrorData(data.data(), data.size());
+}
+
 void ErrorBuilder::setErrorData(const Message *message)
 {
     assert(message);

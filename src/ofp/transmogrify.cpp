@@ -25,6 +25,7 @@
 #include "ofp/portstatus.h"
 #include "ofp/experimenter.h"
 #include "ofp/packetout.h"
+#include "ofp/portmod.h"
 #include "ofp/instructions.h"
 #include "ofp/instructionrange.h"
 #include "ofp/originalmatch.h"
@@ -57,6 +58,8 @@ void Transmogrify::normalize()
             normalizeExperimenterV1();
         } else if (type == PacketOut::type()) {
             normalizePacketOutV1();
+        } else if (type == PortMod::type()) {
+            normalizePortModV1();
         }
     }
 }
@@ -244,6 +247,35 @@ void Transmogrify::normalizePacketOutV1()
 
     // Update header length. N.B. Make sure we use current header ptr.
     header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+
+void Transmogrify::normalizePortModV1()
+{
+    Header *hdr = header();
+
+    if (hdr->length() < 32) {
+        log::info("PortMod v1 message is too short.", hdr->length());
+        hdr->setType(OFPT_UNSUPPORTED);
+        return;
+    }
+
+    UInt8 *pkt = buf_.mutableData();
+    Big32 inPort = normPortNumberV1(pkt + 8);
+
+    // Insert 8 bytes at position 16.
+    buf_.insertUninitialized(pkt + 16, 8);
+
+    // Move hwAddr field 6 bytes.
+    pkt = buf_.mutableData();
+    std::memcpy(pkt + 16, pkt + 10, 6);
+
+    // Set 32-bit port number.
+    std::memcpy(pkt + 8, &inPort, sizeof(inPort));
+
+    // Set padding bytes to zero.
+    std::memset(pkt + 12, 0, 4);
+    std::memset(pkt + 22, 0, 2);
 }
 
 

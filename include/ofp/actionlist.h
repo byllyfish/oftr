@@ -52,6 +52,8 @@ class ActionList {
 
     ActionRange toRange() const { return ActionRange{buf_.toRange()}; }
 
+    void operator=(const ActionRange &range) { buf_ = range.toByteRange(); }
+
   private:
     ByteList buf_;
 };

@@ -92,18 +92,7 @@ private:
 	ByteList buf_;
 	sys::Connection *channel_;
 
-	void transmogrifyFlowModV1();
-	void transmogrifyPortStatusV1();
-	void transmogrifyExperimenterV1();
-
-#if 0
-	int transmogrifyInstructionsV1orV2(const InstructionRange &instr);
-	int transmogrifyActionsV1orV2(const ActionRange &actions);
-	int transmogrifyActionV1orV2(UInt16 type, ActionIterator *iter, ActionIterator *iterEnd);
-#endif //0
-#
 	friend std::ostream &operator<<(std::ostream &os, const Message &msg);
-
 	friend class Transmogrify;
 };
 

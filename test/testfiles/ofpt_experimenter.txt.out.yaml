@@ -1,0 +1,18 @@
+---
+type:            OFPT_EXPERIMENTER
+xid:             0x00000000
+version:         1
+msg:             
+  experimenter:    16909060
+  exp_type:        0
+  experimenter_data: 0123456789
+...
+---
+type:            OFPT_EXPERIMENTER
+xid:             0x00000000
+version:         4
+msg:             
+  experimenter:    16909060
+  exp_type:        270544960
+  experimenter_data: 0123456789
+...

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements Driver class.
@@ -22,10 +22,9 @@
 #include "ofp/driver.h"
 #include "ofp/sys/engine.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
 
-Driver::Driver(DriverOptions *options)
-    : engine_{new sys::Engine{this, options}}
+Driver::Driver(DriverOptions *options) : engine_{new sys::Engine{this, options}}
 {
 }
 
@@ -34,18 +33,22 @@ Driver::~Driver()
     delete engine_;
 }
 
-Deferred<Exception> Driver::listen(Role role, const Features *features, const IPv6Address &localAddress,
-                         UInt16 localPort, ProtocolVersions versions,
-                         ChannelListener::Factory listenerFactory)
+Deferred<Exception> Driver::listen(Role role, const Features *features,
+                                   const IPv6Endpoint &localEndpoint,
+                                   ProtocolVersions versions,
+                                   ChannelListener::Factory listenerFactory)
 {
-    return engine_->listen(role, features, localAddress, localPort, versions, listenerFactory);
+    return engine_->listen(role, features, localEndpoint, versions,
+                           listenerFactory);
 }
 
-Deferred<Exception> Driver::connect(Role role, const Features *features, const IPv6Address &remoteAddress,
-                          UInt16 remotePort, ProtocolVersions versions,
-                          ChannelListener::Factory listenerFactory)
+Deferred<Exception> Driver::connect(Role role, const Features *features,
+                                    const IPv6Endpoint &remoteEndpoint,
+                                    ProtocolVersions versions,
+                                    ChannelListener::Factory listenerFactory)
 {
-    return engine_->connect(role, features, remoteAddress, remotePort, versions, listenerFactory);
+    return engine_->connect(role, features, remoteEndpoint, versions,
+                            listenerFactory);
 }
 
 void Driver::run()
@@ -53,11 +56,12 @@ void Driver::run()
     engine_->run();
 }
 
-
-void Driver::quit()
+void Driver::stop()
 {
-	engine_->quit();
+    engine_->stop();
 }
 
-
-} // </namespace ofp>
+void Driver::installSignalHandlers()
+{
+    engine_->installSignalHandlers();
+}

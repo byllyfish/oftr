@@ -34,7 +34,7 @@ size_t strlen(const char *s, size_t maxlen);
 } // </namespace detail>
 
 /// \brief Implements a fixed size, null-terminated C string.
-/// \remarks Binary representation is standard layout.
+/// \remarks Binary representation is standard layout and trivially copyable.
 template <size_t Size>
 class SmallCString {
 public:
@@ -42,9 +42,8 @@ public:
 
     constexpr SmallCString() : str_{} {}
 
-    SmallCString(const SmallCString &rhs) : str_(rhs.str_)
-    {
-        str_.back() = 0;
+    SmallCString(const std::string &s) {
+        operator=(s);
     }
 
     SmallCString(const char *cstr) {
@@ -63,23 +62,18 @@ public:
 
     size_t length() const
     {
-        return detail::strlen(c_str(), capacity());
+        return detail::strlen(str_.data(), capacity());
     }
 
-    const char *c_str() const
-    {
-        return str_.data();
+    std::string toString() const {
+        return std::string{str_.data(), length()};
     }
 
     const ArrayType &toArray() const {
         return str_;
     }
 
-    void operator=(const SmallCString &rhs)
-    {
-        str_ = rhs.str_;
-    }
-
+    void operator=(const std::string &s);
     void operator=(const char *cstr);
 
 private:
@@ -108,22 +102,18 @@ inline size_t strlen(const char *s, size_t maxlen)
 
 } // </namespace detail>
 
-#if 0
-/// Copies C string and sets the remaining bytes to zero. The last byte will 
+/// Copies string and sets the remaining bytes to zero. The last byte will 
 /// always be zero.
 template <size_t Size>
-inline SmallCString<Size>::SmallCString(const char *cstr)
+inline void SmallCString<Size>::operator=(const std::string &s)
 {
-	size_t len = detail::strlen(cstr, capacity());
-	assert(len <= capacity());
-    std::memcpy(&str_, cstr, len);
+    size_t len = std::min(s.length(), capacity());
+    assert(len <= capacity());
+    std::memcpy(&str_, s.data(), len);
     std::memset(&str_[len], 0, capacity() - len);
     str_.back() = 0;
 }
-#endif
 
-/// Copies C string and sets the remaining bytes to zero. The last byte will 
-/// always be zero.
 template <size_t Size>
 inline void SmallCString<Size>::operator=(const char *cstr)
 {

@@ -32,6 +32,14 @@
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
 #include "ofp/yaml/ysetconfig.h"
+#include "ofp/yaml/yportstatus.h"
+#include "ofp/yaml/ygroupmod.h"
+#include "ofp/yaml/yportmod.h"
+#include "ofp/yaml/ytablemod.h"
+#include "ofp/yaml/yrolerequest.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -179,6 +187,54 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
         SetConfigBuilder setConfig;
         io.mapRequired("msg", setConfig);
         setConfig.send(&channel_);
+        break;
+    }
+    case PortStatus::type(): {
+        PortStatusBuilder portStatus;
+        io.mapRequired("msg", portStatus);
+        portStatus.send(&channel_);
+        break;
+    }
+    case GroupMod::type(): {
+        GroupModBuilder groupMod;
+        io.mapRequired("msg", groupMod);
+        groupMod.send(&channel_);
+        break;
+    }
+    case PortMod::type(): {
+        PortModBuilder portMod;
+        io.mapRequired("msg", portMod);
+        portMod.send(&channel_);
+        break;
+    }
+    case TableMod::type(): {
+        TableModBuilder tableMod;
+        io.mapRequired("msg", tableMod);
+        tableMod.send(&channel_);
+        break;
+    }
+    case RoleRequest::type(): {
+        RoleRequestBuilder roleReq;
+        io.mapRequired("msg", roleReq);
+        roleReq.send(&channel_);
+        break;
+    }
+    case RoleReply::type(): {
+        RoleReplyBuilder roleReply{header.xid()};
+        io.mapRequired("msg", roleReply);
+        roleReply.send(&channel_);
+        break;
+    }
+    case GetAsyncReply::type(): {
+        GetAsyncReplyBuilder asyncReply{header.xid()};
+        io.mapRequired("msg", asyncReply);
+        asyncReply.send(&channel_);
+        break;
+    }
+    case QueueGetConfigRequest::type(): {
+        QueueGetConfigRequestBuilder queueGetConfig;
+        io.mapRequired("msg", queueGetConfig);
+        queueGetConfig.send(&channel_);
         break;
     }
     default:

@@ -26,6 +26,7 @@
 #include "ofp/oxmlist.h"
 #include "ofp/prerequisites.h"
 #include "ofp/constants.h"
+#include "ofp/match.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -33,6 +34,7 @@ class MatchBuilder {
 public:
 
 	MatchBuilder() = default;
+	MatchBuilder(const Match &match) : list_{match.toRange()} {}
 
 	const UInt8 *data() const { return list_.data(); }
 	size_t size() const { return list_.size(); }

@@ -72,6 +72,7 @@ const detail::HelloElement *detail::HelloElement::next(size_t *remaining) const
 	return reinterpret_cast<const HelloElement *>(BytePtr(this) + length_);
 }
 
+#if 0
 const Hello *Hello::cast(const Message *message)
 {
     assert(message->type() == OFPT_HELLO);
@@ -83,6 +84,7 @@ const Hello *Hello::cast(const Message *message)
 
     return msg;
 }
+#endif //0
 
 bool Hello::validateLength(size_t length) const
 {
@@ -142,6 +144,12 @@ ProtocolVersions Hello::protocolVersions() const
 const detail::HelloElement *Hello::helloElements() const
 {
     return reinterpret_cast<const detail::HelloElement *>(BytePtr(&header_) + sizeof(header_));
+}
+
+/// Construct a HelloBuilder from the given Hello message.
+HelloBuilder::HelloBuilder(const Hello *msg) : msg_{*msg}
+{
+    setProtocolVersions(msg->protocolVersions());
 }
 
 UInt32 HelloBuilder::send(Writable *channel)

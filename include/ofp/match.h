@@ -48,10 +48,13 @@ public:
     {
         return oxm_.begin();
     }
+
     OXMIterator end() const
     {
         return oxm_.end();
     }
+
+    OXMRange toRange() const { return oxm_.toRange(); }
 
 private:
     OXMList oxm_;

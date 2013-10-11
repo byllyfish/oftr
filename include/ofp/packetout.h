@@ -39,8 +39,6 @@ public:
 
 	static const PacketOut *cast(const Message *message);
 
-	PacketOut() : header_{type()} {}
-
 	UInt32 bufferId() const { return bufferId_; }
 	UInt32 inPort() const { return inPort_; }
 
@@ -56,21 +54,26 @@ private:
 	Big16 actionsLen_ = 0;
 	Padding<6> pad_;
 
+	// Only PacketOutBuilder can construct an instance.
+	PacketOut() : header_{type()} {}
+
 	friend class PacketOutBuilder;
 	friend struct llvm::yaml::MappingTraits<PacketOutBuilder>;
 };
 
 static_assert(sizeof(PacketOut) == 24, "Unexpected size.");
 static_assert(IsStandardLayout<PacketOut>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<PacketOut>(), "Expected trivially copyable.");
 
 class PacketOutBuilder {
 public:
 	PacketOutBuilder() = default;
+	explicit PacketOutBuilder(const PacketOut *msg);
 
 	void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
 	void setInPort(UInt32 inPort) { msg_.inPort_ = inPort; }
-	void setActions(const ActionList &actions) {actions_ = actions;}
-	void setEnetFrame(const ByteList &enetFrame) {enetFrame_ = enetFrame;}
+	void setActions(const ActionRange &actions) { actions_ = actions; }
+	void setEnetFrame(const ByteRange &enetFrame) { enetFrame_ = enetFrame; }
 
 	UInt32 send(Writable *channel);
 

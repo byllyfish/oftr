@@ -28,10 +28,13 @@
 
 namespace ofp { // <namespace ofp>
 
+class ActionList;
+
 class ActionRange {
 public:
 	ActionRange() = default;
 	ActionRange(const ByteRange &range) : range_{range} {}
+	ActionRange(const ActionList &list);
 
 	size_t itemCount() const { return ActionIterator::distance(begin(), end()); }
 	
@@ -40,7 +43,8 @@ public:
 
 	const UInt8 *data() const { return range_.data(); }
 	size_t size() const { return range_.size(); }
-	
+	ByteRange toByteRange() const { return range_; }
+
 	/// \returns Size of action list when written to channel using the specified
 	/// protocol version.
 	size_t writeSize(Writable *channel);

@@ -43,21 +43,22 @@ public:
     ~Engine();
 
     Deferred<Exception> listen(Driver::Role role, const Features *features,
-                               const IPv6Address &localAddress,
-                               UInt16 localPort, ProtocolVersions versions,
+                               const IPv6Endpoint &localEndpoint,
+                               ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory);
 
     Deferred<Exception> connect(Driver::Role role, const Features *features,
-                                const IPv6Address &remoteAddress,
-                                UInt16 remotePort, ProtocolVersions versions,
+                                const IPv6Endpoint &remoteEndpoint,
+                                ProtocolVersions versions,
                                 ChannelListener::Factory listenerFactory);
 
-    void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Address &remoteAddress, UInt16 remotePort, milliseconds delay);
+    void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Endpoint &remoteEndpoint, milliseconds delay);
 
     void run();
-    void quit();
+    void stop();
     bool isRunning() const { return isRunning_; }
-    
+    void installSignalHandlers();
+
     void openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Connection *mainConnection);
 
     io_service &io()
@@ -84,11 +85,15 @@ private:
 
     DatapathMap dpidMap_;
     ServerList serverList_;
-    
-    // The io_service must be the first object to be destroyed when engine
-    // destructor runs.
+
+    // The io_service must be one of the first objects to be destroyed when 
+    // engine destructor runs. Connections may need to bookkeeping objects.
     io_service io_;
     bool isRunning_ = false;
+
+    // Sets up signal handlers to shut down runloop.
+    bool isSignalsInited_ = false;
+    signal_set signals_;
 };
 
 OFP_END_IGNORE_PADDING

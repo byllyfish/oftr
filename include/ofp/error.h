@@ -45,10 +45,6 @@ public:
 
     static const Error *cast(const Message *message);
 
-    Error() : header_{type()}
-    {
-    }
-
     UInt16 errorType() const { return type_; }
     UInt16 errorCode() const { return code_; }
     ByteRange errorData() const;
@@ -60,11 +56,17 @@ private:
     Big16 type_;
     Big16 code_;
 
+    // Only ErrorBuilder can construct an actual instance.
+    Error() : header_{type()}
+    {
+    }
+
     friend class ErrorBuilder;
 };
 
 static_assert(sizeof(Error) == 12, "Unexpected size.");
 static_assert(IsStandardLayout<Error>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<Error>(), "Expected trivially copyable.");
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E r r o r B u i l d e r
@@ -74,6 +76,8 @@ static_assert(IsStandardLayout<Error>(), "Expected standard layout.");
 class ErrorBuilder {
 public:
     ErrorBuilder(UInt16 type = 0, UInt16 code = 0);
+
+    explicit ErrorBuilder(const Error *msg);
 
     void setErrorType(UInt16 type)
     {

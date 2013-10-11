@@ -21,6 +21,7 @@
 
 #include "ofp/log.h"
 #include <chrono>
+#include <iomanip>
 //#include <ctime>
 
 namespace ofp { // <namespace ofp>
@@ -54,7 +55,7 @@ static Time currentTime()
 
 static std::ostream &operator<<(std::ostream &os, const Time &t)
 {
-	return os << t.first << '.' << t.second.count();
+	return os << t.first << '.' << std::setfill('0') << std::setw(3) << t.second.count();
 }
 
 void write(const std::string &msg)

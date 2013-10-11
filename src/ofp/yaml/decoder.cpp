@@ -32,6 +32,14 @@
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
 #include "ofp/yaml/ysetconfig.h"
+#include "ofp/yaml/yportstatus.h"
+#include "ofp/yaml/ygroupmod.h"
+#include "ofp/yaml/yportmod.h"
+#include "ofp/yaml/ytablemod.h"
+#include "ofp/yaml/yrolerequest.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -97,6 +105,22 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<PacketOut>(io, msg_);
     case SetConfig::type():
         return decode<SetConfig>(io, msg_);
+    case PortStatus::type():
+        return decode<PortStatus>(io, msg_);
+    case GroupMod::type():
+        return decode<GroupMod>(io, msg_);
+    case PortMod::type():
+        return decode<PortMod>(io, msg_);
+    case TableMod::type():
+        return decode<TableMod>(io, msg_);
+    case RoleRequest::type():
+        return decode<RoleRequest>(io, msg_);
+    case RoleReply::type():
+        return decode<RoleReply>(io, msg_);
+    case GetAsyncReply::type():
+        return decode<GetAsyncReply>(io, msg_);
+    case QueueGetConfigRequest::type():
+        return decode<QueueGetConfigRequest>(io, msg_);
     default:
         log::info("Decoder::decodeMsg: Unknown msg type", msg_->type());
         break;

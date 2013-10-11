@@ -34,17 +34,18 @@ public:
 	static constexpr OFPType type() { return OFPT_SET_CONFIG; }
 	static const SetConfig *cast(const Message *message);
 
-	SetConfig() : header_{type()} {}
-
 	UInt16 flags() const { return flags_; }
 	UInt16 missSendLen() const { return missSendLen_; }
+
+	bool validateLength(size_t length) const;
 
 private:
 	Header header_;
 	Big16 flags_ = 0;
 	Big16 missSendLen_ = 128;
 
-	bool validateLength(size_t length) const;
+	// Only SetConfigBuilder can construct an instance.
+	SetConfig() : header_{type()} {}
 
 	friend class SetConfigBuilder;
 	friend struct llvm::yaml::MappingTraits<SetConfig>;
@@ -53,10 +54,12 @@ private:
 
 static_assert(sizeof(SetConfig) == 12, "Unexpected size.");
 static_assert(IsStandardLayout<SetConfig>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<SetConfig>(), "Expected trivially copyable.");
 
 class SetConfigBuilder {
 public:
 	SetConfigBuilder() = default;
+	explicit SetConfigBuilder(const SetConfig *msg);
 
 	void setFlags(UInt16 flags);
 	void setMissSendLen(UInt16 missSendLen);

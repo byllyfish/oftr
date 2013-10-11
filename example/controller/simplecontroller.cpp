@@ -74,7 +74,7 @@ void SimpleController::flood(Channel *channel, const PacketIn *msg)
 }
 
 void SimpleController::drop(Channel *channel, const PacketIn *msg,
-                            const EnetFrame *frame, unsigned timeout)
+                            const EnetFrame *frame, UInt16 timeout)
 {
     log::debug("drop");
 

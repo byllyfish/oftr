@@ -144,7 +144,7 @@ xid: 0x18
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  data: 'ABCDEF0123456789'
+  experimenter_data: 'ABCDEF0123456789'
 )""";
 
     testEncoderSuccess(input, 0x18,
@@ -160,7 +160,7 @@ xid: 0x1B
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  data: 'ABCDEF0123456789'
+  experimenter_data: 'ABCDEF0123456789'
 )""";
 
     testEncoderSuccess(input, 0x14, "010400140000001BDEADBEEFABCDEF0123456789");
@@ -175,7 +175,7 @@ xid: 0xFF
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  data: 'ABCDEF0123456789'
+  experimenter_data: 'ABCDEF0123456789'
 )""";
 
     testEncoderSuccess(input, 0x18,
@@ -745,5 +745,301 @@ TEST(encoder, setconfigv4)
     EXPECT_EQ(0x0C, encoder.size());
     EXPECT_HEX("0409000C11111111AAAABBBB", encoder.data(), encoder.size());
 }
+
+
+TEST(encoder, portstatusv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_PORT_STATUS
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        reason: 0x22
+        port:
+          port_no: 0x33333333
+          hw_addr: 'aabbccddeeff'
+          name: 'Port 1'
+          config: 0x44444444
+          state: 0x55555555
+          curr: 0x66666666
+          advertised: 0x77777777
+          supported: 0x88888888
+          peer: 0x99999999
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x50, encoder.size());
+    EXPECT_HEX("040C00501111111122000000000000003333333300000000AABBCCDDEEFF0000506F7274203100000000000000000000444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, portstatusv1)
+{
+    const char *input = R"""(
+      version: 1
+      type: OFPT_PORT_STATUS
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        reason: 0x22
+        port:
+          port_no: 0x33333333
+          hw_addr: 'aabbccddeeff'
+          name: 'Port 1'
+          config: 0x44444444
+          state: 0x55555555
+          curr: 0x66666666
+          advertised: 0x77777777
+          supported: 0x88888888
+          peer: 0x99999999
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x40, encoder.size());
+    EXPECT_HEX("010C00401111111122000000000000003333AABBCCDDEEFF506F7274203100000000000000000000444444445555555566666666777777778888888899999999", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, groupmodv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_GROUP_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        command: 0x2222
+        type: 0x33
+        group_id: 0x44444444
+        buckets:
+          - weight: 0x5555
+            watch_port: 0x66666666
+            watch_group: 0x77777777
+            actions:
+              - action: OFPAT_OUTPUT
+                port: 5
+                maxlen: 20
+              - action: OFPAT_SET_FIELD
+                type:   OFB_IPV4_DST
+                value:  192.168.1.1
+          - weight: 0x8888
+            watch_port: 0x99999999
+            watch_group: 0xAAAAAAAA
+            actions:
+              - action: OFPAT_SET_FIELD
+                type: OFB_ICMPV4_CODE
+                value: 0xEE
+              - action: OFPAT_COPY_TTL_OUT
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x68, encoder.size());
+    EXPECT_HEX("040F006811111111222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A80101000000000028888899999999AAAAAAAA000000000019001080002801EE00000000000000000B000800000000", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, groupmodv2)
+{
+    const char *input = R"""(
+      version: 2
+      type: OFPT_GROUP_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        command: 0x2222
+        type: 0x33
+        group_id: 0x44444444
+        buckets:
+          - weight: 0x5555
+            watch_port: 0x66666666
+            watch_group: 0x77777777
+            actions:
+              - action: OFPAT_OUTPUT
+                port: 5
+                maxlen: 20
+              - action: OFPAT_SET_FIELD
+                type:   OFB_IPV4_DST
+                value:  192.168.1.1
+          - weight: 0x8888
+            watch_port: 0x99999999
+            watch_group: 0xAAAAAAAA
+            actions:
+              - action: OFPAT_SET_FIELD
+                type: OFB_ICMPV4_CODE
+                value: 0xEE
+              - action: OFPAT_COPY_TTL_OUT
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x68, encoder.size());
+    EXPECT_HEX("020F006811111111222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A80101000000000028888899999999AAAAAAAA000000000019001080002801EE00000000000000000B000800000000", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, portmodv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_PORT_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port_no: 0x22222222
+        hw_addr: '333333333333'
+        config: 0x44444444
+        mask: 0x55555555
+        advertise: 0x66666666
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x28, encoder.size());
+    EXPECT_HEX("04100028111111112222222200000000333333333333000044444444555555556666666600000000", encoder.data(), encoder.size());
+}
+
+TEST(encoder, portmodv1)
+{
+    const char *input = R"""(
+      version: 1
+      type: OFPT_PORT_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port_no: 0x2222
+        hw_addr: '333333333333'
+        config: 0x44444444
+        mask: 0x55555555
+        advertise: 0x66666666
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x20, encoder.size());
+    EXPECT_HEX("010F002011111111222233333333333344444444555555556666666600000000", encoder.data(), encoder.size());
+}
+
+TEST(encoder, tablemodv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_TABLE_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        table_id: 0x22
+        config: 0x33333333
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x10, encoder.size());
+    EXPECT_HEX("04110010111111112200000033333333", encoder.data(), encoder.size());
+}
+
+TEST(encoder, tablemodv2)
+{
+    const char *input = R"""(
+      version: 2
+      type: OFPT_TABLE_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        table_id: 0x22
+        config: 0x33333333
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x10, encoder.size());
+    EXPECT_HEX("02110010111111112200000033333333", encoder.data(), encoder.size());
+}
+
+TEST(encoder, rolerequestv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_ROLE_REQUEST
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        role: 0x22222222
+        generation_id: 0x3333333333333333
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x18, encoder.size());
+    EXPECT_HEX("041800181111111122222222000000003333333333333333", encoder.data(), encoder.size());    
+}
+
+
+TEST(encoder, rolereplyv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_ROLE_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        role: 0x22222222
+        generation_id: 0x3333333333333333
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x18, encoder.size());
+    EXPECT_HEX("041900181111111122222222000000003333333333333333", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, getasyncreplyv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_GET_ASYNC_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        packet_in_mask_master: 0x22222222
+        packet_in_mask_slave: 0x33333333
+        port_status_mask_master: 0x44444444
+        port_status_mask_slave: 0x55555555
+        flow_removed_mask_master: 0x66666666
+        flow_removed_mask_slave: 0x77777777
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x20, encoder.size());
+    EXPECT_HEX("041B002011111111222222223333333344444444555555556666666677777777", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, queuegetconfigrequestv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_QUEUE_GET_CONFIG_REQUEST
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port: 0x22222222
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x10, encoder.size());
+    EXPECT_HEX("04160010111111112222222200000000", encoder.data(), encoder.size());
+}
+
 
 

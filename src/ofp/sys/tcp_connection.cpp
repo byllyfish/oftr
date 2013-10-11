@@ -426,7 +426,7 @@ void TCP_Connection::reconnect()
 
     log::debug("reconnecting...", remoteAddress());
 
-    engine()->reconnect(hs, &features(), remoteAddress(), remotePort(), 750_ms);
+    engine()->reconnect(hs, &features(), IPv6Endpoint{remoteAddress(), remotePort()}, 750_ms);
 
     setHandshake(nullptr);
     if (channelListener() == hs) {

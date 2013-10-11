@@ -6,6 +6,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/apiencoder_unittest.cpp
 	ofp/apiserver_unittest.cpp
 	ofp/boost_asio_unittest.cpp
+	ofp/bucketlist_unittest.cpp
 	ofp/bytedata_unittest.cpp
 	ofp/bytelist_unittest.cpp
 	ofp/byteorder_unittest.cpp
@@ -23,6 +24,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/instructionset_unittest.cpp
 	ofp/ipv4address_unittest.cpp
 	ofp/ipv6address_unittest.cpp
+	ofp/ipv6endpoint_unittest.cpp
 	ofp/matchbuilder_unittest.cpp
 	ofp/message_unittest.cpp
 	ofp/originalmatch_unittest.cpp

@@ -87,6 +87,8 @@ struct MappingTraits<ofp::yaml::Encoder> {
         using namespace ofp;
 
     	Header header{OFPT_UNSUPPORTED};
+        header.setVersion(OFP_VERSION_LAST);
+        
         io.mapOptional("version", header.version_);
     	io.mapRequired("type", header.type_);
     	io.mapOptional("xid", header.xid_);

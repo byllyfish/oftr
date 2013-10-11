@@ -63,6 +63,10 @@ endif()
 
 set(LIBOFP_SOURCES
 	src/ofp/actionrange.cpp
+  src/ofp/bucket.cpp
+  src/ofp/bucketlist.cpp
+  src/ofp/bytelist.cpp
+  src/ofp/byterange.cpp
 	src/ofp/channellistener.cpp
 	src/ofp/connectiontimer.cpp
 	src/ofp/datapathid.cpp
@@ -75,14 +79,18 @@ set(LIBOFP_SOURCES
 	src/ofp/experimenter.cpp
 	src/ofp/featuresreply.cpp
 	src/ofp/flowmod.cpp
+  src/ofp/flowremoved.cpp
 	src/ofp/flowstatsreply.cpp
 	src/ofp/flowstatsrequest.cpp
+  src/ofp/getasyncreply.cpp
 	src/ofp/getconfigreply.cpp
+  src/ofp/groupmod.cpp
 	src/ofp/header.cpp
 	src/ofp/hello.cpp
 	src/ofp/instructionlist.cpp
 	src/ofp/ipv4address.cpp
 	src/ofp/ipv6address.cpp
+  src/ofp/ipv6endpoint.cpp
 	src/ofp/log.cpp
 	src/ofp/message.cpp
 	src/ofp/multipartreply.cpp
@@ -95,9 +103,14 @@ set(LIBOFP_SOURCES
 	src/ofp/packetin.cpp
 	src/ofp/packetout.cpp
 	src/ofp/port.cpp
+  src/ofp/portmod.cpp
 	src/ofp/portstatus.cpp
 	src/ofp/prerequisites.cpp
 	src/ofp/protocolversions.cpp
+  src/ofp/queuegetconfigrequest.cpp
+  src/ofp/rolerequest.cpp
+  src/ofp/rolereply.cpp
+  src/ofp/setasync.cpp
 	src/ofp/setconfig.cpp
 	src/ofp/standardmatch.cpp
 	src/ofp/sys/boost_asio.cpp
@@ -107,6 +120,7 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/tcp_server.cpp
 	src/ofp/sys/udp_connection.cpp
 	src/ofp/sys/udp_server.cpp
+  src/ofp/tablemod.cpp
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp
 	src/ofp/yaml/apichannellistener.cpp
@@ -313,9 +327,13 @@ endif()
 
 include(CTest)
 
+# Boost may pull in pthreads.
+
+find_package(Threads)
+
 # Specify auto-generated config.h file.
 
-configure_file ("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
+configure_file("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
 
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
@@ -352,7 +370,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
 add_executable(libofpexec ${LIBOFP_EXEC_SOURCES})
-target_link_libraries(libofpexec ofp yamlio)
+target_link_libraries(libofpexec ofp yamlio ${CMAKE_THREAD_LIBS_INIT})
 
 # Make sure the source is generated before the executable builds.
 
@@ -364,12 +382,19 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 
 add_subdirectory(example/nulldemo)
 add_subdirectory(example/controller)
+add_subdirectory(example/bridgeofp)
 
 #-------------------------------------------------------------------------------
 # Test
 #-------------------------------------------------------------------------------
 
 add_subdirectory(test)
+
+#-------------------------------------------------------------------------------
+# Documentation
+#-------------------------------------------------------------------------------
+
+add_subdirectory(docs)
 
 #-------------------------------------------------------------------------------
 # Install Library
