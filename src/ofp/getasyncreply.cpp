@@ -29,7 +29,7 @@ UInt32 GetAsyncReplyBuilder::send(Writable *channel)
 	size_t msgLen = sizeof(msg_);
 
 	msg_.header_.setVersion(version);
-	msg_.header_.setLength(msgLen);
+	msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
 	channel->write(&msg_, sizeof(msg_));
 	channel->flush();
