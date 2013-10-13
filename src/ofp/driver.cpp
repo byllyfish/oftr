@@ -61,7 +61,9 @@ void Driver::stop()
     engine_->stop();
 }
 
+#if 0
 void Driver::installSignalHandlers()
 {
     engine_->installSignalHandlers();
 }
+#endif //0
