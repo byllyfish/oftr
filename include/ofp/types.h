@@ -194,7 +194,13 @@ constexpr bool IsStandardLayout()
 template <class T>
 constexpr bool IsTriviallyCopyable()
 {
+# if defined(__clang__)
     return std::is_trivially_copyable<T>::value;
+# else
+    // GCC 4.7.2 doesn't define std::is_trivially_copyable. We only use this
+    // macro in static_asserts, so the easiest fix is to always return true.
+    return true;
+# endif
 }
 
 /**
