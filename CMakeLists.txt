@@ -1,12 +1,6 @@
 #=====- CMakeLists.txt ---------------------------------------------------=====#
 #
-# This is the top-level CMakeLists.txt file for the LibOFP project. This file 
-# relies on these sub-directory files:
-# 
-#    - external/yaml-io/CMakeLists.txt
-#    - external/googletest/CMakeLists.txt
-#    - oxm/CMakeLists.txt
-#    - test/CMakeLists.txt
+# This is the top-level CMakeLists.txt file for the LibOFP project.
 #
 #=====--------------------------------------------------------------------=====#
 
@@ -134,7 +128,7 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/encoder.cpp
 	src/ofp-c/ofpprotocol.cpp
 	src/ofp-c/ofpstring.cpp
-  external/boost_1_54_0_asio/libs/system/src/error_code.cpp
+  #external/boost_1_54_0_asio/libs/system/src/error_code.cpp
 )
 
 # Specify the config.h.in file.
@@ -345,6 +339,7 @@ set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 add_subdirectory(external/yaml-io)
 add_subdirectory(external/googletest)
+add_subdirectory(external/boost_1_54_0_asio)
 
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
@@ -369,6 +364,8 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a and libofpexec.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
+target_link_libraries(ofp boost)
+
 add_executable(libofpexec ${LIBOFP_EXEC_SOURCES})
 target_link_libraries(libofpexec ofp yamlio ${CMAKE_THREAD_LIBS_INIT})
 
