@@ -2,6 +2,8 @@
 #define OFP_IPV6ENDPOINT_H
 
 #include "ofp/ipv6address.h"
+#include <istream>
+#include "ofp/log.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -28,6 +30,25 @@ private:
 	IPv6Address addr_;
 	UInt16 port_ = 0;
 };
+
+std::istream &operator>>(std::istream &is, IPv6Endpoint &value);
+std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value);
+
+
+inline std::istream &operator>>(std::istream &is, IPv6Endpoint &value)
+{
+	std::string str;
+	is >> str;
+	if (!value.parse(str)) {
+		is.setstate(std::ios::failbit);
+	}
+	return is;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value)
+{
+	return os << value.toString();
+}
 
 } // </namespace ofp>
 
