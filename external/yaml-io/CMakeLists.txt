@@ -33,3 +33,5 @@ add_executable(yamlio_test test/testit.cpp)
 target_link_libraries(yamlio_test yamlio)
 
 add_test(yaml_test yamlio_test)
+set_tests_properties(yaml_test PROPERTIES TIMEOUT 10)
+
