@@ -75,6 +75,8 @@ private:
 	ArrayType addr_;
 };
 
+static_assert(IsStandardLayout<IPv6Address>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<IPv6Address>(), "Expected trivially copyable.");
 
 std::ostream &operator<<(std::ostream &os, const IPv6Address &value);
 
