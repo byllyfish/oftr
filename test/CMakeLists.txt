@@ -65,3 +65,5 @@ add_test(
   NAME runtests 
   COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/runtests.sh ${CMAKE_BINARY_DIR}/libofpexec ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+set_tests_properties(unittests runtests PROPERTIES TIMEOUT 10)

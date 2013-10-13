@@ -43,7 +43,6 @@ int main(int argc, char **argv)
         });
 
     } else {
-        driver.installSignalHandlers();
         driver.listen(Driver::Controller, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT},
                       ProtocolVersions{}, NullController::Factory);
     }

@@ -30,13 +30,14 @@ int main(int argc, const char **argv)
     features.setCapabilities(0);
 
     Driver driver;
-    driver.installSignalHandlers();
     
     if (addr.valid()) {
         auto result =
             driver.connect(Driver::Agent, &features, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
                            version, NullAgent::Factory);
         result.done([](Exception ex) {
+            // This will not be called, unless `addr` is invalid; agent will keep
+            // retrying the connection.
             std::cout << "Result: " << ex << '\n';
         });
 
@@ -46,6 +47,7 @@ int main(int argc, const char **argv)
                           version, NullAgent::Factory);
 
         result.done([](Exception ex) {
+            // This may be called if port is already in use.
             std::cout << "Result: " << ex << '\n';
         });
     }

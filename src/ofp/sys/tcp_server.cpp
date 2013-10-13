@@ -30,9 +30,11 @@ TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
                        const Features *features, const tcp::endpoint &endpt,
                        ProtocolVersions versions,
                        ChannelListener::Factory listenerFactory)
-    : engine_{engine}, acceptor_{engine->io(), endpt}, socket_{engine->io()},
+    : engine_{engine}, acceptor_{engine->io()}, socket_{engine->io()},
       role_{role}, versions_{versions}, factory_{listenerFactory}
 {
+    listen(endpt);
+
     if (features) {
         features_ = *features;
     }
@@ -52,6 +54,26 @@ TCP_Server::~TCP_Server()
     log::info("Stop TCP listening on", endpt);
     engine_->releaseServer(this);
 }
+
+void TCP_Server::listen(const tcp::endpoint &endpt)
+{
+    acceptor_.open(endpt.protocol());
+    acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
+
+    // Handle case where IPv6 is not supported on this system.
+    try {
+        acceptor_.bind(endpt);
+    } catch (boost::system::system_error &ex) {
+        if (ex.code() == boost::asio::error::address_family_not_supported && endpt.address().is_v6() && endpt.address().is_unspecified()) {
+            acceptor_.bind(tcp::endpoint{tcp::v4(), endpt.port()});
+        } else {
+            throw;
+        }
+    }
+
+    acceptor_.listen(boost::asio::socket_base::max_connections);
+}
+
 
 void TCP_Server::asyncAccept()
 {

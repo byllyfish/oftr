@@ -71,7 +71,7 @@ public:
     void stop();
 
     /// \brief Installs signal handlers to tell the driver to stop.
-    void installSignalHandlers();
+    //FIXME void installSignalHandlers();
 
     sys::Engine *engine()
     {

@@ -63,6 +63,9 @@ Deferred<Exception> Engine::listen(Driver::Role role, const Features *features, 
 		(void) tcpsvr.release();
 		(void) udpsvr.release();
 
+		// Register signal handlers.
+		installSignalHandlers();
+
 		// Pass back success.
 		result->done(Exception{});
 
@@ -83,6 +86,13 @@ Deferred<Exception> Engine::connect(Driver::Role role, const Features *features,
 	if (features != nullptr) {
 		connPtr->setFeatures(*features);
 	}
+
+	// If the role is `Agent`, the connection will keep retrying. Install signal
+	// handlers to tell it to stop.
+	if (role == Driver::Agent) {
+		installSignalHandlers();
+	}
+
 	return connPtr->asyncConnect(endpt);
 }
 
@@ -248,7 +258,6 @@ void Engine::installSignalHandlers()
 		});
 	}
 }
-
 
 } // </namespace sys>
 } // </namespace ofp>

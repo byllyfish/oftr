@@ -51,6 +51,7 @@ private:
     ChannelListener::Factory factory_;
     Features features_;
     
+    void listen(const tcp::endpoint &endpt);
     void asyncAccept();
 };
 
