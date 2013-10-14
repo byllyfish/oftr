@@ -57,20 +57,25 @@ TCP_Server::~TCP_Server()
 
 void TCP_Server::listen(const tcp::endpoint &endpt)
 {
-    acceptor_.open(endpt.protocol());
-    acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
-
     // Handle case where IPv6 is not supported on this system.
+    tcp::endpoint ep = endpt;
     try {
-        acceptor_.bind(endpt);
-    } catch (boost::system::system_error &ex) {
-        if (ex.code() == boost::asio::error::address_family_not_supported && endpt.address().is_v6() && endpt.address().is_unspecified()) {
-            acceptor_.bind(tcp::endpoint{tcp::v4(), endpt.port()});
+        acceptor_.open(ep.protocol());
+    }
+    catch (boost::system::system_error &ex)
+    {
+        auto addr = ep.address();
+        if (ex.code() == boost::asio::error::address_family_not_supported &&
+            addr.is_v6() && addr.is_unspecified()) {
+            ep = tcp::endpoint{tcp::v4(), ep.port()};
+            acceptor_.open(ep.protocol());
         } else {
             throw;
         }
     }
 
+    acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
+    acceptor_.bind(ep);
     acceptor_.listen(boost::asio::socket_base::max_connections);
 }
 
