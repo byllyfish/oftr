@@ -81,6 +81,24 @@ For example, here is the build directory name for a 32-bit debug build:
 The build options are case-insensitive. The initial part of the directory name 
 can be anything -- it doesn't have to be 'Build'.
 
+
+===========================
+Ubuntu Server 13.0.2 Script
+===========================
+
+Build instructions for Ubuntu Server 13.0.2 (develop branch).
+
+  sudo apt-get -yq update
+  sudo apt-get -yq install build-essential cmake git
+
+  git clone --recursive git://github.com/byllyfish/libofp
+  cd libofp
+  git checkout develop
+  mkdir Build+Release
+  cd Build+Release
+  cmake ..
+  make
+
 ==========================
 Frequently Asked Questions
 ==========================

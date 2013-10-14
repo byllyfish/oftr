@@ -101,11 +101,11 @@ to stderr. Open another terminal and type:
 Type the following into Telnet. Both case and indentation are important.
 The "---" and "..." lines must not be indented.
 
----
+  ---
   event: LIBOFP_LISTEN_REQUEST
   msg:
     port: 6633
-...
+  ...
 
 You should receive a reply that looks like this:
 
@@ -165,13 +165,13 @@ The LIBOFP_DATAPATH_UP will be followed shortly by some OFPT_PACKET_IN messages.
 The enet_frame contains the beginning of the packet in hexadecimal. Let's tell 
 configure how much packet we want. Type the following into Telnet:
 
----
+  ---
   type: OFPT_SET_CONFIG
   datapath_id: 0000-0000-0000-0001
   msg:
     flags: 0
     miss_send_len: 14
-...
+  ...
 
 There will be no reply to this command. We just told the switch to only send us 
 the first 14 bytes of the ethernet frame. The first 14 bytes contain the source 
