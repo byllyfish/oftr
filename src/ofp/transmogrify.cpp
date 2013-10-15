@@ -124,19 +124,14 @@ void Transmogrify::normalizeFlowModV1()
         needed += 8;
     }
 
-    log::debug("TRANSMOGRIFY0: size=", buf_.size());
     // insertUninitialized() may move memory.
     buf_.insertUninitialized(pkt + 48, needed);
-
-    log::debug("TRANSMOGRIFY0.a: size=", buf_.size());
     
     // This insertion may move memory; update pkt ptr just in case.
     // Copy in StandardMatch.
 
     pkt = buf_.mutableData();
     std::memcpy(pkt + 48, &stdMatch, sizeof(stdMatch));
-
-    log::debug("TRANSMOGRIFY1: ", RawDataToHex(buf_.data(), buf_.size()));
 
     if (actLen > 0) {
         // Normalize actions may move memory.
@@ -150,9 +145,6 @@ void Transmogrify::normalizeFlowModV1()
 
     // Update header length. N.B. Make sure we use current header ptr.
     header()->setLength(UInt16_narrow_cast(buf_.size()));
-
-
-    log::debug("TRANSMOGRIFY2: ", RawDataToHex(buf_.data(), buf_.size()));
 }
 
 void Transmogrify::normalizePortStatusV1()
