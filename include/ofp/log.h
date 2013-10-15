@@ -60,10 +60,7 @@ void write(const char *type, const Type1 &a, const Type2 &b)
     write(ss.str());
 }
 
-inline void trace(const char *type, const void *data, size_t length)
-{
-    write(type, RawDataToHex(data, length));
-}
+void trace(const char *type, const void *data, size_t length);
 
 template <class Type1>
 void info(const Type1 &a)

@@ -20,14 +20,15 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/log.h"
+#include "ofp/yaml/decoder.h"
 #include <chrono>
 #include <iomanip>
-//#include <ctime>
 
 namespace ofp { // <namespace ofp>
 namespace log { // <namespace log>
 
-using milliseconds = std::chrono::milliseconds;
+
+//using milliseconds = std::chrono::milliseconds;
 
 static std::ostream *GlobalLogStream = nullptr;
 
@@ -58,12 +59,60 @@ static std::ostream &operator<<(std::ostream &os, const Time &t)
 	return os << t.first << '.' << std::setfill('0') << std::setw(3) << t.second.count();
 }
 
+
 void write(const std::string &msg)
 {
 	if (GlobalLogStream) {
 		*GlobalLogStream << currentTime() << ' ' << msg << '\n';
 	}
 }
+
+
+static void trace1(const char *type, const void *data, size_t length)
+{
+	if (length < sizeof(Header)) {
+		write(type, "Invalid Data:", RawDataToHex(data, length));
+		return;
+	}
+
+	Message message{data, length};
+	message.transmogrify();
+
+	// Don't log echo replies or echo requests.
+	if (message.type() == OFPT_ECHO_REPLY || message.type() == OFPT_ECHO_REQUEST)
+		return;
+
+	yaml::Decoder decoder{&message};
+
+	if (decoder.error().empty()) {
+		write(type, decoder.result(), RawDataToHex(data, length));
+	} else {
+		write(type, decoder.error(), RawDataToHex(data, length));
+	}
+}
+
+void trace(const char *type, const void *data, size_t length)
+{
+	// The memory buffer may contain multiple messages. We need to log each one
+	// separately.
+	
+	size_t remaining = length;
+	const UInt8 *ptr = BytePtr(data);
+
+	const Header *header = reinterpret_cast<const Header *>(ptr);
+	while (remaining >= sizeof(Header) && header->length() <= remaining) {
+		trace1(type, ptr, header->length());
+
+		remaining -= header->length();
+		ptr += header->length();
+		header = reinterpret_cast<const Header *>(ptr);
+	}
+
+	if (remaining > 0) {
+		write(type, "Invalid Leftover:", RawDataToHex(ptr, remaining));
+	}
+}
+
 
 } // </namespace log>
 } // </namespace ofp>

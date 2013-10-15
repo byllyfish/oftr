@@ -267,7 +267,7 @@ void TCP_Connection::asyncWrite()
     const UInt8 *data = outgoing_[idx].data();
     size_t size = outgoing_[idx].size();
 
-    log::trace("asyncWrite", data, size);
+    log::trace("write", data, size);
 
     auto self(shared_from_this());
 
