@@ -20,12 +20,13 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/instructionlist.h"
+#include "ofp/instructionrange.h"
 
 using namespace ofp;
 
 InstructionList::InstructionList(const InstructionRange &range)
 {
-
+    buf_.add(range.data(), range.size());
 }
 
 /// \brief Retrieve action list from OFPIT_APPLY_ACTIONS instruction.
