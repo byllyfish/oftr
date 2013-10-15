@@ -364,10 +364,10 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a and libofpexec.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-target_link_libraries(ofp boost)
+target_link_libraries(ofp boost yamlio)
 
 add_executable(libofpexec ${LIBOFP_EXEC_SOURCES})
-target_link_libraries(libofpexec ofp yamlio ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(libofpexec ofp ${CMAKE_THREAD_LIBS_INIT})
 
 # Make sure the source is generated before the executable builds.
 
