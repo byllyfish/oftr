@@ -60,17 +60,16 @@ public:
 	}
 
 	const Header *header() const { return reinterpret_cast<const Header *>(buf_.data()); }
-	Header *header() { return reinterpret_cast<Header *>(buf_.mutableData()); }
+	Header *mutableHeader() { return reinterpret_cast<Header *>(buf_.mutableData()); }
 
 	const UInt8 *data() const { return buf_.data(); }
 	size_t size() const { return buf_.size(); }
 
 	OFPType type() const { return header()->type(); }
-	void setType(OFPType type) { header()->setType(type); }
-
 	Channel *source() const;
 	UInt32 xid() const { return header()->xid(); }
 	UInt8 version() const { return header()->version(); }
+	bool isRequestType() const;
 
 	// Provides convenient implementation of message cast.
 	template <class MsgType>

@@ -44,8 +44,8 @@ static bool startsWith(const std::string &s, const char *cs)
     return false;
 }
 
-ApiConnection::ApiConnection(ApiServer *server)
-    : server_{server}
+ApiConnection::ApiConnection(ApiServer *server, bool listening)
+    : server_{server}, isListening_{listening}
 {
     server_->onConnect(this);
 }

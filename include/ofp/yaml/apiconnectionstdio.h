@@ -32,8 +32,11 @@ namespace yaml { // <namespace yaml>
 class ApiConnectionStdio : public ApiConnection {
 public:
     ApiConnectionStdio(ApiServer *server, sys::stream_descriptor input,
-                       sys::stream_descriptor output);
+                       sys::stream_descriptor output, bool listening = false);
 
+    void setInput(int input);
+    void setOutput(int output);
+    
     void asyncAccept() override;
 
 protected:

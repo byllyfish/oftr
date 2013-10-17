@@ -6,10 +6,26 @@ using namespace ofp::sys;
 
 ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
                                        sys::stream_descriptor input,
-                                       sys::stream_descriptor output)
-    : ApiConnection{server}, input_{std::move(input)},
+                                       sys::stream_descriptor output, bool listening)
+    : ApiConnection{server, listening}, input_{std::move(input)},
       output_{std::move(output)}
 {
+}
+
+
+void ApiConnectionStdio::setInput(int input) 
+{
+    assert(input >= 0);
+
+    input_.assign(input);
+}
+
+
+void ApiConnectionStdio::setOutput(int output)
+{
+    assert(output >= 0);
+
+    output_.assign(output);
 }
 
 void ApiConnectionStdio::write(const std::string &msg)

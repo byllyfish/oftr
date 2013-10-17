@@ -31,7 +31,7 @@ namespace yaml { // <namespace yaml>
 
 class ApiConnectionTCP : public ApiConnection {
 public:
-	ApiConnectionTCP(ApiServer *server, sys::tcp::socket socket);
+	ApiConnectionTCP(ApiServer *server, sys::tcp::socket socket, bool listening = false);
 
 	void asyncAccept() override;
 

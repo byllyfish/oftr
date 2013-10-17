@@ -141,10 +141,7 @@ void NullAgent::onBarrierRequest(const Message *message)
 void NullAgent::sendError(UInt16 type, UInt16 code, const Message *message)
 {
     ofp::ErrorBuilder msg{type, code};
-    size_t len = message->size();
-    if (len > 128)
-        len = 128;
-    msg.setErrorData(message->data(), len);
+    msg.setErrorData(message);
     msg.send(message->source());
 }
 

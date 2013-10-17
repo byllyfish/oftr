@@ -33,30 +33,49 @@ const int STDIN = 0;
 const int STDOUT = 1;
 const int STDERR = 2;
 
-OFP_BEGIN_IGNORE_PADDING
+//OFP_BEGIN_IGNORE_PADDING
 
-void ApiServer::run(const IPv6Address &localAddress, UInt16 localPort)
+void ApiServer::run(const IPv6Endpoint &localEndpoint)
 {
     Driver driver;
-    ApiServer server{&driver, localAddress, localPort};
+    ApiServer server{&driver, localEndpoint};
 
     driver.run();
 }
 
-ApiServer::ApiServer(Driver *driver, const IPv6Address &localAddress,
-                     UInt16 localPort)
+ApiServer::ApiServer(Driver *driver, const IPv6Endpoint &localEndpoint)
     : engine_{driver->engine()},
-      endpt_{makeTCPEndpoint(localAddress, localPort)},
+      endpt_{makeTCPEndpoint(localEndpoint.address(), localEndpoint.port())},
       acceptor_{engine_->io()}, socket_{engine_->io()}
 {
     auto conn = std::make_shared<ApiConnectionStdio>(this, stream_descriptor{engine_->io(), STDIN}, stream_descriptor{engine_->io(), STDOUT});
     conn->asyncAccept();
 
-    if (localPort != 0) {
+    if (localEndpoint.valid()) {
         acceptor_.bind(endpt_);
         asyncAccept();
         log::info("Start TCP listening on", endpt_);
     }
+}
+
+ApiServer::ApiServer(Driver *driver, int input, int output, Channel *defaultChannel)
+    : engine_{driver->engine()},
+      acceptor_{engine_->io()}, socket_{engine_->io()}, defaultChannel_{defaultChannel}
+{
+    // If we're given an existing channel, connect the stdio-based connection directly up to this connection.
+    
+    bool listening = (defaultChannel != nullptr);
+    auto conn = std::make_shared<ApiConnectionStdio>(this, stream_descriptor{engine_->io()}, stream_descriptor{engine_->io()}, listening);
+    
+    if (input >= 0) {
+        conn->setInput(input);
+    }
+
+    if (output >= 0) {
+        conn->setOutput(output);
+    }
+    
+    conn->asyncAccept();
 }
 
 void ApiServer::asyncAccept()
@@ -182,6 +201,9 @@ void ApiServer::unregisterChannel(Channel *channel)
 
 ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId)
 {
+    if (defaultChannel_)
+        return defaultChannel_;
+
     auto iter = datapathMap_.find(datapathId);
     if (iter != datapathMap_.end()) {
         return iter->second;
@@ -191,4 +213,4 @@ ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId)
 }
 
 
-OFP_END_IGNORE_PADDING
+//OFP_END_IGNORE_PADDING

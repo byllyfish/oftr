@@ -37,6 +37,25 @@ Channel *Message::source() const
     return channel_;
 }
 
+bool Message::isRequestType() const
+{
+	// Echo request is not included because it's handled by the connection
+	// itself.
+
+	switch (type()) {
+		case OFPT_FEATURES_REQUEST:
+		case OFPT_GET_CONFIG_REQUEST:
+		case OFPT_MULTIPART_REQUEST:
+		case OFPT_BARRIER_REQUEST:
+		case OFPT_QUEUE_GET_CONFIG_REQUEST:
+		case OFPT_ROLE_REQUEST:
+		case OFPT_GET_ASYNC_REQUEST:
+			return true;
+	}
+
+	return false;
+}
+
 void Message::transmogrify()
 {
     Transmogrify tr{this};

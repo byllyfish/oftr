@@ -128,7 +128,6 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/encoder.cpp
 	src/ofp-c/ofpprotocol.cpp
 	src/ofp-c/ofpstring.cpp
-  #external/boost_1_54_0_asio/libs/system/src/error_code.cpp
 )
 
 # Specify the config.h.in file.
@@ -380,6 +379,7 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 add_subdirectory(example/nulldemo)
 add_subdirectory(example/controller)
 add_subdirectory(example/bridgeofp)
+add_subdirectory(example/testagent)
 
 #-------------------------------------------------------------------------------
 # Test

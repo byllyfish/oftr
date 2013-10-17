@@ -36,7 +36,7 @@ struct ApiSetTimer;
 
 class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
 public:
-	ApiConnection(ApiServer *server);
+	explicit ApiConnection(ApiServer *server, bool listening);
 	virtual ~ApiConnection();
 
 	virtual void asyncAccept() = 0;

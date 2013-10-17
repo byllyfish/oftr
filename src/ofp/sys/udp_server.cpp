@@ -124,7 +124,7 @@ void UDP_Server::dispatchMessage()
     if (message_.type() == EchoRequest::type()) {
     	auto request = EchoRequest::cast(&message_);
     	if (request) {
-            message_.setType(EchoReply::type());
+            message_.mutableHeader()->setType(EchoReply::type());
             write(message_.data(), message_.size());
             flush(sender_);
     	} else {

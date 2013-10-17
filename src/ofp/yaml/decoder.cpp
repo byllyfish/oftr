@@ -44,7 +44,7 @@
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
-Decoder::Decoder(Message *msg) : msg_{msg}
+Decoder::Decoder(const Message *msg) : msg_{msg}
 {
     assert(msg->size() >= sizeof(Header));
 

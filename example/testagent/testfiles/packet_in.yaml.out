@@ -1,0 +1,272 @@
+---
+type:            OFPT_SET_CONFIG
+xid:             0x00000003
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  flags:           0x0000
+  miss_send_len:   0x000E
+...
+---
+type:            OFPT_FLOW_MOD
+xid:             0x00000004
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  cookie:          0x0000000000000000
+  cookie_mask:     0xFFFFFFFFFFFFFFFF
+  table_id:        0
+  command:         3
+  idle_timeout:    0x0000
+  hard_timeout:    0x0000
+  priority:        0x8000
+  buffer_id:       0xFFFFFFFF
+  out_port:        0xFFFFFFFF
+  out_group:       0x00000000
+  flags:           0x0000
+  match:           
+  instructions:    
+...
+---
+type:            OFPT_BARRIER_REQUEST
+xid:             0x00000005
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x00000006
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       256
+  in_port:         1
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x00000007
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       257
+  in_port:         2
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x00000008
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       258
+  in_port:         1
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x00000009
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       259
+  in_port:         2
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x0000000A
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       260
+  in_port:         2
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x0000000B
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       261
+  in_port:         1
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x0000000C
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       262
+  in_port:         1
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x0000000D
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       263
+  in_port:         2
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x0000000E
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       264
+  in_port:         1
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x0000000F
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       265
+  in_port:         2
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_PACKET_OUT
+xid:             0x00000010
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  buffer_id:       266
+  in_port:         2
+  actions:         
+    - action:          OFPAT_OUTPUT
+      port:            4294967291
+      maxlen:          0
+  enet_frame:      
+...
+---
+type:            OFPT_FLOW_MOD
+xid:             0x00000011
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  cookie:          0x0000000000000000
+  cookie_mask:     0xFFFFFFFFFFFFFFFF
+  table_id:        0
+  command:         0
+  idle_timeout:    0x000A
+  hard_timeout:    0x001E
+  priority:        0x7FFF
+  buffer_id:       0x0000010B
+  out_port:        0x00000000
+  out_group:       0x00000000
+  flags:           0x0000
+  match:           
+    - type:            OFB_IN_PORT
+      value:           1
+    - type:            OFB_ETH_SRC
+      value:           8A-67-69-C6-9F-59
+      mask:            FF-FF-FF-FF-FF-FF
+    - type:            OFB_ETH_DST
+      value:           FA-9A-44-DF-F4-42
+      mask:            FF-FF-FF-FF-FF-FF
+  instructions:    
+    - type:            OFPIT_APPLY_ACTIONS
+      value:           
+        - action:          OFPAT_OUTPUT
+          port:            2
+          maxlen:          0
+...
+---
+type:            OFPT_FLOW_MOD
+xid:             0x00000012
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+  cookie:          0x0000000000000000
+  cookie_mask:     0xFFFFFFFFFFFFFFFF
+  table_id:        0
+  command:         0
+  idle_timeout:    0x000A
+  hard_timeout:    0x001E
+  priority:        0x7FFF
+  buffer_id:       0x0000010C
+  out_port:        0x00000000
+  out_group:       0x00000000
+  flags:           0x0000
+  match:           
+    - type:            OFB_IN_PORT
+      value:           2
+    - type:            OFB_ETH_SRC
+      value:           FA-9A-44-DF-F4-42
+      mask:            FF-FF-FF-FF-FF-FF
+    - type:            OFB_ETH_DST
+      value:           8A-67-69-C6-9F-59
+      mask:            FF-FF-FF-FF-FF-FF
+  instructions:    
+    - type:            OFPIT_APPLY_ACTIONS
+      value:           
+        - action:          OFPAT_OUTPUT
+          port:            1
+          maxlen:          0
+...

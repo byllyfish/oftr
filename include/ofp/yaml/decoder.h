@@ -34,7 +34,7 @@ namespace yaml { // <namespace yaml>
 class Decoder {
 public:
 
-    Decoder(Message *msg);
+    explicit Decoder(const Message *msg);
 
     const std::string &result() const
     {
@@ -47,7 +47,7 @@ public:
     }
 
 private:
-    Message *msg_;
+    const Message *msg_;
     std::string result_;
     std::string error_;
 
@@ -69,10 +69,10 @@ struct MappingTraits<ofp::yaml::Decoder> {
     {
         using namespace ofp;
 
-        Header *header = decoder.msg_->header();
-        io.mapRequired("type", header->type_);
-        io.mapRequired("xid", header->xid_);
-        io.mapRequired("version", header->version_);
+        Header header = *decoder.msg_->header();
+        io.mapRequired("type", header.type_);
+        io.mapRequired("xid", header.xid_);
+        io.mapRequired("version", header.version_);
 
         Channel *source = decoder.msg_->source();
         if (source) {

@@ -3,8 +3,8 @@
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
-ApiConnectionTCP::ApiConnectionTCP(ApiServer *server, sys::tcp::socket socket)
-    : ApiConnection{server}, socket_{std::move(socket)}
+ApiConnectionTCP::ApiConnectionTCP(ApiServer *server, sys::tcp::socket socket, bool listening)
+    : ApiConnection{server, listening}, socket_{std::move(socket)}
 {
 }
 

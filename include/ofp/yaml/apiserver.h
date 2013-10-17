@@ -46,7 +46,10 @@ class ApiServer {
 public:
 	/// \brief Run server on specified local address and port. 
 	///  Pass `IPv6Address{}` to specify `all` local addresses.
-	static void run(const IPv6Address &localAddress, UInt16 localPort);
+	static void run(const IPv6Endpoint &localEndpoint);
+
+    ApiServer(Driver *driver, const IPv6Endpoint &localEndpoint);
+	ApiServer(Driver *driver, int input = 0, int output = 1, Channel *defaultChannel = nullptr);
 
 	// Called by ApiConnection to update oneConn_.
 	void onConnect(ApiConnection *conn);
@@ -76,8 +79,7 @@ private:
     sys::tcp::socket socket_;
     ApiConnection *oneConn_ = nullptr;
     DatapathMap datapathMap_;
-
-    ApiServer(Driver *driver, const IPv6Address &localAddress, UInt16 localPort);
+    Channel *defaultChannel_ = nullptr;
 
     void asyncAccept();
 
