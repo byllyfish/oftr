@@ -51,6 +51,8 @@ bool Message::isRequestType() const
 		case OFPT_ROLE_REQUEST:
 		case OFPT_GET_ASYNC_REQUEST:
 			return true;
+		default:
+			break;
 	}
 
 	return false;

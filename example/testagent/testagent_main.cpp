@@ -14,6 +14,10 @@ int main(int argc, char **argv)
 
 	Exception err = ofp::runAgent(features, remoteAddr, TestAgent::Factory, {OFP_VERSION_1});
 
+	if (err) {
+		std::cerr << "Error starting agent: " << err << '\n';
+		return 1;
+	}
 
 	return 0;
 }
