@@ -61,4 +61,6 @@ add_test(
   COMMAND ofp_unittest
 )
 
-set_tests_properties(unittests PROPERTIES TIMEOUT 10)
+# Unit tests may need more than 10 seconds when running under valgrind.
+
+set_tests_properties(unittests PROPERTIES TIMEOUT 30)

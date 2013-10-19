@@ -313,7 +313,10 @@ endif()
 #-------------------------------------------------------------------------------
 
 # Prepare for testing. Subdirectories can add tests.
+# N.B. The suppressions file must be defined before `include(CTest)`; otherwise
+# the correct value will not appear in the generated DartConfiguration.tcl.
 
+set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
 # Boost may pull in pthreads.
@@ -323,6 +326,10 @@ find_package(Threads)
 # Specify auto-generated config.h file.
 
 configure_file("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
+
+# Copy over the CTestCustom.cmake file into the build tree.
+
+configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTestCustom.cmake")
 
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
