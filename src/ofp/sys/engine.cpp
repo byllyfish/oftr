@@ -93,7 +93,15 @@ Deferred<Exception> Engine::connect(Driver::Role role, const Features *features,
 		installSignalHandlers();
 	}
 
-	return connPtr->asyncConnect(endpt);
+	auto result = connPtr->asyncConnect(endpt);
+
+	if (role == Driver::Agent) {
+		// When the role is Agent, the connection will keep trying to reconnect.
+		// In this case, we always return no error.
+		return Exception{};
+	}
+
+	return result;
 }
 
 

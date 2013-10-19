@@ -104,3 +104,24 @@ TEST(deferred, testImmediateCall)
 		});
 	}
 }
+
+
+static Deferred<int> startImmediatelyReturn(int value) 
+{
+	return value;
+}
+
+
+TEST(deferred, testImmediateReturn)
+{
+	auto result = startImmediatelyReturn(7);
+
+	result.done([](int value) {
+		EXPECT_EQ(7, value);
+	});
+
+	result.done([](int value) {
+		// Must never be called.
+		EXPECT_TRUE(false);
+	});
+}

@@ -29,6 +29,7 @@ namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>
 
 OFP_BEGIN_IGNORE_PADDING
+
 template <class Type>
 class DeferredResult : public std::enable_shared_from_this<DeferredResult<Type>> {
 public:
@@ -82,6 +83,10 @@ class Deferred {
 public:
 
 	/* implicit */ Deferred(const DeferredResultPtr<Type> &result) : result_{result} {}
+	/* implicit */ Deferred(const Type &result) : result_{makeResult()} 
+	{
+		result_->done(result);
+	}
 
 	void done(const detail::DeferredResultCallback<Type> &callback) {
 		result_->setCallback(callback);
