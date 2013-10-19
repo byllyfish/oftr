@@ -217,5 +217,5 @@ References
   - https://code.google.com/p/googletest/
 
 
-
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/d49bd7af9f586e8c810523e5674e0496 "githalytics.com")](http://githalytics.com/byllyfish/libofp)
 

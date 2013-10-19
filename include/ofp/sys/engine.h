@@ -55,7 +55,7 @@ public:
     void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Endpoint &remoteEndpoint, milliseconds delay);
 
     void run();
-    void stop();
+    void stop(milliseconds timeout = 0_ms);
     bool isRunning() const { return isRunning_; }
     void installSignalHandlers();
 
@@ -94,6 +94,9 @@ private:
     // Sets up signal handlers to shut down runloop.
     bool isSignalsInited_ = false;
     signal_set signals_;
+
+    // Timer that can be used to stop the engine.
+    steady_timer stopTimer_;
 };
 
 OFP_END_IGNORE_PADDING

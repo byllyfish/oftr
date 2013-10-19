@@ -61,9 +61,4 @@ add_test(
   COMMAND ofp_unittest
 )
 
-add_test(
-  NAME libofpexec 
-  COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests.sh ${CMAKE_BINARY_DIR}/libofpexec ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-set_tests_properties(unittests libofpexec PROPERTIES TIMEOUT 10)
+set_tests_properties(unittests PROPERTIES TIMEOUT 10)

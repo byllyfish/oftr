@@ -43,7 +43,7 @@ public:
 
 private:
 	ApiServer *server_;
-	Channel *channel_;
+	Channel *channel_ = nullptr;
 };
 
 } // </namespace yaml>

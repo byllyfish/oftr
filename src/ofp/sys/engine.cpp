@@ -31,7 +31,7 @@ namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
 
-Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}, signals_{io_}
+Engine::Engine(Driver *driver, DriverOptions *options) : driver_{driver}, signals_{io_}, stopTimer_{io_}
 {
 }
 
@@ -129,9 +129,18 @@ void Engine::run()
 }
 
 
-void Engine::stop()
+void Engine::stop(milliseconds timeout)
 {	
-	io_.stop();
+	if (timeout == 0_ms) {
+		io_.stop();
+	} else {
+		stopTimer_.expires_from_now(timeout);
+		stopTimer_.async_wait([this](const error_code &err) {
+			if (err != boost::asio::error::operation_aborted) {
+				stop(0_ms);
+			}
+		});
+	}
 }
 
 
@@ -253,8 +262,10 @@ void Engine::installSignalHandlers()
 		signals_.add(SIGINT);
 		signals_.add(SIGTERM);
 		signals_.async_wait([this](error_code error, int signum) {
-			if (!error) 
+			if (!error) {
+				log::info("Signal received:", signum);
 				this->stop();
+			}
 		});
 	}
 }

@@ -5,7 +5,7 @@
 
 using namespace testagent;
 
-const int TIMER_START_API_INPUT = 1;
+const UInt32 TIMER_START_API_INPUT = 1;
 
 
 void TestAgent::onChannelUp(Channel *channel)
@@ -53,6 +53,14 @@ void TestAgent::onTimer(UInt32 timerID)
 	if (timerID == TIMER_START_API_INPUT) {
 		startApiInput();
 	}
+
+	#if 0
+	 else if (timerID == TIMER_STOP_API_INPUT) {
+		channel_->driver()->stop();
+	} else if (timerID == 0xFFFFFFFFU) {
+		channel_->scheduleTimer(TIMER_STOP_API_INPUT, 1500_ms);
+	}
+	#endif
 }
 
 void TestAgent::startApiInput()

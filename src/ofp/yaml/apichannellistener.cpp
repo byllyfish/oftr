@@ -26,6 +26,8 @@ using namespace ofp::yaml;
 
 void ApiChannelListener::onChannelUp(Channel *channel)
 {
+	assert(channel_ == nullptr);
+	
 	channel_ = channel;
 	server_->onChannelUp(channel_);
 }

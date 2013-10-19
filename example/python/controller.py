@@ -1,23 +1,45 @@
 # Python Controller
 #
-# Before running this program, you must start `libofpexec`. It must be running
-# on localhost so this program can connect to it.
-#
+# Set environment variable LIBOFPEXEC_PATH before running this program. If that
+# variable is not set, this program will use /usr/local/bin/libofpexec.
 
 import libofp
-
+import os
 
 def setConfig(datapath, len):
     return '''
----
     type: OFPT_SET_CONFIG
     datapath_id: {}
     msg:
       flags: 0
       miss_send_len: {}
-...
 '''.format(datapath, len)
 
+def clearFlows(datapath):
+    return '''
+      type:            OFPT_FLOW_MOD
+      datapath_id:     {}
+      msg:             
+        cookie:          0
+        cookie_mask:     0
+        table_id:        0
+        command:         3
+        idle_timeout:    0
+        hard_timeout:    0
+        priority:        0x8000
+        buffer_id:       0xFFFFFFFF
+        out_port:        0xFFFFFFFF
+        out_group:       0
+        flags:           0
+        match:           
+        instructions:  
+'''.format(datapath)
+
+def barrierRequest(datapath):
+    return '''
+      type:            OFPT_BARRIER_REQUEST
+      datapath_id:     {}
+'''.format(datapath)
 
 def isMulticast(enetAddr):
     return enetAddr[1] in "13579BDF" 
@@ -119,13 +141,18 @@ def handlePacketIn(ofp, event):
 if __name__ == '__main__':
     forwardTable = {}
     
-    ofp = libofp.LibOFP('/Users/bfish/code/ofp/Build+Debug/libofpexec')
+    libofpexec = os.environ.get('LIBOFPEXEC_PATH')
+    if not libofpexec:
+        libofpexec = '/usr/local/bin/libofpexec'
+
+    ofp = libofp.LibOFP(libofpexec)
     while True:
         event = ofp.waitNextEvent()
         #print event.text
         
         if event.type == 'LIBOFP_DATAPATH_UP':
             ofp.send(setConfig(event.msg.datapath_id, 14))
-
+            ofp.send(clearFlows(event.msg.datapath_id))
+            ofp.send(barrierRequest(event.msg.datapath_id))
         elif event.type == 'OFPT_PACKET_IN':
             handlePacketIn(ofp, event)

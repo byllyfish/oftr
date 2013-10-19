@@ -33,8 +33,6 @@ const int STDIN = 0;
 const int STDOUT = 1;
 const int STDERR = 2;
 
-//OFP_BEGIN_IGNORE_PADDING
-
 void ApiServer::run(const IPv6Endpoint &localEndpoint)
 {
     Driver driver;
@@ -109,12 +107,25 @@ void ApiServer::onConnect(ApiConnection *conn)
 {
     assert(oneConn_ == nullptr);
 
+    log::debug("ApiServer::onConnect");
+
     oneConn_ = conn;
 }
 
 void ApiServer::onDisconnect(ApiConnection *conn)
 {
     assert(oneConn_ == conn);
+
+    log::debug("ApiServer::onDisconnect");
+
+    // When the one API connection disconnects, shutdown the engine in 1.5 secs.
+    // (Only if there are existing channels.)
+    
+    if (defaultChannel_ || !datapathMap_.empty()) {
+        engine_->stop(1500_ms);
+    } else {
+        engine_->stop();
+    }
 
     oneConn_ = nullptr;
 }
@@ -128,6 +139,7 @@ void ApiServer::onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq
         return new ApiChannelListener{this};
     });
 
+    OFP_BEGIN_IGNORE_PADDING
 
     exc.done([this,listenPort](Exception ex) {
         ApiListenReply reply;
@@ -137,6 +149,8 @@ void ApiServer::onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq
         }
         onListenReply(&reply);
     });
+
+    OFP_END_IGNORE_PADDING
 }
 
 
@@ -212,5 +226,3 @@ ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId)
     return nullptr;
 }
 
-
-//OFP_END_IGNORE_PADDING

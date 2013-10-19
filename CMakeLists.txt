@@ -7,6 +7,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(libofp)
 
+# Set the version number of the library.
+
+set(libofp_VERSION_MAJOR 0)
+set(libofp_VERSION_MINOR 2)
+
 # Require out of source builds.
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -19,11 +24,6 @@ endif()
 #-------------------------------------------------------------------------------
 # Settings
 #-------------------------------------------------------------------------------
-
-# Set the version number of the library.
-
-set(libofp_VERSION_MAJOR 0)
-set(libofp_VERSION_MINOR 2)
 
 # Specify the set of warnings to enable. The philosophy of this project is to
 # compile with every clang warning enabled, then disable a few that don't add
@@ -277,10 +277,6 @@ set(LIBOFP_HEADER_FILES
   include/ofp.h  
 )
 
-# Specify the libofpexec main source file.
-
-set(LIBOFP_EXEC_SOURCES src/ofp/libofpexec_main.cpp)
-
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
 # '+debug', set the build type to 'debug', otherwise set to release build. The
 # comparison test for '+debug' is case-insensitive.
@@ -360,13 +356,10 @@ add_subdirectory(oxm)
 
 set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 
-# Build libofp.a and libofpexec.
+# Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
 target_link_libraries(ofp boost yamlio)
-
-add_executable(libofpexec ${LIBOFP_EXEC_SOURCES})
-target_link_libraries(libofpexec ofp ${CMAKE_THREAD_LIBS_INIT})
 
 # Make sure the source is generated before the executable builds.
 
@@ -377,9 +370,11 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 #-------------------------------------------------------------------------------
 
 add_subdirectory(example/nulldemo)
-add_subdirectory(example/controller)
-add_subdirectory(example/bridgeofp)
 add_subdirectory(example/testagent)
+add_subdirectory(example/controller)
+add_subdirectory(example/libofpexec)
+add_subdirectory(example/python)
+add_subdirectory(example/bridgeofp)
 
 #-------------------------------------------------------------------------------
 # Test
@@ -403,10 +398,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "debug")
   set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/local)
 endif()
 
-# Install libofp.a and libofpexec.
+# Install libofp.a.
 
 install(TARGETS ofp DESTINATION lib)
-install(TARGETS libofpexec DESTINATION bin)
 
 # Preserve directory structure of header files when installing.
 
