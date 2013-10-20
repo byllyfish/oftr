@@ -22,15 +22,12 @@
 #ifndef OFP_GETCONFIGREPLY_H
 #define OFP_GETCONFIGREPLY_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp { // <namespace ofp>
 
-class GetConfigReply {
+class GetConfigReply : public ProtocolMsg<GetConfigReply,OFPT_GET_CONFIG_REPLY> {
 public:
-	static constexpr OFPType type() { return OFPT_GET_CONFIG_REPLY; }
-	static const GetConfigReply *cast(const Message *message);
 
 	UInt16 flags() const { return flags_; }
 	UInt16 missSendLen() const { return missSendLen_; }

@@ -25,11 +25,6 @@
 
 namespace ofp { // <namespace ofp>
 
-const EchoRequest *EchoRequest::cast(const Message *message)
-{
-    return message->cast<EchoRequest>();
-}
-
 ByteRange EchoRequest::echoData() const
 {
     return ByteRange{BytePtr(this) + sizeof(Header),

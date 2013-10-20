@@ -22,22 +22,13 @@
 #ifndef OFP_PORTSTATUS_H
 #define OFP_PORTSTATUS_H
 
+#include "ofp/protocolmsg.h"
 #include "ofp/port.h"
-#include "ofp/header.h"
-#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
 
-class Message;
-
-class PortStatus {
+class PortStatus : public ProtocolMsg<PortStatus,OFPT_PORT_STATUS> {
 public:
-    static constexpr OFPType type()
-    {
-        return OFPT_PORT_STATUS;
-    }
-
-    static const PortStatus *cast(const Message *message);
 
     UInt8 reason() const
     {

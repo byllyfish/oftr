@@ -24,11 +24,6 @@
 
 using namespace ofp;
 
-const PacketOut *PacketOut::cast(const Message *message)
-{
-    return message->cast<PacketOut>();
-}
-
 
 bool PacketOut::validateLength(size_t length) const
 {

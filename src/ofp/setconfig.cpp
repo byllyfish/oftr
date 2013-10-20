@@ -25,19 +25,6 @@
 using namespace ofp;
 
 
-const SetConfig *SetConfig::cast(const Message *message)
-{
-	assert(message->type() == OFPT_SET_CONFIG);
-
-	const SetConfig *msg = reinterpret_cast<const SetConfig *>(message->data());
-    if (!msg->validateLength(message->size())) {
-        return nullptr;
-    }
-
-    return msg;
-}
-
-
 bool SetConfig::validateLength(size_t length) const
 {
 	return (length == sizeof(SetConfig));

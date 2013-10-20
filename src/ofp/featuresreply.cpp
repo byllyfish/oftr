@@ -25,19 +25,6 @@
 
 namespace ofp { // <namespace ofp>
 
-const FeaturesReply *ofp::FeaturesReply::cast(const Message *message)
-{
-    assert(message->type() == OFPT_FEATURES_REPLY);
-
-    const FeaturesReply *msg =
-        reinterpret_cast<const FeaturesReply *>(message->data());
-    if (!msg->validateLength(message->size())) {
-        return nullptr;
-    }
-
-    return msg;
-}
-
 void FeaturesReply::getFeatures(Features *features) const
 {
     features->setDatapathId(datapathId_);

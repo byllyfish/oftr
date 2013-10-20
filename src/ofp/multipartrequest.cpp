@@ -26,13 +26,6 @@
 
 namespace ofp { // <namespace ofp>
 
-
-const MultipartRequest *MultipartRequest::cast(const Message *message)
-{
-	return message->cast<MultipartRequest>();
-}
-
-
 bool MultipartRequest::validateLength(size_t length) const
 {
 	// FIXME - this will need to cast and verify the lengths in the body.

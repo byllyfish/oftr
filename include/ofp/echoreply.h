@@ -22,27 +22,23 @@
 #ifndef OFP_ECHOREPLY_H
 #define OFP_ECHOREPLY_H
 
-#include "ofp/header.h"
-#include "ofp/writable.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
 
-class Message;
-
-class EchoReply {
+class EchoReply : public ProtocolMsg<EchoReply,OFPT_ECHO_REPLY> {
 public:
-	static constexpr OFPType type() { return OFPT_ECHO_REPLY; }
-	static const EchoReply *cast(const Message *message);
 	
-	EchoReply() : header_{type()} {}
-
 	ByteRange echoData() const;
 
 	bool validateLength(size_t length) const;
 
 private:
 	Header header_;
+
+	// Only EchoReplyBuilder can construct an instance.
+	EchoReply() : header_{type()} {}
 
 	friend class EchoReplyBuilder;
 };

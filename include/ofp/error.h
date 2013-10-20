@@ -22,28 +22,19 @@
 #ifndef OFP_ERROR_H
 #define OFP_ERROR_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
-
-class Message;
-class Writable;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E r r o r
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements Error protocol message.
 
-class Error {
+class Error : public ProtocolMsg<Error,OFPT_ERROR> {
 public:
-    static constexpr OFPType type()
-    {
-        return OFPT_ERROR;
-    }
-
-    static const Error *cast(const Message *message);
 
     UInt16 errorType() const { return type_; }
     UInt16 errorCode() const { return code_; }

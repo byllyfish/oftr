@@ -22,24 +22,17 @@
 #ifndef OFP_ECHOREQUEST_H
 #define OFP_ECHOREQUEST_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
-
-class Message;
-class Writable;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E c h o R e q u e s t
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
-class EchoRequest {
+class EchoRequest : public ProtocolMsg<EchoRequest,OFPT_ECHO_REQUEST> {
 public:
-	static constexpr OFPType type() { return OFPT_ECHO_REQUEST; }
-	static const EchoRequest *cast(const Message *message);
-
-	EchoRequest() : header_{type()} {}
 
 	ByteRange echoData() const;
 
@@ -47,6 +40,9 @@ public:
 	
 private:
 	Header header_;
+
+	// Only EchoRequestBuilder can construct an instance.
+	EchoRequest() : header_{type()} {}
 
 	friend class EchoRequestBuilder;
 };

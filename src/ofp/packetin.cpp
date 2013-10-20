@@ -20,6 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/packetin.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 

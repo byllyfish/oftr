@@ -23,9 +23,7 @@
 #define OFP_HELLO_H
 
 #include "ofp/protocolmsg.h"
-#include "ofp/header.h"
 #include "ofp/protocolversions.h"
-#include "ofp/message.h"
 
 namespace ofp { // <namespace ofp>
 namespace detail { // <namespace detail>

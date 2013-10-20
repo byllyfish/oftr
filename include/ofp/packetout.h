@@ -22,22 +22,14 @@
 #ifndef OFP_PACKETOUT_H
 #define OFP_PACKETOUT_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/actionlist.h"
 #include "ofp/padding.h"
-#include "ofp/constants.h"
-#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
 
-class Message;
-class PacketOutBuilder;
-
-class PacketOut {
+class PacketOut : public ProtocolMsg<PacketOut,OFPT_PACKET_OUT> {
 public:
-	static constexpr OFPType type() { return OFPT_PACKET_OUT; }
-
-	static const PacketOut *cast(const Message *message);
 
 	UInt32 bufferId() const { return bufferId_; }
 	UInt32 inPort() const { return inPort_; }
@@ -58,7 +50,8 @@ private:
 	PacketOut() : header_{type()} {}
 
 	friend class PacketOutBuilder;
-	friend struct llvm::yaml::MappingTraits<PacketOutBuilder>;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(PacketOut) == 24, "Unexpected size.");
@@ -82,7 +75,8 @@ private:
 	ActionList actions_;
 	ByteList enetFrame_;
 
-	friend struct llvm::yaml::MappingTraits<PacketOutBuilder>;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

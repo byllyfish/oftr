@@ -21,13 +21,9 @@
 
 #include "ofp/echoreply.h"
 #include "ofp/message.h"
+#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
-
-const EchoReply *EchoReply::cast(const Message *message)
-{
-    return message->cast<EchoReply>();
-}
 
 bool EchoReply::validateLength(size_t length) const
 {

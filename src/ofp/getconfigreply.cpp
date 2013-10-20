@@ -24,18 +24,6 @@
 
 using namespace ofp;
 
-const GetConfigReply *GetConfigReply::cast(const Message *message)
-{
-    assert(message->type() == OFPT_GET_CONFIG_REPLY);
-
-    const GetConfigReply *msg = reinterpret_cast<const GetConfigReply *>(message->data());
-
-    if (!msg->validateLength(message->size())) {
-        return nullptr;
-    }
-
-    return msg;	
-}
 
 bool GetConfigReply::validateLength(size_t length) const
 {

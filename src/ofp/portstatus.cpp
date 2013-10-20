@@ -21,14 +21,9 @@
 
 #include "ofp/portstatus.h"
 #include "ofp/message.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
-
-
-const PortStatus *PortStatus::cast(const Message *message)
-{
-    return message->cast<PortStatus>();
-}
 
 
 bool PortStatus::validateLength(size_t length) const

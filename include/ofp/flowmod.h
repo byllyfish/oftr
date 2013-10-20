@@ -22,8 +22,7 @@
 #ifndef OFP_FLOWMOD_H
 #define OFP_FLOWMOD_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
@@ -33,28 +32,13 @@
 
 namespace ofp { // <namespace ofp>
 
-class FlowModBuilder;
-
-enum FlowModCommand : UInt8 {
-    OFPFC_ADD = 0,
-    OFPFC_MODIFY = 1,
-    OFPFC_MODIFY_STRICT = 2,
-    OFPFC_DELETE = 3,
-    OFPFC_DELETE_STRICT = 4
-};
-
-class FlowMod {
+class FlowMod : public ProtocolMsg<FlowMod,OFPT_FLOW_MOD> {
 public:
-    static const FlowMod *cast(const Message *message) {
-        return message->cast<FlowMod>();
-    }
-    
-    static constexpr OFPType type() { return OFPT_FLOW_MOD; }
 
     UInt64 cookie() const { return cookie_; }
     UInt64 cookieMask() const { return cookieMask_; }
     UInt8  tableId() const { return tableId_; }
-    FlowModCommand command() const { return static_cast<FlowModCommand>(command_); }
+    OFPFlowModCommand command() const { return static_cast<OFPFlowModCommand>(command_); }
     UInt16 idleTimeout() const { return idleTimeout_; }
     UInt16 hardTimeout() const  { return hardTimeout_; }
     UInt16 priority() const { return priority_; }
@@ -95,8 +79,8 @@ private:
     FlowMod() : header_{type()} {}
 
     friend class FlowModBuilder;
-    friend struct llvm::yaml::MappingTraits<FlowMod>;
-    friend struct llvm::yaml::MappingTraits<FlowModBuilder>;
+    template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(FlowMod) == 56, "Unexpected size.");
@@ -111,7 +95,7 @@ public:
     void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
     void setCookieMask(UInt64 cookieMask) { msg_.cookieMask_ = cookieMask; }
     void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
-    void setCommand(FlowModCommand command) { msg_.command_ = command; }
+    void setCommand(OFPFlowModCommand command) { msg_.command_ = command; }
     void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
     void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
     void setPriority(UInt16 priority) { msg_.priority_ = priority; }
@@ -138,7 +122,8 @@ private:
     UInt32 sendStandard(Writable *channel);
     UInt32 sendOriginal(Writable *channel);
     
-    friend struct llvm::yaml::MappingTraits<FlowModBuilder>;
+    template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

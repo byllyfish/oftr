@@ -22,24 +22,14 @@
 #ifndef OFP_PACKETIN_H
 #define OFP_PACKETIN_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
-#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
 
-class PacketInBuilder;
-
-class PacketIn {
+class PacketIn : public ProtocolMsg<PacketIn,OFPT_PACKET_IN> {
 public:
-    static constexpr OFPType type() { return OFPT_PACKET_IN; }
-
-    static const PacketIn *cast(const Message *message)
-    {
-        return message->cast<PacketIn>();
-    }
 
     UInt8 version() const { return header_.version(); }
 
@@ -96,7 +86,8 @@ private:
     };
 
     friend class PacketInBuilder;
-    friend struct llvm::yaml::MappingTraits<PacketInBuilder>;
+    template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(PacketIn) == 32, "Unexpected size.");
@@ -136,7 +127,8 @@ private:
     UInt32 sendV2(Writable *channel);
     UInt32 sendV3(Writable *channel);
 
-    friend struct llvm::yaml::MappingTraits<PacketInBuilder>;
+    template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

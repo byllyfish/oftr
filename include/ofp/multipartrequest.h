@@ -22,27 +22,14 @@
 #ifndef OFP_MULTIPARTREQUEST_H
 #define OFP_MULTIPARTREQUEST_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/multipartbody.h"
 
 namespace ofp { // <namespace ofp>
 
-class Message;
-class Writable;
-class MultipartRequestBuilder;
-
-class MultipartRequest {
+class MultipartRequest : public ProtocolMsg<MultipartRequest,OFPT_MULTIPART_REQUEST> {
 public:
-
-	static constexpr OFPType type()
-    {
-        return OFPT_MULTIPART_REQUEST;
-    }
-
-    static const MultipartRequest *cast(const Message *message);
-
-	MultipartRequest() : header_{type()} {}
 
 	OFPMultipartType requestType() const { return type_; }
 	UInt16 requestFlags() const { return flags_; }
@@ -66,9 +53,12 @@ private:
 	Big16 flags_;
 	Padding<4> pad_;
 
+	// Only MultipartRequestBuilder can construct an instance.
+	MultipartRequest() : header_{type()} {}
+
 	friend class MultipartRequestBuilder;
-	friend struct llvm::yaml::MappingTraits<MultipartRequest>;
-	friend struct llvm::yaml::MappingTraits<MultipartRequestBuilder>;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 class MultipartRequestBuilder {
@@ -86,7 +76,8 @@ private:
 	MultipartRequest msg_;
 	ByteList body_;
 
-	friend struct llvm::yaml::MappingTraits<MultipartRequestBuilder>;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

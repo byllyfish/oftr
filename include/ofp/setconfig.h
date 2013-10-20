@@ -22,17 +22,12 @@
 #ifndef OFP_SETCONFIG_H
 #define OFP_SETCONFIG_H
 
-#include "ofp/header.h"
-#include "ofp/message.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp { // <namespace ofp>
 
-class SetConfigBuilder;
-
-class SetConfig {
+class SetConfig : public ProtocolMsg<SetConfig,OFPT_SET_CONFIG> {
 public:
-	static constexpr OFPType type() { return OFPT_SET_CONFIG; }
-	static const SetConfig *cast(const Message *message);
 
 	UInt16 flags() const { return flags_; }
 	UInt16 missSendLen() const { return missSendLen_; }
@@ -48,8 +43,8 @@ private:
 	SetConfig() : header_{type()} {}
 
 	friend class SetConfigBuilder;
-	friend struct llvm::yaml::MappingTraits<SetConfig>;
-	friend struct llvm::yaml::MappingTraits<SetConfigBuilder>;
+	template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(SetConfig) == 12, "Unexpected size.");
@@ -69,7 +64,8 @@ public:
 private:
 	SetConfig msg_;
 
-	friend struct llvm::yaml::MappingTraits<SetConfigBuilder>;
+	template <class T>
+    friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

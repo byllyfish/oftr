@@ -25,12 +25,6 @@
 
 namespace ofp { // <namespace ofp>
 
-const MultipartReply *MultipartReply::cast(const Message *message)
-{
-	return message->cast<MultipartReply>();
-}
-
-
 bool MultipartReply::validateLength(size_t length) const
 {
 	// FIXME - see same method in MultipartRequest.

@@ -26,11 +26,6 @@
 
 namespace ofp { // <namespace ofp>
 
-const Experimenter *Experimenter::cast(const Message *message)
-{
-    return message->cast<Experimenter>();
-}
-
 ByteRange Experimenter::expData() const
 {
     return ByteRange{BytePtr(this) + sizeof(Experimenter),

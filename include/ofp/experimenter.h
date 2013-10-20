@@ -22,28 +22,18 @@
 #ifndef OFP_EXPERIMENTER_H
 #define OFP_EXPERIMENTER_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
-
-class Message;
-class Writable;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E x p e r i m e n t e r
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements immutable Experimenter protocol message.
 
-class Experimenter {
+class Experimenter : public ProtocolMsg<Experimenter,OFPT_EXPERIMENTER> {
 public:
-
-    static constexpr OFPType type()
-    {
-        return OFPT_EXPERIMENTER;
-    }
-
-    static const Experimenter *cast(const Message *message);
 
     UInt32 experimenter() const
     {

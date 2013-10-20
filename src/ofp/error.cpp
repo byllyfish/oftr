@@ -26,11 +26,6 @@
 
 namespace ofp { // <namespace ofp>
 
-const Error *Error::cast(const Message *message)
-{
-    return message->cast<Error>();
-}
-
 bool Error::validateLength(size_t length) const
 {
     return (length >= sizeof(Error));

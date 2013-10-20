@@ -4,13 +4,6 @@
 
 using namespace ofp;
 
-
-const FlowRemoved *FlowRemoved::cast(const Message *message)
-{
-	return message->cast<FlowRemoved>();
-}
-
-
 bool FlowRemoved::validateLength(size_t length) const
 {
 	// FIXME

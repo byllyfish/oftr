@@ -22,19 +22,13 @@
 #ifndef OFP_FLOWREMOVED_H
 #define OFP_FLOWREMOVED_H
 
-#include "ofp/header.h"
-#include "ofp/constants.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
 namespace ofp { // <namespace ofp>
 
-class Message;
-class Writable;
-
-class FlowRemoved {
+class FlowRemoved : public ProtocolMsg<FlowRemoved,OFPT_FLOW_REMOVED> {
 public:
-	static constexpr OFPType type() { return OFPT_FLOW_REMOVED; }
-	static const FlowRemoved *cast(const Message *message);
 
 	/// Opaque controller-issued identifier.
 	UInt64 cookie() const { return cookie_; }

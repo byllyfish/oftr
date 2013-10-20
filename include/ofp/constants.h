@@ -936,6 +936,15 @@ enum OFPPacketInReason : UInt8 {
     OFPR_INVALID_TTL = 2,       //< Packet has invalid TTL (added in v1.2)
 };
 
+
+enum OFPFlowModCommand : UInt8 {
+    OFPFC_ADD = 0,
+    OFPFC_MODIFY = 1,
+    OFPFC_MODIFY_STRICT = 2,
+    OFPFC_DELETE = 3,
+    OFPFC_DELETE_STRICT = 4
+};
+
 } // </namespace ofp>
 
 #endif // OFP_CONSTANTS_H

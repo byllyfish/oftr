@@ -22,20 +22,17 @@
 #ifndef OFP_FEATURESREPLY_H
 #define OFP_FEATURESREPLY_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/features.h"
-#include "ofp/message.h"
 
 namespace ofp { // <namespace ofp>
 
 /**
  *  FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
  */
-class FeaturesReply {
+class FeaturesReply : public ProtocolMsg<FeaturesReply,OFPT_FEATURES_REPLY> {
 public:
-    static constexpr OFPType type() { return OFPT_FEATURES_REPLY; }
-    static const FeaturesReply *cast(const Message *message);
 
     void getFeatures(Features *features) const;
 

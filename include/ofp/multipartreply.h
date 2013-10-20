@@ -22,26 +22,14 @@
 #ifndef OFP_MULTIPARTREPLY_H
 #define OFP_MULTIPARTREPLY_H
 
-#include "ofp/header.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>
 
-class Message;
-class Writable;
-class MultipartReplyBuilder;
-
-class MultipartReply {
+class MultipartReply : public ProtocolMsg<MultipartReply,OFPT_MULTIPART_REPLY> {
 public:
-	static constexpr OFPType type()
-    {
-        return OFPT_MULTIPART_REPLY;
-    }
-
-    static const MultipartReply *cast(const Message *message);
-
-	MultipartReply() : header_{OFPT_MULTIPART_REPLY} {}
 
 	OFPMultipartType replyType() const { return type_; }
 	UInt16 replyFlags() const { return flags_; }
@@ -56,9 +44,12 @@ private:
 	Big16 flags_;
 	Padding<4> pad_;
 
+	// Only MultipartReplyBuilder can construct an instance.
+	MultipartReply() : header_{type()} {}
+
 	friend class MultipartReplyBuilder;
-	friend struct llvm::yaml::MappingTraits<MultipartReply>;
-	friend struct llvm::yaml::MappingTraits<MultipartReplyBuilder>;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 class MultipartReplyBuilder {
@@ -75,7 +66,8 @@ private:
 	MultipartReply msg_;
 	ByteList body_;
 
-	friend struct llvm::yaml::MappingTraits<MultipartReplyBuilder>;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>
