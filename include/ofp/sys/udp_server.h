@@ -38,6 +38,7 @@ class Engine;
 class UDP_Connection;
 
 OFP_BEGIN_IGNORE_PADDING
+
 class UDP_Server : public Server {
 public:
 
@@ -69,11 +70,13 @@ private:
 	bool shuttingDown_ = false;
 	log::Lifetime lifetime_{"UDP_Server"};
 
+	void listen(const udp::endpoint &endpt);
 	void asyncReceive();
 	void asyncSend();
 
 	void dispatchMessage();
 };
+
 OFP_END_IGNORE_PADDING
 
 } // </namespace sys>

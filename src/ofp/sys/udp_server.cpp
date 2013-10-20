@@ -33,8 +33,10 @@ namespace sys { // <namespace sys>
 
 
 UDP_Server::UDP_Server(Engine *engine, Driver::Role role, const Features *features, const udp::endpoint &endpt, ProtocolVersions versions)
-    : engine_{engine}, role_{role}, versions_{versions}, socket_{engine->io(), endpt}, message_{nullptr}
+    : engine_{engine}, role_{role}, versions_{versions}, socket_{engine->io()}, message_{nullptr}
 {
+    listen(endpt);
+
     if (features) {
         features_ = *features;
     }
@@ -82,6 +84,31 @@ void UDP_Server::write(const void *data, size_t length)
 void UDP_Server::flush(udp::endpoint endpt)
 {
     asyncSend();
+}
+
+
+void UDP_Server::listen(const udp::endpoint &endpt)
+{
+    // Handle case where IPv6 is not supported on this system.
+    udp::endpoint ep = endpt;
+    try {
+        socket_.open(ep.protocol());
+    }
+    catch (boost::system::system_error &ex)
+    {
+        auto addr = ep.address();
+        if (ex.code() == boost::asio::error::address_family_not_supported &&
+            addr.is_v6() && addr.is_unspecified()) {
+            log::info("UDP_Server: IPv6 is not supported. Using IPv4.");
+            ep = udp::endpoint{udp::v4(), ep.port()};
+            socket_.open(ep.protocol());
+        } else {
+            log::debug("UDP_Server::listen - unexpected exception", ex.code());
+            throw;
+        }
+    }
+
+    socket_.bind(ep);
 }
 
 

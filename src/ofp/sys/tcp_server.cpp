@@ -67,7 +67,7 @@ void TCP_Server::listen(const tcp::endpoint &endpt)
         auto addr = ep.address();
         if (ex.code() == boost::asio::error::address_family_not_supported &&
             addr.is_v6() && addr.is_unspecified()) {
-            log::info("IPv6 is not supported. Using IPv4.");
+            log::info("TCP_Server: IPv6 is not supported. Using IPv4.");
             ep = tcp::endpoint{tcp::v4(), ep.port()};
             acceptor_.open(ep.protocol());
         } else {
