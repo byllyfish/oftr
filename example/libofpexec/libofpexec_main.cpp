@@ -30,7 +30,7 @@ using namespace yaml;
 int main(int argc, char **argv)
 {
 	log::set(&std::cerr);
-	ApiServer::run(IPv6Endpoint{});
+	ApiServer::run();
 
 	return 0;
 }

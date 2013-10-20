@@ -28,19 +28,15 @@
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
-// Unix Stdio descriptors.
-const int STDIN = 0;
-const int STDOUT = 1;
-const int STDERR = 2;
-
-void ApiServer::run(const IPv6Endpoint &localEndpoint)
+void ApiServer::run(int input, int output)
 {
     Driver driver;
-    ApiServer server{&driver, localEndpoint};
+    ApiServer server{&driver, input, output, nullptr};
 
     driver.run();
 }
 
+#if 0
 ApiServer::ApiServer(Driver *driver, const IPv6Endpoint &localEndpoint)
     : engine_{driver->engine()},
       endpt_{makeTCPEndpoint(localEndpoint.address(), localEndpoint.port())},
@@ -55,6 +51,7 @@ ApiServer::ApiServer(Driver *driver, const IPv6Endpoint &localEndpoint)
         log::info("Start TCP listening on", endpt_);
     }
 }
+#endif
 
 ApiServer::ApiServer(Driver *driver, int input, int output, Channel *defaultChannel)
     : engine_{driver->engine()},

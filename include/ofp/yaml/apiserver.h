@@ -44,9 +44,8 @@ class ApiConnection;
 /// The driver is controlled using YAML messages.
 class ApiServer {
 public:
-	/// \brief Run server on specified local address and port. 
-	///  Pass `IPv6Address{}` to specify `all` local addresses.
-	static void run(const IPv6Endpoint &localEndpoint);
+	
+	static void run(int input=0, int output=1);
 
     ApiServer(Driver *driver, const IPv6Endpoint &localEndpoint);
 	ApiServer(Driver *driver, int input = 0, int output = 1, Channel *defaultChannel = nullptr);

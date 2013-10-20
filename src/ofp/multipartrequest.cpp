@@ -19,7 +19,6 @@
 /// \brief Implements MultipartRequest class.
 //  ===== ------------------------------------------------------------ =====  //
 
-
 #include "ofp/multipartrequest.h"
 #include "ofp/writable.h"
 #include "ofp/message.h"
