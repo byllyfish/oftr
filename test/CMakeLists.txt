@@ -18,6 +18,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/encoder_unittest.cpp
 	ofp/enetaddress_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
+	ofp/flowremovedbuilder_unittest.cpp
 	ofp/headeronly_unittest.cpp
 	ofp/hello_unittest.cpp
 	ofp/instructions_unittest.cpp

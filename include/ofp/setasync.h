@@ -47,6 +47,8 @@ private:
 	SetAsync() : header_{type()} {}
 
 	friend class SetAsyncBuilder;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(SetAsync) == 32, "Unexpected size.");
@@ -69,6 +71,9 @@ public:
 
 private:
 	SetAsync msg_;
+
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

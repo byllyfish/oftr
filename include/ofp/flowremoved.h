@@ -24,6 +24,7 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/matchbuilder.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -40,13 +41,13 @@ public:
 	UInt8 reason() const { return reason_; }
 
 	/// ID of the table
-	UInt8 tableID() const { return tableID_; }
+	UInt8 tableId() const { return tableId_; }
 
 	/// Time flow was alive in seconds.
 	UInt32 durationSec() const { return durationSec_; }
 
 	/// Time flow was alive in nanoseconds beyond durationSec.
-	UInt32 durationNSec() const { return durationNsec_; }
+	UInt32 durationNSec() const { return durationNSec_; }
 
 	/// Idle timeout from original flow mod.
 	UInt16 idleTimeout() const { return idleTimeout_; }
@@ -60,6 +61,8 @@ public:
 	/// Number of the bytes that were associated with the entry.
 	UInt64 byteCount() const { return byteCount_; }
 
+	Match match() const;
+
 	bool validateLength(size_t length) const;
 
 private:
@@ -67,9 +70,9 @@ private:
 	Big64 cookie_;
 	Big16 priority_;
 	Big8 reason_;
-	Big8 tableID_;
+	Big8 tableId_;
 	Big32 durationSec_;
-	Big32 durationNsec_;
+	Big32 durationNSec_;
 	Big16 idleTimeout_;
 	Big16 hardTimeout_;
 	Big64 packetCount_;
@@ -82,6 +85,10 @@ private:
     // Only FlowRemovedBuilder can create an instance.
     FlowRemoved() : header_{type()} {}
 
+    enum : size_t { UnpaddedSizeWithMatchHeader = 52 };
+    enum : size_t { SizeWithoutMatchHeader = 48 };
+    enum : size_t { MatchHeaderSize = 4 };
+    
 	friend class FlowRemovedBuilder;
 };
 
@@ -94,12 +101,29 @@ public:
 	FlowRemovedBuilder() = default;
 	explicit FlowRemovedBuilder(const FlowRemoved *msg);
 
-	// TODO setters
+	void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
+	void setPriority(UInt16 priority) { msg_.priority_ = priority; }
+	void setReason(UInt8 reason) { msg_.reason_ = reason; }
+	void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+	void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
+	void setDurationNSec(UInt32 durationNSec) { msg_.durationNSec_ = durationNSec; }
+	void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
+	void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
+	void setPacketCount(UInt64 packetCount) { msg_.packetCount_ = packetCount; }
+	void setByteCount(UInt64 byteCount) { msg_.byteCount_ = byteCount; }
+
+	void setMatch(const MatchBuilder &match) {
+        match_ = match;
+    }
 
 	UInt32 send(Writable *channel);
 
 private:
 	FlowRemoved msg_;
+	MatchBuilder match_;
+
+	UInt32 sendStandard(Writable *channel);
+    UInt32 sendOriginal(Writable *channel);
 };
 
 } // </namespace ofp>

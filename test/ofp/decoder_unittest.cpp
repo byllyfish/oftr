@@ -348,3 +348,14 @@ TEST(decoder, queuegetconfigrequestv4)
     testDecodeEncode("04160010111111112222222200000000", "---\ntype:            OFPT_QUEUE_GET_CONFIG_REQUEST\nxid:             0x11111111\nversion:         4\nmsg:             \n  port:            0x22222222\n...\n");
 }
 
+TEST(decoder, getconfigreplyv4)
+{
+    testDecodeEncode("0408000C11111111AAAABBBB", "---\ntype:            OFPT_GET_CONFIG_REPLY\nxid:             0x11111111\nversion:         4\nmsg:             \n  flags:           0xAAAA\n  miss_send_len:   0xBBBB\n...\n");
+}
+
+TEST(decoder, setasyncv4)
+{
+    testDecodeEncode("041C002011111111222222223333333344444444555555556666666677777777", "---\ntype:            OFPT_SET_ASYNC\nxid:             0x11111111\nversion:         4\nmsg:             \n  packet_in_mask_master: 0x22222222\n  packet_in_mask_slave: 0x33333333\n  port_status_mask_master: 0x44444444\n  port_status_mask_slave: 0x55555555\n  flow_removed_mask_master: 0x66666666\n  flow_removed_mask_slave: 0x77777777\n...\n");
+}
+
+

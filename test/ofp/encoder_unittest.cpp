@@ -1042,4 +1042,45 @@ TEST(encoder, queuegetconfigrequestv4)
 }
 
 
+TEST(encoder, getconfigreplyv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_GET_CONFIG_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        flags: 0xAAAA
+        miss_send_len: 0xBBBB
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x0C, encoder.size());
+    EXPECT_HEX("0408000C11111111AAAABBBB", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, setasyncv4)
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_SET_ASYNC
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        packet_in_mask_master: 0x22222222
+        packet_in_mask_slave: 0x33333333
+        port_status_mask_master: 0x44444444
+        port_status_mask_slave: 0x55555555
+        flow_removed_mask_master: 0x66666666
+        flow_removed_mask_slave: 0x77777777
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x20, encoder.size());
+    EXPECT_HEX("041C002011111111222222223333333344444444555555556666666677777777", encoder.data(), encoder.size());
+}
+
 

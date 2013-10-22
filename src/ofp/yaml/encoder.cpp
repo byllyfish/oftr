@@ -40,6 +40,8 @@
 #include "ofp/yaml/yrolereply.h"
 #include "ofp/yaml/ygetasyncreply.h"
 #include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/ygetconfigreply.h"
+#include "ofp/yaml/ysetasync.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -132,6 +134,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
     case GetConfigRequest::type(): {
         GetConfigRequestBuilder config;
         io.mapOptional("msg", config);
+        config.send(&channel_);
+        break;
+    }
+    case GetConfigReply::type(): {
+        GetConfigReplyBuilder config;
+        io.mapRequired("msg", config);
         config.send(&channel_);
         break;
     }
@@ -229,6 +237,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
         GetAsyncReplyBuilder asyncReply{header.xid()};
         io.mapRequired("msg", asyncReply);
         asyncReply.send(&channel_);
+        break;
+    }
+    case SetAsync::type(): {
+        SetAsyncBuilder setAsync;
+        io.mapRequired("msg", setAsync);
+        setAsync.send(&channel_);
         break;
     }
     case QueueGetConfigRequest::type(): {

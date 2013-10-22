@@ -43,6 +43,8 @@ private:
 	GetConfigReply() : header_{type()} {}
 
 	friend class GetConfigReplyBuilder;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(GetConfigReply) == 12, "Unexpected size.");
@@ -61,6 +63,9 @@ public:
 
 private:
 	GetConfigReply msg_;
+
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

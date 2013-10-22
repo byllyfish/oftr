@@ -40,6 +40,8 @@
 #include "ofp/yaml/yrolereply.h"
 #include "ofp/yaml/ygetasyncreply.h"
 #include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/ygetconfigreply.h"
+#include "ofp/yaml/ysetasync.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -89,6 +91,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<FeaturesReply>(io, msg_);
     case GetConfigRequest::type() :
         return decode<GetConfigRequest>(io, msg_);
+    case GetConfigReply::type():
+        return decode<GetConfigReply>(io, msg_);
     case MultipartRequest::type() :
         return decode<MultipartRequest>(io, msg_);
     case MultipartReply::type() :
@@ -119,6 +123,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<RoleReply>(io, msg_);
     case GetAsyncReply::type():
         return decode<GetAsyncReply>(io, msg_);
+    case SetAsync::type():
+        return decode<SetAsync>(io, msg_);
     case QueueGetConfigRequest::type():
         return decode<QueueGetConfigRequest>(io, msg_);
     default:
