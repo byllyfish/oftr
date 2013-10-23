@@ -1,5 +1,5 @@
---- config.h	2013-09-01 10:55:52.000000000 -0700
-+++ config.h	2013-09-01 10:53:43.000000000 -0700
+--- config.h	2013-10-19 10:20:36.000000000 -0700
++++ config.h	2013-10-23 12:29:44.000000000 -0700
 @@ -35,7 +35,7 @@
  #define GCC_INSTALL_PREFIX ""
  
@@ -9,7 +9,7 @@
  
  /* Define to 1 if you have the `argz_append' function. */
  /* #undef HAVE_ARGZ_APPEND */
-@@ -247,7 +247,7 @@
+@@ -250,7 +250,7 @@
  #define HAVE_LONGJMP 1
  
  /* Define to 1 if you have the <mach/mach.h> header file. */
@@ -18,7 +18,7 @@
  
  /* Define to 1 if you have the <mach-o/dyld.h> header file. */
  #define HAVE_MACH_O_DYLD_H 1
-@@ -259,10 +259,10 @@
+@@ -262,10 +262,10 @@
  /* #undef HAVE_MALLOC_H */
  
  /* Define to 1 if you have the <malloc/malloc.h> header file. */
@@ -31,7 +31,7 @@
  
  /* Define to 1 if you have the <memory.h> header file. */
  #define HAVE_MEMORY_H 1
-@@ -442,7 +442,7 @@
+@@ -445,7 +445,7 @@
  #define HAVE_SYS_WAIT_H 1
  
  /* Define if the setupterm() function is supported this platform. */
@@ -40,7 +40,7 @@
  
  /* Define to 1 if you have the <termios.h> header file. */
  #define HAVE_TERMIOS_H 1
-@@ -463,7 +463,7 @@
+@@ -466,7 +466,7 @@
  /* #undef HAVE_U_INT64_T */
  
  /* Define to 1 if you have the <valgrind/valgrind.h> header file. */
@@ -49,7 +49,7 @@
  
  /* Define to 1 if you have the `writev' function. */
  #define HAVE_WRITEV 1
-@@ -696,7 +696,7 @@
+@@ -699,7 +699,7 @@
  /* #undef const */
  
  /* Define to a type to use for `error_t' if it is not otherwise available. */
