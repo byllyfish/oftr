@@ -42,6 +42,7 @@
 #include "ofp/yaml/yqueuegetconfigrequest.h"
 #include "ofp/yaml/ygetconfigreply.h"
 #include "ofp/yaml/ysetasync.h"
+#include "ofp/yaml/yflowremoved.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -127,6 +128,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io)
         return decode<SetAsync>(io, msg_);
     case QueueGetConfigRequest::type():
         return decode<QueueGetConfigRequest>(io, msg_);
+    case FlowRemoved::type():
+        return decode<FlowRemoved>(io, msg_);
     default:
         log::info("Decoder::decodeMsg: Unknown msg type", msg_->type());
         break;

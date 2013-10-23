@@ -7,9 +7,38 @@ using namespace ofp;
 
 bool FlowRemoved::validateLength(size_t length) const
 {
-	// FIXME
-	return false;
+	if (length < MinimumSize)
+        return false;
+
+    if (length != matchLength_ + SizeWithoutMatchHeader)
+        return false;
+
+	return true;
 }
+
+
+Match FlowRemoved::match() const
+{
+    assert(validateLength(header_.length()));
+
+    UInt16 type = matchType_;
+
+    if (type == OFPMT_OXM) {
+        assert(matchLength_ >= MatchHeaderSize);
+        OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_ - MatchHeaderSize};
+        return Match{range};
+
+    } else if (type == OFPMT_STANDARD) {
+        assert(matchLength_ == deprecated::OFPMT_STANDARD_LENGTH);
+        const deprecated::StandardMatch *stdMatch = reinterpret_cast<const deprecated::StandardMatch *>(BytePtr(this) + SizeWithoutMatchHeader);
+        return Match{stdMatch};
+
+    } else {
+        log::debug("Unknown matchType:", type);
+        return Match{OXMRange{nullptr, 0}};
+    }
+}
+
 
 FlowRemovedBuilder::FlowRemovedBuilder(const FlowRemoved *msg) : msg_{*msg}
 {

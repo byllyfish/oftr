@@ -1084,3 +1084,121 @@ TEST(encoder, setasyncv4)
 }
 
 
+TEST(encoder, flowremovedv4) 
+{
+    const char *input = R"""(
+      version: 4
+      type: OFPT_FLOW_REMOVED
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        cookie: 0x2222222222222222
+        priority: 0x3333
+        reason: 0x44
+        table_id: 0x55
+        duration_sec: 0x66666666
+        duration_nsec: 0x77777777
+        idle_timeout: 0x8888
+        hard_timeout: 0x9999
+        packet_count: 0xAAAAAAAAAAAAAAAA
+        byte_count: 0xBBBBBBBBBBBBBBBB
+        match:
+            - type: OFB_IN_PORT
+              value: 0x12345678
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x3C, encoder.size());
+    EXPECT_HEX("040B003C11111111222222222222222233334455666666667777777788889999AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678", encoder.data(), encoder.size());
+}
+
+TEST(encoder, flowremovedv1) 
+{
+    const char *input = R"""(
+      version: 1
+      type: OFPT_FLOW_REMOVED
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        cookie: 0x2222222222222222
+        priority: 0x3333
+        reason: 0x44
+        table_id: 0x55
+        duration_sec: 0x66666666
+        duration_nsec: 0x77777777
+        idle_timeout: 0x8888
+        hard_timeout: 0x9999
+        packet_count: 0xAAAAAAAAAAAAAAAA
+        byte_count: 0xBBBBBBBBBBBBBBBB
+        match:
+            - type: OFB_IN_PORT
+              value: 0x12345678
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x58, encoder.size());
+    EXPECT_HEX("010B005811111111003FFFFE567800000000000000000000000000000000000000000000000000000000000000000000222222222222222233334400666666667777777788880000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB", encoder.data(), encoder.size());
+}
+
+TEST(encoder, flowremovedv2) 
+{
+    const char *input = R"""(
+      version: 2
+      type: OFPT_FLOW_REMOVED
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        cookie: 0x2222222222222222
+        priority: 0x3333
+        reason: 0x44
+        table_id: 0x55
+        duration_sec: 0x66666666
+        duration_nsec: 0x77777777
+        idle_timeout: 0x8888
+        hard_timeout: 0x9999
+        packet_count: 0xAAAAAAAAAAAAAAAA
+        byte_count: 0xBBBBBBBBBBBBBBBB
+        match:
+            - type: OFB_IN_PORT
+              value: 0x12345678
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x88, encoder.size());
+    EXPECT_HEX("020B008811111111222222222222222233334455666666667777777788880000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0000005812345678000003FE00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", encoder.data(), encoder.size());
+}
+
+
+TEST(encoder, flowremovedv3) 
+{
+    const char *input = R"""(
+      version: 3
+      type: OFPT_FLOW_REMOVED
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        cookie: 0x2222222222222222
+        priority: 0x3333
+        reason: 0x44
+        table_id: 0x55
+        duration_sec: 0x66666666
+        duration_nsec: 0x77777777
+        idle_timeout: 0x8888
+        hard_timeout: 0x9999
+        packet_count: 0xAAAAAAAAAAAAAAAA
+        byte_count: 0xBBBBBBBBBBBBBBBB
+        match:
+            - type: OFB_IN_PORT
+              value: 0x12345678
+      )""";
+
+    Encoder encoder{input};
+    EXPECT_EQ("", encoder.error());
+    EXPECT_EQ(0x3C, encoder.size());
+    EXPECT_HEX("030B003C11111111222222222222222233334455666666667777777788889999AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678", encoder.data(), encoder.size());
+}
+
+

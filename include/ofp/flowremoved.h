@@ -88,8 +88,11 @@ private:
     enum : size_t { UnpaddedSizeWithMatchHeader = 52 };
     enum : size_t { SizeWithoutMatchHeader = 48 };
     enum : size_t { MatchHeaderSize = 4 };
+    enum : size_t { MinimumSize = 56 };
     
 	friend class FlowRemovedBuilder;
+	template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(FlowRemoved) == 56, "Unexpected size.");
@@ -124,6 +127,9 @@ private:
 
 	UInt32 sendStandard(Writable *channel);
     UInt32 sendOriginal(Writable *channel);
+
+    template <class T>
+	friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

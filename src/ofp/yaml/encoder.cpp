@@ -42,6 +42,7 @@
 #include "ofp/yaml/yqueuegetconfigrequest.h"
 #include "ofp/yaml/ygetconfigreply.h"
 #include "ofp/yaml/ysetasync.h"
+#include "ofp/yaml/yflowremoved.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -249,6 +250,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
         QueueGetConfigRequestBuilder queueGetConfig;
         io.mapRequired("msg", queueGetConfig);
         queueGetConfig.send(&channel_);
+        break;
+    }
+    case FlowRemoved::type(): {
+        FlowRemovedBuilder flowRemoved;
+        io.mapRequired("msg", flowRemoved);
+        flowRemoved.send(&channel_);
         break;
     }
     default:

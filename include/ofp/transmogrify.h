@@ -44,7 +44,8 @@ public:
 	void normalizeExperimenterV1();
     void normalizePacketOutV1();
     void normalizePortModV1();
-
+    void normalizeFlowRemovedV1();
+    
     UInt32 normPortNumberV1(const UInt8 *ptr);
 
 	int normInstructionsV1orV2(const InstructionRange &instr, UInt8 ipProto);

@@ -26,6 +26,7 @@
 #include "ofp/experimenter.h"
 #include "ofp/packetout.h"
 #include "ofp/portmod.h"
+#include "ofp/flowremoved.h"
 #include "ofp/instructions.h"
 #include "ofp/instructionrange.h"
 #include "ofp/originalmatch.h"
@@ -60,6 +61,8 @@ void Transmogrify::normalize()
             normalizePacketOutV1();
         } else if (type == PortMod::type()) {
             normalizePortModV1();
+        } else if (type == FlowRemoved::type()) {
+            normalizeFlowRemovedV1();
         }
     }
 }
@@ -268,6 +271,46 @@ void Transmogrify::normalizePortModV1()
     // Set padding bytes to zero.
     std::memset(pkt + 12, 0, 4);
     std::memset(pkt + 22, 0, 2);
+}
+
+
+void Transmogrify::normalizeFlowRemovedV1()
+{
+    using deprecated::OriginalMatch;
+    using deprecated::StandardMatch;
+
+    Header *hdr = header();
+
+    if (hdr->length() != 88) {
+        log::info("FlowRemoved v1 message is wrong length.", hdr->length());
+        hdr->setType(OFPT_UNSUPPORTED);
+        return;
+    }
+
+    // To convert a v1 FlowRemoved into v2:
+    // 
+    // 1. Copy OriginalMatch into StandardMatch.
+    // 2. Shift bytes in rest of packet upward.
+    // 3. Move StandardMatch after packet data.
+    // 4. Update header length.
+    // 
+    // Note: Size changes from 88 to 136.
+    
+    UInt8 *pkt = buf_.mutableData();
+    assert(buf_.size() == 88);
+
+    OriginalMatch *origMatch =
+        reinterpret_cast<OriginalMatch *>(pkt + sizeof(Header));
+
+    StandardMatch stdMatch{*origMatch};
+
+    std::memcpy(pkt + 8, pkt + 48, 40);
+    buf_.insertUninitialized(pkt + 88, 136 - 88);
+
+    pkt = buf_.mutableData();
+    std::memcpy(pkt + 48, &stdMatch, sizeof(stdMatch));
+
+    header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 

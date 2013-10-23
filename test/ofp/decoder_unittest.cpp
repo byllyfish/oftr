@@ -358,4 +358,23 @@ TEST(decoder, setasyncv4)
     testDecodeEncode("041C002011111111222222223333333344444444555555556666666677777777", "---\ntype:            OFPT_SET_ASYNC\nxid:             0x11111111\nversion:         4\nmsg:             \n  packet_in_mask_master: 0x22222222\n  packet_in_mask_slave: 0x33333333\n  port_status_mask_master: 0x44444444\n  port_status_mask_slave: 0x55555555\n  flow_removed_mask_master: 0x66666666\n  flow_removed_mask_slave: 0x77777777\n...\n");
 }
 
+TEST(decoder, flowremovedv4)
+{
+    testDecodeEncode("040B003C11111111222222222222222233334455666666667777777788889999AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678", "---\ntype:            OFPT_FLOW_REMOVED\nxid:             0x11111111\nversion:         4\nmsg:             \n  cookie:          0x2222222222222222\n  priority:        0x3333\n  reason:          68\n  table_id:        85\n  duration_sec:    0x66666666\n  duration_nsec:   0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      0xBBBBBBBBBBBBBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           305419896\n...\n");
+}
+
+TEST(decoder, flowremovedv1)
+{
+    testDecodeEncode("010B005811111111003FFFFE567800000000000000000000000000000000000000000000000000000000000000000000222222222222222233334400666666667777777788880000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB", "---\ntype:            OFPT_FLOW_REMOVED\nxid:             0x11111111\nversion:         1\nmsg:             \n  cookie:          0x2222222222222222\n  priority:        0x3333\n  reason:          68\n  table_id:        0\n  duration_sec:    0x66666666\n  duration_nsec:   0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      0xBBBBBBBBBBBBBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           22136\n...\n");
+}
+
+TEST(decoder, flowremovedv2)
+{
+    testDecodeEncode("020B008811111111222222222222222233334455666666667777777788880000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0000005812345678000003FE00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "---\ntype:            OFPT_FLOW_REMOVED\nxid:             0x11111111\nversion:         2\nmsg:             \n  cookie:          0x2222222222222222\n  priority:        0x3333\n  reason:          68\n  table_id:        85\n  duration_sec:    0x66666666\n  duration_nsec:   0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      0xBBBBBBBBBBBBBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           305419896\n...\n");
+}
+
+TEST(decoder, flowremovedv3)
+{
+    testDecodeEncode("030B003C11111111222222222222222233334455666666667777777788889999AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678", "---\ntype:            OFPT_FLOW_REMOVED\nxid:             0x11111111\nversion:         3\nmsg:             \n  cookie:          0x2222222222222222\n  priority:        0x3333\n  reason:          68\n  table_id:        85\n  duration_sec:    0x66666666\n  duration_nsec:   0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      0xBBBBBBBBBBBBBBBB\n  match:           \n    - type:            OFB_IN_PORT\n      value:           305419896\n...\n");
+}
 
