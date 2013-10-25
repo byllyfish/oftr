@@ -25,9 +25,21 @@
 
 #include "ofp/hello.h"
 #include "ofp/protocolversions.h"
+#include "ofp/yaml/yllvm.h"
 
-// FIXME - move this macro to yllvm.h ?
-LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8);
+//---
+// type: OFPT_HELLO
+// msg:
+//   - key: versions
+//     type: List<UInt8>
+//     required: False
+//     notes: List of supported protocol versions. Use values 1, 2, 3, and 4. 
+//            Value 0 and values greater than 4 are ignored. Version 4 is used 
+//            for specification 1.3, and version 1 is used for spec 1.0. If the
+//            versions list is omitted or empty (after filtering out unsupported
+//            values), use the version in the header. If the header version is
+//            also omitted, the message specifies all supported versions.
+//...
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>

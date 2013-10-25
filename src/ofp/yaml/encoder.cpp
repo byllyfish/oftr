@@ -85,7 +85,10 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
             channel_.setNextXid(actualChannel->nextXid());
         }
     } else {
-        channel_.setVersion(header.version());
+        // If encodeMsg is called with a header version of 0, it means
+        // the latest version -- except for Hello messages which may look at
+        // the version bitmap in the payload.
+        channel_.setVersion(header.version() ? header.version() : OFP_VERSION_LAST);
         channel_.setNextXid(header.xid());
     }
 
@@ -93,6 +96,8 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header)
     case Hello::type(): {
         HelloBuilder hello{header.version()};
         io.mapOptional("msg", hello);
+        if (hello.protocolVersions().empty()) 
+            hello.setProtocolVersions(ProtocolVersions::All);
         hello.send(&channel_);
         break;
     }

@@ -95,18 +95,13 @@ public:
     explicit HelloBuilder(UInt8 version)
     	: bitmap_{ProtocolVersions{version}.bitmap()}
     {
-        if (version == 0)
-            version = OFP_VERSION_LAST;
     	msg_.header_.setVersion(version);
     }
 
     explicit HelloBuilder(const Hello *msg);
 
-    void setProtocolVersions(ProtocolVersions versions)
-    {
-        bitmap_ = versions.bitmap();
-        msg_.header_.setVersion(versions.highestVersion());
-    }
+    ProtocolVersions protocolVersions() const;
+    void setProtocolVersions(ProtocolVersions versions);
 
     UInt32 send(Writable *channel);
 

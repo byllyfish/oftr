@@ -28,22 +28,24 @@ ProtocolVersions::ProtocolVersions(std::initializer_list<UInt8> versions)
     : bitmap_{0}
 {
     for (auto v : versions) {
-        if (v == 0)
-            bitmap_ = All;
-        else if (v <= MaxVersion)
+        if (v >= MinVersion && v <= MaxVersion)
             bitmap_ |= (1 << v);
     }
+
+    //if (bitmap_ == 0)
+    //    bitmap_ = All;
 }
 
 ProtocolVersions::ProtocolVersions(const std::vector<UInt8> &versions)
     : bitmap_{0}
 {
     for (auto v : versions) {
-        if (v == 0)
-            bitmap_ = All;
-        else if (v <= MaxVersion)
+        if (v >= MinVersion && v <= MaxVersion)
             bitmap_ |= (1 << v);
     }
+
+    //if (bitmap_ == 0)
+    //    bitmap_ = All;
 }
 
 UInt8 ProtocolVersions::highestVersion() const

@@ -34,6 +34,7 @@ class ProtocolVersions {
 public:
 
     enum {
+        MinVersion = OFP_VERSION_1,
         MaxVersion = OFP_VERSION_LAST
     };
 

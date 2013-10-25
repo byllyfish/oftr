@@ -70,6 +70,8 @@ inline void writeHeader(llvm::yaml::IO &io, const Header *header)
 } // </namespace ofp>
 #endif //0
 
+LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8);
+
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
