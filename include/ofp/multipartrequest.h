@@ -24,7 +24,6 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
-#include "ofp/multipartbody.h"
 
 namespace ofp { // <namespace ofp>
 

@@ -1,4 +1,6 @@
 //
+#error "Deprecated"
+
 #include "ofp/oxmfields.h"
 
 const ofp::OXMTypeInternalMapEntry ofp::OXMTypeInternalMapArray[] = {
