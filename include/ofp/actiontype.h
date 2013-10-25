@@ -29,28 +29,6 @@ namespace ofp { // <namespace ofp>
 
 class ActionType {
 public:
-#if 0
-    enum : UInt16 {
-        AT_OUTPUT = 0,
-        AT_COPY_TTL_OUT = 11,
-        AT_COPY_TTL_IN = 12,
-        AT_SET_MPLS_TTL = 15,
-        AT_DEC_MPLS_TTL = 16,
-        AT_PUSH_VLAN = 17,
-        AT_POP_VLAN = 18,
-        AT_PUSH_MPLS = 19,
-        AT_POP_MPLS = 20,
-        AT_SET_QUEUE = 21,
-        AT_GROUP = 22,
-        AT_SET_NW_TTL = 23,
-        AT_DEC_NW_TTL = 24,
-        AT_SET_FIELD = 25, // 32 possible lengths: 8, 16, 24, 32, 40, ..., 256
-        AT_PUSH_PBB = 26,
-        AT_POP_PBB = 27,
-        AT_EXPERIMENTER = 0xFFFF // possible lengths: 8, 16, 24, 32, 40, ...
-    };
-#endif // 0
-
   constexpr ActionType(OFPActionType type, UInt16 length)
       : value32_{make(type, length)} {}
 

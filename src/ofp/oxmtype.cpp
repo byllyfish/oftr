@@ -33,20 +33,6 @@ const OXMTypeInfo *OXMType::lookupInfo() const {
   }
 
   return nullptr;
-
-#if 0
-	// Get unmasked value before we search for it.
-	UInt32 value32 = hasMask() ? withoutMask() : value32_;
-
-	// TODO: More efficient lookup.
-	for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {
-		if (value32 == OXMTypeInfoArray[i].value32) {
-			return &OXMTypeInfoArray[i];
-		}
-	}
-
-	return nullptr;
-#endif
 }
 
 // \returns Internal ID for OXMType, or OXMInternalID::UNKNOWN if not found.

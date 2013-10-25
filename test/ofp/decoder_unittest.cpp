@@ -375,25 +375,6 @@ TEST(decoder, packetinv1) {
 }
 
 TEST(decoder, packetoutv4) {
-#if 0
-    const char *hex = "040D00620000000133333333444444440020000000000000000000100000000500140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002";
-    const char *yaml = "---\ntype:            OFPT_PACKET_OUT\nxid:             0x00000001\nversion:         4\nmsg:             \n  buffer_id:       858993459\n  in_port:         1145324612\n  actions:         \n    - action:          OFPAT_OUTPUT\n      port:            5\n      maxlen:          20\n    - action:          OFPAT_SET_FIELD\n      type:            OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n";
-
-    auto s = HexToRawData(hex);
-
-    Message msg{s.data(), s.size()};
-    msg.transmogrify();
-
-    Decoder decoder{&msg};
-
-    EXPECT_EQ("", decoder.error());
-    EXPECT_EQ(yaml, decoder.result());
-
-    Encoder encoder{decoder.result()};
-
-    EXPECT_EQ("", encoder.error());
-    EXPECT_HEX(hex, encoder.data(), encoder.size());
-#endif
   testDecodeEncode(
       "040D00620000000133333333444444440020000000000000000000100000000500140000"
       "000000000019001080001804C0A8010100000000FFFFFFFFFFFF00000000000108060001"

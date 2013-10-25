@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Include LLVM YAML headers and define yaml traits for common types.
@@ -31,45 +31,6 @@
 #include "ofp/yaml/yconstants.h"
 #include "ofp/header.h"
 
-#if 0
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
-
-void readHeader(llvm::yaml::IO &io, Header *header);
-void writeHeader(llvm::yaml::IO &io, const Header *header);
-
-inline void readHeader(llvm::yaml::IO &io, Header *header)
-{
-    OFPType type;
-    UInt8 version;
-    UInt32 xid;
-
-    // FIXME - is this right? What happens if msg comes first?
-
-    io.mapRequired("type", type);
-    io.mapRequired("xid", xid);
-    io.mapRequired("version", version);
-
-    header->setType(type);
-    header->setVersion(version);
-    header->setXid(xid);
-}
-
-inline void writeHeader(llvm::yaml::IO &io, const Header *header)
-{
-    UInt8 version = header->version();
-    OFPType type = header->type();
-    UInt32 xid = header->xid();
-
-    io.mapRequired("type", type);
-    io.mapRequired("version", version);
-    io.mapRequired("xid", xid);
-}
-
-} // </namespace detail>
-} // </namespace ofp>
-#endif //0
-
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8);
 
 namespace llvm { // <namespace llvm>
@@ -77,18 +38,15 @@ namespace yaml { // <namespace yaml>
 
 template <>
 struct ScalarTraits<std::string> {
-    static void output(const std::string &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value;
-    }
+  static void output(const std::string &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << value;
+  }
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           std::string &value)
-    {
-        value = scalar;
-        return "";
-    }
+  static StringRef input(StringRef scalar, void *ctxt, std::string &value) {
+    value = scalar;
+    return "";
+  }
 };
 
 } // </namespace yaml>

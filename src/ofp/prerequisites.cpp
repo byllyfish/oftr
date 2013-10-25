@@ -279,23 +279,6 @@ bool Prerequisites::matchValueWithMask(size_t length, OXMIterator pos,
   assert(length == pos.type().length());
 
   return matchValueWithMask(length, pos.data() + sizeof(OXMType), preq);
-
-#if 0
-	assert(2 * length == preq.type().length());
-
-	// Return true if the value matches the value & mask in the preq.
-	
-	const UInt8 *value = pos.data() + sizeof(OXMType);
-	const UInt8 *preqValue = preq.data() + sizeof(OXMType);
-	const UInt8 *preqMask = preqValue + length;
-	
-	for (size_t i = 0; i < length; ++i) {
-		if ((*value++ & *preqMask++) != *preqValue++)
-			return false;
-	}
-
-	return true;
-#endif
 }
 
 bool Prerequisites::matchValueWithMask(size_t length, const void *data,
@@ -343,23 +326,6 @@ bool Prerequisites::matchValueWithValue(size_t length, OXMIterator pos,
   assert(length == pos.type().length());
 
   return matchValueWithValue(length, pos.data() + sizeof(OXMType), preq);
-
-#if 0
-	assert(length == preq.type().length());
-
-	// Return true if values are identical.
-
-	const UInt8 *value = pos.data() + sizeof(OXMType);
-	const UInt8 *preqValue = preq.data() + sizeof(OXMType);
-	
-	for (size_t i = 0; i < length; ++i) {
-		if (*value++ != *preqValue++) {
-			return false;
-		}
-	}
-
-	return true;
-#endif
 }
 
 bool Prerequisites::matchValueWithValue(size_t length, const void *data,

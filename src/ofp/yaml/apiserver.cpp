@@ -35,23 +35,6 @@ void ApiServer::run(int input, int output) {
   driver.run();
 }
 
-#if 0
-ApiServer::ApiServer(Driver *driver, const IPv6Endpoint &localEndpoint)
-    : engine_{driver->engine()},
-      endpt_{makeTCPEndpoint(localEndpoint.address(), localEndpoint.port())},
-      acceptor_{engine_->io()}, socket_{engine_->io()}
-{
-    auto conn = std::make_shared<ApiConnectionStdio>(this, stream_descriptor{engine_->io(), STDIN}, stream_descriptor{engine_->io(), STDOUT});
-    conn->asyncAccept();
-
-    if (localEndpoint.valid()) {
-        acceptor_.bind(endpt_);
-        asyncAccept();
-        log::info("Start TCP listening on", endpt_);
-    }
-}
-#endif
-
 ApiServer::ApiServer(Driver *driver, int input, int output,
                      Channel *defaultChannel)
     : engine_{driver->engine()}, acceptor_{engine_->io()},

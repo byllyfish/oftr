@@ -56,16 +56,6 @@ public:
 
   void clear() { buf_.clear(); }
 
-#if 0
-    template <class MesgBuilderType>
-    static ByteList serialize(MesgBuilderType &msg, UInt8 version)
-    {
-        MemoryChannel writer{version};
-        msg.send(&writer);
-        return writer.buf_;
-    }
-#endif
-
 private:
   ByteList buf_;
   UInt32 nextXid_ = 1;

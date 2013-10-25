@@ -55,14 +55,6 @@ public:
 
 private:
   ByteList buf_;
-
-#if 0
-    void add(const void *data, size_t length)
-    {
-        const UInt8 *ptr = static_cast<const UInt8 *>(data);
-        buf_.insert(buf_.end(), ptr, ptr + length);
-    }
-#endif
 };
 
 template <class Type>

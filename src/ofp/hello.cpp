@@ -60,20 +60,6 @@ detail::HelloElement::next(size_t *remaining) const {
   return reinterpret_cast<const HelloElement *>(BytePtr(this) + length_);
 }
 
-#if 0
-const Hello *Hello::cast(const Message *message)
-{
-    assert(message->type() == OFPT_HELLO);
-
-    const Hello *msg = reinterpret_cast<const Hello *>(message->data());
-    if (!msg->validateLength(message->size())) {
-        return nullptr;
-    }
-
-    return msg;
-}
-#endif // 0
-
 bool Hello::validateLength(size_t length) const {
   using namespace detail;
 

@@ -48,10 +48,3 @@ Deferred<Exception> Driver::connect(Role role, const Features *features,
 void Driver::run() { engine_->run(); }
 
 void Driver::stop() { engine_->stop(); }
-
-#if 0
-void Driver::installSignalHandlers()
-{
-    engine_->installSignalHandlers();
-}
-#endif // 0

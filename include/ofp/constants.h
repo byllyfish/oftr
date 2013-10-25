@@ -188,13 +188,13 @@ enum ofp_port_no {
                    used in packet-out messages. */
   OFPP_NORMAL = 0xfffffffa, /* Process with normal L2/L3 switching. */
   OFPP_FLOOD = 0xfffffffb,  /* All physical ports in VLAN, except input
-                port and those blocked or link down. */
+               port and those blocked or link down. */
   OFPP_ALL = 0xfffffffc,        /* All physical ports except input port. */
   OFPP_CONTROLLER = 0xfffffffd, /* Send to controller. */
   OFPP_LOCAL = 0xfffffffe,      /* Local openflow "port". */
   OFPP_ANY = 0xffffffff         /* Wildcard port used only for flow mod
-   (delete) and flow stats requests. Selects
- all flows regardless of output port
+(delete) and flow stats requests. Selects
+all flows regardless of output port
 (including flows with no output port). */
 };
 
@@ -391,37 +391,6 @@ enum : UInt8 {
 } // </namespace v3>
 
 } // </namespace deprecated>
-
-#if 0
-/* Values for 'type' in ofp_error_message.  These values are immutable: they
- * will not change in future versions of the protocol (although new values may
- * be added). */
-
-enum {
-    OFPET_HELLO_FAILED = 0, /* Hello protocol failed. */
-    OFPET_BAD_REQUEST = 1, /* Request was not understood. */
-    OFPET_BAD_ACTION = 2, /* Error in action description. */
-    OFPET_BAD_INSTRUCTION = 3, /* Error in instruction list. */
-    OFPET_BAD_MATCH = 4, /* Error in match. */
-    OFPET_FLOW_MOD_FAILED = 5, /* Problem modifying flow entry. */
-    OFPET_GROUP_MOD_FAILED = 6, /* Problem modifying group entry. */
-    OFPET_PORT_MOD_FAILED = 7, /* Port mod request failed. */
-    OFPET_TABLE_MOD_FAILED = 8, /* Table mod request failed. */
-    OFPET_QUEUE_OP_FAILED = 9, /* Queue operation failed. */
-    OFPET_SWITCH_CONFIG_FAILED = 10, /* Switch config request failed. */
-    OFPET_ROLE_REQUEST_FAILED = 11, /* Controller Role request failed. */
-    OFPET_METER_MOD_FAILED = 12, /* Error in meter. */
-    OFPET_TABLE_FEATURES_FAILED = 13, /* Setting table features failed. */
-    OFPET_EXPERIMENTER = 0xffff /* Experimenter error messages. */
-};
-
-/* ofp_error_msg 'code' values for OFPET_HELLO_FAILED.  'data' contains an
- * ASCII text string that may give failure details. */
-enum ofp_hello_failed_code {
-    OFPHFC_INCOMPATIBLE = 0, /* No compatible version. */
-    OFPHFC_EPERM = 1, /* Permissions error. */
-};
-#endif
 
 /* Hello elements types.
  */
@@ -660,7 +629,7 @@ enum ofp_meter_mod_failed_code {
   OFPMMFC_BAD_BAND_VALUE = 9, /* Band value unsupported. */
   OFPMMFC_OUT_OF_METERS = 10, /* No more meters available. */
   OFPMMFC_OUT_OF_BANDS = 11,  /* The maximum number of properties
-                        for a meter has been exceeded. */
+                       for a meter has been exceeded. */
 };
 
 /* ofp_error_msg 'code' values for OFPET_TABLE_FEATURES_FAILED. 'data' contains
