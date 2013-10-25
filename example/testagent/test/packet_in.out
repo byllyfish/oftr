@@ -50,7 +50,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -65,7 +65,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -80,7 +80,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -95,7 +95,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -110,7 +110,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -125,7 +125,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -140,7 +140,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -155,7 +155,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -170,7 +170,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -185,7 +185,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_PACKET_OUT
@@ -200,7 +200,7 @@ msg:
     - action:          OFPAT_OUTPUT
       port:            4294967291
       maxlen:          0
-  enet_frame:      
+  enet_frame:      ''
 ...
 ---
 type:            OFPT_FLOW_MOD

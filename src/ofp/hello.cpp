@@ -152,6 +152,35 @@ HelloBuilder::HelloBuilder(const Hello *msg) : msg_{*msg}
     setProtocolVersions(msg->protocolVersions());
 }
 
+ProtocolVersions HelloBuilder::protocolVersions() const
+{
+    return ProtocolVersions::fromBitmap(bitmap_);
+}
+
+
+void HelloBuilder::setProtocolVersions(ProtocolVersions versions)
+{
+    UInt8 highVers = 0;
+    if (versions.empty()) {
+        UInt8 headVers = msg_.header_.version();
+        if (headVers == 0) {
+            // All versions.
+            versions = ProtocolVersions::All;
+            highVers = OFP_VERSION_LAST;
+        } else {
+            // Specific version.
+            versions = {headVers};
+            highVers = headVers;
+        }
+    } else {
+        highVers = versions.highestVersion();
+    }
+    
+    msg_.header_.setVersion(highVers);
+    bitmap_ = versions.bitmap();
+}
+
+
 UInt32 HelloBuilder::send(Writable *channel)
 {   
     // HelloRequest is the only message type that doesn't use the channel's

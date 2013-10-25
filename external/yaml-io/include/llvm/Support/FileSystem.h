@@ -238,7 +238,8 @@ struct file_magic {
     macho_dsym_companion,     ///< Mach-O dSYM companion file
     macho_universal_binary,   ///< Mach-O universal binary
     coff_object,              ///< COFF object file
-    pecoff_executable         ///< PECOFF executable file
+    pecoff_executable,        ///< PECOFF executable file
+    windows_resource          ///< Windows compiled resource file (.rc)
   };
 
   bool is_object() const {
@@ -970,7 +971,7 @@ public:
   // modifiers
   /// Goes up one level if Level > 0.
   void pop() {
-    assert(State && "Cannot pop and end itertor!");
+    assert(State && "Cannot pop an end iterator!");
     assert(State->Level > 0 && "Cannot pop an iterator with level < 1");
 
     const directory_iterator end_itr;

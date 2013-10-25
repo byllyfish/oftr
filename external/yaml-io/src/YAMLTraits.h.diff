@@ -1,0 +1,12 @@
+--- YAMLTraits.h	2013-08-31 15:49:41.000000000 -0700
++++ YAMLTraits.h	2013-10-23 12:10:40.000000000 -0700
+@@ -685,7 +685,8 @@
+ class Input : public IO {
+ public:
+   // Construct a yaml Input object from a StringRef and optional user-data.
+-  Input(StringRef InputContent, void *Ctxt=NULL);
++  Input(StringRef InputContent, void *Ctxt=NULL, 
++        llvm::SourceMgr::DiagHandlerTy Handler=NULL, void *HandlerCtxt=NULL);
+   ~Input();
+   
+   // Check if there was an syntax or semantic error during parsing.

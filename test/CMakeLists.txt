@@ -48,6 +48,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/types_unittest.cpp
 	ofp/unittest_unittest.cpp
 	ofp/yaml_unittest.cpp
+	ofp/yhello_unittest.cpp
 )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include")

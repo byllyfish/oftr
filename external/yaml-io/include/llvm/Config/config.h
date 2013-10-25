@@ -218,6 +218,9 @@
 /* Define to 1 if you have the `pthread' library (-lpthread). */
 #define HAVE_LIBPTHREAD 1
 
+/* Define to 1 if you have the `shell32' library (-lshell32). */
+/* #undef HAVE_LIBSHELL32 */
+
 /* Define to 1 if you have the `udis86' library (-ludis86). */
 /* #undef HAVE_LIBUDIS86 */
 
@@ -526,19 +529,19 @@
 /* #undef HAVE____CHKSTK */
 
 /* Linker version detected at compile time. */
-#define HOST_LINK_VERSION "136"
+#define HOST_LINK_VERSION "224.1"
 
 /* Installation directory for binary executables */
 #define LLVM_BINDIR "/usr/local/bin"
 
 /* Time at which LLVM was configured */
-#define LLVM_CONFIGTIME "Sat Aug 31 15:50:49 MST 2013"
+#define LLVM_CONFIGTIME "Sat Oct 19 10:20:35 MST 2013"
 
 /* Installation directory for data files */
 #define LLVM_DATADIR "/usr/local/share/llvm"
 
 /* Target triple LLVM will generate code for by default */
-#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin12.4.0"
+#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin12.5.0"
 
 /* Installation directory for documentation */
 #define LLVM_DOCSDIR "/usr/local/share/doc/llvm"
@@ -556,7 +559,7 @@
 #define LLVM_HAS_ATOMICS 1
 
 /* Host triple LLVM will be executed on */
-#define LLVM_HOST_TRIPLE "x86_64-apple-darwin12.4.0"
+#define LLVM_HOST_TRIPLE "x86_64-apple-darwin12.5.0"
 
 /* Installation directory for include files */
 #define LLVM_INCLUDEDIR "/usr/local/include"

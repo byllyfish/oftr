@@ -17,7 +17,7 @@ type:            OFPT_HELLO
 xid:             0x00000000
 version:         4
 msg:             
-  versions:        [ 4 ]
+  versions:        [ 1, 2, 3, 4 ]
 ...
 ---
 type:            OFPT_HELLO
@@ -66,5 +66,5 @@ type:            OFPT_HELLO
 xid:             0x00000000
 version:         4
 msg:             
-  versions:        [ 4 ]
+  versions:        [ 1, 2, 3, 4 ]
 ...
