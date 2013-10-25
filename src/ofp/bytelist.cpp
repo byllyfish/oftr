@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements ByteList class.
@@ -24,18 +24,13 @@
 using namespace ofp;
 
 /// Construct ByteList by making a copy of a ByteRange.
-ByteList::ByteList(const ByteRange &range)
-{
-	add(range.data(), range.size());
-}
+ByteList::ByteList(const ByteRange &range) { add(range.data(), range.size()); }
 
 /// Return range of bytes.
-ByteRange ByteList::toRange() const
-{
-	return ByteRange{data(), size()};
+ByteRange ByteList::toRange() const {
+  return ByteRange{data(), size()};
 }
 
-void ByteList::operator=(const ByteRange &range)
-{
-	set(range.data(), range.size());
+void ByteList::operator=(const ByteRange &range) {
+  set(range.data(), range.size());
 }

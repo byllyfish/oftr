@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for ApiServer class.
@@ -26,8 +26,7 @@
 using namespace ofp;
 using namespace yaml;
 
-TEST(apiserver, test)
-{
-    //Driver driver;
-    //ApiServer server{&driver, IPv6Address{}, 9191};
+TEST(apiserver, test) {
+  // Driver driver;
+  // ApiServer server{&driver, IPv6Address{}, 9191};
 }

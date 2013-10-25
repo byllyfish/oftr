@@ -36,51 +36,47 @@ class Engine;
 class Features;
 
 struct DriverOptions {
-    /// Platform-specific context for TLS implementation (certificates, etc).
-    /// Pass a pointer to a `boost::asio::ssl::context`.
-    void *tlsContext = nullptr;
+  /// Platform-specific context for TLS implementation (certificates, etc).
+  /// Pass a pointer to a `boost::asio::ssl::context`.
+  void *tlsContext = nullptr;
 };
 
 class Driver {
 public:
+  enum Role {
+    Agent = 0,
+    Controller,
+    Bridge,
+    Auxiliary // for internal use only
+  };
 
-    enum Role {
-        Agent = 0,
-        Controller,
-        Bridge,
-        Auxiliary // for internal use only
-    };
+  Driver(DriverOptions *options = nullptr);
+  ~Driver();
 
-    Driver(DriverOptions *options = nullptr);
-    ~Driver();
+  Deferred<Exception> listen(Role role, const Features *features,
+                             const IPv6Endpoint &localEndpoint,
+                             ProtocolVersions versions,
+                             ChannelListener::Factory listenerFactory);
 
-    Deferred<Exception> listen(Role role, const Features *features,
-                               const IPv6Endpoint &localEndpoint,
-                               ProtocolVersions versions,
-                               ChannelListener::Factory listenerFactory);
+  // TODO this should take an array of remote endpoints...
+  Deferred<Exception> connect(Role role, const Features *features,
+                              const IPv6Endpoint &remoteEndpoint,
+                              ProtocolVersions versions,
+                              ChannelListener::Factory listenerFactory);
 
-    // TODO this should take an array of remote endpoints...
-    Deferred<Exception> connect(Role role, const Features *features,
-                                const IPv6Endpoint &remoteEndpoint, 
-                                ProtocolVersions versions,
-                                ChannelListener::Factory listenerFactory);
+  void run();
 
-    void run();
+  /// \brief Tells the driver to stop running.
+  void stop();
 
-    /// \brief Tells the driver to stop running.
-    void stop();
+  /// \brief Installs signal handlers to tell the driver to stop.
+  // FIXME void installSignalHandlers();
 
-    /// \brief Installs signal handlers to tell the driver to stop.
-    //FIXME void installSignalHandlers();
-
-    sys::Engine *engine()
-    {
-        return engine_;
-    }
+  sys::Engine *engine() { return engine_; }
 
 private:
-    sys::Engine *engine_;
-    log::Lifetime lifetime{"Driver"};
+  sys::Engine *engine_;
+  log::Lifetime lifetime{"Driver"};
 };
 
 } // </namespace ofp>

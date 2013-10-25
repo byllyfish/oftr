@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the EchoRequest and EchoRequestBuilder classes.
@@ -31,20 +31,19 @@ namespace ofp { // <namespace ofp>
 //   E c h o R e q u e s t
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
-class EchoRequest : public ProtocolMsg<EchoRequest,OFPT_ECHO_REQUEST> {
+class EchoRequest : public ProtocolMsg<EchoRequest, OFPT_ECHO_REQUEST> {
 public:
+  ByteRange echoData() const;
 
-	ByteRange echoData() const;
+  bool validateLength(size_t length) const;
 
-	bool validateLength(size_t length) const;
-	
 private:
-	Header header_;
+  Header header_;
 
-	// Only EchoRequestBuilder can construct an instance.
-	EchoRequest() : header_{type()} {}
+  // Only EchoRequestBuilder can construct an instance.
+  EchoRequest() : header_{type()} {}
 
-	friend class EchoRequestBuilder;
+  friend class EchoRequestBuilder;
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
@@ -53,17 +52,15 @@ private:
 
 class EchoRequestBuilder {
 public:
-	EchoRequestBuilder() = default;
+  EchoRequestBuilder() = default;
 
-	void setEchoData(const void *data, size_t length) {
-		data_.set(data, length);
-	}
+  void setEchoData(const void *data, size_t length) { data_.set(data, length); }
 
-	UInt32 send(Writable *channel);
-	
+  UInt32 send(Writable *channel);
+
 private:
-	EchoRequest msg_;
-	ByteList data_;
+  EchoRequest msg_;
+  ByteList data_;
 };
 
 } // </namespace ofp>

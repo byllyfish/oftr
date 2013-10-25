@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements protocol encode/decode functions for C API.
@@ -33,37 +33,36 @@ using namespace ofp;
  * @param  outError  output string containing an error message; "" if no error.
  * @return           1 if successful, 0 on error.
  */
- 
+
 int ofpProtocolEncode(OFPString *inMessage, OFPString *outBinary,
-                      OFPString *outError)
-{
-	using yaml::Encoder;
+                      OFPString *outError) {
+  using yaml::Encoder;
 
-	assert(inMessage);
-	assert(outBinary);
-	assert(outError);
-	
-	if (inMessage->length == 0) {
-		const char *errMsg = "Empty message.";
-		ofpStringSet(outError, errMsg, strlen(errMsg));
-		ofpStringClear(outBinary);
-		return 0;
-	}
+  assert(inMessage);
+  assert(outBinary);
+  assert(outError);
 
-	llvm::StringRef input{inMessage->data, Unsigned_cast(inMessage->length)};
-	Encoder encoder{input};
+  if (inMessage->length == 0) {
+    const char *errMsg = "Empty message.";
+    ofpStringSet(outError, errMsg, strlen(errMsg));
+    ofpStringClear(outBinary);
+    return 0;
+  }
 
-	const std::string &err = encoder.error();
-	if (!err.empty()) {
-		ofpStringClear(outBinary);
-		ofpStringSet(outError, err.data(), err.length());
-		return 0;
-	}
+  llvm::StringRef input{inMessage->data, Unsigned_cast(inMessage->length)};
+  Encoder encoder{input};
 
-	ofpStringSet(outBinary, encoder.data(), encoder.size());
-	ofpStringClear(outError);
+  const std::string &err = encoder.error();
+  if (!err.empty()) {
+    ofpStringClear(outBinary);
+    ofpStringSet(outError, err.data(), err.length());
+    return 0;
+  }
 
-	return 1;
+  ofpStringSet(outBinary, encoder.data(), encoder.size());
+  ofpStringClear(outError);
+
+  return 1;
 }
 
 /**
@@ -74,7 +73,6 @@ int ofpProtocolEncode(OFPString *inMessage, OFPString *outBinary,
  * @return            1 if successful, 0 on error.
  */
 int ofpProtocolDecode(OFPString *inBinary, OFPString *outMessage,
-                      OFPString *outError)
-{
-	return 0;
+                      OFPString *outError) {
+  return 0;
 }

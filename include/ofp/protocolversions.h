@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the ProtocolVersions class.
@@ -32,52 +32,40 @@ namespace ofp { // <namespace ofp>
 /// \brief Represents a set of OpenFlow protocol versions.
 class ProtocolVersions {
 public:
+  enum {
+    MinVersion = OFP_VERSION_1,
+    MaxVersion = OFP_VERSION_LAST
+  };
 
-    enum {
-        MinVersion = OFP_VERSION_1,
-        MaxVersion = OFP_VERSION_LAST
-    };
+  enum Setting : UInt32 {
+    All = ~(~0U << (MaxVersion + 1)) & ~1U,
+    None = 0U
+  };
 
-    enum Setting : UInt32 {
-        All = ~(~0U << (MaxVersion + 1)) & ~1U, 
-        None = 0U
-    };
+  ProtocolVersions() : bitmap_{All} {}
 
-    ProtocolVersions() : bitmap_{All}
-    {
-    }
+  /* implicit */ ProtocolVersions(Setting setting) : bitmap_{setting} {}
 
-    /* implicit */ ProtocolVersions(Setting setting) : bitmap_{setting}
-    {
-    }
+  /* implicit */ ProtocolVersions(std::initializer_list<UInt8> versions);
 
-    /* implicit */ ProtocolVersions(std::initializer_list<UInt8> versions);
+  explicit ProtocolVersions(const std::vector<UInt8> &versions);
 
-    explicit ProtocolVersions(const std::vector<UInt8> &versions);
+  bool empty() const { return (bitmap_ == 0); }
 
-    bool empty() const
-    {
-        return (bitmap_ == 0);
-    }
+  UInt8 highestVersion() const;
 
-    UInt8 highestVersion() const;
+  UInt32 bitmap() const { return bitmap_; }
 
-    UInt32 bitmap() const
-    {
-        return bitmap_;
-    }
+  ProtocolVersions intersection(ProtocolVersions versions) const {
+    return fromBitmap(bitmap_ & versions.bitmap_);
+  }
 
-    ProtocolVersions intersection(ProtocolVersions versions) const
-    {
-        return fromBitmap(bitmap_ & versions.bitmap_);
-    }
+  static ProtocolVersions fromBitmap(UInt32 bitmap);
 
-    static ProtocolVersions fromBitmap(UInt32 bitmap);
-
-    std::vector<UInt8> versions() const;
+  std::vector<UInt8> versions() const;
 
 private:
-    UInt32 bitmap_;
+  UInt32 bitmap_;
 };
 
 } // </namespace ofp>

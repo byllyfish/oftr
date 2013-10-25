@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the YAML read and write functions.
@@ -43,7 +43,6 @@ Exception read(const std::string &input, MesgBuilderType *msg);
 /// \returns the YAML representation of a protocol message.
 template <class MesgType>
 std::string write(const MesgType *msg);
-
 
 #if 0
 template <>

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for ByteRange class.
@@ -25,15 +25,14 @@
 
 using namespace ofp;
 
-TEST(byterange, test)
-{
-    const char *s = "abc";
-    ByteRange r{s, 3};
+TEST(byterange, test) {
+  const char *s = "abc";
+  ByteRange r{s, 3};
 
-    EXPECT_EQ(BytePtr(s), r.data());
-    EXPECT_EQ(3, r.size());
+  EXPECT_EQ(BytePtr(s), r.data());
+  EXPECT_EQ(3, r.size());
 
-    ByteList list{"abc", 3};
-    EXPECT_NE(r.data(), list.data());
-    EXPECT_EQ(r, list.toRange());
+  ByteList list{"abc", 3};
+  EXPECT_NE(r.data(), list.data());
+  EXPECT_EQ(r, list.toRange());
 }

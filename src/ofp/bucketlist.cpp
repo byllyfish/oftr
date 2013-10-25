@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements the BucketList class.
@@ -23,11 +23,9 @@
 
 using namespace ofp;
 
+void BucketList::add(const BucketBuilder &bucket) {
+  ActionRange actions = bucket.actions();
 
-void BucketList::add(const BucketBuilder &bucket)
-{
-	ActionRange actions = bucket.actions();
-
-	buf_.add(&bucket, BucketBuilder::SizeWithoutActionRange);
-	buf_.add(actions.data(), actions.size());
+  buf_.add(&bucket, BucketBuilder::SizeWithoutActionRange);
+  buf_.add(actions.data(), actions.size());
 }

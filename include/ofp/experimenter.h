@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the Experimenter class.
@@ -32,39 +32,31 @@ namespace ofp { // <namespace ofp>
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements immutable Experimenter protocol message.
 
-class Experimenter : public ProtocolMsg<Experimenter,OFPT_EXPERIMENTER> {
+class Experimenter : public ProtocolMsg<Experimenter, OFPT_EXPERIMENTER> {
 public:
+  UInt32 experimenter() const { return experimenter_; }
 
-    UInt32 experimenter() const
-    {
-        return experimenter_;
-    }
-    
-    UInt32 expType() const
-    {
-        return expType_;
-    }
+  UInt32 expType() const { return expType_; }
 
-    ByteRange expData() const;
+  ByteRange expData() const;
 
-    bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-    Header header_;
-    Big32 experimenter_;
-    Big32 expType_;
+  Header header_;
+  Big32 experimenter_;
+  Big32 expType_;
 
-    // Only ExperimenterBuilder can construct an actual instance.
-    Experimenter() : header_{type()}
-    {
-    }
+  // Only ExperimenterBuilder can construct an actual instance.
+  Experimenter() : header_{type()} {}
 
-    friend class ExperimenterBuilder;
+  friend class ExperimenterBuilder;
 };
 
 static_assert(sizeof(Experimenter) == 16, "Unexpected size.");
 static_assert(IsStandardLayout<Experimenter>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<Experimenter>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<Experimenter>(),
+              "Expected trivially copyable.");
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 //   E x p e r i m e n t e r B u i l d e r
@@ -73,30 +65,23 @@ static_assert(IsTriviallyCopyable<Experimenter>(), "Expected trivially copyable.
 
 class ExperimenterBuilder {
 public:
+  ExperimenterBuilder() {}
 
-    ExperimenterBuilder() {}
+  explicit ExperimenterBuilder(const Experimenter *msg);
 
-    explicit ExperimenterBuilder(const Experimenter *msg);
+  void setExperimenter(UInt32 experimenter) {
+    msg_.experimenter_ = experimenter;
+  }
 
-    void setExperimenter(UInt32 experimenter)
-    {
-        msg_.experimenter_ = experimenter;
-    }
+  void setExpType(UInt32 expType) { msg_.expType_ = expType; }
 
-    void setExpType(UInt32 expType)
-    {
-        msg_.expType_ = expType;
-    }
+  void setExpData(const void *data, size_t length) { data_.set(data, length); }
 
-    void setExpData(const void *data, size_t length) {
-        data_.set(data, length);
-    }
-
-    UInt32 send(Writable *channel);
+  UInt32 send(Writable *channel);
 
 private:
-    Experimenter msg_;
-    ByteList data_;
+  Experimenter msg_;
+  ByteList data_;
 };
 
 } // </namespace ofp>

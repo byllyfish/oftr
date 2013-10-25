@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the TableMod and TableModBuilder classes.
@@ -27,25 +27,25 @@
 
 namespace ofp { // <namespace ofp>
 
-class TableMod : public ProtocolMsg<TableMod,OFPT_TABLE_MOD> {
+class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD> {
 public:
-	UInt8 tableId() const { return tableId_; }
-	UInt32 config() const { return config_; }
+  UInt8 tableId() const { return tableId_; }
+  UInt32 config() const { return config_; }
 
-	bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-	Header header_;
-	Big8 tableId_;
-	Padding<3> pad_;
-	Big32 config_;
+  Header header_;
+  Big8 tableId_;
+  Padding<3> pad_;
+  Big32 config_;
 
-	// Only TableModBuilder can create an instance.
-	TableMod() : header_{type()} {}
+  // Only TableModBuilder can create an instance.
+  TableMod() : header_{type()} {}
 
-	friend class TableModBuilder;
-	template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  friend class TableModBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(TableMod) == 16, "Unexpected size.");
@@ -54,19 +54,19 @@ static_assert(IsTriviallyCopyable<TableMod>(), "Expected trivially copyable.");
 
 class TableModBuilder {
 public:
-	TableModBuilder() = default;
-	explicit TableModBuilder(const TableMod *msg);
+  TableModBuilder() = default;
+  explicit TableModBuilder(const TableMod *msg);
 
-	void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
-	void setConfig(UInt32 config) { msg_.config_ = config; }
+  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setConfig(UInt32 config) { msg_.config_ = config; }
 
-	UInt32 send(Writable *channel);
+  UInt32 send(Writable *channel);
 
 private:
-	TableMod msg_;
+  TableMod msg_;
 
-	template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements MultipartReply class.
@@ -25,27 +25,25 @@
 
 namespace ofp { // <namespace ofp>
 
-bool MultipartReply::validateLength(size_t length) const
-{
-	// FIXME - see same method in MultipartRequest.
-	return length >= sizeof(MultipartReply);
+bool MultipartReply::validateLength(size_t length) const {
+  // FIXME - see same method in MultipartRequest.
+  return length >= sizeof(MultipartReply);
 }
 
-UInt32 MultipartReplyBuilder::send(Writable *channel)
-{
-	UInt8 version = channel->version();
-	UInt32 xid = channel->nextXid();
-	size_t msgLen = sizeof(msg_) + body_.size();
+UInt32 MultipartReplyBuilder::send(Writable *channel) {
+  UInt8 version = channel->version();
+  UInt32 xid = channel->nextXid();
+  size_t msgLen = sizeof(msg_) + body_.size();
 
-	msg_.header_.setVersion(version);
-	msg_.header_.setXid(xid);
-	msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setVersion(version);
+  msg_.header_.setXid(xid);
+  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
-	channel->write(&msg_, sizeof(msg_));
-	channel->write(body_.data(), body_.size());
-	channel->flush();
+  channel->write(&msg_, sizeof(msg_));
+  channel->write(body_.data(), body_.size());
+  channel->flush();
 
-	return xid;
+  return xid;
 }
 
 } // </namespace ofp>

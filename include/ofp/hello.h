@@ -25,7 +25,7 @@
 #include "ofp/protocolmsg.h"
 #include "ofp/protocolversions.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
@@ -34,44 +34,42 @@ namespace detail { // <namespace detail>
 
 class HelloElement {
 public:
-    UInt16 type() const;
+  UInt16 type() const;
 
-    void setType(UInt16 type);
-    void setLength(UInt16 length);
+  void setType(UInt16 type);
+  void setLength(UInt16 length);
 
-    ProtocolVersions versionBitMap() const;
-    bool validateLength(size_t remaining) const;
-    const HelloElement *next(size_t *remaining) const;
+  ProtocolVersions versionBitMap() const;
+  bool validateLength(size_t remaining) const;
+  const HelloElement *next(size_t *remaining) const;
 
 private:
-    Big16 type_;
-    Big16 length_;
+  Big16 type_;
+  Big16 length_;
 };
 
 } // </namespace detail>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   H e l l o 
+//   H e l l o
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Immutable OpenFlow `Hello` protocol message.
 
-class Hello : public ProtocolMsg<Hello,OFPT_HELLO> {
+class Hello : public ProtocolMsg<Hello, OFPT_HELLO> {
 public:
-    ProtocolVersions protocolVersions() const;
+  ProtocolVersions protocolVersions() const;
 
-    bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-    Header header_;
+  Header header_;
 
-    const detail::HelloElement *helloElements() const;
+  const detail::HelloElement *helloElements() const;
 
-    // Only HelloBuilder can construct an actual instance.
-    Hello() : header_{type()}
-    {
-    }
+  // Only HelloBuilder can construct an actual instance.
+  Hello() : header_{type()} {}
 
-    friend class HelloBuilder;
+  friend class HelloBuilder;
 };
 
 static_assert(sizeof(Hello) == 8, "Unexpected size.");
@@ -85,30 +83,27 @@ static_assert(IsTriviallyCopyable<Hello>(), "Expected trivially copyable.");
 
 class HelloBuilder {
 public:
+  HelloBuilder(ProtocolVersions versions = ProtocolVersions{})
+      : bitmap_{versions.bitmap()} {
+    msg_.header_.setVersion(versions.highestVersion());
+  }
 
-    HelloBuilder(ProtocolVersions versions = ProtocolVersions{})
-        : bitmap_{versions.bitmap()}
-    {
-        msg_.header_.setVersion(versions.highestVersion());
-    }
+  explicit HelloBuilder(UInt8 version)
+      : bitmap_{ProtocolVersions{version}.bitmap()} {
+    msg_.header_.setVersion(version);
+  }
 
-    explicit HelloBuilder(UInt8 version)
-    	: bitmap_{ProtocolVersions{version}.bitmap()}
-    {
-    	msg_.header_.setVersion(version);
-    }
+  explicit HelloBuilder(const Hello *msg);
 
-    explicit HelloBuilder(const Hello *msg);
+  ProtocolVersions protocolVersions() const;
+  void setProtocolVersions(ProtocolVersions versions);
 
-    ProtocolVersions protocolVersions() const;
-    void setProtocolVersions(ProtocolVersions versions);
-
-    UInt32 send(Writable *channel);
+  UInt32 send(Writable *channel);
 
 private:
-    Hello msg_;
-    detail::HelloElement elem_;
-    Big32 bitmap_ = 0;
+  Hello msg_;
+  detail::HelloElement elem_;
+  Big32 bitmap_ = 0;
 };
 
 } // </namespace ofp>

@@ -1,4 +1,4 @@
-
+# cmake file for oxmfields.h, oxmfields.cpp and oxmfieldsdata.cpp.
 
 set(oxmfields_h "${CMAKE_BINARY_DIR}/include/ofp/oxmfields.h")
 set(oxmfields_cpp "${CMAKE_CURRENT_BINARY_DIR}/oxmfields.cpp")

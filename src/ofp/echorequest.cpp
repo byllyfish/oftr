@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements EchoRequest and EchoRequestBuilder classes.
@@ -25,31 +25,28 @@
 
 namespace ofp { // <namespace ofp>
 
-ByteRange EchoRequest::echoData() const
-{
-    return ByteRange{BytePtr(this) + sizeof(Header),
-                     header_.length() - sizeof(Header)};
+ByteRange EchoRequest::echoData() const {
+  return ByteRange{BytePtr(this) + sizeof(Header),
+                   header_.length() - sizeof(Header)};
 }
 
-bool EchoRequest::validateLength(size_t length) const
-{
-    return (length >= sizeof(Header));
+bool EchoRequest::validateLength(size_t length) const {
+  return (length >= sizeof(Header));
 }
 
-UInt32 EchoRequestBuilder::send(Writable *channel)
-{
-    UInt8 version = channel->version();
-    UInt32 xid = channel->nextXid();
-    size_t msgLen = sizeof(Header) + data_.size();
-    msg_.header_.setVersion(version);
-    msg_.header_.setXid(xid);
-    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+UInt32 EchoRequestBuilder::send(Writable *channel) {
+  UInt8 version = channel->version();
+  UInt32 xid = channel->nextXid();
+  size_t msgLen = sizeof(Header) + data_.size();
+  msg_.header_.setVersion(version);
+  msg_.header_.setXid(xid);
+  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
-    channel->write(&msg_, sizeof(msg_));
-    channel->write(data_.data(), data_.size());
-    channel->flush();
+  channel->write(&msg_, sizeof(msg_));
+  channel->write(data_.data(), data_.size());
+  channel->flush();
 
-    return xid;
+  return xid;
 }
 
 } // </namespace ofp>

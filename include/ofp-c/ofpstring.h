@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Provides simple string api.
@@ -28,12 +28,13 @@
 extern "C" {
 
 typedef struct {
-    char *data;
-    size_t length;
-    size_t capacity;
+  char *data;
+  size_t length;
+  size_t capacity;
 } OFPString;
 
-#define ofpStringNewEmpty()	{ NULL, 0, 0 }
+#define ofpStringNewEmpty()                                                    \
+  { NULL, 0, 0 }
 
 OFP_EXPORT int ofpStringSet(OFPString *str, const void *data, size_t length);
 OFP_EXPORT int ofpStringSetC(OFPString *str, const char *cstr);

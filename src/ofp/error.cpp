@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements Error and ErrorBuilder classes.
@@ -26,50 +26,44 @@
 
 namespace ofp { // <namespace ofp>
 
-bool Error::validateLength(size_t length) const
-{
-    return (length >= sizeof(Error));
+bool Error::validateLength(size_t length) const {
+  return (length >= sizeof(Error));
 }
 
-ByteRange Error::errorData() const
-{
-    return ByteRange{BytePtr(this) + sizeof(Error),
-                     header_.length() - sizeof(Error)};
+ByteRange Error::errorData() const {
+  return ByteRange{BytePtr(this) + sizeof(Error),
+                   header_.length() - sizeof(Error)};
 }
 
-ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code)
-{
-    msg_.type_ = type;
-    msg_.code_ = code;
+ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code) {
+  msg_.type_ = type;
+  msg_.code_ = code;
 }
 
-ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg}
-{
-    // Only data is left to copy.
-    ByteRange data = msg->errorData();
-    setErrorData(data.data(), data.size());
+ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg} {
+  // Only data is left to copy.
+  ByteRange data = msg->errorData();
+  setErrorData(data.data(), data.size());
 }
 
-void ErrorBuilder::setErrorData(const Message *message)
-{
-    assert(message);
-    size_t len = message->size();
-    if (len > 64)
-        len = 64;
-    setErrorData(message->data(), len);
+void ErrorBuilder::setErrorData(const Message *message) {
+  assert(message);
+  size_t len = message->size();
+  if (len > 64)
+    len = 64;
+  setErrorData(message->data(), len);
 }
 
-void ErrorBuilder::send(Writable *channel)
-{
-    size_t msgLen = sizeof(msg_) + data_.size();
+void ErrorBuilder::send(Writable *channel) {
+  size_t msgLen = sizeof(msg_) + data_.size();
 
-    msg_.header_.setVersion(channel->version());
-    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
-    msg_.header_.setXid(channel->nextXid());
+  msg_.header_.setVersion(channel->version());
+  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setXid(channel->nextXid());
 
-    channel->write(&msg_, sizeof(msg_));
-    channel->write(data_.data(), data_.size());
-    channel->flush();
+  channel->write(&msg_, sizeof(msg_));
+  channel->write(data_.data(), data_.size());
+  channel->flush();
 }
 
 } // </namespace ofp>

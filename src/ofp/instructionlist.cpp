@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements InstructionList class.
@@ -24,25 +24,22 @@
 
 using namespace ofp;
 
-InstructionList::InstructionList(const InstructionRange &range)
-{
-    buf_.add(range.data(), range.size());
+InstructionList::InstructionList(const InstructionRange &range) {
+  buf_.add(range.data(), range.size());
 }
 
 /// \brief Retrieve action list from OFPIT_APPLY_ACTIONS instruction.
-ActionRange InstructionList::toActions() const
-{
-    InstructionIterator iter = begin();
-    InstructionIterator iterEnd = end();
+ActionRange InstructionList::toActions() const {
+  InstructionIterator iter = begin();
+  InstructionIterator iterEnd = end();
 
-    while (iter != iterEnd) {
-        if (iter.type() == IT_APPLY_ACTIONS::type()) {
-            return ByteRange{ iter.data() + IT_APPLY_ACTIONS::HeaderSize,
-                              iter.size() - IT_APPLY_ACTIONS::HeaderSize };
-        }
-        ++iter;
+  while (iter != iterEnd) {
+    if (iter.type() == IT_APPLY_ACTIONS::type()) {
+      return ByteRange{iter.data() + IT_APPLY_ACTIONS::HeaderSize,
+                       iter.size() - IT_APPLY_ACTIONS::HeaderSize};
     }
+    ++iter;
+  }
 
-    return ByteRange{};
+  return ByteRange{};
 }
-

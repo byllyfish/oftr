@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the InstructionRange class.
@@ -29,30 +29,26 @@ namespace ofp { // <namespace ofp>
 
 class InstructionRange {
 public:
+  InstructionRange(const ByteRange &range) : range_{range} {}
 
-    InstructionRange(const ByteRange &range) : range_{range} {}
-    
-   /// \returns number of items in the range.
-    size_t itemCount() const
-    {
-        return InstructionIterator::distance(begin(), end());
-    }
+  /// \returns number of items in the range.
+  size_t itemCount() const {
+    return InstructionIterator::distance(begin(), end());
+  }
 
-    InstructionIterator begin() const
-    {
-        return InstructionIterator{range_.begin()};
-    }
+  InstructionIterator begin() const {
+    return InstructionIterator{range_.begin()};
+  }
 
-    InstructionIterator end() const
-    {
-        return InstructionIterator{range_.end()};
-    }
+  InstructionIterator end() const {
+    return InstructionIterator{range_.end()};
+  }
 
-    const UInt8 *data() const { return range_.data(); }
-    size_t size() const { return range_.size(); }
-    
+  const UInt8 *data() const { return range_.data(); }
+  size_t size() const { return range_.size(); }
+
 private:
-	ByteRange range_;
+  ByteRange range_;
 };
 
 } // </namespace ofp>

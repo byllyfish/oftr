@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Define globally useful constants, types and functions.
@@ -34,20 +34,19 @@
 #include <chrono>
 
 #if defined(__clang__)
-# define OFP_BEGIN_IGNORE_PADDING \
-    _Pragma("clang diagnostic push") \
-    _Pragma("clang diagnostic ignored \"-Wpadded\"")
-# define OFP_END_IGNORE_PADDING \
-    _Pragma("clang diagnostic pop")
+#define OFP_BEGIN_IGNORE_PADDING                                               \
+  _Pragma("clang diagnostic push")                                             \
+      _Pragma("clang diagnostic ignored \"-Wpadded\"")
+#define OFP_END_IGNORE_PADDING _Pragma("clang diagnostic pop")
 #else
-# define OFP_BEGIN_IGNORE_PADDING
-# define OFP_END_IGNORE_PADDING
+#define OFP_BEGIN_IGNORE_PADDING
+#define OFP_END_IGNORE_PADDING
 #endif
 
 #if defined(__clang__)
-# define OFP_ALIGNAS(x)     alignas(x) 
+#define OFP_ALIGNAS(x) alignas(x)
 #else
-# define OFP_ALIGNAS(x)     __attribute__((aligned (x))) 
+#define OFP_ALIGNAS(x) __attribute__((aligned(x)))
 #endif
 
 namespace ofp { // <namespace ofp>
@@ -81,68 +80,59 @@ using milliseconds = std::chrono::milliseconds;
 // Literal type `ms` is not supported until C++14. Use _ms for now.
 
 constexpr milliseconds operator"" _ms(unsigned long long msec) {
-    return milliseconds{msec};
+  return milliseconds{msec};
 }
 
 template <class T>
-constexpr MakeSigned<T> Signed_cast(T value)
-{
-    return static_cast<MakeSigned<T>>(value);
+constexpr MakeSigned<T> Signed_cast(T value) {
+  return static_cast<MakeSigned<T>>(value);
 }
 
 template <class T>
-constexpr MakeUnsigned<T> Unsigned_cast(T value)
-{
-    return static_cast<MakeUnsigned<T>>(value);
+constexpr MakeUnsigned<T> Unsigned_cast(T value) {
+  return static_cast<MakeUnsigned<T>>(value);
 }
 
 template <class T>
-constexpr UInt8 UInt8_cast(T value)
-{
-    static_assert(sizeof(T) == sizeof(UInt8), "Use UInt8_narrow_cast().");
-    return static_cast<UInt8>(Unsigned_cast(value));
+constexpr UInt8 UInt8_cast(T value) {
+  static_assert(sizeof(T) == sizeof(UInt8), "Use UInt8_narrow_cast().");
+  return static_cast<UInt8>(Unsigned_cast(value));
 }
 
 template <class T>
-constexpr UInt16 UInt16_cast(T value)
-{
-    static_assert(sizeof(T) <= sizeof(UInt16), "Use UInt16_narrow_cast().");
-    return static_cast<UInt16>(Unsigned_cast(value));
+constexpr UInt16 UInt16_cast(T value) {
+  static_assert(sizeof(T) <= sizeof(UInt16), "Use UInt16_narrow_cast().");
+  return static_cast<UInt16>(Unsigned_cast(value));
 }
 
 template <class T>
-constexpr UInt32 UInt32_cast(T value)
-{
-    static_assert(sizeof(T) <= sizeof(UInt32), "Use UInt32_narrow_cast().");
-    return static_cast<UInt32>(Unsigned_cast(value));
+constexpr UInt32 UInt32_cast(T value) {
+  static_assert(sizeof(T) <= sizeof(UInt32), "Use UInt32_narrow_cast().");
+  return static_cast<UInt32>(Unsigned_cast(value));
 }
 
 template <class T>
-constexpr UInt64 UInt64_cast(T value)
-{
-    static_assert(sizeof(T) <= sizeof(UInt64), "No UInt64 narrow casts.");
-    return static_cast<UInt64>(Unsigned_cast(value));
+constexpr UInt64 UInt64_cast(T value) {
+  static_assert(sizeof(T) <= sizeof(UInt64), "No UInt64 narrow casts.");
+  return static_cast<UInt64>(Unsigned_cast(value));
 }
 
 template <class T>
-constexpr UInt8 UInt8_narrow_cast(T value)
-{
-    static_assert(sizeof(T) != sizeof(UInt8), "Use UInt8_cast().");
-    return static_cast<UInt8>(value);
+constexpr UInt8 UInt8_narrow_cast(T value) {
+  static_assert(sizeof(T) != sizeof(UInt8), "Use UInt8_cast().");
+  return static_cast<UInt8>(value);
 }
 
 template <class T>
-constexpr UInt16 UInt16_narrow_cast(T value)
-{
-    static_assert(sizeof(T) != sizeof(UInt16), "Use UInt16_cast().");
-    return static_cast<UInt16>(value);
+constexpr UInt16 UInt16_narrow_cast(T value) {
+  static_assert(sizeof(T) != sizeof(UInt16), "Use UInt16_cast().");
+  return static_cast<UInt16>(value);
 }
 
 template <class T>
-constexpr UInt16 UInt32_narrow_cast(T value)
-{
-    static_assert(sizeof(T) != sizeof(UInt32), "Use UInt32_cast().");
-    return static_cast<UInt32>(value);
+constexpr UInt16 UInt32_narrow_cast(T value) {
+  static_assert(sizeof(T) != sizeof(UInt32), "Use UInt32_cast().");
+  return static_cast<UInt32>(value);
 }
 
 /**
@@ -157,9 +147,8 @@ constexpr UInt16 UInt32_narrow_cast(T value)
  */
 template <class T>
 constexpr EnableIf<std::is_unsigned<T>::value, T> Unsigned_difference(T lhs,
-                                                                      T rhs)
-{
-    return lhs >= rhs ? lhs - rhs : 0;
+                                                                      T rhs) {
+  return lhs >= rhs ? lhs - rhs : 0;
 }
 
 /**
@@ -169,9 +158,8 @@ constexpr EnableIf<std::is_unsigned<T>::value, T> Unsigned_difference(T lhs,
  * @return true if type is a literal type.
  */
 template <class T>
-constexpr bool IsLiteralType()
-{
-    return std::is_literal_type<T>::value;
+constexpr bool IsLiteralType() {
+  return std::is_literal_type<T>::value;
 }
 
 /**
@@ -180,9 +168,8 @@ constexpr bool IsLiteralType()
  *  @return true if type has standard layout.
  */
 template <class T>
-constexpr bool IsStandardLayout()
-{
-    return std::is_standard_layout<T>::value;
+constexpr bool IsStandardLayout() {
+  return std::is_standard_layout<T>::value;
 }
 
 /**
@@ -192,15 +179,14 @@ constexpr bool IsStandardLayout()
  * @return true if type is trivially copyable.
  */
 template <class T>
-constexpr bool IsTriviallyCopyable()
-{
-# if defined(__clang__)
-    return std::is_trivially_copyable<T>::value;
-# else
-    // GCC 4.7.2 doesn't define std::is_trivially_copyable. We only use this
-    // macro in static_asserts, so the easiest fix is to always return true.
-    return true;
-# endif
+constexpr bool IsTriviallyCopyable() {
+#if defined(__clang__)
+  return std::is_trivially_copyable<T>::value;
+#else
+  // GCC 4.7.2 doesn't define std::is_trivially_copyable. We only use this
+  // macro in static_asserts, so the easiest fix is to always return true.
+  return true;
+#endif
 }
 
 /**
@@ -208,32 +194,28 @@ constexpr bool IsTriviallyCopyable()
  *  @return number of elements in array.
  */
 template <class T, size_t N>
-constexpr size_t ArrayLength(T(&)[N])
-{
-    return N;
+constexpr size_t ArrayLength(T (&)[N]) {
+  return N;
 }
 
 /**
  *  Return byte pointer for any memory address.
  */
-constexpr const UInt8 *BytePtr(const void *data)
-{
-    return static_cast<const UInt8 *>(data);
+constexpr const UInt8 *BytePtr(const void *data) {
+  return static_cast<const UInt8 *>(data);
 }
 
-/// Removes a `const` qualifier from a reference. This is necessary in rare 
-/// cases when interacting with important external API's that are less 
+/// Removes a `const` qualifier from a reference. This is necessary in rare
+/// cases when interacting with important external API's that are less
 /// `const-strict`. No other instances of const_cast should appear in the code.
 template <class T>
-T &RemoveConst_cast(const T &v)
-{
-    return const_cast<T &>(v);
+T &RemoveConst_cast(const T &v) {
+  return const_cast<T &>(v);
 }
 
 template <class T>
-T *RemoveConst_cast(const T *v) 
-{
-    return const_cast<T *>(v);
+T *RemoveConst_cast(const T *v) {
+  return const_cast<T *>(v);
 }
 
 /**
@@ -243,7 +225,7 @@ T *RemoveConst_cast(const T *v)
  *  @param  length size of input buffer
  *  @return hexadecimal string
  */
-std::string RawDataToHex(const void* data, size_t length);
+std::string RawDataToHex(const void *data, size_t length);
 
 /**
  *  Convert raw buffer to a hexadecimal string. The resulting string is
@@ -258,7 +240,7 @@ std::string RawDataToHex(const void* data, size_t length);
  *  @param  word number of bytes between delimiters
  *  @return hexadecimal string
  */
-std::string RawDataToHex(const void* data, size_t length, char delimiter,
+std::string RawDataToHex(const void *data, size_t length, char delimiter,
                          int word = 1);
 
 /**
@@ -273,7 +255,8 @@ std::string RawDataToHex(const void* data, size_t length, char delimiter,
  *  @param  error ptr to optional boolean error result
  *  @return number of bytes resulting from hexadecimal string
  */
-size_t HexToRawData(const std::string& hex, void* data, size_t length, bool *error = nullptr);
+size_t HexToRawData(const std::string &hex, void *data, size_t length,
+                    bool *error = nullptr);
 
 /**
  *  Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
@@ -281,7 +264,7 @@ size_t HexToRawData(const std::string& hex, void* data, size_t length, bool *err
  *  @param  hex string containing hexadecimal characters
  *  @return string containing raw bytes
  */
-std::string HexToRawData(const std::string& hex);
+std::string HexToRawData(const std::string &hex);
 
 /**
  *  Return true if memory block is filled with given byte value.
@@ -290,7 +273,7 @@ std::string HexToRawData(const std::string& hex);
  *  @param  fill fill byte
  *  @return true if memory block is filled with given byte value.
  */
-bool IsMemFilled(const void* data, size_t length, char fill);
+bool IsMemFilled(const void *data, size_t length, char fill);
 
 } // </namespace ofp>
 
@@ -299,7 +282,7 @@ bool IsMemFilled(const void* data, size_t length, char fill);
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
-template<class T>
+template <class T>
 struct MappingTraits;
 
 } // </namespace yaml>

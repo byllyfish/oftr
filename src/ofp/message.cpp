@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements Message class.
@@ -31,35 +31,29 @@
 
 using namespace ofp;
 
+Channel *Message::source() const { return channel_; }
 
-Channel *Message::source() const
-{
-    return channel_;
+bool Message::isRequestType() const {
+  // Echo request is not included because it's handled by the connection
+  // itself.
+
+  switch (type()) {
+  case OFPT_FEATURES_REQUEST:
+  case OFPT_GET_CONFIG_REQUEST:
+  case OFPT_MULTIPART_REQUEST:
+  case OFPT_BARRIER_REQUEST:
+  case OFPT_QUEUE_GET_CONFIG_REQUEST:
+  case OFPT_ROLE_REQUEST:
+  case OFPT_GET_ASYNC_REQUEST:
+    return true;
+  default:
+    break;
+  }
+
+  return false;
 }
 
-bool Message::isRequestType() const
-{
-	// Echo request is not included because it's handled by the connection
-	// itself.
-
-	switch (type()) {
-		case OFPT_FEATURES_REQUEST:
-		case OFPT_GET_CONFIG_REQUEST:
-		case OFPT_MULTIPART_REQUEST:
-		case OFPT_BARRIER_REQUEST:
-		case OFPT_QUEUE_GET_CONFIG_REQUEST:
-		case OFPT_ROLE_REQUEST:
-		case OFPT_GET_ASYNC_REQUEST:
-			return true;
-		default:
-			break;
-	}
-
-	return false;
-}
-
-void Message::transmogrify()
-{
-    Transmogrify tr{this};
-    tr.normalize();
+void Message::transmogrify() {
+  Transmogrify tr{this};
+  tr.normalize();
 }

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the FeaturesReply and FeaturesReplyBuilder classes.
@@ -31,41 +31,41 @@ namespace ofp { // <namespace ofp>
 /**
  *  FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
  */
-class FeaturesReply : public ProtocolMsg<FeaturesReply,OFPT_FEATURES_REPLY> {
+class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY> {
 public:
+  void getFeatures(Features *features) const;
 
-    void getFeatures(Features *features) const;
+  const DatapathID &datapathId() const { return datapathId_; }
+  UInt32 bufferCount() const { return bufferCount_; }
+  UInt8 tableCount() const { return tableCount_; }
+  UInt8 auxiliaryId() const { return auxiliaryId_; }
+  UInt32 capabilities() const { return capabilities_; }
+  UInt32 reserved() const { return reserved_; }
 
-    const DatapathID &datapathId() const { return datapathId_; }
-    UInt32 bufferCount() const { return bufferCount_; }
-    UInt8 tableCount() const { return tableCount_; }
-    UInt8 auxiliaryId() const { return auxiliaryId_; }
-    UInt32 capabilities() const { return capabilities_; }
-    UInt32 reserved() const { return reserved_; }
+  // PortRange ports() const;
 
-    //PortRange ports() const;
-
-    bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-    Header header_;
-    DatapathID datapathId_;
-    Big32 bufferCount_;
-    Big8 tableCount_;
-    Big8 auxiliaryId_;
-    Padding<2> pad_;
-    Big32 capabilities_;
-    Big32 reserved_;
+  Header header_;
+  DatapathID datapathId_;
+  Big32 bufferCount_;
+  Big8 tableCount_;
+  Big8 auxiliaryId_;
+  Padding<2> pad_;
+  Big32 capabilities_;
+  Big32 reserved_;
 
-    // Only FeaturesReplyBuilder can construct an actual instance.
-    FeaturesReply() : header_{type()} {}
+  // Only FeaturesReplyBuilder can construct an actual instance.
+  FeaturesReply() : header_{type()} {}
 
-    friend class FeaturesReplyBuilder;
+  friend class FeaturesReplyBuilder;
 };
 
 static_assert(sizeof(FeaturesReply) == 32, "Unexpected size.");
 static_assert(IsStandardLayout<FeaturesReply>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<FeaturesReply>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<FeaturesReply>(),
+              "Expected trivially copyable.");
 
 /**
  *  FeaturesReplyBuilder is a concrete class for building an OFPT_FEATURES_REPLY
@@ -73,22 +73,26 @@ static_assert(IsTriviallyCopyable<FeaturesReply>(), "Expected trivially copyable
  */
 class FeaturesReplyBuilder {
 public:
-    explicit FeaturesReplyBuilder(UInt32 xid);
-    explicit FeaturesReplyBuilder(const FeaturesReply *msg);
+  explicit FeaturesReplyBuilder(UInt32 xid);
+  explicit FeaturesReplyBuilder(const FeaturesReply *msg);
 
-    void setFeatures(const Features &features);
-    
-    void setDatapathId(const DatapathID &datapathId) { msg_.datapathId_ = datapathId; }
-    void setBufferCount(UInt32 bufferCount) { msg_.bufferCount_ = bufferCount; }
-    void setTableCount(UInt8 tableCount) { msg_.tableCount_ = tableCount; }
-    void setAuxiliaryId(UInt8 auxiliaryId) { msg_.auxiliaryId_ = auxiliaryId; }
-    void setCapabilities(UInt32 capabilities) { msg_.capabilities_ = capabilities; }
-    void setReserved(UInt32 reserved) { msg_.reserved_ = reserved; }
-    
-    UInt32 send(Writable *channel);
+  void setFeatures(const Features &features);
+
+  void setDatapathId(const DatapathID &datapathId) {
+    msg_.datapathId_ = datapathId;
+  }
+  void setBufferCount(UInt32 bufferCount) { msg_.bufferCount_ = bufferCount; }
+  void setTableCount(UInt8 tableCount) { msg_.tableCount_ = tableCount; }
+  void setAuxiliaryId(UInt8 auxiliaryId) { msg_.auxiliaryId_ = auxiliaryId; }
+  void setCapabilities(UInt32 capabilities) {
+    msg_.capabilities_ = capabilities;
+  }
+  void setReserved(UInt32 reserved) { msg_.reserved_ = reserved; }
+
+  UInt32 send(Writable *channel);
 
 private:
-    FeaturesReply msg_;
+  FeaturesReply msg_;
 };
 
 } // </namespace ofp>

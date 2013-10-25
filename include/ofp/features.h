@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the Features class.
@@ -31,82 +31,44 @@ namespace ofp { // <namespace ofp>
 // FIXME Need to handle version 1!
 class Features {
 public:
-    Features() = default;
-    Features(const DatapathID &datapathId, UInt32 bufferCount = 1,
-             UInt8 tableCount = 1)
-        : datapathId_{datapathId}, bufferCount_{bufferCount},
-          tableCount_{tableCount}
-    {
-    }
+  Features() = default;
+  Features(const DatapathID &datapathId, UInt32 bufferCount = 1,
+           UInt8 tableCount = 1)
+      : datapathId_{datapathId}, bufferCount_{bufferCount},
+        tableCount_{tableCount} {}
 
-    DatapathID datapathId() const
-    {
-        return datapathId_;
-    }
+  DatapathID datapathId() const { return datapathId_; }
 
-    UInt32 bufferCount() const
-    {
-        return bufferCount_;
-    }
+  UInt32 bufferCount() const { return bufferCount_; }
 
-    UInt8 tableCount() const
-    {
-        return tableCount_;
-    }
+  UInt8 tableCount() const { return tableCount_; }
 
-    UInt8 auxiliaryId() const
-    {
-        return auxiliaryId_;
-    }
+  UInt8 auxiliaryId() const { return auxiliaryId_; }
 
-    UInt32 capabilities() const
-    {
-        return capabilities_;
-    }
+  UInt32 capabilities() const { return capabilities_; }
 
-    UInt32 reserved() const
-    {
-        return reserved_;
-    }
+  UInt32 reserved() const { return reserved_; }
 
-    void setDatapathId(DatapathID datapathId)
-    {
-        datapathId_ = datapathId;
-    }
+  void setDatapathId(DatapathID datapathId) { datapathId_ = datapathId; }
 
-    void setBufferCount(UInt32 bufferCount)
-    {
-        bufferCount_ = bufferCount;
-    }
+  void setBufferCount(UInt32 bufferCount) { bufferCount_ = bufferCount; }
 
-    void setTableCount(UInt8 tableCount)
-    {
-        tableCount_ = tableCount;
-    }
+  void setTableCount(UInt8 tableCount) { tableCount_ = tableCount; }
 
-    void setAuxiliaryId(UInt8 auxiliaryId)
-    {
-        auxiliaryId_ = auxiliaryId;
-    }
+  void setAuxiliaryId(UInt8 auxiliaryId) { auxiliaryId_ = auxiliaryId; }
 
-    void setCapabilities(UInt32 capabilities)
-    {
-        capabilities_ = capabilities;
-    }
+  void setCapabilities(UInt32 capabilities) { capabilities_ = capabilities; }
 
-    void setReserved(UInt32 reserved)
-    {
-        reserved_ = reserved;
-    }
+  void setReserved(UInt32 reserved) { reserved_ = reserved; }
 
 private:
-    DatapathID datapathId_;
-    UInt32 bufferCount_ = 0;
-    UInt8 tableCount_ = 0;
-    UInt8 auxiliaryId_ = 0;
-    Padding<2> pad_;
-    UInt32 capabilities_ = 0;
-    UInt32 reserved_ = 0;
+  DatapathID datapathId_;
+  UInt32 bufferCount_ = 0;
+  UInt8 tableCount_ = 0;
+  UInt8 auxiliaryId_ = 0;
+  Padding<2> pad_;
+  UInt32 capabilities_ = 0;
+  UInt32 reserved_ = 0;
 };
 
 } // </namespace ofp>

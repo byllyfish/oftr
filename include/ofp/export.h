@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines OFP_EXPORT macro for public API functions.
@@ -22,8 +22,6 @@
 #ifndef OFP_EXPORT_H
 #define OFP_EXPORT_H
 
-
 #define OFP_EXPORT __attribute__((visibility("default")))
-
 
 #endif // OFP_EXPORT_H

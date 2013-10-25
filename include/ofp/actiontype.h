@@ -29,7 +29,6 @@ namespace ofp { // <namespace ofp>
 
 class ActionType {
 public:
-
 #if 0
     enum : UInt16 {
         AT_OUTPUT = 0,
@@ -50,60 +49,43 @@ public:
         AT_POP_PBB = 27,
         AT_EXPERIMENTER = 0xFFFF // possible lengths: 8, 16, 24, 32, 40, ...
     };
-#endif //0
+#endif // 0
 
-    constexpr ActionType(OFPActionType type, UInt16 length)
-        : value32_{make(type, length)}
-    {
-    }
+  constexpr ActionType(OFPActionType type, UInt16 length)
+      : value32_{make(type, length)} {}
 
-    static ActionType fromBytes(const UInt8 *data);
+  static ActionType fromBytes(const UInt8 *data);
 
-    constexpr OFPActionType type() const
-    {
-        return static_cast<OFPActionType>(nativeType() >> 16);
-    }
+  constexpr OFPActionType type() const {
+    return static_cast<OFPActionType>(nativeType() >> 16);
+  }
 
-    constexpr UInt16 length() const
-    {
-        return UInt16_narrow_cast(nativeType());
-    }
+  constexpr UInt16 length() const { return UInt16_narrow_cast(nativeType()); }
 
-    constexpr operator UInt32() const
-    {
-        return value32_;
-    }
+  constexpr operator UInt32() const { return value32_; }
 
-    constexpr static ActionType fromNative(UInt32 value)
-    {
-        return ActionType{value};
-    }
+  constexpr static ActionType fromNative(UInt32 value) {
+    return ActionType{value};
+  }
 
-    constexpr UInt32 nativeType() const
-    {
-        return BigEndianToNative(value32_);
-    }
+  constexpr UInt32 nativeType() const { return BigEndianToNative(value32_); }
 
 private:
-    const UInt32 value32_;
+  const UInt32 value32_;
 
-    constexpr ActionType(UInt32 value) : value32_{value}
-    {
-    }
+  constexpr ActionType(UInt32 value) : value32_{value} {}
 
-    constexpr static UInt32 make(UInt16 type, UInt16 length)
-    {
-        return BigEndianFromNative(UInt32_cast(type << 16) | length);
-    }
+  constexpr static UInt32 make(UInt16 type, UInt16 length) {
+    return BigEndianFromNative(UInt32_cast(type << 16) | length);
+  }
 };
 
 static_assert(IsLiteralType<ActionType>(), "Literal type expected.");
 
-inline ActionType ActionType::fromBytes(const UInt8 *data)
-{
-    ActionType type{0};
-    std::memcpy(&type, data, sizeof(type));
-    return type;
+inline ActionType ActionType::fromBytes(const UInt8 *data) {
+  ActionType type{0};
+  std::memcpy(&type, data, sizeof(type));
+  return type;
 }
 
 } // </namespace ofp>

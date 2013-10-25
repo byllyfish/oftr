@@ -24,46 +24,34 @@
 
 using namespace ofp;
 
-Driver::Driver(DriverOptions *options) : engine_{new sys::Engine{this, options}}
-{
-}
+Driver::Driver(DriverOptions *options)
+    : engine_{new sys::Engine{this, options}} {}
 
-Driver::~Driver()
-{
-    delete engine_;
-}
+Driver::~Driver() { delete engine_; }
 
 Deferred<Exception> Driver::listen(Role role, const Features *features,
                                    const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
-                                   ChannelListener::Factory listenerFactory)
-{
-    return engine_->listen(role, features, localEndpoint, versions,
-                           listenerFactory);
+                                   ChannelListener::Factory listenerFactory) {
+  return engine_->listen(role, features, localEndpoint, versions,
+                         listenerFactory);
 }
 
 Deferred<Exception> Driver::connect(Role role, const Features *features,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
-                                    ChannelListener::Factory listenerFactory)
-{
-    return engine_->connect(role, features, remoteEndpoint, versions,
-                            listenerFactory);
+                                    ChannelListener::Factory listenerFactory) {
+  return engine_->connect(role, features, remoteEndpoint, versions,
+                          listenerFactory);
 }
 
-void Driver::run()
-{
-    engine_->run();
-}
+void Driver::run() { engine_->run(); }
 
-void Driver::stop()
-{
-    engine_->stop();
-}
+void Driver::stop() { engine_->stop(); }
 
 #if 0
 void Driver::installSignalHandlers()
 {
     engine_->installSignalHandlers();
 }
-#endif //0
+#endif // 0

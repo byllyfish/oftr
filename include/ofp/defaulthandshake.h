@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the DefaultHandshake class.
@@ -32,42 +32,41 @@ namespace sys { // <namespace sys>
 class Connection;
 } // </namespace sys>
 
-
 OFP_BEGIN_IGNORE_PADDING
 class DefaultHandshake : public ChannelListener {
 public:
+  DefaultHandshake(sys::Connection *channel, Driver::Role role,
+                   ProtocolVersions versions, Factory listenerFactory);
 
-	DefaultHandshake(sys::Connection *channel, Driver::Role role, ProtocolVersions versions, Factory listenerFactory);
+  void onChannelUp(Channel *channel) override;
+  void onChannelDown(Channel *channel) override;
+  void onMessage(const Message *message) override;
+  void onException(const Exception *exception) override;
+  void onTimer(UInt32 /* timerID */) override {}
 
-	void onChannelUp(Channel *channel) override;
-	void onChannelDown(Channel *channel) override;
-	void onMessage(const Message *message) override;
-	void onException(const Exception *exception) override;
-	void onTimer(UInt32 /* timerID */) override {}
-	
-	Driver::Role role() const { return role_; }
-	ProtocolVersions versions() const { return versions_; }
-	
-	void setStartingVersion(UInt8 version) { startingVersion_ = version; }
-	void setStartingXid(UInt32 xid) { startingXid_ = xid; }
-	void setConnection(sys::Connection *channel) { channel_ = channel; }
+  Driver::Role role() const { return role_; }
+  ProtocolVersions versions() const { return versions_; }
+
+  void setStartingVersion(UInt8 version) { startingVersion_ = version; }
+  void setStartingXid(UInt32 xid) { startingXid_ = xid; }
+  void setConnection(sys::Connection *channel) { channel_ = channel; }
 
 private:
-	sys::Connection *channel_;
-	ProtocolVersions versions_;
-	Factory listenerFactory_;
-	Driver::Role role_;
-	UInt32 startingXid_ = 0;
-	UInt8 startingVersion_ = 0;
+  sys::Connection *channel_;
+  ProtocolVersions versions_;
+  Factory listenerFactory_;
+  Driver::Role role_;
+  UInt32 startingXid_ = 0;
+  UInt8 startingVersion_ = 0;
 
-	void onHello(const Message *message);
-	void onFeaturesRequest(const Message *message);
-	void onFeaturesReply(const Message *message);
-	void onError(const Message *message);
+  void onHello(const Message *message);
+  void onFeaturesRequest(const Message *message);
+  void onFeaturesReply(const Message *message);
+  void onError(const Message *message);
 
-	void replyError(UInt16 type, UInt16 code, const Message *message);
-	void installNewChannelListener();
-	void installAuxiliaryChannelListener();
+  void replyError(UInt16 type, UInt16 code, const Message *message);
+  void installNewChannelListener();
+  void installAuxiliaryChannelListener();
 };
 OFP_END_IGNORE_PADDING
 

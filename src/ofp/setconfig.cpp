@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements SetConfig and SetConfigBuilder classes.
@@ -24,37 +24,27 @@
 
 using namespace ofp;
 
-
-bool SetConfig::validateLength(size_t length) const
-{
-	return (length == sizeof(SetConfig));
+bool SetConfig::validateLength(size_t length) const {
+  return (length == sizeof(SetConfig));
 }
 
+SetConfigBuilder::SetConfigBuilder(const SetConfig *msg) : msg_{*msg} {}
 
-SetConfigBuilder::SetConfigBuilder(const SetConfig *msg) : msg_{*msg}
-{
+void SetConfigBuilder::setFlags(UInt16 flags) { msg_.flags_ = flags; }
+
+void SetConfigBuilder::setMissSendLen(UInt16 missSendLen) {
+  msg_.missSendLen_ = missSendLen;
 }
 
-void SetConfigBuilder::setFlags(UInt16 flags)
-{
-	msg_.flags_ = flags;
-}
+UInt32 SetConfigBuilder::send(Writable *channel) {
+  UInt32 xid = channel->nextXid();
 
-void SetConfigBuilder::setMissSendLen(UInt16 missSendLen)
-{
-	msg_.missSendLen_ = missSendLen;
-}
+  msg_.header_.setVersion(channel->version());
+  msg_.header_.setLength(sizeof(msg_));
+  msg_.header_.setXid(xid);
 
-UInt32 SetConfigBuilder::send(Writable *channel)
-{
-	UInt32 xid = channel->nextXid();
+  channel->write(&msg_, sizeof(msg_));
+  channel->flush();
 
-    msg_.header_.setVersion(channel->version());
-    msg_.header_.setLength(sizeof(msg_));
-    msg_.header_.setXid(xid);
-
-    channel->write(&msg_, sizeof(msg_));
-    channel->flush();
-
-    return xid;
+  return xid;
 }

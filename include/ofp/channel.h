@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the abstract Channel class.
@@ -35,46 +35,46 @@ class DatapathID;
 
 class Channel : public Writable {
 public:
-	virtual ~Channel() {}
-	
-	virtual Driver *driver() const = 0;
-	virtual const Features &features() const = 0;
-	virtual DatapathID datapathId() const = 0;
-	virtual UInt8 auxiliaryId() const = 0;
-	virtual IPv6Address remoteAddress() const = 0;
-	virtual UInt16 remotePort() const = 0;
-	virtual void shutdown() = 0;
-	
-	virtual ChannelListener *channelListener() const = 0;
-	virtual void setChannelListener(ChannelListener *listener) = 0;
+  virtual ~Channel() {}
 
-	virtual void scheduleTimer(UInt32 timerID, milliseconds when, bool repeat = false) = 0;
-	virtual void cancelTimer(UInt32 timerID) = 0;
+  virtual Driver *driver() const = 0;
+  virtual const Features &features() const = 0;
+  virtual DatapathID datapathId() const = 0;
+  virtual UInt8 auxiliaryId() const = 0;
+  virtual IPv6Address remoteAddress() const = 0;
+  virtual UInt16 remotePort() const = 0;
+  virtual void shutdown() = 0;
 
-	// The following methods are provided for OpenFlow agents.
-	// The failure to open an auxiliary channel will be reported to the main listener via onException.
-	
-	enum class Transport {
-		TCP,
-		UDP,
-		TLS,
-		DTLS
-	};
+  virtual ChannelListener *channelListener() const = 0;
+  virtual void setChannelListener(ChannelListener *listener) = 0;
 
-	virtual Transport transport() const = 0;
-	virtual void openAuxChannel(UInt8 auxID, Transport transport) = 0;
-	virtual Channel *findAuxChannel(UInt8 auxID) const = 0;
+  virtual void scheduleTimer(UInt32 timerID, milliseconds when,
+                             bool repeat = false) = 0;
+  virtual void cancelTimer(UInt32 timerID) = 0;
 
-	virtual void setStartingXid(UInt32 xid) = 0;
+  // The following methods are provided for OpenFlow agents.
+  // The failure to open an auxiliary channel will be reported to the main
+  // listener via onException.
 
+  enum class Transport {
+    TCP,
+    UDP,
+    TLS,
+    DTLS
+  };
+
+  virtual Transport transport() const = 0;
+  virtual void openAuxChannel(UInt8 auxID, Transport transport) = 0;
+  virtual Channel *findAuxChannel(UInt8 auxID) const = 0;
+
+  virtual void setStartingXid(UInt32 xid) = 0;
 };
-
 
 std::ostream &operator<<(std::ostream &os, Channel *channel);
 
-inline std::ostream &operator<<(std::ostream &os, Channel *channel)
-{
-	return os << "[Channel to=" << channel->remoteAddress() << ':' << channel->remotePort() << ']';
+inline std::ostream &operator<<(std::ostream &os, Channel *channel) {
+  return os << "[Channel to=" << channel->remoteAddress() << ':'
+            << channel->remotePort() << ']';
 }
 
 } // </namespace ofp>

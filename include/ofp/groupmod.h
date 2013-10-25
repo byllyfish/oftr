@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the GroupMod and GroupModBuilder class.
@@ -28,43 +28,43 @@
 
 namespace ofp { // <namespace ofp>
 
-class GroupMod : public ProtocolMsg<GroupMod,OFPT_GROUP_MOD> {
+class GroupMod : public ProtocolMsg<GroupMod, OFPT_GROUP_MOD> {
 public:
-    UInt16 command() const { return command_; }
-    UInt8 groupType() const { return groupType_; }
-    UInt32 groupId() const { return groupId_; }
-    BucketRange buckets() const;
+  UInt16 command() const { return command_; }
+  UInt8 groupType() const { return groupType_; }
+  UInt32 groupId() const { return groupId_; }
+  BucketRange buckets() const;
 
-    bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-	Header header_;
-	Big16 command_;
-	Big8 groupType_;
-	Padding<1> pad_;
-	Big32 groupId_;
+  Header header_;
+  Big16 command_;
+  Big8 groupType_;
+  Padding<1> pad_;
+  Big32 groupId_;
 
-	// Only GroupModBuilder can construct an actual instance.
-    GroupMod() : header_{type()} {}
+  // Only GroupModBuilder can construct an actual instance.
+  GroupMod() : header_{type()} {}
 
-    friend class GroupModBuilder;
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  friend class GroupModBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 class GroupModBuilder {
 public:
-	GroupModBuilder() = default;
-	explicit GroupModBuilder(const GroupMod *msg);
+  GroupModBuilder() = default;
+  explicit GroupModBuilder(const GroupMod *msg);
 
-	UInt32 send(Writable *channel);
+  UInt32 send(Writable *channel);
 
 private:
-	GroupMod msg_;
-	BucketList buckets_;
+  GroupMod msg_;
+  BucketList buckets_;
 
-	template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

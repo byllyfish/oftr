@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the PacketOut and PacketOutBuilder classes.
@@ -28,30 +28,29 @@
 
 namespace ofp { // <namespace ofp>
 
-class PacketOut : public ProtocolMsg<PacketOut,OFPT_PACKET_OUT> {
+class PacketOut : public ProtocolMsg<PacketOut, OFPT_PACKET_OUT> {
 public:
+  UInt32 bufferId() const { return bufferId_; }
+  UInt32 inPort() const { return inPort_; }
 
-	UInt32 bufferId() const { return bufferId_; }
-	UInt32 inPort() const { return inPort_; }
+  ActionRange actions() const;
+  ByteRange enetFrame() const;
 
-	ActionRange actions() const;
-	ByteRange enetFrame() const;
+  bool validateLength(size_t length) const;
 
-	bool validateLength(size_t length) const;
-	
 private:
-	Header header_;
-	Big32 bufferId_ = OFP_NO_BUFFER;
-	Big32 inPort_ = 0;
-	Big16 actionsLen_ = 0;
-	Padding<6> pad_;
+  Header header_;
+  Big32 bufferId_ = OFP_NO_BUFFER;
+  Big32 inPort_ = 0;
+  Big16 actionsLen_ = 0;
+  Padding<6> pad_;
 
-	// Only PacketOutBuilder can construct an instance.
-	PacketOut() : header_{type()} {}
+  // Only PacketOutBuilder can construct an instance.
+  PacketOut() : header_{type()} {}
 
-	friend class PacketOutBuilder;
-	template <class T>
-	friend struct llvm::yaml::MappingTraits;
+  friend class PacketOutBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(PacketOut) == 24, "Unexpected size.");
@@ -60,23 +59,23 @@ static_assert(IsTriviallyCopyable<PacketOut>(), "Expected trivially copyable.");
 
 class PacketOutBuilder {
 public:
-	PacketOutBuilder() = default;
-	explicit PacketOutBuilder(const PacketOut *msg);
+  PacketOutBuilder() = default;
+  explicit PacketOutBuilder(const PacketOut *msg);
 
-	void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
-	void setInPort(UInt32 inPort) { msg_.inPort_ = inPort; }
-	void setActions(const ActionRange &actions) { actions_ = actions; }
-	void setEnetFrame(const ByteRange &enetFrame) { enetFrame_ = enetFrame; }
+  void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
+  void setInPort(UInt32 inPort) { msg_.inPort_ = inPort; }
+  void setActions(const ActionRange &actions) { actions_ = actions; }
+  void setEnetFrame(const ByteRange &enetFrame) { enetFrame_ = enetFrame; }
 
-	UInt32 send(Writable *channel);
+  UInt32 send(Writable *channel);
 
 private:
-	PacketOut msg_;
-	ActionList actions_;
-	ByteList enetFrame_;
+  PacketOut msg_;
+  ActionList actions_;
+  ByteList enetFrame_;
 
-	template <class T>
-	friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

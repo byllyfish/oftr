@@ -39,79 +39,67 @@ void set(std::ostream *logStream);
 void write(const std::string &msg);
 
 template <class Type1>
-void write(const char *type, const Type1 &a)
-{
-    std::stringstream ss;
-    ss << type;
-    ss << ' ';
-    ss << a;
-    write(ss.str());
+void write(const char *type, const Type1 &a) {
+  std::stringstream ss;
+  ss << type;
+  ss << ' ';
+  ss << a;
+  write(ss.str());
 }
 
 template <class Type1, class Type2>
-void write(const char *type, const Type1 &a, const Type2 &b)
-{
-    std::stringstream ss;
-    ss << type;
-    ss << ' ';
-    ss << a;
-    ss << ' ';
-    ss << b;
-    write(ss.str());
+void write(const char *type, const Type1 &a, const Type2 &b) {
+  std::stringstream ss;
+  ss << type;
+  ss << ' ';
+  ss << a;
+  ss << ' ';
+  ss << b;
+  write(ss.str());
 }
 
 void trace(const char *type, const void *data, size_t length);
 
 template <class Type1>
-void info(const Type1 &a)
-{
-    write("[info]", a);
+void info(const Type1 &a) {
+  write("[info]", a);
 }
 
 template <class Type1, class Type2>
-void info(const Type1 &a, const Type2 &b)
-{
-    write("[info]", a, b);
+void info(const Type1 &a, const Type2 &b) {
+  write("[info]", a, b);
 }
 
 template <class Type1>
-void debug(const Type1 &a)
-{
-    write("[debug]", a);
+void debug(const Type1 &a) {
+  write("[debug]", a);
 }
 
 template <class Type1, class Type2>
-void debug(const Type1 &a, const Type2 &b)
-{
-    write("[debug]", a, b);
+void debug(const Type1 &a, const Type2 &b) {
+  write("[debug]", a, b);
 }
 
 template <class Type1>
-void error(const Type1 &a)
-{
-    write("[error]", a);
+void error(const Type1 &a) {
+  write("[error]", a);
 }
 
 template <class Type1, class Type2>
-void error(const Type1 &a, const Type2 &b)
-{
-    write("[error]", a, b);
+void error(const Type1 &a, const Type2 &b) {
+  write("[error]", a, b);
 }
 
 class Lifetime {
 public:
-    Lifetime(const char *description) : description_{description}
-    {
-        debug("Create ", description_);
-    }
+  Lifetime(const char *description) : description_{description} {
+    debug("Create ", description_);
+  }
 
-    ~Lifetime()
-    {
-        debug("Dispose ", description_);
-    }
+  ~Lifetime() { debug("Dispose ", description_); }
 
 private:
-    const char *description_;
+  const char *description_;
 };
 
 } // </namespace log>

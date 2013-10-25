@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the ProtocolMsg template class.
@@ -34,18 +34,13 @@ namespace ofp { // <namespace ofp>
 template <class MsgClass, OFPType MsgType>
 class ProtocolMsg {
 public:
+  /// \returns OpenFlow message type reprented by this class.
+  static constexpr OFPType type() { return MsgType; }
 
-	/// \returns OpenFlow message type reprented by this class.
-    static constexpr OFPType type()
-    {
-        return MsgType;
-    }
-
-    /// \returns Pointer to message memory as given class or nullptr.
-    static const MsgClass *cast(const Message *message)
-    {
-        return message->cast<MsgClass>();
-    }
+  /// \returns Pointer to message memory as given class or nullptr.
+  static const MsgClass *cast(const Message *message) {
+    return message->cast<MsgClass>();
+  }
 };
 
 } // </namespace ofp>

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the BucketList class.
@@ -27,18 +27,17 @@
 
 namespace ofp { // <namespace ofp>
 
-
 class BucketList {
 public:
-	BucketList() = default;
+  BucketList() = default;
 
-	const UInt8 *data() const { return buf_.data(); }
-	size_t size() const { return buf_.size(); }
-	
-	void add(const BucketBuilder &bucket);
+  const UInt8 *data() const { return buf_.data(); }
+  size_t size() const { return buf_.size(); }
+
+  void add(const BucketBuilder &bucket);
 
 private:
-	ByteList buf_;
+  ByteList buf_;
 };
 
 } // </namespace ofp>

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements OXMTypeSet class.
@@ -24,46 +24,43 @@
 
 using namespace ofp;
 
-bool OXMTypeSet::find(OXMType type)
-{
-	UInt16 oxmClass = type.oxmClass();
-	UInt8 oxmField = type.oxmField();
+bool OXMTypeSet::find(OXMType type) {
+  UInt16 oxmClass = type.oxmClass();
+  UInt8 oxmField = type.oxmField();
 
-	assert(oxmField < 128);
+  assert(oxmField < 128);
 
-	for (unsigned i = 0; i < classCount_; ++i) {
-		if (classes_[i].oxmClass == oxmClass) {
-			return classes_[i].fields.test(oxmField);
-		}
-	}
-	return false;
+  for (unsigned i = 0; i < classCount_; ++i) {
+    if (classes_[i].oxmClass == oxmClass) {
+      return classes_[i].fields.test(oxmField);
+    }
+  }
+  return false;
 }
 
+bool OXMTypeSet::add(OXMType type) {
+  UInt16 oxmClass = type.oxmClass();
+  UInt8 oxmField = type.oxmField();
 
-bool OXMTypeSet::add(OXMType type)
-{
-	UInt16 oxmClass = type.oxmClass();
-	UInt8 oxmField = type.oxmField();
+  assert(oxmField < 128);
 
-	assert(oxmField < 128);
+  for (unsigned i = 0; i < classCount_; ++i) {
+    if (classes_[i].oxmClass == oxmClass) {
+      if (!classes_[i].fields.test(oxmField)) {
+        classes_[i].fields.set(oxmField);
+        return true;
+      }
+      return false;
+    }
+  }
 
-	for (unsigned i = 0; i < classCount_; ++i) {
-		if (classes_[i].oxmClass == oxmClass) {
-			if (!classes_[i].fields.test(oxmField)) {
-				classes_[i].fields.set(oxmField);
-				return true;
-			}
-			return false;
-		}
-	}
+  if (classCount_ < MaxOXMClasses) {
+    classes_[classCount_].oxmClass = oxmClass;
+    classes_[classCount_].fields.set(oxmField);
+    ++classCount_;
+  } else {
+    log::info("Number of OXMTypeSet classes exceeded: ", MaxOXMClasses);
+  }
 
-	if (classCount_ < MaxOXMClasses) {
-		classes_[classCount_].oxmClass = oxmClass;
-		classes_[classCount_].fields.set(oxmField);
-		++classCount_;
-	} else {
-		log::info("Number of OXMTypeSet classes exceeded: ", MaxOXMClasses);
-	}
-
-	return true;
+  return true;
 }

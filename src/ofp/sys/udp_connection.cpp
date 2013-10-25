@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements sys::UDP_Connection class.
@@ -24,28 +24,25 @@
 #include "ofp/sys/udp_server.h"
 #include "ofp/log.h"
 
-
-ofp::sys::UDP_Connection::UDP_Connection(UDP_Server *server, Driver::Role role, ProtocolVersions versions, udp::endpoint remoteEndpt) 
-: Connection{server->engine(), new DefaultHandshake{this, role, versions, nullptr}}, server_{server}, remoteEndpt_{remoteEndpt}
-{
-	server_->add(this);
+ofp::sys::UDP_Connection::UDP_Connection(UDP_Server *server, Driver::Role role,
+                                         ProtocolVersions versions,
+                                         udp::endpoint remoteEndpt)
+    : Connection{server->engine(),
+                 new DefaultHandshake{this, role, versions, nullptr}},
+      server_{server}, remoteEndpt_{remoteEndpt} {
+  server_->add(this);
 }
 
-ofp::sys::UDP_Connection::~UDP_Connection() {
-	server_->remove(this);
-}
+ofp::sys::UDP_Connection::~UDP_Connection() { server_->remove(this); }
 
 void ofp::sys::UDP_Connection::write(const void *data, size_t length) {
-	server_->write(data, length);
+  server_->write(data, length);
 }
 
-void ofp::sys::UDP_Connection::flush() {
-	server_->flush(remoteEndpt_);
-}
+void ofp::sys::UDP_Connection::flush() { server_->flush(remoteEndpt_); }
 
-void ofp::sys::UDP_Connection::shutdown() 
-{
-	log::info("close the 'connection' to this udp endpoint");
+void ofp::sys::UDP_Connection::shutdown() {
+  log::info("close the 'connection' to this udp endpoint");
 
-	// call delete this?
+  // call delete this?
 }

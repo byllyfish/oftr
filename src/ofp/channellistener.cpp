@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements ChannelListener base class.
@@ -25,28 +25,20 @@
 
 using namespace ofp;
 
-void ChannelListener::onChannelUp(Channel *channel)
-{
-	log::debug("ChannelListener - onChannelUp ignored:", channel);
+void ChannelListener::onChannelUp(Channel *channel) {
+  log::debug("ChannelListener - onChannelUp ignored:", channel);
 }
 
-
-void ChannelListener::onChannelDown(Channel *channel)
-{
-	log::debug("ChannelListener - onChannelDown ignored:", channel);
+void ChannelListener::onChannelDown(Channel *channel) {
+  log::debug("ChannelListener - onChannelDown ignored:", channel);
 }
 
-void ChannelListener::onException(const Exception *exception) 
-{
-	log::debug("ChannelListener - onException ignored:", *exception);
+void ChannelListener::onException(const Exception *exception) {
+  log::debug("ChannelListener - onException ignored:", *exception);
 }
 
-void ChannelListener::onTimer(UInt32 timerID) 
-{
-	log::debug("ChannelListener - onTimer ignored:", timerID);
+void ChannelListener::onTimer(UInt32 timerID) {
+  log::debug("ChannelListener - onTimer ignored:", timerID);
 }
 
-void ChannelListener::dispose(ChannelListener *listener)
-{
-	delete listener;
-}
+void ChannelListener::dispose(ChannelListener *listener) { delete listener; }

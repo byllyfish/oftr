@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines MultipartReply and MultipartReplyBuilder classes.
@@ -28,46 +28,52 @@
 
 namespace ofp { // <namespace ofp>
 
-class MultipartReply : public ProtocolMsg<MultipartReply,OFPT_MULTIPART_REPLY> {
+class MultipartReply
+    : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY> {
 public:
+  OFPMultipartType replyType() const { return type_; }
+  UInt16 replyFlags() const { return flags_; }
+  const UInt8 *replyBody() const {
+    return BytePtr(this) + sizeof(MultipartReply);
+  }
+  size_t replyBodySize() const {
+    return header_.length() - sizeof(MultipartReply);
+  }
 
-	OFPMultipartType replyType() const { return type_; }
-	UInt16 replyFlags() const { return flags_; }
-	const UInt8 *replyBody() const { return BytePtr(this) + sizeof(MultipartReply); }
-	size_t replyBodySize() const { return header_.length() - sizeof(MultipartReply); }
-
-	bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-	Header header_;
-	Big<OFPMultipartType> type_;
-	Big16 flags_;
-	Padding<4> pad_;
+  Header header_;
+  Big<OFPMultipartType> type_;
+  Big16 flags_;
+  Padding<4> pad_;
 
-	// Only MultipartReplyBuilder can construct an instance.
-	MultipartReply() : header_{type()} {}
+  // Only MultipartReplyBuilder can construct an instance.
+  MultipartReply() : header_{type()} {}
 
-	friend class MultipartReplyBuilder;
-	template <class T>
-	friend struct llvm::yaml::MappingTraits;
+  friend class MultipartReplyBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 class MultipartReplyBuilder {
 public:
-	MultipartReplyBuilder() = default;
+  MultipartReplyBuilder() = default;
 
-	void setReplyType(OFPMultipartType type) { msg_.type_ = type; }
-	void setReplyFlags(UInt16 flags) { msg_.flags_ = flags; }
-	void setReplyBody(const void *data, size_t length) { body_.set(data, length); }
-	
-	UInt32 send(Writable *channel);
+  void setReplyType(OFPMultipartType type) { msg_.type_ = type; }
+  void setReplyFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setReplyBody(const void *data, size_t length) {
+    body_.set(data, length);
+  }
+
+  UInt32 send(Writable *channel);
 
 private:
-	MultipartReply msg_;
-	ByteList body_;
+  MultipartReply msg_;
+  ByteList body_;
 
-	template <class T>
-	friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

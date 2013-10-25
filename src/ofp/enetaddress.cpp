@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements EnetAddress class.
@@ -23,22 +23,16 @@
 
 using namespace ofp;
 
-EnetAddress::EnetAddress(const std::string &s)
-{
-	if (!parse(s)) {
-		clear();
-	}
+EnetAddress::EnetAddress(const std::string &s) {
+  if (!parse(s)) {
+    clear();
+  }
 }
 
-
-bool EnetAddress::parse(const std::string &s)
-{
-	return HexToRawData(s, addr_.data(), sizeof(addr_)) >= sizeof(addr_);
+bool EnetAddress::parse(const std::string &s) {
+  return HexToRawData(s, addr_.data(), sizeof(addr_)) >= sizeof(addr_);
 }
 
-
-std::string EnetAddress::toString() const
-{
-	return RawDataToHex(addr_.data(), sizeof(addr_), '-', 1);
+std::string EnetAddress::toString() const {
+  return RawDataToHex(addr_.data(), sizeof(addr_), '-', 1);
 }
-

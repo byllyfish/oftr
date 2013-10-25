@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Top-level header for the ofp library..
@@ -68,11 +68,11 @@ namespace ofp { // <namespace ofp>
 Exception runController(ChannelListener::Factory listenerFactory,
                         ProtocolVersions versions = ProtocolVersions::All);
 
-/// \brief Connects to an OpenFlow controller at the specified address on the 
-/// default port. 
+/// \brief Connects to an OpenFlow controller at the specified address on the
+/// default port.
 ///
 /// After connecting, uses listenerFactory to create a ChannelListener.
-/// 
+///
 /// \param  features 		Agent information including datapath ID.
 /// \param  remoteAddress   IPv6 (possibly IPv4-mapped) address of controller
 /// \param  listenerFactory no-arg function that create a ChannelListener

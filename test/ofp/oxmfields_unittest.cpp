@@ -4,56 +4,53 @@
 
 using namespace ofp;
 
+TEST(oxmfields, OFB_TCP_DST) {
+  OFB_TCP_DST tcpdst{80};
 
-TEST(oxmfields, OFB_TCP_DST)
-{
-	OFB_TCP_DST tcpdst{80};
-	
-	EXPECT_EQ(80, tcpdst);
-	EXPECT_EQ(0x80001c02, OFB_TCP_DST::type().oxmNative());
-	EXPECT_EQ(2, sizeof(OFB_TCP_DST));
-	EXPECT_FALSE(OFB_TCP_DST::maskSupported());
-	
-	OXMType types[] = { OFB_ETH_TYPE::type(), OFB_ETH_TYPE::type(), OFB_IP_PROTO::type() };
-	unsigned i = 0;
-	for (auto &x : *OFB_TCP_DST::prerequisites()) {
-		EXPECT_EQ(types[i], x.type());
-		++i;
-	}
+  EXPECT_EQ(80, tcpdst);
+  EXPECT_EQ(0x80001c02, OFB_TCP_DST::type().oxmNative());
+  EXPECT_EQ(2, sizeof(OFB_TCP_DST));
+  EXPECT_FALSE(OFB_TCP_DST::maskSupported());
+
+  OXMType types[] = {OFB_ETH_TYPE::type(), OFB_ETH_TYPE::type(),
+                     OFB_IP_PROTO::type()};
+  unsigned i = 0;
+  for (auto &x : *OFB_TCP_DST::prerequisites()) {
+    EXPECT_EQ(types[i], x.type());
+    ++i;
+  }
 }
 
+TEST(oxmfields, OFB_IPV6_ND_SLL) {
+  OFB_IPV6_ND_SLL ndsll{EnetAddress{}};
 
-TEST(oxmfields, OFB_IPV6_ND_SLL)
-{
-	OFB_IPV6_ND_SLL ndsll{EnetAddress{}};
-	
-	EXPECT_EQ(ndsll.value(), EnetAddress{});
-	
-	auto iter = OFB_IPV6_ND_SLL::prerequisites()->begin();
-	auto end = OFB_IPV6_ND_SLL::prerequisites()->end();
-	
-	EXPECT_NE(iter, end);
-	EXPECT_EQ((*iter).type(), OFB_ETH_TYPE::type());
-	EXPECT_EQ((*iter).value<OFB_ETH_TYPE>(), 0x0800);
-	++iter;
-	EXPECT_NE(iter, end);
-	EXPECT_EQ((*iter).type(), OFB_ETH_TYPE::type());
-	EXPECT_EQ((*iter).value<OFB_ETH_TYPE>(), 0x86dd);
-	++iter;
-	EXPECT_NE(iter, end);
-	EXPECT_EQ((*iter).type(), OFB_IP_PROTO::type());
-	EXPECT_EQ((*iter).value<OFB_IP_PROTO>(), 58);
-	++iter;
-	EXPECT_NE(iter, end);
-	EXPECT_EQ((*iter).type(), OFB_ICMPV6_TYPE::type());
-	EXPECT_EQ((*iter).value<OFB_ICMPV6_TYPE>(), 135);
-	++iter;
-	EXPECT_EQ(iter, end);
-	
-	OXMList list;
-	list.add(OFB_ETH_TYPE{0x0800});
-	list.add(OFB_ETH_TYPE{0x86dd});
-	list.add(OFB_IP_PROTO{58});
-	list.add(OFB_ICMPV6_TYPE{135});
-	EXPECT_EQ(list.toRange(), *OFB_IPV6_ND_SLL::prerequisites());
+  EXPECT_EQ(ndsll.value(), EnetAddress{});
+
+  auto iter = OFB_IPV6_ND_SLL::prerequisites()->begin();
+  auto end = OFB_IPV6_ND_SLL::prerequisites()->end();
+
+  EXPECT_NE(iter, end);
+  EXPECT_EQ((*iter).type(), OFB_ETH_TYPE::type());
+  EXPECT_EQ((*iter).value<OFB_ETH_TYPE>(), 0x0800);
+  ++iter;
+  EXPECT_NE(iter, end);
+  EXPECT_EQ((*iter).type(), OFB_ETH_TYPE::type());
+  EXPECT_EQ((*iter).value<OFB_ETH_TYPE>(), 0x86dd);
+  ++iter;
+  EXPECT_NE(iter, end);
+  EXPECT_EQ((*iter).type(), OFB_IP_PROTO::type());
+  EXPECT_EQ((*iter).value<OFB_IP_PROTO>(), 58);
+  ++iter;
+  EXPECT_NE(iter, end);
+  EXPECT_EQ((*iter).type(), OFB_ICMPV6_TYPE::type());
+  EXPECT_EQ((*iter).value<OFB_ICMPV6_TYPE>(), 135);
+  ++iter;
+  EXPECT_EQ(iter, end);
+
+  OXMList list;
+  list.add(OFB_ETH_TYPE{0x0800});
+  list.add(OFB_ETH_TYPE{0x86dd});
+  list.add(OFB_IP_PROTO{58});
+  list.add(OFB_ICMPV6_TYPE{135});
+  EXPECT_EQ(list.toRange(), *OFB_IPV6_ND_SLL::prerequisites());
 }

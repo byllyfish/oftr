@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the Match class.
@@ -28,36 +28,26 @@ namespace ofp { // <namespace ofp>
 
 class Match {
 public:
-    explicit Match(OXMRange range) : oxm_{range}
-    {
-    	log::debug("Match created:", range);
-    }
+  explicit Match(OXMRange range) : oxm_{range} {
+    log::debug("Match created:", range);
+  }
 
-    explicit Match(const deprecated::StandardMatch *match)
-        : oxm_{match->toOXMList()}
-    {
-    }
+  explicit Match(const deprecated::StandardMatch *match)
+      : oxm_{match->toOXMList()} {}
 
-    /// \returns number of items in the match.
-    size_t itemCount() const
-    {
-        return OXMIterator::distance(oxm_.begin(), oxm_.end());
-    }
+  /// \returns number of items in the match.
+  size_t itemCount() const {
+    return OXMIterator::distance(oxm_.begin(), oxm_.end());
+  }
 
-    OXMIterator begin() const
-    {
-        return oxm_.begin();
-    }
+  OXMIterator begin() const { return oxm_.begin(); }
 
-    OXMIterator end() const
-    {
-        return oxm_.end();
-    }
+  OXMIterator end() const { return oxm_.end(); }
 
-    OXMRange toRange() const { return oxm_.toRange(); }
+  OXMRange toRange() const { return oxm_.toRange(); }
 
 private:
-    OXMList oxm_;
+  OXMList oxm_;
 };
 
 } // </namespace ofp>

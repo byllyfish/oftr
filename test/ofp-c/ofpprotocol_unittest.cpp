@@ -3,26 +3,24 @@
 
 using namespace ofp;
 
-TEST(ofpprotocol, empty)
-{
-    OFPString input = ofpStringNewEmpty();
-    OFPString output = ofpStringNewEmpty();
-    OFPString error = ofpStringNewEmpty();
+TEST(ofpprotocol, empty) {
+  OFPString input = ofpStringNewEmpty();
+  OFPString output = ofpStringNewEmpty();
+  OFPString error = ofpStringNewEmpty();
 
-    int result = ofpProtocolEncode(&input, &output, &error);
+  int result = ofpProtocolEncode(&input, &output, &error);
 
-    EXPECT_EQ(0, result);
-    EXPECT_TRUE(ofpStringEqualsC(&error, "Empty message."));
-    EXPECT_TRUE(ofpStringEqualsC(&output, ""));
+  EXPECT_EQ(0, result);
+  EXPECT_TRUE(ofpStringEqualsC(&error, "Empty message."));
+  EXPECT_TRUE(ofpStringEqualsC(&output, ""));
 }
 
-TEST(ofpprotocol, test)
-{
-    OFPString input = ofpStringNewEmpty();
-    OFPString output = ofpStringNewEmpty();
-    OFPString error = ofpStringNewEmpty();
+TEST(ofpprotocol, test) {
+  OFPString input = ofpStringNewEmpty();
+  OFPString output = ofpStringNewEmpty();
+  OFPString error = ofpStringNewEmpty();
 
-    const char *expected = R"""(---
+  const char *expected = R"""(---
 type:            OFPT_FLOW_MOD
 version:         4
 xid:             1
@@ -49,18 +47,18 @@ msg:
 ...
 )""";
 
-    ofpStringSetC(&input, expected);
+  ofpStringSetC(&input, expected);
 
-    int result = ofpProtocolEncode(&input, &output, &error);
+  int result = ofpProtocolEncode(&input, &output, &error);
 
-    EXPECT_EQ(1, result);
-    EXPECT_HEX("040E00500000000100000000000000000000000000000000000000000000000"
-               "0000000000000000000000000000000000001001A800000040000000D80000A"
-               "02080080001804C0A80101000000000000",
-               output.data, output.length);
-    EXPECT_FALSE(error.data);
+  EXPECT_EQ(1, result);
+  EXPECT_HEX("040E00500000000100000000000000000000000000000000000000000000000"
+             "0000000000000000000000000000000000001001A800000040000000D80000A"
+             "02080080001804C0A80101000000000000",
+             output.data, output.length);
+  EXPECT_FALSE(error.data);
 
-    ofpStringClear(&input);
-    ofpStringClear(&output);
-    ofpStringClear(&error);
+  ofpStringClear(&input);
+  ofpStringClear(&output);
+  ofpStringClear(&error);
 }

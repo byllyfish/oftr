@@ -33,26 +33,23 @@ namespace ofp { // <namespace ofp>
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements Error protocol message.
 
-class Error : public ProtocolMsg<Error,OFPT_ERROR> {
+class Error : public ProtocolMsg<Error, OFPT_ERROR> {
 public:
+  UInt16 errorType() const { return type_; }
+  UInt16 errorCode() const { return code_; }
+  ByteRange errorData() const;
 
-    UInt16 errorType() const { return type_; }
-    UInt16 errorCode() const { return code_; }
-    ByteRange errorData() const;
-
-    bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-    Header header_;
-    Big16 type_;
-    Big16 code_;
+  Header header_;
+  Big16 type_;
+  Big16 code_;
 
-    // Only ErrorBuilder can construct an actual instance.
-    Error() : header_{type()}
-    {
-    }
+  // Only ErrorBuilder can construct an actual instance.
+  Error() : header_{type()} {}
 
-    friend class ErrorBuilder;
+  friend class ErrorBuilder;
 };
 
 static_assert(sizeof(Error) == 12, "Unexpected size.");
@@ -66,34 +63,27 @@ static_assert(IsTriviallyCopyable<Error>(), "Expected trivially copyable.");
 
 class ErrorBuilder {
 public:
-    ErrorBuilder(UInt16 type = 0, UInt16 code = 0);
+  ErrorBuilder(UInt16 type = 0, UInt16 code = 0);
 
-    explicit ErrorBuilder(const Error *msg);
+  explicit ErrorBuilder(const Error *msg);
 
-    void setErrorType(UInt16 type)
-    {
-        msg_.type_ = type;
-    }
+  void setErrorType(UInt16 type) { msg_.type_ = type; }
 
-    void setErrorCode(UInt16 code)
-    {
-        msg_.code_ = code;
-    }
+  void setErrorCode(UInt16 code) { msg_.code_ = code; }
 
-    void setErrorData(const void *data, size_t length)
-    {
-        data_.set(data, length);
-    }
+  void setErrorData(const void *data, size_t length) {
+    data_.set(data, length);
+  }
 
-    void setErrorData(const Message *message);
+  void setErrorData(const Message *message);
 
-    void send(Writable *channel);
+  void send(Writable *channel);
 
 private:
-    Error msg_;
+  Error msg_;
 
-    Padding<4> padNotPartOfPkt_;
-    ByteList data_;
+  Padding<4> padNotPartOfPkt_;
+  ByteList data_;
 };
 
 } // </namespace ofp>

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements high-level runController and runAgent functions.
@@ -24,38 +24,35 @@
 using namespace ofp;
 
 Exception ofp::runController(ChannelListener::Factory listenerFactory,
-                                  ProtocolVersions versions)
-{
-    Driver driver;
+                             ProtocolVersions versions) {
+  Driver driver;
 
-    auto ex = driver.listen(Driver::Controller, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT},
-                            versions, listenerFactory);
+  auto ex =
+      driver.listen(Driver::Controller, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT},
+                    versions, listenerFactory);
 
-    Exception result;
-    ex.done([&result](Exception exc) {
-        result = exc;
-    });
+  Exception result;
+  ex.done([&result](Exception exc) { result = exc; });
 
-    driver.run();
+  driver.run();
 
-    return result;
+  return result;
 }
 
-Exception ofp::runAgent(const Features &features, const IPv6Address &remoteAddress,
-                             ChannelListener::Factory listenerFactory,
-                             ProtocolVersions versions)
-{
-    Driver driver;
+Exception ofp::runAgent(const Features &features,
+                        const IPv6Address &remoteAddress,
+                        ChannelListener::Factory listenerFactory,
+                        ProtocolVersions versions) {
+  Driver driver;
 
-    auto ex = driver.connect(Driver::Agent, &features, IPv6Endpoint{remoteAddress, OFP_DEFAULT_PORT},
-                             versions, listenerFactory);
+  auto ex = driver.connect(Driver::Agent, &features,
+                           IPv6Endpoint{remoteAddress, OFP_DEFAULT_PORT},
+                           versions, listenerFactory);
 
-    Exception result;
-    ex.done([&result](Exception exc) {
-        result = exc;
-    });
+  Exception result;
+  ex.done([&result](Exception exc) { result = exc; });
 
-    driver.run();
+  driver.run();
 
-    return result;
+  return result;
 }

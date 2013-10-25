@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for yaml::Encoder class.
@@ -24,67 +24,61 @@
 
 using namespace ofp::yaml;
 
-static void testEncoderSuccess(const char *yaml, size_t size, const char *hex)
-{
-    Encoder encoder{yaml};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(size, encoder.size());
-    EXPECT_HEX(hex, encoder.data(), encoder.size());
+static void testEncoderSuccess(const char *yaml, size_t size, const char *hex) {
+  Encoder encoder{yaml};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(size, encoder.size());
+  EXPECT_HEX(hex, encoder.data(), encoder.size());
 }
 
-TEST(encoder, flowMod)
-{
-    const char *input = "{ type: OFPT_FLOW_MOD, version: 4, xid: 1 }";
+TEST(encoder, flowMod) {
+  const char *input = "{ type: OFPT_FLOW_MOD, version: 4, xid: 1 }";
 
-    Encoder encoder{input};
-    const std::string &err = encoder.error();
+  Encoder encoder{input};
+  const std::string &err = encoder.error();
 
-    EXPECT_EQ("YAML:1:3: error: missing required key 'msg'\n{ type: "
-              "OFPT_FLOW_MOD, version: 4, xid: 1 }\n  ^\n",
-              err);
+  EXPECT_EQ("YAML:1:3: error: missing required key 'msg'\n{ type: "
+            "OFPT_FLOW_MOD, version: 4, xid: 1 }\n  ^\n",
+            err);
 }
 
-TEST(encoder, hellov1)
-{
-    const char *input = "{ type: OFPT_HELLO, version: 1, xid: 1 }";
+TEST(encoder, hellov1) {
+  const char *input = "{ type: OFPT_HELLO, version: 1, xid: 1 }";
 
-    Encoder encoder{input};
-    const std::string &err = encoder.error();
+  Encoder encoder{input};
+  const std::string &err = encoder.error();
 
-    EXPECT_EQ("", err);
-    EXPECT_EQ(0x08, encoder.size());
-    EXPECT_HEX("0100000800000001", encoder.data(), encoder.size());
+  EXPECT_EQ("", err);
+  EXPECT_EQ(0x08, encoder.size());
+  EXPECT_HEX("0100000800000001", encoder.data(), encoder.size());
 }
 
-TEST(encoder, hellov4err)
-{
-    const char *input =
-        "{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, 4}} }";
+TEST(encoder, hellov4err) {
+  const char *input =
+      "{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, 4}} }";
 
-    Encoder encoder{input};
+  Encoder encoder{input};
 
-    EXPECT_EQ("YAML:1:43: error: Found unexpected ':' while scanning a plain "
-              "scalar\n{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, "
-              "4}} }\n                                          ^\n",
-              encoder.error());
+  EXPECT_EQ("YAML:1:43: error: Found unexpected ':' while scanning a plain "
+            "scalar\n{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, "
+            "4}} }\n                                          ^\n",
+            encoder.error());
 }
 
-TEST(encoder, hellov4)
-{
-    const char *input = "{ 'type': 'OFPT_HELLO', 'version': 4, 'xid': 99, "
-                        "'msg':{ 'versions': [1,4] } }";
+TEST(encoder, hellov4) {
+  const char *input = "{ 'type': 'OFPT_HELLO', 'version': 4, 'xid': 99, "
+                      "'msg':{ 'versions': [1,4] } }";
 
-    Encoder encoder{input};
+  Encoder encoder{input};
 
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x10, encoder.size());
-    EXPECT_HEX("04000010000000630001000800000012", encoder.data(),
-               encoder.size());
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x10, encoder.size());
+  EXPECT_HEX("04000010000000630001000800000012", encoder.data(),
+             encoder.size());
 }
 
-TEST(encoder, error)
-{
-    const char *input = R"""(
+TEST(encoder, error) {
+  const char *input = R"""(
 type: OFPT_ERROR
 version: 1
 xid: 98
@@ -94,17 +88,16 @@ msg:
   data: 'FFFF1234567890'
 )""";
 
-    Encoder encoder{input};
+  Encoder encoder{input};
 
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x13, encoder.size());
-    EXPECT_HEX("010100130000006200010001FFFF1234567890", encoder.data(),
-               encoder.size());
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x13, encoder.size());
+  EXPECT_HEX("010100130000006200010001FFFF1234567890", encoder.data(),
+             encoder.size());
 }
 
-TEST(encoder, error2)
-{
-    const char *input = R"""(
+TEST(encoder, error2) {
+  const char *input = R"""(
 type: OFPT_ERROR
 version: 1
 xid: 98
@@ -114,17 +107,16 @@ msg:
   data: 'Not Hex'
 )""";
 
-    Encoder encoder{input};
+  Encoder encoder{input};
 
-    EXPECT_EQ("YAML:8:9: error: Invalid hexadecimal text.\n  data: 'Not Hex'\n "
-              "       ^~~~~~~~~\n",
-              encoder.error());
-    EXPECT_EQ(0x00, encoder.size());
+  EXPECT_EQ("YAML:8:9: error: Invalid hexadecimal text.\n  data: 'Not Hex'\n "
+            "       ^~~~~~~~~\n",
+            encoder.error());
+  EXPECT_EQ(0x00, encoder.size());
 }
 
-TEST(encoder, echorequest)
-{
-    const char *input = R"""(
+TEST(encoder, echorequest) {
+  const char *input = R"""(
 type: OFPT_ECHO_REQUEST
 version: 1
 xid: 7
@@ -132,16 +124,15 @@ msg:
   data: 'aabbccddeeff'
 )""";
 
-    Encoder encoder{input};
+  Encoder encoder{input};
 
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x0E, encoder.size());
-    EXPECT_HEX("0102000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x0E, encoder.size());
+  EXPECT_HEX("0102000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
 }
 
-TEST(encoder, echoreply)
-{
-    const char *input = R"""(
+TEST(encoder, echoreply) {
+  const char *input = R"""(
 type: OFPT_ECHO_REPLY
 version: 1
 xid: 7
@@ -149,16 +140,15 @@ msg:
   data: 'aabbccddeeff'
 )""";
 
-    Encoder encoder{input};
+  Encoder encoder{input};
 
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x0E, encoder.size());
-    EXPECT_HEX("0103000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x0E, encoder.size());
+  EXPECT_HEX("0103000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
 }
 
-TEST(encoder, experimenterv4)
-{
-    const char *input = R"""(
+TEST(encoder, experimenterv4) {
+  const char *input = R"""(
 type: OFPT_EXPERIMENTER
 version: 4
 xid: 0x18
@@ -168,13 +158,12 @@ msg:
   experimenter_data: 'ABCDEF0123456789'
 )""";
 
-    testEncoderSuccess(input, 0x18,
-                       "0404001800000018DEADBEEFAABBCCDDABCDEF0123456789");
+  testEncoderSuccess(input, 0x18,
+                     "0404001800000018DEADBEEFAABBCCDDABCDEF0123456789");
 }
 
-TEST(encoder, experimenterv1)
-{
-    const char *input = R"""(
+TEST(encoder, experimenterv1) {
+  const char *input = R"""(
 type: OFPT_EXPERIMENTER
 version: 1
 xid: 0x1B
@@ -184,12 +173,11 @@ msg:
   experimenter_data: 'ABCDEF0123456789'
 )""";
 
-    testEncoderSuccess(input, 0x14, "010400140000001BDEADBEEFABCDEF0123456789");
+  testEncoderSuccess(input, 0x14, "010400140000001BDEADBEEFABCDEF0123456789");
 }
 
-TEST(encoder, experimenterv2)
-{
-    const char *input = R"""(
+TEST(encoder, experimenterv2) {
+  const char *input = R"""(
 type: OFPT_EXPERIMENTER
 version: 2
 xid: 0xFF
@@ -199,109 +187,100 @@ msg:
   experimenter_data: 'ABCDEF0123456789'
 )""";
 
-    testEncoderSuccess(input, 0x18,
-                       "02040018000000FFDEADBEEF00000000ABCDEF0123456789");
+  testEncoderSuccess(input, 0x18,
+                     "02040018000000FFDEADBEEF00000000ABCDEF0123456789");
 }
 
-TEST(encoder, featuresrequest)
-{
-    const char *input = R"""(
+TEST(encoder, featuresrequest) {
+  const char *input = R"""(
    type: OFPT_FEATURES_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0x08, "04050008000000BF");
+  testEncoderSuccess(input, 0x08, "04050008000000BF");
 }
 
-TEST(encoder, getasyncrequestv4)
-{
-    const char *input = R"""(
+TEST(encoder, getasyncrequestv4) {
+  const char *input = R"""(
    type: OFPT_GET_ASYNC_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0x08, "041A0008000000BF");
+  testEncoderSuccess(input, 0x08, "041A0008000000BF");
 }
 
-TEST(encoder, getasyncrequestv1)
-{
-    const char *input = R"""(
+TEST(encoder, getasyncrequestv1) {
+  const char *input = R"""(
    type: OFPT_GET_ASYNC_REQUEST
    version: 1
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0, "");
+  testEncoderSuccess(input, 0, "");
 }
 
-TEST(encoder, getconfigrequest)
-{
-    const char *input = R"""(
+TEST(encoder, getconfigrequest) {
+  const char *input = R"""(
    type: OFPT_GET_CONFIG_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0x08, "04070008000000BF");
+  testEncoderSuccess(input, 0x08, "04070008000000BF");
 }
 
-TEST(encoder, barrierrequestv4)
-{
-    const char *input = R"""(
+TEST(encoder, barrierrequestv4) {
+  const char *input = R"""(
    type: OFPT_BARRIER_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0x08, "04140008000000BF");
+  testEncoderSuccess(input, 0x08, "04140008000000BF");
 }
 
-TEST(encoder, barrierrequestv1)
-{
-    const char *input = R"""(
+TEST(encoder, barrierrequestv1) {
+  const char *input = R"""(
    type: OFPT_BARRIER_REQUEST
    version: 1
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0x08, "01120008000000BF");
+  testEncoderSuccess(input, 0x08, "01120008000000BF");
 }
 
-TEST(encoder, barrierreplyv4)
-{
-    const char *input = R"""(
+TEST(encoder, barrierreplyv4) {
+  const char *input = R"""(
    type: OFPT_BARRIER_REPLY
    version: 4
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0x08, "04150008000000BF");
+  testEncoderSuccess(input, 0x08, "04150008000000BF");
 }
 
-TEST(encoder, barrierreplyv1)
-{
-    const char *input = R"""(
+TEST(encoder, barrierreplyv1) {
+  const char *input = R"""(
    type: OFPT_BARRIER_REPLY
    version: 1
    xid: 0xBF
    msg: {}
       )""";
 
-    testEncoderSuccess(input, 0x08, "01130008000000BF");
+  testEncoderSuccess(input, 0x08, "01130008000000BF");
 }
 
-TEST(encoder, featuresreplyv1)
-{
-    const char *input = R"""(
+TEST(encoder, featuresreplyv1) {
+  const char *input = R"""(
    type: OFPT_FEATURES_REPLY
    version: 1
    xid: 0xBF
@@ -314,14 +293,13 @@ TEST(encoder, featuresreplyv1)
      reserved: 0
    )""";
 
-    testEncoderSuccess(
-        input, 0x20,
-        "01060020000000BF000001020304050600000100FF0000000000000000000000");
+  testEncoderSuccess(
+      input, 0x20,
+      "01060020000000BF000001020304050600000100FF0000000000000000000000");
 }
 
-TEST(encoder, featuresreplyv4)
-{
-    const char *input = R"""(
+TEST(encoder, featuresreplyv4) {
+  const char *input = R"""(
    type: OFPT_FEATURES_REPLY
    version: 4
    xid: 0xBF
@@ -334,14 +312,13 @@ TEST(encoder, featuresreplyv4)
      reserved: 0
    )""";
 
-    testEncoderSuccess(
-        input, 0x20,
-        "04060020000000BF000001020304050600000100FF0000000000000000000000");
+  testEncoderSuccess(
+      input, 0x20,
+      "04060020000000BF000001020304050600000100FF0000000000000000000000");
 }
 
-TEST(encoder, multipartrequest)
-{
-    const char *input = R"""(
+TEST(encoder, multipartrequest) {
+  const char *input = R"""(
    type: OFPT_MULTIPART_REQUEST
    version: 4
    xid: 0x11223344
@@ -359,14 +336,13 @@ TEST(encoder, multipartrequest)
               value: 0x12345678
    )""";
 
-    testEncoderSuccess(input, 0x03C, "0412003C112233440001000000000000010000000"
-                                     "00000020000000300000000000000000000000400"
-                                     "00000000000005000100088000000412345678");
+  testEncoderSuccess(input, 0x03C, "0412003C112233440001000000000000010000000"
+                                   "00000020000000300000000000000000000000400"
+                                   "00000000000005000100088000000412345678");
 }
 
-TEST(encoder, multipartreply)
-{
-    const char *input = R"""(
+TEST(encoder, multipartreply) {
+  const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
    version: 4
    xid: 0x11223344
@@ -392,19 +368,20 @@ TEST(encoder, multipartreply)
               value: { 'table_id': 1 }
    )""";
 
-    const char *hex = "0413005411223344000100000000000000440100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A0001000880000004123456780001000801000000";
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x54, encoder.size());
-    EXPECT_HEX(hex, encoder.data(), encoder.size());
+  const char *hex = "0413005411223344000100000000000000440100000000020000000300"
+                    "0400050006000700000000000000000000000800000000000000090000"
+                    "00000000000A0001000880000004123456780001000801000000";
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x54, encoder.size());
+  EXPECT_HEX(hex, encoder.data(), encoder.size());
 
-    // testEncoderSuccess(input, 0x04C,
-    // "0413004C112233440001000000000000003C0100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A000100088000000412345678");
+  // testEncoderSuccess(input, 0x04C,
+  // "0413004C112233440001000000000000003C0100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A000100088000000412345678");
 }
 
-TEST(encoder, multipartreply2)
-{
-    const char *input = R"""(
+TEST(encoder, multipartreply2) {
+  const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
    version: 4
    xid: 0x11223344
@@ -446,14 +423,17 @@ TEST(encoder, multipartreply2)
               value: { 'table_id': 1 }
    )""";
 
-    testEncoderSuccess(input, 0x0A4,
-                       "041300A4112233440001000000000000003C0100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A00010008800000041234567800581100000000220000003300440055006600770000000000000000000000889999999999999999AAAAAAAAAAAAAAAA0001001C80000004123456788000080610203040506080000606AABBCCDDEEFF0001000801000000");
+  testEncoderSuccess(input, 0x0A4,
+                     "041300A4112233440001000000000000003C010000000002000000030"
+                     "004000500060007000000000000000000000008000000000000000900"
+                     "0000000000000A0001000880000004123456780058110000000022000"
+                     "000330044005500660077000000000000000000000088999999999999"
+                     "9999AAAAAAAAAAAAAAAA0001001C80000004123456788000080610203"
+                     "040506080000606AABBCCDDEEFF0001000801000000");
 }
 
-
-TEST(encoder, multipartreply3)
-{
-    const char *input = R"""(
+TEST(encoder, multipartreply3) {
+  const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
    version: 4
    xid: 0x11223344
@@ -482,17 +462,18 @@ TEST(encoder, multipartreply3)
                    ttl: 64
    )""";
 
-    const char *hex = "0413006411223344000100000000000000540100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A0001000000040020000000000000001000000001FFFF0000000000000017000840000000";
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x64, encoder.size());
-    EXPECT_HEX(hex, encoder.data(), encoder.size());
+  const char *hex = "0413006411223344000100000000000000540100000000020000000300"
+                    "0400050006000700000000000000000000000800000000000000090000"
+                    "00000000000A0001000000040020000000000000001000000001FFFF00"
+                    "00000000000017000840000000";
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x64, encoder.size());
+  EXPECT_HEX(hex, encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, flowmodv4)
-{
-    const char *input = R"""(
+TEST(encoder, flowmodv4) {
+  const char *input = R"""(
       type:            OFPT_FLOW_MOD
       version:         4
       xid:             1
@@ -523,16 +504,18 @@ TEST(encoder, flowmodv4)
                  value: 192.168.2.1
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x68, encoder.size());
-    EXPECT_HEX("040E006800000001000000000000000000000000000000000000000000000000000000000000000000000000000000000001001A800000040000000D80000A02080080001804C0A8010100000000000000040018000000000019001080001804C0A8020100000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x68, encoder.size());
+  EXPECT_HEX("040E0068000000010000000000000000000000000000000000000000000000000"
+             "00000000000000000000000000000000001001A800000040000000D80000A0208"
+             "0080001804C0A8010100000000000000040018000000000019001080001804C0A"
+             "8020100000000",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, flowmodv4_2)
-{
-    const char *input = R"""(
+TEST(encoder, flowmodv4_2) {
+  const char *input = R"""(
       type:            OFPT_FLOW_MOD
       version:         4
       xid:             1
@@ -563,16 +546,18 @@ TEST(encoder, flowmodv4_2)
                  value: 192.168.2.1
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x68, encoder.size());
-    EXPECT_HEX("040E0068000000011111111111111111222222222222222233445555666677778888888899999999AAAAAAAABBBB00000001001A80000004CCCCCCCC80000A02080080001804C0A8010100000000000000040018000000000019001080001804C0A8020100000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x68, encoder.size());
+  EXPECT_HEX("040E0068000000011111111111111111222222222222222233445555666677778"
+             "888888899999999AAAAAAAABBBB00000001001A80000004CCCCCCCC80000A0208"
+             "0080001804C0A8010100000000000000040018000000000019001080001804C0A"
+             "8020100000000",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, flowmodv1)
-{
-    const char *input = R"""(
+TEST(encoder, flowmodv1) {
+  const char *input = R"""(
       type:            OFPT_FLOW_MOD
       version:         1
       xid:             1
@@ -601,16 +586,17 @@ TEST(encoder, flowmodv1)
                  value: 192.168.2.1
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x050, encoder.size());
-    EXPECT_HEX("010E00500000000100303FEECCCC0000000000000000000000000000000008000000000000000000C0A801010000000011111111111111110044555566667777888888889999BBBB00070008C0A80201", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x050, encoder.size());
+  EXPECT_HEX("010E00500000000100303FEECCCC0000000000000000000000000000000008000"
+             "000000000000000C0A80101000000001111111111111111004455556666777788"
+             "8888889999BBBB00070008C0A80201",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, flowmodv1_2)
-{
-    const char *input = R"""(
+TEST(encoder, flowmodv1_2) {
+  const char *input = R"""(
       type:            OFPT_FLOW_MOD
       version:         1
       xid:             1
@@ -642,16 +628,17 @@ TEST(encoder, flowmodv1_2)
                - action: OFPAT_COPY_TTL_OUT
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x058, encoder.size());
-    EXPECT_HEX("010E00580000000100303F8ECCCC0000000000000000000000000000000008000001000000000000C0A8010100DD000011111111111111110044555566667777888888889999BBBB000A0008EE000000000B000800000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x058, encoder.size());
+  EXPECT_HEX("010E00580000000100303F8ECCCC0000000000000000000000000000000008000"
+             "001000000000000C0A8010100DD00001111111111111111004455556666777788"
+             "8888889999BBBB000A0008EE000000000B000800000000",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, packetinv1) 
-{
-    const char *input = R"""(
+TEST(encoder, packetinv1) {
+  const char *input = R"""(
       type:            OFPT_PACKET_IN
       version:         1
       xid:             2
@@ -667,15 +654,16 @@ TEST(encoder, packetinv1)
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x03C, encoder.size());
-    EXPECT_HEX("010A003C0000000233333333444455550100FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x03C, encoder.size());
+  EXPECT_HEX("010A003C0000000233333333444455550100FFFFFFFFFFFF00000000000108060"
+             "0010800060400010000000000010A0000010000000000000A000002",
+             encoder.data(), encoder.size());
 }
 
-TEST(encoder, packetinv4)
-{
-    const char *input = R"""(
+TEST(encoder, packetinv4) {
+  const char *input = R"""(
       type:            OFPT_PACKET_IN
       version:         4
       xid:             1
@@ -691,16 +679,18 @@ TEST(encoder, packetinv4)
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x064, encoder.size());
-    EXPECT_HEX("040A0064000000013333333344440188999999999999999900010020800000045555555580000204666666668000040877777777777777770000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x064, encoder.size());
+  EXPECT_HEX("040A0064000000013333333344440188999999999999999900010020800000045"
+             "555555580000204666666668000040877777777777777770000FFFFFFFFFFFF00"
+             "0000000001080600010800060400010000000000010A0000010000000000000A0"
+             "00002",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, packetoutv1)
-{
-    const char *input = R"""(
+TEST(encoder, packetoutv1) {
+  const char *input = R"""(
       type:            OFPT_PACKET_OUT
       version:         1
       xid:             1
@@ -717,15 +707,17 @@ TEST(encoder, packetoutv1)
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x04A, encoder.size());
-    EXPECT_HEX("010D004A000000013333333344440010000000080005001400070008C0A80101FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x04A, encoder.size());
+  EXPECT_HEX("010D004A000000013333333344440010000000080005001400070008C0A80101F"
+             "FFFFFFFFFFF000000000001080600010800060400010000000000010A00000100"
+             "00000000000A000002",
+             encoder.data(), encoder.size());
 }
 
-TEST(encoder, packetoutv4)
-{
-    const char *input = R"""(
+TEST(encoder, packetoutv4) {
+  const char *input = R"""(
       type:            OFPT_PACKET_OUT
       version:         4
       xid:             1
@@ -742,16 +734,18 @@ TEST(encoder, packetoutv4)
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x062, encoder.size());
-    EXPECT_HEX("040D00620000000133333333444444440020000000000000000000100000000500140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x062, encoder.size());
+  EXPECT_HEX("040D0062000000013333333344444444002000000000000000000010000000050"
+             "0140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000"
+             "000001080600010800060400010000000000010A0000010000000000000A00000"
+             "2",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, setconfigv4)
-{
-    const char *input = R"""(
+TEST(encoder, setconfigv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_SET_CONFIG
       datapath_id: 0000-0000-0000-0001
@@ -761,16 +755,14 @@ TEST(encoder, setconfigv4)
         miss_send_len: 0xBBBB
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x0C, encoder.size());
-    EXPECT_HEX("0409000C11111111AAAABBBB", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x0C, encoder.size());
+  EXPECT_HEX("0409000C11111111AAAABBBB", encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, portstatusv4)
-{
-    const char *input = R"""(
+TEST(encoder, portstatusv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_PORT_STATUS
       datapath_id: 0000-0000-0000-0001
@@ -791,16 +783,17 @@ TEST(encoder, portstatusv4)
           max_speed: 0xBBBBBBBB
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x50, encoder.size());
-    EXPECT_HEX("040C00501111111122000000000000003333333300000000AABBCCDDEEFF0000506F7274203100000000000000000000444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x50, encoder.size());
+  EXPECT_HEX("040C00501111111122000000000000003333333300000000AABBCCDDEEFF00005"
+             "06F72742031000000000000000000004444444455555555666666667777777788"
+             "88888899999999AAAAAAAABBBBBBBB",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, portstatusv1)
-{
-    const char *input = R"""(
+TEST(encoder, portstatusv1) {
+  const char *input = R"""(
       version: 1
       type: OFPT_PORT_STATUS
       datapath_id: 0000-0000-0000-0001
@@ -821,16 +814,16 @@ TEST(encoder, portstatusv1)
           max_speed: 0xBBBBBBBB
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x40, encoder.size());
-    EXPECT_HEX("010C00401111111122000000000000003333AABBCCDDEEFF506F7274203100000000000000000000444444445555555566666666777777778888888899999999", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x40, encoder.size());
+  EXPECT_HEX("010C00401111111122000000000000003333AABBCCDDEEFF506F7274203100000"
+             "000000000000000444444445555555566666666777777778888888899999999",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, groupmodv4)
-{
-    const char *input = R"""(
+TEST(encoder, groupmodv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_GROUP_MOD
       datapath_id: 0000-0000-0000-0001
@@ -860,16 +853,18 @@ TEST(encoder, groupmodv4)
               - action: OFPAT_COPY_TTL_OUT
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x68, encoder.size());
-    EXPECT_HEX("040F006811111111222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A80101000000000028888899999999AAAAAAAA000000000019001080002801EE00000000000000000B000800000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x68, encoder.size());
+  EXPECT_HEX("040F0068111111112222330044444444003055556666666677777777000000000"
+             "00000100000000500140000000000000019001080001804C0A801010000000000"
+             "28888899999999AAAAAAAA000000000019001080002801EE00000000000000000"
+             "B000800000000",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, groupmodv2)
-{
-    const char *input = R"""(
+TEST(encoder, groupmodv2) {
+  const char *input = R"""(
       version: 2
       type: OFPT_GROUP_MOD
       datapath_id: 0000-0000-0000-0001
@@ -899,16 +894,18 @@ TEST(encoder, groupmodv2)
               - action: OFPAT_COPY_TTL_OUT
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x68, encoder.size());
-    EXPECT_HEX("020F006811111111222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A80101000000000028888899999999AAAAAAAA000000000019001080002801EE00000000000000000B000800000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x68, encoder.size());
+  EXPECT_HEX("020F0068111111112222330044444444003055556666666677777777000000000"
+             "00000100000000500140000000000000019001080001804C0A801010000000000"
+             "28888899999999AAAAAAAA000000000019001080002801EE00000000000000000"
+             "B000800000000",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, portmodv4)
-{
-    const char *input = R"""(
+TEST(encoder, portmodv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_PORT_MOD
       datapath_id: 0000-0000-0000-0001
@@ -921,15 +918,16 @@ TEST(encoder, portmodv4)
         advertise: 0x66666666
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x28, encoder.size());
-    EXPECT_HEX("04100028111111112222222200000000333333333333000044444444555555556666666600000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x28, encoder.size());
+  EXPECT_HEX("04100028111111112222222200000000333333333333000044444444555555556"
+             "666666600000000",
+             encoder.data(), encoder.size());
 }
 
-TEST(encoder, portmodv1)
-{
-    const char *input = R"""(
+TEST(encoder, portmodv1) {
+  const char *input = R"""(
       version: 1
       type: OFPT_PORT_MOD
       datapath_id: 0000-0000-0000-0001
@@ -942,15 +940,15 @@ TEST(encoder, portmodv1)
         advertise: 0x66666666
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x20, encoder.size());
-    EXPECT_HEX("010F002011111111222233333333333344444444555555556666666600000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x20, encoder.size());
+  EXPECT_HEX("010F002011111111222233333333333344444444555555556666666600000000",
+             encoder.data(), encoder.size());
 }
 
-TEST(encoder, tablemodv4)
-{
-    const char *input = R"""(
+TEST(encoder, tablemodv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_TABLE_MOD
       datapath_id: 0000-0000-0000-0001
@@ -960,15 +958,15 @@ TEST(encoder, tablemodv4)
         config: 0x33333333
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x10, encoder.size());
-    EXPECT_HEX("04110010111111112200000033333333", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x10, encoder.size());
+  EXPECT_HEX("04110010111111112200000033333333", encoder.data(),
+             encoder.size());
 }
 
-TEST(encoder, tablemodv2)
-{
-    const char *input = R"""(
+TEST(encoder, tablemodv2) {
+  const char *input = R"""(
       version: 2
       type: OFPT_TABLE_MOD
       datapath_id: 0000-0000-0000-0001
@@ -978,15 +976,15 @@ TEST(encoder, tablemodv2)
         config: 0x33333333
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x10, encoder.size());
-    EXPECT_HEX("02110010111111112200000033333333", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x10, encoder.size());
+  EXPECT_HEX("02110010111111112200000033333333", encoder.data(),
+             encoder.size());
 }
 
-TEST(encoder, rolerequestv4)
-{
-    const char *input = R"""(
+TEST(encoder, rolerequestv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_ROLE_REQUEST
       datapath_id: 0000-0000-0000-0001
@@ -996,16 +994,15 @@ TEST(encoder, rolerequestv4)
         generation_id: 0x3333333333333333
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x18, encoder.size());
-    EXPECT_HEX("041800181111111122222222000000003333333333333333", encoder.data(), encoder.size());    
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x18, encoder.size());
+  EXPECT_HEX("041800181111111122222222000000003333333333333333", encoder.data(),
+             encoder.size());
 }
 
-
-TEST(encoder, rolereplyv4)
-{
-    const char *input = R"""(
+TEST(encoder, rolereplyv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_ROLE_REPLY
       datapath_id: 0000-0000-0000-0001
@@ -1015,16 +1012,15 @@ TEST(encoder, rolereplyv4)
         generation_id: 0x3333333333333333
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x18, encoder.size());
-    EXPECT_HEX("041900181111111122222222000000003333333333333333", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x18, encoder.size());
+  EXPECT_HEX("041900181111111122222222000000003333333333333333", encoder.data(),
+             encoder.size());
 }
 
-
-TEST(encoder, getasyncreplyv4)
-{
-    const char *input = R"""(
+TEST(encoder, getasyncreplyv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_GET_ASYNC_REPLY
       datapath_id: 0000-0000-0000-0001
@@ -1038,16 +1034,15 @@ TEST(encoder, getasyncreplyv4)
         flow_removed_mask_slave: 0x77777777
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x20, encoder.size());
-    EXPECT_HEX("041B002011111111222222223333333344444444555555556666666677777777", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x20, encoder.size());
+  EXPECT_HEX("041B002011111111222222223333333344444444555555556666666677777777",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, queuegetconfigrequestv4)
-{
-    const char *input = R"""(
+TEST(encoder, queuegetconfigrequestv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_QUEUE_GET_CONFIG_REQUEST
       datapath_id: 0000-0000-0000-0001
@@ -1056,16 +1051,15 @@ TEST(encoder, queuegetconfigrequestv4)
         port: 0x22222222
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x10, encoder.size());
-    EXPECT_HEX("04160010111111112222222200000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x10, encoder.size());
+  EXPECT_HEX("04160010111111112222222200000000", encoder.data(),
+             encoder.size());
 }
 
-
-TEST(encoder, getconfigreplyv4)
-{
-    const char *input = R"""(
+TEST(encoder, getconfigreplyv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_GET_CONFIG_REPLY
       datapath_id: 0000-0000-0000-0001
@@ -1075,16 +1069,14 @@ TEST(encoder, getconfigreplyv4)
         miss_send_len: 0xBBBB
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x0C, encoder.size());
-    EXPECT_HEX("0408000C11111111AAAABBBB", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x0C, encoder.size());
+  EXPECT_HEX("0408000C11111111AAAABBBB", encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, setasyncv4)
-{
-    const char *input = R"""(
+TEST(encoder, setasyncv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_SET_ASYNC
       datapath_id: 0000-0000-0000-0001
@@ -1098,16 +1090,15 @@ TEST(encoder, setasyncv4)
         flow_removed_mask_slave: 0x77777777
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x20, encoder.size());
-    EXPECT_HEX("041C002011111111222222223333333344444444555555556666666677777777", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x20, encoder.size());
+  EXPECT_HEX("041C002011111111222222223333333344444444555555556666666677777777",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, flowremovedv4) 
-{
-    const char *input = R"""(
+TEST(encoder, flowremovedv4) {
+  const char *input = R"""(
       version: 4
       type: OFPT_FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
@@ -1128,15 +1119,16 @@ TEST(encoder, flowremovedv4)
               value: 0x12345678
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x3C, encoder.size());
-    EXPECT_HEX("040B003C11111111222222222222222233334455666666667777777788889999AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x3C, encoder.size());
+  EXPECT_HEX("040B003C11111111222222222222222233334455666666667777777788889999A"
+             "AAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678",
+             encoder.data(), encoder.size());
 }
 
-TEST(encoder, flowremovedv1) 
-{
-    const char *input = R"""(
+TEST(encoder, flowremovedv1) {
+  const char *input = R"""(
       version: 1
       type: OFPT_FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
@@ -1157,15 +1149,17 @@ TEST(encoder, flowremovedv1)
               value: 0x12345678
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x58, encoder.size());
-    EXPECT_HEX("010B005811111111003FFFFE567800000000000000000000000000000000000000000000000000000000000000000000222222222222222233334400666666667777777788880000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x58, encoder.size());
+  EXPECT_HEX("010B005811111111003FFFFE56780000000000000000000000000000000000000"
+             "00000000000000000000000000000002222222222222222333344006666666677"
+             "77777788880000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB",
+             encoder.data(), encoder.size());
 }
 
-TEST(encoder, flowremovedv2) 
-{
-    const char *input = R"""(
+TEST(encoder, flowremovedv2) {
+  const char *input = R"""(
       version: 2
       type: OFPT_FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
@@ -1186,16 +1180,19 @@ TEST(encoder, flowremovedv2)
               value: 0x12345678
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x88, encoder.size());
-    EXPECT_HEX("020B008811111111222222222222222233334455666666667777777788880000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0000005812345678000003FE00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x88, encoder.size());
+  EXPECT_HEX("020B008811111111222222222222222233334455666666667777777788880000A"
+             "AAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0000005812345678000003FE0000000000"
+             "00000000000000000000000000000000000000000000000000000000000000000"
+             "00000000000000000000000000000000000000000000000000000000000000000"
+             "000000000000",
+             encoder.data(), encoder.size());
 }
 
-
-TEST(encoder, flowremovedv3) 
-{
-    const char *input = R"""(
+TEST(encoder, flowremovedv3) {
+  const char *input = R"""(
       version: 3
       type: OFPT_FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
@@ -1216,10 +1213,10 @@ TEST(encoder, flowremovedv3)
               value: 0x12345678
       )""";
 
-    Encoder encoder{input};
-    EXPECT_EQ("", encoder.error());
-    EXPECT_EQ(0x3C, encoder.size());
-    EXPECT_HEX("030B003C11111111222222222222222233334455666666667777777788889999AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678", encoder.data(), encoder.size());
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x3C, encoder.size());
+  EXPECT_HEX("030B003C11111111222222222222222233334455666666667777777788889999A"
+             "AAAAAAAAAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678",
+             encoder.data(), encoder.size());
 }
-
-

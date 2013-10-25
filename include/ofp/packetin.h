@@ -28,66 +28,59 @@
 
 namespace ofp { // <namespace ofp>
 
-class PacketIn : public ProtocolMsg<PacketIn,OFPT_PACKET_IN> {
+class PacketIn : public ProtocolMsg<PacketIn, OFPT_PACKET_IN> {
 public:
+  UInt8 version() const { return header_.version(); }
 
-    UInt8 version() const { return header_.version(); }
+  UInt32 bufferId() const { return bufferId_; }
 
-    UInt32 bufferId() const
-    {
-        return bufferId_;
-    }
+  UInt16 totalLen() const;
+  UInt32 inPort() const;
+  UInt32 inPhyPort() const;
+  UInt64 metadata() const;
+  OFPPacketInReason reason() const;
+  UInt8 tableID() const;
+  UInt64 cookie() const;
 
-    UInt16 totalLen() const;
-    UInt32 inPort() const;
-    UInt32 inPhyPort() const;
-    UInt64 metadata() const;
-    OFPPacketInReason reason() const;
-    UInt8 tableID() const;
-    UInt64 cookie() const;
+  ByteRange enetFrame() const;
 
-    ByteRange enetFrame() const;
-
-    bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-    Header header_;
-    Big32 bufferId_;
-    Big16 totalLen_;
-    OFPPacketInReason reason_;
-    Big8 tableID_;
-    Big64 cookie_;
+  Header header_;
+  Big32 bufferId_;
+  Big16 totalLen_;
+  OFPPacketInReason reason_;
+  Big8 tableID_;
+  Big64 cookie_;
 
-    Big16 matchType_ = 0;
-    Big16 matchLength_ = 0;
-    Padding<4> pad_;
+  Big16 matchType_ = 0;
+  Big16 matchLength_ = 0;
+  Padding<4> pad_;
 
-    // Only PacketInBuilder can construct an instance.
-    PacketIn() : header_{type()}
-    {
-    }
+  // Only PacketInBuilder can construct an instance.
+  PacketIn() : header_{type()} {}
 
-    OXMRange oxmRange() const;
+  OXMRange oxmRange() const;
 
-    template <class Type>
-    Type offset(size_t offset) const
-    {
-        return *reinterpret_cast<const Type *>(BytePtr(this) + offset);
-    }
+  template <class Type>
+  Type offset(size_t offset) const {
+    return *reinterpret_cast<const Type *>(BytePtr(this) + offset);
+  }
 
-    bool validateLengthV1(size_t length) const;
-    bool validateLengthV2(size_t length) const;
-    bool validateLengthV3(size_t length) const;
+  bool validateLengthV1(size_t length) const;
+  bool validateLengthV2(size_t length) const;
+  bool validateLengthV3(size_t length) const;
 
-    enum : size_t {
-        UnpaddedSizeWithMatchHeader = 28,
-        SizeWithoutMatchHeader = 24,
-        MatchHeaderSize = 4,
-    };
+  enum : size_t {
+    UnpaddedSizeWithMatchHeader = 28,
+    SizeWithoutMatchHeader = 24,
+    MatchHeaderSize = 4,
+  };
 
-    friend class PacketInBuilder;
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  friend class PacketInBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(PacketIn) == 32, "Unexpected size.");
@@ -96,39 +89,36 @@ static_assert(IsTriviallyCopyable<PacketIn>(), "Expected trivially copyable.");
 
 class PacketInBuilder {
 public:
-    PacketInBuilder() = default;
-    explicit PacketInBuilder(const PacketIn *msg);
+  PacketInBuilder() = default;
+  explicit PacketInBuilder(const PacketIn *msg);
 
-    void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
-    void setTotalLen(UInt16 totalLen) { msg_.totalLen_ = totalLen; }
-    void setInPort(UInt32 inPort) { inPort_ = inPort; }
-    void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }
-    void setMetadata(UInt64 metadata) { metadata_ = metadata; }
-    void setReason(OFPPacketInReason reason) { msg_.reason_ = reason; }
-    void setTableID(UInt8 tableID) { msg_.tableID_ = tableID; }
-    void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
+  void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
+  void setTotalLen(UInt16 totalLen) { msg_.totalLen_ = totalLen; }
+  void setInPort(UInt32 inPort) { inPort_ = inPort; }
+  void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }
+  void setMetadata(UInt64 metadata) { metadata_ = metadata; }
+  void setReason(OFPPacketInReason reason) { msg_.reason_ = reason; }
+  void setTableID(UInt8 tableID) { msg_.tableID_ = tableID; }
+  void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
 
-    void setEnetFrame(const ByteRange &enetFrame)
-    {
-        enetFrame_ = enetFrame;
-    }
+  void setEnetFrame(const ByteRange &enetFrame) { enetFrame_ = enetFrame; }
 
-    UInt32 send(Writable *channel);
+  UInt32 send(Writable *channel);
 
 private:
-    PacketIn msg_;
-    Big32 inPort_ = 0;
-    Big32 inPhyPort_ = 0;
-    Big64 metadata_ = 0;
-    MatchBuilder match_;
-    ByteList enetFrame_;
+  PacketIn msg_;
+  Big32 inPort_ = 0;
+  Big32 inPhyPort_ = 0;
+  Big64 metadata_ = 0;
+  MatchBuilder match_;
+  ByteList enetFrame_;
 
-    UInt32 sendV1(Writable *channel);
-    UInt32 sendV2(Writable *channel);
-    UInt32 sendV3(Writable *channel);
+  UInt32 sendV1(Writable *channel);
+  UInt32 sendV2(Writable *channel);
+  UInt32 sendV3(Writable *channel);
 
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

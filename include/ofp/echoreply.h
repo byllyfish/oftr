@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the EchoReply and EchoReplyBuilder classes.
@@ -27,36 +27,32 @@
 
 namespace ofp { // <namespace ofp>
 
-class EchoReply : public ProtocolMsg<EchoReply,OFPT_ECHO_REPLY> {
+class EchoReply : public ProtocolMsg<EchoReply, OFPT_ECHO_REPLY> {
 public:
-	
-	ByteRange echoData() const;
+  ByteRange echoData() const;
 
-	bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-	Header header_;
+  Header header_;
 
-	// Only EchoReplyBuilder can construct an instance.
-	EchoReply() : header_{type()} {}
+  // Only EchoReplyBuilder can construct an instance.
+  EchoReply() : header_{type()} {}
 
-	friend class EchoReplyBuilder;
+  friend class EchoReplyBuilder;
 };
-
 
 class EchoReplyBuilder {
 public:
-	explicit EchoReplyBuilder(UInt32 xid);
+  explicit EchoReplyBuilder(UInt32 xid);
 
-	void setEchoData(const void *data, size_t length) {
-		data_.set(data, length);
-	}
-	
-	void send(Writable *channel);
+  void setEchoData(const void *data, size_t length) { data_.set(data, length); }
+
+  void send(Writable *channel);
 
 private:
-	EchoReply msg_;
-	ByteList data_;
+  EchoReply msg_;
+  ByteList data_;
 };
 
 } // </namespace ofp>

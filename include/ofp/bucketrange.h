@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the BucketRange class.
@@ -29,16 +29,20 @@ namespace ofp { // <namespace ofp>
 
 class BucketRange {
 public:
-	BucketRange() = default;
-	explicit BucketRange(const ByteRange &range) : range_{range} {}
+  BucketRange() = default;
+  explicit BucketRange(const ByteRange &range) : range_{range} {}
 
-	size_t itemCount() const { return BucketIterator::distance(begin(), end()); }
+  size_t itemCount() const { return BucketIterator::distance(begin(), end()); }
 
-	BucketIterator begin() const { return BucketIterator{range_.begin()}; }
-	BucketIterator end() const { return BucketIterator{range_.end()}; }
+  BucketIterator begin() const {
+    return BucketIterator{range_.begin()};
+  }
+  BucketIterator end() const {
+    return BucketIterator{range_.end()};
+  }
 
 private:
-	ByteRange range_;
+  ByteRange range_;
 };
 
 } // </namespace ofp>

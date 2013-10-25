@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the OXMTypeSet class.
@@ -31,24 +31,24 @@ OFP_BEGIN_IGNORE_PADDING
 
 class OXMTypeSet {
 public:
+  OXMTypeSet() {}
 
-	OXMTypeSet() {}
-
-	bool find(OXMType type);
-	bool add(OXMType type);
+  bool find(OXMType type);
+  bool add(OXMType type);
 
 private:
-	
-	enum { MaxOXMClasses = 10 };
+  enum {
+    MaxOXMClasses = 10
+  };
 
-	struct ClassEntry {
-		std::bitset<128> fields;
-		UInt16 oxmClass;
-	};
+  struct ClassEntry {
+    std::bitset<128> fields;
+    UInt16 oxmClass;
+  };
 
-	// TODO replace with std::array?
-	ClassEntry classes_[MaxOXMClasses];
-	unsigned classCount_ = 0;
+  // TODO replace with std::array?
+  ClassEntry classes_[MaxOXMClasses];
+  unsigned classCount_ = 0;
 };
 
 OFP_END_IGNORE_PADDING

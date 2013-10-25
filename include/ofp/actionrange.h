@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the ActionRange class.
@@ -32,32 +32,36 @@ class ActionList;
 
 class ActionRange {
 public:
-	ActionRange() = default;
-	ActionRange(const ByteRange &range) : range_{range} {}
-	ActionRange(const ActionList &list);
+  ActionRange() = default;
+  ActionRange(const ByteRange &range) : range_{range} {}
+  ActionRange(const ActionList &list);
 
-	size_t itemCount() const { return ActionIterator::distance(begin(), end()); }
-	
-	ActionIterator begin() const { return ActionIterator{data()}; }
-	ActionIterator end() const { return ActionIterator{data() + size()}; }
+  size_t itemCount() const { return ActionIterator::distance(begin(), end()); }
 
-	const UInt8 *data() const { return range_.data(); }
-	size_t size() const { return range_.size(); }
-	ByteRange toByteRange() const { return range_; }
+  ActionIterator begin() const {
+    return ActionIterator{data()};
+  }
+  ActionIterator end() const {
+    return ActionIterator{data() + size()};
+  }
 
-	/// \returns Size of action list when written to channel using the specified
-	/// protocol version.
-	size_t writeSize(Writable *channel);
+  const UInt8 *data() const { return range_.data(); }
+  size_t size() const { return range_.size(); }
+  ByteRange toByteRange() const { return range_; }
 
-	/// \brief Writes action list to the channel using the specified protocol
-	/// version.
-	void write(Writable *channel);
+  /// \returns Size of action list when written to channel using the specified
+  /// protocol version.
+  size_t writeSize(Writable *channel);
+
+  /// \brief Writes action list to the channel using the specified protocol
+  /// version.
+  void write(Writable *channel);
 
 private:
-	ByteRange range_;
+  ByteRange range_;
 
-	static unsigned writeSizeMinusSetFieldV1(ActionIterator iter);
-	static void writeSetFieldV1(ActionIterator iter, Writable *channel);
+  static unsigned writeSizeMinusSetFieldV1(ActionIterator iter);
+  static void writeSetFieldV1(ActionIterator iter, Writable *channel);
 };
 
 } // </namespace ofp>

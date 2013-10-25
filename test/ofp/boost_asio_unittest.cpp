@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for asio utility functions.
@@ -26,28 +26,24 @@
 using namespace ofp;
 using namespace ofp::sys;
 
+TEST(boost_asio, tcp) {
+  auto endpt = makeTCPEndpoint(IPv6Address{"192.168.1.1"}, 80);
 
-TEST(boost_asio, tcp) 
-{
-	auto endpt = makeTCPEndpoint(IPv6Address{"192.168.1.1"}, 80);
+  log::debug("endpt", endpt.address().to_string());
 
-	log::debug("endpt", endpt.address().to_string());
+  IPv6Address addr = makeIPv6Address(endpt.address());
+  UInt16 port = endpt.port();
 
-	IPv6Address addr = makeIPv6Address(endpt.address());
-	UInt16 port = endpt.port();
-
-	EXPECT_EQ("192.168.1.1", addr.toString());
-	EXPECT_EQ(80, port);
+  EXPECT_EQ("192.168.1.1", addr.toString());
+  EXPECT_EQ(80, port);
 }
 
+TEST(boost_asio, udp) {
+  auto endpt = makeUDPEndpoint(IPv6Address{"192.168.1.1"}, 80);
 
-TEST(boost_asio, udp) 
-{
-	auto endpt = makeUDPEndpoint(IPv6Address{"192.168.1.1"}, 80);
+  IPv6Address addr = makeIPv6Address(endpt.address());
+  UInt16 port = endpt.port();
 
-	IPv6Address addr = makeIPv6Address(endpt.address());
-	UInt16 port = endpt.port();
-
-	EXPECT_EQ("192.168.1.1", addr.toString());
-	EXPECT_EQ(80, port);
+  EXPECT_EQ("192.168.1.1", addr.toString());
+  EXPECT_EQ(80, port);
 }

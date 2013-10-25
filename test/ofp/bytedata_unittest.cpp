@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for ByteData class.
@@ -24,17 +24,16 @@
 
 using namespace ofp;
 
-TEST(bytedata, basics)
-{
-    ByteData b{"abc", 3};
+TEST(bytedata, basics) {
+  ByteData b{"abc", 3};
 
-    EXPECT_EQ(3, b.size());
-    EXPECT_NE(nullptr, b.data());
+  EXPECT_EQ(3, b.size());
+  EXPECT_NE(nullptr, b.data());
 
-    ByteData b2{std::move(b)};
-    EXPECT_EQ(3, b2.size());
+  ByteData b2{std::move(b)};
+  EXPECT_EQ(3, b2.size());
 
-    // Check moved from object.
-    EXPECT_EQ(nullptr, b.data());
-    EXPECT_EQ(0, b.size());
+  // Check moved from object.
+  EXPECT_EQ(nullptr, b.data());
+  EXPECT_EQ(0, b.size());
 }

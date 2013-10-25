@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the SmallCString class.
@@ -25,7 +25,7 @@
 #include <array>
 #include <algorithm>
 
-namespace ofp { // <namespace ofp>
+namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
 
 /// \returns smaller of string length or maxlen.
@@ -38,90 +38,71 @@ size_t strlen(const char *s, size_t maxlen);
 template <size_t Size>
 class SmallCString {
 public:
-    using ArrayType = std::array<char, Size>;
+  using ArrayType = std::array<char, Size>;
 
-    constexpr SmallCString() : str_{} {}
+  constexpr SmallCString() : str_{} {}
 
-    SmallCString(const std::string &s) {
-        operator=(s);
-    }
+  SmallCString(const std::string &s) { operator=(s); }
 
-    SmallCString(const char *cstr) {
-        operator=(cstr);
-    }
+  SmallCString(const char *cstr) { operator=(cstr); }
 
-    constexpr size_t capacity() const
-    {
-        return Size - 1;
-    }
+  constexpr size_t capacity() const { return Size - 1; }
 
-    bool empty() const
-    {
-        return str_.front() == 0;
-    }
+  bool empty() const { return str_.front() == 0; }
 
-    size_t length() const
-    {
-        return detail::strlen(str_.data(), capacity());
-    }
+  size_t length() const { return detail::strlen(str_.data(), capacity()); }
 
-    std::string toString() const {
-        return std::string{str_.data(), length()};
-    }
+  std::string toString() const {
+    return std::string{str_.data(), length()};
+  }
 
-    const ArrayType &toArray() const {
-        return str_;
-    }
+  const ArrayType &toArray() const { return str_; }
 
-    void operator=(const std::string &s);
-    void operator=(const char *cstr);
+  void operator=(const std::string &s);
+  void operator=(const char *cstr);
 
 private:
-    ArrayType str_;
+  ArrayType str_;
 };
 
 template <size_t Size>
 bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size> &rhs);
 
 template <size_t Size>
-inline bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size> &rhs)
-
-{
-    return lhs.toArray() == rhs.toArray();
+inline bool operator==(const SmallCString<Size> &lhs,
+                       const SmallCString<Size> &rhs) {
+  return lhs.toArray() == rhs.toArray();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
 namespace detail { // <namespace detail>
 
-inline size_t strlen(const char *s, size_t maxlen)
-{
-    auto p = std::find(s, s + maxlen, '\0');
-    return Unsigned_cast(p - s);
+inline size_t strlen(const char *s, size_t maxlen) {
+  auto p = std::find(s, s + maxlen, '\0');
+  return Unsigned_cast(p - s);
 }
 
 } // </namespace detail>
 
-/// Copies string and sets the remaining bytes to zero. The last byte will 
+/// Copies string and sets the remaining bytes to zero. The last byte will
 /// always be zero.
 template <size_t Size>
-inline void SmallCString<Size>::operator=(const std::string &s)
-{
-    size_t len = std::min(s.length(), capacity());
-    assert(len <= capacity());
-    std::memcpy(&str_, s.data(), len);
-    std::memset(&str_[len], 0, capacity() - len);
-    str_.back() = 0;
+inline void SmallCString<Size>::operator=(const std::string &s) {
+  size_t len = std::min(s.length(), capacity());
+  assert(len <= capacity());
+  std::memcpy(&str_, s.data(), len);
+  std::memset(&str_[len], 0, capacity() - len);
+  str_.back() = 0;
 }
 
 template <size_t Size>
-inline void SmallCString<Size>::operator=(const char *cstr)
-{
-    size_t len = detail::strlen(cstr, capacity());
-    assert(len <= capacity());
-    std::memcpy(&str_, cstr, len);
-    std::memset(&str_[len], 0, capacity() - len);
-    str_.back() = 0;
+inline void SmallCString<Size>::operator=(const char *cstr) {
+  size_t len = detail::strlen(cstr, capacity());
+  assert(len <= capacity());
+  std::memcpy(&str_, cstr, len);
+  std::memset(&str_[len], 0, capacity() - len);
+  str_.back() = 0;
 }
 
 } // </namespace ofp>

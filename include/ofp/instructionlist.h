@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the InstructionList class.
@@ -33,35 +33,28 @@ class InstructionRange;
 
 class InstructionList {
 public:
+  InstructionList() = default;
+  InstructionList(const InstructionRange &range);
 
-    InstructionList() = default;
-    InstructionList(const InstructionRange &range);
+  InstructionIterator begin() const {
+    return InstructionIterator{data()};
+  }
 
-    InstructionIterator begin() const {
-        return InstructionIterator{data()};
-    }
+  InstructionIterator end() const {
+    return InstructionIterator{data() + size()};
+  }
 
-    InstructionIterator end() const {
-        return InstructionIterator{data() + size()};
-    }
+  const UInt8 *data() const { return buf_.data(); }
 
-    const UInt8 *data() const
-    {
-        return buf_.data();
-    }
-    
-    size_t size() const
-    {
-        return buf_.size();
-    }
+  size_t size() const { return buf_.size(); }
 
-    template <class Type>
-    void add(const Type &instruction);
+  template <class Type>
+  void add(const Type &instruction);
 
-    ActionRange toActions() const;
-    
+  ActionRange toActions() const;
+
 private:
-    ByteList buf_;
+  ByteList buf_;
 
 #if 0
     void add(const void *data, size_t length)
@@ -73,24 +66,21 @@ private:
 };
 
 template <class Type>
-inline void InstructionList::add(const Type &instruction)
-{
-    static_assert(Type::type().type() != 0, "Type is not an instruction?");
-    buf_.add(&instruction, sizeof(instruction));
+inline void InstructionList::add(const Type &instruction) {
+  static_assert(Type::type().type() != 0, "Type is not an instruction?");
+  buf_.add(&instruction, sizeof(instruction));
 }
 
 template <>
-inline void InstructionList::add(const IT_WRITE_ACTIONS &instruction)
-{
-    buf_.add(&instruction, IT_WRITE_ACTIONS::HeaderSize);
-    buf_.add(instruction.data(), instruction.size());
+inline void InstructionList::add(const IT_WRITE_ACTIONS &instruction) {
+  buf_.add(&instruction, IT_WRITE_ACTIONS::HeaderSize);
+  buf_.add(instruction.data(), instruction.size());
 }
 
 template <>
-inline void InstructionList::add(const IT_APPLY_ACTIONS &instruction)
-{
-    buf_.add(&instruction, IT_APPLY_ACTIONS::HeaderSize);
-    buf_.add(instruction.data(), instruction.size());
+inline void InstructionList::add(const IT_APPLY_ACTIONS &instruction) {
+  buf_.add(&instruction, IT_APPLY_ACTIONS::HeaderSize);
+  buf_.add(instruction.data(), instruction.size());
 }
 
 } // </namespace ofp>

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines a specialization of std::hash for std::array.
@@ -24,26 +24,23 @@
 
 #include <array>
 
-namespace std
-{
-	/// \brief Specialization of std::hash for std::array types.
-    template<class T, size_t N>
-    struct hash<std::array<T, N>>
-    {
-        size_t operator()(const std::array<T,N>& a) const
-        {
-            hash<T> hasher;
-            size_t result = 0;
+namespace std {
+/// \brief Specialization of std::hash for std::array types.
+template <class T, size_t N>
+struct hash<std::array<T, N>> {
+  size_t operator()(const std::array<T, N> &a) const {
+    hash<T> hasher;
+    size_t result = 0;
 
-            auto iter = a.crbegin();
-            auto end = a.crend();
-            while (iter != end) {
-            	result = result * 31 + hasher(*iter++);
-            }
+    auto iter = a.crbegin();
+    auto end = a.crend();
+    while (iter != end) {
+      result = result * 31 + hasher(*iter++);
+    }
 
-            return result;
-        }
-    };
+    return result;
+  }
+};
 }
 
 #endif // OFP_ARRAY_H

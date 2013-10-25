@@ -60,5 +60,4 @@ TEST(yaml_unittest, escape_chars)
     yaml::read(input, &builder);
 }
 
-#endif //0
-
+#endif // 0

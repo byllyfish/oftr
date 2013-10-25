@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the FlowStatsReply and FlowStatsReplyBuilder classes.
@@ -36,55 +36,55 @@ class FlowStatsReplyBuilder;
 
 class FlowStatsReply {
 public:
+  FlowStatsReply() = default;
 
-	FlowStatsReply() = default;
-
-	Match match() const;
-	InstructionRange instructions() const;
+  Match match() const;
+  InstructionRange instructions() const;
 
 private:
-	Big16 length_;
-	Big8 tableId_;
-	Padding<1> pad_1;
-	Big32 durationSec_;
-	Big32 durationNsec_;
-	Big16 priority_;
-	Big16 idleTimeout_;
-	Big16 hardTimeout_;
-	Big16 flags_;
-	Padding<4> pad_2;
-	Big64 cookie_;
-	Big64 packetCount_;
-	Big64 byteCount_;
+  Big16 length_;
+  Big8 tableId_;
+  Padding<1> pad_1;
+  Big32 durationSec_;
+  Big32 durationNsec_;
+  Big16 priority_;
+  Big16 idleTimeout_;
+  Big16 hardTimeout_;
+  Big16 flags_;
+  Padding<4> pad_2;
+  Big64 cookie_;
+  Big64 packetCount_;
+  Big64 byteCount_;
 
-	Big16 matchType_ = 0;
-    Big16 matchLength_ = 0;
-    Padding<4> pad_3;
+  Big16 matchType_ = 0;
+  Big16 matchLength_ = 0;
+  Padding<4> pad_3;
 
-    enum { UnpaddedSizeWithMatchHeader = 52 };
-    enum { SizeWithoutMatchHeader = 48 };
+  enum {
+    UnpaddedSizeWithMatchHeader = 52
+  };
+  enum {
+    SizeWithoutMatchHeader = 48
+  };
 
-    friend class FlowStatsReplyBuilder;
-    friend struct llvm::yaml::MappingTraits<FlowStatsReply>;
-    friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
+  friend class FlowStatsReplyBuilder;
+  friend struct llvm::yaml::MappingTraits<FlowStatsReply>;
+  friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
 };
 
 static_assert(sizeof(FlowStatsReply) == 56, "Unexpected size.");
 static_assert(IsStandardLayout<FlowStatsReply>(), "Expected standard layout.");
 
-
 class FlowStatsReplyBuilder {
 public:
-	
-
-	void write(Writable *channel);
+  void write(Writable *channel);
 
 private:
-	FlowStatsReply msg_;
-	MatchBuilder match_;
-	InstructionList instructions_;
+  FlowStatsReply msg_;
+  MatchBuilder match_;
+  InstructionList instructions_;
 
-	friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
+  friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
 };
 
 } // </namespace ofp>

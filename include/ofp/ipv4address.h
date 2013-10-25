@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the IPv4Address class.
@@ -29,50 +29,44 @@ namespace ofp { // <namespace ofp>
 
 class IPv4Address {
 public:
-	enum { Length = 4 };
-	
-	using ArrayType = std::array<UInt8,Length>;
+  enum {
+    Length = 4
+  };
 
-	IPv4Address() : addr_{} {}
-	explicit IPv4Address(const ArrayType &a);
-	IPv4Address(const std::string &s);
+  using ArrayType = std::array<UInt8, Length>;
 
-	static IPv4Address mask(unsigned prefix);
+  IPv4Address() : addr_{} {}
+  explicit IPv4Address(const ArrayType &a);
+  IPv4Address(const std::string &s);
 
-	bool valid() const {
-		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');
-	}
+  static IPv4Address mask(unsigned prefix);
 
-	unsigned prefix() const;
-	bool isBroadcast() const { return IsMemFilled(addr_.data(), sizeof(addr_), '\xff'); }
-	
-	void setAllOnes() {
-		std::memset(addr_.data(), 0xFF, sizeof(addr_));
-	}
+  bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
 
-	bool parse(const std::string &s);
-	void clear();
-	
-	std::string toString() const;
+  unsigned prefix() const;
+  bool isBroadcast() const {
+    return IsMemFilled(addr_.data(), sizeof(addr_), '\xff');
+  }
 
-	ArrayType toArray() const {
-		return addr_;
-	}
+  void setAllOnes() { std::memset(addr_.data(), 0xFF, sizeof(addr_)); }
 
-	bool operator==(const IPv4Address &rhs) const {
-		return addr_ == rhs.addr_;
-	}
-	
-	bool operator!=(const IPv4Address &rhs) const {
-		return !(*this == rhs);
-	}
+  bool parse(const std::string &s);
+  void clear();
 
-	bool fromString(const std::string &s);
+  std::string toString() const;
+
+  ArrayType toArray() const { return addr_; }
+
+  bool operator==(const IPv4Address &rhs) const { return addr_ == rhs.addr_; }
+
+  bool operator!=(const IPv4Address &rhs) const { return !(*this == rhs); }
+
+  bool fromString(const std::string &s);
 
 private:
-	ArrayType addr_;
+  ArrayType addr_;
 };
 
 } // </namespace ofp>
 
-#endif //OFP_IPV4ADDRESS_H
+#endif // OFP_IPV4ADDRESS_H

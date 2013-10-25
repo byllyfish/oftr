@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for EnetAddress class.
@@ -24,38 +24,32 @@
 
 using namespace ofp;
 
-TEST(enetaddress, valid) 
-{
-	EnetAddress enet{"01-02-03-04-05-06"};
+TEST(enetaddress, valid) {
+  EnetAddress enet{"01-02-03-04-05-06"};
 
-	EXPECT_TRUE(enet.valid());
-	EXPECT_EQ("01-02-03-04-05-06", enet.toString());
+  EXPECT_TRUE(enet.valid());
+  EXPECT_EQ("01-02-03-04-05-06", enet.toString());
 
-	EnetAddress enet2{"01-02-03-04-05-06-07"};		// okay
+  EnetAddress enet2{"01-02-03-04-05-06-07"}; // okay
 
-	EXPECT_TRUE(enet2.valid());
-	EXPECT_EQ("01-02-03-04-05-06", enet2.toString());
-
+  EXPECT_TRUE(enet2.valid());
+  EXPECT_EQ("01-02-03-04-05-06", enet2.toString());
 }
 
+TEST(enetaddress, invalid) {
+  EnetAddress enet{"01-02-03-04-05"};
 
-TEST(enetaddress, invalid) 
-{
-	EnetAddress enet{"01-02-03-04-05"};
-
-	EXPECT_FALSE(enet.valid());
-	EXPECT_EQ("00-00-00-00-00-00", enet.toString());
+  EXPECT_FALSE(enet.valid());
+  EXPECT_EQ("00-00-00-00-00-00", enet.toString());
 }
 
+TEST(enetaddress, hash) {
+  EnetAddress enet1{"01-02-03-04-05-06"};
 
-TEST(enetaddress, hash) 
-{
-	EnetAddress enet1{"01-02-03-04-05-06"};
+  std::hash<EnetAddress> hasher;
+  EXPECT_EQ(176514621, hasher(enet1));
 
-	std::hash<EnetAddress> hasher;
-	EXPECT_EQ(176514621, hasher(enet1));
+  EnetAddress enet2{"01-02-03-04-05-07"};
 
-	EnetAddress enet2{"01-02-03-04-05-07"};
-
-	EXPECT_EQ(205143772, hasher(enet2));
+  EXPECT_EQ(205143772, hasher(enet2));
 }

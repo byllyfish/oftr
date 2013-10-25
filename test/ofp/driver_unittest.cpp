@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for Driver class.
@@ -27,37 +27,23 @@ using namespace ofp;
 
 class MockChannelListener : public ChannelListener {
 public:
-    void onChannelUp(Channel *channel) override
-    {
-    }
-    void onChannelDown(Channel *channel) override
-    {
-    }
-    void onMessage(const Message *message) override;
+  void onChannelUp(Channel *channel) override {}
+  void onChannelDown(Channel *channel) override {}
+  void onMessage(const Message *message) override;
 
-    void onException(const Exception *error) override
-    {
-    }
-    void onTimer(UInt32 timerID) override {
-    }
+  void onException(const Exception *error) override {}
+  void onTimer(UInt32 timerID) override {}
 };
 
+void MockChannelListener::onMessage(const Message *message) {}
 
-void MockChannelListener::onMessage(const Message *message)
-{
-}
+TEST(driver, test) {
+  log::set(&std::cerr);
 
+  Driver driver;
 
-TEST(driver, test)
-{
-    log::set(&std::cerr);
-    
-    Driver driver;
+  driver.listen(Driver::Controller, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT},
+                ProtocolVersions{}, [] { return new MockChannelListener; });
 
-    driver.listen(Driver::Controller, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT}, 
-                  ProtocolVersions{}, []{
-        return new MockChannelListener;
-    });
-
-    //driver.run();
+  // driver.run();
 }

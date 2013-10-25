@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the ActionList class.
@@ -29,33 +29,28 @@
 namespace ofp { // <namespace ofp>
 
 class ActionList {
-  public:
+public:
+  ActionList() = default;
 
-    ActionList() = default;
+  const UInt8 *data() const { return buf_.data(); }
 
-    const UInt8 *data() const
-    {
-        return buf_.data();
-    }
-    
-    size_t size() const
-    {
-        return buf_.size();
-    }
+  size_t size() const { return buf_.size(); }
 
-    template <class Type> void add(const Type &action)
-    {
-        // Make sure it's an action.
-        assert(Type::type() != 0);
-        buf_.add(&action, sizeof(action));
-    }
+  template <class Type>
+  void add(const Type &action) {
+    // Make sure it's an action.
+    assert(Type::type() != 0);
+    buf_.add(&action, sizeof(action));
+  }
 
-    ActionRange toRange() const { return ActionRange{buf_.toRange()}; }
+  ActionRange toRange() const {
+    return ActionRange{buf_.toRange()};
+  }
 
-    void operator=(const ActionRange &range) { buf_ = range.toByteRange(); }
+  void operator=(const ActionRange &range) { buf_ = range.toByteRange(); }
 
-  private:
-    ByteList buf_;
+private:
+  ByteList buf_;
 };
 
 } // </namespace ofp>

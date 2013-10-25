@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines useful functions and classes for unit tests.
@@ -33,16 +33,15 @@
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 #endif
 
-inline std::string hexclean(const char *data)
-{
-    std::string s = ofp::HexToRawData(data);
-    return ofp::RawDataToHex(s.data(), s.size());
+inline std::string hexclean(const char *data) {
+  std::string s = ofp::HexToRawData(data);
+  return ofp::RawDataToHex(s.data(), s.size());
 }
 
 #define EXPECT_HEX(hexstr, data, length)                                       \
-    {                                                                          \
-        auto hex_tmp__ = hexclean(hexstr);                                     \
-        EXPECT_EQ(hex_tmp__, ofp::RawDataToHex(data, length));                 \
-    }
+  {                                                                            \
+    auto hex_tmp__ = hexclean(hexstr);                                         \
+    EXPECT_EQ(hex_tmp__, ofp::RawDataToHex(data, length));                     \
+  }
 
 #endif // OFP_UNITTEST_H

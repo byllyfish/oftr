@@ -27,35 +27,26 @@
 
 namespace ofp { // <namespace ofp>
 
-class PortStatus : public ProtocolMsg<PortStatus,OFPT_PORT_STATUS> {
+class PortStatus : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS> {
 public:
+  UInt8 reason() const { return reason_; }
 
-    UInt8 reason() const
-    {
-        return reason_;
-    }
+  const Port &port() const { return port_; }
 
-    const Port &port() const
-    {
-        return port_;
-    }
-
-    bool validateLength(size_t length) const;
+  bool validateLength(size_t length) const;
 
 private:
-    Header header_;
-    UInt8 reason_;
-    Padding<7> pad_;
-    Port port_;
+  Header header_;
+  UInt8 reason_;
+  Padding<7> pad_;
+  Port port_;
 
-    // Only PortStatusBuilder can create an instance.
-    PortStatus() : header_{type()}
-    {
-    }
+  // Only PortStatusBuilder can create an instance.
+  PortStatus() : header_{type()} {}
 
-    friend class PortStatusBuilder;
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  friend class PortStatusBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(PortStatus) == 80, "Unexpected size.");
@@ -65,25 +56,19 @@ static_assert(IsTriviallyCopyable<PortStatus>(),
 
 class PortStatusBuilder {
 public:
-    PortStatusBuilder() = default;
-    explicit PortStatusBuilder(const PortStatus *msg);
+  PortStatusBuilder() = default;
+  explicit PortStatusBuilder(const PortStatus *msg);
 
-    void setReason(UInt8 reason)
-    {
-        msg_.reason_ = reason;
-    }
-    void setPort(const Port &port)
-    {
-        msg_.port_ = port;
-    }
+  void setReason(UInt8 reason) { msg_.reason_ = reason; }
+  void setPort(const Port &port) { msg_.port_ = port; }
 
-    UInt32 send(Writable *channel);
+  UInt32 send(Writable *channel);
 
 private:
-    PortStatus msg_;
+  PortStatus msg_;
 
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements unit tests for BucketList class.
@@ -24,11 +24,8 @@
 
 using namespace ofp;
 
+TEST(bucketlist, test) {
+  BucketList buckets;
 
-
-TEST(bucketlist, test) 
-{
-	BucketList buckets;
-	
-	// TODO
+  // TODO
 }

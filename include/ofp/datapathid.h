@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the DatapathID class.
@@ -31,52 +31,40 @@ namespace ofp { // <namespace ofp>
 
 class DatapathID {
 public:
-    enum {
-        Length = 8
-    };
+  enum {
+    Length = 8
+  };
 
-    using ArrayType = std::array<UInt8, Length>;
+  using ArrayType = std::array<UInt8, Length>;
 
-    DatapathID() : dpid_{} {}
+  DatapathID() : dpid_{} {}
 
-    DatapathID(const ArrayType dpid)
-    {
-        dpid_ = dpid;
-    }
+  DatapathID(const ArrayType dpid) { dpid_ = dpid; }
 
-    DatapathID(Big16 implementerDefined, EnetAddress macAddress);
+  DatapathID(Big16 implementerDefined, EnetAddress macAddress);
 
-    Big16 implementerDefined() const;
-    EnetAddress macAddress() const;
-    std::string toString() const;
+  Big16 implementerDefined() const;
+  EnetAddress macAddress() const;
+  std::string toString() const;
 
-    bool parse(const std::string &s);
-    
-    bool operator<(const DatapathID &rhs) const {
-        return dpid_ < rhs.dpid_;
-    }
+  bool parse(const std::string &s);
 
-    bool operator>(const DatapathID &rhs) const {
-        return dpid_ > rhs.dpid_;
-    }
+  bool operator<(const DatapathID &rhs) const { return dpid_ < rhs.dpid_; }
 
-    bool operator==(const DatapathID &rhs) const {
-        return dpid_ == rhs.dpid_;
-    }
+  bool operator>(const DatapathID &rhs) const { return dpid_ > rhs.dpid_; }
 
-    bool operator!=(const DatapathID &rhs) const {
-        return !operator==(rhs);
-    }
+  bool operator==(const DatapathID &rhs) const { return dpid_ == rhs.dpid_; }
+
+  bool operator!=(const DatapathID &rhs) const { return !operator==(rhs); }
 
 private:
-    ArrayType dpid_;
+  ArrayType dpid_;
 };
 
 std::ostream &operator<<(std::ostream &os, const DatapathID &value);
 
-inline std::ostream &operator<<(std::ostream &os, const DatapathID &value)
-{
-    return os << value.toString();
+inline std::ostream &operator<<(std::ostream &os, const DatapathID &value) {
+  return os << value.toString();
 }
 
 } // </namespace ofp>

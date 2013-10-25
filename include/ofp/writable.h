@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the abstract Writable class.
@@ -28,13 +28,13 @@ namespace ofp { // <namespace ofp>
 
 class Writable {
 public:
-	virtual ~Writable() {}
+  virtual ~Writable() {}
 
-	virtual UInt8 version() const = 0;
-	virtual UInt32 nextXid() = 0;
+  virtual UInt8 version() const = 0;
+  virtual UInt32 nextXid() = 0;
 
-	virtual void write(const void *data, size_t length) = 0;
-	virtual void flush() = 0;
+  virtual void write(const void *data, size_t length) = 0;
+  virtual void flush() = 0;
 };
 
 } // </namespace ofp>

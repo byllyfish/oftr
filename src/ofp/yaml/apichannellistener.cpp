@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements yaml::ApiChannelListener class.
@@ -24,31 +24,26 @@
 
 using namespace ofp::yaml;
 
-void ApiChannelListener::onChannelUp(Channel *channel)
-{
-	assert(channel_ == nullptr);
-	
-	channel_ = channel;
-	server_->onChannelUp(channel_);
+void ApiChannelListener::onChannelUp(Channel *channel) {
+  assert(channel_ == nullptr);
+
+  channel_ = channel;
+  server_->onChannelUp(channel_);
 }
 
-void ApiChannelListener::onChannelDown(Channel *channel)
-{
-	assert(channel == channel_);
-	server_->onChannelDown(channel_);
+void ApiChannelListener::onChannelDown(Channel *channel) {
+  assert(channel == channel_);
+  server_->onChannelDown(channel_);
 }
 
-void ApiChannelListener::onMessage(const Message *message)
-{
-	server_->onMessage(channel_, message);
+void ApiChannelListener::onMessage(const Message *message) {
+  server_->onMessage(channel_, message);
 }
 
-void ApiChannelListener::onException(const Exception *exception)
-{
-	server_->onException(channel_, exception);
+void ApiChannelListener::onException(const Exception *exception) {
+  server_->onException(channel_, exception);
 }
 
-void ApiChannelListener::onTimer(UInt32 timerID)
-{
-	server_->onTimer(channel_, timerID);
+void ApiChannelListener::onTimer(UInt32 timerID) {
+  server_->onTimer(channel_, timerID);
 }

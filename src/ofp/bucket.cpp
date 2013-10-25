@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements the Bucket class.
@@ -23,18 +23,14 @@
 
 using namespace ofp;
 
+ActionRange Bucket::actions() const {
+  assert(len_ >= sizeof(Bucket));
 
-ActionRange Bucket::actions() const
-{
-	assert(len_ >= sizeof(Bucket));
-
-	size_t actLen = len_ - sizeof(Bucket);
-	return ActionRange{ByteRange{BytePtr(this) + sizeof(Bucket), actLen}};
+  size_t actLen = len_ - sizeof(Bucket);
+  return ActionRange{ByteRange{BytePtr(this) + sizeof(Bucket), actLen}};
 }
 
-
-void BucketBuilder::setActions(ActionRange actions)
-{
-	bkt_.len_ = UInt16_narrow_cast(sizeof(Bucket) + actions.size());
-	actions_ = actions;
+void BucketBuilder::setActions(ActionRange actions) {
+  bkt_.len_ = UInt16_narrow_cast(sizeof(Bucket) + actions.size());
+  actions_ = actions;
 }

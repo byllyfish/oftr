@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MatchBuilder class.
@@ -32,57 +32,51 @@ namespace ofp { // <namespace ofp>
 
 class MatchBuilder {
 public:
+  MatchBuilder() = default;
+  MatchBuilder(const Match &match) : list_{match.toRange()} {}
 
-	MatchBuilder() = default;
-	MatchBuilder(const Match &match) : list_{match.toRange()} {}
+  const UInt8 *data() const { return list_.data(); }
+  size_t size() const { return list_.size(); }
 
-	const UInt8 *data() const { return list_.data(); }
-	size_t size() const { return list_.size(); }
+  /// \returns number of items in the match.
+  size_t itemCount() const {
+    return OXMIterator::distance(list_.begin(), list_.end());
+  }
 
-	/// \returns number of items in the match.
-    size_t itemCount() const
-    {
-        return OXMIterator::distance(list_.begin(), list_.end());
+  OXMIterator begin() const { return list_.begin(); }
+
+  OXMIterator end() const { return list_.end(); }
+
+  template <class ValueType>
+  void add(ValueType value) {
+    Prerequisites::insertAll(&list_, ValueType::prerequisites());
+    if (!Prerequisites::substitute(&list_, ValueType::type(), &value,
+                                   sizeof(value))) {
+      list_.add(value);
     }
+  }
 
-	OXMIterator begin() const
-    {
-        return list_.begin();
+  template <class ValueType>
+  void add(ValueType value, ValueType mask) {
+    assert(ValueType::maskSupported());
+    Prerequisites::insertAll(&list_, ValueType::prerequisites());
+    if (!Prerequisites::substitute(&list_, ValueType::type(), &value, &mask,
+                                   sizeof(value))) {
+      list_.add(value, mask);
     }
-    
-    OXMIterator end() const
-    {
-        return list_.end();
-    }
+  }
 
-	template <class ValueType>
-	void add(ValueType value) {
-		Prerequisites::insertAll(&list_, ValueType::prerequisites());
-		if (!Prerequisites::substitute(&list_, ValueType::type(), &value, sizeof(value))) {
-			list_.add(value);
-		}
-	}
-	
-	template <class ValueType>
-	void add(ValueType value, ValueType mask) {
-		assert(ValueType::maskSupported());
-		Prerequisites::insertAll(&list_, ValueType::prerequisites());
-		if (!Prerequisites::substitute(&list_, ValueType::type(), &value, &mask, sizeof(value))) {
-			list_.add(value, mask);
-		}
-	}
+  void clear() { list_.clear(); }
 
-	void clear() { list_.clear(); }
-	
-	bool validate() const {
-		return Prerequisites::checkAll(list_.toRange()) &&
-				!Prerequisites::duplicateFieldsDetected(list_.toRange());
-	}
+  bool validate() const {
+    return Prerequisites::checkAll(list_.toRange()) &&
+           !Prerequisites::duplicateFieldsDetected(list_.toRange());
+  }
 
-	OXMRange toRange() const { return list_.toRange(); }
+  OXMRange toRange() const { return list_.toRange(); }
 
 private:
-	OXMList list_;
+  OXMList list_;
 };
 
 } // </namespace ofp>

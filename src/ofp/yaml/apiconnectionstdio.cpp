@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements the yaml::ApiConnectionStdio class.
@@ -27,91 +27,82 @@ using namespace ofp::sys;
 
 ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
                                        sys::stream_descriptor input,
-                                       sys::stream_descriptor output, bool listening)
+                                       sys::stream_descriptor output,
+                                       bool listening)
     : ApiConnection{server, listening}, input_{std::move(input)},
-      output_{std::move(output)}
-{
+      output_{std::move(output)} {}
+
+void ApiConnectionStdio::setInput(int input) {
+  assert(input >= 0);
+
+  input_.assign(input);
 }
 
+void ApiConnectionStdio::setOutput(int output) {
+  assert(output >= 0);
 
-void ApiConnectionStdio::setInput(int input) 
-{
-    assert(input >= 0);
-
-    input_.assign(input);
+  output_.assign(output);
 }
 
-
-void ApiConnectionStdio::setOutput(int output)
-{
-    assert(output >= 0);
-
-    output_.assign(output);
+void ApiConnectionStdio::write(const std::string &msg) {
+  outgoing_[outgoingIdx_].add(msg.data(), msg.length());
+  if (!writing_) {
+    asyncWrite();
+  }
 }
 
-void ApiConnectionStdio::write(const std::string &msg)
-{
-    outgoing_[outgoingIdx_].add(msg.data(), msg.length());
-    if (!writing_) {
-        asyncWrite();
-    }
+void ApiConnectionStdio::asyncAccept() {
+  // Start first async read.
+  asyncRead();
 }
 
-void ApiConnectionStdio::asyncAccept()
-{
-    // Start first async read.
-    asyncRead();
+void ApiConnectionStdio::asyncRead() {
+  auto self(shared_from_this());
+
+  boost::asio::async_read_until(
+      input_, streambuf_, '\n',
+      [this, self](const error_code & err, size_t bytes_transferred) {
+        if (!err) {
+          std::istream is(&streambuf_);
+          std::string line;
+          std::getline(is, line);
+          handleInputLine(&line);
+          asyncRead();
+        } else if (!isAsioEOF(err)) {
+          auto exc = makeException(err);
+          log::info("ApiConnection::asyncRead err", exc);
+        }
+      });
 }
 
-void ApiConnectionStdio::asyncRead()
-{
-    auto self(shared_from_this());
+void ApiConnectionStdio::asyncWrite() {
+  assert(!writing_);
 
-    boost::asio::async_read_until(
-        input_, streambuf_, '\n',
-        [this, self](const error_code & err, size_t bytes_transferred) {
-            if (!err) {
-                std::istream is(&streambuf_);
-                std::string line;
-                std::getline(is, line);
-                handleInputLine(&line);
-                asyncRead();
-            } else if (!isAsioEOF(err)) {
-                auto exc = makeException(err);
-                log::info("ApiConnection::asyncRead err", exc);
-            }
-        });
-}
+  int idx = outgoingIdx_;
+  outgoingIdx_ = !outgoingIdx_;
+  writing_ = true;
 
-void ApiConnectionStdio::asyncWrite()
-{
-    assert(!writing_);
+  const UInt8 *data = outgoing_[idx].data();
+  size_t size = outgoing_[idx].size();
 
-    int idx = outgoingIdx_;
-    outgoingIdx_ = !outgoingIdx_;
-    writing_ = true;
+  auto self(shared_from_this());
 
-    const UInt8 *data = outgoing_[idx].data();
-    size_t size = outgoing_[idx].size();
+  boost::asio::async_write(
+      output_, boost::asio::buffer(data, size),
+      [this, self](const error_code & err, size_t bytes_transferred) {
 
-    auto self(shared_from_this());
+        if (!err) {
+          assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
 
-    boost::asio::async_write(
-        output_, boost::asio::buffer(data, size),
-        [this, self](const error_code & err, size_t bytes_transferred) {
+          writing_ = false;
+          outgoing_[!outgoingIdx_].clear();
+          if (outgoing_[outgoingIdx_].size() > 0) {
+            // Start another async write for the other output buffer.
+            asyncWrite();
+          }
 
-            if (!err) {
-                assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
-
-                writing_ = false;
-                outgoing_[!outgoingIdx_].clear();
-                if (outgoing_[outgoingIdx_].size() > 0) {
-                    // Start another async write for the other output buffer.
-                    asyncWrite();
-                }
-
-            } else {
-                log::debug("Write error ", makeException(err));
-            }
-        });
+        } else {
+          log::debug("Write error ", makeException(err));
+        }
+      });
 }

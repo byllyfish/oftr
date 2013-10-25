@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements GetConfigReply and GetConfigReplyBuilder classes.
@@ -24,38 +24,28 @@
 
 using namespace ofp;
 
-
-bool GetConfigReply::validateLength(size_t length) const
-{
-	return length == sizeof(GetConfigReply);
+bool GetConfigReply::validateLength(size_t length) const {
+  return length == sizeof(GetConfigReply);
 }
 
 GetConfigReplyBuilder::GetConfigReplyBuilder(const GetConfigReply *msg)
-    : msg_{*msg}
-{
+    : msg_{*msg} {}
+
+void GetConfigReplyBuilder::setFlags(UInt16 flags) { msg_.flags_ = flags; }
+
+void GetConfigReplyBuilder::setMissSendLen(UInt16 missSendLen) {
+  msg_.missSendLen_ = missSendLen;
 }
 
-void GetConfigReplyBuilder::setFlags(UInt16 flags)
-{
-	msg_.flags_ = flags;
+UInt32 GetConfigReplyBuilder::send(Writable *channel) {
+  UInt32 xid = channel->nextXid();
+
+  msg_.header_.setVersion(channel->version());
+  msg_.header_.setLength(sizeof(msg_));
+  msg_.header_.setXid(xid);
+
+  channel->write(&msg_, sizeof(msg_));
+  channel->flush();
+
+  return xid;
 }
-
-void GetConfigReplyBuilder::setMissSendLen(UInt16 missSendLen)
-{
-	msg_.missSendLen_ = missSendLen;
-}
-
-UInt32 GetConfigReplyBuilder::send(Writable *channel)
-{
-   UInt32 xid = channel->nextXid();
-
-    msg_.header_.setVersion(channel->version());
-    msg_.header_.setLength(sizeof(msg_));
-    msg_.header_.setXid(xid);
-
-    channel->write(&msg_, sizeof(msg_));
-    channel->flush();
-
-    return xid;
-}
-

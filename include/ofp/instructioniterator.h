@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the InstructionIterator class.
@@ -28,92 +28,87 @@ namespace ofp { // <namespace ofp>
 
 class InstructionIterator {
 public:
+  class Item {
+  public:
+    Item(const Item &) = delete;
+    Item &operator=(const Item &) = delete;
 
-	class Item {
-	public:
-		
-		Item(const Item &) = delete;
-		Item &operator=(const Item &) = delete;
+    InstructionType type() const { return position().type(); }
 
-		InstructionType type() const {
-			return position().type();
-		}
+    template <class Type>
+    const Type *instruction() {
+      return position().instruction<Type>();
+    }
 
-		template <class Type>
-		const Type *instruction() {
-			return position().instruction<Type>();
-		}
+    InstructionIterator position() const {
+      return InstructionIterator{BytePtr(this)};
+    }
 
-		InstructionIterator position() const { return InstructionIterator{BytePtr(this)}; }
-		
-	private:
-		Item() = default;
-	};
+  private:
+    Item() = default;
+  };
 
-	const Item &operator*() const 
-	{
-		return *reinterpret_cast<const Item *>(position_);
-	}
+  const Item &operator*() const {
+    return *reinterpret_cast<const Item *>(position_);
+  }
 
-	InstructionType type() const {
-		return InstructionType::fromBytes(position_);
-	}
-	
-	const UInt8 *data() const { return position_; }
-	UInt16 size() const { return *reinterpret_cast<const Big16*>(data() + sizeof(InstructionType)); }
+  InstructionType type() const { return InstructionType::fromBytes(position_); }
 
-	template <class Type>
-	const Type *instruction() {
-		return reinterpret_cast<const Type *>(position_);
-	}
+  const UInt8 *data() const { return position_; }
+  UInt16 size() const {
+    return *reinterpret_cast<const Big16 *>(data() + sizeof(InstructionType));
+  }
 
-	// No operator -> (FIXME?)
-	// No postfix ++
-	
-	void operator++() 
-	{
-		auto sz = size();
-		assert(sz >= 4);
-		position_ += sz;
-	}
-		
-	bool operator==(const InstructionIterator &rhs) const {
-		return position_ == rhs.position_;
-	}
-	
-	bool operator!=(const InstructionIterator &rhs) const {
-		return !(*this == rhs);
-	}
+  template <class Type>
+  const Type *instruction() {
+    return reinterpret_cast<const Type *>(position_);
+  }
 
-	bool operator<=(const InstructionIterator &rhs) const {
-		return position_ <= rhs.position_;
-	}
+  // No operator -> (FIXME?)
+  // No postfix ++
 
-	bool operator<(const InstructionIterator &rhs) const {
-		return position_ < rhs.position_;
-	}
-	
-	/// \returns Number of instructions between begin and end.
-	static size_t distance(InstructionIterator begin, InstructionIterator end)
-	{
-		assert(begin <= end);
-		
-		size_t dist = 0;
-		while (begin < end) {
-			++dist;
-			++begin;
-		}
-		return dist;
-	}
+  void operator++() {
+    auto sz = size();
+    assert(sz >= 4);
+    position_ += sz;
+  }
+
+  bool operator==(const InstructionIterator &rhs) const {
+    return position_ == rhs.position_;
+  }
+
+  bool operator!=(const InstructionIterator &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator<=(const InstructionIterator &rhs) const {
+    return position_ <= rhs.position_;
+  }
+
+  bool operator<(const InstructionIterator &rhs) const {
+    return position_ < rhs.position_;
+  }
+
+  /// \returns Number of instructions between begin and end.
+  static size_t distance(InstructionIterator begin, InstructionIterator end) {
+    assert(begin <= end);
+
+    size_t dist = 0;
+    while (begin < end) {
+      ++dist;
+      ++begin;
+    }
+    return dist;
+  }
 
 private:
-	const UInt8 *position_;
+  const UInt8 *position_;
 
-	explicit InstructionIterator(const void *pos)
-		: position_{static_cast<const UInt8 *>(pos)} {}
+  explicit InstructionIterator(const void *pos)
+      : position_{static_cast<const UInt8 *>(pos)} {}
 
-	friend class InstructionList;
-	friend class InstructionRange;
+  friend class InstructionList;
+  friend class InstructionRange;
 };
 
 } // </namespace ofp>

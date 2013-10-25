@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the EnetAddress class.
@@ -30,67 +30,52 @@ namespace ofp { // <namespace ofp>
 
 class EnetAddress {
 public:
-	enum { Length = 6 };
-	
-	using ArrayType = std::array<UInt8,Length>;
+  enum {
+    Length = 6
+  };
 
-	EnetAddress() : addr_{} {}
-	explicit EnetAddress(const std::string &s);
+  using ArrayType = std::array<UInt8, Length>;
 
-	bool parse(const std::string &s);
-	
-	bool valid() const {
-		return !IsMemFilled(addr_.data(), sizeof(addr_), '\0');
-	}
+  EnetAddress() : addr_{} {}
+  explicit EnetAddress(const std::string &s);
 
-	bool isMulticast() const {
-		return (addr_[0] & 0x01);
-	}
+  bool parse(const std::string &s);
 
-	void setAllOnes() {
-		std::memset(addr_.data(), 0xFF, sizeof(addr_));
-	}
+  bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
 
-	void clear() {
-		std::memset(addr_.data(), 0, sizeof(addr_));
-	}
+  bool isMulticast() const { return (addr_[0] & 0x01); }
 
-	std::string toString() const;
+  void setAllOnes() { std::memset(addr_.data(), 0xFF, sizeof(addr_)); }
 
-	const ArrayType &toArray() const {
-		return addr_;
-	}
+  void clear() { std::memset(addr_.data(), 0, sizeof(addr_)); }
 
-	bool operator==(const EnetAddress &rhs) const {
-		return addr_ == rhs.addr_;
-	}
-	
-	bool operator!=(const EnetAddress &rhs) const {
-		return !(*this == rhs);
-	}
-	
+  std::string toString() const;
+
+  const ArrayType &toArray() const { return addr_; }
+
+  bool operator==(const EnetAddress &rhs) const { return addr_ == rhs.addr_; }
+
+  bool operator!=(const EnetAddress &rhs) const { return !(*this == rhs); }
+
 private:
-	ArrayType  addr_;
+  ArrayType addr_;
 };
 
 static_assert(sizeof(EnetAddress) == 6, "Unexpected size.");
 static_assert(IsStandardLayout<EnetAddress>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<EnetAddress>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<EnetAddress>(),
+              "Expected trivially copyable.");
 
 } // </namespace ofp>
 
-
 namespace std { // <namespace std>
-  template <> struct hash<ofp::EnetAddress>
-  {
-    size_t operator()(const ofp::EnetAddress &rhs) const
-    {
-    	std::hash<ofp::EnetAddress::ArrayType> hasher;
-      	return hasher(rhs.toArray());
-    }
-  };
+template <>
+struct hash<ofp::EnetAddress> {
+  size_t operator()(const ofp::EnetAddress &rhs) const {
+    std::hash<ofp::EnetAddress::ArrayType> hasher;
+    return hasher(rhs.toArray());
+  }
+};
 } // </namespace std>
 
-
-
-#endif //OFP_ENETADDRESS_H
+#endif // OFP_ENETADDRESS_H
