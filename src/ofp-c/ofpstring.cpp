@@ -23,14 +23,12 @@
 #include <stdlib.h>
 #include <assert.h>
 
-/**
- * Initializes a NULL-terminated string with the specified data. If provided
- * length is negative, uses the C `strlen` function to determine the length of
- * the data.
- * @param outDest ptr to string object.
- * @param data    ptr to string data.
- * @param length  length of string data, or negative for `strlen`.
- */
+/// Initializes a NULL-terminated string with the specified data. If provided
+/// length is negative, uses the C `strlen` function to determine the length of
+/// the data.
+/// \param outDest ptr to string object.
+/// \param data    ptr to string data.
+/// \param length  length of string data, or negative for `strlen`.
 int ofpStringSet(OFPString *str, const void *data, size_t length) {
   assert(str);
 

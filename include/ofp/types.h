@@ -135,49 +135,33 @@ constexpr UInt16 UInt32_narrow_cast(T value) {
   return static_cast<UInt32>(value);
 }
 
-/**
- * Convenience function to compute the difference of two unsigned integers. It
- * prevents underflow or implicit type promotion. If the right argument is
- * greater than the left argument, this function returns zero. This function
- * requires that both arguments are exactly the same unsigned type.
- *
- * @param  lhs left hand side.
- * @param  rhs right hand side.
- * @return difference between lhs and rhs or zero.
- */
+/// Convenience function to compute the difference of two unsigned integers. It
+/// prevents underflow or implicit type promotion. If the right argument is
+/// greater than the left argument, this function returns zero. This function
+/// requires that both arguments are exactly the same unsigned type.
+///
+/// \param  lhs left hand side.
+/// \param  rhs right hand side.
+/// \return difference between lhs and rhs or zero.
 template <class T>
 constexpr EnableIf<std::is_unsigned<T>::value, T> Unsigned_difference(T lhs,
                                                                       T rhs) {
   return lhs >= rhs ? lhs - rhs : 0;
 }
 
-/**
- * Convenience function to check for literal type. A class with a constexpr
- * constructor is a literal type.
- *
- * @return true if type is a literal type.
- */
+/// \returns true if type is a literal type.
 template <class T>
 constexpr bool IsLiteralType() {
   return std::is_literal_type<T>::value;
 }
 
-/**
- *  Convenience function to check for standard layout type. A type is standard
- *  layout if it has an obvious equivalent in C.
- *  @return true if type has standard layout.
- */
+/// \returns true if type has standard layout.
 template <class T>
 constexpr bool IsStandardLayout() {
   return std::is_standard_layout<T>::value;
 }
 
-/**
- * Convenience function to check for type that is "trivially copyable". That is,
- * T is a type that can be copied, moved and destroyed as a simple collection of
- * bits.
- * @return true if type is trivially copyable.
- */
+/// \returns true if type is trivially copyable.
 template <class T>
 constexpr bool IsTriviallyCopyable() {
 #if defined(__clang__)
@@ -189,18 +173,13 @@ constexpr bool IsTriviallyCopyable() {
 #endif
 }
 
-/**
- *  Return the number of elements in an array.
- *  @return number of elements in array.
- */
+/// \returns number of elements in array.
 template <class T, size_t N>
 constexpr size_t ArrayLength(T (&)[N]) {
   return N;
 }
 
-/**
- *  Return byte pointer for any memory address.
- */
+/// \returns byte pointer for any memory address.
 constexpr const UInt8 *BytePtr(const void *data) {
   return static_cast<const UInt8 *>(data);
 }
@@ -218,61 +197,58 @@ T *RemoveConst_cast(const T *v) {
   return const_cast<T *>(v);
 }
 
-/**
- *  Convert raw buffer to a hexadecimal string. The resulting string contains
- *  only hexadecimal characters.
- *  @param  data pointer to input buffer
- *  @param  length size of input buffer
- *  @return hexadecimal string
- */
+/// Convert raw buffer to a hexadecimal string. The resulting string contains
+/// only hexadecimal characters.
+///
+/// \param  data pointer to input buffer
+/// \param  length size of input buffer
+/// \return hexadecimal string
 std::string RawDataToHex(const void *data, size_t length);
 
-/**
- *  Convert raw buffer to a hexadecimal string. The resulting string is
- *  formatted according to `delimiter` and `word`. The delimiter specifies a
- *  character to insert between each run of hexadecimal chars. `word` specifies
- *  the number of bytes between delimiters.
- *
- *  For example, delimiter=':' and word=2 produces "0001:0203:0405"
- *  @param  data pointer to raw memory
- *  @param  length size of input buffer
- *  @param  delimiter character to insert to format the hex string
- *  @param  word number of bytes between delimiters
- *  @return hexadecimal string
- */
+/// Convert raw buffer to a hexadecimal string.
+///
+/// The resulting string isformatted according to `delimiter` and `word`. The
+/// delimiter specifies a character to insert between each run of hexadecimal
+/// chars. `word` specifies the number of bytes between delimiters.
+///
+/// For example, delimiter=':' and word=2 produces "0001:0203:0405"
+///
+/// \param  data pointer to raw memory
+/// \param  length size of input buffer
+/// \param  delimiter character to insert to format the hex string
+/// \param  word number of bytes between delimiters
+/// \return hexadecimal string
 std::string RawDataToHex(const void *data, size_t length, char delimiter,
                          int word = 1);
 
-/**
- *  Convert a hexadecimal string to raw memory. Only write up to `length` bytes.
- *  Ignore non-hex digits and the odd final hex digit. If there are fewer than
- *  `length` bytes converted from the hex string, set the remaining bytes to
- *  zero. If `error` is not null, set value to true when there are non-hex
- *  digits or an odd number of hex digits.
- *  @param  hex string containing hexadecimal characters
- *  @param  data output buffer
- *  @param  length size of output buffer
- *  @param  error ptr to optional boolean error result
- *  @return number of bytes resulting from hexadecimal string
- */
+/// Convert a hexadecimal string to raw memory. Only write up to `length` bytes.
+///
+/// Ignore non-hex digits and the odd final hex digit. If there are fewer than
+/// `length` bytes converted from the hex string, set the remaining bytes to
+/// zero. If `error` is not null, set value to true when there are non-hex
+/// digits or an odd number of hex digits.
+///
+/// \param  hex string containing hexadecimal characters
+/// \param  data output buffer
+/// \param  length size of output buffer
+/// \param  error ptr to optional boolean error result
+/// \return number of bytes resulting from hexadecimal string
 size_t HexToRawData(const std::string &hex, void *data, size_t length,
                     bool *error = nullptr);
 
-/**
- *  Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
- *  odd final hex digit.
- *  @param  hex string containing hexadecimal characters
- *  @return string containing raw bytes
- */
+/// Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
+/// odd final hex digit.
+///
+/// \param  hex string containing hexadecimal characters
+/// \return string containing raw bytes
 std::string HexToRawData(const std::string &hex);
 
-/**
- *  Return true if memory block is filled with given byte value.
- *  @param  data pointer to memory block
- *  @param  length length of memory block
- *  @param  fill fill byte
- *  @return true if memory block is filled with given byte value.
- */
+/// Return true if memory block is filled with given byte value.
+///
+/// \param  data pointer to memory block
+/// \param  length length of memory block
+/// \param  fill fill byte
+/// \return true if memory block is filled with given byte value.
 bool IsMemFilled(const void *data, size_t length, char fill);
 
 } // </namespace ofp>

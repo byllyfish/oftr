@@ -28,10 +28,6 @@
 namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   d e t a i l . H e l l o E l e m e n t
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 class HelloElement {
 public:
   UInt16 type() const;
@@ -50,11 +46,7 @@ private:
 
 } // </namespace detail>
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   H e l l o
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Immutable OpenFlow `Hello` protocol message.
-
 class Hello : public ProtocolMsg<Hello, OFPT_HELLO> {
 public:
   ProtocolVersions protocolVersions() const;
@@ -76,11 +68,7 @@ static_assert(sizeof(Hello) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<Hello>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<Hello>(), "Expected trivially copyable.");
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   H e l l o B u i l d e r
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Mutable builder for an OpenFlow `Hello` protocol message.
-
 class HelloBuilder {
 public:
   HelloBuilder(ProtocolVersions versions = ProtocolVersions{})

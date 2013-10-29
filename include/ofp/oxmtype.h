@@ -96,11 +96,9 @@ private:
 static_assert(IsLiteralType<OXMType>(), "Literal type expected.");
 static_assert(IsStandardLayout<OXMType>(), "Layout type expected.");
 
-/**
- *  OXMTypeInfo stores information about OXMTypes, such as prerequisites.
- */
 OFP_BEGIN_IGNORE_PADDING
 
+/// \brief Stores information about OXMTypes, such as prerequisites.
 struct OXMTypeInfo {
   const char *name;
   const OXMRange *prerequisites;

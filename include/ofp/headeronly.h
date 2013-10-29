@@ -221,8 +221,6 @@ static_assert(IsStandardLayout<BarrierReply>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<BarrierReply>(),
               "Expected trivially copyable.");
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 namespace detail { // <namespace detail>
 
 template <OFPType MsgType>

@@ -46,9 +46,7 @@ private:
 
 } // </namespace detail>
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete types for various empty actions.
- *-------------------------------------------------------------------------*/ //*
+/// \brief Concrete types for various empty actions.
 
 using AT_COPY_TTL_OUT = detail::EmptyAction<OFPAT_COPY_TTL_OUT>;
 using AT_COPY_TTL_IN = detail::EmptyAction<OFPAT_COPY_TTL_IN>;
@@ -61,10 +59,7 @@ using AT_POP_PBB = detail::EmptyAction<OFPAT_POP_PBB>;
 static_assert(sizeof(AT_COPY_TTL_OUT) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_COPY_TTL_OUT>(), "Unexpected layout.");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_OUTPUT action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_OUTPUT action.
 class AT_OUTPUT {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 16); }
@@ -108,10 +103,7 @@ static_assert(IsStandardLayout<AT_OUTPUT_V1>(), "Unexpected layout");
 
 } // </namespace deprecated>
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_SET_MPLS_TTL action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_SET_MPLS_TTL action.
 class AT_SET_MPLS_TTL {
 public:
   constexpr static ActionType type() {
@@ -131,10 +123,7 @@ private:
 static_assert(sizeof(AT_SET_MPLS_TTL) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_SET_MPLS_TTL>(), "Unexpected layout");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_PUSH_VLAN action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_PUSH_VLAN action.
 class AT_PUSH_VLAN {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_VLAN, 8); }
@@ -152,10 +141,7 @@ private:
 static_assert(sizeof(AT_PUSH_VLAN) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_PUSH_VLAN>(), "Unexpected layout");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_PUSH_MPLS action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_PUSH_MPLS action.
 class AT_PUSH_MPLS {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_MPLS, 8); }
@@ -172,10 +158,7 @@ private:
 static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_SET_QUEUE action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_SET_QUEUE action.
 class AT_SET_QUEUE {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_SET_QUEUE, 8); }
@@ -193,10 +176,7 @@ private:
 static_assert(sizeof(AT_SET_QUEUE) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_SET_QUEUE>(), "Unexpected layout");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_GROUP action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_GROUP action.
 class AT_GROUP {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_GROUP, 8); }
@@ -214,10 +194,7 @@ private:
 static_assert(sizeof(AT_GROUP) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_GROUP>(), "Unexpected layout");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_SET_NW_TTL action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_SET_NW_TTL action.
 class AT_SET_NW_TTL {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_SET_NW_TTL, 8); }
@@ -235,10 +212,7 @@ private:
 static_assert(sizeof(AT_SET_NW_TTL) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_SET_NW_TTL>(), "Unexpected layout");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_SET_NW_TTL action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_SET_NW_TTL action.
 class AT_PUSH_PBB {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_PBB, 8); }
@@ -256,10 +230,7 @@ private:
 static_assert(sizeof(AT_PUSH_PBB) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_PUSH_PBB>(), "Unexpected layout");
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_EXPERIMENTER action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_EXPERIMENTER action.
 class AT_EXPERIMENTER {
 public:
   constexpr static ActionType type() {
@@ -276,10 +247,7 @@ private:
   const Big32 experimenterid_;
 };
 
-/*-------------------------------------------------------------------------*/ /**
- \brief Concrete type for AT_SET_FIELD action.
- *-------------------------------------------------------------------------*/ //*
-
+/// \brief Concrete type for AT_SET_FIELD action.
 template <class ValueType>
 class AT_SET_FIELD {
 public:

@@ -28,10 +28,6 @@ namespace ofp { // <namespace ofp>
 
 class ByteList;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   B y t e R a n g e
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 class ByteRange {
 public:
   constexpr ByteRange();

@@ -458,9 +458,7 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
   return false;
 }
 
-/**
- *  Check for the presence of duplicate fields in the oxm list.
- */
+/// Check for the presence of duplicate fields in the oxm list.
 bool Prerequisites::duplicateFieldsDetected(const OXMRange &oxm) {
   OXMTypeSet typeSet;
 

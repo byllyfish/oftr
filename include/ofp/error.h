@@ -28,11 +28,7 @@
 
 namespace ofp { // <namespace ofp>
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   E r r o r
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements Error protocol message.
-
 class Error : public ProtocolMsg<Error, OFPT_ERROR> {
 public:
   UInt16 errorType() const { return type_; }
@@ -56,11 +52,7 @@ static_assert(sizeof(Error) == 12, "Unexpected size.");
 static_assert(IsStandardLayout<Error>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<Error>(), "Expected trivially copyable.");
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   E r r o r B u i l d e r
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements Error protocol message builder.
-
 class ErrorBuilder {
 public:
   ErrorBuilder(UInt16 type = 0, UInt16 code = 0);

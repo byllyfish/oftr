@@ -28,9 +28,7 @@
 
 namespace ofp { // <namespace ofp>
 
-/**
- *  FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
- */
+/// \brief FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
 class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY> {
 public:
   void getFeatures(Features *features) const;
@@ -67,10 +65,8 @@ static_assert(IsStandardLayout<FeaturesReply>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<FeaturesReply>(),
               "Expected trivially copyable.");
 
-/**
- *  FeaturesReplyBuilder is a concrete class for building an OFPT_FEATURES_REPLY
- *  message.
- */
+/// \brief FeaturesReplyBuilder is a concrete class for building an
+/// OFPT_FEATURES_REPLY message.
 class FeaturesReplyBuilder {
 public:
   explicit FeaturesReplyBuilder(UInt32 xid);

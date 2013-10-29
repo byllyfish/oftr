@@ -74,8 +74,6 @@ inline bool operator==(const SmallCString<Size> &lhs,
   return lhs.toArray() == rhs.toArray();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 namespace detail { // <namespace detail>
 
 inline size_t strlen(const char *s, size_t maxlen) {

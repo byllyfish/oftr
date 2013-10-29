@@ -27,11 +27,7 @@
 
 namespace ofp { // <namespace ofp>
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   E x p e r i m e n t e r
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements immutable Experimenter protocol message.
-
 class Experimenter : public ProtocolMsg<Experimenter, OFPT_EXPERIMENTER> {
 public:
   UInt32 experimenter() const { return experimenter_; }
@@ -58,11 +54,7 @@ static_assert(IsStandardLayout<Experimenter>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<Experimenter>(),
               "Expected trivially copyable.");
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   E x p e r i m e n t e r B u i l d e r
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 /// \brief Implements Experimenter protocol message builder.
-
 class ExperimenterBuilder {
 public:
   ExperimenterBuilder() {}

@@ -37,13 +37,10 @@ class Engine;
 
 OFP_BEGIN_IGNORE_PADDING
 
-/**
- *  Connection is an interface for a channel that can receive messages
- *  posted from other Connections. This interface also supports binding
- *  auxillary connections to their main connection, and a main connection to a
- *  a linked list of auxiliary connections. It also supports a connection timer.
- */
-
+/// Connection is an interface for a channel that can receive messages
+/// posted from other Connections. This interface also supports binding
+/// auxillary connections to their main connection, and a main connection to a
+/// a linked list of auxiliary connections. It also supports a connection timer.
 class Connection : public Channel {
 public:
 	Connection(Engine *engine, DefaultHandshake *handshake) :engine_{engine}, listener_{handshake}, handshake_{handshake}, mainConn_{this} {}

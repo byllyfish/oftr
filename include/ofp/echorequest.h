@@ -27,10 +27,6 @@
 
 namespace ofp { // <namespace ofp>
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   E c h o R e q u e s t
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 class EchoRequest : public ProtocolMsg<EchoRequest, OFPT_ECHO_REQUEST> {
 public:
   ByteRange echoData() const;
@@ -45,10 +41,6 @@ private:
 
   friend class EchoRequestBuilder;
 };
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   E c h o R e q u e s t B u i l d e r
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
 
 class EchoRequestBuilder {
 public:

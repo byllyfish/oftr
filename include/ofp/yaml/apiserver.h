@@ -35,10 +35,6 @@ namespace yaml { // <namespace yaml>
 
 class ApiConnection;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-//   A p i S e r v e r
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  //
-
 /// \brief Implements a TCP server that lets a client control and monitor an 
 /// OpenFlow driver.
 /// The driver is controlled using YAML messages.
