@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the MappingTraits for the MultipartRequest and 
+/// \brief Defines the MappingTraits for the MultipartRequest and
 /// MultipartRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -34,66 +34,64 @@ namespace yaml { // <namespace yaml>
 template <>
 struct MappingTraits<ofp::MultipartRequest> {
 
-    static void mapping(IO &io, ofp::MultipartRequest &msg)
-    {
-        using namespace ofp;
+  static void mapping(IO &io, ofp::MultipartRequest &msg) {
+    using namespace ofp;
 
-        OFPMultipartType type = msg.requestType();
-        io.mapRequired("type", type);
-        io.mapRequired("flags", msg.flags_);
+    OFPMultipartType type = msg.requestType();
+    io.mapRequired("type", type);
+    io.mapRequired("flags", msg.flags_);
 
-        switch (type) {
-        case OFPMP_FLOW: {
-            const FlowStatsRequest *stats = FlowStatsRequest::cast(&msg);
-            if (stats) {
-                io.mapRequired("body", RemoveConst_cast(*stats));
-            }
-            break;
-        }
-
-        case OFPMP_PORT_DESC: {
-            // io.mapOptional("body", EmptyRequest);
-            break;
-        }
-
-        default:
-            // FIXME - implement the rest.
-            log::debug("MultipartRequest MappingTraits not fully implemented.");
-            break;
-        }
+    switch (type) {
+    case OFPMP_DESC:
+    case OFPMP_PORT_DESC:
+      // empty request body
+      break;
+    case OFPMP_FLOW: {
+      const FlowStatsRequest *stats = FlowStatsRequest::cast(&msg);
+      if (stats) {
+        io.mapRequired("body", RemoveConst_cast(*stats));
+      }
+      break;
     }
+    default:
+      // FIXME - implement the rest.
+      log::debug("MultipartRequest MappingTraits not fully implemented.");
+      break;
+    }
+  }
 };
 
 template <>
 struct MappingTraits<ofp::MultipartRequestBuilder> {
 
-    static void mapping(IO &io, ofp::MultipartRequestBuilder &msg)
-    {
-        using namespace ofp;
+  static void mapping(IO &io, ofp::MultipartRequestBuilder &msg) {
+    using namespace ofp;
 
-        OFPMultipartType type;
-        io.mapRequired("type", type);
-        io.mapRequired("flags", msg.msg_.flags_);
-        msg.setRequestType(type);
+    OFPMultipartType type;
+    io.mapRequired("type", type);
+    io.mapRequired("flags", msg.msg_.flags_);
+    msg.setRequestType(type);
 
-        switch (type) {
-        case OFPMP_FLOW: {
-            FlowStatsRequestBuilder stats;
-            io.mapRequired("body", stats);
-            MemoryChannel channel;
-            stats.write(&channel);
-            msg.setRequestBody(channel.data(), channel.size());
-            break;
-        }
-        case OFPMP_PORT_DESC:
-            // io.mapOptional("body", EmptyRequest);
-            break;
-        default:
-            // FIXME - implement the rest.
-            log::debug("MultipartRequestBuilder MappingTraits not fully implemented.");
-            break;
-        }
+    switch (type) {
+    case OFPMP_DESC:
+    case OFPMP_PORT_DESC:
+      // empty request body
+      break;
+    case OFPMP_FLOW: {
+      FlowStatsRequestBuilder stats;
+      io.mapRequired("body", stats);
+      MemoryChannel channel;
+      stats.write(&channel);
+      msg.setRequestBody(channel.data(), channel.size());
+      break;
     }
+    default:
+      // FIXME - implement the rest.
+      log::debug(
+          "MultipartRequestBuilder MappingTraits not fully implemented.");
+      break;
+    }
+  }
 };
 
 } // </namespace yaml>

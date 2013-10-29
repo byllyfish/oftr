@@ -1,4 +1,4 @@
-//  ===== ---- ofp/ysmallcstring.h -------------------------*- C++ -*- =====  //
+//  ===== ---- ofp/ympdesc.h -------------------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,38 +16,30 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::ScalarTraits for the SmallCString class.
+/// \brief Defines the llvm::yaml::MappingTraits for the MPDesc class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YSMALLCSTRING_H
-#define OFP_YAML_YSMALLCSTRING_H
+#ifndef OFP_YAML_YMPDESC_H
+#define OFP_YAML_YMPDESC_H
 
-#include "ofp/smallcstring.h"
+#include "ofp/mpdesc.h"
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
-template <size_t Size>
-struct ScalarTraits<ofp::SmallCString<Size>> {
-    static void output(const ofp::SmallCString<Size> &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value.toString();
-    }
+template <>
+struct MappingTraits<ofp::MPDesc> {
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           ofp::SmallCString<Size> &value)
-    {
-    	if (scalar.size() > value.capacity()) {
-    		return "Value is too long";
-    	}
-        value = scalar;
-
-        return "";
-    }
+  static void mapping(IO &io, ofp::MPDesc &body) {
+    io.mapRequired("mfr_desc", body.mfrDesc_);
+    io.mapRequired("hw_desc", body.hwDesc_);
+    io.mapRequired("sw_desc", body.swDesc_);
+    io.mapRequired("serial_num", body.serialNum_);
+    io.mapRequired("dp_desc", body.dpDesc_);
+  }
 };
 
 } // </namespace yaml>
 } // </namespace llvm>
 
-#endif // OFP_YAML_YSMALLCSTRING_H
+#endif // OFP_YAML_YMPDESC_H

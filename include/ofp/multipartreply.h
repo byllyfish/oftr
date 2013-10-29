@@ -33,11 +33,22 @@ class MultipartReply
 public:
   OFPMultipartType replyType() const { return type_; }
   UInt16 replyFlags() const { return flags_; }
+
   const UInt8 *replyBody() const {
     return BytePtr(this) + sizeof(MultipartReply);
   }
+  
   size_t replyBodySize() const {
     return header_.length() - sizeof(MultipartReply);
+  }
+
+  template <class Type>
+  const Type *body_cast() const {
+    const Type *p = reinterpret_cast<const Type *>(replyBody());
+    if (!p->validateLength(replyBodySize())) {
+      return nullptr;
+    }
+    return p;
   }
 
   bool validateLength(size_t length) const;
