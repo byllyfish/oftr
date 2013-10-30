@@ -91,6 +91,8 @@ private:
   FlowStatsRequest msg_;
   MatchBuilder match_;
 
+  void writeV1(Writable *channel);
+  
   friend struct llvm::yaml::MappingTraits<FlowStatsRequestBuilder>;
 };
 

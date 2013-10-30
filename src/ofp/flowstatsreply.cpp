@@ -21,8 +21,9 @@
 
 #include "ofp/flowstatsreply.h"
 #include "ofp/writable.h"
+#include "ofp/originalmatch.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
 
 Match FlowStatsReply::match() const {
   UInt16 type = matchType_;
@@ -51,6 +52,13 @@ InstructionRange FlowStatsReply::instructions() const {
 }
 
 void FlowStatsReplyBuilder::write(Writable *channel) {
+  UInt8 version = channel->version();
+
+  if (version == OFP_VERSION_1) {
+    writeV1(channel);
+    return;
+  }
+
   size_t msgLen = FlowStatsReply::UnpaddedSizeWithMatchHeader + match_.size() +
                   instructions_.size();
 
@@ -64,4 +72,22 @@ void FlowStatsReplyBuilder::write(Writable *channel) {
   channel->flush();
 }
 
-} // </namespace ofp>
+
+void FlowStatsReplyBuilder::writeV1(Writable *channel)
+{
+  deprecated::OriginalMatch origMatch{match_.toRange()};
+  ActionRange actions = instructions_.toActions();
+
+  size_t msgLen = 88 + actions.size();
+
+  msg_.length_ = UInt16_narrow_cast(msgLen);
+  msg_.flags_ = 0;
+
+  channel->write(&msg_, 4);
+  channel->write(&origMatch, sizeof(origMatch));
+  channel->write(&msg_.durationSec_, 44);
+  if (actions.size() > 0) {
+    actions.write(channel);
+  }
+  channel->flush();
+}

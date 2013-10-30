@@ -68,7 +68,7 @@ OFP_BEGIN_IGNORE_PADDING
 template <class Type>
 class MPReplyBuilderSeq {
 public:
-  MPReplyBuilderSeq() : init_{false} {}
+  explicit MPReplyBuilderSeq(UInt8 version) : channel_{version}, init_{false} {}
 
   Type &next() {
     if (init_) {
@@ -179,7 +179,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
     }
     case OFPMP_FLOW: {
-      ofp::detail::MPReplyBuilderSeq<FlowStatsReplyBuilder> seq;
+      ofp::detail::MPReplyBuilderSeq<FlowStatsReplyBuilder> seq{msg.version()};
       io.mapRequired("body", seq);
       seq.close();
       msg.setReplyBody(seq.data(), seq.size());

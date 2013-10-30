@@ -80,7 +80,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
     case OFPMP_FLOW: {
       FlowStatsRequestBuilder stats;
       io.mapRequired("body", stats);
-      MemoryChannel channel;
+      MemoryChannel channel{msg.msg_.header_.version()};
       stats.write(&channel);
       msg.setRequestBody(channel.data(), channel.size());
       break;

@@ -37,7 +37,7 @@ public:
   const UInt8 *replyBody() const {
     return BytePtr(this) + sizeof(MultipartReply);
   }
-  
+
   size_t replyBodySize() const {
     return header_.length() - sizeof(MultipartReply);
   }
@@ -70,6 +70,11 @@ private:
 class MultipartReplyBuilder {
 public:
   MultipartReplyBuilder() = default;
+  explicit MultipartReplyBuilder(UInt8 version) {
+    msg_.header_.setVersion(version);
+  }
+
+  UInt8 version() const { return msg_.header_.version(); }
 
   void setReplyType(OFPMultipartType type) { msg_.type_ = type; }
   void setReplyFlags(UInt16 flags) { msg_.flags_ = flags; }

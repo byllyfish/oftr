@@ -84,6 +84,8 @@ private:
   MatchBuilder match_;
   InstructionList instructions_;
 
+  void writeV1(Writable *channel);
+  
   friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
 };
 

@@ -22,8 +22,9 @@
 #include "ofp/flowstatsrequest.h"
 #include "ofp/writable.h"
 #include "ofp/multipartrequest.h"
+#include "ofp/originalmatch.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
 
 const FlowStatsRequest *FlowStatsRequest::cast(const MultipartRequest *req) {
   return req->body_cast<FlowStatsRequest>();
@@ -58,6 +59,13 @@ Match FlowStatsRequest::match() const {
 }
 
 void FlowStatsRequestBuilder::write(Writable *channel) {
+  UInt8 version = channel->version();
+
+  if (version == OFP_VERSION_1) {
+    writeV1(channel);
+    return;
+  }
+
   msg_.matchType_ = OFPMT_OXM;
   msg_.matchLength_ = UInt16_narrow_cast(match_.size());
 
@@ -66,4 +74,24 @@ void FlowStatsRequestBuilder::write(Writable *channel) {
   channel->flush();
 }
 
-} // </namespace ofp>
+
+void FlowStatsRequestBuilder::writeV1(Writable *channel)
+{
+  deprecated::OriginalMatch origMatch{match_.toRange()};
+
+  channel->write(&origMatch, sizeof(origMatch));
+
+  struct Block {
+    Big8 tableId;
+    Padding<1> pad;
+    Big16 outPort; 
+  };
+  static_assert(sizeof(Block) == 4, "Unexpected size.");
+
+  Block info;
+  info.tableId = msg_.tableId_;
+  info.outPort = UInt16_narrow_cast(msg_.outPort_);
+  channel->write(&info, sizeof(info));
+
+  channel->flush();
+}

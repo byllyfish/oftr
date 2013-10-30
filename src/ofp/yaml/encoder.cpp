@@ -170,13 +170,13 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
     break;
   }
   case MultipartRequest::type() : {
-    MultipartRequestBuilder multi;
+    MultipartRequestBuilder multi{channel_.version()};
     io.mapRequired("msg", multi);
     multi.send(&channel_);
     break;
   }
   case MultipartReply::type() : {
-    MultipartReplyBuilder multi;
+    MultipartReplyBuilder multi{channel_.version()};
     io.mapRequired("msg", multi);
     multi.send(&channel_);
     break;

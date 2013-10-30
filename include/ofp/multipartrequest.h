@@ -67,6 +67,11 @@ private:
 class MultipartRequestBuilder {
 public:
   MultipartRequestBuilder() = default;
+  explicit MultipartRequestBuilder(UInt8 version) {
+    msg_.header_.setVersion(version);
+  }
+
+  UInt8 version() const { return msg_.header_.version(); }
 
   void setRequestType(OFPMultipartType type) { msg_.type_ = type; }
   void setRequestFlags(UInt16 flags) { msg_.flags_ = flags; }
