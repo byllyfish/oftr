@@ -29,7 +29,7 @@ Match FlowStatsReply::match() const {
   UInt16 type = matchType_;
 
   if (type == OFPMT_OXM) {
-    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_};
+    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_ - MatchHeaderSize};
     return Match{range};
 
   } else if (type == OFPMT_STANDARD) {
@@ -39,13 +39,15 @@ Match FlowStatsReply::match() const {
     return Match{stdMatch};
 
   } else {
-    log::debug("FlowStatsRequest: Unknown matchType:", type);
+    log::debug("FlowStatsReply: Unknown matchType:", type);
     return Match{OXMRange{nullptr, 0}};
   }
 }
 
 InstructionRange FlowStatsReply::instructions() const {
-  size_t offset = UnpaddedSizeWithMatchHeader + matchLength_;
+  assert(matchType_ == OFPMT_OXM || matchType_ == OFPMT_STANDARD);
+
+  size_t offset = SizeWithoutMatchHeader + matchLength_;
   assert(length_ >= offset);
 
   return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
@@ -64,7 +66,7 @@ void FlowStatsReplyBuilder::write(Writable *channel) {
 
   msg_.length_ = UInt16_narrow_cast(msgLen);
   msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ = UInt16_narrow_cast(match_.size());
+  msg_.matchLength_ = UInt16_narrow_cast(FlowStatsReply::MatchHeaderSize + match_.size());
 
   channel->write(&msg_, FlowStatsReply::UnpaddedSizeWithMatchHeader);
   channel->write(match_.data(), match_.size());
@@ -78,7 +80,7 @@ void FlowStatsReplyBuilder::writeV1(Writable *channel)
   deprecated::OriginalMatch origMatch{match_.toRange()};
   ActionRange actions = instructions_.toActions();
 
-  size_t msgLen = 88 + actions.size();
+  size_t msgLen = 88 + actions.writeSize(channel);
 
   msg_.length_ = UInt16_narrow_cast(msgLen);
   msg_.flags_ = 0;

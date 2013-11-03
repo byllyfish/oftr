@@ -225,10 +225,8 @@ msg:
       value:           1
     - type:            OFB_ETH_SRC
       value:           8A-67-69-C6-9F-59
-      mask:            FF-FF-FF-FF-FF-FF
     - type:            OFB_ETH_DST
       value:           FA-9A-44-DF-F4-42
-      mask:            FF-FF-FF-FF-FF-FF
   instructions:    
     - type:            OFPIT_APPLY_ACTIONS
       value:           
@@ -259,10 +257,8 @@ msg:
       value:           2
     - type:            OFB_ETH_SRC
       value:           FA-9A-44-DF-F4-42
-      mask:            FF-FF-FF-FF-FF-FF
     - type:            OFB_ETH_DST
       value:           8A-67-69-C6-9F-59
-      mask:            FF-FF-FF-FF-FF-FF
   instructions:    
     - type:            OFPIT_APPLY_ACTIONS
       value:           

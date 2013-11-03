@@ -191,11 +191,19 @@ OXMList StandardMatch::toOXMList() const {
     list.add(OFB_METADATA{metadata}, OFB_METADATA{metadata_mask});
   }
 
-  if (dl_src_mask.valid())
-    list.add(OFB_ETH_SRC{dl_src}, OFB_ETH_SRC{dl_src_mask});
+  if (dl_src_mask.valid()) {
+    if (dl_src_mask.isBroadcast())
+      list.add(OFB_ETH_SRC{dl_src});
+    else
+      list.add(OFB_ETH_SRC{dl_src}, OFB_ETH_SRC{dl_src_mask});
+  }
 
-  if (dl_dst_mask.valid())
-    list.add(OFB_ETH_DST{dl_dst}, OFB_ETH_DST{dl_dst_mask});
+  if (dl_dst_mask.valid()) {
+    if (dl_dst_mask.isBroadcast())
+      list.add(OFB_ETH_DST{dl_dst});
+    else
+      list.add(OFB_ETH_DST{dl_dst}, OFB_ETH_DST{dl_dst_mask});
+  }
 
   if (!(wc & OFPFW_DL_VLAN)) {
     list.add(OFB_VLAN_VID{dl_vlan});

@@ -317,7 +317,7 @@ TEST(encoder, featuresreplyv4) {
       "04060020000000BF000001020304050600000100FF0000000000000000000000");
 }
 
-TEST(encoder, ofmp_flow_v4) {
+TEST(encoder, ofmp_flowrequest_v4) {
   const char *input = R"""(
    type: OFPT_MULTIPART_REQUEST
    version: 4
@@ -341,7 +341,7 @@ TEST(encoder, ofmp_flow_v4) {
                                    "00000000000005000100088000000412345678");
 }
 
-TEST(encoder, ofmp_flow_v1) {
+TEST(encoder, ofmp_flowrequest_v1) {
   const char *input = R"""(
    type: OFPT_MULTIPART_REQUEST
    version: 1
@@ -360,12 +360,12 @@ TEST(encoder, ofmp_flow_v1) {
               value: 0x12345678
    )""";
 
-  testEncoderSuccess(input, 0x03C, "0112003C112233440001000000000000003FFFFE567"
+  testEncoderSuccess(input, 0x03C, "0110003C112233440001000000000000003FFFFE567"
                                    "8000000000000000000000000000000000000000000"
                                    "0000000000000000000000000011002222");
 }
 
-TEST(encoder, multipartreply) {
+TEST(encoder, ofmp_flowreply_v4) {
   const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
    version: 4
@@ -394,7 +394,7 @@ TEST(encoder, multipartreply) {
 
   const char *hex = "0413005411223344000100000000000000440100000000020000000300"
                     "0400050006000700000000000000000000000800000000000000090000"
-                    "00000000000A0001000880000004123456780001000801000000";
+                    "00000000000A0001000C80000004123456780001000801000000";
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x54, encoder.size());
@@ -404,7 +404,7 @@ TEST(encoder, multipartreply) {
   // "0413004C112233440001000000000000003C0100000000020000000300040005000600070000000000000000000000080000000000000009000000000000000A000100088000000412345678");
 }
 
-TEST(encoder, multipartreply2) {
+TEST(encoder, ofmp_flowreply2_v4) {
   const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
    version: 4
@@ -450,13 +450,13 @@ TEST(encoder, multipartreply2) {
   testEncoderSuccess(input, 0x0A4,
                      "041300A4112233440001000000000000003C010000000002000000030"
                      "004000500060007000000000000000000000008000000000000000900"
-                     "0000000000000A0001000880000004123456780058110000000022000"
+                     "0000000000000A0001000C80000004123456780058110000000022000"
                      "000330044005500660077000000000000000000000088999999999999"
-                     "9999AAAAAAAAAAAAAAAA0001001C80000004123456788000080610203"
+                     "9999AAAAAAAAAAAAAAAA0001002080000004123456788000080610203"
                      "040506080000606AABBCCDDEEFF0001000801000000");
 }
 
-TEST(encoder, multipartreply3) {
+TEST(encoder, ofmp_flowreply3_v4) {
   const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
    version: 4
@@ -488,7 +488,7 @@ TEST(encoder, multipartreply3) {
 
   const char *hex = "0413006411223344000100000000000000540100000000020000000300"
                     "0400050006000700000000000000000000000800000000000000090000"
-                    "00000000000A0001000000040020000000000000001000000001FFFF00"
+                    "00000000000A0001000400040020000000000000001000000001FFFF00"
                     "00000000000017000840000000";
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -496,7 +496,7 @@ TEST(encoder, multipartreply3) {
   EXPECT_HEX(hex, encoder.data(), encoder.size());
 }
 
-TEST(encoder, ofpmp_flow_reply_v1) {
+TEST(encoder, ofpmp_flowreply_v1) {
   const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
    version: 1
@@ -529,9 +529,69 @@ TEST(encoder, ofpmp_flow_reply_v1) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x70, encoder.size());
-  EXPECT_HEX("0113007011111111000122220000000000683300003FFFFEDDDD000000000000000000000000000000000000000000000000000000000000000000004444444455555555666677778888000000000000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCC00000008EEEEFFFF", encoder.data(), encoder.size());
+  EXPECT_HEX("0111007011111111000122220000000000603300003FFFFEDDDD0000000000000"
+             "00000000000000000000000000000000000000000000000000000004444444455"
+             "555555666677778888000000000000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBCCC"
+             "CCCCCCCCCCCCC00000008EEEEFFFF",
+             encoder.data(), encoder.size());
 }
 
+TEST(encoder, ofmp_flowreply2_v1) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 1
+   xid: 0x11223344
+   msg:
+     type: OFPMP_FLOW
+     flags: 0
+     body:
+        - table_id: 1
+          duration_sec: 2
+          duration_nsec: 3
+          priority: 4
+          idle_timeout: 5
+          hard_timeout: 6
+          flags: 7
+          cookie: 8
+          packet_count: 9
+          byte_count: 10
+          match:
+            - type: OFB_IN_PORT
+              value: 0x12345678
+          instructions:
+            - type: OFPIT_APPLY_ACTIONS
+              value:
+                 - action: OFPAT_OUTPUT
+                   port: 0xEEEEEEEE
+                   maxlen: 0xFFFF
+        - table_id: 0x11
+          duration_sec: 0x22
+          duration_nsec: 0x33 
+          priority: 0x44
+          idle_timeout: 0x55
+          hard_timeout: 0x66
+          flags: 0x77
+          cookie: 0x88
+          packet_count: 0x9999999999999999
+          byte_count:   0xAAAAAAAAAAAAAAAA
+          match:
+            - type: OFB_ETH_SRC
+              value: 10-20-30-40-50-60
+            - type: OFB_ETH_DST
+              value: aa-bb-cc-dd-ee-ff
+          instructions:
+            - type: OFPIT_GOTO_TABLE
+              value: { 'table_id': 1 }
+            - type: OFPIT_APPLY_ACTIONS
+              value:
+                 - action: OFPAT_OUTPUT
+                   port: 0xEEEEEEEE
+                   maxlen: 0xFFFF
+   )""";
+
+  testEncoderSuccess(input, 0xD0,
+                     "011100D011223344000100000000000000600100003FFFFE567800000000000000000000000000000000000000000000000000000000000000000000000000020000000300040005000600000000000000000000000000080000000000000009000000000000000A00000008EEEEFFFF00601100003FFFF25678102030405060AABBCCDDEEFF00000000000000000000000000000000000000000000000000220000003300440055006600000000000000000000000000889999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF");
+}
 
 TEST(encoder, flowmodv4) {
   const char *input = R"""(
@@ -1394,7 +1454,7 @@ TEST(encoder, ofmp_desc_request_v1) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x10, encoder.size());
-  EXPECT_HEX("01120010111111110000000000000000", encoder.data(),
+  EXPECT_HEX("01100010111111110000000000000000", encoder.data(),
              encoder.size());
 }
 
@@ -1419,7 +1479,7 @@ TEST(encoder, ofmp_desc_reply_v1) {
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x430, encoder.size());
   EXPECT_HEX(
-      "011304301111111100000000000000004142434445464748494A4B4C4D4E4F5051525354"
+      "011104301111111100000000000000004142434445464748494A4B4C4D4E4F5051525354"
       "55565758595A203132333435363738390000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000000000000000000000000000"

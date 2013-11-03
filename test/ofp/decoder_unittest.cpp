@@ -187,7 +187,7 @@ TEST(decoder, featuresreplyv4) {
       "0\n...\n");
 }
 
-TEST(decoder, multipartrequest) {
+TEST(decoder, ofmp_flowrequest_v4) {
   testDecodeEncode(
       "0412003C1122334400010000000000000100000000000002000000030000000000000000"
       "000000040000000000000005000100088000000412345678",
@@ -200,11 +200,25 @@ TEST(decoder, multipartrequest) {
       "305419896\n...\n");
 }
 
-TEST(decoder, multipartreply) {
+TEST(decoder, ofmp_flowrequest_v1) {
+  testDecodeEncode("0110003C112233440001000000000000003FFFFE567"
+                   "8000000000000000000000000000000000000000000"
+                   "0000000000000000000000000011002222",
+                   "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+                   "    0x11223344\nversion:         1\nmsg:             \n  "
+                   "type:            OFPMP_FLOW\n  flags:           0x0000\n  "
+                   "body:            \n    table_id:        17\n    out_port:  "
+                   "      8738\n    out_group:       0\n    cookie:          "
+                   "0\n    cookie_mask:     0\n    match:           \n      - "
+                   "type:            OFB_IN_PORT\n        value:           "
+                   "22136\n...\n");
+}
+
+TEST(decoder, ofmp_flowreply_v4) {
   testDecodeEncode(
-      "041300541122334400010000000000000044010000000002000000030004000500060007"
-      "0000000000000000000000080000000000000009000000000000000A0001000880000004"
-      "123456780001000801000000",
+      "0413005411223344000100000000000000440100000000020000000300"
+      "0400050006000700000000000000000000000800000000000000090000"
+      "00000000000A0001000C80000004123456780001000801000000",
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         4\nmsg:             \n  type:            "
       "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    - "
@@ -219,11 +233,14 @@ TEST(decoder, multipartreply) {
       "    \n            table_id:        1\n...\n");
 }
 
-TEST(decoder, multipartreply2) {
+TEST(decoder, ofmp_flowreply2_v4) {
   testDecodeEncode(
-      "041300641122334400010000000000000054010000000002000000030004000500060007"
-      "0000000000000000000000080000000000000009000000000000000A0001000000040020"
-      "000000000000001000000001FFFF0000000000000017000840000000",
+      "041300A4112233440001000000000000003C010000000002000000030"
+      "004000500060007000000000000000000000008000000000000000900"
+      "0000000000000A0001000C80000004123456780058110000000022000"
+      "000330044005500660077000000000000000000000088999999999999"
+      "9999AAAAAAAAAAAAAAAA0001002080000004123456788000080610203"
+      "040506080000606AABBCCDDEEFF0001000801000000",
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         4\nmsg:             \n  type:            "
       "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    - "
@@ -232,11 +249,77 @@ TEST(decoder, multipartreply2) {
       "idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:    "
       "       0x0007\n      cookie:          0x0000000000000008\n      "
       "packet_count:    0x0000000000000009\n      byte_count:      "
-      "0x000000000000000A\n      match:           \n      instructions:    \n  "
-      "      - type:            OFPIT_APPLY_ACTIONS\n          value:          "
-      " \n            - action:          OFPAT_OUTPUT\n              port:     "
-      "       1\n              maxlen:          65535\n            - action:   "
-      "       OFPAT_SET_NW_TTL\n              ttl:             64\n...\n");
+      "0x000000000000000A\n      match:           \n        - type:            "
+      "OFB_IN_PORT\n          value:           305419896\n      instructions:  "
+      "  \n    - table_id:        17\n      duration_sec:    0x00000022\n      "
+      "duration_nsec:   0x00000033\n      priority:        0x0044\n      "
+      "idle_timeout:    0x0055\n      hard_timeout:    0x0066\n      flags:    "
+      "       0x0077\n      cookie:          0x0000000000000088\n      "
+      "packet_count:    0x9999999999999999\n      byte_count:      "
+      "0xAAAAAAAAAAAAAAAA\n      match:           \n        - type:            "
+      "OFB_IN_PORT\n          value:           305419896\n        - type:      "
+      "      OFB_ETH_SRC\n          value:           10-20-30-40-50-60\n       "
+      " - type:            OFB_ETH_DST\n          value:           "
+      "AA-BB-CC-DD-EE-FF\n      instructions:    \n        - type:            "
+      "OFPIT_GOTO_TABLE\n          value:           \n            table_id:    "
+      "    1\n...\n");
+}
+
+TEST(decoder, ofmp_flowreply_v1) {
+  testDecodeEncode(
+      "0111007011111111000122220000000000603300003FFFFEDDDD0000000000000"
+      "00000000000000000000000000000000000000000000000000000004444444455"
+      "555555666677778888000000000000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBCCC"
+      "CCCCCCCCCCCCC00000008EEEEFFFF",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         1\nmsg:             \n  type:            "
+      "OFPMP_FLOW\n  flags:           0x2222\n  body:            \n    - "
+      "table_id:        51\n      duration_sec:    0x44444444\n      "
+      "duration_nsec:   0x55555555\n      priority:        0x6666\n      "
+      "idle_timeout:    0x7777\n      hard_timeout:    0x8888\n      flags:    "
+      "       0x0000\n      cookie:          0xAAAAAAAAAAAAAAAA\n      "
+      "packet_count:    0xBBBBBBBBBBBBBBBB\n      byte_count:      "
+      "0xCCCCCCCCCCCCCCCC\n      match:           \n        - type:            "
+      "OFB_IN_PORT\n          value:           56797\n      instructions:    "
+      "\n        - type:            OFPIT_APPLY_ACTIONS\n          value:      "
+      "     \n            - action:          OFPAT_OUTPUT\n              port: "
+      "           61166\n              maxlen:          65535\n...\n");
+}
+
+TEST(decoder, ofmp_flowreply2_v1) {
+  testDecodeEncode(
+      "011100D011223344000100000000000000600100003FFFFE567800000000000000000000"
+      "000000000000000000000000000000000000000000000000000000020000000300040005"
+      "000600000000000000000000000000080000000000000009000000000000000A00000008"
+      "EEEEFFFF00601100003FFFF25678102030405060AABBCCDDEEFF00000000000000000000"
+      "000000000000000000000000000000220000003300440055006600000000000000000000"
+      "000000889999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11223344\nversion:         1\nmsg:             \n  type:            "
+      "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    - "
+      "table_id:        1\n      duration_sec:    0x00000002\n      "
+      "duration_nsec:   0x00000003\n      priority:        0x0004\n      "
+      "idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:    "
+      "       0x0000\n      cookie:          0x0000000000000008\n      "
+      "packet_count:    0x0000000000000009\n      byte_count:      "
+      "0x000000000000000A\n      match:           \n        - type:            "
+      "OFB_IN_PORT\n          value:           22136\n      instructions:    "
+      "\n        - type:            OFPIT_APPLY_ACTIONS\n          value:      "
+      "     \n            - action:          OFPAT_OUTPUT\n              port: "
+      "           61166\n              maxlen:          65535\n    - table_id: "
+      "       17\n      duration_sec:    0x00000022\n      duration_nsec:   "
+      "0x00000033\n      priority:        0x0044\n      idle_timeout:    "
+      "0x0055\n      hard_timeout:    0x0066\n      flags:           0x0000\n  "
+      "    cookie:          0x0000000000000088\n      packet_count:    "
+      "0x9999999999999999\n      byte_count:      0xAAAAAAAAAAAAAAAA\n      "
+      "match:           \n        - type:            OFB_IN_PORT\n          "
+      "value:           22136\n        - type:            OFB_ETH_SRC\n        "
+      "  value:           10-20-30-40-50-60\n        - type:            "
+      "OFB_ETH_DST\n          value:           AA-BB-CC-DD-EE-FF\n      "
+      "instructions:    \n        - type:            OFPIT_APPLY_ACTIONS\n     "
+      "     value:           \n            - action:          OFPAT_OUTPUT\n   "
+      "           port:            61166\n              maxlen:          "
+      "65535\n...\n");
 }
 
 TEST(decoder, flowmodv4) {
@@ -422,8 +505,6 @@ TEST(decoder, packetoutv1) {
 
   EXPECT_EQ("", encoder.error());
   EXPECT_HEX(hex, encoder.data(), encoder.size());
-  // testDecodeEncode("010D004A000000013333333344440010000000080005001400070008C0A80101FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002",
-  // "");
 }
 
 TEST(decoder, setconfigv4) {
@@ -628,7 +709,7 @@ TEST(decoder, flowremovedv3) {
       "OFB_IN_PORT\n      value:           305419896\n...\n");
 }
 
-TEST(decoder, ofmp_desc_request) {
+TEST(decoder, ofmp_desc_request_v4) {
   testDecodeEncode("04120010111111110000000000000000",
                    "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         4\nmsg:             \n  "
@@ -636,7 +717,7 @@ TEST(decoder, ofmp_desc_request) {
                    "0x0000\n...\n");
 }
 
-TEST(decoder, ofmp_desc_reply) {
+TEST(decoder, ofmp_desc_reply_v4) {
   testDecodeEncode(
       "041304301111111100000000000000004142434445464748494A4B4C4D4E4F5051525354"
       "55565758595A203132333435363738390000000000000000000000000000000000000000"

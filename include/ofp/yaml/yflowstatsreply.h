@@ -39,7 +39,7 @@ struct MappingTraits<ofp::FlowStatsReply> {
 
         io.mapRequired("table_id", msg.tableId_);
         io.mapRequired("duration_sec", msg.durationSec_);
-        io.mapRequired("duration_nsec", msg.durationNsec_);
+        io.mapRequired("duration_nsec", msg.durationNSec_);
         io.mapRequired("priority", msg.priority_);
         io.mapRequired("idle_timeout", msg.idleTimeout_);
         io.mapRequired("hard_timeout", msg.hardTimeout_);
@@ -64,7 +64,7 @@ struct MappingTraits<ofp::FlowStatsReplyBuilder> {
     {
         io.mapRequired("table_id", msg.msg_.tableId_);
         io.mapRequired("duration_sec", msg.msg_.durationSec_);
-        io.mapRequired("duration_nsec", msg.msg_.durationNsec_);
+        io.mapRequired("duration_nsec", msg.msg_.durationNSec_);
         io.mapRequired("priority", msg.msg_.priority_);
         io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
         io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);

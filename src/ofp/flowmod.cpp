@@ -198,7 +198,7 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel) {
   channel->write(&origMatch, sizeof(origMatch));
   channel->write(&msg_.cookie_, 8);
   channel->write(&msg_.tableId_, 12);
-  channel->write(BytePtr(&msg_.outPort_) + 2, 2);
+  channel->write(BytePtr(&msg_.outPort_) + 2, 2);   // Big-Endian -> Big-Endian
   channel->write(&msg_.flags_, 2);
 
   if (actions.size() > 0) {

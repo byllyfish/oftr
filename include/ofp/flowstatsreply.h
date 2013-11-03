@@ -46,7 +46,7 @@ private:
   Big8 tableId_;
   Padding<1> pad_1;
   Big32 durationSec_;
-  Big32 durationNsec_;
+  Big32 durationNSec_;
   Big16 priority_;
   Big16 idleTimeout_;
   Big16 hardTimeout_;
@@ -60,11 +60,10 @@ private:
   Big16 matchLength_ = 0;
   Padding<4> pad_3;
 
-  enum {
-    UnpaddedSizeWithMatchHeader = 52
-  };
-  enum {
-    SizeWithoutMatchHeader = 48
+  enum : size_t {
+    UnpaddedSizeWithMatchHeader = 52,
+    SizeWithoutMatchHeader = 48,
+    MatchHeaderSize = 4
   };
 
   friend class FlowStatsReplyBuilder;
@@ -77,6 +76,23 @@ static_assert(IsStandardLayout<FlowStatsReply>(), "Expected standard layout.");
 
 class FlowStatsReplyBuilder {
 public:
+  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
+  void setDurationNSec(UInt32 durationNSec) { msg_.durationNSec_ = durationNSec; }
+  void setPriority(UInt16 priority) { msg_.priority_ = priority; }
+  void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
+  void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
+  void setFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
+  void setPacketCount(UInt64 packetCount) { msg_.packetCount_ = packetCount; }
+  void setByteCount(UInt64 byteCount) { msg_.byteCount_ = byteCount; }
+
+  void setMatch(const MatchBuilder &match) { match_ = match; }
+
+  void setInstructions(const InstructionList &instructions) {
+    instructions_ = instructions;
+  }
+
   void write(Writable *channel);
 
 private:
@@ -85,7 +101,7 @@ private:
   InstructionList instructions_;
 
   void writeV1(Writable *channel);
-  
+
   friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
 };
 

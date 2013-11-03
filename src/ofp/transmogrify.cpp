@@ -27,12 +27,17 @@
 #include "ofp/packetout.h"
 #include "ofp/portmod.h"
 #include "ofp/flowremoved.h"
+#include "ofp/multipartrequest.h"
+#include "ofp/multipartreply.h"
 #include "ofp/instructions.h"
 #include "ofp/instructionrange.h"
 #include "ofp/originalmatch.h"
 #include "ofp/actions.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
+
+using deprecated::OriginalMatch;
+using deprecated::StandardMatch;
 
 Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
 
@@ -62,14 +67,15 @@ void Transmogrify::normalize() {
       normalizePortModV1();
     } else if (type == FlowRemoved::type()) {
       normalizeFlowRemovedV1();
+    } else if (type == MultipartRequest::type()) {
+      normalizeMultipartRequestV1();
+    } else if (type == MultipartReply::type()) {
+      normalizeMultipartReplyV1();
     }
   }
 }
 
 void Transmogrify::normalizeFlowModV1() {
-  using deprecated::OriginalMatch;
-  using deprecated::StandardMatch;
-
   Header *hdr = header();
 
   if (hdr->length() < 72) {
@@ -267,9 +273,6 @@ void Transmogrify::normalizePortModV1() {
 }
 
 void Transmogrify::normalizeFlowRemovedV1() {
-  using deprecated::OriginalMatch;
-  using deprecated::StandardMatch;
-
   Header *hdr = header();
 
   if (hdr->length() != 88) {
@@ -302,6 +305,138 @@ void Transmogrify::normalizeFlowRemovedV1() {
   std::memcpy(pkt + 48, &stdMatch, sizeof(stdMatch));
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeMultipartRequestV1() {
+  Header *hdr = header();
+  if (hdr->length() < sizeof(MultipartRequest)) {
+    log::info("MultipartRequest v1 message is too short.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  const MultipartRequest *multipartReq =
+      reinterpret_cast<const MultipartRequest *>(hdr);
+
+  OFPMultipartType reqType = multipartReq->requestType();
+  if (reqType == OFPMP_FLOW) {
+    normalizeMPFlowRequestV1();
+  }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+
+void Transmogrify::normalizeMultipartReplyV1()
+{
+  Header *hdr = header();
+  if (hdr->length() < sizeof(MultipartReply)) {
+    log::info("MultipartReply v1 message is too short.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  const MultipartReply *multipartReply =
+      reinterpret_cast<const MultipartReply *>(hdr);
+
+  OFPMultipartType replyType = multipartReply->replyType();
+  size_t offset = sizeof(MultipartReply);
+
+  if (replyType == OFPMP_FLOW) {
+    while (offset < buf_.size()) 
+      normalizeMPFlowReplyV1(&offset);
+    assert(offset == buf_.size());
+  }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeMPFlowRequestV1() {
+  // Check length of packet.
+  if (buf_.size() != sizeof(MultipartRequest) + 44) {
+    log::info("MultipartRequest v1 OFPMP_FLOW is wrong length.", buf_.size());
+    header()->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  // Increase buf size from (16+44) to (16+120).
+  buf_.addUninitialized(76);
+
+  UInt8 *ptr = buf_.mutableData() + sizeof(MultipartRequest);
+  OriginalMatch *origMatch = reinterpret_cast<OriginalMatch *>(ptr);
+  StandardMatch stdMatch{*origMatch};
+
+  // Coerce 16-bit port number to 32-bits.
+  Big32 outPort = normPortNumberV1(ptr + sizeof(OriginalMatch) + 2);
+
+  // Shift tableId and pad1 up (2 bytes).
+  std::memcpy(ptr, ptr + sizeof(OriginalMatch), 2);
+  // Add 2 bytes of pad.
+  std::memset(ptr + 2, 0, 2);
+  // Add 32-bit outPort.
+  std::memcpy(ptr + 4, &outPort, sizeof(outPort));
+  // Zero next 24 bytes.
+  std::memset(ptr + 8, 0, 24);
+  // Add stdMatch.
+  std::memcpy(ptr + 32, &stdMatch, sizeof(stdMatch));
+
+  assert(buf_.size() == sizeof(MultipartRequest) + 120);
+}
+
+void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
+  // Normalize the FlowStatsReply (ptr, length)
+  size_t offset = *start;
+  UInt8 *ptr = buf_.mutableData() + offset;
+  UInt16 length = *reinterpret_cast<Big16 *>(ptr);
+
+  if (length < 88) {
+    log::info("FlowStatsReply v1 is too short.", length);
+    *start = buf_.size();
+    return;
+  }
+
+  OriginalMatch *origMatch = reinterpret_cast<OriginalMatch *>(ptr + 4);
+  StandardMatch stdMatch{*origMatch};
+
+  // Shift all fields above actions up. Must use memmove due to overlap.
+  std::memmove(ptr + 4, ptr + 44, 44);
+
+  printf("size: %lu, %d\n", buf_.size(), length);
+  log::debug(" ", buf_);
+  
+  // Need at least 48 more bytes (136 - 88). If there's an action list, we need 
+  // 8 more bytes for the instruction header.
+  UInt16 actLen = UInt16_narrow_cast(length - 88);
+  int needed = 48;
+  if (actLen > 0) {
+    needed += 8;
+  }
+
+  buf_.insertUninitialized(ptr + 48, needed);
+
+  // Copy in stdMatch.
+  ptr = buf_.mutableData() + offset;
+  std::memcpy(ptr + 48, &stdMatch, sizeof(stdMatch));
+
+  // TODO: see common code in FlowModv1.
+  if (actLen > 0) {
+    // Normalize actions may move memory.
+    int delta = normActionsV1orV2(ActionRange{ByteRange{ptr + 144, actLen}},
+                                  stdMatch.nw_proto);
+
+    ptr = buf_.mutableData() + offset;
+    detail::InstructionHeaderWithPadding insHead{
+        OFPIT_APPLY_ACTIONS, UInt16_narrow_cast(actLen + 8 + delta)};
+    std::memcpy(ptr + 136, &insHead, sizeof(insHead));
+
+    needed += delta;
+  }
+
+  // Update length.
+  *reinterpret_cast<Big16 *>(ptr) = length + needed;
+  *start += length + needed;
+  
+  log::debug("normalizeFlowReplyV1", buf_);
 }
 
 UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {
@@ -441,5 +576,3 @@ int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
 
   return 8;
 }
-
-} // </namespace ofp>

@@ -37,14 +37,16 @@ public:
   using ArrayType = std::array<UInt8, Length>;
 
   EnetAddress() : addr_{} {}
-  explicit EnetAddress(const std::string &s);
+  EnetAddress(const std::string &s);
 
   bool parse(const std::string &s);
 
   bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
 
   bool isMulticast() const { return (addr_[0] & 0x01); }
-
+  bool isBroadcast() const {
+    return IsMemFilled(addr_.data(), sizeof(addr_), '\xff');
+  }
   void setAllOnes() { std::memset(addr_.data(), 0xFF, sizeof(addr_)); }
 
   void clear() { std::memset(addr_.data(), 0, sizeof(addr_)); }

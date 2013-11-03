@@ -19,6 +19,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/enetaddress_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
+	ofp/flowstatsreply_unittest.cpp
 	ofp/headeronly_unittest.cpp
 	ofp/hello_unittest.cpp
 	ofp/instructions_unittest.cpp
@@ -53,8 +54,8 @@ set(LIBOFP_TEST_SOURCES
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include")
 
-add_executable(ofp_unittest ${LIBOFP_TEST_SOURCES})
-target_link_libraries(ofp_unittest gtest gtest_main ofp yamlio)
+add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES})
+target_link_libraries(ofp_unittest gtest ofp yamlio)
 
 # Add tests here.
 

@@ -39,6 +39,12 @@ UInt32 MultipartReplyBuilder::send(Writable *channel) {
   msg_.header_.setXid(xid);
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
+  if (version == OFP_VERSION_1) {
+    msg_.header_.setType(deprecated::v1::OFPT_STATS_REPLY);
+  } else {
+    msg_.header_.setType(OFPT_MULTIPART_REPLY);
+  }
+
   channel->write(&msg_, sizeof(msg_));
   channel->write(body_.data(), body_.size());
   channel->flush();
