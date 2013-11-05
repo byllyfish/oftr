@@ -63,14 +63,13 @@ private:
   Padding<4> pad_3;
 
   enum {
-    UnpaddedSizeWithMatchHeader = 36
-  };
-  enum {
+    UnpaddedSizeWithMatchHeader = 36,
     SizeWithoutMatchHeader = 32
   };
 
   friend class FlowStatsRequestBuilder;
-  friend struct llvm::yaml::MappingTraits<FlowStatsRequestBuilder>;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(FlowStatsRequest) == 40, "Unexpected size.");
@@ -93,7 +92,8 @@ private:
 
   void writeV1(Writable *channel);
   
-  friend struct llvm::yaml::MappingTraits<FlowStatsRequestBuilder>;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>

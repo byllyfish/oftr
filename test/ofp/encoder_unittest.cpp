@@ -365,6 +365,54 @@ TEST(encoder, ofmp_flowrequest_v1) {
                                    "0000000000000000000000000011002222");
 }
 
+TEST(encoder, ofmp_aggregaterequest_v4) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REQUEST
+   version: 4
+   xid: 0x11223344
+   msg:
+     type: OFPMP_AGGREGATE
+     flags: 0
+     body:
+         table_id: 0x11
+         out_port: 0x22222222
+         out_group:  0x33333333
+         cookie: 0x4444444444444444
+         cookie_mask: 0x5555555555555555
+         match:
+            - type: OFB_IN_PORT
+              value: 0x12345678
+   )""";
+
+  testEncoderSuccess(input, 0x03C, "0412003C11223344000200000000000011000000222"
+                                   "2222233333333000000004444444444444444555555"
+                                   "5555555555000100088000000412345678");
+}
+
+TEST(encoder, ofmp_aggregaterequest_v1) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REQUEST
+   version: 1
+   xid: 0x11223344
+   msg:
+     type: OFPMP_AGGREGATE
+     flags: 0
+     body:
+         table_id: 0x11
+         out_port: 0x22222222
+         out_group:  0x33333333
+         cookie: 0x4444444444444444
+         cookie_mask: 0x5555555555555555
+         match:
+            - type: OFB_IN_PORT
+              value: 0x12345678
+   )""";
+
+  testEncoderSuccess(input, 0x03C, "0110003C112233440002000000000000003FFFFE567"
+                                   "8000000000000000000000000000000000000000000"
+                                   "0000000000000000000000000011002222");
+}
+
 TEST(encoder, ofmp_flowreply_v4) {
   const char *input = R"""(
    type: OFPT_MULTIPART_REPLY
@@ -589,8 +637,54 @@ TEST(encoder, ofmp_flowreply2_v1) {
                    maxlen: 0xFFFF
    )""";
 
-  testEncoderSuccess(input, 0xD0,
-                     "011100D011223344000100000000000000600100003FFFFE567800000000000000000000000000000000000000000000000000000000000000000000000000020000000300040005000600000000000000000000000000080000000000000009000000000000000A00000008EEEEFFFF00601100003FFFF25678102030405060AABBCCDDEEFF00000000000000000000000000000000000000000000000000220000003300440055006600000000000000000000000000889999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF");
+  testEncoderSuccess(
+      input, 0xD0,
+      "011100D011223344000100000000000000600100003FFFFE567800000000000000000000"
+      "000000000000000000000000000000000000000000000000000000020000000300040005"
+      "000600000000000000000000000000080000000000000009000000000000000A00000008"
+      "EEEEFFFF00601100003FFFF25678102030405060AABBCCDDEEFF00000000000000000000"
+      "000000000000000000000000000000220000003300440055006600000000000000000000"
+      "000000889999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF");
+}
+
+TEST(encoder, aggregatereply_v4) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 4
+   xid: 0x11111111
+   msg:
+     type: OFPMP_AGGREGATE
+     flags: 0x2222
+     body:
+       packet_count: 0x3333333333333330
+       byte_count: 0x4444444444444440
+       flow_count: 0x55555550
+   )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x28, encoder.size());
+  EXPECT_HEX("04130028111111110002222200000000333333333333333044444444444444405555555000000000", encoder.data(), encoder.size());
+}
+
+TEST(encoder, aggregatereply_v1) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 1
+   xid: 0x11111111
+   msg:
+     type: OFPMP_AGGREGATE
+     flags: 0x2222
+     body:
+       packet_count: 0x3333333333333330
+       byte_count: 0x4444444444444440
+       flow_count: 0x55555550
+   )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x28, encoder.size());
+  EXPECT_HEX("01110028111111110002222200000000333333333333333044444444444444405555555000000000", encoder.data(), encoder.size());
 }
 
 TEST(encoder, flowmodv4) {

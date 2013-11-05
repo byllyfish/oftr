@@ -46,7 +46,8 @@ struct MappingTraits<ofp::MultipartRequest> {
     case OFPMP_PORT_DESC:
       // empty request body
       break;
-    case OFPMP_FLOW: {
+    case OFPMP_FLOW:
+    case OFPMP_AGGREGATE: {
       const FlowStatsRequest *stats = FlowStatsRequest::cast(&msg);
       if (stats) {
         io.mapRequired("body", RemoveConst_cast(*stats));
@@ -77,7 +78,8 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
     case OFPMP_PORT_DESC:
       // empty request body
       break;
-    case OFPMP_FLOW: {
+    case OFPMP_FLOW:
+    case OFPMP_AGGREGATE: {
       FlowStatsRequestBuilder stats;
       io.mapRequired("body", stats);
       MemoryChannel channel{msg.msg_.header_.version()};

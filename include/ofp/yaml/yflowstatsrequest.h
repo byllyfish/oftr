@@ -35,19 +35,13 @@ struct MappingTraits<ofp::FlowStatsRequest> {
     {
     	using namespace ofp;
 
-        UInt8 tableId = msg.tableId();
-        UInt32 outPort = msg.outPort();
-        UInt32 outGroup = msg.outGroup();
-        UInt64 cookie = msg.cookie();
-        UInt64 cookieMask = msg.cookieMask();
-    
-        io.mapRequired("table_id", tableId);
-        io.mapRequired("out_port", outPort);
-        io.mapRequired("out_group", outGroup);
-        io.mapRequired("cookie", cookie);
-        io.mapRequired("cookie_mask", cookieMask);
+        io.mapRequired("table_id", msg.tableId_);
+        io.mapRequired("out_port", msg.outPort_);
+        io.mapRequired("out_group", msg.outGroup_);
+        io.mapRequired("cookie", msg.cookie_);
+        io.mapRequired("cookie_mask", msg.cookieMask_);
 
-        ofp::Match m = msg.match();
+        Match m = msg.match();
         io.mapRequired("match", m);
     }
 };

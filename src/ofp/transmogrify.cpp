@@ -319,7 +319,8 @@ void Transmogrify::normalizeMultipartRequestV1() {
       reinterpret_cast<const MultipartRequest *>(hdr);
 
   OFPMultipartType reqType = multipartReq->requestType();
-  if (reqType == OFPMP_FLOW) {
+  if (reqType == OFPMP_FLOW || reqType == OFPMP_AGGREGATE) {
+    // Both requests have the same structure.
     normalizeMPFlowRequestV1();
   }
 

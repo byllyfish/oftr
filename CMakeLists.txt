@@ -57,6 +57,7 @@ endif()
 
 set(LIBOFP_SOURCES
 	src/ofp/actionrange.cpp
+  src/ofp/aggregatestatsreply.cpp
   src/ofp/bucket.cpp
   src/ofp/bucketlist.cpp
   src/ofp/bytelist.cpp
@@ -159,6 +160,8 @@ set(LIBOFP_HEADER_FILES
   include/ofp/actionrange.h
   include/ofp/actions.h
   include/ofp/actiontype.h
+  include/ofp/aggregatestatsrequest.h
+  include/ofp/aggregatestatsreply.h
   include/ofp/array.h
   include/ofp/bytedata.h
   include/ofp/bytelist.h

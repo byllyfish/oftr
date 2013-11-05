@@ -26,6 +26,7 @@
 #include "ofp/multipartreply.h"
 #include "ofp/yaml/yflowstatsreply.h"
 #include "ofp/yaml/ympdesc.h"
+#include "ofp/yaml/yaggregatestatsreply.h"
 
 namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
@@ -147,6 +148,13 @@ struct MappingTraits<ofp::MultipartReply> {
       io.mapRequired("body", seq);
       break;
     }
+    case OFPMP_AGGREGATE: {
+      AggregateStatsReply *reply = RemoveConst_cast(msg.body_cast<AggregateStatsReply>());
+      if (reply) {
+        io.mapRequired("body", *reply);
+      }
+      break;
+    }
     case OFPMP_PORT_DESC: {
       // io.mapOptional("body", EmptyRequest);
       break;
@@ -183,6 +191,12 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       io.mapRequired("body", seq);
       seq.close();
       msg.setReplyBody(seq.data(), seq.size());
+      break;
+    }
+    case OFPMP_AGGREGATE: {
+      AggregateStatsReplyBuilder reply;
+      io.mapRequired("body", reply);
+      msg.setReplyBody(&reply, sizeof(reply));
       break;
     }
     case OFPMP_PORT_DESC: {
