@@ -27,9 +27,31 @@
 #include "ofp/yaml/yflowstatsreply.h"
 #include "ofp/yaml/ympdesc.h"
 #include "ofp/yaml/yaggregatestatsreply.h"
+#include "ofp/yaml/ymptablestats.h"
 
 namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
+
+/// Elements are fixed size.
+template <class Type>
+class MPReplyFixedSizeSeq {
+public:
+  MPReplyFixedSizeSeq(MultipartReply &msg) : msg_{msg}, position_{msg.replyBody()} {}
+
+  size_t size() const {
+    return msg_.replyBodySize() / sizeof(Type);
+  }
+
+  Type &next() {
+    const UInt8 *pos = position_;
+    position_ += sizeof(Type);
+    return RemoveConst_cast(*reinterpret_cast<const Type *>(pos));
+  }
+
+private:
+  MultipartReply &msg_;
+  const UInt8 *position_;
+};
 
 /// Elements are variable size. First two bytes of an element contain the
 /// element size.
@@ -100,6 +122,19 @@ namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
 template <class Type>
+struct SequenceTraits<ofp::detail::MPReplyFixedSizeSeq<Type>> {
+
+  static size_t size(IO &io, ofp::detail::MPReplyFixedSizeSeq<Type> &seq) {
+    return seq.size();
+  }
+
+  static Type &element(IO &io, ofp::detail::MPReplyFixedSizeSeq<Type> &seq,
+                       size_t index) {
+    return seq.next();
+  }
+};
+
+template <class Type>
 struct SequenceTraits<ofp::detail::MPReplyVariableSizeSeq<Type>> {
 
   static size_t size(IO &io, ofp::detail::MPReplyVariableSizeSeq<Type> &seq) {
@@ -155,6 +190,11 @@ struct MappingTraits<ofp::MultipartReply> {
       }
       break;
     }
+    case OFPMP_TABLE: {
+      ofp::detail::MPReplyFixedSizeSeq<MPTableStats> seq{msg};
+      io.mapRequired("body", seq);
+      break;
+    }
     case OFPMP_PORT_DESC: {
       // io.mapOptional("body", EmptyRequest);
       break;
@@ -183,6 +223,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
     case OFPMP_DESC: {
         MPDesc desc;
         io.mapRequired("body", desc);
+        // FIXME - write reply into channel.
         msg.setReplyBody(&desc, sizeof(desc));
         break;
     }
@@ -196,7 +237,15 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
     case OFPMP_AGGREGATE: {
       AggregateStatsReplyBuilder reply;
       io.mapRequired("body", reply);
+      // FIXME - write reply into channel.
       msg.setReplyBody(&reply, sizeof(reply));
+      break;
+    }
+    case OFPMP_TABLE: {
+      ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{msg.version()};
+      io.mapRequired("body", seq);
+      seq.close();
+      msg.setReplyBody(seq.data(), seq.size());
       break;
     }
     case OFPMP_PORT_DESC: {

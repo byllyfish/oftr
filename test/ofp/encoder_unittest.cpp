@@ -687,6 +687,63 @@ TEST(encoder, aggregatereply_v1) {
   EXPECT_HEX("01110028111111110002222200000000333333333333333044444444444444405555555000000000", encoder.data(), encoder.size());
 }
 
+
+TEST(encoder, tablestats_v4) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 4
+   xid: 0x11111111
+   msg:
+     type: OFPMP_TABLE
+     flags: 0x2222
+     body:
+       - table_id: 0x33
+         active_count: 0x44444440
+         lookup_count: 0x5555555555555550
+         matched_count: 0x6666666666666660
+       - table_id: 0x77
+         active_count: 0x88888880
+         lookup_count: 0x9999999999999990
+         matched_count: 0xAAAAAAAAAAAAAAA0
+   )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x40, encoder.size());
+  EXPECT_HEX("0413004011111111000322220000000033000000444444405555555555555550666666666666666077000000888888809999999999999990AAAAAAAAAAAAAAA0", encoder.data(), encoder.size());
+}
+
+TEST(encoder, tablestats_v1) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 1
+   xid: 0x11111111
+   msg:
+     type: OFPMP_TABLE
+     flags: 0x2222
+     body:
+       - table_id: 0x33
+         name: 'Table 1'
+         wildcards: 0x44444440
+         max_entries: 0x55555550
+         active_count: 0x66666660
+         lookup_count: 0x7777777777777770
+         matched_count: 0x8888888888888880
+       - table_id: 0x11
+         name: 'Table 2'
+         wildcards: 0x99999990
+         max_entries: 0xAAAAAAA0
+         active_count: 0xBBBBBBB0
+         lookup_count: 0xCCCCCCCCCCCCCCC0
+         matched_count: 0xDDDDDDDDDDDDDDD0
+   )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x90, encoder.size());
+  EXPECT_HEX("01110090111111110003222200000000330000005461626C6520310000000000000000000000000000000000000000000000000044444440555555506666666077777777777777708888888888888880110000005461626C6520320000000000000000000000000000000000000000000000000099999990AAAAAAA0BBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0", encoder.data(), encoder.size());
+}
+
 TEST(encoder, flowmodv4) {
   const char *input = R"""(
       type:            OFPT_FLOW_MOD

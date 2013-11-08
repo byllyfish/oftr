@@ -54,7 +54,8 @@ void Transmogrify::normalize() {
   }
   hdr->setType(type);
 
-  if (hdr->version() == OFP_VERSION_1) {
+  UInt8 version = hdr->version();
+  if (version == OFP_VERSION_1) {
     if (type == FlowMod::type()) {
       normalizeFlowModV1();
     } else if (type == PortStatus::type()) {
@@ -71,6 +72,10 @@ void Transmogrify::normalize() {
       normalizeMultipartRequestV1();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV1();
+    }
+  } else if (version == OFP_VERSION_4) {
+    if (type == MultipartReply::type()) {
+      normalizeMultipartReplyV4();
     }
   }
 }
@@ -352,6 +357,30 @@ void Transmogrify::normalizeMultipartReplyV1()
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
+void Transmogrify::normalizeMultipartReplyV4()
+{
+  Header *hdr = header();
+  if (hdr->length() < sizeof(MultipartReply)) {
+    log::info("MultipartReply v1 message is too short.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  const MultipartReply *multipartReply =
+      reinterpret_cast<const MultipartReply *>(hdr);
+
+  OFPMultipartType replyType = multipartReply->replyType();
+  size_t offset = sizeof(MultipartReply);
+
+  if (replyType == OFPMP_TABLE) {
+    while (offset < buf_.size()) 
+      normalizeMPTableStatsReplyV4(&offset);
+    assert(offset == buf_.size());
+  }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
 void Transmogrify::normalizeMPFlowRequestV1() {
   // Check length of packet.
   if (buf_.size() != sizeof(MultipartRequest) + 44) {
@@ -439,6 +468,22 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   
   log::debug("normalizeFlowReplyV1", buf_);
 }
+
+
+void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start)
+{
+  // Normalize the TableStatsReply V4 to look like a V1 message.
+  size_t offset = *start;
+  UInt8 *ptr = buf_.mutableData() + offset;
+
+  buf_.insertUninitialized(ptr + 4, 40);
+
+  ptr = buf_.mutableData() + offset + 4;
+  std::memset(ptr, 0, 40);;
+
+  *start += 64;
+}
+
 
 UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {
   const Big16 *port16 = reinterpret_cast<const Big16 *>(ptr);

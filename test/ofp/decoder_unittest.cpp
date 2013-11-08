@@ -373,6 +373,43 @@ TEST(decoder, aggregatereply_v1) {
       "0x4444444444444440\n    flow_count:      0x55555550\n...\n");
 }
 
+TEST(decoder, tablestats_v4) {
+  testDecodeEncode(
+      "041300401111111100032222000000003300000044444440555555555555555066666666"
+      "6666666077000000888888809999999999999990AAAAAAAAAAAAAAA0",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         4\nmsg:             \n  type:            "
+      "OFPMP_TABLE\n  flags:           0x2222\n  body:            \n    - "
+      "table_id:        51\n      name:            ''\n      wildcards:       "
+      "0x00000000\n      max_entries:     0x00000000\n      active_count:    "
+      "0x44444440\n      lookup_count:    0x5555555555555550\n      "
+      "matched_count:   0x6666666666666660\n    - table_id:        119\n      "
+      "name:            ''\n      wildcards:       0x00000000\n      "
+      "max_entries:     0x00000000\n      active_count:    0x88888880\n      "
+      "lookup_count:    0x9999999999999990\n      matched_count:   "
+      "0xAAAAAAAAAAAAAAA0\n...\n");
+}
+
+TEST(decoder, tablestats_v1) {
+  testDecodeEncode(
+      "01110090111111110003222200000000330000005461626C652031000000000000000000"
+      "000000000000000000000000000000004444444055555550666666607777777777777770"
+      "8888888888888880110000005461626C6520320000000000000000000000000000000000"
+      "000000000000000099999990AAAAAAA0BBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD"
+      "0",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         1\nmsg:             \n  type:            "
+      "OFPMP_TABLE\n  flags:           0x2222\n  body:            \n    - "
+      "table_id:        51\n      name:            Table 1\n      wildcards:   "
+      "    0x44444440\n      max_entries:     0x55555550\n      active_count:  "
+      "  0x66666660\n      lookup_count:    0x7777777777777770\n      "
+      "matched_count:   0x8888888888888880\n    - table_id:        17\n      "
+      "name:            Table 2\n      wildcards:       0x99999990\n      "
+      "max_entries:     0xAAAAAAA0\n      active_count:    0xBBBBBBB0\n      "
+      "lookup_count:    0xCCCCCCCCCCCCCCC0\n      matched_count:   "
+      "0xDDDDDDDDDDDDDDD0\n...\n");
+}
+
 TEST(decoder, flowmodv4) {
   testDecodeEncode(
       "040E00680000000100000000000000000000000000000000000000000000000000000000"

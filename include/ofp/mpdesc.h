@@ -64,6 +64,7 @@ static_assert(IsStandardLayout<MPDesc::DescStr>(), "Expected standard layout.");
 static_assert(sizeof(MPDesc::SerialNumStr) == 32, "Unexpected size.");
 static_assert(IsStandardLayout<MPDesc::SerialNumStr>(), "Expected standard layout.");
 static_assert(sizeof(MPDesc) == 1056, "Unexpected size.");
+static_assert(IsStandardLayout<MPDesc>(), "Expected standard layout.");
 
 } // </namespace ofp>
 

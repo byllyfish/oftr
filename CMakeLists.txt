@@ -88,6 +88,7 @@ set(LIBOFP_SOURCES
   src/ofp/ipv6endpoint.cpp
 	src/ofp/log.cpp
 	src/ofp/message.cpp
+  src/ofp/mptablestats.cpp
 	src/ofp/multipartreply.cpp
 	src/ofp/multipartrequest.cpp
 	src/ofp/ofp.cpp

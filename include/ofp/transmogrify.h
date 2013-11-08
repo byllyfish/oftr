@@ -47,9 +47,11 @@ public:
   void normalizeFlowRemovedV1();
   void normalizeMultipartRequestV1();
   void normalizeMultipartReplyV1();
+  void normalizeMultipartReplyV4();
   
   void normalizeMPFlowRequestV1();
   void normalizeMPFlowReplyV1(size_t *start);
+  void normalizeMPTableStatsReplyV4(size_t *start);
 
   UInt32 normPortNumberV1(const UInt8 *ptr);
 

@@ -43,6 +43,7 @@ struct MappingTraits<ofp::MultipartRequest> {
 
     switch (type) {
     case OFPMP_DESC:
+    case OFPMP_TABLE:
     case OFPMP_PORT_DESC:
       // empty request body
       break;
@@ -75,6 +76,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
 
     switch (type) {
     case OFPMP_DESC:
+    case OFPMP_TABLE:
     case OFPMP_PORT_DESC:
       // empty request body
       break;
