@@ -28,6 +28,7 @@
 #include "ofp/yaml/ympdesc.h"
 #include "ofp/yaml/yaggregatestatsreply.h"
 #include "ofp/yaml/ymptablestats.h"
+#include "ofp/yaml/ympportstats.h"
 
 namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
@@ -195,6 +196,11 @@ struct MappingTraits<ofp::MultipartReply> {
       io.mapRequired("body", seq);
       break;
     }
+    case OFPMP_PORT_STATS: {
+      ofp::detail::MPReplyFixedSizeSeq<MPPortStats> seq{msg};
+      io.mapRequired("body", seq);
+      break;
+    }
     case OFPMP_PORT_DESC: {
       // io.mapOptional("body", EmptyRequest);
       break;
@@ -243,6 +249,13 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
     }
     case OFPMP_TABLE: {
       ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{msg.version()};
+      io.mapRequired("body", seq);
+      seq.close();
+      msg.setReplyBody(seq.data(), seq.size());
+      break;
+    }
+    case OFPMP_PORT_STATS: {
+      ofp::detail::MPReplyBuilderSeq<MPPortStatsBuilder> seq{msg.version()};
       io.mapRequired("body", seq);
       seq.close();
       msg.setReplyBody(seq.data(), seq.size());

@@ -410,6 +410,48 @@ TEST(decoder, tablestats_v1) {
       "0xDDDDDDDDDDDDDDD0\n...\n");
 }
 
+TEST(decoder, port_stats_v4) {
+  testDecodeEncode(
+      "041300801111111100042222000000003333333000000000444444444444444055555555"
+      "555555506666666666666660777777777777777088888888888888809999999999999990"
+      "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
+      "EEEEEEE0FFFFFFFFFFFFFFF01111111022222220",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         4\nmsg:             \n  type:            "
+      "OFPMP_PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
+      "port_no:         0x33333330\n      rx_packets:      "
+      "0x4444444444444440\n      tx_packets:      0x5555555555555550\n      "
+      "rx_bytes:        0x6666666666666660\n      tx_bytes:        "
+      "0x7777777777777770\n      rx_dropped:      0x8888888888888880\n      "
+      "tx_dropped:      0x9999999999999990\n      rx_errors:       "
+      "0xAAAAAAAAAAAAAAA0\n      tx_errors:       0xBBBBBBBBBBBBBBB0\n      "
+      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
+      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
+      "collisions:      0xFFFFFFFFFFFFFFF0\n      duration_sec:    "
+      "0x11111110\n      duration_nsec:   0x22222220\n...\n");
+}
+
+TEST(decoder, port_stats_v1) {
+  testDecodeEncode(
+      "011100781111111100042222000000003330000000000000444444444444444055555555"
+      "555555506666666666666660777777777777777088888888888888809999999999999990"
+      "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
+      "EEEEEEE0FFFFFFFFFFFFFFF0",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         1\nmsg:             \n  type:            "
+      "OFPMP_PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
+      "port_no:         0x00003330\n      rx_packets:      "
+      "0x4444444444444440\n      tx_packets:      0x5555555555555550\n      "
+      "rx_bytes:        0x6666666666666660\n      tx_bytes:        "
+      "0x7777777777777770\n      rx_dropped:      0x8888888888888880\n      "
+      "tx_dropped:      0x9999999999999990\n      rx_errors:       "
+      "0xAAAAAAAAAAAAAAA0\n      tx_errors:       0xBBBBBBBBBBBBBBB0\n      "
+      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
+      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
+      "collisions:      0xFFFFFFFFFFFFFFF0\n      duration_sec:    "
+      "0x00000000\n      duration_nsec:   0x00000000\n...\n");
+}
+
 TEST(decoder, flowmodv4) {
   testDecodeEncode(
       "040E00680000000100000000000000000000000000000000000000000000000000000000"

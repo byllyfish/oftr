@@ -352,6 +352,10 @@ void Transmogrify::normalizeMultipartReplyV1()
     while (offset < buf_.size()) 
       normalizeMPFlowReplyV1(&offset);
     assert(offset == buf_.size());
+  } else if (replyType == OFPMP_PORT_STATS) {
+    while (offset < buf_.size())
+      normalizeMPPortStatsReplyV1(&offset);
+    assert(offset == buf_.size());
   }
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
@@ -482,6 +486,33 @@ void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start)
   std::memset(ptr, 0, 40);;
 
   *start += 64;
+}
+
+void Transmogrify::normalizeMPPortStatsReplyV1(size_t *start)
+{
+  // Normalize the PortStatsReply V1 to look like a V2+ message.
+  size_t offset = *start;
+  size_t remaining = buf_.size() - offset;
+
+  if (remaining < 104) {
+    *start = buf_.size();
+    return;
+  }
+  
+  UInt8 *ptr = buf_.mutableData() + offset;
+
+  log::debug("offset=", offset);
+  log::debug("size=", buf_.size());
+  log::debug("buf=", buf_);
+
+  // Change port number from 16-bits to 32-bits.
+  Big32 *port = reinterpret_cast<Big32 *>(ptr);
+  *port = normPortNumberV1(ptr);
+
+  // Insert an additional 8-bytes for timestamp.
+  buf_.insertUninitialized(ptr + 104, 8);
+
+  *start += 112;
 }
 
 
