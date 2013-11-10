@@ -52,8 +52,8 @@ public:
   void normalizeMPFlowRequestV1();
   void normalizeMPFlowReplyV1(size_t *start);
   void normalizeMPTableStatsReplyV4(size_t *start);
-  void normalizeMPPortStatsReplyV1(size_t *start);
-  
+  void normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len);
+
   UInt32 normPortNumberV1(const UInt8 *ptr);
 
   int normInstructionsV1orV2(const InstructionRange &instr, UInt8 ipProto);

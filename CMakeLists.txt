@@ -89,6 +89,7 @@ set(LIBOFP_SOURCES
 	src/ofp/log.cpp
 	src/ofp/message.cpp
   src/ofp/mpportstats.cpp
+  src/ofp/mpqueuestats.cpp
   src/ofp/mptablestats.cpp
 	src/ofp/multipartreply.cpp
 	src/ofp/multipartrequest.cpp

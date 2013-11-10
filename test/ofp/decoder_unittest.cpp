@@ -452,6 +452,32 @@ TEST(decoder, port_stats_v1) {
       "0x00000000\n      duration_nsec:   0x00000000\n...\n");
 }
 
+TEST(decoder, queue_stats_v4) {
+  testDecodeEncode(
+      "041300381111111100052222000000003333333044444440555555555555555066666666"
+      "6666666077777777777777701111111022222220",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         4\nmsg:             \n  type:            "
+      "OFPMP_QUEUE\n  flags:           0x2222\n  body:            \n    - "
+      "port_no:         0x33333330\n      queue_id:        0x44444440\n      "
+      "tx_packets:      0x6666666666666660\n      tx_bytes:        "
+      "0x5555555555555550\n      tx_errors:       0x7777777777777770\n      "
+      "duration_sec:    0x11111110\n      duration_nsec:   0x22222220\n...\n");
+}
+
+TEST(decoder, queue_stats_v1) {
+  testDecodeEncode(
+      "011100301111111100052222000000003330000044444440555555555555555066666666"
+      "666666607777777777777770",
+      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         1\nmsg:             \n  type:            "
+      "OFPMP_QUEUE\n  flags:           0x2222\n  body:            \n    - "
+      "port_no:         0x00003330\n      queue_id:        0x44444440\n      "
+      "tx_packets:      0x6666666666666660\n      tx_bytes:        "
+      "0x5555555555555550\n      tx_errors:       0x7777777777777770\n      "
+      "duration_sec:    0x00000000\n      duration_nsec:   0x00000000\n...\n");
+}
+
 TEST(decoder, flowmodv4) {
   testDecodeEncode(
       "040E00680000000100000000000000000000000000000000000000000000000000000000"

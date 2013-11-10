@@ -774,7 +774,6 @@ TEST(encoder, portstats_v4) {
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x80, encoder.size());
   EXPECT_HEX("041300801111111100042222000000003333333000000000444444444444444055555555555555506666666666666660777777777777777088888888888888809999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0FFFFFFFFFFFFFFF01111111022222220", encoder.data(), encoder.size());
-
 }
 
 
@@ -808,6 +807,54 @@ TEST(encoder, portstats_v1) {
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x78, encoder.size());
   EXPECT_HEX("011100781111111100042222000000003330000000000000444444444444444055555555555555506666666666666660777777777777777088888888888888809999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0FFFFFFFFFFFFFFF0", encoder.data(), encoder.size());
+}
+
+TEST(encoder, queuestats_v4) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 4
+   xid: 0x11111111
+   msg:
+     type: OFPMP_QUEUE
+     flags: 0x2222
+     body:
+       - port_no: 0x33333330
+         queue_id: 0x44444440
+         tx_bytes:   0x5555555555555550
+         tx_packets: 0x6666666666666660
+         tx_errors:  0x7777777777777770
+         duration_sec:   0x11111110
+         duration_nsec:  0x22222220
+   )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x38, encoder.size());
+  EXPECT_HEX("0413003811111111000522220000000033333330444444405555555555555550666666666666666077777777777777701111111022222220", encoder.data(), encoder.size());
+}
+
+TEST(encoder, queuestats_v1) {
+  const char *input = R"""(
+   type: OFPT_MULTIPART_REPLY
+   version: 1
+   xid: 0x11111111
+   msg:
+     type: OFPMP_QUEUE
+     flags: 0x2222
+     body:
+       - port_no: 0x33333330
+         queue_id: 0x44444440
+         tx_bytes:   0x5555555555555550
+         tx_packets: 0x6666666666666660
+         tx_errors:  0x7777777777777770
+         duration_sec:   0x11111110
+         duration_nsec:  0x22222220
+   )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x30, encoder.size());
+  EXPECT_HEX("011100301111111100052222000000003330000044444440555555555555555066666666666666607777777777777770", encoder.data(), encoder.size());
 }
 
 TEST(encoder, flowmodv4) {
