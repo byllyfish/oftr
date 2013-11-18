@@ -28,7 +28,9 @@
 
 namespace ofp { // <namespace ofp>
 
-class RoleReply : public ProtocolMsg<RoleReply, OFPT_ROLE_REPLY> {
+// FIXME- this is identical to RoleRequest - reuse with template?
+
+class RoleReply : public ProtocolMsg<RoleReply, OFPT_ROLE_REPLY, 24, 24> {
 public:
   UInt32 role() const { return role_; }
   UInt64 generationId() const { return generationId_; }

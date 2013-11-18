@@ -27,7 +27,9 @@
 
 namespace ofp { // <namespace ofp>
 
-class GetAsyncReply : public ProtocolMsg<GetAsyncReply, OFPT_GET_ASYNC_REPLY> {
+// FIXME - identical to SetAsync? Use template?
+
+class GetAsyncReply : public ProtocolMsg<GetAsyncReply, OFPT_GET_ASYNC_REPLY, 32, 32> {
 public:
   UInt32 masterPacketInMask() const { return packetInMask_[0]; }
   UInt32 slavePacketInMask() const { return packetInMask_[1]; }

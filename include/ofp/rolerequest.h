@@ -27,7 +27,7 @@
 
 namespace ofp { // <namespace ofp>
 
-class RoleRequest : public ProtocolMsg<RoleRequest, OFPT_ROLE_REQUEST> {
+class RoleRequest : public ProtocolMsg<RoleRequest, OFPT_ROLE_REQUEST, 24, 24> {
 public:
   UInt32 role() const { return role_; }
   UInt64 generationId() const { return generationId_; }

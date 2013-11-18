@@ -47,7 +47,7 @@ Match FlowStatsReply::match() const {
 InstructionRange FlowStatsReply::instructions() const {
   assert(matchType_ == OFPMT_OXM || matchType_ == OFPMT_STANDARD);
 
-  size_t offset = SizeWithoutMatchHeader + matchLength_;
+  size_t offset = PadLength(SizeWithoutMatchHeader + matchLength_);
   assert(length_ >= offset);
 
   return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
@@ -61,15 +61,17 @@ void FlowStatsReplyBuilder::write(Writable *channel) {
     return;
   }
 
-  size_t msgLen = FlowStatsReply::UnpaddedSizeWithMatchHeader + match_.size() +
-                  instructions_.size();
+  size_t msgMatchLen = FlowStatsReply::UnpaddedSizeWithMatchHeader + match_.size();
+  size_t msgMatchLenPadded = PadLength(msgMatchLen);
+
+  size_t msgLen = msgMatchLenPadded + instructions_.size();
 
   msg_.length_ = UInt16_narrow_cast(msgLen);
   msg_.matchType_ = OFPMT_OXM;
   msg_.matchLength_ = UInt16_narrow_cast(FlowStatsReply::MatchHeaderSize + match_.size());
 
   channel->write(&msg_, FlowStatsReply::UnpaddedSizeWithMatchHeader);
-  channel->write(match_.data(), match_.size());
+  channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);
   channel->write(instructions_.data(), instructions_.size());
   channel->flush();
 }

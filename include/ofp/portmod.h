@@ -27,7 +27,7 @@
 
 namespace ofp { // <namespace ofp>
 
-class PortMod : public ProtocolMsg<PortMod, OFPT_PORT_MOD> {
+class PortMod : public ProtocolMsg<PortMod, OFPT_PORT_MOD, 40, 40> {
 public:
   UInt32 portNo() const { return portNo_; }
   EnetAddress hwAddr() const { return hwAddr_; }

@@ -27,7 +27,7 @@
 
 namespace ofp { // <namespace ofp>
 
-class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD> {
+class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16, 16> {
 public:
   UInt8 tableId() const { return tableId_; }
   UInt32 config() const { return config_; }

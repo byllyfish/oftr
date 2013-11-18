@@ -28,7 +28,7 @@
 
 namespace ofp { // <namespace ofp>
 
-class GroupMod : public ProtocolMsg<GroupMod, OFPT_GROUP_MOD> {
+class GroupMod : public ProtocolMsg<GroupMod, OFPT_GROUP_MOD, 16, 65528, true> {
 public:
   UInt16 command() const { return command_; }
   UInt8 groupType() const { return groupType_; }
@@ -51,6 +51,10 @@ private:
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };
+
+static_assert(sizeof(GroupMod) == 16, "Unexpected size.");
+static_assert(IsStandardLayout<GroupMod>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<GroupMod>(), "Expected trivially copyable.");
 
 class GroupModBuilder {
 public:

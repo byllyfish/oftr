@@ -116,6 +116,7 @@ UInt32 FlowModBuilder::send(Writable *channel) {
   // of 8 bytes.
   size_t instrLen = instructions_.size();
   size_t instrLenPadded = PadLength(instrLen);
+  assert((instrLen % 8) == 0);        // should already be padded, right?
 
   // Calculate the total FlowMod message length.
   size_t msgLen = msgMatchLenPadded + instrLenPadded;

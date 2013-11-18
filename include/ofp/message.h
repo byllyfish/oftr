@@ -81,7 +81,7 @@ public:
     size_t length = size();
     assert(length == header()->length());
 
-    if (length < MsgType::MinLength || length > MsgType::MaxLength || (MsgType::Multiple8 && (length % 8) != 0)) {
+    if (!MsgType::isLengthValid(length)) {
       log::info("Invalid length for ", type());
       return nullptr;
     }

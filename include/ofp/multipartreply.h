@@ -28,8 +28,8 @@
 
 namespace ofp { // <namespace ofp>
 
-class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
-                                          16, 65535, false> {
+class MultipartReply
+    : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY, 16, 65528> {
 public:
   OFPMultipartType replyType() const { return type_; }
   UInt16 replyFlags() const { return flags_; }

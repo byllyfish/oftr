@@ -47,7 +47,7 @@ private:
 } // </namespace detail>
 
 /// \brief Immutable OpenFlow `Hello` protocol message.
-class Hello : public ProtocolMsg<Hello, OFPT_HELLO> {
+class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65528> {
 public:
   ProtocolVersions protocolVersions() const;
 

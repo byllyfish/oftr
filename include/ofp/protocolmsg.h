@@ -29,20 +29,20 @@ namespace ofp { // <namespace ofp>
 
 /// \brief Static base class template for all protocol message types. This class
 /// implements the two static methods, type() and cast(), common to all protocol
-/// message types. This class also specified the minimum and maximum length of
+/// message types. This class also specifies the minimum and maximum length of
 /// a message, and whether the length of the message must be a multiple of 8.
 
 template <class MsgClass, OFPType MsgType, size_t MsgMinLength = 8,
-          size_t MsgMaxLength = 65535, bool MsgMultiple8 = true>
+          size_t MsgMaxLength = 65528, bool MsgMultiple8 = true>
 class ProtocolMsg {
 public:
   static_assert(MsgMinLength >= 8, "MinLength must be >= 8");
   static_assert(MsgMaxLength <= 65535, "MaxLength must be <= 2^16-1");
 
   enum : size_t {
-    MinLength = MsgMinLength,     // minimum length of message
-    MaxLength = MsgMaxLength,     // maximum length of message
-    Multiple8 = MsgMultiple8    // is length a multiple of 8?
+    MinLength = MsgMinLength,
+    MaxLength = MsgMaxLength,
+    Multiple8 = MsgMultiple8 && (MsgMinLength != MsgMaxLength)
   };
 
   /// \returns OpenFlow message type represented by this class.
@@ -51,6 +51,12 @@ public:
   /// \returns Pointer to message memory as given class or nullptr.
   static const MsgClass *cast(const Message *message) {
     return message->cast<MsgClass>();
+  }
+
+  /// \returns true if message length is potentially valid.
+  static bool isLengthValid(size_t length) {
+    return (length >= MinLength) && (length <= MaxLength) &&
+           (!Multiple8 || ((length % 8) == 0));
   }
 };
 

@@ -26,7 +26,7 @@
 
 namespace ofp { // <namespace ofp>
 
-class SetAsync : public ProtocolMsg<SetAsync, OFPT_SET_ASYNC> {
+class SetAsync : public ProtocolMsg<SetAsync, OFPT_SET_ASYNC, 32, 32> {
 public:
   UInt32 masterPacketInMask() const;
   UInt32 slavePacketInMask() const;

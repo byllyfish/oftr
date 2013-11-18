@@ -32,7 +32,7 @@
 
 namespace ofp { // <namespace ofp>
 
-class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD> {
+class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
 public:
   UInt64 cookie() const { return cookie_; }
   UInt64 cookieMask() const { return cookieMask_; }

@@ -52,6 +52,10 @@ public:
 
   static constexpr OFPType type() { return MsgType; }
 
+  static bool isLengthValid(size_t length) {
+    return length == 8;
+  }
+
   /// \returns xid in the header.
   UInt32 xid() const { return header_.xid(); }
 
