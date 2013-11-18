@@ -134,10 +134,8 @@ UInt32 FlowModBuilder::send(Writable *channel) {
       UInt16_narrow_cast(FlowMod::MatchHeaderSize + match_.size());
 
   // Write the message with padding in the correct spots.
-  Padding<8> pad;
   channel->write(&msg_, FlowMod::UnpaddedSizeWithMatchHeader);
-  channel->write(match_.data(), match_.size());
-  channel->write(&pad, msgMatchLenPadded - msgMatchLen);
+  channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);
   channel->write(instructions_.data(), instructions_.size());
   channel->flush();
 

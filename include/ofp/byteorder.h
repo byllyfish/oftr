@@ -113,6 +113,7 @@ public:
   // TODO: add assignment and copy constructors?
 
   constexpr operator Type() const { return HostSwapByteOrder(n_); }
+  constexpr bool operator!() const { return !n_; }
 
   void operator=(Type n) { n_ = HostSwapByteOrder(n); }
 
@@ -187,6 +188,12 @@ BigEndianToNative(Type value) {
 
 template <class T>
 using NativeTypeOf = detail::NativeTypeOf<T>;
+
+// Casting Convenience Functions
+
+inline const Big16 *Big16_cast(const void *ptr) {
+  return reinterpret_cast<const Big16 *>(ptr);
+}
 
 } // </namespace ofp>
 

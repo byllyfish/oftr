@@ -27,7 +27,8 @@
 
 namespace ofp { // <namespace ofp>
 
-class PortStatus : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS> {
+class PortStatus
+    : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 80, 80, false> {
 public:
   UInt8 reason() const { return reason_; }
 

@@ -46,11 +46,11 @@ TEST(flowremovedbuilder, v1_3) {
   UInt32 xid = flowRemoved.send(&channel);
 
   EXPECT_EQ(1, xid);
-  EXPECT_EQ(0x03C, channel.size());
+  EXPECT_EQ(0x040, channel.size());
 
-  const char *expected = "040B003C000000011111111111111111222233445555555566666"
+  const char *expected = "040B0040000000011111111111111111222233445555555566666"
                          "666777788889999999999999999AAAAAAAAAAAAAAAA0001000C80"
-                         "0000040000001B";
+                         "0000040000001B00000000";
   EXPECT_HEX(expected, channel.data(), channel.size());
 }
 
@@ -139,10 +139,10 @@ TEST(flowremovedbuilder, v1_2) {
   UInt32 xid = flowRemoved.send(&channel);
 
   EXPECT_EQ(1, xid);
-  EXPECT_EQ(0x3C, channel.size());
+  EXPECT_EQ(0x40, channel.size());
 
-  const char *expected = "030B003C000000011111111111111111222233445555555566666"
+  const char *expected = "030B0040000000011111111111111111222233445555555566666"
                          "666777788889999999999999999AAAAAAAAAAAAAAAA0001000C80"
-                         "0000040000001B";
+                         "0000040000001B00000000";
   EXPECT_HEX(expected, channel.data(), channel.size());
 }

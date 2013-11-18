@@ -20,8 +20,9 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/header.h"
+#include "ofp/log.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
 
 static UInt8 MaxTypeByVersion[] = {0,
                                    UInt8_cast(deprecated::v1::OFPT_LAST),
@@ -90,4 +91,26 @@ OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
   }
 }
 
-} // </namespace ofp>
+
+bool Header::validateInput(UInt8 negotiatedVersion) const
+{
+  // Check length field of the header. Since length includes header, it can't
+  // be smaller than 8 bytes.
+
+  if (length_ < sizeof(Header)) {
+    log::debug("Header length < 8");
+    return false;
+  }
+
+  // Header version must be non-zero and match the negotiated version if there 
+  // is one.
+
+  if (!version_ || (negotiatedVersion != 0 && version_ != negotiatedVersion)) {
+    log::debug("Wrong version");
+    return false;
+  }
+
+  // N.B. The type field will be checked by transmogrify.
+
+  return true;
+}

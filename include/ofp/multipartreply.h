@@ -28,8 +28,8 @@
 
 namespace ofp { // <namespace ofp>
 
-class MultipartReply
-    : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY> {
+class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
+                                          16, 65535, false> {
 public:
   OFPMultipartType replyType() const { return type_; }
   UInt16 replyFlags() const { return flags_; }
@@ -66,6 +66,11 @@ private:
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };
+
+static_assert(sizeof(MultipartReply) == 16, "Unexpected size.");
+static_assert(IsStandardLayout<MultipartReply>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<MultipartReply>(),
+              "Expected trivially copyable.");
 
 class MultipartReplyBuilder {
 public:

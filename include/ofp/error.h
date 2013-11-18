@@ -29,7 +29,7 @@
 namespace ofp { // <namespace ofp>
 
 /// \brief Implements Error protocol message.
-class Error : public ProtocolMsg<Error, OFPT_ERROR> {
+class Error : public ProtocolMsg<Error, OFPT_ERROR, 12, 65535, false> {
 public:
   UInt16 errorType() const { return type_; }
   UInt16 errorCode() const { return code_; }

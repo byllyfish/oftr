@@ -78,6 +78,8 @@ void Transmogrify::normalize() {
       normalizeMultipartReplyV4();
     }
   }
+
+  assert(buf_.size() == header()->length());
 }
 
 void Transmogrify::normalizeFlowModV1() {
@@ -183,6 +185,7 @@ void Transmogrify::normalizePortStatusV1() {
   std::memcpy(pkt + 16, &port, sizeof(Port));
 
   assert(buf_.size() == sizeof(PortStatus));
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeExperimenterV1() {
@@ -275,6 +278,9 @@ void Transmogrify::normalizePortModV1() {
   // Set padding bytes to zero.
   std::memset(pkt + 12, 0, 4);
   std::memset(pkt + 22, 0, 2);
+
+  // Update header length.
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeFlowRemovedV1() {

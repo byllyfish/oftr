@@ -189,8 +189,8 @@ TEST(decoder, featuresreplyv4) {
 
 TEST(decoder, ofmp_flowrequest_v4) {
   testDecodeEncode(
-      "0412003C1122334400010000000000000100000000000002000000030000000000000000"
-      "000000040000000000000005000100088000000412345678",
+      "041200401122334400010000000000000100000000000002000000030000000000000000"
+      "0000000400000000000000050001000C800000041234567800000000",
       "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             "
       "0x11223344\nversion:         4\nmsg:             \n  type:            "
       "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    "
@@ -215,9 +215,9 @@ TEST(decoder, ofmp_flowrequest_v1) {
 }
 
 TEST(decoder, ofmp_aggregaterequest_v4) {
-  testDecodeEncode("0412003C11223344000200000000000011000000222"
-                   "2222233333333000000004444444444444444555555"
-                   "5555555555000100088000000412345678",
+  testDecodeEncode("04120040112233440002000000000000110000002222222233333333000"
+                   "00000444444444444444455555555555555550001000C80000004123456"
+                   "7800000000",
                    "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
                    "    0x11223344\nversion:         4\nmsg:             \n  "
                    "type:            OFPMP_AGGREGATE\n  flags:           "
@@ -808,8 +808,8 @@ TEST(decoder, setasyncv4) {
 
 TEST(decoder, flowremovedv4) {
   testDecodeEncode(
-      "040B003C11111111222222222222222233334455666666667777777788889999AAAAAAAA"
-      "AAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678",
+      "040B004011111111222222222222222233334455666666667777777788889999AAAAAAAA"
+      "AAAAAAAABBBBBBBBBBBBBBBB0001000C800000041234567800000000",
       "---\ntype:            OFPT_FLOW_REMOVED\nxid:             "
       "0x11111111\nversion:         4\nmsg:             \n  cookie:          "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          68\n  "
@@ -853,8 +853,8 @@ TEST(decoder, flowremovedv2) {
 
 TEST(decoder, flowremovedv3) {
   testDecodeEncode(
-      "030B003C11111111222222222222222233334455666666667777777788889999AAAAAAAA"
-      "AAAAAAAABBBBBBBBBBBBBBBB0001000C8000000412345678",
+      "030B004011111111222222222222222233334455666666667777777788889999AAAAAAAA"
+      "AAAAAAAABBBBBBBBBBBBBBBB0001000C800000041234567800000000",
       "---\ntype:            OFPT_FLOW_REMOVED\nxid:             "
       "0x11111111\nversion:         3\nmsg:             \n  cookie:          "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          68\n  "

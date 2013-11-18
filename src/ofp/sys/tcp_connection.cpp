@@ -162,18 +162,12 @@ void TCP_Connection::asyncReadHeader() {
 
     if (!err) {
       assert(length == sizeof(Header));
-
       const Header *hdr = message_.header();
-
-      // If version has already been negotiated, check version in the
-      // header. {TODO} Then check the length and type. Each message type
-      // should have a limit to its length.
-
-      UInt16 msgLength = hdr->length();
-      if (msgLength >= sizeof(Header)) {
-        // TODO once we have the header, we can check the version, type,
-        // and length fields.
-
+      
+      if (hdr->validateInput(version())) {
+        // The header has passed our rudimentary validation checks.
+        UInt16 msgLength = hdr->length();
+        
         if (hdr->type() == OFPT_ECHO_REQUEST) {
           // Handle echo request by relaying message back as we read
           // it in. In this way, we don't have to read the whole
@@ -187,10 +181,8 @@ void TCP_Connection::asyncReadHeader() {
         } else {
           asyncReadMessage(msgLength);
         }
-
-      } else {
-        log::debug("Message too short.");
       }
+
     } else {
 
       if (!isAsioEOF(err)) {

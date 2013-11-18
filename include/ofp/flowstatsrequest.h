@@ -64,7 +64,8 @@ private:
 
   enum {
     UnpaddedSizeWithMatchHeader = 36,
-    SizeWithoutMatchHeader = 32
+    SizeWithoutMatchHeader = 32,
+    HeaderSize = 4
   };
 
   friend class FlowStatsRequestBuilder;

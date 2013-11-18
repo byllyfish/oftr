@@ -330,3 +330,11 @@ TEST(byteorder, equals) {
 
   EXPECT_TRUE(a == b);
 }
+
+TEST(byteorder, operator_not) {
+  Big16 a{0x1122};
+  Big16 b{0};
+
+  EXPECT_FALSE(!a);
+  EXPECT_TRUE(!b);
+}

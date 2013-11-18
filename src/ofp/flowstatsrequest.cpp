@@ -43,7 +43,8 @@ Match FlowStatsRequest::match() const {
   UInt16 type = matchType_;
 
   if (type == OFPMT_OXM) {
-    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_};
+    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader,
+                   matchLength_ - HeaderSize};
     return Match{range};
 
   } else if (type == OFPMT_STANDARD) {
@@ -66,17 +67,18 @@ void FlowStatsRequestBuilder::write(Writable *channel) {
     return;
   }
 
+  size_t matchLen = FlowStatsRequest::HeaderSize + match_.size();
+  size_t matchLenPadded = PadLength(matchLen);
+
   msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ = UInt16_narrow_cast(match_.size());
+  msg_.matchLength_ = UInt16_narrow_cast(matchLen);
 
   channel->write(&msg_, FlowStatsRequest::UnpaddedSizeWithMatchHeader);
-  channel->write(match_.data(), match_.size());
+  channel->write(match_.data(), match_.size(), matchLenPadded - matchLen);
   channel->flush();
 }
 
-
-void FlowStatsRequestBuilder::writeV1(Writable *channel)
-{
+void FlowStatsRequestBuilder::writeV1(Writable *channel) {
   deprecated::OriginalMatch origMatch{match_.toRange()};
 
   channel->write(&origMatch, sizeof(origMatch));
@@ -84,7 +86,7 @@ void FlowStatsRequestBuilder::writeV1(Writable *channel)
   struct Block {
     Big8 tableId;
     Padding<1> pad;
-    Big16 outPort; 
+    Big16 outPort;
   };
   static_assert(sizeof(Block) == 4, "Unexpected size.");
 

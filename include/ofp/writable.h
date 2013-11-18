@@ -23,6 +23,7 @@
 #define OFP_WRITABLE_H
 
 #include "ofp/types.h"
+#include "ofp/padding.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -35,6 +36,13 @@ public:
 
   virtual void write(const void *data, size_t length) = 0;
   virtual void flush() = 0;
+
+  void write(const void *data, size_t length, size_t padSize) {
+    assert(padSize < 8);
+  	Padding<8> pad;
+  	write(data, length);
+  	write(&pad, padSize);
+  }
 };
 
 } // </namespace ofp>

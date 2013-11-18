@@ -27,7 +27,8 @@
 
 namespace ofp { // <namespace ofp>
 
-class EchoReply : public ProtocolMsg<EchoReply, OFPT_ECHO_REPLY> {
+class EchoReply
+    : public ProtocolMsg<EchoReply, OFPT_ECHO_REPLY, 8, 65535, false> {
 public:
   ByteRange echoData() const;
 

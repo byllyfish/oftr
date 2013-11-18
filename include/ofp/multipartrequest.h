@@ -28,7 +28,8 @@
 namespace ofp { // <namespace ofp>
 
 class MultipartRequest
-    : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST> {
+    : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST, 16, 65535,
+                         true> {
 public:
   OFPMultipartType requestType() const { return type_; }
   UInt16 requestFlags() const { return flags_; }
@@ -63,6 +64,12 @@ private:
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };
+
+static_assert(sizeof(MultipartRequest) == 16, "Unexpected size.");
+static_assert(IsStandardLayout<MultipartRequest>(),
+              "Expected standard layout.");
+static_assert(IsTriviallyCopyable<MultipartRequest>(),
+              "Expected trivially copyable.");
 
 class MultipartRequestBuilder {
 public:

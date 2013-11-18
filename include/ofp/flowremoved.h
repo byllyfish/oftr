@@ -28,7 +28,8 @@
 
 namespace ofp { // <namespace ofp>
 
-class FlowRemoved : public ProtocolMsg<FlowRemoved, OFPT_FLOW_REMOVED> {
+class FlowRemoved
+    : public ProtocolMsg<FlowRemoved, OFPT_FLOW_REMOVED, 56, 65528, true> {
 public:
   /// Opaque controller-issued identifier.
   UInt64 cookie() const { return cookie_; }
@@ -85,15 +86,9 @@ private:
   FlowRemoved() : header_{type()} {}
 
   enum : size_t {
-    UnpaddedSizeWithMatchHeader = 52
-  };
-  enum : size_t {
-    SizeWithoutMatchHeader = 48
-  };
-  enum : size_t {
-    MatchHeaderSize = 4
-  };
-  enum : size_t {
+    UnpaddedSizeWithMatchHeader = 52,
+    SizeWithoutMatchHeader = 48,
+    MatchHeaderSize = 4,
     MinimumSize = 56
   };
 

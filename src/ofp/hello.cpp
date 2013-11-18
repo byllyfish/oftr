@@ -26,11 +26,6 @@
 
 using namespace ofp;
 
-UInt16 detail::HelloElement::type() const { return type_; }
-
-void detail::HelloElement::setType(UInt16 type) { type_ = type; }
-
-void detail::HelloElement::setLength(UInt16 length) { length_ = length; }
 
 ProtocolVersions detail::HelloElement::versionBitMap() const {
   if (length_ - sizeof(HelloElement) >= sizeof(UInt32)) {

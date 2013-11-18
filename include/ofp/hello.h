@@ -30,10 +30,10 @@ namespace detail { // <namespace detail>
 
 class HelloElement {
 public:
-  UInt16 type() const;
+  UInt16 type() const { return type_; }
 
-  void setType(UInt16 type);
-  void setLength(UInt16 length);
+  void setType(UInt16 type) { type_ = type; }
+  void setLength(UInt16 length) { length_ = length; }
 
   ProtocolVersions versionBitMap() const;
   bool validateLength(size_t remaining) const;

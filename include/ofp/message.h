@@ -78,14 +78,23 @@ public:
   const MsgType *cast() const {
     assert(type() == MsgType::type());
 
+    size_t length = size();
+    assert(length == header()->length());
+
+    if (length < MsgType::MinLength || length > MsgType::MaxLength || (MsgType::Multiple8 && (length % 8) != 0)) {
+      log::info("Invalid length for ", type());
+      return nullptr;
+    }
+
     const MsgType *msg = reinterpret_cast<const MsgType *>(data());
-    if (!msg->validateLength(size())) {
+    if (!msg->validateLength(length)) {
       return nullptr;
     }
 
     return msg;
   }
 
+  bool isValidHeader();
   void transmogrify();
 
 private:

@@ -73,12 +73,8 @@ private:
   Padding<4> pad_2;
 
   enum : size_t {
-    UnpaddedSizeWithMatchHeader = 52
-  };
-  enum : size_t {
-    SizeWithoutMatchHeader = 48
-  };
-  enum : size_t {
+    UnpaddedSizeWithMatchHeader = 52,
+    SizeWithoutMatchHeader = 48,
     MatchHeaderSize = 4
   };
 

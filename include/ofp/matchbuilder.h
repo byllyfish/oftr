@@ -44,7 +44,6 @@ public:
   }
 
   OXMIterator begin() const { return list_.begin(); }
-
   OXMIterator end() const { return list_.end(); }
 
   template <class ValueType>

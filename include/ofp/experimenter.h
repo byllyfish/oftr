@@ -28,7 +28,8 @@
 namespace ofp { // <namespace ofp>
 
 /// \brief Implements immutable Experimenter protocol message.
-class Experimenter : public ProtocolMsg<Experimenter, OFPT_EXPERIMENTER> {
+class Experimenter
+    : public ProtocolMsg<Experimenter, OFPT_EXPERIMENTER, 16, 65535, false> {
 public:
   UInt32 experimenter() const { return experimenter_; }
 

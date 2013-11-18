@@ -27,7 +27,7 @@
 namespace ofp { // <namespace ofp>
 
 class GetConfigReply
-    : public ProtocolMsg<GetConfigReply, OFPT_GET_CONFIG_REPLY> {
+    : public ProtocolMsg<GetConfigReply, OFPT_GET_CONFIG_REPLY, 12, 12, false> {
 public:
   UInt16 flags() const { return flags_; }
   UInt16 missSendLen() const { return missSendLen_; }

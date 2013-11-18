@@ -27,10 +27,7 @@
 using namespace ofp;
 
 bool FlowRemoved::validateLength(size_t length) const {
-  if (length < MinimumSize)
-    return false;
-
-  if (length != matchLength_ + SizeWithoutMatchHeader)
+  if (length != PadLength(matchLength_ + SizeWithoutMatchHeader))
     return false;
 
   return true;
@@ -72,8 +69,13 @@ UInt32 FlowRemovedBuilder::send(Writable *channel) {
     return sendStandard(channel);
   }
 
+  // Calculate length of FlowRemoved message up to end of match section. Then
+  // pad it to a multiple of 8 bytes.
+  size_t msgMatchLen = FlowRemoved::UnpaddedSizeWithMatchHeader + match_.size();
+  size_t msgMatchLenPadded = PadLength(msgMatchLen);
+
   UInt32 xid = channel->nextXid();
-  size_t msgLen = FlowRemoved::UnpaddedSizeWithMatchHeader + match_.size();
+  size_t msgLen = msgMatchLenPadded;
 
   msg_.header_.setVersion(version);
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
@@ -85,7 +87,7 @@ UInt32 FlowRemovedBuilder::send(Writable *channel) {
       UInt16_narrow_cast(FlowRemoved::MatchHeaderSize + match_.size());
 
   channel->write(&msg_, FlowRemoved::UnpaddedSizeWithMatchHeader);
-  channel->write(match_.data(), match_.size());
+  channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);
   channel->flush();
 
   return xid;

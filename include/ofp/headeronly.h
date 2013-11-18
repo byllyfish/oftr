@@ -40,6 +40,12 @@ class HeaderOnlyBuilder;
 template <OFPType MsgType>
 class HeaderOnly {
 public:
+  enum : size_t {
+    MinLength = 8,    // Minimum length
+    MaxLength = 8,    // Maximum length
+    Multiple8 = false // Multiple of 8 (don't need to check)
+  };
+
   /// Cast message to this type after validating contents.
   /// \returns pointer to message or nullptr if not valid.
   static const HeaderOnly *cast(const Message *message);

@@ -26,7 +26,8 @@
 
 namespace ofp { // <namespace ofp>
 
-class SetConfig : public ProtocolMsg<SetConfig, OFPT_SET_CONFIG> {
+class SetConfig
+    : public ProtocolMsg<SetConfig, OFPT_SET_CONFIG, 12, 12, false> {
 public:
   UInt16 flags() const { return flags_; }
   UInt16 missSendLen() const { return missSendLen_; }

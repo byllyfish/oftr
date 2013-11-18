@@ -28,7 +28,8 @@
 
 namespace ofp { // <namespace ofp>
 
-class PacketOut : public ProtocolMsg<PacketOut, OFPT_PACKET_OUT> {
+class PacketOut
+    : public ProtocolMsg<PacketOut, OFPT_PACKET_OUT, 24, 65535, false> {
 public:
   UInt32 bufferId() const { return bufferId_; }
   UInt32 inPort() const { return inPort_; }
