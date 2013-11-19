@@ -24,7 +24,7 @@
 #include "ofp/writable.h"
 #include "ofp/log.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
 
 bool Error::validateLength(size_t length) const {
   return (length >= sizeof(Error));
@@ -65,5 +65,3 @@ void ErrorBuilder::send(Writable *channel) {
   channel->write(data_.data(), data_.size());
   channel->flush();
 }
-
-} // </namespace ofp>
