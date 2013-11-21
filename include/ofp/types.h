@@ -173,6 +173,12 @@ constexpr bool IsTriviallyCopyable() {
 #endif
 }
 
+/// \returns true if type `From` can be implicitly converted to type `To`.
+template <class From, class To>
+constexpr bool IsConvertible() {
+  return std::is_convertible<From,To>::value;
+}
+
 /// \returns number of elements in array.
 template <class T, size_t N>
 constexpr size_t ArrayLength(T (&)[N]) {
@@ -250,6 +256,18 @@ std::string HexToRawData(const std::string &hex);
 /// \param  fill fill byte
 /// \return true if memory block is filled with given byte value.
 bool IsMemFilled(const void *data, size_t length, char fill);
+
+/// Return true if pointer is aligned to specified byte boundary.
+///
+/// For example, to check if pointer is 64-bit aligned:
+///    IsPtrAligned<8>(ptr)
+///
+/// \param  pointer
+/// \return true if pointer is aligned.
+template <unsigned ByteBoundary>
+constexpr bool IsPtrAligned(const void *ptr) {
+  return (reinterpret_cast<uintptr_t>(ptr) & (ByteBoundary - 1)) == 0;
+}
 
 } // </namespace ofp>
 

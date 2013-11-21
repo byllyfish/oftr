@@ -24,11 +24,13 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/protocolversions.h"
+#include "ofp/protocoliterable.h"
+#include "ofp/protocolelement.h"
 
 namespace ofp {    // <namespace ofp>
 namespace detail { // <namespace detail>
 
-class HelloElement {
+class HelloElement : public ProtocolElement {
 public:
   UInt16 type() const { return type_; }
 
@@ -36,8 +38,6 @@ public:
   void setLength(UInt16 length) { length_ = length; }
 
   ProtocolVersions versionBitMap() const;
-  bool validateLength(size_t remaining) const;
-  const HelloElement *next(size_t *remaining) const;
 
 private:
   Big16 type_;
@@ -56,7 +56,9 @@ public:
 private:
   Header header_;
 
-  const detail::HelloElement *helloElements() const;
+  ProtocolIterable<detail::HelloElement> helloElements() const {
+    return msgBody();
+  }
 
   // Only HelloBuilder can construct an actual instance.
   Hello() : header_{type()} {}

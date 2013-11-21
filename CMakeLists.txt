@@ -27,7 +27,7 @@ endif()
 
 # Specify the set of warnings to enable. The philosophy of this project is to
 # compile with every clang warning enabled, then disable a few that don't add
-# anything except to clutter up the build logs. Put disabled warnings into 
+# anything except to clutter up the build logs. Put disabled warnings into
 # LIB_OFP_WARNINGS_DISABLED.
 
 set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum")
@@ -52,7 +52,7 @@ if (APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
 endif()
 
-# Add new library source files here. Add unittest source files to 
+# Add new library source files here. Add unittest source files to
 # test/CMakeLists.txt.
 
 set(LIBOFP_SOURCES
@@ -104,6 +104,7 @@ set(LIBOFP_SOURCES
   src/ofp/portmod.cpp
 	src/ofp/portstatus.cpp
 	src/ofp/prerequisites.cpp
+  src/ofp/protocoliterable.cpp
 	src/ofp/protocolversions.cpp
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/rolerequest.cpp
@@ -280,7 +281,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml.h
   include/ofp-c/ofpprotocol.h
   include/ofp-c/ofpstring.h
-  include/ofp.h  
+  include/ofp.h
 )
 
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains

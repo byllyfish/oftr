@@ -58,6 +58,14 @@ public:
     return (length >= MinLength) && (length <= MaxLength) &&
            (!Multiple8 || ((length % 8) == 0));
   }
+
+  const Header *msgHeader() const {
+    return reinterpret_cast<const Header *>(this);
+  }
+
+  ByteRange msgBody() const {
+    return ByteRange{msgHeader() + 1, msgHeader()->length() - 8};
+  }
 };
 
 } // </namespace ofp>

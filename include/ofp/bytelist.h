@@ -157,6 +157,8 @@ private:
   }
 };
 
+static_assert(IsConvertible<ByteRange,ByteList>(), "Expected conversion.");
+
 /// \brief Write buffer to stream in hexadecimal format.
 std::ostream &operator<<(std::ostream &os, const ByteList &value);
 

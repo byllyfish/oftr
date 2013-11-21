@@ -42,6 +42,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/padding_unittest.cpp
 	ofp/port_unittest.cpp
 	ofp/portstatus_unittest.cpp
+	ofp/protocoliterable_unittest.cpp
 	ofp/protocolversions_unittest.cpp
 	ofp/roundtrip_unittest.cpp
 	ofp/smallcstring_unittest.cpp
@@ -60,7 +61,7 @@ target_link_libraries(ofp_unittest gtest ofp yamlio)
 # Add tests here.
 
 add_test(
-  NAME unittests 
+  NAME unittests
   COMMAND ofp_unittest
 )
 

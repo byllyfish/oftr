@@ -13,7 +13,7 @@ void MPPortStatsBuilder::write(Writable *channel) {
 			Big16 portNo;
 			Padding<6> pad;
 		} p;
-		p.portNo = msg_.portNo_;
+		p.portNo = UInt16_narrow_cast(msg_.portNo_);
 
 		channel->write(&p, sizeof(p));
 		channel->write(&msg_.rxPackets_, 8*12);

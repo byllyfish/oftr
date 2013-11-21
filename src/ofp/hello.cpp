@@ -26,90 +26,26 @@
 
 using namespace ofp;
 
-
 ProtocolVersions detail::HelloElement::versionBitMap() const {
-  if (length_ - sizeof(HelloElement) >= sizeof(UInt32)) {
-    // Grab the first bit map.
-    const Big32 *bitmap =
-        reinterpret_cast<const Big32 *>(BytePtr(this) + sizeof(HelloElement));
-    return ProtocolVersions::fromBitmap(*bitmap);
+  if (length_ - 4 >= sizeof(UInt32)) {
+    return ProtocolVersions::fromBitmap(*Big32_cast(BytePtr(this) + 4));
   }
 
-  log::info("versionBitMap not big enough");
-
+  log::info("HelloElement::versionBitMap unexpected size", length_);
   return ProtocolVersions::fromBitmap(0);
 }
 
-bool detail::HelloElement::validateLength(size_t remaining) const {
-  if (length_ > remaining || (length_ % 8) != 0) {
-    log::info("HelloElement validateLength failed", length_);
-    return false;
-  }
-  return true;
-}
-
-const detail::HelloElement *
-detail::HelloElement::next(size_t *remaining) const {
-  assert(*remaining >= length_);
-  *remaining -= length_;
-  return reinterpret_cast<const HelloElement *>(BytePtr(this) + length_);
-}
-
 bool Hello::validateLength(size_t length) const {
-  using namespace detail;
-
-  if (length < sizeof(Header)) {
-    log::info("Hello validateLength failed");
-    return false;
-  }
-
-  if (length != header_.length()) {
-    log::info("Hello validateLength failed");
-    return false;
-  }
-
-  if (length > sizeof(Header)) {
-    const HelloElement *elem = helloElements();
-    size_t remaining = length - sizeof(Header);
-    while (remaining > 0) {
-      if (!elem->validateLength(remaining)) {
-        return false;
-      }
-      elem = elem->next(&remaining);
-    }
-  }
-
-  return true;
+  return helloElements().validateInput("helloElements");
 }
 
 ProtocolVersions Hello::protocolVersions() const {
-  using namespace detail;
-
-  UInt16 hdrLen = header_.length();
-
-  if (hdrLen > sizeof(Header)) {
-    // Search for version bit map.
-
-    const HelloElement *elem = helloElements();
-    size_t remaining = hdrLen - sizeof(Header);
-
-    while (remaining > 0) {
-      if (!elem->validateLength(remaining)) {
-        return ProtocolVersions::fromBitmap(0);
-      }
-      if (elem->type() == OFPHET_VERSIONBITMAP) {
-        return elem->versionBitMap();
-      }
-      elem = elem->next(&remaining);
-    }
+  for (auto &elem : helloElements()) {
+    if (elem.type() == OFPHET_VERSIONBITMAP)
+      return elem.versionBitMap();
   }
 
   return ProtocolVersions{header_.version()};
-}
-
-const detail::HelloElement *Hello::helloElements() const {
-  return reinterpret_cast<const detail::HelloElement *>(BytePtr(&header_) +
-                                                        sizeof(header_));
 }
 
 /// Construct a HelloBuilder from the given Hello message.

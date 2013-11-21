@@ -30,47 +30,30 @@ class ByteList;
 
 class ByteRange {
 public:
-  constexpr ByteRange();
-  constexpr ByteRange(const void *data, size_t length);
+  constexpr ByteRange() : begin_{nullptr}, end_{nullptr} {}
+  constexpr ByteRange(const void *data, size_t length)
+      : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
   ByteRange(const ByteList &data);
+  explicit ByteRange(const std::string &s) : ByteRange(s.data(), s.size()) {}
 
   constexpr const UInt8 *begin() const { return begin_; }
-
   constexpr const UInt8 *end() const { return end_; }
 
-  constexpr const UInt8 *data() const;
-  constexpr size_t size() const;
+  constexpr const UInt8 *data() const { return begin_; }
+  constexpr size_t size() const { return Unsigned_cast(end_ - begin_); }
 
-  bool operator==(const ByteRange &rhs) const;
-  bool operator!=(const ByteRange &rhs) const;
+  bool operator==(const ByteRange &rhs) const {
+    return size() == rhs.size() && std::equal(begin_, end_, rhs.data());
+  }
+  bool operator!=(const ByteRange &rhs) const { return !(*this == rhs); }
 
 private:
   const UInt8 *begin_;
   const UInt8 *end_;
 };
 
+static_assert(IsConvertible<ByteList,ByteRange>(), "Expected conversion.");
+
 } // </namespace ofp>
-
-// constexpr ofp::ByteRange::ByteRange(const UInt8 *begin, const UInt8 *end) :
-// begin_{begin}, end_{end} {}
-
-constexpr ofp::ByteRange::ByteRange() : begin_{nullptr}, end_{nullptr} {}
-
-constexpr ofp::ByteRange::ByteRange(const void *data, size_t length)
-    : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
-
-constexpr const ofp::UInt8 *ofp::ByteRange::data() const { return begin_; }
-
-constexpr size_t ofp::ByteRange::size() const {
-  return Unsigned_cast(end_ - begin_);
-}
-
-inline bool ofp::ByteRange::operator==(const ByteRange &rhs) const {
-  return size() == rhs.size() && std::equal(begin_, end_, rhs.data());
-}
-
-inline bool ofp::ByteRange::operator!=(const ByteRange &rhs) const {
-  return !(*this == rhs);
-}
 
 #endif // OFP_BYTERANGE_H
