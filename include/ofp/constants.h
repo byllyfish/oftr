@@ -154,6 +154,8 @@ enum OFPType : UInt8 {
   OFPT_UNSUPPORTED = 0xF9
 };
 
+std::ostream &operator<<(std::ostream &os, OFPType type);
+
 /* Flags to indicate behavior of the physical port.  These flags are
  * used in ofp_port to describe the current configuration.  They are
  * used in the ofp_port_mod message to configure the port's behavior.
@@ -188,7 +190,7 @@ enum ofp_port_no {
                    used in packet-out messages. */
   OFPP_NORMAL = 0xfffffffa, /* Process with normal L2/L3 switching. */
   OFPP_FLOOD = 0xfffffffb,  /* All physical ports in VLAN, except input
-               port and those blocked or link down. */
+              port and those blocked or link down. */
   OFPP_ALL = 0xfffffffc,        /* All physical ports except input port. */
   OFPP_CONTROLLER = 0xfffffffd, /* Send to controller. */
   OFPP_LOCAL = 0xfffffffe,      /* Local openflow "port". */
@@ -629,7 +631,7 @@ enum ofp_meter_mod_failed_code {
   OFPMMFC_BAD_BAND_VALUE = 9, /* Band value unsupported. */
   OFPMMFC_OUT_OF_METERS = 10, /* No more meters available. */
   OFPMMFC_OUT_OF_BANDS = 11,  /* The maximum number of properties
-                       for a meter has been exceeded. */
+                      for a meter has been exceeded. */
 };
 
 /* ofp_error_msg 'code' values for OFPET_TABLE_FEATURES_FAILED. 'data' contains

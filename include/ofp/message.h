@@ -82,7 +82,6 @@ public:
     assert(length == header()->length());
 
     if (!MsgType::isLengthValid(length)) {
-      log::info("Invalid length for ", type());
       return nullptr;
     }
 
