@@ -124,14 +124,14 @@ TEST(types, HexToRawData3) {
 
   EXPECT_EQ(7, HexToRawData("0102 0304 05 0607", buf, sizeof(buf), &error));
   EXPECT_EQ(0, std::memcmp(buf, "\1\2\3\4\5\6\7", 7));
-  EXPECT_TRUE(error);
+  EXPECT_FALSE(error);
 
   EXPECT_EQ(
-      7, HexToRawData("01-02:03\n04 z 05 = 06 _ 07 08 09", buf, sizeof(buf)));
+      7, HexToRawData("01-02:03\n04 z 05 = 06 _ 07 08 09", buf, sizeof(buf), &error));
   EXPECT_EQ(0, std::memcmp(buf, "\1\2\3\4\5\6\7", 7));
   EXPECT_TRUE(error);
 
-  EXPECT_EQ(2, HexToRawData("aa bb c", buf, sizeof(buf)));
+  EXPECT_EQ(2, HexToRawData("aa bb c", buf, sizeof(buf), &error));
   EXPECT_EQ(0, std::memcmp(buf, "\xaa\xbb\0\0\0\0\0", 7));
   EXPECT_TRUE(error);
 }

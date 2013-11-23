@@ -94,7 +94,8 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen,
         if (out >= end)
           break;
       }
-    } else {
+    } else if (!nonhex && !std::isspace(*inp)) {
+      // Ignore space characters when checking for non-hexadecimal values.
       nonhex = true;
     }
   }
