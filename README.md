@@ -1,42 +1,42 @@
 LibOFP Version 0.1
 ==================
 
-LibOFP is a library that implements the OpenFlow protocol. It handles the 
+LibOFP is a library that implements the OpenFlow protocol. It handles the
 wire protocol and connection details for controller and agent applications. With
-LibOFP, a client can program to the latest version of the OpenFlow spec; backward 
+LibOFP, a client can program to the latest version of the OpenFlow spec; backward
 compatibility is handled automatically.
 
-LibOFP is written in C++11. The library provides an efficient C++ API for 
-OpenFlow agents and controllers. 
+LibOFP is written in C++11. The library provides an efficient C++ API for
+OpenFlow agents and controllers.
 
-LibOFP also provides a YAML-based interface for controllers. YAML is a human-readable 
-data serialization format designed for interacting with high level languages. 
-YAML is specified at http://yaml.org. By using YAML, LibOFP can be 
-accessed by any language with a YAML library: Python, Perl, PHP, Java, 
+LibOFP also provides a YAML-based interface for controllers. YAML is a human-readable
+data serialization format designed for interacting with high level languages.
+YAML is specified at http://yaml.org. By using YAML, LibOFP can be
+accessed by any language with a YAML library: Python, Perl, PHP, Java,
 JavaScript, and more.
 
-LibOFP is extensible. You can add support for new match fields 
-(a.k.a. oxm types) by editing a tab-delimited file and re-compiling. 
+LibOFP is extensible. You can add support for new match fields
+(a.k.a. oxm types) by editing a tab-delimited file and re-compiling.
 
-LibOFP is portable. The majority of the code uses only standard C++ libraries. 
+LibOFP is portable. The majority of the code uses only standard C++ libraries.
 The networking code is implemented using Boost.ASIO, but Boost API's are limited
-to a small subset of the code. The networking sub-system can be replaced if 
-needed without making other code changes. The YAML serialization code is 
+to a small subset of the code. The networking sub-system can be replaced if
+needed without making other code changes. The YAML serialization code is
 optional.
 
 Status
 ------
 
-LibOFP provides an interface that uses the OpenFlow 1.3 specification. 
+LibOFP provides an interface that uses the OpenFlow 1.3 specification.
 The library supports multiple TCP connections and auxiliary connections over TCP.
 
 LibOFP also supports previous protocol versions; the library translates messages
-to prior OpenFlow versions as needed. 
+to prior OpenFlow versions as needed.
 
 LibOFP currently supports the OpenFlow 1.3.2 specification with these omissions:
 
 - TLS and DTLS are not implemented yet. { Work-around: Use openssl or netcat to proxy. }
-- A few OpenFlow protocol messages are incomplete, missing unit tests and 
+- A few OpenFlow protocol messages are incomplete, missing unit tests and
   generally untested. This is especially true for OpenFlow versions 1.1 and 1.2.
 - UDP auxiliary connections are implemented, but not presently working.
 
@@ -84,16 +84,16 @@ and restrictions which apply to that code.
 Instant Tutorial
 ----------------
 
-`libofpexec` is the name of the program that provides a YAML interface to 
-clients that connect over TCP. At this time, it only allows one client (of the 
-API) to connect at a time. However, that client sees all connecting OpenFlow 
+`libofpexec` is the name of the program that provides a YAML interface to
+clients that connect over TCP. At this time, it only allows one client (of the
+API) to connect at a time. However, that client sees all connecting OpenFlow
 datapaths.
 
 To run libofpexec:
 
     ./libofpexec
 
-It doesn't daemonize, so it will remain in the foreground and write log output 
+It doesn't daemonize, so it will remain in the foreground and write log output
 to stderr. Open another terminal and type:
 
     telnet localhost 9191
@@ -111,16 +111,16 @@ You should receive a reply that looks like this:
 
   ---
   event:           LIBOFP_LISTEN_REPLY
-  msg:             
+  msg:
     port:            6633
-    error:           
+    error:
   ...
 
 The `error:` value should be empty. However, you may get an error if you specify
 a privileged port number or the TCP port is already in use.
 
-libofpexec is now listening on port 6633 for OpenFlow connections as a 
-controller. Run MiniNet and start up a simple switched network, substituting 
+libofpexec is now listening on port 6633 for OpenFlow connections as a
+controller. Run MiniNet and start up a simple switched network, substituting
 your own IP address:
 
 	sudo mn --controller=remote,ip=192.168.56.1,port=6633 --mac
@@ -129,7 +129,7 @@ You should receive the following output on your Telnet terminal:
 
 	---
 	event:           LIBOFP_DATAPATH_UP
-	msg:             
+	msg:
 	  datapath_id:     0000-0000-0000-0001
 	  version:         1
 	  n_buffers:       256
@@ -138,7 +138,7 @@ You should receive the following output on your Telnet terminal:
 	  reserved:        4095
 	...
 
-An OpenFlow switch has opened a connection. The switch is identified by its 
+An OpenFlow switch has opened a connection. The switch is identified by its
 datapath_id. In this case, that's `0000-0000-0000-0001`. The OpenFlow connection
 will remain open and be kept alive automatically.
 
@@ -150,7 +150,7 @@ The LIBOFP_DATAPATH_UP will be followed shortly by some OFPT_PACKET_IN messages.
 	version:         1
 	datapath_id:     0000-0000-0000-0001
 	auxiliary_id:    0
-	msg:             
+	msg:
 	  buffer_id:       256
 	  total_len:       90
 	  in_port:         2
@@ -162,7 +162,7 @@ The LIBOFP_DATAPATH_UP will be followed shortly by some OFPT_PACKET_IN messages.
 	  enet_frame:      33330000001600000000000286DD6000000000240001000{...}
 	...
 
-The enet_frame contains the beginning of the packet in hexadecimal. Let's tell 
+The enet_frame contains the beginning of the packet in hexadecimal. Let's tell
 configure how much packet we want. Type the following into Telnet:
 
   ---
@@ -173,8 +173,8 @@ configure how much packet we want. Type the following into Telnet:
     miss_send_len: 14
   ...
 
-There will be no reply to this command. We just told the switch to only send us 
-the first 14 bytes of the ethernet frame. The first 14 bytes contain the source 
+There will be no reply to this command. We just told the switch to only send us
+the first 14 bytes of the ethernet frame. The first 14 bytes contain the source
 and destination ethernet addresses and the ethernet type.
 
 You can go back to mininet and run a ping to see more packets:
@@ -183,7 +183,7 @@ You can go back to mininet and run a ping to see more packets:
 
 This concludes the Instant Tutorial. To stop libofpexec, type control-C.
 
-Congratulations! You're an OpenFlow Controller! 
+Congratulations! You're an OpenFlow Controller!
 
 Where To Go Next
 ----------------
@@ -197,8 +197,8 @@ To see how to add custom fields, check out the `OXM.Tutorial.md`.
 Feedback
 --------
 
-No software product is successful without the input of others. I greatly value 
-your feedback. If you find this software useful or promising, please let me 
+No software product is successful without the input of others. I greatly value
+your feedback. If you find this software useful or promising, please let me
 know:
 
     william.w.fisher+libofp@gmail.com
