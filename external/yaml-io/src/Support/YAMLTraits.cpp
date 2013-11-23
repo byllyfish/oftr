@@ -41,19 +41,16 @@ void IO::setContext(void *Context) {
 //  Input
 //===----------------------------------------------------------------------===//
 
-Input::Input(StringRef InputContent, void *Ctxt, 
-             llvm::SourceMgr::DiagHandlerTy Handler, void *HandlerCtxt) //bfish
-  : IO(Ctxt), 
+Input::Input(StringRef InputContent,
+             void *Ctxt,
+             SourceMgr::DiagHandlerTy DiagHandler,
+             void *DiagHandlerCtxt)
+  : IO(Ctxt),
     Strm(new Stream(InputContent, SrcMgr)),
     CurrentNode(NULL) {
-  // Set handler _before_ parsing begins.
-  if (Handler) {
-    SrcMgr.setDiagHandler(Handler, HandlerCtxt);  //bfish
-  }
+  if (DiagHandler)
+    SrcMgr.setDiagHandler(DiagHandler, DiagHandlerCtxt);
   DocIterator = Strm->begin();
-  if (Strm->failed()) {
-    EC = make_error_code(errc::invalid_argument); //bfish
-  }
 }
 
 Input::~Input() {
@@ -63,9 +60,10 @@ error_code Input::error() {
   return EC;
 }
 
-void Input::setDiagHandler(SourceMgr::DiagHandlerTy Handler, void *Ctxt) {
-  SrcMgr.setDiagHandler(Handler, Ctxt);
-}
+// Pin the vtables to this file.
+void Input::HNode::anchor() {}
+void Input::EmptyHNode::anchor() {}
+void Input::ScalarHNode::anchor() {}
 
 bool Input::outputting() {
   return false;
@@ -74,6 +72,12 @@ bool Input::outputting() {
 bool Input::setCurrentDocument() {
   if (DocIterator != Strm->end()) {
     Node *N = DocIterator->getRoot();
+    if (!N) {
+      assert(Strm->failed() && "Root is NULL iff parsing failed");
+      EC = make_error_code(errc::invalid_argument);
+      return false;
+    }
+
     if (isa<NullNode>(N)) {
       // Empty files are allowed and ignored
       ++DocIterator;
@@ -90,15 +94,21 @@ void Input::nextDocument() {
   ++DocIterator;
 }
 
+bool Input::mapTag(StringRef Tag, bool Default) {
+  std::string foundTag = CurrentNode->_node->getVerbatimTag();
+  if (foundTag.empty()) {
+    // If no tag found and 'Tag' is the default, say it was found.
+    return Default;
+  }
+  // Return true iff found tag matches supplied tag.
+  return Tag.equals(foundTag);
+}
+
 void Input::beginMapping() {
   if (EC)
     return;
-  if (CurrentNode == nullptr) {             // bfish temp fix.
-    EC = make_error_code(errc::invalid_argument);
-    return;
-  }
-  assert(CurrentNode);        //bfish
-  MapHNode *MN = dyn_cast<MapHNode>(CurrentNode);
+  // CurrentNode can be null if the document is empty.
+  MapHNode *MN = dyn_cast_or_null<MapHNode>(CurrentNode);
   if (MN) {
     MN->ValidKeys.clear();
   }
@@ -109,6 +119,15 @@ bool Input::preflightKey(const char *Key, bool Required, bool, bool &UseDefault,
   UseDefault = false;
   if (EC)
     return false;
+
+  // CurrentNode is null for empty documents, which is an error in case required
+  // nodes are present.
+  if (!CurrentNode) {
+    if (Required)
+      EC = make_error_code(errc::invalid_argument);
+    return false;
+  }
+
   MapHNode *MN = dyn_cast<MapHNode>(CurrentNode);
   if (!MN) {
     setError(CurrentNode, "not a mapping");
@@ -135,7 +154,8 @@ void Input::postflightKey(void *saveInfo) {
 void Input::endMapping() {
   if (EC)
     return;
-  MapHNode *MN = dyn_cast<MapHNode>(CurrentNode);
+  // CurrentNode can be null if the document is empty.
+  MapHNode *MN = dyn_cast_or_null<MapHNode>(CurrentNode);
   if (!MN)
     return;
   for (MapHNode::NameToNode::iterator i = MN->Mapping.begin(),
@@ -276,6 +296,7 @@ void Input::scalarString(StringRef &S) {
 }
 
 void Input::setError(HNode *hnode, const Twine &message) {
+  assert(hnode && "HNode must not be NULL");
   this->setError(hnode->_node, message);
 }
 
@@ -320,11 +341,6 @@ Input::HNode *Input::createHNodes(Node *N) {
         memcpy(Buf, &StringStorage[0], Len);
         KeyStr = StringRef(Buf, Len);
       }
-      if (i->getValue() == nullptr) {       // bfish temp fix.          
-        EC = make_error_code(errc::invalid_argument);
-        break;
-      }
-      assert(i->getValue());   //bfish
       HNode *ValueHNode = this->createHNodes(i->getValue());
       if (EC)
         break;
@@ -397,6 +413,14 @@ bool Output::outputting() {
 void Output::beginMapping() {
   StateStack.push_back(inMapFirstKey);
   NeedsNewLine = true;
+}
+
+bool Output::mapTag(StringRef Tag, bool Use) {
+  if (Use) {
+    this->output(" ");
+    this->output(Tag);
+  }
+  return Use;
 }
 
 void Output::endMapping() {
@@ -663,6 +687,17 @@ void ScalarTraits<StringRef>::output(const StringRef &Val, void *,
 StringRef ScalarTraits<StringRef>::input(StringRef Scalar, void *,
                                          StringRef &Val) {
   Val = Scalar;
+  return StringRef();
+}
+ 
+void ScalarTraits<std::string>::output(const std::string &Val, void *,
+                                     raw_ostream &Out) {
+  Out << Val;
+}
+
+StringRef ScalarTraits<std::string>::input(StringRef Scalar, void *,
+                                         std::string &Val) {
+  Val = Scalar.str();
   return StringRef();
 }
 

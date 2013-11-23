@@ -16,20 +16,6 @@ namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
 template <>
-struct ScalarTraits<string> {
-    static void output(const string &value, void *ctxt, llvm::raw_ostream &out)
-    {
-        out << value;
-    }
-
-    static StringRef input(StringRef scalar, void *ctxt, string &value)
-    {
-        value = scalar;
-        return "";
-    }
-};
-
-template <>
 struct MappingTraits<TestStruct> {
     static void mapping(llvm::yaml::IO &io, TestStruct &item)
     {

@@ -52,6 +52,8 @@ if (APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
 endif()
 
+set(LIBOFP_C_FLAGS "-fstrict-aliasing")
+
 # Add new library source files here. Add unittest source files to
 # test/CMakeLists.txt.
 
@@ -303,9 +305,11 @@ endif()
 if ("${binary_dir}" MATCHES "/[^/]*\\+64bit[^/]*$")
   message(STATUS "Adding -m64 build option.")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m64")
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -m64")
 elseif("${binary_dir}" MATCHES "/[^/]*\\+32bit[^/]*$")
   message(STATUS "Adding -m32 build option.")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m32")
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -m32")
 endif()
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
@@ -344,6 +348,7 @@ configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTes
 # up the build log with warnings.
 
 set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 # Add subdirectories of third party projects.
 
@@ -355,6 +360,7 @@ add_subdirectory(external/boost_1_54_0_asio)
 # our own super picky set (-Weverything minus a few).
 
 set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS}")
 
 # Set up the source include directory. N.B. Includes for third-party sources are
 # baked into CMAKE_CXX_FLAGS using -isystem.

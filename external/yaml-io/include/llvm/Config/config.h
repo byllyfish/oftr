@@ -4,6 +4,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+/* Define if building universal (internal helper macro) */
+/* #undef AC_APPLE_UNIVERSAL_BUILD */
+
 /* Bug report URL. */
 #define BUG_REPORT_URL "http://llvm.org/bugs/"
 
@@ -192,13 +195,13 @@
 #define HAVE_ISATTY 1
 
 /* Set to 1 if the isinf function is found in <cmath> */
-/* #undef HAVE_ISINF_IN_CMATH */
+#define HAVE_ISINF_IN_CMATH 1
 
 /* Set to 1 if the isinf function is found in <math.h> */
 #define HAVE_ISINF_IN_MATH_H 1
 
 /* Set to 1 if the isnan function is found in <cmath> */
-/* #undef HAVE_ISNAN_IN_CMATH */
+#define HAVE_ISNAN_IN_CMATH 1
 
 /* Set to 1 if the isnan function is found in <math.h> */
 #define HAVE_ISNAN_IN_MATH_H 1
@@ -466,7 +469,7 @@
 /* #undef HAVE_U_INT64_T */
 
 /* Define to 1 if you have the <valgrind/valgrind.h> header file. */
-//#define HAVE_VALGRIND_VALGRIND_H 1
+/* #undef HAVE_VALGRIND_VALGRIND_H */
 
 /* Define to 1 if you have the `writev' function. */
 #define HAVE_WRITEV 1
@@ -535,13 +538,13 @@
 #define LLVM_BINDIR "/usr/local/bin"
 
 /* Time at which LLVM was configured */
-#define LLVM_CONFIGTIME "Sat Oct 19 10:20:35 MST 2013"
+#define LLVM_CONFIGTIME "Fri Nov 22 17:07:32 MST 2013"
 
 /* Installation directory for data files */
 #define LLVM_DATADIR "/usr/local/share/llvm"
 
 /* Target triple LLVM will generate code for by default */
-#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin12.5.0"
+#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin13.0.0"
 
 /* Installation directory for documentation */
 #define LLVM_DOCSDIR "/usr/local/share/doc/llvm"
@@ -559,7 +562,7 @@
 #define LLVM_HAS_ATOMICS 1
 
 /* Host triple LLVM will be executed on */
-#define LLVM_HOST_TRIPLE "x86_64-apple-darwin12.5.0"
+#define LLVM_HOST_TRIPLE "x86_64-apple-darwin13.0.0"
 
 /* Installation directory for include files */
 #define LLVM_INCLUDEDIR "/usr/local/include"
@@ -637,7 +640,7 @@
 #define LLVM_VERSION_MAJOR 3
 
 /* Minor version of the LLVM API */
-#define LLVM_VERSION_MINOR 4
+#define LLVM_VERSION_MINOR 5
 
 /* Define if the OS needs help to load dependent libraries for dlopen(). */
 /* #undef LTDL_DLOPEN_DEPLIBS */
@@ -666,13 +669,16 @@
 #define PACKAGE_NAME "LLVM"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "LLVM 3.4svn"
+#define PACKAGE_STRING "LLVM 3.5svn"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "llvm"
 
+/* Define to the home page for this package. */
+/* #undef PACKAGE_URL */
+
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "3.4svn"
+#define PACKAGE_VERSION "3.5svn"
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #define RETSIGTYPE void
@@ -694,6 +700,18 @@
 
 /* Type of 1st arg on ELM Callback */
 /* #undef WIN32_ELMCB_PCSTR */
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+/* #  undef WORDS_BIGENDIAN */
+# endif
+#endif
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */

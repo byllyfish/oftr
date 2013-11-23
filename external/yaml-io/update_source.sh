@@ -33,6 +33,7 @@ INCLUDES=(
 	include/llvm/ADT/None.h
 	include/llvm/ADT/Optional.h
 	include/llvm/ADT/OwningPtr.h
+	include/llvm/ADT/SmallPtrSet.h
 	include/llvm/ADT/SmallString.h
 	include/llvm/ADT/SmallVector.h
 	include/llvm/ADT/STLExtras.h
@@ -40,12 +41,17 @@ INCLUDES=(
 	include/llvm/ADT/StringMap.h
 	include/llvm/ADT/StringRef.h
 	include/llvm/ADT/StringSwitch.h
+	include/llvm/ADT/Triple.h
 	include/llvm/ADT/Twine.h
 	include/llvm/Support/AlignOf.h
 	include/llvm/Support/Allocator.h
+	include/llvm/Support/Atomic.h
 	include/llvm/Support/Casting.h
 	include/llvm/Support/CBindingWrapping.h
+	include/llvm/Support/CommandLine.h
 	include/llvm/Support/Compiler.h
+	include/llvm/Support/ConvertUTF.h
+	include/llvm/Support/DataStream.h
 	include/llvm/Support/Debug.h
 	include/llvm/Support/Endian.h
 	include/llvm/Support/Errno.h
@@ -54,6 +60,7 @@ INCLUDES=(
 	include/llvm/Support/Format.h
 	include/llvm/Support/Host.h
 	include/llvm/Support/Locale.h
+	include/llvm/Support/ManagedStatic.h
 	include/llvm/Support/MathExtras.h
 	include/llvm/Support/Memory.h
 	include/llvm/Support/MemoryBuffer.h
@@ -89,9 +96,15 @@ BUILD_INCLUDES=(
 SOURCES=(
 	Support/Allocator.cpp
 	Support/APInt.cpp
+	Support/Atomic.cpp
+	Support/CommandLine.cpp
+	Support/ConvertUTF.c
+	Support/ConvertUTFWrapper.cpp
 	Support/Errno.cpp
 	Support/FoldingSet.cpp
 	Support/Hashing.cpp
+	Support/Host.cpp
+	Support/ManagedStatic.cpp
 	Support/Memory.cpp
 	#Support/Memory.inc
 	Support/MemoryBuffer.cpp
@@ -100,13 +113,17 @@ SOURCES=(
 	Support/Process.cpp
 	Support/Program.cpp
 	Support/raw_ostream.cpp
+	Support/SmallPtrSet.cpp
 	Support/SmallVector.cpp
 	Support/SourceMgr.cpp
 	Support/StringMap.cpp
 	Support/StringRef.cpp
 	Support/system_error.cpp
+	Support/Threading.cpp
 	Support/TimeValue.cpp
+	Support/Triple.cpp
 	Support/Twine.cpp
+	Support/Unix/Host.inc
 	Support/Unix/Memory.inc
 	Support/Unix/Path.inc
 	Support/Unix/Process.inc
@@ -120,7 +137,7 @@ SOURCES=(
 )
 
 # Copy the include files.
-for file in "${INCLUDES[@]}"; do 
+for file in "${INCLUDES[@]}"; do
   cp -v "$LLVM_SOURCE_DIR/$file" "$WORKING_DIR/$file"
 done
 
@@ -130,7 +147,7 @@ for file in "${BUILD_INCLUDES[@]}"; do
 done
 
 # Copy the source files.
-for file in "${SOURCES[@]}"; do 
+for file in "${SOURCES[@]}"; do
   cp -v "$LLVM_SOURCE_DIR/lib/$file" "$WORKING_DIR/src/$file"
 done
 
@@ -138,7 +155,5 @@ done
 
 patch "${WORKING_DIR}/include/llvm/Config/config.h" "$WORKING_DIR/src/Config.h.diff"
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
-patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 
 exit 0
