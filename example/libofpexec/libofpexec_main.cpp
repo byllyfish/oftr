@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements program to run an ApiServer.
@@ -27,10 +27,9 @@
 using namespace ofp;
 using namespace yaml;
 
-int main(int argc, char **argv)
-{
-	log::set(&std::cerr);
-	ApiServer::run();
+int main(int argc, char **argv) {
+  log::set(&std::cerr);
+  ApiServer::run();
 
-	return 0;
+  return 0;
 }

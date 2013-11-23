@@ -10,24 +10,19 @@ using namespace ofp;
 
 class TestAgent : public ChannelListener {
 public:
+  static TestAgent *Factory() { return new TestAgent; }
 
-	static TestAgent *Factory()
-    {
-        return new TestAgent;
-    }
-
-    void onChannelUp(Channel *channel) override;
-    void onChannelDown(Channel *channel) override;
-    void onMessage(const Message *message) override;
-    void onTimer(UInt32 timerID) override;
+  void onChannelUp(Channel *channel) override;
+  void onChannelDown(Channel *channel) override;
+  void onMessage(const Message *message) override;
+  void onTimer(UInt32 timerID) override;
 
 private:
-    Channel *channel_ = nullptr;
-    std::unique_ptr<yaml::ApiServer> apiServer_;
+  Channel *channel_ = nullptr;
+  std::unique_ptr<yaml::ApiServer> apiServer_;
 
-    void startApiInput();
+  void startApiInput();
 };
-
 
 } // </namespace testagent>
 

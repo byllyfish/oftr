@@ -4,20 +4,20 @@
 
 using namespace testagent;
 
-int main(int argc, char **argv)
-{
-	Features features{};
+int main(int argc, char **argv) {
+  Features features{};
 
-	IPv6Address remoteAddr{"127.0.0.1"};
+  IPv6Address remoteAddr{"127.0.0.1"};
 
-	//log::set(&std::cerr);
+  // log::set(&std::cerr);
 
-	Exception err = ofp::runAgent(features, remoteAddr, TestAgent::Factory, {OFP_VERSION_1});
+  Exception err =
+      ofp::runAgent(features, remoteAddr, TestAgent::Factory, {OFP_VERSION_1});
 
-	if (err) {
-		std::cerr << "Error starting agent: " << err << '\n';
-		return 1;
-	}
+  if (err) {
+    std::cerr << "Error starting agent: " << err << '\n';
+    return 1;
+  }
 
-	return 0;
+  return 0;
 }

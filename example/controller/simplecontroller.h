@@ -12,23 +12,22 @@ struct EnetFrame;
 
 class SimpleController {
 public:
-
-    void onPacketIn(Channel *channel, const PacketIn *msg);
-    void onPortStatus(Channel *channel, const PortStatus *msg);
-    void onError(Channel *channel, const Error *msg);
+  void onPacketIn(Channel *channel, const PacketIn *msg);
+  void onPortStatus(Channel *channel, const PortStatus *msg);
+  void onError(Channel *channel, const Error *msg);
 
 private:
-    using FwdTable = std::unordered_map<EnetAddress, UInt32>;
+  using FwdTable = std::unordered_map<EnetAddress, UInt32>;
 
-    FwdTable fwdTable_;
+  FwdTable fwdTable_;
 
-    bool lookupPort(const EnetAddress &addr, UInt32 *port) const;
+  bool lookupPort(const EnetAddress &addr, UInt32 *port) const;
 
-    static void flood(Channel *channel, const PacketIn *msg);
-    static void drop(Channel *channel, const PacketIn *msg,
-                     const EnetFrame *frame, UInt16 timeout);
-    static void addFlow(Channel *channel, const PacketIn *msg,
-                        const EnetFrame *frame, UInt32 outPort);
+  static void flood(Channel *channel, const PacketIn *msg);
+  static void drop(Channel *channel, const PacketIn *msg,
+                   const EnetFrame *frame, UInt16 timeout);
+  static void addFlow(Channel *channel, const PacketIn *msg,
+                      const EnetFrame *frame, UInt32 outPort);
 };
 
 } // </namespace controller>

@@ -4,22 +4,17 @@
 
 using namespace ofp;
 
-int main(int argc, char **argv)
-{
-	log::set(&std::cerr);
+int main(int argc, char **argv) {
+  log::set(&std::cerr);
 
-	auto factory = []() {
-        return new controller::SimpleChannelListener;
-    };
+  auto factory = []() { return new controller::SimpleChannelListener; };
 
-    auto ex = runController(factory);
+  auto ex = runController(factory);
 
-    if (ex) {
-    	log::error("Error running controller:", ex);
-        return 1;
-    }
+  if (ex) {
+    log::error("Error running controller:", ex);
+    return 1;
+  }
 
-    return 0;
+  return 0;
 }
-
-
