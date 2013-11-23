@@ -52,18 +52,39 @@ ApiConnection::~ApiConnection() { server_->onDisconnect(this); }
 
 void ApiConnection::onLoopback(ApiLoopback *loopback) {
   ByteList &buf = loopback->msg.data;
+  ApiBoolean validate = loopback->msg.validate;
+
   Message message{buf.mutableData(), buf.size()};
   message.transmogrify();
 
   Decoder decoder{&message};
 
-  if (decoder.error().empty()) {
-    write(decoder.result());
+  if (validate == LIBOFP_NOT_PRESENT) {
+    // Always respond with OpenFlow YAML or a DecodeError event.
+    if (decoder.error().empty()) {
+      write(decoder.result());
+    } else {
+      ApiDecodeError reply;
+      reply.msg.error = decoder.error();
+      reply.msg.data = RawDataToHex(message.data(), message.size());
+      write(reply.toString());
+    }
+  } else if (validate == LIBOFP_FALSE) {
+    // We don't expect data to validate; only respond if it does.
+    if (decoder.error().empty()) {
+      ApiDecodeError reply;
+      reply.msg.error = "Message unexpectedly validates";
+      reply.msg.data = RawDataToHex(message.data(), message.size());
+      write(reply.toString());
+    }
   } else {
-    ApiDecodeError reply;
-    reply.msg.error = decoder.error();
-    reply.msg.data = RawDataToHex(message.data(), message.size());
-    write(reply.toString());
+    // We expect the data to validate; only respond if it doesn't.
+    if (!decoder.error().empty()) {
+      ApiDecodeError reply;
+      reply.msg.error = decoder.error();
+      reply.msg.data = RawDataToHex(message.data(), message.size());
+      write(reply.toString());
+    }
   }
 }
 
@@ -190,6 +211,7 @@ void ApiConnection::handleEvent() {
         // If an OpenFlow YAML message is received before we start
         // listening, return its binary value in a loopback message.
         ApiLoopback reply;
+        reply.msg.validate = LIBOFP_NOT_PRESENT;
         reply.msg.data.set(encoder.data(), encoder.size());
         write(reply.toString());
       }

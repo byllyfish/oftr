@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines API events for a yaml::ApiServer.
@@ -34,6 +34,7 @@ OFP_BEGIN_IGNORE_PADDING
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
+/// API Event types
 enum ApiEvent : UInt32 {
     LIBOFP_INVALID = 0,
     LIBOFP_LOOPBACK,                // Server -> client, client -> server
@@ -47,12 +48,29 @@ enum ApiEvent : UInt32 {
     LIBOFP_SET_TIMER,				// Client -> server
 };
 
-/// Api message to translate binary to YAML.
+/// Utility type for optional boolean values.
+enum ApiBoolean {
+    LIBOFP_FALSE = 0,
+    LIBOFP_TRUE,
+    LIBOFP_NOT_PRESENT
+};
+
+/// Api message to translate binary to YAML. If `validate` is not present,
+/// decode the hexadecimal `data` value and return the OpenFlow YAML. If there
+/// is an error, return a LIBOFP_DECODE_ERROR.
+///
+/// If `validate` is present, check the format of the data and return an error
+/// only if it doesn't meet expectations. That is, if `validate` is true, return
+/// an error if the `data` is malformed. If `validate` is false, return true if
+/// the `data` is _not_ detected as malformed. Nothing is returned if the
+/// validation of `data` matches the `validate` boolean.
+
 struct ApiLoopback {
     ApiEvent event = LIBOFP_LOOPBACK;
 
     struct Message {
         ByteList data;
+        ApiBoolean validate;
     };
     Message msg;
 
@@ -72,7 +90,7 @@ struct ApiListenRequest {
 /// Api reply to ApiListenRequest.
 struct ApiListenReply {
     ApiEvent event = LIBOFP_LISTEN_REPLY;
-    
+
     struct Message {
         UInt16 listenPort;
         std::string error;
@@ -190,6 +208,15 @@ struct ScalarEnumerationTraits<ofp::yaml::ApiEvent> {
 #undef OFP_YAML_ENUMCASE
 
 template <>
+struct ScalarEnumerationTraits<ofp::yaml::ApiBoolean> {
+  static void enumeration(IO &io, ofp::yaml::ApiBoolean &value) {
+    io.enumCase(value, "true", ofp::yaml::LIBOFP_TRUE);
+    io.enumCase(value, "false", ofp::yaml::LIBOFP_FALSE);
+    io.enumCase(value, "not_present", ofp::yaml::LIBOFP_NOT_PRESENT);
+  }
+};
+
+template <>
 struct MappingTraits<ofp::yaml::ApiLoopback> {
     static void mapping(IO &io, ofp::yaml::ApiLoopback &msg)
     {
@@ -202,6 +229,7 @@ template <>
 struct MappingTraits<ofp::yaml::ApiLoopback::Message> {
     static void mapping(IO &io, ofp::yaml::ApiLoopback::Message &msg)
     {
+        io.mapOptional("validate", msg.validate, ofp::yaml::LIBOFP_NOT_PRESENT);
         io.mapRequired("data", msg.data);
     }
 };
