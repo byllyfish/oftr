@@ -33,23 +33,4 @@
 
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8);
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
-
-template <>
-struct ScalarTraits<std::string> {
-  static void output(const std::string &value, void *ctxt,
-                     llvm::raw_ostream &out) {
-    out << value;
-  }
-
-  static StringRef input(StringRef scalar, void *ctxt, std::string &value) {
-    value = scalar;
-    return "";
-  }
-};
-
-} // </namespace yaml>
-} // </namespace llvm>
-
 #endif // OFP_YAML_YLLVM_H
