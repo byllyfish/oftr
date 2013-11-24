@@ -73,7 +73,7 @@ static_assert(IsTriviallyCopyable<Hello>(), "Expected trivially copyable.");
 /// \brief Mutable builder for an OpenFlow `Hello` protocol message.
 class HelloBuilder {
 public:
-  HelloBuilder(ProtocolVersions versions = ProtocolVersions{})
+  explicit HelloBuilder(ProtocolVersions versions = ProtocolVersions{})
       : bitmap_{versions.bitmap()} {
     msg_.header_.setVersion(versions.highestVersion());
   }
