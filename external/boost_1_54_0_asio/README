@@ -1,5 +1,5 @@
 This subset of Boost source files was assembled using bcp to permit libofp.a to compile successfully.
 
-libofp uses Boost ASIO. Some of the example programs use Boost program_options.
+libofp uses Boost ASIO. 
 
-$BOOST_DIR/dist/bin/bcp --scan --boost=$BOOST_DIR include/ofp/sys/boost_asio.h example/bridgeofp/bridgeofp_main.cpp $HOME/boost_files
+$BOOST_DIR/dist/bin/bcp --scan --boost=$BOOST_DIR include/ofp/sys/boost_asio.h $HOME/boost_files
