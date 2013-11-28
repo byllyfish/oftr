@@ -3,8 +3,16 @@
 # Set environment variable LIBOFPEXEC_PATH before running this program. If that
 # variable is not set, this program will use /usr/local/bin/libofpexec.
 
-import libofp
 import os
+
+# If the environment variable LIBOFP_YAML is set to 1, use YAML version;
+# otherwise default to json version.
+
+if os.environ.get('LIBOFP_YAML') == '1':
+  import libofp_yaml as libofp
+else:
+  import libofp_json as libofp
+
 
 def setConfig(datapath, len):
     return '''
@@ -19,7 +27,7 @@ def clearFlows(datapath):
     return '''
       type:            OFPT_FLOW_MOD
       datapath_id:     {}
-      msg:             
+      msg:
         cookie:          0
         cookie_mask:     0
         table_id:        0
@@ -31,8 +39,8 @@ def clearFlows(datapath):
         out_port:        0xFFFFFFFF
         out_group:       0
         flags:           0
-        match:           
-        instructions:  
+        match:
+        instructions:
 '''.format(datapath)
 
 def barrierRequest(datapath):
@@ -42,7 +50,7 @@ def barrierRequest(datapath):
 '''.format(datapath)
 
 def isMulticast(enetAddr):
-    return enetAddr[1] in "13579BDF" 
+    return enetAddr[1] in "13579BDF"
 
 # Tell switch to send the packet out all ports.
 def flood(ofp, event):
@@ -51,7 +59,7 @@ def flood(ofp, event):
 ---
       type:            OFPT_PACKET_OUT
       datapath_id:     {}
-      msg:             
+      msg:
         buffer_id:       {}
         in_port:         {}
         actions:
@@ -70,22 +78,22 @@ def drop(ofp, event):
 ---
       type:            OFPT_PACKET_OUT
       datapath_id:     {}
-      msg:             
+      msg:
         buffer_id:       {}
         in_port:         {}
         actions:       []
         enet_frame:    ''
 
 ...
-'''.format(event.datapath_id, event.msg.buffer_id, event.msg.in_port)    
-      
+'''.format(event.datapath_id, event.msg.buffer_id, event.msg.in_port)
+
 
 def addFlow(ofp, event, ethSource, ethDest, outPort):
     return '''
 ---
       type:            OFPT_FLOW_MOD
       datapath_id:     {}
-      msg:             
+      msg:
         cookie:          0
         cookie_mask:     0
         table_id:        0
@@ -97,7 +105,7 @@ def addFlow(ofp, event, ethSource, ethDest, outPort):
         out_port:        0
         out_group:       0
         flags:           0
-        match:           
+        match:
           - type:            OFB_IN_PORT
             value:           {}
           - type:            OFB_ETH_SRC
@@ -112,18 +120,18 @@ def addFlow(ofp, event, ethSource, ethDest, outPort):
                 maxlen: 0
 ...
 '''.format(event.datapath_id, event.msg.buffer_id, event.msg.in_port, ethSource, ethDest, outPort)
-   
-      
+
+
 def handlePacketIn(ofp, event):
     print 'handlePacketIn'
     ethDest = event.msg.enet_frame[0:12]
     ethSource = event.msg.enet_frame[12:24]
     ethType = event.msg.enet_frame[24:28]
-    
+
     if not isMulticast(ethSource):
         key = event.datapath_id + ethSource
         forwardTable[key] = event.msg.in_port
-        
+
     if isMulticast(ethDest):
         ofp.send(flood(ofp, event))
     else:
@@ -140,7 +148,7 @@ def handlePacketIn(ofp, event):
 
 if __name__ == '__main__':
     forwardTable = {}
-    
+
     libofpexec = os.environ.get('LIBOFPEXEC_PATH')
     if not libofpexec:
         libofpexec = '/usr/local/bin/libofpexec'
@@ -149,7 +157,7 @@ if __name__ == '__main__':
     while True:
         event = ofp.waitNextEvent()
         #print event.text
-        
+
         if event.type == 'LIBOFP_DATAPATH_UP':
             ofp.send(setConfig(event.msg.datapath_id, 14))
             ofp.send(clearFlows(event.msg.datapath_id))

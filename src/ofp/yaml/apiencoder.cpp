@@ -64,6 +64,12 @@ void ApiEncoder::encodeMsg(llvm::yaml::IO &io, ApiEvent event) {
     conn_->onSetTimer(&setTimer);
     break;
   }
+  case LIBOFP_EDIT_SETTING: {
+    ApiEditSetting editSetting;
+    io.mapRequired("msg", editSetting.msg);
+    conn_->onEditSetting(&editSetting);
+    break;
+  }
   default:
     log::info("ApiEncoder: Unrecognized event", event);
     break;

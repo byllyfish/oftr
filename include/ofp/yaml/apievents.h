@@ -46,6 +46,7 @@ enum ApiEvent : UInt32 {
     LIBOFP_DATAPATH_DOWN,			// Server -> client
     LIBOFP_TIMER, 					// Server -> client
     LIBOFP_SET_TIMER,				// Client -> server
+    LIBOFP_EDIT_SETTING,            // Client -> server
 };
 
 /// Utility type for optional boolean values.
@@ -74,7 +75,7 @@ struct ApiLoopback {
     };
     Message msg;
 
-    std::string toString();
+    std::string toString(bool useJson);
 };
 
 /// Api request to listen as a controller on a specified port.
@@ -97,7 +98,7 @@ struct ApiListenReply {
     };
     Message msg;
 
-    std::string toString();
+    std::string toString(bool useJson);
 };
 
 /// Api message to report an error parsing some YAML presented by the client.
@@ -110,7 +111,7 @@ struct ApiYamlError {
     };
     Message msg;
 
-    std::string toString();
+    std::string toString(bool useJson);
 };
 
 /// Api message to report an error decoding an OpenFlow message and translating
@@ -125,7 +126,7 @@ struct ApiDecodeError {
     };
     Message msg;
 
-    std::string toString();
+    std::string toString(bool useJson);
 };
 
 /// Api message to report that a datapath is Up.
@@ -142,7 +143,7 @@ struct ApiDatapathUp {
     };
     Message msg;
 
-    std::string toString();
+    std::string toString(bool useJson);
 };
 
 /// Api message to report that a datapath connection is down.
@@ -154,7 +155,7 @@ struct ApiDatapathDown {
     };
     Message msg;
 
-    std::string toString();
+    std::string toString(bool useJson);
 };
 
 /// Api message to report that a timer has expired.
@@ -167,7 +168,7 @@ struct ApiTimer {
     };
     Message msg;
 
-    std::string toString();
+    std::string toString(bool useJson);
 };
 
 /// Api message to schedule a timer on a datapath channel.
@@ -178,6 +179,18 @@ struct ApiSetTimer {
         DatapathID datapathId;
         UInt32 timerId;
         UInt32 timeout;
+    };
+    Message msg;
+};
+
+
+/// Api message to change the value of a protocol setting.
+struct ApiEditSetting {
+    ApiEvent event = LIBOFP_EDIT_SETTING;
+
+    struct Message {
+        std::string name;
+        std::string value;
     };
     Message msg;
 };
@@ -202,6 +215,7 @@ struct ScalarEnumerationTraits<ofp::yaml::ApiEvent> {
     OFP_YAML_ENUMCASE(LIBOFP_DATAPATH_DOWN);
     OFP_YAML_ENUMCASE(LIBOFP_TIMER);
     OFP_YAML_ENUMCASE(LIBOFP_SET_TIMER);
+    OFP_YAML_ENUMCASE(LIBOFP_EDIT_SETTING);
   }
 };
 
@@ -381,6 +395,24 @@ struct MappingTraits<ofp::yaml::ApiSetTimer::Message> {
         io.mapRequired("datapath_id", msg.datapathId);
         io.mapRequired("timer_id", msg.timerId);
         io.mapRequired("timeout", msg.timeout);
+    }
+};
+
+template <>
+struct MappingTraits<ofp::yaml::ApiEditSetting> {
+    static void mapping(IO &io, ofp::yaml::ApiEditSetting &msg)
+    {
+        io.mapRequired("event", msg.event);
+        io.mapRequired("msg", msg.msg);
+    }
+};
+
+template <>
+struct MappingTraits<ofp::yaml::ApiEditSetting::Message> {
+    static void mapping(IO &io, ofp::yaml::ApiEditSetting::Message &msg)
+    {
+        io.mapRequired("name", msg.name);
+        io.mapRequired("value", msg.value);
     }
 };
 

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the yaml::ApiConnection class.
@@ -40,11 +40,12 @@ public:
 	virtual ~ApiConnection();
 
 	virtual void asyncAccept() = 0;
-	
+
 	void onLoopback(ApiLoopback *loopback);
 	void onListenRequest(ApiListenRequest *listenReq);
 	void onListenReply(ApiListenReply *listenReply);
 	void onSetTimer(ApiSetTimer *setTimer);
+	void onEditSetting(ApiEditSetting *editSetting);
 
 	void onYamlError(const std::string &error, const std::string &text);
 	void onChannelUp(Channel *channel);
@@ -68,13 +69,14 @@ private:
 	unsigned lineCount_ = 0;
 	bool isLibEvent_ = false;
 	bool isListening_ = false;
+	bool isFormatJson_ = false;
 
 	// Use a two buffer strategy for async-writes. We queue up data in one
 	// buffer while we're in the process of writing the other buffer.
 	//ByteList outgoing_[2];
 	//int outgoingIdx_ = 0;
 	//bool writing_ = false;
-	
+
 	void handleEvent();
 
 	static void cleanInputLine(std::string *line);

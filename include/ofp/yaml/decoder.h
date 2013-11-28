@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the yaml::Decoder class and its llvm::yaml::MappingTraits.
@@ -34,7 +34,7 @@ namespace yaml { // <namespace yaml>
 class Decoder {
 public:
 
-    explicit Decoder(const Message *msg);
+    explicit Decoder(const Message *msg, bool useJsonFormat = false);
 
     const std::string &result() const
     {

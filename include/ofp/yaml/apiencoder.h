@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the yaml::ApiEncoder class.
@@ -34,6 +34,7 @@ class ApiConnection;
 /// If there is an error parsing the YAML, write an OFPLIB_PROTOCOL_ERROR event
 /// back to the connection. This class is called an 'encoder' since it
 /// translates from YAML to an internal binary representation.
+
 class ApiEncoder {
 public:
 	ApiEncoder(const std::string &input, ApiConnection *conn);

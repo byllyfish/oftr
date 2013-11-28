@@ -43,18 +43,25 @@
 #include "ofp/yaml/ygetconfigreply.h"
 #include "ofp/yaml/ysetasync.h"
 #include "ofp/yaml/yflowremoved.h"
+#include "ofp/yaml/outputjson.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
-Decoder::Decoder(const Message *msg) : msg_{msg} {
+Decoder::Decoder(const Message *msg, bool useJsonFormat) : msg_{msg} {
   assert(msg->size() >= sizeof(Header));
 
   llvm::raw_string_ostream rss{result_};
-  llvm::yaml::Output yout{rss};
-  yout << *this;
-  (void)rss.str();
 
+  if (useJsonFormat) {
+    ofp::yaml::OutputJson yout{rss};
+    yout << *this;
+  } else {
+    llvm::yaml::Output yout{rss};
+    yout << *this;
+  }
+
+  (void)rss.str();
   if (!error_.empty()) {
     result_.clear();
   }

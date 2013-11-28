@@ -7,6 +7,13 @@
 cmake_minimum_required(VERSION 2.8)
 project(libofp)
 
+# Add path for custom modules
+
+set(CMAKE_MODULE_PATH
+  ${CMAKE_MODULE_PATH}
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+)
+
 # Set the version number of the library.
 
 set(libofp_VERSION_MAJOR 0)
@@ -134,6 +141,7 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/apiserver.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
+  src/ofp/yaml/outputjson.cpp
 	src/ofp-c/ofpprotocol.cpp
 	src/ofp-c/ofpstring.cpp
 )
@@ -334,6 +342,12 @@ include(CTest)
 # Boost may pull in pthreads.
 
 find_package(Threads)
+
+# Call custom function to check for Python YAML module (optional for testing).
+
+find_package(PythonInterp REQUIRED)
+find_package(PythonModule REQUIRED)
+find_python_module(yaml)
 
 # Specify auto-generated config.h file.
 
