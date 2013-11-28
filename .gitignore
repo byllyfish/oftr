@@ -7,4 +7,5 @@
 .~lock.*
 docs/html
 *\+*/
+*.pyc
 
