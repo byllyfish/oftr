@@ -53,13 +53,12 @@ set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/boost_1_54_0
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_CXX_FLAGS "-std=c++11 -fstrict-aliasing")
+set(LIBOFP_C_FLAGS "-fstrict-aliasing")
+set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -std=c++11")
 
 if (APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
 endif()
-
-set(LIBOFP_C_FLAGS "-fstrict-aliasing")
 
 # Add new library source files here. Add unittest source files to
 # test/CMakeLists.txt.
