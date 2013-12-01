@@ -16,8 +16,8 @@ MESSAGE_BEGIN = '---\n'
 MESSAGE_END = '...\n'
 
 
-def _libofp(evt, **msgdict):
-    return dict(event=evt, msg=msgdict)
+def _libofp(evt, **paramdict):
+    return dict(event=evt, params=paramdict)
 
 
 class _toObj(object):
@@ -148,14 +148,14 @@ class LibOFP(object):
     def _sendEditSetting(self, name, value):
         #self.send(_libofp('LIBOFP_EDIT_SETTING', name=name, value=value))
         self.send('''event: LIBOFP_EDIT_SETTING
-msg:
+params:
     name: %s
     value: %s''' % (name, value))
 
     def _sendListenRequest(self, openflowAddr):
         #self.send(_libofp('LIBOFP_LISTEN_REQUEST', port=openflowAddr[1]))
         self.send('''event: LIBOFP_LISTEN_REQUEST
-msg:
+params:
   port: %s''' % (openflowAddr[1]))
 
     def _makeEventGenerator(self):

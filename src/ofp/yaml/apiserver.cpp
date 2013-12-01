@@ -112,7 +112,7 @@ void ApiServer::onDisconnect(ApiConnection *conn) {
 void ApiServer::onListenRequest(ApiConnection *conn,
                                 ApiListenRequest *listenReq) {
   Driver *driver = engine_->driver();
-  UInt16 listenPort = listenReq->msg.listenPort;
+  UInt16 listenPort = listenReq->params.listenPort;
 
   auto exc = driver->listen(Driver::Controller, nullptr,
                             IPv6Endpoint{listenPort}, ProtocolVersions{},
@@ -122,9 +122,9 @@ void ApiServer::onListenRequest(ApiConnection *conn,
 
   exc.done([this, listenPort](Exception ex) {
     ApiListenReply reply;
-    reply.msg.listenPort = listenPort;
+    reply.params.listenPort = listenPort;
     if (ex) {
-      reply.msg.error = ex.toString();
+      reply.params.error = ex.toString();
     }
     onListenReply(&reply);
   });

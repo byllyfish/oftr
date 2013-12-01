@@ -47,26 +47,26 @@ void ApiEncoder::encodeMsg(llvm::yaml::IO &io, ApiEvent event) {
   switch (event) {
   case LIBOFP_LOOPBACK: {
     ApiLoopback loopback;
-    io.mapRequired("msg", loopback.msg);
+    io.mapRequired("params", loopback.params);
     conn_->onLoopback(&loopback);
     break;
   }
   case LIBOFP_LISTEN_REQUEST: {
     ApiListenRequest listenReq;
-    io.mapRequired("msg", listenReq.msg);
-    if (listenReq.msg.listenPort != 0)
+    io.mapRequired("params", listenReq.params);
+    if (listenReq.params.listenPort != 0)
       conn_->onListenRequest(&listenReq);
     break;
   }
   case LIBOFP_SET_TIMER: {
     ApiSetTimer setTimer;
-    io.mapRequired("msg", setTimer.msg);
+    io.mapRequired("params", setTimer.params);
     conn_->onSetTimer(&setTimer);
     break;
   }
   case LIBOFP_EDIT_SETTING: {
     ApiEditSetting editSetting;
-    io.mapRequired("msg", editSetting.msg);
+    io.mapRequired("params", editSetting.params);
     conn_->onEditSetting(&editSetting);
     break;
   }

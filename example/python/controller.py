@@ -159,8 +159,8 @@ if __name__ == '__main__':
         #print event.text
 
         if event.type == 'LIBOFP_DATAPATH_UP':
-            ofp.send(setConfig(event.msg.datapath_id, 14))
-            ofp.send(clearFlows(event.msg.datapath_id))
-            ofp.send(barrierRequest(event.msg.datapath_id))
+            ofp.send(setConfig(event.params.datapath_id, 14))
+            ofp.send(clearFlows(event.params.datapath_id))
+            ofp.send(barrierRequest(event.params.datapath_id))
         elif event.type == 'OFPT_PACKET_IN':
             handlePacketIn(ofp, event)

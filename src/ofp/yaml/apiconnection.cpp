@@ -51,8 +51,8 @@ ApiConnection::ApiConnection(ApiServer *server, bool listening)
 ApiConnection::~ApiConnection() { server_->onDisconnect(this); }
 
 void ApiConnection::onLoopback(ApiLoopback *loopback) {
-  ByteList &buf = loopback->msg.data;
-  ApiBoolean validate = loopback->msg.validate;
+  ByteList &buf = loopback->params.data;
+  ApiBoolean validate = loopback->params.validate;
 
   Message message{buf.mutableData(), buf.size()};
   message.transmogrify();
@@ -65,24 +65,24 @@ void ApiConnection::onLoopback(ApiLoopback *loopback) {
       write(decoder.result());
     } else {
       ApiDecodeError reply;
-      reply.msg.error = decoder.error();
-      reply.msg.data = RawDataToHex(message.data(), message.size());
+      reply.params.error = decoder.error();
+      reply.params.data = RawDataToHex(message.data(), message.size());
       write(reply.toString(isFormatJson_));
     }
   } else if (validate == LIBOFP_FALSE) {
     // We don't expect data to validate; only respond if it does.
     if (decoder.error().empty()) {
       ApiDecodeError reply;
-      reply.msg.error = "Message unexpectedly validates";
-      reply.msg.data = RawDataToHex(message.data(), message.size());
+      reply.params.error = "Message unexpectedly validates";
+      reply.params.data = RawDataToHex(message.data(), message.size());
       write(reply.toString(isFormatJson_));
     }
   } else {
     // We expect the data to validate; only respond if it doesn't.
     if (!decoder.error().empty()) {
       ApiDecodeError reply;
-      reply.msg.error = decoder.error();
-      reply.msg.data = RawDataToHex(message.data(), message.size());
+      reply.params.error = decoder.error();
+      reply.params.data = RawDataToHex(message.data(), message.size());
       write(reply.toString(isFormatJson_));
     }
   }
@@ -105,11 +105,11 @@ void ApiConnection::onSetTimer(ApiSetTimer *setTimer) {
 void ApiConnection::onEditSetting(ApiEditSetting *editSetting) {
   // Handle change in "format" setting: values are "json" and "yaml". This is
   // the format of data sent by the connection.
-  if (editSetting->msg.name == "format") {
-    if (editSetting->msg.value == "json") {
+  if (editSetting->params.name == "format") {
+    if (editSetting->params.value == "json") {
       log::debug("Using JSON.");
       isFormatJson_ = true;
-    } else if (editSetting->msg.value == "yaml") {
+    } else if (editSetting->params.value == "yaml") {
       isFormatJson_ = false;
     }
   }
@@ -123,28 +123,28 @@ void ApiConnection::onYamlError(const std::string &error,
   // event text.
 
   ApiYamlError reply;
-  reply.msg.error = escape(error);
-  reply.msg.text = escape(text);
+  reply.params.error = escape(error);
+  reply.params.text = escape(text);
   write(reply.toString(isFormatJson_));
 }
 
 void ApiConnection::onChannelUp(Channel *channel) {
   ApiDatapathUp reply;
-  reply.msg.datapathId = channel->datapathId();
-  reply.msg.version = channel->version();
+  reply.params.datapathId = channel->datapathId();
+  reply.params.version = channel->version();
 
   const Features &features = channel->features();
-  reply.msg.bufferCount = features.bufferCount();
-  reply.msg.tableCount = features.tableCount();
-  reply.msg.capabilities = features.capabilities();
-  reply.msg.reserved = features.reserved();
+  reply.params.bufferCount = features.bufferCount();
+  reply.params.tableCount = features.tableCount();
+  reply.params.capabilities = features.capabilities();
+  reply.params.reserved = features.reserved();
 
   write(reply.toString(isFormatJson_));
 }
 
 void ApiConnection::onChannelDown(Channel *channel) {
   ApiDatapathDown reply;
-  reply.msg.datapathId = channel->datapathId();
+  reply.params.datapathId = channel->datapathId();
   write(reply.toString(isFormatJson_));
 }
 
@@ -155,9 +155,9 @@ void ApiConnection::onMessage(Channel *channel, const Message *message) {
     write(decoder.result());
   } else {
     ApiDecodeError reply;
-    reply.msg.datapathId = channel->datapathId();
-    reply.msg.error = decoder.error();
-    reply.msg.data = RawDataToHex(message->data(), message->size());
+    reply.params.datapathId = channel->datapathId();
+    reply.params.error = decoder.error();
+    reply.params.data = RawDataToHex(message->data(), message->size());
     write(reply.toString(isFormatJson_));
   }
 }
@@ -166,8 +166,8 @@ void ApiConnection::onException(Channel *channel, const Exception *exception) {}
 
 void ApiConnection::onTimer(Channel *channel, UInt32 timerID) {
   ApiTimer timer;
-  timer.msg.datapathId = channel->datapathId();
-  timer.msg.timerId = timerID;
+  timer.params.datapathId = channel->datapathId();
+  timer.params.timerId = timerID;
   write(timer.toString(isFormatJson_));
 }
 
@@ -224,8 +224,8 @@ void ApiConnection::handleEvent() {
         // If an OpenFlow YAML message is received before we start
         // listening, return its binary value in a loopback message.
         ApiLoopback reply;
-        reply.msg.validate = LIBOFP_NOT_PRESENT;
-        reply.msg.data.set(encoder.data(), encoder.size());
+        reply.params.validate = LIBOFP_NOT_PRESENT;
+        reply.params.data.set(encoder.data(), encoder.size());
         write(reply.toString(isFormatJson_));
       }
 

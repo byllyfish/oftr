@@ -15,8 +15,8 @@ MESSAGE_BEGIN = '---\n'
 MESSAGE_END = '...\n'
 
 
-def _libofp(evt, **msgdict):
-    return dict(event=evt, msg=msgdict)
+def _libofp(evt, **paramdict):
+    return dict(event=evt, params=paramdict)
 
 
 class _toObj(object):

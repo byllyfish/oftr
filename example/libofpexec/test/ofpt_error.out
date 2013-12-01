@@ -1,25 +1,25 @@
 ---
 event:           LIBOFP_LOOPBACK
-msg:             
+params:          
   data:            0101001100000000000100010123456789
 ...
 ---
 event:           LIBOFP_LOOPBACK
-msg:             
+params:          
   data:            0401001100000000000100010123456789
 ...
 ---
 event:           LIBOFP_LOOPBACK
-msg:             
+params:          
   data:            0201001100000000000100010123456789
 ...
 ---
 event:           LIBOFP_LOOPBACK
-msg:             
+params:          
   data:            0301001100000000000100010123456789
 ...
 ---
 event:           LIBOFP_LOOPBACK
-msg:             
+params:          
   data:            0401001100000000000100010123456789
 ...
