@@ -56,15 +56,20 @@ enum ApiBoolean {
     LIBOFP_NOT_PRESENT
 };
 
-/// Api message to translate binary to YAML. If `validate` is not present,
-/// decode the hexadecimal `data` value and return the OpenFlow YAML. If there
-/// is an error, return a LIBOFP_DECODE_ERROR.
+/// If an OpenFlow YAML message is received before server starts listening, the 
+/// encoded binary data is returned by the server in a loopback message.
+/// 
+/// Client can also use loopback to translate binary to YAML. If `validate` is 
+/// not present, decode the hexadecimal `data` value and return the OpenFlow 
+/// YAML. If there is an error, return a LIBOFP_DECODE_ERROR.
 ///
 /// If `validate` is present, check the format of the data and return an error
 /// only if it doesn't meet expectations. That is, if `validate` is true, return
 /// an error if the `data` is malformed. If `validate` is false, return true if
 /// the `data` is _not_ detected as malformed. Nothing is returned if the
 /// validation of `data` matches the `validate` boolean.
+///
+/// The loopback message is symmetric so it can be used in test scripts.
 
 struct ApiLoopback {
     ApiEvent event = LIBOFP_LOOPBACK;
