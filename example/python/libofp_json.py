@@ -146,17 +146,10 @@ class LibOFP(object):
                             timer_id=timerID, timeout=timeout))
 
     def _sendEditSetting(self, name, value):
-        #self.send(_libofp('LIBOFP_EDIT_SETTING', name=name, value=value))
-        self.send('''event: LIBOFP_EDIT_SETTING
-params:
-    name: %s
-    value: %s''' % (name, value))
+        self.send(_libofp('LIBOFP_EDIT_SETTING', name=name, value=value))
 
     def _sendListenRequest(self, openflowAddr):
-        #self.send(_libofp('LIBOFP_LISTEN_REQUEST', port=openflowAddr[1]))
-        self.send('''event: LIBOFP_LISTEN_REQUEST
-params:
-  port: %s''' % (openflowAddr[1]))
+        self.send(_libofp('LIBOFP_LISTEN_REQUEST', port=openflowAddr[1]))
 
     def _makeEventGenerator(self):
         msgLines = []

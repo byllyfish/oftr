@@ -30,15 +30,13 @@
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
-// Return true if first non-whitespace substring in `s` exactly equals `cs`.
-static bool startsWith(const std::string &s, const char *cs) {
-  size_t pos = s.find_first_not_of(" \t\f\v");
-  if (pos != std::string::npos && s[pos] == *cs) {
-    size_t left = s.length() - pos;
-    size_t len = strlen(cs);
-    if (len <= left) {
-      return std::memcmp(cs, &s[pos], len) == 0;
-    }
+// Return true if first alphabetical substring matches "event" or "params".
+// Comparison is case-sensitive. We need to skip over initial spaces, { and ".
+static bool matchesEventPrefix(const std::string &s) {
+  size_t pos = s.find_first_not_of(" \t\f\v{\"");
+  if (pos != std::string::npos && s.length() - pos > 6) {
+    return (std::memcmp("event", &s[pos], 5) == 0) ||
+            (std::memcmp("params", &s[pos], 6) == 0);
   }
   return false;
 }
@@ -115,7 +113,6 @@ void ApiConnection::onEditSetting(ApiEditSetting *editSetting) {
   }
 }
 
-
 void ApiConnection::onYamlError(const std::string &error,
                                 const std::string &text) {
   // YAMLIO doesn't really output strings with newlines AFAICT that well.
@@ -182,7 +179,7 @@ void ApiConnection::handleInputLine(std::string *line) {
     text_ = "---\n";
     isLibEvent_ = false;
     lineCount_ = 0;
-  } else if (lineCount_ == 1 && startsWith(*line, "event:")) {
+  } else if (lineCount_ == 1 && matchesEventPrefix(*line)) {
     // If first line starts with 'event:', we have
     // a library event, not an OpenFlow message.
     isLibEvent_ = true;
@@ -200,7 +197,7 @@ void ApiConnection::handleEvent() {
     if (isEmptyEvent(text_))
       return;
 
-    Encoder encoder(text_, [this](const DatapathID & datapathId) {
+    Encoder encoder(text_, [this](const DatapathID &datapathId) {
       return server_->findChannel(datapathId);
     });
 
