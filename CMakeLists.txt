@@ -338,9 +338,12 @@ endif()
 set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
-# Boost may pull in pthreads.
+# Boost may pull in pthreads. We need OpenSSL for TLS support.
 
 find_package(Threads)
+find_package(OpenSSL)
+
+set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT} ssl crypto)
 
 # Call custom function to check for Python YAML module (optional for testing).
 

@@ -56,7 +56,7 @@ IPv6Address TCP_Connection::remoteAddress() const {
     if (isOutgoing()) {
       return makeIPv6Address(endpoint_.address());
     }
-    return makeIPv6Address(socket_.remote_endpoint().address());
+    return makeIPv6Address(socket_.lowest_layer().remote_endpoint().address());
   }
   catch (std::exception &ex) {
     log::debug("remoteAddress:", ex.what());
@@ -69,7 +69,7 @@ UInt16 TCP_Connection::remotePort() const {
     if (isOutgoing()) {
       return endpoint_.port();
     }
-    return socket_.remote_endpoint().port();
+    return socket_.lowest_layer().remote_endpoint().port();
   }
   catch (std::exception &ex) {
     log::debug("remotePort:", ex.what());
@@ -92,7 +92,7 @@ void TCP_Connection::shutdown() {
 
   // FIXME -- this should stop reading data and close connection when
   // all outgoing data existing at this point is sent.
-  socket_.close();
+  socket_.lowest_layer().close();
 }
 
 Deferred<ofp::Exception>
@@ -114,11 +114,11 @@ TCP_Connection::asyncConnect(const tcp::endpoint &endpt, milliseconds delay) {
 
 void TCP_Connection::asyncAccept() {
   // Do nothing if socket is not open.
-  if (!socket_.is_open())
+  if (!socket_.lowest_layer().is_open())
     return;
 
   // We always send and receive complete messages; disable Nagle algorithm.
-  socket_.set_option(tcp::no_delay(true));
+  socket_.lowest_layer().set_option(tcp::no_delay(true));
 
   channelUp();
 }
@@ -151,7 +151,7 @@ void TCP_Connection::channelDown() {
 
 void TCP_Connection::asyncReadHeader() {
   // Do nothing if socket is not open.
-  if (!socket_.is_open())
+  if (!socket_.lowest_layer().is_open())
     return;
 
   auto self(shared_from_this());
@@ -330,14 +330,14 @@ void TCP_Connection::asyncRelay(size_t length) {
 void TCP_Connection::asyncConnect() {
   auto self(shared_from_this());
 
-  socket_.async_connect(endpoint_, [this, self](const error_code & err) {
+  socket_.lowest_layer().async_connect(endpoint_, [this, self](const error_code & err) {
     // `async_connect` may not report an error when the connection attempt
     // fails. We need to double-check that we are connected.
 
     error_code actualErr = err;
 
-    if (!actualErr && checkAsioConnected(socket_, endpoint_, actualErr)) {
-      socket_.set_option(tcp::no_delay(true));
+    if (!actualErr && checkAsioConnected(socket_.lowest_layer(), endpoint_, actualErr)) {
+      socket_.lowest_layer().set_option(tcp::no_delay(true));
       channelUp();
 
     } else if (wantsReconnect()) {

@@ -27,6 +27,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/asio/steady_timer.hpp>
+#include <boost/asio/ssl.hpp>
 
 #include "ofp/exception.h"
 #include "ofp/log.h"
@@ -58,7 +59,7 @@ inline bool isAsioCanceled(const error_code &error)
 /// \returns True if socket is connected to given endpoint. We need this
 /// function because `async_connect` may not return an error on a failed 
 /// connection attempt.
-inline bool checkAsioConnected(const tcp::socket &socket,
+inline bool checkAsioConnected(const tcp::socket::lowest_layer_type &socket,
                                const tcp::endpoint &endpt,
                                error_code &error)
 {

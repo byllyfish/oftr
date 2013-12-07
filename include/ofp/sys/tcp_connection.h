@@ -30,6 +30,7 @@
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
 #include "ofp/exception.h"
+#include "ofp/sys/plaintext.h"
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -81,7 +82,7 @@ public:
 
 private:
   Message message_;
-  tcp::socket socket_;
+  Plaintext<tcp::socket> socket_;
   tcp::endpoint endpoint_;
   DeferredResultPtr<Exception> deferredExc_ = nullptr;
   steady_timer idleTimer_;

@@ -57,7 +57,7 @@ set(LIBOFP_TEST_SOURCES
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include")
 
 add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES})
-target_link_libraries(ofp_unittest gtest ofp yamlio)
+target_link_libraries(ofp_unittest gtest ofp ${LIBOFP_LINKED_LIBS})
 
 # Add tests here.
 
