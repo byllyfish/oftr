@@ -67,10 +67,12 @@ static void trace1(const char *type, const void *data, size_t length) {
   Message message{data, length};
   message.transmogrify();
 
+#if 0
   // Don't log echo replies or echo requests.
   if (message.type() == OFPT_ECHO_REPLY || message.type() == OFPT_ECHO_REQUEST)
     return;
-
+#endif
+  
   yaml::Decoder decoder{&message};
 
   if (decoder.error().empty()) {

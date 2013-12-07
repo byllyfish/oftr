@@ -51,6 +51,8 @@
 #include "ofp/portmod.h"
 #include "ofp/tablemod.h"
 #include "ofp/queuegetconfigrequest.h"
+#include "ofp/echorequest.h"
+#include "ofp/echoreply.h"
 
 namespace ofp { // <namespace ofp>
 
