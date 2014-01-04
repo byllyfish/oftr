@@ -37,7 +37,7 @@ endif()
 # anything except to clutter up the build logs. Put disabled warnings into
 # LIB_OFP_WARNINGS_DISABLED.
 
-set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum")
+set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum -Wno-unreachable-code")
 
 # LibOFP is a C++11-only project. Disable warnings about C++98 compatibility.
 
@@ -363,7 +363,7 @@ configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTes
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall -Wno-deprecated-declarations")
 set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 # Add subdirectories of third party projects.

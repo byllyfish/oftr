@@ -9,14 +9,16 @@
 
 using namespace ofp;
 
-static ByteList gEchoData;
-
 //-------------------------//
 // P i n g L i s t e n e r //
 //-------------------------//
 
+OFP_BEGIN_IGNORE_PADDING
+
 class PingListener : public ChannelListener {
 public:
+  explicit PingListener(const ByteList *echoData) : echoData_{echoData} {}
+
   void onChannelUp(Channel *channel) override {
     channel_ = channel;
     sendPing();
@@ -32,11 +34,10 @@ public:
     }
   }
 
-  static PingListener *Factory() { return new PingListener; }
-
 private:
   Channel *channel_ = nullptr;
   UInt32 lastXid_ = 0;
+  const ByteList *echoData_;
 
   void onPingReply(const Message *message) {
     const EchoReply *reply = message->cast<EchoReply>();
@@ -56,10 +57,12 @@ private:
 
   void sendPing() {
     EchoRequestBuilder echoRequest;
-    echoRequest.setEchoData(gEchoData.data(), gEchoData.size());
+    echoRequest.setEchoData(echoData_->data(), echoData_->size());
     lastXid_ = echoRequest.send(channel_);
   }
 };
+
+OFP_END_IGNORE_PADDING
 
 //-------------------------//
 // p i n g _ c o n n e c t //
@@ -67,9 +70,11 @@ private:
 
 static int ping_connect(const IPv6Endpoint &endpt) {
   Driver driver;
+  ByteList echoData;
 
-  auto exc = driver.connect(Driver::Bridge, nullptr, endpt,
-                            ProtocolVersions::All, PingListener::Factory);
+  auto exc =
+      driver.connect(Driver::Bridge, nullptr, endpt, ProtocolVersions::All,
+                     [echoData]() { return new PingListener{&echoData}; });
 
   int exitCode = 0;
   exc.done([&exitCode](Exception ex) {
