@@ -23,6 +23,8 @@
 #define OFP_YAML_APICONNECTIONTCP_H
 
 #include "ofp/yaml/apiconnection.h"
+#include "ofp/sys/plaintext.h"
+#include "ofp/sys/buffered.h"
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -38,17 +40,10 @@ public:
 protected:
 	void write(const std::string &msg) override;
 	void asyncRead() override;
-	void asyncWrite() override;
 
 private:
-	sys::tcp::socket socket_;
+	sys::Buffered<sys::Plaintext<sys::tcp::socket>> socket_;
 	boost::asio::streambuf streambuf_;
-
-	// Use a two buffer strategy for async-writes. We queue up data in one
-	// buffer while we're in the process of writing the other buffer.
-	ByteList outgoing_[2];
-	int outgoingIdx_ = 0;
-	bool writing_ = false;
 };
 
 } // </namespace yaml>

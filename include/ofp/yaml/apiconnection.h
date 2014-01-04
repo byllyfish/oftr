@@ -57,25 +57,16 @@ public:
 protected:
 	virtual void write(const std::string &msg) = 0;
 	virtual void asyncRead() = 0;
-	virtual void asyncWrite() = 0;
 
 	void handleInputLine(std::string *line);
 
 private:
 	ApiServer *server_;
-	//sys::tcp::socket socket_;
-	//boost::asio::streambuf streambuf_;
 	std::string text_;
 	unsigned lineCount_ = 0;
 	bool isLibEvent_ = false;
 	bool isListening_ = false;
 	bool isFormatJson_ = false;
-
-	// Use a two buffer strategy for async-writes. We queue up data in one
-	// buffer while we're in the process of writing the other buffer.
-	//ByteList outgoing_[2];
-	//int outgoingIdx_ = 0;
-	//bool writing_ = false;
 
 	void handleEvent();
 

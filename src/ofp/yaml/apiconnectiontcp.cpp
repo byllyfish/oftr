@@ -29,19 +29,17 @@ ApiConnectionTCP::ApiConnectionTCP(ApiServer *server, sys::tcp::socket socket,
     : ApiConnection{server, listening}, socket_{std::move(socket)} {}
 
 void ApiConnectionTCP::write(const std::string &msg) {
-  outgoing_[outgoingIdx_].add(msg.data(), msg.length());
-  if (!writing_) {
-    asyncWrite();
-  }
+  socket_.buf_write(msg.data(), msg.length());
+  socket_.buf_flush();
 }
 
 void ApiConnectionTCP::asyncAccept() {
   // Do nothing if socket is not open.
-  if (!socket_.is_open())
+  if (!socket_.lowest_layer().is_open())
     return;
 
   // We always send and receive complete messages; disable Nagle algorithm.
-  socket_.set_option(tcp::no_delay(true));
+  socket_.lowest_layer().set_option(tcp::no_delay(true));
 
   // Start first async read.
   asyncRead();
@@ -66,35 +64,3 @@ void ApiConnectionTCP::asyncRead() {
       });
 }
 
-void ApiConnectionTCP::asyncWrite() {
-  assert(!writing_);
-
-  int idx = outgoingIdx_;
-  outgoingIdx_ = !outgoingIdx_;
-  writing_ = true;
-
-  const UInt8 *data = outgoing_[idx].data();
-  size_t size = outgoing_[idx].size();
-
-  auto self(shared_from_this());
-
-  boost::asio::async_write(
-      socket_, boost::asio::buffer(data, size),
-      [this, self](const error_code & err, size_t bytes_transferred) {
-
-        if (!err) {
-          assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
-
-          writing_ = false;
-          outgoing_[!outgoingIdx_].clear();
-          if (outgoing_[outgoingIdx_].size() > 0) {
-            // Start another async write for the other output buffer.
-            asyncWrite();
-          }
-
-        } else {
-          auto exc = makeException(err);
-          log::debug("ApiConnectionTCP::async_write err", exc);
-        }
-      });
-}

@@ -31,6 +31,7 @@
 #include "ofp/deferred.h"
 #include "ofp/exception.h"
 #include "ofp/sys/plaintext.h"
+#include "ofp/sys/buffered.h"
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -82,18 +83,11 @@ public:
 
 private:
   Message message_;
-  Plaintext<tcp::socket> socket_;
+  Buffered<Plaintext<tcp::socket>> socket_;
   tcp::endpoint endpoint_;
   DeferredResultPtr<Exception> deferredExc_ = nullptr;
   steady_timer idleTimer_;
   std::chrono::steady_clock::time_point latestActivity_;
-
-  // Use a two buffer strategy for async-writes. We queue up data in one
-  // buffer while we're in the process of writing the other buffer.
-  ByteList outgoing_[2];
-  int outgoingIdx_ = 0;
-  bool writing_ = false;
-  //std::function<void()> flushCallback_ = nullptr;
 
   log::Lifetime lifetime_{"TCP_Connection"};
 

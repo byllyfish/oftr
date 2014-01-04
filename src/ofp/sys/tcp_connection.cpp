@@ -77,13 +77,11 @@ UInt16 TCP_Connection::remotePort() const {
 }
 
 void TCP_Connection::write(const void *data, size_t length) {
-  outgoing_[outgoingIdx_].add(data, length);
+  socket_.buf_write(data, length);
 }
 
 void TCP_Connection::flush() {
-  if (!writing_) {
-    asyncWrite();
-  }
+  socket_.buf_flush();
 }
 
 void TCP_Connection::shutdown() {
@@ -214,42 +212,6 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
             channelException(makeException(err));
           }
           channelDown();
-        }
-
-        updateLatestActivity();
-      });
-}
-
-void TCP_Connection::asyncWrite() {
-  assert(!writing_);
-
-  int idx = outgoingIdx_;
-  outgoingIdx_ = !outgoingIdx_;
-  writing_ = true;
-
-  const UInt8 *data = outgoing_[idx].data();
-  size_t size = outgoing_[idx].size();
-
-  log::trace("write", data, size);
-
-  auto self(shared_from_this());
-
-  asio::async_write(
-      socket_, asio::buffer(data, size),
-      [this, self](const error_code & err, size_t bytes_transferred) {
-
-        if (!err) {
-          assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
-
-          writing_ = false;
-          outgoing_[!outgoingIdx_].clear();
-          if (outgoing_[outgoingIdx_].size() > 0) {
-            // Start another async write for the other output buffer.
-            asyncWrite();
-          }
-
-        } else {
-          log::debug("Write error ", makeException(err));
         }
 
         updateLatestActivity();

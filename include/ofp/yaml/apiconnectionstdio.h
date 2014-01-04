@@ -42,7 +42,7 @@ public:
 protected:
     void write(const std::string &msg) override;
     void asyncRead() override;
-    void asyncWrite() override;
+    void asyncWrite();
 
 private:
     sys::stream_descriptor input_;
