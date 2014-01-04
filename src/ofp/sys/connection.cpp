@@ -89,6 +89,16 @@ void Connection::setMainConnection(Connection *channel) {
 }
 
 void Connection::postMessage(Connection *source, Message *message) {
+
+  // Handle echo reply automatically. We just set the type to reply and write
+  // it back.
+  if (message->type() == OFPT_ECHO_REQUEST) {
+    message->mutableHeader()->setType(OFPT_ECHO_REPLY);
+    write(message->data(), message->size());
+    flush();
+    return;       // all done!
+  }
+
   log::trace("read", message->data(), message->size());
 
   if (listener_) {

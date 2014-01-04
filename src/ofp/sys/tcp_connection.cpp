@@ -25,9 +25,8 @@
 #include "ofp/log.h"
 #include "ofp/defaulthandshake.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
-
+using namespace ofp;
+using namespace ofp::sys;
 using namespace boost;
 
 TCP_Connection::TCP_Connection(Engine *engine, Driver::Role role,
@@ -168,13 +167,7 @@ void TCP_Connection::asyncReadHeader() {
         // The header has passed our rudimentary validation checks.
         UInt16 msgLength = hdr->length();
         
-        if (hdr->type() == OFPT_ECHO_REQUEST) {
-          // Handle echo request by relaying message back as we read
-          // it in. In this way, we don't have to read the whole
-          // message in before we start to respond.
-          asyncEchoReply(hdr, msgLength);
-
-        } else if (msgLength == sizeof(Header)) {
+        if (msgLength == sizeof(Header)) {
           postMessage(this, &message_);
           asyncReadHeader();
 
@@ -253,10 +246,6 @@ void TCP_Connection::asyncWrite() {
           if (outgoing_[outgoingIdx_].size() > 0) {
             // Start another async write for the other output buffer.
             asyncWrite();
-          } else if (flushCallback_ != nullptr) {
-            // Outgoing buffer is empty and we want to write direct.
-            flushCallback_();
-            flushCallback_ = nullptr;
           }
 
         } else {
@@ -265,66 +254,6 @@ void TCP_Connection::asyncWrite() {
 
         updateLatestActivity();
       });
-}
-
-void TCP_Connection::asyncEchoReply(const Header *header, size_t length) {
-  assert(length >= sizeof(Header));
-
-  Header replyHeader = *header;
-  replyHeader.setType(OFPT_ECHO_REPLY);
-  write(&replyHeader, sizeof(replyHeader));
-  flush();
-
-  length -= sizeof(Header);
-
-  if (length > 0) {
-    assert(writing_);
-    assert(flushCallback_ == nullptr);
-
-    auto self(shared_from_this());
-    flushCallback_ = [this, self, length]() {
-      // Immediately write back the next `length` bytes we receive.
-      // When we're done, go back to asyncReadHeader.
-      asyncRelay(length);
-    };
-
-  } else {
-    asyncReadHeader();
-  }
-}
-
-void TCP_Connection::asyncRelay(size_t length) {
-  if (length > 0) {
-    auto self(shared_from_this());
-
-    size_t len = std::min(length, message_.size());
-    socket_.async_read_some(
-        asio::buffer(message_.mutableData(128), len),
-        [this, self, length](const error_code & readErr, size_t bytesRead) {
-
-          if (!readErr) {
-            asio::async_write(socket_, asio::buffer(message_.data(), bytesRead),
-                              [this, self, length](const error_code & writeErr,
-                                                   size_t bytesWritten) {
-
-              if (!writeErr) {
-                assert(bytesWritten <= length);
-                asyncRelay(length - bytesWritten);
-              } else {
-                log::debug("asyncRelay - async_write error",
-                           makeException(writeErr));
-              }
-            });
-
-          } else {
-            log::debug("asyncRelay - async_read_some error",
-                       makeException(readErr));
-          }
-        });
-
-  } else {
-    asyncReadHeader();
-  }
 }
 
 void TCP_Connection::asyncConnect() {
@@ -409,5 +338,3 @@ void TCP_Connection::updateLatestActivity() {
   latestActivity_ = std::chrono::steady_clock::now();
 }
 
-} // </namespace sys>
-} // </namespace ofp>

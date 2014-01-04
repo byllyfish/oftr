@@ -93,15 +93,13 @@ private:
   ByteList outgoing_[2];
   int outgoingIdx_ = 0;
   bool writing_ = false;
-  std::function<void()> flushCallback_ = nullptr;
+  //std::function<void()> flushCallback_ = nullptr;
 
   log::Lifetime lifetime_{"TCP_Connection"};
 
   void asyncReadHeader();
   void asyncReadMessage(size_t length);
   void asyncWrite();
-  void asyncEchoReply(const Header *header, size_t length);
-  void asyncRelay(size_t length);
   void asyncConnect();
   void asyncDelayConnect(milliseconds delay);
   void asyncIdleCheck();
