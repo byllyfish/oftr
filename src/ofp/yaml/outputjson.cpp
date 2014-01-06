@@ -4,7 +4,7 @@ using namespace ofp::yaml;
 using namespace llvm;
 
 OutputJson::OutputJson(llvm::raw_ostream &yout, void *ctxt)
-    : IO{ctxt}, Out{yout}, Column{0}, NeedComma{false} {}
+    : IO{ctxt}, Out(yout), Column{0}, NeedComma{false} {}
 
 OutputJson::~OutputJson() {}
 
@@ -96,7 +96,7 @@ void OutputJson::endBitSetScalar() { output("]"); }
 
 void OutputJson::scalarString(StringRef &S) {
   // If string begins with a leading zero, it may be in hexadecimal format.
-  UInt64 u;
+  unsigned long long u;
   if (!llvm::getAsUnsignedInteger(S, 0, u)) {
     output(std::to_string(u));
   } else {

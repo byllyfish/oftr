@@ -12,7 +12,7 @@ for input in $CURRENT_SOURCE_DIR/*.in ; do
   name=`basename "$input" .in`
   output="$name.out"
   echo "  Run libofpexec to convert $input to $output"
-  ../libofpexec < $input > $output
+  cat $input | ../libofpexec | tee $output 
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.out"
   diff $output "$CURRENT_SOURCE_DIR/$name.out"
 done
@@ -23,11 +23,11 @@ for input in $CURRENT_SOURCE_DIR/*.out ; do
   name=`basename "$input" .out`
   output="$name.yaml"
   echo "  Run libofpexec to convert $input to $output"
-  ../libofpexec < $input > $output
+  cat $input | ../libofpexec | tee $output
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.yaml"
   diff $output "$CURRENT_SOURCE_DIR/$name.yaml"
   echo "  Run libofpexec to convert $output to $output.tmp"
-  ../libofpexec < $output > $output.tmp
+  cat $output | ../libofpexec | tee $output.tmp
   echo "  Compare $output.tmp to $input"
   diff $output.tmp $input
   rm -f "$output.tmp"
