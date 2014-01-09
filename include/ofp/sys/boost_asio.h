@@ -31,7 +31,7 @@
 
 #include "ofp/exception.h"
 #include "ofp/log.h"
-#include "ofp/ipv6address.h"
+#include "ofp/ipv6endpoint.h"
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
@@ -89,7 +89,7 @@ inline Exception makeException(const boost::system::error_code &error)
 }
 
 struct HashEndpoint {
-    size_t operator()(const udp::endpoint &endpt) const;
+    size_t operator()(const IPv6Endpoint &endpt) const;
 };
 
 inline IPv6Address makeIPv6Address(const boost::asio::ip::address &addr)
@@ -103,6 +103,36 @@ inline IPv6Address makeIPv6Address(const boost::asio::ip::address &addr)
     }
 }
 
+template <class Proto>
+inline typename Proto::endpoint makeEndpoint(const IPv6Address &addr, UInt16 port)
+{
+    using Endpoint = typename Proto::endpoint;
+    using namespace boost::asio;
+
+    if (!addr.valid()) {
+        return Endpoint{Proto::v6(), port};
+    } else if (addr.isV4Mapped()) {
+        ip::address_v4 v4{addr.toV4().toArray()};
+        return Endpoint{v4, port};
+    } else {
+        ip::address_v6 v6{addr.toArray()};
+        return Endpoint{v6, port};
+    }
+}
+
+template <class Proto>
+inline typename Proto::endpoint convertEndpoint(const IPv6Endpoint &endpt)
+{
+    return makeEndpoint<Proto>(endpt.address(), endpt.port());
+}
+
+template <class Proto>
+inline IPv6Endpoint convertEndpoint(const typename Proto::endpoint &endpt)
+{
+    return IPv6Endpoint{makeIPv6Address(endpt.address()), endpt.port()};
+}
+
+#if 0
 inline tcp::endpoint makeTCPEndpoint(const IPv6Address &addr, UInt16 port)
 {
     using namespace boost::asio;
@@ -132,6 +162,7 @@ inline udp::endpoint makeUDPEndpoint(const IPv6Address &addr, UInt16 port)
         return udp::endpoint{v6, port};
     }
 }
+#endif //0
 
 } // </namespace sys>
 } // </namespace ofp>

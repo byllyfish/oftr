@@ -23,7 +23,7 @@
 #define OFP_CHANNEL_H
 
 #include "ofp/writable.h"
-#include "ofp/ipv6address.h"
+#include "ofp/ipv6endpoint.h"
 #include "ofp/datapathid.h"
 
 namespace ofp { // <namespace ofp>
@@ -41,8 +41,7 @@ public:
   virtual const Features &features() const = 0;
   virtual DatapathID datapathId() const = 0;
   virtual UInt8 auxiliaryId() const = 0;
-  virtual IPv6Address remoteAddress() const = 0;
-  virtual UInt16 remotePort() const = 0;
+  virtual IPv6Endpoint remoteEndpoint() const = 0;
   virtual void shutdown() = 0;
 
   virtual ChannelListener *channelListener() const = 0;
@@ -73,8 +72,7 @@ public:
 std::ostream &operator<<(std::ostream &os, Channel *channel);
 
 inline std::ostream &operator<<(std::ostream &os, Channel *channel) {
-  return os << "[Channel to=" << channel->remoteAddress() << ':'
-            << channel->remotePort() << ']';
+  return os << "[Channel to=" << channel->remoteEndpoint() << ']';
 }
 
 } // </namespace ofp>

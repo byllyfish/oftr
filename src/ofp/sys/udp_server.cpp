@@ -28,8 +28,8 @@
 
 using namespace boost;
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+using namespace ofp;
+using namespace ofp::sys;
 
 UDP_Server::UDP_Server(Engine *engine, Driver::Role role,
                        const Features *features, const udp::endpoint &endpt,
@@ -151,7 +151,7 @@ void UDP_Server::dispatchMessage() {
   // and the incoming message is a HELLO, open a new connection. Otherwise,
   // drop the message.
 
-  auto iter = connMap_.find(sender_);
+  auto iter = connMap_.find(convertEndpoint<udp>(sender_));
 
   if (iter == connMap_.end()) {
 
@@ -168,6 +168,3 @@ void UDP_Server::dispatchMessage() {
     iter->second->postMessage(nullptr, &message_);
   }
 }
-
-} // </namespace sys>
-} // </namespace ofp>

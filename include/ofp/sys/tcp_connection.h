@@ -64,10 +64,7 @@ public:
     return handshake()->role() == Driver::Agent && isOutgoing();
   }
 
-  tcp::endpoint endpoint() const { return endpoint_; }
-
-  IPv6Address remoteAddress() const override;
-  UInt16 remotePort() const override;
+  IPv6Endpoint remoteEndpoint() const override;
 
   void write(const void *data, size_t length) override;
   void flush() override;

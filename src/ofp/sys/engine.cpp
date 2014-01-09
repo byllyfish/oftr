@@ -51,10 +51,8 @@ Deferred<Exception> Engine::listen(Driver::Role role, const Features *features,
                                    const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory) {
-  auto tcpEndpt =
-      makeTCPEndpoint(localEndpoint.address(), localEndpoint.port());
-  auto udpEndpt =
-      makeUDPEndpoint(localEndpoint.address(), localEndpoint.port());
+  auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
+  auto udpEndpt = convertEndpoint<udp>(localEndpoint);
   auto result = Deferred<Exception>::makeResult();
 
   try {
@@ -84,8 +82,7 @@ Deferred<Exception> Engine::connect(Driver::Role role, const Features *features,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory) {
-  tcp::endpoint endpt =
-      makeTCPEndpoint(remoteEndpoint.address(), remoteEndpoint.port());
+  tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
   auto connPtr =
       std::make_shared<TCP_Connection>(this, role, versions, listenerFactory);
@@ -114,7 +111,7 @@ void Engine::reconnect(DefaultHandshake *handshake, const Features *features,
                        const IPv6Endpoint &remoteEndpoint,
                        std::chrono::milliseconds delay) {
   tcp::endpoint endpt =
-      makeTCPEndpoint(remoteEndpoint.address(), remoteEndpoint.port());
+      convertEndpoint<tcp>(remoteEndpoint);
 
   auto connPtr = std::make_shared<TCP_Connection>(this, handshake);
   if (features != nullptr) {
@@ -146,7 +143,7 @@ void Engine::stop(milliseconds timeout) {
     io_.stop();
   } else {
     stopTimer_.expires_from_now(timeout);
-    stopTimer_.async_wait([this](const error_code & err) {
+    stopTimer_.async_wait([this](const error_code &err) {
       if (err != boost::asio::error::operation_aborted) {
         stop(0_ms);
       }
@@ -165,7 +162,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
   if (transport == Channel::Transport::TCP) {
     log::debug("openAuxChannel", auxID);
 
-    tcp::endpoint endpt = mainConnection->endpoint();
+    tcp::endpoint endpt = convertEndpoint<tcp>(mainConnection->remoteEndpoint());
     DefaultHandshake *hs = mainConnection->handshake();
     ProtocolVersions versions = hs->versions();
 
@@ -187,7 +184,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
 
     // FIXME where does the exception go?
     // result.done([mainConnection](Exception exc){
-    //	mainConnection
+    //  mainConnection
     //});
   }
 }

@@ -50,29 +50,17 @@ TCP_Connection::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
 
 TCP_Connection::~TCP_Connection() {}
 
-IPv6Address TCP_Connection::remoteAddress() const {
+IPv6Endpoint TCP_Connection::remoteEndpoint() const {
   try {
     if (isOutgoing()) {
-      return makeIPv6Address(endpoint_.address());
+      return convertEndpoint<tcp>(endpoint_);
+    } else {
+      return convertEndpoint<tcp>(socket_.lowest_layer().remote_endpoint());
     }
-    return makeIPv6Address(socket_.lowest_layer().remote_endpoint().address());
   }
   catch (std::exception &ex) {
     log::debug("remoteAddress:", ex.what());
-    return IPv6Address{};
-  }
-}
-
-UInt16 TCP_Connection::remotePort() const {
-  try {
-    if (isOutgoing()) {
-      return endpoint_.port();
-    }
-    return socket_.lowest_layer().remote_endpoint().port();
-  }
-  catch (std::exception &ex) {
-    log::debug("remotePort:", ex.what());
-    return 0;
+    return IPv6Endpoint{};
   }
 }
 
@@ -80,9 +68,7 @@ void TCP_Connection::write(const void *data, size_t length) {
   socket_.buf_write(data, length);
 }
 
-void TCP_Connection::flush() {
-  socket_.buf_flush();
-}
+void TCP_Connection::flush() { socket_.buf_flush(); }
 
 void TCP_Connection::shutdown() {
   log::debug(__PRETTY_FUNCTION__);
@@ -160,11 +146,11 @@ void TCP_Connection::asyncReadHeader() {
     if (!err) {
       assert(length == sizeof(Header));
       const Header *hdr = message_.header();
-      
+
       if (hdr->validateInput(version())) {
         // The header has passed our rudimentary validation checks.
         UInt16 msgLength = hdr->length();
-        
+
         if (msgLength == sizeof(Header)) {
           postMessage(this, &message_);
           asyncReadHeader();
@@ -197,7 +183,7 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
   asio::async_read(
       socket_, asio::buffer(message_.mutableData(msgLength) + sizeof(Header),
                             msgLength - sizeof(Header)),
-      [this, self](const error_code & err, size_t bytes_transferred) {
+      [this, self](const error_code &err, size_t bytes_transferred) {
 
         if (!err) {
           assert(bytes_transferred == message_.size() - sizeof(Header));
@@ -221,13 +207,15 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
 void TCP_Connection::asyncConnect() {
   auto self(shared_from_this());
 
-  socket_.lowest_layer().async_connect(endpoint_, [this, self](const error_code & err) {
+  socket_.lowest_layer().async_connect(endpoint_,
+                                       [this, self](const error_code &err) {
     // `async_connect` may not report an error when the connection attempt
     // fails. We need to double-check that we are connected.
 
     error_code actualErr = err;
 
-    if (!actualErr && checkAsioConnected(socket_.lowest_layer(), endpoint_, actualErr)) {
+    if (!actualErr &&
+        checkAsioConnected(socket_.lowest_layer(), endpoint_, actualErr)) {
       socket_.lowest_layer().set_option(tcp::no_delay(true));
       channelUp();
 
@@ -244,7 +232,7 @@ void TCP_Connection::asyncDelayConnect(milliseconds delay) {
   auto self(shared_from_this());
 
   idleTimer_.expires_from_now(delay);
-  idleTimer_.async_wait([this, self](const error_code & err) {
+  idleTimer_.async_wait([this, self](const error_code &err) {
     if (err != boost::asio::error::operation_aborted) {
       asyncConnect();
     } else {
@@ -269,7 +257,7 @@ void TCP_Connection::asyncIdleCheck() {
   }
 
   idleTimer_.expires_from_now(delay);
-  idleTimer_.async_wait([this](const error_code & err) {
+  idleTimer_.async_wait([this](const error_code &err) {
     if (err != boost::asio::error::operation_aborted) {
       asyncIdleCheck();
     }
@@ -283,10 +271,9 @@ void TCP_Connection::reconnect() {
   hs->setStartingVersion(version());
   hs->setStartingXid(nextXid());
 
-  log::debug("reconnecting...", remoteAddress());
+  log::debug("reconnecting...", remoteEndpoint());
 
-  engine()->reconnect(hs, &features(),
-                      IPv6Endpoint{remoteAddress(), remotePort()}, 750_ms);
+  engine()->reconnect(hs, &features(), remoteEndpoint(), 750_ms);
 
   setHandshake(nullptr);
   if (channelListener() == hs) {
@@ -299,4 +286,3 @@ void TCP_Connection::reconnect() {
 void TCP_Connection::updateLatestActivity() {
   latestActivity_ = std::chrono::steady_clock::now();
 }
-
