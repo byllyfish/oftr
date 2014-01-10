@@ -24,7 +24,6 @@
 
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
-#include "ofp/features.h"
 #include "ofp/defaulthandshake.h"
 #include "ofp/sys/connectiontimer.h"
 
@@ -51,16 +50,13 @@ public:
 	UInt8 version() const override { return version_; }
 	void  setVersion(UInt8 version) { version_ = version; }
 
-	const Features &features() const override { return features_; }
-	void setFeatures(const Features &features) { features_ = features; }
-
-	DatapathID datapathId() const override { return features_.datapathId(); }
-	UInt8 auxiliaryId() const override { return features_.auxiliaryId(); }
+	DatapathID datapathId() const override { return datapathId_; }
+	UInt8 auxiliaryId() const override { return auxiliaryId_; }
 	
 	Connection *mainConnection() const 
 	{ return mainConn_; }
 
-	void setMainConnection(Connection *channel);
+	void setMainConnection(Connection *channel, UInt8 auxID);
 
 	//Connection *nextAuxiliaryConnection() const {
 	//	return nextAuxConn_;
@@ -87,7 +83,7 @@ public:
 	void postMessage(Connection *source, Message *message);
 	void postTimerExpired(ConnectionTimer *timer);
 	void postIdle();
-	void postDatapathID();
+	void postDatapathId(const DatapathID &datapath, UInt8 auxiliaryId);
 
 	sys::Engine *engine() const { return engine_; }
 	
@@ -107,9 +103,10 @@ private:
 	Connection *mainConn_;
 	AuxiliaryList auxList_;
 	ConnectionTimerMap timers_;
-	Features features_;
+	DatapathID datapathId_;
 	UInt32 nextXid_ = 0;
 	UInt8 version_ = 0;
+	UInt8 auxiliaryId_ = 0;
 	bool dpidWasPosted_ = false;
 };
 

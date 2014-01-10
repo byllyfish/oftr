@@ -1,4 +1,12 @@
 ---
+type:            OFPT_FEATURES_REQUEST
+xid:             0x00000002
+version:         1
+datapath_id:     0000-0000-0000-0000
+auxiliary_id:    0
+msg:             
+...
+---
 type:            OFPT_SET_CONFIG
 xid:             0x00000003
 version:         1

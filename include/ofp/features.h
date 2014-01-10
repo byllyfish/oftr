@@ -22,6 +22,8 @@
 #ifndef OFP_FEATURES_H
 #define OFP_FEATURES_H
 
+#error "Deprecated"
+
 #include "ofp/padding.h"
 #include "ofp/datapathid.h"
 

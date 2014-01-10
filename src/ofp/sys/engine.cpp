@@ -47,7 +47,7 @@ Engine::~Engine() {
   }
 }
 
-Deferred<Exception> Engine::listen(Driver::Role role, const Features *features,
+Deferred<Exception> Engine::listen(Driver::Role role,
                                    const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory) {
@@ -57,9 +57,9 @@ Deferred<Exception> Engine::listen(Driver::Role role, const Features *features,
 
   try {
     auto tcpsvr = std::unique_ptr<TCP_Server>{new TCP_Server{
-        this, role, features, tcpEndpt, versions, listenerFactory}};
+        this, role, tcpEndpt, versions, listenerFactory}};
     auto udpsvr = std::unique_ptr<UDP_Server>{
-        new UDP_Server{this, role, features, udpEndpt, versions}};
+        new UDP_Server{this, role, udpEndpt, versions}};
 
     (void)tcpsvr.release();
     (void)udpsvr.release();
@@ -78,7 +78,7 @@ Deferred<Exception> Engine::listen(Driver::Role role, const Features *features,
   return result;
 }
 
-Deferred<Exception> Engine::connect(Driver::Role role, const Features *features,
+Deferred<Exception> Engine::connect(Driver::Role role,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory) {
@@ -86,9 +86,6 @@ Deferred<Exception> Engine::connect(Driver::Role role, const Features *features,
 
   auto connPtr =
       std::make_shared<TCP_Connection>(this, role, versions, listenerFactory);
-  if (features != nullptr) {
-    connPtr->setFeatures(*features);
-  }
 
   // If the role is `Agent`, the connection will keep retrying. Install signal
   // handlers to tell it to stop.
@@ -107,16 +104,13 @@ Deferred<Exception> Engine::connect(Driver::Role role, const Features *features,
   return result;
 }
 
-void Engine::reconnect(DefaultHandshake *handshake, const Features *features,
+void Engine::reconnect(DefaultHandshake *handshake,
                        const IPv6Endpoint &remoteEndpoint,
                        std::chrono::milliseconds delay) {
   tcp::endpoint endpt =
       convertEndpoint<tcp>(remoteEndpoint);
 
   auto connPtr = std::make_shared<TCP_Connection>(this, handshake);
-  if (features != nullptr) {
-    connPtr->setFeatures(*features);
-  }
   (void)connPtr->asyncConnect(endpt, delay);
 }
 
@@ -175,10 +169,8 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
     auto connPtr = std::make_shared<TCP_Connection>(this, Driver::Auxiliary,
                                                     versions, listenerFactory);
 
-    Features features = mainConnection->features();
-    features.setAuxiliaryId(auxID);
-    connPtr->setFeatures(features);
-    connPtr->setMainConnection(mainConnection);
+    // FIXME we used to set datapathID and auxiliaryId here...
+    connPtr->setMainConnection(mainConnection, auxID);
 
     Deferred<Exception> result = connPtr->asyncConnect(endpt);
 
@@ -222,7 +214,7 @@ void Engine::postDatapathID(Connection *channel) {
     // don't find a main connection, close the auxiliary channel.
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
-      channel->setMainConnection(item->second);
+      channel->setMainConnection(item->second, auxID);  
 
     } else {
       log::info("Engine.postDatapathID: Main connection not found.", dpid);

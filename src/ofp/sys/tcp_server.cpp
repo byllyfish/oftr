@@ -27,17 +27,12 @@ namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
 TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
-                       const Features *features, const tcp::endpoint &endpt,
+                       const tcp::endpoint &endpt,
                        ProtocolVersions versions,
                        ChannelListener::Factory listenerFactory)
     : engine_{engine}, acceptor_{engine->io()}, socket_{engine->io()},
       role_{role}, versions_{versions}, factory_{listenerFactory} {
   listen(endpt);
-
-  if (features) {
-    features_ = *features;
-  }
-
   asyncAccept();
 
   engine_->registerServer(this);
@@ -89,7 +84,6 @@ void TCP_Server::asyncAccept() {
     if (!err) {
       auto conn = std::make_shared<TCP_Connection>(engine_, std::move(socket_),
                                                    role_, versions_, factory_);
-      conn->setFeatures(features_);
       conn->asyncAccept();
 
     } else {

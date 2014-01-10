@@ -33,8 +33,6 @@ namespace sys { // <namespace sys>
 class Engine;
 } // </namespace ofp>
 
-class Features;
-
 struct DriverOptions {
   /// Platform-specific context for TLS implementation (certificates, etc).
   /// Pass a pointer to a `boost::asio::ssl::context`.
@@ -53,13 +51,13 @@ public:
   Driver(DriverOptions *options = nullptr);
   ~Driver();
 
-  Deferred<Exception> listen(Role role, const Features *features,
+  Deferred<Exception> listen(Role role,
                              const IPv6Endpoint &localEndpoint,
                              ProtocolVersions versions,
                              ChannelListener::Factory listenerFactory);
 
   // TODO this should take an array of remote endpoints...
-  Deferred<Exception> connect(Role role, const Features *features,
+  Deferred<Exception> connect(Role role,
                               const IPv6Endpoint &remoteEndpoint,
                               ProtocolVersions versions,
                               ChannelListener::Factory listenerFactory);

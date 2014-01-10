@@ -273,7 +273,7 @@ void TCP_Connection::reconnect() {
 
   log::debug("reconnecting...", remoteEndpoint());
 
-  engine()->reconnect(hs, &features(), remoteEndpoint(), 750_ms);
+  engine()->reconnect(hs, remoteEndpoint(), 750_ms);
 
   setHandshake(nullptr);
   if (channelListener() == hs) {

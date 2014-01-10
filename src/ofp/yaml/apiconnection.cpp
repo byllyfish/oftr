@@ -25,7 +25,6 @@
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
 #include "ofp/channel.h"
-#include "ofp/features.h"
 
 using namespace ofp::yaml;
 using namespace ofp::sys;
@@ -130,11 +129,11 @@ void ApiConnection::onChannelUp(Channel *channel) {
   reply.params.datapathId = channel->datapathId();
   reply.params.version = channel->version();
 
-  const Features &features = channel->features();
-  reply.params.bufferCount = features.bufferCount();
-  reply.params.tableCount = features.tableCount();
-  reply.params.capabilities = features.capabilities();
-  reply.params.reserved = features.reserved();
+  //const Features &features = channel->features();
+  //reply.params.bufferCount = features.bufferCount();
+  //reply.params.tableCount = features.tableCount();
+  //reply.params.capabilities = features.capabilities();
+  //reply.params.reserved = features.reserved();
 
   write(reply.toString(isFormatJson_));
 }

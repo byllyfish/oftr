@@ -62,16 +62,17 @@ Connection::~Connection() {
   }
 }
 
-void Connection::setMainConnection(Connection *channel) {
+void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
   assert(channel != nullptr);
   assert(mainConn_ == this);
   assert(channel != this);
-  assert(auxiliaryId() != 0);
+  assert(auxID != 0);
 
   log::debug("setMainConnection");
   mainConn_ = channel;
+  datapathId_ = mainConn_->datapathId();
+  auxiliaryId_ = auxID;
 
-  UInt8 auxID = auxiliaryId();
   AuxiliaryList &auxList = mainConn_->auxList_;
 
   // Check if there is already an auxiliary connection with the same ID.
@@ -122,11 +123,14 @@ void Connection::postTimerExpired(ConnectionTimer *timer) {
 
 void Connection::postIdle() { log::debug("postIdle() =========="); }
 
-void Connection::postDatapathID() {
+void Connection::postDatapathId(const DatapathID &datapathId, UInt8 auxiliaryId) {
   assert(!dpidWasPosted_);
 
+  datapathId_ = datapathId;
+  auxiliaryId_ = auxiliaryId;
+  dpidWasPosted_ = true;        // FIXME - replace with check for all-0 datapath?
+
   engine()->postDatapathID(this);
-  dpidWasPosted_ = true;
 }
 
 /// \brief Schedule a timer event on the channel and give it the specified ID.

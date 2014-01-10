@@ -38,23 +38,20 @@ public:
   using ArrayType = std::array<UInt8, Length>;
 
   DatapathID() : dpid_{} {}
-
-  DatapathID(const ArrayType dpid) { dpid_ = dpid; }
-
+  explicit DatapathID(const ArrayType dpid) { dpid_ = dpid; }
   DatapathID(Big16 implementerDefined, EnetAddress macAddress);
+  DatapathID(const std::string &dpid);
 
   Big16 implementerDefined() const;
   EnetAddress macAddress() const;
   std::string toString() const;
 
   bool parse(const std::string &s);
+  void clear() { std::memset(dpid_.data(), 0, sizeof(dpid_)); }
 
   bool operator<(const DatapathID &rhs) const { return dpid_ < rhs.dpid_; }
-
   bool operator>(const DatapathID &rhs) const { return dpid_ > rhs.dpid_; }
-
   bool operator==(const DatapathID &rhs) const { return dpid_ == rhs.dpid_; }
-
   bool operator!=(const DatapathID &rhs) const { return !operator==(rhs); }
 
 private:

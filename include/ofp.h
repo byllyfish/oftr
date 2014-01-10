@@ -26,7 +26,6 @@
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
 #include "ofp/message.h"
-#include "ofp/features.h"
 #include "ofp/headeronly.h"
 #include "ofp/featuresreply.h"
 #include "ofp/flowmod.h"
@@ -81,7 +80,7 @@ Exception runController(ChannelListener::Factory listenerFactory,
 /// \param  versions set of protocol versions to accept
 /// \return error result
 
-Exception runAgent(const Features &features, const IPv6Address &remoteAddress,
+Exception runAgent(const IPv6Address &remoteAddress,
                    ChannelListener::Factory listenerFactory,
                    ProtocolVersions versions = ProtocolVersions::All);
 

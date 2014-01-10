@@ -32,16 +32,11 @@ using namespace ofp;
 using namespace ofp::sys;
 
 UDP_Server::UDP_Server(Engine *engine, Driver::Role role,
-                       const Features *features, const udp::endpoint &endpt,
+                       const udp::endpoint &endpt,
                        ProtocolVersions versions)
     : engine_{engine}, role_{role}, versions_{versions}, socket_{engine->io()},
       message_{nullptr} {
   listen(endpt);
-
-  if (features) {
-    features_ = *features;
-  }
-
   asyncReceive();
 
   engine_->registerServer(this);

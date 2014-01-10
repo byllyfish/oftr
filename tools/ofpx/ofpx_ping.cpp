@@ -73,7 +73,7 @@ static int ping_connect(const IPv6Endpoint &endpt) {
   ByteList echoData;
 
   auto exc =
-      driver.connect(Driver::Bridge, nullptr, endpt, ProtocolVersions::All,
+      driver.connect(Driver::Bridge, endpt, ProtocolVersions::All,
                      [echoData]() { return new PingListener{&echoData}; });
 
   int exitCode = 0;

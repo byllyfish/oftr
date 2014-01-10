@@ -28,7 +28,6 @@
 #include "ofp/ipv6address.h"
 #include "ofp/message.h"
 #include "ofp/driver.h"
-#include "ofp/features.h"
 #include <unordered_map>
 
 namespace ofp { // <namespace ofp>
@@ -44,7 +43,7 @@ public:
 
 	enum { MaxDatagramLength = 2000 };  // FIXME?
 
-	UDP_Server(Engine *engine, Driver::Role role, const Features *features, const udp::endpoint &endpt, ProtocolVersions versions);
+	UDP_Server(Engine *engine, Driver::Role role, const udp::endpoint &endpt, ProtocolVersions versions);
 	~UDP_Server();
 
 	// Used by UDP_Connections to manage their lifetimes.
@@ -61,7 +60,6 @@ private:
 
 	Engine *engine_;
 	Driver::Role role_;
-	Features features_;
 	ProtocolVersions versions_;
 	udp::socket socket_;
 	udp::endpoint sender_;

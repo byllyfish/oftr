@@ -21,10 +21,13 @@ void TestAgent::onChannelDown(Channel *channel) {
 }
 
 void TestAgent::onMessage(const Message *message) {
-  if (message->type() == OFPT_BARRIER_REQUEST) {
+  if (message->type() == OFPT_FEATURES_REQUEST) {
+    FeaturesReplyBuilder reply{message->xid()};
+    reply.setDatapathId(DatapathID{"12-34-56-78-9A-BC-CD-EF"});
+    reply.send(message->source());
+  } else if (message->type() == OFPT_BARRIER_REQUEST) {
     BarrierReplyBuilder reply{message};
     reply.send(message->source());
-
   } else if (message->isRequestType()) {
     ErrorBuilder error{OFPET_BAD_REQUEST, OFPBRC_BAD_TYPE};
     error.setErrorData(message);

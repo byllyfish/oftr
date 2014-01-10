@@ -29,19 +29,19 @@ Driver::Driver(DriverOptions *options)
 
 Driver::~Driver() { delete engine_; }
 
-Deferred<Exception> Driver::listen(Role role, const Features *features,
+Deferred<Exception> Driver::listen(Role role,
                                    const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory) {
-  return engine_->listen(role, features, localEndpoint, versions,
+  return engine_->listen(role, localEndpoint, versions,
                          listenerFactory);
 }
 
-Deferred<Exception> Driver::connect(Role role, const Features *features,
+Deferred<Exception> Driver::connect(Role role,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory) {
-  return engine_->connect(role, features, remoteEndpoint, versions,
+  return engine_->connect(role, remoteEndpoint, versions,
                           listenerFactory);
 }
 

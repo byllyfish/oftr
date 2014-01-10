@@ -42,17 +42,17 @@ public:
      Engine(Driver *driver, DriverOptions *options);
     ~Engine();
 
-    Deferred<Exception> listen(Driver::Role role, const Features *features,
+    Deferred<Exception> listen(Driver::Role role,
                                const IPv6Endpoint &localEndpoint,
                                ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory);
 
-    Deferred<Exception> connect(Driver::Role role, const Features *features,
+    Deferred<Exception> connect(Driver::Role role,
                                 const IPv6Endpoint &remoteEndpoint,
                                 ProtocolVersions versions,
                                 ChannelListener::Factory listenerFactory);
 
-    void reconnect(DefaultHandshake *handshake, const Features *features, const IPv6Endpoint &remoteEndpoint, milliseconds delay);
+    void reconnect(DefaultHandshake *handshake, const IPv6Endpoint &remoteEndpoint, milliseconds delay);
 
     void run();
     void stop(milliseconds timeout = 0_ms);

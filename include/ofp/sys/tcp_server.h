@@ -38,7 +38,7 @@ class Engine;
 class TCP_Server : public Server {
 public:
 
-    TCP_Server(Engine *engine, Driver::Role role, const Features *features, const tcp::endpoint &endpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
+    TCP_Server(Engine *engine, Driver::Role role, const tcp::endpoint &endpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory);
     ~TCP_Server();
 
 private:
@@ -49,7 +49,6 @@ private:
     Driver::Role role_;
     ProtocolVersions versions_;
     ChannelListener::Factory factory_;
-    Features features_;
     
     void listen(const tcp::endpoint &endpt);
     void asyncAccept();

@@ -20,18 +20,10 @@ int main(int argc, const char **argv) {
 
   ofp::log::set(&std::cerr);
 
-  EnetAddress enetAddr{"01-02-03-04-05-00"};
-
-  Features features;
-  features.setDatapathId(DatapathID{0, enetAddr});
-  features.setBufferCount(1);
-  features.setTableCount(1);
-  features.setCapabilities(0);
-
   Driver driver;
 
   if (addr.valid()) {
-    auto result = driver.connect(Driver::Agent, &features,
+    auto result = driver.connect(Driver::Agent,
                                  IPv6Endpoint{addr, OFP_DEFAULT_PORT}, version,
                                  NullAgent::Factory);
     result.done([](Exception ex) {
@@ -42,7 +34,7 @@ int main(int argc, const char **argv) {
 
   } else {
     auto result =
-        driver.listen(Driver::Agent, &features, IPv6Endpoint{OFP_DEFAULT_PORT},
+        driver.listen(Driver::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
                       version, NullAgent::Factory);
 
     result.done([](Exception ex) {

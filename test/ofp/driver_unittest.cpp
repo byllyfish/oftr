@@ -42,7 +42,7 @@ TEST(driver, test) {
 
   Driver driver;
 
-  driver.listen(Driver::Controller, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT},
+  driver.listen(Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
                 ProtocolVersions{}, [] { return new MockChannelListener; });
 
   // driver.run();

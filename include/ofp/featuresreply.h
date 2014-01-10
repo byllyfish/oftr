@@ -24,15 +24,12 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
-#include "ofp/features.h"
 
 namespace ofp { // <namespace ofp>
 
 /// \brief FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
 class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY> {
 public:
-  void getFeatures(Features *features) const;
-
   const DatapathID &datapathId() const { return datapathId_; }
   UInt32 bufferCount() const { return bufferCount_; }
   UInt8 tableCount() const { return tableCount_; }
@@ -47,12 +44,12 @@ public:
 private:
   Header header_;
   DatapathID datapathId_;
-  Big32 bufferCount_;
-  Big8 tableCount_;
-  Big8 auxiliaryId_;
+  Big32 bufferCount_ = 0;
+  Big8 tableCount_ = 0;
+  Big8 auxiliaryId_ = 0;
   Padding<2> pad_;
-  Big32 capabilities_;
-  Big32 reserved_;
+  Big32 capabilities_ = 0;
+  Big32 reserved_ = 0;
 
   // Only FeaturesReplyBuilder can construct an actual instance.
   FeaturesReply() : header_{type()} {}
@@ -71,8 +68,6 @@ class FeaturesReplyBuilder {
 public:
   explicit FeaturesReplyBuilder(UInt32 xid);
   explicit FeaturesReplyBuilder(const FeaturesReply *msg);
-
-  void setFeatures(const Features &features);
 
   void setDatapathId(const DatapathID &datapathId) {
     msg_.datapathId_ = datapathId;
