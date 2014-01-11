@@ -25,9 +25,7 @@
 #include "ofp/log.h"
 #include "ofp/defaulthandshake.h"
 
-using namespace ofp;
 using namespace ofp::sys;
-using namespace boost;
 
 TCP_Connection::TCP_Connection(Engine *engine, Driver::Role role,
                                ProtocolVersions versions,
@@ -50,7 +48,7 @@ TCP_Connection::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
 
 TCP_Connection::~TCP_Connection() {}
 
-IPv6Endpoint TCP_Connection::remoteEndpoint() const {
+ofp::IPv6Endpoint TCP_Connection::remoteEndpoint() const {
   try {
     if (isOutgoing()) {
       return convertEndpoint<tcp>(endpoint_);
@@ -78,7 +76,7 @@ void TCP_Connection::shutdown() {
   socket_.lowest_layer().close();
 }
 
-Deferred<ofp::Exception>
+ofp::Deferred<ofp::Exception>
 TCP_Connection::asyncConnect(const tcp::endpoint &endpt, milliseconds delay) {
   assert(deferredExc_ == nullptr);
 

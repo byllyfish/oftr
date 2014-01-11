@@ -26,9 +26,6 @@
 #include "ofp/echoreply.h"
 #include "ofp/hello.h"
 
-using namespace boost;
-
-using namespace ofp;
 using namespace ofp::sys;
 
 UDP_Server::UDP_Server(Engine *engine, Driver::Role role,

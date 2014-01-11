@@ -25,10 +25,7 @@
 #include "ofp/sys/udp_server.h"
 #include "ofp/defaultauxiliarylistener.h"
 
-using namespace asio;
-
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+using namespace ofp::sys;
 
 Engine::Engine(Driver *driver, DriverOptions *options)
     : driver_{driver}, signals_{io_}, stopTimer_{io_} {}
@@ -47,7 +44,7 @@ Engine::~Engine() {
   }
 }
 
-Deferred<Exception> Engine::listen(Driver::Role role,
+ofp::Deferred<ofp::Exception> Engine::listen(Driver::Role role,
                                    const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory) {
@@ -78,7 +75,7 @@ Deferred<Exception> Engine::listen(Driver::Role role,
   return result;
 }
 
-Deferred<Exception> Engine::connect(Driver::Role role,
+ofp::Deferred<ofp::Exception> Engine::connect(Driver::Role role,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory) {
@@ -137,7 +134,7 @@ void Engine::stop(milliseconds timeout) {
     io_.stop();
   } else {
     stopTimer_.expires_from_now(timeout);
-    stopTimer_.async_wait([this](const error_code &err) {
+    stopTimer_.async_wait([this](const asio::error_code &err) {
       if (err != asio::error::operation_aborted) {
         stop(0_ms);
       }
@@ -255,7 +252,7 @@ void Engine::installSignalHandlers() {
   if (!isSignalsInited_) {
     signals_.add(SIGINT);
     signals_.add(SIGTERM);
-    signals_.async_wait([this](error_code error, int signum) {
+    signals_.async_wait([this](const asio::error_code &error, int signum) {
       if (!error) {
         log::info("Signal received:", signum);
         this->stop();
@@ -264,5 +261,3 @@ void Engine::installSignalHandlers() {
   }
 }
 
-} // </namespace sys>
-} // </namespace ofp>
