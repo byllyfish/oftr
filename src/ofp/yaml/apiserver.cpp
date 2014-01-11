@@ -44,7 +44,7 @@ ApiServer::ApiServer(Driver *driver, int input, int output,
 
   bool listening = (defaultChannel != nullptr);
   auto conn = std::make_shared<ApiConnectionStdio>(
-      this, stream_descriptor{engine_->io()}, stream_descriptor{engine_->io()},
+      this, asio::posix::stream_descriptor{engine_->io()}, asio::posix::stream_descriptor{engine_->io()},
       listening);
 
   if (input >= 0) {
@@ -59,13 +59,13 @@ ApiServer::ApiServer(Driver *driver, int input, int output,
 }
 
 void ApiServer::asyncAccept() {
-  acceptor_.async_accept(socket_, [this](error_code err) {
+  acceptor_.async_accept(socket_, [this](const asio::error_code &err) {
     // N.B. ASIO still sends a cancellation error even after
     // async_accept() throws an exception. Check for cancelled operation
     // first; our ApiServer instance will have been destroyed.
-    if (isAsioCanceled(err)) {
+    if (err == asio::error::operation_aborted)
       return;
-    }
+    
     if (!err) {
       // Only allow one connection at a time.
       if (oneConn_ == nullptr) {

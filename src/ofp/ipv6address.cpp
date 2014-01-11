@@ -40,8 +40,8 @@ IPv6Address::IPv6Address(const std::string &s) {
 }
 
 bool IPv6Address::parse(const std::string &s) {
-  using namespace boost::asio;
-  boost::system::error_code err;
+  using namespace asio;
+  std::error_code err;
 
   ip::address_v6 addr6 = ip::address_v6::from_string(s, err);
   if (!err) {

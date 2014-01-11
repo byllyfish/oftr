@@ -25,7 +25,7 @@
 #include "ofp/sys/udp_server.h"
 #include "ofp/defaultauxiliarylistener.h"
 
-using namespace boost::asio;
+using namespace asio;
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
@@ -70,7 +70,7 @@ Deferred<Exception> Engine::listen(Driver::Role role,
     // Pass back success.
     result->done(Exception{});
   }
-  catch (const boost::system::system_error &ex) {
+  catch (const std::system_error &ex) {
     log::debug("System error caught in Engine::listen: ", ex.code());
     result->done(makeException(ex.code()));
   }
@@ -138,7 +138,7 @@ void Engine::stop(milliseconds timeout) {
   } else {
     stopTimer_.expires_from_now(timeout);
     stopTimer_.async_wait([this](const error_code &err) {
-      if (err != boost::asio::error::operation_aborted) {
+      if (err != asio::error::operation_aborted) {
         stop(0_ms);
       }
     });

@@ -27,6 +27,7 @@
 #include "ofp/defaulthandshake.h"
 #include "ofp/channel.h"
 #include "ofp/datapathid.h"
+#include <map>
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
@@ -61,7 +62,7 @@ public:
 
     void openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Connection *mainConnection);
 
-    io_service &io()
+    asio::io_service &io()
     {
         return io_;
     }
@@ -88,15 +89,15 @@ private:
 
     // The io_service must be one of the first objects to be destroyed when 
     // engine destructor runs. Connections may need to bookkeeping objects.
-    io_service io_;
+    asio::io_service io_;
     bool isRunning_ = false;
 
     // Sets up signal handlers to shut down runloop.
     bool isSignalsInited_ = false;
-    signal_set signals_;
+    asio::signal_set signals_;
 
     // Timer that can be used to stop the engine.
-    steady_timer stopTimer_;
+    asio::steady_timer stopTimer_;
 };
 
 OFP_END_IGNORE_PADDING

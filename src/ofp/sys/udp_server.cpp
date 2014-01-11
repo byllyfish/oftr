@@ -45,7 +45,7 @@ UDP_Server::UDP_Server(Engine *engine, Driver::Role role,
 }
 
 UDP_Server::~UDP_Server() {
-  error_code err;
+  asio::error_code err;
   udp::endpoint endpt = socket_.local_endpoint(err);
   log::info("Stop UDP listening on", endpt);
 
@@ -81,9 +81,9 @@ void UDP_Server::listen(const udp::endpoint &endpt) {
   try {
     socket_.open(ep.protocol());
   }
-  catch (boost::system::system_error &ex) {
+  catch (std::system_error &ex) {
     auto addr = ep.address();
-    if (ex.code() == boost::asio::error::address_family_not_supported &&
+    if (ex.code() == asio::error::address_family_not_supported &&
         addr.is_v6() && addr.is_unspecified()) {
       log::info("UDP_Server: IPv6 is not supported. Using IPv4.");
       ep = udp::endpoint{udp::v4(), ep.port()};
@@ -100,7 +100,7 @@ void UDP_Server::listen(const udp::endpoint &endpt) {
 void UDP_Server::asyncReceive() {
   socket_.async_receive_from(
       asio::buffer(message_.mutableData(MaxDatagramLength), MaxDatagramLength),
-      sender_, [this](error_code err, size_t bytes_recvd) {
+      sender_, [this](const asio::error_code &err, size_t bytes_recvd) {
 
         if (err) {
           log::info("Error receiving datagram:", makeException(err));

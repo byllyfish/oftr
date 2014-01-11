@@ -46,7 +46,11 @@ set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 # Specify include directories for third party headers. We use -isystem instead
 # of -I because we don't want to receive compiler warnings from these headers.
 
-set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/boost_1_54_0_asio -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
+set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
+
+# Specify additional definitions.
+
+set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID")
 
 # Specify the default set of compiler flags for all sources, including third
 # party libraries. Place flags that don't affect the preprocessor or warnings
@@ -370,13 +374,13 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 add_subdirectory(external/yaml-io)
 add_subdirectory(external/googletest)
-add_subdirectory(external/boost_1_54_0_asio)
+##add_subdirectory(external/boost_1_54_0_asio)
 
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS}")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS}")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
 
 # Set up the source include directory. N.B. Includes for third-party sources are
 # baked into CMAKE_CXX_FLAGS using -isystem.
@@ -396,7 +400,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-target_link_libraries(ofp boost yamlio)
+target_link_libraries(ofp yamlio)
 
 # Make sure the source is generated before the executable builds.
 

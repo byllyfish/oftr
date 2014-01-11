@@ -67,8 +67,8 @@ void Buffered<StreamType>::buf_flush() {
 
   log::trace("write", outgoing.data(), outgoing.size());
 
-  async_write(next_layer(), boost::asio::buffer(outgoing.data(), outgoing.size()),
-              [this](const boost::system::error_code &err, size_t bytes_transferred) {
+  async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
+              [this](const asio::error_code &err, size_t bytes_transferred) {
 
     if (!err) {
       assert(bytes_transferred == buffer_[!bufferIdx_].size());

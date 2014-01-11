@@ -141,7 +141,7 @@ void TCP_Connection::asyncReadHeader() {
 
   asio::async_read(socket_, asio::buffer(message_.mutableData(sizeof(Header)),
                                          sizeof(Header)),
-                   [this, self](error_code err, size_t length) {
+                   [this, self](const asio::error_code &err, size_t length) {
 
     if (!err) {
       assert(length == sizeof(Header));
@@ -162,7 +162,7 @@ void TCP_Connection::asyncReadHeader() {
 
     } else {
 
-      if (!isAsioEOF(err)) {
+      if (err != asio::error::eof) {
         auto exc = makeException(err);
         log::debug("asyncReadHeader err ", exc);
         channelException(makeException(err));
@@ -183,7 +183,7 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
   asio::async_read(
       socket_, asio::buffer(message_.mutableData(msgLength) + sizeof(Header),
                             msgLength - sizeof(Header)),
-      [this, self](const error_code &err, size_t bytes_transferred) {
+      [this, self](const asio::error_code &err, size_t bytes_transferred) {
 
         if (!err) {
           assert(bytes_transferred == message_.size() - sizeof(Header));
@@ -192,7 +192,7 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
           asyncReadHeader();
 
         } else {
-          if (!isAsioEOF(err)) {
+          if (err != asio::error::eof) {
             auto exc = makeException(err);
             log::info("asyncReadMessage err ", exc);
             channelException(makeException(err));
@@ -208,14 +208,11 @@ void TCP_Connection::asyncConnect() {
   auto self(shared_from_this());
 
   socket_.lowest_layer().async_connect(endpoint_,
-                                       [this, self](const error_code &err) {
+                                       [this, self](const asio::error_code &err) {
     // `async_connect` may not report an error when the connection attempt
     // fails. We need to double-check that we are connected.
 
-    error_code actualErr = err;
-
-    if (!actualErr &&
-        checkAsioConnected(socket_.lowest_layer(), endpoint_, actualErr)) {
+    if (!err) {
       socket_.lowest_layer().set_option(tcp::no_delay(true));
       channelUp();
 
@@ -223,7 +220,7 @@ void TCP_Connection::asyncConnect() {
       reconnect();
     }
 
-    deferredExc_->done(makeException(actualErr));
+    deferredExc_->done(makeException(err));
     deferredExc_ = nullptr;
   });
 }
@@ -232,8 +229,8 @@ void TCP_Connection::asyncDelayConnect(milliseconds delay) {
   auto self(shared_from_this());
 
   idleTimer_.expires_from_now(delay);
-  idleTimer_.async_wait([this, self](const error_code &err) {
-    if (err != boost::asio::error::operation_aborted) {
+  idleTimer_.async_wait([this, self](const asio::error_code &err) {
+    if (err != asio::error::operation_aborted) {
       asyncConnect();
     } else {
       assert(deferredExc_ != nullptr);
@@ -257,8 +254,8 @@ void TCP_Connection::asyncIdleCheck() {
   }
 
   idleTimer_.expires_from_now(delay);
-  idleTimer_.async_wait([this](const error_code &err) {
-    if (err != boost::asio::error::operation_aborted) {
+  idleTimer_.async_wait([this](const asio::error_code &err) {
+    if (err != asio::error::operation_aborted) {
       asyncIdleCheck();
     }
   });

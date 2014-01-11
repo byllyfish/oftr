@@ -48,19 +48,18 @@ void ApiConnectionTCP::asyncAccept() {
 void ApiConnectionTCP::asyncRead() {
   auto self(shared_from_this());
 
-  boost::asio::async_read_until(
+  asio::async_read_until(
       socket_, streambuf_, '\n',
-      [this, self](const error_code & err, size_t bytes_transferred) {
+      [this, self](const asio::error_code &err, size_t bytes_transferred) {
         if (!err) {
           std::istream is(&streambuf_);
           std::string line;
           std::getline(is, line);
           handleInputLine(&line);
           asyncRead();
-        } else if (!isAsioEOF(err)) {
+        } else if (err != asio::error::eof) {
           auto exc = makeException(err);
           log::info("ApiConnectionTCP::asyncRead err", exc);
         }
       });
 }
-

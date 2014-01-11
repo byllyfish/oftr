@@ -43,7 +43,7 @@ protected:
 
 private:
 	sys::Buffered<sys::Plaintext<sys::tcp::socket>> socket_;
-	boost::asio::streambuf streambuf_;
+	asio::streambuf streambuf_;
 };
 
 } // </namespace yaml>

@@ -83,7 +83,7 @@ private:
   Buffered<Plaintext<tcp::socket>> socket_;
   tcp::endpoint endpoint_;
   DeferredResultPtr<Exception> deferredExc_ = nullptr;
-  steady_timer idleTimer_;
+  asio::steady_timer idleTimer_;
   std::chrono::steady_clock::time_point latestActivity_;
 
   log::Lifetime lifetime_{"TCP_Connection"};

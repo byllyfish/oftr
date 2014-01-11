@@ -13,7 +13,7 @@ namespace sys { // <namespace sys>
 /// and shutdown.
 
 template <class StreamType>
-class Plaintext : private StreamType, public boost::asio::ssl::stream_base {
+class Plaintext : private StreamType, public asio::ssl::stream_base {
   using inherited = StreamType;
 
 public:
@@ -40,13 +40,13 @@ public:
   template <typename HandshakeHandler>
   void async_handshake(handshake_type type, HandshakeHandler &&handler) {
     // Handshake immediately succeeds.
-    handler(error_code());
+    handler(asio::error_code{});
   }
 
   template <typename ShutdownHandler>
   void async_shutdown(ShutdownHandler &&handler) {
     // Shutdown immediately succeeds.
-    handler(error_code());
+    handler(asio::error_code{});
   }
 };
 

@@ -26,8 +26,8 @@ using namespace ofp::yaml;
 using namespace ofp::sys;
 
 ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
-                                       sys::stream_descriptor input,
-                                       sys::stream_descriptor output,
+                                       asio::posix::stream_descriptor input,
+                                       asio::posix::stream_descriptor output,
                                        bool listening)
     : ApiConnection{server, listening}, input_{std::move(input)},
       output_{std::move(output)} {}
@@ -59,16 +59,16 @@ void ApiConnectionStdio::asyncAccept() {
 void ApiConnectionStdio::asyncRead() {
   auto self(shared_from_this());
 
-  boost::asio::async_read_until(
+  asio::async_read_until(
       input_, streambuf_, '\n',
-      [this, self](const error_code & err, size_t bytes_transferred) {
+      [this, self](const asio::error_code &err, size_t bytes_transferred) {
         if (!err) {
           std::istream is(&streambuf_);
           std::string line;
           std::getline(is, line);
           handleInputLine(&line);
           asyncRead();
-        } else if (!isAsioEOF(err)) {
+        } else if (err != asio::error::eof) {
           auto exc = makeException(err);
           log::info("ApiConnection::asyncRead err", exc);
         }
@@ -87,9 +87,9 @@ void ApiConnectionStdio::asyncWrite() {
 
   auto self(shared_from_this());
 
-  boost::asio::async_write(
-      output_, boost::asio::buffer(data, size),
-      [this, self](const error_code & err, size_t bytes_transferred) {
+  asio::async_write(
+      output_, asio::buffer(data, size),
+      [this, self](const asio::error_code &err, size_t bytes_transferred) {
 
         if (!err) {
           assert(bytes_transferred == outgoing_[!outgoingIdx_].size());

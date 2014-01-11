@@ -23,6 +23,7 @@
 #define OFP_SYS_CONNECTION_TIMER_H
 
 #include "ofp/sys/boost_asio.h"
+#include <map>
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
@@ -42,7 +43,7 @@ public:
 
 private:
 	Connection *conn_;
-	steady_timer timer_;
+	asio::steady_timer timer_;
 	milliseconds interval_;
     UInt32 id_;
     bool repeating_;

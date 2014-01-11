@@ -21,8 +21,6 @@
 
 #include "ofp/sys/boost_asio.h"
 
-using namespace boost::asio;
-
 size_t ofp::sys::HashEndpoint::operator()(const IPv6Endpoint &endpt) const {
   // FIXME - check literature for better hash function.
 
