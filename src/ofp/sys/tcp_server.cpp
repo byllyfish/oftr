@@ -26,13 +26,16 @@
 using namespace ofp::sys;
 
 TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
-                       const tcp::endpoint &endpt,
-                       ProtocolVersions versions,
-                       ChannelListener::Factory listenerFactory)
+                       const tcp::endpoint &endpt, ProtocolVersions versions,
+                       ChannelListener::Factory listenerFactory,
+                       std::error_code &error)
     : engine_{engine}, acceptor_{engine->io()}, socket_{engine->io()},
       role_{role}, versions_{versions}, factory_{listenerFactory} {
-  listen(endpt);
-  asyncAccept();
+
+  listen(endpt, error);
+
+  if (!error)
+    asyncAccept();
 
   engine_->registerServer(this);
 
@@ -47,28 +50,29 @@ TCP_Server::~TCP_Server() {
   engine_->releaseServer(this);
 }
 
-void TCP_Server::listen(const tcp::endpoint &endpt) {
+void TCP_Server::listen(const tcp::endpoint &localEndpt,
+                        std::error_code &error) {
+  auto endpt = localEndpt;
+  auto addr = endpt.address();
+
+  acceptor_.open(endpt.protocol(), error);
+
   // Handle case where IPv6 is not supported on this system.
-  tcp::endpoint ep = endpt;
-  try {
-    acceptor_.open(ep.protocol());
-  }
-  catch (std::system_error &ex) {
-    auto addr = ep.address();
-    if (ex.code() == asio::error::address_family_not_supported &&
-        addr.is_v6() && addr.is_unspecified()) {
-      log::info("TCP_Server: IPv6 is not supported. Using IPv4.");
-      ep = tcp::endpoint{tcp::v4(), ep.port()};
-      acceptor_.open(ep.protocol());
-    } else {
-      log::debug("TCP_Server::listen - unexpected exception", ex.code());
-      throw;
-    }
+  if (error == asio::error::address_family_not_supported && addr.is_v6() &&
+      addr.is_unspecified()) {
+    log::info("TCP_Server: IPv6 is not supported. Using IPv4.");
+    endpt = tcp::endpoint{tcp::v4(), endpt.port()};
+    if (acceptor_.open(endpt.protocol(), error))
+      return;
   }
 
-  acceptor_.set_option(asio::socket_base::reuse_address(true));
-  acceptor_.bind(ep);
-  acceptor_.listen(asio::socket_base::max_connections);
+  if (acceptor_.set_option(asio::socket_base::reuse_address(true), error))
+    return;
+
+  if (acceptor_.bind(endpt, error))
+    return;
+
+  acceptor_.listen(asio::socket_base::max_connections, error);
 }
 
 void TCP_Server::asyncAccept() {

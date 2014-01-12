@@ -44,41 +44,47 @@ Engine::~Engine() {
   }
 }
 
-ofp::Deferred<ofp::Exception> Engine::listen(Driver::Role role,
-                                   const IPv6Endpoint &localEndpoint,
-                                   ProtocolVersions versions,
-                                   ChannelListener::Factory listenerFactory) {
+ofp::Deferred<ofp::Exception>
+Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
+               ProtocolVersions versions,
+               ChannelListener::Factory listenerFactory) {
   auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
   auto udpEndpt = convertEndpoint<udp>(localEndpoint);
   auto result = Deferred<Exception>::makeResult();
 
-  try {
-    auto tcpsvr = std::unique_ptr<TCP_Server>{new TCP_Server{
-        this, role, tcpEndpt, versions, listenerFactory}};
-    auto udpsvr = std::unique_ptr<UDP_Server>{
-        new UDP_Server{this, role, udpEndpt, versions}};
+  std::error_code error;
 
-    (void)tcpsvr.release();
-    (void)udpsvr.release();
+  auto tcpsvr = MakeUniquePtr<TCP_Server>(this, role, tcpEndpt, versions,
+                                          listenerFactory, error);
 
-    // Register signal handlers.
-    installSignalHandlers();
-
-    // Pass back success.
-    result->done(Exception{});
+  if (error) {
+    result->done(makeException(error));
+    return result;
   }
-  catch (const std::system_error &ex) {
-    log::debug("System error caught in Engine::listen: ", ex.code());
-    result->done(makeException(ex.code()));
+
+  auto udpsvr =
+      MakeUniquePtr<UDP_Server>(this, role, udpEndpt, versions, error);
+
+  if (error) {
+    result->done(makeException(error));
+    return result;
   }
+
+  (void)tcpsvr.release();
+  (void)udpsvr.release();
+
+  // Register signal handlers.
+  installSignalHandlers();
+
+  result->done(Exception{});
 
   return result;
 }
 
-ofp::Deferred<ofp::Exception> Engine::connect(Driver::Role role,
-                                    const IPv6Endpoint &remoteEndpoint,
-                                    ProtocolVersions versions,
-                                    ChannelListener::Factory listenerFactory) {
+ofp::Deferred<ofp::Exception>
+Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
+                ProtocolVersions versions,
+                ChannelListener::Factory listenerFactory) {
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
   auto connPtr =
@@ -104,8 +110,7 @@ ofp::Deferred<ofp::Exception> Engine::connect(Driver::Role role,
 void Engine::reconnect(DefaultHandshake *handshake,
                        const IPv6Endpoint &remoteEndpoint,
                        std::chrono::milliseconds delay) {
-  tcp::endpoint endpt =
-      convertEndpoint<tcp>(remoteEndpoint);
+  tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
   auto connPtr = std::make_shared<TCP_Connection>(this, handshake);
   (void)connPtr->asyncConnect(endpt, delay);
@@ -118,12 +123,7 @@ void Engine::run() {
     // Set isRunning_ to true when we are in io.run(). This guards against
     // re-entry and provides a flag to test when shutting down.
 
-    try {
-      io_.run();
-    }
-    catch (std::exception &ex) {
-      log::debug("Unexpected exception caught in Engine::run(): ", ex.what());
-    }
+    io_.run();
 
     isRunning_ = false;
   }
@@ -153,7 +153,8 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
   if (transport == Channel::Transport::TCP) {
     log::debug("openAuxChannel", auxID);
 
-    tcp::endpoint endpt = convertEndpoint<tcp>(mainConnection->remoteEndpoint());
+    tcp::endpoint endpt =
+        convertEndpoint<tcp>(mainConnection->remoteEndpoint());
     DefaultHandshake *hs = mainConnection->handshake();
     ProtocolVersions versions = hs->versions();
 
@@ -211,7 +212,7 @@ void Engine::postDatapathID(Connection *channel) {
     // don't find a main connection, close the auxiliary channel.
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
-      channel->setMainConnection(item->second, auxID);  
+      channel->setMainConnection(item->second, auxID);
 
     } else {
       log::info("Engine.postDatapathID: Main connection not found.", dpid);
@@ -260,4 +261,3 @@ void Engine::installSignalHandlers() {
     });
   }
 }
-

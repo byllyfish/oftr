@@ -49,16 +49,10 @@ TCP_Connection::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
 TCP_Connection::~TCP_Connection() {}
 
 ofp::IPv6Endpoint TCP_Connection::remoteEndpoint() const {
-  try {
-    if (isOutgoing()) {
-      return convertEndpoint<tcp>(endpoint_);
-    } else {
-      return convertEndpoint<tcp>(socket_.lowest_layer().remote_endpoint());
-    }
-  }
-  catch (std::exception &ex) {
-    log::debug("remoteAddress:", ex.what());
-    return IPv6Endpoint{};
+  if (isOutgoing()) {
+    return convertEndpoint<tcp>(endpoint_);
+  } else {
+    return convertEndpoint<tcp>(socket_.lowest_layer().remote_endpoint());
   }
 }
 
@@ -205,22 +199,22 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
 void TCP_Connection::asyncConnect() {
   auto self(shared_from_this());
 
-  socket_.lowest_layer().async_connect(endpoint_,
-                                       [this, self](const asio::error_code &err) {
-    // `async_connect` may not report an error when the connection attempt
-    // fails. We need to double-check that we are connected.
+  socket_.lowest_layer().async_connect(
+      endpoint_, [this, self](const asio::error_code &err) {
+        // `async_connect` may not report an error when the connection attempt
+        // fails. We need to double-check that we are connected.
 
-    if (!err) {
-      socket_.lowest_layer().set_option(tcp::no_delay(true));
-      channelUp();
+        if (!err) {
+          socket_.lowest_layer().set_option(tcp::no_delay(true));
+          channelUp();
 
-    } else if (wantsReconnect()) {
-      reconnect();
-    }
+        } else if (wantsReconnect()) {
+          reconnect();
+        }
 
-    deferredExc_->done(makeException(err));
-    deferredExc_ = nullptr;
-  });
+        deferredExc_->done(makeException(err));
+        deferredExc_ = nullptr;
+      });
 }
 
 void TCP_Connection::asyncDelayConnect(milliseconds delay) {

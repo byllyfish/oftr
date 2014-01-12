@@ -43,7 +43,7 @@ public:
 
 	enum { MaxDatagramLength = 2000 };  // FIXME?
 
-	UDP_Server(Engine *engine, Driver::Role role, const udp::endpoint &endpt, ProtocolVersions versions);
+	UDP_Server(Engine *engine, Driver::Role role, const udp::endpoint &endpt, ProtocolVersions versions, std::error_code &error);
 	~UDP_Server();
 
 	// Used by UDP_Connections to manage their lifetimes.
@@ -68,7 +68,7 @@ private:
 	bool shuttingDown_ = false;
 	log::Lifetime lifetime_{"UDP_Server"};
 
-	void listen(const udp::endpoint &endpt);
+	void listen(const udp::endpoint &endpt, std::error_code &error);
 	void asyncReceive();
 	void asyncSend();
 
