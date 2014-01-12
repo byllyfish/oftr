@@ -133,10 +133,16 @@ void Engine::stop(milliseconds timeout) {
   if (timeout == 0_ms) {
     io_.stop();
   } else {
-    stopTimer_.expires_from_now(timeout);
+    asio::error_code error;
+    stopTimer_.expires_from_now(timeout, error);
+    if (error) {
+      io_.stop();
+      return;
+    }
+
     stopTimer_.async_wait([this](const asio::error_code &err) {
       if (err != asio::error::operation_aborted) {
-        stop(0_ms);
+        io_.stop();
       }
     });
   }

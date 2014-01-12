@@ -220,7 +220,11 @@ void TCP_Connection::asyncConnect() {
 void TCP_Connection::asyncDelayConnect(milliseconds delay) {
   auto self(shared_from_this());
 
-  idleTimer_.expires_from_now(delay);
+  asio::error_code error;
+  idleTimer_.expires_from_now(delay, error);
+  if (error)
+    return;
+
   idleTimer_.async_wait([this, self](const asio::error_code &err) {
     if (err != asio::error::operation_aborted) {
       asyncConnect();
@@ -245,7 +249,11 @@ void TCP_Connection::asyncIdleCheck() {
     delay = 5000_ms - interval;
   }
 
-  idleTimer_.expires_from_now(delay);
+  asio::error_code error;
+  idleTimer_.expires_from_now(delay, error);
+  if (error)
+    return;
+  
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (err != asio::error::operation_aborted) {
       asyncIdleCheck();
