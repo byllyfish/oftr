@@ -36,7 +36,7 @@ OFP_BEGIN_IGNORE_PADDING
 /// unique ID.
 class ConnectionTimer {
 public:
-	ConnectionTimer(Connection *conn, UInt32 id, milliseconds interval, bool repeating);
+	ConnectionTimer(Connection *conn, UInt32 id, Milliseconds interval, bool repeating);
 
 	UInt32 id() const { return id_; }
 	bool repeating() const { return repeating_; }
@@ -44,7 +44,7 @@ public:
 private:
 	Connection *conn_;
 	asio::steady_timer timer_;
-	milliseconds interval_;
+	Milliseconds interval_;
     UInt32 id_;
     bool repeating_;
 

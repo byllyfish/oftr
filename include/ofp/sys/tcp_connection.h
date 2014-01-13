@@ -51,7 +51,7 @@ public:
   ~TCP_Connection();
 
   Deferred<Exception> asyncConnect(const tcp::endpoint &endpt,
-                                   milliseconds delay = 0_ms);
+                                   Milliseconds delay = 0_ms);
   void asyncAccept();
 
   void channelUp();
@@ -92,7 +92,7 @@ private:
   void asyncReadMessage(size_t length);
   void asyncWrite();
   void asyncConnect();
-  void asyncDelayConnect(milliseconds delay);
+  void asyncDelayConnect(Milliseconds delay);
   void asyncIdleCheck();
 
   void reconnect();

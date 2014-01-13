@@ -75,12 +75,12 @@ using UInt16 = std::uint16_t;
 using UInt32 = std::uint32_t;
 using UInt64 = std::uint64_t;
 
-using milliseconds = std::chrono::milliseconds;
+using Milliseconds = std::chrono::milliseconds;
 
 // Literal type `ms` is not supported until C++14. Use _ms for now.
 
-constexpr milliseconds operator"" _ms(unsigned long long msec) {
-  return milliseconds{msec};
+constexpr Milliseconds operator"" _ms(unsigned long long msec) {
+  return Milliseconds{msec};
 }
 
 template <class T>

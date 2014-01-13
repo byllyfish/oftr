@@ -45,7 +45,7 @@ public:
   virtual ChannelListener *channelListener() const = 0;
   virtual void setChannelListener(ChannelListener *listener) = 0;
 
-  virtual void scheduleTimer(UInt32 timerID, milliseconds when,
+  virtual void scheduleTimer(UInt32 timerID, Milliseconds when,
                              bool repeat = false) = 0;
   virtual void cancelTimer(UInt32 timerID) = 0;
 

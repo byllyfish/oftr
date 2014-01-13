@@ -26,7 +26,7 @@
 using namespace ofp::sys;
 
 ConnectionTimer::ConnectionTimer(Connection *conn, UInt32 id,
-                                 milliseconds interval, bool repeating)
+                                 Milliseconds interval, bool repeating)
     : conn_{conn}, timer_{conn->engine()->io()}, interval_{interval}, id_{id},
       repeating_{repeating} {
   asyncWait();

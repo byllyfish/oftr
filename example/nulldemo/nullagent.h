@@ -9,7 +9,7 @@ using ofp::UInt16;
 using ofp::UInt32;
 using ofp::Message;
 using ofp::Channel;
-using ofp::milliseconds;
+using ofp::Milliseconds;
 
 class NullAgent : public ofp::ChannelListener {
 public:

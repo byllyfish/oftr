@@ -71,7 +71,7 @@ void TCP_Connection::shutdown() {
 }
 
 ofp::Deferred<ofp::Exception>
-TCP_Connection::asyncConnect(const tcp::endpoint &endpt, milliseconds delay) {
+TCP_Connection::asyncConnect(const tcp::endpoint &endpt, Milliseconds delay) {
   assert(deferredExc_ == nullptr);
 
   endpoint_ = endpt;
@@ -217,7 +217,7 @@ void TCP_Connection::asyncConnect() {
       });
 }
 
-void TCP_Connection::asyncDelayConnect(milliseconds delay) {
+void TCP_Connection::asyncDelayConnect(Milliseconds delay) {
   auto self(shared_from_this());
 
   asio::error_code error;
@@ -239,9 +239,9 @@ void TCP_Connection::asyncDelayConnect(milliseconds delay) {
 void TCP_Connection::asyncIdleCheck() {
   std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
   auto interval =
-      std::chrono::duration_cast<milliseconds>(now - latestActivity_);
+      std::chrono::duration_cast<Milliseconds>(now - latestActivity_);
 
-  milliseconds delay;
+  Milliseconds delay;
   if (interval >= 5000_ms) {
     postIdle();
     delay = 5000_ms;
@@ -253,7 +253,7 @@ void TCP_Connection::asyncIdleCheck() {
   idleTimer_.expires_from_now(delay, error);
   if (error)
     return;
-  
+
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (err != asio::error::operation_aborted) {
       asyncIdleCheck();

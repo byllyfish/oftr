@@ -136,7 +136,7 @@ void Connection::postDatapathId(const DatapathID &datapathId, UInt8 auxiliaryId)
 /// \brief Schedule a timer event on the channel and give it the specified ID.
 /// If there is already a timer with the same ID, this method will cancel the
 /// old timer and replace it.
-void Connection::scheduleTimer(UInt32 timerID, milliseconds interval,
+void Connection::scheduleTimer(UInt32 timerID, Milliseconds interval,
                                bool repeat) {
   timers_[timerID] = std::unique_ptr<ConnectionTimer>(
       new ConnectionTimer{this, timerID, interval, repeat});

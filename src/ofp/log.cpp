@@ -35,7 +35,7 @@ std::ostream *get() { return GlobalLogStream; }
 
 void set(std::ostream *logStream) { GlobalLogStream = logStream; }
 
-using Time = std::pair<std::time_t, milliseconds>;
+using Time = std::pair<std::time_t, Milliseconds>;
 
 static Time currentTime() {
   using namespace std::chrono;

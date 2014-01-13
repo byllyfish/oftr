@@ -53,10 +53,10 @@ public:
                                 ProtocolVersions versions,
                                 ChannelListener::Factory listenerFactory);
 
-    void reconnect(DefaultHandshake *handshake, const IPv6Endpoint &remoteEndpoint, milliseconds delay);
+    void reconnect(DefaultHandshake *handshake, const IPv6Endpoint &remoteEndpoint, Milliseconds delay);
 
     void run();
-    void stop(milliseconds timeout = 0_ms);
+    void stop(Milliseconds timeout = 0_ms);
     bool isRunning() const { return isRunning_; }
     void installSignalHandlers();
 

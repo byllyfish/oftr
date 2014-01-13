@@ -129,7 +129,7 @@ void Engine::run() {
   }
 }
 
-void Engine::stop(milliseconds timeout) {
+void Engine::stop(Milliseconds timeout) {
   if (timeout == 0_ms) {
     io_.stop();
   } else {

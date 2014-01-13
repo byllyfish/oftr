@@ -87,7 +87,7 @@ public:
 
 	sys::Engine *engine() const { return engine_; }
 	
-	void scheduleTimer(UInt32 timerID, milliseconds when, bool repeat) override;
+	void scheduleTimer(UInt32 timerID, Milliseconds when, bool repeat) override;
 	void cancelTimer(UInt32 timerID) override;
 
 	void setStartingXid(UInt32 xid) override {
