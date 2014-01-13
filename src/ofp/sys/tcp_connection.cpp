@@ -31,17 +31,17 @@ TCP_Connection::TCP_Connection(Engine *engine, Driver::Role role,
                                ProtocolVersions versions,
                                ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
-      message_{this}, socket_{engine->io()}, idleTimer_{engine->io()} {}
+      message_{this}, socket_{engine->io(), engine->context()}, idleTimer_{engine->io()} {}
 
 TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket,
                                Driver::Role role, ProtocolVersions versions,
                                ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
-      message_{this}, socket_{std::move(socket)}, idleTimer_{engine->io()} {}
+      message_{this}, socket_{std::move(socket), engine->context()}, idleTimer_{engine->io()} {}
 
 /// \brief Construct connection object for reconnect attempt.
 TCP_Connection::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
-    : Connection{engine, handshake}, message_{this}, socket_{engine->io()},
+    : Connection{engine, handshake}, message_{this}, socket_{engine->io(), engine->context()},
       idleTimer_{engine->io()} {
   handshake->setConnection(this);
 }
@@ -95,7 +95,7 @@ void TCP_Connection::asyncAccept() {
   // We always send and receive complete messages; disable Nagle algorithm.
   socket_.lowest_layer().set_option(tcp::no_delay(true));
 
-  channelUp();
+  asyncHandshake();
 }
 
 void TCP_Connection::channelUp() {
@@ -196,6 +196,20 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
       });
 }
 
+void TCP_Connection::asyncHandshake() {
+  // Start async handshake.
+  auto mode = isOutgoing() ? asio::ssl::stream_base::client : asio::ssl::stream_base::server;
+
+  auto self(shared_from_this());
+  socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
+    if (!err) {
+      channelUp();
+    } else {
+      log::debug("async_handshake failed", err.message());
+    }
+  });
+}
+
 void TCP_Connection::asyncConnect() {
   auto self(shared_from_this());
 
@@ -206,7 +220,7 @@ void TCP_Connection::asyncConnect() {
 
         if (!err) {
           socket_.lowest_layer().set_option(tcp::no_delay(true));
-          channelUp();
+          asyncHandshake();
 
         } else if (wantsReconnect()) {
           reconnect();

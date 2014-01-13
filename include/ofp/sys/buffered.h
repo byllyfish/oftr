@@ -19,6 +19,11 @@ public:
 
   using inherited::inherited;
 
+  Buffered(tcp::socket sock, asio::ssl::context &context)
+    : inherited{sock.get_io_service(), context} {
+      lowest_layer() = std::move(sock);
+  }
+
   using inherited::get_io_service;
   using inherited::async_read_some;
   // using inherited::async_write_some;

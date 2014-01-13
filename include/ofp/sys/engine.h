@@ -67,6 +67,10 @@ public:
         return io_;
     }
 
+    asio::ssl::context &context() {
+        return context_;
+    }
+
     Driver *driver() const
     {
         return driver_;
@@ -91,6 +95,9 @@ private:
     // engine destructor runs. Connections may need to bookkeeping objects.
     asio::io_service io_;
     bool isRunning_ = false;
+
+    // SSL context
+    asio::ssl::context context_;
 
     // Sets up signal handlers to shut down runloop.
     bool isSignalsInited_ = false;

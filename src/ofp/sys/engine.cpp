@@ -27,8 +27,29 @@
 
 using namespace ofp::sys;
 
+static std::string password_callback(std::size_t max_length,
+                              asio::ssl::context::password_purpose purpose) {
+  return "test";
+}
+
 Engine::Engine(Driver *driver, DriverOptions *options)
-    : driver_{driver}, signals_{io_}, stopTimer_{io_} {}
+    : driver_{driver}, context_{asio::ssl::context::sslv23}, signals_{io_},
+      stopTimer_{io_} {
+
+  asio::error_code error;
+  context_.set_options(asio::ssl::context::default_workarounds |
+                       asio::ssl::context::no_sslv2 |
+                       asio::ssl::context::single_dh_use, error);
+  log::debug("set_options", error.message());
+  context_.set_password_callback(password_callback, error);
+  log::debug("set_password_callback", error.message());
+  context_.use_certificate_chain_file("/Users/bfish/code/ofp/Build+Debug/test/server.pem", error);
+  log::debug("use_certificate_chain_file", error.message());
+  context_.use_private_key_file("/Users/bfish/code/ofp/Build+Debug/test/server.pem", asio::ssl::context::pem, error);
+  log::debug("use_private_key_file", error.message());
+  //context_.use_tmp_dh_file("dh512.pem", error);
+  //log::debug("use_tmp_dh_file", error.message());
+}
 
 Engine::~Engine() {
   // Copy the serverlist into a temporary and clear the original list to help

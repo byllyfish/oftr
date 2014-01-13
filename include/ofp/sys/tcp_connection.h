@@ -80,7 +80,7 @@ public:
 
 private:
   Message message_;
-  Buffered<Plaintext<tcp::socket>> socket_;
+  Buffered<asio::ssl::stream<tcp::socket>> socket_;
   tcp::endpoint endpoint_;
   DeferredResultPtr<Exception> deferredExc_ = nullptr;
   asio::steady_timer idleTimer_;
@@ -91,6 +91,7 @@ private:
   void asyncReadHeader();
   void asyncReadMessage(size_t length);
   void asyncWrite();
+  void asyncHandshake();
   void asyncConnect();
   void asyncDelayConnect(Milliseconds delay);
   void asyncIdleCheck();
