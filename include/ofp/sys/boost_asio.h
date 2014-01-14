@@ -31,12 +31,16 @@
 #include "ofp/exception.h"
 #include "ofp/log.h"
 #include "ofp/ipv6endpoint.h"
+#include "ofp/sys/plaintext.h"
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
 using tcp = asio::ip::tcp;
 using udp = asio::ip::udp;
+
+using PlaintextSocket = Plaintext<tcp::socket>;
+using EncryptedSocket = asio::ssl::stream<tcp::socket>;
 
 #if 0
 /// \returns True if socket is connected to given endpoint. We need this

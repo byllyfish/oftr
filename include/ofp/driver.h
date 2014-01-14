@@ -33,12 +33,6 @@ namespace sys { // <namespace sys>
 class Engine;
 } // </namespace ofp>
 
-struct DriverOptions {
-  /// Platform-specific context for TLS implementation (certificates, etc).
-  /// Pass a pointer to a `boost::asio::ssl::context`.
-  void *tlsContext = nullptr;
-};
-
 class Driver {
 public:
   enum Role {
@@ -48,8 +42,13 @@ public:
     Auxiliary // for internal use only
   };
 
-  Driver(DriverOptions *options = nullptr);
+  Driver();
   ~Driver();
+
+  std::error_code configureTLS(const std::string &privateKeyFile,
+                               const std::string &certificateFile,
+                               const std::string &certificateAuthorityFile,
+                               const char *privateKeyPassword);
 
   Deferred<Exception> listen(Role role,
                              const IPv6Endpoint &localEndpoint,

@@ -30,7 +30,6 @@
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
 #include "ofp/exception.h"
-#include "ofp/sys/plaintext.h"
 #include "ofp/sys/buffered.h"
 
 OFP_BEGIN_IGNORE_PADDING
@@ -58,12 +57,6 @@ public:
   void channelException(const Exception &exc);
   void channelDown();
 
-  bool isOutgoing() const { return endpoint_.port() != 0; }
-
-  bool wantsReconnect() const {
-    return handshake()->role() == Driver::Agent && isOutgoing();
-  }
-
   IPv6Endpoint remoteEndpoint() const override;
 
   void write(const void *data, size_t length) override;
@@ -80,7 +73,7 @@ public:
 
 private:
   Message message_;
-  Buffered<asio::ssl::stream<tcp::socket>> socket_;
+  Buffered<PlaintextSocket> socket_;
   tcp::endpoint endpoint_;
   DeferredResultPtr<Exception> deferredExc_ = nullptr;
   asio::steady_timer idleTimer_;
@@ -98,6 +91,13 @@ private:
 
   void reconnect();
   void updateLatestActivity();
+
+  // FIXME - use a bool to indicate if outgoing.
+  bool isOutgoing() const { return endpoint_.port() != 0; }
+
+  bool wantsReconnect() const {
+    return handshake()->role() == Driver::Agent && isOutgoing();
+  }
 };
 
 } // </namespace sys>

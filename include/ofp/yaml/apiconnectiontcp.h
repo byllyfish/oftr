@@ -42,7 +42,7 @@ protected:
 	void asyncRead() override;
 
 private:
-	sys::Buffered<sys::Plaintext<sys::tcp::socket>> socket_;
+	sys::Buffered<sys::PlaintextSocket> socket_;
 	asio::streambuf streambuf_;
 };
 

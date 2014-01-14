@@ -27,29 +27,9 @@
 
 using namespace ofp::sys;
 
-static std::string password_callback(std::size_t max_length,
-                              asio::ssl::context::password_purpose purpose) {
-  return "test";
-}
-
-Engine::Engine(Driver *driver, DriverOptions *options)
-    : driver_{driver}, context_{asio::ssl::context::sslv23}, signals_{io_},
-      stopTimer_{io_} {
-
-  asio::error_code error;
-  context_.set_options(asio::ssl::context::default_workarounds |
-                       asio::ssl::context::no_sslv2 |
-                       asio::ssl::context::single_dh_use, error);
-  log::debug("set_options", error.message());
-  context_.set_password_callback(password_callback, error);
-  log::debug("set_password_callback", error.message());
-  context_.use_certificate_chain_file("/Users/bfish/code/ofp/Build+Debug/test/server.pem", error);
-  log::debug("use_certificate_chain_file", error.message());
-  context_.use_private_key_file("/Users/bfish/code/ofp/Build+Debug/test/server.pem", asio::ssl::context::pem, error);
-  log::debug("use_private_key_file", error.message());
-  //context_.use_tmp_dh_file("dh512.pem", error);
-  //log::debug("use_tmp_dh_file", error.message());
-}
+Engine::Engine(Driver *driver)
+    : driver_{driver}, context_{asio::ssl::context::tlsv1}, signals_{io_},
+      stopTimer_{io_} {}
 
 Engine::~Engine() {
   // Copy the serverlist into a temporary and clear the original list to help
@@ -63,6 +43,45 @@ Engine::~Engine() {
   for (auto svr : servers) {
     delete svr;
   }
+}
+
+std::error_code
+Engine::configureTLS(const std::string &privateKeyFile,
+                     const std::string &certificateFile,
+                     const std::string &certificateAuthorityFile,
+                     const char *privateKeyPassword) {
+  asio::error_code error;
+
+  // Even if there's an error, consider TLS desired.
+  isTLSDesired = true;
+
+  context_.set_options(
+      asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3, error);
+  if (error)
+    return error;
+
+  if (privateKeyPassword && privateKeyPassword[0] > 0) {
+    context_.set_password_callback(
+        [privateKeyPassword](std::size_t max_length,
+                             asio::ssl::context::password_purpose purpose) {
+          return privateKeyPassword;
+        },
+        error);
+    if (error)
+      return error;
+  }
+
+  context_.use_certificate_chain_file(certificateFile, error);
+  if (error)
+    return error;
+
+  context_.use_private_key_file(privateKeyFile, asio::ssl::context::pem, error);
+  if (error)
+    return error;
+
+  // TODO certificateAuthorityFile.
+
+  return error;
 }
 
 ofp::Deferred<ofp::Exception>

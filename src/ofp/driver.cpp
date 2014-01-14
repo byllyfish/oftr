@@ -24,25 +24,30 @@
 
 using namespace ofp;
 
-Driver::Driver(DriverOptions *options)
-    : engine_{new sys::Engine{this, options}} {}
+Driver::Driver() : engine_{new sys::Engine{this}} {}
 
 Driver::~Driver() { delete engine_; }
 
-Deferred<Exception> Driver::listen(Role role,
-                                   const IPv6Endpoint &localEndpoint,
+std::error_code
+Driver::configureTLS(const std::string &privateKeyFile,
+                     const std::string &certificateFile,
+                     const std::string &certificateAuthorityFile,
+                     const char *privateKeyPassword) {
+  return engine_->configureTLS(privateKeyFile, certificateFile,
+                               certificateAuthorityFile, privateKeyPassword);
+}
+
+Deferred<Exception> Driver::listen(Role role, const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory) {
-  return engine_->listen(role, localEndpoint, versions,
-                         listenerFactory);
+  return engine_->listen(role, localEndpoint, versions, listenerFactory);
 }
 
 Deferred<Exception> Driver::connect(Role role,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory) {
-  return engine_->connect(role, remoteEndpoint, versions,
-                          listenerFactory);
+  return engine_->connect(role, remoteEndpoint, versions, listenerFactory);
 }
 
 void Driver::run() { engine_->run(); }

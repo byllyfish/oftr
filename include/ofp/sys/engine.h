@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the sys::Engine class.
@@ -40,71 +40,71 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Engine {
 public:
-     Engine(Driver *driver, DriverOptions *options);
-    ~Engine();
+  explicit Engine(Driver *driver);
+  ~Engine();
 
-    Deferred<Exception> listen(Driver::Role role,
-                               const IPv6Endpoint &localEndpoint,
-                               ProtocolVersions versions,
-                               ChannelListener::Factory listenerFactory);
+  std::error_code configureTLS(const std::string &privateKeyFile,
+                               const std::string &certificateFile,
+                               const std::string &certificateAuthorityFile,
+                               const char *privateKeyPassword);
 
-    Deferred<Exception> connect(Driver::Role role,
-                                const IPv6Endpoint &remoteEndpoint,
-                                ProtocolVersions versions,
-                                ChannelListener::Factory listenerFactory);
+  Deferred<Exception> listen(Driver::Role role,
+                             const IPv6Endpoint &localEndpoint,
+                             ProtocolVersions versions,
+                             ChannelListener::Factory listenerFactory);
 
-    void reconnect(DefaultHandshake *handshake, const IPv6Endpoint &remoteEndpoint, Milliseconds delay);
+  Deferred<Exception> connect(Driver::Role role,
+                              const IPv6Endpoint &remoteEndpoint,
+                              ProtocolVersions versions,
+                              ChannelListener::Factory listenerFactory);
 
-    void run();
-    void stop(Milliseconds timeout = 0_ms);
-    bool isRunning() const { return isRunning_; }
-    void installSignalHandlers();
+  void reconnect(DefaultHandshake *handshake,
+                 const IPv6Endpoint &remoteEndpoint, Milliseconds delay);
 
-    void openAuxChannel(UInt8 auxID, Channel::Transport transport, TCP_Connection *mainConnection);
+  void run();
+  void stop(Milliseconds timeout = 0_ms);
+  bool isRunning() const { return isRunning_; }
+  void installSignalHandlers();
 
-    asio::io_service &io()
-    {
-        return io_;
-    }
+  void openAuxChannel(UInt8 auxID, Channel::Transport transport,
+                      TCP_Connection *mainConnection);
 
-    asio::ssl::context &context() {
-        return context_;
-    }
+  asio::io_service &io() { return io_; }
 
-    Driver *driver() const
-    {
-        return driver_;
-    }
+  asio::ssl::context &context() { return context_; }
 
-    void postDatapathID(Connection *channel);
-    void releaseDatapathID(Connection *channel);
+  Driver *driver() const { return driver_; }
 
-    void registerServer(Server *server);
-    void releaseServer(Server *server);
+  void postDatapathID(Connection *channel);
+  void releaseDatapathID(Connection *channel);
+
+  void registerServer(Server *server);
+  void releaseServer(Server *server);
 
 private:
-    Driver *driver_;
+  Driver *driver_;
 
-    using DatapathMap = std::map<DatapathID,Connection *>;
-    using ServerList = std::vector<Server *>;
+  using DatapathMap = std::map<DatapathID, Connection *>;
+  using ServerList = std::vector<Server *>;
 
-    DatapathMap dpidMap_;
-    ServerList serverList_;
+  DatapathMap dpidMap_;
+  ServerList serverList_;
 
-    // The io_service must be one of the first objects to be destroyed when 
-    // engine destructor runs. Connections may need to bookkeeping objects.
-    asio::io_service io_;
-    bool isRunning_ = false;
+  // The io_service must be one of the first objects to be destroyed when
+  // engine destructor runs. Connections may need to bookkeeping objects.
+  asio::io_service io_;
+  bool isRunning_ = false;
 
-    // SSL context
-    asio::ssl::context context_;
+  // SSL context
+  asio::ssl::context context_;
+  bool isTLSDesired = false;
 
-    // Sets up signal handlers to shut down runloop.
-    bool isSignalsInited_ = false;
-    asio::signal_set signals_;
+  // Sets up signal handlers to shut down runloop.
+  bool isSignalsInited_ = false;
+  asio::signal_set signals_;
 
-    // Timer that can be used to stop the engine.
-    asio::steady_timer stopTimer_;
+  // Timer that can be used to stop the engine.
+  asio::steady_timer stopTimer_;
 };
 
 OFP_END_IGNORE_PADDING
