@@ -28,7 +28,6 @@
 #include "ofp/error.h"
 #include "ofp/log.h"
 #include "ofp/constants.h"
-#include "ofp/exception.h"
 #include "ofp/defaultauxiliarylistener.h"
 
 using namespace ofp;
@@ -85,10 +84,6 @@ void DefaultHandshake::onMessage(const Message *message) {
     log::info("DefaultHandshake ignored message type", message->type());
     break;
   }
-}
-
-void DefaultHandshake::onException(const Exception *exception) {
-  log::info("DefaultHandshake: protocol exception", *exception);
 }
 
 void DefaultHandshake::onHello(const Message *message) {

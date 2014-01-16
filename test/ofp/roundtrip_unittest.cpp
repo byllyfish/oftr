@@ -31,10 +31,6 @@ public:
     EXPECT_EQ(OFPT_FEATURES_REPLY, message->type());
   }
 
-  void onException(const Exception *exception) override {
-    EXPECT_TRUE(false); // never called
-  }
-
   void onTimer(UInt32 timerID) {
     log::debug("TestController::onTimer");
     EXPECT_EQ(timerID, 0x5678);
@@ -109,14 +105,14 @@ TEST(roundtrip, basic_test) {
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
 
-    result1.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result1.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions{}, TestAgent::factory);
 
-    result2.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
     // The driver will run until the Controller shuts it down.
     driver.run();
@@ -144,14 +140,14 @@ TEST(roundtrip, reconnect_test) {
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
 
-    result1.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result1.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions{}, TestAgent::factory);
 
-    result2.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
     TestController::shutdownCount = 3;
     driver.run();
@@ -179,13 +175,13 @@ TEST(roundtrip, auxiliary_test) {
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
 
-    result1.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result1.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions{}, TestAgent::factory);
 
-    result2.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
     TestAgent::auxCount = 5;
     driver.run();

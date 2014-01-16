@@ -86,7 +86,7 @@ void Buffered<StreamType>::buf_flush() {
       }
 
     } else {
-      log::debug("Write error ", makeException(err));
+      log::debug("Write error ", err);
     }
   });
 }

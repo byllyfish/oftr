@@ -29,7 +29,6 @@
 #include "ofp/sys/connection.h"
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
-#include "ofp/exception.h"
 #include "ofp/sys/buffered.h"
 
 OFP_BEGIN_IGNORE_PADDING
@@ -49,12 +48,11 @@ public:
   TCP_Connection(Engine *engine, DefaultHandshake *handshake);
   ~TCP_Connection();
 
-  Deferred<Exception> asyncConnect(const tcp::endpoint &endpt,
+  Deferred<std::error_code> asyncConnect(const tcp::endpoint &endpt,
                                    Milliseconds delay = 0_ms);
   void asyncAccept();
 
   void channelUp();
-  void channelException(const Exception &exc);
   void channelDown();
 
   IPv6Endpoint remoteEndpoint() const override;
@@ -75,7 +73,7 @@ private:
   Message message_;
   Buffered<PlaintextSocket> socket_;
   tcp::endpoint endpoint_;
-  DeferredResultPtr<Exception> deferredExc_ = nullptr;
+  DeferredResultPtr<std::error_code> deferredExc_ = nullptr;
   asio::steady_timer idleTimer_;
   std::chrono::steady_clock::time_point latestActivity_;
 

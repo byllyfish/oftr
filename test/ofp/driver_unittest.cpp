@@ -21,7 +21,6 @@
 
 #include "ofp/unittest.h"
 #include "ofp/driver.h"
-#include "ofp/exception.h"
 
 using namespace ofp;
 
@@ -30,8 +29,6 @@ public:
   void onChannelUp(Channel *channel) override {}
   void onChannelDown(Channel *channel) override {}
   void onMessage(const Message *message) override;
-
-  void onException(const Exception *error) override {}
   void onTimer(UInt32 timerID) override {}
 };
 

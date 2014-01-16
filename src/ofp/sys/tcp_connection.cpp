@@ -70,12 +70,12 @@ void TCP_Connection::shutdown() {
   socket_.lowest_layer().close();
 }
 
-ofp::Deferred<ofp::Exception>
+ofp::Deferred<std::error_code>
 TCP_Connection::asyncConnect(const tcp::endpoint &endpt, Milliseconds delay) {
   assert(deferredExc_ == nullptr);
 
   endpoint_ = endpt;
-  deferredExc_ = Deferred<Exception>::makeResult();
+  deferredExc_ = Deferred<std::error_code>::makeResult();
 
   if (delay > 0_ms) {
     asyncDelayConnect(delay);
@@ -106,12 +106,6 @@ void TCP_Connection::channelUp() {
 
   updateLatestActivity();
   asyncIdleCheck();
-}
-
-void TCP_Connection::channelException(const Exception &exc) {
-  assert(channelListener());
-
-  channelListener()->onException(&exc);
 }
 
 void TCP_Connection::channelDown() {
@@ -155,9 +149,7 @@ void TCP_Connection::asyncReadHeader() {
     } else {
 
       if (err != asio::error::eof) {
-        auto exc = makeException(err);
-        log::debug("asyncReadHeader err ", exc);
-        channelException(makeException(err));
+        log::debug("asyncReadHeader error ", err);
       }
 
       channelDown();
@@ -185,9 +177,7 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
 
         } else {
           if (err != asio::error::eof) {
-            auto exc = makeException(err);
-            log::info("asyncReadMessage err ", exc);
-            channelException(makeException(err));
+            log::info("asyncReadMessage error ", err);
           }
           channelDown();
         }
@@ -226,7 +216,7 @@ void TCP_Connection::asyncConnect() {
           reconnect();
         }
 
-        deferredExc_->done(makeException(err));
+        deferredExc_->done(err);
         deferredExc_ = nullptr;
       });
 }
@@ -244,7 +234,7 @@ void TCP_Connection::asyncDelayConnect(Milliseconds delay) {
       asyncConnect();
     } else {
       assert(deferredExc_ != nullptr);
-      deferredExc_->done(makeException(err));
+      deferredExc_->done(err);
       deferredExc_ = nullptr;
     }
   });

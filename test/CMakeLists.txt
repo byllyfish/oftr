@@ -50,7 +50,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/standardmatch_unittest.cpp
 	ofp/types_unittest.cpp
 	ofp/unittest_unittest.cpp
-	ofp/yaml_unittest.cpp
 	ofp/yhello_unittest.cpp
 )
 

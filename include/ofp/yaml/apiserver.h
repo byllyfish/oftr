@@ -60,7 +60,6 @@ public:
 	void onChannelUp(Channel *channel);
 	void onChannelDown(Channel *channel);
 	void onMessage(Channel *channel, const Message *message);
-	void onException(Channel *channel, const Exception *exception);
 	void onTimer(Channel *channel, UInt32 timerID);
 
 	Channel *findChannel(const DatapathID &datapathId);

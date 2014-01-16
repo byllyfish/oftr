@@ -20,7 +20,6 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp-c/ofpprotocol.h"
-#include "ofp/yaml.h"
 #include "ofp/yaml/encoder.h"
 #include <assert.h>
 

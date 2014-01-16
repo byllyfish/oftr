@@ -28,7 +28,6 @@
 #include <asio.hpp>
 #include <asio/ssl.hpp>
 
-#include "ofp/exception.h"
 #include "ofp/log.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/sys/plaintext.h"
@@ -55,7 +54,6 @@ inline bool checkAsioConnected(const tcp::socket::lowest_layer_type &socket,
     tcp::endpoint actual = socket.remote_endpoint(error);
     return !error && endpt == actual;
 }
-#endif //0
 
 inline Exception makeException(const asio::error_code &error)
 {
@@ -75,6 +73,8 @@ inline Exception makeException(const asio::error_code &error)
 
     return Exception{category, error.value()};
 }
+
+#endif //0
 
 struct HashEndpoint {
     size_t operator()(const IPv6Endpoint &endpt) const;

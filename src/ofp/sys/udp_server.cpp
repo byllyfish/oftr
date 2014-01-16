@@ -97,7 +97,7 @@ void UDP_Server::asyncReceive() {
       sender_, [this](const asio::error_code &err, size_t bytes_recvd) {
 
         if (err) {
-          log::info("Error receiving datagram:", makeException(err));
+          log::info("Error receiving datagram:", err);
 
         } else if (bytes_recvd < sizeof(Header)) {
           log::info("Small datagram ignored:", bytes_recvd);

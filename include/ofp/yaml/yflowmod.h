@@ -23,7 +23,7 @@
 #ifndef OFP_YAML_YFLOWMOD_H
 #define OFP_YAML_YFLOWMOD_H
 
-#include "ofp/yaml.h"
+//#include "ofp/yaml.h"
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yinstructions.h"

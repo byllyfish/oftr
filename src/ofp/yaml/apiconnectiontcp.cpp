@@ -58,8 +58,7 @@ void ApiConnectionTCP::asyncRead() {
           handleInputLine(&line);
           asyncRead();
         } else if (err != asio::error::eof) {
-          auto exc = makeException(err);
-          log::info("ApiConnectionTCP::asyncRead err", exc);
+          log::info("ApiConnectionTCP::asyncRead err", err);
         }
       });
 }

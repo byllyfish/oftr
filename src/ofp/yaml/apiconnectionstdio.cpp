@@ -69,8 +69,7 @@ void ApiConnectionStdio::asyncRead() {
           handleInputLine(&line);
           asyncRead();
         } else if (err != asio::error::eof) {
-          auto exc = makeException(err);
-          log::info("ApiConnection::asyncRead err", exc);
+          log::info("ApiConnection::asyncRead err", err);
         }
       });
 }
@@ -102,7 +101,7 @@ void ApiConnectionStdio::asyncWrite() {
           }
 
         } else {
-          log::debug("Write error ", makeException(err));
+          log::debug("Write error ", err);
         }
       });
 }

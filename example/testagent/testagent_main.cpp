@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 
   // log::set(&std::cerr);
 
-  Exception err =
+  std::error_code err =
       ofp::runAgent(remoteAddr, TestAgent::Factory, {OFP_VERSION_1});
 
   if (err) {

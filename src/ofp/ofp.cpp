@@ -23,7 +23,7 @@
 
 using namespace ofp;
 
-Exception ofp::runController(ChannelListener::Factory listenerFactory,
+std::error_code ofp::runController(ChannelListener::Factory listenerFactory,
                              ProtocolVersions versions) {
   Driver driver;
 
@@ -31,15 +31,15 @@ Exception ofp::runController(ChannelListener::Factory listenerFactory,
       driver.listen(Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
                     versions, listenerFactory);
 
-  Exception result;
-  ex.done([&result](Exception exc) { result = exc; });
+  std::error_code result;
+  ex.done([&result](const std::error_code &err) { result = err; });
 
   driver.run();
 
   return result;
 }
 
-Exception ofp::runAgent(const IPv6Address &remoteAddress,
+std::error_code ofp::runAgent(const IPv6Address &remoteAddress,
                         ChannelListener::Factory listenerFactory,
                         ProtocolVersions versions) {
   Driver driver;
@@ -48,8 +48,8 @@ Exception ofp::runAgent(const IPv6Address &remoteAddress,
                            IPv6Endpoint{remoteAddress, OFP_DEFAULT_PORT},
                            versions, listenerFactory);
 
-  Exception result;
-  ex.done([&result](Exception exc) { result = exc; });
+  std::error_code result;
+  ex.done([&result](const std::error_code &err) { result = err; });
 
   driver.run();
 

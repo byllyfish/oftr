@@ -158,8 +158,6 @@ void ApiConnection::onMessage(Channel *channel, const Message *message) {
   }
 }
 
-void ApiConnection::onException(Channel *channel, const Exception *exception) {}
-
 void ApiConnection::onTimer(Channel *channel, UInt32 timerID) {
   ApiTimer timer;
   timer.params.datapathId = channel->datapathId();

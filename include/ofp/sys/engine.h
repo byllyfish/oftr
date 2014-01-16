@@ -48,12 +48,12 @@ public:
                                const std::string &certificateAuthorityFile,
                                const char *privateKeyPassword);
 
-  Deferred<Exception> listen(Driver::Role role,
+  Deferred<std::error_code> listen(Driver::Role role,
                              const IPv6Endpoint &localEndpoint,
                              ProtocolVersions versions,
                              ChannelListener::Factory listenerFactory);
 
-  Deferred<Exception> connect(Driver::Role role,
+  Deferred<std::error_code> connect(Driver::Role role,
                               const IPv6Endpoint &remoteEndpoint,
                               ProtocolVersions versions,
                               ChannelListener::Factory listenerFactory);
@@ -82,6 +82,7 @@ public:
   void releaseServer(Server *server);
 
 private:
+  // Pointer to driver object that owns engine.
   Driver *driver_;
 
   using DatapathMap = std::map<DatapathID, Connection *>;

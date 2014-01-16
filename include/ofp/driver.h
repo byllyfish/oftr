@@ -50,13 +50,13 @@ public:
                                const std::string &certificateAuthorityFile,
                                const char *privateKeyPassword);
 
-  Deferred<Exception> listen(Role role,
+  Deferred<std::error_code> listen(Role role,
                              const IPv6Endpoint &localEndpoint,
                              ProtocolVersions versions,
                              ChannelListener::Factory listenerFactory);
 
   // TODO this should take an array of remote endpoints...
-  Deferred<Exception> connect(Role role,
+  Deferred<std::error_code> connect(Role role,
                               const IPv6Endpoint &remoteEndpoint,
                               ProtocolVersions versions,
                               ChannelListener::Factory listenerFactory);
@@ -66,14 +66,10 @@ public:
   /// \brief Tells the driver to stop running.
   void stop();
 
-  /// \brief Installs signal handlers to tell the driver to stop.
-  // FIXME void installSignalHandlers();
-
   sys::Engine *engine() { return engine_; }
 
 private:
   sys::Engine *engine_;
-  log::Lifetime lifetime{"Driver"};
 };
 
 } // </namespace ofp>

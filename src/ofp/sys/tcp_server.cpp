@@ -90,8 +90,7 @@ void TCP_Server::asyncAccept() {
       conn->asyncAccept();
 
     } else {
-      Exception exc = makeException(err);
-      log::error("Error in TCP_Server.asyncAcept:", exc.toString());
+      log::error("Error in TCP_Server.asyncAcept:", err);
     }
 
     asyncAccept();

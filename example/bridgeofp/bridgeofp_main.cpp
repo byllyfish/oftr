@@ -30,9 +30,9 @@ int main(int argc, char **argv) {
       [argEndpoints]() { return new BridgeListener(argEndpoints.second); });
 
   int exitCode = 0;
-  exc.done([&exitCode](Exception ex) {
-    if (ex) {
-      std::cerr << "ERROR: " << ex << '\n';
+  exc.done([&exitCode](const std::error_code &err) {
+    if (err) {
+      std::cerr << "ERROR: " << err << '\n';
       exitCode = 2;
     }
   });

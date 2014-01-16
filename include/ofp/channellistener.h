@@ -48,16 +48,10 @@ public:
   // Call onChannelDown when connection goes down. Called one time. (See
   // exception below.)
   // Call onMessage zero or more times.
-  // Call onException one time. onChannelDown called immediately after.
-  // onException
-  // is only called *after* onChannelUp been called.
-  //
+
   virtual void onChannelUp(Channel *channel);
   virtual void onChannelDown(Channel *channel);
-
   virtual void onMessage(const Message *message) = 0;
-  virtual void onException(const Exception *exception);
-
   virtual void onTimer(UInt32 timerID);
 
   // When a controller identifies an incoming connection as an auxiliary

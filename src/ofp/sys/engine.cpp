@@ -84,13 +84,13 @@ Engine::configureTLS(const std::string &privateKeyFile,
   return error;
 }
 
-ofp::Deferred<ofp::Exception>
+ofp::Deferred<std::error_code>
 Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
                ProtocolVersions versions,
                ChannelListener::Factory listenerFactory) {
   auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
   auto udpEndpt = convertEndpoint<udp>(localEndpoint);
-  auto result = Deferred<Exception>::makeResult();
+  auto result = Deferred<std::error_code>::makeResult();
 
   std::error_code error;
 
@@ -98,7 +98,7 @@ Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
                                           listenerFactory, error);
 
   if (error) {
-    result->done(makeException(error));
+    result->done(error);
     return result;
   }
 
@@ -106,7 +106,7 @@ Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
       MakeUniquePtr<UDP_Server>(this, role, udpEndpt, versions, error);
 
   if (error) {
-    result->done(makeException(error));
+    result->done(error);
     return result;
   }
 
@@ -116,12 +116,12 @@ Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
   // Register signal handlers.
   installSignalHandlers();
 
-  result->done(Exception{});
+  result->done(std::error_code{});
 
   return result;
 }
 
-ofp::Deferred<ofp::Exception>
+ofp::Deferred<std::error_code>
 Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
                 ProtocolVersions versions,
                 ChannelListener::Factory listenerFactory) {
@@ -141,7 +141,7 @@ Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
   if (role == Driver::Agent) {
     // When the role is Agent, the connection will keep trying to reconnect.
     // In this case, we always return no error.
-    return Exception{};
+    return std::error_code{};
   }
 
   return result;
@@ -216,7 +216,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
     // FIXME we used to set datapathID and auxiliaryId here...
     connPtr->setMainConnection(mainConnection, auxID);
 
-    Deferred<Exception> result = connPtr->asyncConnect(endpt);
+    Deferred<std::error_code> result = connPtr->asyncConnect(endpt);
 
     // FIXME where does the exception go?
     // result.done([mainConnection](Exception exc){

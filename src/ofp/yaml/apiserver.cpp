@@ -77,8 +77,7 @@ void ApiServer::asyncAccept() {
       }
 
     } else {
-      Exception exc = makeException(err);
-      log::error("Error in ApiServer.asyncAcept:", exc.toString());
+      log::error("Error in ApiServer.asyncAcept:", err);
     }
     asyncAccept();
   });
@@ -120,11 +119,11 @@ void ApiServer::onListenRequest(ApiConnection *conn,
 
   OFP_BEGIN_IGNORE_PADDING
 
-  exc.done([this, listenPort](Exception ex) {
+  exc.done([this, listenPort](const std::error_code &err) {
     ApiListenReply reply;
     reply.params.listenPort = listenPort;
-    if (ex) {
-      reply.params.error = ex.toString();
+    if (err) {
+      reply.params.error = err.message();
     }
     onListenReply(&reply);
   });
@@ -159,11 +158,6 @@ void ApiServer::onChannelDown(Channel *channel) {
 void ApiServer::onMessage(Channel *channel, const Message *message) {
   if (oneConn_)
     oneConn_->onMessage(channel, message);
-}
-
-void ApiServer::onException(Channel *channel, const Exception *exception) {
-  if (oneConn_)
-    oneConn_->onException(channel, exception);
 }
 
 void ApiServer::onTimer(Channel *channel, UInt32 timerID) {

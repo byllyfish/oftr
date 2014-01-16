@@ -26,10 +26,10 @@ int main(int argc, const char **argv) {
     auto result = driver.connect(Driver::Agent,
                                  IPv6Endpoint{addr, OFP_DEFAULT_PORT}, version,
                                  NullAgent::Factory);
-    result.done([](Exception ex) {
+    result.done([](const std::error_code &err) {
       // This will not be called, unless `addr` is invalid; agent will keep
       // retrying the connection.
-      std::cout << "Result: " << ex << '\n';
+      std::cout << "Result: " << err << '\n';
     });
 
   } else {
@@ -37,9 +37,9 @@ int main(int argc, const char **argv) {
         driver.listen(Driver::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
                       version, NullAgent::Factory);
 
-    result.done([](Exception ex) {
+    result.done([](const std::error_code &err) {
       // This may be called if port is already in use.
-      std::cout << "Result: " << ex << '\n';
+      std::cout << "Result: " << err << '\n';
     });
   }
 

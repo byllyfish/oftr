@@ -77,9 +77,9 @@ static int ping_connect(const IPv6Endpoint &endpt) {
                      [echoData]() { return new PingListener{&echoData}; });
 
   int exitCode = 0;
-  exc.done([&exitCode](Exception ex) {
-    if (ex) {
-      std::cerr << "ERROR: " << ex << '\n';
+  exc.done([&exitCode](const std::error_code &err) {
+    if (err) {
+      std::cerr << "ERROR: " << err << '\n';
       exitCode = 2;
     }
   });
