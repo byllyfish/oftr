@@ -52,16 +52,13 @@ public:
                                    Milliseconds delay = 0_ms);
   void asyncAccept();
 
-  void channelUp();
-  void channelDown();
-
   IPv6Endpoint remoteEndpoint() const override;
 
   void write(const void *data, size_t length) override;
   void flush() override;
   void shutdown() override;
 
-  Transport transport() const { return Transport::TCP; }
+  Transport transport() const override { return Transport::TCP; }
 
   void openAuxChannel(UInt8 auxID, Transport transport) override {
     engine()->openAuxChannel(auxID, transport, this);
@@ -78,6 +75,9 @@ private:
   std::chrono::steady_clock::time_point latestActivity_;
 
   log::Lifetime lifetime_{"TCP_Connection"};
+
+  void channelUp();
+  void channelDown();
 
   void asyncReadHeader();
   void asyncReadMessage(size_t length);
