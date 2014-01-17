@@ -94,6 +94,9 @@ public:
 		nextXid_ = xid;
 	}
 
+	void openAuxChannel(UInt8 auxID, Transport transport) override;
+  	Channel *findAuxChannel(UInt8 auxID) const override { return nullptr; }
+
 private:
 	using AuxiliaryList = std::vector<Connection*>;
 

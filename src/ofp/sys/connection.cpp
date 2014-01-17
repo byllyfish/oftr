@@ -23,8 +23,8 @@
 #include "ofp/sys/engine.h"
 #include "ofp/message.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+using namespace ofp;
+using namespace ofp::sys;
 
 Driver *Connection::driver() const { return engine_->driver(); }
 
@@ -80,7 +80,7 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
 
   auto iter = std::find_if(
       auxList.begin(), auxList.end(),
-      [auxID](Connection * conn) { return conn->auxiliaryId() == auxID; });
+      [auxID](Connection *conn) { return conn->auxiliaryId() == auxID; });
   if (iter != auxList.end()) {
     log::info("setMainConnection: Auxiliary connection found with same ID.");
     (*iter)->shutdown();
@@ -97,7 +97,7 @@ void Connection::postMessage(Connection *source, Message *message) {
     message->mutableHeader()->setType(OFPT_ECHO_REPLY);
     write(message->data(), message->size());
     flush();
-    return;       // all done!
+    return; // all done!
   }
 
   log::trace("read", message->data(), message->size());
@@ -123,12 +123,13 @@ void Connection::postTimerExpired(ConnectionTimer *timer) {
 
 void Connection::postIdle() { log::debug("postIdle() =========="); }
 
-void Connection::postDatapathId(const DatapathID &datapathId, UInt8 auxiliaryId) {
+void Connection::postDatapathId(const DatapathID &datapathId,
+                                UInt8 auxiliaryId) {
   assert(!dpidWasPosted_);
 
   datapathId_ = datapathId;
   auxiliaryId_ = auxiliaryId;
-  dpidWasPosted_ = true;        // FIXME - replace with check for all-0 datapath?
+  dpidWasPosted_ = true; // FIXME - replace with check for all-0 datapath?
 
   engine()->postDatapathID(this);
 }
@@ -144,5 +145,6 @@ void Connection::scheduleTimer(UInt32 timerID, Milliseconds interval,
 
 void Connection::cancelTimer(UInt32 timerID) { (void)timers_.erase(timerID); }
 
-} // </namespace sys>
-} // </namespace ofp>
+void Connection::openAuxChannel(UInt8 auxID, Transport transport) {
+  engine()->openAuxChannel(auxID, transport, this);
+}

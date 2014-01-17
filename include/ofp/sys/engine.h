@@ -33,8 +33,8 @@ namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
 class Server;
-class TCP_Server;
-class TCP_Connection; // FIXME can I use Connection here?
+//class TCP_Server;
+class Connection; // FIXME can I use Connection here?
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -67,7 +67,7 @@ public:
   void installSignalHandlers();
 
   void openAuxChannel(UInt8 auxID, Channel::Transport transport,
-                      TCP_Connection *mainConnection);
+                      Connection *mainConnection);
 
   asio::io_service &io() { return io_; }
 

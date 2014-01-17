@@ -24,8 +24,8 @@
 
 #include "ofp/types.h"
 #include "ofp/sys/boost_asio.h"
-#include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/server.h"
+#include "ofp/driver.h"
 
 OFP_BEGIN_IGNORE_PADDING
 

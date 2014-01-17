@@ -22,6 +22,7 @@
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/engine.h"
 #include "ofp/log.h"
+#include "ofp/sys/tcp_connection.h"
 
 using namespace ofp::sys;
 
@@ -85,7 +86,7 @@ void TCP_Server::asyncAccept() {
 
     log::Lifetime lifetime("async_accept callback");
     if (!err) {
-      auto conn = std::make_shared<TCP_Connection>(engine_, std::move(socket_),
+      auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(engine_, std::move(socket_),
                                                    role_, versions_, factory_);
       conn->asyncAccept();
 

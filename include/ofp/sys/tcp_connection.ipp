@@ -1,4 +1,4 @@
-//  ===== ---- ofp/sys/tcp_connection.cpp ------------------*- C++ -*- =====  //
+//  ===== ---- ofp/sys/tcp_connection.ipp ------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -25,30 +25,34 @@
 #include "ofp/log.h"
 #include "ofp/defaulthandshake.h"
 
-using namespace ofp::sys;
+namespace ofp { // <namespace ofp>
+namespace sys { // <namespace sys>
 
-TCP_Connection::TCP_Connection(Engine *engine, Driver::Role role,
+
+template <class SocketType>
+TCP_Connection<SocketType>::TCP_Connection(Engine *engine, Driver::Role role,
                                ProtocolVersions versions,
                                ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
       message_{this}, socket_{engine->io(), engine->context()}, idleTimer_{engine->io()} {}
 
-TCP_Connection::TCP_Connection(Engine *engine, tcp::socket socket,
+template <class SocketType>
+TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
                                Driver::Role role, ProtocolVersions versions,
                                ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
       message_{this}, socket_{std::move(socket), engine->context()}, idleTimer_{engine->io()} {}
 
 /// \brief Construct connection object for reconnect attempt.
-TCP_Connection::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
+template <class SocketType>
+TCP_Connection<SocketType>::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
     : Connection{engine, handshake}, message_{this}, socket_{engine->io(), engine->context()},
       idleTimer_{engine->io()} {
   handshake->setConnection(this);
 }
 
-TCP_Connection::~TCP_Connection() {}
-
-ofp::IPv6Endpoint TCP_Connection::remoteEndpoint() const {
+template <class SocketType>
+ofp::IPv6Endpoint TCP_Connection<SocketType>::remoteEndpoint() const {
   if (isOutgoing()) {
     return convertEndpoint<tcp>(endpoint_);
   } else {
@@ -56,22 +60,9 @@ ofp::IPv6Endpoint TCP_Connection::remoteEndpoint() const {
   }
 }
 
-void TCP_Connection::write(const void *data, size_t length) {
-  socket_.buf_write(data, length);
-}
-
-void TCP_Connection::flush() { socket_.buf_flush(); }
-
-void TCP_Connection::shutdown() {
-  log::debug(__PRETTY_FUNCTION__);
-
-  // FIXME -- this should stop reading data and close connection when
-  // all outgoing data existing at this point is sent.
-  socket_.lowest_layer().close();
-}
-
+template <class SocketType>
 ofp::Deferred<std::error_code>
-TCP_Connection::asyncConnect(const tcp::endpoint &endpt, Milliseconds delay) {
+TCP_Connection<SocketType>::asyncConnect(const tcp::endpoint &endpt, Milliseconds delay) {
   assert(deferredExc_ == nullptr);
 
   endpoint_ = endpt;
@@ -87,7 +78,8 @@ TCP_Connection::asyncConnect(const tcp::endpoint &endpt, Milliseconds delay) {
   return deferredExc_;
 }
 
-void TCP_Connection::asyncAccept() {
+template <class SocketType>
+void TCP_Connection<SocketType>::asyncAccept() {
   // Do nothing if socket is not open.
   if (!socket_.lowest_layer().is_open())
     return;
@@ -98,7 +90,8 @@ void TCP_Connection::asyncAccept() {
   asyncHandshake();
 }
 
-void TCP_Connection::channelUp() {
+template <class SocketType>
+void TCP_Connection<SocketType>::channelUp() {
   assert(channelListener());
 
   channelListener()->onChannelUp(this);
@@ -108,7 +101,8 @@ void TCP_Connection::channelUp() {
   asyncIdleCheck();
 }
 
-void TCP_Connection::channelDown() {
+template <class SocketType>
+void TCP_Connection<SocketType>::channelDown() {
   assert(channelListener());
 
   channelListener()->onChannelDown(this);
@@ -118,12 +112,13 @@ void TCP_Connection::channelDown() {
   }
 }
 
-void TCP_Connection::asyncReadHeader() {
+template <class SocketType>
+void TCP_Connection<SocketType>::asyncReadHeader() {
   // Do nothing if socket is not open.
   if (!socket_.lowest_layer().is_open())
     return;
 
-  auto self(shared_from_this());
+  auto self(this->shared_from_this());
 
   asio::async_read(socket_, asio::buffer(message_.mutableData(sizeof(Header)),
                                          sizeof(Header)),
@@ -159,10 +154,11 @@ void TCP_Connection::asyncReadHeader() {
   });
 }
 
-void TCP_Connection::asyncReadMessage(size_t msgLength) {
+template <class SocketType>
+void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   assert(msgLength > sizeof(Header));
 
-  auto self(shared_from_this());
+  auto self(this->shared_from_this());
 
   asio::async_read(
       socket_, asio::buffer(message_.mutableData(msgLength) + sizeof(Header),
@@ -186,11 +182,12 @@ void TCP_Connection::asyncReadMessage(size_t msgLength) {
       });
 }
 
-void TCP_Connection::asyncHandshake() {
+template <class SocketType>
+void TCP_Connection<SocketType>::asyncHandshake() {
   // Start async handshake.
   auto mode = isOutgoing() ? asio::ssl::stream_base::client : asio::ssl::stream_base::server;
 
-  auto self(shared_from_this());
+  auto self(this->shared_from_this());
   socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
     if (!err) {
       channelUp();
@@ -200,8 +197,9 @@ void TCP_Connection::asyncHandshake() {
   });
 }
 
-void TCP_Connection::asyncConnect() {
-  auto self(shared_from_this());
+template <class SocketType>
+void TCP_Connection<SocketType>::asyncConnect() {
+  auto self(this->shared_from_this());
 
   socket_.lowest_layer().async_connect(
       endpoint_, [this, self](const asio::error_code &err) {
@@ -221,8 +219,9 @@ void TCP_Connection::asyncConnect() {
       });
 }
 
-void TCP_Connection::asyncDelayConnect(Milliseconds delay) {
-  auto self(shared_from_this());
+template <class SocketType>
+void TCP_Connection<SocketType>::asyncDelayConnect(Milliseconds delay) {
+  auto self(this->shared_from_this());
 
   asio::error_code error;
   idleTimer_.expires_from_now(delay, error);
@@ -240,7 +239,8 @@ void TCP_Connection::asyncDelayConnect(Milliseconds delay) {
   });
 }
 
-void TCP_Connection::asyncIdleCheck() {
+template <class SocketType>
+void TCP_Connection<SocketType>::asyncIdleCheck() {
   std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
   auto interval =
       std::chrono::duration_cast<Milliseconds>(now - latestActivity_);
@@ -265,7 +265,8 @@ void TCP_Connection::asyncIdleCheck() {
   });
 }
 
-void TCP_Connection::reconnect() {
+template <class SocketType>
+void TCP_Connection<SocketType>::reconnect() {
   DefaultHandshake *hs = handshake();
   assert(hs);
 
@@ -284,6 +285,5 @@ void TCP_Connection::reconnect() {
   assert(channelListener() != hs);
 }
 
-void TCP_Connection::updateLatestActivity() {
-  latestActivity_ = std::chrono::steady_clock::now();
-}
+} // </namespace sys>
+} // </namespace ofp>

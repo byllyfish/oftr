@@ -24,6 +24,7 @@
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/udp_server.h"
 #include "ofp/defaultauxiliarylistener.h"
+#include "ofp/sys/tcp_connection.h"
 
 using namespace ofp::sys;
 
@@ -128,7 +129,7 @@ Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
   auto connPtr =
-      std::make_shared<TCP_Connection>(this, role, versions, listenerFactory);
+      std::make_shared<TCP_Connection<PlaintextSocket>>(this, role, versions, listenerFactory);
 
   // If the role is `Agent`, the connection will keep retrying. Install signal
   // handlers to tell it to stop.
@@ -152,7 +153,7 @@ void Engine::reconnect(DefaultHandshake *handshake,
                        std::chrono::milliseconds delay) {
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
-  auto connPtr = std::make_shared<TCP_Connection>(this, handshake);
+  auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, handshake);
   (void)connPtr->asyncConnect(endpt, delay);
 }
 
@@ -189,7 +190,7 @@ void Engine::stop(Milliseconds timeout) {
 }
 
 void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
-                            TCP_Connection *mainConnection) {
+                            Connection *mainConnection) {
   // Find the localport of the mainConnection.
   // Look up the apppropriate server object if necessary (for UDP).
   // Create connection using AuxChannelListener and set up connection to main
@@ -210,7 +211,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
 
     // FIXME should Auxiliary connections use a null listenerFactory? (Use
     // defaultauxiliarylistener by default?)
-    auto connPtr = std::make_shared<TCP_Connection>(this, Driver::Auxiliary,
+    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, Driver::Auxiliary,
                                                     versions, listenerFactory);
 
     // FIXME we used to set datapathID and auxiliaryId here...

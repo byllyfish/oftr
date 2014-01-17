@@ -31,14 +31,13 @@
 #include "ofp/deferred.h"
 #include "ofp/sys/buffered.h"
 
-OFP_BEGIN_IGNORE_PADDING
-
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
-class TCP_Server;
+OFP_BEGIN_IGNORE_PADDING
 
-class TCP_Connection : public std::enable_shared_from_this<TCP_Connection>,
+template <class SocketType>
+class TCP_Connection : public std::enable_shared_from_this<TCP_Connection<SocketType>>,
                        public Connection {
 public:
   TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions,
@@ -46,7 +45,7 @@ public:
   TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role,
                  ProtocolVersions versions, ChannelListener::Factory factory);
   TCP_Connection(Engine *engine, DefaultHandshake *handshake);
-  ~TCP_Connection();
+  ~TCP_Connection() {}
 
   Deferred<std::error_code> asyncConnect(const tcp::endpoint &endpt,
                                    Milliseconds delay = 0_ms);
@@ -54,21 +53,23 @@ public:
 
   IPv6Endpoint remoteEndpoint() const override;
 
-  void write(const void *data, size_t length) override;
-  void flush() override;
-  void shutdown() override;
+  void write(const void *data, size_t length) override {
+    socket_.buf_write(data, length);
+  }
+
+  void flush() override {
+    socket_.buf_flush();
+  }
+
+  void shutdown() override {
+    socket_.lowest_layer().close();
+  }
 
   Transport transport() const override { return Transport::TCP; }
 
-  void openAuxChannel(UInt8 auxID, Transport transport) override {
-    engine()->openAuxChannel(auxID, transport, this);
-  }
-
-  Channel *findAuxChannel(UInt8 auxID) const override { return nullptr; }
-
 private:
   Message message_;
-  Buffered<PlaintextSocket> socket_;
+  Buffered<SocketType> socket_;
   tcp::endpoint endpoint_;
   DeferredResultPtr<std::error_code> deferredExc_ = nullptr;
   asio::steady_timer idleTimer_;
@@ -88,7 +89,10 @@ private:
   void asyncIdleCheck();
 
   void reconnect();
-  void updateLatestActivity();
+
+  void updateLatestActivity() {
+    latestActivity_ = std::chrono::steady_clock::now();
+  }
 
   // FIXME - use a bool to indicate if outgoing.
   bool isOutgoing() const { return endpoint_.port() != 0; }
@@ -98,9 +102,11 @@ private:
   }
 };
 
+OFP_END_IGNORE_PADDING
+
 } // </namespace sys>
 } // </namespace ofp>
 
-OFP_END_IGNORE_PADDING
+#include "ofp/sys/tcp_connection.ipp"
 
 #endif // OFP_SYS_TCP_CONNECTION_H
