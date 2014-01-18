@@ -73,6 +73,7 @@ public:
   asio::ssl::context &context() { return context_; }
 
   Driver *driver() const { return driver_; }
+  bool isTLSDesired() const { return isTLSDesired_; }
 
   void postDatapathID(Connection *channel);
   void releaseDatapathID(Connection *channel);
@@ -97,7 +98,7 @@ private:
 
   // SSL context
   asio::ssl::context context_;
-  bool isTLSDesired = false;
+  bool isTLSDesired_ = false;
 
   // Sets up signal handlers to shut down runloop.
   bool isSignalsInited_ = false;

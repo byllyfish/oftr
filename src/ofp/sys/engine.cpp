@@ -54,7 +54,7 @@ Engine::configureTLS(const std::string &privateKeyFile,
   asio::error_code error;
 
   // Even if there's an error, consider TLS desired.
-  isTLSDesired = true;
+  isTLSDesired_ = true;
 
   context_.set_options(
       asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3, error);
@@ -85,10 +85,10 @@ Engine::configureTLS(const std::string &privateKeyFile,
   return error;
 }
 
-std::error_code
-Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
-               ProtocolVersions versions,
-               ChannelListener::Factory listenerFactory) {
+std::error_code Engine::listen(Driver::Role role,
+                               const IPv6Endpoint &localEndpoint,
+                               ProtocolVersions versions,
+                               ChannelListener::Factory listenerFactory) {
   auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
   auto udpEndpt = convertEndpoint<udp>(localEndpoint);
   std::error_code error;
@@ -117,17 +117,23 @@ Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
                 ProtocolVersions versions,
                 ChannelListener::Factory listenerFactory) {
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
+  Deferred<std::error_code> result;
 
-  auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
-      this, role, versions, listenerFactory);
+  if (isTLSDesired()) {
+    auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(
+        this, role, versions, listenerFactory);
+    result = connPtr->asyncConnect(endpt);
+  } else {
+    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
+        this, role, versions, listenerFactory);
+    result = connPtr->asyncConnect(endpt);
+  }
 
   // If the role is `Agent`, the connection will keep retrying. Install signal
   // handlers to tell it to stop.
   if (role == Driver::Agent) {
     installSignalHandlers();
   }
-
-  auto result = connPtr->asyncConnect(endpt);
 
   if (role == Driver::Agent) {
     // When the role is Agent, the connection will keep trying to reconnect.
@@ -143,9 +149,15 @@ void Engine::reconnect(DefaultHandshake *handshake,
                        std::chrono::milliseconds delay) {
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
-  auto connPtr =
-      std::make_shared<TCP_Connection<PlaintextSocket>>(this, handshake);
-  (void)connPtr->asyncConnect(endpt, delay);
+  if (isTLSDesired()) {
+    auto connPtr =
+        std::make_shared<TCP_Connection<EncryptedSocket>>(this, handshake);
+    (void)connPtr->asyncConnect(endpt, delay);
+  } else {
+    auto connPtr =
+        std::make_shared<TCP_Connection<PlaintextSocket>>(this, handshake);
+    (void)connPtr->asyncConnect(endpt, delay);
+  }
 }
 
 void Engine::run() {

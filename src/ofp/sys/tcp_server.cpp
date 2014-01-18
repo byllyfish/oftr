@@ -86,9 +86,16 @@ void TCP_Server::asyncAccept() {
 
     log::Lifetime lifetime("async_accept callback");
     if (!err) {
-      auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(engine_, std::move(socket_),
-                                                   role_, versions_, factory_);
-      conn->asyncAccept();
+
+      if (engine_->isTLSDesired()) {
+        auto conn = std::make_shared<TCP_Connection<EncryptedSocket>>(
+            engine_, std::move(socket_), role_, versions_, factory_);
+        conn->asyncAccept();
+      } else {
+        auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(
+            engine_, std::move(socket_), role_, versions_, factory_);
+        conn->asyncAccept();
+      }
 
     } else {
       log::error("Error in TCP_Server.asyncAcept:", err);
