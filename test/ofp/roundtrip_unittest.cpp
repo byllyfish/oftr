@@ -104,9 +104,7 @@ TEST(roundtrip, basic_test) {
     auto result1 = driver.listen(Driver::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
-
-    result1.done([](const std::error_code &err) { EXPECT_FALSE(err); });
-
+    EXPECT_FALSE(result1);
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
@@ -140,8 +138,7 @@ TEST(roundtrip, reconnect_test) {
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
 
-    result1.done([](const std::error_code &err) { EXPECT_FALSE(err); });
-
+    EXPECT_FALSE(result1);
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
@@ -175,7 +172,7 @@ TEST(roundtrip, auxiliary_test) {
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
 
-    result1.done([](const std::error_code &err) { EXPECT_FALSE(err); });
+    EXPECT_FALSE(result1);
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},

@@ -25,17 +25,15 @@ int main(int argc, char **argv) {
   log::set(&std::cerr);
 
   Driver driver;
-  auto exc = driver.listen(
+  auto err = driver.listen(
       Driver::Bridge, argEndpoints.first, ProtocolVersions::All,
       [argEndpoints]() { return new BridgeListener(argEndpoints.second); });
 
   int exitCode = 0;
-  exc.done([&exitCode](const std::error_code &err) {
-    if (err) {
-      std::cerr << "ERROR: " << err << '\n';
-      exitCode = 2;
-    }
-  });
+  if (err) {
+    std::cerr << "ERROR: " << err << '\n';
+    exitCode = 2;
+  }
 
   driver.run();
 

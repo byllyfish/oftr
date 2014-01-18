@@ -37,7 +37,7 @@ Driver::configureTLS(const std::string &privateKeyFile,
                                certificateAuthorityFile, privateKeyPassword);
 }
 
-Deferred<std::error_code> Driver::listen(Role role, const IPv6Endpoint &localEndpoint,
+std::error_code Driver::listen(Role role, const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory) {
   return engine_->listen(role, localEndpoint, versions, listenerFactory);

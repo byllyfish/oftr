@@ -85,31 +85,23 @@ Engine::configureTLS(const std::string &privateKeyFile,
   return error;
 }
 
-ofp::Deferred<std::error_code>
+std::error_code
 Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
                ProtocolVersions versions,
                ChannelListener::Factory listenerFactory) {
   auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
   auto udpEndpt = convertEndpoint<udp>(localEndpoint);
-  auto result = Deferred<std::error_code>::makeResult();
-
   std::error_code error;
 
   auto tcpsvr = MakeUniquePtr<TCP_Server>(this, role, tcpEndpt, versions,
                                           listenerFactory, error);
-
-  if (error) {
-    result->done(error);
-    return result;
-  }
+  if (error)
+    return error;
 
   auto udpsvr =
       MakeUniquePtr<UDP_Server>(this, role, udpEndpt, versions, error);
-
-  if (error) {
-    result->done(error);
-    return result;
-  }
+  if (error)
+    return error;
 
   (void)tcpsvr.release();
   (void)udpsvr.release();
@@ -117,9 +109,7 @@ Engine::listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
   // Register signal handlers.
   installSignalHandlers();
 
-  result->done(std::error_code{});
-
-  return result;
+  return error;
 }
 
 ofp::Deferred<std::error_code>
@@ -128,8 +118,8 @@ Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
                 ChannelListener::Factory listenerFactory) {
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
-  auto connPtr =
-      std::make_shared<TCP_Connection<PlaintextSocket>>(this, role, versions, listenerFactory);
+  auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
+      this, role, versions, listenerFactory);
 
   // If the role is `Agent`, the connection will keep retrying. Install signal
   // handlers to tell it to stop.
@@ -153,7 +143,8 @@ void Engine::reconnect(DefaultHandshake *handshake,
                        std::chrono::milliseconds delay) {
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
 
-  auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, handshake);
+  auto connPtr =
+      std::make_shared<TCP_Connection<PlaintextSocket>>(this, handshake);
   (void)connPtr->asyncConnect(endpt, delay);
 }
 
@@ -211,8 +202,8 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
 
     // FIXME should Auxiliary connections use a null listenerFactory? (Use
     // defaultauxiliarylistener by default?)
-    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, Driver::Auxiliary,
-                                                    versions, listenerFactory);
+    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
+        this, Driver::Auxiliary, versions, listenerFactory);
 
     // FIXME we used to set datapathID and auxiliaryId here...
     connPtr->setMainConnection(mainConnection, auxID);

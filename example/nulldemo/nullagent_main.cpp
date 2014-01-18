@@ -33,14 +33,11 @@ int main(int argc, const char **argv) {
     });
 
   } else {
-    auto result =
+    auto err =
         driver.listen(Driver::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
                       version, NullAgent::Factory);
 
-    result.done([](const std::error_code &err) {
-      // This may be called if port is already in use.
-      std::cout << "Result: " << err << '\n';
-    });
+    std::cout << "Result: " << err << '\n';
   }
 
   driver.run();

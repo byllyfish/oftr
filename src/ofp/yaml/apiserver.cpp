@@ -113,22 +113,16 @@ void ApiServer::onListenRequest(ApiConnection *conn,
   Driver *driver = engine_->driver();
   UInt16 listenPort = listenReq->params.listenPort;
 
-  auto exc = driver->listen(Driver::Controller,
+  std::error_code err = driver->listen(Driver::Controller,
                             IPv6Endpoint{listenPort}, ProtocolVersions{},
                             [this]() { return new ApiChannelListener{this}; });
 
-  OFP_BEGIN_IGNORE_PADDING
-
-  exc.done([this, listenPort](const std::error_code &err) {
-    ApiListenReply reply;
-    reply.params.listenPort = listenPort;
-    if (err) {
-      reply.params.error = err.message();
-    }
-    onListenReply(&reply);
-  });
-
-  OFP_END_IGNORE_PADDING
+  ApiListenReply reply;
+  reply.params.listenPort = listenPort;
+  if (err) {
+    reply.params.error = err.message();
+  }
+  onListenReply(&reply);
 }
 
 void ApiServer::onListenReply(ApiListenReply *listenReply) {

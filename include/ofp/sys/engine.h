@@ -33,7 +33,7 @@ namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
 class Server;
-//class TCP_Server;
+// class TCP_Server;
 class Connection; // FIXME can I use Connection here?
 
 OFP_BEGIN_IGNORE_PADDING
@@ -48,15 +48,14 @@ public:
                                const std::string &certificateAuthorityFile,
                                const char *privateKeyPassword);
 
-  Deferred<std::error_code> listen(Driver::Role role,
-                             const IPv6Endpoint &localEndpoint,
-                             ProtocolVersions versions,
-                             ChannelListener::Factory listenerFactory);
+  std::error_code listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
+                         ProtocolVersions versions,
+                         ChannelListener::Factory listenerFactory);
 
   Deferred<std::error_code> connect(Driver::Role role,
-                              const IPv6Endpoint &remoteEndpoint,
-                              ProtocolVersions versions,
-                              ChannelListener::Factory listenerFactory);
+                                    const IPv6Endpoint &remoteEndpoint,
+                                    ProtocolVersions versions,
+                                    ChannelListener::Factory listenerFactory);
 
   void reconnect(DefaultHandshake *handshake,
                  const IPv6Endpoint &remoteEndpoint, Milliseconds delay);

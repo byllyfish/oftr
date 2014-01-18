@@ -50,16 +50,15 @@ public:
                                const std::string &certificateAuthorityFile,
                                const char *privateKeyPassword);
 
-  Deferred<std::error_code> listen(Role role,
-                             const IPv6Endpoint &localEndpoint,
-                             ProtocolVersions versions,
-                             ChannelListener::Factory listenerFactory);
+  std::error_code listen(Role role, const IPv6Endpoint &localEndpoint,
+                         ProtocolVersions versions,
+                         ChannelListener::Factory listenerFactory);
 
   // TODO this should take an array of remote endpoints...
   Deferred<std::error_code> connect(Role role,
-                              const IPv6Endpoint &remoteEndpoint,
-                              ProtocolVersions versions,
-                              ChannelListener::Factory listenerFactory);
+                                    const IPv6Endpoint &remoteEndpoint,
+                                    ProtocolVersions versions,
+                                    ChannelListener::Factory listenerFactory);
 
   void run();
 
