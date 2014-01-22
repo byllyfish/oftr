@@ -80,8 +80,8 @@ using DeferredResultPtr = typename detail::DeferredResult<Type>::SharedPtr;
 template <class Type>
 class Deferred {
 public:
-    explicit Deferred() {}
-    
+  explicit Deferred() {}
+
   /* implicit */ Deferred(const DeferredResultPtr<Type> &result)
       : result_{result} {}
   /* implicit */ Deferred(const Type &result) : result_{makeResult()} {
