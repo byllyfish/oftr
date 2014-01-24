@@ -33,6 +33,7 @@ namespace yaml { // <namespace yaml>
 
 struct ApiListenRequest;
 struct ApiSetTimer;
+struct ApiEditSetting;
 
 class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
 public:

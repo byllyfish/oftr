@@ -23,15 +23,22 @@
 #ifndef OFP_YAML_APISERVER_H
 #define OFP_YAML_APISERVER_H
 
-#include "ofp/yaml/yllvm.h"
 #include "ofp/driver.h"
-#include "ofp/yaml/apievents.h"
+#include "ofp/datapathid.h"
+#include <map>
+
+//#include "ofp/yaml/apievents.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
 class ApiConnection;
 class ApiSession;
+
+struct ApiLoopback;
+struct ApiListenRequest;
+struct ApiListenReply;
+struct ApiSetTimer;
 
 OFP_BEGIN_IGNORE_PADDING
 

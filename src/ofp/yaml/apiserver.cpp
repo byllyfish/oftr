@@ -25,6 +25,7 @@
 #include "ofp/sys/engine.h"
 #include "ofp/yaml/apichannellistener.h"
 #include "ofp/yaml/apisession.h"
+#include "ofp/yaml/apievents.h"
 
 using namespace ofp::yaml;
 using namespace ofp::sys;
