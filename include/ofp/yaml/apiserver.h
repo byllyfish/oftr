@@ -24,27 +24,25 @@
 #define OFP_YAML_APISERVER_H
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/sys/boost_asio.h"
 #include "ofp/driver.h"
 #include "ofp/yaml/apievents.h"
-
-OFP_BEGIN_IGNORE_PADDING
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
 class ApiConnection;
+class ApiSession;
 
-/// \brief Implements a TCP server that lets a client control and monitor an 
-/// OpenFlow driver.
+OFP_BEGIN_IGNORE_PADDING
+
+/// \brief Implements a server that lets a client control and monitor an 
+/// OpenFlow driver over stdin/stdout.
 /// The driver is controlled using YAML messages.
 class ApiServer {
 public:
-	
-	static void run(int input=0, int output=1);
 
-    ApiServer(Driver *driver, const IPv6Endpoint &localEndpoint);
-	ApiServer(Driver *driver, int input = 0, int output = 1, Channel *defaultChannel = nullptr);
+	ApiServer(Driver *driver, int inputFD, int outputFD, Channel *defaultChannel = nullptr);
+    ApiServer(Driver *driver, ApiSession *session, Channel *defaultChannel = nullptr);
 
 	// Called by ApiConnection to update oneConn_.
 	void onConnect(ApiConnection *conn);
@@ -64,26 +62,23 @@ public:
 
 	Channel *findChannel(const DatapathID &datapathId);
 	
+    sys::Engine *engine() { return engine_; }
+    
 private:
 	using DatapathMap = std::map<DatapathID,Channel*>;
 
     sys::Engine *engine_;
-    sys::tcp::endpoint endpt_;
-    sys::tcp::acceptor acceptor_;
-    sys::tcp::socket socket_;
     ApiConnection *oneConn_ = nullptr;
     DatapathMap datapathMap_;
     Channel *defaultChannel_ = nullptr;
-
-    void asyncAccept();
 
     void registerChannel(Channel *channel);
     void unregisterChannel(Channel *channel);
 };
 
+OFP_END_IGNORE_PADDING
+
 } // </namespace yaml>
 } // </namespace ofp>
-
-OFP_END_IGNORE_PADDING
 
 #endif // OFP_YAML_APISERVER_H

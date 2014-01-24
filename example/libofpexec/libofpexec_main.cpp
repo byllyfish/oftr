@@ -19,17 +19,22 @@
 /// \brief Implements program to run an ApiServer.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/log.h"
+#include "ofp.h"
 #include "ofp/yaml/apiserver.h"
 #include <iostream>
-#include <deque>
 
 using namespace ofp;
-using namespace yaml;
+
+const int STDIN = 0;
+const int STDOUT = 1;
 
 int main(int argc, char **argv) {
   log::set(&std::cerr);
-  ApiServer::run();
+  
+  Driver driver;
+  yaml::ApiServer server{&driver, STDIN, STDOUT};
+
+  driver.run();
 
   return 0;
 }

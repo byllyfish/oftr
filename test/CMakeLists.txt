@@ -4,6 +4,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/actions_unittest.cpp
 	ofp/actiontype_unittest.cpp
 	ofp/apiencoder_unittest.cpp
+	ofp/apisession_unittest.cpp
 	ofp/asio_unittest.cpp
 	ofp/boost_asio_unittest.cpp
 	ofp/bucketlist_unittest.cpp

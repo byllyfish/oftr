@@ -136,11 +136,12 @@ set(LIBOFP_SOURCES
 	src/ofp/types.cpp
 	src/ofp/yaml/apichannellistener.cpp
 	src/ofp/yaml/apiconnection.cpp
-  src/ofp/yaml/apiconnectiontcp.cpp
+  src/ofp/yaml/apiconnectionsession.cpp
   src/ofp/yaml/apiconnectionstdio.cpp
 	src/ofp/yaml/apiencoder.cpp
 	src/ofp/yaml/apievents.cpp
 	src/ofp/yaml/apiserver.cpp
+  src/ofp/yaml/apisession.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp

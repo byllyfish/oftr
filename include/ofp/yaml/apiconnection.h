@@ -53,25 +53,31 @@ public:
 	void onMessage(Channel *channel, const Message *message);
 	void onTimer(Channel *channel, UInt32 timerID);
 
+	void handleEvent(const std::string &event);
+
 protected:
 	virtual void write(const std::string &msg) = 0;
 	virtual void asyncRead() = 0;
 
-	void handleInputLine(std::string *line);
+	void processInputLine(std::string *line);
 
 private:
 	ApiServer *server_;
 	std::string text_;
-	unsigned lineCount_ = 0;
-	bool isLibEvent_ = false;
 	bool isListening_ = false;
 	bool isFormatJson_ = false;
-
-	void handleEvent();
 
 	static void cleanInputLine(std::string *line);
 	static bool isEmptyEvent(const std::string &s);
 	static std::string escape(const std::string &s);
+
+	enum EventType {
+		EmptyEvent,			// empty; too short or no colon
+		LibEvent,			// library event
+		MsgEvent			// protocol msg event
+	};
+
+	static EventType eventTypeOf(const std::string &s);
 };
 
 } // </namespace yaml>

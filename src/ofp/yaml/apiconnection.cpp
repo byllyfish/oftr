@@ -29,17 +29,6 @@
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
-// Return true if first alphabetical substring matches "event" or "params".
-// Comparison is case-sensitive. We need to skip over initial spaces, { and ".
-static bool matchesEventPrefix(const std::string &s) {
-  size_t pos = s.find_first_not_of(" \t\f\v{\"");
-  if (pos != std::string::npos && s.length() - pos > 6) {
-    return (std::memcmp("event", &s[pos], 5) == 0) ||
-            (std::memcmp("params", &s[pos], 6) == 0);
-  }
-  return false;
-}
-
 ApiConnection::ApiConnection(ApiServer *server, bool listening)
     : server_{server}, isListening_{listening} {
   server_->onConnect(this);
@@ -165,36 +154,29 @@ void ApiConnection::onTimer(Channel *channel, UInt32 timerID) {
   write(timer.toString(isFormatJson_));
 }
 
-void ApiConnection::handleInputLine(std::string *line) {
+void ApiConnection::processInputLine(std::string *line) {
   // Line is modified by this method.
   cleanInputLine(line);
 
   text_ += *line + '\n';
 
   if (*line == "---" || *line == "...") {
-    handleEvent();
+    handleEvent(text_);
     text_ = "---\n";
-    isLibEvent_ = false;
-    lineCount_ = 0;
-  } else if (lineCount_ == 1 && matchesEventPrefix(*line)) {
-    // If first line starts with 'event:', we have
-    // a library event, not an OpenFlow message.
-    isLibEvent_ = true;
   }
-
-  ++lineCount_;
 }
 
-void ApiConnection::handleEvent() {
-  if (isLibEvent_) {
-    ApiEncoder encoder{text_, this};
+void ApiConnection::handleEvent(const std::string &eventText) {
+  EventType type = eventTypeOf(eventText);
+  if (type == EmptyEvent) 
+    return;
+
+  if (type == LibEvent) {
+    ApiEncoder encoder{eventText, this};
 
   } else {
-    // Ignore event if there is no data.
-    if (isEmptyEvent(text_))
-      return;
 
-    Encoder encoder(text_, [this](const DatapathID &datapathId) {
+    Encoder encoder(eventText, [this](const DatapathID &datapathId) {
       return server_->findChannel(datapathId);
     });
 
@@ -224,7 +206,7 @@ void ApiConnection::handleEvent() {
       }
 
     } else {
-      onYamlError(encoder.error(), text_);
+      onYamlError(encoder.error(), eventText);
     }
   }
 }
@@ -272,4 +254,31 @@ std::string ApiConnection::escape(const std::string &s) {
     }
   }
   return result;
+}
+
+// Return true if first alphabetical substring matches "event" or "params".
+// Comparison is case-sensitive. We need to skip over initial spaces, { and ".
+// (We also skip over --- and ...)
+static bool matchesEventPrefix(const std::string &s) {
+  size_t pos = s.find_first_not_of(" \n\t\f\v{\"-.");
+  if (pos != std::string::npos && s.length() - pos > 6) {
+    return (std::memcmp("event", &s[pos], 5) == 0) ||
+            (std::memcmp("params", &s[pos], 6) == 0);
+  }
+  return false;
+}
+
+/// \returns type of event for event `s`. 
+ApiConnection::EventType ApiConnection::eventTypeOf(const std::string &s)
+{
+  // String should have the format:  "---\n(...)\n---\n"
+  // Return true if string is too short or there is no colon.
+
+  if (s.size() < 12 || s.find(':') == std::string::npos)
+    return EmptyEvent;
+
+  if (matchesEventPrefix(s))
+    return LibEvent;
+
+  return MsgEvent;
 }

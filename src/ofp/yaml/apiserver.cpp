@@ -20,25 +20,18 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/yaml/apiserver.h"
-#include "ofp/yaml/apiconnectiontcp.h"
 #include "ofp/yaml/apiconnectionstdio.h"
+#include "ofp/yaml/apiconnectionsession.h"
 #include "ofp/sys/engine.h"
 #include "ofp/yaml/apichannellistener.h"
+#include "ofp/yaml/apisession.h"
 
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
-void ApiServer::run(int input, int output) {
-  Driver driver;
-  ApiServer server{&driver, input, output, nullptr};
-
-  driver.run();
-}
-
-ApiServer::ApiServer(Driver *driver, int input, int output,
+ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
-    : engine_{driver->engine()}, acceptor_{engine_->io()},
-      socket_{engine_->io()}, defaultChannel_{defaultChannel} {
+    : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
 
@@ -47,40 +40,28 @@ ApiServer::ApiServer(Driver *driver, int input, int output,
       this, asio::posix::stream_descriptor{engine_->io()}, asio::posix::stream_descriptor{engine_->io()},
       listening);
 
-  if (input >= 0) {
-    conn->setInput(input);
+  if (inputFD >= 0) {
+    conn->setInput(inputFD);
   }
 
-  if (output >= 0) {
-    conn->setOutput(output);
+  if (outputFD >= 0) {
+    conn->setOutput(outputFD);
   }
 
   conn->asyncAccept();
 }
 
-void ApiServer::asyncAccept() {
-  acceptor_.async_accept(socket_, [this](const asio::error_code &err) {
-    // N.B. ASIO still sends a cancellation error even after
-    // async_accept() throws an exception. Check for cancelled operation
-    // first; our ApiServer instance will have been destroyed.
-    if (err == asio::error::operation_aborted)
-      return;
-    
-    if (!err) {
-      // Only allow one connection at a time.
-      if (oneConn_ == nullptr) {
-        auto conn =
-            std::make_shared<ApiConnectionTCP>(this, std::move(socket_));
-        conn->asyncAccept();
-      } else {
-        socket_.close();
-      }
 
-    } else {
-      log::error("Error in ApiServer.asyncAcept:", err);
-    }
-    asyncAccept();
-  });
+ApiServer::ApiServer(Driver *driver, ApiSession *session, Channel *defaultChannel)
+  : engine_{driver->engine()}, defaultChannel_{defaultChannel}
+{
+  auto conn = std::make_shared<ApiConnectionSession>(this, session);
+
+  // Give the session a reference to the connection; otherwise, the connection
+  // will be deleted when it goes out of scope.
+
+  session->setConnection(conn);
+  conn->asyncAccept();
 }
 
 void ApiServer::onConnect(ApiConnection *conn) {
