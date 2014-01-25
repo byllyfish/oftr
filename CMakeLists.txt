@@ -178,9 +178,13 @@ set(LIBOFP_HEADER_FILES
   include/ofp/actionrange.h
   include/ofp/actions.h
   include/ofp/actiontype.h
-  include/ofp/aggregatestatsrequest.h
   include/ofp/aggregatestatsreply.h
+  include/ofp/aggregatestatsrequest.h
   include/ofp/array.h
+  include/ofp/bucket.h
+  include/ofp/bucketiterator.h
+  include/ofp/bucketlist.h
+  include/ofp/bucketrange.h
   include/ofp/bytedata.h
   include/ofp/bytelist.h
   include/ofp/byteorder.h
@@ -197,10 +201,8 @@ set(LIBOFP_HEADER_FILES
   include/ofp/echorequest.h
   include/ofp/enetaddress.h
   include/ofp/error.h
-  include/ofp/exception.h
   include/ofp/experimenter.h
   include/ofp/export.h
-  include/ofp/features.h
   include/ofp/featuresreply.h
   include/ofp/flowmod.h
   include/ofp/flowremoved.h
@@ -208,6 +210,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/flowstatsrequest.h
   include/ofp/getasyncreply.h
   include/ofp/getconfigreply.h
+  include/ofp/groupmod.h
   include/ofp/header.h
   include/ofp/headeronly.h
   include/ofp/hello.h
@@ -218,12 +221,16 @@ set(LIBOFP_HEADER_FILES
   include/ofp/instructiontype.h
   include/ofp/ipv4address.h
   include/ofp/ipv6address.h
+  include/ofp/ipv6endpoint.h
   include/ofp/log.h
   include/ofp/match.h
   include/ofp/matchbuilder.h
   include/ofp/memorychannel.h
   include/ofp/message.h
-  include/ofp/multipartbody.h
+  include/ofp/mpdesc.h
+  include/ofp/mpportstats.h
+  include/ofp/mpqueuestats.h
+  include/ofp/mptablestats.h
   include/ofp/multipartreply.h
   include/ofp/multipartrequest.h
   include/ofp/originalmatch.h
@@ -238,9 +245,16 @@ set(LIBOFP_HEADER_FILES
   include/ofp/padding.h
   include/ofp/port.h
   include/ofp/portlist.h
+  include/ofp/portmod.h
   include/ofp/portstatus.h
   include/ofp/prerequisites.h
+  include/ofp/protocolelement.h
+  include/ofp/protocoliterable.h
+  include/ofp/protocoliterator.h
+  include/ofp/protocolmsg.h
   include/ofp/protocolversions.h
+  include/ofp/queuegetconfigreply.h
+  include/ofp/queuegetconfigrequest.h
   include/ofp/rolereply.h
   include/ofp/rolerequest.h
   include/ofp/setasync.h
@@ -248,28 +262,36 @@ set(LIBOFP_HEADER_FILES
   include/ofp/smallcstring.h
   include/ofp/standardmatch.h
   include/ofp/sys/boost_asio.h
+  include/ofp/sys/buffered.h
   include/ofp/sys/connection.h
   include/ofp/sys/connectiontimer.h
   include/ofp/sys/engine.h
+  include/ofp/sys/plaintext.h
   include/ofp/sys/server.h
   include/ofp/sys/tcp_connection.h
   include/ofp/sys/tcp_server.h
   include/ofp/sys/udp_connection.h
   include/ofp/sys/udp_server.h
+  include/ofp/tablemod.h
   include/ofp/transmogrify.h
   include/ofp/types.h
   include/ofp/unittest.h
   include/ofp/writable.h
   include/ofp/yaml/apichannellistener.h
   include/ofp/yaml/apiconnection.h
+  include/ofp/yaml/apiconnectionsession.h
+  include/ofp/yaml/apiconnectionstdio.h
   include/ofp/yaml/apiencoder.h
   include/ofp/yaml/apievents.h
   include/ofp/yaml/apiserver.h
+  include/ofp/yaml/apisession.h
   include/ofp/yaml/decoder.h
   include/ofp/yaml/encoder.h
-  include/ofp/yaml/old_flowmod.h
+  include/ofp/yaml/outputjson.h
   include/ofp/yaml/yactions.h
   include/ofp/yaml/yaddress.h
+  include/ofp/yaml/yaggregatestatsreply.h
+  include/ofp/yaml/ybucket.h
   include/ofp/yaml/ybytelist.h
   include/ofp/yaml/ybyteorder.h
   include/ofp/yaml/yconstants.h
@@ -279,20 +301,35 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml/yexperimenter.h
   include/ofp/yaml/yfeaturesreply.h
   include/ofp/yaml/yflowmod.h
+  include/ofp/yaml/yflowremoved.h
   include/ofp/yaml/yflowstatsreply.h
   include/ofp/yaml/yflowstatsrequest.h
+  include/ofp/yaml/ygetasyncreply.h
+  include/ofp/yaml/ygetconfigreply.h
+  include/ofp/yaml/ygroupmod.h
   include/ofp/yaml/yheaderonly.h
   include/ofp/yaml/yhello.h
   include/ofp/yaml/yinstructions.h
   include/ofp/yaml/yllvm.h
   include/ofp/yaml/ymatch.h
-  include/ofp/yaml/ymultipartbody.h
+  include/ofp/yaml/ympdesc.h
+  include/ofp/yaml/ympportstats.h
+  include/ofp/yaml/ympqueuestats.h
+  include/ofp/yaml/ymptablestats.h
   include/ofp/yaml/ymultipartreply.h
   include/ofp/yaml/ymultipartrequest.h
   include/ofp/yaml/ypacketin.h
   include/ofp/yaml/ypacketout.h
+  include/ofp/yaml/yport.h
+  include/ofp/yaml/yportmod.h
+  include/ofp/yaml/yportstatus.h
+  include/ofp/yaml/yqueuegetconfigrequest.h
+  include/ofp/yaml/yrolereply.h
+  include/ofp/yaml/yrolerequest.h
+  include/ofp/yaml/ysetasync.h
   include/ofp/yaml/ysetconfig.h
-  include/ofp/yaml.h
+  include/ofp/yaml/ysmallcstring.h
+  include/ofp/yaml/ytablemod.h
   include/ofp-c/ofpprotocol.h
   include/ofp-c/ofpstring.h
   include/ofp.h
