@@ -100,9 +100,24 @@ void OutputJson::scalarString(StringRef &S) {
   if (!llvm::getAsUnsignedInteger(S, 0, u)) {
     output(std::to_string(u));
   } else {
-    // FIXME(bfish): Handle special chars in scalar strings!
+    // Output value wrapped in double-quotes. Escape any embedded double-quotes 
+    // or backslashes in the string. Leave every other character alone.
     output("\"");
-    output(S);
+    size_t offset = S.find_first_of("\\\"");
+    if (offset == StringRef::npos) {
+      // No need to escape characters in the string.
+      output(S);
+    } else {
+      output(S.substr(0, offset));
+      output("\\");
+      size_t pos = offset;
+      while ((offset = S.find_first_of("\\\"", pos + 1)) != StringRef::npos) {
+        output(S.substr(pos, offset - pos));
+        output("\\");
+        pos = offset;
+      }
+      output(S.substr(pos));
+    }
     output("\"");
   }
 }

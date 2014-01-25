@@ -49,3 +49,24 @@ TEST(outputjson, flowmod) {
   // Decoder decodeYaml{&msg};
   // std::cout << decodeYaml.result();
 }
+
+TEST(outputjson, scalarString) {
+
+  auto testOne = [](llvm::StringRef s) {
+    std::string result;
+    llvm::raw_string_ostream rss{result};
+    OutputJson out{rss};
+    out.scalarString(s);
+    return result;
+  };
+
+  EXPECT_EQ(R"~~("abc")~~", testOne(R"~~(abc)~~"));
+  EXPECT_EQ(R"~~("")~~", testOne(R"~~()~~"));
+  EXPECT_EQ(R"~~("\\")~~", testOne(R"~~(\)~~"));
+  EXPECT_EQ(R"~~("\"")~~", testOne(R"~~(")~~"));
+  EXPECT_EQ(R"~~("a\"")~~", testOne(R"~~(a")~~"));
+  EXPECT_EQ(R"~~("\"b")~~", testOne(R"~~("b)~~"));
+  EXPECT_EQ(R"~~("a\"b")~~", testOne(R"~~(a"b)~~"));
+  EXPECT_EQ("\"\n\"", testOne("\n"));
+  EXPECT_EQ(R"~~("\"a\\n\"\"b\"")~~", testOne(R"~~("a\n""b")~~"));
+}
