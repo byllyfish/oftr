@@ -70,7 +70,6 @@ private:
 
 	static void cleanInputLine(std::string *line);
 	static bool isEmptyEvent(const std::string &s);
-	static std::string escape(const std::string &s);
 
 	enum EventType {
 		EmptyEvent,			// empty; too short or no colon

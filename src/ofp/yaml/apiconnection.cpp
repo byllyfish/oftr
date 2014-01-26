@@ -103,13 +103,9 @@ void ApiConnection::onEditSetting(ApiEditSetting *editSetting) {
 
 void ApiConnection::onYamlError(const std::string &error,
                                 const std::string &text) {
-  // YAMLIO doesn't really output strings with newlines AFAICT that well.
-  // I am escaping the newlines with \n for error messages and original
-  // event text.
-
   ApiYamlError reply;
-  reply.params.error = escape(error);
-  reply.params.text = escape(text);
+  reply.params.error = error;
+  reply.params.text = text;
   write(reply.toString(isFormatJson_));
 }
 
@@ -233,21 +229,6 @@ bool ApiConnection::isEmptyEvent(const std::string &s) {
     return true;
 
   return false;
-}
-
-// Replace newlines in `s` with explicit '\n' escape sequence.
-std::string ApiConnection::escape(const std::string &s) {
-  std::string result;
-  result.reserve(s.length());
-
-  for (auto ch : s) {
-    if (ch == '\n') {
-      result += "\\n";
-    } else {
-      result += ch;
-    }
-  }
-  return result;
 }
 
 // Return true if first alphabetical substring matches "event" or "params".

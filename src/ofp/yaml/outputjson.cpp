@@ -94,31 +94,69 @@ bool OutputJson::bitSetMatch(const char *Str, bool Matches) {
 
 void OutputJson::endBitSetScalar() { output("]"); }
 
+// Return offset of next unsafe character -- either a control character, \ or ".
+static StringRef::size_type findUnsafe(const StringRef &s,
+                                       StringRef::size_type pos) {
+  const char *data = s.data();
+  StringRef::size_type len = s.size();
+  for (StringRef::size_type i = pos; i < len; ++i) {
+    unsigned ch = static_cast<unsigned>(data[i]);
+    if (ch < 0x20 || ch == '\\' || ch == '"')
+      return i;
+  }
+  return StringRef::npos;
+}
+
+const char *const ControlReplacement[] = {
+    "u0000", "u0001", "u0002", "u0003", "u0004", "u0005", "u0006", "u0007",
+    "b",     "t",     "n",     "u000B", "f",     "r",     "u000E", "u000F",
+    "u0010", "u0011", "u0012", "u0013", "u0014", "u0015", "u0016", "u0017",
+    "u0018", "u0019", "u001A", "u001B", "u001C", "u001D", "u001E", "u001F", };
+
 void OutputJson::scalarString(StringRef &S) {
   // If string begins with a leading zero, it may be in hexadecimal format.
   unsigned long long u;
   if (!llvm::getAsUnsignedInteger(S, 0, u)) {
     output(std::to_string(u));
   } else {
-    // Output value wrapped in double-quotes. Escape any embedded double-quotes 
-    // or backslashes in the string. Leave every other character alone.
+    // Output value wrapped in double-quotes. Escape any embedded double-quotes
+    // or backslashes in the string. Replace control characters (ASCII < 32)
+    // with \b, \t, \n, \f, \r or \uxxxx.
     output("\"");
-    size_t offset = S.find_first_of("\\\"");
+    StringRef::size_type pos = 0;
+    StringRef::size_type offset = findUnsafe(S, pos);
     if (offset == StringRef::npos) {
       // No need to escape characters in the string.
       output(S);
     } else {
-      output(S.substr(0, offset));
+      // At least one character found that must be escaped. Deal with the first
+      // one, then loop through the string looking for the remaining unsafe
+      // characters.
+      output(S.substr(pos, offset));
       output("\\");
-      size_t pos = offset;
-      while ((offset = S.find_first_of("\\\"", pos + 1)) != StringRef::npos) {
-        output(S.substr(pos, offset - pos));
-        output("\\");
+      unsigned ch = static_cast<unsigned>(S[offset]);
+      if (ch < 0x20) { // control character?
+        output(ControlReplacement[ch]);
+        pos = offset + 1;
+      } else {
         pos = offset;
       }
+
+      while ((offset = findUnsafe(S, offset + 1)) != StringRef::npos) {
+        output(S.substr(pos, offset - pos));
+        output("\\");
+        ch = static_cast<unsigned>(S[offset]);
+        if (ch <= 0x20) { // control character?
+          output(ControlReplacement[ch]);
+          pos = offset + 1;
+        } else {
+          pos = offset;
+        }
+      }
+
       output(S.substr(pos));
     }
-    output("\"");
+    output("\""); // closing quote
   }
 }
 

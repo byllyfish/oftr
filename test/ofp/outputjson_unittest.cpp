@@ -53,10 +53,12 @@ TEST(outputjson, flowmod) {
 TEST(outputjson, scalarString) {
 
   auto testOne = [](llvm::StringRef s) {
+    //log::debug(s.str());
     std::string result;
     llvm::raw_string_ostream rss{result};
     OutputJson out{rss};
     out.scalarString(s);
+    //log::debug("->", rss.str());
     return result;
   };
 
@@ -67,6 +69,11 @@ TEST(outputjson, scalarString) {
   EXPECT_EQ(R"~~("a\"")~~", testOne(R"~~(a")~~"));
   EXPECT_EQ(R"~~("\"b")~~", testOne(R"~~("b)~~"));
   EXPECT_EQ(R"~~("a\"b")~~", testOne(R"~~(a"b)~~"));
-  EXPECT_EQ("\"\n\"", testOne("\n"));
+  EXPECT_EQ("\"\\n\"", testOne("\n"));
+  EXPECT_EQ("\"\\\\a\\\\b\\\\\"", testOne("\\a\\b\\"));
+  EXPECT_EQ("\"\\\"a\\\\n\\\"\"", testOne("\"a\\n\""));
   EXPECT_EQ(R"~~("\"a\\n\"\"b\"")~~", testOne(R"~~("a\n""b")~~"));
+
+  EXPECT_EQ(R"~~("\u0001")~~", testOne("\x01"));
+  EXPECT_EQ(R"~~("\b\t\n\f\r\"\\")~~", testOne("\b\t\n\f\r\"\\"));
 }
