@@ -14,7 +14,7 @@ for input in $CURRENT_SOURCE_DIR/*.in ; do
   name=`basename $input .in`
   output=$name.out
   echo "Run testagent to convert $input into $output"
-  $TESTAGENT < $input &> $output
+  cat $input | $TESTAGENT | tee $output
   echo "Compare $output and $CURRENT_SOURCE_DIR/$output"
   diff $output $CURRENT_SOURCE_DIR/$output 
 done

@@ -42,15 +42,9 @@ public:
 	void flush() override;
 	void shutdown() override;
 	
-    IPv6Address remoteAddress() const override {
-        return makeIPv6Address(remoteEndpoint().address());
+    IPv6Endpoint remoteEndpoint() const override {
+        return convertEndpoint<udp>(remoteEndpt_);
     }
-
-    UInt16 remotePort() const override {
-        return remoteEndpoint().port();
-    }
-
-    udp::endpoint remoteEndpoint() const;
 
     Transport transport() const { return Transport::UDP; }
     void openAuxChannel(UInt8 auxID, Transport transport) override {}       // should not be called
@@ -65,12 +59,5 @@ OFP_END_IGNORE_PADDING
 
 } // </namespace sys>
 } // </namespace ofp>
-
-
-inline ofp::sys::udp::endpoint ofp::sys::UDP_Connection::remoteEndpoint() const
-{
-	return remoteEndpt_;
-}
-
 
 #endif // OFP_SYS_UDP_CONNECTION_H

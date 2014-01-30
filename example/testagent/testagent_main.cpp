@@ -5,14 +5,12 @@
 using namespace testagent;
 
 int main(int argc, char **argv) {
-  Features features{};
-
   IPv6Address remoteAddr{"127.0.0.1"};
 
   // log::set(&std::cerr);
 
-  Exception err =
-      ofp::runAgent(features, remoteAddr, TestAgent::Factory, {OFP_VERSION_1});
+  std::error_code err =
+      ofp::runAgent(remoteAddr, TestAgent::Factory, {OFP_VERSION_1});
 
   if (err) {
     std::cerr << "Error starting agent: " << err << '\n';

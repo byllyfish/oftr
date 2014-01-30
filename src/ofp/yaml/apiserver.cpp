@@ -20,68 +20,49 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/yaml/apiserver.h"
-#include "ofp/yaml/apiconnectiontcp.h"
 #include "ofp/yaml/apiconnectionstdio.h"
+#include "ofp/yaml/apiconnectionsession.h"
 #include "ofp/sys/engine.h"
 #include "ofp/yaml/apichannellistener.h"
+#include "ofp/yaml/apisession.h"
+#include "ofp/yaml/apievents.h"
 
 using namespace ofp::yaml;
 using namespace ofp::sys;
 
-void ApiServer::run(int input, int output) {
-  Driver driver;
-  ApiServer server{&driver, input, output, nullptr};
-
-  driver.run();
-}
-
-ApiServer::ApiServer(Driver *driver, int input, int output,
+ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
-    : engine_{driver->engine()}, acceptor_{engine_->io()},
-      socket_{engine_->io()}, defaultChannel_{defaultChannel} {
+    : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
 
   bool listening = (defaultChannel != nullptr);
   auto conn = std::make_shared<ApiConnectionStdio>(
-      this, stream_descriptor{engine_->io()}, stream_descriptor{engine_->io()},
+      this, asio::posix::stream_descriptor{engine_->io()}, asio::posix::stream_descriptor{engine_->io()},
       listening);
 
-  if (input >= 0) {
-    conn->setInput(input);
+  if (inputFD >= 0) {
+    conn->setInput(inputFD);
   }
 
-  if (output >= 0) {
-    conn->setOutput(output);
+  if (outputFD >= 0) {
+    conn->setOutput(outputFD);
   }
 
   conn->asyncAccept();
 }
 
-void ApiServer::asyncAccept() {
-  acceptor_.async_accept(socket_, [this](error_code err) {
-    // N.B. ASIO still sends a cancellation error even after
-    // async_accept() throws an exception. Check for cancelled operation
-    // first; our ApiServer instance will have been destroyed.
-    if (isAsioCanceled(err)) {
-      return;
-    }
-    if (!err) {
-      // Only allow one connection at a time.
-      if (oneConn_ == nullptr) {
-        auto conn =
-            std::make_shared<ApiConnectionTCP>(this, std::move(socket_));
-        conn->asyncAccept();
-      } else {
-        socket_.close();
-      }
 
-    } else {
-      Exception exc = makeException(err);
-      log::error("Error in ApiServer.asyncAcept:", exc.toString());
-    }
-    asyncAccept();
-  });
+ApiServer::ApiServer(Driver *driver, ApiSession *session, Channel *defaultChannel)
+  : engine_{driver->engine()}, defaultChannel_{defaultChannel}
+{
+  auto conn = std::make_shared<ApiConnectionSession>(this, session);
+
+  // Give the session a reference to the connection; otherwise, the connection
+  // will be deleted when it goes out of scope.
+
+  session->setConnection(conn);
+  conn->asyncAccept();
 }
 
 void ApiServer::onConnect(ApiConnection *conn) {
@@ -114,22 +95,16 @@ void ApiServer::onListenRequest(ApiConnection *conn,
   Driver *driver = engine_->driver();
   UInt16 listenPort = listenReq->params.listenPort;
 
-  auto exc = driver->listen(Driver::Controller, nullptr,
+  std::error_code err = driver->listen(Driver::Controller,
                             IPv6Endpoint{listenPort}, ProtocolVersions{},
                             [this]() { return new ApiChannelListener{this}; });
 
-  OFP_BEGIN_IGNORE_PADDING
-
-  exc.done([this, listenPort](Exception ex) {
-    ApiListenReply reply;
-    reply.params.listenPort = listenPort;
-    if (ex) {
-      reply.params.error = ex.toString();
-    }
-    onListenReply(&reply);
-  });
-
-  OFP_END_IGNORE_PADDING
+  ApiListenReply reply;
+  reply.params.listenPort = listenPort;
+  if (err) {
+    reply.params.error = err.message();
+  }
+  onListenReply(&reply);
 }
 
 void ApiServer::onListenReply(ApiListenReply *listenReply) {
@@ -159,11 +134,6 @@ void ApiServer::onChannelDown(Channel *channel) {
 void ApiServer::onMessage(Channel *channel, const Message *message) {
   if (oneConn_)
     oneConn_->onMessage(channel, message);
-}
-
-void ApiServer::onException(Channel *channel, const Exception *exception) {
-  if (oneConn_)
-    oneConn_->onException(channel, exception);
 }
 
 void ApiServer::onTimer(Channel *channel, UInt32 timerID) {

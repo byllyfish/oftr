@@ -37,7 +37,7 @@ endif()
 # anything except to clutter up the build logs. Put disabled warnings into
 # LIB_OFP_WARNINGS_DISABLED.
 
-set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum")
+set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum -Wno-unreachable-code")
 
 # LibOFP is a C++11-only project. Disable warnings about C++98 compatibility.
 
@@ -46,7 +46,11 @@ set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 # Specify include directories for third party headers. We use -isystem instead
 # of -I because we don't want to receive compiler warnings from these headers.
 
-set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/boost_1_54_0_asio -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
+set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
+
+# Specify additional definitions.
+
+set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID")
 
 # Specify the default set of compiler flags for all sources, including third
 # party libraries. Place flags that don't affect the preprocessor or warnings
@@ -54,7 +58,7 @@ set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/boost_1_54_0
 # source code be compiled with the same flags.
 
 set(LIBOFP_C_FLAGS "-fstrict-aliasing")
-set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -std=c++11")
+set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11")
 
 if (APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
@@ -124,7 +128,6 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/boost_asio.cpp
 	src/ofp/sys/connection.cpp
 	src/ofp/sys/engine.cpp
-	src/ofp/sys/tcp_connection.cpp
 	src/ofp/sys/tcp_server.cpp
 	src/ofp/sys/udp_connection.cpp
 	src/ofp/sys/udp_server.cpp
@@ -133,11 +136,12 @@ set(LIBOFP_SOURCES
 	src/ofp/types.cpp
 	src/ofp/yaml/apichannellistener.cpp
 	src/ofp/yaml/apiconnection.cpp
-  src/ofp/yaml/apiconnectiontcp.cpp
+  src/ofp/yaml/apiconnectionsession.cpp
   src/ofp/yaml/apiconnectionstdio.cpp
 	src/ofp/yaml/apiencoder.cpp
 	src/ofp/yaml/apievents.cpp
 	src/ofp/yaml/apiserver.cpp
+  src/ofp/yaml/apisession.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
@@ -174,9 +178,13 @@ set(LIBOFP_HEADER_FILES
   include/ofp/actionrange.h
   include/ofp/actions.h
   include/ofp/actiontype.h
-  include/ofp/aggregatestatsrequest.h
   include/ofp/aggregatestatsreply.h
+  include/ofp/aggregatestatsrequest.h
   include/ofp/array.h
+  include/ofp/bucket.h
+  include/ofp/bucketiterator.h
+  include/ofp/bucketlist.h
+  include/ofp/bucketrange.h
   include/ofp/bytedata.h
   include/ofp/bytelist.h
   include/ofp/byteorder.h
@@ -193,10 +201,8 @@ set(LIBOFP_HEADER_FILES
   include/ofp/echorequest.h
   include/ofp/enetaddress.h
   include/ofp/error.h
-  include/ofp/exception.h
   include/ofp/experimenter.h
   include/ofp/export.h
-  include/ofp/features.h
   include/ofp/featuresreply.h
   include/ofp/flowmod.h
   include/ofp/flowremoved.h
@@ -204,6 +210,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/flowstatsrequest.h
   include/ofp/getasyncreply.h
   include/ofp/getconfigreply.h
+  include/ofp/groupmod.h
   include/ofp/header.h
   include/ofp/headeronly.h
   include/ofp/hello.h
@@ -214,12 +221,16 @@ set(LIBOFP_HEADER_FILES
   include/ofp/instructiontype.h
   include/ofp/ipv4address.h
   include/ofp/ipv6address.h
+  include/ofp/ipv6endpoint.h
   include/ofp/log.h
   include/ofp/match.h
   include/ofp/matchbuilder.h
   include/ofp/memorychannel.h
   include/ofp/message.h
-  include/ofp/multipartbody.h
+  include/ofp/mpdesc.h
+  include/ofp/mpportstats.h
+  include/ofp/mpqueuestats.h
+  include/ofp/mptablestats.h
   include/ofp/multipartreply.h
   include/ofp/multipartrequest.h
   include/ofp/originalmatch.h
@@ -234,9 +245,16 @@ set(LIBOFP_HEADER_FILES
   include/ofp/padding.h
   include/ofp/port.h
   include/ofp/portlist.h
+  include/ofp/portmod.h
   include/ofp/portstatus.h
   include/ofp/prerequisites.h
+  include/ofp/protocolelement.h
+  include/ofp/protocoliterable.h
+  include/ofp/protocoliterator.h
+  include/ofp/protocolmsg.h
   include/ofp/protocolversions.h
+  include/ofp/queuegetconfigreply.h
+  include/ofp/queuegetconfigrequest.h
   include/ofp/rolereply.h
   include/ofp/rolerequest.h
   include/ofp/setasync.h
@@ -244,28 +262,36 @@ set(LIBOFP_HEADER_FILES
   include/ofp/smallcstring.h
   include/ofp/standardmatch.h
   include/ofp/sys/boost_asio.h
+  include/ofp/sys/buffered.h
   include/ofp/sys/connection.h
   include/ofp/sys/connectiontimer.h
   include/ofp/sys/engine.h
+  include/ofp/sys/plaintext.h
   include/ofp/sys/server.h
   include/ofp/sys/tcp_connection.h
   include/ofp/sys/tcp_server.h
   include/ofp/sys/udp_connection.h
   include/ofp/sys/udp_server.h
+  include/ofp/tablemod.h
   include/ofp/transmogrify.h
   include/ofp/types.h
   include/ofp/unittest.h
   include/ofp/writable.h
   include/ofp/yaml/apichannellistener.h
   include/ofp/yaml/apiconnection.h
+  include/ofp/yaml/apiconnectionsession.h
+  include/ofp/yaml/apiconnectionstdio.h
   include/ofp/yaml/apiencoder.h
   include/ofp/yaml/apievents.h
   include/ofp/yaml/apiserver.h
+  include/ofp/yaml/apisession.h
   include/ofp/yaml/decoder.h
   include/ofp/yaml/encoder.h
-  include/ofp/yaml/old_flowmod.h
+  include/ofp/yaml/outputjson.h
   include/ofp/yaml/yactions.h
   include/ofp/yaml/yaddress.h
+  include/ofp/yaml/yaggregatestatsreply.h
+  include/ofp/yaml/ybucket.h
   include/ofp/yaml/ybytelist.h
   include/ofp/yaml/ybyteorder.h
   include/ofp/yaml/yconstants.h
@@ -275,20 +301,35 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml/yexperimenter.h
   include/ofp/yaml/yfeaturesreply.h
   include/ofp/yaml/yflowmod.h
+  include/ofp/yaml/yflowremoved.h
   include/ofp/yaml/yflowstatsreply.h
   include/ofp/yaml/yflowstatsrequest.h
+  include/ofp/yaml/ygetasyncreply.h
+  include/ofp/yaml/ygetconfigreply.h
+  include/ofp/yaml/ygroupmod.h
   include/ofp/yaml/yheaderonly.h
   include/ofp/yaml/yhello.h
   include/ofp/yaml/yinstructions.h
   include/ofp/yaml/yllvm.h
   include/ofp/yaml/ymatch.h
-  include/ofp/yaml/ymultipartbody.h
+  include/ofp/yaml/ympdesc.h
+  include/ofp/yaml/ympportstats.h
+  include/ofp/yaml/ympqueuestats.h
+  include/ofp/yaml/ymptablestats.h
   include/ofp/yaml/ymultipartreply.h
   include/ofp/yaml/ymultipartrequest.h
   include/ofp/yaml/ypacketin.h
   include/ofp/yaml/ypacketout.h
+  include/ofp/yaml/yport.h
+  include/ofp/yaml/yportmod.h
+  include/ofp/yaml/yportstatus.h
+  include/ofp/yaml/yqueuegetconfigrequest.h
+  include/ofp/yaml/yrolereply.h
+  include/ofp/yaml/yrolerequest.h
+  include/ofp/yaml/ysetasync.h
   include/ofp/yaml/ysetconfig.h
-  include/ofp/yaml.h
+  include/ofp/yaml/ysmallcstring.h
+  include/ofp/yaml/ytablemod.h
   include/ofp-c/ofpprotocol.h
   include/ofp-c/ofpstring.h
   include/ofp.h
@@ -338,9 +379,12 @@ endif()
 set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
-# Boost may pull in pthreads.
+# Boost may pull in pthreads. We need OpenSSL for TLS support.
 
 find_package(Threads)
+find_package(OpenSSL)
+
+set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT} ssl crypto)
 
 # Call custom function to check for Python YAML module (optional for testing).
 
@@ -360,20 +404,20 @@ configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTes
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall -Wno-deprecated-declarations")
 set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
 add_subdirectory(external/googletest)
-add_subdirectory(external/boost_1_54_0_asio)
+##add_subdirectory(external/boost_1_54_0_asio)
 
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS}")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS}")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
 
 # Set up the source include directory. N.B. Includes for third-party sources are
 # baked into CMAKE_CXX_FLAGS using -isystem.
@@ -393,7 +437,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-target_link_libraries(ofp boost yamlio)
+target_link_libraries(ofp yamlio)
 
 # Make sure the source is generated before the executable builds.
 
@@ -409,6 +453,12 @@ add_subdirectory(example/controller)
 add_subdirectory(example/libofpexec)
 add_subdirectory(example/python)
 add_subdirectory(example/bridgeofp)
+
+#-------------------------------------------------------------------------------
+# Build Tool
+#-------------------------------------------------------------------------------
+
+add_subdirectory(tools/ofpx)
 
 #-------------------------------------------------------------------------------
 # Test

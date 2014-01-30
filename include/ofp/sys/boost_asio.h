@@ -25,42 +25,29 @@
 #ifndef OFP_SYS_BOOST_ASIO_H
 #define OFP_SYS_BOOST_ASIO_H
 
-#include <boost/asio.hpp>
-#include <boost/asio/steady_timer.hpp>
+#include <asio.hpp>
+#include <asio/ssl.hpp>
 
-#include "ofp/exception.h"
 #include "ofp/log.h"
-#include "ofp/ipv6address.h"
+#include "ofp/ipv6endpoint.h"
+#include "ofp/sys/plaintext.h"
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
-using tcp = boost::asio::ip::tcp;
-using udp = boost::asio::ip::udp;
-using io_service = boost::asio::io_service;
-using error_code = boost::system::error_code;
-using steady_timer = boost::asio::steady_timer;
-using stream_descriptor = boost::asio::posix::stream_descriptor;
-using signal_set = boost::asio::signal_set;
+using tcp = asio::ip::tcp;
+using udp = asio::ip::udp;
 
-inline bool isAsioEOF(const error_code &error)
-{
-    using namespace boost::asio::error;
-    return error.value() == eof && error.category() == misc_category;
-}
+using PlaintextSocket = Plaintext<tcp::socket>;
+using EncryptedSocket = asio::ssl::stream<tcp::socket>;
 
-inline bool isAsioCanceled(const error_code &error)
-{
-    using namespace boost::asio::error;
-    return error.value() == ECANCELED && error.category() == system_category;
-}
-
+#if 0
 /// \returns True if socket is connected to given endpoint. We need this
 /// function because `async_connect` may not return an error on a failed 
 /// connection attempt.
-inline bool checkAsioConnected(const tcp::socket &socket,
+inline bool checkAsioConnected(const tcp::socket::lowest_layer_type &socket,
                                const tcp::endpoint &endpt,
-                               error_code &error)
+                               asio::error_code &error)
 {
     assert(socket.is_open());
 
@@ -68,7 +55,7 @@ inline bool checkAsioConnected(const tcp::socket &socket,
     return !error && endpt == actual;
 }
 
-inline Exception makeException(const boost::system::error_code &error)
+inline Exception makeException(const asio::error_code &error)
 {
     Exception::Category category{{'*', '*', '*', '*'}};
 
@@ -87,11 +74,13 @@ inline Exception makeException(const boost::system::error_code &error)
     return Exception{category, error.value()};
 }
 
+#endif //0
+
 struct HashEndpoint {
-    size_t operator()(const udp::endpoint &endpt) const;
+    size_t operator()(const IPv6Endpoint &endpt) const;
 };
 
-inline IPv6Address makeIPv6Address(const boost::asio::ip::address &addr)
+inline IPv6Address makeIPv6Address(const asio::ip::address &addr)
 {
     if (addr.is_v6()) {
         return IPv6Address{addr.to_v6().to_bytes()};
@@ -102,34 +91,32 @@ inline IPv6Address makeIPv6Address(const boost::asio::ip::address &addr)
     }
 }
 
-inline tcp::endpoint makeTCPEndpoint(const IPv6Address &addr, UInt16 port)
+template <class Proto>
+inline typename Proto::endpoint makeEndpoint(const IPv6Address &addr, UInt16 port)
 {
-    using namespace boost::asio;
+    using Endpoint = typename Proto::endpoint;
 
     if (!addr.valid()) {
-        return tcp::endpoint{tcp::v6(), port};
+        return Endpoint{Proto::v6(), port};
     } else if (addr.isV4Mapped()) {
-        ip::address_v4 v4{addr.toV4().toArray()};
-        return tcp::endpoint{v4, port};
+        asio::ip::address_v4 v4{addr.toV4().toArray()};
+        return Endpoint{v4, port};
     } else {
-        ip::address_v6 v6{addr.toArray()};
-        return tcp::endpoint{v6, port};
+        asio::ip::address_v6 v6{addr.toArray()};
+        return Endpoint{v6, port};
     }
 }
 
-inline udp::endpoint makeUDPEndpoint(const IPv6Address &addr, UInt16 port)
+template <class Proto>
+inline typename Proto::endpoint convertEndpoint(const IPv6Endpoint &endpt)
 {
-    using namespace boost::asio;
+    return makeEndpoint<Proto>(endpt.address(), endpt.port());
+}
 
-    if (!addr.valid()) {
-        return udp::endpoint{udp::v6(), port};
-    } else if (addr.isV4Mapped()) {
-        ip::address_v4 v4{addr.toV4().toArray()};
-        return udp::endpoint{v4, port};
-    } else {
-        ip::address_v6 v6{addr.toArray()};
-        return udp::endpoint{v6, port};
-    }
+template <class Proto>
+inline IPv6Endpoint convertEndpoint(const typename Proto::endpoint &endpt)
+{
+    return IPv6Endpoint{makeIPv6Address(endpt.address()), endpt.port()};
 }
 
 } // </namespace sys>

@@ -21,7 +21,6 @@
 
 #include "ofp/unittest.h"
 #include "ofp/driver.h"
-#include "ofp/exception.h"
 
 using namespace ofp;
 
@@ -30,8 +29,6 @@ public:
   void onChannelUp(Channel *channel) override {}
   void onChannelDown(Channel *channel) override {}
   void onMessage(const Message *message) override;
-
-  void onException(const Exception *error) override {}
   void onTimer(UInt32 timerID) override {}
 };
 
@@ -42,7 +39,7 @@ TEST(driver, test) {
 
   Driver driver;
 
-  driver.listen(Driver::Controller, nullptr, IPv6Endpoint{OFP_DEFAULT_PORT},
+  driver.listen(Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
                 ProtocolVersions{}, [] { return new MockChannelListener; });
 
   // driver.run();

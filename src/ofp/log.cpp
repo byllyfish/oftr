@@ -35,7 +35,7 @@ std::ostream *get() { return GlobalLogStream; }
 
 void set(std::ostream *logStream) { GlobalLogStream = logStream; }
 
-using Time = std::pair<std::time_t, milliseconds>;
+using Time = std::pair<std::time_t, Milliseconds>;
 
 static Time currentTime() {
   using namespace std::chrono;
@@ -67,10 +67,12 @@ static void trace1(const char *type, const void *data, size_t length) {
   Message message{data, length};
   message.transmogrify();
 
+#if 0
   // Don't log echo replies or echo requests.
   if (message.type() == OFPT_ECHO_REPLY || message.type() == OFPT_ECHO_REQUEST)
     return;
-
+#endif
+  
   yaml::Decoder decoder{&message};
 
   if (decoder.error().empty()) {

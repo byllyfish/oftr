@@ -38,7 +38,7 @@ namespace detail { // <namespace detail>
 template <class Type>
 class MPReplyFixedSizeSeq {
 public:
-  MPReplyFixedSizeSeq(MultipartReply &msg) : msg_{msg}, position_{msg.replyBody()} {}
+  MPReplyFixedSizeSeq(MultipartReply &msg) : msg_(msg), position_{msg.replyBody()} {}
 
   size_t size() const {
     return msg_.replyBodySize() / sizeof(Type);

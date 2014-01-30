@@ -33,6 +33,7 @@ namespace yaml { // <namespace yaml>
 
 struct ApiListenRequest;
 struct ApiSetTimer;
+struct ApiEditSetting;
 
 class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
 public:
@@ -51,37 +52,32 @@ public:
 	void onChannelUp(Channel *channel);
 	void onChannelDown(Channel *channel);
 	void onMessage(Channel *channel, const Message *message);
-	void onException(Channel *channel, const Exception *exception);
 	void onTimer(Channel *channel, UInt32 timerID);
+
+	void handleEvent(const std::string &event);
 
 protected:
 	virtual void write(const std::string &msg) = 0;
 	virtual void asyncRead() = 0;
-	virtual void asyncWrite() = 0;
 
-	void handleInputLine(std::string *line);
+	void processInputLine(std::string *line);
 
 private:
 	ApiServer *server_;
-	//sys::tcp::socket socket_;
-	//boost::asio::streambuf streambuf_;
 	std::string text_;
-	unsigned lineCount_ = 0;
-	bool isLibEvent_ = false;
 	bool isListening_ = false;
 	bool isFormatJson_ = false;
 
-	// Use a two buffer strategy for async-writes. We queue up data in one
-	// buffer while we're in the process of writing the other buffer.
-	//ByteList outgoing_[2];
-	//int outgoingIdx_ = 0;
-	//bool writing_ = false;
-
-	void handleEvent();
-
 	static void cleanInputLine(std::string *line);
 	static bool isEmptyEvent(const std::string &s);
-	static std::string escape(const std::string &s);
+
+	enum EventType {
+		EmptyEvent,			// empty; too short or no colon
+		LibEvent,			// library event
+		MsgEvent			// protocol msg event
+	};
+
+	static EventType eventTypeOf(const std::string &s);
 };
 
 } // </namespace yaml>

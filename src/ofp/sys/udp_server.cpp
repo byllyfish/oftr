@@ -26,22 +26,14 @@
 #include "ofp/echoreply.h"
 #include "ofp/hello.h"
 
-using namespace boost;
-
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+using namespace ofp::sys;
 
 UDP_Server::UDP_Server(Engine *engine, Driver::Role role,
-                       const Features *features, const udp::endpoint &endpt,
-                       ProtocolVersions versions)
+                       const udp::endpoint &endpt, ProtocolVersions versions,
+                       std::error_code &error)
     : engine_{engine}, role_{role}, versions_{versions}, socket_{engine->io()},
       message_{nullptr} {
-  listen(endpt);
-
-  if (features) {
-    features_ = *features;
-  }
-
+  listen(endpt, error);
   asyncReceive();
 
   engine_->registerServer(this);
@@ -50,7 +42,7 @@ UDP_Server::UDP_Server(Engine *engine, Driver::Role role,
 }
 
 UDP_Server::~UDP_Server() {
-  error_code err;
+  asio::error_code err;
   udp::endpoint endpt = socket_.local_endpoint(err);
   log::info("Stop UDP listening on", endpt);
 
@@ -80,35 +72,32 @@ void UDP_Server::write(const void *data, size_t length) {
 
 void UDP_Server::flush(udp::endpoint endpt) { asyncSend(); }
 
-void UDP_Server::listen(const udp::endpoint &endpt) {
+void UDP_Server::listen(const udp::endpoint &localEndpt,
+                        std::error_code &error) {
   // Handle case where IPv6 is not supported on this system.
-  udp::endpoint ep = endpt;
-  try {
-    socket_.open(ep.protocol());
-  }
-  catch (boost::system::system_error &ex) {
-    auto addr = ep.address();
-    if (ex.code() == boost::asio::error::address_family_not_supported &&
-        addr.is_v6() && addr.is_unspecified()) {
-      log::info("UDP_Server: IPv6 is not supported. Using IPv4.");
-      ep = udp::endpoint{udp::v4(), ep.port()};
-      socket_.open(ep.protocol());
-    } else {
-      log::debug("UDP_Server::listen - unexpected exception", ex.code());
-      throw;
-    }
+  udp::endpoint endpt = localEndpt;
+  asio::ip::address addr = endpt.address();
+
+  socket_.open(endpt.protocol(), error);
+
+  if (error == asio::error::address_family_not_supported && addr.is_v6() &&
+      addr.is_unspecified()) {
+    log::info("UDP_Server: IPv6 is not supported. Using IPv4.");
+    endpt = udp::endpoint{udp::v4(), endpt.port()};
+    if (socket_.open(endpt.protocol(), error))
+      return;
   }
 
-  socket_.bind(ep);
+  socket_.bind(endpt, error);
 }
 
 void UDP_Server::asyncReceive() {
   socket_.async_receive_from(
       asio::buffer(message_.mutableData(MaxDatagramLength), MaxDatagramLength),
-      sender_, [this](error_code err, size_t bytes_recvd) {
+      sender_, [this](const asio::error_code &err, size_t bytes_recvd) {
 
         if (err) {
-          log::info("Error receiving datagram:", makeException(err));
+          log::info("Error receiving datagram:", err);
 
         } else if (bytes_recvd < sizeof(Header)) {
           log::info("Small datagram ignored:", bytes_recvd);
@@ -151,7 +140,7 @@ void UDP_Server::dispatchMessage() {
   // and the incoming message is a HELLO, open a new connection. Otherwise,
   // drop the message.
 
-  auto iter = connMap_.find(sender_);
+  auto iter = connMap_.find(convertEndpoint<udp>(sender_));
 
   if (iter == connMap_.end()) {
 
@@ -168,6 +157,3 @@ void UDP_Server::dispatchMessage() {
     iter->second->postMessage(nullptr, &message_);
   }
 }
-
-} // </namespace sys>
-} // </namespace ofp>

@@ -23,8 +23,8 @@
 #include "ofp/sys/engine.h"
 #include "ofp/message.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+using namespace ofp;
+using namespace ofp::sys;
 
 Driver *Connection::driver() const { return engine_->driver(); }
 
@@ -62,16 +62,17 @@ Connection::~Connection() {
   }
 }
 
-void Connection::setMainConnection(Connection *channel) {
+void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
   assert(channel != nullptr);
   assert(mainConn_ == this);
   assert(channel != this);
-  assert(auxiliaryId() != 0);
+  assert(auxID != 0);
 
   log::debug("setMainConnection");
   mainConn_ = channel;
+  datapathId_ = mainConn_->datapathId();
+  auxiliaryId_ = auxID;
 
-  UInt8 auxID = auxiliaryId();
   AuxiliaryList &auxList = mainConn_->auxList_;
 
   // Check if there is already an auxiliary connection with the same ID.
@@ -79,7 +80,7 @@ void Connection::setMainConnection(Connection *channel) {
 
   auto iter = std::find_if(
       auxList.begin(), auxList.end(),
-      [auxID](Connection * conn) { return conn->auxiliaryId() == auxID; });
+      [auxID](Connection *conn) { return conn->auxiliaryId() == auxID; });
   if (iter != auxList.end()) {
     log::info("setMainConnection: Auxiliary connection found with same ID.");
     (*iter)->shutdown();
@@ -89,6 +90,16 @@ void Connection::setMainConnection(Connection *channel) {
 }
 
 void Connection::postMessage(Connection *source, Message *message) {
+
+  // Handle echo reply automatically. We just set the type to reply and write
+  // it back.
+  if (message->type() == OFPT_ECHO_REQUEST) {
+    message->mutableHeader()->setType(OFPT_ECHO_REPLY);
+    write(message->data(), message->size());
+    flush();
+    return; // all done!
+  }
+
   log::trace("read", message->data(), message->size());
 
   if (listener_) {
@@ -112,17 +123,21 @@ void Connection::postTimerExpired(ConnectionTimer *timer) {
 
 void Connection::postIdle() { log::debug("postIdle() =========="); }
 
-void Connection::postDatapathID() {
+void Connection::postDatapathId(const DatapathID &datapathId,
+                                UInt8 auxiliaryId) {
   assert(!dpidWasPosted_);
 
+  datapathId_ = datapathId;
+  auxiliaryId_ = auxiliaryId;
+  dpidWasPosted_ = true; // FIXME - replace with check for all-0 datapath?
+
   engine()->postDatapathID(this);
-  dpidWasPosted_ = true;
 }
 
 /// \brief Schedule a timer event on the channel and give it the specified ID.
 /// If there is already a timer with the same ID, this method will cancel the
 /// old timer and replace it.
-void Connection::scheduleTimer(UInt32 timerID, milliseconds interval,
+void Connection::scheduleTimer(UInt32 timerID, Milliseconds interval,
                                bool repeat) {
   timers_[timerID] = std::unique_ptr<ConnectionTimer>(
       new ConnectionTimer{this, timerID, interval, repeat});
@@ -130,5 +145,6 @@ void Connection::scheduleTimer(UInt32 timerID, milliseconds interval,
 
 void Connection::cancelTimer(UInt32 timerID) { (void)timers_.erase(timerID); }
 
-} // </namespace sys>
-} // </namespace ofp>
+void Connection::openAuxChannel(UInt8 auxID, Transport transport) {
+  engine()->openAuxChannel(auxID, transport, this);
+}

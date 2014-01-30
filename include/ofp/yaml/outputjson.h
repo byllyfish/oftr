@@ -6,6 +6,8 @@
 namespace ofp { // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
+OFP_BEGIN_IGNORE_PADDING
+
 class OutputJson : public llvm::yaml::IO {
 public:
   OutputJson(llvm::raw_ostream &yout, void *ctxt=NULL);
@@ -62,6 +64,7 @@ private:
   bool                     NeedComma;
 };
 
+OFP_END_IGNORE_PADDING
 
 // Define non-member operator<< so that OutputJson can stream out a map.
 // (Adapted from llvm::yaml.)

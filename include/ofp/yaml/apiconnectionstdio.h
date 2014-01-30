@@ -22,6 +22,7 @@
 #ifndef OFP_YAML_APICONNECTIONSTDIO
 #define OFP_YAML_APICONNECTIONSTDIO
 
+#include "ofp/sys/boost_asio.h"
 #include "ofp/yaml/apiconnection.h"
 
 OFP_BEGIN_IGNORE_PADDING
@@ -31,8 +32,8 @@ namespace yaml { // <namespace yaml>
 
 class ApiConnectionStdio : public ApiConnection {
 public:
-    ApiConnectionStdio(ApiServer *server, sys::stream_descriptor input,
-                       sys::stream_descriptor output, bool listening = false);
+    ApiConnectionStdio(ApiServer *server, asio::posix::stream_descriptor input,
+                       asio::posix::stream_descriptor output, bool listening = false);
 
     void setInput(int input);
     void setOutput(int output);
@@ -42,12 +43,12 @@ public:
 protected:
     void write(const std::string &msg) override;
     void asyncRead() override;
-    void asyncWrite() override;
+    void asyncWrite();
 
 private:
-    sys::stream_descriptor input_;
-    sys::stream_descriptor output_;
-    boost::asio::streambuf streambuf_;
+    asio::posix::stream_descriptor input_;
+    asio::posix::stream_descriptor output_;
+    asio::streambuf streambuf_;
 
     // Use a two buffer strategy for async-writes. We queue up data in one
     // buffer while we're in the process of writing the other buffer.

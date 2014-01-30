@@ -21,7 +21,6 @@
 
 #include "ofp/channellistener.h"
 #include "ofp/log.h"
-#include "ofp/exception.h"
 
 using namespace ofp;
 
@@ -31,10 +30,6 @@ void ChannelListener::onChannelUp(Channel *channel) {
 
 void ChannelListener::onChannelDown(Channel *channel) {
   log::debug("ChannelListener - onChannelDown ignored:", channel);
-}
-
-void ChannelListener::onException(const Exception *exception) {
-  log::debug("ChannelListener - onException ignored:", *exception);
 }
 
 void ChannelListener::onTimer(UInt32 timerID) {

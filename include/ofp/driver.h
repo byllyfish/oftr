@@ -33,14 +33,6 @@ namespace sys { // <namespace sys>
 class Engine;
 } // </namespace ofp>
 
-class Features;
-
-struct DriverOptions {
-  /// Platform-specific context for TLS implementation (certificates, etc).
-  /// Pass a pointer to a `boost::asio::ssl::context`.
-  void *tlsContext = nullptr;
-};
-
 class Driver {
 public:
   enum Role {
@@ -50,33 +42,33 @@ public:
     Auxiliary // for internal use only
   };
 
-  Driver(DriverOptions *options = nullptr);
+  Driver();
   ~Driver();
 
-  Deferred<Exception> listen(Role role, const Features *features,
-                             const IPv6Endpoint &localEndpoint,
-                             ProtocolVersions versions,
-                             ChannelListener::Factory listenerFactory);
+  std::error_code configureTLS(const std::string &privateKeyFile,
+                               const std::string &certificateFile,
+                               const std::string &certificateAuthorityFile,
+                               const char *privateKeyPassword);
+
+  std::error_code listen(Role role, const IPv6Endpoint &localEndpoint,
+                         ProtocolVersions versions,
+                         ChannelListener::Factory listenerFactory);
 
   // TODO this should take an array of remote endpoints...
-  Deferred<Exception> connect(Role role, const Features *features,
-                              const IPv6Endpoint &remoteEndpoint,
-                              ProtocolVersions versions,
-                              ChannelListener::Factory listenerFactory);
+  Deferred<std::error_code> connect(Role role,
+                                    const IPv6Endpoint &remoteEndpoint,
+                                    ProtocolVersions versions,
+                                    ChannelListener::Factory listenerFactory);
 
   void run();
 
   /// \brief Tells the driver to stop running.
   void stop();
 
-  /// \brief Installs signal handlers to tell the driver to stop.
-  // FIXME void installSignalHandlers();
-
   sys::Engine *engine() { return engine_; }
 
 private:
   sys::Engine *engine_;
-  log::Lifetime lifetime{"Driver"};
 };
 
 } // </namespace ofp>

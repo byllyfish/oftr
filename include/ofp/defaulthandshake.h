@@ -41,7 +41,6 @@ public:
   void onChannelUp(Channel *channel) override;
   void onChannelDown(Channel *channel) override;
   void onMessage(const Message *message) override;
-  void onException(const Exception *exception) override;
   void onTimer(UInt32 /* timerID */) override {}
 
   Driver::Role role() const { return role_; }
@@ -60,13 +59,13 @@ private:
   UInt8 startingVersion_ = 0;
 
   void onHello(const Message *message);
-  void onFeaturesRequest(const Message *message);
+  //void onFeaturesRequest(const Message *message);
   void onFeaturesReply(const Message *message);
   void onError(const Message *message);
 
   void replyError(UInt16 type, UInt16 code, const Message *message);
-  void installNewChannelListener();
-  void installAuxiliaryChannelListener();
+  void installNewChannelListener(const Message *message);
+  void installAuxiliaryChannelListener(const Message *message);
 };
 OFP_END_IGNORE_PADDING
 

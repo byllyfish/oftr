@@ -23,6 +23,7 @@
 #define OFP_SYS_CONNECTION_TIMER_H
 
 #include "ofp/sys/boost_asio.h"
+#include <map>
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
@@ -35,15 +36,15 @@ OFP_BEGIN_IGNORE_PADDING
 /// unique ID.
 class ConnectionTimer {
 public:
-	ConnectionTimer(Connection *conn, UInt32 id, milliseconds interval, bool repeating);
+	ConnectionTimer(Connection *conn, UInt32 id, Milliseconds interval, bool repeating);
 
 	UInt32 id() const { return id_; }
 	bool repeating() const { return repeating_; }
 
 private:
 	Connection *conn_;
-	steady_timer timer_;
-	milliseconds interval_;
+	asio::steady_timer timer_;
+	Milliseconds interval_;
     UInt32 id_;
     bool repeating_;
 

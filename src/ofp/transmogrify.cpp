@@ -451,12 +451,12 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   // Need at least 48 more bytes (136 - 88). If there's an action list, we need 
   // 8 more bytes for the instruction header.
   UInt16 actLen = UInt16_narrow_cast(length - 88);
-  size_t needed = 48;
+  int needed = 48;
   if (actLen > 0) {
     needed += 8;
   }
 
-  buf_.insertUninitialized(ptr + 48, needed);
+  buf_.insertUninitialized(ptr + 48, Unsigned_cast(needed));
 
   // Copy in stdMatch.
   ptr = buf_.mutableData() + offset;
@@ -477,8 +477,8 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   }
 
   // Update length.
-  *reinterpret_cast<Big16 *>(ptr) = length + needed;
-  *start += length + needed;
+  *reinterpret_cast<Big16 *>(ptr) = UInt16_narrow_cast(length + needed);
+  *start = Unsigned_cast(Signed_cast(*start) + length + needed);
   
   log::debug("normalizeFlowReplyV1", buf_);
 }

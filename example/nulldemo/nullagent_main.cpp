@@ -20,35 +20,24 @@ int main(int argc, const char **argv) {
 
   ofp::log::set(&std::cerr);
 
-  EnetAddress enetAddr{"01-02-03-04-05-00"};
-
-  Features features;
-  features.setDatapathId(DatapathID{0, enetAddr});
-  features.setBufferCount(1);
-  features.setTableCount(1);
-  features.setCapabilities(0);
-
   Driver driver;
 
   if (addr.valid()) {
-    auto result = driver.connect(Driver::Agent, &features,
+    auto result = driver.connect(Driver::Agent,
                                  IPv6Endpoint{addr, OFP_DEFAULT_PORT}, version,
                                  NullAgent::Factory);
-    result.done([](Exception ex) {
+    result.done([](const std::error_code &err) {
       // This will not be called, unless `addr` is invalid; agent will keep
       // retrying the connection.
-      std::cout << "Result: " << ex << '\n';
+      std::cout << "Result: " << err << '\n';
     });
 
   } else {
-    auto result =
-        driver.listen(Driver::Agent, &features, IPv6Endpoint{OFP_DEFAULT_PORT},
+    auto err =
+        driver.listen(Driver::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
                       version, NullAgent::Factory);
 
-    result.done([](Exception ex) {
-      // This may be called if port is already in use.
-      std::cout << "Result: " << ex << '\n';
-    });
+    std::cout << "Result: " << err << '\n';
   }
 
   driver.run();

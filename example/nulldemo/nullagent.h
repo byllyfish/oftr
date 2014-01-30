@@ -2,14 +2,13 @@
 #define NULLAGENT_H
 
 #include "ofp.h"
-#include "ofp/yaml.h"
 #include "ofp/yaml/yflowmod.h"
 
 using ofp::UInt16;
 using ofp::UInt32;
 using ofp::Message;
 using ofp::Channel;
-using ofp::milliseconds;
+using ofp::Milliseconds;
 
 class NullAgent : public ofp::ChannelListener {
 public:

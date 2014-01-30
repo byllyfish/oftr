@@ -4,7 +4,8 @@ set(LIBOFP_TEST_SOURCES
 	ofp/actions_unittest.cpp
 	ofp/actiontype_unittest.cpp
 	ofp/apiencoder_unittest.cpp
-	ofp/apiserver_unittest.cpp
+	ofp/apisession_unittest.cpp
+	ofp/asio_unittest.cpp
 	ofp/boost_asio_unittest.cpp
 	ofp/bucketlist_unittest.cpp
 	ofp/bytedata_unittest.cpp
@@ -50,14 +51,13 @@ set(LIBOFP_TEST_SOURCES
 	ofp/standardmatch_unittest.cpp
 	ofp/types_unittest.cpp
 	ofp/unittest_unittest.cpp
-	ofp/yaml_unittest.cpp
 	ofp/yhello_unittest.cpp
 )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include")
 
 add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES})
-target_link_libraries(ofp_unittest gtest ofp yamlio)
+target_link_libraries(ofp_unittest gtest ofp ${LIBOFP_LINKED_LIBS})
 
 # Add tests here.
 

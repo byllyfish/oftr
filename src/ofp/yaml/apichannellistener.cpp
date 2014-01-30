@@ -40,10 +40,6 @@ void ApiChannelListener::onMessage(const Message *message) {
   server_->onMessage(channel_, message);
 }
 
-void ApiChannelListener::onException(const Exception *exception) {
-  server_->onException(channel_, exception);
-}
-
 void ApiChannelListener::onTimer(UInt32 timerID) {
   server_->onTimer(channel_, timerID);
 }

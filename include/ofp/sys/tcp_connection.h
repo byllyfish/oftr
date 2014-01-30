@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the sys::TCP_Connection class.
@@ -29,103 +29,84 @@
 #include "ofp/sys/connection.h"
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
-#include "ofp/exception.h"
-
-OFP_BEGIN_IGNORE_PADDING
+#include "ofp/sys/buffered.h"
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>
 
-class TCP_Server;
+OFP_BEGIN_IGNORE_PADDING
 
-class TCP_Connection : public std::enable_shared_from_this<TCP_Connection>,
+template <class SocketType>
+class TCP_Connection : public std::enable_shared_from_this<TCP_Connection<SocketType>>,
                        public Connection {
 public:
-    TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions,
-                   ChannelListener::Factory factory);
-    TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role,
-                   ProtocolVersions versions, ChannelListener::Factory factory);
-    TCP_Connection(Engine *engine, DefaultHandshake *handshake);
-    ~TCP_Connection();
+  TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions,
+                 ChannelListener::Factory factory);
+  TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role,
+                 ProtocolVersions versions, ChannelListener::Factory factory);
+  TCP_Connection(Engine *engine, DefaultHandshake *handshake);
+  ~TCP_Connection() {}
 
-    Deferred<Exception> asyncConnect(const tcp::endpoint &endpt,
-                                     milliseconds delay = 0_ms);
-    void asyncAccept();
+  Deferred<std::error_code> asyncConnect(const tcp::endpoint &endpt,
+                                   Milliseconds delay = 0_ms);
+  void asyncAccept();
 
-    void channelUp();
-    void channelException(const Exception &exc);
-    void channelDown();
+  IPv6Endpoint remoteEndpoint() const override;
 
-    bool isOutgoing() const
-    {
-        return endpoint_.port() != 0;
-    }
+  void write(const void *data, size_t length) override {
+    socket_.buf_write(data, length);
+  }
 
-    bool wantsReconnect() const
-    {
-        return handshake()->role() == Driver::Agent && isOutgoing();
-    }
+  void flush() override {
+    socket_.buf_flush();
+  }
 
-    tcp::endpoint endpoint() const
-    {
-        return endpoint_;
-    }
+  void shutdown() override {
+    socket_.lowest_layer().close();
+  }
 
-    IPv6Address remoteAddress() const override;
-    UInt16 remotePort() const override;
-
-    void write(const void *data, size_t length) override;
-    void flush() override;
-    void shutdown() override;
-
-    Transport transport() const
-    {
-        return Transport::TCP;
-    }
-
-    void openAuxChannel(UInt8 auxID, Transport transport) override
-    {
-        engine()->openAuxChannel(auxID, transport, this);
-    }
-
-    Channel *findAuxChannel(UInt8 auxID) const override
-    {
-        return nullptr;
-    }
+  Transport transport() const override { return Transport::TCP; }
 
 private:
-    Message message_;
-    tcp::socket socket_;
-    tcp::endpoint endpoint_;
-    DeferredResultPtr<Exception> deferredExc_ = nullptr;
-    steady_timer idleTimer_;
-    std::chrono::steady_clock::time_point latestActivity_;
+  Message message_;
+  Buffered<SocketType> socket_;
+  tcp::endpoint endpoint_;
+  DeferredResultPtr<std::error_code> deferredExc_ = nullptr;
+  asio::steady_timer idleTimer_;
+  std::chrono::steady_clock::time_point latestActivity_;
 
-    // Use a two buffer strategy for async-writes. We queue up data in one
-    // buffer while we're in the process of writing the other buffer.
-    ByteList outgoing_[2];
-    int outgoingIdx_ = 0;
-    bool writing_ = false;
-    std::function<void()> flushCallback_ = nullptr;
+  log::Lifetime lifetime_{"TCP_Connection"};
 
-    log::Lifetime lifetime_{"TCP_Connection"};
+  void channelUp();
+  void channelDown();
 
-    void asyncReadHeader();
-    void asyncReadMessage(size_t length);
-    void asyncWrite();
-    void asyncEchoReply(const Header *header, size_t length);
-    void asyncRelay(size_t length);
-    void asyncConnect();
-    void asyncDelayConnect(milliseconds delay);
-    void asyncIdleCheck();
+  void asyncReadHeader();
+  void asyncReadMessage(size_t length);
+  void asyncWrite();
+  void asyncHandshake();
+  void asyncConnect();
+  void asyncDelayConnect(Milliseconds delay);
+  void asyncIdleCheck();
 
-    void reconnect();
-    void updateLatestActivity();
+  void reconnect();
+
+  void updateLatestActivity() {
+    latestActivity_ = std::chrono::steady_clock::now();
+  }
+
+  // FIXME - use a bool to indicate if outgoing.
+  bool isOutgoing() const { return endpoint_.port() != 0; }
+
+  bool wantsReconnect() const {
+    return handshake()->role() == Driver::Agent && isOutgoing();
+  }
 };
+
+OFP_END_IGNORE_PADDING
 
 } // </namespace sys>
 } // </namespace ofp>
 
-OFP_END_IGNORE_PADDING
+#include "ofp/sys/tcp_connection.ipp"
 
 #endif // OFP_SYS_TCP_CONNECTION_H

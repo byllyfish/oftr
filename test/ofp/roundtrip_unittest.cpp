@@ -12,6 +12,7 @@ public:
   ~TestController() { --controllerCount; }
 
   void onChannelUp(Channel *channel) override {
+    log::debug("TestController::onChannelUp");
     channel_ = channel;
 
     DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
@@ -26,15 +27,13 @@ public:
   }
 
   void onMessage(const Message *message) override {
-    EXPECT_TRUE(false); // never called
-  }
-
-  void onException(const Exception *exception) override {
-    EXPECT_TRUE(false); // never called
+    log::debug("TestController::onMessage");
+    EXPECT_EQ(OFPT_FEATURES_REPLY, message->type());
   }
 
   void onTimer(UInt32 timerID) {
-    EXPECT_EQ(0x5678, timerID);
+    log::debug("TestController::onTimer");
+    EXPECT_EQ(timerID, 0x5678);
 
     channel_->driver()->stop();
   }
@@ -55,16 +54,29 @@ public:
   ~TestAgent() { --agentCount; }
 
   void onChannelUp(Channel *channel) override {
-    DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
-    EXPECT_EQ(channel->datapathId(), dpid);
+    log::debug("TestAgent::onChannelUp");
+
+    // When agent channel comes up, we expect the datapathId to be all zeros.
+    DatapathID dpid;
+    EXPECT_EQ(dpid, channel->datapathId());
     EXPECT_EQ(0, channel->auxiliaryId());
+    EXPECT_LT(0, channel->version());
+    EXPECT_GE(OFP_VERSION_LAST, channel->version());
 
     for (UInt8 i = 1; i <= auxCount; ++i) {
       channel->openAuxChannel(i, Channel::Transport::TCP);
     }
   }
 
-  void onMessage(const Message *message) override {}
+  void onMessage(const Message *message) override {
+    log::debug("TestAgent::onMessage");
+    EXPECT_EQ(OFPT_FEATURES_REQUEST, message->type());
+
+    DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
+    FeaturesReplyBuilder reply{message->xid()};
+    reply.setDatapathId(dpid);
+    reply.send(message->source());
+  }
 
   static ChannelListener *factory() { return new TestAgent; }
   static int agentCount;
@@ -89,20 +101,16 @@ TEST(roundtrip, basic_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(Driver::Controller, nullptr,
+    auto result1 = driver.listen(Driver::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
+    EXPECT_FALSE(result1);
 
-    result1.done([](Exception exc) { EXPECT_FALSE(exc); });
-
-    DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
-    Features features{dpid};
-
-    auto result2 = driver.connect(Driver::Agent, &features,
+    auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions{}, TestAgent::factory);
 
-    result2.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
     // The driver will run until the Controller shuts it down.
     driver.run();
@@ -126,20 +134,17 @@ TEST(roundtrip, reconnect_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(Driver::Controller, nullptr,
+    auto result1 = driver.listen(Driver::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
 
-    result1.done([](Exception exc) { EXPECT_FALSE(exc); });
+    EXPECT_FALSE(result1);
 
-    DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
-    Features features{dpid};
-
-    auto result2 = driver.connect(Driver::Agent, &features,
+    auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions{}, TestAgent::factory);
 
-    result2.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
     TestController::shutdownCount = 3;
     driver.run();
@@ -163,20 +168,17 @@ TEST(roundtrip, auxiliary_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(Driver::Controller, nullptr,
+    auto result1 = driver.listen(Driver::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions{}, TestController::factory);
 
-    result1.done([](Exception exc) { EXPECT_FALSE(exc); });
+    EXPECT_FALSE(result1);
 
-    DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
-    Features features{dpid};
-
-    auto result2 = driver.connect(Driver::Agent, &features,
+    auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions{}, TestAgent::factory);
 
-    result2.done([](Exception exc) { EXPECT_FALSE(exc); });
+    result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
     TestAgent::auxCount = 5;
     driver.run();

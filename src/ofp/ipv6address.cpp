@@ -40,16 +40,15 @@ IPv6Address::IPv6Address(const std::string &s) {
 }
 
 bool IPv6Address::parse(const std::string &s) {
-  using namespace boost::asio;
-  boost::system::error_code err;
+  std::error_code err;
 
-  ip::address_v6 addr6 = ip::address_v6::from_string(s, err);
+  auto addr6 = asio::ip::address_v6::from_string(s, err);
   if (!err) {
     addr_ = addr6.to_bytes();
     return true;
   }
 
-  ip::address_v4 addr4 = ip::address_v4::from_string(s, err);
+  auto addr4 = asio::ip::address_v4::from_string(s, err);
   if (!err) {
     auto a = addr4.to_bytes();
     std::copy(a.data(), a.data() + 4, &addr_[12]);

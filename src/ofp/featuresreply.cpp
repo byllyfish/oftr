@@ -23,16 +23,7 @@
 #include "ofp/channel.h"
 #include "ofp/log.h"
 
-namespace ofp { // <namespace ofp>
-
-void FeaturesReply::getFeatures(Features *features) const {
-  features->setDatapathId(datapathId_);
-  features->setBufferCount(bufferCount_);
-  features->setTableCount(tableCount_);
-  features->setAuxiliaryId(auxiliaryId_);
-  features->setCapabilities(capabilities_);
-  features->setReserved(reserved_);
-}
+using namespace ofp;
 
 bool FeaturesReply::validateLength(size_t length) const {
   if (length < sizeof(FeaturesReply)) {
@@ -53,15 +44,6 @@ FeaturesReplyBuilder::FeaturesReplyBuilder(UInt32 xid) {
   msg_.header_.setXid(xid);
 }
 
-void FeaturesReplyBuilder::setFeatures(const Features &features) {
-  msg_.datapathId_ = features.datapathId();
-  msg_.bufferCount_ = features.bufferCount();
-  msg_.tableCount_ = features.tableCount();
-  msg_.auxiliaryId_ = features.auxiliaryId();
-  msg_.capabilities_ = features.capabilities();
-  msg_.reserved_ = features.reserved();
-}
-
 UInt32 FeaturesReplyBuilder::send(Writable *channel) {
   msg_.header_.setVersion(channel->version());
   msg_.header_.setLength(sizeof(msg_));
@@ -71,5 +53,3 @@ UInt32 FeaturesReplyBuilder::send(Writable *channel) {
 
   return msg_.header_.xid();
 }
-
-} // </namespace ofp>

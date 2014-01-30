@@ -49,6 +49,9 @@ public:
 
   std::string toString() const;
 
+  bool operator==(const IPv6Endpoint &rhs) const { return port_ == rhs.port_ && addr_ == rhs.addr_; }
+  bool operator!=(const IPv6Endpoint &rhs) const { return !(*this == rhs); }
+
 private:
   IPv6Address addr_;
   UInt16 port_ = 0;

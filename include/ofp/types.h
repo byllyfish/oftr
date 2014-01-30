@@ -75,12 +75,12 @@ using UInt16 = std::uint16_t;
 using UInt32 = std::uint32_t;
 using UInt64 = std::uint64_t;
 
-using milliseconds = std::chrono::milliseconds;
+using Milliseconds = std::chrono::milliseconds;
 
 // Literal type `ms` is not supported until C++14. Use _ms for now.
 
-constexpr milliseconds operator"" _ms(unsigned long long msec) {
-  return milliseconds{msec};
+constexpr Milliseconds operator"" _ms(unsigned long long msec) {
+  return Milliseconds{msec};
 }
 
 template <class T>
@@ -267,6 +267,16 @@ bool IsMemFilled(const void *data, size_t length, char fill);
 template <unsigned ByteBoundary>
 constexpr bool IsPtrAligned(const void *ptr) {
   return (reinterpret_cast<uintptr_t>(ptr) & (ByteBoundary - 1)) == 0;
+}
+
+/// Return a constructed unique_ptr for the specified type by forwarding
+/// arguments to the constructor.
+///
+/// \return unique ptr to new object.
+template <class T, class... Args>
+std::unique_ptr<T> MakeUniquePtr(Args &&... args) {
+  static_assert(!std::is_array<T>::value, "Only supports non-array types.");
+  return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
 } // </namespace ofp>

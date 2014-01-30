@@ -23,7 +23,7 @@
 #ifndef OFP_YAML_YSETCONFIG_H
 #define OFP_YAML_YSETCONFIG_H
 
-#include "ofp/yaml.h"
+//#include "ofp/yaml.h"
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/setconfig.h"

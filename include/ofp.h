@@ -26,7 +26,6 @@
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
 #include "ofp/message.h"
-#include "ofp/features.h"
 #include "ofp/headeronly.h"
 #include "ofp/featuresreply.h"
 #include "ofp/flowmod.h"
@@ -38,7 +37,6 @@
 #include "ofp/getconfigreply.h"
 #include "ofp/error.h"
 #include "ofp/setconfig.h"
-#include "ofp/exception.h"
 #include "ofp/actions.h"
 #include "ofp/hello.h"
 #include "ofp/experimenter.h"
@@ -51,6 +49,8 @@
 #include "ofp/portmod.h"
 #include "ofp/tablemod.h"
 #include "ofp/queuegetconfigrequest.h"
+#include "ofp/echorequest.h"
+#include "ofp/echoreply.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -65,7 +65,7 @@ namespace ofp { // <namespace ofp>
 /// \param versions set of protocol versions to accept
 /// \returns error result
 
-Exception runController(ChannelListener::Factory listenerFactory,
+std::error_code runController(ChannelListener::Factory listenerFactory,
                         ProtocolVersions versions = ProtocolVersions::All);
 
 /// \brief Connects to an OpenFlow controller at the specified address on the
@@ -79,7 +79,7 @@ Exception runController(ChannelListener::Factory listenerFactory,
 /// \param  versions set of protocol versions to accept
 /// \return error result
 
-Exception runAgent(const Features &features, const IPv6Address &remoteAddress,
+std::error_code runAgent(const IPv6Address &remoteAddress,
                    ChannelListener::Factory listenerFactory,
                    ProtocolVersions versions = ProtocolVersions::All);
 

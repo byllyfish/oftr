@@ -22,23 +22,21 @@
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/engine.h"
 #include "ofp/log.h"
+#include "ofp/sys/tcp_connection.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+using namespace ofp::sys;
 
 TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
-                       const Features *features, const tcp::endpoint &endpt,
-                       ProtocolVersions versions,
-                       ChannelListener::Factory listenerFactory)
+                       const tcp::endpoint &endpt, ProtocolVersions versions,
+                       ChannelListener::Factory listenerFactory,
+                       std::error_code &error)
     : engine_{engine}, acceptor_{engine->io()}, socket_{engine->io()},
       role_{role}, versions_{versions}, factory_{listenerFactory} {
-  listen(endpt);
 
-  if (features) {
-    features_ = *features;
-  }
+  listen(endpt, error);
 
-  asyncAccept();
+  if (!error)
+    asyncAccept();
 
   engine_->registerServer(this);
 
@@ -46,60 +44,63 @@ TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
 }
 
 TCP_Server::~TCP_Server() {
-  error_code err;
+  asio::error_code err;
   tcp::endpoint endpt = acceptor_.local_endpoint(err);
 
   log::info("Stop TCP listening on", endpt);
   engine_->releaseServer(this);
 }
 
-void TCP_Server::listen(const tcp::endpoint &endpt) {
+void TCP_Server::listen(const tcp::endpoint &localEndpt,
+                        std::error_code &error) {
+  auto endpt = localEndpt;
+  auto addr = endpt.address();
+
+  acceptor_.open(endpt.protocol(), error);
+
   // Handle case where IPv6 is not supported on this system.
-  tcp::endpoint ep = endpt;
-  try {
-    acceptor_.open(ep.protocol());
-  }
-  catch (boost::system::system_error &ex) {
-    auto addr = ep.address();
-    if (ex.code() == boost::asio::error::address_family_not_supported &&
-        addr.is_v6() && addr.is_unspecified()) {
-      log::info("TCP_Server: IPv6 is not supported. Using IPv4.");
-      ep = tcp::endpoint{tcp::v4(), ep.port()};
-      acceptor_.open(ep.protocol());
-    } else {
-      log::debug("TCP_Server::listen - unexpected exception", ex.code());
-      throw;
-    }
+  if (error == asio::error::address_family_not_supported && addr.is_v6() &&
+      addr.is_unspecified()) {
+    log::info("TCP_Server: IPv6 is not supported. Using IPv4.");
+    endpt = tcp::endpoint{tcp::v4(), endpt.port()};
+    if (acceptor_.open(endpt.protocol(), error))
+      return;
   }
 
-  acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
-  acceptor_.bind(ep);
-  acceptor_.listen(boost::asio::socket_base::max_connections);
+  if (acceptor_.set_option(asio::socket_base::reuse_address(true), error))
+    return;
+
+  if (acceptor_.bind(endpt, error))
+    return;
+
+  acceptor_.listen(asio::socket_base::max_connections, error);
 }
 
 void TCP_Server::asyncAccept() {
-  acceptor_.async_accept(socket_, [this](error_code err) {
+  acceptor_.async_accept(socket_, [this](const asio::error_code &err) {
     // N.B. ASIO still sends a cancellation error even after
     // async_accept() throws an exception. Check for cancelled operation
     // first; our TCP_Server instance will have been destroyed.
-    if (isAsioCanceled(err))
+    if (err == asio::error::operation_aborted)
       return;
 
     log::Lifetime lifetime("async_accept callback");
     if (!err) {
-      auto conn = std::make_shared<TCP_Connection>(engine_, std::move(socket_),
-                                                   role_, versions_, factory_);
-      conn->setFeatures(features_);
-      conn->asyncAccept();
+
+      if (engine_->isTLSDesired()) {
+        auto conn = std::make_shared<TCP_Connection<EncryptedSocket>>(
+            engine_, std::move(socket_), role_, versions_, factory_);
+        conn->asyncAccept();
+      } else {
+        auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(
+            engine_, std::move(socket_), role_, versions_, factory_);
+        conn->asyncAccept();
+      }
 
     } else {
-      Exception exc = makeException(err);
-      log::error("Error in TCP_Server.asyncAcept:", exc.toString());
+      log::error("Error in TCP_Server.asyncAcept:", err);
     }
 
     asyncAccept();
   });
 }
-
-} // </namespace sys>
-} // </namespace ofp>
