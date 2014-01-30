@@ -50,7 +50,7 @@ set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/in
 
 # Specify additional definitions.
 
-set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID")
+set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS")
 
 # Specify the default set of compiler flags for all sources, including third
 # party libraries. Place flags that don't affect the preprocessor or warnings

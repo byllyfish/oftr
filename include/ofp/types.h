@@ -31,6 +31,8 @@
 #include <string>      // for std::string
 #include <cassert>     // for assert macro
 #include <ostream>     // for std::ostream (used for now)
+#include <memory>      // for std::unique_ptr<T>
+#include <system_error>  // for std::error_code
 #include <chrono>
 
 #if defined(__clang__)

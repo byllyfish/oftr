@@ -20,6 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/sys/boost_asio.h"
+#include <system_error>
 
 size_t ofp::sys::HashEndpoint::operator()(const IPv6Endpoint &endpt) const {
   // FIXME - check literature for better hash function.
@@ -38,3 +39,21 @@ size_t ofp::sys::HashEndpoint::operator()(const IPv6Endpoint &endpt) const {
   sum += 41 * sum + (*quad + 37);
   return sum;
 }
+
+namespace asio {
+namespace detail {
+
+template <typename Exception>
+void throw_exception(const Exception& e)
+{
+  std::terminate();
+}
+
+template void throw_exception(const std::system_error &);
+template void throw_exception(const std::bad_cast &);
+template void throw_exception(const std::out_of_range &);
+template void throw_exception(const std::length_error &);
+
+} // namespace detail
+} // namespace asio
+
