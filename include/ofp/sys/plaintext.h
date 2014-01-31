@@ -1,7 +1,7 @@
 #ifndef OFP_SYS_PLAINTEXT_H
 #define OFP_SYS_PLAINTEXT_H
 
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 
 namespace ofp { // <namespace ofp>
 namespace sys { // <namespace sys>

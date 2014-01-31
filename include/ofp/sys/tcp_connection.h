@@ -23,7 +23,7 @@
 #define OFP_SYS_TCP_CONNECTION_H
 
 #include "ofp/types.h"
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/sys/engine.h"
 #include "ofp/message.h"
 #include "ofp/sys/connection.h"

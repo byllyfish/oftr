@@ -1,4 +1,4 @@
-//  ===== ---- ofp/boost_asio_unittest.cpp -----------------*- C++ -*- =====  //
+//  ===== ---- ofp/asio_utils_unittest.cpp -----------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -20,7 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/unittest.h"
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/ipv6address.h"
 
 using namespace ofp;

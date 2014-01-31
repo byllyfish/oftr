@@ -20,7 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/ipv6address.h"
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include <arpa/inet.h>
 #include "ofp/log.h"
 

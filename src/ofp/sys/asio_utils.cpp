@@ -1,4 +1,4 @@
-//  ===== ---- ofp/sys/boost_asio.cpp ----------------------*- C++ -*- =====  //
+//  ===== ---- ofp/sys/asio_utils.cpp ----------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -19,7 +19,7 @@
 /// \brief Implements Boost ASIO utility functions.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include <system_error>
 
 size_t ofp::sys::HashEndpoint::operator()(const IPv6Endpoint &endpt) const {

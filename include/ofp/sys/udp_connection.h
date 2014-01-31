@@ -24,7 +24,7 @@
 
 #include "ofp/sys/connection.h"
 #include "ofp/driver.h"
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/protocolversions.h"
 
 namespace ofp { // <namespace ofp>

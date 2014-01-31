@@ -22,7 +22,7 @@
 #ifndef OFP_SYS_CONNECTION_TIMER_H
 #define OFP_SYS_CONNECTION_TIMER_H
 
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include <map>
 
 namespace ofp { // <namespace ofp>

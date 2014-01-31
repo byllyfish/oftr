@@ -1,7 +1,7 @@
 #ifndef OFP_SYS_BUFFERED_H
 #define OFP_SYS_BUFFERED_H
 
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/bytelist.h"
 
 namespace ofp { // <namespace ofp>

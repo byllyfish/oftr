@@ -23,7 +23,7 @@
 #define OFP_SYS_UDP_SERVER_H
 
 #include "ofp/types.h"
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/sys/server.h"
 #include "ofp/ipv6address.h"
 #include "ofp/message.h"

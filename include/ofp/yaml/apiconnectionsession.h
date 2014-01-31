@@ -1,7 +1,7 @@
 #ifndef OFP_YAML_APICONNECTIONSESSION_H
 #define OFP_YAML_APICONNECTIONSESSION_H
 
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/yaml/apiconnection.h"
 
 namespace ofp { // <namespace ofp>

@@ -1,4 +1,4 @@
-//  ===== ---- ofp/sys/boost_asio.h ------------------------*- C++ -*- =====  //
+//  ===== ---- ofp/sys/asio_utils.h ------------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -41,40 +41,6 @@ using udp = asio::ip::udp;
 using PlaintextSocket = Plaintext<tcp::socket>;
 using EncryptedSocket = asio::ssl::stream<tcp::socket>;
 
-#if 0
-/// \returns True if socket is connected to given endpoint. We need this
-/// function because `async_connect` may not return an error on a failed 
-/// connection attempt.
-inline bool checkAsioConnected(const tcp::socket::lowest_layer_type &socket,
-                               const tcp::endpoint &endpt,
-                               asio::error_code &error)
-{
-    assert(socket.is_open());
-
-    tcp::endpoint actual = socket.remote_endpoint(error);
-    return !error && endpt == actual;
-}
-
-inline Exception makeException(const asio::error_code &error)
-{
-    Exception::Category category{{'*', '*', '*', '*'}};
-
-    const char *name = error.category().name();
-    if (name != nullptr) {
-        size_t len = std::strlen(name);
-        if (len >= 9 && name[4] == '.') {
-            // Skip "asio."
-            std::copy(name + 5, name + 9, category.begin());
-        } else if (len >= 4) {
-
-            std::copy(name, name + 4, category.begin());
-        }
-    }
-
-    return Exception{category, error.value()};
-}
-
-#endif //0
 
 struct HashEndpoint {
     size_t operator()(const IPv6Endpoint &endpt) const;

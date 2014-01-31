@@ -1,5 +1,5 @@
 #include "ofp/unittest.h"
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 
 TEST(asio, async_connect_v4) {
   auto localhost_v4 = asio::ip::address_v4::loopback();

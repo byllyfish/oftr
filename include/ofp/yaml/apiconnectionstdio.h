@@ -22,7 +22,7 @@
 #ifndef OFP_YAML_APICONNECTIONSTDIO
 #define OFP_YAML_APICONNECTIONSTDIO
 
-#include "ofp/sys/boost_asio.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/yaml/apiconnection.h"
 
 OFP_BEGIN_IGNORE_PADDING

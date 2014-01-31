@@ -125,7 +125,7 @@ set(LIBOFP_SOURCES
   src/ofp/setasync.cpp
 	src/ofp/setconfig.cpp
 	src/ofp/standardmatch.cpp
-	src/ofp/sys/boost_asio.cpp
+	src/ofp/sys/asio_utils.cpp
 	src/ofp/sys/connection.cpp
 	src/ofp/sys/engine.cpp
 	src/ofp/sys/tcp_server.cpp
@@ -261,7 +261,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/setconfig.h
   include/ofp/smallcstring.h
   include/ofp/standardmatch.h
-  include/ofp/sys/boost_asio.h
+  include/ofp/sys/asio_utils.h
   include/ofp/sys/buffered.h
   include/ofp/sys/connection.h
   include/ofp/sys/connectiontimer.h
