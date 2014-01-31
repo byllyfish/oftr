@@ -145,8 +145,6 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
-	src/ofp-c/ofpprotocol.cpp
-	src/ofp-c/ofpstring.cpp
 )
 
 # Specify the config.h.in file.
@@ -330,8 +328,6 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml/ysetconfig.h
   include/ofp/yaml/ysmallcstring.h
   include/ofp/yaml/ytablemod.h
-  include/ofp-c/ofpprotocol.h
-  include/ofp-c/ofpstring.h
   include/ofp.h
 )
 
