@@ -1,4 +1,4 @@
-//  ===== ---- ofp/sys/apiconnectionstdio.h ----------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiconnectionstdio.h ----------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -19,16 +19,16 @@
 /// \brief Defines the ApiConnectionStdio class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_APICONNECTIONSTDIO
-#define OFP_YAML_APICONNECTIONSTDIO
+#ifndef OFP_API_APICONNECTIONSTDIO
+#define OFP_API_APICONNECTIONSTDIO
 
 #include "ofp/sys/asio_utils.h"
-#include "ofp/yaml/apiconnection.h"
+#include "ofp/api/apiconnection.h"
 
 OFP_BEGIN_IGNORE_PADDING
 
 namespace ofp {  // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api { // <namespace api>
 
 class ApiConnectionStdio : public ApiConnection {
 public:
@@ -57,9 +57,9 @@ private:
     bool writing_ = false;
 };
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
 OFP_END_IGNORE_PADDING
 
-#endif // OFP_YAML_APICONNECTIONSTDIO
+#endif // OFP_API_APICONNECTIONSTDIO

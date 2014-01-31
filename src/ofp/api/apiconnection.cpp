@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apiconnection.cpp ------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiconnection.cpp -------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,17 +16,17 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements yaml::ApiConnection class.
+/// \brief Implements api::ApiConnection class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/yaml/apiconnection.h"
-#include "ofp/yaml/apievents.h"
-#include "ofp/yaml/apiencoder.h"
+#include "ofp/api/apiconnection.h"
+#include "ofp/api/apievents.h"
+#include "ofp/api/apiencoder.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
 #include "ofp/channel.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 using namespace ofp::sys;
 
 ApiConnection::ApiConnection(ApiServer *server, bool listening)
@@ -43,7 +43,7 @@ void ApiConnection::onLoopback(ApiLoopback *loopback) {
   Message message{buf.mutableData(), buf.size()};
   message.transmogrify();
 
-  Decoder decoder{&message};
+  yaml::Decoder decoder{&message};
 
   if (validate == LIBOFP_NOT_PRESENT) {
     // Always respond with OpenFlow YAML or a DecodeError event.
@@ -124,7 +124,7 @@ void ApiConnection::onChannelDown(Channel *channel) {
 }
 
 void ApiConnection::onMessage(Channel *channel, const Message *message) {
-  Decoder decoder{RemoveConst_cast(message), isFormatJson_};
+  yaml::Decoder decoder{RemoveConst_cast(message), isFormatJson_};
 
   if (decoder.error().empty()) {
     write(decoder.result());
@@ -166,7 +166,7 @@ void ApiConnection::handleEvent(const std::string &eventText) {
 
   } else {
 
-    Encoder encoder(eventText, [this](const DatapathID &datapathId) {
+    yaml::Encoder encoder(eventText, [this](const DatapathID &datapathId) {
       return server_->findChannel(datapathId);
     });
 

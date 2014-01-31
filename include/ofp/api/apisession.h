@@ -1,10 +1,10 @@
-#ifndef OFP_YAML_APISESSION_H
-#define OFP_YAML_APISESSION_H
+#ifndef OFP_API_APISESSION_H
+#define OFP_API_APISESSION_H
 
-#include "ofp/yaml/apiserver.h"
+#include "ofp/api/apiserver.h"
 
 namespace ofp {  // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api { // <namespace api>
 
 class ApiConnectionSession;
 
@@ -33,7 +33,7 @@ private:
   ApiServer server_;
 };
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
-#endif // OFP_YAML_APISESSION_H
+#endif // OFP_API_APISESSION_H

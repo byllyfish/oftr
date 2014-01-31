@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apiserver.cpp ----------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiserver.cpp -----------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -19,15 +19,15 @@
 /// \brief Implements ApiServer class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/yaml/apiserver.h"
-#include "ofp/yaml/apiconnectionstdio.h"
-#include "ofp/yaml/apiconnectionsession.h"
+#include "ofp/api/apiserver.h"
+#include "ofp/api/apiconnectionstdio.h"
+#include "ofp/api/apiconnectionsession.h"
 #include "ofp/sys/engine.h"
-#include "ofp/yaml/apichannellistener.h"
-#include "ofp/yaml/apisession.h"
-#include "ofp/yaml/apievents.h"
+#include "ofp/api/apichannellistener.h"
+#include "ofp/api/apisession.h"
+#include "ofp/api/apievents.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 using namespace ofp::sys;
 
 ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,

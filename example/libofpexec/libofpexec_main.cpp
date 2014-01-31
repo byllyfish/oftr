@@ -20,7 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp.h"
-#include "ofp/yaml/apiserver.h"
+#include "ofp/api/apiserver.h"
 #include <iostream>
 
 using namespace ofp;
@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
   log::set(&std::cerr);
   
   Driver driver;
-  yaml::ApiServer server{&driver, STDIN, STDOUT};
+  api::ApiServer server{&driver, STDIN, STDOUT};
 
   driver.run();
 

@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apiencoder.cpp ---------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiencoder.cpp ----------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,13 +16,13 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements yaml::ApiEncoder class.
+/// \brief Implements api::ApiEncoder class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/yaml/apiencoder.h"
-#include "ofp/yaml/apiconnection.h"
+#include "ofp/api/apiencoder.h"
+#include "ofp/api/apiconnection.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 
 ApiEncoder::ApiEncoder(const std::string &input, ApiConnection *conn)
     : conn_{conn}, errorStream_{error_} {

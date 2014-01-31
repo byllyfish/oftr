@@ -1,8 +1,8 @@
-#include "ofp/yaml/apisession.h"
-#include "ofp/yaml/apiconnectionsession.h"
+#include "ofp/api/apisession.h"
+#include "ofp/api/apiconnectionsession.h"
 #include "ofp/sys/engine.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 
 void ApiSession::send(const std::string &msg) {
     asio::io_service &io = driver_.engine()->io();

@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apichannellistener.h ---------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apichannellistener.h ----------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,16 +16,16 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the yaml::ApiChannelListener class.
+/// \brief Defines the api::ApiChannelListener class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_APICHANNELLISTENER_H
-#define OFP_YAML_APICHANNELLISTENER_H
+#ifndef OFP_API_APICHANNELLISTENER_H
+#define OFP_API_APICHANNELLISTENER_H
 
 #include "ofp/channellistener.h"
 
 namespace ofp { // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api { // <namespace api>
 
 class ApiServer;
 
@@ -43,7 +43,7 @@ private:
 	Channel *channel_ = nullptr;
 };
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
-#endif // OFP_YAML_APICHANNELLISTENER_H
+#endif // OFP_API_APICHANNELLISTENER_H

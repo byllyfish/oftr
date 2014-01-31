@@ -1,8 +1,8 @@
-#include "ofp/yaml/apiconnectionsession.h"
+#include "ofp/api/apiconnectionsession.h"
 #include "ofp/sys/engine.h"
-#include "ofp/yaml/apisession.h"
+#include "ofp/api/apisession.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 
 ApiConnectionSession::ApiConnectionSession(ApiServer *server, ApiSession *session)
     : ApiConnection{server, false}, session_{session}, work_{server->engine()->io()}

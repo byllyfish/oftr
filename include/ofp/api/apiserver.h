@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apiserver.h ------------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiserver.h -------------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,21 +16,19 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the yaml::ApiServer class for remote control of OpenFlow 
+/// \brief Defines the api::ApiServer class for remote control of OpenFlow 
 /// driver.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_APISERVER_H
-#define OFP_YAML_APISERVER_H
+#ifndef OFP_API_APISERVER_H
+#define OFP_API_APISERVER_H
 
 #include "ofp/driver.h"
 #include "ofp/datapathid.h"
 #include <map>
 
-//#include "ofp/yaml/apievents.h"
-
 namespace ofp {  // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api {  // <namespace api>
 
 class ApiConnection;
 class ApiSession;
@@ -85,7 +83,7 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
-#endif // OFP_YAML_APISERVER_H
+#endif // OFP_API_APISERVER_H

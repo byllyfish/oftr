@@ -20,9 +20,9 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/unittest.h"
-#include "ofp/yaml/apiencoder.h"
+#include "ofp/api/apiencoder.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 
 TEST(apiencoder, dumptokens) {
   const char *hex = "2D2D2D0A6576656E743A204C49424F46505F4C495354454E5F5245504C"

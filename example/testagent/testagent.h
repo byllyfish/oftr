@@ -2,7 +2,7 @@
 #define TESTAGENT_H
 
 #include "ofp.h"
-#include "ofp/yaml/apiserver.h"
+#include "ofp/api/apiserver.h"
 
 namespace testagent { // <namespace testagent>
 
@@ -19,7 +19,7 @@ public:
 
 private:
   Channel *channel_ = nullptr;
-  std::unique_ptr<yaml::ApiServer> apiServer_;
+  std::unique_ptr<api::ApiServer> apiServer_;
 
   void startApiInput();
 };

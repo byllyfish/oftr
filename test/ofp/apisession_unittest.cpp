@@ -1,9 +1,9 @@
 #include "ofp/unittest.h"
-#include "ofp/yaml/apisession.h"
+#include "ofp/api/apisession.h"
 #include <future>
 
 using namespace ofp;
-using namespace ofp::yaml;
+using namespace ofp::api;
 
 OFP_BEGIN_IGNORE_PADDING
 

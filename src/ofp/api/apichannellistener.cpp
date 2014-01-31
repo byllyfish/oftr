@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apichannellistener.cpp -------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apichannellistener.cpp --------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,13 +16,13 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements yaml::ApiChannelListener class.
+/// \brief Implements api::ApiChannelListener class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/yaml/apichannellistener.h"
-#include "ofp/yaml/apiserver.h"
+#include "ofp/api/apichannellistener.h"
+#include "ofp/api/apiserver.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 
 void ApiChannelListener::onChannelUp(Channel *channel) {
   assert(channel_ == nullptr);

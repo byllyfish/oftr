@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apiencoder.h -----------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiencoder.h ------------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,17 +16,17 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the yaml::ApiEncoder class.
+/// \brief Defines the api::ApiEncoder class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_APIENCODER_H
-#define OFP_YAML_APIENCODER_H
+#ifndef OFP_API_APIENCODER_H
+#define OFP_API_APIENCODER_H
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/yaml/apievents.h"
+#include "ofp/api/apievents.h"
 
 namespace ofp { // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api { // <namespace api>
 
 class ApiConnection;
 
@@ -52,10 +52,10 @@ private:
 
     void encodeMsg(llvm::yaml::IO &io, ApiEvent event);
 
-    friend struct llvm::yaml::MappingTraits<ofp::yaml::ApiEncoder>;
+    friend struct llvm::yaml::MappingTraits<ofp::api::ApiEncoder>;
 };
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
 
@@ -63,11 +63,11 @@ namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
 template <>
-struct MappingTraits<ofp::yaml::ApiEncoder> {
+struct MappingTraits<ofp::api::ApiEncoder> {
 
-    static void mapping(IO &io, ofp::yaml::ApiEncoder &encoder)
+    static void mapping(IO &io, ofp::api::ApiEncoder &encoder)
     {
-        using namespace ofp::yaml;
+        using namespace ofp::api;
 
     	ApiEvent event = LIBOFP_INVALID;
     	io.mapRequired("event", event);
@@ -77,4 +77,5 @@ struct MappingTraits<ofp::yaml::ApiEncoder> {
 
 } // </namespace yaml>
 } // </namespace llvm>
-#endif // OFP_YAML_APIENCODER_H
+
+#endif // OFP_API_APIENCODER_H

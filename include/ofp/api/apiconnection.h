@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apiconnection.h --------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiconnection.h ---------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,20 +16,20 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the yaml::ApiConnection class.
+/// \brief Defines the api::ApiConnection class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_APICONNECTION_H
-#define OFP_YAML_APICONNECTION_H
+#ifndef OFP_API_APICONNECTION_H
+#define OFP_API_APICONNECTION_H
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/yaml/apiserver.h"
+#include "ofp/api/apiserver.h"
 #include "ofp/bytelist.h"
 
 OFP_BEGIN_IGNORE_PADDING
 
 namespace ofp { // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api { // <namespace api>
 
 struct ApiListenRequest;
 struct ApiSetTimer;
@@ -80,9 +80,9 @@ private:
 	static EventType eventTypeOf(const std::string &s);
 };
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
 OFP_END_IGNORE_PADDING
 
-#endif // OFP_YAML_APICONNECTION_H
+#endif // OFP_API_APICONNECTION_H

@@ -1,11 +1,11 @@
-#ifndef OFP_YAML_APICONNECTIONSESSION_H
-#define OFP_YAML_APICONNECTIONSESSION_H
+#ifndef OFP_API_APICONNECTIONSESSION_H
+#define OFP_API_APICONNECTIONSESSION_H
 
 #include "ofp/sys/asio_utils.h"
-#include "ofp/yaml/apiconnection.h"
+#include "ofp/api/apiconnection.h"
 
 namespace ofp { // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api { // <namespace api>
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -26,7 +26,7 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
-#endif // OFP_YAML_APICONNECTIONSESSION_H
+#endif // OFP_API_APICONNECTIONSESSION_H

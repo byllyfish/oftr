@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apievents.h ------------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apievents.h -------------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,7 +16,7 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines API events for a yaml::ApiServer.
+/// \brief Defines API events for a api::ApiServer.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_YAML_APIEVENTS_H
@@ -32,7 +32,7 @@
 OFP_BEGIN_IGNORE_PADDING
 
 namespace ofp {  // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace api { // <namespace api>
 
 /// API Event types
 enum ApiEvent : UInt32 {
@@ -200,17 +200,17 @@ struct ApiEditSetting {
     Params params;
 };
 
-} // </namespace yaml>
+} // </namespace api>
 } // </namespace ofp>
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
-#define OFP_YAML_ENUMCASE(val)  io.enumCase(value, #val, ofp::yaml::val)
+#define OFP_YAML_ENUMCASE(val)  io.enumCase(value, #val, ofp::api::val)
 
 template <>
-struct ScalarEnumerationTraits<ofp::yaml::ApiEvent> {
-  static void enumeration(IO &io, ofp::yaml::ApiEvent &value) {
+struct ScalarEnumerationTraits<ofp::api::ApiEvent> {
+  static void enumeration(IO &io, ofp::api::ApiEvent &value) {
     OFP_YAML_ENUMCASE(LIBOFP_LOOPBACK);
     OFP_YAML_ENUMCASE(LIBOFP_LISTEN_REQUEST);
     OFP_YAML_ENUMCASE(LIBOFP_LISTEN_REPLY);
@@ -227,17 +227,17 @@ struct ScalarEnumerationTraits<ofp::yaml::ApiEvent> {
 #undef OFP_YAML_ENUMCASE
 
 template <>
-struct ScalarEnumerationTraits<ofp::yaml::ApiBoolean> {
-  static void enumeration(IO &io, ofp::yaml::ApiBoolean &value) {
-    io.enumCase(value, "true", ofp::yaml::LIBOFP_TRUE);
-    io.enumCase(value, "false", ofp::yaml::LIBOFP_FALSE);
-    io.enumCase(value, "not_present", ofp::yaml::LIBOFP_NOT_PRESENT);
+struct ScalarEnumerationTraits<ofp::api::ApiBoolean> {
+  static void enumeration(IO &io, ofp::api::ApiBoolean &value) {
+    io.enumCase(value, "true", ofp::api::LIBOFP_TRUE);
+    io.enumCase(value, "false", ofp::api::LIBOFP_FALSE);
+    io.enumCase(value, "not_present", ofp::api::LIBOFP_NOT_PRESENT);
   }
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiLoopback> {
-    static void mapping(IO &io, ofp::yaml::ApiLoopback &msg)
+struct MappingTraits<ofp::api::ApiLoopback> {
+    static void mapping(IO &io, ofp::api::ApiLoopback &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -245,17 +245,17 @@ struct MappingTraits<ofp::yaml::ApiLoopback> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiLoopback::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiLoopback::Params &msg)
+struct MappingTraits<ofp::api::ApiLoopback::Params> {
+    static void mapping(IO &io, ofp::api::ApiLoopback::Params &msg)
     {
-        io.mapOptional("validate", msg.validate, ofp::yaml::LIBOFP_NOT_PRESENT);
+        io.mapOptional("validate", msg.validate, ofp::api::LIBOFP_NOT_PRESENT);
         io.mapRequired("data", msg.data);
     }
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiListenRequest> {
-    static void mapping(IO &io, ofp::yaml::ApiListenRequest &msg)
+struct MappingTraits<ofp::api::ApiListenRequest> {
+    static void mapping(IO &io, ofp::api::ApiListenRequest &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -263,8 +263,8 @@ struct MappingTraits<ofp::yaml::ApiListenRequest> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiListenRequest::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiListenRequest::Params &msg)
+struct MappingTraits<ofp::api::ApiListenRequest::Params> {
+    static void mapping(IO &io, ofp::api::ApiListenRequest::Params &msg)
     {
         ofp::UInt16 defaultPort = ofp::OFP_DEFAULT_PORT;
         io.mapOptional("port", msg.listenPort, defaultPort);
@@ -272,8 +272,8 @@ struct MappingTraits<ofp::yaml::ApiListenRequest::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiListenReply> {
-    static void mapping(IO &io, ofp::yaml::ApiListenReply &msg)
+struct MappingTraits<ofp::api::ApiListenReply> {
+    static void mapping(IO &io, ofp::api::ApiListenReply &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -281,8 +281,8 @@ struct MappingTraits<ofp::yaml::ApiListenReply> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiListenReply::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiListenReply::Params &msg)
+struct MappingTraits<ofp::api::ApiListenReply::Params> {
+    static void mapping(IO &io, ofp::api::ApiListenReply::Params &msg)
     {
         io.mapRequired("port", msg.listenPort);
         io.mapRequired("error", msg.error);
@@ -290,8 +290,8 @@ struct MappingTraits<ofp::yaml::ApiListenReply::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiYamlError> {
-    static void mapping(IO &io, ofp::yaml::ApiYamlError &msg)
+struct MappingTraits<ofp::api::ApiYamlError> {
+    static void mapping(IO &io, ofp::api::ApiYamlError &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -299,8 +299,8 @@ struct MappingTraits<ofp::yaml::ApiYamlError> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiYamlError::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiYamlError::Params &msg)
+struct MappingTraits<ofp::api::ApiYamlError::Params> {
+    static void mapping(IO &io, ofp::api::ApiYamlError::Params &msg)
     {
         io.mapRequired("error", msg.error);
         io.mapRequired("text", msg.text);
@@ -308,8 +308,8 @@ struct MappingTraits<ofp::yaml::ApiYamlError::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiDecodeError> {
-    static void mapping(IO &io, ofp::yaml::ApiDecodeError &msg)
+struct MappingTraits<ofp::api::ApiDecodeError> {
+    static void mapping(IO &io, ofp::api::ApiDecodeError &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -317,8 +317,8 @@ struct MappingTraits<ofp::yaml::ApiDecodeError> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiDecodeError::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiDecodeError::Params &msg)
+struct MappingTraits<ofp::api::ApiDecodeError::Params> {
+    static void mapping(IO &io, ofp::api::ApiDecodeError::Params &msg)
     {
         io.mapRequired("datapath_id", msg.datapathId);
         io.mapRequired("error", msg.error);
@@ -327,8 +327,8 @@ struct MappingTraits<ofp::yaml::ApiDecodeError::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiDatapathUp> {
-    static void mapping(IO &io, ofp::yaml::ApiDatapathUp &msg)
+struct MappingTraits<ofp::api::ApiDatapathUp> {
+    static void mapping(IO &io, ofp::api::ApiDatapathUp &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -336,8 +336,8 @@ struct MappingTraits<ofp::yaml::ApiDatapathUp> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiDatapathUp::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiDatapathUp::Params &msg)
+struct MappingTraits<ofp::api::ApiDatapathUp::Params> {
+    static void mapping(IO &io, ofp::api::ApiDatapathUp::Params &msg)
     {
         io.mapRequired("datapath_id", msg.datapathId);
         io.mapRequired("version", msg.version);
@@ -350,8 +350,8 @@ struct MappingTraits<ofp::yaml::ApiDatapathUp::Params> {
 
 
 template <>
-struct MappingTraits<ofp::yaml::ApiDatapathDown> {
-    static void mapping(IO &io, ofp::yaml::ApiDatapathDown &msg)
+struct MappingTraits<ofp::api::ApiDatapathDown> {
+    static void mapping(IO &io, ofp::api::ApiDatapathDown &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -359,16 +359,16 @@ struct MappingTraits<ofp::yaml::ApiDatapathDown> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiDatapathDown::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiDatapathDown::Params &msg)
+struct MappingTraits<ofp::api::ApiDatapathDown::Params> {
+    static void mapping(IO &io, ofp::api::ApiDatapathDown::Params &msg)
     {
         io.mapRequired("datapath_id", msg.datapathId);
     }
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiTimer> {
-    static void mapping(IO &io, ofp::yaml::ApiTimer &msg)
+struct MappingTraits<ofp::api::ApiTimer> {
+    static void mapping(IO &io, ofp::api::ApiTimer &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -376,8 +376,8 @@ struct MappingTraits<ofp::yaml::ApiTimer> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiTimer::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiTimer::Params &msg)
+struct MappingTraits<ofp::api::ApiTimer::Params> {
+    static void mapping(IO &io, ofp::api::ApiTimer::Params &msg)
     {
         io.mapRequired("datapath_id", msg.datapathId);
         io.mapRequired("timer_id", msg.timerId);
@@ -385,8 +385,8 @@ struct MappingTraits<ofp::yaml::ApiTimer::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiSetTimer> {
-    static void mapping(IO &io, ofp::yaml::ApiSetTimer &msg)
+struct MappingTraits<ofp::api::ApiSetTimer> {
+    static void mapping(IO &io, ofp::api::ApiSetTimer &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -394,8 +394,8 @@ struct MappingTraits<ofp::yaml::ApiSetTimer> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiSetTimer::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiSetTimer::Params &msg)
+struct MappingTraits<ofp::api::ApiSetTimer::Params> {
+    static void mapping(IO &io, ofp::api::ApiSetTimer::Params &msg)
     {
         io.mapRequired("datapath_id", msg.datapathId);
         io.mapRequired("timer_id", msg.timerId);
@@ -404,8 +404,8 @@ struct MappingTraits<ofp::yaml::ApiSetTimer::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiEditSetting> {
-    static void mapping(IO &io, ofp::yaml::ApiEditSetting &msg)
+struct MappingTraits<ofp::api::ApiEditSetting> {
+    static void mapping(IO &io, ofp::api::ApiEditSetting &msg)
     {
         io.mapRequired("event", msg.event);
         io.mapRequired("params", msg.params);
@@ -413,8 +413,8 @@ struct MappingTraits<ofp::yaml::ApiEditSetting> {
 };
 
 template <>
-struct MappingTraits<ofp::yaml::ApiEditSetting::Params> {
-    static void mapping(IO &io, ofp::yaml::ApiEditSetting::Params &msg)
+struct MappingTraits<ofp::api::ApiEditSetting::Params> {
+    static void mapping(IO &io, ofp::api::ApiEditSetting::Params &msg)
     {
         io.mapRequired("name", msg.name);
         io.mapRequired("value", msg.value);

@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apievents.cpp ----------------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apievents.cpp -----------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,13 +16,13 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements yaml API event classes.
+/// \brief Implements api API event classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/yaml/apievents.h"
+#include "ofp/api/apievents.h"
 #include "ofp/yaml/outputjson.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 
 namespace { // <namespace>
 

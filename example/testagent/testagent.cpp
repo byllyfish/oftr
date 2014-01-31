@@ -1,6 +1,6 @@
 #include "testagent.h"
 #include "ofp/yaml/decoder.h"
-#include "ofp/yaml/apiserver.h"
+#include "ofp/api/apiserver.h"
 #include <iostream>
 
 using namespace testagent;
@@ -62,6 +62,6 @@ void TestAgent::onTimer(UInt32 timerID) {
 }
 
 void TestAgent::startApiInput() {
-  apiServer_ = std::unique_ptr<yaml::ApiServer>{
-      new yaml::ApiServer{channel_->driver(), 0, -1, channel_}};
+  apiServer_ = std::unique_ptr<api::ApiServer>{
+      new api::ApiServer{channel_->driver(), 0, -1, channel_}};
 }

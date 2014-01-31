@@ -1,4 +1,4 @@
-//  ===== ---- ofp/yaml/apiconnectionstdio.cpp -------------*- C++ -*- =====  //
+//  ===== ---- ofp/api/apiconnectionstdio.cpp --------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,13 +16,13 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements the yaml::ApiConnectionStdio class.
+/// \brief Implements the api::ApiConnectionStdio class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/yaml/apiconnectionstdio.h"
+#include "ofp/api/apiconnectionstdio.h"
 #include "ofp/sys/asio_utils.h"
 
-using namespace ofp::yaml;
+using namespace ofp::api;
 using namespace ofp::sys;
 
 ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,

@@ -134,14 +134,14 @@ set(LIBOFP_SOURCES
   src/ofp/tablemod.cpp
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp
-	src/ofp/yaml/apichannellistener.cpp
-	src/ofp/yaml/apiconnection.cpp
-  src/ofp/yaml/apiconnectionsession.cpp
-  src/ofp/yaml/apiconnectionstdio.cpp
-	src/ofp/yaml/apiencoder.cpp
-	src/ofp/yaml/apievents.cpp
-	src/ofp/yaml/apiserver.cpp
-  src/ofp/yaml/apisession.cpp
+	src/ofp/api/apichannellistener.cpp
+	src/ofp/api/apiconnection.cpp
+  src/ofp/api/apiconnectionsession.cpp
+  src/ofp/api/apiconnectionstdio.cpp
+	src/ofp/api/apiencoder.cpp
+	src/ofp/api/apievents.cpp
+	src/ofp/api/apiserver.cpp
+  src/ofp/api/apisession.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
@@ -275,14 +275,14 @@ set(LIBOFP_HEADER_FILES
   include/ofp/types.h
   include/ofp/unittest.h
   include/ofp/writable.h
-  include/ofp/yaml/apichannellistener.h
-  include/ofp/yaml/apiconnection.h
-  include/ofp/yaml/apiconnectionsession.h
-  include/ofp/yaml/apiconnectionstdio.h
-  include/ofp/yaml/apiencoder.h
-  include/ofp/yaml/apievents.h
-  include/ofp/yaml/apiserver.h
-  include/ofp/yaml/apisession.h
+  include/ofp/api/apichannellistener.h
+  include/ofp/api/apiconnection.h
+  include/ofp/api/apiconnectionsession.h
+  include/ofp/api/apiconnectionstdio.h
+  include/ofp/api/apiencoder.h
+  include/ofp/api/apievents.h
+  include/ofp/api/apiserver.h
+  include/ofp/api/apisession.h
   include/ofp/yaml/decoder.h
   include/ofp/yaml/encoder.h
   include/ofp/yaml/outputjson.h
