@@ -42,10 +42,6 @@ using PlaintextSocket = Plaintext<tcp::socket>;
 using EncryptedSocket = asio::ssl::stream<tcp::socket>;
 
 
-struct HashEndpoint {
-    size_t operator()(const IPv6Endpoint &endpt) const;
-};
-
 inline IPv6Address makeIPv6Address(const asio::ip::address &addr)
 {
     if (addr.is_v6()) {

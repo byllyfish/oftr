@@ -56,7 +56,7 @@ public:
 	Engine *engine() const { return engine_; }
 
 private:
-	using ConnectionMap = std::unordered_map<IPv6Endpoint,UDP_Connection*, HashEndpoint>;
+	using ConnectionMap = std::unordered_map<IPv6Endpoint,UDP_Connection*>;
 
 	Engine *engine_;
 	Driver::Role role_;

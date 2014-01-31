@@ -22,23 +22,7 @@
 #include "ofp/sys/asio_utils.h"
 #include <system_error>
 
-size_t ofp::sys::HashEndpoint::operator()(const IPv6Endpoint &endpt) const {
-  // FIXME - check literature for better hash function.
-
-  // Hash the endpoint starting with the port and the least signficant bytes
-  // of the IP address.
-
-  const IPv6Address &addr = endpt.address();
-  UInt16 port = endpt.port();
-
-  auto data = addr.toArray();
-  UInt32 *quad = reinterpret_cast<UInt32 *>(&data[0]) + 3;
-  UInt64 sum = *quad * (port + 37);
-  for (int i = 0; i < 3; ++i)
-    sum += 41 * sum + (*quad-- + 37);
-  sum += 41 * sum + (*quad + 37);
-  return sum;
-}
+#if ASIO_NO_EXCEPTIONS
 
 namespace asio {
 namespace detail {
@@ -46,6 +30,10 @@ namespace detail {
 template <typename Exception>
 void throw_exception(const Exception& e)
 {
+  // With ASIO_NO_EXPCEPTIONS defined, we need to define our own version of
+  // asio::detail::throw_exception. GCC requires ASIO_NO_EXCEPTIONS to compile
+  // with -fno-exceptions. (Clang does not.)
+
   std::terminate();
 }
 
@@ -56,4 +44,6 @@ template void throw_exception(const std::length_error &);
 
 } // namespace detail
 } // namespace asio
+
+#endif //ASIO_NO_EXCEPTIONS
 

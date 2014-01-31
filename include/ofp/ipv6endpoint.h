@@ -23,8 +23,8 @@
 #define OFP_IPV6ENDPOINT_H
 
 #include "ofp/ipv6address.h"
-#include <istream>
 #include "ofp/log.h"
+#include <istream>
 
 namespace ofp { // <namespace ofp>
 
@@ -74,5 +74,16 @@ inline std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value) {
 }
 
 } // </namespace ofp>
+
+namespace std { // <namespace std>
+
+template <>
+struct hash<ofp::IPv6Endpoint> {
+  size_t operator()(const ofp::IPv6Endpoint &endpt) const {
+    return hash<ofp::IPv6Address>{}(endpt.address()) ^ hash<unsigned>{}(endpt.port());
+  }
+};
+
+} // </namespace std>
 
 #endif // OFP_IPV6ENDPOINT_H

@@ -23,7 +23,7 @@
 #define OFP_IPV4ADDRESS_H
 
 #include "ofp/types.h"
-#include <array>
+#include "ofp/array.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -55,7 +55,7 @@ public:
 
   std::string toString() const;
 
-  ArrayType toArray() const { return addr_; }
+  const ArrayType &toArray() const { return addr_; }
 
   bool operator==(const IPv4Address &rhs) const { return addr_ == rhs.addr_; }
 
@@ -67,6 +67,20 @@ private:
   ArrayType addr_;
 };
 
+static_assert(IsStandardLayout<IPv4Address>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<IPv4Address>(), "Expected trivially copyable.");
+
 } // </namespace ofp>
+
+namespace std { // <namespace std>
+
+template <>
+struct hash<ofp::IPv4Address> {
+  size_t operator()(const ofp::IPv4Address &addr) const {
+    return hash<ofp::IPv4Address::ArrayType>{}(addr.toArray());
+  }
+};
+
+} // </namespace std>
 
 #endif // OFP_IPV4ADDRESS_H

@@ -24,7 +24,7 @@
 
 #include "ofp/types.h"
 #include "ofp/ipv4address.h"
-#include <array>
+#include "ofp/array.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -59,7 +59,7 @@ public:
 
   std::string toString() const;
 
-  ArrayType toArray() const { return addr_; }
+  const ArrayType &toArray() const { return addr_; }
 
   bool operator==(const IPv6Address &rhs) const { return addr_ == rhs.addr_; }
 
@@ -75,11 +75,21 @@ static_assert(IsTriviallyCopyable<IPv6Address>(),
 
 std::ostream &operator<<(std::ostream &os, const IPv6Address &value);
 
-} // </namespace ofp>
-
-inline std::ostream &ofp::operator<<(std::ostream &os,
-                                     const ofp::IPv6Address &value) {
+inline std::ostream &operator<<(std::ostream &os, const IPv6Address &value) {
   return os << value.toString();
 }
+
+} // </namespace ofp>
+
+namespace std { // <namespace std>
+
+template <>
+struct hash<ofp::IPv6Address> {
+  size_t operator()(const ofp::IPv6Address &addr) const {
+    return hash<ofp::IPv6Address::ArrayType>{}(addr.toArray());
+  }
+};
+
+} // </namespace std>
 
 #endif // OFP_IPV6ADDRESS_H
