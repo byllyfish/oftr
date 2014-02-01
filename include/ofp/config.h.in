@@ -17,8 +17,6 @@
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Configuration file for LibOFP.
-///
-/// This file must remain compatible with C.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_CONFIG_H

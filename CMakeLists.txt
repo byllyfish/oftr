@@ -148,7 +148,7 @@ set(LIBOFP_SOURCES
 
 # Specify the config.h.in file.
 
-set(LIBOFP_CONFIG_IN ${CMAKE_SOURCE_DIR}/src/config.h.in)
+set(LIBOFP_CONFIG_IN ${CMAKE_SOURCE_DIR}/include/ofp/config.h.in)
 set(LIBOFP_CONFIG ${CMAKE_BINARY_DIR}/include/ofp/config.h)
 
 # These source files are generated.
@@ -326,7 +326,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml/ysetconfig.h
   include/ofp/yaml/ysmallcstring.h
   include/ofp/yaml/ytablemod.h
-  include/ofp.h
+  include/ofp/ofp.h
 )
 
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
