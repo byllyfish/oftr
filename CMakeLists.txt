@@ -106,7 +106,6 @@ set(LIBOFP_SOURCES
   src/ofp/mptablestats.cpp
 	src/ofp/multipartreply.cpp
 	src/ofp/multipartrequest.cpp
-	src/ofp/ofp.cpp
 	src/ofp/originalmatch.cpp
 	src/ofp/oxmlist.cpp
 	src/ofp/oxmtype.cpp

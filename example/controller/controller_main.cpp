@@ -7,12 +7,16 @@ using namespace ofp;
 int main(int argc, char **argv) {
   log::set(&std::cerr);
 
-  auto factory = []() { return new controller::SimpleChannelListener; };
+  Driver driver;
 
-  auto ex = runController(factory);
+  std::error_code err = driver.listen(
+      Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT}, ProtocolVersions::All,
+      []() { return new controller::SimpleChannelListener; });
 
-  if (ex) {
-    log::error("Error running controller:", ex);
+  driver.run();
+
+  if (err) {
+    log::error("Error running controller:", err);
     return 1;
   }
 

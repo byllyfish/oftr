@@ -16,7 +16,7 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Top-level header for the ofp library..
+/// \brief Umbrella header for the ofp library.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_OFP_H
@@ -51,38 +51,5 @@
 #include "ofp/queuegetconfigrequest.h"
 #include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
-
-namespace ofp { // <namespace ofp>
-
-/// \brief Listens for incoming OpenFlow connections on the default port.
-///
-/// When a switch connects, uses listenerFactory to create a ChannelListener.
-/// Once the driver begins listening for incoming connections, it will run
-/// forever. (TODO: provide a way to shutdown the driver). If the driver fails
-/// to listen on the default port, this function returns an error.
-///
-/// \param listenerFactory no-arg function that creates a ChannelListener
-/// \param versions set of protocol versions to accept
-/// \returns error result
-
-std::error_code runController(ChannelListener::Factory listenerFactory,
-                        ProtocolVersions versions = ProtocolVersions::All);
-
-/// \brief Connects to an OpenFlow controller at the specified address on the
-/// default port.
-///
-/// After connecting, uses listenerFactory to create a ChannelListener.
-///
-/// \param  features 		Agent information including datapath ID.
-/// \param  remoteAddress   IPv6 (possibly IPv4-mapped) address of controller
-/// \param  listenerFactory no-arg function that create a ChannelListener
-/// \param  versions set of protocol versions to accept
-/// \return error result
-
-std::error_code runAgent(const IPv6Address &remoteAddress,
-                   ChannelListener::Factory listenerFactory,
-                   ProtocolVersions versions = ProtocolVersions::All);
-
-} // </namespace ofp>
 
 #endif // OFP_OFP_H
