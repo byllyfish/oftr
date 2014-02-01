@@ -1,7 +1,7 @@
 #ifndef BRIDGELISTENER_H
 #define BRIDGELISTENER_H
 
-#include "ofp.h"
+#include "ofp/ofp.h"
 
 OFP_BEGIN_IGNORE_PADDING
 

@@ -19,7 +19,7 @@
 /// \brief Implements program to run an ApiServer.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp.h"
+#include "ofp/ofp.h"
 #include "ofp/api/apiserver.h"
 #include <iostream>
 

@@ -1,5 +1,5 @@
 #include "ofp/unittest.h"
-#include "ofp.h"
+#include "ofp/ofp.h"
 
 using namespace ofp;
 

@@ -1,7 +1,7 @@
 #ifndef OFP_SIMPLECONTROLLER_H
 #define OFP_SIMPLECONTROLLER_H
 
-#include "ofp.h"
+#include "ofp/ofp.h"
 #include <unordered_map>
 
 namespace controller { // <namespace controller>

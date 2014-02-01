@@ -1,7 +1,7 @@
 #ifndef TESTAGENT_H
 #define TESTAGENT_H
 
-#include "ofp.h"
+#include "ofp/ofp.h"
 #include "ofp/api/apiserver.h"
 
 namespace testagent { // <namespace testagent>

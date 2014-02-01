@@ -4,7 +4,7 @@
 
 #include "llvm/Support/CommandLine.h"
 #include "ofpx.h"
-#include "ofp.h"
+#include "ofp/ofp.h"
 #include <iostream>
 
 using namespace ofp;

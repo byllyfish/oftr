@@ -1,7 +1,7 @@
 #ifndef NULLAGENT_H
 #define NULLAGENT_H
 
-#include "ofp.h"
+#include "ofp/ofp.h"
 #include "ofp/yaml/yflowmod.h"
 
 using ofp::UInt16;
