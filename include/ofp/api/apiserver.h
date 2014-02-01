@@ -36,6 +36,8 @@ class ApiSession;
 struct ApiLoopback;
 struct ApiListenRequest;
 struct ApiListenReply;
+struct ApiConnectRequest;
+struct ApiConnectReply;
 struct ApiSetTimer;
 
 OFP_BEGIN_IGNORE_PADDING
@@ -57,6 +59,8 @@ public:
 	// These methods are used to bridge ApiConnections to ApiChannelListeners.
     void onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq);
     void onListenReply(ApiListenReply *listenReply);
+    void onConnectRequest(ApiConnection *conn, ApiConnectRequest *connectReq);
+    void onConnectReply(ApiConnectReply *connectReply);
 	void onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer);
 
 	// These methods are used to bridge ApiChannelListeners to ApiConnections.

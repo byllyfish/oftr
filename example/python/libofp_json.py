@@ -149,7 +149,7 @@ class LibOFP(object):
         self.send(_libofp('LIBOFP_EDIT_SETTING', name=name, value=value))
 
     def _sendListenRequest(self, openflowAddr):
-        self.send(_libofp('LIBOFP_LISTEN_REQUEST', port=openflowAddr[1]))
+        self.send(_libofp('LIBOFP_LISTEN_REQUEST', xid=1, endpoint='%s %d' % openflowAddr))
 
     def _makeEventGenerator(self):
         msgLines = []

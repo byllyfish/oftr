@@ -24,10 +24,20 @@
 
 using namespace ofp::api;
 
+using YamlInput = llvm::yaml::Input;
+
+static bool errorFound(llvm::yaml::IO &io) {
+  // This is a kludge. We need to know if the io object encountered an error
+  // but the IO class doesn't support this. We need to reach into the Input
+  // subclass to check for the error.
+  llvm::yaml::Input *yin = static_cast<llvm::yaml::Input *>(&io);
+  return yin->error();
+}
+
 ApiEncoder::ApiEncoder(const std::string &input, ApiConnection *conn)
     : conn_{conn}, errorStream_{error_} {
   if (!input.empty()) {
-    llvm::yaml::Input yin{input, nullptr, ApiEncoder::diagnosticHandler, this};
+    YamlInput yin{input, nullptr, ApiEncoder::diagnosticHandler, this};
     if (!yin.error()) {
       yin >> *this;
     }
@@ -48,26 +58,36 @@ void ApiEncoder::encodeMsg(llvm::yaml::IO &io, ApiEvent event) {
   case LIBOFP_LOOPBACK: {
     ApiLoopback loopback;
     io.mapRequired("params", loopback.params);
-    conn_->onLoopback(&loopback);
+    if (!errorFound(io))
+      conn_->onLoopback(&loopback);
     break;
   }
   case LIBOFP_LISTEN_REQUEST: {
     ApiListenRequest listenReq;
     io.mapRequired("params", listenReq.params);
-    if (listenReq.params.listenPort != 0)
+    if (!errorFound(io))
       conn_->onListenRequest(&listenReq);
+    break;
+  }
+  case LIBOFP_CONNECT_REQUEST: {
+    ApiConnectRequest connectReq;
+    io.mapRequired("params", connectReq.params);
+    if (!errorFound(io))
+      conn_->onConnectRequest(&connectReq);
     break;
   }
   case LIBOFP_SET_TIMER: {
     ApiSetTimer setTimer;
     io.mapRequired("params", setTimer.params);
-    conn_->onSetTimer(&setTimer);
+    if (!errorFound(io))
+      conn_->onSetTimer(&setTimer);
     break;
   }
   case LIBOFP_EDIT_SETTING: {
     ApiEditSetting editSetting;
     io.mapRequired("params", editSetting.params);
-    conn_->onEditSetting(&editSetting);
+    if (!errorFound(io))
+      conn_->onEditSetting(&editSetting);
     break;
   }
   default:

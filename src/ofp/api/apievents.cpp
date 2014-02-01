@@ -54,6 +54,11 @@ std::string ApiListenReply::toString(bool useJson) {
   return convertToString(this, useJson);
 }
 
+/// \returns YAML representation of LIBOFP_CONNECT_REPLY event.
+std::string ApiConnectReply::toString(bool useJson) {
+  return convertToString(this, useJson);
+}
+
 /// \returns YAML representation of LIBOFP_YAML_ERROR event.
 std::string ApiYamlError::toString(bool useJson) {
   return convertToString(this, useJson);

@@ -93,14 +93,15 @@ void ApiServer::onDisconnect(ApiConnection *conn) {
 void ApiServer::onListenRequest(ApiConnection *conn,
                                 ApiListenRequest *listenReq) {
   Driver *driver = engine_->driver();
-  UInt16 listenPort = listenReq->params.listenPort;
+  IPv6Endpoint endpt = listenReq->params.endpoint;
 
   std::error_code err = driver->listen(Driver::Controller,
-                            IPv6Endpoint{listenPort}, ProtocolVersions{},
+                            endpt, ProtocolVersions{},
                             [this]() { return new ApiChannelListener{this}; });
 
   ApiListenReply reply;
-  reply.params.listenPort = listenPort;
+  reply.params.xid = listenReq->params.xid;
+  reply.params.endpoint = endpt;
   if (err) {
     reply.params.error = err.message();
   }
@@ -112,6 +113,34 @@ void ApiServer::onListenReply(ApiListenReply *listenReply) {
     oneConn_->onListenReply(listenReply);
   }
 }
+
+
+void ApiServer::onConnectRequest(ApiConnection *conn, ApiConnectRequest *connectReq) {
+  Driver *driver = engine_->driver();
+  IPv6Endpoint endpt = connectReq->params.endpoint;
+
+  auto deferredErr = driver->connect(Driver::Controller,
+                            endpt, ProtocolVersions{},
+                            [this]() { return new ApiChannelListener{this}; });
+
+  UInt32 xid = connectReq->params.xid;
+  deferredErr.done([this,xid,endpt](std::error_code err){
+    ApiConnectReply reply;
+    reply.params.xid = xid;
+    reply.params.endpoint = endpt;
+    if (err) {
+      reply.params.error = err.message();
+    }
+    onConnectReply(&reply);
+  });
+}
+
+void ApiServer::onConnectReply(ApiConnectReply *connectReply) {
+  if (oneConn_) {
+    oneConn_->onConnectReply(connectReply);
+  }
+}
+
 
 void ApiServer::onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer) {
   // FIXME

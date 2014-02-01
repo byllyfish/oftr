@@ -80,8 +80,16 @@ void ApiConnection::onListenRequest(ApiListenRequest *listenReq) {
 }
 
 void ApiConnection::onListenReply(ApiListenReply *listenReply) {
-  log::debug("ApiConnection::onListenReply");
   write(listenReply->toString(isFormatJson_));
+}
+
+
+void ApiConnection::onConnectRequest(ApiConnectRequest *connectReq) {
+  server_->onConnectRequest(this, connectReq);
+}
+
+void ApiConnection::onConnectReply(ApiConnectReply *connectReply) {
+  write(connectReply->toString(isFormatJson_));
 }
 
 void ApiConnection::onSetTimer(ApiSetTimer *setTimer) {

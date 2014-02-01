@@ -5,15 +5,38 @@
 using namespace testagent;
 
 int main(int argc, char **argv) {
-  IPv6Address remoteAddr{"127.0.0.1"};
+  std::vector<std::string> args{argv + 1, argv + argc};
 
-  // log::set(&std::cerr);
+  IPv6Endpoint remoteEndpoint;
+  if (!args.empty()) {
+    (void) remoteEndpoint.parse(args[0]);
+    if (remoteEndpoint.port() == 0) {
+      remoteEndpoint.setPort(OFP_DEFAULT_PORT);
+    }
+  }
 
-  std::error_code err =
-      ofp::runAgent(remoteAddr, TestAgent::Factory, {OFP_VERSION_1});
+  Driver driver;
+  std::error_code error;
 
-  if (err) {
-    std::cerr << "Error starting agent: " << err << '\n';
+  if (remoteEndpoint.valid()) {
+    auto result = driver.connect(Driver::Agent, remoteEndpoint, {OFP_VERSION_1},
+                                 TestAgent::Factory);
+    result.done([&error](const std::error_code &err) {
+      // This will not be called, unless `addr` is invalid; agent will keep
+      // retrying the connection.
+      std::cerr << "Error connecting: " << err << '\n';
+      error = err;
+    });
+
+  } else {
+    error = driver.listen(Driver::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
+                          {OFP_VERSION_1}, TestAgent::Factory);
+  }
+
+  driver.run();
+
+  if (error) {
+    std::cerr << "Error starting agent: " << error << '\n';
     return 1;
   }
 

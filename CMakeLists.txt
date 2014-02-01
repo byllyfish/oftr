@@ -200,7 +200,6 @@ set(LIBOFP_HEADER_FILES
   include/ofp/enetaddress.h
   include/ofp/error.h
   include/ofp/experimenter.h
-  include/ofp/export.h
   include/ofp/featuresreply.h
   include/ofp/flowmod.h
   include/ofp/flowremoved.h

@@ -5,7 +5,7 @@ set -e
 echo "Working Directory:" `pwd`
 
 echo "Starting testagent."
-../testagent &
+../testagent 127.0.0.1 &
 apid=$!
 
 echo "Sleep 1 second."

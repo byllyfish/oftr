@@ -28,6 +28,7 @@
 #include "ofp/driver.h"
 #include "ofp/padding.h"
 #include "ofp/yaml/ybytelist.h"
+#include "ofp/yaml/yaddress.h"
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -40,6 +41,8 @@ enum ApiEvent : UInt32 {
     LIBOFP_LOOPBACK,                // Server -> client, client -> server
     LIBOFP_LISTEN_REQUEST,			// Client -> server
     LIBOFP_LISTEN_REPLY,            // Server -> client
+    LIBOFP_CONNECT_REQUEST,         // Client -> server
+    LIBOFP_CONNECT_REPLY,           // Server -> client
     LIBOFP_YAML_ERROR,			    // Server -> client
     LIBOFP_DECODE_ERROR,            // Server -> client
     LIBOFP_DATAPATH_UP,				// Server -> client
@@ -88,7 +91,8 @@ struct ApiListenRequest {
     ApiEvent event = LIBOFP_LISTEN_REQUEST;
 
     struct Params {
-        UInt16 listenPort = 0;
+        UInt32 xid = 0;
+        IPv6Endpoint endpoint;
     };
     Params params;
 };
@@ -98,7 +102,35 @@ struct ApiListenReply {
     ApiEvent event = LIBOFP_LISTEN_REPLY;
 
     struct Params {
-        UInt16 listenPort;
+        UInt32 xid = 0;
+        IPv6Endpoint endpoint;
+        std::string error;
+    };
+    Params params;
+
+    std::string toString(bool useJson);
+};
+
+/// Api request to connect to as a controller to the specified address and port.
+struct ApiConnectRequest {
+    ApiEvent event = LIBOFP_CONNECT_REQUEST;
+
+    struct Params {
+        UInt32 xid = 0;
+        IPv6Endpoint endpoint;
+    };
+    Params params;
+
+    std::string toString(bool useJson);
+};
+
+/// Api reply to ApiConnectRequest.
+struct ApiConnectReply {
+    ApiEvent event = LIBOFP_CONNECT_REPLY;
+
+    struct Params {
+        UInt32 xid = 0;
+        IPv6Endpoint endpoint;
         std::string error;
     };
     Params params;
@@ -214,6 +246,8 @@ struct ScalarEnumerationTraits<ofp::api::ApiEvent> {
     OFP_YAML_ENUMCASE(LIBOFP_LOOPBACK);
     OFP_YAML_ENUMCASE(LIBOFP_LISTEN_REQUEST);
     OFP_YAML_ENUMCASE(LIBOFP_LISTEN_REPLY);
+    OFP_YAML_ENUMCASE(LIBOFP_CONNECT_REQUEST);
+    OFP_YAML_ENUMCASE(LIBOFP_CONNECT_REPLY);
     OFP_YAML_ENUMCASE(LIBOFP_YAML_ERROR);
     OFP_YAML_ENUMCASE(LIBOFP_DECODE_ERROR);
     OFP_YAML_ENUMCASE(LIBOFP_DATAPATH_UP);
@@ -266,8 +300,8 @@ template <>
 struct MappingTraits<ofp::api::ApiListenRequest::Params> {
     static void mapping(IO &io, ofp::api::ApiListenRequest::Params &msg)
     {
-        ofp::UInt16 defaultPort = ofp::OFP_DEFAULT_PORT;
-        io.mapOptional("port", msg.listenPort, defaultPort);
+        io.mapRequired("xid", msg.xid);
+        io.mapRequired("endpoint", msg.endpoint);
     }
 };
 
@@ -284,7 +318,45 @@ template <>
 struct MappingTraits<ofp::api::ApiListenReply::Params> {
     static void mapping(IO &io, ofp::api::ApiListenReply::Params &msg)
     {
-        io.mapRequired("port", msg.listenPort);
+        io.mapRequired("xid", msg.xid);
+        io.mapRequired("endpoint", msg.endpoint);
+        io.mapRequired("error", msg.error);
+    }
+};
+
+template <>
+struct MappingTraits<ofp::api::ApiConnectRequest> {
+    static void mapping(IO &io, ofp::api::ApiConnectRequest &msg)
+    {
+        io.mapRequired("event", msg.event);
+        io.mapRequired("params", msg.params);
+    }
+};
+
+template <>
+struct MappingTraits<ofp::api::ApiConnectRequest::Params> {
+    static void mapping(IO &io, ofp::api::ApiConnectRequest::Params &msg)
+    {
+        io.mapRequired("xid", msg.xid);
+        io.mapRequired("endpoint", msg.endpoint);
+    }
+};
+
+template <>
+struct MappingTraits<ofp::api::ApiConnectReply> {
+    static void mapping(IO &io, ofp::api::ApiConnectReply &msg)
+    {
+        io.mapRequired("event", msg.event);
+        io.mapRequired("params", msg.params);
+    }
+};
+
+template <>
+struct MappingTraits<ofp::api::ApiConnectReply::Params> {
+    static void mapping(IO &io, ofp::api::ApiConnectReply::Params &msg)
+    {
+        io.mapRequired("xid", msg.xid);
+        io.mapRequired("endpoint", msg.endpoint);
         io.mapRequired("error", msg.error);
     }
 };

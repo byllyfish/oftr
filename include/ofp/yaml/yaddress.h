@@ -27,6 +27,7 @@
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
 #include "ofp/enetaddress.h"
+#include "ofp/ipv6endpoint.h"
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
@@ -42,6 +43,11 @@ struct ScalarTraits<ofp::IPv4Address> {
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::IPv4Address &value)
     {
+        if (scalar.empty()) {
+            value.clear();
+            return "";
+        }
+
         if (!value.parse(scalar)) {
             return "Invalid IPv4 address.";
         }
@@ -60,6 +66,11 @@ struct ScalarTraits<ofp::IPv6Address> {
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::IPv6Address &value)
     {
+        if (scalar.empty()) {
+            value.clear();
+            return "";
+        }
+
         if (!value.parse(scalar)) {
             return "Invalid IPv6 address.";
         }
@@ -78,8 +89,36 @@ struct ScalarTraits<ofp::EnetAddress> {
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::EnetAddress &value)
     {
+        if (scalar.empty()) {
+            value.clear();
+            return "";
+        }
+        
         if (!value.parse(scalar)) {
             return "Invalid Ethernet address.";
+        }
+        return "";
+    }
+};
+
+template <>
+struct ScalarTraits<ofp::IPv6Endpoint> {
+    static void output(const ofp::IPv6Endpoint &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+        out << value.toString();
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt,
+                           ofp::IPv6Endpoint &value)
+    {
+        if (scalar.empty()) {
+            value.clear();
+            return "";
+        }
+
+        if (!value.parse(scalar)) {
+            return "Invalid IPv6 endpoint.";
         }
         return "";
     }

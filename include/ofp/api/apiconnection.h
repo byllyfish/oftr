@@ -45,6 +45,8 @@ public:
 	void onLoopback(ApiLoopback *loopback);
 	void onListenRequest(ApiListenRequest *listenReq);
 	void onListenReply(ApiListenReply *listenReply);
+	void onConnectRequest(ApiConnectRequest *connectReq);
+	void onConnectReply(ApiConnectReply *connectReply);
 	void onSetTimer(ApiSetTimer *setTimer);
 	void onEditSetting(ApiEditSetting *editSetting);
 
