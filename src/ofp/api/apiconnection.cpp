@@ -121,6 +121,7 @@ void ApiConnection::onChannelUp(Channel *channel) {
   ApiDatapathUp reply;
   reply.params.datapathId = channel->datapathId();
   reply.params.version = channel->version();
+  reply.params.endpoint = channel->remoteEndpoint();
 
   write(reply.toString(isFormatJson_));
 }
@@ -128,6 +129,9 @@ void ApiConnection::onChannelUp(Channel *channel) {
 void ApiConnection::onChannelDown(Channel *channel) {
   ApiDatapathDown reply;
   reply.params.datapathId = channel->datapathId();
+  reply.params.version = channel->version();
+  reply.params.endpoint = channel->remoteEndpoint();
+
   write(reply.toString(isFormatJson_));
 }
 

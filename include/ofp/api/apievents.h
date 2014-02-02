@@ -172,11 +172,8 @@ struct ApiDatapathUp {
 
     struct Params {
         DatapathID datapathId;
+        IPv6Endpoint endpoint;
         UInt8 version;
-        UInt8 tableCount;
-        UInt32 bufferCount;
-        UInt32 capabilities;
-        UInt32 reserved;
     };
     Params params;
 
@@ -189,6 +186,8 @@ struct ApiDatapathDown {
 
     struct Params {
         DatapathID datapathId;
+        IPv6Endpoint endpoint;
+        UInt8 version;
     };
     Params params;
 
@@ -412,11 +411,8 @@ struct MappingTraits<ofp::api::ApiDatapathUp::Params> {
     static void mapping(IO &io, ofp::api::ApiDatapathUp::Params &msg)
     {
         io.mapRequired("datapath_id", msg.datapathId);
+        io.mapRequired("endpoint", msg.endpoint);
         io.mapRequired("version", msg.version);
-        io.mapRequired("n_buffers", msg.bufferCount);
-        io.mapRequired("n_tables", msg.tableCount);
-        io.mapRequired("capabilities", msg.capabilities);
-        io.mapRequired("reserved", msg.reserved);
     }
 };
 
@@ -435,6 +431,8 @@ struct MappingTraits<ofp::api::ApiDatapathDown::Params> {
     static void mapping(IO &io, ofp::api::ApiDatapathDown::Params &msg)
     {
         io.mapRequired("datapath_id", msg.datapathId);
+        io.mapRequired("endpoint", msg.endpoint);
+        io.mapRequired("version", msg.version);
     }
 };
 
