@@ -233,7 +233,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
 
     switch (type) {
     case OFPMP_DESC: {
-        MPDesc desc;
+        MPDescBuilder desc;
         io.mapRequired("body", desc);
         // FIXME - write reply into channel.
         msg.setReplyBody(&desc, sizeof(desc));

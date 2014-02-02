@@ -25,11 +25,11 @@
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {  // <namespace ofp>
 
 /// \brief FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
 class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY> {
-public:
+ public:
   const DatapathID &datapathId() const { return datapathId_; }
   UInt32 bufferCount() const { return bufferCount_; }
   UInt8 tableCount() const { return tableCount_; }
@@ -37,11 +37,11 @@ public:
   UInt32 capabilities() const { return capabilities_; }
   UInt32 reserved() const { return reserved_; }
 
-  // PortRange ports() const;
+  //PortRange ports() const;
 
   bool validateLength(size_t length) const;
 
-private:
+ private:
   Header header_;
   DatapathID datapathId_;
   Big32 bufferCount_ = 0;
@@ -65,7 +65,7 @@ static_assert(IsTriviallyCopyable<FeaturesReply>(),
 /// \brief FeaturesReplyBuilder is a concrete class for building an
 /// OFPT_FEATURES_REPLY message.
 class FeaturesReplyBuilder {
-public:
+ public:
   explicit FeaturesReplyBuilder(UInt32 xid);
   explicit FeaturesReplyBuilder(const FeaturesReply *msg);
 
@@ -82,10 +82,11 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   FeaturesReply msg_;
+  //PortList ports_;
 };
 
-} // </namespace ofp>
+}  // </namespace ofp>
 
-#endif // OFP_FEATURESREPLY_H
+#endif  // OFP_FEATURESREPLY_H

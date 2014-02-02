@@ -45,10 +45,17 @@ FeaturesReplyBuilder::FeaturesReplyBuilder(UInt32 xid) {
 }
 
 UInt32 FeaturesReplyBuilder::send(Writable *channel) {
-  msg_.header_.setVersion(channel->version());
+  UInt8 version = channel->version();
+
+  msg_.header_.setVersion(version);
   msg_.header_.setLength(sizeof(msg_));
 
   channel->write(&msg_, sizeof(msg_));
+
+  //if (version < OFP_VERSION_4) {
+  // ports_.toRange().write(channel);
+  //}
+
   channel->flush();
 
   return msg_.header_.xid();

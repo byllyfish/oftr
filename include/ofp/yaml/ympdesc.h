@@ -39,6 +39,18 @@ struct MappingTraits<ofp::MPDesc> {
   }
 };
 
+template <>
+struct MappingTraits<ofp::MPDescBuilder> {
+
+  static void mapping(IO &io, ofp::MPDescBuilder &body) {
+    io.mapRequired("mfr_desc", body.msg_.mfrDesc_);
+    io.mapRequired("hw_desc", body.msg_.hwDesc_);
+    io.mapRequired("sw_desc", body.msg_.swDesc_);
+    io.mapRequired("serial_num", body.msg_.serialNum_);
+    io.mapRequired("dp_desc", body.msg_.dpDesc_);
+  }
+};
+
 } // </namespace yaml>
 } // </namespace llvm>
 
