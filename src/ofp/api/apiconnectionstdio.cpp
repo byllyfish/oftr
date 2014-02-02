@@ -22,14 +22,14 @@
 #include "ofp/api/apiconnectionstdio.h"
 #include "ofp/sys/asio_utils.h"
 
-using namespace ofp::api;
-using namespace ofp::sys;
+using ofp::api::ApiConnectionStdio;
 
 ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
                                        asio::posix::stream_descriptor input,
                                        asio::posix::stream_descriptor output,
                                        bool listening)
-    : ApiConnection{server, listening}, input_{std::move(input)},
+    : ApiConnection{server, listening},
+      input_{std::move(input)},
       output_{std::move(output)} {}
 
 void ApiConnectionStdio::setInput(int input) {
@@ -89,7 +89,6 @@ void ApiConnectionStdio::asyncWrite() {
   asio::async_write(
       output_, asio::buffer(data, size),
       [this, self](const asio::error_code &err, size_t bytes_transferred) {
-
         if (!err) {
           assert(bytes_transferred == outgoing_[!outgoingIdx_].size());
 

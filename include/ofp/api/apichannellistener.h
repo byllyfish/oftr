@@ -13,37 +13,37 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the api::ApiChannelListener class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_API_APICHANNELLISTENER_H
-#define OFP_API_APICHANNELLISTENER_H
+#ifndef OFP_API_APICHANNELLISTENER_H_
+#define OFP_API_APICHANNELLISTENER_H_
 
 #include "ofp/channellistener.h"
 
-namespace ofp { // <namespace ofp>
-namespace api { // <namespace api>
+namespace ofp {
+namespace api {
 
 class ApiServer;
 
 class ApiChannelListener : public ChannelListener {
-public:
-	ApiChannelListener(ApiServer *server): server_{server} {}
+ public:
+  explicit ApiChannelListener(ApiServer *server) : server_{server} {}
 
-	void onChannelUp(Channel *channel) override;
-    void onChannelDown(Channel *channel) override;
-    void onMessage(const Message *message) override;
-    void onTimer(UInt32 timerID) override;
+  void onChannelUp(Channel *channel) override;
+  void onChannelDown(Channel *channel) override;
+  void onMessage(const Message *message) override;
+  void onTimer(UInt32 timerID) override;
 
-private:
-	ApiServer *server_;
-	Channel *channel_ = nullptr;
+ private:
+  ApiServer *server_;
+  Channel *channel_ = nullptr;
 };
 
-} // </namespace api>
-} // </namespace ofp>
+}  // namespace api
+}  // namespace ofp
 
-#endif // OFP_API_APICHANNELLISTENER_H
+#endif  // OFP_API_APICHANNELLISTENER_H_

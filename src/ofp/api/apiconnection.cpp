@@ -26,8 +26,7 @@
 #include "ofp/yaml/encoder.h"
 #include "ofp/channel.h"
 
-using namespace ofp::api;
-using namespace ofp::sys;
+using ofp::api::ApiConnection;
 
 ApiConnection::ApiConnection(ApiServer *server, bool listening)
     : server_{server}, isListening_{listening} {
@@ -82,7 +81,6 @@ void ApiConnection::onListenRequest(ApiListenRequest *listenReq) {
 void ApiConnection::onListenReply(ApiListenReply *listenReply) {
   write(listenReply->toString(isFormatJson_));
 }
-
 
 void ApiConnection::onConnectRequest(ApiConnectRequest *connectReq) {
   server_->onConnectRequest(this, connectReq);
@@ -170,20 +168,17 @@ void ApiConnection::processInputLine(std::string *line) {
 
 void ApiConnection::handleEvent(const std::string &eventText) {
   EventType type = eventTypeOf(eventText);
-  if (type == EmptyEvent) 
-    return;
+  if (type == EmptyEvent) return;
 
   if (type == LibEvent) {
     ApiEncoder encoder{eventText, this};
 
   } else {
-
     yaml::Encoder encoder(eventText, [this](const DatapathID &datapathId) {
       return server_->findChannel(datapathId);
     });
 
     if (encoder.error().empty()) {
-
       if (isListening_) {
         Channel *channel = server_->findChannel(encoder.datapathId());
 
@@ -234,11 +229,9 @@ bool ApiConnection::isEmptyEvent(const std::string &s) {
   // String should have the format:  "---\n(...)\n---\n"
   // Return true if string is too short or there is no colon.
 
-  if (s.size() < 12)
-    return true;
+  if (s.size() < 12) return true;
 
-  if (s.find(':') == std::string::npos)
-    return true;
+  if (s.find(':') == std::string::npos) return true;
 
   return false;
 }
@@ -250,22 +243,19 @@ static bool matchesEventPrefix(const std::string &s) {
   size_t pos = s.find_first_not_of(" \n\t\f\v{\"-.");
   if (pos != std::string::npos && s.length() - pos > 6) {
     return (std::memcmp("event", &s[pos], 5) == 0) ||
-            (std::memcmp("params", &s[pos], 6) == 0);
+           (std::memcmp("params", &s[pos], 6) == 0);
   }
   return false;
 }
 
-/// \returns type of event for event `s`. 
-ApiConnection::EventType ApiConnection::eventTypeOf(const std::string &s)
-{
+/// \returns type of event for event `s`.
+ApiConnection::EventType ApiConnection::eventTypeOf(const std::string &s) {
   // String should have the format:  "---\n(...)\n---\n"
   // Return true if string is too short or there is no colon.
 
-  if (s.size() < 12 || s.find(':') == std::string::npos)
-    return EmptyEvent;
+  if (s.size() < 12 || s.find(':') == std::string::npos) return EmptyEvent;
 
-  if (matchesEventPrefix(s))
-    return LibEvent;
+  if (matchesEventPrefix(s)) return LibEvent;
 
   return MsgEvent;
 }

@@ -1,4 +1,4 @@
-BasedOnStyle: llvm
+BasedOnStyle: google
 
 # IndentWidth: 4
 # AccessModifierOffset: -4

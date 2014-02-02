@@ -22,7 +22,7 @@
 #include "ofp/api/apichannellistener.h"
 #include "ofp/api/apiserver.h"
 
-using namespace ofp::api;
+using ofp::api::ApiChannelListener;
 
 void ApiChannelListener::onChannelUp(Channel *channel) {
   assert(channel_ == nullptr);

@@ -19,14 +19,14 @@
 /// \brief Defines the api::ApiEncoder class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_API_APIENCODER_H
-#define OFP_API_APIENCODER_H
+#ifndef OFP_API_APIENCODER_H_
+#define OFP_API_APIENCODER_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/api/apievents.h"
 
-namespace ofp { // <namespace ofp>
-namespace api { // <namespace api>
+namespace ofp {
+namespace api {
 
 class ApiConnection;
 
@@ -36,46 +36,41 @@ class ApiConnection;
 /// translates from YAML to an internal binary representation.
 
 class ApiEncoder {
-public:
-	ApiEncoder(const std::string &input, ApiConnection *conn);
+ public:
+  ApiEncoder(const std::string &input, ApiConnection *conn);
 
-private:
-	ApiConnection *conn_;
-	std::string error_;
-    llvm::raw_string_ostream errorStream_;
+ private:
+  ApiConnection *conn_;
+  std::string error_;
+  llvm::raw_string_ostream errorStream_;
 
-    static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
+  static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
 
-    void addDiagnostic(const llvm::SMDiagnostic &diag) {
-		diag.print("", errorStream_, false);
-	}
+  void addDiagnostic(const llvm::SMDiagnostic &diag) {
+    diag.print("", errorStream_, false);
+  }
 
-    void encodeMsg(llvm::yaml::IO &io, ApiEvent event);
+  void encodeMsg(llvm::yaml::IO &io, ApiEvent event);  // NOLINT
 
-    friend struct llvm::yaml::MappingTraits<ofp::api::ApiEncoder>;
+  friend struct llvm::yaml::MappingTraits<ofp::api::ApiEncoder>;
 };
 
-} // </namespace api>
-} // </namespace ofp>
+}  // namespace api
+}  // namespace ofp
 
-
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::api::ApiEncoder> {
-
-    static void mapping(IO &io, ofp::api::ApiEncoder &encoder)
-    {
-        using namespace ofp::api;
-
-    	ApiEvent event = LIBOFP_INVALID;
-    	io.mapRequired("event", event);
-    	encoder.encodeMsg(io, event);
-    }
+  static void mapping(IO &io, ofp::api::ApiEncoder &encoder) {  // NOLINT
+    ofp::api::ApiEvent event = ofp::api::LIBOFP_INVALID;
+    io.mapRequired("event", event);
+    encoder.encodeMsg(io, event);
+  }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_API_APIENCODER_H
+#endif  // OFP_API_APIENCODER_H_

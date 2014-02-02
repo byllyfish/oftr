@@ -22,8 +22,7 @@
 #include "ofp/api/apiencoder.h"
 #include "ofp/api/apiconnection.h"
 
-using namespace ofp::api;
-
+using ofp::api::ApiEncoder;
 using YamlInput = llvm::yaml::Input;
 
 static bool errorFound(llvm::yaml::IO &io) {
@@ -55,43 +54,38 @@ void ApiEncoder::diagnosticHandler(const llvm::SMDiagnostic &diag,
 
 void ApiEncoder::encodeMsg(llvm::yaml::IO &io, ApiEvent event) {
   switch (event) {
-  case LIBOFP_LOOPBACK: {
-    ApiLoopback loopback;
-    io.mapRequired("params", loopback.params);
-    if (!errorFound(io))
-      conn_->onLoopback(&loopback);
-    break;
-  }
-  case LIBOFP_LISTEN_REQUEST: {
-    ApiListenRequest listenReq;
-    io.mapRequired("params", listenReq.params);
-    if (!errorFound(io))
-      conn_->onListenRequest(&listenReq);
-    break;
-  }
-  case LIBOFP_CONNECT_REQUEST: {
-    ApiConnectRequest connectReq;
-    io.mapRequired("params", connectReq.params);
-    if (!errorFound(io))
-      conn_->onConnectRequest(&connectReq);
-    break;
-  }
-  case LIBOFP_SET_TIMER: {
-    ApiSetTimer setTimer;
-    io.mapRequired("params", setTimer.params);
-    if (!errorFound(io))
-      conn_->onSetTimer(&setTimer);
-    break;
-  }
-  case LIBOFP_EDIT_SETTING: {
-    ApiEditSetting editSetting;
-    io.mapRequired("params", editSetting.params);
-    if (!errorFound(io))
-      conn_->onEditSetting(&editSetting);
-    break;
-  }
-  default:
-    log::info("ApiEncoder: Unrecognized event", event);
-    break;
+    case LIBOFP_LOOPBACK: {
+      ApiLoopback loopback;
+      io.mapRequired("params", loopback.params);
+      if (!errorFound(io)) conn_->onLoopback(&loopback);
+      break;
+    }
+    case LIBOFP_LISTEN_REQUEST: {
+      ApiListenRequest listenReq;
+      io.mapRequired("params", listenReq.params);
+      if (!errorFound(io)) conn_->onListenRequest(&listenReq);
+      break;
+    }
+    case LIBOFP_CONNECT_REQUEST: {
+      ApiConnectRequest connectReq;
+      io.mapRequired("params", connectReq.params);
+      if (!errorFound(io)) conn_->onConnectRequest(&connectReq);
+      break;
+    }
+    case LIBOFP_SET_TIMER: {
+      ApiSetTimer setTimer;
+      io.mapRequired("params", setTimer.params);
+      if (!errorFound(io)) conn_->onSetTimer(&setTimer);
+      break;
+    }
+    case LIBOFP_EDIT_SETTING: {
+      ApiEditSetting editSetting;
+      io.mapRequired("params", editSetting.params);
+      if (!errorFound(io)) conn_->onEditSetting(&editSetting);
+      break;
+    }
+    default:
+      log::info("ApiEncoder: Unrecognized event", event);
+      break;
   }
 }

@@ -27,8 +27,7 @@
 #include "ofp/api/apisession.h"
 #include "ofp/api/apievents.h"
 
-using namespace ofp::api;
-using namespace ofp::sys;
+using ofp::api::ApiServer;
 
 ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
@@ -38,8 +37,8 @@ ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
 
   bool listening = (defaultChannel != nullptr);
   auto conn = std::make_shared<ApiConnectionStdio>(
-      this, asio::posix::stream_descriptor{engine_->io()}, asio::posix::stream_descriptor{engine_->io()},
-      listening);
+      this, asio::posix::stream_descriptor{engine_->io()},
+      asio::posix::stream_descriptor{engine_->io()}, listening);
 
   if (inputFD >= 0) {
     conn->setInput(inputFD);
@@ -52,10 +51,9 @@ ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
   conn->asyncAccept();
 }
 
-
-ApiServer::ApiServer(Driver *driver, ApiSession *session, Channel *defaultChannel)
-  : engine_{driver->engine()}, defaultChannel_{defaultChannel}
-{
+ApiServer::ApiServer(Driver *driver, ApiSession *session,
+                     Channel *defaultChannel)
+    : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
   auto conn = std::make_shared<ApiConnectionSession>(this, session);
 
   // Give the session a reference to the connection; otherwise, the connection
@@ -95,9 +93,9 @@ void ApiServer::onListenRequest(ApiConnection *conn,
   Driver *driver = engine_->driver();
   IPv6Endpoint endpt = listenReq->params.endpoint;
 
-  std::error_code err = driver->listen(Driver::Controller,
-                            endpt, ProtocolVersions{},
-                            [this]() { return new ApiChannelListener{this}; });
+  std::error_code err =
+      driver->listen(Driver::Controller, endpt, ProtocolVersions{},
+                     [this]() { return new ApiChannelListener{this}; });
 
   ApiListenReply reply;
   reply.params.xid = listenReq->params.xid;
@@ -114,17 +112,20 @@ void ApiServer::onListenReply(ApiListenReply *listenReply) {
   }
 }
 
-
-void ApiServer::onConnectRequest(ApiConnection *conn, ApiConnectRequest *connectReq) {
+void ApiServer::onConnectRequest(ApiConnection *conn,
+                                 ApiConnectRequest *connectReq) {
   Driver *driver = engine_->driver();
   IPv6Endpoint endpt = connectReq->params.endpoint;
 
-  auto deferredErr = driver->connect(Driver::Controller,
-                            endpt, ProtocolVersions{},
-                            [this]() { return new ApiChannelListener{this}; });
+  auto deferredErr =
+      driver->connect(Driver::Controller, endpt, ProtocolVersions{},
+                      [this]() { return new ApiChannelListener{this}; });
 
   UInt32 xid = connectReq->params.xid;
-  deferredErr.done([this,xid,endpt](std::error_code err){
+
+  OFP_BEGIN_IGNORE_PADDING
+
+  deferredErr.done([this, endpt, xid](std::error_code err) {
     ApiConnectReply reply;
     reply.params.xid = xid;
     reply.params.endpoint = endpt;
@@ -133,6 +134,8 @@ void ApiServer::onConnectRequest(ApiConnection *conn, ApiConnectRequest *connect
     }
     onConnectReply(&reply);
   });
+
+  OFP_END_IGNORE_PADDING
 }
 
 void ApiServer::onConnectReply(ApiConnectReply *connectReply) {
@@ -141,7 +144,6 @@ void ApiServer::onConnectReply(ApiConnectReply *connectReply) {
   }
 }
 
-
 void ApiServer::onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer) {
   // FIXME
 }
@@ -149,25 +151,21 @@ void ApiServer::onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer) {
 void ApiServer::onChannelUp(Channel *channel) {
   registerChannel(channel);
 
-  if (oneConn_)
-    oneConn_->onChannelUp(channel);
+  if (oneConn_) oneConn_->onChannelUp(channel);
 }
 
 void ApiServer::onChannelDown(Channel *channel) {
-  if (oneConn_)
-    oneConn_->onChannelDown(channel);
+  if (oneConn_) oneConn_->onChannelDown(channel);
 
   unregisterChannel(channel);
 }
 
 void ApiServer::onMessage(Channel *channel, const Message *message) {
-  if (oneConn_)
-    oneConn_->onMessage(channel, message);
+  if (oneConn_) oneConn_->onMessage(channel, message);
 }
 
 void ApiServer::onTimer(Channel *channel, UInt32 timerID) {
-  if (oneConn_)
-    oneConn_->onTimer(channel, timerID);
+  if (oneConn_) oneConn_->onTimer(channel, timerID);
 }
 
 void ApiServer::registerChannel(Channel *channel) {
@@ -181,8 +179,7 @@ void ApiServer::unregisterChannel(Channel *channel) {
 }
 
 ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId) {
-  if (defaultChannel_)
-    return defaultChannel_;
+  if (defaultChannel_) return defaultChannel_;
 
   auto iter = datapathMap_.find(datapathId);
   if (iter != datapathMap_.end()) {
