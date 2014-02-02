@@ -27,7 +27,7 @@
 using namespace ofp;
 
 ProtocolVersions detail::HelloElement::versionBitMap() const {
-  if (length_ - 4 >= sizeof(UInt32)) {
+  if (length_ >= sizeof(UInt32) + 4) {
     return ProtocolVersions::fromBitmap(*Big32_cast(BytePtr(this) + 4));
   }
 

@@ -61,7 +61,7 @@ private:
   Big16 matchLength_ = 0;
   Padding<4> pad_3;
 
-  enum {
+  enum : size_t {
     UnpaddedSizeWithMatchHeader = 36,
     SizeWithoutMatchHeader = 32,
     HeaderSize = 4
