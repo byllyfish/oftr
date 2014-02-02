@@ -5,7 +5,6 @@
 
 set(CTEST_CUSTOM_MEMCHECK_IGNORE
 	nulldemo
-	testagent
 	controller
 	libofpexec
 	python_json

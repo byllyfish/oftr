@@ -370,6 +370,7 @@ endif()
 # N.B. The suppressions file must be defined before `include(CTest)`; otherwise
 # the correct value will not appear in the generated DartConfiguration.tcl.
 
+set(MEMORYCHECK_COMMAND_OPTIONS "-v --trace-children=yes --leak-check=full")
 set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
