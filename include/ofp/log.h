@@ -91,7 +91,7 @@ void error(const Type1 &a, const Type2 &b) {
 
 class Lifetime {
 public:
-  explicit Lifetime(const char *description) : description_{description} {
+  /* implicit NOLINT */ Lifetime(const char *description) : description_{description} {
     debug("Create ", description_);
   }
 
