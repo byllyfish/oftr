@@ -1,4 +1,4 @@
-//  ===== ---- ofp/aggregatestatsrequest.h -----------------*- C++ -*- =====  //
+//  ===== ---- ofp/mpaggregatestatsrequest.h ---------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,23 +16,23 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines AggregateStatsRequest and AggregateStatsRequestBuilder
+/// \brief Defines MPAggregateStatsRequest and MPAggregateStatsRequestBuilder
 /// classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_AGGREGATESTATSREQUEST_H
-#define OFP_AGGREGATESTATSREQUEST_H
+#ifndef OFP_MPAGGREGATESTATSREQUEST_H
+#define OFP_MPAGGREGATESTATSREQUEST_H
 
-#include "ofp/flowstatsrequest.h"
+#include "ofp/mpflowstatsrequest.h"
 
 namespace ofp { // <namespace ofp>
 
-// AggregateStatsRequest is identical to FlowStatsRequest. Only the reply is
+// MPAggregateStatsRequest is identical to MPFlowStatsRequest. Only the reply is
 // different.
 
-using AggregateStatsRequest = FlowStatsRequest;
-using AggregateStatsRequestBuilder = FlowStatsRequestBuilder;
+using MPAggregateStatsRequest = MPFlowStatsRequest;
+using MPAggregateStatsRequestBuilder = MPFlowStatsRequestBuilder;
 
 } // </namespace ofp>
 
-#endif // OFP_AGGREGATESTATSREQUEST_H
+#endif // OFP_MPAGGREGATESTATSREQUEST_H

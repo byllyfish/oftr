@@ -1,11 +1,11 @@
 #include "ofp/unittest.h"
-#include "ofp/flowstatsreply.h"
+#include "ofp/mpflowstatsreply.h"
 #include "ofp/actions.h"
 
 using namespace ofp;
 
-TEST(flowstatsreply, test1_v4) {
-  FlowStatsReplyBuilder reply;
+TEST(mpflowstatsreply, test1_v4) {
+  MPFlowStatsReplyBuilder reply;
 
   reply.setTableId(0x11);
   reply.setDurationSec(0x22222222);
@@ -27,8 +27,8 @@ TEST(flowstatsreply, test1_v4) {
              channel.data(), channel.size());
 }
 
-TEST(flowstatsreply, test1_v1) {
-  FlowStatsReplyBuilder reply;
+TEST(mpflowstatsreply, test1_v1) {
+  MPFlowStatsReplyBuilder reply;
 
   reply.setTableId(0x11);
   reply.setDurationSec(0x22222222);
@@ -51,7 +51,7 @@ TEST(flowstatsreply, test1_v1) {
              channel.data(), channel.size());
 }
 
-TEST(flowstatsreply, test2_v4) {
+TEST(mpflowstatsreply, test2_v4) {
   MatchBuilder match;
   match.add(OFB_IN_PORT{7});
 
@@ -61,7 +61,7 @@ TEST(flowstatsreply, test2_v4) {
   InstructionList instructions;
   instructions.add(IT_APPLY_ACTIONS{&actions});
 
-  FlowStatsReplyBuilder reply;
+  MPFlowStatsReplyBuilder reply;
   reply.setTableId(0x11);
   reply.setDurationSec(0x22222222);
   reply.setDurationNSec(0x33333333);
@@ -85,7 +85,7 @@ TEST(flowstatsreply, test2_v4) {
              channel.data(), channel.size());
 }
 
-TEST(flowstatsreply, test2_v1) {
+TEST(mpflowstatsreply, test2_v1) {
   MatchBuilder match;
   match.add(OFB_IN_PORT{7});
 
@@ -95,7 +95,7 @@ TEST(flowstatsreply, test2_v1) {
   InstructionList instructions;
   instructions.add(IT_APPLY_ACTIONS{&actions});
 
-  FlowStatsReplyBuilder reply;
+  MPFlowStatsReplyBuilder reply;
   reply.setTableId(0x11);
   reply.setDurationSec(0x22222222);
   reply.setDurationNSec(0x33333333);

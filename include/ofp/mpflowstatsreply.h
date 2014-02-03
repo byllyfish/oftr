@@ -1,4 +1,4 @@
-//  ===== ---- ofp/flowstatsreply.h ------------------------*- C++ -*- =====  //
+//  ===== ---- ofp/mpflowstatsreply.h ----------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,11 +16,11 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the FlowStatsReply and FlowStatsReplyBuilder classes.
+/// \brief Defines the MPFlowStatsReply and MPFlowStatsReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_FLOWSTATSREPLY_H
-#define OFP_FLOWSTATSREPLY_H
+#ifndef OFP_MPFLOWSTATSREPLY_H
+#define OFP_MPFLOWSTATSREPLY_H
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
@@ -32,11 +32,10 @@
 namespace ofp { // <namespace ofp>
 
 class Writable;
-class FlowStatsReplyBuilder;
 
-class FlowStatsReply {
+class MPFlowStatsReply {
 public:
-  FlowStatsReply() = default;
+  MPFlowStatsReply() = default;
 
   Match match() const;
   InstructionRange instructions() const;
@@ -66,15 +65,15 @@ private:
     MatchHeaderSize = 4
   };
 
-  friend class FlowStatsReplyBuilder;
-  friend struct llvm::yaml::MappingTraits<FlowStatsReply>;
-  friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
+  friend class MPFlowStatsReplyBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
-static_assert(sizeof(FlowStatsReply) == 56, "Unexpected size.");
-static_assert(IsStandardLayout<FlowStatsReply>(), "Expected standard layout.");
+static_assert(sizeof(MPFlowStatsReply) == 56, "Unexpected size.");
+static_assert(IsStandardLayout<MPFlowStatsReply>(), "Expected standard layout.");
 
-class FlowStatsReplyBuilder {
+class MPFlowStatsReplyBuilder {
 public:
   void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
   void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
@@ -96,15 +95,16 @@ public:
   void write(Writable *channel);
 
 private:
-  FlowStatsReply msg_;
+  MPFlowStatsReply msg_;
   MatchBuilder match_;
   InstructionList instructions_;
 
   void writeV1(Writable *channel);
 
-  friend struct llvm::yaml::MappingTraits<FlowStatsReplyBuilder>;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 } // </namespace ofp>
 
-#endif // OFP_FLOWSTATSREPLY_H
+#endif // OFP_MPFLOWSTATSREPLY_H

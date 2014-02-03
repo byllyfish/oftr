@@ -1,4 +1,4 @@
-//  ===== ---- ofp/flowstatsrequest.h ----------------------*- C++ -*- =====  //
+//  ===== ---- ofp/mpflowstatsrequest.h --------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,11 +16,11 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines FlowStatsRequest and FlowStatsRequestBuilder classes.
+/// \brief Defines MPFlowStatsRequest and MPFlowStatsRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_FLOWSTATSREQUEST_H
-#define OFP_FLOWSTATSREQUEST_H
+#ifndef OFP_MPFLOWSTATSREQUEST_H
+#define OFP_MPFLOWSTATSREQUEST_H
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
@@ -30,14 +30,13 @@
 namespace ofp { // <namespace ofp>
 
 class Writable;
-class FlowStatsRequestBuilder;
 class MultipartRequest;
 
-class FlowStatsRequest {
+class MPFlowStatsRequest {
 public:
-  static const FlowStatsRequest *cast(const MultipartRequest *req);
+  static const MPFlowStatsRequest *cast(const MultipartRequest *req);
 
-  FlowStatsRequest() = default;
+  MPFlowStatsRequest() = default;
 
   UInt8 tableId() const { return tableId_; }
   UInt32 outPort() const { return outPort_; }
@@ -68,16 +67,16 @@ private:
     HeaderSize = 4
   };
 
-  friend class FlowStatsRequestBuilder;
+  friend class MPFlowStatsRequestBuilder;
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };
 
-static_assert(sizeof(FlowStatsRequest) == 40, "Unexpected size.");
-static_assert(IsStandardLayout<FlowStatsRequest>(),
+static_assert(sizeof(MPFlowStatsRequest) == 40, "Unexpected size.");
+static_assert(IsStandardLayout<MPFlowStatsRequest>(),
               "Expected standard layout.");
 
-class FlowStatsRequestBuilder {
+class MPFlowStatsRequestBuilder {
 public:
   void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
   void setOutPort(UInt32 outPort) { msg_.outPort_ = outPort; }
@@ -88,7 +87,7 @@ public:
   void write(Writable *channel);
 
 private:
-  FlowStatsRequest msg_;
+  MPFlowStatsRequest msg_;
   MatchBuilder match_;
 
   void writeV1(Writable *channel);
@@ -99,4 +98,4 @@ private:
 
 } // </namespace ofp>
 
-#endif // OFP_FLOWSTATSREQUEST_H
+#endif // OFP_MPFLOWSTATSREQUEST_H

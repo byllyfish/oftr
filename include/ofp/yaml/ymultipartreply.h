@@ -181,12 +181,12 @@ struct MappingTraits<ofp::MultipartReply> {
       break;
     }
     case OFPMP_FLOW: {
-      ofp::detail::MPReplyVariableSizeSeq<FlowStatsReply> seq{msg};
+      ofp::detail::MPReplyVariableSizeSeq<MPFlowStatsReply> seq{msg};
       io.mapRequired("body", seq);
       break;
     }
     case OFPMP_AGGREGATE: {
-      AggregateStatsReply *reply = RemoveConst_cast(msg.body_cast<AggregateStatsReply>());
+      MPAggregateStatsReply *reply = RemoveConst_cast(msg.body_cast<MPAggregateStatsReply>());
       if (reply) {
         io.mapRequired("body", *reply);
       }
@@ -240,14 +240,14 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
     }
     case OFPMP_FLOW: {
-      ofp::detail::MPReplyBuilderSeq<FlowStatsReplyBuilder> seq{msg.version()};
+      ofp::detail::MPReplyBuilderSeq<MPFlowStatsReplyBuilder> seq{msg.version()};
       io.mapRequired("body", seq);
       seq.close();
       msg.setReplyBody(seq.data(), seq.size());
       break;
     }
     case OFPMP_AGGREGATE: {
-      AggregateStatsReplyBuilder reply;
+      MPAggregateStatsReplyBuilder reply;
       io.mapRequired("body", reply);
       // FIXME - write reply into channel.
       msg.setReplyBody(&reply, sizeof(reply));

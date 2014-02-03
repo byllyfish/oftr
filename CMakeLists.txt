@@ -69,7 +69,7 @@ endif()
 
 set(LIBOFP_SOURCES
 	src/ofp/actionrange.cpp
-  src/ofp/aggregatestatsreply.cpp
+  src/ofp/mpaggregatestatsreply.cpp
   src/ofp/bucket.cpp
   src/ofp/bucketlist.cpp
   src/ofp/bytelist.cpp
@@ -88,8 +88,8 @@ set(LIBOFP_SOURCES
 	src/ofp/featuresreply.cpp
 	src/ofp/flowmod.cpp
   src/ofp/flowremoved.cpp
-	src/ofp/flowstatsreply.cpp
-	src/ofp/flowstatsrequest.cpp
+	src/ofp/mpflowstatsreply.cpp
+	src/ofp/mpflowstatsrequest.cpp
   src/ofp/getasyncreply.cpp
 	src/ofp/getconfigreply.cpp
   src/ofp/groupmod.cpp
@@ -202,8 +202,8 @@ set(LIBOFP_HEADER_FILES
   include/ofp/featuresreply.h
   include/ofp/flowmod.h
   include/ofp/flowremoved.h
-  include/ofp/flowstatsreply.h
-  include/ofp/flowstatsrequest.h
+  include/ofp/mpflowstatsreply.h
+  include/ofp/mpflowstatsrequest.h
   include/ofp/getasyncreply.h
   include/ofp/getconfigreply.h
   include/ofp/groupmod.h

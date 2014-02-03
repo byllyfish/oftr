@@ -24,7 +24,7 @@
 #define OFP_YAML_MULTIPARTREQUEST_H
 
 #include "ofp/multipartrequest.h"
-#include "ofp/flowstatsrequest.h"
+#include "ofp/mpflowstatsrequest.h"
 #include "ofp/yaml/yflowstatsrequest.h"
 #include "ofp/memorychannel.h"
 
@@ -49,7 +49,7 @@ struct MappingTraits<ofp::MultipartRequest> {
       break;
     case OFPMP_FLOW:
     case OFPMP_AGGREGATE: {
-      const FlowStatsRequest *stats = FlowStatsRequest::cast(&msg);
+      const MPFlowStatsRequest *stats = MPFlowStatsRequest::cast(&msg);
       if (stats) {
         io.mapRequired("body", RemoveConst_cast(*stats));
       }
@@ -82,7 +82,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
       break;
     case OFPMP_FLOW:
     case OFPMP_AGGREGATE: {
-      FlowStatsRequestBuilder stats;
+      MPFlowStatsRequestBuilder stats;
       io.mapRequired("body", stats);
       MemoryChannel channel{msg.msg_.header_.version()};
       stats.write(&channel);

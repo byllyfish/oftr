@@ -16,22 +16,22 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for the FlowStatsRequest and
-/// FlowStatsRequestBuilder classes.
+/// \brief Defines the llvm::yaml::MappingTraits for the MPFlowStatsRequest and
+/// MPFlowStatsRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_YAML_YFLOWSTATSREQUEST_H
 #define OFP_YAML_YFLOWSTATSREQUEST_H
 
-#include "ofp/flowstatsrequest.h"
+#include "ofp/mpflowstatsrequest.h"
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
 template <>
-struct MappingTraits<ofp::FlowStatsRequest> {
+struct MappingTraits<ofp::MPFlowStatsRequest> {
 
-    static void mapping(IO &io, ofp::FlowStatsRequest &msg)
+    static void mapping(IO &io, ofp::MPFlowStatsRequest &msg)
     {
     	using namespace ofp;
 
@@ -48,9 +48,9 @@ struct MappingTraits<ofp::FlowStatsRequest> {
 
 
 template <>
-struct MappingTraits<ofp::FlowStatsRequestBuilder> {
+struct MappingTraits<ofp::MPFlowStatsRequestBuilder> {
 
-    static void mapping(IO &io, ofp::FlowStatsRequestBuilder &msg)
+    static void mapping(IO &io, ofp::MPFlowStatsRequestBuilder &msg)
     {
         io.mapRequired("table_id", msg.msg_.tableId_);
         io.mapRequired("out_port", msg.msg_.outPort_);

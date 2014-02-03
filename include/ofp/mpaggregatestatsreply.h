@@ -1,5 +1,5 @@
-#ifndef OFP_AGGREGATESTATSREPLY_H
-#define OFP_AGGREGATESTATSREPLY_H
+#ifndef OFP_MPAGGREGATESTATSREPLY_H
+#define OFP_MPAGGREGATESTATSREPLY_H
 
 #include "ofp/padding.h"
 #include "ofp/byteorder.h"
@@ -8,11 +8,11 @@ namespace ofp { // <namespace ofp>
 
 class MultipartReply;
 
-class AggregateStatsReply {
+class MPAggregateStatsReply {
 public:
-  static const AggregateStatsReply *cast(const MultipartReply *req);
+  static const MPAggregateStatsReply *cast(const MultipartReply *req);
 
-  AggregateStatsReply() = default;
+  MPAggregateStatsReply() = default;
 
   UInt64 packetCount() const { return packetCount_; }
   UInt64 byteCount() const { return byteCount_; }
@@ -30,16 +30,16 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-static_assert(sizeof(AggregateStatsReply) == 24, "Unexpected size.");
-static_assert(IsStandardLayout<AggregateStatsReply>(),
+static_assert(sizeof(MPAggregateStatsReply) == 24, "Unexpected size.");
+static_assert(IsStandardLayout<MPAggregateStatsReply>(),
               "Expected standard layout.");
 
-class AggregateStatsReplyBuilder {
+class MPAggregateStatsReplyBuilder {
 public:
 
 
 private:
-  AggregateStatsReply msg_;
+  MPAggregateStatsReply msg_;
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;
@@ -47,4 +47,4 @@ private:
 
 } // </namespace ofp>
 
-#endif // OFP_AGGREGATESTATSREPLY_H
+#endif // OFP_MPAGGREGATESTATSREPLY_H

@@ -16,14 +16,14 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for the FlowStatsReply and
-/// FlowStatsReplyBuilder classes.
+/// \brief Defines the llvm::yaml::MappingTraits for the MPFlowStatsReply and
+/// MPFlowStatsReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_YAML_YFLOWSTATSREPLY_H
 #define OFP_YAML_YFLOWSTATSREPLY_H
 
-#include "ofp/flowstatsreply.h"
+#include "ofp/mpflowstatsreply.h"
 #include "ofp/yaml/yinstructions.h"
 #include "ofp/yaml/yflowmod.h"
 
@@ -31,9 +31,9 @@ namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
 template <>
-struct MappingTraits<ofp::FlowStatsReply> {
+struct MappingTraits<ofp::MPFlowStatsReply> {
 
-    static void mapping(IO &io, ofp::FlowStatsReply &msg)
+    static void mapping(IO &io, ofp::MPFlowStatsReply &msg)
     {
         using namespace ofp;
 
@@ -58,9 +58,9 @@ struct MappingTraits<ofp::FlowStatsReply> {
 
 
 template <>
-struct MappingTraits<ofp::FlowStatsReplyBuilder> {
+struct MappingTraits<ofp::MPFlowStatsReplyBuilder> {
 
-    static void mapping(IO &io, ofp::FlowStatsReplyBuilder &msg)
+    static void mapping(IO &io, ofp::MPFlowStatsReplyBuilder &msg)
     {
         io.mapRequired("table_id", msg.msg_.tableId_);
         io.mapRequired("duration_sec", msg.msg_.durationSec_);

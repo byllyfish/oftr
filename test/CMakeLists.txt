@@ -20,7 +20,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/enetaddress_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
-	ofp/flowstatsreply_unittest.cpp
+	ofp/mpflowstatsreply_unittest.cpp
 	ofp/headeronly_unittest.cpp
 	ofp/hello_unittest.cpp
 	ofp/instructions_unittest.cpp

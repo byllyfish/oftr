@@ -1,4 +1,4 @@
-//  ===== ---- ofp/flowstatsreply.cpp ----------------------*- C++ -*- =====  //
+//  ===== ---- ofp/mpflowstatsreply.cpp --------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,16 +16,16 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements FlowStatsReply and FlowStatsReplyBuilder classes.
+/// \brief Implements MPFlowStatsReply and MPFlowStatsReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/flowstatsreply.h"
+#include "ofp/mpflowstatsreply.h"
 #include "ofp/writable.h"
 #include "ofp/originalmatch.h"
 
 using namespace ofp;
 
-Match FlowStatsReply::match() const {
+Match MPFlowStatsReply::match() const {
   UInt16 type = matchType_;
 
   if (type == OFPMT_OXM) {
@@ -39,12 +39,12 @@ Match FlowStatsReply::match() const {
     return Match{stdMatch};
 
   } else {
-    log::debug("FlowStatsReply: Unknown matchType:", type);
+    log::debug("MPFlowStatsReply: Unknown matchType:", type);
     return Match{OXMRange{nullptr, 0}};
   }
 }
 
-InstructionRange FlowStatsReply::instructions() const {
+InstructionRange MPFlowStatsReply::instructions() const {
   assert(matchType_ == OFPMT_OXM || matchType_ == OFPMT_STANDARD);
 
   size_t offset = PadLength(SizeWithoutMatchHeader + matchLength_);
@@ -53,7 +53,7 @@ InstructionRange FlowStatsReply::instructions() const {
   return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
 }
 
-void FlowStatsReplyBuilder::write(Writable *channel) {
+void MPFlowStatsReplyBuilder::write(Writable *channel) {
   UInt8 version = channel->version();
 
   if (version == OFP_VERSION_1) {
@@ -61,23 +61,23 @@ void FlowStatsReplyBuilder::write(Writable *channel) {
     return;
   }
 
-  size_t msgMatchLen = FlowStatsReply::UnpaddedSizeWithMatchHeader + match_.size();
+  size_t msgMatchLen = MPFlowStatsReply::UnpaddedSizeWithMatchHeader + match_.size();
   size_t msgMatchLenPadded = PadLength(msgMatchLen);
 
   size_t msgLen = msgMatchLenPadded + instructions_.size();
 
   msg_.length_ = UInt16_narrow_cast(msgLen);
   msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ = UInt16_narrow_cast(FlowStatsReply::MatchHeaderSize + match_.size());
+  msg_.matchLength_ = UInt16_narrow_cast(MPFlowStatsReply::MatchHeaderSize + match_.size());
 
-  channel->write(&msg_, FlowStatsReply::UnpaddedSizeWithMatchHeader);
+  channel->write(&msg_, MPFlowStatsReply::UnpaddedSizeWithMatchHeader);
   channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);
   channel->write(instructions_.data(), instructions_.size());
   channel->flush();
 }
 
 
-void FlowStatsReplyBuilder::writeV1(Writable *channel)
+void MPFlowStatsReplyBuilder::writeV1(Writable *channel)
 {
   deprecated::OriginalMatch origMatch{match_.toRange()};
   ActionRange actions = instructions_.toActions();
