@@ -5,7 +5,7 @@
 using namespace ofp;
 
 TEST(portstatus, v4) {
-  Port port;
+  PortBuilder port;
   port.setPortNo(0x11111111);
   port.setHwAddr(EnetAddress{"010203040506"});
   port.setName("Port 1");
@@ -58,7 +58,7 @@ TEST(portstatus, v4) {
 }
 
 TEST(portstatus, v1) {
-  Port port;
+  PortBuilder port;
   port.setPortNo(0x11111111);
   port.setHwAddr(EnetAddress{"010203040506"});
   port.setName("Port 1");

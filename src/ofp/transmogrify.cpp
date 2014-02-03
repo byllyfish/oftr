@@ -176,7 +176,7 @@ void Transmogrify::normalizePortStatusV1() {
   UInt8 *pkt = buf_.mutableData();
 
   PortV1 *portV1 = reinterpret_cast<PortV1 *>(pkt + 16);
-  Port port{*portV1};
+  PortBuilder port{*portV1};
 
   buf_.addUninitialized(sizeof(Port) - sizeof(PortV1));
 

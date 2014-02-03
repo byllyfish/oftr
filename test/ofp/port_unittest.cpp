@@ -4,24 +4,25 @@
 using namespace ofp;
 
 TEST(port, test) {
-  Port port;
+  PortBuilder portBuilder;
 
-  port.setPortNo(0x11111111);
-  port.setHwAddr(EnetAddress{"010203040506"});
-  port.setName("Port 1");
-  port.setConfig(0x22222222);
-  port.setState(0x33333333);
-  port.setCurr(0x44444444);
-  port.setAdvertised(0x55555555);
-  port.setSupported(0x66666666);
-  port.setPeer(0x77777777);
-  port.setCurrSpeed(0x88888888);
-  port.setMaxSpeed(0x99999999);
+  portBuilder.setPortNo(0x11111111);
+  portBuilder.setHwAddr(EnetAddress{"010203040506"});
+  portBuilder.setName("Port 1");
+  portBuilder.setConfig(0x22222222);
+  portBuilder.setState(0x33333333);
+  portBuilder.setCurr(0x44444444);
+  portBuilder.setAdvertised(0x55555555);
+  portBuilder.setSupported(0x66666666);
+  portBuilder.setPeer(0x77777777);
+  portBuilder.setCurrSpeed(0x88888888);
+  portBuilder.setMaxSpeed(0x99999999);
 
   EXPECT_HEX("11111111000000000102030405060000506F72742031000000000000000000002"
              "222222233333333444444445555555566666666777777778888888899999999",
-             &port, sizeof(port));
+             &portBuilder, sizeof(portBuilder));
 
+  const Port &port = portBuilder.toPort();
   EXPECT_EQ(0x11111111, port.portNo());
   EXPECT_EQ(EnetAddress{"010203040506"}, port.hwAddr());
   EXPECT_TRUE(PortName{"Port 1"} == port.name());
@@ -50,7 +51,9 @@ TEST(port, test) {
   EXPECT_EQ(0x66666666, portv1.supported());
   EXPECT_EQ(0x77777777, portv1.peer());
 
-  Port port2{portv1};
+  PortBuilder port2Builder{portv1};
+  const Port &port2 = port2Builder.toPort();
+
   EXPECT_EQ(0x1111, port2.portNo());
   EXPECT_EQ(EnetAddress{"010203040506"}, port2.hwAddr());
   EXPECT_TRUE(PortName{"Port 1"} == port2.name());

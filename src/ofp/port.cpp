@@ -23,18 +23,18 @@
 
 namespace ofp { // <namespace ofp>
 
-Port::Port(const deprecated::PortV1 &port) {
-  portNo_ = port.portNo();
-  hwAddr_ = port.hwAddr();
-  name_ = port.name();
-  config_ = port.config();
-  state_ = port.state();
-  curr_ = port.curr();
-  advertised_ = port.advertised();
-  supported_ = port.supported();
-  peer_ = port.peer();
-  currSpeed_ = 0;
-  maxSpeed_ = 0;
+PortBuilder::PortBuilder(const deprecated::PortV1 &port) {
+  setPortNo(port.portNo());
+  setHwAddr(port.hwAddr());
+  setName(port.name());
+  setConfig(port.config());
+  setState(port.state());
+  setCurr(port.curr());
+  setAdvertised(port.advertised());
+  setSupported(port.supported());
+  setPeer(port.peer());
+  setCurrSpeed(0);
+  setMaxSpeed(0);
 }
 
 namespace deprecated { // <namespace deprecated>

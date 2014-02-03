@@ -61,7 +61,7 @@ public:
   explicit PortStatusBuilder(const PortStatus *msg);
 
   void setReason(UInt8 reason) { msg_.reason_ = reason; }
-  void setPort(const Port &port) { msg_.port_ = port; }
+  void setPort(const PortBuilder &port) { msg_.port_ = port.toPort(); }
 
   UInt32 send(Writable *channel);
 
