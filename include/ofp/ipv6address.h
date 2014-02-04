@@ -41,6 +41,9 @@ public:
   explicit IPv6Address(const ArrayType &a);
   IPv6Address(const std::string &s);
 
+  /// \returns zone_id for link-local address.
+  UInt32 zone() const;
+
   bool parse(const std::string &s);
   void clear();
 
@@ -48,6 +51,11 @@ public:
 
   bool isV4Mapped() const {
     return IsMemFilled(addr_.data(), 11, '\0') && (addr_[11] == 0xFF);
+  }
+
+  /// \returns true if address is link-local (fe80::/10)
+  bool isLinkLocal() const {
+    return (addr_[0] == 0xFE) && ((addr_[1] & 0xC0) == 0x80);
   }
 
   IPv4Address toV4() const {
@@ -67,6 +75,11 @@ public:
 
 private:
   ArrayType addr_;
+
+  void setZone(UInt32 zone);
+  
+  bool parseIPv6Address(const std::string &s);
+  bool parseIPv4Address(const std::string &s);
 };
 
 static_assert(IsStandardLayout<IPv6Address>(), "Expected standard layout.");

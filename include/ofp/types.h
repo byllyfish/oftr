@@ -132,7 +132,7 @@ constexpr UInt16 UInt16_narrow_cast(T value) {
 }
 
 template <class T>
-constexpr UInt16 UInt32_narrow_cast(T value) {
+constexpr UInt32 UInt32_narrow_cast(T value) {
   static_assert(sizeof(T) != sizeof(UInt32), "Use UInt32_cast().");
   return static_cast<UInt32>(value);
 }

@@ -23,6 +23,7 @@
 #include "ofp/sys/asio_utils.h"
 #include <arpa/inet.h>
 #include "ofp/log.h"
+#include "ofp/byteorder.h"
 
 using namespace ofp;
 
@@ -39,15 +40,72 @@ IPv6Address::IPv6Address(const std::string &s) {
     addr_.fill(0);
 }
 
-bool IPv6Address::parse(const std::string &s) {
-  std::error_code err;
+UInt32 IPv6Address::zone() const
+{
+  if (!isLinkLocal()) return 0;
+  const Big16 *lo = Big16_cast(&addr_[2]);
+  const Big16 *hi = Big16_cast(&addr_[4]);
+  UInt32 x = *hi;
+  return (x << 16)| *lo;
+}
 
+void IPv6Address::setZone(UInt32 zone)
+{
+  assert(isLinkLocal());
+
+  *Big16_cast(&addr_[2]) = UInt16_narrow_cast(zone);
+  *Big16_cast(&addr_[4]) = UInt16_narrow_cast(zone >> 16);
+}
+
+bool IPv6Address::parse(const std::string &s) {
+  // Check for %zone option.
+  auto pct = s.find('%');
+  if (pct != s.npos) {
+    // If it's not an IPv6 address, the parse fails.
+    if (!parseIPv6Address(s.substr(0, pct)))
+      return false;
+
+    // If IPv6 address is not link-local, the parse fails.
+    if (!isLinkLocal())
+      return false;
+
+    // If zone is not an integer, the parse fails.
+    auto zoneStr = s.substr(pct+1);
+    if (zoneStr.empty())
+      return false;
+
+    char *end = nullptr;
+    UInt64 zone = std::strtoul(zoneStr.c_str(), &end, 10);
+    if (*end != '\0' || zone > UINT32_MAX)
+      return false;
+
+    setZone(UInt32_narrow_cast(zone));
+
+    return true;
+  }
+
+  assert(pct == std::string::npos);
+
+  if (parseIPv6Address(s))
+    return true;
+  
+  return parseIPv4Address(s);
+}
+
+bool IPv6Address::parseIPv6Address(const std::string &s)
+{
+  std::error_code err;
   auto addr6 = asio::ip::address_v6::from_string(s, err);
   if (!err) {
     addr_ = addr6.to_bytes();
     return true;
   }
+  return false;
+}
 
+bool IPv6Address::parseIPv4Address(const std::string &s)
+{
+  std::error_code err;
   auto addr4 = asio::ip::address_v4::from_string(s, err);
   if (!err) {
     auto a = addr4.to_bytes();
@@ -56,7 +114,6 @@ bool IPv6Address::parse(const std::string &s) {
     std::memset(addr_.data(), 0, 11);
     return true;
   }
-
   return false;
 }
 
