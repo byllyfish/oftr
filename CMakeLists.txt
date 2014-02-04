@@ -500,3 +500,15 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 set(CPACK_PACKAGE_VERSION_MAJOR "${libofp_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${libofp_VERSION_MINOR}")
 include(CPack)
+
+#-------------------------------------------------------------------------------
+# Support for Running Cpplint
+#-------------------------------------------------------------------------------
+
+set(CPPLINT_PATH external/cpplint/cpplint.py)
+set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references --root=include)
+
+add_custom_target(cpplint
+  COMMAND ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} ${LIBOFP_HEADER_FILES} ${LIBOFP_HEADERS_GENERATED} ${LIBOFP_SOURCES}
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)
