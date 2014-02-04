@@ -50,6 +50,7 @@ TEST(ipv6address, zones) {
     EXPECT_TRUE(a.isLinkLocal());
     EXPECT_EQ(0, a.zone());
     EXPECT_HEX("FE80 0000 0000 0000 1122 33FF fe44 5566", &a, sizeof(a));
+    EXPECT_EQ("fe80::1122:33ff:fe44:5566", a.toString());
   }
 
   {
@@ -58,6 +59,7 @@ TEST(ipv6address, zones) {
     EXPECT_TRUE(a.isLinkLocal());
     EXPECT_EQ(1, a.zone());
     EXPECT_HEX("FE80 0001 0000 0000 1122 33FF fe44 5566", &a, sizeof(a));
+    EXPECT_EQ("fe80::1122:33ff:fe44:5566%1", a.toString());
   }
 
   {
@@ -66,6 +68,7 @@ TEST(ipv6address, zones) {
     EXPECT_TRUE(a.isLinkLocal());
     EXPECT_EQ(65535, a.zone());
     EXPECT_HEX("FE80 FFFF 0000 0000 1122 33FF fe44 5566", &a, sizeof(a));
+    EXPECT_EQ("fe80::1122:33ff:fe44:5566%65535", a.toString());
   }
 
   {
@@ -74,6 +77,7 @@ TEST(ipv6address, zones) {
     EXPECT_TRUE(a.isLinkLocal());
     EXPECT_EQ(65536, a.zone());
     EXPECT_HEX("FE80 0000 0001 0000 1122 33FF fe44 5566", &a, sizeof(a));
+    EXPECT_EQ("fe80::1122:33ff:fe44:5566%65536", a.toString());
   }
 
   {
@@ -82,5 +86,7 @@ TEST(ipv6address, zones) {
     EXPECT_TRUE(a.isLinkLocal());
     EXPECT_EQ(4294967294, a.zone());
     EXPECT_HEX("FE80 FFFE FFFF 0000 1122 33FF fe44 5566", &a, sizeof(a));
+    EXPECT_EQ("fe80::1122:33ff:fe44:5566%4294967294", a.toString());
   }
 }
+
