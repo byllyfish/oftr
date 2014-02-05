@@ -20,16 +20,16 @@
 /// SetConfigBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YSETCONFIG_H
-#define OFP_YAML_YSETCONFIG_H
+#ifndef OFP_YAML_YSETCONFIG_H_
+#define OFP_YAML_YSETCONFIG_H_
 
 //#include "ofp/yaml.h"
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/setconfig.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::SetConfig> {
@@ -52,7 +52,7 @@ struct MappingTraits<ofp::SetConfigBuilder> {
 };
 
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YSETCONFIG_H
+#endif  // OFP_YAML_YSETCONFIG_H_

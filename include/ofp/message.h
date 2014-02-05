@@ -19,21 +19,21 @@
 /// \brief Defines the Message class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MESSAGE_H
-#define OFP_MESSAGE_H
+#ifndef OFP_MESSAGE_H_
+#define OFP_MESSAGE_H_
 
 #include "ofp/bytelist.h"
 #include "ofp/header.h"
 #include "ofp/datapathid.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Writable;
 class Channel;
 
-namespace sys { // <namespace sys>
+namespace sys {
 class Connection;
-} // </namespace sys>
+}  // namespace sys
 
 /// \brief Implements a protocol message buffer.
 class Message {
@@ -110,6 +110,6 @@ inline std::ostream &operator<<(std::ostream &os, const Message &msg) {
   return os << msg.buf_;
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MESSAGE_H
+#endif  // OFP_MESSAGE_H_

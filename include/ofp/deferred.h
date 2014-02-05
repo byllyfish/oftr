@@ -19,14 +19,14 @@
 /// \brief Defines the Deferred class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_DEFERRED_H
-#define OFP_DEFERRED_H
+#ifndef OFP_DEFERRED_H_
+#define OFP_DEFERRED_H_
 
-#include "ofp/log.h"
 #include <memory>
+#include "ofp/log.h"
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -72,7 +72,7 @@ OFP_END_IGNORE_PADDING
 template <class Type>
 using DeferredResultCallback = typename DeferredResult<Type>::Callback;
 
-} // </namespace detail>
+}  // namespace detail
 
 template <class Type>
 using DeferredResultPtr = typename detail::DeferredResult<Type>::SharedPtr;
@@ -82,9 +82,9 @@ class Deferred {
 public:
   explicit Deferred() {}
 
-  /* implicit */ Deferred(const DeferredResultPtr<Type> &result)
+  /* implicit NOLINT */ Deferred(const DeferredResultPtr<Type> &result)
       : result_{result} {}
-  /* implicit */ Deferred(const Type &result) : result_{makeResult()} {
+  /* implicit NOLINT */ Deferred(const Type &result) : result_{makeResult()} {
     result_->done(result);
   }
 
@@ -101,6 +101,6 @@ private:
   log::Lifetime lifetime_{"Deferred"};
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_DEFERRED_H
+#endif  // OFP_DEFERRED_H_

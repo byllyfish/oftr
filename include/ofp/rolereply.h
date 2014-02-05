@@ -19,14 +19,14 @@
 /// \brief Defines the RoleReply and RoleReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ROLEREPLY_H
-#define OFP_ROLEREPLY_H
+#ifndef OFP_ROLEREPLY_H_
+#define OFP_ROLEREPLY_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/rolerequest.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // FIXME- this is identical to RoleRequest - reuse with template?
 
@@ -75,6 +75,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ROLEREPLY_H
+#endif  // OFP_ROLEREPLY_H_

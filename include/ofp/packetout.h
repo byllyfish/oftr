@@ -19,14 +19,14 @@
 /// \brief Defines the PacketOut and PacketOutBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PACKETOUT_H
-#define OFP_PACKETOUT_H
+#ifndef OFP_PACKETOUT_H_
+#define OFP_PACKETOUT_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/actionlist.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class PacketOut
     : public ProtocolMsg<PacketOut, OFPT_PACKET_OUT, 24, 65535, false> {
@@ -79,6 +79,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PACKETOUT_H
+#endif  // OFP_PACKETOUT_H_

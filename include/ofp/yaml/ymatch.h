@@ -20,8 +20,8 @@
 /// MatchBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YMATCH_H
-#define OFP_YAML_YMATCH_H
+#ifndef OFP_YAML_YMATCH_H_
+#define OFP_YAML_YMATCH_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
@@ -29,8 +29,8 @@
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 
-namespace ofp { // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -93,12 +93,12 @@ OFP_END_IGNORE_PADDING
 struct MatchBuilderItem {
 };
 
-} // </namespace detail>
-} // </namespace ofp>
+}  // namespace detail
+}  // namespace ofp
 
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 
 template <>
@@ -195,7 +195,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YMATCH_H
+#endif  // OFP_YAML_YMATCH_H_

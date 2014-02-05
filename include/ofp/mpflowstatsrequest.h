@@ -19,15 +19,15 @@
 /// \brief Defines MPFlowStatsRequest and MPFlowStatsRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MPFLOWSTATSREQUEST_H
-#define OFP_MPFLOWSTATSREQUEST_H
+#ifndef OFP_MPFLOWSTATSREQUEST_H_
+#define OFP_MPFLOWSTATSREQUEST_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/match.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Writable;
 class MultipartRequest;
@@ -96,6 +96,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MPFLOWSTATSREQUEST_H
+#endif  // OFP_MPFLOWSTATSREQUEST_H_

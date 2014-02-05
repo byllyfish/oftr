@@ -20,8 +20,8 @@
 /// MultipartReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YMULTIPARTREPLY_H
-#define OFP_YAML_YMULTIPARTREPLY_H
+#ifndef OFP_YAML_YMULTIPARTREPLY_H_
+#define OFP_YAML_YMULTIPARTREPLY_H_
 
 #include "ofp/multipartreply.h"
 #include "ofp/yaml/yflowstatsreply.h"
@@ -31,8 +31,8 @@
 #include "ofp/yaml/ympportstats.h"
 #include "ofp/yaml/ympqueuestats.h"
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 /// Elements are fixed size.
 template <class Type>
@@ -117,11 +117,11 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace detail>
-} // </namespace ofp>
+}  // namespace detail
+}  // namespace ofp
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <class Type>
 struct SequenceTraits<ofp::detail::MPReplyFixedSizeSeq<Type>> {
@@ -288,7 +288,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
   }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YMULTIPARTREPLY_H
+#endif  // OFP_YAML_YMULTIPARTREPLY_H_

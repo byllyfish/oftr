@@ -1,10 +1,10 @@
-#ifndef OFP_YAML_YTABLESTATS_H
-#define OFP_YAML_YTABLESTATS_H
+#ifndef OFP_YAML_YTABLESTATS_H_
+#define OFP_YAML_YTABLESTATS_H_
 
 #include "ofp/mptablestats.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPTableStats> {
@@ -34,7 +34,7 @@ struct MappingTraits<ofp::MPTableStatsBuilder> {
   }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YTABLESTATS_H
+#endif  // OFP_YAML_YTABLESTATS_H_

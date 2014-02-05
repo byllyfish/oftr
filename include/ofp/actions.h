@@ -19,8 +19,8 @@
 /// \brief Defines classes for OpenFlow Actions.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ACTIONS_H
-#define OFP_ACTIONS_H
+#ifndef OFP_ACTIONS_H_
+#define OFP_ACTIONS_H_
 
 #include "ofp/actiontype.h"
 #include "ofp/padding.h"
@@ -28,9 +28,9 @@
 #include "ofp/constants.h"
 #include "ofp/oxmfields.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
-namespace detail { // <namespace detail>
+namespace detail {
 
 template <OFPActionType ActType>
 class EmptyAction {
@@ -44,7 +44,7 @@ private:
   const Padding<4> pad_;
 };
 
-} // </namespace detail>
+}  // namespace detail
 
 /// \brief Concrete types for various empty actions.
 
@@ -80,7 +80,7 @@ private:
 static_assert(sizeof(AT_OUTPUT) == 16, "Unexpected size.");
 static_assert(IsStandardLayout<AT_OUTPUT>(), "Unexpected layout");
 
-namespace deprecated { // <namespace deprecated>
+namespace deprecated {
 
 class AT_OUTPUT_V1 {
 public:
@@ -101,7 +101,7 @@ private:
 static_assert(sizeof(AT_OUTPUT_V1) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_OUTPUT_V1>(), "Unexpected layout");
 
-} // </namespace deprecated>
+}  // namespace deprecated
 
 /// \brief Concrete type for AT_SET_MPLS_TTL action.
 class AT_SET_MPLS_TTL {
@@ -265,7 +265,7 @@ private:
   const Padded<ValueType> value_;
 };
 
-namespace deprecated { // <namespace deprecated>
+namespace deprecated {
 
 template <UInt16 Code, class ValueType>
 class AT_SET_FIELD_V {
@@ -340,8 +340,8 @@ static_assert(sizeof(AT_SET_TP_DST_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_TP_TYPE_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_TP_CODE_V1) == 8, "Unexpected size.");
 
-} // </namespace deprecated>
+}  // namespace deprecated
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ACTIONS_H
+#endif  // OFP_ACTIONS_H_

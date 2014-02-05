@@ -20,25 +20,25 @@
 /// llvm::yaml::SequenceTraits for BucketList and BucketRange.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YBUCKET_H
-#define OFP_YAML_YBUCKET_H
+#ifndef OFP_YAML_YBUCKET_H_
+#define OFP_YAML_YBUCKET_H_
 
 #include "ofp/bucket.h"
 #include "ofp/bucketlist.h"
 #include "ofp/bucketiterator.h"
 
-namespace ofp { // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 struct BucketInserter 
 {
 };
 
-} // </namespace detail>
-} // </namespace ofp>
+}  // namespace detail
+}  // namespace ofp
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 
 template <>
@@ -127,7 +127,7 @@ struct SequenceTraits<ofp::BucketList> {
 };
 
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YBUCKET_H
+#endif  // OFP_YAML_YBUCKET_H_

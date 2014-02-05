@@ -1,10 +1,10 @@
-#ifndef OFP_SYS_PLAINTEXT_H
-#define OFP_SYS_PLAINTEXT_H
+#ifndef OFP_SYS_PLAINTEXT_H_
+#define OFP_SYS_PLAINTEXT_H_
 
 #include "ofp/sys/asio_utils.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 /// \brief Encapsulates a stream with an identical interface to ssl::stream,
 /// so the two classes can be transparently interchanged. That is,
@@ -56,7 +56,7 @@ public:
   }
 };
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_PLAINTEXT_H
+#endif  // OFP_SYS_PLAINTEXT_H_

@@ -1,10 +1,10 @@
-#ifndef OFP_YAML_YMPQUEUESTATS_H
-#define OFP_YAML_YMPQUEUESTATS_H
+#ifndef OFP_YAML_YMPQUEUESTATS_H_
+#define OFP_YAML_YMPQUEUESTATS_H_
 
 #include "ofp/mpqueuestats.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPQueueStats> {
@@ -34,7 +34,7 @@ struct MappingTraits<ofp::MPQueueStatsBuilder> {
   }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YMPQUEUESTATS_H
+#endif  // OFP_YAML_YMPQUEUESTATS_H_

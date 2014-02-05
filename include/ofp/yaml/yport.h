@@ -19,14 +19,14 @@
 /// \brief Defines the llvm::yaml::MappingTraits for Port.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YPORT_H
-#define OFP_YAML_YPORT_H
+#ifndef OFP_YAML_YPORT_H_
+#define OFP_YAML_YPORT_H_
 
 #include "ofp/port.h"
 #include "ofp/yaml/ysmallcstring.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::Port> {
@@ -47,7 +47,7 @@ struct MappingTraits<ofp::Port> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YPORT_H
+#endif  // OFP_YAML_YPORT_H_

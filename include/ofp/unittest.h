@@ -21,8 +21,8 @@
 /// This file should be ignored (or not included in the installer) by users.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_UNITTEST_H
-#define OFP_UNITTEST_H
+#ifndef OFP_UNITTEST_H_
+#define OFP_UNITTEST_H_
 
 #include <gtest/gtest.h>
 #include "ofp/types.h"
@@ -44,4 +44,4 @@ inline std::string hexclean(const char *data) {
     EXPECT_EQ(hex_tmp__, ofp::RawDataToHex(data, length));                     \
   }
 
-#endif // OFP_UNITTEST_H
+#endif  // OFP_UNITTEST_H_

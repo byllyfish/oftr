@@ -19,13 +19,13 @@
 /// \brief Defines the EchoRequest and EchoRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ECHOREQUEST_H
-#define OFP_ECHOREQUEST_H
+#ifndef OFP_ECHOREQUEST_H_
+#define OFP_ECHOREQUEST_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class EchoRequest
     : public ProtocolMsg<EchoRequest, OFPT_ECHO_REQUEST, 8, 65535, false> {
@@ -56,6 +56,6 @@ private:
   ByteList data_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ECHOREQUEST_H
+#endif  // OFP_ECHOREQUEST_H_

@@ -19,12 +19,12 @@
 /// \brief Defines the PortList class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PORTLIST_H
-#define OFP_PORTLIST_H
+#ifndef OFP_PORTLIST_H_
+#define OFP_PORTLIST_H_
 
 #include "ofp/port.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class PortList {
 public:
@@ -34,6 +34,6 @@ private:
   ByteList list_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PORTLIST_H
+#endif  // OFP_PORTLIST_H_

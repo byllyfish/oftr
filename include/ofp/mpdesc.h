@@ -19,12 +19,12 @@
 /// \brief Defines MPDesc class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MPDESC_H
-#define OFP_MPDESC_H
+#ifndef OFP_MPDESC_H_
+#define OFP_MPDESC_H_
 
 #include "ofp/smallcstring.h"
 
-namespace ofp {  // <namespace ofp>
+namespace ofp {
 
 class MPDesc {
  public:
@@ -80,6 +80,6 @@ class MPDescBuilder {
   friend struct llvm::yaml::MappingTraits;
 };
 
-}  // </namespace ofp>
+}  // namespace ofp
 
-#endif  // OFP_MPDESC_H
+#endif  // OFP_MPDESC_H_

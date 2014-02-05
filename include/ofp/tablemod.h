@@ -19,13 +19,13 @@
 /// \brief Defines the TableMod and TableModBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_TABLEMOD_H
-#define OFP_TABLEMOD_H
+#ifndef OFP_TABLEMOD_H_
+#define OFP_TABLEMOD_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16, 16> {
 public:
@@ -69,6 +69,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_TABLEMOD_H
+#endif  // OFP_TABLEMOD_H_

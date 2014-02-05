@@ -20,13 +20,13 @@
 /// PacketInBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YPACKETIN_H
-#define OFP_YAML_YPACKETIN_H
+#ifndef OFP_YAML_YPACKETIN_H_
+#define OFP_YAML_YPACKETIN_H_
 
 #include "ofp/packetin.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::PacketIn> {
@@ -90,7 +90,7 @@ struct MappingTraits<ofp::PacketInBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YPACKETIN_H
+#endif  // OFP_YAML_YPACKETIN_H_

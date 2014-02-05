@@ -19,14 +19,14 @@
 /// \brief Defines the FlowRemoved and FlowRemovedBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_FLOWREMOVED_H
-#define OFP_FLOWREMOVED_H
+#ifndef OFP_FLOWREMOVED_H_
+#define OFP_FLOWREMOVED_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/matchbuilder.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class FlowRemoved
     : public ProtocolMsg<FlowRemoved, OFPT_FLOW_REMOVED, 56, 65528, true> {
@@ -135,6 +135,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_FLOWREMOVED_H
+#endif  // OFP_FLOWREMOVED_H_

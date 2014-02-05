@@ -20,14 +20,14 @@
 /// ExperimenterBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YEXPERIMENTER_H
-#define OFP_YAML_YEXPERIMENTER_H
+#ifndef OFP_YAML_YEXPERIMENTER_H_
+#define OFP_YAML_YEXPERIMENTER_H_
 
 #include "ofp/experimenter.h"
 #include "ofp/yaml/ybytelist.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::Experimenter> {
@@ -61,7 +61,7 @@ struct MappingTraits<ofp::ExperimenterBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YEXPERIMENTER_H
+#endif  // OFP_YAML_YEXPERIMENTER_H_

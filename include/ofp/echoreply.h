@@ -19,13 +19,13 @@
 /// \brief Defines the EchoReply and EchoReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ECHOREPLY_H
-#define OFP_ECHOREPLY_H
+#ifndef OFP_ECHOREPLY_H_
+#define OFP_ECHOREPLY_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class EchoReply
     : public ProtocolMsg<EchoReply, OFPT_ECHO_REPLY, 8, 65535, false> {
@@ -56,6 +56,6 @@ private:
   ByteList data_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ECHOREPLY_H
+#endif  // OFP_ECHOREPLY_H_

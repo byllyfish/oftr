@@ -19,8 +19,8 @@
 /// \brief Defines the OriginalMatch class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ORIGINALMATCH_H
-#define OFP_ORIGINALMATCH_H
+#ifndef OFP_ORIGINALMATCH_H_
+#define OFP_ORIGINALMATCH_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/enetaddress.h"
@@ -28,8 +28,8 @@
 #include "ofp/padding.h"
 #include "ofp/oxmrange.h"
 
-namespace ofp {        // <namespace ofp>
-namespace deprecated { // <namespace deprecated>
+namespace ofp {
+namespace deprecated {
 
 struct OriginalMatch {
 
@@ -64,7 +64,7 @@ struct OriginalMatch {
   };
 
   OriginalMatch() = default;
-  OriginalMatch(const OXMRange &range);
+  explicit OriginalMatch(const OXMRange &range);
 
   Big32 wildcards;
   Big16 in_port;
@@ -101,7 +101,7 @@ struct OriginalMatch {
 
 static_assert(sizeof(OriginalMatch) == 40, "Unexpected size.");
 
-} // </namespace deprecated>
-} // </namespace ofp>
+}  // namespace deprecated
+}  // namespace ofp
 
-#endif // OFP_ORIGINALMATCH_H
+#endif  // OFP_ORIGINALMATCH_H_

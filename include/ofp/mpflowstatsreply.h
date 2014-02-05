@@ -19,8 +19,8 @@
 /// \brief Defines the MPFlowStatsReply and MPFlowStatsReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MPFLOWSTATSREPLY_H
-#define OFP_MPFLOWSTATSREPLY_H
+#ifndef OFP_MPFLOWSTATSREPLY_H_
+#define OFP_MPFLOWSTATSREPLY_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
@@ -29,7 +29,7 @@
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionlist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Writable;
 
@@ -105,6 +105,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MPFLOWSTATSREPLY_H
+#endif  // OFP_MPFLOWSTATSREPLY_H_

@@ -1,7 +1,7 @@
-#ifndef OFP_PROTOCOLELEMENT_H
-#define OFP_PROTOCOLELEMENT_H
+#ifndef OFP_PROTOCOLELEMENT_H_
+#define OFP_PROTOCOLELEMENT_H_
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 /// \brief A marker interface for protocol elements.
 ///
@@ -17,6 +17,6 @@ public:
     ProtocolElement &operator=(const ProtocolElement &) = delete;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PROTOCOLELEMENT_H
+#endif  // OFP_PROTOCOLELEMENT_H_

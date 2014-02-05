@@ -19,8 +19,8 @@
 /// \brief Define globally useful constants, types and functions.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_TYPES_H
-#define OFP_TYPES_H
+#ifndef OFP_TYPES_H_
+#define OFP_TYPES_H_
 
 #include "ofp/config.h"
 #include <cstddef>     // for std::size_t, etc.
@@ -51,7 +51,7 @@
 #define OFP_ALIGNAS(x) __attribute__((aligned(x)))
 #endif
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // Metaprogramming Utilities
 
@@ -281,17 +281,17 @@ std::unique_ptr<T> MakeUniquePtr(Args &&... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
 // Place forward declarations of YAML classes here.
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <class T>
 struct MappingTraits;
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_TYPES_H
+#endif  // OFP_TYPES_H_

@@ -19,14 +19,14 @@
 /// \brief Defines the IPv6Endpoint class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_IPV6ENDPOINT_H
-#define OFP_IPV6ENDPOINT_H
+#ifndef OFP_IPV6ENDPOINT_H_
+#define OFP_IPV6ENDPOINT_H_
 
+#include <istream>
 #include "ofp/ipv6address.h"
 #include "ofp/log.h"
-#include <istream>
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class IPv6Endpoint {
 public:
@@ -73,9 +73,9 @@ inline std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value) {
   return os << value.toString();
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-namespace std { // <namespace std>
+namespace std {
 
 template <>
 struct hash<ofp::IPv6Endpoint> {
@@ -84,6 +84,6 @@ struct hash<ofp::IPv6Endpoint> {
   }
 };
 
-} // </namespace std>
+}  // namespace std
 
-#endif // OFP_IPV6ENDPOINT_H
+#endif  // OFP_IPV6ENDPOINT_H_

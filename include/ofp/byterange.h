@@ -19,12 +19,12 @@
 /// \brief Defines the ByteRange class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BYTERANGE_H
-#define OFP_BYTERANGE_H
+#ifndef OFP_BYTERANGE_H_
+#define OFP_BYTERANGE_H_
 
 #include "ofp/types.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class ByteList;
 
@@ -33,7 +33,7 @@ public:
   constexpr ByteRange() : begin_{nullptr}, end_{nullptr} {}
   constexpr ByteRange(const void *data, size_t length)
       : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
-  ByteRange(const ByteList &data);
+  /* implicit NOLINT */ ByteRange(const ByteList &data);
   explicit ByteRange(const std::string &s) : ByteRange(s.data(), s.size()) {}
 
   constexpr const UInt8 *begin() const { return begin_; }
@@ -54,6 +54,6 @@ private:
 
 static_assert(IsConvertible<ByteList,ByteRange>(), "Expected conversion.");
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_BYTERANGE_H
+#endif  // OFP_BYTERANGE_H_

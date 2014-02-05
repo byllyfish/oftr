@@ -19,13 +19,13 @@
 /// \brief Defines the abstract Writable class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_WRITABLE_H
-#define OFP_WRITABLE_H
+#ifndef OFP_WRITABLE_H_
+#define OFP_WRITABLE_H_
 
 #include "ofp/types.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Writable {
 public:
@@ -45,6 +45,6 @@ public:
   }
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_WRITABLE_H
+#endif  // OFP_WRITABLE_H_

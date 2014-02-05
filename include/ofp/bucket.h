@@ -19,13 +19,13 @@
 /// \brief Defines the Bucket class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BUCKET_H
-#define OFP_BUCKET_H
+#ifndef OFP_BUCKET_H_
+#define OFP_BUCKET_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/actionrange.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Bucket {
 public:
@@ -73,6 +73,6 @@ private:
   friend class BucketList;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_BUCKET_H
+#endif  // OFP_BUCKET_H_

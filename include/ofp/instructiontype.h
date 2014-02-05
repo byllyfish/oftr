@@ -19,13 +19,13 @@
 /// \brief Defines the InstructionType class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_INSTRUCTIONTYPE_H
-#define OFP_INSTRUCTIONTYPE_H
+#ifndef OFP_INSTRUCTIONTYPE_H_
+#define OFP_INSTRUCTIONTYPE_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/constants.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class InstructionType {
 public:
@@ -62,6 +62,6 @@ inline std::ostream &operator<<(std::ostream &os,
   return os << static_cast<unsigned>(value.type());
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_INSTRUCTIONTYPE_H
+#endif  // OFP_INSTRUCTIONTYPE_H_

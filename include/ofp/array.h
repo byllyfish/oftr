@@ -19,12 +19,13 @@
 /// \brief Defines a specialization of std::hash for std::array.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ARRAY_H
-#define OFP_ARRAY_H
+#ifndef OFP_ARRAY_H_
+#define OFP_ARRAY_H_
 
 #include <array>
 
 namespace std {
+
 /// \brief Specialization of std::hash for std::array types.
 template <class T, size_t N>
 struct hash<std::array<T, N>> {
@@ -41,6 +42,7 @@ struct hash<std::array<T, N>> {
     return result;
   }
 };
-}
 
-#endif // OFP_ARRAY_H
+}  // namespace std
+
+#endif  // OFP_ARRAY_H_

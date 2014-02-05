@@ -19,8 +19,8 @@
 /// \brief Include LLVM YAML headers and define yaml traits for common types.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YLLVM_H
-#define OFP_YAML_YLLVM_H
+#ifndef OFP_YAML_YLLVM_H_
+#define OFP_YAML_YLLVM_H_
 
 // The following two definitions are required by llvm/Support/DataTypes.h
 #define __STDC_LIMIT_MACROS 1
@@ -33,4 +33,4 @@
 
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8);
 
-#endif // OFP_YAML_YLLVM_H
+#endif  // OFP_YAML_YLLVM_H_

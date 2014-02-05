@@ -19,13 +19,13 @@
 /// \brief Defines the llvm::yaml::ScalarTraits for DatapathID.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YDATAPATHID_H
-#define OFP_YAML_YDATAPATHID_H
+#ifndef OFP_YAML_YDATAPATHID_H_
+#define OFP_YAML_YDATAPATHID_H_
 
 #include "ofp/datapathid.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::DatapathID> {
@@ -45,7 +45,7 @@ struct ScalarTraits<ofp::DatapathID> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YDATAPATHID_H
+#endif  // OFP_YAML_YDATAPATHID_H_

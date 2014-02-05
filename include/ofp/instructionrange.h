@@ -19,17 +19,17 @@
 /// \brief Defines the InstructionRange class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_INSTRUCTIONRANGE_H
-#define OFP_INSTRUCTIONRANGE_H
+#ifndef OFP_INSTRUCTIONRANGE_H_
+#define OFP_INSTRUCTIONRANGE_H_
 
 #include "ofp/byterange.h"
 #include "ofp/instructioniterator.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class InstructionRange {
 public:
-  InstructionRange(const ByteRange &range) : range_{range} {}
+  /* implicit NOLINT */ InstructionRange(const ByteRange &range) : range_{range} {}
 
   /// \returns number of items in the range.
   size_t itemCount() const {
@@ -51,6 +51,6 @@ private:
   ByteRange range_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_INSTRUCTIONRANGE_H
+#endif  // OFP_INSTRUCTIONRANGE_H_

@@ -20,14 +20,14 @@
 /// GroupModBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YGROUPMOD_H
-#define OFP_YAML_YGROUPMOD_H
+#ifndef OFP_YAML_YGROUPMOD_H_
+#define OFP_YAML_YGROUPMOD_H_
 
 #include "ofp/groupmod.h"
 #include "ofp/yaml/ybucket.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::GroupMod> {
@@ -55,7 +55,7 @@ struct MappingTraits<ofp::GroupModBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YGROUPMOD_H
+#endif  // OFP_YAML_YGROUPMOD_H_

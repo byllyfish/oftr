@@ -20,13 +20,13 @@
 /// TableModBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YTABLEMOD_H
-#define OFP_YAML_YTABLEMOD_H
+#ifndef OFP_YAML_YTABLEMOD_H_
+#define OFP_YAML_YTABLEMOD_H_
 
 #include "ofp/tablemod.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::TableMod> {
@@ -48,7 +48,7 @@ struct MappingTraits<ofp::TableModBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YTABLEMOD_H
+#endif  // OFP_YAML_YTABLEMOD_H_

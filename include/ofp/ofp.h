@@ -19,8 +19,8 @@
 /// \brief Umbrella header for the ofp library.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_OFP_H
-#define OFP_OFP_H
+#ifndef OFP_OFP_H_
+#define OFP_OFP_H_
 
 #include "ofp/driver.h"
 #include "ofp/channel.h"
@@ -52,4 +52,4 @@
 #include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
 
-#endif // OFP_OFP_H
+#endif  // OFP_OFP_H_

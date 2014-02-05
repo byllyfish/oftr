@@ -19,8 +19,8 @@
 /// \brief Defines the Transmogrify class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_TRANSMOGRIFY_H
-#define OFP_TRANSMOGRIFY_H
+#ifndef OFP_TRANSMOGRIFY_H_
+#define OFP_TRANSMOGRIFY_H_
 
 #include "ofp/actioniterator.h"
 #include "ofp/instructionrange.h"
@@ -29,7 +29,7 @@
 #include "ofp/oxmlist.h"
 #include "ofp/log.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Message;
 class Header;
@@ -112,6 +112,6 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
   return 0;
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_TRANSMOGRIFY_H
+#endif  // OFP_TRANSMOGRIFY_H_

@@ -20,8 +20,8 @@
 /// and EnetAddress.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YADDRESS_H
-#define OFP_YAML_YADDRESS_H
+#ifndef OFP_YAML_YADDRESS_H_
+#define OFP_YAML_YADDRESS_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/ipv4address.h"
@@ -29,8 +29,8 @@
 #include "ofp/enetaddress.h"
 #include "ofp/ipv6endpoint.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::IPv4Address> {
@@ -124,7 +124,7 @@ struct ScalarTraits<ofp::IPv6Endpoint> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YADDRESS_H
+#endif  // OFP_YAML_YADDRESS_H_

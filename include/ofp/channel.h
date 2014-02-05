@@ -19,14 +19,14 @@
 /// \brief Defines the abstract Channel class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_CHANNEL_H
-#define OFP_CHANNEL_H
+#ifndef OFP_CHANNEL_H_
+#define OFP_CHANNEL_H_
 
 #include "ofp/writable.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/datapathid.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Driver;
 class ChannelListener;
@@ -73,6 +73,6 @@ inline std::ostream &operator<<(std::ostream &os, Channel *channel) {
   return os << "[Channel to=" << channel->remoteEndpoint() << ']';
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_CHANNEL_H
+#endif  // OFP_CHANNEL_H_

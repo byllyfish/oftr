@@ -19,8 +19,8 @@
 /// \brief Defines the yaml::Decoder class and its llvm::yaml::MappingTraits.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_DECODER_H
-#define OFP_YAML_DECODER_H
+#ifndef OFP_YAML_DECODER_H_
+#define OFP_YAML_DECODER_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
@@ -28,8 +28,8 @@
 #include "ofp/message.h"
 #include "ofp/channel.h"
 
-namespace ofp {  // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace ofp {
+namespace yaml {
 
 class Decoder {
 public:
@@ -56,11 +56,11 @@ private:
     friend struct llvm::yaml::MappingTraits<ofp::yaml::Decoder>;
 };
 
-} // </namespace yaml>
-} // </namespace ofp>
+}  // namespace yaml
+}  // namespace ofp
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::yaml::Decoder> {
@@ -88,7 +88,7 @@ struct MappingTraits<ofp::yaml::Decoder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_DECODER_H
+#endif  // OFP_YAML_DECODER_H_

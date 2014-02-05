@@ -19,12 +19,12 @@
 /// \brief Defines the SetAsync and SetAsyncBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SETASYNC_H
-#define OFP_SETASYNC_H
+#ifndef OFP_SETASYNC_H_
+#define OFP_SETASYNC_H_
 
 #include "ofp/protocolmsg.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class SetAsync : public ProtocolMsg<SetAsync, OFPT_SET_ASYNC, 32, 32> {
 public:
@@ -76,6 +76,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_SETASYNC_H
+#endif  // OFP_SETASYNC_H_

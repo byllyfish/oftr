@@ -19,13 +19,13 @@
 /// \brief Defines the ActionType class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ACTION_H
-#define OFP_ACTION_H
+#ifndef OFP_ACTIONTYPE_H_
+#define OFP_ACTIONTYPE_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/constants.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class ActionType {
 public:
@@ -66,6 +66,6 @@ inline ActionType ActionType::fromBytes(const UInt8 *data) {
   return type;
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ACTION_H
+#endif  // OFP_ACTIONTYPE_H_

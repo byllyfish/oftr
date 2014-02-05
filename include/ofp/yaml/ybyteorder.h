@@ -19,14 +19,14 @@
 /// \brief Defines the llvm::yaml::ScalarTraits for Big16, Big32, and Big64.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YBYTEORDER_H
-#define OFP_YAML_YBYTEORDER_H
+#ifndef OFP_YAML_YBYTEORDER_H_
+#define OFP_YAML_YBYTEORDER_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/byteorder.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::Big16> {
@@ -91,7 +91,7 @@ struct ScalarTraits<ofp::Big64> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YBYTEORDER_H
+#endif  // OFP_YAML_YBYTEORDER_H_

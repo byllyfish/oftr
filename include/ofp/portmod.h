@@ -19,13 +19,13 @@
 /// \brief Defines the PortMod and PortModBuilder class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PORTMOD_H
-#define OFP_PORTMOD_H
+#ifndef OFP_PORTMOD_H_
+#define OFP_PORTMOD_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class PortMod : public ProtocolMsg<PortMod, OFPT_PORT_MOD, 40, 40> {
 public:
@@ -80,6 +80,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PORTMOD_H
+#endif  // OFP_PORTMOD_H_

@@ -20,13 +20,13 @@
 /// QueueGetConfigRequestBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YQUEUEGETCONFIGREQUEST_H
-#define OFP_YAML_YQUEUEGETCONFIGREQUEST_H
+#ifndef OFP_YAML_YQUEUEGETCONFIGREQUEST_H_
+#define OFP_YAML_YQUEUEGETCONFIGREQUEST_H_
 
 #include "ofp/queuegetconfigrequest.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigRequest> {
@@ -46,7 +46,7 @@ struct MappingTraits<ofp::QueueGetConfigRequestBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YQUEUEGETCONFIGREQUEST_H
+#endif  // OFP_YAML_YQUEUEGETCONFIGREQUEST_H_

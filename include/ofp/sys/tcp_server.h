@@ -19,16 +19,16 @@
 /// \brief Defines the sys::TCP_Server class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_TCP_SERVER_H
-#define OFP_SYS_TCP_SERVER_H
+#ifndef OFP_SYS_TCP_SERVER_H_
+#define OFP_SYS_TCP_SERVER_H_
 
 #include "ofp/types.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/sys/server.h"
 #include "ofp/driver.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 class Engine;
 
@@ -56,7 +56,7 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_TCP_SERVER_H
+#endif  // OFP_SYS_TCP_SERVER_H_

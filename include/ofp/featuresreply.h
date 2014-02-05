@@ -19,13 +19,13 @@
 /// \brief Defines the FeaturesReply and FeaturesReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_FEATURESREPLY_H
-#define OFP_FEATURESREPLY_H
+#ifndef OFP_FEATURESREPLY_H_
+#define OFP_FEATURESREPLY_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
-namespace ofp {  // <namespace ofp>
+namespace ofp {
 
 /// \brief FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
 class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY> {
@@ -87,6 +87,6 @@ class FeaturesReplyBuilder {
   //PortList ports_;
 };
 
-}  // </namespace ofp>
+}  // namespace ofp
 
-#endif  // OFP_FEATURESREPLY_H
+#endif  // OFP_FEATURESREPLY_H_

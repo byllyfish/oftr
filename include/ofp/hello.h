@@ -19,16 +19,16 @@
 /// \brief Defines the Hello and HelloBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_HELLO_H
-#define OFP_HELLO_H
+#ifndef OFP_HELLO_H_
+#define OFP_HELLO_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/protocolversions.h"
 #include "ofp/protocoliterable.h"
 #include "ofp/protocolelement.h"
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 class HelloElement : public ProtocolElement {
 public:
@@ -44,7 +44,7 @@ private:
   Big16 length_;
 };
 
-} // </namespace detail>
+}  // namespace detail
 
 /// \brief Immutable OpenFlow `Hello` protocol message.
 class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65528> {
@@ -96,6 +96,6 @@ private:
   Big32 bitmap_ = 0;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_HELLO_H
+#endif  // OFP_HELLO_H_

@@ -1,10 +1,10 @@
-#ifndef OFP_YAML_OUTPUTJSON_H
-#define OFP_YAML_OUTPUTJSON_H
+#ifndef OFP_YAML_OUTPUTJSON_H_
+#define OFP_YAML_OUTPUTJSON_H_
 
 #include "ofp/yaml/yllvm.h"
 
-namespace ofp { // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace ofp {
+namespace yaml {
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -81,7 +81,7 @@ operator<<(OutputJson &yout, T &map) {
   return yout;
 }
 
-} // </namespace yaml>
-} // </namespace ofp>
+}  // namespace yaml
+}  // namespace ofp
 
-#endif // OFP_YAML_OUTPUTJSON_H
+#endif  // OFP_YAML_OUTPUTJSON_H_

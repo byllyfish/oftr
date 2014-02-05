@@ -22,8 +22,8 @@
 /// Specify all ASIO includes here.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_BOOST_ASIO_H
-#define OFP_SYS_BOOST_ASIO_H
+#ifndef OFP_SYS_BOOST_ASIO_H_
+#define OFP_SYS_BOOST_ASIO_H_
 
 #include <asio.hpp>
 #include <asio/ssl.hpp>
@@ -32,8 +32,8 @@
 #include "ofp/ipv6endpoint.h"
 #include "ofp/sys/plaintext.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 using tcp = asio::ip::tcp;
 using udp = asio::ip::udp;
@@ -81,7 +81,7 @@ inline IPv6Endpoint convertEndpoint(const typename Proto::endpoint &endpt)
     return IPv6Endpoint{makeIPv6Address(endpt.address()), endpt.port()};
 }
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_BOOST_ASIO_H
+#endif  // OFP_SYS_BOOST_ASIO_H_

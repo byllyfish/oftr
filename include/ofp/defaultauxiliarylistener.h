@@ -19,12 +19,12 @@
 /// \brief Defines the DefaultAuxiliaryListener class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_DEFAULTAUXILIARYLISTENER_H
-#define OFP_DEFAULTAUXILIARYLISTENER_H
+#ifndef OFP_DEFAULTAUXILIARYLISTENER_H_
+#define OFP_DEFAULTAUXILIARYLISTENER_H_
 
 #include "ofp/channellistener.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class DefaultAuxiliaryListener : public ChannelListener {
 public:
@@ -39,6 +39,6 @@ public:
 private:
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_DEFAULTAUXILIARYLISTENER_H
+#endif  // OFP_DEFAULTAUXILIARYLISTENER_H_

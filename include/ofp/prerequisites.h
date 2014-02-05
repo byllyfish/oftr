@@ -19,13 +19,13 @@
 /// \brief Defines the Prerequisites utility class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PREREQUISITES_H
-#define OFP_PREREQUISITES_H
+#ifndef OFP_PREREQUISITES_H_
+#define OFP_PREREQUISITES_H_
 
 #include "ofp/oxmtype.h"
 #include "ofp/oxmrange.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class OXMList;
 
@@ -81,6 +81,6 @@ private:
                                                 OXMIterator rest);
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PREREQUISITES_H
+#endif  // OFP_PREREQUISITES_H_

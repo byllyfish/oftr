@@ -19,8 +19,8 @@
 /// \brief Defines the sys::Engine class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_ENGINE_H
-#define OFP_SYS_ENGINE_H
+#ifndef OFP_SYS_ENGINE_H_
+#define OFP_SYS_ENGINE_H_
 
 #include "ofp/driver.h"
 #include "ofp/sys/asio_utils.h"
@@ -29,8 +29,8 @@
 #include "ofp/datapathid.h"
 #include <map>
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 class Server;
 // class TCP_Server;
@@ -110,7 +110,7 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_ENGINE_H
+#endif  // OFP_SYS_ENGINE_H_

@@ -19,15 +19,15 @@
 /// \brief Defines the ProtocolVersions class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PROTOCOL_VERSIONS_H
-#define OFP_PROTOCOL_VERSIONS_H
+#ifndef OFP_PROTOCOLVERSIONS_H_
+#define OFP_PROTOCOLVERSIONS_H_
 
-#include "ofp/types.h"
-#include "ofp/constants.h"
 #include <initializer_list>
 #include <vector>
+#include "ofp/types.h"
+#include "ofp/constants.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 /// \brief Represents a set of OpenFlow protocol versions.
 class ProtocolVersions {
@@ -44,9 +44,9 @@ public:
 
   ProtocolVersions() : bitmap_{All} {}
 
-  /* implicit */ ProtocolVersions(Setting setting) : bitmap_{setting} {}
+  /* implicit NOLINT */ ProtocolVersions(Setting setting) : bitmap_{setting} {}
 
-  /* implicit */ ProtocolVersions(std::initializer_list<UInt8> versions);
+  /* implicit NOLINT */ ProtocolVersions(std::initializer_list<UInt8> versions);
 
   explicit ProtocolVersions(const std::vector<UInt8> &versions);
 
@@ -68,6 +68,6 @@ private:
   UInt32 bitmap_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PROTOCOL_VERSIONS_H
+#endif  // OFP_PROTOCOLVERSIONS_H_

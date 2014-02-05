@@ -19,13 +19,13 @@
 /// \brief Defines the BucketRange class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BUCKETRANGE_H
-#define OFP_BUCKETRANGE_H
+#ifndef OFP_BUCKETRANGE_H_
+#define OFP_BUCKETRANGE_H_
 
 #include "ofp/byterange.h"
 #include "ofp/bucketiterator.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class BucketRange {
 public:
@@ -45,6 +45,6 @@ private:
   ByteRange range_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_BUCKETRANGE_H
+#endif  // OFP_BUCKETRANGE_H_

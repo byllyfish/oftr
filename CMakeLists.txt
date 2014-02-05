@@ -175,8 +175,8 @@ set(LIBOFP_HEADER_FILES
   include/ofp/actionrange.h
   include/ofp/actions.h
   include/ofp/actiontype.h
-  include/ofp/aggregatestatsreply.h
-  include/ofp/aggregatestatsrequest.h
+  include/ofp/mpaggregatestatsreply.h
+  include/ofp/mpaggregatestatsrequest.h
   include/ofp/array.h
   include/ofp/bucket.h
   include/ofp/bucketiterator.h
@@ -506,7 +506,7 @@ include(CPack)
 #-------------------------------------------------------------------------------
 
 set(CPPLINT_PATH external/cpplint/cpplint.py)
-set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references --root=include)
+set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-whitespace --root=include)
 
 add_custom_target(cpplint
   COMMAND ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} ${LIBOFP_HEADER_FILES} ${LIBOFP_HEADERS_GENERATED} ${LIBOFP_SOURCES}

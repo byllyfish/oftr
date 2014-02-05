@@ -20,12 +20,12 @@
 /// classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_QUEUEGETCONFIGREPLY_H
-#define OFP_QUEUEGETCONFIGREPLY_H
+#ifndef OFP_QUEUEGETCONFIGREPLY_H_
+#define OFP_QUEUEGETCONFIGREPLY_H_
 
 #include "ofp/protocolmsg.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // Note: This message is replaced by a MultipartReply in version 1.4.
 
@@ -63,6 +63,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_QUEUEGETCONFIGREPLY_H
+#endif  // OFP_QUEUEGETCONFIGREPLY_H_

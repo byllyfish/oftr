@@ -19,15 +19,15 @@
 /// \brief Defines the instruction classes for the OpenFlow protocol.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_INSTRUCTIONS_H
-#define OFP_INSTRUCTIONS_H
+#ifndef OFP_INSTRUCTIONS_H_
+#define OFP_INSTRUCTIONS_H_
 
 #include "ofp/instructiontype.h"
 #include "ofp/padding.h"
 #include "ofp/actionlist.h"
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 struct InstructionHeaderWithPadding {
   InstructionType type_;
@@ -41,7 +41,7 @@ struct InstructionHeaderWithPadding {
 static_assert(IsStandardLayout<InstructionHeaderWithPadding>(),
               "Expected standard layout type.");
 
-} // </namespace detail>
+}  // namespace detail
 
 class IT_GOTO_TABLE {
 public:
@@ -88,7 +88,7 @@ private:
   friend struct llvm::yaml::MappingTraits<IT_WRITE_METADATA *>;
 };
 
-namespace detail { // <namespace detail>
+namespace detail {
 
 // IT_WithActions is an instruction with a variable sized action list.
 
@@ -131,7 +131,7 @@ private:
   // friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>*>;
 };
 
-} // </namespace detail>
+}  // namespace detail
 
 using IT_WRITE_ACTIONS = detail::IT_WithActions<OFPIT_WRITE_ACTIONS>;
 using IT_APPLY_ACTIONS = detail::IT_WithActions<OFPIT_APPLY_ACTIONS>;
@@ -192,6 +192,6 @@ private:
   friend struct llvm::yaml::MappingTraits<IT_EXPERIMENTER *>;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_INSTRUCTIONS_H
+#endif  // OFP_INSTRUCTIONS_H_

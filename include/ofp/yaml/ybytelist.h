@@ -19,14 +19,14 @@
 /// \brief Defines the llvm::yaml::ScalarTraits for ByteRange and ByteList.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YBYTELIST_H
-#define OFP_YAML_YBYTELIST_H
+#ifndef OFP_YAML_YBYTELIST_H_
+#define OFP_YAML_YBYTELIST_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/bytelist.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::ByteRange> {
@@ -65,7 +65,7 @@ struct ScalarTraits<ofp::ByteList> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YBYTELIST_H
+#endif  // OFP_YAML_YBYTELIST_H_

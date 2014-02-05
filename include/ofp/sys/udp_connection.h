@@ -19,16 +19,16 @@
 /// \brief Defines the sys::UDP_Connection class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_UDP_CONNECTION_H
-#define OFP_SYS_UDP_CONNECTION_H
+#ifndef OFP_SYS_UDP_CONNECTION_H_
+#define OFP_SYS_UDP_CONNECTION_H_
 
 #include "ofp/sys/connection.h"
 #include "ofp/driver.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/protocolversions.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 class UDP_Server;
 
@@ -57,7 +57,7 @@ private:
 };
 OFP_END_IGNORE_PADDING
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_UDP_CONNECTION_H
+#endif  // OFP_SYS_UDP_CONNECTION_H_

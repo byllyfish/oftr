@@ -25,8 +25,8 @@
 #include "ofp/log.h"
 #include "ofp/defaulthandshake.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 
 template <class SocketType>
@@ -285,5 +285,5 @@ void TCP_Connection<SocketType>::reconnect() {
   assert(channelListener() != hs);
 }
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp

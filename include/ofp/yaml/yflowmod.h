@@ -20,8 +20,8 @@
 /// FlowModBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YFLOWMOD_H
-#define OFP_YAML_YFLOWMOD_H
+#ifndef OFP_YAML_YFLOWMOD_H_
+#define OFP_YAML_YFLOWMOD_H_
 
 //#include "ofp/yaml.h"
 #include "ofp/yaml/yllvm.h"
@@ -30,8 +30,8 @@
 #include "ofp/flowmod.h"
 #include "ofp/match.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::FlowMod> {
@@ -78,7 +78,7 @@ struct MappingTraits<ofp::FlowModBuilder> {
   }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YFLOWMOD_H
+#endif  // OFP_YAML_YFLOWMOD_H_

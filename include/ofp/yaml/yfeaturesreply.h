@@ -20,15 +20,15 @@
 /// FeaturesReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YFEATURESREPLY_H
-#define OFP_YAML_YFEATURESREPLY_H
+#ifndef OFP_YAML_YFEATURESREPLY_H_
+#define OFP_YAML_YFEATURESREPLY_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/featuresreply.h"
 #include "ofp/yaml/ydatapathid.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::FeaturesReply> {
@@ -83,7 +83,7 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YFEATURESREPLY_H
+#endif  // OFP_YAML_YFEATURESREPLY_H_

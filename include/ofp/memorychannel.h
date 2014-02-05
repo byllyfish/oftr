@@ -19,19 +19,19 @@
 /// \brief Defines the MemoryChannel class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MEMORYCHANNEL_H
-#define OFP_MEMORYCHANNEL_H
+#ifndef OFP_MEMORYCHANNEL_H_
+#define OFP_MEMORYCHANNEL_H_
 
 #include "ofp/writable.h"
 #include "ofp/bytelist.h"
 #include "ofp/padding.h"
 #include "ofp/constants.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class MemoryChannel : public Writable {
 public:
-  MemoryChannel(UInt8 version = OFP_VERSION_LAST) : version_{version} {}
+  explicit MemoryChannel(UInt8 version = OFP_VERSION_LAST) : version_{version} {}
 
   const UInt8 *data() const {
     assert(flushed_ || size() == 0);
@@ -64,6 +64,6 @@ private:
   Padding<2> pad_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MEMORYCHANNEL_H
+#endif  // OFP_MEMORYCHANNEL_H_

@@ -19,8 +19,8 @@
 /// \brief Defines the Port class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PORT_H
-#define OFP_PORT_H
+#ifndef OFP_PORT_H_
+#define OFP_PORT_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/smallcstring.h"
@@ -28,11 +28,11 @@
 #include "ofp/padding.h"
 #include "ofp/enetaddress.h"
 
-namespace ofp {  // <namespace ofp>
+namespace ofp {
 
-namespace deprecated {  // <namespace deprecated>
+namespace deprecated {
 class PortV1;
-}  // </namespace deprecated>
+}  // namespace deprecated
 
 using PortName = SmallCString<OFP_MAX_PORT_NAME_LEN>;
 
@@ -106,7 +106,7 @@ class PortBuilder {
   friend struct llvm::yaml::MappingTraits;
 };
 
-namespace deprecated {  // <namespace deprecated>
+namespace deprecated {
 
 class PortV1 {
  public:
@@ -156,7 +156,7 @@ static_assert(sizeof(PortV1) == 48, "Unexpected size.");
 static_assert(IsStandardLayout<PortV1>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<PortV1>(), "Expected trivially copyable.");
 
-}  // </namespace deprecated>
-}  // </namespace ofp>
+}  // namespace deprecated
+}  // namespace ofp
 
-#endif  // OFP_PORT_H
+#endif  // OFP_PORT_H_

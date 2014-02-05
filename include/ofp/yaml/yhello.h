@@ -20,8 +20,8 @@
 /// classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YHELLO_H
-#define OFP_YAML_YHELLO_H
+#ifndef OFP_YAML_YHELLO_H_
+#define OFP_YAML_YHELLO_H_
 
 #include "ofp/hello.h"
 #include "ofp/protocolversions.h"
@@ -41,8 +41,8 @@
 //            also omitted, the message specifies all supported versions.
 //...
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::Hello> {
@@ -69,7 +69,7 @@ struct MappingTraits<ofp::HelloBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YHELLO_H
+#endif  // OFP_YAML_YHELLO_H_

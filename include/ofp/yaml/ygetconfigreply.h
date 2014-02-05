@@ -20,13 +20,13 @@
 /// GetConfigReplyBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YGETCONFIGREPLY_H
-#define OFP_YAML_YGETCONFIGREPLY_H
+#ifndef OFP_YAML_YGETCONFIGREPLY_H_
+#define OFP_YAML_YGETCONFIGREPLY_H_
 
 #include "ofp/getconfigreply.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::GetConfigReply> {
@@ -48,7 +48,7 @@ struct MappingTraits<ofp::GetConfigReplyBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YGETCONFIGREPLY_H
+#endif  // OFP_YAML_YGETCONFIGREPLY_H_

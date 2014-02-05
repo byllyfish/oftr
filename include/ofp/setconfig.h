@@ -19,12 +19,12 @@
 /// \brief Defines the SetConfig and SetConfigBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SETCONFIG_H
-#define OFP_SETCONFIG_H
+#ifndef OFP_SETCONFIG_H_
+#define OFP_SETCONFIG_H_
 
 #include "ofp/protocolmsg.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class SetConfig
     : public ProtocolMsg<SetConfig, OFPT_SET_CONFIG, 12, 12, false> {
@@ -68,6 +68,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_SETCONFIG_H
+#endif  // OFP_SETCONFIG_H_

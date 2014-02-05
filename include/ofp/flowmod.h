@@ -19,8 +19,8 @@
 /// \brief Defines the FlowMod and FlowModBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_FLOWMOD_H
-#define OFP_FLOWMOD_H
+#ifndef OFP_FLOWMOD_H_
+#define OFP_FLOWMOD_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
@@ -30,7 +30,7 @@
 #include "ofp/standardmatch.h"
 #include "ofp/instructionrange.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
 public:
@@ -127,6 +127,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_FLOWMOD_H
+#endif  // OFP_FLOWMOD_H_

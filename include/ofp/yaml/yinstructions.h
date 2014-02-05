@@ -21,24 +21,24 @@
 /// InstructionRange and InstructionList.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YINSTRUCTIONS_H
-#define OFP_YAML_YINSTRUCTIONS_H
+#ifndef OFP_YAML_YINSTRUCTIONS_H_
+#define OFP_YAML_YINSTRUCTIONS_H_
 
 #include "ofp/instructionlist.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yactions.h"
 #include "ofp/instructionrange.h"
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 struct InstructionInserter {};
 
-} // </namespace detail>
-} // </namespace ofp>
+}  // namespace detail
+}  // namespace ofp
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 // Pointers are used for read-only.
 template <>
@@ -238,7 +238,7 @@ struct SequenceTraits<ofp::InstructionList> {
   }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YINSTRUCTIONS_H
+#endif  // OFP_YAML_YINSTRUCTIONS_H_

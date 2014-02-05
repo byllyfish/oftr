@@ -19,12 +19,12 @@
 /// \brief Defines the OXMIterator class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_OXMITERATOR_H
-#define OFP_OXMITERATOR_H
+#ifndef OFP_OXMITERATOR_H_
+#define OFP_OXMITERATOR_H_
 
 #include "ofp/oxmtype.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class OXMIterator {
 public:
@@ -101,6 +101,6 @@ private:
   friend class ActionIterator;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_OXMITERATOR_H
+#endif  // OFP_OXMITERATOR_H_

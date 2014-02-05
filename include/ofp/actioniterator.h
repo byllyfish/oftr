@@ -19,13 +19,13 @@
 /// \brief Defines the ActionIterator class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ACTIONITERATOR_H
-#define OFP_ACTIONITERATOR_H
+#ifndef OFP_ACTIONITERATOR_H_
+#define OFP_ACTIONITERATOR_H_
 
 #include "ofp/actiontype.h"
 #include "ofp/oxmiterator.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class ActionIterator {
 public:
@@ -113,6 +113,6 @@ private:
   const UInt8 *position_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ACTIONITERATOR_H
+#endif  // OFP_ACTIONITERATOR_H_

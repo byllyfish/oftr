@@ -19,13 +19,13 @@
 /// \brief Defines the OXMType class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_OXM_TYPE_H
-#define OFP_OXM_TYPE_H
+#ifndef OFP_OXMTYPE_H_
+#define OFP_OXMTYPE_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class OXMRange;
 struct OXMTypeInfo;
@@ -108,6 +108,6 @@ struct OXMTypeInfo {
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_OXM_TYPE_H
+#endif  // OFP_OXMTYPE_H_

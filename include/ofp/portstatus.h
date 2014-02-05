@@ -19,13 +19,13 @@
 /// \brief Defines the PortStatus and PortStatusBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PORTSTATUS_H
-#define OFP_PORTSTATUS_H
+#ifndef OFP_PORTSTATUS_H_
+#define OFP_PORTSTATUS_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/port.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class PortStatus
     : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 80, 80, false> {
@@ -72,6 +72,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PORTSTATUS_H
+#endif  // OFP_PORTSTATUS_H_

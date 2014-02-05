@@ -19,13 +19,13 @@
 /// \brief Defines the GetAsyncReply and GetAsyncReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_GETASYNCREPLY_H
-#define OFP_GETASYNCREPLY_H
+#ifndef OFP_GETASYNCREPLY_H_
+#define OFP_GETASYNCREPLY_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/headeronly.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // FIXME - identical to SetAsync? Use template?
 
@@ -83,6 +83,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_GETASYNCREPLY_H
+#endif  // OFP_GETASYNCREPLY_H_

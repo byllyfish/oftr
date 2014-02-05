@@ -19,22 +19,22 @@
 /// \brief Defines the InstructionList class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_INSTRUCTIONLIST_H
-#define OFP_INSTRUCTIONLIST_H
+#ifndef OFP_INSTRUCTIONLIST_H_
+#define OFP_INSTRUCTIONLIST_H_
 
 #include "ofp/types.h"
 #include "ofp/instructions.h"
 #include "ofp/instructioniterator.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class InstructionRange;
 
 class InstructionList {
 public:
   InstructionList() = default;
-  InstructionList(const InstructionRange &range);
+  /* implicit NOLINT */ InstructionList(const InstructionRange &range);
 
   InstructionIterator begin() const {
     return InstructionIterator{data()};
@@ -75,6 +75,6 @@ inline void InstructionList::add(const IT_APPLY_ACTIONS &instruction) {
   buf_.add(instruction.data(), instruction.size());
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_INSTRUCTIONLIST_H
+#endif  // OFP_INSTRUCTIONLIST_H_

@@ -19,12 +19,12 @@
 /// \brief Defines all OpenFlow constants.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_CONSTANTS_H
-#define OFP_CONSTANTS_H
+#ifndef OFP_CONSTANTS_H_
+#define OFP_CONSTANTS_H_
 
 #include "ofp/types.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // Internet Protocol Transport Types
 enum : UInt8 {
@@ -228,7 +228,7 @@ enum ofp_controller_max_len {
                                sent to the controller. */
 };
 
-namespace deprecated { // <namespace deprecated>
+namespace deprecated {
 
 // There are differences in message types between versions. Here is a summary
 // listing the differences between v4 and each of the earlier versions:
@@ -243,7 +243,7 @@ namespace deprecated { // <namespace deprecated>
 //       STATS_REQUEST/REPLY, BARRIER_REQUEST/REPLY, and
 //       QUEUE_GET_CONFIG_REQUEST/REPLY are all different.
 
-namespace v1 { // <namespace v1>
+namespace v1 {
 enum OFPType : UInt8 {
   OFPT_HELLO = 0,        // Symmetric message
   OFPT_ERROR = 1,        // Symmetric message
@@ -276,9 +276,9 @@ enum OFPType : UInt8 {
   OFPT_QUEUE_GET_CONFIG_REPLY = 21,   /* Controller/switch message */
   OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
 };
-} // </namespace v1>
+}  // namespace v1
 
-namespace v2 { // <namespace v2>
+namespace v2 {
 enum : UInt8 {
   /* Immutable messages. */
   OFPT_HELLO = 0,
@@ -331,9 +331,9 @@ enum : UInt8 {
   OFPT_QUEUE_GET_CONFIG_REPLY = 23,   /* Controller/switch message */
   OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
 };
-} // </namespace v2>
+}  // namespace v2
 
-namespace v3 { // <namespace v3>
+namespace v3 {
 enum : UInt8 {
   /* Immutable messages. */
   OFPT_HELLO = 0,
@@ -390,9 +390,9 @@ enum : UInt8 {
   OFPT_ROLE_REPLY = 25,   /* Controller/switch message */
   OFPT_LAST = OFPT_ROLE_REPLY
 };
-} // </namespace v3>
+}  // namespace v3
 
-} // </namespace deprecated>
+}  // namespace deprecated
 
 /* Hello elements types.
  */
@@ -770,7 +770,7 @@ enum OFPActionType : UInt16 {
   OFPAT_EXPERIMENTER = 0xFFFF // possible lengths: 8, 16, 24, 32, 40, ...
 };
 
-namespace deprecated { // <namespace deprecated>
+namespace deprecated {
 
 // Version               1       2      3      4
 // ----------------------------------------------
@@ -808,7 +808,7 @@ namespace deprecated { // <namespace deprecated>
 //
 // (*) Port field changed from 16 to 32 bits in v2.
 
-namespace v1 { // <namespace v1>
+namespace v1 {
 enum : UInt16 {
   OFPAT_OUTPUT = 0,
   OFPAT_SET_VLAN_VID = 1,
@@ -823,9 +823,9 @@ enum : UInt16 {
   OFPAT_SET_TP_DST = 10,
   OFPAT_ENQUEUE = 11 // only present in v1
 };
-} // </namespace v1>
+}  // namespace v1
 
-namespace v2 { // <namespace v2>
+namespace v2 {
 enum : UInt16 {
   OFPAT_OUTPUT = 0,
   OFPAT_SET_VLAN_VID = 1,
@@ -854,9 +854,9 @@ enum : UInt16 {
   OFPAT_DEC_NW_TTL = 24,
   OFPAT_EXPERIMENTER = 0xFFFF
 };
-} // </namespace v2>
+}  // namespace v2
 
-namespace v3 { // <namespace v3>
+namespace v3 {
 enum : UInt16 {
   OFPAT_OUTPUT = 0,
   // -OFPAT_SET_VLAN_VID = 1,
@@ -886,9 +886,9 @@ enum : UInt16 {
   OFPAT_SET_FIELD = 25,
   OFPAT_EXPERIMENTER = 0xFFFF
 };
-} // </namespace v3>
+}  // namespace v3
 
-} // </namespace deprecated>
+}  // namespace deprecated
 
 enum OFPPacketInReason : UInt8 {
   OFPR_NO_MATCH = 0,    //< No matching flow (table-miss flow entry)
@@ -904,6 +904,6 @@ enum OFPFlowModCommand : UInt8 {
   OFPFC_DELETE_STRICT = 4
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_CONSTANTS_H
+#endif  // OFP_CONSTANTS_H_

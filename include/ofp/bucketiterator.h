@@ -19,10 +19,10 @@
 /// \brief Defines the BucketIterator class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BUCKETITERATOR_H
-#define OFP_BUCKETITERATOR_H
+#ifndef OFP_BUCKETITERATOR_H_
+#define OFP_BUCKETITERATOR_H_
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class BucketIterator {
 public:
@@ -76,6 +76,6 @@ private:
   const UInt8 *position_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_BUCKETITERATOR_H
+#endif  // OFP_BUCKETITERATOR_H_

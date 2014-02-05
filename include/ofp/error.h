@@ -19,14 +19,14 @@
 /// \brief Defines the Error and ErrorBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ERROR_H
-#define OFP_ERROR_H
+#ifndef OFP_ERROR_H_
+#define OFP_ERROR_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 /// \brief Implements Error protocol message.
 class Error : public ProtocolMsg<Error, OFPT_ERROR, 12, 65535, false> {
@@ -78,6 +78,6 @@ private:
   ByteList data_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ERROR_H
+#endif  // OFP_ERROR_H_

@@ -19,15 +19,14 @@
 /// \brief Implements logging hooks for the library.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_LOG_H
-#define OFP_LOG_H
+#ifndef OFP_LOG_H_
+#define OFP_LOG_H_
 
-#include "ofp/types.h"
-#include <string>
 #include <sstream>
+#include "ofp/types.h"
 
-namespace ofp { // <namespace ofp>
-namespace log { // <namespace log>
+namespace ofp {
+namespace log {
 
 /// \returns the global log output stream or nullptr if none is set.
 std::ostream *get();
@@ -92,7 +91,7 @@ void error(const Type1 &a, const Type2 &b) {
 
 class Lifetime {
 public:
-  Lifetime(const char *description) : description_{description} {
+  explicit Lifetime(const char *description) : description_{description} {
     debug("Create ", description_);
   }
 
@@ -102,7 +101,7 @@ private:
   const char *description_;
 };
 
-} // </namespace log>
-} // </namespace ofp>
+}  // namespace log
+}  // namespace ofp
 
-#endif // OFP_LOG_H
+#endif  // OFP_LOG_H_

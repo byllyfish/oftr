@@ -19,19 +19,19 @@
 /// \brief Defines the Driver class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_DRIVER_H
-#define OFP_DRIVER_H
+#ifndef OFP_DRIVER_H_
+#define OFP_DRIVER_H_
 
 #include "ofp/channellistener.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/protocolversions.h"
 #include "ofp/deferred.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
-namespace sys { // <namespace sys>
+namespace sys {
 class Engine;
-} // </namespace ofp>
+}  // namespace sys
 
 class Driver {
 public:
@@ -54,7 +54,7 @@ public:
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory);
 
-  // TODO this should take an array of remote endpoints...
+  // TODO(bfish): this should take an array of remote endpoints...
   Deferred<std::error_code> connect(Role role,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
@@ -71,6 +71,6 @@ private:
   sys::Engine *engine_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_DRIVER_H
+#endif  // OFP_DRIVER_H_

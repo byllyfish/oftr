@@ -19,15 +19,15 @@
 /// \brief Defines the DatapathID class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_DATAPATHID_H
-#define OFP_DATAPATHID_H
+#ifndef OFP_DATAPATHID_H_
+#define OFP_DATAPATHID_H_
 
 #include "ofp/types.h"
+#include "ofp/array.h"
 #include "ofp/enetaddress.h"
 #include "ofp/byteorder.h"
-#include <array>
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class DatapathID {
 public:
@@ -39,8 +39,8 @@ public:
 
   DatapathID() : dpid_{} {}
   explicit DatapathID(const ArrayType dpid) { dpid_ = dpid; }
-  DatapathID(Big16 implementerDefined, EnetAddress macAddress);
-  DatapathID(const std::string &dpid);
+  explicit DatapathID(Big16 implementerDefined, EnetAddress macAddress);
+  explicit DatapathID(const std::string &dpid);
 
   Big16 implementerDefined() const;
   EnetAddress macAddress() const;
@@ -64,6 +64,6 @@ inline std::ostream &operator<<(std::ostream &os, const DatapathID &value) {
   return os << value.toString();
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_DATAPATHID_H
+#endif  // OFP_DATAPATHID_H_

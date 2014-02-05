@@ -19,14 +19,14 @@
 /// \brief Defines the GroupMod and GroupModBuilder class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_GROUPMOD_H
-#define OFP_GROUPMOD_H
+#ifndef OFP_GROUPMOD_H_
+#define OFP_GROUPMOD_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/bucketlist.h"
 #include "ofp/bucketrange.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class GroupMod : public ProtocolMsg<GroupMod, OFPT_GROUP_MOD, 16, 65528, true> {
 public:
@@ -71,6 +71,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_GROUPMOD_H
+#endif  // OFP_GROUPMOD_H_

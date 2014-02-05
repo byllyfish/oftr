@@ -19,19 +19,19 @@
 /// \brief Defines the SmallCString class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SMALLCSTRING_H
-#define OFP_SMALLCSTRING_H
+#ifndef OFP_SMALLCSTRING_H_
+#define OFP_SMALLCSTRING_H_
 
 #include <array>
 #include <algorithm>
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 /// \returns smaller of string length or maxlen.
 size_t strlen(const char *s, size_t maxlen);
 
-} // </namespace detail>
+}  // namespace detail
 
 /// \brief Implements a fixed size, null-terminated C string.
 /// \remarks Binary representation is standard layout and trivially copyable.
@@ -42,9 +42,9 @@ public:
 
   constexpr SmallCString() : str_{} {}
 
-  SmallCString(const std::string &s) { operator=(s); }
+  /* implicit NOLINT */ SmallCString(const std::string &s) { operator=(s); }
 
-  SmallCString(const char *cstr) { operator=(cstr); }
+  /* implicit NOLINT */ SmallCString(const char *cstr) { operator=(cstr); }
 
   constexpr size_t capacity() const { return Size - 1; }
 
@@ -74,14 +74,14 @@ inline bool operator==(const SmallCString<Size> &lhs,
   return lhs.toArray() == rhs.toArray();
 }
 
-namespace detail { // <namespace detail>
+namespace detail {
 
 inline size_t strlen(const char *s, size_t maxlen) {
   auto p = std::find(s, s + maxlen, '\0');
   return Unsigned_cast(p - s);
 }
 
-} // </namespace detail>
+}  // namespace detail
 
 /// Copies string and sets the remaining bytes to zero. The last byte will
 /// always be zero.
@@ -103,6 +103,6 @@ inline void SmallCString<Size>::operator=(const char *cstr) {
   str_.back() = 0;
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_SMALLCSTRING_H
+#endif  // OFP_SMALLCSTRING_H_

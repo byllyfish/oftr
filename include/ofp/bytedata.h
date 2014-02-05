@@ -19,13 +19,13 @@
 /// \brief Defines the ByteData class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BYTEDATA_H
-#define OFP_BYTEDATA_H
+#ifndef OFP_BYTEDATA_H_
+#define OFP_BYTEDATA_H_
 
-#include "ofp/byterange.h"
 #include <memory>
+#include "ofp/byterange.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class ByteData {
 public:
@@ -46,7 +46,7 @@ private:
   size_t size_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
 inline ofp::ByteData::ByteData() : buf_{nullptr}, size_{0} {}
 
@@ -71,4 +71,4 @@ inline ofp::ByteRange ofp::ByteData::toRange() const {
   return ByteRange{data(), size()};
 }
 
-#endif // OFP_BYTEDATA_H
+#endif  // OFP_BYTEDATA_H_

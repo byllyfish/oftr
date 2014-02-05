@@ -20,15 +20,15 @@
 /// and ActionList.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YACTIONS_H
-#define OFP_YAML_YACTIONS_H
+#ifndef OFP_YAML_YACTIONS_H_
+#define OFP_YAML_YACTIONS_H_
 
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
 #include "ofp/yaml/ymatch.h"
 
-namespace ofp { // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 struct ActionInserter {};
 
@@ -59,12 +59,12 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace detail>
-} // </namespace ofp>
+}  // namespace detail
+}  // namespace ofp
 
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::ActionIterator::Item> {
@@ -325,7 +325,7 @@ struct SequenceTraits<ofp::ActionList> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YACTIONS_H
+#endif  // OFP_YAML_YACTIONS_H_

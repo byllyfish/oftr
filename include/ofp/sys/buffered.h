@@ -1,11 +1,11 @@
-#ifndef OFP_SYS_BUFFERED_H
-#define OFP_SYS_BUFFERED_H
+#ifndef OFP_SYS_BUFFERED_H_
+#define OFP_SYS_BUFFERED_H_
 
 #include "ofp/sys/asio_utils.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -91,7 +91,7 @@ void Buffered<StreamType>::buf_flush() {
   });
 }
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_BUFFERED_H
+#endif  // OFP_SYS_BUFFERED_H_

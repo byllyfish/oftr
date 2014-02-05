@@ -19,13 +19,13 @@
 /// \brief Defines the ProtocolMsg template class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PROTOCOLMSG_H
-#define OFP_PROTOCOLMSG_H
+#ifndef OFP_PROTOCOLMSG_H_
+#define OFP_PROTOCOLMSG_H_
 
 #include "ofp/header.h"
 #include "ofp/message.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 /// \brief Static base class template for all protocol message types. This class
 /// implements the two static methods, type() and cast(), common to all protocol
@@ -72,6 +72,6 @@ public:
   }
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PROTOCOLMSG_H
+#endif  // OFP_PROTOCOLMSG_H_

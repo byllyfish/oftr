@@ -19,13 +19,13 @@
 /// \brief Defines the RoleRequest and RoleRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ROLEREQUEST_H
-#define OFP_ROLEREQUEST_H
+#ifndef OFP_ROLEREQUEST_H_
+#define OFP_ROLEREQUEST_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class RoleRequest : public ProtocolMsg<RoleRequest, OFPT_ROLE_REQUEST, 24, 24> {
 public:
@@ -74,6 +74,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ROLEREQUEST_H
+#endif  // OFP_ROLEREQUEST_H_

@@ -19,13 +19,13 @@
 /// \brief Defines the IPv4Address class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_IPV4ADDRESS_H
-#define OFP_IPV4ADDRESS_H
+#ifndef OFP_IPV4ADDRESS_H_
+#define OFP_IPV4ADDRESS_H_
 
 #include "ofp/types.h"
 #include "ofp/array.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class IPv4Address {
 public:
@@ -37,7 +37,7 @@ public:
 
   IPv4Address() : addr_{} {}
   explicit IPv4Address(const ArrayType &a);
-  IPv4Address(const std::string &s);
+  /* implicit NOLINT */ IPv4Address(const std::string &s);
 
   static IPv4Address mask(unsigned prefix);
 
@@ -70,9 +70,9 @@ private:
 static_assert(IsStandardLayout<IPv4Address>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv4Address>(), "Expected trivially copyable.");
 
-} // </namespace ofp>
+}  // namespace ofp
 
-namespace std { // <namespace std>
+namespace std {
 
 template <>
 struct hash<ofp::IPv4Address> {
@@ -81,6 +81,6 @@ struct hash<ofp::IPv4Address> {
   }
 };
 
-} // </namespace std>
+}  // namespace std
 
-#endif // OFP_IPV4ADDRESS_H
+#endif  // OFP_IPV4ADDRESS_H_

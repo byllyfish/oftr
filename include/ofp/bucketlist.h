@@ -19,13 +19,13 @@
 /// \brief Defines the BucketList class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BUCKETLIST_H
-#define OFP_BUCKETLIST_H
+#ifndef OFP_BUCKETLIST_H_
+#define OFP_BUCKETLIST_H_
 
 #include "ofp/bytelist.h"
 #include "ofp/bucket.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class BucketList {
 public:
@@ -40,6 +40,6 @@ private:
   ByteList buf_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_BUCKETLIST_H
+#endif  // OFP_BUCKETLIST_H_

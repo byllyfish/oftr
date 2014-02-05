@@ -20,13 +20,13 @@
 /// RoleRequestBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YROLEREQUEST_H
-#define OFP_YAML_YROLEREQUEST_H
+#ifndef OFP_YAML_YROLEREQUEST_H_
+#define OFP_YAML_YROLEREQUEST_H_
 
 #include "ofp/rolerequest.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::RoleRequest> {
@@ -49,7 +49,7 @@ struct MappingTraits<ofp::RoleRequestBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YROLEREQUEST_H
+#endif  // OFP_YAML_YROLEREQUEST_H_

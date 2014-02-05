@@ -19,13 +19,13 @@
 /// \brief Defines the llvm::yaml::ScalarTraits for the SmallCString class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YSMALLCSTRING_H
-#define OFP_YAML_YSMALLCSTRING_H
+#ifndef OFP_YAML_YSMALLCSTRING_H_
+#define OFP_YAML_YSMALLCSTRING_H_
 
 #include "ofp/smallcstring.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <size_t Size>
 struct ScalarTraits<ofp::SmallCString<Size>> {
@@ -47,7 +47,7 @@ struct ScalarTraits<ofp::SmallCString<Size>> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YSMALLCSTRING_H
+#endif  // OFP_YAML_YSMALLCSTRING_H_

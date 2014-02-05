@@ -19,19 +19,18 @@
 /// \brief Define integral types for dealing with host byteorder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BYTEORDER_H
-#define OFP_BYTEORDER_H
-
-#include "ofp/types.h"
+#ifndef OFP_BYTEORDER_H_
+#define OFP_BYTEORDER_H_
 
 #if defined(__linux__) || defined(__GNU__)
 #include <endian.h>
 #elif !defined(BYTE_ORDER)
 #include <machine/endian.h>
 #endif
+#include "ofp/types.h"
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 /// True if host is big endian.
 #if defined(BYTE_ORDER) && defined(BIG_ENDIAN) && BYTE_ORDER == BIG_ENDIAN
@@ -110,7 +109,7 @@ public:
   constexpr BigEndianAligned() = default;
   constexpr BigEndianAligned(Type n) : n_{HostSwapByteOrder(n)} {}
 
-  // TODO: add assignment and copy constructors?
+  // TODO(bfish): add assignment and copy constructors?
 
   constexpr operator Type() const { return HostSwapByteOrder(n_); }
   constexpr bool operator!() const { return !n_; }
@@ -124,7 +123,7 @@ private:
 template <class Type>
 class BigEndianUnaligned {
 public:
-  // TODO: add constexpr constructors.
+  // TODO(bfish): add constexpr constructors.
 
   operator Type() const {
     Type n;
@@ -152,7 +151,7 @@ struct NativeTypeOf {
   using type = decltype(check(std::declval<Type>()));
 };
 
-} // </namespace detail>
+}  // namespace detail
 
 /// \brief Types for big endian integers (aligned).
 
@@ -206,6 +205,6 @@ inline const Big32 *Big32_cast(const void *ptr) {
   return reinterpret_cast<const Big32 *>(ptr);
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_BYTEORDER_H
+#endif  // OFP_BYTEORDER_H_

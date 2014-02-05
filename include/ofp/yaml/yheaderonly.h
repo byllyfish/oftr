@@ -22,13 +22,13 @@
 /// BarrierRequest, BarrierRequestBuilder, BarrierReply, BarrierReplyBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YHEADERONLY_H
-#define OFP_YAML_YHEADERONLY_H
+#ifndef OFP_YAML_YHEADERONLY_H_
+#define OFP_YAML_YHEADERONLY_H_
 
 #include "ofp/headeronly.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::FeaturesRequest> {
@@ -102,7 +102,7 @@ struct MappingTraits<ofp::BarrierReplyBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YHEADERONLY_H
+#endif  // OFP_YAML_YHEADERONLY_H_

@@ -19,17 +19,17 @@
 /// \brief Defines the Header class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_HEADER_H
-#define OFP_HEADER_H
+#ifndef OFP_HEADER_H_
+#define OFP_HEADER_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/constants.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Header {
 public:
-  Header(OFPType type) : type_{type} {}
+  explicit Header(OFPType type) : type_{type} {}
 
   UInt8 version() const { return version_; }
   void setVersion(UInt8 version) { version_ = version; }
@@ -63,6 +63,6 @@ private:
 static_assert(sizeof(Header) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<Header>(), "Expected standard layout.");
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_HEADER_H
+#endif  // OFP_HEADER_H_

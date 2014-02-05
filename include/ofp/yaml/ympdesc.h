@@ -19,13 +19,13 @@
 /// \brief Defines the llvm::yaml::MappingTraits for the MPDesc class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YMPDESC_H
-#define OFP_YAML_YMPDESC_H
+#ifndef OFP_YAML_YMPDESC_H_
+#define OFP_YAML_YMPDESC_H_
 
 #include "ofp/mpdesc.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPDesc> {
@@ -51,7 +51,7 @@ struct MappingTraits<ofp::MPDescBuilder> {
   }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YMPDESC_H
+#endif  // OFP_YAML_YMPDESC_H_

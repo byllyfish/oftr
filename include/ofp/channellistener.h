@@ -19,21 +19,21 @@
 /// \brief Defines the abstract ChannelListener class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_CHANNELLISTENER_H
-#define OFP_CHANNELLISTENER_H
+#ifndef OFP_CHANNELLISTENER_H_
+#define OFP_CHANNELLISTENER_H_
 
-#include "ofp/types.h"
 #include <functional>
+#include "ofp/types.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Channel;
 class Message;
 class Exception;
 
-namespace sys { // <namespace sys>
+namespace sys {
 class Connection;
-} // </namespace sys>
+}  // namespace sys
 
 /// \brief An abstract class for listening to events and messages from a
 /// Channel.
@@ -81,6 +81,6 @@ protected:
   friend class sys::Connection;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_CHANNELLISTENER_H
+#endif  // OFP_CHANNELLISTENER_H_

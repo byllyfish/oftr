@@ -19,12 +19,12 @@
 /// \brief Provides utilties for padding structures to 8 byte boundaries.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PADDING_H
-#define OFP_PADDING_H
+#ifndef OFP_PADDING_H_
+#define OFP_PADDING_H_
 
 #include "ofp/types.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 template <size_t N>
 struct Padding {
@@ -34,12 +34,12 @@ struct Padding {
 
 constexpr size_t PadLength(size_t length) { return 8 * ((length + 7) / 8); }
 
-namespace detail { // <namespace detail>
+namespace detail {
 
 template <class ContentType>
 class PaddedWithPadding {
 public:
-  PaddedWithPadding(const ContentType &content) : content_{content} {}
+  explicit PaddedWithPadding(const ContentType &content) : content_{content} {}
   operator const ContentType &() const { return content_; }
   operator ContentType &() { return content_; }
 
@@ -55,7 +55,7 @@ private:
 template <class ContentType>
 class PaddedNoPadding {
 public:
-  PaddedNoPadding(const ContentType &content) : content_{content} {}
+  explicit PaddedNoPadding(const ContentType &content) : content_{content} {}
   operator const ContentType &() const { return content_; }
   operator ContentType &() { return content_; }
 
@@ -67,13 +67,13 @@ private:
   ContentType content_;
 };
 
-} // </namespace detail>
+}  // namespace detail
 
 template <class ContentType>
 using Padded = Conditional<sizeof(ContentType) % 8 != 0,
                            detail::PaddedWithPadding<ContentType>,
                            detail::PaddedNoPadding<ContentType>>;
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PADDING_H
+#endif  // OFP_PADDING_H_

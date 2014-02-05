@@ -19,12 +19,12 @@
 /// \brief Defines the GetConfigReply and GetConfigReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_GETCONFIGREPLY_H
-#define OFP_GETCONFIGREPLY_H
+#ifndef OFP_GETCONFIGREPLY_H_
+#define OFP_GETCONFIGREPLY_H_
 
 #include "ofp/protocolmsg.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class GetConfigReply
     : public ProtocolMsg<GetConfigReply, OFPT_GET_CONFIG_REPLY, 12, 12, false> {
@@ -69,6 +69,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_GETCONFIGREPLY_H
+#endif  // OFP_GETCONFIGREPLY_H_

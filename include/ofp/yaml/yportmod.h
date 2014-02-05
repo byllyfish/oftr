@@ -19,13 +19,13 @@
 /// \brief Defines the llvm::yaml::MappingTraits for PortMod and PortModBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YPORTMOD_H
-#define OFP_YAML_YPORTMOD_H
+#ifndef OFP_YAML_YPORTMOD_H_
+#define OFP_YAML_YPORTMOD_H_
 
 #include "ofp/portmod.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::PortMod> {
@@ -53,7 +53,7 @@ struct MappingTraits<ofp::PortModBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YPORTMOD_H
+#endif  // OFP_YAML_YPORTMOD_H_

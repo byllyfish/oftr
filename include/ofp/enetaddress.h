@@ -19,14 +19,14 @@
 /// \brief Defines the EnetAddress class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ENETADDRESS_H
-#define OFP_ENETADDRESS_H
+#ifndef OFP_ENETADDRESS_H_
+#define OFP_ENETADDRESS_H_
 
 #include "ofp/types.h"
 #include "ofp/array.h"
 #include "ofp/log.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class EnetAddress {
 public:
@@ -37,7 +37,7 @@ public:
   using ArrayType = std::array<UInt8, Length>;
 
   EnetAddress() : addr_{} {}
-  EnetAddress(const std::string &s);
+  /* implicit NOLINT */ EnetAddress(const std::string &s);
 
   bool parse(const std::string &s);
 
@@ -68,9 +68,9 @@ static_assert(IsStandardLayout<EnetAddress>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<EnetAddress>(),
               "Expected trivially copyable.");
 
-} // </namespace ofp>
+}  // namespace ofp
 
-namespace std { // <namespace std>
+namespace std {
 template <>
 struct hash<ofp::EnetAddress> {
   size_t operator()(const ofp::EnetAddress &rhs) const {
@@ -78,6 +78,6 @@ struct hash<ofp::EnetAddress> {
     return hasher(rhs.toArray());
   }
 };
-} // </namespace std>
+}  // namespace std
 
-#endif // OFP_ENETADDRESS_H
+#endif  // OFP_ENETADDRESS_H_

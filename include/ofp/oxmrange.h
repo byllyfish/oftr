@@ -19,13 +19,12 @@
 /// \brief Defines the OXMRange class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_OXMRANGE_H
-#define OFP_OXMRANGE_H
+#ifndef OFP_OXMRANGE_H_
+#define OFP_OXMRANGE_H_
 
 #include "ofp/oxmiterator.h"
-#include <ostream>
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class OXMRange {
 public:
@@ -104,6 +103,6 @@ inline std::ostream &operator<<(std::ostream &stream, const OXMRange &range) {
                 << " data=" << RawDataToHex(range.data(), range.size()) << ']';
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_OXMRANGE_H
+#endif  // OFP_OXMRANGE_H_

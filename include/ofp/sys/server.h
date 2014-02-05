@@ -19,11 +19,11 @@
 /// \brief Defines the abstract sys::Server class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_SERVER_H
-#define OFP_SYS_SERVER_H
+#ifndef OFP_SYS_SERVER_H_
+#define OFP_SYS_SERVER_H_
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 /// \brief Interface for server classes.
 class Server {
@@ -31,7 +31,7 @@ public:
 	virtual ~Server() {}
 };
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_SERVER_H
+#endif  // OFP_SYS_SERVER_H_

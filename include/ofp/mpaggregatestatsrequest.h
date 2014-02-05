@@ -20,12 +20,12 @@
 /// classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MPAGGREGATESTATSREQUEST_H
-#define OFP_MPAGGREGATESTATSREQUEST_H
+#ifndef OFP_MPAGGREGATESTATSREQUEST_H_
+#define OFP_MPAGGREGATESTATSREQUEST_H_
 
 #include "ofp/mpflowstatsrequest.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // MPAggregateStatsRequest is identical to MPFlowStatsRequest. Only the reply is
 // different.
@@ -33,6 +33,6 @@ namespace ofp { // <namespace ofp>
 using MPAggregateStatsRequest = MPFlowStatsRequest;
 using MPAggregateStatsRequestBuilder = MPFlowStatsRequestBuilder;
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MPAGGREGATESTATSREQUEST_H
+#endif  // OFP_MPAGGREGATESTATSREQUEST_H_

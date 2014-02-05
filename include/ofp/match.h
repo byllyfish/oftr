@@ -19,12 +19,12 @@
 /// \brief Defines the Match class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MATCH_H
-#define OFP_MATCH_H
+#ifndef OFP_MATCH_H_
+#define OFP_MATCH_H_
 
 #include "ofp/standardmatch.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Match {
 public:
@@ -50,6 +50,6 @@ private:
   OXMList oxm_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MATCH_H
+#endif  // OFP_MATCH_H_

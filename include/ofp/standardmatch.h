@@ -19,8 +19,8 @@
 /// \brief Defines the StandardMatch class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_STANDARDMATCH_H
-#define OFP_STANDARDMATCH_H
+#ifndef OFP_STANDARDMATCH_H_
+#define OFP_STANDARDMATCH_H_
 
 #include "ofp/oxmfields.h"
 #include "ofp/enetaddress.h"
@@ -31,8 +31,8 @@
 #include "ofp/log.h"
 #include "ofp/constants.h"
 
-namespace ofp {        // <namespace ofp>
-namespace deprecated { // <namespace deprecated>
+namespace ofp {
+namespace deprecated {
 
 struct OriginalMatch;
 
@@ -92,7 +92,7 @@ struct StandardMatch {
 static_assert(sizeof(StandardMatch) == OFPMT_STANDARD_LENGTH,
               "Unexpected size.");
 
-} // </namespace deprecated>
-} // </namespace ofp>
+}  // namespace deprecated
+}  // namespace ofp
 
-#endif // OFP_STANDARDMATCH_H
+#endif  // OFP_STANDARDMATCH_H_

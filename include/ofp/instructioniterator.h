@@ -19,12 +19,12 @@
 /// \brief Defines the InstructionIterator class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_INSTRUCTIONITERATOR_H
-#define OFP_INSTRUCTIONITERATOR_H
+#ifndef OFP_INSTRUCTIONITERATOR_H_
+#define OFP_INSTRUCTIONITERATOR_H_
 
 #include "ofp/instructiontype.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class InstructionIterator {
 public:
@@ -111,6 +111,6 @@ private:
   friend class InstructionRange;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_INSTRUCTIONITERATOR_H
+#endif  // OFP_INSTRUCTIONITERATOR_H_

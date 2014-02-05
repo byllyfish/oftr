@@ -20,13 +20,13 @@
 /// GetAsyncReplyBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YGETASYNCREPLY_H
-#define OFP_YAML_YGETASYNCREPLY_H
+#ifndef OFP_YAML_YGETASYNCREPLY_H_
+#define OFP_YAML_YGETASYNCREPLY_H_
 
 #include "ofp/getasyncreply.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::GetAsyncReply> {
@@ -57,7 +57,7 @@ struct MappingTraits<ofp::GetAsyncReplyBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YGETASYNCREPLY_H
+#endif  // OFP_YAML_YGETASYNCREPLY_H_

@@ -19,13 +19,13 @@
 /// \brief Defines the ByteList class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_BYTELIST_H
-#define OFP_BYTELIST_H
+#ifndef OFP_BYTELIST_H_
+#define OFP_BYTELIST_H_
 
-#include "ofp/byterange.h"
 #include <vector>
+#include "ofp/byterange.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 /// \brief Concrete class representing a mutable byte buffer.
 ///
@@ -43,7 +43,7 @@ public:
   ByteList() = default;
 
   /// \brief Construct byte buffer copying data in range.
-  ByteList(const ByteRange &range);
+  /* implicit NOLINT */ ByteList(const ByteRange &range);
 
   /// \brief Construct byte buffer copying the specified data.
   ByteList(const void *data, size_t length) { add(data, length); }
@@ -166,6 +166,6 @@ inline std::ostream &operator<<(std::ostream &os, const ByteList &value) {
   return os << RawDataToHex(value.data(), value.size(), ' ', 2);
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_BYTELIST_H
+#endif  // OFP_BYTELIST_H_

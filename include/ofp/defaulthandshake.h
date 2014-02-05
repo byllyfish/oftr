@@ -19,18 +19,18 @@
 /// \brief Defines the DefaultHandshake class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_DEFAULTHANDSHAKE_H
-#define OFP_DEFAULTHANDSHAKE_H
+#ifndef OFP_DEFAULTHANDSHAKE_H_
+#define OFP_DEFAULTHANDSHAKE_H_
 
 #include "ofp/channellistener.h"
 #include "ofp/protocolversions.h"
 #include "ofp/driver.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
-namespace sys { // <namespace sys>
+namespace sys {
 class Connection;
-} // </namespace sys>
+}  // namespace sys
 
 OFP_BEGIN_IGNORE_PADDING
 class DefaultHandshake : public ChannelListener {
@@ -69,6 +69,6 @@ private:
 };
 OFP_END_IGNORE_PADDING
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_DEFAULTHANDSHAKE_H
+#endif  // OFP_DEFAULTHANDSHAKE_H_

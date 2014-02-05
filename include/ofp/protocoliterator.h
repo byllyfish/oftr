@@ -1,10 +1,10 @@
-#ifndef OFP_PROTOCOLITERATOR_H
-#define OFP_PROTOCOLITERATOR_H
+#ifndef OFP_PROTOCOLITERATOR_H_
+#define OFP_PROTOCOLITERATOR_H_
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 template <class ElemType>
 class ProtocolIterable;
@@ -108,6 +108,6 @@ class ProtocolIteratorFixedType {
   // TODO
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PROTOCOLITERATOR_H
+#endif  // OFP_PROTOCOLITERATOR_H_

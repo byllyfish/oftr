@@ -19,13 +19,13 @@
 /// \brief Defines the OXMList class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_OXMLIST_H
-#define OFP_OXMLIST_H
+#ifndef OFP_OXMLIST_H_
+#define OFP_OXMLIST_H_
 
 #include "ofp/oxmrange.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // OXMList is an ordered sequence of values stored (without padding) in a
 // memory buffer.
@@ -34,7 +34,7 @@ namespace ofp { // <namespace ofp>
 class OXMList {
 public:
   OXMList() = default;
-  OXMList(const OXMRange &range);
+  /* implicit NOLINT */ OXMList(const OXMRange &range);
 
   OXMIterator begin() const { return OXMIterator(buf_.begin()); }
   OXMIterator end() const { return OXMIterator(buf_.end()); }
@@ -110,6 +110,6 @@ inline void OXMList::pad8(unsigned n) {
   }
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_OXMLIST_H
+#endif  // OFP_OXMLIST_H_

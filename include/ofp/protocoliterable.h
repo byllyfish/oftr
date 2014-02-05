@@ -1,13 +1,13 @@
-#ifndef OFP_PROTOCOLITERABLE_H
-#define OFP_PROTOCOLITERABLE_H
+#ifndef OFP_PROTOCOLITERABLE_H_
+#define OFP_PROTOCOLITERABLE_H_
 
 #include "ofp/protocoliterator.h"
 #include "ofp/byterange.h"
 #include "ofp/log.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
-namespace detail { // <namespace detail>
+namespace detail {
 
 /// Return true if given ByteRange is a valid protocol iterable.
 ///
@@ -29,7 +29,7 @@ bool IsProtocolIterableValid(const ByteRange &range, const char *context="");
 /// \return number of items in iterable.
 size_t ProtocolIterableItemCount(const ByteRange &range);
 
-} // </namespace detail>
+}  // namespace detail
 
 template <class ElemType>
 class ProtocolIterable {
@@ -52,6 +52,6 @@ private:
   const ByteRange range_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PROTOCOLITERABLE_H
+#endif  // OFP_PROTOCOLITERABLE_H_

@@ -19,14 +19,14 @@
 /// \brief Defines the sys::ConnectionTimer class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_CONNECTION_TIMER_H
-#define OFP_SYS_CONNECTION_TIMER_H
+#ifndef OFP_SYS_CONNECTION_TIMER_H_
+#define OFP_SYS_CONNECTION_TIMER_H_
 
 #include "ofp/sys/asio_utils.h"
 #include <map>
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 class Connection;
 
@@ -56,7 +56,7 @@ OFP_END_IGNORE_PADDING
 /// \brief Stores connection timers so we can look them up by ID.
 using ConnectionTimerMap = std::map<UInt32,std::unique_ptr<ConnectionTimer>>;
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_CONNECTION_TIMER_H
+#endif  // OFP_SYS_CONNECTION_TIMER_H_

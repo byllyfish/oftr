@@ -19,14 +19,14 @@
 /// \brief Defines the PacketIn and PacketInBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_PACKETIN_H
-#define OFP_PACKETIN_H
+#ifndef OFP_PACKETIN_H_
+#define OFP_PACKETIN_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class PacketIn : public ProtocolMsg<PacketIn, OFPT_PACKET_IN, 20, 65535, false> {
 public:
@@ -121,6 +121,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_PACKETIN_H
+#endif  // OFP_PACKETIN_H_

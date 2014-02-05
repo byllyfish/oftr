@@ -20,15 +20,15 @@
 /// EchoRequestBuilder, EchoReply, and EchoReplyBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YECHO_H
-#define OFP_YAML_YECHO_H
+#ifndef OFP_YAML_YECHO_H_
+#define OFP_YAML_YECHO_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 
 template <>
@@ -76,7 +76,7 @@ struct MappingTraits<ofp::EchoReplyBuilder> {
 };
 
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YECHO_H
+#endif  // OFP_YAML_YECHO_H_

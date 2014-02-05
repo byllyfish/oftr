@@ -19,22 +19,22 @@
 /// \brief Defines the ActionRange class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ACTIONRANGE_H
-#define OFP_ACTIONRANGE_H
+#ifndef OFP_ACTIONRANGE_H_
+#define OFP_ACTIONRANGE_H_
 
 #include "ofp/byterange.h"
 #include "ofp/writable.h"
 #include "ofp/actioniterator.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class ActionList;
 
 class ActionRange {
-public:
+ public:
   ActionRange() = default;
-  ActionRange(const ByteRange &range) : range_{range} {}
-  ActionRange(const ActionList &list);
+  /* implicit NOLINT */ ActionRange(const ByteRange &range) : range_{range} {}
+  /* implicit NOLINT */ ActionRange(const ActionList &list);
 
   size_t itemCount() const { return ActionIterator::distance(begin(), end()); }
 
@@ -57,13 +57,13 @@ public:
   /// version.
   void write(Writable *channel);
 
-private:
+ private:
   ByteRange range_;
 
   static unsigned writeSizeMinusSetFieldV1(ActionIterator iter);
   static void writeSetFieldV1(ActionIterator iter, Writable *channel);
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ACTIONRANGE_H
+#endif  // OFP_ACTIONRANGE_H_

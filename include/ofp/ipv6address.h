@@ -19,14 +19,14 @@
 /// \brief Defines the IPv6Address class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_IPV6ADDRESS_H
-#define OFP_IPV6ADDRESS_H
+#ifndef OFP_IPV6ADDRESS_H_
+#define OFP_IPV6ADDRESS_H_
 
 #include "ofp/types.h"
 #include "ofp/ipv4address.h"
 #include "ofp/array.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class IPv6Address {
 public:
@@ -37,9 +37,9 @@ public:
   using ArrayType = std::array<UInt8, Length>;
 
   IPv6Address() : addr_{} {}
-  IPv6Address(const IPv4Address &addr);
+  /* implicit NOLINT */ IPv6Address(const IPv4Address &addr);
   explicit IPv6Address(const ArrayType &a);
-  IPv6Address(const std::string &s);
+  /* implicit NOLINT */ IPv6Address(const std::string &s);
 
   /// \returns zone_id for link-local address.
   UInt32 zone() const;
@@ -92,9 +92,9 @@ inline std::ostream &operator<<(std::ostream &os, const IPv6Address &value) {
   return os << value.toString();
 }
 
-} // </namespace ofp>
+}  // namespace ofp
 
-namespace std { // <namespace std>
+namespace std {
 
 template <>
 struct hash<ofp::IPv6Address> {
@@ -103,6 +103,6 @@ struct hash<ofp::IPv6Address> {
   }
 };
 
-} // </namespace std>
+}  // namespace std
 
-#endif // OFP_IPV6ADDRESS_H
+#endif  // OFP_IPV6ADDRESS_H_

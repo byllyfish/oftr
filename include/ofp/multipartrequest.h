@@ -19,13 +19,13 @@
 /// \brief Defines the MultipartRequest and MultipartRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MULTIPARTREQUEST_H
-#define OFP_MULTIPARTREQUEST_H
+#ifndef OFP_MULTIPARTREQUEST_H_
+#define OFP_MULTIPARTREQUEST_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class MultipartRequest
     : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST, 16, 65528> {
@@ -95,6 +95,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MULTIPARTREQUEST_H
+#endif  // OFP_MULTIPARTREQUEST_H_

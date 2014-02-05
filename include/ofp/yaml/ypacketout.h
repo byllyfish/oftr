@@ -20,13 +20,13 @@
 /// PacketOutBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YPACKETOUT_H
-#define OFP_YAML_YPACKETOUT_H
+#ifndef OFP_YAML_YPACKETOUT_H_
+#define OFP_YAML_YPACKETOUT_H_
 
 #include "ofp/packetout.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::PacketOut> {
@@ -65,7 +65,7 @@ struct MappingTraits<ofp::PacketOutBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YPACKETOUT_H
+#endif  // OFP_YAML_YPACKETOUT_H_

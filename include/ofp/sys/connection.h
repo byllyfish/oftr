@@ -19,19 +19,19 @@
 /// \brief Defines the sys::Connection class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_CONNECTION_H
-#define OFP_SYS_CONNECTION_H
+#ifndef OFP_SYS_CONNECTION_H_
+#define OFP_SYS_CONNECTION_H_
 
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
 #include "ofp/defaulthandshake.h"
 #include "ofp/sys/connectiontimer.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class Message;
 
-namespace sys { // <namespace sys>
+namespace sys {
 class Engine;
 
 OFP_BEGIN_IGNORE_PADDING
@@ -110,7 +110,7 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
-#endif // OFP_SYS_CONNECTION_H
+#endif  // OFP_SYS_CONNECTION_H_

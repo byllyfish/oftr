@@ -1,10 +1,10 @@
-#ifndef OFP_YAML_YMPPORTSTATS_H
-#define OFP_YAML_YMPPORTSTATS_H
+#ifndef OFP_YAML_YMPPORTSTATS_H_
+#define OFP_YAML_YMPPORTSTATS_H_
 
 #include "ofp/mpportstats.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPPortStats> {
@@ -50,7 +50,7 @@ struct MappingTraits<ofp::MPPortStatsBuilder> {
   }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YMPPORTSTATS_H
+#endif  // OFP_YAML_YMPPORTSTATS_H_

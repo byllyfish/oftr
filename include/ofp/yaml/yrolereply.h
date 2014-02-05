@@ -20,13 +20,13 @@
 /// RoleReplyBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YROLEREPLY_H
-#define OFP_YAML_YROLEREPLY_H
+#ifndef OFP_YAML_YROLEREPLY_H_
+#define OFP_YAML_YROLEREPLY_H_
 
 #include "ofp/rolereply.h"
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::RoleReply> {
@@ -48,7 +48,7 @@ struct MappingTraits<ofp::RoleReplyBuilder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YROLEREPLY_H
+#endif  // OFP_YAML_YROLEREPLY_H_

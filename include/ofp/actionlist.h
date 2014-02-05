@@ -19,14 +19,14 @@
 /// \brief Defines the ActionList class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_ACTIONLIST_H
-#define OFP_ACTIONLIST_H
+#ifndef OFP_ACTIONLIST_H_
+#define OFP_ACTIONLIST_H_
 
 #include "ofp/types.h"
 #include "ofp/bytelist.h"
 #include "ofp/actionrange.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class ActionList {
 public:
@@ -53,6 +53,6 @@ private:
   ByteList buf_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_ACTIONLIST_H
+#endif  // OFP_ACTIONLIST_H_

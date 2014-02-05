@@ -20,13 +20,13 @@
 /// classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_QUEUEGETCONFIGREQUEST_H
-#define OFP_QUEUEGETCONFIGREQUEST_H
+#ifndef OFP_QUEUEGETCONFIGREQUEST_H_
+#define OFP_QUEUEGETCONFIGREQUEST_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 // Note: This message is replaced by a MultipartRequest in version 1.4.
 
@@ -71,6 +71,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_QUEUEGETCONFIGREQUEST_H
+#endif  // OFP_QUEUEGETCONFIGREQUEST_H_

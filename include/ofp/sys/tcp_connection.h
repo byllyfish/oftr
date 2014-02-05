@@ -19,8 +19,8 @@
 /// \brief Defines the sys::TCP_Connection class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_TCP_CONNECTION_H
-#define OFP_SYS_TCP_CONNECTION_H
+#ifndef OFP_SYS_TCP_CONNECTION_H_
+#define OFP_SYS_TCP_CONNECTION_H_
 
 #include "ofp/types.h"
 #include "ofp/sys/asio_utils.h"
@@ -31,8 +31,8 @@
 #include "ofp/deferred.h"
 #include "ofp/sys/buffered.h"
 
-namespace ofp { // <namespace ofp>
-namespace sys { // <namespace sys>
+namespace ofp {
+namespace sys {
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -104,9 +104,9 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace sys>
-} // </namespace ofp>
+}  // namespace sys
+}  // namespace ofp
 
 #include "ofp/sys/tcp_connection.ipp"
 
-#endif // OFP_SYS_TCP_CONNECTION_H
+#endif  // OFP_SYS_TCP_CONNECTION_H_

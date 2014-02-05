@@ -19,14 +19,14 @@
 /// \brief Defines MultipartReply and MultipartReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_MULTIPARTREPLY_H
-#define OFP_MULTIPARTREPLY_H
+#ifndef OFP_MULTIPARTREPLY_H_
+#define OFP_MULTIPARTREPLY_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 class MultipartReply
     : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY, 16, 65528> {
@@ -97,6 +97,6 @@ private:
   friend struct llvm::yaml::MappingTraits;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_MULTIPARTREPLY_H
+#endif  // OFP_MULTIPARTREPLY_H_

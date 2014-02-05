@@ -19,13 +19,13 @@
 /// \brief Defines the Experimenter class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_EXPERIMENTER_H
-#define OFP_EXPERIMENTER_H
+#ifndef OFP_EXPERIMENTER_H_
+#define OFP_EXPERIMENTER_H_
 
 #include "ofp/protocolmsg.h"
 #include "ofp/bytelist.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {
 
 /// \brief Implements immutable Experimenter protocol message.
 class Experimenter
@@ -77,6 +77,6 @@ private:
   ByteList data_;
 };
 
-} // </namespace ofp>
+}  // namespace ofp
 
-#endif // OFP_EXPERIMENTER_H
+#endif  // OFP_EXPERIMENTER_H_

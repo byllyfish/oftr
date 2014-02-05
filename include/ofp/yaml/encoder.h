@@ -19,8 +19,8 @@
 /// \brief Defines the yaml::Encoder class and its llvm::yaml::MappingTraits.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_ENCODER_H
-#define OFP_YAML_ENCODER_H
+#ifndef OFP_YAML_ENCODER_H_
+#define OFP_YAML_ENCODER_H_
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
@@ -31,8 +31,8 @@
 #include "ofp/log.h"
 #include "ofp/channel.h"
 
-namespace ofp { // <namespace ofp>
-namespace yaml { // <namespace yaml>
+namespace ofp {
+namespace yaml {
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -73,11 +73,11 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-} // </namespace yaml>
-} // </namespace ofp>
+}  // namespace yaml
+}  // namespace ofp
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<ofp::yaml::Encoder> {
@@ -101,7 +101,7 @@ struct MappingTraits<ofp::yaml::Encoder> {
     }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_ENCODER_H
+#endif  // OFP_YAML_ENCODER_H_

@@ -21,8 +21,8 @@
 /// OFPT_BARRIER_REQUEST, OFPT_BARRIER_REPLY.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_HEADERONLY_H
-#define OFP_HEADERONLY_H
+#ifndef OFP_HEADERONLY_H_
+#define OFP_HEADERONLY_H_
 
 #include "ofp/header.h"
 #include "ofp/writable.h"
@@ -30,8 +30,8 @@
 #include "ofp/padding.h"
 #include "ofp/log.h"
 
-namespace ofp {    // <namespace ofp>
-namespace detail { // <namespace detail>
+namespace ofp {
+namespace detail {
 
 template <class HeaderOnlyType>
 class HeaderOnlyBuilder;
@@ -94,7 +94,7 @@ private:
   Padding<3> pad_;
 };
 
-} // </namespace detail>
+}  // namespace detail
 
 /// \class ofp::FeaturesRequest
 /// \brief Represents an immutable OFPT_FEATURES_REQUEST message.
@@ -231,7 +231,7 @@ static_assert(IsStandardLayout<BarrierReply>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<BarrierReply>(),
               "Expected trivially copyable.");
 
-namespace detail { // <namespace detail>
+namespace detail {
 
 template <OFPType MsgType>
 const HeaderOnly<MsgType> *HeaderOnly<MsgType>::cast(const Message *message) {
@@ -275,7 +275,7 @@ UInt32 HeaderOnlyBuilder<HeaderOnlyType>::send(Writable *channel) {
   return xid;
 }
 
-} // </namespace detail>
-} // </namespace ofp>
+}  // namespace detail
+}  // namespace ofp
 
-#endif // OFP_HEADERONLY_H
+#endif  // OFP_HEADERONLY_H_
