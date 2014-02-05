@@ -24,6 +24,8 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/portrange.h"
+#include "ofp/portlist.h"
 
 namespace ofp {
 
@@ -37,7 +39,7 @@ class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY> {
   UInt32 capabilities() const { return capabilities_; }
   UInt32 reserved() const { return reserved_; }
 
-  //PortRange ports() const;
+  PortRange ports() const;
 
   bool validateLength(size_t length) const;
 
@@ -79,12 +81,13 @@ class FeaturesReplyBuilder {
     msg_.capabilities_ = capabilities;
   }
   void setReserved(UInt32 reserved) { msg_.reserved_ = reserved; }
+  void setPorts(const PortRange &ports) { ports_ = ports; }
 
   UInt32 send(Writable *channel);
 
  private:
   FeaturesReply msg_;
-  //PortList ports_;
+  PortList ports_;
 };
 
 }  // namespace ofp

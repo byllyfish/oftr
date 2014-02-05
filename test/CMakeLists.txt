@@ -18,6 +18,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/driver_unittest.cpp
 	ofp/encoder_unittest.cpp
 	ofp/enetaddress_unittest.cpp
+	ofp/featuresreply_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
 	ofp/mpflowstatsreply_unittest.cpp

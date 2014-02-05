@@ -114,6 +114,7 @@ set(LIBOFP_SOURCES
 	src/ofp/packetout.cpp
 	src/ofp/port.cpp
   src/ofp/portmod.cpp
+  src/ofp/portrange.cpp
 	src/ofp/portstatus.cpp
 	src/ofp/prerequisites.cpp
   src/ofp/protocoliterable.cpp
