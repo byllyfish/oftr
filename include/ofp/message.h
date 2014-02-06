@@ -82,6 +82,7 @@ public:
     assert(length == header()->length());
 
     if (!MsgType::isLengthValid(length)) {
+      log::debug("ProtocolMsg: Invalid length");
       return nullptr;
     }
 

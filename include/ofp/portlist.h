@@ -32,6 +32,9 @@ class PortList {
 public:
   PortList() = default;
 
+  const UInt8 *data() const { return buf_.data(); }
+  size_t size() const { return buf_.size(); }
+  
   void add(const Port &port) { buf_.add(&port, sizeof(Port)); }
   void add(const PortBuilder &port) { add(port.toPort()); }
 

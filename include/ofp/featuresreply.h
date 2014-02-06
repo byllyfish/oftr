@@ -30,7 +30,7 @@
 namespace ofp {
 
 /// \brief FeaturesReply is a concrete class for an OFPT_FEATURES_REPLY message.
-class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY> {
+class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY, 32> {
  public:
   const DatapathID &datapathId() const { return datapathId_; }
   UInt32 bufferCount() const { return bufferCount_; }

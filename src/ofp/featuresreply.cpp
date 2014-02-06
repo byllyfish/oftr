@@ -31,9 +31,25 @@ bool FeaturesReply::validateLength(size_t length) const {
     return false;
   }
 
-  // TODO check number of ports in reply if version < 4.
+  UInt8 version = header_.version();
 
-  return true;
+  // Version 4 and later don't include the port list.
+  if (version >= OFP_VERSION_4) {
+    return (length == sizeof(FeaturesReply));
+  }
+
+  // Make sure the size of the list is a multiple of the port size. (Note
+  // that we mean post-1.0 port size; validation happens after transmogrify.)
+  size_t portListSize = header_.length() - sizeof(FeaturesReply);
+
+  return (portListSize % sizeof(Port)) == 0;
+}
+
+PortRange FeaturesReply::ports() const
+{
+  assert(header_.length() >= sizeof(FeaturesReply));
+
+  return ByteRange{BytePtr(this) + sizeof(FeaturesReply), header_.length() - sizeof(FeaturesReply)};
 }
 
 FeaturesReplyBuilder::FeaturesReplyBuilder(const FeaturesReply *msg)

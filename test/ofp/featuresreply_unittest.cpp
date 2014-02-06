@@ -37,6 +37,21 @@ TEST(featuresreply, v4) {
   EXPECT_EQ(0x20, channel.size());
   EXPECT_HEX("0406002000000001222222222222222233333333445500006666666677777777",
              channel.data(), channel.size());
+
+  Message message{channel.data(), channel.size()};
+  message.transmogrify();
+
+  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  EXPECT_TRUE(reply);
+
+  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(0x33333333, reply->bufferCount());
+  EXPECT_EQ(0x44, reply->tableCount());
+  EXPECT_EQ(0x55, reply->auxiliaryId());
+  EXPECT_EQ(0x66666666, reply->capabilities());
+  EXPECT_EQ(0x77777777, reply->reserved());
+
+  EXPECT_EQ(0, reply->ports().size());
 }
 
 TEST(featuresreply, v3) {
@@ -78,6 +93,21 @@ TEST(featuresreply, v3) {
       "11111111000000002222222222220000506F7274203300000000000000000000"
       "444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB",
       channel.data(), channel.size());
+
+  Message message{channel.data(), channel.size()};
+  message.transmogrify();
+
+  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  EXPECT_TRUE(reply);
+
+  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(0x33333333, reply->bufferCount());
+  EXPECT_EQ(0x44, reply->tableCount());
+  EXPECT_EQ(0x55, reply->auxiliaryId());
+  EXPECT_EQ(0x66666666, reply->capabilities());
+  EXPECT_EQ(0x77777777, reply->reserved());
+
+  EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
 }
 
 TEST(featuresreply, v2) {
@@ -119,6 +149,21 @@ TEST(featuresreply, v2) {
       "11111111000000002222222222220000506F7274203300000000000000000000"
       "444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB",
       channel.data(), channel.size());
+
+  Message message{channel.data(), channel.size()};
+  message.transmogrify();
+
+  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  EXPECT_TRUE(reply);
+
+  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(0x33333333, reply->bufferCount());
+  EXPECT_EQ(0x44, reply->tableCount());
+  EXPECT_EQ(0x55, reply->auxiliaryId());
+  EXPECT_EQ(0x66666666, reply->capabilities());
+  EXPECT_EQ(0x77777777, reply->reserved());
+
+  EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
 }
 
 TEST(featuresreply, v1) {
@@ -160,4 +205,19 @@ TEST(featuresreply, v1) {
       "1111222222222222506F7274203300000000000000000000444444445555555566666666"
       "777777778888888899999999",
       channel.data(), channel.size());
+
+  Message message{channel.data(), channel.size()};
+  message.transmogrify();
+
+  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  ASSERT_TRUE(reply);
+
+  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(0x33333333, reply->bufferCount());
+  EXPECT_EQ(0x44, reply->tableCount());
+  EXPECT_EQ(0x55, reply->auxiliaryId());
+  EXPECT_EQ(0x66666666, reply->capabilities());
+  EXPECT_EQ(0x77777777, reply->reserved());
+
+  EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
 }

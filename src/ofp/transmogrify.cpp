@@ -21,6 +21,7 @@
 
 #include "ofp/transmogrify.h"
 #include "ofp/message.h"
+#include "ofp/featuresreply.h"
 #include "ofp/flowmod.h"
 #include "ofp/portstatus.h"
 #include "ofp/experimenter.h"
@@ -56,7 +57,9 @@ void Transmogrify::normalize() {
 
   UInt8 version = hdr->version();
   if (version == OFP_VERSION_1) {
-    if (type == FlowMod::type()) {
+    if (type == FeaturesReply::type()) {
+      normalizeFeaturesReplyV1();
+    } else if (type == FlowMod::type()) {
       normalizeFlowModV1();
     } else if (type == PortStatus::type()) {
       normalizePortStatusV1();
@@ -81,6 +84,50 @@ void Transmogrify::normalize() {
 
   assert(buf_.size() == header()->length());
 }
+
+void Transmogrify::normalizeFeaturesReplyV1() {
+  using deprecated::PortV1;
+
+  Header *hdr = header();
+
+  // TODO(bfish): min length already checked?
+  if (hdr->length() < sizeof(FeaturesReply)) {   
+    log::debug("Invalid FeaturesReply size.");
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  // Verify size of port list.
+  size_t portListSize = hdr->length() - sizeof(FeaturesReply);
+  if ((portListSize % sizeof(PortV1)) != 0) {
+    log::debug("Invalid FeaturesReply port list size.");
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  // Normalize the port structures from V1 to normal size.
+  size_t portCount = portListSize / sizeof(PortV1);
+  UInt8 *pkt = buf_.mutableData();
+  const PortV1 *portV1 = reinterpret_cast<const PortV1 *>(pkt + sizeof(FeaturesReply));
+
+  PortList ports;
+  for (size_t i = 0; i < portCount; ++i) {
+    PortBuilder newPort{*portV1};
+    ports.add(newPort);
+    ++portV1;
+  }
+
+  // Copy new port list into packet.
+  buf_.addUninitialized(ports.size() - portListSize);
+  pkt = buf_.mutableData();
+  assert(buf_.size() == sizeof(FeaturesReply) + ports.size());
+  std::memcpy(pkt + sizeof(FeaturesReply), ports.data(), ports.size());
+
+  // Update header length. N.B. Make sure we use current header ptr.
+  // TODO(bfish): Put header fix up at end of calling method?
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
 
 void Transmogrify::normalizeFlowModV1() {
   Header *hdr = header();

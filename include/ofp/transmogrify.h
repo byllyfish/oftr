@@ -39,6 +39,7 @@ public:
   Transmogrify(Message *message);
 
   void normalize();
+  void normalizeFeaturesReplyV1();
   void normalizeFlowModV1();
   void normalizePortStatusV1();
   void normalizeExperimenterV1();
