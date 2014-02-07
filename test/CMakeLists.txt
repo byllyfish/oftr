@@ -8,7 +8,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/asio_unittest.cpp
 	ofp/boost_asio_unittest.cpp
 	ofp/bucketlist_unittest.cpp
-	ofp/bytedata_unittest.cpp
 	ofp/bytelist_unittest.cpp
 	ofp/byteorder_unittest.cpp
 	ofp/byterange_unittest.cpp

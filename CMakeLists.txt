@@ -183,7 +183,6 @@ set(LIBOFP_HEADER_FILES
   include/ofp/bucketiterator.h
   include/ofp/bucketlist.h
   include/ofp/bucketrange.h
-  include/ofp/bytedata.h
   include/ofp/bytelist.h
   include/ofp/byteorder.h
   include/ofp/byterange.h
