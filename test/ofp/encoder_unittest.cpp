@@ -291,11 +291,54 @@ TEST(encoder, featuresreplyv1) {
      auxiliary_id: 0
      capabilities: 0
      reserved: 0
+     ports:
    )""";
 
   testEncoderSuccess(
       input, 0x20,
       "01060020000000BF000001020304050600000100FF0000000000000000000000");
+}
+
+TEST(encoder, featuresreplyv1ports) {
+  const char *input = R"""(
+   type: OFPT_FEATURES_REPLY
+   version: 1
+   xid: 0xBF
+   msg:
+     datapath_id: '0000:0102:0304:0506'
+     n_buffers: 256
+     n_tables: 255
+     auxiliary_id: 0
+     capabilities: 0
+     reserved: 0
+     ports:
+       - port_no: 0x1111
+         hw_addr: 22-22-22-22-22-22
+         name: Port 1
+         config: 0x33333333
+         state:  0x44444444
+         curr:   0x55555555
+         advertised: 0x66666666
+         supported:  0x77777777
+         peer:  0x88888888
+         curr_speed: 0x99999999
+         max_speed: 0xAAAAAAAA
+       - port_no: 0xBBBB
+         hw_addr: CC-CC-CC-CC-CC-CC
+         name: Port 2
+         config: 0x33333333
+         state:  0x44444444
+         curr:   0x55555555
+         advertised: 0x66666666
+         supported:  0x77777777
+         peer:  0x88888888
+         curr_speed: 0x99999999
+         max_speed: 0xAAAAAAAA
+   )""";
+
+  testEncoderSuccess(
+      input, 0x0080,
+      "01060080000000BF000001020304050600000100FF00000000000000000000001111222222222222506F7274203100000000000000000000333333334444444455555555666666667777777788888888BBBBCCCCCCCCCCCC506F7274203200000000000000000000333333334444444455555555666666667777777788888888");
 }
 
 TEST(encoder, featuresreplyv4) {
@@ -310,6 +353,7 @@ TEST(encoder, featuresreplyv4) {
      auxiliary_id: 0
      capabilities: 0
      reserved: 0
+     ports:
    )""";
 
   testEncoderSuccess(

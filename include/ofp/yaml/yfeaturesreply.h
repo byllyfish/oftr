@@ -26,6 +26,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/featuresreply.h"
 #include "ofp/yaml/ydatapathid.h"
+#include "ofp/yaml/yport.h"
 
 namespace llvm {
 namespace yaml {
@@ -50,6 +51,9 @@ struct MappingTraits<ofp::FeaturesReply> {
         io.mapRequired("auxiliary_id", auxiliaryId);
         io.mapRequired("capabilities", capabilities);
         io.mapRequired("reserved", reserved);
+
+        PortRange ports = msg.ports();
+        io.mapRequired("ports", ports);
     }
 };
 
@@ -80,6 +84,10 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
         msg.setAuxiliaryId(auxiliaryId);
         msg.setCapabilities(capabilities);
         msg.setReserved(reserved);
+
+        PortList ports;
+        io.mapRequired("ports", ports);
+        msg.setPorts(ports);
     }
 };
 
