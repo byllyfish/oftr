@@ -48,6 +48,8 @@ public:
   /// \brief Construct byte buffer copying the specified data.
   ByteList(const void *data, size_t length) { add(data, length); }
 
+  explicit ByteList(const std::string &s) : ByteList{s.data(), s.size()} {}
+
   /// \returns pointer to beginning of constant byte buffer.
   const UInt8 *begin() const { return &buf_[0]; }
 

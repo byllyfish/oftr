@@ -55,16 +55,12 @@ TEST(protocoliterable, valid_exact) {
 }
 
 TEST(protocoliterable, invalid1) {
-  auto d1 = ByteRange{HexToRawData("FFFFFFFFFFFFFFFFFF")};
-  auto d2 = ByteRange{HexToRawData("FFFF0009FFFFFFFF")};
-  auto d3 = ByteRange{HexToRawData("FFFFFFFFFFFFFFFF")};
-
   // Need to convert to ByteList for alignment; string data not necessarily
   // aligned to an 8-byte boundary.
 
-  ByteList r1{d1};
-  ByteList r2{d2};
-  ByteList r3{d3};
+  ByteList r1{HexToRawData("FFFFFFFFFFFFFFFFFF")};
+  ByteList r2{HexToRawData("FFFF0009FFFFFFFF")};
+  ByteList r3{HexToRawData("FFFFFFFFFFFFFFFF")};
 
   EXPECT_FALSE(IsProtocolIterableValid(r1));
   EXPECT_FALSE(IsProtocolIterableValid(r2));
@@ -72,11 +68,8 @@ TEST(protocoliterable, invalid1) {
 }
 
 TEST(protocoliterable, invalid2) {
-  auto d1 = ByteRange{HexToRawData("ffff0008ffffffffff")};
-  auto d2 = ByteRange{HexToRawData("ffff0006ffffffffffffffffffffffff")};
-
-  ByteList r1{d1};
-  ByteList r2{d2};
+  ByteList r1{HexToRawData("ffff0008ffffffffff")};
+  ByteList r2{HexToRawData("ffff0006ffffffffffffffffffffffff")};
 
   EXPECT_FALSE(IsProtocolIterableValid(r1));
   EXPECT_FALSE(IsProtocolIterableValid(r2));
