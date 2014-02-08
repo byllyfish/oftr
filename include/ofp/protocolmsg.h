@@ -68,7 +68,7 @@ public:
   }
 
   ByteRange msgBody() const {
-    return ByteRange{msgHeader() + 1, msgHeader()->length() - 8};
+    return ByteRange{msgHeader() + 1, msgHeader()->length() - sizeof(Header)};
   }
 };
 
