@@ -41,7 +41,14 @@ unsigned OutputJson::beginSequence() {
 
 void OutputJson::endSequence() { output("]"); }
 
-bool OutputJson::preflightElement(unsigned, void *&) { return true; }
+bool OutputJson::preflightElement(unsigned, void *&) { 
+  if (NeedComma)
+    output(",");
+  if (Column > 120) {
+    outputNewLine();
+  }
+  return true;
+}
 
 void OutputJson::postflightElement(void *) { NeedComma = true; }
 
