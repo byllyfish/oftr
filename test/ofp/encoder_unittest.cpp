@@ -978,6 +978,42 @@ TEST(encoder, flowmodv4_2) {
              encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowmodv4_fail) {
+  const char *input = R"""(
+      type:            OFPT_FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111111
+        cookie_mask:     0x2222222222222222
+        table_id:        0x33
+        command:         0x44
+        idle_timeout:    0x5555
+        hard_timeout:    0x6666
+        priority:        0x7777
+        buffer_id:       0x88888888
+        out_port:        0x99999999
+        out_group:       0xAAAAAAAA
+        flags:           0xBBBB
+        match:           
+          - type:            OFB_IN_PORT
+            value:           13
+          - type:            OFB_TCP_DST
+            value:           80
+        instructions:
+          - type:    OFPIT_APPLY_ACTIONS
+            value:
+               - action: OFPAT_SET_FIELD
+                 type: OFB_IPV4_DST
+                 value: 192.168.2.1
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:6:9: error: Match is ambiguous.\n        cookie:          0x1111111111111111\n        ^\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
 TEST(encoder, flowmodv1) {
   const char *input = R"""(
       type:            OFPT_FLOW_MOD

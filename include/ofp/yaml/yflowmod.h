@@ -75,6 +75,11 @@ struct MappingTraits<ofp::FlowModBuilder> {
 
     io.mapRequired("match", msg.match_);
     io.mapRequired("instructions", msg.instructions_);
+
+    if (!msg.match_.validate()) {
+        // TODO(bfish) better error message
+        io.setError("Match is ambiguous.");
+    }
   }
 };
 
