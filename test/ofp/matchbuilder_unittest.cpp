@@ -272,3 +272,37 @@ TEST(matchbuilder, OFP_ETH_SRC_mask) {
   EXPECT_HEX("8000070C001122334455FFFFFF000000", match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }
+
+TEST(matchbuilder, test_placeholders_1) {
+  MatchBuilder match;
+  match.add(OFB_IN_PORT{27});
+
+  EXPECT_HEX("800000040000001B", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+  
+  match.add(OFB_TCP_SRC{80});
+
+  EXPECT_HEX("800000040000001B7FF2010080000A02080080000A0286DD800014010680001A020050", match.data(), match.size());
+  EXPECT_TRUE(!match.validate());
+
+  match.add(OFB_ETH_TYPE{0x0800});
+  EXPECT_HEX("800000040000001B80000A020800800014010680001A020050", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+}
+
+TEST(matchbuilder, test_placeholders_2) {
+  MatchBuilder match;
+  match.add(OFB_TCP_SRC{80});
+
+  EXPECT_HEX("7FF2010080000A02080080000A0286DD800014010680001A020050", match.data(), match.size());
+  EXPECT_TRUE(!match.validate());
+
+  match.add(OFB_ETH_TYPE{0x0800});
+  EXPECT_HEX("80000A020800800014010680001A020050", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+
+  match.add(OFB_IN_PORT{27});
+
+  EXPECT_HEX("80000A020800800014010680001A020050800000040000001B", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+}

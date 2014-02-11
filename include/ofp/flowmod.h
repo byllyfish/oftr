@@ -33,7 +33,7 @@
 namespace ofp {
 
 class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
-public:
+ public:
   UInt64 cookie() const { return cookie_; }
   UInt64 cookieMask() const { return cookieMask_; }
   UInt8 tableId() const { return tableId_; }
@@ -53,7 +53,7 @@ public:
 
   bool validateLength(size_t length) const;
 
-private:
+ private:
   Header header_;
   Big64 cookie_ = 0;
   Big64 cookieMask_ = 0;
@@ -91,7 +91,7 @@ static_assert(IsStandardLayout<FlowMod>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<FlowMod>(), "Expected trivially copyable.");
 
 class FlowModBuilder {
-public:
+ public:
   FlowModBuilder() = default;
   explicit FlowModBuilder(const FlowMod *msg);
 
@@ -107,7 +107,10 @@ public:
   void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
   void setFlags(UInt16 flags) { msg_.flags_ = flags; }
 
-  void setMatch(const MatchBuilder &match) { match_ = match; }
+  void setMatch(const MatchBuilder &match) {
+    assert(match.validate());
+    match_ = match;
+  }
 
   void setInstructions(const InstructionList &instructions) {
     instructions_ = instructions;
@@ -115,7 +118,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   FlowMod msg_;
   MatchBuilder match_;
   InstructionList instructions_;

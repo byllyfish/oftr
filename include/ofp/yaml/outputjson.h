@@ -54,13 +54,9 @@ public:
 
 private:
   void output(llvm::StringRef s);
-  void outputUpToEndOfLine(llvm::StringRef s);
-  void newLineCheck();
-  void outputNewLine();
   void paddedKey(llvm::StringRef key);
 
   llvm::raw_ostream       &Out;
-  int                      Column;
   bool                     NeedComma;
 };
 

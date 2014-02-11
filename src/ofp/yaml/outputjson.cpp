@@ -4,7 +4,7 @@ using namespace ofp::yaml;
 using namespace llvm;
 
 OutputJson::OutputJson(llvm::raw_ostream &yout, void *ctxt)
-    : IO{ctxt}, Out(yout), Column{0}, NeedComma{false} {}
+    : IO{ctxt}, Out(yout), NeedComma{false} {}
 
 OutputJson::~OutputJson() {}
 
@@ -44,9 +44,6 @@ void OutputJson::endSequence() { output("]"); }
 bool OutputJson::preflightElement(unsigned, void *&) { 
   if (NeedComma)
     output(",");
-  if (Column > 120) {
-    outputNewLine();
-  }
   return true;
 }
 
@@ -63,9 +60,6 @@ void OutputJson::endFlowSequence() { output("]"); }
 bool OutputJson::preflightFlowElement(unsigned, void *&) {
   if (NeedComma)
     output(",");
-  if (Column > 120) {
-    outputNewLine();
-  }
   return true;
 }
 
@@ -172,15 +166,7 @@ void OutputJson::setError(const Twine &message) {}
 bool OutputJson::canElideEmptySequence() { return false; }
 
 void OutputJson::output(StringRef s) {
-  Column += s.size();
   Out << s;
-}
-
-void OutputJson::outputUpToEndOfLine(StringRef s) { output(s); }
-
-void OutputJson::outputNewLine() {
-  Out << "\n";
-  Column = 0;
 }
 
 void OutputJson::paddedKey(StringRef key) {
@@ -189,11 +175,11 @@ void OutputJson::paddedKey(StringRef key) {
   output("\":");
 }
 
-void OutputJson::beginDocuments() { outputUpToEndOfLine("---\n"); }
+void OutputJson::beginDocuments() { output("---\n"); }
 
 bool OutputJson::preflightDocument(unsigned index) {
   if (index > 0)
-    outputUpToEndOfLine("\n---\n");
+    output("\n---\n");
   return true;
 }
 

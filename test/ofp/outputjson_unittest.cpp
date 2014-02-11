@@ -15,14 +15,17 @@ TEST(outputjson, hello) {
   Message msg{channel.data(), channel.size()};
   Decoder decode{&msg, true};
 
-  const char *expected = "---\n{\"type\":\"OFPT_HELLO\",\"xid\":1,\"version\":"
-                         "4,\"msg\":{\"versions\":[1,2,3,4]}}\n...\n";
+  const char *expected =
+      "---\n{\"type\":\"OFPT_HELLO\",\"xid\":1,\"version\":"
+      "4,\"msg\":{\"versions\":[1,2,3,4]}}\n...\n";
   EXPECT_EQ(expected, decode.result());
 }
 
 TEST(outputjson, flowmod) {
   MatchBuilder match;
   match.add(OFB_IN_PORT{27});
+  match.add(OFB_TCP_SRC{80});
+  match.add(OFB_ETH_TYPE{0x0800});
 
   InstructionList instructions;
   instructions.add(IT_GOTO_TABLE{3});
@@ -42,23 +45,22 @@ TEST(outputjson, flowmod) {
       "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":0,\"idle_"
       "timeout\":0,\"hard_timeout\":0,\"priority\":0,\"buffer_id\":0,\"out_"
       "port\":0,\"out_group\":0,\"flags\":0,\"match\":[{\"type\":\"OFB_IN_"
-      "PORT\",\"value\":27}],\"instructions\":[{\"type\":\"OFPIT_GOTO_TABLE\","
+      "PORT\",\"value\":27},{\"type\":\"OFB_ETH_TYPE\",\"value\":2048},{"
+      "\"type\":\"OFB_IP_PROTO\",\"value\":6},{\"type\":\"OFB_TCP_SRC\","
+      "\"value\":80}],\"instructions\":[{\"type\":\"OFPIT_GOTO_TABLE\","
       "\"value\":{\"table_id\":3}}]}}\n...\n";
   EXPECT_EQ(expected, decodeJson.result());
-
-  // Decoder decodeYaml{&msg};
-  // std::cout << decodeYaml.result();
 }
 
 TEST(outputjson, scalarString) {
 
   auto testOne = [](llvm::StringRef s) {
-    //log::debug(s.str());
+    // log::debug(s.str());
     std::string result;
     llvm::raw_string_ostream rss{result};
     OutputJson out{rss};
     out.scalarString(s);
-    //log::debug("->", rss.str());
+    // log::debug("->", rss.str());
     return result;
   };
 
