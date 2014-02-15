@@ -27,8 +27,8 @@ using ofp::api::ApiConnectionStdio;
 ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
                                        asio::posix::stream_descriptor input,
                                        asio::posix::stream_descriptor output,
-                                       bool listening)
-    : ApiConnection{server, listening},
+                                       bool loopbackMode)
+    : ApiConnection{server, loopbackMode},
       input_{std::move(input)},
       output_{std::move(output)} {}
 

@@ -28,8 +28,8 @@
 
 using ofp::api::ApiConnection;
 
-ApiConnection::ApiConnection(ApiServer *server, bool listening)
-    : server_{server}, isListening_{listening} {
+ApiConnection::ApiConnection(ApiServer *server, bool loopbackMode)
+    : server_{server}, isLoopbackMode_{loopbackMode} {
   server_->onConnect(this);
 }
 
@@ -75,7 +75,7 @@ void ApiConnection::onLoopback(ApiLoopback *loopback) {
 
 void ApiConnection::onListenRequest(ApiListenRequest *listenReq) {
   server_->onListenRequest(this, listenReq);
-  isListening_ = true;
+  isLoopbackMode_ = false;
 }
 
 void ApiConnection::onListenReply(ApiListenReply *listenReply) {
@@ -84,6 +84,7 @@ void ApiConnection::onListenReply(ApiListenReply *listenReply) {
 
 void ApiConnection::onConnectRequest(ApiConnectRequest *connectReq) {
   server_->onConnectRequest(this, connectReq);
+  isLoopbackMode_ = false;
 }
 
 void ApiConnection::onConnectReply(ApiConnectReply *connectReply) {
@@ -179,9 +180,18 @@ void ApiConnection::handleEvent(const std::string &eventText) {
     });
 
     if (encoder.error().empty()) {
-      if (isListening_) {
-        Channel *channel = server_->findChannel(encoder.datapathId());
 
+      if (isLoopbackMode_) {
+        // If an OpenFlow YAML message is received in loopback mode,
+        // return its binary value in a loopback message.
+        ApiLoopback reply;
+        reply.params.validate = LIBOFP_NOT_PRESENT;
+        reply.params.data.set(encoder.data(), encoder.size());
+        write(reply.toString(isFormatJson_));
+      } else {
+        // Otherwise, find the channel for the datapath and write the message
+        // out that channel.
+        Channel *channel = server_->findChannel(encoder.datapathId());
         if (channel) {
           channel->write(encoder.data(), encoder.size());
           channel->flush();
@@ -190,16 +200,6 @@ void ApiConnection::handleEvent(const std::string &eventText) {
               "Unknown Datapath ID: " + encoder.datapathId().toString();
           onYamlError(errorMsg, RawDataToHex(encoder.data(), encoder.size()));
         }
-
-      } else {
-        assert(!isListening_);
-
-        // If an OpenFlow YAML message is received before we start
-        // listening, return its binary value in a loopback message.
-        ApiLoopback reply;
-        reply.params.validate = LIBOFP_NOT_PRESENT;
-        reply.params.data.set(encoder.data(), encoder.size());
-        write(reply.toString(isFormatJson_));
       }
 
     } else {

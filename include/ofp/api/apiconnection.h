@@ -37,7 +37,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
  public:
-  explicit ApiConnection(ApiServer *server, bool listening);
+  explicit ApiConnection(ApiServer *server, bool loopbackMode);
   virtual ~ApiConnection();
 
   virtual void asyncAccept() = 0;
@@ -67,7 +67,7 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
  private:
   ApiServer *server_;
   std::string text_;
-  bool isListening_ = false;
+  bool isLoopbackMode_ = true;
   bool isFormatJson_ = false;
 
   static void cleanInputLine(std::string *line);

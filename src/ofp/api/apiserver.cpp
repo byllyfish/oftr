@@ -35,10 +35,10 @@ ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
 
-  bool listening = (defaultChannel != nullptr);
+  bool loopbackMode = (defaultChannel == nullptr);
   auto conn = std::make_shared<ApiConnectionStdio>(
       this, asio::posix::stream_descriptor{engine_->io()},
-      asio::posix::stream_descriptor{engine_->io()}, listening);
+      asio::posix::stream_descriptor{engine_->io()}, loopbackMode);
 
   if (inputFD >= 0) {
     conn->setInput(inputFD);
