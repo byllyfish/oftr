@@ -98,7 +98,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
     break;
   }
   case Error::type() : {
-    ErrorBuilder error;
+    ErrorBuilder error{header.xid()};
     io.mapOptional("msg", error);
     error.send(&channel_);
     break;

@@ -29,7 +29,9 @@ void TestAgent::onMessage(const Message *message) {
     BarrierReplyBuilder reply{message};
     reply.send(message->source());
   } else if (message->isRequestType()) {
-    ErrorBuilder error{OFPET_BAD_REQUEST, OFPBRC_BAD_TYPE};
+    ErrorBuilder error{message->xid()};
+    error.setErrorType(OFPET_BAD_REQUEST);
+    error.setErrorCode(OFPBRC_BAD_TYPE);
     error.setErrorData(message);
     error.send(message->source());
   }

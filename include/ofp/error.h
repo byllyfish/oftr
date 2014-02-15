@@ -55,14 +55,12 @@ static_assert(IsTriviallyCopyable<Error>(), "Expected trivially copyable.");
 /// \brief Implements Error protocol message builder.
 class ErrorBuilder {
 public:
-  ErrorBuilder(UInt16 type = 0, UInt16 code = 0);
-
+  explicit ErrorBuilder(UInt32 xid);
   explicit ErrorBuilder(const Error *msg);
 
   void setErrorType(UInt16 type) { msg_.type_ = type; }
-
   void setErrorCode(UInt16 code) { msg_.code_ = code; }
-
+  
   void setErrorData(const void *data, size_t length) {
     data_.set(data, length);
   }

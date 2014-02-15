@@ -35,9 +35,8 @@ ByteRange Error::errorData() const {
                    header_.length() - sizeof(Error)};
 }
 
-ErrorBuilder::ErrorBuilder(UInt16 type, UInt16 code) {
-  msg_.type_ = type;
-  msg_.code_ = code;
+ErrorBuilder::ErrorBuilder(UInt32 xid) {
+  msg_.header_.setXid(xid);
 }
 
 ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg} {

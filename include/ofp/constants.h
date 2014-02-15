@@ -101,54 +101,54 @@ enum {
 // METER_MOD                    -      -      -     29
 
 enum OFPType : UInt8 {
-  OFPT_HELLO = 0,        // Symmetric message
-  OFPT_ERROR = 1,        // Symmetric message
-  OFPT_ECHO_REQUEST = 2, // Symmetric message
-  OFPT_ECHO_REPLY = 3,   // Symmetric message
-  OFPT_EXPERIMENTER = 4, // Symmetric message
+  OFPT_HELLO = 0,         // Symmetric message
+  OFPT_ERROR = 1,         // Symmetric message
+  OFPT_ECHO_REQUEST = 2,  // Symmetric message
+  OFPT_ECHO_REPLY = 3,    // Symmetric message
+  OFPT_EXPERIMENTER = 4,  // Symmetric message
 
   // Switch configuration messages.
-  OFPT_FEATURES_REQUEST = 5,   // Controller -> switch message
-  OFPT_FEATURES_REPLY = 6,     // Controller -> switch message
-  OFPT_GET_CONFIG_REQUEST = 7, // Controller -> switch message
-  OFPT_GET_CONFIG_REPLY = 8,   // Controller -> switch message
-  OFPT_SET_CONFIG = 9,         // Controller -> switch message
+  OFPT_FEATURES_REQUEST = 5,    // Controller -> switch message
+  OFPT_FEATURES_REPLY = 6,      // Controller -> switch message
+  OFPT_GET_CONFIG_REQUEST = 7,  // Controller -> switch message
+  OFPT_GET_CONFIG_REPLY = 8,    // Controller -> switch message
+  OFPT_SET_CONFIG = 9,          // Controller -> switch message
 
   // Asynchronous messages.
-  OFPT_PACKET_IN = 10,    // Switch -> controller message
-  OFPT_FLOW_REMOVED = 11, // Switch -> controller message
-  OFPT_PORT_STATUS = 12,  // Switch -> controller message
+  OFPT_PACKET_IN = 10,     // Async Switch -> controller message
+  OFPT_FLOW_REMOVED = 11,  // Async Switch -> controller message
+  OFPT_PORT_STATUS = 12,   // AsyncSwitch -> controller message
 
   // Controller command messages.
-  OFPT_PACKET_OUT = 13, // Controller -> switch message
-  OFPT_FLOW_MOD = 14,   // Controller -> switch message
-  OFPT_GROUP_MOD = 15,  // Controller -> switch message
-  OFPT_PORT_MOD = 16,   // Controller -> switch message
-  OFPT_TABLE_MOD = 17,  // Controller -> switch message
+  OFPT_PACKET_OUT = 13,  // Controller -> switch message
+  OFPT_FLOW_MOD = 14,    // Controller -> switch message
+  OFPT_GROUP_MOD = 15,   // Controller -> switch message
+  OFPT_PORT_MOD = 16,    // Controller -> switch message
+  OFPT_TABLE_MOD = 17,   // Controller -> switch message
 
   // Multipart messages.
-  OFPT_MULTIPART_REQUEST = 18, // Controller -> switch message
-  OFPT_MULTIPART_REPLY = 19,   // Controller -> switch message
+  OFPT_MULTIPART_REQUEST = 18,  // Controller -> switch message
+  OFPT_MULTIPART_REPLY = 19,    // Controller -> switch message
 
   // Barrier messages.
-  OFPT_BARRIER_REQUEST = 20, // Controller -> switch message
-  OFPT_BARRIER_REPLY = 21,   // Controller -> switch message
+  OFPT_BARRIER_REQUEST = 20,  // Controller -> switch message
+  OFPT_BARRIER_REPLY = 21,    // Controller -> switch message
 
   // Queue Configuration messages.
-  OFPT_QUEUE_GET_CONFIG_REQUEST = 22, // Controller -> switch message
-  OFPT_QUEUE_GET_CONFIG_REPLY = 23,   // Controller -> switch message
+  OFPT_QUEUE_GET_CONFIG_REQUEST = 22,  // Controller -> switch message
+  OFPT_QUEUE_GET_CONFIG_REPLY = 23,    // Controller -> switch message
 
   // Controller role change request messages.
-  OFPT_ROLE_REQUEST = 24, // Controller -> switch message
-  OFPT_ROLE_REPLY = 25,   // Controller -> switch message
+  OFPT_ROLE_REQUEST = 24,  // Controller -> switch message
+  OFPT_ROLE_REPLY = 25,    // Controller -> switch message
 
   // Asynchronous message configuration.
-  OFPT_GET_ASYNC_REQUEST = 26, // Controller -> switch message
-  OFPT_GET_ASYNC_REPLY = 27,   // Controller -> switch message
-  OFPT_SET_ASYNC = 28,         // Controller -> switch message
+  OFPT_GET_ASYNC_REQUEST = 26,  // Controller -> switch message
+  OFPT_GET_ASYNC_REPLY = 27,    // Controller -> switch message
+  OFPT_SET_ASYNC = 28,          // Controller -> switch message
 
   // Meters and rate limiters configuration messages.
-  OFPT_METER_MOD = 29, // Controller -> switch message
+  OFPT_METER_MOD = 29,  // Controller -> switch message
   OFPT_LAST = OFPT_METER_MOD,
   /// Used internally to flag denote an improper version/type combination.
   OFPT_UNSUPPORTED = 0xF9
@@ -156,10 +156,10 @@ enum OFPType : UInt8 {
 
 std::ostream &operator<<(std::ostream &os, OFPType type);
 
-/* Flags to indicate behavior of the physical port.  These flags are
- * used in ofp_port to describe the current configuration.  They are
- * used in the ofp_port_mod message to configure the port's behavior.
- */
+// Flags to indicate behavior of the physical port.  These flags are
+// used in ofp_port to describe the current configuration.  They are
+// used in the ofp_port_mod message to configure the port's behavior.
+
 enum ofp_port_config {
   OFPPC_PORT_DOWN = 1 << 0,   /* Port is administratively down. */
   OFPPC_NO_RECV = 1 << 2,     /* Drop all packets received by port. */
@@ -190,7 +190,7 @@ enum ofp_port_no {
                    used in packet-out messages. */
   OFPP_NORMAL = 0xfffffffa, /* Process with normal L2/L3 switching. */
   OFPP_FLOOD = 0xfffffffb,  /* All physical ports in VLAN, except input
-              port and those blocked or link down. */
+             port and those blocked or link down. */
   OFPP_ALL = 0xfffffffc,        /* All physical ports except input port. */
   OFPP_CONTROLLER = 0xfffffffd, /* Send to controller. */
   OFPP_LOCAL = 0xfffffffe,      /* Local openflow "port". */
@@ -245,11 +245,11 @@ namespace deprecated {
 
 namespace v1 {
 enum OFPType : UInt8 {
-  OFPT_HELLO = 0,        // Symmetric message
-  OFPT_ERROR = 1,        // Symmetric message
-  OFPT_ECHO_REQUEST = 2, // Symmetric message
-  OFPT_ECHO_REPLY = 3,   // Symmetric message
-  OFPT_VENDOR = 4,       // Symmetric message (OFPT_EXPERIMENTER)
+  OFPT_HELLO = 0,         // Symmetric message
+  OFPT_ERROR = 1,         // Symmetric message
+  OFPT_ECHO_REQUEST = 2,  // Symmetric message
+  OFPT_ECHO_REPLY = 3,    // Symmetric message
+  OFPT_VENDOR = 4,        // Symmetric message (OFPT_EXPERIMENTER)
 
   /* Switch configuration messages. */
   OFPT_FEATURES_REQUEST = 5,   /* Controller/switch message */
@@ -631,7 +631,7 @@ enum ofp_meter_mod_failed_code {
   OFPMMFC_BAD_BAND_VALUE = 9, /* Band value unsupported. */
   OFPMMFC_OUT_OF_METERS = 10, /* No more meters available. */
   OFPMMFC_OUT_OF_BANDS = 11,  /* The maximum number of properties
-                      for a meter has been exceeded. */
+                     for a meter has been exceeded. */
 };
 
 /* ofp_error_msg 'code' values for OFPET_TABLE_FEATURES_FAILED. 'data' contains
@@ -760,14 +760,14 @@ enum OFPActionType : UInt16 {
   OFPAT_GROUP = 22,
   OFPAT_SET_NW_TTL = 23,
   OFPAT_DEC_NW_TTL = 24,
-  OFPAT_SET_FIELD = 25, // 32 possible lengths: 8, 16, 24, 32, 40, ..., 256
-  OFPAT_PUSH_PBB = 26,  // New in v4
-  OFPAT_POP_PBB = 27,   // New in v4
+  OFPAT_SET_FIELD = 25,  // 32 possible lengths: 8, 16, 24, 32, 40, ..., 256
+  OFPAT_PUSH_PBB = 26,   // New in v4
+  OFPAT_POP_PBB = 27,    // New in v4
 
   // "Fake" Version 1 actions.
   OFPAT_STRIP_VLAN_V1 = 0x7FF1,
   OFPAT_ENQUEUE_V1 = 0x7FF2,
-  OFPAT_EXPERIMENTER = 0xFFFF // possible lengths: 8, 16, 24, 32, 40, ...
+  OFPAT_EXPERIMENTER = 0xFFFF  // possible lengths: 8, 16, 24, 32, 40, ...
 };
 
 namespace deprecated {
@@ -813,15 +813,15 @@ enum : UInt16 {
   OFPAT_OUTPUT = 0,
   OFPAT_SET_VLAN_VID = 1,
   OFPAT_SET_VLAN_PCP = 2,
-  OFPAT_STRIP_VLAN = 3, // only present in v1
-  OFPAT_SET_DL_SRC = 4, // these constants differ from later versions
+  OFPAT_STRIP_VLAN = 3,  // only present in v1
+  OFPAT_SET_DL_SRC = 4,  // these constants differ from later versions
   OFPAT_SET_DL_DST = 5,
   OFPAT_SET_NW_SRC = 6,
   OFPAT_SET_NW_DST = 7,
   OFPAT_SET_NW_TOS = 8,
   OFPAT_SET_TP_SRC = 9,
   OFPAT_SET_TP_DST = 10,
-  OFPAT_ENQUEUE = 11 // only present in v1
+  OFPAT_ENQUEUE = 11  // only present in v1
 };
 }  // namespace v1
 
@@ -830,16 +830,16 @@ enum : UInt16 {
   OFPAT_OUTPUT = 0,
   OFPAT_SET_VLAN_VID = 1,
   OFPAT_SET_VLAN_PCP = 2,
-  OFPAT_SET_DL_SRC = 3, // different from v1
+  OFPAT_SET_DL_SRC = 3,  // different from v1
   OFPAT_SET_DL_DST = 4,
   OFPAT_SET_NW_SRC = 5,
   OFPAT_SET_NW_DST = 6,
   OFPAT_SET_NW_TOS = 7,
-  OFPAT_SET_NW_ECN = 8, // new in v2
+  OFPAT_SET_NW_ECN = 8,  // new in v2
   OFPAT_SET_TP_SRC = 9,
   OFPAT_SET_TP_DST = 10,
-  OFPAT_COPY_TTL_OUT = 11, // changed in v2
-  OFPAT_COPY_TTL_IN = 12,  // new in v2 from here on...
+  OFPAT_COPY_TTL_OUT = 11,  // changed in v2
+  OFPAT_COPY_TTL_IN = 12,   // new in v2 from here on...
   OFPAT_SET_MPLS_LABEL = 13,
   OFPAT_SET_MPLS_TC = 14,
   OFPAT_SET_MPLS_TTL = 15,
@@ -891,9 +891,9 @@ enum : UInt16 {
 }  // namespace deprecated
 
 enum OFPPacketInReason : UInt8 {
-  OFPR_NO_MATCH = 0,    //< No matching flow (table-miss flow entry)
-  OFPR_ACTION = 1,      //< Action explicitly output to controller
-  OFPR_INVALID_TTL = 2, //< Packet has invalid TTL (added in v1.2)
+  OFPR_NO_MATCH = 0,     //< No matching flow (table-miss flow entry)
+  OFPR_ACTION = 1,       //< Action explicitly output to controller
+  OFPR_INVALID_TTL = 2,  //< Packet has invalid TTL (added in v1.2)
 };
 
 enum OFPFlowModCommand : UInt8 {

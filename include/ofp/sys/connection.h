@@ -67,7 +67,7 @@ public:
   //	nextAuxConn_ = channel;
   //}
 
-  UInt32 nextXid() override { return ++nextXid_; }
+  UInt32 nextXid() override { return nextXid_++; }
 
   ChannelListener *channelListener() const override { return listener_; }
   void setChannelListener(ChannelListener *listener) override {
