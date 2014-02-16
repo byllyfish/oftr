@@ -53,6 +53,10 @@ public:
 
   bool validateLength(size_t length) const;
 
+  enum : size_t {
+    UnpaddedSizeVersion1 = 12
+  };
+
 private:
   Header header_;
   Big<OFPMultipartType> type_;

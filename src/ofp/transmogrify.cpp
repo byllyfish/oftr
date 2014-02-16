@@ -367,14 +367,18 @@ void Transmogrify::normalizeFlowRemovedV1() {
 
 void Transmogrify::normalizeMultipartRequestV1() {
   Header *hdr = header();
-  if (hdr->length() < sizeof(MultipartRequest)) {
+  if (hdr->length() < sizeof(MultipartRequest::UnpaddedSizeVersion1)) {
     log::info("MultipartRequest v1 message is too short.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
     return;
   }
 
+  // Insert 4 bytes of padding.
+  Padding<4> pad;
+  buf_.insert(BytePtr(hdr) + MultipartRequest::UnpaddedSizeVersion1, &pad, sizeof(pad));
+
   const MultipartRequest *multipartReq =
-      reinterpret_cast<const MultipartRequest *>(hdr);
+      reinterpret_cast<const MultipartRequest *>(header());
 
   OFPMultipartType reqType = multipartReq->requestType();
   if (reqType == OFPMP_FLOW || reqType == OFPMP_AGGREGATE) {
@@ -389,14 +393,18 @@ void Transmogrify::normalizeMultipartRequestV1() {
 void Transmogrify::normalizeMultipartReplyV1()
 {
   Header *hdr = header();
-  if (hdr->length() < sizeof(MultipartReply)) {
+  if (hdr->length() < sizeof(MultipartReply::UnpaddedSizeVersion1)) {
     log::info("MultipartReply v1 message is too short.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
     return;
   }
 
+  // Insert 4 bytes of padding.
+  Padding<4> pad;
+  buf_.insert(BytePtr(hdr) + MultipartReply::UnpaddedSizeVersion1, &pad, sizeof(pad));
+
   const MultipartReply *multipartReply =
-      reinterpret_cast<const MultipartReply *>(hdr);
+      reinterpret_cast<const MultipartReply *>(header());
 
   OFPMultipartType replyType = multipartReply->replyType();
   size_t offset = sizeof(MultipartReply);

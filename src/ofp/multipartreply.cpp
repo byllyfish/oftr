@@ -33,7 +33,13 @@ bool MultipartReply::validateLength(size_t length) const {
 UInt32 MultipartReplyBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   UInt32 xid = channel->nextXid();
-  size_t msgLen = sizeof(msg_) + body_.size();
+
+  size_t msgLen = body_.size();
+  if (version == OFP_VERSION_1) {
+    msgLen += MultipartReply::UnpaddedSizeVersion1;
+  } else {
+    msgLen += sizeof(msg_);
+  }
 
   msg_.header_.setVersion(version);
   msg_.header_.setXid(xid);
@@ -41,11 +47,12 @@ UInt32 MultipartReplyBuilder::send(Writable *channel) {
 
   if (version == OFP_VERSION_1) {
     msg_.header_.setType(deprecated::v1::OFPT_STATS_REPLY);
+    channel->write(&msg_, MultipartReply::UnpaddedSizeVersion1);
   } else {
     msg_.header_.setType(OFPT_MULTIPART_REPLY);
+    channel->write(&msg_, sizeof(msg_));
   }
 
-  channel->write(&msg_, sizeof(msg_));
   channel->write(body_.data(), body_.size());
   channel->flush();
 
