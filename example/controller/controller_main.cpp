@@ -5,7 +5,7 @@
 using namespace ofp;
 
 int main(int argc, char **argv) {
-  log::set(&std::cerr);
+  log::setOutputStream(&std::cerr);
 
   Driver driver;
 

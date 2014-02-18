@@ -29,8 +29,8 @@ const int STDIN = 0;
 const int STDOUT = 1;
 
 int main(int argc, char **argv) {
-  log::set(&std::cerr);
-  
+  log::setOutputStream(&std::cerr);
+
   Driver driver;
   api::ApiServer server{&driver, STDIN, STDOUT};
 

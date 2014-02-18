@@ -24,16 +24,8 @@
 #include <chrono>
 #include <iomanip>
 
-namespace ofp { // <namespace ofp>
-namespace log { // <namespace log>
-
-// using milliseconds = std::chrono::milliseconds;
-
-static std::ostream *GlobalLogStream = nullptr;
-
-std::ostream *get() { return GlobalLogStream; }
-
-void set(std::ostream *logStream) { GlobalLogStream = logStream; }
+namespace ofp {  // <namespace ofp>
+namespace log {  // <namespace log>
 
 using Time = std::pair<std::time_t, Milliseconds>;
 
@@ -52,15 +44,60 @@ static std::ostream &operator<<(std::ostream &os, const Time &t) {
             << t.second.count();
 }
 
-void write(const std::string &msg) {
-  if (GlobalLogStream) {
-    *GlobalLogStream << currentTime() << ' ' << msg << '\n';
+const char *levelToString(Level level) {
+  switch (level) {
+    case Level::Debug:
+      return "[debug]";
+    case Level::Trace:
+      return "[trace]";
+    case Level::Info:
+      return "[info]";
+    case Level::Error:
+      return "[error]";
+    case Level::Silent:
+      return "[silent]";
   }
+}
+
+const Level kDefaultLevel = Level::Debug;
+
+namespace detail {
+
+OutputCallback GlobalOutputCallback = nullptr;
+void *GlobalOutputCallbackContext = nullptr;
+Level GlobalOutputLevelFilter = Level::Silent;
+
+}  // namespace detail
+
+void setOutputCallback(OutputCallback callback, void *context) {
+  detail::GlobalOutputCallback = callback;
+  detail::GlobalOutputCallbackContext = context;
+  if (callback == nullptr) {
+    detail::GlobalOutputLevelFilter = Level::Silent;
+  } else if (detail::GlobalOutputLevelFilter == Level::Silent) {
+    detail::GlobalOutputLevelFilter = kDefaultLevel;
+  }
+}
+
+void setOutputLevelFilter(Level level) {
+  if (detail::GlobalOutputCallback != nullptr)
+    detail::GlobalOutputLevelFilter = level;
+}
+
+static void streamOutputCallback(Level level, const char *line, size_t size,
+                                 void *context) {
+  std::ostream &os = *reinterpret_cast<std::ostream *>(context);
+  os << currentTime() << ' ' << levelToString(level) << ' ' << line << '\n';
+}
+
+void setOutputStream(std::ostream *outputStream) {
+  setOutputCallback(streamOutputCallback, outputStream);
 }
 
 static void trace1(const char *type, const void *data, size_t length) {
   if (length < sizeof(Header)) {
-    write(type, "Invalid Data:", RawDataToHex(data, length));
+    detail::write_(Level::Trace, type, length, "Invalid Data:",
+                   RawDataToHex(data, length));
     return;
   }
 
@@ -72,13 +109,15 @@ static void trace1(const char *type, const void *data, size_t length) {
   if (message.type() == OFPT_ECHO_REPLY || message.type() == OFPT_ECHO_REQUEST)
     return;
 #endif
-  
+
   yaml::Decoder decoder{&message};
 
   if (decoder.error().empty()) {
-    write(type, decoder.result(), RawDataToHex(data, length));
+    detail::write_(Level::Trace, type, length, decoder.result(),
+                   RawDataToHex(data, length));
   } else {
-    write(type, decoder.error(), RawDataToHex(data, length));
+    detail::write_(Level::Trace, type, length, decoder.error(),
+                   RawDataToHex(data, length));
   }
 }
 
@@ -99,9 +138,10 @@ void trace(const char *type, const void *data, size_t length) {
   }
 
   if (remaining > 0) {
-    write(type, "Invalid Leftover:", RawDataToHex(ptr, remaining));
+    detail::write_(Level::Trace, type, "Invalid Leftover:",
+                   RawDataToHex(ptr, remaining));
   }
 }
 
-} // </namespace log>
-} // </namespace ofp>
+}  // </namespace log>
+}  // </namespace ofp>

@@ -18,7 +18,7 @@ int main(int argc, const char **argv) {
     }
   }
 
-  ofp::log::set(&std::cerr);
+  ofp::log::setOutputStream(&std::cerr);
 
   Driver driver;
 

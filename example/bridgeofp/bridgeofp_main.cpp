@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
       "L", cl::desc("Listen and bridge to remote endpoint"), cl::Required};
   cl::ParseCommandLineOptions(argc, argv);
 
-  log::set(&std::cerr);
+  log::setOutputStream(&std::cerr);
 
   Driver driver;
   auto err = driver.listen(

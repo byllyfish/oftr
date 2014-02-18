@@ -90,6 +90,7 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
 }
 
 void Connection::postMessage(Connection *source, Message *message) {
+  log::trace("read", message->data(), message->size());
 
   // Handle echo reply automatically. We just set the type to reply and write
   // it back.
@@ -99,8 +100,6 @@ void Connection::postMessage(Connection *source, Message *message) {
     flush();
     return; // all done!
   }
-
-  log::trace("read", message->data(), message->size());
 
   if (listener_) {
     message->transmogrify();

@@ -28,76 +28,91 @@
 namespace ofp {
 namespace log {
 
-/// \returns the global log output stream or nullptr if none is set.
-std::ostream *get();
+enum class Level {
+  Debug = 0,
+  Trace = 1,
+  Info = 2,
+  Error = 3,
+  Silent = 4
+};
 
-/// \brief Sets the global log output stream.
-/// Set `logStream` to nullptr to disable logging entirely.
-void set(std::ostream *logStream);
+const char *levelToString(Level level);
 
-void write(const std::string &msg);
+/// Type of function called when an event is logged. There can be at most one
+/// output callback function specified at any one time.
+typedef void (*OutputCallback)(Level level, const char *line, size_t size,
+                               void *context);
+
+/// \brief Sets the output callback function. This function will be called for
+/// each line of log output with the specified context pointer.
+void setOutputCallback(OutputCallback callback, void *context);
+
+/// \brief Sets the output callback to log each line to the specified output
+/// stream (e.g. std::cerr).
+void setOutputStream(std::ostream *outputStream);
+
+/// \brief Sets the minimum desired level of output.
+void setOutputLevelFilter(Level level);
+
+namespace detail {
+
+extern OutputCallback GlobalOutputCallback;
+extern void *GlobalOutputCallbackContext;
+extern Level GlobalOutputLevelFilter;
 
 template <class Type1>
-void write(const char *type, const Type1 &a) {
-  std::stringstream ss;
-  ss << type;
-  ss << ' ';
-  ss << a;
-  write(ss.str());
+void write_(std::ostream &os, Level level, const Type1 &value1) {
+  os << value1;
 }
 
-template <class Type1, class Type2>
-void write(const char *type, const Type1 &a, const Type2 &b) {
-  std::stringstream ss;
-  ss << type;
-  ss << ' ';
-  ss << a;
-  ss << ' ';
-  ss << b;
-  write(ss.str());
+template <class Type1, class... Args>
+void write_(std::ostream &os, Level level, const Type1 &value1,
+            const Args &... args) {
+  os << value1;
+  os << ' ';
+  write_(os, level, args...);
 }
+
+template <class... Args>
+void write_(Level level, const Args &... args) {
+  if (level >= detail::GlobalOutputLevelFilter) {
+    std::ostringstream oss;
+    write_(oss, level, args...);
+    std::string buf = oss.str();
+    GlobalOutputCallback(level, buf.data(), buf.size(),
+                         GlobalOutputCallbackContext);
+  }
+}
+
+}  // namespace detail
 
 void trace(const char *type, const void *data, size_t length);
 
-template <class Type1>
-void info(const Type1 &a) {
-  write("[info]", a);
+template <class... Args>
+inline void info(const Args &... args) {
+  detail::write_(Level::Info, args...);
 }
 
-template <class Type1, class Type2>
-void info(const Type1 &a, const Type2 &b) {
-  write("[info]", a, b);
+template <class... Args>
+inline void debug(const Args &... args) {
+  detail::write_(Level::Debug, args...);
 }
 
-template <class Type1>
-void debug(const Type1 &a) {
-  write("[debug]", a);
-}
-
-template <class Type1, class Type2>
-void debug(const Type1 &a, const Type2 &b) {
-  write("[debug]", a, b);
-}
-
-template <class Type1>
-void error(const Type1 &a) {
-  write("[error]", a);
-}
-
-template <class Type1, class Type2>
-void error(const Type1 &a, const Type2 &b) {
-  write("[error]", a, b);
+template <class... Args>
+inline void error(const Args &... args) {
+  detail::write_(Level::Error, args...);
 }
 
 class Lifetime {
-public:
-  /* implicit NOLINT */ Lifetime(const char *description) : description_{description} {
-    debug("Create ", description_);
+ public:
+  /* implicit NOLINT */ Lifetime(const char *description)
+      : description_{description} {
+    debug("Create", description_);
   }
 
-  ~Lifetime() { debug("Dispose ", description_); }
+  ~Lifetime() { debug("Dispose", description_); }
 
-private:
+ private:
   const char *description_;
 };
 
