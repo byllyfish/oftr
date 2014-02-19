@@ -54,6 +54,7 @@ public:
   void normalizeMPFlowReplyV1(size_t *start);
   void normalizeMPTableStatsReplyV4(size_t *start);
   void normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len);
+  void normalizeMPPortStatsRequestV1();
 
   UInt32 normPortNumberV1(const UInt8 *ptr);
 

@@ -1,5 +1,5 @@
-#ifndef OFP_YAML_YAGGREGATESTATSREPLY_H_
-#define OFP_YAML_YAGGREGATESTATSREPLY_H_
+#ifndef OFP_YAML_YMPAGGREGATESTATSREPLY_H_
+#define OFP_YAML_YMPAGGREGATESTATSREPLY_H_
 
 #include "ofp/mpaggregatestatsreply.h"
 
@@ -29,4 +29,4 @@ struct MappingTraits<ofp::MPAggregateStatsReplyBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif  // OFP_YAML_YAGGREGATESTATSREPLY_H_
+#endif  // OFP_YAML_YMPAGGREGATESTATSREPLY_H_

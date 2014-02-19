@@ -384,6 +384,10 @@ void Transmogrify::normalizeMultipartRequestV1() {
   if (reqType == OFPMP_FLOW || reqType == OFPMP_AGGREGATE) {
     // Both requests have the same structure.
     normalizeMPFlowRequestV1();
+  } else if (reqType == OFPMP_PORT_STATS || reqType == OFPMP_QUEUE) {
+    // Both requests have a port number that needs to be converted as the
+    // first field.
+    normalizeMPPortStatsRequestV1();
   }
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
@@ -575,6 +579,20 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len)
   *start += len + 8;
 }
 
+void Transmogrify::normalizeMPPortStatsRequestV1() {
+  // Check length of packet.
+  if (buf_.size() != sizeof(MultipartRequest) + 8) {
+    log::info("MultipartRequest v1 OFPMP_PORT_STATS/OFPMP_QUEUE is wrong length.", buf_.size());
+    header()->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  UInt8 *ptr = buf_.mutableData() + sizeof(MultipartRequest);
+
+  // Change port number from 16-bits to 32-bits.
+  Big32 *port = Big32_cast(ptr);
+  *port = normPortNumberV1(ptr);
+}
 
 UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {
   const Big16 *port16 = reinterpret_cast<const Big16 *>(ptr);

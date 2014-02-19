@@ -20,8 +20,8 @@
 /// MPFlowStatsReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YFLOWSTATSREPLY_H_
-#define OFP_YAML_YFLOWSTATSREPLY_H_
+#ifndef OFP_YAML_YMPFLOWSTATSREPLY_H_
+#define OFP_YAML_YMPFLOWSTATSREPLY_H_
 
 #include "ofp/mpflowstatsreply.h"
 #include "ofp/yaml/yinstructions.h"
@@ -81,4 +81,4 @@ struct MappingTraits<ofp::MPFlowStatsReplyBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif  // OFP_YAML_YFLOWSTATSREPLY_H_
+#endif  // OFP_YAML_YMPFLOWSTATSREPLY_H_

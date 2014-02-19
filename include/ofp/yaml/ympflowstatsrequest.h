@@ -20,8 +20,8 @@
 /// MPFlowStatsRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_YFLOWSTATSREQUEST_H_
-#define OFP_YAML_YFLOWSTATSREQUEST_H_
+#ifndef OFP_YAML_YMPFLOWSTATSREQUEST_H_
+#define OFP_YAML_YMPFLOWSTATSREQUEST_H_
 
 #include "ofp/mpflowstatsrequest.h"
 
@@ -64,4 +64,4 @@ struct MappingTraits<ofp::MPFlowStatsRequestBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif  // OFP_YAML_YFLOWSTATSREQUEST_H_
+#endif  // OFP_YAML_YMPFLOWSTATSREQUEST_H_

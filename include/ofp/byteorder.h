@@ -205,6 +205,11 @@ inline const Big32 *Big32_cast(const void *ptr) {
   return reinterpret_cast<const Big32 *>(ptr);
 }
 
+inline Big32 *Big32_cast(void *ptr) {
+  assert(IsPtrAligned<4>(ptr) && "Big32_cast failed");
+  return reinterpret_cast<Big32 *>(ptr);
+}
+
 }  // namespace ofp
 
 #endif  // OFP_BYTEORDER_H_

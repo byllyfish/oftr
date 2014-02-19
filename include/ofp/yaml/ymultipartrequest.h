@@ -25,7 +25,9 @@
 
 #include "ofp/multipartrequest.h"
 #include "ofp/mpflowstatsrequest.h"
-#include "ofp/yaml/yflowstatsrequest.h"
+#include "ofp/yaml/ympflowstatsrequest.h"
+#include "ofp/yaml/ympportstatsrequest.h"
+#include "ofp/yaml/ympqueuestatsrequest.h"
 #include "ofp/memorychannel.h"
 
 namespace llvm {
@@ -50,6 +52,20 @@ struct MappingTraits<ofp::MultipartRequest> {
     case OFPMP_FLOW:
     case OFPMP_AGGREGATE: {
       const MPFlowStatsRequest *stats = MPFlowStatsRequest::cast(&msg);
+      if (stats) {
+        io.mapRequired("body", RemoveConst_cast(*stats));
+      }
+      break;
+    }
+    case OFPMP_PORT_STATS: {
+      const MPPortStatsRequest *stats = MPPortStatsRequest::cast(&msg);
+      if (stats) {
+        io.mapRequired("body", RemoveConst_cast(*stats));
+      }
+      break;
+    }
+    case OFPMP_QUEUE: {
+      const MPQueueStatsRequest *stats = MPQueueStatsRequest::cast(&msg);
       if (stats) {
         io.mapRequired("body", RemoveConst_cast(*stats));
       }
@@ -83,6 +99,22 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
     case OFPMP_FLOW:
     case OFPMP_AGGREGATE: {
       MPFlowStatsRequestBuilder stats;
+      io.mapRequired("body", stats);
+      MemoryChannel channel{msg.msg_.header_.version()};
+      stats.write(&channel);
+      msg.setRequestBody(channel.data(), channel.size());
+      break;
+    }
+    case OFPMP_PORT_STATS: {
+      MPPortStatsRequestBuilder stats;
+      io.mapRequired("body", stats);
+      MemoryChannel channel{msg.msg_.header_.version()};
+      stats.write(&channel);
+      msg.setRequestBody(channel.data(), channel.size());
+      break;
+    }
+    case OFPMP_QUEUE: {
+      MPQueueStatsRequestBuilder stats;
       io.mapRequired("body", stats);
       MemoryChannel channel{msg.msg_.header_.version()};
       stats.write(&channel);

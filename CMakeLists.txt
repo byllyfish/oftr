@@ -102,7 +102,9 @@ set(LIBOFP_SOURCES
 	src/ofp/log.cpp
 	src/ofp/message.cpp
   src/ofp/mpportstats.cpp
+  src/ofp/mpportstatsrequest.cpp
   src/ofp/mpqueuestats.cpp
+  src/ofp/mpqueuestatsrequest.cpp
   src/ofp/mptablestats.cpp
 	src/ofp/multipartreply.cpp
 	src/ofp/multipartrequest.cpp
@@ -225,7 +227,9 @@ set(LIBOFP_HEADER_FILES
   include/ofp/message.h
   include/ofp/mpdesc.h
   include/ofp/mpportstats.h
+  include/ofp/mpportstatsrequest.h
   include/ofp/mpqueuestats.h
+  include/ofp/mpqueuestatsrequest.h
   include/ofp/mptablestats.h
   include/ofp/multipartreply.h
   include/ofp/multipartrequest.h
@@ -286,7 +290,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml/outputjson.h
   include/ofp/yaml/yactions.h
   include/ofp/yaml/yaddress.h
-  include/ofp/yaml/yaggregatestatsreply.h
+  include/ofp/yaml/ympaggregatestatsreply.h
   include/ofp/yaml/ybucket.h
   include/ofp/yaml/ybytelist.h
   include/ofp/yaml/ybyteorder.h
@@ -298,8 +302,8 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml/yfeaturesreply.h
   include/ofp/yaml/yflowmod.h
   include/ofp/yaml/yflowremoved.h
-  include/ofp/yaml/yflowstatsreply.h
-  include/ofp/yaml/yflowstatsrequest.h
+  include/ofp/yaml/ympflowstatsreply.h
+  include/ofp/yaml/ympflowstatsrequest.h
   include/ofp/yaml/ygetasyncreply.h
   include/ofp/yaml/ygetconfigreply.h
   include/ofp/yaml/ygroupmod.h
@@ -310,7 +314,9 @@ set(LIBOFP_HEADER_FILES
   include/ofp/yaml/ymatch.h
   include/ofp/yaml/ympdesc.h
   include/ofp/yaml/ympportstats.h
+  include/ofp/yaml/ympportstatsrequest.h
   include/ofp/yaml/ympqueuestats.h
+  include/ofp/yaml/ympqueuestatsrequest.h
   include/ofp/yaml/ymptablestats.h
   include/ofp/yaml/ymultipartreply.h
   include/ofp/yaml/ymultipartrequest.h

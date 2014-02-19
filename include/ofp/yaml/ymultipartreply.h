@@ -24,9 +24,9 @@
 #define OFP_YAML_YMULTIPARTREPLY_H_
 
 #include "ofp/multipartreply.h"
-#include "ofp/yaml/yflowstatsreply.h"
+#include "ofp/yaml/ympflowstatsreply.h"
 #include "ofp/yaml/ympdesc.h"
-#include "ofp/yaml/yaggregatestatsreply.h"
+#include "ofp/yaml/ympaggregatestatsreply.h"
 #include "ofp/yaml/ymptablestats.h"
 #include "ofp/yaml/ympportstats.h"
 #include "ofp/yaml/ympqueuestats.h"
