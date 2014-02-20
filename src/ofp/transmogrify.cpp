@@ -497,7 +497,7 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
     *start = buf_.size();
     return;
   }
-
+  
   OriginalMatch *origMatch = reinterpret_cast<OriginalMatch *>(ptr + 4);
   StandardMatch stdMatch{*origMatch};
 
@@ -721,9 +721,11 @@ int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
   AT_OUTPUT output{port, maxlen};
 
   ptrdiff_t offset = buf_.offset(iter->data());
+  ptrdiff_t endOffset = buf_.offset(iterEnd->data());
+  
   buf_.insertUninitialized(iter->valuePtr(), 8);
   *iter = ActionIterator{buf_.data() + offset};
-  *iterEnd = ActionIterator{buf_.end()};
+  *iterEnd = ActionIterator{buf_.data() + endOffset + 8};
 
   std::memcpy(RemoveConst_cast(iter->data()), &output, sizeof(output));
 

@@ -77,6 +77,7 @@ public:
   // No postfix ++
 
   void operator++() {
+    assert(type().length() > 0);
     position_ += *reinterpret_cast<const Big_unaligned<UInt16> *>(
                       position_ + 2); // type().length();
   }
