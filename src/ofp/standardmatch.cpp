@@ -245,7 +245,7 @@ OXMList StandardMatch::toOXMList() const {
   }
 
   if (!(wc & OFPFW_TP_SRC)) {
-    if (wc & nw_proto) {
+    if (wc & OFPFW_NW_PROTO) {
       log::info(
           "StandardMatch::toOXMList: OFPFW_TP_SRC is missing OFPFW_NW_PROTO.");
     } else {
@@ -272,7 +272,7 @@ OXMList StandardMatch::toOXMList() const {
   }
 
   if (!(wc & OFPFW_TP_DST)) {
-    if ((wc & nw_proto)) {
+    if ((wc & OFPFW_NW_PROTO)) {
       log::info(
           "StandardMatch::toOXMList: OFPFW_TP_DST is missing OFPFW_NW_PROTO.");
     } else {
