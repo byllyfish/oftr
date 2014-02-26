@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for EchoRequest, 
+/// \brief Defines the llvm::yaml::MappingTraits for EchoRequest,
 /// EchoRequestBuilder, EchoReply, and EchoReplyBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -30,51 +30,55 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_ECHO_REQUEST
+// msg:
+//   data: <Bytes>    { Required }
+//...
 
 template <>
 struct MappingTraits<ofp::EchoRequest> {
 
-    static void mapping(IO &io, ofp::EchoRequest &msg)
-    {
-        ofp::ByteRange data = msg.echoData();
-        io.mapRequired("data", data);
-    }
+  static void mapping(IO &io, ofp::EchoRequest &msg) {
+    ofp::ByteRange data = msg.echoData();
+    io.mapRequired("data", data);
+  }
 };
-
 
 template <>
 struct MappingTraits<ofp::EchoRequestBuilder> {
 
-    static void mapping(IO &io, ofp::EchoRequestBuilder &msg)
-    {
-        ofp::ByteList data;
-        io.mapRequired("data", data);
-        msg.setEchoData(data.data(), data.size());
-    }
+  static void mapping(IO &io, ofp::EchoRequestBuilder &msg) {
+    ofp::ByteList data;
+    io.mapRequired("data", data);
+    msg.setEchoData(data.data(), data.size());
+  }
 };
 
+//---
+// type: OFPT_ECHO_REPLY
+// msg:
+//   data: <Bytes>    { Required }
+//...
 
 template <>
 struct MappingTraits<ofp::EchoReply> {
 
-    static void mapping(IO &io, ofp::EchoReply &msg)
-    {
-        ofp::ByteRange data = msg.echoData();
-        io.mapRequired("data", data);
-    }
+  static void mapping(IO &io, ofp::EchoReply &msg) {
+    ofp::ByteRange data = msg.echoData();
+    io.mapRequired("data", data);
+  }
 };
 
 template <>
 struct MappingTraits<ofp::EchoReplyBuilder> {
 
-    static void mapping(IO &io, ofp::EchoReplyBuilder &msg)
-    {
-        ofp::ByteList data;
-        io.mapRequired("data", data);
-        msg.setEchoData(data.data(), data.size());
-    }
+  static void mapping(IO &io, ofp::EchoReplyBuilder &msg) {
+    ofp::ByteList data;
+    io.mapRequired("data", data);
+    msg.setEchoData(data.data(), data.size());
+  }
 };
-
 
 }  // namespace yaml
 }  // namespace llvm

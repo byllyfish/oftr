@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for PortStatus and 
+/// \brief Defines the llvm::yaml::MappingTraits for PortStatus and
 /// PortStatusBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -29,24 +29,29 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_PORT_STATUS
+// msg:
+//   reason: <UInt8>    { Required }
+//   port: <Port>       { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::PortStatus> {
 
-    static void mapping(IO &io, ofp::PortStatus &msg)
-    {
-        io.mapRequired("reason", msg.reason_);
-        io.mapRequired("port", msg.port_);
-    }
+  static void mapping(IO &io, ofp::PortStatus &msg) {
+    io.mapRequired("reason", msg.reason_);
+    io.mapRequired("port", msg.port_);
+  }
 };
 
 template <>
 struct MappingTraits<ofp::PortStatusBuilder> {
 
-    static void mapping(IO &io, ofp::PortStatusBuilder &msg)
-    {
-        io.mapRequired("reason", msg.msg_.reason_);
-        io.mapRequired("port", msg.msg_.port_);
-    }
+  static void mapping(IO &io, ofp::PortStatusBuilder &msg) {
+    io.mapRequired("reason", msg.msg_.reason_);
+    io.mapRequired("port", msg.msg_.port_);
+  }
 };
 
 }  // namespace yaml

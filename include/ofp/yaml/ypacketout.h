@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for the PacketOut and 
+/// \brief Defines the llvm::yaml::MappingTraits for the PacketOut and
 /// PacketOutBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -28,41 +28,47 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_PACKET_OUT
+// msg:
+//   buffer_id: <UInt32>      { Required }
+//   in_port: <UInt32>        { Required }
+//   actions: [ <Action> ]    { Required }
+//   enet_frame: <Bytes>      { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::PacketOut> {
 
-    static void mapping(IO &io, ofp::PacketOut &msg)
-    {
-        using namespace ofp;
+  static void mapping(IO &io, ofp::PacketOut &msg) {
+    using namespace ofp;
 
-        UInt32 bufferID = msg.bufferId();
-        UInt32 inPort = msg.inPort();
+    UInt32 bufferID = msg.bufferId();
+    UInt32 inPort = msg.inPort();
 
-        io.mapRequired("buffer_id", bufferID);
-        io.mapRequired("in_port", inPort);
+    io.mapRequired("buffer_id", bufferID);
+    io.mapRequired("in_port", inPort);
 
-        ActionRange actions = msg.actions();
-        io.mapRequired("actions", actions);
+    ActionRange actions = msg.actions();
+    io.mapRequired("actions", actions);
 
-        ByteRange enetFrame = msg.enetFrame();
-        io.mapRequired("enet_frame", enetFrame);
-    }
+    ByteRange enetFrame = msg.enetFrame();
+    io.mapRequired("enet_frame", enetFrame);
+  }
 };
-
 
 template <>
 struct MappingTraits<ofp::PacketOutBuilder> {
 
-    static void mapping(IO &io, ofp::PacketOutBuilder &msg)
-    {
-        using namespace ofp;
+  static void mapping(IO &io, ofp::PacketOutBuilder &msg) {
+    using namespace ofp;
 
-        io.mapRequired("buffer_id", msg.msg_.bufferId_);
-        io.mapRequired("in_port", msg.msg_.inPort_);
+    io.mapRequired("buffer_id", msg.msg_.bufferId_);
+    io.mapRequired("in_port", msg.msg_.inPort_);
 
-        io.mapRequired("actions", msg.actions_);
-        io.mapRequired("enet_frame", msg.enetFrame_);
-    }
+    io.mapRequired("actions", msg.actions_);
+    io.mapRequired("enet_frame", msg.enetFrame_);
+  }
 };
 
 }  // namespace yaml

@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for QueueGetConfigRequest and 
+/// \brief Defines the llvm::yaml::MappingTraits for QueueGetConfigRequest and
 /// QueueGetConfigRequestBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -28,22 +28,26 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_QUEUE_GET_CONFIG_REQUEST
+// msg:
+//   port: <UInt32>    { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::QueueGetConfigRequest> {
 
-    static void mapping(IO &io, ofp::QueueGetConfigRequest &msg)
-    {
-    	io.mapRequired("port", msg.port_);
-    }
+  static void mapping(IO &io, ofp::QueueGetConfigRequest &msg) {
+    io.mapRequired("port", msg.port_);
+  }
 };
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigRequestBuilder> {
 
-    static void mapping(IO &io, ofp::QueueGetConfigRequestBuilder &msg)
-    {
-        io.mapRequired("port", msg.msg_.port_);
-    }
+  static void mapping(IO &io, ofp::QueueGetConfigRequestBuilder &msg) {
+    io.mapRequired("port", msg.msg_.port_);
+  }
 };
 
 }  // namespace yaml

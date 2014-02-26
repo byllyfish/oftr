@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for RoleReply and 
+/// \brief Defines the llvm::yaml::MappingTraits for RoleReply and
 /// RoleReplyBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -28,24 +28,29 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_ROLE_REPLY
+// msg:
+//   role: <UInt32>             { Required }
+//   generation_id: <UInt64>    { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::RoleReply> {
 
-    static void mapping(IO &io, ofp::RoleReply &msg)
-    {
-    	io.mapRequired("role", msg.role_);
-    	io.mapRequired("generation_id", msg.generationId_);
-    }
+  static void mapping(IO &io, ofp::RoleReply &msg) {
+    io.mapRequired("role", msg.role_);
+    io.mapRequired("generation_id", msg.generationId_);
+  }
 };
 
 template <>
 struct MappingTraits<ofp::RoleReplyBuilder> {
 
-    static void mapping(IO &io, ofp::RoleReplyBuilder &msg)
-    {
-        io.mapRequired("role", msg.msg_.role_);
-    	io.mapRequired("generation_id", msg.msg_.generationId_);
-    }
+  static void mapping(IO &io, ofp::RoleReplyBuilder &msg) {
+    io.mapRequired("role", msg.msg_.role_);
+    io.mapRequired("generation_id", msg.msg_.generationId_);
+  }
 };
 
 }  // namespace yaml

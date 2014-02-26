@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for GroupMod and 
+/// \brief Defines the llvm::yaml::MappingTraits for GroupMod and
 /// GroupModBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -29,30 +29,37 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_GROUP_MOD
+// msg:
+//   command: <UInt16>        { Required }
+//   type: <UInt8>            { Required }
+//   group_id: <UInt32>       { Required }
+//   buckets: [ <Bucket> ]    { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::GroupMod> {
 
-    static void mapping(IO &io, ofp::GroupMod &msg)
-    {
-        io.mapRequired("command", msg.command_);
-        io.mapRequired("type", msg.groupType_);
-        io.mapRequired("group_id", msg.groupId_);
+  static void mapping(IO &io, ofp::GroupMod &msg) {
+    io.mapRequired("command", msg.command_);
+    io.mapRequired("type", msg.groupType_);
+    io.mapRequired("group_id", msg.groupId_);
 
-        ofp::BucketRange buckets = msg.buckets();
-        io.mapRequired("buckets", buckets);
-    }
+    ofp::BucketRange buckets = msg.buckets();
+    io.mapRequired("buckets", buckets);
+  }
 };
 
 template <>
 struct MappingTraits<ofp::GroupModBuilder> {
 
-    static void mapping(IO &io, ofp::GroupModBuilder &msg)
-    {
-        io.mapRequired("command", msg.msg_.command_);
-        io.mapRequired("type", msg.msg_.groupType_);
-        io.mapRequired("group_id", msg.msg_.groupId_);
-        io.mapRequired("buckets", msg.buckets_);
-    }
+  static void mapping(IO &io, ofp::GroupModBuilder &msg) {
+    io.mapRequired("command", msg.msg_.command_);
+    io.mapRequired("type", msg.msg_.groupType_);
+    io.mapRequired("group_id", msg.msg_.groupId_);
+    io.mapRequired("buckets", msg.buckets_);
+  }
 };
 
 }  // namespace yaml

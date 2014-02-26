@@ -33,6 +33,24 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_FLOW_MOD
+// msg:
+//   cookie: <UInt64>                   { Required }
+//   cookie_mask: <UInt64>              { Required }
+//   table_id: <UInt8>                  { Required }
+//   command:  <UInt8>                  { Required }
+//   idle_timeout: <UInt16>             { Required }
+//   hard_timeout: <UInt16>             { Required }
+//   priority: <UInt16>                 { Required }
+//   buffer_id: <UInt32>                { Required }
+//   out_port: <UInt32>                 { Required }
+//   out_group: <UInt32>                { Required }
+//   flags: <UInt16>                    { Required }
+//   match: [ <MatchItem> ]             { Required }
+//   instructions: [ <Instruction> ]    { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::FlowMod> {
 
@@ -77,8 +95,8 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapRequired("instructions", msg.instructions_);
 
     if (!msg.match_.validate()) {
-        // TODO(bfish) better error message
-        io.setError("Match is ambiguous.");
+      // TODO(bfish) better error message
+      io.setError("Match is ambiguous.");
     }
   }
 };

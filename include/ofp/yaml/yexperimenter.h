@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::MappingTraits for the Experimenter and 
+/// \brief Defines the llvm::yaml::MappingTraits for the Experimenter and
 /// ExperimenterBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -29,36 +29,41 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_EXPERIMENTER
+// msg:
+//   experimenter: <UInt32>      { Required }
+//   exp_type: <UInt32>          { Required }
+//   experimenter_data: <Bytes>  { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::Experimenter> {
 
-    static void mapping(IO &io, ofp::Experimenter &msg)
-    {
-        ofp::UInt32 experimenter = msg.experimenter();
-        ofp::UInt32 expType = msg.expType();
-        ofp::ByteRange data = msg.expData();
-        io.mapRequired("experimenter", experimenter);
-        io.mapRequired("exp_type", expType);
-        io.mapRequired("experimenter_data", data);
-    }
+  static void mapping(IO &io, ofp::Experimenter &msg) {
+    ofp::UInt32 experimenter = msg.experimenter();
+    ofp::UInt32 expType = msg.expType();
+    ofp::ByteRange data = msg.expData();
+    io.mapRequired("experimenter", experimenter);
+    io.mapRequired("exp_type", expType);
+    io.mapRequired("experimenter_data", data);
+  }
 };
-
 
 template <>
 struct MappingTraits<ofp::ExperimenterBuilder> {
 
-    static void mapping(IO &io, ofp::ExperimenterBuilder &msg)
-    {
-        ofp::UInt32 experimenter;
-        ofp::UInt32 expType;
-        ofp::ByteList data;
-        io.mapRequired("experimenter", experimenter);
-        io.mapRequired("exp_type", expType);
-        io.mapRequired("experimenter_data", data);
-        msg.setExperimenter(experimenter);
-        msg.setExpType(expType);
-        msg.setExpData(data.data(), data.size());
-    }
+  static void mapping(IO &io, ofp::ExperimenterBuilder &msg) {
+    ofp::UInt32 experimenter;
+    ofp::UInt32 expType;
+    ofp::ByteList data;
+    io.mapRequired("experimenter", experimenter);
+    io.mapRequired("exp_type", expType);
+    io.mapRequired("experimenter_data", data);
+    msg.setExperimenter(experimenter);
+    msg.setExpType(expType);
+    msg.setExpData(data.data(), data.size());
+  }
 };
 
 }  // namespace yaml

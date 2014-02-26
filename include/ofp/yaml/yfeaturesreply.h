@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::MappingTraits for the FeaturesReply and
@@ -31,64 +31,74 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_FEATURES_REPLY
+// msg:
+//   datapath_id: <DatapathID>    { Required }
+//   n_buffers: <UInt32>          { Required }
+//   n_tables: <UInt8>            { Required }
+//   auxiliary_id: <UInt8>        { Required }
+//   capabilities: <UInt32>       { Required }
+//   reserved: <UInt32>           { Required }
+//   ports: [ <Port> ]            { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::FeaturesReply> {
 
-    static void mapping(IO &io, ofp::FeaturesReply &msg)
-    {
-    	using namespace ofp;
+  static void mapping(IO &io, ofp::FeaturesReply &msg) {
+    using namespace ofp;
 
-        DatapathID dpid = msg.datapathId();
-        UInt32 bufferCount = msg.bufferCount();
-        UInt8 tableCount = msg.tableCount();
-        UInt8 auxiliaryId = msg.auxiliaryId();
-        UInt32 capabilities = msg.capabilities();
-        UInt32 reserved = msg.reserved();
-        
-        io.mapRequired("datapath_id", dpid);
-        io.mapRequired("n_buffers", bufferCount);
-        io.mapRequired("n_tables", tableCount);
-        io.mapRequired("auxiliary_id", auxiliaryId);
-        io.mapRequired("capabilities", capabilities);
-        io.mapRequired("reserved", reserved);
+    DatapathID dpid = msg.datapathId();
+    UInt32 bufferCount = msg.bufferCount();
+    UInt8 tableCount = msg.tableCount();
+    UInt8 auxiliaryId = msg.auxiliaryId();
+    UInt32 capabilities = msg.capabilities();
+    UInt32 reserved = msg.reserved();
 
-        PortRange ports = msg.ports();
-        io.mapRequired("ports", ports);
-    }
+    io.mapRequired("datapath_id", dpid);
+    io.mapRequired("n_buffers", bufferCount);
+    io.mapRequired("n_tables", tableCount);
+    io.mapRequired("auxiliary_id", auxiliaryId);
+    io.mapRequired("capabilities", capabilities);
+    io.mapRequired("reserved", reserved);
+
+    PortRange ports = msg.ports();
+    io.mapRequired("ports", ports);
+  }
 };
 
 template <>
 struct MappingTraits<ofp::FeaturesReplyBuilder> {
 
-    static void mapping(IO &io, ofp::FeaturesReplyBuilder &msg)
-    {
-    	using namespace ofp;
-    	
-        DatapathID dpid;
-        UInt32 bufferCount;
-        UInt8 tableCount;
-        UInt8 auxiliaryId;
-        UInt32 capabilities;
-        UInt32 reserved;
-        
-        io.mapRequired("datapath_id", dpid);
-        io.mapRequired("n_buffers", bufferCount);
-        io.mapRequired("n_tables", tableCount);
-        io.mapRequired("auxiliary_id", auxiliaryId);
-        io.mapRequired("capabilities", capabilities);
-        io.mapRequired("reserved", reserved);
+  static void mapping(IO &io, ofp::FeaturesReplyBuilder &msg) {
+    using namespace ofp;
 
-        msg.setDatapathId(dpid);
-        msg.setBufferCount(bufferCount);
-        msg.setTableCount(tableCount);
-        msg.setAuxiliaryId(auxiliaryId);
-        msg.setCapabilities(capabilities);
-        msg.setReserved(reserved);
+    DatapathID dpid;
+    UInt32 bufferCount;
+    UInt8 tableCount;
+    UInt8 auxiliaryId;
+    UInt32 capabilities;
+    UInt32 reserved;
 
-        PortList ports;
-        io.mapRequired("ports", ports);
-        msg.setPorts(ports);
-    }
+    io.mapRequired("datapath_id", dpid);
+    io.mapRequired("n_buffers", bufferCount);
+    io.mapRequired("n_tables", tableCount);
+    io.mapRequired("auxiliary_id", auxiliaryId);
+    io.mapRequired("capabilities", capabilities);
+    io.mapRequired("reserved", reserved);
+
+    msg.setDatapathId(dpid);
+    msg.setBufferCount(bufferCount);
+    msg.setTableCount(tableCount);
+    msg.setAuxiliaryId(auxiliaryId);
+    msg.setCapabilities(capabilities);
+    msg.setReserved(reserved);
+
+    PortList ports;
+    io.mapRequired("ports", ports);
+    msg.setPorts(ports);
+  }
 };
 
 }  // namespace yaml

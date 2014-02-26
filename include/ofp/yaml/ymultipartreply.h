@@ -37,12 +37,11 @@ namespace detail {
 /// Elements are fixed size.
 template <class Type>
 class MPReplyFixedSizeSeq {
-public:
-  MPReplyFixedSizeSeq(MultipartReply &msg) : msg_(msg), position_{msg.replyBody()} {}
+ public:
+  MPReplyFixedSizeSeq(MultipartReply &msg)
+      : msg_(msg), position_{msg.replyBody()} {}
 
-  size_t size() const {
-    return msg_.replyBodySize() / sizeof(Type);
-  }
+  size_t size() const { return msg_.replyBodySize() / sizeof(Type); }
 
   Type &next() {
     const UInt8 *pos = position_;
@@ -50,7 +49,7 @@ public:
     return RemoveConst_cast(*reinterpret_cast<const Type *>(pos));
   }
 
-private:
+ private:
   MultipartReply &msg_;
   const UInt8 *position_;
 };
@@ -59,7 +58,7 @@ private:
 /// element size.
 template <class Type>
 class MPReplyVariableSizeSeq {
-public:
+ public:
   MPReplyVariableSizeSeq(MultipartReply &msg)
       : msg_(msg), position_{msg.replyBody()} {}
 
@@ -83,7 +82,7 @@ public:
     return RemoveConst_cast(*reinterpret_cast<const Type *>(pos));
   }
 
-private:
+ private:
   MultipartReply &msg_;
   const UInt8 *position_;
 };
@@ -92,7 +91,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 template <class Type>
 class MPReplyBuilderSeq {
-public:
+ public:
   explicit MPReplyBuilderSeq(UInt8 version) : channel_{version}, init_{false} {}
 
   Type &next() {
@@ -109,7 +108,7 @@ public:
   const UInt8 *data() const { return channel_.data(); }
   size_t size() const { return channel_.size(); }
 
-private:
+ private:
   MemoryChannel channel_;
   Type item_;
   bool init_;
@@ -162,6 +161,15 @@ struct SequenceTraits<ofp::detail::MPReplyBuilderSeq<Type>> {
   }
 };
 
+//---
+// type: OFPT_MULTIPART_REPLY
+// msg:
+//   type: <OFPMultipartType>    { Required }
+//   flags: <UInt16>             { Required }
+//   body:
+//       { Depends on OFPMultipartType }
+//...
+
 template <>
 struct MappingTraits<ofp::MultipartReply> {
 
@@ -173,49 +181,50 @@ struct MappingTraits<ofp::MultipartReply> {
     io.mapRequired("flags", msg.flags_);
 
     switch (type) {
-    case OFPMP_DESC: {
-      MPDesc *desc = RemoveConst_cast(msg.body_cast<MPDesc>());
-      if (desc) {
-        io.mapRequired("body", *desc);
+      case OFPMP_DESC: {
+        MPDesc *desc = RemoveConst_cast(msg.body_cast<MPDesc>());
+        if (desc) {
+          io.mapRequired("body", *desc);
+        }
+        break;
       }
-      break;
-    }
-    case OFPMP_FLOW: {
-      ofp::detail::MPReplyVariableSizeSeq<MPFlowStatsReply> seq{msg};
-      io.mapRequired("body", seq);
-      break;
-    }
-    case OFPMP_AGGREGATE: {
-      MPAggregateStatsReply *reply = RemoveConst_cast(msg.body_cast<MPAggregateStatsReply>());
-      if (reply) {
-        io.mapRequired("body", *reply);
+      case OFPMP_FLOW: {
+        ofp::detail::MPReplyVariableSizeSeq<MPFlowStatsReply> seq{msg};
+        io.mapRequired("body", seq);
+        break;
       }
-      break;
-    }
-    case OFPMP_TABLE: {
-      ofp::detail::MPReplyFixedSizeSeq<MPTableStats> seq{msg};
-      io.mapRequired("body", seq);
-      break;
-    }
-    case OFPMP_PORT_STATS: {
-      ofp::detail::MPReplyFixedSizeSeq<MPPortStats> seq{msg};
-      io.mapRequired("body", seq);
-      break;
-    }
-    case OFPMP_QUEUE: {
-      ofp::detail::MPReplyFixedSizeSeq<MPQueueStats> seq{msg};
-      io.mapRequired("body", seq);
-      break;
-    }
-    case OFPMP_PORT_DESC: {
-      // io.mapOptional("body", EmptyRequest);
-      break;
-    }
-    default:
-      // FIXME
-      log::info("MultiPartReply: MappingTraits not fully implemented.",
-                int(type));
-      break;
+      case OFPMP_AGGREGATE: {
+        MPAggregateStatsReply *reply =
+            RemoveConst_cast(msg.body_cast<MPAggregateStatsReply>());
+        if (reply) {
+          io.mapRequired("body", *reply);
+        }
+        break;
+      }
+      case OFPMP_TABLE: {
+        ofp::detail::MPReplyFixedSizeSeq<MPTableStats> seq{msg};
+        io.mapRequired("body", seq);
+        break;
+      }
+      case OFPMP_PORT_STATS: {
+        ofp::detail::MPReplyFixedSizeSeq<MPPortStats> seq{msg};
+        io.mapRequired("body", seq);
+        break;
+      }
+      case OFPMP_QUEUE: {
+        ofp::detail::MPReplyFixedSizeSeq<MPQueueStats> seq{msg};
+        io.mapRequired("body", seq);
+        break;
+      }
+      case OFPMP_PORT_DESC: {
+        // io.mapOptional("body", EmptyRequest);
+        break;
+      }
+      default:
+        // FIXME
+        log::info("MultiPartReply: MappingTraits not fully implemented.",
+                  int(type));
+        break;
     }
   }
 };
@@ -232,59 +241,59 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
     msg.setReplyType(type);
 
     switch (type) {
-    case OFPMP_DESC: {
+      case OFPMP_DESC: {
         MPDescBuilder desc;
         io.mapRequired("body", desc);
         // FIXME - write reply into channel.
         msg.setReplyBody(&desc, sizeof(desc));
         break;
-    }
-    case OFPMP_FLOW: {
-      ofp::detail::MPReplyBuilderSeq<MPFlowStatsReplyBuilder> seq{msg.version()};
-      io.mapRequired("body", seq);
-      seq.close();
-      msg.setReplyBody(seq.data(), seq.size());
-      break;
-    }
-    case OFPMP_AGGREGATE: {
-      MPAggregateStatsReplyBuilder reply;
-      io.mapRequired("body", reply);
-      // FIXME - write reply into channel.
-      msg.setReplyBody(&reply, sizeof(reply));
-      break;
-    }
-    case OFPMP_TABLE: {
-      ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{msg.version()};
-      io.mapRequired("body", seq);
-      seq.close();
-      msg.setReplyBody(seq.data(), seq.size());
-      break;
-    }
-    case OFPMP_PORT_STATS: {
-      ofp::detail::MPReplyBuilderSeq<MPPortStatsBuilder> seq{msg.version()};
-      io.mapRequired("body", seq);
-      seq.close();
-      msg.setReplyBody(seq.data(), seq.size());
-      break;
-    }
-    case OFPMP_QUEUE: {
-      ofp::detail::MPReplyBuilderSeq<MPQueueStatsBuilder> seq{msg.version()};
-      io.mapRequired("body", seq);
-      seq.close();
-      msg.setReplyBody(seq.data(), seq.size());
-      break;
-    }
-    case OFPMP_PORT_DESC: {
-      // io.mapOptional("body", EmptyRequest);
-      break;
-    }
-    default:
-      // FIXME
-      log::info("MultiPartReplyBuilder: MappingTraits not fully implemented.",
-                int(type));
-      break;
-    }
-    ;
+      }
+      case OFPMP_FLOW: {
+        ofp::detail::MPReplyBuilderSeq<MPFlowStatsReplyBuilder> seq{
+            msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_AGGREGATE: {
+        MPAggregateStatsReplyBuilder reply;
+        io.mapRequired("body", reply);
+        // FIXME - write reply into channel.
+        msg.setReplyBody(&reply, sizeof(reply));
+        break;
+      }
+      case OFPMP_TABLE: {
+        ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_PORT_STATS: {
+        ofp::detail::MPReplyBuilderSeq<MPPortStatsBuilder> seq{msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_QUEUE: {
+        ofp::detail::MPReplyBuilderSeq<MPQueueStatsBuilder> seq{msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_PORT_DESC: {
+        // io.mapOptional("body", EmptyRequest);
+        break;
+      }
+      default:
+        // FIXME
+        log::info("MultiPartReplyBuilder: MappingTraits not fully implemented.",
+                  int(type));
+        break;
+    };
   }
 };
 

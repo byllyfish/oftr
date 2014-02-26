@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::MappingTraits for the Error and ErrorBuilder
@@ -29,36 +29,41 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_ERROR
+// msg:
+//   type: <UInt16>    { Required }
+//   code: <UInt16>    { Required }
+//   data: <Bytes>     { Required }
+//...
+
 template <>
 struct MappingTraits<ofp::Error> {
 
-    static void mapping(IO &io, ofp::Error &msg)
-    {
-        ofp::UInt16 type = msg.errorType();
-        ofp::UInt16 code = msg.errorCode();
-        ofp::ByteRange data = msg.errorData();
-        io.mapRequired("type", type);
-        io.mapRequired("code", code);
-        io.mapRequired("data", data);
-    }
+  static void mapping(IO &io, ofp::Error &msg) {
+    ofp::UInt16 type = msg.errorType();
+    ofp::UInt16 code = msg.errorCode();
+    ofp::ByteRange data = msg.errorData();
+    io.mapRequired("type", type);
+    io.mapRequired("code", code);
+    io.mapRequired("data", data);
+  }
 };
-
 
 template <>
 struct MappingTraits<ofp::ErrorBuilder> {
 
-    static void mapping(IO &io, ofp::ErrorBuilder &msg)
-    {
-        ofp::UInt16 type;
-        ofp::UInt16 code;
-        ofp::ByteList data;
-        io.mapRequired("type", type);
-        io.mapRequired("code", code);
-        io.mapRequired("data", data);
-        msg.setErrorType(type);
-        msg.setErrorCode(code);
-        msg.setErrorData(data.data(), data.size());
-    }
+  static void mapping(IO &io, ofp::ErrorBuilder &msg) {
+    ofp::UInt16 type;
+    ofp::UInt16 code;
+    ofp::ByteList data;
+    io.mapRequired("type", type);
+    io.mapRequired("code", code);
+    io.mapRequired("data", data);
+    msg.setErrorType(type);
+    msg.setErrorCode(code);
+    msg.setErrorData(data.data(), data.size());
+  }
 };
 
 }  // namespace yaml

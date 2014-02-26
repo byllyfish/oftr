@@ -33,6 +33,15 @@
 namespace llvm {
 namespace yaml {
 
+//---
+// type: OFPT_MULTIPART_REQUEST
+// msg:
+//   type: <OFPMultipartType>    { Required }
+//   flags: <UInt16>             { Required }
+//   body:
+//     { Depends on OFPMultipartType }
+//...
+
 template <>
 struct MappingTraits<ofp::MultipartRequest> {
 
@@ -44,37 +53,37 @@ struct MappingTraits<ofp::MultipartRequest> {
     io.mapRequired("flags", msg.flags_);
 
     switch (type) {
-    case OFPMP_DESC:
-    case OFPMP_TABLE:
-    case OFPMP_PORT_DESC:
-      // empty request body
-      break;
-    case OFPMP_FLOW:
-    case OFPMP_AGGREGATE: {
-      const MPFlowStatsRequest *stats = MPFlowStatsRequest::cast(&msg);
-      if (stats) {
-        io.mapRequired("body", RemoveConst_cast(*stats));
+      case OFPMP_DESC:
+      case OFPMP_TABLE:
+      case OFPMP_PORT_DESC:
+        // empty request body
+        break;
+      case OFPMP_FLOW:
+      case OFPMP_AGGREGATE: {
+        const MPFlowStatsRequest *stats = MPFlowStatsRequest::cast(&msg);
+        if (stats) {
+          io.mapRequired("body", RemoveConst_cast(*stats));
+        }
+        break;
       }
-      break;
-    }
-    case OFPMP_PORT_STATS: {
-      const MPPortStatsRequest *stats = MPPortStatsRequest::cast(&msg);
-      if (stats) {
-        io.mapRequired("body", RemoveConst_cast(*stats));
+      case OFPMP_PORT_STATS: {
+        const MPPortStatsRequest *stats = MPPortStatsRequest::cast(&msg);
+        if (stats) {
+          io.mapRequired("body", RemoveConst_cast(*stats));
+        }
+        break;
       }
-      break;
-    }
-    case OFPMP_QUEUE: {
-      const MPQueueStatsRequest *stats = MPQueueStatsRequest::cast(&msg);
-      if (stats) {
-        io.mapRequired("body", RemoveConst_cast(*stats));
+      case OFPMP_QUEUE: {
+        const MPQueueStatsRequest *stats = MPQueueStatsRequest::cast(&msg);
+        if (stats) {
+          io.mapRequired("body", RemoveConst_cast(*stats));
+        }
+        break;
       }
-      break;
-    }
-    default:
-      // FIXME - implement the rest.
-      log::debug("MultipartRequest MappingTraits not fully implemented.");
-      break;
+      default:
+        // FIXME - implement the rest.
+        log::debug("MultipartRequest MappingTraits not fully implemented.");
+        break;
     }
   }
 };
@@ -91,41 +100,41 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
     msg.setRequestType(type);
 
     switch (type) {
-    case OFPMP_DESC:
-    case OFPMP_TABLE:
-    case OFPMP_PORT_DESC:
-      // empty request body
-      break;
-    case OFPMP_FLOW:
-    case OFPMP_AGGREGATE: {
-      MPFlowStatsRequestBuilder stats;
-      io.mapRequired("body", stats);
-      MemoryChannel channel{msg.msg_.header_.version()};
-      stats.write(&channel);
-      msg.setRequestBody(channel.data(), channel.size());
-      break;
-    }
-    case OFPMP_PORT_STATS: {
-      MPPortStatsRequestBuilder stats;
-      io.mapRequired("body", stats);
-      MemoryChannel channel{msg.msg_.header_.version()};
-      stats.write(&channel);
-      msg.setRequestBody(channel.data(), channel.size());
-      break;
-    }
-    case OFPMP_QUEUE: {
-      MPQueueStatsRequestBuilder stats;
-      io.mapRequired("body", stats);
-      MemoryChannel channel{msg.msg_.header_.version()};
-      stats.write(&channel);
-      msg.setRequestBody(channel.data(), channel.size());
-      break;
-    }
-    default:
-      // FIXME - implement the rest.
-      log::debug(
-          "MultipartRequestBuilder MappingTraits not fully implemented.");
-      break;
+      case OFPMP_DESC:
+      case OFPMP_TABLE:
+      case OFPMP_PORT_DESC:
+        // empty request body
+        break;
+      case OFPMP_FLOW:
+      case OFPMP_AGGREGATE: {
+        MPFlowStatsRequestBuilder stats;
+        io.mapRequired("body", stats);
+        MemoryChannel channel{msg.msg_.header_.version()};
+        stats.write(&channel);
+        msg.setRequestBody(channel.data(), channel.size());
+        break;
+      }
+      case OFPMP_PORT_STATS: {
+        MPPortStatsRequestBuilder stats;
+        io.mapRequired("body", stats);
+        MemoryChannel channel{msg.msg_.header_.version()};
+        stats.write(&channel);
+        msg.setRequestBody(channel.data(), channel.size());
+        break;
+      }
+      case OFPMP_QUEUE: {
+        MPQueueStatsRequestBuilder stats;
+        io.mapRequired("body", stats);
+        MemoryChannel channel{msg.msg_.header_.version()};
+        stats.write(&channel);
+        msg.setRequestBody(channel.data(), channel.size());
+        break;
+      }
+      default:
+        // FIXME - implement the rest.
+        log::debug(
+            "MultipartRequestBuilder MappingTraits not fully implemented.");
+        break;
     }
   }
 };
