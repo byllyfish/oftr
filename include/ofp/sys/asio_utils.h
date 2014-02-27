@@ -22,8 +22,8 @@
 /// Specify all ASIO includes here.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_BOOST_ASIO_H_
-#define OFP_SYS_BOOST_ASIO_H_
+#ifndef OFP_SYS_ASIO_UTILS_H_
+#define OFP_SYS_ASIO_UTILS_H_
 
 #include <asio.hpp>
 #include <asio/ssl.hpp>
@@ -84,4 +84,4 @@ inline IPv6Endpoint convertEndpoint(const typename Proto::endpoint &endpt)
 }  // namespace sys
 }  // namespace ofp
 
-#endif  // OFP_SYS_BOOST_ASIO_H_
+#endif  // OFP_SYS_ASIO_UTILS_H_

@@ -19,8 +19,8 @@
 /// \brief Defines the sys::ConnectionTimer class.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_SYS_CONNECTION_TIMER_H_
-#define OFP_SYS_CONNECTION_TIMER_H_
+#ifndef OFP_SYS_CONNECTIONTIMER_H_
+#define OFP_SYS_CONNECTIONTIMER_H_
 
 #include "ofp/sys/asio_utils.h"
 #include <map>
@@ -59,4 +59,4 @@ using ConnectionTimerMap = std::map<UInt32,std::unique_ptr<ConnectionTimer>>;
 }  // namespace sys
 }  // namespace ofp
 
-#endif  // OFP_SYS_CONNECTION_TIMER_H_
+#endif  // OFP_SYS_CONNECTIONTIMER_H_

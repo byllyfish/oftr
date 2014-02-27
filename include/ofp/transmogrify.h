@@ -36,7 +36,7 @@ class Header;
 
 class Transmogrify {
 public:
-  Transmogrify(Message *message);
+  explicit Transmogrify(Message *message);
 
   void normalize();
   void normalizeFeaturesReplyV1();

@@ -83,8 +83,8 @@ struct StandardMatch {
   Big64 metadata_mask;
 
   StandardMatch();
-  StandardMatch(const OXMRange &range);
-  StandardMatch(const OriginalMatch &match);
+  explicit StandardMatch(const OXMRange &range);
+  explicit StandardMatch(const OriginalMatch &match);
 
   OXMList toOXMList() const;
 };

@@ -38,7 +38,7 @@ namespace detail {
 template <class Type>
 class MPReplyFixedSizeSeq {
  public:
-  MPReplyFixedSizeSeq(MultipartReply &msg)
+  explicit MPReplyFixedSizeSeq(MultipartReply &msg)
       : msg_(msg), position_{msg.replyBody()} {}
 
   size_t size() const { return msg_.replyBodySize() / sizeof(Type); }
@@ -59,7 +59,7 @@ class MPReplyFixedSizeSeq {
 template <class Type>
 class MPReplyVariableSizeSeq {
  public:
-  MPReplyVariableSizeSeq(MultipartReply &msg)
+  explicit MPReplyVariableSizeSeq(MultipartReply &msg)
       : msg_(msg), position_{msg.replyBody()} {}
 
   size_t size() const {
@@ -293,7 +293,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         log::info("MultiPartReplyBuilder: MappingTraits not fully implemented.",
                   int(type));
         break;
-    };
+    }
   }
 };
 

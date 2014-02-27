@@ -22,7 +22,6 @@
 #ifndef OFP_TYPES_H_
 #define OFP_TYPES_H_
 
-#include "ofp/config.h"
 #include <cstddef>     // for std::size_t, etc.
 #include <cstdint>     // for std::uint8_t, etc.
 #include <cstring>     // for std::strlen, std::memcpy, etc.
@@ -34,6 +33,7 @@
 #include <memory>      // for std::unique_ptr<T>
 #include <system_error>  // for std::error_code
 #include <chrono>
+#include "ofp/config.h"
 
 #if defined(__clang__)
 #define OFP_BEGIN_IGNORE_PADDING                                               \
@@ -81,7 +81,7 @@ using Milliseconds = std::chrono::milliseconds;
 
 // Literal type `ms` is not supported until C++14. Use _ms for now.
 
-constexpr Milliseconds operator"" _ms(unsigned long long msec) {
+constexpr Milliseconds operator"" _ms(UInt64 msec) {
   return Milliseconds{msec};
 }
 

@@ -20,8 +20,8 @@
 /// MultipartRequestBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_YAML_MULTIPARTREQUEST_H_
-#define OFP_YAML_MULTIPARTREQUEST_H_
+#ifndef OFP_YAML_YMULTIPARTREQUEST_H_
+#define OFP_YAML_YMULTIPARTREQUEST_H_
 
 #include "ofp/multipartrequest.h"
 #include "ofp/mpflowstatsrequest.h"
@@ -142,4 +142,4 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif  // OFP_YAML_MULTIPARTREQUEST_H_
+#endif  // OFP_YAML_YMULTIPARTREQUEST_H_
