@@ -148,9 +148,6 @@ enum ofp_port_state {
 
 // Special Port numbers.
 enum OFPPortNo : UInt32 {
-  // Ports are numbered starting from 1.
-  OFPP_INVALID = 0x00000000,
-
   // Maximum number of physical and logical switch ports.
   OFPP_MAX = 0xffffff00,
 
@@ -330,7 +327,9 @@ enum OFPFlowModCommand : UInt8 {
   OFPFC_MODIFY = 1,
   OFPFC_MODIFY_STRICT = 2,
   OFPFC_DELETE = 3,
-  OFPFC_DELETE_STRICT = 4
+  OFPFC_DELETE_STRICT = 4,
+
+  OFPFC_LAST = OFPFC_DELETE_STRICT
 };
 
 }  // namespace ofp

@@ -465,7 +465,7 @@ TEST(decoder, flowmodv4) {
       "---\ntype:            OFPT_FLOW_MOD\nxid:             "
       "0x00000001\nversion:         4\nmsg:             \n  cookie:          "
       "0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:  "
-      "      0\n  command:         0\n  idle_timeout:    0x0000\n  "
+      "      0\n  command:         OFPFC_ADD\n  idle_timeout:    0x0000\n  "
       "hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       "
       "0x00000000\n  out_port:        0x00000000\n  out_group:       "
       "0x00000000\n  flags:           0x0000\n  match:           \n    - type: "

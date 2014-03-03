@@ -42,7 +42,7 @@ TEST(outputjson, flowmod) {
 
   const char *expected =
       "---\n{\"type\":\"OFPT_FLOW_MOD\",\"xid\":1,\"version\":4,\"msg\":{"
-      "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":0,\"idle_"
+      "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":\"OFPFC_ADD\",\"idle_"
       "timeout\":0,\"hard_timeout\":0,\"priority\":0,\"buffer_id\":0,\"out_"
       "port\":0,\"out_group\":0,\"flags\":0,\"match\":[{\"type\":\"OFB_IN_"
       "PORT\",\"value\":27},{\"type\":\"OFB_ETH_TYPE\",\"value\":2048},{"

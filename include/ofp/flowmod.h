@@ -37,9 +37,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   UInt64 cookie() const { return cookie_; }
   UInt64 cookieMask() const { return cookieMask_; }
   UInt8 tableId() const { return tableId_; }
-  OFPFlowModCommand command() const {
-    return static_cast<OFPFlowModCommand>(command_);
-  }
+  OFPFlowModCommand command() const { return command_; }
   UInt16 idleTimeout() const { return idleTimeout_; }
   UInt16 hardTimeout() const { return hardTimeout_; }
   UInt16 priority() const { return priority_; }
@@ -58,7 +56,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   Big64 cookie_ = 0;
   Big64 cookieMask_ = 0;
   Big8 tableId_ = 0;
-  Big8 command_ = 0;
+  Big<OFPFlowModCommand> command_ = OFPFC_ADD;
   Big16 idleTimeout_ = 0;
   Big16 hardTimeout_ = 0;
   Big16 priority_ = 0;

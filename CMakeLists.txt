@@ -147,6 +147,7 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
+  src/ofp/yaml/yconstants.cpp
 )
 
 # Specify the config.h.in file.
@@ -513,7 +514,7 @@ include(CPack)
 #-------------------------------------------------------------------------------
 
 set(CPPLINT_PATH external/cpplint/cpplint.py)
-set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-whitespace --root=include)
+set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-whitespace,-build/namespaces --root=include)
 
 add_custom_target(cpplint
   COMMAND ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} ${LIBOFP_HEADER_FILES} ${LIBOFP_HEADERS_GENERATED} ${LIBOFP_SOURCES}

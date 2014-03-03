@@ -58,7 +58,8 @@ struct MappingTraits<ofp::FlowMod> {
     io.mapRequired("cookie", msg.cookie_);
     io.mapRequired("cookie_mask", msg.cookieMask_);
     io.mapRequired("table_id", msg.tableId_);
-    io.mapRequired("command", msg.command_);
+    ofp::OFPFlowModCommand command = msg.command();
+    io.mapRequired("command", command);
     io.mapRequired("idle_timeout", msg.idleTimeout_);
     io.mapRequired("hard_timeout", msg.hardTimeout_);
     io.mapRequired("priority", msg.priority_);
@@ -82,7 +83,9 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapRequired("cookie", msg.msg_.cookie_);
     io.mapRequired("cookie_mask", msg.msg_.cookieMask_);
     io.mapRequired("table_id", msg.msg_.tableId_);
-    io.mapRequired("command", msg.msg_.command_);
+    ofp::OFPFlowModCommand command;
+    io.mapRequired("command", command);
+    msg.setCommand(command);
     io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
     io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);
     io.mapRequired("priority", msg.msg_.priority_);
