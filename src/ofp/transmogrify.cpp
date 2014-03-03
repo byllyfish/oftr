@@ -684,22 +684,22 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
     lengthChange += normSetField<OFB_IP_ECN>(iter, iterEnd);
     break;
   case v2::OFPAT_SET_TP_SRC:
-    if (ipProto == TCP) {
+    if (ipProto == PROTOCOL_TCP) {
       lengthChange += normSetField<OFB_TCP_SRC>(iter, iterEnd);
-    } else if (ipProto == UDP) {
+    } else if (ipProto == PROTOCOL_UDP) {
       lengthChange += normSetField<OFB_UDP_SRC>(iter, iterEnd);
-    } else if (ipProto == ICMP) {
+    } else if (ipProto == PROTOCOL_ICMP) {
       lengthChange += normSetField<OFB_ICMPV4_TYPE>(iter, iterEnd);
     } else {
       log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
     }
     break;
   case v2::OFPAT_SET_TP_DST:
-    if (ipProto == TCP) {
+    if (ipProto == PROTOCOL_TCP) {
       lengthChange += normSetField<OFB_TCP_DST>(iter, iterEnd);
-    } else if (ipProto == UDP) {
+    } else if (ipProto == PROTOCOL_UDP) {
       lengthChange += normSetField<OFB_UDP_DST>(iter, iterEnd);
-    } else if (ipProto == ICMP) {
+    } else if (ipProto == PROTOCOL_ICMP) {
       lengthChange += normSetField<OFB_ICMPV4_CODE>(iter, iterEnd);
     } else {
       log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);

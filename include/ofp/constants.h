@@ -30,10 +30,16 @@ namespace ofp {
 
 // Internet Protocol Transport Types
 enum : UInt8 {
-  ICMP = 1,
-  TCP = 6,
-  UDP = 17,
-  SCTP = 132
+  PROTOCOL_ICMP = 1,
+  PROTOCOL_TCP = 6,
+  PROTOCOL_UDP = 17,
+  PROTOCOL_SCTP = 132
+};
+
+enum : UInt16 {
+  DATALINK_ARP = 0x0806,
+  DATALINK_IPV4 = 0x0800,
+  DATALINK_IPV6 = 0x86dd
 };
 
 enum {

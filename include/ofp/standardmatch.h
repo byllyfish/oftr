@@ -87,6 +87,9 @@ struct StandardMatch {
   explicit StandardMatch(const OriginalMatch &match);
 
   OXMList toOXMList() const;
+
+private:
+  void convertDatalinkARP(UInt32 wc, OXMList *list) const;
 };
 
 static_assert(sizeof(StandardMatch) == OFPMT_STANDARD_LENGTH,

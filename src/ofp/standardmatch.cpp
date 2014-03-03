@@ -220,6 +220,12 @@ OXMList StandardMatch::toOXMList() const {
     return list;
   }
 
+  // If dl_type is ARP (0x0806), process fields differently.
+  if (dl_type == DATALINK_ARP) {
+    convertDatalinkARP(wc, &list);
+    return list;
+  }
+
   if (!(wc & OFPFW_NW_TOS)) {
     list.add(OFB_IP_DSCP{nw_tos});
   }
@@ -250,16 +256,16 @@ OXMList StandardMatch::toOXMList() const {
           "StandardMatch::toOXMList: OFPFW_TP_SRC is missing OFPFW_NW_PROTO.");
     } else {
       switch (nw_proto) {
-      case TCP:
+      case PROTOCOL_TCP:
         list.add(OFB_TCP_SRC{tp_src});
         break;
-      case UDP:
+      case PROTOCOL_UDP:
         list.add(OFB_UDP_SRC{tp_src});
         break;
-      case ICMP:
+      case PROTOCOL_ICMP:
         list.add(OFB_ICMPV4_TYPE{UInt8_narrow_cast(tp_src)});
         break;
-      case SCTP:
+      case PROTOCOL_SCTP:
         list.add(OFB_SCTP_SRC{tp_src});
         break;
       default:
@@ -277,16 +283,16 @@ OXMList StandardMatch::toOXMList() const {
           "StandardMatch::toOXMList: OFPFW_TP_DST is missing OFPFW_NW_PROTO.");
     } else {
       switch (nw_proto) {
-      case TCP:
+      case PROTOCOL_TCP:
         list.add(OFB_TCP_DST{tp_dst});
         break;
-      case UDP:
+      case PROTOCOL_UDP:
         list.add(OFB_UDP_DST{tp_dst});
         break;
-      case ICMP:
+      case PROTOCOL_ICMP:
         list.add(OFB_ICMPV4_CODE{UInt8_narrow_cast(tp_dst)});
         break;
-      case SCTP:
+      case PROTOCOL_SCTP:
         list.add(OFB_SCTP_DST{tp_dst});
         break;
       default:
@@ -307,6 +313,34 @@ OXMList StandardMatch::toOXMList() const {
   }
 
   return list;
+}
+
+
+void StandardMatch::convertDatalinkARP(UInt32 wc, OXMList *list) const {
+  assert(dl_type == DATALINK_ARP);
+  
+  // nw_proto is ARP_OP (lower 8 bits)
+  if (!(wc & OFPFW_NW_PROTO)) {
+    list->add(OFB_ARP_OP{nw_proto});
+  }
+
+  // nw_src is ARP_SPA
+  if (nw_src_mask.valid()) {
+    if (nw_src_mask.isBroadcast()) {
+      list->add(OFB_ARP_SPA{nw_src});
+    } else {
+      list->add(OFB_ARP_SPA{nw_src}, OFB_ARP_SPA{nw_src_mask});
+    }
+  }
+
+  // nw_dst is ARP_TPA
+  if (nw_dst_mask.valid()) {
+    if (nw_dst_mask.isBroadcast()) {
+      list->add(OFB_ARP_TPA{nw_dst});
+    } else {
+      list->add(OFB_ARP_TPA{nw_dst}, OFB_ARP_TPA{nw_dst_mask});
+    }
+  }
 }
 
 } // </namespace deprecated>
