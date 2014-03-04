@@ -162,7 +162,7 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
     dl_dst_mask.clear();
   }
 
-  dl_vlan = match.dl_vlan; // TODO check flags
+  dl_vlan = match.dl_vlan; // TODO(bfish) check flags
   dl_vlan_pcp = match.dl_vlan_pcp;
   dl_type = match.dl_type;
   nw_tos = match.nw_tos;

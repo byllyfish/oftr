@@ -137,7 +137,7 @@ struct WildcardInfo {
   SW standard;
 };
 
-static WildcardInfo WildcardMap[] = {
+static const WildcardInfo WildcardMap[] = {
     {OW::OFPFW_IN_PORT, SW::OFPFW_IN_PORT},
     {OW::OFPFW_DL_VLAN, SW::OFPFW_DL_VLAN},
     {OW::OFPFW_DL_TYPE, SW::OFPFW_DL_TYPE},
