@@ -26,11 +26,6 @@
 using namespace ofp;
 
 bool FeaturesReply::validateInput(size_t length) const {
-  if (length < sizeof(FeaturesReply)) {
-    log::info("FeatureReply validateInput failed.");
-    return false;
-  }
-
   UInt8 version = header_.version();
 
   // Version 4 and later don't include the port list.
@@ -45,11 +40,11 @@ bool FeaturesReply::validateInput(size_t length) const {
   return (portListSize % sizeof(Port)) == 0;
 }
 
-PortRange FeaturesReply::ports() const
-{
+PortRange FeaturesReply::ports() const {
   assert(header_.length() >= sizeof(FeaturesReply));
 
-  return ByteRange{BytePtr(this) + sizeof(FeaturesReply), header_.length() - sizeof(FeaturesReply)};
+  return ByteRange{BytePtr(this) + sizeof(FeaturesReply),
+                   header_.length() - sizeof(FeaturesReply)};
 }
 
 FeaturesReplyBuilder::FeaturesReplyBuilder(const FeaturesReply *msg)

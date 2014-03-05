@@ -29,7 +29,7 @@ namespace ofp {
 class ByteList;
 
 class ByteRange {
-public:
+ public:
   constexpr ByteRange() : begin_{nullptr}, end_{nullptr} {}
   constexpr ByteRange(const void *data, size_t length)
       : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
@@ -46,12 +46,12 @@ public:
   }
   bool operator!=(const ByteRange &rhs) const { return !(*this == rhs); }
 
-private:
+ private:
   const UInt8 *begin_;
   const UInt8 *end_;
 };
 
-static_assert(IsConvertible<ByteList,ByteRange>(), "Expected conversion.");
+static_assert(IsConvertible<ByteList, ByteRange>(), "Expected conversion.");
 
 }  // namespace ofp
 

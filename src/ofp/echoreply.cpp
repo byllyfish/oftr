@@ -25,10 +25,6 @@
 
 namespace ofp { // <namespace ofp>
 
-bool EchoReply::validateInput(size_t length) const {
-  return length >= sizeof(Header);
-}
-
 ByteRange EchoReply::echoData() const {
   return ByteRange{BytePtr(this) + sizeof(Header),
                    header_.length() - sizeof(Header)};

@@ -53,16 +53,14 @@ public:
   static constexpr OFPType type() { return MsgType; }
 
   static bool isLengthValid(size_t length) {
-    return length == 8;
+    return length == MinLength;
   }
 
   /// \returns xid in the header.
   UInt32 xid() const { return header_.xid(); }
 
-  /// \returns true if message length matches length in header.
-  bool validateInput(size_t length) const {
-    return length == sizeof(HeaderOnly);
-  }
+  /// \returns true if message content is valid.
+  bool validateInput(size_t length) const { return true; }
 
 private:
   Header header_;
@@ -102,10 +100,6 @@ private:
 ///
 /// \enum { Type = OFPT_FEATURES_REQUEST };
 /// \memberof ofp::FeaturesRequest
-///
-/// \fn bool validateInput(size_t length) const
-/// \memberof ofp::FeaturesRequest
-/// \returns true if message length matches length in header.
 
 using FeaturesRequest = detail::HeaderOnly<OFPT_FEATURES_REQUEST>;
 
@@ -129,10 +123,6 @@ static_assert(IsTriviallyCopyable<FeaturesRequest>(),
 ///
 /// \enum { Type = OFPT_GET_ASYNC_REQUEST };
 /// \memberof ofp::GetAsyncRequest
-///
-/// \fn bool validateInput(size_t length) const
-/// \memberof ofp::GetAsyncRequest
-/// \returns true if message length matches length in header.
 
 using GetAsyncRequest = detail::HeaderOnly<OFPT_GET_ASYNC_REQUEST>;
 
@@ -156,10 +146,6 @@ static_assert(IsTriviallyCopyable<GetAsyncRequest>(),
 ///
 /// \enum { Type = OFPT_GET_CONFIG_REQUEST };
 /// \memberof ofp::GetConfigRequest
-///
-/// \fn bool validateInput(size_t length) const
-/// \memberof ofp::GetConfigRequest
-/// \returns true if message length matches length in header.
 
 using GetConfigRequest = detail::HeaderOnly<OFPT_GET_CONFIG_REQUEST>;
 
@@ -184,10 +170,6 @@ static_assert(IsTriviallyCopyable<GetConfigRequest>(),
 ///
 /// \enum { Type = OFPT_BARRIER_REQUEST };
 /// \memberof ofp::BarrierRequest
-///
-/// \fn bool validateInput(size_t length) const
-/// \memberof ofp::BarrierRequest
-/// \returns true if message length matches length in header.
 
 using BarrierRequest = detail::HeaderOnly<OFPT_BARRIER_REQUEST>;
 
@@ -210,9 +192,6 @@ static_assert(IsTriviallyCopyable<BarrierRequest>(),
 /// This request contains the header only.
 ///
 /// \enum { Type = OFPT_BARRIER_REPLY };
-/// \memberof ofp::BarrierReply
-///
-/// \fn bool validateInput(size_t length) const
 /// \memberof ofp::BarrierReply
 
 using BarrierReply = detail::HeaderOnly<OFPT_BARRIER_REPLY>;

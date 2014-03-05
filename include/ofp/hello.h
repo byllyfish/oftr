@@ -44,6 +44,10 @@ private:
   Big16 length_;
 };
 
+static_assert(sizeof(HelloElement) == 4, "Unexpected size.");
+static_assert(IsStandardLayout<HelloElement>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<HelloElement>(), "Expected trivially copyable.");
+
 }  // namespace detail
 
 /// \brief Immutable OpenFlow `Hello` protocol message.

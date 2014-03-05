@@ -30,10 +30,6 @@ ByteRange EchoRequest::echoData() const {
                    header_.length() - sizeof(Header)};
 }
 
-bool EchoRequest::validateInput(size_t length) const {
-  return (length >= sizeof(Header));
-}
-
 UInt32 EchoRequestBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   UInt32 xid = channel->nextXid();

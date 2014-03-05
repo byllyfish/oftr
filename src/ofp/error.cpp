@@ -26,10 +26,6 @@
 
 using namespace ofp;
 
-bool Error::validateInput(size_t length) const {
-  return (length >= sizeof(Error));
-}
-
 ByteRange Error::errorData() const {
   return ByteRange{BytePtr(this) + sizeof(Error),
                    header_.length() - sizeof(Error)};
