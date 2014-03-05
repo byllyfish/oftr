@@ -32,7 +32,7 @@ BucketRange GroupMod::buckets() const {
       ByteRange{BytePtr(this) + sizeof(GroupMod), len - sizeof(GroupMod)}};
 }
 
-bool GroupMod::validateLength(size_t length) const {
+bool GroupMod::validateInput(size_t length) const {
   if (length < sizeof(GroupMod)) {
     return false;
   }

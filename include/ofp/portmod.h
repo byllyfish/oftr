@@ -35,7 +35,7 @@ public:
   UInt32 mask() const { return mask_; }
   UInt32 advertise() const { return advertise_; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

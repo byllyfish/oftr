@@ -26,7 +26,7 @@
 namespace ofp { // <namespace ofp>
 
 Match FlowMod::match() const {
-  assert(validateLength(header_.length()));
+  assert(validateInput(header_.length()));
 
   UInt16 type = matchType_;
 
@@ -57,7 +57,7 @@ InstructionRange FlowMod::instructions() const {
       ByteRange{BytePtr(this) + offset, header_.length() - offset}};
 }
 
-bool FlowMod::validateLength(size_t length) const {
+bool FlowMod::validateInput(size_t length) const {
   if (length < UnpaddedSizeWithMatchHeader) {
     log::debug("FlowMod too small", length);
     return false;
@@ -79,7 +79,7 @@ bool FlowMod::validateLength(size_t length) const {
   if (matchType == OFPMT_OXM) {
     OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader,
                    matchLen - MatchHeaderSize};
-    if (!range.validateLength()) {
+    if (!range.validateInput()) {
       log::debug("FlowMod OXM list has length mismatch");
       return false;
     }

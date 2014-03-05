@@ -35,7 +35,7 @@ ProtocolVersions detail::HelloElement::versionBitMap() const {
   return ProtocolVersions::fromBitmap(0);
 }
 
-bool Hello::validateLength(size_t length) const {
+bool Hello::validateInput(size_t length) const {
   return helloElements().validateInput("helloElements");
 }
 

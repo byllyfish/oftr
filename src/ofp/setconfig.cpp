@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool SetConfig::validateLength(size_t length) const {
+bool SetConfig::validateInput(size_t length) const {
   return (length == sizeof(SetConfig));
 }
 

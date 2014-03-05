@@ -10,7 +10,7 @@ const MPPortStatsRequest *MPPortStatsRequest::cast(const MultipartRequest *req) 
     return req->body_cast<MPPortStatsRequest>();
 }
 
-bool MPPortStatsRequest::validateLength(size_t length) const {
+bool MPPortStatsRequest::validateInput(size_t length) const {
   if (length != sizeof(MPPortStatsRequest)) {
     log::debug("MPPortStatsRequest: Validation failed.");
     return false;

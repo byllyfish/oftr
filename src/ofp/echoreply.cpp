@@ -25,7 +25,7 @@
 
 namespace ofp { // <namespace ofp>
 
-bool EchoReply::validateLength(size_t length) const {
+bool EchoReply::validateInput(size_t length) const {
   return length >= sizeof(Header);
 }
 

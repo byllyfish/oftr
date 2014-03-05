@@ -40,7 +40,7 @@ private:
   const ByteList *echoData_;
 
   void onPingReply(const Message *message) {
-    const EchoReply *reply = message->cast<EchoReply>();
+    const EchoReply *reply = message->castMessage<EchoReply>();
     if (reply) {
       // Check valid ping reply.
     } else {

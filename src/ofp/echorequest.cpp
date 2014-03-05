@@ -30,7 +30,7 @@ ByteRange EchoRequest::echoData() const {
                    header_.length() - sizeof(Header)};
 }
 
-bool EchoRequest::validateLength(size_t length) const {
+bool EchoRequest::validateInput(size_t length) const {
   return (length >= sizeof(Header));
 }
 

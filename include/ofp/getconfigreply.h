@@ -32,7 +32,7 @@ public:
   UInt16 flags() const { return flags_; }
   UInt16 missSendLen() const { return missSendLen_; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

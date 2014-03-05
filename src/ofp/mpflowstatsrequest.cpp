@@ -30,7 +30,7 @@ const MPFlowStatsRequest *MPFlowStatsRequest::cast(const MultipartRequest *req) 
   return req->body_cast<MPFlowStatsRequest>();
 }
 
-bool MPFlowStatsRequest::validateLength(size_t length) const {
+bool MPFlowStatsRequest::validateInput(size_t length) const {
   if (length < sizeof(MPFlowStatsRequest)) {
     log::debug("MPFlowStatsRequest: Validation failed.");
     return false;

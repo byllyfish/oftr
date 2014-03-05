@@ -35,7 +35,7 @@ public:
   UInt16 errorCode() const { return code_; }
   ByteRange errorData() const;
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool SetAsync::validateLength(size_t length) const {
+bool SetAsync::validateInput(size_t length) const {
   return length == sizeof(SetAsync);
 }
 

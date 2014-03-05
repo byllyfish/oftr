@@ -37,7 +37,7 @@ public:
 
   ByteRange expData() const;
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

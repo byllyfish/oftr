@@ -25,9 +25,9 @@
 
 using namespace ofp;
 
-bool FeaturesReply::validateLength(size_t length) const {
+bool FeaturesReply::validateInput(size_t length) const {
   if (length < sizeof(FeaturesReply)) {
-    log::info("FeatureReply validateLength failed.");
+    log::info("FeatureReply validateInput failed.");
     return false;
   }
 

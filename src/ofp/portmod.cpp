@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool PortMod::validateLength(size_t length) const {
+bool PortMod::validateInput(size_t length) const {
   if (length != sizeof(PortMod))
     return false;
 

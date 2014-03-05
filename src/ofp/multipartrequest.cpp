@@ -25,7 +25,7 @@
 
 namespace ofp { // <namespace ofp>
 
-bool MultipartRequest::validateLength(size_t length) const {
+bool MultipartRequest::validateInput(size_t length) const {
   // FIXME - this will need to cast and verify the lengths in the body.
   return length >= sizeof(MultipartRequest);
 }

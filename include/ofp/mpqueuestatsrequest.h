@@ -40,7 +40,7 @@ class MPQueueStatsRequest {
   UInt32 portNo() const { return portNo_; }
   UInt32 queueId() const { return queueId_; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
  private:
   Big32 portNo_;

@@ -45,7 +45,7 @@ using namespace ofp;
 // (*) Version 3 is same as version 4, but without the 64 bit cookie field
 // between table_id and match_type.
 
-bool PacketIn::validateLength(size_t length) const {
+bool PacketIn::validateInput(size_t length) const {
   switch (version()) {
   case OFP_VERSION_1:
     return validateLengthV1(length);

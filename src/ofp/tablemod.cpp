@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool TableMod::validateLength(size_t length) const {
+bool TableMod::validateInput(size_t length) const {
   if (length != sizeof(TableMod)) {
     return false;
   }

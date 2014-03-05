@@ -23,7 +23,7 @@
 
 using namespace ofp;
 
-bool GetAsyncReply::validateLength(size_t length) const {
+bool GetAsyncReply::validateInput(size_t length) const {
   return length == sizeof(GetAsyncReply);
 }
 

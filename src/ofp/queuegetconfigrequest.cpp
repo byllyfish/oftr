@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool QueueGetConfigRequest::validateLength(size_t length) const {
+bool QueueGetConfigRequest::validateInput(size_t length) const {
   return length == sizeof(QueueGetConfigRequest);
 }
 

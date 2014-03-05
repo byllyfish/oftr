@@ -38,7 +38,7 @@ class MPPortStatsRequest {
 
   UInt32 portNo() const { return portNo_; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
   
  private:
   Big32 portNo_;

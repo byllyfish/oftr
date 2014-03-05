@@ -60,7 +60,7 @@ public:
 
   bool operator!=(const OXMRange &rhs) const { return !(*this == rhs); }
 
-  bool validateLength() const {
+  bool validateInput() const {
     assert(begin_ <= end_);
     const UInt8 *pos = begin_;
     int left = static_cast<int>(end_ - begin_);

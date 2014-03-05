@@ -77,19 +77,16 @@ public:
   bool isValidHeader();
   void transmogrify();
 
+  // Used by the ProtocolMsg::cast(message) operator.
+  template <class MsgType>
+  const MsgType *castMessage() const;
+
 private:
   ByteList buf_;
   sys::Connection *channel_;
 
-  template <class MsgType>
-  const MsgType *castMessage() const;
-
   friend std::ostream &operator<<(std::ostream &os, const Message &msg);
   friend class Transmogrify;
-
-  template <class MsgClass, OFPType MsgType, size_t MsgMinLength,
-          size_t MsgMaxLength, bool MsgMultiple8>
-  friend class ProtocolMsg;
 };
 
 std::ostream &operator<<(std::ostream &os, const Message &msg);
@@ -112,7 +109,7 @@ const MsgType *Message::castMessage() const {
   }
 
   const MsgType *msg = reinterpret_cast<const MsgType *>(data());
-  if (!msg->validateLength(length)) {
+  if (!msg->validateInput(length)) {
     return nullptr;
   }
 

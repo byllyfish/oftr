@@ -39,12 +39,12 @@ public:
     return header_.length() - sizeof(MultipartRequest);
   }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
   template <class Type>
   const Type *body_cast() const {
     const Type *p = reinterpret_cast<const Type *>(requestBody());
-    if (!p->validateLength(requestBodySize())) {
+    if (!p->validateInput(requestBodySize())) {
       return nullptr;
     }
     return p;

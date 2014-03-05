@@ -10,7 +10,7 @@ const MPQueueStatsRequest *MPQueueStatsRequest::cast(const MultipartRequest *req
     return req->body_cast<MPQueueStatsRequest>();
 }
 
-bool MPQueueStatsRequest::validateLength(size_t length) const {
+bool MPQueueStatsRequest::validateInput(size_t length) const {
   if (length != sizeof(MPQueueStatsRequest)) {
     log::debug("MPQueueStatsRequest: Validation failed.");
     return false;

@@ -31,7 +31,7 @@ ByteRange Experimenter::expData() const {
                    header_.length() - sizeof(Experimenter)};
 }
 
-bool Experimenter::validateLength(size_t length) const {
+bool Experimenter::validateInput(size_t length) const {
   return length >= sizeof(Experimenter);
 }
 

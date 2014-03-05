@@ -25,7 +25,7 @@
 
 namespace ofp { // <namespace ofp>
 
-bool MultipartReply::validateLength(size_t length) const {
+bool MultipartReply::validateInput(size_t length) const {
   // FIXME - see same method in MultipartRequest.
   return length >= sizeof(MultipartReply);
 }

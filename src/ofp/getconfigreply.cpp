@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool GetConfigReply::validateLength(size_t length) const {
+bool GetConfigReply::validateInput(size_t length) const {
   return length == sizeof(GetConfigReply);
 }
 

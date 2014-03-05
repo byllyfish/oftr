@@ -32,7 +32,7 @@ public:
   UInt8 tableId() const { return tableId_; }
   UInt32 config() const { return config_; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

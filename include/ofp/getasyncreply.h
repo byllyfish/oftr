@@ -38,7 +38,7 @@ public:
   UInt32 masterFlowRemovedMask() const { return flowRemovedMask_[0]; }
   UInt32 slaveFlowRemovedMask() const { return flowRemovedMask_[1]; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

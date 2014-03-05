@@ -26,7 +26,7 @@
 
 using namespace ofp;
 
-bool FlowRemoved::validateLength(size_t length) const {
+bool FlowRemoved::validateInput(size_t length) const {
   if (length != PadLength(matchLength_ + SizeWithoutMatchHeader))
     return false;
 
@@ -34,7 +34,7 @@ bool FlowRemoved::validateLength(size_t length) const {
 }
 
 Match FlowRemoved::match() const {
-  assert(validateLength(header_.length()));
+  assert(validateInput(header_.length()));
 
   UInt16 type = matchType_;
 

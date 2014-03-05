@@ -40,7 +40,7 @@ public:
   UInt64 byteCount() const { return byteCount_; }
   UInt32 flowCount() const { return flowCount_; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
   
 private:
   Big64 packetCount_;

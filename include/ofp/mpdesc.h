@@ -37,7 +37,7 @@ class MPDesc {
   std::string serialNum() const { return serialNum_.toString(); }
   std::string dpDesc() const { return dpDesc_.toString(); }
 
-  bool validateLength(size_t length) const { return length == 1056; }
+  bool validateInput(size_t length) const { return length == 1056; }
 
  private:
   DescStr mfrDesc_{};         // Manufacturer description

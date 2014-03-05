@@ -26,7 +26,7 @@
 
 using namespace ofp;
 
-bool Error::validateLength(size_t length) const {
+bool Error::validateInput(size_t length) const {
   return (length >= sizeof(Error));
 }
 

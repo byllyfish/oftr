@@ -51,7 +51,7 @@ class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65528> {
 public:
   ProtocolVersions protocolVersions() const;
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

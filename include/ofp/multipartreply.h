@@ -45,13 +45,13 @@ public:
   template <class Type>
   const Type *body_cast() const {
     const Type *p = reinterpret_cast<const Type *>(replyBody());
-    if (!p->validateLength(replyBodySize())) {
+    if (!p->validateInput(replyBodySize())) {
       return nullptr;
     }
     return p;
   }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
   enum : size_t {
     UnpaddedSizeVersion1 = 12

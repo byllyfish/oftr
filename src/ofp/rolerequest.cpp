@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool RoleRequest::validateLength(size_t length) const {
+bool RoleRequest::validateInput(size_t length) const {
   if (length != sizeof(RoleRequest)) {
     return false;
   }

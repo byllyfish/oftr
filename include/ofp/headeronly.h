@@ -60,7 +60,7 @@ public:
   UInt32 xid() const { return header_.xid(); }
 
   /// \returns true if message length matches length in header.
-  bool validateLength(size_t length) const {
+  bool validateInput(size_t length) const {
     return length == sizeof(HeaderOnly);
   }
 
@@ -103,7 +103,7 @@ private:
 /// \enum { Type = OFPT_FEATURES_REQUEST };
 /// \memberof ofp::FeaturesRequest
 ///
-/// \fn bool validateLength(size_t length) const
+/// \fn bool validateInput(size_t length) const
 /// \memberof ofp::FeaturesRequest
 /// \returns true if message length matches length in header.
 
@@ -130,7 +130,7 @@ static_assert(IsTriviallyCopyable<FeaturesRequest>(),
 /// \enum { Type = OFPT_GET_ASYNC_REQUEST };
 /// \memberof ofp::GetAsyncRequest
 ///
-/// \fn bool validateLength(size_t length) const
+/// \fn bool validateInput(size_t length) const
 /// \memberof ofp::GetAsyncRequest
 /// \returns true if message length matches length in header.
 
@@ -157,7 +157,7 @@ static_assert(IsTriviallyCopyable<GetAsyncRequest>(),
 /// \enum { Type = OFPT_GET_CONFIG_REQUEST };
 /// \memberof ofp::GetConfigRequest
 ///
-/// \fn bool validateLength(size_t length) const
+/// \fn bool validateInput(size_t length) const
 /// \memberof ofp::GetConfigRequest
 /// \returns true if message length matches length in header.
 
@@ -185,7 +185,7 @@ static_assert(IsTriviallyCopyable<GetConfigRequest>(),
 /// \enum { Type = OFPT_BARRIER_REQUEST };
 /// \memberof ofp::BarrierRequest
 ///
-/// \fn bool validateLength(size_t length) const
+/// \fn bool validateInput(size_t length) const
 /// \memberof ofp::BarrierRequest
 /// \returns true if message length matches length in header.
 
@@ -212,7 +212,7 @@ static_assert(IsTriviallyCopyable<BarrierRequest>(),
 /// \enum { Type = OFPT_BARRIER_REPLY };
 /// \memberof ofp::BarrierReply
 ///
-/// \fn bool validateLength(size_t length) const
+/// \fn bool validateInput(size_t length) const
 /// \memberof ofp::BarrierReply
 
 using BarrierReply = detail::HeaderOnly<OFPT_BARRIER_REPLY>;
@@ -239,7 +239,7 @@ const HeaderOnly<MsgType> *HeaderOnly<MsgType>::cast(const Message *message) {
 
   const HeaderOnly *msg = reinterpret_cast<const HeaderOnly *>(message->data());
 
-  if (!msg->validateLength(message->size())) {
+  if (!msg->validateInput(message->size())) {
     return nullptr;
   }
 

@@ -23,6 +23,6 @@
 
 using namespace ofp;
 
-bool MPAggregateStatsReply::validateLength(size_t length) const {
+bool MPAggregateStatsReply::validateInput(size_t length) const {
   return (length == sizeof(MPAggregateStatsReply));
 }

@@ -24,7 +24,7 @@
 
 using namespace ofp;
 
-bool RoleReply::validateLength(size_t length) const {
+bool RoleReply::validateInput(size_t length) const {
   return length == sizeof(RoleReply);
 }
 

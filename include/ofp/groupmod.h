@@ -35,7 +35,7 @@ public:
   UInt32 groupId() const { return groupId_; }
   BucketRange buckets() const;
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;

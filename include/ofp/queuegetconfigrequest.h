@@ -35,7 +35,7 @@ class QueueGetConfigRequest
 public:
   UInt32 port() const { return port_; }
 
-  bool validateLength(size_t length) const;
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;
