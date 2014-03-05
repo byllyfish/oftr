@@ -60,6 +60,7 @@ public:
   const Header *header() const {
     return reinterpret_cast<const Header *>(buf_.data());
   }
+
   Header *mutableHeader() {
     return reinterpret_cast<Header *>(buf_.mutableData());
   }
@@ -73,27 +74,6 @@ public:
   UInt8 version() const { return header()->version(); }
   bool isRequestType() const;
 
-  // Provides convenient implementation of message cast.
-  template <class MsgType>
-  const MsgType *cast() const {
-    assert(type() == MsgType::type());
-
-    size_t length = size();
-    assert(length == header()->length());
-
-    if (!MsgType::isLengthValid(length)) {
-      log::debug("ProtocolMsg: Invalid length");
-      return nullptr;
-    }
-
-    const MsgType *msg = reinterpret_cast<const MsgType *>(data());
-    if (!msg->validateLength(length)) {
-      return nullptr;
-    }
-
-    return msg;
-  }
-
   bool isValidHeader();
   void transmogrify();
 
@@ -101,14 +81,42 @@ private:
   ByteList buf_;
   sys::Connection *channel_;
 
+  template <class MsgType>
+  const MsgType *castMessage() const;
+
   friend std::ostream &operator<<(std::ostream &os, const Message &msg);
   friend class Transmogrify;
+
+  template <class MsgClass, OFPType MsgType, size_t MsgMinLength,
+          size_t MsgMaxLength, bool MsgMultiple8>
+  friend class ProtocolMsg;
 };
 
 std::ostream &operator<<(std::ostream &os, const Message &msg);
 
 inline std::ostream &operator<<(std::ostream &os, const Message &msg) {
   return os << msg.buf_;
+}
+
+// Provides convenient implementation of message cast.
+template <class MsgType>
+const MsgType *Message::castMessage() const {
+  assert(type() == MsgType::type());
+
+  size_t length = size();
+  assert(length == header()->length());
+
+  if (!MsgType::isLengthValid(length)) {
+    log::debug("ProtocolMsg: Invalid length");
+    return nullptr;
+  }
+
+  const MsgType *msg = reinterpret_cast<const MsgType *>(data());
+  if (!msg->validateLength(length)) {
+    return nullptr;
+  }
+
+  return msg;
 }
 
 }  // namespace ofp

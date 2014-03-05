@@ -41,7 +41,7 @@ TEST(featuresreply, v4) {
   Message message{channel.data(), channel.size()};
   message.transmogrify();
 
-  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  const FeaturesReply *reply = FeaturesReply::cast(&message);
   EXPECT_TRUE(reply);
 
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
@@ -97,7 +97,7 @@ TEST(featuresreply, v3) {
   Message message{channel.data(), channel.size()};
   message.transmogrify();
 
-  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  const FeaturesReply *reply = FeaturesReply::cast(&message);
   EXPECT_TRUE(reply);
 
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
@@ -153,7 +153,7 @@ TEST(featuresreply, v2) {
   Message message{channel.data(), channel.size()};
   message.transmogrify();
 
-  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  const FeaturesReply *reply = FeaturesReply::cast(&message);
   EXPECT_TRUE(reply);
 
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
@@ -209,7 +209,7 @@ TEST(featuresreply, v1) {
   Message message{channel.data(), channel.size()};
   message.transmogrify();
 
-  const FeaturesReply *reply = message.cast<FeaturesReply>();
+  const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
 
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());

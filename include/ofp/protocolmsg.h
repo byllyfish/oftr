@@ -50,7 +50,7 @@ public:
 
   /// \returns Pointer to message memory as given class or nullptr.
   static const MsgClass *cast(const Message *message) {
-    return message->cast<MsgClass>();
+    return message->castMessage<MsgClass>();
   }
 
   /// \returns true if message length is potentially valid.
