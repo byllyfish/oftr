@@ -25,7 +25,7 @@ class EnumConverter {
       }
     }
     // If it doesn't match string, check for integer value.
-    UInt64 num;
+    unsigned long long num;
     if (!llvm::getAsUnsignedInteger(name, 0, num)) {
         *value = static_cast<Type>(num);
         return true;
