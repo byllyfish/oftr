@@ -119,7 +119,7 @@ set(LIBOFP_SOURCES
   src/ofp/portrange.cpp
 	src/ofp/portstatus.cpp
 	src/ofp/prerequisites.cpp
-  src/ofp/protocoliterable.cpp
+  src/ofp/protocoliterator.cpp
 	src/ofp/protocolversions.cpp
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/rolerequest.cpp

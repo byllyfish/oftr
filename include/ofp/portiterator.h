@@ -9,8 +9,6 @@ class PortIterator {
  public:
   using Item = Port;
 
-  explicit PortIterator(const UInt8 *pos) : position_{pos} {}
-
   const Item &operator*() const {
     return *reinterpret_cast<const Item *>(position_);
   }
@@ -55,6 +53,10 @@ class PortIterator {
 
  private:
   const UInt8 *position_;
+
+  explicit PortIterator(const UInt8 *pos) : position_{pos} {}
+
+  friend class PortRange;
 };
 
 }  // namespace ofp

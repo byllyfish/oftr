@@ -6,17 +6,17 @@ using namespace ofp::detail;
 
 TEST(protocoliterable, valid_empty) {
   ByteRange r1;
-  EXPECT_TRUE(IsProtocolIterableValid(r1));
+  EXPECT_TRUE(IsProtocolIteratorValid(r1));
 
   UInt64 d2 = 0;
   ByteRange r2{&d2, 0};
-  EXPECT_TRUE(IsProtocolIterableValid(r2));
+  EXPECT_TRUE(IsProtocolIteratorValid(r2));
 }
 
 TEST(protocoliterable, invalid_empty) {
   UInt8 d1[2];
   ByteRange r1{&d1[1], 0};
-  EXPECT_FALSE(IsProtocolIterableValid(r1));
+  EXPECT_FALSE(IsProtocolIteratorValid(r1));
 }
 
 TEST(protocoliterable, invalid_short) {
@@ -28,9 +28,9 @@ TEST(protocoliterable, invalid_short) {
   ByteRange r2{&d2, 8};
   ByteRange r3{&d3, 8};
 
-  EXPECT_FALSE(IsProtocolIterableValid(r1));
-  EXPECT_FALSE(IsProtocolIterableValid(r2));
-  EXPECT_FALSE(IsProtocolIterableValid(r3));
+  EXPECT_FALSE(IsProtocolIteratorValid(r1));
+  EXPECT_FALSE(IsProtocolIteratorValid(r2));
+  EXPECT_FALSE(IsProtocolIteratorValid(r3));
 }
 
 TEST(protocoliterable, valid_short) {
@@ -42,16 +42,16 @@ TEST(protocoliterable, valid_short) {
   ByteRange r2{&d2, 8};
   ByteRange r3{&d3, 8};
 
-  EXPECT_TRUE(IsProtocolIterableValid(r1));
-  EXPECT_TRUE(IsProtocolIterableValid(r2));
-  EXPECT_TRUE(IsProtocolIterableValid(r3));
+  EXPECT_TRUE(IsProtocolIteratorValid(r1));
+  EXPECT_TRUE(IsProtocolIteratorValid(r2));
+  EXPECT_TRUE(IsProtocolIteratorValid(r3));
 }
 
 TEST(protocoliterable, valid_exact) {
   Big64 d1 = 0xffff0008ffffffff;
   ByteRange r1{&d1, 8};
 
-  EXPECT_TRUE(IsProtocolIterableValid(r1));
+  EXPECT_TRUE(IsProtocolIteratorValid(r1));
 }
 
 TEST(protocoliterable, invalid1) {
@@ -62,17 +62,17 @@ TEST(protocoliterable, invalid1) {
   ByteList r2{HexToRawData("FFFF0009FFFFFFFF")};
   ByteList r3{HexToRawData("FFFFFFFFFFFFFFFF")};
 
-  EXPECT_FALSE(IsProtocolIterableValid(r1));
-  EXPECT_FALSE(IsProtocolIterableValid(r2));
-  EXPECT_FALSE(IsProtocolIterableValid(r3));
+  EXPECT_FALSE(IsProtocolIteratorValid(r1));
+  EXPECT_FALSE(IsProtocolIteratorValid(r2));
+  EXPECT_FALSE(IsProtocolIteratorValid(r3));
 }
 
 TEST(protocoliterable, invalid2) {
   ByteList r1{HexToRawData("ffff0008ffffffffff")};
   ByteList r2{HexToRawData("ffff0006ffffffffffffffffffffffff")};
 
-  EXPECT_FALSE(IsProtocolIterableValid(r1));
-  EXPECT_FALSE(IsProtocolIterableValid(r2));
+  EXPECT_FALSE(IsProtocolIteratorValid(r1));
+  EXPECT_FALSE(IsProtocolIteratorValid(r2));
 }
 
 TEST(protocoliterable, iteration) {
@@ -86,9 +86,12 @@ TEST(protocoliterable, iteration) {
   };
 
   ByteRange r1{data, sizeof(data)};
-  EXPECT_TRUE(IsProtocolIterableValid(r1));
+  EXPECT_TRUE(IsProtocolIteratorValid(r1));
 
   ProtocolIterable<Item> iterable{r1};
+  EXPECT_TRUE(iterable.validateInput(""));
+  EXPECT_EQ(4, iterable.itemCount());
+  
   unsigned sum = 0;
 
   // Three different ways to iterate.

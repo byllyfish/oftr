@@ -1,8 +1,8 @@
-#include "ofp/protocoliterable.h"
+#include "ofp/protocoliterator.h"
 #include "ofp/log.h"
 #include <algorithm>
 
-bool ofp::detail::IsProtocolIterableValid(const ByteRange &range,
+bool ofp::detail::IsProtocolIteratorValid(const ByteRange &range,
                                           const char *context) {
   const UInt8 *ptr = range.begin();
   size_t len = range.size();
@@ -45,7 +45,7 @@ bool ofp::detail::IsProtocolIterableValid(const ByteRange &range,
   return true;
 }
 
-size_t ofp::detail::ProtocolIterableItemCount(const ByteRange &range) {
+size_t ofp::detail::ProtocolIteratorItemCount(const ByteRange &range) {
   size_t count = 0;
 
   const UInt8 *ptr = range.begin();
