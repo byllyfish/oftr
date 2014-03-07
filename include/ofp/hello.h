@@ -25,13 +25,12 @@
 #include "ofp/protocolmsg.h"
 #include "ofp/protocolversions.h"
 #include "ofp/protocoliterable.h"
-#include "ofp/protocolelement.h"
 
 namespace ofp {
 namespace detail {
 
-class HelloElement : public ProtocolElement {
-public:
+class HelloElement {
+ public:
   UInt16 type() const { return type_; }
 
   void setType(UInt16 type) { type_ = type; }
@@ -39,25 +38,26 @@ public:
 
   ProtocolVersions versionBitMap() const;
 
-private:
+ private:
   Big16 type_;
   Big16 length_;
 };
 
 static_assert(sizeof(HelloElement) == 4, "Unexpected size.");
 static_assert(IsStandardLayout<HelloElement>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<HelloElement>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<HelloElement>(),
+              "Expected trivially copyable.");
 
 }  // namespace detail
 
 /// \brief Immutable OpenFlow `Hello` protocol message.
 class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65528> {
-public:
+ public:
   ProtocolVersions protocolVersions() const;
 
   bool validateInput(size_t length) const;
 
-private:
+ private:
   Header header_;
 
   ProtocolIterable<detail::HelloElement> helloElements() const {
@@ -76,7 +76,7 @@ static_assert(IsTriviallyCopyable<Hello>(), "Expected trivially copyable.");
 
 /// \brief Mutable builder for an OpenFlow `Hello` protocol message.
 class HelloBuilder {
-public:
+ public:
   explicit HelloBuilder(ProtocolVersions versions = ProtocolVersions{})
       : bitmap_{versions.bitmap()} {
     msg_.header_.setVersion(versions.highestVersion());
@@ -94,7 +94,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   Hello msg_;
   detail::HelloElement elem_;
   Big32 bitmap_ = 0;

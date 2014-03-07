@@ -1,33 +1,21 @@
 #ifndef OFP_PORTRANGE_H_
 #define OFP_PORTRANGE_H_
 
-#include "ofp/byterange.h"
-#include "ofp/portiterator.h"
+#include "ofp/protocoliterable.h"
+#include "ofp/port.h"
 
 namespace ofp {
 
 class PortList;
 class Writable;
 
-class PortRange {
- public:
+using PortIterator = ProtocolIteratorFixedSizeAndType<Port>;
+
+class PortRange : public ProtocolIterable<Port, PortIterator> {
+public:
   PortRange() = default;
-  PortRange(const ByteRange &range) : range_{range} {}
+  PortRange(const ByteRange &range) : ProtocolIterable{range} {}
   PortRange(const PortList &ports);
-
-  size_t itemCount() const { return PortIterator::distance(begin(), end()); }
-
-  PortIterator begin() const {
-    return PortIterator{range_.begin()};
-  }
-
-  PortIterator end() const {
-    return PortIterator{range_.end()};
-  }
-
-  const UInt8 *data() const { return range_.data(); }
-  size_t size() const { return range_.size(); }
-  ByteRange toByteRange() const { return range_; }
 
   /// \returns Size of port list when written to channel using the specified
   /// protocol version.
@@ -35,10 +23,7 @@ class PortRange {
 
   /// \brief Writes port list to the channel using the specified protocol
   /// version.
-  void write(Writable *channel);
-
- private:
-  ByteRange range_;
+  void write(Writable *channel);  
 };
 
 }  // namespace ofp

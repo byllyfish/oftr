@@ -42,8 +42,6 @@ static_assert(IsTriviallyCopyable<PortName>(), "Expected trivially copyable.");
 
 class Port {
  public:
-  Port() = default;
-
   UInt32 portNo() const { return portNo_; }
   const EnetAddress &hwAddr() const { return hwAddr_; }
   const PortName &name() const { return name_; }
@@ -71,7 +69,12 @@ class Port {
   Big32 currSpeed_;
   Big32 maxSpeed_;
 
+  // Only a PortBuilder can create an instance.
+  Port() = default;
+
   friend class PortBuilder;
+  friend class PortStatus;
+
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };

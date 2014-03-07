@@ -42,7 +42,7 @@ private:
   Padding<4> pad_;
 
   // Only a BucketBuilder can create an instance.
-  Bucket() {}
+  Bucket() = default;
 
   friend class BucketBuilder;
 };

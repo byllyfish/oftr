@@ -22,28 +22,13 @@
 #ifndef OFP_BUCKETRANGE_H_
 #define OFP_BUCKETRANGE_H_
 
-#include "ofp/byterange.h"
-#include "ofp/bucketiterator.h"
+#include "ofp/protocoliterable.h"
+#include "ofp/bucket.h"
 
 namespace ofp {
 
-class BucketRange {
-public:
-  BucketRange() = default;
-  explicit BucketRange(const ByteRange &range) : range_{range} {}
-
-  size_t itemCount() const { return BucketIterator::distance(begin(), end()); }
-
-  BucketIterator begin() const {
-    return BucketIterator{range_.begin()};
-  }
-  BucketIterator end() const {
-    return BucketIterator{range_.end()};
-  }
-
-private:
-  ByteRange range_;
-};
+using BucketIterator = ProtocolIteratorFixedType<Bucket>;
+using BucketRange = ProtocolIterable<Bucket, BucketIterator>;
 
 }  // namespace ofp
 
