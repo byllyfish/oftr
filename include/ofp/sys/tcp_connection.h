@@ -57,17 +57,13 @@ public:
     socket_.buf_write(data, length);
   }
 
-  void flush() override {
-    socket_.buf_flush();
-  }
-
-  void shutdown() override {
-    socket_.lowest_layer().close();
-  }
+  void flush() override;
+  void shutdown() override;
 
   Transport transport() const override { return Transport::TCP; }
 
 private:
+  log::Lifetime lifetime_{"TCP_Connection"};
   Message message_;
   Buffered<SocketType> socket_;
   tcp::endpoint endpoint_;
@@ -75,7 +71,7 @@ private:
   asio::steady_timer idleTimer_;
   std::chrono::steady_clock::time_point latestActivity_;
 
-  log::Lifetime lifetime_{"TCP_Connection"};
+  
 
   void channelUp();
   void channelDown();

@@ -61,6 +61,20 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::remoteEndpoint() const {
 }
 
 template <class SocketType>
+void TCP_Connection<SocketType>::flush() {
+  auto self(this->shared_from_this());
+  socket_.buf_flush([self](const std::error_code &error){});
+}
+
+template <class SocketType>
+void TCP_Connection<SocketType>::shutdown() {
+  auto self(this->shared_from_this());
+  socket_.async_shutdown([this, self](const std::error_code &error){
+    socket_.shutdownLowestLayer();
+  });
+}
+
+template <class SocketType>
 ofp::Deferred<std::error_code>
 TCP_Connection<SocketType>::asyncConnect(const tcp::endpoint &endpt, Milliseconds delay) {
   assert(deferredExc_ == nullptr);
@@ -81,7 +95,7 @@ TCP_Connection<SocketType>::asyncConnect(const tcp::endpoint &endpt, Millisecond
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncAccept() {
   // Do nothing if socket is not open.
-  if (!socket_.lowest_layer().is_open())
+  if (!socket_.is_open())
     return;
 
   // We always send and receive complete messages; disable Nagle algorithm.
@@ -115,14 +129,17 @@ void TCP_Connection<SocketType>::channelDown() {
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncReadHeader() {
   // Do nothing if socket is not open.
-  if (!socket_.lowest_layer().is_open())
+  if (!socket_.is_open()) {
+    log::debug("asyncReadHeader called with socket closed.");
     return;
+  }
 
   auto self(this->shared_from_this());
 
   asio::async_read(socket_, asio::buffer(message_.mutableData(sizeof(Header)),
                                          sizeof(Header)),
                    [this, self](const asio::error_code &err, size_t length) {
+    log::Lifetime lifetime{"asyncReadHeader callback."};
 
     if (!err) {
       assert(length == sizeof(Header));
@@ -134,11 +151,20 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
 
         if (msgLength == sizeof(Header)) {
           postMessage(this, &message_);
-          asyncReadHeader();
+          if (socket_.is_open()) {
+            asyncReadHeader();
+          } else {
+            // Rare: postMessage() closed the socket forcefully.
+            channelDown();
+          }
 
         } else {
           asyncReadMessage(msgLength);
         }
+      } else {
+        // The header failed our rudimentary validation checks.
+        log::debug("asyncReadHeader header validation failed");
+        channelDown();
       }
 
     } else {
@@ -157,6 +183,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   assert(msgLength > sizeof(Header));
+  assert(socket_.is_open());
 
   auto self(this->shared_from_this());
 
@@ -169,7 +196,12 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
           assert(bytes_transferred == message_.size() - sizeof(Header));
 
           postMessage(this, &message_);
-          asyncReadHeader();
+          if (socket_.is_open()) {
+            asyncReadHeader();
+          } else {
+            // Rare: postMessage() closed the socket forcefully.
+            channelDown();
+          }
 
         } else {
           if (err != asio::error::eof) {

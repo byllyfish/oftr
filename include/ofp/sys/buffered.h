@@ -59,18 +59,23 @@ public:
   // using inherited::close;
 
   ~Buffered() {
-    // Close the underlying socket before destroying buffers.
-    lowest_layer().close();
+    // Shutdown the underlying socket before destroying buffers.
+    shutdownLowestLayer();
   }
 
   const next_layer_type &next_layer() const { return *this; }
   next_layer_type &next_layer() { return *this; }
 
+  bool is_open() const { return lowest_layer().is_open(); }
+
   void buf_write(const void *data, size_t length) {
     buffer_[bufferIdx_].add(data, length);
   }
 
-  void buf_flush();
+  template <class CompletionHandler>
+  void buf_flush(CompletionHandler &&handler);
+
+  void shutdownLowestLayer();
 
 private:
   // Use a two buffer strategy for async-writes. We queue up data in one
@@ -78,13 +83,15 @@ private:
   ByteList buffer_[2];
   int bufferIdx_ = 0;
   bool isFlushing_ = false;
+  bool isShutdown_ = false;
 };
 
 OFP_END_IGNORE_PADDING
 
 template <class StreamType>
-void Buffered<StreamType>::buf_flush() {
-  ByteList &outgoing = buffer_[bufferIdx_];
+template <class CompletionHandler>
+void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
+  const ByteList &outgoing = buffer_[bufferIdx_];
   if (isFlushing_ || outgoing.size() == 0)
     return;
 
@@ -94,22 +101,38 @@ void Buffered<StreamType>::buf_flush() {
   log::trace("write", outgoing.data(), outgoing.size());
 
   async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
-              [this](const asio::error_code &err, size_t bytes_transferred) {
+              [this, handler](const asio::error_code &err, size_t bytes_transferred) {
 
     if (!err) {
       assert(bytes_transferred == buffer_[!bufferIdx_].size());
 
+      log::debug("Write:", bytes_transferred);
       isFlushing_ = false;
       buffer_[!bufferIdx_].clear();
       if (buffer_[bufferIdx_].size() > 0) {
         // Start another async write for the other output buffer.
-        buf_flush();
+        buf_flush(handler);
+      } else {
+        // Call completion handler.
+        handler(err);
       }
 
     } else {
       log::debug("Write error ", err);
+      handler(err);
     }
   });
+}
+
+template <class StreamType>
+void Buffered<StreamType>::shutdownLowestLayer() {
+  if (!isShutdown_ && is_open()) {
+    std::error_code err;
+    lowest_layer().shutdown(tcp::socket::shutdown_both, err);
+    if (err)
+      log::info("Buffered::shutdownLowestLayer error:", err.message());
+    isShutdown_ = true;
+  }
 }
 
 }  // namespace sys
