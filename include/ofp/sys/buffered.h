@@ -58,11 +58,6 @@ public:
   // using inherited::set_option;
   // using inherited::close;
 
-  ~Buffered() {
-    // Shutdown the underlying socket before destroying buffers.
-    shutdownLowestLayer();
-  }
-
   const next_layer_type &next_layer() const { return *this; }
   next_layer_type &next_layer() { return *this; }
 
@@ -83,7 +78,6 @@ private:
   ByteList buffer_[2];
   int bufferIdx_ = 0;
   bool isFlushing_ = false;
-  bool isShutdown_ = false;
 };
 
 OFP_END_IGNORE_PADDING
@@ -106,7 +100,6 @@ void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
     if (!err) {
       assert(bytes_transferred == buffer_[!bufferIdx_].size());
 
-      log::debug("Write:", bytes_transferred);
       isFlushing_ = false;
       buffer_[!bufferIdx_].clear();
       if (buffer_[bufferIdx_].size() > 0) {
@@ -118,7 +111,7 @@ void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
       }
 
     } else {
-      log::debug("Write error ", err);
+      log::debug("Buffered::buf_flush error ", err);
       handler(err);
     }
   });
@@ -126,12 +119,11 @@ void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
 
 template <class StreamType>
 void Buffered<StreamType>::shutdownLowestLayer() {
-  if (!isShutdown_ && is_open()) {
+  if (is_open()) {
     std::error_code err;
     lowest_layer().shutdown(tcp::socket::shutdown_both, err);
     if (err)
-      log::info("Buffered::shutdownLowestLayer error:", err.message());
-    isShutdown_ = true;
+      log::debug("Buffered::shutdownLowestLayer error:", err.message());
   }
 }
 
