@@ -9,6 +9,7 @@ set(oxmfields_tab ${CMAKE_CURRENT_SOURCE_DIR}/oxmfields.tab)
 set(oxmfields_compile_cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxmfields_compile_main.cpp)
 set(oxmfields_compile3_cpp ${CMAKE_CURRENT_SOURCE_DIR}/oxmfields_compile3_main.cpp)
 set(oxmlist_cpp "${CMAKE_SOURCE_DIR}/src/ofp/oxmlist.cpp")
+set(bytelist_cpp "${CMAKE_SOURCE_DIR}/src/ofp/bytelist.cpp")
 
 # Make ofp sub-directory for oxmfields.h
 
@@ -34,7 +35,7 @@ add_custom_command(
 
 # Build `oxmfields_compile2`.
 
-add_executable(oxmfields_compile2 ${oxmfields_main_cpp} ${oxmlist_cpp} ${oxmfields_h})
+add_executable(oxmfields_compile2 ${oxmfields_main_cpp} ${oxmlist_cpp} ${oxmfields_h} ${bytelist_cpp})
 
 # Use `oxmfields_compile2` to produce oxmfields.cpp.
 
@@ -46,7 +47,7 @@ add_custom_command(
 
 # Build `oxmfields_compile3`.
 
-add_executable(oxmfields_compile3 ${oxmlist_cpp} ${oxmfields_cpp} ${oxmfields_compile3_cpp})
+add_executable(oxmfields_compile3 ${oxmlist_cpp} ${oxmfields_cpp} ${oxmfields_compile3_cpp} ${bytelist_cpp})
 
 # Use `oxmfields_compile3` to produce oxmfieldsdata.cpp.
 

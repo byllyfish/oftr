@@ -46,7 +46,7 @@ public:
   /* implicit NOLINT */ ByteList(const ByteRange &range);
 
   /// \brief Construct byte buffer copying the specified data.
-  ByteList(const void *data, size_t length) { add(data, length); }
+  ByteList(const void *data, size_t length);
 
   explicit ByteList(const std::string &s) : ByteList{s.data(), s.size()} {}
 
@@ -72,76 +72,37 @@ public:
   }
 
   /// \brief Set contents of the entire byte buffer.
-  void set(const void *data, size_t length) {
-    assert(data != nullptr || length == 0);
-    clear();
-    add(data, length);
-  }
+  void set(const void *data, size_t length);
 
   /// \brief Append data to the end of the byte buffer.
-  void add(const void *data, size_t length) {
-    assert(data != nullptr || length == 0);
-    auto bp = BytePtr(data);
-    buf_.insert(buf_.end(), bp, bp + length);
-  }
+  void add(const void *data, size_t length);
 
   /// \brief Insert data at the specified position in the byte buffer.
-  void insert(const UInt8 *pos, const void *data, size_t length) {
-    assertInRange(pos);
-    assert(data != nullptr || length == 0);
-    auto bp = BytePtr(data);
-    buf_.insert(buf_.begin() + offset(pos), bp, bp + length);
-  }
+  void insert(const UInt8 *pos, const void *data, size_t length);
 
   /// \brief Replace existing data in the byte buffer with new values.
   void replace(const UInt8 *pos, const UInt8 *posEnd, const void *data,
-               size_t length) {
-    assert(data != nullptr || length == 0);
-    auto idx = offset(pos);
-    replaceUninitialized(pos, posEnd, length);
-    // N.B. Memory might have moved.
-    auto bp = BytePtr(data);
-    std::copy(bp, bp + length, buf_.begin() + idx);
-  }
+               size_t length);
 
   /// \brief Append uninitialized bytes to the end of the byte buffer.
-  void addUninitialized(size_t length) { buf_.insert(buf_.end(), length, 0); }
+  void addUninitialized(size_t length);
 
   /// \brief Insert uninitialized bytes at the specified position in the byte
   /// buffer.
-  void insertUninitialized(const UInt8 *pos, size_t length) {
-    assertInRange(pos);
-    buf_.insert(buf_.begin() + offset(pos), length, 0);
-  }
+  void insertUninitialized(const UInt8 *pos, size_t length);
 
   /// \brief Replace existing data in the byte buffer with uninitialized values.
   void replaceUninitialized(const UInt8 *pos, const UInt8 *posEnd,
-                            size_t length) {
-    assert(pos <= posEnd);
-    assertInRange(pos);
-    assertInRange(posEnd);
-
-    size_t oldlen = Unsigned_cast(posEnd - pos);
-    if (length > oldlen) {
-      buf_.insert(buf_.begin() + offset(posEnd), length - oldlen, 0);
-    } else if (length < oldlen) {
-      auto iter = buf_.begin() + offset(pos);
-      buf_.erase(iter, iter + Signed_cast(oldlen - length));
-    }
-  }
+                            size_t length);
 
   /// \brief Remove specified range from the byte buffer.
-  void remove(const UInt8 *pos, size_t length) {
-    assertInRange(pos);
-    auto iter = buf_.begin() + offset(pos);
-    buf_.erase(iter, iter + Signed_cast(length));
-  }
+  void remove(const UInt8 *pos, size_t length);
 
   /// \brief Resize buffer to specified length.
-  void resize(size_t length) { buf_.resize(length); }
+  void resize(size_t length);
 
   /// \brief Clear contents of the buffer.
-  void clear() { buf_.clear(); }
+  void clear();
 
   bool operator==(const ByteList &rhs) const { return buf_ == rhs.buf_; }
   bool operator!=(const ByteList &rhs) const { return !operator==(rhs); }
