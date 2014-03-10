@@ -9,7 +9,7 @@ int main(int argc, const char **argv) {
   std::vector<std::string> args{argv + 1, argv + argc};
 
   IPv6Address addr{};
-  ProtocolVersions version{};
+  ProtocolVersions version{ProtocolVersions::All};
   if (!args.empty()) {
     addr = IPv6Address{args[0]};
     if (args.size() == 2) {

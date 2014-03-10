@@ -37,35 +37,41 @@ public:
     MaxVersion = OFP_VERSION_LAST
   };
 
-  enum Setting : UInt32 {
-    All = ~(~0U << (MaxVersion + 1)) & ~1U,
-    None = 0U
+  enum : UInt32 {
+    VersionBitmapAll = ~(~0U << (MaxVersion + 1)) & ~1U,
+    VersionBitmapNone = 0U
   };
-
-  ProtocolVersions() : bitmap_{All} {}
-
-  /* implicit NOLINT */ ProtocolVersions(Setting setting) : bitmap_{setting} {}
 
   /* implicit NOLINT */ ProtocolVersions(std::initializer_list<UInt8> versions);
 
-  explicit ProtocolVersions(const std::vector<UInt8> &versions);
-
-  bool empty() const { return (bitmap_ == 0); }
-
+  constexpr bool empty() const { return (bitmap_ == 0); }
+  bool isOnlyOneVersionSupported() const;
+  bool containsVersion(UInt8 version) const;
+  
   UInt8 highestVersion() const;
+  UInt8 negotiateVersion(UInt8 msgVersion, ProtocolVersions msgVersions) const;
 
-  UInt32 bitmap() const { return bitmap_; }
+  constexpr UInt32 bitmap() const { return bitmap_; }
+  std::vector<UInt8> versions() const;
 
-  ProtocolVersions intersection(ProtocolVersions versions) const {
-    return fromBitmap(bitmap_ & versions.bitmap_);
+  constexpr ProtocolVersions intersection(ProtocolVersions versions) const {
+    return ProtocolVersions(bitmap_ & versions.bitmap_);
   }
 
-  static ProtocolVersions fromBitmap(UInt32 bitmap);
+  std::string toString() const;
+  
+  constexpr static ProtocolVersions fromBitmap(UInt32 bitmap) { return ProtocolVersions(bitmap); }
 
-  std::vector<UInt8> versions() const;
+  static ProtocolVersions fromVector(const std::vector<UInt8> &versions);
+
+  static const ProtocolVersions None;
+  static const ProtocolVersions All;
 
 private:
   UInt32 bitmap_;
+
+  // N.B. You must call this constructor using (), not {}.
+  constexpr explicit ProtocolVersions(UInt32 bitmap) : bitmap_(bitmap) {}
 };
 
 }  // namespace ofp

@@ -48,7 +48,7 @@ TEST(decoder, hellov1) {
       "0100000800000001",
       "---\ntype:            OFPT_HELLO\nxid:             "
       "0x00000001\nversion:         1\nmsg:             \n  versions:  "
-      "      [ 1 ]\n...\n");
+      "      [  ]\n...\n");
 }
 
 TEST(decoder, hellov4) {

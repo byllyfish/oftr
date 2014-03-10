@@ -77,6 +77,16 @@ TEST(encoder, hellov4) {
              encoder.size());
 }
 
+TEST(encoder, helloNoVersionsV4) {
+  const char *input = R"""(
+type: OFPT_HELLO
+version: 4
+msg: {}
+)""";
+
+  testEncoderSuccess(input, 16, "04000010000000000001000800000010");
+}
+
 TEST(encoder, error) {
   const char *input = R"""(
 type: OFPT_ERROR

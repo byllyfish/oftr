@@ -44,8 +44,7 @@ ProtocolVersions Hello::protocolVersions() const {
     if (elem.type() == OFPHET_VERSIONBITMAP)
       return elem.versionBitMap();
   }
-
-  return ProtocolVersions{header_.version()};
+  return ProtocolVersions::None;
 }
 
 /// Construct a HelloBuilder from the given Hello message.

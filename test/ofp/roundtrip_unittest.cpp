@@ -103,12 +103,12 @@ TEST(roundtrip, basic_test) {
 
     auto result1 = driver.listen(Driver::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions{}, TestController::factory);
+                                 ProtocolVersions::All, TestController::factory);
     EXPECT_FALSE(result1);
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
-                                  ProtocolVersions{}, TestAgent::factory);
+                                  ProtocolVersions::All, TestAgent::factory);
 
     result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
@@ -136,13 +136,13 @@ TEST(roundtrip, reconnect_test) {
 
     auto result1 = driver.listen(Driver::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions{}, TestController::factory);
+                                 ProtocolVersions::All, TestController::factory);
 
     EXPECT_FALSE(result1);
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
-                                  ProtocolVersions{}, TestAgent::factory);
+                                  ProtocolVersions::All, TestAgent::factory);
 
     result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 
@@ -170,13 +170,13 @@ TEST(roundtrip, auxiliary_test) {
 
     auto result1 = driver.listen(Driver::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions{}, TestController::factory);
+                                 ProtocolVersions::All, TestController::factory);
 
     EXPECT_FALSE(result1);
 
     auto result2 = driver.connect(Driver::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
-                                  ProtocolVersions{}, TestAgent::factory);
+                                  ProtocolVersions::All, TestAgent::factory);
 
     result2.done([](const std::error_code &err) { EXPECT_FALSE(err); });
 

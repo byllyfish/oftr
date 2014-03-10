@@ -68,10 +68,6 @@ void DefaultHandshake::onMessage(const Message *message) {
     onHello(message);
     break;
 
-  //case FeaturesRequest::type() :
-  //  onFeaturesRequest(message);
-  //  break;
-
   case FeaturesReply::type() :
     onFeaturesReply(message);
     break;
@@ -91,46 +87,40 @@ void DefaultHandshake::onHello(const Message *message) {
   if (!msg)
     return;
 
-  ProtocolVersions versions = msg->protocolVersions();
-  versions = versions.intersection(versions_);
+  UInt8 msgVersion = msg->msgHeader()->version();
+  UInt8 version = versions_.negotiateVersion(msgVersion, msg->protocolVersions());
 
-  if (versions.empty()) {
-    replyError(OFPET_HELLO_FAILED, OFPHFC_INCOMPATIBLE, message);
+  if (version == 0) {
+    // If there are no versions in common, send an error and terminate the
+    // connection.
+    channel_->setVersion(versions_.highestVersion());
+    std::string explanation = "Supported Versions: ";
+    explanation += versions_.toString();
 
-  } else if (role_ == Driver::Controller) {
-    channel_->setVersion(versions.highestVersion());
+    ErrorBuilder error{message->xid()};
+    error.setErrorType(OFPET_HELLO_FAILED);
+    error.setErrorCode(OFPHFC_INCOMPATIBLE);
+    error.setErrorData(explanation.data(), explanation.size());
+    error.send(channel_);
+    channel_->shutdown();
+    return;
+  }
+
+  channel_->setVersion(version);
+
+  if (role_ == Driver::Controller) {
     FeaturesRequestBuilder reply{};
     reply.send(channel_);
 
   } else {
     assert(role_ == Driver::Bridge || role_ == Driver::Agent || role_ == Driver::Auxiliary);
 
-    channel_->setVersion(versions.highestVersion());
     installNewChannelListener(nullptr);
   }
 
   // TODO handle case where we reconnected with a startingVersion of 1 but
   // the other end supports a higher version number.
 }
-
-#if 0
-void DefaultHandshake::onFeaturesRequest(const Message *message) {
-  // A controller shouuld not receive a features request message.
-  if (role_ == Driver::Controller) {
-    return; // FIXME error
-  }
-
-  const FeaturesRequest *request = FeaturesRequest::cast(message);
-  if (!request)
-    return; // FIXME log
-
-  FeaturesReplyBuilder reply{message->xid()};
-  //reply.setFeatures(channel_->features());
-  reply.send(channel_);
-
-  installNewChannelListener(nullptr);
-}
-#endif //0
 
 void DefaultHandshake::onFeaturesReply(const Message *message) {
   // Only a controller should be receiving a features reply message.
@@ -156,16 +146,6 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
 
 void DefaultHandshake::onError(const Message *message) {
   // FIXME log it
-}
-
-void DefaultHandshake::replyError(UInt16 type, UInt16 code,
-                                  const Message *message) {
-  ErrorBuilder error{message->xid()};
-  error.setErrorType(type);
-  error.setErrorCode(code);
-  error.setErrorData(message);
-  error.send(channel_);
-  channel_->shutdown();
 }
 
 void DefaultHandshake::installNewChannelListener(const Message *message) {

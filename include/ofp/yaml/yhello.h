@@ -32,7 +32,7 @@ namespace yaml {
 
 //---
 // type: OFPT_HELLO
-// msg:
+// msg:                       { Optional; versions defaults to All. }
 //   versions: [ <UInt8> ]    { Optional }
 //...
 
@@ -41,10 +41,8 @@ struct MappingTraits<ofp::Hello> {
 
   static void mapping(IO &io, ofp::Hello &msg) {
     ofp::ProtocolVersions versions = msg.protocolVersions();
-    if (!versions.empty()) {
-      std::vector<ofp::UInt8> vers = versions.versions();
-      io.mapRequired("versions", vers);
-    }
+    std::vector<ofp::UInt8> vers = versions.versions();
+    io.mapRequired("versions", vers);
   }
 };
 
@@ -53,8 +51,8 @@ struct MappingTraits<ofp::HelloBuilder> {
 
   static void mapping(IO &io, ofp::HelloBuilder &msg) {
     std::vector<ofp::UInt8> versions;
-    io.mapRequired("versions", versions);
-    msg.setProtocolVersions(ofp::ProtocolVersions{versions});
+    io.mapOptional("versions", versions);
+    msg.setProtocolVersions(ofp::ProtocolVersions::fromVector(versions));
   }
 };
 

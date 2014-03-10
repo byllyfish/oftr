@@ -59,11 +59,9 @@ private:
   UInt8 startingVersion_ = 0;
 
   void onHello(const Message *message);
-  //void onFeaturesRequest(const Message *message);
   void onFeaturesReply(const Message *message);
   void onError(const Message *message);
 
-  void replyError(UInt16 type, UInt16 code, const Message *message);
   void installNewChannelListener(const Message *message);
   void installAuxiliaryChannelListener(const Message *message);
 };

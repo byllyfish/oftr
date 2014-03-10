@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
   if (addr.valid()) {
     auto result =
         driver.connect(Driver::Controller, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
-                       ProtocolVersions{}, NullController::Factory);
+                       ProtocolVersions::All, NullController::Factory);
 
     result.done([](const std::error_code &err) {
       std::cout << "Result " << err << '\n';
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
   } else {
     driver.listen(Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
-                  ProtocolVersions{}, NullController::Factory);
+                  ProtocolVersions::All, NullController::Factory);
   }
 
   driver.run();

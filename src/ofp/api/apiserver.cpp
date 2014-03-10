@@ -94,7 +94,7 @@ void ApiServer::onListenRequest(ApiConnection *conn,
   IPv6Endpoint endpt = listenReq->params.endpoint;
 
   std::error_code err =
-      driver->listen(Driver::Controller, endpt, ProtocolVersions{},
+      driver->listen(Driver::Controller, endpt, ProtocolVersions::All,
                      [this]() { return new ApiChannelListener{this}; });
 
   ApiListenReply reply;
@@ -118,7 +118,7 @@ void ApiServer::onConnectRequest(ApiConnection *conn,
   IPv6Endpoint endpt = connectReq->params.endpoint;
 
   auto deferredErr =
-      driver->connect(Driver::Controller, endpt, ProtocolVersions{},
+      driver->connect(Driver::Controller, endpt, ProtocolVersions::All,
                       [this]() { return new ApiChannelListener{this}; });
 
   UInt32 xid = connectReq->params.xid;

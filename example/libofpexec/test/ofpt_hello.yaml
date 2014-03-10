@@ -10,7 +10,7 @@ type:            OFPT_HELLO
 xid:             0x01020304
 version:         1
 msg:             
-  versions:        [ 1 ]
+  versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
@@ -24,14 +24,14 @@ type:            OFPT_HELLO
 xid:             0x00000000
 version:         1
 msg:             
-  versions:        [ 1 ]
+  versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
 version:         2
 msg:             
-  versions:        [ 2 ]
+  versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
@@ -45,14 +45,14 @@ type:            OFPT_HELLO
 xid:             0x00000000
 version:         3
 msg:             
-  versions:        [ 3 ]
+  versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
 version:         3
 msg:             
-  versions:        [ 3 ]
+  versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO

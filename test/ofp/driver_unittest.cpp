@@ -38,7 +38,7 @@ TEST(driver, test) {
   Driver driver;
 
   driver.listen(Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
-                ProtocolVersions{}, [] { return new MockChannelListener; });
+                ProtocolVersions::All, [] { return new MockChannelListener; });
 
   // driver.run();
 }

@@ -123,7 +123,7 @@ msg:
 )";
 
   Encoder encoder{yaml};
-  EXPECT_TRUE(encoder.error().find("missing required key 'versions'") !=
+  EXPECT_TRUE(encoder.error().find("unknown key 'version'") !=
               std::string::npos);
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
