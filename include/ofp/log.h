@@ -95,7 +95,9 @@ inline void info(const Args &... args) {
 
 template <class... Args>
 inline void debug(const Args &... args) {
+#ifndef NDEBUG
   detail::write_(Level::Debug, args...);
+#endif
 }
 
 template <class... Args>

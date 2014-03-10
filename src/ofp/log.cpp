@@ -57,9 +57,14 @@ const char *levelToString(Level level) {
     case Level::Silent:
       return "[silent]";
   }
+  return "";
 }
 
-const Level kDefaultLevel = Level::Debug;
+#ifndef NDEBUG
+ const Level kDefaultLevel = Level::Debug;
+#else
+ const Level kDefaultLevel = Level::Info;
+#endif 
 
 namespace detail {
 
@@ -122,6 +127,9 @@ static void trace1(const char *type, const void *data, size_t length) {
 }
 
 void trace(const char *type, const void *data, size_t length) {
+  if (Level::Trace < detail::GlobalOutputLevelFilter)
+    return;
+
   // The memory buffer may contain multiple messages. We need to log each one
   // separately.
 
