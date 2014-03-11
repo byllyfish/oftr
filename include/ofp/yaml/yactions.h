@@ -167,7 +167,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 
     	ActionList &list = reinterpret_cast<ActionList&>(builder);
 
-    	OFPActionType type;
+    	OFPActionType type = OFPAT_OUTPUT;
     	io.mapRequired("action", type);
     	switch (type)
     	{

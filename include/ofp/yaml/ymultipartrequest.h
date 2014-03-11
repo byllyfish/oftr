@@ -94,7 +94,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
   static void mapping(IO &io, ofp::MultipartRequestBuilder &msg) {
     using namespace ofp;
 
-    OFPMultipartType type;
+    OFPMultipartType type = OFPMP_DESC;
     io.mapRequired("type", type);
     io.mapRequired("flags", msg.msg_.flags_);
     msg.setRequestType(type);

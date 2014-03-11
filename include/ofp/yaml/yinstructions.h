@@ -161,7 +161,7 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
 
     InstructionList &list = reinterpret_cast<InstructionList &>(builder);
 
-    OFPInstructionType type;
+    OFPInstructionType type = OFPIT_GOTO_TABLE;
     io.mapRequired("type", type);
     switch (type) {
     case IT_GOTO_TABLE::type() : {
