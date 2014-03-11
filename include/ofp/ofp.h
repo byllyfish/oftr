@@ -51,5 +51,6 @@
 #include "ofp/queuegetconfigrequest.h"
 #include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
+#include "ofp/memorychannel.h"
 
 #endif  // OFP_OFP_H_
