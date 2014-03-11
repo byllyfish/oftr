@@ -174,7 +174,7 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel) {
   assert(version <= OFP_VERSION_1);
 
   deprecated::OriginalMatch origMatch{match_.toRange()};
-  ActionRange actions = instructions_.toActions();
+  ActionRange actions = instructions_.toRange().outputActions();
 
   UInt16 msgLen = 72;
   if (actions.size() > 0) {

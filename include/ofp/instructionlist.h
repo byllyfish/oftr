@@ -25,11 +25,10 @@
 #include "ofp/types.h"
 #include "ofp/instructions.h"
 #include "ofp/instructioniterator.h"
+#include "ofp/instructionrange.h"
 #include "ofp/bytelist.h"
 
 namespace ofp {
-
-class InstructionRange;
 
 class InstructionList {
 public:
@@ -51,7 +50,7 @@ public:
   template <class Type>
   void add(const Type &instruction);
 
-  ActionRange toActions() const;
+  InstructionRange toRange() const { return buf_.toRange(); }
 
 private:
   ByteList buf_;

@@ -80,7 +80,7 @@ void MPFlowStatsReplyBuilder::write(Writable *channel) {
 void MPFlowStatsReplyBuilder::writeV1(Writable *channel)
 {
   deprecated::OriginalMatch origMatch{match_.toRange()};
-  ActionRange actions = instructions_.toActions();
+  ActionRange actions = instructions_.toRange().outputActions();
 
   size_t msgLen = 88 + actions.writeSize(channel);
 

@@ -24,6 +24,7 @@
 
 #include "ofp/byterange.h"
 #include "ofp/instructioniterator.h"
+#include "ofp/actionrange.h"
 
 namespace ofp {
 
@@ -46,6 +47,8 @@ public:
 
   const UInt8 *data() const { return range_.data(); }
   size_t size() const { return range_.size(); }
+
+  ActionRange outputActions() const;
 
 private:
   ByteRange range_;
