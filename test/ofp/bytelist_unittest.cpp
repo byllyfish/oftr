@@ -108,3 +108,15 @@ TEST(bytelist, byterange) {
 
   EXPECT_EQ(list2, list3);
 }
+
+TEST(bytelist, move) {
+  ByteList list;
+  list.add("123", 3);
+
+  ByteList list2;
+  list2.add("x", 1);
+
+  EXPECT_EQ(list.size(), 3);
+  list2 = std::move(list);
+  EXPECT_EQ(0, list.size());
+}

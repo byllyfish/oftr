@@ -110,8 +110,17 @@ class FlowModBuilder {
     match_ = match;
   }
 
+  void setMatch(MatchBuilder &&match) {
+    assert(match.validate());
+    match_ = std::move(match);
+  }
+
   void setInstructions(const InstructionList &instructions) {
     instructions_ = instructions;
+  }
+
+  void setInstructions(InstructionList &&instructions) {
+    instructions_ = std::move(instructions);
   }
 
   UInt32 send(Writable *channel);

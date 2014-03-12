@@ -108,6 +108,7 @@ ByteRange ByteList::toRange() const {
   return ByteRange{data(), size()};
 }
 
-void ByteList::operator=(const ByteRange &range) {
+ByteList &ByteList::operator=(const ByteRange &range) {
   set(range.data(), range.size());
+  return *this;
 }

@@ -53,3 +53,18 @@ TEST(oxmlist, mpls) {
   EXPECT_EQ(13, list.size());
   EXPECT_HEX("80004404-00000002 80004601-01", list.data(), list.size());
 }
+
+TEST(oxmlist, move) {
+  OXMList list;
+  list.add(OFB_InPort{300});
+  list.add(OFB_VlanVid{200});
+
+  OXMList list2;
+  list2.add(OFB_TCPSrcPort{100});
+
+  EXPECT_LT(0, list.size());
+  EXPECT_LT(0, list2.size());
+
+  list2 = std::move(list);
+  EXPECT_EQ(0, list.size());
+}

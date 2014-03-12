@@ -108,7 +108,7 @@ public:
   bool operator!=(const ByteList &rhs) const { return !operator==(rhs); }
 
   ByteRange toRange() const;
-  void operator=(const ByteRange &range);
+  ByteList &operator=(const ByteRange &range);
 
 private:
   std::vector<UInt8> buf_;
