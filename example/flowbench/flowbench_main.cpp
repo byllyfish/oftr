@@ -22,24 +22,22 @@ void *operator new [](size_t size) {
   ++mallocCount;
   mallocSize += size;
   return malloc(size);
-} 
+}
 
 //
-
-void operator delete(void *p) noexcept {
+void
+operator delete(void *p) noexcept {
   free(p);
 }
 
-// 
-void operator delete [](void *p) noexcept {
-  free(p);
-}
+//
+void operator delete[](void *p) noexcept { free(p); }
 
 //
 
 static void flowMod(Writable *channel, UInt32 inPort, UInt32 bufferId,
-                      const EnetAddress &dst, const EnetAddress &src,
-                      UInt32 outPort) {
+                    const EnetAddress &dst, const EnetAddress &src,
+                    UInt32 outPort) {
   MatchBuilder match;
   match.add(OFB_IN_PORT{inPort});
   match.add(OFB_ETH_DST{dst});
@@ -104,15 +102,16 @@ int main(int argc, char **argv) {
     auto end = clock::now();
 
     // Ignore trial 0.
-    if (trial == 0)
-        continue;
+    if (trial == 0) continue;
 
     milliseconds duration =
         std::chrono::duration_cast<milliseconds>(end - start);
     std::cout << "Loops=" << loops << " Trial " << std::setw(2) << trial
-              << " Time: " << duration.count() << " ms  Malloc/Bytes: " << mallocCount << "/" << mallocSize << " (" << double(mallocCount) / loops << "/" << double(mallocSize) / loops << ")\n";
+              << " Time: " << duration.count()
+              << " ms  Malloc/Bytes: " << mallocCount << "/" << mallocSize
+              << " (" << double(mallocCount) / loops << "/"
+              << double(mallocSize) / loops << ")\n";
     results.push_back(duration.count());
-
   }
 
   logStats(results);

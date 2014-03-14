@@ -13,7 +13,8 @@ TEST(originalmatch, oxmrange) {
 
   OriginalMatch match{oxmMatch.toRange()};
 
-  EXPECT_HEX("00303FEECCCC0000000000000000000000000000000008000000000000000000C"
-             "0A8010100000000",
-             &match, sizeof(match));
+  EXPECT_HEX(
+      "00303FEECCCC0000000000000000000000000000000008000000000000000000C"
+      "0A8010100000000",
+      &match, sizeof(match));
 }
