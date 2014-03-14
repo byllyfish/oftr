@@ -33,7 +33,8 @@ enum class Level {
   Trace = 1,
   Info = 2,
   Error = 3,
-  Silent = 4
+  Abort = 4,
+  Silent = 5
 };
 
 const char *levelToString(Level level);
@@ -105,14 +106,26 @@ inline void error(const Args &... args) {
   detail::write_(Level::Error, args...);
 }
 
+template <class... Args>
+inline void abort(const Args &... args) {
+  detail::write_(Level::Abort, args...);
+}
+
 class Lifetime {
  public:
-  /* implicit NOLINT */ Lifetime(const char *description)
+  /* implicit NOLINT */ Lifetime(const char *description) noexcept
       : description_{description} {
     debug("Create", description_);
   }
 
+  Lifetime(const Lifetime &lifetime) noexcept : description_{lifetime.description_} {}
+
   ~Lifetime() { debug("Dispose", description_); }
+
+  Lifetime &operator=(const Lifetime &lifetime) noexcept {
+    description_ = lifetime.description_;
+    return *this;
+  }
 
  private:
   const char *description_;

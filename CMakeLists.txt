@@ -127,6 +127,7 @@ set(LIBOFP_SOURCES
   src/ofp/rolereply.cpp
   src/ofp/setasync.cpp
 	src/ofp/setconfig.cpp
+  src/ofp/smallbuffer.cpp
 	src/ofp/standardmatch.cpp
 	src/ofp/sys/asio_utils.cpp
 	src/ofp/sys/connection.cpp

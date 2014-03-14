@@ -48,6 +48,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/protocoliterable_unittest.cpp
 	ofp/protocolversions_unittest.cpp
 	ofp/roundtrip_unittest.cpp
+	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
 	ofp/standardmatch_unittest.cpp
 	ofp/types_unittest.cpp
