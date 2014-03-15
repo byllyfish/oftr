@@ -12,15 +12,17 @@ void SimpleChannelListener::onChannelUp(Channel *channel) {
   config.send(channel);
   // No Reply expected.
 
-  FlowModBuilder flowMod;
-  flowMod.setTableId(OFPTT_ALL);
-  flowMod.setCommand(OFPFC_DELETE);
-  flowMod.setPriority(0x8000);
-  flowMod.setBufferId(OFP_NO_BUFFER);
-  flowMod.setOutPort(OFPP_ANY);
-  flowMod.setOutGroup(OFPG_ANY);
-  (void)flowMod.send(channel);
-  // No reply expected.
+  if (channel->version() > OFP_VERSION_1) {
+    FlowModBuilder flowMod;
+    flowMod.setTableId(OFPTT_ALL);
+    flowMod.setCommand(OFPFC_DELETE);
+    flowMod.setPriority(0x8000);
+    flowMod.setBufferId(OFP_NO_BUFFER);
+    flowMod.setOutPort(OFPP_ANY);
+    flowMod.setOutGroup(OFPG_ANY);
+    (void)flowMod.send(channel);
+    // No reply expected.
+  }
 
   BarrierRequestBuilder barrier;
   xid = barrier.send(channel);
