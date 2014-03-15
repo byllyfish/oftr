@@ -1,8 +1,11 @@
 #include "ofp/smallbuffer.h"
 
 using ofp::SmallBuffer;
+using ofp::UInt8;
 
 SmallBuffer::SmallBuffer(SmallBuffer &&buf) noexcept {
+  buf.assertInvariant();
+
   if (buf.isSmall()) {
     size_t len = buf.size();
     std::memcpy(buf_, buf.buf_, len);
@@ -20,18 +23,18 @@ SmallBuffer::SmallBuffer(SmallBuffer &&buf) noexcept {
   buf.capacity_ = buf.begin_;
 }
 
-SmallBuffer::~SmallBuffer() {
-  if (!isSmall()) {
-    std::free(begin_);
-  }
-}
-
 SmallBuffer &SmallBuffer::operator=(const SmallBuffer &buf) noexcept {
+  assertInvariant();
+  buf.assertInvariant();
+
   assign(buf.begin(), buf.size());
   return *this;
 }
 
 SmallBuffer &SmallBuffer::operator=(SmallBuffer &&buf) noexcept {
+  assertInvariant();
+  buf.assertInvariant();
+
   if (buf.isSmall()) {
     assign(buf.begin(), buf.size());
   } else {
@@ -51,27 +54,27 @@ SmallBuffer &SmallBuffer::operator=(SmallBuffer &&buf) noexcept {
 
 void SmallBuffer::assign(const void *data, size_t length) noexcept {
   assertNoOverlap(data, length);
+  assertInvariant();
+
   if (length > capacity()) {
     increaseCapacity(length);
   }
+
   std::memcpy(begin_, data, length);
   end_ = begin_ + length;
-}
-
-void SmallBuffer::append(const void *data, size_t length) noexcept {
-  assertNoOverlap(data, length);
-  if (length > remaining()) {
-    increaseCapacity(size() + length);
-  }
-  std::memcpy(end_, data, length);
-  end_ += length;
 }
 
 void SmallBuffer::insert(UInt8 *pos, const void *data, size_t length) noexcept {
   assertInRange(pos);
   assertNoOverlap(data, length);
+  assertInvariant();
+
   if (length > remaining()) {
+    size_t posOffset = pos - begin_;
     increaseCapacity(size() + length);
+    pos = begin_ + posOffset;
+
+    assertInRange(pos);
   }
 
   std::memmove(pos + length, pos, Unsigned_cast(end_ - pos));
@@ -81,15 +84,22 @@ void SmallBuffer::insert(UInt8 *pos, const void *data, size_t length) noexcept {
 
 void SmallBuffer::replace(UInt8 *pos, UInt8 *posEnd, const void *data,
                           size_t length) noexcept {
-  assertInRange(pos);
-  assertInRange(posEnd);
-  assert(pos <= posEnd);
+  assertInRange(pos, posEnd);
   assertNoOverlap(data, length);
+  assertInvariant();
 
   size_t posLen = Unsigned_cast(posEnd - pos);
   if (length > posLen) {
     size_t more = length - posLen;
-    if (more > remaining()) increaseCapacity(more);
+    if (more > remaining()) { 
+      size_t posOffset = pos - begin_;
+      size_t posLength = posEnd - pos;
+      increaseCapacity(more); 
+      pos = begin_ + posOffset;
+      posEnd = pos + posLength;
+
+      assertInRange(pos, posEnd);
+    }
     std::memmove(posEnd + more, posEnd, Unsigned_cast(end_ - posEnd));
     std::memcpy(pos, data, length);
     end_ += more;
@@ -102,15 +112,16 @@ void SmallBuffer::replace(UInt8 *pos, UInt8 *posEnd, const void *data,
 }
 
 void SmallBuffer::remove(UInt8 *pos, UInt8 *posEnd) noexcept {
-  assertInRange(pos);
-  assertInRange(posEnd);
-  assert(pos <= posEnd);
+  assertInRange(pos, posEnd);
+  assertInvariant();
 
   size_t less = Unsigned_cast(posEnd - pos);
   std::memmove(posEnd - less, posEnd, Unsigned_cast(end_ - posEnd));
 }
 
 void SmallBuffer::resize(size_t length) noexcept {
+  assertInvariant();
+
   if (length > capacity()) {
     increaseCapacity(length);
   }
@@ -118,6 +129,8 @@ void SmallBuffer::resize(size_t length) noexcept {
 }
 
 void SmallBuffer::reset(size_t length) noexcept {
+  assertInvariant();
+
   if (!isSmall()) {
     std::free(begin_);
   }
@@ -138,42 +151,79 @@ void SmallBuffer::reset(size_t length) noexcept {
   }
 }
 
-void SmallBuffer::addUninitialized(size_t length) noexcept {
+UInt8 *SmallBuffer::addUninitialized(size_t length) noexcept {
+  assertInvariant();
+
   if (length > remaining()) {
     increaseCapacity(size() + length);
   }
+
+  UInt8 *pos = end_;
   end_ += length;
+  return pos;
 }
 
-void SmallBuffer::insertUninitialized(UInt8 *pos, size_t length) noexcept {
+UInt8 *SmallBuffer::insertUninitialized(UInt8 *pos, size_t length) noexcept {
   assertInRange(pos);
+  assertInvariant();
+
   if (length > remaining()) {
+    size_t posOffset = pos - begin_;
     increaseCapacity(size() + length);
+    pos = begin_ + posOffset;
+
+    assertInRange(pos);
   }
+
   std::memmove(pos + length, pos, Unsigned_cast(end_ - pos));
   end_ += length;
+  return pos;
 }
 
-void SmallBuffer::replaceUninitialized(UInt8 *pos, UInt8 *posEnd,
+UInt8 *SmallBuffer::replaceUninitialized(UInt8 *pos, UInt8 *posEnd,
                                        size_t length) noexcept {
-  assertInRange(pos);
-  assertInRange(posEnd);
-  assert(pos <= posEnd);
+  assertInRange(pos, posEnd);
+  assertInvariant();
 
   size_t posLen = Unsigned_cast(posEnd - pos);
   if (length > posLen) {
     size_t more = length - posLen;
     if (more > remaining()) {
+      size_t posOffset = pos - begin_;
+      size_t posLength = posEnd - pos;
       increaseCapacity(more);
+      pos = begin_ + posOffset;
+      posEnd = pos + posLength;
+
+      assertInRange(pos, posEnd);
     }
     std::memmove(posEnd + more, posEnd, Unsigned_cast(end_ - posEnd));
     end_ += more;
+
   } else {
     size_t less = posLen - length;
     std::memmove(posEnd - less, posEnd, Unsigned_cast(end_ - posEnd));
     end_ -= less;
   }
+  return pos;
 }
+
+
+void SmallBuffer::addZeros(size_t length) noexcept{
+  UInt8 *p = addUninitialized(length);
+  std::memset(p, 0, length);
+}
+
+void SmallBuffer::insertZeros(UInt8 *pos, size_t length) noexcept {
+  UInt8 *p = insertUninitialized(pos, length);
+  std::memset(p, 0, length);
+}
+
+void SmallBuffer::replaceZeros(UInt8 *pos, UInt8 *posEnd, size_t length) noexcept {
+  UInt8 *p = replaceUninitialized(pos, posEnd, length);
+  std::memset(p, 0, length);
+}
+
 
 void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
   size_t newCapacity = computeCapacity(newLength);
@@ -210,18 +260,18 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
 
 size_t SmallBuffer::computeCapacity(size_t length) noexcept {
   assert(length > IntrinsicBufSize);
-  assert(length < 65536);
+  assert(length <= 65536);
 
   if (length <= 1024) return 1024;
   if (length <= 8192) return 8192;
-  if (length < 65536) return 65536;
+  if (length <= 65536) return 65536;
 
   // In release code, we allow the buffer to grow to 1MB, as this is
   // preferable to aborting.
 
   log::error("SmallBuffer >= 65536 bytes:", length);
-  if (length < 1048576) return 1048576;
+  if (length <= 1048576) return 1048576;
 
-  log::abort("SmallBuffer >= 1 MB:", length);
+  log::abort("SmallBuffer > 1 MB:", length);
   return 0;
 }

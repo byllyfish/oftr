@@ -28,8 +28,8 @@ TEST(bytelist, basic) {
   ByteList list;
 
   EXPECT_EQ(0, list.size());
-  EXPECT_EQ(nullptr, list.begin());
-  EXPECT_EQ(nullptr, list.end());
+  EXPECT_NE(nullptr, list.begin());
+  EXPECT_EQ(list.begin(), list.end());
 
   list.add("a", 1);
   EXPECT_EQ(1, list.size());

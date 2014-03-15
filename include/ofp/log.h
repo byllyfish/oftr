@@ -76,6 +76,7 @@ void write_(std::ostream &os, Level level, const Type1 &value1,
 
 template <class... Args>
 void write_(Level level, const Args &... args) {
+#if !defined(LIBOFP_LOGGING_DISABLED)
   if (level >= detail::GlobalOutputLevelFilter) {
     std::ostringstream oss;
     write_(oss, level, args...);
@@ -83,6 +84,7 @@ void write_(Level level, const Args &... args) {
     GlobalOutputCallback(level, buf.data(), buf.size(),
                          GlobalOutputCallbackContext);
   }
+#endif //OFP_LOGGING_DISABLED
 }
 
 }  // namespace detail
@@ -109,6 +111,7 @@ inline void error(const Args &... args) {
 template <class... Args>
 inline void abort(const Args &... args) {
   detail::write_(Level::Abort, args...);
+  std::abort();
 }
 
 class Lifetime {

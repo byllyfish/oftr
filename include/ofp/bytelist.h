@@ -22,7 +22,7 @@
 #ifndef OFP_BYTELIST_H_
 #define OFP_BYTELIST_H_
 
-#include <vector>
+#include "ofp/smallbuffer.h"
 #include "ofp/byterange.h"
 
 namespace ofp {
@@ -42,25 +42,25 @@ public:
   /// \brief Construct an empty byte buffer.
   ByteList() = default;
 
-  /// \brief Construct byte buffer copying data in range.
-  /* implicit NOLINT */ ByteList(const ByteRange &range);
-
   /// \brief Construct byte buffer copying the specified data.
-  ByteList(const void *data, size_t length);
+  explicit ByteList(const void *data, size_t length) : buf_{data, length} {}
+
+  /// \brief Construct byte buffer copying data in range.
+  /* implicit NOLINT */ ByteList(const ByteRange &range) : ByteList{range.data(), range.size()} {}
 
   explicit ByteList(const std::string &s) : ByteList{s.data(), s.size()} {}
 
   /// \returns pointer to beginning of constant byte buffer.
-  const UInt8 *begin() const { return &buf_[0]; }
+  const UInt8 *begin() const { return buf_.begin(); }
 
   /// \returns pointer to end of constant byte buffer (i.e. one past last byte).
-  const UInt8 *end() const { return &buf_[buf_.size()]; }
+  const UInt8 *end() const { return buf_.end(); }
 
   /// \returns pointer to beginning of constant byte buffer.
-  const UInt8 *data() const { return &buf_[0]; }
+  const UInt8 *data() const { return buf_.begin(); }
 
   /// \returns pointer to beginning of mutable byte buffer.
-  UInt8 *mutableData() { return &buf_[0]; }
+  UInt8 *mutableData() { return buf_.begin(); }
 
   /// \returns size of buffer in bytes.
   size_t size() const { return buf_.size(); }
@@ -75,7 +75,7 @@ public:
   void set(const void *data, size_t length);
 
   /// \brief Append data to the end of the byte buffer.
-  void add(const void *data, size_t length);
+  void add(const void *data, size_t length) { buf_.add(data, length); }
 
   /// \brief Insert data at the specified position in the byte buffer.
   void insert(const UInt8 *pos, const void *data, size_t length);
@@ -95,6 +95,9 @@ public:
   void replaceUninitialized(const UInt8 *pos, const UInt8 *posEnd,
                             size_t length);
 
+  /// \brief Insert zero bytes at the specified position in the byte buffer.
+  void insertZeros(const UInt8 *pos, size_t length);
+
   /// \brief Remove specified range from the byte buffer.
   void remove(const UInt8 *pos, size_t length);
 
@@ -111,7 +114,7 @@ public:
   ByteList &operator=(const ByteRange &range);
 
 private:
-  std::vector<UInt8> buf_;
+  SmallBuffer buf_;
 
   /// \brief Helper function to verify pointer is valid for byte buffer.
   void assertInRange(const UInt8 *pos) const {

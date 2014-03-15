@@ -110,6 +110,22 @@ inline void OXMList::pad8(unsigned n) {
   }
 }
 
+inline void OXMList::add(OXMType type, const void *data, size_t len) {
+  assert(type.length() == len);
+
+  buf_.add(&type, sizeof(type));
+  buf_.add(data, len);
+}
+
+inline void OXMList::add(OXMType type, const void *data, const void *mask,
+                  size_t len) {
+  assert(type.length() == 2 * len);
+
+  buf_.add(&type, sizeof(type));
+  buf_.add(data, len); // FIXME - apply mask here.
+  buf_.add(mask, len);
+}
+
 }  // namespace ofp
 
 #endif  // OFP_OXMLIST_H_

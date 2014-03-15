@@ -105,6 +105,8 @@ class FlowModBuilder {
   void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
   void setFlags(UInt16 flags) { msg_.flags_ = flags; }
 
+  MatchBuilder &match() { return match_; }
+
   void setMatch(const MatchBuilder &match) {
     assert(match.validate());
     match_ = match;
@@ -115,6 +117,8 @@ class FlowModBuilder {
     match_ = std::move(match);
   }
 
+  InstructionList &instructions() { return instructions_; }
+  
   void setInstructions(const InstructionList &instructions) {
     instructions_ = instructions;
   }

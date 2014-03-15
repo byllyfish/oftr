@@ -19,7 +19,7 @@ TEST(smallbuffer, small) {
   EXPECT_EQ(buf.begin(), buf.end());
   EXPECT_EQ(0, std::accumulate(buf.begin(), buf.end(), 0));
 
-  buf.append("123456789", 10);
+  buf.add("123456789", 10);
   EXPECT_EQ(10, buf.size());
   EXPECT_HEX("31323334353637383900", buf.begin(), buf.size());
   EXPECT_EQ(477, std::accumulate(buf.begin(), buf.end(), 0));
@@ -29,7 +29,7 @@ TEST(smallbuffer, increaseCapacity) {
   SmallBuffer buf;
 
   for (int i = 0; i < 20; ++i) {
-    buf.append("123456789", 10);
+    buf.add("123456789", 10);
   }
 
   EXPECT_TRUE(IsPtrAligned<8>(buf.begin()));

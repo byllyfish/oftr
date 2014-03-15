@@ -1,3 +1,6 @@
+#ifndef OFP_SMALLBUFFER_H_
+#define OFP_SMALLBUFFER_H_
+
 #include "ofp/log.h"
 
 namespace ofp {
@@ -50,7 +53,7 @@ class SmallBuffer {
 
   void assign(const void *data, size_t length) noexcept;
 
-  void append(const void *data, size_t length) noexcept;
+  void add(const void *data, size_t length) noexcept;
 
   void insert(UInt8 *pos, const void *data, size_t length) noexcept;
 
@@ -65,11 +68,17 @@ class SmallBuffer {
 
   void reset(size_t length) noexcept;
 
-  void addUninitialized(size_t length) noexcept;
+  UInt8 *addUninitialized(size_t length) noexcept;
 
-  void insertUninitialized(UInt8 *pos, size_t length) noexcept;
+  UInt8 *insertUninitialized(UInt8 *pos, size_t length) noexcept;
 
-  void replaceUninitialized(UInt8 *pos, UInt8 *posEnd, size_t length) noexcept;
+  UInt8 *replaceUninitialized(UInt8 *pos, UInt8 *posEnd, size_t length) noexcept;
+
+  void addZeros(size_t length) noexcept;
+
+  void insertZeros(UInt8 *pos, size_t length) noexcept;
+
+  void replaceZeros(UInt8 *pos, UInt8 *posEnd, size_t length) noexcept;
 
  private:
   enum : size_t {
@@ -97,10 +106,42 @@ class SmallBuffer {
     assert((pos >= begin_ && pos <= end_) && "position out of range");
   }
 
+  void assertInRange(const UInt8 *pos, const UInt8 *posEnd) {
+    assertInRange(pos);
+    assertInRange(posEnd);
+    assert(pos <= posEnd);
+  }
+
   void assertNoOverlap(const void *data, size_t length) const noexcept {
     assert((BytePtr(data) + length <= begin_ || BytePtr(data) >= capacity_) &&
            "data overlaps with buffer");
   }
+
+  void assertInvariant() const noexcept {
+    assert(begin_ <= end_);
+    assert(end_ <= capacity_);
+    assert((begin_ != buf_) || (capacity_ == begin_ + IntrinsicBufSize));
+  }
 };
 
+inline SmallBuffer::~SmallBuffer() {
+  if (!isSmall()) {
+    std::free(begin_);
+  }
+}
+
+inline void SmallBuffer::add(const void *data, size_t length) noexcept {
+  assertNoOverlap(data, length);
+  assertInvariant();
+
+  if (length > remaining()) {
+    increaseCapacity(size() + length);
+  }
+
+  std::memcpy(end_, data, length);
+  end_ += length;
+}
+
 }  // namespace ofp
+
+#endif // OFP_SMALLBUFFER_H_

@@ -549,10 +549,7 @@ void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start)
   size_t offset = *start;
   UInt8 *ptr = buf_.mutableData() + offset;
 
-  buf_.insertUninitialized(ptr + 4, 40);
-
-  ptr = buf_.mutableData() + offset + 4;
-  std::memset(ptr, 0, 40);;
+  buf_.insertZeros(ptr + 4, 40);
 
   *start += 64;
 }
@@ -575,7 +572,7 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len)
   *port = normPortNumberV1(ptr);
 
   // Insert an additional 8-bytes for timestamp.
-  buf_.insertUninitialized(ptr + len, 8);
+  buf_.insertZeros(ptr + len, 8);
   *start += len + 8;
 }
 

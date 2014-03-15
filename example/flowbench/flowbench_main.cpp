@@ -38,7 +38,10 @@ void operator delete[](void *p) noexcept { free(p); }
 static void flowMod(Writable *channel, UInt32 inPort, UInt32 bufferId,
                     const EnetAddress &dst, const EnetAddress &src,
                     UInt32 outPort) {
-  MatchBuilder match;
+
+  FlowModBuilder flowMod;
+
+  MatchBuilder &match = flowMod.match();
   match.add(OFB_IN_PORT{inPort});
   match.add(OFB_ETH_DST{dst});
   match.add(OFB_ETH_SRC{src});
@@ -46,12 +49,9 @@ static void flowMod(Writable *channel, UInt32 inPort, UInt32 bufferId,
   ActionList actions;
   actions.add(AT_OUTPUT{outPort});
 
-  InstructionList instructions;
+  InstructionList &instructions = flowMod.instructions();
   instructions.add(IT_APPLY_ACTIONS{&actions});
 
-  FlowModBuilder flowMod;
-  flowMod.setMatch(std::move(match));
-  flowMod.setInstructions(std::move(instructions));
   flowMod.setIdleTimeout(10);
   flowMod.setHardTimeout(30);
   flowMod.setPriority(0x8000);
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
   using clock = std::chrono::high_resolution_clock;
   using milliseconds = std::chrono::milliseconds;
 
-  const unsigned loops = 500000;
+  const unsigned loops = 25000000;
   std::vector<int64_t> results;
 
   for (int trial = 0; trial <= 10; ++trial) {
