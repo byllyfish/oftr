@@ -43,6 +43,14 @@ TEST(smallbuffer, increaseCapacity) {
       "3132333435363738390031323334353637383900",
       buf.begin(), buf.size());
   EXPECT_EQ(9540, std::accumulate(buf.begin(), buf.end(), 0));
+
+  for (int i = 0; i < 2000; ++i) {
+    buf.add("123456789", 10);
+  }
+
+  EXPECT_TRUE(IsPtrAligned<8>(buf.begin()));
+  EXPECT_EQ(20200, buf.size());
+  EXPECT_EQ(963540, std::accumulate(buf.begin(), buf.end(), 0));
 }
 
 TEST(smallbuffer, copyConstruct) {
@@ -91,4 +99,18 @@ TEST(smallbuffer, moveConstruct) {
     EXPECT_EQ(800, std::accumulate(buf2.begin(), buf2.end(), 0));
     EXPECT_EQ(0, buf.size());
   }
+}
+
+
+TEST(smallbuffer, resize) {
+    SmallBuffer buf;
+
+    buf.resize(8);
+    EXPECT_EQ(8, buf.size());
+
+    buf.resize(0);
+    EXPECT_EQ(0, buf.size());
+
+    buf.resize(10000);
+    EXPECT_EQ(10000, buf.size());
 }

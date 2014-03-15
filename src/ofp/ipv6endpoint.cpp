@@ -42,8 +42,7 @@ static bool scan(std::istream &stream, char delimiter) {
 static bool scan(std::istream &stream, std::string &str, char delimiter) {
   auto pos = stream.tellg();
 
-  if (std::getline(stream, str, delimiter) && !stream.eof())
-    return true;
+  if (std::getline(stream, str, delimiter) && !stream.eof()) return true;
 
   stream.clear();
   stream.seekg(pos);

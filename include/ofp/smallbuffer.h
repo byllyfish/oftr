@@ -120,6 +120,7 @@ class SmallBuffer {
   void assertInvariant() const noexcept {
     assert(begin_ <= end_);
     assert(end_ <= capacity_);
+    assert(begin_ < capacity_ && ((capacity_ - begin_) % 8) == 0);
     assert((begin_ != buf_) || (capacity_ == begin_ + IntrinsicBufSize));
   }
 };

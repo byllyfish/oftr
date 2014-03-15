@@ -70,7 +70,7 @@ void SmallBuffer::insert(UInt8 *pos, const void *data, size_t length) noexcept {
   assertInvariant();
 
   if (length > remaining()) {
-    size_t posOffset = pos - begin_;
+    size_t posOffset = Unsigned_cast(pos - begin_);
     increaseCapacity(size() + length);
     pos = begin_ + posOffset;
 
@@ -92,8 +92,8 @@ void SmallBuffer::replace(UInt8 *pos, UInt8 *posEnd, const void *data,
   if (length > posLen) {
     size_t more = length - posLen;
     if (more > remaining()) { 
-      size_t posOffset = pos - begin_;
-      size_t posLength = posEnd - pos;
+      size_t posOffset = Unsigned_cast(pos - begin_);
+      size_t posLength = Unsigned_cast(posEnd - pos);
       increaseCapacity(more); 
       pos = begin_ + posOffset;
       posEnd = pos + posLength;
@@ -168,7 +168,7 @@ UInt8 *SmallBuffer::insertUninitialized(UInt8 *pos, size_t length) noexcept {
   assertInvariant();
 
   if (length > remaining()) {
-    size_t posOffset = pos - begin_;
+    size_t posOffset = Unsigned_cast(pos - begin_);
     increaseCapacity(size() + length);
     pos = begin_ + posOffset;
 
@@ -189,8 +189,8 @@ UInt8 *SmallBuffer::replaceUninitialized(UInt8 *pos, UInt8 *posEnd,
   if (length > posLen) {
     size_t more = length - posLen;
     if (more > remaining()) {
-      size_t posOffset = pos - begin_;
-      size_t posLength = posEnd - pos;
+      size_t posOffset = Unsigned_cast(pos - begin_);
+      size_t posLength = Unsigned_cast(posEnd - pos);
       increaseCapacity(more);
       pos = begin_ + posOffset;
       posEnd = pos + posLength;
@@ -247,7 +247,7 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
     // Allocate a new larger buffer with contents copied from the current
     // buffer block.
 
-    newBuf = static_cast<UInt8 *>(std::realloc(buf_, newCapacity));
+    newBuf = static_cast<UInt8 *>(std::realloc(begin_, newCapacity));
     if (!newBuf) {
       log::abort("realloc failed:", newCapacity);
     }

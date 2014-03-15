@@ -4,6 +4,11 @@
 
 using namespace ofp;
 
+TEST(message, constructor) {
+  Message message{nullptr};
+  EXPECT_EQ(8, message.size());
+}
+
 TEST(message, transmogrify) {
   const char *hexBefore =
       "010E 0048 0000 002C 0010 001F 0000 0000 0000 0000 0000 0000 0000 0000 "
