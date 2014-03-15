@@ -129,6 +129,9 @@ class FlowModBuilder {
 
   UInt32 send(Writable *channel);
 
+  static UInt32 sendFastVersion1(Writable *channel, UInt32 inPort, UInt32 outPort, UInt32 bufferId,
+                    const EnetAddress &dst, const EnetAddress &src);
+
  private:
   FlowMod msg_;
   MatchBuilder match_;

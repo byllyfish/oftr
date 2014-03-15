@@ -209,4 +209,38 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel) {
   return xid;
 }
 
+// The fastest it can be done... useful for self-benchmarking.
+UInt32 FlowModBuilder::sendFastVersion1(Writable *channel, UInt32 inPort, UInt32 outPort, UInt32 bufferId,
+                    const EnetAddress &dst, const EnetAddress &src)
+{
+  const char * const layout = 
+    "\x01\x0E\x00\x50\x00\x00\x00\x01"
+    "\x00\x3F\xFF\xF2\xA2\xA2\xCD\xCD"
+    "\xCD\xCD\xCD\xCD\xAB\xAB\xAB\xAB"
+    "\xAB\xAB\x00\x00\x00\x00\x00\x00"
+    "\x00\x00\x00\x00\x00\x00\x00\x00"
+    "\x00\x00\x00\x00\x00\x00\x00\x00"
+    "\x00\x00\x00\x00\x00\x00\x00\x00"
+    "\x00\x00\x00\x0A\x00\x1E\x80\x00"
+    "\x34\x34\x34\x34\x00\x00\x00\x00"
+    "\x00\x00\x00\x08\xB3\xB3\x00\x00";
+
+  OFP_ALIGNAS(8) UInt8 buf[80];
+  assert(IsPtrAligned<8>(buf));
+
+  UInt32 xid = channel->nextXid();
+
+  std::memcpy(buf, layout, sizeof(buf));
+  *Big32_cast(buf + 4) = xid;
+  *Big16_cast(buf + 12) = UInt16_narrow_cast(inPort);
+  std::memcpy(buf + 14, &src, 6);
+  std::memcpy(buf + 20, &dst, 6);
+  *Big32_cast(buf + 64) = bufferId;
+  *Big16_cast(buf + 76) = UInt16_narrow_cast(outPort);
+
+  channel->write(buf, sizeof(buf));
+
+  return xid;
+}
+
 } // </namespace ofp>
