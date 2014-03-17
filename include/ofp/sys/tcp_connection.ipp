@@ -63,7 +63,11 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::remoteEndpoint() const {
 template <class SocketType>
 void TCP_Connection<SocketType>::flush() {
   auto self(this->shared_from_this());
-  socket_.buf_flush([self](const std::error_code &error){});
+  socket_.buf_flush([this, self](const std::error_code &error){
+    if (error) {
+      socket_.lowest_layer().close();
+    }
+  });
 }
 
 template <class SocketType>
