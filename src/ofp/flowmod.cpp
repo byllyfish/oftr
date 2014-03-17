@@ -239,7 +239,8 @@ UInt32 FlowModBuilder::sendFastVersion1(Writable *channel, UInt32 inPort, UInt32
   *Big16_cast(buf + 76) = UInt16_narrow_cast(outPort);
 
   channel->write(buf, sizeof(buf));
-
+  channel->flush();
+  
   return xid;
 }
 
