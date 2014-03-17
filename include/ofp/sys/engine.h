@@ -93,7 +93,7 @@ private:
 
   // The io_service must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to bookkeeping objects.
-  asio::io_service io_;
+  asio::io_service io_{1};
   bool isRunning_ = false;
 
   // SSL context
