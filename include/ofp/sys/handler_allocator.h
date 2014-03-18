@@ -10,37 +10,49 @@ namespace sys {
 // It contains a single block of memory which may be returned for allocation
 // requests. If the memory is in use when an allocation request is made, the
 // allocator delegates allocation to the global heap.
+//
+// The last byte of the memory block is reserved for the flag that indicates
+// if the intrinsic memory block is in use.
 class handler_allocator {
  public:
-  handler_allocator() : in_use_(false) {}
+  enum {
+    IntrinsicSize = 183
+  };
+
+  handler_allocator() { set_in_use(false); }
 
   handler_allocator(const handler_allocator &) = delete;
   handler_allocator &operator=(const handler_allocator &) = delete;
 
   void *allocate(std::size_t size) {
-    if (!in_use_ && size < sizeof(storage_)) {
-      in_use_ = true;
-      return &storage_;
+    if (!in_use() && size <= sizeof(IntrinsicSize)) {
+      set_in_use(true);
+      return storage_;
     } else {
+      log::debug("handler_allocator::allocate: intrinsic block in use:", size);
       return ::operator new(size);
     }
   }
 
   void deallocate(void *pointer) {
-    if (pointer == &storage_) {
-      in_use_ = false;
+    if (pointer == storage_) {
+      set_in_use(false);
     } else {
       ::operator delete(pointer);
     }
   }
 
  private:
-  // Storage space used for handler-based custom memory allocation.
-  typename std::aligned_storage<180>::type storage_;
+  // Storage space used for handler-based custom memory allocation. The last
+  // byte is used for the in_use flag; the size of this object is aligned to
+  // 8 bytes.
+  OFP_ALIGNAS(8) UInt8 storage_[IntrinsicSize + 1];
 
-  // Whether the handler-based custom allocation storage has been used.
-  bool in_use_;
+  bool in_use() const { return storage_[IntrinsicSize]; }
+  void set_in_use(bool val) { storage_[IntrinsicSize] = val; }
 };
+
+static_assert(sizeof(handler_allocator) % 8 == 0, "Expected aligned size.");
 
 // Wrapper class template for handler objects to allow handler memory
 // allocation to be customised. Calls to operator() are forwarded to the
