@@ -417,7 +417,6 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 add_subdirectory(external/yaml-io)
 add_subdirectory(external/googletest)
-##add_subdirectory(external/boost_1_54_0_asio)
 
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).

@@ -151,8 +151,6 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
       asio::buffer(message_.mutableData(sizeof(Header)), sizeof(Header)),
       make_custom_alloc_handler(
           allocator_, [this, self](const asio::error_code &err, size_t length) {
-            log::Lifetime lifetime{"asyncReadHeader callback."};
-
             if (!err) {
               assert(length == sizeof(Header));
               const Header *hdr = message_.header();

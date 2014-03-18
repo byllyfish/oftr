@@ -15,7 +15,7 @@ namespace sys {
 // if the intrinsic memory block is in use.
 class handler_allocator {
  public:
-  enum {
+  enum : size_t {
     IntrinsicSize = 183
   };
 
@@ -25,7 +25,7 @@ class handler_allocator {
   handler_allocator &operator=(const handler_allocator &) = delete;
 
   void *allocate(std::size_t size) {
-    if (!in_use() && size <= sizeof(IntrinsicSize)) {
+    if (!in_use() && size <= IntrinsicSize) {
       set_in_use(true);
       return storage_;
     } else {
