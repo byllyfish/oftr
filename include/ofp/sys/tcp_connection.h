@@ -30,6 +30,7 @@
 #include "ofp/driver.h"
 #include "ofp/deferred.h"
 #include "ofp/sys/buffered.h"
+#include "ofp/sys/handler_allocator.h"
 
 namespace ofp {
 namespace sys {
@@ -70,8 +71,7 @@ private:
   DeferredResultPtr<std::error_code> deferredExc_ = nullptr;
   asio::steady_timer idleTimer_;
   std::chrono::steady_clock::time_point latestActivity_;
-
-  
+  handler_allocator allocator_;
 
   void channelUp();
   void channelDown();

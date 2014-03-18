@@ -24,6 +24,7 @@
 
 #include "ofp/sys/asio_utils.h"
 #include "ofp/bytelist.h"
+#include "ofp/sys/handler_allocator.h"
 
 namespace ofp {
 namespace sys {
@@ -76,6 +77,7 @@ private:
   // Use a two buffer strategy for async-writes. We queue up data in one
   // growable buffer while we're in the process of flushing the other buffer.
   ByteList buffer_[2];
+  handler_allocator allocator_;
   int bufferIdx_ = 0;
   bool isFlushing_ = false;
 };
@@ -95,7 +97,7 @@ void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
   log::trace("write", outgoing.data(), outgoing.size());
 
   async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
-              [this, handler](const asio::error_code &err, size_t bytes_transferred) {
+              make_custom_alloc_handler(allocator_, [this, handler](const asio::error_code &err, size_t bytes_transferred) {
 
     if (!err) {
       assert(bytes_transferred == buffer_[!bufferIdx_].size());
@@ -114,7 +116,7 @@ void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
       log::debug("Buffered::buf_flush error ", err);
       handler(err);
     }
-  });
+  }));
 }
 
 template <class StreamType>

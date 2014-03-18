@@ -28,25 +28,32 @@
 namespace ofp {
 namespace sys {
 
-
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, Driver::Role role,
-                               ProtocolVersions versions,
-                               ChannelListener::Factory factory)
+                                           ProtocolVersions versions,
+                                           ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
-      message_{this}, socket_{engine->io(), engine->context()}, idleTimer_{engine->io()} {}
+      message_{this},
+      socket_{engine->io(), engine->context()},
+      idleTimer_{engine->io()} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
-                               Driver::Role role, ProtocolVersions versions,
-                               ChannelListener::Factory factory)
+                                           Driver::Role role,
+                                           ProtocolVersions versions,
+                                           ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
-      message_{this}, socket_{std::move(socket), engine->context()}, idleTimer_{engine->io()} {}
+      message_{this},
+      socket_{std::move(socket), engine->context()},
+      idleTimer_{engine->io()} {}
 
 /// \brief Construct connection object for reconnect attempt.
 template <class SocketType>
-TCP_Connection<SocketType>::TCP_Connection(Engine *engine, DefaultHandshake *handshake)
-    : Connection{engine, handshake}, message_{this}, socket_{engine->io(), engine->context()},
+TCP_Connection<SocketType>::TCP_Connection(Engine *engine,
+                                           DefaultHandshake *handshake)
+    : Connection{engine, handshake},
+      message_{this},
+      socket_{engine->io(), engine->context()},
       idleTimer_{engine->io()} {
   handshake->setConnection(this);
 }
@@ -63,7 +70,7 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::remoteEndpoint() const {
 template <class SocketType>
 void TCP_Connection<SocketType>::flush() {
   auto self(this->shared_from_this());
-  socket_.buf_flush([this, self](const std::error_code &error){
+  socket_.buf_flush([this, self](const std::error_code &error) {
     if (error) {
       socket_.lowest_layer().close();
     }
@@ -73,14 +80,14 @@ void TCP_Connection<SocketType>::flush() {
 template <class SocketType>
 void TCP_Connection<SocketType>::shutdown() {
   auto self(this->shared_from_this());
-  socket_.async_shutdown([this, self](const std::error_code &error){
+  socket_.async_shutdown([this, self](const std::error_code &error) {
     socket_.shutdownLowestLayer();
   });
 }
 
 template <class SocketType>
-ofp::Deferred<std::error_code>
-TCP_Connection<SocketType>::asyncConnect(const tcp::endpoint &endpt, Milliseconds delay) {
+ofp::Deferred<std::error_code> TCP_Connection<SocketType>::asyncConnect(
+    const tcp::endpoint &endpt, Milliseconds delay) {
   assert(deferredExc_ == nullptr);
 
   endpoint_ = endpt;
@@ -99,8 +106,7 @@ TCP_Connection<SocketType>::asyncConnect(const tcp::endpoint &endpt, Millisecond
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncAccept() {
   // Do nothing if socket is not open.
-  if (!socket_.is_open())
-    return;
+  if (!socket_.is_open()) return;
 
   // We always send and receive complete messages; disable Nagle algorithm.
   socket_.lowest_layer().set_option(tcp::no_delay(true));
@@ -140,48 +146,50 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
 
   auto self(this->shared_from_this());
 
-  asio::async_read(socket_, asio::buffer(message_.mutableData(sizeof(Header)),
-                                         sizeof(Header)),
-                   [this, self](const asio::error_code &err, size_t length) {
-    log::Lifetime lifetime{"asyncReadHeader callback."};
+  asio::async_read(
+      socket_,
+      asio::buffer(message_.mutableData(sizeof(Header)), sizeof(Header)),
+      make_custom_alloc_handler(
+          allocator_, [this, self](const asio::error_code &err, size_t length) {
+            log::Lifetime lifetime{"asyncReadHeader callback."};
 
-    if (!err) {
-      assert(length == sizeof(Header));
-      const Header *hdr = message_.header();
+            if (!err) {
+              assert(length == sizeof(Header));
+              const Header *hdr = message_.header();
 
-      if (hdr->validateInput(version())) {
-        // The header has passed our rudimentary validation checks.
-        UInt16 msgLength = hdr->length();
+              if (hdr->validateInput(version())) {
+                // The header has passed our rudimentary validation checks.
+                UInt16 msgLength = hdr->length();
 
-        if (msgLength == sizeof(Header)) {
-          postMessage(this, &message_);
-          if (socket_.is_open()) {
-            asyncReadHeader();
-          } else {
-            // Rare: postMessage() closed the socket forcefully.
-            channelDown();
-          }
+                if (msgLength == sizeof(Header)) {
+                  postMessage(this, &message_);
+                  if (socket_.is_open()) {
+                    asyncReadHeader();
+                  } else {
+                    // Rare: postMessage() closed the socket forcefully.
+                    channelDown();
+                  }
 
-        } else {
-          asyncReadMessage(msgLength);
-        }
-      } else {
-        // The header failed our rudimentary validation checks.
-        log::debug("asyncReadHeader header validation failed");
-        channelDown();
-      }
+                } else {
+                  asyncReadMessage(msgLength);
+                }
+              } else {
+                // The header failed our rudimentary validation checks.
+                log::debug("asyncReadHeader header validation failed");
+                channelDown();
+              }
 
-    } else {
+            } else {
 
-      if (err != asio::error::eof) {
-        log::debug("asyncReadHeader error ", err);
-      }
+              if (err != asio::error::eof) {
+                log::debug("asyncReadHeader error ", err);
+              }
 
-      channelDown();
-    }
+              channelDown();
+            }
 
-    updateLatestActivity();
-  });
+            updateLatestActivity();
+          }));
 }
 
 template <class SocketType>
@@ -194,34 +202,37 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   asio::async_read(
       socket_, asio::buffer(message_.mutableData(msgLength) + sizeof(Header),
                             msgLength - sizeof(Header)),
-      [this, self](const asio::error_code &err, size_t bytes_transferred) {
+      make_custom_alloc_handler(
+          allocator_,
+          [this, self](const asio::error_code &err, size_t bytes_transferred) {
 
-        if (!err) {
-          assert(bytes_transferred == message_.size() - sizeof(Header));
+            if (!err) {
+              assert(bytes_transferred == message_.size() - sizeof(Header));
 
-          postMessage(this, &message_);
-          if (socket_.is_open()) {
-            asyncReadHeader();
-          } else {
-            // Rare: postMessage() closed the socket forcefully.
-            channelDown();
-          }
+              postMessage(this, &message_);
+              if (socket_.is_open()) {
+                asyncReadHeader();
+              } else {
+                // Rare: postMessage() closed the socket forcefully.
+                channelDown();
+              }
 
-        } else {
-          if (err != asio::error::eof) {
-            log::info("asyncReadMessage error ", err);
-          }
-          channelDown();
-        }
+            } else {
+              if (err != asio::error::eof) {
+                log::info("asyncReadMessage error ", err);
+              }
+              channelDown();
+            }
 
-        updateLatestActivity();
-      });
+            updateLatestActivity();
+          }));
 }
 
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncHandshake() {
   // Start async handshake.
-  auto mode = isOutgoing() ? asio::ssl::stream_base::client : asio::ssl::stream_base::server;
+  auto mode = isOutgoing() ? asio::ssl::stream_base::client
+                           : asio::ssl::stream_base::server;
 
   auto self(this->shared_from_this());
   socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
@@ -261,8 +272,7 @@ void TCP_Connection<SocketType>::asyncDelayConnect(Milliseconds delay) {
 
   asio::error_code error;
   idleTimer_.expires_from_now(delay, error);
-  if (error)
-    return;
+  if (error) return;
 
   idleTimer_.async_wait([this, self](const asio::error_code &err) {
     if (err != asio::error::operation_aborted) {
@@ -291,8 +301,7 @@ void TCP_Connection<SocketType>::asyncIdleCheck() {
 
   asio::error_code error;
   idleTimer_.expires_from_now(delay, error);
-  if (error)
-    return;
+  if (error) return;
 
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (err != asio::error::operation_aborted) {
