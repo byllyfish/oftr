@@ -9,6 +9,11 @@
 
 using namespace ofp;
 
+// Maximum size of ping message payload is maximum length of OpenFlow message 
+// minus header size.
+
+const size_t kMaxPingData = OFP_MAX_SIZE - 8;
+
 //-------------------------//
 // P i n g L i s t e n e r //
 //-------------------------//
@@ -40,7 +45,7 @@ private:
   const ByteList *echoData_;
 
   void onPingReply(const Message *message) {
-    const EchoReply *reply = message->castMessage<EchoReply>();
+    const EchoReply *reply = EchoReply::cast(message);
     if (reply) {
       // Check valid ping reply.
     } else {
@@ -68,9 +73,14 @@ OFP_END_IGNORE_PADDING
 // p i n g _ c o n n e c t //
 //-------------------------//
 
-static int ping_connect(const IPv6Endpoint &endpt) {
+static int ping_connect(const IPv6Endpoint &endpt, int size) {
   Driver driver;
-  ByteList echoData;
+
+  if (size < 0 || size > kMaxPingData) {
+    size = kMaxPingData;
+  }
+
+  ByteList echoData = ByteList::iota(size);
 
   auto exc =
       driver.connect(Driver::Bridge, endpt, ProtocolVersions::All,
@@ -109,10 +119,13 @@ public:
 int ofpx_ping(int argc, char **argv) {
 
   cl::opt<IPv6Endpoint, false, IPv6EndpointParser> connect{
-      "c",                        cl::desc("where to connect"),
+      "connect",                  cl::desc("where to connect"),
       cl::value_desc("endpoint"), cl::ValueRequired};
+
+  cl::opt<int> size{"size", cl::desc("data size"), 
+      cl::value_desc("size")};
 
   cl::ParseCommandLineOptions(argc, argv);
 
-  return ping_connect(connect);
+  return ping_connect(connect, size);
 }

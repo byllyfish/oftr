@@ -185,7 +185,6 @@ set(LIBOFP_HEADER_FILES
   include/ofp/mpaggregatestatsrequest.h
   include/ofp/array.h
   include/ofp/bucket.h
-  include/ofp/bucketiterator.h
   include/ofp/bucketlist.h
   include/ofp/bucketrange.h
   include/ofp/bytelist.h
@@ -253,7 +252,6 @@ set(LIBOFP_HEADER_FILES
   include/ofp/portmod.h
   include/ofp/portstatus.h
   include/ofp/prerequisites.h
-  include/ofp/protocolelement.h
   include/ofp/protocoliterable.h
   include/ofp/protocoliterator.h
   include/ofp/protocolmsg.h

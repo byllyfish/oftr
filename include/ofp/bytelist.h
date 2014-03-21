@@ -113,6 +113,8 @@ public:
   ByteRange toRange() const;
   ByteList &operator=(const ByteRange &range);
 
+  static ByteList iota(size_t length);
+  
 private:
   SmallBuffer buf_;
 

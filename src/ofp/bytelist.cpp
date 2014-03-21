@@ -20,6 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/bytelist.h"
+#include <numeric>      // for iota
 
 using namespace ofp;
 
@@ -80,5 +81,12 @@ ByteRange ByteList::toRange() const {
 ByteList &ByteList::operator=(const ByteRange &range) {
   buf_.assign(range.data(), range.size());
   return *this;
+}
+
+ByteList ByteList::iota(size_t length) {
+  ByteList result;
+  result.resize(length);
+  std::iota(result.mutableData(), result.mutableData() + length, 0);
+  return result;
 }
 

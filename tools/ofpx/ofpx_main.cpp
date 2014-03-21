@@ -17,6 +17,7 @@ static ProgramEntry programs[] = {{"ping", ofpx_ping}};
 int main(int argc, char **argv) {
 
   ofp::log::setOutputStream(&std::cerr);
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
 
   if (argc >= 2) {
     char *name = argv[1];

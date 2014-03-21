@@ -55,7 +55,10 @@ enum {
 };
 
 enum {
-  OFP_DEFAULT_PORT = 6633
+  OFP_DEFAULT_PORT = 6633,
+
+  // Maximum size of an OpenFlow message.
+  OFP_MAX_SIZE = 65535
 };
 
 enum {
