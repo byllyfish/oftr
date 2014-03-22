@@ -34,3 +34,13 @@ TEST(hello, HelloBuilder3) {
   EXPECT_EQ(0x08, channel.size());
   EXPECT_HEX("0100-0008-00000001", channel.data(), channel.size());
 }
+
+TEST(hello, HelloBuilder4) {
+  HelloBuilder msg{OFP_VERSION_1};
+
+  MemoryChannel channel{0};
+  msg.send(&channel);
+
+  EXPECT_EQ(0x08, channel.size());
+  EXPECT_HEX("0100-0008-00000001", channel.data(), channel.size());
+}
