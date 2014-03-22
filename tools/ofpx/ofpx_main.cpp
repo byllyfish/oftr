@@ -12,7 +12,10 @@ struct ProgramEntry {
   Program prog;
 };
 
-static ProgramEntry programs[] = {{"ping", ofpx_ping}};
+static ProgramEntry programs[] = {
+  {"ping", ofpx_ping},
+  {"decode", ofpx_decode}
+};
 
 int main(int argc, char **argv) {
 
