@@ -59,9 +59,7 @@ UInt32 PacketOutBuilder::send(Writable *channel) {
     msgLen -= 8;
   }
 
-  if (msg_.bufferId() != OFP_NO_BUFFER) {
-    msgLen += enetFrame_.size();
-  }
+  msgLen += enetFrame_.size();
 
   // Fill in the message header.
   UInt32 xid = channel->nextXid();
@@ -88,9 +86,7 @@ UInt32 PacketOutBuilder::send(Writable *channel) {
   // Write actions to channel.
   actions_.toRange().write(channel);
 
-  if (msg_.bufferId() != OFP_NO_BUFFER) {
-    channel->write(enetFrame_.data(), enetFrame_.size());
-  }
+  channel->write(enetFrame_.data(), enetFrame_.size());
   channel->flush();
 
   return xid;
