@@ -81,6 +81,8 @@ public:
   template <class MsgType>
   const MsgType *castMessage() const;
 
+  void assign(const Message &message) { buf_ = message.buf_.toRange(); }
+
 private:
   ByteList buf_;
   sys::Connection *channel_;

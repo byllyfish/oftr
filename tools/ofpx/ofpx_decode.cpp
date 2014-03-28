@@ -13,7 +13,7 @@
 // d e c o d e _ o n e _ m e s s a g e //
 //-------------------------------------//
 
-static int decode_one_message(const ofp::Message *message) {
+static int decode_one_message(const ofp::Message *message, const ofp::Message *originalMessage) {
   ofp::yaml::Decoder decoder{message};
 
   if (!decoder.error().empty()) {
@@ -33,11 +33,11 @@ static int decode_one_message(const ofp::Message *message) {
     //return 129;
   }
 
-  if (encoder.size() != message->size()) {
-    std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << message->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(message->data(), message->size()) << '\n';
+  if (encoder.size() != originalMessage->size()) {
+    std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << originalMessage->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
     //return 130;
-  } else if (std::memcmp(message->data(), encoder.data(), encoder.size()) != 0) {
-    std::cerr << "Error: Encode yielded different data:\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(message->data(), message->size()) << '\n';
+  } else if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
+    std::cerr << "Error: Encode yielded different data:\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
     //return 131;
   }
 
@@ -50,6 +50,8 @@ static int decode_one_message(const ofp::Message *message) {
 
 static int decode_messages(std::ifstream &input) {
   ofp::Message message{nullptr};
+  ofp::Message originalMessage{nullptr};
+  size_t offset = 0;
 
   while (input) {
     char *msg = (char *)message.mutableData(sizeof(ofp::Header));
@@ -58,11 +60,13 @@ static int decode_messages(std::ifstream &input) {
     if (input) {
       // Read the rest of the message.
 
+      assert(input.gcount() == sizeof(ofp::Header));
       size_t msgLen = message.header()->length();
       if (msgLen < sizeof(ofp::Header)) {
         std::cerr << "Error: Message length " << msgLen
-                  << " bytes is too short." << '\n';
-        return 2;
+                  << " bytes is too short: offset=" << offset << '\n' << ofp::RawDataToHex(msg, sizeof(ofp::Header)) << '\n';
+        offset += sizeof(ofp::Header);
+        continue;
       }
 
       msg = (char *)message.mutableData(msgLen);
@@ -70,17 +74,24 @@ static int decode_messages(std::ifstream &input) {
                  ofp::Signed_cast(msgLen - sizeof(ofp::Header)));
 
       if (input) {
+        // Save a copy of the original message binary before we transmogrify it
+        // for reading. After we decode the message, we'll re-encode it and 
+        // compare it to this original.
+
+        originalMessage.assign(message);
         message.transmogrify();
 
-        int result = decode_one_message(&message);
+        int result = decode_one_message(&message, &originalMessage);
         if (result) {
           return result;
         }
 
+        offset += msgLen;
+
       } else if (!input.eof()) {
         // There was an error reading the message body.
         std::cerr << "Error: Only " << input.gcount() << " bytes read of body."
-                  << '\n' << input.rdstate();
+                  << '\n';
         return 1;
       }
 
