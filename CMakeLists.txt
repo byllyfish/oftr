@@ -122,6 +122,7 @@ set(LIBOFP_SOURCES
 	src/ofp/prerequisites.cpp
   src/ofp/protocoliterator.cpp
 	src/ofp/protocolversions.cpp
+  src/ofp/queuegetconfigreply.cpp
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/rolerequest.cpp
   src/ofp/rolereply.cpp

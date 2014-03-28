@@ -24,6 +24,7 @@
 #define OFP_QUEUEGETCONFIGREPLY_H_
 
 #include "ofp/protocolmsg.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 
@@ -33,6 +34,9 @@ class QueueGetConfigReply
     : public ProtocolMsg<QueueGetConfigReply, OFPT_QUEUE_GET_CONFIG_REPLY> {
 public:
   UInt32 port() const { return port_; }
+  //QueueRange queues() const;
+
+  bool validateInput(size_t length) const;
 
 private:
   Header header_;
@@ -54,10 +58,14 @@ static_assert(IsTriviallyCopyable<QueueGetConfigReply>(),
 
 class QueueGetConfigReplyBuilder {
 public:
-  QueueGetConfigReply() = default;
+  QueueGetConfigReplyBuilder() = default;
+
+  void setPort(UInt32 port);
+  //void setQueues(const QueueRange &queues);
 
 private:
   QueueGetConfigReply msg_;
+  //QueueList queues_;
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;
