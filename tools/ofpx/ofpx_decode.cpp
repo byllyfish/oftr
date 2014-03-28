@@ -30,15 +30,13 @@ static int decode_one_message(const ofp::Message *message) {
 
   if (!encoder.error().empty()) {
     std::cerr << "Error: Decode succeeded but encode failed: " << encoder.error() << '\n';
-    return 129;
+    //return 129;
   }
 
   if (encoder.size() != message->size()) {
-    std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << message->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n';
-    return 130;
-  }
-
-  if (std::memcmp(message->data(), encoder.data(), encoder.size()) != 0) {
+    std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << message->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(message->data(), message->size()) << '\n';
+    //return 130;
+  } else if (std::memcmp(message->data(), encoder.data(), encoder.size()) != 0) {
     std::cerr << "Error: Encode yielded different data:\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(message->data(), message->size()) << '\n';
     //return 131;
   }
