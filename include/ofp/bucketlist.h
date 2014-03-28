@@ -22,22 +22,14 @@
 #ifndef OFP_BUCKETLIST_H_
 #define OFP_BUCKETLIST_H_
 
-#include "ofp/bytelist.h"
-#include "ofp/bucket.h"
+#include "ofp/protocollist.h"
+#include "ofp/bucketrange.h"
 
 namespace ofp {
 
-class BucketList {
+class BucketList : public ProtocolList<BucketRange> {
 public:
-  BucketList() = default;
-
-  const UInt8 *data() const { return buf_.data(); }
-  size_t size() const { return buf_.size(); }
-
   void add(const BucketBuilder &bucket);
-
-private:
-  ByteList buf_;
 };
 
 }  // namespace ofp

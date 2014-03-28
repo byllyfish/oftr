@@ -81,7 +81,7 @@ class FeaturesReplyBuilder {
     msg_.capabilities_ = capabilities;
   }
   void setReserved(UInt32 reserved) { msg_.reserved_ = reserved; }
-  void setPorts(const PortRange &ports) { ports_ = ports; }
+  void setPorts(const PortRange &ports) { ports_.assign(ports); }
 
   UInt32 send(Writable *channel);
 

@@ -6,9 +6,11 @@
 
 namespace ofp {
 
-template <class ElemType, class Iterator = ProtocolIterator<ElemType>>
+template <class ElemType, class IteratorType = ProtocolIterator<ElemType>>
 class ProtocolIterable {
 public:
+  using Iterator = IteratorType;
+
   /* implicit */ ProtocolIterable(const ByteRange &range) : range_{range} {}
 
   Iterator begin() const { return Iterator(range_.begin()); }

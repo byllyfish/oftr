@@ -22,28 +22,21 @@
 #ifndef OFP_PORTLIST_H_
 #define OFP_PORTLIST_H_
 
-#include "ofp/bytelist.h"
-#include "ofp/port.h"
+#include "ofp/protocollist.h"
 #include "ofp/portrange.h"
 
 namespace ofp {
 
-class PortList {
+class PortList : public ProtocolList<PortRange> {
 public:
-  PortList() = default;
-
-  const UInt8 *data() const { return buf_.data(); }
-  size_t size() const { return buf_.size(); }
-  
   void add(const Port &port) { buf_.add(&port, sizeof(Port)); }
   void add(const PortBuilder &port) { add(port.toPort()); }
 
-  PortRange toRange() const { return buf_.toRange(); }
+  //PortRange toRange() const { return buf_.toRange(); }
+  //void operator=(const PortRange &range) { buf_ = range.toByteRange(); }
 
-  void operator=(const PortRange &range) { buf_ = range.toByteRange(); }
-
-private:
-  ByteList buf_;
+//private:
+//  ByteList buf_;
 };
 
 }  // namespace ofp
