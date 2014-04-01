@@ -6,7 +6,7 @@
 namespace ofp {
 
 using QueueIterator = ProtocolIterator<Queue>;
-using QueueRange = ProtocolIterable<Queue, QueueIterator>;
+using QueueRange = ProtocolIterable<QueueIterator>;
 
 }  // namespace ofp
 

@@ -105,7 +105,7 @@ struct SequenceTraits<ofp::PortRange> {
     return ports.itemCount();
   }
 
-  static ofp::PortIterator::Item &element(IO &io, ofp::PortRange &ports,
+  static ofp::PortIterator::Element &element(IO &io, ofp::PortRange &ports,
                                           size_t index) {
     ofp::log::debug("port yaml item", index);
     // FIXME

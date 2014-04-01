@@ -50,6 +50,9 @@ static_assert(IsStandardLayout<HelloElement>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<HelloElement>(),
               "Expected trivially copyable.");
 
+using HelloIterator = ProtocolIterator<HelloElement>;
+using HelloRange = ProtocolIterable<HelloIterator>;
+
 }  // namespace detail
 
 /// \brief Immutable OpenFlow `Hello` protocol message.
@@ -62,7 +65,7 @@ class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65528> {
  private:
   Header header_;
 
-  ProtocolIterable<detail::HelloElement> helloElements() const {
+  detail::HelloRange helloElements() const {
     return msgBody();
   }
 

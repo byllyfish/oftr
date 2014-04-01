@@ -28,7 +28,7 @@
 namespace ofp {
 
 using BucketIterator = ProtocolIterator<Bucket>;
-using BucketRange = ProtocolIterable<Bucket, BucketIterator>;
+using BucketRange = ProtocolIterable<BucketIterator>;
 
 }  // namespace ofp
 

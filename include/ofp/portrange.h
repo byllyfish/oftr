@@ -11,7 +11,7 @@ class Writable;
 
 using PortIterator = ProtocolIterator<Port>;
 
-class PortRange : public ProtocolIterable<Port, PortIterator> {
+class PortRange : public ProtocolIterable<PortIterator> {
 public:
   PortRange() = default;
   PortRange(const ByteRange &range) : ProtocolIterable{range} {}

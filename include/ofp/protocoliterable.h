@@ -6,11 +6,11 @@
 
 namespace ofp {
 
-template <class ElemType, class IteratorType = ProtocolIterator<ElemType>>
+template <class IteratorType>
 class ProtocolIterable {
 public:
   using Iterator = IteratorType;
-  using Element = ElemType;
+  using Element = typename IteratorType::Element;
 
   ProtocolIterable() = default;
   /* implicit */ ProtocolIterable(const ByteRange &range) : range_{range} {}

@@ -77,7 +77,7 @@ size_t ProtocolRangeFixedItemCount(size_t elemSize, const ByteRange &range);
 
 }  // namespace detail
 
-template <class ElemType, class Iterator>
+template <class Iterator>
 class ProtocolIterable;
 
 // ProtocolIterator is a template for an iterator that traverses an array of
@@ -97,7 +97,7 @@ public:
   
   static_assert(sizeof(ElemType) >= MinSize, "Unexpected element size.");
 
-  using Item = ElemType;
+  using Element = ElemType;
 
   const ElemType &operator*() const {
     return *operator->();
@@ -162,7 +162,7 @@ private:
      detail::IsProtocolRangeValid(range, SizeOffset, context);
   }
 
-  template <class T, class I>
+  template <class I>
   friend class ProtocolIterable;
 
   template <class R>

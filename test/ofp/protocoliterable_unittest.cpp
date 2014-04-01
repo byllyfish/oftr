@@ -89,7 +89,7 @@ TEST(protocoliterable, iteration) {
   ByteRange r1{data, sizeof(data)};
   EXPECT_TRUE(IsProtocolRangeValid(r1, 2));
 
-  ProtocolIterable<Item> iterable{r1};
+  ProtocolIterable<ProtocolIterator<Item>> iterable{r1};
   EXPECT_TRUE(iterable.validateInput(""));
   EXPECT_EQ(4, iterable.itemCount());
   

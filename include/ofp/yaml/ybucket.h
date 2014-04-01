@@ -98,7 +98,7 @@ struct SequenceTraits<ofp::BucketRange> {
         return buckets.itemCount();
     }
 
-    static ofp::BucketIterator::Item &element(IO &io, ofp::BucketRange &buckets,
+    static ofp::BucketIterator::Element &element(IO &io, ofp::BucketRange &buckets,
                                      size_t index)
     {
         ofp::log::debug("bucket yaml item", index);

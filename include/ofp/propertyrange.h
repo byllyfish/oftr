@@ -29,8 +29,8 @@ private:
 
 using PropertyIterator = ProtocolIterator<detail::PropertyIteratorItem>;
 
-class PropertyRange : public ProtocolIterable<detail::PropertyIteratorItem, PropertyIterator> {
-using Inherited = ProtocolIterable<detail::PropertyIteratorItem, PropertyIterator>;
+class PropertyRange : public ProtocolIterable<PropertyIterator> {
+using Inherited = ProtocolIterable<PropertyIterator>;
 public:
     using Inherited::Inherited;
 
