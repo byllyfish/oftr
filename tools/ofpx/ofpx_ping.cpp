@@ -12,7 +12,7 @@ using namespace ofp;
 // Maximum size of ping message payload is maximum length of OpenFlow message 
 // minus header size.
 
-const size_t kMaxPingData = OFP_MAX_SIZE - 8;
+const int kMaxPingData = OFP_MAX_SIZE - 8;
 
 //-------------------------//
 // P i n g L i s t e n e r //
@@ -80,7 +80,7 @@ static int ping_connect(const IPv6Endpoint &endpt, int size) {
     size = kMaxPingData;
   }
 
-  ByteList echoData = ByteList::iota(size);
+  ByteList echoData = ByteList::iota(Unsigned_cast(size));
 
   auto exc =
       driver.connect(Driver::Bridge, endpt, ProtocolVersions::All,

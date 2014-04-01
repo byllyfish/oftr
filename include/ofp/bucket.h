@@ -27,8 +27,10 @@
 
 namespace ofp {
 
-class Bucket {
+class Bucket : private NonCopyable {
 public:
+  enum { ProtocolIteratorSizeOffset = 0 };
+
   UInt16 weight() const { return weight_; }
   UInt32 watchPort() const { return watchPort_; }
   UInt32 watchGroup() const { return watchGroup_; }

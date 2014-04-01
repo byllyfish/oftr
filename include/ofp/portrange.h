@@ -9,7 +9,7 @@ namespace ofp {
 class PortList;
 class Writable;
 
-using PortIterator = ProtocolIteratorFixedSizeAndType<Port>;
+using PortIterator = ProtocolIterator<Port>;
 
 class PortRange : public ProtocolIterable<Port, PortIterator> {
 public:

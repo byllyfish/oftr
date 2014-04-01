@@ -57,6 +57,11 @@ void ByteList::replaceUninitialized(const UInt8 *pos, const UInt8 *posEnd,
   buf_.replaceUninitialized(RemoveConst_cast(pos), RemoveConst_cast(posEnd), length);
 }
 
+/// \brief Add zero bytes to the end of the byte buffer.
+void ByteList::addZeros(size_t length) {
+  buf_.addZeros(length);
+}
+
 /// \brief Insert zero bytes at the specified position in the byte buffer.
 void ByteList::insertZeros(const UInt8 *pos, size_t length) {
   buf_.insertZeros(RemoveConst_cast(pos), length);

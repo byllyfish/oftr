@@ -95,6 +95,9 @@ public:
   void replaceUninitialized(const UInt8 *pos, const UInt8 *posEnd,
                             size_t length);
 
+  /// \brief Add zero bytes to the end of the byte buffer.
+  void addZeros(size_t length);
+  
   /// \brief Insert zero bytes at the specified position in the byte buffer.
   void insertZeros(const UInt8 *pos, size_t length);
 

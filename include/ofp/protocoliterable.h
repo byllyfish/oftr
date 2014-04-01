@@ -10,7 +10,9 @@ template <class ElemType, class IteratorType = ProtocolIterator<ElemType>>
 class ProtocolIterable {
 public:
   using Iterator = IteratorType;
+  using Element = ElemType;
 
+  ProtocolIterable() = default;
   /* implicit */ ProtocolIterable(const ByteRange &range) : range_{range} {}
 
   Iterator begin() const { return Iterator(range_.begin()); }
@@ -26,8 +28,13 @@ public:
     return Iterator::isRangeValid(range_, context);
   }
 
+  template <class UnaryPredicate>
+  bool exists(UnaryPredicate pred) const {
+    return std::any_of(begin(), end(), pred);
+  }
+
 private:
-  const ByteRange range_;
+  ByteRange range_;
 };
 
 }  // namespace ofp

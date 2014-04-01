@@ -341,6 +341,13 @@ enum OFPFlowModCommand : UInt8 {
   OFPFC_LAST = OFPFC_DELETE_STRICT
 };
 
+
+enum OFPQueueProperty : UInt16 {
+  OFPQT_MIN_RATE = 1,
+  OFPQT_MAX_RATE = 2,
+  OFPQT_EXPERIMENTER = 0xffff
+};
+
 }  // namespace ofp
 
 #endif  // OFP_CONSTANTS_H_

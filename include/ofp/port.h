@@ -40,8 +40,12 @@ static_assert(sizeof(PortName) == OFP_MAX_PORT_NAME_LEN, "Unexpected size.");
 static_assert(IsStandardLayout<PortName>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<PortName>(), "Expected trivially copyable.");
 
+// TODO(bfish): Make Port a NonCopyable.
 class Port {
  public:
+  // Port is a fixed size struct; no length field present.
+  enum { ProtocolIteratorSizeOffset = 0xffff };
+
   UInt32 portNo() const { return portNo_; }
   const EnetAddress &hwAddr() const { return hwAddr_; }
   const PortName &name() const { return name_; }

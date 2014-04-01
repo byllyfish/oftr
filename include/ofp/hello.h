@@ -29,8 +29,10 @@
 namespace ofp {
 namespace detail {
 
-class HelloElement {
+class HelloElement : private NonCopyable {
  public:
+  enum { ProtocolIteratorSizeOffset = 2 };
+
   UInt16 type() const { return type_; }
 
   void setType(UInt16 type) { type_ = type; }

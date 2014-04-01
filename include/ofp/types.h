@@ -281,6 +281,18 @@ std::unique_ptr<T> MakeUniquePtr(Args &&... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
+
+class NonCopyable {
+protected:
+  NonCopyable() = default;
+  ~NonCopyable() = default;
+private:
+  NonCopyable(const NonCopyable &) = default;
+  NonCopyable& operator=(const NonCopyable &) = default;
+};
+
+static_assert(IsTriviallyCopyable<NonCopyable>(), "Expected trivial copyable.");
+
 }  // namespace ofp
 
 // Place forward declarations of YAML classes here.

@@ -10,6 +10,7 @@ template <class RangeType>
 class ProtocolList {
 public:
     using Iterator = typename RangeType::Iterator;
+    using Element = typename RangeType::Element;
 
     Iterator begin() const { return Iterator(buf_.begin()); }
     Iterator end() const { return Iterator(buf_.end()); }

@@ -47,6 +47,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/portstatus_unittest.cpp
 	ofp/protocoliterable_unittest.cpp
 	ofp/protocolversions_unittest.cpp
+	ofp/queue_unittest.cpp
 	ofp/roundtrip_unittest.cpp
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
