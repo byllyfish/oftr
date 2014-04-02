@@ -1,7 +1,7 @@
 #ifndef OFP_PROTOCOLLIST_H_
 #define OFP_PROTOCOLLIST_H_
 
-#include "ofp/protocoliterable.h"
+#include "ofp/protocolrange.h"
 #include "ofp/bytelist.h"
 
 namespace ofp {

@@ -82,7 +82,7 @@ size_t ofp::detail::ProtocolRangeItemCount(const ByteRange &range, size_t sizeFi
 /// Return true if given ByteRange is a valid protocol iterable for an element
 /// with a fixed size.
 ///
-/// To be structurally valid as a ProtocolIterable, the byte range must pass
+/// To be structurally valid as a ProtocolRange, the byte range must pass
 /// the following tests:
 ///   - size in bytes is a multiple of elemSize
 ///   - pointer to start of range is 8-byte aligned.

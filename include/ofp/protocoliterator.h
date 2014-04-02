@@ -39,7 +39,7 @@ namespace detail {
 
 /// Return true if given ByteRange is a valid protocol range.
 ///
-/// To be structurally valid as a ProtocolIterable, the byte range must pass
+/// To be structurally valid as a ProtocolRange, the byte range must pass
 /// the following tests:
 ///   - size in bytes is a multiple of 8.
 ///   - no element length is less than `minElemSize`.
@@ -62,7 +62,7 @@ enum { ProtocolIteratorSizeOffsetCutoff = 128 };
 /// Return true if given ByteRange is a valid protocol iterable for an element
 /// with a fixed size.
 /// 
-/// To be structurally valid as a ProtocolIterable, the byte range must pass
+/// To be structurally valid as a ProtocolRange, the byte range must pass
 /// the following tests:
 ///   - size in bytes is a multiple of elemSize
 ///   - pointer to start of range is 8-byte aligned.
@@ -78,7 +78,7 @@ size_t ProtocolRangeFixedItemCount(size_t elemSize, const ByteRange &range);
 }  // namespace detail
 
 template <class Iterator>
-class ProtocolIterable;
+class ProtocolRange;
 
 // ProtocolIterator is a template for an iterator that traverses an array of
 // variable-sized elements. The structure of each element header is:
@@ -149,7 +149,7 @@ public:
 private:
   const UInt8 *pos_;
 
-  // Only a ProtocolIterable or ProtocolList can construct a ProtocolIterator.
+  // Only a ProtocolRange or ProtocolList can construct a ProtocolIterator.
   ProtocolIterator(const UInt8 *pos) : pos_{pos} {}
 
   static size_t rangeItemCount(const ByteRange &range) {
@@ -163,7 +163,7 @@ private:
   }
 
   template <class I>
-  friend class ProtocolIterable;
+  friend class ProtocolRange;
 
   template <class R>
   friend class ProtocolList;

@@ -7,13 +7,13 @@
 namespace ofp {
 
 template <class IteratorType>
-class ProtocolIterable {
+class ProtocolRange {
 public:
   using Iterator = IteratorType;
   using Element = typename IteratorType::Element;
 
-  ProtocolIterable() = default;
-  /* implicit */ ProtocolIterable(const ByteRange &range) : range_{range} {}
+  ProtocolRange() = default;
+  /* implicit */ ProtocolRange(const ByteRange &range) : range_{range} {}
 
   Iterator begin() const { return Iterator(range_.begin()); }
   Iterator end() const { return Iterator(range_.end()); }

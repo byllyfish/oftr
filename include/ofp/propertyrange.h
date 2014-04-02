@@ -1,7 +1,7 @@
 #ifndef OFP_PROPERTYRANGE_H_
 #define OFP_PROPERTYRANGE_H_
 
-#include "ofp/protocoliterable.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 
@@ -29,8 +29,8 @@ private:
 
 using PropertyIterator = ProtocolIterator<detail::PropertyIteratorItem>;
 
-class PropertyRange : public ProtocolIterable<PropertyIterator> {
-using Inherited = ProtocolIterable<PropertyIterator>;
+class PropertyRange : public ProtocolRange<PropertyIterator> {
+using Inherited = ProtocolRange<PropertyIterator>;
 public:
     using Inherited::Inherited;
 

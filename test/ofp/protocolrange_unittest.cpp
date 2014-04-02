@@ -1,10 +1,10 @@
 #include "ofp/unittest.h"
-#include "ofp/protocoliterable.h"
+#include "ofp/protocolrange.h"
 
 using namespace ofp;
 using namespace ofp::detail;
 
-TEST(protocoliterable, valid_empty) {
+TEST(protocolrange, valid_empty) {
   ByteRange r1;
   EXPECT_TRUE(IsProtocolRangeValid(r1, 2));
 
@@ -13,13 +13,13 @@ TEST(protocoliterable, valid_empty) {
   EXPECT_TRUE(IsProtocolRangeValid(r2, 2));
 }
 
-TEST(protocoliterable, invalid_empty) {
+TEST(protocolrange, invalid_empty) {
   UInt8 d1[2];
   ByteRange r1{&d1[1], 0};
   EXPECT_FALSE(IsProtocolRangeValid(r1, 2));
 }
 
-TEST(protocoliterable, invalid_short) {
+TEST(protocolrange, invalid_short) {
   Big16 d1 = 0xff01;
   Big64 d2 = 0xffff0001ffffffff;
   Big64 d3 = 0xffff0000ffffffff;
@@ -33,7 +33,7 @@ TEST(protocoliterable, invalid_short) {
   EXPECT_FALSE(IsProtocolRangeValid(r3, 2));
 }
 
-TEST(protocoliterable, valid_short) {
+TEST(protocolrange, valid_short) {
   Big64 d1 = 0xffff0004ffffffff;
   Big64 d2 = 0xffff0005ffffffff;
   Big64 d3 = 0xffff0007ffffffff;
@@ -47,14 +47,14 @@ TEST(protocoliterable, valid_short) {
   EXPECT_TRUE(IsProtocolRangeValid(r3, 2));
 }
 
-TEST(protocoliterable, valid_exact) {
+TEST(protocolrange, valid_exact) {
   Big64 d1 = 0xffff0008ffffffff;
   ByteRange r1{&d1, 8};
 
   EXPECT_TRUE(IsProtocolRangeValid(r1, 2));
 }
 
-TEST(protocoliterable, invalid1) {
+TEST(protocolrange, invalid1) {
   // Need to convert to ByteList for alignment; string data not necessarily
   // aligned to an 8-byte boundary.
 
@@ -67,7 +67,7 @@ TEST(protocoliterable, invalid1) {
   EXPECT_FALSE(IsProtocolRangeValid(r3, 2));
 }
 
-TEST(protocoliterable, invalid2) {
+TEST(protocolrange, invalid2) {
   ByteList r1{HexToRawData("ffff0008ffffffffff")};
   ByteList r2{HexToRawData("ffff0006ffffffffffffffffffffffff")};
 
@@ -75,7 +75,7 @@ TEST(protocoliterable, invalid2) {
   EXPECT_FALSE(IsProtocolRangeValid(r2, 2));
 }
 
-TEST(protocoliterable, iteration) {
+TEST(protocolrange, iteration) {
   Big64 data[] = {0xffff000800000001, 0xffff000800000002,
                   0xffff000800000003, 0xffff000800000004};
 
@@ -89,7 +89,7 @@ TEST(protocoliterable, iteration) {
   ByteRange r1{data, sizeof(data)};
   EXPECT_TRUE(IsProtocolRangeValid(r1, 2));
 
-  ProtocolIterable<ProtocolIterator<Item>> iterable{r1};
+  ProtocolRange<ProtocolIterator<Item>> iterable{r1};
   EXPECT_TRUE(iterable.validateInput(""));
   EXPECT_EQ(4, iterable.itemCount());
   

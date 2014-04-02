@@ -24,7 +24,7 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/protocolversions.h"
-#include "ofp/protocoliterable.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 namespace detail {
@@ -51,7 +51,7 @@ static_assert(IsTriviallyCopyable<HelloElement>(),
               "Expected trivially copyable.");
 
 using HelloIterator = ProtocolIterator<HelloElement>;
-using HelloRange = ProtocolIterable<HelloIterator>;
+using HelloRange = ProtocolRange<HelloIterator>;
 
 }  // namespace detail
 

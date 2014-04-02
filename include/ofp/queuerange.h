@@ -1,12 +1,12 @@
 #ifndef OFP_QUEUERANGE_H_
 #define OFP_QUEUERANGE_H_
 
-#include "ofp/protocoliterable.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 
 using QueueIterator = ProtocolIterator<Queue>;
-using QueueRange = ProtocolIterable<QueueIterator>;
+using QueueRange = ProtocolRange<QueueIterator>;
 
 }  // namespace ofp
 

@@ -254,7 +254,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/portmod.h
   include/ofp/portstatus.h
   include/ofp/prerequisites.h
-  include/ofp/protocoliterable.h
+  include/ofp/protocolrange.h
   include/ofp/protocoliterator.h
   include/ofp/protocolmsg.h
   include/ofp/protocolversions.h

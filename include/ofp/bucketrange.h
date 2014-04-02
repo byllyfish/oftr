@@ -22,13 +22,13 @@
 #ifndef OFP_BUCKETRANGE_H_
 #define OFP_BUCKETRANGE_H_
 
-#include "ofp/protocoliterable.h"
+#include "ofp/protocolrange.h"
 #include "ofp/bucket.h"
 
 namespace ofp {
 
 using BucketIterator = ProtocolIterator<Bucket>;
-using BucketRange = ProtocolIterable<BucketIterator>;
+using BucketRange = ProtocolRange<BucketIterator>;
 
 }  // namespace ofp
 

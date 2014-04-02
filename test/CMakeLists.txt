@@ -45,7 +45,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/padding_unittest.cpp
 	ofp/port_unittest.cpp
 	ofp/portstatus_unittest.cpp
-	ofp/protocoliterable_unittest.cpp
+	ofp/protocolrange_unittest.cpp
 	ofp/protocolversions_unittest.cpp
 	ofp/queue_unittest.cpp
 	ofp/roundtrip_unittest.cpp
