@@ -12,6 +12,11 @@ public:
     using Iterator = typename RangeType::Iterator;
     using Element = typename RangeType::Element;
 
+    ProtocolList() = default;
+    ProtocolList(const ProtocolList &list) = default;
+    ProtocolList(const RangeType &range) : buf_{range.toByteRange()} {}
+    ProtocolList &operator=(const ProtocolList &list) = default;
+
     Iterator begin() const { return Iterator(buf_.begin()); }
     Iterator end() const { return Iterator(buf_.end()); }
 

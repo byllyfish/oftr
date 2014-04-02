@@ -77,9 +77,6 @@ size_t ProtocolRangeFixedItemCount(size_t elemSize, const ByteRange &range);
 
 }  // namespace detail
 
-template <class Iterator>
-class ProtocolRange;
-
 // ProtocolIterator is a template for an iterator that traverses an array of
 // variable-sized elements. The structure of each element header is:
 //
@@ -116,9 +113,6 @@ public:
   size_t size() const { 
     return IsFixedSize ?  sizeof(ElemType) : std::max<size_t>(MinSize, *Big16_cast(data() + SizeOffset)); 
   }
-
-  const UInt8 *valuePtr() const { return data() + MinSize; }
-  size_t valueSize() const { return size() - MinSize; }
 
   void operator++() { pos_ += PadLength(size()); }
 

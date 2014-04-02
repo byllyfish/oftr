@@ -8,52 +8,55 @@ namespace ofp {
 namespace detail {
 
 class PropertyIteratorItem : private NonCopyable {
-public:
-    enum { ProtocolIteratorSizeOffset = 2 };
-    
-    UInt16 property() const { return property_; }
-    UInt16 size() const { return len_; }
+ public:
+  enum {
+    ProtocolIteratorSizeOffset = sizeof(Big16)
+  };
 
-    template <class PropertyType>
-    const PropertyType &castProperty() const {
-        return *reinterpret_cast<const PropertyType *>(this);
-    }
+  UInt16 type() const { return type_; }
+  UInt16 size() const { return len_; }
 
-private:
-    Big16 property_;
-    Big16 len_;
+  template <class Type>
+  const Type &property() const {
+    return *reinterpret_cast<const Type *>(this);
+  }
+
+ private:
+  Big16 type_;
+  Big16 len_;
 };
 
 }  // namespace detail
 
-
 using PropertyIterator = ProtocolIterator<detail::PropertyIteratorItem>;
 
 class PropertyRange : public ProtocolRange<PropertyIterator> {
-using Inherited = ProtocolRange<PropertyIterator>;
-public:
-    using Inherited::Inherited;
+  using Inherited = ProtocolRange<PropertyIterator>;
 
-    template <class PropertyType>
-    Iterator findProperty() const {
-        for (auto iter = begin(); iter < end(); ++iter) {
-            if (iter->property() == PropertyType::Property && iter->size() == sizeof(PropertyType)) {
-                return iter;
-            }
-        }
-        return end();
-    }
+ public:
+  using Inherited::Inherited;
 
-    template <class PropertyType>
-    typename PropertyType::ValueType value() const {
-        auto iter = findProperty<PropertyType>();
-        if (iter != end()) {
-            return iter->template castProperty<PropertyType>().value();
-        }
-        return PropertyType::defaultValue();
+  template <class PropertyType>
+  Iterator findProperty() const {
+    for (auto iter = begin(); iter < end(); ++iter) {
+      if (iter->type() == PropertyType::type() &&
+          iter->size() == sizeof(PropertyType)) {
+        return iter;
+      }
     }
+    return end();
+  }
+
+  template <class PropertyType>
+  typename PropertyType::ValueType value() const {
+    auto iter = findProperty<PropertyType>();
+    if (iter != end()) {
+      return iter->template property<PropertyType>().value();
+    }
+    return PropertyType::defaultValue();
+  }
 };
 
 }  // namespace ofp
 
-#endif // OFP_PROPERTYRANGE_H_
+#endif  // OFP_PROPERTYRANGE_H_

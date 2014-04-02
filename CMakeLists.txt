@@ -95,7 +95,6 @@ set(LIBOFP_SOURCES
   src/ofp/groupmod.cpp
 	src/ofp/header.cpp
 	src/ofp/hello.cpp
-	src/ofp/instructionlist.cpp
   src/ofp/instructionrange.cpp
 	src/ofp/ipv4address.cpp
 	src/ofp/ipv6address.cpp

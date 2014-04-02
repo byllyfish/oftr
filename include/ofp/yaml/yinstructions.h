@@ -100,9 +100,9 @@ struct MappingTraits<ofp::IT_EXPERIMENTER> {
 };
 
 template <>
-struct MappingTraits<ofp::InstructionIterator::Item> {
+struct MappingTraits<ofp::InstructionIterator::Element> {
 
-  static void mapping(IO &io, ofp::InstructionIterator::Item &item) {
+  static void mapping(IO &io, ofp::InstructionIterator::Element &item) {
     using namespace ofp;
 
     OFPInstructionType type = item.type();
@@ -217,7 +217,7 @@ struct SequenceTraits<ofp::InstructionRange> {
     return range.itemCount();
   }
 
-  static ofp::InstructionIterator::Item &
+  static ofp::InstructionIterator::Element &
   element(IO &io, ofp::InstructionRange &range, size_t index) {
     // FIXME - iterates every time!
     ofp::InstructionIterator iter = range.begin();

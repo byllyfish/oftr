@@ -7,7 +7,8 @@ namespace ofp {
 
 class QueuePropertyMinRate {
 public:
-    enum { Property = OFPQT_MIN_RATE };
+    constexpr static OFPQueueProperty type() { return OFPQT_MIN_RATE; }
+
     using ValueType = UInt16;
 
     explicit QueuePropertyMinRate(UInt16 rate) : rate_{rate} {}
@@ -16,7 +17,7 @@ public:
     static UInt16 defaultValue() { return 0xffff; }
 
 private:
-    Big16 property_ = Property;
+    Big16 type_ = type();
     Big16 len_ = 16;
     Padding<4> pad_1;
     Big16 rate_;
@@ -28,7 +29,8 @@ static_assert(sizeof(QueuePropertyMinRate) == 16, "Unexpected size.");
 
 class QueuePropertyMaxRate {
 public:
-    enum { Property = OFPQT_MAX_RATE };
+    constexpr static OFPQueueProperty type() { return OFPQT_MAX_RATE; }
+
     using ValueType = UInt16;
 
     explicit QueuePropertyMaxRate(UInt16 rate) : rate_{rate} {}
@@ -37,7 +39,7 @@ public:
     static UInt16 defaultValue() { return 0xffff; }
     
 private:
-    Big16 property_ = Property;
+    Big16 type_ = type();
     Big16 len_ = 16;
     Padding<4> pad_1;
     Big16 rate_;
@@ -48,17 +50,18 @@ static_assert(sizeof(QueuePropertyMinRate) == 16, "Unexpected size.");
 
 class QueuePropertyExperimenter {
 public:
-    enum { Property = OFPQT_EXPERIMENTER };
-    enum { FixedSize = 16 };
+    constexpr static OFPQueueProperty type() { return OFPQT_EXPERIMENTER; }
 
-    QueuePropertyExperimenter(UInt32 experimenterId, const ByteRange &data) : len_(UInt16_narrow_cast(FixedSize + data.size())), experimenter_{experimenterId}, data_{data} {
+    enum { FixedHeaderSize = 16 };
+
+    QueuePropertyExperimenter(UInt32 experimenterId, const ByteRange &data) : len_(UInt16_narrow_cast(FixedHeaderSize + data.size())), experimenter_{experimenterId}, data_{data} {
 
     }
 
     ByteRange value() const { return data_; }
 
 private:
-    Big16 property_ = Property;
+    Big16 type_ = type();
     Big16 len_;
     Padding<4> pad_1;
     Big32 experimenter_;
@@ -66,7 +69,7 @@ private:
     ByteRange data_;
 };
 
-static_assert(sizeof(QueuePropertyExperimenter) == QueuePropertyExperimenter::FixedSize + sizeof(ByteRange), "Unexpected size.");
+static_assert(sizeof(QueuePropertyExperimenter) == QueuePropertyExperimenter::FixedHeaderSize + sizeof(ByteRange), "Unexpected size.");
 
 }  // namespace ofp
 

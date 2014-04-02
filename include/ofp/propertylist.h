@@ -13,20 +13,12 @@ class PropertyList : public ProtocolList<PropertyRange> {
   void add(const PropertyType &property) {
     buf_.add(&property, sizeof(property));
   }
-
-#if 0
-  bool exists(UInt16 property) const {
-    return toRange().exists([property](const Element &item) {
-      return item.property() == property;
-    });
-  }
-#endif //0
 };
 
 template <>
 inline void PropertyList::add(const QueuePropertyExperimenter &property) {
   ByteRange value = property.value();
-  buf_.add(&property, QueuePropertyExperimenter::FixedSize);
+  buf_.add(&property, QueuePropertyExperimenter::FixedHeaderSize);
   buf_.add(value.data(), value.size());
   buf_.addZeros(PadLength(value.size()) - value.size());
 }

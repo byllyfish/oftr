@@ -28,11 +28,6 @@ public:
     return Iterator::isRangeValid(range_, context);
   }
 
-  template <class UnaryPredicate>
-  bool exists(UnaryPredicate pred) const {
-    return std::any_of(begin(), end(), pred);
-  }
-
 private:
   ByteRange range_;
 };

@@ -11,7 +11,7 @@ ActionRange InstructionRange::outputActions() const {
   InstructionIterator iterEnd = end();
 
   while (iter != iterEnd) {
-    if (iter.type() == IT_APPLY_ACTIONS::type()) {
+    if (iter->type() == IT_APPLY_ACTIONS::type()) {
       return ByteRange{iter.data() + IT_APPLY_ACTIONS::HeaderSize,
                        iter.size() - IT_APPLY_ACTIONS::HeaderSize};
     }

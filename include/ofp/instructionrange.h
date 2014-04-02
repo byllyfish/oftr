@@ -22,36 +22,19 @@
 #ifndef OFP_INSTRUCTIONRANGE_H_
 #define OFP_INSTRUCTIONRANGE_H_
 
-#include "ofp/byterange.h"
+#include "ofp/protocolrange.h"
 #include "ofp/instructioniterator.h"
 #include "ofp/actionrange.h"
 
 namespace ofp {
 
-class InstructionRange {
-public:
-  /* implicit NOLINT */ InstructionRange(const ByteRange &range) : range_{range} {}
+class InstructionRange : public ProtocolRange<InstructionIterator> {
+  using Inherited = ProtocolRange<InstructionIterator>;
 
-  /// \returns number of items in the range.
-  size_t itemCount() const {
-    return InstructionIterator::distance(begin(), end());
-  }
-
-  InstructionIterator begin() const {
-    return InstructionIterator{range_.begin()};
-  }
-
-  InstructionIterator end() const {
-    return InstructionIterator{range_.end()};
-  }
-
-  const UInt8 *data() const { return range_.data(); }
-  size_t size() const { return range_.size(); }
+ public:
+  using Inherited::Inherited;
 
   ActionRange outputActions() const;
-
-private:
-  ByteRange range_;
 };
 
 }  // namespace ofp

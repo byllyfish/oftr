@@ -22,7 +22,7 @@
 #ifndef OFP_INSTRUCTIONLIST_H_
 #define OFP_INSTRUCTIONLIST_H_
 
-#include "ofp/types.h"
+#include "ofp/protocollist.h"
 #include "ofp/instructions.h"
 #include "ofp/instructioniterator.h"
 #include "ofp/instructionrange.h"
@@ -30,30 +30,13 @@
 
 namespace ofp {
 
-class InstructionList {
+class InstructionList : public ProtocolList<InstructionRange> {
+using Inherited = ProtocolList<InstructionRange>;
 public:
-  InstructionList() = default;
-  /* implicit NOLINT */ InstructionList(const InstructionRange &range);
-
-  InstructionIterator begin() const {
-    return InstructionIterator{data()};
-  }
-
-  InstructionIterator end() const {
-    return InstructionIterator{data() + size()};
-  }
-
-  const UInt8 *data() const { return buf_.data(); }
-
-  size_t size() const { return buf_.size(); }
+  using Inherited::Inherited;
 
   template <class Type>
   void add(const Type &instruction);
-
-  InstructionRange toRange() const { return buf_.toRange(); }
-
-private:
-  ByteList buf_;
 };
 
 template <class Type>

@@ -46,11 +46,11 @@ TEST(instructionlist, test) {
   auto iter = list.begin();
   auto iterEnd = list.end();
 
-  EXPECT_EQ(IT_GOTO_TABLE::type(), iter.type());
+  EXPECT_EQ(IT_GOTO_TABLE::type(), iter->type());
   EXPECT_EQ(8, iter.size());
 
   ++iter;
-  EXPECT_EQ(IT_CLEAR_ACTIONS::type(), iter.type());
+  EXPECT_EQ(IT_CLEAR_ACTIONS::type(), iter->type());
   EXPECT_EQ(8, iter.size());
 
   ++iter;

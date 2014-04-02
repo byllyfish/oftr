@@ -31,8 +31,6 @@ class InstructionType {
 public:
   constexpr InstructionType(OFPInstructionType type) : type_{type} {}
 
-  static InstructionType fromBytes(const UInt8 *data);
-
   constexpr OFPInstructionType type() const { return type_; }
 
   constexpr operator OFPInstructionType() const { return type_; }
@@ -50,12 +48,6 @@ private:
 static_assert(IsLiteralType<InstructionType>(), "Literal type expected.");
 
 std::ostream &operator<<(std::ostream &os, const InstructionType &value);
-
-inline InstructionType InstructionType::fromBytes(const UInt8 *data) {
-  InstructionType type{OFPIT_GOTO_TABLE};
-  std::memcpy(&type, data, sizeof(type));
-  return type;
-}
 
 inline std::ostream &operator<<(std::ostream &os,
                                 const InstructionType &value) {
