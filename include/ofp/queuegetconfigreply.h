@@ -25,6 +25,7 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/queuelist.h"
 
 namespace ofp {
 
@@ -34,7 +35,7 @@ class QueueGetConfigReply
     : public ProtocolMsg<QueueGetConfigReply, OFPT_QUEUE_GET_CONFIG_REPLY> {
 public:
   UInt32 port() const { return port_; }
-  //QueueRange queues() const;
+  QueueRange queues() const;
 
   bool validateInput(size_t length) const;
 
@@ -60,12 +61,16 @@ class QueueGetConfigReplyBuilder {
 public:
   QueueGetConfigReplyBuilder() = default;
 
-  void setPort(UInt32 port);
-  //void setQueues(const QueueRange &queues);
+  void setPort(UInt32 port) { msg_.port_ = port; }
+
+  void setQueues(const QueueRange &queues) { queues_.assign(queues); }
+  void setQueues(const QueueList &queues) { setQueues(queues.toRange()); }
+
+  UInt32 send(Writable *channel);
 
 private:
   QueueGetConfigReply msg_;
-  //QueueList queues_;
+  QueueList queues_;
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;

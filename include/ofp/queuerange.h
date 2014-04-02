@@ -2,6 +2,7 @@
 #define OFP_QUEUERANGE_H_
 
 #include "ofp/protocolrange.h"
+#include "ofp/queue.h"
 
 namespace ofp {
 

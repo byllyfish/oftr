@@ -38,8 +38,10 @@ class QueueBuilder {
 
   void setQueueId(UInt32 queueId) { queue_.queueId_ = queueId; }
   void setPort(UInt32 port) { queue_.port_ = port; }
-  void setProperties(const PropertyRange &properties);
 
+  void setProperties(const PropertyRange &properties);
+  void setProperties(const PropertyList &properties) { setProperties(properties.toRange()); }
+  
  private:
   Queue queue_;
   PropertyRange properties_;
