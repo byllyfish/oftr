@@ -1519,6 +1519,65 @@ TEST(encoder, queuegetconfigrequestv4) {
              encoder.size());
 }
 
+TEST(encoder, queuegetconfigreplyv4) {
+  const char *input = R"""(
+    version: 4
+    type: OFPT_QUEUE_GET_CONFIG_REPLY
+    datapath_id: 0000-0000-0000-0001
+    xid: 0x11111111
+    msg:
+      port: 0x22222222
+      queues:
+        - queue_id: 0x33333333
+          port: 0x44444444
+          min_rate: 0x5555
+          max_rate: 0x6666
+        - queue_id: 0x77777777
+          port: 0x88888888
+          min_rate: 0x9999
+          max_rate: 0xAAAA
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x70, encoder.size());
+  EXPECT_HEX("0417007011111111 2222222200000000"
+             "333333334444444400300000000000000001001000000000555500000000000000020010000000006666000000000000"
+             "77777777888888880030000000000000000100100000000099990000000000000002001000000000AAAA000000000000", encoder.data(),
+             encoder.size());
+}
+
+TEST(encoder, queuegetconfigreplyv4_experimenter) {
+  const char *input = R"""(
+    version: 4
+    type: OFPT_QUEUE_GET_CONFIG_REPLY
+    datapath_id: 0000-0000-0000-0001
+    xid: 0x11111111
+    msg:
+      port: 0x22222222
+      queues:
+        - queue_id: 0x33333333
+          port: 0x44444444
+          min_rate: 0x5555
+          max_rate: 0x6666
+          properties:
+            - experimenter: 0xEEEEEEEE
+              value: 000102030405
+            - experimenter: 0xFFFFFFFF
+              value: abcdef
+        - queue_id: 0x77777777
+          port: 0x88888888
+          min_rate: 0x9999
+          max_rate: 0xAAAA
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0xA0, encoder.size());
+  EXPECT_HEX("041700A0111111112222222200000000333333334444444400600000000000000001001000000000555500000000000000020010000000006666000000000000FFFF001600000000EEEEEEEE000000000001020304050000FFFF001300000000FFFFFFFF00000000ABCDEF000000000077777777888888880030000000000000000100100000000099990000000000000002001000000000AAAA000000000000", encoder.data(),
+             encoder.size());
+}
+
 TEST(encoder, getconfigreplyv4) {
   const char *input = R"""(
       version: 4

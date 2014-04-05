@@ -11,6 +11,6 @@ PropertyRange Queue::properties() const
 
 void QueueBuilder::setProperties(const PropertyRange &properties)
 {
-    properties_ = properties;
+    properties_.assign(properties);
     queue_.len_ = UInt16_narrow_cast(SizeWithoutProperties + properties_.size());
 }

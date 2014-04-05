@@ -75,6 +75,7 @@ bool IsProtocolRangeFixedValid(size_t elemSize, const ByteRange &range, const ch
 /// \return number of items in iterable.
 size_t ProtocolRangeFixedItemCount(size_t elemSize, const ByteRange &range);
 
+
 }  // namespace detail
 
 // ProtocolIterator is a template for an iterator that traverses an array of
@@ -93,6 +94,13 @@ public:
   enum { MinSize  = IsFixedSize ? 0 : sizeof(Big16) + SizeOffset };
   
   static_assert(sizeof(ElemType) >= MinSize, "Unexpected element size.");
+
+  // Define types for std::iterator.
+  using difference_type = ptrdiff_t;
+  using value_type = ElemType;
+  using reference = const ElemType&;
+  using pointer = const ElemType*;
+  using iterator_category = std::forward_iterator_tag;
 
   using Element = ElemType;
 
@@ -146,12 +154,12 @@ private:
   // Only a ProtocolRange or ProtocolList can construct a ProtocolIterator.
   ProtocolIterator(const UInt8 *pos) : pos_{pos} {}
 
-  static size_t rangeItemCount(const ByteRange &range) {
+  static size_t itemCount(const ByteRange &range) {
     return IsFixedSize ? detail::ProtocolRangeFixedItemCount(sizeof(ElemType), range) :
      detail::ProtocolRangeItemCount(range, SizeOffset);
   }
 
-  static bool isRangeValid(const ByteRange &range, const char *context) {
+  static bool isValid(const ByteRange &range, const char *context) {
     return IsFixedSize ? detail::IsProtocolRangeFixedValid(sizeof(ElemType), range, context) :
      detail::IsProtocolRangeValid(range, SizeOffset, context);
   }

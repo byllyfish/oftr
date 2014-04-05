@@ -38,7 +38,7 @@ namespace llvm {
 namespace yaml {
 
 //---
-// <>:
+// <Port> :=
 //   port_no: <UInt32>         { Required }
 //   hw_addr: <EnetAddress>    { Required }
 //   name: <Str15>             { Required }

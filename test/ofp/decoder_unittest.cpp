@@ -767,6 +767,14 @@ TEST(decoder, queuegetconfigrequestv4) {
                    " \n  port:            0x22222222\n...\n");
 }
 
+TEST(decoder, queuegetconfigreplyv4) {
+  testDecodeEncode("0417007011111111222222220000000033333333444444440030000000000000000100100000000055550000000000000002001000000000666600000000000077777777888888880030000000000000000100100000000099990000000000000002001000000000AAAA000000000000", "---\ntype:            OFPT_QUEUE_GET_CONFIG_REPLY\nxid:             0x11111111\nversion:         4\nmsg:             \n  port:            0x22222222\n  queues:          \n    - queue_id:        0x33333333\n      port:            0x44444444\n      min_rate:        21845\n      max_rate:        26214\n      properties:      \n    - queue_id:        0x77777777\n      port:            0x88888888\n      min_rate:        39321\n      max_rate:        43690\n      properties:      \n...\n");
+}
+
+TEST(decoder, queuegetconfigreplyv4_experimenter) {
+  testDecodeEncode("041700A0111111112222222200000000333333334444444400600000000000000001001000000000555500000000000000020010000000006666000000000000FFFF001600000000EEEEEEEE000000000001020304050000FFFF001300000000FFFFFFFF00000000ABCDEF000000000077777777888888880030000000000000000100100000000099990000000000000002001000000000AAAA000000000000", "---\ntype:            OFPT_QUEUE_GET_CONFIG_REPLY\nxid:             0x11111111\nversion:         4\nmsg:             \n  port:            0x22222222\n  queues:          \n    - queue_id:        0x33333333\n      port:            0x44444444\n      min_rate:        21845\n      max_rate:        26214\n      properties:      \n        - experimenter:    4008636142\n          value:           000102030405\n        - experimenter:    4294967295\n          value:           ABCDEF\n    - queue_id:        0x77777777\n      port:            0x88888888\n      min_rate:        39321\n      max_rate:        43690\n      properties:      \n...\n");
+}
+
 TEST(decoder, getconfigreplyv4) {
   testDecodeEncode("0408000C11111111AAAABBBB",
                    "---\ntype:            OFPT_GET_CONFIG_REPLY\nxid:          "

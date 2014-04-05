@@ -26,6 +26,9 @@ class Queue : private NonCopyable {
   Queue() = default;
 
   friend class QueueBuilder;
+
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(Queue) == 16, "Unexpected size.");
@@ -44,13 +47,16 @@ class QueueBuilder {
   
  private:
   Queue queue_;
-  PropertyRange properties_;
+  PropertyList properties_;
 
   enum {
     SizeWithoutProperties = sizeof(queue_)
   };
 
   friend class QueueList;
+
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp

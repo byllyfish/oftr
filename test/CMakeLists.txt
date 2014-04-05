@@ -49,6 +49,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/protocolversions_unittest.cpp
 	ofp/queue_unittest.cpp
 	ofp/queuegetconfigreply_unittest.cpp
+	ofp/queuegetconfigrequest_unittest.cpp
 	ofp/roundtrip_unittest.cpp
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp

@@ -3,9 +3,9 @@
 
 using namespace ofp;
 
-bool QueueGetConfigReply::validateInput(size_t length) const {
-  // TODO(bfish) implement correctly...
-  return length == sizeof(QueueGetConfigReply);
+
+QueueRange QueueGetConfigReply::queues() const {
+    return ByteRange{ BytePtr(this) + sizeof(QueueGetConfigReply), header_.length() - sizeof(QueueGetConfigReply)};
 }
 
 

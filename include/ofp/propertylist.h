@@ -17,7 +17,7 @@ class PropertyList : public ProtocolList<PropertyRange> {
 
 template <>
 inline void PropertyList::add(const QueuePropertyExperimenter &property) {
-  ByteRange value = property.value();
+  ByteRange value = property.data_;
   buf_.add(&property, QueuePropertyExperimenter::FixedHeaderSize);
   buf_.add(value.data(), value.size());
   buf_.addZeros(PadLength(value.size()) - value.size());

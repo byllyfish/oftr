@@ -22,10 +22,28 @@ public:
   size_t size() const { return range_.size(); }
   ByteRange toByteRange() const { return range_; }
 
-  size_t itemCount() const { return Iterator::rangeItemCount(range_); }
+  size_t itemCount() const { return Iterator::itemCount(range_); }
+
+  template <class UnaryPredicate>
+  size_t itemCountIf(UnaryPredicate pred) const {
+    return Unsigned_cast(std::count_if(begin(), end(), pred));
+  }
+
+  const Element &nthItem(size_t index) const { return Iterator::nthItem(range_, index); }
+
+  template <class UnaryPredicate>
+  Iterator nthItemIf(size_t index, UnaryPredicate pred) const { 
+    return std::find_if(begin(), end(), [pred, &index](const Element &elem){
+      if (pred(elem)) {
+        if (index == 0) return true;
+        --index;
+      }
+      return false;
+    });
+  }
 
   bool validateInput(const char *context) const {
-    return Iterator::isRangeValid(range_, context);
+    return Iterator::isValid(range_, context);
   }
 
 private:

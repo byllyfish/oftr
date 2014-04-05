@@ -58,7 +58,9 @@ public:
 
     }
 
-    ByteRange value() const { return data_; }
+    UInt32 size() const { return len_; }
+    UInt32 experimenter() const { return experimenter_; }
+    ByteRange value() const { return ByteRange{BytePtr(this) + FixedHeaderSize, size() - FixedHeaderSize}; }
 
 private:
     Big16 type_ = type();
@@ -67,6 +69,8 @@ private:
     Big32 experimenter_;
     Padding<4> pad_2;
     ByteRange data_;
+
+    friend class PropertyList;
 };
 
 static_assert(sizeof(QueuePropertyExperimenter) == QueuePropertyExperimenter::FixedHeaderSize + sizeof(ByteRange), "Unexpected size.");

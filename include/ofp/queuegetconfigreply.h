@@ -32,12 +32,12 @@ namespace ofp {
 // Note: This message is replaced by a MultipartReply in version 1.4.
 
 class QueueGetConfigReply
-    : public ProtocolMsg<QueueGetConfigReply, OFPT_QUEUE_GET_CONFIG_REPLY> {
+    : public ProtocolMsg<QueueGetConfigReply, OFPT_QUEUE_GET_CONFIG_REPLY, 16> {
 public:
   UInt32 port() const { return port_; }
   QueueRange queues() const;
 
-  bool validateInput(size_t length) const;
+  bool validateInput(size_t length) const { return true; }
 
 private:
   Header header_;

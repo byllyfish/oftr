@@ -8,7 +8,7 @@ namespace ofp {
 class QueueList : public ProtocolList<QueueRange> {
 public:
     void add(const QueueBuilder &queue) {
-        PropertyRange props = queue.properties_;
+        const PropertyList &props = queue.properties_;
         buf_.add(&queue, QueueBuilder::SizeWithoutProperties);
         buf_.add(props.data(), props.size());
     }
