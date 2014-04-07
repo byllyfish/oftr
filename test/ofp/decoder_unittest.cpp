@@ -32,15 +32,30 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
   Message msg{s.data(), s.size()};
   msg.transmogrify();
 
-  Decoder decoder{&msg};
+  {
+    // YAML test
+    Decoder decoder{&msg};
 
-  EXPECT_EQ("", decoder.error());
-  EXPECT_EQ(yaml, decoder.result());
+    EXPECT_EQ("", decoder.error());
+    EXPECT_EQ(yaml, decoder.result());
 
-  Encoder encoder{decoder.result()};
+    Encoder encoder{decoder.result()};
 
-  EXPECT_EQ("", encoder.error());
-  EXPECT_HEX(hex, encoder.data(), encoder.size());
+    EXPECT_EQ("", encoder.error());
+    EXPECT_HEX(hex, encoder.data(), encoder.size());
+  }
+
+  {
+    // JSON roundtrip test
+    Decoder decoder{&msg, true};
+    EXPECT_EQ("", decoder.error());
+    log::debug(decoder.result());
+
+    Encoder encoder{decoder.result()};
+
+    EXPECT_EQ("", encoder.error());
+    EXPECT_HEX(hex, encoder.data(), encoder.size());
+  }
 }
 
 TEST(decoder, hellov1) {
