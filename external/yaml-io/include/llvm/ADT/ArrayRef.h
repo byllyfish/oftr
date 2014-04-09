@@ -12,6 +12,7 @@
 
 #include "llvm/ADT/None.h"
 #include "llvm/ADT/SmallVector.h"
+#include "llvm/Support/Allocator.h"
 #include <vector>
 
 namespace llvm {
@@ -51,7 +52,7 @@ namespace llvm {
     /*implicit*/ ArrayRef() : Data(0), Length(0) {}
 
     /// Construct an empty ArrayRef from None.
-    /*implicit*/ ArrayRef(NoneType) : Data(0), Length(0) {}
+    /*implicit*/ ArrayRef(NoneType) : Data(nullptr), Length(0) {}
 
     /// Construct an ArrayRef from a single element.
     /*implicit*/ ArrayRef(const T &OneElt)
@@ -76,7 +77,7 @@ namespace llvm {
     /// Construct an ArrayRef from a std::vector.
     template<typename A>
     /*implicit*/ ArrayRef(const std::vector<T, A> &Vec)
-      : Data(Vec.empty() ? (T*)0 : &Vec[0]), Length(Vec.size()) {}
+      : Data(Vec.data()), Length(Vec.size()) {}
 
     /// Construct an ArrayRef from a C array.
     template <size_t N>
@@ -118,6 +119,13 @@ namespace llvm {
     const T &back() const {
       assert(!empty());
       return Data[Length-1];
+    }
+
+    // copy - Allocate copy in BumpPtrAllocator and return ArrayRef<T> to it.
+    ArrayRef<T> copy(BumpPtrAllocator &Allocator) {
+      T *Buff = Allocator.Allocate<T>(Length);
+      std::copy(begin(), end(), Buff);
+      return ArrayRef<T>(Buff, Length);
     }
 
     /// equals - Check for element-wise equality.
@@ -185,6 +193,8 @@ namespace llvm {
   public:
     typedef T *iterator;
 
+    typedef std::reverse_iterator<iterator> reverse_iterator;
+
     /// Construct an empty MutableArrayRef.
     /*implicit*/ MutableArrayRef() : ArrayRef<T>() {}
 
@@ -218,6 +228,9 @@ namespace llvm {
 
     iterator begin() const { return data(); }
     iterator end() const { return data() + this->size(); }
+
+    reverse_iterator rbegin() const { return reverse_iterator(end()); }
+    reverse_iterator rend() const { return reverse_iterator(begin()); }
 
     /// front - Get the first element.
     T &front() const {

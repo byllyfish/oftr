@@ -21,13 +21,13 @@
 #define LLVM_BINDIR "/usr/local/bin"
 
 /* Time at which LLVM was configured */
-#define LLVM_CONFIGTIME "Fri Nov 22 17:07:32 MST 2013"
+#define LLVM_CONFIGTIME "Mon Apr  7 11:41:36 MST 2014"
 
 /* Installation directory for data files */
 #define LLVM_DATADIR "/usr/local/share/llvm"
 
 /* Target triple LLVM will generate code for by default */
-#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin13.0.0"
+#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin13.1.0"
 
 /* Installation directory for documentation */
 #define LLVM_DOCSDIR "/usr/local/share/doc/llvm"
@@ -42,7 +42,7 @@
 #define LLVM_HAS_ATOMICS 1
 
 /* Host triple LLVM will be executed on */
-#define LLVM_HOST_TRIPLE "x86_64-apple-darwin13.0.0"
+#define LLVM_HOST_TRIPLE "x86_64-apple-darwin13.1.0"
 
 /* Installation directory for include files */
 #define LLVM_INCLUDEDIR "/usr/local/include"

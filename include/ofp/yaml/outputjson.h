@@ -87,7 +87,7 @@ OFP_END_IGNORE_PADDING
 // (Adapted from llvm::yaml.)
 template <typename T>
 inline
-typename llvm::enable_if_c<llvm::yaml::has_MappingTraits<T>::value,OutputJson &>::type
+typename std::enable_if<llvm::yaml::has_MappingTraits<T>::value,OutputJson &>::type
 operator<<(OutputJson &yout, T &map) {
   yout.beginDocuments();
   if ( yout.preflightDocument(0) ) {

@@ -30,6 +30,7 @@ INCLUDES=(
 	include/llvm/ADT/ilist.h
 	include/llvm/ADT/ilist_node.h
 	include/llvm/ADT/IntrusiveRefCntPtr.h
+	include/llvm/ADT/iterator_range.h
 	include/llvm/ADT/None.h
 	include/llvm/ADT/Optional.h
 	include/llvm/ADT/OwningPtr.h
@@ -83,6 +84,7 @@ INCLUDES=(
 	include/llvm/Support/YAMLParser.h
 	include/llvm/Support/YAMLTraits.h
 	include/llvm-c/Core.h
+	include/llvm-c/Support.h
 )
 
 # Include files to copy from llvm build tree.

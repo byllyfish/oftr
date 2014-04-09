@@ -4,9 +4,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-/* Define if building universal (internal helper macro) */
-/* #undef AC_APPLE_UNIVERSAL_BUILD */
-
 /* Bug report URL. */
 #define BUG_REPORT_URL "http://llvm.org/bugs/"
 
@@ -37,27 +34,6 @@
 /* Directory where gcc is installed. */
 #define GCC_INSTALL_PREFIX ""
 
-/* Define to 1 if you have the `arc4random' function. */
-//#define HAVE_ARC4RANDOM 1
-
-/* Define to 1 if you have the `argz_append' function. */
-/* #undef HAVE_ARGZ_APPEND */
-
-/* Define to 1 if you have the `argz_create_sep' function. */
-/* #undef HAVE_ARGZ_CREATE_SEP */
-
-/* Define to 1 if you have the <argz.h> header file. */
-/* #undef HAVE_ARGZ_H */
-
-/* Define to 1 if you have the `argz_insert' function. */
-/* #undef HAVE_ARGZ_INSERT */
-
-/* Define to 1 if you have the `argz_next' function. */
-/* #undef HAVE_ARGZ_NEXT */
-
-/* Define to 1 if you have the `argz_stringify' function. */
-/* #undef HAVE_ARGZ_STRINGIFY */
-
 /* Define to 1 if you have the `backtrace' function. */
 #define HAVE_BACKTRACE 1
 
@@ -67,9 +43,6 @@
 /* Define if the neat program is available */
 #define HAVE_CIRCO 1
 
-/* Define to 1 if you have the `closedir' function. */
-#define HAVE_CLOSEDIR 1
-
 /* Define to 1 if you have the <CrashReporterClient.h> header file. */
 /* #undef HAVE_CRASHREPORTERCLIENT_H */
 
@@ -78,6 +51,10 @@
 
 /* Define to 1 if you have the <cxxabi.h> header file. */
 #define HAVE_CXXABI_H 1
+
+/* Define to 1 if you have the declaration of `arc4random', and to 0 if you
+   don't. */
+//#define HAVE_DECL_ARC4RANDOM 1
 
 /* Define to 1 if you have the declaration of `FE_ALL_EXCEPT', and to 0 if you
    don't. */
@@ -95,12 +72,6 @@
    */
 #define HAVE_DIRENT_H 1
 
-/* Define if you have the GNU dld library. */
-/* #undef HAVE_DLD */
-
-/* Define to 1 if you have the `dlerror' function. */
-#define HAVE_DLERROR 1
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
 
@@ -113,14 +84,8 @@
 /* Define if the dotty program is available */
 #define HAVE_DOTTY 1
 
-/* Define if you have the _dyld_func_lookup function. */
-/* #undef HAVE_DYLD */
-
 /* Define to 1 if you have the <errno.h> header file. */
 #define HAVE_ERRNO_H 1
-
-/* Define to 1 if the system has the type `error_t'. */
-/* #undef HAVE_ERROR_T */
 
 /* Define to 1 if you have the <execinfo.h> header file. */
 #define HAVE_EXECINFO_H 1
@@ -206,8 +171,8 @@
 /* Set to 1 if the isnan function is found in <math.h> */
 #define HAVE_ISNAN_IN_MATH_H 1
 
-/* Define if you have the libdl library or equivalent. */
-#define HAVE_LIBDL 1
+/* Define if libedit is available on this platform. */
+#define HAVE_LIBEDIT 1
 
 /* Define to 1 if you have the `imagehlp' library (-limagehlp). */
 /* #undef HAVE_LIBIMAGEHLP */
@@ -255,9 +220,6 @@
 /* Define to 1 if you have the <mach/mach.h> header file. */
 //#define HAVE_MACH_MACH_H 1
 
-/* Define to 1 if you have the <mach-o/dyld.h> header file. */
-#define HAVE_MACH_O_DYLD_H 1
-
 /* Define if mallinfo() is available on this platform. */
 /* #undef HAVE_MALLINFO */
 
@@ -301,9 +263,6 @@
 /* Define if the neat program is available */
 #define HAVE_NEATO 1
 
-/* Define to 1 if you have the `opendir' function. */
-#define HAVE_OPENDIR 1
-
 /* Define to 1 if you have the `posix_spawn' function. */
 #define HAVE_POSIX_SPAWN 1
 
@@ -312,9 +271,6 @@
 
 /* Define to 1 if you have the `pread' function. */
 #define HAVE_PREAD 1
-
-/* Define if libtool can extract symbol lists from object files. */
-#define HAVE_PRELOADED_SYMBOLS 1
 
 /* Define to have the %a format string */
 #define HAVE_PRINTF_A 1
@@ -333,9 +289,6 @@
 
 /* Define to 1 if srand48/lrand48/drand48 exist in <stdlib.h> */
 #define HAVE_RAND48 1
-
-/* Define to 1 if you have the `readdir' function. */
-#define HAVE_READDIR 1
 
 /* Define to 1 if you have the `realpath' function. */
 #define HAVE_REALPATH 1
@@ -363,9 +316,6 @@
 
 /* Define to 1 if you have the `setrlimit' function. */
 #define HAVE_SETRLIMIT 1
-
-/* Define if you have the shl_load function. */
-/* #undef HAVE_SHL_LOAD */
 
 /* Define to 1 if you have the `siglongjmp' function. */
 #define HAVE_SIGLONGJMP 1
@@ -469,7 +419,7 @@
 /* #undef HAVE_U_INT64_T */
 
 /* Define to 1 if you have the <valgrind/valgrind.h> header file. */
-/* #undef HAVE_VALGRIND_VALGRIND_H */
+//#define HAVE_VALGRIND_VALGRIND_H 1
 
 /* Define to 1 if you have the `writev' function. */
 #define HAVE_WRITEV 1
@@ -532,19 +482,19 @@
 /* #undef HAVE____CHKSTK */
 
 /* Linker version detected at compile time. */
-#define HOST_LINK_VERSION "224.1"
+#define HOST_LINK_VERSION "236.3"
 
 /* Installation directory for binary executables */
 #define LLVM_BINDIR "/usr/local/bin"
 
 /* Time at which LLVM was configured */
-#define LLVM_CONFIGTIME "Fri Nov 22 17:07:32 MST 2013"
+#define LLVM_CONFIGTIME "Mon Apr  7 11:41:36 MST 2014"
 
 /* Installation directory for data files */
 #define LLVM_DATADIR "/usr/local/share/llvm"
 
 /* Target triple LLVM will generate code for by default */
-#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin13.0.0"
+#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin13.1.0"
 
 /* Installation directory for documentation */
 #define LLVM_DOCSDIR "/usr/local/share/doc/llvm"
@@ -562,7 +512,7 @@
 #define LLVM_HAS_ATOMICS 1
 
 /* Host triple LLVM will be executed on */
-#define LLVM_HOST_TRIPLE "x86_64-apple-darwin13.0.0"
+#define LLVM_HOST_TRIPLE "x86_64-apple-darwin13.1.0"
 
 /* Installation directory for include files */
 #define LLVM_INCLUDEDIR "/usr/local/include"
@@ -642,25 +592,15 @@
 /* Minor version of the LLVM API */
 #define LLVM_VERSION_MINOR 5
 
-/* Define if the OS needs help to load dependent libraries for dlopen(). */
-/* #undef LTDL_DLOPEN_DEPLIBS */
+/* Patch version of the LLVM API */
+#define LLVM_VERSION_PATCH 0
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
-#define LTDL_OBJDIR ".libs/"
-
-/* Define to the extension used for shared libraries, say, ".so". */
+/* The shared library extension */
 #define LTDL_SHLIB_EXT ".dylib"
-
-/* Define to the system default library search path. */
-#define LTDL_SYSSEARCHPATH "/usr/local/lib:/lib:/usr/lib"
 
 /* Define if /dev/zero should be used when mapping RWX memory, or undefine if
    its not necessary */
 /* #undef NEED_DEV_ZERO_FOR_MMAP */
-
-/* Define if dlsym() requires a leading underscore in symbol names. */
-/* #undef NEED_USCORE */
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "http://llvm.org/bugs/"
@@ -669,16 +609,13 @@
 #define PACKAGE_NAME "LLVM"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "LLVM 3.5svn"
+#define PACKAGE_STRING "LLVM 3.5.0svn"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "llvm"
 
-/* Define to the home page for this package. */
-/* #undef PACKAGE_URL */
-
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "3.5svn"
+#define PACKAGE_VERSION "3.5.0svn"
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #define RETSIGTYPE void
@@ -700,24 +637,6 @@
 
 /* Type of 1st arg on ELM Callback */
 /* #undef WIN32_ELMCB_PCSTR */
-
-/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
-   significant byte first (like Motorola and SPARC, unlike Intel). */
-#if defined AC_APPLE_UNIVERSAL_BUILD
-# if defined __BIG_ENDIAN__
-#  define WORDS_BIGENDIAN 1
-# endif
-#else
-# ifndef WORDS_BIGENDIAN
-/* #  undef WORDS_BIGENDIAN */
-# endif
-#endif
-
-/* Define to empty if `const' does not conform to ANSI C. */
-/* #undef const */
-
-/* Define to a type to use for `error_t' if it is not otherwise available. */
-//#define error_t int
 
 /* Define to `int' if <sys/types.h> does not define. */
 /* #undef pid_t */

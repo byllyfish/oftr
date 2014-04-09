@@ -1,6 +1,6 @@
---- SourceMgr.cpp	2013-10-11 10:40:22.000000000 -0700
-+++ SourceMgr.cpp	2013-10-23 12:29:44.000000000 -0700
-@@ -298,8 +298,10 @@
+--- SourceMgr.cpp	2014-04-07 11:40:43.000000000 -0700
++++ SourceMgr.cpp	2014-04-09 12:57:26.000000000 -0700
+@@ -297,8 +297,10 @@
      // FIXME: This assertion is intended to catch unintended use of multibyte
      // characters in fixits. If we decide to do this, we'll have to track
      // separate byte widths for the source and fixit lines.
