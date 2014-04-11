@@ -157,5 +157,6 @@ done
 
 patch "${WORKING_DIR}/include/llvm/Config/config.h" "$WORKING_DIR/src/Config.h.diff"
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
+patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 
 exit 0

@@ -115,50 +115,44 @@ const char *const ControlReplacement[] = {
     "u0018", "u0019", "u001A", "u001B", "u001C", "u001D", "u001E", "u001F", };
 
 void OutputJson::scalarString(StringRef &S) {
-  // If string begins with a leading zero, it may be in hexadecimal format.
-  unsigned long long u;
-  if (!llvm::getAsUnsignedInteger(S, 0, u)) {
-    output(std::to_string(u));
+  // Output value wrapped in double-quotes. Escape any embedded double-quotes
+  // or backslashes in the string. Replace control characters (ASCII < 32)
+  // with \b, \t, \n, \f, \r or \uxxxx.
+  output("\"");
+  StringRef::size_type pos = 0;
+  StringRef::size_type offset = findUnsafe(S, pos);
+  if (offset == StringRef::npos) {
+    // No need to escape characters in the string.
+    output(S);
   } else {
-    // Output value wrapped in double-quotes. Escape any embedded double-quotes
-    // or backslashes in the string. Replace control characters (ASCII < 32)
-    // with \b, \t, \n, \f, \r or \uxxxx.
-    output("\"");
-    StringRef::size_type pos = 0;
-    StringRef::size_type offset = findUnsafe(S, pos);
-    if (offset == StringRef::npos) {
-      // No need to escape characters in the string.
-      output(S);
+    // At least one character found that must be escaped. Deal with the first
+    // one, then loop through the string looking for the remaining unsafe
+    // characters.
+    output(S.substr(pos, offset));
+    output("\\");
+    unsigned ch = static_cast<unsigned>(S[offset]);
+    if (ch < 0x20) { // control character?
+      output(ControlReplacement[ch]);
+      pos = offset + 1;
     } else {
-      // At least one character found that must be escaped. Deal with the first
-      // one, then loop through the string looking for the remaining unsafe
-      // characters.
-      output(S.substr(pos, offset));
+      pos = offset;
+    }
+
+    while ((offset = findUnsafe(S, offset + 1)) != StringRef::npos) {
+      output(S.substr(pos, offset - pos));
       output("\\");
-      unsigned ch = static_cast<unsigned>(S[offset]);
-      if (ch < 0x20) { // control character?
+      ch = static_cast<unsigned>(S[offset]);
+      if (ch <= 0x20) { // control character?
         output(ControlReplacement[ch]);
         pos = offset + 1;
       } else {
         pos = offset;
       }
-
-      while ((offset = findUnsafe(S, offset + 1)) != StringRef::npos) {
-        output(S.substr(pos, offset - pos));
-        output("\\");
-        ch = static_cast<unsigned>(S[offset]);
-        if (ch <= 0x20) { // control character?
-          output(ControlReplacement[ch]);
-          pos = offset + 1;
-        } else {
-          pos = offset;
-        }
-      }
-
-      output(S.substr(pos));
     }
-    output("\""); // closing quote
+
+    output(S.substr(pos));
   }
+  output("\""); // closing quote
 }
 
 void OutputJson::setError(const Twine &message) {}

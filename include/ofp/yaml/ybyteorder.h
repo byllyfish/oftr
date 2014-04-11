@@ -47,6 +47,8 @@ struct ScalarTraits<ofp::Big16> {
         }
         return err;
     }
+
+    using json_type = uint16_t;
 };
 
 template <>
@@ -68,6 +70,8 @@ struct ScalarTraits<ofp::Big32> {
         }
         return err;
     }
+
+    using json_type = uint32_t;
 };
 
 template <>
@@ -89,6 +93,8 @@ struct ScalarTraits<ofp::Big64> {
         }
         return err;
     }
+
+    using json_type = uint64_t;
 };
 
 }  // namespace yaml

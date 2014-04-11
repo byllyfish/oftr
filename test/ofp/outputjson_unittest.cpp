@@ -7,6 +7,37 @@
 using namespace ofp;
 using namespace yaml;
 
+OFP_BEGIN_IGNORE_PADDING
+
+struct TestStruct {
+    int a;
+    std::string b;
+    bool c;
+    Big32 d;
+    double e;
+};
+
+OFP_END_IGNORE_PADDING
+
+namespace llvm { // <namespace llvm>
+namespace yaml { // <namespace yaml>
+
+template <>
+struct MappingTraits<TestStruct> {
+    static void mapping(llvm::yaml::IO &io, TestStruct &item)
+    {
+        io.mapRequired("a", item.a);
+        io.mapRequired("b", item.b);
+        io.mapRequired("c", item.c);
+        io.mapRequired("d", item.d);
+        io.mapRequired("e", item.e);
+    }
+};
+
+} // </namespace yaml>
+} // </namespace llvm>
+
+
 TEST(outputjson, hello) {
   MemoryChannel channel;
   HelloBuilder builder;
@@ -79,3 +110,28 @@ TEST(outputjson, scalarString) {
   EXPECT_EQ(R"~~("\u0001")~~", testOne("\x01"));
   EXPECT_EQ(R"~~("\b\t\n\f\r\"\\")~~", testOne("\b\t\n\f\r\"\\"));
 }
+
+
+TEST(outputjson, testStruct) {
+  TestStruct s = {-54, "it works", true, 12345678, 3.141593};
+
+  std::string result;
+  llvm::raw_string_ostream rss{result};
+
+  OutputJson yout{rss};
+  yout << s;
+
+  const char *expected = R"""(---
+{"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593}
+...
+)""";
+
+  EXPECT_TRUE(result.empty());
+
+  std::string ans = rss.str();
+  EXPECT_EQ(ans, result);
+
+  std::cout << result;
+  EXPECT_EQ(expected, ans);
+}
+

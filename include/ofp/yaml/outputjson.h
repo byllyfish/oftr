@@ -35,6 +35,7 @@ public:
   virtual ~OutputJson();
 
   virtual bool outputting() override;
+  virtual bool outputtingJson() override { return true; }
 
   virtual unsigned beginSequence() override;
   virtual bool preflightElement(unsigned, void *&) override;
@@ -62,6 +63,10 @@ public:
   virtual void endBitSetScalar() override;
 
   virtual void scalarString(llvm::StringRef &) override;
+
+  virtual void scalarJson(llvm::StringRef s) override {
+    output(s);
+  }
 
   virtual void setError(const llvm::Twine &) override;
 

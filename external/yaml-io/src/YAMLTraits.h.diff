@@ -1,0 +1,194 @@
+--- /Users/bfish/code/llvm/include/llvm/Support/YAMLTraits.h	2014-04-07 11:40:17.000000000 -0700
++++ ../include/llvm/Support/YAMLTraits.h	2014-04-10 15:45:34.000000000 -0700
+@@ -211,6 +211,20 @@
+     (sizeof(test<ScalarTraits<T> >(nullptr,nullptr)) == 1);
+ };
+ 
++// Test if ScalarTraits<T>::json_type exists and is a primitive type.
++template <class T>
++struct has_ScalarJsonTraits
++{
++  template <typename U>
++  static char test(typename U::json_type *);
++
++  template <typename U>
++  static double test(...);
++
++public:
++  static bool const value = (sizeof(test<ScalarTraits<T>>(nullptr)) == 1);
++};
++
+ 
+ // Test if MappingTraits<T> is defined on type T.
+ template <class T>
+@@ -345,6 +359,7 @@
+   virtual ~IO();
+ 
+   virtual bool outputting() = 0;
++  virtual bool outputtingJson() { return false; }
+ 
+   virtual unsigned beginSequence() = 0;
+   virtual bool preflightElement(unsigned, void *&) = 0;
+@@ -372,6 +387,7 @@
+   virtual void endBitSetScalar() = 0;
+ 
+   virtual void scalarString(StringRef &) = 0;
++  virtual void scalarJson(StringRef) {};
+ 
+   virtual void setError(const Twine &) = 0;
+ 
+@@ -512,9 +528,45 @@
+   }
+ }
+ 
++template<typename T>
++inline std::string primitive_to_json(T value) {
++  return std::to_string(value);
++}
++
++template<>
++inline std::string primitive_to_json(bool value) {
++  return value ? "true" : "false";
++}
++
++template<typename T>
++typename std::enable_if<has_ScalarTraits<T>::value && has_ScalarJsonTraits<T>::value,void>::type
++yamlize(IO &io, T &Val, bool) {
++  if ( io.outputting() ) {
++    // Handle integer types differently on output to Json.
++    if (io.outputtingJson()) {
++      typename ScalarTraits<T>::json_type u = Val;
++      std::string Storage = primitive_to_json(u);
++      io.scalarJson(Storage);
++    } else {
++      std::string Storage;
++      llvm::raw_string_ostream Buffer(Storage);
++      ScalarTraits<T>::output(Val, io.getContext(), Buffer);
++      StringRef Str = Buffer.str();
++      io.scalarString(Str);
++    }
++  }
++  else {
++    StringRef Str;
++    io.scalarString(Str);
++    StringRef Result = ScalarTraits<T>::input(Str, io.getContext(), Val);
++    if ( !Result.empty() ) {
++      io.setError(llvm::Twine(Result));
++    }
++  }
++}
+ 
+ template<typename T>
+-typename std::enable_if<has_ScalarTraits<T>::value,void>::type
++typename std::enable_if<has_ScalarTraits<T>::value && !has_ScalarJsonTraits<T>::value,void>::type
+ yamlize(IO &io, T &Val, bool) {
+   if ( io.outputting() ) {
+     std::string Storage;
+@@ -602,6 +654,7 @@
+ struct ScalarTraits<bool> {
+   static void output(const bool &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, bool &);
++  using json_type = bool;
+ };
+ 
+ template<>
+@@ -620,60 +673,70 @@
+ struct ScalarTraits<uint8_t> {
+   static void output(const uint8_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, uint8_t &);
++  using json_type = uint8_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<uint16_t> {
+   static void output(const uint16_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, uint16_t &);
++  using json_type = uint16_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<uint32_t> {
+   static void output(const uint32_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, uint32_t &);
++  using json_type = uint32_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<uint64_t> {
+   static void output(const uint64_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, uint64_t &);
++  using json_type = uint64_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<int8_t> {
+   static void output(const int8_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, int8_t &);
++  using json_type = int8_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<int16_t> {
+   static void output(const int16_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, int16_t &);
++  using json_type = int16_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<int32_t> {
+   static void output(const int32_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, int32_t &);
++  using json_type = int32_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<int64_t> {
+   static void output(const int64_t &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, int64_t &);
++  using json_type = int64_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<float> {
+   static void output(const float &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, float &);
++  using json_type = float;
+ };
+ 
+ template<>
+ struct ScalarTraits<double> {
+   static void output(const double &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, double &);
++  using json_type = double;
+ };
+ 
+ 
+@@ -991,24 +1054,28 @@
+ struct ScalarTraits<Hex8> {
+   static void output(const Hex8 &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, Hex8 &);
++  using json_type = uint8_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<Hex16> {
+   static void output(const Hex16 &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, Hex16 &);
++  using json_type = uint16_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<Hex32> {
+   static void output(const Hex32 &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, Hex32 &);
++  using json_type = uint32_t;
+ };
+ 
+ template<>
+ struct ScalarTraits<Hex64> {
+   static void output(const Hex64 &, void*, llvm::raw_ostream &);
+   static StringRef input(StringRef, void*, Hex64 &);
++  using json_type = uint64_t;
+ };
+ 
+ 
