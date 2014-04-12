@@ -27,6 +27,22 @@ TEST(packetin, version4) {
                          "000000000001020304050607080102030405060708";
 
   EXPECT_HEX(expected, channel.data(), channel.size());
+
+  {
+    Message message{channel.data(), channel.size()};
+    message.transmogrify();
+
+    auto packetIn = PacketIn::cast(&message);
+
+    ASSERT_TRUE(packetIn->validateInput(message.size()));
+
+    if (packetIn->validateInput(message.size())) {
+      EXPECT_EQ(1, packetIn->bufferId());
+      EXPECT_EQ(2, packetIn->totalLen());
+      EXPECT_EQ(OFPR_NO_MATCH, packetIn->reason());
+      EXPECT_EQ(27, packetIn->inPort());
+    }
+  }
 }
 
 TEST(packetin, version1) {

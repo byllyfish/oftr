@@ -134,7 +134,7 @@ static_assert(IsConvertible<ByteRange,ByteList>(), "Expected conversion.");
 std::ostream &operator<<(std::ostream &os, const ByteList &value);
 
 inline std::ostream &operator<<(std::ostream &os, const ByteList &value) {
-  return os << RawDataToHex(value.data(), value.size(), ' ', 2);
+  return os << "[ByteList size=" << value.size() << " data=" << RawDataToHex(value.data(), value.size()) << "]";
 }
 
 }  // namespace ofp

@@ -64,8 +64,20 @@ bool PacketIn::validateInput(size_t length) const {
 
   // Check the match length.
   UInt16 matchLen = matchLength_;
+
+  if (matchLen < MatchHeaderSize) {
+    log::debug("PacketIn has invalid match length.");
+    return false;
+  }
+
   if (length < UnpaddedSizeWithMatchHeader + matchLen) {
     log::debug("PacketIn has mismatched lengths.");
+    return false;
+  }
+
+  // Check the match contents.
+  if (!oxmRange().validateInput()) {
+    log::info("PacketIn has incorrect oxm range:", oxmRange());
     return false;
   }
 
@@ -185,10 +197,14 @@ OXMRange PacketIn::oxmRange() const {
   case OFP_VERSION_1:
   case OFP_VERSION_2:
     return OXMRange{};
-  case OFP_VERSION_3:
-    return OXMRange{BytePtr(this) + 20, offset<Big16>(18)};
+  case OFP_VERSION_3: {
+    UInt16 mlen = offset<Big16>(18);
+    assert(mlen >= 4U);
+    return OXMRange{BytePtr(this) + 20, mlen - 4U};
+  }
   default:
-    return OXMRange{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_};
+    assert(matchLength_ >= 4U);
+    return OXMRange{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_ - 4U};
   }
 }
 

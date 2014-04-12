@@ -18,6 +18,7 @@ static int decode_one_message(const ofp::Message *message, const ofp::Message *o
 
   if (!decoder.error().empty()) {
     std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
+    std::cerr << *message << '\n';
     return 128;
   }
 
@@ -48,15 +49,16 @@ static int decode_one_message(const ofp::Message *message, const ofp::Message *o
 // d e c o d e _ m e s s a g e s //
 //-------------------------------//
 
-static int decode_messages(std::ifstream &input) {
+static int decode_messages(std::ifstream &input, const std::string &filename) {
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
   size_t offset = 0;
 
   while (input) {
+    // Read the message header.
     char *msg = (char *)message.mutableData(sizeof(ofp::Header));
-
     input.read(msg, sizeof(ofp::Header));
+
     if (input) {
       // Read the rest of the message.
 
@@ -83,6 +85,7 @@ static int decode_messages(std::ifstream &input) {
 
         int result = decode_one_message(&message, &originalMessage);
         if (result) {
+          std::cerr << "Filename: " << filename << '\n';
           return result;
         }
 
@@ -115,7 +118,7 @@ static int decode_file(const std::string &filename) {
   int result = -1;
 
   if (input) {
-    result = decode_messages(input);
+    result = decode_messages(input, filename);
     input.close();
   } else {
     std::cerr << "Error: opening file " << filename << '\n';

@@ -53,6 +53,13 @@ class ByteRange {
 
 static_assert(IsConvertible<ByteList, ByteRange>(), "Expected conversion.");
 
+/// \brief Write buffer to stream in hexadecimal format.
+std::ostream &operator<<(std::ostream &os, const ByteRange &value);
+
+inline std::ostream &operator<<(std::ostream &os, const ByteRange &value) {
+  return os << "[ByteRange size=" << value.size() << " data=" << RawDataToHex(value.data(), value.size()) << "]";
+}
+
 }  // namespace ofp
 
 #endif  // OFP_BYTERANGE_H_
