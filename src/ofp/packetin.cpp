@@ -58,7 +58,7 @@ bool PacketIn::validateInput(size_t length) const {
   }
 
   if (length < UnpaddedSizeWithMatchHeader) {
-    log::debug("PacketIn too small.");
+    log::info("PacketIn too small.");
     return false;
   }
 
@@ -66,12 +66,12 @@ bool PacketIn::validateInput(size_t length) const {
   UInt16 matchLen = matchLength_;
 
   if (matchLen < MatchHeaderSize) {
-    log::debug("PacketIn has invalid match length.");
+    log::info("PacketIn has invalid match length.");
     return false;
   }
 
-  if (length < UnpaddedSizeWithMatchHeader + matchLen) {
-    log::debug("PacketIn has mismatched lengths.");
+  if (length < SizeWithoutMatchHeader + matchLen) {
+    log::info("PacketIn has mismatched lengths.");
     return false;
   }
 
@@ -178,13 +178,18 @@ UInt64 PacketIn::cookie() const {
 
 ByteRange PacketIn::enetFrame() const {
   size_t offset;
+  size_t msgLen = header_.length();
 
   switch (version()) {
   case OFP_VERSION_1:
-    return ByteRange{BytePtr(this) + 18, header_.length() - 18U};
+    assert(msgLen >= 18U);
+    return ByteRange{BytePtr(this) + 18, msgLen - 18U};
   case OFP_VERSION_4:
     offset = PadLength(SizeWithoutMatchHeader + matchLength_) + 2;
-    return ByteRange{BytePtr(this) + offset, header_.length() - offset};
+    if (offset >= msgLen) {
+      return ByteRange{};
+    }
+    return ByteRange{BytePtr(this) + offset, msgLen - offset};
   default:
     return ByteRange{};
   }
