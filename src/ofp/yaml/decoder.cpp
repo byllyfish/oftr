@@ -44,6 +44,7 @@
 #include "ofp/yaml/ygetconfigreply.h"
 #include "ofp/yaml/ysetasync.h"
 #include "ofp/yaml/yflowremoved.h"
+#include "ofp/yaml/ymetermod.h"
 #include "ofp/yaml/outputjson.h"
 
 namespace ofp {  // <namespace ofp>
@@ -137,6 +138,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
     return decode<QueueGetConfigReply>(io, msg_);
   case FlowRemoved::type() :
     return decode<FlowRemoved>(io, msg_);
+  case MeterMod::type() : 
+    return decode<MeterMod>(io, msg_);
   default:
     log::info("Decoder::decodeMsg: Unknown msg type", msg_->type());
     break;

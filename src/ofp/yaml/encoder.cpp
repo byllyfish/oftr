@@ -44,6 +44,7 @@
 #include "ofp/yaml/ygetconfigreply.h"
 #include "ofp/yaml/ysetasync.h"
 #include "ofp/yaml/yflowremoved.h"
+#include "ofp/yaml/ymetermod.h"
 
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
@@ -264,6 +265,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
     FlowRemovedBuilder flowRemoved;
     io.mapRequired("msg", flowRemoved);
     flowRemoved.send(&channel_);
+    break;
+  }
+  case MeterMod::type() : {
+    MeterModBuilder meterMod;
+    io.mapRequired("msg", meterMod);
+    meterMod.send(&channel_);
     break;
   }
   default:

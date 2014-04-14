@@ -101,6 +101,7 @@ set(LIBOFP_SOURCES
   src/ofp/ipv6endpoint.cpp
 	src/ofp/log.cpp
 	src/ofp/message.cpp
+  src/ofp/metermod.cpp
   src/ofp/mpportstats.cpp
   src/ofp/mpportstatsrequest.cpp
   src/ofp/mpqueuestats.cpp

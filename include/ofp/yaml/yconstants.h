@@ -24,6 +24,7 @@
 ///   - OFPInstructionType
 ///   - OFPActionType
 ///   - OFPPacketInReason
+///   - OFPMeterBandType
 ///
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -162,6 +163,15 @@ struct ScalarTraits<ofp::OFPFlowModCommand> {
     }
 
     return "Invalid enumerated constant.";
+  }
+};
+
+template <>
+struct ScalarEnumerationTraits<ofp::OFPMeterBandType> {
+  static void enumeration(IO &io, ofp::OFPMeterBandType &value) {
+    OFP_YAML_ENUMCASE(OFPMBT_DROP);
+    OFP_YAML_ENUMCASE(OFPMBT_DSCP_REMARK);
+    OFP_YAML_ENUMCASE(OFPMBT_EXPERIMENTER);
   }
 };
 

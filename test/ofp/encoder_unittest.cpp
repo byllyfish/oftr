@@ -1964,3 +1964,31 @@ TEST(encoder, ofmp_queue_v1_request) {
              encoder.size());
 }
 
+
+TEST(encoder, meter_mod_v4) {
+  const char *input = R"""(
+      version: 4
+      type: OFPT_METER_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        command: 1
+        flags: 0x2222
+        meter_id: 0x33333333
+        meter_bands:
+          - type: OFPMBT_DROP
+            rate: 0x44444444
+            burst_size: 0x55555555
+          - type: OFPMBT_DSCP_REMARK
+            rate: 0x66666666
+            burst_size: 0x77777777
+            prec_level: 0x88
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x30, encoder.size());
+  EXPECT_HEX("041D00301111111100012222333333330001001044444444555555550000000000020010666666667777777788000000", encoder.data(),
+             encoder.size());
+}
+

@@ -29,7 +29,13 @@ public:
     return Unsigned_cast(std::count_if(begin(), end(), pred));
   }
 
-  const Element &nthItem(size_t index) const { return Iterator::nthItem(range_, index); }
+  const Element &nthItem(size_t index) const { 
+    Iterator iter = begin();
+    for (size_t i = 0; i < index; ++i) {
+      ++iter;
+    }
+    return *iter;
+  }
 
   template <class UnaryPredicate>
   Iterator nthItemIf(size_t index, UnaryPredicate pred) const { 
