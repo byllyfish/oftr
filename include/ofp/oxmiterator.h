@@ -46,6 +46,10 @@ public:
                                   sizeof(ValueType));
     }
 
+    const UInt8 *unknownValuePtr() const {
+      return BytePtr(this) + sizeof(OXMType);
+    }
+
     OXMIterator position() const {
       return OXMIterator{BytePtr(this)};
     }
@@ -58,9 +62,12 @@ public:
     return *reinterpret_cast<const Item *>(position_);
   }
 
+  const Item *operator->() const {
+    return reinterpret_cast<const Item *>(position_);
+  }
+
   OXMType type() const { return OXMType::fromBytes(position_); }
 
-  // No operator -> (FIXME?)
   // No postfix ++
 
   void operator++() { position_ += size(); }

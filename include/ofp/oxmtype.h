@@ -67,7 +67,9 @@ public:
 
   constexpr UInt16 oxmClass() const { return oxmNative() >> 16; }
   constexpr UInt8 oxmField() const { return (oxmNative() >> 9) & 0x07FU; }
+
   constexpr UInt32 oxmNative() const { return BigEndianToNative(value32_); }
+  void setOxmNative(UInt32 value) { value32_ = BigEndianFromNative(value); }
 
   const OXMTypeInfo *lookupInfo() const;
   OXMInternalID internalID() const;

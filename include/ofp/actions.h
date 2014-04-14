@@ -261,8 +261,26 @@ public:
 
 private:
   const ActionType type_ = type();
-  const OXMType omxtype_ = ValueType::type();
+  const OXMType oxmtype_ = ValueType::type();
   const Padded<ValueType> value_;
+};
+
+
+class AT_SET_FIELD_CUSTOM {
+public:
+  constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, const ByteRange &value) : 
+    type_{ActionType(OFPAT_SET_FIELD, UInt16_narrow_cast(8U + PadLength(value.size())))}, oxmtype_{oxmType}, value_{value} {}
+
+  ByteRange value() const;
+
+private:
+  const ActionType type_;
+  const OXMType oxmtype_;
+  const ByteRange value_;
+
+  enum : size_t { FixedSize = 8 };
+  
+  friend class ActionList;
 };
 
 namespace deprecated {

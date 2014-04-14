@@ -146,9 +146,14 @@ struct MappingTraits<ofp::ActionIterator::Item> {
 				OXMIterator iter = item.oxmIterator();
 				OXMType oxmType = iter.type();
 				io.mapRequired("type", oxmType);
-				ofp::detail::OXMItemReader reader{io, RemoveConst_cast(*iter), oxmType};
-        		OXMInternalID id = oxmType.internalID();
-        		OXMDispatch(id, &reader);
+                OXMInternalID id = oxmType.internalID();
+                if (id != ofp::OXMInternalID::UNKNOWN) {
+				  ofp::detail::OXMItemReader reader{io, RemoveConst_cast(*iter), oxmType};
+        		  OXMDispatch(id, &reader);
+                } else {
+                  ByteRange data{iter->unknownValuePtr(), oxmType.length()};
+                  io.mapRequired("value", data);
+                }
 				break;
 			}
 			default:
@@ -278,7 +283,12 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         		if (id != ofp::OXMInternalID::UNKNOWN) {
             		ofp::detail::SetFieldInserter inserter{io, list, oxmType};
             		OXMDispatch(id, &inserter);
-        		}
+        		} else {
+                    ByteList data;
+                    io.mapRequired("value", data);
+                    AT_SET_FIELD_CUSTOM action{oxmType, data};
+                    list.add(action);
+                }
 				break;
 			}
 			default:

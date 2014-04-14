@@ -25,6 +25,7 @@
 #include "ofp/types.h"
 #include "ofp/bytelist.h"
 #include "ofp/actionrange.h"
+#include "ofp/actions.h"
 
 namespace ofp {
 
@@ -52,6 +53,15 @@ public:
 private:
   ByteList buf_;
 };
+
+template <>
+inline void ActionList::add(const AT_SET_FIELD_CUSTOM &action) {
+  ByteRange value = action.value_;
+  size_t paddedLen = PadLength(value.size());
+  buf_.add(&action, AT_SET_FIELD_CUSTOM::FixedSize);
+  buf_.add(value.data(), value.size());
+  buf_.addZeros(paddedLen - value.size());
+}
 
 }  // namespace ofp
 

@@ -52,6 +52,9 @@ public:
   template <class ValueType>
   void add(ValueType value, ValueType mask);
 
+  void add(OXMType type, const void *data, size_t len);
+  void add(OXMType type, const void *data, const void *mask, size_t len);
+
   void add(OXMIterator iter);
   void addSignal(OXMType signal);
   void insertSignal(OXMIterator pos, OXMType signal);
@@ -70,9 +73,6 @@ private:
 
   // void add(const void *data, size_t len);
   void insert(OXMIterator pos, const void *data, size_t len);
-
-  void add(OXMType type, const void *data, size_t len);
-  void add(OXMType type, const void *data, const void *mask, size_t len);
 };
 
 template <class ValueType>

@@ -55,7 +55,7 @@ OXMInternalID OXMType::internalID() const {
 }
 
 bool OXMType::parse(const std::string &s) {
-  // TODO: make faster
+  // TODO(bfish): make faster
   for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {
     if (s == OXMTypeInfoArray[i].name) {
       value32_ = OXMTypeInfoArray[i].value32;

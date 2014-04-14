@@ -65,6 +65,10 @@ public:
     }
   }
 
+  void add(OXMType type, const ByteRange &data) {
+    list_.add(type, data.data(), data.size());
+  }
+
   void clear() { list_.clear(); }
 
   bool validate() const {

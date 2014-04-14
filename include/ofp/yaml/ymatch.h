@@ -26,6 +26,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yaddress.h"
+#include "ofp/yaml/ybytelist.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 
@@ -132,7 +133,13 @@ struct MappingTraits<ofp::OXMIterator::Item> {
 
         ofp::detail::OXMItemReader reader{io, item, type};
         ofp::OXMInternalID id = type.internalID();
-        OXMDispatch(id, &reader);
+
+        if (id != ofp::OXMInternalID::UNKNOWN) {
+            OXMDispatch(id, &reader);
+        } else {
+            ofp::ByteRange data{item.unknownValuePtr(), type.length()};
+            io.mapRequired("value", data);
+        }
     }
 };
 
@@ -152,6 +159,12 @@ struct ScalarTraits<ofp::OXMType> {
     static StringRef input(StringRef scalar, void *ctxt, ofp::OXMType &value)
     {
         if (!value.parse(scalar)) {
+            unsigned long long num;
+            if (llvm::getAsUnsignedInteger(scalar, 0, num) == 0) {
+                value.setOxmNative(num);
+                return "";
+            }
+
             return "Invalid OXM type.";
         }
 
@@ -190,7 +203,14 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
             OXMDispatch(id, &inserter);
 
         } else {
-            ofp::log::debug("Unknown oxmtype: ", type);
+            ofp::ByteList data;
+            io.mapRequired("value", data);
+            if (data.size() == type.length()) {
+                builder.add(type, data);
+            } else {
+                ofp::log::debug("Invalid data size:", type);
+            }
+            //ofp::log::debug("Unknown oxmtype: ", type);
         }
     }
 };
