@@ -93,7 +93,8 @@ public:
   }
 
   void write(Writable *channel);
-
+  void reset();
+  
 private:
   MPFlowStatsReply msg_;
   MatchBuilder match_;

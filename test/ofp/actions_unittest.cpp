@@ -134,7 +134,7 @@ TEST(actions, AT_SET_QUEUE) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_QUEUE::type().length());
 
-  auto expected = HexToRawData("0015 0008 0500 0000");
+  auto expected = HexToRawData("0015 0008 0000 0005");
   EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
 }
 
@@ -144,7 +144,7 @@ TEST(actions, AT_GROUP) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_GROUP::type().length());
 
-  auto expected = HexToRawData("0016 0008 0500 0000");
+  auto expected = HexToRawData("0016 0008 0000 0005");
   EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
 }
 

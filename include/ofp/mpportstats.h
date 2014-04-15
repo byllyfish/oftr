@@ -67,7 +67,8 @@ public:
   MPPortStatsBuilder() = default;
 
   void write(Writable *channel);
-
+  void reset() {}
+  
 private:
   MPPortStats msg_;
 

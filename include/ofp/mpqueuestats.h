@@ -54,7 +54,8 @@ class MPQueueStatsBuilder {
 public:
 
 	void write(Writable *channel);
-
+	void reset() {}
+	
 private:
 	MPQueueStats msg_;
 

@@ -114,13 +114,13 @@ struct MappingTraits<ofp::ActionIterator::Item> {
 			}
 			case OFPAT_SET_QUEUE: {
 				const AT_SET_QUEUE *action = item.action<AT_SET_QUEUE>();
-				UInt8 queue = action->queue();
+				UInt32 queue = action->queue();
 				io.mapRequired("queue", queue);
 				break;
 			}
 			case OFPAT_GROUP: {
 				const AT_GROUP *action = item.action<AT_GROUP>();
-				UInt8 group = action->group();
+				UInt32 group = action->group();
 				io.mapRequired("group", group);
 				break;
 			}
@@ -242,14 +242,14 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 				break;
 			}
 			case OFPAT_SET_QUEUE: {
-				UInt8 queue;
+				UInt32 queue;
 				io.mapRequired("queue", queue);
 				AT_SET_QUEUE action{queue};
 				list.add(action);
 				break;
 			}
 			case OFPAT_GROUP: {
-				UInt8 group;
+				UInt32 group;
 				io.mapRequired("group", group);
 				AT_GROUP action{group};
 				list.add(action);

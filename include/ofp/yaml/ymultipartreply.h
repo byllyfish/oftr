@@ -97,6 +97,7 @@ class MPReplyBuilderSeq {
   Type &next() {
     if (init_) {
       item_.write(&channel_);
+      item_.reset();
     } else {
       init_ = true;
     }

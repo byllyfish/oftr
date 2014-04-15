@@ -69,7 +69,8 @@ public:
   MPTableStatsBuilder() = default;
 
   void write(Writable *channel);
-
+  void reset() {}
+  
 private:
   MPTableStats msg_;
 

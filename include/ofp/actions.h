@@ -163,14 +163,13 @@ class AT_SET_QUEUE {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_SET_QUEUE, 8); }
 
-  constexpr explicit AT_SET_QUEUE(UInt8 queue) : queue_{queue} {}
+  constexpr explicit AT_SET_QUEUE(UInt32 queue) : queue_{queue} {}
 
-  UInt8 queue() const { return queue_; }
+  UInt32 queue() const { return queue_; }
 
 private:
   const ActionType type_ = type();
-  const Big8 queue_;
-  const Padding<3> pad_;
+  const Big32 queue_;
 };
 
 static_assert(sizeof(AT_SET_QUEUE) == 8, "Unexpected size.");
@@ -181,14 +180,13 @@ class AT_GROUP {
 public:
   constexpr static ActionType type() { return ActionType(OFPAT_GROUP, 8); }
 
-  constexpr explicit AT_GROUP(UInt8 group) : group_{group} {}
+  constexpr explicit AT_GROUP(UInt32 group) : group_{group} {}
 
-  UInt8 group() const { return group_; }
+  UInt32 group() const { return group_; }
 
 private:
   const ActionType type_ = type();
-  const Big8 group_;
-  const Padding<3> pad_;
+  const Big32 group_;
 };
 
 static_assert(sizeof(AT_GROUP) == 8, "Unexpected size.");

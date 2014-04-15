@@ -95,3 +95,8 @@ void MPFlowStatsReplyBuilder::writeV1(Writable *channel)
   }
   channel->flush();
 }
+
+void MPFlowStatsReplyBuilder::reset() {
+  match_.clear();
+  instructions_.clear();
+}

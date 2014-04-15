@@ -26,7 +26,8 @@ public:
     RangeType toRange() const { return buf_.toRange(); }
 
     void assign(const RangeType &range) { buf_ = range.toByteRange(); }
-
+    void clear() { buf_.clear(); }
+    
 protected:
     ByteList buf_;
 };
