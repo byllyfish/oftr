@@ -102,6 +102,7 @@ set(LIBOFP_SOURCES
 	src/ofp/log.cpp
 	src/ofp/message.cpp
   src/ofp/metermod.cpp
+  src/ofp/mpgroupdesc.cpp
   src/ofp/mpportstats.cpp
   src/ofp/mpportstatsrequest.cpp
   src/ofp/mpqueuestats.cpp
