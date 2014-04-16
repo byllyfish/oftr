@@ -52,7 +52,6 @@ using AT_COPY_TTL_OUT = detail::EmptyAction<OFPAT_COPY_TTL_OUT>;
 using AT_COPY_TTL_IN = detail::EmptyAction<OFPAT_COPY_TTL_IN>;
 using AT_DEC_MPLS_TTL = detail::EmptyAction<OFPAT_DEC_MPLS_TTL>;
 using AT_POP_VLAN = detail::EmptyAction<OFPAT_POP_VLAN>;
-using AT_POP_MPLS = detail::EmptyAction<OFPAT_POP_MPLS>;
 using AT_DEC_NW_TTL = detail::EmptyAction<OFPAT_DEC_NW_TTL>;
 using AT_POP_PBB = detail::EmptyAction<OFPAT_POP_PBB>;
 
@@ -158,6 +157,23 @@ private:
 static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
 
+/// \brief Concrete type for AT_POP_MPLS action.
+class AT_POP_MPLS {
+public:
+  constexpr static ActionType type() { return ActionType(OFPAT_POP_MPLS, 8); }
+
+  constexpr explicit AT_POP_MPLS(UInt16 ethertype) : ethertype_{ethertype} {}
+
+  UInt16 ethertype() const { return ethertype_; }
+
+private:
+  const ActionType type_ = type();
+  const Big16 ethertype_;
+  const Padding<2> pad_;
+};
+
+static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
+static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
 /// \brief Concrete type for AT_SET_QUEUE action.
 class AT_SET_QUEUE {
 public:

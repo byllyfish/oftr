@@ -62,11 +62,11 @@ TEST(actions, AT_POP_VLAN) {
 }
 
 TEST(actions, AT_POP_MPLS) {
-  AT_POP_MPLS act;
+  AT_POP_MPLS act{5};
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_POP_MPLS::type().length());
 
-  auto expected = HexToRawData("0014 0008 0000 0000");
+  auto expected = HexToRawData("0014 0008 0005 0000");
   EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
 }
 

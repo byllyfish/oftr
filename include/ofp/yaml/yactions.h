@@ -81,7 +81,6 @@ struct MappingTraits<ofp::ActionIterator::Item> {
     		case OFPAT_COPY_TTL_IN:
 			case OFPAT_DEC_MPLS_TTL:
 			case OFPAT_POP_VLAN:
-			case OFPAT_POP_MPLS:
 			case OFPAT_DEC_NW_TTL:
 			case OFPAT_POP_PBB:
 				// Nothing else to do.
@@ -112,6 +111,12 @@ struct MappingTraits<ofp::ActionIterator::Item> {
 				io.mapRequired("mpls", mpls);
 				break;
 			}
+            case OFPAT_POP_MPLS: {
+                const AT_POP_MPLS *action = item.action<AT_POP_MPLS>();
+                UInt16 ethertype = action->ethertype();
+                io.mapRequired("ethertype", ethertype);
+                break;
+            }
 			case OFPAT_SET_QUEUE: {
 				const AT_SET_QUEUE *action = item.action<AT_SET_QUEUE>();
 				UInt32 queue = action->queue();
@@ -196,11 +201,6 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 				list.add(action);
 				break;
 			}
-			case OFPAT_POP_MPLS: {
-				AT_POP_MPLS action;
-				list.add(action);
-				break;
-			}
 			case OFPAT_DEC_NW_TTL: {
 				AT_DEC_NW_TTL action;
 				list.add(action);
@@ -241,6 +241,13 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 				list.add(action);
 				break;
 			}
+            case OFPAT_POP_MPLS: {
+                UInt16 ethertype;
+                io.mapRequired("ethertype", ethertype);
+                AT_POP_MPLS action{ethertype};
+                list.add(action);
+                break;
+            }
 			case OFPAT_SET_QUEUE: {
 				UInt32 queue;
 				io.mapRequired("queue", queue);

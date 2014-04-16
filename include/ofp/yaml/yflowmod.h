@@ -23,7 +23,6 @@
 #ifndef OFP_YAML_YFLOWMOD_H_
 #define OFP_YAML_YFLOWMOD_H_
 
-//#include "ofp/yaml.h"
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yinstructions.h"
@@ -47,7 +46,7 @@ namespace yaml {
 //   out_port: <UInt32>                 { Required }
 //   out_group: <UInt32>                { Required }
 //   flags: <UInt16>                    { Required }
-//   match: [ <MatchItem> ]             { Required }
+//   match: [ <MatchField> ]            { Required }
 //   instructions: [ <Instruction> ]    { Required }
 //...
 
@@ -100,6 +99,7 @@ struct MappingTraits<ofp::FlowModBuilder> {
     if (!msg.match_.validate()) {
       // TODO(bfish) better error message
       io.setError("Match is ambiguous.");
+      ofp::log::info("Match is ambiguous.");
     }
   }
 };
