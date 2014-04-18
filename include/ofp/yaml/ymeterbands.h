@@ -41,6 +41,16 @@ struct MappingTraits<ofp::MeterBandIterator::Element> {
         io.mapRequired("prec_level", precLevel);
         break;
       }
+      case MeterBandExperimenter::type() : {
+        auto p = elem.meterBand<MeterBandExperimenter>();
+        UInt32 rate = p.rate();
+        UInt32 burstSize = p.burstSize();
+        UInt32 experimenter = p.experimenter();
+        io.mapRequired("rate", rate);
+        io.mapRequired("burst_size", burstSize);
+        io.mapRequired("experimenter", experimenter);
+        break;
+      }
       default:
         break;
     }
@@ -72,6 +82,14 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
         io.mapRequired("burst_size", burstSize);
         io.mapRequired("prec_level", precLevel);
         list.add(MeterBandDscpRemark{rate, burstSize, precLevel});
+        break;
+      }
+      case MeterBandExperimenter::type() : {
+        UInt32 rate, burstSize, experimenter;
+        io.mapRequired("rate", rate);
+        io.mapRequired("burst_size", burstSize);
+        io.mapRequired("experimenter", experimenter);
+        list.add(MeterBandExperimenter{rate, burstSize, experimenter});
         break;
       }
       default:
