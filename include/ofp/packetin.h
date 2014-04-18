@@ -42,6 +42,7 @@ public:
   UInt8 tableID() const;
   UInt64 cookie() const;
 
+  Match match() const;
   ByteRange enetFrame() const;
 
   bool validateInput(size_t length) const;
@@ -116,7 +117,8 @@ private:
   UInt32 sendV1(Writable *channel);
   UInt32 sendV2(Writable *channel);
   UInt32 sendV3(Writable *channel);
-
+  UInt32 sendV4(Writable *channel);
+  
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };

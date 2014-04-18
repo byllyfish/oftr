@@ -1107,6 +1107,7 @@ TEST(encoder, packetinv1) {
         reason:          OFPR_ACTION
         table_id:        0x88
         cookie:          0x9999999999999999
+        match:
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
@@ -1132,6 +1133,7 @@ TEST(encoder, packetinv4) {
         reason:          OFPR_ACTION
         table_id:        0x88
         cookie:          0x9999999999999999
+        match:
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 

@@ -39,6 +39,7 @@ namespace yaml {
 //   reason: <OFPPacketInReason>    { Required }
 //   table_id: <UInt8>              { Required }
 //   cookie: <UInt64>               { Required }
+//   match: <Match>
 //   enet_frame: <Bytes>            { Required }
 //...
 
@@ -69,6 +70,9 @@ struct MappingTraits<ofp::PacketIn> {
     io.mapRequired("table_id", tableID);
     io.mapRequired("cookie", cookie);
 
+    ofp::Match m = msg.match();
+    io.mapRequired("match", m);
+
     ofp::ByteRange enetFrame = msg.enetFrame();
     io.mapRequired("enet_frame", enetFrame);
   }
@@ -97,6 +101,7 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapRequired("table_id", msg.msg_.tableID_);
     io.mapRequired("cookie", msg.msg_.cookie_);
 
+    io.mapOptional("match", msg.match_);
     io.mapRequired("enet_frame", msg.enetFrame_);
   }
 };

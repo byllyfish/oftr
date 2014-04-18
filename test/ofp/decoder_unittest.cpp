@@ -582,29 +582,14 @@ TEST(decoder, packetinv4) {
                    "80000004555555558000020466666666800004087777777777777777000"
                    "0FFFFFFFFFFFF000000000001080600010800060400010000000000010A"
                    "0000010000000000000A000002",
-                   "---\ntype:            OFPT_PACKET_IN\nxid:             "
-                   "0x00000001\nversion:         4\nmsg:             \n  "
-                   "buffer_id:       858993459\n  total_len:       17476\n  "
-                   "in_port:         1431655765\n  in_phy_port:     "
-                   "1717986918\n  metadata:        8608480567731124087\n  "
-                   "reason:          OFPR_ACTION\n  table_id:        136\n  "
-                   "cookie:          11068046444225730969\n  enet_frame:      "
-                   "FFFFFFFFFFFF000000000001080600010800060400010000000000010A0"
-                   "000010000000000000A000002\n...\n");
+                   "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000001\nversion:         4\nmsg:             \n  buffer_id:       858993459\n  total_len:       17476\n  in_port:         1431655765\n  in_phy_port:     1717986918\n  metadata:        8608480567731124087\n  reason:          OFPR_ACTION\n  table_id:        136\n  cookie:          11068046444225730969\n  match:           \n    - type:            OFB_IN_PORT\n      value:           1431655765\n    - type:            OFB_IN_PHY_PORT\n      value:           1717986918\n    - type:            OFB_METADATA\n      value:           8608480567731124087\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
 }
 
 TEST(decoder, packetinv1) {
   testDecodeEncode("010A003C0000000233333333444455550100FFFFFFFFFFFF00000000000"
                    "1080600010800060400010000000000010A0000010000000000000A0000"
                    "02",
-                   "---\ntype:            OFPT_PACKET_IN\nxid:             "
-                   "0x00000002\nversion:         1\nmsg:             \n  "
-                   "buffer_id:       858993459\n  total_len:       17476\n  "
-                   "in_port:         21845\n  in_phy_port:     0\n  metadata:  "
-                   "      0\n  reason:          OFPR_ACTION\n  table_id:       "
-                   " 0\n  cookie:          0\n  enet_frame:      "
-                   "FFFFFFFFFFFF000000000001080600010800060400010000000000010A0"
-                   "000010000000000000A000002\n...\n");
+                   "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000002\nversion:         1\nmsg:             \n  buffer_id:       858993459\n  total_len:       17476\n  in_port:         21845\n  in_phy_port:     0\n  metadata:        0\n  reason:          OFPR_ACTION\n  table_id:        0\n  cookie:          0\n  match:           \n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
 }
 
 TEST(decoder, packetoutv4) {
