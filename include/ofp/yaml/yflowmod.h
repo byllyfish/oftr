@@ -32,23 +32,28 @@
 namespace llvm {
 namespace yaml {
 
-//---
-// type: OFPT_FLOW_MOD
-// msg:
-//   cookie: <UInt64>                   { Required }
-//   cookie_mask: <UInt64>              { Required }
-//   table_id: <UInt8>                  { Required }
-//   command:  <UInt8>                  { Required }
-//   idle_timeout: <UInt16>             { Required }
-//   hard_timeout: <UInt16>             { Required }
-//   priority: <UInt16>                 { Required }
-//   buffer_id: <UInt32>                { Required }
-//   out_port: <UInt32>                 { Required }
-//   out_group: <UInt32>                { Required }
-//   flags: <UInt16>                    { Required }
-//   match: [ <MatchField> ]            { Required }
-//   instructions: [ <Instruction> ]    { Required }
-//...
+/// Use a FLOW_MOD message to modify the flow table in a switch.
+///
+/// ~~~~~
+/// type:     OFPT_FLOW_MOD
+/// xid:      UInt64?
+/// version:  UInt8?
+/// msg:
+///   cookie:       UInt64
+///   cookie_mask:  UInt64
+///   table_id:     UInt8                  
+///   command:      UInt8                  
+///   idle_timeout: UInt16             
+///   hard_timeout: UInt16             
+///   priority:     UInt16                 
+///   buffer_id:    UInt32               
+///   out_port:     UInt32                 
+///   out_group:    UInt32                
+///   flags:        UInt16                    
+///   match:        [ MatchField* ]            
+///   instructions: [ Instruction* ]
+/// ~~~~~
+///
 
 template <>
 struct MappingTraits<ofp::FlowMod> {
