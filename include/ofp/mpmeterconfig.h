@@ -9,6 +9,7 @@ class Writable;
 
 class MPMeterConfig {
 public:
+    enum { MPReplyVariableSizeOffset = 0 };
     
     UInt16 flags() const { return flags_; }
     UInt32 meterId() const { return meterId_; }

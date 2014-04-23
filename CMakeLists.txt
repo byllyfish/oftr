@@ -37,7 +37,7 @@ endif()
 # anything except to clutter up the build logs. Put disabled warnings into
 # LIB_OFP_WARNINGS_DISABLED.
 
-set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum -Wno-unreachable-code")
+set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-documentation -Wno-weak-vtables -Wno-switch-enum -Wno-unreachable-code -Wno-covered-switch-default")
 
 # LibOFP is a C++11-only project. Disable warnings about C++98 compatibility.
 
@@ -105,6 +105,7 @@ set(LIBOFP_SOURCES
   src/ofp/mpgroupdesc.cpp
   src/ofp/mpmeterconfig.cpp
   src/ofp/mpmeterconfigrequest.cpp
+  src/ofp/mpmeterstats.cpp
   src/ofp/mpportstats.cpp
   src/ofp/mpportstatsrequest.cpp
   src/ofp/mpqueuestats.cpp

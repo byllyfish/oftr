@@ -35,6 +35,8 @@ class Writable;
 
 class MPFlowStatsReply {
 public:
+  enum { MPReplyVariableSizeOffset = 0 };
+  
   MPFlowStatsReply() = default;
 
   Match match() const;

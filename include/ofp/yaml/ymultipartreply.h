@@ -33,6 +33,7 @@
 #include "ofp/yaml/ympgroupdesc.h"
 #include "ofp/yaml/ympgroupfeatures.h"
 #include "ofp/yaml/ympmeterconfig.h"
+#include "ofp/yaml/ympmeterstats.h"
 
 namespace ofp {
 namespace detail {
@@ -59,7 +60,7 @@ class MPReplyFixedSizeSeq {
 
 /// Elements are variable size. First two bytes of an element contain the
 /// element size.
-template <class Type>
+template <class Type, size_t Offset = Type::MPReplyVariableSizeOffset>
 class MPReplyVariableSizeSeq {
  public:
   explicit MPReplyVariableSizeSeq(MultipartReply &msg)
@@ -72,7 +73,7 @@ class MPReplyVariableSizeSeq {
     // FIXME check alignment
     size_t len = 0;
     while (len < total) {
-      UInt16 elemSize = *reinterpret_cast<const Big16 *>(buf + len);
+      UInt16 elemSize = *reinterpret_cast<const Big16 *>(buf + len + Offset);
       len += elemSize;
       ++result;
     }
@@ -241,6 +242,11 @@ struct MappingTraits<ofp::MultipartReply> {
         io.mapRequired("body", seq);
         break;
       }
+      case OFPMP_METER: {
+        ofp::detail::MPReplyVariableSizeSeq<MPMeterStats> seq{msg};
+        io.mapRequired("body", seq);
+        break;
+      }
       default:
         // FIXME
         log::info("MultiPartReply: MappingTraits not fully implemented.",
@@ -326,6 +332,13 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       }
       case OFPMP_METER_CONFIG: {
         ofp::detail::MPReplyBuilderSeq<MPMeterConfigBuilder> seq {msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_METER: {
+        ofp::detail::MPReplyBuilderSeq<MPMeterStatsBuilder> seq {msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());

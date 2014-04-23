@@ -7,6 +7,8 @@ namespace ofp {
 
 class MPGroupDesc {
  public:
+  enum { MPReplyVariableSizeOffset = 0 };
+  
   UInt8 type() const { return type_; }
   UInt32 groupId() const { return groupId_; }
   BucketRange buckets() const;
