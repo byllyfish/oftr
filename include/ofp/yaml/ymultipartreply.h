@@ -223,6 +223,8 @@ struct MappingTraits<ofp::MultipartReply> {
         break;
       }
       case OFPMP_PORT_DESC: {
+        ofp::detail::MPReplyFixedSizeSeq<Port> seq{msg};
+        io.mapRequired("body", seq);
         // io.mapOptional("body", EmptyRequest);
         break;
       }
@@ -320,7 +322,10 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_PORT_DESC: {
-        // io.mapOptional("body", EmptyRequest);
+        ofp::detail::MPReplyBuilderSeq<PortBuilder> seq{msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
         break;
       }
       case OFPMP_GROUP_DESC: {

@@ -20,6 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/port.h"
+#include "ofp/writable.h"
 
 namespace ofp { // <namespace ofp>
 
@@ -35,6 +36,11 @@ PortBuilder::PortBuilder(const deprecated::PortV1 &port) {
   setPeer(port.peer());
   setCurrSpeed(0);
   setMaxSpeed(0);
+}
+
+void PortBuilder::write(Writable *channel) {
+  channel->write(&msg_, sizeof(msg_));
+  channel->flush();
 }
 
 namespace deprecated { // <namespace deprecated>

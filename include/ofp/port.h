@@ -30,6 +30,8 @@
 
 namespace ofp {
 
+class Writable;
+
 namespace deprecated {
 class PortV1;
 }  // namespace deprecated
@@ -106,6 +108,9 @@ class PortBuilder {
 
   const Port &toPort() const { return msg_; }
   
+  void write(Writable *channel);
+  void reset() {}
+
  private:
   Port msg_;
 
