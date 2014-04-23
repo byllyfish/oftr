@@ -60,6 +60,7 @@ struct MappingTraits<ofp::MultipartRequest> {
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
+      case OFPMP_METER_FEATURES:
         // empty request body
         break;
       case OFPMP_FLOW:
@@ -121,6 +122,9 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
       case OFPMP_DESC:
       case OFPMP_TABLE:
       case OFPMP_PORT_DESC:
+      case OFPMP_GROUP_DESC:
+      case OFPMP_GROUP_FEATURES:
+      case OFPMP_METER_FEATURES:
         // empty request body
         break;
       case OFPMP_FLOW:

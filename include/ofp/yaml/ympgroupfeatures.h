@@ -29,7 +29,7 @@ template <>
 struct MappingTraits<ofp::MPGroupFeaturesBuilder> {
 
   static void mapping(IO &io, ofp::MPGroupFeaturesBuilder &body) {
-    io.mapRequired("type", body.msg_.types_);
+    io.mapRequired("types", body.msg_.types_);
     io.mapRequired("capabilities", body.msg_.capabilities_);
 
     io.mapRequired("max_groups_all", body.msg_.maxGroups_[0]);

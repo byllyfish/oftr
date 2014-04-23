@@ -34,6 +34,7 @@
 #include "ofp/yaml/ympgroupfeatures.h"
 #include "ofp/yaml/ympmeterconfig.h"
 #include "ofp/yaml/ympmeterstats.h"
+#include "ofp/yaml/ympmeterfeatures.h"
 
 namespace ofp {
 namespace detail {
@@ -247,6 +248,13 @@ struct MappingTraits<ofp::MultipartReply> {
         io.mapRequired("body", seq);
         break;
       }
+      case OFPMP_METER_FEATURES: {
+        MPMeterFeatures *features = RemoveConst_cast(msg.body_cast<MPMeterFeatures>());
+        if (features) {
+          io.mapRequired("body", *features);
+        }
+        break;
+      }
       default:
         // FIXME
         log::info("MultiPartReply: MappingTraits not fully implemented.",
@@ -324,7 +332,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_GROUP_FEATURES: {
-        MPGroupFeatures features;
+        MPGroupFeaturesBuilder features;
         io.mapRequired("body", features);
         // FIXME - write reply into channel.
         msg.setReplyBody(&features, sizeof(features));
@@ -342,6 +350,13 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_METER_FEATURES: {
+        MPMeterFeaturesBuilder features;
+        io.mapRequired("body", features);
+        // FIXME - write reply into channel.
+        msg.setReplyBody(&features, sizeof(features));
         break;
       }
       default:
