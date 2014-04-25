@@ -43,7 +43,8 @@ enum : UInt16 {
 };
 
 enum {
-  OFP_MAX_PORT_NAME_LEN = 16
+  OFP_MAX_PORT_NAME_LEN = 16,
+  OFP_MAX_TABLE_NAME_LEN = 32
 };
 
 enum {

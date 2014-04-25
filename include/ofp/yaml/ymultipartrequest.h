@@ -29,6 +29,7 @@
 #include "ofp/yaml/ympportstatsrequest.h"
 #include "ofp/yaml/ympqueuestatsrequest.h"
 #include "ofp/yaml/ympmeterconfigrequest.h"
+#include "ofp/yaml/ymptablefeatures.h"
 #include "ofp/mpmeterstatsrequest.h"
 #include "ofp/memorychannel.h"
 

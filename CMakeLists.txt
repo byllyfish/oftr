@@ -110,6 +110,7 @@ set(LIBOFP_SOURCES
   src/ofp/mpportstatsrequest.cpp
   src/ofp/mpqueuestats.cpp
   src/ofp/mpqueuestatsrequest.cpp
+  src/ofp/mptablefeatures.cpp
   src/ofp/mptablestats.cpp
 	src/ofp/multipartreply.cpp
 	src/ofp/multipartrequest.cpp

@@ -44,7 +44,7 @@ class QueueBuilder {
 
   void setProperties(const PropertyRange &properties);
   void setProperties(const PropertyList &properties) { setProperties(properties.toRange()); }
-  
+
  private:
   Queue queue_;
   PropertyList properties_;
