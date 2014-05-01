@@ -1,7 +1,3 @@
-// The following two definitions are required by llvm/Support/DataTypes.h
-#define __STDC_LIMIT_MACROS 1
-#define __STDC_CONSTANT_MACROS 1
-
 #include "llvm/Support/CommandLine.h"
 #include "ofpx.h"
 #include "ofp/yaml/decoder.h"

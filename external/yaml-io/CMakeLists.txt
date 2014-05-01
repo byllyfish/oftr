@@ -35,7 +35,7 @@ set(YAMLIO_SOURCES
 	src/Support/YAMLTraits.cpp
 )
 
-add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
+#add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 add_library(yamlio ${YAMLIO_SOURCES})
 
 add_executable(yamlio_test test/testit.cpp)

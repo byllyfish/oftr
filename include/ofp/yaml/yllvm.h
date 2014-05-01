@@ -22,11 +22,6 @@
 #ifndef OFP_YAML_YLLVM_H_
 #define OFP_YAML_YLLVM_H_
 
-// The following two definitions are required by llvm/Support/DataTypes.h.
-// These C macros have no effect when using C++11.
-#define __STDC_LIMIT_MACROS
-#define __STDC_CONSTANT_MACROS
-
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
 #include "ofp/yaml/yconstants.h"

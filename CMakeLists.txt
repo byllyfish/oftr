@@ -411,6 +411,10 @@ configure_file("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
 
 configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTestCustom.cmake")
 
+# DataTypes.h in yaml-io depends on having these set. These macros have no effect
+# in C++11.
+add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
+
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
