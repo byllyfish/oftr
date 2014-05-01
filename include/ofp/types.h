@@ -253,22 +253,22 @@ std::string HexToRawData(const std::string &hex);
 
 /// Return true if memory block is filled with given byte value.
 ///
-/// \param  data pointer to memory block
+/// \param  data   pointer to memory block
 /// \param  length length of memory block
-/// \param  fill fill byte
+/// \param  fill   fill byte
 /// \return true if memory block is filled with given byte value.
 bool IsMemFilled(const void *data, size_t length, char fill);
 
 /// Return true if pointer is aligned to specified byte boundary.
 ///
 /// For example, to check if pointer is 64-bit aligned:
-///    IsPtrAligned<8>(ptr)
+///    IsPtrAligned(ptr, 8)
 ///
 /// \param  pointer
+/// \param  byteBoundary
 /// \return true if pointer is aligned.
-template <unsigned ByteBoundary>
-constexpr bool IsPtrAligned(const void *ptr) {
-  return (reinterpret_cast<uintptr_t>(ptr) & (ByteBoundary - 1)) == 0;
+inline bool IsPtrAligned(const void *ptr, size_t byteBoundary) {
+  return (reinterpret_cast<uintptr_t>(ptr) & (byteBoundary - 1)) == 0;
 }
 
 /// Return a constructed unique_ptr for the specified type by forwarding

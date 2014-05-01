@@ -107,7 +107,7 @@ struct SequenceTraits<ofp::MeterBandRange> {
 
   static ofp::MeterBandIterator::Element &element(IO &io, ofp::MeterBandRange &meterBands,
                                              size_t index) {
-    return RemoveConst_cast(meterBands.nthItem(index));
+    return RemoveConst_cast(*meterBands.nthItem(index));
   }
 };
 

@@ -161,7 +161,7 @@ struct ScalarTraits<ofp::OXMType> {
         if (!value.parse(scalar)) {
             unsigned long long num;
             if (llvm::getAsUnsignedInteger(scalar, 0, num) == 0) {
-                value.setOxmNative(num);
+                value.setOxmNative(ofp::UInt32_narrow_cast(num));
                 return "";
             }
 

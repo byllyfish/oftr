@@ -48,14 +48,14 @@ namespace detail {
 ///   - pointer to start of range is 8-byte aligned.
 ///
 /// \return true if byte range is a valid protocol iterable.
-bool IsProtocolRangeValid(const ByteRange &range, size_t sizeFieldOffset, const char *context="", size_t minElemSize = 4);
+bool IsProtocolRangeValid(const ByteRange &range, size_t sizeFieldOffset, size_t alignment = 8, const char *context="", size_t minElemSize = 4);
 
 /// Return count of items in the protocol range.
 ///
 /// If protocol iterable is not valid, return count of valid items.
 ///
 /// \return number of items in iterable.
-size_t ProtocolRangeItemCount(const ByteRange &range, size_t sizeFieldOffset);
+size_t ProtocolRangeItemCount(const ByteRange &range, size_t sizeFieldOffset, size_t alignment = 8);
 
 enum { ProtocolIteratorSizeOffsetCutoff = 128 };
 
@@ -87,7 +87,7 @@ size_t ProtocolRangeFixedItemCount(size_t elemSize, const ByteRange &range);
 //
 // The actual element is padded to a multiple of 8 bytes.
 
-template <class ElemType, size_t SizeOffset=ElemType::ProtocolIteratorSizeOffset>
+template <class ElemType, size_t SizeOffset=ElemType::ProtocolIteratorSizeOffset, size_t Alignment=8>
 class ProtocolIterator {
 public:
   enum { IsFixedSize = (SizeOffset > detail::ProtocolIteratorSizeOffsetCutoff) };
@@ -113,7 +113,7 @@ public:
   }
 
   const UInt8 *data() const {
-    assert(IsPtrAligned<8>(pos_));
+    assert(IsPtrAligned(pos_, Alignment));
     return pos_;
   }
 
@@ -122,7 +122,7 @@ public:
     return IsFixedSize ?  sizeof(ElemType) : std::max<size_t>(MinSize, *Big16_cast(data() + SizeOffset)); 
   }
 
-  void operator++() { pos_ += PadLength(size()); }
+  void operator++() { pos_ += (Alignment == 8) ? PadLength(size()) : size(); }
 
   bool operator==(const ProtocolIterator &rhs) const {
     return data() == rhs.data();
@@ -156,12 +156,12 @@ private:
 
   static size_t itemCount(const ByteRange &range) {
     return IsFixedSize ? detail::ProtocolRangeFixedItemCount(sizeof(ElemType), range) :
-     detail::ProtocolRangeItemCount(range, SizeOffset);
+     detail::ProtocolRangeItemCount(range, SizeOffset, Alignment);
   }
 
   static bool isValid(const ByteRange &range, const char *context) {
     return IsFixedSize ? detail::IsProtocolRangeFixedValid(sizeof(ElemType), range, context) :
-     detail::IsProtocolRangeValid(range, SizeOffset, context);
+     detail::IsProtocolRangeValid(range, SizeOffset, Alignment, context);
   }
 
   template <class I>

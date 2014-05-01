@@ -4,6 +4,7 @@
 
 bool ofp::detail::IsProtocolRangeValid(const ByteRange &range,
                                           size_t sizeFieldOffset,
+                                          size_t alignment,
                                           const char *context,
                                           size_t minElemSize) {
   assert(sizeFieldOffset <= detail::ProtocolIteratorSizeOffsetCutoff);
@@ -11,21 +12,21 @@ bool ofp::detail::IsProtocolRangeValid(const ByteRange &range,
   const UInt8 *ptr = range.begin();
   size_t len = range.size();
 
-  // Length must be a multiple of 8.
-  if ((len % 8) != 0) {
-    log::info("Array length is not a multiple of 8:", context);
+  // Length must be a multiple of `alignment`.
+  if ((len % alignment) != 0) {
+    log::info("Array length is not a multiple of Alignment:", context);
     return false;
   }
 
-  // Beginning pointer must be 8-byte aligned.
-  if (!IsPtrAligned<8>(ptr)) {
-    log::info("Array start is not 8-byte aligned:", context);
+  // Beginning pointer must be aligned.
+  if (!IsPtrAligned(ptr, alignment)) {
+    log::info("Array start is not aligned:", context);
     return false;
   }
 
   // All of the element lengths must add up (when padded).
   while (len > 0) {
-    assert(len >= 8);
+    assert(len >= alignment);
 
     UInt16 elemSize = *Big16_cast(ptr + sizeFieldOffset);
     if (elemSize < minElemSize) {
@@ -33,7 +34,22 @@ bool ofp::detail::IsProtocolRangeValid(const ByteRange &range,
       return false;
     }
 
-    size_t jumpSize = PadLength(elemSize);
+    // If alignment isn't 8-bytes, the element size must be a multiple of the 
+    // alignment. If the alignment is 8-bytes, we just pad out the element size
+    // to a multiple of 8.
+
+    size_t jumpSize;
+    if (alignment != 8) {
+      if ((elemSize % alignment) != 0) {
+        log::info("Array element size is not a multiple of Alignment:", context);
+        return false;
+      }
+      jumpSize = elemSize;
+    } else {
+      assert(alignment == 8);
+      jumpSize = PadLength(elemSize);
+    }
+
     if (jumpSize > len) {
       log::info("Array element size overruns the end:", context);
       return false;
@@ -49,7 +65,7 @@ bool ofp::detail::IsProtocolRangeValid(const ByteRange &range,
   return true;
 }
 
-size_t ofp::detail::ProtocolRangeItemCount(const ByteRange &range, size_t sizeFieldOffset) {
+size_t ofp::detail::ProtocolRangeItemCount(const ByteRange &range, size_t sizeFieldOffset, size_t alignment) {
   assert(sizeFieldOffset <= detail::ProtocolIteratorSizeOffsetCutoff);
 
   size_t count = 0;
@@ -57,18 +73,18 @@ size_t ofp::detail::ProtocolRangeItemCount(const ByteRange &range, size_t sizeFi
   const UInt8 *ptr = range.begin();
   size_t len = range.size();
 
-  assert((len % 8) == 0);
-  assert(IsPtrAligned<8>(ptr));
+  assert((len % alignment) == 0);
+  assert(IsPtrAligned(ptr, alignment));
 
   const size_t minSize = sizeFieldOffset + sizeof(Big16);
 
   while (len > 0) {
-    assert(len >= 8);
+    assert(len >= alignment);
 
     size_t elemSize = std::max<size_t>(minSize, *Big16_cast(ptr + sizeFieldOffset));
     assert(elemSize > 0);
 
-    size_t jumpSize = PadLength(elemSize);
+    size_t jumpSize = (alignment == 8) ? PadLength(elemSize) : elemSize;
     if (jumpSize > len) break;
 
     len -= jumpSize;

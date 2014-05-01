@@ -1,0 +1,74 @@
+$schema: 'http://json-schema.org/draft-04/schema#' 
+id: 'action'
+description: OpenFlow Action Schema
+
+type: object
+
+oneOf:
+  # OFPAT_COPY_TTL_OUT()
+  # OFPAT_COPY_TTL_IN()
+  # OFPAT_DEC_MPLS_TTL()
+  # OFPAT_POP_VLAN()
+  # OFPAT_DEC_NW_TTL()
+  # OFPAT_POP_PBB()
+  - properties:
+      action: { 'enum' : ['COPY_TTL_OUT', 'COPY_TTL_IN', 'DEC_MPLS_TTL', 'POP_VLAN', 'DEC_NW_TTL', 'POP_PBB']}
+    required: ['action']
+  # OFPAT_OUTPUT(port, maxlen)
+  - properties:
+      action: { 'enum' : ['OUTPUT'] }
+      port:   { '$ref' : 'types#/uint32' }
+      maxlen: { '$ref' : 'types#/uint16' }
+    required: ['action', 'port', 'maxlen']
+  # OFPAT_SET_MPLS_TTL(ttl)
+  - properties:
+      action: { 'enum' : ['SET_MPLS_TTL'] }
+      ttl:    { '$ref' : 'types#/uint16' }
+    required: ['action', 'ttl']
+  # OFPAT_PUSH_VLAN(vlan)
+  - properties:
+      action: { 'enum' : ['PUSH_VLAN'] }
+      vlan:   { '$ref' : 'types#/uint16' }
+    required: ['action', 'vlan']
+  # OFPAT_PUSH_MPLS(mpls)
+  - properties:
+      action: { 'enum' : ['PUSH_MPLS'] }
+      mpls:   { '$ref' : 'types#/uint32' }
+    required: ['action', 'mpls']
+  # OFPAT_POP_MPLS(ethertype)
+  - properties:
+      action: { 'enum' : ['POP_MPLS'] }
+      ethertype: { '$ref' : 'types#/uint16' }
+    required: ['action', 'ethertype']
+  # OFPAT_SET_QUEUE(queue)
+  - properties:
+      action: { 'enum' : ['SET_QUEUE'] }
+      queue:  { '$ref' : 'types#/uint32' }
+    required: ['action', 'queue']
+  # OFPAT_GROUP(group)
+  - properties:
+      action: { 'enum' : ['GROUP'] }
+      group:  { '$ref' : 'types#/uint32' }
+    required: ['action', 'group']
+  # OFPAT_SET_NW_TTL(ttl)
+  - properties:
+      action: { 'enum' : ['SET_NW_TTL'] }
+      ttl:    { '$ref' : 'types#/uint8' }
+    required: ['action', 'ttl']
+  # OFPAT_PUSH_PBB(ethertype)
+  - properties:
+      action: { 'enum' : ['PUSH_PBB'] }
+      ethertype: { '$ref' : 'types#/uint16' }
+    required: ['action', 'ethertype']
+  # OFPAT_SET_FIELD(field, value)
+  - properties:
+      action: { 'enum' : ['SET_FIELD'] }
+    # TODO(bfish) 'mask' field is not supported...
+    oneOf:  { '$ref' : 'matchfield#'}
+    required: ['action', 'field', 'value']
+    additionalProperties: false
+  # OFPAT_EXPERIMENTER(experimenter_id, ...)
+  - properties:
+      action: { 'enum' : ['EXPERIMENTER'] }
+      experimenter_id: { '$ref' : 'types#/uint32' }
+      required: ['action', 'experimenter']

@@ -2,9 +2,11 @@
 #define OFP_YAML_YMPTABLEFEATURES_H_
 
 #include "ofp/mptablefeatures.h"
+#include "ofp/yaml/ytablefeatureproperty.h"
 
 namespace llvm {
 namespace yaml {
+
 
 template <>
 struct MappingTraits<ofp::MPTableFeatures> {
@@ -17,7 +19,22 @@ struct MappingTraits<ofp::MPTableFeatures> {
     io.mapRequired("config", body.config_);
     io.mapRequired("max_entries", body.maxEntries_);
 
-    //ofp::PropertyRange properties = body.properties();
+    ofp::PropertyRange props = body.properties();
+
+    ofp::InstructionIDRange ins = props.valueRange<ofp::TableFeaturePropertyInstructions>();
+    io.mapRequired("instructions", ins);
+    
+    ofp::InstructionIDRange insMiss = props.valueRange<ofp::TableFeaturePropertyInstructionsMiss>(ins);
+    io.mapOptional("instructions_miss", insMiss, ins);
+   
+    ofp::ByteRange nextTables = props.valueRange<ofp::TableFeaturePropertyNextTables>();
+    io.mapRequired("next_tables", nextTables);
+
+    ofp::ByteRange nextTablesMiss = props.valueRange<ofp::TableFeaturePropertyNextTablesMiss>(nextTables);
+    io.mapOptional("next_tables_miss", nextTablesMiss, nextTables);
+
+    io.mapRequired("properties", Ref_cast<ofp::detail::TableFeaturePropertyRange>(props));
+
     //io.mapRequired("properties", properties);
   }
 };

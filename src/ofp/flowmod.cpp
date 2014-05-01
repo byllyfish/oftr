@@ -226,7 +226,7 @@ UInt32 FlowModBuilder::sendFastVersion1(Writable *channel, UInt32 inPort, UInt32
     "\x00\x00\x00\x08\xB3\xB3\x00\x00";
 
   OFP_ALIGNAS(8) UInt8 buf[80];
-  assert(IsPtrAligned<8>(buf));
+  assert(IsPtrAligned(buf, 8));
 
   UInt32 xid = channel->nextXid();
 

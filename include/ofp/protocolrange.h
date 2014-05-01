@@ -29,14 +29,15 @@ public:
     return Unsigned_cast(std::count_if(begin(), end(), pred));
   }
 
-  const Element &nthItem(size_t index) const { 
+  Iterator nthItem(size_t index) const { 
     Iterator iter = begin();
     for (size_t i = 0; i < index; ++i) {
       ++iter;
     }
-    return *iter;
+    return iter;
   }
 
+OFP_BEGIN_IGNORE_PADDING
   template <class UnaryPredicate>
   Iterator nthItemIf(size_t index, UnaryPredicate pred) const { 
     return std::find_if(begin(), end(), [pred, &index](const Element &elem){
@@ -47,9 +48,14 @@ public:
       return false;
     });
   }
+OFP_END_IGNORE_PADDING
 
   bool validateInput(const char *context) const {
     return Iterator::isValid(range_, context);
+  }
+
+  bool operator==(const ProtocolRange &rhs) const {
+    return range_ == rhs.range_;
   }
 
 private:

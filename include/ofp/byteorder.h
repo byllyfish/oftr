@@ -191,22 +191,22 @@ using NativeTypeOf = detail::NativeTypeOf<T>;
 // Casting Convenience Functions
 
 inline const Big16 *Big16_cast(const void *ptr) {
-  assert(IsPtrAligned<2>(ptr) && "Big16_cast failed");
+  assert(IsPtrAligned(ptr, 2) && "Big16_cast failed");
   return reinterpret_cast<const Big16 *>(ptr);
 }
 
 inline Big16 *Big16_cast(void *ptr) {
-  assert(IsPtrAligned<2>(ptr) && "Big16_cast failed");
+  assert(IsPtrAligned(ptr, 2) && "Big16_cast failed");
   return reinterpret_cast<Big16 *>(ptr);
 }
 
 inline const Big32 *Big32_cast(const void *ptr) {
-  assert(IsPtrAligned<4>(ptr) && "Big32_cast failed");
+  assert(IsPtrAligned(ptr, 4) && "Big32_cast failed");
   return reinterpret_cast<const Big32 *>(ptr);
 }
 
 inline Big32 *Big32_cast(void *ptr) {
-  assert(IsPtrAligned<4>(ptr) && "Big32_cast failed");
+  assert(IsPtrAligned(ptr, 4) && "Big32_cast failed");
   return reinterpret_cast<Big32 *>(ptr);
 }
 

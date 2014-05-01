@@ -1,0 +1,18 @@
+$schema: 'http://json-schema.org/draft-04/schema#' 
+id: 'matchfield'
+description: OpenFlow MatchField Schema
+
+type: object
+
+# All MatchFields have a required `field` and `value`. Some MatchFields also 
+# have an optional `mask`.
+
+oneOf:
+    - properties:
+        field: { enum: ['IN_PORT'] }
+        value: { '$ref' : 'types#/uint32' }
+      required: ['field', 'value']
+    - properties:
+        field: { enum: ['IN_PHY_PORT'] }
+        value: { '$ref' : 'types#/uint32' }
+      required: ['field', 'value']

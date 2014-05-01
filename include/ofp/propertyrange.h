@@ -21,6 +21,8 @@ class PropertyIteratorItem : private NonCopyable {
     return *reinterpret_cast<const Type *>(this);
   }
 
+  ByteRange value() const { return ByteRange{BytePtr(this) + 4, len_ - 4U }; }
+
  private:
   Big16 type_;
   Big16 len_;
@@ -36,24 +38,35 @@ class PropertyRange : public ProtocolRange<PropertyIterator> {
  public:
   using Inherited::Inherited;
 
-  template <class PropertyType>
-  Iterator findProperty() const {
+  /// \return Iterator to first property found with specified type.
+  Iterator findProperty(UInt16 type) const {
     for (auto iter = begin(); iter < end(); ++iter) {
-      if (iter->type() == PropertyType::type() &&
-          iter->size() == sizeof(PropertyType)) {
+      if (iter->type() == type)
         return iter;
-      }
     }
     return end();
   }
 
-  template <class PropertyType>
-  typename PropertyType::ValueType value() const {
-    auto iter = findProperty<PropertyType>();
-    if (iter != end()) {
+  /// \return value of property, when size of property is fixed.
+  ///
+  /// `PropertyType` must implement the `ValueType` concept.
+  template <class PropertyType, class ValueType=typename PropertyType::ValueType>
+  ValueType value() const {
+    auto iter = findProperty(PropertyType::type());
+    if (iter != end() && iter.size() == sizeof(PropertyType)) {
       return iter->template property<PropertyType>().value();
     }
     return PropertyType::defaultValue();
+  }
+
+  /// \return value of property, when it is a range (and size is variable)
+  template <class PropertyType, class ValueType=typename PropertyType::ValueType>
+  ValueType valueRange(const ValueType &defaultValue=PropertyType::defaultValue()) const {
+    auto iter = findProperty(PropertyType::type());
+    if (iter != end() && iter.size() >= 4) {
+      return iter->template property<PropertyType>().value();
+    }
+    return defaultValue;
   }
 };
 

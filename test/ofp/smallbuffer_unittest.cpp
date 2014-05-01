@@ -12,7 +12,7 @@ static void setAll(SmallBuffer *buf, UInt8 val, size_t length) {
 TEST(smallbuffer, small) {
   SmallBuffer buf;
 
-  EXPECT_TRUE(IsPtrAligned<8>(buf.begin()));
+  EXPECT_TRUE(IsPtrAligned(buf.begin(), 8));
   EXPECT_EQ(0, buf.size());
   EXPECT_EQ(64, buf.capacity());
   EXPECT_TRUE(buf.begin() != nullptr);
@@ -32,7 +32,7 @@ TEST(smallbuffer, increaseCapacity) {
     buf.add("123456789", 10);
   }
 
-  EXPECT_TRUE(IsPtrAligned<8>(buf.begin()));
+  EXPECT_TRUE(IsPtrAligned(buf.begin(), 8));
   EXPECT_EQ(200, buf.size());
   EXPECT_HEX(
       "313233343536373839003132333435363738390031323334353637383900313233343536"
@@ -48,7 +48,7 @@ TEST(smallbuffer, increaseCapacity) {
     buf.add("123456789", 10);
   }
 
-  EXPECT_TRUE(IsPtrAligned<8>(buf.begin()));
+  EXPECT_TRUE(IsPtrAligned(buf.begin(), 8));
   EXPECT_EQ(20200, buf.size());
   EXPECT_EQ(963540, std::accumulate(buf.begin(), buf.end(), 0));
 }
