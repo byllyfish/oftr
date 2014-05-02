@@ -3,6 +3,7 @@
 
 #include "ofp/constants.h"
 #include "ofp/instructionidlist.h"
+#include "ofp/actionidlist.h"
 
 namespace ofp {
 
@@ -46,6 +47,26 @@ private:
     enum : size_t { FixedHeaderSize = 4U };
 };
 
+
+template <OFPTableFeatureProperty Type>
+class TableFeaturePropertyActions {
+public:
+    constexpr static OFPTableFeatureProperty type() { return Type; }
+
+    TableFeaturePropertyActions(ActionIDRange actionIds) : actionIds_{actionIds} {}
+
+    using ValueType = ActionIDRange;
+    ActionIDRange value() const { return ByteRange{BytePtr(this) + FixedHeaderSize, length_ - FixedHeaderSize }; }
+    static ActionIDRange defaultValue() { return {}; }
+
+private:
+    Big16 type_ = type();
+    Big16 length_;
+    ActionIDRange actionIds_;
+
+    enum : size_t { FixedHeaderSize = 4U };
+};
+
 }  // namespace detail
 
 
@@ -54,6 +75,12 @@ using TableFeaturePropertyInstructionsMiss = detail::TableFeaturePropertyInstruc
 
 using TableFeaturePropertyNextTables = detail::TableFeaturePropertyTables<OFPTFPT_NEXT_TABLES>;
 using TableFeaturePropertyNextTablesMiss = detail::TableFeaturePropertyTables<OFPTFPT_NEXT_TABLES_MISS>;
+
+using TableFeaturePropertyWriteActions = detail::TableFeaturePropertyActions<OFPTFPT_WRITE_ACTIONS>;
+using TableFeaturePropertyWriteActionsMiss = detail::TableFeaturePropertyActions<OFPTFPT_WRITE_ACTIONS_MISS>;
+
+using TableFeaturePropertyApplyActions = detail::TableFeaturePropertyActions<OFPTFPT_APPLY_ACTIONS>;
+using TableFeaturePropertyApplyActionsMiss = detail::TableFeaturePropertyActions<OFPTFPT_APPLY_ACTIONS_MISS>;
 
 class TableFeaturePropertyExperimenter {
 public:

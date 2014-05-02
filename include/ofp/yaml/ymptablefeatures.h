@@ -33,6 +33,18 @@ struct MappingTraits<ofp::MPTableFeatures> {
     ofp::ByteRange nextTablesMiss = props.valueRange<ofp::TableFeaturePropertyNextTablesMiss>(nextTables);
     io.mapOptional("next_tables_miss", nextTablesMiss, nextTables);
 
+    ofp::ActionIDRange writeAct = props.valueRange<ofp::TableFeaturePropertyWriteActions>();
+    io.mapRequired("write_actions", writeAct);
+
+    ofp::ActionIDRange writeActMiss = props.valueRange<ofp::TableFeaturePropertyWriteActionsMiss>();
+    io.mapOptional("write_actions_miss", writeActMiss, writeAct);
+
+    ofp::ActionIDRange applyAct = props.valueRange<ofp::TableFeaturePropertyApplyActions>();
+    io.mapRequired("apply_actions", applyAct);
+
+    ofp::ActionIDRange applyActMiss = props.valueRange<ofp::TableFeaturePropertyApplyActionsMiss>();
+    io.mapOptional("apply_actions_miss", applyActMiss, applyAct);
+
     io.mapRequired("properties", Ref_cast<ofp::detail::TableFeaturePropertyRange>(props));
 
     //io.mapRequired("properties", properties);

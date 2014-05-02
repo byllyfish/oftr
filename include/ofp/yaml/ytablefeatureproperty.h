@@ -3,6 +3,7 @@
 
 #include "ofp/tablefeatureproperty.h"
 #include "ofp/yaml/yinstructionids.h"
+#include "ofp/yaml/yactionids.h"
 
 namespace ofp {
 namespace detail {
