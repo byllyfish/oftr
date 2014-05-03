@@ -29,7 +29,7 @@ namespace ofp {
 
 class Bucket : private NonCopyable {
 public:
-  enum { ProtocolIteratorSizeOffset = 0 };
+  enum { ProtocolIteratorSizeOffset = 0, ProtocolIteratorAlignment = 8 };
 
   UInt16 weight() const { return weight_; }
   UInt32 watchPort() const { return watchPort_; }

@@ -2,12 +2,37 @@
 #include "ofp/log.h"
 #include <algorithm>
 
-bool ofp::detail::IsProtocolRangeValid(const ByteRange &range,
+using namespace ofp;
+
+
+/// Return true if given ByteRange is a valid protocol iterable for an element
+/// with a fixed size.
+/// 
+/// To be structurally valid as a ProtocolRange, the byte range must pass
+/// the following tests:
+///   - size in bytes is a multiple of elemSize
+///   - pointer to start of range is 8-byte aligned.
+/// 
+/// \return true if byte range is a valid protocol iterable.
+static bool isProtocolRangeFixedValid(size_t elementSize, const ByteRange &range, const char *context="");
+
+/// Return count of items in the protocol iterable.
+/// 
+/// \return number of items in iterable.
+static size_t protocolRangeFixedItemCount(size_t elementSize, const ByteRange &range);
+
+
+bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
+                                          const ByteRange &range,
                                           size_t sizeFieldOffset,
                                           size_t alignment,
-                                          const char *context,
-                                          size_t minElemSize) {
-  assert(sizeFieldOffset <= detail::ProtocolIteratorSizeOffsetCutoff);
+                                          const char *context) {
+
+  if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_FIXED) {
+    return isProtocolRangeFixedValid(elementSize, range, context);
+  }
+
+  assert(sizeFieldOffset < 32 || sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL);
 
   const UInt8 *ptr = range.begin();
   size_t len = range.size();
@@ -28,8 +53,14 @@ bool ofp::detail::IsProtocolRangeValid(const ByteRange &range,
   while (len > 0) {
     assert(len >= alignment);
 
-    UInt16 elemSize = *Big16_cast(ptr + sizeFieldOffset);
-    if (elemSize < minElemSize) {
+    UInt16 elemSize;
+    if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) {
+      elemSize = *Big16_cast(ptr) == 0xffff ? 8 : 4;
+    } else {
+      elemSize = *Big16_cast(ptr + sizeFieldOffset);
+    }
+
+    if (elemSize < 4) {
       log::info("Array element size less than minimum:", context);
       return false;
     }
@@ -65,9 +96,14 @@ bool ofp::detail::IsProtocolRangeValid(const ByteRange &range,
   return true;
 }
 
-size_t ofp::detail::ProtocolRangeItemCount(const ByteRange &range, size_t sizeFieldOffset, size_t alignment) {
-  assert(sizeFieldOffset <= detail::ProtocolIteratorSizeOffsetCutoff);
+size_t ofp::detail::ProtocolRangeItemCount(size_t elementSize, const ByteRange &range, size_t sizeFieldOffset, size_t alignment) {
+  if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_FIXED) {
+    return protocolRangeFixedItemCount(elementSize, range);
+  }
 
+  assert(sizeFieldOffset < 32 || sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL);
+  assert(alignment == 4 || alignment == 8);
+  
   size_t count = 0;
 
   const UInt8 *ptr = range.begin();
@@ -81,8 +117,14 @@ size_t ofp::detail::ProtocolRangeItemCount(const ByteRange &range, size_t sizeFi
   while (len > 0) {
     assert(len >= alignment);
 
-    size_t elemSize = std::max<size_t>(minSize, *Big16_cast(ptr + sizeFieldOffset));
-    assert(elemSize > 0);
+    size_t elemSize;
+    if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) {
+      assert(alignment == 4);
+      elemSize = *Big16_cast(ptr) == 0xffff ? 8 : 4;
+    } else {
+      elemSize = std::max<size_t>(minSize, *Big16_cast(ptr + sizeFieldOffset));
+      assert(elemSize > 0);
+    }
 
     size_t jumpSize = (alignment == 8) ? PadLength(elemSize) : elemSize;
     if (jumpSize > len) break;
@@ -104,12 +146,12 @@ size_t ofp::detail::ProtocolRangeItemCount(const ByteRange &range, size_t sizeFi
 ///   - pointer to start of range is 8-byte aligned.
 ///
 /// \return true if byte range is a valid protocol iterable.
-bool ofp::detail::IsProtocolRangeFixedValid(
-    size_t elemSize, const ByteRange &range, const char *context) {
-  assert(elemSize > 0 && "Element size must not be 0.");
-  assert((elemSize % 8) == 0 && "Element size must be multiple of 8.");
+static bool isProtocolRangeFixedValid(
+    size_t elementSize, const ByteRange &range, const char *context) {
+  assert(elementSize > 0 && "Element size must not be 0.");
+  assert((elementSize % 8) == 0 && "Element size must be multiple of 8.");
 
-  if ((range.size() % elemSize) != 0) {
+  if ((range.size() % elementSize) != 0) {
     log::info("Array element size mismatch:", context);
     return false;
   }
@@ -120,10 +162,10 @@ bool ofp::detail::IsProtocolRangeFixedValid(
 /// Return count of items in the protocol iterable.
 ///
 /// \return number of items in iterable.
-size_t ofp::detail::ProtocolRangeFixedItemCount(
-    size_t elemSize, const ByteRange &range) {
-  assert(elemSize > 0 && "Element size must not be 0.");
-  assert((elemSize % 8) == 0 && "Element size must be multiple of 8.");
+static size_t protocolRangeFixedItemCount(
+    size_t elementSize, const ByteRange &range) {
+  assert(elementSize > 0 && "Element size must not be 0.");
+  assert((elementSize % 8) == 0 && "Element size must be multiple of 8.");
 
-  return range.size() / elemSize;
+  return range.size() / elementSize;
 }

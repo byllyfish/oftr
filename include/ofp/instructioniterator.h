@@ -32,7 +32,8 @@ namespace detail {
 class InstructionIteratorItem : private NonCopyable {
  public:
   enum {
-    ProtocolIteratorSizeOffset = sizeof(InstructionType)
+    ProtocolIteratorSizeOffset = sizeof(InstructionType),
+    ProtocolIteratorAlignment = 8
   };
 
   InstructionType type() const { return type_; }

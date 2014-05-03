@@ -8,7 +8,8 @@ namespace ofp {
 class InstructionID {
  public:
   enum {
-    ProtocolIteratorSizeOffset = sizeof(InstructionType)
+    ProtocolIteratorSizeOffset = sizeof(InstructionType),
+    ProtocolIteratorAlignment = 4
   };
   
   explicit InstructionID(OFPInstructionType type, UInt32 experimenter = 0)

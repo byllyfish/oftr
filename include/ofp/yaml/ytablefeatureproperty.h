@@ -4,6 +4,7 @@
 #include "ofp/tablefeatureproperty.h"
 #include "ofp/yaml/yinstructionids.h"
 #include "ofp/yaml/yactionids.h"
+#include "ofp/yaml/yoxmids.h"
 
 namespace ofp {
 namespace detail {

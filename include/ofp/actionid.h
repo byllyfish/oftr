@@ -9,7 +9,8 @@ class ActionID {
 public:
  public:
   enum {
-    ProtocolIteratorSizeOffset = sizeof(OFPActionType)
+    ProtocolIteratorSizeOffset = sizeof(OFPActionType),
+    ProtocolIteratorAlignment = 4
   };
   
   explicit ActionID(OFPActionType type, UInt32 experimenter = 0)

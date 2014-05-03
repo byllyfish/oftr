@@ -9,7 +9,7 @@ namespace ofp {
 class Queue : private NonCopyable {
  public:
   // Offset of len_ field.
-  enum { ProtocolIteratorSizeOffset = 8 };
+  enum { ProtocolIteratorSizeOffset = 8, ProtocolIteratorAlignment = 8 };
 
   UInt32 queueId() const { return queueId_; }
   UInt32 port() const { return port_; }

@@ -4,83 +4,56 @@
 #include "ofp/constants.h"
 #include "ofp/instructionidlist.h"
 #include "ofp/actionidlist.h"
+#include "ofp/oxmidlist.h"
 
 namespace ofp {
 
 namespace detail {
 
-template <OFPTableFeatureProperty Type>
-class TableFeaturePropertyInstructions {
+OFP_BEGIN_IGNORE_PADDING
+
+template <class RangeType, OFPTableFeatureProperty Type>
+class TableFeatureProperty {
 public:
     constexpr static OFPTableFeatureProperty type() { return Type; }
 
-    TableFeaturePropertyInstructions(InstructionIDRange instructionIds) : instructionIds_{instructionIds} {}
+    TableFeatureProperty(RangeType range) : range_{range} {}
 
-    using ValueType = InstructionIDRange;
-    InstructionIDRange value() const { return ByteRange{BytePtr(this) + FixedHeaderSize, length_ - FixedHeaderSize }; }
-    static InstructionIDRange defaultValue() { return {}; }
-
-private:
-    Big16 type_ = type();
-    Big16 length_;
-    InstructionIDRange instructionIds_;
-
-    enum : size_t { FixedHeaderSize = 4U };
-};
-
-template <OFPTableFeatureProperty Type>
-class TableFeaturePropertyTables {
-public:
-    constexpr static OFPTableFeatureProperty type() { return Type; }
-
-    TableFeaturePropertyTables(ByteRange tableIds) : tableIds_{tableIds} {}
-
-    using ValueType = ByteRange;
+    using ValueType = RangeType;
     ValueType value() const { return ByteRange{BytePtr(this) + FixedHeaderSize, length_ - FixedHeaderSize }; }
     static ValueType defaultValue() { return {}; }
 
 private:
     Big16 type_ = type();
     Big16 length_;
-    ByteRange tableIds_;
+    RangeType range_;
 
     enum : size_t { FixedHeaderSize = 4U };
 };
 
-
-template <OFPTableFeatureProperty Type>
-class TableFeaturePropertyActions {
-public:
-    constexpr static OFPTableFeatureProperty type() { return Type; }
-
-    TableFeaturePropertyActions(ActionIDRange actionIds) : actionIds_{actionIds} {}
-
-    using ValueType = ActionIDRange;
-    ActionIDRange value() const { return ByteRange{BytePtr(this) + FixedHeaderSize, length_ - FixedHeaderSize }; }
-    static ActionIDRange defaultValue() { return {}; }
-
-private:
-    Big16 type_ = type();
-    Big16 length_;
-    ActionIDRange actionIds_;
-
-    enum : size_t { FixedHeaderSize = 4U };
-};
+OFP_END_IGNORE_PADDING
 
 }  // namespace detail
 
 
-using TableFeaturePropertyInstructions = detail::TableFeaturePropertyInstructions<OFPTFPT_INSTRUCTIONS>;
-using TableFeaturePropertyInstructionsMiss = detail::TableFeaturePropertyInstructions<OFPTFPT_INSTRUCTIONS_MISS>;
+using TableFeaturePropertyInstructions = detail::TableFeatureProperty<InstructionIDRange, OFPTFPT_INSTRUCTIONS>;
+using TableFeaturePropertyInstructionsMiss = detail::TableFeatureProperty<InstructionIDRange, OFPTFPT_INSTRUCTIONS_MISS>;
 
-using TableFeaturePropertyNextTables = detail::TableFeaturePropertyTables<OFPTFPT_NEXT_TABLES>;
-using TableFeaturePropertyNextTablesMiss = detail::TableFeaturePropertyTables<OFPTFPT_NEXT_TABLES_MISS>;
+using TableFeaturePropertyNextTables = detail::TableFeatureProperty<ByteRange, OFPTFPT_NEXT_TABLES>;
+using TableFeaturePropertyNextTablesMiss = detail::TableFeatureProperty<ByteRange, OFPTFPT_NEXT_TABLES_MISS>;
 
-using TableFeaturePropertyWriteActions = detail::TableFeaturePropertyActions<OFPTFPT_WRITE_ACTIONS>;
-using TableFeaturePropertyWriteActionsMiss = detail::TableFeaturePropertyActions<OFPTFPT_WRITE_ACTIONS_MISS>;
+using TableFeaturePropertyWriteActions = detail::TableFeatureProperty<ActionIDRange, OFPTFPT_WRITE_ACTIONS>;
+using TableFeaturePropertyWriteActionsMiss = detail::TableFeatureProperty<ActionIDRange, OFPTFPT_WRITE_ACTIONS_MISS>;
+using TableFeaturePropertyApplyActions = detail::TableFeatureProperty<ActionIDRange, OFPTFPT_APPLY_ACTIONS>;
+using TableFeaturePropertyApplyActionsMiss = detail::TableFeatureProperty<ActionIDRange, OFPTFPT_APPLY_ACTIONS_MISS>;
 
-using TableFeaturePropertyApplyActions = detail::TableFeaturePropertyActions<OFPTFPT_APPLY_ACTIONS>;
-using TableFeaturePropertyApplyActionsMiss = detail::TableFeaturePropertyActions<OFPTFPT_APPLY_ACTIONS_MISS>;
+using TableFeaturePropertyMatch = detail::TableFeatureProperty<OXMIDRange, OFPTFPT_MATCH>;
+using TableFeaturePropertyWildcards= detail::TableFeatureProperty<OXMIDRange, OFPTFPT_WILDCARDS>;
+using TableFeaturePropertyWriteSetField = detail::TableFeatureProperty<OXMIDRange, OFPTFPT_WRITE_SETFIELD>;
+using TableFeaturePropertyWriteSetFieldMiss = detail::TableFeatureProperty<OXMIDRange, OFPTFPT_WRITE_SETFIELD_MISS>;
+using TableFeaturePropertyApplySetField = detail::TableFeatureProperty<OXMIDRange, OFPTFPT_APPLY_SETFIELD>;
+using TableFeaturePropertyApplySetFieldMiss = detail::TableFeatureProperty<OXMIDRange, OFPTFPT_APPLY_SETFIELD_MISS>;
+
 
 class TableFeaturePropertyExperimenter {
 public:
@@ -95,30 +68,6 @@ private:
     Big32 expType_;
     ByteList expData_;
 };
-
-#if 0
-class TableFeaturePropertyTables {
-public:
-    TableFeaturePropertyTables(OFPTableFeatureProperty type);
-
-private:
-    Big16 type_;
-    Big16 length_;
-    TableIDList tableIds;
-};
-
-
-class TableFeaturePropertyActions {
-public:
-    TableFeaturePropertyActions(OFPTableFeatureProperty type);
-
-private:
-    Big16 type_;
-    Big16 length_;
-    ActionIDList actionIds;
-};
-#endif //0
-
 
 }  // namespace ofp
 

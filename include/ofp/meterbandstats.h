@@ -2,12 +2,16 @@
 #define OFP_METERBANDSTATS_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/constants.h"
 
 namespace ofp {
 
 class MeterBandStats {
 public:
-    enum { ProtocolIteratorSizeOffset = 0xffff };
+    enum { 
+      ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_FIXED, 
+      ProtocolIteratorAlignment = 8 
+    };
 
     UInt64 packetBandCount() const { return packetBandCount_; }
     UInt64 byteBandCount() const { return byteBandCount_; }

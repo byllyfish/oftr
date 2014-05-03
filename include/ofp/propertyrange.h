@@ -10,7 +10,7 @@ namespace detail {
 class PropertyIteratorItem : private NonCopyable {
  public:
   enum {
-    ProtocolIteratorSizeOffset = sizeof(Big16)
+    ProtocolIteratorSizeOffset = sizeof(Big16), ProtocolIteratorAlignment = 8
   };
 
   UInt16 type() const { return type_; }

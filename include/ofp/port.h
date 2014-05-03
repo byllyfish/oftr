@@ -46,7 +46,10 @@ static_assert(IsTriviallyCopyable<PortName>(), "Expected trivially copyable.");
 class Port {
  public:
   // Port is a fixed size struct; no length field present.
-  enum { ProtocolIteratorSizeOffset = 0xffff };
+  enum { 
+    ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_FIXED, 
+    ProtocolIteratorAlignment = 8
+  };
 
   UInt32 portNo() const { return portNo_; }
   const EnetAddress &hwAddr() const { return hwAddr_; }

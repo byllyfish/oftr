@@ -36,14 +36,32 @@ struct MappingTraits<ofp::MPTableFeatures> {
     ofp::ActionIDRange writeAct = props.valueRange<ofp::TableFeaturePropertyWriteActions>();
     io.mapRequired("write_actions", writeAct);
 
-    ofp::ActionIDRange writeActMiss = props.valueRange<ofp::TableFeaturePropertyWriteActionsMiss>();
+    ofp::ActionIDRange writeActMiss = props.valueRange<ofp::TableFeaturePropertyWriteActionsMiss>(writeAct);
     io.mapOptional("write_actions_miss", writeActMiss, writeAct);
 
     ofp::ActionIDRange applyAct = props.valueRange<ofp::TableFeaturePropertyApplyActions>();
     io.mapRequired("apply_actions", applyAct);
 
-    ofp::ActionIDRange applyActMiss = props.valueRange<ofp::TableFeaturePropertyApplyActionsMiss>();
+    ofp::ActionIDRange applyActMiss = props.valueRange<ofp::TableFeaturePropertyApplyActionsMiss>(applyAct);
     io.mapOptional("apply_actions_miss", applyActMiss, applyAct);
+
+    ofp::OXMIDRange match = props.valueRange<ofp::TableFeaturePropertyMatch>();
+    io.mapRequired("match", match);
+
+    ofp::OXMIDRange wildcards = props.valueRange<ofp::TableFeaturePropertyWildcards>();
+    io.mapRequired("wildcards", wildcards);
+
+    ofp::OXMIDRange writeSetField = props.valueRange<ofp::TableFeaturePropertyWriteSetField>();
+    io.mapRequired("write_set_field", writeSetField);
+
+    ofp::OXMIDRange writeSetFieldMiss = props.valueRange<ofp::TableFeaturePropertyWriteSetFieldMiss>(writeSetField);
+    io.mapOptional("write_set_field_miss", writeSetFieldMiss, writeSetField);
+
+    ofp::OXMIDRange applySetField = props.valueRange<ofp::TableFeaturePropertyApplySetField>();
+    io.mapRequired("apply_set_field", applySetField);
+
+    ofp::OXMIDRange applySetFieldMiss = props.valueRange<ofp::TableFeaturePropertyApplySetFieldMiss>(applySetField);
+    io.mapOptional("apply_set_field_miss", applySetFieldMiss, applySetField);
 
     io.mapRequired("properties", Ref_cast<ofp::detail::TableFeaturePropertyRange>(props));
 

@@ -42,6 +42,12 @@ enum : UInt16 {
   DATALINK_IPV6 = 0x86dd
 };
 
+enum : size_t {
+  // Used by ProtocolIterator template class.
+  PROTOCOL_ITERATOR_SIZE_FIXED = 0xffff,
+  PROTOCOL_ITERATOR_SIZE_CONDITIONAL = 0xfffe
+};
+
 enum {
   OFP_MAX_PORT_NAME_LEN = 16,
   OFP_MAX_TABLE_NAME_LEN = 32

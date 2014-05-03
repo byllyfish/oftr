@@ -31,7 +31,7 @@ namespace detail {
 
 class HelloElement : private NonCopyable {
  public:
-  enum { ProtocolIteratorSizeOffset = 2 };
+  enum { ProtocolIteratorSizeOffset = 2, ProtocolIteratorAlignment = 8 };
 
   UInt16 type() const { return type_; }
 

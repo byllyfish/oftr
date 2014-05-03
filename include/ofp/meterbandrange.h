@@ -11,7 +11,8 @@ namespace detail {
 class MeterBandIteratorItem : private NonCopyable {
  public:
   enum {
-    ProtocolIteratorSizeOffset = sizeof(Big16)
+    ProtocolIteratorSizeOffset = sizeof(Big16),
+    ProtocolIteratorAlignment = 8
   };
 
   OFPMeterBandType type() const { return type_; }
