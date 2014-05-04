@@ -49,12 +49,12 @@
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
-Encoder::Encoder(const std::string &input, ChannelFinder finder)
-    : errorStream_{error_}, finder_{finder} {
+Encoder::Encoder(const std::string &input, bool matchPrereqsChecked, ChannelFinder finder)
+    : errorStream_{error_}, finder_{finder}, matchPrereqsChecked_{matchPrereqsChecked} {
   if (input.empty()) {
     error_ = "No input.";
   } else {
-    llvm::yaml::Input yin{input, nullptr, Encoder::diagnosticHandler, this};
+    llvm::yaml::Input yin{input, this, Encoder::diagnosticHandler, this};
     if (!yin.error()) {
       yin >> *this;
     }

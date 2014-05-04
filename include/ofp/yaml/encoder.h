@@ -40,13 +40,15 @@ class Encoder {
 public:
     using ChannelFinder = std::function<Channel*(const DatapathID &datapathId)>;
 
-	Encoder(const std::string &input, ChannelFinder finder = NullChannelFinder);
+	Encoder(const std::string &input, bool matchPrereqsChecked=true, ChannelFinder finder = NullChannelFinder);
 
 	const UInt8 *data() const { return channel_.data(); }
 	size_t size() const { return channel_.size(); }
 
     const DatapathID &datapathId() const { return datapathId_; }
     UInt8 auxiliaryId() const { return auxiliaryId_; }
+
+    bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
 	const std::string &error() { errorStream_.str(); return error_; }
 
@@ -57,6 +59,7 @@ private:
     DatapathID datapathId_;
     ChannelFinder finder_;
     UInt8 auxiliaryId_ = 0;
+    bool matchPrereqsChecked_;
 
     static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
 

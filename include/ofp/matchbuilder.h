@@ -65,8 +65,18 @@ public:
     }
   }
 
-  void add(OXMType type, const ByteRange &data) {
+  void addUnchecked(OXMType type, const ByteRange &data) {
     list_.add(type, data.data(), data.size());
+  }
+
+  template <class ValueType>
+  void addUnchecked(ValueType value) {
+    list_.add(value);
+  }
+
+  template <class ValueType>
+  void addUnchecked(ValueType value, ValueType mask) {
+    list_.add(value, mask);
   }
 
   void clear() { list_.clear(); }

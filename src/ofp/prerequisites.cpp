@@ -173,12 +173,13 @@ FAILURE:
 
 bool Prerequisites::check(OXMIterator begin, OXMIterator end) const {
   // Check this oxm range against our sequence of prerequisites.
+  assert(begin <= end);
 
   OXMIterator preq = preqs_->begin();
   OXMIterator preqEnd = preqs_->end();
   bool conflict = false;
 
-  while (preq != preqEnd) {
+  while (preq < preqEnd) {
     OXMType preqType = preq.type();
 
     if (preqType.hasMask()) {
@@ -189,8 +190,11 @@ bool Prerequisites::check(OXMIterator begin, OXMIterator end) const {
     } else {
       if (checkPreqValue(preqType, preq, preqEnd, begin, end, &conflict))
         return true;
+      ++preq;  //? TODO
     }
   }
+
+  assert(preq == preqEnd);
 
   return false;
 }
@@ -198,6 +202,7 @@ bool Prerequisites::check(OXMIterator begin, OXMIterator end) const {
 bool Prerequisites::checkPreqMasked(OXMType preqTypeMasked, OXMIterator preq,
                                     OXMIterator begin, OXMIterator end) const {
   assert(preqTypeMasked.hasMask());
+  assert(begin <= end);
 
   OXMType preqType = preqTypeMasked.withoutMask();
   size_t valueLength = preqType.length();
@@ -231,13 +236,15 @@ bool Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin,
                                    OXMIterator end, bool *conflict) const {
   assert(!preqType.hasMask());
   assert(conflict != nullptr);
+  assert(preqBegin <= preqEnd);
+  assert(begin <= end);
 
   OXMType preqTypeMasked = preqType.withMask();
   size_t valueLength = preqType.length();
 
   // Search for any values that match the preq. If we find one, return true.
   OXMIterator pos = begin;
-  while (pos != end) {
+  while (pos < end) {
     OXMType posType = pos.type();
 
     OXMIterator preq = preqBegin;
@@ -270,6 +277,8 @@ bool Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin,
 
     ++pos;
   }
+
+  assert(pos == end);
 
   return false;
 }

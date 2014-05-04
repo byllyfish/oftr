@@ -23,7 +23,7 @@ static int decode_one_message(const ofp::Message *message, const ofp::Message *o
   // Now double-check the result by re-encoding the message. We should obtain 
   // the original message contents.
 
-  ofp::yaml::Encoder encoder{decoder.result()};
+  ofp::yaml::Encoder encoder{decoder.result(), false};
 
   if (!encoder.error().empty()) {
     std::cerr << "Error: Decode succeeded but encode failed: " << encoder.error() << '\n';

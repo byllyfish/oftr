@@ -103,6 +103,15 @@ struct MappingTraits<ofp::PacketInBuilder> {
 
     io.mapOptional("match", msg.match_);
     io.mapRequired("enet_frame", msg.enetFrame_);
+
+    ofp::yaml::Encoder *encoder = reinterpret_cast<ofp::yaml::Encoder *>(io.getContext());
+    if (encoder && encoder->matchPrereqsChecked()) {
+        if (!msg.match_.validate()) {
+          // TODO(bfish) better error message
+          io.setError("Match is ambiguous.");
+          ofp::log::info("Match is ambiguous.");
+        }
+    }
   }
 };
 

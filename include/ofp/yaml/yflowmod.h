@@ -28,6 +28,7 @@
 #include "ofp/yaml/yinstructions.h"
 #include "ofp/flowmod.h"
 #include "ofp/match.h"
+#include "ofp/yaml/encoder.h"
 
 namespace llvm {
 namespace yaml {
@@ -101,10 +102,13 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapRequired("match", msg.match_);
     io.mapRequired("instructions", msg.instructions_);
 
-    if (!msg.match_.validate()) {
-      // TODO(bfish) better error message
-      io.setError("Match is ambiguous.");
-      ofp::log::info("Match is ambiguous.");
+    ofp::yaml::Encoder *encoder = reinterpret_cast<ofp::yaml::Encoder *>(io.getContext());
+    if (encoder && encoder->matchPrereqsChecked()) {
+        if (!msg.match_.validate()) {
+            // TODO(bfish) better error message
+            io.setError("Match is ambiguous.");
+            ofp::log::info("Match is ambiguous.");
+        }
     }
   }
 };

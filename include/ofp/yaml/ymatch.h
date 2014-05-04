@@ -29,6 +29,7 @@
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
+#include "ofp/yaml/encoder.h"
 
 namespace ofp {
 namespace detail {
@@ -65,6 +66,10 @@ public:
                          OXMType type)
         : io_(io), builder_(builder), type_{type}
     {
+        yaml::Encoder *encoder = reinterpret_cast<yaml::Encoder *>(io.getContext());
+        if (encoder) {
+            checkPrereqs_ = encoder->matchPrereqsChecked();
+        }
     }
 
     template <class ValueType>
@@ -75,11 +80,20 @@ public:
             typename ValueType::NativeType mask;
             io_.mapRequired("value", value);
             io_.mapRequired("mask", mask);
-            builder_.add(ValueType{value}, ValueType{mask});
+            if (checkPrereqs_) {
+                builder_.add(ValueType{value}, ValueType{mask});
+            } else {
+                builder_.addUnchecked(ValueType{value}, ValueType{mask});
+            }
+
         } else {
             typename ValueType::NativeType value;
             io_.mapRequired("value", value);
-            builder_.add(ValueType{value});
+            if (checkPrereqs_) {
+                builder_.add(ValueType{value});
+            } else {
+                builder_.addUnchecked(ValueType{value});
+            }
         }
     }
 
@@ -87,6 +101,7 @@ private:
     llvm::yaml::IO &io_;
     MatchBuilder &builder_;
     OXMType type_;
+    bool checkPrereqs_ = true;
 };
 
 OFP_END_IGNORE_PADDING
@@ -206,7 +221,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
             ofp::ByteList data;
             io.mapRequired("value", data);
             if (data.size() == type.length()) {
-                builder.add(type, data);
+                builder.addUnchecked(type, data);
             } else {
                 ofp::log::debug("Invalid data size:", type);
             }

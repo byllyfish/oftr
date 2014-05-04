@@ -82,6 +82,10 @@ public:
     return position_ <= rhs.position_;
   }
 
+  bool operator<(const OXMIterator &rhs) const {
+    return position_ < rhs.position_;
+  }
+
   constexpr const UInt8 *data() const { return position_; }
   size_t size() const { return sizeof(OXMType) + position_[3]; }
 
