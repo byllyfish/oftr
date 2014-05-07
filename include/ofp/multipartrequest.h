@@ -50,6 +50,11 @@ public:
     return p;
   }
 
+  template <class Type>
+  static const MultipartRequest *msg_cast(const Type *body) {
+    return reinterpret_cast<const MultipartRequest *>(BytePtr(body) - sizeof(MultipartRequest));
+  }
+
   enum : size_t {
     UnpaddedSizeVersion1 = 12
   };

@@ -37,6 +37,7 @@
 #include "ofp/yaml/ympmeterfeatures.h"
 #include "ofp/yaml/ymptablefeatures.h"
 #include "ofp/yaml/ympgroupstats.h"
+#include "ofp/yaml/ympexperimenter.h"
 
 namespace ofp {
 namespace detail {
@@ -269,6 +270,13 @@ struct MappingTraits<ofp::MultipartReply> {
         io.mapRequired("body", seq);
         break;
       }
+      case OFPMP_EXPERIMENTER: {
+        MPExperimenter *exper = RemoveConst_cast(msg.body_cast<MPExperimenter>());
+        if (exper) {
+          io.mapRequired("body", *exper);
+        }
+        break;
+      }
       default:
         // FIXME
         log::info("MultiPartReply: MappingTraits not fully implemented.",
@@ -388,6 +396,14 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_EXPERIMENTER: {
+        MPExperimenterBuilder exper;
+        io.mapRequired("body", exper);
+        MemoryChannel channel{msg.version()};
+        exper.write(&channel);
+        msg.setReplyBody(channel.data(), channel.size());
         break;
       }
       default:
