@@ -1,5 +1,5 @@
-#ifndef OFP_YAML_YGROUPDESC_H_
-#define OFP_YAML_YGROUPDESC_H_
+#ifndef OFP_YAML_YMPGROUPDESC_H_
+#define OFP_YAML_YMPGROUPDESC_H_
 
 #include "ofp/mpgroupdesc.h"
 
@@ -31,4 +31,4 @@ struct MappingTraits<ofp::MPGroupDescBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YGROUPDESC_H_
+#endif // OFP_YAML_YMPGROUPDESC_H_

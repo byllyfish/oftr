@@ -3,7 +3,7 @@
 
 using namespace ofp;
 
-MeterBandStatsRange MPMeterStats::bandStats() const {
+PacketCounterRange MPMeterStats::bandStats() const {
     assert(len_ >= sizeof(MPMeterStats));
     return ByteRange{BytePtr(this) + sizeof(MPMeterStats), len_ - sizeof(MPMeterStats)};
 }

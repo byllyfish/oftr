@@ -2,7 +2,7 @@
 #define OFP_YAML_YMPMETERSTATS_H_
 
 #include "ofp/mpmeterstats.h"
-#include "ofp/yaml/ymeterbandstats.h"
+#include "ofp/yaml/ypacketcounter.h"
 
 namespace llvm {
 namespace yaml {
@@ -18,7 +18,7 @@ struct MappingTraits<ofp::MPMeterStats> {
     io.mapRequired("duration_sec", body.durationSec_);
     io.mapRequired("duration_nsec", body.durationNSec_);
 
-    ofp::MeterBandStatsRange bands = body.bandStats();
+    ofp::PacketCounterRange bands = body.bandStats();
     io.mapRequired("bands", bands);
   }
 };

@@ -103,6 +103,8 @@ set(LIBOFP_SOURCES
 	src/ofp/message.cpp
   src/ofp/metermod.cpp
   src/ofp/mpgroupdesc.cpp
+  src/ofp/mpgroupstats.cpp
+  src/ofp/mpgroupstatsrequest.cpp
   src/ofp/mpmeterconfig.cpp
   src/ofp/mpmeterconfigrequest.cpp
   src/ofp/mpmeterstats.cpp

@@ -30,6 +30,7 @@
 #include "ofp/yaml/ympqueuestatsrequest.h"
 #include "ofp/yaml/ympmeterconfigrequest.h"
 #include "ofp/yaml/ymptablefeatures.h"
+#include "ofp/yaml/ympgroupstatsrequest.h"
 #include "ofp/mpmeterstatsrequest.h"
 #include "ofp/memorychannel.h"
 
@@ -100,6 +101,13 @@ struct MappingTraits<ofp::MultipartRequest> {
         }
         break;
       }
+      case OFPMP_GROUP: {
+        const MPGroupStatsRequest *stats = MPGroupStatsRequest::cast(&msg);
+        if (stats) {
+          io.mapRequired("body", RemoveConst_cast(*stats));
+        }
+        break;
+      }
       default:
         // FIXME - implement the rest.
         log::debug("MultipartRequest MappingTraits not fully implemented.");
@@ -163,6 +171,14 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
       }
       case OFPMP_METER: {
         MPMeterStatsRequestBuilder stats;
+        io.mapRequired("body", stats);
+        MemoryChannel channel{msg.msg_.header_.version()};
+        stats.write(&channel);
+        msg.setRequestBody(channel.data(), channel.size());
+        break;
+      }
+      case OFPMP_GROUP: {
+        MPGroupStatsRequestBuilder stats;
         io.mapRequired("body", stats);
         MemoryChannel channel{msg.msg_.header_.version()};
         stats.write(&channel);

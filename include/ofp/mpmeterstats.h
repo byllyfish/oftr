@@ -1,10 +1,8 @@
 #ifndef OFP_MPMETERSTATS_H_
 #define OFP_MPMETERSTATS_H_
 
-#include "ofp/meterbandstatslist.h"
+#include "ofp/packetcounterlist.h"
 #include "ofp/padding.h"
-
-#include "ofp/meterbandstatsrange.h"
 
 namespace ofp {
 
@@ -21,7 +19,7 @@ public:
     UInt32 durationSec() const { return durationSec_; }
     UInt32 durationNSec() const { return durationNSec_; }
 
-    MeterBandStatsRange bandStats() const;
+    PacketCounterRange bandStats() const;
     
 private:
     Big32 meterId_;
@@ -58,7 +56,7 @@ public:
 
 private:
     MPMeterStats msg_;
-    MeterBandStatsList bandStats_;
+    PacketCounterList bandStats_;
 
     template <class T>
     friend struct llvm::yaml::MappingTraits;
