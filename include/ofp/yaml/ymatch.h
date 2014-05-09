@@ -27,6 +27,7 @@
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
+#include "ofp/yaml/yoxmtype.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/yaml/encoder.h"
@@ -165,34 +166,6 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     }
 };
 
-template <>
-struct ScalarTraits<ofp::OXMType> {
-    static void output(const ofp::OXMType &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        const ofp::OXMTypeInfo *info = value.lookupInfo();
-        if (info) {
-            out << info->name;
-        } else {
-            out << value.oxmNative();
-        }
-    }
-
-    static StringRef input(StringRef scalar, void *ctxt, ofp::OXMType &value)
-    {
-        if (!value.parse(scalar)) {
-            unsigned long long num;
-            if (llvm::getAsUnsignedInteger(scalar, 0, num) == 0) {
-                value.setOxmNative(ofp::UInt32_narrow_cast(num));
-                return "";
-            }
-
-            return "Invalid OXM type.";
-        }
-
-        return "";
-    }
-};
 
 template <>
 struct SequenceTraits<ofp::MatchBuilder> {

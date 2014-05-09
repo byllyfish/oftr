@@ -1,6 +1,8 @@
 #ifndef OFP_YAML_YOXMIDS_H_
 #define OFP_YAML_YOXMIDS_H_
 
+#include "ofp/yaml/yoxmtype.h"
+
 namespace llvm {
 namespace yaml {
 
@@ -9,16 +11,20 @@ struct ScalarTraits<ofp::OXMID> {
     static void output(const ofp::OXMID &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
-      out << value.type();
+      ScalarTraits<ofp::OXMType>::output(value.type(), ctxt, out);
+      //out << value.type();
     }
 
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::OXMID &value)
     {
-        //if (!value.parse(scalar)) {
-        //    return "Invalid OXMID.";
-        //}
-        return "";
+      ofp::OXMType type;
+      StringRef result = ScalarTraits<ofp::OXMType>::input(scalar, ctxt, type);
+      if (result.empty()) {
+        value = ofp::OXMID{type, 0};
+      }
+
+      return result;
     }
 };
 
@@ -35,6 +41,8 @@ struct SequenceTraits<ofp::OXMIDRange> {
     ofp::OXMIDIterator iter = range.nthItem(index);
     return RemoveConst_cast(*iter);
   }
+
+  static const bool flow = true;
 };
 
 }  // namespace yaml

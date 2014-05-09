@@ -24,6 +24,7 @@
 
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
+#include "llvm/Support/Format.h"
 #include "ofp/yaml/yconstants.h"
 #include "ofp/header.h"
 

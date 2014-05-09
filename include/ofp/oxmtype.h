@@ -72,7 +72,10 @@ public:
   void setOxmNative(UInt32 value) { value32_ = BigEndianFromNative(value); }
 
   const OXMTypeInfo *lookupInfo() const;
+  const OXMTypeInfo *lookupInfo_IgnoreLength() const;
+
   OXMInternalID internalID() const;
+  OXMInternalID internalID_IgnoreLength() const;
 
   bool parse(const std::string &s);
 
@@ -83,7 +86,8 @@ private:
     MaskBits = BigEndianFromNative(0x0100U),
     End7Bits = BigEndianFromNative(0x007FU),
     End8Bits = BigEndianFromNative(0x00FFU),
-    End8RightShift = (End8Bits == 0x00FFU ? 0 : 24)
+    End8RightShift = (End8Bits == 0x00FFU ? 0 : 24),
+    Prefix24Bits = ~End8Bits
   };
 
   constexpr explicit OXMType(const UInt32 &value) : value32_{value} {}

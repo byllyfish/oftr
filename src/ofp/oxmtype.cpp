@@ -24,10 +24,20 @@
 #include "ofp/oxmfields.h"
 #include <algorithm>
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
+
 
 const OXMTypeInfo *OXMType::lookupInfo() const {
   unsigned idx = static_cast<unsigned>(internalID());
+  if (idx < OXMTypeInfoArraySize) {
+    return &OXMTypeInfoArray[idx];
+  }
+
+  return nullptr;
+}
+
+const OXMTypeInfo *OXMType::lookupInfo_IgnoreLength() const {
+  unsigned idx = static_cast<unsigned>(internalID_IgnoreLength());
   if (idx < OXMTypeInfoArraySize) {
     return &OXMTypeInfoArray[idx];
   }
@@ -54,6 +64,23 @@ OXMInternalID OXMType::internalID() const {
   return OXMInternalID::UNKNOWN;
 }
 
+
+// \returns Internal ID for OXMType, or OXMInternalID::UNKNOWN if not found.
+OXMInternalID OXMType::internalID_IgnoreLength() const {
+  // Get unmasked value before we search for it.
+  UInt32 value32 = (withoutMask() & Prefix24Bits);
+
+  const OXMTypeInternalMapEntry *begin = &OXMTypeInternalMapArray[0];
+  const OXMTypeInternalMapEntry *end = begin + OXMTypeInfoArraySize;
+
+  begin = std::find_if(begin, end, [value32](const OXMTypeInternalMapEntry &item) { return (item.value32 & Prefix24Bits) == value32; });
+  if (begin != end) {
+    return begin->id;
+  }
+
+  return OXMInternalID::UNKNOWN;
+}
+
 bool OXMType::parse(const std::string &s) {
   // TODO(bfish): make faster
   for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {
@@ -66,4 +93,3 @@ bool OXMType::parse(const std::string &s) {
   return false;
 }
 
-} // </namespace ofp>
