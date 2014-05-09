@@ -21,7 +21,7 @@
 
 #include "ofp/oxmlist.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
 
 void OXMList::insert(OXMIterator pos, const void *data, size_t len) {
   buf_.insert(pos.data(), data, len);
@@ -52,4 +52,16 @@ OXMIterator OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type,
   return rest;
 }
 
-} // </namespace ofp>
+OXMIterator OXMList::findValue(OXMType type) const {
+  OXMIterator iterEnd = end();
+  for (OXMIterator iter = begin(); iter < iterEnd; ++iter) {
+    if (iter->type() == type)
+      return iter;
+  }
+  return iterEnd;
+}
+
+void OXMList::replaceValue(OXMIterator pos, const void *data, size_t len) {
+  std::memcpy(const_cast<UInt8 *>(pos->unknownValuePtr()), data, len);
+}
+

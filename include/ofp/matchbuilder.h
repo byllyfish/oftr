@@ -79,6 +79,11 @@ public:
     list_.add(value, mask);
   }
 
+  template <class ValueType>
+  void replaceUnchecked(ValueType value) {
+    list_.replace(value);
+  }
+
   void clear() { list_.clear(); }
 
   bool validate() const {

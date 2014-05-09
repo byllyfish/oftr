@@ -2,18 +2,19 @@
 #define OFP_YAML_ENUMCONVERTER_H_
 
 #include "llvm/ADT/StringRef.h"
+#include "llvm/ADT/ArrayRef.h"
 
 namespace ofp {
 namespace yaml {
 
-template <class Type, size_t N>
+template <class Type>
 class EnumConverter {
  public:
-  constexpr EnumConverter(const char *const (&names)[N]) : names_{names} {}
+  constexpr EnumConverter(llvm::ArrayRef<const char *> names) : names_{names} {}
 
   bool convert(llvm::StringRef name, Type *value) {
     // Check for name match.
-    for (size_t i = 0; i < N; ++i) {
+    for (size_t i = 0, len = names_.size(); i < len; ++i) {
       if (equals(name, i)) {
         *value = static_cast<Type>(i);
         return true;
@@ -29,7 +30,7 @@ class EnumConverter {
   }
 
   bool convert(Type value, const char **name) const {
-    if (value < N && value >= 0) {
+    if (value < names_.size() && value >= 0) {
       *name = names_[value];
       return true;
     }
@@ -37,8 +38,7 @@ class EnumConverter {
   }
 
  private:
-  using Name = const char *const;
-  const Name *const names_;
+  llvm::ArrayRef<const char *> names_;
 
   bool equals(llvm::StringRef name, size_t i) const {
     const char *p = name.data();
@@ -55,9 +55,9 @@ class EnumConverter {
   }
 };
 
-template <class Type, size_t N>
-EnumConverter<Type, N> MakeEnumConverter(const char *const (&names)[N]) {
-  return EnumConverter<Type, N>{names};
+template <class Type>
+EnumConverter<Type> MakeEnumConverter(llvm::ArrayRef<const char *> names) {
+  return EnumConverter<Type>{names};
 }
 
 }  // namespace yaml

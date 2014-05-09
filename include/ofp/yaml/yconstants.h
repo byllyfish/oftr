@@ -132,19 +132,35 @@ struct ScalarEnumerationTraits<ofp::OFPActionType> {
   }
 };
 
+
 template <>
-struct ScalarEnumerationTraits<ofp::OFPPacketInReason> {
-  static void enumeration(IO &io, ofp::OFPPacketInReason &value) {
-    OFP_YAML_ENUMCASE(OFPR_NO_MATCH);
-    OFP_YAML_ENUMCASE(OFPR_ACTION);
-    OFP_YAML_ENUMCASE(OFPR_INVALID_TTL);
+struct ScalarTraits<ofp::OFPPacketInReason> {
+  static ofp::yaml::EnumConverter<ofp::OFPPacketInReason> converter;
+
+  static void output(const ofp::OFPPacketInReason &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    const char *scalar;
+    if (converter.convert(value, &scalar)) {
+      out << scalar;
+    } else {
+      out << int(value);
+    }
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::OFPPacketInReason &value) {
+    if (converter.convert(scalar, &value)) {
+      return "";
+    }
+
+    return "Invalid enumerated constant.";
   }
 };
 
 
 template <>
 struct ScalarTraits<ofp::OFPFlowModCommand> {
-  static ofp::yaml::EnumConverter<ofp::OFPFlowModCommand, ofp::OFPFC_LAST+1> converter;
+  static ofp::yaml::EnumConverter<ofp::OFPFlowModCommand> converter;
 
   static void output(const ofp::OFPFlowModCommand &value, void *ctxt,
                      llvm::raw_ostream &out) {

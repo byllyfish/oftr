@@ -52,6 +52,9 @@ public:
   template <class ValueType>
   void add(ValueType value, ValueType mask);
 
+  template <class ValueType>
+  void replace(ValueType value);
+
   void add(OXMType type, const void *data, size_t len);
   void add(OXMType type, const void *data, const void *mask, size_t len);
 
@@ -71,8 +74,10 @@ public:
 private:
   ByteList buf_;
 
-  // void add(const void *data, size_t len);
   void insert(OXMIterator pos, const void *data, size_t len);
+
+  OXMIterator findValue(OXMType type) const;
+  void replaceValue(OXMIterator pos, const void *data, size_t len);
 };
 
 template <class ValueType>
@@ -87,6 +92,18 @@ inline void OXMList::add(ValueType value, ValueType mask) {
   static_assert(sizeof(value) < 128, "oxm_length must be <= 255.");
 
   add(ValueType::type().withMask(), &value, &mask, sizeof(value));
+}
+
+template <class ValueType>
+inline void OXMList::replace(ValueType value) {
+  static_assert(sizeof(value) < 256, "oxm_length must be <= 255.");
+
+  OXMIterator iter = this->findValue(ValueType::type());
+  if (iter != end()) {
+    this->replaceValue(iter, &value, sizeof(value));
+  } else {
+    add(ValueType::type(), &value, sizeof(value));
+  }
 }
 
 inline void OXMList::add(OXMIterator iter) {

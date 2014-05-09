@@ -75,20 +75,27 @@ public:
     template <class ValueType>
     void visit()
     {
-        if (type_.hasMask()) {
-            typename ValueType::NativeType value;
-            typename ValueType::NativeType mask;
-            io_.mapRequired("value", value);
-            io_.mapRequired("mask", mask);
-            if (checkPrereqs_) {
-                builder_.add(ValueType{value}, ValueType{mask});
-            } else {
-                builder_.addUnchecked(ValueType{value}, ValueType{mask});
-            }
+        assert(!type_.hasMask());
 
+        typename ValueType::NativeType value;
+        io_.mapRequired("value", value);
+
+        llvm::Optional<decltype(value)> optMask;
+        io_.mapOptional("mask", optMask);
+
+        if (optMask.hasValue()) {
+            if (checkPrereqs_) {
+                if (!ValueType::maskSupported()) {
+                    // TODO(bfish) better error message
+                    io_.setError("Mask is not supported.");
+                    ofp::log::info("Match is not supported:", type_);
+                } else {
+                    builder_.add(ValueType{value}, ValueType{*optMask});
+                }
+            } else {
+                builder_.addUnchecked(ValueType{value}, ValueType{*optMask});
+            }
         } else {
-            typename ValueType::NativeType value;
-            io_.mapRequired("value", value);
             if (checkPrereqs_) {
                 builder_.add(ValueType{value});
             } else {

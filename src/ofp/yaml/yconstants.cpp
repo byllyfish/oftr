@@ -8,5 +8,10 @@ static const char *sFlowModCommands[] = {"OFPFC_ADD", "OFPFC_MODIFY",
                                          "OFPFC_MODIFY_STRICT", "OFPFC_DELETE",
                                          "OFPFC_DELETE_STRICT"};
 
-EnumConverter<OFPFlowModCommand, OFPFC_LAST + 1>
+static const char *sPacketInReason[] = {"OFPR_NO_MATCH", "OFPR_ACTION", "OFPR_INVALID_TTL"};
+
+EnumConverter<OFPFlowModCommand>
     llvm::yaml::ScalarTraits<OFPFlowModCommand>::converter{sFlowModCommands};
+
+EnumConverter<OFPPacketInReason>
+    llvm::yaml::ScalarTraits<OFPPacketInReason>::converter{sPacketInReason};

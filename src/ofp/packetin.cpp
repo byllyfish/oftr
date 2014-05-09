@@ -317,13 +317,13 @@ UInt32 PacketInBuilder::sendV4(Writable *channel) {
   // there are other fields already added.
 
   if (inPort_)
-    match_.add(OFB_IN_PORT{inPort_});
+    match_.replaceUnchecked(OFB_IN_PORT{inPort_});
 
   if (inPhyPort_ && (inPhyPort_ != inPort_))
-    match_.add(OFB_IN_PHY_PORT{inPhyPort_});
+    match_.replaceUnchecked(OFB_IN_PHY_PORT{inPhyPort_});
 
   if (metadata_)
-    match_.add(OFB_METADATA{metadata_});
+    match_.replaceUnchecked(OFB_METADATA{metadata_});
 
   // TODO(bfish): TUNNEL_ID
 
