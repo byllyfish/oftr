@@ -32,6 +32,7 @@
 #include "ofp/yaml/ymptablefeatures.h"
 #include "ofp/yaml/ympgroupstatsrequest.h"
 #include "ofp/yaml/ympexperimenter.h"
+#include "ofp/yaml/ympreplyseq.h"
 #include "ofp/mpmeterstatsrequest.h"
 #include "ofp/memorychannel.h"
 
@@ -107,6 +108,11 @@ struct MappingTraits<ofp::MultipartRequest> {
         if (stats) {
           io.mapRequired("body", RemoveConst_cast(*stats));
         }
+        break;
+      }
+      case OFPMP_TABLE_FEATURES: {
+        ofp::detail::MPReplyVariableSizeSeq<MPTableFeatures> seq{msg};
+        io.mapRequired("body", seq);
         break;
       }
       case OFPMP_EXPERIMENTER: {
@@ -191,6 +197,13 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         MemoryChannel channel{msg.msg_.header_.version()};
         stats.write(&channel);
         msg.setRequestBody(channel.data(), channel.size());
+        break;
+      }
+      case OFPMP_TABLE_FEATURES: {
+        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setRequestBody(seq.data(), seq.size());
         break;
       }
       case OFPMP_EXPERIMENTER: {
