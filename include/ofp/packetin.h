@@ -25,6 +25,7 @@
 #include "ofp/protocolmsg.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
+#include "ofp/matchheader.h"
 
 namespace ofp {
 
@@ -55,14 +56,13 @@ private:
   Big8 tableID_;
   Big64 cookie_;
 
-  Big16 matchType_ = 0;
-  Big16 matchLength_ = 0;
+  MatchHeader matchHeader_;
   Padding<4> pad_;
 
   // Only PacketInBuilder can construct an instance.
   PacketIn() : header_{type()} {}
 
-  OXMRange oxmRange() const;
+  const MatchHeader *matchHeader() const;
 
   template <class Type>
   Type offset(size_t offset) const {
@@ -75,8 +75,7 @@ private:
 
   enum : size_t {
     UnpaddedSizeWithMatchHeader = 28,
-    SizeWithoutMatchHeader = 24,
-    MatchHeaderSize = 4,
+    SizeWithoutMatchHeader = 24
   };
 
   friend class PacketInBuilder;

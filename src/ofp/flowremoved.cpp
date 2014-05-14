@@ -27,34 +27,23 @@
 using namespace ofp;
 
 bool FlowRemoved::validateInput(size_t length) const {
-  if (length != PadLength(matchLength_ + SizeWithoutMatchHeader))
+  if (length != SizeWithoutMatchHeader + matchHeader_.paddedLength()) {
+    log::debug("FlowRemoved: Invalid length.");
     return false;
+  }
 
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+    log::debug("FlowRemoved: Invalid match.");
+    return false;
+  }
+  
   return true;
 }
 
 Match FlowRemoved::match() const {
   assert(validateInput(header_.length()));
 
-  UInt16 type = matchType_;
-
-  if (type == OFPMT_OXM) {
-    assert(matchLength_ >= MatchHeaderSize);
-    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader,
-                   matchLength_ - MatchHeaderSize};
-    return Match{range};
-
-  } else if (type == OFPMT_STANDARD) {
-    assert(matchLength_ == deprecated::OFPMT_STANDARD_LENGTH);
-    const deprecated::StandardMatch *stdMatch =
-        reinterpret_cast<const deprecated::StandardMatch *>(
-            BytePtr(this) + SizeWithoutMatchHeader);
-    return Match{stdMatch};
-
-  } else {
-    log::debug("Unknown matchType:", type);
-    return Match{OXMRange{nullptr, 0}};
-  }
+  return Match{&matchHeader_};
 }
 
 FlowRemovedBuilder::FlowRemovedBuilder(const FlowRemoved *msg) : msg_{*msg} {
@@ -82,9 +71,8 @@ UInt32 FlowRemovedBuilder::send(Writable *channel) {
   msg_.header_.setXid(xid);
 
   // Fill in the match header.
-  msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ =
-      UInt16_narrow_cast(FlowRemoved::MatchHeaderSize + match_.size());
+  msg_.matchHeader_.setType(OFPMT_OXM);
+  msg_.matchHeader_.setLength(sizeof(MatchHeader) + match_.size());
 
   channel->write(&msg_, FlowRemoved::UnpaddedSizeWithMatchHeader);
   channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);

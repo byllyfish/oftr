@@ -63,11 +63,11 @@ public:
   bool validateInput() const {
     assert(begin_ <= end_);
     const UInt8 *pos = begin_;
-    int left = static_cast<int>(end_ - begin_);
+    size_t left = static_cast<size_t>(end_ - begin_);
     while (pos < end_) {
       if (left < 4)
         return false;
-      UInt8 len = sizeof(OXMType) + pos[3];
+      size_t len = sizeof(OXMType) + pos[3];
       if (left < len)
         return false;
       pos += len;

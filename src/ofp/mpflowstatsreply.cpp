@@ -26,28 +26,13 @@
 using namespace ofp;
 
 Match MPFlowStatsReply::match() const {
-  UInt16 type = matchType_;
-
-  if (type == OFPMT_OXM) {
-    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_ - MatchHeaderSize};
-    return Match{range};
-
-  } else if (type == OFPMT_STANDARD) {
-    const deprecated::StandardMatch *stdMatch =
-        reinterpret_cast<const deprecated::StandardMatch *>(
-            BytePtr(this) + SizeWithoutMatchHeader);
-    return Match{stdMatch};
-
-  } else {
-    log::debug("MPFlowStatsReply: Unknown matchType:", type);
-    return Match{OXMRange{nullptr, 0}};
-  }
+  return Match{&matchHeader_};
 }
 
 InstructionRange MPFlowStatsReply::instructions() const {
-  assert(matchType_ == OFPMT_OXM || matchType_ == OFPMT_STANDARD);
+  assert(matchHeader_.type() == OFPMT_OXM || matchHeader_.type() == OFPMT_STANDARD);
 
-  size_t offset = PadLength(SizeWithoutMatchHeader + matchLength_);
+  size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   assert(length_ >= offset);
 
   return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
@@ -67,8 +52,8 @@ void MPFlowStatsReplyBuilder::write(Writable *channel) {
   size_t msgLen = msgMatchLenPadded + instructions_.size();
 
   msg_.length_ = UInt16_narrow_cast(msgLen);
-  msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ = UInt16_narrow_cast(MPFlowStatsReply::MatchHeaderSize + match_.size());
+  msg_.matchHeader_.setType(OFPMT_OXM);
+  msg_.matchHeader_.setLength(sizeof(MatchHeader) + match_.size());
 
   channel->write(&msg_, MPFlowStatsReply::UnpaddedSizeWithMatchHeader);
   channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);

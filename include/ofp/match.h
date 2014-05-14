@@ -23,17 +23,14 @@
 #define OFP_MATCH_H_
 
 #include "ofp/standardmatch.h"
+#include "ofp/matchheader.h"
 
 namespace ofp {
 
 class Match {
 public:
-  explicit Match(OXMRange range) : oxm_{range} {
-    log::debug("Match created:", range);
-  }
-
-  explicit Match(const deprecated::StandardMatch *match)
-      : oxm_{match->toOXMList()} {}
+  Match() = default;
+  explicit Match(const MatchHeader *matchHeader);
 
   /// \returns number of items in the match.
   size_t itemCount() const {
@@ -41,7 +38,6 @@ public:
   }
 
   OXMIterator begin() const { return oxm_.begin(); }
-
   OXMIterator end() const { return oxm_.end(); }
 
   OXMRange toRange() const { return oxm_.toRange(); }

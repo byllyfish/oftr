@@ -57,27 +57,13 @@ bool PacketIn::validateInput(size_t length) const {
     break;
   }
 
-  if (length < UnpaddedSizeWithMatchHeader) {
+  if (length < SizeWithoutMatchHeader) {
     log::info("PacketIn too small.");
     return false;
   }
 
-  // Check the match length.
-  UInt16 matchLen = matchLength_;
-
-  if (matchLen < MatchHeaderSize) {
-    log::info("PacketIn has invalid match length.");
-    return false;
-  }
-
-  if (length < SizeWithoutMatchHeader + matchLen) {
-    log::info("PacketIn has mismatched lengths.");
-    return false;
-  }
-
-  // Check the match contents.
-  if (!oxmRange().validateInput()) {
-    log::info("PacketIn has incorrect oxm range:", oxmRange());
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+    log::info("PacketIn has invalid Match element.");
     return false;
   }
 
@@ -140,7 +126,7 @@ UInt32 PacketIn::inPort() const {
   case OFP_VERSION_2:
     return offset<Big32>(12);
   default:
-    return oxmRange().get<OFB_IN_PORT>();
+    return matchHeader()->oxmRange().get<OFB_IN_PORT>();
   }
 }
 
@@ -151,7 +137,7 @@ UInt32 PacketIn::inPhyPort() const {
   case OFP_VERSION_2:
     return offset<Big32>(16);
   default:
-    return oxmRange().get<OFB_IN_PHY_PORT>();
+    return matchHeader()->oxmRange().get<OFB_IN_PHY_PORT>();
   }
 }
 
@@ -161,7 +147,7 @@ UInt64 PacketIn::metadata() const {
   case OFP_VERSION_2:
     return 0;
   default:
-    return oxmRange().get<OFB_METADATA>();
+    return matchHeader()->oxmRange().get<OFB_METADATA>();
   }
 }
 
@@ -180,9 +166,9 @@ Match PacketIn::match() const {
   switch (version()) {
   case OFP_VERSION_1:
   case OFP_VERSION_2:
-    return Match{OXMRange{}};
+    return Match{};
   default:
-    return Match{oxmRange()};
+    return Match{matchHeader()};
   }
 }
 
@@ -195,7 +181,7 @@ ByteRange PacketIn::enetFrame() const {
     assert(msgLen >= 18U);
     return ByteRange{BytePtr(this) + 18, msgLen - 18U};
   case OFP_VERSION_4:
-    offset = PadLength(SizeWithoutMatchHeader + matchLength_) + 2;
+    offset = SizeWithoutMatchHeader + matchHeader_.paddedLength() + 2;
     if (offset >= msgLen) {
       return ByteRange{};
     }
@@ -205,21 +191,16 @@ ByteRange PacketIn::enetFrame() const {
   }
 }
 
-OXMRange PacketIn::oxmRange() const {
+const MatchHeader *PacketIn::matchHeader() const {
   assert(version() >= OFP_VERSION_3);
 
   switch (version()) {
-  case OFP_VERSION_1:
-  case OFP_VERSION_2:
-    return OXMRange{};
-  case OFP_VERSION_3: {
-    UInt16 mlen = offset<Big16>(18);
-    assert(mlen >= 4U);
-    return OXMRange{BytePtr(this) + 20, mlen - 4U};
-  }
-  default:
-    assert(matchLength_ >= 4U);
-    return OXMRange{BytePtr(this) + UnpaddedSizeWithMatchHeader, matchLength_ - 4U};
+    case OFP_VERSION_3:
+      return reinterpret_cast<const MatchHeader *>(BytePtr(this) + 16);
+    case OFP_VERSION_4:
+      return &matchHeader_;
+    default:
+      return nullptr;
   }
 }
 
@@ -347,9 +328,8 @@ UInt32 PacketInBuilder::sendV4(Writable *channel) {
   hdr.setXid(xid);
 
   // Fill in the match header.
-  msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ =
-      UInt16_narrow_cast(PacketIn::MatchHeaderSize + match_.size());
+  msg_.matchHeader_.setType(OFPMT_OXM);
+  msg_.matchHeader_.setLength(sizeof(MatchHeader) + match_.size());
 
   // Write the message with padding in the correct spots.
   Padding<8> pad;

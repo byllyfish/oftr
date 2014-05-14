@@ -28,29 +28,11 @@ namespace ofp { // <namespace ofp>
 Match FlowMod::match() const {
   assert(validateInput(header_.length()));
 
-  UInt16 type = matchType_;
-
-  if (type == OFPMT_OXM) {
-    assert(matchLength_ >= MatchHeaderSize);
-    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader,
-                   matchLength_ - MatchHeaderSize};
-    return Match{range};
-
-  } else if (type == OFPMT_STANDARD) {
-    assert(matchLength_ == deprecated::OFPMT_STANDARD_LENGTH);
-    const deprecated::StandardMatch *stdMatch =
-        reinterpret_cast<const deprecated::StandardMatch *>(
-            BytePtr(this) + SizeWithoutMatchHeader);
-    return Match{stdMatch};
-
-  } else {
-    log::debug("Unknown matchType:", type);
-    return Match{OXMRange{nullptr, 0}};
-  }
+  return Match{&matchHeader_};
 }
 
 InstructionRange FlowMod::instructions() const {
-  size_t offset = PadLength(SizeWithoutMatchHeader + matchLength_);
+  size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   assert(header_.length() >= offset);
 
   return InstructionRange{
@@ -63,32 +45,9 @@ bool FlowMod::validateInput(size_t length) const {
     return false;
   }
 
-  // Check the match length.
-  UInt16 matchLen = matchLength_;
-  if (matchLen < MatchHeaderSize) {
-    log::debug("Match header size too small", matchLen);
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+    log::info("FlowMod: invalid match");
     return false;
-  }
-
-  if (length < SizeWithoutMatchHeader + matchLen) {
-    log::debug("FlowMod too small with match", length);
-    return false;
-  }
-
-  UInt16 matchType = matchType_;
-  if (matchType == OFPMT_OXM) {
-    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader,
-                   matchLen - MatchHeaderSize};
-    if (!range.validateInput()) {
-      log::debug("FlowMod OXM list has length mismatch");
-      return false;
-    }
-
-  } else if (matchType == OFPMT_STANDARD) {
-    if (matchLen != deprecated::OFPMT_STANDARD_LENGTH) {
-      log::debug("FlowMod StandardMatch unexpected length", matchLen);
-      return false;
-    }
   }
 
   return true;
@@ -130,9 +89,8 @@ UInt32 FlowModBuilder::send(Writable *channel) {
   hdr.setXid(xid);
 
   // Fill in the match header.
-  msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ =
-      UInt16_narrow_cast(FlowMod::MatchHeaderSize + match_.size());
+  msg_.matchHeader_.setType(OFPMT_OXM);
+  msg_.matchHeader_.setLength(sizeof(MatchHeader) + match_.size());
 
   // Write the message with padding in the correct spots.
   channel->write(&msg_, FlowMod::UnpaddedSizeWithMatchHeader);

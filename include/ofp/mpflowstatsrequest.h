@@ -57,14 +57,12 @@ private:
   Big64 cookie_;
   Big64 cookieMask_;
 
-  Big16 matchType_ = 0;
-  Big16 matchLength_ = 0;
+  MatchHeader matchHeader_;
   Padding<4> pad_3;
 
   enum : size_t {
     UnpaddedSizeWithMatchHeader = 36,
-    SizeWithoutMatchHeader = 32,
-    HeaderSize = 4
+    SizeWithoutMatchHeader = 32
   };
 
   friend class MPFlowStatsRequestBuilder;

@@ -26,8 +26,8 @@
 #include "ofp/padding.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
+#include "ofp/matchheader.h"
 #include "ofp/instructionlist.h"
-#include "ofp/standardmatch.h"
 #include "ofp/instructionrange.h"
 
 namespace ofp {
@@ -66,14 +66,12 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   Big16 flags_ = 0;
   Padding<2> pad_1;
 
-  Big16 matchType_ = 0;
-  Big16 matchLength_ = 0;
+  MatchHeader matchHeader_;
   Padding<4> pad_2;
 
   enum : size_t {
     UnpaddedSizeWithMatchHeader = 52,
-    SizeWithoutMatchHeader = 48,
-    MatchHeaderSize = 4
+    SizeWithoutMatchHeader = 48
   };
 
   // Only FlowModBuilder can construct an instance.

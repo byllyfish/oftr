@@ -78,8 +78,7 @@ private:
   Big64 packetCount_;
   Big64 byteCount_;
 
-  Big16 matchType_ = 0;
-  Big16 matchLength_ = 0;
+  MatchHeader matchHeader_;
   Padding<4> pad_2;
 
   // Only FlowRemovedBuilder can create an instance.
@@ -87,9 +86,7 @@ private:
 
   enum : size_t {
     UnpaddedSizeWithMatchHeader = 52,
-    SizeWithoutMatchHeader = 48,
-    MatchHeaderSize = 4,
-    MinimumSize = 56
+    SizeWithoutMatchHeader = 48
   };
 
   friend class FlowRemovedBuilder;

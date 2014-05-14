@@ -31,8 +31,18 @@ const MPFlowStatsRequest *MPFlowStatsRequest::cast(const MultipartRequest *req) 
 }
 
 bool MPFlowStatsRequest::validateInput(size_t length) const {
-  if (length < sizeof(MPFlowStatsRequest)) {
-    log::debug("MPFlowStatsRequest: Validation failed.");
+  if (length < SizeWithoutMatchHeader) {
+    log::debug("MPFlowStatsRequest: Too short.");
+    return false;
+  }
+
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+    log::debug("MPFlowStatsRequest: Invalid match.");
+    return false;
+  }
+
+  if (length != SizeWithoutMatchHeader + matchHeader_.paddedLength()) {
+    log::debug("MPFlowStatsRequest: Invalid length.");
     return false;
   }
 
@@ -40,23 +50,7 @@ bool MPFlowStatsRequest::validateInput(size_t length) const {
 }
 
 Match MPFlowStatsRequest::match() const {
-  UInt16 type = matchType_;
-
-  if (type == OFPMT_OXM) {
-    OXMRange range{BytePtr(this) + UnpaddedSizeWithMatchHeader,
-                   matchLength_ - HeaderSize};
-    return Match{range};
-
-  } else if (type == OFPMT_STANDARD) {
-    const deprecated::StandardMatch *stdMatch =
-        reinterpret_cast<const deprecated::StandardMatch *>(
-            BytePtr(this) + SizeWithoutMatchHeader);
-    return Match{stdMatch};
-
-  } else {
-    log::debug("MPFlowStatsRequest: Unknown matchType:", type);
-    return Match{OXMRange{nullptr, 0}};
-  }
+  return Match{&matchHeader_};
 }
 
 void MPFlowStatsRequestBuilder::write(Writable *channel) {
@@ -67,11 +61,11 @@ void MPFlowStatsRequestBuilder::write(Writable *channel) {
     return;
   }
 
-  size_t matchLen = MPFlowStatsRequest::HeaderSize + match_.size();
+  size_t matchLen = sizeof(MatchHeader) + match_.size();
   size_t matchLenPadded = PadLength(matchLen);
 
-  msg_.matchType_ = OFPMT_OXM;
-  msg_.matchLength_ = UInt16_narrow_cast(matchLen);
+  msg_.matchHeader_.setType(OFPMT_OXM);
+  msg_.matchHeader_.setLength(matchLen);
 
   channel->write(&msg_, MPFlowStatsRequest::UnpaddedSizeWithMatchHeader);
   channel->write(match_.data(), match_.size(), matchLenPadded - matchLen);
