@@ -45,8 +45,14 @@ bool FlowMod::validateInput(size_t length) const {
     return false;
   }
 
-  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+  size_t remainingLength = length - SizeWithoutMatchHeader;
+  if (!matchHeader_.validateInput(remainingLength)) {
     log::info("FlowMod: invalid match");
+    return false;
+  }
+
+  if (!instructions().validateInput("FlowMod")) {
+    log::info("FlowMod: invalid instructions");
     return false;
   }
 
