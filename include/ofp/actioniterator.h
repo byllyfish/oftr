@@ -22,97 +22,38 @@
 #ifndef OFP_ACTIONITERATOR_H_
 #define OFP_ACTIONITERATOR_H_
 
+#include "ofp/protocoliterator.h"
 #include "ofp/actiontype.h"
-#include "ofp/oxmiterator.h"
+#include "ofp/oxmrange.h"
 
 namespace ofp {
+namespace detail {
 
-class ActionIterator {
-public:
-  class Item {
-  public:
-    Item(const Item &) = delete;
-    Item &operator=(const Item &) = delete;
-
-    ActionType type() const { return position().type(); }
-
-    template <class Type>
-    const Type *action() {
-      return position().action<Type>();
-    }
-
-    OXMIterator oxmIterator() const { return position().oxmIterator(); }
-
-    ActionIterator position() const {
-      return ActionIterator{BytePtr(this)};
-    }
-
-  private:
-    Item() = default;
+class ActionIteratorItem : private NonCopyable {
+ public:
+  enum {
+    ProtocolIteratorSizeOffset = 2,
+    ProtocolIteratorAlignment = 8
   };
 
-  explicit ActionIterator(const UInt8 *pos) : position_{pos} {}
-
-  const Item &operator*() const {
-    return *reinterpret_cast<const Item *>(position_);
-  }
-
-  ActionType type() const { return ActionType::fromBytes(position_); }
-
-  const UInt8 *data() const { return position_; }
+  ActionType type() const { return type_; }
+  UInt16 size() const { return type_.length(); }
 
   template <class Type>
-  const Type *action() {
-    return reinterpret_cast<const Type *>(position_);
+  const Type *action() const {
+    return reinterpret_cast<const Type *>(this);
   }
 
-  OXMIterator oxmIterator() const {
-    return OXMIterator{BytePtr(position_) + sizeof(ActionType)};
-  }
+  OXMRange oxmRange() const { return value(); }
+  ByteRange value() const { return {BytePtr(this) + sizeof(ActionType), size() - sizeof(ActionType)}; }
 
-  const UInt8 *valuePtr() const { return data() + sizeof(ActionType); }
-
-  size_t valueSize() const { return type().length() - sizeof(ActionType); }
-  // No operator -> (FIXME?)
-  // No postfix ++
-
-  void operator++() {
-    assert(type().length() > 0);
-    position_ += *reinterpret_cast<const Big_unaligned<UInt16> *>(
-                      position_ + 2); // type().length();
-  }
-
-  bool operator==(const ActionIterator &rhs) const {
-    return position_ == rhs.position_;
-  }
-
-  bool operator!=(const ActionIterator &rhs) const { return !(*this == rhs); }
-
-  bool operator<=(const ActionIterator &rhs) const {
-    return position_ <= rhs.position_;
-  }
-
-  bool operator<(const ActionIterator &rhs) const {
-    return position_ < rhs.position_;
-  }
-
-  /// \returns Number of actions between begin and end.
-  static size_t distance(ActionIterator begin, ActionIterator end) {
-    assert(begin <= end);
-
-    size_t dist = 0;
-    while (begin < end) {
-      ++dist;
-      ++begin;
-    }
-    assert(begin == end);
-
-    return dist;
-  }
-
-private:
-  const UInt8 *position_;
+ private:
+  ActionType type_;
 };
+
+}  // namespace detail
+
+using ActionIterator = ProtocolIterator<detail::ActionIteratorItem>;
 
 }  // namespace ofp
 

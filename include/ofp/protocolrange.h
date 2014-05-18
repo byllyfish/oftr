@@ -13,7 +13,7 @@ public:
   using Element = typename IteratorType::Element;
 
   ProtocolRange() = default;
-  /* implicit */ ProtocolRange(const ByteRange &range) : range_{range} {}
+  /* implicit */ ProtocolRange(const ByteRange &range) : range_{range} { assert(begin() <= end()); }
 
   Iterator begin() const { return Iterator(range_.begin()); }
   Iterator end() const { return Iterator(range_.end()); }

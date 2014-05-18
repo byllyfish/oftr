@@ -96,11 +96,7 @@ struct ProtocolElement<ElemType, PROTOCOL_ITERATOR_SIZE_CONDITIONAL> {
 template <class ElemType, size_t SizeOffset=ElemType::ProtocolIteratorSizeOffset, size_t Alignment=ElemType::ProtocolIteratorAlignment>
 class ProtocolIterator {
 public:
-  enum { IsFixedSize = (SizeOffset == PROTOCOL_ITERATOR_SIZE_FIXED) };
-  enum { IsConditionalSize = (SizeOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) };
-  enum { XMinSize  = (IsFixedSize || IsConditionalSize) ? 0 : sizeof(Big16) + SizeOffset };
-  
-  static_assert(sizeof(ElemType) >= XMinSize, "Unexpected element size.");
+  static_assert((SizeOffset == PROTOCOL_ITERATOR_SIZE_FIXED) || (SizeOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) || (SizeOffset < 32), "Unexpected SizeOffset.");
   static_assert((Alignment == 8) || (Alignment == 4), "Unexpected alignment.");
 
   // Define types for std::iterator.
@@ -133,27 +129,27 @@ public:
   void operator++() { pos_ += (Alignment == 8) ? PadLength(size()) : size(); }
 
   bool operator==(const ProtocolIterator &rhs) const {
-    return data() == rhs.data();
+    return pos_ == rhs.pos_;
   }
 
   bool operator!=(const ProtocolIterator &rhs) const {
-    return data() != rhs.data();
+    return pos_ != rhs.pos_;
   }
 
   bool operator<=(const ProtocolIterator &rhs) const {
-    return data() <= rhs.data();
+    return pos_ <= rhs.pos_;
   }
 
   bool operator<(const ProtocolIterator &rhs) const {
-    return data() < rhs.data();
+    return pos_ < rhs.pos_;
   }
 
   bool operator>(const ProtocolIterator &rhs) const {
-    return data() > rhs.data();
+    return pos_ > rhs.pos_;
   }
 
   bool operator>=(const ProtocolIterator &rhs) const {
-    return data() >= rhs.data();
+    return pos_ >= rhs.pos_;
   }
 
 private:

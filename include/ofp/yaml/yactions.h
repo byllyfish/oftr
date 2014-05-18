@@ -67,13 +67,13 @@ namespace llvm {
 namespace yaml {
 
 template <>
-struct MappingTraits<ofp::ActionIterator::Item> {
+struct MappingTraits<ofp::detail::ActionIteratorItem> {
 
-    static void mapping(IO &io, ofp::ActionIterator::Item &item)
+    static void mapping(IO &io, ofp::detail::ActionIteratorItem &item)
     {
     	using namespace ofp;
 
-    	OFPActionType type = item.type().type();
+    	OFPActionType type = item.type().enumType();
     	io.mapRequired("action", type);
     	switch (type)
     	{
@@ -148,7 +148,7 @@ struct MappingTraits<ofp::ActionIterator::Item> {
 				break;
 			}
 			case OFPAT_SET_FIELD: {
-				OXMIterator iter = item.oxmIterator();
+				OXMIterator iter = item.oxmRange().begin();
 				OXMType oxmType = iter.type();
 				io.mapRequired("type", oxmType);
                 OXMInternalID id = oxmType.internalID();
@@ -314,7 +314,7 @@ struct SequenceTraits<ofp::ActionRange> {
         return actions.itemCount();
     }
 
-    static ofp::ActionIterator::Item &element(IO &io, ofp::ActionRange &actions,
+    static ofp::detail::ActionIteratorItem &element(IO &io, ofp::ActionRange &actions,
                                      size_t index)
     {
         ofp::log::debug("action yaml item", index);

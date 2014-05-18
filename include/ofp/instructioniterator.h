@@ -41,7 +41,7 @@ class InstructionIteratorItem : private NonCopyable {
   UInt16 size() const { return len_; }
 
   template <class Type>
-  const Type *instruction() {
+  const Type *instruction() const {
     return reinterpret_cast<const Type *>(this);
   }
 

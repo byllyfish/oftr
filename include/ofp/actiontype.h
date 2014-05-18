@@ -34,10 +34,11 @@ public:
 
   static ActionType fromBytes(const UInt8 *data);
 
-  constexpr OFPActionType type() const {
+  constexpr OFPActionType enumType() const {
     return static_cast<OFPActionType>(nativeType() >> 16);
   }
 
+  // FIXME(bfish) rename to size()?
   constexpr UInt16 length() const { return UInt16_narrow_cast(nativeType()); }
 
   constexpr operator UInt32() const { return value32_; }

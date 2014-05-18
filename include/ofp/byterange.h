@@ -33,6 +33,7 @@ class ByteRange {
   constexpr ByteRange() : begin_{nullptr}, end_{nullptr} {}
   constexpr ByteRange(const void *data, size_t length)
       : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
+  constexpr ByteRange(const void *data, const void *end) : begin_{BytePtr(data)}, end_{BytePtr(end)} {}
   /* implicit NOLINT */ ByteRange(const ByteList &data);
 
   constexpr const UInt8 *begin() const { return begin_; }

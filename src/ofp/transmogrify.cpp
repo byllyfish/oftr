@@ -619,8 +619,8 @@ int Transmogrify::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto) {
   ActionIterator iterEnd = actions.end();
 
   while (iter < iterEnd) {
-    ActionType actType = iter.type();
-    UInt16 type = actType.type();
+    ActionType actType = iter->type();
+    UInt16 type = actType.enumType();
 
     if (type <= UInt16_cast(v1::OFPAT_ENQUEUE) ||
         type == UInt16_cast(v2::OFPAT_SET_MPLS_LABEL) ||
@@ -708,25 +708,29 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
 }
 
 int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
-  if (iter->type() != deprecated::AT_OUTPUT_V1::type())
+  if ((*iter)->type() != deprecated::AT_OUTPUT_V1::type())
     return 0;
 
+  ByteRange valueRange = (*iter)->value();
+
   // Change port number from 16 to 32 bits.
-  UInt32 port = normPortNumberV1(iter->valuePtr());
-  UInt16 maxlen = *reinterpret_cast<const Big16 *>(iter->valuePtr() + 2);
+  UInt32 port = normPortNumberV1(valueRange.data());
+  UInt16 maxlen = *Big16_cast(valueRange.data() + 2);
 
   AT_OUTPUT output{port, maxlen};
 
   ptrdiff_t offset = buf_.offset(iter->data());
   ptrdiff_t endOffset = buf_.offset(iterEnd->data());
   
-  buf_.insertUninitialized(iter->valuePtr(), 8);
-  *iter = ActionIterator{buf_.data() + offset};
-  *iterEnd = ActionIterator{buf_.data() + endOffset + 8};
+  buf_.insertUninitialized(valueRange.data(), 8);
+
+  ActionRange range{{buf_.data() + offset, buf_.data() + endOffset + 8}};
+  *iter = range.begin();
+  *iterEnd = range.end();
 
   std::memcpy(RemoveConst_cast(iter->data()), &output, sizeof(output));
 
-  assert(iter->type() == AT_OUTPUT::type());
+  assert((*iter)->type() == AT_OUTPUT::type());
 
   return 8;
 }

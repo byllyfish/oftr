@@ -22,6 +22,7 @@
 #ifndef OFP_ACTIONRANGE_H_
 #define OFP_ACTIONRANGE_H_
 
+#include "ofp/protocolrange.h"
 #include "ofp/byterange.h"
 #include "ofp/writable.h"
 #include "ofp/actioniterator.h"
@@ -30,24 +31,13 @@ namespace ofp {
 
 class ActionList;
 
-class ActionRange {
- public:
+class ActionRange : public ProtocolRange<ActionIterator> {
+  using Inherited = ProtocolRange<ActionIterator>;
+public:
+  using Inherited::Inherited;
+
   ActionRange() = default;
-  /* implicit NOLINT */ ActionRange(const ByteRange &range) : range_{range} {}
   /* implicit NOLINT */ ActionRange(const ActionList &list);
-
-  size_t itemCount() const { return ActionIterator::distance(begin(), end()); }
-
-  ActionIterator begin() const {
-    return ActionIterator{data()};
-  }
-  ActionIterator end() const {
-    return ActionIterator{data() + size()};
-  }
-
-  const UInt8 *data() const { return range_.data(); }
-  size_t size() const { return range_.size(); }
-  ByteRange toByteRange() const { return range_; }
 
   /// \returns Size of action list when written to channel using the specified
   /// protocol version.
@@ -58,8 +48,6 @@ class ActionRange {
   void write(Writable *channel);
 
  private:
-  ByteRange range_;
-
   static unsigned writeSizeMinusSetFieldV1(ActionIterator iter);
   static void writeSetFieldV1(ActionIterator iter, Writable *channel);
 };

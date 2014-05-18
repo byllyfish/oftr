@@ -76,11 +76,12 @@ private:
 
 template <class Type>
 int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
-  size_t valueLen = iter->valueSize();
+  ByteRange valueRange = (*iter)->value();
+  size_t valueLen = valueRange.size();
 
   if (valueLen >= sizeof(Type)) {
     typename Type::NativeType value;
-    memcpy(&value, iter->valuePtr(), sizeof(value));
+    memcpy(&value, valueRange.data(), sizeof(value));
 
     OXMList list;
     list.add(Type{value});
@@ -88,27 +89,29 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
 
     int lengthChange =
         static_cast<int>(Signed_cast(list.size()) - Signed_cast(valueLen));
+    ptrdiff_t offset = buf_.offset(iter->data());
     if (lengthChange > 0) {
-      ptrdiff_t offset = buf_.offset(iter->data());
-      buf_.insertUninitialized(iter->valuePtr(), Unsigned_cast(lengthChange));
-      *iter = ActionIterator{buf_.data() + offset};
-      *iterEnd = ActionIterator{buf_.end()};
+      buf_.insertUninitialized(valueRange.data(), Unsigned_cast(lengthChange));
+      
     } else if (lengthChange < 0) {
-      ptrdiff_t offset = buf_.offset(iter->data());
       buf_.remove(iter->data(), Unsigned_cast(-lengthChange));
-      *iter = ActionIterator{buf_.data() + offset};
-      *iterEnd = ActionIterator{buf_.end()};
     }
+
+    ActionRange range{{buf_.data() + offset, buf_.end()}};
+    *iter = range.begin();
+    *iterEnd = range.end();
+
+    valueRange = (*iter)->value();
 
     ActionType setField{OFPAT_SET_FIELD, UInt16_narrow_cast(4 + list.size())};
     std::memcpy(RemoveConst_cast(iter->data()), &setField, sizeof(ActionType));
-    std::memcpy(RemoveConst_cast(iter->valuePtr()), list.data(), list.size());
+    std::memcpy(RemoveConst_cast(valueRange.data()), list.data(), list.size());
 
     return lengthChange;
 
   } else {
     log::info("Transmogrify::normSetField: Unexpected value size.", valueLen);
-    log::info(" actiontype:", iter->type());
+    log::info(" actiontype:", (*iter)->type());
   }
 
   return 0;

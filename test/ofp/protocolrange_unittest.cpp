@@ -9,13 +9,13 @@ TEST(protocolrange, valid_empty) {
   EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2));
 
   UInt64 d2 = 0;
-  ByteRange r2{&d2, 0};
+  ByteRange r2{&d2, (size_t)0};
   EXPECT_TRUE(IsProtocolRangeValid(0, r2, 2));
 }
 
 TEST(protocolrange, invalid_empty) {
   UInt8 d1[2];
-  ByteRange r1{&d1[1], 0};
+  ByteRange r1{&d1[1], (size_t)0};
   EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2));
 }
 

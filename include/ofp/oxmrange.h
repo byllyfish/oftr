@@ -23,12 +23,15 @@
 #define OFP_OXMRANGE_H_
 
 #include "ofp/oxmiterator.h"
+#include "ofp/byterange.h"
 
 namespace ofp {
 
 class OXMRange {
 public:
   constexpr OXMRange() : begin_{nullptr}, end_{nullptr} {}
+
+  constexpr OXMRange(const ByteRange &range) : begin_{range.begin()}, end_{range.end()} {}
 
   constexpr OXMRange(OXMIterator begin, OXMIterator end)
       : begin_{begin.data()}, end_{end.data()} {}

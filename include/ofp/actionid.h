@@ -17,7 +17,7 @@ public:
       : type_(type, type == OFPAT_EXPERIMENTER ? 8U : 4U),
         experimenter_{experimenter} {}
 
-  OFPActionType type() const { return type_.type(); }
+  OFPActionType type() const { return type_.enumType(); }
   UInt32 experimenter() const { return experimenter_; }
 
 private:

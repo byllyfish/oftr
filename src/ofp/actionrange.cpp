@@ -24,7 +24,7 @@
 #include "ofp/oxmfields.h"
 #include "ofp/actionlist.h"
 
-namespace ofp {  // <namespace ofp>
+using namespace ofp;
 
 // Delegating constructor.
 ActionRange::ActionRange(const ActionList &list)
@@ -44,11 +44,11 @@ size_t ActionRange::writeSize(Writable *channel) {
   ActionIterator iterEnd = end();
 
   while (iter != iterEnd) {
-    ActionType type = iter.type();
+    ActionType type = iter->type();
 
     if (type == AT_OUTPUT::type()) {
       newSize -= 8;
-    } else if (type.type() == OFPAT_SET_FIELD) {
+    } else if (type.enumType() == OFPAT_SET_FIELD) {
       newSize -= writeSizeMinusSetFieldV1(iter);
     }
 
@@ -76,12 +76,12 @@ void ActionRange::write(Writable *channel) {
 
   while (iter != iterEnd) {
     // Write each action separately.
-    ActionType type = iter.type();
+    ActionType type = iter->type();
 
     if (type == AT_OUTPUT::type()) {
-      deprecated::AT_OUTPUT_V1 outAction{iter.action<AT_OUTPUT>()};
+      deprecated::AT_OUTPUT_V1 outAction{iter->action<AT_OUTPUT>()};
       channel->write(&outAction, sizeof(outAction));
-    } else if (type.type() == OFPAT_SET_FIELD) {
+    } else if (type.enumType() == OFPAT_SET_FIELD) {
       writeSetFieldV1(iter, channel);
     } else {
       channel->write(iter.data(), type.length());
@@ -95,7 +95,7 @@ namespace {  // <namespace>
 
 template <class Action, class OFBType>
 void writeAction(ActionIterator iter, Writable *channel) {
-  Action action{iter.action<AT_SET_FIELD<OFBType>>()};
+  Action action{iter->action<AT_SET_FIELD<OFBType>>()};
   channel->write(&action, sizeof(action));
 }
 
@@ -104,7 +104,7 @@ void writeAction(ActionIterator iter, Writable *channel) {
 unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
   using namespace deprecated;
 
-  OXMIterator oxm = iter.oxmIterator();
+  OXMIterator oxm = iter->oxmRange().begin();
   switch (oxm.type()) {
     case OFB_ETH_SRC::type() :
     case OFB_ETH_DST::type() :
@@ -131,7 +131,7 @@ unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
 void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
   using namespace deprecated;
 
-  OXMIterator oxm = iter.oxmIterator();
+  OXMIterator oxm = iter->oxmRange().begin();
   switch (oxm.type()) {
     case OFB_VLAN_VID::type() :
       writeAction<AT_SET_VLAN_VID_V1, OFB_VLAN_VID>(iter, channel);
@@ -179,4 +179,3 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
   }
 }
 
-}  // </namespace ofp>
