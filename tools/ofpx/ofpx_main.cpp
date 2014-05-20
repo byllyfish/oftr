@@ -1,20 +1,18 @@
 
 #include "ofp/ofp.h"
-#include "ofpx.h"
+#include "ofpx_decode.h"
 #include <iostream>
 
 using namespace llvm;
 
-typedef int (*Program)(int argc, char **argv);
-
-struct ProgramEntry {
+struct SubprogramEntry {
   const char *name;
-  Program prog;
+  ofpx::RunSubprogram run;
 };
 
-static ProgramEntry programs[] = {
+static SubprogramEntry programs[] = {
   {"ping", ofpx_ping},
-  {"decode", ofpx_decode}
+  {"decode", ofpx::Run<ofpx::Decode>}
 };
 
 int main(int argc, char **argv) {
@@ -26,7 +24,7 @@ int main(int argc, char **argv) {
     char *name = argv[1];
     for (size_t i = 0; i < ofp::ArrayLength(programs); ++i) {
       if (std::strcmp(name, programs[i].name) == 0) {
-        return (*programs[i].prog)(argc - 1, argv + 1);
+        return (*programs[i].run)(argc - 1, argv + 1);
       }
     }
   }

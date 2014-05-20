@@ -35,6 +35,8 @@ class InstructionRange : public ProtocolRange<InstructionIterator> {
   using Inherited::Inherited;
 
   ActionRange outputActions() const;
+
+  bool validateInput(const char *context) const;
 };
 
 }  // namespace ofp

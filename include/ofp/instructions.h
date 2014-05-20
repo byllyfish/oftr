@@ -114,8 +114,16 @@ public:
   size_t size() const { return actions_->size(); }
 
   ByteRange dataRange() const {
+    assert(length_ >= SizeWithoutActions);
     return ByteRange{BytePtr(this) + SizeWithoutActions,
                      length_ - SizeWithoutActions};
+  }
+
+  bool validateInput(const char *context) const {
+    if (length_ < SizeWithoutActions)
+      return false;
+    ActionRange actions = dataRange();
+    return actions.validateInput(context);
   }
 
 private:

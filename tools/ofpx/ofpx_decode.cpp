@@ -1,51 +1,65 @@
 #include "llvm/Support/CommandLine.h"
-#include "ofpx.h"
+#include "ofpx_decode.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
 #include <iostream>
 #include <fstream>
 
-//-------------------------------------//
-// d e c o d e _ o n e _ m e s s a g e //
-//-------------------------------------//
+using namespace ofpx;
 
-static int decode_one_message(const ofp::Message *message, const ofp::Message *originalMessage) {
-  ofp::yaml::Decoder decoder{message};
+//-------//
+// r u n //
+//-------//
 
-  if (!decoder.error().empty()) {
-    std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
-    std::cerr << *message << '\n';
-    return 128;
-  }
+int Decode::run(int argc, char **argv) {
+  cl::ParseCommandLineOptions(argc, argv);
+  return decodeFiles();
+}
 
-  std::cout << decoder.result();
+//-----------------------//
+// d e c o d e F i l e s //
+//-----------------------//
 
-  // Now double-check the result by re-encoding the message. We should obtain 
-  // the original message contents.
+int Decode::decodeFiles() {
+  const std::vector<std::string> &files = inputFiles_;
 
-  ofp::yaml::Encoder encoder{decoder.result(), false};
-
-  if (!encoder.error().empty()) {
-    std::cerr << "Error: Decode succeeded but encode failed: " << encoder.error() << '\n';
-    //return 129;
-  }
-
-  if (encoder.size() != originalMessage->size()) {
-    std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << originalMessage->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
-    //return 130;
-  } else if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
-    std::cerr << "Error: Encode yielded different data:\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
-    //return 131;
+  for (const std::string &filename : files) {
+    int result = decodeFile(filename);
+    if (result) {
+      return result;
+    }
   }
 
   return 0;
 }
 
-//-------------------------------//
-// d e c o d e _ m e s s a g e s //
-//-------------------------------//
 
-static int decode_messages(std::ifstream &input, const std::string &filename) {
+//---------------------//
+// d e c o d e F i l e //
+//---------------------//
+
+int Decode::decodeFile(const std::string &filename) {
+  std::ifstream input{filename, std::ifstream::binary};
+  int result = -1;
+
+  if (input) {
+    currentFilename_ = filename;
+    result = decodeMessages(input);
+    input.close();
+    currentFilename_ = "";
+  } else {
+    std::cerr << "Error: opening file " << filename << '\n';
+  }
+
+  return result;
+}
+
+
+//-----------------------------//
+// d e c o d e M e s s a g e s //
+//-----------------------------//
+
+int Decode::decodeMessages(std::ifstream &input) {
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
   size_t offset = 0;
@@ -79,9 +93,8 @@ static int decode_messages(std::ifstream &input, const std::string &filename) {
         originalMessage.assign(message);
         message.transmogrify();
 
-        int result = decode_one_message(&message, &originalMessage);
+        int result = decodeOneMessage(&message, &originalMessage);
         if (result) {
-          std::cerr << "Filename: " << filename << '\n';
           return result;
         }
 
@@ -105,50 +118,69 @@ static int decode_messages(std::ifstream &input, const std::string &filename) {
   return 0;
 }
 
-//-----------------------//
-// d e c o d e _ f i l e //
-//-----------------------//
 
-static int decode_file(const std::string &filename) {
-  std::ifstream input{filename, std::ifstream::binary};
-  int result = -1;
+//---------------------------------//
+// d e c o d e O n e M e s s a g e //
+//---------------------------------//
 
-  if (input) {
-    result = decode_messages(input, filename);
-    input.close();
-  } else {
-    std::cerr << "Error: opening file " << filename << '\n';
+int Decode::decodeOneMessage(const ofp::Message *message, const ofp::Message *originalMessage) {
+  ofp::yaml::Decoder decoder{message};
+
+  if (!decoder.error().empty()) {
+    // An error occurred in decoding the message.
+    
+    if (verify_ == Verify::Valid) {
+      // If the verify flag indicates that we expect the data to be valid, we 
+      // report the error.
+
+      std::cerr << "Filename: " << currentFilename_ << '\n';
+      std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
+      std::cerr << *message << '\n';
+      return 128;
+
+    } else {
+      assert(verify_ == Verify::Invalid);
+
+      // Report no error and continue.
+      return 0;
+    }
   }
 
-  return result;
-}
+  if (verify_ == Verify::Invalid) {
+    // There was no problem decoding the message, but we are expecting the data
+    // to be invalid. Report this as an error.
+    
+    std::cerr << "Filename: " << currentFilename_ << '\n';
+    std::cerr << "Error: Decode succeeded when --verify=invalid flag is specified.\n";
+    std::cerr << *message << '\n';
+    return 0;
+  }
 
-//-------------------------//
-// d e c o d e _ f i l e s //
-//-------------------------//
+  if (!quiet_) {
+    std::cout << decoder.result();
+  }
 
-static int decode_files(const std::vector<std::string> &files) {
-  for (const std::string &filename : files) {
-    int result = decode_file(filename);
-    if (result) {
-      return result;
-    }
+  // Now double-check the result by re-encoding the message. We should obtain 
+  // the original message contents.
+
+  ofp::yaml::Encoder encoder{decoder.result(), false};
+
+  if (!encoder.error().empty()) {
+    std::cerr << "Error: Decode succeeded but encode failed: " << encoder.error() << '\n';
+    //return 129;
+  }
+
+  if (encoder.size() != originalMessage->size()) {
+    std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << originalMessage->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
+    //return 130;
+  } else if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
+    std::cerr << "Error: Encode yielded different data:\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
+    //return 131;
   }
 
   return 0;
 }
 
-//-------------------//
-// o f p x _ p i n g //
-//-------------------//
 
-int ofpx_decode(int argc, char **argv) {
-  using namespace llvm;
 
-  cl::list<std::string> inputFiles(cl::Positional, cl::desc("<Input files>"),
-                                   cl::OneOrMore);
 
-  cl::ParseCommandLineOptions(argc, argv);
-
-  return decode_files(inputFiles);
-}
