@@ -2,7 +2,6 @@
 #define OFPX_DECODE_H_
 
 #include "ofpx.h"
-#include "ofp/message.h"
 
 namespace ofpx {
 

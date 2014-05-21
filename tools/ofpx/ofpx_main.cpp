@@ -1,6 +1,7 @@
 
 #include "ofp/ofp.h"
 #include "ofpx_decode.h"
+#include "ofpx_ping.h"
 #include <iostream>
 
 using namespace llvm;
@@ -11,7 +12,7 @@ struct SubprogramEntry {
 };
 
 static SubprogramEntry programs[] = {
-  {"ping", ofpx_ping},
+  {"ping", ofpx::Run<ofpx::Ping>},
   {"decode", ofpx::Run<ofpx::Decode>}
 };
 

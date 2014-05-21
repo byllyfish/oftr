@@ -1,18 +1,10 @@
-// The following two definitions are required by llvm/Support/DataTypes.h
-#define __STDC_LIMIT_MACROS 1
-#define __STDC_CONSTANT_MACROS 1
-
 #include "llvm/Support/CommandLine.h"
-#include "ofpx.h"
-#include "ofp/ofp.h"
+#include "ofpx_ping.h"
 #include <iostream>
 
 using namespace ofp;
+using namespace ofpx;
 
-// Maximum size of ping message payload is maximum length of OpenFlow message 
-// minus header size.
-
-const int kMaxPingData = OFP_MAX_SIZE - 8;
 
 //-------------------------//
 // P i n g L i s t e n e r //
@@ -69,18 +61,31 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-//-------------------------//
-// p i n g _ c o n n e c t //
-//-------------------------//
 
-static int ping_connect(const IPv6Endpoint &endpt, int size) {
+//-------//
+// r u n //
+//-------//
+
+int Ping::run(int argc, char **argv) {
+  cl::ParseCommandLineOptions(argc, argv);
+  return ping();
+}
+
+
+//---------//
+// p i n g //
+//---------//
+
+int Ping::ping() {
   Driver driver;
 
+  int size = size_;
   if (size < 0 || size > kMaxPingData) {
     size = kMaxPingData;
   }
 
   ByteList echoData = ByteList::iota(Unsigned_cast(size));
+  IPv6Endpoint endpt = endpoint_;
 
   auto exc =
       driver.connect(Driver::Bridge, endpt, ProtocolVersions::All,
@@ -99,33 +104,3 @@ static int ping_connect(const IPv6Endpoint &endpt, int size) {
   return exitCode;
 }
 
-using namespace llvm;
-
-struct IPv6EndpointParser : public cl::parser<IPv6Endpoint> {
-public:
-  // parse - Return true on error.
-  bool parse(cl::Option &O, StringRef ArgName, StringRef ArgValue,
-             IPv6Endpoint &Val) {
-    if (Val.parse(ArgValue))
-      return false;
-    return O.error("Unexpected endpoint format '" + ArgValue + "'!");
-  }
-};
-
-//-------------------//
-// o f p x _ p i n g //
-//-------------------//
-
-int ofpx_ping(int argc, char **argv) {
-
-  cl::opt<IPv6Endpoint, false, IPv6EndpointParser> connect{
-      "connect",                  cl::desc("where to connect"),
-      cl::value_desc("endpoint"), cl::ValueRequired};
-
-  cl::opt<int> size{"size", cl::desc("data size"), 
-      cl::value_desc("size")};
-
-  cl::ParseCommandLineOptions(argc, argv);
-
-  return ping_connect(connect, size);
-}

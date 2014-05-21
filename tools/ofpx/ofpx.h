@@ -2,6 +2,7 @@
 #define OFPX_PING_H
 
 #include "llvm/Support/CommandLine.h"
+#include "ofp/ofp.h"
 #include <vector>
 #include <string>
 
@@ -23,9 +24,18 @@ inline int Run(int argc, char **argv) {
   return t.run(argc, argv);
 }
 
+
+struct IPv6EndpointParser : public cl::parser<ofp::IPv6Endpoint> {
+public:
+  // parse - Return true on error.
+  bool parse(cl::Option &O, llvm::StringRef ArgName, llvm::StringRef ArgValue,
+             ofp::IPv6Endpoint &Val) {
+    if (Val.parse(ArgValue))
+      return false;
+    return O.error("Unexpected endpoint format '" + ArgValue + "'!");
+  }
+};
+
 }  // namespace ofpx
-
-
-int ofpx_ping(int argc, char **argv);
 
 #endif // OFPX_PING_H
