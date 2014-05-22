@@ -41,7 +41,7 @@ public:
 
 template <class Type>
 inline void InstructionList::add(const Type &instruction) {
-  static_assert(Type::type().type() != 0, "Type is not an instruction?");
+  static_assert(Type::type().enumType() != 0, "Type is not an instruction?");
   buf_.add(&instruction, sizeof(instruction));
 }
 

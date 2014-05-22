@@ -27,11 +27,13 @@
 
 namespace ofp {
 
+struct InstructionTypeInfo;
+
 class InstructionType {
 public:
   constexpr InstructionType(OFPInstructionType type) : type_{type} {}
 
-  constexpr OFPInstructionType type() const { return type_; }
+  constexpr OFPInstructionType enumType() const { return type_; }
 
   constexpr operator OFPInstructionType() const { return type_; }
 
@@ -40,6 +42,9 @@ public:
   }
 
   bool operator!=(const InstructionType &rhs) const { return !operator==(rhs); }
+
+  const InstructionTypeInfo *lookupInfo() const;
+  bool parse(const std::string &s);
 
 private:
   const Big<OFPInstructionType> type_;
@@ -51,8 +56,18 @@ std::ostream &operator<<(std::ostream &os, const InstructionType &value);
 
 inline std::ostream &operator<<(std::ostream &os,
                                 const InstructionType &value) {
-  return os << static_cast<unsigned>(value.type());
+  return os << static_cast<unsigned>(value.enumType());
 }
+
+
+OFP_BEGIN_IGNORE_PADDING
+
+struct InstructionTypeInfo {
+  InstructionType type;
+  const char *name;
+};
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace ofp
 

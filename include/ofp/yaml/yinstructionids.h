@@ -3,6 +3,7 @@
 
 #include "ofp/instructionidlist.h"
 #include "ofp/yaml/yconstants.h"
+#include "ofp/yaml/yinstructiontype.h"
 
 namespace llvm {
 namespace yaml {
@@ -12,7 +13,7 @@ struct ScalarTraits<ofp::InstructionID> {
     static void output(const ofp::InstructionID &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
-      out << value.type();
+      ScalarTraits<ofp::InstructionType>::output(value.type(), ctxt, out);
     }
 
     static StringRef input(StringRef scalar, void *ctxt,
