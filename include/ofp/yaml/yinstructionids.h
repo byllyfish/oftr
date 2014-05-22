@@ -38,6 +38,8 @@ struct SequenceTraits<ofp::InstructionIDRange> {
     ofp::InstructionIDIterator iter = range.nthItem(index);
     return RemoveConst_cast(*iter);
   }
+
+  static const bool flow = true;
 };
 
 }  // namespace yaml

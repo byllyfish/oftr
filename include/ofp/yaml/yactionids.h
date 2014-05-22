@@ -2,6 +2,7 @@
 #define OFP_YAML_YACTIONIDS_H_
 
 #include "ofp/actionidlist.h"
+#include "ofp/yaml/yactions.h"
 
 namespace llvm {
 namespace yaml {
@@ -11,16 +12,20 @@ struct ScalarTraits<ofp::ActionID> {
     static void output(const ofp::ActionID &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
-      out << value.type();
+      ScalarTraits<ofp::ActionType>::output(value.type(), ctxt, out);
+      //out << value.type();
     }
 
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::ActionID &value)
     {
-        //if (!value.parse(scalar)) {
-        //    return "Invalid ActionID.";
-        //}
-        return "";
+      ofp::ActionType type;
+      StringRef result = ScalarTraits<ofp::ActionType>::input(scalar, ctxt, type);
+      if (result.empty()) {
+        value = ofp::ActionID{type, 0};
+      }
+
+      return result;
     }
 };
 
@@ -37,6 +42,8 @@ struct SequenceTraits<ofp::ActionIDRange> {
     ofp::ActionIDIterator iter = range.nthItem(index);
     return RemoveConst_cast(*iter);
   }
+
+  static const bool flow = true;
 };
 
 }  // namespace yaml

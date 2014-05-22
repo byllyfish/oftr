@@ -17,7 +17,9 @@ public:
       : type_(type, type == OFPAT_EXPERIMENTER ? 8U : 4U),
         experimenter_{experimenter} {}
 
-  OFPActionType type() const { return type_.enumType(); }
+  explicit ActionID(ActionType type, UInt32 experimenter = 0) : ActionID{type.enumType(), experimenter} {}
+  
+  ActionType type() const { return type_.zeroLength(); }
   UInt32 experimenter() const { return experimenter_; }
 
 private:

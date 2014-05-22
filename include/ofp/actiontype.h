@@ -27,8 +27,12 @@
 
 namespace ofp {
 
+struct ActionTypeInfo;
+
 class ActionType {
 public:
+  constexpr ActionType() : value32_{0} {}
+
   constexpr ActionType(OFPActionType type, UInt16 length)
       : value32_{make(type, length)} {}
 
@@ -49,8 +53,13 @@ public:
 
   constexpr UInt32 nativeType() const { return BigEndianToNative(value32_); }
 
+  constexpr ActionType zeroLength() const { return BigEndianFromNative(nativeType() & 0xffff0000U); }
+
+  const ActionTypeInfo *lookupInfo() const;
+  bool parse(const std::string &s);
+
 private:
-  const UInt32 value32_;
+  UInt32 value32_;
 
   constexpr ActionType(UInt32 value) : value32_{value} {}
 
@@ -59,13 +68,24 @@ private:
   }
 };
 
+static_assert(sizeof(ActionType) == 4, "Unexpected size.");
 static_assert(IsLiteralType<ActionType>(), "Literal type expected.");
+static_assert(IsStandardLayout<ActionType>(), "Standard Layout type expected.");
 
 inline ActionType ActionType::fromBytes(const UInt8 *data) {
   ActionType type{0};
   std::memcpy(&type, data, sizeof(type));
   return type;
 }
+
+OFP_BEGIN_IGNORE_PADDING
+
+struct ActionTypeInfo {
+  ActionType type;
+  const char *name;
+};
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace ofp
 

@@ -12,7 +12,6 @@ struct ScalarTraits<ofp::OXMID> {
                        llvm::raw_ostream &out)
     {
       ScalarTraits<ofp::OXMType>::output(value.type(), ctxt, out);
-      //out << value.type();
     }
 
     static StringRef input(StringRef scalar, void *ctxt,

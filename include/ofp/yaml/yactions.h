@@ -26,6 +26,7 @@
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
 #include "ofp/yaml/ymatch.h"
+#include "ofp/yaml/yactiontype.h"
 
 namespace ofp {
 namespace detail {

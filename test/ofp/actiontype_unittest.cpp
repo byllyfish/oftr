@@ -31,9 +31,9 @@ TEST(actiontype, AT_OUTPUT) {
   EXPECT_EQ(OFPAT_OUTPUT, type.enumType());
   EXPECT_EQ(8, type.length());
   EXPECT_EQ(0x08, type.nativeType());
+  EXPECT_HEX("00000008", &type, sizeof(type));
 
-  auto expected = HexToRawData("00000008");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &type, sizeof(type)));
+  EXPECT_EQ(0, type.zeroLength().nativeType());
 }
 
 TEST(actiontype, AT_EXPERIMENTER) {
@@ -43,9 +43,9 @@ TEST(actiontype, AT_EXPERIMENTER) {
   EXPECT_EQ(OFPAT_EXPERIMENTER, type.enumType());
   EXPECT_EQ(64, type.length());
   EXPECT_EQ(0xFFFF0040, type.nativeType());
+  EXPECT_HEX("FFFF0040", &type, sizeof(type));
 
-  auto expected = HexToRawData("FFFF0040");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &type, sizeof(type)));
+  EXPECT_EQ(0xFFFF0000, type.zeroLength().nativeType());
 }
 
 TEST(actiontype, AT_EXPERIMENTER_2) {
