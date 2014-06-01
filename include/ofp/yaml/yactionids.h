@@ -4,6 +4,15 @@
 #include "ofp/actionidlist.h"
 #include "ofp/yaml/yactions.h"
 
+
+namespace ofp {
+namespace detail {
+
+struct ActionIDInserter {};
+
+}  // namespace detail
+}  // namespace ofp
+
 namespace llvm {
 namespace yaml {
 
@@ -31,6 +40,27 @@ struct ScalarTraits<ofp::ActionID> {
 
 
 template <>
+struct ScalarTraits<ofp::detail::ActionIDInserter> {
+    static void output(const ofp::detail::ActionIDInserter &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt,
+                           ofp::detail::ActionIDInserter &value)
+    {
+      ofp::ActionIDList &list = Ref_cast<ofp::ActionIDList>(value);
+
+      ofp::ActionID id;
+      StringRef result = ScalarTraits<ofp::ActionID>::input(scalar, ctxt, id);
+      if (result.empty()) {
+        list.add(id);
+      }
+      return result;
+    }
+};
+
+template <>
 struct SequenceTraits<ofp::ActionIDRange> {
 
   static size_t size(IO &io, ofp::ActionIDRange &range) {
@@ -44,6 +74,20 @@ struct SequenceTraits<ofp::ActionIDRange> {
   }
 
   static const bool flow = true;
+};
+
+
+template <>
+struct SequenceTraits<ofp::ActionIDList> {
+
+  static size_t size(IO &io, ofp::ActionIDList &list) {
+    return 0;
+  }
+
+  static ofp::detail::ActionIDInserter &
+  element(IO &io, ofp::ActionIDList &list, size_t index) {
+    return Ref_cast<ofp::detail::ActionIDInserter>(list);
+  }
 };
 
 }  // namespace yaml

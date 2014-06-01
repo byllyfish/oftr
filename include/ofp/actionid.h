@@ -2,6 +2,7 @@
 #define OFP_ACTIONID_H_
 
 #include "ofp/constants.h"
+#include "ofp/actiontype.h"
 
 namespace ofp {
 
@@ -13,7 +14,7 @@ public:
     ProtocolIteratorAlignment = 4
   };
   
-  explicit ActionID(OFPActionType type, UInt32 experimenter = 0)
+  explicit ActionID(OFPActionType type = OFPAT_OUTPUT, UInt32 experimenter = 0)
       : type_(type, type == OFPAT_EXPERIMENTER ? 8U : 4U),
         experimenter_{experimenter} {}
 
@@ -25,6 +26,10 @@ public:
 private:
     ActionType type_;
     Big32 experimenter_;
+
+    size_t length() const { return type_.length(); }
+
+    friend class ActionIDList;
 };
 
 }  // namespace ofp

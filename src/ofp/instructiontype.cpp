@@ -3,11 +3,6 @@
 
 using namespace ofp;
 
-bool InstructionType::parse(const std::string &s) {
-    // TODO(bfish) !!!
-    return false;
-}
-
 static const InstructionTypeInfo sInstructionInfo[] = {
     {IT_GOTO_TABLE::type(), "OFPIT_GOTO_TABLE"},
     {IT_WRITE_METADATA::type(), "OFPIT_WRITE_METADATA"},
@@ -17,6 +12,16 @@ static const InstructionTypeInfo sInstructionInfo[] = {
     {IT_METER::type(), "OFPIT_METER"},
     {IT_EXPERIMENTER::type(), "OFPIT_EXPERIMENTER"},
 };
+
+bool InstructionType::parse(const std::string &s) {
+    for (unsigned i = 0; i < ArrayLength(sInstructionInfo); ++i) {
+        if (s == sInstructionInfo[i].name) {
+            type_ = sInstructionInfo[i].type.type_;
+            return true;
+        }
+    }
+    return false;
+}
 
 const InstructionTypeInfo *InstructionType::lookupInfo() const {
     InstructionType desiredValue = *this;

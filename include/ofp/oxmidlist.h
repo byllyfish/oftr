@@ -6,7 +6,15 @@
 
 namespace ofp {
 
-using OXMIDList = ProtocolList<OXMIDRange>;
+class OXMIDList : public ProtocolList<OXMIDRange> {
+  using Inherited = ProtocolList<OXMIDRange>;
+public:
+    using Inherited::Inherited;
+
+  void add(const OXMID &id) {
+    buf_.add(&id, id.length());
+  }
+};
 
 }  // namespace ofp
 

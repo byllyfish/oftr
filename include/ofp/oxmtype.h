@@ -52,7 +52,8 @@ public:
   }
   constexpr bool hasMask() const { return value32_ & MaskBits; }
   constexpr bool isIllegal() const { return hasMask() && length() == 0; }
-
+  constexpr bool isExperimenter() const { return oxmClass() == 0xffff; }
+  
   // When we add the mask, double the length.
   constexpr OXMType withMask() const {
     return hasMask() ? *this : OXMType((value32_ & ~End8Bits) | MaskBits |
@@ -79,6 +80,8 @@ public:
 
   bool parse(const std::string &s);
 
+  constexpr OXMType zeroLength() const { return OXMType(value32_ & ~End8Bits); }
+
 private:
   UInt32 value32_;
 
@@ -90,7 +93,7 @@ private:
     Prefix24Bits = ~End8Bits
   };
 
-  constexpr explicit OXMType(const UInt32 &value) : value32_{value} {}
+  constexpr explicit OXMType(UInt32 value) : value32_{value} {}
 
   constexpr static UInt32 make(UInt16 oxmClass, UInt8 oxmField,
                                UInt16 oxmSize) {

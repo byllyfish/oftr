@@ -61,6 +61,7 @@ public:
     UInt32 size() const { return len_; }
     UInt32 experimenter() const { return experimenter_; }
     ByteRange value() const { return ByteRange{BytePtr(this) + FixedHeaderSize, size() - FixedHeaderSize}; }
+    ByteRange valueRef() const { return data_; }
 
 private:
     Big16 type_ = type();

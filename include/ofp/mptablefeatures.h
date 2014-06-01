@@ -50,7 +50,7 @@ static_assert(IsStandardLayout<MPTableFeatures>(), "Expected standard layout.");
 class MPTableFeaturesBuilder {
 public:
 
-    void setProperties(const PropertyList &properties);
+    void setProperties(const PropertyList &properties) { properties_ = properties; }
 
     void write(Writable *channel);
     void reset() { properties_.clear(); }

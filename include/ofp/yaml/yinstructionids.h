@@ -5,6 +5,14 @@
 #include "ofp/yaml/yconstants.h"
 #include "ofp/yaml/yinstructiontype.h"
 
+namespace ofp {
+namespace detail {
+
+struct InstructionIDInserter {};
+
+}  // namespace detail
+}  // namespace ofp
+
 namespace llvm {
 namespace yaml {
 
@@ -19,10 +27,35 @@ struct ScalarTraits<ofp::InstructionID> {
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::InstructionID &value)
     {
-        //if (!value.parse(scalar)) {
-        //    return "Invalid InstructionID.";
-        //}
-        return "";
+      ofp::InstructionType type;
+      StringRef result = ScalarTraits<ofp::InstructionType>::input(scalar, ctxt, type);
+      if (result.empty()) {
+        value = ofp::InstructionID{type, 0};
+      }
+
+      return result;
+    }
+};
+
+
+template <>
+struct ScalarTraits<ofp::detail::InstructionIDInserter> {
+    static void output(const ofp::detail::InstructionIDInserter &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt,
+                           ofp::detail::InstructionIDInserter &value)
+    {
+      ofp::InstructionIDList &list = Ref_cast<ofp::InstructionIDList>(value);
+
+      ofp::InstructionID id;
+      StringRef result = ScalarTraits<ofp::InstructionID>::input(scalar, ctxt, id);
+      if (result.empty()) {
+        list.add(id);
+      }
+      return result;
     }
 };
 
@@ -41,6 +74,19 @@ struct SequenceTraits<ofp::InstructionIDRange> {
   }
 
   static const bool flow = true;
+};
+
+
+template <>
+struct SequenceTraits<ofp::InstructionIDList> {
+  static size_t size(IO &io, ofp::InstructionIDList &list) {
+    return 0;
+  }
+
+  static ofp::detail::InstructionIDInserter &
+  element(IO &io, ofp::InstructionIDList &list, size_t index) {
+    return Ref_cast<ofp::detail::InstructionIDInserter>(list);
+  }
 };
 
 }  // namespace yaml

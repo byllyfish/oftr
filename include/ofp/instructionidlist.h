@@ -7,8 +7,13 @@
 namespace ofp {
 
 class InstructionIDList : public ProtocolList<InstructionIDRange> {
+  using Inherited = ProtocolList<InstructionIDRange>;
 public:
+  using Inherited::Inherited;
 
+  void add(const InstructionID &id) {
+    buf_.add(&id, id.length());
+  }
 };
 
 }  // namespace ofp

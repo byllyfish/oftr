@@ -3,10 +3,6 @@
 
 using namespace ofp;
 
-bool ActionType::parse(const std::string &s) {
-    // TODO(bfish) !!!
-    return false;
-}
 
 static const ActionTypeInfo sActionInfo[] = {
     {AT_OUTPUT::type(), "OFPAT_OUTPUT"},
@@ -27,6 +23,17 @@ static const ActionTypeInfo sActionInfo[] = {
     {ActionType{OFPAT_SET_FIELD, 0}, "OFPAT_SET_FIELD"},
     {ActionType{OFPAT_EXPERIMENTER, 0}, "OFPAT_EXPERIMENTER"}
 };
+
+bool ActionType::parse(const std::string &s) {
+    for (unsigned i = 0; i < ArrayLength(sActionInfo); ++i) {
+        if (s == sActionInfo[i].name) {
+            value32_ = sActionInfo[i].type.value32_;
+            return true;
+        }
+    }
+    return false;
+}
+
 
 const ActionTypeInfo *ActionType::lookupInfo() const {
     const UInt32 mask = BigEndianToNative(0xFFFF0000);

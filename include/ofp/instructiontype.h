@@ -31,7 +31,7 @@ struct InstructionTypeInfo;
 
 class InstructionType {
 public:
-  constexpr InstructionType(OFPInstructionType type) : type_{type} {}
+  constexpr InstructionType(OFPInstructionType type = OFPIT_GOTO_TABLE) : type_{type} {}
 
   constexpr OFPInstructionType enumType() const { return type_; }
 
@@ -47,7 +47,7 @@ public:
   bool parse(const std::string &s);
 
 private:
-  const Big<OFPInstructionType> type_;
+  Big<OFPInstructionType> type_;
 };
 
 static_assert(IsLiteralType<InstructionType>(), "Literal type expected.");

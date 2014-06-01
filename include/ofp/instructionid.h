@@ -12,7 +12,7 @@ class InstructionID {
     ProtocolIteratorAlignment = 4
   };
   
-  explicit InstructionID(OFPInstructionType type, UInt32 experimenter = 0)
+  explicit InstructionID(OFPInstructionType type = OFPIT_GOTO_TABLE, UInt32 experimenter = 0)
       : type_{type},
         len_(type == OFPIT_EXPERIMENTER ? 8U : 4U),
         experimenter_{experimenter} {}
@@ -24,6 +24,10 @@ class InstructionID {
   InstructionType type_;
   Big16 len_;
   Big32 experimenter_;
+
+  size_t length() const { return len_; }
+  
+  friend class InstructionIDList;
 };
 
 }  // namespace ofp
