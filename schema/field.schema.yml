@@ -1,0 +1,180 @@
+# Copyright (c) 2014, William W. Fisher.
+
+$schema: 'http://json-schema.org/draft-04/schema#' 
+id: field
+description: >
+  A Field is an object that represents an element of an OpenFlow Match. All 
+  field objects have an attribute named `field` which specifies the field type.
+  In addition, all field objects have an attribute named `value` containing
+  the field's value. Some field objects may have an optional `mask` attribute.
+
+yaml_examples: |
+  ---
+  field: OFB_IN_PORT
+  value: 0xffffffff
+  ---
+  field: OFB_IN_PHY_PORT
+  value: 0xffffffff
+  ---
+  field: OFB_METADATA
+  value: 0xffffffffffffffff
+  mask: 0xffffffffffffffff
+  ---
+  field: OFB_ETH_DST
+  value: 'ff:ff:ff:ff:ff:ff'
+  mask: 'ff:ff:ff:ff:ff:ff'
+  ---
+  field: OFB_ETH_SRC
+  value: 'ff:ff:ff:ff:ff:ff'
+  mask: 'ff:ff:ff:ff:ff:ff'
+  ---
+  field: OFB_ETH_TYPE
+  value: 0xffff
+  ---
+  field: OFB_VLAN_VID
+  value: 0xffff
+  mask: 0xffff
+  ...
+
+type: object
+required: [ field, value ]
+oneOf:
+  - properties:
+      field: { enum: [ OFB_IN_PORT ] }
+      value: { $ref: 'types#/uint32' }
+  - properties:
+      field: { enum: ['OFB_IN_PHY_PORT'] }
+      value: { '$ref' : 'types#/uint32' }
+  - properties:
+      field: { enum: ['OFB_METADATA'] }
+      value: { '$ref' : 'types#/uint64' }
+      mask: { '$ref' : 'types#/uint64' }
+  - properties:
+      field: { enum: ['OFB_ETH_DST'] }
+      value: { '$ref' : 'types#/enetaddress' }
+      mask: { '$ref' : 'types#/enetaddress' }
+  - properties:
+      field: { enum: ['OFB_ETH_SRC'] }
+      value: { '$ref' : 'types#/enetaddress' }
+      mask: { '$ref' : 'types#/enetaddress' }
+  - properties:
+      field: { enum: ['OFB_ETH_TYPE'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_VLAN_VID'] }
+      value: { '$ref' : 'types#/uint16' }
+      mask: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_VLAN_PCP'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_IP_DSCP'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_IP_ECN'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_IP_PROTO'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_IPV4_SRC'] }
+      value: { '$ref' : 'types#/ipv4address' }
+      mask: { '$ref' : 'types#/ipv4address' }
+  - properties:
+      field: { enum: ['OFB_IPV4_DST'] }
+      value: { '$ref' : 'types#/ipv4address' }
+      mask: { '$ref' : 'types#/ipv4address' }
+  - properties:
+      field: { enum: ['OFB_TCP_SRC'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_TCP_DST'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_UDP_SRC'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_UDP_DST'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_SCTP_SRC'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_SCTP_DST'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_ICMPV4_TYPE'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_ICMPV4_CODE'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_ARP_OP'] }
+      value: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_ARP_SPA'] }
+      value: { '$ref' : 'types#/ipv4address' }
+      mask: { '$ref' : 'types#/ipv4address' }
+  - properties:
+      field: { enum: ['OFB_ARP_TPA'] }
+      value: { '$ref' : 'types#/ipv4address' }
+      mask: { '$ref' : 'types#/ipv4address' }
+  - properties:
+      field: { enum: ['OFB_ARP_SHA'] }
+      value: { '$ref' : 'types#/enetaddress' }
+      mask: { '$ref' : 'types#/enetaddress' }
+  - properties:
+      field: { enum: ['OFB_ARP_THA'] }
+      value: { '$ref' : 'types#/enetaddress' }
+      mask: { '$ref' : 'types#/enetaddress' }
+  - properties:
+      field: { enum: ['OFB_IPV6_SRC'] }
+      value: { '$ref' : 'types#/ipv6address' }
+      mask: { '$ref' : 'types#/ipv6address' }
+  - properties:
+      field: { enum: ['OFB_IPV6_DST'] }
+      value: { '$ref' : 'types#/ipv6address' }
+      mask: { '$ref' : 'types#/ipv6address' }
+  - properties:
+      field: { enum: ['OFB_IPV6_FLABEL'] }
+      value: { '$ref' : 'types#/uint32' }
+      mask: { '$ref' : 'types#/uint32' }
+  - properties:
+      field: { enum: ['OFB_ICMPV6_TYPE'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_ICMPV6_CODE'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_IPV6_ND_TARGET'] }
+      value: { '$ref' : 'types#/ipv6address' }
+  - properties:
+      field: { enum: ['OFB_IPV6_ND_SLL'] }
+      value: { '$ref' : 'types#/enetaddress' }
+  - properties:
+      field: { enum: ['OFB_IPV6_ND_TLL'] }
+      value: { '$ref' : 'types#/enetaddress' }
+  - properties:
+      field: { enum: ['OFB_MPLS_LABEL'] }
+      value: { '$ref' : 'types#/uint32' }
+  - properties:
+      field: { enum: ['OFB_MPLS_TC'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFP_MPLS_BOS'] }
+      value: { '$ref' : 'types#/uint8' }
+  - properties:
+      field: { enum: ['OFB_PBB_ISID'] }
+      value: { '$ref' : 'types#/uint32' }
+      mask: { '$ref' : 'types#/uint32' }
+  - properties:
+      field: { enum: ['OFB_TUNNEL_ID'] }
+      value: { '$ref' : 'types#/uint64' }
+      mask: { '$ref' : 'types#/uint64' }
+  - properties:
+      field: { enum: ['OFB_IPV6_EXTHDR'] }
+      value: { '$ref' : 'types#/uint16' }
+      mask: { '$ref' : 'types#/uint16' }
+  - properties:
+      field: { enum: ['OFB_PBB_UCA'] }
+      value: { '$ref' : 'types#/uint8' }

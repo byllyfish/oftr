@@ -1,6 +1,10 @@
 $schema: 'http://json-schema.org/draft-04/schema#' 
-id: 'types'
-description: Base Types
+id: types
+description: >
+  Core scalar types for use in other schemas. To specify that an object has
+  type `uint32` you can reference it via JSON Reference:
+  
+  { '$ref' : 'types#/uint32' }
 
 uint8:
   type: integer
@@ -38,7 +42,12 @@ enetaddress:
   type: string
   pattern: '^[0-9a-fA-F]{2}([-:][0-9a-fA-F]{2}){5}$'
 
+ipv6endpoint:
+  type: string
+  pattern: ''
+
 binary:
   type: string
   format: byte
-  pattern: '^[= \t\n0-9A-Za-z_-]*a$'
+  pattern: '^[= \t\n0-9A-Za-z_-]*$'
+
