@@ -9,6 +9,33 @@ PropertyRange MPTableFeatures::properties() const {
     return ByteRange{BytePtr(this) + sizeof(MPTableFeatures), length_ - sizeof(MPTableFeatures)};
 }
 
+
+bool MPTableFeatures::validateInput(size_t length) const {
+    if (length < sizeof(MPTableFeatures)) {
+        return false;
+    }
+
+    size_t len = length_;
+    if (len < sizeof(MPTableFeatures)) {
+        return false;
+    }
+
+    if (len > length) {
+        return false;
+    }
+
+    PropertyRange props = properties();
+    if (!props.validateInput("MPTableFeatures")) {
+        return false;
+    }
+
+    if (!TableFeaturePropertyValidator::validateInput(props)) {
+        return false;
+    }
+
+    return true;
+}
+
 void MPTableFeaturesBuilder::write(Writable *channel) {
     msg_.length_ = UInt16_narrow_cast(sizeof(msg_) + properties_.size());
     channel->write(&msg_, sizeof(msg_));

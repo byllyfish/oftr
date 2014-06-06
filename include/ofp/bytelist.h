@@ -65,6 +65,9 @@ public:
   /// \returns size of buffer in bytes.
   size_t size() const { return buf_.size(); }
 
+  /// \returns true if buffer is empty.
+  bool empty() const { return buf_.empty(); }
+
   /// \returns offset of pointer relative to start of the byte buffer.
   ptrdiff_t offset(const UInt8 *pos) const {
     assertInRange(pos);

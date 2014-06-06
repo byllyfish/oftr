@@ -15,13 +15,18 @@ struct ScalarTraits<ofp::InstructionType> {
         if (info) {
             out << info->name;
         } else {
-            out << value.enumType();
+            out << llvm::format("0x%04X", value.enumType());
         }
     }
 
     static StringRef input(StringRef scalar, void *ctxt, ofp::InstructionType &value)
     {
         if (!value.parse(scalar)) {
+            unsigned long long num;
+            if (llvm::getAsUnsignedInteger(scalar, 0, num) == 0) {
+                value.setNative(num);
+                return "";
+            }
             return "Invalid instruction type.";
         }
 

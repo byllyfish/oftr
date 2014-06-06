@@ -45,7 +45,8 @@ public:
 
   const InstructionTypeInfo *lookupInfo() const;
   bool parse(const std::string &s);
-
+  void setNative(UInt16 value) { type_ = static_cast<OFPInstructionType>(value); }
+  
 private:
   Big<OFPInstructionType> type_;
 };

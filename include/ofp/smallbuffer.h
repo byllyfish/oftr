@@ -50,7 +50,8 @@ class SmallBuffer {
 
   size_t size() const noexcept { return Unsigned_cast(end_ - begin_); }
   size_t capacity() const noexcept { return Unsigned_cast(capacity_ - begin_); }
-
+  bool empty() const noexcept { return end_ == begin_; }
+  
   void assign(const void *data, size_t length) noexcept;
 
   void add(const void *data, size_t length) noexcept;

@@ -28,6 +28,8 @@ public:
 
     PropertyRange properties() const;
 
+    bool validateInput(size_t length) const;
+    
 private:
     Big16 length_;
     Big8 tableId_;

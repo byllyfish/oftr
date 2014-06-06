@@ -9,6 +9,8 @@
 
 namespace ofp {
 
+class PropertyRange;
+
 namespace detail {
 
 OFP_BEGIN_IGNORE_PADDING
@@ -29,6 +31,8 @@ public:
     enum : size_t { FixedHeaderSize = 4U };
 
     ByteRange valueRef() const { return range_.toByteRange(); }
+
+    bool validateInput() const { return value().validateInput("TableFeature"); }
 
 private:
     Big16 type_ = type();
@@ -88,6 +92,10 @@ using TableFeaturePropertyExperimenter = detail::TableFeaturePropertyExperimente
 using TableFeaturePropertyExperimenterMiss = detail::TableFeaturePropertyExperimenter<OFPTFPT_EXPERIMENTER_MISS>;
 
 
+class TableFeaturePropertyValidator {
+public:
+    static bool validateInput(const PropertyRange &range);
+};
 
 }  // namespace ofp
 

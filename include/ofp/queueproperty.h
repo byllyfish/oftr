@@ -76,6 +76,12 @@ private:
 
 static_assert(sizeof(QueuePropertyExperimenter) == QueuePropertyExperimenter::FixedHeaderSize + sizeof(ByteRange), "Unexpected size.");
 
+
+class QueuePropertyValidator {
+public:
+    static bool validateInput(PropertyRange range);
+};
+
 }  // namespace ofp
 
 #endif // OFP_QUEUEPROPERTY_H_

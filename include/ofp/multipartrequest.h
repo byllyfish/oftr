@@ -43,6 +43,7 @@ public:
 
   template <class Type>
   const Type *body_cast() const {
+    // FIXME(bfish) - don't defer validateInput until here; do it earlier.
     const Type *p = reinterpret_cast<const Type *>(requestBody());
     if (!p->validateInput(requestBodySize())) {
       return nullptr;

@@ -57,6 +57,7 @@ public:
 
   const ActionTypeInfo *lookupInfo() const;
   bool parse(const std::string &s);
+  void setNative(UInt16 type) { value32_ = BigEndianFromNative(UInt32_cast(type) << 16); }
 
 private:
   UInt32 value32_;

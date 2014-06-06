@@ -149,6 +149,7 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/tcp_server.cpp
 	src/ofp/sys/udp_connection.cpp
 	src/ofp/sys/udp_server.cpp
+  src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp

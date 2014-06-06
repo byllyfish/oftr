@@ -13,6 +13,8 @@ public:
 
     TableIDRange toRange() const { return TableIDRange{buf_.toRange()}; }
     
+    bool empty() const { return buf_.empty(); }
+    
 private:
     ByteList buf_;
 };

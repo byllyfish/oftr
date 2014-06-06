@@ -22,7 +22,8 @@ public:
 
     const UInt8 *data() const { return buf_.data(); }
     size_t size() const { return buf_.size(); }
-
+    bool empty() const { return buf_.empty(); }
+    
     RangeType toRange() const { return buf_.toRange(); }
 
     void assign(const RangeType &range) { buf_ = range.toByteRange(); }

@@ -87,7 +87,9 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 
     InstructionIDList ins;
     io.mapRequired("instructions", ins);
-    props.add(TableFeaturePropertyInstructions{ins.toRange()});
+    if (!ins.empty()) {
+        props.add(TableFeaturePropertyInstructions{ins.toRange()});
+    }
 
     Optional<InstructionIDList> insMiss;
     io.mapOptional("instructions_miss", insMiss);
@@ -97,7 +99,9 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 
     TableIDList tables;
     io.mapRequired("next_tables", tables);
-    props.add(TableFeaturePropertyNextTables{tables.toRange()});
+    if (!tables.empty()) {
+        props.add(TableFeaturePropertyNextTables{tables.toRange()});
+    }
 
     Optional<TableIDList> tablesMiss;
     io.mapOptional("next_tables_miss", tablesMiss);
@@ -107,7 +111,9 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 
     ActionIDList act;
     io.mapRequired("write_actions", act);
-    props.add(TableFeaturePropertyWriteActions{act.toRange()});
+    if (!act.empty()) {
+        props.add(TableFeaturePropertyWriteActions{act.toRange()});
+    }
 
     Optional<ActionIDList> actMiss;
     io.mapOptional("write_actions_miss", actMiss);
@@ -117,7 +123,9 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 
     act.clear();
     io.mapRequired("apply_actions", act);
-    props.add(TableFeaturePropertyApplyActions{act.toRange()});
+    if (!act.empty()) {
+        props.add(TableFeaturePropertyApplyActions{act.toRange()});
+    }
 
     actMiss.reset();
     io.mapOptional("apply_actions_miss", actMiss);
@@ -127,15 +135,21 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 
     OXMIDList match;
     io.mapRequired("match", match);
-    props.add(TableFeaturePropertyMatch{match.toRange()});
+    if (!match.empty()) {
+        props.add(TableFeaturePropertyMatch{match.toRange()});
+    }
 
     match.clear();
     io.mapRequired("wildcards", match);
-    props.add(TableFeaturePropertyWildcards{match.toRange()});
+    if (!match.empty()) {
+        props.add(TableFeaturePropertyWildcards{match.toRange()});
+    }
 
     match.clear();
     io.mapRequired("write_set_field", match);
-    props.add(TableFeaturePropertyWriteSetField{match.toRange()});
+    if (!match.empty()) {
+        props.add(TableFeaturePropertyWriteSetField{match.toRange()});
+    }
 
     Optional<OXMIDList> matchMiss;
     io.mapOptional("write_set_field_miss", matchMiss);
@@ -145,8 +159,10 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 
     match.clear();
     io.mapRequired("apply_set_field", match);
-    props.add(TableFeaturePropertyApplySetField{match.toRange()});
-
+    if (!match.empty()) {
+        props.add(TableFeaturePropertyApplySetField{match.toRange()});
+    }
+    
     matchMiss.reset();
     io.mapOptional("apply_set_field_miss", matchMiss);
     if (matchMiss) {

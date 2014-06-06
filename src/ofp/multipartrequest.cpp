@@ -22,12 +22,29 @@
 #include "ofp/multipartrequest.h"
 #include "ofp/writable.h"
 #include "ofp/message.h"
+#include "ofp/mptablefeatures.h"
 
-namespace ofp { // <namespace ofp>
+using namespace ofp;
+
+template <class Type>
+static bool validateBody(const UInt8 *body, size_t length) {
+  const Type *p = reinterpret_cast<const Type *>(body);
+  return p->validateInput(length);
+}
+
+
 
 bool MultipartRequest::validateInput(size_t length) const {
   // FIXME - this will need to cast and verify the lengths in the body.
-  return length >= sizeof(MultipartRequest);
+
+  assert(length == requestBodySize() + 16);
+
+  switch (requestType()) {
+    case OFPMP_TABLE_FEATURES:
+      return validateBody<MPTableFeatures>(requestBody(), requestBodySize());
+  }
+
+  return true;
 }
 
 UInt32 MultipartRequestBuilder::send(Writable *channel) {
@@ -59,4 +76,3 @@ UInt32 MultipartRequestBuilder::send(Writable *channel) {
   return xid;
 }
 
-} // </namespace ofp>
