@@ -17,7 +17,7 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::OXMID> {
-    static const bool OXMID_WITH_ZERO_LENGTH = true;
+    static const bool OXMID_WITH_ZERO_LENGTH = false;
     
     static void output(const ofp::OXMID &value, void *ctxt,
                        llvm::raw_ostream &out)
