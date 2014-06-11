@@ -25,10 +25,6 @@ bool MPTableFeatures::validateInput(size_t length) const {
     }
 
     PropertyRange props = properties();
-    if (!props.validateInput("MPTableFeatures")) {
-        return false;
-    }
-
     if (!TableFeaturePropertyValidator::validateInput(props)) {
         return false;
     }

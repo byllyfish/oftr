@@ -19,6 +19,8 @@ public:
         return range_ == rhs.range_;
     }
 
+    bool validateInput(const char *context) const { return true; }
+
 private:
     ByteRange range_;
 };

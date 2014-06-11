@@ -152,8 +152,8 @@ int Decode::decodeOneMessage(const ofp::Message *message, const ofp::Message *or
     
     std::cerr << "Filename: " << currentFilename_ << '\n';
     std::cerr << "Error: Decode succeeded when --verify=invalid flag is specified.\n";
-    std::cerr << *message << '\n';
-    return 0;
+    //std::cerr << *message << '\n';
+    //return 0;
   }
 
   if (!quiet_) {

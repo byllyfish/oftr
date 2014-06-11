@@ -19,6 +19,7 @@ class MPTableFeatures {
 public:
     enum { MPReplyVariableSizeOffset = 0 };
 
+    size_t length() const { return length_; }
     UInt8 tableId() const { return tableId_; }
     const TableName &name() const { return name_; }
     UInt64 metadataMatch() const { return metadataMatch_; }

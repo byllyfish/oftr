@@ -116,3 +116,21 @@ TEST(protocolrange, iteration) {
   //   sum += elem.value;
   // }
 }
+
+
+TEST(protocolrange, misalignedSeq) {
+   ByteList r1{HexToRawData("00 01 00 05 00 10 00 04 00 02 00 04 00 13 00 04 00 02 00 04 00 10 00 04 00 18 00 04 00 09 00 04 00 06 00 04 00 03 00 04")};
+
+   struct Item : private NonCopyable {
+    enum { ProtocolIteratorSizeOffset = 2,
+           ProtocolIteratorAlignment = 4 };
+    Big16 type;
+    Big16 len;
+    Big32 data;
+  };
+
+  ProtocolRange<ProtocolIterator<Item>> iterable{r1};
+
+  // Sequence is invalid because first item has len of 5 which is misaligned.
+  EXPECT_FALSE(iterable.validateInput(""));
+}

@@ -28,8 +28,25 @@ using namespace ofp;
 
 template <class Type>
 static bool validateBody(const UInt8 *body, size_t length) {
-  const Type *p = reinterpret_cast<const Type *>(body);
-  return p->validateInput(length);
+  const Type *ptr = reinterpret_cast<const Type *>(body);
+  return ptr->validateInput(length);
+}
+
+// TODO(bfish): wrap this in an MPRange<Type> or something...
+template <class Type>
+static bool validateBodyArray(const UInt8 *body, size_t length) {
+  while (length != 0) {
+    const Type *ptr = reinterpret_cast<const Type *>(body);
+    assert(IsPtrAligned(ptr, 8) && "Misaligned ptr");
+    size_t size = ptr->length();
+
+    if (size < 8 || size > length) return false;
+    if ((size % 8) != 0) return false;
+    if (!ptr->validateInput(length)) return false;
+    body += size;
+    length -= size;
+  }
+  return true;
 }
 
 
@@ -41,7 +58,7 @@ bool MultipartRequest::validateInput(size_t length) const {
 
   switch (requestType()) {
     case OFPMP_TABLE_FEATURES:
-      return validateBody<MPTableFeatures>(requestBody(), requestBodySize());
+      return validateBodyArray<MPTableFeatures>(requestBody(), requestBodySize());
   }
 
   return true;
