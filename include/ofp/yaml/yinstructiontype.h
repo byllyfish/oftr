@@ -24,7 +24,7 @@ struct ScalarTraits<ofp::InstructionType> {
         if (!value.parse(scalar)) {
             unsigned long long num;
             if (llvm::getAsUnsignedInteger(scalar, 0, num) == 0) {
-                value.setNative(num);
+                value.setNative(ofp::UInt16_narrow_cast(num));
                 return "";
             }
             return "Invalid instruction type.";

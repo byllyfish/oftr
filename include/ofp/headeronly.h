@@ -94,21 +94,14 @@ private:
 
 }  // namespace detail
 
-/// \class ofp::FeaturesRequest
+/// \typedef ofp::FeaturesRequest
 /// \brief Represents an immutable OFPT_FEATURES_REQUEST message.
 /// This request contains the header only.
-///
-/// \enum { Type = OFPT_FEATURES_REQUEST };
-/// \memberof ofp::FeaturesRequest
 
 using FeaturesRequest = detail::HeaderOnly<OFPT_FEATURES_REQUEST>;
 
-/// \class ofp::FeaturesRequestBuilder
+/// \typedef ofp::FeaturesRequestBuilder
 /// \brief Builds a mutable OFPT_FEATURES_REQUEST message.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::FeaturesRequestBuilder
-/// \returns xid assigned to sent message.
 
 using FeaturesRequestBuilder = detail::HeaderOnlyBuilder<FeaturesRequest>;
 
@@ -117,21 +110,14 @@ static_assert(IsStandardLayout<FeaturesRequest>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<FeaturesRequest>(),
               "Expected trivially copyable.");
 
-/// \class ofp::GetAsyncRequest
+/// \typedef ofp::GetAsyncRequest
 /// \brief Represents an immutable OFPT_GET_ASYNC_REQUEST message.
 /// This request contains the header only.
-///
-/// \enum { Type = OFPT_GET_ASYNC_REQUEST };
-/// \memberof ofp::GetAsyncRequest
 
 using GetAsyncRequest = detail::HeaderOnly<OFPT_GET_ASYNC_REQUEST>;
 
-/// \class ofp::GetAsyncRequestBuilder
+/// \typedef ofp::GetAsyncRequestBuilder
 /// \brief Builds a mutable OFPT_GET_ASYNC_REQUEST message.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::GetAsyncRequestBuilder
-/// \returns xid assigned to sent message.
 
 using GetAsyncRequestBuilder = detail::HeaderOnlyBuilder<GetAsyncRequest>;
 
@@ -140,21 +126,14 @@ static_assert(IsStandardLayout<GetAsyncRequest>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<GetAsyncRequest>(),
               "Expected trivially copyable.");
 
-/// \class ofp::GetConfigRequest
+/// \typedef ofp::GetConfigRequest
 /// \brief Represents an immutable OFPT_GET_CONFIG_REQUEST message.
 /// This request contains the header only.
-///
-/// \enum { Type = OFPT_GET_CONFIG_REQUEST };
-/// \memberof ofp::GetConfigRequest
 
 using GetConfigRequest = detail::HeaderOnly<OFPT_GET_CONFIG_REQUEST>;
 
-/// \class ofp::GetConfigRequestBuilder
+/// \typedef ofp::GetConfigRequestBuilder
 /// \brief Builds a mutable OFPT_GET_CONFIG_REQUEST message.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::GetConfigRequestBuilder
-/// \returns xid assigned to sent message.
 
 using GetConfigRequestBuilder = detail::HeaderOnlyBuilder<GetConfigRequest>;
 
@@ -164,21 +143,14 @@ static_assert(IsStandardLayout<GetConfigRequest>(),
 static_assert(IsTriviallyCopyable<GetConfigRequest>(),
               "Expected trivially copyable.");
 
-/// \class ofp::BarrierRequest
+/// \typedef ofp::BarrierRequest
 /// \brief Represents an immutable OFPT_BARRIER_REQUEST message.
 /// This request contains the header only.
-///
-/// \enum { Type = OFPT_BARRIER_REQUEST };
-/// \memberof ofp::BarrierRequest
 
 using BarrierRequest = detail::HeaderOnly<OFPT_BARRIER_REQUEST>;
 
-/// \class ofp::BarrierRequestBuilder
+/// \typedef ofp::BarrierRequestBuilder
 /// \brief Builds a mutable OFPT_BARRIER_REQUEST message.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::BarrierRequestBuilder
-/// \returns xid assigned to sent message.
 
 using BarrierRequestBuilder = detail::HeaderOnlyBuilder<BarrierRequest>;
 
@@ -187,21 +159,14 @@ static_assert(IsStandardLayout<BarrierRequest>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<BarrierRequest>(),
               "Expected trivially copyable.");
 
-/// \class ofp::BarrierReply
+/// \typedef ofp::BarrierReply
 /// \brief Represents an immutable OFPT_BARRIER_REPLY message.
 /// This request contains the header only.
-///
-/// \enum { Type = OFPT_BARRIER_REPLY };
-/// \memberof ofp::BarrierReply
 
 using BarrierReply = detail::HeaderOnly<OFPT_BARRIER_REPLY>;
 
-/// \class ofp::BarrierReplyBuilder
+/// \typedef ofp::BarrierReplyBuilder
 /// \brief Builds a mutable OFPT_BARRIER_REPLY message.
-///
-/// \fn UInt32 send(Writable *channel);
-/// \memberof ofp::BarrierReplyBuilder
-/// \returns xid assigned to sent message.
 
 using BarrierReplyBuilder = detail::HeaderOnlyBuilder<BarrierReply>;
 

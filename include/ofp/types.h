@@ -264,8 +264,8 @@ bool IsMemFilled(const void *data, size_t length, char fill);
 /// For example, to check if pointer is 64-bit aligned:
 ///    IsPtrAligned(ptr, 8)
 ///
-/// \param  pointer
-/// \param  byteBoundary
+/// \param  ptr  pointer to memory
+/// \param  byteBoundary alignment to 2, 4, or 8 bytes
 /// \return true if pointer is aligned.
 inline bool IsPtrAligned(const void *ptr, size_t byteBoundary) {
   return (reinterpret_cast<uintptr_t>(ptr) & (byteBoundary - 1)) == 0;
