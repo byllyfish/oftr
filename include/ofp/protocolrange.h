@@ -1,6 +1,7 @@
 #ifndef OFP_PROTOCOLITERABLE_H_
 #define OFP_PROTOCOLITERABLE_H_
 
+#include <algorithm>
 #include "ofp/protocoliterator.h"
 #include "ofp/log.h"
 
