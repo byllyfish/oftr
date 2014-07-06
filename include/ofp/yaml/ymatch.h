@@ -152,7 +152,7 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     static void mapping(IO &io, ofp::OXMIterator::Item &item)
     {
         ofp::OXMType type = item.type();
-        io.mapRequired("type", type);
+        io.mapRequired("field", type);
 
         ofp::detail::OXMItemReader reader{io, item, type};
         ofp::OXMInternalID id = type.internalID();
@@ -190,7 +190,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
         ofp::MatchBuilder &builder = reinterpret_cast<ofp::MatchBuilder &>(item);
 
         ofp::OXMType type;
-        io.mapRequired("type", type);
+        io.mapRequired("field", type);
 
         ofp::OXMInternalID id = type.internalID();
         if (id != ofp::OXMInternalID::UNKNOWN) {

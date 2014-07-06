@@ -106,11 +106,11 @@ def addFlow(ofp, event, ethSource, ethDest, outPort):
         out_group:       0
         flags:           0
         match:
-          - type:            OFB_IN_PORT
+          - field:           OFB_IN_PORT
             value:           {}
-          - type:            OFB_ETH_SRC
+          - field:           OFB_ETH_SRC
             value:           {}
-          - type:            OFB_ETH_DST
+          - field:           OFB_ETH_DST
             value:           {}
         instructions:
           - type:    OFPIT_APPLY_ACTIONS

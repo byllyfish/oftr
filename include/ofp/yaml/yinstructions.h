@@ -107,6 +107,7 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
 
     OFPInstructionType type = item.type();
     io.mapRequired("type", type);
+
     switch (type) {
     case IT_GOTO_TABLE::type() : {
       IT_GOTO_TABLE *instr =
@@ -163,6 +164,7 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
 
     OFPInstructionType type = OFPIT_GOTO_TABLE;
     io.mapRequired("type", type);
+
     switch (type) {
     case IT_GOTO_TABLE::type() : {
       IT_GOTO_TABLE instr{0};
