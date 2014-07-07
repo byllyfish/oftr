@@ -269,8 +269,7 @@ TEST(decoder, ofmp_flowreply_v4) {
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
       "OFB_IN_PORT\n          value:           305419896\n      instructions:  "
-      "  \n        - type:            OFPIT_GOTO_TABLE\n          value:       "
-      "    \n            table_id:        1\n...\n");
+      "  \n        - instruction:     OFPIT_GOTO_TABLE\n          table_id:        1\n...\n");
 }
 
 TEST(decoder, ofmp_flowreply2_v4) {
@@ -300,9 +299,8 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "OFB_IN_PORT\n          value:           305419896\n        - field:     "
       "      OFB_ETH_SRC\n          value:           10-20-30-40-50-60\n       "
       " - field:           OFB_ETH_DST\n          value:           "
-      "AA-BB-CC-DD-EE-FF\n      instructions:    \n        - type:            "
-      "OFPIT_GOTO_TABLE\n          value:           \n            table_id:    "
-      "    1\n...\n");
+      "AA-BB-CC-DD-EE-FF\n      instructions:    \n        - instruction:     "
+      "OFPIT_GOTO_TABLE\n          table_id:        1\n...\n");
 }
 
 TEST(decoder, ofmp_flowreply_v1) {
@@ -318,7 +316,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "packet_count:    0xBBBBBBBBBBBBBBBB\n      byte_count:      "
       "0xCCCCCCCCCCCCCCCC\n      match:           \n        - field:           "
       "OFB_IN_PORT\n          value:           56797\n      instructions:    "
-      "\n        - type:            OFPIT_APPLY_ACTIONS\n          value:      "
+      "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
       "           61166\n              maxlen:          65535\n...\n");
 }
@@ -336,7 +334,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
       "OFB_IN_PORT\n          value:           22136\n      instructions:    "
-      "\n        - type:            OFPIT_APPLY_ACTIONS\n          value:      "
+      "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
       "           61166\n              maxlen:          65535\n    - table_id: "
       "       17\n      duration_sec:    0x00000022\n      duration_nsec:   "
@@ -348,8 +346,8 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "value:           22136\n        - field:           OFB_ETH_SRC\n        "
       "  value:           10-20-30-40-50-60\n        - field:           "
       "OFB_ETH_DST\n          value:           AA-BB-CC-DD-EE-FF\n      "
-      "instructions:    \n        - type:            OFPIT_APPLY_ACTIONS\n     "
-      "     value:           \n            - action:          OFPAT_OUTPUT\n   "
+      "instructions:    \n        - instruction:     OFPIT_APPLY_ACTIONS\n     "
+      "     actions:         \n            - action:          OFPAT_OUTPUT\n   "
       "           port:            61166\n              maxlen:          "
       "65535\n...\n");
 }
@@ -487,7 +485,7 @@ TEST(decoder, flowmodv4) {
       "           OFB_IN_PORT\n      value:           13\n    - field:         "
       "  OFB_ETH_TYPE\n      value:           2048\n    - field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
-      "   - type:            OFPIT_APPLY_ACTIONS\n      value:           \n    "
+      "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
       "    - action:          OFPAT_SET_FIELD\n          type:            "
       "OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
@@ -507,7 +505,7 @@ TEST(decoder, flowmodv4_2) {
       "           OFB_IN_PORT\n      value:           3435973836\n    - field: "
       "          OFB_ETH_TYPE\n      value:           2048\n    - field:       "
       "    OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:   "
-      " \n    - type:            OFPIT_APPLY_ACTIONS\n      value:           "
+      " \n    - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         "
       "\n        - action:          OFPAT_SET_FIELD\n          type:           "
       " OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
@@ -527,7 +525,7 @@ TEST(decoder, flowmodv1) {
       "           OFB_IN_PORT\n      value:           52428\n    - field:      "
       "     OFB_ETH_TYPE\n      value:           2048\n    - field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
-      "   - type:            OFPIT_APPLY_ACTIONS\n      value:           \n    "
+      "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
       "    - action:          OFPAT_SET_FIELD\n          type:            "
       "OFB_IPV4_DST\n          value:           192.168.2.1\n...\n";
 
@@ -571,7 +569,7 @@ TEST(decoder, flowmod1_2) {
       "OFB_IP_PROTO\n      value:           1\n    - field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n    - field:          "
       " OFB_ICMPV4_TYPE\n      value:           221\n  instructions:    \n    "
-      "- type:            OFPIT_APPLY_ACTIONS\n      value:           \n       "
+      "- instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n       "
       " - action:          OFPAT_SET_FIELD\n          type:            "
       "OFB_ICMPV4_CODE\n          value:           238\n        - action:      "
       "    OFPAT_COPY_TTL_OUT\n...\n");

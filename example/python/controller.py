@@ -113,8 +113,8 @@ def addFlow(ofp, event, ethSource, ethDest, outPort):
           - field:           OFB_ETH_DST
             value:           {}
         instructions:
-          - type:    OFPIT_APPLY_ACTIONS
-            value:
+          - instruction:    OFPIT_APPLY_ACTIONS
+            actions:
               - action: OFPAT_OUTPUT
                 port:   {}
                 maxlen: 0

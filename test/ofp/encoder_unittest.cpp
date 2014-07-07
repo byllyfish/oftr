@@ -486,8 +486,8 @@ TEST(encoder, ofmp_flowreply_v4) {
             - field: OFB_IN_PORT
               value: 0x12345678
           instructions:
-            - type: OFPIT_GOTO_TABLE
-              value: { 'table_id': 1 }
+            - instruction: OFPIT_GOTO_TABLE
+              table_id: 1
    )""";
 
   const char *hex = "0413005811223344000100000000000000480100000000020000000300"
@@ -538,8 +538,8 @@ TEST(encoder, ofmp_flowreply2_v4) {
             - field: OFB_ETH_DST
               value: aa-bb-cc-dd-ee-ff
           instructions:
-            - type: OFPIT_GOTO_TABLE
-              value: { 'table_id': 1 }
+            - instruction: OFPIT_GOTO_TABLE
+              table_id: 1
    )""";
 
   testEncoderSuccess(input, 0x0A0,
@@ -567,8 +567,8 @@ TEST(encoder, ofmp_flowreply3_v4) {
           byte_count: 10
           match:
           instructions:
-            - type: OFPIT_APPLY_ACTIONS
-              value:
+            - instruction: OFPIT_APPLY_ACTIONS
+              actions:
                  - action: OFPAT_OUTPUT
                    port: 1
                    maxlen: 0xFFFF
@@ -609,8 +609,8 @@ TEST(encoder, ofmp_flowreply_v1) {
             - field: OFB_IN_PORT
               value: 0xDDDDDDDD
           instructions:
-            - type: OFPIT_APPLY_ACTIONS
-              value:
+            - instruction: OFPIT_APPLY_ACTIONS
+              actions:
                  - action: OFPAT_OUTPUT
                    port: 0xEEEEEEEE
                    maxlen: 0xFFFF
@@ -647,8 +647,8 @@ TEST(encoder, ofmp_flowreply2_v1) {
             - field: OFB_IN_PORT
               value: 0x12345678
           instructions:
-            - type: OFPIT_APPLY_ACTIONS
-              value:
+            - instruction: OFPIT_APPLY_ACTIONS
+              actions:
                  - action: OFPAT_OUTPUT
                    port: 0xEEEEEEEE
                    maxlen: 0xFFFF
@@ -668,10 +668,10 @@ TEST(encoder, ofmp_flowreply2_v1) {
             - field: OFB_ETH_DST
               value: aa-bb-cc-dd-ee-ff
           instructions:
-            - type: OFPIT_GOTO_TABLE
-              value: { 'table_id': 1 }
-            - type: OFPIT_APPLY_ACTIONS
-              value:
+            - instruction: OFPIT_GOTO_TABLE
+              table_id: 1
+            - instruction: OFPIT_APPLY_ACTIONS
+              actions:
                  - action: OFPAT_OUTPUT
                    port: 0xEEEEEEEE
                    maxlen: 0xFFFF
@@ -917,8 +917,8 @@ TEST(encoder, flowmodv4) {
           - field:           OFB_IPV4_DST
             value:           192.168.1.1
         instructions:
-          - type:    OFPIT_APPLY_ACTIONS
-            value:
+          - instruction:    OFPIT_APPLY_ACTIONS
+            actions:
                - action: OFPAT_SET_FIELD
                  type: OFB_IPV4_DST
                  value: 192.168.2.1
@@ -959,8 +959,8 @@ TEST(encoder, flowmodv4_2) {
           - field:           OFB_IPV4_DST
             value:           192.168.1.1
         instructions:
-          - type:    OFPIT_APPLY_ACTIONS
-            value:
+          - instruction:    OFPIT_APPLY_ACTIONS
+            actions:
                - action: OFPAT_SET_FIELD
                  type: OFB_IPV4_DST
                  value: 192.168.2.1
@@ -999,8 +999,8 @@ TEST(encoder, flowmodv4_fail) {
           - field:           OFB_TCP_DST
             value:           80
         instructions:
-          - type:    OFPIT_APPLY_ACTIONS
-            value:
+          - instruction:    OFPIT_APPLY_ACTIONS
+            actions:
                - action: OFPAT_SET_FIELD
                  type: OFB_IPV4_DST
                  value: 192.168.2.1
@@ -1035,8 +1035,8 @@ TEST(encoder, flowmodv1) {
           - field:           OFB_IPV4_DST
             value:           192.168.1.1
         instructions:
-          - type:    OFPIT_APPLY_ACTIONS
-            value:
+          - instruction:    OFPIT_APPLY_ACTIONS
+            actions:
                - action: OFPAT_SET_FIELD
                  type: OFB_IPV4_DST
                  value: 192.168.2.1
@@ -1076,8 +1076,8 @@ TEST(encoder, flowmodv1_2) {
           - field:           OFB_ICMPV4_TYPE
             value:           0xDD
         instructions:
-          - type:    OFPIT_APPLY_ACTIONS
-            value:
+          - instruction:    OFPIT_APPLY_ACTIONS
+            actions:
                - action: OFPAT_SET_FIELD
                  type: OFB_ICMPV4_CODE
                  value: 0xEE

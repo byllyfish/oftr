@@ -78,8 +78,8 @@ TEST(outputjson, flowmod) {
       "port\":0,\"out_group\":0,\"flags\":0,\"match\":[{\"field\":\"OFB_IN_"
       "PORT\",\"value\":27},{\"field\":\"OFB_ETH_TYPE\",\"value\":2048},{"
       "\"field\":\"OFB_IP_PROTO\",\"value\":6},{\"field\":\"OFB_TCP_SRC\","
-      "\"value\":80}],\"instructions\":[{\"type\":\"OFPIT_GOTO_TABLE\","
-      "\"value\":{\"table_id\":3}}]}}\n...\n";
+      "\"value\":80}],\"instructions\":[{\"instruction\":\"OFPIT_GOTO_TABLE\","
+      "\"table_id\":3}]}}\n...\n";
   EXPECT_EQ(expected, decodeJson.result());
 }
 

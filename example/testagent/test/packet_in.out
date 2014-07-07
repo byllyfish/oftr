@@ -236,8 +236,8 @@ msg:
     - field:           OFB_ETH_DST
       value:           FA-9A-44-DF-F4-42
   instructions:    
-    - type:            OFPIT_APPLY_ACTIONS
-      value:           
+    - instruction:     OFPIT_APPLY_ACTIONS
+      actions:         
         - action:          OFPAT_OUTPUT
           port:            2
           maxlen:          0
@@ -268,8 +268,8 @@ msg:
     - field:           OFB_ETH_DST
       value:           8A-67-69-C6-9F-59
   instructions:    
-    - type:            OFPIT_APPLY_ACTIONS
-      value:           
+    - instruction:     OFPIT_APPLY_ACTIONS
+      actions:         
         - action:          OFPAT_OUTPUT
           port:            1
           maxlen:          0

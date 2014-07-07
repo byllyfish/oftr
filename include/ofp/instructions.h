@@ -51,7 +51,6 @@ public:
 
   constexpr explicit IT_GOTO_TABLE(UInt8 tableId) : tableId_{tableId} {}
 
-  // constexpr size_t size() const { return sizeof(*this); }
   UInt8 tableId() const { return tableId_; }
   void setTableId(UInt8 tableId) { tableId_ = tableId; }
 
@@ -189,7 +188,7 @@ public:
   constexpr explicit IT_EXPERIMENTER(UInt32 experimenterId)
       : experimenterId_{experimenterId} {}
 
-  constexpr UInt32 experimenterid() const { return experimenterId_; }
+  constexpr UInt32 experimenterId() const { return experimenterId_; }
 
 private:
   InstructionType type_ = type();

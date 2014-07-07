@@ -40,65 +40,6 @@ struct InstructionInserter {};
 namespace llvm {
 namespace yaml {
 
-// Pointers are used for read-only.
-template <>
-struct MappingTraits<ofp::IT_GOTO_TABLE *> {
-  static void mapping(IO &io, ofp::IT_GOTO_TABLE *&instr) {
-    io.mapRequired("table_id", instr->tableId_);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::IT_GOTO_TABLE> {
-  static void mapping(IO &io, ofp::IT_GOTO_TABLE &instr) {
-    io.mapRequired("table_id", instr.tableId_);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::IT_WRITE_METADATA *> {
-  static void mapping(IO &io, ofp::IT_WRITE_METADATA *&instr) {
-    io.mapRequired("metadata", instr->metadata_);
-    io.mapRequired("mask", instr->mask_);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::IT_WRITE_METADATA> {
-  static void mapping(IO &io, ofp::IT_WRITE_METADATA &instr) {
-    io.mapRequired("metadata", instr.metadata_);
-    io.mapRequired("mask", instr.mask_);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::IT_METER *> {
-  static void mapping(IO &io, ofp::IT_METER *&instr) {
-    io.mapRequired("meter", instr->meter_);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::IT_METER> {
-  static void mapping(IO &io, ofp::IT_METER &instr) {
-    io.mapRequired("meter", instr.meter_);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::IT_EXPERIMENTER *> {
-  static void mapping(IO &io, ofp::IT_EXPERIMENTER *&instr) {
-    io.mapRequired("meter", instr->experimenterId_);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::IT_EXPERIMENTER> {
-  static void mapping(IO &io, ofp::IT_EXPERIMENTER &instr) {
-    io.mapRequired("meter", instr.experimenterId_);
-  }
-};
-
 template <>
 struct MappingTraits<ofp::InstructionIterator::Element> {
 
@@ -106,33 +47,37 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
     using namespace ofp;
 
     OFPInstructionType type = item.type();
-    io.mapRequired("type", type);
+    io.mapRequired("instruction", type);
 
     switch (type) {
     case IT_GOTO_TABLE::type() : {
       IT_GOTO_TABLE *instr =
           RemoveConst_cast(item.instruction<IT_GOTO_TABLE>());
-      io.mapRequired("value", instr);
+      UInt8 tableId = instr->tableId();
+      io.mapRequired("table_id", tableId);
       break;
     }
     case IT_WRITE_METADATA::type() : {
       IT_WRITE_METADATA *instr =
           RemoveConst_cast(item.instruction<IT_WRITE_METADATA>());
-      io.mapRequired("value", instr);
+      UInt64 metadata = instr->metadata();
+      UInt64 mask = instr->mask();
+      io.mapRequired("metadata", metadata);
+      io.mapRequired("mask", mask);
       break;
     }
     case IT_WRITE_ACTIONS::type() : {
       IT_WRITE_ACTIONS *instr =
           RemoveConst_cast(item.instruction<IT_WRITE_ACTIONS>());
       ActionRange actions{instr->dataRange()};
-      io.mapRequired("value", actions);
+      io.mapRequired("actions", actions);
       break;
     }
     case IT_APPLY_ACTIONS::type() : {
       IT_APPLY_ACTIONS *instr =
           RemoveConst_cast(item.instruction<IT_APPLY_ACTIONS>());
       ActionRange actions{instr->dataRange()};
-      io.mapRequired("value", actions);
+      io.mapRequired("actions", actions);
       break;
     }
     case IT_CLEAR_ACTIONS::type() : {
@@ -141,13 +86,16 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
     }
     case IT_METER::type() : {
       IT_METER *instr = RemoveConst_cast(item.instruction<IT_METER>());
-      io.mapRequired("value", instr);
+      UInt32 meter = instr->meter();
+      io.mapRequired("meter", meter);
       break;
     }
     case IT_EXPERIMENTER::type() : {
       IT_EXPERIMENTER *instr =
           RemoveConst_cast(item.instruction<IT_EXPERIMENTER>());
-      io.mapRequired("value", instr);
+      UInt32 experimenterId = instr->experimenterId();
+      io.mapRequired("experimenter_id", experimenterId);
+      // FIXME - rest of experimenter
       break;
     }
     }
@@ -163,49 +111,48 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
     InstructionList &list = reinterpret_cast<InstructionList &>(builder);
 
     OFPInstructionType type = OFPIT_GOTO_TABLE;
-    io.mapRequired("type", type);
+    io.mapRequired("instruction", type);
 
     switch (type) {
     case IT_GOTO_TABLE::type() : {
-      IT_GOTO_TABLE instr{0};
-      io.mapRequired("value", instr);
-      list.add(instr);
+      UInt8 tableId;
+      io.mapRequired("table_id", tableId);
+      list.add(IT_GOTO_TABLE{tableId});
       break;
     }
     case IT_WRITE_METADATA::type() : {
-      IT_WRITE_METADATA instr{0, 0};
-      io.mapRequired("value", instr);
-      list.add(instr);
+      UInt64 metadata, mask;
+      io.mapRequired("metadata", metadata);
+      io.mapRequired("mask", mask);
+      list.add(IT_WRITE_METADATA{metadata, mask});
       break;
     }
     case IT_WRITE_ACTIONS::type() : {
       ActionList actions;
-      io.mapRequired("value", actions);
+      io.mapRequired("actions", actions);
       list.add(IT_WRITE_ACTIONS{&actions});
       break;
     }
     case IT_APPLY_ACTIONS::type() : {
       ActionList actions;
-      io.mapRequired("value", actions);
+      io.mapRequired("actions", actions);
       list.add(IT_APPLY_ACTIONS{&actions});
       break;
     }
     case IT_CLEAR_ACTIONS::type() : {
-      IT_CLEAR_ACTIONS instr;
-      // io.mapRequired("value", instr);
-      list.add(instr);
+      list.add(IT_CLEAR_ACTIONS{});
       break;
     }
     case IT_METER::type() : {
-      IT_METER instr{0};
-      io.mapRequired("value", instr);
-      list.add(instr);
+      UInt32 meter;
+      io.mapRequired("meter", meter);
+      list.add(IT_METER{meter});
       break;
     }
     case IT_EXPERIMENTER::type() : {
-      IT_EXPERIMENTER instr{0};
-      io.mapRequired("value", instr);
-      list.add(instr);
+      UInt32 experimenterId;
+      io.mapRequired("experimenter_id", experimenterId);
+      list.add(IT_EXPERIMENTER{experimenterId});
       break;
     }
     }
