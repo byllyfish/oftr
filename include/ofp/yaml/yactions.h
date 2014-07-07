@@ -151,7 +151,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
 			case OFPAT_SET_FIELD: {
 				OXMIterator iter = item.oxmRange().begin();
 				OXMType oxmType = iter.type();
-				io.mapRequired("type", oxmType);
+				io.mapRequired("field", oxmType);
                 OXMInternalID id = oxmType.internalID();
                 if (id != ofp::OXMInternalID::UNKNOWN) {
 				  ofp::detail::OXMItemReader reader{io, RemoveConst_cast(*iter), oxmType};
@@ -286,7 +286,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 			}
 			case OFPAT_SET_FIELD: {
 				OXMType oxmType;
-				io.mapRequired("type", oxmType);
+				io.mapRequired("field", oxmType);
 				ofp::OXMInternalID id = oxmType.internalID();
         		if (id != ofp::OXMInternalID::UNKNOWN) {
             		ofp::detail::SetFieldInserter inserter{io, list, oxmType};

@@ -920,7 +920,7 @@ TEST(encoder, flowmodv4) {
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 type: OFB_IPV4_DST
+                 field: OFB_IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -962,7 +962,7 @@ TEST(encoder, flowmodv4_2) {
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 type: OFB_IPV4_DST
+                 field: OFB_IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -1002,7 +1002,7 @@ TEST(encoder, flowmodv4_fail) {
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 type: OFB_IPV4_DST
+                 field: OFB_IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -1038,7 +1038,7 @@ TEST(encoder, flowmodv1) {
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 type: OFB_IPV4_DST
+                 field: OFB_IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -1079,7 +1079,7 @@ TEST(encoder, flowmodv1_2) {
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 type: OFB_ICMPV4_CODE
+                 field: OFB_ICMPV4_CODE
                  value: 0xEE
                - action: OFPAT_COPY_TTL_OUT
       )""";
@@ -1160,7 +1160,7 @@ TEST(encoder, packetoutv1) {
             port: 5
             maxlen: 20
           - action: OFPAT_SET_FIELD
-            type:   OFB_IPV4_DST
+            field:  OFB_IPV4_DST
             value:  192.168.1.1
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
@@ -1187,7 +1187,7 @@ TEST(encoder, packetoutv4) {
             port: 5
             maxlen: 20
           - action: OFPAT_SET_FIELD
-            type:   OFB_IPV4_DST
+            field:  OFB_IPV4_DST
             value:  192.168.1.1
         enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
@@ -1299,14 +1299,14 @@ TEST(encoder, groupmodv4) {
                 port: 5
                 maxlen: 20
               - action: OFPAT_SET_FIELD
-                type:   OFB_IPV4_DST
+                field:  OFB_IPV4_DST
                 value:  192.168.1.1
           - weight: 0x8888
             watch_port: 0x99999999
             watch_group: 0xAAAAAAAA
             actions:
               - action: OFPAT_SET_FIELD
-                type: OFB_ICMPV4_CODE
+                field: OFB_ICMPV4_CODE
                 value: 0xEE
               - action: OFPAT_COPY_TTL_OUT
       )""";
@@ -1340,14 +1340,14 @@ TEST(encoder, groupmodv2) {
                 port: 5
                 maxlen: 20
               - action: OFPAT_SET_FIELD
-                type:   OFB_IPV4_DST
+                field:  OFB_IPV4_DST
                 value:  192.168.1.1
           - weight: 0x8888
             watch_port: 0x99999999
             watch_group: 0xAAAAAAAA
             actions:
               - action: OFPAT_SET_FIELD
-                type: OFB_ICMPV4_CODE
+                field: OFB_ICMPV4_CODE
                 value: 0xEE
               - action: OFPAT_COPY_TTL_OUT
       )""";

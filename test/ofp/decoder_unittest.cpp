@@ -486,7 +486,7 @@ TEST(decoder, flowmodv4) {
       "  OFB_ETH_TYPE\n      value:           2048\n    - field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
       "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
-      "    - action:          OFPAT_SET_FIELD\n          type:            "
+      "    - action:          OFPAT_SET_FIELD\n          field:           "
       "OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
@@ -506,7 +506,7 @@ TEST(decoder, flowmodv4_2) {
       "          OFB_ETH_TYPE\n      value:           2048\n    - field:       "
       "    OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:   "
       " \n    - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         "
-      "\n        - action:          OFPAT_SET_FIELD\n          type:           "
+      "\n        - action:          OFPAT_SET_FIELD\n          field:          "
       " OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
@@ -526,7 +526,7 @@ TEST(decoder, flowmodv1) {
       "     OFB_ETH_TYPE\n      value:           2048\n    - field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
       "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
-      "    - action:          OFPAT_SET_FIELD\n          type:            "
+      "    - action:          OFPAT_SET_FIELD\n          field:           "
       "OFB_IPV4_DST\n          value:           192.168.2.1\n...\n";
 
   auto s = HexToRawData(hex);
@@ -570,7 +570,7 @@ TEST(decoder, flowmod1_2) {
       "OFB_IPV4_DST\n      value:           192.168.1.1\n    - field:          "
       " OFB_ICMPV4_TYPE\n      value:           221\n  instructions:    \n    "
       "- instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n       "
-      " - action:          OFPAT_SET_FIELD\n          type:            "
+      " - action:          OFPAT_SET_FIELD\n          field:           "
       "OFB_ICMPV4_CODE\n          value:           238\n        - action:      "
       "    OFPAT_COPY_TTL_OUT\n...\n");
 }
@@ -599,7 +599,7 @@ TEST(decoder, packetoutv4) {
       "0x00000001\nversion:         4\nmsg:             \n  buffer_id:       "
       "858993459\n  in_port:         1145324612\n  actions:         \n    - "
       "action:          OFPAT_OUTPUT\n      port:            5\n      maxlen:  "
-      "        20\n    - action:          OFPAT_SET_FIELD\n      type:         "
+      "        20\n    - action:          OFPAT_SET_FIELD\n      field:        "
       "   OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
@@ -614,7 +614,7 @@ TEST(decoder, packetoutv1) {
       "0x00000001\nversion:         1\nmsg:             \n  buffer_id:       "
       "858993459\n  in_port:         17476\n  actions:         \n    - action: "
       "         OFPAT_OUTPUT\n      port:            5\n      maxlen:          "
-      "20\n    - action:          OFPAT_SET_FIELD\n      type:            "
+      "20\n    - action:          OFPAT_SET_FIELD\n      field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n";
@@ -688,11 +688,11 @@ TEST(decoder, groupmodv4) {
       "1717986918\n      watch_group:     2004318071\n      actions:         "
       "\n        - action:          OFPAT_OUTPUT\n          port:            "
       "5\n          maxlen:          20\n        - action:          "
-      "OFPAT_SET_FIELD\n          type:            OFB_IPV4_DST\n          "
+      "OFPAT_SET_FIELD\n          field:           OFB_IPV4_DST\n          "
       "value:           192.168.1.1\n    - weight:          34952\n      "
       "watch_port:      2576980377\n      watch_group:     2863311530\n      "
       "actions:         \n        - action:          OFPAT_SET_FIELD\n         "
-      " type:            OFB_ICMPV4_CODE\n          value:           238\n     "
+      " field:           OFB_ICMPV4_CODE\n          value:           238\n     "
       "   - action:          OFPAT_COPY_TTL_OUT\n...\n");
 }
 
