@@ -109,6 +109,10 @@ struct SequenceTraits<ofp::PortRange> {
   static iterator end(IO &io, ofp::PortRange &range) {
     return range.end();
   }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
+  }
 };
 
 template <>

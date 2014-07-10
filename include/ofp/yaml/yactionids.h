@@ -72,6 +72,10 @@ struct SequenceTraits<ofp::ActionIDRange> {
     return range.end();
   }
 
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
+  }
+
   static const bool flow = true;
 };
 

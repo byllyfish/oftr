@@ -170,6 +170,10 @@ struct SequenceTraits<ofp::InstructionRange> {
   static iterator end(IO &io, ofp::InstructionRange &range) {
     return range.end();
   }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
+  }
 };
 
 template <>

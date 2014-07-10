@@ -110,6 +110,10 @@ struct SequenceTraits<ofp::MeterBandRange> {
   static iterator end(IO &io, ofp::MeterBandRange &range) {
     return range.end();
   }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
+  }
 };
 
 template <>

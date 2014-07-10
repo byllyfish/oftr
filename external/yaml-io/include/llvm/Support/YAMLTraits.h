@@ -648,7 +648,7 @@ yamlize(IO &io, T &Seq, bool) {
     unsigned incnt = io.beginFlowSequence();
     typename SequenceTraits<T>::iterator iter = SequenceTraits<T>::begin(io, Seq);
     typename SequenceTraits<T>::iterator iterEnd = SequenceTraits<T>::end(io, Seq);
-    for (; iter < iterEnd; ++iter) {
+    for (; iter < iterEnd; SequenceTraits<T>::next(iter, iterEnd)) {
       void *SaveInfo;
       if ( io.preflightFlowElement(0, SaveInfo) ) {
         yamlize(io, mutable_ref(*iter), true);
@@ -661,7 +661,7 @@ yamlize(IO &io, T &Seq, bool) {
     unsigned incnt = io.beginSequence();
     typename SequenceTraits<T>::iterator iter = SequenceTraits<T>::begin(io, Seq);
     typename SequenceTraits<T>::iterator iterEnd = SequenceTraits<T>::end(io, Seq);
-    for (; iter < iterEnd; ++iter) {
+    for (; iter < iterEnd; SequenceTraits<T>::next(iter, iterEnd)) {
       void *SaveInfo;
       if ( io.preflightElement(0, SaveInfo) ) {
         yamlize(io, mutable_ref(*iter), true);

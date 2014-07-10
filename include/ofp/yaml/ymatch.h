@@ -136,6 +136,10 @@ struct SequenceTraits<ofp::Match> {
     static iterator end(IO &io, ofp::Match &match) {
         return match.end();
     }
+
+    static void next(iterator &iter, iterator iterEnd) {
+        ++iter;
+    }
 };
 
 template <>

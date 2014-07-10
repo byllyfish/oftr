@@ -101,6 +101,10 @@ struct SequenceTraits<ofp::BucketRange> {
     static iterator end(IO &io, ofp::BucketRange &range) {
         return range.end();
     }
+
+    static void next(iterator &iter, iterator iterEnd) {
+        ++iter;
+    }
 };
 
 
