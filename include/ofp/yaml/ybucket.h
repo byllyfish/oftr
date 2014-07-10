@@ -92,21 +92,14 @@ struct MappingTraits<ofp::Bucket> {
 
 template <>
 struct SequenceTraits<ofp::BucketRange> {
+    using iterator = ofp::BucketIterator;
 
-    static size_t size(IO &io, ofp::BucketRange &buckets)
-    {
-        return buckets.itemCount();
+    static iterator begin(IO &io, ofp::BucketRange &range) {
+        return range.begin();
     }
 
-    static ofp::BucketIterator::Element &element(IO &io, ofp::BucketRange &buckets,
-                                     size_t index)
-    {
-        ofp::log::debug("bucket yaml item", index);
-        // FIXME
-        ofp::BucketIterator iter = buckets.begin();
-        for (size_t i = 0; i < index; ++i)
-            ++iter;
-        return RemoveConst_cast(*iter);
+    static iterator end(IO &io, ofp::BucketRange &range) {
+        return range.end();
     }
 };
 

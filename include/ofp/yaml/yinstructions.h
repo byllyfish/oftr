@@ -161,18 +161,14 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
 
 template <>
 struct SequenceTraits<ofp::InstructionRange> {
+  using iterator = ofp::InstructionIterator;
 
-  static size_t size(IO &io, ofp::InstructionRange &range) {
-    return range.itemCount();
+  static iterator begin(IO &io, ofp::InstructionRange &range) {
+    return range.begin();
   }
 
-  static ofp::InstructionIterator::Element &
-  element(IO &io, ofp::InstructionRange &range, size_t index) {
-    // FIXME - iterates every time!
-    ofp::InstructionIterator iter = range.begin();
-    for (size_t i = 0; i < index; ++i)
-      ++iter;
-    return RemoveConst_cast(*iter);
+  static iterator end(IO &io, ofp::InstructionRange &range) {
+    return range.end();
   }
 };
 

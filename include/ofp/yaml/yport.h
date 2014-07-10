@@ -100,18 +100,14 @@ struct MappingTraits<ofp::detail::PortInserter> {
 
 template <>
 struct SequenceTraits<ofp::PortRange> {
+  using iterator = ofp::PortIterator;
 
-  static size_t size(IO &io, ofp::PortRange &ports) {
-    return ports.itemCount();
+  static iterator begin(IO &io, ofp::PortRange &range) {
+    return range.begin();
   }
 
-  static ofp::PortIterator::Element &element(IO &io, ofp::PortRange &ports,
-                                          size_t index) {
-    ofp::log::debug("port yaml item", index);
-    // FIXME
-    ofp::PortIterator iter = ports.begin();
-    for (size_t i = 0; i < index; ++i) ++iter;
-    return RemoveConst_cast(*iter);
+  static iterator end(IO &io, ofp::PortRange &range) {
+    return range.end();
   }
 };
 

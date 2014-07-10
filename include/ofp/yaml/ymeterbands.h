@@ -101,13 +101,14 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
 
 template <>
 struct SequenceTraits<ofp::MeterBandRange> {
-  static size_t size(IO &io, ofp::MeterBandRange &meterBands) {
-    return meterBands.itemCount();
+  using iterator = ofp::MeterBandIterator;
+
+  static iterator begin(IO &io, ofp::MeterBandRange &range) {
+    return range.begin();
   }
 
-  static ofp::MeterBandIterator::Element &element(IO &io, ofp::MeterBandRange &meterBands,
-                                             size_t index) {
-    return RemoveConst_cast(*meterBands.nthItem(index));
+  static iterator end(IO &io, ofp::MeterBandRange &range) {
+    return range.end();
   }
 };
 

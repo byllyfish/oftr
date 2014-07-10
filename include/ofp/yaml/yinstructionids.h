@@ -62,15 +62,14 @@ struct ScalarTraits<ofp::detail::InstructionIDInserter> {
 
 template <>
 struct SequenceTraits<ofp::InstructionIDRange> {
+  using iterator = ofp::InstructionIDIterator;
 
-  static size_t size(IO &io, ofp::InstructionIDRange &range) {
-    return range.itemCount();
+  static iterator begin(IO &io, ofp::InstructionIDRange &range) {
+    return range.begin();
   }
 
-  static ofp::InstructionID &
-  element(IO &io, ofp::InstructionIDRange &range, size_t index) {
-    ofp::InstructionIDIterator iter = range.nthItem(index);
-    return RemoveConst_cast(*iter);
+  static iterator end(IO &io, ofp::InstructionIDRange &range) {
+    return range.end();
   }
 
   static const bool flow = true;
