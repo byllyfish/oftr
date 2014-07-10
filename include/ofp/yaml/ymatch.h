@@ -127,22 +127,14 @@ namespace yaml {
 
 template <>
 struct SequenceTraits<ofp::Match> {
+    using iterator = ofp::OXMIterator;
 
-    static size_t size(IO &io, ofp::Match &match)
-    {
-        return match.itemCount();
+    static iterator begin(IO &io, ofp::Match &match) {
+        return match.begin();
     }
 
-    static ofp::OXMIterator::Item &element(IO &io, ofp::Match &match,
-                                           size_t index)
-    {
-        ofp::log::debug("match yaml item", index);
-
-        // FIXME
-        ofp::OXMIterator iter = match.begin();
-        for (size_t i = 0; i < index; ++i)
-            ++iter;
-        return RemoveConst_cast(*iter);
+    static iterator end(IO &io, ofp::Match &match) {
+        return match.end();
     }
 };
 

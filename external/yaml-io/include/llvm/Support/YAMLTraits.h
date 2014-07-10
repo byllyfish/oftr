@@ -276,6 +276,20 @@ public:
   static bool const value =  (sizeof(test<SequenceTraits<T> >(0)) == 1);
 };
 
+// Test if SequenceTraits<T> is defined on type T, with an iterator
+// type, and begin, end methods.
+template <class T>
+struct has_IteratorMethodTraits
+{
+  template <typename U>
+  static char test(typename U::iterator *);
+
+  template <typename U>
+  static double test(...);
+
+public:
+  static bool const value = (sizeof(test<SequenceTraits<T>>(nullptr)) == 1);
+};
 
 // has_FlowTraits<int> will cause an error with some compilers because
 // it subclasses int.  Using this wrapper only instantiates the
@@ -311,8 +325,8 @@ public:
 // Test if SequenceTraits<T> is defined on type T
 template<typename T>
 struct has_SequenceTraits : public std::integral_constant<bool,
-                                      has_SequenceMethodTraits<T>::value > { };
-
+                                      has_SequenceMethodTraits<T>::value ||
+                                      has_IteratorMethodTraits<T>::value> { };
 
 // Test if DocumentListTraits<T> is defined on type T
 template <class T>
@@ -620,8 +634,46 @@ yamlize(IO &io, T &Val, bool) {
   char missing_yaml_trait_for_type[sizeof(MissingTrait<T>)];
 }
 
+
 template<typename T>
-typename std::enable_if<has_SequenceTraits<T>::value,void>::type
+T &mutable_ref(const T& ref) {
+  return const_cast<T&>(ref);
+}
+
+template<typename T>
+typename std::enable_if<has_IteratorMethodTraits<T>::value,void>::type
+yamlize(IO &io, T &Seq, bool) {
+  assert(io.outputting());
+  if ( has_FlowTraits< SequenceTraits<T> >::value ) {
+    unsigned incnt = io.beginFlowSequence();
+    typename SequenceTraits<T>::iterator iter = SequenceTraits<T>::begin(io, Seq);
+    typename SequenceTraits<T>::iterator iterEnd = SequenceTraits<T>::end(io, Seq);
+    for (; iter < iterEnd; ++iter) {
+      void *SaveInfo;
+      if ( io.preflightFlowElement(0, SaveInfo) ) {
+        yamlize(io, mutable_ref(*iter), true);
+        io.postflightFlowElement(SaveInfo);
+      }
+    }
+    io.endFlowSequence();
+  }
+  else {
+    unsigned incnt = io.beginSequence();
+    typename SequenceTraits<T>::iterator iter = SequenceTraits<T>::begin(io, Seq);
+    typename SequenceTraits<T>::iterator iterEnd = SequenceTraits<T>::end(io, Seq);
+    for (; iter < iterEnd; ++iter) {
+      void *SaveInfo;
+      if ( io.preflightElement(0, SaveInfo) ) {
+        yamlize(io, mutable_ref(*iter), true);
+        io.postflightElement(SaveInfo);
+      }
+    }
+    io.endSequence();
+  }
+}
+
+template<typename T>
+typename std::enable_if<has_SequenceMethodTraits<T>::value,void>::type
 yamlize(IO &io, T &Seq, bool) {
   if ( has_FlowTraits< SequenceTraits<T> >::value ) {
     unsigned incnt = io.beginFlowSequence();
