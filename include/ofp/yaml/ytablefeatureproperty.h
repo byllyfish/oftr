@@ -2,6 +2,7 @@
 #define OFP_YAML_YTABLEFEATURESPROPERTY_H_
 
 #include "ofp/tablefeatureproperty.h"
+#include "ofp/unrecognizedproperty.h"
 #include "ofp/yaml/yinstructionids.h"
 #include "ofp/yaml/yactionids.h"
 #include "ofp/yaml/yoxmids.h"
@@ -11,6 +12,12 @@ namespace ofp {
 namespace detail {
 
 struct TableFeaturePropertyItem {};
+struct TableFeaturePropertyIterator {
+  TableFeaturePropertyIterator(PropertyIterator iter) : iter_{iter} {}
+  TableFeaturePropertyItem &operator*() { return llvm::yaml::Ref_cast<TableFeaturePropertyItem>(RemoveConst_cast(*iter_)); }
+  bool operator<(const TableFeaturePropertyIterator &rhs) const { return iter_ < rhs.iter_; }
+  PropertyIterator iter_;
+};
 struct TableFeaturePropertyRange {};
 struct TableFeaturePropertyInserter {};
 struct TableFeaturePropertyList {};
@@ -67,47 +74,59 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyInserter> {
     UInt16 property;
     io.mapRequired("property", property);
 
-    UInt32 experimenter;
-    io.mapRequired("experimenter_id", experimenter);
+    if (property >= OFPTFPT_EXPERIMENTER) {
+      UInt32 experimenter;
+      io.mapRequired("experimenter_id", experimenter);
 
-    UInt32 expType;
-    io.mapRequired("exp_type", expType);
+      UInt32 expType;
+      io.mapRequired("exp_type", expType);
 
-    ByteList expData;
-    io.mapRequired("exp_data", expData);
+      ByteList expData;
+      io.mapRequired("exp_data", expData);
 
-    switch (property) {
-      case OFPTFPT_EXPERIMENTER: {
-        props.add(TableFeaturePropertyExperimenter{experimenter, expType, expData});
-        break;
+      switch (property) {
+        case OFPTFPT_EXPERIMENTER:
+          props.add(TableFeaturePropertyExperimenter{experimenter, expType, expData});
+          break;
+        case OFPTFPT_EXPERIMENTER_MISS:
+          props.add(TableFeaturePropertyExperimenterMiss{experimenter, expType, expData});
+          break;
       }
-      case OFPTFPT_EXPERIMENTER_MISS: {
-        props.add(TableFeaturePropertyExperimenterMiss{experimenter, expType, expData});
-        break;
-      }
-      default: {
-        log::debug("Unsupported TableFeaturePropertyInserter");
-        //ByteRange data = elem.value();
-        //io.mapRequired("data", data);
-        break;
-      }
+
+    } else {
+      ByteList propData;
+      io.mapRequired("data", propData);
+      props.add(UnrecognizedProperty{property, propData});
     }
   }
 };
 
 template <>
 struct SequenceTraits<ofp::detail::TableFeaturePropertyRange> {
+  using iterator = ofp::detail::TableFeaturePropertyIterator;
 
-  static size_t size(IO &io, ofp::detail::TableFeaturePropertyRange &props) {
-    ofp::PropertyRange &p = Ref_cast<ofp::PropertyRange>(props);
-    return p.itemCountIf([](const ofp::PropertyRange::Element &item){ return (item.type() == ofp::OFPTFPT_EXPERIMENTER) || (item.type() == ofp::OFPTFPT_EXPERIMENTER_MISS); });
+  static iterator begin(IO &io, ofp::detail::TableFeaturePropertyRange &range) {
+    ofp::PropertyRange props = Ref_cast<ofp::PropertyRange>(range);
+    auto it = ofp::detail::TableFeaturePropertyIterator{props.begin()};
+    skip(it, end(io, range));
+    return it;
   }
 
-  static ofp::detail::TableFeaturePropertyItem &element(IO &io, ofp::detail::TableFeaturePropertyRange &props,
-                                          size_t index) {
-    ofp::PropertyRange &p = Ref_cast<ofp::PropertyRange>(props);
-    ofp::PropertyIterator iter = p.nthItemIf(index, [](const ofp::PropertyRange::Element &item){ return (item.type() == ofp::OFPTFPT_EXPERIMENTER) || (item.type() == ofp::OFPTFPT_EXPERIMENTER_MISS); });
-    return Ref_cast<ofp::detail::TableFeaturePropertyItem>(RemoveConst_cast(*iter));
+  static iterator end(IO &io, ofp::detail::TableFeaturePropertyRange &range) {
+    ofp::PropertyRange props = Ref_cast<ofp::PropertyRange>(range);
+    return ofp::detail::TableFeaturePropertyIterator{props.end()};
+  }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++(iter.iter_);
+    skip(iter, iterEnd);
+  }
+
+  static void skip(iterator &iter, iterator iterEnd) {
+    for (; iter < iterEnd; ++(iter.iter_)) {
+      ofp::UInt16 type = iter.iter_->type();
+      if (type >= ofp::OFPTFPT_UNUSED_MIN || type == ofp::OFPTFPT_UNUSED_9 || type == ofp::OFPTFPT_UNUSED_11) break;
+    }
   }
 };
 
