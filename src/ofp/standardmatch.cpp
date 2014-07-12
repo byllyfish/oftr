@@ -156,7 +156,7 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
   }
 
   dl_dst = match.dl_dst;
-  if (!(origWildcards & OriginalMatch::OFPFW_DL_SRC)) {
+  if (!(origWildcards & OriginalMatch::OFPFW_DL_DST)) {
     dl_dst_mask.setAllOnes();
   } else {
     dl_dst_mask.clear();
