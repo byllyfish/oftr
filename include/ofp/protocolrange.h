@@ -25,32 +25,6 @@ public:
 
   size_t itemCount() const { return Iterator::itemCount(range_); }
 
-  template <class UnaryPredicate>
-  size_t itemCountIf(UnaryPredicate pred) const {
-    return Unsigned_cast(std::count_if(begin(), end(), pred));
-  }
-
-  Iterator nthItem(size_t index) const { 
-    Iterator iter = begin();
-    for (size_t i = 0; i < index; ++i) {
-      ++iter;
-    }
-    return iter;
-  }
-
-OFP_BEGIN_IGNORE_PADDING
-  template <class UnaryPredicate>
-  Iterator nthItemIf(size_t index, UnaryPredicate pred) const { 
-    return std::find_if(begin(), end(), [pred, &index](const Element &elem){
-      if (pred(elem)) {
-        if (index == 0) return true;
-        --index;
-      }
-      return false;
-    });
-  }
-OFP_END_IGNORE_PADDING
-
   bool validateInput(const char *context) const {
     return Iterator::isValid(range_, context);
   }

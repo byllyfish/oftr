@@ -65,15 +65,18 @@ struct ScalarTraits<ofp::detail::OXMIDInserter> {
 
 template <>
 struct SequenceTraits<ofp::OXMIDRange> {
+  using iterator = ofp::OXMIDIterator;
 
-  static size_t size(IO &io, ofp::OXMIDRange &range) {
-    return range.itemCount();
+  static iterator begin(IO &io, ofp::OXMIDRange &range) {
+    return range.begin();
   }
 
-  static ofp::OXMID &
-  element(IO &io, ofp::OXMIDRange &range, size_t index) {
-    ofp::OXMIDIterator iter = range.nthItem(index);
-    return RemoveConst_cast(*iter);
+  static iterator end(IO &io, ofp::OXMIDRange &range) {
+    return range.end();
+  }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
   }
 
   static const bool flow = true;
