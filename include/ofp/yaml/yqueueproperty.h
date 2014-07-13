@@ -1,10 +1,13 @@
 #ifndef OFP_YAML_YQUEUEPROPERTY_H_
 #define OFP_YAML_YQUEUEPROPERTY_H_
 
+#include "ofp/yaml/ytypedpropertyiterator.h"
+
 namespace ofp {
 namespace detail {
 
 struct QueuePropertyItem {};
+using QueuePropertyIterator = TypedPropertyIterator<QueuePropertyItem>;
 struct QueuePropertyRange {};
 struct QueuePropertyList {
   // Need begin/end to allow mapOptional("properties", qp).
@@ -64,20 +67,29 @@ struct MappingTraits<ofp::detail::QueuePropertyInserter> {
 template <>
 struct SequenceTraits<ofp::detail::QueuePropertyRange> {
 
-  static size_t size(IO &io, ofp::detail::QueuePropertyRange &props) {
-    ofp::PropertyRange &p = reinterpret_cast<ofp::PropertyRange &>(props);
-    return p.itemCountIf([](const ofp::PropertyRange::Element &item){ return item.type() == ofp::QueuePropertyExperimenter::type(); });
+  using iterator = ofp::detail::QueuePropertyIterator;
+
+  static iterator begin(IO &io, ofp::detail::QueuePropertyRange &range) {
+    auto props = Ref_cast<ofp::PropertyRange>(range);
+    auto it = ofp::detail::QueuePropertyIterator{props.begin()};
+    skip(it, end(io, range));
+    return it;
   }
 
-  static ofp::detail::QueuePropertyItem &element(IO &io, ofp::detail::QueuePropertyRange &props,
-                                          size_t index) {
-    ofp::log::debug("queue property yaml item", index);
-    ofp::PropertyRange &p = reinterpret_cast<ofp::PropertyRange &>(props);
-    //ofp::PropertyIterator iter = p.begin();
-    //for (size_t i = 0; i < index; ++i) ++iter;
-    ofp::PropertyIterator iter = p.nthItemIf(index, [](const ofp::PropertyRange::Element &item){ return item.type() == ofp::QueuePropertyExperimenter::type(); });
-    const ofp::PropertyIterator::Element &elem = *iter;
-    return reinterpret_cast<ofp::detail::QueuePropertyItem &>(RemoveConst_cast(elem));
+  static iterator end(IO &io, ofp::detail::QueuePropertyRange &range) {
+    auto props = Ref_cast<ofp::PropertyRange>(range);
+    return ofp::detail::QueuePropertyIterator{props.end()};
+  }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
+    skip(iter, iterEnd);
+  }
+
+  static void skip(iterator &iter, iterator iterEnd) {
+    for (; iter < iterEnd; ++iter) {
+      if (iter->type() >= ofp::OFPQT_UNUSED_MIN) break;
+    }
   }
 };
 

@@ -349,6 +349,7 @@ enum OFPFlowModCommand : UInt8 {
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,
+  OFPQT_UNUSED_MIN = 3,       // min unused property id
   OFPQT_EXPERIMENTER = 0xffff
 };
 
@@ -375,7 +376,7 @@ enum OFPTableFeatureProperty : UInt16 {
   OFPTFPT_WRITE_SETFIELD_MISS = 13,
   OFPTFPT_APPLY_SETFIELD = 14,
   OFPTFPT_APPLY_SETFIELD_MISS = 15,
-  OFPTFPT_UNUSED_MIN = 16,
+  OFPTFPT_UNUSED_MIN = 16,    // min unused property id
   OFPTFPT_EXPERIMENTER = 0xFFFE,
   OFPTFPT_EXPERIMENTER_MISS = 0xFFFF
 };
