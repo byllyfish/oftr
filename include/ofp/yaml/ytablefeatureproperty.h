@@ -7,17 +7,13 @@
 #include "ofp/yaml/yactionids.h"
 #include "ofp/yaml/yoxmids.h"
 #include "ofp/yaml/ytableids.h"
+#include "ofp/yaml/ytypedpropertyiterator.h"
 
 namespace ofp {
 namespace detail {
 
 struct TableFeaturePropertyItem {};
-struct TableFeaturePropertyIterator {
-  TableFeaturePropertyIterator(PropertyIterator iter) : iter_{iter} {}
-  TableFeaturePropertyItem &operator*() { return llvm::yaml::Ref_cast<TableFeaturePropertyItem>(RemoveConst_cast(*iter_)); }
-  bool operator<(const TableFeaturePropertyIterator &rhs) const { return iter_ < rhs.iter_; }
-  PropertyIterator iter_;
-};
+using TableFeaturePropertyIterator = TypedPropertyIterator<TableFeaturePropertyItem>;
 struct TableFeaturePropertyRange {};
 struct TableFeaturePropertyInserter {};
 struct TableFeaturePropertyList {};
@@ -118,13 +114,13 @@ struct SequenceTraits<ofp::detail::TableFeaturePropertyRange> {
   }
 
   static void next(iterator &iter, iterator iterEnd) {
-    ++(iter.iter_);
+    ++iter;
     skip(iter, iterEnd);
   }
 
   static void skip(iterator &iter, iterator iterEnd) {
-    for (; iter < iterEnd; ++(iter.iter_)) {
-      ofp::UInt16 type = iter.iter_->type();
+    for (; iter < iterEnd; ++iter) {
+      ofp::UInt16 type = iter->type();
       if (type >= ofp::OFPTFPT_UNUSED_MIN || type == ofp::OFPTFPT_UNUSED_9 || type == ofp::OFPTFPT_UNUSED_11) break;
     }
   }
