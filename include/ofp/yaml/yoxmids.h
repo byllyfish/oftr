@@ -17,22 +17,35 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::OXMID> {
-    static const bool OXMID_WITH_ZERO_LENGTH = false;
+    static const bool OXMID_WITH_ZERO_LENGTH = true;
     
     static void output(const ofp::OXMID &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
       ScalarTraits<ofp::OXMType>::output(value.type(), ctxt, out);
+      if (value.type().hasMask()) {
+        out << '*';
+      }
     }
 
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::OXMID &value)
     {
+      bool hasMask = false;
+
+      if (!scalar.empty() && scalar.back() == '*') {
+        scalar = scalar.drop_back();
+        hasMask = true;
+      }
+
       ofp::OXMType type;
       StringRef result = ScalarTraits<ofp::OXMType>::input(scalar, ctxt, type);
       if (result.empty()) {
         if (OXMID_WITH_ZERO_LENGTH) {
           type = type.zeroLength();
+        }
+        if (hasMask) {
+          type = type.withMask();   // FIXME(bfish) - fix length?
         }
         value = ofp::OXMID{type, 0};
       }
