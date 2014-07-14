@@ -121,26 +121,6 @@ private:
 };
 
 template <class Type>
-class BigEndianUnaligned {
-public:
-  // TODO(bfish): add constexpr constructors.
-
-  operator Type() const {
-    Type n;
-    std::memcpy(&n, b_, sizeof(n));
-    return HostSwapByteOrder(n);
-  }
-
-  void operator=(Type n) {
-    Type v = HostSwapByteOrder(n);
-    std::memcpy(b_, &v, sizeof(b_));
-  }
-
-private:
-  OFP_ALIGNAS(1) UInt8 b_[sizeof(Type)];
-};
-
-template <class Type>
 struct NativeTypeOf {
 
   template <class X>
@@ -158,19 +138,15 @@ struct NativeTypeOf {
 template <class T>
 using Big = detail::BigEndianAligned<T>;
 
-using Big8 = UInt8;
+using Big8 = Big<UInt8>;
 using Big16 = Big<UInt16>;
 using Big32 = Big<UInt32>;
 using Big64 = Big<UInt64>;
 
+static_assert(IsLiteralType<Big8>(), "Literal type expected.");
 static_assert(IsLiteralType<Big16>(), "Literal type expected.");
 static_assert(IsLiteralType<Big32>(), "Literal type expected.");
 static_assert(IsLiteralType<Big64>(), "Literal type expected.");
-
-/// \brief Types for big endian integers (unaligned).
-
-template <class T>
-using Big_unaligned = detail::BigEndianUnaligned<T>;
 
 // For compile-time conversions.
 template <class Type>

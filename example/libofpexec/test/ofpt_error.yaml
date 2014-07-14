@@ -1,7 +1,7 @@
 ---
 type:            OFPT_ERROR
 xid:             0x00000000
-version:         1
+version:         0x01
 msg:             
   type:            1
   code:            1
@@ -10,7 +10,7 @@ msg:
 ---
 type:            OFPT_ERROR
 xid:             0x00000000
-version:         4
+version:         0x04
 msg:             
   type:            1
   code:            1
@@ -19,7 +19,7 @@ msg:
 ---
 type:            OFPT_ERROR
 xid:             0x00000000
-version:         2
+version:         0x02
 msg:             
   type:            1
   code:            1
@@ -28,7 +28,7 @@ msg:
 ---
 type:            OFPT_ERROR
 xid:             0x00000000
-version:         3
+version:         0x03
 msg:             
   type:            1
   code:            1
@@ -37,7 +37,7 @@ msg:
 ---
 type:            OFPT_ERROR
 xid:             0x00000000
-version:         4
+version:         0x04
 msg:             
   type:            1
   code:            1

@@ -16,7 +16,8 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the llvm::yaml::ScalarTraits for Big16, Big32, and Big64.
+/// \brief Defines the llvm::yaml::ScalarTraits for Big8, Big16, Big32, and 
+/// Big64.
 //  ===== ------------------------------------------------------------ =====  //
 
 #ifndef OFP_YAML_YBYTEORDER_H_
@@ -27,6 +28,29 @@
 
 namespace llvm {
 namespace yaml {
+
+template <>
+struct ScalarTraits<ofp::Big8> {
+    static void output(const ofp::Big8 &value, void *ctxt,
+                       llvm::raw_ostream &out)
+    {
+        // Output Big8 in hexadecimal.
+        uint8_t num = value;
+        ScalarTraits<Hex8>::output(num, ctxt, out);
+    }
+
+    static StringRef input(StringRef scalar, void *ctxt, ofp::Big8 &value)
+    {
+        uint8_t num = 0;
+        auto err = ScalarTraits<uint8_t>::input(scalar, ctxt, num);
+        if (err.empty()) {
+            value = num;
+        }
+        return err;
+    }
+
+    using json_type = uint8_t;
+};
 
 template <>
 struct ScalarTraits<ofp::Big16> {

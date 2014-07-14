@@ -50,10 +50,10 @@ TEST(padding, Padded_Big8) {
   EXPECT_EQ(8, sizeof(b));
   EXPECT_HEX("01 000000 00000000", &b, 8);
 
-  EXPECT_EQ(1, b);
+  EXPECT_EQ(1, b.content());
 
   b = 0xF1;
-  EXPECT_EQ(0xF1, b);
+  EXPECT_EQ(0xF1, b.content());
   EXPECT_HEX("F1 000000 00000000", &b, 8);
 }
 

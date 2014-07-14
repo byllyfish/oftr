@@ -1,70 +1,70 @@
 ---
 type:            OFPT_HELLO
 xid:             0x01020304
-version:         4
+version:         0x04
 msg:             
   versions:        [ 1, 2, 3, 4 ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x01020304
-version:         1
+version:         0x01
 msg:             
   versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         4
+version:         0x04
 msg:             
   versions:        [ 1, 2, 3, 4 ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         1
+version:         0x01
 msg:             
   versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         2
+version:         0x02
 msg:             
   versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         4
+version:         0x04
 msg:             
   versions:        [ 1, 4 ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         3
+version:         0x03
 msg:             
   versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         3
+version:         0x03
 msg:             
   versions:        [  ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         4
+version:         0x04
 msg:             
   versions:        [ 1, 2, 3, 4 ]
 ...
 ---
 type:            OFPT_HELLO
 xid:             0x00000000
-version:         4
+version:         0x04
 msg:             
   versions:        [ 1, 2, 3, 4 ]
 ...
