@@ -2,18 +2,11 @@
 #define OFP_MPTABLEFEATURES_H_
 
 #include "ofp/propertylist.h"
-#include "ofp/smallcstring.h"
+#include "ofp/strings.h"
 
 namespace ofp {
 
 class Writable;
-
-using TableName = SmallCString<OFP_MAX_TABLE_NAME_LEN>;
-
-static_assert(sizeof(TableName) == OFP_MAX_TABLE_NAME_LEN, "Unexpected size.");
-static_assert(IsStandardLayout<TableName>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<TableName>(), "Expected trivially copyable.");
-
 
 class MPTableFeatures {
 public:
@@ -21,7 +14,7 @@ public:
 
     size_t length() const { return length_; }
     UInt8 tableId() const { return tableId_; }
-    const TableName &name() const { return name_; }
+    const TableNameStr &name() const { return name_; }
     UInt64 metadataMatch() const { return metadataMatch_; }
     UInt64 metadataWrite() const { return metadataWrite_; }
     UInt32 config() const { return config_; }
@@ -35,7 +28,7 @@ private:
     Big16 length_;
     Big8 tableId_;
     Padding<5> pad_;
-    TableName name_;
+    TableNameStr name_;
     Big64 metadataMatch_;
     Big64 metadataWrite_;
     Big32 config_;

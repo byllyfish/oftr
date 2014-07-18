@@ -25,7 +25,7 @@ TEST(port, test) {
   const Port &port = portBuilder.toPort();
   EXPECT_EQ(0x11111111, port.portNo());
   EXPECT_EQ(EnetAddress{"010203040506"}, port.hwAddr());
-  EXPECT_TRUE(PortName{"Port 1"} == port.name());
+  EXPECT_TRUE(PortNameStr{"Port 1"} == port.name());
   EXPECT_EQ(0x22222222, port.config());
   EXPECT_EQ(0x33333333, port.state());
   EXPECT_EQ(0x44444444, port.curr());
@@ -43,7 +43,7 @@ TEST(port, test) {
 
   EXPECT_EQ(0x1111, portv1.portNo());
   EXPECT_EQ(EnetAddress{"010203040506"}, portv1.hwAddr());
-  EXPECT_TRUE(PortName{"Port 1"} == portv1.name());
+  EXPECT_TRUE(PortNameStr{"Port 1"} == portv1.name());
   EXPECT_EQ(0x22222222, portv1.config());
   EXPECT_EQ(0x33333333, portv1.state());
   EXPECT_EQ(0x44444444, portv1.curr());
@@ -56,7 +56,7 @@ TEST(port, test) {
 
   EXPECT_EQ(0x1111, port2.portNo());
   EXPECT_EQ(EnetAddress{"010203040506"}, port2.hwAddr());
-  EXPECT_TRUE(PortName{"Port 1"} == port2.name());
+  EXPECT_TRUE(PortNameStr{"Port 1"} == port2.name());
   EXPECT_EQ(0x22222222, port2.config());
   EXPECT_EQ(0x33333333, port2.state());
   EXPECT_EQ(0x44444444, port2.curr());

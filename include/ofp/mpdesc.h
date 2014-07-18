@@ -22,15 +22,12 @@
 #ifndef OFP_MPDESC_H_
 #define OFP_MPDESC_H_
 
-#include "ofp/smallcstring.h"
+#include "ofp/strings.h"
 
 namespace ofp {
 
 class MPDesc {
  public:
-  using DescStr = SmallCString<256>;
-  using SerialNumStr = SmallCString<32>;
-
   std::string mfrDesc() const { return mfrDesc_.toString(); }
   std::string hwDesc() const { return hwDesc_.toString(); }
   std::string swDesc() const { return swDesc_.toString(); }
@@ -40,22 +37,18 @@ class MPDesc {
   bool validateInput(size_t length) const { return length == 1056; }
 
  private:
-  DescStr mfrDesc_{};         // Manufacturer description
-  DescStr hwDesc_{};          // Hardware description
-  DescStr swDesc_{};          // Software description
-  SerialNumStr serialNum_{};  // Serial number
-  DescStr dpDesc_{};          // Human readable description of datapath
+  DescriptionStr mfrDesc_{};         // Manufacturer description
+  DescriptionStr hwDesc_{};          // Hardware description
+  DescriptionStr swDesc_{};          // Software description
+  SerialNumberStr serialNum_{};      // Serial number
+  DescriptionStr dpDesc_{};          // Human readable description of datapath
 
   friend class MPDescBuilder;
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };
 
-static_assert(sizeof(MPDesc::DescStr) == 256, "Unexpected size.");
-static_assert(IsStandardLayout<MPDesc::DescStr>(), "Expected standard layout.");
-static_assert(sizeof(MPDesc::SerialNumStr) == 32, "Unexpected size.");
-static_assert(IsStandardLayout<MPDesc::SerialNumStr>(),
-              "Expected standard layout.");
+
 static_assert(sizeof(MPDesc) == 1056, "Unexpected size.");
 static_assert(IsStandardLayout<MPDesc>(), "Expected standard layout.");
 

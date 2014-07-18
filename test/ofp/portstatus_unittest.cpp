@@ -45,7 +45,7 @@ TEST(portstatus, v4) {
     const Port &p = msg->port();
     EXPECT_EQ(0x11111111, p.portNo());
     EXPECT_EQ(EnetAddress{"010203040506"}, p.hwAddr());
-    EXPECT_EQ(PortName{"Port 1"}, p.name());
+    EXPECT_EQ(PortNameStr{"Port 1"}, p.name());
     EXPECT_EQ(0x22222222, p.config());
     EXPECT_EQ(0x33333333, p.state());
     EXPECT_EQ(0x44444444, p.curr());
@@ -97,7 +97,7 @@ TEST(portstatus, v1) {
     const Port &p = msg->port();
     EXPECT_EQ(0x1111, p.portNo());
     EXPECT_EQ(EnetAddress{"010203040506"}, p.hwAddr());
-    EXPECT_EQ(PortName{"Port 1"}, p.name());
+    EXPECT_EQ(PortNameStr{"Port 1"}, p.name());
     EXPECT_EQ(0x22222222, p.config());
     EXPECT_EQ(0x33333333, p.state());
     EXPECT_EQ(0x44444444, p.curr());

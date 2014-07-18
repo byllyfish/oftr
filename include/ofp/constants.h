@@ -49,11 +49,6 @@ enum : size_t {
 };
 
 enum {
-  OFP_MAX_PORT_NAME_LEN = 16,
-  OFP_MAX_TABLE_NAME_LEN = 32
-};
-
-enum {
   OFP_VERSION_1 = 0x01,
   OFP_VERSION_2 = 0x02,
   OFP_VERSION_3 = 0x03,

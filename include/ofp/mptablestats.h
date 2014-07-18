@@ -24,7 +24,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
-#include "ofp/smallcstring.h"
+#include "ofp/strings.h"
 
 namespace ofp {
 
@@ -34,8 +34,6 @@ class Writable;
 
 class MPTableStats {
 public:
-  using TableStr = SmallCString<32>;
-
   MPTableStats() = default;
 
   UInt8 tableId() const { return tableId_; }
@@ -49,7 +47,7 @@ public:
 private:
   Big8 tableId_;
   Padding<3> pad_;
-  TableStr name_;
+  TableNameStr name_;
   Big32 wildcards_;
   Big32 maxEntries_;
   Big32 activeCount_;

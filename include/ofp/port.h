@@ -23,8 +23,7 @@
 #define OFP_PORT_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/smallcstring.h"
-#include "ofp/constants.h"
+#include "ofp/strings.h"
 #include "ofp/padding.h"
 #include "ofp/enetaddress.h"
 
@@ -35,12 +34,6 @@ class Writable;
 namespace deprecated {
 class PortV1;
 }  // namespace deprecated
-
-using PortName = SmallCString<OFP_MAX_PORT_NAME_LEN>;
-
-static_assert(sizeof(PortName) == OFP_MAX_PORT_NAME_LEN, "Unexpected size.");
-static_assert(IsStandardLayout<PortName>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<PortName>(), "Expected trivially copyable.");
 
 // TODO(bfish): Make Port a NonCopyable.
 class Port {
@@ -53,7 +46,7 @@ class Port {
 
   UInt32 portNo() const { return portNo_; }
   const EnetAddress &hwAddr() const { return hwAddr_; }
-  const PortName &name() const { return name_; }
+  const PortNameStr &name() const { return name_; }
   UInt32 config() const { return config_; }
   UInt32 state() const { return state_; }
   UInt32 curr() const { return curr_; }
@@ -68,7 +61,7 @@ class Port {
   Padding<4> pad1_;
   EnetAddress hwAddr_;
   Padding<2> pad2_;
-  PortName name_;
+  PortNameStr name_;
   Big32 config_;
   Big32 state_;
   Big32 curr_;
@@ -99,7 +92,7 @@ class PortBuilder {
 
   void setPortNo(UInt32 portNo) { msg_.portNo_ = portNo; }
   void setHwAddr(const EnetAddress &hwAddr) { msg_.hwAddr_ = hwAddr; }
-  void setName(const PortName &name) { msg_.name_ = name; }
+  void setName(const PortNameStr &name) { msg_.name_ = name; }
   void setConfig(UInt32 config) { msg_.config_ = config; }
   void setState(UInt32 state) { msg_.state_ = state; }
   void setCurr(UInt32 curr) { msg_.curr_ = curr; }
@@ -134,8 +127,8 @@ class PortV1 {
   const EnetAddress &hwAddr() const { return hwAddr_; }
   void setHwAddr(const EnetAddress &hwAddr) { hwAddr_ = hwAddr; }
 
-  const PortName &name() const { return name_; }
-  void setName(const PortName &name) { name_ = name; }
+  const PortNameStr &name() const { return name_; }
+  void setName(const PortNameStr &name) { name_ = name; }
 
   UInt32 config() const { return config_; }
   void setConfig(UInt32 config) { config_ = config; }
@@ -158,7 +151,7 @@ class PortV1 {
  private:
   Big16 portNo_;
   EnetAddress hwAddr_;
-  PortName name_;
+  PortNameStr name_;
   Big32 config_;
   Big32 state_;
   Big32 curr_;
