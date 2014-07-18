@@ -85,18 +85,18 @@ struct MappingTraits<ofp::detail::QueueInserter> {
 
 template <>
 struct SequenceTraits<ofp::QueueRange> {
+  using iterator = ofp::QueueIterator;
 
-  static size_t size(IO &io, ofp::QueueRange &queues) {
-    return queues.itemCount();
+  static iterator begin(IO &io, ofp::QueueRange &range) {
+    return range.begin();
   }
 
-  static ofp::QueueIterator::Element &element(IO &io, ofp::QueueRange &queues,
-                                          size_t index) {
-    ofp::log::debug("queue yaml item", index);
-    // FIXME
-    ofp::QueueIterator iter = queues.begin();
-    for (size_t i = 0; i < index; ++i) ++iter;
-    return RemoveConst_cast(*iter);
+  static iterator end(IO &io, ofp::QueueRange &range) {
+    return range.end();
+  }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
   }
 };
 
