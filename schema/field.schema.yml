@@ -8,7 +8,7 @@ description: >
   In addition, all field objects have an attribute named `value` containing
   the field's value. Some field objects may have an optional `mask` attribute.
 
-yaml_examples: |
+yamlschema_examples: |
   ---
   field: OFB_IN_PORT
   value: 0xffffffff

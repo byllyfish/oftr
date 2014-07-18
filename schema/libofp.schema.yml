@@ -3,7 +3,7 @@ id: libofp
 description: >
   Schema for Libofp messages.
 
-yaml_examples: |
+yamlschema_examples: |
   ---
   event: LIBOFP_LOOPBACK
   params:

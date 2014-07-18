@@ -15,6 +15,8 @@ a YAML/JSON Schema.
 """
 
 SCHEMA_EXTENSION = '.schema.yml'
+SCHEMA_EXAMPLES = 'yamlschema_examples'
+
 
 def _loadFile(uri):
     """
@@ -88,7 +90,7 @@ def validateFile(sourcePath, schemaPath):
 def checkSchema(schemaPath):
     """
     Check a schema to make sure it's a valid JSON-Schema. If the YAML document
-    has a `yaml_examples` value, check it using the schema.
+    has a `yamlschema_examples` value, check it using the schema.
     """
     
     validator = _makeValidator(schemaPath)
@@ -96,8 +98,8 @@ def checkSchema(schemaPath):
     with open(schemaPath) as schemaFile:
         schema = yaml.load(schemaFile)
 
-    if 'yaml_examples' in schema:
-        testString = schema['yaml_examples']
+    if SCHEMA_EXAMPLES in schema:
+        testString = schema[SCHEMA_EXAMPLES]
         for doc in yaml.load_all(testString):
             print doc
             validator.validate(doc)

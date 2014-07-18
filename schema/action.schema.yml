@@ -16,7 +16,7 @@ description: >
   An unknown action will include a `data` attribute containing the hexadecimal
   value of the action's raw bytes.
 
-yaml_examples: |
+yamlschema_examples: |
   ---
   action: OFPAT_OUTPUT
   port: 0xffffffff
