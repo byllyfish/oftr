@@ -38,6 +38,7 @@ struct ScalarTraits<ofp::detail::TableIDInserter> {
 
 template <>
 struct SequenceTraits<ofp::TableIDRange> {
+  // Use nthItem; It's fast enough.
 
   static size_t size(IO &io, ofp::TableIDRange &range) {
     return range.size();

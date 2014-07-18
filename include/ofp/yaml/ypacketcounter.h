@@ -47,18 +47,18 @@ struct MappingTraits<ofp::detail::PacketCounterInserter> {
 
 template <>
 struct SequenceTraits<ofp::PacketCounterRange> {
+  using iterator = ofp::PacketCounterIterator;
 
-  static size_t size(IO &io, ofp::PacketCounterRange &statsList) {
-    return statsList.itemCount();
+  static iterator begin(IO &io, ofp::PacketCounterRange &range) {
+    return range.begin();
   }
 
-  static ofp::PacketCounterIterator::Element &element(IO &io, ofp::PacketCounterRange &statsList,
-                                          size_t index) {
-    ofp::log::debug("queue yaml item", index);
-    // FIXME
-    ofp::PacketCounterIterator iter = statsList.begin();
-    for (size_t i = 0; i < index; ++i) ++iter;
-    return RemoveConst_cast(*iter);
+  static iterator end(IO &io, ofp::PacketCounterRange &range) {
+    return range.end();
+  }
+
+  static void next(iterator &iter, iterator iterEnd) {
+    ++iter;
   }
 };
 
