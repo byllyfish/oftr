@@ -50,11 +50,11 @@ struct MappingTraits<ofp::FeaturesReply> {
     using namespace ofp;
 
     DatapathID dpid = msg.datapathId();
-    UInt32 bufferCount = msg.bufferCount();
-    UInt8 tableCount = msg.tableCount();
-    UInt8 auxiliaryId = msg.auxiliaryId();
-    UInt32 capabilities = msg.capabilities();
-    UInt32 reserved = msg.reserved();
+    Hex32 bufferCount = msg.bufferCount();
+    Hex8 tableCount = msg.tableCount();
+    Hex8 auxiliaryId = msg.auxiliaryId();
+    Hex32 capabilities = msg.capabilities();
+    Hex32 reserved = msg.reserved();
 
     io.mapRequired("datapath_id", dpid);
     io.mapRequired("n_buffers", bufferCount);
