@@ -41,8 +41,8 @@ template <>
 struct MappingTraits<ofp::Error> {
 
   static void mapping(IO &io, ofp::Error &msg) {
-    ofp::UInt16 type = msg.errorType();
-    ofp::UInt16 code = msg.errorCode();
+    Hex16 type = msg.errorType();
+    Hex16 code = msg.errorCode();
     ofp::ByteRange data = msg.errorData();
     io.mapRequired("type", type);
     io.mapRequired("code", code);

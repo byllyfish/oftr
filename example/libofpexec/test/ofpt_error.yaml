@@ -3,8 +3,8 @@ type:            OFPT_ERROR
 xid:             0x00000000
 version:         0x01
 msg:             
-  type:            1
-  code:            1
+  type:            0x0001
+  code:            0x0001
   data:            0123456789
 ...
 ---
@@ -12,8 +12,8 @@ type:            OFPT_ERROR
 xid:             0x00000000
 version:         0x04
 msg:             
-  type:            1
-  code:            1
+  type:            0x0001
+  code:            0x0001
   data:            0123456789
 ...
 ---
@@ -21,8 +21,8 @@ type:            OFPT_ERROR
 xid:             0x00000000
 version:         0x02
 msg:             
-  type:            1
-  code:            1
+  type:            0x0001
+  code:            0x0001
   data:            0123456789
 ...
 ---
@@ -30,8 +30,8 @@ type:            OFPT_ERROR
 xid:             0x00000000
 version:         0x03
 msg:             
-  type:            1
-  code:            1
+  type:            0x0001
+  code:            0x0001
   data:            0123456789
 ...
 ---
@@ -39,7 +39,7 @@ type:            OFPT_ERROR
 xid:             0x00000000
 version:         0x04
 msg:             
-  type:            1
-  code:            1
+  type:            0x0001
+  code:            0x0001
   data:            0123456789
 ...
