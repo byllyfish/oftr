@@ -24,12 +24,18 @@
 
 #include <array>
 #include <algorithm>
+#include "ofp/types.h"
 
 namespace ofp {
 namespace detail {
 
 /// \returns smaller of string length or maxlen.
-size_t strlen(const char *s, size_t maxlen);
+inline size_t strlen(const char *s, size_t maxlen) {
+  auto p = std::find(s, s + maxlen, '\0');
+  return Unsigned_cast(p - s);
+}
+
+std::string validUtf8String(const char *b, const char *e);
 
 }  // namespace detail
 
@@ -53,7 +59,7 @@ public:
   size_t length() const { return detail::strlen(str_.data(), capacity()); }
 
   std::string toString() const {
-    return std::string{str_.data(), length()};
+    return detail::validUtf8String(str_.data(), str_.data() + length());
   }
 
   const ArrayType &toArray() const { return str_; }
@@ -65,23 +71,14 @@ private:
   ArrayType str_;
 };
 
-template <size_t Size>
-bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size> &rhs);
+//template <size_t Size>
+//bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size> &rhs);
 
 template <size_t Size>
 inline bool operator==(const SmallCString<Size> &lhs,
                        const SmallCString<Size> &rhs) {
   return lhs.toArray() == rhs.toArray();
 }
-
-namespace detail {
-
-inline size_t strlen(const char *s, size_t maxlen) {
-  auto p = std::find(s, s + maxlen, '\0');
-  return Unsigned_cast(p - s);
-}
-
-}  // namespace detail
 
 /// Copies string and sets the remaining bytes to zero. The last byte will
 /// always be zero.

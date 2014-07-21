@@ -72,3 +72,39 @@ TEST(smallcstring, copyconstructor) {
   EXPECT_EQ(7, copy2.length());
   EXPECT_HEX("73 74 75 66 66 73 74 00", &copy2, sizeof(copy2));
 }
+
+TEST(smallcstring, validUtf8String) {
+  auto validTest = [](const char *s) -> std::string { 
+    return ofp::detail::validUtf8String(s, s + strlen(s));
+  };
+
+  EXPECT_EQ("", validTest(""));
+  EXPECT_EQ("a", validTest("a"));
+
+  EXPECT_EQ(u8"\u00FF", validTest(u8"\u00FF"));
+  EXPECT_EQ(u8"\u0080", validTest(u8"\u0080"));
+  EXPECT_EQ(u8"\u80FF", validTest(u8"\u80FF"));
+  EXPECT_EQ(u8"\uFFFF", validTest(u8"\uFFFF"));
+  EXPECT_EQ(u8"\uFF00", validTest(u8"\uFF00"));
+  EXPECT_EQ(u8"\u0FFF", validTest(u8"\u0FFF"));
+  EXPECT_EQ(u8"\uFF00", validTest(u8"\uFF00"));
+  EXPECT_EQ(u8"\U0010FFFF", validTest(u8"\U0010FFFF"));
+
+  EXPECT_EQ("a?", validTest("a\xC2"));
+  EXPECT_EQ("a?", validTest("a\x80"));
+
+  EXPECT_EQ("??", validTest("\xC1\x9C"));
+  EXPECT_EQ("\x41?\x3E\x42", validTest("\x41\xC2\x3E\x42"));
+
+  EXPECT_EQ("????", validTest("\xF0\x82\x82\xAC"));
+  EXPECT_EQ("??", validTest("\xC0\x80"));
+
+  EXPECT_EQ("??????", validTest("\xED\xA1\x8C\xED\xBE\xB4"));
+  EXPECT_EQ("????", validTest("\xF5\x80\x80\x80"));
+  EXPECT_EQ("\xF4\x80\x80\x80", validTest("\xF4\x80\x80\x80"));
+  EXPECT_EQ("\xF4\x8F\xBF\xBF", validTest("\xF4\x8F\xBF\xBF"));
+  EXPECT_EQ("????", validTest("\xF4\x9F\xBF\xBF"));
+  EXPECT_EQ("abc???", validTest("abc\xF4\x80\x80"));
+
+  EXPECT_EQ("a?a", validTest("a\xFF""a"));
+}
