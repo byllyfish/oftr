@@ -77,9 +77,12 @@ struct MappingTraits<ofp::yaml::Decoder> {
         Channel *source = decoder.msg_->source();
         if (source) {
             DatapathID dpid = source->datapathId();
-            UInt8 auxID = source->auxiliaryId();
             io.mapRequired("datapath_id", dpid);
-            io.mapRequired("auxiliary_id", auxID);
+
+            Hex8 auxID = source->auxiliaryId();
+            if (auxID) {
+                io.mapRequired("auxiliary_id", auxID);
+            }
         }
 
         if (!decoder.decodeMsg(io)) {
