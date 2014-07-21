@@ -50,22 +50,21 @@ struct MappingTraits<ofp::PacketIn> {
     using namespace ofp;
 
     // Remember that PacketIn uses cross-wired accessors.
-    UInt32 bufferID = msg.bufferId();
-    UInt16 totalLen = msg.totalLen();
-
+    Hex32 bufferID = msg.bufferId();
+    Hex16 totalLen = msg.totalLen();
     io.mapRequired("buffer_id", bufferID);
     io.mapRequired("total_len", totalLen);
 
-    UInt32 inPort = msg.inPort();
-    UInt32 inPhyPort = msg.inPhyPort();
-    UInt64 metadata = msg.metadata();
+    Hex32 inPort = msg.inPort();
+    Hex32 inPhyPort = msg.inPhyPort();
+    Hex64 metadata = msg.metadata();
     io.mapRequired("in_port", inPort);
     io.mapRequired("in_phy_port", inPhyPort);
     io.mapRequired("metadata", metadata);
 
     OFPPacketInReason reason = msg.reason();
-    UInt8 tableID = msg.tableID();
-    UInt64 cookie = msg.cookie();
+    Hex8 tableID = msg.tableID();
+    Hex64 cookie = msg.cookie();
     io.mapRequired("reason", reason);
     io.mapRequired("table_id", tableID);
     io.mapRequired("cookie", cookie);
