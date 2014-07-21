@@ -43,8 +43,8 @@ struct MappingTraits<ofp::PacketOut> {
   static void mapping(IO &io, ofp::PacketOut &msg) {
     using namespace ofp;
 
-    UInt32 bufferID = msg.bufferId();
-    UInt32 inPort = msg.inPort();
+    Hex32 bufferID = msg.bufferId();
+    Hex32 inPort = msg.inPort();
 
     io.mapRequired("buffer_id", bufferID);
     io.mapRequired("in_port", inPort);

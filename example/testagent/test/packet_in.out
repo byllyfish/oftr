@@ -52,8 +52,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       256
-  in_port:         1
+  buffer_id:       0x00000100
+  in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -67,8 +67,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       257
-  in_port:         2
+  buffer_id:       0x00000101
+  in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -82,8 +82,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       258
-  in_port:         1
+  buffer_id:       0x00000102
+  in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -97,8 +97,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       259
-  in_port:         2
+  buffer_id:       0x00000103
+  in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -112,8 +112,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       260
-  in_port:         2
+  buffer_id:       0x00000104
+  in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -127,8 +127,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       261
-  in_port:         1
+  buffer_id:       0x00000105
+  in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -142,8 +142,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       262
-  in_port:         1
+  buffer_id:       0x00000106
+  in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -157,8 +157,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       263
-  in_port:         2
+  buffer_id:       0x00000107
+  in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -172,8 +172,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       264
-  in_port:         1
+  buffer_id:       0x00000108
+  in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -187,8 +187,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       265
-  in_port:         2
+  buffer_id:       0x00000109
+  in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291
@@ -202,8 +202,8 @@ version:         0x01
 datapath_id:     0000-0000-0000-0000
 auxiliary_id:    0
 msg:             
-  buffer_id:       266
-  in_port:         2
+  buffer_id:       0x0000010A
+  in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
       port:            4294967291

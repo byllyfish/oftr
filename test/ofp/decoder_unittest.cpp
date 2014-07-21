@@ -597,7 +597,7 @@ TEST(decoder, packetoutv4) {
       "0800060400010000000000010A0000010000000000000A000002",
       "---\ntype:            OFPT_PACKET_OUT\nxid:             "
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:       "
-      "858993459\n  in_port:         1145324612\n  actions:         \n    - "
+      "0x33333333\n  in_port:         0x44444444\n  actions:         \n    - "
       "action:          OFPAT_OUTPUT\n      port:            5\n      maxlen:  "
       "        20\n    - action:          OFPAT_SET_FIELD\n      field:        "
       "   OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      "
@@ -612,7 +612,7 @@ TEST(decoder, packetoutv1) {
   const char *yaml =
       "---\ntype:            OFPT_PACKET_OUT\nxid:             "
       "0x00000001\nversion:         0x01\nmsg:             \n  buffer_id:       "
-      "858993459\n  in_port:         17476\n  actions:         \n    - action: "
+      "0x33333333\n  in_port:         0x00004444\n  actions:         \n    - action: "
       "         OFPAT_OUTPUT\n      port:            5\n      maxlen:          "
       "20\n    - action:          OFPAT_SET_FIELD\n      field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      "
