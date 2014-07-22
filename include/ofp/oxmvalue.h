@@ -56,6 +56,8 @@ public:
     return result;
   }
 
+  ValueType valueOriginal() const { return value_; }
+  
 private:
   ValueType value_;
 

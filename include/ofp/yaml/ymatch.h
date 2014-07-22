@@ -47,10 +47,10 @@ public:
     template <class ValueType>
     void visit()
     {
-        auto val = item_.value<ValueType>().value();
+        auto val = item_.value<ValueType>().valueOriginal();
         io_.mapRequired("value", val);
         if (type_.hasMask()) {
-            auto mask = item_.mask<ValueType>().value();
+            auto mask = item_.mask<ValueType>().valueOriginal();
             io_.mapRequired("mask", mask);
         }
     }

@@ -214,7 +214,7 @@ msg:
   flags:           0x0000
   match:           
     - field:           OFB_IN_PORT
-      value:           1
+      value:           0x00000001
     - field:           OFB_ETH_SRC
       value:           8A-67-69-C6-9F-59
     - field:           OFB_ETH_DST
@@ -245,7 +245,7 @@ msg:
   flags:           0x0000
   match:           
     - field:           OFB_IN_PORT
-      value:           2
+      value:           0x00000002
     - field:           OFB_ETH_SRC
       value:           FA-9A-44-DF-F4-42
     - field:           OFB_ETH_DST
