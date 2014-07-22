@@ -31,7 +31,7 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    UInt16 property = elem.type();
+    Hex16 property = elem.type();
     io.mapRequired("property", property);
 
     switch (property) {
@@ -39,15 +39,14 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyItem> {
       case OFPTFPT_EXPERIMENTER_MISS: {
         const TableFeaturePropertyExperimenter &p = elem.property<TableFeaturePropertyExperimenter>();
 
-        UInt32 experimenter = p.experimenter();
+        Hex32 experimenter = p.experimenter();
         io.mapRequired("experimenter_id", experimenter);
 
-        UInt32 expType = p.expType();
+        Hex32 expType = p.expType();
         io.mapRequired("exp_type", expType);
 
         ByteRange expData = p.expData();
         io.mapRequired("exp_data", expData);
-        //io.mapRequired("value", data);
         break;
       }
       default: {
