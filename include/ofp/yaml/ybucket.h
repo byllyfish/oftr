@@ -77,9 +77,9 @@ struct MappingTraits<ofp::Bucket> {
     {
         using namespace ofp;
 
-        UInt16 weight = bucket.weight();
-        UInt32 watchPort = bucket.watchPort();
-        UInt32 watchGroup = bucket.watchGroup();
+        Hex16 weight = bucket.weight();
+        Hex32 watchPort = bucket.watchPort();
+        Hex32 watchGroup = bucket.watchGroup();
         io.mapRequired("weight", weight);
         io.mapRequired("watch_port", watchPort);
         io.mapRequired("watch_group", watchGroup);
