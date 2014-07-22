@@ -53,15 +53,15 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
     case IT_GOTO_TABLE::type() : {
       IT_GOTO_TABLE *instr =
           RemoveConst_cast(item.instruction<IT_GOTO_TABLE>());
-      UInt8 tableId = instr->tableId();
+      Hex8 tableId = instr->tableId();
       io.mapRequired("table_id", tableId);
       break;
     }
     case IT_WRITE_METADATA::type() : {
       IT_WRITE_METADATA *instr =
           RemoveConst_cast(item.instruction<IT_WRITE_METADATA>());
-      UInt64 metadata = instr->metadata();
-      UInt64 mask = instr->mask();
+      Hex64 metadata = instr->metadata();
+      Hex64 mask = instr->mask();
       io.mapRequired("metadata", metadata);
       io.mapRequired("mask", mask);
       break;
@@ -86,14 +86,14 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
     }
     case IT_METER::type() : {
       IT_METER *instr = RemoveConst_cast(item.instruction<IT_METER>());
-      UInt32 meter = instr->meter();
+      Hex32 meter = instr->meter();
       io.mapRequired("meter", meter);
       break;
     }
     case IT_EXPERIMENTER::type() : {
       IT_EXPERIMENTER *instr =
           RemoveConst_cast(item.instruction<IT_EXPERIMENTER>());
-      UInt32 experimenterId = instr->experimenterId();
+      Hex32 experimenterId = instr->experimenterId();
       io.mapRequired("experimenter_id", experimenterId);
       // FIXME - rest of experimenter
       break;

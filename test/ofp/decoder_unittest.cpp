@@ -269,7 +269,7 @@ TEST(decoder, ofmp_flowreply_v4) {
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
       "OFB_IN_PORT\n          value:           305419896\n      instructions:  "
-      "  \n        - instruction:     OFPIT_GOTO_TABLE\n          table_id:        1\n...\n");
+      "  \n        - instruction:     OFPIT_GOTO_TABLE\n          table_id:        0x01\n...\n");
 }
 
 TEST(decoder, ofmp_flowreply2_v4) {
@@ -300,7 +300,7 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "      OFB_ETH_SRC\n          value:           10-20-30-40-50-60\n       "
       " - field:           OFB_ETH_DST\n          value:           "
       "AA-BB-CC-DD-EE-FF\n      instructions:    \n        - instruction:     "
-      "OFPIT_GOTO_TABLE\n          table_id:        1\n...\n");
+      "OFPIT_GOTO_TABLE\n          table_id:        0x01\n...\n");
 }
 
 TEST(decoder, ofmp_flowreply_v1) {
