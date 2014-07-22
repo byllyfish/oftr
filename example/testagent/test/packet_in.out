@@ -216,9 +216,9 @@ msg:
     - field:           OFB_IN_PORT
       value:           0x00000001
     - field:           OFB_ETH_SRC
-      value:           8A-67-69-C6-9F-59
+      value:           '8a:67:69:c6:9f:59'
     - field:           OFB_ETH_DST
-      value:           FA-9A-44-DF-F4-42
+      value:           'fa:9a:44:df:f4:42'
   instructions:    
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
@@ -247,9 +247,9 @@ msg:
     - field:           OFB_IN_PORT
       value:           0x00000002
     - field:           OFB_ETH_SRC
-      value:           FA-9A-44-DF-F4-42
+      value:           'fa:9a:44:df:f4:42'
     - field:           OFB_ETH_DST
-      value:           8A-67-69-C6-9F-59
+      value:           '8a:67:69:c6:9f:59'
   instructions:    
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         

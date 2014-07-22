@@ -189,7 +189,7 @@ TEST(decoder, featuresreplyv1) {
 }
 
 TEST(decoder, featuresreplyv1ports) {
-  testDecodeEncode("01060080000000BF000001020304050600000100FF00000000000000000000001111222222222222506F7274203100000000000000000000333333334444444455555555666666667777777788888888BBBBCCCCCCCCCCCC506F7274203200000000000000000000333333334444444455555555666666667777777788888888", "---\ntype:            OFPT_FEATURES_REPLY\nxid:             0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:     0000-0102-0304-0506\n  n_buffers:       0x00000100\n  n_tables:        0xFF\n  auxiliary_id:    0x00\n  capabilities:    0x00000000\n  reserved:        0x00000000\n  ports:           \n    - port_no:         0x00001111\n      hw_addr:         22-22-22-22-22-22\n      name:            Port 1\n      config:          0x33333333\n      state:           0x44444444\n      curr:            0x55555555\n      advertised:      0x66666666\n      supported:       0x77777777\n      peer:            0x88888888\n      curr_speed:      0x00000000\n      max_speed:       0x00000000\n    - port_no:         0x0000BBBB\n      hw_addr:         CC-CC-CC-CC-CC-CC\n      name:            Port 2\n      config:          0x33333333\n      state:           0x44444444\n      curr:            0x55555555\n      advertised:      0x66666666\n      supported:       0x77777777\n      peer:            0x88888888\n      curr_speed:      0x00000000\n      max_speed:       0x00000000\n...\n");
+  testDecodeEncode("01060080000000BF000001020304050600000100FF00000000000000000000001111222222222222506F7274203100000000000000000000333333334444444455555555666666667777777788888888BBBBCCCCCCCCCCCC506F7274203200000000000000000000333333334444444455555555666666667777777788888888", "---\ntype:            OFPT_FEATURES_REPLY\nxid:             0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:     0000-0102-0304-0506\n  n_buffers:       0x00000100\n  n_tables:        0xFF\n  auxiliary_id:    0x00\n  capabilities:    0x00000000\n  reserved:        0x00000000\n  ports:           \n    - port_no:         0x00001111\n      hw_addr:         '22:22:22:22:22:22'\n      name:            Port 1\n      config:          0x33333333\n      state:           0x44444444\n      curr:            0x55555555\n      advertised:      0x66666666\n      supported:       0x77777777\n      peer:            0x88888888\n      curr_speed:      0x00000000\n      max_speed:       0x00000000\n    - port_no:         0x0000BBBB\n      hw_addr:         'cc:cc:cc:cc:cc:cc'\n      name:            Port 2\n      config:          0x33333333\n      state:           0x44444444\n      curr:            0x55555555\n      advertised:      0x66666666\n      supported:       0x77777777\n      peer:            0x88888888\n      curr_speed:      0x00000000\n      max_speed:       0x00000000\n...\n");
 }
 
 TEST(decoder, featuresreplyv4) {
@@ -297,9 +297,9 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "packet_count:    0x9999999999999999\n      byte_count:      "
       "0xAAAAAAAAAAAAAAAA\n      match:           \n        - field:           "
       "OFB_IN_PORT\n          value:           0x12345678\n        - field:     "
-      "      OFB_ETH_SRC\n          value:           10-20-30-40-50-60\n       "
+      "      OFB_ETH_SRC\n          value:           '10:20:30:40:50:60'\n       "
       " - field:           OFB_ETH_DST\n          value:           "
-      "AA-BB-CC-DD-EE-FF\n      instructions:    \n        - instruction:     "
+      "'aa:bb:cc:dd:ee:ff'\n      instructions:    \n        - instruction:     "
       "OFPIT_GOTO_TABLE\n          table_id:        0x01\n...\n");
 }
 
@@ -344,8 +344,8 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "0x9999999999999999\n      byte_count:      0xAAAAAAAAAAAAAAAA\n      "
       "match:           \n        - field:           OFB_IN_PORT\n          "
       "value:           0x00005678\n        - field:           OFB_ETH_SRC\n        "
-      "  value:           10-20-30-40-50-60\n        - field:           "
-      "OFB_ETH_DST\n          value:           AA-BB-CC-DD-EE-FF\n      "
+      "  value:           '10:20:30:40:50:60'\n        - field:           "
+      "OFB_ETH_DST\n          value:           'aa:bb:cc:dd:ee:ff'\n      "
       "instructions:    \n        - instruction:     OFPIT_APPLY_ACTIONS\n     "
       "     actions:         \n            - action:          OFPAT_OUTPUT\n   "
       "           port:            0x0000EEEE\n              maxlen:          "
@@ -655,7 +655,7 @@ TEST(decoder, portstatusv4) {
       "---\ntype:            OFPT_PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  reason:          "
       "34\n  port:            \n    port_no:         0x33333333\n    hw_addr:  "
-      "       AA-BB-CC-DD-EE-FF\n    name:            Port 1\n    config:      "
+      "       'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    config:      "
       "    0x44444444\n    state:           0x55555555\n    curr:            "
       "0x66666666\n    advertised:      0x77777777\n    supported:       "
       "0x88888888\n    peer:            0x99999999\n    curr_speed:      "
@@ -669,7 +669,7 @@ TEST(decoder, portstatusv1) {
       "---\ntype:            OFPT_PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  reason:          "
       "34\n  port:            \n    port_no:         0x00003333\n    hw_addr:  "
-      "       AA-BB-CC-DD-EE-FF\n    name:            Port 1\n    config:      "
+      "       'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    config:      "
       "    0x44444444\n    state:           0x55555555\n    curr:            "
       "0x66666666\n    advertised:      0x77777777\n    supported:       "
       "0x88888888\n    peer:            0x99999999\n    curr_speed:      "
@@ -702,7 +702,7 @@ TEST(decoder, portmodv4) {
                    "---\ntype:            OFPT_PORT_MOD\nxid:             "
                    "0x11111111\nversion:         0x04\nmsg:             \n  "
                    "port_no:         0x22222222\n  hw_addr:         "
-                   "33-33-33-33-33-33\n  config:          0x44444444\n  mask:  "
+                   "'33:33:33:33:33:33'\n  config:          0x44444444\n  mask:  "
                    "          0x55555555\n  advertise:       "
                    "0x66666666\n...\n");
 }
@@ -712,7 +712,7 @@ TEST(decoder, portmodv1) {
       "010F002011111111222233333333333344444444555555556666666600000000",
       "---\ntype:            OFPT_PORT_MOD\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  port_no:         "
-      "0x00002222\n  hw_addr:         33-33-33-33-33-33\n  config:          "
+      "0x00002222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          "
       "0x44444444\n  mask:            0x55555555\n  advertise:       "
       "0x66666666\n...\n");
 }
