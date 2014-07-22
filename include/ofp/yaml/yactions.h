@@ -88,63 +88,63 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
 				break;
 			case OFPAT_OUTPUT: {
 				const AT_OUTPUT *action = item.action<AT_OUTPUT>();
-				UInt32 port = action->port();
-				UInt16 maxlen = action->maxlen();
+				Hex32 port = action->port();
+				Hex16 maxlen = action->maxlen();
 				io.mapRequired("port", port);
 				io.mapRequired("maxlen", maxlen);
 				break;
 			}
 			case OFPAT_SET_MPLS_TTL: {
 				const AT_SET_MPLS_TTL *action = item.action<AT_SET_MPLS_TTL>();
-				UInt16 ttl = action->ttl();
+				Hex16 ttl = action->ttl();
 				io.mapRequired("ttl", ttl);
 				break;
 			}
 			case OFPAT_PUSH_VLAN: {
 				const AT_PUSH_VLAN *action = item.action<AT_PUSH_VLAN>();
-				UInt16 vlan = action->vlan();
+				Hex16 vlan = action->vlan();
 				io.mapRequired("vlan", vlan);
 				break;
 			}
 			case OFPAT_PUSH_MPLS: {
 				const AT_PUSH_MPLS *action = item.action<AT_PUSH_MPLS>();
-				UInt32 mpls = action->mpls();
+				Hex32 mpls = action->mpls();
 				io.mapRequired("mpls", mpls);
 				break;
 			}
             case OFPAT_POP_MPLS: {
                 const AT_POP_MPLS *action = item.action<AT_POP_MPLS>();
-                UInt16 ethertype = action->ethertype();
+                Hex16 ethertype = action->ethertype();
                 io.mapRequired("ethertype", ethertype);
                 break;
             }
 			case OFPAT_SET_QUEUE: {
 				const AT_SET_QUEUE *action = item.action<AT_SET_QUEUE>();
-				UInt32 queue = action->queue();
+				Hex32 queue = action->queue();
 				io.mapRequired("queue", queue);
 				break;
 			}
 			case OFPAT_GROUP: {
 				const AT_GROUP *action = item.action<AT_GROUP>();
-				UInt32 group = action->group();
+				Hex32 group = action->group();
 				io.mapRequired("group", group);
 				break;
 			}
 			case OFPAT_SET_NW_TTL: {
 				const AT_SET_NW_TTL *action = item.action<AT_SET_NW_TTL>();
-				UInt8 ttl = action->ttl();
+				Hex8 ttl = action->ttl();
 				io.mapRequired("ttl", ttl);
 				break;
 			}
 			case OFPAT_PUSH_PBB: {
 				const AT_PUSH_PBB *action = item.action<AT_PUSH_PBB>();
-				UInt16 ethertype = action->ethertype();
+				Hex16 ethertype = action->ethertype();
 				io.mapRequired("ethertype", ethertype);
 				break;
 			}
 			case OFPAT_EXPERIMENTER: {
 				const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();
-				UInt32 experimenterid = action->experimenterid();
+				Hex32 experimenterid = action->experimenterid();
 				io.mapRequired("experimenter_id", experimenterid);
 				break;
 			}

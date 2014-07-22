@@ -51,8 +51,8 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -65,8 +65,8 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -79,8 +79,8 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -93,8 +93,8 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -107,8 +107,8 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -121,8 +121,8 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -135,8 +135,8 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -149,8 +149,8 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -163,8 +163,8 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -177,8 +177,8 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -191,8 +191,8 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            4294967291
-      maxlen:          0
+      port:            0xFFFFFFFB
+      maxlen:          0x0000
   enet_frame:      ''
 ...
 ---
@@ -223,8 +223,8 @@ msg:
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
         - action:          OFPAT_OUTPUT
-          port:            2
-          maxlen:          0
+          port:            0x00000002
+          maxlen:          0x0000
 ...
 ---
 type:            OFPT_FLOW_MOD
@@ -254,6 +254,6 @@ msg:
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
         - action:          OFPAT_OUTPUT
-          port:            1
-          maxlen:          0
+          port:            0x00000001
+          maxlen:          0x0000
 ...
