@@ -101,15 +101,15 @@ TEST(decoder, experimenterv4) {
   testDecodeEncode("0404001800000018DEADBEEFAABBCCDDABCDEF0123456789",
                    "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
                    "0x00000018\nversion:         0x04\nmsg:             \n  "
-                   "experimenter:    3735928559\n  exp_type:        "
-                   "2864434397\n  experimenter_data: ABCDEF0123456789\n...\n");
+                   "experimenter:    0xDEADBEEF\n  exp_type:        "
+                   "0xAABBCCDD\n  experimenter_data: ABCDEF0123456789\n...\n");
 }
 
 TEST(decoder, experimenterv1) {
   testDecodeEncode("010400140000001BDEADBEEFABCDEF0123456789",
                    "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
                    "0x0000001B\nversion:         0x01\nmsg:             \n  "
-                   "experimenter:    3735928559\n  exp_type:        0\n  "
+                   "experimenter:    0xDEADBEEF\n  exp_type:        0x00000000\n  "
                    "experimenter_data: ABCDEF0123456789\n...\n");
 }
 
@@ -117,7 +117,7 @@ TEST(decoder, experimenterv2) {
   testDecodeEncode("02040018000000FFDEADBEEF00000000ABCDEF0123456789",
                    "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
                    "0x000000FF\nversion:         0x02\nmsg:             \n  "
-                   "experimenter:    3735928559\n  exp_type:        0\n  "
+                   "experimenter:    0xDEADBEEF\n  exp_type:        0x00000000\n  "
                    "experimenter_data: ABCDEF0123456789\n...\n");
 }
 

@@ -3,8 +3,8 @@ type:            OFPT_EXPERIMENTER
 xid:             0x00000000
 version:         0x01
 msg:             
-  experimenter:    16909060
-  exp_type:        0
+  experimenter:    0x01020304
+  exp_type:        0x00000000
   experimenter_data: 0123456789
 ...
 ---
@@ -12,7 +12,7 @@ type:            OFPT_EXPERIMENTER
 xid:             0x00000000
 version:         0x04
 msg:             
-  experimenter:    16909060
-  exp_type:        270544960
+  experimenter:    0x01020304
+  exp_type:        0x10203040
   experimenter_data: 0123456789
 ...

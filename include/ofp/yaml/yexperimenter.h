@@ -41,8 +41,8 @@ template <>
 struct MappingTraits<ofp::Experimenter> {
 
   static void mapping(IO &io, ofp::Experimenter &msg) {
-    ofp::UInt32 experimenter = msg.experimenter();
-    ofp::UInt32 expType = msg.expType();
+    Hex32 experimenter = msg.experimenter();
+    Hex32 expType = msg.expType();
     ofp::ByteRange data = msg.expData();
     io.mapRequired("experimenter", experimenter);
     io.mapRequired("exp_type", expType);
