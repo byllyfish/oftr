@@ -34,16 +34,12 @@ struct MappingTraits<ofp::Queue> {
 
     PropertyRange props = msg.properties();
 
-    UInt16 minRate = props.value<QueuePropertyMinRate>();
-    UInt16 maxRate = props.value<QueuePropertyMaxRate>();
+    Hex16 minRate = props.value<QueuePropertyMinRate>();
+    Hex16 maxRate = props.value<QueuePropertyMaxRate>();
     io.mapRequired("min_rate", minRate);
     io.mapRequired("max_rate", maxRate);
 
-    //PropertyRange &p = props;
     io.mapRequired("properties", Ref_cast<ofp::detail::QueuePropertyRange>(props));
-
-    //ofp::detail::QueuePropertyRange &qp = reinterpret_cast<ofp::detail::QueuePropertyRange &>(p);
-    //io.mapRequired("properties", qp);
   }
 };
 
