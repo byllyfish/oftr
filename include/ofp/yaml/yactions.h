@@ -176,7 +176,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
     {
     	using namespace ofp;
 
-    	ActionList &list = reinterpret_cast<ActionList&>(builder);
+    	ActionList &list = Ref_cast<ActionList>(builder);
 
     	OFPActionType type = OFPAT_OUTPUT;
     	io.mapRequired("action", type);
@@ -336,7 +336,7 @@ struct SequenceTraits<ofp::ActionList> {
     static ofp::detail::ActionInserter &element(IO &io, ofp::ActionList &list,
                                      size_t index)
     {
-        return reinterpret_cast<ofp::detail::ActionInserter &>(list);
+        return Ref_cast<ofp::detail::ActionInserter>(list);
     }
 };
 

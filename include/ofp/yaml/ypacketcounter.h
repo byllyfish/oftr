@@ -38,7 +38,7 @@ struct MappingTraits<ofp::detail::PacketCounterInserter> {
   static void mapping(IO &io, ofp::detail::PacketCounterInserter &inserter) {
     using namespace ofp;
 
-    PacketCounterList &statsList = reinterpret_cast<PacketCounterList &>(inserter);
+    PacketCounterList &statsList = Ref_cast<PacketCounterList>(inserter);
     PacketCounterBuilder stats;
     MappingTraits<PacketCounterBuilder>::mapping(io, stats);
     statsList.add(stats);
@@ -69,7 +69,7 @@ struct SequenceTraits<ofp::PacketCounterList> {
 
   static ofp::detail::PacketCounterInserter &element(IO &io, ofp::PacketCounterList &list,
                                             size_t index) {
-    return reinterpret_cast<ofp::detail::PacketCounterInserter &>(list);
+    return Ref_cast<ofp::detail::PacketCounterInserter>(list);
   }
 };
 

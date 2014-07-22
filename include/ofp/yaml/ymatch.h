@@ -174,7 +174,7 @@ struct SequenceTraits<ofp::MatchBuilder> {
     static ofp::detail::MatchBuilderItem &element(IO &io, ofp::MatchBuilder &match,
                                      size_t index)
     {
-        return reinterpret_cast<ofp::detail::MatchBuilderItem &>(match);
+        return Ref_cast<ofp::detail::MatchBuilderItem>(match);
     }
 };
 
@@ -183,7 +183,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
 
     static void mapping(IO &io, ofp::detail::MatchBuilderItem &item)
     {
-        ofp::MatchBuilder &builder = reinterpret_cast<ofp::MatchBuilder &>(item);
+        ofp::MatchBuilder &builder = Ref_cast<ofp::MatchBuilder>(item);
 
         ofp::OXMType type;
         io.mapRequired("field", type);

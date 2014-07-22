@@ -48,7 +48,7 @@ struct MappingTraits<ofp::detail::BucketInserter> {
     {
         using namespace ofp;
 
-        BucketList &buckets = reinterpret_cast<BucketList&>(inserter);
+        BucketList &buckets = Ref_cast<BucketList>(inserter);
 
         UInt16 weight;
         UInt32 watchPort;
@@ -119,7 +119,7 @@ struct SequenceTraits<ofp::BucketList> {
     static ofp::detail::BucketInserter &element(IO &io, ofp::BucketList &list,
                                      size_t index)
     {
-        return reinterpret_cast<ofp::detail::BucketInserter &>(list);
+        return Ref_cast<ofp::detail::BucketInserter>(list);
     }
 };
 

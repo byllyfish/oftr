@@ -91,7 +91,7 @@ struct MappingTraits<ofp::detail::PortInserter> {
   static void mapping(IO &io, ofp::detail::PortInserter &inserter) {
     using namespace ofp;
 
-    PortList &ports = reinterpret_cast<PortList &>(inserter);
+    PortList &ports = Ref_cast<PortList>(inserter);
     PortBuilder port;
     MappingTraits<PortBuilder>::mapping(io, port);
     ports.add(port);
@@ -122,7 +122,7 @@ struct SequenceTraits<ofp::PortList> {
 
   static ofp::detail::PortInserter &element(IO &io, ofp::PortList &list,
                                             size_t index) {
-    return reinterpret_cast<ofp::detail::PortInserter &>(list);
+    return Ref_cast<ofp::detail::PortInserter>(list);
   }
 };
 

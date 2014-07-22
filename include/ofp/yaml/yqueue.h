@@ -61,7 +61,7 @@ struct MappingTraits<ofp::QueueBuilder> {
     props.add(QueuePropertyMaxRate{maxRate});
 
     PropertyList &p = props;
-    ofp::detail::QueuePropertyList &qp = reinterpret_cast<ofp::detail::QueuePropertyList &>(p);
+    ofp::detail::QueuePropertyList &qp = Ref_cast<ofp::detail::QueuePropertyList>(p);
     io.mapOptional("properties", qp);
     msg.setProperties(props.toRange());
   }
@@ -72,7 +72,7 @@ struct MappingTraits<ofp::detail::QueueInserter> {
   static void mapping(IO &io, ofp::detail::QueueInserter &inserter) {
     using namespace ofp;
 
-    QueueList &queues = reinterpret_cast<QueueList &>(inserter);
+    QueueList &queues = Ref_cast<QueueList>(inserter);
     QueueBuilder queue;
     MappingTraits<QueueBuilder>::mapping(io, queue);
     queues.add(queue);
@@ -103,7 +103,7 @@ struct SequenceTraits<ofp::QueueList> {
 
   static ofp::detail::QueueInserter &element(IO &io, ofp::QueueList &list,
                                             size_t index) {
-    return reinterpret_cast<ofp::detail::QueueInserter &>(list);
+    return Ref_cast<ofp::detail::QueueInserter>(list);
   }
 };
 

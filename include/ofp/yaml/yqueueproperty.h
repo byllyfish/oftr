@@ -27,7 +27,7 @@ struct MappingTraits<ofp::detail::QueuePropertyItem> {
   static void mapping(IO &io, ofp::detail::QueuePropertyItem &item) {
     using namespace ofp;
 
-    PropertyIterator::Element &elem = reinterpret_cast<PropertyIterator::Element &>(item);
+    PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
 
     if (elem.type() == QueuePropertyExperimenter::type()) {
       auto p = elem.property<QueuePropertyExperimenter>();
@@ -51,7 +51,7 @@ struct MappingTraits<ofp::detail::QueuePropertyInserter> {
   static void mapping(IO &io, ofp::detail::QueuePropertyInserter &inserter) {
     using namespace ofp;
 
-    PropertyList &props = reinterpret_cast<PropertyList &>(inserter);
+    PropertyList &props = Ref_cast<PropertyList>(inserter);
 
     UInt32 experimenter;
     io.mapRequired("experimenter", experimenter);
@@ -100,7 +100,7 @@ struct SequenceTraits<ofp::detail::QueuePropertyList> {
 
   static ofp::detail::QueuePropertyInserter &element(IO &io, ofp::detail::QueuePropertyList &list,
                                             size_t index) {
-    return reinterpret_cast<ofp::detail::QueuePropertyInserter &>(list);
+    return Ref_cast<ofp::detail::QueuePropertyInserter>(list);
   }
 };
 

@@ -108,7 +108,7 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
   static void mapping(IO &io, ofp::detail::InstructionInserter &builder) {
     using namespace ofp;
 
-    InstructionList &list = reinterpret_cast<InstructionList &>(builder);
+    InstructionList &list = Ref_cast<InstructionList>(builder);
 
     OFPInstructionType type = OFPIT_GOTO_TABLE;
     io.mapRequired("instruction", type);
@@ -183,7 +183,7 @@ struct SequenceTraits<ofp::InstructionList> {
 
   static ofp::detail::InstructionInserter &
   element(IO &io, ofp::InstructionList &list, size_t index) {
-    return reinterpret_cast<ofp::detail::InstructionInserter &>(list);
+    return Ref_cast<ofp::detail::InstructionInserter>(list);
   }
 };
 

@@ -62,7 +62,7 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
   static void mapping(IO &io, ofp::detail::MeterBandInserter &inserter) {
     using namespace ofp;
 
-    MeterBandList &list = reinterpret_cast<MeterBandList &>(inserter);
+    MeterBandList &list = Ref_cast<MeterBandList>(inserter);
 
     OFPMeterBandType meterType;
     io.mapRequired("type", meterType);
@@ -123,7 +123,7 @@ struct SequenceTraits<ofp::MeterBandList> {
   static ofp::detail::MeterBandInserter &element(IO &io,
                                                  ofp::MeterBandList &list,
                                                  size_t index) {
-    return reinterpret_cast<ofp::detail::MeterBandInserter &>(list);
+    return Ref_cast<ofp::detail::MeterBandInserter>(list);
   }
 };
 
