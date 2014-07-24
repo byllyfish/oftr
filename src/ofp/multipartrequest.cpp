@@ -22,6 +22,12 @@
 #include "ofp/multipartrequest.h"
 #include "ofp/writable.h"
 #include "ofp/message.h"
+#include "ofp/mpflowstatsrequest.h"
+#include "ofp/mpaggregatestatsrequest.h"
+#include "ofp/mpportstatsrequest.h"
+#include "ofp/mpqueuestatsrequest.h"
+#include "ofp/mpgroupstatsrequest.h"
+#include "ofp/mpmeterstatsrequest.h"
 #include "ofp/mptablefeatures.h"
 
 using namespace ofp;
@@ -52,16 +58,41 @@ static bool validateBodyArray(const UInt8 *body, size_t length) {
 
 
 bool MultipartRequest::validateInput(size_t length) const {
-  // FIXME - this will need to cast and verify the lengths in the body.
-
-  assert(length == requestBodySize() + 16);
+  assert(length == requestBodySize() + sizeof(MultipartRequest));
 
   switch (requestType()) {
+    case OFPMP_DESC:
+    case OFPMP_TABLE:
+    case OFPMP_GROUP_DESC:
+    case OFPMP_GROUP_FEATURES:
+    case OFPMP_METER_FEATURES:
+    case OFPMP_PORT_DESC:
+      // The request body is empty.
+      return (requestBodySize() == 0);
+    case OFPMP_FLOW:
+      return validateBody<MPFlowStatsRequest>(requestBody(), requestBodySize());
+    case OFPMP_AGGREGATE:
+      return validateBody<MPAggregateStatsRequest>(requestBody(), requestBodySize());
+    case OFPMP_PORT_STATS:
+      return validateBody<MPPortStatsRequest>(requestBody(), requestBodySize());
+    case OFPMP_QUEUE:
+      return validateBody<MPQueueStatsRequest>(requestBody(), requestBodySize());
+    case OFPMP_GROUP:
+      return validateBody<MPGroupStatsRequest>(requestBody(), requestBodySize());
+    case OFPMP_METER:
+      return validateBody<MPMeterStatsRequest>(requestBody(), requestBodySize());
+    case OFPMP_METER_CONFIG:
+      return validateBody<MPMeterConfigRequest>(requestBody(), requestBodySize());
     case OFPMP_TABLE_FEATURES:
       return validateBodyArray<MPTableFeatures>(requestBody(), requestBodySize());
+    case OFPMP_EXPERIMENTER:
+      // FIXME - implement this check.
+      return false;
   }
 
-  return true;
+  log::info("Unexpected MultipartRequest type:", static_cast<int>(requestType()));
+
+  return false;
 }
 
 UInt32 MultipartRequestBuilder::send(Writable *channel) {
