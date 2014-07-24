@@ -17,14 +17,14 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::OXMID> {
-    static const bool OXMID_WITH_ZERO_LENGTH = true;
+    static const bool OXMID_WITH_ZERO_LENGTH = false;
     
     static void output(const ofp::OXMID &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
       ScalarTraits<ofp::OXMType>::output(value.type(), ctxt, out);
       if (value.type().hasMask()) {
-        out << '*';
+        out << '/';
       }
     }
 
@@ -33,7 +33,7 @@ struct ScalarTraits<ofp::OXMID> {
     {
       bool hasMask = false;
 
-      if (!scalar.empty() && scalar.back() == '*') {
+      if (!scalar.empty() && scalar.back() == '/') {
         scalar = scalar.drop_back();
         hasMask = true;
       }
