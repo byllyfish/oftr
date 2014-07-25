@@ -6,6 +6,17 @@
 #include <fstream>
 
 using namespace ofpx;
+using ofp::UInt8;
+
+// Compare two buffers and return offset of the byte that differs. If buffers 
+// are identical, return `size`.
+static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
+  for (size_t i = 0; i < size; ++i) {
+    if (lhs[i] != rhs[i])
+      return i;
+  }
+  return size;
+}
 
 //-------//
 // r u n //
@@ -174,7 +185,8 @@ int Decode::decodeOneMessage(const ofp::Message *message, const ofp::Message *or
     std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << originalMessage->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
     //return 130;
   } else if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
-    std::cerr << "Error: Encode yielded different data:\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
+    size_t diffOffset = findDiffOffset(originalMessage->data(), encoder.data(), encoder.size());
+    std::cerr << "Error: Encode yielded different data at byte offset " << diffOffset << ":\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
     //return 131;
   }
 
