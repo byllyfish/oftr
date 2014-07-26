@@ -27,6 +27,8 @@
 
 namespace ofp {
 
+class Validation;
+
 /// \brief Static base class template for all protocol message types. This class
 /// implements the two static methods, type() and cast(), common to all protocol
 /// message types. This class also specifies the minimum and maximum length of
@@ -50,6 +52,7 @@ public:
 
   /// \returns Pointer to message memory as given class or nullptr.
   static const MsgClass *cast(const Message *message) {
+    // FIXME - why is this in Message? Why not inline here?
     return message->castMessage<MsgClass>();
   }
 

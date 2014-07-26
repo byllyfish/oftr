@@ -60,7 +60,7 @@ public:
   UInt32 xid() const { return header_.xid(); }
 
   /// \returns true if message content is valid.
-  bool validateInput(size_t length) const { return true; }
+  bool validateInput(Validation *context) const { return true; }
 
 private:
   Header header_;
@@ -183,7 +183,7 @@ const HeaderOnly<MsgType> *HeaderOnly<MsgType>::cast(const Message *message) {
 
   const HeaderOnly *msg = reinterpret_cast<const HeaderOnly *>(message->data());
 
-  if (!msg->validateInput(message->size())) {
+  if (message->size() != 8) {
     return nullptr;
   }
 

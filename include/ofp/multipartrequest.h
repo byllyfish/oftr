@@ -39,16 +39,11 @@ public:
     return header_.length() - sizeof(MultipartRequest);
   }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
 
   template <class Type>
   const Type *body_cast() const {
-    // FIXME(bfish) - don't defer validateInput until here; do it earlier.
-    const Type *p = reinterpret_cast<const Type *>(requestBody());
-    if (!p->validateInput(requestBodySize())) {
-      return nullptr;
-    }
-    return p;
+    return reinterpret_cast<const Type *>(requestBody());
   }
 
   template <class Type>

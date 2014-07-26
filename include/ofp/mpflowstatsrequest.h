@@ -31,6 +31,7 @@ namespace ofp {
 
 class Writable;
 class MultipartRequest;
+class Validation;
 
 class MPFlowStatsRequest {
 public:
@@ -46,7 +47,7 @@ public:
 
   Match match() const;
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
 
 private:
   Big8 tableId_;

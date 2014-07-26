@@ -49,7 +49,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   Match match() const;
   InstructionRange instructions() const;
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
 
  private:
   Header header_;

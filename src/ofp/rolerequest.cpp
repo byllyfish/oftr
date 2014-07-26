@@ -24,14 +24,6 @@
 
 using namespace ofp;
 
-bool RoleRequest::validateInput(size_t length) const {
-  if (length != sizeof(RoleRequest)) {
-    return false;
-  }
-
-  return true;
-}
-
 RoleRequestBuilder::RoleRequestBuilder(const RoleRequest *msg) : msg_{*msg} {}
 
 UInt32 RoleRequestBuilder::send(Writable *channel) {

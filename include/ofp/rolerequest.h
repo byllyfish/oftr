@@ -34,7 +34,7 @@ public:
 
   UInt32 xid() const { return header_.xid(); }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const { return true; }
 
 private:
   Header header_;

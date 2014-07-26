@@ -24,13 +24,6 @@
 
 using namespace ofp;
 
-bool PortMod::validateInput(size_t length) const {
-  if (length != sizeof(PortMod))
-    return false;
-
-  return true;
-}
-
 PortModBuilder::PortModBuilder(const PortMod *msg) : msg_{*msg} {}
 
 UInt32 PortModBuilder::send(Writable *channel) {

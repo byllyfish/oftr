@@ -25,15 +25,6 @@
 
 using namespace ofp;
 
-bool PortStatus::validateInput(size_t length) const {
-  if (length != sizeof(PortStatus)) {
-    log::info("Invalid size of PortStatus message:", length);
-    return false;
-  }
-
-  return true;
-}
-
 PortStatusBuilder::PortStatusBuilder(const PortStatus *msg) : msg_{*msg} {}
 
 UInt32 PortStatusBuilder::send(Writable *channel) {

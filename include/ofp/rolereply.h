@@ -35,7 +35,7 @@ public:
   UInt32 role() const { return role_; }
   UInt64 generationId() const { return generationId_; }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const { return true; }
 
 private:
   Header header_;

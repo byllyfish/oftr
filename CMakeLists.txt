@@ -154,6 +154,7 @@ set(LIBOFP_SOURCES
   src/ofp/tablemod.cpp
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp
+  src/ofp/validation.cpp
 	src/ofp/api/apichannellistener.cpp
 	src/ofp/api/apiconnection.cpp
   src/ofp/api/apiconnectionsession.cpp

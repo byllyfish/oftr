@@ -24,14 +24,6 @@
 
 using namespace ofp;
 
-bool TableMod::validateInput(size_t length) const {
-  if (length != sizeof(TableMod)) {
-    return false;
-  }
-
-  return true;
-}
-
 TableModBuilder::TableModBuilder(const TableMod *msg) : msg_{*msg} {}
 
 UInt32 TableModBuilder::send(Writable *channel) {

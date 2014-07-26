@@ -24,10 +24,6 @@
 
 using namespace ofp;
 
-bool RoleReply::validateInput(size_t length) const {
-  return length == sizeof(RoleReply);
-}
-
 RoleReplyBuilder::RoleReplyBuilder(UInt32 xid) {
   // Set xid of reply to request's xid.
   msg_.header_.setXid(xid);

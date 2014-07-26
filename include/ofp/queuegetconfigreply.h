@@ -37,7 +37,7 @@ public:
   UInt32 port() const { return port_; }
   QueueRange queues() const;
 
-  bool validateInput(size_t length) const { return true; }
+  bool validateInput(Validation *context) const;
 
 private:
   Header header_;

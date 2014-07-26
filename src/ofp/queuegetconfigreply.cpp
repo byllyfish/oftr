@@ -9,6 +9,15 @@ QueueRange QueueGetConfigReply::queues() const {
 }
 
 
+bool QueueGetConfigReply::validateInput(Validation *context) const {
+    if (!queues().validateInput(context)) {
+        return false;
+    }
+
+    return true;
+}
+
+
 UInt32 QueueGetConfigReplyBuilder::send(Writable *channel) {
     UInt8 version = channel->version();
     UInt32 xid = channel->nextXid();

@@ -4,7 +4,10 @@
 using namespace ofp;
 
 
-bool MeterMod::validateInput(size_t length) const {
+bool MeterMod::validateInput(Validation *context) const {
+  if (!meterBands().validateInput(context)) {
+    return false;
+  }
   return true;
 }
 

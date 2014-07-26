@@ -32,7 +32,7 @@ class EchoRequest
 public:
   ByteRange echoData() const;
 
-  bool validateInput(size_t length) const { return true; }
+  bool validateInput(Validation *context) const { return true; }
 
 private:
   Header header_;

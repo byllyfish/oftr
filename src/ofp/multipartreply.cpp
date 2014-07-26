@@ -25,9 +25,9 @@
 
 namespace ofp { // <namespace ofp>
 
-bool MultipartReply::validateInput(size_t length) const {
+bool MultipartReply::validateInput(Validation *context) const {
   // FIXME - see same method in MultipartRequest.
-  return length >= sizeof(MultipartReply);
+  return true;
 }
 
 UInt32 MultipartReplyBuilder::send(Writable *channel) {

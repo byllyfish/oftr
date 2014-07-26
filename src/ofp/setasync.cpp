@@ -24,10 +24,6 @@
 
 using namespace ofp;
 
-bool SetAsync::validateInput(size_t length) const {
-  return length == sizeof(SetAsync);
-}
-
 SetAsyncBuilder::SetAsyncBuilder(const SetAsync *msg) : msg_{*msg} {}
 
 UInt32 SetAsyncBuilder::send(Writable *channel) {

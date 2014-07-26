@@ -29,6 +29,7 @@ namespace ofp {
 
 class Writable;
 class MultipartRequest;
+class Validation;
 
 class MPPortStatsRequest {
  public:
@@ -38,7 +39,7 @@ class MPPortStatsRequest {
 
   UInt32 portNo() const { return portNo_; }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
   
  private:
   Big32 portNo_;

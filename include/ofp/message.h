@@ -25,6 +25,7 @@
 #include "ofp/bytelist.h"
 #include "ofp/header.h"
 #include "ofp/datapathid.h"
+#include "ofp/validation.h"
 
 namespace ofp {
 
@@ -105,13 +106,15 @@ const MsgType *Message::castMessage() const {
   size_t length = size();
   assert(length == header()->length());
 
+  Validation context{data(), length};
+
   if (!MsgType::isLengthValid(length)) {
     log::debug("ProtocolMsg: Invalid length");
     return nullptr;
   }
 
   const MsgType *msg = reinterpret_cast<const MsgType *>(data());
-  if (!msg->validateInput(length)) {
+  if (!msg->validateInput(&context)) {
     return nullptr;
   }
 

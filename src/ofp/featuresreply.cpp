@@ -25,12 +25,12 @@
 
 using namespace ofp;
 
-bool FeaturesReply::validateInput(size_t length) const {
+bool FeaturesReply::validateInput(Validation *context) const {
   UInt8 version = header_.version();
 
   // Version 4 and later don't include the port list.
   if (version >= OFP_VERSION_4) {
-    return (length == sizeof(FeaturesReply));
+    return (context->length() == sizeof(FeaturesReply));
   }
 
   // Make sure the size of the list is a multiple of the port size. (Note

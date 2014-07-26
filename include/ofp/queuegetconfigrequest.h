@@ -31,11 +31,11 @@ namespace ofp {
 // Note: This message is replaced by a MultipartRequest in version 1.4.
 
 class QueueGetConfigRequest
-    : public ProtocolMsg<QueueGetConfigRequest, OFPT_QUEUE_GET_CONFIG_REQUEST> {
+    : public ProtocolMsg<QueueGetConfigRequest, OFPT_QUEUE_GET_CONFIG_REQUEST, 16, 16> {
 public:
   UInt32 port() const { return port_; }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const { return true; }
 
 private:
   Header header_;

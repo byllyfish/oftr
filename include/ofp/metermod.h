@@ -13,7 +13,7 @@ class MeterMod : public ProtocolMsg<MeterMod, OFPT_METER_MOD, 16> {
   UInt32 meterId() const { return meterId_; }
   MeterBandRange meterBands() const;
   
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
 
  private:
   Header header_;

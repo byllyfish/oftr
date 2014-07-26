@@ -26,8 +26,6 @@
 namespace ofp { // <namespace ofp>
 
 Match FlowMod::match() const {
-  assert(validateInput(header_.length()));
-
   return Match{&matchHeader_};
 }
 
@@ -39,7 +37,9 @@ InstructionRange FlowMod::instructions() const {
       ByteRange{BytePtr(this) + offset, header_.length() - offset}};
 }
 
-bool FlowMod::validateInput(size_t length) const {
+bool FlowMod::validateInput(Validation *context) const {
+  size_t length = context->length();
+
   if (length < UnpaddedSizeWithMatchHeader) {
     log::debug("FlowMod too small", length);
     return false;
@@ -51,7 +51,7 @@ bool FlowMod::validateInput(size_t length) const {
     return false;
   }
 
-  if (!instructions().validateInput("FlowMod")) {
+  if (!instructions().validateInput(context)) {
     log::info("FlowMod: invalid instructions");
     return false;
   }

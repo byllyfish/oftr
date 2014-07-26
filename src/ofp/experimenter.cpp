@@ -31,10 +31,6 @@ ByteRange Experimenter::expData() const {
                    header_.length() - sizeof(Experimenter)};
 }
 
-bool Experimenter::validateInput(size_t length) const {
-  return length >= sizeof(Experimenter);
-}
-
 ExperimenterBuilder::ExperimenterBuilder(const Experimenter *msg) : msg_{*msg} {
   ByteRange expData = msg->expData();
   setExpData(expData.data(), expData.size());

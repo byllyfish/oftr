@@ -24,10 +24,6 @@
 
 using namespace ofp;
 
-bool SetConfig::validateInput(size_t length) const {
-  return (length == sizeof(SetConfig));
-}
-
 SetConfigBuilder::SetConfigBuilder(const SetConfig *msg) : msg_{*msg} {}
 
 void SetConfigBuilder::setFlags(UInt16 flags) { msg_.flags_ = flags; }

@@ -22,7 +22,7 @@ public:
 
     PropertyRange properties() const;
 
-    bool validateInput(size_t length) const;
+    bool validateInput(Validation *context) const;
     
 private:
     Big16 length_;

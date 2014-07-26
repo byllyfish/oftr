@@ -23,7 +23,7 @@ ActionRange InstructionRange::outputActions() const {
 
 
 
-bool InstructionRange::validateInput(const char *context) const {
+bool InstructionRange::validateInput(Validation *context) const {
   if (!Inherited::validateInput(context))
     return false;
 

@@ -8,6 +8,7 @@ namespace ofp {
 
 class Writable;
 class MultipartRequest;
+class Validation;
 
 class MPMeterConfigRequest {
 public:
@@ -15,7 +16,7 @@ public:
 
     UInt32 meterId() const { return meterId_; }
 
-    bool validateInput(size_t length) const { return length == 8; }
+    bool validateInput(Validation *context) const;
 
 private:
     Big32 meterId_;

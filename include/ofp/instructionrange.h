@@ -36,7 +36,7 @@ class InstructionRange : public ProtocolRange<InstructionIterator> {
 
   ActionRange outputActions() const;
 
-  bool validateInput(const char *context) const;
+  bool validateInput(Validation *context) const;
 };
 
 }  // namespace ofp

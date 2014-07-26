@@ -36,6 +36,9 @@
 #include "ofp/constants.h"
 
 namespace ofp {
+
+class Validation;
+
 namespace detail {
 
 /// Return true if given ByteRange is a valid protocol range.
@@ -49,7 +52,7 @@ namespace detail {
 ///   - pointer to start of range is 8-byte aligned.
 ///
 /// \return true if byte range is a valid protocol iterable.
-bool IsProtocolRangeValid(size_t elementSize, const ByteRange &range, size_t sizeFieldOffset, size_t alignment = 8, const char *context="");
+bool IsProtocolRangeValid(size_t elementSize, const ByteRange &range, size_t sizeFieldOffset, size_t alignment, Validation *context);
 
 /// Return count of items in the protocol range.
 ///
@@ -162,7 +165,7 @@ private:
     return detail::ProtocolRangeItemCount(sizeof(ElemType), range, SizeOffset, Alignment);
   }
 
-  static bool isValid(const ByteRange &range, const char *context) {
+  static bool isValid(const ByteRange &range, Validation *context) {
     return detail::IsProtocolRangeValid(sizeof(ElemType), range, SizeOffset, Alignment, context);
   }
 

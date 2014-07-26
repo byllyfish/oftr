@@ -24,7 +24,9 @@
 
 using namespace ofp;
 
-bool PacketOut::validateInput(size_t length) const {
+bool PacketOut::validateInput(Validation *context) const {
+  size_t length = context->length();
+  
   if (length < sizeof(PacketOut) + actionsLen_) {
     log::info("PacketOut::validateInput: Too short.", length);
     return false;

@@ -51,7 +51,7 @@ public:
     return p;
   }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
 
   enum : size_t {
     UnpaddedSizeVersion1 = 12

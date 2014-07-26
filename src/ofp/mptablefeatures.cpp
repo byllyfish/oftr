@@ -1,5 +1,6 @@
 #include "ofp/mptablefeatures.h"
 #include "ofp/writable.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 
@@ -10,8 +11,10 @@ PropertyRange MPTableFeatures::properties() const {
 }
 
 
-bool MPTableFeatures::validateInput(size_t length) const {
-    if (length < sizeof(MPTableFeatures)) {
+bool MPTableFeatures::validateInput(Validation *context) const {
+    size_t lengthRemaining = context->lengthRemaining();
+
+    if (lengthRemaining < sizeof(MPTableFeatures)) {
         return false;
     }
 
@@ -20,12 +23,16 @@ bool MPTableFeatures::validateInput(size_t length) const {
         return false;
     }
 
-    if (len > length) {
+    if (len > lengthRemaining) {
         return false;
     }
 
     PropertyRange props = properties();
-    if (!TableFeaturePropertyValidator::validateInput(props)) {
+    if (!props.validateInput(context)) {
+        return false;
+    }
+
+    if (!TableFeaturePropertyValidator::validateInput(props, context)) {
         return false;
     }
 

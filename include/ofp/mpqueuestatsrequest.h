@@ -30,6 +30,7 @@ namespace ofp {
 
 class Writable;
 class MultipartRequest;
+class Validation;
 
 class MPQueueStatsRequest {
  public:
@@ -40,7 +41,7 @@ class MPQueueStatsRequest {
   UInt32 portNo() const { return portNo_; }
   UInt32 queueId() const { return queueId_; }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
 
  private:
   Big32 portNo_;

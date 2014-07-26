@@ -23,10 +23,6 @@
 
 using namespace ofp;
 
-bool GetAsyncReply::validateInput(size_t length) const {
-  return length == sizeof(GetAsyncReply);
-}
-
 GetAsyncReplyBuilder::GetAsyncReplyBuilder(UInt32 xid) {
   msg_.header_.setXid(xid);
 }

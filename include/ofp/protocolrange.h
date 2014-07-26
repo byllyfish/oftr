@@ -25,7 +25,7 @@ public:
 
   size_t itemCount() const { return Iterator::itemCount(range_); }
 
-  bool validateInput(const char *context) const {
+  bool validateInput(Validation *context) const {
     return Iterator::isValid(range_, context);
   }
 

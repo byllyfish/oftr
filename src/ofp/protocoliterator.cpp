@@ -1,5 +1,6 @@
 #include "ofp/protocoliterator.h"
 #include "ofp/log.h"
+#include "ofp/validation.h"
 #include <algorithm>
 
 using namespace ofp;
@@ -14,7 +15,7 @@ using namespace ofp;
 ///   - pointer to start of range is 8-byte aligned.
 /// 
 /// \return true if byte range is a valid protocol iterable.
-static bool isProtocolRangeFixedValid(size_t elementSize, const ByteRange &range, const char *context="");
+static bool isProtocolRangeFixedValid(size_t elementSize, const ByteRange &range, Validation *context);
 
 /// Return count of items in the protocol iterable.
 /// 
@@ -26,7 +27,7 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
                                           const ByteRange &range,
                                           size_t sizeFieldOffset,
                                           size_t alignment,
-                                          const char *context) {
+                                          Validation *context) {
 
   if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_FIXED) {
     return isProtocolRangeFixedValid(elementSize, range, context);
@@ -39,13 +40,13 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
 
   // Length must be a multiple of `alignment`.
   if ((len % alignment) != 0) {
-    log::info("Array length is not a multiple of Alignment:", context);
+    context->rangeSizeHasImproperAlignment(ptr, alignment);
     return false;
   }
 
   // Beginning pointer must be aligned.
   if (!IsPtrAligned(ptr, alignment)) {
-    log::info("Array start is not aligned:", context);
+    context->rangeDataHasImproperAlignment(ptr, alignment);
     return false;
   }
 
@@ -61,7 +62,7 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
     }
 
     if (elemSize < 4) {
-      log::info("Array element size less than minimum:", context);
+      context->rangeElementSizeIsTooSmall(ptr, 4);
       return false;
     }
 
@@ -72,7 +73,7 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
     size_t jumpSize;
     if (alignment != 8) {
       if ((elemSize % alignment) != 0) {
-        log::info("Array element size is not a multiple of Alignment:", context);
+        context->rangeElementSizeHasImproperAlignment(ptr, elemSize, alignment);
         return false;
       }
       jumpSize = elemSize;
@@ -82,7 +83,7 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
     }
 
     if (jumpSize > len) {
-      log::info("Array element size overruns the end:", context);
+      context->rangeElementSizeOverrunsEnd(ptr, jumpSize);
       return false;
     }
 
@@ -147,12 +148,12 @@ size_t ofp::detail::ProtocolRangeItemCount(size_t elementSize, const ByteRange &
 ///
 /// \return true if byte range is a valid protocol iterable.
 static bool isProtocolRangeFixedValid(
-    size_t elementSize, const ByteRange &range, const char *context) {
+    size_t elementSize, const ByteRange &range, Validation *context) {
   assert(elementSize > 0 && "Element size must not be 0.");
   assert((elementSize % 8) == 0 && "Element size must be multiple of 8.");
 
   if ((range.size() % elementSize) != 0) {
-    log::info("Array element size mismatch:", context);
+    context->rangeSizeIsNotMultipleOfElementSize(range.data(), elementSize);
     return false;
   }
 

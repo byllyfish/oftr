@@ -10,6 +10,7 @@
 namespace ofp {
 
 class PropertyRange;
+class Validation;
 
 namespace detail {
 
@@ -32,7 +33,7 @@ public:
 
     ByteRange valueRef() const { return range_.toByteRange(); }
 
-    bool validateInput() const { return value().validateInput("TableFeature"); }
+    bool validateInput(Validation *context) const { return value().validateInput(context); }
 
 private:
     Big16 type_ = type();
@@ -94,7 +95,7 @@ using TableFeaturePropertyExperimenterMiss = detail::TableFeaturePropertyExperim
 
 class TableFeaturePropertyValidator {
 public:
-    static bool validateInput(const PropertyRange &range);
+    static bool validateInput(const PropertyRange &range, Validation *context);
 };
 
 }  // namespace ofp

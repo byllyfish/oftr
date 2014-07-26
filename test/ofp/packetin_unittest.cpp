@@ -32,9 +32,10 @@ TEST(packetin, version4) {
 
     auto packetIn = PacketIn::cast(&message);
 
-    ASSERT_TRUE(packetIn->validateInput(message.size()));
+    Validation context{message.data(), message.size()};
+    ASSERT_TRUE(packetIn->validateInput(&context));
 
-    if (packetIn->validateInput(message.size())) {
+    if (packetIn->validateInput(&context)) {
       EXPECT_EQ(1, packetIn->bufferId());
       EXPECT_EQ(2, packetIn->totalLen());
       EXPECT_EQ(OFPR_NO_MATCH, packetIn->reason());

@@ -24,10 +24,6 @@
 
 using namespace ofp;
 
-bool QueueGetConfigRequest::validateInput(size_t length) const {
-  return length == sizeof(QueueGetConfigRequest);
-}
-
 QueueGetConfigRequestBuilder::QueueGetConfigRequestBuilder(
     const QueueGetConfigRequest *msg)
     : msg_{*msg} {}

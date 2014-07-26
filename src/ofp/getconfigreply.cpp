@@ -24,10 +24,6 @@
 
 using namespace ofp;
 
-bool GetConfigReply::validateInput(size_t length) const {
-  return length == sizeof(GetConfigReply);
-}
-
 GetConfigReplyBuilder::GetConfigReplyBuilder(const GetConfigReply *msg)
     : msg_{*msg} {}
 

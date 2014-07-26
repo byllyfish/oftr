@@ -118,7 +118,7 @@ public:
                      length_ - SizeWithoutActions};
   }
 
-  bool validateInput(const char *context) const {
+  bool validateInput(Validation *context) const {
     if (length_ < SizeWithoutActions)
       return false;
     ActionRange actions = dataRange();

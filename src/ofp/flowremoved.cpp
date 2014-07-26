@@ -26,7 +26,9 @@
 
 using namespace ofp;
 
-bool FlowRemoved::validateInput(size_t length) const {
+bool FlowRemoved::validateInput(Validation *context) const {
+  size_t length = context->length();
+
   if (length != SizeWithoutMatchHeader + matchHeader_.paddedLength()) {
     log::debug("FlowRemoved: Invalid length.");
     return false;
@@ -41,8 +43,6 @@ bool FlowRemoved::validateInput(size_t length) const {
 }
 
 Match FlowRemoved::match() const {
-  assert(validateInput(header_.length()));
-
   return Match{&matchHeader_};
 }
 
