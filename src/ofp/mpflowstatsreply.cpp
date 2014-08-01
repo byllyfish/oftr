@@ -22,6 +22,7 @@
 #include "ofp/mpflowstatsreply.h"
 #include "ofp/writable.h"
 #include "ofp/originalmatch.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 
@@ -36,6 +37,25 @@ InstructionRange MPFlowStatsReply::instructions() const {
   assert(length_ >= offset);
 
   return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
+}
+
+bool MPFlowStatsReply::validateInput(Validation *context) const {
+  size_t length = length_;
+  if (!context->validateLength(length_, UnpaddedSizeWithMatchHeader)) {
+    return false;
+  }
+
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+    return false;
+  }
+
+  context->setLengthRemaining(length - SizeWithoutMatchHeader - matchHeader_.length());
+  
+  if (!instructions().validateInput(context)) {
+    return false;
+  }
+
+  return true;
 }
 
 void MPFlowStatsReplyBuilder::write(Writable *channel) {

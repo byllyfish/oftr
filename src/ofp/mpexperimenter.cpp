@@ -18,6 +18,15 @@ ByteRange MPExperimenter::expData() const {
     return ByteRange{BytePtr(this) + sizeof(MPExperimenter), req->requestBodySize() - sizeof(MPExperimenter)};
 }
 
+bool MPExperimenter::validateInput(Validation *context) const {
+    if (context->lengthRemaining() < sizeof(MPExperimenter)) {
+        context->lengthRemainingIsInvalid(BytePtr(this), sizeof(MPExperimenter));
+        return false;
+    }
+
+    return true;
+}
+
 void MPExperimenterBuilder::write(Writable *channel) {
     channel->write(&msg_, sizeof(msg_));
     channel->write(data_.data(), data_.size());

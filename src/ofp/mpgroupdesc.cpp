@@ -1,4 +1,5 @@
 #include "ofp/mpgroupdesc.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 
@@ -6,6 +7,18 @@ BucketRange MPGroupDesc::buckets() const {
     assert(length_ >= sizeof(MPGroupDesc));
 
     return ByteRange{BytePtr(this) + sizeof(MPGroupDesc), length_ - sizeof(MPGroupDesc)};
+}
+
+bool MPGroupDesc::validateInput(Validation *context) const {
+    if (!context->validateLength(length_, sizeof(MPGroupDesc))) {
+        return false;
+    }
+
+    if (!buckets().validateInput(context)) {
+        return false;
+    }
+
+    return true;
 }
 
 

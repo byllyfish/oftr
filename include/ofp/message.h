@@ -109,7 +109,7 @@ const MsgType *Message::castMessage() const {
   Validation context{data(), length};
 
   if (!MsgType::isLengthValid(length)) {
-    log::debug("ProtocolMsg: Invalid length");
+    context.messageSizeIsInvalid();
     return nullptr;
   }
 

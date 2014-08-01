@@ -5,11 +5,14 @@
 
 namespace ofp {
 
+class Writable;
+class Validation;
+
 class MPGroupFeatures {
 public:
     UInt32 types() const { return types_; }
 
-    bool validateInput(size_t length) const { return (length == 40); }
+    bool validateInput(Validation *context) const;
 
 private:
     Big32 types_;

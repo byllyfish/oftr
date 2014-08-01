@@ -9,6 +9,7 @@ namespace ofp {
 
 class Writable;
 class MultipartRequest;
+class Validation;
 
 class MPExperimenter {
  public:
@@ -18,7 +19,7 @@ class MPExperimenter {
   UInt32 expType() const { return expType_; }
   ByteRange expData() const;
 
-  bool validateInput(size_t length) const { return length >= 8; }
+  bool validateInput(Validation *context) const;
 
  private:
   Big32 experimenter_;

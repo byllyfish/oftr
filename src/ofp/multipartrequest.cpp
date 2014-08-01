@@ -29,33 +29,9 @@
 #include "ofp/mpgroupstatsrequest.h"
 #include "ofp/mpmeterstatsrequest.h"
 #include "ofp/mptablefeatures.h"
+#include "ofp/mpexperimenter.h"
 
 using namespace ofp;
-
-template <class Type>
-static bool validateBody(const UInt8 *body, Validation *context) {
-  const Type *ptr = reinterpret_cast<const Type *>(body);
-  return ptr->validateInput(context);
-}
-
-template <class Type>
-static bool validateArray(const UInt8 *body, Validation *context) {
-  size_t length = context->lengthRemaining();
-
-  while (length != 0) {
-    const Type *ptr = reinterpret_cast<const Type *>(body);
-    assert(IsPtrAligned(ptr, 8) && "Misaligned ptr");
-    size_t size = ptr->length();
-
-    if (size < 8 || size > length) return false;
-    if ((size % 8) != 0) return false;
-    if (!ptr->validateInput(context)) return false;
-    body += size;
-    length -= size;
-  }
-  return true;
-}
-
 
 
 bool MultipartRequest::validateInput(Validation *context) const {
@@ -69,26 +45,25 @@ bool MultipartRequest::validateInput(Validation *context) const {
     case OFPMP_METER_FEATURES:
     case OFPMP_PORT_DESC:
       // The request body is empty.
-      return (context->lengthRemaining() == 0);
+      return context->validateEmpty(requestBody());
     case OFPMP_FLOW:
-      return validateBody<MPFlowStatsRequest>(requestBody(), context);
+      return context->validate<MPFlowStatsRequest>(requestBody());
     case OFPMP_AGGREGATE:
-      return validateBody<MPAggregateStatsRequest>(requestBody(), context);
+      return context->validate<MPAggregateStatsRequest>(requestBody());
     case OFPMP_PORT_STATS:
-      return validateBody<MPPortStatsRequest>(requestBody(), context);
+      return context->validate<MPPortStatsRequest>(requestBody());
     case OFPMP_QUEUE:
-      return validateBody<MPQueueStatsRequest>(requestBody(), context);
+      return context->validate<MPQueueStatsRequest>(requestBody());
     case OFPMP_GROUP:
-      return validateBody<MPGroupStatsRequest>(requestBody(), context);
+      return context->validate<MPGroupStatsRequest>(requestBody());
     case OFPMP_METER:
-      return validateBody<MPMeterStatsRequest>(requestBody(), context);
+      return context->validate<MPMeterStatsRequest>(requestBody());
     case OFPMP_METER_CONFIG:
-      return validateBody<MPMeterConfigRequest>(requestBody(), context);
+      return context->validate<MPMeterConfigRequest>(requestBody());
     case OFPMP_TABLE_FEATURES:
-      return validateArray<MPTableFeatures>(requestBody(), context);
+      return context->validateArrayVariableSize<MPTableFeatures>(requestBody());
     case OFPMP_EXPERIMENTER:
-      // FIXME - implement this check.
-      return false;
+      return context->validate<MPExperimenter>(requestBody());
   }
 
   log::info("Unexpected MultipartRequest type:", static_cast<int>(requestType()));

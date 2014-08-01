@@ -26,9 +26,9 @@ class MPReplyFixedSizeSeq {
   const UInt8 *position_;
 };
 
-/// Elements are variable size. First two bytes of an element contain the
+/// Elements are variable size. MPVariableSizeOffset gives us the offset to the
 /// element size.
-template <class Type, size_t Offset = Type::MPReplyVariableSizeOffset>
+template <class Type, size_t Offset = Type::MPVariableSizeOffset>
 class MPReplyVariableSizeSeq {
  public:
   explicit MPReplyVariableSizeSeq(const UInt8 *buf, size_t size) : buf_{buf}, size_{size}, position_{buf} {}

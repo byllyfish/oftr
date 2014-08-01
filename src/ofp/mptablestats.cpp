@@ -2,6 +2,7 @@
 #include "ofp/writable.h"
 #include "ofp/constants.h"
 #include "ofp/log.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 

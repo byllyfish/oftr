@@ -146,6 +146,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
 				const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();
 				Hex32 experimenterid = action->experimenterid();
 				io.mapRequired("experimenter_id", experimenterid);
+                // FIXME - TBD
 				break;
 			}
 			case OFPAT_SET_FIELD: {
@@ -164,6 +165,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
 			}
 			default:
 				log::info("MappingTraits: Unknown action type:", int(type));
+                // FIXME - TBD
 				break;
     	}
     }

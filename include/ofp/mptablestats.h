@@ -29,6 +29,7 @@
 namespace ofp {
 
 class Writable;
+class Validation;
 
 // MPTableStats supports v1.0 and v1.3 only.
 
@@ -43,6 +44,8 @@ public:
   UInt32 activeCount() const { return activeCount_; }
   UInt64 lookupCount() const { return lookupCount_; }
   UInt64 matchedCount() const { return matchedCount_; }
+
+  bool validateInput(Validation *context) const { return true; }
 
 private:
   Big8 tableId_;

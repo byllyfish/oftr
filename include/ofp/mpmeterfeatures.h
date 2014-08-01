@@ -1,7 +1,12 @@
 #ifndef OFP_MPMETERFEATURES_H_
 #define OFP_MPMETERFEATURES_H_
 
+#include "ofp/byteorder.h"
+#include "ofp/padding.h"
+
 namespace ofp {
+
+class Validation;
 
 class MPMeterFeatures {
 public:
@@ -12,7 +17,7 @@ public:
     UInt8 maxBands() const { return maxBands_; }
     UInt8 maxColor() const { return maxColor_; }
 
-    bool validateInput(size_t length) const { return length == 16; }
+    bool validateInput(Validation *context) const;
     
 private:
     Big32 maxMeter_;

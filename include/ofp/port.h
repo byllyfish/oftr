@@ -30,6 +30,7 @@
 namespace ofp {
 
 class Writable;
+class Validation;
 
 namespace deprecated {
 class PortV1;
@@ -55,6 +56,8 @@ class Port {
   UInt32 peer() const { return peer_; }
   UInt32 currSpeed() const { return currSpeed_; }
   UInt32 maxSpeed() const { return maxSpeed_; }
+
+  bool validateInput(Validation *context) const { return true; }
 
  private:
   Big32 portNo_;

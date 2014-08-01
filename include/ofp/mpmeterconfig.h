@@ -9,12 +9,14 @@ class Writable;
 
 class MPMeterConfig {
 public:
-    enum { MPReplyVariableSizeOffset = 0 };
+    enum { MPVariableSizeOffset = 0 };
     
     UInt16 flags() const { return flags_; }
     UInt32 meterId() const { return meterId_; }
 
     MeterBandRange bands() const;
+    
+    bool validateInput(Validation *context) const;
     
 private:
     Big16 length_;

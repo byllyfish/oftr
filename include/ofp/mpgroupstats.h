@@ -9,7 +9,7 @@ class Writable;
 
 class MPGroupStats {
 public:
-    enum { MPReplyVariableSizeOffset = 0 };
+    enum { MPVariableSizeOffset = 0 };
 
     UInt32 groupId() const { return groupId_; }
     UInt32 refCount() const { return refCount_; }
@@ -20,7 +20,7 @@ public:
     
     PacketCounterRange bucketStats() const;
 
-    bool validateInput(size_t length) const;
+    bool validateInput(Validation *context) const;
 
 private:
     Big16 length_;

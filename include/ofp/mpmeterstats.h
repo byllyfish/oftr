@@ -10,7 +10,7 @@ class Writable;
 
 class MPMeterStats {
 public:
-    enum { MPReplyVariableSizeOffset = 4 };
+    enum { MPVariableSizeOffset = 4 };
 
     UInt32 meterId() const { return meterId_; }
     UInt32 flowCount() const { return flowCount_; }
@@ -20,6 +20,8 @@ public:
     UInt32 durationNSec() const { return durationNSec_; }
 
     PacketCounterRange bandStats() const;
+    
+    bool validateInput(Validation *context) const;
     
 private:
     Big32 meterId_;

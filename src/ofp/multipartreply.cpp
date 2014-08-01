@@ -22,12 +22,61 @@
 #include "ofp/multipartreply.h"
 #include "ofp/writable.h"
 #include "ofp/message.h"
+#include "ofp/mpdesc.h"
+#include "ofp/mptablestats.h"
+#include "ofp/mpgroupdesc.h"
+#include "ofp/mpgroupfeatures.h"
+#include "ofp/mpmeterfeatures.h"
+#include "ofp/port.h"
+#include "ofp/mpflowstatsreply.h"
+#include "ofp/mpaggregatestatsreply.h"
+#include "ofp/mpportstats.h"
+#include "ofp/mpqueuestats.h"
+#include "ofp/mpgroupstats.h"
+#include "ofp/mpmeterstats.h"
+#include "ofp/mpmeterconfig.h"
+#include "ofp/mptablefeatures.h"
+#include "ofp/mpexperimenter.h"
 
 namespace ofp { // <namespace ofp>
 
 bool MultipartReply::validateInput(Validation *context) const {
-  // FIXME - see same method in MultipartRequest.
-  return true;
+  context->setLengthRemaining(replyBodySize());
+
+  switch (replyType()) {
+    case OFPMP_DESC:
+      return context->validate<MPDesc>(replyBody());
+    case OFPMP_TABLE:
+      return context->validateArrayFixedSize<MPTableStats>(replyBody());
+    case OFPMP_GROUP_DESC:
+      return context->validateArrayVariableSize<MPGroupDesc>(replyBody());
+    case OFPMP_GROUP_FEATURES:
+      return context->validate<MPGroupFeatures>(replyBody());
+    case OFPMP_METER_FEATURES:
+      return context->validate<MPMeterFeatures>(replyBody());
+    case OFPMP_PORT_DESC:
+      return context->validateArrayFixedSize<Port>(replyBody());
+    case OFPMP_FLOW:
+      return context->validateArrayVariableSize<MPFlowStatsReply>(replyBody());
+    case OFPMP_AGGREGATE:
+      return context->validate<MPAggregateStatsReply>(replyBody());
+    case OFPMP_PORT_STATS:
+      return context->validateArrayFixedSize<MPPortStats>(replyBody());
+    case OFPMP_QUEUE:
+      return context->validateArrayFixedSize<MPQueueStats>(replyBody());
+    case OFPMP_GROUP:
+      return context->validateArrayVariableSize<MPGroupStats>(replyBody());
+    case OFPMP_METER:
+      return context->validateArrayVariableSize<MPMeterStats>(replyBody());
+    case OFPMP_METER_CONFIG:
+      return context->validateArrayVariableSize<MPMeterConfig>(replyBody());
+    case OFPMP_TABLE_FEATURES:
+      return context->validateArrayVariableSize<MPTableFeatures>(replyBody());
+    case OFPMP_EXPERIMENTER:
+      return context->validate<MPExperimenter>(replyBody());
+  }
+
+  return false;
 }
 
 UInt32 MultipartReplyBuilder::send(Writable *channel) {

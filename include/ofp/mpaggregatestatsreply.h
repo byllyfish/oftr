@@ -29,6 +29,7 @@
 namespace ofp {
 
 class MultipartReply;
+class Validation;
 
 class MPAggregateStatsReply {
 public:
@@ -40,7 +41,7 @@ public:
   UInt64 byteCount() const { return byteCount_; }
   UInt32 flowCount() const { return flowCount_; }
 
-  bool validateInput(size_t length) const;
+  bool validateInput(Validation *context) const;
   
 private:
   Big64 packetCount_;

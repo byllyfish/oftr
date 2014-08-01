@@ -3,8 +3,13 @@
 using namespace ofp;
 
 static const char *toCString(OFPType type);
+static const char *toCString(OFPMultipartType type);
 
 std::ostream &ofp::operator<<(std::ostream &os, OFPType type) {
+  return os << toCString(type);
+}
+
+std::ostream &ofp::operator<<(std::ostream &os, OFPMultipartType type) {
   return os << toCString(type);
 }
 
@@ -45,6 +50,28 @@ const char *toCString(OFPType type) {
     ENUMCASE(OFPT_SET_ASYNC);
     ENUMCASE(OFPT_METER_MOD);
     ENUMCASE(OFPT_UNSUPPORTED);
+  }
+
+  return "[unknown]";
+}
+
+const char *toCString(OFPMultipartType type) {
+  switch (type) {
+    ENUMCASE(OFPMP_DESC);
+    ENUMCASE(OFPMP_FLOW);
+    ENUMCASE(OFPMP_AGGREGATE);
+    ENUMCASE(OFPMP_TABLE);
+    ENUMCASE(OFPMP_PORT_STATS);
+    ENUMCASE(OFPMP_QUEUE);
+    ENUMCASE(OFPMP_GROUP);
+    ENUMCASE(OFPMP_GROUP_DESC);
+    ENUMCASE(OFPMP_GROUP_FEATURES);
+    ENUMCASE(OFPMP_METER);
+    ENUMCASE(OFPMP_METER_CONFIG);
+    ENUMCASE(OFPMP_METER_FEATURES);
+    ENUMCASE(OFPMP_TABLE_FEATURES);
+    ENUMCASE(OFPMP_PORT_DESC);
+    ENUMCASE(OFPMP_EXPERIMENTER);
   }
 
   return "[unknown]";

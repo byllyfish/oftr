@@ -35,13 +35,15 @@ class Writable;
 
 class MPFlowStatsReply {
 public:
-  enum { MPReplyVariableSizeOffset = 0 };
+  enum { MPVariableSizeOffset = 0 };
   
   MPFlowStatsReply() = default;
 
   Match match() const;
   InstructionRange instructions() const;
 
+  bool validateInput(Validation *context) const;
+  
 private:
   Big16 length_;
   Big8 tableId_;

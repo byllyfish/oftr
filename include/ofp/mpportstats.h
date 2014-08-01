@@ -28,6 +28,7 @@
 namespace ofp {
 
 class Writable;
+class Validation;
 
 class MPPortStats {
 public:
@@ -35,6 +36,8 @@ public:
 
   UInt32 portNo() const { return portNo_; }
   UInt64 rxPackets() const { return rxPackets_; }
+
+  bool validateInput(Validation *context) const { return true; }
 
 private:
   Big32 portNo_;

@@ -44,11 +44,7 @@ public:
 
   template <class Type>
   const Type *body_cast() const {
-    const Type *p = reinterpret_cast<const Type *>(replyBody());
-    if (!p->validateInput(replyBodySize())) {
-      return nullptr;
-    }
-    return p;
+    return reinterpret_cast<const Type *>(replyBody());
   }
 
   bool validateInput(Validation *context) const;

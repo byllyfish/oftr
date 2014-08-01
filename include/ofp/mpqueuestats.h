@@ -27,11 +27,14 @@
 namespace ofp {
 
 class Writable;
+class Validation;
 
 class MPQueueStats {
 public:
 	MPQueueStats() = default;
 
+
+	bool validateInput(Validation *context) const { return true; }
 
 private:
 	Big32 portNo_;

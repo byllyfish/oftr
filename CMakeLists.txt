@@ -106,12 +106,15 @@ set(LIBOFP_SOURCES
   src/ofp/matchheader.cpp
 	src/ofp/message.cpp
   src/ofp/metermod.cpp
+  src/ofp/mpdesc.cpp
   src/ofp/mpexperimenter.cpp
   src/ofp/mpgroupdesc.cpp
+  src/ofp/mpgroupfeatures.cpp
   src/ofp/mpgroupstats.cpp
   src/ofp/mpgroupstatsrequest.cpp
   src/ofp/mpmeterconfig.cpp
   src/ofp/mpmeterconfigrequest.cpp
+  src/ofp/mpmeterfeatures.cpp
   src/ofp/mpmeterstats.cpp
   src/ofp/mpportstats.cpp
   src/ofp/mpportstatsrequest.cpp

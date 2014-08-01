@@ -293,6 +293,8 @@ enum OFPMultipartType : UInt16 {
   OFPMP_EXPERIMENTER = 0xffff
 };
 
+std::ostream &operator<<(std::ostream &os, OFPMultipartType type);
+
 enum OFPInstructionType : UInt16 {
   OFPIT_GOTO_TABLE = 1,
   OFPIT_WRITE_METADATA = 2,

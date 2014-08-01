@@ -10,9 +10,8 @@ class Writable;
 
 class MPTableFeatures {
 public:
-    enum { MPReplyVariableSizeOffset = 0 };
+    enum { MPVariableSizeOffset = 0 };
 
-    size_t length() const { return length_; }
     UInt8 tableId() const { return tableId_; }
     const TableNameStr &name() const { return name_; }
     UInt64 metadataMatch() const { return metadataMatch_; }
