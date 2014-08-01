@@ -33,6 +33,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/matchbuilder_unittest.cpp
 	ofp/matchheader_unittest.cpp
 	ofp/message_unittest.cpp
+	ofp/multipartreply_unittest.cpp
 	ofp/originalmatch_unittest.cpp
 	ofp/outputjson_unittest.cpp
 	ofp/oxmfields_unittest.cpp

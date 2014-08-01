@@ -45,6 +45,13 @@ static_assert(IsStandardLayout<MPTableFeatures>(), "Expected standard layout.");
 class MPTableFeaturesBuilder {
 public:
 
+    void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+    void setName(TableNameStr name) { msg_.name_ = name; }
+    void setMetadataMatch(UInt64 metadataMatch) { msg_.metadataMatch_ = metadataMatch; }
+    void setMetadataWrite(UInt64 metadataWrite) { msg_.metadataWrite_ = metadataWrite; }
+    void setConfig(UInt32 config) { msg_.config_ = config; }
+    void setMaxEntries(UInt32 maxEntries) { msg_.maxEntries_ = maxEntries; }
+
     void setProperties(const PropertyList &properties) { properties_ = properties; }
 
     void write(Writable *channel);
