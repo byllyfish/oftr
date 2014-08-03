@@ -74,19 +74,20 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
     {
     	using namespace ofp;
 
-    	OFPActionType type = item.type().enumType();
+    	ActionType type = item.type();
     	io.mapRequired("action", type);
+
     	switch (type)
     	{
-    		case OFPAT_COPY_TTL_OUT:
-    		case OFPAT_COPY_TTL_IN:
-			case OFPAT_DEC_MPLS_TTL:
-			case OFPAT_POP_VLAN:
-			case OFPAT_DEC_NW_TTL:
-			case OFPAT_POP_PBB:
+    		case AT_COPY_TTL_OUT::type():
+    		case AT_COPY_TTL_IN::type():
+			case AT_DEC_MPLS_TTL::type():
+			case AT_POP_VLAN::type():
+			case AT_DEC_NW_TTL::type():
+			case AT_POP_PBB::type():
 				// Nothing else to do.
 				break;
-			case OFPAT_OUTPUT: {
+			case AT_OUTPUT::type(): {
 				const AT_OUTPUT *action = item.action<AT_OUTPUT>();
 				Hex32 port = action->port();
 				Hex16 maxlen = action->maxlen();
@@ -94,79 +95,84 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
 				io.mapRequired("maxlen", maxlen);
 				break;
 			}
-			case OFPAT_SET_MPLS_TTL: {
+			case AT_SET_MPLS_TTL::type(): {
 				const AT_SET_MPLS_TTL *action = item.action<AT_SET_MPLS_TTL>();
 				Hex16 ttl = action->ttl();
 				io.mapRequired("ttl", ttl);
 				break;
 			}
-			case OFPAT_PUSH_VLAN: {
+			case AT_PUSH_VLAN::type(): {
 				const AT_PUSH_VLAN *action = item.action<AT_PUSH_VLAN>();
 				Hex16 vlan = action->vlan();
 				io.mapRequired("vlan", vlan);
 				break;
 			}
-			case OFPAT_PUSH_MPLS: {
+			case AT_PUSH_MPLS::type(): {
 				const AT_PUSH_MPLS *action = item.action<AT_PUSH_MPLS>();
 				Hex32 mpls = action->mpls();
 				io.mapRequired("mpls", mpls);
 				break;
 			}
-            case OFPAT_POP_MPLS: {
+            case AT_POP_MPLS::type(): {
                 const AT_POP_MPLS *action = item.action<AT_POP_MPLS>();
                 Hex16 ethertype = action->ethertype();
                 io.mapRequired("ethertype", ethertype);
                 break;
             }
-			case OFPAT_SET_QUEUE: {
+			case AT_SET_QUEUE::type(): {
 				const AT_SET_QUEUE *action = item.action<AT_SET_QUEUE>();
 				Hex32 queue = action->queue();
 				io.mapRequired("queue", queue);
 				break;
 			}
-			case OFPAT_GROUP: {
+			case AT_GROUP::type(): {
 				const AT_GROUP *action = item.action<AT_GROUP>();
 				Hex32 group = action->group();
 				io.mapRequired("group", group);
 				break;
 			}
-			case OFPAT_SET_NW_TTL: {
+			case AT_SET_NW_TTL::type(): {
 				const AT_SET_NW_TTL *action = item.action<AT_SET_NW_TTL>();
 				Hex8 ttl = action->ttl();
 				io.mapRequired("ttl", ttl);
 				break;
 			}
-			case OFPAT_PUSH_PBB: {
+			case AT_PUSH_PBB::type(): {
 				const AT_PUSH_PBB *action = item.action<AT_PUSH_PBB>();
 				Hex16 ethertype = action->ethertype();
 				io.mapRequired("ethertype", ethertype);
 				break;
 			}
-			case OFPAT_EXPERIMENTER: {
-				const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();
-				Hex32 experimenterid = action->experimenterid();
-				io.mapRequired("experimenter_id", experimenterid);
-                // FIXME - TBD
-				break;
-			}
-			case OFPAT_SET_FIELD: {
-				OXMIterator iter = item.oxmRange().begin();
-				OXMType oxmType = iter.type();
-				io.mapRequired("field", oxmType);
-                OXMInternalID id = oxmType.internalID();
-                if (id != ofp::OXMInternalID::UNKNOWN) {
-				  ofp::detail::OXMItemReader reader{io, RemoveConst_cast(*iter), oxmType};
-        		  OXMDispatch(id, &reader);
-                } else {
-                  ByteRange data{iter->unknownValuePtr(), oxmType.length()};
-                  io.mapRequired("value", data);
+            default: {
+                switch (type.enumType()) {
+                case OFPAT_EXPERIMENTER: {
+                    const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();
+                    Hex32 experimenterid = action->experimenterid();
+                    io.mapRequired("experimenter_id", experimenterid);
+                    // FIXME - TBD
+                    break;
                 }
-				break;
-			}
-			default:
-				log::info("MappingTraits: Unknown action type:", int(type));
-                // FIXME - TBD
-				break;
+                case OFPAT_SET_FIELD: {
+                    OXMIterator iter = item.oxmRange().begin();
+                    OXMType oxmType = iter.type();
+                    io.mapRequired("field", oxmType);
+                    OXMInternalID id = oxmType.internalID();
+                    if (id != ofp::OXMInternalID::UNKNOWN) {
+                      ofp::detail::OXMItemReader reader{io, RemoveConst_cast(*iter), oxmType};
+                      OXMDispatch(id, &reader);
+                    } else {
+                      ByteRange data{iter->unknownValuePtr(), oxmType.length()};
+                      io.mapRequired("value", data);
+                    }
+                    break;
+                }
+                default:
+                    ByteRange data = item.value();
+                    io.mapRequired("value", data);
+                    break;
+                }
+                break;
+            }
     	}
     }
 };
@@ -180,9 +186,9 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 
     	ActionList &list = Ref_cast<ActionList>(builder);
 
-    	OFPActionType type = OFPAT_OUTPUT;
+    	ActionType type;
     	io.mapRequired("action", type);
-    	switch (type)
+    	switch (type.enumType())
     	{
     		case OFPAT_COPY_TTL_OUT: {
     			AT_COPY_TTL_OUT action;
@@ -282,7 +288,9 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 			case OFPAT_EXPERIMENTER: {
 				UInt32 experimenterid;
 				io.mapRequired("experimenter_id", experimenterid);
-				AT_EXPERIMENTER action{experimenterid};
+                ByteList value;
+                io.mapRequired("value", value);
+				AT_EXPERIMENTER action{experimenterid, value};
 				list.add(action);
 				break;
 			}
@@ -302,7 +310,11 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 				break;
 			}
 			default:
-				log::info("MappingTraits<Inserter>: Unknown Action type:", int(type));
+                ByteList data;
+                io.mapRequired("value", data);
+                AT_UNKNOWN action{type, data};
+                list.add(action);
+				//log::info("MappingTraits<Inserter>: Unknown Action type:", int(type));
 				break;
     	}
     }

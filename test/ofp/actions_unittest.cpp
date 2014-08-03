@@ -22,6 +22,7 @@
 #include "ofp/unittest.h"
 #include "ofp/actions.h"
 #include "ofp/oxmfields.h"
+#include "ofp/actionlist.h"
 
 using namespace ofp;
 
@@ -169,13 +170,13 @@ TEST(actions, AT_PUSH_PBB) {
 }
 
 TEST(actions, AT_EXPERIMENTER) {
-  AT_EXPERIMENTER act{5};
-  EXPECT_EQ(5, act.experimenterid());
-  EXPECT_EQ(8, sizeof(act));
-  EXPECT_EQ(sizeof(act), AT_EXPERIMENTER::type().length());
+  ByteList value{HexToRawData("11223344")};
+  AT_EXPERIMENTER act{5, value};
 
-  auto expected = HexToRawData("FFFF 0008 0000 0005");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  ActionList actions;
+  actions.add(act);
+
+  EXPECT_HEX("FFFF001000000005 1122334400000000", actions.data(), actions.size());
 }
 
 TEST(actions, AT_SET_FIELD_8bit) {

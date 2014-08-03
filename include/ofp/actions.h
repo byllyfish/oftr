@@ -247,18 +247,22 @@ static_assert(IsStandardLayout<AT_PUSH_PBB>(), "Unexpected layout");
 /// \brief Concrete type for AT_EXPERIMENTER action.
 class AT_EXPERIMENTER {
 public:
-  constexpr static ActionType type() {
-    return ActionType(OFPAT_EXPERIMENTER, 8);
-  }
+  // Variable length actions do not have a type().
 
-  constexpr explicit AT_EXPERIMENTER(UInt32 experimenterid)
-      : experimenterid_{experimenterid} {}
+  constexpr explicit AT_EXPERIMENTER(UInt32 experimenterid, const ByteRange &value)
+      : type_{OFPAT_EXPERIMENTER, UInt16_narrow_cast(PadLength(8 + value.size()))}, experimenterid_{experimenterid},
+      value_{value} {}
 
   UInt32 experimenterid() const { return experimenterid_; }
 
 private:
-  const ActionType type_ = type();
+  const ActionType type_;
   const Big32 experimenterid_;
+  const ByteRange value_;
+
+  enum : size_t { FixedSize = 8 };
+  
+  friend class ActionList;
 };
 
 /// \brief Concrete type for AT_SET_FIELD action.
@@ -282,6 +286,8 @@ private:
 
 class AT_SET_FIELD_CUSTOM {
 public:
+  // Variable length actions do not have a type().
+
   constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, const ByteRange &value) : 
     type_{ActionType(OFPAT_SET_FIELD, UInt16_narrow_cast(8U + PadLength(value.size())))}, oxmtype_{oxmType}, value_{value} {}
 
@@ -294,6 +300,27 @@ private:
 
   enum : size_t { FixedSize = 8 };
   
+  friend class ActionList;
+};
+
+
+class AT_UNKNOWN {
+public:
+  // Variable length actions do not have a type().
+
+  constexpr AT_UNKNOWN(ActionType type, const ByteRange &value) :
+    type_{ActionType(type.enumType(), UInt16_narrow_cast(4U + value.size()))},
+    value_{value} {}
+
+  ByteRange value() const;
+
+private:
+  enum : size_t { FixedSize = 4 };
+
+  const ActionType type_;
+  const Padding<4> pad_;
+  const ByteRange value_;
+
   friend class ActionList;
 };
 
