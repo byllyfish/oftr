@@ -45,26 +45,27 @@ using namespace ofp;
 // (*) Version 3 is same as version 4, but without the 64 bit cookie field
 // between table_id and match_type.
 
-bool PacketIn::validateInput(Validation *context) const {
-  size_t length = context->length();
-  
+bool PacketIn::validateInput(Validation *context) const {  
   switch (version()) {
   case OFP_VERSION_1:
-    return validateLengthV1(length);
+    return validateInputV1(context);
   case OFP_VERSION_2:
-    return validateLengthV2(length);
+    return validateInputV2(context);
   case OFP_VERSION_3:
-    return validateLengthV3(length);
+    return validateInputV3(context);
   default:
     break;
   }
 
+  size_t length = context->length();
+
   if (length < SizeWithoutMatchHeader) {
-    log::info("PacketIn too small.");
+    context->messageSizeIsInvalid();
     return false;
   }
 
   if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+    // FIXME(bfish)
     log::info("PacketIn has invalid Match element.");
     return false;
   }
@@ -72,21 +73,25 @@ bool PacketIn::validateInput(Validation *context) const {
   return true;
 }
 
-bool PacketIn::validateLengthV1(size_t length) const {
+bool PacketIn::validateInputV1(Validation *context) const {
+  size_t length = context->length();
   if (length < 18) {
+    context->messageSizeIsInvalid();
     return false;
   }
 
   return true;
 }
 
-bool PacketIn::validateLengthV2(size_t length) const {
+bool PacketIn::validateInputV2(Validation *context) const {
   // FIXME - Unimplemented
+  context->messageTypeIsNotSupported();
   return false;
 }
 
-bool PacketIn::validateLengthV3(size_t length) const {
+bool PacketIn::validateInputV3(Validation *context) const {
   // FIXME - Unimplemented
+  context->messageTypeIsNotSupported();
   return false;
 }
 

@@ -76,6 +76,8 @@ bool MultipartReply::validateInput(Validation *context) const {
       return context->validate<MPExperimenter>(replyBody());
   }
 
+  context->multipartTypeIsNotSupported();
+  
   return false;
 }
 

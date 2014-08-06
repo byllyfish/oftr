@@ -1,11 +1,25 @@
 #include "ofp/validation.h"
 #include "ofp/log.h"
-#include "ofp/header.h"
+#include "ofp/message.h"
 
 using namespace ofp;
 
+Validation::Validation(const Message *msg) : Validation{msg->data(), msg->size()} 
+{
+}
+
 void Validation::messageSizeIsInvalid() {
     log::info("Validation Failed: Message size is invalid", length_);
+    logContext(data_);
+}
+
+void Validation::messageTypeIsNotSupported() {
+    log::info("Validation Failed: Message type is not supported");
+    logContext(data_);
+}
+
+void Validation::multipartTypeIsNotSupported() {
+    log::info("Validation Failed: Multipart type is not supported");
     logContext(data_);
 }
 
@@ -69,13 +83,17 @@ void Validation::logContext(const UInt8 *ptr) const {
     if (length_ >= sizeof(Header)) {
         const Header *header = reinterpret_cast<const Header *>(data_);
         OFPType type = header->type();
+        UInt8 version = header->version();
 
-        log::info("  Message type:", type);
-
+        std::ostringstream oss;
         if (length_ >= 16 && (type == OFPT_MULTIPART_REQUEST || type == OFPT_MULTIPART_REPLY)) {
             OFPMultipartType mpType = *reinterpret_cast<const Big<OFPMultipartType> *>(data_ + sizeof(Header));
-            log::info("  Multipart type:", mpType);
+            oss << type << '.' << mpType << " v1." << static_cast<int>(version-1);
+        } else {
+            oss << type << " v1." << static_cast<int>(version-1);
         }
+
+        log::info("  Message type:", oss.str());
         log::info("  Context(16 bytes):", hexContext(ptr));
     }
 }

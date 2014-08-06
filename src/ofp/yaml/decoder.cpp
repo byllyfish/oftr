@@ -141,7 +141,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
   case MeterMod::type() : 
     return decode<MeterMod>(io, msg_);
   default:
-    log::info("Decoder::decodeMsg: Unknown msg type", msg_->type());
+    Validation context{msg_};
+    context.messageTypeIsNotSupported();
     break;
   }
 

@@ -69,9 +69,9 @@ private:
     return *reinterpret_cast<const Type *>(BytePtr(this) + offset);
   }
 
-  bool validateLengthV1(size_t length) const;
-  bool validateLengthV2(size_t length) const;
-  bool validateLengthV3(size_t length) const;
+  bool validateInputV1(Validation *context) const;
+  bool validateInputV2(Validation *context) const;
+  bool validateInputV3(Validation *context) const;
 
   enum : size_t {
     UnpaddedSizeWithMatchHeader = 28,

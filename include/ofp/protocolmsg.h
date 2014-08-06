@@ -58,12 +58,8 @@ public:
 
   /// \returns true if message length is potentially valid.
   static bool isLengthValid(size_t length) {
-    bool valid = (length >= MinLength) && (length <= MaxLength) &&
+    return (length >= MinLength) && (length <= MaxLength) &&
                  (!Multiple8 || ((length % 8) == 0));
-    if (!valid) {
-      log::info("Invalid message length:", type());
-    }
-    return valid;
   }
 
   const Header *msgHeader() const {

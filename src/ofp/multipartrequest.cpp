@@ -66,7 +66,7 @@ bool MultipartRequest::validateInput(Validation *context) const {
       return context->validate<MPExperimenter>(requestBody());
   }
 
-  log::info("Unexpected MultipartRequest type:", static_cast<int>(requestType()));
+  context->multipartTypeIsNotSupported();
 
   return false;
 }

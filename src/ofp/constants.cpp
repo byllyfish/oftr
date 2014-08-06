@@ -6,11 +6,19 @@ static const char *toCString(OFPType type);
 static const char *toCString(OFPMultipartType type);
 
 std::ostream &ofp::operator<<(std::ostream &os, OFPType type) {
-  return os << toCString(type);
+  const char *s = toCString(type);
+  if (s) {
+    return os << s;
+  }
+  return os << '[' << static_cast<int>(type) << ']';
 }
 
 std::ostream &ofp::operator<<(std::ostream &os, OFPMultipartType type) {
-  return os << toCString(type);
+  const char *s = toCString(type);
+  if (s) {
+    return os << s;
+  }
+  return os << '[' << static_cast<int>(type) << ']';
 }
 
 #define ENUMCASE(val)                                                          \
@@ -52,7 +60,7 @@ const char *toCString(OFPType type) {
     ENUMCASE(OFPT_UNSUPPORTED);
   }
 
-  return "[unknown]";
+  return nullptr;
 }
 
 const char *toCString(OFPMultipartType type) {
@@ -74,7 +82,7 @@ const char *toCString(OFPMultipartType type) {
     ENUMCASE(OFPMP_EXPERIMENTER);
   }
 
-  return "[unknown]";
+  return nullptr;
 }
 
 #undef ENUMCASE

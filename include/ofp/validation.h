@@ -7,10 +7,13 @@
 
 namespace ofp {
 
+class Message;
+
 class Validation {
 public:
     explicit Validation(const UInt8 *data, size_t length) : data_{data}, length_{length} {}
     explicit Validation(const ByteRange &range) : Validation{range.data(), range.size()} {}
+    explicit Validation(const Message *msg);
 
     const UInt8 *data() const { return data_; }
     size_t length() const { return length_; }
@@ -21,6 +24,8 @@ public:
     // Log validation failure messages.
     
     void messageSizeIsInvalid();
+    void messageTypeIsNotSupported();
+    void multipartTypeIsNotSupported();
     void lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength);
     
     void rangeSizeHasImproperAlignment(const UInt8 *ptr, size_t alignment);
