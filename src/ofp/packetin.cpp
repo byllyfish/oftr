@@ -200,9 +200,8 @@ const MatchHeader *PacketIn::matchHeader() const {
     case OFP_VERSION_3:
       return reinterpret_cast<const MatchHeader *>(BytePtr(this) + 16);
     case OFP_VERSION_4:
-      return &matchHeader_;
     default:
-      return nullptr;
+      return &matchHeader_;
   }
 }
 
