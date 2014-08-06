@@ -7,9 +7,11 @@
 
 using namespace ofpx;
 using ofp::UInt8;
+using ExitStatus = Decode::ExitStatus;
 
 // Compare two buffers and return offset of the byte that differs. If buffers 
 // are identical, return `size`.
+//
 static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
   for (size_t i = 0; i < size; ++i) {
     if (lhs[i] != rhs[i])
@@ -24,24 +26,30 @@ static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
 
 int Decode::run(int argc, char **argv) {
   cl::ParseCommandLineOptions(argc, argv);
-  return decodeFiles();
+
+  // If there are no input files, add "-" to indicate stdin.
+  if (inputFiles_.empty()) {
+    inputFiles_.push_back("-");
+  }
+
+  return static_cast<int>(decodeFiles());
 }
 
 //-----------------------//
 // d e c o d e F i l e s //
 //-----------------------//
 
-int Decode::decodeFiles() {
+ExitStatus Decode::decodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
 
   for (const std::string &filename : files) {
-    int result = decodeFile(filename);
-    if (result) {
+    ExitStatus result = decodeFile(filename);
+    if (result != ExitStatus::Success && !keepGoing_) {
       return result;
     }
   }
 
-  return 0;
+  return ExitStatus::Success;
 }
 
 
@@ -49,16 +57,25 @@ int Decode::decodeFiles() {
 // d e c o d e F i l e //
 //---------------------//
 
-int Decode::decodeFile(const std::string &filename) {
-  std::ifstream input{filename, std::ifstream::binary};
-  int result = -1;
+ExitStatus Decode::decodeFile(const std::string &filename) {
+  ExitStatus result;
 
-  if (input) {
+  std::istream *input = nullptr;
+  std::ifstream file;
+  if (filename != "-") {
+    file.open(filename, std::ifstream::binary);
+    input = &file;
+  } else {
+    input = &std::cin;
+  }
+
+  if (*input) {
+    // Store current filename in instance variable for use in error messages.
     currentFilename_ = filename;
-    result = decodeMessages(input);
-    input.close();
+    result = decodeMessages(*input);
     currentFilename_ = "";
   } else {
+    result = ExitStatus::FileOpenFailed;
     std::cerr << "Error: opening file " << filename << '\n';
   }
 
@@ -70,63 +87,73 @@ int Decode::decodeFile(const std::string &filename) {
 // d e c o d e M e s s a g e s //
 //-----------------------------//
 
-int Decode::decodeMessages(std::ifstream &input) {
+ExitStatus Decode::decodeMessages(std::istream &input) {
+  // Create message buffers.
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
-  size_t offset = 0;
 
   while (input) {
     // Read the message header.
     char *msg = (char *)message.mutableData(sizeof(ofp::Header));
+
     input.read(msg, sizeof(ofp::Header));
+    if (!input) {
+      return checkError(input, sizeof(ofp::Header), true);
+    }
 
-    if (input) {
-      // Read the rest of the message.
+    // Check header length in message.
+    size_t msgLen = message.header()->length();
+    if (msgLen < sizeof(ofp::Header)) {
+      msgLen = sizeof(ofp::Header);
+    }
 
-      assert(input.gcount() == sizeof(ofp::Header));
-      size_t msgLen = message.header()->length();
-      if (msgLen < sizeof(ofp::Header)) {
-        std::cerr << "Error: Message length " << msgLen
-                  << " bytes is too short: offset=" << offset << '\n' << ofp::RawDataToHex(msg, sizeof(ofp::Header)) << '\n';
-        offset += sizeof(ofp::Header);
-        continue;
-      }
+    // Read the message body.
+    msg = (char *)message.mutableData(msgLen);
+    std::streamsize bodyLen = ofp::Signed_cast(msgLen - sizeof(ofp::Header));
 
-      msg = (char *)message.mutableData(msgLen);
-      input.read(msg + sizeof(ofp::Header),
-                 ofp::Signed_cast(msgLen - sizeof(ofp::Header)));
+    input.read(msg + sizeof(ofp::Header), bodyLen);
+    if (!input) {
+      return checkError(input, bodyLen, false);
+    }
 
-      if (input) {
-        // Save a copy of the original message binary before we transmogrify it
-        // for reading. After we decode the message, we'll re-encode it and 
-        // compare it to this original.
+    // Save a copy of the original message binary before we transmogrify it
+    // for parsing. After we decode the message, we'll re-encode it and 
+    // compare it to this original.
 
-        originalMessage.assign(message);
-        message.transmogrify();
+    originalMessage.assign(message);
+    message.transmogrify();
 
-        int result = decodeOneMessage(&message, &originalMessage);
-        if (result) {
-          return result;
-        }
-
-        offset += msgLen;
-
-      } else if (!input.eof()) {
-        // There was an error reading the message body.
-        std::cerr << "Error: Only " << input.gcount() << " bytes read of body."
-                  << '\n';
-        return 1;
-      }
-
-    } else if (!input.eof()) {
-      // There was an error reading the message header.
-      std::cerr << "Error: Only " << input.gcount() << " bytes read of header."
-                << '\n' << input.rdstate();
-      return 1;
+    ExitStatus result = decodeOneMessage(&message, &originalMessage);
+    if (result != ExitStatus::Success && !keepGoing_) {
+      return result;
     }
   }
 
-  return 0;
+  return ExitStatus::Success;
+}
+
+
+//---------------------//
+// c h e c k E r r o r //
+//---------------------//
+
+ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen, bool header) {
+  assert(!input);
+
+  if (!input.eof()) {
+    // Premature I/O error; we're not at EOF.
+    std::cerr << "Error: Error reading from file " << currentFilename_ << '\n';
+    return ExitStatus::MessageReadFailed;
+  } else if (input.gcount() != readLen && !(header && input.gcount() == 0)) {
+    // EOF and insufficient input remaining. N.B. Zero bytes of header read at
+    // EOF is a normal exit condition.
+    const char *what = header ? "header" : "body";
+    std::cerr << "Error: Only " << input.gcount() << " bytes read of " << what << '\n';
+    return ExitStatus::MessageReadFailed;
+  } else {
+    // EOF and everything is good.
+    return ExitStatus::Success;
+  }
 }
 
 
@@ -134,63 +161,60 @@ int Decode::decodeMessages(std::ifstream &input) {
 // d e c o d e O n e M e s s a g e //
 //---------------------------------//
 
-int Decode::decodeOneMessage(const ofp::Message *message, const ofp::Message *originalMessage) {
-  ofp::yaml::Decoder decoder{message};
+ExitStatus Decode::decodeOneMessage(const ofp::Message *message, const ofp::Message *originalMessage) {
+  ofp::yaml::Decoder decoder{message, json_};
 
   if (!decoder.error().empty()) {
     // An error occurred in decoding the message.
     
-    if (verify_ == Verify::Valid) {
-      // If the verify flag indicates that we expect the data to be valid, we 
-      // report the error.
-
-      std::cerr << "Filename: " << currentFilename_ << '\n';
-      std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
-      std::cerr << *message << '\n';
-      return 128;
-
-    } else {
-      assert(verify_ == Verify::Invalid);
-
-      // Report no error and continue.
-      return 0;
+    if (invertCheck_) {
+      // We're expecting invalid data -- report no error and continue.
+      return ExitStatus::Success;
     }
+
+    std::cerr << "Filename: " << currentFilename_ << '\n';
+    std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
+    std::cerr << *message << '\n';
+    return ExitStatus::DecodeFailed;
   }
 
-  if (verify_ == Verify::Invalid) {
+  if (invertCheck_) {
     // There was no problem decoding the message, but we are expecting the data
     // to be invalid. Report this as an error.
     
     std::cerr << "Filename: " << currentFilename_ << '\n';
-    std::cerr << "Error: Decode succeeded when --verify=invalid flag is specified.\n";
-    //std::cerr << *message << '\n';
-    //return 0;
+    std::cerr << "Error: Decode succeeded when --invert-check flag is specified.\n";
+    std::cerr << *message << '\n';
+    return ExitStatus::DecodeSucceeded;
   }
 
-  if (!quiet_) {
+  if (!silent_) {
     std::cout << decoder.result();
   }
 
-  // Now double-check the result by re-encoding the message. We should obtain 
-  // the original message contents.
+  if (verifyOutput_) {
+    // Double-check the result by re-encoding the YAML message. We should obtain 
+    // the original message contents. If there is a difference, report the error.
 
-  ofp::yaml::Encoder encoder{decoder.result(), false};
+    ofp::yaml::Encoder encoder{decoder.result(), false};
 
-  if (!encoder.error().empty()) {
-    std::cerr << "Error: Decode succeeded but encode failed: " << encoder.error() << '\n';
-    //return 129;
+    if (!encoder.error().empty()) {
+      std::cerr << "Error: Decode succeeded but encode failed: " << encoder.error() << '\n';
+      return ExitStatus::VerifyOutputFailed;
+    }
+
+    if (encoder.size() != originalMessage->size()) {
+      std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << originalMessage->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
+      return ExitStatus::VerifyOutputFailed;
+
+    } else if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
+      size_t diffOffset = findDiffOffset(originalMessage->data(), encoder.data(), encoder.size());
+      std::cerr << "Error: Encode yielded different data at byte offset " << diffOffset << ":\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
+      return ExitStatus::VerifyOutputFailed;
+    }
   }
 
-  if (encoder.size() != originalMessage->size()) {
-    std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << originalMessage->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
-    //return 130;
-  } else if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
-    size_t diffOffset = findDiffOffset(originalMessage->data(), encoder.data(), encoder.size());
-    std::cerr << "Error: Encode yielded different data at byte offset " << diffOffset << ":\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
-    //return 131;
-  }
-
-  return 0;
+  return ExitStatus::Success;
 }
 
 

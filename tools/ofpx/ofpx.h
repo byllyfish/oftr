@@ -14,6 +14,9 @@ class Subprogram {
 public:
     virtual ~Subprogram() {}
     virtual int run(int argc, char **argv) = 0;
+
+protected: 
+    static const int MinExitStatus = 10;
 };
 
 using RunSubprogram = int(*)(int argc, char **argv);
