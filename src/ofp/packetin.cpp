@@ -292,7 +292,7 @@ UInt32 PacketInBuilder::sendV3(Writable *channel) {
 
 
 UInt32 PacketInBuilder::sendV4(Writable *channel) {
-  assert(channel->version() == OFP_VERSION_4);
+  assert(channel->version() >= OFP_VERSION_4);
 
   // Construct the match with the standard context fields: IN_PORT, IN_PHY_PORT,
   // METADATA, and TUNNEL_ID.
