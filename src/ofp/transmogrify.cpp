@@ -76,6 +76,10 @@ void Transmogrify::normalize() {
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV1();
     }
+  } else if (version == OFP_VERSION_3) {
+    if (type == MultipartReply::type()) {
+      normalizeMultipartReplyV3();
+    }
   } else if (version == OFP_VERSION_4) {
     if (type == MultipartReply::type()) {
       normalizeMultipartReplyV4();
@@ -430,11 +434,38 @@ void Transmogrify::normalizeMultipartReplyV1()
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
+void Transmogrify::normalizeMultipartReplyV3() {
+  Header *hdr = header();
+  if (hdr->length() < sizeof(MultipartReply)) {
+    log::info("MultipartReply v3 message is too short.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  const MultipartReply *multipartReply =
+      reinterpret_cast<const MultipartReply *>(hdr);
+
+  OFPMultipartType replyType = multipartReply->replyType();
+  size_t offset = sizeof(MultipartReply);
+
+  if (replyType == OFPMP_PORT_STATS) {
+    while (offset < buf_.size()) 
+      normalizeMPPortOrQueueStatsReplyV3(&offset, 104);
+    assert(offset == buf_.size());
+  } else if (replyType == OFPMP_QUEUE) {
+    while (offset < buf_.size())
+      normalizeMPPortOrQueueStatsReplyV3(&offset, 32);
+    assert(offset == buf_.size());
+  }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
 void Transmogrify::normalizeMultipartReplyV4()
 {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
-    log::info("MultipartReply v1 message is too short.", hdr->length());
+    log::info("MultipartReply v4 message is too short.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
     return;
   }
@@ -556,7 +587,7 @@ void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start)
 
 void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len)
 {
-  // Normalize the PortStatsReply V1 to look like a V2+ message.
+  // Normalize the PortStatsReply V1 to look like a V4+ message.
   size_t offset = *start;
   size_t remaining = buf_.size() - offset;
 
@@ -590,6 +621,25 @@ void Transmogrify::normalizeMPPortStatsRequestV1() {
   Big32 *port = Big32_cast(ptr);
   *port = normPortNumberV1(ptr);
 }
+
+
+void Transmogrify::normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len) {
+  // Normalize the PortStatsReply V3 to look like a V4+ message.
+  size_t offset = *start;
+  size_t remaining = buf_.size() - offset;
+
+  if (remaining < len) {
+    *start = buf_.size();
+    return;
+  }
+
+  UInt8 *ptr = buf_.mutableData() + offset;
+
+  // Insert an additional 8-bytes for timestamp.
+  buf_.insertZeros(ptr + len, 8);
+  *start += len + 8;
+}
+
 
 UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {
   const Big16 *port16 = reinterpret_cast<const Big16 *>(ptr);

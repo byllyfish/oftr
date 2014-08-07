@@ -34,7 +34,6 @@ public:
   UInt8 version() const { return header_.version(); }
 
   UInt32 bufferId() const { return bufferId_; }
-
   UInt16 totalLen() const;
   UInt32 inPort() const;
   UInt32 inPhyPort() const;

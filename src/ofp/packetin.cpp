@@ -90,9 +90,20 @@ bool PacketIn::validateInputV2(Validation *context) const {
 }
 
 bool PacketIn::validateInputV3(Validation *context) const {
-  // FIXME - Unimplemented
-  context->messageTypeIsNotSupported();
-  return false;
+  size_t length = context->length();
+  if (length < 24) {
+    context->messageSizeIsInvalid();
+    return false;
+  }
+
+  const MatchHeader *matchHdr = matchHeader();
+
+  if (!matchHdr->validateInput(length - 16)) {
+    log::info("PacketIn has invalid Match element.");
+    return false;
+  }
+  
+  return true;
 }
 
 UInt16 PacketIn::totalLen() const {

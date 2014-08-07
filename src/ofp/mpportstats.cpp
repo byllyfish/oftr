@@ -19,6 +19,10 @@ void MPPortStatsBuilder::write(Writable *channel) {
 		channel->write(&msg_.rxPackets_, 8*12);
 		channel->flush();
 
+	} else if (version == OFP_VERSION_3) {
+		channel->write(&msg_, 104);
+		channel->flush();
+
 	} else {
 		channel->write(&msg_, sizeof(msg_));
 		channel->flush();
