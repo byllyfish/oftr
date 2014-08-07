@@ -51,7 +51,7 @@ UInt32 ExperimenterBuilder::send(Writable *channel) {
   if (version == OFP_VERSION_1) {
     // Header + experimenter (12 bytes)
     channel->write(&msg_, 12);
-  } else if (version < OFP_VERSION_4) {
+  } else if (version < OFP_VERSION_3) {
     // Header + experimenter + 4 byte pad (12 + 4 bytes)
     Padding<4> pad;
     channel->write(&msg_, 12);
