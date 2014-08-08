@@ -198,6 +198,14 @@ ByteRange PacketIn::enetFrame() const {
   case OFP_VERSION_1:
     assert(msgLen >= 18U);
     return ByteRange{BytePtr(this) + 18, msgLen - 18U};
+  case OFP_VERSION_3: {
+    const MatchHeader *matchHdr = matchHeader();
+    offset = SizeWithoutMatchHeader - sizeof(Big64) + matchHdr->paddedLength() + 2;
+    if (offset >= msgLen) {
+      return ByteRange{};
+    }
+    return ByteRange{BytePtr(this) + offset, msgLen - offset};
+  }
   case OFP_VERSION_4:
     offset = SizeWithoutMatchHeader + matchHeader_.paddedLength() + 2;
     if (offset >= msgLen) {
@@ -205,6 +213,7 @@ ByteRange PacketIn::enetFrame() const {
     }
     return ByteRange{BytePtr(this) + offset, msgLen - offset};
   default:
+    log::info("PacketIn::enetFrame() not implemented.");
     return ByteRange{};
   }
 }
@@ -287,6 +296,7 @@ UInt32 PacketInBuilder::sendV2(Writable *channel) {
   UInt32 xid = channel->nextXid();
 
   // FIXME - Unimplemented
+  log::info("PacketInBuilder::sendV2 not implemented.");
 
   return xid;
 }
@@ -294,9 +304,58 @@ UInt32 PacketInBuilder::sendV2(Writable *channel) {
 UInt32 PacketInBuilder::sendV3(Writable *channel) {
   assert(channel->version() == OFP_VERSION_3);
 
-  UInt32 xid = channel->nextXid();
+  // Construct the match with the standard context fields: IN_PORT, IN_PHY_PORT,
+  // METADATA, and TUNNEL_ID.
+  // 
+  // Fields whose values are all-bits-zero should be omitted. IN_PHY_PORT should
+  // be omitted if it has the same value as IN_PORT.
 
-  // FIXME - Unimplemented
+  // TODO(bfish): check ordering of fields in resulting match. Especially if
+  // there are other fields already added.
+
+  if (inPort_)
+    match_.replaceUnchecked(OFB_IN_PORT{inPort_});
+
+  if (inPhyPort_ && (inPhyPort_ != inPort_))
+    match_.replaceUnchecked(OFB_IN_PHY_PORT{inPhyPort_});
+
+  if (metadata_)
+    match_.replaceUnchecked(OFB_METADATA{metadata_});
+
+  // TODO(bfish): TUNNEL_ID
+
+  // Calculate length of PacketIn message up to end of match section. Then
+  // pad it to a multiple of 8 bytes.
+  size_t msgMatchLen = PacketIn::UnpaddedSizeWithMatchHeader - sizeof(Big64) + match_.size();
+  size_t msgMatchLenPadded = PadLength(msgMatchLen);
+
+  // Calculate length of ethernet frame section (preceded by 2 byte pad.)
+  size_t enetFrameLen = enetFrame_.size() + 2;
+
+  // Calculate the total PacketIn message length.
+  size_t msgLen = msgMatchLenPadded + enetFrameLen;
+
+  // Fill in the message header.
+  UInt32 xid = channel->nextXid();
+  Header &hdr = msg_.header_;
+  hdr.setVersion(OFP_VERSION_3);
+  hdr.setType(PacketIn::type());
+  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setXid(xid);
+
+  // Fill in the match header.
+  msg_.matchHeader_.setType(OFPMT_OXM);
+  msg_.matchHeader_.setLength(sizeof(MatchHeader) + match_.size());
+
+  // Write the message with padding in the correct spots.
+  Padding<8> pad;
+  channel->write(&msg_, PacketIn::SizeWithoutMatchHeader - sizeof(Big64));
+  channel->write(&msg_.matchHeader_, sizeof(MatchHeader));
+  channel->write(match_.data(), match_.size());
+  channel->write(&pad, msgMatchLenPadded - msgMatchLen);
+  channel->write(&pad, 2);
+  channel->write(enetFrame_.data(), enetFrame_.size());
+  channel->flush();
 
   return xid;
 }
@@ -339,7 +398,7 @@ UInt32 PacketInBuilder::sendV4(Writable *channel) {
   // Fill in the message header.
   UInt32 xid = channel->nextXid();
   Header &hdr = msg_.header_;
-  hdr.setVersion(OFP_VERSION_4);
+  hdr.setVersion(channel->version());
   hdr.setType(PacketIn::type());
   hdr.setLength(UInt16_narrow_cast(msgLen));
   hdr.setXid(xid);

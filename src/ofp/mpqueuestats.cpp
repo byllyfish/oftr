@@ -16,6 +16,10 @@ void MPQueueStatsBuilder::write(Writable *channel)
 		channel->write(&msg_.queueId_, 28);
 		channel->flush();
 
+	} else if (version <= OFP_VERSION_3) {
+		channel->write(&msg_, 32);
+		channel->flush();
+	
 	} else {
 		channel->write(&msg_, sizeof(msg_));
 		channel->flush();
