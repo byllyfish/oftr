@@ -17,13 +17,17 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::OXMID> {
-    static const bool OXMID_WITH_ZERO_LENGTH = false;
     
     static void output(const ofp::OXMID &value, void *ctxt,
                        llvm::raw_ostream &out)
     {
-      ScalarTraits<ofp::OXMType>::output(value.type(), ctxt, out);
-      if (value.type().hasMask()) {
+      ofp::OXMType type = value.type();
+
+      if (type.length() == 0) {
+        out << '~';
+      }
+      ScalarTraits<ofp::OXMType>::output(type, ctxt, out);
+      if (type.hasMask()) {
         out << '/';
       }
     }
@@ -31,7 +35,13 @@ struct ScalarTraits<ofp::OXMID> {
     static StringRef input(StringRef scalar, void *ctxt,
                            ofp::OXMID &value)
     {
+      bool hasZeroLength = false;
       bool hasMask = false;
+
+      if (!scalar.empty() && scalar.front() == '~') {
+        scalar = scalar.drop_front();
+        hasZeroLength = true;
+      }
 
       if (!scalar.empty() && scalar.back() == '/') {
         scalar = scalar.drop_back();
@@ -41,11 +51,11 @@ struct ScalarTraits<ofp::OXMID> {
       ofp::OXMType type;
       StringRef result = ScalarTraits<ofp::OXMType>::input(scalar, ctxt, type);
       if (result.empty()) {
-        if (OXMID_WITH_ZERO_LENGTH) {
-          type = type.zeroLength();
-        }
         if (hasMask) {
-          type = type.withMask();   // FIXME(bfish) - fix length?
+          type = type.withMask();
+        }
+        if (hasZeroLength) {
+          type = type.zeroLength();
         }
         value = ofp::OXMID{type, 0};
       }
