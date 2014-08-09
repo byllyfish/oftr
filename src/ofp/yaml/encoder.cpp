@@ -94,8 +94,6 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
   case Hello::type() : {
     HelloBuilder hello{header.version()};
     io.mapOptional("msg", hello);
-    if (hello.protocolVersions().empty())
-      hello.setProtocolVersions(ProtocolVersions::All);
     hello.send(&channel_);
     break;
   }

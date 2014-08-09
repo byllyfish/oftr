@@ -32,13 +32,9 @@ namespace ofp {
 /// \brief Represents a set of OpenFlow protocol versions.
 class ProtocolVersions {
 public:
-  enum {
-    MinVersion = OFP_VERSION_1,
-    MaxVersion = OFP_VERSION_LAST
-  };
 
   enum : UInt32 {
-    VersionBitmapAll = ~(~0U << (MaxVersion + 1)) & ~1U,
+    VersionBitmapAll = ~(~0U << (OFP_VERSION_LAST + 1)) & ~1U,
     VersionBitmapNone = 0U
   };
 
@@ -72,6 +68,11 @@ private:
 
   // N.B. You must call this constructor using (), not {}.
   constexpr explicit ProtocolVersions(UInt32 bitmap) : bitmap_(bitmap) {}
+
+  enum {
+    MinVersionSupported = OFP_VERSION_1,
+    MaxVersionSupported = 30      // Maximum version supported by Big32 bitmap.
+  };
 };
 
 }  // namespace ofp

@@ -23,7 +23,7 @@ msg:
 }
 
 TEST(yhello, test2) {
-  // The protocol version is still version 4 (use highest protocol in versions).
+  // The protocol version is still version 1 -- ignore the versions bitmap.
   const char *yaml = R"(
 type: OFPT_HELLO
 version: 1
@@ -33,12 +33,12 @@ msg:
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0400001000000000000100080000001E", encoder.data(),
+  EXPECT_HEX("0100000800000000", encoder.data(),
              encoder.size());
 }
 
 TEST(yhello, test3) {
-  // Always use higest protocol in versions rather than header version.
+  // Always use header version if available
   const char *yaml = R"(
 type: OFPT_HELLO
 version: 4
@@ -48,7 +48,7 @@ msg:
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0200000800000000", encoder.data(), encoder.size());
+  EXPECT_HEX("04000010000000000001000800000006", encoder.data(), encoder.size());
 }
 
 TEST(yhello, test4) {
@@ -106,13 +106,14 @@ type: OFPT_HELLO
 TEST(yhello, test8) {
   const char *yaml = R"(
 type: OFPT_HELLO
+version: 5
 msg:
-  versions: [0, 1, 3, 5, 99]
+  versions: [0, 1, 3, 10, 29]
 )";
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0300000800000000", encoder.data(), encoder.size());
+  EXPECT_HEX("0500001000000000000100082000040A", encoder.data(), encoder.size());
 }
 
 TEST(yhello, error1) {

@@ -14,7 +14,6 @@ TEST(protocolversions, defaultConstructor) {
 
   EXPECT_FALSE(versions.empty());
 
-  EXPECT_EQ(0x04, ProtocolVersions::MaxVersion);
   EXPECT_EQ(0x1E, ProtocolVersions::VersionBitmapAll);
   EXPECT_EQ(0x00, ProtocolVersions::VersionBitmapNone);
 }

@@ -105,6 +105,9 @@ class HelloBuilder {
   Big32 bitmap_ = 0;
 };
 
+static_assert(sizeof(HelloBuilder) == 16, "Unexpected size.");
+static_assert(IsStandardLayout<HelloBuilder>(), "Expected standard layout.");
+
 }  // namespace ofp
 
 #endif  // OFP_HELLO_H_

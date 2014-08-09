@@ -57,23 +57,6 @@ ProtocolVersions HelloBuilder::protocolVersions() const {
 }
 
 void HelloBuilder::setProtocolVersions(ProtocolVersions versions) {
-  UInt8 highVers = 0;
-  if (versions.empty()) {
-    UInt8 headVers = msg_.header_.version();
-    if (headVers == 0) {
-      // All versions.
-      versions = ProtocolVersions::All;
-      highVers = OFP_VERSION_LAST;
-    } else {
-      // Specific version.
-      versions = {headVers};
-      highVers = headVers;
-    }
-  } else {
-    highVers = versions.highestVersion();
-  }
-
-  msg_.header_.setVersion(highVers);
   bitmap_ = versions.bitmap();
 }
 
@@ -83,15 +66,35 @@ UInt32 HelloBuilder::send(Writable *channel) {
   // HelloElements; POX doesn't support the extended part of the Hello
   // request.
 
-  UInt32 xid = channel->nextXid();
-
   Header &hdr = msg_.header_;
+  UInt8 version = hdr.version();
+
+  if (version == 0) {
+    // Infer header version from value of versions bitmap.
+    // If versions bitmap is empty, use latest version with a bitmap of all
+    // versions.
+    
+    if (!bitmap_) {
+      version = OFP_VERSION_LAST;
+      bitmap_ = ProtocolVersions::All.bitmap();
+    } else {
+      version = ProtocolVersions::fromBitmap(bitmap_).highestVersion();
+    }
+    hdr.setVersion(version);
+
+  } else if (version >= OFP_VERSION_4 && !bitmap_) {
+    // Version is 1.3 or later, but the bitmap is empty. Set bitmap to 
+    // contain just the header version.
+    bitmap_ = ProtocolVersions{version}.bitmap();
+  }
+
   size_t msgLen = sizeof(msg_);
-  if (hdr.version() >= OFP_VERSION_4) {
+  if (version >= OFP_VERSION_4) {
     // Include our hello element.
     msgLen += sizeof(elem_) + sizeof(bitmap_);
   }
 
+  UInt32 xid = channel->nextXid();
   hdr.setLength(UInt16_narrow_cast(msgLen));
   hdr.setXid(xid);
 

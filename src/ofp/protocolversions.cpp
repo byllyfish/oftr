@@ -33,14 +33,16 @@ const ProtocolVersions ProtocolVersions::None(
 ProtocolVersions::ProtocolVersions(std::initializer_list<UInt8> versions)
     : bitmap_{0} {
   for (auto v : versions) {
-    if (v >= MinVersion && v <= MaxVersion) bitmap_ |= (1 << v);
+    if (v >= MinVersionSupported && v <= MaxVersionSupported) {
+      bitmap_ |= (1 << v);
+    }
   }
 }
 
 UInt8 ProtocolVersions::highestVersion() const {
   UInt32 bits = bitmap_;
 
-  for (unsigned i = MaxVersion; i > 0; --i) {
+  for (unsigned i = MaxVersionSupported; i > 0; --i) {
     if ((bits >> i) & 1) {
       return UInt8_narrow_cast(i);
     }
@@ -87,8 +89,10 @@ bool ProtocolVersions::containsVersion(UInt8 version) const {
 std::vector<UInt8> ProtocolVersions::versions() const {
   std::vector<UInt8> result;
 
-  for (UInt8 i = 1; i <= MaxVersion; ++i) {
-    if ((bitmap_ >> i) & 1) result.push_back(i);
+  for (UInt8 i = 1; i <= MaxVersionSupported; ++i) {
+    if ((bitmap_ >> i) & 1) {
+      result.push_back(i);
+    }
   }
 
   return result;
@@ -99,7 +103,7 @@ std::string ProtocolVersions::toString() const {
   bool needComma = false;
   out << "[";
 
-  for (UInt8 i = 1; i <= MaxVersion; ++i) {
+  for (UInt8 i = 1; i <= MaxVersionSupported; ++i) {
     if ((bitmap_ >> i) & 1) {
       if (needComma) out << ", ";
       out << int(i);
@@ -116,7 +120,9 @@ ProtocolVersions ProtocolVersions::fromVector(
   ProtocolVersions result{};
 
   for (auto v : versions) {
-    if (v >= MinVersion && v <= MaxVersion) result.bitmap_ |= (1 << v);
+    if (v >= MinVersionSupported && v <= MaxVersionSupported) {
+      result.bitmap_ |= (1 << v);
+    }
   }
 
   return result;
