@@ -198,6 +198,9 @@ ByteRange PacketIn::enetFrame() const {
   case OFP_VERSION_1:
     assert(msgLen >= 18U);
     return ByteRange{BytePtr(this) + 18, msgLen - 18U};
+  case OFP_VERSION_2:
+    log::info("PacketIn::enetFrame() not implemented.");
+    return ByteRange{};
   case OFP_VERSION_3: {
     const MatchHeader *matchHdr = matchHeader();
     offset = SizeWithoutMatchHeader - sizeof(Big64) + matchHdr->paddedLength() + 2;
@@ -206,15 +209,12 @@ ByteRange PacketIn::enetFrame() const {
     }
     return ByteRange{BytePtr(this) + offset, msgLen - offset};
   }
-  case OFP_VERSION_4:
+  default:
     offset = SizeWithoutMatchHeader + matchHeader_.paddedLength() + 2;
     if (offset >= msgLen) {
       return ByteRange{};
     }
     return ByteRange{BytePtr(this) + offset, msgLen - offset};
-  default:
-    log::info("PacketIn::enetFrame() not implemented.");
-    return ByteRange{};
   }
 }
 
