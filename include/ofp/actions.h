@@ -254,6 +254,7 @@ public:
       value_{value} {}
 
   UInt32 experimenterid() const { return experimenterid_; }
+  ByteRange value() const { return {BytePtr(&value_), type_.length() - 8U}; }
 
 private:
   const ActionType type_;
