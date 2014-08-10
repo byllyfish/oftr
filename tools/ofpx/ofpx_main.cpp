@@ -1,6 +1,7 @@
 
 #include "ofp/ofp.h"
 #include "ofpx_decode.h"
+#include "ofpx_encode.h"
 #include "ofpx_ping.h"
 #include <iostream>
 
@@ -13,11 +14,11 @@ struct SubprogramEntry {
 
 static SubprogramEntry programs[] = {
   {"ping", ofpx::Run<ofpx::Ping>},
-  {"decode", ofpx::Run<ofpx::Decode>}
+  {"decode", ofpx::Run<ofpx::Decode>},
+  {"encode", ofpx::Run<ofpx::Encode>}
 };
 
 int main(int argc, char **argv) {
-
   ofp::log::setOutputStream(&std::cerr);
   ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
 
