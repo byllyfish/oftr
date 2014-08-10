@@ -3,4 +3,4 @@ add_test(
   COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests.sh
 )
 
-set_tests_properties(ofpx PROPERTIES TIMEOUT 10)
+set_tests_properties(ofpx PROPERTIES TIMEOUT 180)

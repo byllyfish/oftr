@@ -77,4 +77,4 @@ add_test(
 
 # Unit tests may need more than 10 seconds when running under valgrind.
 
-set_tests_properties(unittests PROPERTIES TIMEOUT 30)
+set_tests_properties(unittests PROPERTIES TIMEOUT 60)
