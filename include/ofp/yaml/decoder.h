@@ -36,7 +36,7 @@ public:
 
     explicit Decoder(const Message *msg, bool useJsonFormat = false);
 
-    const std::string &result() const
+    const llvm::StringRef result() const
     {
         return result_;
     }
@@ -48,7 +48,7 @@ public:
 
 private:
     const Message *msg_;
-    std::string result_;
+    llvm::SmallString<1024> result_;
     std::string error_;
 
     bool decodeMsg(llvm::yaml::IO &io);

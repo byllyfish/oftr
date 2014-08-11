@@ -23,7 +23,20 @@
 #define OFP_LOG_H_
 
 #include <sstream>
+#include "llvm/ADT/StringRef.h"
 #include "ofp/types.h"
+
+// Allow llvm::StringRef to write to a std::ostream.
+
+namespace llvm {
+
+std::ostream &operator<<(std::ostream &os, const StringRef &s);
+
+inline std::ostream &operator<<(std::ostream &os, const StringRef &s) {
+  return os.write(s.data(), ofp::Signed_cast(s.size()));
+}
+
+}  // namespace llvm
 
 namespace ofp {
 namespace log {

@@ -53,7 +53,7 @@ namespace yaml { // <namespace yaml>
 Decoder::Decoder(const Message *msg, bool useJsonFormat) : msg_{msg} {
   assert(msg->size() >= sizeof(Header));
 
-  llvm::raw_string_ostream rss{result_};
+  llvm::raw_svector_ostream rss{result_};
 
   if (useJsonFormat) {
     ofp::yaml::OutputJson yout{rss};
