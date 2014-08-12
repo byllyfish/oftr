@@ -25,11 +25,12 @@ public:
 private:
     std::string currentFilename_;
     std::string lineBuf_;
+    int lineNumber_ = 0;
 
     ExitStatus encodeFiles();
     ExitStatus encodeFile(const std::string &filename);
     ExitStatus encodeMessages(std::istream &input);
-    bool readMessage(std::istream &input, std::string &msg);
+    bool readMessage(std::istream &input, std::string &msg, int &lineNum);
 
     // --- Command-line Arguments ---
     cl::opt<bool> silent_{"silent", cl::desc("Quiet mode; suppress normal output")};

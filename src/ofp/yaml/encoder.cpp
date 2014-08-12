@@ -49,8 +49,8 @@
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
-Encoder::Encoder(const std::string &input, bool matchPrereqsChecked, ChannelFinder finder)
-    : errorStream_{error_}, finder_{finder}, matchPrereqsChecked_{matchPrereqsChecked} {
+Encoder::Encoder(const std::string &input, bool matchPrereqsChecked, int lineNumber, ChannelFinder finder)
+    : errorStream_{error_}, finder_{finder}, lineNumber_{lineNumber}, matchPrereqsChecked_{matchPrereqsChecked} {
   if (input.empty()) {
     error_ = "No input.";
   } else {
@@ -64,10 +64,15 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked, ChannelFind
   }
 }
 
-void Encoder::diagnosticHandler(const llvm::SMDiagnostic &diag, void *context) {
+void Encoder::diagnosticHandler(const llvm::SMDiagnostic &d, void *context) {
   Encoder *encoder = reinterpret_cast<Encoder *>(context);
-  encoder->addDiagnostic(diag);
+  encoder->addDiagnostic(d);
 }
+
+void Encoder::addDiagnostic(const llvm::SMDiagnostic &d) {
+    llvm::SMDiagnostic diag{*d.getSourceMgr(), d.getLoc(), d.getFilename(), d.getLineNo() + lineNumber_, d.getColumnNo(), d.getKind(), d.getMessage(), d.getLineContents(), d.getRanges()};
+    diag.print("", errorStream_, false);
+  }
 
 void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
   // At this point, we know the datapathID. The YAML message may not contain

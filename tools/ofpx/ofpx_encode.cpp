@@ -61,6 +61,7 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
   if (*input) {
     // Store current filename in instance variable for use in error messages.
     currentFilename_ = filename;
+    lineNumber_ = 0;
     result = encodeMessages(*input);
     currentFilename_ = "";
   } else {
@@ -78,9 +79,10 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
 
 ExitStatus Encode::encodeMessages(std::istream &input) {
   std::string text;
+  int lineNum;
 
-  while (readMessage(input, text)) {
-    ofp::yaml::Encoder encoder{text, !uncheckedMatch_};
+  while (readMessage(input, text, lineNum)) {
+    ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum};
 
     auto err = encoder.error();
     if (!err.empty()) {
@@ -117,25 +119,33 @@ static bool isEmptyOrWhitespaceOnly(std::string &s) {
 // r e a d M e s s a g e //
 //-----------------------//
 
-bool Encode::readMessage(std::istream &input, std::string &msg) {
+bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
     if (!input) {
         return false;
     }
 
     msg.clear();
 
+    int msgLines = 0;
     while (input) {
         std::getline(input, lineBuf_);
+        ++lineNumber_;
+
         if (lineBuf_ == "---" || lineBuf_ == "...") {
             if (isEmptyOrWhitespaceOnly(msg)) {
               // Don't return empty messages.
+              msgLines = 0;
               continue;
             }
+            lineNum = lineNumber_ - msgLines - 1;
             return true;
         }
         msg += lineBuf_;
         msg += '\n';
+        ++msgLines;
     }
+
+    lineNum = lineNumber_ - msgLines - 1;
 
     return !isEmptyOrWhitespaceOnly(msg);
 }

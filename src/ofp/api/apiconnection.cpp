@@ -175,7 +175,7 @@ void ApiConnection::handleEvent(const std::string &eventText) {
     ApiEncoder encoder{eventText, this};
 
   } else {
-    yaml::Encoder encoder(eventText, true, [this](const DatapathID &datapathId) {
+    yaml::Encoder encoder(eventText, true, 0, [this](const DatapathID &datapathId) {
       return server_->findChannel(datapathId);
     });
 

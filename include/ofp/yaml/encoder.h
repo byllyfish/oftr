@@ -40,7 +40,7 @@ class Encoder {
 public:
     using ChannelFinder = std::function<Channel*(const DatapathID &datapathId)>;
 
-	Encoder(const std::string &input, bool matchPrereqsChecked=true, ChannelFinder finder = NullChannelFinder);
+	Encoder(const std::string &input, bool matchPrereqsChecked=true, int lineNumber=0, ChannelFinder finder = NullChannelFinder);
 
 	const UInt8 *data() const { return channel_.data(); }
 	size_t size() const { return channel_.size(); }
@@ -58,14 +58,12 @@ private:
     llvm::raw_string_ostream errorStream_;
     DatapathID datapathId_;
     ChannelFinder finder_;
+    int lineNumber_ = 0;
     UInt8 auxiliaryId_ = 0;
     bool matchPrereqsChecked_;
 
-    static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
-
-    void addDiagnostic(const llvm::SMDiagnostic &diag) {
-		diag.print("", errorStream_, false);
-	}
+    static void diagnosticHandler(const llvm::SMDiagnostic &d, void *context);
+    void addDiagnostic(const llvm::SMDiagnostic &d);
 
     void encodeMsg(llvm::yaml::IO &io, Header &header);
 
