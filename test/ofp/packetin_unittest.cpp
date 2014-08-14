@@ -32,7 +32,7 @@ TEST(packetin, version4) {
 
     auto packetIn = PacketIn::cast(&message);
 
-    Validation context{message.data(), message.size()};
+    Validation context{&message};
     ASSERT_TRUE(packetIn->validateInput(&context));
 
     if (packetIn->validateInput(&context)) {

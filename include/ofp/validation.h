@@ -11,13 +11,10 @@ class Message;
 
 class Validation {
 public:
-    explicit Validation(const UInt8 *data, size_t length) : data_{data}, length_{length} {}
-    explicit Validation(const ByteRange &range) : Validation{range.data(), range.size()} {}
     explicit Validation(const Message *msg);
 
-    const UInt8 *data() const { return data_; }
+    UInt8 version() const { return version_; }
     size_t length() const { return length_; }
-
     size_t lengthRemaining() const { return lengthRemaining_; }
     void setLengthRemaining(size_t length) { lengthRemaining_ = length; }
 
@@ -26,6 +23,7 @@ public:
     void messageSizeIsInvalid();
     void messageTypeIsNotSupported();
     void multipartTypeIsNotSupported();
+    void multipartTypeIsNotSupportedForVersion();
     void lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength);
     
     void rangeSizeHasImproperAlignment(const UInt8 *ptr, size_t alignment);
@@ -43,29 +41,34 @@ public:
 
     // Used in validating multipart request/reply.
     
-    bool validateEmpty(const UInt8 *body);
+    bool validateEmpty(const UInt8 *body, UInt8 minVersion);
 
     template <class Type>
-    bool validate(const UInt8 *body);
+    bool validate(const UInt8 *body, UInt8 minVersion);
 
     template <class Type, size_t Offset = Type::MPVariableSizeOffset>
-    bool validateArrayVariableSize(const UInt8 *body);
+    bool validateArrayVariableSize(const UInt8 *body, UInt8 minVersion);
 
     template <class Type>
-    bool validateArrayFixedSize(const UInt8 *body);
+    bool validateArrayFixedSize(const UInt8 *body, UInt8 minVersion);
 
 private:
-    const UInt8 *data_;
-    const size_t length_;
+    const Message *msg_;
+    size_t length_;
     size_t lengthRemaining_ = 0;
+    UInt8 version_;
 
     size_t offset(const UInt8 *ptr) const;
     std::string hexContext(const UInt8 *ptr) const;
-    void logContext(const UInt8 *ptr) const;
+    void logContext(const UInt8 *ptr = nullptr) const;
 };
 
 
-inline bool Validation::validateEmpty(const UInt8 *body) {
+inline bool Validation::validateEmpty(const UInt8 *body, UInt8 minVersion) {
+  if (version_ < minVersion) {
+    multipartTypeIsNotSupportedForVersion();
+    return false;
+  }
   if (lengthRemaining() != 0) {
     lengthRemainingIsInvalid(body, 0);
     return false;
@@ -75,7 +78,11 @@ inline bool Validation::validateEmpty(const UInt8 *body) {
 }
 
 template <class Type>
-bool Validation::validate(const UInt8 *body) {
+bool Validation::validate(const UInt8 *body, UInt8 minVersion) {
+  if (version_ < minVersion) {
+    multipartTypeIsNotSupportedForVersion();
+    return false;
+  }
   const Type *ptr = reinterpret_cast<const Type *>(body);
   // Class is responsible for validating length.
   return ptr->validateInput(this);
@@ -84,9 +91,13 @@ bool Validation::validate(const UInt8 *body) {
 // There are two versions of validateArray; variable size and fixed size.
 
 template <class Type, size_t Offset>
-bool Validation::validateArrayVariableSize(const UInt8 *body) {
-  size_t length = lengthRemaining();
+bool Validation::validateArrayVariableSize(const UInt8 *body, UInt8 minVersion) {
+  if (version_ < minVersion) {
+    multipartTypeIsNotSupportedForVersion();
+    return false;
+  }
 
+  size_t length = lengthRemaining();
   if ((length % 8) != 0) {
     rangeSizeHasImproperAlignment(body, 8);
     return false;
@@ -129,7 +140,12 @@ bool Validation::validateArrayVariableSize(const UInt8 *body) {
 }
 
 template <class Type>
-bool Validation::validateArrayFixedSize(const UInt8 *body) {
+bool Validation::validateArrayFixedSize(const UInt8 *body, UInt8 minVersion) {
+  if (version_ < minVersion) {
+    multipartTypeIsNotSupportedForVersion();
+    return false;
+  }
+
   size_t length = lengthRemaining();
 
   if (!IsPtrAligned(body, 8)) {

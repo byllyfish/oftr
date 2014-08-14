@@ -39,31 +39,35 @@ bool MultipartRequest::validateInput(Validation *context) const {
 
   switch (requestType()) {
     case OFPMP_DESC:
-    case OFPMP_TABLE:
-    case OFPMP_GROUP_DESC:
-    case OFPMP_GROUP_FEATURES:
-    case OFPMP_METER_FEATURES:
-    case OFPMP_PORT_DESC:
-      // The request body is empty.
-      return context->validateEmpty(requestBody());
+      return context->validateEmpty(requestBody(), OFP_VERSION_1);
     case OFPMP_FLOW:
-      return context->validate<MPFlowStatsRequest>(requestBody());
+      return context->validate<MPFlowStatsRequest>(requestBody(), OFP_VERSION_1);
     case OFPMP_AGGREGATE:
-      return context->validate<MPAggregateStatsRequest>(requestBody());
+      return context->validate<MPAggregateStatsRequest>(requestBody(), OFP_VERSION_1);
+    case OFPMP_TABLE:
+      return context->validateEmpty(requestBody(), OFP_VERSION_1);
     case OFPMP_PORT_STATS:
-      return context->validate<MPPortStatsRequest>(requestBody());
+      return context->validate<MPPortStatsRequest>(requestBody(), OFP_VERSION_1);
     case OFPMP_QUEUE:
-      return context->validate<MPQueueStatsRequest>(requestBody());
+      return context->validate<MPQueueStatsRequest>(requestBody(), OFP_VERSION_1);
     case OFPMP_GROUP:
-      return context->validate<MPGroupStatsRequest>(requestBody());
+      return context->validate<MPGroupStatsRequest>(requestBody(), OFP_VERSION_2);
+    case OFPMP_GROUP_DESC:
+      return context->validateEmpty(requestBody(), OFP_VERSION_2);
+    case OFPMP_GROUP_FEATURES:
+      return context->validateEmpty(requestBody(), OFP_VERSION_3);
     case OFPMP_METER:
-      return context->validate<MPMeterStatsRequest>(requestBody());
+      return context->validate<MPMeterStatsRequest>(requestBody(), OFP_VERSION_4);
     case OFPMP_METER_CONFIG:
-      return context->validate<MPMeterConfigRequest>(requestBody());
+      return context->validate<MPMeterConfigRequest>(requestBody(), OFP_VERSION_4);
+    case OFPMP_METER_FEATURES:
+      return context->validateEmpty(requestBody(), OFP_VERSION_4);
     case OFPMP_TABLE_FEATURES:
-      return context->validateArrayVariableSize<MPTableFeatures>(requestBody());
+      return context->validateArrayVariableSize<MPTableFeatures>(requestBody(), OFP_VERSION_4);
+    case OFPMP_PORT_DESC:
+      return context->validateEmpty(requestBody(), OFP_VERSION_4);
     case OFPMP_EXPERIMENTER:
-      return context->validate<MPExperimenter>(requestBody());
+      return context->validate<MPExperimenter>(requestBody(), OFP_VERSION_1);
   }
 
   context->multipartTypeIsNotSupported();

@@ -4,23 +4,34 @@
 
 using namespace ofp;
 
-Validation::Validation(const Message *msg) : Validation{msg->data(), msg->size()} 
-{
+Validation::Validation(const Message *msg) : msg_{msg} {
+    if (msg) {
+        version_ = msg->version();
+        length_ = msg->size();
+    } else {
+        version_ = 0;
+        length_ = 0;
+    }
 }
 
 void Validation::messageSizeIsInvalid() {
     log::info("Validation Failed: Message size is invalid", length_);
-    logContext(data_);
+    logContext();
 }
 
 void Validation::messageTypeIsNotSupported() {
     log::info("Validation Failed: Message type is not supported");
-    logContext(data_);
+    logContext();
 }
 
 void Validation::multipartTypeIsNotSupported() {
     log::info("Validation Failed: Multipart type is not supported");
-    logContext(data_);
+    logContext();
+}
+
+void Validation::multipartTypeIsNotSupportedForVersion() {
+    log::info("Validation Failed: Multipart type is not supported for this protocol version");
+    logContext();
 }
 
 void Validation::lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength) {
@@ -60,40 +71,47 @@ void Validation::rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr, size_t el
 
 
 size_t Validation::offset(const UInt8 *ptr) const {
-    if (ptr < data_) {
+    if (!msg_ || ptr < msg_->data()) {
         return 0xFFFFFFFF;
     }
-    return Unsigned_cast(ptr - data_);
+    return Unsigned_cast(ptr - msg_->data());
 }
 
 std::string Validation::hexContext(const UInt8 *ptr) const {
-    if ((ptr < data_) || (ptr >= data_ + length_)) {
+    assert(msg_);
+
+    const UInt8 *data = msg_->data();
+    if ((ptr < data) || (ptr >= data + length_)) {
         return "<out of range>";
     }
 
     size_t len = 16;
-    if (Unsigned_cast((data_ + length_) - ptr) < len) {
-        len = Unsigned_cast((data_ + length_) - ptr);
+    if (Unsigned_cast((data + length_) - ptr) < len) {
+        len = Unsigned_cast((data + length_) - ptr);
     }
 
     return RawDataToHex(ptr, len);
 }
 
 void Validation::logContext(const UInt8 *ptr) const {
+    assert(msg_ != nullptr || length_ == 0);
+
     if (length_ >= sizeof(Header)) {
-        const Header *header = reinterpret_cast<const Header *>(data_);
+        const Header *header = msg_->header();
         OFPType type = header->type();
         UInt8 version = header->version();
 
         std::ostringstream oss;
         if (length_ >= 16 && (type == OFPT_MULTIPART_REQUEST || type == OFPT_MULTIPART_REPLY)) {
-            OFPMultipartType mpType = *reinterpret_cast<const Big<OFPMultipartType> *>(data_ + sizeof(Header));
-            oss << type << '.' << mpType << " v1." << static_cast<int>(version-1);
+            OFPMultipartType mpType = *reinterpret_cast<const Big<OFPMultipartType> *>(msg_->data() + sizeof(Header));
+            oss << type << '.' << mpType << 'v' << static_cast<int>(version);
         } else {
-            oss << type << " v1." << static_cast<int>(version-1);
+            oss << type << 'v' << static_cast<int>(version);
         }
 
         log::info("  Message type:", oss.str());
-        log::info("  Context(16 bytes):", hexContext(ptr));
+        if (ptr) { 
+            log::info("  Context(16 bytes):", hexContext(ptr));
+        }
     }
 }

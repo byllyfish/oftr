@@ -534,9 +534,6 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
 
   // Shift all fields above actions up. Must use memmove due to overlap.
   std::memmove(ptr + 4, ptr + 44, 44);
-
-  printf("size: %lu, %d\n", buf_.size(), length);
-  log::debug(" ", buf_);
   
   // Need at least 48 more bytes (136 - 88). If there's an action list, we need 
   // 8 more bytes for the instruction header.

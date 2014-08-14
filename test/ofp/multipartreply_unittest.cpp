@@ -33,6 +33,6 @@ TEST(multipartreply, mptablefeatures) {
     const MultipartReply *m = MultipartReply::cast(&message);
     ASSERT_TRUE(m != nullptr);
 
-    Validation context{message.data(), message.size()};
+    Validation context{&message};
     EXPECT_TRUE(m->validateInput(&context));
 }

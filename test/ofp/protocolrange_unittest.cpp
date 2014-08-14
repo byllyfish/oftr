@@ -7,19 +7,19 @@ using namespace ofp::detail;
 
 TEST(protocolrange, valid_empty) {
   ByteRange r1;
-  Validation context1{r1};
+  Validation context1{nullptr};
   EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &context1));
 
   UInt64 d2 = 0;
   ByteRange r2{&d2, (size_t)0};
-  Validation context2{r2};
+  Validation context2{nullptr};
   EXPECT_TRUE(IsProtocolRangeValid(0, r2, 2, 8, &context2));
 }
 
 TEST(protocolrange, invalid_empty) {
   UInt8 d1[2];
   ByteRange r1{&d1[1], (size_t)0};
-  Validation context1{r1};
+  Validation context1{nullptr};
   EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &context1));
 }
 
@@ -32,13 +32,11 @@ TEST(protocolrange, invalid_short) {
   ByteRange r2{&d2, 8};
   ByteRange r3{&d3, 8};
 
-  Validation c1{r1};
-  Validation c2{r2};
-  Validation c3{r3};
+  Validation c1{nullptr};
 
   EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c2));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r3, 2, 8, &c3));
+  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(0, r3, 2, 8, &c1));
 }
 
 TEST(protocolrange, valid_short) {
@@ -50,19 +48,17 @@ TEST(protocolrange, valid_short) {
   ByteRange r2{&d2, 8};
   ByteRange r3{&d3, 8};
 
-  Validation c1{r1};
-  Validation c2{r2};
-  Validation c3{r3};
+  Validation c1{nullptr};
 
   EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_TRUE(IsProtocolRangeValid(0, r2, 2, 8, &c2));
-  EXPECT_TRUE(IsProtocolRangeValid(0, r3, 2, 8, &c3));
+  EXPECT_TRUE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
+  EXPECT_TRUE(IsProtocolRangeValid(0, r3, 2, 8, &c1));
 }
 
 TEST(protocolrange, valid_exact) {
   Big64 d1 = 0xffff0008ffffffff;
   ByteRange r1{&d1, 8};
-  Validation c1{r1};
+  Validation c1{nullptr};
 
   EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
 }
@@ -75,24 +71,21 @@ TEST(protocolrange, invalid1) {
   ByteList r2{HexToRawData("FFFF0009FFFFFFFF")};
   ByteList r3{HexToRawData("FFFFFFFFFFFFFFFF")};
 
-  Validation c1{r1};
-  Validation c2{r2};
-  Validation c3{r3};
+  Validation c1{nullptr};
 
   EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c2));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r3, 2, 8, &c3));
+  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(0, r3, 2, 8, &c1));
 }
 
 TEST(protocolrange, invalid2) {
   ByteList r1{HexToRawData("ffff0008ffffffffff")};
   ByteList r2{HexToRawData("ffff0006ffffffffffffffffffffffff")};
 
-  Validation c1{r1};
-  Validation c2{r2};
+  Validation c1{nullptr};
 
   EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c2));
+  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
 }
 
 TEST(protocolrange, iteration) {
@@ -108,7 +101,7 @@ TEST(protocolrange, iteration) {
   };
 
   ByteRange r1{data, sizeof(data)};
-  Validation c1{r1};
+  Validation c1{nullptr};
   EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
 
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};
@@ -153,6 +146,6 @@ TEST(protocolrange, misalignedSeq) {
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};
 
   // Sequence is invalid because first item has len of 5 which is misaligned.
-  Validation context{r1.data(), r1.size()};
+  Validation context{nullptr};
   EXPECT_FALSE(iterable.validateInput(&context));
 }

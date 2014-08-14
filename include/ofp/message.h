@@ -106,7 +106,7 @@ const MsgType *Message::castMessage() const {
   size_t length = size();
   assert(length == header()->length());
 
-  Validation context{data(), length};
+  Validation context{this};
 
   if (!MsgType::isLengthValid(length)) {
     context.messageSizeIsInvalid();
