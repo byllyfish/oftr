@@ -67,7 +67,8 @@ static OFPType translateTypeFromVersion(UInt8 type, UInt8 version) {
 }
 
 OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
-  assert(version >= OFP_VERSION_1);
+  if (version == 0)
+    return OFPT_UNSUPPORTED;
 
   if (version == newVersion)
     return OFPType(type);
