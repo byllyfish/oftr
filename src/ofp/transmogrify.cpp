@@ -46,6 +46,7 @@ void Transmogrify::normalize() {
   assert(buf_.size() >= sizeof(Header));
 
   Header *hdr = header();
+  assert(buf_.size() == hdr->length());
 
   // Translate type of message from earlier version into latest enum.
   OFPType type =
