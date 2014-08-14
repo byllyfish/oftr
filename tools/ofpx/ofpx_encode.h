@@ -11,6 +11,8 @@ namespace ofpx {
 // syntax error in the YAML input, stop and report an error.
 // 
 
+OFP_BEGIN_IGNORE_PADDING
+
 class Encode : public Subprogram {
 public:
     enum class ExitStatus {
@@ -43,6 +45,8 @@ private:
     cl::alias kAlias_{"k", cl::desc("Alias for -keep-going"), cl::aliasopt(keepGoing_), cl::Grouping};
     cl::alias MAlias_{"M", cl::desc("Alias for -unchecked-match"), cl::aliasopt(uncheckedMatch_), cl::Grouping};
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace ofpx
 

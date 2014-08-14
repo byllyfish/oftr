@@ -3,6 +3,7 @@
 
 namespace ofp {
 
+OFP_BEGIN_IGNORE_PADDING
 
 class UnrecognizedProperty {
 public:
@@ -25,6 +26,8 @@ private:
     Big16 length_;
     ByteRange range_;
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace ofp
 

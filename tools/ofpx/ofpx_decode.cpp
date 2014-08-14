@@ -101,7 +101,8 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
       return checkError(input, sizeof(ofp::Header), true);
     }
 
-    // Check header length in message.
+    // Check header length in message. If the header says the length is less
+    // than 8 bytes, the entire message *must* still be 8 bytes in length.
     size_t msgLen = message.header()->length();
     if (msgLen < sizeof(ofp::Header)) {
       msgLen = sizeof(ofp::Header);

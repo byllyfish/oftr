@@ -9,6 +9,8 @@ namespace ofp {
 
 class Message;
 
+OFP_BEGIN_IGNORE_PADDING
+
 class Validation {
 public:
     explicit Validation(const Message *msg);
@@ -63,6 +65,7 @@ private:
     void logContext(const UInt8 *ptr = nullptr) const;
 };
 
+OFP_END_IGNORE_PADDING
 
 inline bool Validation::validateEmpty(const UInt8 *body, UInt8 minVersion) {
   if (version_ < minVersion) {

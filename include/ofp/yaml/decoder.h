@@ -70,6 +70,8 @@ struct MappingTraits<ofp::yaml::Decoder> {
         using namespace ofp;
 
         Header header = *decoder.msg_->header();
+        assert(header.length() == decoder.msg_->size());
+
         io.mapRequired("type", header.type_);
         io.mapRequired("xid", header.xid_);
         io.mapRequired("version", header.version_);

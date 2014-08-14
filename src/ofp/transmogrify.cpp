@@ -46,7 +46,6 @@ void Transmogrify::normalize() {
   assert(buf_.size() >= sizeof(Header));
 
   Header *hdr = header();
-  assert(buf_.size() == hdr->length());
 
   // Translate type of message from earlier version into latest enum.
   OFPType type =
@@ -55,6 +54,13 @@ void Transmogrify::normalize() {
     log::info("Unsupported type for protocol version:", hdr->type());
   }
   hdr->setType(type);
+
+  // If header length doesn't match buffer size, we have a problem.
+  if (buf_.size() != hdr->length()) {
+    log::info("Unexpected header length:", hdr->length());
+    hdr->setLength(UInt16_narrow_cast(buf_.size()));
+    hdr->setType(OFPT_UNSUPPORTED);
+  }
 
   UInt8 version = hdr->version();
   if (version == OFP_VERSION_1) {
