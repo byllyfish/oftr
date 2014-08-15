@@ -75,7 +75,7 @@ bool MultipartReply::validateInput(Validation *context) const {
     case OFPMP_PORT_DESC:
       return context->validateArrayFixedSize<Port>(replyBody(), OFP_VERSION_4);
     case OFPMP_EXPERIMENTER:
-      return context->validate<MPExperimenter>(replyBody(), OFP_VERSION_1);
+      return context->validate<MPExperimenter>(replyBody(), OFP_VERSION_1, false);
   }
 
   context->multipartTypeIsNotSupported();

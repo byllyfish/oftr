@@ -67,7 +67,7 @@ bool MultipartRequest::validateInput(Validation *context) const {
     case OFPMP_PORT_DESC:
       return context->validateEmpty(requestBody(), OFP_VERSION_4);
     case OFPMP_EXPERIMENTER:
-      return context->validate<MPExperimenter>(requestBody(), OFP_VERSION_1);
+      return context->validate<MPExperimenter>(requestBody(), OFP_VERSION_1, false);
   }
 
   context->multipartTypeIsNotSupported();

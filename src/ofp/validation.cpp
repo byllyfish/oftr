@@ -34,6 +34,11 @@ void Validation::multipartTypeIsNotSupportedForVersion() {
     logContext();
 }
 
+void Validation::multipartSizeHasImproperAlignment() {
+    log::info("Validation Failed: Multipart size has improper alignment");
+    logContext();
+}
+
 void Validation::lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength) {
     log::info("Validation Failed: Length remaining is invalid", lengthRemaining(), "expected", expectedLength, "at offset", offset(ptr));
     logContext(ptr);

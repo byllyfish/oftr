@@ -28,7 +28,7 @@
 namespace ofp {
 
 class MultipartRequest
-    : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST, 16, 65528> {
+    : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST, 16, 65535, false> {
 public:
   OFPMultipartType requestType() const { return type_; }
   UInt16 requestFlags() const { return flags_; }

@@ -26,6 +26,7 @@ public:
     void messageTypeIsNotSupported();
     void multipartTypeIsNotSupported();
     void multipartTypeIsNotSupportedForVersion();
+    void multipartSizeHasImproperAlignment();
     void lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength);
     
     void rangeSizeHasImproperAlignment(const UInt8 *ptr, size_t alignment);
@@ -46,7 +47,7 @@ public:
     bool validateEmpty(const UInt8 *body, UInt8 minVersion);
 
     template <class Type>
-    bool validate(const UInt8 *body, UInt8 minVersion);
+    bool validate(const UInt8 *body, UInt8 minVersion, bool lenMultiple8=true);
 
     template <class Type, size_t Offset = Type::MPVariableSizeOffset>
     bool validateArrayVariableSize(const UInt8 *body, UInt8 minVersion);
@@ -81,9 +82,13 @@ inline bool Validation::validateEmpty(const UInt8 *body, UInt8 minVersion) {
 }
 
 template <class Type>
-bool Validation::validate(const UInt8 *body, UInt8 minVersion) {
+bool Validation::validate(const UInt8 *body, UInt8 minVersion, bool lenMultiple8) {
   if (version_ < minVersion) {
     multipartTypeIsNotSupportedForVersion();
+    return false;
+  }
+  if (lenMultiple8 && (lengthRemaining() % 8) != 0) {
+    multipartSizeHasImproperAlignment();
     return false;
   }
   const Type *ptr = reinterpret_cast<const Type *>(body);
