@@ -175,7 +175,7 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message, const ofp::Mess
 
     std::cerr << "Filename: " << currentFilename_ << '\n';
     std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
-    std::cerr << *message << '\n';
+    std::cerr << *originalMessage << '\n';
     return ExitStatus::DecodeFailed;
   }
 
@@ -185,7 +185,7 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message, const ofp::Mess
     
     std::cerr << "Filename: " << currentFilename_ << '\n';
     std::cerr << "Error: Decode succeeded when --invert-check flag is specified.\n";
-    std::cerr << *message << '\n';
+    std::cerr << *originalMessage << '\n';
     return ExitStatus::DecodeSucceeded;
   }
 
