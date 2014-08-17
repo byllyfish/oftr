@@ -96,6 +96,8 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
     } else if (roundtrip_) {
       // Translate binary message back to text.
       ofp::Message message{encoder.data(), encoder.size()};
+      message.transmogrify();
+      
       ofp::yaml::Decoder decoder{&message};
 
       err = decoder.error();
@@ -109,8 +111,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
       }
 
     } else if (!silent_) {
-      // Write binary message to stdout.
-      std::cout.write(reinterpret_cast<const char *>(encoder.data()), ofp::Signed_cast(encoder.size()));
+      output(encoder.data(), encoder.size());
     }
   }
 
@@ -166,4 +167,28 @@ bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
     lineNum = lineNumber_ - msgLines - 1;
 
     return !isEmptyOrWhitespaceOnly(msg);
+}
+
+void Encode::output(const void *data, size_t length) {
+  if (hex_) {
+    // Output hex in rows of 4 blocks of 8 bytes each.
+    const unsigned rowlen = 68;
+
+    auto hex = ofp::RawDataToHex(data, length, ' ', 8);
+    auto rows = hex.size() / rowlen;
+    auto left = hex.size() % rowlen;
+
+    for (auto i = 0U; i < rows; ++i) {
+      std::cout << hex.substr(i*rowlen, rowlen) << '\n';
+    }
+
+    if (left) {
+      std::cout << hex.substr(rows*rowlen, left) << '\n';
+    }
+    std::cout << '\n';
+
+  } else {
+    // Write binary message to stdout.
+    std::cout.write(static_cast<const char *>(data), ofp::Signed_cast(length));
+  }
 }

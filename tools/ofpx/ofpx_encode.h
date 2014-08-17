@@ -5,11 +5,12 @@
 
 namespace ofpx {
 
-// ofpx encode [--silent|-S] [--keep-going|-k] [--unchecked-match|-M] [--roundtrip|-R] [<Input files>]
+// ofpx encode [--hex|-h] [--silent|-S] [--keep-going|-k] [--unchecked-match|-M] [--roundtrip|-R] [<Input files>]
 //
 // Encode OpenFlow messages to binary as specified in YAML input files. If there
 // is a syntax error in the YAML input, stop and report an error.
 // 
+//   --hex               Output hexadecimal rather than binary
 //   --silent            Quiet mode; suppress normal output
 //   --keep-going        Continue processing messages after errors
 //   --unchecked-match   Do not check items in match fields
@@ -52,8 +53,10 @@ private:
     ExitStatus encodeFile(const std::string &filename);
     ExitStatus encodeMessages(std::istream &input);
     bool readMessage(std::istream &input, std::string &msg, int &lineNum);
+    void output(const void *data, size_t length);
 
     // --- Command-line Arguments ---
+    cl::opt<bool> hex_{"hex", cl::desc("Output hexadecimal rather than binary")};
     cl::opt<bool> silent_{"silent", cl::desc("Quiet mode; suppress normal output")};
     cl::opt<bool> keepGoing_{"keep-going", cl::desc("Continue processing messages after errors")};
     cl::opt<bool> uncheckedMatch_{"unchecked-match", cl::desc("Do not check items in match fields")};
@@ -61,6 +64,7 @@ private:
     cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
     // --- Argument Aliases (May be grouped into one argument) ---
+    cl::alias hAlias_{"h", cl::desc("Alias for -hex"), cl::aliasopt(hex_), cl::Grouping};
     cl::alias sAlias_{"s", cl::desc("Alias for -silent"), cl::aliasopt(silent_), cl::Grouping};
     cl::alias kAlias_{"k", cl::desc("Alias for -keep-going"), cl::aliasopt(keepGoing_), cl::Grouping};
     cl::alias MAlias_{"M", cl::desc("Alias for -unchecked-match"), cl::aliasopt(uncheckedMatch_), cl::Grouping};
