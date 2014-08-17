@@ -1,6 +1,7 @@
 //#include "llvm/Support/CommandLine.h"
 #include "ofpx_encode.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/decoder.h"
 #include <iostream>
 #include <fstream>
 
@@ -86,13 +87,30 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
 
     auto err = encoder.error();
     if (!err.empty()) {
+        // There was an error in converting the text to a binary message.
         std::cerr << err << '\n';
         if (!keepGoing_) {
           return ExitStatus::EncodeFailed;
         }
 
+    } else if (roundtrip_) {
+      // Translate binary message back to text.
+      ofp::Message message{encoder.data(), encoder.size()};
+      ofp::yaml::Decoder decoder{&message};
+
+      err = decoder.error();
+      if (!err.empty()) {
+        std::cerr << err << '\n';
+        if (!keepGoing_) {
+          return ExitStatus::RoundtripFailed;
+        }
+      } else if (!silent_) {
+        std::cout << decoder.result();
+      }
+
     } else if (!silent_) {
-        std::cout.write(reinterpret_cast<const char *>(encoder.data()), ofp::Signed_cast(encoder.size()));
+      // Write binary message to stdout.
+      std::cout.write(reinterpret_cast<const char *>(encoder.data()), ofp::Signed_cast(encoder.size()));
     }
   }
 
