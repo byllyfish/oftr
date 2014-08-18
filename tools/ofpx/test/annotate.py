@@ -1,11 +1,11 @@
 import yaml
 import subprocess
-import StringIO
 import copy
-import pprint
+import sys
 
-OFPX = '/Users/bfish/code/ofp/Build+Debug/tools/ofpx/ofpx'
-TEST_INPUT = '/Users/bfish/code/ofp/tools/ofpx/test/annotate-input.yml'
+
+OFPX = '../ofpx'
+MAX_VERSION = 4
 
 def _getType(elem):
     if elem == None:
@@ -251,10 +251,15 @@ def roundtrip(doc, omitField=None, modifyField=None):
     return None
 
 if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print 'Usage: annotate.py <input-file>'
+        sys.exit(1)
+
+    inputFile = sys.argv[1]
     header=['version', 'type', 'keypath', 'syntax', 'required', 'default', 'missing', 'modify']
     print '\t'.join(header)
-    for version in range(1,5):
-        with open(TEST_INPUT) as input:
+    for version in range(1,MAX_VERSION+1):
+        with open(inputFile) as input:
             docs = yaml.load_all(input)
             for doc in docs:
                 if doc:
@@ -262,7 +267,5 @@ if __name__ == '__main__':
                     d = OFPDocument(doc)
                     d.check()
                     d.output()
-                    #print d.roundtrip(d.fields[0])
-                    #pprint.pprint(d.__dict__)
 
 
