@@ -32,6 +32,8 @@ def _getType(elem):
             return 'str15'
         elif s == 'ffffffff':
             return 'binary'
+        elif s == '255.255.255.255':
+            return 'ipv4address'
         else:
             return elem
     else:
@@ -46,7 +48,8 @@ _syntaxModified = {
     'macaddress': 'ee:ee:ee:ee:ee:ee',
     'datapath': 'ee:ee:ee:ee:ee:ee:ee:ee',
     'binary' : 'eeeeeeee',
-    'str15' : 'e.e.e.e.e.e.e.e'
+    'str15' : 'e.e.e.e.e.e.e.e',
+    'ipv4address' : '14.14.14.14'
 }
 
 _syntaxModifiedValues = [str(v) for v in _syntaxModified.values()] + ['238', 'eeee-eeee-eeee-eeee']
@@ -164,7 +167,9 @@ class OFPDocument(object):
         # For each field, try roundtripping the document with it modified.
         for modifyField in self.fields:
             result = self.roundtrip(modifyField=modifyField)
-            assert result
+            if not result:
+                modifyField.modifyConsequences = 'ERROR'
+                continue
             # Check value of modifyField in result to see if it changed.
             #modifyField.modifyConsequences = False
             for fld in result.fields:
@@ -182,7 +187,6 @@ class OFPDocument(object):
     
     def compare(self, doc):
         if not doc:
-            print self.doc
             return []
         # Return list of fields that are different in 'doc'
         lhs = sorted(self.fields, key=_keypath)

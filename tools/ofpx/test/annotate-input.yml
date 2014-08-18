@@ -53,4 +53,108 @@ msg:
       peer: 0xffffffff
       curr_speed: 0xffffffff
       max_speed: 0xffffffff
-...
+---
+version: 0x04
+type: OFPT_GET_CONFIG_REQUEST
+msg:
+---
+version: 0x04
+type: OFPT_GET_CONFIG_REPLY
+msg:
+  flags: 0xffff
+  miss_send_len: 0xffff
+---
+version: 0x04
+type: OFPT_SET_CONFIG
+msg:
+  flags: 0xffff
+  miss_send_len: 0xffff
+---
+version: 0x04
+type: OFPT_PACKET_IN
+msg:
+  buffer_id: 0xffffffff
+  total_len: 0xffff
+  in_port: 0xffffffff
+  in_phy_port: 0xffffffff
+  metadata: 0xffffffffffffffff
+  reason: 0xff
+  table_id: 0xff
+  cookie: 0xffffffffffffffff
+  match:
+    - field: OFB_ETH_DST
+      value: 'ff:ff:ff:ff:ff:ff'
+      mask: 'ff:ff:ff:ff:ff:ff'
+  enet_frame: 'ffffffff'
+---
+version: 0x04
+type: OFPT_FLOW_REMOVED
+msg:
+  cookie: 0xffffffffffffffff
+  priority: 0xffff
+  reason: 0xff
+  table_id: 0xff
+  duration_sec: 0xffffffff
+  duration_nsec: 0xffffffff
+  idle_timeout: 0xffff
+  hard_timeout: 0xffff
+  packet_count: 0xffffffffffffffff
+  byte_count: 0xffffffffffffffff
+  match:
+    - field: OFB_ETH_DST
+      value: 'ff:ff:ff:ff:ff:ff'
+      mask: 'ff:ff:ff:ff:ff:ff'
+---
+version: 0x04
+type: OFPT_PORT_STATUS
+msg:
+  reason: 0xff
+  port:
+    port_no: 0xffffffff
+    hw_addr: 'ff:ff:ff:ff:ff:ff'
+    name: '...............'
+    config: 0xffffffff
+    state: 0xffffffff
+    curr: 0xffffffff
+    advertised: 0xffffffff
+    supported: 0xffffffff
+    peer: 0xffffffff
+    curr_speed: 0xffffffff
+    max_speed: 0xffffffff
+---
+version: 0x04
+type: OFPT_PACKET_OUT
+msg:
+  buffer_id: 0xffffffff
+  in_port: 0xffffffff
+  actions:
+    - action: OFPAT_OUTPUT
+      port: 0xffffffff
+      maxlen: 0xffff
+  enet_frame: 'ffffffff'
+---
+version: 0x04
+type: OFPT_FLOW_MOD
+msg:
+  cookie: 0xffffffffffffffff
+  cookie_mask: 0xffffffffffffffff
+  table_id:     0xff                  
+  command:      0xff                  
+  idle_timeout: 0xffff             
+  hard_timeout: 0xffff             
+  priority:     0xffff                 
+  buffer_id:    0xffffffff               
+  out_port:     0xffffffff                 
+  out_group:    0xffffffff                
+  flags:        0xffff                    
+  match:
+    - field: OFB_ETH_DST
+      value: 'ff:ff:ff:ff:ff:ff'
+      mask: 'ff:ff:ff:ff:ff:ff'
+  instructions:
+    - instruction: OFPIT_APPLY_ACTIONS
+      actions:
+        - action: OFPAT_OUTPUT
+          port: 0xffffffff
+          maxlen: 0xffff
+---
