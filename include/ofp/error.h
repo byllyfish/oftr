@@ -39,8 +39,8 @@ public:
 
 private:
   Header header_;
-  Big16 type_;
-  Big16 code_;
+  Big16 type_ = 0;
+  Big16 code_ = 0;
 
   // Only ErrorBuilder can construct an actual instance.
   Error() : header_{type()} {}
