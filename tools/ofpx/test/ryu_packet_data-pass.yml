@@ -612,7 +612,7 @@ msg:
   buffer_id:       0x00000002
   total_len:       0x002A
   in_port:         0x00000006
-  in_phy_port:     0x00000000
+  in_phy_port:     0x00000006
   metadata:        0x0000000000000000
   reason:          OFPR_ACTION
   table_id:        0x01
@@ -1510,7 +1510,7 @@ msg:
   buffer_id:       0x00000002
   total_len:       0x002A
   in_port:         0x00000006
-  in_phy_port:     0x00000000
+  in_phy_port:     0x00000006
   metadata:        0x0000000000000000
   reason:          OFPR_ACTION
   table_id:        0x01
@@ -4523,7 +4523,7 @@ msg:
   buffer_id:       0x00000002
   total_len:       0x002A
   in_port:         0x00000006
-  in_phy_port:     0x00000000
+  in_phy_port:     0x00000006
   metadata:        0x0000000000000000
   reason:          3
   table_id:        0x01

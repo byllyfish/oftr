@@ -288,16 +288,16 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_SET_CONFIG	msg.flags	uint16	True			True
 3	OFPT_PACKET_IN	msg	object	True			
 3	OFPT_PACKET_IN	msg.total_len	uint16	True			True
-3	OFPT_PACKET_IN	msg.in_phy_port	uint32	True		msg.in_phy_port=0	True
+3	OFPT_PACKET_IN	msg.in_phy_port	uint32	True			True
 3	OFPT_PACKET_IN	msg.buffer_id	uint32	True			True
 3	OFPT_PACKET_IN	msg.reason	uint8	True			True
 3	OFPT_PACKET_IN	msg.table_id	uint8	True			True
 3	OFPT_PACKET_IN	msg.in_port	uint32	True			True
 3	OFPT_PACKET_IN	msg.cookie	uint64	True		msg.cookie=0	
-3	OFPT_PACKET_IN	msg.match	array	False	msg.cookie=0,msg.in_phy_port=0,msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
-3	OFPT_PACKET_IN	msg.match.0	object	False	msg.cookie=0,msg.in_phy_port=0,msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
+3	OFPT_PACKET_IN	msg.match	array	False	msg.cookie=0,msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
+3	OFPT_PACKET_IN	msg.match.0	object	False	msg.cookie=0,msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
 3	OFPT_PACKET_IN	msg.match.0.field	OFB_ETH_DST	True			
-3	OFPT_PACKET_IN	msg.match.0.mask	macaddress	False	msg.cookie=0,msg.in_phy_port=0,msg.match.0.mask=macaddress,msg.match.1=object,msg.match.1.field=OFB_IN_PORT,msg.match.1.value=uint32,msg.match.2=object,msg.match.2.field=OFB_METADATA,msg.match.2.value=uint64		True
+3	OFPT_PACKET_IN	msg.match.0.mask	macaddress	False	msg.cookie=0,msg.match.0.mask=macaddress,msg.match.1=object,msg.match.1.field=OFB_IN_PORT,msg.match.1.value=uint32,msg.match.2=object,msg.match.2.field=OFB_METADATA,msg.match.2.value=uint64		True
 3	OFPT_PACKET_IN	msg.match.0.value	macaddress	True			True
 3	OFPT_PACKET_IN	msg.enet_frame	binary	True			True
 3	OFPT_PACKET_IN	msg.metadata	uint64	True			True
@@ -410,16 +410,16 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_SET_CONFIG	msg.flags	uint16	True			True
 4	OFPT_PACKET_IN	msg	object	True			
 4	OFPT_PACKET_IN	msg.total_len	uint16	True			True
-4	OFPT_PACKET_IN	msg.in_phy_port	uint32	True		msg.in_phy_port=0	True
+4	OFPT_PACKET_IN	msg.in_phy_port	uint32	True			True
 4	OFPT_PACKET_IN	msg.buffer_id	uint32	True			True
 4	OFPT_PACKET_IN	msg.reason	uint8	True			True
 4	OFPT_PACKET_IN	msg.table_id	uint8	True			True
 4	OFPT_PACKET_IN	msg.in_port	uint32	True			True
 4	OFPT_PACKET_IN	msg.cookie	uint64	True			True
-4	OFPT_PACKET_IN	msg.match	array	False	msg.in_phy_port=0,msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
-4	OFPT_PACKET_IN	msg.match.0	object	False	msg.in_phy_port=0,msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
+4	OFPT_PACKET_IN	msg.match	array	False	msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
+4	OFPT_PACKET_IN	msg.match.0	object	False	msg.match.0.field=OFB_IN_PORT,msg.match.0.mask=macaddress,msg.match.0.value=uint32,msg.match.1=object,msg.match.1.field=OFB_METADATA,msg.match.1.value=uint64		
 4	OFPT_PACKET_IN	msg.match.0.field	OFB_ETH_DST	True			
-4	OFPT_PACKET_IN	msg.match.0.mask	macaddress	False	msg.in_phy_port=0,msg.match.0.mask=macaddress,msg.match.1=object,msg.match.1.field=OFB_IN_PORT,msg.match.1.value=uint32,msg.match.2=object,msg.match.2.field=OFB_METADATA,msg.match.2.value=uint64		True
+4	OFPT_PACKET_IN	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress,msg.match.1=object,msg.match.1.field=OFB_IN_PORT,msg.match.1.value=uint32,msg.match.2=object,msg.match.2.field=OFB_METADATA,msg.match.2.value=uint64		True
 4	OFPT_PACKET_IN	msg.match.0.value	macaddress	True			True
 4	OFPT_PACKET_IN	msg.enet_frame	binary	True			True
 4	OFPT_PACKET_IN	msg.metadata	uint64	True			True

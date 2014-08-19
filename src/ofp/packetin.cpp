@@ -154,8 +154,12 @@ UInt32 PacketIn::inPhyPort() const {
     return 0;
   case OFP_VERSION_2:
     return offset<Big32>(16);
-  default:
-    return matchHeader()->oxmRange().get<OFB_IN_PHY_PORT>();
+  default: {
+    // If not present or zero, assume the value is identical to OFB_IN_PORT.
+    OXMRange oxm = matchHeader()->oxmRange();
+    UInt32 inPhyPort = oxm.get<OFB_IN_PHY_PORT>();
+    return inPhyPort ? inPhyPort : oxm.get<OFB_IN_PORT>();
+  }
   }
 }
 
