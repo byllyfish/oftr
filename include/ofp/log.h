@@ -46,7 +46,7 @@ enum class Level {
   Trace = 1,
   Info = 2,
   Error = 3,
-  Abort = 4,
+  Fatal = 4,
   Silent = 5
 };
 
@@ -122,9 +122,8 @@ inline void error(const Args &... args) {
 }
 
 template <class... Args>
-inline void abort(const Args &... args) {
-  detail::write_(Level::Abort, args...);
-  std::abort();
+inline void fatal(const Args &... args) {
+  detail::write_(Level::Fatal, args...);
 }
 
 class Lifetime {

@@ -20,6 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/sys/asio_utils.h"
+#include "ofp/log.h"
 #include <system_error>
 
 #if ASIO_NO_EXCEPTIONS
@@ -34,6 +35,7 @@ void throw_exception(const Exception& e)
   // asio::detail::throw_exception. GCC requires ASIO_NO_EXCEPTIONS to compile
   // with -fno-exceptions. (Clang does not.)
 
+  ofp::log::fatal("asio::detail::throw_exception:", e.what());
   std::terminate();
 }
 

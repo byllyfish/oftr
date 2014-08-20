@@ -143,7 +143,8 @@ void SmallBuffer::reset(size_t length) noexcept {
   } else {
     UInt8 *newBuf = static_cast<UInt8 *>(std::malloc(length));
     if (!newBuf) {
-      log::abort("malloc failed:", length);
+      log::fatal("ofp::SmallBuffer: malloc failed:", length);
+      std::abort();
     }
     begin_ = newBuf;
     end_ = begin_ + length;
@@ -238,7 +239,8 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
 
     newBuf = static_cast<UInt8 *>(std::malloc(newCapacity));
     if (!newBuf) {
-      log::abort("malloc failed:", newCapacity);
+      log::fatal("ofp::SmallBuffer: malloc failed:", newCapacity);
+      std::abort();
     }
 
     std::memcpy(newBuf, begin_, len);
@@ -249,7 +251,8 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
 
     newBuf = static_cast<UInt8 *>(std::realloc(begin_, newCapacity));
     if (!newBuf) {
-      log::abort("realloc failed:", newCapacity);
+      log::fatal("ofp::SmallBuffer: realloc failed:", newCapacity);
+      std::abort();
     }
   }
 
@@ -269,9 +272,11 @@ size_t SmallBuffer::computeCapacity(size_t length) noexcept {
   // In release code, we allow the buffer to grow to 1MB, as this is
   // preferable to aborting.
 
-  log::error("SmallBuffer >= 65536 bytes:", length);
+  log::error("ofp::SmallByffer: SmallBuffer >= 65536 bytes:", length);
   if (length <= 1048576) return 1048576;
 
-  log::abort("SmallBuffer > 1 MB:", length);
+  log::fatal("ofp::SmallBuffer: SmallBuffer > 1 MB:", length);
+  std::abort();
+  
   return 0;
 }

@@ -54,8 +54,8 @@ const char *levelToString(Level level) {
       return "[info]";
     case Level::Error:
       return "[error]";
-    case Level::Abort:
-      return "[abort]";
+    case Level::Fatal:
+      return "[fatal]";
     case Level::Silent:
       return "[silent]";
   }
