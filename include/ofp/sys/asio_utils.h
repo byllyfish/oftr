@@ -25,6 +25,7 @@
 #ifndef OFP_SYS_ASIO_UTILS_H_
 #define OFP_SYS_ASIO_UTILS_H_
 
+#include "ofp/sys/asio_openssl_init.h"
 #include <asio.hpp>
 #include <asio/ssl.hpp>
 
