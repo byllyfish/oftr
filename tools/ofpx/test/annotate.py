@@ -6,6 +6,9 @@ import sys
 
 OFPX = '../ofpx'
 MAX_VERSION = 4
+STR15 = '.' * 15
+STR31 = '.' * 31
+STR255 = '.' * 255
 
 def _getType(elem):
     if elem == None:
@@ -28,8 +31,12 @@ def _getType(elem):
             return 'macaddress'
         elif s == 'ff:ff:ff:ff:ff:ff:ff:ff' or s == 'ffff-ffff-ffff-ffff':
             return 'datapath'
-        elif s == '...............':
+        elif s == STR15:
             return 'str15'
+        elif s == STR31:
+            return 'str31'
+        elif s == STR255:
+            return 'str255'
         elif s == 'ffffffff':
             return 'binary'
         elif s == '255.255.255.255':
