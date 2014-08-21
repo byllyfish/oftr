@@ -422,7 +422,7 @@
 {"type":"OFPT_ERROR","xid":0,"version":5,"msg":{"type":65535,"code":60000,"data":"000F423F6A696B6B656E2064617461"}}
 ...
 ---
-{"type":"OFPT_PACKET_IN","xid":0,"version":5,"msg":{"buffer_id":2,"total_len":42,"in_port":6,"in_phy_port":6,"metadata":0,"reason":"3","table_id":1,"cookie":283686884868096,"match":[{"field":"OFB_IN_PORT","value":6},{"field":"OFB_ETH_TYPE","value":2054},{"field":"OFB_ETH_DST","value":"ff:ff:ff:ff:ff:ff"},{"field":"OFB_ETH_SRC","value":"f2:0b:a4:7d:f8:ea"},{"field":"OFB_ARP_OP","value":1},{"field":"OFB_ARP_SPA","value":"10.0.0.1"},{"field":"OFB_ARP_TPA","value":"10.0.0.3"},{"field":"OFB_ARP_SHA","value":"f2:0b:a4:7d:f8:ea"},{"field":"OFB_ARP_THA","value":"00:00:00:00:00:00"}],"enet_frame":"FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003"}}
+{"type":"OFPT_PACKET_IN","xid":0,"version":5,"msg":{"buffer_id":2,"total_len":42,"in_port":6,"in_phy_port":6,"metadata":0,"reason":"0x03","table_id":1,"cookie":283686884868096,"match":[{"field":"OFB_IN_PORT","value":6},{"field":"OFB_ETH_TYPE","value":2054},{"field":"OFB_ETH_DST","value":"ff:ff:ff:ff:ff:ff"},{"field":"OFB_ETH_SRC","value":"f2:0b:a4:7d:f8:ea"},{"field":"OFB_ARP_OP","value":1},{"field":"OFB_ARP_SPA","value":"10.0.0.1"},{"field":"OFB_ARP_TPA","value":"10.0.0.3"},{"field":"OFB_ARP_SHA","value":"f2:0b:a4:7d:f8:ea"},{"field":"OFB_ARP_THA","value":"00:00:00:00:00:00"}],"enet_frame":"FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003"}}
 ...
 ---
 {"type":"OFPT_GET_ASYNC_REQUEST","xid":0,"version":5,"msg":{}}

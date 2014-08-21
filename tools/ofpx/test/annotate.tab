@@ -123,15 +123,16 @@ version	type	keypath	syntax	required	default	missing	modify
 1	OFPT_FLOW_MOD	msg.instructions.0.actions.0.port	uint32	True			True
 1	OFPT_GROUP_MOD	msg	object	True			ERROR
 1	OFPT_GROUP_MOD	msg.command	uint16	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets	object	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.weight	uint16	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.watch_group	uint32	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.actions	array	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.actions.0	object	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.actions.0.action	OFPAT_OUTPUT	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.actions.0.maxlen	uint16	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.actions.0.port	uint32	True			ERROR
-1	OFPT_GROUP_MOD	msg.buckets.watch_port	uint32	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets	array	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0	object	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.weight	uint16	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.watch_group	uint32	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.actions	array	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.actions.0	object	False	msg.advertise=uint32,msg.buckets=array,msg.buckets.0=object,msg.buckets.0.actions=array,msg.buckets.0.actions.0=object,msg.buckets.0.actions.0.action=OFPAT_OUTPUT,msg.buckets.0.actions.0.maxlen=uint16,msg.buckets.0.actions.0.port=uint32,msg.buckets.0.watch_group=uint32,msg.buckets.0.watch_port=uint32,msg.buckets.0.weight=uint16,msg.command=uint16,msg.config=1114111,msg.group_id=uint32,msg.hw_addr=ff:00:ff:ff:ff:ff,msg.mask=uint32,msg.port_no=uint32		ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.actions.0.action	OFPAT_OUTPUT	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.actions.0.maxlen	uint16	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.actions.0.port	uint32	True			ERROR
+1	OFPT_GROUP_MOD	msg.buckets.0.watch_port	uint32	True			ERROR
 1	OFPT_GROUP_MOD	msg.group_id	uint32	True			ERROR
 1	OFPT_GROUP_MOD	msg.type	uint8	True			ERROR
 1	OFPT_PORT_MOD	msg	object	True			
@@ -582,15 +583,16 @@ version	type	keypath	syntax	required	default	missing	modify
 2	OFPT_FLOW_MOD	msg.instructions.0.actions.0.port	uint32	True			True
 2	OFPT_GROUP_MOD	msg	object	True			
 2	OFPT_GROUP_MOD	msg.command	uint16	True			True
-2	OFPT_GROUP_MOD	msg.buckets	object	True		msg.buckets=null	
-2	OFPT_GROUP_MOD	msg.buckets.weight	uint16	False	msg.buckets=null		
-2	OFPT_GROUP_MOD	msg.buckets.watch_group	uint32	False	msg.buckets=null		
-2	OFPT_GROUP_MOD	msg.buckets.actions	array	False	msg.buckets=null		
-2	OFPT_GROUP_MOD	msg.buckets.actions.0	object	False	msg.buckets=null		
-2	OFPT_GROUP_MOD	msg.buckets.actions.0.action	OFPAT_OUTPUT	False	msg.buckets=null		
-2	OFPT_GROUP_MOD	msg.buckets.actions.0.maxlen	uint16	False	msg.buckets=null		
-2	OFPT_GROUP_MOD	msg.buckets.actions.0.port	uint32	False	msg.buckets=null		
-2	OFPT_GROUP_MOD	msg.buckets.watch_port	uint32	False	msg.buckets=null		
+2	OFPT_GROUP_MOD	msg.buckets	array	True			
+2	OFPT_GROUP_MOD	msg.buckets.0	object	False	msg.buckets=null		
+2	OFPT_GROUP_MOD	msg.buckets.0.weight	uint16	True			True
+2	OFPT_GROUP_MOD	msg.buckets.0.watch_group	uint32	True			True
+2	OFPT_GROUP_MOD	msg.buckets.0.actions	array	True			
+2	OFPT_GROUP_MOD	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null		
+2	OFPT_GROUP_MOD	msg.buckets.0.actions.0.action	OFPAT_OUTPUT	True			
+2	OFPT_GROUP_MOD	msg.buckets.0.actions.0.maxlen	uint16	True			True
+2	OFPT_GROUP_MOD	msg.buckets.0.actions.0.port	uint32	True			True
+2	OFPT_GROUP_MOD	msg.buckets.0.watch_port	uint32	True			True
 2	OFPT_GROUP_MOD	msg.group_id	uint32	True			True
 2	OFPT_GROUP_MOD	msg.type	uint8	True			True
 2	OFPT_PORT_MOD	msg	object	True			
@@ -1041,15 +1043,16 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_FLOW_MOD	msg.instructions.0.actions.0.port	uint32	True			True
 3	OFPT_GROUP_MOD	msg	object	True			
 3	OFPT_GROUP_MOD	msg.command	uint16	True			True
-3	OFPT_GROUP_MOD	msg.buckets	object	True		msg.buckets=null	
-3	OFPT_GROUP_MOD	msg.buckets.weight	uint16	False	msg.buckets=null		
-3	OFPT_GROUP_MOD	msg.buckets.watch_group	uint32	False	msg.buckets=null		
-3	OFPT_GROUP_MOD	msg.buckets.actions	array	False	msg.buckets=null		
-3	OFPT_GROUP_MOD	msg.buckets.actions.0	object	False	msg.buckets=null		
-3	OFPT_GROUP_MOD	msg.buckets.actions.0.action	OFPAT_OUTPUT	False	msg.buckets=null		
-3	OFPT_GROUP_MOD	msg.buckets.actions.0.maxlen	uint16	False	msg.buckets=null		
-3	OFPT_GROUP_MOD	msg.buckets.actions.0.port	uint32	False	msg.buckets=null		
-3	OFPT_GROUP_MOD	msg.buckets.watch_port	uint32	False	msg.buckets=null		
+3	OFPT_GROUP_MOD	msg.buckets	array	True			
+3	OFPT_GROUP_MOD	msg.buckets.0	object	False	msg.buckets=null		
+3	OFPT_GROUP_MOD	msg.buckets.0.weight	uint16	True			True
+3	OFPT_GROUP_MOD	msg.buckets.0.watch_group	uint32	True			True
+3	OFPT_GROUP_MOD	msg.buckets.0.actions	array	True			
+3	OFPT_GROUP_MOD	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null		
+3	OFPT_GROUP_MOD	msg.buckets.0.actions.0.action	OFPAT_OUTPUT	True			
+3	OFPT_GROUP_MOD	msg.buckets.0.actions.0.maxlen	uint16	True			True
+3	OFPT_GROUP_MOD	msg.buckets.0.actions.0.port	uint32	True			True
+3	OFPT_GROUP_MOD	msg.buckets.0.watch_port	uint32	True			True
 3	OFPT_GROUP_MOD	msg.group_id	uint32	True			True
 3	OFPT_GROUP_MOD	msg.type	uint8	True			True
 3	OFPT_PORT_MOD	msg	object	True			
@@ -1500,15 +1503,16 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_FLOW_MOD	msg.instructions.0.actions.0.port	uint32	True			True
 4	OFPT_GROUP_MOD	msg	object	True			
 4	OFPT_GROUP_MOD	msg.command	uint16	True			True
-4	OFPT_GROUP_MOD	msg.buckets	object	True		msg.buckets=null	
-4	OFPT_GROUP_MOD	msg.buckets.weight	uint16	False	msg.buckets=null		
-4	OFPT_GROUP_MOD	msg.buckets.watch_group	uint32	False	msg.buckets=null		
-4	OFPT_GROUP_MOD	msg.buckets.actions	array	False	msg.buckets=null		
-4	OFPT_GROUP_MOD	msg.buckets.actions.0	object	False	msg.buckets=null		
-4	OFPT_GROUP_MOD	msg.buckets.actions.0.action	OFPAT_OUTPUT	False	msg.buckets=null		
-4	OFPT_GROUP_MOD	msg.buckets.actions.0.maxlen	uint16	False	msg.buckets=null		
-4	OFPT_GROUP_MOD	msg.buckets.actions.0.port	uint32	False	msg.buckets=null		
-4	OFPT_GROUP_MOD	msg.buckets.watch_port	uint32	False	msg.buckets=null		
+4	OFPT_GROUP_MOD	msg.buckets	array	True			
+4	OFPT_GROUP_MOD	msg.buckets.0	object	False	msg.buckets=null		
+4	OFPT_GROUP_MOD	msg.buckets.0.weight	uint16	True			True
+4	OFPT_GROUP_MOD	msg.buckets.0.watch_group	uint32	True			True
+4	OFPT_GROUP_MOD	msg.buckets.0.actions	array	True			
+4	OFPT_GROUP_MOD	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null		
+4	OFPT_GROUP_MOD	msg.buckets.0.actions.0.action	OFPAT_OUTPUT	True			
+4	OFPT_GROUP_MOD	msg.buckets.0.actions.0.maxlen	uint16	True			True
+4	OFPT_GROUP_MOD	msg.buckets.0.actions.0.port	uint32	True			True
+4	OFPT_GROUP_MOD	msg.buckets.0.watch_port	uint32	True			True
 4	OFPT_GROUP_MOD	msg.group_id	uint32	True			True
 4	OFPT_GROUP_MOD	msg.type	uint8	True			True
 4	OFPT_PORT_MOD	msg	object	True			

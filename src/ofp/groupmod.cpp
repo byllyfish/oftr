@@ -39,10 +39,7 @@ bool GroupMod::validateInput(Validation *context) const {
   return true;
 }
 
-GroupModBuilder::GroupModBuilder(const GroupMod *msg) {
-  msg_ = *msg;
-
-  // FIXME copy actions
+GroupModBuilder::GroupModBuilder(const GroupMod *msg) : msg_{*msg}, buckets_{msg->buckets()} {
 }
 
 UInt32 GroupModBuilder::send(Writable *channel) {

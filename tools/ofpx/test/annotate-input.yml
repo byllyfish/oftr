@@ -165,13 +165,13 @@ msg:
   type: 0xff
   group_id: 0xffffffff
   buckets:
-    weight: 0xffff
-    watch_port: 0xffffffff
-    watch_group: 0xffffffff
-    actions:
-      - action: OFPAT_OUTPUT
-        port: 0xffffffff
-        maxlen: 0xffff
+    - weight: 0xffff
+      watch_port: 0xffffffff
+      watch_group: 0xffffffff
+      actions:
+        - action: OFPAT_OUTPUT
+          port: 0xffffffff
+          maxlen: 0xffff
 ---
 version: 0x04
 type: OFPT_PORT_MOD

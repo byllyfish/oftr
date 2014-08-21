@@ -4525,7 +4525,7 @@ msg:
   in_port:         0x00000006
   in_phy_port:     0x00000006
   metadata:        0x0000000000000000
-  reason:          3
+  reason:          0x03
   table_id:        0x01
   cookie:          0x0001020300000000
   match:           

@@ -66,9 +66,16 @@ def _modifySyntax(elem):
     return _syntaxModified.get(syntax, elem)
 
 def _isModified(val, fieldVal):
-    #print '_isModified', val, fieldVal
     return val != fieldVal and val.lower() in _syntaxModifiedValues
 
+def _increment(elem):
+    if elem == 0x0f:            # alternate case for uint8
+        return 256
+    if isinstance(elem, int):
+        return elem + 1
+    if isinstance(elem, str) and elem and elem[-1] == '.':
+        return elem + '.'
+    return None
 
 def _annotateDict(elem, keypath, result):
     for key,value in elem.items():
@@ -104,7 +111,7 @@ class OFPEntry(object):
             val = "''"
         return '%s=%s' % (self.keypath, val)
 
-    def remove(self, doc):
+    def omit(self, doc):
         # Remove this keypath from the specified document.
         container, key = self.find(doc)
         del container[key]
@@ -113,7 +120,13 @@ class OFPEntry(object):
         # Edit this keypath in the specified document.
         container, key = self.find(doc)
         container[key] = _modifySyntax(container[key])
-        
+    
+    def increment(self, doc):
+        # Increment this keypath in the specified document.
+        container, key = self.find(doc)
+        container[key] = _increment(container[key])
+        return container[key] is not None
+
     def find(self, doc):
         # Find this keypath in the specified document. Return the tuple
         # (container-ref, key).
@@ -156,10 +169,20 @@ class OFPDocument(object):
         #self.fields.sort(key=_keypath)
         
     def __repr__(self):
-        return str(self.fields)
+        return self.type() + str(self.fields)
     
+    def type(self):
+        # Return type of message. If it's a multipart message, include the 
+        # subtype.
+        type = self.doc['type']
+        if type == 'OFPT_MULTIPART_REQUEST' or type == 'OFPT_MULTIPART_REPLY':
+            type = '%s.%s' % (type, self.doc['msg']['type'])
+        type = '%s.v%d' % (type, self.doc['version'])
+        return type
+
     def check(self):
         # Test document itself.
+        print >> sys.stderr, '  annotate.py: Checking %s' % self.type()
         self.consequences = self.compare(self.roundtrip())
         self.filter(self.consequences)
         # For each field, try roundtripping the document without it.
@@ -178,16 +201,21 @@ class OFPDocument(object):
                 modifyField.modifyConsequences = 'ERROR'
                 continue
             # Check value of modifyField in result to see if it changed.
-            #modifyField.modifyConsequences = False
             for fld in result.fields:
                 if fld.keypath == modifyField.keypath and _isModified(fld.type, modifyField.type):
                     modifyField.modifyConsequences = True
                     break
-            #modifyField.modifyConsequences = self.compare(result)
-            #self.filter(modifyField.modifyConsequences)
-                
-    def roundtrip(self, omitField=None, modifyField=None):
-        doc = roundtrip(self.doc, omitField, modifyField)
+        # For each field, try roundtripping the document with it incremented.
+        # This should fail; all fields are at their max.
+        for modifyField in self.fields:
+            result = self.roundtrip(incrementField=modifyField)
+            if result:
+                print >> sys.stderr, 'Unexpected result:\n' + str(result)
+                print >> sys.stderr, modifyField
+            assert not result
+
+    def roundtrip(self, omitField=None, modifyField=None, incrementField=None):
+        doc = roundtrip(self.doc, omitField, modifyField, incrementField)
         if doc:
             return OFPDocument(doc)
         return None
@@ -247,16 +275,22 @@ def spawn(args, input):
     output = proc.communicate(input)[0]
     return (proc.returncode, output)
 
-def roundtrip(doc, omitField=None, modifyField=None):
+def roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
     # if omitField is set, make a deep-copy of doc, and remove the specified
     # field.
     if omitField:
         doc = copy.deepcopy(doc)
-        omitField.remove(doc)
+        omitField.omit(doc)
     if modifyField:
         doc = copy.deepcopy(doc)
         modifyField.modify(doc)
-    exit, output = spawn([OFPX, 'encode', '-R'], yaml.dump(doc))
+    if incrementField:
+        doc = copy.deepcopy(doc)
+        if not incrementField.increment(doc):
+            return None
+    input = yaml.dump(doc)
+    #print >> sys.stderr, 'Input:\n' + input
+    exit, output = spawn([OFPX, 'encode', '-R'], input)
     if not exit:
         return yaml.load(output)
     return None
