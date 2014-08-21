@@ -207,3 +207,364 @@ msg:
     serial_num: '...............................'
     dp_desc: '...............................................................................................................................................................................................................................................................'
 ---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_FLOW
+  flags: 0xffff
+  body:
+    table_id: 0xff
+    out_port: 0xffffffff
+    out_group: 0xffffffff
+    cookie: 0xffffffffffffffff
+    cookie_mask: 0xffffffffffffffff
+    match:
+      - field: OFB_ETH_DST
+        value: 'ff:ff:ff:ff:ff:ff'
+        mask: 'ff:ff:ff:ff:ff:ff'
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_FLOW
+  flags: 0xffff
+  body:
+    - table_id: 0xff
+      duration_sec: 0xffffffff
+      duration_nsec: 0xffffffff
+      priority: 0xffff
+      idle_timeout: 0xffff
+      hard_timeout: 0xffff
+      flags: 0xffff
+      cookie: 0xffffffffffffffff
+      packet_count: 0xffffffffffffffff
+      byte_count: 0xffffffffffffffff
+      match:
+        - field: OFB_ETH_DST
+          value: 'ff:ff:ff:ff:ff:ff'
+          mask: 'ff:ff:ff:ff:ff:ff'
+      instructions:
+        - instruction: OFPIT_APPLY_ACTIONS
+          actions:
+            - action: OFPAT_OUTPUT
+              port: 0xffffffff
+              maxlen: 0xffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_AGGREGATE
+  flags: 0xffff
+  body:
+    table_id: 0xff
+    out_port: 0xffffffff
+    out_group: 0xffffffff
+    cookie: 0xffffffffffffffff
+    cookie_mask: 0xffffffffffffffff
+    match:
+      - field: OFB_ETH_DST
+        value: 'ff:ff:ff:ff:ff:ff'
+        mask: 'ff:ff:ff:ff:ff:ff'
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_AGGREGATE
+  flags: 0xffff
+  body:
+    packet_count: 0xffffffffffffffff
+    byte_count: 0xffffffffffffffff
+    flow_count: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_TABLE
+  flags: 0xffff
+  #body:
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_TABLE
+  flags: 0xffff
+  body:
+    - table_id: 0xff
+      active_count: 0xffffffff
+      lookup_count: 0xffffffffffffffff
+      matched_count: 0xffffffffffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_PORT_STATS
+  flags: 0xffff
+  body:
+    port_no: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_PORT_STATS
+  flags: 0xffff
+  body:
+    - port_no: 0xffffffff
+      rx_packets: 0xffffffffffffffff
+      tx_packets: 0xffffffffffffffff
+      rx_bytes: 0xffffffffffffffff
+      tx_bytes: 0xffffffffffffffff
+      rx_dropped: 0xffffffffffffffff
+      tx_dropped: 0xffffffffffffffff
+      rx_errors: 0xffffffffffffffff
+      tx_errors: 0xffffffffffffffff
+      rx_frame_err: 0xffffffffffffffff
+      rx_over_err: 0xffffffffffffffff
+      rx_crc_err: 0xffffffffffffffff
+      collisions: 0xffffffffffffffff
+      duration_sec: 0xffffffff
+      duration_nsec: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_QUEUE
+  flags: 0xffff
+  body:
+    port_no: 0xffffffff
+    queue_id: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_QUEUE
+  flags: 0xffff
+  body:
+    - port_no: 0xffffffff
+      queue_id: 0xffffffff
+      tx_packets: 0xffffffffffffffff
+      tx_bytes: 0xffffffffffffffff
+      tx_errors: 0xffffffffffffffff
+      duration_sec: 0xffffffff
+      duration_nsec: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_GROUP
+  flags: 0xffff
+  body:
+    group_id: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_GROUP
+  flags: 0xffff
+  body:
+    - group_id: 0xffffffff
+      ref_count: 0xffffffff
+      packet_count: 0xffffffffffffffff
+      byte_count: 0xffffffffffffffff
+      duration_sec: 0xffffffff
+      duration_nsec: 0xffffffff
+      bucket_stats:
+        - packet_count: 0xffffffffffffffff
+          byte_count: 0xffffffffffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_GROUP_FEATURES
+  flags: 0xffff
+  #body:
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_GROUP_FEATURES
+  flags: 0xffff
+  body:
+    types: 0xffffffff
+    capabilities: 0xffffffff
+    max_groups_all: 0xffffffff
+    max_groups_sel: 0xffffffff
+    max_groups_ind: 0xffffffff
+    max_groups_ff: 0xffffffff
+    actions_all: 0xffffffff
+    actions_sel: 0xffffffff
+    actions_ind: 0xffffffff
+    actions_ff: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_METER
+  flags: 0xffff
+  body:
+    meter_id: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_METER
+  flags: 0xffff
+  body:
+    - meter_id: 0xffffffff
+      flow_count: 0xffffffff
+      packet_in_count: 0xffffffffffffffff
+      byte_in_count: 0xffffffffffffffff
+      duration_sec: 0xffffffff
+      duration_nsec: 0xffffffff
+      bands:
+        - packet_count: 0xffffffffffffffff
+          byte_count: 0xffffffffffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_METER_CONFIG
+  flags: 0xffff
+  body:
+    meter_id: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_METER_CONFIG
+  flags: 0xffff
+  body:
+    - flags: 0xffff
+      meter_id: 0xffffffff
+      bands:
+        - type: OFPMBT_DROP
+          rate: 0xffffffff
+          burst_size: 0xffffffff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_METER_FEATURES
+  flags: 0xffff
+  #body:
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_METER_FEATURES
+  flags: 0xffff
+  body:
+    max_meter: 0xffffffff
+    band_types: 0xffffffff
+    capabilities: 0xffffffff
+    max_bands: 0xff
+    max_color: 0xff
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_TABLE_FEATURES
+  flags: 0xffff
+  body:
+    - table_id: 0xff
+      name: '...............................'
+      metadata_match: 0xffffffffffffffff
+      metadata_write: 0xffffffffffffffff
+      config: 0xffffffff
+      max_entries: 0xffffffff
+      instructions:
+        - OFPIT_APPLY_ACTIONS
+      instructions_miss:
+        - OFPIT_GOTO_TABLE
+      next_tables:
+        - 0xff
+      next_tables_miss:
+        - 0x0f
+      write_actions:
+        - OFPAT_OUTPUT
+      write_actions_miss:
+        - OFPAT_COPY_TTL_OUT
+      apply_actions:
+        - OFPAT_OUTPUT
+      apply_actions_miss:
+        - OFPAT_COPY_TTL_OUT
+      match:
+        - OFB_ETH_DST
+      wildcards:
+        - OFB_ETH_DST
+      write_set_field:
+        - OFB_ETH_DST
+      write_set_field_miss:
+        - OFB_ETH_SRC
+      apply_set_field:
+        - OFB_ETH_DST
+      apply_set_field_miss:
+        - OFB_ETH_SRC
+      properties:
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_TABLE_FEATURES
+  flags: 0xffff
+  body:
+    - table_id: 0xff
+      name: '...............................'
+      metadata_match: 0xffffffffffffffff
+      metadata_write: 0xffffffffffffffff
+      config: 0xffffffff
+      max_entries: 0xffffffff
+      instructions:
+        - OFPIT_APPLY_ACTIONS
+      instructions_miss:
+        - OFPIT_GOTO_TABLE
+      next_tables:
+        - 0xff
+      next_tables_miss:
+        - 0x0f
+      write_actions:
+        - OFPAT_OUTPUT
+      write_actions_miss:
+        - OFPAT_COPY_TTL_OUT
+      apply_actions:
+        - OFPAT_OUTPUT
+      apply_actions_miss:
+        - OFPAT_COPY_TTL_OUT
+      match:
+        - OFB_ETH_DST
+      wildcards:
+        - OFB_ETH_DST
+      write_set_field:
+        - OFB_ETH_DST
+      write_set_field_miss:
+        - OFB_ETH_SRC
+      apply_set_field:
+        - OFB_ETH_DST
+      apply_set_field_miss:
+        - OFB_ETH_SRC
+      properties:
+---
+version: 0x04
+type: OFPT_MULTIPART_REQUEST
+msg:
+  type: OFPMP_PORT_DESC
+  flags: 0xffff
+  #body:
+---
+version: 0x04
+type: OFPT_MULTIPART_REPLY
+msg:
+  type: OFPMP_PORT_DESC
+  flags: 0xffff
+  body:
+    - port_no: 0xffffffff
+      hw_addr: 'ff:ff:ff:ff:ff:ff'
+      name: '...............'
+      config: 0xffffffff
+      state: 0xffffffff
+      curr: 0xffffffff
+      advertised: 0xffffffff
+      supported: 0xffffffff
+      peer: 0xffffffff
+      curr_speed: 0xffffffff
+      max_speed: 0xffffffff
+...
