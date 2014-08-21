@@ -120,7 +120,7 @@ struct ScalarTraits<ofp::OFPPacketInReason> {
     if (converter.convert(value, &scalar)) {
       out << scalar;
     } else {
-      out << int(value);
+      out << format("0x%02X", value);
     }
   }
 
@@ -145,7 +145,7 @@ struct ScalarTraits<ofp::OFPFlowModCommand> {
     if (converter.convert(value, &scalar)) {
       out << scalar;
     } else {
-      out << int(value);
+      out << format("0x%02X", value);
     }
   }
 
