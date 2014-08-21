@@ -459,6 +459,49 @@ version	type	keypath	syntax	required	default	missing	modify
 1	OFPT_MULTIPART_REPLY	msg.body.0.port_no	uint32	True			ERROR
 1	OFPT_MULTIPART_REPLY	msg.type	OFPMP_PORT_DESC	True			ERROR
 1	OFPT_MULTIPART_REPLY	msg.flags	uint16	True			ERROR
+1	OFPT_BARRIER_REQUEST	msg	null	False			
+1	OFPT_BARRIER_REPLY	msg	null	False			
+1	OFPT_QUEUE_GET_CONFIG_REQUEST	msg	object	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REQUEST	msg.port	uint32	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg	object	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues	array	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0	object	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.min_rate	uint16	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.queue_id	uint32	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.max_rate	uint16	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.properties	null	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.port	uint32	True			ERROR
+1	OFPT_QUEUE_GET_CONFIG_REPLY	msg.port	uint32	True			ERROR
+1	OFPT_ROLE_REQUEST	msg	object	True			ERROR
+1	OFPT_ROLE_REQUEST	msg.role	uint32	True			ERROR
+1	OFPT_ROLE_REQUEST	msg.generation_id	uint64	True			ERROR
+1	OFPT_ROLE_REPLY	msg	object	True			ERROR
+1	OFPT_ROLE_REPLY	msg.role	uint32	True			ERROR
+1	OFPT_ROLE_REPLY	msg.generation_id	uint64	True			ERROR
+1	OFPT_GET_ASYNC_REQUEST	msg	null	True			ERROR
+1	OFPT_GET_ASYNC_REPLY	msg	object	True			ERROR
+1	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_master	uint32	True			ERROR
+1	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_slave	uint32	True			ERROR
+1	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_slave	uint32	True			ERROR
+1	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_master	uint32	True			ERROR
+1	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_master	uint32	True			ERROR
+1	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_slave	uint32	True			ERROR
+1	OFPT_SET_ASYNC	msg	object	True			ERROR
+1	OFPT_SET_ASYNC	msg.port_status_mask_master	uint32	True			ERROR
+1	OFPT_SET_ASYNC	msg.port_status_mask_slave	uint32	True			ERROR
+1	OFPT_SET_ASYNC	msg.flow_removed_mask_slave	uint32	True			ERROR
+1	OFPT_SET_ASYNC	msg.flow_removed_mask_master	uint32	True			ERROR
+1	OFPT_SET_ASYNC	msg.packet_in_mask_master	uint32	True			ERROR
+1	OFPT_SET_ASYNC	msg.packet_in_mask_slave	uint32	True			ERROR
+1	OFPT_METER_MOD	msg	object	True			ERROR
+1	OFPT_METER_MOD	msg.command	uint16	True			ERROR
+1	OFPT_METER_MOD	msg.flags	uint16	True			ERROR
+1	OFPT_METER_MOD	msg.meter_id	uint32	True			ERROR
+1	OFPT_METER_MOD	msg.meter_bands	array	True			ERROR
+1	OFPT_METER_MOD	msg.meter_bands.0	object	True			ERROR
+1	OFPT_METER_MOD	msg.meter_bands.0.type	OFPMBT_DROP	True			ERROR
+1	OFPT_METER_MOD	msg.meter_bands.0.rate	uint32	True			ERROR
+1	OFPT_METER_MOD	msg.meter_bands.0.burst_size	uint32	True			ERROR
 2	OFPT_HELLO	msg	object	False			
 2	OFPT_HELLO	msg.versions	array	False			
 2	OFPT_HELLO	msg.versions.0	uint8	False			
@@ -919,6 +962,49 @@ version	type	keypath	syntax	required	default	missing	modify
 2	OFPT_MULTIPART_REPLY	msg.body.0.port_no	uint32	True			ERROR
 2	OFPT_MULTIPART_REPLY	msg.type	OFPMP_PORT_DESC	True			ERROR
 2	OFPT_MULTIPART_REPLY	msg.flags	uint16	True			ERROR
+2	OFPT_BARRIER_REQUEST	msg	null	False			
+2	OFPT_BARRIER_REPLY	msg	null	False			
+2	OFPT_QUEUE_GET_CONFIG_REQUEST	msg	object	True			
+2	OFPT_QUEUE_GET_CONFIG_REQUEST	msg.port	uint32	True			True
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg	object	True			
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues	array	True			
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0	object	False	msg.queues=null		
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.min_rate	uint16	True			True
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.queue_id	uint32	True			True
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.max_rate	uint16	True			True
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.properties	null	False			
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.port	uint32	True			True
+2	OFPT_QUEUE_GET_CONFIG_REPLY	msg.port	uint32	True			True
+2	OFPT_ROLE_REQUEST	msg	object	True			ERROR
+2	OFPT_ROLE_REQUEST	msg.role	uint32	True			ERROR
+2	OFPT_ROLE_REQUEST	msg.generation_id	uint64	True			ERROR
+2	OFPT_ROLE_REPLY	msg	object	True			ERROR
+2	OFPT_ROLE_REPLY	msg.role	uint32	True			ERROR
+2	OFPT_ROLE_REPLY	msg.generation_id	uint64	True			ERROR
+2	OFPT_GET_ASYNC_REQUEST	msg	null	True			ERROR
+2	OFPT_GET_ASYNC_REPLY	msg	object	True			ERROR
+2	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_master	uint32	True			ERROR
+2	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_slave	uint32	True			ERROR
+2	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_slave	uint32	True			ERROR
+2	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_master	uint32	True			ERROR
+2	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_master	uint32	True			ERROR
+2	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_slave	uint32	True			ERROR
+2	OFPT_SET_ASYNC	msg	object	True			ERROR
+2	OFPT_SET_ASYNC	msg.port_status_mask_master	uint32	True			ERROR
+2	OFPT_SET_ASYNC	msg.port_status_mask_slave	uint32	True			ERROR
+2	OFPT_SET_ASYNC	msg.flow_removed_mask_slave	uint32	True			ERROR
+2	OFPT_SET_ASYNC	msg.flow_removed_mask_master	uint32	True			ERROR
+2	OFPT_SET_ASYNC	msg.packet_in_mask_master	uint32	True			ERROR
+2	OFPT_SET_ASYNC	msg.packet_in_mask_slave	uint32	True			ERROR
+2	OFPT_METER_MOD	msg	object	True			ERROR
+2	OFPT_METER_MOD	msg.command	uint16	True			ERROR
+2	OFPT_METER_MOD	msg.flags	uint16	True			ERROR
+2	OFPT_METER_MOD	msg.meter_id	uint32	True			ERROR
+2	OFPT_METER_MOD	msg.meter_bands	array	True			ERROR
+2	OFPT_METER_MOD	msg.meter_bands.0	object	True			ERROR
+2	OFPT_METER_MOD	msg.meter_bands.0.type	OFPMBT_DROP	True			ERROR
+2	OFPT_METER_MOD	msg.meter_bands.0.rate	uint32	True			ERROR
+2	OFPT_METER_MOD	msg.meter_bands.0.burst_size	uint32	True			ERROR
 3	OFPT_HELLO	msg	object	False			
 3	OFPT_HELLO	msg.versions	array	False			
 3	OFPT_HELLO	msg.versions.0	uint8	False			
@@ -1379,6 +1465,49 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_MULTIPART_REPLY	msg.body.0.port_no	uint32	True			ERROR
 3	OFPT_MULTIPART_REPLY	msg.type	OFPMP_PORT_DESC	True			ERROR
 3	OFPT_MULTIPART_REPLY	msg.flags	uint16	True			ERROR
+3	OFPT_BARRIER_REQUEST	msg	null	False			
+3	OFPT_BARRIER_REPLY	msg	null	False			
+3	OFPT_QUEUE_GET_CONFIG_REQUEST	msg	object	True			
+3	OFPT_QUEUE_GET_CONFIG_REQUEST	msg.port	uint32	True			True
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg	object	True			
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues	array	True			
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0	object	False	msg.queues=null		
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.min_rate	uint16	True			True
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.queue_id	uint32	True			True
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.max_rate	uint16	True			True
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.properties	null	False			
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.port	uint32	True			True
+3	OFPT_QUEUE_GET_CONFIG_REPLY	msg.port	uint32	True			True
+3	OFPT_ROLE_REQUEST	msg	object	True			
+3	OFPT_ROLE_REQUEST	msg.role	uint32	True			True
+3	OFPT_ROLE_REQUEST	msg.generation_id	uint64	True			True
+3	OFPT_ROLE_REPLY	msg	object	True			
+3	OFPT_ROLE_REPLY	msg.role	uint32	True			True
+3	OFPT_ROLE_REPLY	msg.generation_id	uint64	True			True
+3	OFPT_GET_ASYNC_REQUEST	msg	null	True			ERROR
+3	OFPT_GET_ASYNC_REPLY	msg	object	True			ERROR
+3	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_master	uint32	True			ERROR
+3	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_slave	uint32	True			ERROR
+3	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_slave	uint32	True			ERROR
+3	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_master	uint32	True			ERROR
+3	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_master	uint32	True			ERROR
+3	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_slave	uint32	True			ERROR
+3	OFPT_SET_ASYNC	msg	object	True			ERROR
+3	OFPT_SET_ASYNC	msg.port_status_mask_master	uint32	True			ERROR
+3	OFPT_SET_ASYNC	msg.port_status_mask_slave	uint32	True			ERROR
+3	OFPT_SET_ASYNC	msg.flow_removed_mask_slave	uint32	True			ERROR
+3	OFPT_SET_ASYNC	msg.flow_removed_mask_master	uint32	True			ERROR
+3	OFPT_SET_ASYNC	msg.packet_in_mask_master	uint32	True			ERROR
+3	OFPT_SET_ASYNC	msg.packet_in_mask_slave	uint32	True			ERROR
+3	OFPT_METER_MOD	msg	object	True			ERROR
+3	OFPT_METER_MOD	msg.command	uint16	True			ERROR
+3	OFPT_METER_MOD	msg.flags	uint16	True			ERROR
+3	OFPT_METER_MOD	msg.meter_id	uint32	True			ERROR
+3	OFPT_METER_MOD	msg.meter_bands	array	True			ERROR
+3	OFPT_METER_MOD	msg.meter_bands.0	object	True			ERROR
+3	OFPT_METER_MOD	msg.meter_bands.0.type	OFPMBT_DROP	True			ERROR
+3	OFPT_METER_MOD	msg.meter_bands.0.rate	uint32	True			ERROR
+3	OFPT_METER_MOD	msg.meter_bands.0.burst_size	uint32	True			ERROR
 4	OFPT_HELLO	msg	object	False	msg.versions.0=4		
 4	OFPT_HELLO	msg.versions	array	False	msg.versions.0=4		
 4	OFPT_HELLO	msg.versions.0	uint8	False	msg.versions.0=4		True
@@ -1839,3 +1968,46 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_MULTIPART_REPLY	msg.body.0.port_no	uint32	True			True
 4	OFPT_MULTIPART_REPLY	msg.type	OFPMP_PORT_DESC	True			
 4	OFPT_MULTIPART_REPLY	msg.flags	uint16	True			True
+4	OFPT_BARRIER_REQUEST	msg	null	False			
+4	OFPT_BARRIER_REPLY	msg	null	False			
+4	OFPT_QUEUE_GET_CONFIG_REQUEST	msg	object	True			
+4	OFPT_QUEUE_GET_CONFIG_REQUEST	msg.port	uint32	True			True
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg	object	True			
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues	array	True			
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0	object	False	msg.queues=null		
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.min_rate	uint16	True			True
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.queue_id	uint32	True			True
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.max_rate	uint16	True			True
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.properties	null	False			
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.queues.0.port	uint32	True			True
+4	OFPT_QUEUE_GET_CONFIG_REPLY	msg.port	uint32	True			True
+4	OFPT_ROLE_REQUEST	msg	object	True			
+4	OFPT_ROLE_REQUEST	msg.role	uint32	True			True
+4	OFPT_ROLE_REQUEST	msg.generation_id	uint64	True			True
+4	OFPT_ROLE_REPLY	msg	object	True			
+4	OFPT_ROLE_REPLY	msg.role	uint32	True			True
+4	OFPT_ROLE_REPLY	msg.generation_id	uint64	True			True
+4	OFPT_GET_ASYNC_REQUEST	msg	null	False			
+4	OFPT_GET_ASYNC_REPLY	msg	object	True			
+4	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_master	uint32	True			True
+4	OFPT_GET_ASYNC_REPLY	msg.port_status_mask_slave	uint32	True			True
+4	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_slave	uint32	True			True
+4	OFPT_GET_ASYNC_REPLY	msg.flow_removed_mask_master	uint32	True			True
+4	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_master	uint32	True			True
+4	OFPT_GET_ASYNC_REPLY	msg.packet_in_mask_slave	uint32	True			True
+4	OFPT_SET_ASYNC	msg	object	True			
+4	OFPT_SET_ASYNC	msg.port_status_mask_master	uint32	True			True
+4	OFPT_SET_ASYNC	msg.port_status_mask_slave	uint32	True			True
+4	OFPT_SET_ASYNC	msg.flow_removed_mask_slave	uint32	True			True
+4	OFPT_SET_ASYNC	msg.flow_removed_mask_master	uint32	True			True
+4	OFPT_SET_ASYNC	msg.packet_in_mask_master	uint32	True			True
+4	OFPT_SET_ASYNC	msg.packet_in_mask_slave	uint32	True			True
+4	OFPT_METER_MOD	msg	object	True			
+4	OFPT_METER_MOD	msg.command	uint16	True			True
+4	OFPT_METER_MOD	msg.flags	uint16	True			True
+4	OFPT_METER_MOD	msg.meter_id	uint32	True			True
+4	OFPT_METER_MOD	msg.meter_bands	array	True			
+4	OFPT_METER_MOD	msg.meter_bands.0	object	False	msg.meter_bands=null		
+4	OFPT_METER_MOD	msg.meter_bands.0.type	OFPMBT_DROP	True			
+4	OFPT_METER_MOD	msg.meter_bands.0.rate	uint32	True			True
+4	OFPT_METER_MOD	msg.meter_bands.0.burst_size	uint32	True			True

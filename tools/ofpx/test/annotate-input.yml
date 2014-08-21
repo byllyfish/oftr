@@ -567,4 +567,95 @@ msg:
       peer: 0xffffffff
       curr_speed: 0xffffffff
       max_speed: 0xffffffff
-...
+---
+version: 0x04
+type: OFPT_BARRIER_REQUEST
+msg:
+---
+version: 0x04
+type: OFPT_BARRIER_REPLY
+msg:
+---
+version: 0x04
+type: OFPT_QUEUE_GET_CONFIG_REQUEST
+msg:
+  port: 0xffffffff
+---
+version: 0x04
+type: OFPT_QUEUE_GET_CONFIG_REPLY
+msg:
+  port: 0xffffffff
+  queues:
+    - queue_id: 0xffffffff
+      port: 0xffffffff
+      min_rate: 0xffff
+      max_rate: 0xffff
+      properties:
+---
+version: 0x04
+type: OFPT_ROLE_REQUEST
+msg:
+  role: 0xffffffff
+  generation_id: 0xffffffffffffffff
+---
+version: 0x04
+type: OFPT_ROLE_REPLY
+msg:
+  role: 0xffffffff
+  generation_id: 0xffffffffffffffff
+---
+version: 0x04
+type: OFPT_GET_ASYNC_REQUEST  # header only
+msg:  
+---
+version: 0x04
+type: OFPT_GET_ASYNC_REPLY
+msg:
+  packet_in_mask_master: 0xffffffff
+  packet_in_mask_slave: 0xffffffff
+  port_status_mask_master: 0xffffffff
+  port_status_mask_slave: 0xffffffff
+  flow_removed_mask_master: 0xffffffff
+  flow_removed_mask_slave: 0xffffffff
+---
+version: 0x04
+type: OFPT_SET_ASYNC
+msg:
+  packet_in_mask_master: 0xffffffff
+  packet_in_mask_slave: 0xffffffff
+  port_status_mask_master: 0xffffffff
+  port_status_mask_slave: 0xffffffff
+  flow_removed_mask_master: 0xffffffff
+  flow_removed_mask_slave: 0xffffffff
+---
+version: 0x04
+type: OFPT_METER_MOD
+msg:
+  command: 0xffff
+  flags: 0xffff
+  meter_id: 0xffffffff
+  meter_bands:
+    - type: OFPMBT_DROP
+      rate: 0xffffffff
+      burst_size: 0xffffffff
+#---
+# version: 0x05
+# type: OFPT_ROLE_STATUS
+# msg:
+# ---
+# version: 0x05
+# type: OFPT_TABLE_STATUS
+# msg:
+# ---
+# version: 0x05
+# type: OFPT_REQUEST_FORWARD
+# msg:
+# ---
+# version: 0x05
+# type: OFPT_BUNDLE_CONTROL
+# msg:
+# ---
+# version: 0x05
+# type: OFPT_BUNDLE_ADD_MESSAGE
+# msg:
+# ---
