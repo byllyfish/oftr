@@ -44,6 +44,7 @@ public:
   }
 
   Message(const void *data, size_t size) : channel_{nullptr} {
+    assert(size >= sizeof(Header));
     buf_.add(data, size);
     assert(header()->length() == size);
   }

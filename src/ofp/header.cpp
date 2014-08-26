@@ -92,7 +92,6 @@ OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
   }
 }
 
-
 bool Header::validateInput(UInt8 negotiatedVersion) const
 {
   // Check length field of the header. Since length includes header, it can't
@@ -114,4 +113,15 @@ bool Header::validateInput(UInt8 negotiatedVersion) const
   // N.B. The type field will be checked by transmogrify.
 
   return true;
+}
+
+/// Return true if `version, type` pair is valid. e.g. There is no v1 
+/// OFPT_METER_MOD so (1, OFPT_METER_MOD) returns false.
+bool Header::validateVersionAndType() const {
+  // We permit version 0 for OFPT_HELLO and OFPT_ERROR messages only.
+  if (version_ == 0) {
+    return (type_ == OFPT_HELLO) || (type_ == OFPT_ERROR);
+  }
+
+  return OFPT_UNSUPPORTED != translateType(OFP_VERSION_4, type_, version_);
 }

@@ -10,7 +10,7 @@ msg:
 ---
 type:            OFPT_ERROR
 xid:             0x00000000
-version:         0x04
+version:         0x01
 msg:             
   type:            0x0001
   code:            0x0001

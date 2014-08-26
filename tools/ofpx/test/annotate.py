@@ -261,7 +261,7 @@ class OFPDocument(object):
         return yaml.dump(self.doc)
 
     def output(self):
-        type = self.doc['type']
+        type = self.type()
         version = self.doc['version']
         for field in self.fields:
             row =[version, type, field.keypath, field.type, field.required, field.default(), field.effect(self.consequences), field.modified()]
@@ -272,7 +272,10 @@ class OFPDocument(object):
 
 def spawn(args, input):
     proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output = proc.communicate(input)[0]
+    output, stderr = proc.communicate(input)
+    assert proc.returncode >= 0 and "ofpx terminated with signal."
+    #if proc.returncode:
+    #    print >> sys.stderr, 'Output:\n' + stderr
     return (proc.returncode, output)
 
 def roundtrip(doc, omitField=None, modifyField=None, incrementField=None):

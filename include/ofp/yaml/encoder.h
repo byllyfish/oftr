@@ -57,6 +57,7 @@ private:
 	std::string error_;
     llvm::raw_string_ostream errorStream_;
     DatapathID datapathId_;
+    Header header_;
     ChannelFinder finder_;
     int lineNumber_ = 0;
     UInt8 auxiliaryId_ = 0;
@@ -65,7 +66,7 @@ private:
     static void diagnosticHandler(const llvm::SMDiagnostic &d, void *context);
     void addDiagnostic(const llvm::SMDiagnostic &d);
 
-    void encodeMsg(llvm::yaml::IO &io, Header &header);
+    void encodeMsg(llvm::yaml::IO &io);
 
     static Channel *NullChannelFinder(const DatapathID &datapathId);
 
@@ -87,9 +88,11 @@ struct MappingTraits<ofp::yaml::Encoder> {
     {
         using namespace ofp;
 
-    	Header header{OFPT_UNSUPPORTED};
+    	//Header header{OFPT_UNSUPPORTED};
+        Header &header = encoder.header_;
         header.setVersion(0);
-        
+        header.setType(OFPT_UNSUPPORTED);
+
         io.mapOptional("version", header.version_);
     	io.mapRequired("type", header.type_);
     	io.mapOptional("xid", header.xid_);
@@ -98,7 +101,18 @@ struct MappingTraits<ofp::yaml::Encoder> {
         UInt8 defaultAuxId = 0;
         io.mapOptional("auxiliary_id", encoder.auxiliaryId_, defaultAuxId);
 
-    	encoder.encodeMsg(io, header);
+    	encoder.encodeMsg(io);
+    }
+
+    static StringRef validate(IO &io, ofp::yaml::Encoder &encoder) {
+        if (encoder.header_.type() == ofp::OFPT_UNSUPPORTED) {
+            return "";
+        }
+
+        if (!encoder.header_.validateVersionAndType()) {
+            return "invalid combination of version and type";
+        }
+        return "";
     }
 };
 

@@ -52,7 +52,13 @@ void ErrorBuilder::setErrorData(const Message *message) {
 void ErrorBuilder::send(Writable *channel) {
   size_t msgLen = sizeof(msg_) + data_.size();
 
-  msg_.header_.setVersion(channel->version());
+  // Send v1 error message when channel version is unknown.
+  UInt8 version = channel->version();
+  if (version == 0) {
+    version = OFP_VERSION_1;
+  }
+
+  msg_.header_.setVersion(version);
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
   msg_.header_.setXid(channel->nextXid());
 

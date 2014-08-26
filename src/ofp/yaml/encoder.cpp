@@ -50,18 +50,28 @@ namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked, int lineNumber, ChannelFinder finder)
-    : errorStream_{error_}, finder_{finder}, lineNumber_{lineNumber}, matchPrereqsChecked_{matchPrereqsChecked} {
-  if (input.empty()) {
-    error_ = "No input.";
-  } else {
-    llvm::yaml::Input yin{input, this, Encoder::diagnosticHandler, this};
-    if (!yin.error()) {
-      yin >> *this;
-    }
-    if (yin.error()) {
-      channel_.clear();
-    }
+    : errorStream_{error_}, header_{OFPT_UNSUPPORTED}, finder_{finder}, lineNumber_{lineNumber}, matchPrereqsChecked_{matchPrereqsChecked} {
+
+  llvm::yaml::Input yin{input, this, Encoder::diagnosticHandler, this};
+  if (!yin.error()) {
+    yin >> *this;
   }
+
+  if (yin.error()) {
+    // Make sure error string is set. There won't be an error string if the 
+    // document is empty.
+    if (error().empty()) {
+      errorStream_ << "YAML:" << (lineNumber_+1) << ":1: error: not a document";
+    }
+    channel_.clear();
+
+  } else if (channel_.size() < sizeof(Header)) {
+    // If the message isn't implemented, no output will be produced and there
+    // will be no error.
+    errorStream_ << "YAML:" << (lineNumber_+1) << ":1: error: no output produced; check implementation status";
+  }
+
+  assert(channel_.size() >= sizeof(Header) || !error().empty());
 }
 
 void Encoder::diagnosticHandler(const llvm::SMDiagnostic &d, void *context) {
@@ -74,7 +84,7 @@ void Encoder::addDiagnostic(const llvm::SMDiagnostic &d) {
     diag.print("", errorStream_, false);
   }
 
-void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
+void Encoder::encodeMsg(llvm::yaml::IO &io) {
   // At this point, we know the datapathID. The YAML message may not contain
   // the version and xid, and even if it does, we still need to override the
   // version if the channel corresponds to an actual channel. Use the channel
@@ -83,27 +93,26 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
 
   Channel *actualChannel = finder_(datapathId_);
   if (actualChannel) {
-    channel_.setVersion(actualChannel->version());
-    if (header.xid() == 0) {
-      channel_.setNextXid(actualChannel->nextXid());
+    // Channel version will override any version specified by input.
+    header_.setVersion(actualChannel->version());
+    if (header_.xid() == 0) {
+      header_.setXid(actualChannel->nextXid());
     }
-  } else {
-    // If encodeMsg is called with a header version of 0, it means
-    // the latest version -- except for Hello messages which may look at
-    // the version bitmap in the payload.
-    channel_.setVersion(header.version() ? header.version() : OFP_VERSION_LAST);
-    channel_.setNextXid(header.xid());
   }
 
-  switch (header.type()) {
+  // Set the version and xid for the memory channel.
+  channel_.setVersion(header_.version());
+  channel_.setNextXid(header_.xid());
+
+  switch (header_.type()) {
   case Hello::type() : {
-    HelloBuilder hello{header.version()};
+    HelloBuilder hello{header_.version()};
     io.mapOptional("msg", hello);
     hello.send(&channel_);
     break;
   }
   case Error::type() : {
-    ErrorBuilder error{header.xid()};
+    ErrorBuilder error{header_.xid()};
     io.mapOptional("msg", error);
     error.send(&channel_);
     break;
@@ -115,7 +124,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
     break;
   }
   case EchoReply::type() : {
-    EchoReplyBuilder echo{header.xid()};
+    EchoReplyBuilder echo{header_.xid()};
     io.mapOptional("msg", echo);
     echo.send(&channel_);
     break;
@@ -133,7 +142,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
     break;
   }
   case FeaturesReply::type() : {
-    FeaturesReplyBuilder features{header.xid()};
+    FeaturesReplyBuilder features{header_.xid()};
     io.mapRequired("msg", features);
     features.send(&channel_);
     break;
@@ -235,13 +244,13 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
     break;
   }
   case RoleReply::type() : {
-    RoleReplyBuilder roleReply{header.xid()};
+    RoleReplyBuilder roleReply{header_.xid()};
     io.mapRequired("msg", roleReply);
     roleReply.send(&channel_);
     break;
   }
   case GetAsyncReply::type() : {
-    GetAsyncReplyBuilder asyncReply{header.xid()};
+    GetAsyncReplyBuilder asyncReply{header_.xid()};
     io.mapRequired("msg", asyncReply);
     asyncReply.send(&channel_);
     break;
@@ -278,7 +287,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io, Header &header) {
   }
   default:
     log::info("yaml::Encoder::encodeMsg: Unsupported message type:",
-              int(header.type()));
+              int(header_.type()));
     break;
   }
 }

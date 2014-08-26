@@ -49,6 +49,7 @@ public:
   static OFPType translateType(UInt8 version, UInt8 type, UInt8 newVersion);
 
   bool validateInput(UInt8 negotiatedVersion) const;
+  bool validateVersionAndType() const;
 
 private:
   Big8 version_ = 0; // OFP_VERSION.

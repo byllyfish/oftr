@@ -26,7 +26,11 @@ using namespace ofp::yaml;
 
 static void testEncoderSuccess(const char *yaml, size_t size, const char *hex) {
   Encoder encoder{yaml};
-  EXPECT_EQ("", encoder.error());
+  if (size) {
+    EXPECT_EQ("", encoder.error());
+  } else {
+    EXPECT_NE("", encoder.error());
+  }
   EXPECT_EQ(size, encoder.size());
   EXPECT_HEX(hex, encoder.data(), encoder.size());
 }

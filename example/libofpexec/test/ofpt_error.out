@@ -6,7 +6,7 @@ params:
 ---
 event:           LIBOFP_LOOPBACK
 params:          
-  data:            0401001100000000000100010123456789
+  data:            0101001100000000000100010123456789
 ...
 ---
 event:           LIBOFP_LOOPBACK
