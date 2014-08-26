@@ -170,7 +170,18 @@ void Input::endMapping() {
 unsigned Input::beginSequence() {
   if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode)) {
     return SQ->Entries.size();
+  } else if (dyn_cast<EmptyHNode>(CurrentNode)) {
+    return 0;
   }
+
+  // Treat case where there's a scalar "null" value as an empty sequence.
+  if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
+    StringRef val = SN->value();
+    if (val.equals("null") || val.equals("~"))
+      return 0;
+  }
+  // Any other type of HNode is an error.
+  setError(CurrentNode, "not a sequence");
   return 0;
 }
 
@@ -193,10 +204,7 @@ void Input::postflightElement(void *SaveInfo) {
 }
 
 unsigned Input::beginFlowSequence() {
-  if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode)) {
-    return SQ->Entries.size();
-  }
-  return 0;
+  return beginSequence();
 }
 
 bool Input::preflightFlowElement(unsigned index, void *&SaveInfo) {
@@ -341,7 +349,13 @@ Input::HNode *Input::createHNodes(Node *N) {
         memcpy(Buf, &StringStorage[0], Len);
         KeyStr = StringRef(Buf, Len);
       }
-      HNode *ValueHNode = this->createHNodes(i->getValue());
+      Node *ValueNode = i->getValue();
+      if (!ValueNode) {
+        assert(Strm->failed() && "Root is NULL iff parsing failed");
+        EC = make_error_code(errc::invalid_argument);
+        break;
+      }
+      HNode *ValueHNode = this->createHNodes(ValueNode);
       if (EC)
         break;
       mapHNode->Mapping[KeyStr] = ValueHNode;

@@ -13,6 +13,12 @@ struct TestStruct {
     bool c;
 };
 
+struct TestContainer {
+    std::vector<TestStruct> d;
+};
+
+LLVM_YAML_IS_SEQUENCE_VECTOR(TestStruct);
+
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>
 
@@ -23,6 +29,14 @@ struct MappingTraits<TestStruct> {
         io.mapRequired("a", item.a);
         io.mapRequired("b", item.b);
         io.mapRequired("c", item.c);
+    }
+};
+
+template <>
+struct MappingTraits<TestContainer> {
+    static void mapping(llvm::yaml::IO &io, TestContainer &item)
+    {
+        io.mapRequired("d", item.d);
     }
 };
 
@@ -41,6 +55,47 @@ inline void testFailed(const char *condition, const char *file, int linenum)
         if (!(condition))                                                      \
             testFailed(#condition, __FILE__, __LINE__);                        \
     }
+
+
+
+static void test_YamlParser_MissingEndQuote() {
+
+    {
+        const std::string badYaml1 = 
+R"""(---
+test:
+  b:    'no end quote in value position
+---
+)""";
+
+        llvm::yaml::Input yin(badYaml1);
+        EXPECT(!yin.error());
+
+        TestStruct t;
+        yin >> t;
+
+        EXPECT(yin.error());
+    }
+
+    {
+        const std::string badYaml2 = 
+R"""(---
+test:
+  a:  no end quote in key position
+ 'b:  3
+---
+)""";
+
+        llvm::yaml::Input yin(badYaml2);
+        EXPECT(!yin.error());
+
+        TestStruct t;
+        yin >> t;
+
+        EXPECT(yin.error());
+    }
+}
+
 
 int main()
 {
@@ -89,6 +144,124 @@ c:               true
         EXPECT(t.b == "it still works");
         EXPECT(t.c == true);
     }
+
+    {
+        const char *yml = R"""(---
+d:
+  a: -54
+  b: it works
+  c: true
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(yin.error());
+    }
+
+   {
+        const char *yml = R"""(---
+d: []
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(!yin.error());
+    }
+
+
+   {
+        const char *yml = R"""(---
+d: 
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(!yin.error());
+    }
+
+   {
+        const char *yml = R"""(---
+d: !!null
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(!yin.error());
+    }
+
+   {
+        const char *yml = R"""(---
+d: null 
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(!yin.error());
+    }
+
+   {
+        const char *yml = R"""(---
+d: ~ 
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(!yin.error());
+    }
+
+   {
+        const char *yml = R"""(---
+d: 'null'
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(!yin.error());
+    }
+
+   {
+        const char *yml = R"""(---
+d: 3
+...
+)""";
+
+        TestContainer t;
+        llvm::yaml::Input yin(yml);
+        yin >> t;
+
+        EXPECT(t.d.size() == 0);
+        EXPECT(yin.error());
+    }
+
+    test_YamlParser_MissingEndQuote();
 
     return 0;
 }
