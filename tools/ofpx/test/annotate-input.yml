@@ -26,7 +26,7 @@ type: OFPT_EXPERIMENTER
 msg:
   experimenter: 0xffffffff
   exp_type: 0xffffffff
-  experimenter_data: 'ffffffff'
+  data: 'ffffffff'
 ---
 version: 0x04
 type: OFPT_FEATURES_REQUEST
@@ -85,7 +85,7 @@ msg:
     - field: OFB_ETH_DST
       value: 'ff:ff:ff:ff:ff:ff'
       mask: 'ff:ff:ff:ff:ff:ff'
-  enet_frame: 'ffffffff'
+  data: 'ffffffff'
 ---
 version: 0x04
 type: OFPT_FLOW_REMOVED
@@ -131,7 +131,7 @@ msg:
     - action: OFPAT_OUTPUT
       port: 0xffffffff
       maxlen: 0xffff
-  enet_frame: 'ffffffff'
+  data: 'ffffffff'
 ---
 version: 0x04
 type: OFPT_FLOW_MOD

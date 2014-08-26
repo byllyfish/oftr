@@ -37,7 +37,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
     Decoder decoder{&msg};
 
     EXPECT_EQ("", decoder.error());
-    EXPECT_EQ(yaml, decoder.result());
+    EXPECT_EQ(yaml, decoder.result().str());
 
     Encoder encoder{decoder.result()};
 
@@ -49,7 +49,6 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
     // JSON roundtrip test
     Decoder decoder{&msg, true};
     EXPECT_EQ("", decoder.error());
-    log::debug(decoder.result());
 
     Encoder encoder{decoder.result()};
 
@@ -102,7 +101,7 @@ TEST(decoder, experimenterv4) {
                    "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
                    "0x00000018\nversion:         0x04\nmsg:             \n  "
                    "experimenter:    0xDEADBEEF\n  exp_type:        "
-                   "0xAABBCCDD\n  experimenter_data: ABCDEF0123456789\n...\n");
+                   "0xAABBCCDD\n  data:            ABCDEF0123456789\n...\n");
 }
 
 TEST(decoder, experimenterv1) {
@@ -110,7 +109,7 @@ TEST(decoder, experimenterv1) {
                    "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
                    "0x0000001B\nversion:         0x01\nmsg:             \n  "
                    "experimenter:    0xDEADBEEF\n  exp_type:        0x00000000\n  "
-                   "experimenter_data: ABCDEF0123456789\n...\n");
+                   "data:            ABCDEF0123456789\n...\n");
 }
 
 TEST(decoder, experimenterv2) {
@@ -118,7 +117,7 @@ TEST(decoder, experimenterv2) {
                    "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
                    "0x000000FF\nversion:         0x02\nmsg:             \n  "
                    "experimenter:    0xDEADBEEF\n  exp_type:        0x00000000\n  "
-                   "experimenter_data: ABCDEF0123456789\n...\n");
+                   "data:            ABCDEF0123456789\n...\n");
 }
 
 TEST(decoder, featuresrequest) {
@@ -580,14 +579,14 @@ TEST(decoder, packetinv4) {
                    "80000004555555558000020466666666800004087777777777777777000"
                    "0FFFFFFFFFFFF000000000001080600010800060400010000000000010A"
                    "0000010000000000000A000002",
-                   "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:       0x33333333\n  total_len:       0x4444\n  in_port:         0x55555555\n  in_phy_port:     0x66666666\n  metadata:        0x7777777777777777\n  reason:          OFPR_ACTION\n  table_id:        0x88\n  cookie:          0x9999999999999999\n  match:           \n    - field:           OFB_IN_PORT\n      value:           0x55555555\n    - field:           OFB_IN_PHY_PORT\n      value:           0x66666666\n    - field:           OFB_METADATA\n      value:           0x7777777777777777\n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
+                   "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:       0x33333333\n  total_len:       0x4444\n  in_port:         0x55555555\n  in_phy_port:     0x66666666\n  metadata:        0x7777777777777777\n  reason:          OFPR_ACTION\n  table_id:        0x88\n  cookie:          0x9999999999999999\n  match:           \n    - field:           OFB_IN_PORT\n      value:           0x55555555\n    - field:           OFB_IN_PHY_PORT\n      value:           0x66666666\n    - field:           OFB_METADATA\n      value:           0x7777777777777777\n  data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
 }
 
 TEST(decoder, packetinv1) {
   testDecodeEncode("010A003C0000000233333333444455550100FFFFFFFFFFFF00000000000"
                    "1080600010800060400010000000000010A0000010000000000000A0000"
                    "02",
-                   "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000002\nversion:         0x01\nmsg:             \n  buffer_id:       0x33333333\n  total_len:       0x4444\n  in_port:         0x00005555\n  in_phy_port:     0x00000000\n  metadata:        0x0000000000000000\n  reason:          OFPR_ACTION\n  table_id:        0x00\n  cookie:          0x0000000000000000\n  match:           \n  enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
+                   "---\ntype:            OFPT_PACKET_IN\nxid:             0x00000002\nversion:         0x01\nmsg:             \n  buffer_id:       0x33333333\n  total_len:       0x4444\n  in_port:         0x00005555\n  in_phy_port:     0x00000000\n  metadata:        0x0000000000000000\n  reason:          OFPR_ACTION\n  table_id:        0x00\n  cookie:          0x0000000000000000\n  match:           \n  data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
 }
 
 TEST(decoder, packetoutv4) {
@@ -600,7 +599,7 @@ TEST(decoder, packetoutv4) {
       "0x33333333\n  in_port:         0x44444444\n  actions:         \n    - "
       "action:          OFPAT_OUTPUT\n      port:            0x00000005\n      maxlen:  "
       "        0x0014\n    - action:          OFPAT_SET_FIELD\n      field:        "
-      "   OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      "
+      "   OFB_IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
 }
@@ -615,7 +614,7 @@ TEST(decoder, packetoutv1) {
       "0x33333333\n  in_port:         0x00004444\n  actions:         \n    - action: "
       "         OFPAT_OUTPUT\n      port:            0x00000005\n      maxlen:          "
       "0x0014\n    - action:          OFPAT_SET_FIELD\n      field:           "
-      "OFB_IPV4_DST\n      value:           192.168.1.1\n  enet_frame:      "
+      "OFB_IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n";
 
@@ -632,7 +631,7 @@ TEST(decoder, packetoutv1) {
   Decoder decoder{&msg};
 
   EXPECT_EQ("", decoder.error());
-  EXPECT_EQ(yaml, decoder.result());
+  EXPECT_EQ(yaml, decoder.result().str());
 
   Encoder encoder{decoder.result()};
 

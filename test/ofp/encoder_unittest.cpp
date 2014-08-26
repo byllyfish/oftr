@@ -169,7 +169,7 @@ xid: 0x18
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  experimenter_data: 'ABCDEF0123456789'
+  data: 'ABCDEF0123456789'
 )""";
 
   testEncoderSuccess(input, 0x18,
@@ -184,7 +184,7 @@ xid: 0x1B
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  experimenter_data: 'ABCDEF0123456789'
+  data: 'ABCDEF0123456789'
 )""";
 
   testEncoderSuccess(input, 0x14, "010400140000001BDEADBEEFABCDEF0123456789");
@@ -198,7 +198,7 @@ xid: 0xFF
 msg:
   experimenter: 0xDEADBEEF
   exp_type: 0xAABBCCDD
-  experimenter_data: 'ABCDEF0123456789'
+  data: 'ABCDEF0123456789'
 )""";
 
   testEncoderSuccess(input, 0x18,
@@ -1112,7 +1112,7 @@ TEST(encoder, packetinv1) {
         table_id:        0x88
         cookie:          0x9999999999999999
         match:
-        enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
   Encoder encoder{input};
@@ -1138,7 +1138,7 @@ TEST(encoder, packetinv4) {
         table_id:        0x88
         cookie:          0x9999999999999999
         match:
-        enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
   Encoder encoder{input};
@@ -1166,7 +1166,7 @@ TEST(encoder, packetoutv1) {
           - action: OFPAT_SET_FIELD
             field:  OFB_IPV4_DST
             value:  192.168.1.1
-        enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
   Encoder encoder{input};
@@ -1193,7 +1193,7 @@ TEST(encoder, packetoutv4) {
           - action: OFPAT_SET_FIELD
             field:  OFB_IPV4_DST
             value:  192.168.1.1
-        enet_frame:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
 
   Encoder encoder{input};

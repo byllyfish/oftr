@@ -5,7 +5,7 @@ version:         0x01
 msg:             
   experimenter:    0x01020304
   exp_type:        0x00000000
-  experimenter_data: 0123456789
+  data:            0123456789
 ...
 ---
 type:            OFPT_EXPERIMENTER
@@ -14,5 +14,5 @@ version:         0x04
 msg:             
   experimenter:    0x01020304
   exp_type:        0x10203040
-  experimenter_data: 0123456789
+  data:            0123456789
 ...

@@ -34,7 +34,7 @@ namespace yaml {
 //   buffer_id: <UInt32>      { Required }
 //   in_port: <UInt32>        { Required }
 //   actions: [ <Action> ]    { Required }
-//   enet_frame: <Bytes>      { Required }
+//   data: <Bytes>            { Required }
 //...
 
 template <>
@@ -53,7 +53,7 @@ struct MappingTraits<ofp::PacketOut> {
     io.mapRequired("actions", actions);
 
     ByteRange enetFrame = msg.enetFrame();
-    io.mapRequired("enet_frame", enetFrame);
+    io.mapRequired("data", enetFrame);
   }
 };
 
@@ -67,7 +67,7 @@ struct MappingTraits<ofp::PacketOutBuilder> {
     io.mapRequired("in_port", msg.msg_.inPort_);
 
     io.mapRequired("actions", msg.actions_);
-    io.mapRequired("enet_frame", msg.enetFrame_);
+    io.mapRequired("data", msg.enetFrame_);
   }
 };
 

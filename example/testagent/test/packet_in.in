@@ -11,7 +11,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      3333FFC69F598A6769C69F5986DD
+  data:            3333FFC69F598A6769C69F5986DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -26,7 +26,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      3333FFDFF442FA9A44DFF44286DD
+  data:            3333FFDFF442FA9A44DFF44286DD
 ...
 ---
 type:            OFPT_PORT_STATUS
@@ -60,7 +60,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      3333000000028A6769C69F5986DD
+  data:            3333000000028A6769C69F5986DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -75,7 +75,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      333300000002FA9A44DFF44286DD
+  data:            333300000002FA9A44DFF44286DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -90,7 +90,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      333300000016FA9A44DFF44286DD
+  data:            333300000016FA9A44DFF44286DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -105,7 +105,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      3333000000168A6769C69F5986DD
+  data:            3333000000168A6769C69F5986DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -120,7 +120,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      3333000000028A6769C69F5986DD
+  data:            3333000000028A6769C69F5986DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -135,7 +135,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      333300000002FA9A44DFF44286DD
+  data:            333300000002FA9A44DFF44286DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -150,7 +150,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      3333000000028A6769C69F5986DD
+  data:            3333000000028A6769C69F5986DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -165,7 +165,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      333300000002FA9A44DFF44286DD
+  data:            333300000002FA9A44DFF44286DD
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -180,7 +180,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      FFFFFFFFFFFFFA9A44DFF4420806
+  data:            FFFFFFFFFFFFFA9A44DFF4420806
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -195,7 +195,7 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      FA9A44DFF4428A6769C69F590806
+  data:            FA9A44DFF4428A6769C69F590806
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -210,5 +210,5 @@ msg:
   reason:          OFPR_NO_MATCH
   table_id:        0
   cookie:          0
-  enet_frame:      8A6769C69F59FA9A44DFF4420800
+  data:            8A6769C69F59FA9A44DFF4420800
 ...

@@ -66,7 +66,7 @@ def flood(ofp, event):
           - action: OFPAT_OUTPUT
             port:   0xfffffffb
             maxlen: 0
-        enet_frame:     ''
+        data:     ''
 
 ...
 '''.format(event.datapath_id, event.msg.buffer_id, event.msg.in_port)
@@ -82,7 +82,7 @@ def drop(ofp, event):
         buffer_id:       {}
         in_port:         {}
         actions:       []
-        enet_frame:    ''
+        data:    ''
 
 ...
 '''.format(event.datapath_id, event.msg.buffer_id, event.msg.in_port)
@@ -124,9 +124,9 @@ def addFlow(ofp, event, ethSource, ethDest, outPort):
 
 def handlePacketIn(ofp, event):
     print 'handlePacketIn'
-    ethDest = event.msg.enet_frame[0:12]
-    ethSource = event.msg.enet_frame[12:24]
-    ethType = event.msg.enet_frame[24:28]
+    ethDest = event.msg.data[0:12]
+    ethSource = event.msg.data[12:24]
+    ethType = event.msg.data[24:28]
 
     if not isMulticast(ethSource):
         key = event.datapath_id + ethSource

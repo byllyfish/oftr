@@ -34,7 +34,7 @@ namespace yaml {
 // msg:
 //   experimenter: <UInt32>      { Required }
 //   exp_type: <UInt32>          { Required }
-//   experimenter_data: <Bytes>  { Required }
+//   data: <Bytes>  { Required }
 //...
 
 template <>
@@ -46,7 +46,7 @@ struct MappingTraits<ofp::Experimenter> {
     ofp::ByteRange data = msg.expData();
     io.mapRequired("experimenter", experimenter);
     io.mapRequired("exp_type", expType);
-    io.mapRequired("experimenter_data", data);
+    io.mapRequired("data", data);
   }
 };
 
@@ -59,7 +59,7 @@ struct MappingTraits<ofp::ExperimenterBuilder> {
     ofp::ByteList data;
     io.mapRequired("experimenter", experimenter);
     io.mapRequired("exp_type", expType);
-    io.mapRequired("experimenter_data", data);
+    io.mapRequired("data", data);
     msg.setExperimenter(experimenter);
     msg.setExpType(expType);
     msg.setExpData(data.data(), data.size());

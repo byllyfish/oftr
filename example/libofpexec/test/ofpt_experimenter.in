@@ -4,12 +4,12 @@ version: 1
 msg:
   experimenter: 0x01020304
   exp_type: 0x10203040
-  experimenter_data: '0123456789'
+  data: '0123456789'
 ---
 type: OFPT_EXPERIMENTER
 version: 4
 msg:
   experimenter: 0x01020304
   exp_type: 0x10203040
-  experimenter_data: '0123456789'
+  data: '0123456789'
 ---
