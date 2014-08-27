@@ -65,7 +65,7 @@ def flood(ofp, event):
         actions:
           - action: OFPAT_OUTPUT
             port:   0xfffffffb
-            maxlen: 0
+            max_len: 0
         data:     ''
 
 ...
@@ -117,7 +117,7 @@ def addFlow(ofp, event, ethSource, ethDest, outPort):
             actions:
               - action: OFPAT_OUTPUT
                 port:   {}
-                maxlen: 0
+                max_len: 0
 ...
 '''.format(event.datapath_id, event.msg.buffer_id, event.msg.in_port, ethSource, ethDest, outPort)
 

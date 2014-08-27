@@ -130,7 +130,7 @@ msg:
   actions:
     - action: OFPAT_OUTPUT
       port: 0xffffffff
-      maxlen: 0xffff
+      max_len: 0xffff
   data: 'ffffffff'
 ---
 version: 0x04
@@ -156,7 +156,7 @@ msg:
       actions:
         - action: OFPAT_OUTPUT
           port: 0xffffffff
-          maxlen: 0xffff
+          max_len: 0xffff
 ---
 version: 0x04
 type: OFPT_GROUP_MOD
@@ -171,7 +171,7 @@ msg:
       actions:
         - action: OFPAT_OUTPUT
           port: 0xffffffff
-          maxlen: 0xffff
+          max_len: 0xffff
 ---
 version: 0x04
 type: OFPT_PORT_MOD
@@ -248,7 +248,7 @@ msg:
           actions:
             - action: OFPAT_OUTPUT
               port: 0xffffffff
-              maxlen: 0xffff
+              max_len: 0xffff
 ---
 version: 0x04
 type: OFPT_MULTIPART_REQUEST

@@ -575,7 +575,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
               actions:
                  - action: OFPAT_OUTPUT
                    port: 1
-                   maxlen: 0xFFFF
+                   max_len: 0xFFFF
                  - action: OFPAT_SET_NW_TTL
                    ttl: 64
    )""";
@@ -617,7 +617,7 @@ TEST(encoder, ofmp_flowreply_v1) {
               actions:
                  - action: OFPAT_OUTPUT
                    port: 0xEEEEEEEE
-                   maxlen: 0xFFFF
+                   max_len: 0xFFFF
    )""";
 
   Encoder encoder{input};
@@ -655,7 +655,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
               actions:
                  - action: OFPAT_OUTPUT
                    port: 0xEEEEEEEE
-                   maxlen: 0xFFFF
+                   max_len: 0xFFFF
         - table_id: 0x11
           duration_sec: 0x22
           duration_nsec: 0x33 
@@ -678,7 +678,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
               actions:
                  - action: OFPAT_OUTPUT
                    port: 0xEEEEEEEE
-                   maxlen: 0xFFFF
+                   max_len: 0xFFFF
    )""";
 
   testEncoderSuccess(
@@ -1162,7 +1162,7 @@ TEST(encoder, packetoutv1) {
         actions:
           - action: OFPAT_OUTPUT
             port: 5
-            maxlen: 20
+            max_len: 20
           - action: OFPAT_SET_FIELD
             field:  OFB_IPV4_DST
             value:  192.168.1.1
@@ -1189,7 +1189,7 @@ TEST(encoder, packetoutv4) {
         actions:
           - action: OFPAT_OUTPUT
             port: 5
-            maxlen: 20
+            max_len: 20
           - action: OFPAT_SET_FIELD
             field:  OFB_IPV4_DST
             value:  192.168.1.1
@@ -1301,7 +1301,7 @@ TEST(encoder, groupmodv4) {
             actions:
               - action: OFPAT_OUTPUT
                 port: 5
-                maxlen: 20
+                max_len: 20
               - action: OFPAT_SET_FIELD
                 field:  OFB_IPV4_DST
                 value:  192.168.1.1
@@ -1342,7 +1342,7 @@ TEST(encoder, groupmodv2) {
             actions:
               - action: OFPAT_OUTPUT
                 port: 5
-                maxlen: 20
+                max_len: 20
               - action: OFPAT_SET_FIELD
                 field:  OFB_IPV4_DST
                 value:  192.168.1.1

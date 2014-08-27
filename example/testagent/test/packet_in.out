@@ -52,7 +52,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -66,7 +66,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -80,7 +80,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -94,7 +94,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -108,7 +108,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -122,7 +122,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -136,7 +136,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -150,7 +150,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -164,7 +164,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -178,7 +178,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -192,7 +192,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0xFFFFFFFB
-      maxlen:          0x0000
+      max_len:         0x0000
   data:            ''
 ...
 ---
@@ -224,7 +224,7 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000002
-          maxlen:          0x0000
+          max_len:         0x0000
 ...
 ---
 type:            OFPT_FLOW_MOD
@@ -255,5 +255,5 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000001
-          maxlen:          0x0000
+          max_len:         0x0000
 ...

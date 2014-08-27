@@ -317,7 +317,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "OFB_IN_PORT\n          value:           0x0000DDDD\n      instructions:    "
       "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
-      "           0x0000EEEE\n              maxlen:          0xFFFF\n...\n");
+      "           0x0000EEEE\n              max_len:         0xFFFF\n...\n");
 }
 
 TEST(decoder, ofmp_flowreply2_v1) {
@@ -335,7 +335,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "OFB_IN_PORT\n          value:           0x00005678\n      instructions:    "
       "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
-      "           0x0000EEEE\n              maxlen:          0xFFFF\n    - table_id: "
+      "           0x0000EEEE\n              max_len:         0xFFFF\n    - table_id: "
       "       0x11\n      duration_sec:    0x00000022\n      duration_nsec:   "
       "0x00000033\n      priority:        0x0044\n      idle_timeout:    "
       "0x0055\n      hard_timeout:    0x0066\n      flags:           0x0000\n  "
@@ -347,7 +347,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "OFB_ETH_DST\n          value:           'aa:bb:cc:dd:ee:ff'\n      "
       "instructions:    \n        - instruction:     OFPIT_APPLY_ACTIONS\n     "
       "     actions:         \n            - action:          OFPAT_OUTPUT\n   "
-      "           port:            0x0000EEEE\n              maxlen:          "
+      "           port:            0x0000EEEE\n              max_len:         "
       "0xFFFF\n...\n");
 }
 
@@ -597,7 +597,7 @@ TEST(decoder, packetoutv4) {
       "---\ntype:            OFPT_PACKET_OUT\nxid:             "
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:       "
       "0x33333333\n  in_port:         0x44444444\n  actions:         \n    - "
-      "action:          OFPAT_OUTPUT\n      port:            0x00000005\n      maxlen:  "
+      "action:          OFPAT_OUTPUT\n      port:            0x00000005\n      max_len: "
       "        0x0014\n    - action:          OFPAT_SET_FIELD\n      field:        "
       "   OFB_IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
@@ -612,7 +612,7 @@ TEST(decoder, packetoutv1) {
       "---\ntype:            OFPT_PACKET_OUT\nxid:             "
       "0x00000001\nversion:         0x01\nmsg:             \n  buffer_id:       "
       "0x33333333\n  in_port:         0x00004444\n  actions:         \n    - action: "
-      "         OFPAT_OUTPUT\n      port:            0x00000005\n      maxlen:          "
+      "         OFPAT_OUTPUT\n      port:            0x00000005\n      max_len:         "
       "0x0014\n    - action:          OFPAT_SET_FIELD\n      field:           "
       "OFB_IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
@@ -686,7 +686,7 @@ TEST(decoder, groupmodv4) {
       "buckets:         \n    - weight:          0x5555\n      watch_port:      "
       "0x66666666\n      watch_group:     0x77777777\n      actions:         "
       "\n        - action:          OFPAT_OUTPUT\n          port:            "
-      "0x00000005\n          maxlen:          0x0014\n        - action:          "
+      "0x00000005\n          max_len:         0x0014\n        - action:          "
       "OFPAT_SET_FIELD\n          field:           OFB_IPV4_DST\n          "
       "value:           192.168.1.1\n    - weight:          0x8888\n      "
       "watch_port:      0x99999999\n      watch_group:     0xAAAAAAAA\n      "

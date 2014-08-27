@@ -92,7 +92,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
 				Hex32 port = action->port();
 				Hex16 maxlen = action->maxlen();
 				io.mapRequired("port", port);
-				io.mapRequired("maxlen", maxlen);
+				io.mapRequired("max_len", maxlen);
 				break;
 			}
 			case AT_SET_MPLS_TTL::type(): {
@@ -225,7 +225,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 				UInt32 port;
 				UInt16 maxlen;
 				io.mapRequired("port", port);
-				io.mapRequired("maxlen", maxlen);
+				io.mapRequired("max_len", maxlen);
 				AT_OUTPUT action{port, maxlen};
 				list.add(action);
 				break;
