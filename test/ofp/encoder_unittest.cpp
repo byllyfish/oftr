@@ -1976,7 +1976,7 @@ TEST(encoder, meter_mod_v4) {
         command: 1
         flags: 0x2222
         meter_id: 0x33333333
-        meter_bands:
+        bands:
           - type: OFPMBT_DROP
             rate: 0x44444444
             burst_size: 0x55555555

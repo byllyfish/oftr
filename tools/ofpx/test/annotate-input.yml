@@ -634,7 +634,7 @@ msg:
   command: 0xffff
   flags: 0xffff
   meter_id: 0xffffffff
-  meter_bands:
+  bands:
     - type: OFPMBT_DROP
       rate: 0xffffffff
       burst_size: 0xffffffff

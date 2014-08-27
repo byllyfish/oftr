@@ -148,9 +148,9 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
                 case OFPAT_EXPERIMENTER: {
                     const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();
                     Hex32 experimenterid = action->experimenterid();
-                    io.mapRequired("experimenter_id", experimenterid);
+                    io.mapRequired("experimenter", experimenterid);
                     ByteRange value = action->value();
-                    io.mapRequired("value", value);
+                    io.mapRequired("data", value);
                     break;
                 }
                 case OFPAT_SET_FIELD: {
@@ -169,7 +169,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
                 }
                 default:
                     ByteRange data = item.value();
-                    io.mapRequired("value", data);
+                    io.mapRequired("data", data);
                     break;
                 }
                 break;
@@ -288,9 +288,9 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 			}
 			case OFPAT_EXPERIMENTER: {
 				UInt32 experimenterid;
-				io.mapRequired("experimenter_id", experimenterid);
+				io.mapRequired("experimenter", experimenterid);
                 ByteList value;
-                io.mapRequired("value", value);
+                io.mapRequired("data", value);
 				AT_EXPERIMENTER action{experimenterid, value};
 				list.add(action);
 				break;
@@ -312,7 +312,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 			}
 			default:
                 ByteList data;
-                io.mapRequired("value", data);
+                io.mapRequired("data", data);
                 AT_UNKNOWN action{type, data};
                 list.add(action);
 				//log::info("MappingTraits<Inserter>: Unknown Action type:", int(type));

@@ -16,7 +16,7 @@ struct MappingTraits<ofp::MeterMod> {
     io.mapRequired("meter_id", msg.meterId_);
 
     ofp::MeterBandRange meterBands = msg.meterBands();
-    io.mapRequired("meter_bands", meterBands);
+    io.mapRequired("bands", meterBands);
   }
 };
 
@@ -27,7 +27,7 @@ struct MappingTraits<ofp::MeterModBuilder> {
     io.mapRequired("command", msg.msg_.command_);
     io.mapRequired("flags", msg.msg_.flags_);
     io.mapRequired("meter_id", msg.msg_.meterId_);
-    io.mapRequired("meter_bands", msg.meterBands_);
+    io.mapRequired("bands", msg.meterBands_);
   }
 };
 

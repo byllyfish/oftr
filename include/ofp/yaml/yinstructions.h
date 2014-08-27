@@ -94,7 +94,7 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
       IT_EXPERIMENTER *instr =
           RemoveConst_cast(item.instruction<IT_EXPERIMENTER>());
       Hex32 experimenterId = instr->experimenterId();
-      io.mapRequired("experimenter_id", experimenterId);
+      io.mapRequired("experimenter", experimenterId);
       // FIXME - rest of experimenter
       break;
     }
@@ -151,7 +151,7 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
     }
     case IT_EXPERIMENTER::type() : {
       UInt32 experimenterId;
-      io.mapRequired("experimenter_id", experimenterId);
+      io.mapRequired("experimenter", experimenterId);
       list.add(IT_EXPERIMENTER{experimenterId});
       break;
     }

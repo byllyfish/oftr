@@ -40,13 +40,13 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyItem> {
         const TableFeaturePropertyExperimenter &p = elem.property<TableFeaturePropertyExperimenter>();
 
         Hex32 experimenter = p.experimenter();
-        io.mapRequired("experimenter_id", experimenter);
+        io.mapRequired("experimenter", experimenter);
 
         Hex32 expType = p.expType();
         io.mapRequired("exp_type", expType);
 
         ByteRange expData = p.expData();
-        io.mapRequired("exp_data", expData);
+        io.mapRequired("data", expData);
         break;
       }
       default: {
@@ -71,13 +71,13 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyInserter> {
 
     if (property >= OFPTFPT_EXPERIMENTER) {
       UInt32 experimenter;
-      io.mapRequired("experimenter_id", experimenter);
+      io.mapRequired("experimenter", experimenter);
 
       UInt32 expType;
       io.mapRequired("exp_type", expType);
 
       ByteList expData;
-      io.mapRequired("exp_data", expData);
+      io.mapRequired("data", expData);
 
       switch (property) {
         case OFPTFPT_EXPERIMENTER:

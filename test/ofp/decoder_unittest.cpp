@@ -928,5 +928,5 @@ TEST(decoder, ofmp_queuestats_v1_request) {
 }
 
 TEST(decoder, ofp_metermod_v4) {
-  testDecodeEncode("041D00301111111100012222333333330001001044444444555555550000000000020010666666667777777788000000", "---\ntype:            OFPT_METER_MOD\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  command:         0x0001\n  flags:           0x2222\n  meter_id:        0x33333333\n  meter_bands:     \n    - type:            OFPMBT_DROP\n      rate:            1145324612\n      burst_size:      1431655765\n    - type:            OFPMBT_DSCP_REMARK\n      rate:            1717986918\n      burst_size:      2004318071\n      prec_level:      136\n...\n");
+  testDecodeEncode("041D00301111111100012222333333330001001044444444555555550000000000020010666666667777777788000000", "---\ntype:            OFPT_METER_MOD\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  command:         0x0001\n  flags:           0x2222\n  meter_id:        0x33333333\n  bands:           \n    - type:            OFPMBT_DROP\n      rate:            1145324612\n      burst_size:      1431655765\n    - type:            OFPMBT_DSCP_REMARK\n      rate:            1717986918\n      burst_size:      2004318071\n      prec_level:      136\n...\n");
 }

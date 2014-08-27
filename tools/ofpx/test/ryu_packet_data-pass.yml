@@ -1602,7 +1602,7 @@ msg:
   command:         0x0000
   flags:           0x000E
   meter_id:        0x00000064
-  meter_bands:     
+  bands:           
     - type:            OFPMBT_DROP
       rate:            1000
       burst_size:      10
@@ -1867,17 +1867,17 @@ msg:
                          '~OFB_PBB_ISID' ]
       properties:      
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000000
-          exp_data:        00000000
+          data:            00000000
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000001
-          exp_data:        0000000100000001
+          data:            0000000100000001
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000002
-          exp_data:        000000020000000100000002
+          data:            000000020000000100000002
     - table_id:        0x01
       name:            Flow Table 0x01
       metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2837,17 +2837,17 @@ msg:
                          '~OFB_PBB_ISID' ]
       properties:      
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000000
-          exp_data:        00000000
+          data:            00000000
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000001
-          exp_data:        0000000100000001
+          data:            0000000100000001
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000002
-          exp_data:        000000020000000100000002
+          data:            000000020000000100000002
     - table_id:        0x01
       name:            Flow Table 0x01
       metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4257,8 +4257,8 @@ msg:
         - action:          OFPAT_SET_NW_TTL
           ttl:             0x0A
         - action:          OFPAT_EXPERIMENTER
-          experimenter_id: 0x00000065
-          value:           0001020304050607
+          experimenter:    0x00000065
+          data:            0001020304050607
         - action:          OFPAT_SET_QUEUE
           queue:           0x00000003
         - action:          OFPAT_GROUP
@@ -4563,7 +4563,7 @@ msg:
   command:         0x0000
   flags:           0x000E
   meter_id:        0x00000064
-  meter_bands:     
+  bands:           
     - type:            OFPMBT_DROP
       rate:            1000
       burst_size:      10
@@ -4797,17 +4797,17 @@ msg:
                          '~OFB_PBB_ISID' ]
       properties:      
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000000
-          exp_data:        00000000
+          data:            00000000
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000001
-          exp_data:        0000000100000001
+          data:            0000000100000001
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000002
-          exp_data:        000000020000000100000002
+          data:            000000020000000100000002
     - table_id:        0x01
       name:            Flow Table 0x01
       metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5767,17 +5767,17 @@ msg:
                          '~OFB_PBB_ISID' ]
       properties:      
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000000
-          exp_data:        00000000
+          data:            00000000
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000001
-          exp_data:        0000000100000001
+          data:            0000000100000001
         - property:        0xFFFE
-          experimenter_id: 0x00000065
+          experimenter:    0x00000065
           exp_type:        0x00000002
-          exp_data:        000000020000000100000002
+          data:            000000020000000100000002
     - table_id:        0x01
       name:            Flow Table 0x01
       metadata_match:  0xFFFFFFFFFFFFFFFF
