@@ -40,6 +40,7 @@ class Encoder {
 public:
     using ChannelFinder = std::function<Channel*(const DatapathID &datapathId)>;
 
+    Encoder(ChannelFinder finder);
 	Encoder(const std::string &input, bool matchPrereqsChecked=true, int lineNumber=0, ChannelFinder finder = NullChannelFinder);
 
 	const UInt8 *data() const { return channel_.data(); }

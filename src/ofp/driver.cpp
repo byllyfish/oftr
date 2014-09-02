@@ -52,4 +52,4 @@ Deferred<std::error_code> Driver::connect(Role role,
 
 void Driver::run() { engine_->run(); }
 
-void Driver::stop() { engine_->stop(); }
+void Driver::stop(Milliseconds timeout) { engine_->stop(timeout); }

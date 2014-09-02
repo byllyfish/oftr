@@ -43,7 +43,7 @@ for input in $CURRENT_SOURCE_DIR/*-pass.json ; do
   output="$name.bin"
 
   echo "  Run ofpx encode to convert $input to $output"
-  ../ofpx encode -M $input > $output
+  ../ofpx encode -Mj $input > $output
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.bin"
   diff $output "$CURRENT_SOURCE_DIR/$name.bin"
 done

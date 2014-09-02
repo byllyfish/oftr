@@ -49,6 +49,8 @@
 namespace ofp {  // <namespace ofp>
 namespace yaml { // <namespace yaml>
 
+Encoder::Encoder(ChannelFinder finder) : errorStream_{error_}, header_{OFPT_UNSUPPORTED}, finder_{finder}, matchPrereqsChecked_{true} {}
+
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked, int lineNumber, ChannelFinder finder)
     : errorStream_{error_}, header_{OFPT_UNSUPPORTED}, finder_{finder}, lineNumber_{lineNumber}, matchPrereqsChecked_{matchPrereqsChecked} {
 

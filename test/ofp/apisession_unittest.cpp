@@ -26,9 +26,9 @@ TEST(apisession, test) {
 
   session.send(
 R"""(
----
-foo: foo
-...
+id: 1
+method: foo
+params: []
 )""");
 
   EXPECT_FALSE(session.didReceive);

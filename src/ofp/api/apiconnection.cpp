@@ -22,6 +22,7 @@
 #include "ofp/api/apiconnection.h"
 #include "ofp/api/apievents.h"
 #include "ofp/api/apiencoder.h"
+#include "ofp/api/rpcencoder.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
 #include "ofp/channel.h"
@@ -34,6 +35,51 @@ ApiConnection::ApiConnection(ApiServer *server, bool loopbackMode)
 }
 
 ApiConnection::~ApiConnection() { server_->onDisconnect(this); }
+
+
+void ApiConnection::onRpcOpen(RpcOpen *open) {
+  server_->onRpcOpen(this, open);
+}
+
+//void ApiConnection::onRpcOpenResponse(RpcOpenResponse *response) {
+//  write(response->toJson());
+//}
+
+void ApiConnection::onRpcClose(RpcClose *close) {
+
+}
+
+void ApiConnection::onRpcSend(RpcSend *send) {
+  Channel *channel = server_->findChannel(send->params.datapathId());
+  if (channel) {
+    channel->write(send->params.data(), send->params.size());
+    channel->flush();
+  } else {
+
+    //std::string errorMsg =
+    //    "Unknown Datapath ID: " + send->params.datapathId().toString();
+    //onYamlError(errorMsg, RawDataToHex(send->params.data(), send->params.size()));
+  }
+
+  if (send->id != RPC_ID_MISSING) {
+    RpcSendResponse response{send->id};
+    response.result.data = {send->params.data(), send->params.size()};
+    rpcReply(&response);
+  }
+}
+
+void ApiConnection::onRpcSetTimer(RpcSetTimer *setTimer) {
+
+}
+
+void ApiConnection::onRpcConfig(RpcConfig *config) {
+
+}
+
+//void ApiConnection::onRpcErrorResponse(RpcErrorResponse *response) {
+//  write(response->toJson());
+//}
+
 
 void ApiConnection::onLoopback(ApiLoopback *loopback) {
   ByteList &buf = loopback->params.data;
@@ -117,28 +163,48 @@ void ApiConnection::onYamlError(const std::string &error,
 }
 
 void ApiConnection::onChannelUp(Channel *channel) {
+  RpcDatapath notification;
+  notification.params.datapathId = channel->datapathId();
+  notification.params.version = channel->version();
+  notification.params.endpoint = channel->remoteEndpoint();
+  notification.params.status = "UP";
+  write(notification.toJson());
+
+#if 0
   ApiDatapathUp reply;
   reply.params.datapathId = channel->datapathId();
   reply.params.version = channel->version();
   reply.params.endpoint = channel->remoteEndpoint();
 
   write(reply.toString(isFormatJson_));
+#endif //0
 }
 
 void ApiConnection::onChannelDown(Channel *channel) {
+  RpcDatapath notification;
+  notification.params.datapathId = channel->datapathId();
+  notification.params.version = channel->version();
+  notification.params.endpoint = channel->remoteEndpoint();
+  notification.params.status = "DOWN";
+  write(notification.toJson());
+
+  #if 0
   ApiDatapathDown reply;
   reply.params.datapathId = channel->datapathId();
   reply.params.version = channel->version();
   reply.params.endpoint = channel->remoteEndpoint();
-
   write(reply.toString(isFormatJson_));
+  #endif //0
 }
 
 void ApiConnection::onMessage(Channel *channel, const Message *message) {
-  yaml::Decoder decoder{RemoveConst_cast(message), isFormatJson_};
+  yaml::Decoder decoder{RemoveConst_cast(message), true};
 
   if (decoder.error().empty()) {
+    write("{\"params\":");
     write(decoder.result());
+    write(",\"method\":\"ofp.message\"}\n");
+
   } else {
     ApiDecodeError reply;
     reply.params.datapathId = channel->datapathId();
@@ -155,6 +221,7 @@ void ApiConnection::onTimer(Channel *channel, UInt32 timerID) {
   write(timer.toString(isFormatJson_));
 }
 
+#if 0
 void ApiConnection::processInputLine(std::string *line) {
   // Line is modified by this method.
   cleanInputLine(line);
@@ -166,8 +233,16 @@ void ApiConnection::processInputLine(std::string *line) {
     text_ = "---\n";
   }
 }
+#endif //0
 
 void ApiConnection::handleEvent(const std::string &eventText) {
+
+  RpcEncoder encoder{eventText, this, [this](const DatapathID &datapathId) {
+      return server_->findChannel(datapathId);
+    }};
+
+
+#if 0
   EventType type = eventTypeOf(eventText);
   if (type == EmptyEvent) return;
 
@@ -206,6 +281,7 @@ void ApiConnection::handleEvent(const std::string &eventText) {
       onYamlError(encoder.error(), eventText);
     }
   }
+#endif //0
 }
 
 void ApiConnection::cleanInputLine(std::string *line) {

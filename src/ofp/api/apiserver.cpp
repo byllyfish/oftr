@@ -26,6 +26,7 @@
 #include "ofp/api/apichannellistener.h"
 #include "ofp/api/apisession.h"
 #include "ofp/api/apievents.h"
+#include "ofp/api/rpcevents.h"
 
 using ofp::api::ApiServer;
 
@@ -86,6 +87,32 @@ void ApiServer::onDisconnect(ApiConnection *conn) {
   }
 
   oneConn_ = nullptr;
+}
+
+void ApiServer::onRpcOpen(ApiConnection *conn, RpcOpen *open) {
+  IPv6Endpoint endpt = open->params.endpoint;
+  UInt64 connId = 0;
+  Driver *driver = engine_->driver();
+
+  std::error_code err = driver->listen(Driver::Controller, endpt, ProtocolVersions::All,
+    [this]() { return new ApiChannelListener{this}; });
+
+  if (open->id == RPC_ID_MISSING) {
+    // No id in request? No response necessary.
+    return;
+  }
+
+  if (!err) {
+    RpcOpenResponse response{open->id};
+    response.result.connId = connId;
+    conn->rpcReply(&response);
+
+  } else {
+    RpcErrorResponse response{open->id};
+    response.error.code = err.value();
+    response.error.message = err.message();
+    conn->rpcReply(&response);
+  }
 }
 
 void ApiServer::onListenRequest(ApiConnection *conn,

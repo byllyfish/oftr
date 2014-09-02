@@ -66,7 +66,7 @@ void ApiConnectionStdio::asyncRead() {
           std::istream is(&streambuf_);
           std::string line;
           std::getline(is, line);
-          processInputLine(&line);
+          handleEvent(line);
           asyncRead();
         } else if (err != asio::error::eof) {
           log::info("ApiConnection::asyncRead err", err);

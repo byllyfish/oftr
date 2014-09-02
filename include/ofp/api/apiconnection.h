@@ -33,6 +33,14 @@ struct ApiListenRequest;
 struct ApiSetTimer;
 struct ApiEditSetting;
 
+struct RpcOpen;
+struct RpcOpenResponse;
+struct RpcClose;
+struct RpcSend;
+struct RpcSetTimer;
+struct RpcConfig;
+struct RpcErrorResponse;
+
 OFP_BEGIN_IGNORE_PADDING
 
 class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
@@ -41,6 +49,20 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   virtual ~ApiConnection();
 
   virtual void asyncAccept() = 0;
+
+  void onRpcOpen(RpcOpen *open);
+  //void onRpcOpenResponse(RpcOpenResponse *response);
+
+  void onRpcClose(RpcClose *close);
+  void onRpcSend(RpcSend *send);
+  void onRpcSetTimer(RpcSetTimer *setTimer);
+  void onRpcConfig(RpcConfig *config);
+
+  template <class Response>
+  void rpcReply(Response *response) {
+    write(response->toJson());
+  }
+  //void onRpcErrorResponse(RpcErrorResponse *response);
 
   void onLoopback(ApiLoopback *loopback);
   void onListenRequest(ApiListenRequest *listenReq);
@@ -62,13 +84,13 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   virtual void write(const std::string &msg) = 0;
   virtual void asyncRead() = 0;
 
-  void processInputLine(std::string *line);
+  //void processInputLine(const std::string &line);
 
  private:
   ApiServer *server_;
   std::string text_;
   bool isLoopbackMode_ = true;
-  bool isFormatJson_ = false;
+  bool isFormatJson_ = true;
 
   static void cleanInputLine(std::string *line);
   static bool isEmptyEvent(const std::string &s);

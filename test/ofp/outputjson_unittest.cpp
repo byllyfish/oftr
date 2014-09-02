@@ -47,9 +47,9 @@ TEST(outputjson, hello) {
   Decoder decode{&msg, true};
 
   const char *expected =
-      "---\n{\"type\":\"OFPT_HELLO\",\"xid\":1,\"version\":"
-      "4,\"msg\":{\"versions\":[1,2,3,4]}}\n...\n";
-  EXPECT_EQ(expected, decode.result());
+      "{\"type\":\"OFPT_HELLO\",\"xid\":1,\"version\":"
+      "4,\"msg\":{\"versions\":[1,2,3,4]}}";
+  EXPECT_EQ(expected, decode.result().str());
 }
 
 TEST(outputjson, flowmod) {
@@ -72,15 +72,15 @@ TEST(outputjson, flowmod) {
   Decoder decodeJson{&msg, true};
 
   const char *expected =
-      "---\n{\"type\":\"OFPT_FLOW_MOD\",\"xid\":1,\"version\":4,\"msg\":{"
+      "{\"type\":\"OFPT_FLOW_MOD\",\"xid\":1,\"version\":4,\"msg\":{"
       "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":\"OFPFC_ADD\",\"idle_"
       "timeout\":0,\"hard_timeout\":0,\"priority\":0,\"buffer_id\":0,\"out_"
       "port\":0,\"out_group\":0,\"flags\":0,\"match\":[{\"field\":\"OFB_IN_"
       "PORT\",\"value\":27},{\"field\":\"OFB_ETH_TYPE\",\"value\":2048},{"
       "\"field\":\"OFB_IP_PROTO\",\"value\":6},{\"field\":\"OFB_TCP_SRC\","
       "\"value\":80}],\"instructions\":[{\"instruction\":\"OFPIT_GOTO_TABLE\","
-      "\"table_id\":3}]}}\n...\n";
-  EXPECT_EQ(expected, decodeJson.result());
+      "\"table_id\":3}]}}";
+  EXPECT_EQ(expected, decodeJson.result().str());
 }
 
 TEST(outputjson, scalarString) {
@@ -121,10 +121,7 @@ TEST(outputjson, testStruct) {
   OutputJson yout{rss};
   yout << s;
 
-  const char *expected = R"""(---
-{"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593}
-...
-)""";
+  const char *expected = R"""({"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593})""";
 
   EXPECT_TRUE(result.empty());
 

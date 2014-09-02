@@ -131,5 +131,5 @@ oneOf:
   # OFPAT_EXPERIMENTER(experimenter_id, ...)
   - properties:
       action: { 'enum' : ['OFPAT_EXPERIMENTER'] }
-      experimenter_id: { '$ref' : 'types#/uint32' }
+      experimenter: { '$ref' : 'types#/uint32' }
     required: ['action', 'experimenter']

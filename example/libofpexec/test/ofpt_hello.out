@@ -1,50 +1,10 @@
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0400001001020304000100080000001E
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0100000801020304
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0400001000000000000100080000001E
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0100000800000000
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0100000800000000
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0200000800000000
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0300000800000000
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0500001000000000000100080000000A
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            05000010000000000001000800000020
-...
----
-event:           LIBOFP_LOOPBACK
-params:          
-  data:            0400001000000000000100080000001E
-...
+{"id":1,"result":{"data":"0400001001020304000100080000001E"}}
+{"id":2,"result":{"data":"0100000801020304"}}
+{"id":3,"result":{"data":"0400001000000000000100080000001E"}}
+{"id":4,"result":{"data":"0100000800000000"}}
+{"id":5,"result":{"data":"0100000800000000"}}
+{"id":6,"result":{"data":"0200000800000000"}}
+{"id":7,"result":{"data":"0300000800000000"}}
+{"id":8,"result":{"data":"0500001000000000000100080000000A"}}
+{"id":9,"result":{"data":"05000010000000000001000800000020"}}
+{"id":10,"result":{"data":"0400001000000000000100080000001E"}}

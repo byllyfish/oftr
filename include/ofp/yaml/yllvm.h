@@ -29,6 +29,7 @@
 #include "ofp/header.h"
 
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8);
+LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(std::string);
 
 namespace llvm {
 namespace yaml {

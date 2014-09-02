@@ -1,0 +1,108 @@
+#include "ofp/api/rpcencoder.h"
+#include "ofp/api/apiconnection.h"
+
+using ofp::api::RpcEncoder;
+
+static bool errorFound(llvm::yaml::IO &io) {
+  // This is a kludge. We need to know if the io object encountered an error
+  // but the IO class doesn't support this. We need to reach into the Input
+  // subclass to check for the error.
+  llvm::yaml::Input *yin = static_cast<llvm::yaml::Input *>(&io);
+  return yin->error();
+}
+
+
+RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn, yaml::Encoder::ChannelFinder finder)
+    : conn_{conn}, errorStream_{error_}, finder_{finder} {
+  
+  llvm::yaml::Input yin{input, nullptr, RpcEncoder::diagnosticHandler, this};
+  if (!yin.error()) {
+    yin >> *this;
+  }
+
+  if (yin.error()) {
+    // Error string will be empty if there's no content.
+    
+    if (!error().empty())
+      log::info("Error: ", error());
+
+    
+    RpcErrorResponse response{id_ ? *id_ : 0};
+    response.error.code = ERROR_CODE_INVALID_REQUEST;
+    response.error.message = error();
+    conn_->rpcReply(&response);
+  }
+}
+
+
+void RpcEncoder::diagnosticHandler(const llvm::SMDiagnostic &diag,
+                                   void *context) {
+  RpcEncoder *encoder = reinterpret_cast<RpcEncoder *>(context);
+  encoder->addDiagnostic(diag);
+}
+
+void RpcEncoder::addDiagnostic(const llvm::SMDiagnostic &diag) {
+  diag.print("", errorStream_, false);
+}
+
+void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
+  // Make sure no one uses an explicit ID value of 2^64 - 1. We use this value
+  // to indicate a missing ID value.
+  UInt64 id;
+  if (id_) {
+    id = *id_;
+    if (id == RPC_ID_MISSING) {
+      method_ = METHOD_UNSUPPORTED;
+      return;
+    }
+  } else {
+    id = RPC_ID_MISSING;
+  }
+
+  switch (method_) {
+    case METHOD_OPEN: {
+        RpcOpen open{id};
+        io.mapRequired("params", open.params);
+        if (!errorFound(io)) {
+            conn_->onRpcOpen(&open);
+        }
+        break;
+    }
+    case METHOD_CLOSE: {
+        RpcClose close{id};
+        io.mapRequired("params", close.params);
+        if (!errorFound(io)) {
+            conn_->onRpcClose(&close);
+        }
+        break;
+    }
+    case METHOD_SEND: {
+        RpcSend send{id, finder_};
+        io.mapRequired("params", send.params);
+        if (!errorFound(io)) {
+            conn_->onRpcSend(&send);
+        }
+        break;
+    }
+    case METHOD_SET_TIMER: {
+        RpcSetTimer setTimer{id};
+        io.mapRequired("params", setTimer.params);
+        if (!errorFound(io)) {
+            conn_->onRpcSetTimer(&setTimer);
+        }
+        break;
+    }
+    case METHOD_CONFIG: {
+        RpcConfig config{id};
+        io.mapRequired("params", config.params);
+        if (!errorFound(io)) {
+          conn_->onRpcConfig(&config);
+        }
+        break;
+    }
+    default:
+      log::info("RpcEncoder: Unrecognized method", method_);
+      method_ = METHOD_UNSUPPORTED;
+      break;
+  }
+}

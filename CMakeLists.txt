@@ -166,6 +166,8 @@ set(LIBOFP_SOURCES
 	src/ofp/api/apievents.cpp
 	src/ofp/api/apiserver.cpp
   src/ofp/api/apisession.cpp
+  src/ofp/api/rpcencoder.cpp
+  src/ofp/api/rpcevents.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp

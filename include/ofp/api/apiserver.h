@@ -40,6 +40,8 @@ struct ApiConnectRequest;
 struct ApiConnectReply;
 struct ApiSetTimer;
 
+struct RpcOpen;
+
 OFP_BEGIN_IGNORE_PADDING
 
 /// \brief Implements a server that lets a client control and monitor an
@@ -56,6 +58,8 @@ class ApiServer {
   void onConnect(ApiConnection *conn);
   void onDisconnect(ApiConnection *conn);
   void onLoopback(ApiConnection *conn, ApiLoopback *loopback);
+
+  void onRpcOpen(ApiConnection *conn, RpcOpen *open);
 
   // These methods are used to bridge ApiConnections to ApiChannelListeners.
   void onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq);

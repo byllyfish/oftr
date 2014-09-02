@@ -191,6 +191,9 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message, const ofp::Mess
 
   if (!silent_) {
     std::cout << decoder.result();
+    if (json_) {
+      std::cout << '\n';
+    }
   }
 
   if (verifyOutput_) {

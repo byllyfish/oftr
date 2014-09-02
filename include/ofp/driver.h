@@ -63,7 +63,7 @@ public:
   void run();
 
   /// \brief Tells the driver to stop running.
-  void stop();
+  void stop(Milliseconds timeout = 0_ms);
 
   sys::Engine *engine() { return engine_; }
 

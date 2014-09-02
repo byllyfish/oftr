@@ -12,21 +12,9 @@ import sys
 DEFAULT_OPENFLOW_PORT = 6633
 DEFAULT_DRIVER_PORT = 9191
 
-MESSAGE_BEGIN = '---\n'
-MESSAGE_END = '...\n'
-
-
-def _libofp(evt, **paramdict):
-    return dict(event=evt, params=paramdict)
-
-
-class _toObj(object):
+class _JsonObject:
     def __init__(self, d):
-        for a, b in d.items():
-            if isinstance(b, (list, tuple)):
-               setattr(self, a, [_toObj(x) if isinstance(x, dict) else x for x in b])
-            else:
-               setattr(self, a, _toObj(b) if isinstance(b, dict) else b)
+        self.__dict__ = d
 
 
 class LibOFP(object):
@@ -132,41 +120,56 @@ class LibOFP(object):
         if self._sock:
             self._sock.close()
 
-    def send(self, data):
-        msg = json.dumps(data) if not isinstance(data, str) else data
-        msg = MESSAGE_BEGIN + msg + '\n' + MESSAGE_END
-        #print >>sys.stderr,msg
-        self._write(msg)
+    def send(self, params):
+        rpc = {
+          'method': 'ofp.send', 
+          'params': params
+        }
+        msg = json.dumps(rpc)
+        self._write(msg + '\n')
+
+    def _call(self, method, id=None, **params):
+        rpc = {
+          'method': method,
+          'params': params
+        }
+        if id is not None:
+            rpc['id'] = id
+        msg = json.dumps(rpc)
+        self._write(msg + '\n')
 
     def waitNextEvent(self):
         return self._eventGenerator.next()
 
     def setTimer(self, datapath, timerID, timeout):
-        self._send(_libofp('LIBOFP_SET_TIMER', datapath_id=datapath,
-                            timer_id=timerID, timeout=timeout))
+        self._call('ofp.set.timer', datapath_id=datapath,
+                            timer_id=timerID, timeout=timeout)
 
     def _sendEditSetting(self, name, value):
-        self.send(_libofp('LIBOFP_EDIT_SETTING', name=name, value=value))
+        self._call('ofp.config', options=['%s=%s' % (name, value)])
 
     def _sendListenRequest(self, openflowAddr):
-        self.send(_libofp('LIBOFP_LISTEN_REQUEST', xid=1, endpoint='%s %d' % openflowAddr))
+        self._call('ofp.open', endpoint='%s %d' % openflowAddr)
 
     def _makeEventGenerator(self):
         msgLines = []
         # Simply using `for line in self._sockInput:` doesn't work for pipes in
         # Python 2.7.2.
         for line in iter(self._sockInput.readline, ''):
-            if line == '...\n' and msgLines:
-                msg = ''.join(msgLines[1:])
-                #print msg
-                obj = _toObj(json.loads(msg))
-                obj.text = msg
-                if hasattr(obj,'event') and not hasattr(obj,'type'):
-                    obj.type = obj.event
-                yield obj
-                msgLines = []
-            else:
-                msgLines.append(line)
+            obj = json.loads(line, object_hook=_JsonObject)
+            yield obj
+
+            # if line == '...\n' and msgLines:
+            #     msg = ''.join(msgLines[1:])
+            #     #print msg
+            #     obj = _toObj(json.loads(msg))
+            #     obj.text = msg
+            #     if hasattr(obj,'method') and not hasattr(obj,'type'):
+            #         obj.type = obj.method
+            #     yield obj
+            #     msgLines = []
+            # else:
+            #     msgLines.append(line)
 
     def _writeToSocket(self, msg):
         self._sock.sendall(msg)

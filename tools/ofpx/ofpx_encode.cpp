@@ -150,6 +150,17 @@ bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
         std::getline(input, lineBuf_);
         ++lineNumber_;
 
+        if (json_) {
+          if (isEmptyOrWhitespaceOnly(lineBuf_)) {
+            // Don't return empty lines.
+            continue;
+          }
+          msg = lineBuf_;
+          return true;
+        }
+
+        assert(!json_);
+
         if (lineBuf_ == "---" || lineBuf_ == "...") {
             if (isEmptyOrWhitespaceOnly(msg)) {
               // Don't return empty messages.

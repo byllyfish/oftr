@@ -169,14 +169,14 @@ void OutputJson::paddedKey(StringRef key) {
   output("\":");
 }
 
-void OutputJson::beginDocuments() { output("---\n"); }
+void OutputJson::beginDocuments() { /* output("---\n"); */ }
 
 bool OutputJson::preflightDocument(unsigned index) {
-  if (index > 0)
-    output("\n---\n");
+  /* if (index > 0)
+    output("\n---\n"); */
   return true;
 }
 
-void OutputJson::postflightDocument() {}
+void OutputJson::postflightDocument() { /*output("\n");*/ }
 
-void OutputJson::endDocuments() { output("\n...\n"); }
+void OutputJson::endDocuments() { /* output("\n...\n"); */ }

@@ -1,6 +1,6 @@
 #include "testagent.h"
 #include "ofp/yaml/decoder.h"
-#include "ofp/api/apiserver.h"
+//#include "ofp/api/apiserver.h"
 #include <iostream>
 
 using namespace testagent;
@@ -17,7 +17,8 @@ void TestAgent::onChannelUp(Channel *channel) {
 void TestAgent::onChannelDown(Channel *channel) {
   assert(channel_ == channel);
 
-  apiServer_.reset(nullptr);
+  //apiServer_.reset(nullptr);
+  channel->driver()->stop();
 }
 
 void TestAgent::onMessage(const Message *message) {
@@ -64,6 +65,24 @@ void TestAgent::onTimer(UInt32 timerID) {
 }
 
 void TestAgent::startApiInput() {
-  apiServer_ = std::unique_ptr<api::ApiServer>{
-      new api::ApiServer{channel_->driver(), 0, -1, channel_}};
+  // Read binary messages from input file and write them to the channel.
+  
+  while (true) {
+    char buf[1000];
+    std::cin.read(buf, sizeof(buf));
+
+    if (std::cin) {
+      channel_->write(buf, sizeof(buf));
+    } else {
+      channel_->write(buf, Unsigned_cast(std::cin.gcount()));
+      break;
+    }
+  }
+
+  channel_->flush();
+
+  channel_->driver()->stop(1000_ms);
+
+  //apiServer_ = std::unique_ptr<api::ApiServer>{
+  //    new api::ApiServer{channel_->driver(), 0, -1, channel_}};
 }
