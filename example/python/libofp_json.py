@@ -142,7 +142,7 @@ class LibOFP(object):
         return self._eventGenerator.next()
 
     def setTimer(self, datapath, timerID, timeout):
-        self._call('ofp.set.timer', datapath_id=datapath,
+        self._call('ofp.set_timer', datapath_id=datapath,
                             timer_id=timerID, timeout=timeout)
 
     def _sendEditSetting(self, name, value):
