@@ -12,3 +12,5 @@ JSON REference
 
 CBOR  - https://tools.ietf.org/html/rfc7049
 
+http://tools.ietf.org/html/draft-ietf-json-text-sequence-04
+http://tools.ietf.org/html/rfc7159
