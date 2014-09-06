@@ -33,14 +33,8 @@ namespace api {
 class ApiConnection;
 class ApiSession;
 
-struct ApiLoopback;
-struct ApiListenRequest;
-struct ApiListenReply;
-struct ApiConnectRequest;
-struct ApiConnectReply;
-struct ApiSetTimer;
-
 struct RpcOpen;
+struct RpcClose;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -57,16 +51,9 @@ class ApiServer {
   // Called by ApiConnection to update oneConn_.
   void onConnect(ApiConnection *conn);
   void onDisconnect(ApiConnection *conn);
-  void onLoopback(ApiConnection *conn, ApiLoopback *loopback);
 
   void onRpcOpen(ApiConnection *conn, RpcOpen *open);
-
-  // These methods are used to bridge ApiConnections to ApiChannelListeners.
-  void onListenRequest(ApiConnection *conn, ApiListenRequest *listenReq);
-  void onListenReply(ApiListenReply *listenReply);
-  void onConnectRequest(ApiConnection *conn, ApiConnectRequest *connectReq);
-  void onConnectReply(ApiConnectReply *connectReply);
-  void onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer);
+  void onRpcClose(ApiConnection *conn, RpcClose *close);
 
   // These methods are used to bridge ApiChannelListeners to ApiConnections.
   void onChannelUp(Channel *channel);

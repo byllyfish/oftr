@@ -36,10 +36,9 @@ ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
 
-  bool loopbackMode = (defaultChannel == nullptr);
   auto conn = std::make_shared<ApiConnectionStdio>(
       this, asio::posix::stream_descriptor{engine_->io()},
-      asio::posix::stream_descriptor{engine_->io()}, loopbackMode);
+      asio::posix::stream_descriptor{engine_->io()});
 
   if (inputFD >= 0) {
     conn->setInput(inputFD);
@@ -115,30 +114,10 @@ void ApiServer::onRpcOpen(ApiConnection *conn, RpcOpen *open) {
   }
 }
 
-void ApiServer::onListenRequest(ApiConnection *conn,
-                                ApiListenRequest *listenReq) {
-  Driver *driver = engine_->driver();
-  IPv6Endpoint endpt = listenReq->params.endpoint;
+void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
 
-  std::error_code err =
-      driver->listen(Driver::Controller, endpt, ProtocolVersions::All,
-                     [this]() { return new ApiChannelListener{this}; });
-
-  ApiListenReply reply;
-  reply.params.xid = listenReq->params.xid;
-  reply.params.endpoint = endpt;
-  if (err) {
-    reply.params.error = err.message();
-  }
-  onListenReply(&reply);
 }
-
-void ApiServer::onListenReply(ApiListenReply *listenReply) {
-  if (oneConn_) {
-    oneConn_->onListenReply(listenReply);
-  }
-}
-
+#if 0
 void ApiServer::onConnectRequest(ApiConnection *conn,
                                  ApiConnectRequest *connectReq) {
   Driver *driver = engine_->driver();
@@ -164,16 +143,8 @@ void ApiServer::onConnectRequest(ApiConnection *conn,
 
   OFP_END_IGNORE_PADDING
 }
+#endif //0
 
-void ApiServer::onConnectReply(ApiConnectReply *connectReply) {
-  if (oneConn_) {
-    oneConn_->onConnectReply(connectReply);
-  }
-}
-
-void ApiServer::onSetTimer(ApiConnection *conn, ApiSetTimer *setTimer) {
-  // FIXME
-}
 
 void ApiServer::onChannelUp(Channel *channel) {
   registerChannel(channel);

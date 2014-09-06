@@ -20,8 +20,6 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/api/apiconnection.h"
-#include "ofp/api/apievents.h"
-#include "ofp/api/apiencoder.h"
 #include "ofp/api/rpcencoder.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
@@ -29,24 +27,21 @@
 
 using ofp::api::ApiConnection;
 
-ApiConnection::ApiConnection(ApiServer *server, bool loopbackMode)
-    : server_{server}, isLoopbackMode_{loopbackMode} {
+ApiConnection::ApiConnection(ApiServer *server)
+    : server_{server} {
   server_->onConnect(this);
 }
 
-ApiConnection::~ApiConnection() { server_->onDisconnect(this); }
-
+ApiConnection::~ApiConnection() { 
+  server_->onDisconnect(this); 
+}
 
 void ApiConnection::onRpcOpen(RpcOpen *open) {
   server_->onRpcOpen(this, open);
 }
 
-//void ApiConnection::onRpcOpenResponse(RpcOpenResponse *response) {
-//  write(response->toJson());
-//}
-
 void ApiConnection::onRpcClose(RpcClose *close) {
-
+  server_->onRpcClose(this, close);
 }
 
 void ApiConnection::onRpcSend(RpcSend *send) {
@@ -54,11 +49,6 @@ void ApiConnection::onRpcSend(RpcSend *send) {
   if (channel) {
     channel->write(send->params.data(), send->params.size());
     channel->flush();
-  } else {
-
-    //std::string errorMsg =
-    //    "Unknown Datapath ID: " + send->params.datapathId().toString();
-    //onYamlError(errorMsg, RawDataToHex(send->params.data(), send->params.size()));
   }
 
   if (send->id != RPC_ID_MISSING) {
@@ -76,108 +66,13 @@ void ApiConnection::onRpcConfig(RpcConfig *config) {
 
 }
 
-//void ApiConnection::onRpcErrorResponse(RpcErrorResponse *response) {
-//  write(response->toJson());
-//}
-
-
-void ApiConnection::onLoopback(ApiLoopback *loopback) {
-  ByteList &buf = loopback->params.data;
-  ApiBoolean validate = loopback->params.validate;
-
-  Message message{buf.mutableData(), buf.size()};
-  message.transmogrify();
-
-  yaml::Decoder decoder{&message};
-
-  if (validate == LIBOFP_NOT_PRESENT) {
-    // Always respond with OpenFlow YAML or a DecodeError event.
-    if (decoder.error().empty()) {
-      write(decoder.result());
-    } else {
-      ApiDecodeError reply;
-      reply.params.error = decoder.error();
-      reply.params.data = RawDataToHex(message.data(), message.size());
-      write(reply.toString(isFormatJson_));
-    }
-  } else if (validate == LIBOFP_FALSE) {
-    // We don't expect data to validate; only respond if it does.
-    if (decoder.error().empty()) {
-      ApiDecodeError reply;
-      reply.params.error = "Message unexpectedly validates";
-      reply.params.data = RawDataToHex(message.data(), message.size());
-      write(reply.toString(isFormatJson_));
-    }
-  } else {
-    // We expect the data to validate; only respond if it doesn't.
-    if (!decoder.error().empty()) {
-      ApiDecodeError reply;
-      reply.params.error = decoder.error();
-      reply.params.data = RawDataToHex(message.data(), message.size());
-      write(reply.toString(isFormatJson_));
-    }
-  }
-}
-
-void ApiConnection::onListenRequest(ApiListenRequest *listenReq) {
-  server_->onListenRequest(this, listenReq);
-  isLoopbackMode_ = false;
-}
-
-void ApiConnection::onListenReply(ApiListenReply *listenReply) {
-  write(listenReply->toString(isFormatJson_));
-}
-
-void ApiConnection::onConnectRequest(ApiConnectRequest *connectReq) {
-  server_->onConnectRequest(this, connectReq);
-  isLoopbackMode_ = false;
-}
-
-void ApiConnection::onConnectReply(ApiConnectReply *connectReply) {
-  write(connectReply->toString(isFormatJson_));
-}
-
-void ApiConnection::onSetTimer(ApiSetTimer *setTimer) {
-  server_->onSetTimer(this, setTimer);
-}
-
-void ApiConnection::onEditSetting(ApiEditSetting *editSetting) {
-  // Handle change in "format" setting: values are "json" and "yaml". This is
-  // the format of data sent by the connection.
-  if (editSetting->params.name == "format") {
-    if (editSetting->params.value == "json") {
-      log::debug("Using JSON.");
-      isFormatJson_ = true;
-    } else if (editSetting->params.value == "yaml") {
-      isFormatJson_ = false;
-    }
-  }
-}
-
-void ApiConnection::onYamlError(const std::string &error,
-                                const std::string &text) {
-  ApiYamlError reply;
-  reply.params.error = error;
-  reply.params.text = text;
-  write(reply.toString(isFormatJson_));
-}
-
 void ApiConnection::onChannelUp(Channel *channel) {
   RpcDatapath notification;
   notification.params.datapathId = channel->datapathId();
   notification.params.version = channel->version();
   notification.params.endpoint = channel->remoteEndpoint();
   notification.params.status = "UP";
-  write(notification.toJson());
-
-#if 0
-  ApiDatapathUp reply;
-  reply.params.datapathId = channel->datapathId();
-  reply.params.version = channel->version();
-  reply.params.endpoint = channel->remoteEndpoint();
-
-  write(reply.toString(isFormatJson_));
-#endif //0
+  rpcReply(&notification);
 }
 
 void ApiConnection::onChannelDown(Channel *channel) {
@@ -186,39 +81,34 @@ void ApiConnection::onChannelDown(Channel *channel) {
   notification.params.version = channel->version();
   notification.params.endpoint = channel->remoteEndpoint();
   notification.params.status = "DOWN";
-  write(notification.toJson());
-
-  #if 0
-  ApiDatapathDown reply;
-  reply.params.datapathId = channel->datapathId();
-  reply.params.version = channel->version();
-  reply.params.endpoint = channel->remoteEndpoint();
-  write(reply.toString(isFormatJson_));
-  #endif //0
+  rpcReply(&notification);
 }
 
 void ApiConnection::onMessage(Channel *channel, const Message *message) {
   yaml::Decoder decoder{RemoveConst_cast(message), true};
 
   if (decoder.error().empty()) {
+    // Send `ofp.message` notification event.
     write("{\"params\":");
     write(decoder.result());
     write(",\"method\":\"ofp.message\"}\n");
 
   } else {
-    ApiDecodeError reply;
-    reply.params.datapathId = channel->datapathId();
-    reply.params.error = decoder.error();
-    reply.params.data = RawDataToHex(message->data(), message->size());
-    write(reply.toString(isFormatJson_));
+    // Send `ofp.message_error` notification event.
+    RpcMessageError messageError;
+    messageError.params.datapathId = channel->datapathId();
+    messageError.params.error = decoder.error();
+    messageError.params.data = { message->data(), message->size() };
+    rpcReply(&messageError);
   }
 }
 
 void ApiConnection::onTimer(Channel *channel, UInt32 timerID) {
-  ApiTimer timer;
+  // Send `ofp.timer` notification event.
+  RpcTimer timer;
   timer.params.datapathId = channel->datapathId();
   timer.params.timerId = timerID;
-  write(timer.toString(isFormatJson_));
+  rpcReply(&timer);
 }
 
 #if 0
@@ -284,6 +174,7 @@ void ApiConnection::handleEvent(const std::string &eventText) {
 #endif //0
 }
 
+#if 0
 void ApiConnection::cleanInputLine(std::string *line) {
   // For telnet clients, handle CR-LF just in case.
   if (!line->empty() && line->back() == '\r') {
@@ -335,3 +226,6 @@ ApiConnection::EventType ApiConnection::eventTypeOf(const std::string &s) {
 
   return MsgEvent;
 }
+
+#endif //0
+#

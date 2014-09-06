@@ -26,12 +26,18 @@ std::string RpcSendResponse::toJson() {
   return toJsonString(this);
 }
 
-
 std::string RpcErrorResponse::toJson() {
   return toJsonString(this);
 }
 
-
 std::string RpcDatapath::toJson() {
+  return toJsonString(this);
+}
+
+std::string RpcMessageError::toJson() {
+  return toJsonString(this);
+}
+
+std::string RpcTimer::toJson() {
   return toJsonString(this);
 }

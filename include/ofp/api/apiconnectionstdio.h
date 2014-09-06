@@ -33,8 +33,7 @@ OFP_BEGIN_IGNORE_PADDING
 class ApiConnectionStdio : public ApiConnection {
  public:
   ApiConnectionStdio(ApiServer *server, asio::posix::stream_descriptor input,
-                     asio::posix::stream_descriptor output,
-                     bool loopbackMode = true);
+                     asio::posix::stream_descriptor output);
 
   void setInput(int input);
   void setOutput(int output);

@@ -29,10 +29,6 @@
 namespace ofp {
 namespace api {
 
-struct ApiListenRequest;
-struct ApiSetTimer;
-struct ApiEditSetting;
-
 struct RpcOpen;
 struct RpcOpenResponse;
 struct RpcClose;
@@ -45,14 +41,12 @@ OFP_BEGIN_IGNORE_PADDING
 
 class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
  public:
-  explicit ApiConnection(ApiServer *server, bool loopbackMode);
+  explicit ApiConnection(ApiServer *server);
   virtual ~ApiConnection();
 
   virtual void asyncAccept() = 0;
 
   void onRpcOpen(RpcOpen *open);
-  //void onRpcOpenResponse(RpcOpenResponse *response);
-
   void onRpcClose(RpcClose *close);
   void onRpcSend(RpcSend *send);
   void onRpcSetTimer(RpcSetTimer *setTimer);
@@ -62,17 +56,7 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   void rpcReply(Response *response) {
     write(response->toJson());
   }
-  //void onRpcErrorResponse(RpcErrorResponse *response);
 
-  void onLoopback(ApiLoopback *loopback);
-  void onListenRequest(ApiListenRequest *listenReq);
-  void onListenReply(ApiListenReply *listenReply);
-  void onConnectRequest(ApiConnectRequest *connectReq);
-  void onConnectReply(ApiConnectReply *connectReply);
-  void onSetTimer(ApiSetTimer *setTimer);
-  void onEditSetting(ApiEditSetting *editSetting);
-
-  void onYamlError(const std::string &error, const std::string &text);
   void onChannelUp(Channel *channel);
   void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
@@ -84,24 +68,8 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   virtual void write(const std::string &msg) = 0;
   virtual void asyncRead() = 0;
 
-  //void processInputLine(const std::string &line);
-
  private:
   ApiServer *server_;
-  std::string text_;
-  bool isLoopbackMode_ = true;
-  bool isFormatJson_ = true;
-
-  static void cleanInputLine(std::string *line);
-  static bool isEmptyEvent(const std::string &s);
-
-  enum EventType {
-    EmptyEvent,  // empty; too short or no colon
-    LibEvent,    // library event
-    MsgEvent     // protocol msg event
-  };
-
-  static EventType eventTypeOf(const std::string &s);
 };
 
 OFP_END_IGNORE_PADDING

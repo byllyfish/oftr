@@ -25,6 +25,8 @@
 using ofp::api::ApiEncoder;
 using YamlInput = llvm::yaml::Input;
 
+#if 0
+
 static bool errorFound(llvm::yaml::IO &io) {
   // This is a kludge. We need to know if the io object encountered an error
   // but the IO class doesn't support this. We need to reach into the Input
@@ -89,3 +91,5 @@ void ApiEncoder::encodeMsg(llvm::yaml::IO &io, ApiEvent event) {
       break;
   }
 }
+#endif //0
+
