@@ -41,9 +41,9 @@ template <class SocketType>
 class TCP_Connection : public std::enable_shared_from_this<TCP_Connection<SocketType>>,
                        public Connection {
 public:
-  TCP_Connection(Engine *engine, Driver::Role role, ProtocolVersions versions,
+  TCP_Connection(Engine *engine, ChannelMode mode, ProtocolVersions versions,
                  ChannelListener::Factory factory);
-  TCP_Connection(Engine *engine, tcp::socket socket, Driver::Role role,
+  TCP_Connection(Engine *engine, tcp::socket socket, ChannelMode mode,
                  ProtocolVersions versions, ChannelListener::Factory factory);
   TCP_Connection(Engine *engine, DefaultHandshake *handshake);
   ~TCP_Connection() {}
@@ -53,7 +53,8 @@ public:
   void asyncAccept();
 
   IPv6Endpoint remoteEndpoint() const override;
-
+  IPv6Endpoint localEndpoint() const override;
+  
   void write(const void *data, size_t length) override {
     socket_.buf_write(data, length);
   }
@@ -94,7 +95,7 @@ private:
   bool isOutgoing() const { return endpoint_.port() != 0; }
 
   bool wantsReconnect() const {
-    return handshake()->role() == Driver::Agent && isOutgoing();
+    return handshake()->mode() == ChannelMode::Agent && isOutgoing();
   }
 };
 

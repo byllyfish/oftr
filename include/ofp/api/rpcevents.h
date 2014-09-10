@@ -39,7 +39,7 @@ const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 
 /// RPC Methods
 enum RpcMethod : UInt32 {
-  METHOD_OPEN,          // ofp.open
+  METHOD_LISTEN,        // ofp.listen
   METHOD_CLOSE,         // ofp.close
   METHOD_SEND,          // ofp.send
   METHOD_SET_TIMER,     // ofp.set_timer
@@ -72,16 +72,16 @@ struct RpcErrorResponse {
   Error error;
 };
 
-//-----------------//
-// o f p . o p e n //
-//-----------------//
+//---------------------//
+// o f p . l i s t e n //
+//---------------------//
 
-/// Represents a RPC request to open a connection (METHOD_OPEN)
-struct RpcOpen {
-  explicit RpcOpen(UInt64 ident) : id{ident} {}
+/// Represents a RPC request to listen for new connections (METHOD_LISTEN)
+struct RpcListen {
+  explicit RpcListen(UInt64 ident) : id{ident} {}
 
   struct Params {
-    /// Endpoint to connect to or listen on.
+    /// Endpoint to listen on.
     IPv6Endpoint endpoint;
     /// Array of options passed to open.
     std::vector<std::string> options;
@@ -91,16 +91,14 @@ struct RpcOpen {
   Params params;
 };
 
-/// Represents a RPC response to open a connection (METHOD_OPEN)
-struct RpcOpenResponse {
-  explicit RpcOpenResponse(UInt64 ident) : id{ident} {}
+/// Represents a RPC response to listen for new connections (METHOD_LISTEN)
+struct RpcListenResponse {
+  explicit RpcListenResponse(UInt64 ident) : id{ident} {}
   std::string toJson();
 
   struct Result {
-    /// Connection ID of opened connection.
+    /// Connection ID of listening connection.
     UInt64 connId;
-    /// Status of open connection: `listening` or `connecting`.
-    std::string status;
   };
 
   UInt64 id;
@@ -280,7 +278,7 @@ namespace yaml {
 template <>
 struct ScalarEnumerationTraits<ofp::api::RpcMethod> {
   static void enumeration(IO &io, ofp::api::RpcMethod &value) {
-    io.enumCase(value, "ofp.open", ofp::api::METHOD_OPEN);
+    io.enumCase(value, "ofp.listen", ofp::api::METHOD_LISTEN);
     io.enumCase(value, "ofp.close", ofp::api::METHOD_CLOSE);
     io.enumCase(value, "ofp.send", ofp::api::METHOD_SEND);
     io.enumCase(value, "ofp.config", ofp::api::METHOD_CONFIG);
@@ -293,8 +291,8 @@ struct ScalarEnumerationTraits<ofp::api::RpcMethod> {
 };
 
 template <>
-struct MappingTraits<ofp::api::RpcOpen::Params> {
-  static void mapping(IO &io, ofp::api::RpcOpen::Params &params) {
+struct MappingTraits<ofp::api::RpcListen::Params> {
+  static void mapping(IO &io, ofp::api::RpcListen::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
     io.mapOptional("options", params.options);
   }
@@ -341,16 +339,16 @@ struct MappingTraits<ofp::api::RpcConfig::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::api::RpcOpenResponse> {
-  static void mapping(IO &io, ofp::api::RpcOpenResponse &response) {
+struct MappingTraits<ofp::api::RpcListenResponse> {
+  static void mapping(IO &io, ofp::api::RpcListenResponse &response) {
     io.mapRequired("id", response.id);
     io.mapRequired("result", response.result);
   }
 };
 
 template <>
-struct MappingTraits<ofp::api::RpcOpenResponse::Result> {
-  static void mapping(IO &io, ofp::api::RpcOpenResponse::Result &result) {
+struct MappingTraits<ofp::api::RpcListenResponse::Result> {
+  static void mapping(IO &io, ofp::api::RpcListenResponse::Result &result) {
     io.mapRequired("conn_id", result.connId);
   }
 };

@@ -39,7 +39,7 @@ void BridgeListener::onChannelUp(Channel *channel) {
     otherBridge_ = bridge;
 
     auto exc =
-        driver->connect(Driver::Bridge, remoteEndpoint_,
+        driver->connect(ChannelMode::Bridge, remoteEndpoint_,
                         ProtocolVersions::All, [bridge]() { return bridge; });
 
     exc.done([bridge](const std::error_code &err) {

@@ -26,6 +26,7 @@
 #include "ofp/ipv6endpoint.h"
 #include "ofp/protocolversions.h"
 #include "ofp/deferred.h"
+#include "ofp/channelmode.h"
 
 namespace ofp {
 
@@ -35,13 +36,6 @@ class Engine;
 
 class Driver {
 public:
-  enum Role {
-    Agent = 0,
-    Controller,
-    Bridge,
-    Auxiliary // for internal use only
-  };
-
   Driver();
   ~Driver();
 
@@ -50,12 +44,12 @@ public:
                                const std::string &certificateAuthorityFile,
                                const char *privateKeyPassword);
 
-  std::error_code listen(Role role, const IPv6Endpoint &localEndpoint,
+  std::error_code listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory);
 
   // TODO(bfish): this should take an array of remote endpoints...
-  Deferred<std::error_code> connect(Role role,
+  Deferred<std::error_code> connect(ChannelMode mode,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory);

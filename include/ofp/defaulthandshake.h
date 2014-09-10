@@ -33,9 +33,10 @@ class Connection;
 }  // namespace sys
 
 OFP_BEGIN_IGNORE_PADDING
+
 class DefaultHandshake : public ChannelListener {
 public:
-  DefaultHandshake(sys::Connection *channel, Driver::Role role,
+  DefaultHandshake(sys::Connection *channel, ChannelMode mode,
                    ProtocolVersions versions, Factory listenerFactory);
 
   void onChannelUp(Channel *channel) override;
@@ -43,7 +44,7 @@ public:
   void onMessage(const Message *message) override;
   void onTimer(UInt32 /* timerID */) override {}
 
-  Driver::Role role() const { return role_; }
+  ChannelMode mode() const { return mode_; }
   ProtocolVersions versions() const { return versions_; }
 
   void setStartingVersion(UInt8 version) { startingVersion_ = version; }
@@ -54,7 +55,7 @@ private:
   sys::Connection *channel_;
   ProtocolVersions versions_;
   Factory listenerFactory_;
-  Driver::Role role_;
+  ChannelMode mode_;
   UInt32 startingXid_ = 0;
   UInt8 startingVersion_ = 0;
 

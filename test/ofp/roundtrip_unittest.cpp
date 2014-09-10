@@ -101,12 +101,12 @@ TEST(roundtrip, basic_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(Driver::Controller,
+    auto result1 = driver.listen(ChannelMode::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions::All, TestController::factory);
     EXPECT_FALSE(result1);
 
-    auto result2 = driver.connect(Driver::Agent,
+    auto result2 = driver.connect(ChannelMode::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions::All, TestAgent::factory);
 
@@ -134,13 +134,13 @@ TEST(roundtrip, reconnect_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(Driver::Controller,
+    auto result1 = driver.listen(ChannelMode::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions::All, TestController::factory);
 
     EXPECT_FALSE(result1);
 
-    auto result2 = driver.connect(Driver::Agent,
+    auto result2 = driver.connect(ChannelMode::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions::All, TestAgent::factory);
 
@@ -168,13 +168,13 @@ TEST(roundtrip, auxiliary_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(Driver::Controller,
+    auto result1 = driver.listen(ChannelMode::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
                                  ProtocolVersions::All, TestController::factory);
 
     EXPECT_FALSE(result1);
 
-    auto result2 = driver.connect(Driver::Agent,
+    auto result2 = driver.connect(ChannelMode::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions::All, TestAgent::factory);
 

@@ -74,6 +74,15 @@ extern OutputCallback GlobalOutputCallback;
 extern void *GlobalOutputCallbackContext;
 extern Level GlobalOutputLevelFilter;
 
+template <class T1, class T2>
+std::ostream &operator<<(std::ostream &os, const std::pair<T1,T2> &p) {
+  return os << '{' << p.first << ": " << p.second << '}';
+}
+
+inline std::ostream &operator<<(std::ostream &os, const std::error_code &e) {
+  return os << "{msg: " << e.message() << ", err: " << e.value() << '}';
+}
+
 template <class Type1>
 void write_(std::ostream &os, Level level, const Type1 &value1) {
   os << value1;

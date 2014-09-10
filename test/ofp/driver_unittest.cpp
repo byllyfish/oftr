@@ -37,7 +37,7 @@ void MockChannelListener::onMessage(const Message *message) {}
 TEST(driver, test) {
   Driver driver;
 
-  driver.listen(Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
+  driver.listen(ChannelMode::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
                 ProtocolVersions::All, [] { return new MockChannelListener; });
 
   // driver.run();

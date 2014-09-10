@@ -88,12 +88,12 @@ void ApiServer::onDisconnect(ApiConnection *conn) {
   oneConn_ = nullptr;
 }
 
-void ApiServer::onRpcOpen(ApiConnection *conn, RpcOpen *open) {
+void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   IPv6Endpoint endpt = open->params.endpoint;
   UInt64 connId = 0;
   Driver *driver = engine_->driver();
 
-  std::error_code err = driver->listen(Driver::Controller, endpt, ProtocolVersions::All,
+  std::error_code err = driver->listen(ChannelMode::Controller, endpt, ProtocolVersions::All,
     [this]() { return new ApiChannelListener{this}; });
 
   if (open->id == RPC_ID_MISSING) {
@@ -102,7 +102,7 @@ void ApiServer::onRpcOpen(ApiConnection *conn, RpcOpen *open) {
   }
 
   if (!err) {
-    RpcOpenResponse response{open->id};
+    RpcListenResponse response{open->id};
     response.result.connId = connId;
     conn->rpcReply(&response);
 

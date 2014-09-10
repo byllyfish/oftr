@@ -33,11 +33,11 @@
 using namespace ofp;
 using sys::Connection;
 
-DefaultHandshake::DefaultHandshake(Connection *channel, Driver::Role role,
+DefaultHandshake::DefaultHandshake(Connection *channel, ChannelMode mode,
                                    ProtocolVersions versions,
                                    Factory listenerFactory)
     : channel_{channel}, versions_{versions}, listenerFactory_{listenerFactory},
-      role_{role} {
+      mode_{mode} {
   assert(listenerFactory_ != nullptr);
 }
 
@@ -108,13 +108,11 @@ void DefaultHandshake::onHello(const Message *message) {
 
   channel_->setVersion(version);
 
-  if (role_ == Driver::Controller) {
+  if (mode_ == ChannelMode::Controller) {
     FeaturesRequestBuilder reply{};
     reply.send(channel_);
 
   } else {
-    assert(role_ == Driver::Bridge || role_ == Driver::Agent || role_ == Driver::Auxiliary);
-
     installNewChannelListener(nullptr);
   }
 
@@ -124,7 +122,7 @@ void DefaultHandshake::onHello(const Message *message) {
 
 void DefaultHandshake::onFeaturesReply(const Message *message) {
   // Only a controller should be receiving a features reply message.
-  if (role_ != Driver::Controller) {
+  if (mode_ != ChannelMode::Controller) {
     return;
   }
 
@@ -137,7 +135,7 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
 
   channel_->postDatapathId(msg->datapathId(), msg->auxiliaryId());
 
-  if (role_ == Driver::Controller && channel_->mainConnection() != channel_) {
+  if (mode_ == ChannelMode::Controller && channel_->mainConnection() != channel_) {
     installAuxiliaryChannelListener(message);
   } else {
     installNewChannelListener(message);

@@ -149,7 +149,7 @@ class LibOFP(object):
         self._call('ofp.config', options=['%s=%s' % (name, value)])
 
     def _sendListenRequest(self, openflowAddr):
-        self._call('ofp.open', endpoint='%s %d' % openflowAddr)
+        self._call('ofp.listen', endpoint='%s %d' % openflowAddr)
 
     def _makeEventGenerator(self):
         msgLines = []

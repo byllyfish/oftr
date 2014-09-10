@@ -28,25 +28,36 @@
 
 using namespace ofp::sys;
 
-UDP_Server::UDP_Server(Engine *engine, Driver::Role role,
-                       const udp::endpoint &endpt, ProtocolVersions versions,
-                       std::error_code &error)
-    : engine_{engine}, role_{role}, versions_{versions}, socket_{engine->io()},
-      message_{nullptr} {
-  listen(endpt, error);
-  asyncReceive();
+UDP_Server::UDP_Server(Engine *engine, ChannelMode mode,
+                       const IPv6Endpoint &localEndpt, ProtocolVersions versions,
+                       UInt64 connId, std::error_code &error)
+    : engine_{engine}, mode_{mode}, versions_{versions}, socket_{engine->io()},
+      message_{nullptr}, connId_{connId} {
 
-  engine_->registerServer(this);
+  assert(connId_ != 0);
 
-  log::info("Start UDP listening on", endpt);
+  listen(localEndpt, error);
+
+  if (!error) {
+    asyncReceive();
+    log::info("Start listening on UDP", localEndpt, std::make_pair("connid", connId_));
+
+  } else {
+    connId_ = 0;
+    log::error("Listen failed on UDP", localEndpt, error);
+  }
 }
 
 UDP_Server::~UDP_Server() {
+  if (connId_) {
+    log::info("Stop listening on UDP", localEndpoint(), std::make_pair("connid", connId_));
+  }
+}
+
+ofp::IPv6Endpoint UDP_Server::localEndpoint() const {
   asio::error_code err;
   udp::endpoint endpt = socket_.local_endpoint(err);
-  log::info("Stop UDP listening on", endpt);
-
-  engine_->releaseServer(this);
+  return convertEndpoint<udp>(endpt);
 }
 
 void UDP_Server::add(UDP_Connection *conn) {
@@ -72,10 +83,10 @@ void UDP_Server::write(const void *data, size_t length) {
 
 void UDP_Server::flush(udp::endpoint endpt) { asyncSend(); }
 
-void UDP_Server::listen(const udp::endpoint &localEndpt,
+void UDP_Server::listen(const IPv6Endpoint &localEndpt,
                         std::error_code &error) {
   // Handle case where IPv6 is not supported on this system.
-  udp::endpoint endpt = localEndpt;
+  udp::endpoint endpt = convertEndpoint<udp>(localEndpt);;
   asio::ip::address addr = endpt.address();
 
   socket_.open(endpt.protocol(), error);
@@ -145,7 +156,7 @@ void UDP_Server::dispatchMessage() {
   if (iter == connMap_.end()) {
 
     if (message_.type() == Hello::type()) {
-      auto conn = new UDP_Connection(this, role_, versions_, sender_);
+      auto conn = new UDP_Connection(this, mode_, versions_, sender_);
       conn->postMessage(nullptr, &message_);
 
     } else {

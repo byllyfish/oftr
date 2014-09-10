@@ -36,8 +36,8 @@ ApiConnection::~ApiConnection() {
   server_->onDisconnect(this); 
 }
 
-void ApiConnection::onRpcOpen(RpcOpen *open) {
-  server_->onRpcOpen(this, open);
+void ApiConnection::onRpcListen(RpcListen *listen) {
+  server_->onRpcListen(this, listen);
 }
 
 void ApiConnection::onRpcClose(RpcClose *close) {

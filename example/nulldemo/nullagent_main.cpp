@@ -23,7 +23,7 @@ int main(int argc, const char **argv) {
   Driver driver;
 
   if (addr.valid()) {
-    auto result = driver.connect(Driver::Agent,
+    auto result = driver.connect(ChannelMode::Agent,
                                  IPv6Endpoint{addr, OFP_DEFAULT_PORT}, version,
                                  NullAgent::Factory);
     result.done([](const std::error_code &err) {
@@ -34,7 +34,7 @@ int main(int argc, const char **argv) {
 
   } else {
     auto err =
-        driver.listen(Driver::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
+        driver.listen(ChannelMode::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
                       version, NullAgent::Factory);
 
     std::cout << "Result: " << err << '\n';

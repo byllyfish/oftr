@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 
   Driver driver;
   auto err = driver.listen(
-      Driver::Bridge, argEndpoints.first, ProtocolVersions::All,
+      ChannelMode::Bridge, argEndpoints.first, ProtocolVersions::All,
       [argEndpoints]() { return new BridgeListener(argEndpoints.second); });
 
   int exitCode = 0;

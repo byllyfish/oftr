@@ -27,6 +27,7 @@
 #include "ofp/sys/tcp_connection.h"
 
 using namespace ofp::sys;
+using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
     : driver_{driver}, context_{asio::ssl::context::tlsv1}, signals_{io_},
@@ -37,7 +38,7 @@ Engine::~Engine() {
   // speed things up; servers attempt to remove themselves from the server
   // list when they are destroyed.
 
-  ServerList servers;
+  TCPServerList servers;
   std::swap(servers, serverList_);
   assert(serverList_.empty());
 
@@ -85,26 +86,28 @@ Engine::configureTLS(const std::string &privateKeyFile,
   return error;
 }
 
-std::error_code Engine::listen(Driver::Role role,
+std::error_code Engine::listen(ChannelMode mode,
                                const IPv6Endpoint &localEndpoint,
                                ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory) {
-  auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
-  auto udpEndpt = convertEndpoint<udp>(localEndpoint);
+  //auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
+  //auto udpEndpt = convertEndpoint<udp>(localEndpoint);
   std::error_code error;
 
-  auto tcpsvr = MakeUniquePtr<TCP_Server>(this, role, tcpEndpt, versions,
+  auto tcpsvr = MakeUniquePtr<TCP_Server>(this, mode, localEndpoint, versions,
                                           listenerFactory, error);
   if (error)
     return error;
 
-  auto udpsvr =
-      MakeUniquePtr<UDP_Server>(this, role, udpEndpt, versions, error);
-  if (error)
-    return error;
+  //auto udpsvr =
+  //    MakeUniquePtr<UDP_Server>(this, role, udpEndpt, versions, error);
+  //if (error)
+  //  return error;
+
+  //tcpsvr->setUDPServer(udpsvr);
 
   (void)tcpsvr.release();
-  (void)udpsvr.release();
+  //(void)udpsvr.release();
 
   // Register signal handlers.
   installSignalHandlers();
@@ -113,7 +116,7 @@ std::error_code Engine::listen(Driver::Role role,
 }
 
 ofp::Deferred<std::error_code>
-Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
+Engine::connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint,
                 ProtocolVersions versions,
                 ChannelListener::Factory listenerFactory) {
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
@@ -121,21 +124,21 @@ Engine::connect(Driver::Role role, const IPv6Endpoint &remoteEndpoint,
 
   if (isTLSDesired()) {
     auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(
-        this, role, versions, listenerFactory);
+        this, mode, versions, listenerFactory);
     result = connPtr->asyncConnect(endpt);
   } else {
     auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
-        this, role, versions, listenerFactory);
+        this, mode, versions, listenerFactory);
     result = connPtr->asyncConnect(endpt);
   }
 
   // If the role is `Agent`, the connection will keep retrying. Install signal
   // handlers to tell it to stop.
-  if (role == Driver::Agent) {
+  if (mode == ChannelMode::Agent) {
     installSignalHandlers();
   }
 
-  if (role == Driver::Agent) {
+  if (mode == ChannelMode::Agent) {
     // When the role is Agent, the connection will keep trying to reconnect.
     // In this case, we always return no error.
     return std::error_code{};
@@ -215,7 +218,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
     // FIXME should Auxiliary connections use a null listenerFactory? (Use
     // defaultauxiliarylistener by default?)
     auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
-        this, Driver::Auxiliary, versions, listenerFactory);
+        this, ChannelMode::Auxiliary, versions, listenerFactory);
 
     // FIXME we used to set datapathID and auxiliaryId here...
     connPtr->setMainConnection(mainConnection, auxID);
@@ -290,9 +293,12 @@ void Engine::releaseDatapathID(Connection *channel) {
   }
 }
 
-void Engine::registerServer(Server *server) { serverList_.push_back(server); }
+UInt64 Engine::registerServer(TCP_Server *server) { 
+  serverList_.push_back(server);
+  return assignConnId();
+}
 
-void Engine::releaseServer(Server *server) {
+void Engine::releaseServer(TCP_Server *server) {
   auto iter = std::find(serverList_.begin(), serverList_.end(), server);
   if (iter != serverList_.end()) {
     serverList_.erase(iter);
@@ -310,4 +316,12 @@ void Engine::installSignalHandlers() {
       }
     });
   }
+}
+
+UInt64 Engine::assignConnId() {
+  UInt64 id = ++lastConnId_;
+  if (id == 0) {
+    id = ++lastConnId_;
+  }
+  return id;
 }

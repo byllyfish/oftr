@@ -46,7 +46,7 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
 
   virtual void asyncAccept() = 0;
 
-  void onRpcOpen(RpcOpen *open);
+  void onRpcListen(RpcListen *listen);
   void onRpcClose(RpcClose *close);
   void onRpcSend(RpcSend *send);
   void onRpcSetTimer(RpcSetTimer *setTimer);

@@ -24,24 +24,35 @@
 #include "ofp/sys/udp_server.h"
 #include "ofp/log.h"
 
-ofp::sys::UDP_Connection::UDP_Connection(UDP_Server *server, Driver::Role role,
+using ofp::sys::UDP_Connection;
+using ofp::IPv6Endpoint;
+
+UDP_Connection::UDP_Connection(UDP_Server *server, ChannelMode mode,
                                          ProtocolVersions versions,
                                          udp::endpoint remoteEndpt)
     : Connection{server->engine(),
-                 new DefaultHandshake{this, role, versions, nullptr}},
+                 new DefaultHandshake{this, mode, versions, nullptr}},
       server_{server}, remoteEndpt_{remoteEndpt} {
   server_->add(this);
 }
 
-ofp::sys::UDP_Connection::~UDP_Connection() { server_->remove(this); }
+UDP_Connection::~UDP_Connection() { server_->remove(this); }
 
-void ofp::sys::UDP_Connection::write(const void *data, size_t length) {
+IPv6Endpoint UDP_Connection::remoteEndpoint() const {
+    return convertEndpoint<udp>(remoteEndpt_);
+}
+
+IPv6Endpoint UDP_Connection::localEndpoint() const {
+    return server_->localEndpoint();
+}
+
+void UDP_Connection::write(const void *data, size_t length) {
   server_->write(data, length);
 }
 
-void ofp::sys::UDP_Connection::flush() { server_->flush(remoteEndpt_); }
+void UDP_Connection::flush() { server_->flush(remoteEndpt_); }
 
-void ofp::sys::UDP_Connection::shutdown() {
+void UDP_Connection::shutdown() {
   log::info("close the 'connection' to this udp endpoint");
 
   // call delete this?

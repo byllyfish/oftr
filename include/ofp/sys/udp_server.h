@@ -24,7 +24,6 @@
 
 #include "ofp/types.h"
 #include "ofp/sys/asio_utils.h"
-#include "ofp/sys/server.h"
 #include "ofp/ipv6address.h"
 #include "ofp/message.h"
 #include "ofp/driver.h"
@@ -38,13 +37,15 @@ class UDP_Connection;
 
 OFP_BEGIN_IGNORE_PADDING
 
-class UDP_Server : public Server {
+class UDP_Server {
 public:
 
 	enum { MaxDatagramLength = 2000 };  // FIXME?
 
-	UDP_Server(Engine *engine, Driver::Role role, const udp::endpoint &endpt, ProtocolVersions versions, std::error_code &error);
+	UDP_Server(Engine *engine, ChannelMode mode, const IPv6Endpoint &endpt, ProtocolVersions versions, UInt64 connId, std::error_code &error);
 	~UDP_Server();
+
+	IPv6Endpoint localEndpoint() const;
 
 	// Used by UDP_Connections to manage their lifetimes.
 	void add(UDP_Connection *conn);
@@ -59,16 +60,17 @@ private:
 	using ConnectionMap = std::unordered_map<IPv6Endpoint,UDP_Connection*>;
 
 	Engine *engine_;
-	Driver::Role role_;
+	ChannelMode mode_;
 	ProtocolVersions versions_;
 	udp::socket socket_;
 	udp::endpoint sender_;
 	Message message_;
 	ConnectionMap connMap_;
+	UInt64 connId_ = 0;
 	bool shuttingDown_ = false;
 	log::Lifetime lifetime_{"UDP_Server"};
 
-	void listen(const udp::endpoint &endpt, std::error_code &error);
+	void listen(const IPv6Endpoint &localEndpt, std::error_code &error);
 	void asyncReceive();
 	void asyncSend();
 

@@ -23,37 +23,52 @@
 #include "ofp/sys/engine.h"
 #include "ofp/log.h"
 #include "ofp/sys/tcp_connection.h"
+#include "ofp/sys/udp_server.h"
 
 using namespace ofp::sys;
 
-TCP_Server::TCP_Server(Engine *engine, Driver::Role role,
-                       const tcp::endpoint &endpt, ProtocolVersions versions,
+TCP_Server::TCP_Server(Engine *engine, ChannelMode mode,
+                       const IPv6Endpoint &localEndpt, ProtocolVersions versions,
                        ChannelListener::Factory listenerFactory,
                        std::error_code &error)
     : engine_{engine}, acceptor_{engine->io()}, socket_{engine->io()},
-      role_{role}, versions_{versions}, factory_{listenerFactory} {
+      mode_{mode}, versions_{versions}, factory_{listenerFactory} {
 
-  listen(endpt, error);
+  listen(localEndpt, error);
 
-  if (!error)
+  if (!error) {
+    connId_ = engine_->registerServer(this);
+    log::info("Start listening on TCP", localEndpt, std::make_pair("connid", connId_));
     asyncAccept();
+    listenUDP(localEndpt, error);
 
-  engine_->registerServer(this);
-
-  log::info("Start TCP listening on", endpt);
+  } else {
+    connId_ = 0;
+    log::error("Listen failed on TCP", localEndpt, error);
+  }
 }
 
 TCP_Server::~TCP_Server() {
-  asio::error_code err;
-  tcp::endpoint endpt = acceptor_.local_endpoint(err);
+  if (connId_) {
+    // Dispose of UDP server first.
+    udpServer_.reset();
 
-  log::info("Stop TCP listening on", endpt);
-  engine_->releaseServer(this);
+    log::info("Stop listening on TCP", localEndpoint(), std::make_pair("connid", connId_));
+    engine_->releaseServer(this);
+  }
 }
 
-void TCP_Server::listen(const tcp::endpoint &localEndpt,
+
+ofp::IPv6Endpoint TCP_Server::localEndpoint() const {
+  asio::error_code err;
+  tcp::endpoint endpt = acceptor_.local_endpoint(err);
+  return convertEndpoint<tcp>(endpt);
+}
+
+
+void TCP_Server::listen(const IPv6Endpoint &localEndpt,
                         std::error_code &error) {
-  auto endpt = localEndpt;
+  auto endpt = convertEndpoint<tcp>(localEndpt);
   auto addr = endpt.address();
 
   acceptor_.open(endpt.protocol(), error);
@@ -89,11 +104,11 @@ void TCP_Server::asyncAccept() {
 
       if (engine_->isTLSDesired()) {
         auto conn = std::make_shared<TCP_Connection<EncryptedSocket>>(
-            engine_, std::move(socket_), role_, versions_, factory_);
+            engine_, std::move(socket_), mode_, versions_, factory_);
         conn->asyncAccept();
       } else {
         auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(
-            engine_, std::move(socket_), role_, versions_, factory_);
+            engine_, std::move(socket_), mode_, versions_, factory_);
         conn->asyncAccept();
       }
 
@@ -103,4 +118,9 @@ void TCP_Server::asyncAccept() {
 
     asyncAccept();
   });
+}
+
+
+void TCP_Server::listenUDP(const IPv6Endpoint &localEndpt, std::error_code &error) {
+  udpServer_ = MakeUniquePtr<UDP_Server>(engine_, mode_, localEndpt, versions_, connId_, error);
 }

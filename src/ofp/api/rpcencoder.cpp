@@ -60,11 +60,11 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
   }
 
   switch (method_) {
-    case METHOD_OPEN: {
-        RpcOpen open{id};
-        io.mapRequired("params", open.params);
+    case METHOD_LISTEN: {
+        RpcListen listen{id};
+        io.mapRequired("params", listen.params);
         if (!errorFound(io)) {
-            conn_->onRpcOpen(&open);
+            conn_->onRpcListen(&listen);
         }
         break;
     }

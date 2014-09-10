@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
   std::error_code error;
 
   if (remoteEndpoint.valid()) {
-    auto result = driver.connect(Driver::Agent, remoteEndpoint, {OFP_VERSION_1},
+    auto result = driver.connect(ChannelMode::Agent, remoteEndpoint, {OFP_VERSION_1},
                                  TestAgent::Factory);
     result.done([&error](const std::error_code &err) {
       // This will not be called, unless `addr` is invalid; agent will keep
@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     });
 
   } else {
-    error = driver.listen(Driver::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
+    error = driver.listen(ChannelMode::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
                           {OFP_VERSION_1}, TestAgent::Factory);
   }
 

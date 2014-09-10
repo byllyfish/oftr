@@ -18,7 +18,7 @@ std::string toJsonString(Type *event) {
 
 using namespace ofp::api;
 
-std::string RpcOpenResponse::toJson() {
+std::string RpcListenResponse::toJson() {
   return toJsonString(this);
 }
 

@@ -40,6 +40,7 @@ public:
   virtual DatapathID datapathId() const = 0;
   virtual UInt8 auxiliaryId() const = 0;
   virtual IPv6Endpoint remoteEndpoint() const = 0;
+  virtual IPv6Endpoint localEndpoint() const = 0;
   virtual void shutdown() = 0;
 
   virtual ChannelListener *channelListener() const = 0;

@@ -88,7 +88,7 @@ int Ping::ping() {
   IPv6Endpoint endpt = endpoint_;
 
   auto exc =
-      driver.connect(Driver::Bridge, endpt, ProtocolVersions::All,
+      driver.connect(ChannelMode::Bridge, endpt, ProtocolVersions::All,
                      [echoData]() { return new PingListener{&echoData}; });
 
   int exitCode = 0;

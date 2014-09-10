@@ -24,34 +24,40 @@
 
 #include "ofp/types.h"
 #include "ofp/sys/asio_utils.h"
-#include "ofp/sys/server.h"
 #include "ofp/driver.h"
 
 namespace ofp {
 namespace sys {
 
 class Engine;
+class UDP_Server;
 
 OFP_BEGIN_IGNORE_PADDING
 
-class TCP_Server : public Server {
+class TCP_Server {
 public:
-  TCP_Server(Engine *engine, Driver::Role role, const tcp::endpoint &endpt,
+  TCP_Server(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt,
              ProtocolVersions versions,
              ChannelListener::Factory listenerFactory, std::error_code &error);
   ~TCP_Server();
+
+  IPv6Endpoint localEndpoint() const;
 
 private:
   log::Lifetime lifetime_{"TCP_Server"};
   Engine *engine_;
   tcp::acceptor acceptor_;
   tcp::socket socket_;
-  Driver::Role role_;
+  ChannelMode mode_;
   ProtocolVersions versions_;
   ChannelListener::Factory factory_;
+  UInt64 connId_ = 0;
+  std::unique_ptr<UDP_Server> udpServer_;
 
-  void listen(const tcp::endpoint &localEndpt, std::error_code &error);
+  void listen(const IPv6Endpoint &localEndpt, std::error_code &error);
   void asyncAccept();
+
+  void listenUDP(const IPv6Endpoint &localEndpt, std::error_code &error);
 };
 
 OFP_END_IGNORE_PADDING

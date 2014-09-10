@@ -29,20 +29,20 @@ namespace ofp {
 namespace sys {
 
 template <class SocketType>
-TCP_Connection<SocketType>::TCP_Connection(Engine *engine, Driver::Role role,
+TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
+    : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
       socket_{engine->io(), engine->context()},
       idleTimer_{engine->io()} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
-                                           Driver::Role role,
+                                           ChannelMode mode,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, role, versions, factory}},
+    : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
       socket_{std::move(socket), engine->context()},
       idleTimer_{engine->io()} {}
@@ -65,6 +65,11 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::remoteEndpoint() const {
   } else {
     return convertEndpoint<tcp>(socket_.lowest_layer().remote_endpoint());
   }
+}
+
+template <class SocketType>
+ofp::IPv6Endpoint TCP_Connection<SocketType>::localEndpoint() const {
+  return convertEndpoint<tcp>(socket_.lowest_layer().local_endpoint());
 }
 
 template <class SocketType>

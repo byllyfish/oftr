@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
   if (addr.valid()) {
     auto result =
-        driver.connect(Driver::Controller, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
+        driver.connect(ChannelMode::Controller, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
                        ProtocolVersions::All, NullController::Factory);
 
     result.done([](const std::error_code &err) {
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     });
 
   } else {
-    driver.listen(Driver::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
+    driver.listen(ChannelMode::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
                   ProtocolVersions::All, NullController::Factory);
   }
 

@@ -33,7 +33,7 @@ namespace api {
 class ApiConnection;
 class ApiSession;
 
-struct RpcOpen;
+struct RpcListen;
 struct RpcClose;
 
 OFP_BEGIN_IGNORE_PADDING
@@ -52,7 +52,7 @@ class ApiServer {
   void onConnect(ApiConnection *conn);
   void onDisconnect(ApiConnection *conn);
 
-  void onRpcOpen(ApiConnection *conn, RpcOpen *open);
+  void onRpcListen(ApiConnection *conn, RpcListen *open);
   void onRpcClose(ApiConnection *conn, RpcClose *close);
 
   // These methods are used to bridge ApiChannelListeners to ApiConnections.

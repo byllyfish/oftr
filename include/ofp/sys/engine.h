@@ -33,7 +33,7 @@ namespace ofp {
 namespace sys {
 
 class Server;
-// class TCP_Server;
+class TCP_Server;
 class Connection; // FIXME can I use Connection here?
 
 OFP_BEGIN_IGNORE_PADDING
@@ -48,11 +48,11 @@ public:
                                const std::string &certificateAuthorityFile,
                                const char *privateKeyPassword);
 
-  std::error_code listen(Driver::Role role, const IPv6Endpoint &localEndpoint,
+  std::error_code listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory);
 
-  Deferred<std::error_code> connect(Driver::Role role,
+  Deferred<std::error_code> connect(ChannelMode mode,
                                     const IPv6Endpoint &remoteEndpoint,
                                     ProtocolVersions versions,
                                     ChannelListener::Factory listenerFactory);
@@ -78,19 +78,20 @@ public:
   void postDatapathID(Connection *channel);
   void releaseDatapathID(Connection *channel);
 
-  void registerServer(Server *server);
-  void releaseServer(Server *server);
+  UInt64 registerServer(TCP_Server *server);
+  void releaseServer(TCP_Server *server);
 
 private:
   // Pointer to driver object that owns engine.
   Driver *driver_;
 
   using DatapathMap = std::map<DatapathID, Connection *>;
-  using ServerList = std::vector<Server *>;
+  using TCPServerList = std::vector<TCP_Server *>;
 
   DatapathMap dpidMap_;
-  ServerList serverList_;
-
+  TCPServerList serverList_;
+  UInt64 lastConnId_ = 0;
+  
   // The io_service must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to bookkeeping objects.
   asio::io_service io_{1};
@@ -106,6 +107,8 @@ private:
 
   // Timer that can be used to stop the engine.
   asio::steady_timer stopTimer_;
+
+  UInt64 assignConnId();
 };
 
 OFP_END_IGNORE_PADDING

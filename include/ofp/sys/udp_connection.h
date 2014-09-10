@@ -35,16 +35,15 @@ class UDP_Server;
 OFP_BEGIN_IGNORE_PADDING
 class UDP_Connection : public Connection {
 public:
-    UDP_Connection(UDP_Server *server, Driver::Role role, ProtocolVersions versions, udp::endpoint remoteEndpt);
+    UDP_Connection(UDP_Server *server, ChannelMode mode, ProtocolVersions versions, udp::endpoint remoteEndpt);
     ~UDP_Connection();
 
     void write(const void *data, size_t length) override;
 	void flush() override;
 	void shutdown() override;
 	
-    IPv6Endpoint remoteEndpoint() const override {
-        return convertEndpoint<udp>(remoteEndpt_);
-    }
+    IPv6Endpoint remoteEndpoint() const override;
+    IPv6Endpoint localEndpoint() const override;
 
     Transport transport() const { return Transport::UDP; }
     void openAuxChannel(UInt8 auxID, Transport transport) override {}       // should not be called
