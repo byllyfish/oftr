@@ -12,17 +12,17 @@ TEST(enumconverter, convert) {
     UNK
   };
 
-  const char *const names[] = {"A", "B", "C"};
-  auto converter = yaml::MakeEnumConverter<Kind>(names);
+  const llvm::StringRef names[] = {"A", "B", "C"};
+  ofp::yaml::EnumConverter<Kind> converter{names};
 
   {
     Kind k;
     EXPECT_TRUE(converter.convert("A", &k));
     EXPECT_EQ(A, k);
 
-    const char *n;
+    llvm::StringRef n;
     EXPECT_TRUE(converter.convert(A, &n));
-    EXPECT_EQ("A", n);
+    EXPECT_EQ("A", n.str());
   }
 
   {
@@ -30,9 +30,9 @@ TEST(enumconverter, convert) {
     EXPECT_TRUE(converter.convert("C", &k));
     EXPECT_EQ(C, k);
 
-    const char *n;
+    llvm::StringRef n;
     EXPECT_TRUE(converter.convert(C, &n));
-    EXPECT_EQ("C", n);
+    EXPECT_EQ("C", n.str());
   }
 }
 
@@ -45,14 +45,14 @@ TEST(enumconverter, convert_case_senstive) {
     KIND_LAST = C
   };
 
-  const char *const names[KIND_LAST + 1] = {"A", "B", "C"};
+  const llvm::StringRef names[KIND_LAST + 1] = {"A", "B", "C"};
 
-  auto converter = yaml::MakeEnumConverter<Kind>(names);
+  ofp::yaml::EnumConverter<Kind> converter{names};
 
   Kind k;
   EXPECT_FALSE(converter.convert("b", &k));
 
-  const char *n;
+  llvm::StringRef n;
   EXPECT_TRUE(converter.convert(B, &n));
-  EXPECT_EQ("B", n);
+  EXPECT_EQ("B", n.str());
 }

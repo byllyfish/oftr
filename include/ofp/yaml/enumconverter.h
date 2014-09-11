@@ -36,12 +36,12 @@ bool ParseUnsignedInteger(llvm::StringRef name, Type *value) {
 template <class Type>
 class EnumConverter {
  public:
-  constexpr EnumConverter(llvm::ArrayRef<const char *> names) : names_{names} {}
+  constexpr EnumConverter(llvm::ArrayRef<llvm::StringRef> names) : names_{names} {}
 
   bool convert(llvm::StringRef name, Type *value) {
     // Check for name match.
     for (size_t i = 0, len = names_.size(); i < len; ++i) {
-      if (equals(name, i)) {
+      if (name.equals(names_[i])) {
         *value = static_cast<Type>(i);
         return true;
       }
@@ -50,7 +50,7 @@ class EnumConverter {
     return ParseUnsignedInteger(name, value);
   }
 
-  bool convert(Type value, const char **name) const {
+  bool convert(Type value, llvm::StringRef *name) const {
     if (value < names_.size() && value >= 0) {
       *name = names_[value];
       return true;
@@ -59,30 +59,8 @@ class EnumConverter {
   }
 
  private:
-  llvm::ArrayRef<const char *> names_;
-
-  bool equals(llvm::StringRef name, size_t i) const {
-    return name.equals(names_[i]);
-#if 0
-    const char *p = name.data();
-    const char *pend = p + name.size();
-    const char *c = names_[i];
-    while (p < pend) {
-      if (std::toupper(*p) != std::toupper(*c)) {
-        return false;
-      }
-      ++p;
-      ++c;
-    }
-    return true;
-#endif //0
-  }
+  llvm::ArrayRef<llvm::StringRef> names_;
 };
-
-template <class Type>
-EnumConverter<Type> MakeEnumConverter(llvm::ArrayRef<const char *> names) {
-  return EnumConverter<Type>{names};
-}
 
 }  // namespace yaml
 }  // namespace ofp

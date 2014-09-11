@@ -283,7 +283,7 @@ struct ScalarTraits<ofp::api::RpcMethod> {
 
   static void output(const ofp::api::RpcMethod &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    const char *scalar;
+    llvm::StringRef scalar;
     if (converter.convert(value, &scalar)) {
       out << scalar;
     } else {

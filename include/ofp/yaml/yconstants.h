@@ -116,7 +116,7 @@ struct ScalarTraits<ofp::OFPPacketInReason> {
 
   static void output(const ofp::OFPPacketInReason &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    const char *scalar;
+    llvm::StringRef scalar;
     if (converter.convert(value, &scalar)) {
       out << scalar;
     } else {
@@ -141,7 +141,7 @@ struct ScalarTraits<ofp::OFPFlowModCommand> {
 
   static void output(const ofp::OFPFlowModCommand &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    const char *scalar;
+    llvm::StringRef scalar;
     if (converter.convert(value, &scalar)) {
       out << scalar;
     } else {

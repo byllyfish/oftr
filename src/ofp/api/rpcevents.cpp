@@ -42,7 +42,7 @@ std::string RpcTimer::toJson() {
   return toJsonString(this);
 }
 
-static const char *sRpcMethods[] = {
+static llvm::StringRef sRpcMethods[] = {
   "ofp.listen",
   "ofp.close",
   "ofp.send",
