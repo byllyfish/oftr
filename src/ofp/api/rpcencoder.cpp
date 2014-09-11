@@ -23,13 +23,15 @@ RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn, yaml::Enco
   if (yin.error()) {
     // Error string will be empty if there's no content.
     
-    if (!error().empty())
-      log::info("Error: ", error());
-
-    
     RpcErrorResponse response{id_ ? *id_ : 0};
-    response.error.code = ERROR_CODE_INVALID_REQUEST;
     response.error.message = error();
+
+    int code = ERROR_CODE_INVALID_REQUEST;
+    if (response.error.message.find("unknown method") != std::string::npos) {
+      code = ERROR_CODE_METHOD_NOT_FOUND;
+    }
+    
+    response.error.code = code;
     conn_->rpcReply(&response);
   }
 }
@@ -101,8 +103,6 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
         break;
     }
     default:
-      log::info("RpcEncoder: Unrecognized method", method_);
-      method_ = METHOD_UNSUPPORTED;
       break;
   }
 }

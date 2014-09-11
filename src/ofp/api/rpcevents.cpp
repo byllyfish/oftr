@@ -41,3 +41,19 @@ std::string RpcMessageError::toJson() {
 std::string RpcTimer::toJson() {
   return toJsonString(this);
 }
+
+static const char *sRpcMethods[] = {
+  "ofp.listen",
+  "ofp.close",
+  "ofp.send",
+  "ofp.set_timer",
+  "ofp.config",
+  "ofp.datapath",
+  "ofp.message",
+  "ofp.message_error",
+  "ofp.timer",
+};
+
+ofp::yaml::EnumConverter<ofp::api::RpcMethod>
+    llvm::yaml::ScalarTraits<ofp::api::RpcMethod>::converter{sRpcMethods};
+

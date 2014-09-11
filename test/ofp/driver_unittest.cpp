@@ -36,9 +36,11 @@ void MockChannelListener::onMessage(const Message *message) {}
 
 TEST(driver, test) {
   Driver driver;
+  std::error_code err;
 
-  driver.listen(ChannelMode::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
-                ProtocolVersions::All, [] { return new MockChannelListener; });
+  UInt64 connId = driver.listen(ChannelMode::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
+                ProtocolVersions::All, [] { return new MockChannelListener; }, err);
 
+  EXPECT_NE(0, connId);
   // driver.run();
 }

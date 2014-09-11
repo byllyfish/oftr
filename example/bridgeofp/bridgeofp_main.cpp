@@ -25,9 +25,10 @@ int main(int argc, char **argv) {
   log::setOutputStream(&std::cerr);
 
   Driver driver;
-  auto err = driver.listen(
+  std::error_code err;
+  (void)driver.listen(
       ChannelMode::Bridge, argEndpoints.first, ProtocolVersions::All,
-      [argEndpoints]() { return new BridgeListener(argEndpoints.second); });
+      [argEndpoints]() { return new BridgeListener(argEndpoints.second); }, err);
 
   int exitCode = 0;
   if (err) {

@@ -9,9 +9,10 @@ int main(int argc, char **argv) {
 
   Driver driver;
 
-  std::error_code err = driver.listen(
+  std::error_code err;
+  (void)driver.listen(
       ChannelMode::Controller, IPv6Endpoint{OFP_DEFAULT_PORT}, ProtocolVersions::All,
-      []() { return new controller::SimpleChannelListener; });
+      []() { return new controller::SimpleChannelListener; }, err);
 
   driver.run();
 

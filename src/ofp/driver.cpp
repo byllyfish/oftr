@@ -37,10 +37,10 @@ Driver::configureTLS(const std::string &privateKeyFile,
                                certificateAuthorityFile, privateKeyPassword);
 }
 
-std::error_code Driver::listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
+UInt64 Driver::listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
-                                   ChannelListener::Factory listenerFactory) {
-  return engine_->listen(mode, localEndpoint, versions, listenerFactory);
+                                   ChannelListener::Factory listenerFactory, std::error_code &error) {
+  return engine_->listen(mode, localEndpoint, versions, listenerFactory, error);
 }
 
 Deferred<std::error_code> Driver::connect(ChannelMode mode,

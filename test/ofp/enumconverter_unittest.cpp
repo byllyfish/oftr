@@ -36,7 +36,7 @@ TEST(enumconverter, convert) {
   }
 }
 
-TEST(enumconverter, convert_case_insenstive) {
+TEST(enumconverter, convert_case_senstive) {
 
   enum Kind {
     A,
@@ -50,10 +50,9 @@ TEST(enumconverter, convert_case_insenstive) {
   auto converter = yaml::MakeEnumConverter<Kind>(names);
 
   Kind k;
-  EXPECT_TRUE(converter.convert("b", &k));
-  EXPECT_EQ(B, k);
+  EXPECT_FALSE(converter.convert("b", &k));
 
   const char *n;
-  EXPECT_TRUE(converter.convert(k, &n));
+  EXPECT_TRUE(converter.convert(B, &n));
   EXPECT_EQ("B", n);
 }

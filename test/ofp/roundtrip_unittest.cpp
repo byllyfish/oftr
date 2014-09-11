@@ -101,10 +101,11 @@ TEST(roundtrip, basic_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(ChannelMode::Controller,
+    std::error_code err1;
+    (void)driver.listen(ChannelMode::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions::All, TestController::factory);
-    EXPECT_FALSE(result1);
+                                 ProtocolVersions::All, TestController::factory, err1);
+    EXPECT_FALSE(err1);
 
     auto result2 = driver.connect(ChannelMode::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
@@ -134,11 +135,12 @@ TEST(roundtrip, reconnect_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(ChannelMode::Controller,
+    std::error_code err1;
+    (void)driver.listen(ChannelMode::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions::All, TestController::factory);
+                                 ProtocolVersions::All, TestController::factory, err1);
 
-    EXPECT_FALSE(result1);
+    EXPECT_FALSE(err1);
 
     auto result2 = driver.connect(ChannelMode::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},
@@ -168,11 +170,12 @@ TEST(roundtrip, auxiliary_test) {
     Driver driver;
     IPv6Address localhost{"127.0.0.1"};
 
-    auto result1 = driver.listen(ChannelMode::Controller,
+    std::error_code err1;
+    (void)driver.listen(ChannelMode::Controller,
                                  IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions::All, TestController::factory);
+                                 ProtocolVersions::All, TestController::factory, err1);
 
-    EXPECT_FALSE(result1);
+    EXPECT_FALSE(err1);
 
     auto result2 = driver.connect(ChannelMode::Agent,
                                   IPv6Endpoint{localhost, kTestingPort},

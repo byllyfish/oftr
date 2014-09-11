@@ -48,9 +48,9 @@ public:
                                const std::string &certificateAuthorityFile,
                                const char *privateKeyPassword);
 
-  std::error_code listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
+  UInt64 listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
                          ProtocolVersions versions,
-                         ChannelListener::Factory listenerFactory);
+                         ChannelListener::Factory listenerFactory, std::error_code &error);
 
   Deferred<std::error_code> connect(ChannelMode mode,
                                     const IPv6Endpoint &remoteEndpoint,

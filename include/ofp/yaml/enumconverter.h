@@ -62,6 +62,8 @@ class EnumConverter {
   llvm::ArrayRef<const char *> names_;
 
   bool equals(llvm::StringRef name, size_t i) const {
+    return name.equals(names_[i]);
+#if 0
     const char *p = name.data();
     const char *pend = p + name.size();
     const char *c = names_[i];
@@ -73,6 +75,7 @@ class EnumConverter {
       ++c;
     }
     return true;
+#endif //0
   }
 };
 

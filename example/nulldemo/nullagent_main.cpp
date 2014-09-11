@@ -33,9 +33,9 @@ int main(int argc, const char **argv) {
     });
 
   } else {
-    auto err =
-        driver.listen(ChannelMode::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
-                      version, NullAgent::Factory);
+    std::error_code err;
+    (void)driver.listen(ChannelMode::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
+                      version, NullAgent::Factory, err);
 
     std::cout << "Result: " << err << '\n';
   }

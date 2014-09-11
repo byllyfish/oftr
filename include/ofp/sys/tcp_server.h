@@ -42,7 +42,8 @@ public:
   ~TCP_Server();
 
   IPv6Endpoint localEndpoint() const;
-
+  UInt64 connectionId() const { return connId_; }
+  
 private:
   log::Lifetime lifetime_{"TCP_Server"};
   Engine *engine_;

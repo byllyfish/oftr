@@ -36,8 +36,9 @@ int main(int argc, char **argv) {
     });
 
   } else {
-    driver.listen(ChannelMode::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
-                  ProtocolVersions::All, NullController::Factory);
+    std::error_code err;
+    (void)driver.listen(ChannelMode::Controller, IPv6Endpoint{OFP_DEFAULT_PORT},
+                  ProtocolVersions::All, NullController::Factory, err);
   }
 
   driver.run();

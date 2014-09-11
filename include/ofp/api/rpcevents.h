@@ -39,7 +39,7 @@ const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 
 /// RPC Methods
 enum RpcMethod : UInt32 {
-  METHOD_LISTEN,        // ofp.listen
+  METHOD_LISTEN = 0,    // ofp.listen
   METHOD_CLOSE,         // ofp.close
   METHOD_SEND,          // ofp.send
   METHOD_SET_TIMER,     // ofp.set_timer
@@ -53,7 +53,8 @@ enum RpcMethod : UInt32 {
 
 /// JSON-RPC error codes.
 enum RpcErrorCode {
-  ERROR_CODE_INVALID_REQUEST = -32600
+  ERROR_CODE_INVALID_REQUEST = -32600,
+  ERROR_CODE_METHOD_NOT_FOUND = -32601
 };
 
 OFP_BEGIN_IGNORE_PADDING
@@ -275,18 +276,29 @@ OFP_END_IGNORE_PADDING
 namespace llvm {
 namespace yaml {
 
+
 template <>
-struct ScalarEnumerationTraits<ofp::api::RpcMethod> {
-  static void enumeration(IO &io, ofp::api::RpcMethod &value) {
-    io.enumCase(value, "ofp.listen", ofp::api::METHOD_LISTEN);
-    io.enumCase(value, "ofp.close", ofp::api::METHOD_CLOSE);
-    io.enumCase(value, "ofp.send", ofp::api::METHOD_SEND);
-    io.enumCase(value, "ofp.config", ofp::api::METHOD_CONFIG);
-    io.enumCase(value, "ofp.set_timer", ofp::api::METHOD_SET_TIMER);
-    io.enumCase(value, "ofp.datapath", ofp::api::METHOD_DATAPATH);
-    io.enumCase(value, "ofp.message", ofp::api::METHOD_MESSAGE);
-    io.enumCase(value, "ofp.message_error", ofp::api::METHOD_MESSAGE_ERROR);
-    io.enumCase(value, "ofp.timer", ofp::api::METHOD_TIMER);
+struct ScalarTraits<ofp::api::RpcMethod> {
+  static ofp::yaml::EnumConverter<ofp::api::RpcMethod> converter;
+
+  static void output(const ofp::api::RpcMethod &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    const char *scalar;
+    if (converter.convert(value, &scalar)) {
+      out << scalar;
+    } else {
+      out << format("0x%02X", value);
+    }
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::api::RpcMethod &value) {
+    if (!converter.convert(scalar, &value)) {
+      value = ofp::api::METHOD_UNSUPPORTED;
+      return "unknown method";
+    }
+    
+    return "";
   }
 };
 

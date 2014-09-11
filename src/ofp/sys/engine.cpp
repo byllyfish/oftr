@@ -86,33 +86,24 @@ Engine::configureTLS(const std::string &privateKeyFile,
   return error;
 }
 
-std::error_code Engine::listen(ChannelMode mode,
+UInt64 Engine::listen(ChannelMode mode,
                                const IPv6Endpoint &localEndpoint,
                                ProtocolVersions versions,
-                               ChannelListener::Factory listenerFactory) {
-  //auto tcpEndpt = convertEndpoint<tcp>(localEndpoint);
-  //auto udpEndpt = convertEndpoint<udp>(localEndpoint);
-  std::error_code error;
-
+                               ChannelListener::Factory listenerFactory, std::error_code &error) {
   auto tcpsvr = MakeUniquePtr<TCP_Server>(this, mode, localEndpoint, versions,
                                           listenerFactory, error);
   if (error)
-    return error;
+    return 0;
 
-  //auto udpsvr =
-  //    MakeUniquePtr<UDP_Server>(this, role, udpEndpt, versions, error);
-  //if (error)
-  //  return error;
-
-  //tcpsvr->setUDPServer(udpsvr);
-
-  (void)tcpsvr.release();
-  //(void)udpsvr.release();
-
+  // If there's no error, the TCP_Server has registered itself with the engine. 
+  // We can release our owning ptr.
+  UInt64 connId = tcpsvr.release()->connectionId();
+  assert(connId > 0);
+  
   // Register signal handlers.
   installSignalHandlers();
 
-  return error;
+  return connId;
 }
 
 ofp::Deferred<std::error_code>
