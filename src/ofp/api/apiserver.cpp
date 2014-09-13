@@ -27,6 +27,8 @@
 #include "ofp/api/apisession.h"
 #include "ofp/api/apievents.h"
 #include "ofp/api/rpcevents.h"
+#include "ofp/sys/connection.h"
+#include "ofp/sys/tcp_server.h"
 
 using ofp::api::ApiServer;
 
@@ -79,7 +81,7 @@ void ApiServer::onDisconnect(ApiConnection *conn) {
   // When the one API connection disconnects, shutdown the engine in 1.5 secs.
   // (Only if there are existing channels.)
 
-  if (defaultChannel_ || !datapathMap_.empty()) {
+  if (defaultChannel_) {
     engine_->stop(1500_ms);
   } else {
     engine_->stop();
@@ -90,16 +92,13 @@ void ApiServer::onDisconnect(ApiConnection *conn) {
 
 void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   IPv6Endpoint endpt = open->params.endpoint;
-  Driver *driver = engine_->driver();
 
   std::error_code err;
-  UInt64 connId = driver->listen(ChannelMode::Controller, endpt, ProtocolVersions::All,
+  UInt64 connId = engine_->listen(ChannelMode::Controller, endpt, ProtocolVersions::All,
     [this]() { return new ApiChannelListener{this}; }, err);
 
-  if (open->id == RPC_ID_MISSING) {
-    // No id in request? No response necessary.
+  if (open->id == RPC_ID_MISSING)
     return;
-  }
 
   if (!err) {
     RpcListenResponse response{open->id};
@@ -117,6 +116,87 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
 void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
 
 }
+
+
+void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
+  Channel *channel = findChannel(send->params.datapathId());
+  if (channel) {
+    channel->write(send->params.data(), send->params.size());
+    channel->flush();
+  }
+
+  if (send->id == RPC_ID_MISSING)
+    return;
+
+  RpcSendResponse response{send->id};
+  response.result.data = {send->params.data(), send->params.size()};
+  conn->rpcReply(&response);
+}
+
+
+void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
+  if (list->id == RPC_ID_MISSING)
+    return;
+
+  RpcListConnsResponse response{list->id};
+  UInt64 desiredConnId = list->params.connId;
+
+  engine_->forEachServer([desiredConnId, &response](sys::TCP_Server *server){
+    UInt64 connId = server->connectionId();
+    if (!desiredConnId || connId == desiredConnId) {
+      response.result.emplace_back();
+      RpcConnectionStats &stats = response.result.back();
+      stats.localEndpoint = server->localEndpoint();
+      stats.connId = connId;     
+    }
+  });
+
+  engine_->forEachChannel([desiredConnId, &response](Channel *channel){
+    UInt64 connId = channel->connectionId();
+    if (!desiredConnId || connId == desiredConnId) {
+      response.result.emplace_back();
+      RpcConnectionStats &stats = response.result.back();
+      stats.localEndpoint = channel->localEndpoint();
+      stats.remoteEndpoint = channel->remoteEndpoint();
+      stats.connId = connId;
+      stats.datapathId = channel->datapathId();
+    }
+  });
+
+  conn->rpcReply(&response);
+}
+
+
+void ApiServer::onRpcSetTimer(ApiConnection *conn, RpcSetTimer *setTimer) {
+  std::string error;
+  DatapathID datapath = setTimer->params.datapathId;
+
+  Channel *channel = findChannel(datapath);
+  if (channel) {
+    channel->scheduleTimer(setTimer->params.timerId, Milliseconds{setTimer->params.timeout});
+  } else {
+    error = "Unknown datapath: ";
+    error += datapath.toString();
+  }
+
+  if (setTimer->id == RPC_ID_MISSING)
+    return;
+
+  if (error.empty()) {
+    RpcSetTimerResponse response{setTimer->id};
+    response.result.datapathId = setTimer->params.datapathId;
+    response.result.timerId = setTimer->params.timerId;
+    response.result.timeout = setTimer->params.timeout;
+    conn->rpcReply(&response);
+  } else {
+    RpcErrorResponse response{setTimer->id};
+    response.error.code = ERROR_CODE_DATAPATH_NOT_FOUND;
+    response.error.message = error;
+    conn->rpcReply(&response);
+  }
+}
+
+
 #if 0
 void ApiServer::onConnectRequest(ApiConnection *conn,
                                  ApiConnectRequest *connectReq) {
@@ -147,15 +227,11 @@ void ApiServer::onConnectRequest(ApiConnection *conn,
 
 
 void ApiServer::onChannelUp(Channel *channel) {
-  registerChannel(channel);
-
   if (oneConn_) oneConn_->onChannelUp(channel);
 }
 
 void ApiServer::onChannelDown(Channel *channel) {
   if (oneConn_) oneConn_->onChannelDown(channel);
-
-  unregisterChannel(channel);
 }
 
 void ApiServer::onMessage(Channel *channel, const Message *message) {
@@ -166,23 +242,8 @@ void ApiServer::onTimer(Channel *channel, UInt32 timerID) {
   if (oneConn_) oneConn_->onTimer(channel, timerID);
 }
 
-void ApiServer::registerChannel(Channel *channel) {
-  assert(datapathMap_.find(channel->datapathId()) == datapathMap_.end());
-
-  datapathMap_[channel->datapathId()] = channel;
-}
-
-void ApiServer::unregisterChannel(Channel *channel) {
-  datapathMap_.erase(channel->datapathId());
-}
-
 ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId) {
   if (defaultChannel_) return defaultChannel_;
 
-  auto iter = datapathMap_.find(datapathId);
-  if (iter != datapathMap_.end()) {
-    return iter->second;
-  }
-
-  return nullptr;
+  return engine_->findChannel(datapathId);
 }

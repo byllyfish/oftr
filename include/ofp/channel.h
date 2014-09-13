@@ -37,6 +37,7 @@ public:
   virtual ~Channel() {}
 
   virtual Driver *driver() const = 0;
+  virtual UInt64 connectionId() const = 0;
   virtual DatapathID datapathId() const = 0;
   virtual UInt8 auxiliaryId() const = 0;
   virtual IPv6Endpoint remoteEndpoint() const = 0;

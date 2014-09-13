@@ -81,19 +81,36 @@ public:
   UInt64 registerServer(TCP_Server *server);
   void releaseServer(TCP_Server *server);
 
+  UInt64 registerConnection(Connection *connection);
+  void releaseConnection(Connection *connection);
+
+  template <class UnaryFunc>
+  void forEachChannel(UnaryFunc func) {
+    std::for_each(connList_.begin(), connList_.end(), func);
+  }
+
+  template <class UnaryFunc>
+  void forEachServer(UnaryFunc func) {
+    std::for_each(serverList_.begin(), serverList_.end(), func);
+  }
+
+  Connection *findChannel(const DatapathID &dpid) const;
+
 private:
   // Pointer to driver object that owns engine.
   Driver *driver_;
 
   using DatapathMap = std::map<DatapathID, Connection *>;
-  using TCPServerList = std::vector<TCP_Server *>;
+  using ServerList = std::vector<TCP_Server *>;
+  using ConnectionList = std::vector<Connection *>;
 
+  ConnectionList connList_;
+  ServerList serverList_;
   DatapathMap dpidMap_;
-  TCPServerList serverList_;
   UInt64 lastConnId_ = 0;
   
   // The io_service must be one of the first objects to be destroyed when
-  // engine destructor runs. Connections may need to bookkeeping objects.
+  // engine destructor runs. Connections may need to update bookkeeping objects.
   asio::io_service io_{1};
   bool isRunning_ = false;
 

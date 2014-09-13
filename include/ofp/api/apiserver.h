@@ -35,6 +35,9 @@ class ApiSession;
 
 struct RpcListen;
 struct RpcClose;
+struct RpcSend;
+struct RpcListConns;
+struct RpcSetTimer;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -54,6 +57,9 @@ class ApiServer {
 
   void onRpcListen(ApiConnection *conn, RpcListen *open);
   void onRpcClose(ApiConnection *conn, RpcClose *close);
+  void onRpcSend(ApiConnection *conn, RpcSend *send);
+  void onRpcListConns(ApiConnection *conn, RpcListConns *list);
+  void onRpcSetTimer(ApiConnection *conn, RpcSetTimer *setTimer);
 
   // These methods are used to bridge ApiChannelListeners to ApiConnections.
   void onChannelUp(Channel *channel);
@@ -66,15 +72,15 @@ class ApiServer {
   sys::Engine *engine() { return engine_; }
 
  private:
-  using DatapathMap = std::map<DatapathID, Channel *>;
+  //using DatapathMap = std::map<DatapathID, Channel *>;
 
   sys::Engine *engine_;
   ApiConnection *oneConn_ = nullptr;
-  DatapathMap datapathMap_;
+  ///DatapathMap datapathMap_;
   Channel *defaultChannel_ = nullptr;
 
-  void registerChannel(Channel *channel);
-  void unregisterChannel(Channel *channel);
+  //void registerChannel(Channel *channel);
+  //void unregisterChannel(Channel *channel);
 };
 
 OFP_END_IGNORE_PADDING

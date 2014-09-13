@@ -48,13 +48,15 @@ enum RpcMethod : UInt32 {
   METHOD_MESSAGE,       // ofp.message
   METHOD_MESSAGE_ERROR, // ofp.message_error
   METHOD_TIMER,         // ofp.timer
+  METHOD_LIST_CONNS,    // ofp.list_connections
   METHOD_UNSUPPORTED
 };
 
 /// JSON-RPC error codes.
 enum RpcErrorCode {
   ERROR_CODE_INVALID_REQUEST = -32600,
-  ERROR_CODE_METHOD_NOT_FOUND = -32601
+  ERROR_CODE_METHOD_NOT_FOUND = -32601,
+  ERROR_CODE_DATAPATH_NOT_FOUND = -65000
 };
 
 OFP_BEGIN_IGNORE_PADDING
@@ -71,6 +73,16 @@ struct RpcErrorResponse {
 
   UInt64 id;
   Error error;
+};
+
+/// Represents an object in a ofp.list_connections result list.
+struct RpcConnectionStats {
+  IPv6Endpoint localEndpoint;
+  IPv6Endpoint remoteEndpoint;
+  UInt64 connId;
+  DatapathID datapathId;
+  //Channel::Transport transport;
+  //UInt8 auxiliaryId;
 };
 
 //---------------------//
@@ -127,6 +139,32 @@ struct RpcClose {
 struct RpcCloseResponse {
   /// Count of closed connections (0 or 1).
   UInt32 count;
+};
+
+//-----------------------------------------//
+// o f p . l i s t _ c o n n e c t i o n s //
+//-----------------------------------------//
+
+/// Represents a RPC request to list connection stats (METHOD_LIST_CONNS)
+struct RpcListConns {
+  explicit RpcListConns(UInt64 ident) : id{ident} {}
+
+  struct Params {
+    UInt64 connId;
+  };
+
+  UInt64 id;
+  Params params;
+};
+
+struct RpcListConnsResponse {
+  explicit RpcListConnsResponse(UInt64 ident) : id{ident} {}
+  std::string toJson();
+
+  using Result = std::vector<RpcConnectionStats>;
+
+  UInt64 id;
+  Result result;
 };
 
 //---------------------------//
@@ -273,6 +311,8 @@ OFP_END_IGNORE_PADDING
 }  // namespace api
 }  // namespace ofp
 
+LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::api::RpcConnectionStats);
+
 namespace llvm {
 namespace yaml {
 
@@ -351,6 +391,13 @@ struct MappingTraits<ofp::api::RpcConfig::Params> {
 };
 
 template <>
+struct MappingTraits<ofp::api::RpcListConns::Params> {
+  static void mapping(IO &io, ofp::api::RpcListConns::Params &result) {
+    io.mapRequired("conn_id", result.connId);
+  }
+};
+
+template <>
 struct MappingTraits<ofp::api::RpcListenResponse> {
   static void mapping(IO &io, ofp::api::RpcListenResponse &response) {
     io.mapRequired("id", response.id);
@@ -362,6 +409,41 @@ template <>
 struct MappingTraits<ofp::api::RpcListenResponse::Result> {
   static void mapping(IO &io, ofp::api::RpcListenResponse::Result &result) {
     io.mapRequired("conn_id", result.connId);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcSetTimerResponse> {
+  static void mapping(IO &io, ofp::api::RpcSetTimerResponse &response) {
+    io.mapRequired("id", response.id);
+    io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcSetTimerResponse::Result> {
+  static void mapping(IO &io, ofp::api::RpcSetTimerResponse::Result &result) {
+    io.mapRequired("datapath_id", result.datapathId);
+    io.mapRequired("timer_id", result.timerId);
+    io.mapRequired("timeout", result.timeout);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcListConnsResponse> {
+  static void mapping(IO &io, ofp::api::RpcListConnsResponse &response) {
+    io.mapRequired("id", response.id);
+    io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcConnectionStats> {
+  static void mapping(IO &io, ofp::api::RpcConnectionStats &stats) {
+    io.mapRequired("local_endpoint", stats.localEndpoint);
+    io.mapRequired("remote_endpoint", stats.remoteEndpoint);
+    io.mapRequired("datapath_id", stats.datapathId);
+    io.mapRequired("conn_id", stats.connId);
   }
 };
 

@@ -38,13 +38,15 @@ Engine::~Engine() {
   // speed things up; servers attempt to remove themselves from the server
   // list when they are destroyed.
 
-  TCPServerList servers;
+  ServerList servers;
   std::swap(servers, serverList_);
   assert(serverList_.empty());
 
-  for (auto svr : servers) {
+  for (auto svr : servers) {      // FIXME - use unqiue_ptr?
     delete svr;
   }
+
+  connList_.clear();
 }
 
 std::error_code
@@ -296,6 +298,20 @@ void Engine::releaseServer(TCP_Server *server) {
   }
 }
 
+UInt64 Engine::registerConnection(Connection *connection) {
+  connList_.push_back(connection);
+  return assignConnId();
+}
+
+void Engine::releaseConnection(Connection *connection) {
+  auto iter = std::find(connList_.begin(), connList_.end(), connection);
+  if (iter != connList_.end()) {
+    std::swap(*iter, connList_.back());
+    connList_.pop_back();
+  }
+}
+
+
 void Engine::installSignalHandlers() {
   if (!isSignalsInited_) {
     signals_.add(SIGINT);
@@ -315,4 +331,13 @@ UInt64 Engine::assignConnId() {
     id = ++lastConnId_;
   }
   return id;
+}
+
+
+Connection *Engine::findChannel(const DatapathID &dpid) const {
+  auto item = dpidMap_.find(dpid);
+  if (item != dpidMap_.end()) {
+    return item->second;
+  }
+  return nullptr;
 }

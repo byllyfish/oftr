@@ -50,7 +50,7 @@ UDP_Server::UDP_Server(Engine *engine, ChannelMode mode,
 
 UDP_Server::~UDP_Server() {
   if (connId_) {
-    log::info("Stop listening on UDP", localEndpoint(), std::make_pair("connid", connId_));
+    log::info("Stop listening on UDP", std::make_pair("connid", connId_));
   }
 }
 

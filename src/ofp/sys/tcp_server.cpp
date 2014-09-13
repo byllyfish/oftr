@@ -53,7 +53,7 @@ TCP_Server::~TCP_Server() {
     // Dispose of UDP server first.
     udpServer_.reset();
 
-    log::info("Stop listening on TCP", localEndpoint(), std::make_pair("connid", connId_));
+    log::info("Stop listening on TCP", std::make_pair("connid", connId_));
     engine_->releaseServer(this);
   }
 }

@@ -26,7 +26,12 @@
 using namespace ofp;
 using namespace ofp::sys;
 
-Driver *Connection::driver() const { return engine_->driver(); }
+Connection::Connection(Engine *engine, DefaultHandshake *handshake)
+    : engine_{engine}, listener_{handshake}, handshake_{handshake},
+      mainConn_{this} {
+
+  connId_ = engine_->registerConnection(this);
+}
 
 Connection::~Connection() {
   if (listener_ != handshake_) {
@@ -34,7 +39,7 @@ Connection::~Connection() {
   }
   ChannelListener::dispose(handshake_);
 
-  if (dpidWasPosted_ && engine()->isRunning()) {
+  if (datapathRegistered_ && engine()->isRunning()) {
     engine()->releaseDatapathID(this);
 
     if (mainConn_ == this) {
@@ -60,7 +65,11 @@ Connection::~Connection() {
       }
     }
   }
+
+  engine()->releaseConnection(this);
 }
+
+Driver *Connection::driver() const { return engine_->driver(); }
 
 void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
   assert(channel != nullptr);
@@ -124,11 +133,11 @@ void Connection::postIdle() { log::debug("postIdle() =========="); }
 
 void Connection::postDatapathId(const DatapathID &datapathId,
                                 UInt8 auxiliaryId) {
-  assert(!dpidWasPosted_);
+  assert(!datapathRegistered_);
 
   datapathId_ = datapathId;
   auxiliaryId_ = auxiliaryId;
-  dpidWasPosted_ = true; // FIXME - replace with check for all-0 datapath?
+  datapathRegistered_ = true; // FIXME - replace with check for all-0 datapath?
 
   engine()->postDatapathID(this);
 }

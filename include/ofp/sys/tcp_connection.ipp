@@ -59,17 +59,24 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine,
 }
 
 template <class SocketType>
+TCP_Connection<SocketType>::~TCP_Connection() {
+  log::info("Close TCP connection", std::make_pair("connid", connectionId()));
+}
+
+template <class SocketType>
 ofp::IPv6Endpoint TCP_Connection<SocketType>::remoteEndpoint() const {
   if (isOutgoing()) {
     return convertEndpoint<tcp>(endpoint_);
   } else {
-    return convertEndpoint<tcp>(socket_.lowest_layer().remote_endpoint());
+    asio::error_code err;
+    return convertEndpoint<tcp>(socket_.lowest_layer().remote_endpoint(err));
   }
 }
 
 template <class SocketType>
 ofp::IPv6Endpoint TCP_Connection<SocketType>::localEndpoint() const {
-  return convertEndpoint<tcp>(socket_.lowest_layer().local_endpoint());
+  asio::error_code err;
+  return convertEndpoint<tcp>(socket_.lowest_layer().local_endpoint(err));
 }
 
 template <class SocketType>
@@ -115,6 +122,8 @@ void TCP_Connection<SocketType>::asyncAccept() {
 
   // We always send and receive complete messages; disable Nagle algorithm.
   socket_.lowest_layer().set_option(tcp::no_delay(true));
+
+  log::info("Accept TCP connection", localEndpoint(), "<--", remoteEndpoint(), std::make_pair("connid", connectionId()));
 
   asyncHandshake();
 }
@@ -258,6 +267,8 @@ void TCP_Connection<SocketType>::asyncConnect() {
 
         if (!err) {
           socket_.lowest_layer().set_option(tcp::no_delay(true));
+          log::info("Establish TCP connection", localEndpoint(), "-->", remoteEndpoint(), std::make_pair("connid", connectionId()));
+
           asyncHandshake();
 
         } else if (wantsReconnect()) {

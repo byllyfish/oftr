@@ -45,25 +45,19 @@ void ApiConnection::onRpcClose(RpcClose *close) {
 }
 
 void ApiConnection::onRpcSend(RpcSend *send) {
-  Channel *channel = server_->findChannel(send->params.datapathId());
-  if (channel) {
-    channel->write(send->params.data(), send->params.size());
-    channel->flush();
-  }
-
-  if (send->id != RPC_ID_MISSING) {
-    RpcSendResponse response{send->id};
-    response.result.data = {send->params.data(), send->params.size()};
-    rpcReply(&response);
-  }
+  server_->onRpcSend(this, send);
 }
 
 void ApiConnection::onRpcSetTimer(RpcSetTimer *setTimer) {
-
+  server_->onRpcSetTimer(this, setTimer);
 }
 
 void ApiConnection::onRpcConfig(RpcConfig *config) {
 
+}
+
+void ApiConnection::onRpcListConns(RpcListConns *list) {
+  server_->onRpcListConns(this, list);
 }
 
 void ApiConnection::onChannelUp(Channel *channel) {

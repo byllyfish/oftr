@@ -46,7 +46,7 @@ public:
   TCP_Connection(Engine *engine, tcp::socket socket, ChannelMode mode,
                  ProtocolVersions versions, ChannelListener::Factory factory);
   TCP_Connection(Engine *engine, DefaultHandshake *handshake);
-  ~TCP_Connection() {}
+  ~TCP_Connection();
 
   Deferred<std::error_code> asyncConnect(const tcp::endpoint &endpt,
                                    Milliseconds delay = 0_ms);

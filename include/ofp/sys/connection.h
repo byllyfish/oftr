@@ -42,9 +42,7 @@ OFP_BEGIN_IGNORE_PADDING
 /// a list of auxiliary connections. It also supports a connection timer.
 class Connection : public Channel {
 public:
-  Connection(Engine *engine, DefaultHandshake *handshake)
-      : engine_{engine}, listener_{handshake}, handshake_{handshake},
-        mainConn_{this} {}
+  Connection(Engine *engine, DefaultHandshake *handshake);
   virtual ~Connection();
 
   Driver *driver() const override;
@@ -52,20 +50,12 @@ public:
   UInt8 version() const override { return version_; }
   void setVersion(UInt8 version) { version_ = version; }
 
+  UInt64 connectionId() const override { return connId_; }
   DatapathID datapathId() const override { return datapathId_; }
   UInt8 auxiliaryId() const override { return auxiliaryId_; }
 
   Connection *mainConnection() const { return mainConn_; }
-
   void setMainConnection(Connection *channel, UInt8 auxID);
-
-  // Connection *nextAuxiliaryConnection() const {
-  //	return nextAuxConn_;
-  //}
-
-  // void setNextAuxiliaryConnection(Connection *channel) {
-  //	nextAuxConn_ = channel;
-  //}
 
   UInt32 nextXid() override { return nextXid_++; }
 
@@ -102,10 +92,11 @@ private:
   AuxiliaryList auxList_;
   ConnectionTimerMap timers_;
   DatapathID datapathId_;
+  UInt64 connId_ = 0;
   UInt32 nextXid_ = 0;
   UInt8 version_ = 0;
   UInt8 auxiliaryId_ = 0;
-  bool dpidWasPosted_ = false;
+  bool datapathRegistered_ = false;
 };
 
 OFP_END_IGNORE_PADDING
