@@ -76,7 +76,6 @@ set(LIBOFP_SOURCES
   src/ofp/bytelist.cpp
   src/ofp/byterange.cpp
 	src/ofp/channellistener.cpp
-	src/ofp/connectiontimer.cpp
   src/ofp/constants.cpp
 	src/ofp/datapathid.cpp
 	src/ofp/defaulthandshake.cpp

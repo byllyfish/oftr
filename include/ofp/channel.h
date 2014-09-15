@@ -47,10 +47,6 @@ public:
   virtual ChannelListener *channelListener() const = 0;
   virtual void setChannelListener(ChannelListener *listener) = 0;
 
-  virtual void scheduleTimer(UInt32 timerID, Milliseconds when,
-                             bool repeat = false) = 0;
-  virtual void cancelTimer(UInt32 timerID) = 0;
-
   // The following methods are provided for OpenFlow agents.
   // The failure to open an auxiliary channel will be reported to the main
   // listener via onException.

@@ -173,7 +173,7 @@ void ApiServer::onRpcSetTimer(ApiConnection *conn, RpcSetTimer *setTimer) {
 
   Channel *channel = findChannel(datapath);
   if (channel) {
-    channel->scheduleTimer(setTimer->params.timerId, Milliseconds{setTimer->params.timeout});
+    //channel->scheduleTimer(setTimer->params.timerId, Milliseconds{setTimer->params.timeout});
   } else {
     error = "Unknown datapath: ";
     error += datapath.toString();

@@ -25,7 +25,6 @@
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
 #include "ofp/defaulthandshake.h"
-#include "ofp/sys/connectiontimer.h"
 
 namespace ofp {
 
@@ -68,14 +67,10 @@ public:
   void setHandshake(DefaultHandshake *handshake) { handshake_ = handshake; }
 
   void postMessage(Connection *source, Message *message);
-  void postTimerExpired(ConnectionTimer *timer);
   void postIdle();
   void postDatapathId(const DatapathID &datapath, UInt8 auxiliaryId);
 
   sys::Engine *engine() const { return engine_; }
-
-  void scheduleTimer(UInt32 timerID, Milliseconds when, bool repeat) override;
-  void cancelTimer(UInt32 timerID) override;
 
   void setStartingXid(UInt32 xid) override { nextXid_ = xid; }
 
@@ -90,7 +85,6 @@ private:
   DefaultHandshake *handshake_ = nullptr;
   Connection *mainConn_;
   AuxiliaryList auxList_;
-  ConnectionTimerMap timers_;
   DatapathID datapathId_;
   UInt64 connId_ = 0;
   UInt32 nextXid_ = 0;

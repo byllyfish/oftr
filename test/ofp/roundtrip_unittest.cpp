@@ -19,7 +19,8 @@ public:
     EXPECT_EQ(dpid, channel->datapathId());
     EXPECT_EQ(0, channel->auxiliaryId());
 
-    channel->scheduleTimer(0x5678, 1000_ms);
+    channel->driver()->stop(1000_ms);
+
     if (shutdownCount > 0) {
       --shutdownCount;
       channel->shutdown();
@@ -29,13 +30,6 @@ public:
   void onMessage(const Message *message) override {
     log::debug("TestController::onMessage");
     EXPECT_EQ(OFPT_FEATURES_REPLY, message->type());
-  }
-
-  void onTimer(UInt32 timerID) {
-    log::debug("TestController::onTimer");
-    EXPECT_EQ(timerID, 0x5678);
-
-    channel_->driver()->stop();
   }
 
   static ChannelListener *factory() { return new TestController; }

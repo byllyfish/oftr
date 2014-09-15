@@ -116,19 +116,6 @@ void Connection::postMessage(Connection *source, Message *message) {
   }
 }
 
-void Connection::postTimerExpired(ConnectionTimer *timer) {
-  log::debug("postTimerExpired");
-
-  if (listener_) {
-    listener_->onTimer(timer->id());
-  }
-
-  if (!timer->repeating()) {
-    // Delete timer.
-    (void)timers_.erase(timer->id());
-  }
-}
-
 void Connection::postIdle() { log::debug("postIdle() =========="); }
 
 void Connection::postDatapathId(const DatapathID &datapathId,
@@ -141,17 +128,6 @@ void Connection::postDatapathId(const DatapathID &datapathId,
 
   engine()->postDatapathID(this);
 }
-
-/// \brief Schedule a timer event on the channel and give it the specified ID.
-/// If there is already a timer with the same ID, this method will cancel the
-/// old timer and replace it.
-void Connection::scheduleTimer(UInt32 timerID, Milliseconds interval,
-                               bool repeat) {
-  timers_[timerID] = std::unique_ptr<ConnectionTimer>(
-      new ConnectionTimer{this, timerID, interval, repeat});
-}
-
-void Connection::cancelTimer(UInt32 timerID) { (void)timers_.erase(timerID); }
 
 void Connection::openAuxChannel(UInt8 auxID, Transport transport) {
   engine()->openAuxChannel(auxID, transport, this);

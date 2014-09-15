@@ -29,7 +29,7 @@ void ApiSession::send(const std::string &msg) {
   asio::io_service &io = driver_.engine()->io();
 
   auto conn = conn_;
-  io.post([conn, msg]() { conn->handleEvent(msg); });
+  io.post([conn, msg]() { conn->handleEvent(msg); });  // FIXME - is msg a ref?
 }
 
 void ApiSession::setConnection(
