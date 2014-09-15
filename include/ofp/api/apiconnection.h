@@ -33,7 +33,6 @@ struct RpcOpen;
 struct RpcOpenResponse;
 struct RpcClose;
 struct RpcSend;
-struct RpcSetTimer;
 struct RpcConfig;
 struct RpcErrorResponse;
 
@@ -49,7 +48,6 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   void onRpcListen(RpcListen *listen);
   void onRpcClose(RpcClose *close);
   void onRpcSend(RpcSend *send);
-  void onRpcSetTimer(RpcSetTimer *setTimer);
   void onRpcConfig(RpcConfig *config);
   void onRpcListConns(RpcListConns *list);
   
@@ -61,7 +59,6 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   void onChannelUp(Channel *channel);
   void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
-  void onTimer(Channel *channel, UInt32 timerID);
 
   void handleEvent(const std::string &event);
 

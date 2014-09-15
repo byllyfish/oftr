@@ -42,7 +42,6 @@ public:
   void onChannelUp(Channel *channel) override;
   void onChannelDown(Channel *channel) override;
   void onMessage(const Message *message) override;
-  void onTimer(UInt32 /* timerID */) override {}
 
   ChannelMode mode() const { return mode_; }
   ProtocolVersions versions() const { return versions_; }

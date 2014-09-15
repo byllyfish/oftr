@@ -36,7 +36,6 @@ class ApiChannelListener : public ChannelListener {
   void onChannelUp(Channel *channel) override;
   void onChannelDown(Channel *channel) override;
   void onMessage(const Message *message) override;
-  void onTimer(UInt32 timerID) override;
 
  private:
   ApiServer *server_;

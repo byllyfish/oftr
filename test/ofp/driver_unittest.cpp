@@ -29,7 +29,6 @@ public:
   void onChannelUp(Channel *channel) override {}
   void onChannelDown(Channel *channel) override {}
   void onMessage(const Message *message) override;
-  void onTimer(UInt32 timerID) override {}
 };
 
 void MockChannelListener::onMessage(const Message *message) {}

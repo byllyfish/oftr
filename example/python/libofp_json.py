@@ -16,6 +16,8 @@ class _JsonObject:
     def __init__(self, d):
         self.__dict__ = d
 
+    def __repr__(self):
+        return str(self.__dict__)
 
 class LibOFP(object):
     """
@@ -81,7 +83,6 @@ class LibOFP(object):
         self._sock = None
         self._process = None
         self._openDriver(driverPath, driverAddr)
-        self._sendEditSetting('format', 'json')
 
         if listen:
             self._sendListenRequest(openflowAddr)
@@ -140,13 +141,6 @@ class LibOFP(object):
 
     def waitNextEvent(self):
         return self._eventGenerator.next()
-
-    def setTimer(self, datapath, timerID, timeout):
-        self._call('ofp.set_timer', datapath_id=datapath,
-                            timer_id=timerID, timeout=timeout)
-
-    def _sendEditSetting(self, name, value):
-        self._call('ofp.config', options=['%s=%s' % (name, value)])
 
     def _sendListenRequest(self, openflowAddr):
         self._call('ofp.listen', endpoint='%s %d' % openflowAddr)

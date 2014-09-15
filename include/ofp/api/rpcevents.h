@@ -42,12 +42,10 @@ enum RpcMethod : UInt32 {
   METHOD_LISTEN = 0,    // ofp.listen
   METHOD_CLOSE,         // ofp.close
   METHOD_SEND,          // ofp.send
-  METHOD_SET_TIMER,     // ofp.set_timer
   METHOD_CONFIG,        // ofp.config
   METHOD_DATAPATH,      // ofp.datapath
   METHOD_MESSAGE,       // ofp.message
   METHOD_MESSAGE_ERROR, // ofp.message_error
-  METHOD_TIMER,         // ofp.timer
   METHOD_LIST_CONNS,    // ofp.list_connections
   METHOD_UNSUPPORTED
 };
@@ -167,39 +165,6 @@ struct RpcListConnsResponse {
   Result result;
 };
 
-//---------------------------//
-// o f p . s e t _ t i m e r //
-//---------------------------//
-
-/// Represents a RPC request to set a timer (METHOD_SET_TIMER)
-struct RpcSetTimer {
-  explicit RpcSetTimer(UInt64 ident) : id{ident} {}
-
-  struct Params {
-    DatapathID datapathId;
-    UInt32 timerId;
-    UInt32 timeout;
-  };
-
-  UInt64 id;
-  Params params;
-};
-
-/// Represents a RPC response to set a timer (METHOD_SET_TIMER).
-struct RpcSetTimerResponse {
-  explicit RpcSetTimerResponse(UInt64 ident) : id{ident} {}
-  std::string toJson();
-
-  struct Result {
-    DatapathID datapathId;
-    UInt32 timerId;
-    UInt32 timeout;
-  };
-
-  UInt64 id;
-  Result result;
-};
-
 //-----------------//
 // o f p . s e n d //
 //-----------------//
@@ -272,23 +237,6 @@ struct RpcDatapath {
   Params params;
 };
 
-//-------------------//
-// o f p . t i m e r //
-//-------------------//
-
-/// Represents a RPC timer notification (METHOD_TIMER).
-struct RpcTimer {
-  std::string toJson();
-
-  struct Params {
-    DatapathID datapathId;
-    UInt32 timerId;
-  };
-
-  UInt64 id;
-  Params params;
-};
-
 //-----------------------------------//
 // o f p . m e s s a g e _ e r r o r //
 //-----------------------------------//
@@ -358,32 +306,6 @@ struct MappingTraits<ofp::api::RpcClose::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::api::RpcSetTimer::Params> {
-  static void mapping(IO &io, ofp::api::RpcSetTimer::Params &params) {
-    io.mapRequired("datapath_id", params.datapathId);
-    io.mapRequired("timer_id", params.timerId);
-    io.mapRequired("timeout", params.timeout);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::api::RpcTimer> {
-  static void mapping(IO &io, ofp::api::RpcTimer &response) {
-    ofp::api::RpcMethod method = ofp::api::METHOD_TIMER;
-    io.mapRequired("method", method);
-    io.mapRequired("params", response.params);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::api::RpcTimer::Params> {
-  static void mapping(IO &io, ofp::api::RpcTimer::Params &params) {
-    io.mapRequired("datapath_id", params.datapathId);
-    io.mapRequired("timer_id", params.timerId);
-  }
-};
-
-template <>
 struct MappingTraits<ofp::api::RpcConfig::Params> {
   static void mapping(IO &io, ofp::api::RpcConfig::Params &params) {
     io.mapRequired("options", params.options);
@@ -409,23 +331,6 @@ template <>
 struct MappingTraits<ofp::api::RpcListenResponse::Result> {
   static void mapping(IO &io, ofp::api::RpcListenResponse::Result &result) {
     io.mapRequired("conn_id", result.connId);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::api::RpcSetTimerResponse> {
-  static void mapping(IO &io, ofp::api::RpcSetTimerResponse &response) {
-    io.mapRequired("id", response.id);
-    io.mapRequired("result", response.result);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::api::RpcSetTimerResponse::Result> {
-  static void mapping(IO &io, ofp::api::RpcSetTimerResponse::Result &result) {
-    io.mapRequired("datapath_id", result.datapathId);
-    io.mapRequired("timer_id", result.timerId);
-    io.mapRequired("timeout", result.timeout);
   }
 };
 

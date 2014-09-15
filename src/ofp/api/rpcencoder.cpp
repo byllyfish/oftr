@@ -86,14 +86,6 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
         }
         break;
     }
-    case METHOD_SET_TIMER: {
-        RpcSetTimer setTimer{id};
-        io.mapRequired("params", setTimer.params);
-        if (!errorFound(io)) {
-            conn_->onRpcSetTimer(&setTimer);
-        }
-        break;
-    }
     case METHOD_CONFIG: {
         RpcConfig config{id};
         io.mapRequired("params", config.params);

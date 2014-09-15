@@ -37,7 +37,6 @@ struct RpcListen;
 struct RpcClose;
 struct RpcSend;
 struct RpcListConns;
-struct RpcSetTimer;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -59,13 +58,11 @@ class ApiServer {
   void onRpcClose(ApiConnection *conn, RpcClose *close);
   void onRpcSend(ApiConnection *conn, RpcSend *send);
   void onRpcListConns(ApiConnection *conn, RpcListConns *list);
-  void onRpcSetTimer(ApiConnection *conn, RpcSetTimer *setTimer);
 
   // These methods are used to bridge ApiChannelListeners to ApiConnections.
   void onChannelUp(Channel *channel);
   void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
-  void onTimer(Channel *channel, UInt32 timerID);
 
   Channel *findChannel(const DatapathID &datapathId);
 

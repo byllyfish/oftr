@@ -167,36 +167,6 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
 }
 
 
-void ApiServer::onRpcSetTimer(ApiConnection *conn, RpcSetTimer *setTimer) {
-  std::string error;
-  DatapathID datapath = setTimer->params.datapathId;
-
-  Channel *channel = findChannel(datapath);
-  if (channel) {
-    //channel->scheduleTimer(setTimer->params.timerId, Milliseconds{setTimer->params.timeout});
-  } else {
-    error = "Unknown datapath: ";
-    error += datapath.toString();
-  }
-
-  if (setTimer->id == RPC_ID_MISSING)
-    return;
-
-  if (error.empty()) {
-    RpcSetTimerResponse response{setTimer->id};
-    response.result.datapathId = setTimer->params.datapathId;
-    response.result.timerId = setTimer->params.timerId;
-    response.result.timeout = setTimer->params.timeout;
-    conn->rpcReply(&response);
-  } else {
-    RpcErrorResponse response{setTimer->id};
-    response.error.code = ERROR_CODE_DATAPATH_NOT_FOUND;
-    response.error.message = error;
-    conn->rpcReply(&response);
-  }
-}
-
-
 #if 0
 void ApiServer::onConnectRequest(ApiConnection *conn,
                                  ApiConnectRequest *connectReq) {
@@ -236,10 +206,6 @@ void ApiServer::onChannelDown(Channel *channel) {
 
 void ApiServer::onMessage(Channel *channel, const Message *message) {
   if (oneConn_) oneConn_->onMessage(channel, message);
-}
-
-void ApiServer::onTimer(Channel *channel, UInt32 timerID) {
-  if (oneConn_) oneConn_->onTimer(channel, timerID);
 }
 
 ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId) {

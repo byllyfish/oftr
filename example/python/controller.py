@@ -4,6 +4,7 @@
 # variable is not set, this program will use /usr/local/bin/libofpexec.
 
 import os
+import sys
 
 # If the environment variable LIBOFP_YAML is set to 1, use YAML version;
 # otherwise default to json version.
@@ -155,9 +156,10 @@ if __name__ == '__main__':
     ofp = libofp.LibOFP(libofpexec)
     while True:
         event = ofp.waitNextEvent()
-        #print event.text
 
-        if event.method == 'ofp.datapath' and event.params.status == 'UP':
+        if hasattr(event, 'error'):
+            print >>sys.stderr, event
+        elif event.method == 'ofp.datapath' and event.params.status == 'UP':
             ofp.send(setConfig(event.params.datapath_id, 14))
             ofp.send(clearFlows(event.params.datapath_id))
             ofp.send(barrierRequest(event.params.datapath_id))

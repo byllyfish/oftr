@@ -26,10 +26,6 @@ std::string RpcSendResponse::toJson() {
   return toJsonString(this);
 }
 
-std::string RpcSetTimerResponse::toJson() {
-  return toJsonString(this);
-}
-
 std::string RpcErrorResponse::toJson() {
   return toJsonString(this);
 }
@@ -42,10 +38,6 @@ std::string RpcMessageError::toJson() {
   return toJsonString(this);
 }
 
-std::string RpcTimer::toJson() {
-  return toJsonString(this);
-}
-
 std::string RpcListConnsResponse::toJson() {
   return toJsonString(this);
 }
@@ -54,12 +46,10 @@ static llvm::StringRef sRpcMethods[] = {
   "ofp.listen",
   "ofp.close",
   "ofp.send",
-  "ofp.set_timer",
   "ofp.config",
   "ofp.datapath",
   "ofp.message",
   "ofp.message_error",
-  "ofp.timer",
   "ofp.list_connections",
 };
 

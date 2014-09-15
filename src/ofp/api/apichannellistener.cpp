@@ -39,7 +39,3 @@ void ApiChannelListener::onChannelDown(Channel *channel) {
 void ApiChannelListener::onMessage(const Message *message) {
   server_->onMessage(channel_, message);
 }
-
-void ApiChannelListener::onTimer(UInt32 timerID) {
-  server_->onTimer(channel_, timerID);
-}

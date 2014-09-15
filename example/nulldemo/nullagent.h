@@ -27,10 +27,6 @@ public:
 
   void onMessage(const Message *message) override;
 
-  void onTimer(UInt32 timerID) override {
-    ofp::log::debug("NullAgent timer", timerID);
-  }
-
 private:
   void onSetConfig(const Message *message);
   void onFlowMod(const Message *message);

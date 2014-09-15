@@ -32,8 +32,4 @@ void ChannelListener::onChannelDown(Channel *channel) {
   log::debug("ChannelListener - onChannelDown ignored:", channel);
 }
 
-void ChannelListener::onTimer(UInt32 timerID) {
-  log::debug("ChannelListener - onTimer ignored:", timerID);
-}
-
 void ChannelListener::dispose(ChannelListener *listener) { delete listener; }
