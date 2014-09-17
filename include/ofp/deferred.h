@@ -23,7 +23,6 @@
 #define OFP_DEFERRED_H_
 
 #include <memory>
-#include "ofp/log.h"
 
 namespace ofp {
 namespace detail {
@@ -65,7 +64,6 @@ private:
   Type result_{};
   bool isDone = false;
   bool isCalled = false;
-  log::Lifetime lifetime_{"DeferredResult"};
 };
 OFP_END_IGNORE_PADDING
 
@@ -98,7 +96,6 @@ public:
 
 private:
   DeferredResultPtr<Type> result_;
-  log::Lifetime lifetime_{"Deferred"};
 };
 
 }  // namespace ofp

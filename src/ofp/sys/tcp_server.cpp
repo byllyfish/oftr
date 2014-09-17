@@ -118,7 +118,6 @@ void TCP_Server::asyncAccept() {
     if (err == asio::error::operation_aborted)
       return;
 
-    log::Lifetime lifetime("async_accept callback");
     if (!err) {
 
       if (engine_->isTLSDesired()) {

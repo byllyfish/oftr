@@ -37,7 +37,6 @@ public:
   static int shutdownCount;
 
 private:
-  log::Lifetime lifetime_{"TestController"};
   Channel *channel_;
 };
 
@@ -75,9 +74,6 @@ public:
   static ChannelListener *factory() { return new TestAgent; }
   static int agentCount;
   static int auxCount;
-
-private:
-  log::Lifetime lifetime_{"TestAgent"};
 };
 
 int TestController::controllerCount = 0;

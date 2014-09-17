@@ -213,6 +213,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/byterange.h
   include/ofp/channel.h
   include/ofp/channellistener.h
+  include/ofp/channelmode.h
   include/ofp/constants.h
   include/ofp/constants_deprecated.h
   include/ofp/constants_error.h
@@ -246,6 +247,7 @@ set(LIBOFP_HEADER_FILES
   include/ofp/ipv6address.h
   include/ofp/ipv6endpoint.h
   include/ofp/log.h
+  include/ofp/loglevel.h
   include/ofp/match.h
   include/ofp/matchbuilder.h
   include/ofp/memorychannel.h
@@ -288,10 +290,8 @@ set(LIBOFP_HEADER_FILES
   include/ofp/sys/asio_utils.h
   include/ofp/sys/buffered.h
   include/ofp/sys/connection.h
-  include/ofp/sys/connectiontimer.h
   include/ofp/sys/engine.h
   include/ofp/sys/plaintext.h
-  include/ofp/sys/server.h
   include/ofp/sys/tcp_connection.h
   include/ofp/sys/tcp_server.h
   include/ofp/sys/udp_connection.h

@@ -33,6 +33,7 @@ namespace sys {
 class UDP_Server;
 
 OFP_BEGIN_IGNORE_PADDING
+
 class UDP_Connection : public Connection {
 public:
     UDP_Connection(UDP_Server *server, ChannelMode mode, ProtocolVersions versions, udp::endpoint remoteEndpt);
@@ -52,8 +53,8 @@ public:
 private:
     UDP_Server *server_;
     udp::endpoint remoteEndpt_;
-    log::Lifetime lifetime_{"UDP_Connection"};
 };
+
 OFP_END_IGNORE_PADDING
 
 }  // namespace sys

@@ -24,7 +24,6 @@
 
 #include <istream>
 #include "ofp/ipv6address.h"
-#include "ofp/log.h"
 
 namespace ofp {
 

@@ -71,7 +71,6 @@ private:
 	ConnectionMap connMap_;
 	UInt64 connId_ = 0;
 	bool shuttingDown_ = false;
-	log::Lifetime lifetime_{"UDP_Server"};
 
 	void asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error);
 	void listen(const IPv6Endpoint &localEndpt, std::error_code &error);

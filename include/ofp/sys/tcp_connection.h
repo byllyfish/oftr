@@ -65,7 +65,6 @@ public:
   Transport transport() const override { return Transport::TCP; }
 
 private:
-  log::Lifetime lifetime_{"TCP_Connection"};
   Message message_;
   Buffered<SocketType> socket_;
   tcp::endpoint endpoint_;

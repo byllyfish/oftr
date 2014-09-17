@@ -22,16 +22,14 @@
 #ifndef OFP_LOG_H_
 #define OFP_LOG_H_
 
-#include <sstream>
+#include "ofp/loglevel.h"
 #include "llvm/ADT/StringRef.h"
-#include "ofp/types.h"
-
-// Allow llvm::StringRef to write to a std::ostream.
+#include <sstream>
 
 namespace llvm {
 
-std::ostream &operator<<(std::ostream &os, const StringRef &s);
-
+// Allow llvm::StringRef to write to a std::ostream. Needs to be in llvm 
+// namespace for ADL to work.
 inline std::ostream &operator<<(std::ostream &os, const StringRef &s) {
   return os.write(s.data(), ofp::Signed_cast(s.size()));
 }
@@ -40,34 +38,6 @@ inline std::ostream &operator<<(std::ostream &os, const StringRef &s) {
 
 namespace ofp {
 namespace log {
-
-enum class Level {
-  Debug = 0,
-  Trace = 1,
-  Info = 2,
-  Error = 3,
-  Fatal = 4,
-  Silent = 5
-};
-
-const char *levelToString(Level level);
-
-/// Type of function called when an event is logged. There can be at most one
-/// output callback function specified at any one time.
-typedef void (*OutputCallback)(Level level, const char *line, size_t size,
-                               void *context);
-
-/// \brief Sets the output callback function. This function will be called for
-/// each line of log output with the specified context pointer.
-void setOutputCallback(OutputCallback callback, void *context);
-
-/// \brief Sets the output callback to log each line to the specified output
-/// stream (e.g. std::cerr).
-void setOutputStream(std::ostream *outputStream);
-
-/// \brief Sets the minimum desired level of output.
-void setOutputLevelFilter(Level level);
-
 namespace detail {
 
 extern OutputCallback GlobalOutputCallback;
@@ -135,6 +105,7 @@ inline void fatal(const Args &... args) {
   detail::write_(Level::Fatal, args...);
 }
 
+#if 0
 class Lifetime {
  public:
   /* implicit NOLINT */ Lifetime(const char *description) noexcept
@@ -154,6 +125,7 @@ class Lifetime {
  private:
   const char *description_;
 };
+#endif //0
 
 }  // namespace log
 }  // namespace ofp

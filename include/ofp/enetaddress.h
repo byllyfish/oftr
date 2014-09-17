@@ -24,7 +24,6 @@
 
 #include "ofp/types.h"
 #include "ofp/array.h"
-#include "ofp/log.h"
 
 namespace ofp {
 

@@ -50,7 +50,6 @@ public:
   void shutdown();
 
 private:
-  log::Lifetime lifetime_{"TCP_Server"};
   Engine *engine_;
   tcp::acceptor acceptor_;
   tcp::socket socket_;
