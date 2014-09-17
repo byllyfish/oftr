@@ -28,24 +28,18 @@
 
 using namespace ofp::sys;
 
-UDP_Server::UDP_Server(Engine *engine, ChannelMode mode,
-                       const IPv6Endpoint &localEndpt, ProtocolVersions versions,
-                       UInt64 connId, std::error_code &error)
+std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt, ProtocolVersions versions, UInt64 connId, std::error_code &error) {
+  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, mode, versions, connId);
+  ptr->asyncListen(localEndpt, error);
+  return ptr;
+}
+
+
+UDP_Server::UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+                       ProtocolVersions versions,
+                       UInt64 connId)
     : engine_{engine}, mode_{mode}, versions_{versions}, socket_{engine->io()},
       message_{nullptr}, connId_{connId} {
-
-  assert(connId_ != 0);
-
-  listen(localEndpt, error);
-
-  if (!error) {
-    asyncReceive();
-    log::info("Start listening on UDP", localEndpt, std::make_pair("connid", connId_));
-
-  } else {
-    connId_ = 0;
-    log::error("Listen failed on UDP", localEndpt, error);
-  }
 }
 
 UDP_Server::~UDP_Server() {
@@ -56,12 +50,17 @@ UDP_Server::~UDP_Server() {
 
 ofp::IPv6Endpoint UDP_Server::localEndpoint() const {
   asio::error_code err;
-  udp::endpoint endpt = socket_.local_endpoint(err);
-  return convertEndpoint<udp>(endpt);
+  return convertEndpoint<udp>(socket_.local_endpoint(err));
 }
 
+void UDP_Server::shutdown() {
+  asio::error_code err;
+  socket_.close(err);
+}
+
+
 void UDP_Server::add(UDP_Connection *conn) {
-  connMap_.insert(std::make_pair(conn->remoteEndpoint(), conn));
+  connMap_.insert({conn->remoteEndpoint(), conn});
 }
 
 void UDP_Server::remove(UDP_Connection *conn) {
@@ -83,6 +82,21 @@ void UDP_Server::write(const void *data, size_t length) {
 
 void UDP_Server::flush(udp::endpoint endpt) { asyncSend(); }
 
+void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error) {
+  assert(connId_ != 0);
+
+  listen(localEndpt, error);
+
+  if (!error) {
+    asyncReceive();
+    log::info("Start listening on UDP", localEndpt, std::make_pair("connid", connId_));
+
+  } else {
+    connId_ = 0;
+    log::error("Listen failed on UDP", localEndpt, error);
+  }
+}
+
 void UDP_Server::listen(const IPv6Endpoint &localEndpt,
                         std::error_code &error) {
   // Handle case where IPv6 is not supported on this system.
@@ -103,19 +117,24 @@ void UDP_Server::listen(const IPv6Endpoint &localEndpt,
 }
 
 void UDP_Server::asyncReceive() {
+  auto self(this->shared_from_this());
+
   socket_.async_receive_from(
       asio::buffer(message_.mutableData(MaxDatagramLength), MaxDatagramLength),
-      sender_, [this](const asio::error_code &err, size_t bytes_recvd) {
+      sender_, [this, self](const asio::error_code &err, size_t bytes_recvd) {
+
+        if (err == asio::error::operation_aborted) 
+          return;
 
         if (err) {
-          log::info("Error receiving datagram:", err);
-
+          log::info("Error receiving datagram", std::make_pair("connid", connId_), err);
+          
         } else if (bytes_recvd < sizeof(Header)) {
-          log::info("Small datagram ignored:", bytes_recvd);
+          log::info("Small datagram ignored:", bytes_recvd, std::make_pair("connid", connId_));
 
         } else if (message_.header()->length() != bytes_recvd) {
           log::info("Mismatch between datagram size and header length:",
-                    message_);
+                    message_, std::make_pair("connid", connId_));
 
         } else {
           message_.shrink(bytes_recvd);

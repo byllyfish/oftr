@@ -31,6 +31,8 @@
 #include "ofp/sys/tcp_server.h"
 
 using ofp::api::ApiServer;
+using ofp::sys::TCP_Server;
+using ofp::UInt32;
 
 ApiServer::ApiServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
@@ -114,12 +116,30 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
 }
 
 void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
+  UInt64 connId = close->params.connId;
+  UInt32 count = 0;
 
+  if (connId != 0) {
+    // Close a specific connection.
+    if (closeServer(connId) || closeChannel(connId)) {
+      count = 1;
+    }
+  } else {
+    // Close all connections and servers.
+    count = closeAll();
+  }
+
+  if (close->id == RPC_ID_MISSING)
+    return;
+
+  RpcCloseResponse response{close->id};
+  response.result.count = count;
+  conn->rpcReply(&response);
 }
 
 
 void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
-  Channel *channel = findChannel(send->params.datapathId());
+  Channel *channel = findDatapath(send->params.datapathId());
   if (channel) {
     channel->write(send->params.data(), send->params.size());
     channel->flush();
@@ -151,7 +171,7 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
     }
   });
 
-  engine_->forEachChannel([desiredConnId, &response](Channel *channel){
+  engine_->forEachConnection([desiredConnId, &response](Channel *channel){
     UInt64 connId = channel->connectionId();
     if (!desiredConnId || connId == desiredConnId) {
       response.result.emplace_back();
@@ -208,8 +228,50 @@ void ApiServer::onMessage(Channel *channel, const Message *message) {
   if (oneConn_) oneConn_->onMessage(channel, message);
 }
 
-ofp::Channel *ApiServer::findChannel(const DatapathID &datapathId) {
+ofp::Channel *ApiServer::findDatapath(const DatapathID &datapathId) {
   if (defaultChannel_) return defaultChannel_;
 
-  return engine_->findChannel(datapathId);
+  return engine_->findDatapath(datapathId);
+}
+
+
+bool ApiServer::closeServer(UInt64 connId) {
+  TCP_Server *server = engine_->findServer([connId](TCP_Server *svr) {
+    return svr->connectionId() == connId;
+  });
+
+  if (server) {
+    server->shutdown();
+    return true;
+  }
+
+  return false;
+}
+
+
+bool ApiServer::closeChannel(UInt64 connId) {
+  Channel *channel = engine_->findConnection([connId](Channel *chan) {
+    return chan->connectionId() == connId;
+  });
+
+  if (channel) {
+    channel->shutdown();
+    return true;
+  }
+
+  return false;
+}
+
+UInt32 ApiServer::closeAll() {
+  UInt32 result = UInt32_narrow_cast(engine_->serverCount() + engine_->connectionCount());
+
+  engine_->forEachServer([](TCP_Server *svr) {
+    svr->shutdown();
+  });
+
+  engine_->forEachConnection([](Channel *chan) {
+    chan->shutdown();
+  });
+
+  return result;
 }

@@ -22,6 +22,10 @@ std::string RpcListenResponse::toJson() {
   return toJsonString(this);
 }
 
+std::string RpcCloseResponse::toJson() {
+  return toJsonString(this);
+}
+
 std::string RpcSendResponse::toJson() {
   return toJsonString(this);
 }

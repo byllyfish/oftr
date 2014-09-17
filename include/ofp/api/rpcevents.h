@@ -135,8 +135,16 @@ struct RpcClose {
 
 /// Represents a RPC response to close a connection (METHOD_CLOSE)
 struct RpcCloseResponse {
-  /// Count of closed connections (0 or 1).
-  UInt32 count;
+  explicit RpcCloseResponse(UInt64 ident) : id{ident} {}
+  std::string toJson();
+
+  struct Result {
+    /// Count of closed connections.
+    UInt32 count;
+  };
+
+  UInt64 id;
+  Result result;
 };
 
 //-----------------------------------------//
@@ -331,6 +339,21 @@ template <>
 struct MappingTraits<ofp::api::RpcListenResponse::Result> {
   static void mapping(IO &io, ofp::api::RpcListenResponse::Result &result) {
     io.mapRequired("conn_id", result.connId);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcCloseResponse> {
+  static void mapping(IO &io, ofp::api::RpcCloseResponse &response) {
+    io.mapRequired("id", response.id);
+    io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcCloseResponse::Result> {
+  static void mapping(IO &io, ofp::api::RpcCloseResponse::Result &result) {
+    io.mapRequired("count", result.count);
   }
 };
 

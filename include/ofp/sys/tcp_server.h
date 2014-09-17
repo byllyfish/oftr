@@ -34,16 +34,21 @@ class UDP_Server;
 
 OFP_BEGIN_IGNORE_PADDING
 
-class TCP_Server {
+class TCP_Server : public std::enable_shared_from_this<TCP_Server> {
+  // Private token parameter used to keep constructor private with make_shared.
+  class PrivateToken {};
 public:
-  TCP_Server(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt,
+  static std::shared_ptr<TCP_Server> create(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory, std::error_code &error);
+
+  TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt,
              ProtocolVersions versions,
-             ChannelListener::Factory listenerFactory, std::error_code &error);
+             ChannelListener::Factory listenerFactory);
   ~TCP_Server();
 
   IPv6Endpoint localEndpoint() const;
   UInt64 connectionId() const { return connId_; }
-  
+  void shutdown();
+
 private:
   log::Lifetime lifetime_{"TCP_Server"};
   Engine *engine_;
@@ -53,8 +58,9 @@ private:
   ProtocolVersions versions_;
   ChannelListener::Factory factory_;
   UInt64 connId_ = 0;
-  std::unique_ptr<UDP_Server> udpServer_;
+  std::shared_ptr<UDP_Server> udpServer_;
 
+  void asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error);
   void listen(const IPv6Endpoint &localEndpt, std::error_code &error);
   void asyncAccept();
 

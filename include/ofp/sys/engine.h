@@ -75,8 +75,8 @@ public:
   Driver *driver() const { return driver_; }
   bool isTLSDesired() const { return isTLSDesired_; }
 
-  void postDatapathID(Connection *channel);
-  void releaseDatapathID(Connection *channel);
+  void registerDatapath(Connection *channel);
+  void releaseDatapath(Connection *channel);
 
   UInt64 registerServer(TCP_Server *server);
   void releaseServer(TCP_Server *server);
@@ -84,8 +84,11 @@ public:
   UInt64 registerConnection(Connection *connection);
   void releaseConnection(Connection *connection);
 
+  size_t connectionCount() const { return connList_.size(); }
+  size_t serverCount() const { return serverList_.size(); }
+
   template <class UnaryFunc>
-  void forEachChannel(UnaryFunc func) {
+  void forEachConnection(UnaryFunc func) {
     std::for_each(connList_.begin(), connList_.end(), func);
   }
 
@@ -94,7 +97,19 @@ public:
     std::for_each(serverList_.begin(), serverList_.end(), func);
   }
 
-  Connection *findChannel(const DatapathID &dpid) const;
+  template <class UnaryPredicate>
+  Connection *findConnection(UnaryPredicate func) {
+    auto iter = std::find_if(connList_.begin(), connList_.end(), func);
+    return iter != connList_.end() ? *iter : nullptr;
+  }
+
+  template <class UnaryPredicate>
+  TCP_Server *findServer(UnaryPredicate func) {
+    auto iter = std::find_if(serverList_.begin(), serverList_.end(), func);
+    return iter != serverList_.end() ? *iter : nullptr;
+  }
+
+  Connection *findDatapath(const DatapathID &dpid) const;
 
 private:
   // Pointer to driver object that owns engine.

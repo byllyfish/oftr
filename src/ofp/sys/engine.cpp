@@ -34,18 +34,12 @@ Engine::Engine(Driver *driver)
       stopTimer_{io_} {}
 
 Engine::~Engine() {
-  // Copy the serverlist into a temporary and clear the original list to help
-  // speed things up; servers attempt to remove themselves from the server
-  // list when they are destroyed.
+  // Connections and servers will remove themselves when they are destroyed.
+  // When the engine is destroyed, this bookkeeping doesn't matter anymore. To
+  // make destruction "faster", we can clear the data structures first.
 
-  ServerList servers;
-  std::swap(servers, serverList_);
-  assert(serverList_.empty());
-
-  for (auto svr : servers) {      // FIXME - use unqiue_ptr?
-    delete svr;
-  }
-
+  dpidMap_.clear();
+  serverList_.clear();
   connList_.clear();
 }
 
@@ -92,14 +86,13 @@ UInt64 Engine::listen(ChannelMode mode,
                                const IPv6Endpoint &localEndpoint,
                                ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory, std::error_code &error) {
-  auto tcpsvr = MakeUniquePtr<TCP_Server>(this, mode, localEndpoint, versions,
+  auto svrPtr = TCP_Server::create(this, mode, localEndpoint, versions,
                                           listenerFactory, error);
   if (error)
     return 0;
 
-  // If there's no error, the TCP_Server has registered itself with the engine. 
-  // We can release our owning ptr.
-  UInt64 connId = tcpsvr.release()->connectionId();
+  // If there's no error, the TCP_Server has registered itself with the engine.
+  UInt64 connId = svrPtr->connectionId();
   assert(connId > 0);
   
   // Register signal handlers.
@@ -225,7 +218,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
   }
 }
 
-void Engine::postDatapathID(Connection *channel) {
+void Engine::registerDatapath(Connection *channel) {
   DatapathID dpid = channel->datapathId();
   UInt8 auxID = channel->auxiliaryId();
 
@@ -267,7 +260,7 @@ void Engine::postDatapathID(Connection *channel) {
   }
 }
 
-void Engine::releaseDatapathID(Connection *channel) {
+void Engine::releaseDatapath(Connection *channel) {
   DatapathID dpid = channel->datapathId();
   UInt8 auxID = channel->auxiliaryId();
 
@@ -334,7 +327,7 @@ UInt64 Engine::assignConnId() {
 }
 
 
-Connection *Engine::findChannel(const DatapathID &dpid) const {
+Connection *Engine::findDatapath(const DatapathID &dpid) const {
   auto item = dpidMap_.find(dpid);
   if (item != dpidMap_.end()) {
     return item->second;

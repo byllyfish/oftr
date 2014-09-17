@@ -64,20 +64,18 @@ class ApiServer {
   void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
 
-  Channel *findChannel(const DatapathID &datapathId);
+  Channel *findDatapath(const DatapathID &datapathId);
 
   sys::Engine *engine() { return engine_; }
 
  private:
-  //using DatapathMap = std::map<DatapathID, Channel *>;
-
   sys::Engine *engine_;
   ApiConnection *oneConn_ = nullptr;
-  ///DatapathMap datapathMap_;
   Channel *defaultChannel_ = nullptr;
 
-  //void registerChannel(Channel *channel);
-  //void unregisterChannel(Channel *channel);
+  bool closeServer(UInt64 connId);
+  bool closeChannel(UInt64 connId);
+  UInt32 closeAll();
 };
 
 OFP_END_IGNORE_PADDING

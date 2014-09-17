@@ -39,8 +39,8 @@ Connection::~Connection() {
   }
   ChannelListener::dispose(handshake_);
 
-  if (datapathRegistered_ && engine()->isRunning()) {
-    engine()->releaseDatapathID(this);
+  if (datapathRegistered_ && engine()->isRunning()) {   // FIXME: necessary to check if engine running?
+    engine()->releaseDatapath(this);
 
     if (mainConn_ == this) {
       // Main connection is going down. Terminate all of our auxiliary
@@ -126,7 +126,7 @@ void Connection::postDatapathId(const DatapathID &datapathId,
   auxiliaryId_ = auxiliaryId;
   datapathRegistered_ = true; // FIXME - replace with check for all-0 datapath?
 
-  engine()->postDatapathID(this);
+  engine()->registerDatapath(this);
 }
 
 void Connection::openAuxChannel(UInt8 auxID, Transport transport) {

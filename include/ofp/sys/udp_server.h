@@ -37,15 +37,17 @@ class UDP_Connection;
 
 OFP_BEGIN_IGNORE_PADDING
 
-class UDP_Server {
+class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
+  // Private token parameter used to keep constructor private with make_shared.
+  class PrivateToken {};
 public:
+	static std::shared_ptr<UDP_Server> create(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt, ProtocolVersions versions, UInt64 connId, std::error_code &error);
 
-	enum { MaxDatagramLength = 2000 };  // FIXME?
-
-	UDP_Server(Engine *engine, ChannelMode mode, const IPv6Endpoint &endpt, ProtocolVersions versions, UInt64 connId, std::error_code &error);
+     UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode, ProtocolVersions versions, UInt64 connId);
 	~UDP_Server();
 
 	IPv6Endpoint localEndpoint() const;
+	void shutdown();
 
 	// Used by UDP_Connections to manage their lifetimes.
 	void add(UDP_Connection *conn);
@@ -58,6 +60,7 @@ public:
 
 private:
 	using ConnectionMap = std::unordered_map<IPv6Endpoint,UDP_Connection*>;
+	enum { MaxDatagramLength = 2000 };  // FIXME?
 
 	Engine *engine_;
 	ChannelMode mode_;
@@ -70,6 +73,7 @@ private:
 	bool shuttingDown_ = false;
 	log::Lifetime lifetime_{"UDP_Server"};
 
+	void asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error);
 	void listen(const IPv6Endpoint &localEndpt, std::error_code &error);
 	void asyncReceive();
 	void asyncSend();

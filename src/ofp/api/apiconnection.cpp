@@ -95,6 +95,6 @@ void ApiConnection::onMessage(Channel *channel, const Message *message) {
 
 void ApiConnection::handleEvent(const std::string &eventText) {
   RpcEncoder encoder{eventText, this, [this](const DatapathID &datapathId) {
-      return server_->findChannel(datapathId);
+      return server_->findDatapath(datapathId);
     }};
 }

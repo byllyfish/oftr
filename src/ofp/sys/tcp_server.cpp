@@ -27,13 +27,48 @@
 
 using namespace ofp::sys;
 
-TCP_Server::TCP_Server(Engine *engine, ChannelMode mode,
+std::shared_ptr<TCP_Server> TCP_Server::create(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory, std::error_code &error) {
+  auto ptr = std::make_shared<TCP_Server>(PrivateToken{}, engine, mode, localEndpt, versions, listenerFactory);
+  ptr->asyncListen(localEndpt, error);
+  return ptr;
+}
+
+
+TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
                        const IPv6Endpoint &localEndpt, ProtocolVersions versions,
-                       ChannelListener::Factory listenerFactory,
-                       std::error_code &error)
+                       ChannelListener::Factory listenerFactory)
     : engine_{engine}, acceptor_{engine->io()}, socket_{engine->io()},
       mode_{mode}, versions_{versions}, factory_{listenerFactory} {
+}
 
+TCP_Server::~TCP_Server() {
+  // If connId_ is non-zero, we need to de-register the TCP server.
+  // 
+  // If connId_ is zero, there was an error opening when constructing the TCP
+  // server, and there is nothing left to destroy.
+
+  if (connId_) {
+    // Dispose of UDP server first.
+    udpServer_->shutdown();
+
+    log::info("Stop listening on TCP", std::make_pair("connid", connId_));
+    engine_->releaseServer(this);
+  }
+}
+
+
+ofp::IPv6Endpoint TCP_Server::localEndpoint() const {
+  asio::error_code err;
+  return convertEndpoint<tcp>(acceptor_.local_endpoint(err));
+}
+
+void TCP_Server::shutdown() {
+  acceptor_.close();
+  udpServer_->shutdown();
+}
+
+
+void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error) {
   listen(localEndpt, error);
 
   if (!error) {
@@ -47,24 +82,6 @@ TCP_Server::TCP_Server(Engine *engine, ChannelMode mode,
     log::error("Listen failed on TCP", localEndpt, error);
   }
 }
-
-TCP_Server::~TCP_Server() {
-  if (connId_) {
-    // Dispose of UDP server first.
-    udpServer_.reset();
-
-    log::info("Stop listening on TCP", std::make_pair("connid", connId_));
-    engine_->releaseServer(this);
-  }
-}
-
-
-ofp::IPv6Endpoint TCP_Server::localEndpoint() const {
-  asio::error_code err;
-  tcp::endpoint endpt = acceptor_.local_endpoint(err);
-  return convertEndpoint<tcp>(endpt);
-}
-
 
 void TCP_Server::listen(const IPv6Endpoint &localEndpt,
                         std::error_code &error) {
@@ -92,7 +109,9 @@ void TCP_Server::listen(const IPv6Endpoint &localEndpt,
 }
 
 void TCP_Server::asyncAccept() {
-  acceptor_.async_accept(socket_, [this](const asio::error_code &err) {
+  auto self(this->shared_from_this());
+  
+  acceptor_.async_accept(socket_, [this, self](const asio::error_code &err) {
     // N.B. ASIO still sends a cancellation error even after
     // async_accept() throws an exception. Check for cancelled operation
     // first; our TCP_Server instance will have been destroyed.
@@ -122,5 +141,5 @@ void TCP_Server::asyncAccept() {
 
 
 void TCP_Server::listenUDP(const IPv6Endpoint &localEndpt, std::error_code &error) {
-  udpServer_ = MakeUniquePtr<UDP_Server>(engine_, mode_, localEndpt, versions_, connId_, error);
+  udpServer_ = UDP_Server::create(engine_, mode_, localEndpt, versions_, connId_, error);
 }
