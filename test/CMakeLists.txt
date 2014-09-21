@@ -13,7 +13,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/byterange_unittest.cpp
 	ofp/datapathid_unittest.cpp
 	ofp/decoder_unittest.cpp
-	ofp/deferred_unittest.cpp
 	ofp/driver_unittest.cpp
 	ofp/encoder_unittest.cpp
 	ofp/enetaddress_unittest.cpp

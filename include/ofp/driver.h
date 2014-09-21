@@ -25,7 +25,6 @@
 #include "ofp/channellistener.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/protocolversions.h"
-#include "ofp/deferred.h"
 #include "ofp/channelmode.h"
 
 namespace ofp {

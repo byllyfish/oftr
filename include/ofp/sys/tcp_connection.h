@@ -28,7 +28,6 @@
 #include "ofp/message.h"
 #include "ofp/sys/connection.h"
 #include "ofp/driver.h"
-#include "ofp/deferred.h"
 #include "ofp/sys/buffered.h"
 #include "ofp/sys/handler_allocator.h"
 
