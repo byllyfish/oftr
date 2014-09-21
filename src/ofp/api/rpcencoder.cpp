@@ -49,7 +49,7 @@ void RpcEncoder::addDiagnostic(const llvm::SMDiagnostic &diag) {
 
 void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
   // Make sure no one uses an explicit ID value of 2^64 - 1. We use this value
-  // to indicate a missing ID value.
+  // to indicate a missing ID value. (FIXME)
   UInt64 id;
   if (id_) {
     id = *id_;
@@ -110,6 +110,15 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
         }
         break;
     }
+    case METHOD_DATAPATH:
+      io.setError("'ofp.datapath' is for notifications only.");
+      break;
+    case METHOD_MESSAGE:
+      io.setError("Use 'ofp.send' instead; 'ofp.message' is for notifications only.");
+      break;
+    case METHOD_MESSAGE_ERROR:
+      io.setError("'ofp.message_error' is for notifications only.");
+      break;
     default:
       break;
   }
