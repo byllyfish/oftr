@@ -63,9 +63,6 @@ public:
     listener_ = listener;
   }
 
-  DefaultHandshake *handshake() const { return handshake_; }
-  void setHandshake(DefaultHandshake *handshake) { handshake_ = handshake; }
-
   void postMessage(Connection *source, Message *message);
   void postIdle();
   void postDatapathId(const DatapathID &datapath, UInt8 auxiliaryId);
@@ -74,7 +71,6 @@ public:
 
   void setStartingXid(UInt32 xid) override { nextXid_ = xid; }
 
-  void openAuxChannel(UInt8 auxID, Transport transport) override;
   Channel *findAuxChannel(UInt8 auxID) const override { return nullptr; }
 
 private:
@@ -82,7 +78,6 @@ private:
 
   sys::Engine *engine_;
   ChannelListener *listener_ = nullptr;
-  DefaultHandshake *handshake_ = nullptr;
   Connection *mainConn_;
   AuxiliaryList auxList_;
   DatapathID datapathId_;
@@ -90,7 +85,6 @@ private:
   UInt32 nextXid_ = 0;
   UInt8 version_ = 0;
   UInt8 auxiliaryId_ = 0;
-  bool datapathRegistered_ = false;
 };
 
 OFP_END_IGNORE_PADDING

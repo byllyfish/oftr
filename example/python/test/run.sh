@@ -17,6 +17,7 @@ echo "Working Directory:" `pwd`
 echo "Start controller."
 python $CURRENT_SOURCE_DIR/../controller.py &
 cpid=$!
+sleep 1
 
 echo "Run agent tests."
 if bash $CURRENT_SOURCE_DIR/../../testagent/test/runtests.sh $TESTAGENT ; then

@@ -27,19 +27,16 @@ using namespace ofp;
 using namespace ofp::sys;
 
 Connection::Connection(Engine *engine, DefaultHandshake *handshake)
-    : engine_{engine}, listener_{handshake}, handshake_{handshake},
+    : engine_{engine}, listener_{handshake}, //handshake_{handshake},
       mainConn_{this} {
 
   connId_ = engine_->registerConnection(this);
 }
 
 Connection::~Connection() {
-  if (listener_ != handshake_) {
-    ChannelListener::dispose(listener_);
-  }
-  ChannelListener::dispose(handshake_);
+  ChannelListener::dispose(listener_);
 
-  if (datapathRegistered_ && engine()->isRunning()) {   // FIXME: necessary to check if engine running?
+  if (!datapathId_.empty()) {
     engine()->releaseDatapath(this);
 
     if (mainConn_ == this) {
@@ -120,15 +117,9 @@ void Connection::postIdle() { log::debug("postIdle() =========="); }
 
 void Connection::postDatapathId(const DatapathID &datapathId,
                                 UInt8 auxiliaryId) {
-  assert(!datapathRegistered_);
-
-  datapathId_ = datapathId;
-  auxiliaryId_ = auxiliaryId;
-  datapathRegistered_ = true; // FIXME - replace with check for all-0 datapath?
-
-  engine()->registerDatapath(this);
-}
-
-void Connection::openAuxChannel(UInt8 auxID, Transport transport) {
-  engine()->openAuxChannel(auxID, transport, this);
+  if (!datapathId.empty()) {
+    datapathId_ = datapathId;
+    auxiliaryId_ = auxiliaryId;
+    engine()->registerDatapath(this);
+  }
 }

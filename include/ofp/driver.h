@@ -48,11 +48,9 @@ public:
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  // TODO(bfish): this should take an array of remote endpoints...
-  Deferred<std::error_code> connect(ChannelMode mode,
-                                    const IPv6Endpoint &remoteEndpoint,
-                                    ProtocolVersions versions,
-                                    ChannelListener::Factory listenerFactory);
+  void connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint, 
+    ProtocolVersions versions, ChannelListener::Factory listenerFactory, 
+    std::function<void(Channel*,std::error_code)> resultHandler);
 
   void run();
 
@@ -61,6 +59,8 @@ public:
 
   sys::Engine *engine() { return engine_; }
 
+  void installSignalHandlers();
+  
 private:
   sys::Engine *engine_;
 };

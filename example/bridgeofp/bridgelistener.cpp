@@ -38,16 +38,14 @@ void BridgeListener::onChannelUp(Channel *channel) {
     BridgeListener *bridge = new BridgeListener(this);
     otherBridge_ = bridge;
 
-    auto exc =
-        driver->connect(ChannelMode::Bridge, remoteEndpoint_,
-                        ProtocolVersions::All, [bridge]() { return bridge; });
-
-    exc.done([bridge](const std::error_code &err) {
-      // If connection fails, delete the otherBridge_.
-      if (err) {
-        delete bridge;
-      }
-    });
+    (void)driver->connect(ChannelMode::Raw, remoteEndpoint_,
+                        ProtocolVersions::All, [bridge]() { return bridge; }, 
+                        [bridge](Channel *, std::error_code err){
+                          // If connection fails, delete the otherBridge_.
+                          if (err) {
+                            delete bridge;
+                          }
+                        });
 
   } else {
     // We're the outgoing side.

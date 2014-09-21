@@ -27,13 +27,11 @@ int main(int argc, char **argv) {
   Driver driver;
 
   if (addr.valid()) {
-    auto result =
-        driver.connect(ChannelMode::Controller, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
-                       ProtocolVersions::All, NullController::Factory);
-
-    result.done([](const std::error_code &err) {
-      std::cout << "Result " << err << '\n';
-    });
+    (void)driver.connect(ChannelMode::Controller, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
+                       ProtocolVersions::All, NullController::Factory, 
+                       [](Channel *channel, std::error_code err) {
+                          std::cout << "Result: connId=" << channel->connectionId() << " err=" << err << '\n';
+                       });
 
   } else {
     std::error_code err;

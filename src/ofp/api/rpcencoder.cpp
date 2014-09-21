@@ -70,6 +70,14 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
         }
         break;
     }
+    case METHOD_CONNECT: {
+        RpcConnect connect{id};
+        io.mapRequired("params", connect.params);
+        if (!errorFound(io)) {
+            conn_->onRpcConnect(&connect);
+        }
+        break;
+    }
     case METHOD_CLOSE: {
         RpcClose close{id};
         io.mapRequired("params", close.params);

@@ -155,6 +155,8 @@ void DefaultHandshake::installNewChannelListener(const Message *message) {
 
   if (message)
     newListener->onMessage(message);
+
+  ChannelListener::dispose(this);
 }
 
 void DefaultHandshake::installAuxiliaryChannelListener(const Message *message) {

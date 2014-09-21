@@ -52,21 +52,14 @@ public:
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  Deferred<std::error_code> connect(ChannelMode mode,
-                                    const IPv6Endpoint &remoteEndpoint,
-                                    ProtocolVersions versions,
-                                    ChannelListener::Factory listenerFactory);
-
-  void reconnect(DefaultHandshake *handshake,
-                 const IPv6Endpoint &remoteEndpoint, Milliseconds delay);
+  UInt64 connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint,
+                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
+                        std::function<void(Channel*,std::error_code)> resultHandler);
 
   void run();
   void stop(Milliseconds timeout = 0_ms);
   bool isRunning() const { return isRunning_; }
   void installSignalHandlers();
-
-  void openAuxChannel(UInt8 auxID, Channel::Transport transport,
-                      Connection *mainConnection);
 
   asio::io_service &io() { return io_; }
 

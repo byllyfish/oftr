@@ -43,13 +43,17 @@ UInt64 Driver::listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
   return engine_->listen(mode, localEndpoint, versions, listenerFactory, error);
 }
 
-Deferred<std::error_code> Driver::connect(ChannelMode mode,
-                                    const IPv6Endpoint &remoteEndpoint,
-                                    ProtocolVersions versions,
-                                    ChannelListener::Factory listenerFactory) {
-  return engine_->connect(mode, remoteEndpoint, versions, listenerFactory);
+void Driver::connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint, 
+  ProtocolVersions versions, ChannelListener::Factory listenerFactory, 
+  std::function<void(Channel*,std::error_code)> resultHandler) {
+  engine_->connect(mode, remoteEndpoint, versions, listenerFactory, resultHandler);
 }
 
 void Driver::run() { engine_->run(); }
 
 void Driver::stop(Milliseconds timeout) { engine_->stop(timeout); }
+
+
+void Driver::installSignalHandlers() {
+  engine_->installSignalHandlers();
+}

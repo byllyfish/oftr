@@ -42,12 +42,13 @@ public:
   explicit DatapathID(Big16 implementerDefined, EnetAddress macAddress);
   explicit DatapathID(const std::string &dpid);
 
+  bool empty() const { return toUInt64() == 0; }
   Big16 implementerDefined() const;
   EnetAddress macAddress() const;
   std::string toString() const;
 
   bool parse(const std::string &s);
-  void clear() { std::memset(dpid_.data(), 0, sizeof(dpid_)); }
+  void clear() { dpid_.fill(0); }
 
   bool operator<(const DatapathID &rhs) const { return dpid_ < rhs.dpid_; }
   bool operator>(const DatapathID &rhs) const { return dpid_ > rhs.dpid_; }
@@ -56,6 +57,8 @@ public:
 
 private:
   ArrayType dpid_;
+
+  UInt64 toUInt64() const { return *reinterpret_cast<const UInt64 *>(&dpid_); }
 };
 
 std::ostream &operator<<(std::ostream &os, const DatapathID &value);

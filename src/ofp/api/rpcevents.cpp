@@ -22,6 +22,10 @@ std::string RpcListenResponse::toJson() {
   return toJsonString(this);
 }
 
+std::string RpcConnectResponse::toJson() {
+  return toJsonString(this);
+}
+
 std::string RpcCloseResponse::toJson() {
   return toJsonString(this);
 }
@@ -48,6 +52,7 @@ std::string RpcListConnsResponse::toJson() {
 
 static llvm::StringRef sRpcMethods[] = {
   "ofp.listen",
+  "ofp.connect",
   "ofp.close",
   "ofp.send",
   "ofp.config",

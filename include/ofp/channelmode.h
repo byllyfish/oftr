@@ -4,10 +4,8 @@
 namespace ofp {
 
 enum class ChannelMode {
-    Agent = 0,
-    Controller,
-    Bridge,
-    Auxiliary
+    Raw = 0,
+    Controller
 };
 
 }  // namespace ofp

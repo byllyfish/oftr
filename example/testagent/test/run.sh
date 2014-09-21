@@ -13,7 +13,7 @@ sleep 1
 
 echo "Stop testagent."
 kill $apid
-wait $apid
+wait $apid || true
 echo "Stopped."
 
 exit 0

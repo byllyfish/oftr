@@ -40,6 +40,7 @@ const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 /// RPC Methods
 enum RpcMethod : UInt32 {
   METHOD_LISTEN = 0,    // ofp.listen
+  METHOD_CONNECT,       // ofp.connect
   METHOD_CLOSE,         // ofp.close
   METHOD_SEND,          // ofp.send
   METHOD_CONFIG,        // ofp.config
@@ -54,7 +55,8 @@ enum RpcMethod : UInt32 {
 enum RpcErrorCode {
   ERROR_CODE_INVALID_REQUEST = -32600,
   ERROR_CODE_METHOD_NOT_FOUND = -32601,
-  ERROR_CODE_DATAPATH_NOT_FOUND = -65000
+  ERROR_CODE_DATAPATH_NOT_FOUND = -65000,
+  ERROR_CODE_INVALID_OPTION = -65001,
 };
 
 OFP_BEGIN_IGNORE_PADDING
@@ -94,7 +96,7 @@ struct RpcListen {
   struct Params {
     /// Endpoint to listen on.
     IPv6Endpoint endpoint;
-    /// Array of options passed to open.
+    /// Array of options.
     std::vector<std::string> options;
   };
 
@@ -109,6 +111,39 @@ struct RpcListenResponse {
 
   struct Result {
     /// Connection ID of listening connection.
+    UInt64 connId;
+  };
+
+  UInt64 id;
+  Result result;
+};
+
+//-----------------------//
+// o f p . c o n n e c t //
+//-----------------------//
+
+/// Represents a RPC request to make an outgoing connection (METHOD_CONNECT)
+struct RpcConnect {
+  explicit RpcConnect(UInt64 ident) : id{ident} {}
+
+  struct Params {
+    /// Endpoint to connect to.
+    IPv6Endpoint endpoint;
+    /// Array of options.
+    std::vector<std::string> options;
+  };
+
+  UInt64 id;
+  Params params;
+};
+
+/// Represents a RPC response to make an outgoing connection (METHOD_CONNECT)
+struct RpcConnectResponse {
+  explicit RpcConnectResponse(UInt64 ident) : id{ident} {}
+  std::string toJson();
+
+  struct Result {
+    /// Connection ID of outgoing connection.
     UInt64 connId;
   };
 
@@ -236,8 +271,8 @@ struct RpcDatapath {
   std::string toJson();
 
   struct Params {
+    UInt64 connId;
     DatapathID datapathId;
-    IPv6Endpoint endpoint;
     std::string status;
     UInt8 version{};
   };
@@ -307,6 +342,14 @@ struct MappingTraits<ofp::api::RpcListen::Params> {
 };
 
 template <>
+struct MappingTraits<ofp::api::RpcConnect::Params> {
+  static void mapping(IO &io, ofp::api::RpcConnect::Params &params) {
+    io.mapRequired("endpoint", params.endpoint);
+    io.mapOptional("options", params.options);
+  }
+};
+
+template <>
 struct MappingTraits<ofp::api::RpcClose::Params> {
   static void mapping(IO &io, ofp::api::RpcClose::Params &params) {
     io.mapRequired("conn_id", params.connId);
@@ -338,6 +381,21 @@ struct MappingTraits<ofp::api::RpcListenResponse> {
 template <>
 struct MappingTraits<ofp::api::RpcListenResponse::Result> {
   static void mapping(IO &io, ofp::api::RpcListenResponse::Result &result) {
+    io.mapRequired("conn_id", result.connId);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcConnectResponse> {
+  static void mapping(IO &io, ofp::api::RpcConnectResponse &response) {
+    io.mapRequired("id", response.id);
+    io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcConnectResponse::Result> {
+  static void mapping(IO &io, ofp::api::RpcConnectResponse::Result &result) {
     io.mapRequired("conn_id", result.connId);
   }
 };
@@ -418,9 +476,9 @@ struct MappingTraits<ofp::api::RpcDatapath> {
 template <>
 struct MappingTraits<ofp::api::RpcDatapath::Params> {
   static void mapping(IO &io, ofp::api::RpcDatapath::Params &params) {
+    io.mapRequired("conn_id", params.connId);
     io.mapRequired("datapath_id", params.datapathId);
     io.mapRequired("version", params.version);
-    io.mapRequired("endpoint", params.endpoint);
     io.mapRequired("status", params.status);
   }
 };

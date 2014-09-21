@@ -59,7 +59,6 @@ public:
   };
 
   virtual Transport transport() const = 0;
-  virtual void openAuxChannel(UInt8 auxID, Transport transport) = 0;
   virtual Channel *findAuxChannel(UInt8 auxID) const = 0;
 
   virtual void setStartingXid(UInt32 xid) = 0;

@@ -31,7 +31,9 @@ using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
     : driver_{driver}, context_{asio::ssl::context::tlsv1}, signals_{io_},
-      stopTimer_{io_} {}
+      stopTimer_{io_} {
+  log::debug("Engine ready");
+}
 
 Engine::~Engine() {
   // Connections and servers will remove themselves when they are destroyed.
@@ -41,6 +43,8 @@ Engine::~Engine() {
   dpidMap_.clear();
   serverList_.clear();
   connList_.clear();
+
+  log::debug("Engine shutting down");
 }
 
 std::error_code
@@ -101,52 +105,22 @@ UInt64 Engine::listen(ChannelMode mode,
   return connId;
 }
 
-ofp::Deferred<std::error_code>
-Engine::connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint,
-                ProtocolVersions versions,
-                ChannelListener::Factory listenerFactory) {
-  tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
-  Deferred<std::error_code> result;
+UInt64 Engine::connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint,
+                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
+                        std::function<void(Channel*,std::error_code)> resultHandler) {
+  UInt64 connId;
 
   if (isTLSDesired()) {
-    auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(
-        this, mode, versions, listenerFactory);
-    result = connPtr->asyncConnect(endpt);
+    auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(this, mode, versions, listenerFactory);
+    connPtr->asyncConnect(remoteEndpoint, resultHandler);
+    connId = connPtr->connectionId();
   } else {
-    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
-        this, mode, versions, listenerFactory);
-    result = connPtr->asyncConnect(endpt);
+    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, mode, versions, listenerFactory);
+    connPtr->asyncConnect(remoteEndpoint, resultHandler);
+    connId = connPtr->connectionId();
   }
 
-  // If the role is `Agent`, the connection will keep retrying. Install signal
-  // handlers to tell it to stop.
-  if (mode == ChannelMode::Agent) {
-    installSignalHandlers();
-  }
-
-  if (mode == ChannelMode::Agent) {
-    // When the role is Agent, the connection will keep trying to reconnect.
-    // In this case, we always return no error.
-    return std::error_code{};
-  }
-
-  return result;
-}
-
-void Engine::reconnect(DefaultHandshake *handshake,
-                       const IPv6Endpoint &remoteEndpoint,
-                       std::chrono::milliseconds delay) {
-  tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpoint);
-
-  if (isTLSDesired()) {
-    auto connPtr =
-        std::make_shared<TCP_Connection<EncryptedSocket>>(this, handshake);
-    (void)connPtr->asyncConnect(endpt, delay);
-  } else {
-    auto connPtr =
-        std::make_shared<TCP_Connection<PlaintextSocket>>(this, handshake);
-    (void)connPtr->asyncConnect(endpt, delay);
-  }
+  return connId;
 }
 
 void Engine::run() {
@@ -181,6 +155,7 @@ void Engine::stop(Milliseconds timeout) {
   }
 }
 
+#if 0
 void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
                             Connection *mainConnection) {
   // Find the localport of the mainConnection.
@@ -217,6 +192,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
     //});
   }
 }
+#endif //0
 
 void Engine::registerDatapath(Connection *channel) {
   DatapathID dpid = channel->datapathId();

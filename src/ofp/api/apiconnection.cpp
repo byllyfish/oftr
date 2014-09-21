@@ -40,6 +40,10 @@ void ApiConnection::onRpcListen(RpcListen *listen) {
   server_->onRpcListen(this, listen);
 }
 
+void ApiConnection::onRpcConnect(RpcConnect *connect) {
+  server_->onRpcConnect(this, connect);
+}
+
 void ApiConnection::onRpcClose(RpcClose *close) {
   server_->onRpcClose(this, close);
 }
@@ -49,28 +53,19 @@ void ApiConnection::onRpcSend(RpcSend *send) {
 }
 
 void ApiConnection::onRpcConfig(RpcConfig *config) {
-
+  server_->onRpcConfig(this, config);
 }
 
 void ApiConnection::onRpcListConns(RpcListConns *list) {
   server_->onRpcListConns(this, list);
 }
 
-void ApiConnection::onChannelUp(Channel *channel) {
+void ApiConnection::onChannel(Channel *channel, const char *status) {
   RpcDatapath notification;
+  notification.params.connId = channel->connectionId();
   notification.params.datapathId = channel->datapathId();
   notification.params.version = channel->version();
-  notification.params.endpoint = channel->remoteEndpoint();
-  notification.params.status = "UP";
-  rpcReply(&notification);
-}
-
-void ApiConnection::onChannelDown(Channel *channel) {
-  RpcDatapath notification;
-  notification.params.datapathId = channel->datapathId();
-  notification.params.version = channel->version();
-  notification.params.endpoint = channel->remoteEndpoint();
-  notification.params.status = "DOWN";
+  notification.params.status = status;
   rpcReply(&notification);
 }
 

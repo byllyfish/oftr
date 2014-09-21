@@ -77,7 +77,7 @@ int Ping::run(int argc, char **argv) {
 //---------//
 
 int Ping::ping() {
-  Driver driver;
+  int exitCode = 0;
 
   int size = size_;
   if (size < 0 || size > kMaxPingData) {
@@ -85,19 +85,16 @@ int Ping::ping() {
   }
 
   ByteList echoData = ByteList::iota(Unsigned_cast(size));
-  IPv6Endpoint endpt = endpoint_;
+  Driver driver;
 
-  auto exc =
-      driver.connect(ChannelMode::Bridge, endpt, ProtocolVersions::All,
-                     [echoData]() { return new PingListener{&echoData}; });
-
-  int exitCode = 0;
-  exc.done([&exitCode](const std::error_code &err) {
-    if (err) {
-      std::cerr << "ERROR: " << err << '\n';
-      exitCode = 2;
-    }
-  });
+  (void)driver.connect(ChannelMode::Raw, endpoint_, ProtocolVersions::All,
+                     [echoData]() { return new PingListener{&echoData}; },
+                     [&exitCode](Channel *, std::error_code err){
+                      if (err) {
+                        std::cerr << "ERROR: " << err << '\n';
+                        exitCode = 2;
+                      }
+                     });
 
   driver.run();
 

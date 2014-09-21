@@ -115,6 +115,50 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   }
 }
 
+void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
+  std::string optionError;
+  ChannelMode mode = ChannelMode::Controller;
+  for (auto opt : connect->params.options) {
+    if (opt == "--raw" || opt == "-raw") {
+      mode = ChannelMode::Raw;
+    } else {
+      optionError += "Unknown option: " + opt;
+      break;
+    }
+  }
+
+  if (!optionError.empty()) {
+    if (connect->id == RPC_ID_MISSING)
+      return;
+    RpcErrorResponse response{connect->id};
+    response.error.code = ERROR_CODE_INVALID_OPTION;
+    response.error.message = optionError;
+    conn->rpcReply(&response);
+    return;
+  }
+
+  IPv6Endpoint endpt = connect->params.endpoint;
+  UInt64 id = connect->id;
+  auto connPtr = conn->shared_from_this();
+
+  engine_->connect(mode, endpt, ProtocolVersions::All, 
+    [this]() { return new ApiChannelListener{this}; }, 
+    [connPtr, id](Channel *channel, std::error_code err) {
+      if (id == RPC_ID_MISSING) 
+        return;
+      if (!err) {
+        RpcConnectResponse response{id};
+        response.result.connId = channel->connectionId();
+        connPtr->rpcReply(&response);
+      } else {
+        RpcErrorResponse response{id};
+        response.error.code = err.value();
+        response.error.message = err.message();
+        connPtr->rpcReply(&response);        
+      }
+    });
+}
+
 void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
   UInt64 connId = close->params.connId;
   UInt32 count = 0;
@@ -153,6 +197,9 @@ void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
   conn->rpcReply(&response);
 }
 
+void ApiServer::onRpcConfig(ApiConnection *conn, RpcConfig *config) {
+  // FIXME - to be implemented.
+}
 
 void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
   if (list->id == RPC_ID_MISSING)
@@ -217,11 +264,11 @@ void ApiServer::onConnectRequest(ApiConnection *conn,
 
 
 void ApiServer::onChannelUp(Channel *channel) {
-  if (oneConn_) oneConn_->onChannelUp(channel);
+  if (oneConn_) oneConn_->onChannel(channel, "UP");
 }
 
 void ApiServer::onChannelDown(Channel *channel) {
-  if (oneConn_) oneConn_->onChannelDown(channel);
+  if (oneConn_) oneConn_->onChannel(channel, "DOWN");
 }
 
 void ApiServer::onMessage(Channel *channel, const Message *message) {

@@ -46,18 +46,18 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   virtual void asyncAccept() = 0;
 
   void onRpcListen(RpcListen *listen);
+  void onRpcConnect(RpcConnect *connect);
   void onRpcClose(RpcClose *close);
   void onRpcSend(RpcSend *send);
   void onRpcConfig(RpcConfig *config);
   void onRpcListConns(RpcListConns *list);
-  
+
   template <class Response>
   void rpcReply(Response *response) {
     write(response->toJson());
   }
 
-  void onChannelUp(Channel *channel);
-  void onChannelDown(Channel *channel);
+  void onChannel(Channel *channel, const char *status);
   void onMessage(Channel *channel, const Message *message);
 
   void handleEvent(const std::string &event);

@@ -47,7 +47,6 @@ public:
     IPv6Endpoint localEndpoint() const override;
 
     Transport transport() const { return Transport::UDP; }
-    void openAuxChannel(UInt8 auxID, Transport transport) override {}       // should not be called
     Channel *findAuxChannel(UInt8 auxID) const override { return 0; }
 
 private:

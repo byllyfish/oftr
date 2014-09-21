@@ -45,11 +45,9 @@ public:
                  ChannelListener::Factory factory);
   TCP_Connection(Engine *engine, tcp::socket socket, ChannelMode mode,
                  ProtocolVersions versions, ChannelListener::Factory factory);
-  TCP_Connection(Engine *engine, DefaultHandshake *handshake);
   ~TCP_Connection();
 
-  Deferred<std::error_code> asyncConnect(const tcp::endpoint &endpt,
-                                   Milliseconds delay = 0_ms);
+  void asyncConnect(const IPv6Endpoint &remoteEndpt, std::function<void(Channel*,std::error_code)> resultHandler);
   void asyncAccept();
 
   IPv6Endpoint remoteEndpoint() const override;
@@ -67,11 +65,9 @@ public:
 private:
   Message message_;
   Buffered<SocketType> socket_;
-  tcp::endpoint endpoint_;
-  DeferredResultPtr<std::error_code> deferredExc_ = nullptr;
-  asio::steady_timer idleTimer_;
   std::chrono::steady_clock::time_point latestActivity_;
   handler_allocator allocator_;
+  bool isChannelUp_ = false;
 
   void channelUp();
   void channelDown();
@@ -79,22 +75,10 @@ private:
   void asyncReadHeader();
   void asyncReadMessage(size_t length);
   void asyncWrite();
-  void asyncHandshake();
-  void asyncConnect();
-  void asyncDelayConnect(Milliseconds delay);
-  void asyncIdleCheck();
-
-  void reconnect();
+  void asyncHandshake(bool isClient);
 
   void updateLatestActivity() {
     latestActivity_ = std::chrono::steady_clock::now();
-  }
-
-  // FIXME - use a bool to indicate if outgoing.
-  bool isOutgoing() const { return endpoint_.port() != 0; }
-
-  bool wantsReconnect() const {
-    return handshake()->mode() == ChannelMode::Agent && isOutgoing();
   }
 };
 

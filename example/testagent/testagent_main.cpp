@@ -15,21 +15,19 @@ int main(int argc, char **argv) {
     }
   }
 
-  Driver driver;
   std::error_code error;
-
+  Driver driver;
+  driver.installSignalHandlers();
+  
   if (remoteEndpoint.valid()) {
-    auto result = driver.connect(ChannelMode::Agent, remoteEndpoint, {OFP_VERSION_1},
-                                 TestAgent::Factory);
-    result.done([&error](const std::error_code &err) {
-      // This will not be called, unless `addr` is invalid; agent will keep
-      // retrying the connection.
-      std::cerr << "Error connecting: " << err << '\n';
-      error = err;
-    });
+    (void) driver.connect(ChannelMode::Raw, remoteEndpoint, {OFP_VERSION_1},
+                                 TestAgent::Factory, [&error](Channel *channel, std::error_code err) {
+                                  std::cerr << "Error connecting: connId=" << channel->connectionId() << " err=" << err << '\n';
+                                  error = err;
+                                 });
 
   } else {
-    (void)driver.listen(ChannelMode::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
+    (void)driver.listen(ChannelMode::Raw, IPv6Endpoint{OFP_DEFAULT_PORT},
                           {OFP_VERSION_1}, TestAgent::Factory, error);
   }
 

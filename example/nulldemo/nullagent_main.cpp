@@ -21,24 +21,24 @@ int main(int argc, const char **argv) {
   ofp::log::setOutputStream(&std::cerr);
 
   Driver driver;
-
+  driver.installSignalHandlers();
+  
   if (addr.valid()) {
-    auto result = driver.connect(ChannelMode::Agent,
+    (void)driver.connect(ChannelMode::Raw,
                                  IPv6Endpoint{addr, OFP_DEFAULT_PORT}, version,
-                                 NullAgent::Factory);
-    result.done([](const std::error_code &err) {
-      // This will not be called, unless `addr` is invalid; agent will keep
-      // retrying the connection.
-      std::cout << "Result: " << err << '\n';
-    });
+                                 NullAgent::Factory, [](Channel *channel, std::error_code err) {
+                                  std::cout << "Result: connId=" << channel->connectionId() << ", " << err << '\n';
+                                 });
 
   } else {
     std::error_code err;
-    (void)driver.listen(ChannelMode::Agent, IPv6Endpoint{OFP_DEFAULT_PORT},
+    (void)driver.listen(ChannelMode::Raw, IPv6Endpoint{OFP_DEFAULT_PORT},
                       version, NullAgent::Factory, err);
 
     std::cout << "Result: " << err << '\n';
   }
 
   driver.run();
+
+  return 0;
 }
