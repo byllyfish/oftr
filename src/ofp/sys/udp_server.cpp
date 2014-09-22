@@ -176,7 +176,7 @@ void UDP_Server::dispatchMessage() {
 
     if (message_.type() == Hello::type()) {
       auto conn = new UDP_Connection(this, mode_, versions_, sender_);
-      conn->postMessage(nullptr, &message_);
+      conn->postMessage(&message_);
 
     } else {
       log::info("Unexpected message ignored: ", message_);
@@ -184,6 +184,6 @@ void UDP_Server::dispatchMessage() {
 
   } else {
     // Dispatch incoming message to existing connection.
-    iter->second->postMessage(nullptr, &message_);
+    iter->second->postMessage(&message_);
   }
 }

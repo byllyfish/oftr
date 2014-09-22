@@ -93,12 +93,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
   // finder to locate the channel for the given datapathID so we can set the
   // correct protocol version and possibly override the xid.
 
-  Channel *actualChannel = finder_(datapathId_);
-  if (actualChannel) {
+  outputChannel_ = finder_(datapathId_, connId_);
+  if (outputChannel_) {
     // Channel version will override any version specified by input.
-    header_.setVersion(actualChannel->version());
+    header_.setVersion(outputChannel_->version());
     if (header_.xid() == 0) {
-      header_.setXid(actualChannel->nextXid());
+      header_.setXid(outputChannel_->nextXid());
     }
   }
 
@@ -294,7 +294,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
   }
 }
 
-Channel *Encoder::NullChannelFinder(const DatapathID &datapathId) {
+Channel *Encoder::NullChannelFinder(const DatapathID &datapathId, UInt64 connId) {
   return nullptr;
 }
 

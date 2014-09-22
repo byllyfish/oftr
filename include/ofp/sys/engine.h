@@ -91,18 +91,18 @@ public:
   }
 
   template <class UnaryPredicate>
-  Connection *findConnection(UnaryPredicate func) {
+  Connection *findConnection(UnaryPredicate func) const {
     auto iter = std::find_if(connList_.begin(), connList_.end(), func);
     return iter != connList_.end() ? *iter : nullptr;
   }
 
   template <class UnaryPredicate>
-  TCP_Server *findServer(UnaryPredicate func) {
+  TCP_Server *findServer(UnaryPredicate func) const {
     auto iter = std::find_if(serverList_.begin(), serverList_.end(), func);
     return iter != serverList_.end() ? *iter : nullptr;
   }
 
-  Connection *findDatapath(const DatapathID &dpid) const;
+  Connection *findDatapath(const DatapathID &dpid, UInt64 connId) const;
 
 private:
   // Pointer to driver object that owns engine.

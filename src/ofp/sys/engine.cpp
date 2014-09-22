@@ -207,16 +207,15 @@ void Engine::registerDatapath(Connection *channel) {
       // different, close it and replace it with the new one.
       auto item = pair.first;
       if (item->second != channel) {
-        log::info("Engine.postDatapathID: Conflict between main connections "
-                  "detected. Closing old.",
-                  dpid);
+        log::error("registerDatapath: Conflict between main connections detected",
+                  dpid, std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
         item->second = channel;
         old->shutdown();
 
       } else {
-        log::info("Engine.postDatapathID: DatapathID is already registered.",
-                  dpid);
+        log::error("registerDatapath: Datapath is already registered.",
+                  dpid, std::make_pair("conn_id", channel->connectionId()));
       }
     }
 
@@ -230,7 +229,7 @@ void Engine::registerDatapath(Connection *channel) {
       channel->setMainConnection(item->second, auxID);
 
     } else {
-      log::info("Engine.postDatapathID: Main connection not found.", dpid);
+      log::error("registerDatapath: Main connection not found", dpid, std::make_pair("conn_id", channel->connectionId()));
       channel->shutdown();
     }
   }
@@ -240,6 +239,7 @@ void Engine::releaseDatapath(Connection *channel) {
   DatapathID dpid = channel->datapathId();
   UInt8 auxID = channel->auxiliaryId();
 
+  // We only need to release the datapath for main connections.
   if (auxID == 0) {
     // When releasing the datapathID for a main connection, we need to
     // verify that the datapathID _is_ registered to this connection.
@@ -248,10 +248,8 @@ void Engine::releaseDatapath(Connection *channel) {
       if (item->second == channel)
         dpidMap_.erase(item);
     } else if (isRunning_) {
-      log::debug("Engine.releaseDatapathID: Unable to find datapathID.", dpid);
+      log::error("releaseDatapath: Unable to find datapath", dpid, std::make_pair("conn_id", channel->connectionId()));
     }
-  } else {
-    log::debug("Engine.releaseDatapathID called for auxID", auxID);
   }
 }
 
@@ -303,10 +301,21 @@ UInt64 Engine::assignConnId() {
 }
 
 
-Connection *Engine::findDatapath(const DatapathID &dpid) const {
-  auto item = dpidMap_.find(dpid);
-  if (item != dpidMap_.end()) {
-    return item->second;
+Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
+  // If datapath ID is not all zeros, use it to look up the connection.
+  if (!dpid.empty()) {
+    auto item = dpidMap_.find(dpid);
+    if (item != dpidMap_.end()) {
+      return item->second;
+    }
+
+  } else if (connId != 0) {
+    // Otherwise use the connectionId, it it's non-zero.
+    return findConnection([connId](Channel *channel) {
+      return channel->connectionId() == connId;
+    });
   }
+
+
   return nullptr;
 }

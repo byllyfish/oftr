@@ -69,7 +69,7 @@ public:
   }
 
   template <class CompletionHandler>
-  void buf_flush(CompletionHandler &&handler);
+  void buf_flush(UInt64 id, CompletionHandler &&handler);
 
   void shutdownLowestLayer();
 
@@ -86,7 +86,7 @@ OFP_END_IGNORE_PADDING
 
 template <class StreamType>
 template <class CompletionHandler>
-void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
+void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
   const ByteList &outgoing = buffer_[bufferIdx_];
   if (isFlushing_ || outgoing.size() == 0)
     return;
@@ -94,10 +94,10 @@ void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
   bufferIdx_ = !bufferIdx_;
   isFlushing_ = true;
 
-  log::trace("write", outgoing.data(), outgoing.size());
+  log::trace("Write", id, outgoing.data(), outgoing.size());
 
   async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
-              make_custom_alloc_handler(allocator_, [this, handler](const asio::error_code &err, size_t bytes_transferred) {
+              make_custom_alloc_handler(allocator_, [this, id, handler](const asio::error_code &err, size_t bytes_transferred) {
 
     if (!err) {
       assert(bytes_transferred == buffer_[!bufferIdx_].size());
@@ -106,7 +106,7 @@ void Buffered<StreamType>::buf_flush(CompletionHandler &&handler) {
       buffer_[!bufferIdx_].clear();
       if (buffer_[bufferIdx_].size() > 0) {
         // Start another async write for the other output buffer.
-        buf_flush(handler);
+        buf_flush(id, handler);
       } else {
         // Call completion handler.
         handler(err);

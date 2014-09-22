@@ -38,7 +38,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Encoder {
 public:
-    using ChannelFinder = std::function<Channel*(const DatapathID &datapathId)>;
+    using ChannelFinder = std::function<Channel*(const DatapathID &datapathId, UInt64 connId)>;
 
     Encoder(ChannelFinder finder);
 	Encoder(const std::string &input, bool matchPrereqsChecked=true, int lineNumber=0, ChannelFinder finder = NullChannelFinder);
@@ -46,8 +46,10 @@ public:
 	const UInt8 *data() const { return channel_.data(); }
 	size_t size() const { return channel_.size(); }
 
+    UInt64 connectionId() const { return connId_; }
     const DatapathID &datapathId() const { return datapathId_; }
     UInt8 auxiliaryId() const { return auxiliaryId_; }
+    Channel *outputChannel() const { return outputChannel_; }
 
     bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
@@ -57,9 +59,11 @@ private:
 	MemoryChannel channel_;
 	std::string error_;
     llvm::raw_string_ostream errorStream_;
+    UInt64 connId_ = 0;
     DatapathID datapathId_;
     Header header_;
     ChannelFinder finder_;
+    Channel *outputChannel_ = nullptr;
     int lineNumber_ = 0;
     UInt8 auxiliaryId_ = 0;
     bool matchPrereqsChecked_;
@@ -69,7 +73,7 @@ private:
 
     void encodeMsg(llvm::yaml::IO &io);
 
-    static Channel *NullChannelFinder(const DatapathID &datapathId);
+    static Channel *NullChannelFinder(const DatapathID &datapathId, UInt64 connId);
 
     friend struct llvm::yaml::MappingTraits<ofp::yaml::Encoder>;
 };
@@ -97,6 +101,8 @@ struct MappingTraits<ofp::yaml::Encoder> {
         io.mapOptional("version", header.version_);
     	io.mapRequired("type", header.type_);
     	io.mapOptional("xid", header.xid_);
+
+        io.mapOptional("conn_id", encoder.connId_, UInt64{});
     	io.mapOptional("datapath_id", encoder.datapathId_, DatapathID{});
 
         UInt8 defaultAuxId = 0;

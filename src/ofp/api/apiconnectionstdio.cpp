@@ -97,9 +97,6 @@ void ApiConnectionStdio::asyncWrite() {
             // Start another async write for the other output buffer.
             asyncWrite();
           }
-
-        } else {
-          log::debug("Write error ", err);
         }
       });
 }

@@ -101,7 +101,7 @@ void setOutputStream(std::ostream *outputStream) {
   setOutputCallback(streamOutputCallback, outputStream);
 }
 
-static void trace1(const char *type, const void *data, size_t length) {
+static void trace1(const char *type, UInt64 id, const void *data, size_t length) {
   if (length < sizeof(Header)) {
     detail::write_(Level::Trace, type, length, "Invalid Data:",
                    RawDataToHex(data, length));
@@ -111,24 +111,18 @@ static void trace1(const char *type, const void *data, size_t length) {
   Message message{data, length};
   message.transmogrify();
 
-#if 0
-  // Don't log echo replies or echo requests.
-  if (message.type() == OFPT_ECHO_REPLY || message.type() == OFPT_ECHO_REQUEST)
-    return;
-#endif
-
   yaml::Decoder decoder{&message};
 
   if (decoder.error().empty()) {
-    detail::write_(Level::Trace, type, length, decoder.result(),
+    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("conn_id", id), '\n', decoder.result(),
                    RawDataToHex(data, length));
   } else {
-    detail::write_(Level::Trace, type, length, decoder.error(),
+    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("conn_id", id), '\n', decoder.error(),
                    RawDataToHex(data, length));
   }
 }
 
-void trace(const char *type, const void *data, size_t length) {
+void trace(const char *type, UInt64 id, const void *data, size_t length) {
   if (Level::Trace < detail::GlobalOutputLevelFilter)
     return;
 
@@ -140,7 +134,7 @@ void trace(const char *type, const void *data, size_t length) {
 
   const Header *header = reinterpret_cast<const Header *>(ptr);
   while (remaining >= sizeof(Header) && header->length() <= remaining) {
-    trace1(type, ptr, header->length());
+    trace1(type, id, ptr, header->length());
 
     remaining -= header->length();
     ptr += header->length();

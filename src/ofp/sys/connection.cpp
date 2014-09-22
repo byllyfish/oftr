@@ -95,8 +95,10 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
   auxList.push_back(this);
 }
 
-void Connection::postMessage(Connection *source, Message *message) {
-  log::trace("read", message->data(), message->size());
+void Connection::postMessage(Message *message) {
+  assert(message->source());
+
+  log::trace("Read", message->source()->connectionId(), message->data(), message->size());
 
   // Handle echo reply automatically. We just set the type to reply and write
   // it back.
@@ -107,19 +109,22 @@ void Connection::postMessage(Connection *source, Message *message) {
     return; // all done!
   }
 
-  if (listener_) {
+  ChannelListener *listener = mainConn_->listener_;
+  if (listener) {
     message->transmogrify();
-    listener_->onMessage(message);
+    listener->onMessage(message);
   }
 }
 
 void Connection::postIdle() { log::debug("postIdle() =========="); }
 
-void Connection::postDatapathId(const DatapathID &datapathId,
+void Connection::postDatapath(const DatapathID &datapathId,
                                 UInt8 auxiliaryId) {
   if (!datapathId.empty()) {
     datapathId_ = datapathId;
     auxiliaryId_ = auxiliaryId;
     engine()->registerDatapath(this);
+
+    log::info("Assign datapath_id", datapathId, "auxiliary_id", int(auxiliaryId), std::make_pair("conn_id", connectionId()));
   }
 }

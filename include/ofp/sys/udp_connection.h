@@ -46,8 +46,7 @@ public:
     IPv6Endpoint remoteEndpoint() const override;
     IPv6Endpoint localEndpoint() const override;
 
-    Transport transport() const { return Transport::UDP; }
-    Channel *findAuxChannel(UInt8 auxID) const override { return 0; }
+    Transport transport() const override { return Transport::UDP; }
 
 private:
     UDP_Server *server_;

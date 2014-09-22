@@ -68,7 +68,7 @@ class ApiServer {
   void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
 
-  Channel *findDatapath(const DatapathID &datapathId);
+  Channel *findDatapath(const DatapathID &datapathId, UInt64 connId);
 
   sys::Engine *engine() { return engine_; }
 

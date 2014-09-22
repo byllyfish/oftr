@@ -2,14 +2,14 @@
 type:            OFPT_FEATURES_REQUEST
 xid:             0x00000001
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
 ...
 ---
 type:            OFPT_SET_CONFIG
 xid:             0x00000002
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   flags:           0x0000
   miss_send_len:   0x000E
@@ -18,7 +18,7 @@ msg:
 type:            OFPT_FLOW_MOD
 xid:             0x00000003
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   cookie:          0x0000000000000000
   cookie_mask:     0xFFFFFFFFFFFFFFFF
@@ -38,14 +38,14 @@ msg:
 type:            OFPT_BARRIER_REQUEST
 xid:             0x00000004
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
 ...
 ---
 type:            OFPT_PACKET_OUT
 xid:             0x00000005
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000100
   in_port:         0x00000001
@@ -59,7 +59,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x00000006
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000101
   in_port:         0x00000002
@@ -73,7 +73,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x00000007
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000102
   in_port:         0x00000001
@@ -87,7 +87,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x00000008
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000103
   in_port:         0x00000002
@@ -101,7 +101,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x00000009
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000104
   in_port:         0x00000002
@@ -115,7 +115,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x0000000A
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000105
   in_port:         0x00000001
@@ -129,7 +129,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x0000000B
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000106
   in_port:         0x00000001
@@ -143,7 +143,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x0000000C
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000107
   in_port:         0x00000002
@@ -157,7 +157,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x0000000D
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000108
   in_port:         0x00000001
@@ -171,7 +171,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x0000000E
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x00000109
   in_port:         0x00000002
@@ -185,7 +185,7 @@ msg:
 type:            OFPT_PACKET_OUT
 xid:             0x0000000F
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   buffer_id:       0x0000010A
   in_port:         0x00000002
@@ -199,7 +199,7 @@ msg:
 type:            OFPT_FLOW_MOD
 xid:             0x00000010
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   cookie:          0x0000000000000000
   cookie_mask:     0xFFFFFFFFFFFFFFFF
@@ -230,7 +230,7 @@ msg:
 type:            OFPT_FLOW_MOD
 xid:             0x00000011
 version:         0x01
-datapath_id:     0000-0000-0000-0000
+conn_id:         0x0000000000000001
 msg:             
   cookie:          0x0000000000000000
   cookie_mask:     0xFFFFFFFFFFFFFFFF

@@ -58,7 +58,7 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 }
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
-  log::info("DefaultHandshake: Channel down before handshake could complete", std::make_pair("connid", channel->connectionId()));
+  log::error("DefaultHandshake: Channel down before handshake could complete", std::make_pair("connid", channel->connectionId()));
 }
 
 void DefaultHandshake::onMessage(const Message *message) {
@@ -132,7 +132,7 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
   // Registering the connection allows us to attach auxiliary connections to
   // their main connections.
 
-  channel_->postDatapathId(msg->datapathId(), msg->auxiliaryId());
+  channel_->postDatapath(msg->datapathId(), msg->auxiliaryId());
 
   if (mode_ == ChannelMode::Controller && channel_->mainConnection() != channel_) {
     installAuxiliaryChannelListener(message);

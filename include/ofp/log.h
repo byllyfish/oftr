@@ -81,7 +81,7 @@ void write_(Level level, const Args &... args) {
 
 }  // namespace detail
 
-void trace(const char *type, const void *data, size_t length);
+void trace(const char *type, UInt64 id, const void *data, size_t length);
 
 template <class... Args>
 inline void info(const Args &... args) {

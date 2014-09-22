@@ -183,9 +183,13 @@ void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
 
 
 void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
-  Channel *channel = findDatapath(send->params.datapathId());
+  UInt64 connId = 0;
+  yaml::Encoder &params = send->params;
+
+  Channel *channel = params.outputChannel();
   if (channel) {
-    channel->write(send->params.data(), send->params.size());
+    connId = channel->connectionId();
+    channel->write(params.data(), params.size());
     channel->flush();
   }
 
@@ -193,7 +197,8 @@ void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
     return;
 
   RpcSendResponse response{send->id};
-  response.result.data = {send->params.data(), send->params.size()};
+  response.result.connId = connId;
+  response.result.data = {params.data(), params.size()};
   conn->rpcReply(&response);
 }
 
@@ -214,7 +219,8 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
       response.result.emplace_back();
       RpcConnectionStats &stats = response.result.back();
       stats.localEndpoint = server->localEndpoint();
-      stats.connId = connId;     
+      stats.connId = connId;
+      stats.auxiliaryId = 0;
     }
   });
 
@@ -227,6 +233,7 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
       stats.remoteEndpoint = channel->remoteEndpoint();
       stats.connId = connId;
       stats.datapathId = channel->datapathId();
+      stats.auxiliaryId = channel->auxiliaryId();
     }
   });
 
@@ -275,10 +282,10 @@ void ApiServer::onMessage(Channel *channel, const Message *message) {
   if (oneConn_) oneConn_->onMessage(channel, message);
 }
 
-ofp::Channel *ApiServer::findDatapath(const DatapathID &datapathId) {
+ofp::Channel *ApiServer::findDatapath(const DatapathID &datapathId, UInt64 connId) {
   if (defaultChannel_) return defaultChannel_;
 
-  return engine_->findDatapath(datapathId);
+  return engine_->findDatapath(datapathId, connId);
 }
 
 

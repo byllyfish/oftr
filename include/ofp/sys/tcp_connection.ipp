@@ -66,7 +66,7 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::localEndpoint() const {
 template <class SocketType>
 void TCP_Connection<SocketType>::flush() {
   auto self(this->shared_from_this());
-  socket_.buf_flush([this, self](const std::error_code &error) {
+  socket_.buf_flush(connectionId(), [this, self](const std::error_code &error) {
     if (error) {
       socket_.lowest_layer().close();
     }
@@ -162,7 +162,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
                 UInt16 msgLength = hdr->length();
 
                 if (msgLength == sizeof(Header)) {
-                  postMessage(this, &message_);
+                  postMessage(&message_);
                   if (socket_.is_open()) {
                     asyncReadHeader();
                   } else {
@@ -209,7 +209,7 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
             if (!err) {
               assert(bytes_transferred == message_.size() - sizeof(Header));
 
-              postMessage(this, &message_);
+              postMessage(&message_);
               if (socket_.is_open()) {
                 asyncReadHeader();
               } else {

@@ -63,15 +63,13 @@ public:
     listener_ = listener;
   }
 
-  void postMessage(Connection *source, Message *message);
+  void postMessage(Message *message);
   void postIdle();
-  void postDatapathId(const DatapathID &datapath, UInt8 auxiliaryId);
+  void postDatapath(const DatapathID &datapath, UInt8 auxiliaryId);
 
   sys::Engine *engine() const { return engine_; }
 
   void setStartingXid(UInt32 xid) override { nextXid_ = xid; }
-
-  Channel *findAuxChannel(UInt8 auxID) const override { return nullptr; }
 
 private:
   using AuxiliaryList = std::vector<Connection *>;

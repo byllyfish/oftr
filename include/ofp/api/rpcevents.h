@@ -81,6 +81,7 @@ struct RpcConnectionStats {
   IPv6Endpoint remoteEndpoint;
   UInt64 connId;
   DatapathID datapathId;
+  UInt8 auxiliaryId;
   //Channel::Transport transport;
   //UInt8 auxiliaryId;
 };
@@ -226,6 +227,7 @@ struct RpcSendResponse {
   std::string toJson();
 
   struct Result {
+    UInt64 connId;
     ByteRange data;
   };
 
@@ -430,6 +432,7 @@ struct MappingTraits<ofp::api::RpcConnectionStats> {
     io.mapRequired("remote_endpoint", stats.remoteEndpoint);
     io.mapRequired("datapath_id", stats.datapathId);
     io.mapRequired("conn_id", stats.connId);
+    io.mapRequired("auxiliary_id", stats.auxiliaryId);
   }
 };
 
@@ -444,6 +447,7 @@ struct MappingTraits<ofp::api::RpcSendResponse> {
 template <>
 struct MappingTraits<ofp::api::RpcSendResponse::Result> {
   static void mapping(IO &io, ofp::api::RpcSendResponse::Result &result) {
+    io.mapRequired("conn_id", result.connId);
     io.mapRequired("data", result.data);
   }
 };
