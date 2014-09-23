@@ -221,6 +221,7 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
       stats.localEndpoint = server->localEndpoint();
       stats.connId = connId;
       stats.auxiliaryId = 0;
+      stats.transport = ChannelTransport::None;
     }
   });
 
@@ -234,6 +235,7 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
       stats.connId = connId;
       stats.datapathId = channel->datapathId();
       stats.auxiliaryId = channel->auxiliaryId();
+      stats.transport = channel->transport();
     }
   });
 

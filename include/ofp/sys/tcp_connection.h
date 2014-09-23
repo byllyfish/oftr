@@ -32,6 +32,17 @@
 #include "ofp/sys/handler_allocator.h"
 
 namespace ofp {
+
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::PlaintextSocket>() {
+  return ChannelTransport::TCP_Plaintext;
+}
+
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::EncryptedSocket>() {
+  return ChannelTransport::TCP_TLS;
+}
+
 namespace sys {
 
 OFP_BEGIN_IGNORE_PADDING
@@ -49,6 +60,7 @@ public:
   void asyncConnect(const IPv6Endpoint &remoteEndpt, std::function<void(Channel*,std::error_code)> resultHandler);
   void asyncAccept();
 
+  ChannelTransport transport() const override { return ToChannelTransport<SocketType>(); }
   IPv6Endpoint remoteEndpoint() const override;
   IPv6Endpoint localEndpoint() const override;
   
@@ -58,8 +70,6 @@ public:
 
   void flush() override;
   void shutdown() override;
-
-  Transport transport() const override { return Transport::TCP; }
 
 private:
   Message message_;

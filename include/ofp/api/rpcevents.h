@@ -82,8 +82,7 @@ struct RpcConnectionStats {
   UInt64 connId;
   DatapathID datapathId;
   UInt8 auxiliaryId;
-  //Channel::Transport transport;
-  //UInt8 auxiliaryId;
+  ChannelTransport transport;
 };
 
 //---------------------//
@@ -336,6 +335,17 @@ struct ScalarTraits<ofp::api::RpcMethod> {
 };
 
 template <>
+struct ScalarEnumerationTraits<ofp::ChannelTransport> {
+  static void enumeration(IO &io, ofp::ChannelTransport &value) {
+    io.enumCase(value, "NONE", ofp::ChannelTransport::None);
+    io.enumCase(value, "TCP", ofp::ChannelTransport::TCP_Plaintext);
+    io.enumCase(value, "UDP", ofp::ChannelTransport::UDP_Plaintext);
+    io.enumCase(value, "TLS", ofp::ChannelTransport::TCP_TLS);
+    io.enumCase(value, "DTLS", ofp::ChannelTransport::UDP_DTLS);
+  }
+};
+
+template <>
 struct MappingTraits<ofp::api::RpcListen::Params> {
   static void mapping(IO &io, ofp::api::RpcListen::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
@@ -433,6 +443,7 @@ struct MappingTraits<ofp::api::RpcConnectionStats> {
     io.mapRequired("datapath_id", stats.datapathId);
     io.mapRequired("conn_id", stats.connId);
     io.mapRequired("auxiliary_id", stats.auxiliaryId);
+    io.mapRequired("transport", stats.transport);
   }
 };
 

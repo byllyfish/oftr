@@ -43,10 +43,9 @@ public:
 	void flush() override;
 	void shutdown() override;
 	
+    ChannelTransport transport() const override { return ChannelTransport::UDP_Plaintext; }
     IPv6Endpoint remoteEndpoint() const override;
     IPv6Endpoint localEndpoint() const override;
-
-    Transport transport() const override { return Transport::UDP; }
 
 private:
     UDP_Server *server_;

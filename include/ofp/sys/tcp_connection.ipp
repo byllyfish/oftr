@@ -131,9 +131,10 @@ void TCP_Connection<SocketType>::channelUp() {
 template <class SocketType>
 void TCP_Connection<SocketType>::channelDown() {
   if (isChannelUp_) {
-    assert(channelListener());
     isChannelUp_ = false;
-    channelListener()->onChannelDown(this);
+    if (channelListener()) {
+      channelListener()->onChannelDown(this);
+    }
   }
 }
 
