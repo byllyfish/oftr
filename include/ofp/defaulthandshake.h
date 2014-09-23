@@ -63,8 +63,9 @@ private:
   void onError(const Message *message);
 
   void installNewChannelListener(const Message *message);
-  void installAuxiliaryChannelListener(const Message *message);
+  void clearChannelListener();
 };
+
 OFP_END_IGNORE_PADDING
 
 }  // namespace ofp

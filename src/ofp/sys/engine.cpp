@@ -23,7 +23,6 @@
 #include "ofp/log.h"
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/udp_server.h"
-#include "ofp/defaultauxiliarylistener.h"
 #include "ofp/sys/tcp_connection.h"
 
 using namespace ofp::sys;

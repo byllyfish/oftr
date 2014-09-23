@@ -28,7 +28,6 @@
 #include "ofp/error.h"
 #include "ofp/log.h"
 #include "ofp/constants.h"
-#include "ofp/defaultauxiliarylistener.h"
 
 using namespace ofp;
 using sys::Connection;
@@ -135,7 +134,11 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
   channel_->postDatapath(msg->datapathId(), msg->auxiliaryId());
 
   if (mode_ == ChannelMode::Controller && channel_->mainConnection() != channel_) {
-    installAuxiliaryChannelListener(message);
+    assert(msg->auxiliaryId() != 0);
+    // If this is an auxiliary connection, clear its channel listener. Note
+    // that we do not pass the (auxiliary) FeaturesReply message to the channel.
+    clearChannelListener();
+
   } else {
     installNewChannelListener(message);
   }
@@ -159,12 +162,9 @@ void DefaultHandshake::installNewChannelListener(const Message *message) {
   ChannelListener::dispose(this);
 }
 
-void DefaultHandshake::installAuxiliaryChannelListener(const Message *message) {
+void DefaultHandshake::clearChannelListener() {
   assert(channel_->channelListener() == this);
-  assert(message);
 
-  ChannelListener *newListener = new DefaultAuxiliaryListener;
-  channel_->setChannelListener(newListener);
-  newListener->onChannelUp(channel_);
-  newListener->onMessage(message);
+  channel_->setChannelListener(nullptr);
+  ChannelListener::dispose(this);
 }

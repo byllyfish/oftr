@@ -218,7 +218,6 @@ set(LIBOFP_HEADER_FILES
   include/ofp/constants_deprecated.h
   include/ofp/constants_error.h
   include/ofp/datapathid.h
-  include/ofp/defaultauxiliarylistener.h
   include/ofp/defaulthandshake.h
   include/ofp/driver.h
   include/ofp/echoreply.h
