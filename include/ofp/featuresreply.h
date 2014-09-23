@@ -37,7 +37,9 @@ class FeaturesReply : public ProtocolMsg<FeaturesReply, OFPT_FEATURES_REPLY, 32>
   UInt8 tableCount() const { return tableCount_; }
   UInt8 auxiliaryId() const { return auxiliaryId_; }
   UInt32 capabilities() const { return capabilities_; }
-  UInt32 reserved() const { return reserved_; }
+
+  // Protocol version 1 stores `actions` in reserved slot.
+  UInt32 actions() const { return reserved_; }
 
   PortRange ports() const;
 
@@ -80,7 +82,9 @@ class FeaturesReplyBuilder {
   void setCapabilities(UInt32 capabilities) {
     msg_.capabilities_ = capabilities;
   }
-  void setReserved(UInt32 reserved) { msg_.reserved_ = reserved; }
+
+  // Protocol version 1 stores `actions` in reserved slot.
+  void setActions(UInt32 actions) { msg_.reserved_ = actions; }
   void setPorts(const PortRange &ports) { ports_.assign(ports); }
 
   UInt32 send(Writable *channel);

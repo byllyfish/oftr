@@ -15,7 +15,7 @@ msg:
   n_tables:        0xFE
   auxiliary_id:    0x00
   capabilities:    0x000000C7
-  reserved:        0x00000FFF
+  actions:         0x00000FFF
   ports:           
     - port_no:         0x00000001
       hw_addr:         '4e:50:2f:4b:2d:df'

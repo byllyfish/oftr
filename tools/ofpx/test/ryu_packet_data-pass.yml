@@ -69,7 +69,7 @@ msg:
   n_tables:        0xFF
   auxiliary_id:    0x00
   capabilities:    0x000000A9
-  reserved:        0x00000843
+  actions:         0x00000843
   ports:           
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'
@@ -768,7 +768,6 @@ msg:
   n_tables:        0xFF
   auxiliary_id:    0x00
   capabilities:    0x0000004F
-  reserved:        0x00000000
   ports:           
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'
@@ -3837,7 +3836,6 @@ msg:
   n_tables:        0xFF
   auxiliary_id:    0x63
   capabilities:    0x0000004F
-  reserved:        0x00000000
   ports:           
 ...
 ---
@@ -6878,7 +6876,6 @@ msg:
   n_tables:        0xFF
   auxiliary_id:    0x63
   capabilities:    0x0000004F
-  reserved:        0x00000000
   ports:           
 ...
 ---

@@ -27,7 +27,7 @@ TEST(featuresreply, v4) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setReserved(0x77777777);
+  msg.setActions(0x77777777);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_4};
@@ -35,7 +35,7 @@ TEST(featuresreply, v4) {
 
   EXPECT_EQ(1, xid);
   EXPECT_EQ(0x20, channel.size());
-  EXPECT_HEX("0406002000000001222222222222222233333333445500006666666677777777",
+  EXPECT_HEX("0406002000000001222222222222222233333333445500006666666600000000",
              channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
@@ -49,7 +49,7 @@ TEST(featuresreply, v4) {
   EXPECT_EQ(0x44, reply->tableCount());
   EXPECT_EQ(0x55, reply->auxiliaryId());
   EXPECT_EQ(0x66666666, reply->capabilities());
-  EXPECT_EQ(0x77777777, reply->reserved());
+  EXPECT_EQ(0, reply->actions());
 
   EXPECT_EQ(0, reply->ports().size());
 }
@@ -78,7 +78,7 @@ TEST(featuresreply, v3) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setReserved(0x77777777);
+  msg.setActions(0x77777777);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_3};
@@ -87,7 +87,7 @@ TEST(featuresreply, v3) {
   EXPECT_EQ(1, xid);
   EXPECT_EQ(0xA0, channel.size());
   EXPECT_HEX(
-      "030600A000000001222222222222222233333333445500006666666677777777"
+      "030600A000000001222222222222222233333333440000006666666600000000"
       "11111111000000002222222222220000506F7274203300000000000000000000"
       "444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB"
       "11111111000000002222222222220000506F7274203300000000000000000000"
@@ -103,9 +103,9 @@ TEST(featuresreply, v3) {
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
   EXPECT_EQ(0x44, reply->tableCount());
-  EXPECT_EQ(0x55, reply->auxiliaryId());
+  EXPECT_EQ(0, reply->auxiliaryId());
   EXPECT_EQ(0x66666666, reply->capabilities());
-  EXPECT_EQ(0x77777777, reply->reserved());
+  EXPECT_EQ(0, reply->actions());
 
   EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
 }
@@ -134,7 +134,7 @@ TEST(featuresreply, v2) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setReserved(0x77777777);
+  msg.setActions(0x77777777);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_2};
@@ -143,7 +143,7 @@ TEST(featuresreply, v2) {
   EXPECT_EQ(1, xid);
   EXPECT_EQ(0xA0, channel.size());
   EXPECT_HEX(
-      "020600A000000001222222222222222233333333445500006666666677777777"
+      "020600A000000001222222222222222233333333440000006666666600000000"
       "11111111000000002222222222220000506F7274203300000000000000000000"
       "444444445555555566666666777777778888888899999999AAAAAAAABBBBBBBB"
       "11111111000000002222222222220000506F7274203300000000000000000000"
@@ -159,9 +159,9 @@ TEST(featuresreply, v2) {
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
   EXPECT_EQ(0x44, reply->tableCount());
-  EXPECT_EQ(0x55, reply->auxiliaryId());
+  EXPECT_EQ(0, reply->auxiliaryId());
   EXPECT_EQ(0x66666666, reply->capabilities());
-  EXPECT_EQ(0x77777777, reply->reserved());
+  EXPECT_EQ(0, reply->actions());
 
   EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
 }
@@ -190,7 +190,7 @@ TEST(featuresreply, v1) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setReserved(0x77777777);
+  msg.setActions(0x77777777);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_1};
@@ -199,7 +199,7 @@ TEST(featuresreply, v1) {
   EXPECT_EQ(1, xid);
   EXPECT_EQ(0x80, channel.size());
   EXPECT_HEX(
-      "0106008000000001222222222222222233333333445500006666666677777777"
+      "0106008000000001222222222222222233333333440000006666666677777777"
       "1111222222222222506F7274203300000000000000000000444444445555555566666666"
       "777777778888888899999999"
       "1111222222222222506F7274203300000000000000000000444444445555555566666666"
@@ -215,9 +215,9 @@ TEST(featuresreply, v1) {
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
   EXPECT_EQ(0x44, reply->tableCount());
-  EXPECT_EQ(0x55, reply->auxiliaryId());
+  EXPECT_EQ(0, reply->auxiliaryId());
   EXPECT_EQ(0x66666666, reply->capabilities());
-  EXPECT_EQ(0x77777777, reply->reserved());
+  EXPECT_EQ(0x77777777, reply->actions());
 
   EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
 }

@@ -40,7 +40,7 @@ msg:
   n_tables: 0xff
   auxiliary_id: 0xff
   capabilities: 0xffffffff
-  reserved: 0xffffffff
+  actions: 0xffffffff
   ports:
     - port_no: 0xffffffff
       hw_addr: 'ff:ff:ff:ff:ff:ff'

@@ -39,7 +39,7 @@ namespace yaml {
 //   n_tables: <UInt8>            { Required }
 //   auxiliary_id: <UInt8>        { Required }
 //   capabilities: <UInt32>       { Required }
-//   reserved: <UInt32>           { Required }
+//   actions: <UInt32>            { Optional }
 //   ports: [ <Port> ]            { Required }
 //...
 
@@ -54,14 +54,16 @@ struct MappingTraits<ofp::FeaturesReply> {
     Hex8 tableCount = msg.tableCount();
     Hex8 auxiliaryId = msg.auxiliaryId();
     Hex32 capabilities = msg.capabilities();
-    Hex32 reserved = msg.reserved();
+    Hex32 actions = msg.actions();
 
     io.mapRequired("datapath_id", dpid);
     io.mapRequired("n_buffers", bufferCount);
     io.mapRequired("n_tables", tableCount);
     io.mapRequired("auxiliary_id", auxiliaryId);
     io.mapRequired("capabilities", capabilities);
-    io.mapRequired("reserved", reserved);
+
+    if (msg.msgHeader()->version() == OFP_VERSION_1) 
+        io.mapRequired("actions", actions);
 
     PortRange ports = msg.ports();
     io.mapRequired("ports", ports);
@@ -79,21 +81,21 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
     UInt8 tableCount;
     UInt8 auxiliaryId;
     UInt32 capabilities;
-    UInt32 reserved;
+    UInt32 actions;
 
     io.mapRequired("datapath_id", dpid);
     io.mapRequired("n_buffers", bufferCount);
     io.mapRequired("n_tables", tableCount);
-    io.mapRequired("auxiliary_id", auxiliaryId);
+    io.mapOptional("auxiliary_id", auxiliaryId, UInt8{});
     io.mapRequired("capabilities", capabilities);
-    io.mapRequired("reserved", reserved);
+    io.mapOptional("actions", actions, UInt32{});
 
     msg.setDatapathId(dpid);
     msg.setBufferCount(bufferCount);
     msg.setTableCount(tableCount);
     msg.setAuxiliaryId(auxiliaryId);
     msg.setCapabilities(capabilities);
-    msg.setReserved(reserved);
+    msg.setActions(actions);
 
     PortList ports;
     io.mapRequired("ports", ports);

@@ -62,6 +62,11 @@ UInt32 FeaturesReplyBuilder::send(Writable *channel) {
   size_t msgLen = sizeof(msg_);
   if (version < OFP_VERSION_4) {
     msgLen += portRange.writeSize(channel);
+    msg_.auxiliaryId_ = 0;
+  }
+
+  if (version > OFP_VERSION_1) {
+    msg_.reserved_ = 0;
   }
 
   msg_.header_.setVersion(version);
