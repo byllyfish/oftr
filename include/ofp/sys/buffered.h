@@ -122,12 +122,9 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
 template <class StreamType>
 void Buffered<StreamType>::shutdownLowestLayer() {
   if (is_open()) {
-    std::error_code err;
-    lowest_layer().shutdown(tcp::socket::shutdown_both, err);
-    if (err) {
-      log::error("Buffered::shutdownLowestLayer", err);
-    }
-    lowest_layer().close(err);
+    std::error_code ignore;
+    lowest_layer().shutdown(tcp::socket::shutdown_both, ignore);
+    lowest_layer().close(ignore);
   }
 }
 

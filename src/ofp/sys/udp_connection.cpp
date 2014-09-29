@@ -37,7 +37,7 @@ UDP_Connection::UDP_Connection(UDP_Server *server, ChannelMode mode,
 
 UDP_Connection::~UDP_Connection() { 
   if (connectionId()) {
-    log::info("Close UDP connection", std::make_pair("parent", parentConnectionId()), std::make_pair("connid", connectionId()));
+    log::info("Close UDP connection", std::make_pair("connid", connectionId()));
     server_->remove(this); 
   }
 }
@@ -46,14 +46,14 @@ UDP_Connection::~UDP_Connection() {
 void UDP_Connection::connect(const udp::endpoint &remoteEndpt) {
   remoteEndpt_ = remoteEndpt;
   server_->add(this);
-  log::info("Establish UDP connection", localEndpoint(), "-->", remoteEndpoint(), std::make_pair("parent", parentConnectionId()), std::make_pair("connid", connectionId()));
+  log::info("Establish UDP connection", localEndpoint(), "-->", remoteEndpoint(), std::make_pair("connid", connectionId()));
   channelUp();
 }
 
 void UDP_Connection::accept(const udp::endpoint &remoteEndpt) {
   remoteEndpt_ = remoteEndpt;
   server_->add(this);
-  log::info("Accept UDP connection", localEndpoint(), "<--", remoteEndpoint(), std::make_pair("parent", parentConnectionId()), std::make_pair("connid", connectionId()));
+  log::info("Accept UDP connection", localEndpoint(), "<--", remoteEndpoint(), std::make_pair("connid", connectionId()));
   channelUp();
 }
 
@@ -83,6 +83,3 @@ void UDP_Connection::channelUp() {
   channelListener()->onChannelUp(this);
 }
 
-ofp::UInt64 UDP_Connection::parentConnectionId() const {
-  return server_->connectionId();
-}

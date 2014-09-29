@@ -50,14 +50,11 @@ public:
     IPv6Endpoint remoteEndpoint() const override;
     IPv6Endpoint localEndpoint() const override;
 
-    UInt64 parentConnectionId() const;
-
 private:
     UDP_Server *server_;
     udp::endpoint remoteEndpt_;
 
     void channelUp();
-    void channelDown();
 };
 
 OFP_END_IGNORE_PADDING

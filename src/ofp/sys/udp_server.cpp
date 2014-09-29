@@ -112,14 +112,12 @@ void UDP_Server::add(UDP_Connection *conn) {
 }
 
 void UDP_Server::remove(UDP_Connection *conn) {
-  if (!shuttingDown_) {
-    auto iter = connMap_.find(conn->remoteEndpoint());
-    if (iter != connMap_.end() && iter->second == conn) {
-      connMap_.erase(iter);
+  auto iter = connMap_.find(conn->remoteEndpoint());
+  if (iter != connMap_.end() && iter->second == conn) {
+    connMap_.erase(iter);
 
-    } else {
-      log::error("UDP_Server::remove - cannot find UDP connection", conn->remoteEndpoint(), std::make_pair("connid", conn->connectionId()));
-    }
+  } else {
+    log::error("UDP_Server::remove - cannot find UDP connection", conn->remoteEndpoint(), std::make_pair("connid", conn->connectionId()));
   }
 }
 

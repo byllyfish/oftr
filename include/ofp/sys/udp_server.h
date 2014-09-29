@@ -80,7 +80,6 @@ private:
 	ConnectionMap connMap_;
 	UInt64 connId_ = 0;
 	std::deque<Datagram> datagrams_;
-	bool shuttingDown_ = false;
 
 	void asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error);
 	void listen(const IPv6Endpoint &localEndpt, std::error_code &error);

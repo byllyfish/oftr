@@ -77,7 +77,6 @@ template <class SocketType>
 void TCP_Connection<SocketType>::shutdown() {
   auto self(this->shared_from_this());
   socket_.async_shutdown([this, self](const std::error_code &error) {
-    log::info("shutdown", connectionId());
     socket_.shutdownLowestLayer();
   });
 }
