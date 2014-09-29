@@ -29,6 +29,7 @@
 #include "ofp/api/rpcevents.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/tcp_server.h"
+#include "ofp/sys/udp_server.h"
 
 using ofp::api::ApiServer;
 using ofp::sys::TCP_Server;
@@ -118,13 +119,22 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
 void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
   std::string optionError;
   ChannelMode mode = ChannelMode::Controller;
+  ChannelTransport transport = ChannelTransport::TCP_Plaintext;
+
   for (auto opt : connect->params.options) {
     if (opt == "--raw" || opt == "-raw") {
       mode = ChannelMode::Raw;
+    } else if (opt == "--udp" || opt == "-udp") {
+      transport = ChannelTransport::UDP_Plaintext;
     } else {
       optionError += "Unknown option: " + opt;
       break;
     }
+  }
+
+  // Check for invalid combination of mode and transport.
+  if (IsChannelTransportUDP(transport) && mode != ChannelMode::Raw) {
+    optionError += "Invalid option: --udp must be combined with --raw";
   }
 
   if (!optionError.empty()) {
@@ -141,7 +151,7 @@ void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
   UInt64 id = connect->id;
   auto connPtr = conn->shared_from_this();
 
-  engine_->connect(mode, endpt, ProtocolVersions::All, 
+  engine_->connect(mode, transport, endpt, ProtocolVersions::All, 
     [this]() { return new ApiChannelListener{this}; }, 
     [connPtr, id](Channel *channel, std::error_code err) {
       if (id == RPC_ID_MISSING) 
@@ -160,24 +170,13 @@ void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
 }
 
 void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
-  UInt64 connId = close->params.connId;
-  UInt32 count = 0;
-
-  if (connId != 0) {
-    // Close a specific connection.
-    if (closeServer(connId) || closeChannel(connId)) {
-      count = 1;
-    }
-  } else {
-    // Close all connections and servers.
-    count = closeAll();
-  }
+  size_t count = engine_->close(close->params.connId);
 
   if (close->id == RPC_ID_MISSING)
     return;
 
   RpcCloseResponse response{close->id};
-  response.result.count = count;
+  response.result.count = UInt32_narrow_cast(count);
   conn->rpcReply(&response);
 }
 
@@ -213,7 +212,7 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
   RpcListConnsResponse response{list->id};
   UInt64 desiredConnId = list->params.connId;
 
-  engine_->forEachServer([desiredConnId, &response](sys::TCP_Server *server){
+  engine_->forEachTCPServer([desiredConnId, &response](sys::TCP_Server *server){
     UInt64 connId = server->connectionId();
     if (!desiredConnId || connId == desiredConnId) {
       response.result.emplace_back();
@@ -221,7 +220,19 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
       stats.localEndpoint = server->localEndpoint();
       stats.connId = connId;
       stats.auxiliaryId = 0;
-      stats.transport = ChannelTransport::None;
+      stats.transport = ChannelTransport::TCP_Plaintext;
+    }
+  });
+
+  engine_->forEachUDPServer([desiredConnId, &response](sys::UDP_Server *server){
+    UInt64 connId = server->connectionId();
+    if (!desiredConnId || connId == desiredConnId) {
+      response.result.emplace_back();
+      RpcConnectionStats &stats = response.result.back();
+      stats.localEndpoint = server->localEndpoint();
+      stats.connId = connId;
+      stats.auxiliaryId = 0;
+      stats.transport = ChannelTransport::UDP_Plaintext;
     }
   });
 
@@ -243,35 +254,6 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
 }
 
 
-#if 0
-void ApiServer::onConnectRequest(ApiConnection *conn,
-                                 ApiConnectRequest *connectReq) {
-  Driver *driver = engine_->driver();
-  IPv6Endpoint endpt = connectReq->params.endpoint;
-
-  auto deferredErr =
-      driver->connect(Driver::Controller, endpt, ProtocolVersions::All,
-                      [this]() { return new ApiChannelListener{this}; });
-
-  UInt32 xid = connectReq->params.xid;
-
-  OFP_BEGIN_IGNORE_PADDING
-
-  deferredErr.done([this, endpt, xid](std::error_code err) {
-    ApiConnectReply reply;
-    reply.params.xid = xid;
-    reply.params.endpoint = endpt;
-    if (err) {
-      reply.params.error = err.message();
-    }
-    onConnectReply(&reply);
-  });
-
-  OFP_END_IGNORE_PADDING
-}
-#endif //0
-
-
 void ApiServer::onChannelUp(Channel *channel) {
   if (oneConn_) oneConn_->onChannel(channel, "UP");
 }
@@ -288,46 +270,4 @@ ofp::Channel *ApiServer::findDatapath(const DatapathID &datapathId, UInt64 connI
   if (defaultChannel_) return defaultChannel_;
 
   return engine_->findDatapath(datapathId, connId);
-}
-
-
-bool ApiServer::closeServer(UInt64 connId) {
-  TCP_Server *server = engine_->findServer([connId](TCP_Server *svr) {
-    return svr->connectionId() == connId;
-  });
-
-  if (server) {
-    server->shutdown();
-    return true;
-  }
-
-  return false;
-}
-
-
-bool ApiServer::closeChannel(UInt64 connId) {
-  Channel *channel = engine_->findConnection([connId](Channel *chan) {
-    return chan->connectionId() == connId;
-  });
-
-  if (channel) {
-    channel->shutdown();
-    return true;
-  }
-
-  return false;
-}
-
-UInt32 ApiServer::closeAll() {
-  UInt32 result = UInt32_narrow_cast(engine_->serverCount() + engine_->connectionCount());
-
-  engine_->forEachServer([](TCP_Server *svr) {
-    svr->shutdown();
-  });
-
-  engine_->forEachConnection([](Channel *chan) {
-    chan->shutdown();
-  });
-
-  return result;
 }

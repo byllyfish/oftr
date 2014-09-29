@@ -24,7 +24,7 @@ int main(int argc, const char **argv) {
   driver.installSignalHandlers();
   
   if (addr.valid()) {
-    (void)driver.connect(ChannelMode::Raw,
+    (void)driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext,
                                  IPv6Endpoint{addr, OFP_DEFAULT_PORT}, version,
                                  NullAgent::Factory, [](Channel *channel, std::error_code err) {
                                   std::cout << "Result: connId=" << channel->connectionId() << ", " << err << '\n';

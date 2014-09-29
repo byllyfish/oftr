@@ -27,10 +27,22 @@
 #include "ofp/defaulthandshake.h"
 #include "ofp/channel.h"
 #include "ofp/datapathid.h"
+#include "ofp/sys/tcp_server.h"
 #include <map>
 
 namespace ofp {
 namespace sys {
+
+// RAII Utility class to prevent modification while iterating. (Not thread-safe)
+class IterLock {
+public: 
+  explicit IterLock(bool &ref, bool val=true) : val_{ref}, ref_{ref} { ref_ = val; }
+  ~IterLock() { ref_ = val_; }
+
+private:
+  bool val_;
+  bool &ref_; 
+};
 
 class Server;
 class TCP_Server;
@@ -52,9 +64,11 @@ public:
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint,
+  UInt64 connect(ChannelMode mode, ChannelTransport transport, const IPv6Endpoint &remoteEndpoint,
                         ProtocolVersions versions, ChannelListener::Factory listenerFactory,
                         std::function<void(Channel*,std::error_code)> resultHandler);
+
+  size_t close(UInt64 connId);
 
   void run();
   void stop(Milliseconds timeout = 0_ms);
@@ -68,7 +82,7 @@ public:
   Driver *driver() const { return driver_; }
   bool isTLSDesired() const { return isTLSDesired_; }
 
-  void registerDatapath(Connection *channel);
+  bool registerDatapath(Connection *channel);
   void releaseDatapath(Connection *channel);
 
   UInt64 registerServer(TCP_Server *server);
@@ -77,32 +91,42 @@ public:
   UInt64 registerConnection(Connection *connection);
   void releaseConnection(Connection *connection);
 
-  size_t connectionCount() const { return connList_.size(); }
-  size_t serverCount() const { return serverList_.size(); }
-
   template <class UnaryFunc>
   void forEachConnection(UnaryFunc func) {
+    IterLock lock{connListLock_};
     std::for_each(connList_.begin(), connList_.end(), func);
   }
 
   template <class UnaryFunc>
-  void forEachServer(UnaryFunc func) {
+  void forEachTCPServer(UnaryFunc func) {
+    IterLock lock{serverListLock_};
     std::for_each(serverList_.begin(), serverList_.end(), func);
+  }
+
+  template <class UnaryFunc>
+  void forEachUDPServer(UnaryFunc func) {
+    if (udpConnect_) {
+      func(udpConnect_.get());
+    }
   }
 
   template <class UnaryPredicate>
   Connection *findConnection(UnaryPredicate func) const {
+    IterLock lock{connListLock_};
     auto iter = std::find_if(connList_.begin(), connList_.end(), func);
     return iter != connList_.end() ? *iter : nullptr;
   }
 
   template <class UnaryPredicate>
-  TCP_Server *findServer(UnaryPredicate func) const {
+  TCP_Server *findTCPServer(UnaryPredicate func) const {
+    IterLock lock{serverListLock_};
     auto iter = std::find_if(serverList_.begin(), serverList_.end(), func);
     return iter != serverList_.end() ? *iter : nullptr;
   }
 
   Connection *findDatapath(const DatapathID &dpid, UInt64 connId) const;
+
+  UInt64 assignConnId();
 
 private:
   // Pointer to driver object that owns engine.
@@ -115,6 +139,7 @@ private:
   ConnectionList connList_;
   ServerList serverList_;
   DatapathMap dpidMap_;
+  std::shared_ptr<UDP_Server> udpConnect_;
   UInt64 lastConnId_ = 0;
   
   // The io_service must be one of the first objects to be destroyed when
@@ -133,7 +158,9 @@ private:
   // Timer that can be used to stop the engine.
   asio::steady_timer stopTimer_;
 
-  UInt64 assignConnId();
+
+  mutable bool connListLock_ = false;
+  mutable bool serverListLock_ = false;
 };
 
 OFP_END_IGNORE_PADDING

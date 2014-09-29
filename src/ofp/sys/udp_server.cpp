@@ -26,7 +26,9 @@
 #include "ofp/echoreply.h"
 #include "ofp/hello.h"
 
+using namespace ofp;
 using namespace ofp::sys;
+
 
 std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt, ProtocolVersions versions, UInt64 connId, std::error_code &error) {
   auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, mode, versions, connId);
@@ -34,18 +36,64 @@ std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelMode mode,
   return ptr;
 }
 
+/// \brief Construct a UDP_Server for use in making outgoing connections.
+/// 
+/// The server will open a UDP socket in the ephemeral port range.
+std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, std::error_code &error) {
+  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine);
+  ptr->asyncListen(IPv6Endpoint{10000}, error);
+  return ptr;
+}
 
 UDP_Server::UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
                        ProtocolVersions versions,
                        UInt64 connId)
     : engine_{engine}, mode_{mode}, versions_{versions}, socket_{engine->io()},
       message_{nullptr}, connId_{connId} {
+  datagrams_.emplace_back();
 }
 
+
+UDP_Server::UDP_Server(PrivateToken t, Engine *engine) : engine_{engine}, mode_{ChannelMode::Raw}, 
+versions_{ProtocolVersions::All}, socket_{engine->io()}, message_{nullptr}, connId_{0} {
+  datagrams_.emplace_back();
+}
+
+
 UDP_Server::~UDP_Server() {
+
+  if (!connMap_.empty()) {
+    // By this point, all connections should have removed themselves. If any exist, we need
+    // to shut them down.
+    log::info(connMap_.size(), "UDP connections still exist!", std::make_pair("connid", connId_));
+
+    // Safe way to iterate over connMap_ to close existing connections. N.B.
+    // connections remove themselves from connMap_ (if they find themselves) 
+    // inside shutdown().
+    auto iter = connMap_.begin();
+    auto iterEnd = connMap_.end();
+    while (iter != iterEnd) {
+      auto conn = iter->second;
+      iter = connMap_.erase(iter);
+      conn->shutdown();
+    }
+  }
+
   if (connId_) {
     log::info("Stop listening on UDP", std::make_pair("connid", connId_));
   }
+}
+
+UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, ChannelListener::Factory factory, std::error_code &error) {
+  // Convert remoteEndpt to IPv6 address format if necessary.
+  auto endpt = convertDestinationEndpoint(remoteEndpt, protocol_, error);
+  if (error) {
+    return 0;
+  }
+
+  auto conn = new UDP_Connection(this, mode_, versions_, factory);
+  conn->connect(endpt);
+  return conn->connectionId();
 }
 
 ofp::IPv6Endpoint UDP_Server::localEndpoint() const {
@@ -64,32 +112,45 @@ void UDP_Server::add(UDP_Connection *conn) {
 }
 
 void UDP_Server::remove(UDP_Connection *conn) {
-
   if (!shuttingDown_) {
     auto iter = connMap_.find(conn->remoteEndpoint());
-    if (iter != connMap_.end()) {
+    if (iter != connMap_.end() && iter->second == conn) {
       connMap_.erase(iter);
 
     } else {
-      log::error("UDP_Server::remove - cannot find connection");
+      log::error("UDP_Server::remove - cannot find UDP connection", conn->remoteEndpoint(), std::make_pair("connid", conn->connectionId()));
     }
   }
 }
 
 void UDP_Server::write(const void *data, size_t length) {
-  // write to buffer
+  assert(!datagrams_.empty());
+  datagrams_.back().write(data, length);
 }
 
-void UDP_Server::flush(udp::endpoint endpt) { asyncSend(); }
+void UDP_Server::flush(udp::endpoint endpt, UInt64 connId) {
+  assert(!datagrams_.empty());
+
+  Datagram &datagram = datagrams_.back();
+  datagram.setDestination(endpt);
+  datagram.setConnectionId(connId);
+
+  asyncSend(); 
+}
 
 void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error) {
-  assert(connId_ != 0);
-
   listen(localEndpt, error);
 
   if (!error) {
+    // Assign connection ID if necessary.
+    if (connId_ == 0) {
+      connId_ = engine_->assignConnId();
+    }
+
+    // Log message using the new local endpoint, if one was assigned.
+    log::info("Start listening on UDP", localEndpoint(), std::make_pair("connid", connId_));
+
     asyncReceive();
-    log::info("Start listening on UDP", localEndpt, std::make_pair("connid", connId_));
 
   } else {
     connId_ = 0;
@@ -113,6 +174,7 @@ void UDP_Server::listen(const IPv6Endpoint &localEndpt,
       return;
   }
 
+  protocol_ = endpt.protocol();
   socket_.bind(endpt, error);
 }
 
@@ -127,13 +189,13 @@ void UDP_Server::asyncReceive() {
           return;
 
         if (err) {
-          log::info("Error receiving datagram", std::make_pair("connid", connId_), err);
+          log::error("Error receiving datagram", std::make_pair("connid", connId_), err);
           
         } else if (bytes_recvd < sizeof(Header)) {
-          log::info("Small datagram ignored:", bytes_recvd, std::make_pair("connid", connId_));
+          log::error("Small datagram ignored:", bytes_recvd, std::make_pair("connid", connId_));
 
         } else if (message_.header()->length() != bytes_recvd) {
-          log::info("Mismatch between datagram size and header length:",
+          log::error("Mismatch between datagram size and header length:",
                     message_, std::make_pair("connid", connId_));
 
         } else {
@@ -145,11 +207,33 @@ void UDP_Server::asyncReceive() {
       });
 }
 
-void UDP_Server::asyncSend() {}
+void UDP_Server::asyncSend() {
+  auto self(this->shared_from_this());
+
+  const Datagram &datagram = datagrams_.back();
+  datagrams_.emplace_back();
+
+  log::trace("Write", datagram.connectionId(), datagram.data(), datagram.size());
+
+  socket_.async_send_to(
+      asio::buffer(datagram.data(), datagram.size()),
+      datagram.destination(), [this, self, &datagram](const asio::error_code &err, size_t bytesTransferred) {
+        if (err == asio::error::operation_aborted) {
+          log::error("UDP_Server::asyncSend: operation_aborted");
+          return;
+        }
+
+        assert(&datagram == &datagrams_.front());
+        
+        if (err) {
+          log::error("Error sending datagram to", datagram.destination(), std::make_pair("connid", datagram.connectionId()), err);
+        }
+        datagrams_.pop_front();
+      }
+    );
+}
 
 void UDP_Server::dispatchMessage() {
-  log::debug("Receive datagram:", message_);
-
   // If the message is an EchoRequest, reply immediately; it doesn't matter
   // if there is an existing connection or not.
 
@@ -158,7 +242,7 @@ void UDP_Server::dispatchMessage() {
     if (request) {
       message_.mutableHeader()->setType(EchoReply::type());
       write(message_.data(), message_.size());
-      flush(sender_);
+      flush(sender_, 0);
     } else {
       log::info("Invalid EchoRequest dropped.");
     }
@@ -175,7 +259,9 @@ void UDP_Server::dispatchMessage() {
   if (iter == connMap_.end()) {
 
     if (message_.type() == Hello::type()) {
-      auto conn = new UDP_Connection(this, mode_, versions_, sender_);
+      auto conn = new UDP_Connection(this, mode_, versions_, nullptr);
+      conn->accept(sender_);
+      message_.setSource(conn);
       conn->postMessage(&message_);
 
     } else {
@@ -184,6 +270,8 @@ void UDP_Server::dispatchMessage() {
 
   } else {
     // Dispatch incoming message to existing connection.
+    message_.setSource(iter->second);
     iter->second->postMessage(&message_);
   }
 }
+

@@ -38,7 +38,7 @@ void BridgeListener::onChannelUp(Channel *channel) {
     BridgeListener *bridge = new BridgeListener(this);
     otherBridge_ = bridge;
 
-    (void)driver->connect(ChannelMode::Raw, remoteEndpoint_,
+    (void)driver->connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, remoteEndpoint_,
                         ProtocolVersions::All, [bridge]() { return bridge; }, 
                         [bridge](Channel *, std::error_code err){
                           // If connection fails, delete the otherBridge_.

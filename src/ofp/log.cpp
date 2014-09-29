@@ -114,10 +114,10 @@ static void trace1(const char *type, UInt64 id, const void *data, size_t length)
   yaml::Decoder decoder{&message};
 
   if (decoder.error().empty()) {
-    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("conn_id", id), '\n', decoder.result(),
+    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("connid", id), '\n', decoder.result(),
                    RawDataToHex(data, length));
   } else {
-    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("conn_id", id), '\n', decoder.error(),
+    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("connid", id), '\n', decoder.error(),
                    RawDataToHex(data, length));
   }
 }

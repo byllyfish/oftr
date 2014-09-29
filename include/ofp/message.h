@@ -67,6 +67,9 @@ public:
     return reinterpret_cast<Header *>(buf_.mutableData());
   }
 
+  void setData(const UInt8 *data, size_t length) { buf_.set(data, length); }
+  void setSource(sys::Connection *source) { channel_ = source; }
+
   const UInt8 *data() const { return buf_.data(); }
   size_t size() const { return buf_.size(); }
 

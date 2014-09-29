@@ -26,6 +26,7 @@
 #include "ofp/ipv6endpoint.h"
 #include "ofp/protocolversions.h"
 #include "ofp/channelmode.h"
+#include "ofp/channeltransport.h"
 
 namespace ofp {
 
@@ -47,7 +48,7 @@ public:
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  void connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint, 
+  UInt64 connect(ChannelMode mode, ChannelTransport transport, const IPv6Endpoint &remoteEndpoint, 
     ProtocolVersions versions, ChannelListener::Factory listenerFactory, 
     std::function<void(Channel*,std::error_code)> resultHandler);
 

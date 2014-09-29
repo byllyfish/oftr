@@ -37,7 +37,6 @@ DefaultHandshake::DefaultHandshake(Connection *channel, ChannelMode mode,
                                    Factory listenerFactory)
     : channel_{channel}, versions_{versions}, listenerFactory_{listenerFactory},
       mode_{mode} {
-  assert(listenerFactory_ != nullptr);
 }
 
 void DefaultHandshake::onChannelUp(Channel *channel) {
@@ -129,18 +128,23 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
     return; // FIXME log
 
   // Registering the connection allows us to attach auxiliary connections to
-  // their main connections.
+  // their main connections. A main connection (auxiliary_id == 0) cannot use
+  // a UDP transport.
 
-  channel_->postDatapath(msg->datapathId(), msg->auxiliaryId());
+  if (channel_->postDatapath(msg->datapathId(), msg->auxiliaryId())) {
 
-  if (mode_ == ChannelMode::Controller && channel_->mainConnection() != channel_) {
-    assert(msg->auxiliaryId() != 0);
-    // If this is an auxiliary connection, clear its channel listener. Note
-    // that we do not pass the (auxiliary) FeaturesReply message to the channel.
-    clearChannelListener();
+    if (mode_ == ChannelMode::Controller && channel_->mainConnection() != channel_) {
+      assert(msg->auxiliaryId() != 0);
+      // If this is an auxiliary connection, clear its channel listener. Note
+      // that we do not pass the (auxiliary) FeaturesReply message to the channel.
+      clearChannelListener();
+
+    } else {
+      installNewChannelListener(message);
+    }
 
   } else {
-    installNewChannelListener(message);
+    channel_->shutdown();
   }
 }
 
@@ -150,16 +154,20 @@ void DefaultHandshake::onError(const Message *message) {
 
 void DefaultHandshake::installNewChannelListener(const Message *message) {
   assert(channel_->channelListener() == this);
-  assert(listenerFactory_ != nullptr);
+  
+  if (listenerFactory_) {
+    ChannelListener *newListener = listenerFactory_();
+    channel_->setChannelListener(newListener);
+    newListener->onChannelUp(channel_);
 
-  ChannelListener *newListener = listenerFactory_();
-  channel_->setChannelListener(newListener);
-  newListener->onChannelUp(channel_);
+    if (message)
+      newListener->onMessage(message);
 
-  if (message)
-    newListener->onMessage(message);
+    ChannelListener::dispose(this);
 
-  ChannelListener::dispose(this);
+  } else {
+    clearChannelListener();
+  }
 }
 
 void DefaultHandshake::clearChannelListener() {

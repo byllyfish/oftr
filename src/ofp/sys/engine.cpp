@@ -31,19 +31,13 @@ using ofp::UInt64;
 Engine::Engine(Driver *driver)
     : driver_{driver}, context_{asio::ssl::context::tlsv1}, signals_{io_},
       stopTimer_{io_} {
-  log::debug("Engine ready");
+  log::info("Engine ready");
 }
 
 Engine::~Engine() {
-  // Connections and servers will remove themselves when they are destroyed.
-  // When the engine is destroyed, this bookkeeping doesn't matter anymore. To
-  // make destruction "faster", we can clear the data structures first.
-
-  dpidMap_.clear();
-  serverList_.clear();
-  connList_.clear();
-
-  log::debug("Engine shutting down");
+  // Shutdown all existing connections and servers.
+  (void)close(0);
+  log::info("Engine shutting down");
 }
 
 std::error_code
@@ -104,22 +98,90 @@ UInt64 Engine::listen(ChannelMode mode,
   return connId;
 }
 
-UInt64 Engine::connect(ChannelMode mode, const IPv6Endpoint &remoteEndpoint,
+UInt64 Engine::connect(ChannelMode mode, ChannelTransport transport, const IPv6Endpoint &remoteEndpoint,
                         ProtocolVersions versions, ChannelListener::Factory listenerFactory,
                         std::function<void(Channel*,std::error_code)> resultHandler) {
-  UInt64 connId;
+  UInt64 connId = 0;
 
-  if (isTLSDesired()) {
+  if (transport == ChannelTransport::TCP_TLS) {
     auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(this, mode, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
-  } else {
+
+  } else if (transport == ChannelTransport::TCP_Plaintext) {
     auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, mode, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
+
+  } else if (transport == ChannelTransport::UDP_Plaintext) {
+    std::error_code err;
+    if (!udpConnect_) {
+      udpConnect_ = UDP_Server::create(this, err);
+      if (err) {
+        resultHandler(nullptr, err);
+        udpConnect_.reset();
+      }
+    }
+
+    if (udpConnect_) {
+      connId = udpConnect_->connect(remoteEndpoint, listenerFactory, err);
+      if (err) {
+        resultHandler(nullptr, err);
+        udpConnect_.reset();
+      }
+    }
   }
 
   return connId;
+}
+
+size_t Engine::close(UInt64 connId) {
+  if (connId != 0) {
+    // Close a specific server or connection.
+    TCP_Server *server = findTCPServer([connId](TCP_Server *svr) {
+      return svr->connectionId() == connId;
+    });
+
+    if (server) {
+      server->shutdown();
+      return 1;
+    }
+
+    Channel *channel = findConnection([connId](Channel *chan) {
+      return chan->connectionId() == connId;
+    });
+
+    if (channel) {
+      channel->shutdown();
+      return 1;
+    }  
+
+    return 0;
+
+  } else {
+    // Close all servers and connections.
+    size_t result = serverList_.size() + connList_.size();
+
+    ServerList servers;
+    servers.swap(serverList_);
+    for (auto svr: servers) {
+      svr->shutdown();
+    }
+
+    ConnectionList conns;
+    conns.swap(connList_);
+    for (auto chan: conns) {
+      chan->shutdown();
+    }
+
+    if (udpConnect_) {
+      udpConnect_->shutdown();
+      udpConnect_.reset();
+      ++result;
+    }
+
+    return result;
+  }
 }
 
 void Engine::run() {
@@ -193,11 +255,13 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
 }
 #endif //0
 
-void Engine::registerDatapath(Connection *channel) {
+bool Engine::registerDatapath(Connection *channel) {
   DatapathID dpid = channel->datapathId();
   UInt8 auxID = channel->auxiliaryId();
 
   if (auxID == 0) {
+    assert(!IsChannelTransportUDP(channel->transport()));
+
     // Insert main connection's datapathID into the dpidMap, if not present
     // already.
     auto pair = dpidMap_.insert({dpid, channel});
@@ -229,9 +293,11 @@ void Engine::registerDatapath(Connection *channel) {
 
     } else {
       log::error("registerDatapath: Main connection not found", dpid, std::make_pair("conn_id", channel->connectionId()));
-      channel->shutdown();
+      return false;
     }
   }
+
+  return true;
 }
 
 void Engine::releaseDatapath(Connection *channel) {
@@ -246,34 +312,37 @@ void Engine::releaseDatapath(Connection *channel) {
     if (item != dpidMap_.end()) {
       if (item->second == channel)
         dpidMap_.erase(item);
-    } else if (isRunning_) {
-      log::error("releaseDatapath: Unable to find datapath", dpid, std::make_pair("conn_id", channel->connectionId()));
     }
   }
 }
 
 UInt64 Engine::registerServer(TCP_Server *server) { 
+  assert(!serverListLock_);
   serverList_.push_back(server);
   return assignConnId();
 }
 
 void Engine::releaseServer(TCP_Server *server) {
+  assert(!serverListLock_);
   auto iter = std::find(serverList_.begin(), serverList_.end(), server);
   if (iter != serverList_.end()) {
+    assert(*iter == server);
     serverList_.erase(iter);
   }
 }
 
 UInt64 Engine::registerConnection(Connection *connection) {
+  assert(!connListLock_);
   connList_.push_back(connection);
   return assignConnId();
 }
 
 void Engine::releaseConnection(Connection *connection) {
+  assert(!connListLock_);
   auto iter = std::find(connList_.begin(), connList_.end(), connection);
   if (iter != connList_.end()) {
-    std::swap(*iter, connList_.back());
-    connList_.pop_back();
+    assert(*iter == connection);
+    connList_.erase(iter);
   }
 }
 
@@ -294,7 +363,8 @@ void Engine::installSignalHandlers() {
 UInt64 Engine::assignConnId() {
   UInt64 id = ++lastConnId_;
   if (id == 0) {
-    id = ++lastConnId_;
+    ++lastConnId_;
+    id = lastConnId_;
   }
   return id;
 }

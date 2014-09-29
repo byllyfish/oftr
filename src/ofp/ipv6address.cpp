@@ -29,8 +29,9 @@ using namespace ofp;
 
 IPv6Address::IPv6Address(const IPv4Address &addr) {
   std::memcpy(&addr_[12], &addr, 4);
+  addr_[10] = 0xFF;
   addr_[11] = 0xFF;
-  std::memset(addr_.data(), 0, 11);
+  std::memset(addr_.data(), 0, 10);
 }
 
 IPv6Address::IPv6Address(const ArrayType &a) : addr_(a) {}
@@ -110,8 +111,9 @@ bool IPv6Address::parseIPv4Address(const std::string &s)
   if (!err) {
     auto a = addr4.to_bytes();
     std::copy(a.data(), a.data() + 4, &addr_[12]);
+    addr_[10] = 0xFF;
     addr_[11] = 0xFF;
-    std::memset(addr_.data(), 0, 11);
+    std::memset(addr_.data(), 0, 10);
     return true;
   }
   return false;

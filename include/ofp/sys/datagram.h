@@ -1,4 +1,4 @@
-//  ===== ---- ofp/channeltransport.h ----------------------*- C++ -*- =====  //
+//  ===== ---- ofp/datagram.h ------------------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,33 +16,36 @@
 //  
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines ChannelTransport enum class.
+/// \brief Implements a datagram object suitable for use with asio 
+/// async_send_to.
 //  ===== ------------------------------------------------------------ =====  //
 
-#ifndef OFP_CHANNELTRANSPORT_H_
-#define OFP_CHANNELTRANSPORT_H_
+#ifndef OFP_SYS_DATAGRAM_H_
+#define OFP_SYS_DATAGRAM_H_
 
 namespace ofp {
+namespace sys {
 
-enum class ChannelTransport {
-    None = 0,
-    TCP_Plaintext,
-    UDP_Plaintext,
-    TCP_TLS,
-    UDP_DTLS
+class Datagram {
+public:
+    const UInt8 *data() const { return buf_.data(); }
+    size_t size() const { return buf_.size(); }
+
+    udp::endpoint destination() const { return dest_;}
+    void setDestination(const udp::endpoint &dest) { dest_ = dest; }
+
+    UInt64 connectionId() const { return connId_; }
+    void setConnectionId(UInt64 connId) { connId_ = connId; }
+
+    void write(const void *data, size_t length) { buf_.add(data, length); }
+
+private:
+    ByteList buf_;
+    udp::endpoint dest_;
+    UInt64 connId_ = 0;
 };
 
-// Specialize this function to return the channel transport for a specific
-// socket type.
-template <class SocketType>
-constexpr ChannelTransport ToChannelTransport() {
-    return ChannelTransport::None;
-}
-
-constexpr bool IsChannelTransportUDP(ChannelTransport transport) {
-    return (transport == ChannelTransport::UDP_Plaintext) || (transport == ChannelTransport::UDP_DTLS);
-}
-
+}  // namespace sys
 }  // namespace ofp
 
-#endif // OFP_CHANNELTRANSPORT_H_
+#endif // OFP_SYS_DATAGRAM_H_

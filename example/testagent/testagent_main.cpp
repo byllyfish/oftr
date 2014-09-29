@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
   driver.installSignalHandlers();
   
   if (remoteEndpoint.valid()) {
-    (void) driver.connect(ChannelMode::Raw, remoteEndpoint, {OFP_VERSION_1},
+    (void) driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, remoteEndpoint, {OFP_VERSION_1},
                                  TestAgent::Factory, [&error](Channel *channel, std::error_code err) {
                                   std::cerr << "Error connecting: connId=" << channel->connectionId() << " err=" << err << '\n';
                                   error = err;

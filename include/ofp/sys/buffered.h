@@ -113,7 +113,7 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
       }
 
     } else {
-      log::debug("Buffered::buf_flush error ", err);
+      log::error("Buffered::buf_flush error", err);
       handler(err);
     }
   }));
@@ -124,8 +124,10 @@ void Buffered<StreamType>::shutdownLowestLayer() {
   if (is_open()) {
     std::error_code err;
     lowest_layer().shutdown(tcp::socket::shutdown_both, err);
-    if (err)
-      log::debug("Buffered::shutdownLowestLayer error:", err.message());
+    if (err) {
+      log::error("Buffered::shutdownLowestLayer", err);
+    }
+    lowest_layer().close(err);
   }
 }
 

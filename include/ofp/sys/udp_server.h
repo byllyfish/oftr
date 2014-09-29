@@ -27,7 +27,9 @@
 #include "ofp/ipv6address.h"
 #include "ofp/message.h"
 #include "ofp/driver.h"
+#include "ofp/sys/datagram.h"
 #include <unordered_map>
+#include <deque>
 
 namespace ofp {
 namespace sys {
@@ -42,10 +44,16 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   class PrivateToken {};
 public:
 	static std::shared_ptr<UDP_Server> create(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt, ProtocolVersions versions, UInt64 connId, std::error_code &error);
+	static std::shared_ptr<UDP_Server> create(Engine *engine, std::error_code &error);
 
      UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode, ProtocolVersions versions, UInt64 connId);
+     UDP_Server(PrivateToken t, Engine *engine);
 	~UDP_Server();
 
+	// Make an outgoing connection.
+	UInt64 connect(const IPv6Endpoint &remoteEndpt, ChannelListener::Factory factory, std::error_code &error);
+
+	UInt64 connectionId() const { return connId_; }
 	IPv6Endpoint localEndpoint() const;
 	void shutdown();
 
@@ -54,7 +62,7 @@ public:
 	void remove(UDP_Connection *conn);
 
 	void write(const void *data, size_t length);
-	void flush(udp::endpoint endpt);
+	void flush(udp::endpoint endpt, UInt64 connId);
 	
 	Engine *engine() const { return engine_; }
 
@@ -67,9 +75,11 @@ private:
 	ProtocolVersions versions_;
 	udp::socket socket_;
 	udp::endpoint sender_;
+	udp protocol_ = udp::v6();
 	Message message_;
 	ConnectionMap connMap_;
 	UInt64 connId_ = 0;
+	std::deque<Datagram> datagrams_;
 	bool shuttingDown_ = false;
 
 	void asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error);

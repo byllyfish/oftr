@@ -36,8 +36,11 @@ OFP_BEGIN_IGNORE_PADDING
 
 class UDP_Connection : public Connection {
 public:
-    UDP_Connection(UDP_Server *server, ChannelMode mode, ProtocolVersions versions, udp::endpoint remoteEndpt);
+    UDP_Connection(UDP_Server *server, ChannelMode mode, ProtocolVersions versions, ChannelListener::Factory factory);
     ~UDP_Connection();
+
+    void connect(const udp::endpoint &remoteEndpt);
+    void accept(const udp::endpoint &remoteEndpt);
 
     void write(const void *data, size_t length) override;
 	void flush() override;
@@ -47,9 +50,14 @@ public:
     IPv6Endpoint remoteEndpoint() const override;
     IPv6Endpoint localEndpoint() const override;
 
+    UInt64 parentConnectionId() const;
+
 private:
     UDP_Server *server_;
     udp::endpoint remoteEndpt_;
+
+    void channelUp();
+    void channelDown();
 };
 
 OFP_END_IGNORE_PADDING

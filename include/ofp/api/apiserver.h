@@ -76,10 +76,6 @@ class ApiServer {
   sys::Engine *engine_;
   ApiConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
-
-  bool closeServer(UInt64 connId);
-  bool closeChannel(UInt64 connId);
-  UInt32 closeAll();
 };
 
 OFP_END_IGNORE_PADDING

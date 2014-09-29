@@ -50,7 +50,7 @@ public:
   bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
 
   bool isV4Mapped() const {
-    return IsMemFilled(addr_.data(), 11, '\0') && (addr_[11] == 0xFF);
+    return IsMemFilled(addr_.data(), 10, '\0') && (addr_[10] == 0xFF) && (addr_[11] == 0xFF);
   }
 
   /// \returns true if address is link-local (fe80::/10)

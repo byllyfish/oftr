@@ -65,7 +65,7 @@ public:
 
   void postMessage(Message *message);
   void postIdle();
-  void postDatapath(const DatapathID &datapath, UInt8 auxiliaryId);
+  bool postDatapath(const DatapathID &datapath, UInt8 auxiliaryId);
 
   sys::Engine *engine() const { return engine_; }
 

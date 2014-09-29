@@ -14,7 +14,10 @@ TEST(ipv6address, basic) {
 TEST(ipv6address, v4) {
   IPv6Address addr{"192.168.1.1"};
 
-  EXPECT_HEX("0000 0000 0000 0000 0000 00FF C0A8 0101", &addr, sizeof(addr));
+  EXPECT_TRUE(addr.valid());
+  EXPECT_HEX("0000 0000 0000 0000 0000 FFFF C0A8 0101", &addr, sizeof(addr));
+  EXPECT_TRUE(addr.isV4Mapped());
+  EXPECT_EQ("192.168.1.1", addr.toString());
 }
 
 TEST(ipv6address, equals) {
@@ -32,16 +35,28 @@ TEST(ipv6address, fromv4) {
   IPv4Address addr{"192.168.1.1"};
   IPv6Address v6{addr};
 
-  EXPECT_HEX("0000 0000 0000 0000 0000 00FF C0A8 0101", &v6, sizeof(v6));
+  EXPECT_HEX("0000 0000 0000 0000 0000 FFFF C0A8 0101", &v6, sizeof(v6));
   EXPECT_EQ("192.168.1.1", v6.toString());
+  EXPECT_TRUE(v6.isV4Mapped());
 }
 
-TEST(ipv6address, valid) {
+TEST(ipv6address, invalid) {
   IPv6Address addr;
 
   EXPECT_FALSE(addr.valid());
 }
 
+TEST(ipv6address, linklocal) {
+  IPv6Address a{"fe80::1"};
+  EXPECT_TRUE(a.valid());
+  EXPECT_TRUE(a.isLinkLocal());
+  EXPECT_EQ(0, a.zone());
+
+  IPv6Address b{"2000::1"};
+  EXPECT_TRUE(b.valid());
+  EXPECT_FALSE(b.isLinkLocal());
+  EXPECT_EQ(0, b.zone());
+}
 
 TEST(ipv6address, zones) {
   {
@@ -88,5 +103,41 @@ TEST(ipv6address, zones) {
     EXPECT_HEX("FE80 FFFE FFFF 0000 1122 33FF fe44 5566", &a, sizeof(a));
     EXPECT_EQ("fe80::1122:33ff:fe44:5566%4294967294", a.toString());
   }
+}
+
+TEST(ipv6address, rfc5952) {
+  // 4.1 Handling leading zeros in a 16-bit field.
+  
+  IPv6Address a{"2001:0db8::0001"};
+  EXPECT_EQ("2001:db8::1", a.toString());
+
+  // 4.2.1 Shorten as much as possible.
+
+  IPv6Address b{"2001:db8:0:0:0:0:2:1"};
+  EXPECT_EQ("2001:db8::2:1", b.toString());
+
+  IPv6Address c{"2001:db8::0:2:1"};
+  EXPECT_EQ("2001:db8::2:1", c.toString());
+
+  // 4.2.2. Handling One 16-Bit 0 Field (ignored)
+  
+  //IPv6Address d{"2001:db8:0:1:1:1:1:1"};
+  //EXPECT_EQ("2001:db8:0:1:1:1:1:1", d.toString());
+
+  //IPv6Address e{"2001:db8::1:1:1:1:1"};
+  //EXPECT_EQ("2001:db8:0:1:1:1:1:1", e.toString());
+
+  // 4.2.3. Choice in Placement of "::"
+  
+  IPv6Address f{"2001:0:0:1:0:0:0:1"};
+  EXPECT_EQ("2001:0:0:1::1", f.toString());
+
+  IPv6Address g{"2001:db8:0:0:1:0:0:1"};
+  EXPECT_EQ("2001:db8::1:0:0:1", g.toString());
+
+  // 4.3. Lowercase
+  
+  IPv6Address h{"2001:0DBA::000F"};
+  EXPECT_EQ("2001:dba::f", h.toString());
 }
 

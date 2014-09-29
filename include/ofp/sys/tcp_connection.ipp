@@ -77,6 +77,7 @@ template <class SocketType>
 void TCP_Connection<SocketType>::shutdown() {
   auto self(this->shared_from_this());
   socket_.async_shutdown([this, self](const std::error_code &error) {
+    log::info("shutdown", connectionId());
     socket_.shutdownLowestLayer();
   });
 }
@@ -90,11 +91,13 @@ void TCP_Connection<SocketType>::asyncConnect(const IPv6Endpoint &remoteEndpt, s
 
   socket_.lowest_layer().async_connect(
       endpt, [this, self, resultHandler](const asio::error_code &err) {
-        // `async_connect` may not report an error when the connection attempt
-        // fails. We need to double-check that we are connected.
+        // `async_connect` may not report an error if close() is not called.
 
         if (!err) {
-          socket_.lowest_layer().set_option(tcp::no_delay(true));
+          assert(socket_.lowest_layer().is_open());
+
+          std::error_code ignore;
+          socket_.lowest_layer().set_option(tcp::no_delay(true), ignore);
           log::info("Establish TCP connection", localEndpoint(), "-->", remoteEndpoint(), std::make_pair("connid", connectionId()));
 
           asyncHandshake(true);
