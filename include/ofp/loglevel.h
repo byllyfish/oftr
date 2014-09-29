@@ -10,9 +10,10 @@ enum class Level {
   Debug = 0,
   Trace = 1,
   Info = 2,
-  Error = 3,
-  Fatal = 4,
-  Silent = 5
+  Warning = 3,
+  Error = 4,
+  Fatal = 5,
+  Silent = 6
 };
 
 const char *levelToString(Level level);

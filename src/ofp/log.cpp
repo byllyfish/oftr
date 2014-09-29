@@ -52,6 +52,8 @@ const char *levelToString(Level level) {
       return "[trace]";
     case Level::Info:
       return "[info]";
+    case Level::Warning:
+      return "[warning]";
     case Level::Error:
       return "[error]";
     case Level::Fatal:

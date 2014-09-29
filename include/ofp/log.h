@@ -96,6 +96,11 @@ inline void debug(const Args &... args) {
 }
 
 template <class... Args>
+inline void warning(const Args &... args) {
+  detail::write_(Level::Warning, args...);
+}
+
+template <class... Args>
 inline void error(const Args &... args) {
   detail::write_(Level::Error, args...);
 }
@@ -104,28 +109,6 @@ template <class... Args>
 inline void fatal(const Args &... args) {
   detail::write_(Level::Fatal, args...);
 }
-
-#if 0
-class Lifetime {
- public:
-  /* implicit NOLINT */ Lifetime(const char *description) noexcept
-      : description_{description} {
-    debug("Create", description_);
-  }
-
-  Lifetime(const Lifetime &lifetime) noexcept : description_{lifetime.description_} {}
-
-  ~Lifetime() { debug("Dispose", description_); }
-
-  Lifetime &operator=(const Lifetime &lifetime) noexcept {
-    description_ = lifetime.description_;
-    return *this;
-  }
-
- private:
-  const char *description_;
-};
-#endif //0
 
 }  // namespace log
 }  // namespace ofp
