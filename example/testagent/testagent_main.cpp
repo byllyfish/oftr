@@ -20,14 +20,14 @@ int main(int argc, char **argv) {
   driver.installSignalHandlers();
   
   if (remoteEndpoint.valid()) {
-    (void) driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, remoteEndpoint, {OFP_VERSION_1},
+    (void) driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, 0, remoteEndpoint, {OFP_VERSION_1},
                                  TestAgent::Factory, [&error](Channel *channel, std::error_code err) {
                                   std::cerr << "Error connecting: connId=" << channel->connectionId() << " err=" << err << '\n';
                                   error = err;
                                  });
 
   } else {
-    (void)driver.listen(ChannelMode::Raw, IPv6Endpoint{OFP_DEFAULT_PORT},
+    (void)driver.listen(ChannelMode::Raw, 0, IPv6Endpoint{OFP_DEFAULT_PORT},
                           {OFP_VERSION_1}, TestAgent::Factory, error);
   }
 

@@ -40,50 +40,12 @@ Engine::~Engine() {
   log::info("Engine shutting down");
 }
 
-std::error_code
-Engine::configureTLS(const std::string &privateKeyFile,
-                     const std::string &certificateFile,
-                     const std::string &certificateAuthorityFile,
-                     const char *privateKeyPassword) {
-  asio::error_code error;
 
-  // Even if there's an error, consider TLS desired.
-  isTLSDesired_ = true;
-
-  context_.set_options(
-      asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3, error);
-  if (error)
-    return error;
-
-  if (privateKeyPassword && privateKeyPassword[0] > 0) {
-    context_.set_password_callback(
-        [privateKeyPassword](std::size_t max_length,
-                             asio::ssl::context::password_purpose purpose) {
-          return privateKeyPassword;
-        },
-        error);
-    if (error)
-      return error;
-  }
-
-  context_.use_certificate_chain_file(certificateFile, error);
-  if (error)
-    return error;
-
-  context_.use_private_key_file(privateKeyFile, asio::ssl::context::pem, error);
-  if (error)
-    return error;
-
-  // TODO certificateAuthorityFile.
-
-  return error;
-}
-
-UInt64 Engine::listen(ChannelMode mode,
+UInt64 Engine::listen(ChannelMode mode, UInt64 securityId, 
                                const IPv6Endpoint &localEndpoint,
                                ProtocolVersions versions,
                                ChannelListener::Factory listenerFactory, std::error_code &error) {
-  auto svrPtr = TCP_Server::create(this, mode, localEndpoint, versions,
+  auto svrPtr = TCP_Server::create(this, mode, securityId, localEndpoint, versions,
                                           listenerFactory, error);
   if (error)
     return 0;
@@ -98,18 +60,18 @@ UInt64 Engine::listen(ChannelMode mode,
   return connId;
 }
 
-UInt64 Engine::connect(ChannelMode mode, ChannelTransport transport, const IPv6Endpoint &remoteEndpoint,
+UInt64 Engine::connect(ChannelMode mode, ChannelTransport transport, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
                         ProtocolVersions versions, ChannelListener::Factory listenerFactory,
                         std::function<void(Channel*,std::error_code)> resultHandler) {
   UInt64 connId = 0;
 
   if (transport == ChannelTransport::TCP_TLS) {
-    auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(this, mode, versions, listenerFactory);
+    auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(this, mode, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
 
   } else if (transport == ChannelTransport::TCP_Plaintext) {
-    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, mode, versions, listenerFactory);
+    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, mode, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
 
@@ -184,6 +146,20 @@ size_t Engine::close(UInt64 connId) {
   }
 }
 
+UInt64 Engine::addIdentity(const std::string &certFile, std::error_code &error) {
+  auto idPtr = MakeUniquePtr<Identity>(certFile, error);
+  if (error)
+    return 0;
+
+  UInt64 secId = assignSecurityId();
+  idPtr->setSecurityId(secId);
+  identities_.push_back(std::move(idPtr));
+
+  assert(secId > 0);
+
+  return secId;
+}
+
 void Engine::run() {
   if (!isRunning_) {
     isRunning_ = true;
@@ -195,6 +171,25 @@ void Engine::run() {
 
     isRunning_ = false;
   }
+}
+
+asio::ssl::context *Engine::securityContext(UInt64 securityId) {
+  if (securityId == 0) {
+    return nullptr;
+  }
+
+  auto iter = std::find_if(identities_.begin(), identities_.end(), 
+    [securityId](std::unique_ptr<Identity> &identity) {
+      return identity->securityId() == securityId;
+    });
+
+  if (iter != identities_.end()) {
+    return iter->get()->securityContext();
+  }
+
+  log::fatal("Engine::securityContext id not found", securityId);
+
+  return nullptr;
 }
 
 void Engine::stop(Milliseconds timeout) {
@@ -319,7 +314,7 @@ void Engine::releaseDatapath(Connection *channel) {
 UInt64 Engine::registerServer(TCP_Server *server) { 
   assert(!serverListLock_);
   serverList_.push_back(server);
-  return assignConnId();
+  return assignConnectionId();
 }
 
 void Engine::releaseServer(TCP_Server *server) {
@@ -334,7 +329,7 @@ void Engine::releaseServer(TCP_Server *server) {
 UInt64 Engine::registerConnection(Connection *connection) {
   assert(!connListLock_);
   connList_.push_back(connection);
-  return assignConnId();
+  return assignConnectionId();
 }
 
 void Engine::releaseConnection(Connection *connection) {
@@ -360,13 +355,19 @@ void Engine::installSignalHandlers() {
   }
 }
 
-UInt64 Engine::assignConnId() {
-  UInt64 id = ++lastConnId_;
-  if (id == 0) {
-    ++lastConnId_;
-    id = lastConnId_;
+UInt64 Engine::assignConnectionId() {
+  // FIXME: handle case where connectionId wraps around...
+  if (++lastConnId_ == 0) {
+    lastConnId_ = 1;
   }
-  return id;
+  return lastConnId_;
+}
+
+UInt64 Engine::assignSecurityId() {
+  if (++lastSecurityId_ == 0) {
+    lastSecurityId_ = 1;
+  }
+  return lastSecurityId_;
 }
 
 

@@ -27,18 +27,18 @@
 
 using namespace ofp::sys;
 
-std::shared_ptr<TCP_Server> TCP_Server::create(Engine *engine, ChannelMode mode, const IPv6Endpoint &localEndpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory, std::error_code &error) {
-  auto ptr = std::make_shared<TCP_Server>(PrivateToken{}, engine, mode, localEndpt, versions, listenerFactory);
+std::shared_ptr<TCP_Server> TCP_Server::create(Engine *engine, ChannelMode mode, UInt64 securityId, const IPv6Endpoint &localEndpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory, std::error_code &error) {
+  auto ptr = std::make_shared<TCP_Server>(PrivateToken{}, engine, mode, securityId, localEndpt, versions, listenerFactory);
   ptr->asyncListen(localEndpt, error);
   return ptr;
 }
 
 
-TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode, UInt64 securityId, 
                        const IPv6Endpoint &localEndpt, ProtocolVersions versions,
                        ChannelListener::Factory listenerFactory)
     : engine_{engine}, acceptor_{engine->io()}, socket_{engine->io()},
-      mode_{mode}, versions_{versions}, factory_{listenerFactory} {
+      mode_{mode}, versions_{versions}, factory_{listenerFactory}, securityId_{securityId} {
 }
 
 TCP_Server::~TCP_Server() {
@@ -120,13 +120,13 @@ void TCP_Server::asyncAccept() {
 
     if (!err) {
 
-      if (engine_->isTLSDesired()) {
+      if (securityId_ > 0) {
         auto conn = std::make_shared<TCP_Connection<EncryptedSocket>>(
-            engine_, std::move(socket_), mode_, versions_, factory_);
+            engine_, std::move(socket_), mode_, securityId_, versions_, factory_);
         conn->asyncAccept();
       } else {
         auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(
-            engine_, std::move(socket_), mode_, versions_, factory_);
+            engine_, std::move(socket_), mode_, securityId_, versions_, factory_);
         conn->asyncAccept();
       }
 

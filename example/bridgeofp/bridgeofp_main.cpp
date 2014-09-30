@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
   Driver driver;
   std::error_code err;
   (void)driver.listen(
-      ChannelMode::Raw, argEndpoints.first, ProtocolVersions::All,
+      ChannelMode::Raw, 0, argEndpoints.first, ProtocolVersions::All,
       [argEndpoints]() { return new BridgeListener(argEndpoints.second); }, err);
 
   int exitCode = 0;

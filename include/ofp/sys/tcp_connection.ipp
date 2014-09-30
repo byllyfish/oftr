@@ -30,20 +30,22 @@ namespace sys {
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
+                                           UInt64 securityId,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
-      socket_{engine->io(), engine->context()} {}
+      socket_{engine->io(), engine->securityContext(securityId)} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
                                            ChannelMode mode,
+                                           UInt64 securityId,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
-      socket_{std::move(socket), engine->context()} {}
+      socket_{std::move(socket), engine->securityContext(securityId)} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::~TCP_Connection() {

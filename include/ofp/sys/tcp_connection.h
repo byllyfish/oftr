@@ -51,9 +51,9 @@ template <class SocketType>
 class TCP_Connection : public std::enable_shared_from_this<TCP_Connection<SocketType>>,
                        public Connection {
 public:
-  TCP_Connection(Engine *engine, ChannelMode mode, ProtocolVersions versions,
+  TCP_Connection(Engine *engine, ChannelMode mode, UInt64 securityId, ProtocolVersions versions,
                  ChannelListener::Factory factory);
-  TCP_Connection(Engine *engine, tcp::socket socket, ChannelMode mode,
+  TCP_Connection(Engine *engine, tcp::socket socket, ChannelMode mode, UInt64 securityId,
                  ProtocolVersions versions, ChannelListener::Factory factory);
   ~TCP_Connection();
 

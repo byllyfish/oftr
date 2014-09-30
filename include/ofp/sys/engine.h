@@ -28,6 +28,7 @@
 #include "ofp/channel.h"
 #include "ofp/datapathid.h"
 #include "ofp/sys/tcp_server.h"
+#include "ofp/sys/identity.h"
 #include <map>
 
 namespace ofp {
@@ -55,20 +56,17 @@ public:
   explicit Engine(Driver *driver);
   ~Engine();
 
-  std::error_code configureTLS(const std::string &privateKeyFile,
-                               const std::string &certificateFile,
-                               const std::string &certificateAuthorityFile,
-                               const char *privateKeyPassword);
-
-  UInt64 listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
+  UInt64 listen(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &localEndpoint,
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, ChannelTransport transport, const IPv6Endpoint &remoteEndpoint,
+  UInt64 connect(ChannelMode mode, ChannelTransport transport, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
                         ProtocolVersions versions, ChannelListener::Factory listenerFactory,
                         std::function<void(Channel*,std::error_code)> resultHandler);
 
   size_t close(UInt64 connId);
+
+  UInt64 addIdentity(const std::string &certFile, std::error_code &error);
 
   void run();
   void stop(Milliseconds timeout = 0_ms);
@@ -76,11 +74,9 @@ public:
   void installSignalHandlers();
 
   asio::io_service &io() { return io_; }
-
-  asio::ssl::context &context() { return context_; }
+  asio::ssl::context *securityContext(UInt64 securityId);
 
   Driver *driver() const { return driver_; }
-  bool isTLSDesired() const { return isTLSDesired_; }
 
   bool registerDatapath(Connection *channel);
   void releaseDatapath(Connection *channel);
@@ -126,7 +122,8 @@ public:
 
   Connection *findDatapath(const DatapathID &dpid, UInt64 connId) const;
 
-  UInt64 assignConnId();
+  UInt64 assignConnectionId();
+  UInt64 assignSecurityId();
 
 private:
   // Pointer to driver object that owns engine.
@@ -136,11 +133,17 @@ private:
   using ServerList = std::vector<TCP_Server *>;
   using ConnectionList = std::vector<Connection *>;
 
+  // The identities_ vector must be the last object destroyed, since io_service
+  // objects may depend on it.
+
+  std::vector<std::unique_ptr<Identity>> identities_;
+
   ConnectionList connList_;
   ServerList serverList_;
   DatapathMap dpidMap_;
   std::shared_ptr<UDP_Server> udpConnect_;
   UInt64 lastConnId_ = 0;
+  UInt64 lastSecurityId_ = 0;
   
   // The io_service must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to update bookkeeping objects.

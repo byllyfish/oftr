@@ -1,4 +1,4 @@
-//  ===== ---- ofp/driver_unittest.cpp ---------------------*- C++ -*- =====  //
+//  ===== ---- ofp/identity.h ------------------------------*- C++ -*- =====  //
 //
 //  Copyright (c) 2013 William W. Fisher
 //
@@ -16,30 +16,33 @@
 //
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements unit tests for Driver class.
+/// \brief Implements Identity class which combines a certificate and private
+/// key to provide a TLS context.
 //  ===== ------------------------------------------------------------ =====  //
 
-#include "ofp/unittest.h"
-#include "ofp/driver.h"
+#ifndef OFP_SYS_IDENTITY_H_
+#define OFP_SYS_IDENTITY_H_
 
-using namespace ofp;
+#include "ofp/sys/asio_utils.h"
 
-class MockChannelListener : public ChannelListener {
-public:
-  void onChannelUp(Channel *channel) override {}
-  void onChannelDown(Channel *channel) override {}
-  void onMessage(const Message *message) override;
+namespace ofp {
+namespace sys {
+
+class Identity {
+ public:
+  explicit Identity(const std::string &certFile, std::error_code &error);
+
+  UInt64 securityId() const { return securityId_; }
+  void setSecurityId(UInt64 securityId) { securityId_ = securityId; }
+
+  asio::ssl::context *securityContext() { return &context_; }
+
+ private:
+  UInt64 securityId_;
+  asio::ssl::context context_;
 };
 
-void MockChannelListener::onMessage(const Message *message) {}
+}  // namespace sys
+}  // namespace ofp
 
-TEST(driver, test) {
-  Driver driver;
-  std::error_code err;
-
-  UInt64 connId = driver.listen(ChannelMode::Controller, 0, IPv6Endpoint{OFP_DEFAULT_PORT},
-                ProtocolVersions::All, [] { return new MockChannelListener; }, err);
-
-  EXPECT_NE(0, connId);
-  // driver.run();
-}
+#endif  // OFP_SYS_IDENTITY_H_

@@ -149,6 +149,7 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/asio_utils.cpp
 	src/ofp/sys/connection.cpp
 	src/ofp/sys/engine.cpp
+  src/ofp/sys/identity.cpp
 	src/ofp/sys/tcp_server.cpp
 	src/ofp/sys/udp_connection.cpp
 	src/ofp/sys/udp_server.cpp

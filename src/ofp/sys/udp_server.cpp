@@ -142,7 +142,7 @@ void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt, std::error_code &er
   if (!error) {
     // Assign connection ID if necessary.
     if (connId_ == 0) {
-      connId_ = engine_->assignConnId();
+      connId_ = engine_->assignConnectionId();
     }
 
     // Log message using the new local endpoint, if one was assigned.

@@ -39,10 +39,13 @@ public:
   using next_layer_type = inherited;
   using lowest_layer_type = typename inherited::lowest_layer_type;
 
-  using inherited::inherited;
+  //using inherited::inherited;
 
-  Buffered(tcp::socket sock, asio::ssl::context &context)
-    : inherited{sock.get_io_service(), context} {
+  Buffered(asio::io_service &io, asio::ssl::context *context)
+    : inherited{io, *context} {}
+
+  Buffered(tcp::socket sock, asio::ssl::context *context)
+    : inherited{sock.get_io_service(), *context} {
       lowest_layer() = std::move(sock);
   }
 

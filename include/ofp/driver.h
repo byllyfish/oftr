@@ -39,16 +39,11 @@ public:
   Driver();
   ~Driver();
 
-  std::error_code configureTLS(const std::string &privateKeyFile,
-                               const std::string &certificateFile,
-                               const std::string &certificateAuthorityFile,
-                               const char *privateKeyPassword);
-
-  UInt64 listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
+  UInt64 listen(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &localEndpoint,
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, ChannelTransport transport, const IPv6Endpoint &remoteEndpoint, 
+  UInt64 connect(ChannelMode mode, ChannelTransport transport, UInt64 securityId, const IPv6Endpoint &remoteEndpoint, 
     ProtocolVersions versions, ChannelListener::Factory listenerFactory, 
     std::function<void(Channel*,std::error_code)> resultHandler);
 

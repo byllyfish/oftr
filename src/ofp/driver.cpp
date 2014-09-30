@@ -28,25 +28,16 @@ Driver::Driver() : engine_{new sys::Engine{this}} {}
 
 Driver::~Driver() { delete engine_; }
 
-std::error_code
-Driver::configureTLS(const std::string &privateKeyFile,
-                     const std::string &certificateFile,
-                     const std::string &certificateAuthorityFile,
-                     const char *privateKeyPassword) {
-  return engine_->configureTLS(privateKeyFile, certificateFile,
-                               certificateAuthorityFile, privateKeyPassword);
-}
-
-UInt64 Driver::listen(ChannelMode mode, const IPv6Endpoint &localEndpoint,
+UInt64 Driver::listen(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &localEndpoint,
                                    ProtocolVersions versions,
                                    ChannelListener::Factory listenerFactory, std::error_code &error) {
-  return engine_->listen(mode, localEndpoint, versions, listenerFactory, error);
+  return engine_->listen(mode, securityId, localEndpoint, versions, listenerFactory, error);
 }
 
-UInt64 Driver::connect(ChannelMode mode, ChannelTransport transport, const IPv6Endpoint &remoteEndpoint, 
+UInt64 Driver::connect(ChannelMode mode, ChannelTransport transport, UInt64 securityId, const IPv6Endpoint &remoteEndpoint, 
   ProtocolVersions versions, ChannelListener::Factory listenerFactory, 
   std::function<void(Channel*,std::error_code)> resultHandler) {
-  return engine_->connect(mode, transport, remoteEndpoint, versions, listenerFactory, resultHandler);
+  return engine_->connect(mode, transport, securityId, remoteEndpoint, versions, listenerFactory, resultHandler);
 }
 
 void Driver::run() { engine_->run(); }

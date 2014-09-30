@@ -87,7 +87,7 @@ int Ping::ping() {
   ByteList echoData = ByteList::iota(Unsigned_cast(size));
   Driver driver;
 
-  (void)driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, endpoint_, ProtocolVersions::All,
+  (void)driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, 0, endpoint_, ProtocolVersions::All,
                      [echoData]() { return new PingListener{&echoData}; },
                      [&exitCode](Channel *, std::error_code err){
                       if (err) {
