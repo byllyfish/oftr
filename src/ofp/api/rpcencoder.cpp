@@ -110,6 +110,14 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
         }
         break;
     }
+    case METHOD_ADD_IDENTITY: {
+      RpcAddIdentity add{id};
+      io.mapRequired("params", add.params);
+      if (!errorFound(io)) {
+        conn_->onRpcAddIdentity(&add);
+      }
+      break;
+    }
     case METHOD_DATAPATH:
       io.setError("'ofp.datapath' is for notifications only.");
       break;

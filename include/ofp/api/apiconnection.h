@@ -51,7 +51,8 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   void onRpcSend(RpcSend *send);
   void onRpcConfig(RpcConfig *config);
   void onRpcListConns(RpcListConns *list);
-
+  void onRpcAddIdentity(RpcAddIdentity *add);
+  
   template <class Response>
   void rpcReply(Response *response) {
     write(response->toJson());

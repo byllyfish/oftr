@@ -60,6 +60,10 @@ void ApiConnection::onRpcListConns(RpcListConns *list) {
   server_->onRpcListConns(this, list);
 }
 
+void ApiConnection::onRpcAddIdentity(RpcAddIdentity *add) {
+  server_->onRpcAddIdentity(this, add);
+}
+
 void ApiConnection::onChannel(Channel *channel, const char *status) {
   RpcDatapath notification;
   notification.params.connId = channel->connectionId();

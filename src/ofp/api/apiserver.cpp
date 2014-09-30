@@ -255,6 +255,24 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
   conn->rpcReply(&response);
 }
 
+void ApiServer::onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add) {
+  std::error_code err;
+  UInt64 securityId = engine_->addIdentity(add->params.certificate, err);
+
+  if (add->id == RPC_ID_MISSING)
+    return;
+
+  if (!err) {
+    RpcAddIdentityResponse response{add->id};
+    response.result.securityId = securityId;
+    conn->rpcReply(&response);
+  } else {
+    RpcErrorResponse response{add->id};
+    response.error.code = err.value();
+    response.error.message = err.message();
+    conn->rpcReply(&response);    
+  }
+}
 
 void ApiServer::onChannelUp(Channel *channel) {
   if (oneConn_) oneConn_->onChannel(channel, "UP");

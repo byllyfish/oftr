@@ -28,11 +28,16 @@ Identity::Identity(const std::string &certFile, std::error_code &error)
     : context_{asio::ssl::context::tlsv1} {
   context_.set_options(
       asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3, error);
-  if (error) return;
 
-  context_.use_certificate_chain_file(certFile, error);
-  if (error) return;
+  if (!error) {
+    context_.use_certificate_chain_file(certFile, error);
+  }
 
-  context_.use_private_key_file(certFile, asio::ssl::context::pem, error);
-  if (error) return;
+  if (!error) {
+    context_.use_private_key_file(certFile, asio::ssl::context::pem, error);
+  }
+
+  if (error) {
+    log::error("Failed to construct identity:", certFile, error);
+  }
 }

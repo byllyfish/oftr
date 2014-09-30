@@ -39,6 +39,7 @@ struct RpcClose;
 struct RpcSend;
 struct RpcConfig;
 struct RpcListConns;
+struct RpcAddIdentity;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -62,7 +63,8 @@ class ApiServer {
   void onRpcSend(ApiConnection *conn, RpcSend *send);
   void onRpcConfig(ApiConnection *conn, RpcConfig *config);
   void onRpcListConns(ApiConnection *conn, RpcListConns *list);
-
+  void onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add);
+  
   // These methods are used to bridge ApiChannelListeners to ApiConnections.
   void onChannelUp(Channel *channel);
   void onChannelDown(Channel *channel);

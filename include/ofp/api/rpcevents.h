@@ -48,6 +48,7 @@ enum RpcMethod : UInt32 {
   METHOD_MESSAGE,       // ofp.message
   METHOD_MESSAGE_ERROR, // ofp.message_error
   METHOD_LIST_CONNS,    // ofp.list_connections
+  METHOD_ADD_IDENTITY,  // ofp.add_identity
   METHOD_UNSUPPORTED
 };
 
@@ -203,6 +204,37 @@ struct RpcListConnsResponse {
   std::string toJson();
 
   using Result = std::vector<RpcConnectionStats>;
+
+  UInt64 id;
+  Result result;
+};
+
+//---------------------------------//
+// o f p . a d d _ i d e n t i t y //
+//---------------------------------//
+
+/// Represents a RPC request to add an identity (METHOD_ADD_IDENTITY)
+struct RpcAddIdentity {
+  explicit RpcAddIdentity(UInt64 ident) : id{ident} {}
+
+  struct Params {
+    /// Name of certificate file (which also contains private key).
+    std::string certificate;
+  };
+
+  UInt64 id;
+  Params params;
+};
+
+/// Represents a RPC response to add an identity (METHOD_ADD_IDENTITY)
+struct RpcAddIdentityResponse {
+  explicit RpcAddIdentityResponse(UInt64 ident) : id{ident} {}
+  std::string toJson();
+
+  struct Result {
+    /// Security ID of identity added.
+    UInt64 securityId;
+  };
 
   UInt64 id;
   Result result;
@@ -383,6 +415,13 @@ struct MappingTraits<ofp::api::RpcListConns::Params> {
 };
 
 template <>
+struct MappingTraits<ofp::api::RpcAddIdentity::Params> {
+  static void mapping(IO &io, ofp::api::RpcAddIdentity::Params &params) {
+    io.mapRequired("certificate", params.certificate);
+  }
+};
+
+template <>
 struct MappingTraits<ofp::api::RpcListenResponse> {
   static void mapping(IO &io, ofp::api::RpcListenResponse &response) {
     io.mapRequired("id", response.id);
@@ -444,6 +483,21 @@ struct MappingTraits<ofp::api::RpcConnectionStats> {
     io.mapRequired("conn_id", stats.connId);
     io.mapRequired("auxiliary_id", stats.auxiliaryId);
     io.mapRequired("transport", stats.transport);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcAddIdentityResponse> {
+  static void mapping(IO &io, ofp::api::RpcAddIdentityResponse &response) {
+    io.mapRequired("id", response.id);
+    io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::api::RpcAddIdentityResponse::Result> {
+  static void mapping(IO &io, ofp::api::RpcAddIdentityResponse::Result &result) {
+    io.mapRequired("security_id", result.securityId);
   }
 };
 

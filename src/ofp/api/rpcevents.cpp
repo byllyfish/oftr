@@ -50,6 +50,10 @@ std::string RpcListConnsResponse::toJson() {
   return toJsonString(this);
 }
 
+std::string RpcAddIdentityResponse::toJson() {
+  return toJsonString(this);
+}
+
 static llvm::StringRef sRpcMethods[] = {
   "ofp.listen",
   "ofp.connect",
@@ -60,6 +64,7 @@ static llvm::StringRef sRpcMethods[] = {
   "ofp.message",
   "ofp.message_error",
   "ofp.list_connections",
+  "ofp.add_identity"
 };
 
 ofp::yaml::EnumConverter<ofp::api::RpcMethod>
