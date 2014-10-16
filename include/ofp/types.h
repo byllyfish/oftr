@@ -205,15 +205,15 @@ T *RemoveConst_cast(const T *v) {
   return const_cast<T *>(v);
 }
 
-/// Convert raw buffer to a hexadecimal string. The resulting string contains
-/// only hexadecimal characters.
+/// Convert raw buffer to a hexadecimal string (upper case). The resulting 
+/// string contains only hexadecimal characters, no delimters.
 ///
 /// \param  data pointer to input buffer
 /// \param  length size of input buffer
 /// \return hexadecimal string
 std::string RawDataToHex(const void *data, size_t length);
 
-/// Convert raw buffer to a hexadecimal string.
+/// Convert raw buffer to a hexadecimal string (upper case).
 ///
 /// The resulting string isformatted according to `delimiter` and `word`. The
 /// delimiter specifies a character to insert between each run of hexadecimal
@@ -243,6 +243,11 @@ std::string RawDataToHex(const void *data, size_t length, char delimiter,
 /// \return number of bytes resulting from hexadecimal string
 size_t HexToRawData(const std::string &hex, void *data, size_t length,
                     bool *error = nullptr);
+
+/// Convert a (small) fixed size array to hexadecimal using lower case and ':' 
+/// as the delimiter. Defined for Length=6 and Length=8.
+template <size_t Length>
+std::string RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data);
 
 /// Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
 /// odd final hex digit.

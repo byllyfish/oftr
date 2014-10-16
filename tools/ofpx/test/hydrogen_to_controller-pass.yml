@@ -10,7 +10,7 @@ type:            OFPT_FEATURES_REPLY
 xid:             0x360907F3
 version:         0x01
 msg:             
-  datapath_id:     0000-0000-0000-0001
+  datapath_id:     '00:00:00:00:00:00:00:01'
   n_buffers:       0x00000100
   n_tables:        0xFE
   auxiliary_id:    0x00

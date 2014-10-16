@@ -46,7 +46,7 @@ EnetAddress DatapathID::macAddress() const {
 }
 
 std::string DatapathID::toString() const {
-  return RawDataToHex(dpid_.data(), sizeof(dpid_), '-', 2);
+  return RawDataToHexDelimitedLowercase(dpid_);
 }
 
 bool DatapathID::parse(const std::string &s) {

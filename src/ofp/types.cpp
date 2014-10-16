@@ -20,20 +20,53 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/types.h"
+#include <array>
 
 using namespace ofp;
 
-constexpr char HexDigits[17] = "0123456789ABCDEF";
+constexpr char HexDigitsUpperCase[17] = "0123456789ABCDEF";
+constexpr char HexDigitsLowerCase[17] = "0123456789abcdef";
 
 inline unsigned FromHex(char hex) {
   assert(std::isxdigit(hex));
   return Unsigned_cast(hex <= '9' ? hex - '0' : (hex & ~0x20) - 'A' + 10);
 }
 
-inline char ToHex(UInt8 value) {
+inline char ToHexUpperCase(UInt8 value) {
   assert(value < 16);
-  return HexDigits[value];
+  return HexDigitsUpperCase[value];
 }
+
+inline char ToHexLowerCase(UInt8 value) {
+  assert(value < 16);
+  return HexDigitsLowerCase[value];
+}
+
+namespace ofp {
+
+template <size_t Length>
+std::string RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data) {
+  // Output is lower-case hexadecimal and delimited by ':'.
+  const UInt8 *e = data.data();
+  const size_t bufLen = 2 * Length + Length - 1;
+
+  char buf[bufLen];
+  char *p = buf;
+  *p++ = ToHexLowerCase(*e >> 4);
+  *p++ = ToHexLowerCase(*e++ & 0x0F);
+  for (int i = 0; i < Length - 1; ++i) {
+      *p++ = ':';
+      *p++ = ToHexLowerCase(*e >> 4);
+      *p++ = ToHexLowerCase(*e++ & 0x0F);
+  }
+
+  return std::string(buf, bufLen);
+}
+
+}  // namespace ofp
+
+
+template std::string ofp::RawDataToHexDelimitedLowercase(const std::array<UInt8,8U> &);
 
 std::string ofp::RawDataToHex(const void *data, size_t len) {
   std::string result;
@@ -44,8 +77,8 @@ std::string ofp::RawDataToHex(const void *data, size_t len) {
 
   char buf[2];
   while (pos < end) {
-    buf[0] = ToHex(*pos >> 4);
-    buf[1] = ToHex(*pos++ & 0x0F);
+    buf[0] = ToHexUpperCase(*pos >> 4);
+    buf[1] = ToHexUpperCase(*pos++ & 0x0F);
     result.append(buf, sizeof(buf));
   }
 
@@ -67,8 +100,8 @@ std::string ofp::RawDataToHex(const void *data, size_t len, char delimiter,
       result.push_back(delimiter);
       cnt = 1;
     }
-    buf[0] = ToHex(*pos >> 4);
-    buf[1] = ToHex(*pos++ & 0x0F);
+    buf[0] = ToHexUpperCase(*pos >> 4);
+    buf[1] = ToHexUpperCase(*pos++ & 0x0F);
     result.append(buf, sizeof(buf));
   }
 

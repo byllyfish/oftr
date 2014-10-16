@@ -64,7 +64,7 @@ type:            OFPT_FEATURES_REPLY
 xid:             0x00000000
 version:         0x01
 msg:             
-  datapath_id:     0000-00FF-1234-5678
+  datapath_id:     '00:00:00:ff:12:34:56:78'
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x00
@@ -763,7 +763,7 @@ type:            OFPT_FEATURES_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
-  datapath_id:     0000-0860-6E7F-74E7
+  datapath_id:     '00:00:08:60:6e:7f:74:e7'
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x00
@@ -3831,7 +3831,7 @@ type:            OFPT_FEATURES_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
-  datapath_id:     0000-0860-6E7F-74E7
+  datapath_id:     '00:00:08:60:6e:7f:74:e7'
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x63
@@ -6871,7 +6871,7 @@ type:            OFPT_FEATURES_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
-  datapath_id:     0000-0860-6E7F-74E7
+  datapath_id:     '00:00:08:60:6e:7f:74:e7'
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x63
