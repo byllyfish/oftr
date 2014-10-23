@@ -94,8 +94,24 @@ void ApiServer::onDisconnect(ApiConnection *conn) {
 }
 
 void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
+  std::string optionError;
   IPv6Endpoint endpt = open->params.endpoint;
-  UInt64 securityId = 0;
+  UInt64 securityId = open->params.securityId;
+
+  // Check that securityId exists.
+  if (securityId != 0 && engine_->securityContext(securityId) == nullptr) {
+    optionError += "Invalid securityId: " + std::to_string(securityId);
+  }
+
+  if (!optionError.empty()) {
+    if (open->id == RPC_ID_MISSING)
+      return;
+    RpcErrorResponse response{open->id};
+    response.error.code = ERROR_CODE_INVALID_OPTION;
+    response.error.message = optionError;
+    conn->rpcReply(&response);
+    return;
+  }
 
   std::error_code err;
   UInt64 connId = engine_->listen(ChannelMode::Controller, securityId, endpt, ProtocolVersions::All,
@@ -117,17 +133,34 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   }
 }
 
+
+void ApiServer::connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId, const std::error_code &err) {
+  if (id == RPC_ID_MISSING) 
+    return;
+
+  if (!err) {
+    RpcConnectResponse response{id};
+    response.result.connId = connId;
+    conn->rpcReply(&response);
+  } else {
+    RpcErrorResponse response{id};
+    response.error.code = err.value();
+    response.error.message = err.message();
+    conn->rpcReply(&response);        
+  }
+}
+
 void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
   std::string optionError;
   ChannelMode mode = ChannelMode::Controller;
-  ChannelTransport transport = ChannelTransport::TCP_Plaintext;
-  UInt64 securityId = 0;
+  UInt64 securityId = connect->params.securityId;
+  bool udp = false;
 
   for (auto opt : connect->params.options) {
     if (opt == "--raw" || opt == "-raw") {
       mode = ChannelMode::Raw;
     } else if (opt == "--udp" || opt == "-udp") {
-      transport = ChannelTransport::UDP_Plaintext;
+      udp = true;
     } else {
       optionError += "Unknown option: " + opt;
       break;
@@ -135,8 +168,13 @@ void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
   }
 
   // Check for invalid combination of mode and transport.
-  if (IsChannelTransportUDP(transport) && mode != ChannelMode::Raw) {
+  if (udp && mode != ChannelMode::Raw) {
     optionError += "Invalid option: --udp must be combined with --raw";
+  }
+
+  // Check that securityId exists.
+  if (optionError.empty() && securityId != 0 && engine_->securityContext(securityId) == nullptr) {
+    optionError += "Invalid securityId: " + std::to_string(securityId);
   }
 
   if (!optionError.empty()) {
@@ -151,24 +189,22 @@ void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
 
   IPv6Endpoint endpt = connect->params.endpoint;
   UInt64 id = connect->id;
-  auto connPtr = conn->shared_from_this();
 
-  engine_->connect(mode, transport, securityId, endpt, ProtocolVersions::All, 
-    [this]() { return new ApiChannelListener{this}; }, 
-    [connPtr, id](Channel *channel, std::error_code err) {
-      if (id == RPC_ID_MISSING) 
-        return;
-      if (!err) {
-        RpcConnectResponse response{id};
-        response.result.connId = channel->connectionId();
-        connPtr->rpcReply(&response);
-      } else {
-        RpcErrorResponse response{id};
-        response.error.code = err.value();
-        response.error.message = err.message();
-        connPtr->rpcReply(&response);        
-      }
-    });
+  if (udp) {
+    std::error_code err;
+    UInt64 connId = engine_->connectUDP(mode, securityId, endpt, ProtocolVersions::All, 
+      [this]() { return new ApiChannelListener{this}; }, err);
+    connectResponse(conn, id, connId, err);
+
+  } else {
+    auto connPtr = conn->shared_from_this();
+    engine_->connect(mode, securityId, endpt, ProtocolVersions::All, 
+      [this]() { return new ApiChannelListener{this}; }, 
+      [connPtr, id](Channel *channel, std::error_code err) {
+        UInt64 connId = channel ? channel->connectionId() : 0;
+        connectResponse(connPtr.get(), id, connId, err);
+      });
+  }
 }
 
 void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
@@ -257,7 +293,9 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
 
 void ApiServer::onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add) {
   std::error_code err;
-  UInt64 securityId = engine_->addIdentity(add->params.certificate, err);
+  UInt64 securityId = engine_->addIdentity(add->params.certificate, add->params.password, add->params.verifier, err);
+
+  //add->params.password.fill('x');
 
   if (add->id == RPC_ID_MISSING)
     return;

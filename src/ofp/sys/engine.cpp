@@ -29,7 +29,7 @@ using namespace ofp::sys;
 using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
-    : driver_{driver}, context_{asio::ssl::context::tlsv1}, signals_{io_},
+    : driver_{driver}, signals_{io_},
       stopTimer_{io_} {
   log::info("Engine ready");
 }
@@ -60,38 +60,39 @@ UInt64 Engine::listen(ChannelMode mode, UInt64 securityId,
   return connId;
 }
 
-UInt64 Engine::connect(ChannelMode mode, ChannelTransport transport, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
+UInt64 Engine::connect(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
                         ProtocolVersions versions, ChannelListener::Factory listenerFactory,
                         std::function<void(Channel*,std::error_code)> resultHandler) {
   UInt64 connId = 0;
 
-  if (transport == ChannelTransport::TCP_TLS) {
+  if (securityId != 0) {
     auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(this, mode, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
 
-  } else if (transport == ChannelTransport::TCP_Plaintext) {
+  } else {
     auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, mode, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
+  }
 
-  } else if (transport == ChannelTransport::UDP_Plaintext) {
-    std::error_code err;
-    if (!udpConnect_) {
-      udpConnect_ = UDP_Server::create(this, err);
-      if (err) {
-        resultHandler(nullptr, err);
-        udpConnect_.reset();
-      }
-    }
+  return connId;
+}
 
-    if (udpConnect_) {
-      connId = udpConnect_->connect(remoteEndpoint, listenerFactory, err);
-      if (err) {
-        resultHandler(nullptr, err);
-        udpConnect_.reset();
-      }
+UInt64 Engine::connectUDP(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
+                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
+                        std::error_code &error) {
+  UInt64 connId = 0;
+
+  if (!udpConnect_) {
+    udpConnect_ = UDP_Server::create(this, error);
+    if (error) {
+      udpConnect_.reset();
     }
+  }
+
+  if (udpConnect_) {
+    connId = udpConnect_->connect(remoteEndpoint, listenerFactory, error);
   }
 
   return connId;
@@ -146,16 +147,19 @@ size_t Engine::close(UInt64 connId) {
   }
 }
 
-UInt64 Engine::addIdentity(const std::string &certFile, std::error_code &error) {
-  auto idPtr = MakeUniquePtr<Identity>(certFile, error);
+UInt64 Engine::addIdentity(const std::string &certFile, const std::string &password, const std::string &verifier, std::error_code &error) {
+  auto idPtr = MakeUniquePtr<Identity>(certFile, password, verifier, error);
   if (error)
     return 0;
 
   UInt64 secId = assignSecurityId();
-  idPtr->setSecurityId(secId);
-  identities_.push_back(std::move(idPtr));
-
   assert(secId > 0);
+
+  idPtr->setSecurityId(secId);
+
+  log::info("Add TLS identity", std::make_pair("tlsid", secId));
+
+  identities_.push_back(std::move(idPtr));
 
   return secId;
 }
@@ -186,8 +190,6 @@ asio::ssl::context *Engine::securityContext(UInt64 securityId) {
   if (iter != identities_.end()) {
     return iter->get()->securityContext();
   }
-
-  log::fatal("Engine::securityContext id not found", securityId);
 
   return nullptr;
 }

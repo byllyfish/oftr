@@ -78,6 +78,8 @@ class ApiServer {
   sys::Engine *engine_;
   ApiConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
+
+  static void connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId, const std::error_code &err);
 };
 
 OFP_END_IGNORE_PADDING

@@ -106,9 +106,16 @@ inline void error(const Args &... args) {
 }
 
 template <class... Args>
-inline void fatal(const Args &... args) {
+[[noreturn]] inline void fatal(const Args &... args) {
   detail::write_(Level::Fatal, args...);
+  std::abort();
 }
+
+template <class Ptr>
+inline Ptr fatal_if_null(Ptr value) {
+  return (value == nullptr) ? fatal("Unexpected null ptr"), value : value;
+}
+
 
 }  // namespace log
 }  // namespace ofp

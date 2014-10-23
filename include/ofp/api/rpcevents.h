@@ -97,6 +97,8 @@ struct RpcListen {
   struct Params {
     /// Endpoint to listen on.
     IPv6Endpoint endpoint;
+    /// Optional TLS identity.
+    UInt64 securityId;
     /// Array of options.
     std::vector<std::string> options;
   };
@@ -130,6 +132,8 @@ struct RpcConnect {
   struct Params {
     /// Endpoint to connect to.
     IPv6Endpoint endpoint;
+    /// Optional TLS identity.
+    UInt64 securityId;
     /// Array of options.
     std::vector<std::string> options;
   };
@@ -220,6 +224,11 @@ struct RpcAddIdentity {
   struct Params {
     /// Name of certificate file (which also contains private key).
     std::string certificate;
+    /// Optional password for encrypted private key.
+    std::string password;
+    /// Name of file containing certificate authority to use for verifying a
+    /// peer certificate.
+    std::string verifier;
   };
 
   UInt64 id;
@@ -381,6 +390,7 @@ template <>
 struct MappingTraits<ofp::api::RpcListen::Params> {
   static void mapping(IO &io, ofp::api::RpcListen::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
+    io.mapOptional("security_id", params.securityId, 0ULL);
     io.mapOptional("options", params.options);
   }
 };
@@ -389,6 +399,7 @@ template <>
 struct MappingTraits<ofp::api::RpcConnect::Params> {
   static void mapping(IO &io, ofp::api::RpcConnect::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
+    io.mapOptional("security_id", params.securityId, 0ULL);
     io.mapOptional("options", params.options);
   }
 };
@@ -418,6 +429,8 @@ template <>
 struct MappingTraits<ofp::api::RpcAddIdentity::Params> {
   static void mapping(IO &io, ofp::api::RpcAddIdentity::Params &params) {
     io.mapRequired("certificate", params.certificate);
+    io.mapOptional("password", params.password);
+    io.mapRequired("verifier", params.verifier);
   }
 };
 

@@ -28,6 +28,25 @@
 namespace ofp {
 namespace sys {
 
+namespace detail {
+
+// Every socket type except PlaintextSocket needs an SSL context. Make sure
+// one is provided or abort. The SSL context for a PlaintextSocket can be null.
+
+template <class SocketType>
+inline asio::ssl::context *sslContext(Engine *engine, UInt64 securityId) {
+  assert(securityId != 0);
+  return log::fatal_if_null(engine->securityContext(securityId));
+}
+
+template <>
+inline asio::ssl::context *sslContext<PlaintextSocket>(Engine *engine, UInt64 securityId) {
+  assert(securityId == 0);
+  return nullptr;
+}
+
+}  // namespace detail
+
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
                                            UInt64 securityId,
@@ -35,7 +54,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
                                            ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
-      socket_{engine->io(), engine->securityContext(securityId)} {}
+      socket_{engine->io(), detail::sslContext<SocketType>(engine, securityId)} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
@@ -45,7 +64,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
                                            ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
-      socket_{std::move(socket), engine->securityContext(securityId)} {}
+      socket_{std::move(socket), detail::sslContext<SocketType>(engine, securityId)} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::~TCP_Connection() {
@@ -242,9 +261,10 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
   auto self(this->shared_from_this());
   socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
     if (!err) {
+      log::info("TLS handshake completed", std::make_pair("connid", connectionId()));
       channelUp();
     } else {
-      log::debug("async_handshake failed", err.message());
+      log::error("TLS handshake failed", std::make_pair("connid", connectionId()), err);
     }
   });
 }

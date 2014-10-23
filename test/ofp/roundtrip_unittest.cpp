@@ -118,7 +118,7 @@ TEST(roundtrip, basic_test) {
     // There should be no error on listen, unless the port is in use.
     EXPECT_FALSE(err1);
 
-    (void)driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, 0,
+    (void)driver.connect(ChannelMode::Raw, 0,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions::All, TestAgent::factory, [](Channel *, std::error_code err){
                                     EXPECT_FALSE(err);
@@ -152,7 +152,7 @@ TEST(roundtrip, shutdown_test) {
 
     EXPECT_FALSE(err1);
 
-    (void)driver.connect(ChannelMode::Raw, ChannelTransport::TCP_Plaintext, 0,
+    (void)driver.connect(ChannelMode::Raw, 0,
                                   IPv6Endpoint{localhost, kTestingPort},
                                   ProtocolVersions::All, TestAgent::factory, [](Channel *, std::error_code err){
                                     EXPECT_FALSE(err);

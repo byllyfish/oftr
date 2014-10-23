@@ -45,9 +45,7 @@ private:
   bool &ref_; 
 };
 
-class Server;
-class TCP_Server;
-class Connection; // FIXME can I use Connection here?
+class Connection;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -60,13 +58,17 @@ public:
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, ChannelTransport transport, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
+  UInt64 connect(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
                         ProtocolVersions versions, ChannelListener::Factory listenerFactory,
                         std::function<void(Channel*,std::error_code)> resultHandler);
 
+  UInt64 connectUDP(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
+                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
+                        std::error_code &error);
+
   size_t close(UInt64 connId);
 
-  UInt64 addIdentity(const std::string &certFile, std::error_code &error);
+  UInt64 addIdentity(const std::string &certFile, const std::string &password, const std::string &verifier, std::error_code &error);
 
   void run();
   void stop(Milliseconds timeout = 0_ms);
@@ -149,10 +151,6 @@ private:
   // engine destructor runs. Connections may need to update bookkeeping objects.
   asio::io_service io_{1};
   bool isRunning_ = false;
-
-  // SSL context
-  asio::ssl::context context_;
-  bool isTLSDesired_ = false;
 
   // Sets up signal handlers to shut down runloop.
   bool isSignalsInited_ = false;

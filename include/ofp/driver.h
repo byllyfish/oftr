@@ -43,9 +43,13 @@ public:
                          ProtocolVersions versions,
                          ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, ChannelTransport transport, UInt64 securityId, const IPv6Endpoint &remoteEndpoint, 
+  UInt64 connect(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint, 
     ProtocolVersions versions, ChannelListener::Factory listenerFactory, 
     std::function<void(Channel*,std::error_code)> resultHandler);
+
+  UInt64 connectUDP(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint, 
+    ProtocolVersions versions, ChannelListener::Factory listenerFactory, 
+    std::error_code &error);
 
   void run();
 

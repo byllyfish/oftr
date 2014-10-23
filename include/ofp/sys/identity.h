@@ -30,7 +30,7 @@ namespace sys {
 
 class Identity {
  public:
-  explicit Identity(const std::string &certFile, std::error_code &error);
+  explicit Identity(const std::string &certFile, const std::string &password, const std::string &verifyFile, std::error_code &error);
 
   UInt64 securityId() const { return securityId_; }
   void setSecurityId(UInt64 securityId) { securityId_ = securityId; }
@@ -40,6 +40,11 @@ class Identity {
  private:
   UInt64 securityId_;
   asio::ssl::context context_;
+
+  std::error_code configureContext();
+  std::error_code loadCertificate(const std::string &certFile, const std::string &password);
+  std::error_code loadVerifier(const std::string &verifyFile);
+  std::error_code prepareVerifier();
 };
 
 }  // namespace sys
