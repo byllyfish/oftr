@@ -54,7 +54,7 @@ std::string RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data
   char *p = buf;
   *p++ = ToHexLowerCase(*e >> 4);
   *p++ = ToHexLowerCase(*e++ & 0x0F);
-  for (int i = 0; i < Length - 1; ++i) {
+  for (unsigned i = 0; i < Length - 1; ++i) {
       *p++ = ':';
       *p++ = ToHexLowerCase(*e >> 4);
       *p++ = ToHexLowerCase(*e++ & 0x0F);

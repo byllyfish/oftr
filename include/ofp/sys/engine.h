@@ -34,6 +34,8 @@
 namespace ofp {
 namespace sys {
 
+OFP_BEGIN_IGNORE_PADDING
+
 // RAII Utility class to prevent modification while iterating. (Not thread-safe)
 class IterLock {
 public: 
@@ -46,8 +48,6 @@ private:
 };
 
 class Connection;
-
-OFP_BEGIN_IGNORE_PADDING
 
 class Engine {
 public:

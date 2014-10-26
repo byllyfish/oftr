@@ -24,6 +24,7 @@
 #define OFP_SYS_IDENTITY_H_
 
 #include "ofp/sys/asio_utils.h"
+#include "ofp/sys/buffered.h"
 
 namespace ofp {
 namespace sys {
@@ -37,6 +38,11 @@ class Identity {
 
   asio::ssl::context *securityContext() { return &context_; }
 
+  template <class SocketType>
+  static void prepareVerifier(UInt64 connId, SocketType &sock) { }
+
+  static bool verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_context &ctx);
+
  private:
   UInt64 securityId_;
   asio::ssl::context context_;
@@ -46,6 +52,21 @@ class Identity {
   std::error_code loadVerifier(const std::string &verifyFile);
   std::error_code prepareVerifier();
 };
+
+
+template <>
+inline void Identity::prepareVerifier<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock) {
+  std::error_code err;
+
+  sock.set_verify_callback([connId](bool preverified, asio::ssl::verify_context &ctx) -> bool {
+    return verifyPeer(connId, preverified, ctx);
+  }, err);
+
+  if (err) {
+    log::error("Failed to specify TLS verifier callback", err);
+  }
+}
+
 
 }  // namespace sys
 }  // namespace ofp

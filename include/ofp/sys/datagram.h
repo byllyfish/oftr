@@ -26,6 +26,8 @@
 namespace ofp {
 namespace sys {
 
+OFP_BEGIN_IGNORE_PADDING
+
 class Datagram {
 public:
     const UInt8 *data() const { return buf_.data(); }
@@ -44,6 +46,8 @@ private:
     udp::endpoint dest_;
     UInt64 connId_ = 0;
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace sys
 }  // namespace ofp

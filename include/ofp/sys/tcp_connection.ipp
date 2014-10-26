@@ -109,6 +109,8 @@ void TCP_Connection<SocketType>::asyncConnect(const IPv6Endpoint &remoteEndpt, s
 
   log::info("Initiate TCP connection to", remoteEndpt, std::make_pair("connid", connectionId()));
 
+  OFP_BEGIN_IGNORE_PADDING
+
   socket_.lowest_layer().async_connect(
       endpt, [this, self, resultHandler](const asio::error_code &err) {
         // `async_connect` may not report an error if close() is not called.
@@ -125,6 +127,8 @@ void TCP_Connection<SocketType>::asyncConnect(const IPv6Endpoint &remoteEndpt, s
 
         resultHandler(this, err);
       });
+
+  OFP_END_IGNORE_PADDING
 }
 
 template <class SocketType>
@@ -258,10 +262,12 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
   auto mode = isClient ? asio::ssl::stream_base::client
                            : asio::ssl::stream_base::server;
 
+  // Set up verify callback.
+  Identity::prepareVerifier(connectionId(), socket_.next_layer());
+
   auto self(this->shared_from_this());
   socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
     if (!err) {
-      log::info("TLS handshake completed", std::make_pair("connid", connectionId()));
       channelUp();
     } else {
       log::error("TLS handshake failed", std::make_pair("connid", connectionId()), err);
