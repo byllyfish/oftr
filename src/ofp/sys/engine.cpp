@@ -31,7 +31,11 @@ using ofp::UInt64;
 Engine::Engine(Driver *driver)
     : driver_{driver}, signals_{io_},
       stopTimer_{io_} {
-  log::info("Engine ready");
+  std::string ready{"Engine ready "};
+  ready.push_back('(');
+  ready.append(SSLeay_version(SSLEAY_VERSION));
+  ready.push_back(')');
+  log::info(ready);
 }
 
 Engine::~Engine() {

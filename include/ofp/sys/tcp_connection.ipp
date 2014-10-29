@@ -263,14 +263,13 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
                            : asio::ssl::stream_base::server;
 
   // Set up verify callback.
-  Identity::prepareVerifier(connectionId(), socket_.next_layer());
+  Identity::beforeHandshake(connectionId(), socket_.next_layer(), remoteEndpoint(), isClient);
 
   auto self(this->shared_from_this());
-  socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
+  socket_.async_handshake(mode, [this, self, isClient](const asio::error_code &err) {
+    Identity::afterHandshake(connectionId(), socket_.next_layer(), remoteEndpoint(), isClient, err);
     if (!err) {
       channelUp();
-    } else {
-      log::error("TLS handshake failed", std::make_pair("connid", connectionId()), err);
     }
   });
 }

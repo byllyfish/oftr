@@ -25,6 +25,7 @@
 
 #include "ofp/sys/asio_utils.h"
 #include "ofp/sys/buffered.h"
+#include <unordered_map>
 
 namespace ofp {
 namespace sys {
@@ -32,40 +33,42 @@ namespace sys {
 class Identity {
  public:
   explicit Identity(const std::string &certFile, const std::string &password, const std::string &verifyFile, std::error_code &error);
-
+  ~Identity();
+  
   UInt64 securityId() const { return securityId_; }
   void setSecurityId(UInt64 securityId) { securityId_ = securityId; }
 
   asio::ssl::context *securityContext() { return &context_; }
 
-  template <class SocketType>
-  static void prepareVerifier(UInt64 connId, SocketType &sock) { }
+  SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
+  void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
 
-  static bool verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_context &ctx);
+  template <class SocketType>
+  static void beforeHandshake(UInt64 connId, SocketType &sock, const IPv6Endpoint &remoteEndpt, bool isClient) { }
+
+  template <class SocketType>
+  static void afterHandshake(UInt64 connId, SocketType &sock, const IPv6Endpoint &remoteEndpt, bool isClient, std::error_code err) { }
 
  private:
   UInt64 securityId_;
   asio::ssl::context context_;
+  std::unordered_map<IPv6Endpoint, SSL_SESSION*> clientSessions_;
 
   std::error_code configureContext();
   std::error_code loadCertificate(const std::string &certFile, const std::string &password);
   std::error_code loadVerifier(const std::string &verifyFile);
   std::error_code prepareVerifier();
+
+  static bool verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_context &ctx);
 };
 
 
 template <>
-inline void Identity::prepareVerifier<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock) {
-  std::error_code err;
+void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient);
 
-  sock.set_verify_callback([connId](bool preverified, asio::ssl::verify_context &ctx) -> bool {
-    return verifyPeer(connId, preverified, ctx);
-  }, err);
+template <>
+void Identity::afterHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient, std::error_code err);
 
-  if (err) {
-    log::error("Failed to specify TLS verifier callback", err);
-  }
-}
 
 
 }  // namespace sys

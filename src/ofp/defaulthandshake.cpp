@@ -56,7 +56,7 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 }
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
-  log::error("DefaultHandshake: Channel down before handshake could complete", std::make_pair("connid", channel->connectionId()));
+  log::warning("DefaultHandshake: Channel down before handshake could complete", std::make_pair("connid", channel->connectionId()));
 }
 
 void DefaultHandshake::onMessage(const Message *message) {
@@ -74,7 +74,7 @@ void DefaultHandshake::onMessage(const Message *message) {
     break;
 
   default:
-    log::info("DefaultHandshake: Ignored message type", message->type());
+    log::warning("DefaultHandshake: Ignored message type", message->type(), std::make_pair("connid", message->source()->connectionId()));
     break;
   }
 }
