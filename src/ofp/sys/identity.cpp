@@ -22,7 +22,7 @@
 
 #include "ofp/sys/identity.h"
 #include "ofp/sys/membio.h"
-#include <openssl/x509.h>
+#include "ofp/sys/memx509.h"
 
 using namespace ofp::sys;
 
@@ -36,24 +36,41 @@ const int SSL_CTX_IDENTITY_PTR = SSL_CTX_get_ex_new_index(0, (void*)"ctx_identit
 const int SSL_ASIO_PTR = SSL_get_ex_new_index(0, (void*)"ssl_asio", nullptr, nullptr, nullptr);
 const int SSL_IDENTITY_PTR = SSL_get_ex_new_index(0, (void*)"ssl_identity", nullptr, nullptr, nullptr);
 
+constexpr asio::ssl::context_base::method defaultMethod() {
+ #if defined(SSL_TXT_TLSV1_2)
+  return asio::ssl::context_base::tlvv1_2;
+ #elif defined(SSL_TXT_TLSV1_1)
+  return asio::ssl::context_base::tlsv1_1;
+ #else
+  return asio::ssl::context_base::tlsv1;
+ #endif
+}
 
-Identity::Identity(const std::string &certFile, const std::string &password, const std::string &verifyFile, std::error_code &error)
-    : context_{asio::ssl::context::tlsv1} {
+Identity::Identity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifyData, std::error_code &error)
+    : context_{defaultMethod()} {
 
   error = configureContext();
   if (error) return;
 
-  error = loadCertificate(certFile, password);
+  error = loadCertificateChain(certData);
   if (error) return;
 
-  error = loadVerifier(verifyFile);
+  error = loadPrivateKey(certData, keyPassphrase);
+  if (error) return;
+
+  error = loadVerifier(verifyData);
   if (error) return;
 
   error = prepareVerifier();
+  if (error) return;
+
+  // Save subject name of the certificate.
+  MemX509 cert{certData};
+  subjectName_ = cert.subjectName();
 }
 
 Identity::~Identity() {
-  for (auto item : clientSessions_) {
+  for (auto &item : clientSessions_) {
     SSL_SESSION_free(item.second);
   }
 }
@@ -79,74 +96,102 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *s
 
 std::error_code Identity::configureContext() {
   std::error_code err;
-
   context_.set_options(asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3 | asio::ssl::context::no_compression, err);
 
   uint8_t id[] = "ofpx";
   SSL_CTX_set_session_id_context(context_.native_handle(), id, sizeof(id) - 1);
-  SSL_CTX_set_timeout(context_.native_handle(), 60*30);
+  SSL_CTX_set_timeout(context_.native_handle(), 60*5);
   SSL_CTX_set_session_cache_mode(context_.native_handle(), SSL_SESS_CACHE_SERVER);
 
   // Allow for retrieving this Identity object given just an SSL context.
   SSL_CTX_set_ex_data(context_.native_handle(), SSL_CTX_IDENTITY_PTR, this);
 
-  //log::info("SSL_get_ex_new_index", SSL_get_ex_new_index(0, (void*)"test", nullptr, nullptr, nullptr));
-
   return err;
 }
 
 
-std::error_code Identity::loadCertificate(const std::string &certFile, const std::string &password) {
+/// Load certificate from a PEM file.
+std::error_code Identity::loadCertificateChain(const std::string &certData) {
   std::error_code err;
 
-  context_.use_certificate_chain_file(certFile, err);
+  asio::const_buffer certBuffer{certData.data(), certData.size()};
+  context_.use_certificate_chain(certBuffer, err);
+
+  if (err) {
+    log::error("Failed to load certificate", err);
+  }
+
+  return err;
+}
+
+/// Load private key from a PEM file.
+std::error_code Identity::loadPrivateKey(const std::string &keyData, const std::string &passphrase) {
+  std::error_code err;
+
+  // Set the context's password callback to return the given passphrase.
+  context_.set_password_callback(
+    [&passphrase](size_t maxLength, asio::ssl::context::password_purpose purpose) -> std::string {
+    return (purpose == asio::ssl::context::for_reading) ? passphrase : "";
+  }, err);
+
+  if (err) {
+    log::warning("loadPrivateKey: Error returned from set_password_callback", err);
+  }
+
+  asio::const_buffer keyBuffer{keyData.data(), keyData.size()};
+  context_.use_private_key(keyBuffer, asio::ssl::context::pem, err);
+
+  if (err) {
+    log::error("Failed to load private key", err);
+  }
+
+  // After loading the key, reset the context's password callback.
+  std::error_code ignore;
+  context_.set_password_callback(
+    [](size_t maxLength, asio::ssl::context::password_purpose purpose) -> std::string {
+      return "";
+    }, ignore);
 
   if (!err) {
-    context_.set_password_callback(
-      [password](size_t maxLength, asio::ssl::context::password_purpose purpose) -> std::string {
-      return password;
-    }, err);
-
-    if (!err) {
-      context_.use_private_key_file(certFile, asio::ssl::context::pem, err);
-    
-      if (!err) {
-        context_.set_password_callback(
-          [password](size_t maxLength, asio::ssl::context::password_purpose purpose) -> std::string {
-            return "";
-          }, err);
-      }
+    // Make sure the key matches the certificate.
+    int valid = SSL_CTX_check_private_key(context_.native_handle());
+    if (!valid) {
+      log::warning("loadPrivateKey: private key does not match certificate");
     }
   }
 
-  // TODO - verify that key matches certificate?
+  return err;
+}
+
+
+std::error_code Identity::loadVerifier(const std::string &verifyData) {
+  std::error_code err;
+
+  asio::const_buffer verifyBuffer{verifyData.data(), verifyData.size()};
+  context_.add_certificate_authority(verifyBuffer, err);
 
   if (err) {
-    char *cwd = getcwd(nullptr, 0);
-    std::string dir{cwd};
-    free(cwd);
-
-    log::error("Failed to construct identity:", certFile, dir, err);
+    log::error("Failed to load verifier:", err);
+  } else {
+    // Add CA certificate name to our client CA list.
+    err = addClientCA(verifyData);
   }
 
   return err;
 }
 
 
-std::error_code Identity::loadVerifier(const std::string &verifyFile) {
-  std::error_code err;
+std::error_code Identity::addClientCA(const std::string &verifyData) {
+  ::ERR_clear_error();
 
-  context_.load_verify_file(verifyFile, err);
+  MemX509 cert{verifyData};
+  if (cert) {
+    if (::SSL_CTX_add_client_CA(context_.native_handle(), cert) == 1) {
+      return std::error_code{};
+    }
+  }
 
-  if (err) {
-    char *cwd = getcwd(nullptr, 0);
-    std::string dir{cwd};
-    free(cwd);
-
-    log::error("Failed to load verifier:", verifyFile, dir, err);
-  }  
-
-  return err;
+  return std::error_code(static_cast<int>(::ERR_get_error()), asio::error::get_ssl_category());
 }
 
 
@@ -170,42 +215,33 @@ std::error_code Identity::prepareVerifier() {
   return err;
 }
 
-static std::string getSubjectName(X509 *cert);
-
 bool Identity::verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_context &ctx) {
+  int error = X509_STORE_CTX_get_error(ctx.native_handle());
   int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
-  X509 *cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
 
-  log::fatal_if_null(cert);
+  MemX509 cert{X509_STORE_CTX_get_current_cert(ctx.native_handle())};
+  log::fatal_if_null(cert.ptr());
 
-  if (!preverified) {
-    // We failed pre-verification.
-    MemBio certBio;
-    X509_print_ex(certBio, cert, 0, 0);
-    log::warning("Verify peer failed:", depth, getSubjectName(cert), std::make_pair("connid", connId), '\n', certBio.toString());
+  std::string subjectName = cert.subjectName();
+
+  if (!preverified || (error != X509_V_OK)) {
+    // We failed pre-verification or there is a verify error.
+    log::warning("Certificate verify failed:", X509_verify_cert_error_string(error), std::make_pair("connid", connId));
+    log::warning("Peer certificate", depth, subjectName, std::make_pair("connid", connId), '\n', cert.toString());
     return false;
   }
 
   if (depth > 0) {
-    log::debug("Verify peer chain:", depth, getSubjectName(cert), std::make_pair("connid", connId));
+    log::debug("Verify peer chain:", depth, subjectName, std::make_pair("connid", connId));
     return preverified;
   }
 
   assert(depth == 0);
-
-  log::info("Verify peer:", getSubjectName(cert), std::make_pair("connid", connId));
+  log::info("Verify peer:", subjectName, std::make_pair("connid", connId));
 
   return true;
 }
 
-
-static std::string getSubjectName(X509 *cert) {
-  X509_NAME *name = X509_get_subject_name(cert);
-  ofp::log::fatal_if_null(name);
-  MemBio bio;
-  X509_NAME_print_ex(bio, name, 0, 0);
-  return bio.toString();
-}
 
 #if 0
 static std::string getSubjectAltName(X509 *cert) {

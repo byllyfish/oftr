@@ -68,7 +68,7 @@ public:
 
   size_t close(UInt64 connId);
 
-  UInt64 addIdentity(const std::string &certFile, const std::string &password, const std::string &verifier, std::error_code &error);
+  UInt64 addIdentity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifier, std::error_code &error);
 
   void run();
   void stop(Milliseconds timeout = 0_ms);

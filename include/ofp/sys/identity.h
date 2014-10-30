@@ -32,14 +32,15 @@ namespace sys {
 
 class Identity {
  public:
-  explicit Identity(const std::string &certFile, const std::string &password, const std::string &verifyFile, std::error_code &error);
+  explicit Identity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifyData, std::error_code &error);
   ~Identity();
   
   UInt64 securityId() const { return securityId_; }
   void setSecurityId(UInt64 securityId) { securityId_ = securityId; }
 
   asio::ssl::context *securityContext() { return &context_; }
-
+  std::string subjectName() const { return subjectName_; }
+  
   SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
 
@@ -52,11 +53,14 @@ class Identity {
  private:
   UInt64 securityId_;
   asio::ssl::context context_;
+  std::string subjectName_;
   std::unordered_map<IPv6Endpoint, SSL_SESSION*> clientSessions_;
 
   std::error_code configureContext();
-  std::error_code loadCertificate(const std::string &certFile, const std::string &password);
-  std::error_code loadVerifier(const std::string &verifyFile);
+  std::error_code loadCertificateChain(const std::string &certData);
+  std::error_code loadPrivateKey(const std::string &keyData, const std::string &keyPassphrase);
+  std::error_code loadVerifier(const std::string &verifyData);
+  std::error_code addClientCA(const std::string &verifyData);
   std::error_code prepareVerifier();
 
   static bool verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_context &ctx);

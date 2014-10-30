@@ -4,10 +4,10 @@
 namespace ofp {
 namespace sys {
 
-
 class MemBio {
 public:
-    MemBio() : bio_{log::fatal_if_null(BIO_new(BIO_s_mem()))} {}
+    explicit MemBio() : bio_{log::fatal_if_null(BIO_new(BIO_s_mem()))} {}
+    explicit MemBio(const std::string &buf) : bio_{log::fatal_if_null(BIO_new_mem_buf((void*)buf.data(), (int)buf.size()))} {}
 
     ~MemBio() {
         BIO_free(bio_);
@@ -19,6 +19,8 @@ public:
         return std::string(mem, Unsigned_cast(size));
     }
 
+    BIO *ptr() const noexcept { return bio_; }
+    
     operator BIO*() const noexcept { return bio_; }
 
 private:

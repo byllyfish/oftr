@@ -151,17 +151,16 @@ size_t Engine::close(UInt64 connId) {
   }
 }
 
-UInt64 Engine::addIdentity(const std::string &certFile, const std::string &password, const std::string &verifier, std::error_code &error) {
-  auto idPtr = MakeUniquePtr<Identity>(certFile, password, verifier, error);
+UInt64 Engine::addIdentity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifier, std::error_code &error) {
+  auto idPtr = MakeUniquePtr<Identity>(certData, keyPassphrase, verifier, error);
   if (error)
     return 0;
 
   UInt64 secId = assignSecurityId();
   assert(secId > 0);
-
   idPtr->setSecurityId(secId);
 
-  log::info("Add TLS identity", std::make_pair("tlsid", secId));
+  log::info("Add TLS identity:", idPtr->subjectName(), std::make_pair("tlsid", secId));
 
   identities_.push_back(std::move(idPtr));
 
@@ -271,14 +270,14 @@ bool Engine::registerDatapath(Connection *channel) {
       // different, close it and replace it with the new one.
       auto item = pair.first;
       if (item->second != channel) {
-        log::error("registerDatapath: Conflict between main connections detected",
+        log::warning("registerDatapath: Conflict between main connections detected",
                   dpid, std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
         item->second = channel;
         old->shutdown();
 
       } else {
-        log::error("registerDatapath: Datapath is already registered.",
+        log::warning("registerDatapath: Datapath is already registered.",
                   dpid, std::make_pair("conn_id", channel->connectionId()));
       }
     }
@@ -293,7 +292,7 @@ bool Engine::registerDatapath(Connection *channel) {
       channel->setMainConnection(item->second, auxID);
 
     } else {
-      log::error("registerDatapath: Main connection not found", dpid, std::make_pair("conn_id", channel->connectionId()));
+      log::warning("registerDatapath: Main connection not found for datapath", dpid, "aux", int(auxID), std::make_pair("conn_id", channel->connectionId()));
       return false;
     }
   }

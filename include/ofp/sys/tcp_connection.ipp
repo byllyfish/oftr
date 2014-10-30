@@ -265,6 +265,8 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
   // Set up verify callback.
   Identity::beforeHandshake(connectionId(), socket_.next_layer(), remoteEndpoint(), isClient);
 
+  OFP_BEGIN_IGNORE_PADDING
+
   auto self(this->shared_from_this());
   socket_.async_handshake(mode, [this, self, isClient](const asio::error_code &err) {
     Identity::afterHandshake(connectionId(), socket_.next_layer(), remoteEndpoint(), isClient, err);
@@ -272,6 +274,8 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
       channelUp();
     }
   });
+
+  OFP_END_IGNORE_PADDING
 }
 
 }  // namespace sys
