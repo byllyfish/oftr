@@ -215,7 +215,7 @@ std::error_code Identity::prepareVerifier() {
   return err;
 }
 
-bool Identity::verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_context &ctx) {
+bool Identity::verifyPeer(UInt64 connId, UInt64 securityId, bool preverified, asio::ssl::verify_context &ctx) {
   int error = X509_STORE_CTX_get_error(ctx.native_handle());
   int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
 
@@ -227,17 +227,17 @@ bool Identity::verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_con
   if (!preverified || (error != X509_V_OK)) {
     // We failed pre-verification or there is a verify error.
     log::warning("Certificate verify failed:", X509_verify_cert_error_string(error), std::make_pair("connid", connId));
-    log::warning("Peer certificate", depth, subjectName, std::make_pair("connid", connId), '\n', cert.toString());
+    log::warning("Peer certificate", depth, subjectName, std::make_pair("tlsid", securityId), std::make_pair("connid", connId), '\n', cert.toString());
     return false;
   }
 
   if (depth > 0) {
-    log::debug("Verify peer chain:", depth, subjectName, std::make_pair("connid", connId));
+    log::debug("Verify peer chain:", depth, subjectName, std::make_pair("tlsid", securityId), std::make_pair("connid", connId));
     return preverified;
   }
 
   assert(depth == 0);
-  log::info("Verify peer:", subjectName, std::make_pair("connid", connId));
+  log::info("Verify peer:", subjectName, std::make_pair("tlsid", securityId), std::make_pair("connid", connId));
 
   return true;
 }
@@ -288,22 +288,21 @@ static std::string getSubjectAltName(X509 *cert) {
 
 template <>
 void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient) {
-  std::error_code err;
+  // Store identity pointer in SSL object app data field.
+  SSL_CTX *ctxt = SSL_get_SSL_CTX(sock.native_handle());
+  Identity *identity = reinterpret_cast<Identity *>(SSL_CTX_get_ex_data(ctxt, SSL_CTX_IDENTITY_PTR));
+  SSL_set_ex_data(sock.native_handle(), SSL_IDENTITY_PTR, identity);
+  log::fatal_if_null(identity);
 
-  sock.set_verify_callback([connId](bool preverified, asio::ssl::verify_context &ctx) -> bool {
-    return verifyPeer(connId, preverified, ctx);
+  std::error_code err;
+  UInt64 securityId = identity->securityId();
+  sock.set_verify_callback([connId, securityId](bool preverified, asio::ssl::verify_context &ctx) -> bool {
+    return verifyPeer(connId, securityId, preverified, ctx);
   }, err);
 
   if (err) {
     log::error("Failed to specify TLS verifier callback", err);
   }
-
-  // Store identity pointer in SSL object app data field.
-  SSL_CTX *ctxt = SSL_get_SSL_CTX(sock.native_handle());
-  Identity *identity = reinterpret_cast<Identity *>(SSL_CTX_get_ex_data(ctxt, SSL_CTX_IDENTITY_PTR));
-  SSL_set_ex_data(sock.native_handle(), SSL_IDENTITY_PTR, identity);
-
-  log::fatal_if_null(identity);
 
   if (isClient) {
     // Check if there is a client session we can resume. This is a static method
@@ -320,8 +319,12 @@ void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &
 template <>
 void Identity::afterHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient, std::error_code err) 
 { 
+  Identity *identity = reinterpret_cast<Identity *>(SSL_get_ex_data(sock.native_handle(), SSL_IDENTITY_PTR));
+  log::fatal_if_null(identity);
+  UInt64 securityId = identity->securityId();
+
   if (err) {
-    log::error("TLS handshake failed", std::make_pair("connid", connId), err);
+    log::error("TLS handshake failed", std::make_pair("tlsid", securityId), std::make_pair("connid", connId), err);
     return;
   }
 
@@ -339,12 +342,10 @@ void Identity::afterHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &s
     sessionId = RawDataToHex(id, idlen);
   }
 
-  log::info(tlsVersion, "session", sessionStatus, tlsCipherSpec, sessionId, std::make_pair("connid", connId));
+  log::info(tlsVersion, "session", sessionStatus, tlsCipherSpec, sessionId, std::make_pair("tlsid", securityId), std::make_pair("connid", connId));
 
   // If this is a client handshake, save the client session.
   if (isClient) {
-    Identity *identity = reinterpret_cast<Identity *>(SSL_get_ex_data(sock.native_handle(), SSL_IDENTITY_PTR));
-    assert(identity);
     identity->saveClientSession(remoteEndpt, SSL_get1_session(sock.native_handle()));
   }
 }

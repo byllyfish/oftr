@@ -40,7 +40,7 @@ class Identity {
 
   asio::ssl::context *securityContext() { return &context_; }
   std::string subjectName() const { return subjectName_; }
-  
+
   SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
 
@@ -63,7 +63,7 @@ class Identity {
   std::error_code addClientCA(const std::string &verifyData);
   std::error_code prepareVerifier();
 
-  static bool verifyPeer(UInt64 connId, bool preverified, asio::ssl::verify_context &ctx);
+  static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified, asio::ssl::verify_context &ctx);
 };
 
 
