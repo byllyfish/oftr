@@ -38,9 +38,9 @@ const int SSL_IDENTITY_PTR = SSL_get_ex_new_index(0, (void*)"ssl_identity", null
 
 constexpr asio::ssl::context_base::method defaultMethod() {
  #if defined(SSL_TXT_TLSV1_2)
-  return asio::ssl::context_base::tlvv1_2;
+  return asio::ssl::context_base::tlsv12;
  #elif defined(SSL_TXT_TLSV1_1)
-  return asio::ssl::context_base::tlsv1_1;
+  return asio::ssl::context_base::tlsv11;
  #else
   return asio::ssl::context_base::tlsv1;
  #endif

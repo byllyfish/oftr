@@ -390,7 +390,7 @@ template <>
 struct MappingTraits<ofp::api::RpcListen::Params> {
   static void mapping(IO &io, ofp::api::RpcListen::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
-    io.mapOptional("security_id", params.securityId, 0ULL);
+    io.mapOptional("security_id", params.securityId);
     io.mapOptional("options", params.options);
   }
 };
@@ -399,7 +399,7 @@ template <>
 struct MappingTraits<ofp::api::RpcConnect::Params> {
   static void mapping(IO &io, ofp::api::RpcConnect::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
-    io.mapOptional("security_id", params.securityId, 0ULL);
+    io.mapOptional("security_id", params.securityId);
     io.mapOptional("options", params.options);
   }
 };
