@@ -98,7 +98,7 @@ struct RpcListen {
     /// Endpoint to listen on.
     IPv6Endpoint endpoint;
     /// Optional TLS identity.
-    UInt64 securityId;
+    UInt64 securityId = 0;
     /// Array of options.
     std::vector<std::string> options;
   };
@@ -133,7 +133,7 @@ struct RpcConnect {
     /// Endpoint to connect to.
     IPv6Endpoint endpoint;
     /// Optional TLS identity.
-    UInt64 securityId;
+    UInt64 securityId = 0;
     /// Array of options.
     std::vector<std::string> options;
   };

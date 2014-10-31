@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   if (remoteEndpoint.valid()) {
     (void) driver.connect(ChannelMode::Raw, 0, remoteEndpoint, {OFP_VERSION_1},
                                  TestAgent::Factory, [&error](Channel *channel, std::error_code err) {
-                                  std::cerr << "Error connecting: connId=" << channel->connectionId() << " err=" << err << '\n';
+                                  std::cerr << "Error connecting: connId=" << channel->connectionId() << " err=" << err.message() << '\n';
                                   error = err;
                                  });
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
   driver.run();
 
   if (error) {
-    std::cerr << "Error starting agent: " << error << '\n';
+    std::cerr << "Error starting agent: " << error.message() << '\n';
     return 1;
   }
 
