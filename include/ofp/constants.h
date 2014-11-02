@@ -53,7 +53,8 @@ enum {
   OFP_VERSION_2 = 0x02,
   OFP_VERSION_3 = 0x03,
   OFP_VERSION_4 = 0x04,
-  OFP_VERSION_LAST = OFP_VERSION_4
+  OFP_VERSION_LAST = OFP_VERSION_4,
+  OFP_VERSION_MAX_ALLOWED = 0x09
 };
 
 enum {
@@ -133,7 +134,8 @@ enum OFPType : UInt8 {
 
   /// Used internally.
   OFPT_LAST = OFPT_METER_MOD,
-  OFPT_UNSUPPORTED = 0xF9
+  OFPT_MAX_ALLOWED = 64,
+  OFPT_UNSUPPORTED = 0xF9,
 };
 
 std::ostream &operator<<(std::ostream &os, OFPType type);

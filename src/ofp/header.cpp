@@ -98,19 +98,29 @@ bool Header::validateInput(UInt8 negotiatedVersion) const
   // be smaller than 8 bytes.
 
   if (length_ < sizeof(Header)) {
-    log::debug("Header length < 8");
+    log::warning("Message header length is too small:", length_);
     return false;
   }
 
-  // Header version must be non-zero and match the negotiated version if there 
-  // is one.
-
-  if (!version_ || (negotiatedVersion != 0 && version_ != negotiatedVersion)) {
-    log::debug("Wrong version");
+  // Header version needs to be within range [1...MAX_ALLOWED].
+  if (version_ == 0 || version_ > OFP_VERSION_MAX_ALLOWED) {
+    log::warning("Message header version is invalid:", int(version_));
     return false;
   }
 
-  // N.B. The type field will be checked by transmogrify.
+  // Header version must match the negotiated version if there is one.
+  if (negotiatedVersion != 0 && version_ != negotiatedVersion) {
+    log::warning("Wrong message header version:", int(version_));
+    return false;
+  }
+
+  // Header type needs to be within range [0...MAX_ALLOWED]
+  if (type_ > OFPT_MAX_ALLOWED) {
+    log::warning("Message header type is invalid:", int(type_));
+    return false;
+  }
+
+  // N.B. The type field will be further checked by transmogrify.
 
   return true;
 }
@@ -118,7 +128,8 @@ bool Header::validateInput(UInt8 negotiatedVersion) const
 /// Return true if `version, type` pair is valid. e.g. There is no v1 
 /// OFPT_METER_MOD so (1, OFPT_METER_MOD) returns false.
 bool Header::validateVersionAndType() const {
-  // We permit version 0 for OFPT_HELLO and OFPT_ERROR messages only.
+  // We permit version 0 for OFPT_HELLO and OFPT_ERROR messages only. (Allowed
+  // for testing purposes; version 0 is blocked from external streams.)
   if (version_ == 0) {
     return (type_ == OFPT_HELLO) || (type_ == OFPT_ERROR);
   }
