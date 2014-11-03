@@ -23,8 +23,8 @@
 #include "ofp/oxmlist.h"
 #include "ofp/originalmatch.h"
 
-namespace ofp {        // <namespace ofp>
-namespace deprecated { // <namespace deprecated>
+namespace ofp {         // <namespace ofp>
+namespace deprecated {  // <namespace deprecated>
 
 StandardMatch::StandardMatch() {
   in_port = 0;
@@ -38,105 +38,105 @@ StandardMatch::StandardMatch(const OXMRange &range) {
   UInt32 wc = wildcards;
   for (auto &item : range) {
     switch (item.type()) {
-    case OFB_IN_PORT::type() :
-      in_port = item.value<OFB_IN_PORT>();
-      wc &= ~OFPFW_IN_PORT;
-      break;
-    case OFB_ETH_SRC::type() :
-      dl_src = item.value<OFB_ETH_SRC>();
-      dl_src_mask.setAllOnes();
-      break;
-    case OFB_ETH_SRC::typeWithMask() :
-      dl_src = item.value<OFB_ETH_SRC>();
-      dl_src_mask = item.mask<OFB_ETH_SRC>();
-      break;
-    case OFB_ETH_DST::type() :
-      dl_dst = item.value<OFB_ETH_DST>();
-      dl_dst_mask.setAllOnes();
-      break;
-    case OFB_ETH_DST::typeWithMask() :
-      dl_dst = item.value<OFB_ETH_DST>();
-      dl_dst_mask = item.mask<OFB_ETH_DST>();
-      break;
-    case OFB_VLAN_VID::type() :
-      dl_vlan = item.value<OFB_VLAN_VID>();
-      wc &= ~OFPFW_DL_VLAN;
-      break;
-    case OFB_VLAN_PCP::type() :
-      dl_vlan_pcp = item.value<OFB_VLAN_PCP>();
-      wc &= ~OFPFW_DL_VLAN_PCP;
-      break;
-    case OFB_ETH_TYPE::type() :
-      dl_type = item.value<OFB_ETH_TYPE>();
-      wc &= ~OFPFW_DL_TYPE;
-      break;
-    case OFB_IP_DSCP::type() :
-      nw_tos = item.value<OFB_IP_DSCP>();
-      wc &= ~OFPFW_NW_TOS;
-      break;
-    case OFB_IP_PROTO::type() :
-      nw_proto = item.value<OFB_IP_PROTO>();
-      wc &= ~OFPFW_NW_PROTO;
-      break;
-    case OFB_IPV4_SRC::type() :
-      nw_src = item.value<OFB_IPV4_SRC>();
-      nw_src_mask.setAllOnes();
-      break;
-    case OFB_IPV4_SRC::typeWithMask() :
-      nw_src = item.value<OFB_IPV4_SRC>();
-      nw_src_mask = item.mask<OFB_IPV4_SRC>();
-      break;
-    case OFB_IPV4_DST::type() :
-      nw_dst = item.value<OFB_IPV4_DST>();
-      nw_dst_mask.setAllOnes();
-      break;
-    case OFB_IPV4_DST::typeWithMask() :
-      nw_dst = item.value<OFB_IPV4_DST>();
-      nw_dst_mask = item.mask<OFB_IPV4_DST>();
-      break;
-    case OFB_TCP_SRC::type() :
-      tp_src = item.value<OFB_TCP_SRC>();
-      wc &= ~OFPFW_TP_SRC;
-      break;
-    case OFB_UDP_SRC::type() :
-      tp_src = item.value<OFB_UDP_SRC>();
-      wc &= ~OFPFW_TP_SRC;
-      break;
-    case OFB_ICMPV4_TYPE::type() :
-      tp_src = item.value<OFB_ICMPV4_TYPE>();
-      wc &= ~OFPFW_TP_SRC;
-      break;
-    case OFB_TCP_DST::type() :
-      tp_dst = item.value<OFB_TCP_DST>();
-      wc &= ~OFPFW_TP_DST;
-      break;
-    case OFB_UDP_DST::type() :
-      tp_dst = item.value<OFB_UDP_DST>();
-      wc &= ~OFPFW_TP_DST;
-      break;
-    case OFB_ICMPV4_CODE::type() :
-      tp_dst = item.value<OFB_ICMPV4_CODE>();
-      wc &= ~OFPFW_TP_DST;
-      break;
-    case OFB_MPLS_LABEL::type() :
-      mpls_label = item.value<OFB_MPLS_LABEL>();
-      wc &= ~OFPFW_MPLS_LABEL;
-      break;
-    case OFB_MPLS_TC::type() :
-      mpls_tc = item.value<OFB_MPLS_TC>();
-      wc &= ~OFPFW_MPLS_TC;
-      break;
-    case OFB_METADATA::type() :
-      metadata = item.value<OFB_METADATA>();
-      metadata_mask = ~0ULL;
-      break;
-    case OFB_METADATA::typeWithMask() :
-      metadata = item.value<OFB_METADATA>();
-      metadata_mask = item.mask<OFB_METADATA>();
-      break;
-    default:
-      log::debug("StandardMatch: Unexpected oxm type.");
-      break;
+      case OFB_IN_PORT::type():
+        in_port = item.value<OFB_IN_PORT>();
+        wc &= ~OFPFW_IN_PORT;
+        break;
+      case OFB_ETH_SRC::type():
+        dl_src = item.value<OFB_ETH_SRC>();
+        dl_src_mask.setAllOnes();
+        break;
+      case OFB_ETH_SRC::typeWithMask():
+        dl_src = item.value<OFB_ETH_SRC>();
+        dl_src_mask = item.mask<OFB_ETH_SRC>();
+        break;
+      case OFB_ETH_DST::type():
+        dl_dst = item.value<OFB_ETH_DST>();
+        dl_dst_mask.setAllOnes();
+        break;
+      case OFB_ETH_DST::typeWithMask():
+        dl_dst = item.value<OFB_ETH_DST>();
+        dl_dst_mask = item.mask<OFB_ETH_DST>();
+        break;
+      case OFB_VLAN_VID::type():
+        dl_vlan = item.value<OFB_VLAN_VID>();
+        wc &= ~OFPFW_DL_VLAN;
+        break;
+      case OFB_VLAN_PCP::type():
+        dl_vlan_pcp = item.value<OFB_VLAN_PCP>();
+        wc &= ~OFPFW_DL_VLAN_PCP;
+        break;
+      case OFB_ETH_TYPE::type():
+        dl_type = item.value<OFB_ETH_TYPE>();
+        wc &= ~OFPFW_DL_TYPE;
+        break;
+      case OFB_IP_DSCP::type():
+        nw_tos = item.value<OFB_IP_DSCP>();
+        wc &= ~OFPFW_NW_TOS;
+        break;
+      case OFB_IP_PROTO::type():
+        nw_proto = item.value<OFB_IP_PROTO>();
+        wc &= ~OFPFW_NW_PROTO;
+        break;
+      case OFB_IPV4_SRC::type():
+        nw_src = item.value<OFB_IPV4_SRC>();
+        nw_src_mask.setAllOnes();
+        break;
+      case OFB_IPV4_SRC::typeWithMask():
+        nw_src = item.value<OFB_IPV4_SRC>();
+        nw_src_mask = item.mask<OFB_IPV4_SRC>();
+        break;
+      case OFB_IPV4_DST::type():
+        nw_dst = item.value<OFB_IPV4_DST>();
+        nw_dst_mask.setAllOnes();
+        break;
+      case OFB_IPV4_DST::typeWithMask():
+        nw_dst = item.value<OFB_IPV4_DST>();
+        nw_dst_mask = item.mask<OFB_IPV4_DST>();
+        break;
+      case OFB_TCP_SRC::type():
+        tp_src = item.value<OFB_TCP_SRC>();
+        wc &= ~OFPFW_TP_SRC;
+        break;
+      case OFB_UDP_SRC::type():
+        tp_src = item.value<OFB_UDP_SRC>();
+        wc &= ~OFPFW_TP_SRC;
+        break;
+      case OFB_ICMPV4_TYPE::type():
+        tp_src = item.value<OFB_ICMPV4_TYPE>();
+        wc &= ~OFPFW_TP_SRC;
+        break;
+      case OFB_TCP_DST::type():
+        tp_dst = item.value<OFB_TCP_DST>();
+        wc &= ~OFPFW_TP_DST;
+        break;
+      case OFB_UDP_DST::type():
+        tp_dst = item.value<OFB_UDP_DST>();
+        wc &= ~OFPFW_TP_DST;
+        break;
+      case OFB_ICMPV4_CODE::type():
+        tp_dst = item.value<OFB_ICMPV4_CODE>();
+        wc &= ~OFPFW_TP_DST;
+        break;
+      case OFB_MPLS_LABEL::type():
+        mpls_label = item.value<OFB_MPLS_LABEL>();
+        wc &= ~OFPFW_MPLS_LABEL;
+        break;
+      case OFB_MPLS_TC::type():
+        mpls_tc = item.value<OFB_MPLS_TC>();
+        wc &= ~OFPFW_MPLS_TC;
+        break;
+      case OFB_METADATA::type():
+        metadata = item.value<OFB_METADATA>();
+        metadata_mask = ~0ULL;
+        break;
+      case OFB_METADATA::typeWithMask():
+        metadata = item.value<OFB_METADATA>();
+        metadata_mask = item.mask<OFB_METADATA>();
+        break;
+      default:
+        log::debug("StandardMatch: Unexpected oxm type.");
+        break;
     }
   }
   wildcards = wc;
@@ -162,7 +162,7 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
     dl_dst_mask.clear();
   }
 
-  dl_vlan = match.dl_vlan; // TODO(bfish) check flags
+  dl_vlan = match.dl_vlan;  // TODO(bfish) check flags
   dl_vlan_pcp = match.dl_vlan_pcp;
   dl_type = match.dl_type;
   nw_tos = match.nw_tos;
@@ -173,8 +173,8 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
   nw_dst_mask = match.nw_dst_mask();
   tp_src = match.tp_src;
   tp_dst = match.tp_dst;
-  mpls_label = 0; // must be wildcarded
-  mpls_tc = 0;    // must be wildcarded
+  mpls_label = 0;  // must be wildcarded
+  mpls_tc = 0;     // must be wildcarded
   metadata = 0;
   metadata_mask = 0;
 }
@@ -256,23 +256,24 @@ OXMList StandardMatch::toOXMList() const {
           "StandardMatch::toOXMList: OFPFW_TP_SRC is missing OFPFW_NW_PROTO.");
     } else {
       switch (nw_proto) {
-      case PROTOCOL_TCP:
-        list.add(OFB_TCP_SRC{tp_src});
-        break;
-      case PROTOCOL_UDP:
-        list.add(OFB_UDP_SRC{tp_src});
-        break;
-      case PROTOCOL_ICMP:
-        list.add(OFB_ICMPV4_TYPE{UInt8_narrow_cast(tp_src)});
-        break;
-      case PROTOCOL_SCTP:
-        list.add(OFB_SCTP_SRC{tp_src});
-        break;
-      default:
-        log::info("StandardMatch::toOXMList: OFPFW_TP_SRC has unsupported "
-                  "OFPFW_NW_PROTO:",
-                  nw_proto);
-        break;
+        case PROTOCOL_TCP:
+          list.add(OFB_TCP_SRC{tp_src});
+          break;
+        case PROTOCOL_UDP:
+          list.add(OFB_UDP_SRC{tp_src});
+          break;
+        case PROTOCOL_ICMP:
+          list.add(OFB_ICMPV4_TYPE{UInt8_narrow_cast(tp_src)});
+          break;
+        case PROTOCOL_SCTP:
+          list.add(OFB_SCTP_SRC{tp_src});
+          break;
+        default:
+          log::info(
+              "StandardMatch::toOXMList: OFPFW_TP_SRC has unsupported "
+              "OFPFW_NW_PROTO:",
+              nw_proto);
+          break;
       }
     }
   }
@@ -283,23 +284,24 @@ OXMList StandardMatch::toOXMList() const {
           "StandardMatch::toOXMList: OFPFW_TP_DST is missing OFPFW_NW_PROTO.");
     } else {
       switch (nw_proto) {
-      case PROTOCOL_TCP:
-        list.add(OFB_TCP_DST{tp_dst});
-        break;
-      case PROTOCOL_UDP:
-        list.add(OFB_UDP_DST{tp_dst});
-        break;
-      case PROTOCOL_ICMP:
-        list.add(OFB_ICMPV4_CODE{UInt8_narrow_cast(tp_dst)});
-        break;
-      case PROTOCOL_SCTP:
-        list.add(OFB_SCTP_DST{tp_dst});
-        break;
-      default:
-        log::info("StandardMatch::toOXMList: OFPFW_TP_DST has unsupported "
-                  "OFPFW_NW_PROTO:",
-                  nw_proto);
-        break;
+        case PROTOCOL_TCP:
+          list.add(OFB_TCP_DST{tp_dst});
+          break;
+        case PROTOCOL_UDP:
+          list.add(OFB_UDP_DST{tp_dst});
+          break;
+        case PROTOCOL_ICMP:
+          list.add(OFB_ICMPV4_CODE{UInt8_narrow_cast(tp_dst)});
+          break;
+        case PROTOCOL_SCTP:
+          list.add(OFB_SCTP_DST{tp_dst});
+          break;
+        default:
+          log::info(
+              "StandardMatch::toOXMList: OFPFW_TP_DST has unsupported "
+              "OFPFW_NW_PROTO:",
+              nw_proto);
+          break;
       }
     }
   }
@@ -315,10 +317,9 @@ OXMList StandardMatch::toOXMList() const {
   return list;
 }
 
-
 void StandardMatch::convertDatalinkARP(UInt32 wc, OXMList *list) const {
   assert(dl_type == DATALINK_ARP);
-  
+
   // nw_proto is ARP_OP (lower 8 bits)
   if (!(wc & OFPFW_NW_PROTO)) {
     list->add(OFB_ARP_OP{nw_proto});
@@ -343,5 +344,5 @@ void StandardMatch::convertDatalinkARP(UInt32 wc, OXMList *list) const {
   }
 }
 
-} // </namespace deprecated>
-} // </namespace ofp>
+}  // </namespace deprecated>
+}  // </namespace ofp>

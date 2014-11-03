@@ -28,7 +28,7 @@
 namespace ofp {
 
 class RoleRequest : public ProtocolMsg<RoleRequest, OFPT_ROLE_REQUEST, 24, 24> {
-public:
+ public:
   UInt32 role() const { return role_; }
   UInt64 generationId() const { return generationId_; }
 
@@ -36,7 +36,7 @@ public:
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big32 role_;
   Padding<4> pad_;
@@ -56,7 +56,7 @@ static_assert(IsTriviallyCopyable<RoleRequest>(),
               "Expected trivially copyable.");
 
 class RoleRequestBuilder {
-public:
+ public:
   RoleRequestBuilder() = default;
   explicit RoleRequestBuilder(const RoleRequest *msg);
 
@@ -67,7 +67,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   RoleRequest msg_;
 
   template <class T>

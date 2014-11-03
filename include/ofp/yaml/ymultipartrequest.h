@@ -50,7 +50,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MultipartRequest> {
-
   static void mapping(IO &io, ofp::MultipartRequest &msg) {
     using namespace ofp;
 
@@ -132,7 +131,6 @@ struct MappingTraits<ofp::MultipartRequest> {
 
 template <>
 struct MappingTraits<ofp::MultipartRequestBuilder> {
-
   static void mapping(IO &io, ofp::MultipartRequestBuilder &msg) {
     using namespace ofp;
 
@@ -200,7 +198,8 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         break;
       }
       case OFPMP_TABLE_FEATURES: {
-        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{
+            msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setRequestBody(seq.data(), seq.size());

@@ -40,8 +40,6 @@
 
 using namespace ofp;
 
-
-
 bool MultipartReply::validateInput(Validation *context) const {
   context->setLengthRemaining(replyBodySize());
 
@@ -49,37 +47,48 @@ bool MultipartReply::validateInput(Validation *context) const {
     case OFPMP_DESC:
       return context->validate<MPDesc>(replyBody(), OFP_VERSION_1);
     case OFPMP_FLOW:
-      return context->validateArrayVariableSize<MPFlowStatsReply>(replyBody(), OFP_VERSION_1);
+      return context->validateArrayVariableSize<MPFlowStatsReply>(
+          replyBody(), OFP_VERSION_1);
     case OFPMP_AGGREGATE:
-      return context->validate<MPAggregateStatsReply>(replyBody(), OFP_VERSION_1);
+      return context->validate<MPAggregateStatsReply>(replyBody(),
+                                                      OFP_VERSION_1);
     case OFPMP_TABLE:
-      return context->validateArrayFixedSize<MPTableStats>(replyBody(), OFP_VERSION_1);
+      return context->validateArrayFixedSize<MPTableStats>(replyBody(),
+                                                           OFP_VERSION_1);
     case OFPMP_PORT_STATS:
-      return context->validateArrayFixedSize<MPPortStats>(replyBody(), OFP_VERSION_1);
+      return context->validateArrayFixedSize<MPPortStats>(replyBody(),
+                                                          OFP_VERSION_1);
     case OFPMP_QUEUE:
-      return context->validateArrayFixedSize<MPQueueStats>(replyBody(), OFP_VERSION_1);
+      return context->validateArrayFixedSize<MPQueueStats>(replyBody(),
+                                                           OFP_VERSION_1);
     case OFPMP_GROUP:
-      return context->validateArrayVariableSize<MPGroupStats>(replyBody(), OFP_VERSION_2);
+      return context->validateArrayVariableSize<MPGroupStats>(replyBody(),
+                                                              OFP_VERSION_2);
     case OFPMP_GROUP_DESC:
-      return context->validateArrayVariableSize<MPGroupDesc>(replyBody(), OFP_VERSION_2);
+      return context->validateArrayVariableSize<MPGroupDesc>(replyBody(),
+                                                             OFP_VERSION_2);
     case OFPMP_GROUP_FEATURES:
       return context->validate<MPGroupFeatures>(replyBody(), OFP_VERSION_3);
     case OFPMP_METER:
-      return context->validateArrayVariableSize<MPMeterStats>(replyBody(), OFP_VERSION_4);
+      return context->validateArrayVariableSize<MPMeterStats>(replyBody(),
+                                                              OFP_VERSION_4);
     case OFPMP_METER_CONFIG:
-      return context->validateArrayVariableSize<MPMeterConfig>(replyBody(), OFP_VERSION_4);
+      return context->validateArrayVariableSize<MPMeterConfig>(replyBody(),
+                                                               OFP_VERSION_4);
     case OFPMP_METER_FEATURES:
       return context->validate<MPMeterFeatures>(replyBody(), OFP_VERSION_4);
     case OFPMP_TABLE_FEATURES:
-      return context->validateArrayVariableSize<MPTableFeatures>(replyBody(), OFP_VERSION_4);
+      return context->validateArrayVariableSize<MPTableFeatures>(replyBody(),
+                                                                 OFP_VERSION_4);
     case OFPMP_PORT_DESC:
       return context->validateArrayFixedSize<Port>(replyBody(), OFP_VERSION_4);
     case OFPMP_EXPERIMENTER:
-      return context->validate<MPExperimenter>(replyBody(), OFP_VERSION_1, false);
+      return context->validate<MPExperimenter>(replyBody(), OFP_VERSION_1,
+                                               false);
   }
 
   context->multipartTypeIsNotSupported();
-  
+
   return false;
 }
 
@@ -111,4 +120,3 @@ UInt32 MultipartReplyBuilder::send(Writable *channel) {
 
   return xid;
 }
-

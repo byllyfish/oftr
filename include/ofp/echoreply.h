@@ -29,12 +29,12 @@ namespace ofp {
 
 class EchoReply
     : public ProtocolMsg<EchoReply, OFPT_ECHO_REPLY, 8, 65535, false> {
-public:
+ public:
   ByteRange echoData() const;
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
 
   // Only EchoReplyBuilder can construct an instance.
@@ -44,14 +44,14 @@ private:
 };
 
 class EchoReplyBuilder {
-public:
+ public:
   explicit EchoReplyBuilder(UInt32 xid);
 
   void setEchoData(const void *data, size_t length) { data_.set(data, length); }
 
   void send(Writable *channel);
 
-private:
+ private:
   EchoReply msg_;
   ByteList data_;
 };

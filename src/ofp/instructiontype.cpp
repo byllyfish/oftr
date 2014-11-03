@@ -14,22 +14,22 @@ static const InstructionTypeInfo sInstructionInfo[] = {
 };
 
 bool InstructionType::parse(const std::string &s) {
-    for (unsigned i = 0; i < ArrayLength(sInstructionInfo); ++i) {
-        if (s == sInstructionInfo[i].name) {
-            type_ = sInstructionInfo[i].type.type_;
-            return true;
-        }
+  for (unsigned i = 0; i < ArrayLength(sInstructionInfo); ++i) {
+    if (s == sInstructionInfo[i].name) {
+      type_ = sInstructionInfo[i].type.type_;
+      return true;
     }
-    return false;
+  }
+  return false;
 }
 
 const InstructionTypeInfo *InstructionType::lookupInfo() const {
-    InstructionType desiredValue = *this;
-    for (unsigned i = 0; i < ArrayLength(sInstructionInfo); ++i) {
-        if (desiredValue == sInstructionInfo[i].type) {
-            return &sInstructionInfo[i];
-        }
+  InstructionType desiredValue = *this;
+  for (unsigned i = 0; i < ArrayLength(sInstructionInfo); ++i) {
+    if (desiredValue == sInstructionInfo[i].type) {
+      return &sInstructionInfo[i];
     }
-    
-    return nullptr;
+  }
+
+  return nullptr;
 }

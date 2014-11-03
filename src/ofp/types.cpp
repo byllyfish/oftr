@@ -45,7 +45,8 @@ inline char ToHexLowerCase(UInt8 value) {
 namespace ofp {
 
 template <size_t Length>
-std::string RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data) {
+std::string RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, Length> &data) {
   // Output is lower-case hexadecimal and delimited by ':'.
   const UInt8 *e = data.data();
   const size_t bufLen = 2 * Length + Length - 1;
@@ -55,9 +56,9 @@ std::string RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data
   *p++ = ToHexLowerCase(*e >> 4);
   *p++ = ToHexLowerCase(*e++ & 0x0F);
   for (unsigned i = 0; i < Length - 1; ++i) {
-      *p++ = ':';
-      *p++ = ToHexLowerCase(*e >> 4);
-      *p++ = ToHexLowerCase(*e++ & 0x0F);
+    *p++ = ':';
+    *p++ = ToHexLowerCase(*e >> 4);
+    *p++ = ToHexLowerCase(*e++ & 0x0F);
   }
 
   return std::string(buf, bufLen);
@@ -65,8 +66,8 @@ std::string RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data
 
 }  // namespace ofp
 
-
-template std::string ofp::RawDataToHexDelimitedLowercase(const std::array<UInt8,8U> &);
+template std::string ofp::RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, 8U> &);
 
 std::string ofp::RawDataToHex(const void *data, size_t len) {
   std::string result;
@@ -124,8 +125,7 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen,
         idx = 0;
         assert(ch[0] < 16 && ch[1] < 16);
         *out++ = UInt8_narrow_cast((ch[0] << 4) | ch[1]);
-        if (out >= end)
-          break;
+        if (out >= end) break;
       }
     } else if (!nonhex && !std::isspace(*inp)) {
       // Ignore space characters when checking for non-hexadecimal values.
@@ -167,8 +167,7 @@ std::string ofp::HexToRawData(const std::string &hex) {
 bool ofp::IsMemFilled(const void *data, size_t len, char ch) {
   const UInt8 *p = static_cast<const UInt8 *>(data);
   while (len-- > 0) {
-    if (*p++ != UInt8_cast(ch))
-      return false;
+    if (*p++ != UInt8_cast(ch)) return false;
   }
   return true;
 }

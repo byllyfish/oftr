@@ -44,7 +44,7 @@ static_assert(IsStandardLayout<InstructionHeaderWithPadding>(),
 }  // namespace detail
 
 class IT_GOTO_TABLE {
-public:
+ public:
   constexpr static InstructionType type() {
     return InstructionType{OFPIT_GOTO_TABLE};
   }
@@ -54,7 +54,7 @@ public:
   UInt8 tableId() const { return tableId_; }
   void setTableId(UInt8 tableId) { tableId_ = tableId; }
 
-private:
+ private:
   InstructionType type_ = type();
   Big16 length_{8};
   Big8 tableId_;
@@ -65,7 +65,7 @@ private:
 };
 
 class IT_WRITE_METADATA {
-public:
+ public:
   constexpr static InstructionType type() {
     return InstructionType{OFPIT_WRITE_METADATA};
   }
@@ -76,7 +76,7 @@ public:
   constexpr UInt64 metadata() const { return metadata_; }
   constexpr UInt64 mask() const { return mask_; }
 
-private:
+ private:
   InstructionType type_ = type();
   Big16 length_{24};
   Padding<4> pad_;
@@ -93,17 +93,11 @@ namespace detail {
 
 template <OFPInstructionType InstrType>
 class IT_WithActions {
-public:
-  enum : bool {
-    VariableSize = true
-  };
-  enum : size_t {
-    HeaderSize = 8
-  };
+ public:
+  enum : bool { VariableSize = true };
+  enum : size_t { HeaderSize = 8 };
 
-  constexpr static InstructionType type() {
-    return InstructionType{InstrType};
-  }
+  constexpr static InstructionType type() { return InstructionType{InstrType}; }
 
   explicit IT_WithActions(ActionList *actions)
       : length_{UInt16_narrow_cast(HeaderSize + actions->size())},
@@ -119,21 +113,18 @@ public:
   }
 
   bool validateInput(Validation *context) const {
-    if (length_ < SizeWithoutActions)
-      return false;
+    if (length_ < SizeWithoutActions) return false;
     ActionRange actions = dataRange();
     return actions.validateInput(context);
   }
 
-private:
+ private:
   InstructionType type_ = type();
   Big16 length_;
   Padding<4> pad_;
-  ActionList *actions_; // FIXME - use ActionRange?
+  ActionList *actions_;  // FIXME - use ActionRange?
 
-  enum : size_t {
-    SizeWithoutActions = 8
-  };
+  enum : size_t { SizeWithoutActions = 8 };
   // friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>>;
   // friend struct llvm::yaml::MappingTraits<IT_WithActions<InstrType>*>;
 };
@@ -144,14 +135,14 @@ using IT_WRITE_ACTIONS = detail::IT_WithActions<OFPIT_WRITE_ACTIONS>;
 using IT_APPLY_ACTIONS = detail::IT_WithActions<OFPIT_APPLY_ACTIONS>;
 
 class IT_CLEAR_ACTIONS {
-public:
+ public:
   constexpr static InstructionType type() {
     return InstructionType{OFPIT_CLEAR_ACTIONS};
   }
 
   constexpr IT_CLEAR_ACTIONS() {}
 
-private:
+ private:
   InstructionType type_ = type();
   Big16 length_{8};
   Padding<4> pad_;
@@ -161,7 +152,7 @@ private:
 };
 
 class IT_METER {
-public:
+ public:
   constexpr static InstructionType type() {
     return InstructionType{OFPIT_METER};
   }
@@ -170,7 +161,7 @@ public:
 
   constexpr UInt32 meter() const { return meter_; }
 
-private:
+ private:
   InstructionType type_ = type();
   Big16 length_{8};
   Big32 meter_;
@@ -180,7 +171,7 @@ private:
 };
 
 class IT_EXPERIMENTER {
-public:
+ public:
   constexpr static InstructionType type() {
     return InstructionType{OFPIT_EXPERIMENTER};
   }
@@ -190,7 +181,7 @@ public:
 
   constexpr UInt32 experimenterId() const { return experimenterId_; }
 
-private:
+ private:
   InstructionType type_ = type();
   Big16 length_{8};
   Big32 experimenterId_;

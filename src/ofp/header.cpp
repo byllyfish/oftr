@@ -24,8 +24,7 @@
 
 using namespace ofp;
 
-static UInt8 MaxTypeByVersion[] = {0,
-                                   UInt8_cast(deprecated::v1::OFPT_LAST),
+static UInt8 MaxTypeByVersion[] = {0, UInt8_cast(deprecated::v1::OFPT_LAST),
                                    UInt8_cast(deprecated::v2::OFPT_LAST),
                                    UInt8_cast(deprecated::v3::OFPT_LAST),
                                    UInt8_cast(OFPT_LAST)};
@@ -67,19 +66,16 @@ static OFPType translateTypeFromVersion(UInt8 type, UInt8 version) {
 }
 
 OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
-  if (version == 0)
-    return OFPT_UNSUPPORTED;
+  if (version == 0) return OFPT_UNSUPPORTED;
 
-  if (version == newVersion)
-    return OFPType(type);
+  if (version == newVersion) return OFPType(type);
 
   assert(version == OFP_VERSION_4 || newVersion == OFP_VERSION_4);
 
   if (version > OFP_VERSION_4 || newVersion > OFP_VERSION_4)
     return OFPType(type);
 
-  if (type <= OFPT_FLOW_MOD)
-    return OFPType(type);
+  if (type <= OFPT_FLOW_MOD) return OFPType(type);
 
   if (version == OFP_VERSION_4) {
     return translateTypeToVersion(type, newVersion);
@@ -92,8 +88,7 @@ OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
   }
 }
 
-bool Header::validateInput(UInt8 negotiatedVersion) const
-{
+bool Header::validateInput(UInt8 negotiatedVersion) const {
   // Check length field of the header. Since length includes header, it can't
   // be smaller than 8 bytes.
 
@@ -125,7 +120,7 @@ bool Header::validateInput(UInt8 negotiatedVersion) const
   return true;
 }
 
-/// Return true if `version, type` pair is valid. e.g. There is no v1 
+/// Return true if `version, type` pair is valid. e.g. There is no v1
 /// OFPT_METER_MOD so (1, OFPT_METER_MOD) returns false.
 bool Header::validateVersionAndType() const {
   // We permit version 0 for OFPT_HELLO and OFPT_ERROR messages only. (Allowed

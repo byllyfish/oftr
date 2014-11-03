@@ -35,4 +35,4 @@ using MeterBandRange = ProtocolRange<MeterBandIterator>;
 
 }  // namespace ofp
 
-#endif // OFP_METERBANDRANGE_H_
+#endif  // OFP_METERBANDRANGE_H_

@@ -38,7 +38,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::EchoRequest> {
-
   static void mapping(IO &io, ofp::EchoRequest &msg) {
     ofp::ByteRange data = msg.echoData();
     io.mapRequired("data", data);
@@ -47,7 +46,6 @@ struct MappingTraits<ofp::EchoRequest> {
 
 template <>
 struct MappingTraits<ofp::EchoRequestBuilder> {
-
   static void mapping(IO &io, ofp::EchoRequestBuilder &msg) {
     ofp::ByteList data;
     io.mapRequired("data", data);
@@ -63,7 +61,6 @@ struct MappingTraits<ofp::EchoRequestBuilder> {
 
 template <>
 struct MappingTraits<ofp::EchoReply> {
-
   static void mapping(IO &io, ofp::EchoReply &msg) {
     ofp::ByteRange data = msg.echoData();
     io.mapRequired("data", data);
@@ -72,7 +69,6 @@ struct MappingTraits<ofp::EchoReply> {
 
 template <>
 struct MappingTraits<ofp::EchoReplyBuilder> {
-
   static void mapping(IO &io, ofp::EchoReplyBuilder &msg) {
     ofp::ByteList data;
     io.mapRequired("data", data);

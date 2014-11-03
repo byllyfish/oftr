@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the MappingTraits for MPQueueStatsRequest and 
+/// \brief Defines the MappingTraits for MPQueueStatsRequest and
 /// MPQueueStatsRequestBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -30,7 +30,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPQueueStatsRequest> {
-
   static void mapping(IO &io, ofp::MPQueueStatsRequest &body) {
     io.mapRequired("port_no", body.portNo_);
     io.mapRequired("queue_id", body.queueId_);
@@ -39,7 +38,6 @@ struct MappingTraits<ofp::MPQueueStatsRequest> {
 
 template <>
 struct MappingTraits<ofp::MPQueueStatsRequestBuilder> {
-
   static void mapping(IO &io, ofp::MPQueueStatsRequestBuilder &msg) {
     io.mapRequired("port_no", msg.msg_.portNo_);
     io.mapRequired("queue_id", msg.msg_.queueId_);

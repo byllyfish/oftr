@@ -39,7 +39,8 @@ struct MappingTraits<ofp::Queue> {
     io.mapRequired("min_rate", minRate);
     io.mapRequired("max_rate", maxRate);
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::QueuePropertyRange>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::QueuePropertyRange>(props));
   }
 };
 
@@ -61,7 +62,8 @@ struct MappingTraits<ofp::QueueBuilder> {
     props.add(QueuePropertyMaxRate{maxRate});
 
     PropertyList &p = props;
-    ofp::detail::QueuePropertyList &qp = Ref_cast<ofp::detail::QueuePropertyList>(p);
+    ofp::detail::QueuePropertyList &qp =
+        Ref_cast<ofp::detail::QueuePropertyList>(p);
     io.mapOptional("properties", qp);
     msg.setProperties(props.toRange());
   }
@@ -87,30 +89,22 @@ struct SequenceTraits<ofp::QueueRange> {
     return range.begin();
   }
 
-  static iterator end(IO &io, ofp::QueueRange &range) {
-    return range.end();
-  }
+  static iterator end(IO &io, ofp::QueueRange &range) { return range.end(); }
 
-  static void next(iterator &iter, iterator iterEnd) {
-    ++iter;
-  }
+  static void next(iterator &iter, iterator iterEnd) { ++iter; }
 };
 
 template <>
 struct SequenceTraits<ofp::QueueList> {
-
   static size_t size(IO &io, ofp::QueueList &list) { return 0; }
 
   static ofp::detail::QueueInserter &element(IO &io, ofp::QueueList &list,
-                                            size_t index) {
+                                             size_t index) {
     return Ref_cast<ofp::detail::QueueInserter>(list);
   }
 };
 
-
-
-
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YQUEUE_
+#endif  // OFP_YAML_YQUEUE_

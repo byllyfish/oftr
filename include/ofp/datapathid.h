@@ -30,10 +30,8 @@
 namespace ofp {
 
 class DatapathID {
-public:
-  enum {
-    Length = 8
-  };
+ public:
+  enum { Length = 8 };
 
   using ArrayType = std::array<UInt8, Length>;
 
@@ -55,7 +53,7 @@ public:
   bool operator==(const DatapathID &rhs) const { return dpid_ == rhs.dpid_; }
   bool operator!=(const DatapathID &rhs) const { return !operator==(rhs); }
 
-private:
+ private:
   ArrayType dpid_;
 
   UInt64 toUInt64() const { return *reinterpret_cast<const UInt64 *>(&dpid_); }

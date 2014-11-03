@@ -23,7 +23,7 @@ struct MappingTraits<ofp::MeterBandIterator::Element> {
     io.mapRequired("type", meterType);
 
     switch (meterType) {
-      case MeterBandDrop::type() : {
+      case MeterBandDrop::type(): {
         auto p = elem.meterBand<MeterBandDrop>();
         UInt32 rate = p.rate();
         UInt32 burstSize = p.burstSize();
@@ -31,7 +31,7 @@ struct MappingTraits<ofp::MeterBandIterator::Element> {
         io.mapRequired("burst_size", burstSize);
         break;
       }
-      case MeterBandDscpRemark::type() : {
+      case MeterBandDscpRemark::type(): {
         auto p = elem.meterBand<MeterBandDscpRemark>();
         UInt32 rate = p.rate();
         UInt32 burstSize = p.burstSize();
@@ -41,7 +41,7 @@ struct MappingTraits<ofp::MeterBandIterator::Element> {
         io.mapRequired("prec_level", precLevel);
         break;
       }
-      case MeterBandExperimenter::type() : {
+      case MeterBandExperimenter::type(): {
         auto p = elem.meterBand<MeterBandExperimenter>();
         UInt32 rate = p.rate();
         UInt32 burstSize = p.burstSize();
@@ -68,14 +68,14 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
     io.mapRequired("type", meterType);
 
     switch (meterType) {
-      case MeterBandDrop::type() : {
+      case MeterBandDrop::type(): {
         UInt32 rate, burstSize;
         io.mapRequired("rate", rate);
         io.mapRequired("burst_size", burstSize);
         list.add(MeterBandDrop{rate, burstSize});
         break;
       }
-      case MeterBandDscpRemark::type() : {
+      case MeterBandDscpRemark::type(): {
         UInt32 rate, burstSize;
         UInt8 precLevel;
         io.mapRequired("rate", rate);
@@ -84,7 +84,7 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
         list.add(MeterBandDscpRemark{rate, burstSize, precLevel});
         break;
       }
-      case MeterBandExperimenter::type() : {
+      case MeterBandExperimenter::type(): {
         UInt32 rate, burstSize, experimenter;
         io.mapRequired("rate", rate);
         io.mapRequired("burst_size", burstSize);
@@ -98,7 +98,6 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
   }
 };
 
-
 template <>
 struct SequenceTraits<ofp::MeterBandRange> {
   using iterator = ofp::MeterBandIterator;
@@ -111,9 +110,7 @@ struct SequenceTraits<ofp::MeterBandRange> {
     return range.end();
   }
 
-  static void next(iterator &iter, iterator iterEnd) {
-    ++iter;
-  }
+  static void next(iterator &iter, iterator iterEnd) { ++iter; }
 };
 
 template <>

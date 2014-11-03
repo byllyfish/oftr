@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the MappingTraits for MPPortStatsRequest and 
+/// \brief Defines the MappingTraits for MPPortStatsRequest and
 /// MPPortStatsRequestBuilder.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -30,7 +30,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPPortStatsRequest> {
-
   static void mapping(IO &io, ofp::MPPortStatsRequest &body) {
     io.mapRequired("port_no", body.portNo_);
   }
@@ -38,7 +37,6 @@ struct MappingTraits<ofp::MPPortStatsRequest> {
 
 template <>
 struct MappingTraits<ofp::MPPortStatsRequestBuilder> {
-
   static void mapping(IO &io, ofp::MPPortStatsRequestBuilder &msg) {
     io.mapRequired("port_no", msg.msg_.portNo_);
   }

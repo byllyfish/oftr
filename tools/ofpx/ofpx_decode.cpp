@@ -9,13 +9,12 @@ using namespace ofpx;
 using ofp::UInt8;
 using ExitStatus = Decode::ExitStatus;
 
-// Compare two buffers and return offset of the byte that differs. If buffers 
+// Compare two buffers and return offset of the byte that differs. If buffers
 // are identical, return `size`.
 //
 static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
   for (size_t i = 0; i < size; ++i) {
-    if (lhs[i] != rhs[i])
-      return i;
+    if (lhs[i] != rhs[i]) return i;
   }
   return size;
 }
@@ -52,7 +51,6 @@ ExitStatus Decode::decodeFiles() {
   return ExitStatus::Success;
 }
 
-
 //---------------------//
 // d e c o d e F i l e //
 //---------------------//
@@ -81,7 +79,6 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
 
   return result;
 }
-
 
 //-----------------------------//
 // d e c o d e M e s s a g e s //
@@ -118,7 +115,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
     }
 
     // Save a copy of the original message binary before we transmogrify it
-    // for parsing. After we decode the message, we'll re-encode it and 
+    // for parsing. After we decode the message, we'll re-encode it and
     // compare it to this original.
 
     originalMessage.assign(message);
@@ -133,12 +130,12 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   return ExitStatus::Success;
 }
 
-
 //---------------------//
 // c h e c k E r r o r //
 //---------------------//
 
-ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen, bool header) {
+ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
+                              bool header) {
   assert(!input);
 
   if (!input.eof()) {
@@ -149,7 +146,8 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen, bool
     // EOF and insufficient input remaining. N.B. Zero bytes of header read at
     // EOF is a normal exit condition.
     const char *what = header ? "header" : "body";
-    std::cerr << "Error: Only " << input.gcount() << " bytes read of " << what << '\n';
+    std::cerr << "Error: Only " << input.gcount() << " bytes read of " << what
+              << '\n';
     return ExitStatus::MessageReadFailed;
   } else {
     // EOF and everything is good.
@@ -157,17 +155,17 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen, bool
   }
 }
 
-
 //---------------------------------//
 // d e c o d e O n e M e s s a g e //
 //---------------------------------//
 
-ExitStatus Decode::decodeOneMessage(const ofp::Message *message, const ofp::Message *originalMessage) {
+ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
+                                    const ofp::Message *originalMessage) {
   ofp::yaml::Decoder decoder{message, json_};
 
   if (!decoder.error().empty()) {
     // An error occurred in decoding the message.
-    
+
     if (invertCheck_) {
       // We're expecting invalid data -- report no error and continue.
       return ExitStatus::Success;
@@ -182,9 +180,10 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message, const ofp::Mess
   if (invertCheck_) {
     // There was no problem decoding the message, but we are expecting the data
     // to be invalid. Report this as an error.
-    
+
     std::cerr << "Filename: " << currentFilename_ << '\n';
-    std::cerr << "Error: Decode succeeded when --invert-check flag is specified.\n";
+    std::cerr
+        << "Error: Decode succeeded when --invert-check flag is specified.\n";
     std::cerr << *originalMessage << '\n';
     return ExitStatus::DecodeSucceeded;
   }
@@ -197,30 +196,38 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message, const ofp::Mess
   }
 
   if (verifyOutput_) {
-    // Double-check the result by re-encoding the YAML message. We should obtain 
-    // the original message contents. If there is a difference, report the error.
+    // Double-check the result by re-encoding the YAML message. We should obtain
+    // the original message contents. If there is a difference, report the
+    // error.
 
     ofp::yaml::Encoder encoder{decoder.result(), false};
 
     if (!encoder.error().empty()) {
-      std::cerr << "Error: Decode succeeded but encode failed: " << encoder.error() << '\n';
+      std::cerr << "Error: Decode succeeded but encode failed: "
+                << encoder.error() << '\n';
       return ExitStatus::VerifyOutputFailed;
     }
 
     if (encoder.size() != originalMessage->size()) {
-      std::cerr << "Error: Encode yielded different size data: " << encoder.size() << " vs. " << originalMessage->size() << '\n' << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
+      std::cerr << "Error: Encode yielded different size data: "
+                << encoder.size() << " vs. " << originalMessage->size() << '\n'
+                << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n'
+                << ofp::RawDataToHex(originalMessage->data(),
+                                     originalMessage->size()) << '\n';
       return ExitStatus::VerifyOutputFailed;
 
-    } else if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
-      size_t diffOffset = findDiffOffset(originalMessage->data(), encoder.data(), encoder.size());
-      std::cerr << "Error: Encode yielded different data at byte offset " << diffOffset << ":\n" << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n' << ofp::RawDataToHex(originalMessage->data(), originalMessage->size()) << '\n';
+    } else if (std::memcmp(originalMessage->data(), encoder.data(),
+                           encoder.size()) != 0) {
+      size_t diffOffset = findDiffOffset(originalMessage->data(),
+                                         encoder.data(), encoder.size());
+      std::cerr << "Error: Encode yielded different data at byte offset "
+                << diffOffset << ":\n"
+                << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n'
+                << ofp::RawDataToHex(originalMessage->data(),
+                                     originalMessage->size()) << '\n';
       return ExitStatus::VerifyOutputFailed;
     }
   }
 
   return ExitStatus::Success;
 }
-
-
-
-

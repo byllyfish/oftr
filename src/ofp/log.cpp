@@ -65,10 +65,10 @@ const char *levelToString(Level level) {
 }
 
 #ifndef NDEBUG
- const Level kDefaultLevel = Level::Debug;
+const Level kDefaultLevel = Level::Debug;
 #else
- const Level kDefaultLevel = Level::Info;
-#endif 
+const Level kDefaultLevel = Level::Info;
+#endif
 
 namespace detail {
 
@@ -103,7 +103,8 @@ void setOutputStream(std::ostream *outputStream) {
   setOutputCallback(streamOutputCallback, outputStream);
 }
 
-static void trace1(const char *type, UInt64 id, const void *data, size_t length) {
+static void trace1(const char *type, UInt64 id, const void *data,
+                   size_t length) {
   if (length < sizeof(Header)) {
     detail::write_(Level::Trace, type, length, "Invalid Data:",
                    RawDataToHex(data, length));
@@ -116,17 +117,18 @@ static void trace1(const char *type, UInt64 id, const void *data, size_t length)
   yaml::Decoder decoder{&message};
 
   if (decoder.error().empty()) {
-    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("connid", id), '\n', decoder.result(),
+    detail::write_(Level::Trace, type, length, "bytes",
+                   std::make_pair("connid", id), '\n', decoder.result(),
                    RawDataToHex(data, length));
   } else {
-    detail::write_(Level::Trace, type, length, "bytes", std::make_pair("connid", id), '\n', decoder.error(),
+    detail::write_(Level::Trace, type, length, "bytes",
+                   std::make_pair("connid", id), '\n', decoder.error(),
                    RawDataToHex(data, length));
   }
 }
 
 void trace(const char *type, UInt64 id, const void *data, size_t length) {
-  if (Level::Trace < detail::GlobalOutputLevelFilter)
-    return;
+  if (Level::Trace < detail::GlobalOutputLevelFilter) return;
 
   // The memory buffer may contain multiple messages. We need to log each one
   // separately.

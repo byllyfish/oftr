@@ -30,7 +30,7 @@ namespace ofp {
 struct ActionTypeInfo;
 
 class ActionType {
-public:
+ public:
   constexpr ActionType() : value32_{0} {}
 
   constexpr ActionType(OFPActionType type, UInt16 length)
@@ -53,13 +53,17 @@ public:
 
   constexpr UInt32 nativeType() const { return BigEndianToNative(value32_); }
 
-  constexpr ActionType zeroLength() const { return BigEndianFromNative(nativeType() & 0xffff0000U); }
+  constexpr ActionType zeroLength() const {
+    return BigEndianFromNative(nativeType() & 0xffff0000U);
+  }
 
   const ActionTypeInfo *lookupInfo() const;
   bool parse(const std::string &s);
-  void setNative(UInt16 type) { value32_ = BigEndianFromNative(UInt32_cast(type) << 16); }
+  void setNative(UInt16 type) {
+    value32_ = BigEndianFromNative(UInt32_cast(type) << 16);
+  }
 
-private:
+ private:
   UInt32 value32_;
 
   constexpr ActionType(UInt32 value) : value32_{value} {}

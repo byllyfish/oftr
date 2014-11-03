@@ -28,7 +28,7 @@
 namespace ofp {
 
 class Header {
-public:
+ public:
   explicit Header(OFPType type) : type_{type} {}
 
   UInt8 version() const { return version_; }
@@ -51,11 +51,11 @@ public:
   bool validateInput(UInt8 negotiatedVersion) const;
   bool validateVersionAndType() const;
 
-private:
-  Big8 version_ = 0; // OFP_VERSION.
-  OFPType type_;     // One of the OFPT_ constants.
-  Big16 length_ = 0; // Length including this ofp_header.
-  Big32 xid_ = 0;    // Transaction id for this packet.
+ private:
+  Big8 version_ = 0;  // OFP_VERSION.
+  OFPType type_;      // One of the OFPT_ constants.
+  Big16 length_ = 0;  // Length including this ofp_header.
+  Big32 xid_ = 0;     // Transaction id for this packet.
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;

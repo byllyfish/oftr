@@ -43,7 +43,7 @@ std::string validUtf8String(const char *b, const char *e);
 /// \remarks Binary representation is standard layout and trivially copyable.
 template <size_t Size>
 class SmallCString {
-public:
+ public:
   using ArrayType = std::array<char, Size>;
 
   constexpr SmallCString() : str_{} {}
@@ -67,12 +67,13 @@ public:
   void operator=(const std::string &s);
   void operator=(const char *cstr);
 
-private:
+ private:
   ArrayType str_;
 };
 
-//template <size_t Size>
-//bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size> &rhs);
+// template <size_t Size>
+// bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size>
+// &rhs);
 
 template <size_t Size>
 inline bool operator==(const SmallCString<Size> &lhs,

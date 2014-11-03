@@ -8,46 +8,45 @@ namespace ofp {
 class Writable;
 
 class MPMeterConfig {
-public:
-    enum { MPVariableSizeOffset = 0 };
-    
-    UInt16 flags() const { return flags_; }
-    UInt32 meterId() const { return meterId_; }
+ public:
+  enum { MPVariableSizeOffset = 0 };
 
-    MeterBandRange bands() const;
-    
-    bool validateInput(Validation *context) const;
-    
-private:
-    Big16 length_;
-    Big16 flags_;
-    Big32 meterId_;
+  UInt16 flags() const { return flags_; }
+  UInt32 meterId() const { return meterId_; }
 
-    friend class MPMeterConfigBuilder;
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  MeterBandRange bands() const;
+
+  bool validateInput(Validation *context) const;
+
+ private:
+  Big16 length_;
+  Big16 flags_;
+  Big32 meterId_;
+
+  friend class MPMeterConfigBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(MPMeterConfig) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<MPMeterConfig>(), "Expected standard layout.");
 
 class MPMeterConfigBuilder {
-public:
+ public:
+  void setFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
 
-    void setFlags(UInt16 flags) { msg_.flags_ = flags; }
-    void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
+  void write(Writable *channel);
+  void reset() { bands_.clear(); }
 
-    void write(Writable *channel);
-    void reset() { bands_.clear(); }
+ private:
+  MPMeterConfig msg_;
+  MeterBandList bands_;
 
-private:
-    MPMeterConfig msg_;
-    MeterBandList bands_;
-
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp
 
-#endif // OFP_MPMETERCONFIG_H_
+#endif  // OFP_MPMETERCONFIG_H_

@@ -28,13 +28,13 @@
 namespace ofp {
 
 class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16, 16> {
-public:
+ public:
   UInt8 tableId() const { return tableId_; }
   UInt32 config() const { return config_; }
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big8 tableId_;
   Padding<3> pad_;
@@ -53,7 +53,7 @@ static_assert(IsStandardLayout<TableMod>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<TableMod>(), "Expected trivially copyable.");
 
 class TableModBuilder {
-public:
+ public:
   TableModBuilder() = default;
   explicit TableModBuilder(const TableMod *msg);
 
@@ -62,7 +62,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   TableMod msg_;
 
   template <class T>

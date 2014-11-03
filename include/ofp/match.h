@@ -28,7 +28,7 @@
 namespace ofp {
 
 class Match {
-public:
+ public:
   Match() = default;
   explicit Match(const MatchHeader *matchHeader);
 
@@ -42,7 +42,7 @@ public:
 
   OXMRange toRange() const { return oxm_.toRange(); }
 
-private:
+ private:
   OXMList oxm_;
 };
 

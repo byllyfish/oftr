@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MPPortStats and MPPortStatsBuilder classes.
@@ -31,7 +31,7 @@ class Writable;
 class Validation;
 
 class MPPortStats {
-public:
+ public:
   MPPortStats() = default;
 
   UInt32 portNo() const { return portNo_; }
@@ -39,7 +39,7 @@ public:
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Big32 portNo_;
   Padding<4> pad_;
   Big64 rxPackets_;
@@ -66,13 +66,13 @@ static_assert(sizeof(MPPortStats) == 112, "Unexpected size.");
 static_assert(IsStandardLayout<MPPortStats>(), "Expected standard layout.");
 
 class MPPortStatsBuilder {
-public:
+ public:
   MPPortStatsBuilder() = default;
 
   void write(Writable *channel);
   void reset() {}
-  
-private:
+
+ private:
   MPPortStats msg_;
 
   template <class T>

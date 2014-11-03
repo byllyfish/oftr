@@ -30,7 +30,7 @@ namespace ofp {
 /// \brief Implements immutable Experimenter protocol message.
 class Experimenter
     : public ProtocolMsg<Experimenter, OFPT_EXPERIMENTER, 16, 65535, false> {
-public:
+ public:
   UInt32 experimenter() const { return experimenter_; }
 
   UInt32 expType() const { return expType_; }
@@ -39,7 +39,7 @@ public:
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big32 experimenter_;
   Big32 expType_;
@@ -57,7 +57,7 @@ static_assert(IsTriviallyCopyable<Experimenter>(),
 
 /// \brief Implements Experimenter protocol message builder.
 class ExperimenterBuilder {
-public:
+ public:
   ExperimenterBuilder() {}
 
   explicit ExperimenterBuilder(const Experimenter *msg);
@@ -72,7 +72,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   Experimenter msg_;
   ByteList data_;
 };

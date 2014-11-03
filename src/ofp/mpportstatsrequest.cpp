@@ -6,8 +6,9 @@
 using ofp::MPPortStatsRequest;
 using ofp::MPPortStatsRequestBuilder;
 
-const MPPortStatsRequest *MPPortStatsRequest::cast(const MultipartRequest *req) {
-    return req->body_cast<MPPortStatsRequest>();
+const MPPortStatsRequest *MPPortStatsRequest::cast(
+    const MultipartRequest *req) {
+  return req->body_cast<MPPortStatsRequest>();
 }
 
 bool MPPortStatsRequest::validateInput(Validation *context) const {
@@ -21,19 +22,19 @@ bool MPPortStatsRequest::validateInput(Validation *context) const {
 }
 
 void MPPortStatsRequestBuilder::write(Writable *channel) {
-    UInt8 version = channel->version();
+  UInt8 version = channel->version();
 
-    if (version == OFP_VERSION_1) {
-        struct {
-            Big16 portNo;
-            Padding<6> pad;
-        } p;
-        p.portNo = UInt16_narrow_cast(msg_.portNo_);
+  if (version == OFP_VERSION_1) {
+    struct {
+      Big16 portNo;
+      Padding<6> pad;
+    } p;
+    p.portNo = UInt16_narrow_cast(msg_.portNo_);
 
-        channel->write(&p, sizeof(p));
-    } else {
-        channel->write(&msg_, sizeof(msg_));
-    }
+    channel->write(&p, sizeof(p));
+  } else {
+    channel->write(&msg_, sizeof(msg_));
+  }
 
-    channel->flush();
+  channel->flush();
 }

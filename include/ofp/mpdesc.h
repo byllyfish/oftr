@@ -40,17 +40,16 @@ class MPDesc {
   bool validateInput(Validation *context) const;
 
  private:
-  DescriptionStr mfrDesc_{};         // Manufacturer description
-  DescriptionStr hwDesc_{};          // Hardware description
-  DescriptionStr swDesc_{};          // Software description
-  SerialNumberStr serialNum_{};      // Serial number
-  DescriptionStr dpDesc_{};          // Human readable description of datapath
+  DescriptionStr mfrDesc_{};     // Manufacturer description
+  DescriptionStr hwDesc_{};      // Hardware description
+  DescriptionStr swDesc_{};      // Software description
+  SerialNumberStr serialNum_{};  // Serial number
+  DescriptionStr dpDesc_{};      // Human readable description of datapath
 
   friend class MPDescBuilder;
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };
-
 
 static_assert(sizeof(MPDesc) == 1056, "Unexpected size.");
 static_assert(IsStandardLayout<MPDesc>(), "Expected standard layout.");

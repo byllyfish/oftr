@@ -34,7 +34,7 @@ class MultipartRequest;
 class Validation;
 
 class MPFlowStatsRequest {
-public:
+ public:
   static const MPFlowStatsRequest *cast(const MultipartRequest *req);
 
   MPFlowStatsRequest() = default;
@@ -49,7 +49,7 @@ public:
 
   bool validateInput(Validation *context) const;
 
-private:
+ private:
   Big8 tableId_;
   Padding<3> pad_1;
   Big32 outPort_;
@@ -76,7 +76,7 @@ static_assert(IsStandardLayout<MPFlowStatsRequest>(),
               "Expected standard layout.");
 
 class MPFlowStatsRequestBuilder {
-public:
+ public:
   void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
   void setOutPort(UInt32 outPort) { msg_.outPort_ = outPort; }
   void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
@@ -85,12 +85,12 @@ public:
 
   void write(Writable *channel);
 
-private:
+ private:
   MPFlowStatsRequest msg_;
   MatchBuilder match_;
 
   void writeV1(Writable *channel);
-  
+
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };

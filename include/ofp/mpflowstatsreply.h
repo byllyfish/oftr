@@ -34,17 +34,17 @@ namespace ofp {
 class Writable;
 
 class MPFlowStatsReply {
-public:
+ public:
   enum { MPVariableSizeOffset = 0 };
-  
+
   MPFlowStatsReply() = default;
 
   Match match() const;
   InstructionRange instructions() const;
 
   bool validateInput(Validation *context) const;
-  
-private:
+
+ private:
   Big16 length_;
   Big8 tableId_;
   Padding<1> pad_1;
@@ -73,13 +73,16 @@ private:
 };
 
 static_assert(sizeof(MPFlowStatsReply) == 56, "Unexpected size.");
-static_assert(IsStandardLayout<MPFlowStatsReply>(), "Expected standard layout.");
+static_assert(IsStandardLayout<MPFlowStatsReply>(),
+              "Expected standard layout.");
 
 class MPFlowStatsReplyBuilder {
-public:
+ public:
   void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
   void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
-  void setDurationNSec(UInt32 durationNSec) { msg_.durationNSec_ = durationNSec; }
+  void setDurationNSec(UInt32 durationNSec) {
+    msg_.durationNSec_ = durationNSec;
+  }
   void setPriority(UInt16 priority) { msg_.priority_ = priority; }
   void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
   void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
@@ -96,8 +99,8 @@ public:
 
   void write(Writable *channel);
   void reset();
-  
-private:
+
+ private:
   MPFlowStatsReply msg_;
   MatchBuilder match_;
   InstructionList instructions_;

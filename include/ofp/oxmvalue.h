@@ -33,13 +33,11 @@ enum class OXMInternalID : UInt16;
 template <OXMInternalID ID, UInt16 Class, UInt8 Field, class ValueType,
           UInt16 Size, bool Mask, const OXMRange *Prereqs = nullptr>
 class OXMValue {
-public:
+ public:
   using NativeType = typename NativeTypeOf<ValueType>::type;
 
   constexpr static OXMInternalID internalId() { return ID; }
-  constexpr static OXMType type() {
-    return OXMType{Class, Field, Size};
-  }
+  constexpr static OXMType type() { return OXMType{Class, Field, Size}; }
   constexpr static OXMType typeWithMask() { return type().withMask(); }
   constexpr static bool maskSupported() { return Mask; }
   static inline const OXMRange *prerequisites() { return Prereqs; }
@@ -57,8 +55,8 @@ public:
   }
 
   ValueType valueOriginal() const { return value_; }
-  
-private:
+
+ private:
   ValueType value_;
 
   // Used by fromBytes().

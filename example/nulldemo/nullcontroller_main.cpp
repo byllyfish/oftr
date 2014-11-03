@@ -4,7 +4,7 @@
 using namespace ofp;
 
 class NullController : public ChannelListener {
-public:
+ public:
   void onChannelUp(Channel *channel) override {
     log::debug(__PRETTY_FUNCTION__);
   }
@@ -27,16 +27,19 @@ int main(int argc, char **argv) {
   Driver driver;
 
   if (addr.valid()) {
-    (void)driver.connect(ChannelMode::Controller, 0, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
-                       ProtocolVersions::All, NullController::Factory, 
-                       [](Channel *channel, std::error_code err) {
-                          std::cout << "Result: connId=" << channel->connectionId() << " err=" << err << '\n';
-                       });
+    (void)driver.connect(ChannelMode::Controller, 0,
+                         IPv6Endpoint{addr, OFP_DEFAULT_PORT},
+                         ProtocolVersions::All, NullController::Factory,
+                         [](Channel *channel, std::error_code err) {
+      std::cout << "Result: connId=" << channel->connectionId()
+                << " err=" << err << '\n';
+    });
 
   } else {
     std::error_code err;
-    (void)driver.listen(ChannelMode::Controller, 0, IPv6Endpoint{OFP_DEFAULT_PORT},
-                  ProtocolVersions::All, NullController::Factory, err);
+    (void)driver.listen(ChannelMode::Controller, 0,
+                        IPv6Endpoint{OFP_DEFAULT_PORT}, ProtocolVersions::All,
+                        NullController::Factory, err);
   }
 
   driver.run();

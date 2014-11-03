@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Implements a datagram object suitable for use with asio 
+/// \brief Implements a datagram object suitable for use with asio
 /// async_send_to.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -29,22 +29,22 @@ namespace sys {
 OFP_BEGIN_IGNORE_PADDING
 
 class Datagram {
-public:
-    const UInt8 *data() const { return buf_.data(); }
-    size_t size() const { return buf_.size(); }
+ public:
+  const UInt8 *data() const { return buf_.data(); }
+  size_t size() const { return buf_.size(); }
 
-    udp::endpoint destination() const { return dest_;}
-    void setDestination(const udp::endpoint &dest) { dest_ = dest; }
+  udp::endpoint destination() const { return dest_; }
+  void setDestination(const udp::endpoint &dest) { dest_ = dest; }
 
-    UInt64 connectionId() const { return connId_; }
-    void setConnectionId(UInt64 connId) { connId_ = connId; }
+  UInt64 connectionId() const { return connId_; }
+  void setConnectionId(UInt64 connId) { connId_ = connId; }
 
-    void write(const void *data, size_t length) { buf_.add(data, length); }
+  void write(const void *data, size_t length) { buf_.add(data, length); }
 
-private:
-    ByteList buf_;
-    udp::endpoint dest_;
-    UInt64 connId_ = 0;
+ private:
+  ByteList buf_;
+  udp::endpoint dest_;
+  UInt64 connId_ = 0;
 };
 
 OFP_END_IGNORE_PADDING
@@ -52,4 +52,4 @@ OFP_END_IGNORE_PADDING
 }  // namespace sys
 }  // namespace ofp
 
-#endif // OFP_SYS_DATAGRAM_H_
+#endif  // OFP_SYS_DATAGRAM_H_

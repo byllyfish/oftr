@@ -11,4 +11,4 @@ using OXMIDRange = ProtocolRange<OXMIDIterator>;
 
 }  // namespace ofp
 
-#endif // OFP_OXMIDRANGE_H_
+#endif  // OFP_OXMIDRANGE_H_

@@ -31,8 +31,7 @@ namespace ofp {
 
 /// \brief Represents a set of OpenFlow protocol versions.
 class ProtocolVersions {
-public:
-
+ public:
   enum : UInt32 {
     VersionBitmapAll = ~(~0U << (OFP_VERSION_LAST + 1)) & ~1U,
     VersionBitmapNone = 0U
@@ -43,7 +42,7 @@ public:
   constexpr bool empty() const { return (bitmap_ == 0); }
   bool isOnlyOneVersionSupported() const;
   bool containsVersion(UInt8 version) const;
-  
+
   UInt8 highestVersion() const;
   UInt8 negotiateVersion(UInt8 msgVersion, ProtocolVersions msgVersions) const;
 
@@ -55,15 +54,17 @@ public:
   }
 
   std::string toString() const;
-  
-  constexpr static ProtocolVersions fromBitmap(UInt32 bitmap) { return ProtocolVersions(bitmap); }
+
+  constexpr static ProtocolVersions fromBitmap(UInt32 bitmap) {
+    return ProtocolVersions(bitmap);
+  }
 
   static ProtocolVersions fromVector(const std::vector<UInt8> &versions);
 
   static const ProtocolVersions None;
   static const ProtocolVersions All;
 
-private:
+ private:
   UInt32 bitmap_;
 
   // N.B. You must call this constructor using (), not {}.
@@ -71,7 +72,7 @@ private:
 
   enum {
     MinVersionSupported = OFP_VERSION_1,
-    MaxVersionSupported = 30      // Maximum version supported by Big32 bitmap.
+    MaxVersionSupported = 30  // Maximum version supported by Big32 bitmap.
   };
 };
 

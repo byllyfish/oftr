@@ -9,7 +9,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MeterMod> {
-
   static void mapping(IO &io, ofp::MeterMod &msg) {
     io.mapRequired("command", msg.command_);
     io.mapRequired("flags", msg.flags_);
@@ -22,7 +21,6 @@ struct MappingTraits<ofp::MeterMod> {
 
 template <>
 struct MappingTraits<ofp::MeterModBuilder> {
-
   static void mapping(IO &io, ofp::MeterModBuilder &msg) {
     io.mapRequired("command", msg.msg_.command_);
     io.mapRequired("flags", msg.msg_.flags_);
@@ -34,4 +32,4 @@ struct MappingTraits<ofp::MeterModBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMETERMOD_H_
+#endif  // OFP_YAML_YMETERMOD_H_

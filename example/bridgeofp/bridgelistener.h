@@ -5,12 +5,12 @@
 
 OFP_BEGIN_IGNORE_PADDING
 
-namespace bridge { // <namespace bridge>
+namespace bridge {  // <namespace bridge>
 
 using namespace ofp;
 
 class BridgeListener : public ChannelListener {
-public:
+ public:
   explicit BridgeListener(BridgeListener *otherBridge);
   explicit BridgeListener(const IPv6Endpoint &remoteEndpoint);
   ~BridgeListener();
@@ -23,7 +23,7 @@ public:
 
   Channel *channel() const { return channel_; }
 
-private:
+ private:
   Channel *channel_ = nullptr;
   IPv6Endpoint remoteEndpoint_;
   BridgeListener *otherBridge_ = nullptr;
@@ -33,8 +33,8 @@ private:
   static void translateAndForward(const Message *message, Channel *channel);
 };
 
-} // </namespace bridge>
+}  // </namespace bridge>
 
 OFP_END_IGNORE_PADDING
 
-#endif // BRIDGELISTENER_H
+#endif  // BRIDGELISTENER_H

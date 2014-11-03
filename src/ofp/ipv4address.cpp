@@ -23,7 +23,7 @@
 #include "ofp/log.h"
 #include <arpa/inet.h>
 
-namespace ofp { // <namespace ofp>
+namespace ofp {  // <namespace ofp>
 
 IPv4Address::IPv4Address(const ArrayType &a) : addr_(a) {}
 
@@ -91,4 +91,4 @@ std::string IPv4Address::toString() const {
   return result ? ipv4str : "<inet_ntop_error4>";
 }
 
-} // </namespace ofp>
+}  // </namespace ofp>

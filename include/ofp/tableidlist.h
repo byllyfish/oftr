@@ -7,18 +7,17 @@
 namespace ofp {
 
 class TableIDList {
-public:
+ public:
+  void add(UInt8 tableId) { buf_.add(&tableId, sizeof(tableId)); }
 
-    void add(UInt8 tableId) { buf_.add(&tableId, sizeof(tableId)); }
+  TableIDRange toRange() const { return TableIDRange{buf_.toRange()}; }
 
-    TableIDRange toRange() const { return TableIDRange{buf_.toRange()}; }
-    
-    bool empty() const { return buf_.empty(); }
-    
-private:
-    ByteList buf_;
+  bool empty() const { return buf_.empty(); }
+
+ private:
+  ByteList buf_;
 };
 
 }  // namespace ofp
 
-#endif // OFP_TABLEIDLIST_H_
+#endif  // OFP_TABLEIDLIST_H_

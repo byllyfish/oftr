@@ -8,7 +8,7 @@ namespace ofp {
 class MPGroupDesc {
  public:
   enum { MPVariableSizeOffset = 0 };
-  
+
   UInt8 type() const { return type_; }
   UInt32 groupId() const { return groupId_; }
   BucketRange buckets() const;
@@ -38,7 +38,7 @@ class MPGroupDescBuilder {
   void setBuckets(const BucketRange &buckets);
 
   void write(Writable *channel);
-  void reset() { buckets_.clear(); } 
+  void reset() { buckets_.clear(); }
 
  private:
   MPGroupDesc msg_;

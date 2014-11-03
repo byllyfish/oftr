@@ -11,4 +11,4 @@ using InstructionIDRange = ProtocolRange<InstructionIDIterator>;
 
 }  // namespace ofp
 
-#endif // OFP_INSTRUCTIONIDRANGE_H_
+#endif  // OFP_INSTRUCTIONIDRANGE_H_

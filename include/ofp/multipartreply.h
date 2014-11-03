@@ -28,9 +28,9 @@
 
 namespace ofp {
 
-class MultipartReply
-    : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY, 16, 65535, false> {
-public:
+class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
+                                          16, 65535, false> {
+ public:
   OFPMultipartType replyType() const { return type_; }
   UInt16 replyFlags() const { return flags_; }
 
@@ -49,11 +49,9 @@ public:
 
   bool validateInput(Validation *context) const;
 
-  enum : size_t {
-    UnpaddedSizeVersion1 = 12
-  };
+  enum : size_t { UnpaddedSizeVersion1 = 12 };
 
-private:
+ private:
   Header header_;
   Big<OFPMultipartType> type_;
   Big16 flags_;
@@ -73,7 +71,7 @@ static_assert(IsTriviallyCopyable<MultipartReply>(),
               "Expected trivially copyable.");
 
 class MultipartReplyBuilder {
-public:
+ public:
   MultipartReplyBuilder() = default;
   explicit MultipartReplyBuilder(UInt8 version) {
     msg_.header_.setVersion(version);
@@ -89,7 +87,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   MultipartReply msg_;
   ByteList body_;
 

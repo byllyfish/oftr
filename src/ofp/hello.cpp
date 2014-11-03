@@ -41,8 +41,7 @@ bool Hello::validateInput(Validation *context) const {
 
 ProtocolVersions Hello::protocolVersions() const {
   for (auto &elem : helloElements()) {
-    if (elem.type() == OFPHET_VERSIONBITMAP)
-      return elem.versionBitMap();
+    if (elem.type() == OFPHET_VERSIONBITMAP) return elem.versionBitMap();
   }
   return ProtocolVersions::None;
 }
@@ -73,7 +72,7 @@ UInt32 HelloBuilder::send(Writable *channel) {
     // Infer header version from value of versions bitmap.
     // If versions bitmap is empty, use latest version with a bitmap of all
     // versions.
-    
+
     if (!bitmap_) {
       version = OFP_VERSION_LAST;
       bitmap_ = ProtocolVersions::All.bitmap();
@@ -83,7 +82,7 @@ UInt32 HelloBuilder::send(Writable *channel) {
     hdr.setVersion(version);
 
   } else if (version >= OFP_VERSION_4 && !bitmap_) {
-    // Version is 1.3 or later, but the bitmap is empty. Set bitmap to 
+    // Version is 1.3 or later, but the bitmap is empty. Set bitmap to
     // contain just the header version.
     bitmap_ = ProtocolVersions{version}.bitmap();
   }

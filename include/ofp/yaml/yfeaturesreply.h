@@ -45,7 +45,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::FeaturesReply> {
-
   static void mapping(IO &io, ofp::FeaturesReply &msg) {
     using namespace ofp;
 
@@ -62,8 +61,8 @@ struct MappingTraits<ofp::FeaturesReply> {
     io.mapRequired("auxiliary_id", auxiliaryId);
     io.mapRequired("capabilities", capabilities);
 
-    if (msg.msgHeader()->version() == OFP_VERSION_1) 
-        io.mapRequired("actions", actions);
+    if (msg.msgHeader()->version() == OFP_VERSION_1)
+      io.mapRequired("actions", actions);
 
     PortRange ports = msg.ports();
     io.mapRequired("ports", ports);
@@ -72,7 +71,6 @@ struct MappingTraits<ofp::FeaturesReply> {
 
 template <>
 struct MappingTraits<ofp::FeaturesReplyBuilder> {
-
   static void mapping(IO &io, ofp::FeaturesReplyBuilder &msg) {
     using namespace ofp;
 

@@ -106,20 +106,20 @@ unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
 
   OXMIterator oxm = iter->oxmRange().begin();
   switch (oxm.type()) {
-    case OFB_ETH_SRC::type() :
-    case OFB_ETH_DST::type() :
+    case OFB_ETH_SRC::type():
+    case OFB_ETH_DST::type():
       return 0;
-    case OFB_VLAN_VID::type() :
-    case OFB_VLAN_PCP::type() :
-    case OFB_IPV4_SRC::type() :
-    case OFB_IPV4_DST::type() :
-    case OFB_IP_DSCP::type() :
-    case OFB_TCP_SRC::type() :
-    case OFB_TCP_DST::type() :
-    case OFB_UDP_SRC::type() :
-    case OFB_UDP_DST::type() :
-    case OFB_ICMPV4_TYPE::type() :
-    case OFB_ICMPV4_CODE::type() :
+    case OFB_VLAN_VID::type():
+    case OFB_VLAN_PCP::type():
+    case OFB_IPV4_SRC::type():
+    case OFB_IPV4_DST::type():
+    case OFB_IP_DSCP::type():
+    case OFB_TCP_SRC::type():
+    case OFB_TCP_DST::type():
+    case OFB_UDP_SRC::type():
+    case OFB_UDP_DST::type():
+    case OFB_ICMPV4_TYPE::type():
+    case OFB_ICMPV4_CODE::type():
       return 8;
     default:
       log::debug("ActionRange::writeSizeMinusSetFieldV1: Unexpected OXM type:",
@@ -133,43 +133,43 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
 
   OXMIterator oxm = iter->oxmRange().begin();
   switch (oxm.type()) {
-    case OFB_VLAN_VID::type() :
+    case OFB_VLAN_VID::type():
       writeAction<AT_SET_VLAN_VID_V1, OFB_VLAN_VID>(iter, channel);
       break;
-    case OFB_VLAN_PCP::type() :
+    case OFB_VLAN_PCP::type():
       writeAction<AT_SET_VLAN_PCP_V1, OFB_VLAN_PCP>(iter, channel);
       break;
-    case OFB_ETH_SRC::type() :
+    case OFB_ETH_SRC::type():
       writeAction<AT_SET_DL_SRC_V1, OFB_ETH_SRC>(iter, channel);
       break;
-    case OFB_ETH_DST::type() :
+    case OFB_ETH_DST::type():
       writeAction<AT_SET_DL_DST_V1, OFB_ETH_DST>(iter, channel);
       break;
-    case OFB_IPV4_SRC::type() :
+    case OFB_IPV4_SRC::type():
       writeAction<AT_SET_NW_SRC_V1, OFB_IPV4_SRC>(iter, channel);
       break;
-    case OFB_IPV4_DST::type() :
+    case OFB_IPV4_DST::type():
       writeAction<AT_SET_NW_DST_V1, OFB_IPV4_DST>(iter, channel);
       break;
-    case OFB_IP_DSCP::type() :
+    case OFB_IP_DSCP::type():
       writeAction<AT_SET_NW_TOS_V1, OFB_IP_DSCP>(iter, channel);
       break;
-    case OFB_TCP_SRC::type() :
+    case OFB_TCP_SRC::type():
       writeAction<AT_SET_TP_SRC_V1, OFB_TP_PORT>(iter, channel);
       break;
-    case OFB_TCP_DST::type() :
+    case OFB_TCP_DST::type():
       writeAction<AT_SET_TP_DST_V1, OFB_TP_PORT>(iter, channel);
       break;
-    case OFB_UDP_SRC::type() :
+    case OFB_UDP_SRC::type():
       writeAction<AT_SET_TP_SRC_V1, OFB_TP_PORT>(iter, channel);
       break;
-    case OFB_UDP_DST::type() :
+    case OFB_UDP_DST::type():
       writeAction<AT_SET_TP_DST_V1, OFB_TP_PORT>(iter, channel);
       break;
-    case OFB_ICMPV4_TYPE::type() :
+    case OFB_ICMPV4_TYPE::type():
       writeAction<AT_SET_TP_TYPE_V1, OFB_TP_CODE>(iter, channel);
       break;
-    case OFB_ICMPV4_CODE::type() :
+    case OFB_ICMPV4_CODE::type():
       writeAction<AT_SET_TP_CODE_V1, OFB_TP_CODE>(iter, channel);
       break;
     default:
@@ -178,4 +178,3 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
       break;
   }
 }
-

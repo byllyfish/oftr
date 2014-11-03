@@ -28,15 +28,15 @@
 namespace ofp {
 
 class PortList : public ProtocolList<PortRange> {
-public:
+ public:
   void add(const Port &port) { buf_.add(&port, sizeof(Port)); }
   void add(const PortBuilder &port) { add(port.toPort()); }
 
-  //PortRange toRange() const { return buf_.toRange(); }
-  //void operator=(const PortRange &range) { buf_ = range.toByteRange(); }
+  // PortRange toRange() const { return buf_.toRange(); }
+  // void operator=(const PortRange &range) { buf_ = range.toByteRange(); }
 
-//private:
-//  ByteList buf_;
+  // private:
+  //  ByteList buf_;
 };
 
 }  // namespace ofp

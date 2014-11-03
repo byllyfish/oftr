@@ -30,7 +30,7 @@ namespace ofp {
 
 class PacketOut
     : public ProtocolMsg<PacketOut, OFPT_PACKET_OUT, 24, 65535, false> {
-public:
+ public:
   UInt32 bufferId() const { return bufferId_; }
   UInt32 inPort() const { return inPort_; }
 
@@ -39,7 +39,7 @@ public:
 
   bool validateInput(Validation *context) const;
 
-private:
+ private:
   Header header_;
   Big32 bufferId_ = OFP_NO_BUFFER;
   Big32 inPort_ = 0;
@@ -59,7 +59,7 @@ static_assert(IsStandardLayout<PacketOut>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<PacketOut>(), "Expected trivially copyable.");
 
 class PacketOutBuilder {
-public:
+ public:
   PacketOutBuilder() = default;
   explicit PacketOutBuilder(const PacketOut *msg);
 
@@ -70,7 +70,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   PacketOut msg_;
   ActionList actions_;
   ByteList enetFrame_;

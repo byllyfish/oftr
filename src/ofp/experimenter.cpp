@@ -24,7 +24,7 @@
 #include "ofp/writable.h"
 #include "ofp/padding.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {  // <namespace ofp>
 
 ByteRange Experimenter::expData() const {
   return ByteRange{BytePtr(this) + sizeof(Experimenter),
@@ -41,8 +41,7 @@ UInt32 ExperimenterBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();
   size_t msgLen = sizeof(msg_) + data_.size();
 
-  if (version == OFP_VERSION_1)
-    msgLen -= 4;
+  if (version == OFP_VERSION_1) msgLen -= 4;
 
   msg_.header_.setVersion(version);
   msg_.header_.setXid(xid);
@@ -68,4 +67,4 @@ UInt32 ExperimenterBuilder::send(Writable *channel) {
   return xid;
 }
 
-} // </namespace ofp>
+}  // </namespace ofp>

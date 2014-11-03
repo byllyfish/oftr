@@ -8,7 +8,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPMeterConfigRequest> {
-
   static void mapping(IO &io, ofp::MPMeterConfigRequest &body) {
     io.mapRequired("meter_id", body.meterId_);
   }
@@ -16,7 +15,6 @@ struct MappingTraits<ofp::MPMeterConfigRequest> {
 
 template <>
 struct MappingTraits<ofp::MPMeterConfigRequestBuilder> {
-
   static void mapping(IO &io, ofp::MPMeterConfigRequestBuilder &body) {
     io.mapRequired("meter_id", body.msg_.meterId_);
   }
@@ -25,4 +23,4 @@ struct MappingTraits<ofp::MPMeterConfigRequestBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMPMETERCONFIGREQUEST_H_
+#endif  // OFP_YAML_YMPMETERCONFIGREQUEST_H_

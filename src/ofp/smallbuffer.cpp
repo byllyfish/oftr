@@ -91,10 +91,10 @@ void SmallBuffer::replace(UInt8 *pos, UInt8 *posEnd, const void *data,
   size_t posLen = Unsigned_cast(posEnd - pos);
   if (length > posLen) {
     size_t more = length - posLen;
-    if (more > remaining()) { 
+    if (more > remaining()) {
       size_t posOffset = Unsigned_cast(pos - begin_);
       size_t posLength = Unsigned_cast(posEnd - pos);
-      increaseCapacity(more); 
+      increaseCapacity(more);
       pos = begin_ + posOffset;
       posEnd = pos + posLength;
 
@@ -182,7 +182,7 @@ UInt8 *SmallBuffer::insertUninitialized(UInt8 *pos, size_t length) noexcept {
 }
 
 UInt8 *SmallBuffer::replaceUninitialized(UInt8 *pos, UInt8 *posEnd,
-                                       size_t length) noexcept {
+                                         size_t length) noexcept {
   assertInRange(pos, posEnd);
   assertInvariant();
 
@@ -209,8 +209,7 @@ UInt8 *SmallBuffer::replaceUninitialized(UInt8 *pos, UInt8 *posEnd,
   return pos;
 }
 
-
-void SmallBuffer::addZeros(size_t length) noexcept{
+void SmallBuffer::addZeros(size_t length) noexcept {
   UInt8 *p = addUninitialized(length);
   std::memset(p, 0, length);
 }
@@ -220,11 +219,11 @@ void SmallBuffer::insertZeros(UInt8 *pos, size_t length) noexcept {
   std::memset(p, 0, length);
 }
 
-void SmallBuffer::replaceZeros(UInt8 *pos, UInt8 *posEnd, size_t length) noexcept {
+void SmallBuffer::replaceZeros(UInt8 *pos, UInt8 *posEnd,
+                               size_t length) noexcept {
   UInt8 *p = replaceUninitialized(pos, posEnd, length);
   std::memset(p, 0, length);
 }
-
 
 void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
   size_t newCapacity = computeCapacity(newLength);
@@ -277,6 +276,6 @@ size_t SmallBuffer::computeCapacity(size_t length) noexcept {
 
   log::fatal("ofp::SmallBuffer: SmallBuffer > 1 MB:", length);
   std::abort();
-  
+
   return 0;
 }

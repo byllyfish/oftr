@@ -31,10 +31,7 @@ namespace detail {
 
 class ActionIteratorItem : private NonCopyable {
  public:
-  enum {
-    ProtocolIteratorSizeOffset = 2,
-    ProtocolIteratorAlignment = 8
-  };
+  enum { ProtocolIteratorSizeOffset = 2, ProtocolIteratorAlignment = 8 };
 
   ActionType type() const { return type_; }
   UInt16 size() const { return type_.length(); }
@@ -45,7 +42,9 @@ class ActionIteratorItem : private NonCopyable {
   }
 
   OXMRange oxmRange() const { return value(); }
-  ByteRange value() const { return {BytePtr(this) + sizeof(ActionType), size() - sizeof(ActionType)}; }
+  ByteRange value() const {
+    return {BytePtr(this) + sizeof(ActionType), size() - sizeof(ActionType)};
+  }
 
  private:
   ActionType type_;

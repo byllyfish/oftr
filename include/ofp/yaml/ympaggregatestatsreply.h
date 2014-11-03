@@ -13,10 +13,10 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
-/// \brief Defines the MappingTraits classes for MPAggregateStatsReply and 
+/// \brief Defines the MappingTraits classes for MPAggregateStatsReply and
 /// MPAggregateStatsReplyBuilder classes.
 //  ===== ------------------------------------------------------------ =====  //
 
@@ -30,7 +30,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPAggregateStatsReply> {
-
   static void mapping(IO &io, ofp::MPAggregateStatsReply &msg) {
     io.mapRequired("packet_count", msg.packetCount_);
     io.mapRequired("byte_count", msg.byteCount_);
@@ -40,7 +39,6 @@ struct MappingTraits<ofp::MPAggregateStatsReply> {
 
 template <>
 struct MappingTraits<ofp::MPAggregateStatsReplyBuilder> {
-
   static void mapping(IO &io, ofp::MPAggregateStatsReplyBuilder &msg) {
     io.mapRequired("packet_count", msg.msg_.packetCount_);
     io.mapRequired("byte_count", msg.msg_.byteCount_);

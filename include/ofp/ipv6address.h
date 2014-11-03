@@ -29,10 +29,8 @@
 namespace ofp {
 
 class IPv6Address {
-public:
-  enum {
-    Length = 16
-  };
+ public:
+  enum { Length = 16 };
 
   using ArrayType = std::array<UInt8, Length>;
 
@@ -50,7 +48,8 @@ public:
   bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
 
   bool isV4Mapped() const {
-    return IsMemFilled(addr_.data(), 10, '\0') && (addr_[10] == 0xFF) && (addr_[11] == 0xFF);
+    return IsMemFilled(addr_.data(), 10, '\0') && (addr_[10] == 0xFF) &&
+           (addr_[11] == 0xFF);
   }
 
   /// \returns true if address is link-local (fe80::/10)
@@ -73,11 +72,11 @@ public:
 
   bool operator!=(const IPv6Address &rhs) const { return !(*this == rhs); }
 
-private:
+ private:
   ArrayType addr_;
 
   void setZone(UInt32 zone);
-  
+
   bool parseIPv6Address(const std::string &s);
   bool parseIPv4Address(const std::string &s);
 };

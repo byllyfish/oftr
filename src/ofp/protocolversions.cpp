@@ -47,7 +47,7 @@ UInt8 ProtocolVersions::highestVersion() const {
       return UInt8_narrow_cast(i);
     }
   }
-  
+
   return 0;
 }
 

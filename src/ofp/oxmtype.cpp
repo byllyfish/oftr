@@ -26,7 +26,6 @@
 
 using namespace ofp;
 
-
 const OXMTypeInfo *OXMType::lookupInfo() const {
   unsigned idx = static_cast<unsigned>(internalID());
   if (idx < OXMTypeInfoArraySize) {
@@ -54,7 +53,7 @@ OXMInternalID OXMType::internalID() const {
   const OXMTypeInternalMapEntry *end = begin + OXMTypeInfoArraySize;
 
   begin = std::lower_bound(begin, end, value32,
-                           [](const OXMTypeInternalMapEntry & item,
+                           [](const OXMTypeInternalMapEntry &item,
                               UInt32 value) { return item.value32 < value; });
 
   if (begin != end && begin->value32 == value32) {
@@ -64,7 +63,6 @@ OXMInternalID OXMType::internalID() const {
   return OXMInternalID::UNKNOWN;
 }
 
-
 // \returns Internal ID for OXMType, or OXMInternalID::UNKNOWN if not found.
 OXMInternalID OXMType::internalID_IgnoreLength() const {
   // Get unmasked value before we search for it.
@@ -73,7 +71,10 @@ OXMInternalID OXMType::internalID_IgnoreLength() const {
   const OXMTypeInternalMapEntry *begin = &OXMTypeInternalMapArray[0];
   const OXMTypeInternalMapEntry *end = begin + OXMTypeInfoArraySize;
 
-  begin = std::find_if(begin, end, [value32](const OXMTypeInternalMapEntry &item) { return (item.value32 & Prefix24Bits) == value32; });
+  begin =
+      std::find_if(begin, end, [value32](const OXMTypeInternalMapEntry &item) {
+        return (item.value32 & Prefix24Bits) == value32;
+      });
   if (begin != end) {
     return begin->id;
   }
@@ -92,4 +93,3 @@ bool OXMType::parse(const std::string &s) {
 
   return false;
 }
-

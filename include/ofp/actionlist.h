@@ -30,8 +30,9 @@
 namespace ofp {
 
 class ActionList : public ProtocolList<ActionRange> {
-using Inherited = ProtocolList<ActionRange>;
-public:
+  using Inherited = ProtocolList<ActionRange>;
+
+ public:
   using Inherited::Inherited;
 
   template <class Type>
@@ -39,7 +40,7 @@ public:
     // Make sure it's an action.
     assert(Type::type() != 0);
     buf_.add(&action, sizeof(action));
-  }  
+  }
 };
 
 template <>

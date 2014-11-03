@@ -38,7 +38,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::Hello> {
-
   static void mapping(IO &io, ofp::Hello &msg) {
     ofp::ProtocolVersions versions = msg.protocolVersions();
     std::vector<ofp::UInt8> vers = versions.versions();
@@ -48,7 +47,6 @@ struct MappingTraits<ofp::Hello> {
 
 template <>
 struct MappingTraits<ofp::HelloBuilder> {
-
   static void mapping(IO &io, ofp::HelloBuilder &msg) {
     std::vector<ofp::UInt8> versions;
     io.mapOptional("versions", versions);

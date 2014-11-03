@@ -8,31 +8,31 @@ namespace ofp {
 
 template <class RangeType>
 class ProtocolList {
-public:
-    using Iterator = typename RangeType::Iterator;
-    using Element = typename RangeType::Element;
+ public:
+  using Iterator = typename RangeType::Iterator;
+  using Element = typename RangeType::Element;
 
-    ProtocolList() = default;
-    ProtocolList(const ProtocolList &list) = default;
-    ProtocolList(const RangeType &range) : buf_{range.toByteRange()} {}
-    ProtocolList &operator=(const ProtocolList &list) = default;
+  ProtocolList() = default;
+  ProtocolList(const ProtocolList &list) = default;
+  ProtocolList(const RangeType &range) : buf_{range.toByteRange()} {}
+  ProtocolList &operator=(const ProtocolList &list) = default;
 
-    Iterator begin() const { return Iterator(buf_.begin()); }
-    Iterator end() const { return Iterator(buf_.end()); }
+  Iterator begin() const { return Iterator(buf_.begin()); }
+  Iterator end() const { return Iterator(buf_.end()); }
 
-    const UInt8 *data() const { return buf_.data(); }
-    size_t size() const { return buf_.size(); }
-    bool empty() const { return buf_.empty(); }
-    
-    RangeType toRange() const { return buf_.toRange(); }
+  const UInt8 *data() const { return buf_.data(); }
+  size_t size() const { return buf_.size(); }
+  bool empty() const { return buf_.empty(); }
 
-    void assign(const RangeType &range) { buf_ = range.toByteRange(); }
-    void clear() { buf_.clear(); }
-    
-protected:
-    ByteList buf_;
+  RangeType toRange() const { return buf_.toRange(); }
+
+  void assign(const RangeType &range) { buf_ = range.toByteRange(); }
+  void clear() { buf_.clear(); }
+
+ protected:
+  ByteList buf_;
 };
 
 }  // namespace ofp
 
-#endif // OFP_PROTOCOLLIST_H_
+#endif  // OFP_PROTOCOLLIST_H_

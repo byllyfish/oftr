@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MPTableStats and MPTableStatsBuilder classes.
@@ -34,7 +34,7 @@ class Validation;
 // MPTableStats supports v1.0 and v1.3 only.
 
 class MPTableStats {
-public:
+ public:
   MPTableStats() = default;
 
   UInt8 tableId() const { return tableId_; }
@@ -47,7 +47,7 @@ public:
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Big8 tableId_;
   Padding<3> pad_;
   TableNameStr name_;
@@ -66,13 +66,13 @@ static_assert(sizeof(MPTableStats) == 64, "Unexpected size.");
 static_assert(IsStandardLayout<MPTableStats>(), "Expected standard layout.");
 
 class MPTableStatsBuilder {
-public:
+ public:
   MPTableStatsBuilder() = default;
 
   void write(Writable *channel);
   void reset() {}
-  
-private:
+
+ private:
   MPTableStats msg_;
 
   template <class T>

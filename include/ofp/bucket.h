@@ -28,7 +28,7 @@
 namespace ofp {
 
 class Bucket : private NonCopyable {
-public:
+ public:
   enum { ProtocolIteratorSizeOffset = 0, ProtocolIteratorAlignment = 8 };
 
   UInt16 weight() const { return weight_; }
@@ -36,7 +36,7 @@ public:
   UInt32 watchGroup() const { return watchGroup_; }
   ActionRange actions() const;
 
-private:
+ private:
   Big16 len_;
   Big16 weight_ = 0;
   Big32 watchPort_ = 0;
@@ -54,7 +54,7 @@ static_assert(IsStandardLayout<Bucket>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<Bucket>(), "Expected trivially copyable.");
 
 class BucketBuilder {
-public:
+ public:
   BucketBuilder() = default;
 
   void setWeight(UInt16 weight) { bkt_.weight_ = weight; }
@@ -64,13 +64,11 @@ public:
   ActionRange actions() const { return actions_; }
   void setActions(ActionRange actions);
 
-private:
+ private:
   Bucket bkt_;
   ActionRange actions_;
 
-  enum {
-    SizeWithoutActionRange = sizeof(bkt_)
-  };
+  enum { SizeWithoutActionRange = sizeof(bkt_) };
 
   friend class BucketList;
 };

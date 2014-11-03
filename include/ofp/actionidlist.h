@@ -7,15 +7,14 @@
 namespace ofp {
 
 class ActionIDList : public ProtocolList<ActionIDRange> {
-using Inherited = ProtocolList<ActionIDRange>;
-public:
-    using Inherited::Inherited;
+  using Inherited = ProtocolList<ActionIDRange>;
 
-    void add(const ActionID &id) {
-        buf_.add(&id, id.length());
-    }
+ public:
+  using Inherited::Inherited;
+
+  void add(const ActionID &id) { buf_.add(&id, id.length()); }
 };
 
 }  // namespace ofp
 
-#endif // OFP_ACTIONIDLIST_H_
+#endif  // OFP_ACTIONIDLIST_H_

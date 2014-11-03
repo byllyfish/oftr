@@ -48,22 +48,28 @@ namespace sys {
 OFP_BEGIN_IGNORE_PADDING
 
 template <class SocketType>
-class TCP_Connection : public std::enable_shared_from_this<TCP_Connection<SocketType>>,
-                       public Connection {
-public:
-  TCP_Connection(Engine *engine, ChannelMode mode, UInt64 securityId, ProtocolVersions versions,
-                 ChannelListener::Factory factory);
-  TCP_Connection(Engine *engine, tcp::socket socket, ChannelMode mode, UInt64 securityId,
+class TCP_Connection
+    : public std::enable_shared_from_this<TCP_Connection<SocketType>>,
+      public Connection {
+ public:
+  TCP_Connection(Engine *engine, ChannelMode mode, UInt64 securityId,
                  ProtocolVersions versions, ChannelListener::Factory factory);
+  TCP_Connection(Engine *engine, tcp::socket socket, ChannelMode mode,
+                 UInt64 securityId, ProtocolVersions versions,
+                 ChannelListener::Factory factory);
   ~TCP_Connection();
 
-  void asyncConnect(const IPv6Endpoint &remoteEndpt, std::function<void(Channel*,std::error_code)> resultHandler);
+  void asyncConnect(
+      const IPv6Endpoint &remoteEndpt,
+      std::function<void(Channel *, std::error_code)> resultHandler);
   void asyncAccept();
 
-  ChannelTransport transport() const override { return ToChannelTransport<SocketType>(); }
+  ChannelTransport transport() const override {
+    return ToChannelTransport<SocketType>();
+  }
   IPv6Endpoint remoteEndpoint() const override;
   IPv6Endpoint localEndpoint() const override;
-  
+
   void write(const void *data, size_t length) override {
     socket_.buf_write(data, length);
   }
@@ -71,7 +77,7 @@ public:
   void flush() override;
   void shutdown() override;
 
-private:
+ private:
   Message message_;
   Buffered<SocketType> socket_;
   std::chrono::steady_clock::time_point latestActivity_;

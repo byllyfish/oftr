@@ -29,12 +29,12 @@ namespace ofp {
 
 class EchoRequest
     : public ProtocolMsg<EchoRequest, OFPT_ECHO_REQUEST, 8, 65535, false> {
-public:
+ public:
   ByteRange echoData() const;
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
 
   // Only EchoRequestBuilder can construct an instance.
@@ -44,14 +44,14 @@ private:
 };
 
 class EchoRequestBuilder {
-public:
+ public:
   EchoRequestBuilder() = default;
 
   void setEchoData(const void *data, size_t length) { data_.set(data, length); }
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   EchoRequest msg_;
   ByteList data_;
 };

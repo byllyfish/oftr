@@ -27,14 +27,11 @@
 
 using ofp::api::ApiConnection;
 
-ApiConnection::ApiConnection(ApiServer *server)
-    : server_{server} {
+ApiConnection::ApiConnection(ApiServer *server) : server_{server} {
   server_->onConnect(this);
 }
 
-ApiConnection::~ApiConnection() { 
-  server_->onDisconnect(this); 
-}
+ApiConnection::~ApiConnection() { server_->onDisconnect(this); }
 
 void ApiConnection::onRpcListen(RpcListen *listen) {
   server_->onRpcListen(this, listen);
@@ -48,9 +45,7 @@ void ApiConnection::onRpcClose(RpcClose *close) {
   server_->onRpcClose(this, close);
 }
 
-void ApiConnection::onRpcSend(RpcSend *send) {
-  server_->onRpcSend(this, send);
-}
+void ApiConnection::onRpcSend(RpcSend *send) { server_->onRpcSend(this, send); }
 
 void ApiConnection::onRpcConfig(RpcConfig *config) {
   server_->onRpcConfig(this, config);
@@ -87,14 +82,14 @@ void ApiConnection::onMessage(Channel *channel, const Message *message) {
     RpcMessageError messageError;
     messageError.params.datapathId = channel->datapathId();
     messageError.params.error = decoder.error();
-    messageError.params.data = { message->data(), message->size() };
+    messageError.params.data = {message->data(), message->size()};
     rpcReply(&messageError);
   }
 }
 
 void ApiConnection::handleEvent(const std::string &eventText) {
-  RpcEncoder encoder{eventText, this, [this](const DatapathID &datapathId, UInt64 connId) {
-      return server_->findDatapath(datapathId, connId);
-    }};
+  RpcEncoder encoder{eventText, this,
+                     [this](const DatapathID &datapathId, UInt64 connId) {
+    return server_->findDatapath(datapathId, connId);
+  }};
 }
-

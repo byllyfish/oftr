@@ -109,7 +109,6 @@ struct ScalarEnumerationTraits<ofp::OFPInstructionType> {
   }
 };
 
-
 template <>
 struct ScalarTraits<ofp::OFPPacketInReason> {
   static ofp::yaml::EnumConverter<ofp::OFPPacketInReason> converter;
@@ -133,7 +132,6 @@ struct ScalarTraits<ofp::OFPPacketInReason> {
     return "Invalid enumerated constant.";
   }
 };
-
 
 template <>
 struct ScalarTraits<ofp::OFPFlowModCommand> {

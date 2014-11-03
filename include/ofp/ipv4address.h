@@ -28,10 +28,8 @@
 namespace ofp {
 
 class IPv4Address {
-public:
-  enum {
-    Length = 4
-  };
+ public:
+  enum { Length = 4 };
 
   using ArrayType = std::array<UInt8, Length>;
 
@@ -63,12 +61,13 @@ public:
 
   bool fromString(const std::string &s);
 
-private:
+ private:
   ArrayType addr_;
 };
 
 static_assert(IsStandardLayout<IPv4Address>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<IPv4Address>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<IPv4Address>(),
+              "Expected trivially copyable.");
 
 }  // namespace ofp
 

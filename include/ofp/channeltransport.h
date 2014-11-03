@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines ChannelTransport enum class.
@@ -25,24 +25,25 @@
 namespace ofp {
 
 enum class ChannelTransport {
-    None = 0,
-    TCP_Plaintext,
-    UDP_Plaintext,
-    TCP_TLS,
-    UDP_DTLS
+  None = 0,
+  TCP_Plaintext,
+  UDP_Plaintext,
+  TCP_TLS,
+  UDP_DTLS
 };
 
 // Specialize this function to return the channel transport for a specific
 // socket type.
 template <class SocketType>
 constexpr ChannelTransport ToChannelTransport() {
-    return ChannelTransport::None;
+  return ChannelTransport::None;
 }
 
 constexpr bool IsChannelTransportUDP(ChannelTransport transport) {
-    return (transport == ChannelTransport::UDP_Plaintext) || (transport == ChannelTransport::UDP_DTLS);
+  return (transport == ChannelTransport::UDP_Plaintext) ||
+         (transport == ChannelTransport::UDP_DTLS);
 }
 
 }  // namespace ofp
 
-#endif // OFP_CHANNELTRANSPORT_H_
+#endif  // OFP_CHANNELTRANSPORT_H_

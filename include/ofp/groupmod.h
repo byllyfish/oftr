@@ -29,7 +29,7 @@
 namespace ofp {
 
 class GroupMod : public ProtocolMsg<GroupMod, OFPT_GROUP_MOD, 16, 65528, true> {
-public:
+ public:
   UInt16 command() const { return command_; }
   UInt8 groupType() const { return groupType_; }
   UInt32 groupId() const { return groupId_; }
@@ -37,7 +37,7 @@ public:
 
   bool validateInput(Validation *context) const;
 
-private:
+ private:
   Header header_;
   Big16 command_;
   Big8 groupType_;
@@ -57,13 +57,13 @@ static_assert(IsStandardLayout<GroupMod>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<GroupMod>(), "Expected trivially copyable.");
 
 class GroupModBuilder {
-public:
+ public:
   GroupModBuilder() = default;
   explicit GroupModBuilder(const GroupMod *msg);
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   GroupMod msg_;
   BucketList buckets_;
 

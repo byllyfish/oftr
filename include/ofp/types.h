@@ -22,22 +22,22 @@
 #ifndef OFP_TYPES_H_
 #define OFP_TYPES_H_
 
-#include <cstddef>     // for std::size_t, etc.
-#include <cstdint>     // for std::uint8_t, etc.
-#include <cstring>     // for std::strlen, std::memcpy, etc.
-#include <cstdlib>     // for std::malloc, etc.
-#include <type_traits> // for std::make_unsigned<T>, etc.
-#include <string>      // for std::string
-#include <cassert>     // for assert macro
-#include <ostream>     // for std::ostream (used for now)
-#include <memory>      // for std::unique_ptr<T>
+#include <cstddef>       // for std::size_t, etc.
+#include <cstdint>       // for std::uint8_t, etc.
+#include <cstring>       // for std::strlen, std::memcpy, etc.
+#include <cstdlib>       // for std::malloc, etc.
+#include <type_traits>   // for std::make_unsigned<T>, etc.
+#include <string>        // for std::string
+#include <cassert>       // for assert macro
+#include <ostream>       // for std::ostream (used for now)
+#include <memory>        // for std::unique_ptr<T>
 #include <system_error>  // for std::error_code
 #include <chrono>
 #include "ofp/config.h"
 
 #if defined(__clang__)
-#define OFP_BEGIN_IGNORE_PADDING                                               \
-  _Pragma("clang diagnostic push")                                             \
+#define OFP_BEGIN_IGNORE_PADDING   \
+  _Pragma("clang diagnostic push") \
       _Pragma("clang diagnostic ignored \"-Wpadded\"")
 #define OFP_END_IGNORE_PADDING _Pragma("clang diagnostic pop")
 #else
@@ -178,12 +178,12 @@ constexpr bool IsTriviallyCopyable() {
 /// \returns true if type `From` can be implicitly converted to type `To`.
 template <class From, class To>
 constexpr bool IsConvertible() {
-  return std::is_convertible<From,To>::value;
+  return std::is_convertible<From, To>::value;
 }
 
 /// \returns number of elements in array.
 template <class T, size_t N>
-constexpr size_t ArrayLength(T (&)[N]) {
+constexpr size_t ArrayLength(T(&)[N]) {
   return N;
 }
 
@@ -205,7 +205,7 @@ T *RemoveConst_cast(const T *v) {
   return const_cast<T *>(v);
 }
 
-/// Convert raw buffer to a hexadecimal string (upper case). The resulting 
+/// Convert raw buffer to a hexadecimal string (upper case). The resulting
 /// string contains only hexadecimal characters, no delimters.
 ///
 /// \param  data pointer to input buffer
@@ -244,10 +244,11 @@ std::string RawDataToHex(const void *data, size_t length, char delimiter,
 size_t HexToRawData(const std::string &hex, void *data, size_t length,
                     bool *error = nullptr);
 
-/// Convert a (small) fixed size array to hexadecimal using lower case and ':' 
+/// Convert a (small) fixed size array to hexadecimal using lower case and ':'
 /// as the delimiter. Defined for Length=6 and Length=8.
 template <size_t Length>
-std::string RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data);
+std::string RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, Length> &data);
 
 /// Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
 /// odd final hex digit.
@@ -286,14 +287,14 @@ std::unique_ptr<T> MakeUniquePtr(Args &&... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
-
 class NonCopyable {
-protected:
+ protected:
   NonCopyable() = default;
   ~NonCopyable() = default;
-private:
+
+ private:
   NonCopyable(const NonCopyable &) = default;
-  NonCopyable& operator=(const NonCopyable &) = default;
+  NonCopyable &operator=(const NonCopyable &) = default;
 };
 
 static_assert(IsTriviallyCopyable<NonCopyable>(), "Expected trivial copyable.");

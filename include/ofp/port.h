@@ -40,8 +40,8 @@ class PortV1;
 class Port {
  public:
   // Port is a fixed size struct; no length field present.
-  enum { 
-    ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_FIXED, 
+  enum {
+    ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_FIXED,
     ProtocolIteratorAlignment = 8
   };
 
@@ -106,7 +106,7 @@ class PortBuilder {
   void setMaxSpeed(UInt32 maxSpeed) { msg_.maxSpeed_ = maxSpeed; }
 
   const Port &toPort() const { return msg_; }
-  
+
   void write(Writable *channel);
   void reset() {}
 

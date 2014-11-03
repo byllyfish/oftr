@@ -3,7 +3,6 @@
 
 using namespace ofp;
 
-
 bool MeterMod::validateInput(Validation *context) const {
   if (!meterBands().validateInput(context)) {
     return false;
@@ -11,11 +10,10 @@ bool MeterMod::validateInput(Validation *context) const {
   return true;
 }
 
-
 MeterBandRange MeterMod::meterBands() const {
-  return ByteRange{BytePtr(this) + sizeof(MeterMod), header_.length() - sizeof(MeterMod)};
+  return ByteRange{BytePtr(this) + sizeof(MeterMod),
+                   header_.length() - sizeof(MeterMod)};
 }
-
 
 UInt32 MeterModBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

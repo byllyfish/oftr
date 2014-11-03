@@ -26,29 +26,33 @@
 
 using namespace ofp::sys;
 
-
 // First call to SSL_CTX_get_ex_new_index works around an issue in ASIO where
 // it uses SSL_CTX_get_app_data.
 
-const int SSL_CTX_ASIO_PTR = SSL_CTX_get_ex_new_index(0, (void*)"ctx_asio", nullptr, nullptr, nullptr);
-const int SSL_CTX_IDENTITY_PTR = SSL_CTX_get_ex_new_index(0, (void*)"ctx_identity", nullptr, nullptr, nullptr);
+const int SSL_CTX_ASIO_PTR =
+    SSL_CTX_get_ex_new_index(0, (void *)"ctx_asio", nullptr, nullptr, nullptr);
+const int SSL_CTX_IDENTITY_PTR = SSL_CTX_get_ex_new_index(
+    0, (void *)"ctx_identity", nullptr, nullptr, nullptr);
 
-const int SSL_ASIO_PTR = SSL_get_ex_new_index(0, (void*)"ssl_asio", nullptr, nullptr, nullptr);
-const int SSL_IDENTITY_PTR = SSL_get_ex_new_index(0, (void*)"ssl_identity", nullptr, nullptr, nullptr);
+const int SSL_ASIO_PTR =
+    SSL_get_ex_new_index(0, (void *)"ssl_asio", nullptr, nullptr, nullptr);
+const int SSL_IDENTITY_PTR =
+    SSL_get_ex_new_index(0, (void *)"ssl_identity", nullptr, nullptr, nullptr);
 
 constexpr asio::ssl::context_base::method defaultMethod() {
- #if defined(SSL_TXT_TLSV1_2)
+#if defined(SSL_TXT_TLSV1_2)
   return asio::ssl::context_base::tlsv12;
- #elif defined(SSL_TXT_TLSV1_1)
+#elif defined(SSL_TXT_TLSV1_1)
   return asio::ssl::context_base::tlsv11;
- #else
+#else
   return asio::ssl::context_base::tlsv1;
- #endif
+#endif
 }
 
-Identity::Identity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifyData, std::error_code &error)
+Identity::Identity(const std::string &certData,
+                   const std::string &keyPassphrase,
+                   const std::string &verifyData, std::error_code &error)
     : context_{defaultMethod()} {
-
   error = configureContext();
   if (error) return;
 
@@ -77,13 +81,13 @@ Identity::~Identity() {
 
 SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
   auto iter = clientSessions_.find(remoteEndpt);
-  if (iter == clientSessions_.end())
-    return nullptr;
+  if (iter == clientSessions_.end()) return nullptr;
 
   return iter->second;
 }
 
-void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session) {
+void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
+                                 SSL_SESSION *session) {
   auto ptr = &clientSessions_[remoteEndpt];
   auto prevSession = *ptr;
   *ptr = session;
@@ -92,23 +96,24 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *s
   }
 }
 
-
-
 std::error_code Identity::configureContext() {
   std::error_code err;
-  context_.set_options(asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3 | asio::ssl::context::no_compression, err);
+  context_.set_options(asio::ssl::context::no_sslv2 |
+                           asio::ssl::context::no_sslv3 |
+                           asio::ssl::context::no_compression,
+                       err);
 
   uint8_t id[] = "ofpx";
   SSL_CTX_set_session_id_context(context_.native_handle(), id, sizeof(id) - 1);
-  SSL_CTX_set_timeout(context_.native_handle(), 60*5);
-  SSL_CTX_set_session_cache_mode(context_.native_handle(), SSL_SESS_CACHE_SERVER);
+  SSL_CTX_set_timeout(context_.native_handle(), 60 * 5);
+  SSL_CTX_set_session_cache_mode(context_.native_handle(),
+                                 SSL_SESS_CACHE_SERVER);
 
   // Allow for retrieving this Identity object given just an SSL context.
   SSL_CTX_set_ex_data(context_.native_handle(), SSL_CTX_IDENTITY_PTR, this);
 
   return err;
 }
-
 
 /// Load certificate from a PEM file.
 std::error_code Identity::loadCertificateChain(const std::string &certData) {
@@ -125,17 +130,22 @@ std::error_code Identity::loadCertificateChain(const std::string &certData) {
 }
 
 /// Load private key from a PEM file.
-std::error_code Identity::loadPrivateKey(const std::string &keyData, const std::string &passphrase) {
+std::error_code Identity::loadPrivateKey(const std::string &keyData,
+                                         const std::string &passphrase) {
   std::error_code err;
 
   // Set the context's password callback to return the given passphrase.
   context_.set_password_callback(
-    [&passphrase](size_t maxLength, asio::ssl::context::password_purpose purpose) -> std::string {
-    return (purpose == asio::ssl::context::for_reading) ? passphrase : "";
-  }, err);
+      [&passphrase](size_t maxLength,
+                    asio::ssl::context::password_purpose purpose)
+          -> std::string {
+        return (purpose == asio::ssl::context::for_reading) ? passphrase : "";
+      },
+      err);
 
   if (err) {
-    log::warning("loadPrivateKey: Error returned from set_password_callback", err);
+    log::warning("loadPrivateKey: Error returned from set_password_callback",
+                 err);
   }
 
   asio::const_buffer keyBuffer{keyData.data(), keyData.size()};
@@ -148,9 +158,9 @@ std::error_code Identity::loadPrivateKey(const std::string &keyData, const std::
   // After loading the key, reset the context's password callback.
   std::error_code ignore;
   context_.set_password_callback(
-    [](size_t maxLength, asio::ssl::context::password_purpose purpose) -> std::string {
-      return "";
-    }, ignore);
+      [](size_t maxLength, asio::ssl::context::password_purpose purpose)
+          -> std::string { return ""; },
+      ignore);
 
   if (!err) {
     // Make sure the key matches the certificate.
@@ -162,7 +172,6 @@ std::error_code Identity::loadPrivateKey(const std::string &keyData, const std::
 
   return err;
 }
-
 
 std::error_code Identity::loadVerifier(const std::string &verifyData) {
   std::error_code err;
@@ -180,7 +189,6 @@ std::error_code Identity::loadVerifier(const std::string &verifyData) {
   return err;
 }
 
-
 std::error_code Identity::addClientCA(const std::string &verifyData) {
   ::ERR_clear_error();
 
@@ -191,9 +199,9 @@ std::error_code Identity::addClientCA(const std::string &verifyData) {
     }
   }
 
-  return std::error_code(static_cast<int>(::ERR_get_error()), asio::error::get_ssl_category());
+  return std::error_code(static_cast<int>(::ERR_get_error()),
+                         asio::error::get_ssl_category());
 }
-
 
 std::error_code Identity::prepareVerifier() {
   std::error_code err;
@@ -202,20 +210,27 @@ std::error_code Identity::prepareVerifier() {
   // certificate is not present". In a client handshake, the verify_fail_if
   // no_cert option is ignored -- I'm just setting the verify mode here.
 
-  context_.set_verify_mode(asio::ssl::verify_peer | asio::ssl::verify_fail_if_no_peer_cert, err);
+  context_.set_verify_mode(
+      asio::ssl::verify_peer | asio::ssl::verify_fail_if_no_peer_cert, err);
 
-  // By default, set up the context to REJECT all certificates. The TLS connection
+  // By default, set up the context to REJECT all certificates. The TLS
+  // connection
   // object should have its verify_callback set instead.
 
-  context_.set_verify_callback([this](bool preverified, asio::ssl::verify_context &ctx) -> bool {
-    log::warning("Context TLS verifier is rejecting all certificates - you need to override!");
-    return false;
-  }, err);
+  context_.set_verify_callback(
+      [this](bool preverified, asio::ssl::verify_context &ctx) -> bool {
+        log::warning(
+            "Context TLS verifier is rejecting all certificates - you need to "
+            "override!");
+        return false;
+      },
+      err);
 
   return err;
 }
 
-bool Identity::verifyPeer(UInt64 connId, UInt64 securityId, bool preverified, asio::ssl::verify_context &ctx) {
+bool Identity::verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
+                          asio::ssl::verify_context &ctx) {
   int error = X509_STORE_CTX_get_error(ctx.native_handle());
   int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
 
@@ -226,22 +241,28 @@ bool Identity::verifyPeer(UInt64 connId, UInt64 securityId, bool preverified, as
 
   if (!preverified || (error != X509_V_OK)) {
     // We failed pre-verification or there is a verify error.
-    log::warning("Certificate verify failed:", X509_verify_cert_error_string(error), std::make_pair("connid", connId));
-    log::warning("Peer certificate", depth, subjectName, std::make_pair("tlsid", securityId), std::make_pair("connid", connId), '\n', cert.toString());
+    log::warning("Certificate verify failed:",
+                 X509_verify_cert_error_string(error),
+                 std::make_pair("connid", connId));
+    log::warning("Peer certificate", depth, subjectName,
+                 std::make_pair("tlsid", securityId),
+                 std::make_pair("connid", connId), '\n', cert.toString());
     return false;
   }
 
   if (depth > 0) {
-    log::debug("Verify peer chain:", depth, subjectName, std::make_pair("tlsid", securityId), std::make_pair("connid", connId));
+    log::debug("Verify peer chain:", depth, subjectName,
+               std::make_pair("tlsid", securityId),
+               std::make_pair("connid", connId));
     return preverified;
   }
 
   assert(depth == 0);
-  log::info("Verify peer:", subjectName, std::make_pair("tlsid", securityId), std::make_pair("connid", connId));
+  log::info("Verify peer:", subjectName, std::make_pair("tlsid", securityId),
+            std::make_pair("connid", connId));
 
   return true;
 }
-
 
 #if 0
 static std::string getSubjectAltName(X509 *cert) {
@@ -283,22 +304,26 @@ static std::string getSubjectAltName(X509 *cert) {
 
   return result;
 }
-#endif //0
-
+#endif  // 0
 
 template <>
-void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient) {
+void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId,
+                                                EncryptedSocket &sock,
+                                                const IPv6Endpoint &remoteEndpt,
+                                                bool isClient) {
   // Store identity pointer in SSL object app data field.
   SSL_CTX *ctxt = SSL_get_SSL_CTX(sock.native_handle());
-  Identity *identity = reinterpret_cast<Identity *>(SSL_CTX_get_ex_data(ctxt, SSL_CTX_IDENTITY_PTR));
+  Identity *identity = reinterpret_cast<Identity *>(
+      SSL_CTX_get_ex_data(ctxt, SSL_CTX_IDENTITY_PTR));
   SSL_set_ex_data(sock.native_handle(), SSL_IDENTITY_PTR, identity);
   log::fatal_if_null(identity);
 
   std::error_code err;
   UInt64 securityId = identity->securityId();
-  sock.set_verify_callback([connId, securityId](bool preverified, asio::ssl::verify_context &ctx) -> bool {
-    return verifyPeer(connId, securityId, preverified, ctx);
-  }, err);
+  sock.set_verify_callback(
+      [connId, securityId](bool preverified, asio::ssl::verify_context &ctx)
+          -> bool { return verifyPeer(connId, securityId, preverified, ctx); },
+      err);
 
   if (err) {
     log::error("Failed to specify TLS verifier callback", err);
@@ -307,7 +332,7 @@ void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &
   if (isClient) {
     // Check if there is a client session we can resume. This is a static method
     // so we have to retrieve the Identity object from the SSL_CTX.
-    
+
     SSL_SESSION *session = identity->findClientSession(remoteEndpt);
     if (session) {
       SSL_set_session(sock.native_handle(), session);
@@ -315,16 +340,20 @@ void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &
   }
 }
 
-
 template <>
-void Identity::afterHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient, std::error_code err) 
-{ 
-  Identity *identity = reinterpret_cast<Identity *>(SSL_get_ex_data(sock.native_handle(), SSL_IDENTITY_PTR));
+void Identity::afterHandshake<EncryptedSocket>(UInt64 connId,
+                                               EncryptedSocket &sock,
+                                               const IPv6Endpoint &remoteEndpt,
+                                               bool isClient,
+                                               std::error_code err) {
+  Identity *identity = reinterpret_cast<Identity *>(
+      SSL_get_ex_data(sock.native_handle(), SSL_IDENTITY_PTR));
   log::fatal_if_null(identity);
   UInt64 securityId = identity->securityId();
 
   if (err) {
-    log::error("TLS handshake failed", std::make_pair("tlsid", securityId), std::make_pair("connid", connId), err);
+    log::error("TLS handshake failed", std::make_pair("tlsid", securityId),
+               std::make_pair("connid", connId), err);
     return;
   }
 
@@ -338,15 +367,18 @@ void Identity::afterHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &s
   std::string sessionId;
   if (sessionResumed) {
     unsigned int idlen;
-    const UInt8 *id = SSL_SESSION_get_id(SSL_get_session(sock.native_handle()), &idlen);
+    const UInt8 *id =
+        SSL_SESSION_get_id(SSL_get_session(sock.native_handle()), &idlen);
     sessionId = RawDataToHex(id, idlen);
   }
 
-  log::info(tlsVersion, "session", sessionStatus, tlsCipherSpec, sessionId, std::make_pair("tlsid", securityId), std::make_pair("connid", connId));
+  log::info(tlsVersion, "session", sessionStatus, tlsCipherSpec, sessionId,
+            std::make_pair("tlsid", securityId),
+            std::make_pair("connid", connId));
 
   // If this is a client handshake, save the client session.
   if (isClient) {
-    identity->saveClientSession(remoteEndpt, SSL_get1_session(sock.native_handle()));
+    identity->saveClientSession(remoteEndpt,
+                                SSL_get1_session(sock.native_handle()));
   }
 }
-

@@ -34,12 +34,12 @@ namespace detail {
 
 template <OFPActionType ActType>
 class EmptyAction {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(ActType, 8); }
 
   constexpr EmptyAction() {}
 
-private:
+ private:
   const ActionType type_ = type();
   const Padding<4> pad_;
 };
@@ -60,7 +60,7 @@ static_assert(IsStandardLayout<AT_COPY_TTL_OUT>(), "Unexpected layout.");
 
 /// \brief Concrete type for AT_OUTPUT action.
 class AT_OUTPUT {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 16); }
 
   constexpr AT_OUTPUT(UInt32 port, UInt16 maxlen = 0)
@@ -69,7 +69,7 @@ public:
   constexpr UInt32 port() const { return port_; }
   constexpr UInt16 maxlen() const { return maxlen_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big32 port_;
   const Big16 maxlen_;
@@ -82,7 +82,7 @@ static_assert(IsStandardLayout<AT_OUTPUT>(), "Unexpected layout");
 namespace deprecated {
 
 class AT_OUTPUT_V1 {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 8); }
 
   constexpr AT_OUTPUT_V1(const AT_OUTPUT *output)
@@ -91,7 +91,7 @@ public:
   constexpr UInt16 port() const { return port_; }
   constexpr UInt16 maxlen() const { return maxlen_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big16 port_;
   const Big16 maxlen_;
@@ -104,7 +104,7 @@ static_assert(IsStandardLayout<AT_OUTPUT_V1>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_SET_MPLS_TTL action.
 class AT_SET_MPLS_TTL {
-public:
+ public:
   constexpr static ActionType type() {
     return ActionType(OFPAT_SET_MPLS_TTL, 8);
   }
@@ -113,7 +113,7 @@ public:
 
   UInt16 ttl() const { return ttl_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big16 ttl_;
   const Padding<2> pad_;
@@ -124,14 +124,14 @@ static_assert(IsStandardLayout<AT_SET_MPLS_TTL>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_PUSH_VLAN action.
 class AT_PUSH_VLAN {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_VLAN, 8); }
 
   constexpr explicit AT_PUSH_VLAN(UInt16 vlan) : vlan_{vlan} {}
 
   UInt16 vlan() const { return vlan_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big16 vlan_;
   const Padding<2> pad_;
@@ -142,14 +142,14 @@ static_assert(IsStandardLayout<AT_PUSH_VLAN>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_PUSH_MPLS action.
 class AT_PUSH_MPLS {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_MPLS, 8); }
 
   constexpr explicit AT_PUSH_MPLS(UInt32 mpls) : mpls_{mpls} {}
 
   UInt32 mpls() const { return mpls_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big32 mpls_;
 };
@@ -159,14 +159,14 @@ static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_POP_MPLS action.
 class AT_POP_MPLS {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_POP_MPLS, 8); }
 
   constexpr explicit AT_POP_MPLS(UInt16 ethertype) : ethertype_{ethertype} {}
 
   UInt16 ethertype() const { return ethertype_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big16 ethertype_;
   const Padding<2> pad_;
@@ -176,14 +176,14 @@ static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
 /// \brief Concrete type for AT_SET_QUEUE action.
 class AT_SET_QUEUE {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_SET_QUEUE, 8); }
 
   constexpr explicit AT_SET_QUEUE(UInt32 queue) : queue_{queue} {}
 
   UInt32 queue() const { return queue_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big32 queue_;
 };
@@ -193,14 +193,14 @@ static_assert(IsStandardLayout<AT_SET_QUEUE>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_GROUP action.
 class AT_GROUP {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_GROUP, 8); }
 
   constexpr explicit AT_GROUP(UInt32 group) : group_{group} {}
 
   UInt32 group() const { return group_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big32 group_;
 };
@@ -210,14 +210,14 @@ static_assert(IsStandardLayout<AT_GROUP>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_SET_NW_TTL action.
 class AT_SET_NW_TTL {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_SET_NW_TTL, 8); }
 
   constexpr explicit AT_SET_NW_TTL(UInt8 ttl) : ttl_{ttl} {}
 
   UInt8 ttl() const { return ttl_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big8 ttl_;
   const Padding<3> pad_;
@@ -228,14 +228,14 @@ static_assert(IsStandardLayout<AT_SET_NW_TTL>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_SET_NW_TTL action.
 class AT_PUSH_PBB {
-public:
+ public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_PBB, 8); }
 
   constexpr explicit AT_PUSH_PBB(UInt16 ethertype) : ethertype_{ethertype} {}
 
   UInt16 ethertype() const { return ethertype_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const Big16 ethertype_;
   const Padding<2> pad_;
@@ -246,30 +246,33 @@ static_assert(IsStandardLayout<AT_PUSH_PBB>(), "Unexpected layout");
 
 /// \brief Concrete type for AT_EXPERIMENTER action.
 class AT_EXPERIMENTER {
-public:
+ public:
   // Variable length actions do not have a type().
 
-  constexpr explicit AT_EXPERIMENTER(UInt32 experimenterid, const ByteRange &value)
-      : type_{OFPAT_EXPERIMENTER, UInt16_narrow_cast(PadLength(8 + value.size()))}, experimenterid_{experimenterid},
-      value_{value} {}
+  constexpr explicit AT_EXPERIMENTER(UInt32 experimenterid,
+                                     const ByteRange &value)
+      : type_{OFPAT_EXPERIMENTER,
+              UInt16_narrow_cast(PadLength(8 + value.size()))},
+        experimenterid_{experimenterid},
+        value_{value} {}
 
   UInt32 experimenterid() const { return experimenterid_; }
   ByteRange value() const { return {BytePtr(&value_), type_.length() - 8U}; }
 
-private:
+ private:
   const ActionType type_;
   const Big32 experimenterid_;
   const ByteRange value_;
 
   enum : size_t { FixedSize = 8 };
-  
+
   friend class ActionList;
 };
 
 /// \brief Concrete type for AT_SET_FIELD action.
 template <class ValueType>
 class AT_SET_FIELD {
-public:
+ public:
   constexpr static ActionType type() {
     return ActionType(OFPAT_SET_FIELD, 8 + sizeof(Padded<ValueType>));
   }
@@ -278,44 +281,46 @@ public:
 
   ValueType value() const { return value_; }
 
-private:
+ private:
   const ActionType type_ = type();
   const OXMType oxmtype_ = ValueType::type();
   const Padded<ValueType> value_;
 };
 
-
 class AT_SET_FIELD_CUSTOM {
-public:
+ public:
   // Variable length actions do not have a type().
 
-  constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, const ByteRange &value) : 
-    type_{ActionType(OFPAT_SET_FIELD, UInt16_narrow_cast(8U + PadLength(value.size())))}, oxmtype_{oxmType}, value_{value} {}
+  constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, const ByteRange &value)
+      : type_{ActionType(OFPAT_SET_FIELD,
+                         UInt16_narrow_cast(8U + PadLength(value.size())))},
+        oxmtype_{oxmType},
+        value_{value} {}
 
   ByteRange value() const;
 
-private:
+ private:
   const ActionType type_;
   const OXMType oxmtype_;
   const ByteRange value_;
 
   enum : size_t { FixedSize = 8 };
-  
+
   friend class ActionList;
 };
 
-
 class AT_UNKNOWN {
-public:
+ public:
   // Variable length actions do not have a type().
 
-  constexpr AT_UNKNOWN(ActionType type, const ByteRange &value) :
-    type_{ActionType(type.enumType(), UInt16_narrow_cast(4U + value.size()))},
-    value_{value} {}
+  constexpr AT_UNKNOWN(ActionType type, const ByteRange &value)
+      : type_{
+            ActionType(type.enumType(), UInt16_narrow_cast(4U + value.size()))},
+        value_{value} {}
 
   ByteRange value() const;
 
-private:
+ private:
   enum : size_t { FixedSize = 4 };
 
   const ActionType type_;
@@ -329,7 +334,7 @@ namespace deprecated {
 
 template <UInt16 Code, class ValueType>
 class AT_SET_FIELD_V {
-public:
+ public:
   constexpr static ActionType type() {
     return ActionType(static_cast<OFPActionType>(Code),
                       PadLength(4 + sizeof(ValueType)));
@@ -338,7 +343,7 @@ public:
   constexpr AT_SET_FIELD_V(const AT_SET_FIELD<ValueType> *action)
       : value_{action->value()} {}
 
-private:
+ private:
   const ActionType type_ = type();
   const ValueType value_;
   Padding<8 - (4 + sizeof(ValueType)) % 8> pad_;
@@ -346,7 +351,7 @@ private:
 
 template <UInt16 Code, class ValueType>
 class AT_SET_FIELD_V_NPAD {
-public:
+ public:
   constexpr static ActionType type() {
     return ActionType(static_cast<OFPActionType>(Code),
                       PadLength(4 + sizeof(ValueType)));
@@ -355,7 +360,7 @@ public:
   constexpr AT_SET_FIELD_V_NPAD(const AT_SET_FIELD<ValueType> *action)
       : value_{action->value()} {}
 
-private:
+ private:
   const ActionType type_ = type();
   const ValueType value_;
   // No padding.

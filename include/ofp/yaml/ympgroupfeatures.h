@@ -8,7 +8,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPGroupFeatures> {
-
   static void mapping(IO &io, ofp::MPGroupFeatures &body) {
     io.mapRequired("types", body.types_);
     io.mapRequired("capabilities", body.capabilities_);
@@ -27,7 +26,6 @@ struct MappingTraits<ofp::MPGroupFeatures> {
 
 template <>
 struct MappingTraits<ofp::MPGroupFeaturesBuilder> {
-
   static void mapping(IO &io, ofp::MPGroupFeaturesBuilder &body) {
     io.mapRequired("types", body.msg_.types_);
     io.mapRequired("capabilities", body.msg_.capabilities_);
@@ -47,4 +45,4 @@ struct MappingTraits<ofp::MPGroupFeaturesBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YGROUPFEATURES_H_
+#endif  // OFP_YAML_YGROUPFEATURES_H_

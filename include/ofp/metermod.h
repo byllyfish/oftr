@@ -12,7 +12,7 @@ class MeterMod : public ProtocolMsg<MeterMod, OFPT_METER_MOD, 16> {
   UInt16 flags() const { return flags_; }
   UInt32 meterId() const { return meterId_; }
   MeterBandRange meterBands() const;
-  
+
   bool validateInput(Validation *context) const;
 
  private:
@@ -36,11 +36,13 @@ static_assert(IsTriviallyCopyable<MeterMod>(), "Expected trivially copyable.");
 class MeterModBuilder {
  public:
   MeterModBuilder() = default;
-  
+
   void setCommand(UInt16 command) { msg_.command_ = command; }
   void setFlags(UInt16 flags) { msg_.flags_ = flags; }
   void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
-  void setMeterBands(const MeterBandRange &meterBands) { meterBands_.assign(meterBands); }
+  void setMeterBands(const MeterBandRange &meterBands) {
+    meterBands_.assign(meterBands);
+  }
 
   UInt32 send(Writable *channel);
 

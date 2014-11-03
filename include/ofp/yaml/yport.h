@@ -102,22 +102,15 @@ template <>
 struct SequenceTraits<ofp::PortRange> {
   using iterator = ofp::PortIterator;
 
-  static iterator begin(IO &io, ofp::PortRange &range) {
-    return range.begin();
-  }
+  static iterator begin(IO &io, ofp::PortRange &range) { return range.begin(); }
 
-  static iterator end(IO &io, ofp::PortRange &range) {
-    return range.end();
-  }
+  static iterator end(IO &io, ofp::PortRange &range) { return range.end(); }
 
-  static void next(iterator &iter, iterator iterEnd) {
-    ++iter;
-  }
+  static void next(iterator &iter, iterator iterEnd) { ++iter; }
 };
 
 template <>
 struct SequenceTraits<ofp::PortList> {
-
   static size_t size(IO &io, ofp::PortList &list) { return 0; }
 
   static ofp::detail::PortInserter &element(IO &io, ofp::PortList &list,

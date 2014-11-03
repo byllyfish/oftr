@@ -29,8 +29,9 @@ namespace ofp {
 
 // FIXME - identical to SetAsync? Use template?
 
-class GetAsyncReply : public ProtocolMsg<GetAsyncReply, OFPT_GET_ASYNC_REPLY, 32, 32> {
-public:
+class GetAsyncReply
+    : public ProtocolMsg<GetAsyncReply, OFPT_GET_ASYNC_REPLY, 32, 32> {
+ public:
   UInt32 masterPacketInMask() const { return packetInMask_[0]; }
   UInt32 slavePacketInMask() const { return packetInMask_[1]; }
   UInt32 masterPortStatusMask() const { return portStatusMask_[0]; }
@@ -40,7 +41,7 @@ public:
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big32 packetInMask_[2];
   Big32 portStatusMask_[2];
@@ -60,7 +61,7 @@ static_assert(IsTriviallyCopyable<GetAsyncReply>(),
               "Expected trivially copyable.");
 
 class GetAsyncReplyBuilder {
-public:
+ public:
   explicit GetAsyncReplyBuilder(UInt32 xid);
   explicit GetAsyncReplyBuilder(const GetAsyncRequest *request);
   explicit GetAsyncReplyBuilder(const GetAsyncReply *msg);
@@ -76,7 +77,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   GetAsyncReply msg_;
 
   template <class T>

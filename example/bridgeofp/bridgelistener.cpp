@@ -39,13 +39,13 @@ void BridgeListener::onChannelUp(Channel *channel) {
     otherBridge_ = bridge;
 
     (void)driver->connect(ChannelMode::Raw, 0, remoteEndpoint_,
-                        ProtocolVersions::All, [bridge]() { return bridge; }, 
-                        [bridge](Channel *, std::error_code err){
-                          // If connection fails, delete the otherBridge_.
-                          if (err) {
-                            delete bridge;
-                          }
-                        });
+                          ProtocolVersions::All, [bridge]() { return bridge; },
+                          [bridge](Channel *, std::error_code err) {
+                            // If connection fails, delete the otherBridge_.
+                            if (err) {
+                              delete bridge;
+                            }
+                          });
 
   } else {
     // We're the outgoing side.
@@ -80,9 +80,9 @@ static void translateFwd(const Message *message, Channel *channel) {
   }
 }
 
-#define CASE_MSG(MsgType)                                                      \
-  case MsgType::type() :                                                       \
-    translateFwd<MsgType, MsgType##Builder>(message, channel);                 \
+#define CASE_MSG(MsgType)                                      \
+  case MsgType::type():                                        \
+    translateFwd<MsgType, MsgType##Builder>(message, channel); \
     break
 
 void BridgeListener::translateAndForward(const Message *message,
@@ -107,7 +107,7 @@ void BridgeListener::translateAndForward(const Message *message,
 #if 0
         CASE_MSG(MultipartRequest);
         CASE_MSG(MultipartReply);
-#endif // 0
+#endif  // 0
     CASE_MSG(BarrierRequest);
     CASE_MSG(BarrierReply);
     CASE_MSG(QueueGetConfigRequest);
@@ -117,10 +117,10 @@ void BridgeListener::translateAndForward(const Message *message,
     CASE_MSG(GetAsyncRequest);
     CASE_MSG(GetAsyncReply);
     CASE_MSG(SetAsync);
-  // CASE_MSG(MeterMod);
-  //#endif //0
-  default:
-    log::info("Unrecognized message type:", message->type());
-    break;
+    // CASE_MSG(MeterMod);
+    //#endif //0
+    default:
+      log::info("Unrecognized message type:", message->type());
+      break;
   }
 }

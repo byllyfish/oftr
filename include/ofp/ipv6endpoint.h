@@ -28,7 +28,7 @@
 namespace ofp {
 
 class IPv6Endpoint {
-public:
+ public:
   IPv6Endpoint() = default;
   IPv6Endpoint(const IPv6Address &addr, UInt16 port)
       : addr_{addr}, port_{port} {}
@@ -48,10 +48,12 @@ public:
 
   std::string toString() const;
 
-  bool operator==(const IPv6Endpoint &rhs) const { return port_ == rhs.port_ && addr_ == rhs.addr_; }
+  bool operator==(const IPv6Endpoint &rhs) const {
+    return port_ == rhs.port_ && addr_ == rhs.addr_;
+  }
   bool operator!=(const IPv6Endpoint &rhs) const { return !(*this == rhs); }
 
-private:
+ private:
   IPv6Address addr_;
   UInt16 port_ = 0;
 };
@@ -79,7 +81,8 @@ namespace std {
 template <>
 struct hash<ofp::IPv6Endpoint> {
   size_t operator()(const ofp::IPv6Endpoint &endpt) const {
-    return hash<ofp::IPv6Address>{}(endpt.address()) ^ hash<unsigned>{}(endpt.port());
+    return hash<ofp::IPv6Address>{}(endpt.address()) ^
+           hash<unsigned>{}(endpt.port());
   }
 };
 

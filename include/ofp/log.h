@@ -28,7 +28,7 @@
 
 namespace llvm {
 
-// Allow llvm::StringRef to write to a std::ostream. Needs to be in llvm 
+// Allow llvm::StringRef to write to a std::ostream. Needs to be in llvm
 // namespace for ADL to work.
 inline std::ostream &operator<<(std::ostream &os, const StringRef &s) {
   return os.write(s.data(), ofp::Signed_cast(s.size()));
@@ -45,7 +45,7 @@ extern void *GlobalOutputCallbackContext;
 extern Level GlobalOutputLevelFilter;
 
 template <class T1, class T2>
-std::ostream &operator<<(std::ostream &os, const std::pair<T1,T2> &p) {
+std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p) {
   return os << '{' << p.first << ": " << p.second << '}';
 }
 
@@ -76,7 +76,7 @@ void write_(Level level, const Args &... args) {
     GlobalOutputCallback(level, buf.data(), buf.size(),
                          GlobalOutputCallbackContext);
   }
-#endif //OFP_LOGGING_DISABLED
+#endif  // OFP_LOGGING_DISABLED
 }
 
 }  // namespace detail
@@ -115,7 +115,6 @@ template <class Ptr>
 inline Ptr fatal_if_null(Ptr value) {
   return (value == nullptr) ? fatal("Unexpected null ptr"), value : value;
 }
-
 
 }  // namespace log
 }  // namespace ofp

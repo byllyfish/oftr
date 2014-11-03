@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Specialize asio's openssl_init<> template so it does *not* initialize
@@ -30,28 +30,22 @@ namespace ssl {
 namespace detail {
 
 template <>
-class openssl_init<> : private openssl_init_base
-{
-public:
+class openssl_init<> : private openssl_init_base {
+ public:
   // Constructor.
-  openssl_init() : ref_(instance())
-  {
-  }
+  openssl_init() : ref_(instance()) {}
 
   // Destructor.
-  ~openssl_init()
-  {
-  }
+  ~openssl_init() {}
 
-#if !defined(SSL_OP_NO_COMPRESSION) \
-  && (OPENSSL_VERSION_NUMBER >= 0x00908000L)
+#if !defined(SSL_OP_NO_COMPRESSION) && (OPENSSL_VERSION_NUMBER >= 0x00908000L)
   using openssl_init_base::get_null_compression_methods;
-#endif // !defined(SSL_OP_NO_COMPRESSION)
-       // && (OPENSSL_VERSION_NUMBER >= 0x00908000L)
+#endif  // !defined(SSL_OP_NO_COMPRESSION)
+        // && (OPENSSL_VERSION_NUMBER >= 0x00908000L)
 
   using openssl_init_base::instance;
 
-private:
+ private:
   asio::detail::shared_ptr<do_init> ref_;
 };
 
@@ -59,4 +53,4 @@ private:
 }  // namespace ssl
 }  // namespace asio
 
-#endif // OFP_SYS_ASIO_OPENSSL_INIT_H_
+#endif  // OFP_SYS_ASIO_OPENSSL_INIT_H_

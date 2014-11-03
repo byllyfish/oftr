@@ -30,8 +30,9 @@
 namespace ofp {
 
 class MemoryChannel : public Writable {
-public:
-  explicit MemoryChannel(UInt8 version = OFP_VERSION_LAST) : version_{version} {}
+ public:
+  explicit MemoryChannel(UInt8 version = OFP_VERSION_LAST)
+      : version_{version} {}
 
   const UInt8 *data() const {
     assert(flushed_ || size() == 0);
@@ -56,7 +57,7 @@ public:
 
   void clear() { buf_.clear(); }
 
-private:
+ private:
   ByteList buf_;
   UInt32 nextXid_ = 1;
   UInt8 version_;

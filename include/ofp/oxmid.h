@@ -6,27 +6,27 @@
 namespace ofp {
 
 class OXMID {
-public:
+ public:
+  enum {
+    ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_CONDITIONAL,
+    ProtocolIteratorAlignment = 4
+  };
 
-    enum {
-        ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_CONDITIONAL,
-        ProtocolIteratorAlignment  = 4
-    };
+  explicit OXMID(OXMType type = {}, UInt32 experimenter = 0)
+      : type_{type}, experimenter_{experimenter} {}
 
-    explicit OXMID(OXMType type = {}, UInt32 experimenter = 0) : type_{type}, experimenter_{experimenter} {}
+  OXMType type() const { return type_; }
+  UInt32 experimenter() const { return experimenter_; }
 
-    OXMType type() const { return type_; }
-    UInt32 experimenter() const { return experimenter_; }
+ private:
+  OXMType type_;
+  Big32 experimenter_;
 
-private:
-    OXMType type_;
-    Big32 experimenter_;
+  size_t length() const { return type_.isExperimenter() ? 8 : 4; }
 
-    size_t length() const { return type_.isExperimenter() ? 8 : 4; }
-
-    friend class OXMIDList;
+  friend class OXMIDList;
 };
 
 }  // namespace ofp
 
-#endif // OFP_OXMID_H_
+#endif  // OFP_OXMID_H_

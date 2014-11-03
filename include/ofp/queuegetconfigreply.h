@@ -33,13 +33,13 @@ namespace ofp {
 
 class QueueGetConfigReply
     : public ProtocolMsg<QueueGetConfigReply, OFPT_QUEUE_GET_CONFIG_REPLY, 16> {
-public:
+ public:
   UInt32 port() const { return port_; }
   QueueRange queues() const;
 
   bool validateInput(Validation *context) const;
 
-private:
+ private:
   Header header_;
   Big32 port_;
   Padding<4> pad_;
@@ -58,7 +58,7 @@ static_assert(IsTriviallyCopyable<QueueGetConfigReply>(),
               "Expected trivially copyable.");
 
 class QueueGetConfigReplyBuilder {
-public:
+ public:
   QueueGetConfigReplyBuilder() = default;
 
   void setPort(UInt32 port) { msg_.port_ = port; }
@@ -68,7 +68,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   QueueGetConfigReply msg_;
   QueueList queues_;
 

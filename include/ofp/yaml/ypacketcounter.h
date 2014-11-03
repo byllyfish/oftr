@@ -16,7 +16,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::PacketCounter> {
-
   static void mapping(IO &io, ofp::PacketCounter &stats) {
     io.mapRequired("packet_count", stats.packetCount_);
     io.mapRequired("byte_count", stats.byteCount_);
@@ -25,13 +24,11 @@ struct MappingTraits<ofp::PacketCounter> {
 
 template <>
 struct MappingTraits<ofp::PacketCounterBuilder> {
-
   static void mapping(IO &io, ofp::PacketCounterBuilder &stats) {
     io.mapRequired("packet_count", stats.msg_.packetCount_);
     io.mapRequired("byte_count", stats.msg_.byteCount_);
   }
 };
-
 
 template <>
 struct MappingTraits<ofp::detail::PacketCounterInserter> {
@@ -57,18 +54,15 @@ struct SequenceTraits<ofp::PacketCounterRange> {
     return range.end();
   }
 
-  static void next(iterator &iter, iterator iterEnd) {
-    ++iter;
-  }
+  static void next(iterator &iter, iterator iterEnd) { ++iter; }
 };
 
 template <>
 struct SequenceTraits<ofp::PacketCounterList> {
-
   static size_t size(IO &io, ofp::PacketCounterList &list) { return 0; }
 
-  static ofp::detail::PacketCounterInserter &element(IO &io, ofp::PacketCounterList &list,
-                                            size_t index) {
+  static ofp::detail::PacketCounterInserter &element(
+      IO &io, ofp::PacketCounterList &list, size_t index) {
     return Ref_cast<ofp::detail::PacketCounterInserter>(list);
   }
 };
@@ -76,4 +70,4 @@ struct SequenceTraits<ofp::PacketCounterList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YPACKETCOUNTER_H_
+#endif  // OFP_YAML_YPACKETCOUNTER_H_

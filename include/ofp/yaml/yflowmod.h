@@ -42,23 +42,22 @@ namespace yaml {
 /// msg:
 ///   cookie:       UInt64
 ///   cookie_mask:  UInt64
-///   table_id:     UInt8                  
-///   command:      UInt8                  
-///   idle_timeout: UInt16             
-///   hard_timeout: UInt16             
-///   priority:     UInt16                 
-///   buffer_id:    UInt32               
-///   out_port:     UInt32                 
-///   out_group:    UInt32                
-///   flags:        UInt16                    
-///   match:        [ MatchField* ]            
+///   table_id:     UInt8
+///   command:      UInt8
+///   idle_timeout: UInt16
+///   hard_timeout: UInt16
+///   priority:     UInt16
+///   buffer_id:    UInt32
+///   out_port:     UInt32
+///   out_group:    UInt32
+///   flags:        UInt16
+///   match:        [ MatchField* ]
 ///   instructions: [ Instruction* ]
 /// ~~~~~
 ///
 
 template <>
 struct MappingTraits<ofp::FlowMod> {
-
   static void mapping(IO &io, ofp::FlowMod &msg) {
     io.mapRequired("cookie", msg.cookie_);
     io.mapRequired("cookie_mask", msg.cookieMask_);
@@ -83,7 +82,6 @@ struct MappingTraits<ofp::FlowMod> {
 
 template <>
 struct MappingTraits<ofp::FlowModBuilder> {
-
   static void mapping(IO &io, ofp::FlowModBuilder &msg) {
     io.mapRequired("cookie", msg.msg_.cookie_);
     io.mapRequired("cookie_mask", msg.msg_.cookieMask_);
@@ -102,13 +100,14 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapRequired("match", msg.match_);
     io.mapRequired("instructions", msg.instructions_);
 
-    ofp::yaml::Encoder *encoder = reinterpret_cast<ofp::yaml::Encoder *>(io.getContext());
+    ofp::yaml::Encoder *encoder =
+        reinterpret_cast<ofp::yaml::Encoder *>(io.getContext());
     if (encoder && encoder->matchPrereqsChecked()) {
-        if (!msg.match_.validate()) {
-            // TODO(bfish) better error message
-            io.setError("Match is ambiguous.");
-            ofp::log::info("Match is ambiguous.");
-        }
+      if (!msg.match_.validate()) {
+        // TODO(bfish) better error message
+        io.setError("Match is ambiguous.");
+        ofp::log::info("Match is ambiguous.");
+      }
     }
   }
 };

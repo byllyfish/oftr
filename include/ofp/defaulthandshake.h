@@ -35,7 +35,7 @@ class Connection;
 OFP_BEGIN_IGNORE_PADDING
 
 class DefaultHandshake : public ChannelListener {
-public:
+ public:
   DefaultHandshake(sys::Connection *channel, ChannelMode mode,
                    ProtocolVersions versions, Factory listenerFactory);
 
@@ -50,7 +50,7 @@ public:
   void setStartingXid(UInt32 xid) { startingXid_ = xid; }
   void setConnection(sys::Connection *channel) { channel_ = channel; }
 
-private:
+ private:
   sys::Connection *channel_;
   ProtocolVersions versions_;
   Factory listenerFactory_;

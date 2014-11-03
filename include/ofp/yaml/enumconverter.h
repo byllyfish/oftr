@@ -11,10 +11,13 @@ namespace detail {
 /// Return max storable integer value based on type's size in bytes.
 template <class Type>
 constexpr unsigned long long MaxIntValue() {
-  return (sizeof(Type) == 1) ? 0xffu :
-         (sizeof(Type) == 2) ? 0xffffu :
-         (sizeof(Type) == 4) ? 0xffffffffu :
-         (sizeof(Type) == 8) ? 0xffffffffffffffffu : 0;
+  return (sizeof(Type) == 1) ? 0xffu : (sizeof(Type) == 2)
+                                           ? 0xffffu
+                                           : (sizeof(Type) == 4)
+                                                 ? 0xffffffffu
+                                                 : (sizeof(Type) == 8)
+                                                       ? 0xffffffffffffffffu
+                                                       : 0;
 }
 
 }  // namespace detail
@@ -23,20 +26,20 @@ template <class Type>
 bool ParseUnsignedInteger(llvm::StringRef name, Type *value) {
   unsigned long long num;
   if (!llvm::getAsUnsignedInteger(name, 0, num)) {
-      static_assert(detail::MaxIntValue<Type>() > 0, "Unexpected type");
-      if (num <= detail::MaxIntValue<Type>()) {
-        *value = static_cast<Type>(num);
-        return true;
-      }
+    static_assert(detail::MaxIntValue<Type>() > 0, "Unexpected type");
+    if (num <= detail::MaxIntValue<Type>()) {
+      *value = static_cast<Type>(num);
+      return true;
+    }
   }
   return false;
 }
 
-
 template <class Type>
 class EnumConverter {
  public:
-  constexpr EnumConverter(llvm::ArrayRef<llvm::StringRef> names) : names_{names} {}
+  constexpr EnumConverter(llvm::ArrayRef<llvm::StringRef> names)
+      : names_{names} {}
 
   bool convert(llvm::StringRef name, Type *value) {
     // Check for name match.

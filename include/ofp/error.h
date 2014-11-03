@@ -30,14 +30,14 @@ namespace ofp {
 
 /// \brief Implements Error protocol message.
 class Error : public ProtocolMsg<Error, OFPT_ERROR, 12, 65535, false> {
-public:
+ public:
   UInt16 errorType() const { return type_; }
   UInt16 errorCode() const { return code_; }
   ByteRange errorData() const;
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big16 type_ = 0;
   Big16 code_ = 0;
@@ -54,13 +54,13 @@ static_assert(IsTriviallyCopyable<Error>(), "Expected trivially copyable.");
 
 /// \brief Implements Error protocol message builder.
 class ErrorBuilder {
-public:
+ public:
   explicit ErrorBuilder(UInt32 xid);
   explicit ErrorBuilder(const Error *msg);
 
   void setErrorType(UInt16 type) { msg_.type_ = type; }
   void setErrorCode(UInt16 code) { msg_.code_ = code; }
-  
+
   void setErrorData(const void *data, size_t length) {
     data_.set(data, length);
   }
@@ -69,7 +69,7 @@ public:
 
   void send(Writable *channel);
 
-private:
+ private:
   Error msg_;
 
   Padding<4> padNotPartOfPkt_;

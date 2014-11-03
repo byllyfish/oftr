@@ -38,37 +38,45 @@ OFP_BEGIN_IGNORE_PADDING
 
 // RAII Utility class to prevent modification while iterating. (Not thread-safe)
 class IterLock {
-public: 
-  explicit IterLock(bool &ref, bool val=true) : val_{ref}, ref_{ref} { ref_ = val; }
+ public:
+  explicit IterLock(bool &ref, bool val = true) : val_{ref}, ref_{ref} {
+    ref_ = val;
+  }
   ~IterLock() { ref_ = val_; }
 
-private:
+ private:
   bool val_;
-  bool &ref_; 
+  bool &ref_;
 };
 
 class Connection;
 
 class Engine {
-public:
+ public:
   explicit Engine(Driver *driver);
   ~Engine();
 
-  UInt64 listen(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &localEndpoint,
-                         ProtocolVersions versions,
-                         ChannelListener::Factory listenerFactory, std::error_code &error);
+  UInt64 listen(ChannelMode mode, UInt64 securityId,
+                const IPv6Endpoint &localEndpoint, ProtocolVersions versions,
+                ChannelListener::Factory listenerFactory,
+                std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
-                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
-                        std::function<void(Channel*,std::error_code)> resultHandler);
+  UInt64 connect(ChannelMode mode, UInt64 securityId,
+                 const IPv6Endpoint &remoteEndpoint, ProtocolVersions versions,
+                 ChannelListener::Factory listenerFactory,
+                 std::function<void(Channel *, std::error_code)> resultHandler);
 
-  UInt64 connectUDP(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
-                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
-                        std::error_code &error);
+  UInt64 connectUDP(ChannelMode mode, UInt64 securityId,
+                    const IPv6Endpoint &remoteEndpoint,
+                    ProtocolVersions versions,
+                    ChannelListener::Factory listenerFactory,
+                    std::error_code &error);
 
   size_t close(UInt64 connId);
 
-  UInt64 addIdentity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifier, std::error_code &error);
+  UInt64 addIdentity(const std::string &certData,
+                     const std::string &keyPassphrase,
+                     const std::string &verifier, std::error_code &error);
 
   void run();
   void stop(Milliseconds timeout = 0_ms);
@@ -127,7 +135,7 @@ public:
   UInt64 assignConnectionId();
   UInt64 assignSecurityId();
 
-private:
+ private:
   // Pointer to driver object that owns engine.
   Driver *driver_;
 
@@ -146,7 +154,7 @@ private:
   std::shared_ptr<UDP_Server> udpConnect_;
   UInt64 lastConnId_ = 0;
   UInt64 lastSecurityId_ = 0;
-  
+
   // The io_service must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to update bookkeeping objects.
   asio::io_service io_{1};
@@ -158,7 +166,6 @@ private:
 
   // Timer that can be used to stop the engine.
   asio::steady_timer stopTimer_;
-
 
   mutable bool connListLock_ = false;
   mutable bool serverListLock_ = false;

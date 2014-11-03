@@ -29,17 +29,15 @@
 #include <sstream>
 #include <unordered_map>
 #include <unordered_set>
-#include "ofp/oxmtype.h" // so we can define lookupInfo().
+#include "ofp/oxmtype.h"  // so we can define lookupInfo().
 
 using namespace std;
 
 static vector<string> Split(const string &str, char delimiter, bool trim);
 
 class OXMField {
-public:
-  enum {
-    NumFields = 7
-  };
+ public:
+  enum { NumFields = 7 };
 
   explicit OXMField(const vector<string> fields) : fields_{fields} {}
 
@@ -126,7 +124,7 @@ public:
       s << "\"nullptr\");\n";
   }
 
-private:
+ private:
   vector<string> fields_;
 };
 
@@ -155,7 +153,7 @@ static vector<OXMField> ReadInput(istream &stream) {
   int lineNum = 0;
   std::string line;
   while (std::getline(stream, line)) {
-    if (++lineNum == 1) // skip first line
+    if (++lineNum == 1)  // skip first line
       continue;
     auto fields = Split(line, '\t', true);
     if (fields.size() >= OXMField::NumFields) {
@@ -190,8 +188,7 @@ static void WriteHeaderFile(ostream &stream, vector<OXMField> &fields) {
   stream << "namespace ofp {\n\n";
 
   for (auto field : fields) {
-    if (field.hasPrereqs())
-      field.declareGlobalPrereq(stream);
+    if (field.hasPrereqs()) field.declareGlobalPrereq(stream);
   }
 
   stream << "\n\n/// \\brief Defines an internal ID in the contiguous range "
@@ -275,8 +272,7 @@ static void WriteSourceFile(ostream &stream, vector<OXMField> &fields) {
   stream << PrereqFunctionPreamble;
 
   for (auto field : fields) {
-    if (field.hasPrereqs())
-      field.writePrereqCode(stream);
+    if (field.hasPrereqs()) field.writePrereqCode(stream);
   }
 
   stream
@@ -346,8 +342,7 @@ static vector<string> Split(const string &str, char delimiter, bool trim) {
   vector<string> result;
   istringstream iss{str};
   for (string f; getline(iss, f, delimiter);) {
-    if (trim)
-      Trim(f);
+    if (trim) Trim(f);
     result.push_back(f);
   }
   return result;

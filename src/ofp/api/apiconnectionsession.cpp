@@ -27,9 +27,7 @@ using ofp::api::ApiConnectionSession;
 
 ApiConnectionSession::ApiConnectionSession(ApiServer *server,
                                            ApiSession *session)
-    : ApiConnection{server},
-      session_{session},
-      work_{server->engine()->io()} {}
+    : ApiConnection{server}, session_{session}, work_{server->engine()->io()} {}
 
 void ApiConnectionSession::write(const std::string &msg) {
   session_->receive(msg);

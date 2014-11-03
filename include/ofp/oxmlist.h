@@ -32,7 +32,7 @@ namespace ofp {
 // It allows multiple values for the same key (used for prereqs).
 
 class OXMList {
-public:
+ public:
   OXMList() = default;
   /* implicit NOLINT */ OXMList(const OXMRange &range);
 
@@ -42,9 +42,7 @@ public:
   const UInt8 *data() const { return buf_.begin(); }
   size_t size() const { return buf_.size(); }
 
-  OXMRange toRange() const {
-    return OXMRange{buf_.data(), buf_.size()};
-  }
+  OXMRange toRange() const { return OXMRange{buf_.data(), buf_.size()}; }
 
   template <class ValueType>
   void add(ValueType value);
@@ -71,7 +69,7 @@ public:
   bool operator==(const OXMList &rhs) const { return buf_ == rhs.buf_; }
   bool operator!=(const OXMList &rhs) const { return !(*this == rhs); }
 
-private:
+ private:
   ByteList buf_;
 
   void insert(OXMIterator pos, const void *data, size_t len);
@@ -135,11 +133,11 @@ inline void OXMList::add(OXMType type, const void *data, size_t len) {
 }
 
 inline void OXMList::add(OXMType type, const void *data, const void *mask,
-                  size_t len) {
+                         size_t len) {
   assert(type.length() == 2 * len);
 
   buf_.add(&type, sizeof(type));
-  buf_.add(data, len); // FIXME - apply mask here.
+  buf_.add(data, len);  // FIXME - apply mask here.
   buf_.add(mask, len);
 }
 

@@ -30,7 +30,7 @@ namespace ofp {
 
 class FlowRemoved
     : public ProtocolMsg<FlowRemoved, OFPT_FLOW_REMOVED, 56, 65528, true> {
-public:
+ public:
   /// Opaque controller-issued identifier.
   UInt64 cookie() const { return cookie_; }
 
@@ -65,7 +65,7 @@ public:
 
   bool validateInput(Validation *context) const;
 
-private:
+ private:
   Header header_;
   Big64 cookie_;
   Big16 priority_;
@@ -100,7 +100,7 @@ static_assert(IsTriviallyCopyable<FlowRemoved>(),
               "Expected trivially copyable.");
 
 class FlowRemovedBuilder {
-public:
+ public:
   FlowRemovedBuilder() = default;
   explicit FlowRemovedBuilder(const FlowRemoved *msg);
 
@@ -121,7 +121,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   FlowRemoved msg_;
   MatchBuilder match_;
 

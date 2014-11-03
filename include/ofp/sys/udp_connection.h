@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the sys::UDP_Connection class.
@@ -35,26 +35,29 @@ class UDP_Server;
 OFP_BEGIN_IGNORE_PADDING
 
 class UDP_Connection : public Connection {
-public:
-    UDP_Connection(UDP_Server *server, ChannelMode mode, ProtocolVersions versions, ChannelListener::Factory factory);
-    ~UDP_Connection();
+ public:
+  UDP_Connection(UDP_Server *server, ChannelMode mode,
+                 ProtocolVersions versions, ChannelListener::Factory factory);
+  ~UDP_Connection();
 
-    void connect(const udp::endpoint &remoteEndpt);
-    void accept(const udp::endpoint &remoteEndpt);
+  void connect(const udp::endpoint &remoteEndpt);
+  void accept(const udp::endpoint &remoteEndpt);
 
-    void write(const void *data, size_t length) override;
-	void flush() override;
-	void shutdown() override;
-	
-    ChannelTransport transport() const override { return ChannelTransport::UDP_Plaintext; }
-    IPv6Endpoint remoteEndpoint() const override;
-    IPv6Endpoint localEndpoint() const override;
+  void write(const void *data, size_t length) override;
+  void flush() override;
+  void shutdown() override;
 
-private:
-    UDP_Server *server_;
-    udp::endpoint remoteEndpt_;
+  ChannelTransport transport() const override {
+    return ChannelTransport::UDP_Plaintext;
+  }
+  IPv6Endpoint remoteEndpoint() const override;
+  IPv6Endpoint localEndpoint() const override;
 
-    void channelUp();
+ private:
+  UDP_Server *server_;
+  udp::endpoint remoteEndpt_;
+
+  void channelUp();
 };
 
 OFP_END_IGNORE_PADDING

@@ -10,4 +10,4 @@ using MPMeterStatsRequestBuilder = MPMeterConfigRequestBuilder;
 
 }  // namespace ofp
 
-#endif // OFP_MPMETERSTATSREQUEST_H_
+#endif  // OFP_MPMETERSTATSREQUEST_H_

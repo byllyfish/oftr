@@ -3,11 +3,8 @@
 
 namespace ofp {
 
-enum class ChannelMode {
-    Raw = 0,
-    Controller
-};
+enum class ChannelMode { Raw = 0, Controller };
 
 }  // namespace ofp
 
-#endif // OFP_CHANNELMODE_H_
+#endif  // OFP_CHANNELMODE_H_

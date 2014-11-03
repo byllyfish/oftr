@@ -5,7 +5,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPMeterFeatures> {
-
   static void mapping(IO &io, ofp::MPMeterFeatures &body) {
     io.mapRequired("max_meter", body.maxMeter_);
     io.mapRequired("band_types", body.bandTypes_);
@@ -17,7 +16,6 @@ struct MappingTraits<ofp::MPMeterFeatures> {
 
 template <>
 struct MappingTraits<ofp::MPMeterFeaturesBuilder> {
-
   static void mapping(IO &io, ofp::MPMeterFeaturesBuilder &body) {
     io.mapRequired("max_meter", body.msg_.maxMeter_);
     io.mapRequired("band_types", body.msg_.bandTypes_);

@@ -11,4 +11,4 @@ using QueueRange = ProtocolRange<QueueIterator>;
 
 }  // namespace ofp
 
-#endif // OFP_QUEUERANGE_H_
+#endif  // OFP_QUEUERANGE_H_

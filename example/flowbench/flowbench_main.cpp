@@ -18,17 +18,14 @@ void *operator new(size_t size) {
 
 //
 
-void *operator new [](size_t size) {
+void *operator new[](size_t size) {
   ++mallocCount;
   mallocSize += size;
   return malloc(size);
 }
 
 //
-void
-operator delete(void *p) noexcept {
-  free(p);
-}
+void operator delete(void *p) noexcept { free(p); }
 
 //
 void operator delete[](void *p) noexcept { free(p); }
@@ -38,7 +35,6 @@ void operator delete[](void *p) noexcept { free(p); }
 static void flowMod(Writable *channel, UInt32 inPort, UInt32 bufferId,
                     const EnetAddress &dst, const EnetAddress &src,
                     UInt32 outPort) {
-
   FlowModBuilder flowMod;
 
   MatchBuilder &match = flowMod.match();

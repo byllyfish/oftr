@@ -55,8 +55,7 @@ OXMIterator OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type,
 OXMIterator OXMList::findValue(OXMType type) const {
   OXMIterator iterEnd = end();
   for (OXMIterator iter = begin(); iter < iterEnd; ++iter) {
-    if (iter->type() == type)
-      return iter;
+    if (iter->type() == type) return iter;
   }
   return iterEnd;
 }
@@ -64,4 +63,3 @@ OXMIterator OXMList::findValue(OXMType type) const {
 void OXMList::replaceValue(OXMIterator pos, const void *data, size_t len) {
   std::memcpy(const_cast<UInt8 *>(pos->unknownValuePtr()), data, len);
 }
-

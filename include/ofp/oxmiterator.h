@@ -27,9 +27,9 @@
 namespace ofp {
 
 class OXMIterator {
-public:
+ public:
   class Item {
-  public:
+   public:
     Item(const Item &) = delete;
     Item &operator=(const Item &) = delete;
 
@@ -50,11 +50,9 @@ public:
       return BytePtr(this) + sizeof(OXMType);
     }
 
-    OXMIterator position() const {
-      return OXMIterator{BytePtr(this)};
-    }
+    OXMIterator position() const { return OXMIterator{BytePtr(this)}; }
 
-  private:
+   private:
     Item() = default;
   };
 
@@ -101,7 +99,7 @@ public:
     return dist;
   }
 
-private:
+ private:
   const UInt8 *position_;
 
   constexpr explicit OXMIterator(const void *pos)

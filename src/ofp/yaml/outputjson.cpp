@@ -23,8 +23,7 @@ bool OutputJson::preflightKey(const char *Key, bool Required,
                               bool SameAsDefault, bool &UseDefault, void *&) {
   UseDefault = false;
   if (Required || !SameAsDefault) {
-    if (NeedComma)
-      output(",");
+    if (NeedComma) output(",");
     this->paddedKey(Key);
     return true;
   }
@@ -41,9 +40,8 @@ unsigned OutputJson::beginSequence() {
 
 void OutputJson::endSequence() { output("]"); }
 
-bool OutputJson::preflightElement(unsigned, void *&) { 
-  if (NeedComma)
-    output(",");
+bool OutputJson::preflightElement(unsigned, void *&) {
+  if (NeedComma) output(",");
   return true;
 }
 
@@ -58,8 +56,7 @@ unsigned OutputJson::beginFlowSequence() {
 void OutputJson::endFlowSequence() { output("]"); }
 
 bool OutputJson::preflightFlowElement(unsigned, void *&) {
-  if (NeedComma)
-    output(",");
+  if (NeedComma) output(",");
   return true;
 }
 
@@ -68,7 +65,7 @@ void OutputJson::postflightFlowElement(void *) { NeedComma = true; }
 void OutputJson::beginEnumScalar() {}
 
 bool OutputJson::matchEnumScalar(const char *Str, bool Match) {
-  if (Match) { // TODO(bfish): Check out caller...
+  if (Match) {  // TODO(bfish): Check out caller...
     output("\"");
     output(Str);
     output("\"");
@@ -85,8 +82,7 @@ bool OutputJson::beginBitSetScalar(bool &DoClear) {
 
 bool OutputJson::bitSetMatch(const char *Str, bool Matches) {
   if (Matches) {
-    if (NeedComma)
-      output(",");
+    if (NeedComma) output(",");
     output(Str);
     NeedComma = true;
   }
@@ -102,8 +98,7 @@ static StringRef::size_type findUnsafe(const StringRef &s,
   StringRef::size_type len = s.size();
   for (StringRef::size_type i = pos; i < len; ++i) {
     unsigned ch = static_cast<unsigned>(data[i]);
-    if (ch < 0x20 || ch == '\\' || ch == '"')
-      return i;
+    if (ch < 0x20 || ch == '\\' || ch == '"') return i;
   }
   return StringRef::npos;
 }
@@ -112,7 +107,8 @@ const char *const ControlReplacement[] = {
     "u0000", "u0001", "u0002", "u0003", "u0004", "u0005", "u0006", "u0007",
     "b",     "t",     "n",     "u000B", "f",     "r",     "u000E", "u000F",
     "u0010", "u0011", "u0012", "u0013", "u0014", "u0015", "u0016", "u0017",
-    "u0018", "u0019", "u001A", "u001B", "u001C", "u001D", "u001E", "u001F", };
+    "u0018", "u0019", "u001A", "u001B", "u001C", "u001D", "u001E", "u001F",
+};
 
 void OutputJson::scalarString(StringRef &S) {
   // Output value wrapped in double-quotes. Escape any embedded double-quotes
@@ -131,7 +127,7 @@ void OutputJson::scalarString(StringRef &S) {
     output(S.substr(pos, offset));
     output("\\");
     unsigned ch = static_cast<unsigned>(S[offset]);
-    if (ch < 0x20) { // control character?
+    if (ch < 0x20) {  // control character?
       output(ControlReplacement[ch]);
       pos = offset + 1;
     } else {
@@ -142,7 +138,7 @@ void OutputJson::scalarString(StringRef &S) {
       output(S.substr(pos, offset - pos));
       output("\\");
       ch = static_cast<unsigned>(S[offset]);
-      if (ch <= 0x20) { // control character?
+      if (ch <= 0x20) {  // control character?
         output(ControlReplacement[ch]);
         pos = offset + 1;
       } else {
@@ -152,16 +148,14 @@ void OutputJson::scalarString(StringRef &S) {
 
     output(S.substr(pos));
   }
-  output("\""); // closing quote
+  output("\"");  // closing quote
 }
 
 void OutputJson::setError(const Twine &message) {}
 
 bool OutputJson::canElideEmptySequence() { return false; }
 
-void OutputJson::output(StringRef s) {
-  Out << s;
-}
+void OutputJson::output(StringRef s) { Out << s; }
 
 void OutputJson::paddedKey(StringRef key) {
   output("\"");
@@ -169,7 +163,8 @@ void OutputJson::paddedKey(StringRef key) {
   output("\":");
 }
 
-void OutputJson::beginDocuments() { /* output("---\n"); */ }
+void OutputJson::beginDocuments() { /* output("---\n"); */
+}
 
 bool OutputJson::preflightDocument(unsigned index) {
   /* if (index > 0)
@@ -177,6 +172,8 @@ bool OutputJson::preflightDocument(unsigned index) {
   return true;
 }
 
-void OutputJson::postflightDocument() { /*output("\n");*/ }
+void OutputJson::postflightDocument() { /*output("\n");*/
+}
 
-void OutputJson::endDocuments() { /* output("\n...\n"); */ }
+void OutputJson::endDocuments() { /* output("\n...\n"); */
+}

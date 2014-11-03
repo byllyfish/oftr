@@ -11,4 +11,4 @@ using ActionIDRange = ProtocolRange<ActionIDIterator>;
 
 }  // namespace ofp
 
-#endif // OFP_ACTIONIDRANGE_H_
+#endif  // OFP_ACTIONIDRANGE_H_

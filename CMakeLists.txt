@@ -426,6 +426,7 @@ configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTes
 
 # DataTypes.h in yaml-io depends on having these set. These macros have no effect
 # in C++11.
+
 add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 
 # Set flags to use when compiling third party code. Basically, we just use our
@@ -545,4 +546,15 @@ set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-white
 add_custom_target(cpplint
   COMMAND ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} ${LIBOFP_HEADER_FILES} ${LIBOFP_HEADERS_GENERATED} ${LIBOFP_SOURCES}
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+  COMMENT "Checking all libofp code with cpplint" VERBATIM
+)
+
+#-------------------------------------------------------------------------------
+# Support for Running Clang-format
+#-------------------------------------------------------------------------------
+
+add_custom_target(format-all
+  COMMAND find include src tools example oxm \( -name "*.h" -o -name "*.cpp" -o -name "*.ipp" \) -exec clang-format -i {} +
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMENT "Formatting all libofp code with clang-format" VERBATIM
 )

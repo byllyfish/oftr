@@ -39,7 +39,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::PacketOut> {
-
   static void mapping(IO &io, ofp::PacketOut &msg) {
     using namespace ofp;
 
@@ -59,7 +58,6 @@ struct MappingTraits<ofp::PacketOut> {
 
 template <>
 struct MappingTraits<ofp::PacketOutBuilder> {
-
   static void mapping(IO &io, ofp::PacketOutBuilder &msg) {
     using namespace ofp;
 

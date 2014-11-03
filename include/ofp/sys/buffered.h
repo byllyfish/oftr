@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the sys::Buffered class for use by ASIO streams.
@@ -35,18 +35,18 @@ template <class StreamType>
 class Buffered : private StreamType {
   using inherited = StreamType;
 
-public:
+ public:
   using next_layer_type = inherited;
   using lowest_layer_type = typename inherited::lowest_layer_type;
 
-  //using inherited::inherited;
+  // using inherited::inherited;
 
   Buffered(asio::io_service &io, asio::ssl::context *context)
-    : inherited{io, *context} {}
+      : inherited{io, *context} {}
 
   Buffered(tcp::socket sock, asio::ssl::context *context)
-    : inherited{sock.get_io_service(), *context} {
-      lowest_layer() = std::move(sock);
+      : inherited{sock.get_io_service(), *context} {
+    lowest_layer() = std::move(sock);
   }
 
   using inherited::get_io_service;
@@ -76,7 +76,7 @@ public:
 
   void shutdownLowestLayer();
 
-private:
+ private:
   // Use a two buffer strategy for async-writes. We queue up data in one
   // growable buffer while we're in the process of flushing the other buffer.
   ByteList buffer_[2];
@@ -91,8 +91,7 @@ template <class StreamType>
 template <class CompletionHandler>
 void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
   const ByteList &outgoing = buffer_[bufferIdx_];
-  if (isFlushing_ || outgoing.size() == 0)
-    return;
+  if (isFlushing_ || outgoing.size() == 0) return;
 
   bufferIdx_ = !bufferIdx_;
   isFlushing_ = true;
@@ -100,26 +99,29 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
   log::trace("Write", id, outgoing.data(), outgoing.size());
 
   async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
-              make_custom_alloc_handler(allocator_, [this, id, handler](const asio::error_code &err, size_t bytes_transferred) {
+              make_custom_alloc_handler(
+                  allocator_, [this, id, handler](const asio::error_code &err,
+                                                  size_t bytes_transferred) {
 
-    if (!err) {
-      assert(bytes_transferred == buffer_[!bufferIdx_].size());
+                    if (!err) {
+                      assert(bytes_transferred == buffer_[!bufferIdx_].size());
 
-      isFlushing_ = false;
-      buffer_[!bufferIdx_].clear();
-      if (buffer_[bufferIdx_].size() > 0) {
-        // Start another async write for the other output buffer.
-        buf_flush(id, handler);
-      } else {
-        // Call completion handler.
-        handler(err);
-      }
+                      isFlushing_ = false;
+                      buffer_[!bufferIdx_].clear();
+                      if (buffer_[bufferIdx_].size() > 0) {
+                        // Start another async write for the other output
+                        // buffer.
+                        buf_flush(id, handler);
+                      } else {
+                        // Call completion handler.
+                        handler(err);
+                      }
 
-    } else {
-      log::error("Buffered::buf_flush error", err);
-      handler(err);
-    }
-  }));
+                    } else {
+                      log::error("Buffered::buf_flush error", err);
+                      handler(err);
+                    }
+                  }));
 }
 
 template <class StreamType>

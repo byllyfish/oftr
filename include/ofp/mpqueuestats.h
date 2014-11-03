@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MPQueueStats and MPQueueStatsBuilder classes.
@@ -30,40 +30,38 @@ class Writable;
 class Validation;
 
 class MPQueueStats {
-public:
-	MPQueueStats() = default;
+ public:
+  MPQueueStats() = default;
 
+  bool validateInput(Validation *context) const { return true; }
 
-	bool validateInput(Validation *context) const { return true; }
+ private:
+  Big32 portNo_;
+  Big32 queueId_;
+  Big64 txBytes_;
+  Big64 txPackets_;
+  Big64 txErrors_;
+  Big32 durationSec_;
+  Big32 durationNSec_;
 
-private:
-	Big32 portNo_;
-	Big32 queueId_;
-	Big64 txBytes_;
-	Big64 txPackets_;
-	Big64 txErrors_;
-	Big32 durationSec_;
-	Big32 durationNSec_;
-
-	friend class MPQueueStatsBuilder;
-	template <class T>
-	friend struct llvm::yaml::MappingTraits;
+  friend class MPQueueStatsBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(MPQueueStats) == 40, "Unexpected size.");
 static_assert(IsStandardLayout<MPQueueStats>(), "Expected standard layout.");
 
 class MPQueueStatsBuilder {
-public:
+ public:
+  void write(Writable *channel);
+  void reset() {}
 
-	void write(Writable *channel);
-	void reset() {}
-	
-private:
-	MPQueueStats msg_;
+ private:
+  MPQueueStats msg_;
 
-	template <class T>
-	friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp

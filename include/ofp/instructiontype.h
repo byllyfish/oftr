@@ -30,8 +30,9 @@ namespace ofp {
 struct InstructionTypeInfo;
 
 class InstructionType {
-public:
-  constexpr InstructionType(OFPInstructionType type = OFPIT_GOTO_TABLE) : type_{type} {}
+ public:
+  constexpr InstructionType(OFPInstructionType type = OFPIT_GOTO_TABLE)
+      : type_{type} {}
 
   constexpr OFPInstructionType enumType() const { return type_; }
 
@@ -45,9 +46,11 @@ public:
 
   const InstructionTypeInfo *lookupInfo() const;
   bool parse(const std::string &s);
-  void setNative(UInt16 value) { type_ = static_cast<OFPInstructionType>(value); }
-  
-private:
+  void setNative(UInt16 value) {
+    type_ = static_cast<OFPInstructionType>(value);
+  }
+
+ private:
   Big<OFPInstructionType> type_;
 };
 
@@ -59,7 +62,6 @@ inline std::ostream &operator<<(std::ostream &os,
                                 const InstructionType &value) {
   return os << static_cast<unsigned>(value.enumType());
 }
-
 
 OFP_BEGIN_IGNORE_PADDING
 

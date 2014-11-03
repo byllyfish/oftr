@@ -9,12 +9,14 @@ namespace ofp {
 
 template <class IteratorType>
 class ProtocolRange {
-public:
+ public:
   using Iterator = IteratorType;
   using Element = typename IteratorType::Element;
 
   ProtocolRange() = default;
-  /* implicit */ ProtocolRange(const ByteRange &range) : range_{range} { assert(begin() <= end()); }
+  /* implicit */ ProtocolRange(const ByteRange &range) : range_{range} {
+    assert(begin() <= end());
+  }
 
   Iterator begin() const { return Iterator(range_.begin()); }
   Iterator end() const { return Iterator(range_.end()); }
@@ -33,7 +35,7 @@ public:
     return range_ == rhs.range_;
   }
 
-private:
+ private:
   ByteRange range_;
 };
 

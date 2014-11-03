@@ -37,7 +37,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::TableMod> {
-
   static void mapping(IO &io, ofp::TableMod &msg) {
     io.mapRequired("table_id", msg.tableId_);
     io.mapRequired("config", msg.config_);
@@ -46,7 +45,6 @@ struct MappingTraits<ofp::TableMod> {
 
 template <>
 struct MappingTraits<ofp::TableModBuilder> {
-
   static void mapping(IO &io, ofp::TableModBuilder &msg) {
     io.mapRequired("table_id", msg.msg_.tableId_);
     io.mapRequired("config", msg.msg_.config_);

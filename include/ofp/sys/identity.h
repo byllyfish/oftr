@@ -32,9 +32,11 @@ namespace sys {
 
 class Identity {
  public:
-  explicit Identity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifyData, std::error_code &error);
+  explicit Identity(const std::string &certData,
+                    const std::string &keyPassphrase,
+                    const std::string &verifyData, std::error_code &error);
   ~Identity();
-  
+
   UInt64 securityId() const { return securityId_; }
   void setSecurityId(UInt64 securityId) { securityId_ = securityId; }
 
@@ -45,35 +47,44 @@ class Identity {
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
 
   template <class SocketType>
-  static void beforeHandshake(UInt64 connId, SocketType &sock, const IPv6Endpoint &remoteEndpt, bool isClient) { }
+  static void beforeHandshake(UInt64 connId, SocketType &sock,
+                              const IPv6Endpoint &remoteEndpt, bool isClient) {}
 
   template <class SocketType>
-  static void afterHandshake(UInt64 connId, SocketType &sock, const IPv6Endpoint &remoteEndpt, bool isClient, std::error_code err) { }
+  static void afterHandshake(UInt64 connId, SocketType &sock,
+                             const IPv6Endpoint &remoteEndpt, bool isClient,
+                             std::error_code err) {}
 
  private:
   UInt64 securityId_;
   asio::ssl::context context_;
   std::string subjectName_;
-  std::unordered_map<IPv6Endpoint, SSL_SESSION*> clientSessions_;
+  std::unordered_map<IPv6Endpoint, SSL_SESSION *> clientSessions_;
 
   std::error_code configureContext();
   std::error_code loadCertificateChain(const std::string &certData);
-  std::error_code loadPrivateKey(const std::string &keyData, const std::string &keyPassphrase);
+  std::error_code loadPrivateKey(const std::string &keyData,
+                                 const std::string &keyPassphrase);
   std::error_code loadVerifier(const std::string &verifyData);
   std::error_code addClientCA(const std::string &verifyData);
   std::error_code prepareVerifier();
 
-  static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified, asio::ssl::verify_context &ctx);
+  static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
+                         asio::ssl::verify_context &ctx);
 };
 
+template <>
+void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId,
+                                                EncryptedSocket &sock,
+                                                const IPv6Endpoint &remoteEndpt,
+                                                bool isClient);
 
 template <>
-void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient);
-
-template <>
-void Identity::afterHandshake<EncryptedSocket>(UInt64 connId, EncryptedSocket &sock, const IPv6Endpoint &remoteEndpt, bool isClient, std::error_code err);
-
-
+void Identity::afterHandshake<EncryptedSocket>(UInt64 connId,
+                                               EncryptedSocket &sock,
+                                               const IPv6Endpoint &remoteEndpt,
+                                               bool isClient,
+                                               std::error_code err);
 
 }  // namespace sys
 }  // namespace ofp

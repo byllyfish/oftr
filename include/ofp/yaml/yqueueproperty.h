@@ -63,10 +63,8 @@ struct MappingTraits<ofp::detail::QueuePropertyInserter> {
   }
 };
 
-
 template <>
 struct SequenceTraits<ofp::detail::QueuePropertyRange> {
-
   using iterator = ofp::detail::QueuePropertyIterator;
 
   static iterator begin(IO &io, ofp::detail::QueuePropertyRange &range) {
@@ -95,16 +93,15 @@ struct SequenceTraits<ofp::detail::QueuePropertyRange> {
 
 template <>
 struct SequenceTraits<ofp::detail::QueuePropertyList> {
-
   static size_t size(IO &io, ofp::detail::QueuePropertyList &list) { return 0; }
 
-  static ofp::detail::QueuePropertyInserter &element(IO &io, ofp::detail::QueuePropertyList &list,
-                                            size_t index) {
+  static ofp::detail::QueuePropertyInserter &element(
+      IO &io, ofp::detail::QueuePropertyList &list, size_t index) {
     return Ref_cast<ofp::detail::QueuePropertyInserter>(list);
   }
 };
 
-} // namespace yaml
-} // namespace llvm
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YQUEUEPROPERTY_H_
+#endif  // OFP_YAML_YQUEUEPROPERTY_H_

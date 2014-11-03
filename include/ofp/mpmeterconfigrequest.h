@@ -11,41 +11,42 @@ class MultipartRequest;
 class Validation;
 
 class MPMeterConfigRequest {
-public:
-    static const MPMeterConfigRequest *cast(const MultipartRequest *req);
+ public:
+  static const MPMeterConfigRequest *cast(const MultipartRequest *req);
 
-    UInt32 meterId() const { return meterId_; }
+  UInt32 meterId() const { return meterId_; }
 
-    bool validateInput(Validation *context) const;
+  bool validateInput(Validation *context) const;
 
-private:
-    Big32 meterId_;
-    Padding<4> pad_;
+ private:
+  Big32 meterId_;
+  Padding<4> pad_;
 
-    friend class MPMeterConfigRequestBuilder;
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  friend class MPMeterConfigRequestBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(MPMeterConfigRequest) == 8, "Unexpected size.");
-static_assert(IsStandardLayout<MPMeterConfigRequest>(), "Expected standard layout.");
+static_assert(IsStandardLayout<MPMeterConfigRequest>(),
+              "Expected standard layout.");
 
 class MPMeterConfigRequestBuilder {
-public:
-    MPMeterConfigRequestBuilder() = default;
+ public:
+  MPMeterConfigRequestBuilder() = default;
 
-    void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
+  void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
 
-    void write(Writable *channel);
-    void reset() { }
+  void write(Writable *channel);
+  void reset() {}
 
-private:
-    MPMeterConfigRequest msg_;
+ private:
+  MPMeterConfigRequest msg_;
 
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp
 
-#endif // OFP_MPMETERCONFIGREQUEST_H_
+#endif  // OFP_MPMETERCONFIGREQUEST_H_

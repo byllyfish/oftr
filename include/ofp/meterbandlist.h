@@ -7,14 +7,14 @@
 namespace ofp {
 
 class MeterBandList : public ProtocolList<MeterBandRange> {
-    using Inherited = ProtocolList<MeterBandRange>;
-public:
+  using Inherited = ProtocolList<MeterBandRange>;
+
+ public:
   using Inherited::Inherited;
 
   template <class Type>
   void add(const Type &meterBand);
 };
-
 
 template <class Type>
 inline void MeterBandList::add(const Type &meterBand) {
@@ -23,4 +23,4 @@ inline void MeterBandList::add(const Type &meterBand) {
 
 }  // namespace ofp
 
-#endif // OFP_METERBANDLIST_H_
+#endif  // OFP_METERBANDLIST_H_

@@ -91,5 +91,4 @@ void ApiEncoder::encodeMsg(llvm::yaml::IO &io, ApiEvent event) {
       break;
   }
 }
-#endif //0
-
+#endif  // 0

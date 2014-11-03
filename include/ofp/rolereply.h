@@ -31,13 +31,13 @@ namespace ofp {
 // FIXME- this is identical to RoleRequest - reuse with template?
 
 class RoleReply : public ProtocolMsg<RoleReply, OFPT_ROLE_REPLY, 24, 24> {
-public:
+ public:
   UInt32 role() const { return role_; }
   UInt64 generationId() const { return generationId_; }
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big32 role_;
   Padding<4> pad_;
@@ -56,7 +56,7 @@ static_assert(IsStandardLayout<RoleReply>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<RoleReply>(), "Expected trivially copyable.");
 
 class RoleReplyBuilder {
-public:
+ public:
   explicit RoleReplyBuilder(UInt32 xid);
   explicit RoleReplyBuilder(const RoleRequest *request);
   explicit RoleReplyBuilder(const RoleReply *msg);
@@ -68,7 +68,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   RoleReply msg_;
 
   template <class T>

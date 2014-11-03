@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::ScalarTraits for the SmallCString class.
@@ -29,22 +29,20 @@ namespace yaml {
 
 template <size_t Size>
 struct ScalarTraits<ofp::SmallCString<Size>> {
-    static void output(const ofp::SmallCString<Size> &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value.toString();
-    }
+  static void output(const ofp::SmallCString<Size> &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << value.toString();
+  }
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           ofp::SmallCString<Size> &value)
-    {
-    	if (scalar.size() > value.capacity()) {
-    		return "Value is too long";
-    	}
-        value = scalar;
-
-        return "";
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::SmallCString<Size> &value) {
+    if (scalar.size() > value.capacity()) {
+      return "Value is too long";
     }
+    value = scalar;
+
+    return "";
+  }
 };
 
 }  // namespace yaml

@@ -41,7 +41,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::GetAsyncReply> {
-
   static void mapping(IO &io, ofp::GetAsyncReply &msg) {
     io.mapRequired("packet_in_mask_master", msg.packetInMask_[0]);
     io.mapRequired("packet_in_mask_slave", msg.packetInMask_[1]);
@@ -54,7 +53,6 @@ struct MappingTraits<ofp::GetAsyncReply> {
 
 template <>
 struct MappingTraits<ofp::GetAsyncReplyBuilder> {
-
   static void mapping(IO &io, ofp::GetAsyncReplyBuilder &msg) {
     io.mapRequired("packet_in_mask_master", msg.msg_.packetInMask_[0]);
     io.mapRequired("packet_in_mask_slave", msg.msg_.packetInMask_[1]);

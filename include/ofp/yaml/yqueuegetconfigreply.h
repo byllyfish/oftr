@@ -16,7 +16,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigReply> {
-
   static void mapping(IO &io, ofp::QueueGetConfigReply &msg) {
     io.mapRequired("port", msg.port_);
     ofp::QueueRange queues = msg.queues();
@@ -26,14 +25,13 @@ struct MappingTraits<ofp::QueueGetConfigReply> {
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigReplyBuilder> {
-
   static void mapping(IO &io, ofp::QueueGetConfigReplyBuilder &msg) {
     io.mapRequired("port", msg.msg_.port_);
     io.mapRequired("queues", msg.queues_);
   }
 };
 
-} // namespace yaml
-} // namespace llvm
+}  // namespace yaml
+}  // namespace llvm
 
-#endif // OFP_YAML_YQUEUEGETCONFIGREPLY_H_
+#endif  // OFP_YAML_YQUEUEGETCONFIGREPLY_H_

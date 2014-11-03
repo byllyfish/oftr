@@ -1,6 +1,6 @@
 #include "simplechannellistener.h"
 
-namespace controller { // <namespace controller>
+namespace controller {  // <namespace controller>
 
 void SimpleChannelListener::onChannelUp(Channel *channel) {
   UInt32 xid;
@@ -8,7 +8,7 @@ void SimpleChannelListener::onChannelUp(Channel *channel) {
   log::debug("SimpleChannelListener UP");
 
   SetConfigBuilder config;
-  config.setMissSendLen(14); // ethernet header only
+  config.setMissSendLen(14);  // ethernet header only
   config.send(channel);
   // No Reply expected.
 
@@ -32,24 +32,24 @@ void SimpleChannelListener::onChannelUp(Channel *channel) {
 
 void SimpleChannelListener::onMessage(const Message *message) {
   switch (message->type()) {
-  case PacketIn::type() :
-    if (auto msg = PacketIn::cast(message))
-      controller_.onPacketIn(message->source(), msg);
-    break;
+    case PacketIn::type():
+      if (auto msg = PacketIn::cast(message))
+        controller_.onPacketIn(message->source(), msg);
+      break;
 
-  case PortStatus::type() :
-    if (auto msg = PortStatus::cast(message))
-      controller_.onPortStatus(message->source(), msg);
-    break;
+    case PortStatus::type():
+      if (auto msg = PortStatus::cast(message))
+        controller_.onPortStatus(message->source(), msg);
+      break;
 
-  case Error::type() :
-    if (auto msg = Error::cast(message))
-      controller_.onError(message->source(), msg);
-    break;
+    case Error::type():
+      if (auto msg = Error::cast(message))
+        controller_.onError(message->source(), msg);
+      break;
 
-  default:
-    onReply(message);
-    break;
+    default:
+      onReply(message);
+      break;
   }
 }
 
@@ -77,4 +77,4 @@ void SimpleChannelListener::onReply(const Message *message) {
   }
 }
 
-} // </namespace controller>
+}  // </namespace controller>

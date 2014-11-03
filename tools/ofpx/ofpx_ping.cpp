@@ -5,7 +5,6 @@
 using namespace ofp;
 using namespace ofpx;
 
-
 //-------------------------//
 // P i n g L i s t e n e r //
 //-------------------------//
@@ -13,7 +12,7 @@ using namespace ofpx;
 OFP_BEGIN_IGNORE_PADDING
 
 class PingListener : public ChannelListener {
-public:
+ public:
   explicit PingListener(const ByteList *echoData) : echoData_{echoData} {}
 
   void onChannelUp(Channel *channel) override {
@@ -31,7 +30,7 @@ public:
     }
   }
 
-private:
+ private:
   Channel *channel_ = nullptr;
   UInt32 lastXid_ = 0;
   const ByteList *echoData_;
@@ -61,7 +60,6 @@ private:
 
 OFP_END_IGNORE_PADDING
 
-
 //-------//
 // r u n //
 //-------//
@@ -70,7 +68,6 @@ int Ping::run(int argc, char **argv) {
   cl::ParseCommandLineOptions(argc, argv);
   return ping();
 }
-
 
 //---------//
 // p i n g //
@@ -88,16 +85,15 @@ int Ping::ping() {
   Driver driver;
 
   (void)driver.connect(ChannelMode::Raw, 0, endpoint_, ProtocolVersions::All,
-                     [echoData]() { return new PingListener{&echoData}; },
-                     [&exitCode](Channel *, std::error_code err){
-                      if (err) {
-                        std::cerr << "ERROR: " << err << '\n';
-                        exitCode = 2;
-                      }
-                     });
+                       [echoData]() { return new PingListener{&echoData}; },
+                       [&exitCode](Channel *, std::error_code err) {
+                         if (err) {
+                           std::cerr << "ERROR: " << err << '\n';
+                           exitCode = 2;
+                         }
+                       });
 
   driver.run();
 
   return exitCode;
 }
-

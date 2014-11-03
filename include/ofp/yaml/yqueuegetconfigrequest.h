@@ -36,7 +36,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigRequest> {
-
   static void mapping(IO &io, ofp::QueueGetConfigRequest &msg) {
     io.mapRequired("port", msg.port_);
   }
@@ -44,7 +43,6 @@ struct MappingTraits<ofp::QueueGetConfigRequest> {
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigRequestBuilder> {
-
   static void mapping(IO &io, ofp::QueueGetConfigRequestBuilder &msg) {
     io.mapRequired("port", msg.msg_.port_);
   }

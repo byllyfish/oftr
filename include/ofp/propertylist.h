@@ -12,7 +12,6 @@ namespace detail {
 
 template <class T>
 struct has_FixedHeaderSize {
-
   template <typename U>
   static char test(decltype(U::FixedHeaderSize) *);
 
@@ -24,13 +23,11 @@ struct has_FixedHeaderSize {
 
 }  // namespace detail
 
-
 class PropertyList : public ProtocolList<PropertyRange> {
  public:
-
   template <class PropertyType>
-  EnableIf<detail::has_FixedHeaderSize<PropertyType>::value, void> 
-  add(const PropertyType &property) {
+  EnableIf<detail::has_FixedHeaderSize<PropertyType>::value, void> add(
+      const PropertyType &property) {
     assert((buf_.size() % 8) == 0);
 
     ByteRange value = property.valueRef();
@@ -44,8 +41,8 @@ class PropertyList : public ProtocolList<PropertyRange> {
   }
 
   template <class PropertyType>
-  EnableIf<!detail::has_FixedHeaderSize<PropertyType>::value, void> 
-  add(const PropertyType &property) {
+  EnableIf<!detail::has_FixedHeaderSize<PropertyType>::value, void> add(
+      const PropertyType &property) {
     static_assert((sizeof(property) % 8) == 0, "Expected multiple of 8.");
     buf_.add(&property, sizeof(property));
   }

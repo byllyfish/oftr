@@ -8,7 +8,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPExperimenter> {
-
   static void mapping(IO &io, ofp::MPExperimenter &body) {
     io.mapRequired("experimenter", body.experimenter_);
     io.mapRequired("exp_type", body.expType_);
@@ -20,7 +19,6 @@ struct MappingTraits<ofp::MPExperimenter> {
 
 template <>
 struct MappingTraits<ofp::MPExperimenterBuilder> {
-
   static void mapping(IO &io, ofp::MPExperimenterBuilder &body) {
     io.mapRequired("experimenter", body.msg_.experimenter_);
     io.mapRequired("exp_type", body.msg_.expType_);
@@ -31,4 +29,4 @@ struct MappingTraits<ofp::MPExperimenterBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMPEXPERIMENTER_H_
+#endif  // OFP_YAML_YMPEXPERIMENTER_H_

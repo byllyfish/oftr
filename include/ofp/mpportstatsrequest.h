@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MPPortStatsRequest and MPPortStatsRequestBuilder classes.
@@ -40,7 +40,7 @@ class MPPortStatsRequest {
   UInt32 portNo() const { return portNo_; }
 
   bool validateInput(Validation *context) const;
-  
+
  private:
   Big32 portNo_;
   Padding<4> pad_;

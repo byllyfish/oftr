@@ -26,13 +26,14 @@
 
 using namespace ofp;
 
-const MPFlowStatsRequest *MPFlowStatsRequest::cast(const MultipartRequest *req) {
+const MPFlowStatsRequest *MPFlowStatsRequest::cast(
+    const MultipartRequest *req) {
   return req->body_cast<MPFlowStatsRequest>();
 }
 
 bool MPFlowStatsRequest::validateInput(Validation *context) const {
   size_t length = context->lengthRemaining();
-  
+
   if (length < SizeWithoutMatchHeader) {
     log::debug("MPFlowStatsRequest: Too short.");
     return false;
@@ -51,9 +52,7 @@ bool MPFlowStatsRequest::validateInput(Validation *context) const {
   return true;
 }
 
-Match MPFlowStatsRequest::match() const {
-  return Match{&matchHeader_};
-}
+Match MPFlowStatsRequest::match() const { return Match{&matchHeader_}; }
 
 void MPFlowStatsRequestBuilder::write(Writable *channel) {
   UInt8 version = channel->version();

@@ -31,13 +31,14 @@ namespace ofp {
 // Note: This message is replaced by a MultipartRequest in version 1.4.
 
 class QueueGetConfigRequest
-    : public ProtocolMsg<QueueGetConfigRequest, OFPT_QUEUE_GET_CONFIG_REQUEST, 16, 16> {
-public:
+    : public ProtocolMsg<QueueGetConfigRequest, OFPT_QUEUE_GET_CONFIG_REQUEST,
+                         16, 16> {
+ public:
   UInt32 port() const { return port_; }
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big32 port_;
   Padding<4> pad_;
@@ -56,7 +57,7 @@ static_assert(IsTriviallyCopyable<QueueGetConfigRequest>(),
               "Expected trivially copyable.");
 
 class QueueGetConfigRequestBuilder {
-public:
+ public:
   QueueGetConfigRequestBuilder() = default;
   explicit QueueGetConfigRequestBuilder(const QueueGetConfigRequest *msg);
 
@@ -64,7 +65,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   QueueGetConfigRequest msg_;
 
   template <class T>

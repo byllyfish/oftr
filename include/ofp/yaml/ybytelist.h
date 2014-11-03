@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::ScalarTraits for ByteRange and ByteList.
@@ -30,39 +30,32 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::ByteRange> {
+  static void output(const ofp::ByteRange &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << ofp::RawDataToHex(value.data(), value.size());
+  }
 
-    static void output(const ofp::ByteRange &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << ofp::RawDataToHex(value.data(), value.size());
-    }
-
-    static StringRef input(StringRef scalar, void *ctxt, ofp::ByteRange &value)
-    {
-        return "Not supported.";
-    }
+  static StringRef input(StringRef scalar, void *ctxt, ofp::ByteRange &value) {
+    return "Not supported.";
+  }
 };
 
 template <>
 struct ScalarTraits<ofp::ByteList> {
+  static void output(const ofp::ByteList &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << ofp::RawDataToHex(value.data(), value.size());
+  }
 
-    static void output(const ofp::ByteList &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << ofp::RawDataToHex(value.data(), value.size());
-    }
-
-    static StringRef input(StringRef scalar, void *ctxt, ofp::ByteList &value)
-    {
-        value.resize(scalar.size() / 2 + 2);
-        bool error = false;
-        size_t actualSize = ofp::HexToRawData(scalar, value.mutableData(),
-                                              value.size(), &error);
-        value.resize(actualSize);
-        if (error)
-            return "Invalid hexadecimal text.";
-        return "";
-    }
+  static StringRef input(StringRef scalar, void *ctxt, ofp::ByteList &value) {
+    value.resize(scalar.size() / 2 + 2);
+    bool error = false;
+    size_t actualSize =
+        ofp::HexToRawData(scalar, value.mutableData(), value.size(), &error);
+    value.resize(actualSize);
+    if (error) return "Invalid hexadecimal text.";
+    return "";
+  }
 };
 
 }  // namespace yaml

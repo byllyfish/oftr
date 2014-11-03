@@ -103,7 +103,7 @@ constexpr Type HostSwapByteOrder(Type n) {
 /// \brief Concrete class for big-endian integer types (aligned).
 template <class Type>
 class BigEndianAligned {
-public:
+ public:
   using NativeType = Type;
 
   constexpr BigEndianAligned() = default;
@@ -116,13 +116,12 @@ public:
 
   void operator=(Type n) { n_ = HostSwapByteOrder(n); }
 
-private:
+ private:
   Type n_;
 };
 
 template <class Type>
 struct NativeTypeOf {
-
   template <class X>
   static typename X::NativeType check(const X &x);
 
@@ -150,14 +149,14 @@ static_assert(IsLiteralType<Big64>(), "Literal type expected.");
 
 // For compile-time conversions.
 template <class Type>
-constexpr EnableIf<std::is_integral<Type>::value, Type>
-BigEndianFromNative(Type value) {
+constexpr EnableIf<std::is_integral<Type>::value, Type> BigEndianFromNative(
+    Type value) {
   return detail::HostSwapByteOrder(value);
 }
 
 template <class Type>
-constexpr EnableIf<std::is_integral<Type>::value, Type>
-BigEndianToNative(Type value) {
+constexpr EnableIf<std::is_integral<Type>::value, Type> BigEndianToNative(
+    Type value) {
   return detail::HostSwapByteOrder(value);
 }
 

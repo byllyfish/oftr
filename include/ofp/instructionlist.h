@@ -31,8 +31,9 @@
 namespace ofp {
 
 class InstructionList : public ProtocolList<InstructionRange> {
-using Inherited = ProtocolList<InstructionRange>;
-public:
+  using Inherited = ProtocolList<InstructionRange>;
+
+ public:
   using Inherited::Inherited;
 
   template <class Type>

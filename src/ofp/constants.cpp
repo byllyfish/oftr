@@ -21,8 +21,8 @@ std::ostream &ofp::operator<<(std::ostream &os, OFPMultipartType type) {
   return os << '[' << static_cast<int>(type) << ']';
 }
 
-#define ENUMCASE(val)                                                          \
-  case val:                                                                    \
+#define ENUMCASE(val) \
+  case val:           \
     return #val
 
 const char *toCString(OFPType type) {

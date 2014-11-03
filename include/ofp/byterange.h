@@ -33,7 +33,8 @@ class ByteRange {
   constexpr ByteRange() : begin_{nullptr}, end_{nullptr} {}
   constexpr ByteRange(const void *data, size_t length)
       : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
-  constexpr ByteRange(const void *data, const void *end) : begin_{BytePtr(data)}, end_{BytePtr(end)} {}
+  constexpr ByteRange(const void *data, const void *end)
+      : begin_{BytePtr(data)}, end_{BytePtr(end)} {}
   /* implicit NOLINT */ ByteRange(const ByteList &data);
 
   constexpr const UInt8 *begin() const { return begin_; }
@@ -58,7 +59,8 @@ static_assert(IsConvertible<ByteList, ByteRange>(), "Expected conversion.");
 std::ostream &operator<<(std::ostream &os, const ByteRange &value);
 
 inline std::ostream &operator<<(std::ostream &os, const ByteRange &value) {
-  return os << "[ByteRange size=" << value.size() << " data=" << RawDataToHex(value.data(), value.size()) << "]";
+  return os << "[ByteRange size=" << value.size()
+            << " data=" << RawDataToHex(value.data(), value.size()) << "]";
 }
 
 }  // namespace ofp

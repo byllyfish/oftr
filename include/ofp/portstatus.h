@@ -29,14 +29,14 @@ namespace ofp {
 
 class PortStatus
     : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 80, 80, false> {
-public:
+ public:
   UInt8 reason() const { return reason_; }
 
   const Port &port() const { return port_; }
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   UInt8 reason_;
   Padding<7> pad_;
@@ -56,7 +56,7 @@ static_assert(IsTriviallyCopyable<PortStatus>(),
               "Expected trivially copyable.");
 
 class PortStatusBuilder {
-public:
+ public:
   PortStatusBuilder() = default;
   explicit PortStatusBuilder(const PortStatus *msg);
 
@@ -65,7 +65,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   PortStatus msg_;
 
   template <class T>

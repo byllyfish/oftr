@@ -80,8 +80,9 @@ inline IPv6Endpoint convertEndpoint(const typename Proto::endpoint &endpt) {
   return IPv6Endpoint{makeIPv6Address(endpt.address()), endpt.port()};
 }
 
-
-inline udp::endpoint convertDestinationEndpoint(const IPv6Endpoint &endpt, udp proto, std::error_code &error) {
+inline udp::endpoint convertDestinationEndpoint(const IPv6Endpoint &endpt,
+                                                udp proto,
+                                                std::error_code &error) {
   IPv6Address addr = endpt.address();
   UInt16 port = endpt.port();
 

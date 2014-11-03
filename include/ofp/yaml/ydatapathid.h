@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::ScalarTraits for DatapathID.
@@ -29,20 +29,17 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::DatapathID> {
-    static void output(const ofp::DatapathID &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value.toString();
-    }
+  static void output(const ofp::DatapathID &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << value.toString();
+  }
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           ofp::DatapathID &value)
-    {
-        if (!value.parse(scalar)) {
-            return "Invalid DatapathID.";
-        }
-        return "";
+  static StringRef input(StringRef scalar, void *ctxt, ofp::DatapathID &value) {
+    if (!value.parse(scalar)) {
+      return "Invalid DatapathID.";
     }
+    return "";
+  }
 };
 
 }  // namespace yaml

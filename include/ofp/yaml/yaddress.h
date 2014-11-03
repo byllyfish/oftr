@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::ScalarTraits for IPv4Address, IPv6Address,
@@ -34,94 +34,86 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::IPv4Address> {
-    static void output(const ofp::IPv4Address &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value.toString();
+  static void output(const ofp::IPv4Address &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << value.toString();
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::IPv4Address &value) {
+    if (scalar.empty()) {
+      value.clear();
+      return "";
     }
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           ofp::IPv4Address &value)
-    {
-        if (scalar.empty()) {
-            value.clear();
-            return "";
-        }
-
-        if (!value.parse(scalar)) {
-            return "Invalid IPv4 address.";
-        }
-        return "";
+    if (!value.parse(scalar)) {
+      return "Invalid IPv4 address.";
     }
+    return "";
+  }
 };
 
 template <>
 struct ScalarTraits<ofp::IPv6Address> {
-    static void output(const ofp::IPv6Address &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value.toString();
+  static void output(const ofp::IPv6Address &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << value.toString();
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::IPv6Address &value) {
+    if (scalar.empty()) {
+      value.clear();
+      return "";
     }
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           ofp::IPv6Address &value)
-    {
-        if (scalar.empty()) {
-            value.clear();
-            return "";
-        }
-
-        if (!value.parse(scalar)) {
-            return "Invalid IPv6 address.";
-        }
-        return "";
+    if (!value.parse(scalar)) {
+      return "Invalid IPv6 address.";
     }
+    return "";
+  }
 };
 
 template <>
 struct ScalarTraits<ofp::EnetAddress> {
-    static void output(const ofp::EnetAddress &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value.toString();
+  static void output(const ofp::EnetAddress &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << value.toString();
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::EnetAddress &value) {
+    if (scalar.empty()) {
+      value.clear();
+      return "";
     }
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           ofp::EnetAddress &value)
-    {
-        if (scalar.empty()) {
-            value.clear();
-            return "";
-        }
-        
-        if (!value.parse(scalar)) {
-            return "Invalid Ethernet address.";
-        }
-        return "";
+    if (!value.parse(scalar)) {
+      return "Invalid Ethernet address.";
     }
+    return "";
+  }
 };
 
 template <>
 struct ScalarTraits<ofp::IPv6Endpoint> {
-    static void output(const ofp::IPv6Endpoint &value, void *ctxt,
-                       llvm::raw_ostream &out)
-    {
-        out << value.toString();
+  static void output(const ofp::IPv6Endpoint &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    out << value.toString();
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::IPv6Endpoint &value) {
+    if (scalar.empty()) {
+      value.clear();
+      return "";
     }
 
-    static StringRef input(StringRef scalar, void *ctxt,
-                           ofp::IPv6Endpoint &value)
-    {
-        if (scalar.empty()) {
-            value.clear();
-            return "";
-        }
-
-        if (!value.parse(scalar)) {
-            return "Invalid IPv6 endpoint.";
-        }
-        return "";
+    if (!value.parse(scalar)) {
+      return "Invalid IPv6 endpoint.";
     }
+    return "";
+  }
 };
 
 }  // namespace yaml

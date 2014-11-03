@@ -8,7 +8,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPGroupStats> {
-
   static void mapping(IO &io, ofp::MPGroupStats &body) {
     io.mapRequired("group_id", body.groupId_);
     io.mapRequired("ref_count", body.refCount_);
@@ -24,7 +23,6 @@ struct MappingTraits<ofp::MPGroupStats> {
 
 template <>
 struct MappingTraits<ofp::MPGroupStatsBuilder> {
-
   static void mapping(IO &io, ofp::MPGroupStatsBuilder &body) {
     io.mapRequired("group_id", body.msg_.groupId_);
     io.mapRequired("ref_count", body.msg_.refCount_);
@@ -40,4 +38,4 @@ struct MappingTraits<ofp::MPGroupStatsBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMPGROUPSTATS_H_
+#endif  // OFP_YAML_YMPGROUPSTATS_H_

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the sys::Plaintext class for use by ASIO streams.
@@ -37,7 +37,7 @@ template <class StreamType>
 class Plaintext : private StreamType, public asio::ssl::stream_base {
   using inherited = StreamType;
 
-public:
+ public:
   using next_layer_type = inherited;
   using lowest_layer_type = typename inherited::lowest_layer_type;
 

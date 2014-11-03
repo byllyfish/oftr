@@ -28,13 +28,13 @@ namespace ofp {
 
 class GetConfigReply
     : public ProtocolMsg<GetConfigReply, OFPT_GET_CONFIG_REPLY, 12, 12, false> {
-public:
+ public:
   UInt16 flags() const { return flags_; }
   UInt16 missSendLen() const { return missSendLen_; }
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big16 flags_;
   Big16 missSendLen_;
@@ -53,7 +53,7 @@ static_assert(IsTriviallyCopyable<GetConfigReply>(),
               "Expected trivially copyable.");
 
 class GetConfigReplyBuilder {
-public:
+ public:
   GetConfigReplyBuilder() = default;
   explicit GetConfigReplyBuilder(const GetConfigReply *msg);
 
@@ -62,7 +62,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   GetConfigReply msg_;
 
   template <class T>

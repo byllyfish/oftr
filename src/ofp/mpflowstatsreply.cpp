@@ -26,12 +26,11 @@
 
 using namespace ofp;
 
-Match MPFlowStatsReply::match() const {
-  return Match{&matchHeader_};
-}
+Match MPFlowStatsReply::match() const { return Match{&matchHeader_}; }
 
 InstructionRange MPFlowStatsReply::instructions() const {
-  assert(matchHeader_.type() == OFPMT_OXM || matchHeader_.type() == OFPMT_STANDARD);
+  assert(matchHeader_.type() == OFPMT_OXM ||
+         matchHeader_.type() == OFPMT_STANDARD);
 
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   assert(length_ >= offset);
@@ -49,8 +48,9 @@ bool MPFlowStatsReply::validateInput(Validation *context) const {
     return false;
   }
 
-  context->setLengthRemaining(length - SizeWithoutMatchHeader - matchHeader_.length());
-  
+  context->setLengthRemaining(length - SizeWithoutMatchHeader -
+                              matchHeader_.length());
+
   if (!instructions().validateInput(context)) {
     return false;
   }
@@ -66,7 +66,8 @@ void MPFlowStatsReplyBuilder::write(Writable *channel) {
     return;
   }
 
-  size_t msgMatchLen = MPFlowStatsReply::UnpaddedSizeWithMatchHeader + match_.size();
+  size_t msgMatchLen =
+      MPFlowStatsReply::UnpaddedSizeWithMatchHeader + match_.size();
   size_t msgMatchLenPadded = PadLength(msgMatchLen);
 
   size_t msgLen = msgMatchLenPadded + instructions_.size();
@@ -81,9 +82,7 @@ void MPFlowStatsReplyBuilder::write(Writable *channel) {
   channel->flush();
 }
 
-
-void MPFlowStatsReplyBuilder::writeV1(Writable *channel)
-{
+void MPFlowStatsReplyBuilder::writeV1(Writable *channel) {
   deprecated::OriginalMatch origMatch{match_.toRange()};
   ActionRange actions = instructions_.toRange().outputActions();
 

@@ -15,9 +15,7 @@ namespace sys {
 // if the intrinsic memory block is in use.
 class handler_allocator {
  public:
-  enum : size_t {
-    IntrinsicSize = 183
-  };
+  enum : size_t { IntrinsicSize = 183 };
 
   handler_allocator() { set_in_use(false); }
 

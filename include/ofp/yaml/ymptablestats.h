@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MappingTraits for MPTableStats and MPTableStatsBuilder.
@@ -29,7 +29,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPTableStats> {
-
   static void mapping(IO &io, ofp::MPTableStats &body) {
     io.mapRequired("table_id", body.tableId_);
     io.mapOptional("name", body.name_);
@@ -43,7 +42,6 @@ struct MappingTraits<ofp::MPTableStats> {
 
 template <>
 struct MappingTraits<ofp::MPTableStatsBuilder> {
-
   static void mapping(IO &io, ofp::MPTableStatsBuilder &msg) {
     io.mapRequired("table_id", msg.msg_.tableId_);
     io.mapOptional("name", msg.msg_.name_);

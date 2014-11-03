@@ -28,7 +28,7 @@
 namespace ofp {
 
 class PortMod : public ProtocolMsg<PortMod, OFPT_PORT_MOD, 40, 40> {
-public:
+ public:
   UInt32 portNo() const { return portNo_; }
   EnetAddress hwAddr() const { return hwAddr_; }
   UInt32 config() const { return config_; }
@@ -37,7 +37,7 @@ public:
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big32 portNo_;
   Padding<4> pad1_;
@@ -61,7 +61,7 @@ static_assert(IsStandardLayout<PortMod>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<PortMod>(), "Expected trivially copyable.");
 
 class PortModBuilder {
-public:
+ public:
   PortModBuilder() = default;
   explicit PortModBuilder(const PortMod *msg);
 
@@ -73,7 +73,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   PortMod msg_;
 
   template <class T>

@@ -38,10 +38,10 @@ inline std::string hexclean(const char *data) {
   return ofp::RawDataToHex(s.data(), s.size());
 }
 
-#define EXPECT_HEX(hexstr, data, length)                                       \
-  {                                                                            \
-    auto hex_tmp__ = hexclean(hexstr);                                         \
-    EXPECT_EQ(hex_tmp__, ofp::RawDataToHex(data, length));                     \
+#define EXPECT_HEX(hexstr, data, length)                   \
+  {                                                        \
+    auto hex_tmp__ = hexclean(hexstr);                     \
+    EXPECT_EQ(hex_tmp__, ofp::RawDataToHex(data, length)); \
   }
 
 #endif  // OFP_UNITTEST_H_

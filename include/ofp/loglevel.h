@@ -37,4 +37,4 @@ void setOutputLevelFilter(Level level);
 }  // namespace log
 }  // namespace ofp
 
-#endif // OFP_LOGLEVEL_H_
+#endif  // OFP_LOGLEVEL_H_

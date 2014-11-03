@@ -40,7 +40,7 @@ OFP_BEGIN_IGNORE_PADDING
 /// auxillary connections to their main connection, and a main connection to a
 /// a list of auxiliary connections. It also supports a connection timer.
 class Connection : public Channel {
-public:
+ public:
   Connection(Engine *engine, DefaultHandshake *handshake);
   virtual ~Connection();
 
@@ -71,7 +71,7 @@ public:
 
   void setStartingXid(UInt32 xid) override { nextXid_ = xid; }
 
-private:
+ private:
   using AuxiliaryList = std::vector<Connection *>;
 
   sys::Engine *engine_;

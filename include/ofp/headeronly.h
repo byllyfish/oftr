@@ -39,11 +39,11 @@ class HeaderOnlyBuilder;
 /// \brief Used to implement header-only messages.
 template <OFPType MsgType>
 class HeaderOnly {
-public:
+ public:
   enum : size_t {
-    MinLength = 8,    // Minimum length
-    MaxLength = 8,    // Maximum length
-    Multiple8 = false // Multiple of 8 (don't need to check)
+    MinLength = 8,     // Minimum length
+    MaxLength = 8,     // Maximum length
+    Multiple8 = false  // Multiple of 8 (don't need to check)
   };
 
   /// Cast message to this type after validating contents.
@@ -52,9 +52,7 @@ public:
 
   static constexpr OFPType type() { return MsgType; }
 
-  static bool isLengthValid(size_t length) {
-    return length == MinLength;
-  }
+  static bool isLengthValid(size_t length) { return length == MinLength; }
 
   /// \returns xid in the header.
   UInt32 xid() const { return header_.xid(); }
@@ -62,7 +60,7 @@ public:
   /// \returns true if message content is valid.
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
 
   // Only HeaderOnlyBuilder can construct an actual instance.
@@ -73,7 +71,7 @@ private:
 
 template <class HeaderOnlyType>
 class HeaderOnlyBuilder {
-public:
+ public:
   HeaderOnlyBuilder() = default;
 
   explicit HeaderOnlyBuilder(const Message *request) : isReply_{true} {
@@ -86,7 +84,7 @@ public:
   /// \returns xid assigned to sent message.
   UInt32 send(Writable *channel);
 
-private:
+ private:
   HeaderOnlyType msg_;
   bool isReply_ = false;
   Padding<3> pad_;
@@ -203,8 +201,7 @@ UInt32 HeaderOnlyBuilder<HeaderOnlyType>::send(Writable *channel) {
     header->setType(newType);
     header->setVersion(version);
     header->setLength(sizeof(msg_));
-    if (!isReply_)
-      header->setXid(xid);
+    if (!isReply_) header->setXid(xid);
 
     channel->write(&msg_, sizeof(msg_));
     channel->flush();

@@ -4,19 +4,19 @@
 #include "ofp/ofp.h"
 #include <unordered_map>
 
-namespace controller { // <namespace controller>
+namespace controller {  // <namespace controller>
 
 using namespace ofp;
 
 struct EnetFrame;
 
 class SimpleController {
-public:
+ public:
   void onPacketIn(Channel *channel, const PacketIn *msg);
   void onPortStatus(Channel *channel, const PortStatus *msg);
   void onError(Channel *channel, const Error *msg);
 
-private:
+ private:
   using FwdTable = std::unordered_map<EnetAddress, UInt32>;
 
   FwdTable fwdTable_;
@@ -30,6 +30,6 @@ private:
                       const EnetFrame *frame, UInt32 outPort);
 };
 
-} // </namespace controller>
+}  // </namespace controller>
 
-#endif // OFP_SIMPLECONTROLLER_H
+#endif  // OFP_SIMPLECONTROLLER_H

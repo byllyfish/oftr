@@ -7,42 +7,41 @@
 namespace ofp {
 
 class PacketCounter {
-public:
-    enum { 
-      ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_FIXED, 
-      ProtocolIteratorAlignment = 8 
-    };
+ public:
+  enum {
+    ProtocolIteratorSizeOffset = PROTOCOL_ITERATOR_SIZE_FIXED,
+    ProtocolIteratorAlignment = 8
+  };
 
-    UInt64 packetCount() const { return packetCount_; }
-    UInt64 byteCount() const { return byteCount_; }
+  UInt64 packetCount() const { return packetCount_; }
+  UInt64 byteCount() const { return byteCount_; }
 
-private:
-    Big64 packetCount_;
-    Big64 byteCount_;
+ private:
+  Big64 packetCount_;
+  Big64 byteCount_;
 
-    friend class PacketCounterBuilder;
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  friend class PacketCounterBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(PacketCounter) == 16, "Unexpected size.");
 static_assert(IsStandardLayout<PacketCounter>(), "Expected standard layout.");
 
-
 class PacketCounterBuilder {
-public:
-    PacketCounterBuilder() = default;
+ public:
+  PacketCounterBuilder() = default;
 
-    void setPacketCount(UInt64 packetCount) { msg_.packetCount_ = packetCount; }
-    void setByteCount(UInt64 byteCount) { msg_.byteCount_ = byteCount; }
+  void setPacketCount(UInt64 packetCount) { msg_.packetCount_ = packetCount; }
+  void setByteCount(UInt64 byteCount) { msg_.byteCount_ = byteCount; }
 
-private:
-    PacketCounter msg_;
+ private:
+  PacketCounter msg_;
 
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp
 
-#endif // OFP_PACKETCOUNTER_H_
+#endif  // OFP_PACKETCOUNTER_H_

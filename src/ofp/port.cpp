@@ -22,7 +22,7 @@
 #include "ofp/port.h"
 #include "ofp/writable.h"
 
-namespace ofp { // <namespace ofp>
+namespace ofp {  // <namespace ofp>
 
 PortBuilder::PortBuilder(const deprecated::PortV1 &port) {
   setPortNo(port.portNo());
@@ -43,7 +43,7 @@ void PortBuilder::write(Writable *channel) {
   channel->flush();
 }
 
-namespace deprecated { // <namespace deprecated>
+namespace deprecated {  // <namespace deprecated>
 
 PortV1::PortV1(const Port &port) {
   portNo_ = UInt16_narrow_cast(port.portNo());
@@ -57,5 +57,5 @@ PortV1::PortV1(const Port &port) {
   peer_ = port.peer();
 }
 
-} // </namespace deprecated>
-} // </namespace ofp>
+}  // </namespace deprecated>
+}  // </namespace ofp>

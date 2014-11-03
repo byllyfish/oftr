@@ -31,9 +31,7 @@ ByteRange Error::errorData() const {
                    header_.length() - sizeof(Error)};
 }
 
-ErrorBuilder::ErrorBuilder(UInt32 xid) {
-  msg_.header_.setXid(xid);
-}
+ErrorBuilder::ErrorBuilder(UInt32 xid) { msg_.header_.setXid(xid); }
 
 ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg} {
   // Only data is left to copy.
@@ -44,8 +42,7 @@ ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg} {
 void ErrorBuilder::setErrorData(const Message *message) {
   assert(message);
   size_t len = message->size();
-  if (len > 64)
-    len = 64;
+  if (len > 64) len = 64;
   setErrorData(message->data(), len);
 }
 

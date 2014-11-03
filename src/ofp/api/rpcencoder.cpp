@@ -11,10 +11,9 @@ static bool errorFound(llvm::yaml::IO &io) {
   return yin->error();
 }
 
-
-RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn, yaml::Encoder::ChannelFinder finder)
+RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn,
+                       yaml::Encoder::ChannelFinder finder)
     : conn_{conn}, errorStream_{error_}, finder_{finder} {
-  
   llvm::yaml::Input yin{input, nullptr, RpcEncoder::diagnosticHandler, this};
   if (!yin.error()) {
     yin >> *this;
@@ -22,7 +21,7 @@ RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn, yaml::Enco
 
   if (yin.error()) {
     // Error string will be empty if there's no content.
-    
+
     RpcErrorResponse response{id_ ? *id_ : 0};
     response.error.message = error();
 
@@ -30,12 +29,11 @@ RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn, yaml::Enco
     if (response.error.message.find("unknown method") != std::string::npos) {
       code = ERROR_CODE_METHOD_NOT_FOUND;
     }
-    
+
     response.error.code = code;
     conn_->rpcReply(&response);
   }
 }
-
 
 void RpcEncoder::diagnosticHandler(const llvm::SMDiagnostic &diag,
                                    void *context) {
@@ -63,52 +61,52 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
 
   switch (method_) {
     case METHOD_LISTEN: {
-        RpcListen listen{id};
-        io.mapRequired("params", listen.params);
-        if (!errorFound(io)) {
-            conn_->onRpcListen(&listen);
-        }
-        break;
+      RpcListen listen{id};
+      io.mapRequired("params", listen.params);
+      if (!errorFound(io)) {
+        conn_->onRpcListen(&listen);
+      }
+      break;
     }
     case METHOD_CONNECT: {
-        RpcConnect connect{id};
-        io.mapRequired("params", connect.params);
-        if (!errorFound(io)) {
-            conn_->onRpcConnect(&connect);
-        }
-        break;
+      RpcConnect connect{id};
+      io.mapRequired("params", connect.params);
+      if (!errorFound(io)) {
+        conn_->onRpcConnect(&connect);
+      }
+      break;
     }
     case METHOD_CLOSE: {
-        RpcClose close{id};
-        io.mapRequired("params", close.params);
-        if (!errorFound(io)) {
-            conn_->onRpcClose(&close);
-        }
-        break;
+      RpcClose close{id};
+      io.mapRequired("params", close.params);
+      if (!errorFound(io)) {
+        conn_->onRpcClose(&close);
+      }
+      break;
     }
     case METHOD_SEND: {
-        RpcSend send{id, finder_};
-        io.mapRequired("params", send.params);
-        if (!errorFound(io)) {
-            conn_->onRpcSend(&send);
-        }
-        break;
+      RpcSend send{id, finder_};
+      io.mapRequired("params", send.params);
+      if (!errorFound(io)) {
+        conn_->onRpcSend(&send);
+      }
+      break;
     }
     case METHOD_CONFIG: {
-        RpcConfig config{id};
-        io.mapRequired("params", config.params);
-        if (!errorFound(io)) {
-          conn_->onRpcConfig(&config);
-        }
-        break;
+      RpcConfig config{id};
+      io.mapRequired("params", config.params);
+      if (!errorFound(io)) {
+        conn_->onRpcConfig(&config);
+      }
+      break;
     }
     case METHOD_LIST_CONNS: {
-        RpcListConns list{id};
-        io.mapRequired("params", list.params);
-        if (!errorFound(io)) {
-          conn_->onRpcListConns(&list);
-        }
-        break;
+      RpcListConns list{id};
+      io.mapRequired("params", list.params);
+      if (!errorFound(io)) {
+        conn_->onRpcListConns(&list);
+      }
+      break;
     }
     case METHOD_ADD_IDENTITY: {
       RpcAddIdentity add{id};
@@ -122,7 +120,8 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       io.setError("'ofp.datapath' is for notifications only.");
       break;
     case METHOD_MESSAGE:
-      io.setError("Use 'ofp.send' instead; 'ofp.message' is for notifications only.");
+      io.setError(
+          "Use 'ofp.send' instead; 'ofp.message' is for notifications only.");
       break;
     case METHOD_MESSAGE_ERROR:
       io.setError("'ofp.message_error' is for notifications only.");

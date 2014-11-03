@@ -11,7 +11,7 @@ using ofp::Channel;
 using ofp::Milliseconds;
 
 class NullAgent : public ofp::ChannelListener {
-public:
+ public:
   static NullAgent *Factory() { return new NullAgent; }
 
   void onChannelUp(Channel *channel) override {
@@ -27,7 +27,7 @@ public:
 
   void onMessage(const Message *message) override;
 
-private:
+ private:
   void onSetConfig(const Message *message);
   void onFlowMod(const Message *message);
   void onGetAsyncRequest(const Message *message);
@@ -39,30 +39,30 @@ private:
 
 void NullAgent::onMessage(const Message *message) {
   switch (message->type()) {
-  case ofp::SetConfig::type() :
-    onSetConfig(message);
-    break;
+    case ofp::SetConfig::type():
+      onSetConfig(message);
+      break;
 
-  case ofp::FlowMod::type() :
-    onFlowMod(message);
-    break;
+    case ofp::FlowMod::type():
+      onFlowMod(message);
+      break;
 
-  case ofp::GetAsyncRequest::type() :
-    onGetAsyncRequest(message);
-    break;
+    case ofp::GetAsyncRequest::type():
+      onGetAsyncRequest(message);
+      break;
 
-  case ofp::GetConfigRequest::type() :
-    onGetConfigRequest(message);
-    break;
+    case ofp::GetConfigRequest::type():
+      onGetConfigRequest(message);
+      break;
 
-  case ofp::BarrierRequest::type() :
-    onBarrierRequest(message);
-    break;
+    case ofp::BarrierRequest::type():
+      onBarrierRequest(message);
+      break;
 
-  default:
-    ofp::log::debug("Unknown message type", int(message->type()));
-    sendError(1, 1, message);
-    break;
+    default:
+      ofp::log::debug("Unknown message type", int(message->type()));
+      sendError(1, 1, message);
+      break;
   }
 }
 
@@ -128,4 +128,4 @@ void NullAgent::sendError(UInt16 type, UInt16 code, const Message *message) {
   msg.send(message->source());
 }
 
-#endif // NULLAGENT_H
+#endif  // NULLAGENT_H

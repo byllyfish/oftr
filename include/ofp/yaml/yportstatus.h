@@ -38,7 +38,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::PortStatus> {
-
   static void mapping(IO &io, ofp::PortStatus &msg) {
     io.mapRequired("reason", msg.reason_);
     io.mapRequired("port", msg.port_);
@@ -47,7 +46,6 @@ struct MappingTraits<ofp::PortStatus> {
 
 template <>
 struct MappingTraits<ofp::PortStatusBuilder> {
-
   static void mapping(IO &io, ofp::PortStatusBuilder &msg) {
     io.mapRequired("reason", msg.msg_.reason_);
     io.mapRequired("port", msg.msg_.port_);

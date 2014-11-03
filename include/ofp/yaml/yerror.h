@@ -39,7 +39,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::Error> {
-
   static void mapping(IO &io, ofp::Error &msg) {
     Hex16 type = msg.errorType();
     Hex16 code = msg.errorCode();
@@ -52,7 +51,6 @@ struct MappingTraits<ofp::Error> {
 
 template <>
 struct MappingTraits<ofp::ErrorBuilder> {
-
   static void mapping(IO &io, ofp::ErrorBuilder &msg) {
     ofp::UInt16 type;
     ofp::UInt16 code;

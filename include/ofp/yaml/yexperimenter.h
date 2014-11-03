@@ -39,7 +39,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::Experimenter> {
-
   static void mapping(IO &io, ofp::Experimenter &msg) {
     Hex32 experimenter = msg.experimenter();
     Hex32 expType = msg.expType();
@@ -52,7 +51,6 @@ struct MappingTraits<ofp::Experimenter> {
 
 template <>
 struct MappingTraits<ofp::ExperimenterBuilder> {
-
   static void mapping(IO &io, ofp::ExperimenterBuilder &msg) {
     ofp::UInt32 experimenter;
     ofp::UInt32 expType;

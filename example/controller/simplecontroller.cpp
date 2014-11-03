@@ -1,6 +1,6 @@
 #include "simplecontroller.h"
 
-namespace controller { // <namespace controller>
+namespace controller {  // <namespace controller>
 
 struct EnetFrame {
   EnetAddress dst;
@@ -11,8 +11,7 @@ struct EnetFrame {
 void SimpleController::onPacketIn(Channel *channel, const PacketIn *msg) {
   const EnetFrame *frame =
       reinterpret_cast<const EnetFrame *>(msg->enetFrame().data());
-  if (msg->enetFrame().size() < 14)
-    return;
+  if (msg->enetFrame().size() < 14) return;
 
   UInt32 inPort = msg->inPort();
   UInt32 outPort;
@@ -113,4 +112,4 @@ void SimpleController::addFlow(Channel *channel, const PacketIn *msg,
   flowMod.send(channel);
 }
 
-} // </namespace controller>
+}  // </namespace controller>

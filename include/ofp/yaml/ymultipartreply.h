@@ -54,7 +54,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MultipartReply> {
-
   static void mapping(IO &io, ofp::MultipartReply &msg) {
     using namespace ofp;
 
@@ -110,7 +109,8 @@ struct MappingTraits<ofp::MultipartReply> {
         break;
       }
       case OFPMP_GROUP_FEATURES: {
-        MPGroupFeatures *features = RemoveConst_cast(msg.body_cast<MPGroupFeatures>());
+        MPGroupFeatures *features =
+            RemoveConst_cast(msg.body_cast<MPGroupFeatures>());
         if (features) {
           io.mapRequired("body", *features);
         }
@@ -127,7 +127,8 @@ struct MappingTraits<ofp::MultipartReply> {
         break;
       }
       case OFPMP_METER_FEATURES: {
-        MPMeterFeatures *features = RemoveConst_cast(msg.body_cast<MPMeterFeatures>());
+        MPMeterFeatures *features =
+            RemoveConst_cast(msg.body_cast<MPMeterFeatures>());
         if (features) {
           io.mapRequired("body", *features);
         }
@@ -144,7 +145,8 @@ struct MappingTraits<ofp::MultipartReply> {
         break;
       }
       case OFPMP_EXPERIMENTER: {
-        MPExperimenter *exper = RemoveConst_cast(msg.body_cast<MPExperimenter>());
+        MPExperimenter *exper =
+            RemoveConst_cast(msg.body_cast<MPExperimenter>());
         if (exper) {
           io.mapRequired("body", *exper);
         }
@@ -161,7 +163,6 @@ struct MappingTraits<ofp::MultipartReply> {
 
 template <>
 struct MappingTraits<ofp::MultipartReplyBuilder> {
-
   static void mapping(IO &io, ofp::MultipartReplyBuilder &msg) {
     using namespace ofp;
 
@@ -222,8 +223,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_GROUP_DESC: {
-        ofp::detail::MPReplyBuilderSeq<MPGroupDescBuilder> seq{
-            msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPGroupDescBuilder> seq{msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
@@ -237,14 +237,14 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_METER_CONFIG: {
-        ofp::detail::MPReplyBuilderSeq<MPMeterConfigBuilder> seq {msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPMeterConfigBuilder> seq{msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
         break;
       }
       case OFPMP_METER: {
-        ofp::detail::MPReplyBuilderSeq<MPMeterStatsBuilder> seq {msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPMeterStatsBuilder> seq{msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
@@ -258,7 +258,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_TABLE_FEATURES: {
-        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{
+            msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());

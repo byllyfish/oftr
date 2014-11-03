@@ -13,12 +13,10 @@ struct SubprogramEntry {
   ofpx::RunSubprogram run;
 };
 
-static SubprogramEntry programs[] = {
-  {"ping", ofpx::Run<ofpx::Ping>},
-  {"decode", ofpx::Run<ofpx::Decode>},
-  {"encode", ofpx::Run<ofpx::Encode>},
-  {"jsonrpc", ofpx::Run<ofpx::JsonRpc>}
-};
+static SubprogramEntry programs[] = {{"ping", ofpx::Run<ofpx::Ping>},
+                                     {"decode", ofpx::Run<ofpx::Decode>},
+                                     {"encode", ofpx::Run<ofpx::Encode>},
+                                     {"jsonrpc", ofpx::Run<ofpx::JsonRpc>}};
 
 //-----------------------//
 // p r i n t _ u s a g e //
@@ -58,7 +56,8 @@ int main(int argc, char **argv) {
     }
   }
 
-  std::cerr << "ofpx: '" << name << "' is not a ofpx command. See 'ofpx --help'.\n";
+  std::cerr << "ofpx: '" << name
+            << "' is not a ofpx command. See 'ofpx --help'.\n";
 
   return 1;
 }

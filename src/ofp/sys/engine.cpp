@@ -29,8 +29,7 @@ using namespace ofp::sys;
 using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
-    : driver_{driver}, signals_{io_},
-      stopTimer_{io_} {
+    : driver_{driver}, signals_{io_}, stopTimer_{io_} {
   std::string ready{"Engine ready "};
   ready.push_back('(');
   ready.append(SSLeay_version(SSLEAY_VERSION));
@@ -44,38 +43,40 @@ Engine::~Engine() {
   log::info("Engine shutting down");
 }
 
-
-UInt64 Engine::listen(ChannelMode mode, UInt64 securityId, 
-                               const IPv6Endpoint &localEndpoint,
-                               ProtocolVersions versions,
-                               ChannelListener::Factory listenerFactory, std::error_code &error) {
-  auto svrPtr = TCP_Server::create(this, mode, securityId, localEndpoint, versions,
-                                          listenerFactory, error);
-  if (error)
-    return 0;
+UInt64 Engine::listen(ChannelMode mode, UInt64 securityId,
+                      const IPv6Endpoint &localEndpoint,
+                      ProtocolVersions versions,
+                      ChannelListener::Factory listenerFactory,
+                      std::error_code &error) {
+  auto svrPtr = TCP_Server::create(this, mode, securityId, localEndpoint,
+                                   versions, listenerFactory, error);
+  if (error) return 0;
 
   // If there's no error, the TCP_Server has registered itself with the engine.
   UInt64 connId = svrPtr->connectionId();
   assert(connId > 0);
-  
+
   // Register signal handlers.
   installSignalHandlers();
 
   return connId;
 }
 
-UInt64 Engine::connect(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
-                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
-                        std::function<void(Channel*,std::error_code)> resultHandler) {
+UInt64 Engine::connect(
+    ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
+    ProtocolVersions versions, ChannelListener::Factory listenerFactory,
+    std::function<void(Channel *, std::error_code)> resultHandler) {
   UInt64 connId = 0;
 
   if (securityId != 0) {
-    auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(this, mode, securityId, versions, listenerFactory);
+    auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(
+        this, mode, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
 
   } else {
-    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(this, mode, securityId, versions, listenerFactory);
+    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
+        this, mode, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
   }
@@ -83,9 +84,11 @@ UInt64 Engine::connect(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &
   return connId;
 }
 
-UInt64 Engine::connectUDP(ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
-                        ProtocolVersions versions, ChannelListener::Factory listenerFactory,
-                        std::error_code &error) {
+UInt64 Engine::connectUDP(ChannelMode mode, UInt64 securityId,
+                          const IPv6Endpoint &remoteEndpoint,
+                          ProtocolVersions versions,
+                          ChannelListener::Factory listenerFactory,
+                          std::error_code &error) {
   UInt64 connId = 0;
 
   if (!udpConnect_) {
@@ -105,23 +108,21 @@ UInt64 Engine::connectUDP(ChannelMode mode, UInt64 securityId, const IPv6Endpoin
 size_t Engine::close(UInt64 connId) {
   if (connId != 0) {
     // Close a specific server or connection.
-    TCP_Server *server = findTCPServer([connId](TCP_Server *svr) {
-      return svr->connectionId() == connId;
-    });
+    TCP_Server *server = findTCPServer(
+        [connId](TCP_Server *svr) { return svr->connectionId() == connId; });
 
     if (server) {
       server->shutdown();
       return 1;
     }
 
-    Channel *channel = findConnection([connId](Channel *chan) {
-      return chan->connectionId() == connId;
-    });
+    Channel *channel = findConnection(
+        [connId](Channel *chan) { return chan->connectionId() == connId; });
 
     if (channel) {
       channel->shutdown();
       return 1;
-    }  
+    }
 
     return 0;
 
@@ -131,13 +132,13 @@ size_t Engine::close(UInt64 connId) {
 
     ServerList servers;
     servers.swap(serverList_);
-    for (auto svr: servers) {
+    for (auto svr : servers) {
       svr->shutdown();
     }
 
     ConnectionList conns;
     conns.swap(connList_);
-    for (auto chan: conns) {
+    for (auto chan : conns) {
       chan->shutdown();
     }
 
@@ -151,16 +152,20 @@ size_t Engine::close(UInt64 connId) {
   }
 }
 
-UInt64 Engine::addIdentity(const std::string &certData, const std::string &keyPassphrase, const std::string &verifier, std::error_code &error) {
-  auto idPtr = MakeUniquePtr<Identity>(certData, keyPassphrase, verifier, error);
-  if (error)
-    return 0;
+UInt64 Engine::addIdentity(const std::string &certData,
+                           const std::string &keyPassphrase,
+                           const std::string &verifier,
+                           std::error_code &error) {
+  auto idPtr =
+      MakeUniquePtr<Identity>(certData, keyPassphrase, verifier, error);
+  if (error) return 0;
 
   UInt64 secId = assignSecurityId();
   assert(secId > 0);
   idPtr->setSecurityId(secId);
 
-  log::info("Add TLS identity:", idPtr->subjectName(), std::make_pair("tlsid", secId));
+  log::info("Add TLS identity:", idPtr->subjectName(),
+            std::make_pair("tlsid", secId));
 
   identities_.push_back(std::move(idPtr));
 
@@ -185,10 +190,10 @@ asio::ssl::context *Engine::securityContext(UInt64 securityId) {
     return nullptr;
   }
 
-  auto iter = std::find_if(identities_.begin(), identities_.end(), 
-    [securityId](std::unique_ptr<Identity> &identity) {
-      return identity->securityId() == securityId;
-    });
+  auto iter = std::find_if(identities_.begin(), identities_.end(),
+                           [securityId](std::unique_ptr<Identity> &identity) {
+    return identity->securityId() == securityId;
+  });
 
   if (iter != identities_.end()) {
     return iter->get()->securityContext();
@@ -253,7 +258,7 @@ void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
     //});
   }
 }
-#endif //0
+#endif  // 0
 
 bool Engine::registerDatapath(Connection *channel) {
   DatapathID dpid = channel->datapathId();
@@ -270,15 +275,16 @@ bool Engine::registerDatapath(Connection *channel) {
       // different, close it and replace it with the new one.
       auto item = pair.first;
       if (item->second != channel) {
-        log::warning("registerDatapath: Conflict between main connections detected",
-                  dpid, std::make_pair("conn_id", channel->connectionId()));
+        log::warning(
+            "registerDatapath: Conflict between main connections detected",
+            dpid, std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
         item->second = channel;
         old->shutdown();
 
       } else {
-        log::warning("registerDatapath: Datapath is already registered.",
-                  dpid, std::make_pair("conn_id", channel->connectionId()));
+        log::warning("registerDatapath: Datapath is already registered.", dpid,
+                     std::make_pair("conn_id", channel->connectionId()));
       }
     }
 
@@ -292,7 +298,9 @@ bool Engine::registerDatapath(Connection *channel) {
       channel->setMainConnection(item->second, auxID);
 
     } else {
-      log::warning("registerDatapath: Main connection not found for datapath", dpid, "aux", int(auxID), std::make_pair("conn_id", channel->connectionId()));
+      log::warning("registerDatapath: Main connection not found for datapath",
+                   dpid, "aux", int(auxID),
+                   std::make_pair("conn_id", channel->connectionId()));
       return false;
     }
   }
@@ -310,13 +318,12 @@ void Engine::releaseDatapath(Connection *channel) {
     // verify that the datapathID _is_ registered to this connection.
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
-      if (item->second == channel)
-        dpidMap_.erase(item);
+      if (item->second == channel) dpidMap_.erase(item);
     }
   }
 }
 
-UInt64 Engine::registerServer(TCP_Server *server) { 
+UInt64 Engine::registerServer(TCP_Server *server) {
   assert(!serverListLock_);
   serverList_.push_back(server);
   return assignConnectionId();
@@ -346,7 +353,6 @@ void Engine::releaseConnection(Connection *connection) {
   }
 }
 
-
 void Engine::installSignalHandlers() {
   if (!isSignalsInited_) {
     signals_.add(SIGINT);
@@ -375,7 +381,6 @@ UInt64 Engine::assignSecurityId() {
   return lastSecurityId_;
 }
 
-
 Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
   // If datapath ID is not all zeros, use it to look up the connection.
   if (!dpid.empty()) {
@@ -390,7 +395,6 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
       return channel->connectionId() == connId;
     });
   }
-
 
   return nullptr;
 }

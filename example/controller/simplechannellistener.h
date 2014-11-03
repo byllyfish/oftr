@@ -2,10 +2,10 @@
 #include "simplecontroller.h"
 #include <map>
 
-namespace controller { // <namespace controller>
+namespace controller {  // <namespace controller>
 
 class SimpleChannelListener : public ChannelListener {
-public:
+ public:
   // ChannelListener overrides.
   void onChannelUp(Channel *channel) override;
   void onMessage(const Message *message) override;
@@ -18,7 +18,7 @@ public:
   void onGetConfigReply(const GetConfigReply *msg);
   void onBarrierReply(const BarrierReply *msg);
 
-private:
+ private:
   // Our controller object handles PacketIn messages.
   SimpleController controller_;
 
@@ -41,7 +41,7 @@ private:
 
 template <class MesgType>
 void SimpleChannelListener::trackReply(UInt32 xid, PtrMemFunc<MesgType> mbf) {
-  auto handler = [this, mbf](const Message * message) {
+  auto handler = [this, mbf](const Message *message) {
     if (message->type() == MesgType::type()) {
       if (const MesgType *msg = MesgType::cast(message)) {
         // Call pointer to member function.
@@ -58,4 +58,4 @@ void SimpleChannelListener::trackReply(UInt32 xid, PtrMemFunc<MesgType> mbf) {
   }
 }
 
-} // </namespace controller>
+}  // </namespace controller>

@@ -8,7 +8,6 @@
 using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;
 
-
 //-------//
 // r u n //
 //-------//
@@ -23,7 +22,6 @@ int Encode::run(int argc, char **argv) {
 
   return static_cast<int>(encodeFiles());
 }
-
 
 //-----------------------//
 // e n c o d e F i l e s //
@@ -41,7 +39,6 @@ ExitStatus Encode::encodeFiles() {
 
   return ExitStatus::Success;
 }
-
 
 //---------------------//
 // e n c o d e F i l e //
@@ -73,7 +70,6 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
   return result;
 }
 
-
 //-----------------------------//
 // e n c o d e M e s s a g e s //
 //-----------------------------//
@@ -87,17 +83,17 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
 
     auto err = encoder.error();
     if (!err.empty()) {
-        // There was an error in converting the text to a binary message.
-        std::cerr << err << '\n';
-        if (!keepGoing_) {
-          return ExitStatus::EncodeFailed;
-        }
+      // There was an error in converting the text to a binary message.
+      std::cerr << err << '\n';
+      if (!keepGoing_) {
+        return ExitStatus::EncodeFailed;
+      }
 
     } else if (roundtrip_) {
       // Translate binary message back to text.
       ofp::Message message{encoder.data(), encoder.size()};
       message.transmogrify();
-      
+
       ofp::yaml::Decoder decoder{&message};
 
       err = decoder.error();
@@ -124,60 +120,59 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   return ExitStatus::Success;
 }
 
-
 //-----------------------------------------------//
 // i s E m p t y O r W h i t e s p a c e O n l y //
 //-----------------------------------------------//
 
 static bool isEmptyOrWhitespaceOnly(std::string &s) {
-  return std::find_if(s.begin(), s.end(), [](char ch) { return !isspace(ch); }) == s.end();
+  return std::find_if(s.begin(), s.end(),
+                      [](char ch) { return !isspace(ch); }) == s.end();
 }
-
 
 //-----------------------//
 // r e a d M e s s a g e //
 //-----------------------//
 
 bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
-    if (!input) {
-        return false;
+  if (!input) {
+    return false;
+  }
+
+  msg.clear();
+
+  int msgLines = 0;
+  while (input) {
+    std::getline(input, lineBuf_);
+    ++lineNumber_;
+
+    if (json_) {
+      if (isEmptyOrWhitespaceOnly(lineBuf_)) {
+        // Don't return empty lines.
+        continue;
+      }
+      msg = lineBuf_;
+      return true;
     }
 
-    msg.clear();
+    assert(!json_);
 
-    int msgLines = 0;
-    while (input) {
-        std::getline(input, lineBuf_);
-        ++lineNumber_;
-
-        if (json_) {
-          if (isEmptyOrWhitespaceOnly(lineBuf_)) {
-            // Don't return empty lines.
-            continue;
-          }
-          msg = lineBuf_;
-          return true;
-        }
-
-        assert(!json_);
-
-        if (lineBuf_ == "---" || lineBuf_ == "...") {
-            if (isEmptyOrWhitespaceOnly(msg)) {
-              // Don't return empty messages.
-              msgLines = 0;
-              continue;
-            }
-            lineNum = lineNumber_ - msgLines - 1;
-            return true;
-        }
-        msg += lineBuf_;
-        msg += '\n';
-        ++msgLines;
+    if (lineBuf_ == "---" || lineBuf_ == "...") {
+      if (isEmptyOrWhitespaceOnly(msg)) {
+        // Don't return empty messages.
+        msgLines = 0;
+        continue;
+      }
+      lineNum = lineNumber_ - msgLines - 1;
+      return true;
     }
+    msg += lineBuf_;
+    msg += '\n';
+    ++msgLines;
+  }
 
-    lineNum = lineNumber_ - msgLines - 1;
+  lineNum = lineNumber_ - msgLines - 1;
 
-    return !isEmptyOrWhitespaceOnly(msg);
+  return !isEmptyOrWhitespaceOnly(msg);
 }
 
 void Encode::output(const void *data, size_t length) {
@@ -190,11 +185,11 @@ void Encode::output(const void *data, size_t length) {
     auto left = hex.size() % rowlen;
 
     for (auto i = 0U; i < rows; ++i) {
-      std::cout << hex.substr(i*rowlen, rowlen) << '\n';
+      std::cout << hex.substr(i * rowlen, rowlen) << '\n';
     }
 
     if (left) {
-      std::cout << hex.substr(rows*rowlen, left) << '\n';
+      std::cout << hex.substr(rows * rowlen, left) << '\n';
     }
     std::cout << '\n';
 

@@ -27,9 +27,9 @@ using namespace ofp;
 using namespace ofp::sys;
 
 Connection::Connection(Engine *engine, DefaultHandshake *handshake)
-    : engine_{engine}, listener_{handshake}, //handshake_{handshake},
+    : engine_{engine},
+      listener_{handshake},  // handshake_{handshake},
       mainConn_{this} {
-
   connId_ = engine_->registerConnection(this);
 }
 
@@ -98,7 +98,8 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
 void Connection::postMessage(Message *message) {
   assert(message->source());
 
-  log::trace("Read", message->source()->connectionId(), message->data(), message->size());
+  log::trace("Read", message->source()->connectionId(), message->data(),
+             message->size());
 
   // Handle echo reply automatically. We just set the type to reply and write
   // it back.
@@ -106,7 +107,7 @@ void Connection::postMessage(Message *message) {
     message->mutableHeader()->setType(OFPT_ECHO_REPLY);
     write(message->data(), message->size());
     flush();
-    return; // all done!
+    return;  // all done!
   }
 
   ChannelListener *listener = mainConn_->listener_;
@@ -118,10 +119,10 @@ void Connection::postMessage(Message *message) {
 
 void Connection::postIdle() { log::debug("postIdle() =========="); }
 
-bool Connection::postDatapath(const DatapathID &datapathId,
-                                UInt8 auxiliaryId) {
+bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   if (auxiliaryId == 0 && IsChannelTransportUDP(transport())) {
-    log::error("UDP connection not allowed to have auxiliary_id of 0", std::make_pair("connid", connectionId()));
+    log::error("UDP connection not allowed to have auxiliary_id of 0",
+               std::make_pair("connid", connectionId()));
     return false;
   }
 
@@ -132,7 +133,8 @@ bool Connection::postDatapath(const DatapathID &datapathId,
     auxiliaryId_ = auxiliaryId;
     result = engine()->registerDatapath(this);
     if (result) {
-      log::info("Assign datapath", datapathId, "aux", int(auxiliaryId), std::make_pair("conn_id", connectionId()));
+      log::info("Assign datapath", datapathId, "aux", int(auxiliaryId),
+                std::make_pair("conn_id", connectionId()));
     }
   }
 

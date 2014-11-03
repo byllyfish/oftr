@@ -28,10 +28,8 @@
 namespace ofp {
 
 class EnetAddress {
-public:
-  enum {
-    Length = 6
-  };
+ public:
+  enum { Length = 6 };
 
   using ArrayType = std::array<UInt8, Length>;
 
@@ -58,7 +56,7 @@ public:
 
   bool operator!=(const EnetAddress &rhs) const { return !(*this == rhs); }
 
-private:
+ private:
   ArrayType addr_;
 };
 

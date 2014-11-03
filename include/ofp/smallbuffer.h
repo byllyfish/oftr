@@ -51,7 +51,7 @@ class SmallBuffer {
   size_t size() const noexcept { return Unsigned_cast(end_ - begin_); }
   size_t capacity() const noexcept { return Unsigned_cast(capacity_ - begin_); }
   bool empty() const noexcept { return end_ == begin_; }
-  
+
   void assign(const void *data, size_t length) noexcept;
 
   void add(const void *data, size_t length) noexcept;
@@ -73,7 +73,8 @@ class SmallBuffer {
 
   UInt8 *insertUninitialized(UInt8 *pos, size_t length) noexcept;
 
-  UInt8 *replaceUninitialized(UInt8 *pos, UInt8 *posEnd, size_t length) noexcept;
+  UInt8 *replaceUninitialized(UInt8 *pos, UInt8 *posEnd,
+                              size_t length) noexcept;
 
   void addZeros(size_t length) noexcept;
 
@@ -82,9 +83,7 @@ class SmallBuffer {
   void replaceZeros(UInt8 *pos, UInt8 *posEnd, size_t length) noexcept;
 
  private:
-  enum : size_t {
-    IntrinsicBufSize = 64
-  };
+  enum : size_t { IntrinsicBufSize = 64 };
 
   UInt8 *begin_;
   UInt8 *end_;
@@ -146,4 +145,4 @@ inline void SmallBuffer::add(const void *data, size_t length) noexcept {
 
 }  // namespace ofp
 
-#endif // OFP_SMALLBUFFER_H_
+#endif  // OFP_SMALLBUFFER_H_

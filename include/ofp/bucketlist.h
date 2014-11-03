@@ -28,10 +28,11 @@
 namespace ofp {
 
 class BucketList : public ProtocolList<BucketRange> {
-using Inherited = ProtocolList<BucketRange>;
-public:
+  using Inherited = ProtocolList<BucketRange>;
+
+ public:
   using Inherited::Inherited;
-  
+
   void add(const BucketBuilder &bucket);
 };
 

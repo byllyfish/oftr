@@ -53,11 +53,7 @@ enum ApiEvent : UInt32 {
 };
 
 /// Utility type for optional boolean values.
-enum ApiBoolean {
-  LIBOFP_FALSE = 0,
-  LIBOFP_TRUE,
-  LIBOFP_NOT_PRESENT
-};
+enum ApiBoolean { LIBOFP_FALSE = 0, LIBOFP_TRUE, LIBOFP_NOT_PRESENT };
 
 /// If an OpenFlow YAML message is received before server starts listening, the
 /// encoded binary data is returned by the server in a loopback message.

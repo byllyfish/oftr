@@ -35,7 +35,7 @@ class Message;
 class Header;
 
 class Transmogrify {
-public:
+ public:
   explicit Transmogrify(Message *message);
 
   void normalize();
@@ -50,7 +50,7 @@ public:
   void normalizeMultipartReplyV1();
   void normalizeMultipartReplyV3();
   void normalizeMultipartReplyV4();
-  
+
   void normalizeMPFlowRequestV1();
   void normalizeMPFlowReplyV1(size_t *start);
   void normalizeMPTableStatsReplyV4(size_t *start);
@@ -70,7 +70,7 @@ public:
 
   int normOutput(ActionIterator *iter, ActionIterator *iterEnd);
 
-private:
+ private:
   ByteList &buf_;
 
   Header *header() { return reinterpret_cast<Header *>(buf_.mutableData()); }
@@ -94,7 +94,7 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
     ptrdiff_t offset = buf_.offset(iter->data());
     if (lengthChange > 0) {
       buf_.insertUninitialized(valueRange.data(), Unsigned_cast(lengthChange));
-      
+
     } else if (lengthChange < 0) {
       buf_.remove(iter->data(), Unsigned_cast(-lengthChange));
     }

@@ -30,7 +30,7 @@ namespace ofp {
 class OXMList;
 
 class Prerequisites {
-public:
+ public:
   static void insertAll(OXMList *list, const OXMRange *preqs);
   static bool checkAll(const OXMRange &oxm);
 
@@ -41,7 +41,7 @@ public:
 
   static bool duplicateFieldsDetected(const OXMRange &oxm);
 
-private:
+ private:
   const OXMRange *preqs_;
 
   explicit Prerequisites(const OXMRange *preqs) : preqs_{preqs} {

@@ -31,9 +31,10 @@ class MPReplyFixedSizeSeq {
 template <class Type, size_t Offset = Type::MPVariableSizeOffset>
 class MPReplyVariableSizeSeq {
  public:
-  explicit MPReplyVariableSizeSeq(const UInt8 *buf, size_t size) : buf_{buf}, size_{size}, position_{buf} {}
+  explicit MPReplyVariableSizeSeq(const UInt8 *buf, size_t size)
+      : buf_{buf}, size_{size}, position_{buf} {}
 
-  explicit MPReplyVariableSizeSeq(const MultipartRequest &msg) 
+  explicit MPReplyVariableSizeSeq(const MultipartRequest &msg)
       : MPReplyVariableSizeSeq{msg.requestBody(), msg.requestBodySize()} {}
   explicit MPReplyVariableSizeSeq(const MultipartReply &msg)
       : MPReplyVariableSizeSeq{msg.replyBody(), msg.replyBodySize()} {}
@@ -61,7 +62,7 @@ class MPReplyVariableSizeSeq {
  private:
   const UInt8 *buf_;
   size_t size_;
-  //MultipartReply &msg_;
+  // MultipartReply &msg_;
   const UInt8 *position_;
 };
 
@@ -103,7 +104,6 @@ namespace yaml {
 
 template <class Type>
 struct SequenceTraits<ofp::detail::MPReplyFixedSizeSeq<Type>> {
-
   static size_t size(IO &io, ofp::detail::MPReplyFixedSizeSeq<Type> &seq) {
     return seq.size();
   }
@@ -116,7 +116,6 @@ struct SequenceTraits<ofp::detail::MPReplyFixedSizeSeq<Type>> {
 
 template <class Type>
 struct SequenceTraits<ofp::detail::MPReplyVariableSizeSeq<Type>> {
-
   static size_t size(IO &io, ofp::detail::MPReplyVariableSizeSeq<Type> &seq) {
     return seq.size();
   }
@@ -129,7 +128,6 @@ struct SequenceTraits<ofp::detail::MPReplyVariableSizeSeq<Type>> {
 
 template <class Type>
 struct SequenceTraits<ofp::detail::MPReplyBuilderSeq<Type>> {
-
   static size_t size(IO &io, ofp::detail::MPReplyBuilderSeq<Type> &seq) {
     return 0;
   }
@@ -143,4 +141,4 @@ struct SequenceTraits<ofp::detail::MPReplyBuilderSeq<Type>> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMPREPLYSEQ_H_
+#endif  // OFP_YAML_YMPREPLYSEQ_H_

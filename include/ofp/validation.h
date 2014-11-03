@@ -12,58 +12,60 @@ class Message;
 OFP_BEGIN_IGNORE_PADDING
 
 class Validation {
-public:
-    explicit Validation(const Message *msg);
+ public:
+  explicit Validation(const Message *msg);
 
-    UInt8 version() const { return version_; }
-    size_t length() const { return length_; }
-    size_t lengthRemaining() const { return lengthRemaining_; }
-    void setLengthRemaining(size_t length) { lengthRemaining_ = length; }
+  UInt8 version() const { return version_; }
+  size_t length() const { return length_; }
+  size_t lengthRemaining() const { return lengthRemaining_; }
+  void setLengthRemaining(size_t length) { lengthRemaining_ = length; }
 
-    // Log validation failure messages.
-    
-    void messageSizeIsInvalid();
-    void messageTypeIsNotSupported();
-    void multipartTypeIsNotSupported();
-    void multipartTypeIsNotSupportedForVersion();
-    void multipartSizeHasImproperAlignment();
-    void lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength);
-    
-    void rangeSizeHasImproperAlignment(const UInt8 *ptr, size_t alignment);
-    void rangeDataHasImproperAlignment(const UInt8 *ptr, size_t alignment);
-    void rangeElementSizeIsTooSmall(const UInt8 *ptr, size_t minSize);
-    void rangeElementSizeHasImproperAlignment(const UInt8 *ptr, size_t elemSize, size_t alignment);
-    void rangeElementSizeOverrunsEnd(const UInt8 *ptr, size_t jumpSize);
-    void rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr, size_t elementSize);
+  // Log validation failure messages.
 
-    // Used in validating multipart section lengths.
-    
-    bool validateLength(size_t length, size_t minSize) {
-      return (length >= minSize) && ((length % 8) == 0);
-    }
+  void messageSizeIsInvalid();
+  void messageTypeIsNotSupported();
+  void multipartTypeIsNotSupported();
+  void multipartTypeIsNotSupportedForVersion();
+  void multipartSizeHasImproperAlignment();
+  void lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength);
 
-    // Used in validating multipart request/reply.
-    
-    bool validateEmpty(const UInt8 *body, UInt8 minVersion);
+  void rangeSizeHasImproperAlignment(const UInt8 *ptr, size_t alignment);
+  void rangeDataHasImproperAlignment(const UInt8 *ptr, size_t alignment);
+  void rangeElementSizeIsTooSmall(const UInt8 *ptr, size_t minSize);
+  void rangeElementSizeHasImproperAlignment(const UInt8 *ptr, size_t elemSize,
+                                            size_t alignment);
+  void rangeElementSizeOverrunsEnd(const UInt8 *ptr, size_t jumpSize);
+  void rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr,
+                                           size_t elementSize);
 
-    template <class Type>
-    bool validate(const UInt8 *body, UInt8 minVersion, bool lenMultiple8=true);
+  // Used in validating multipart section lengths.
 
-    template <class Type, size_t Offset = Type::MPVariableSizeOffset>
-    bool validateArrayVariableSize(const UInt8 *body, UInt8 minVersion);
+  bool validateLength(size_t length, size_t minSize) {
+    return (length >= minSize) && ((length % 8) == 0);
+  }
 
-    template <class Type>
-    bool validateArrayFixedSize(const UInt8 *body, UInt8 minVersion);
+  // Used in validating multipart request/reply.
 
-private:
-    const Message *msg_;
-    size_t length_;
-    size_t lengthRemaining_ = 0;
-    UInt8 version_;
+  bool validateEmpty(const UInt8 *body, UInt8 minVersion);
 
-    size_t offset(const UInt8 *ptr) const;
-    std::string hexContext(const UInt8 *ptr) const;
-    void logContext(const UInt8 *ptr = nullptr) const;
+  template <class Type>
+  bool validate(const UInt8 *body, UInt8 minVersion, bool lenMultiple8 = true);
+
+  template <class Type, size_t Offset = Type::MPVariableSizeOffset>
+  bool validateArrayVariableSize(const UInt8 *body, UInt8 minVersion);
+
+  template <class Type>
+  bool validateArrayFixedSize(const UInt8 *body, UInt8 minVersion);
+
+ private:
+  const Message *msg_;
+  size_t length_;
+  size_t lengthRemaining_ = 0;
+  UInt8 version_;
+
+  size_t offset(const UInt8 *ptr) const;
+  std::string hexContext(const UInt8 *ptr) const;
+  void logContext(const UInt8 *ptr = nullptr) const;
 };
 
 OFP_END_IGNORE_PADDING
@@ -82,7 +84,8 @@ inline bool Validation::validateEmpty(const UInt8 *body, UInt8 minVersion) {
 }
 
 template <class Type>
-bool Validation::validate(const UInt8 *body, UInt8 minVersion, bool lenMultiple8) {
+bool Validation::validate(const UInt8 *body, UInt8 minVersion,
+                          bool lenMultiple8) {
   if (version_ < minVersion) {
     multipartTypeIsNotSupportedForVersion();
     return false;
@@ -99,7 +102,8 @@ bool Validation::validate(const UInt8 *body, UInt8 minVersion, bool lenMultiple8
 // There are two versions of validateArray; variable size and fixed size.
 
 template <class Type, size_t Offset>
-bool Validation::validateArrayVariableSize(const UInt8 *body, UInt8 minVersion) {
+bool Validation::validateArrayVariableSize(const UInt8 *body,
+                                           UInt8 minVersion) {
   if (version_ < minVersion) {
     multipartTypeIsNotSupportedForVersion();
     return false;
@@ -120,24 +124,24 @@ bool Validation::validateArrayVariableSize(const UInt8 *body, UInt8 minVersion) 
     assert(IsPtrAligned(body, 8) && "Misaligned ptr");
 
     if (length < Offset + sizeof(Big16)) {
-        rangeElementSizeIsTooSmall(body, Offset + sizeof(Big16));
-        return false;
+      rangeElementSizeIsTooSmall(body, Offset + sizeof(Big16));
+      return false;
     }
 
     size_t size = *Big16_cast(body + Offset);
     if (size > length) {
-        rangeElementSizeOverrunsEnd(body, size);
-        return false;
+      rangeElementSizeOverrunsEnd(body, size);
+      return false;
     }
 
     if ((size % 8) != 0) {
-        rangeElementSizeHasImproperAlignment(body, size, 8);
-        return false;
+      rangeElementSizeHasImproperAlignment(body, size, 8);
+      return false;
     }
 
     const Type *ptr = reinterpret_cast<const Type *>(body);
     if (!ptr->validateInput(this)) {
-        return false;
+      return false;
     }
 
     body += size;
@@ -175,12 +179,12 @@ bool Validation::validateArrayFixedSize(const UInt8 *body, UInt8 minVersion) {
     assert(IsPtrAligned(ptr, 8) && "Misaligned ptr");
 
     if (size > length) {
-        rangeElementSizeOverrunsEnd(body, size);
-        return false;
+      rangeElementSizeOverrunsEnd(body, size);
+      return false;
     }
 
     if (!ptr->validateInput(this)) {
-        return false;
+      return false;
     }
 
     body += size;
@@ -192,4 +196,4 @@ bool Validation::validateArrayFixedSize(const UInt8 *body, UInt8 minVersion) {
 
 }  // namespace ofp
 
-#endif // OFP_VALIDATION_H_
+#endif  // OFP_VALIDATION_H_

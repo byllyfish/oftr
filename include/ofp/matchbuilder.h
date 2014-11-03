@@ -31,9 +31,10 @@
 namespace ofp {
 
 class MatchBuilder {
-public:
+ public:
   MatchBuilder() = default;
-  /* implicit NOLINT */ MatchBuilder(const Match &match) : list_{match.toRange()} {}
+  /* implicit NOLINT */ MatchBuilder(const Match &match)
+      : list_{match.toRange()} {}
 
   const UInt8 *data() const { return list_.data(); }
   size_t size() const { return list_.size(); }
@@ -93,7 +94,7 @@ public:
 
   OXMRange toRange() const { return list_.toRange(); }
 
-private:
+ private:
   OXMList list_;
 };
 

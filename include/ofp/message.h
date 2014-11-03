@@ -38,7 +38,7 @@ class Connection;
 
 /// \brief Implements a protocol message buffer.
 class Message {
-public:
+ public:
   explicit Message(sys::Connection *channel) : channel_{channel} {
     buf_.resize(sizeof(Header));
   }
@@ -88,7 +88,7 @@ public:
 
   void assign(const Message &message) { buf_ = message.buf_.toRange(); }
 
-private:
+ private:
   ByteList buf_;
   sys::Connection *channel_;
 

@@ -64,19 +64,11 @@ enum {
   OFP_MAX_SIZE = 65535
 };
 
-enum {
-  OFP_NO_BUFFER = 0xFFFFFFFFUL
-};
+enum { OFP_NO_BUFFER = 0xFFFFFFFFUL };
 
-enum {
-  OFPVID_PRESENT = 0x1000,
-  OFPVID_NONE = 0x0000
-};
+enum { OFPVID_PRESENT = 0x1000, OFPVID_NONE = 0x0000 };
 
-enum {
-  OFPMT_STANDARD = 0,
-  OFPMT_OXM = 1
-};
+enum { OFPMT_STANDARD = 0, OFPMT_OXM = 1 };
 
 enum OFPType : UInt8 {
   // Symmetric messages. Use OFPT_EXPERIMENTER in place of OFPT_VENDOR for
@@ -348,7 +340,7 @@ enum OFPFlowModCommand : UInt8 {
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,
-  OFPQT_UNUSED_MIN = 3,       // min unused property id
+  OFPQT_UNUSED_MIN = 3,  // min unused property id
   OFPQT_EXPERIMENTER = 0xffff
 };
 
@@ -363,7 +355,7 @@ enum OFPTableFeatureProperty : UInt16 {
   OFPTFPT_INSTRUCTIONS_MISS = 1,
   OFPTFPT_NEXT_TABLES = 2,
   OFPTFPT_NEXT_TABLES_MISS = 3,
-  OFPTFPT_WRITE_ACTIONS = 4, 
+  OFPTFPT_WRITE_ACTIONS = 4,
   OFPTFPT_WRITE_ACTIONS_MISS = 5,
   OFPTFPT_APPLY_ACTIONS = 6,
   OFPTFPT_APPLY_ACTIONS_MISS = 7,
@@ -375,7 +367,7 @@ enum OFPTableFeatureProperty : UInt16 {
   OFPTFPT_WRITE_SETFIELD_MISS = 13,
   OFPTFPT_APPLY_SETFIELD = 14,
   OFPTFPT_APPLY_SETFIELD_MISS = 15,
-  OFPTFPT_UNUSED_MIN = 16,    // min unused property id
+  OFPTFPT_UNUSED_MIN = 16,  // min unused property id
   OFPTFPT_EXPERIMENTER = 0xFFFE,
   OFPTFPT_EXPERIMENTER_MISS = 0xFFFF
 };

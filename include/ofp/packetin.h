@@ -29,8 +29,9 @@
 
 namespace ofp {
 
-class PacketIn : public ProtocolMsg<PacketIn, OFPT_PACKET_IN, 20, 65535, false> {
-public:
+class PacketIn
+    : public ProtocolMsg<PacketIn, OFPT_PACKET_IN, 20, 65535, false> {
+ public:
   UInt8 version() const { return header_.version(); }
 
   UInt32 bufferId() const { return bufferId_; }
@@ -47,7 +48,7 @@ public:
 
   bool validateInput(Validation *context) const;
 
-private:
+ private:
   Header header_;
   Big32 bufferId_;
   Big16 totalLen_;
@@ -87,7 +88,7 @@ static_assert(IsStandardLayout<PacketIn>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<PacketIn>(), "Expected trivially copyable.");
 
 class PacketInBuilder {
-public:
+ public:
   PacketInBuilder() = default;
   explicit PacketInBuilder(const PacketIn *msg);
 
@@ -104,7 +105,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   PacketIn msg_;
   Big32 inPort_ = 0;
   Big32 inPhyPort_ = 0;
@@ -116,7 +117,7 @@ private:
   UInt32 sendV2(Writable *channel);
   UInt32 sendV3(Writable *channel);
   UInt32 sendV4(Writable *channel);
-  
+
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };

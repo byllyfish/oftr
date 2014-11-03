@@ -28,7 +28,7 @@
 namespace ofp {
 
 class Writable {
-public:
+ public:
   virtual ~Writable() {}
 
   virtual UInt8 version() const = 0;
@@ -39,9 +39,9 @@ public:
 
   void write(const void *data, size_t length, size_t padSize) {
     assert(padSize < 8);
-  	Padding<8> pad;
-  	write(data, length);
-  	write(&pad, padSize);
+    Padding<8> pad;
+    write(data, length);
+    write(&pad, padSize);
   }
 };
 

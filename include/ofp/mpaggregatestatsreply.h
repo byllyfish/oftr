@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MPAggregateStatsReply and MPAggregateStatsReplyBuilder
@@ -32,7 +32,7 @@ class MultipartReply;
 class Validation;
 
 class MPAggregateStatsReply {
-public:
+ public:
   static const MPAggregateStatsReply *cast(const MultipartReply *req);
 
   MPAggregateStatsReply() = default;
@@ -42,8 +42,8 @@ public:
   UInt32 flowCount() const { return flowCount_; }
 
   bool validateInput(Validation *context) const;
-  
-private:
+
+ private:
   Big64 packetCount_;
   Big64 byteCount_;
   Big32 flowCount_;
@@ -58,10 +58,8 @@ static_assert(IsStandardLayout<MPAggregateStatsReply>(),
               "Expected standard layout.");
 
 class MPAggregateStatsReplyBuilder {
-public:
-
-
-private:
+ public:
+ private:
   MPAggregateStatsReply msg_;
 
   template <class T>

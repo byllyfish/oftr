@@ -27,7 +27,7 @@
 namespace ofp {
 
 class SetAsync : public ProtocolMsg<SetAsync, OFPT_SET_ASYNC, 32, 32> {
-public:
+ public:
   UInt32 masterPacketInMask() const;
   UInt32 slavePacketInMask() const;
   UInt32 masterPortStatusMask() const;
@@ -37,7 +37,7 @@ public:
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big32 packetInMask_[2];
   Big32 portStatusMask_[2];
@@ -56,7 +56,7 @@ static_assert(IsStandardLayout<SetAsync>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<SetAsync>(), "Expected trivially copyable.");
 
 class SetAsyncBuilder {
-public:
+ public:
   SetAsyncBuilder() = default;
   explicit SetAsyncBuilder(const SetAsync *msg);
 
@@ -69,7 +69,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   SetAsync msg_;
 
   template <class T>

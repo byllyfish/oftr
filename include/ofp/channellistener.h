@@ -38,7 +38,7 @@ class Connection;
 /// \brief An abstract class for listening to events and messages from a
 /// Channel.
 class ChannelListener {
-public:
+ public:
   using Factory = std::function<ChannelListener *()>;
 
   // Lifecycle:
@@ -68,7 +68,7 @@ public:
   // Exception class. Exceptions on auxiliary connections will not shut down
   // the main connection.
 
-protected:
+ protected:
   // ChannelListeners must be allocated on the heap; never on the stack.
   // After detaching from a Channel, a ChannelListener may delete itself
   // using ChannelListener::dispose(this).

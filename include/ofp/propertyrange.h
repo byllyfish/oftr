@@ -10,7 +10,8 @@ namespace detail {
 class PropertyIteratorItem : private NonCopyable {
  public:
   enum {
-    ProtocolIteratorSizeOffset = sizeof(Big16), ProtocolIteratorAlignment = 8
+    ProtocolIteratorSizeOffset = sizeof(Big16),
+    ProtocolIteratorAlignment = 8
   };
 
   UInt16 type() const { return type_; }
@@ -21,7 +22,7 @@ class PropertyIteratorItem : private NonCopyable {
     return *reinterpret_cast<const Type *>(this);
   }
 
-  ByteRange value() const { return ByteRange{BytePtr(this) + 4, len_ - 4U }; }
+  ByteRange value() const { return ByteRange{BytePtr(this) + 4, len_ - 4U}; }
 
  private:
   Big16 type_;
@@ -41,8 +42,7 @@ class PropertyRange : public ProtocolRange<PropertyIterator> {
   /// \return Iterator to first property found with specified type.
   Iterator findProperty(UInt16 type) const {
     for (auto iter = begin(); iter < end(); ++iter) {
-      if (iter->type() == type)
-        return iter;
+      if (iter->type() == type) return iter;
     }
     return end();
   }
@@ -50,7 +50,8 @@ class PropertyRange : public ProtocolRange<PropertyIterator> {
   /// \return value of property, when size of property is fixed.
   ///
   /// `PropertyType` must implement the `ValueType` concept.
-  template <class PropertyType, class ValueType=typename PropertyType::ValueType>
+  template <class PropertyType,
+            class ValueType = typename PropertyType::ValueType>
   ValueType value() const {
     auto iter = findProperty(PropertyType::type());
     if (iter != end() && iter.size() == sizeof(PropertyType)) {
@@ -60,8 +61,10 @@ class PropertyRange : public ProtocolRange<PropertyIterator> {
   }
 
   /// \return value of property, when it is a range (and size is variable)
-  template <class PropertyType, class ValueType=typename PropertyType::ValueType>
-  ValueType valueRange(const ValueType &defaultValue=PropertyType::defaultValue()) const {
+  template <class PropertyType,
+            class ValueType = typename PropertyType::ValueType>
+  ValueType valueRange(
+      const ValueType &defaultValue = PropertyType::defaultValue()) const {
     auto iter = findProperty(PropertyType::type());
     if (iter != end() && iter.size() >= 4) {
       return iter->template property<PropertyType>().value();

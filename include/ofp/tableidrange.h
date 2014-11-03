@@ -8,25 +8,25 @@ namespace ofp {
 class Validation;
 
 class TableIDRange {
-public:
-    TableIDRange() = default;
-    TableIDRange(const ByteRange &range) : range_{range} {}
+ public:
+  TableIDRange() = default;
+  TableIDRange(const ByteRange &range) : range_{range} {}
 
-    size_t size() const { return range_.size(); }
-    const UInt8 *nthItem(size_t index) const { return range_.data() + index; }
+  size_t size() const { return range_.size(); }
+  const UInt8 *nthItem(size_t index) const { return range_.data() + index; }
 
-    ByteRange toByteRange() const { return range_; }
-    
-    bool operator==(const TableIDRange &rhs) const {
-        return range_ == rhs.range_;
-    }
+  ByteRange toByteRange() const { return range_; }
 
-    bool validateInput(Validation *context) const { return true; }
+  bool operator==(const TableIDRange &rhs) const {
+    return range_ == rhs.range_;
+  }
 
-private:
-    ByteRange range_;
+  bool validateInput(Validation *context) const { return true; }
+
+ private:
+  ByteRange range_;
 };
 
 }  // namespace ofp
 
-#endif // OFP_TABLEIDRANGE_H_
+#endif  // OFP_TABLEIDRANGE_H_

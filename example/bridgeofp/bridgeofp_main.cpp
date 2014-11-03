@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
   std::error_code err;
   (void)driver.listen(
       ChannelMode::Raw, 0, argEndpoints.first, ProtocolVersions::All,
-      [argEndpoints]() { return new BridgeListener(argEndpoints.second); }, err);
+      [argEndpoints]() { return new BridgeListener(argEndpoints.second); },
+      err);
 
   int exitCode = 0;
   if (err) {

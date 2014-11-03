@@ -11,4 +11,4 @@ using PacketCounterRange = ProtocolRange<PacketCounterIterator>;
 
 }  // namespace ofp
 
-#endif // OFP_PACKETCOUNTERRANGE_H_
+#endif  // OFP_PACKETCOUNTERRANGE_H_

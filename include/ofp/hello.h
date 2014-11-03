@@ -65,9 +65,7 @@ class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65528> {
  private:
   Header header_;
 
-  detail::HelloRange helloElements() const {
-    return msgBody();
-  }
+  detail::HelloRange helloElements() const { return msgBody(); }
 
   // Only HelloBuilder can construct an actual instance.
   Hello() : header_{type()} {}

@@ -33,7 +33,8 @@ class ActionList;
 
 class ActionRange : public ProtocolRange<ActionIterator> {
   using Inherited = ProtocolRange<ActionIterator>;
-public:
+
+ public:
   using Inherited::Inherited;
 
   ActionRange() = default;

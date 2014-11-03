@@ -104,8 +104,7 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   }
 
   if (!optionError.empty()) {
-    if (open->id == RPC_ID_MISSING)
-      return;
+    if (open->id == RPC_ID_MISSING) return;
     RpcErrorResponse response{open->id};
     response.error.code = ERROR_CODE_INVALID_OPTION;
     response.error.message = optionError;
@@ -114,11 +113,11 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   }
 
   std::error_code err;
-  UInt64 connId = engine_->listen(ChannelMode::Controller, securityId, endpt, ProtocolVersions::All,
-    [this]() { return new ApiChannelListener{this}; }, err);
+  UInt64 connId = engine_->listen(
+      ChannelMode::Controller, securityId, endpt, ProtocolVersions::All,
+      [this]() { return new ApiChannelListener{this}; }, err);
 
-  if (open->id == RPC_ID_MISSING)
-    return;
+  if (open->id == RPC_ID_MISSING) return;
 
   if (!err) {
     RpcListenResponse response{open->id};
@@ -133,10 +132,9 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   }
 }
 
-
-void ApiServer::connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId, const std::error_code &err) {
-  if (id == RPC_ID_MISSING) 
-    return;
+void ApiServer::connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId,
+                                const std::error_code &err) {
+  if (id == RPC_ID_MISSING) return;
 
   if (!err) {
     RpcConnectResponse response{id};
@@ -146,7 +144,7 @@ void ApiServer::connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId, c
     RpcErrorResponse response{id};
     response.error.code = err.value();
     response.error.message = err.message();
-    conn->rpcReply(&response);        
+    conn->rpcReply(&response);
   }
 }
 
@@ -173,13 +171,13 @@ void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
   }
 
   // Check that securityId exists.
-  if (optionError.empty() && securityId != 0 && engine_->securityContext(securityId) == nullptr) {
+  if (optionError.empty() && securityId != 0 &&
+      engine_->securityContext(securityId) == nullptr) {
     optionError += "Invalid securityId: " + std::to_string(securityId);
   }
 
   if (!optionError.empty()) {
-    if (connect->id == RPC_ID_MISSING)
-      return;
+    if (connect->id == RPC_ID_MISSING) return;
     RpcErrorResponse response{connect->id};
     response.error.code = ERROR_CODE_INVALID_OPTION;
     response.error.message = optionError;
@@ -192,32 +190,31 @@ void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
 
   if (udp) {
     std::error_code err;
-    UInt64 connId = engine_->connectUDP(mode, securityId, endpt, ProtocolVersions::All, 
-      [this]() { return new ApiChannelListener{this}; }, err);
+    UInt64 connId = engine_->connectUDP(
+        mode, securityId, endpt, ProtocolVersions::All,
+        [this]() { return new ApiChannelListener{this}; }, err);
     connectResponse(conn, id, connId, err);
 
   } else {
     auto connPtr = conn->shared_from_this();
-    engine_->connect(mode, securityId, endpt, ProtocolVersions::All, 
-      [this]() { return new ApiChannelListener{this}; }, 
-      [connPtr, id](Channel *channel, std::error_code err) {
-        UInt64 connId = channel ? channel->connectionId() : 0;
-        connectResponse(connPtr.get(), id, connId, err);
-      });
+    engine_->connect(mode, securityId, endpt, ProtocolVersions::All,
+                     [this]() { return new ApiChannelListener{this}; },
+                     [connPtr, id](Channel *channel, std::error_code err) {
+                       UInt64 connId = channel ? channel->connectionId() : 0;
+                       connectResponse(connPtr.get(), id, connId, err);
+                     });
   }
 }
 
 void ApiServer::onRpcClose(ApiConnection *conn, RpcClose *close) {
   size_t count = engine_->close(close->params.connId);
 
-  if (close->id == RPC_ID_MISSING)
-    return;
+  if (close->id == RPC_ID_MISSING) return;
 
   RpcCloseResponse response{close->id};
   response.result.count = UInt32_narrow_cast(count);
   conn->rpcReply(&response);
 }
-
 
 void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
   UInt64 connId = 0;
@@ -230,8 +227,7 @@ void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
     channel->flush();
   }
 
-  if (send->id == RPC_ID_MISSING)
-    return;
+  if (send->id == RPC_ID_MISSING) return;
 
   RpcSendResponse response{send->id};
   response.result.connId = connId;
@@ -244,37 +240,38 @@ void ApiServer::onRpcConfig(ApiConnection *conn, RpcConfig *config) {
 }
 
 void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
-  if (list->id == RPC_ID_MISSING)
-    return;
+  if (list->id == RPC_ID_MISSING) return;
 
   RpcListConnsResponse response{list->id};
   UInt64 desiredConnId = list->params.connId;
 
-  engine_->forEachTCPServer([desiredConnId, &response](sys::TCP_Server *server){
-    UInt64 connId = server->connectionId();
-    if (!desiredConnId || connId == desiredConnId) {
-      response.result.emplace_back();
-      RpcConnectionStats &stats = response.result.back();
-      stats.localEndpoint = server->localEndpoint();
-      stats.connId = connId;
-      stats.auxiliaryId = 0;
-      stats.transport = ChannelTransport::TCP_Plaintext;
-    }
-  });
+  engine_->forEachTCPServer(
+      [desiredConnId, &response](sys::TCP_Server *server) {
+        UInt64 connId = server->connectionId();
+        if (!desiredConnId || connId == desiredConnId) {
+          response.result.emplace_back();
+          RpcConnectionStats &stats = response.result.back();
+          stats.localEndpoint = server->localEndpoint();
+          stats.connId = connId;
+          stats.auxiliaryId = 0;
+          stats.transport = ChannelTransport::TCP_Plaintext;
+        }
+      });
 
-  engine_->forEachUDPServer([desiredConnId, &response](sys::UDP_Server *server){
-    UInt64 connId = server->connectionId();
-    if (!desiredConnId || connId == desiredConnId) {
-      response.result.emplace_back();
-      RpcConnectionStats &stats = response.result.back();
-      stats.localEndpoint = server->localEndpoint();
-      stats.connId = connId;
-      stats.auxiliaryId = 0;
-      stats.transport = ChannelTransport::UDP_Plaintext;
-    }
-  });
+  engine_->forEachUDPServer(
+      [desiredConnId, &response](sys::UDP_Server *server) {
+        UInt64 connId = server->connectionId();
+        if (!desiredConnId || connId == desiredConnId) {
+          response.result.emplace_back();
+          RpcConnectionStats &stats = response.result.back();
+          stats.localEndpoint = server->localEndpoint();
+          stats.connId = connId;
+          stats.auxiliaryId = 0;
+          stats.transport = ChannelTransport::UDP_Plaintext;
+        }
+      });
 
-  engine_->forEachConnection([desiredConnId, &response](Channel *channel){
+  engine_->forEachConnection([desiredConnId, &response](Channel *channel) {
     UInt64 connId = channel->connectionId();
     if (!desiredConnId || connId == desiredConnId) {
       response.result.emplace_back();
@@ -293,12 +290,12 @@ void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {
 
 void ApiServer::onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add) {
   std::error_code err;
-  UInt64 securityId = engine_->addIdentity(add->params.certificate, add->params.password, add->params.verifier, err);
+  UInt64 securityId = engine_->addIdentity(
+      add->params.certificate, add->params.password, add->params.verifier, err);
 
-  //add->params.password.fill('x');
+  // add->params.password.fill('x');
 
-  if (add->id == RPC_ID_MISSING)
-    return;
+  if (add->id == RPC_ID_MISSING) return;
 
   if (!err) {
     RpcAddIdentityResponse response{add->id};
@@ -308,7 +305,7 @@ void ApiServer::onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add) {
     RpcErrorResponse response{add->id};
     response.error.code = err.value();
     response.error.message = err.message();
-    conn->rpcReply(&response);    
+    conn->rpcReply(&response);
   }
 }
 
@@ -324,7 +321,8 @@ void ApiServer::onMessage(Channel *channel, const Message *message) {
   if (oneConn_) oneConn_->onMessage(channel, message);
 }
 
-ofp::Channel *ApiServer::findDatapath(const DatapathID &datapathId, UInt64 connId) {
+ofp::Channel *ApiServer::findDatapath(const DatapathID &datapathId,
+                                      UInt64 connId) {
   if (defaultChannel_) return defaultChannel_;
 
   return engine_->findDatapath(datapathId, connId);

@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the MPAggregateStatsReply class.
@@ -27,7 +27,8 @@ using namespace ofp;
 bool MPAggregateStatsReply::validateInput(Validation *context) const {
   size_t length = context->lengthRemaining();
   if (length != sizeof(MPAggregateStatsReply)) {
-    context->lengthRemainingIsInvalid(BytePtr(this), sizeof(MPAggregateStatsReply));
+    context->lengthRemainingIsInvalid(BytePtr(this),
+                                      sizeof(MPAggregateStatsReply));
     return false;
   }
   return true;

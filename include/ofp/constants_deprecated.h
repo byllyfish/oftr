@@ -39,7 +39,7 @@ namespace deprecated {
 // GET_ASYNC_REPLY              -      -      -     27
 // SET_ASYNC                    -      -      -     28
 // METER_MOD                    -      -      -     29
-// 
+//
 // There are differences in message types between versions. Here is a summary
 // listing the differences between v4 and each of the earlier versions:
 //

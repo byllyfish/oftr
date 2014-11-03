@@ -16,7 +16,7 @@ class PortRange : public ProtocolRange<PortIterator> {
 
  public:
   using Inherited::Inherited;
-  
+
   PortRange(const PortList &ports);
 
   /// \returns Size of port list when written to channel using the specified

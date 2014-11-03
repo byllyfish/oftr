@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::MappingTraits for the MPDesc class.
@@ -29,7 +29,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::MPDesc> {
-
   static void mapping(IO &io, ofp::MPDesc &body) {
     io.mapRequired("mfr_desc", body.mfrDesc_);
     io.mapRequired("hw_desc", body.hwDesc_);
@@ -41,7 +40,6 @@ struct MappingTraits<ofp::MPDesc> {
 
 template <>
 struct MappingTraits<ofp::MPDescBuilder> {
-
   static void mapping(IO &io, ofp::MPDescBuilder &body) {
     io.mapRequired("mfr_desc", body.msg_.mfrDesc_);
     io.mapRequired("hw_desc", body.msg_.hwDesc_);

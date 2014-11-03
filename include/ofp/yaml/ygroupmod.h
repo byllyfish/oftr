@@ -40,7 +40,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::GroupMod> {
-
   static void mapping(IO &io, ofp::GroupMod &msg) {
     io.mapRequired("command", msg.command_);
     io.mapRequired("type", msg.groupType_);
@@ -53,7 +52,6 @@ struct MappingTraits<ofp::GroupMod> {
 
 template <>
 struct MappingTraits<ofp::GroupModBuilder> {
-
   static void mapping(IO &io, ofp::GroupModBuilder &msg) {
     io.mapRequired("command", msg.msg_.command_);
     io.mapRequired("type", msg.msg_.groupType_);

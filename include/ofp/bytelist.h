@@ -38,7 +38,7 @@ namespace ofp {
 /// @see ByteData
 /// @see ByteRange
 class ByteList {
-public:
+ public:
   /// \brief Construct an empty byte buffer.
   ByteList() = default;
 
@@ -46,7 +46,8 @@ public:
   explicit ByteList(const void *data, size_t length) : buf_{data, length} {}
 
   /// \brief Construct byte buffer copying data in range.
-  /* implicit NOLINT */ ByteList(const ByteRange &range) : ByteList{range.data(), range.size()} {}
+  /* implicit NOLINT */ ByteList(const ByteRange &range)
+      : ByteList{range.data(), range.size()} {}
 
   explicit ByteList(const std::string &s) : ByteList{s.data(), s.size()} {}
 
@@ -100,7 +101,7 @@ public:
 
   /// \brief Add zero bytes to the end of the byte buffer.
   void addZeros(size_t length);
-  
+
   /// \brief Insert zero bytes at the specified position in the byte buffer.
   void insertZeros(const UInt8 *pos, size_t length);
 
@@ -120,8 +121,8 @@ public:
   ByteList &operator=(const ByteRange &range);
 
   static ByteList iota(size_t length);
-  
-private:
+
+ private:
   SmallBuffer buf_;
 
   /// \brief Helper function to verify pointer is valid for byte buffer.
@@ -131,13 +132,14 @@ private:
   }
 };
 
-static_assert(IsConvertible<ByteRange,ByteList>(), "Expected conversion.");
+static_assert(IsConvertible<ByteRange, ByteList>(), "Expected conversion.");
 
 /// \brief Write buffer to stream in hexadecimal format.
 std::ostream &operator<<(std::ostream &os, const ByteList &value);
 
 inline std::ostream &operator<<(std::ostream &os, const ByteList &value) {
-  return os << "[ByteList size=" << value.size() << " data=" << RawDataToHex(value.data(), value.size()) << "]";
+  return os << "[ByteList size=" << value.size()
+            << " data=" << RawDataToHex(value.data(), value.size()) << "]";
 }
 
 }  // namespace ofp

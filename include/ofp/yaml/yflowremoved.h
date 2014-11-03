@@ -46,7 +46,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::FlowRemoved> {
-
   static void mapping(IO &io, ofp::FlowRemoved &msg) {
     io.mapRequired("cookie", msg.cookie_);
     io.mapRequired("priority", msg.priority_);
@@ -66,7 +65,6 @@ struct MappingTraits<ofp::FlowRemoved> {
 
 template <>
 struct MappingTraits<ofp::FlowRemovedBuilder> {
-
   static void mapping(IO &io, ofp::FlowRemovedBuilder &msg) {
     io.mapRequired("cookie", msg.msg_.cookie_);
     io.mapRequired("priority", msg.msg_.priority_);

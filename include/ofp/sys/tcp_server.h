@@ -37,10 +37,15 @@ OFP_BEGIN_IGNORE_PADDING
 class TCP_Server : public std::enable_shared_from_this<TCP_Server> {
   // Private token parameter used to keep constructor private with make_shared.
   class PrivateToken {};
-public:
-  static std::shared_ptr<TCP_Server> create(Engine *engine, ChannelMode mode, UInt64 securityId, const IPv6Endpoint &localEndpt, ProtocolVersions versions, ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode, UInt64 securityId, const IPv6Endpoint &localEndpt,
+ public:
+  static std::shared_ptr<TCP_Server> create(
+      Engine *engine, ChannelMode mode, UInt64 securityId,
+      const IPv6Endpoint &localEndpt, ProtocolVersions versions,
+      ChannelListener::Factory listenerFactory, std::error_code &error);
+
+  TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+             UInt64 securityId, const IPv6Endpoint &localEndpt,
              ProtocolVersions versions,
              ChannelListener::Factory listenerFactory);
   ~TCP_Server();
@@ -49,7 +54,7 @@ public:
   UInt64 connectionId() const { return connId_; }
   void shutdown();
 
-private:
+ private:
   Engine *engine_;
   tcp::acceptor acceptor_;
   tcp::socket socket_;

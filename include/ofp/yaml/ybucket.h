@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Defines the llvm::yaml::MappingTraits for Bucket and the
@@ -30,9 +30,7 @@
 namespace ofp {
 namespace detail {
 
-struct BucketInserter 
-{
-};
+struct BucketInserter {};
 
 }  // namespace detail
 }  // namespace ofp
@@ -40,89 +38,71 @@ struct BucketInserter
 namespace llvm {
 namespace yaml {
 
-
 template <>
 struct MappingTraits<ofp::detail::BucketInserter> {
+  static void mapping(IO &io, ofp::detail::BucketInserter &inserter) {
+    using namespace ofp;
 
-    static void mapping(IO &io, ofp::detail::BucketInserter &inserter)
-    {
-        using namespace ofp;
+    BucketList &buckets = Ref_cast<BucketList>(inserter);
 
-        BucketList &buckets = Ref_cast<BucketList>(inserter);
+    UInt16 weight;
+    UInt32 watchPort;
+    UInt32 watchGroup;
+    io.mapRequired("weight", weight);
+    io.mapRequired("watch_port", watchPort);
+    io.mapRequired("watch_group", watchGroup);
 
-        UInt16 weight;
-        UInt32 watchPort;
-        UInt32 watchGroup;
-        io.mapRequired("weight", weight);
-        io.mapRequired("watch_port", watchPort);
-        io.mapRequired("watch_group", watchGroup);
+    ActionList actions;
+    io.mapRequired("actions", actions);
 
-        ActionList actions;
-        io.mapRequired("actions", actions);
-
-        BucketBuilder bkt;
-        bkt.setWeight(weight);
-        bkt.setWatchPort(watchPort);
-        bkt.setWatchGroup(watchGroup);
-        bkt.setActions(actions);
-        buckets.add(bkt);
-    }
+    BucketBuilder bkt;
+    bkt.setWeight(weight);
+    bkt.setWatchPort(watchPort);
+    bkt.setWatchGroup(watchGroup);
+    bkt.setActions(actions);
+    buckets.add(bkt);
+  }
 };
-
 
 template <>
 struct MappingTraits<ofp::Bucket> {
+  static void mapping(IO &io, ofp::Bucket &bucket) {
+    using namespace ofp;
 
-    static void mapping(IO &io, ofp::Bucket &bucket)
-    {
-        using namespace ofp;
+    Hex16 weight = bucket.weight();
+    Hex32 watchPort = bucket.watchPort();
+    Hex32 watchGroup = bucket.watchGroup();
+    io.mapRequired("weight", weight);
+    io.mapRequired("watch_port", watchPort);
+    io.mapRequired("watch_group", watchGroup);
 
-        Hex16 weight = bucket.weight();
-        Hex32 watchPort = bucket.watchPort();
-        Hex32 watchGroup = bucket.watchGroup();
-        io.mapRequired("weight", weight);
-        io.mapRequired("watch_port", watchPort);
-        io.mapRequired("watch_group", watchGroup);
-
-        ActionRange actions = bucket.actions();
-        io.mapRequired("actions", actions);
-    }
+    ActionRange actions = bucket.actions();
+    io.mapRequired("actions", actions);
+  }
 };
-
 
 template <>
 struct SequenceTraits<ofp::BucketRange> {
-    using iterator = ofp::BucketIterator;
+  using iterator = ofp::BucketIterator;
 
-    static iterator begin(IO &io, ofp::BucketRange &range) {
-        return range.begin();
-    }
+  static iterator begin(IO &io, ofp::BucketRange &range) {
+    return range.begin();
+  }
 
-    static iterator end(IO &io, ofp::BucketRange &range) {
-        return range.end();
-    }
+  static iterator end(IO &io, ofp::BucketRange &range) { return range.end(); }
 
-    static void next(iterator &iter, iterator iterEnd) {
-        ++iter;
-    }
+  static void next(iterator &iter, iterator iterEnd) { ++iter; }
 };
-
 
 template <>
 struct SequenceTraits<ofp::BucketList> {
+  static size_t size(IO &io, ofp::BucketList &list) { return 0; }
 
-    static size_t size(IO &io, ofp::BucketList &list)
-    {
-        return 0;
-    }
-
-    static ofp::detail::BucketInserter &element(IO &io, ofp::BucketList &list,
-                                     size_t index)
-    {
-        return Ref_cast<ofp::detail::BucketInserter>(list);
-    }
+  static ofp::detail::BucketInserter &element(IO &io, ofp::BucketList &list,
+                                              size_t index) {
+    return Ref_cast<ofp::detail::BucketInserter>(list);
+  }
 };
-
 
 }  // namespace yaml
 }  // namespace llvm

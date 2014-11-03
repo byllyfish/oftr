@@ -102,7 +102,7 @@ void Transmogrify::normalizeFeaturesReplyV1() {
   Header *hdr = header();
 
   // TODO(bfish): min length already checked?
-  if (hdr->length() < sizeof(FeaturesReply)) {   
+  if (hdr->length() < sizeof(FeaturesReply)) {
     log::debug("Invalid FeaturesReply size.");
     hdr->setType(OFPT_UNSUPPORTED);
     return;
@@ -119,7 +119,8 @@ void Transmogrify::normalizeFeaturesReplyV1() {
   // Normalize the port structures from V1 to normal size.
   size_t portCount = portListSize / sizeof(PortV1);
   UInt8 *pkt = buf_.mutableData();
-  const PortV1 *portV1 = reinterpret_cast<const PortV1 *>(pkt + sizeof(FeaturesReply));
+  const PortV1 *portV1 =
+      reinterpret_cast<const PortV1 *>(pkt + sizeof(FeaturesReply));
 
   PortList ports;
   for (size_t i = 0; i < portCount; ++i) {
@@ -138,7 +139,6 @@ void Transmogrify::normalizeFeaturesReplyV1() {
   // TODO(bfish): Put header fix up at end of calling method?
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
-
 
 void Transmogrify::normalizeFlowModV1() {
   Header *hdr = header();
@@ -175,13 +175,13 @@ void Transmogrify::normalizeFlowModV1() {
   // Convert port number from 16 to 32 bits.
   Big32 out_port = normPortNumberV1(pkt + 68);
 
-  std::memcpy(pkt + 8, pkt + 48, 8);      // set cookie
-  std::memcpy(pkt + 16, &cookie_mask, 8); // set cookie_mask
-  std::memcpy(pkt + 24, pkt + 56, 12);    // set up to out_port
-  std::memcpy(pkt + 36, &out_port, 4);    // set out_port as 32 bits
-  std::memset(pkt + 40, 0, 4);            // set out_group
-  std::memcpy(pkt + 44, pkt + 70, 2);     // set flags
-  std::memset(pkt + 46, 0, 2);            // set 2 pad bytes
+  std::memcpy(pkt + 8, pkt + 48, 8);       // set cookie
+  std::memcpy(pkt + 16, &cookie_mask, 8);  // set cookie_mask
+  std::memcpy(pkt + 24, pkt + 56, 12);     // set up to out_port
+  std::memcpy(pkt + 36, &out_port, 4);     // set out_port as 32 bits
+  std::memset(pkt + 40, 0, 4);             // set out_group
+  std::memcpy(pkt + 44, pkt + 70, 2);      // set flags
+  std::memset(pkt + 46, 0, 2);             // set 2 pad bytes
 
   // Current position is pkt + 48.
   // StandardMatch size is 88.
@@ -386,7 +386,8 @@ void Transmogrify::normalizeMultipartRequestV1() {
 
   // Insert 4 bytes of padding.
   Padding<4> pad;
-  buf_.insert(BytePtr(hdr) + MultipartRequest::UnpaddedSizeVersion1, &pad, sizeof(pad));
+  buf_.insert(BytePtr(hdr) + MultipartRequest::UnpaddedSizeVersion1, &pad,
+              sizeof(pad));
 
   const MultipartRequest *multipartReq =
       reinterpret_cast<const MultipartRequest *>(header());
@@ -404,9 +405,7 @@ void Transmogrify::normalizeMultipartRequestV1() {
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
-
-void Transmogrify::normalizeMultipartReplyV1()
-{
+void Transmogrify::normalizeMultipartReplyV1() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply::UnpaddedSizeVersion1)) {
     log::info("MultipartReply v1 message is too short.", hdr->length());
@@ -416,7 +415,8 @@ void Transmogrify::normalizeMultipartReplyV1()
 
   // Insert 4 bytes of padding.
   Padding<4> pad;
-  buf_.insert(BytePtr(hdr) + MultipartReply::UnpaddedSizeVersion1, &pad, sizeof(pad));
+  buf_.insert(BytePtr(hdr) + MultipartReply::UnpaddedSizeVersion1, &pad,
+              sizeof(pad));
 
   const MultipartReply *multipartReply =
       reinterpret_cast<const MultipartReply *>(header());
@@ -425,8 +425,7 @@ void Transmogrify::normalizeMultipartReplyV1()
   size_t offset = sizeof(MultipartReply);
 
   if (replyType == OFPMP_FLOW) {
-    while (offset < buf_.size()) 
-      normalizeMPFlowReplyV1(&offset);
+    while (offset < buf_.size()) normalizeMPFlowReplyV1(&offset);
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_PORT_STATS) {
     while (offset < buf_.size())
@@ -456,7 +455,7 @@ void Transmogrify::normalizeMultipartReplyV3() {
   size_t offset = sizeof(MultipartReply);
 
   if (replyType == OFPMP_PORT_STATS) {
-    while (offset < buf_.size()) 
+    while (offset < buf_.size())
       normalizeMPPortOrQueueStatsReplyV3(&offset, 104);
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_QUEUE) {
@@ -468,8 +467,7 @@ void Transmogrify::normalizeMultipartReplyV3() {
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
-void Transmogrify::normalizeMultipartReplyV4()
-{
+void Transmogrify::normalizeMultipartReplyV4() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
     log::info("MultipartReply v4 message is too short.", hdr->length());
@@ -484,8 +482,7 @@ void Transmogrify::normalizeMultipartReplyV4()
   size_t offset = sizeof(MultipartReply);
 
   if (replyType == OFPMP_TABLE) {
-    while (offset < buf_.size()) 
-      normalizeMPTableStatsReplyV4(&offset);
+    while (offset < buf_.size()) normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());
   }
 
@@ -535,14 +532,14 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
     *start = buf_.size();
     return;
   }
-  
+
   OriginalMatch *origMatch = reinterpret_cast<OriginalMatch *>(ptr + 4);
   StandardMatch stdMatch{*origMatch};
 
   // Shift all fields above actions up. Must use memmove due to overlap.
   std::memmove(ptr + 4, ptr + 44, 44);
-  
-  // Need at least 48 more bytes (136 - 88). If there's an action list, we need 
+
+  // Need at least 48 more bytes (136 - 88). If there's an action list, we need
   // 8 more bytes for the instruction header.
   UInt16 actLen = UInt16_narrow_cast(length - 88);
   int needed = 48;
@@ -573,13 +570,11 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   // Update length.
   *reinterpret_cast<Big16 *>(ptr) = UInt16_narrow_cast(length + needed);
   *start = Unsigned_cast(Signed_cast(*start) + length + needed);
-  
+
   log::debug("normalizeFlowReplyV1", buf_);
 }
 
-
-void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start)
-{
+void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start) {
   // Normalize the TableStatsReply V4 to look like a V1 message.
   size_t offset = *start;
   UInt8 *ptr = buf_.mutableData() + offset;
@@ -589,8 +584,8 @@ void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start)
   *start += 64;
 }
 
-void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len)
-{
+void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start,
+                                                      size_t len) {
   // Normalize the PortStatsReply V1 to look like a V4+ message.
   size_t offset = *start;
   size_t remaining = buf_.size() - offset;
@@ -599,7 +594,7 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len)
     *start = buf_.size();
     return;
   }
-  
+
   UInt8 *ptr = buf_.mutableData() + offset;
 
   // Change port number from 16-bits to 32-bits.
@@ -614,7 +609,9 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len)
 void Transmogrify::normalizeMPPortStatsRequestV1() {
   // Check length of packet.
   if (buf_.size() != sizeof(MultipartRequest) + 8) {
-    log::info("MultipartRequest v1 OFPMP_PORT_STATS/OFPMP_QUEUE is wrong length.", buf_.size());
+    log::info(
+        "MultipartRequest v1 OFPMP_PORT_STATS/OFPMP_QUEUE is wrong length.",
+        buf_.size());
     header()->setType(OFPT_UNSUPPORTED);
     return;
   }
@@ -626,8 +623,8 @@ void Transmogrify::normalizeMPPortStatsRequestV1() {
   *port = normPortNumberV1(ptr);
 }
 
-
-void Transmogrify::normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len) {
+void Transmogrify::normalizeMPPortOrQueueStatsReplyV3(size_t *start,
+                                                      size_t len) {
   // Normalize the PortStatsReply V3 to look like a V4+ message.
   size_t offset = *start;
   size_t remaining = buf_.size() - offset;
@@ -643,7 +640,6 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len)
   buf_.insertZeros(ptr + len, 8);
   *start += len + 8;
 }
-
 
 UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {
   const Big16 *port16 = reinterpret_cast<const Big16 *>(ptr);
@@ -707,63 +703,62 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
 
   int lengthChange = 0;
   switch (type) {
-  case v1::OFPAT_OUTPUT:
-    lengthChange += normOutput(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_VLAN_VID:
-    lengthChange += normSetField<OFB_VLAN_VID>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_VLAN_PCP:
-    lengthChange += normSetField<OFB_VLAN_PCP>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_DL_SRC:
-    lengthChange += normSetField<OFB_ETH_SRC>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_DL_DST:
-    lengthChange += normSetField<OFB_ETH_DST>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_NW_SRC:
-    lengthChange += normSetField<OFB_IPV4_SRC>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_NW_DST:
-    lengthChange += normSetField<OFB_IPV4_DST>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_NW_TOS:
-    lengthChange += normSetField<OFB_IP_DSCP>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_NW_ECN:
-    lengthChange += normSetField<OFB_IP_ECN>(iter, iterEnd);
-    break;
-  case v2::OFPAT_SET_TP_SRC:
-    if (ipProto == PROTOCOL_TCP) {
-      lengthChange += normSetField<OFB_TCP_SRC>(iter, iterEnd);
-    } else if (ipProto == PROTOCOL_UDP) {
-      lengthChange += normSetField<OFB_UDP_SRC>(iter, iterEnd);
-    } else if (ipProto == PROTOCOL_ICMP) {
-      lengthChange += normSetField<OFB_ICMPV4_TYPE>(iter, iterEnd);
-    } else {
-      log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
-    }
-    break;
-  case v2::OFPAT_SET_TP_DST:
-    if (ipProto == PROTOCOL_TCP) {
-      lengthChange += normSetField<OFB_TCP_DST>(iter, iterEnd);
-    } else if (ipProto == PROTOCOL_UDP) {
-      lengthChange += normSetField<OFB_UDP_DST>(iter, iterEnd);
-    } else if (ipProto == PROTOCOL_ICMP) {
-      lengthChange += normSetField<OFB_ICMPV4_CODE>(iter, iterEnd);
-    } else {
-      log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
-    }
-    break;
+    case v1::OFPAT_OUTPUT:
+      lengthChange += normOutput(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_VLAN_VID:
+      lengthChange += normSetField<OFB_VLAN_VID>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_VLAN_PCP:
+      lengthChange += normSetField<OFB_VLAN_PCP>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_DL_SRC:
+      lengthChange += normSetField<OFB_ETH_SRC>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_DL_DST:
+      lengthChange += normSetField<OFB_ETH_DST>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_NW_SRC:
+      lengthChange += normSetField<OFB_IPV4_SRC>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_NW_DST:
+      lengthChange += normSetField<OFB_IPV4_DST>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_NW_TOS:
+      lengthChange += normSetField<OFB_IP_DSCP>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_NW_ECN:
+      lengthChange += normSetField<OFB_IP_ECN>(iter, iterEnd);
+      break;
+    case v2::OFPAT_SET_TP_SRC:
+      if (ipProto == PROTOCOL_TCP) {
+        lengthChange += normSetField<OFB_TCP_SRC>(iter, iterEnd);
+      } else if (ipProto == PROTOCOL_UDP) {
+        lengthChange += normSetField<OFB_UDP_SRC>(iter, iterEnd);
+      } else if (ipProto == PROTOCOL_ICMP) {
+        lengthChange += normSetField<OFB_ICMPV4_TYPE>(iter, iterEnd);
+      } else {
+        log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
+      }
+      break;
+    case v2::OFPAT_SET_TP_DST:
+      if (ipProto == PROTOCOL_TCP) {
+        lengthChange += normSetField<OFB_TCP_DST>(iter, iterEnd);
+      } else if (ipProto == PROTOCOL_UDP) {
+        lengthChange += normSetField<OFB_UDP_DST>(iter, iterEnd);
+      } else if (ipProto == PROTOCOL_ICMP) {
+        lengthChange += normSetField<OFB_ICMPV4_CODE>(iter, iterEnd);
+      } else {
+        log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
+      }
+      break;
   }
 
   return lengthChange;
 }
 
 int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
-  if ((*iter)->type() != deprecated::AT_OUTPUT_V1::type())
-    return 0;
+  if ((*iter)->type() != deprecated::AT_OUTPUT_V1::type()) return 0;
 
   ByteRange valueRange = (*iter)->value();
 
@@ -775,7 +770,7 @@ int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
 
   ptrdiff_t offset = buf_.offset(iter->data());
   ptrdiff_t endOffset = buf_.offset(iterEnd->data());
-  
+
   buf_.insertUninitialized(valueRange.data(), 8);
 
   ActionRange range{{buf_.data() + offset, buf_.data() + endOffset + 8}};

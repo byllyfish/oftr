@@ -28,13 +28,13 @@ namespace ofp {
 
 class SetConfig
     : public ProtocolMsg<SetConfig, OFPT_SET_CONFIG, 12, 12, false> {
-public:
+ public:
   UInt16 flags() const { return flags_; }
   UInt16 missSendLen() const { return missSendLen_; }
 
   bool validateInput(Validation *context) const { return true; }
 
-private:
+ private:
   Header header_;
   Big16 flags_ = 0;
   Big16 missSendLen_ = 128;
@@ -52,7 +52,7 @@ static_assert(IsStandardLayout<SetConfig>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<SetConfig>(), "Expected trivially copyable.");
 
 class SetConfigBuilder {
-public:
+ public:
   SetConfigBuilder() = default;
   explicit SetConfigBuilder(const SetConfig *msg);
 
@@ -61,7 +61,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   SetConfig msg_;
 
   template <class T>

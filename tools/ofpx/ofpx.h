@@ -11,15 +11,15 @@ namespace ofpx {
 namespace cl = llvm::cl;
 
 class Subprogram {
-public:
-    virtual ~Subprogram() {}
-    virtual int run(int argc, char **argv) = 0;
+ public:
+  virtual ~Subprogram() {}
+  virtual int run(int argc, char **argv) = 0;
 
-protected: 
-    static const int MinExitStatus = 10;
+ protected:
+  static const int MinExitStatus = 10;
 };
 
-using RunSubprogram = int(*)(int argc, char **argv);
+using RunSubprogram = int (*)(int argc, char **argv);
 
 template <class Type>
 inline int Run(int argc, char **argv) {
@@ -27,18 +27,16 @@ inline int Run(int argc, char **argv) {
   return t.run(argc, argv);
 }
 
-
 struct IPv6EndpointParser : public cl::parser<ofp::IPv6Endpoint> {
-public:
+ public:
   // parse - Return true on error.
   bool parse(cl::Option &O, llvm::StringRef ArgName, llvm::StringRef ArgValue,
              ofp::IPv6Endpoint &Val) {
-    if (Val.parse(ArgValue))
-      return false;
+    if (Val.parse(ArgValue)) return false;
     return O.error("Unexpected endpoint format '" + ArgValue + "'!");
   }
 };
 
 }  // namespace ofpx
 
-#endif // OFPX_PING_H
+#endif  // OFPX_PING_H

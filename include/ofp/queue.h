@@ -43,15 +43,15 @@ class QueueBuilder {
   void setPort(UInt32 port) { queue_.port_ = port; }
 
   void setProperties(const PropertyRange &properties);
-  void setProperties(const PropertyList &properties) { setProperties(properties.toRange()); }
+  void setProperties(const PropertyList &properties) {
+    setProperties(properties.toRange());
+  }
 
  private:
   Queue queue_;
   PropertyList properties_;
 
-  enum {
-    SizeWithoutProperties = sizeof(queue_)
-  };
+  enum { SizeWithoutProperties = sizeof(queue_) };
 
   friend class QueueList;
 

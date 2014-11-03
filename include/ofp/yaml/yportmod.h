@@ -39,7 +39,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::PortMod> {
-
   static void mapping(IO &io, ofp::PortMod &msg) {
     io.mapRequired("port_no", msg.portNo_);
     io.mapRequired("hw_addr", msg.hwAddr_);
@@ -51,7 +50,6 @@ struct MappingTraits<ofp::PortMod> {
 
 template <>
 struct MappingTraits<ofp::PortModBuilder> {
-
   static void mapping(IO &io, ofp::PortModBuilder &msg) {
     io.mapRequired("port_no", msg.msg_.portNo_);
     io.mapRequired("hw_addr", msg.msg_.hwAddr_);

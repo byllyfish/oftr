@@ -39,7 +39,6 @@ namespace yaml {
 
 template <>
 struct MappingTraits<ofp::SetConfig> {
-
   static void mapping(IO &io, ofp::SetConfig &msg) {
     io.mapRequired("flags", msg.flags_);
     io.mapRequired("miss_send_len", msg.missSendLen_);
@@ -48,7 +47,6 @@ struct MappingTraits<ofp::SetConfig> {
 
 template <>
 struct MappingTraits<ofp::SetConfigBuilder> {
-
   static void mapping(IO &io, ofp::SetConfigBuilder &msg) {
     io.mapRequired("flags", msg.msg_.flags_);
     io.mapRequired("miss_send_len", msg.msg_.missSendLen_);

@@ -64,7 +64,7 @@ class ApiServer {
   void onRpcConfig(ApiConnection *conn, RpcConfig *config);
   void onRpcListConns(ApiConnection *conn, RpcListConns *list);
   void onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add);
-  
+
   // These methods are used to bridge ApiChannelListeners to ApiConnections.
   void onChannelUp(Channel *channel);
   void onChannelDown(Channel *channel);
@@ -79,7 +79,8 @@ class ApiServer {
   ApiConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
 
-  static void connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId, const std::error_code &err);
+  static void connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId,
+                              const std::error_code &err);
 };
 
 OFP_END_IGNORE_PADDING

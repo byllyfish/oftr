@@ -30,16 +30,14 @@ namespace ofp {
 OFP_BEGIN_IGNORE_PADDING
 
 class OXMTypeSet {
-public:
+ public:
   OXMTypeSet() {}
 
   bool find(OXMType type);
   bool add(OXMType type);
 
-private:
-  enum {
-    MaxOXMClasses = 10
-  };
+ private:
+  enum { MaxOXMClasses = 10 };
 
   struct ClassEntry {
     std::bitset<128> fields;

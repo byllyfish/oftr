@@ -14,7 +14,7 @@ const int STDOUT = 1;
 int JsonRpc::run(int argc, char **argv) {
   cl::ParseCommandLineOptions(argc, argv);
 
-  //ofp::log::setOutputLevelFilter(ofp::log::Level::Trace);
+  // ofp::log::setOutputLevelFilter(ofp::log::Level::Trace);
 
   ofp::Driver driver;
   ofp::api::ApiServer server{&driver, STDIN, STDOUT};

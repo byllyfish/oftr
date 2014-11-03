@@ -1,11 +1,7 @@
 BasedOnStyle: google
 
-# IndentWidth: 4
-# AccessModifierOffset: -4
 PointerBindsToType: false
 DerivePointerBinding: false
 Standard: C++11
-# BreakBeforeBraces: Stroustrup
 AlwaysBreakTemplateDeclarations: true
-# ExperimentalAutoDetectBinPacking: true
 Cpp11BracedListStyle: true

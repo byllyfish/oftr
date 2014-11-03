@@ -39,16 +39,16 @@ const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 
 /// RPC Methods
 enum RpcMethod : UInt32 {
-  METHOD_LISTEN = 0,    // ofp.listen
-  METHOD_CONNECT,       // ofp.connect
-  METHOD_CLOSE,         // ofp.close
-  METHOD_SEND,          // ofp.send
-  METHOD_CONFIG,        // ofp.config
-  METHOD_DATAPATH,      // ofp.datapath
-  METHOD_MESSAGE,       // ofp.message
-  METHOD_MESSAGE_ERROR, // ofp.message_error
-  METHOD_LIST_CONNS,    // ofp.list_connections
-  METHOD_ADD_IDENTITY,  // ofp.add_identity
+  METHOD_LISTEN = 0,     // ofp.listen
+  METHOD_CONNECT,        // ofp.connect
+  METHOD_CLOSE,          // ofp.close
+  METHOD_SEND,           // ofp.send
+  METHOD_CONFIG,         // ofp.config
+  METHOD_DATAPATH,       // ofp.datapath
+  METHOD_MESSAGE,        // ofp.message
+  METHOD_MESSAGE_ERROR,  // ofp.message_error
+  METHOD_LIST_CONNS,     // ofp.list_connections
+  METHOD_ADD_IDENTITY,   // ofp.add_identity
   METHOD_UNSUPPORTED
 };
 
@@ -255,7 +255,8 @@ struct RpcAddIdentityResponse {
 
 /// Represents a RPC request to send a message to datapath (METHOD_SEND).
 struct RpcSend {
-  explicit RpcSend(UInt64 ident, yaml::Encoder::ChannelFinder finder) : id{ident}, params{finder} {}
+  explicit RpcSend(UInt64 ident, yaml::Encoder::ChannelFinder finder)
+      : id{ident}, params{finder} {}
 
   UInt64 id;
   yaml::Encoder params;
@@ -326,7 +327,8 @@ struct RpcDatapath {
 // o f p . m e s s a g e _ e r r o r //
 //-----------------------------------//
 
-/// Represents a RPC notification about an incoming message error (METHOD_MESSAGE_ERROR).
+/// Represents a RPC notification about an incoming message error
+/// (METHOD_MESSAGE_ERROR).
 struct RpcMessageError {
   std::string toJson();
 
@@ -349,7 +351,6 @@ LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::api::RpcConnectionStats);
 namespace llvm {
 namespace yaml {
 
-
 template <>
 struct ScalarTraits<ofp::api::RpcMethod> {
   static ofp::yaml::EnumConverter<ofp::api::RpcMethod> converter;
@@ -370,7 +371,7 @@ struct ScalarTraits<ofp::api::RpcMethod> {
       value = ofp::api::METHOD_UNSUPPORTED;
       return "unknown method";
     }
-    
+
     return "";
   }
 };
@@ -509,7 +510,8 @@ struct MappingTraits<ofp::api::RpcAddIdentityResponse> {
 
 template <>
 struct MappingTraits<ofp::api::RpcAddIdentityResponse::Result> {
-  static void mapping(IO &io, ofp::api::RpcAddIdentityResponse::Result &result) {
+  static void mapping(IO &io,
+                      ofp::api::RpcAddIdentityResponse::Result &result) {
     io.mapRequired("security_id", result.securityId);
   }
 };
@@ -582,7 +584,6 @@ struct MappingTraits<ofp::api::RpcMessageError::Params> {
     io.mapRequired("data", params.data);
   }
 };
-
 
 }  // namespace yaml
 }  // namespace llvm

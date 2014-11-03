@@ -40,7 +40,8 @@ inline asio::ssl::context *sslContext(Engine *engine, UInt64 securityId) {
 }
 
 template <>
-inline asio::ssl::context *sslContext<PlaintextSocket>(Engine *engine, UInt64 securityId) {
+inline asio::ssl::context *sslContext<PlaintextSocket>(Engine *engine,
+                                                       UInt64 securityId) {
   assert(securityId == 0);
   return nullptr;
 }
@@ -54,17 +55,18 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
                                            ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
-      socket_{engine->io(), detail::sslContext<SocketType>(engine, securityId)} {}
+      socket_{engine->io(),
+              detail::sslContext<SocketType>(engine, securityId)} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
-                                           ChannelMode mode,
-                                           UInt64 securityId,
+                                           ChannelMode mode, UInt64 securityId,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
-      socket_{std::move(socket), detail::sslContext<SocketType>(engine, securityId)} {}
+      socket_{std::move(socket),
+              detail::sslContext<SocketType>(engine, securityId)} {}
 
 template <class SocketType>
 TCP_Connection<SocketType>::~TCP_Connection() {
@@ -103,11 +105,14 @@ void TCP_Connection<SocketType>::shutdown() {
 }
 
 template <class SocketType>
-void TCP_Connection<SocketType>::asyncConnect(const IPv6Endpoint &remoteEndpt, std::function<void(Channel*,std::error_code)> resultHandler) {
+void TCP_Connection<SocketType>::asyncConnect(
+    const IPv6Endpoint &remoteEndpt,
+    std::function<void(Channel *, std::error_code)> resultHandler) {
   auto self(this->shared_from_this());
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpt);
 
-  log::info("Initiate TCP connection to", remoteEndpt, std::make_pair("connid", connectionId()));
+  log::info("Initiate TCP connection to", remoteEndpt,
+            std::make_pair("connid", connectionId()));
 
   OFP_BEGIN_IGNORE_PADDING
 
@@ -120,7 +125,8 @@ void TCP_Connection<SocketType>::asyncConnect(const IPv6Endpoint &remoteEndpt, s
 
           std::error_code ignore;
           socket_.lowest_layer().set_option(tcp::no_delay(true), ignore);
-          log::info("Establish TCP connection", localEndpoint(), "-->", remoteEndpoint(), std::make_pair("connid", connectionId()));
+          log::info("Establish TCP connection", localEndpoint(), "-->",
+                    remoteEndpoint(), std::make_pair("connid", connectionId()));
 
           asyncHandshake(true);
         }
@@ -139,7 +145,8 @@ void TCP_Connection<SocketType>::asyncAccept() {
   // We always send and receive complete messages; disable Nagle algorithm.
   socket_.lowest_layer().set_option(tcp::no_delay(true));
 
-  log::info("Accept TCP connection", localEndpoint(), "<--", remoteEndpoint(), std::make_pair("connid", connectionId()));
+  log::info("Accept TCP connection", localEndpoint(), "<--", remoteEndpoint(),
+            std::make_pair("connid", connectionId()));
 
   asyncHandshake(false);
 }
@@ -208,7 +215,6 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               }
 
             } else {
-
               if (err != asio::error::eof) {
                 log::debug("asyncReadHeader error ", err);
               }
@@ -260,16 +266,19 @@ template <class SocketType>
 void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
   // Start async handshake.
   auto mode = isClient ? asio::ssl::stream_base::client
-                           : asio::ssl::stream_base::server;
+                       : asio::ssl::stream_base::server;
 
   // Set up verify callback.
-  Identity::beforeHandshake(connectionId(), socket_.next_layer(), remoteEndpoint(), isClient);
+  Identity::beforeHandshake(connectionId(), socket_.next_layer(),
+                            remoteEndpoint(), isClient);
 
   OFP_BEGIN_IGNORE_PADDING
 
   auto self(this->shared_from_this());
-  socket_.async_handshake(mode, [this, self, isClient](const asio::error_code &err) {
-    Identity::afterHandshake(connectionId(), socket_.next_layer(), remoteEndpoint(), isClient, err);
+  socket_.async_handshake(mode,
+                          [this, self, isClient](const asio::error_code &err) {
+    Identity::afterHandshake(connectionId(), socket_.next_layer(),
+                             remoteEndpoint(), isClient, err);
     if (!err) {
       channelUp();
     }

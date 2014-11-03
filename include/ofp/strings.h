@@ -21,17 +21,21 @@ using SerialNumberStr = SmallCString<32>;
 // Compile time assertions.
 
 static_assert(IsStandardLayout<PortNameStr>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<PortNameStr>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<PortNameStr>(),
+              "Expected trivially copyable.");
 
 static_assert(IsStandardLayout<TableNameStr>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<TableNameStr>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<TableNameStr>(),
+              "Expected trivially copyable.");
 
 static_assert(IsStandardLayout<DescriptionStr>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<DescriptionStr>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<DescriptionStr>(),
+              "Expected trivially copyable.");
 
 static_assert(IsStandardLayout<SerialNumberStr>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<SerialNumberStr>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<SerialNumberStr>(),
+              "Expected trivially copyable.");
 
 }  // namespace ofp
 
-#endif // OFP_STRINGS_H_
+#endif  // OFP_STRINGS_H_

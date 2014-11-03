@@ -28,8 +28,9 @@
 namespace ofp {
 
 class MultipartRequest
-    : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST, 16, 65535, false> {
-public:
+    : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST, 16, 65535,
+                         false> {
+ public:
   OFPMultipartType requestType() const { return type_; }
   UInt16 requestFlags() const { return flags_; }
   const UInt8 *requestBody() const {
@@ -48,14 +49,13 @@ public:
 
   template <class Type>
   static const MultipartRequest *msg_cast(const Type *body) {
-    return reinterpret_cast<const MultipartRequest *>(BytePtr(body) - sizeof(MultipartRequest));
+    return reinterpret_cast<const MultipartRequest *>(BytePtr(body) -
+                                                      sizeof(MultipartRequest));
   }
 
-  enum : size_t {
-    UnpaddedSizeVersion1 = 12
-  };
-  
-private:
+  enum : size_t { UnpaddedSizeVersion1 = 12 };
+
+ private:
   Header header_;
   Big<OFPMultipartType> type_;
   Big16 flags_;
@@ -76,7 +76,7 @@ static_assert(IsTriviallyCopyable<MultipartRequest>(),
               "Expected trivially copyable.");
 
 class MultipartRequestBuilder {
-public:
+ public:
   MultipartRequestBuilder() = default;
   explicit MultipartRequestBuilder(UInt8 version) {
     msg_.header_.setVersion(version);
@@ -92,7 +92,7 @@ public:
 
   UInt32 send(Writable *channel);
 
-private:
+ private:
   MultipartRequest msg_;
   ByteList body_;
 

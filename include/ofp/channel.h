@@ -34,7 +34,7 @@ class ChannelListener;
 class DatapathID;
 
 class Channel : public Writable {
-public:
+ public:
   virtual ~Channel() {}
 
   virtual Driver *driver() const = 0;

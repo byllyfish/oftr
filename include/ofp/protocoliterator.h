@@ -1,24 +1,24 @@
 ///   ProtocolIterator<class ElemType>
 ///   ProtocolIteratorFixedType<class ElemType>
 ///   ProtocolIteratorFixedTypeAndSize<class ElemType>
-/// 
+///
 /// Common Synopsis:
-/// 
+///
 /// class ProtocolIteratorX<class ElemType> {
 /// public:
 ///   using Item = ElemType;
-///   
+///
 ///   const ElemType &operator*() const;
 ///   const ElemType *operator->() const;
-///   
+///
 ///   const UInt8 *data() const;
 ///   size_t size() const;
-///   
+///
 ///   const UInt8 *valuePtr() const;
 ///   size_t valueSize() const;
-///   
+///
 ///   void operator++();
-///   
+///
 ///   bool operator==(const ProtocolIterator &rhs) const;
 ///   bool operator!=(const ProtocolIterator &rhs) const;
 ///   bool operator<(const ProtocolIterator &rhs) const;
@@ -52,31 +52,31 @@ namespace detail {
 ///   - pointer to start of range is 8-byte aligned.
 ///
 /// \return true if byte range is a valid protocol iterable.
-bool IsProtocolRangeValid(size_t elementSize, const ByteRange &range, size_t sizeFieldOffset, size_t alignment, Validation *context);
+bool IsProtocolRangeValid(size_t elementSize, const ByteRange &range,
+                          size_t sizeFieldOffset, size_t alignment,
+                          Validation *context);
 
 /// Return count of items in the protocol range.
 ///
 /// If protocol iterable is not valid, return count of valid items.
 ///
 /// \return number of items in iterable.
-size_t ProtocolRangeItemCount(size_t elementSize, const ByteRange &range, size_t sizeFieldOffset, size_t alignment = 8);
-
+size_t ProtocolRangeItemCount(size_t elementSize, const ByteRange &range,
+                              size_t sizeFieldOffset, size_t alignment = 8);
 
 template <class ElemType, size_t SizeOffset>
 struct ProtocolElement {
-  static size_t size(const UInt8 *ptr) { 
+  static size_t size(const UInt8 *ptr) {
     static_assert(SizeOffset < 32, "Unexpected value of size offset.");
-    return std::max<size_t>(sizeof(Big16) + SizeOffset, *Big16_cast(ptr + SizeOffset));
+    return std::max<size_t>(sizeof(Big16) + SizeOffset,
+                            *Big16_cast(ptr + SizeOffset));
   }
 };
 
 template <class ElemType>
 struct ProtocolElement<ElemType, PROTOCOL_ITERATOR_SIZE_FIXED> {
-  static size_t size(const UInt8 *ptr) {
-    return sizeof(ElemType);
-  }
+  static size_t size(const UInt8 *ptr) { return sizeof(ElemType); }
 };
-
 
 template <class ElemType>
 struct ProtocolElement<ElemType, PROTOCOL_ITERATOR_SIZE_CONDITIONAL> {
@@ -96,24 +96,27 @@ struct ProtocolElement<ElemType, PROTOCOL_ITERATOR_SIZE_CONDITIONAL> {
 //
 // The actual element is padded to a multiple of 8 bytes.
 
-template <class ElemType, size_t SizeOffset=ElemType::ProtocolIteratorSizeOffset, size_t Alignment=ElemType::ProtocolIteratorAlignment>
+template <class ElemType,
+          size_t SizeOffset = ElemType::ProtocolIteratorSizeOffset,
+          size_t Alignment = ElemType::ProtocolIteratorAlignment>
 class ProtocolIterator {
-public:
-  static_assert((SizeOffset == PROTOCOL_ITERATOR_SIZE_FIXED) || (SizeOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) || (SizeOffset < 32), "Unexpected SizeOffset.");
+ public:
+  static_assert((SizeOffset == PROTOCOL_ITERATOR_SIZE_FIXED) ||
+                    (SizeOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) ||
+                    (SizeOffset < 32),
+                "Unexpected SizeOffset.");
   static_assert((Alignment == 8) || (Alignment == 4), "Unexpected alignment.");
 
   // Define types for std::iterator.
   using difference_type = ptrdiff_t;
   using value_type = ElemType;
-  using reference = const ElemType&;
-  using pointer = const ElemType*;
+  using reference = const ElemType &;
+  using pointer = const ElemType *;
   using iterator_category = std::forward_iterator_tag;
 
   using Element = ElemType;
 
-  const ElemType &operator*() const {
-    return *operator->();
-  }
+  const ElemType &operator*() const { return *operator->(); }
 
   const ElemType *operator->() const {
     return reinterpret_cast<const ElemType *>(data());
@@ -125,7 +128,7 @@ public:
   }
 
   /// \returns size of element including type and length fields.
-  size_t size() const { 
+  size_t size() const {
     return detail::ProtocolElement<ElemType, SizeOffset>::size(data());
   }
 
@@ -143,30 +146,28 @@ public:
     return pos_ <= rhs.pos_;
   }
 
-  bool operator<(const ProtocolIterator &rhs) const {
-    return pos_ < rhs.pos_;
-  }
+  bool operator<(const ProtocolIterator &rhs) const { return pos_ < rhs.pos_; }
 
-  bool operator>(const ProtocolIterator &rhs) const {
-    return pos_ > rhs.pos_;
-  }
+  bool operator>(const ProtocolIterator &rhs) const { return pos_ > rhs.pos_; }
 
   bool operator>=(const ProtocolIterator &rhs) const {
     return pos_ >= rhs.pos_;
   }
 
-private:
+ private:
   const UInt8 *pos_;
 
   // Only a ProtocolRange or ProtocolList can construct a ProtocolIterator.
   ProtocolIterator(const UInt8 *pos) : pos_{pos} {}
 
   static size_t itemCount(const ByteRange &range) {
-    return detail::ProtocolRangeItemCount(sizeof(ElemType), range, SizeOffset, Alignment);
+    return detail::ProtocolRangeItemCount(sizeof(ElemType), range, SizeOffset,
+                                          Alignment);
   }
 
   static bool isValid(const ByteRange &range, Validation *context) {
-    return detail::IsProtocolRangeValid(sizeof(ElemType), range, SizeOffset, Alignment, context);
+    return detail::IsProtocolRangeValid(sizeof(ElemType), range, SizeOffset,
+                                        Alignment, context);
   }
 
   template <class I>

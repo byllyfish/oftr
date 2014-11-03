@@ -8,14 +8,13 @@ namespace ofp {
 
 class OXMIDList : public ProtocolList<OXMIDRange> {
   using Inherited = ProtocolList<OXMIDRange>;
-public:
-    using Inherited::Inherited;
 
-  void add(const OXMID &id) {
-    buf_.add(&id, id.length());
-  }
+ public:
+  using Inherited::Inherited;
+
+  void add(const OXMID &id) { buf_.add(&id, id.length()); }
 };
 
 }  // namespace ofp
 
-#endif // OFP_OXMIDLIST_H_
+#endif  // OFP_OXMIDLIST_H_

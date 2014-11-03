@@ -28,10 +28,11 @@
 namespace ofp {
 
 class OXMRange {
-public:
+ public:
   constexpr OXMRange() : begin_{nullptr}, end_{nullptr} {}
 
-  constexpr OXMRange(const ByteRange &range) : begin_{range.begin()}, end_{range.end()} {}
+  constexpr OXMRange(const ByteRange &range)
+      : begin_{range.begin()}, end_{range.end()} {}
 
   constexpr OXMRange(OXMIterator begin, OXMIterator end)
       : begin_{begin.data()}, end_{end.data()} {}
@@ -47,12 +48,8 @@ public:
   template <class Value>
   typename Value::NativeType get() const;
 
-  OXMIterator begin() const {
-    return OXMIterator{begin_};
-  }
-  OXMIterator end() const {
-    return OXMIterator{end_};
-  }
+  OXMIterator begin() const { return OXMIterator{begin_}; }
+  OXMIterator end() const { return OXMIterator{end_}; }
 
   const UInt8 *data() const { return begin_; }
   size_t size() const { return Unsigned_cast(end_ - begin_); }
@@ -68,11 +65,9 @@ public:
     const UInt8 *pos = begin_;
     size_t left = static_cast<size_t>(end_ - begin_);
     while (pos < end_) {
-      if (left < 4)
-        return false;
+      if (left < 4) return false;
       size_t len = sizeof(OXMType) + pos[3];
-      if (left < len)
-        return false;
+      if (left < len) return false;
       pos += len;
       left -= len;
     }
@@ -81,7 +76,7 @@ public:
     return true;
   }
 
-private:
+ private:
   const UInt8 *begin_;
   const UInt8 *end_;
 };

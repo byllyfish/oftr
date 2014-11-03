@@ -38,7 +38,7 @@ namespace detail {
 
 template <class ContentType>
 class PaddedWithPadding {
-public:
+ public:
   explicit PaddedWithPadding(const ContentType &content) : content_{content} {}
   operator const ContentType &() const { return content_; }
   operator ContentType &() { return content_; }
@@ -47,14 +47,14 @@ public:
 
   const ContentType &content() const { return content_; }
 
-private:
+ private:
   ContentType content_;
   Padding<8 - sizeof(ContentType) % 8> pad;
 };
 
 template <class ContentType>
 class PaddedNoPadding {
-public:
+ public:
   explicit PaddedNoPadding(const ContentType &content) : content_{content} {}
   operator const ContentType &() const { return content_; }
   operator ContentType &() { return content_; }
@@ -63,7 +63,7 @@ public:
 
   const ContentType &content() const { return content_; }
 
-private:
+ private:
   ContentType content_;
 };
 

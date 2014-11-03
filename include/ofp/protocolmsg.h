@@ -37,7 +37,7 @@ class Validation;
 template <class MsgClass, OFPType MsgType, size_t MsgMinLength = 8,
           size_t MsgMaxLength = 65528, bool MsgMultiple8 = true>
 class ProtocolMsg {
-public:
+ public:
   static_assert(MsgMinLength >= 8, "MinLength must be >= 8");
   static_assert(MsgMaxLength <= 65535, "MaxLength must be <= 2^16-1");
 
@@ -59,7 +59,7 @@ public:
   /// \returns true if message length is potentially valid.
   static bool isLengthValid(size_t length) {
     return (length >= MinLength) && (length <= MaxLength) &&
-                 (!Multiple8 || ((length % 8) == 0));
+           (!Multiple8 || ((length % 8) == 0));
   }
 
   const Header *msgHeader() const {

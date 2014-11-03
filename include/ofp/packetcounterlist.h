@@ -7,10 +7,12 @@
 namespace ofp {
 
 class PacketCounterList : public ProtocolList<PacketCounterRange> {
-public:
-    void add(const PacketCounterBuilder &stats) { buf_.add(&stats, sizeof(stats)); }
+ public:
+  void add(const PacketCounterBuilder &stats) {
+    buf_.add(&stats, sizeof(stats));
+  }
 };
 
 }  // namespace ofp
 
-#endif // OFP_PACKETCOUNTERLIST_H_
+#endif  // OFP_PACKETCOUNTERLIST_H_

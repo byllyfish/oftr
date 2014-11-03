@@ -4,7 +4,6 @@
 
 using namespace testagent;
 
-
 void TestAgent::onMessage(const Message *message) {
   bool writeNow = false;
 
@@ -44,7 +43,7 @@ void TestAgent::onMessage(const Message *message) {
 
 void TestAgent::writeMessages(Channel *channel) {
   // Read binary messages from input file and write them to the channel.
-  
+
   while (true) {
     char buf[1000];
     std::cin.read(buf, sizeof(buf));

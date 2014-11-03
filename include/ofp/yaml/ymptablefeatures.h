@@ -7,10 +7,8 @@
 namespace llvm {
 namespace yaml {
 
-
 template <>
 struct MappingTraits<ofp::MPTableFeatures> {
-
   static void mapping(IO &io, ofp::MPTableFeatures &body) {
     using namespace ofp;
 
@@ -23,28 +21,36 @@ struct MappingTraits<ofp::MPTableFeatures> {
 
     PropertyRange props = body.properties();
 
-    InstructionIDRange ins = props.valueRange<TableFeaturePropertyInstructions>();
+    InstructionIDRange ins =
+        props.valueRange<TableFeaturePropertyInstructions>();
     io.mapRequired("instructions", ins);
-    
-    InstructionIDRange insMiss = props.valueRange<TableFeaturePropertyInstructionsMiss>(ins);
+
+    InstructionIDRange insMiss =
+        props.valueRange<TableFeaturePropertyInstructionsMiss>(ins);
     io.mapOptional("instructions_miss", insMiss, ins);
-   
-    TableIDRange nextTables = props.valueRange<TableFeaturePropertyNextTables>();
+
+    TableIDRange nextTables =
+        props.valueRange<TableFeaturePropertyNextTables>();
     io.mapRequired("next_tables", nextTables);
 
-    TableIDRange nextTablesMiss = props.valueRange<TableFeaturePropertyNextTablesMiss>(nextTables);
+    TableIDRange nextTablesMiss =
+        props.valueRange<TableFeaturePropertyNextTablesMiss>(nextTables);
     io.mapOptional("next_tables_miss", nextTablesMiss, nextTables);
 
-    ActionIDRange writeAct = props.valueRange<TableFeaturePropertyWriteActions>();
+    ActionIDRange writeAct =
+        props.valueRange<TableFeaturePropertyWriteActions>();
     io.mapRequired("write_actions", writeAct);
 
-    ActionIDRange writeActMiss = props.valueRange<TableFeaturePropertyWriteActionsMiss>(writeAct);
+    ActionIDRange writeActMiss =
+        props.valueRange<TableFeaturePropertyWriteActionsMiss>(writeAct);
     io.mapOptional("write_actions_miss", writeActMiss, writeAct);
 
-    ActionIDRange applyAct = props.valueRange<TableFeaturePropertyApplyActions>();
+    ActionIDRange applyAct =
+        props.valueRange<TableFeaturePropertyApplyActions>();
     io.mapRequired("apply_actions", applyAct);
 
-    ActionIDRange applyActMiss = props.valueRange<TableFeaturePropertyApplyActionsMiss>(applyAct);
+    ActionIDRange applyActMiss =
+        props.valueRange<TableFeaturePropertyApplyActionsMiss>(applyAct);
     io.mapOptional("apply_actions_miss", applyActMiss, applyAct);
 
     OXMIDRange match = props.valueRange<TableFeaturePropertyMatch>();
@@ -53,25 +59,29 @@ struct MappingTraits<ofp::MPTableFeatures> {
     OXMIDRange wildcards = props.valueRange<TableFeaturePropertyWildcards>();
     io.mapRequired("wildcards", wildcards);
 
-    OXMIDRange writeSetField = props.valueRange<TableFeaturePropertyWriteSetField>();
+    OXMIDRange writeSetField =
+        props.valueRange<TableFeaturePropertyWriteSetField>();
     io.mapRequired("write_set_field", writeSetField);
 
-    OXMIDRange writeSetFieldMiss = props.valueRange<TableFeaturePropertyWriteSetFieldMiss>(writeSetField);
+    OXMIDRange writeSetFieldMiss =
+        props.valueRange<TableFeaturePropertyWriteSetFieldMiss>(writeSetField);
     io.mapOptional("write_set_field_miss", writeSetFieldMiss, writeSetField);
 
-    OXMIDRange applySetField = props.valueRange<TableFeaturePropertyApplySetField>();
+    OXMIDRange applySetField =
+        props.valueRange<TableFeaturePropertyApplySetField>();
     io.mapRequired("apply_set_field", applySetField);
 
-    OXMIDRange applySetFieldMiss = props.valueRange<TableFeaturePropertyApplySetFieldMiss>(applySetField);
+    OXMIDRange applySetFieldMiss =
+        props.valueRange<TableFeaturePropertyApplySetFieldMiss>(applySetField);
     io.mapOptional("apply_set_field_miss", applySetFieldMiss, applySetField);
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::TableFeaturePropertyRange>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::TableFeaturePropertyRange>(props));
   }
 };
 
 template <>
 struct MappingTraits<ofp::MPTableFeaturesBuilder> {
-
   static void mapping(IO &io, ofp::MPTableFeaturesBuilder &body) {
     using namespace ofp;
     using namespace ofp::detail;
@@ -88,85 +98,85 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
     InstructionIDList ins;
     io.mapRequired("instructions", ins);
     if (!ins.empty()) {
-        props.add(TableFeaturePropertyInstructions{ins.toRange()});
+      props.add(TableFeaturePropertyInstructions{ins.toRange()});
     }
 
     Optional<InstructionIDList> insMiss;
     io.mapOptional("instructions_miss", insMiss);
     if (insMiss) {
-        props.add(TableFeaturePropertyInstructionsMiss{insMiss->toRange()});
+      props.add(TableFeaturePropertyInstructionsMiss{insMiss->toRange()});
     }
 
     TableIDList tables;
     io.mapRequired("next_tables", tables);
     if (!tables.empty()) {
-        props.add(TableFeaturePropertyNextTables{tables.toRange()});
+      props.add(TableFeaturePropertyNextTables{tables.toRange()});
     }
 
     Optional<TableIDList> tablesMiss;
     io.mapOptional("next_tables_miss", tablesMiss);
     if (tablesMiss) {
-        props.add(TableFeaturePropertyNextTablesMiss{tablesMiss->toRange()});
+      props.add(TableFeaturePropertyNextTablesMiss{tablesMiss->toRange()});
     }
 
     ActionIDList act;
     io.mapRequired("write_actions", act);
     if (!act.empty()) {
-        props.add(TableFeaturePropertyWriteActions{act.toRange()});
+      props.add(TableFeaturePropertyWriteActions{act.toRange()});
     }
 
     Optional<ActionIDList> actMiss;
     io.mapOptional("write_actions_miss", actMiss);
     if (actMiss) {
-        props.add(TableFeaturePropertyWriteActionsMiss{actMiss->toRange()});
+      props.add(TableFeaturePropertyWriteActionsMiss{actMiss->toRange()});
     }
 
     act.clear();
     io.mapRequired("apply_actions", act);
     if (!act.empty()) {
-        props.add(TableFeaturePropertyApplyActions{act.toRange()});
+      props.add(TableFeaturePropertyApplyActions{act.toRange()});
     }
 
     actMiss.reset();
     io.mapOptional("apply_actions_miss", actMiss);
     if (actMiss) {
-        props.add(TableFeaturePropertyApplyActionsMiss{actMiss->toRange()});
+      props.add(TableFeaturePropertyApplyActionsMiss{actMiss->toRange()});
     }
 
     OXMIDList match;
     io.mapRequired("match", match);
     if (!match.empty()) {
-        props.add(TableFeaturePropertyMatch{match.toRange()});
+      props.add(TableFeaturePropertyMatch{match.toRange()});
     }
 
     match.clear();
     io.mapRequired("wildcards", match);
     if (!match.empty()) {
-        props.add(TableFeaturePropertyWildcards{match.toRange()});
+      props.add(TableFeaturePropertyWildcards{match.toRange()});
     }
 
     match.clear();
     io.mapRequired("write_set_field", match);
     if (!match.empty()) {
-        props.add(TableFeaturePropertyWriteSetField{match.toRange()});
+      props.add(TableFeaturePropertyWriteSetField{match.toRange()});
     }
 
     Optional<OXMIDList> matchMiss;
     io.mapOptional("write_set_field_miss", matchMiss);
     if (matchMiss) {
-        props.add(TableFeaturePropertyWriteSetFieldMiss{matchMiss->toRange()});
+      props.add(TableFeaturePropertyWriteSetFieldMiss{matchMiss->toRange()});
     }
 
     match.clear();
     io.mapRequired("apply_set_field", match);
     if (!match.empty()) {
-        props.add(TableFeaturePropertyApplySetField{match.toRange()});
+      props.add(TableFeaturePropertyApplySetField{match.toRange()});
     }
-    
+
     matchMiss.reset();
     io.mapOptional("apply_set_field_miss", matchMiss);
     if (matchMiss) {
-        props.add(TableFeaturePropertyApplySetFieldMiss{matchMiss->toRange()});
+      props.add(TableFeaturePropertyApplySetFieldMiss{matchMiss->toRange()});
     }
 
     io.mapRequired("properties", Ref_cast<TableFeaturePropertyList>(props));
@@ -178,4 +188,4 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMPTABLEFEATURES_H_
+#endif  // OFP_YAML_YMPTABLEFEATURES_H_

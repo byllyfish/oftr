@@ -13,7 +13,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//  
+//
 //  ===== ------------------------------------------------------------ =====  //
 /// \file
 /// \brief Implements ....
@@ -39,9 +39,13 @@ OFP_BEGIN_IGNORE_PADDING
 
 class RpcEncoder {
  public:
-  explicit RpcEncoder(const std::string &input, ApiConnection *conn, yaml::Encoder::ChannelFinder finder);
+  explicit RpcEncoder(const std::string &input, ApiConnection *conn,
+                      yaml::Encoder::ChannelFinder finder);
 
-  const std::string &error() { errorStream_.str(); return error_; }
+  const std::string &error() {
+    errorStream_.str();
+    return error_;
+  }
 
  private:
   ApiConnection *conn_;
@@ -82,4 +86,4 @@ struct MappingTraits<ofp::api::RpcEncoder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_API_RPCENCODER_H_
+#endif  // OFP_API_RPCENCODER_H_

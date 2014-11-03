@@ -18,55 +18,28 @@ std::string toJsonString(Type *event) {
 
 using namespace ofp::api;
 
-std::string RpcListenResponse::toJson() {
-  return toJsonString(this);
-}
+std::string RpcListenResponse::toJson() { return toJsonString(this); }
 
-std::string RpcConnectResponse::toJson() {
-  return toJsonString(this);
-}
+std::string RpcConnectResponse::toJson() { return toJsonString(this); }
 
-std::string RpcCloseResponse::toJson() {
-  return toJsonString(this);
-}
+std::string RpcCloseResponse::toJson() { return toJsonString(this); }
 
-std::string RpcSendResponse::toJson() {
-  return toJsonString(this);
-}
+std::string RpcSendResponse::toJson() { return toJsonString(this); }
 
-std::string RpcErrorResponse::toJson() {
-  return toJsonString(this);
-}
+std::string RpcErrorResponse::toJson() { return toJsonString(this); }
 
-std::string RpcDatapath::toJson() {
-  return toJsonString(this);
-}
+std::string RpcDatapath::toJson() { return toJsonString(this); }
 
-std::string RpcMessageError::toJson() {
-  return toJsonString(this);
-}
+std::string RpcMessageError::toJson() { return toJsonString(this); }
 
-std::string RpcListConnsResponse::toJson() {
-  return toJsonString(this);
-}
+std::string RpcListConnsResponse::toJson() { return toJsonString(this); }
 
-std::string RpcAddIdentityResponse::toJson() {
-  return toJsonString(this);
-}
+std::string RpcAddIdentityResponse::toJson() { return toJsonString(this); }
 
 static llvm::StringRef sRpcMethods[] = {
-  "ofp.listen",
-  "ofp.connect",
-  "ofp.close",
-  "ofp.send",
-  "ofp.config",
-  "ofp.datapath",
-  "ofp.message",
-  "ofp.message_error",
-  "ofp.list_connections",
-  "ofp.add_identity"
-};
+    "ofp.listen", "ofp.connect", "ofp.close", "ofp.send", "ofp.config",
+    "ofp.datapath", "ofp.message", "ofp.message_error", "ofp.list_connections",
+    "ofp.add_identity"};
 
 ofp::yaml::EnumConverter<ofp::api::RpcMethod>
     llvm::yaml::ScalarTraits<ofp::api::RpcMethod>::converter{sRpcMethods};
-

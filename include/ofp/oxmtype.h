@@ -32,7 +32,7 @@ struct OXMTypeInfo;
 enum class OXMInternalID : UInt16;
 
 class OXMType {
-public:
+ public:
   constexpr OXMType() : value32_{0} {}
 
   constexpr OXMType(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmSize)
@@ -53,7 +53,7 @@ public:
   constexpr bool hasMask() const { return value32_ & MaskBits; }
   constexpr bool isIllegal() const { return hasMask() && length() == 0; }
   constexpr bool isExperimenter() const { return oxmClass() == 0xffff; }
-  
+
   // When we add the mask, double the length.
   constexpr OXMType withMask() const {
     return hasMask() ? *this : OXMType((value32_ & ~End8Bits) | MaskBits |
@@ -82,7 +82,7 @@ public:
 
   constexpr OXMType zeroLength() const { return OXMType(value32_ & ~End8Bits); }
 
-private:
+ private:
   UInt32 value32_;
 
   enum : UInt32 {

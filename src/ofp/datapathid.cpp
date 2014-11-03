@@ -29,8 +29,7 @@ DatapathID::DatapathID(Big16 implementerDefined, EnetAddress macAddress) {
 }
 
 DatapathID::DatapathID(const std::string &dpid) {
-  if (!parse(dpid))
-    clear();
+  if (!parse(dpid)) clear();
 }
 
 Big16 DatapathID::implementerDefined() const {

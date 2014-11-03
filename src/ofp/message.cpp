@@ -38,16 +38,16 @@ bool Message::isRequestType() const {
   // itself.
 
   switch (type()) {
-  case OFPT_FEATURES_REQUEST:
-  case OFPT_GET_CONFIG_REQUEST:
-  case OFPT_MULTIPART_REQUEST:
-  case OFPT_BARRIER_REQUEST:
-  case OFPT_QUEUE_GET_CONFIG_REQUEST:
-  case OFPT_ROLE_REQUEST:
-  case OFPT_GET_ASYNC_REQUEST:
-    return true;
-  default:
-    break;
+    case OFPT_FEATURES_REQUEST:
+    case OFPT_GET_CONFIG_REQUEST:
+    case OFPT_MULTIPART_REQUEST:
+    case OFPT_BARRIER_REQUEST:
+    case OFPT_QUEUE_GET_CONFIG_REQUEST:
+    case OFPT_ROLE_REQUEST:
+    case OFPT_GET_ASYNC_REQUEST:
+      return true;
+    default:
+      break;
   }
 
   return false;

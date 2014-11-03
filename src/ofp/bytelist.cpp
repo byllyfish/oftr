@@ -20,7 +20,7 @@
 //  ===== ------------------------------------------------------------ =====  //
 
 #include "ofp/bytelist.h"
-#include <numeric>      // for iota
+#include <numeric>  // for iota
 
 using namespace ofp;
 
@@ -54,13 +54,12 @@ void ByteList::insertUninitialized(const UInt8 *pos, size_t length) {
 /// \brief Replace existing data in the byte buffer with uninitialized values.
 void ByteList::replaceUninitialized(const UInt8 *pos, const UInt8 *posEnd,
                                     size_t length) {
-  buf_.replaceUninitialized(RemoveConst_cast(pos), RemoveConst_cast(posEnd), length);
+  buf_.replaceUninitialized(RemoveConst_cast(pos), RemoveConst_cast(posEnd),
+                            length);
 }
 
 /// \brief Add zero bytes to the end of the byte buffer.
-void ByteList::addZeros(size_t length) {
-  buf_.addZeros(length);
-}
+void ByteList::addZeros(size_t length) { buf_.addZeros(length); }
 
 /// \brief Insert zero bytes at the specified position in the byte buffer.
 void ByteList::insertZeros(const UInt8 *pos, size_t length) {
@@ -79,9 +78,7 @@ void ByteList::resize(size_t length) { buf_.resize(length); }
 void ByteList::clear() { buf_.clear(); }
 
 /// Return range of bytes.
-ByteRange ByteList::toRange() const {
-  return ByteRange{data(), size()};
-}
+ByteRange ByteList::toRange() const { return ByteRange{data(), size()}; }
 
 ByteList &ByteList::operator=(const ByteRange &range) {
   buf_.assign(range.data(), range.size());
@@ -94,4 +91,3 @@ ByteList ByteList::iota(size_t length) {
   std::iota(result.mutableData(), result.mutableData() + length, 0);
   return result;
 }
-

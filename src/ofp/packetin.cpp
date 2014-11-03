@@ -45,16 +45,16 @@ using namespace ofp;
 // (*) Version 3 is same as version 4, but without the 64 bit cookie field
 // between table_id and match_type.
 
-bool PacketIn::validateInput(Validation *context) const {  
+bool PacketIn::validateInput(Validation *context) const {
   switch (version()) {
-  case OFP_VERSION_1:
-    return validateInputV1(context);
-  case OFP_VERSION_2:
-    return validateInputV2(context);
-  case OFP_VERSION_3:
-    return validateInputV3(context);
-  default:
-    break;
+    case OFP_VERSION_1:
+      return validateInputV1(context);
+    case OFP_VERSION_2:
+      return validateInputV2(context);
+    case OFP_VERSION_3:
+      return validateInputV3(context);
+    default:
+      break;
   }
 
   size_t length = context->length();
@@ -102,95 +102,95 @@ bool PacketIn::validateInputV3(Validation *context) const {
     log::info("PacketIn has invalid Match element.");
     return false;
   }
-  
+
   return true;
 }
 
 UInt16 PacketIn::totalLen() const {
   switch (version()) {
-  case OFP_VERSION_2:
-    return offset<Big16>(20);
-  default:
-    return totalLen_;
+    case OFP_VERSION_2:
+      return offset<Big16>(20);
+    default:
+      return totalLen_;
   }
 }
 
 OFPPacketInReason PacketIn::reason() const {
   switch (version()) {
-  case OFP_VERSION_1:
-    return offset<OFPPacketInReason>(16);
-  case OFP_VERSION_2:
-    return offset<OFPPacketInReason>(22);
-  default:
-    return reason_;
+    case OFP_VERSION_1:
+      return offset<OFPPacketInReason>(16);
+    case OFP_VERSION_2:
+      return offset<OFPPacketInReason>(22);
+    default:
+      return reason_;
   }
 }
 
 UInt8 PacketIn::tableID() const {
   switch (version()) {
-  case OFP_VERSION_1:
-    return 0;
-  case OFP_VERSION_2:
-    return offset<Big8>(23);
-  default:
-    return tableID_;
+    case OFP_VERSION_1:
+      return 0;
+    case OFP_VERSION_2:
+      return offset<Big8>(23);
+    default:
+      return tableID_;
   }
 }
 
 UInt32 PacketIn::inPort() const {
   switch (version()) {
-  case OFP_VERSION_1:
-    return offset<Big16>(14);
-  case OFP_VERSION_2:
-    return offset<Big32>(12);
-  default:
-    return matchHeader()->oxmRange().get<OFB_IN_PORT>();
+    case OFP_VERSION_1:
+      return offset<Big16>(14);
+    case OFP_VERSION_2:
+      return offset<Big32>(12);
+    default:
+      return matchHeader()->oxmRange().get<OFB_IN_PORT>();
   }
 }
 
 UInt32 PacketIn::inPhyPort() const {
   switch (version()) {
-  case OFP_VERSION_1:
-    return 0;
-  case OFP_VERSION_2:
-    return offset<Big32>(16);
-  default: {
-    // If not present or zero, assume the value is identical to OFB_IN_PORT.
-    OXMRange oxm = matchHeader()->oxmRange();
-    UInt32 inPhyPort = oxm.get<OFB_IN_PHY_PORT>();
-    return inPhyPort ? inPhyPort : oxm.get<OFB_IN_PORT>();
-  }
+    case OFP_VERSION_1:
+      return 0;
+    case OFP_VERSION_2:
+      return offset<Big32>(16);
+    default: {
+      // If not present or zero, assume the value is identical to OFB_IN_PORT.
+      OXMRange oxm = matchHeader()->oxmRange();
+      UInt32 inPhyPort = oxm.get<OFB_IN_PHY_PORT>();
+      return inPhyPort ? inPhyPort : oxm.get<OFB_IN_PORT>();
+    }
   }
 }
 
 UInt64 PacketIn::metadata() const {
   switch (version()) {
-  case OFP_VERSION_1:
-  case OFP_VERSION_2:
-    return 0;
-  default:
-    return matchHeader()->oxmRange().get<OFB_METADATA>();
+    case OFP_VERSION_1:
+    case OFP_VERSION_2:
+      return 0;
+    default:
+      return matchHeader()->oxmRange().get<OFB_METADATA>();
   }
 }
 
 UInt64 PacketIn::cookie() const {
   switch (version()) {
-  case OFP_VERSION_1:
-  case OFP_VERSION_2:
-  case OFP_VERSION_3:
-    return 0;
-  default:
-    return cookie_;
+    case OFP_VERSION_1:
+    case OFP_VERSION_2:
+    case OFP_VERSION_3:
+      return 0;
+    default:
+      return cookie_;
   }
 }
 
 Match PacketIn::match() const {
   switch (version()) {
-  case OFP_VERSION_1:
-  case OFP_VERSION_2:
-    return Match{};
-  default:
-    return Match{matchHeader()};
+    case OFP_VERSION_1:
+    case OFP_VERSION_2:
+      return Match{};
+    default:
+      return Match{matchHeader()};
   }
 }
 
@@ -199,26 +199,27 @@ ByteRange PacketIn::enetFrame() const {
   size_t msgLen = header_.length();
 
   switch (version()) {
-  case OFP_VERSION_1:
-    assert(msgLen >= 18U);
-    return ByteRange{BytePtr(this) + 18, msgLen - 18U};
-  case OFP_VERSION_2:
-    log::info("PacketIn::enetFrame() not implemented.");
-    return ByteRange{};
-  case OFP_VERSION_3: {
-    const MatchHeader *matchHdr = matchHeader();
-    offset = SizeWithoutMatchHeader - sizeof(Big64) + matchHdr->paddedLength() + 2;
-    if (offset >= msgLen) {
+    case OFP_VERSION_1:
+      assert(msgLen >= 18U);
+      return ByteRange{BytePtr(this) + 18, msgLen - 18U};
+    case OFP_VERSION_2:
+      log::info("PacketIn::enetFrame() not implemented.");
       return ByteRange{};
+    case OFP_VERSION_3: {
+      const MatchHeader *matchHdr = matchHeader();
+      offset =
+          SizeWithoutMatchHeader - sizeof(Big64) + matchHdr->paddedLength() + 2;
+      if (offset >= msgLen) {
+        return ByteRange{};
+      }
+      return ByteRange{BytePtr(this) + offset, msgLen - offset};
     }
-    return ByteRange{BytePtr(this) + offset, msgLen - offset};
-  }
-  default:
-    offset = SizeWithoutMatchHeader + matchHeader_.paddedLength() + 2;
-    if (offset >= msgLen) {
-      return ByteRange{};
-    }
-    return ByteRange{BytePtr(this) + offset, msgLen - offset};
+    default:
+      offset = SizeWithoutMatchHeader + matchHeader_.paddedLength() + 2;
+      if (offset >= msgLen) {
+        return ByteRange{};
+      }
+      return ByteRange{BytePtr(this) + offset, msgLen - offset};
   }
 }
 
@@ -251,14 +252,14 @@ PacketInBuilder::PacketInBuilder(const PacketIn *msg) {
 UInt32 PacketInBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   switch (version) {
-  case OFP_VERSION_1:
-    return sendV1(channel);
-  case OFP_VERSION_2:
-    return sendV2(channel);
-  case OFP_VERSION_3:
-    return sendV3(channel);
-  default:
-    return sendV4(channel);
+    case OFP_VERSION_1:
+      return sendV1(channel);
+    case OFP_VERSION_2:
+      return sendV2(channel);
+    case OFP_VERSION_3:
+      return sendV3(channel);
+    default:
+      return sendV4(channel);
   }
 }
 
@@ -310,27 +311,26 @@ UInt32 PacketInBuilder::sendV3(Writable *channel) {
 
   // Construct the match with the standard context fields: IN_PORT, IN_PHY_PORT,
   // METADATA, and TUNNEL_ID.
-  // 
+  //
   // Fields whose values are all-bits-zero should be omitted. IN_PHY_PORT should
   // be omitted if it has the same value as IN_PORT.
 
   // TODO(bfish): check ordering of fields in resulting match. Especially if
   // there are other fields already added.
 
-  if (inPort_)
-    match_.replaceUnchecked(OFB_IN_PORT{inPort_});
+  if (inPort_) match_.replaceUnchecked(OFB_IN_PORT{inPort_});
 
   if (inPhyPort_ && (inPhyPort_ != inPort_))
     match_.replaceUnchecked(OFB_IN_PHY_PORT{inPhyPort_});
 
-  if (metadata_)
-    match_.replaceUnchecked(OFB_METADATA{metadata_});
+  if (metadata_) match_.replaceUnchecked(OFB_METADATA{metadata_});
 
   // TODO(bfish): TUNNEL_ID
 
   // Calculate length of PacketIn message up to end of match section. Then
   // pad it to a multiple of 8 bytes.
-  size_t msgMatchLen = PacketIn::UnpaddedSizeWithMatchHeader - sizeof(Big64) + match_.size();
+  size_t msgMatchLen =
+      PacketIn::UnpaddedSizeWithMatchHeader - sizeof(Big64) + match_.size();
   size_t msgMatchLenPadded = PadLength(msgMatchLen);
 
   // Calculate length of ethernet frame section (preceded by 2 byte pad.)
@@ -364,27 +364,24 @@ UInt32 PacketInBuilder::sendV3(Writable *channel) {
   return xid;
 }
 
-
 UInt32 PacketInBuilder::sendV4(Writable *channel) {
   assert(channel->version() >= OFP_VERSION_4);
 
   // Construct the match with the standard context fields: IN_PORT, IN_PHY_PORT,
   // METADATA, and TUNNEL_ID.
-  // 
+  //
   // Fields whose values are all-bits-zero should be omitted. IN_PHY_PORT should
   // be omitted if it has the same value as IN_PORT.
 
   // TODO(bfish): check ordering of fields in resulting match. Especially if
   // there are other fields already added.
 
-  if (inPort_)
-    match_.replaceUnchecked(OFB_IN_PORT{inPort_});
+  if (inPort_) match_.replaceUnchecked(OFB_IN_PORT{inPort_});
 
   if (inPhyPort_ && (inPhyPort_ != inPort_))
     match_.replaceUnchecked(OFB_IN_PHY_PORT{inPhyPort_});
 
-  if (metadata_)
-    match_.replaceUnchecked(OFB_METADATA{metadata_});
+  if (metadata_) match_.replaceUnchecked(OFB_METADATA{metadata_});
 
   // TODO(bfish): TUNNEL_ID
 

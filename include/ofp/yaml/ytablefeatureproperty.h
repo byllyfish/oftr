@@ -13,7 +13,8 @@ namespace ofp {
 namespace detail {
 
 struct TableFeaturePropertyItem {};
-using TableFeaturePropertyIterator = TypedPropertyIterator<TableFeaturePropertyItem>;
+using TableFeaturePropertyIterator =
+    TypedPropertyIterator<TableFeaturePropertyItem>;
 struct TableFeaturePropertyRange {};
 struct TableFeaturePropertyInserter {};
 struct TableFeaturePropertyList {};
@@ -23,7 +24,6 @@ struct TableFeaturePropertyList {};
 
 namespace llvm {
 namespace yaml {
-
 
 template <>
 struct MappingTraits<ofp::detail::TableFeaturePropertyItem> {
@@ -37,7 +37,8 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyItem> {
     switch (property) {
       case OFPTFPT_EXPERIMENTER:
       case OFPTFPT_EXPERIMENTER_MISS: {
-        const TableFeaturePropertyExperimenter &p = elem.property<TableFeaturePropertyExperimenter>();
+        const TableFeaturePropertyExperimenter &p =
+            elem.property<TableFeaturePropertyExperimenter>();
 
         Hex32 experimenter = p.experimenter();
         io.mapRequired("experimenter", experimenter);
@@ -81,10 +82,12 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyInserter> {
 
       switch (property) {
         case OFPTFPT_EXPERIMENTER:
-          props.add(TableFeaturePropertyExperimenter{experimenter, expType, expData});
+          props.add(
+              TableFeaturePropertyExperimenter{experimenter, expType, expData});
           break;
         case OFPTFPT_EXPERIMENTER_MISS:
-          props.add(TableFeaturePropertyExperimenterMiss{experimenter, expType, expData});
+          props.add(TableFeaturePropertyExperimenterMiss{experimenter, expType,
+                                                         expData});
           break;
       }
 
@@ -120,25 +123,26 @@ struct SequenceTraits<ofp::detail::TableFeaturePropertyRange> {
   static void skip(iterator &iter, iterator iterEnd) {
     for (; iter < iterEnd; ++iter) {
       ofp::UInt16 type = iter->type();
-      if (type >= ofp::OFPTFPT_UNUSED_MIN || type == ofp::OFPTFPT_UNUSED_9 || type == ofp::OFPTFPT_UNUSED_11) break;
+      if (type >= ofp::OFPTFPT_UNUSED_MIN || type == ofp::OFPTFPT_UNUSED_9 ||
+          type == ofp::OFPTFPT_UNUSED_11)
+        break;
     }
   }
 };
 
 template <>
 struct SequenceTraits<ofp::detail::TableFeaturePropertyList> {
-
   static size_t size(IO &io, ofp::detail::TableFeaturePropertyList &props) {
     return 0;
   }
 
-  static ofp::detail::TableFeaturePropertyInserter &element(IO &io, ofp::detail::TableFeaturePropertyList &props,
-                                          size_t index) {
-     return Ref_cast<ofp::detail::TableFeaturePropertyInserter>(props);
+  static ofp::detail::TableFeaturePropertyInserter &element(
+      IO &io, ofp::detail::TableFeaturePropertyList &props, size_t index) {
+    return Ref_cast<ofp::detail::TableFeaturePropertyInserter>(props);
   }
 };
 
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YTABLEFEATURESPROPERTY_H_
+#endif  // OFP_YAML_YTABLEFEATURESPROPERTY_H_

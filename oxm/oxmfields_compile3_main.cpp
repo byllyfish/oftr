@@ -38,9 +38,10 @@ int main() {
   }
 
   std::sort(entries.begin(), entries.end(),
-            [](const OXMTypeInternalMapEntry & lhs,
-               const OXMTypeInternalMapEntry &
-                   rhs) { return lhs.value32 < rhs.value32; });
+            [](const OXMTypeInternalMapEntry &lhs,
+               const OXMTypeInternalMapEntry &rhs) {
+    return lhs.value32 < rhs.value32;
+  });
 
   std::cout << R"""(//
 #include "ofp/oxmfields.h"
