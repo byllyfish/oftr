@@ -3,7 +3,6 @@
 #ifndef OFP_IPV6ENDPOINT_H_
 #define OFP_IPV6ENDPOINT_H_
 
-#include <istream>
 #include "ofp/ipv6address.h"
 
 namespace ofp {
@@ -39,17 +38,7 @@ class IPv6Endpoint {
   UInt16 port_ = 0;
 };
 
-std::istream &operator>>(std::istream &is, IPv6Endpoint &value);
 std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value);
-
-inline std::istream &operator>>(std::istream &is, IPv6Endpoint &value) {
-  std::string str;
-  is >> str;
-  if (!value.parse(str)) {
-    is.setstate(std::ios::failbit);
-  }
-  return is;
-}
 
 inline std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value) {
   return os << value.toString();

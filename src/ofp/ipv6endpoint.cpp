@@ -1,8 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/ipv6endpoint.h"
 #include <sstream>
-#include <iostream>
+#include "ofp/ipv6endpoint.h"
 
 using namespace ofp;
 
