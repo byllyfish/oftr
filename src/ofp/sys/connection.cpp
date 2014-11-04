@@ -114,7 +114,8 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
     auxiliaryId_ = auxiliaryId;
     result = engine()->registerDatapath(this);
     if (result) {
-      log::info("Assign datapath", datapathId, "aux", static_cast<int>(auxiliaryId),
+      log::info("Assign datapath", datapathId, "aux",
+                static_cast<int>(auxiliaryId),
                 std::make_pair("conn_id", connectionId()));
     }
   }

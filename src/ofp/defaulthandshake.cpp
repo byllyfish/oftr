@@ -97,7 +97,7 @@ void DefaultHandshake::onHello(const Message *message) {
     installNewChannelListener(nullptr);
   }
 
-  // TODO(bfish): handle case where we reconnected with a startingVersion of 1 
+  // TODO(bfish): handle case where we reconnected with a startingVersion of 1
   // but the other end supports a higher version number.
 }
 

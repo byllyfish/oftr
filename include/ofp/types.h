@@ -62,7 +62,7 @@ using Milliseconds = std::chrono::milliseconds;
 
 // Literal type `ms` is not supported until C++14. Use _ms for now.
 
-constexpr Milliseconds operator"" _ms(unsigned long long int msec) { // NOLINT
+constexpr Milliseconds operator"" _ms(unsigned long long int msec) {  // NOLINT
   return Milliseconds{msec};
 }
 

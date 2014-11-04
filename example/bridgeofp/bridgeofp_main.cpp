@@ -22,20 +22,18 @@ struct IPv6EndpointParser : public cl::parser<ofp::IPv6Endpoint> {
 };
 
 int main(int argc, char **argv) {
-  cl::opt<IPv6Endpoint> listen{
-      "listen", cl::desc("Listen on local endpoint"), cl::Required};
+  cl::opt<IPv6Endpoint> listen{"listen", cl::desc("Listen on local endpoint"),
+                               cl::Required};
   cl::opt<IPv6Endpoint> connect{
-    "connect", cl::desc("Connect to remote endpoint"), cl::Required};
+      "connect", cl::desc("Connect to remote endpoint"), cl::Required};
   cl::ParseCommandLineOptions(argc, argv);
 
   log::setOutputStream(&std::cerr);
 
   Driver driver;
   std::error_code err;
-  (void)driver.listen(
-      ChannelMode::Raw, 0, listen, ProtocolVersions::All,
-      [connect]() { return new BridgeListener(connect); },
-      err);
+  (void)driver.listen(ChannelMode::Raw, 0, listen, ProtocolVersions::All,
+                      [connect]() { return new BridgeListener(connect); }, err);
 
   int exitCode = 0;
   if (err) {

@@ -80,7 +80,8 @@ bool Header::validateInput(UInt8 negotiatedVersion) const {
 
   // Header version needs to be within range [1...MAX_ALLOWED].
   if (version_ == 0 || version_ > OFP_VERSION_MAX_ALLOWED) {
-    log::warning("Message header version is invalid:", static_cast<int>(version_));
+    log::warning("Message header version is invalid:",
+                 static_cast<int>(version_));
     return false;
   }
 
