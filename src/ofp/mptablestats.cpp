@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/mptablestats.h"
 #include "ofp/writable.h"
 #include "ofp/constants.h"

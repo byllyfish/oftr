@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "simplecontroller.h"
 
 namespace controller {  // <namespace controller>

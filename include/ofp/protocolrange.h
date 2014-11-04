@@ -1,5 +1,7 @@
-#ifndef OFP_PROTOCOLITERABLE_H_
-#define OFP_PROTOCOLITERABLE_H_
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
+#ifndef OFP_PROTOCOLRANGE_H_
+#define OFP_PROTOCOLRANGE_H_
 
 #include <algorithm>
 #include "ofp/protocoliterator.h"
@@ -41,4 +43,4 @@ class ProtocolRange {
 
 }  // namespace ofp
 
-#endif  // OFP_PROTOCOLITERABLE_H_
+#endif  // OFP_PROTOCOLRANGE_H_

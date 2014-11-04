@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YQUEUE_
 #define OFP_YAML_YQUEUE_
 

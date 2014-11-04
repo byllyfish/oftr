@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/queue.h"
 
 using namespace ofp;

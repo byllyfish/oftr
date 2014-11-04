@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_PROTOCOLLIST_H_
 #define OFP_PROTOCOLLIST_H_
 

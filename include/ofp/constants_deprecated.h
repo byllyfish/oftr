@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_CONSTANTS_DEPRECATED_H_
 #define OFP_CONSTANTS_DEPRECATED_H_
 

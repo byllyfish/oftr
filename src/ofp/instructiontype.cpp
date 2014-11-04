@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/instructiontype.h"
 #include "ofp/instructions.h"
 

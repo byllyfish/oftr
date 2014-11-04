@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/smallcstring.h"
 #include "llvm/Support/ConvertUTF.h"  // isLegalUTF8Sequence, getNumBytesForUTF8
 

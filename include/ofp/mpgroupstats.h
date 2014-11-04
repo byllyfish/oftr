@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_MPGROUPSTATS_H_
 #define OFP_MPGROUPSTATS_H_
 

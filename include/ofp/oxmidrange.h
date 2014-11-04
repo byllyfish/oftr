@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_OXMIDRANGE_H_
 #define OFP_OXMIDRANGE_H_
 

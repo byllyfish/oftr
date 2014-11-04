@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/mptablefeatures.h"
 #include "ofp/writable.h"
 #include "ofp/validation.h"

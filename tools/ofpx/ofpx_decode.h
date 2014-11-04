@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFPX_DECODE_H_
 #define OFPX_DECODE_H_
 

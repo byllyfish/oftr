@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_MEMX509_H_
 #define OFP_MEMX509_H_
 

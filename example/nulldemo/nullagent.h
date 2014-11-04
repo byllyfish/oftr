@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef NULLAGENT_H
 #define NULLAGENT_H
 

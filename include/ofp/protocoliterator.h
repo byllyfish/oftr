@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 ///   ProtocolIterator<class ElemType>
 ///   ProtocolIteratorFixedType<class ElemType>
 ///   ProtocolIteratorFixedTypeAndSize<class ElemType>

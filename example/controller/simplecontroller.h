@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_SIMPLECONTROLLER_H
 #define OFP_SIMPLECONTROLLER_H
 

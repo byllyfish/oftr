@@ -1,3 +1,4 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
 
 // The following two definitions are required by llvm/Support/DataTypes.h
 #define __STDC_LIMIT_MACROS 1

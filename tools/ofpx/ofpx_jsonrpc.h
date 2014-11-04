@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFPX_JSONRPC_H_
 #define OFPX_JSONRPC_H_
 

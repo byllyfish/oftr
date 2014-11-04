@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_PACKETCOUNTER_H_
 #define OFP_PACKETCOUNTER_H_
 
