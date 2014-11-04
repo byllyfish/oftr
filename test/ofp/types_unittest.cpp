@@ -11,7 +11,7 @@ TEST(types, Unsigned_cast) {
   size_t diff1 = Unsigned_cast(&a[3] - &a[0]);
   EXPECT_EQ(3UL, diff1);
 
-  size_t diff2 = Unsigned_cast(&a[0] - &a[3]); // huge number
+  size_t diff2 = Unsigned_cast(&a[0] - &a[3]);  // huge number
   EXPECT_LT(3, diff2);
 
   std::int16_t b = -25;
@@ -29,7 +29,7 @@ TEST(types, UInt16_cast) {
   EXPECT_EQ(65486, UInt16_narrow_cast(a << 1));
 
   std::int8_t b = -25;
-  EXPECT_EQ(231, UInt16_cast(b)); // result is different from static_cast.
+  EXPECT_EQ(231, UInt16_cast(b));  // result is different from static_cast.
   EXPECT_EQ(65486, UInt16_narrow_cast(b << 1));
 }
 
@@ -128,8 +128,8 @@ TEST(types, HexToRawData3) {
   EXPECT_EQ(0, std::memcmp(buf, "\1\2\3\4\5\6\7", 7));
   EXPECT_FALSE(error);
 
-  EXPECT_EQ(
-      7, HexToRawData("01-02:03\n04 z 05 = 06 _ 07 08 09", buf, sizeof(buf), &error));
+  EXPECT_EQ(7, HexToRawData("01-02:03\n04 z 05 = 06 _ 07 08 09", buf,
+                            sizeof(buf), &error));
   EXPECT_EQ(0, std::memcmp(buf, "\1\2\3\4\5\6\7", 7));
   EXPECT_TRUE(error);
 

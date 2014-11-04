@@ -16,9 +16,10 @@ using OFB_InPort = OXMValue<cast(0), 0x8000, 0, Big16, 2, false>;
 using OFB_VlanVid = OXMValue<cast(1), 0x8000, 6, Big16, 2, true>;
 using OFB_TCPSrcPort = OXMValue<cast(2), 0x8000, 19, Big16, 2, false>;
 
-const char *buffer = "8000 0002 012c"
-                     "8000 0c02 00c8"
-                     "8000 2602 0064";
+const char *buffer =
+    "8000 0002 012c"
+    "8000 0c02 00c8"
+    "8000 2602 0064";
 }
 
 TEST(oxmlist, test) {

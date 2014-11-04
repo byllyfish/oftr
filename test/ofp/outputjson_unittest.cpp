@@ -12,33 +12,31 @@ using namespace yaml;
 OFP_BEGIN_IGNORE_PADDING
 
 struct TestStruct {
-    int a;
-    std::string b;
-    bool c;
-    Big32 d;
-    double e;
+  int a;
+  std::string b;
+  bool c;
+  Big32 d;
+  double e;
 };
 
 OFP_END_IGNORE_PADDING
 
-namespace llvm { // <namespace llvm>
-namespace yaml { // <namespace yaml>
+namespace llvm {  // <namespace llvm>
+namespace yaml {  // <namespace yaml>
 
 template <>
 struct MappingTraits<TestStruct> {
-    static void mapping(llvm::yaml::IO &io, TestStruct &item)
-    {
-        io.mapRequired("a", item.a);
-        io.mapRequired("b", item.b);
-        io.mapRequired("c", item.c);
-        io.mapRequired("d", item.d);
-        io.mapRequired("e", item.e);
-    }
+  static void mapping(llvm::yaml::IO &io, TestStruct &item) {
+    io.mapRequired("a", item.a);
+    io.mapRequired("b", item.b);
+    io.mapRequired("c", item.c);
+    io.mapRequired("d", item.d);
+    io.mapRequired("e", item.e);
+  }
 };
 
-} // </namespace yaml>
-} // </namespace llvm>
-
+}  // </namespace yaml>
+}  // </namespace llvm>
 
 TEST(outputjson, hello) {
   MemoryChannel channel;
@@ -75,7 +73,8 @@ TEST(outputjson, flowmod) {
 
   const char *expected =
       "{\"type\":\"OFPT_FLOW_MOD\",\"xid\":1,\"version\":4,\"msg\":{"
-      "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":\"OFPFC_ADD\",\"idle_"
+      "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":\"OFPFC_ADD\","
+      "\"idle_"
       "timeout\":0,\"hard_timeout\":0,\"priority\":0,\"buffer_id\":0,\"out_"
       "port\":0,\"out_group\":0,\"flags\":0,\"match\":[{\"field\":\"OFB_IN_"
       "PORT\",\"value\":27},{\"field\":\"OFB_ETH_TYPE\",\"value\":2048},{"
@@ -86,7 +85,6 @@ TEST(outputjson, flowmod) {
 }
 
 TEST(outputjson, scalarString) {
-
   auto testOne = [](llvm::StringRef s) {
     // log::debug(s.str());
     std::string result;
@@ -113,7 +111,6 @@ TEST(outputjson, scalarString) {
   EXPECT_EQ(R"~~("\b\t\n\f\r\"\\")~~", testOne("\b\t\n\f\r\"\\"));
 }
 
-
 TEST(outputjson, testStruct) {
   TestStruct s = {-54, "it works", true, 12345678, 3.141593};
 
@@ -123,7 +120,8 @@ TEST(outputjson, testStruct) {
   OutputJson yout{rss};
   yout << s;
 
-  const char *expected = R"""({"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593})""";
+  const char *expected =
+      R"""({"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593})""";
 
   EXPECT_TRUE(result.empty());
 
@@ -133,4 +131,3 @@ TEST(outputjson, testStruct) {
   std::cout << result;
   EXPECT_EQ(expected, ans);
 }
-

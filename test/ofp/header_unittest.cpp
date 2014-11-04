@@ -41,37 +41,35 @@ TEST(header, translateType) {
   EXPECT_EQ(OFPT_UNSUPPORTED, Header::translateType(4, OFPT_SET_ASYNC, 3));
 }
 
+TEST(header, validateVersionAndType) {
+  Header header{OFPT_UNSUPPORTED};
 
-TEST(header, validateVersionAndType) 
-{
-    Header header{OFPT_UNSUPPORTED};
-
-    header.setVersion(OFP_VERSION_1);
-    for (unsigned type = 1; type <= OFPT_BARRIER_REPLY; ++type) {
-        header.setType(static_cast<OFPType>(type));
-        if (type == OFPT_GROUP_MOD || type == OFPT_TABLE_MOD) {
-            EXPECT_FALSE(header.validateVersionAndType());
-        } else {
-            EXPECT_TRUE(header.validateVersionAndType());
-        }
+  header.setVersion(OFP_VERSION_1);
+  for (unsigned type = 1; type <= OFPT_BARRIER_REPLY; ++type) {
+    header.setType(static_cast<OFPType>(type));
+    if (type == OFPT_GROUP_MOD || type == OFPT_TABLE_MOD) {
+      EXPECT_FALSE(header.validateVersionAndType());
+    } else {
+      EXPECT_TRUE(header.validateVersionAndType());
     }
+  }
 
-    header.setVersion(OFP_VERSION_4);
-    for (unsigned type = 1; type <= OFPT_METER_MOD; ++type) {
-        header.setType(static_cast<OFPType>(type));
-        EXPECT_TRUE(header.validateVersionAndType());
-    }
-
-    // Hello and Error messages validate when version is 0 (unset).
-    header.setVersion(0);
-    header.setType(OFPT_HELLO);
+  header.setVersion(OFP_VERSION_4);
+  for (unsigned type = 1; type <= OFPT_METER_MOD; ++type) {
+    header.setType(static_cast<OFPType>(type));
     EXPECT_TRUE(header.validateVersionAndType());
-    header.setType(OFPT_ERROR);
-    EXPECT_TRUE(header.validateVersionAndType());
+  }
 
-    // All other messages do not validate when version is 0.
-    for (unsigned type = OFPT_ERROR+1; type <= 255; ++type) {
-        header.setType(static_cast<OFPType>(type));
-        EXPECT_FALSE(header.validateVersionAndType());
-    }
+  // Hello and Error messages validate when version is 0 (unset).
+  header.setVersion(0);
+  header.setType(OFPT_HELLO);
+  EXPECT_TRUE(header.validateVersionAndType());
+  header.setType(OFPT_ERROR);
+  EXPECT_TRUE(header.validateVersionAndType());
+
+  // All other messages do not validate when version is 0.
+  for (unsigned type = OFPT_ERROR + 1; type <= 255; ++type) {
+    header.setType(static_cast<OFPType>(type));
+    EXPECT_FALSE(header.validateVersionAndType());
+  }
 }

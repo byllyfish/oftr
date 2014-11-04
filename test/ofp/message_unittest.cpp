@@ -37,10 +37,11 @@ TEST(message, transmogrify) {
 }
 
 TEST(message, transmogrify_flow_mod) {
-  const char *hexBefore = "010E 0048 0000 0060 0010 001F 0000 0000 0000 0000 "
-                          "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 "
-                          "0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 "
-                          "0000 8000 FFFF FFFF FFFF 0000";
+  const char *hexBefore =
+      "010E 0048 0000 0060 0010 001F 0000 0000 0000 0000 "
+      "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 "
+      "0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 "
+      "0000 8000 FFFF FFFF FFFF 0000";
 
   auto s = HexToRawData(hexBefore);
 
@@ -66,4 +67,3 @@ TEST(message, transmogrify_flow_mod) {
     EXPECT_EQ(0, msg->flags());
   }
 }
-

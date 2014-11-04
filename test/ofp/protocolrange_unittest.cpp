@@ -91,12 +91,11 @@ TEST(protocolrange, invalid2) {
 }
 
 TEST(protocolrange, iteration) {
-  Big64 data[] = {0xffff000800000001, 0xffff000800000002,
-                  0xffff000800000003, 0xffff000800000004};
+  Big64 data[] = {0xffff000800000001, 0xffff000800000002, 0xffff000800000003,
+                  0xffff000800000004};
 
   struct Item : private NonCopyable {
-    enum { ProtocolIteratorSizeOffset = 2,
-           ProtocolIteratorAlignment = 8 };
+    enum { ProtocolIteratorSizeOffset = 2, ProtocolIteratorAlignment = 8 };
     Big16 type;
     Big16 len;
     Big32 value;
@@ -109,11 +108,11 @@ TEST(protocolrange, iteration) {
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};
   EXPECT_TRUE(iterable.validateInput(&c1));
   EXPECT_EQ(4, iterable.itemCount());
-  
+
   unsigned sum = 10;
 
   // Two ways to iterate:
- 
+
   // (1) Use a const reference.
   for (auto &elem : iterable) {
     sum += elem.value;
@@ -133,13 +132,13 @@ TEST(protocolrange, iteration) {
   // }
 }
 
-
 TEST(protocolrange, misalignedSeq) {
-   ByteList r1{HexToRawData("00 01 00 05 00 10 00 04 00 02 00 04 00 13 00 04 00 02 00 04 00 10 00 04 00 18 00 04 00 09 00 04 00 06 00 04 00 03 00 04")};
+  ByteList r1{HexToRawData(
+      "00 01 00 05 00 10 00 04 00 02 00 04 00 13 00 04 00 02 00 04 00 10 00 04 "
+      "00 18 00 04 00 09 00 04 00 06 00 04 00 03 00 04")};
 
-   struct Item : private NonCopyable {
-    enum { ProtocolIteratorSizeOffset = 2,
-           ProtocolIteratorAlignment = 4 };
+  struct Item : private NonCopyable {
+    enum { ProtocolIteratorSizeOffset = 2, ProtocolIteratorAlignment = 4 };
     Big16 type;
     Big16 len;
     Big32 data;

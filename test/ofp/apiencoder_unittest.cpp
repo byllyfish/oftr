@@ -6,8 +6,9 @@
 using namespace ofp::api;
 
 TEST(apiencoder, dumptokens) {
-  const char *hex = "2D2D2D0A6576656E743A204C49424F46505F4C495354454E5F5245504C"
-                    "590A6D73673A0A2020706F727420393008080A2D2D2D0A";
+  const char *hex =
+      "2D2D2D0A6576656E743A204C49424F46505F4C495354454E5F5245504C"
+      "590A6D73673A0A2020706F727420393008080A2D2D2D0A";
   std::string data = ofp::HexToRawData(hex);
 
   std::string output;
@@ -33,8 +34,9 @@ Value: :
 }
 
 TEST(apiencoder, test) {
-  const char *hex = "2D2D2D0A6576656E743A204C49424F46505F4C495354454E5F5245504C"
-                    "590A6D73673A0A2020706F727420393008080A2D2D2D0A";
+  const char *hex =
+      "2D2D2D0A6576656E743A204C49424F46505F4C495354454E5F5245504C"
+      "590A6D73673A0A2020706F727420393008080A2D2D2D0A";
   std::string data = ofp::HexToRawData(hex);
 
 // FIXME!  This test is disabled. It causes a crash in yaml-io.

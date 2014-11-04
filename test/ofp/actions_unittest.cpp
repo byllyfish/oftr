@@ -157,7 +157,8 @@ TEST(actions, AT_EXPERIMENTER) {
   ActionList actions;
   actions.add(act);
 
-  EXPECT_HEX("FFFF001000000005 1122334400000000", actions.data(), actions.size());
+  EXPECT_HEX("FFFF001000000005 1122334400000000", actions.data(),
+             actions.size());
 }
 
 TEST(actions, AT_SET_FIELD_8bit) {

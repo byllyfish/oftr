@@ -109,7 +109,7 @@ TEST(ipv6address, zones) {
 
 TEST(ipv6address, rfc5952) {
   // 4.1 Handling leading zeros in a 16-bit field.
-  
+
   IPv6Address a{"2001:0db8::0001"};
   EXPECT_EQ("2001:db8::1", a.toString());
 
@@ -122,15 +122,15 @@ TEST(ipv6address, rfc5952) {
   EXPECT_EQ("2001:db8::2:1", c.toString());
 
   // 4.2.2. Handling One 16-Bit 0 Field (ignored)
-  
-  //IPv6Address d{"2001:db8:0:1:1:1:1:1"};
-  //EXPECT_EQ("2001:db8:0:1:1:1:1:1", d.toString());
 
-  //IPv6Address e{"2001:db8::1:1:1:1:1"};
-  //EXPECT_EQ("2001:db8:0:1:1:1:1:1", e.toString());
+  // IPv6Address d{"2001:db8:0:1:1:1:1:1"};
+  // EXPECT_EQ("2001:db8:0:1:1:1:1:1", d.toString());
+
+  // IPv6Address e{"2001:db8::1:1:1:1:1"};
+  // EXPECT_EQ("2001:db8:0:1:1:1:1:1", e.toString());
 
   // 4.2.3. Choice in Placement of "::"
-  
+
   IPv6Address f{"2001:0:0:1:0:0:0:1"};
   EXPECT_EQ("2001:0:0:1::1", f.toString());
 
@@ -138,8 +138,7 @@ TEST(ipv6address, rfc5952) {
   EXPECT_EQ("2001:db8::1:0:0:1", g.toString());
 
   // 4.3. Lowercase
-  
+
   IPv6Address h{"2001:0DBA::000F"};
   EXPECT_EQ("2001:dba::f", h.toString());
 }
-

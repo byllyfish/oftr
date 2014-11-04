@@ -76,7 +76,6 @@ TEST(smallbuffer, copyAssign) {
 }
 
 TEST(smallbuffer, moveConstruct) {
-
   {
     SmallBuffer buf{"1234567890", 11};
     const UInt8 *bufBegin = buf.begin();
@@ -103,16 +102,15 @@ TEST(smallbuffer, moveConstruct) {
   }
 }
 
-
 TEST(smallbuffer, resize) {
-    SmallBuffer buf;
+  SmallBuffer buf;
 
-    buf.resize(8);
-    EXPECT_EQ(8, buf.size());
+  buf.resize(8);
+  EXPECT_EQ(8, buf.size());
 
-    buf.resize(0);
-    EXPECT_EQ(0, buf.size());
+  buf.resize(0);
+  EXPECT_EQ(0, buf.size());
 
-    buf.resize(10000);
-    EXPECT_EQ(10000, buf.size());
+  buf.resize(10000);
+  EXPECT_EQ(10000, buf.size());
 }

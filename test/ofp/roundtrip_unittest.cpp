@@ -8,20 +8,21 @@ using namespace ofp;
 const UInt16 kTestingPort = 6666;
 
 class TestController : public ChannelListener {
-public:
-  TestController() { 
+ public:
+  TestController() {
     log::debug("TestController constructed");
-    ++controllerCount; 
+    ++controllerCount;
   }
 
-  ~TestController() { 
+  ~TestController() {
     log::debug("TestController destroyed");
-    --controllerCount; 
+    --controllerCount;
   }
 
   void onChannelUp(Channel *channel) override {
-    ++controllerCount; 
-    log::debug("TestController::onChannelUp", std::make_pair("connid", channel->connectionId()));
+    ++controllerCount;
+    log::debug("TestController::onChannelUp",
+               std::make_pair("connid", channel->connectionId()));
     channel_ = channel;
 
     DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
@@ -37,12 +38,14 @@ public:
   }
 
   void onChannelDown(Channel *channel) override {
-    --controllerCount; 
-    log::debug("TestController::onChannelDown", std::make_pair("connid", channel->connectionId()));
+    --controllerCount;
+    log::debug("TestController::onChannelDown",
+               std::make_pair("connid", channel->connectionId()));
   }
 
   void onMessage(const Message *message) override {
-    log::debug("TestController::onMessage", std::make_pair("connid", message->source()->connectionId()));
+    log::debug("TestController::onMessage",
+               std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REPLY, message->type());
   }
 
@@ -50,25 +53,26 @@ public:
   static int controllerCount;
   static int shutdownCount;
 
-private:
+ private:
   Channel *channel_;
 };
 
 class TestAgent : public ChannelListener {
-public:
-  TestAgent() { 
-    ++agentCount; 
+ public:
+  TestAgent() {
+    ++agentCount;
     log::debug("TestAgent constructed");
   }
 
-  ~TestAgent() { 
-    --agentCount; 
+  ~TestAgent() {
+    --agentCount;
     log::debug("TestAgent destroyed");
   }
 
   void onChannelUp(Channel *channel) override {
-    ++agentCount; 
-    log::debug("TestAgent::onChannelUp", std::make_pair("connid", channel->connectionId()));
+    ++agentCount;
+    log::debug("TestAgent::onChannelUp",
+               std::make_pair("connid", channel->connectionId()));
 
     // When agent channel comes up, we expect the datapathId to be all zeros.
     DatapathID dpid;
@@ -79,12 +83,14 @@ public:
   }
 
   void onChannelDown(Channel *channel) override {
-    --agentCount; 
-    log::debug("TestAgent::onChannelDown", std::make_pair("connid", channel->connectionId()));
+    --agentCount;
+    log::debug("TestAgent::onChannelDown",
+               std::make_pair("connid", channel->connectionId()));
   }
 
   void onMessage(const Message *message) override {
-    log::debug("TestAgent::onMessage", std::make_pair("connid", message->source()->connectionId()));
+    log::debug("TestAgent::onMessage",
+               std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REQUEST, message->type());
 
     DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
@@ -104,7 +110,6 @@ int TestAgent::agentCount = 0;
 int TestAgent::auxCount = 0;
 
 TEST(roundtrip, basic_test) {
-
   // Before we start, there are no controller or agent listeners.
   TestController::controllerCount = 0;
   TestAgent::agentCount = 0;
@@ -115,16 +120,15 @@ TEST(roundtrip, basic_test) {
 
     std::error_code err1;
     (void)driver.listen(ChannelMode::Controller, 0,
-                                 IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions::All, TestController::factory, err1);
+                        IPv6Endpoint{localhost, kTestingPort},
+                        ProtocolVersions::All, TestController::factory, err1);
     // There should be no error on listen, unless the port is in use.
     EXPECT_FALSE(err1);
 
-    (void)driver.connect(ChannelMode::Raw, 0,
-                                  IPv6Endpoint{localhost, kTestingPort},
-                                  ProtocolVersions::All, TestAgent::factory, [](Channel *, std::error_code err){
-                                    EXPECT_FALSE(err);
-                                  });
+    (void)driver.connect(
+        ChannelMode::Raw, 0, IPv6Endpoint{localhost, kTestingPort},
+        ProtocolVersions::All, TestAgent::factory,
+        [](Channel *, std::error_code err) { EXPECT_FALSE(err); });
 
     // The driver will run until the Controller shuts it down.
     driver.run();
@@ -139,7 +143,6 @@ TEST(roundtrip, basic_test) {
 }
 
 TEST(roundtrip, shutdown_test) {
-
   TestController::controllerCount = 0;
   TestAgent::agentCount = 0;
 
@@ -149,16 +152,15 @@ TEST(roundtrip, shutdown_test) {
 
     std::error_code err1;
     (void)driver.listen(ChannelMode::Controller, 0,
-                                 IPv6Endpoint{localhost, kTestingPort},
-                                 ProtocolVersions::All, TestController::factory, err1);
+                        IPv6Endpoint{localhost, kTestingPort},
+                        ProtocolVersions::All, TestController::factory, err1);
 
     EXPECT_FALSE(err1);
 
-    (void)driver.connect(ChannelMode::Raw, 0,
-                                  IPv6Endpoint{localhost, kTestingPort},
-                                  ProtocolVersions::All, TestAgent::factory, [](Channel *, std::error_code err){
-                                    EXPECT_FALSE(err);
-                                  });
+    (void)driver.connect(
+        ChannelMode::Raw, 0, IPv6Endpoint{localhost, kTestingPort},
+        ProtocolVersions::All, TestAgent::factory,
+        [](Channel *, std::error_code err) { EXPECT_FALSE(err); });
 
     TestController::shutdownCount = 1;
     driver.run();
@@ -172,4 +174,3 @@ TEST(roundtrip, shutdown_test) {
   EXPECT_EQ(0, TestController::controllerCount);
   EXPECT_EQ(0, TestAgent::agentCount);
 }
-

@@ -181,9 +181,10 @@ TEST(matchbuilder, OFB_TCP_SRC) {
   match.add(OFB_IP_PROTO{17});
   // Attempting to specify the UDP protocol for IP_PROTO now poisons the first
   // IP_PROTO field.
-  EXPECT_HEX("8000-0A02-0800 [7FF3-0100] 8000-1401-06 8000-1A02-0050 7FF3-0100 "
-             "8000-1E02-0050",
-             match.data(), match.size());
+  EXPECT_HEX(
+      "8000-0A02-0800 [7FF3-0100] 8000-1401-06 8000-1A02-0050 7FF3-0100 "
+      "8000-1E02-0050",
+      match.data(), match.size());
   EXPECT_FALSE(match.validate());
 }
 
@@ -197,9 +198,10 @@ TEST(matchbuilder, OFB_TCP_SRC_alt1) {
   EXPECT_FALSE(match.validate());
 
   match.add(OFB_UDP_SRC{80});
-  EXPECT_HEX("(7FF2-0100 8000-0A02-0800 8000-0A02-86DD) 8000-1401-06 "
-             "8000-1A02-0050 [7FF3-01-00] 8000-1E02-0050",
-             match.data(), match.size());
+  EXPECT_HEX(
+      "(7FF2-0100 8000-0A02-0800 8000-0A02-86DD) 8000-1401-06 "
+      "8000-1A02-0050 [7FF3-01-00] 8000-1E02-0050",
+      match.data(), match.size());
   EXPECT_FALSE(match.validate());
 
   match.add(OFB_ETH_TYPE{0x0800});
@@ -258,7 +260,6 @@ TEST(matchbuilder, OFB_IN_PORT_alt1) {
   EXPECT_FALSE(match.validate());
 }
 
-
 TEST(matchbuilder, OFB_ETH_SRC) {
   MatchBuilder match;
 
@@ -270,7 +271,8 @@ TEST(matchbuilder, OFB_ETH_SRC) {
 TEST(matchbuilder, OFP_ETH_SRC_mask) {
   MatchBuilder match;
 
-  match.add(OFB_ETH_DST{EnetAddress{"00-11-22-33-44-55"}}, OFB_ETH_DST{EnetAddress{"ff-ff-ff-00-00-00"}});
+  match.add(OFB_ETH_DST{EnetAddress{"00-11-22-33-44-55"}},
+            OFB_ETH_DST{EnetAddress{"ff-ff-ff-00-00-00"}});
   EXPECT_HEX("8000070C001122334455FFFFFF000000", match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }
@@ -281,14 +283,17 @@ TEST(matchbuilder, test_placeholders_1) {
 
   EXPECT_HEX("800000040000001B", match.data(), match.size());
   EXPECT_TRUE(match.validate());
-  
+
   match.add(OFB_TCP_SRC{80});
 
-  EXPECT_HEX("800000040000001B7FF2010080000A02080080000A0286DD800014010680001A020050", match.data(), match.size());
+  EXPECT_HEX(
+      "800000040000001B7FF2010080000A02080080000A0286DD800014010680001A020050",
+      match.data(), match.size());
   EXPECT_TRUE(!match.validate());
 
   match.add(OFB_ETH_TYPE{0x0800});
-  EXPECT_HEX("800000040000001B80000A020800800014010680001A020050", match.data(), match.size());
+  EXPECT_HEX("800000040000001B80000A020800800014010680001A020050", match.data(),
+             match.size());
   EXPECT_TRUE(match.validate());
 }
 
@@ -296,7 +301,8 @@ TEST(matchbuilder, test_placeholders_2) {
   MatchBuilder match;
   match.add(OFB_TCP_SRC{80});
 
-  EXPECT_HEX("7FF2010080000A02080080000A0286DD800014010680001A020050", match.data(), match.size());
+  EXPECT_HEX("7FF2010080000A02080080000A0286DD800014010680001A020050",
+             match.data(), match.size());
   EXPECT_TRUE(!match.validate());
 
   match.add(OFB_ETH_TYPE{0x0800});
@@ -305,6 +311,7 @@ TEST(matchbuilder, test_placeholders_2) {
 
   match.add(OFB_IN_PORT{27});
 
-  EXPECT_HEX("80000A020800800014010680001A020050800000040000001B", match.data(), match.size());
+  EXPECT_HEX("80000A020800800014010680001A020050800000040000001B", match.data(),
+             match.size());
   EXPECT_TRUE(match.validate());
 }

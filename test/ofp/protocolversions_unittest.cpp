@@ -72,7 +72,7 @@ TEST(protocolversions, negotiateVersion) {
   {
     ProtocolVersions vers{1};
 
-    EXPECT_EQ(1, vers.negotiateVersion(4, {1,2,3,4}));
+    EXPECT_EQ(1, vers.negotiateVersion(4, {1, 2, 3, 4}));
     EXPECT_EQ(1, vers.negotiateVersion(4, {2, 3, 4}));
     EXPECT_EQ(1, vers.negotiateVersion(3, ProtocolVersions::None));
     EXPECT_EQ(1, vers.negotiateVersion(2, ProtocolVersions::None));
@@ -81,7 +81,7 @@ TEST(protocolversions, negotiateVersion) {
 
   {
     ProtocolVersions vers{4};
-    EXPECT_EQ(4, vers.negotiateVersion(4, {1,2,3,4}));
+    EXPECT_EQ(4, vers.negotiateVersion(4, {1, 2, 3, 4}));
     EXPECT_EQ(4, vers.negotiateVersion(4, ProtocolVersions::None));
 
     EXPECT_EQ(0, vers.negotiateVersion(3, ProtocolVersions::None));
@@ -90,8 +90,8 @@ TEST(protocolversions, negotiateVersion) {
   }
 
   {
-    ProtocolVersions vers{1,4};
-    EXPECT_EQ(4, vers.negotiateVersion(4, {1,2,3,4}));
+    ProtocolVersions vers{1, 4};
+    EXPECT_EQ(4, vers.negotiateVersion(4, {1, 2, 3, 4}));
     EXPECT_EQ(4, vers.negotiateVersion(4, ProtocolVersions::None));
 
     EXPECT_EQ(0, vers.negotiateVersion(3, ProtocolVersions::None));
@@ -100,8 +100,8 @@ TEST(protocolversions, negotiateVersion) {
   }
 
   {
-    ProtocolVersions vers{2,3,4};
-    EXPECT_EQ(4, vers.negotiateVersion(4, {1,2,3,4}));
+    ProtocolVersions vers{2, 3, 4};
+    EXPECT_EQ(4, vers.negotiateVersion(4, {1, 2, 3, 4}));
     EXPECT_EQ(4, vers.negotiateVersion(4, ProtocolVersions::None));
 
     EXPECT_EQ(3, vers.negotiateVersion(3, ProtocolVersions::None));
@@ -110,8 +110,8 @@ TEST(protocolversions, negotiateVersion) {
   }
 
   {
-    ProtocolVersions vers{2,3};
-    EXPECT_EQ(3, vers.negotiateVersion(4, {1,2,3,4}));
+    ProtocolVersions vers{2, 3};
+    EXPECT_EQ(3, vers.negotiateVersion(4, {1, 2, 3, 4}));
     EXPECT_EQ(3, vers.negotiateVersion(4, ProtocolVersions::None));
 
     EXPECT_EQ(3, vers.negotiateVersion(3, ProtocolVersions::None));

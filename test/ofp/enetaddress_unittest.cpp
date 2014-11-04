@@ -11,7 +11,7 @@ TEST(enetaddress, valid) {
   EXPECT_TRUE(enet.valid());
   EXPECT_EQ("01:02:03:04:05:06", enet.toString());
 
-  EnetAddress enet2{"01-02-03-04-05-06-07"}; // okay
+  EnetAddress enet2{"01-02-03-04-05-06-07"};  // okay
 
   EXPECT_TRUE(enet2.valid());
   EXPECT_EQ("01:02:03:04:05:06", enet2.toString());
@@ -41,7 +41,7 @@ TEST(enetaddress, canonical) {
   EXPECT_TRUE(enet.valid());
   EXPECT_EQ("aa:bb:cc:dd:ee:ff", enet.toString());
 
-  EnetAddress enet2{"AA:BB:CC:DD:EE:FF"}; // okay
+  EnetAddress enet2{"AA:BB:CC:DD:EE:FF"};  // okay
 
   EXPECT_TRUE(enet2.valid());
   EXPECT_EQ("aa:bb:cc:dd:ee:ff", enet2.toString());

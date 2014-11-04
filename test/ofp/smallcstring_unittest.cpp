@@ -44,7 +44,6 @@ TEST(smallcstring, empty) {
 }
 
 TEST(smallcstring, constructor) {
-
   SmallCString<8> s{"test"};
 
   EXPECT_EQ(8, sizeof(s));
@@ -76,7 +75,7 @@ TEST(smallcstring, copyconstructor) {
 }
 
 TEST(smallcstring, validUtf8String) {
-  auto validTest = [](const char *s) -> std::string { 
+  auto validTest = [](const char *s) -> std::string {
     return ofp::detail::validUtf8String(s, s + strlen(s));
   };
 
@@ -108,5 +107,7 @@ TEST(smallcstring, validUtf8String) {
   EXPECT_EQ("????", validTest("\xF4\x9F\xBF\xBF"));
   EXPECT_EQ("abc???", validTest("abc\xF4\x80\x80"));
 
-  EXPECT_EQ("a?a", validTest("a\xFF""a"));
+  EXPECT_EQ("a?a", validTest(
+                       "a\xFF"
+                       "a"));
 }

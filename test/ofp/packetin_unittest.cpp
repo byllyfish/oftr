@@ -24,7 +24,9 @@ TEST(packetin, version4) {
   EXPECT_EQ(1, xid);
   EXPECT_EQ(0x3A, channel.size());
 
-  const char *expected = "040A003A00000001000000010002000400000000000000050001000C800000040000001B00000000000001020304050607080102030405060708";
+  const char *expected =
+      "040A003A00000001000000010002000400000000000000050001000C800000040000001B"
+      "00000000000001020304050607080102030405060708";
 
   EXPECT_HEX(expected, channel.data(), channel.size());
 
@@ -64,9 +66,10 @@ TEST(packetin, version1) {
 
   EXPECT_EQ(0x0026, channel.size());
 
-  const char *expected = "(01-0A-0026-00000001)"
-                         "01020304-0101-2222-00-00"
-                         "3737373737373737373737373737373737373737";
+  const char *expected =
+      "(01-0A-0026-00000001)"
+      "01020304-0101-2222-00-00"
+      "3737373737373737373737373737373737373737";
 
   EXPECT_HEX(expected, channel.data(), channel.size());
 

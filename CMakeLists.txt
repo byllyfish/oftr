@@ -554,7 +554,7 @@ add_custom_target(cpplint
 #-------------------------------------------------------------------------------
 
 add_custom_target(format-all
-  COMMAND find include src tools example oxm \( -name "*.h" -o -name "*.cpp" -o -name "*.ipp" \) -exec clang-format -i {} +
+  COMMAND find include src tools example oxm test \( -name "*.h" -o -name "*.cpp" -o -name "*.ipp" \) -exec clang-format -i {} +
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMENT "Formatting all libofp code with clang-format" VERBATIM
 )

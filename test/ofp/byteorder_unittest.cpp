@@ -78,11 +78,7 @@ TEST(byteorder, Big64) {
 
 TEST(byteorder, BigEnum8) {
   // Test enum class of type UInt8.
-  enum class Foo8 : UInt8 {
-    a,
-    b,
-    c
-  };
+  enum class Foo8 : UInt8 { a, b, c };
   Big<Foo8> x;
 
   static_assert(sizeof(x) == sizeof(UInt8), "Unexpected enum size.");
@@ -102,11 +98,7 @@ TEST(byteorder, BigEnum8) {
 
 TEST(byteorder, BigEnum16) {
   // Test enum class of type UInt16.
-  enum class Foo16 : UInt16 {
-    a,
-    b,
-    c
-  };
+  enum class Foo16 : UInt16 { a, b, c };
   Big<Foo16> x;
 
   static_assert(sizeof(x) == sizeof(UInt16), "Unexpected enum size.");
@@ -126,11 +118,7 @@ TEST(byteorder, BigEnum16) {
 
 TEST(byteorder, BigEnum32) {
   // Test enum class of type UInt32.
-  enum class Foo32 : UInt32 {
-    a,
-    b,
-    c
-  };
+  enum class Foo32 : UInt32 { a, b, c };
   Big<Foo32> x;
 
   static_assert(sizeof(x) == sizeof(UInt32), "Unexpected enum size.");
@@ -150,11 +138,7 @@ TEST(byteorder, BigEnum32) {
 
 TEST(byteorder, BigEnum) {
   // Plain unadorned enum.
-  enum Foo {
-    a,
-    b,
-    c
-  };
+  enum Foo { a, b, c };
   Big<Foo> x;
 
   static_assert(sizeof(x) == sizeof(int), "Unexpected enum size.");

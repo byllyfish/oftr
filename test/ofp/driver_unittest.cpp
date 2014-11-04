@@ -6,7 +6,7 @@
 using namespace ofp;
 
 class MockChannelListener : public ChannelListener {
-public:
+ public:
   void onChannelUp(Channel *channel) override {}
   void onChannelDown(Channel *channel) override {}
   void onMessage(const Message *message) override;
@@ -18,8 +18,9 @@ TEST(driver, test) {
   Driver driver;
   std::error_code err;
 
-  UInt64 connId = driver.listen(ChannelMode::Controller, 0, IPv6Endpoint{OFP_DEFAULT_PORT},
-                ProtocolVersions::All, [] { return new MockChannelListener; }, err);
+  UInt64 connId = driver.listen(
+      ChannelMode::Controller, 0, IPv6Endpoint{OFP_DEFAULT_PORT},
+      ProtocolVersions::All, [] { return new MockChannelListener; }, err);
 
   EXPECT_NE(0, connId);
   // driver.run();

@@ -10,7 +10,7 @@ using namespace ofp::api;
 OFP_BEGIN_IGNORE_PADDING
 
 class TestSession : public ApiSession {
-public:
+ public:
   void receive(const std::string &msg) override {
     log::debug("TestSession::receive", msg);
     didReceive = true;
@@ -22,12 +22,11 @@ public:
 
 OFP_END_IGNORE_PADDING
 
-
 TEST(apisession, test) {
   TestSession session;
 
   session.send(
-R"""(
+      R"""(
 id: 1
 method: foo
 params: []
@@ -35,9 +34,7 @@ params: []
 
   EXPECT_FALSE(session.didReceive);
 
-  auto f = std::async([&session]() { 
-    session.run(); 
-  });
+  auto f = std::async([&session]() { session.run(); });
 
   f.wait();
 

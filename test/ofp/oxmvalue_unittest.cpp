@@ -47,13 +47,13 @@ TEST(OXMValue, use_in_switch_stmt) {
   auto type = OXMType{0x8000, 6, 2};
 
   switch (type) {
-  case ofb_in_port::type() :
-  case ofb_tcp_src_port::type() :
-    break;
+    case ofb_in_port::type():
+    case ofb_tcp_src_port::type():
+      break;
 
-  case ofb_vlan_vid::type() :
-    found = true;
-    break;
+    case ofb_vlan_vid::type():
+      found = true;
+      break;
   }
 
   EXPECT_TRUE(found);

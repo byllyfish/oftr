@@ -38,13 +38,13 @@ TEST(OXMType, use_in_switch_stmt) {
 
   OXMType d{2, 2, 8};
   switch (d) {
-  case cool:
-    found = true;
-    break;
+    case cool:
+      found = true;
+      break;
 
-  case OXMType{1, 1, 8}:
-  case OXMType{3, 3, 8}:
-    break;
+    case OXMType{1, 1, 8}:
+    case OXMType{3, 3, 8}:
+      break;
   }
 
   EXPECT_TRUE(found);

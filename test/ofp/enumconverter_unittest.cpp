@@ -6,13 +6,7 @@
 using namespace ofp;
 
 TEST(enumconverter, convert) {
-
-  enum Kind {
-    A,
-    B,
-    C,
-    UNK
-  };
+  enum Kind { A, B, C, UNK };
 
   const llvm::StringRef names[] = {"A", "B", "C"};
   ofp::yaml::EnumConverter<Kind> converter{names};
@@ -39,13 +33,7 @@ TEST(enumconverter, convert) {
 }
 
 TEST(enumconverter, convert_case_senstive) {
-
-  enum Kind {
-    A,
-    B,
-    C,
-    KIND_LAST = C
-  };
+  enum Kind { A, B, C, KIND_LAST = C };
 
   const llvm::StringRef names[KIND_LAST + 1] = {"A", "B", "C"};
 
