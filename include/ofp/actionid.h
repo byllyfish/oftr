@@ -10,7 +10,6 @@ namespace ofp {
 
 class ActionID {
  public:
- public:
   enum {
     ProtocolIteratorSizeOffset = sizeof(OFPActionType),
     ProtocolIteratorAlignment = 4
