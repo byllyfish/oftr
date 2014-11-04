@@ -1,9 +1,9 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_CONFIG_H_
+#ifndef OFP_CONFIG_H_  // NOLINT
 #define OFP_CONFIG_H_
 
 #define LIBOFP_VERSION_MAJOR		@libofp_VERSION_MAJOR@
 #define LIBOFP_VERSION_MINOR 		@libofp_VERSION_MINOR@
 
-#endif  // OFP_CONFIG_H_
+#endif  // OFP_CONFIG_H_  // NOLINT

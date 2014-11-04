@@ -80,19 +80,19 @@ bool Header::validateInput(UInt8 negotiatedVersion) const {
 
   // Header version needs to be within range [1...MAX_ALLOWED].
   if (version_ == 0 || version_ > OFP_VERSION_MAX_ALLOWED) {
-    log::warning("Message header version is invalid:", int(version_));
+    log::warning("Message header version is invalid:", static_cast<int>(version_));
     return false;
   }
 
   // Header version must match the negotiated version if there is one.
   if (negotiatedVersion != 0 && version_ != negotiatedVersion) {
-    log::warning("Wrong message header version:", int(version_));
+    log::warning("Wrong message header version:", static_cast<int>(version_));
     return false;
   }
 
   // Header type needs to be within range [0...MAX_ALLOWED]
   if (type_ > OFPT_MAX_ALLOWED) {
-    log::warning("Message header type is invalid:", int(type_));
+    log::warning("Message header type is invalid:", static_cast<int>(type_));
     return false;
   }
 

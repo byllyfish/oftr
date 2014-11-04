@@ -1,8 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <arpa/inet.h>
 #include "ofp/ipv6address.h"
 #include "ofp/sys/asio_utils.h"
-#include <arpa/inet.h>
 #include "ofp/log.h"
 #include "ofp/byteorder.h"
 

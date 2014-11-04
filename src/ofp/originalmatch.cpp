@@ -1,11 +1,11 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <iterator>
 #include "ofp/originalmatch.h"
 #include "ofp/standardmatch.h"
-#include <iterator>
 
-namespace ofp {         // <namespace ofp>
-namespace deprecated {  // <namespace deprecated>
+namespace ofp {
+namespace deprecated {
 
 using OW = OriginalMatch::Wildcards;
 using SW = StandardMatch::Wildcards;
@@ -144,5 +144,5 @@ UInt32 OriginalMatch::standardWildcards() const {
   return result;
 }
 
-}  // </namespace deprecated>
-}  // </namespace ofp>
+}  // namespace deprecated
+}  // namespace ofp

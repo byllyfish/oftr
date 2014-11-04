@@ -22,7 +22,7 @@ class Encoder {
   using ChannelFinder =
       std::function<Channel *(const DatapathID &datapathId, UInt64 connId)>;
 
-  Encoder(ChannelFinder finder);
+  explicit Encoder(ChannelFinder finder);
   Encoder(const std::string &input, bool matchPrereqsChecked = true,
           int lineNumber = 0, ChannelFinder finder = NullChannelFinder);
 

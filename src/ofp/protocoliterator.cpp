@@ -1,9 +1,9 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <algorithm>
 #include "ofp/protocoliterator.h"
 #include "ofp/log.h"
 #include "ofp/validation.h"
-#include <algorithm>
 
 using namespace ofp;
 

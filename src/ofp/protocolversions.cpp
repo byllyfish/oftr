@@ -3,7 +3,7 @@
 #include "ofp/protocolversions.h"
 #include <sstream>
 
-namespace ofp {  // <namespace ofp>
+namespace ofp {
 
 const ProtocolVersions ProtocolVersions::All(
     ProtocolVersions::VersionBitmapAll);
@@ -86,7 +86,7 @@ std::string ProtocolVersions::toString() const {
   for (UInt8 i = 1; i <= MaxVersionSupported; ++i) {
     if ((bitmap_ >> i) & 1) {
       if (needComma) out << ", ";
-      out << int(i);
+      out << static_cast<int>(i);
       needComma = true;
     }
   }
@@ -108,4 +108,4 @@ ProtocolVersions ProtocolVersions::fromVector(
   return result;
 }
 
-}  // </namespace ofp>
+}  // namespace ofp

@@ -1,12 +1,12 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/log.h"
-#include "ofp/yaml/decoder.h"
 #include <chrono>
 #include <iomanip>
+#include "ofp/log.h"
+#include "ofp/yaml/decoder.h"
 
-namespace ofp {  // <namespace ofp>
-namespace log {  // <namespace log>
+namespace ofp {
+namespace log {
 
 using Time = std::pair<std::time_t, Milliseconds>;
 
@@ -132,5 +132,5 @@ void trace(const char *type, UInt64 id, const void *data, size_t length) {
   }
 }
 
-}  // </namespace log>
-}  // </namespace ofp>
+}  // namespace log
+}  // namespace ofp

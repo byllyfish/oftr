@@ -1,9 +1,9 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <algorithm>
 #include "ofp/oxmtype.h"
 #include "ofp/log.h"
 #include "ofp/oxmfields.h"
-#include <algorithm>
 
 using namespace ofp;
 

@@ -4,7 +4,7 @@
 #include "ofp/message.h"
 #include "ofp/writable.h"
 
-namespace ofp {  // <namespace ofp>
+namespace ofp {
 
 ByteRange EchoRequest::echoData() const {
   return ByteRange{BytePtr(this) + sizeof(Header),
@@ -26,4 +26,4 @@ UInt32 EchoRequestBuilder::send(Writable *channel) {
   return xid;
 }
 
-}  // </namespace ofp>
+}  // namespace ofp

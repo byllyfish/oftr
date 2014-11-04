@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/yaml/outputjson.h"
 
 using namespace ofp::yaml;

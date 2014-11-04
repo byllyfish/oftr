@@ -72,7 +72,7 @@ void ActionRange::write(Writable *channel) {
   }
 }
 
-namespace {  // <namespace>
+namespace {
 
 template <class Action, class OFBType>
 void writeAction(ActionIterator iter, Writable *channel) {
@@ -80,7 +80,7 @@ void writeAction(ActionIterator iter, Writable *channel) {
   channel->write(&action, sizeof(action));
 }
 
-}  // </namespace>
+}  // namespace
 
 unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
   using namespace deprecated;

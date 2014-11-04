@@ -4,8 +4,8 @@
 #include "ofp/oxmlist.h"
 #include "ofp/originalmatch.h"
 
-namespace ofp {         // <namespace ofp>
-namespace deprecated {  // <namespace deprecated>
+namespace ofp {
+namespace deprecated {
 
 StandardMatch::StandardMatch() {
   in_port = 0;
@@ -325,5 +325,5 @@ void StandardMatch::convertDatalinkARP(UInt32 wc, OXMList *list) const {
   }
 }
 
-}  // </namespace deprecated>
-}  // </namespace ofp>
+}  // namespace deprecated
+}  // namespace ofp

@@ -102,7 +102,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm) {
   // algorithm is O(n*m).
   //
   // FIXME: Make sure this check can't loop indefinitely.
-  // TODO: Improve algorithm and/or data structures.
+  // TODO(bfish): Improve algorithm and/or data structures.
 
   for (auto &item : oxm) {
     auto type = item.type();

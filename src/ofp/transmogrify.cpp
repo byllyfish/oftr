@@ -534,7 +534,7 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   ptr = buf_.mutableData() + offset;
   std::memcpy(ptr + 48, &stdMatch, sizeof(stdMatch));
 
-  // TODO: see common code in FlowModv1.
+  // TODO(bfish): see common code in FlowModv1.
   if (actLen > 0) {
     // Normalize actions may move memory.
     int delta = normActionsV1orV2(ActionRange{ByteRange{ptr + 144, actLen}},

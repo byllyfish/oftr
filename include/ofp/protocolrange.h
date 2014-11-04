@@ -16,7 +16,7 @@ class ProtocolRange {
   using Element = typename IteratorType::Element;
 
   ProtocolRange() = default;
-  /* implicit */ ProtocolRange(const ByteRange &range) : range_{range} {
+  /* implicit NOLINT */ ProtocolRange(const ByteRange &range) : range_{range} {
     assert(begin() <= end());
   }
 

@@ -1,16 +1,16 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <arpa/inet.h>
 #include "ofp/ipv4address.h"
 #include "ofp/log.h"
-#include <arpa/inet.h>
 
-namespace ofp {  // <namespace ofp>
+namespace ofp {
 
 IPv4Address::IPv4Address(const ArrayType &a) : addr_(a) {}
 
 IPv4Address::IPv4Address(const std::string &s) {
-  // TODO this function should handle / notation. ie. "/24" should give you a
-  // network mask 255.255.255.0. and a.b.c.d/24 should give you a.b.c.0
+  // TODO(bfish): this function should handle / notation. ie. "/24" should give
+  // you a network mask 255.255.255.0. and a.b.c.d/24 should give you a.b.c.0
 
   if (!parse(s)) {
     addr_.fill(0);
@@ -72,4 +72,4 @@ std::string IPv4Address::toString() const {
   return result ? ipv4str : "<inet_ntop_error4>";
 }
 
-}  // </namespace ofp>
+}  // namespace ofp

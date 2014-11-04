@@ -1,23 +1,4 @@
-//  ===== ---- ofp/yaml/encoder.cpp ------------------------*- C++ -*- =====  //
-//
-//  Copyright (c) 2013 William W. Fisher
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//
-//  ===== ------------------------------------------------------------ =====  //
-/// \file
-/// \brief Implements yaml::Encoder class.
-//  ===== ------------------------------------------------------------ =====  //
+// Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/yaml/encoder.h"
 #include "ofp/yaml/yhello.h"
@@ -46,8 +27,8 @@
 #include "ofp/yaml/yflowremoved.h"
 #include "ofp/yaml/ymetermod.h"
 
-namespace ofp {   // <namespace ofp>
-namespace yaml {  // <namespace yaml>
+namespace ofp {
+namespace yaml {
 
 Encoder::Encoder(ChannelFinder finder)
     : errorStream_{error_},
@@ -303,7 +284,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     }
     default:
       log::info("yaml::Encoder::encodeMsg: Unsupported message type:",
-                int(header_.type()));
+                static_cast<int>(header_.type()));
       break;
   }
 }
@@ -313,5 +294,5 @@ Channel *Encoder::NullChannelFinder(const DatapathID &datapathId,
   return nullptr;
 }
 
-}  // </namespace yaml>
-}  // </namespace ofp>
+}  // namespace yaml
+}  // namespace ofp
