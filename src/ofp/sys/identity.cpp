@@ -10,14 +10,14 @@ using namespace ofp::sys;
 // it uses SSL_CTX_get_app_data.
 
 const int SSL_CTX_ASIO_PTR =
-    SSL_CTX_get_ex_new_index(0, (void *)"ctx_asio", nullptr, nullptr, nullptr);
-const int SSL_CTX_IDENTITY_PTR = SSL_CTX_get_ex_new_index(
-    0, (void *)"ctx_identity", nullptr, nullptr, nullptr);
+    SSL_CTX_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
+const int SSL_CTX_IDENTITY_PTR = 
+    SSL_CTX_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 
 const int SSL_ASIO_PTR =
-    SSL_get_ex_new_index(0, (void *)"ssl_asio", nullptr, nullptr, nullptr);
+    SSL_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 const int SSL_IDENTITY_PTR =
-    SSL_get_ex_new_index(0, (void *)"ssl_identity", nullptr, nullptr, nullptr);
+    SSL_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 
 constexpr asio::ssl::context_base::method defaultMethod() {
 #if defined(SSL_TXT_TLSV1_2)
@@ -243,48 +243,6 @@ bool Identity::verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
 
   return true;
 }
-
-#if 0
-static std::string getSubjectAltName(X509 *cert) {
-  std::string result;
-
-  GENERAL_NAMES* gens = static_cast<GENERAL_NAMES*>(X509_get_ext_d2i(cert, NID_subject_alt_name, 0, 0));
-  for (int i = 0; i < sk_GENERAL_NAME_num(gens); ++i) {
-    GENERAL_NAME* gen = sk_GENERAL_NAME_value(gens, i);
-    if (gen->type == GEN_DNS) {
-      ASN1_IA5STRING* domain = gen->d.dNSName;
-      if (domain->type == V_ASN1_IA5STRING && domain->data && domain->length) {
-        result += "DNS:" + std::string((char *)domain->data, domain->length) + '\n';
-      } else {
-        result += "DNS:?\n";
-      }
-    } else if (gen->type == GEN_IPADD) {
-      ASN1_OCTET_STRING* ip_address = gen->d.iPAddress;
-      if (ip_address->type == V_ASN1_OCTET_STRING && ip_address->data) {
-        if (ip_address->length == 4) {
-          result += "IP:v4\n";
-        } else if (ip_address->length == 16) {
-          result += "IP:v6\n";
-        } else {
-          result += "IP:?";
-        }
-      } else {
-        result += "IP:?\n";
-      }
-    } else if (gen->type == GEN_EMAIL) {
-      ASN1_OCTET_STRING *email = gen->d.rfc822Name;
-      if (email->type == V_ASN1_IA5STRING && email->data && email->length) {
-        result += "email:" + std::string((char *)email->data, email->length) + '\n';
-      } else {
-        result += "email:?\n";
-      }
-    }
-  }
-  GENERAL_NAMES_free(gens);
-
-  return result;
-}
-#endif  // 0
 
 template <>
 void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId,

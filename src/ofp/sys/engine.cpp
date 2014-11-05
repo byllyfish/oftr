@@ -202,45 +202,6 @@ void Engine::stop(Milliseconds timeout) {
   }
 }
 
-#if 0
-void Engine::openAuxChannel(UInt8 auxID, Channel::Transport transport,
-                            Connection *mainConnection) {
-  // Find the localport of the mainConnection.
-  // Look up the apppropriate server object if necessary (for UDP).
-  // Create connection using AuxChannelListener and set up connection to main
-  // connection. Note that deferred from connection attempt must be sent to
-  // mainConnection.
-
-  if (transport == Channel::Transport::TCP) {
-    log::debug("openAuxChannel", auxID);
-
-    tcp::endpoint endpt =
-        convertEndpoint<tcp>(mainConnection->remoteEndpoint());
-    DefaultHandshake *hs = mainConnection->handshake();
-    ProtocolVersions versions = hs->versions();
-
-    ChannelListener::Factory listenerFactory = []() {
-      return new DefaultAuxiliaryListener;
-    };
-
-    // FIXME should Auxiliary connections use a null listenerFactory? (Use
-    // defaultauxiliarylistener by default?)
-    auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
-        this, ChannelMode::Auxiliary, versions, listenerFactory);
-
-    // FIXME we used to set datapathID and auxiliaryId here...
-    connPtr->setMainConnection(mainConnection, auxID);
-
-    Deferred<std::error_code> result = connPtr->asyncConnect(endpt);
-
-    // FIXME where does the exception go?
-    // result.done([mainConnection](Exception exc){
-    //  mainConnection
-    //});
-  }
-}
-#endif  // 0
-
 bool Engine::registerDatapath(Connection *channel) {
   DatapathID dpid = channel->datapathId();
   UInt8 auxID = channel->auxiliaryId();

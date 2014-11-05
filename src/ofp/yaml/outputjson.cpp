@@ -32,7 +32,7 @@ bool OutputJson::preflightKey(const char *Key, bool Required,
   return false;
 }
 
-void OutputJson::postflightKey(void *) { NeedComma = true; }
+void OutputJson::postflightKey(void *SaveInfo) { NeedComma = true; }
 
 unsigned OutputJson::beginSequence() {
   output("[");
@@ -47,7 +47,7 @@ bool OutputJson::preflightElement(unsigned, void *&) {
   return true;
 }
 
-void OutputJson::postflightElement(void *) { NeedComma = true; }
+void OutputJson::postflightElement(void *SaveInfo) { NeedComma = true; }
 
 unsigned OutputJson::beginFlowSequence() {
   output("[");
@@ -62,7 +62,7 @@ bool OutputJson::preflightFlowElement(unsigned, void *&) {
   return true;
 }
 
-void OutputJson::postflightFlowElement(void *) { NeedComma = true; }
+void OutputJson::postflightFlowElement(void *SaveInfo) { NeedComma = true; }
 
 void OutputJson::beginEnumScalar() {}
 

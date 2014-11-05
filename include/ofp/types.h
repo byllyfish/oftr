@@ -10,7 +10,7 @@
 #include <type_traits>   // for std::make_unsigned<T>, etc.
 #include <string>        // for std::string
 #include <cassert>       // for assert macro
-#include <ostream>       // for std::ostream (used for now)
+#include <ostream>       // for std::ostream (used for now) NOLINT
 #include <memory>        // for std::unique_ptr<T>
 #include <system_error>  // for std::error_code
 #include <chrono>

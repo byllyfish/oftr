@@ -19,35 +19,34 @@ class OutputJson : public llvm::yaml::IO {
   virtual bool outputtingJson() override { return true; }
 
   virtual unsigned beginSequence() override;
-  virtual bool preflightElement(unsigned, void *&) override;
-  virtual void postflightElement(void *) override;
+  virtual bool preflightElement(unsigned Index, void *&SaveInfo) override;
+  virtual void postflightElement(void *SaveInfo) override;
   virtual void endSequence() override;
   virtual bool canElideEmptySequence() override;
 
   virtual unsigned beginFlowSequence() override;
-  virtual bool preflightFlowElement(unsigned, void *&) override;
-  virtual void postflightFlowElement(void *) override;
+  virtual bool preflightFlowElement(unsigned Index, void *&SaveInfo) override;
+  virtual void postflightFlowElement(void *SaveInfo) override;
   virtual void endFlowSequence() override;
 
   virtual bool mapTag(llvm::StringRef Tag, bool Default = false) override;
   virtual void beginMapping() override;
   virtual void endMapping() override;
-  virtual bool preflightKey(const char *, bool, bool, bool &, void *&) override;
-  virtual void postflightKey(void *) override;
+  virtual bool preflightKey(const char *Key, bool Required, bool, bool &UseDefault, void *&SaveInfo) override;
+  virtual void postflightKey(void *SaveInfo) override;
 
   virtual void beginEnumScalar() override;
-  virtual bool matchEnumScalar(const char *, bool) override;
+  virtual bool matchEnumScalar(const char *Str, bool) override;
   virtual void endEnumScalar() override;
 
-  virtual bool beginBitSetScalar(bool &) override;
-  virtual bool bitSetMatch(const char *, bool) override;
+  virtual bool beginBitSetScalar(bool &DoClear) override;
+  virtual bool bitSetMatch(const char *Str, bool) override;
   virtual void endBitSetScalar() override;
 
-  virtual void scalarString(llvm::StringRef &) override;
-
+  virtual void scalarString(llvm::StringRef &S) override;
   virtual void scalarJson(llvm::StringRef s) override { output(s); }
 
-  virtual void setError(const llvm::Twine &) override;
+  virtual void setError(const llvm::Twine &message) override;
 
  public:
   // These are only used by operator<<. They could be private

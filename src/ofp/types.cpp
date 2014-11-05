@@ -30,9 +30,9 @@ std::string RawDataToHexDelimitedLowercase(
     const std::array<UInt8, Length> &data) {
   // Output is lower-case hexadecimal and delimited by ':'.
   const UInt8 *e = data.data();
-  const size_t bufLen = 2 * Length + Length - 1;
+  const size_t kBufLen = 2 * Length + Length - 1;
 
-  char buf[bufLen];
+  char buf[kBufLen];
   char *p = buf;
   *p++ = ToHexLowerCase(*e >> 4);
   *p++ = ToHexLowerCase(*e++ & 0x0F);
@@ -42,7 +42,7 @@ std::string RawDataToHexDelimitedLowercase(
     *p++ = ToHexLowerCase(*e++ & 0x0F);
   }
 
-  return std::string(buf, bufLen);
+  return std::string(buf, kBufLen);
 }
 
 }  // namespace ofp
