@@ -79,7 +79,8 @@ namespace std {
 template <>
 struct hash<ofp::IPv6Address> {
   size_t operator()(const ofp::IPv6Address &addr) const {
-    return hash<ofp::IPv6Address::ArrayType>{}(addr.toArray());
+    std::hash<ofp::IPv6Address::ArrayType> h;
+    return h(addr.toArray());
   }
 };
 

@@ -170,7 +170,7 @@ bool Prerequisites::check(OXMIterator begin, OXMIterator end) const {
     } else {
       if (checkPreqValue(preqType, preq, preqEnd, begin, end, &conflict))
         return true;
-      ++preq;  //? TODO
+      ++preq;  // TODO(bfish):
     }
   }
 

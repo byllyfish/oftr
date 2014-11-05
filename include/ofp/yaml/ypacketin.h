@@ -8,7 +8,6 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_PACKET_IN
 // msg:
 //   buffer_id: <UInt32>            { Required }
@@ -21,7 +20,6 @@ namespace yaml {
 //   cookie: <UInt64>               { Required }
 //   match: <Match>
 //   data: <Bytes>                  { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::PacketIn> {

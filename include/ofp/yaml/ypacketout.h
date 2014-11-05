@@ -8,14 +8,12 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_PACKET_OUT
 // msg:
 //   buffer_id: <UInt32>      { Required }
 //   in_port: <UInt32>        { Required }
 //   actions: [ <Action> ]    { Required }
 //   data: <Bytes>            { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::PacketOut> {

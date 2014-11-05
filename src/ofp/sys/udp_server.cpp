@@ -158,7 +158,6 @@ void UDP_Server::listen(const IPv6Endpoint &localEndpt,
                         std::error_code &error) {
   // Handle case where IPv6 is not supported on this system.
   udp::endpoint endpt = convertEndpoint<udp>(localEndpt);
-  ;
   asio::ip::address addr = endpt.address();
 
   socket_.open(endpt.protocol(), error);
@@ -180,7 +179,6 @@ void UDP_Server::asyncReceive() {
   socket_.async_receive_from(
       asio::buffer(message_.mutableData(MaxDatagramLength), MaxDatagramLength),
       sender_, [this, self](const asio::error_code &err, size_t bytes_recvd) {
-
         if (err == asio::error::operation_aborted) return;
 
         if (err) {

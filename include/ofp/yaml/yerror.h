@@ -9,13 +9,11 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_ERROR
 // msg:
 //   type: <UInt16>    { Required }
 //   code: <UInt16>    { Required }
 //   data: <Bytes>     { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::Error> {

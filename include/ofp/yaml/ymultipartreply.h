@@ -23,14 +23,12 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_MULTIPART_REPLY
 // msg:
 //   type: <OFPMultipartType>    { Required }
 //   flags: <UInt16>             { Required }
 //   body:
 //       { Depends on OFPMultipartType }
-//...
 
 template <>
 struct MappingTraits<ofp::MultipartReply> {

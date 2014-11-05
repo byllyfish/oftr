@@ -8,12 +8,10 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_TABLE_MOD
 // msg:
 //   table_id: <UInt8>    { Required }
 //   config: <UInt32>     { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::TableMod> {

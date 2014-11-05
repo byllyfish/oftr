@@ -51,8 +51,9 @@ namespace std {
 template <>
 struct hash<ofp::IPv6Endpoint> {
   size_t operator()(const ofp::IPv6Endpoint &endpt) const {
-    return hash<ofp::IPv6Address>{}(endpt.address()) ^
-           hash<unsigned>{}(endpt.port());
+    std::hash<ofp::IPv6Address> h;
+    std::hash<unsigned> i;
+    return h(endpt.address()) ^ i(endpt.port());
   }
 };
 

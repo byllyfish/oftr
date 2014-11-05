@@ -10,11 +10,9 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_HELLO
 // msg:                       { Optional; versions defaults to All. }
 //   versions: [ <UInt8> ]    { Optional }
-//...
 
 template <>
 struct MappingTraits<ofp::Hello> {

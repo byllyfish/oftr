@@ -8,12 +8,10 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_ROLE_REQUEST
 // msg:
 //   role: <UInt32>             { Required }
 //   generation_id: <UInt64>    { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::RoleRequest> {

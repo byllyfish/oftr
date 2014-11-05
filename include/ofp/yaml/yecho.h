@@ -10,11 +10,9 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_ECHO_REQUEST
 // msg:
 //   data: <Bytes>    { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::EchoRequest> {
@@ -33,11 +31,9 @@ struct MappingTraits<ofp::EchoRequestBuilder> {
   }
 };
 
-//---
 // type: OFPT_ECHO_REPLY
 // msg:
 //   data: <Bytes>    { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::EchoReply> {

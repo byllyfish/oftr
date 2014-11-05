@@ -9,12 +9,10 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_PORT_STATUS
 // msg:
 //   reason: <UInt8>    { Required }
 //   port: <Port>       { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::PortStatus> {

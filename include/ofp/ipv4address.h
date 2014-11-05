@@ -57,7 +57,8 @@ namespace std {
 template <>
 struct hash<ofp::IPv4Address> {
   size_t operator()(const ofp::IPv4Address &addr) const {
-    return hash<ofp::IPv4Address::ArrayType>{}(addr.toArray());
+    std::hash<ofp::IPv4Address::ArrayType> h;
+    return h(addr.toArray());
   }
 };
 

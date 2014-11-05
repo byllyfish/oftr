@@ -8,7 +8,6 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_PORT_MOD
 // msg:
 //   port_no: <UInt32>         { Required }
@@ -16,7 +15,6 @@ namespace yaml {
 //   config: <UInt32>          { Required }
 //   mask: <UInt32>            { Required }
 //   advertise: <UInt32>       { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::PortMod> {

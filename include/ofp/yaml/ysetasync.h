@@ -8,7 +8,6 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_SET_ASYNC
 // msg:
 //   packet_in_mask_master: <UInt32>       { Required }
@@ -17,7 +16,6 @@ namespace yaml {
 //   port_status_mask_slave: <UInt32>      { Required }
 //   flow_removed_mask_master: <UInt32>    { Required }
 //   flow_removed_mask_slave: <UInt32>     { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::SetAsync> {

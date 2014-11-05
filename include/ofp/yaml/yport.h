@@ -18,7 +18,6 @@ struct PortInserter {};
 namespace llvm {
 namespace yaml {
 
-//---
 // <Port> :=
 //   port_no: <UInt32>         { Required }
 //   hw_addr: <EnetAddress>    { Required }
@@ -31,7 +30,6 @@ namespace yaml {
 //   peer: <UInt32>            { Required }
 //   curr_speed: <UInt32>      { Required }
 //   max_speed: <UInt32>       { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::Port> {

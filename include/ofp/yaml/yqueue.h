@@ -16,7 +16,6 @@ struct QueueInserter {};
 namespace llvm {
 namespace yaml {
 
-//---
 // <Queue> := {
 //   queue_id: <UInt32>                 #required
 //   port: <UInt32>                     #required
@@ -24,7 +23,6 @@ namespace yaml {
 //   max_rate: <UInt16>                 #default: 0xffff
 //   properties: [ <QueuePropertyX>  ]  #required
 // }
-//...
 
 template <>
 struct MappingTraits<ofp::Queue> {

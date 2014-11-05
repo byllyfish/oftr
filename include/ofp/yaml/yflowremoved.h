@@ -8,7 +8,6 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_FLOW_REMOVED
 // msg:
 //   cookie: <UInt64>           { Required }
@@ -22,7 +21,6 @@ namespace yaml {
 //   packet_count: <UInt64>     { Required }
 //   byte_count: <UInt64>       { Required }
 //   match: [ <MatchItem> ]     { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::FlowRemoved> {

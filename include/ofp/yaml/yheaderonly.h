@@ -8,10 +8,8 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_FEATURES_REQUEST
 // msg:
-//...
 
 template <>
 struct MappingTraits<ofp::FeaturesRequest> {
@@ -23,10 +21,8 @@ struct MappingTraits<ofp::FeaturesRequestBuilder> {
   static void mapping(IO &io, ofp::FeaturesRequestBuilder &msg) {}
 };
 
-//---
 // type: OFPT_GET_ASYNC_REQUEST
 // msg:
-//...
 
 template <>
 struct MappingTraits<ofp::GetAsyncRequest> {
@@ -38,10 +34,8 @@ struct MappingTraits<ofp::GetAsyncRequestBuilder> {
   static void mapping(IO &io, ofp::GetAsyncRequestBuilder &msg) {}
 };
 
-//---
 // type: OFPT_GET_CONFIG_REQUEST
 // msg:
-//...
 
 template <>
 struct MappingTraits<ofp::GetConfigRequest> {
@@ -53,10 +47,8 @@ struct MappingTraits<ofp::GetConfigRequestBuilder> {
   static void mapping(IO &io, ofp::GetConfigRequestBuilder &msg) {}
 };
 
-//---
 // type: OFPT_BARRIER_REQUEST
 // msg:
-//...
 
 template <>
 struct MappingTraits<ofp::BarrierRequest> {
@@ -68,10 +60,8 @@ struct MappingTraits<ofp::BarrierRequestBuilder> {
   static void mapping(IO &io, ofp::BarrierRequestBuilder &msg) {}
 };
 
-//---
 // type: OFPT_BARRIER_REPLY
 // msg:
-//...
 
 template <>
 struct MappingTraits<ofp::BarrierReply> {

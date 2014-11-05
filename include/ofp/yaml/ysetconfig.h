@@ -10,12 +10,10 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_SET_CONFIG
 // msg:
 //   flags: <UInt16>            { Required }
 //   miss_send_len: <UInt16>    { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::SetConfig> {

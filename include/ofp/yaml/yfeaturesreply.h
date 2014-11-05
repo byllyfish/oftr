@@ -11,7 +11,6 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_FEATURES_REPLY
 // msg:
 //   datapath_id: <DatapathID>    { Required }
@@ -21,7 +20,6 @@ namespace yaml {
 //   capabilities: <UInt32>       { Required }
 //   actions: <UInt32>            { Optional }
 //   ports: [ <Port> ]            { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::FeaturesReply> {

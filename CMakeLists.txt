@@ -541,7 +541,7 @@ include(CPack)
 #-------------------------------------------------------------------------------
 
 set(CPPLINT_PATH external/cpplint/cpplint.py)
-set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-whitespace,-build/namespaces --root=include)
+set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-build/namespaces --root=include --linelength=200)
 
 add_custom_target(cpplint
   COMMAND ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} ${LIBOFP_HEADER_FILES} ${LIBOFP_HEADERS_GENERATED} ${LIBOFP_SOURCES}

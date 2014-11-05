@@ -9,14 +9,12 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_GROUP_MOD
 // msg:
 //   command: <UInt16>        { Required }
 //   type: <UInt8>            { Required }
 //   group_id: <UInt32>       { Required }
 //   buckets: [ <Bucket> ]    { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::GroupMod> {

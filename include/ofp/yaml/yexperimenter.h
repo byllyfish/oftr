@@ -9,13 +9,11 @@
 namespace llvm {
 namespace yaml {
 
-//---
 // type: OFPT_EXPERIMENTER
 // msg:
 //   experimenter: <UInt32>      { Required }
 //   exp_type: <UInt32>          { Required }
 //   data: <Bytes>  { Required }
-//...
 
 template <>
 struct MappingTraits<ofp::Experimenter> {
