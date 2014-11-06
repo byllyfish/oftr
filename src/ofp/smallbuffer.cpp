@@ -264,20 +264,14 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
 
 size_t SmallBuffer::computeCapacity(size_t length) noexcept {
   assert(length > IntrinsicBufSize);
-  assert(length <= 65536);
 
   if (length <= 1024) return 1024;
   if (length <= 8192) return 8192;
   if (length <= 65536) return 65536;
+  if (length <= 524288) return 524288;
+  if (length <= 4194304) return 4194304;
 
-  // In release code, we allow the buffer to grow to 1MB, as this is
-  // preferable to aborting.
-
-  log::error("ofp::SmallByffer: SmallBuffer >= 65536 bytes:", length);
-  if (length <= 1048576) return 1048576;
-
-  log::fatal("ofp::SmallBuffer: SmallBuffer > 1 MB:", length);
-  std::abort();
-
-  return 0;
+  log::warning("SmallBuffer capacity > 4 MB:", length);
+  
+  return 2 * length;
 }
