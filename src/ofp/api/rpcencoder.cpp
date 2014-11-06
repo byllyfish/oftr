@@ -25,7 +25,7 @@ RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn,
     // Error string will be empty if there's no content.
 
     RpcErrorResponse response{id_ ? *id_ : 0};
-    response.error.message = error();
+    response.error.message = llvm::StringRef{error()}.rtrim();
 
     int code = ERROR_CODE_INVALID_REQUEST;
     if (response.error.message.find("unknown method") != std::string::npos) {
@@ -34,6 +34,8 @@ RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn,
 
     response.error.code = code;
     conn_->rpcReply(&response);
+
+    log::warning("JSON-RPC parse error:", response.error.message);
   }
 }
 

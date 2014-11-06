@@ -65,6 +65,8 @@ void ApiConnection::onMessage(Channel *channel, const Message *message) {
     messageError.params.error = decoder.error();
     messageError.params.data = {message->data(), message->size()};
     rpcReply(&messageError);
+
+    log::warning("OpenFlow parse error:", decoder.error(), std::make_pair("connid", message->source()->connectionId()));
   }
 }
 
