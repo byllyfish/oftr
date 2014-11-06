@@ -32,14 +32,16 @@ void JsonRpc::setMaxOpenFiles() {
   struct rlimit rlp{};
 
   if (::getrlimit(RLIMIT_NOFILE, &rlp) < 0) {
-    ofp::log::error("getrlimit failed:", errno);
+    std::error_code err{errno, std::generic_category()};
+    ofp::log::error("getrlimit failed for RLIMIT_NOFILE:", err);
     return;
   }
 
-  rlp.rlim_cur = 10000;
+  rlp.rlim_cur = 1000;
 
   if (::setrlimit(RLIMIT_NOFILE, &rlp) < 0) {
-    ofp::log::error("setrlimit failed:", rlp.rlim_cur, errno);
+    std::error_code err{errno, std::generic_category()};
+    ofp::log::error("setrlimit failed for RLIMIT_NOFILE:", rlp.rlim_cur, err);
     return;
   }
 
