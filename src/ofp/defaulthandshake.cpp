@@ -26,14 +26,7 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 
   channel->setStartingXid(startingXid_);
 
-  ProtocolVersions useVersion = versions_;
-  if (startingVersion_ == OFP_VERSION_1) {
-    // If the starting version is set to 1, we'll use this version on the
-    // reconnect.
-    useVersion = ProtocolVersions{startingVersion_};
-  }
-
-  HelloBuilder msg{useVersion};
+  HelloBuilder msg{versions_};
   msg.send(channel_);
 }
 
@@ -75,8 +68,9 @@ void DefaultHandshake::onHello(const Message *message) {
     // If there are no versions in common, send an error and terminate the
     // connection.
     channel_->setVersion(versions_.highestVersion());
-    std::string explanation = "Supported Versions: ";
+    std::string explanation = "Supported versions: ";
     explanation += versions_.toString();
+    log::warning("OpenFlow incompatible version:", static_cast<int>(msgVersion), explanation, std::make_pair("connid", channel_->connectionId()));
 
     ErrorBuilder error{message->xid()};
     error.setErrorType(OFPET_HELLO_FAILED);
@@ -88,6 +82,8 @@ void DefaultHandshake::onHello(const Message *message) {
   }
 
   channel_->setVersion(version);
+
+  log::info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:", msg->protocolVersions().toString(), std::make_pair("connid", channel_->connectionId()));
 
   if (mode_ == ChannelMode::Controller) {
     FeaturesRequestBuilder reply{};

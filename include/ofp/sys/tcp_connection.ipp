@@ -110,6 +110,9 @@ void TCP_Connection<SocketType>::asyncConnect(
                     remoteEndpoint(), std::make_pair("connid", connectionId()));
 
           asyncHandshake(true);
+
+        } else {
+          log::error("TCP connect failed", std::make_pair("connid", connectionId()), err);
         }
 
         resultHandler(this, err);

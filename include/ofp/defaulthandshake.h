@@ -27,7 +27,6 @@ class DefaultHandshake : public ChannelListener {
   ChannelMode mode() const { return mode_; }
   ProtocolVersions versions() const { return versions_; }
 
-  void setStartingVersion(UInt8 version) { startingVersion_ = version; }
   void setStartingXid(UInt32 xid) { startingXid_ = xid; }
   void setConnection(sys::Connection *channel) { channel_ = channel; }
 
@@ -37,7 +36,6 @@ class DefaultHandshake : public ChannelListener {
   Factory listenerFactory_;
   ChannelMode mode_;
   UInt32 startingXid_ = 0;
-  UInt8 startingVersion_ = 0;
 
   void onHello(const Message *message);
   void onFeaturesReply(const Message *message);
