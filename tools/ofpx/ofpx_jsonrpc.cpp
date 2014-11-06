@@ -15,12 +15,33 @@ const int STDOUT = 1;
 
 int JsonRpc::run(int argc, char **argv) {
   cl::ParseCommandLineOptions(argc, argv);
-
-  // ofp::log::setOutputLevelFilter(ofp::log::Level::Trace);
+  setMaxOpenFiles();
 
   ofp::Driver driver;
   ofp::api::ApiServer server{&driver, STDIN, STDOUT};
   driver.run();
 
   return 0;
+}
+
+//-------------------------------//
+// s e t M a x O p e n F i l e s //
+//-------------------------------//
+
+void JsonRpc::setMaxOpenFiles() {
+  struct rlimit rlp{};
+
+  if (::getrlimit(RLIMIT_NOFILE, &rlp) < 0) {
+    ofp::log::error("getrlimit failed:", errno);
+    return;
+  }
+
+  rlp.rlim_cur = 10000;
+
+  if (::setrlimit(RLIMIT_NOFILE, &rlp) < 0) {
+    ofp::log::error("setrlimit failed:", rlp.rlim_cur, errno);
+    return;
+  }
+
+  ofp::log::info("Changed open file limit to", rlp.rlim_cur);
 }

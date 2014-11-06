@@ -30,6 +30,8 @@ class JsonRpc : public Subprogram {
  private:
   // --- Command-line Arguments ---
   cl::opt<bool> stdin_{"stdin", cl::desc("Take commands from standard input")};
+
+  void setMaxOpenFiles();
 };
 
 }  // namespace ofpx
