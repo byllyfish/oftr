@@ -55,8 +55,7 @@ UDP_Server::UDP_Server(PrivateToken t, Engine *engine)
 UDP_Server::~UDP_Server() {
   if (!connMap_.empty()) {
     // By this point, all connections should have removed themselves. If any
-    // exist, we need
-    // to shut them down.
+    // exist, we need to shut them down.
     log::info(connMap_.size(), "UDP connections still exist!",
               std::make_pair("connid", connId_));
 
@@ -102,18 +101,30 @@ void UDP_Server::shutdown() {
 }
 
 void UDP_Server::add(UDP_Connection *conn) {
-  connMap_.insert({conn->remoteEndpoint(), conn});
+  auto result = connMap_.insert({conn->remoteEndpoint(), conn});
+  if (!result.second) {
+    auto existing = connMap_[conn->remoteEndpoint()];
+    log::warning("UDP_Server::add: duplicate UDP connection ignored",
+                 conn->remoteEndpoint(), existing->connectionId(),
+                 std::make_pair("connid", conn->connectionId()));
+  }
 }
 
 void UDP_Server::remove(UDP_Connection *conn) {
   auto iter = connMap_.find(conn->remoteEndpoint());
-  if (iter != connMap_.end() && iter->second == conn) {
-    connMap_.erase(iter);
+  if (iter == connMap_.end()) {
+    log::warning("UDP_Server::remove: cannot find remote endpoint",
+                 conn->remoteEndpoint(),
+                 std::make_pair("connid", conn->connectionId()));
+    return;
+  }
 
+  if (iter->second == conn) {
+    connMap_.erase(iter);
   } else {
-    log::error("UDP_Server::remove - cannot find UDP connection",
-               conn->remoteEndpoint(),
-               std::make_pair("connid", conn->connectionId()));
+    log::warning("UDP_Server::remove: duplicate UDP connection ignored",
+                 conn->remoteEndpoint(),
+                 std::make_pair("connid", conn->connectionId()));
   }
 }
 

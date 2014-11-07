@@ -11,24 +11,12 @@
 #include "ofp/datapathid.h"
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/identity.h"
+#include "ofp/sys/saverestore.h"
 
 namespace ofp {
 namespace sys {
 
 OFP_BEGIN_IGNORE_PADDING
-
-// RAII Utility class to prevent modification while iterating. (Not thread-safe)
-class IterLock {
- public:
-  explicit IterLock(bool &ref, bool val = true) : val_{ref}, ref_{ref} {
-    ref_ = val;
-  }
-  ~IterLock() { ref_ = val_; }
-
- private:
-  bool val_;
-  bool &ref_;
-};
 
 class Connection;
 
@@ -80,13 +68,13 @@ class Engine {
 
   template <class UnaryFunc>
   void forEachConnection(UnaryFunc func) {
-    IterLock lock{connListLock_};
+    SaveRestore<bool> lock{connListLock_, true};
     std::for_each(connList_.begin(), connList_.end(), func);
   }
 
   template <class UnaryFunc>
   void forEachTCPServer(UnaryFunc func) {
-    IterLock lock{serverListLock_};
+    SaveRestore<bool> lock{serverListLock_, true};
     std::for_each(serverList_.begin(), serverList_.end(), func);
   }
 
@@ -99,14 +87,14 @@ class Engine {
 
   template <class UnaryPredicate>
   Connection *findConnection(UnaryPredicate func) const {
-    IterLock lock{connListLock_};
+    SaveRestore<bool> lock{connListLock_, true};
     auto iter = std::find_if(connList_.begin(), connList_.end(), func);
     return iter != connList_.end() ? *iter : nullptr;
   }
 
   template <class UnaryPredicate>
   TCP_Server *findTCPServer(UnaryPredicate func) const {
-    IterLock lock{serverListLock_};
+    SaveRestore<bool> lock{serverListLock_, true};
     auto iter = std::find_if(serverList_.begin(), serverList_.end(), func);
     return iter != serverList_.end() ? *iter : nullptr;
   }
