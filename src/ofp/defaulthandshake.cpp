@@ -70,7 +70,9 @@ void DefaultHandshake::onHello(const Message *message) {
     channel_->setVersion(versions_.highestVersion());
     std::string explanation = "Supported versions: ";
     explanation += versions_.toString();
-    log::warning("OpenFlow incompatible version:", static_cast<int>(msgVersion), explanation, std::make_pair("connid", channel_->connectionId()));
+    log::warning("OpenFlow incompatible version:", static_cast<int>(msgVersion),
+                 explanation,
+                 std::make_pair("connid", channel_->connectionId()));
 
     ErrorBuilder error{message->xid()};
     error.setErrorType(OFPET_HELLO_FAILED);
@@ -83,7 +85,9 @@ void DefaultHandshake::onHello(const Message *message) {
 
   channel_->setVersion(version);
 
-  log::info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:", msg->protocolVersions().toString(), std::make_pair("connid", channel_->connectionId()));
+  log::info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:",
+            msg->protocolVersions().toString(),
+            std::make_pair("connid", channel_->connectionId()));
 
   if (mode_ == ChannelMode::Controller) {
     FeaturesRequestBuilder reply{};

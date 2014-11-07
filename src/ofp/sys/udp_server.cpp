@@ -261,7 +261,7 @@ void UDP_Server::dispatchMessage() {
       conn->postMessage(&message_);
 
     } else {
-      log::info("Unexpected message ignored: ", message_);
+      log::warning("Unexpected UDP datagram ignored: ", message_);
     }
 
   } else {

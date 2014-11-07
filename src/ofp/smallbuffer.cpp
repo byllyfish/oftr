@@ -272,6 +272,6 @@ size_t SmallBuffer::computeCapacity(size_t length) noexcept {
   if (length <= 4194304) return 4194304;
 
   log::warning("SmallBuffer capacity > 4 MB:", length);
-  
+
   return 2 * length;
 }

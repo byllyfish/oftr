@@ -29,7 +29,7 @@ int JsonRpc::run(int argc, char **argv) {
 //-------------------------------//
 
 void JsonRpc::setMaxOpenFiles() {
-  struct rlimit rlp{};
+  struct rlimit rlp;
 
   if (::getrlimit(RLIMIT_NOFILE, &rlp) < 0) {
     std::error_code err{errno, std::generic_category()};

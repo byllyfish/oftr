@@ -112,7 +112,8 @@ void TCP_Connection<SocketType>::asyncConnect(
           asyncHandshake(true);
 
         } else {
-          log::error("TCP connect failed", std::make_pair("connid", connectionId()), err);
+          log::error("TCP connect failed",
+                     std::make_pair("connid", connectionId()), err);
         }
 
         resultHandler(this, err);
