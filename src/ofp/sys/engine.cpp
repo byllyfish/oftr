@@ -80,7 +80,7 @@ UInt64 Engine::connectUDP(ChannelMode mode, UInt64 securityId,
   }
 
   if (udpConnect_) {
-    connId = udpConnect_->connect(remoteEndpoint, listenerFactory, error);
+    connId = udpConnect_->connect(remoteEndpoint, securityId, listenerFactory, error);
   }
 
   return connId;
@@ -97,11 +97,14 @@ size_t Engine::close(UInt64 connId) {
       return 1;
     }
 
-    Channel *channel = findConnection(
-        [connId](Channel *chan) { return chan->connectionId() == connId; });
+    Connection *conn = findConnection(
+        [connId](Connection *c) { return c->connectionId() == connId; });
 
-    if (channel) {
-      channel->shutdown();
+    if (conn) {
+      conn->shutdown();
+      if (conn->shutdownRequiresManualDelete()) {
+        delete conn;
+      }
       return 1;
     }
 
@@ -109,6 +112,8 @@ size_t Engine::close(UInt64 connId) {
 
   } else {
     // Close all servers and connections.
+    log::info("Close all servers and connections");
+    
     size_t result = serverList_.size() + connList_.size();
 
     ServerList servers;
@@ -119,8 +124,11 @@ size_t Engine::close(UInt64 connId) {
 
     ConnectionList conns;
     conns.swap(connList_);
-    for (auto chan : conns) {
-      chan->shutdown();
+    for (auto conn : conns) {
+      conn->shutdown();
+      if (conn->shutdownRequiresManualDelete()) {
+        delete conn;
+      }
     }
 
     if (udpConnect_) {

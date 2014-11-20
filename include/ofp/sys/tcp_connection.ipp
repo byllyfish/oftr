@@ -17,7 +17,7 @@ namespace detail {
 template <class SocketType>
 inline asio::ssl::context *sslContext(Engine *engine, UInt64 securityId) {
   assert(securityId != 0);
-  return log::fatal_if_null(engine->securityContext(securityId));
+  return log::fatal_if_null(engine->securityContext(securityId), LOG_LINE());
 }
 
 template <>
@@ -214,7 +214,12 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   assert(msgLength > sizeof(Header));
-  assert(socket_.is_open());
+  
+  // Do nothing if socket is not open.
+  if (!socket_.is_open()) {
+    log::debug("asyncReadMessage called with socket closed.");
+    return;
+  }
 
   auto self(this->shared_from_this());
 
@@ -254,16 +259,14 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
                        : asio::ssl::stream_base::server;
 
   // Set up verify callback.
-  Identity::beforeHandshake(connectionId(), socket_.next_layer(),
-                            remoteEndpoint(), isClient);
+  Identity::beforeHandshake(this, socket_.next_layer().native_handle(), isClient);
 
   OFP_BEGIN_IGNORE_PADDING
 
   auto self(this->shared_from_this());
   socket_.async_handshake(mode,
-                          [this, self, isClient](const asio::error_code &err) {
-    Identity::afterHandshake(connectionId(), socket_.next_layer(),
-                             remoteEndpoint(), isClient, err);
+                          [this, self](const asio::error_code &err) {
+    Identity::afterHandshake(this, socket_.next_layer().native_handle(), err);
     if (!err) {
       channelUp();
     }

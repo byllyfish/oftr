@@ -93,7 +93,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
 
   while (input) {
     // Read the message header.
-    char *msg = (char *)message.mutableData(sizeof(ofp::Header));
+    char *msg = reinterpret_cast<char *>(message.mutableData(sizeof(ofp::Header)));
 
     input.read(msg, sizeof(ofp::Header));
     if (!input) {
@@ -108,7 +108,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
     }
 
     // Read the message body.
-    msg = (char *)message.mutableData(msgLen);
+    msg = reinterpret_cast<char *>(message.mutableData(msgLen));
     std::streamsize bodyLen = ofp::Signed_cast(msgLen - sizeof(ofp::Header));
 
     input.read(msg + sizeof(ofp::Header), bodyLen);

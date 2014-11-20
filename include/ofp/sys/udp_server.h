@@ -26,6 +26,7 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
 
  public:
   static std::shared_ptr<UDP_Server> create(Engine *engine, ChannelMode mode,
+                                            UInt64 securityId,
                                             const IPv6Endpoint &localEndpt,
                                             ProtocolVersions versions,
                                             UInt64 connId,
@@ -33,13 +34,13 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   static std::shared_ptr<UDP_Server> create(Engine *engine,
                                             std::error_code &error);
 
-  UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+  UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode, UInt64 securityId,
              ProtocolVersions versions, UInt64 connId);
   UDP_Server(PrivateToken t, Engine *engine);
   ~UDP_Server();
 
   // Make an outgoing connection.
-  UInt64 connect(const IPv6Endpoint &remoteEndpt,
+  UInt64 connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
                  ChannelListener::Factory factory, std::error_code &error);
 
   UInt64 connectionId() const { return connId_; }
@@ -49,15 +50,18 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   // Used by UDP_Connections to manage their lifetimes.
   void add(UDP_Connection *conn);
   void remove(UDP_Connection *conn);
+  UDP_Connection *findConnection(const IPv6Endpoint &endpt);
 
-  void write(const void *data, size_t length);
-  void flush(udp::endpoint endpt, UInt64 connId);
+  void send(udp::endpoint endpt, UInt64 connId, const void *data, size_t length);
+
+  //void write(const void *data, size_t length);
+  //void flush(udp::endpoint endpt, UInt64 connId);
 
   Engine *engine() const { return engine_; }
 
  private:
   using ConnectionMap = std::unordered_map<IPv6Endpoint, UDP_Connection *>;
-  enum { MaxDatagramLength = 2000 };  // FIXME?
+  enum { MaxDatagramLength = 4000 };  // FIXME?
 
   Engine *engine_;
   ChannelMode mode_;
@@ -65,9 +69,10 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   udp::socket socket_;
   udp::endpoint sender_;
   udp protocol_ = udp::v6();
-  Message message_;
+  ByteList buffer_;
   ConnectionMap connMap_;
   UInt64 connId_ = 0;
+  UInt64 securityId_ = 0;
   std::deque<Datagram> datagrams_;
 
   void asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error);
@@ -75,7 +80,7 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   void asyncReceive();
   void asyncSend();
 
-  void dispatchMessage();
+  void datagramReceived();
 };
 
 OFP_END_IGNORE_PADDING

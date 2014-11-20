@@ -52,6 +52,10 @@ class Connection : public Channel {
 
   void setStartingXid(UInt32 xid) override { nextXid_ = xid; }
 
+  /// Does this class require a delete() to finish shutdown? (See
+  /// UDP_Connection.) FIXME(bfish) - replace this with a flags_ field.
+  virtual bool shutdownRequiresManualDelete() const { return false; }
+
  private:
   using AuxiliaryList = std::vector<Connection *>;
 

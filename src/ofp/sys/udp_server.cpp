@@ -11,11 +11,12 @@ using namespace ofp;
 using namespace ofp::sys;
 
 std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelMode mode,
+                                               UInt64 securityId,
                                                const IPv6Endpoint &localEndpt,
                                                ProtocolVersions versions,
                                                UInt64 connId,
                                                std::error_code &error) {
-  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, mode,
+  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, mode, securityId,
                                           versions, connId);
   ptr->asyncListen(localEndpt, error);
   return ptr;
@@ -32,13 +33,13 @@ std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine,
 }
 
 UDP_Server::UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
-                       ProtocolVersions versions, UInt64 connId)
+                       UInt64 securityId, ProtocolVersions versions, UInt64 connId)
     : engine_{engine},
       mode_{mode},
       versions_{versions},
       socket_{engine->io()},
-      message_{nullptr},
-      connId_{connId} {
+      connId_{connId},
+      securityId_{securityId} {
   datagrams_.emplace_back();
 }
 
@@ -47,8 +48,8 @@ UDP_Server::UDP_Server(PrivateToken t, Engine *engine)
       mode_{ChannelMode::Raw},
       versions_{ProtocolVersions::All},
       socket_{engine->io()},
-      message_{nullptr},
-      connId_{0} {
+      connId_{0},
+      securityId_{0} {
   datagrams_.emplace_back();
 }
 
@@ -77,6 +78,7 @@ UDP_Server::~UDP_Server() {
 }
 
 UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt,
+                           UInt64 securityId,
                            ChannelListener::Factory factory,
                            std::error_code &error) {
   // Convert remoteEndpt to IPv6 address format if necessary.
@@ -85,7 +87,7 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt,
     return 0;
   }
 
-  auto conn = new UDP_Connection(this, mode_, versions_, factory);
+  auto conn = new UDP_Connection(this, mode_, securityId, versions_, factory);
   conn->connect(endpt);
   return conn->connectionId();
 }
@@ -128,6 +130,27 @@ void UDP_Server::remove(UDP_Connection *conn) {
   }
 }
 
+UDP_Connection *UDP_Server::findConnection(const IPv6Endpoint &endpt) {
+  auto iter = connMap_.find(endpt);
+  if (iter != connMap_.end()) {
+    return iter->second;
+  }
+
+  return nullptr;
+}
+
+void UDP_Server::send(udp::endpoint endpt, UInt64 connId, const void *data, size_t length) {
+  assert(!datagrams_.empty());
+
+  Datagram &datagram = datagrams_.back();
+  datagram.write(data, length);
+  datagram.setDestination(endpt);
+  datagram.setConnectionId(connId);
+
+  asyncSend();
+}
+
+#if 0
 void UDP_Server::write(const void *data, size_t length) {
   assert(!datagrams_.empty());
   datagrams_.back().write(data, length);
@@ -142,6 +165,7 @@ void UDP_Server::flush(udp::endpoint endpt, UInt64 connId) {
 
   asyncSend();
 }
+#endif //0
 
 void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt,
                              std::error_code &error) {
@@ -187,8 +211,10 @@ void UDP_Server::listen(const IPv6Endpoint &localEndpt,
 void UDP_Server::asyncReceive() {
   auto self(this->shared_from_this());
 
+  buffer_.resize(MaxDatagramLength);
+
   socket_.async_receive_from(
-      asio::buffer(message_.mutableData(MaxDatagramLength), MaxDatagramLength),
+      asio::buffer(buffer_.mutableData(), buffer_.size()),
       sender_, [this, self](const asio::error_code &err, size_t bytes_recvd) {
         if (err == asio::error::operation_aborted) return;
 
@@ -196,17 +222,9 @@ void UDP_Server::asyncReceive() {
           log::error("Error receiving datagram",
                      std::make_pair("connid", connId_), err);
 
-        } else if (bytes_recvd < sizeof(Header)) {
-          log::error("Small datagram ignored:", bytes_recvd,
-                     std::make_pair("connid", connId_));
-
-        } else if (message_.header()->length() != bytes_recvd) {
-          log::error("Mismatch between datagram size and header length:",
-                     message_, std::make_pair("connid", connId_));
-
         } else {
-          message_.shrink(bytes_recvd);
-          dispatchMessage();
+          buffer_.resize(bytes_recvd);
+          datagramReceived();
         }
 
         asyncReceive();
@@ -219,15 +237,15 @@ void UDP_Server::asyncSend() {
   const Datagram &datagram = datagrams_.back();
   datagrams_.emplace_back();
 
-  log::trace("Write", datagram.connectionId(), datagram.data(),
-             datagram.size());
+  //log::trace("Write", datagram.connectionId(), datagram.data(),
+  //           datagram.size());
 
   socket_.async_send_to(asio::buffer(datagram.data(), datagram.size()),
                         datagram.destination(),
                         [this, self, &datagram](const asio::error_code &err,
                                                 size_t bytesTransferred) {
     if (err == asio::error::operation_aborted) {
-      log::error("UDP_Server::asyncSend: operation_aborted");
+      log::warning("UDP_Server::asyncSend: operation_aborted");
       return;
     }
 
@@ -241,10 +259,10 @@ void UDP_Server::asyncSend() {
   });
 }
 
-void UDP_Server::dispatchMessage() {
+void UDP_Server::datagramReceived() {
+  #if 0
   // If the message is an EchoRequest, reply immediately; it doesn't matter
   // if there is an existing connection or not.
-
   if (message_.type() == EchoRequest::type()) {
     auto request = EchoRequest::cast(&message_);
     if (request) {
@@ -256,28 +274,22 @@ void UDP_Server::dispatchMessage() {
     }
     return;
   }
+  #endif //0
 
   // Lookup sender_ to find an existing UDP_Connection. If it exists, dispatch
-  // incoming message to that connection. If there is no related connection
-  // and the incoming message is a HELLO, open a new connection. Otherwise,
-  // drop the message.
+  // incoming message to that connection. If there is no related connection,
+  // open a new connection.
 
-  auto iter = connMap_.find(convertEndpoint<udp>(sender_));
+  auto conn = findConnection(convertEndpoint<udp>(sender_));
+  if (!conn) {
+    // TODO(bfish): check if this UDP server allows incoming UDP connections...
 
-  if (iter == connMap_.end()) {
-    if (message_.type() == Hello::type()) {
-      auto conn = new UDP_Connection(this, mode_, versions_, nullptr);
-      conn->accept(sender_);
-      message_.setSource(conn);
-      conn->postMessage(&message_);
+    conn = new UDP_Connection(this, mode_, securityId_, versions_, nullptr);
+    conn->accept(sender_);
+  }
 
-    } else {
-      log::warning("Unexpected UDP datagram ignored: ", message_);
-    }
-
-  } else {
-    // Dispatch incoming message to existing connection.
-    message_.setSource(iter->second);
-    iter->second->postMessage(&message_);
+  conn->datagramReceived(buffer_.data(), buffer_.size());
+  if (conn->isShutdown()) {
+    delete conn;
   }
 }

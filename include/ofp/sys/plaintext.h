@@ -56,6 +56,8 @@ class Plaintext : private StreamType, public asio::ssl::stream_base {
     // Shutdown immediately succeeds.
     handler(asio::error_code{});
   }
+
+  void *native_handle() const { return nullptr; }
 };
 
 }  // namespace sys

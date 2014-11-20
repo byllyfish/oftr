@@ -50,6 +50,7 @@ set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/in
 
 # Specify additional definitions.
 
+#set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_ENABLE_HANDLER_TRACKING")
 set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS")
 
 # Specify the default set of compiler flags for all sources, including third
@@ -148,6 +149,7 @@ set(LIBOFP_SOURCES
 	src/ofp/standardmatch.cpp
 	src/ofp/sys/asio_utils.cpp
 	src/ofp/sys/connection.cpp
+  src/ofp/sys/dtls_adapter.cpp
 	src/ofp/sys/engine.cpp
   src/ofp/sys/identity.cpp
 	src/ofp/sys/tcp_server.cpp

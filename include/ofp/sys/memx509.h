@@ -8,6 +8,8 @@
 namespace ofp {
 namespace sys {
 
+OFP_BEGIN_IGNORE_PADDING
+
 class MemX509 {
  public:
   explicit MemX509(X509 *cert, bool own = false) : cert_{cert}, own_{own} {}
@@ -48,6 +50,8 @@ class MemX509 {
   X509 *cert_ = nullptr;
   bool own_;
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace sys
 }  // namespace ofp

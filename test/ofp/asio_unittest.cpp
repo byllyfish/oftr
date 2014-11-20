@@ -40,5 +40,30 @@ TEST(asio, async_connect_v6) {
 
   service.run();
 
+  EXPECT_TRUE(socket.is_open());
   EXPECT_EQ(asio::error::connection_refused, result);
+
+  socket.close();
+  EXPECT_FALSE(socket.is_open());
+}
+
+TEST(asio, chrono_time_traits) {
+  // Make sure that there is no overflow in the implementation of duration_cast
+  // in asio::detail::chrono_time_traits.
+  //
+  // This test was written on Mac OS X; it may need to be revised for systems
+  // where the steady_clock has less than nanosecond precision.
+
+  using Clock = std::chrono::steady_clock;
+  using TimeTraits = asio::detail::chrono_time_traits<Clock, asio::wait_traits<Clock>>;
+
+  const int64_t value = 9223231944883008317LL;
+  std::chrono::nanoseconds nano{value};
+
+  TimeTraits::posix_time_duration test1{nano};
+  EXPECT_EQ(value, test1.ticks());
+
+  EXPECT_EQ(value/1000000000, test1.total_seconds());
+  EXPECT_EQ(value/1000000, test1.total_milliseconds());
+  EXPECT_EQ(value/1000, test1.total_microseconds());
 }

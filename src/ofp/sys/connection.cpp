@@ -26,6 +26,9 @@ Connection::~Connection() {
       for (auto conn : auxList_) {
         conn->mainConn_ = conn;
         conn->shutdown();
+        if (conn->shutdownRequiresManualDelete()) {
+          delete conn;
+        }
       }
 
     } else {

@@ -7,6 +7,8 @@
 #include "ofp/driver.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/protocolversions.h"
+#include "ofp/sys/dtls_adapter.h"
+#include "ofp/bytelist.h"
 
 namespace ofp {
 namespace sys {
@@ -17,7 +19,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class UDP_Connection : public Connection {
  public:
-  UDP_Connection(UDP_Server *server, ChannelMode mode,
+  UDP_Connection(UDP_Server *server, ChannelMode mode, UInt64 securityId,
                  ProtocolVersions versions, ChannelListener::Factory factory);
   ~UDP_Connection();
 
@@ -31,14 +33,30 @@ class UDP_Connection : public Connection {
   ChannelTransport transport() const override {
     return ChannelTransport::UDP_Plaintext;
   }
+
   IPv6Endpoint remoteEndpoint() const override;
   IPv6Endpoint localEndpoint() const override;
 
+  void datagramReceived(const void *data, size_t length);
+  bool isShutdown() const { return isShutdown_; }
+
+  bool shutdownRequiresManualDelete() const override { return true; }
+  
  private:
   UDP_Server *server_;
+  DTLS_Adapter dtls_;
   udp::endpoint remoteEndpt_;
+  ByteList buffer_;
+  bool isShutdown_ = false;
+  bool isHandshakeDone_ = false;
 
   void channelUp();
+
+  void sendCiphertext(const void *data, size_t length);
+  void receivePlaintext(const void *data, size_t length);
+
+  static void sendCallback(const void *data, size_t length, void *userData);
+  static void receiveCallback(const void *data, size_t length, void *userData);
 };
 
 OFP_END_IGNORE_PADDING

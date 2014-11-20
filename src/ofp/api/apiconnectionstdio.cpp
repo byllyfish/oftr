@@ -15,13 +15,23 @@ ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
 void ApiConnectionStdio::setInput(int input) {
   assert(input >= 0);
 
-  input_.assign(input);
+  std::error_code err;
+  input_.assign(input, err);
+
+  if (err) {
+    log::error("ApiConnectionStdio::setInput", input, err);
+  }
 }
 
 void ApiConnectionStdio::setOutput(int output) {
   assert(output >= 0);
 
-  output_.assign(output);
+  std::error_code err;
+  output_.assign(output, err);
+
+  if (err) {
+    log::error("ApiConnectionStdio::setOutput", output, err);
+  }
 }
 
 void ApiConnectionStdio::write(const std::string &msg) {
@@ -49,7 +59,7 @@ void ApiConnectionStdio::asyncRead() {
           handleEvent(line);
           asyncRead();
         } else if (err != asio::error::eof) {
-          log::info("ApiConnection::asyncRead err", err);
+          log::error("ApiConnectionStdio::asyncRead", err);
         }
       });
 }

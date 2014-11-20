@@ -3,6 +3,8 @@
 #ifndef OFP_SYS_DATAGRAM_H_
 #define OFP_SYS_DATAGRAM_H_
 
+#include "ofp/bytelist.h"
+
 namespace ofp {
 namespace sys {
 

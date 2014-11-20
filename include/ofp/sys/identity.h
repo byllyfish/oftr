@@ -10,6 +10,8 @@
 namespace ofp {
 namespace sys {
 
+class Connection;
+
 class Identity {
  public:
   explicit Identity(const std::string &certData,
@@ -27,12 +29,11 @@ class Identity {
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
 
   template <class SocketType>
-  static void beforeHandshake(UInt64 connId, SocketType &sock,
-                              const IPv6Endpoint &remoteEndpt, bool isClient) {}
+  static void beforeHandshake(Connection *conn, SocketType *ssl,
+                              bool isClient) {}
 
   template <class SocketType>
-  static void afterHandshake(UInt64 connId, SocketType &sock,
-                             const IPv6Endpoint &remoteEndpt, bool isClient,
+  static void afterHandshake(Connection *conn, SocketType *ssl,
                              std::error_code err) {}
 
  private:
@@ -48,22 +49,24 @@ class Identity {
   std::error_code loadVerifier(const std::string &verifyData);
   std::error_code addClientCA(const std::string &verifyData);
   std::error_code prepareVerifier();
+  std::error_code prepareCookies();
 
-  static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
-                         asio::ssl::verify_context &ctx);
+  //static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
+   //                      X509_STORE_CTX *ctx);
+
+  static int openssl_verify_callback(int preverified, X509_STORE_CTX *ctx);
+  static int openssl_cookie_generate_callback(SSL *ssl, unsigned char *cookie, unsigned int *cookie_len);
+  static int openssl_cookie_verify_callback(SSL *ssl, unsigned char *cookie, unsigned int cookie_len);
 };
 
 template <>
-void Identity::beforeHandshake<EncryptedSocket>(UInt64 connId,
-                                                EncryptedSocket &sock,
-                                                const IPv6Endpoint &remoteEndpt,
+void Identity::beforeHandshake<SSL>(Connection *conn,
+                                                SSL *ssl,
                                                 bool isClient);
 
 template <>
-void Identity::afterHandshake<EncryptedSocket>(UInt64 connId,
-                                               EncryptedSocket &sock,
-                                               const IPv6Endpoint &remoteEndpt,
-                                               bool isClient,
+void Identity::afterHandshake<SSL>(Connection *conn,
+                                               SSL *ssl,
                                                std::error_code err);
 
 }  // namespace sys
