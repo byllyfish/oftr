@@ -16,7 +16,6 @@ namespace ofp {
 namespace sys {
 
 class Engine;
-class UDP_Connection;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -48,9 +47,9 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   void shutdown();
 
   // Used by UDP_Connections to manage their lifetimes.
-  void add(UDP_Connection *conn);
-  void remove(UDP_Connection *conn);
-  UDP_Connection *findConnection(const IPv6Endpoint &endpt);
+  void add(Connection *conn);
+  void remove(Connection *conn);
+  Connection *findConnection(const IPv6Endpoint &endpt);
 
   void send(udp::endpoint endpt, UInt64 connId, const void *data, size_t length);
 
@@ -60,7 +59,6 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   Engine *engine() const { return engine_; }
 
  private:
-  using ConnectionMap = std::unordered_map<IPv6Endpoint, UDP_Connection *>;
   enum { MaxDatagramLength = 4000 };  // FIXME?
 
   Engine *engine_;
@@ -70,7 +68,7 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   udp::endpoint sender_;
   udp protocol_ = udp::v6();
   ByteList buffer_;
-  ConnectionMap connMap_;
+  std::unordered_map<IPv6Endpoint, Connection *> connMap_;
   UInt64 connId_ = 0;
   UInt64 securityId_ = 0;
   std::deque<Datagram> datagrams_;

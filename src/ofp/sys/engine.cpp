@@ -102,7 +102,7 @@ size_t Engine::close(UInt64 connId) {
 
     if (conn) {
       conn->shutdown();
-      if (conn->shutdownRequiresManualDelete()) {
+      if (conn->flags() & Connection::kManualDelete) {
         delete conn;
       }
       return 1;
@@ -126,7 +126,7 @@ size_t Engine::close(UInt64 connId) {
     conns.swap(connList_);
     for (auto conn : conns) {
       conn->shutdown();
-      if (conn->shutdownRequiresManualDelete()) {
+      if (conn->flags() & Connection::kManualDelete) {
         delete conn;
       }
     }

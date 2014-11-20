@@ -102,7 +102,7 @@ void UDP_Server::shutdown() {
   socket_.close(err);
 }
 
-void UDP_Server::add(UDP_Connection *conn) {
+void UDP_Server::add(Connection *conn) {
   auto result = connMap_.insert({conn->remoteEndpoint(), conn});
   if (!result.second) {
     auto existing = connMap_[conn->remoteEndpoint()];
@@ -112,7 +112,7 @@ void UDP_Server::add(UDP_Connection *conn) {
   }
 }
 
-void UDP_Server::remove(UDP_Connection *conn) {
+void UDP_Server::remove(Connection *conn) {
   auto iter = connMap_.find(conn->remoteEndpoint());
   if (iter == connMap_.end()) {
     log::warning("UDP_Server::remove: cannot find remote endpoint",
@@ -130,7 +130,7 @@ void UDP_Server::remove(UDP_Connection *conn) {
   }
 }
 
-UDP_Connection *UDP_Server::findConnection(const IPv6Endpoint &endpt) {
+Connection *UDP_Server::findConnection(const IPv6Endpoint &endpt) {
   auto iter = connMap_.find(endpt);
   if (iter != connMap_.end()) {
     return iter->second;
@@ -284,12 +284,16 @@ void UDP_Server::datagramReceived() {
   if (!conn) {
     // TODO(bfish): check if this UDP server allows incoming UDP connections...
 
-    conn = new UDP_Connection(this, mode_, securityId_, versions_, nullptr);
-    conn->accept(sender_);
+    auto udp = new UDP_Connection(this, mode_, securityId_, versions_, nullptr);
+    udp->accept(sender_);
+    conn = udp;
   }
 
   conn->datagramReceived(buffer_.data(), buffer_.size());
-  if (conn->isShutdown()) {
+
+  // Check if both shutdown and manual delete flags are set.
+  const UInt16 kShutdownFlags = (Connection::kShutdownCalled | Connection::kManualDelete);
+  if ((conn->flags() & kShutdownFlags) == kShutdownFlags) {
     delete conn;
   }
 }

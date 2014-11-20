@@ -331,6 +331,9 @@ template <>
 void Identity::beforeHandshake<SSL>(Connection *conn,
                                                 SSL *ssl,
                                                 bool isClient) {
+  assert(conn->flags() & Connection::kRequiresHandshake);
+  assert(conn->flags() & ~Connection::kHandshakeDone);
+
   // Store connection pointer in SSL object.
   SetConnectionPtr(ssl, conn);
 
@@ -367,6 +370,11 @@ template <>
 void Identity::afterHandshake<SSL>(Connection *conn,
                                                SSL *ssl,
                                                std::error_code err) {
+  assert(conn->flags() & Connection::kRequiresHandshake);
+  assert(conn->flags() & ~Connection::kHandshakeDone);
+
+  conn->setFlags(conn->flags() | Connection::kHandshakeDone);
+
   // Retrieve identity pointer from SSL_CTX object.
   Identity *identity = GetIdentityPtr(SSL_get_SSL_CTX(ssl));
   bool isClient = !ssl->server;

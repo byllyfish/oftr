@@ -63,10 +63,6 @@ class TCP_Connection
   Buffered<SocketType> socket_;
   std::chrono::steady_clock::time_point latestActivity_;
   handler_allocator allocator_;
-  bool isChannelUp_ = false;
-
-  void channelUp();
-  void channelDown();
 
   void asyncReadHeader();
   void asyncReadMessage(size_t length);

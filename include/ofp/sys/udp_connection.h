@@ -37,20 +37,13 @@ class UDP_Connection : public Connection {
   IPv6Endpoint remoteEndpoint() const override;
   IPv6Endpoint localEndpoint() const override;
 
-  void datagramReceived(const void *data, size_t length);
-  bool isShutdown() const { return isShutdown_; }
-
-  bool shutdownRequiresManualDelete() const override { return true; }
+  void datagramReceived(const void *data, size_t length) override;
   
  private:
   UDP_Server *server_;
   DTLS_Adapter dtls_;
   udp::endpoint remoteEndpt_;
   ByteList buffer_;
-  bool isShutdown_ = false;
-  bool isHandshakeDone_ = false;
-
-  void channelUp();
 
   void sendCiphertext(const void *data, size_t length);
   void receivePlaintext(const void *data, size_t length);

@@ -26,7 +26,7 @@ Connection::~Connection() {
       for (auto conn : auxList_) {
         conn->mainConn_ = conn;
         conn->shutdown();
-        if (conn->shutdownRequiresManualDelete()) {
+        if (conn->flags() & kManualDelete) {
           delete conn;
         }
       }
@@ -125,3 +125,25 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
 
   return result;
 }
+
+
+void Connection::channelUp() {
+  if (!(flags() & kChannelUp)) {
+    setFlags(flags() | kChannelUp);
+    auto delegate = channelListener();
+    if (delegate) {
+      delegate->onChannelUp(this);
+    }
+  }
+}
+
+void Connection::channelDown() {
+  if (flags() & kChannelUp) {
+    setFlags(flags() & ~kChannelUp);
+    auto delegate = channelListener();
+    if (delegate) {
+      delegate->onChannelDown(this);
+    }
+  }
+}
+

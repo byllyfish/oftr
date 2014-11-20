@@ -37,7 +37,11 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
       socket_{engine->io(),
-              detail::sslContext<SocketType>(engine, securityId)} {}
+              detail::sslContext<SocketType>(engine, securityId)} {
+  if (securityId != 0) {
+    setFlags(flags() | kRequiresHandshake);
+  }
+}
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
@@ -47,7 +51,11 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
       socket_{std::move(socket),
-              detail::sslContext<SocketType>(engine, securityId)} {}
+              detail::sslContext<SocketType>(engine, securityId)} {
+  if (securityId != 0) {
+    setFlags(flags() | kRequiresHandshake);
+  }
+}
 
 template <class SocketType>
 TCP_Connection<SocketType>::~TCP_Connection() {
@@ -80,7 +88,11 @@ void TCP_Connection<SocketType>::flush() {
 template <class SocketType>
 void TCP_Connection<SocketType>::shutdown() {
   auto self(this->shared_from_this());
+  setFlags(flags() | Connection::kShutdownCalled);
   socket_.async_shutdown([this, self](const std::error_code &error) {
+    if (error) {
+      log::error("TCP_Connection::shutdown result", std::make_pair("connid", connectionId()), error);
+    }
     socket_.shutdownLowestLayer();
   });
 }
@@ -137,27 +149,6 @@ void TCP_Connection<SocketType>::asyncAccept() {
 }
 
 template <class SocketType>
-void TCP_Connection<SocketType>::channelUp() {
-  assert(channelListener());
-
-  channelListener()->onChannelUp(this);
-  isChannelUp_ = true;
-
-  asyncReadHeader();
-  updateLatestActivity();
-}
-
-template <class SocketType>
-void TCP_Connection<SocketType>::channelDown() {
-  if (isChannelUp_) {
-    isChannelUp_ = false;
-    if (channelListener()) {
-      channelListener()->onChannelDown(this);
-    }
-  }
-}
-
-template <class SocketType>
 void TCP_Connection<SocketType>::asyncReadHeader() {
   // Do nothing if socket is not open.
   if (!socket_.is_open()) {
@@ -206,9 +197,9 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
 
               channelDown();
             }
-
-            updateLatestActivity();
           }));
+
+  updateLatestActivity();
 }
 
 template <class SocketType>
@@ -247,9 +238,9 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
               }
               channelDown();
             }
-
-            updateLatestActivity();
           }));
+
+  updateLatestActivity();
 }
 
 template <class SocketType>
@@ -269,6 +260,7 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
     Identity::afterHandshake(this, socket_.next_layer().native_handle(), err);
     if (!err) {
       channelUp();
+      asyncReadHeader();
     }
   });
 

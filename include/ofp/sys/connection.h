@@ -54,7 +54,37 @@ class Connection : public Channel {
 
   /// Does this class require a delete() to finish shutdown? (See
   /// UDP_Connection.) FIXME(bfish) - replace this with a flags_ field.
-  virtual bool shutdownRequiresManualDelete() const { return false; }
+  //virtual bool shutdownRequiresManualDelete() const { return false; }
+
+  // UDP subclass implementation needs this to receive datagrams...
+  virtual void datagramReceived(const void *data, size_t length) {}
+
+  UInt16 flags() { return flags_; }
+  void setFlags(UInt16 flags) { flags_ = flags; }
+
+  enum {
+    /// Indicates connection has called shutdown.
+    kShutdownCalled = 0x0001,
+
+    /// Indicates creator is responsible for deletion upon shutdown.
+    kManualDelete = 0x0002,
+
+    /// Indicates handshake is required to establish connection (e.g. TLS).
+    kRequiresHandshake = 0x0004,
+
+    /// Indicates that result of handshake is available (error possible).
+    kHandshakeDone = 0x0008,
+
+    /// Indicates that channel up has been sent to channel delegate.
+    kChannelUp = 0x0010,
+  };
+
+protected:
+  /// Invoked by subclasses to inform channel delegate that channel is up.
+  void channelUp();
+
+  /// Invoked by subclasses to inform channel delegate that channel is down.
+  void channelDown();
 
  private:
   using AuxiliaryList = std::vector<Connection *>;
@@ -66,6 +96,7 @@ class Connection : public Channel {
   DatapathID datapathId_;
   UInt64 connId_ = 0;
   UInt32 nextXid_ = 0;
+  UInt16 flags_ = 0;
   UInt8 version_ = 0;
   UInt8 auxiliaryId_ = 0;
 };
