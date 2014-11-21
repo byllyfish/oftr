@@ -153,7 +153,6 @@ set(LIBOFP_SOURCES
 	src/ofp/sys/engine.cpp
   src/ofp/sys/identity.cpp
 	src/ofp/sys/tcp_server.cpp
-	src/ofp/sys/udp_connection.cpp
 	src/ofp/sys/udp_server.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp

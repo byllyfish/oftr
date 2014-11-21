@@ -6,6 +6,8 @@
 #include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
 #include "ofp/hello.h"
+#include "ofp/sys/dtls_adapter.h"
+#include "ofp/sys/plaintext_adapter.h"
 
 using namespace ofp;
 using namespace ofp::sys;
@@ -87,9 +89,15 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt,
     return 0;
   }
 
-  auto conn = new UDP_Connection(this, mode_, securityId, versions_, factory);
-  conn->connect(endpt);
-  return conn->connectionId();
+  if (securityId != 0) {
+    auto conn = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId, versions_, factory);
+    conn->connect(endpt);
+    return conn->connectionId();
+  } else {
+    auto conn = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId, versions_, factory);
+    conn->connect(endpt);
+    return conn->connectionId();
+  }
 }
 
 ofp::IPv6Endpoint UDP_Server::localEndpoint() const {
@@ -150,23 +158,6 @@ void UDP_Server::send(udp::endpoint endpt, UInt64 connId, const void *data, size
   asyncSend();
 }
 
-#if 0
-void UDP_Server::write(const void *data, size_t length) {
-  assert(!datagrams_.empty());
-  datagrams_.back().write(data, length);
-}
-
-void UDP_Server::flush(udp::endpoint endpt, UInt64 connId) {
-  assert(!datagrams_.empty());
-
-  Datagram &datagram = datagrams_.back();
-  datagram.setDestination(endpt);
-  datagram.setConnectionId(connId);
-
-  asyncSend();
-}
-#endif //0
-
 void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt,
                              std::error_code &error) {
   listen(localEndpt, error);
@@ -179,6 +170,7 @@ void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt,
 
     // Log message using the new local endpoint, if one was assigned.
     log::info("Start listening on UDP", localEndpoint(),
+              std::make_pair("tlsid", securityId_),
               std::make_pair("connid", connId_));
 
     asyncReceive();
@@ -260,22 +252,6 @@ void UDP_Server::asyncSend() {
 }
 
 void UDP_Server::datagramReceived() {
-  #if 0
-  // If the message is an EchoRequest, reply immediately; it doesn't matter
-  // if there is an existing connection or not.
-  if (message_.type() == EchoRequest::type()) {
-    auto request = EchoRequest::cast(&message_);
-    if (request) {
-      message_.mutableHeader()->setType(EchoReply::type());
-      write(message_.data(), message_.size());
-      flush(sender_, 0);
-    } else {
-      log::info("Invalid EchoRequest dropped.");
-    }
-    return;
-  }
-  #endif //0
-
   // Lookup sender_ to find an existing UDP_Connection. If it exists, dispatch
   // incoming message to that connection. If there is no related connection,
   // open a new connection.
@@ -284,9 +260,15 @@ void UDP_Server::datagramReceived() {
   if (!conn) {
     // TODO(bfish): check if this UDP server allows incoming UDP connections...
 
-    auto udp = new UDP_Connection(this, mode_, securityId_, versions_, nullptr);
-    udp->accept(sender_);
-    conn = udp;
+    if (securityId_ != 0) {
+      auto udp = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId_, versions_, nullptr);
+      udp->accept(sender_);
+      conn = udp;
+    } else {
+      auto udp = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId_, versions_, nullptr);
+      udp->accept(sender_);
+      conn = udp;
+    }
   }
 
   conn->datagramReceived(buffer_.data(), buffer_.size());

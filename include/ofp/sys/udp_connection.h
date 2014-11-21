@@ -7,7 +7,6 @@
 #include "ofp/driver.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/protocolversions.h"
-#include "ofp/sys/dtls_adapter.h"
 #include "ofp/bytelist.h"
 
 namespace ofp {
@@ -17,6 +16,7 @@ class UDP_Server;
 
 OFP_BEGIN_IGNORE_PADDING
 
+template <class AdapterType>
 class UDP_Connection : public Connection {
  public:
   UDP_Connection(UDP_Server *server, ChannelMode mode, UInt64 securityId,
@@ -41,7 +41,7 @@ class UDP_Connection : public Connection {
   
  private:
   UDP_Server *server_;
-  DTLS_Adapter dtls_;
+  AdapterType dtls_;
   udp::endpoint remoteEndpt_;
   ByteList buffer_;
 
@@ -56,5 +56,7 @@ OFP_END_IGNORE_PADDING
 
 }  // namespace sys
 }  // namespace ofp
+
+#include "ofp/sys/udp_connection.ipp"
 
 #endif  // OFP_SYS_UDP_CONNECTION_H_

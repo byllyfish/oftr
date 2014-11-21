@@ -15,13 +15,13 @@ namespace detail {
 // one is provided or abort. The SSL context for a PlaintextSocket can be null.
 
 template <class SocketType>
-inline asio::ssl::context *sslContext(Engine *engine, UInt64 securityId) {
+inline asio::ssl::context *tcpContext(Engine *engine, UInt64 securityId) {
   assert(securityId != 0);
   return log::fatal_if_null(engine->securityContext(securityId), LOG_LINE());
 }
 
 template <>
-inline asio::ssl::context *sslContext<PlaintextSocket>(Engine *engine,
+inline asio::ssl::context *tcpContext<PlaintextSocket>(Engine *engine,
                                                        UInt64 securityId) {
   assert(securityId == 0);
   return nullptr;
@@ -37,7 +37,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
       socket_{engine->io(),
-              detail::sslContext<SocketType>(engine, securityId)} {
+              detail::tcpContext<SocketType>(engine, securityId)} {
   if (securityId != 0) {
     setFlags(flags() | kRequiresHandshake);
   }
@@ -51,7 +51,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
     : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
       message_{this},
       socket_{std::move(socket),
-              detail::sslContext<SocketType>(engine, securityId)} {
+              detail::tcpContext<SocketType>(engine, securityId)} {
   if (securityId != 0) {
     setFlags(flags() | kRequiresHandshake);
   }
