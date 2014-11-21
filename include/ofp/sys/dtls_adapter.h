@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_SYS_DTLS_ADAPTER_H_
 #define OFP_SYS_DTLS_ADAPTER_H_
 
@@ -9,38 +11,38 @@ namespace ofp {
 namespace sys {
 
 class DTLS_Adapter {
-public:
+ public:
+  typedef void (*DeliverFunc)(const void *data, size_t length, void *userData);
 
-    typedef void (*DeliverFunc)(const void *data, size_t length, void *userData);
+  DTLS_Adapter(asio::ssl::context *context, DeliverFunc sendCallback,
+               DeliverFunc receiveCallback, void *userData);
+  ~DTLS_Adapter();
 
-     DTLS_Adapter(asio::ssl::context *context, DeliverFunc sendCallback, DeliverFunc receiveCallback, void *userData);
-    ~DTLS_Adapter();
+  SSL *native_handle() { return ssl_; }
 
-    SSL *native_handle() { return ssl_; }
+  void connect();
+  void accept();
 
-    void connect();
-    void accept();
+  bool isHandshakeDone() const;
 
-    bool isHandshakeDone() const;
+  void sendDatagram(const void *datagram, size_t length);
+  void datagramReceived(const void *datagram, size_t length);
+  void pollIdle();
 
-    void sendDatagram(const void *datagram, size_t length);
-    void datagramReceived(const void *datagram, size_t length);
-    void pollIdle();
+ private:
+  SSL *ssl_;
+  BIO *reading_;
+  BIO *writing_;
+  DeliverFunc sendCallback_;
+  DeliverFunc receiveCallback_;
+  void *userData_;
+  std::deque<Datagram> datagrams_;
 
-private:
-    SSL *ssl_;
-    BIO *reading_;
-    BIO *writing_;
-    DeliverFunc sendCallback_;
-    DeliverFunc receiveCallback_;
-    void *userData_;
-    std::deque<Datagram> datagrams_;
-
-    void enqueueDatagram(const void *datagram, size_t length);
-    void flushDatagrams();
+  void enqueueDatagram(const void *datagram, size_t length);
+  void flushDatagrams();
 };
 
 }  // namespace sys
 }  // namespace ofp
 
-#endif // OFP_SYS_DTLS_ADAPTER_H_
+#endif  // OFP_SYS_DTLS_ADAPTER_H_

@@ -80,7 +80,8 @@ UInt64 Engine::connectUDP(ChannelMode mode, UInt64 securityId,
   }
 
   if (udpConnect_) {
-    connId = udpConnect_->connect(remoteEndpoint, securityId, listenerFactory, error);
+    connId = udpConnect_->connect(remoteEndpoint, securityId, listenerFactory,
+                                  error);
   }
 
   return connId;
@@ -113,7 +114,7 @@ size_t Engine::close(UInt64 connId) {
   } else {
     // Close all servers and connections.
     log::info("Close all servers and connections");
-    
+
     size_t result = serverList_.size() + connList_.size();
 
     ServerList servers;

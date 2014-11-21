@@ -104,11 +104,10 @@ inline bool fatal_if_false(bool value, const Args &... args) {
 
 // Use the LOG_LINE() macro to log source code file and line number.
 // ie. a runtime assert can be written as:
-// 
+//
 //     log::fatal_if_false(condition, LOG_LINE());
-     
-#define LOG_LINE() std::make_pair(__FILE__, __LINE__)
 
+#define LOG_LINE() std::make_pair(__FILE__, __LINE__)
 
 }  // namespace log
 }  // namespace ofp

@@ -93,7 +93,8 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
 
   while (input) {
     // Read the message header.
-    char *msg = reinterpret_cast<char *>(message.mutableData(sizeof(ofp::Header)));
+    char *msg =
+        reinterpret_cast<char *>(message.mutableData(sizeof(ofp::Header)));
 
     input.read(msg, sizeof(ofp::Header));
     if (!input) {

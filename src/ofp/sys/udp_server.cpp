@@ -18,8 +18,8 @@ std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelMode mode,
                                                ProtocolVersions versions,
                                                UInt64 connId,
                                                std::error_code &error) {
-  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, mode, securityId,
-                                          versions, connId);
+  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, mode,
+                                          securityId, versions, connId);
   ptr->asyncListen(localEndpt, error);
   return ptr;
 }
@@ -35,7 +35,8 @@ std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine,
 }
 
 UDP_Server::UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
-                       UInt64 securityId, ProtocolVersions versions, UInt64 connId)
+                       UInt64 securityId, ProtocolVersions versions,
+                       UInt64 connId)
     : engine_{engine},
       mode_{mode},
       versions_{versions},
@@ -79,8 +80,7 @@ UDP_Server::~UDP_Server() {
   }
 }
 
-UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt,
-                           UInt64 securityId,
+UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
                            ChannelListener::Factory factory,
                            std::error_code &error) {
   // Convert remoteEndpt to IPv6 address format if necessary.
@@ -90,11 +90,13 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt,
   }
 
   if (securityId != 0) {
-    auto conn = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId, versions_, factory);
+    auto conn = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId,
+                                                 versions_, factory);
     conn->connect(endpt);
     return conn->connectionId();
   } else {
-    auto conn = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId, versions_, factory);
+    auto conn = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId,
+                                                      versions_, factory);
     conn->connect(endpt);
     return conn->connectionId();
   }
@@ -147,7 +149,8 @@ Connection *UDP_Server::findConnection(const IPv6Endpoint &endpt) {
   return nullptr;
 }
 
-void UDP_Server::send(udp::endpoint endpt, UInt64 connId, const void *data, size_t length) {
+void UDP_Server::send(udp::endpoint endpt, UInt64 connId, const void *data,
+                      size_t length) {
   assert(!datagrams_.empty());
 
   Datagram &datagram = datagrams_.back();
@@ -206,8 +209,8 @@ void UDP_Server::asyncReceive() {
   buffer_.resize(MaxDatagramLength);
 
   socket_.async_receive_from(
-      asio::buffer(buffer_.mutableData(), buffer_.size()),
-      sender_, [this, self](const asio::error_code &err, size_t bytes_recvd) {
+      asio::buffer(buffer_.mutableData(), buffer_.size()), sender_,
+      [this, self](const asio::error_code &err, size_t bytes_recvd) {
         if (err == asio::error::operation_aborted) return;
 
         if (err) {
@@ -229,7 +232,7 @@ void UDP_Server::asyncSend() {
   const Datagram &datagram = datagrams_.back();
   datagrams_.emplace_back();
 
-  //log::trace("Write", datagram.connectionId(), datagram.data(),
+  // log::trace("Write", datagram.connectionId(), datagram.data(),
   //           datagram.size());
 
   socket_.async_send_to(asio::buffer(datagram.data(), datagram.size()),
@@ -261,11 +264,13 @@ void UDP_Server::datagramReceived() {
     // TODO(bfish): check if this UDP server allows incoming UDP connections...
 
     if (securityId_ != 0) {
-      auto udp = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId_, versions_, nullptr);
+      auto udp = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId_,
+                                                  versions_, nullptr);
       udp->accept(sender_);
       conn = udp;
     } else {
-      auto udp = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId_, versions_, nullptr);
+      auto udp = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId_,
+                                                       versions_, nullptr);
       udp->accept(sender_);
       conn = udp;
     }
@@ -274,7 +279,8 @@ void UDP_Server::datagramReceived() {
   conn->datagramReceived(buffer_.data(), buffer_.size());
 
   // Check if both shutdown and manual delete flags are set.
-  const UInt16 kShutdownFlags = (Connection::kShutdownCalled | Connection::kManualDelete);
+  const UInt16 kShutdownFlags =
+      (Connection::kShutdownCalled | Connection::kManualDelete);
   if ((conn->flags() & kShutdownFlags) == kShutdownFlags) {
     delete conn;
   }

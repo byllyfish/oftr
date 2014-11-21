@@ -126,7 +126,6 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   return result;
 }
 
-
 void Connection::channelUp() {
   if (!(flags() & kChannelUp)) {
     log::debug("channelUp", std::make_pair("connid", connectionId()));
@@ -148,4 +147,3 @@ void Connection::channelDown() {
     }
   }
 }
-

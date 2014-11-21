@@ -20,10 +20,9 @@ const int SSL_ASIO_PTR =
 const int SSL_CONNECTION_PTR =
     SSL_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 
-
-
 static Identity *GetIdentityPtr(SSL_CTX *ctx) {
-  return ofp::log::fatal_if_null(static_cast<Identity *>(SSL_CTX_get_ex_data(ctx, SSL_CTX_IDENTITY_PTR)));
+  return ofp::log::fatal_if_null(
+      static_cast<Identity *>(SSL_CTX_get_ex_data(ctx, SSL_CTX_IDENTITY_PTR)));
 }
 
 static void SetIdentityPtr(SSL_CTX *ctx, Identity *identity) {
@@ -31,7 +30,8 @@ static void SetIdentityPtr(SSL_CTX *ctx, Identity *identity) {
 }
 
 static Connection *GetConnectionPtr(SSL *ssl) {
-  return ofp::log::fatal_if_null(static_cast<Connection *>(SSL_get_ex_data(ssl, SSL_CONNECTION_PTR)));
+  return ofp::log::fatal_if_null(
+      static_cast<Connection *>(SSL_get_ex_data(ssl, SSL_CONNECTION_PTR)));
 }
 
 static void SetConnectionPtr(SSL *ssl, Connection *conn) {
@@ -40,22 +40,22 @@ static void SetConnectionPtr(SSL *ssl, Connection *conn) {
 
 static const char *MySSLVersionString(SSL *ssl) {
   switch (SSL_version(ssl)) {
-  case SSL2_VERSION:
-    return "SSL 2.0";
-  case SSL3_VERSION:
-    return "SSL 3.0";
-  case TLS1_VERSION:
-    return "TLS 1.0";
-  case TLS1_1_VERSION:
-    return "TLS 1.1";
-  case TLS1_2_VERSION:
-    return "TLS 1.2";
-  case DTLS1_VERSION:
-    return "DTLS 1.0";
-  case DTLS1_BAD_VER:
-    return "DTLS 1.0 (bad)";
-  default:
-    return "Unknown";
+    case SSL2_VERSION:
+      return "SSL 2.0";
+    case SSL3_VERSION:
+      return "SSL 3.0";
+    case TLS1_VERSION:
+      return "TLS 1.0";
+    case TLS1_1_VERSION:
+      return "TLS 1.1";
+    case TLS1_2_VERSION:
+      return "TLS 1.2";
+    case DTLS1_VERSION:
+      return "DTLS 1.0";
+    case DTLS1_BAD_VER:
+      return "DTLS 1.0 (bad)";
+    default:
+      return "Unknown";
   }
 }
 
@@ -68,7 +68,6 @@ static bool IsDTLS(SSL *ssl) {
       return false;
   }
 }
-
 
 constexpr asio::ssl::context_base::method defaultMethod() {
 #if defined(SSL_TXT_TLSV1_2)
@@ -130,7 +129,7 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
   auto ptr = &clientSessions_[remoteEndpt];
   auto prevSession = *ptr;
   *ptr = session;
-  
+
   if (prevSession) {
     SSL_SESSION_free(prevSession);
   }
@@ -139,18 +138,20 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
 std::error_code Identity::configureContext() {
   std::error_code err;
 
-  (void) SSL_CTX_clear_options(context_.native_handle(), SSL_OP_LEGACY_SERVER_CONNECT);
-  auto options = SSL_CTX_set_options(context_.native_handle(), SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
+  (void)SSL_CTX_clear_options(context_.native_handle(),
+                              SSL_OP_LEGACY_SERVER_CONNECT);
+  auto options = SSL_CTX_set_options(context_.native_handle(),
+                                     SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
   log::debug("ConfigureContext: options", options);
 
   assert(options == (SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3));
 
-  //context_.set_options(asio::ssl::context::no_sslv2 |
+  // context_.set_options(asio::ssl::context::no_sslv2 |
   //                         asio::ssl::context::no_sslv3 |
   //                         asio::ssl::context::no_compression,
   //                     err);
 
-  //context_.clear_options();
+  // context_.clear_options();
 
   uint8_t id[] = "ofpx";
   SSL_CTX_set_session_id_context(context_.native_handle(), id, sizeof(id) - 1);
@@ -278,10 +279,11 @@ std::error_code Identity::prepareVerifier() {
   return err;
 }
 
-
 std::error_code Identity::prepareCookies() {
-  SSL_CTX_set_cookie_generate_cb(context_.native_handle(), openssl_cookie_generate_callback);
-  SSL_CTX_set_cookie_verify_cb(context_.native_handle(), openssl_cookie_verify_callback);
+  SSL_CTX_set_cookie_generate_cb(context_.native_handle(),
+                                 openssl_cookie_generate_callback);
+  SSL_CTX_set_cookie_verify_cb(context_.native_handle(),
+                               openssl_cookie_verify_callback);
 
   return {};
 }
@@ -321,16 +323,14 @@ bool Identity::verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
 
   return true;
 }
-#endif //0
+#endif  // 0
 
 //-------------------------------//
 // b e f o r e H a n d s h a k e //
 //-------------------------------//
 
 template <>
-void Identity::beforeHandshake<SSL>(Connection *conn,
-                                                SSL *ssl,
-                                                bool isClient) {
+void Identity::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient) {
   assert(conn->flags() & Connection::kRequiresHandshake);
   assert(conn->flags() & ~Connection::kHandshakeDone);
 
@@ -344,7 +344,7 @@ void Identity::beforeHandshake<SSL>(Connection *conn,
   int verifyMode = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
   SSL_set_verify(ssl, verifyMode, openssl_verify_callback);
 
-  #if 0
+#if 0
   sock.set_verify_callback(
       [connId, securityId](bool preverified, asio::ssl::verify_context &ctx)
           -> bool { return verifyPeer(connId, securityId, preverified, ctx); },
@@ -353,7 +353,7 @@ void Identity::beforeHandshake<SSL>(Connection *conn,
   if (err) {
     log::error("Failed to specify TLS verifier callback", err);
   }
-  #endif //0
+#endif  // 0
 
   if (isClient && !IsDTLS(ssl)) {
     // Check if there is a client session we can resume. This is a static method
@@ -367,9 +367,8 @@ void Identity::beforeHandshake<SSL>(Connection *conn,
 }
 
 template <>
-void Identity::afterHandshake<SSL>(Connection *conn,
-                                               SSL *ssl,
-                                               std::error_code err) {
+void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
+                                   std::error_code err) {
   assert(conn->flags() & Connection::kRequiresHandshake);
   assert(conn->flags() & ~Connection::kHandshakeDone);
 
@@ -385,7 +384,8 @@ void Identity::afterHandshake<SSL>(Connection *conn,
   const char *tlsVersion = MySSLVersionString(ssl);
 
   if (err) {
-    log::error(tlsVersion, "handshake failed", std::make_pair("tlsid", securityId),
+    log::error(tlsVersion, "handshake failed",
+               std::make_pair("tlsid", securityId),
                std::make_pair("connid", connId), err);
     return;
   }
@@ -399,8 +399,7 @@ void Identity::afterHandshake<SSL>(Connection *conn,
   std::string sessionId;
   if (sessionResumed) {
     unsigned int idlen;
-    const UInt8 *id =
-        SSL_SESSION_get_id(SSL_get_session(ssl), &idlen);
+    const UInt8 *id = SSL_SESSION_get_id(SSL_get_session(ssl), &idlen);
     sessionId = RawDataToHex(id, idlen);
   }
 
@@ -410,8 +409,7 @@ void Identity::afterHandshake<SSL>(Connection *conn,
 
   // If this is a client handshake, save the client session.
   if (isClient && !IsDTLS(ssl)) {
-    identity->saveClientSession(conn->remoteEndpoint(),
-                                SSL_get1_session(ssl));
+    identity->saveClientSession(conn->remoteEndpoint(), SSL_get1_session(ssl));
   }
 }
 
@@ -425,7 +423,8 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   // Retrieve pointer to SSL object from the X509_STORE_CTX. Then, retrieve our
   // stored pointers to the identity and connection objects from the SSL object.
 
-  SSL *ssl = static_cast<SSL*>(::X509_STORE_CTX_get_ex_data(ctx, ::SSL_get_ex_data_X509_STORE_CTX_idx()));
+  SSL *ssl = static_cast<SSL *>(::X509_STORE_CTX_get_ex_data(
+      ctx, ::SSL_get_ex_data_X509_STORE_CTX_idx()));
   log::fatal_if_null(ssl);
 
   Identity *identity = GetIdentityPtr(SSL_get_SSL_CTX(ssl));
@@ -440,7 +439,7 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   int depth = X509_STORE_CTX_get_error_depth(ctx);
 
   // Retrieve subject name of the current (possibly intermediate) certificate.
- 
+
   MemX509 cert{X509_STORE_CTX_get_current_cert(ctx)};
   log::fatal_if_null(cert.ptr());
   std::string subjectName = cert.subjectName();
@@ -462,7 +461,7 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
 
   assert(preverified != 0);
 
-  // At this point, our certificate has passed OpenSSL's pre-verification. An 
+  // At this point, our certificate has passed OpenSSL's pre-verification. An
   // intermediate certificate will have a depth greater than zero.
 
   if (depth > 0) {
@@ -478,17 +477,16 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   return 1;
 }
 
-
-int Identity::openssl_cookie_generate_callback(SSL *ssl, unsigned char *cookie, unsigned int *cookie_len) {
+int Identity::openssl_cookie_generate_callback(SSL *ssl, unsigned char *cookie,
+                                               unsigned int *cookie_len) {
   log::debug("openssl_cookie_generate_callback");
   memset(cookie, 0, 16);
   *cookie_len = 16;
   return 1;
 }
 
-
-int Identity::openssl_cookie_verify_callback(SSL *ssl, unsigned char *cookie, unsigned int cookie_len) {
+int Identity::openssl_cookie_verify_callback(SSL *ssl, unsigned char *cookie,
+                                             unsigned int cookie_len) {
   log::debug("openssl_cookie_verify_callback");
   return 1;
 }
-

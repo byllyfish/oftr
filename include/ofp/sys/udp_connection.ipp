@@ -15,26 +15,32 @@ namespace detail {
 template <class Adapter>
 inline asio::ssl::context *udpContext(UDP_Server *server, UInt64 securityId) {
   assert(securityId != 0);
-  return log::fatal_if_null(server->engine()->securityContext(securityId), LOG_LINE());
+  return log::fatal_if_null(server->engine()->securityContext(securityId),
+                            LOG_LINE());
 }
 
 template <>
-inline asio::ssl::context *udpContext<Plaintext_Adapter>(UDP_Server *server, UInt64 securityId) {
+inline asio::ssl::context *udpContext<Plaintext_Adapter>(UDP_Server *server,
+                                                         UInt64 securityId) {
   assert(securityId == 0);
   return nullptr;
 }
 
 }  // namespace detail
 
-
 template <class AdapterType>
-UDP_Connection<AdapterType>::UDP_Connection(UDP_Server *server, ChannelMode mode, UInt64 securityId,
-                               ProtocolVersions versions,
-                               ChannelListener::Factory factory)
+UDP_Connection<AdapterType>::UDP_Connection(UDP_Server *server,
+                                            ChannelMode mode, UInt64 securityId,
+                                            ProtocolVersions versions,
+                                            ChannelListener::Factory factory)
     : Connection{server->engine(),
                  new DefaultHandshake{this, mode, versions, factory}},
-      server_{server}, dtls_{detail::udpContext<AdapterType>(server, securityId), sendCallback, receiveCallback, this} {
-  UInt16 newFlags = (securityId == 0) ? Connection::kManualDelete : (Connection::kManualDelete | kRequiresHandshake);
+      server_{server},
+      dtls_{detail::udpContext<AdapterType>(server, securityId), sendCallback,
+            receiveCallback, this} {
+  UInt16 newFlags = (securityId == 0)
+                        ? Connection::kManualDelete
+                        : (Connection::kManualDelete | kRequiresHandshake);
   setFlags(flags() | newFlags);
 }
 
@@ -95,19 +101,20 @@ void UDP_Connection<AdapterType>::write(const void *data, size_t length) {
 }
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::flush() { 
+void UDP_Connection<AdapterType>::flush() {
   log::trace("Write", connectionId(), buffer_.data(), buffer_.size());
   dtls_.sendDatagram(buffer_.data(), buffer_.size());
   buffer_.clear();
 }
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::shutdown() { 
+void UDP_Connection<AdapterType>::shutdown() {
   setFlags(flags() | Connection::kShutdownCalled);
- }
+}
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::datagramReceived(const void *data, size_t length) {
+void UDP_Connection<AdapterType>::datagramReceived(const void *data,
+                                                   size_t length) {
   dtls_.datagramReceived(data, length);
 
   if (!(flags() & Connection::kHandshakeDone) && dtls_.isHandshakeDone()) {
@@ -119,31 +126,35 @@ void UDP_Connection<AdapterType>::datagramReceived(const void *data, size_t leng
 }
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::sendCiphertext(const void *data, size_t length) {
+void UDP_Connection<AdapterType>::sendCiphertext(const void *data,
+                                                 size_t length) {
   server_->send(remoteEndpt_, connectionId(), data, length);
 }
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::receivePlaintext(const void *data, size_t length) {
+void UDP_Connection<AdapterType>::receivePlaintext(const void *data,
+                                                   size_t length) {
   Message message(data, length);
   message.setSource(this);
   postMessage(&message);
 }
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::sendCallback(const void *data, size_t length, void *userData) {
+void UDP_Connection<AdapterType>::sendCallback(const void *data, size_t length,
+                                               void *userData) {
   log::debug("sendCallback", ByteRange{data, length});
-  UDP_Connection *conn = static_cast<UDP_Connection*>(userData);
+  UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->sendCiphertext(data, length);
 }
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::receiveCallback(const void *data, size_t length, void *userData) {
+void UDP_Connection<AdapterType>::receiveCallback(const void *data,
+                                                  size_t length,
+                                                  void *userData) {
   log::debug("receiveCallback", ByteRange{data, length});
-  UDP_Connection *conn = static_cast<UDP_Connection*>(userData);
+  UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->receivePlaintext(data, length);
 }
 
 }  // namespace sys
 }  // namespace ofp
-

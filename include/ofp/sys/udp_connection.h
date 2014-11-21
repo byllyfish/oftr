@@ -38,7 +38,7 @@ class UDP_Connection : public Connection {
   IPv6Endpoint localEndpoint() const override;
 
   void datagramReceived(const void *data, size_t length) override;
-  
+
  private:
   UDP_Server *server_;
   AdapterType dtls_;

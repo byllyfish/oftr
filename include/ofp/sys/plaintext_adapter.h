@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_SYS_PLAINTEXT_ADAPTER_H_
 #define OFP_SYS_PLAINTEXT_ADAPTER_H_
 
@@ -7,31 +9,38 @@ namespace ofp {
 namespace sys {
 
 class Plaintext_Adapter {
-public:
+ public:
+  typedef void (*DeliverFunc)(const void *data, size_t length, void *userData);
 
-    typedef void (*DeliverFunc)(const void *data, size_t length, void *userData);
+  Plaintext_Adapter(asio::ssl::context *context, DeliverFunc sendCallback,
+                    DeliverFunc receiveCallback, void *userData)
+      : sendCallback_{sendCallback},
+        receiveCallback_{receiveCallback},
+        userData_{userData} {}
+  ~Plaintext_Adapter() {}
 
-     Plaintext_Adapter(asio::ssl::context *context, DeliverFunc sendCallback, DeliverFunc receiveCallback, void *userData) : sendCallback_{sendCallback}, receiveCallback_{receiveCallback}, userData_{userData} {}
-    ~Plaintext_Adapter() {}
+  void *native_handle() { return nullptr; }
 
-    void *native_handle() { return nullptr; }
+  void connect() {}
+  void accept() {}
 
-    void connect() {}
-    void accept() {}
+  bool isHandshakeDone() const { return false; }
 
-    bool isHandshakeDone() const { return false; }
+  void sendDatagram(const void *datagram, size_t length) {
+    sendCallback_(datagram, length, userData_);
+  }
+  void datagramReceived(const void *datagram, size_t length) {
+    receiveCallback_(datagram, length, userData_);
+  }
+  void pollIdle() {}
 
-    void sendDatagram(const void *datagram, size_t length) { sendCallback_(datagram, length, userData_); }
-    void datagramReceived(const void *datagram, size_t length) { receiveCallback_(datagram, length, userData_); }
-    void pollIdle() {}
-
-private:
-    DeliverFunc sendCallback_;
-    DeliverFunc receiveCallback_;
-    void *userData_;
+ private:
+  DeliverFunc sendCallback_;
+  DeliverFunc receiveCallback_;
+  void *userData_;
 };
 
 }  // namespace sys
 }  // namespace ofp
 
-#endif // OFP_SYS_PLAINTEXT_ADAPTER_H_
+#endif  // OFP_SYS_PLAINTEXT_ADAPTER_H_

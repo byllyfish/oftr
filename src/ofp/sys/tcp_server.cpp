@@ -130,6 +130,6 @@ void TCP_Server::asyncAccept() {
 
 void TCP_Server::listenUDP(const IPv6Endpoint &localEndpt,
                            std::error_code &error) {
-  udpServer_ =
-      UDP_Server::create(engine_, mode_, securityId_, localEndpt, versions_, connId_, error);
+  udpServer_ = UDP_Server::create(engine_, mode_, securityId_, localEndpt,
+                                  versions_, connId_, error);
 }

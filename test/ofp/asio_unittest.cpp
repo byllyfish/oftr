@@ -55,7 +55,8 @@ TEST(asio, chrono_time_traits) {
   // where the steady_clock has less than nanosecond precision.
 
   using Clock = std::chrono::steady_clock;
-  using TimeTraits = asio::detail::chrono_time_traits<Clock, asio::wait_traits<Clock>>;
+  using TimeTraits =
+      asio::detail::chrono_time_traits<Clock, asio::wait_traits<Clock>>;
 
   const int64_t value = 9223231944883008317LL;
   std::chrono::nanoseconds nano{value};
@@ -63,7 +64,7 @@ TEST(asio, chrono_time_traits) {
   TimeTraits::posix_time_duration test1{nano};
   EXPECT_EQ(value, test1.ticks());
 
-  EXPECT_EQ(value/1000000000, test1.total_seconds());
-  EXPECT_EQ(value/1000000, test1.total_milliseconds());
-  EXPECT_EQ(value/1000, test1.total_microseconds());
+  EXPECT_EQ(value / 1000000000, test1.total_seconds());
+  EXPECT_EQ(value / 1000000, test1.total_milliseconds());
+  EXPECT_EQ(value / 1000, test1.total_microseconds());
 }

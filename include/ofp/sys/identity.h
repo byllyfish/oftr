@@ -51,23 +51,22 @@ class Identity {
   std::error_code prepareVerifier();
   std::error_code prepareCookies();
 
-  //static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
-   //                      X509_STORE_CTX *ctx);
+  // static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
+  //                      X509_STORE_CTX *ctx);
 
   static int openssl_verify_callback(int preverified, X509_STORE_CTX *ctx);
-  static int openssl_cookie_generate_callback(SSL *ssl, unsigned char *cookie, unsigned int *cookie_len);
-  static int openssl_cookie_verify_callback(SSL *ssl, unsigned char *cookie, unsigned int cookie_len);
+  static int openssl_cookie_generate_callback(SSL *ssl, unsigned char *cookie,
+                                              unsigned int *cookie_len);
+  static int openssl_cookie_verify_callback(SSL *ssl, unsigned char *cookie,
+                                            unsigned int cookie_len);
 };
 
 template <>
-void Identity::beforeHandshake<SSL>(Connection *conn,
-                                                SSL *ssl,
-                                                bool isClient);
+void Identity::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient);
 
 template <>
-void Identity::afterHandshake<SSL>(Connection *conn,
-                                               SSL *ssl,
-                                               std::error_code err);
+void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
+                                   std::error_code err);
 
 }  // namespace sys
 }  // namespace ofp

@@ -91,7 +91,8 @@ void TCP_Connection<SocketType>::shutdown() {
   setFlags(flags() | Connection::kShutdownCalled);
   socket_.async_shutdown([this, self](const std::error_code &error) {
     if (error) {
-      log::error("TCP_Connection::shutdown result", std::make_pair("connid", connectionId()), error);
+      log::error("TCP_Connection::shutdown result",
+                 std::make_pair("connid", connectionId()), error);
     }
     socket_.shutdownLowestLayer();
   });
@@ -205,7 +206,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   assert(msgLength > sizeof(Header));
-  
+
   // Do nothing if socket is not open.
   if (!socket_.is_open()) {
     log::debug("asyncReadMessage called with socket closed.");
@@ -250,13 +251,13 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
                        : asio::ssl::stream_base::server;
 
   // Set up verify callback.
-  Identity::beforeHandshake(this, socket_.next_layer().native_handle(), isClient);
+  Identity::beforeHandshake(this, socket_.next_layer().native_handle(),
+                            isClient);
 
   OFP_BEGIN_IGNORE_PADDING
 
   auto self(this->shared_from_this());
-  socket_.async_handshake(mode,
-                          [this, self](const asio::error_code &err) {
+  socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
     Identity::afterHandshake(this, socket_.next_layer().native_handle(), err);
     if (!err) {
       channelUp();

@@ -54,7 +54,7 @@ class Connection : public Channel {
 
   /// Does this class require a delete() to finish shutdown? (See
   /// UDP_Connection.) FIXME(bfish) - replace this with a flags_ field.
-  //virtual bool shutdownRequiresManualDelete() const { return false; }
+  // virtual bool shutdownRequiresManualDelete() const { return false; }
 
   // UDP subclass implementation needs this to receive datagrams...
   virtual void datagramReceived(const void *data, size_t length) {}
@@ -79,7 +79,7 @@ class Connection : public Channel {
     kChannelUp = 0x0010,
   };
 
-protected:
+ protected:
   /// Invoked by subclasses to inform channel delegate that channel is up.
   void channelUp();
 
