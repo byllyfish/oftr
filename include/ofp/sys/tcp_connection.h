@@ -72,6 +72,8 @@ class TCP_Connection
   void updateLatestActivity() {
     latestActivity_ = std::chrono::steady_clock::now();
   }
+
+  void disableNagleAlgorithm();
 };
 
 OFP_END_IGNORE_PADDING

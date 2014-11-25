@@ -123,11 +123,10 @@ void TCP_Connection<SocketType>::asyncConnect(
         if (!err) {
           assert(socket_.lowest_layer().is_open());
 
-          std::error_code ignore;
-          socket_.lowest_layer().set_option(tcp::no_delay(true), ignore);
           log::info("Establish TCP connection", localEndpoint(), "-->",
                     remoteEndpoint(), std::make_pair("connid", connectionId()));
 
+          disableNagleAlgorithm();
           asyncHandshake(true);
 
         } else {
@@ -146,12 +145,10 @@ void TCP_Connection<SocketType>::asyncAccept() {
   // Do nothing if socket is not open.
   if (!socket_.is_open()) return;
 
-  // We always send and receive complete messages; disable Nagle algorithm.
-  socket_.lowest_layer().set_option(tcp::no_delay(true));
-
   log::info("Accept TCP connection", localEndpoint(), "<--", remoteEndpoint(),
             std::make_pair("connid", connectionId()));
 
+  disableNagleAlgorithm();
   asyncHandshake(false);
 }
 
@@ -273,6 +270,18 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
   });
 
   OFP_END_IGNORE_PADDING
+}
+
+
+template <class SocketType>
+void TCP_Connection<SocketType>::disableNagleAlgorithm() {
+  // We always send and receive complete messages; disable Nagle algorithm.
+  std::error_code err;
+  socket_.lowest_layer().set_option(tcp::no_delay(true), err);
+
+  if (err) {
+    log::error("TCP_Connection::disableNagleAlgorithm", err);
+  }
 }
 
 }  // namespace sys
