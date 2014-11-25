@@ -6,6 +6,7 @@
 #include "ofpx_ping.h"
 #include "ofpx_jsonrpc.h"
 #include <iostream>
+#include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
 
@@ -37,7 +38,10 @@ static void print_usage(std::ostream &out) {
 //---------//
 
 int main(int argc, char **argv) {
-  ofp::log::setOutputStream(&std::cerr);
+  llvm::raw_fd_ostream logfile{2, true};
+  logfile.SetBufferSize(4096);
+
+  ofp::log::setOutputStream(&logfile);
   ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
 
   if (argc < 2) {

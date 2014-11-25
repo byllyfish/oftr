@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
 
   // The key thing is to set up logging to stderr before running the tests.
-  ofp::log::setOutputStream(&std::cerr);
+  ofp::log::setOutputStream(&std::clog);
   ofp::log::setOutputLevelFilter(ofp::log::Level::Debug);
 
   return RUN_ALL_TESTS();

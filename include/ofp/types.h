@@ -118,20 +118,6 @@ constexpr UInt32 UInt32_narrow_cast(T value) {
   return static_cast<UInt32>(value);
 }
 
-/// Convenience function to compute the difference of two unsigned integers. It
-/// prevents underflow or implicit type promotion. If the right argument is
-/// greater than the left argument, this function returns zero. This function
-/// requires that both arguments are exactly the same unsigned type.
-///
-/// \param  lhs left hand side.
-/// \param  rhs right hand side.
-/// \return difference between lhs and rhs or zero.
-template <class T>
-constexpr EnableIf<std::is_unsigned<T>::value, T> Unsigned_difference(T lhs,
-                                                                      T rhs) {
-  return lhs >= rhs ? lhs - rhs : 0;
-}
-
 /// \returns true if type is a literal type.
 template <class T>
 constexpr bool IsLiteralType() {

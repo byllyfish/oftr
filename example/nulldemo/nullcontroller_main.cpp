@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     addr = IPv6Address{args[0]};
   }
 
-  log::setOutputStream(&std::cerr);
+  log::setOutputStream(&std::clog);
 
   Driver driver;
 

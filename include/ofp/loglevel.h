@@ -5,6 +5,10 @@
 
 #include "ofp/types.h"
 
+namespace llvm {
+class raw_ostream;
+}  // namespace llvm
+
 namespace ofp {
 namespace log {
 
@@ -18,8 +22,6 @@ enum class Level {
   Silent = 6
 };
 
-const char *levelToString(Level level);
-
 /// Type of function called when an event is logged. There can be at most one
 /// output callback function specified at any one time.
 typedef void (*OutputCallback)(Level level, const char *line, size_t size,
@@ -30,8 +32,12 @@ typedef void (*OutputCallback)(Level level, const char *line, size_t size,
 void setOutputCallback(OutputCallback callback, void *context);
 
 /// \brief Sets the output callback to log each line to the specified output
-/// stream (e.g. std::cerr).
+/// stream (e.g. std::clog).
 void setOutputStream(std::ostream *outputStream);
+
+/// \brief Sets the output callback to log each line to the specified output
+/// stream, specified as a raw_ostream.
+void setOutputStream(llvm::raw_ostream *outputStream);
 
 /// \brief Sets the minimum desired level of output.
 void setOutputLevelFilter(Level level);

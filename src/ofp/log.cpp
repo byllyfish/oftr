@@ -8,41 +8,76 @@
 namespace ofp {
 namespace log {
 
-using Time = std::pair<std::time_t, Milliseconds>;
-
-static Time currentTime() {
+// Print the current timestamp into the given buffer. The format is exactly
+// 24 characters (including a trailing \0):
+// 
+//   YYYYMMDD HHMMSS.ssssss \0
+//   
+static size_t timestamp_now(char *buf, size_t buflen) {
   using namespace std::chrono;
 
+  assert(buflen >= 24);
+
   auto now = system_clock::now();
-  milliseconds ms = duration_cast<milliseconds>(now.time_since_epoch());
-  time_t t = system_clock::to_time_t(now);
+  auto secs = system_clock::to_time_t(now);
+  UInt32 msec = UInt32_narrow_cast((duration_cast<microseconds>(now.time_since_epoch()) % 1000000).count());
 
-  return {t, ms % 1000};
+  struct tm date;
+  localtime_r(&secs, &date);
+  date.tm_year += 1900;
+  date.tm_mon += 1;
+
+  int rc = snprintf(buf, buflen, "%04d%02d%02d %02d%02d%02d.%06d ", date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec, msec);
+
+  assert(rc == 23);
+  return 23;
 }
 
-static std::ostream &operator<<(std::ostream &os, const Time &t) {
-  return os << t.first << '.' << std::setfill('0') << std::setw(3)
-            << t.second.count();
-}
+// Terminal Colors
+#define RED(s)    "\033[31m" s
+#define YELLOW(s) "\033[33m" s
+#define GREEN(s)  "\033[32m" s
+#define GRAY(s)   "\033[90m" s
+#define BLUE(s)   "\033[34m" s
 
-const char *levelToString(Level level) {
+static char levelPrefix(Level level) {
   switch (level) {
     case Level::Debug:
-      return "[debug]";
+      return 'd';
     case Level::Trace:
-      return "[trace]";
+      return 't';
     case Level::Info:
-      return "[info]";
+      return 'I';
     case Level::Warning:
-      return "[warning]";
+      return 'W';
     case Level::Error:
-      return "[error]";
+      return 'E';
     case Level::Fatal:
-      return "[fatal]";
+      return 'F';
     case Level::Silent:
-      return "[silent]";
+      return 's';
   }
-  return "";
+  return '?';
+}
+
+static const char *levelPrefixColor(Level level) {
+  switch (level) {
+    case Level::Debug:
+      return GRAY("d");
+    case Level::Trace:
+      return BLUE("t");
+    case Level::Info:
+      return GREEN("I");
+    case Level::Warning:
+      return YELLOW("W");
+    case Level::Error:
+      return RED("E");
+    case Level::Fatal:
+      return RED("F");
+    case Level::Silent:
+      return "s";
+  }
+  return "?";
 }
 
 #ifndef NDEBUG
@@ -74,14 +109,63 @@ void setOutputLevelFilter(Level level) {
     detail::GlobalOutputLevelFilter = level;
 }
 
+
+
 static void streamOutputCallback(Level level, const char *line, size_t size,
                                  void *context) {
-  std::ostream &os = *reinterpret_cast<std::ostream *>(context);
-  os << currentTime() << ' ' << levelToString(level) << ' ' << line << '\n';
+  std::ostream *os = reinterpret_cast<std::ostream *>(context);
+
+  *os << levelPrefix(level);
+
+  char tbuf[32];
+  size_t tlen = timestamp_now(tbuf, sizeof(tbuf));
+  os->write(tbuf, Signed_cast(tlen));
+  os->write(line, Signed_cast(size));
+
+  *os << '\n';
+  os->flush();
+}
+
+static void rawStreamOutputCallback(Level level, const char *line, size_t size,
+                                 void *context) {
+  llvm::raw_ostream *os = reinterpret_cast<llvm::raw_ostream *>(context);
+
+  *os << levelPrefix(level);
+
+  char tbuf[32];
+  size_t tlen = timestamp_now(tbuf, sizeof(tbuf));
+  os->write(tbuf, tlen);
+  os->write(line, size);
+
+  *os << '\n';
+  os->flush();
+}
+
+static void rawStreamColorOutputCallback(Level level, const char *line, size_t size,
+                                 void *context) {
+  llvm::raw_ostream *os = reinterpret_cast<llvm::raw_ostream *>(context);
+
+  *os << levelPrefixColor(level);
+
+  char tbuf[32];
+  size_t tlen = timestamp_now(tbuf, sizeof(tbuf));
+  os->write(tbuf, tlen);
+  os->write(line, size);
+
+  *os << "\n\033[0m";
+  os->flush();
 }
 
 void setOutputStream(std::ostream *outputStream) {
   setOutputCallback(streamOutputCallback, outputStream);
+}
+
+void setOutputStream(llvm::raw_ostream *outputStream) {
+  if (true) {   // FIXME(bfish): use has_colors() when working...
+    setOutputCallback(rawStreamColorOutputCallback, outputStream);
+  } else {
+    setOutputCallback(rawStreamOutputCallback, outputStream);
+  }
 }
 
 static void trace1(const char *type, UInt64 id, const void *data,

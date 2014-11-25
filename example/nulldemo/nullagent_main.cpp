@@ -20,7 +20,7 @@ int main(int argc, const char **argv) {
     }
   }
 
-  ofp::log::setOutputStream(&std::cerr);
+  ofp::log::setOutputStream(&std::clog);
 
   Driver driver;
   driver.installSignalHandlers();

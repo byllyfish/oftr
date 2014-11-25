@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
       "connect", cl::desc("Connect to remote endpoint"), cl::Required};
   cl::ParseCommandLineOptions(argc, argv);
 
-  log::setOutputStream(&std::cerr);
+  log::setOutputStream(&std::clog);
 
   Driver driver;
   std::error_code err;
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
   int exitCode = 0;
   if (err) {
-    std::cerr << "ERROR: " << err << '\n';
+    log::error("ERROR", err);
     exitCode = 2;
   }
 

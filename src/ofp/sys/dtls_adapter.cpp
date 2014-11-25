@@ -35,23 +35,19 @@ DTLS_Adapter::~DTLS_Adapter() {
 }
 
 void DTLS_Adapter::connect() {
-  log::debug("connect: options", SSL_get_options(ssl_));
-
+  // Initialize DTLS connection to client mode.
   SSL_set_connect_state(ssl_);
-
-  log::debug("connect: state", SSL_state_string_long(ssl_));
 
   // Get the ball rolling by sending an empty datagram.
   sendDatagram("", 0);
 }
 
 void DTLS_Adapter::accept() {
+  // Enable DTLS cookie exchange.
   (void)SSL_set_options(ssl_, SSL_OP_COOKIE_EXCHANGE);
-  log::debug("accept: options", SSL_get_options(ssl_));
 
+  // Initialize DTLS connection to server mode.
   SSL_set_accept_state(ssl_);
-
-  log::debug("accept: state", SSL_state_string_long(ssl_));
 }
 
 bool DTLS_Adapter::isHandshakeDone() const {
@@ -77,14 +73,20 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
       case SSL_ERROR_WANT_READ:
         // We are waiting for some data to arrive before we can send
         // the next datagram. Add the datagram to a queue.
-        enqueueDatagram(datagram, length);
+        if (length > 0) 
+          enqueueDatagram(datagram, length);
         break;
 
       case SSL_ERROR_WANT_WRITE:
         // This should not happen. SSL_write should be able to put
         // any necessary outgoing data into the memory bio.
-        log::warning(
-            "DTLS_Adapter::sendDatagram: unexpected SSL_ERROR_WANT_WRITE");
+        log::warning("DTLS_Adapter::sendDatagram: SSL_ERROR_WANT_WRITE");
+        break;
+
+      case SSL_ERROR_SYSCALL:
+        log::warning("DTLS_Adapter::sendDatagram: SSL_ERROR_SYSCALL");
+        log::debug("DTLS_Adapter::sendDatagram: state", 
+            SSL_state_string_long(ssl_), ERR_peek_last_error());
         break;
 
       default:
@@ -149,6 +151,7 @@ void DTLS_Adapter::enqueueDatagram(const void *data, size_t length) {
 }
 
 void DTLS_Adapter::flushDatagrams() {
+  log::debug("DTLS_Adapter::flushDatagrams");
   while (!datagrams_.empty()) {
     Datagram &datagram = datagrams_.front();
     sendDatagram(datagram.data(), datagram.size());

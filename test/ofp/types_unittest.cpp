@@ -33,26 +33,6 @@ TEST(types, UInt16_cast) {
   EXPECT_EQ(65486, UInt16_narrow_cast(b << 1));
 }
 
-TEST(types, Unsigned_difference) {
-  UInt32 a = 6;
-  UInt32 b = 5;
-
-  EXPECT_EQ(1, Unsigned_difference(a, b));
-  EXPECT_EQ(1, a - b);
-
-  EXPECT_EQ(0, Unsigned_difference(b, a));
-  EXPECT_NE(0, b - a);
-
-  // Doesn't compile; UInt32 and UInt16 are different types.
-  // UInt16 c = 2;
-  // EXPECT_EQ(4, Unsigned_difference(a, c));
-
-  // Doesn't compile; Unsigned_difference only accepts unsigned types.
-  // int x = 10;
-  // int y = 9;
-  // EXPECT_EQ(1, Unsigned_difference(x, y));
-}
-
 TEST(types, ArrayLength) {
   int a[] = {1, 2, 3};
   EXPECT_EQ(3, ArrayLength(a));

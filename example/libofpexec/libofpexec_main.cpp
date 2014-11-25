@@ -10,7 +10,7 @@ const int STDIN = 0;
 const int STDOUT = 1;
 
 int main(int argc, char **argv) {
-  log::setOutputStream(&std::cerr);
+  log::setOutputStream(&std::clog);
 
   Driver driver;
   api::ApiServer server{&driver, STDIN, STDOUT};
