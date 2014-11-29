@@ -11,11 +11,7 @@ using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
     : driver_{driver}, signals_{io_}, stopTimer_{io_} {
-  std::string ready{"Engine ready "};
-  ready.push_back('(');
-  ready.append(SSLeay_version(SSLEAY_VERSION));
-  ready.push_back(')');
-  log::info(ready);
+  log::info("Engine ready - OpenSSL", OPENSSL_VERSION_NUMBER);
 }
 
 Engine::~Engine() {
@@ -306,12 +302,22 @@ void Engine::releaseConnection(Connection *connection) {
 
 void Engine::installSignalHandlers() {
   if (!isSignalsInited_) {
+    isSignalsInited_ = true;
+
     signals_.add(SIGINT);
     signals_.add(SIGTERM);
+
     signals_.async_wait([this](const asio::error_code &error, int signum) {
       if (!error) {
-        log::info("Signal received:", signum);
-        this->stop();
+        const char *signame = (signum == SIGTERM) ? "SIGTERM"
+                              : (signum == SIGINT) ? "SIGINT"
+                              : "???";
+        log::info("Signal received:", signame);
+
+        signals_.cancel();
+        (void)this->close(0);
+
+        // TODO(bfish): tell external clients about shutdown wish?
       }
     });
   }

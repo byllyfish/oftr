@@ -8,6 +8,8 @@ set(OFPX_SOURCES
 )
 
 add_executable(ofpx ${OFPX_SOURCES})
+
+# Add "-framework CoreFoundation" on Mac OS X for measuring with Instruments. 
 target_link_libraries(ofpx ofp ${LIBOFP_LINKED_LIBS})
 
 add_subdirectory(test)

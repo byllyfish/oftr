@@ -77,6 +77,9 @@ class Connection : public Channel {
 
     /// Indicates that channel up has been sent to channel delegate.
     kChannelUp = 0x0010,
+
+    /// Indicates connection shutdown completed (error possible).
+    kShutdownDone = 0x0020,
   };
 
  protected:

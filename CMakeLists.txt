@@ -4,7 +4,7 @@
 #
 #=====--------------------------------------------------------------------=====#
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.8)
 project(libofp)
 
 # Add path for custom modules
@@ -46,12 +46,12 @@ set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 # Specify include directories for third party headers. We use -isystem instead
 # of -I because we don't want to receive compiler warnings from these headers.
 
-set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
+set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
 
 # Specify additional definitions.
 
-#set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_ENABLE_HANDLER_TRACKING")
 set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS")
+set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
 
 # Specify the default set of compiler flags for all sources, including third
 # party libraries. Place flags that don't affect the preprocessor or warnings
@@ -404,12 +404,10 @@ set(MEMORYCHECK_COMMAND_OPTIONS "-v --trace-children=yes --trace-children-skip=/
 set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
-# Boost may pull in pthreads. We need OpenSSL for TLS support.
+# Use pthreads.
 
 find_package(Threads)
-find_package(OpenSSL)
-
-set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT} ssl crypto)
+set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT})
 
 # Call custom function to check for Python YAML module (optional for testing).
 
@@ -441,6 +439,7 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 add_subdirectory(external/yaml-io)
 add_subdirectory(external/googletest)
+add_subdirectory(external/boringssl)
 
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
@@ -466,7 +465,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-target_link_libraries(ofp yamlio)
+target_link_libraries(ofp yamlio crypto ssl)
 
 # Make sure the source is generated before the executable builds.
 

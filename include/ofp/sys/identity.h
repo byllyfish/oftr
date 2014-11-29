@@ -36,6 +36,9 @@ class Identity {
   static void afterHandshake(Connection *conn, SocketType *ssl,
                              std::error_code err) {}
 
+  template <class SocketType>
+  static void beforeClose(Connection *conn, SocketType *ssl) {}
+
  private:
   UInt64 securityId_;
   asio::ssl::context context_;
@@ -55,10 +58,11 @@ class Identity {
   //                      X509_STORE_CTX *ctx);
 
   static int openssl_verify_callback(int preverified, X509_STORE_CTX *ctx);
-  static int openssl_cookie_generate_callback(SSL *ssl, unsigned char *cookie,
-                                              unsigned int *cookie_len);
-  static int openssl_cookie_verify_callback(SSL *ssl, unsigned char *cookie,
-                                            unsigned int cookie_len);
+  static int openssl_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
+                                              size_t *cookie_len);
+  static int openssl_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
+                                            size_t cookie_len);
+  static void openssl_msg_callback(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg);
 };
 
 template <>
@@ -67,6 +71,9 @@ void Identity::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient);
 template <>
 void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
                                    std::error_code err);
+
+template <>
+void Identity::beforeClose<SSL>(Connection *conn, SSL *ssl);
 
 }  // namespace sys
 }  // namespace ofp

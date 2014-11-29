@@ -24,6 +24,10 @@ template void throw_exception(const std::bad_cast &);
 template void throw_exception(const std::out_of_range &);
 template void throw_exception(const std::length_error &);
 
+template void throw_exception(const asio::invalid_service_owner &);
+template void throw_exception(const asio::service_already_exists &);
+template void throw_exception(const asio::ip::bad_address_cast &);
+
 }  // namespace detail
 }  // namespace asio
 

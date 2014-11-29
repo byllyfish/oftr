@@ -52,8 +52,6 @@ static const char *MySSLVersionString(SSL *ssl) {
       return "TLS 1.2";
     case DTLS1_VERSION:
       return "DTLS 1.0";
-    case DTLS1_BAD_VER:
-      return "DTLS 1.0 (bad)";
     default:
       return "Unknown";
   }
@@ -62,7 +60,6 @@ static const char *MySSLVersionString(SSL *ssl) {
 static bool IsDTLS(SSL *ssl) {
   switch (SSL_version(ssl)) {
     case DTLS1_VERSION:
-    case DTLS1_BAD_VER:
       return true;
     default:
       return false;
@@ -144,8 +141,6 @@ std::error_code Identity::configureContext() {
                                      SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
   log::debug("ConfigureContext: options", options);
 
-  assert(options == (SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3));
-
   // context_.set_options(asio::ssl::context::no_sslv2 |
   //                         asio::ssl::context::no_sslv3 |
   //                         asio::ssl::context::no_compression,
@@ -161,6 +156,9 @@ std::error_code Identity::configureContext() {
 
   // Allow for retrieving this Identity object given just an SSL context.
   SetIdentityPtr(context_.native_handle(), this);
+
+  // Install msg callback to log handshake messages.
+  SSL_CTX_set_msg_callback(context_.native_handle(), openssl_msg_callback);
 
   return err;
 }
@@ -413,6 +411,21 @@ void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
   }
 }
 
+template <>
+void Identity::beforeClose<SSL>(Connection *conn, SSL *ssl) {
+  auto flags = conn->flags();
+  if ((flags & Connection::kHandshakeDone) && !(flags & Connection::kShutdownDone)) {
+    Identity *identity = GetIdentityPtr(SSL_get_SSL_CTX(ssl));
+    UInt64 securityId = identity->securityId();
+    UInt64 connId = conn->connectionId();
+
+    const char *tlsVersion = MySSLVersionString(ssl);
+
+    log::warning(tlsVersion, "incomplete shutdown", std::make_pair("tlsid", securityId),
+               std::make_pair("connid", connId));
+  }
+}
+
 //-----------------------------------------------//
 // o p e n s s l _ v e r i f y _ c a l l b a c k //
 //-----------------------------------------------//
@@ -477,16 +490,24 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   return 1;
 }
 
-int Identity::openssl_cookie_generate_callback(SSL *ssl, unsigned char *cookie,
-                                               unsigned int *cookie_len) {
-  log::debug("openssl_cookie_generate_callback");
+int Identity::openssl_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
+                                               size_t *cookie_len) {
+  Connection *conn = GetConnectionPtr(ssl);
+  log::debug("openssl_cookie_generate_callback", std::make_pair("connid", conn->connectionId()));
   memset(cookie, 0, 16);
   *cookie_len = 16;
   return 1;
 }
 
-int Identity::openssl_cookie_verify_callback(SSL *ssl, unsigned char *cookie,
-                                             unsigned int cookie_len) {
-  log::debug("openssl_cookie_verify_callback");
+int Identity::openssl_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
+                                             size_t cookie_len) {
+  Connection *conn = GetConnectionPtr(ssl);
+  log::debug("openssl_cookie_verify_callback", std::make_pair("connid", conn->connectionId()));
   return 1;
+}
+
+void Identity::openssl_msg_callback(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg) {
+  Connection *conn = GetConnectionPtr(ssl);
+  const char *readWrite = write_p ? "TLS write" : "TLS read";
+  log::debug(readWrite, "version", version, "type", content_type, "len", len, RawDataToHex(buf, len), std::make_pair("connid", conn->connectionId()));
 }

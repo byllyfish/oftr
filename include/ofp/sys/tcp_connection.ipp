@@ -60,6 +60,10 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
 template <class SocketType>
 TCP_Connection<SocketType>::~TCP_Connection() {
   channelDown();
+
+  // Check that secure socket was shutdown correctly.
+  Identity::beforeClose(this, socket_.next_layer().native_handle());
+
   log::info("Close TCP connection", std::make_pair("connid", connectionId()));
 }
 
@@ -88,14 +92,15 @@ void TCP_Connection<SocketType>::flush() {
 
 template <class SocketType>
 void TCP_Connection<SocketType>::shutdown() {
-  assert(socket_.is_open());
   if (!(flags() & Connection::kShutdownCalled)) {
     setFlags(flags() | Connection::kShutdownCalled);
     log::debug("TCP_Connection::shutdown started", std::make_pair("connid", connectionId()));
+    assert(socket_.is_open());
     auto self(this->shared_from_this());
     socket_.async_shutdown([this, self](const std::error_code &error) {
+      setFlags(flags() | Connection::kShutdownDone);
       log::debug("TCP_Connection::shutdown handler called", std::make_pair("connid", connectionId()));
-      if (error) {
+      if (error && error != asio::error::eof) {
         log::error("TCP_Connection::shutdown result",
                    std::make_pair("connid", connectionId()), error);
       }
@@ -282,6 +287,12 @@ void TCP_Connection<SocketType>::disableNagleAlgorithm() {
   if (err) {
     log::error("TCP_Connection::disableNagleAlgorithm", err);
   }
+
+#if 0
+  // FIXME (for debugging only!)
+  socket_.lowest_layer().set_option(asio::socket_base::send_buffer_size(25));
+  //socket_.lowest_layer().set_option(asio::socket_base::receive_buffer_size(1));
+#endif // 0
 }
 
 }  // namespace sys
