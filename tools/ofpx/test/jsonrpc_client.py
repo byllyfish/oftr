@@ -156,7 +156,8 @@ class SubprocessConnection(Connection):
         if not foundExecutable:
             raise ValueError('Executable does not exist: `%s`' % executable)
         args = [foundExecutable] + options['args']
-        self._process = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env={'DYLD_INSERT_LIBRARIES': '/usr/lib/libgmalloc.dylib'})
+        envs = {'MallocStackLogging': '1', 'MallocScribble': '1'}
+        self._process = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=envs)
         
         # Read connection input from child process stdout.
         self._sockInput = self._process.stdout
@@ -164,6 +165,13 @@ class SubprocessConnection(Connection):
         # Write connection output to child process stdin.
         self._sockOutput = self._process.stdin
 
+    def __del__(self):
+        """
+        Wait for child process to terminate.
+        """
+        
+        self._process.wait()
+        
     def close(self):
         """
         Close the connection to the child process.
@@ -173,7 +181,10 @@ class SubprocessConnection(Connection):
         
     def fileno(self):
         return self._sockInput.fileno()
-            
+    
+    def __repr__(self):
+        return 'SubprocessConnection: pid=%d' % self._process.pid
+         
     def _send(self, event):
         msg = json.dumps(event, separators=(',', ':')) + '\n'
         self._sockOutput.write(msg)
@@ -204,77 +215,3 @@ class JsonObject(object):
 
     def __repr__(self):
         return str(self.__dict__)
-
-
-def onResult(conn, event):
-    pass
-    print 'onResult', event
-
-auxID = 0
-
-def features_reply(connid, xid):
-    global auxID
-    a = auxID
-    auxID += 1
-    return { 'version': 4, 'type': 'OFPT_FEATURES_REPLY', 'xid': xid, 'conn_id': connid, 'msg': {
-        'datapath_id':'1111-2222-3333-4444',
-        'n_buffers': 1,
-        'n_tables': 1,
-        'auxiliary_id': a,
-        'capabilities': 0,
-        'ports': []
-    }}
-
-def packet_in(connid):
-    return { 'version': 4, 'type': 'OFPT_PACKET_IN', 'conn_id': connid, 'msg': {
-        'buffer_id': 0,
-        'total_len': 100,
-        'in_port': 1,
-        'in_phy_port': 1,
-        'metadata': 0,
-        'reason': 0,
-        'table_id': 0,
-        'cookie': 0,
-        'data': 'DEADBEEF'
-    }}
-
-def onNotify(conn, event):
-    #print 'onNotify', event
-    if event.method == 'ofp.message' and event.params.type == 'OFPT_FEATURES_REQUEST':
-        conn.call('ofp.send', features_reply(event.params.conn_id, event.params.xid), onResult) 
-        conn.call('ofp.send', packet_in(event.params.conn_id), onResult)
-    
-
-def onTimer(conn, event):
-    conn.call('ofp.list_connections', {'conn_id': 0 }, onResult)
-    conn.call('ofp.close', {'conn_id': 0 }, onResult)
-    #conn.wait('timer1', 10.0, onTimer)
-    conn.call('ofp.listen', {'endpoint': '8889', 'security_id': 1}, onResult)
-    conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'security_id': 2, 'options':['--raw']}, onResult)
-
-
-
-import certdata
-
-
-if __name__ == '__main__':
-    conn = connect('subprocess:/Users/bfish/code/ofp/Build+Debug/tools/ofpx/ofpx', args=['jsonrpc'])
-    #time.sleep(20)
-    #conn.call('ofp.set_authority', {'certificate':'root.pem'}, onResult)
-    reply = conn.call_sync('ofp.add_identity', {'certificate':certdata.SERVER_PEM, 'password':'passphrase', 'verifier': certdata.VERIFIER_PEM})
-    conn.call_sync('ofp.listen', {'endpoint': '8889', 'security_id': reply.result.security_id})
-    
-    reply = conn.call_sync('ofp.add_identity', {'certificate':certdata.CLIENT_PEM, 'password':'passphrase', 'verifier':certdata.VERIFIER_PEM})
-    conn.call_sync('ofp.connect', {'endpoint': '127.0.0.1:8889', 'security_id': reply.result.security_id, 'options':['--raw']})
-    
-    #conn.call('ofp.listen', {'endpoint': '127.0.0.1:88'}, onResult)
-    #conn.call('ofp.listen', {'endpoint': '127.0.0.1:8888'}, onResult)
-    #conn.call('ofp.listen', {'endpoint': '8889', 'security_id': 1}, onResult)
-    #conn.call('ofp.close', {'conn_id': 1 }, onResult)
-    conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'security_id': 2, 'options':['--raw']}, onResult)
-    #conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'options':['--raw', '--udp']}, onResult)
-    #conn.call('ofp.connect', {'endpoint': '[::1]:8889', 'options':['--raw', '--udp']}, onResult)
-    #conn.call('ofp.connect', {'endpoint': '10.0.0.1:9999', 'options':['--raw']}, onResult)
-    conn.notification(onNotify)
-    conn.wait('timer1', 10.0, onTimer)
-    run(conn)
