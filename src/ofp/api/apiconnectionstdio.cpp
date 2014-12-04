@@ -56,6 +56,7 @@ void ApiConnectionStdio::asyncRead() {
           std::istream is(&streambuf_);
           std::string line;
           std::getline(is, line);
+          log::trace_rpc("Read RPC", 0, line.data(), line.size());
           handleEvent(line);
           asyncRead();
         } else if (err != asio::error::eof) {
@@ -75,6 +76,8 @@ void ApiConnectionStdio::asyncWrite() {
   size_t size = outgoing_[idx].size();
 
   auto self(shared_from_this());
+
+  log::trace_rpc("Write RPC", 0, data, size);
 
   asio::async_write(
       output_, asio::buffer(data, size),

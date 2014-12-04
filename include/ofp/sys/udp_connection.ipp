@@ -120,8 +120,9 @@ void UDP_Connection<AdapterType>::datagramReceived(const void *data,
   if (!(flags() & Connection::kHandshakeDone) && dtls_.isHandshakeDone()) {
     std::error_code err;
     Identity::afterHandshake(this, dtls_.native_handle(), err);
-    log::info("UDP_Connection::afterHandshake error", err);
-    channelUp();
+    if (!err) {
+      channelUp();
+    }
   }
 }
 
@@ -142,7 +143,7 @@ void UDP_Connection<AdapterType>::receivePlaintext(const void *data,
 template <class AdapterType>
 void UDP_Connection<AdapterType>::sendCallback(const void *data, size_t length,
                                                void *userData) {
-  log::debug("sendCallback", ByteRange{data, length});
+  //log::debug("sendCallback", ByteRange{data, length});
   UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->sendCiphertext(data, length);
 }
@@ -151,7 +152,7 @@ template <class AdapterType>
 void UDP_Connection<AdapterType>::receiveCallback(const void *data,
                                                   size_t length,
                                                   void *userData) {
-  log::debug("receiveCallback", ByteRange{data, length});
+  //log::debug("receiveCallback", ByteRange{data, length});
   UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->receivePlaintext(data, length);
 }

@@ -1,6 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/sys/dtls_adapter.h"
+#include "ofp/sys/dtls_utils.h"
 
 using namespace ofp::sys;
 
@@ -13,26 +14,41 @@ DTLS_Adapter::DTLS_Adapter(asio::ssl::context *context,
   ssl_ = SSL_new(context->native_handle());
   log::fatal_if_null(ssl_, LOG_LINE());
 
+  // TODO(bfish): Figure out why DTLSv1_2_method() doesn't work? DTLS Handshake 
+  // doesn't complete normally!
+
   int rc = SSL_set_ssl_method(ssl_, DTLSv1_method());
   log::fatal_if_false(rc == 1, LOG_LINE());
 
-  reading_ = BIO_new(BIO_s_mem());
-  log::fatal_if_null(reading_, LOG_LINE());
+  ::SSL_set_mode(ssl_, SSL_MODE_ENABLE_PARTIAL_WRITE);
+  ::SSL_set_mode(ssl_, SSL_MODE_ACCEPT_MOVING_WRITE_BUFFER);
 
-  writing_ = BIO_new(BIO_s_mem());
-  log::fatal_if_null(writing_, LOG_LINE());
+  // By default, let OpenSSL guess the MTU.
+  // setMTU(499);
 
-  BIO_set_mem_eof_return(reading_, -1);
-  BIO_set_mem_eof_return(writing_, -1);
-  SSL_set_bio(ssl_, reading_, writing_);
+  BIO *int_bio = nullptr;
+  BIO_new_bio_pair(&int_bio, 0, &bio_, 0);
+  SSL_set_bio(ssl_, int_bio, int_bio);
 }
 
 DTLS_Adapter::~DTLS_Adapter() {
+  BIO_free(bio_);
+  bio_ = nullptr;
+
   SSL_free(ssl_);
   ssl_ = nullptr;
-  reading_ = nullptr;
-  writing_ = nullptr;
 }
+
+
+void DTLS_Adapter::setMTU(size_t mtu) {
+  if (mtu > 0) {
+    ::SSL_set_options(ssl_, SSL_OP_NO_QUERY_MTU);
+    ::SSL_set_mtu(ssl_, static_cast<long>(mtu));
+  } else {
+    ::SSL_clear_options(ssl_, SSL_OP_NO_QUERY_MTU);
+  }
+}
+
 
 void DTLS_Adapter::connect() {
   // Initialize DTLS connection to client mode.
@@ -61,9 +77,8 @@ bool DTLS_Adapter::isHandshakeDone() const {
 }
 
 void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
-  int rc;
-
-  rc = SSL_write(ssl_, datagram, static_cast<int>(length));
+  // Write the datagram through the SSL bio.
+  int rc = SSL_write(ssl_, datagram, static_cast<int>(length));
   log::debug("sendDatagram: SSL_write returned", rc);
 
   if (rc <= 0) {
@@ -72,7 +87,8 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
     switch (err) {
       case SSL_ERROR_WANT_READ:
         // We are waiting for some data to arrive before we can send
-        // the next datagram. Add the datagram to a queue.
+        // the next datagram. Add the datagram to our queue so we can retry
+        // it later.
         if (length > 0) 
           enqueueDatagram(datagram, length);
         break;
@@ -98,21 +114,17 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
                SSL_state_string_long(ssl_));
   }
 
-  UInt8 outBuf[4000];
-  rc = BIO_read(writing_, outBuf, sizeof(outBuf));
-  log::debug("sendDatagram: BIO_read returned", rc);
-
-  if (rc > 0) {
-    sendCallback_(outBuf, Unsigned_cast(rc), userData_);
-  }
+  writeOutput();
 }
 
 void DTLS_Adapter::datagramReceived(const void *datagram, size_t length) {
   int rc;
 
-  rc = BIO_write(reading_, datagram, static_cast<int>(length));
-  log::debug("datagramReceived: BIO_write returned", rc,
-             ByteRange{datagram, length});
+  log::debug("datagramReceived:", DTLS_PrintRecord(datagram, length));
+
+  rc = BIO_write(bio_, datagram, static_cast<int>(length));
+  //log::debug("datagramReceived: BIO_write returned", rc,
+  //           ByteRange{datagram, length});
 
   UInt8 inBuf[4000];
   rc = SSL_read(ssl_, inBuf, sizeof(inBuf));
@@ -127,21 +139,38 @@ void DTLS_Adapter::datagramReceived(const void *datagram, size_t length) {
                SSL_state_string_long(ssl_), ERR_peek_last_error());
   }
 
-  size_t wlen = BIO_ctrl_pending(writing_);
-  log::debug("datagramReceived: BIO_ctrl_pending returned", wlen);
+  writeOutput();
 
-  if (wlen > 0) {
-    UInt8 outBuf[4000];
-    rc = BIO_read(writing_, outBuf, sizeof(outBuf));
+  if (SSL_is_init_finished(ssl_) && !datagrams_.empty()) {
+    log::debug("SSL_is_init_finished");
+    flushDatagrams();
+  }
+}
+
+void DTLS_Adapter::writeOutput() {
+  while (BIO_pending(bio_) > 0) {
+    UInt8 buf[1500];
+    int rc = BIO_read(bio_, buf, 13);
+    assert(rc == 13);
+
+    size_t recordLen = (UInt32_cast(buf[11]) << 8) | UInt32_cast(buf[12]);
+    assert(recordLen <= 1500 - 13);
+
+    rc = BIO_read(bio_, &buf[13], recordLen);
+    assert(rc == recordLen);
+
+    log::debug("DTLS_Adapter:", DTLS_PrintRecord(buf, recordLen+13));
+    sendCallback_(buf, recordLen + 13, userData_);
+
+#if 0
+    int rc = BIO_read(bio_, outBuf, sizeof(outBuf));
     log::debug("datagramReceived: BIO_read returned", rc);
 
     if (rc > 0) {
+      logOutput(outBuf, Unsigned_cast(rc));
       sendCallback_(outBuf, Unsigned_cast(rc), userData_);
     }
-  }
-
-  if (SSL_is_init_finished(ssl_) && !datagrams_.empty()) {
-    flushDatagrams();
+#endif //0
   }
 }
 
@@ -157,4 +186,51 @@ void DTLS_Adapter::flushDatagrams() {
     sendDatagram(datagram.data(), datagram.size());
     datagrams_.pop_front();
   }
+}
+
+
+void DTLS_Adapter::logOutput(const UInt8 *p, size_t length) {
+  // Log DTLS records sent.
+
+  while (length > 0) {
+    size_t recordLen = DTLS_GetRecordLength(p, length);
+    if (recordLen == 0) {
+      break;
+    }
+
+    log::debug("DTLS_Adapter:", DTLS_PrintRecord(p, recordLen));
+
+    assert(recordLen <= length);
+
+    p += recordLen;
+    length -= recordLen;
+  }
+
+#if 0
+  while (length >= 13) {
+    UInt32 recordLen =  (UInt32_cast(p[11]) << 8) | p[12];
+    //log::debug("DTLS_Adapter::recordLen = ", recordLen);
+
+    if (recordLen + 13 > length) break;
+
+    if (p[0] == 22) {
+      assert(recordLen > 6);
+      UInt32 msgType = p[13];
+      UInt32 epoch = (UInt32_cast(p[3]) << 8) | p[4];
+      UInt32 msgSeq = (UInt32_cast(p[17]) << 8) | p[18];
+      UInt32 fragmentOffset = (UInt32_cast(p[19]) << 16) |
+                                (UInt32_cast(p[20]) << 8) | UInt32_cast(p[21]);
+      log::debug("DTLS_Adapter: epoch", epoch, "msgType", msgType, "msgSeq", msgSeq, "fragmentOffset", fragmentOffset);
+    } else {
+      log::debug("DTLS_Adapter::logOutput", 13 + recordLen, RawDataToHex(p, recordLen + 13));
+    }
+
+    p += recordLen + 13;
+    length -= recordLen + 13;
+  }
+  
+  if (length != 0) {
+    log::error("Output does not end on record boundary");
+  }
+#endif //0
 }

@@ -5,6 +5,7 @@
 #include "ofp/sys/memx509.h"
 #include "ofp/sys/connection.h"
 
+using namespace ofp;
 using namespace ofp::sys;
 
 // First call to SSL_CTX_get_ex_new_index works around an issue in ASIO where
@@ -52,6 +53,8 @@ static const char *MySSLVersionString(SSL *ssl) {
       return "TLS 1.2";
     case DTLS1_VERSION:
       return "DTLS 1.0";
+    case DTLS1_2_VERSION:
+      return "DTLS 1.2";
     default:
       return "Unknown";
   }
@@ -60,6 +63,7 @@ static const char *MySSLVersionString(SSL *ssl) {
 static bool IsDTLS(SSL *ssl) {
   switch (SSL_version(ssl)) {
     case DTLS1_VERSION:
+    case DTLS1_2_VERSION:
       return true;
     default:
       return false;
@@ -67,13 +71,7 @@ static bool IsDTLS(SSL *ssl) {
 }
 
 constexpr asio::ssl::context_base::method defaultMethod() {
-#if defined(SSL_TXT_TLSV1_2)
   return asio::ssl::context_base::tlsv12;
-#elif defined(SSL_TXT_TLSV1_1)
-  return asio::ssl::context_base::tlsv11;
-#else
-  return asio::ssl::context_base::tlsv1;
-#endif
 }
 
 Identity::Identity(const std::string &certData,
@@ -138,7 +136,7 @@ std::error_code Identity::configureContext() {
   (void)SSL_CTX_clear_options(context_.native_handle(),
                               SSL_OP_LEGACY_SERVER_CONNECT);
   auto options = SSL_CTX_set_options(context_.native_handle(),
-                                     SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
+                                     SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
   log::debug("ConfigureContext: options", options);
 
   // context_.set_options(asio::ssl::context::no_sslv2 |
@@ -490,14 +488,25 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   return 1;
 }
 
+//-----------------------------------------------------------------//
+// o p e n s s l _ c o o k i e _ g e n e r a t e _ c a l l b a c k //
+//-----------------------------------------------------------------//
+
 int Identity::openssl_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                                size_t *cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
   log::debug("openssl_cookie_generate_callback", std::make_pair("connid", conn->connectionId()));
   memset(cookie, 0, 16);
+  for (UInt8 i = 0; i < 16; ++i) {
+    cookie[i] = i;
+  }
   *cookie_len = 16;
   return 1;
 }
+
+//-------------------------------------------------------------//
+// o p e n s s l _ c o o k i e _ v e r i f y _ c a l l b a c k //
+//-------------------------------------------------------------//
 
 int Identity::openssl_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                              size_t cookie_len) {
@@ -506,8 +515,96 @@ int Identity::openssl_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
   return 1;
 }
 
+#if 0
+static const char *SSLRecordTypeString(UInt8 type) {
+  switch (type) {
+    case 20: return "change_cipher_spec";
+    case 21: return "alert";
+    case 22: return "handshake";
+    case 23: return "application_data";
+    default: return "unknown_record_type";
+  }
+}
+
+static const char *SSLRecordVersionString(UInt32 version) {
+  switch (version) {
+    case 0x0303: return "TLS1.2";
+    case 0x0302: return "TLS1.1";
+    case 0x0301: return "TLS1.0";
+    case 0x0300: return "SSL3";
+    case 0xFEFF: return "DTLS1.0";
+    default: return "unknown_record_version";
+  }
+}
+#endif //0
+
+//-----------------------------------------//
+// o p e n s s l _ m s g _ c a l l b a c k //
+//-----------------------------------------//
+
 void Identity::openssl_msg_callback(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg) {
+#if 0
+  // This callback is called in multiple ways by OpenSSL. We are interested in
+  // the header callbacks for each plaintext record:
+  // 
+  //     write_p == 1 for write, 0 for read.
+  //     version == 0
+  //     content_type == SSL3_RT_HEADER (0x0100)
+  //     buf == ptr to record header
+  //     len == SSL3_RT_HEADER_LENGTH (5) for SSL/TLS, 
+  //            DTLS1_RT_HEADER_LENGTH (13) for DTLS
+  // 
+  
+  if (!(version == 0 && content_type == SSL3_RT_HEADER && len >= SSL3_RT_HEADER_LENGTH)) {
+    //log::debug(write_p ? "msg write": "msg read", version, content_type, len, RawDataToHex(buf, len));
+    return;
+  }
+
+  static_assert(SSL3_RT_HEADER_LENGTH == 5, "Unexpected value");
+  static_assert(DTLS1_RT_HEADER_LENGTH == 13, "Unexpected value");
+  
+  const UInt8 *data = BytePtr(buf);
+  UInt32 recordLen = 0;
+  UInt32 recordEpoch = 0;
+  UInt64 recordSeqNum = 0;
+
+  if (len == SSL3_RT_HEADER_LENGTH) {
+    // SSL record header is 5-bytes:
+    // 
+    //    ContentType: 1 byte
+    //    ProtocolVersion: 2 bytes (Big endian)
+    //    Length: 2 bytes (Big endian)
+
+    recordLen = (UInt32_cast(data[3]) << 8) | data[4];
+
+  } else if (len == DTLS1_RT_HEADER_LENGTH) {
+    // DTLS record header is 13-bytes:
+    //   ContentType: 1 byte
+    //   ProtocolVersion: 2 bytes (Big endian)
+    //   Epoch: 2 bytes (Big endian)
+    //   SequenceNumber: 6 bytes (Big endian)
+    //   Length: 2 bytes (Big endian)
+    
+    recordEpoch = (UInt32_cast(data[3]) << 8) | data[4];
+    recordSeqNum = (UInt64_cast(data[5]) << 5*8) |
+                    (UInt64_cast(data[6]) << 4*8) |
+                     (UInt64_cast(data[7]) << 3*8) |
+                      (UInt64_cast(data[8]) << 2*8) |
+                       (UInt64_cast(data[9]) << 1*8) | UInt64_cast(data[10]);
+    recordLen = (UInt32_cast(data[11]) << 8) | data[12];
+  }
+
+  // Grab the common parts:
+
+  UInt8 recordType = data[0];
+  UInt32 recordVersion = (UInt32_cast(data[1]) << 8) | data[2];
+
+  const char *recType = SSLRecordTypeString(recordType);
+  const char *recVers = SSLRecordVersionString(recordVersion);
+  const char *readWrite = write_p ? "write" : "read";
+
   Connection *conn = GetConnectionPtr(ssl);
-  const char *readWrite = write_p ? "TLS write" : "TLS read";
-  log::debug(readWrite, "version", version, "type", content_type, "len", len, RawDataToHex(buf, len), std::make_pair("connid", conn->connectionId()));
+  
+  log::debug(recVers, readWrite, recType, "length", recordLen, "epoch", recordEpoch, "seq", recordSeqNum, std::make_pair("connid", conn->connectionId()));
+#endif //0
 }

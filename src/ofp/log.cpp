@@ -216,5 +216,17 @@ void trace(const char *type, UInt64 id, const void *data, size_t length) {
   }
 }
 
+void trace_rpc(const char *type, UInt64 id, const void *data, size_t length) {
+  if (Level::Trace < detail::GlobalOutputLevelFilter || length == 0) return;
+
+  const char *msg = static_cast<const char *>(data);
+
+  // Remove trailing newline, if it exists.
+  if (msg[length-1] == '\n')
+    --length;
+
+  detail::write_(Level::Trace, type, length, "bytes", std::make_pair("connid", id), '\n', llvm::StringRef{msg, length});
+}
+
 }  // namespace log
 }  // namespace ofp

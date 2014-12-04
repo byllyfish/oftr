@@ -19,6 +19,7 @@ class DTLS_Adapter {
   ~DTLS_Adapter();
 
   SSL *native_handle() { return ssl_; }
+  void setMTU(size_t mtu);
 
   void connect();
   void accept();
@@ -29,17 +30,21 @@ class DTLS_Adapter {
   void datagramReceived(const void *datagram, size_t length);
   void pollIdle();
 
+  
+
  private:
   SSL *ssl_;
-  BIO *reading_;
-  BIO *writing_;
+  BIO *bio_;
   DeliverFunc sendCallback_;
   DeliverFunc receiveCallback_;
   void *userData_;
   std::deque<Datagram> datagrams_;
 
+  void writeOutput();
   void enqueueDatagram(const void *datagram, size_t length);
   void flushDatagrams();
+
+  void logOutput(const UInt8 *p, size_t length);
 };
 
 }  // namespace sys

@@ -64,6 +64,8 @@ void write_(Level level, const Args &... args) {
 
 void trace(const char *type, UInt64 id, const void *data, size_t length);
 
+void trace_rpc(const char *type, UInt64 id, const void *data, size_t length);
+
 template <class... Args>
 inline void info(const Args &... args) {
   detail::write_(Level::Info, args...);

@@ -14,6 +14,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/datapathid_unittest.cpp
 	ofp/decoder_unittest.cpp
 	ofp/driver_unittest.cpp
+	ofp/dtls_utils_unittest.cpp
 	ofp/encoder_unittest.cpp
 	ofp/enetaddress_unittest.cpp
 	ofp/enumconverter_unittest.cpp
