@@ -223,7 +223,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx, const std::string &keyDat
   auto passwordCallback = [](char *buf, int size, int rwflag, void *u) -> int {
     char *pw = static_cast<char *>(u);
     log::fatal_if_null(pw);
-    size_t result = strlcpy(buf, pw, Unsigned_cast(size));
+    size_t result = BUF_strlcpy(buf, pw, Unsigned_cast(size));
     return static_cast<int>(result);
   };
 
