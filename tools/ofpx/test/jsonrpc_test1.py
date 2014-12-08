@@ -47,8 +47,8 @@ def onTimer(conn, event):
     conn.call('ofp.list_connections', {'conn_id': 0 }, onResult)
     conn.call('ofp.close', {'conn_id': 4 }, onResult)
     #conn.wait('timer1', 10.0, onTimer)
-    conn.call('ofp.listen', {'endpoint': '8889', 'security_id': 1}, onResult)
-    conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'security_id': 2, 'options':['--raw']}, onResult)
+    conn.call('ofp.listen', {'endpoint': '8889', 'tls_id': 1}, onResult)
+    conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'tls_id': 2, 'options':['--raw']}, onResult)
 
 
 if __name__ == '__main__':
@@ -66,7 +66,7 @@ if __name__ == '__main__':
                 'verifier': certdata.VERIFIER_PEM
             })
     
-    listenSecurityId = reply.result.security_id
+    listenSecurityId = reply.result.tls_id
     
     reply = conn.call_sync('ofp.add_identity', {
                 'certificate': certdata.CLIENT_PEM, 
@@ -74,11 +74,11 @@ if __name__ == '__main__':
                 'verifier': certdata.VERIFIER_PEM
             })
             
-    connectSecurityId = reply.result.security_id
+    connectSecurityId = reply.result.tls_id
         
     reply = conn.call_sync('ofp.listen', {
                 'endpoint': '8889', 
-                'security_id': listenSecurityId
+                'tls_id': listenSecurityId
             })
 
 
@@ -88,21 +88,21 @@ if __name__ == '__main__':
     for i in range(10):
         reply = conn.call_sync('ofp.connect', {
                     'endpoint': '127.0.0.1:8889', 
-                    'security_id': connectSecurityId, 
+                    'tls_id': connectSecurityId, 
                     'options':['--raw']
                 })
                 
     reply = conn.call_sync('ofp.connect', {
                 'endpoint': '127.0.0.1:8889', 
-                'security_id': connectSecurityId, 
+                'tls_id': connectSecurityId, 
                 'options':['--raw', '--udp']
             })
     
     #conn.call('ofp.listen', {'endpoint': '127.0.0.1:88'}, onResult)
     #conn.call('ofp.listen', {'endpoint': '127.0.0.1:8888'}, onResult)
-    #conn.call('ofp.listen', {'endpoint': '8889', 'security_id': 1}, onResult)
+    #conn.call('ofp.listen', {'endpoint': '8889', 'tls_id': 1}, onResult)
     #conn.call('ofp.close', {'conn_id': 1 }, onResult)
-    #conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'security_id': 2, 'options':['--raw']}, onResult)
+    #conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'tls_id': 2, 'options':['--raw']}, onResult)
     #conn.call('ofp.connect', {'endpoint': '127.0.0.1:8889', 'options':['--raw', '--udp']}, onResult)
     #conn.call('ofp.connect', {'endpoint': '[::1]:8889', 'options':['--raw', '--udp']}, onResult)
     #conn.call('ofp.connect', {'endpoint': '10.0.0.1:9999', 'options':['--raw']}, onResult)

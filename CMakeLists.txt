@@ -466,7 +466,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-target_link_libraries(ofp yamlio crypto ssl)
+target_link_libraries(ofp yamlio ssl crypto)
 
 # Make sure the source is generated before the executable builds.
 

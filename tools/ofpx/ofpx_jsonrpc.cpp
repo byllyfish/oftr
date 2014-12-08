@@ -1,5 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <sys/resource.h>     // for getrlimit, setrlimit
 #include "ofpx_jsonrpc.h"
 #include "ofp/api/apiserver.h"
 
