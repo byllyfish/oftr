@@ -13,14 +13,15 @@ namespace sys {
 namespace detail {
 
 template <class Adapter>
-inline asio::ssl::context *udpContext(UDP_Server *server, UInt64 securityId) {
+inline SSL_CTX *udpContext(UDP_Server *server, UInt64 securityId) {
   assert(securityId != 0);
-  return log::fatal_if_null(server->engine()->securityContext(securityId),
-                            LOG_LINE());
+  Identity *identity = server->engine()->findIdentity(securityId);
+  log::fatal_if_null(identity, LOG_LINE());
+  return identity->dtlsContext();
 }
 
 template <>
-inline asio::ssl::context *udpContext<Plaintext_Adapter>(UDP_Server *server,
+inline SSL_CTX *udpContext<Plaintext_Adapter>(UDP_Server *server,
                                                          UInt64 securityId) {
   assert(securityId == 0);
   return nullptr;

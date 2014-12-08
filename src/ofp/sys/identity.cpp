@@ -70,30 +70,23 @@ static bool IsDTLS(SSL *ssl) {
   }
 }
 
-constexpr asio::ssl::context_base::method defaultMethod() {
-  return asio::ssl::context_base::tlsv12;
-}
-
 Identity::Identity(const std::string &certData,
                    const std::string &keyPassphrase,
                    const std::string &verifyData, std::error_code &error)
-    : context_{defaultMethod()} {
-  error = configureContext();
+    : tls_{asio::ssl::context_base::tlsv12},
+    dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
+
+
+  // Allow for retrieving this Identity object given just an SSL context.
+  SetIdentityPtr(tls_.native_handle(), this);
+  SetIdentityPtr(dtls_.get(), this);
+
+  // Initialize the TLS context.
+  error = initContext(tls_.native_handle(), certData, keyPassphrase, verifyData);
   if (error) return;
 
-  error = loadCertificateChain(certData);
-  if (error) return;
-
-  error = loadPrivateKey(certData, keyPassphrase);
-  if (error) return;
-
-  error = loadVerifier(verifyData);
-  if (error) return;
-
-  error = prepareVerifier();
-  if (error) return;
-
-  error = prepareCookies();
+  // Initialize the DTLS context identically.
+  error = initContext(dtls_.get(), certData, keyPassphrase, verifyData);
   if (error) return;
 
   // Save subject name of the certificate.
@@ -130,196 +123,171 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
   }
 }
 
-std::error_code Identity::configureContext() {
-  std::error_code err;
 
-  (void)SSL_CTX_clear_options(context_.native_handle(),
-                              SSL_OP_LEGACY_SERVER_CONNECT);
-  auto options = SSL_CTX_set_options(context_.native_handle(),
-                                     SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
-  log::debug("ConfigureContext: options", options);
+std::error_code Identity::initContext(SSL_CTX *ctx, 
+                    const std::string &certData,
+                    const std::string &keyPassphrase,
+                    const std::string &verifyData) {
+  prepareOptions(ctx);
+  prepareSessions(ctx);
+  prepareVerifier(ctx);
+  prepareDTLSCookies(ctx);
 
-  // context_.set_options(asio::ssl::context::no_sslv2 |
-  //                         asio::ssl::context::no_sslv3 |
-  //                         asio::ssl::context::no_compression,
-  //                     err);
-
-  // context_.clear_options();
-
-  uint8_t id[] = "ofpx";
-  SSL_CTX_set_session_id_context(context_.native_handle(), id, sizeof(id) - 1);
-  SSL_CTX_set_timeout(context_.native_handle(), 60 * 5);
-  SSL_CTX_set_session_cache_mode(context_.native_handle(),
-                                 SSL_SESS_CACHE_SERVER);
-
-  // Allow for retrieving this Identity object given just an SSL context.
-  SetIdentityPtr(context_.native_handle(), this);
-
-  // Install msg callback to log handshake messages.
-  SSL_CTX_set_msg_callback(context_.native_handle(), openssl_msg_callback);
-
-  return err;
-}
-
-/// Load certificate from a PEM file.
-std::error_code Identity::loadCertificateChain(const std::string &certData) {
-  std::error_code err;
-
-  asio::const_buffer certBuffer{certData.data(), certData.size()};
-  context_.use_certificate_chain(certBuffer, err);
-
-  if (err) {
-    log::error("Failed to load certificate", err);
+  std::error_code result = loadCertificateChain(ctx, certData);
+  if (result) {
+    return result;
   }
 
-  return err;
+  result = loadPrivateKey(ctx, certData, keyPassphrase);
+  if (result) {
+    return result;
+  }
+
+  result = loadVerifier(ctx, verifyData);
+  
+  return result;
+}
+
+void Identity::prepareOptions(SSL_CTX *ctx) {
+  (void)SSL_CTX_clear_options(ctx, SSL_OP_LEGACY_SERVER_CONNECT);
+  auto options = SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
+
+  log::debug("Identity::prepareContextOptions: options", log::hex(options));
+}
+
+void Identity::prepareSessions(SSL_CTX *ctx) {
+  uint8_t id[] = "ofpx";
+  SSL_CTX_set_session_id_context(ctx, id, sizeof(id) - 1);
+  SSL_CTX_set_timeout(ctx, 60 * 5);
+  SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_SERVER);
+}
+
+inline std::error_code sslError(uint32_t err) {
+  return asio::error_code(static_cast<int>(err), asio::error::get_ssl_category());
+}
+
+std::error_code Identity::loadCertificateChain(SSL_CTX *ctx, const std::string &certData) {
+  // This code is adapted from SSL_CTX_use_certificate_chain_file implementation
+  // in ssl_rsa.c
+
+  ERR_clear_error(); // clear error stack for SSL_CTX_use_certificate()
+
+  MemBio bio{certData};
+  MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), 0, 0, 0)};
+
+  if (!mainCert) {
+    return sslError(ERR_R_PEM_LIB);
+  }
+
+  int rc = SSL_CTX_use_certificate(ctx, mainCert.get());
+
+  if (rc == 0 || ERR_peek_error() != 0) {
+    return sslError(::ERR_get_error());
+  }
+
+  SSL_CTX_clear_chain_certs(ctx);
+
+  while (true) {
+    MemX509 caCert{PEM_read_bio_X509(bio.get(), 0, 0,0)};
+    if (!caCert) 
+      break;
+
+    if (!SSL_CTX_add0_chain_cert(ctx, caCert.get())) {
+      return sslError(::ERR_get_error());
+    }
+    
+    // Do not free caCert if it was successfully added to the chain.
+    caCert.release();
+  }
+
+  // When the while loop ends, it's usually just EOF.
+  uint32_t err = ERR_peek_last_error();
+  assert(err);
+
+  if (ERR_GET_LIB(err) == ERR_LIB_PEM && ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
+    ERR_clear_error();
+    return {};
+  }
+
+  // Return the error.
+  return sslError(::ERR_get_error());
 }
 
 /// Load private key from a PEM file.
-std::error_code Identity::loadPrivateKey(const std::string &keyData,
+std::error_code Identity::loadPrivateKey(SSL_CTX *ctx, const std::string &keyData,
                                          const std::string &passphrase) {
-  std::error_code err;
-
-  // Set the context's password callback to return the given passphrase.
-  context_.set_password_callback(
-      [&passphrase](size_t maxLength,
-                    asio::ssl::context::password_purpose purpose)
-          -> std::string {
-        return (purpose == asio::ssl::context::for_reading) ? passphrase : "";
-      },
-      err);
-
-  if (err) {
-    log::warning("loadPrivateKey: Error returned from set_password_callback",
-                 err);
-  }
-
-  asio::const_buffer keyBuffer{keyData.data(), keyData.size()};
-  context_.use_private_key(keyBuffer, asio::ssl::context::pem, err);
-
-  if (err) {
-    log::error("Failed to load private key", err);
-  }
-
-  // After loading the key, reset the context's password callback.
-  std::error_code ignore;
-  context_.set_password_callback(
-      [](size_t maxLength, asio::ssl::context::password_purpose purpose)
-          -> std::string { return ""; },
-      ignore);
-
-  if (!err) {
-    // Make sure the key matches the certificate.
-    int valid = SSL_CTX_check_private_key(context_.native_handle());
-    if (!valid) {
-      log::warning("loadPrivateKey: private key does not match certificate");
-    }
-  }
-
-  return err;
-}
-
-std::error_code Identity::loadVerifier(const std::string &verifyData) {
-  std::error_code err;
-
-  asio::const_buffer verifyBuffer{verifyData.data(), verifyData.size()};
-  context_.add_certificate_authority(verifyBuffer, err);
-
-  if (err) {
-    log::error("Failed to load verifier:", err);
-  } else {
-    // Add CA certificate name to our client CA list.
-    err = addClientCA(verifyData);
-  }
-
-  return err;
-}
-
-std::error_code Identity::addClientCA(const std::string &verifyData) {
   ::ERR_clear_error();
 
-  MemX509 cert{verifyData};
-  if (cert) {
-    if (::SSL_CTX_add_client_CA(context_.native_handle(), cert) == 1) {
-      return std::error_code{};
-    }
+  MemBio bio{keyData};
+
+  auto passwordCallback = [](char *buf, int size, int rwflag, void *u) -> int {
+    char *pw = static_cast<char *>(u);
+    log::fatal_if_null(pw);
+    size_t result = strlcpy(buf, pw, Unsigned_cast(size));
+    return static_cast<int>(result);
+  };
+
+  std::unique_ptr<EVP_PKEY, void(*)(EVP_PKEY *)> privateKey{::PEM_read_bio_PrivateKey(
+          bio.get(), 0, passwordCallback, const_cast<char *>(passphrase.c_str())), EVP_PKEY_free};
+
+  if (!privateKey) {
+    log::debug("loadPrivateKey: PEM_read_bio_PrivateKey failed");
+    return sslError(::ERR_get_error());
   }
 
-  return std::error_code(static_cast<int>(::ERR_get_error()),
-                         asio::error::get_ssl_category());
-}
+  if (::SSL_CTX_use_PrivateKey(ctx, privateKey.get()) != 1) {
+    return sslError(::ERR_get_error());
+  }
 
-std::error_code Identity::prepareVerifier() {
-  std::error_code err;
-
-  // Set the verify mode to "verify the peer" and "fail verification if peer
-  // certificate is not present". In a client handshake, the verify_fail_if
-  // no_cert option is ignored -- I'm just setting the verify mode here.
-
-  context_.set_verify_mode(
-      asio::ssl::verify_peer | asio::ssl::verify_fail_if_no_peer_cert, err);
-
-  // By default, set up the context to REJECT all certificates. The TLS
-  // connection
-  // object should have its verify_callback set instead.
-
-  context_.set_verify_callback(
-      [this](bool preverified, asio::ssl::verify_context &ctx) -> bool {
-        log::warning(
-            "Context TLS verifier is rejecting all certificates - you need to "
-            "override!");
-        return false;
-      },
-      err);
-
-  return err;
-}
-
-std::error_code Identity::prepareCookies() {
-  SSL_CTX_set_cookie_generate_cb(context_.native_handle(),
-                                 openssl_cookie_generate_callback);
-  SSL_CTX_set_cookie_verify_cb(context_.native_handle(),
-                               openssl_cookie_verify_callback);
+  if (::SSL_CTX_check_private_key(ctx) != 1) {
+      log::warning("loadPrivateKey: private key does not match certificate");
+  }
 
   return {};
 }
 
-#if 0
-bool Identity::verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
-                          X509_STORE_CTX *ctx) {
-  int error = X509_STORE_CTX_get_error(ctx.native_handle());
-  int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
+std::error_code Identity::loadVerifier(SSL_CTX *ctx, const std::string &verifyData) {
+  ::ERR_clear_error();
 
-  MemX509 cert{X509_STORE_CTX_get_current_cert(ctx.native_handle())};
-  log::fatal_if_null(cert.ptr());
+  MemX509 caCert{verifyData};
 
-  std::string subjectName = cert.subjectName();
-
-  if (!preverified || (error != X509_V_OK)) {
-    // We failed pre-verification or there is a verify error.
-    log::warning("Certificate verify failed:",
-                 X509_verify_cert_error_string(error),
-                 std::make_pair("connid", connId));
-    log::warning("Peer certificate", depth, subjectName,
-                 std::make_pair("tlsid", securityId),
-                 std::make_pair("connid", connId), '\n', cert.toString());
-    return false;
+  if (!caCert) {
+    return sslError(::ERR_get_error());
   }
 
-  if (depth > 0) {
-    log::debug("Verify peer chain:", depth, subjectName,
-               std::make_pair("tlsid", securityId),
-               std::make_pair("connid", connId));
-    return preverified;
+  X509_STORE *store = ::SSL_CTX_get_cert_store(ctx);
+  log::fatal_if_null(store);
+
+  if (::X509_STORE_add_cert(store, caCert.get()) != 1) {
+    return sslError(::ERR_get_error());
   }
 
-  assert(depth == 0);
-  log::info("Verify peer:", subjectName, std::make_pair("tlsid", securityId),
-            std::make_pair("connid", connId));
+  // Add CA certificate name to our client CA list.
+  if (::SSL_CTX_add_client_CA(ctx, caCert.get()) != 1) {
+    return sslError(::ERR_get_error());
+  }
 
-  return true;
+  return {};
 }
-#endif  // 0
+
+
+void Identity::prepareVerifier(SSL_CTX *ctx) {
+  // By default, set up the context to REJECT all certificates. The TLS
+  // connection object should have its verify_callback set explicitly.
+
+  auto verifyCallback = [](int preverify_ok, X509_STORE_CTX *storeCtx) -> int {
+    log::warning("Context TLS verifier is rejecting all certificates - you need to override!");
+    return 0;
+  };
+
+  ::SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+      verifyCallback);
+}
+
+void Identity::prepareDTLSCookies(SSL_CTX *ctx) {
+  SSL_CTX_set_cookie_generate_cb(ctx, dtls_cookie_generate_callback);
+  SSL_CTX_set_cookie_verify_cb(ctx, dtls_cookie_verify_callback);
+}
 
 //-------------------------------//
 // b e f o r e H a n d s h a k e //
@@ -338,18 +306,7 @@ void Identity::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient) {
 
   // Set up the verify callback.
   int verifyMode = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
-  SSL_set_verify(ssl, verifyMode, openssl_verify_callback);
-
-#if 0
-  sock.set_verify_callback(
-      [connId, securityId](bool preverified, asio::ssl::verify_context &ctx)
-          -> bool { return verifyPeer(connId, securityId, preverified, ctx); },
-      err);
-
-  if (err) {
-    log::error("Failed to specify TLS verifier callback", err);
-  }
-#endif  // 0
+  SSL_set_verify(ssl, verifyMode, tls_verify_callback);
 
   if (isClient && !IsDTLS(ssl)) {
     // Check if there is a client session we can resume. This is a static method
@@ -424,11 +381,11 @@ void Identity::beforeClose<SSL>(Connection *conn, SSL *ssl) {
   }
 }
 
-//-----------------------------------------------//
-// o p e n s s l _ v e r i f y _ c a l l b a c k //
-//-----------------------------------------------//
+//---------------------------------------//
+// t l s _ v e r i f y _ c a l l b a c k //
+//---------------------------------------//
 
-int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
+int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   log::fatal_if_null(ctx);
 
   // Retrieve pointer to SSL object from the X509_STORE_CTX. Then, retrieve our
@@ -450,9 +407,11 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   int depth = X509_STORE_CTX_get_error_depth(ctx);
 
   // Retrieve subject name of the current (possibly intermediate) certificate.
+  // N.B. do not delete the certificate; we don't own it!
 
-  MemX509 cert{X509_STORE_CTX_get_current_cert(ctx)};
-  log::fatal_if_null(cert.ptr());
+  MemX509 cert{X509_STORE_CTX_get_current_cert(ctx), false};
+  log::fatal_if_null(cert.get());
+
   std::string subjectName = cert.subjectName();
 
   // Check status of preverification.
@@ -488,11 +447,11 @@ int Identity::openssl_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   return 1;
 }
 
-//-----------------------------------------------------------------//
-// o p e n s s l _ c o o k i e _ g e n e r a t e _ c a l l b a c k //
-//-----------------------------------------------------------------//
+//-----------------------------------------------------------//
+// d t l s _ c o o k i e _ g e n e r a t e _ c a l l b a c k //
+//-----------------------------------------------------------//
 
-int Identity::openssl_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
+int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                                size_t *cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
   log::debug("openssl_cookie_generate_callback", std::make_pair("connid", conn->connectionId()));
@@ -504,107 +463,14 @@ int Identity::openssl_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
   return 1;
 }
 
-//-------------------------------------------------------------//
-// o p e n s s l _ c o o k i e _ v e r i f y _ c a l l b a c k //
-//-------------------------------------------------------------//
+//-------------------------------------------------------//
+// d t l s _ c o o k i e _ v e r i f y _ c a l l b a c k //
+//-------------------------------------------------------//
 
-int Identity::openssl_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
+int Identity::dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                              size_t cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
   log::debug("openssl_cookie_verify_callback", std::make_pair("connid", conn->connectionId()));
   return 1;
 }
 
-#if 0
-static const char *SSLRecordTypeString(UInt8 type) {
-  switch (type) {
-    case 20: return "change_cipher_spec";
-    case 21: return "alert";
-    case 22: return "handshake";
-    case 23: return "application_data";
-    default: return "unknown_record_type";
-  }
-}
-
-static const char *SSLRecordVersionString(UInt32 version) {
-  switch (version) {
-    case 0x0303: return "TLS1.2";
-    case 0x0302: return "TLS1.1";
-    case 0x0301: return "TLS1.0";
-    case 0x0300: return "SSL3";
-    case 0xFEFF: return "DTLS1.0";
-    default: return "unknown_record_version";
-  }
-}
-#endif //0
-
-//-----------------------------------------//
-// o p e n s s l _ m s g _ c a l l b a c k //
-//-----------------------------------------//
-
-void Identity::openssl_msg_callback(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg) {
-#if 0
-  // This callback is called in multiple ways by OpenSSL. We are interested in
-  // the header callbacks for each plaintext record:
-  // 
-  //     write_p == 1 for write, 0 for read.
-  //     version == 0
-  //     content_type == SSL3_RT_HEADER (0x0100)
-  //     buf == ptr to record header
-  //     len == SSL3_RT_HEADER_LENGTH (5) for SSL/TLS, 
-  //            DTLS1_RT_HEADER_LENGTH (13) for DTLS
-  // 
-  
-  if (!(version == 0 && content_type == SSL3_RT_HEADER && len >= SSL3_RT_HEADER_LENGTH)) {
-    //log::debug(write_p ? "msg write": "msg read", version, content_type, len, RawDataToHex(buf, len));
-    return;
-  }
-
-  static_assert(SSL3_RT_HEADER_LENGTH == 5, "Unexpected value");
-  static_assert(DTLS1_RT_HEADER_LENGTH == 13, "Unexpected value");
-  
-  const UInt8 *data = BytePtr(buf);
-  UInt32 recordLen = 0;
-  UInt32 recordEpoch = 0;
-  UInt64 recordSeqNum = 0;
-
-  if (len == SSL3_RT_HEADER_LENGTH) {
-    // SSL record header is 5-bytes:
-    // 
-    //    ContentType: 1 byte
-    //    ProtocolVersion: 2 bytes (Big endian)
-    //    Length: 2 bytes (Big endian)
-
-    recordLen = (UInt32_cast(data[3]) << 8) | data[4];
-
-  } else if (len == DTLS1_RT_HEADER_LENGTH) {
-    // DTLS record header is 13-bytes:
-    //   ContentType: 1 byte
-    //   ProtocolVersion: 2 bytes (Big endian)
-    //   Epoch: 2 bytes (Big endian)
-    //   SequenceNumber: 6 bytes (Big endian)
-    //   Length: 2 bytes (Big endian)
-    
-    recordEpoch = (UInt32_cast(data[3]) << 8) | data[4];
-    recordSeqNum = (UInt64_cast(data[5]) << 5*8) |
-                    (UInt64_cast(data[6]) << 4*8) |
-                     (UInt64_cast(data[7]) << 3*8) |
-                      (UInt64_cast(data[8]) << 2*8) |
-                       (UInt64_cast(data[9]) << 1*8) | UInt64_cast(data[10]);
-    recordLen = (UInt32_cast(data[11]) << 8) | data[12];
-  }
-
-  // Grab the common parts:
-
-  UInt8 recordType = data[0];
-  UInt32 recordVersion = (UInt32_cast(data[1]) << 8) | data[2];
-
-  const char *recType = SSLRecordTypeString(recordType);
-  const char *recVers = SSLRecordVersionString(recordVersion);
-  const char *readWrite = write_p ? "write" : "read";
-
-  Connection *conn = GetConnectionPtr(ssl);
-  
-  log::debug(recVers, readWrite, recType, "length", recordLen, "epoch", recordEpoch, "seq", recordSeqNum, std::make_pair("connid", conn->connectionId()));
-#endif //0
-}

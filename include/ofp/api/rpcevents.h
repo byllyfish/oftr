@@ -24,7 +24,6 @@ enum RpcMethod : UInt32 {
   METHOD_CONNECT,        // ofp.connect
   METHOD_CLOSE,          // ofp.close
   METHOD_SEND,           // ofp.send
-  METHOD_CONFIG,         // ofp.config
   METHOD_DATAPATH,       // ofp.datapath
   METHOD_MESSAGE,        // ofp.message
   METHOD_MESSAGE_ERROR,  // ofp.message_error
@@ -203,12 +202,11 @@ struct RpcAddIdentity {
   explicit RpcAddIdentity(UInt64 ident) : id{ident} {}
 
   struct Params {
-    /// Name of certificate file (which also contains private key).
+    /// Certificate chain in PEM format (which also contains private key).
     std::string certificate;
     /// Optional password for encrypted private key.
     std::string password;
-    /// Name of file containing certificate authority to use for verifying a
-    /// peer certificate.
+    /// PEM certificate for trusted CA to use for verifying a peer certificate.
     std::string verifier;
   };
 
@@ -257,6 +255,7 @@ struct RpcSendResponse {
   Result result;
 };
 
+#if 0
 //---------------------//
 // o f p . c o n f i g //
 //---------------------//
@@ -285,6 +284,7 @@ struct RpcConfigResponse {
   UInt64 id;
   Result result;
 };
+#endif //0
 
 //-------------------------//
 // o f p . d a t a p a t h //
@@ -372,7 +372,7 @@ template <>
 struct MappingTraits<ofp::api::RpcListen::Params> {
   static void mapping(IO &io, ofp::api::RpcListen::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
-    io.mapOptional("security_id", params.securityId);
+    io.mapOptional("tls_id", params.securityId);
     io.mapOptional("options", params.options);
   }
 };
@@ -381,7 +381,7 @@ template <>
 struct MappingTraits<ofp::api::RpcConnect::Params> {
   static void mapping(IO &io, ofp::api::RpcConnect::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
-    io.mapOptional("security_id", params.securityId);
+    io.mapOptional("tls_id", params.securityId);
     io.mapOptional("options", params.options);
   }
 };
@@ -390,13 +390,6 @@ template <>
 struct MappingTraits<ofp::api::RpcClose::Params> {
   static void mapping(IO &io, ofp::api::RpcClose::Params &params) {
     io.mapRequired("conn_id", params.connId);
-  }
-};
-
-template <>
-struct MappingTraits<ofp::api::RpcConfig::Params> {
-  static void mapping(IO &io, ofp::api::RpcConfig::Params &params) {
-    io.mapRequired("options", params.options);
   }
 };
 
@@ -493,7 +486,7 @@ template <>
 struct MappingTraits<ofp::api::RpcAddIdentityResponse::Result> {
   static void mapping(IO &io,
                       ofp::api::RpcAddIdentityResponse::Result &result) {
-    io.mapRequired("security_id", result.securityId);
+    io.mapRequired("tls_id", result.securityId);
   }
 };
 

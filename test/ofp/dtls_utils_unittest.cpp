@@ -40,6 +40,6 @@ TEST(dtls_utils, DTLS_PrintRecord) {
 
     // DTLS 1.0
     std::string buf3 = HexToRawData("16FEFF0000000000000000001F030000130000000000000013FEFF1000000000000000000000000000000000");
-    EXPECT_EQ("DTLS1.0 handshake(22) len=44 epoch=0 seq=0 hello_verify_request(3) msgLen=19 msgSeq=0 fragmentOffset=0", DTLS_PrintRecord(buf3.data(), buf3.size()));
+    EXPECT_EQ("DTLS1.0 handshake(22) len=44 epoch=0 seq=0 hello_verify_request(3) msgLen=19 msgSeq=0 fragmentOffset=0 (19 bytes) cookie=00000000000000000000000000000000", DTLS_PrintRecord(buf3.data(), buf3.size()));
 }
 

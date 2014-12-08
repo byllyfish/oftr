@@ -5,20 +5,20 @@
 
 using namespace ofp::sys;
 
-DTLS_Adapter::DTLS_Adapter(asio::ssl::context *context,
+DTLS_Adapter::DTLS_Adapter(SSL_CTX *ctx,
                            DeliverFunc sendCallback,
                            DeliverFunc receiveCallback, void *userData)
     : sendCallback_{sendCallback},
       receiveCallback_{receiveCallback},
       userData_{userData} {
-  ssl_ = SSL_new(context->native_handle());
+  ssl_ = SSL_new(ctx);
   log::fatal_if_null(ssl_, LOG_LINE());
 
   // TODO(bfish): Figure out why DTLSv1_2_method() doesn't work? DTLS Handshake 
   // doesn't complete normally!
 
-  int rc = SSL_set_ssl_method(ssl_, DTLSv1_method());
-  log::fatal_if_false(rc == 1, LOG_LINE());
+  //int rc = SSL_set_ssl_method(ssl_, DTLSv1_method());
+  //log::fatal_if_false(rc == 1, LOG_LINE());
 
   ::SSL_set_mode(ssl_, SSL_MODE_ENABLE_PARTIAL_WRITE);
   ::SSL_set_mode(ssl_, SSL_MODE_ACCEPT_MOVING_WRITE_BUFFER);

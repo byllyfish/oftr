@@ -96,14 +96,6 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       }
       break;
     }
-    case METHOD_CONFIG: {
-      RpcConfig config{id};
-      io.mapRequired("params", config.params);
-      if (!errorFound(io)) {
-        conn_->onRpcConfig(&config);
-      }
-      break;
-    }
     case METHOD_LIST_CONNS: {
       RpcListConns list{id};
       io.mapRequired("params", list.params);

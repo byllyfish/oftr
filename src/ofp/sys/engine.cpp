@@ -158,6 +158,20 @@ UInt64 Engine::addIdentity(const std::string &certData,
   return secId;
 }
 
+
+Identity *Engine::findIdentity(UInt64 securityId) {
+  if (securityId == 0) {
+    return nullptr;
+  }
+
+  auto iter = std::find_if(identities_.begin(), identities_.end(),
+                           [securityId](std::unique_ptr<Identity> &identity) {
+    return identity->securityId() == securityId;
+  });
+
+  return iter != identities_.end() ? iter->get() : nullptr;
+}
+
 void Engine::run() {
   if (!isRunning_) {
     isRunning_ = true;
@@ -169,23 +183,6 @@ void Engine::run() {
 
     isRunning_ = false;
   }
-}
-
-asio::ssl::context *Engine::securityContext(UInt64 securityId) {
-  if (securityId == 0) {
-    return nullptr;
-  }
-
-  auto iter = std::find_if(identities_.begin(), identities_.end(),
-                           [securityId](std::unique_ptr<Identity> &identity) {
-    return identity->securityId() == securityId;
-  });
-
-  if (iter != identities_.end()) {
-    return iter->get()->securityContext();
-  }
-
-  return nullptr;
 }
 
 void Engine::stop(Milliseconds timeout) {

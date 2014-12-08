@@ -80,8 +80,8 @@ void ApiServer::onRpcListen(ApiConnection *conn, RpcListen *open) {
   UInt64 securityId = open->params.securityId;
 
   // Check that securityId exists.
-  if (securityId != 0 && engine_->securityContext(securityId) == nullptr) {
-    optionError += "Invalid securityId: " + std::to_string(securityId);
+  if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
+    optionError += "Invalid tls_id: " + std::to_string(securityId);
   }
 
   if (!optionError.empty()) {
@@ -153,8 +153,8 @@ void ApiServer::onRpcConnect(ApiConnection *conn, RpcConnect *connect) {
 
   // Check that securityId exists.
   if (optionError.empty() && securityId != 0 &&
-      engine_->securityContext(securityId) == nullptr) {
-    optionError += "Invalid securityId: " + std::to_string(securityId);
+      engine_->findIdentity(securityId) == nullptr) {
+    optionError += "Invalid tls_id: " + std::to_string(securityId);
   }
 
   if (!optionError.empty()) {
@@ -214,10 +214,6 @@ void ApiServer::onRpcSend(ApiConnection *conn, RpcSend *send) {
   response.result.connId = connId;
   response.result.data = {params.data(), params.size()};
   conn->rpcReply(&response);
-}
-
-void ApiServer::onRpcConfig(ApiConnection *conn, RpcConfig *config) {
-  // FIXME - to be implemented.
 }
 
 void ApiServer::onRpcListConns(ApiConnection *conn, RpcListConns *list) {

@@ -17,6 +17,8 @@ int JsonRpc::run(int argc, char **argv) {
   cl::ParseCommandLineOptions(argc, argv);
   setMaxOpenFiles();
 
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Debug);
+
   ofp::Driver driver;
   ofp::api::ApiServer server{&driver, STDIN, STDOUT};
   driver.run();

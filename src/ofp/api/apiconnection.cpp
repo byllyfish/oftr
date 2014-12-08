@@ -28,10 +28,6 @@ void ApiConnection::onRpcClose(RpcClose *close) {
 
 void ApiConnection::onRpcSend(RpcSend *send) { server_->onRpcSend(this, send); }
 
-void ApiConnection::onRpcConfig(RpcConfig *config) {
-  server_->onRpcConfig(this, config);
-}
-
 void ApiConnection::onRpcListConns(RpcListConns *list) {
   server_->onRpcListConns(this, list);
 }

@@ -47,13 +47,14 @@ class Engine {
                      const std::string &keyPassphrase,
                      const std::string &verifier, std::error_code &error);
 
+  Identity *findIdentity(UInt64 securityId);
+
   void run();
   void stop(Milliseconds timeout = 0_ms);
   bool isRunning() const { return isRunning_; }
   void installSignalHandlers();
 
   asio::io_service &io() { return io_; }
-  asio::ssl::context *securityContext(UInt64 securityId);
 
   Driver *driver() const { return driver_; }
 

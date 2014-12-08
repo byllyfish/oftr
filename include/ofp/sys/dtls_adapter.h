@@ -14,7 +14,7 @@ class DTLS_Adapter {
  public:
   typedef void (*DeliverFunc)(const void *data, size_t length, void *userData);
 
-  DTLS_Adapter(asio::ssl::context *context, DeliverFunc sendCallback,
+  DTLS_Adapter(SSL_CTX *ctx, DeliverFunc sendCallback,
                DeliverFunc receiveCallback, void *userData);
   ~DTLS_Adapter();
 

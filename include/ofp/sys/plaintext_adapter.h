@@ -12,7 +12,7 @@ class Plaintext_Adapter {
  public:
   typedef void (*DeliverFunc)(const void *data, size_t length, void *userData);
 
-  Plaintext_Adapter(asio::ssl::context *context, DeliverFunc sendCallback,
+  Plaintext_Adapter(SSL_CTX *ctx, DeliverFunc sendCallback,
                     DeliverFunc receiveCallback, void *userData)
       : sendCallback_{sendCallback},
         receiveCallback_{receiveCallback},

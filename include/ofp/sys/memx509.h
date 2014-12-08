@@ -12,29 +12,28 @@ OFP_BEGIN_IGNORE_PADDING
 
 class MemX509 {
  public:
-  explicit MemX509(X509 *cert, bool own = false) : cert_{cert}, own_{own} {}
 
-  explicit MemX509(const std::string &data) : own_{true} {
-    MemBio bio{data};
-    if (bio) {
-      cert_ = PEM_read_bio_X509(bio, 0, 0, 0);
+  explicit MemX509(X509 *cert, bool own=true) : cert_{cert}, own_{own} {}
+
+  explicit MemX509(const std::string &data) : cert_{::PEM_read_bio_X509(MemBio{data}.get(), 0, 0, 0)} {}
+
+  ~MemX509() {
+    if (cert_ && own_) {
+      ::X509_free(cert_);
+      cert_ = nullptr; 
     }
   }
 
-  ~MemX509() {
-    if (own_ && cert_) ::X509_free(cert_);
-  }
-
-  X509 *ptr() const { return cert_; }
-
-  operator X509 *() const noexcept { return cert_; }
+  X509 *get() const noexcept  { return cert_; }
+  void release() noexcept { cert_ = nullptr; }
+  bool operator!() const noexcept { return cert_ == nullptr; }
 
   std::string subjectName() {
     assert(cert_);
     X509_NAME *name = X509_get_subject_name(cert_);
     MemBio bio;
     if (name) {
-      X509_NAME_print_ex(bio, name, 0, 0);
+      X509_NAME_print_ex(bio.get(), name, 0, 0);
     }
     return bio.toString();
   }
@@ -42,13 +41,13 @@ class MemX509 {
   std::string toString() {
     assert(cert_);
     MemBio bio;
-    X509_print_ex(bio, cert_, 0, 0);
+    X509_print_ex(bio.get(), cert_, 0, 0);
     return bio.toString();
   }
 
  private:
-  X509 *cert_ = nullptr;
-  bool own_;
+  X509 *cert_;
+  bool own_ = true;
 };
 
 OFP_END_IGNORE_PADDING

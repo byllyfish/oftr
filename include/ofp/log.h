@@ -111,6 +111,11 @@ inline bool fatal_if_false(bool value, const Args &... args) {
 
 #define LOG_LINE() std::make_pair(__FILE__, __LINE__)
 
+template <class Type>
+std::string hex(Type n) {
+  return RawDataToHex(&n, sizeof(n));
+}
+
 }  // namespace log
 }  // namespace ofp
 

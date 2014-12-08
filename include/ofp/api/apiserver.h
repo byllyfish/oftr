@@ -17,7 +17,6 @@ struct RpcListen;
 struct RpcConnect;
 struct RpcClose;
 struct RpcSend;
-struct RpcConfig;
 struct RpcListConns;
 struct RpcAddIdentity;
 
@@ -41,7 +40,6 @@ class ApiServer {
   void onRpcConnect(ApiConnection *conn, RpcConnect *connect);
   void onRpcClose(ApiConnection *conn, RpcClose *close);
   void onRpcSend(ApiConnection *conn, RpcSend *send);
-  void onRpcConfig(ApiConnection *conn, RpcConfig *config);
   void onRpcListConns(ApiConnection *conn, RpcListConns *list);
   void onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add);
 

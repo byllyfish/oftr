@@ -14,7 +14,6 @@ struct RpcOpen;
 struct RpcOpenResponse;
 struct RpcClose;
 struct RpcSend;
-struct RpcConfig;
 struct RpcErrorResponse;
 
 OFP_BEGIN_IGNORE_PADDING
@@ -30,7 +29,6 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   void onRpcConnect(RpcConnect *connect);
   void onRpcClose(RpcClose *close);
   void onRpcSend(RpcSend *send);
-  void onRpcConfig(RpcConfig *config);
   void onRpcListConns(RpcListConns *list);
   void onRpcAddIdentity(RpcAddIdentity *add);
 

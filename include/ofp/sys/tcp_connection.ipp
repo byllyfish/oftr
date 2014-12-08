@@ -17,7 +17,9 @@ namespace detail {
 template <class SocketType>
 inline asio::ssl::context *tcpContext(Engine *engine, UInt64 securityId) {
   assert(securityId != 0);
-  return log::fatal_if_null(engine->securityContext(securityId), LOG_LINE());
+  Identity *identity = engine->findIdentity(securityId);
+  log::fatal_if_null(identity, LOG_LINE());
+  return identity->tlsContext();
 }
 
 template <>

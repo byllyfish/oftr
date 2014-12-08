@@ -14,7 +14,10 @@ class MemBio {
             BIO_new_mem_buf(static_cast<void *>(const_cast<char *>(buf.data())),
                             static_cast<int>(buf.size())))} {}
 
-  ~MemBio() { BIO_free(bio_); }
+  ~MemBio() {
+    // Constructor guarantees that bio_ is created, or entire program aborted.
+    BIO_free(bio_); 
+  }
 
   std::string toString() {
     char *mem;
@@ -22,9 +25,9 @@ class MemBio {
     return std::string(mem, Unsigned_cast(size));
   }
 
-  BIO *ptr() const noexcept { return bio_; }
+  BIO *get() const noexcept { return bio_; }
 
-  operator BIO *() const noexcept { return bio_; }
+  bool operator!() const { return bio_ != nullptr; }
 
  private:
   BIO *bio_;

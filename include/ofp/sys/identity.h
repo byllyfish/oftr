@@ -22,7 +22,9 @@ class Identity {
   UInt64 securityId() const { return securityId_; }
   void setSecurityId(UInt64 securityId) { securityId_ = securityId; }
 
-  asio::ssl::context *securityContext() { return &context_; }
+  asio::ssl::context *tlsContext() { return &tls_; }
+  SSL_CTX *dtlsContext() { return dtls_.get(); }
+
   std::string subjectName() const { return subjectName_; }
 
   SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
@@ -40,29 +42,42 @@ class Identity {
   static void beforeClose(Connection *conn, SocketType *ssl) {}
 
  private:
+  /// Unique non-zero ID used to reference this Identity.
   UInt64 securityId_;
-  asio::ssl::context context_;
+
+  /// SSL context used for TLS connections over TCP.
+  asio::ssl::context tls_;
+
+  /// Separate SSL context used for DTLS connections over UDP.
+  std::unique_ptr<SSL_CTX, void(*)(SSL_CTX *)> dtls_;
+
+  /// Subject DN of this identities certificate.
   std::string subjectName_;
+
+  /// Map used to store client sessions by IP endpoint. Used for session
+  /// resumption in the client.
   std::unordered_map<IPv6Endpoint, SSL_SESSION *> clientSessions_;
 
-  std::error_code configureContext();
-  std::error_code loadCertificateChain(const std::string &certData);
-  std::error_code loadPrivateKey(const std::string &keyData,
+  std::error_code initContext(SSL_CTX *ctx, 
+                    const std::string &certData,
+                    const std::string &keyPassphrase,
+                    const std::string &verifyData);
+
+  static std::error_code loadCertificateChain(SSL_CTX *ctx, const std::string &certData);
+  static std::error_code loadPrivateKey(SSL_CTX *ctx, const std::string &keyData,
                                  const std::string &keyPassphrase);
-  std::error_code loadVerifier(const std::string &verifyData);
-  std::error_code addClientCA(const std::string &verifyData);
-  std::error_code prepareVerifier();
-  std::error_code prepareCookies();
+  static std::error_code loadVerifier(SSL_CTX *ctx, const std::string &verifyData);
 
-  // static bool verifyPeer(UInt64 connId, UInt64 securityId, bool preverified,
-  //                      X509_STORE_CTX *ctx);
+  static void prepareOptions(SSL_CTX *ctx);
+  static void prepareSessions(SSL_CTX *ctx);
+  static void prepareVerifier(SSL_CTX *ctx);
+  static void prepareDTLSCookies(SSL_CTX *ctx);
 
-  static int openssl_verify_callback(int preverified, X509_STORE_CTX *ctx);
-  static int openssl_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
+  static int tls_verify_callback(int preverified, X509_STORE_CTX *ctx);
+  static int dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                               size_t *cookie_len);
-  static int openssl_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
+  static int dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                             size_t cookie_len);
-  static void openssl_msg_callback(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg);
 };
 
 template <>
