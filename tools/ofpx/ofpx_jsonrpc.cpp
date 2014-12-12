@@ -2,6 +2,7 @@
 
 #include <sys/resource.h>     // for getrlimit, setrlimit
 #include "ofpx_jsonrpc.h"
+#include "ofpx_xpc.h"
 #include "ofp/api/apiserver.h"
 
 using namespace ofpx;
@@ -14,15 +15,17 @@ const int STDOUT = 1;
 // r u n //
 //-------//
 
-int JsonRpc::run(int argc, char **argv) {
+int JsonRpc::run(int argc, const char * const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
   setMaxOpenFiles();
 
   ofp::log::setOutputLevelFilter(ofp::log::Level::Debug);
 
-  ofp::Driver driver;
-  ofp::api::ApiServer server{&driver, STDIN, STDOUT};
-  driver.run();
+  if (xpc_) {
+    runXpc();
+  } else {
+    runStdio();
+  }
 
   return 0;
 }
@@ -49,4 +52,26 @@ void JsonRpc::setMaxOpenFiles() {
   }
 
   ofp::log::info("Changed open file limit to", rlp.rlim_cur);
+}
+
+//-----------------//
+// r u n S t d i o //
+//-----------------//
+
+void JsonRpc::runStdio() {
+  ofp::Driver driver;
+  ofp::api::ApiServer server{&driver, STDIN, STDOUT};
+  driver.run();
+}
+
+//-------------//
+// r u n X p c //
+//-------------//
+
+void JsonRpc::runXpc() {
+#if LIBOFP_TARGET_DARWIN
+  run_xpc_main();
+#else
+  log::fatal("XPC service is only available on Darwin/MacOS/IOS.");
+#endif
 }

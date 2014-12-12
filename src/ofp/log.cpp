@@ -4,6 +4,9 @@
 #include <iomanip>
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
+#if defined(LIBOFP_TARGET_DARWIN)
+# include <syslog.h>         // for LOG_ constants
+#endif // defined(LIBOFP_TARGET_DARWIN)
 
 namespace ofp {
 namespace log {
@@ -109,8 +112,6 @@ void setOutputLevelFilter(Level level) {
     detail::GlobalOutputLevelFilter = level;
 }
 
-
-
 static void streamOutputCallback(Level level, const char *line, size_t size,
                                  void *context) {
   std::ostream *os = reinterpret_cast<std::ostream *>(context);
@@ -167,6 +168,44 @@ void setOutputStream(llvm::raw_ostream *outputStream) {
     setOutputCallback(rawStreamOutputCallback, outputStream);
   }
 }
+
+#if defined(LIBOFP_TARGET_DARWIN)
+
+static void aslStreamOutputCallback(Level level, const char *line, size_t size,
+                                 void *context) {
+  aslclient client = static_cast<aslclient>(context);
+        
+  int priority;
+  switch (level) {
+      case ofp::log::Level::Debug:
+        priority = LOG_DEBUG;
+        break;
+      case ofp::log::Level::Trace:
+        priority = LOG_INFO;
+        break;
+      case ofp::log::Level::Info:
+        priority = LOG_NOTICE;
+        break;
+      case ofp::log::Level::Warning:
+        priority = LOG_WARNING;
+        break;
+      case ofp::log::Level::Error:
+        priority = LOG_ERR;
+        break;
+      default:
+        priority = LOG_NOTICE;
+        break;
+  }
+  
+  asl_log(client, NULL, priority, "%s", line);
+}
+
+void setOutputStream(aslclient outputStream) {
+  setOutputCallback(aslStreamOutputCallback, outputStream);
+}
+
+#endif //defined(LIBOFP_TARGET_DARWIN)
+
 
 static void trace1(const char *type, UInt64 id, const void *data,
                    size_t length) {

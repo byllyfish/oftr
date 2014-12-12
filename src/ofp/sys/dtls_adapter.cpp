@@ -156,8 +156,8 @@ void DTLS_Adapter::writeOutput() {
     size_t recordLen = (UInt32_cast(buf[11]) << 8) | UInt32_cast(buf[12]);
     assert(recordLen <= 1500 - 13);
 
-    rc = BIO_read(bio_, &buf[13], recordLen);
-    assert(rc == recordLen);
+    rc = BIO_read(bio_, &buf[13], static_cast<int>(recordLen));
+    assert(Unsigned_cast(rc) == recordLen);
 
     log::debug("DTLS_Adapter:", DTLS_PrintRecord(buf, recordLen+13));
     sendCallback_(buf, recordLen + 13, userData_);

@@ -53,6 +53,10 @@ set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/in
 set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS")
 set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
 
+if (APPLE AND UNIX)
+  set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D LIBOFP_TARGET_DARWIN")
+endif()
+
 # Specify the default set of compiler flags for all sources, including third
 # party libraries. Place flags that don't affect the preprocessor or warnings
 # here. This set of flags controls compiler output. It is important that all

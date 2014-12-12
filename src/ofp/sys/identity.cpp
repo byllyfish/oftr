@@ -11,6 +11,8 @@ using namespace ofp::sys;
 // First call to SSL_CTX_get_ex_new_index works around an issue in ASIO where
 // it uses SSL_CTX_get_app_data.
 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
 const int SSL_CTX_ASIO_PTR =
     SSL_CTX_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 const int SSL_CTX_IDENTITY_PTR =
@@ -20,6 +22,8 @@ const int SSL_ASIO_PTR =
     SSL_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 const int SSL_CONNECTION_PTR =
     SSL_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 static Identity *GetIdentityPtr(SSL_CTX *ctx) {
   return ofp::log::fatal_if_null(

@@ -9,6 +9,9 @@ namespace asio {
 namespace ssl {
 namespace detail {
 
+// Initialize OpenSSL on demand, rather than statically. Not all runs of 
+// a program will use OpenSSL -- we don't always need to initialize it.
+
 template <>
 class openssl_init<> : private openssl_init_base {
  public:

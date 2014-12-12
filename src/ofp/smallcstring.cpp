@@ -27,7 +27,7 @@ static const UInt8 *findIllegalUtf8(const UInt8 *begin, const UInt8 *end) {
     // Find first byte that has the high bit set.
     pos = std::find_if(pos, end, [](UInt8 b) { return (b & 0x80) != 0; });
     if (pos == end) {
-      return end;
+      break;
     }
 
     if (!isLegalUTF8Sequence(pos, end)) {

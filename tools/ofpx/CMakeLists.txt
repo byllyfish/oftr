@@ -5,6 +5,7 @@ set(OFPX_SOURCES
   ofpx_decode.cpp
   ofpx_encode.cpp
   ofpx_jsonrpc.cpp
+  ofpx_xpc.cpp
 )
 
 add_executable(ofpx ${OFPX_SOURCES})

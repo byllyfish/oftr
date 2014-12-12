@@ -25,7 +25,7 @@ static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
 // r u n //
 //-------//
 
-int Decode::run(int argc, char **argv) {
+int Decode::run(int argc, const char * const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
 
   // If there are no input files, add "-" to indicate stdin.

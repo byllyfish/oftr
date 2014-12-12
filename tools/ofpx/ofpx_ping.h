@@ -9,7 +9,7 @@ namespace ofpx {
 
 class Ping : public Subprogram {
  public:
-  int run(int argc, char **argv) override;
+  int run(int argc, const char * const *argv) override;
 
  private:
   cl::opt<int> size_{"size", cl::desc("data size"), cl::value_desc("size")};
