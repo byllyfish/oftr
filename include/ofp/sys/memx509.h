@@ -12,19 +12,19 @@ OFP_BEGIN_IGNORE_PADDING
 
 class MemX509 {
  public:
+  explicit MemX509(X509 *cert, bool own = true) : cert_{cert}, own_{own} {}
 
-  explicit MemX509(X509 *cert, bool own=true) : cert_{cert}, own_{own} {}
-
-  explicit MemX509(const std::string &data) : cert_{::PEM_read_bio_X509(MemBio{data}.get(), 0, 0, 0)} {}
+  explicit MemX509(const std::string &data)
+      : cert_{::PEM_read_bio_X509(MemBio{data}.get(), 0, 0, 0)} {}
 
   ~MemX509() {
     if (cert_ && own_) {
       ::X509_free(cert_);
-      cert_ = nullptr; 
+      cert_ = nullptr;
     }
   }
 
-  X509 *get() const noexcept  { return cert_; }
+  X509 *get() const noexcept { return cert_; }
   void release() noexcept { cert_ = nullptr; }
   bool operator!() const noexcept { return cert_ == nullptr; }
 

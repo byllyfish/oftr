@@ -5,17 +5,17 @@
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #if defined(LIBOFP_TARGET_DARWIN)
-# include <syslog.h>         // for LOG_ constants
-#endif // defined(LIBOFP_TARGET_DARWIN)
+#include <syslog.h>  // for LOG_ constants
+#endif               // defined(LIBOFP_TARGET_DARWIN)
 
 namespace ofp {
 namespace log {
 
 // Print the current timestamp into the given buffer. The format is exactly
 // 24 characters (including a trailing \0):
-// 
+//
 //   YYYYMMDD HHMMSS.ssssss \0
-//   
+//
 static size_t timestamp_now(char *buf, size_t buflen) {
   using namespace std::chrono;
 
@@ -23,25 +23,28 @@ static size_t timestamp_now(char *buf, size_t buflen) {
 
   auto now = system_clock::now();
   auto secs = system_clock::to_time_t(now);
-  UInt32 msec = UInt32_narrow_cast((duration_cast<microseconds>(now.time_since_epoch()) % 1000000).count());
+  UInt32 msec = UInt32_narrow_cast(
+      (duration_cast<microseconds>(now.time_since_epoch()) % 1000000).count());
 
   struct tm date;
   localtime_r(&secs, &date);
   date.tm_year += 1900;
   date.tm_mon += 1;
 
-  int rc = snprintf(buf, buflen, "%04d%02d%02d %02d%02d%02d.%06d ", date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec, msec);
+  int rc = snprintf(buf, buflen, "%04d%02d%02d %02d%02d%02d.%06d ",
+                    date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
+                    date.tm_min, date.tm_sec, msec);
 
   assert(rc == 23);
   return 23;
 }
 
 // Terminal Colors
-#define RED(s)    "\033[31m" s
+#define RED(s) "\033[31m" s
 #define YELLOW(s) "\033[33m" s
-#define GREEN(s)  "\033[32m" s
-#define GRAY(s)   "\033[90m" s
-#define BLUE(s)   "\033[34m" s
+#define GREEN(s) "\033[32m" s
+#define GRAY(s) "\033[90m" s
+#define BLUE(s) "\033[34m" s
 
 static char levelPrefix(Level level) {
   switch (level) {
@@ -128,7 +131,7 @@ static void streamOutputCallback(Level level, const char *line, size_t size,
 }
 
 static void rawStreamOutputCallback(Level level, const char *line, size_t size,
-                                 void *context) {
+                                    void *context) {
   llvm::raw_ostream *os = reinterpret_cast<llvm::raw_ostream *>(context);
 
   *os << levelPrefix(level);
@@ -142,8 +145,8 @@ static void rawStreamOutputCallback(Level level, const char *line, size_t size,
   os->flush();
 }
 
-static void rawStreamColorOutputCallback(Level level, const char *line, size_t size,
-                                 void *context) {
+static void rawStreamColorOutputCallback(Level level, const char *line,
+                                         size_t size, void *context) {
   llvm::raw_ostream *os = reinterpret_cast<llvm::raw_ostream *>(context);
 
   *os << levelPrefixColor(level);
@@ -162,7 +165,7 @@ void setOutputStream(std::ostream *outputStream) {
 }
 
 void setOutputStream(llvm::raw_ostream *outputStream) {
-  if (true) {   // FIXME(bfish): use has_colors() when working...
+  if (true) {  // FIXME(bfish): use has_colors() when working...
     setOutputCallback(rawStreamColorOutputCallback, outputStream);
   } else {
     setOutputCallback(rawStreamOutputCallback, outputStream);
@@ -172,31 +175,31 @@ void setOutputStream(llvm::raw_ostream *outputStream) {
 #if defined(LIBOFP_TARGET_DARWIN)
 
 static void aslStreamOutputCallback(Level level, const char *line, size_t size,
-                                 void *context) {
+                                    void *context) {
   aslclient client = static_cast<aslclient>(context);
-        
+
   int priority;
   switch (level) {
-      case ofp::log::Level::Debug:
-        priority = LOG_DEBUG;
-        break;
-      case ofp::log::Level::Trace:
-        priority = LOG_INFO;
-        break;
-      case ofp::log::Level::Info:
-        priority = LOG_NOTICE;
-        break;
-      case ofp::log::Level::Warning:
-        priority = LOG_WARNING;
-        break;
-      case ofp::log::Level::Error:
-        priority = LOG_ERR;
-        break;
-      default:
-        priority = LOG_NOTICE;
-        break;
+    case ofp::log::Level::Debug:
+      priority = LOG_DEBUG;
+      break;
+    case ofp::log::Level::Trace:
+      priority = LOG_INFO;
+      break;
+    case ofp::log::Level::Info:
+      priority = LOG_NOTICE;
+      break;
+    case ofp::log::Level::Warning:
+      priority = LOG_WARNING;
+      break;
+    case ofp::log::Level::Error:
+      priority = LOG_ERR;
+      break;
+    default:
+      priority = LOG_NOTICE;
+      break;
   }
-  
+
   asl_log(client, NULL, priority, "%s", line);
 }
 
@@ -204,8 +207,7 @@ void setOutputStream(aslclient outputStream) {
   setOutputCallback(aslStreamOutputCallback, outputStream);
 }
 
-#endif //defined(LIBOFP_TARGET_DARWIN)
-
+#endif  // defined(LIBOFP_TARGET_DARWIN)
 
 static void trace1(const char *type, UInt64 id, const void *data,
                    size_t length) {
@@ -261,10 +263,11 @@ void trace_rpc(const char *type, UInt64 id, const void *data, size_t length) {
   const char *msg = static_cast<const char *>(data);
 
   // Remove trailing newline, if it exists.
-  if (msg[length-1] == '\n')
-    --length;
+  if (msg[length - 1] == '\n') --length;
 
-  detail::write_(Level::Trace, type, length, "bytes", std::make_pair("connid", id), '\n', llvm::StringRef{msg, length});
+  detail::write_(Level::Trace, type, length, "bytes",
+                 std::make_pair("connid", id), '\n',
+                 llvm::StringRef{msg, length});
 }
 
 }  // namespace log

@@ -66,7 +66,7 @@ OFP_END_IGNORE_PADDING
 // r u n //
 //-------//
 
-int Ping::run(int argc, const char * const *argv) {
+int Ping::run(int argc, const char *const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
   return ping();
 }

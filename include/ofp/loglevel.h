@@ -5,8 +5,8 @@
 
 #include "ofp/types.h"
 #if defined(LIBOFP_TARGET_DARWIN)
-# include <asl.h>
-#endif // defined(LIBOFP_TARGET_DARWIN)
+#include <asl.h>
+#endif  // defined(LIBOFP_TARGET_DARWIN)
 
 namespace llvm {
 class raw_ostream;
@@ -47,7 +47,7 @@ void setOutputStream(llvm::raw_ostream *outputStream);
 /// \brief Sets the output callback to log each line via Apple System Logging.
 void setOutputStream(aslclient outputStream);
 
-#endif // defined(LIBOFP_TARGET_DARWIN)
+#endif  // defined(LIBOFP_TARGET_DARWIN)
 
 /// \brief Sets the minimum desired level of output.
 void setOutputLevelFilter(Level level);

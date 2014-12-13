@@ -13,7 +13,7 @@ using ExitStatus = Encode::ExitStatus;
 // r u n //
 //-------//
 
-int Encode::run(int argc, const char * const *argv) {
+int Encode::run(int argc, const char *const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
 
   // If there are no input files, add "-" to indicate stdin.

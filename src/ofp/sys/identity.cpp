@@ -78,15 +78,14 @@ Identity::Identity(const std::string &certData,
                    const std::string &keyPassphrase,
                    const std::string &verifyData, std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
-    dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
-
-
+      dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
   // Allow for retrieving this Identity object given just an SSL context.
   SetIdentityPtr(tls_.native_handle(), this);
   SetIdentityPtr(dtls_.get(), this);
 
   // Initialize the TLS context.
-  error = initContext(tls_.native_handle(), certData, keyPassphrase, verifyData);
+  error =
+      initContext(tls_.native_handle(), certData, keyPassphrase, verifyData);
   if (error) return;
 
   // Initialize the DTLS context identically.
@@ -127,11 +126,9 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
   }
 }
 
-
-std::error_code Identity::initContext(SSL_CTX *ctx, 
-                    const std::string &certData,
-                    const std::string &keyPassphrase,
-                    const std::string &verifyData) {
+std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
+                                      const std::string &keyPassphrase,
+                                      const std::string &verifyData) {
   prepareOptions(ctx);
   prepareSessions(ctx);
   prepareVerifier(ctx);
@@ -148,13 +145,14 @@ std::error_code Identity::initContext(SSL_CTX *ctx,
   }
 
   result = loadVerifier(ctx, verifyData);
-  
+
   return result;
 }
 
 void Identity::prepareOptions(SSL_CTX *ctx) {
   (void)SSL_CTX_clear_options(ctx, SSL_OP_LEGACY_SERVER_CONNECT);
-  auto options = SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
+  auto options = SSL_CTX_set_options(
+      ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
 
   log::debug("Identity::prepareContextOptions: options", log::hex(options));
 }
@@ -167,14 +165,16 @@ void Identity::prepareSessions(SSL_CTX *ctx) {
 }
 
 inline std::error_code sslError(uint32_t err) {
-  return asio::error_code(static_cast<int>(err), asio::error::get_ssl_category());
+  return asio::error_code(static_cast<int>(err),
+                          asio::error::get_ssl_category());
 }
 
-std::error_code Identity::loadCertificateChain(SSL_CTX *ctx, const std::string &certData) {
+std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
+                                               const std::string &certData) {
   // This code is adapted from SSL_CTX_use_certificate_chain_file implementation
   // in ssl_rsa.c
 
-  ERR_clear_error(); // clear error stack for SSL_CTX_use_certificate()
+  ERR_clear_error();  // clear error stack for SSL_CTX_use_certificate()
 
   MemBio bio{certData};
   MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), 0, 0, 0)};
@@ -192,14 +192,13 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx, const std::string &
   SSL_CTX_clear_chain_certs(ctx);
 
   while (true) {
-    MemX509 caCert{PEM_read_bio_X509(bio.get(), 0, 0,0)};
-    if (!caCert) 
-      break;
+    MemX509 caCert{PEM_read_bio_X509(bio.get(), 0, 0, 0)};
+    if (!caCert) break;
 
     if (!SSL_CTX_add0_chain_cert(ctx, caCert.get())) {
       return sslError(::ERR_get_error());
     }
-    
+
     // Do not free caCert if it was successfully added to the chain.
     caCert.release();
   }
@@ -208,7 +207,8 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx, const std::string &
   uint32_t err = ERR_peek_last_error();
   assert(err);
 
-  if (ERR_GET_LIB(err) == ERR_LIB_PEM && ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
+  if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
+      ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
     ERR_clear_error();
     return {};
   }
@@ -218,7 +218,8 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx, const std::string &
 }
 
 /// Load private key from a PEM file.
-std::error_code Identity::loadPrivateKey(SSL_CTX *ctx, const std::string &keyData,
+std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
+                                         const std::string &keyData,
                                          const std::string &passphrase) {
   ::ERR_clear_error();
 
@@ -231,8 +232,10 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx, const std::string &keyDat
     return static_cast<int>(result);
   };
 
-  std::unique_ptr<EVP_PKEY, void(*)(EVP_PKEY *)> privateKey{::PEM_read_bio_PrivateKey(
-          bio.get(), 0, passwordCallback, const_cast<char *>(passphrase.c_str())), EVP_PKEY_free};
+  std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
+      ::PEM_read_bio_PrivateKey(bio.get(), 0, passwordCallback,
+                                const_cast<char *>(passphrase.c_str())),
+      EVP_PKEY_free};
 
   if (!privateKey) {
     log::debug("loadPrivateKey: PEM_read_bio_PrivateKey failed");
@@ -244,13 +247,14 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx, const std::string &keyDat
   }
 
   if (::SSL_CTX_check_private_key(ctx) != 1) {
-      log::warning("loadPrivateKey: private key does not match certificate");
+    log::warning("loadPrivateKey: private key does not match certificate");
   }
 
   return {};
 }
 
-std::error_code Identity::loadVerifier(SSL_CTX *ctx, const std::string &verifyData) {
+std::error_code Identity::loadVerifier(SSL_CTX *ctx,
+                                       const std::string &verifyData) {
   ::ERR_clear_error();
 
   MemX509 caCert{verifyData};
@@ -274,18 +278,19 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx, const std::string &verifyDa
   return {};
 }
 
-
 void Identity::prepareVerifier(SSL_CTX *ctx) {
   // By default, set up the context to REJECT all certificates. The TLS
   // connection object should have its verify_callback set explicitly.
 
   auto verifyCallback = [](int preverify_ok, X509_STORE_CTX *storeCtx) -> int {
-    log::warning("Context TLS verifier is rejecting all certificates - you need to override!");
+    log::warning(
+        "Context TLS verifier is rejecting all certificates - you need to "
+        "override!");
     return 0;
   };
 
   ::SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
-      verifyCallback);
+                       verifyCallback);
 }
 
 void Identity::prepareDTLSCookies(SSL_CTX *ctx) {
@@ -373,15 +378,17 @@ void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
 template <>
 void Identity::beforeClose<SSL>(Connection *conn, SSL *ssl) {
   auto flags = conn->flags();
-  if ((flags & Connection::kHandshakeDone) && !(flags & Connection::kShutdownDone)) {
+  if ((flags & Connection::kHandshakeDone) &&
+      !(flags & Connection::kShutdownDone)) {
     Identity *identity = GetIdentityPtr(SSL_get_SSL_CTX(ssl));
     UInt64 securityId = identity->securityId();
     UInt64 connId = conn->connectionId();
 
     const char *tlsVersion = MySSLVersionString(ssl);
 
-    log::warning(tlsVersion, "incomplete shutdown", std::make_pair("tlsid", securityId),
-               std::make_pair("connid", connId));
+    log::warning(tlsVersion, "incomplete shutdown",
+                 std::make_pair("tlsid", securityId),
+                 std::make_pair("connid", connId));
   }
 }
 
@@ -456,9 +463,10 @@ int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
 //-----------------------------------------------------------//
 
 int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
-                                               size_t *cookie_len) {
+                                            size_t *cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
-  log::debug("openssl_cookie_generate_callback", std::make_pair("connid", conn->connectionId()));
+  log::debug("openssl_cookie_generate_callback",
+             std::make_pair("connid", conn->connectionId()));
   memset(cookie, 0, 16);
   for (UInt8 i = 0; i < 16; ++i) {
     cookie[i] = i;
@@ -472,9 +480,9 @@ int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
 //-------------------------------------------------------//
 
 int Identity::dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
-                                             size_t cookie_len) {
+                                          size_t cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
-  log::debug("openssl_cookie_verify_callback", std::make_pair("connid", conn->connectionId()));
+  log::debug("openssl_cookie_verify_callback",
+             std::make_pair("connid", conn->connectionId()));
   return 1;
 }
-

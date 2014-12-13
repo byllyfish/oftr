@@ -5,8 +5,7 @@
 
 using namespace ofp::sys;
 
-DTLS_Adapter::DTLS_Adapter(SSL_CTX *ctx,
-                           DeliverFunc sendCallback,
+DTLS_Adapter::DTLS_Adapter(SSL_CTX *ctx, DeliverFunc sendCallback,
                            DeliverFunc receiveCallback, void *userData)
     : sendCallback_{sendCallback},
       receiveCallback_{receiveCallback},
@@ -14,11 +13,11 @@ DTLS_Adapter::DTLS_Adapter(SSL_CTX *ctx,
   ssl_ = SSL_new(ctx);
   log::fatal_if_null(ssl_, LOG_LINE());
 
-  // TODO(bfish): Figure out why DTLSv1_2_method() doesn't work? DTLS Handshake 
+  // TODO(bfish): Figure out why DTLSv1_2_method() doesn't work? DTLS Handshake
   // doesn't complete normally!
 
-  //int rc = SSL_set_ssl_method(ssl_, DTLSv1_method());
-  //log::fatal_if_false(rc == 1, LOG_LINE());
+  // int rc = SSL_set_ssl_method(ssl_, DTLSv1_method());
+  // log::fatal_if_false(rc == 1, LOG_LINE());
 
   ::SSL_set_mode(ssl_, SSL_MODE_ENABLE_PARTIAL_WRITE);
   ::SSL_set_mode(ssl_, SSL_MODE_ACCEPT_MOVING_WRITE_BUFFER);
@@ -39,7 +38,6 @@ DTLS_Adapter::~DTLS_Adapter() {
   ssl_ = nullptr;
 }
 
-
 void DTLS_Adapter::setMTU(size_t mtu) {
   if (mtu > 0) {
     ::SSL_set_options(ssl_, SSL_OP_NO_QUERY_MTU);
@@ -48,7 +46,6 @@ void DTLS_Adapter::setMTU(size_t mtu) {
     ::SSL_clear_options(ssl_, SSL_OP_NO_QUERY_MTU);
   }
 }
-
 
 void DTLS_Adapter::connect() {
   // Initialize DTLS connection to client mode.
@@ -89,8 +86,7 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
         // We are waiting for some data to arrive before we can send
         // the next datagram. Add the datagram to our queue so we can retry
         // it later.
-        if (length > 0) 
-          enqueueDatagram(datagram, length);
+        if (length > 0) enqueueDatagram(datagram, length);
         break;
 
       case SSL_ERROR_WANT_WRITE:
@@ -101,8 +97,8 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
 
       case SSL_ERROR_SYSCALL:
         log::warning("DTLS_Adapter::sendDatagram: SSL_ERROR_SYSCALL");
-        log::debug("DTLS_Adapter::sendDatagram: state", 
-            SSL_state_string_long(ssl_), ERR_peek_last_error());
+        log::debug("DTLS_Adapter::sendDatagram: state",
+                   SSL_state_string_long(ssl_), ERR_peek_last_error());
         break;
 
       default:
@@ -123,7 +119,7 @@ void DTLS_Adapter::datagramReceived(const void *datagram, size_t length) {
   log::debug("datagramReceived:", DTLS_PrintRecord(datagram, length));
 
   rc = BIO_write(bio_, datagram, static_cast<int>(length));
-  //log::debug("datagramReceived: BIO_write returned", rc,
+  // log::debug("datagramReceived: BIO_write returned", rc,
   //           ByteRange{datagram, length});
 
   UInt8 inBuf[4000];
@@ -159,7 +155,7 @@ void DTLS_Adapter::writeOutput() {
     rc = BIO_read(bio_, &buf[13], static_cast<int>(recordLen));
     assert(Unsigned_cast(rc) == recordLen);
 
-    log::debug("DTLS_Adapter:", DTLS_PrintRecord(buf, recordLen+13));
+    log::debug("DTLS_Adapter:", DTLS_PrintRecord(buf, recordLen + 13));
     sendCallback_(buf, recordLen + 13, userData_);
 
 #if 0
@@ -170,7 +166,7 @@ void DTLS_Adapter::writeOutput() {
       logOutput(outBuf, Unsigned_cast(rc));
       sendCallback_(outBuf, Unsigned_cast(rc), userData_);
     }
-#endif //0
+#endif  // 0
   }
 }
 
@@ -187,7 +183,6 @@ void DTLS_Adapter::flushDatagrams() {
     datagrams_.pop_front();
   }
 }
-
 
 void DTLS_Adapter::logOutput(const UInt8 *p, size_t length) {
   // Log DTLS records sent.
@@ -232,5 +227,5 @@ void DTLS_Adapter::logOutput(const UInt8 *p, size_t length) {
   if (length != 0) {
     log::error("Output does not end on record boundary");
   }
-#endif //0
+#endif  // 0
 }

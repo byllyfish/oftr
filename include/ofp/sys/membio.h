@@ -16,7 +16,7 @@ class MemBio {
 
   ~MemBio() {
     // Constructor guarantees that bio_ is created, or entire program aborted.
-    BIO_free(bio_); 
+    BIO_free(bio_);
   }
 
   std::string toString() {

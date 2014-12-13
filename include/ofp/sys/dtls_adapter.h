@@ -30,8 +30,6 @@ class DTLS_Adapter {
   void datagramReceived(const void *datagram, size_t length);
   void pollIdle();
 
-  
-
  private:
   SSL *ssl_;
   BIO *bio_;

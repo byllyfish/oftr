@@ -83,7 +83,8 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
               make_custom_alloc_handler(
                   allocator_, [this, id, handler](const asio::error_code &err,
                                                   size_t bytes_transferred) {
-                    log::debug("Buffered::buf_flush handler called", bytes_transferred, std::make_pair("connid", id));
+                    log::debug("Buffered::buf_flush handler called",
+                               bytes_transferred, std::make_pair("connid", id));
                     if (!err) {
                       assert(bytes_transferred == buffer_[!bufferIdx_].size());
 

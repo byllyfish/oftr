@@ -50,7 +50,7 @@ class Encode : public Subprogram {
     MessageReadFailed
   };
 
-  int run(int argc, const char * const *argv) override;
+  int run(int argc, const char *const *argv) override;
 
  private:
   std::string currentFilename_;

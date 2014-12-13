@@ -12,7 +12,7 @@ namespace ofpx {
 // Run a JSON-RPC server. By default, the control connection comes from stdio.
 //
 //   --xpc              Run as a XPC service (Mac OS X only)
-// 
+//
 // Usage:
 //
 // To run JSON-RPC server over stdin and stdout:
@@ -24,7 +24,7 @@ class JsonRpc : public Subprogram {
  public:
   enum class ExitStatus { Success = 0 };
 
-  int run(int argc, const char * const *argv) override;
+  int run(int argc, const char *const *argv) override;
 
  private:
   // --- Command-line Arguments ---

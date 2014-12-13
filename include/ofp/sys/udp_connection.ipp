@@ -22,7 +22,7 @@ inline SSL_CTX *udpContext(UDP_Server *server, UInt64 securityId) {
 
 template <>
 inline SSL_CTX *udpContext<Plaintext_Adapter>(UDP_Server *server,
-                                                         UInt64 securityId) {
+                                              UInt64 securityId) {
   assert(securityId == 0);
   return nullptr;
 }
@@ -144,7 +144,7 @@ void UDP_Connection<AdapterType>::receivePlaintext(const void *data,
 template <class AdapterType>
 void UDP_Connection<AdapterType>::sendCallback(const void *data, size_t length,
                                                void *userData) {
-  //log::debug("sendCallback", ByteRange{data, length});
+  // log::debug("sendCallback", ByteRange{data, length});
   UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->sendCiphertext(data, length);
 }
@@ -153,7 +153,7 @@ template <class AdapterType>
 void UDP_Connection<AdapterType>::receiveCallback(const void *data,
                                                   size_t length,
                                                   void *userData) {
-  //log::debug("receiveCallback", ByteRange{data, length});
+  // log::debug("receiveCallback", ByteRange{data, length});
   UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->receivePlaintext(data, length);
 }

@@ -158,7 +158,6 @@ UInt64 Engine::addIdentity(const std::string &certData,
   return secId;
 }
 
-
 Identity *Engine::findIdentity(UInt64 securityId) {
   if (securityId == 0) {
     return nullptr;
@@ -306,9 +305,9 @@ void Engine::installSignalHandlers() {
 
     signals_.async_wait([this](const asio::error_code &error, int signum) {
       if (!error) {
-        const char *signame = (signum == SIGTERM) ? "SIGTERM"
-                              : (signum == SIGINT) ? "SIGINT"
-                              : "???";
+        const char *signame = (signum == SIGTERM)
+                                  ? "SIGTERM"
+                                  : (signum == SIGINT) ? "SIGINT" : "???";
         log::info("Signal received:", signame);
 
         signals_.cancel();

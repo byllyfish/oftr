@@ -255,37 +255,6 @@ struct RpcSendResponse {
   Result result;
 };
 
-#if 0
-//---------------------//
-// o f p . c o n f i g //
-//---------------------//
-
-/// Represents a RPC request to configure some options (METHOD_CONFIG).
-struct RpcConfig {
-  explicit RpcConfig(UInt64 ident) : id{ident} {}
-
-  struct Params {
-    std::vector<std::string> options;
-  };
-
-  UInt64 id;
-  Params params;
-};
-
-/// Represents a RPC response to configure some options (METHOD_CONFIG).
-struct RpcConfigResponse {
-  explicit RpcConfigResponse(UInt64 ident) : id{ident} {}
-  std::string toJson();
-
-  struct Result {
-    std::vector<std::string> options;
-  };
-
-  UInt64 id;
-  Result result;
-};
-#endif //0
-
 //-------------------------//
 // o f p . d a t a p a t h //
 //-------------------------//

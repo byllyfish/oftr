@@ -42,8 +42,8 @@ OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 // N.B. These strings must be in same order as RpcMethod enum.
 static llvm::StringRef sRpcMethods[] = {
-    "ofp.listen", "ofp.connect", "ofp.close", "ofp.send", 
-    "ofp.datapath", "ofp.message", "ofp.message_error", "ofp.list_connections",
+    "ofp.listen", "ofp.connect", "ofp.close", "ofp.send", "ofp.datapath",
+    "ofp.message", "ofp.message_error", "ofp.list_connections",
     "ofp.add_identity"};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

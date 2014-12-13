@@ -49,7 +49,7 @@ class Identity {
   asio::ssl::context tls_;
 
   /// Separate SSL context used for DTLS connections over UDP.
-  std::unique_ptr<SSL_CTX, void(*)(SSL_CTX *)> dtls_;
+  std::unique_ptr<SSL_CTX, void (*)(SSL_CTX *)> dtls_;
 
   /// Subject DN of this identities certificate.
   std::string subjectName_;
@@ -58,15 +58,17 @@ class Identity {
   /// resumption in the client.
   std::unordered_map<IPv6Endpoint, SSL_SESSION *> clientSessions_;
 
-  std::error_code initContext(SSL_CTX *ctx, 
-                    const std::string &certData,
-                    const std::string &keyPassphrase,
-                    const std::string &verifyData);
+  std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
+                              const std::string &keyPassphrase,
+                              const std::string &verifyData);
 
-  static std::error_code loadCertificateChain(SSL_CTX *ctx, const std::string &certData);
-  static std::error_code loadPrivateKey(SSL_CTX *ctx, const std::string &keyData,
-                                 const std::string &keyPassphrase);
-  static std::error_code loadVerifier(SSL_CTX *ctx, const std::string &verifyData);
+  static std::error_code loadCertificateChain(SSL_CTX *ctx,
+                                              const std::string &certData);
+  static std::error_code loadPrivateKey(SSL_CTX *ctx,
+                                        const std::string &keyData,
+                                        const std::string &keyPassphrase);
+  static std::error_code loadVerifier(SSL_CTX *ctx,
+                                      const std::string &verifyData);
 
   static void prepareOptions(SSL_CTX *ctx);
   static void prepareSessions(SSL_CTX *ctx);
@@ -75,9 +77,9 @@ class Identity {
 
   static int tls_verify_callback(int preverified, X509_STORE_CTX *ctx);
   static int dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
-                                              size_t *cookie_len);
+                                           size_t *cookie_len);
   static int dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
-                                            size_t cookie_len);
+                                         size_t cookie_len);
 };
 
 template <>

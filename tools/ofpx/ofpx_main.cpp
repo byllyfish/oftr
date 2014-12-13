@@ -27,8 +27,9 @@ static void print_usage(std::ostream &out);
 // m a i n //
 //---------//
 
-int main(int argc, const char * const *argv) {
-  // If the OFPX_JSONRPC_XPC_SERVICE environment variable is set to 1, immediately 
+int main(int argc, const char *const *argv) {
+  // If the OFPX_JSONRPC_XPC_SERVICE environment variable is set to 1,
+  // immediately
   // run the JSON-RPC XPC service (Mac OS X only).
 
   if (const char *env = getenv("OFPX_JSONRPC_XPC_SERVICE")) {
@@ -65,16 +66,14 @@ int main(int argc, const char * const *argv) {
   return 1;
 }
 
-
 //-------------------------------//
 // r u n _ x p c _ s e r v i c e //
 //-------------------------------//
 
 int run_xpc_service() {
-  const char *args[] = { "jsonrpc", "--xpc" };
+  const char *args[] = {"jsonrpc", "--xpc"};
   return ofpx::Run<ofpx::JsonRpc>(2, args);
 }
-
 
 //-----------------------//
 // p r i n t _ u s a g e //
@@ -88,6 +87,3 @@ void print_usage(std::ostream &out) {
   }
   out << '\n';
 }
-
-
-

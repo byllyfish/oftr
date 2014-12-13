@@ -17,27 +17,25 @@
 #include "ofp/config.h"
 
 #if defined(__clang__)
-# define OFP_BEGIN_IGNORE_PADDING  \
+#define OFP_BEGIN_IGNORE_PADDING   \
   _Pragma("clang diagnostic push") \
-  _Pragma("clang diagnostic ignored \"-Wpadded\"")
-# define OFP_END_IGNORE_PADDING \
-  _Pragma("clang diagnostic pop")
-# define OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR \
-  _Pragma("clang diagnostic push") \
-  _Pragma("clang diagnostic ignored \"-Wglobal-constructors\"")
-# define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR \
-  _Pragma("clang diagnostic pop")
+      _Pragma("clang diagnostic ignored \"-Wpadded\"")
+#define OFP_END_IGNORE_PADDING _Pragma("clang diagnostic pop")
+#define OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR \
+  _Pragma("clang diagnostic push")          \
+      _Pragma("clang diagnostic ignored \"-Wglobal-constructors\"")
+#define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR _Pragma("clang diagnostic pop")
 #else
-# define OFP_BEGIN_IGNORE_PADDING
-# define OFP_END_IGNORE_PADDING
-# define OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
-# define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+#define OFP_BEGIN_IGNORE_PADDING
+#define OFP_END_IGNORE_PADDING
+#define OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+#define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 #endif
 
 #if defined(__clang__)
-# define OFP_ALIGNAS(x) alignas(x)
+#define OFP_ALIGNAS(x) alignas(x)
 #else
-# define OFP_ALIGNAS(x) __attribute__((aligned(x)))
+#define OFP_ALIGNAS(x) __attribute__((aligned(x)))
 #endif
 
 namespace ofp {

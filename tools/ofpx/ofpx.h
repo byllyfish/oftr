@@ -15,16 +15,16 @@ namespace cl = llvm::cl;
 class Subprogram {
  public:
   virtual ~Subprogram() {}
-  virtual int run(int argc, const char * const *argv) = 0;
+  virtual int run(int argc, const char *const *argv) = 0;
 
  protected:
   static const int MinExitStatus = 10;
 };
 
-using RunSubprogram = int (*)(int argc, const char * const *argv);
+using RunSubprogram = int (*)(int argc, const char *const *argv);
 
 template <class Type>
-inline int Run(int argc, const char * const *argv) {
+inline int Run(int argc, const char *const *argv) {
   Type t;
   return t.run(argc, argv);
 }

@@ -9,7 +9,7 @@ namespace asio {
 namespace ssl {
 namespace detail {
 
-// Initialize OpenSSL on demand, rather than statically. Not all runs of 
+// Initialize OpenSSL on demand, rather than statically. Not all runs of
 // a program will use OpenSSL -- we don't always need to initialize it.
 
 template <>
