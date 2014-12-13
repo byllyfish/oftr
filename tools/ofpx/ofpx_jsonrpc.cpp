@@ -70,6 +70,9 @@ void JsonRpc::runStdio() {
 
 void JsonRpc::runXpc() {
 #if LIBOFP_TARGET_DARWIN
+  // Use ASL on Darwin.
+  ofp::log::setOutputStream(static_cast<aslclient>(nullptr));
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
   run_xpc_main();
 #else
   log::fatal("XPC service is only available on Darwin/MacOS/IOS.");

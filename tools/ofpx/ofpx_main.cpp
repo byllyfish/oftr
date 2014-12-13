@@ -71,9 +71,6 @@ int main(int argc, const char * const *argv) {
 //-------------------------------//
 
 int run_xpc_service() {
-  ofp::log::setOutputStream(static_cast<aslclient>(nullptr));
-  ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
-  
   const char *args[] = { "jsonrpc", "--xpc" };
   return ofpx::Run<ofpx::JsonRpc>(2, args);
 }
