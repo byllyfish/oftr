@@ -75,6 +75,6 @@ void JsonRpc::runXpc() {
   ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
   run_xpc_main();
 #else
-  log::fatal("XPC service is only available on Darwin/MacOS/IOS.");
+  ofp::log::fatal("XPC service is only available on Darwin/MacOS/IOS.");
 #endif
 }
