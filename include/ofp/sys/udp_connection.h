@@ -10,6 +10,17 @@
 #include "ofp/bytelist.h"
 
 namespace ofp {
+
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::Plaintext_Adapter>() {
+  return ChannelTransport::UDP_Plaintext;
+}
+
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::DTLS_Adapter>() {
+  return ChannelTransport::UDP_DTLS;
+}
+
 namespace sys {
 
 class UDP_Server;
@@ -31,7 +42,7 @@ class UDP_Connection : public Connection {
   void shutdown() override;
 
   ChannelTransport transport() const override {
-    return ChannelTransport::UDP_Plaintext;
+    return ToChannelTransport<AdapterType>();
   }
 
   IPv6Endpoint remoteEndpoint() const override;
