@@ -41,7 +41,7 @@ DTLS_Adapter::~DTLS_Adapter() {
 void DTLS_Adapter::setMTU(size_t mtu) {
   if (mtu > 0) {
     ::SSL_set_options(ssl_, SSL_OP_NO_QUERY_MTU);
-    ::SSL_set_mtu(ssl_, static_cast<long>(mtu));
+    ::SSL_set_mtu(ssl_, static_cast<int32_t>(mtu));
   } else {
     ::SSL_clear_options(ssl_, SSL_OP_NO_QUERY_MTU);
   }
@@ -157,16 +157,6 @@ void DTLS_Adapter::writeOutput() {
 
     log::debug("DTLS_Adapter:", DTLS_PrintRecord(buf, recordLen + 13));
     sendCallback_(buf, recordLen + 13, userData_);
-
-#if 0
-    int rc = BIO_read(bio_, outBuf, sizeof(outBuf));
-    log::debug("datagramReceived: BIO_read returned", rc);
-
-    if (rc > 0) {
-      logOutput(outBuf, Unsigned_cast(rc));
-      sendCallback_(outBuf, Unsigned_cast(rc), userData_);
-    }
-#endif  // 0
   }
 }
 
@@ -200,32 +190,4 @@ void DTLS_Adapter::logOutput(const UInt8 *p, size_t length) {
     p += recordLen;
     length -= recordLen;
   }
-
-#if 0
-  while (length >= 13) {
-    UInt32 recordLen =  (UInt32_cast(p[11]) << 8) | p[12];
-    //log::debug("DTLS_Adapter::recordLen = ", recordLen);
-
-    if (recordLen + 13 > length) break;
-
-    if (p[0] == 22) {
-      assert(recordLen > 6);
-      UInt32 msgType = p[13];
-      UInt32 epoch = (UInt32_cast(p[3]) << 8) | p[4];
-      UInt32 msgSeq = (UInt32_cast(p[17]) << 8) | p[18];
-      UInt32 fragmentOffset = (UInt32_cast(p[19]) << 16) |
-                                (UInt32_cast(p[20]) << 8) | UInt32_cast(p[21]);
-      log::debug("DTLS_Adapter: epoch", epoch, "msgType", msgType, "msgSeq", msgSeq, "fragmentOffset", fragmentOffset);
-    } else {
-      log::debug("DTLS_Adapter::logOutput", 13 + recordLen, RawDataToHex(p, recordLen + 13));
-    }
-
-    p += recordLen + 13;
-    length -= recordLen + 13;
-  }
-  
-  if (length != 0) {
-    log::error("Output does not end on record boundary");
-  }
-#endif  // 0
 }

@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/sys/dtls_utils.h"
 #include "ofp/sys/asio_utils.h"
 
@@ -100,7 +102,8 @@ std::string ofp::sys::DTLS_PrintRecord(const void *record, size_t length) {
   // Check that DTLS message is valid and read the record length.
   size_t recordLen = DTLS_GetRecordLength(record, length);
   if (recordLen == 0) {
-    return std::string{"Invalid DTLS message: "} + RawDataToHex(record, length);
+    std::string msg{"Invalid DTLS message: "};
+    return msg + RawDataToHex(record, length);
   }
 
   // Pull apart the DTLS record header.

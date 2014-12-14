@@ -3,10 +3,10 @@
 #ifndef OFP_LOGLEVEL_H_
 #define OFP_LOGLEVEL_H_
 
-#include "ofp/types.h"
 #if defined(LIBOFP_TARGET_DARWIN)
 #include <asl.h>
 #endif  // defined(LIBOFP_TARGET_DARWIN)
+#include "ofp/types.h"
 
 namespace llvm {
 class raw_ostream;

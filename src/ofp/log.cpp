@@ -1,12 +1,12 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include <chrono>
-#include <iomanip>
 #include "ofp/log.h"
-#include "ofp/yaml/decoder.h"
 #if defined(LIBOFP_TARGET_DARWIN)
 #include <syslog.h>  // for LOG_ constants
 #endif               // defined(LIBOFP_TARGET_DARWIN)
+#include <chrono>
+#include <iomanip>
+#include "ofp/yaml/decoder.h"
 
 namespace ofp {
 namespace log {

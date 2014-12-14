@@ -546,10 +546,10 @@ include(CPack)
 #-------------------------------------------------------------------------------
 
 set(CPPLINT_PATH external/cpplint/cpplint.py)
-set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-build/namespaces --root=include --linelength=200)
+set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-build/namespaces --root=include --linelength=200 --extensions=h,cpp,ipp)
 
 add_custom_target(cpplint
-  COMMAND ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} ${LIBOFP_HEADER_FILES} ${LIBOFP_HEADERS_GENERATED} ${LIBOFP_SOURCES}
+  COMMAND find include src tools example oxm test \( -name "*.h" -o -name "*.cpp" -o -name "*.ipp" \) -exec ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} {} +
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
   COMMENT "Checking all libofp code with cpplint" VERBATIM
 )

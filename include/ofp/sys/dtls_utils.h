@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_SYS_DTLS_UTILS_H_
 #define OFP_SYS_DTLS_UTILS_H_
 
