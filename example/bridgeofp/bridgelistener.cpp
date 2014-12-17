@@ -120,7 +120,6 @@ void BridgeListener::translateAndForward(const Message *message,
     CASE_MSG(GetAsyncReply);
     CASE_MSG(SetAsync);
     // CASE_MSG(MeterMod);
-    //#endif //0
     default:
       log::info("Unrecognized message type:", message->type());
       break;

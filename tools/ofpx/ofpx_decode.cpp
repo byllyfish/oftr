@@ -1,11 +1,10 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "llvm/Support/CommandLine.h"
 #include "ofpx_decode.h"
-#include "ofp/yaml/decoder.h"
-#include "ofp/yaml/encoder.h"
 #include <iostream>
 #include <fstream>
+#include "ofp/yaml/decoder.h"
+#include "ofp/yaml/encoder.h"
 
 using namespace ofpx;
 using ofp::UInt8;

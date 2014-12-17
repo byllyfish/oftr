@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFPX_ENCODE_H_
-#define OFPX_ENCODE_H_
+#ifndef TOOLS_OFPX_OFPX_ENCODE_H_
+#define TOOLS_OFPX_OFPX_ENCODE_H_
 
 #include "ofpx.h"
 
@@ -95,4 +95,4 @@ OFP_END_IGNORE_PADDING
 
 }  // namespace ofpx
 
-#endif  // OFPX_ENCODE_H_
+#endif  // TOOLS_OFPX_OFPX_ENCODE_H_

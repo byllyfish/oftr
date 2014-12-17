@@ -298,12 +298,6 @@ void TCP_Connection<SocketType>::disableNagleAlgorithm() {
   if (err) {
     log::error("TCP_Connection::disableNagleAlgorithm", err);
   }
-
-#if 0
-  // FIXME (for debugging only!)
-  socket_.lowest_layer().set_option(asio::socket_base::send_buffer_size(25));
-  //socket_.lowest_layer().set_option(asio::socket_base::receive_buffer_size(1));
-#endif  // 0
 }
 
 }  // namespace sys

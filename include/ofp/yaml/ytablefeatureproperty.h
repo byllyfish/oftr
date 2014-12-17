@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_YAML_YTABLEFEATURESPROPERTY_H_
-#define OFP_YAML_YTABLEFEATURESPROPERTY_H_
+#ifndef OFP_YAML_YTABLEFEATUREPROPERTY_H_
+#define OFP_YAML_YTABLEFEATUREPROPERTY_H_
 
 #include "ofp/tablefeatureproperty.h"
 #include "ofp/unrecognizedproperty.h"
@@ -147,4 +147,4 @@ struct SequenceTraits<ofp::detail::TableFeaturePropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif  // OFP_YAML_YTABLEFEATURESPROPERTY_H_
+#endif  // OFP_YAML_YTABLEFEATUREPROPERTY_H_

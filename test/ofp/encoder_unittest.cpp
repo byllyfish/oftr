@@ -280,18 +280,18 @@ TEST(encoder, barrierreplyv1) {
 
 TEST(encoder, featuresreplyv1) {
   const char *input = R"""(
-   type: OFPT_FEATURES_REPLY
-   version: 1
-   xid: 0xBF
-   msg:
-     datapath_id: '0000:0102:0304:0506'
-     n_buffers: 256
-     n_tables: 255
-     auxiliary_id: 0
-     capabilities: 0
-     actions: 0
-     ports:
-   )""";
+    type: OFPT_FEATURES_REPLY
+    version: 1
+    xid: 0xBF
+    msg:
+      datapath_id: '0000:0102:0304:0506'
+      n_buffers: 256
+      n_tables: 255
+      auxiliary_id: 0
+      capabilities: 0
+      actions: 0
+      ports:
+    )""";
 
   testEncoderSuccess(
       input, 0x20,
@@ -300,40 +300,40 @@ TEST(encoder, featuresreplyv1) {
 
 TEST(encoder, featuresreplyv1ports) {
   const char *input = R"""(
-   type: OFPT_FEATURES_REPLY
-   version: 1
-   xid: 0xBF
-   msg:
-     datapath_id: '0000:0102:0304:0506'
-     n_buffers: 256
-     n_tables: 255
-     auxiliary_id: 0
-     capabilities: 0
-     actions: 0
-     ports:
-       - port_no: 0x1111
-         hw_addr: 22-22-22-22-22-22
-         name: Port 1
-         config: 0x33333333
-         state:  0x44444444
-         curr:   0x55555555
-         advertised: 0x66666666
-         supported:  0x77777777
-         peer:  0x88888888
-         curr_speed: 0x99999999
-         max_speed: 0xAAAAAAAA
-       - port_no: 0xBBBB
-         hw_addr: CC-CC-CC-CC-CC-CC
-         name: Port 2
-         config: 0x33333333
-         state:  0x44444444
-         curr:   0x55555555
-         advertised: 0x66666666
-         supported:  0x77777777
-         peer:  0x88888888
-         curr_speed: 0x99999999
-         max_speed: 0xAAAAAAAA
-   )""";
+    type: OFPT_FEATURES_REPLY
+    version: 1
+    xid: 0xBF
+    msg:
+      datapath_id: '0000:0102:0304:0506'
+      n_buffers: 256
+      n_tables: 255
+      auxiliary_id: 0
+      capabilities: 0
+      actions: 0
+      ports:
+        - port_no: 0x1111
+          hw_addr: 22-22-22-22-22-22
+          name: Port 1
+          config: 0x33333333
+          state:  0x44444444
+          curr:   0x55555555
+          advertised: 0x66666666
+          supported:  0x77777777
+          peer:  0x88888888
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        - port_no: 0xBBBB
+          hw_addr: CC-CC-CC-CC-CC-CC
+          name: Port 2
+          config: 0x33333333
+          state:  0x44444444
+          curr:   0x55555555
+          advertised: 0x66666666
+          supported:  0x77777777
+          peer:  0x88888888
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+    )""";
 
   testEncoderSuccess(input, 0x0080,
                      "01060080000000BF000001020304050600000100FF000000000000000"
@@ -345,18 +345,18 @@ TEST(encoder, featuresreplyv1ports) {
 
 TEST(encoder, featuresreplyv4) {
   const char *input = R"""(
-   type: OFPT_FEATURES_REPLY
-   version: 4
-   xid: 0xBF
-   msg:
-     datapath_id: '0000:0102:0304:0506'
-     n_buffers: 256
-     n_tables: 255
-     auxiliary_id: 0
-     capabilities: 0
-     actions: 0
-     ports:
-   )""";
+    type: OFPT_FEATURES_REPLY
+    version: 4
+    xid: 0xBF
+    msg:
+      datapath_id: '0000:0102:0304:0506'
+      n_buffers: 256
+      n_tables: 255
+      auxiliary_id: 0
+      capabilities: 0
+      actions: 0
+      ports:
+    )""";
 
   testEncoderSuccess(
       input, 0x20,
@@ -365,22 +365,22 @@ TEST(encoder, featuresreplyv4) {
 
 TEST(encoder, ofmp_flowrequest_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REQUEST
-   version: 4
-   xid: 0x11223344
-   msg:
-     type: OFPMP_FLOW
-     flags: 0
-     body:
-         table_id: 1
-         out_port: 2
-         out_group:  3
-         cookie: 4
-         cookie_mask: 5
-         match:
-            - field: OFB_IN_PORT
-              value: 0x12345678
-   )""";
+    type: OFPT_MULTIPART_REQUEST
+    version: 4
+    xid: 0x11223344
+    msg:
+      type: OFPMP_FLOW
+      flags: 0
+      body:
+          table_id: 1
+          out_port: 2
+          out_group:  3
+          cookie: 4
+          cookie_mask: 5
+          match:
+             - field: OFB_IN_PORT
+               value: 0x12345678
+    )""";
 
   testEncoderSuccess(input, 0x040,
                      "041200401122334400010000000000000100000000000002000000030"
@@ -390,22 +390,22 @@ TEST(encoder, ofmp_flowrequest_v4) {
 
 TEST(encoder, ofmp_flowrequest_v1) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REQUEST
-   version: 1
-   xid: 0x11223344
-   msg:
-     type: OFPMP_FLOW
-     flags: 0
-     body:
-         table_id: 0x11
-         out_port: 0x22222222
-         out_group:  0x33333333
-         cookie: 0x4444444444444444
-         cookie_mask: 0x5555555555555555
-         match:
-            - field: OFB_IN_PORT
-              value: 0x12345678
-   )""";
+    type: OFPT_MULTIPART_REQUEST
+    version: 1
+    xid: 0x11223344
+    msg:
+      type: OFPMP_FLOW
+      flags: 0
+      body:
+          table_id: 0x11
+          out_port: 0x22222222
+          out_group:  0x33333333
+          cookie: 0x4444444444444444
+          cookie_mask: 0x5555555555555555
+          match:
+             - field: OFB_IN_PORT
+               value: 0x12345678
+    )""";
 
   testEncoderSuccess(input, 0x038,
                      "011000381122334400010000003FFFFE567"
@@ -415,22 +415,22 @@ TEST(encoder, ofmp_flowrequest_v1) {
 
 TEST(encoder, ofmp_aggregaterequest_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REQUEST
-   version: 4
-   xid: 0x11223344
-   msg:
-     type: OFPMP_AGGREGATE
-     flags: 0
-     body:
-         table_id: 0x11
-         out_port: 0x22222222
-         out_group:  0x33333333
-         cookie: 0x4444444444444444
-         cookie_mask: 0x5555555555555555
-         match:
-            - field: OFB_IN_PORT
-              value: 0x12345678
-   )""";
+    type: OFPT_MULTIPART_REQUEST
+    version: 4
+    xid: 0x11223344
+    msg:
+      type: OFPMP_AGGREGATE
+      flags: 0
+      body:
+          table_id: 0x11
+          out_port: 0x22222222
+          out_group:  0x33333333
+          cookie: 0x4444444444444444
+          cookie_mask: 0x5555555555555555
+          match:
+             - field: OFB_IN_PORT
+               value: 0x12345678
+    )""";
 
   testEncoderSuccess(input, 0x040,
                      "041200401122334400020000000000001100000022222222333333330"
@@ -440,22 +440,22 @@ TEST(encoder, ofmp_aggregaterequest_v4) {
 
 TEST(encoder, ofmp_aggregaterequest_v1) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REQUEST
-   version: 1
-   xid: 0x11223344
-   msg:
-     type: OFPMP_AGGREGATE
-     flags: 0
-     body:
-         table_id: 0x11
-         out_port: 0x22222222
-         out_group:  0x33333333
-         cookie: 0x4444444444444444
-         cookie_mask: 0x5555555555555555
-         match:
-            - field: OFB_IN_PORT
-              value: 0x12345678
-   )""";
+    type: OFPT_MULTIPART_REQUEST
+    version: 1
+    xid: 0x11223344
+    msg:
+      type: OFPMP_AGGREGATE
+      flags: 0
+      body:
+          table_id: 0x11
+          out_port: 0x22222222
+          out_group:  0x33333333
+          cookie: 0x4444444444444444
+          cookie_mask: 0x5555555555555555
+          match:
+             - field: OFB_IN_PORT
+               value: 0x12345678
+    )""";
 
   testEncoderSuccess(input, 0x038,
                      "011000381122334400020000003FFFFE567"
@@ -465,30 +465,30 @@ TEST(encoder, ofmp_aggregaterequest_v1) {
 
 TEST(encoder, ofmp_flowreply_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 4
-   xid: 0x11223344
-   msg:
-     type: OFPMP_FLOW
-     flags: 0
-     body:
-        - table_id: 1
-          duration_sec: 2
-          duration_nsec: 3
-          priority: 4
-          idle_timeout: 5
-          hard_timeout: 6
-          flags: 7
-          cookie: 8
-          packet_count: 9
-          byte_count: 10
-          match:
-            - field: OFB_IN_PORT
-              value: 0x12345678
-          instructions:
-            - instruction: OFPIT_GOTO_TABLE
-              table_id: 1
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 4
+    xid: 0x11223344
+    msg:
+      type: OFPMP_FLOW
+      flags: 0
+      body:
+         - table_id: 1
+           duration_sec: 2
+           duration_nsec: 3
+           priority: 4
+           idle_timeout: 5
+           hard_timeout: 6
+           flags: 7
+           cookie: 8
+           packet_count: 9
+           byte_count: 10
+           match:
+             - field: OFB_IN_PORT
+               value: 0x12345678
+           instructions:
+             - instruction: OFPIT_GOTO_TABLE
+               table_id: 1
+    )""";
 
   const char *hex =
       "0413005811223344000100000000000000480100000000020000000300"
@@ -502,46 +502,46 @@ TEST(encoder, ofmp_flowreply_v4) {
 
 TEST(encoder, ofmp_flowreply2_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 4
-   xid: 0x11223344
-   msg:
-     type: OFPMP_FLOW
-     flags: 0
-     body:
-        - table_id: 1
-          duration_sec: 2
-          duration_nsec: 3
-          priority: 4
-          idle_timeout: 5
-          hard_timeout: 6
-          flags: 7
-          cookie: 8
-          packet_count: 9
-          byte_count: 10
-          match:
-            - field: OFB_IN_PORT
-              value: 0x12345678
-          instructions:
-        - table_id: 0x11
-          duration_sec: 0x22
-          duration_nsec: 0x33 
-          priority: 0x44
-          idle_timeout: 0x55
-          hard_timeout: 0x66
-          flags: 0x77
-          cookie: 0x88
-          packet_count: 0x9999999999999999
-          byte_count:   0xAAAAAAAAAAAAAAAA
-          match:
-            - field: OFB_ETH_SRC
-              value: 10-20-30-40-50-60
-            - field: OFB_ETH_DST
-              value: aa-bb-cc-dd-ee-ff
-          instructions:
-            - instruction: OFPIT_GOTO_TABLE
-              table_id: 1
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 4
+    xid: 0x11223344
+    msg:
+      type: OFPMP_FLOW
+      flags: 0
+      body:
+         - table_id: 1
+           duration_sec: 2
+           duration_nsec: 3
+           priority: 4
+           idle_timeout: 5
+           hard_timeout: 6
+           flags: 7
+           cookie: 8
+           packet_count: 9
+           byte_count: 10
+           match:
+             - field: OFB_IN_PORT
+               value: 0x12345678
+           instructions:
+         - table_id: 0x11
+           duration_sec: 0x22
+           duration_nsec: 0x33 
+           priority: 0x44
+           idle_timeout: 0x55
+           hard_timeout: 0x66
+           flags: 0x77
+           cookie: 0x88
+           packet_count: 0x9999999999999999
+           byte_count:   0xAAAAAAAAAAAAAAAA
+           match:
+             - field: OFB_ETH_SRC
+               value: 10-20-30-40-50-60
+             - field: OFB_ETH_DST
+               value: aa-bb-cc-dd-ee-ff
+           instructions:
+             - instruction: OFPIT_GOTO_TABLE
+               table_id: 1
+    )""";
 
   testEncoderSuccess(input, 0x0A0,
                      "041300A01122334400010000000000000040010000000002000000030"

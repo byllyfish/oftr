@@ -1,12 +1,12 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFPX_PING_H
-#define OFPX_PING_H
+#ifndef TOOLS_OFPX_OFPX_H_
+#define TOOLS_OFPX_OFPX_H_
 
-#include "llvm/Support/CommandLine.h"
-#include "ofp/ofp.h"
 #include <vector>
 #include <string>
+#include "llvm/Support/CommandLine.h"
+#include "ofp/ofp.h"
 
 namespace ofpx {
 
@@ -41,4 +41,4 @@ struct IPv6EndpointParser : public cl::parser<ofp::IPv6Endpoint> {
 
 }  // namespace ofpx
 
-#endif  // OFPX_PING_H
+#endif  // TOOLS_OFPX_OFPX_H_

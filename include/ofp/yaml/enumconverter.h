@@ -12,7 +12,7 @@ namespace detail {
 
 /// Return max storable integer value based on type's size in bytes.
 template <class Type>
-constexpr unsigned long long MaxIntValue() {
+constexpr uint64_t MaxIntValue() {
   return (sizeof(Type) == 1) ? 0xffu : (sizeof(Type) == 2)
                                            ? 0xffffu
                                            : (sizeof(Type) == 4)
@@ -26,7 +26,7 @@ constexpr unsigned long long MaxIntValue() {
 
 template <class Type>
 bool ParseUnsignedInteger(llvm::StringRef name, Type *value) {
-  unsigned long long num;
+  uint64_t num;
   if (!llvm::getAsUnsignedInteger(name, 0, num)) {
     static_assert(detail::MaxIntValue<Type>() > 0, "Unexpected type");
     if (num <= detail::MaxIntValue<Type>()) {

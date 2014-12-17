@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_YAML_YGROUPFEATURES_H_
-#define OFP_YAML_YGROUPFEATURES_H_
+#ifndef OFP_YAML_YMPGROUPFEATURES_H_
+#define OFP_YAML_YMPGROUPFEATURES_H_
 
 #include "ofp/mpgroupfeatures.h"
 
@@ -47,4 +47,4 @@ struct MappingTraits<ofp::MPGroupFeaturesBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif  // OFP_YAML_YGROUPFEATURES_H_
+#endif  // OFP_YAML_YMPGROUPFEATURES_H_

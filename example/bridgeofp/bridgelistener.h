@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef BRIDGELISTENER_H
-#define BRIDGELISTENER_H
+#ifndef EXAMPLE_BRIDGEOFP_BRIDGELISTENER_H_
+#define EXAMPLE_BRIDGEOFP_BRIDGELISTENER_H_
 
 #include "ofp/ofp.h"
 
@@ -39,4 +39,4 @@ class BridgeListener : public ChannelListener {
 
 OFP_END_IGNORE_PADDING
 
-#endif  // BRIDGELISTENER_H
+#endif  // EXAMPLE_BRIDGEOFP_BRIDGELISTENER_H_

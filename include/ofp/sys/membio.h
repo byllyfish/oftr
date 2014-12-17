@@ -21,7 +21,7 @@ class MemBio {
 
   std::string toString() {
     char *mem;
-    long size = BIO_get_mem_data(bio_, &mem);
+    auto size = BIO_get_mem_data(bio_, &mem);
     return std::string(mem, Unsigned_cast(size));
   }
 

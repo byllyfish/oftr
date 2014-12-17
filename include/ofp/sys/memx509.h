@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_MEMX509_H_
-#define OFP_MEMX509_H_
+#ifndef OFP_SYS_MEMX509_H_
+#define OFP_SYS_MEMX509_H_
 
 #include <openssl/x509.h>
 
@@ -55,4 +55,4 @@ OFP_END_IGNORE_PADDING
 }  // namespace sys
 }  // namespace ofp
 
-#endif  // OFP_MEMX509_H_
+#endif  // OFP_SYS_MEMX509_H_

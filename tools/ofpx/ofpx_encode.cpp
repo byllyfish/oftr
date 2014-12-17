@@ -1,10 +1,10 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofpx_encode.h"
-#include "ofp/yaml/encoder.h"
-#include "ofp/yaml/decoder.h"
 #include <iostream>
 #include <fstream>
+#include "ofp/yaml/encoder.h"
+#include "ofp/yaml/decoder.h"
 
 using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;

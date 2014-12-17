@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFPX_PING_H_
-#define OFPX_PING_H_
+#ifndef TOOLS_OFPX_OFPX_PING_H_
+#define TOOLS_OFPX_OFPX_PING_H_
 
 #include "ofpx.h"
 
@@ -26,4 +26,4 @@ class Ping : public Subprogram {
 
 }  // namespace ofpx
 
-#endif  // OFPX_PING_H_
+#endif  // TOOLS_OFPX_OFPX_PING_H_

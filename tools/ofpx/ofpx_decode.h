@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFPX_DECODE_H_
-#define OFPX_DECODE_H_
+#ifndef TOOLS_OFPX_OFPX_DECODE_H_
+#define TOOLS_OFPX_OFPX_DECODE_H_
 
 #include "ofpx.h"
 
@@ -92,4 +92,4 @@ class Decode : public Subprogram {
 
 }  // namespace ofpx
 
-#endif  // OFPX_DECODE_H_
+#endif  // TOOLS_OFPX_OFPX_DECODE_H_

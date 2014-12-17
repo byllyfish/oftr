@@ -1,5 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#ifndef OFP_YAML_YMPMETERFEATURES_H_
+#define OFP_YAML_YMPMETERFEATURES_H_
+
 #include "ofp/mpmeterfeatures.h"
 
 namespace llvm {
@@ -29,3 +32,5 @@ struct MappingTraits<ofp::MPMeterFeaturesBuilder> {
 
 }  // namespace yaml
 }  // namespace llvm
+
+#endif  // OFP_YAML_YMPMETERFEATURES_H_
