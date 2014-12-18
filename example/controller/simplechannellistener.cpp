@@ -2,7 +2,7 @@
 
 #include "simplechannellistener.h"
 
-namespace controller {  // <namespace controller>
+using namespace controller;
 
 void SimpleChannelListener::onChannelUp(Channel *channel) {
   UInt32 xid;
@@ -79,4 +79,3 @@ void SimpleChannelListener::onReply(const Message *message) {
   }
 }
 
-}  // </namespace controller>

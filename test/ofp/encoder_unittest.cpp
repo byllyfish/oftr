@@ -554,33 +554,33 @@ TEST(encoder, ofmp_flowreply2_v4) {
 
 TEST(encoder, ofmp_flowreply3_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 4
-   xid: 0x11223344
-   msg:
-     type: OFPMP_FLOW
-     flags: 0
-     body:
-        - table_id: 1
-          duration_sec: 2
-          duration_nsec: 3
-          priority: 4
-          idle_timeout: 5
-          hard_timeout: 6
-          flags: 7
-          cookie: 8
-          packet_count: 9
-          byte_count: 10
-          match:
-          instructions:
-            - instruction: OFPIT_APPLY_ACTIONS
-              actions:
-                 - action: OFPAT_OUTPUT
-                   port: 1
-                   max_len: 0xFFFF
-                 - action: OFPAT_SET_NW_TTL
-                   ttl: 64
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 4
+    xid: 0x11223344
+    msg:
+      type: OFPMP_FLOW
+      flags: 0
+      body:
+         - table_id: 1
+           duration_sec: 2
+           duration_nsec: 3
+           priority: 4
+           idle_timeout: 5
+           hard_timeout: 6
+           flags: 7
+           cookie: 8
+           packet_count: 9
+           byte_count: 10
+           match:
+           instructions:
+             - instruction: OFPIT_APPLY_ACTIONS
+               actions:
+                  - action: OFPAT_OUTPUT
+                    port: 1
+                    max_len: 0xFFFF
+                  - action: OFPAT_SET_NW_TTL
+                    ttl: 64
+    )""";
 
   const char *hex =
       "0413006811223344000100000000000000580100000000020000000300"
@@ -595,33 +595,33 @@ TEST(encoder, ofmp_flowreply3_v4) {
 
 TEST(encoder, ofmp_flowreply_v1) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 1
-   xid: 0x11111111
-   msg:
-     type: OFPMP_FLOW
-     flags: 0x2222
-     body:
-        - table_id: 0x33
-          duration_sec: 0x44444444
-          duration_nsec: 0x55555555
-          priority: 0x6666
-          idle_timeout: 0x7777
-          hard_timeout: 0x8888
-          flags: 0x9999
-          cookie: 0xAAAAAAAAAAAAAAAA
-          packet_count: 0xBBBBBBBBBBBBBBBB
-          byte_count: 0xCCCCCCCCCCCCCCCC
-          match:
-            - field: OFB_IN_PORT
-              value: 0xDDDDDDDD
-          instructions:
-            - instruction: OFPIT_APPLY_ACTIONS
-              actions:
-                 - action: OFPAT_OUTPUT
-                   port: 0xEEEEEEEE
-                   max_len: 0xFFFF
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 1
+    xid: 0x11111111
+    msg:
+      type: OFPMP_FLOW
+      flags: 0x2222
+      body:
+         - table_id: 0x33
+           duration_sec: 0x44444444
+           duration_nsec: 0x55555555
+           priority: 0x6666
+           idle_timeout: 0x7777
+           hard_timeout: 0x8888
+           flags: 0x9999
+           cookie: 0xAAAAAAAAAAAAAAAA
+           packet_count: 0xBBBBBBBBBBBBBBBB
+           byte_count: 0xCCCCCCCCCCCCCCCC
+           match:
+             - field: OFB_IN_PORT
+               value: 0xDDDDDDDD
+           instructions:
+             - instruction: OFPIT_APPLY_ACTIONS
+               actions:
+                  - action: OFPAT_OUTPUT
+                    port: 0xEEEEEEEE
+                    max_len: 0xFFFF
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -637,56 +637,56 @@ TEST(encoder, ofmp_flowreply_v1) {
 TEST(encoder, ofmp_flowreply2_v1) {
   // TODO(bfish): incorrect body for version 1?
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 1
-   xid: 0x11223344
-   msg:
-     type: OFPMP_FLOW
-     flags: 0
-     body:
-        - table_id: 1
-          duration_sec: 2
-          duration_nsec: 3
-          priority: 4
-          idle_timeout: 5
-          hard_timeout: 6
-          flags: 7
-          cookie: 8
-          packet_count: 9
-          byte_count: 10
-          match:
-            - field: OFB_IN_PORT
-              value: 0x12345678
-          instructions:
-            - instruction: OFPIT_APPLY_ACTIONS
-              actions:
-                 - action: OFPAT_OUTPUT
-                   port: 0xEEEEEEEE
-                   max_len: 0xFFFF
-        - table_id: 0x11
-          duration_sec: 0x22
-          duration_nsec: 0x33 
-          priority: 0x44
-          idle_timeout: 0x55
-          hard_timeout: 0x66
-          flags: 0x77
-          cookie: 0x88
-          packet_count: 0x9999999999999999
-          byte_count:   0xAAAAAAAAAAAAAAAA
-          match:
-            - field: OFB_ETH_SRC
-              value: 10-20-30-40-50-60
-            - field: OFB_ETH_DST
-              value: aa-bb-cc-dd-ee-ff
-          instructions:
-            - instruction: OFPIT_GOTO_TABLE
-              table_id: 1
-            - instruction: OFPIT_APPLY_ACTIONS
-              actions:
-                 - action: OFPAT_OUTPUT
-                   port: 0xEEEEEEEE
-                   max_len: 0xFFFF
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 1
+    xid: 0x11223344
+    msg:
+      type: OFPMP_FLOW
+      flags: 0
+      body:
+         - table_id: 1
+           duration_sec: 2
+           duration_nsec: 3
+           priority: 4
+           idle_timeout: 5
+           hard_timeout: 6
+           flags: 7
+           cookie: 8
+           packet_count: 9
+           byte_count: 10
+           match:
+             - field: OFB_IN_PORT
+               value: 0x12345678
+           instructions:
+             - instruction: OFPIT_APPLY_ACTIONS
+               actions:
+                  - action: OFPAT_OUTPUT
+                    port: 0xEEEEEEEE
+                    max_len: 0xFFFF
+         - table_id: 0x11
+           duration_sec: 0x22
+           duration_nsec: 0x33 
+           priority: 0x44
+           idle_timeout: 0x55
+           hard_timeout: 0x66
+           flags: 0x77
+           cookie: 0x88
+           packet_count: 0x9999999999999999
+           byte_count:   0xAAAAAAAAAAAAAAAA
+           match:
+             - field: OFB_ETH_SRC
+               value: 10-20-30-40-50-60
+             - field: OFB_ETH_DST
+               value: aa-bb-cc-dd-ee-ff
+           instructions:
+             - instruction: OFPIT_GOTO_TABLE
+               table_id: 1
+             - instruction: OFPIT_APPLY_ACTIONS
+               actions:
+                  - action: OFPAT_OUTPUT
+                    port: 0xEEEEEEEE
+                    max_len: 0xFFFF
+    )""";
 
   testEncoderSuccess(
       input, 0x0CC,
@@ -700,17 +700,17 @@ TEST(encoder, ofmp_flowreply2_v1) {
 
 TEST(encoder, ofmp_aggregatereply_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 4
-   xid: 0x11111111
-   msg:
-     type: OFPMP_AGGREGATE
-     flags: 0x2222
-     body:
-       packet_count: 0x3333333333333330
-       byte_count: 0x4444444444444440
-       flow_count: 0x55555550
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 4
+    xid: 0x11111111
+    msg:
+      type: OFPMP_AGGREGATE
+      flags: 0x2222
+      body:
+        packet_count: 0x3333333333333330
+        byte_count: 0x4444444444444440
+        flow_count: 0x55555550
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -723,17 +723,17 @@ TEST(encoder, ofmp_aggregatereply_v4) {
 
 TEST(encoder, ofmp_aggregatereply_v1) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 1
-   xid: 0x11111111
-   msg:
-     type: OFPMP_AGGREGATE
-     flags: 0x2222
-     body:
-       packet_count: 0x3333333333333330
-       byte_count: 0x4444444444444440
-       flow_count: 0x55555550
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 1
+    xid: 0x11111111
+    msg:
+      type: OFPMP_AGGREGATE
+      flags: 0x2222
+      body:
+        packet_count: 0x3333333333333330
+        byte_count: 0x4444444444444440
+        flow_count: 0x55555550
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -746,22 +746,22 @@ TEST(encoder, ofmp_aggregatereply_v1) {
 
 TEST(encoder, ofmp_tablestats_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 4
-   xid: 0x11111111
-   msg:
-     type: OFPMP_TABLE
-     flags: 0x2222
-     body:
-       - table_id: 0x33
-         active_count: 0x44444440
-         lookup_count: 0x5555555555555550
-         matched_count: 0x6666666666666660
-       - table_id: 0x77
-         active_count: 0x88888880
-         lookup_count: 0x9999999999999990
-         matched_count: 0xAAAAAAAAAAAAAAA0
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 4
+    xid: 0x11111111
+    msg:
+      type: OFPMP_TABLE
+      flags: 0x2222
+      body:
+        - table_id: 0x33
+          active_count: 0x44444440
+          lookup_count: 0x5555555555555550
+          matched_count: 0x6666666666666660
+        - table_id: 0x77
+          active_count: 0x88888880
+          lookup_count: 0x9999999999999990
+          matched_count: 0xAAAAAAAAAAAAAAA0
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -774,28 +774,28 @@ TEST(encoder, ofmp_tablestats_v4) {
 
 TEST(encoder, ofmp_tablestats_v1) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 1
-   xid: 0x11111111
-   msg:
-     type: OFPMP_TABLE
-     flags: 0x2222
-     body:
-       - table_id: 0x33
-         name: 'Table 1'
-         wildcards: 0x44444440
-         max_entries: 0x55555550
-         active_count: 0x66666660
-         lookup_count: 0x7777777777777770
-         matched_count: 0x8888888888888880
-       - table_id: 0x11
-         name: 'Table 2'
-         wildcards: 0x99999990
-         max_entries: 0xAAAAAAA0
-         active_count: 0xBBBBBBB0
-         lookup_count: 0xCCCCCCCCCCCCCCC0
-         matched_count: 0xDDDDDDDDDDDDDDD0
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 1
+    xid: 0x11111111
+    msg:
+      type: OFPMP_TABLE
+      flags: 0x2222
+      body:
+        - table_id: 0x33
+          name: 'Table 1'
+          wildcards: 0x44444440
+          max_entries: 0x55555550
+          active_count: 0x66666660
+          lookup_count: 0x7777777777777770
+          matched_count: 0x8888888888888880
+        - table_id: 0x11
+          name: 'Table 2'
+          wildcards: 0x99999990
+          max_entries: 0xAAAAAAA0
+          active_count: 0xBBBBBBB0
+          lookup_count: 0xCCCCCCCCCCCCCCC0
+          matched_count: 0xDDDDDDDDDDDDDDD0
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -810,29 +810,29 @@ TEST(encoder, ofmp_tablestats_v1) {
 
 TEST(encoder, ofmp_portstats_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 4
-   xid: 0x11111111
-   msg:
-     type: OFPMP_PORT_STATS
-     flags: 0x2222
-     body:
-       - port_no: 0x33333330
-         rx_packets: 0x4444444444444440
-         tx_packets: 0x5555555555555550
-         rx_bytes:   0x6666666666666660
-         tx_bytes:   0x7777777777777770
-         rx_dropped: 0x8888888888888880
-         tx_dropped: 0x9999999999999990
-         rx_errors:  0xAAAAAAAAAAAAAAA0
-         tx_errors:  0xBBBBBBBBBBBBBBB0
-         rx_frame_err: 0xCCCCCCCCCCCCCCC0
-         rx_over_err:  0xDDDDDDDDDDDDDDD0
-         rx_crc_err:   0xEEEEEEEEEEEEEEE0
-         collisions:   0xFFFFFFFFFFFFFFF0
-         duration_sec:   0x11111110
-         duration_nsec:  0x22222220
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 4
+    xid: 0x11111111
+    msg:
+      type: OFPMP_PORT_STATS
+      flags: 0x2222
+      body:
+        - port_no: 0x33333330
+          rx_packets: 0x4444444444444440
+          tx_packets: 0x5555555555555550
+          rx_bytes:   0x6666666666666660
+          tx_bytes:   0x7777777777777770
+          rx_dropped: 0x8888888888888880
+          tx_dropped: 0x9999999999999990
+          rx_errors:  0xAAAAAAAAAAAAAAA0
+          tx_errors:  0xBBBBBBBBBBBBBBB0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -847,29 +847,29 @@ TEST(encoder, ofmp_portstats_v4) {
 
 TEST(encoder, ofmp_portstats_v1) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 1
-   xid: 0x11111111
-   msg:
-     type: OFPMP_PORT_STATS
-     flags: 0x2222
-     body:
-       - port_no: 0x33333330
-         rx_packets: 0x4444444444444440
-         tx_packets: 0x5555555555555550
-         rx_bytes:   0x6666666666666660
-         tx_bytes:   0x7777777777777770
-         rx_dropped: 0x8888888888888880
-         tx_dropped: 0x9999999999999990
-         rx_errors:  0xAAAAAAAAAAAAAAA0
-         tx_errors:  0xBBBBBBBBBBBBBBB0
-         rx_frame_err: 0xCCCCCCCCCCCCCCC0
-         rx_over_err:  0xDDDDDDDDDDDDDDD0
-         rx_crc_err:   0xEEEEEEEEEEEEEEE0
-         collisions:   0xFFFFFFFFFFFFFFF0
-         duration_sec:   0x11111110
-         duration_nsec:  0x22222220
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 1
+    xid: 0x11111111
+    msg:
+      type: OFPMP_PORT_STATS
+      flags: 0x2222
+      body:
+        - port_no: 0x33333330
+          rx_packets: 0x4444444444444440
+          tx_packets: 0x5555555555555550
+          rx_bytes:   0x6666666666666660
+          tx_bytes:   0x7777777777777770
+          rx_dropped: 0x8888888888888880
+          tx_dropped: 0x9999999999999990
+          rx_errors:  0xAAAAAAAAAAAAAAA0
+          tx_errors:  0xBBBBBBBBBBBBBBB0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -884,21 +884,21 @@ TEST(encoder, ofmp_portstats_v1) {
 
 TEST(encoder, ofmp_queuestats_v4) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 4
-   xid: 0x11111111
-   msg:
-     type: OFPMP_QUEUE
-     flags: 0x2222
-     body:
-       - port_no: 0x33333330
-         queue_id: 0x44444440
-         tx_bytes:   0x5555555555555550
-         tx_packets: 0x6666666666666660
-         tx_errors:  0x7777777777777770
-         duration_sec:   0x11111110
-         duration_nsec:  0x22222220
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 4
+    xid: 0x11111111
+    msg:
+      type: OFPMP_QUEUE
+      flags: 0x2222
+      body:
+        - port_no: 0x33333330
+          queue_id: 0x44444440
+          tx_bytes:   0x5555555555555550
+          tx_packets: 0x6666666666666660
+          tx_errors:  0x7777777777777770
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
@@ -911,21 +911,21 @@ TEST(encoder, ofmp_queuestats_v4) {
 
 TEST(encoder, ofmp_queuestats_v1) {
   const char *input = R"""(
-   type: OFPT_MULTIPART_REPLY
-   version: 1
-   xid: 0x11111111
-   msg:
-     type: OFPMP_QUEUE
-     flags: 0x2222
-     body:
-       - port_no: 0x33333330
-         queue_id: 0x44444440
-         tx_bytes:   0x5555555555555550
-         tx_packets: 0x6666666666666660
-         tx_errors:  0x7777777777777770
-         duration_sec:   0x11111110
-         duration_nsec:  0x22222220
-   )""";
+    type: OFPT_MULTIPART_REPLY
+    version: 1
+    xid: 0x11111111
+    msg:
+      type: OFPMP_QUEUE
+      flags: 0x2222
+      body:
+        - port_no: 0x33333330
+          queue_id: 0x44444440
+          tx_bytes:   0x5555555555555550
+          tx_packets: 0x6666666666666660
+          tx_errors:  0x7777777777777770
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
+    )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());

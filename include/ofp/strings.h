@@ -1,5 +1,4 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
-/// Defines the string types used in the OpenFlow protocol.
 
 #ifndef OFP_STRINGS_H_
 #define OFP_STRINGS_H_

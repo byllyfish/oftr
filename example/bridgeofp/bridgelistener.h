@@ -7,7 +7,7 @@
 
 OFP_BEGIN_IGNORE_PADDING
 
-namespace bridge {  // <namespace bridge>
+namespace bridge {
 
 using namespace ofp;
 
@@ -35,7 +35,7 @@ class BridgeListener : public ChannelListener {
   static void translateAndForward(const Message *message, Channel *channel);
 };
 
-}  // </namespace bridge>
+}  // namespace bridge
 
 OFP_END_IGNORE_PADDING
 

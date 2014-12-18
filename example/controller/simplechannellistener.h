@@ -1,10 +1,13 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/ofp.h"
-#include "simplecontroller.h"
-#include <map>
+#ifndef EXAMPLE_CONTROLLER_SIMPLECHANNELLISTENER_H_
+#define EXAMPLE_CONTROLLER_SIMPLECHANNELLISTENER_H_
 
-namespace controller {  // <namespace controller>
+#include "ofp/ofp.h"
+#include <map>
+#include "simplecontroller.h"
+
+namespace controller {
 
 class SimpleChannelListener : public ChannelListener {
  public:
@@ -60,4 +63,6 @@ void SimpleChannelListener::trackReply(UInt32 xid, PtrMemFunc<MesgType> mbf) {
   }
 }
 
-}  // </namespace controller>
+}  // namespace controller
+
+#endif  // EXAMPLE_CONTROLLER_SIMPLECHANNELLISTENER_H_

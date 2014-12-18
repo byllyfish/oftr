@@ -272,8 +272,8 @@ static void WriteSourceFile(ostream &stream, vector<OXMField> &fields) {
   }
 
   stream << R"""(
-	  std::cout << "};\n";
-	)""";
+    std::cout << "};\n";
+  )""";
 
   stream << R"""(std::cout << "const size_t ofp::OXMTypeInfoArraySize=)""";
   stream << fields.size();

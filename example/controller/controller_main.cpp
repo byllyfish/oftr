@@ -1,8 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/ofp.h"
-#include "simplechannellistener.h"
 #include <iostream>
+#include "simplechannellistener.h"
 
 using namespace ofp;
 

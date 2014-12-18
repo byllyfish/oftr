@@ -1,11 +1,11 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/ofp.h"
 #include <iostream>
 #include <iomanip>
 #include <chrono>
 #include <numeric>
 #include <cmath>
+#include "ofp/ofp.h"
 
 using namespace ofp;
 
@@ -107,8 +107,8 @@ int main(int argc, char **argv) {
     std::cout << "Loops=" << loops << " Trial " << std::setw(2) << trial
               << " Time: " << duration.count()
               << " ms  Malloc/Bytes: " << mallocCount << "/" << mallocSize
-              << " (" << double(mallocCount) / loops << "/"
-              << double(mallocSize) / loops << ")\n";
+              << " (" << static_cast<double>(mallocCount) / loops << "/"
+              << static_cast<double>(mallocSize) / loops << ")\n";
     results.push_back(duration.count());
   }
 

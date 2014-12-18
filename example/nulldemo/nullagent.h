@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef NULLAGENT_H
-#define NULLAGENT_H
+#ifndef EXAMPLE_NULLDEMO_NULLAGENT_H_
+#define EXAMPLE_NULLDEMO_NULLAGENT_H_
 
 #include "ofp/ofp.h"
 #include "ofp/yaml/yflowmod.h"
@@ -62,7 +62,7 @@ void NullAgent::onMessage(const Message *message) {
       break;
 
     default:
-      ofp::log::debug("Unknown message type", int(message->type()));
+      ofp::log::debug("Unknown message type", static_cast<int>(message->type()));
       sendError(1, 1, message);
       break;
   }
@@ -130,4 +130,4 @@ void NullAgent::sendError(UInt16 type, UInt16 code, const Message *message) {
   msg.send(message->source());
 }
 
-#endif  // NULLAGENT_H
+#endif  // EXAMPLE_NULLDEMO_NULLAGENT_H_

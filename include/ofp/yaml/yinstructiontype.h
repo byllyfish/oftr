@@ -23,7 +23,7 @@ struct ScalarTraits<ofp::InstructionType> {
   static StringRef input(StringRef scalar, void *ctxt,
                          ofp::InstructionType &value) {
     if (!value.parse(scalar)) {
-      unsigned long long num;
+      uint64_t num;
       if (llvm::getAsUnsignedInteger(scalar, 0, num) == 0) {
         value.setNative(ofp::UInt16_narrow_cast(num));
         return "";

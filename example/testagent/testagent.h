@@ -1,11 +1,11 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef TESTAGENT_H
-#define TESTAGENT_H
+#ifndef EXAMPLE_TESTAGENT_TESTAGENT_H_
+#define EXAMPLE_TESTAGENT_TESTAGENT_H_
 
 #include "ofp/ofp.h"
 
-namespace testagent {  // <namespace testagent>
+namespace testagent {
 
 using namespace ofp;
 
@@ -21,6 +21,6 @@ class TestAgent : public ChannelListener {
   void writeMessages(Channel *channel);
 };
 
-}  // </namespace testagent>
+}  // namespace testagent
 
-#endif  // TESTAGENT_H
+#endif  // EXAMPLE_TESTAGENT_TESTAGENT_H_
