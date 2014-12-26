@@ -66,7 +66,6 @@ INCLUDES=(
 	include/llvm/Support/FileSystem.h
 	include/llvm/Support/Format.h
 	include/llvm/Support/Host.h
-	include/llvm/Support/Locale.h
 	include/llvm/Support/ManagedStatic.h
 	include/llvm/Support/MathExtras.h
 	include/llvm/Support/Memory.h
@@ -93,11 +92,11 @@ INCLUDES=(
 )
 
 # Include files to copy from llvm build tree.
-BUILD_INCLUDES=(
-	include/llvm/Config/config.h
-	include/llvm/Config/llvm-config.h
-	include/llvm/Support/DataTypes.h
-)
+#BUILD_INCLUDES=(
+#	include/llvm/Config/config.h
+#	include/llvm/Config/llvm-config.h
+#	include/llvm/Support/DataTypes.h
+#)
 
 # Source files to copy from llvm source tree.
 SOURCES=(
@@ -148,9 +147,9 @@ for file in "${INCLUDES[@]}"; do
 done
 
 # Copy the include files from the build dir.
-for file in "${BUILD_INCLUDES[@]}"; do
-  cp -v "$LLVM_BUILD_DIR/$file" "$WORKING_DIR/$file"
-done
+#for file in "${BUILD_INCLUDES[@]}"; do
+#  cp -v "$LLVM_BUILD_DIR/$file" "$WORKING_DIR/$file"
+#done
 
 # Copy the source files.
 for file in "${SOURCES[@]}"; do
@@ -160,7 +159,8 @@ done
 # Apply patches.
 
 #patch "${WORKING_DIR}/include/llvm/Config/config.h" "$WORKING_DIR/src/Config.h.diff"
-#patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-#patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
+patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
+patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 
 exit 0
