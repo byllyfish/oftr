@@ -1,13 +1,22 @@
---- SourceMgr.cpp	2014-04-07 11:40:43.000000000 -0700
-+++ SourceMgr.cpp	2014-04-09 12:57:26.000000000 -0700
-@@ -297,8 +297,10 @@
+--- SourceMgr.cpp	2014-12-18 13:33:24.000000000 -0700
++++ SourceMgr.cpp	2014-12-24 13:15:18.000000000 -0700
+@@ -16,7 +16,7 @@
+ #include "llvm/Support/SourceMgr.h"
+ #include "llvm/ADT/SmallString.h"
+ #include "llvm/ADT/Twine.h"
+-#include "llvm/Support/Locale.h"
++//#include "llvm/Support/Locale.h"
+ #include "llvm/Support/MemoryBuffer.h"
+ #include "llvm/Support/Path.h"
+ #include "llvm/Support/raw_ostream.h"
+@@ -287,8 +287,10 @@
      // FIXME: This assertion is intended to catch unintended use of multibyte
      // characters in fixits. If we decide to do this, we'll have to track
      // separate byte widths for the source and fixit lines.
 +#if 0
      assert((size_t)llvm::sys::locale::columnWidth(I->getText()) ==
             I->getText().size());
-+#endif
++#endif //0
  
      // This relies on one byte per column in our fixit hints.
      unsigned LastColumnModified = HintCol + I->getText().size();
