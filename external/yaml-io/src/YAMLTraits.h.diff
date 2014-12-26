@@ -1,5 +1,14 @@
 --- YAMLTraits.h	2014-11-02 14:03:23.000000000 -0700
-+++ YAMLTraits.h	2014-12-24 11:23:41.000000000 -0700
++++ YAMLTraits.h	2014-12-26 09:51:10.000000000 -0700
+@@ -20,7 +20,7 @@
+ #include "llvm/ADT/StringSwitch.h"
+ #include "llvm/ADT/Twine.h"
+ #include "llvm/Support/Compiler.h"
+-#include "llvm/Support/Regex.h"
++//#include "llvm/Support/Regex.h"
+ #include "llvm/Support/SourceMgr.h"
+ #include "llvm/Support/YAMLParser.h"
+ #include "llvm/Support/raw_ostream.h"
 @@ -219,6 +219,20 @@
        (sizeof(test<ScalarTraits<T>>(nullptr, nullptr, nullptr)) == 1);
  };
