@@ -59,6 +59,8 @@ struct ScalarTraits<ofp::OXMID> {
 
     return result;
   }
+
+  static bool mustQuote(StringRef s) { return !s.empty() && s.front() == '~'; }
 };
 
 template <>
@@ -77,6 +79,8 @@ struct ScalarTraits<ofp::detail::OXMIDInserter> {
     }
     return result;
   }
+
+  static bool mustQuote(StringRef s) { return !s.empty() && s.front() == '~'; }
 };
 
 template <>

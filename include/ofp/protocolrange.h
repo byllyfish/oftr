@@ -27,7 +27,7 @@ class ProtocolRange {
   size_t size() const { return range_.size(); }
   ByteRange toByteRange() const { return range_; }
 
-  size_t itemCount() const { return Iterator::itemCount(range_); }
+  size_t itemCount() const OFP_DEPRECATED { return Iterator::itemCount(range_); }
 
   bool validateInput(Validation *context) const {
     return Iterator::isValid(range_, context);

@@ -35,6 +35,8 @@ struct ScalarTraits<ofp::OXMType> {
 
     return "";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 }  // namespace yaml

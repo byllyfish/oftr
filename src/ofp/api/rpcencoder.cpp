@@ -10,7 +10,7 @@ static bool errorFound(llvm::yaml::IO &io) {
   // but the IO class doesn't support this. We need to reach into the Input
   // subclass to check for the error.
   llvm::yaml::Input *yin = static_cast<llvm::yaml::Input *>(&io);
-  return yin->error();
+  return static_cast<bool>(yin->error());
 }
 
 RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn,

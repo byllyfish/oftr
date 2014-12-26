@@ -96,6 +96,27 @@ test:
     }
 }
 
+static void test_Yaml_IsFloat() {
+    EXPECT(llvm::yaml::isFloat("0"));
+    EXPECT(llvm::yaml::isFloat("0."));
+    EXPECT(llvm::yaml::isFloat(".0"));
+    EXPECT(llvm::yaml::isFloat("0.0"));
+    EXPECT(llvm::yaml::isFloat("0e0"));
+    EXPECT(llvm::yaml::isFloat("0E0"));
+    EXPECT(llvm::yaml::isFloat("0.e0"));
+    EXPECT(llvm::yaml::isFloat(".0e0"));
+    EXPECT(llvm::yaml::isFloat("0.0e0"));
+
+    EXPECT(!llvm::yaml::isFloat(""));
+    EXPECT(!llvm::yaml::isFloat(" "));
+    EXPECT(!llvm::yaml::isFloat("."));
+    EXPECT(!llvm::yaml::isFloat("e0"));
+    EXPECT(!llvm::yaml::isFloat("0.e"));
+    EXPECT(!llvm::yaml::isFloat(".e"));
+    EXPECT(!llvm::yaml::isFloat(".0.e0"));
+    EXPECT(!llvm::yaml::isFloat(".0."));
+    EXPECT(!llvm::yaml::isFloat("0e0 "));
+}
 
 int main()
 {
@@ -159,6 +180,8 @@ d:
         yin >> t;
 
         EXPECT(t.d.size() == 0);
+        // This should return an error; d is an array of structs, but the 
+        // above is a map.
         EXPECT(yin.error());
     }
 
@@ -262,6 +285,7 @@ d: 3
     }
 
     test_YamlParser_MissingEndQuote();
+    test_Yaml_IsFloat();
 
     return 0;
 }

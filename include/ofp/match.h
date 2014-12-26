@@ -14,7 +14,7 @@ class Match {
   explicit Match(const MatchHeader *matchHeader);
 
   /// \returns number of items in the match.
-  size_t itemCount() const {
+  size_t itemCount() const OFP_DEPRECATED {
     return OXMIterator::distance(oxm_.begin(), oxm_.end());
   }
 

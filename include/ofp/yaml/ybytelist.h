@@ -19,6 +19,8 @@ struct ScalarTraits<ofp::ByteRange> {
   static StringRef input(StringRef scalar, void *ctxt, ofp::ByteRange &value) {
     return "Not supported.";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>
@@ -37,6 +39,8 @@ struct ScalarTraits<ofp::ByteList> {
     if (error) return "Invalid hexadecimal text.";
     return "";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 }  // namespace yaml

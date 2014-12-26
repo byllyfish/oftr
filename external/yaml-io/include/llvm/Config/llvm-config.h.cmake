@@ -1,4 +1,3 @@
-/* include/llvm/Config/llvm-config.h.  Generated from llvm-config.h.in by configure.  */
 /*===------- llvm/Config/llvm-config.h - llvm configuration -------*- C -*-===*/
 /*                                                                            */
 /*                     The LLVM Compiler Infrastructure                       */
@@ -16,84 +15,87 @@
 #define LLVM_CONFIG_H
 
 /* Installation directory for binary executables */
-#define LLVM_BINDIR "/usr/local/bin"
+#cmakedefine LLVM_BINDIR "${LLVM_BINDIR}"
 
 /* Time at which LLVM was configured */
-#define LLVM_CONFIGTIME "Thu Dec 18 13:34:58 MST 2014"
+#cmakedefine LLVM_CONFIGTIME "${LLVM_CONFIGTIME}"
 
 /* Installation directory for data files */
-#define LLVM_DATADIR "/usr/local/share/llvm"
+#cmakedefine LLVM_DATADIR "${LLVM_DATADIR}"
 
 /* Target triple LLVM will generate code for by default */
-#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin14.0.0"
+#cmakedefine LLVM_DEFAULT_TARGET_TRIPLE "${LLVM_DEFAULT_TARGET_TRIPLE}"
 
 /* Installation directory for documentation */
-#define LLVM_DOCSDIR "/usr/local/share/doc/llvm"
+#cmakedefine LLVM_DOCSDIR "${LLVM_DOCSDIR}"
 
 /* Define if threads enabled */
-#define LLVM_ENABLE_THREADS 1
+#cmakedefine01 LLVM_ENABLE_THREADS
 
 /* Installation directory for config files */
-#define LLVM_ETCDIR "/usr/local/etc/llvm"
+#cmakedefine LLVM_ETCDIR "${LLVM_ETCDIR}"
 
 /* Has gcc/MSVC atomic intrinsics */
-#define LLVM_HAS_ATOMICS 1
+#cmakedefine01 LLVM_HAS_ATOMICS
 
 /* Host triple LLVM will be executed on */
-#define LLVM_HOST_TRIPLE "x86_64-apple-darwin14.0.0"
+#cmakedefine LLVM_HOST_TRIPLE "${LLVM_HOST_TRIPLE}"
 
 /* Installation directory for include files */
-#define LLVM_INCLUDEDIR "/usr/local/include"
+#cmakedefine LLVM_INCLUDEDIR "${LLVM_INCLUDEDIR}"
 
 /* Installation directory for .info files */
-#define LLVM_INFODIR "/usr/local/info"
+#cmakedefine LLVM_INFODIR "${LLVM_INFODIR}"
 
 /* Installation directory for man pages */
-#define LLVM_MANDIR "/usr/local/man"
+#cmakedefine LLVM_MANDIR "${LLVM_MANDIR}"
 
 /* LLVM architecture name for the native architecture, if available */
-#define LLVM_NATIVE_ARCH X86
+#cmakedefine LLVM_NATIVE_ARCH ${LLVM_NATIVE_ARCH}
 
 /* LLVM name for the native AsmParser init function, if available */
-#define LLVM_NATIVE_ASMPARSER LLVMInitializeX86AsmParser
+#cmakedefine LLVM_NATIVE_ASMPARSER LLVMInitialize${LLVM_NATIVE_ARCH}AsmParser
 
 /* LLVM name for the native AsmPrinter init function, if available */
-#define LLVM_NATIVE_ASMPRINTER LLVMInitializeX86AsmPrinter
+#cmakedefine LLVM_NATIVE_ASMPRINTER LLVMInitialize${LLVM_NATIVE_ARCH}AsmPrinter
 
 /* LLVM name for the native Disassembler init function, if available */
-#define LLVM_NATIVE_DISASSEMBLER LLVMInitializeX86Disassembler
+#cmakedefine LLVM_NATIVE_DISASSEMBLER LLVMInitialize${LLVM_NATIVE_ARCH}Disassembler
 
 /* LLVM name for the native Target init function, if available */
-#define LLVM_NATIVE_TARGET LLVMInitializeX86Target
+#cmakedefine LLVM_NATIVE_TARGET LLVMInitialize${LLVM_NATIVE_ARCH}Target
 
 /* LLVM name for the native TargetInfo init function, if available */
-#define LLVM_NATIVE_TARGETINFO LLVMInitializeX86TargetInfo
+#cmakedefine LLVM_NATIVE_TARGETINFO LLVMInitialize${LLVM_NATIVE_ARCH}TargetInfo
 
 /* LLVM name for the native target MC init function, if available */
-#define LLVM_NATIVE_TARGETMC LLVMInitializeX86TargetMC
+#cmakedefine LLVM_NATIVE_TARGETMC LLVMInitialize${LLVM_NATIVE_ARCH}TargetMC
 
 /* Define if this is Unixish platform */
-#define LLVM_ON_UNIX 1
+#cmakedefine LLVM_ON_UNIX ${LLVM_ON_UNIX}
 
 /* Define if this is Win32ish platform */
-/* #undef LLVM_ON_WIN32 */
+#cmakedefine LLVM_ON_WIN32 ${LLVM_ON_WIN32}
 
 /* Installation prefix directory */
-#define LLVM_PREFIX "/usr/local"
+#cmakedefine LLVM_PREFIX "${LLVM_PREFIX}"
 
 /* Define if we have the Intel JIT API runtime support library */
-#define LLVM_USE_INTEL_JITEVENTS 0
+#cmakedefine LLVM_USE_INTEL_JITEVENTS 1
 
 /* Define if we have the oprofile JIT-support library */
-#define LLVM_USE_OPROFILE 0
+#cmakedefine LLVM_USE_OPROFILE 1
 
 /* Major version of the LLVM API */
-#define LLVM_VERSION_MAJOR 3
+#cmakedefine LLVM_VERSION_MAJOR ${LLVM_VERSION_MAJOR}
 
 /* Minor version of the LLVM API */
-#define LLVM_VERSION_MINOR 6
+#cmakedefine LLVM_VERSION_MINOR ${LLVM_VERSION_MINOR}
 
 /* LLVM version string */
-#define LLVM_VERSION_STRING "3.6.0svn"
+#define LLVM_VERSION_STRING "${PACKAGE_VERSION}"
+
+/* Define if we link Polly to the tools */
+#cmakedefine LINK_POLLY_INTO_TOOLS
 
 #endif

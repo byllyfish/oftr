@@ -32,6 +32,8 @@ struct ScalarTraits<ofp::ActionType> {
 
     return "";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 }  // namespace yaml

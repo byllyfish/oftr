@@ -38,6 +38,8 @@
 #define OFP_ALIGNAS(x) __attribute__((aligned(x)))
 #endif
 
+#define OFP_DEPRECATED  __attribute__((deprecated))
+
 namespace ofp {
 
 // Metaprogramming Utilities

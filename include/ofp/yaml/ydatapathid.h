@@ -21,6 +21,8 @@ struct ScalarTraits<ofp::DatapathID> {
     }
     return "";
   }
+
+  static bool mustQuote(StringRef) { return true; }
 };
 
 }  // namespace yaml

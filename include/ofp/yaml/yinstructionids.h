@@ -36,6 +36,8 @@ struct ScalarTraits<ofp::InstructionID> {
 
     return result;
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>
@@ -55,6 +57,8 @@ struct ScalarTraits<ofp::detail::InstructionIDInserter> {
     }
     return result;
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>

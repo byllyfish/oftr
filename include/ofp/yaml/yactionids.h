@@ -34,6 +34,8 @@ struct ScalarTraits<ofp::ActionID> {
 
     return result;
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>
@@ -52,6 +54,8 @@ struct ScalarTraits<ofp::detail::ActionIDInserter> {
     }
     return result;
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>

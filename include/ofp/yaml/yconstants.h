@@ -103,6 +103,8 @@ struct ScalarTraits<ofp::OFPPacketInReason> {
 
     return "Invalid enumerated constant.";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>
@@ -127,6 +129,8 @@ struct ScalarTraits<ofp::OFPFlowModCommand> {
 
     return "Invalid enumerated constant.";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>

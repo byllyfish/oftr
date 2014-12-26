@@ -31,6 +31,8 @@ struct ScalarTraits<ofp::IPv4Address> {
     }
     return "";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>
@@ -52,6 +54,8 @@ struct ScalarTraits<ofp::IPv6Address> {
     }
     return "";
   }
+
+  static bool mustQuote(StringRef) { return true; }
 };
 
 template <>
@@ -73,6 +77,8 @@ struct ScalarTraits<ofp::EnetAddress> {
     }
     return "";
   }
+
+  static bool mustQuote(StringRef) { return true; }
 };
 
 template <>
@@ -94,6 +100,8 @@ struct ScalarTraits<ofp::IPv6Endpoint> {
     }
     return "";
   }
+
+  static bool mustQuote(StringRef) { return true; }
 };
 
 }  // namespace yaml

@@ -85,18 +85,18 @@ if __name__ == '__main__':
     reply = conn.call_sync('ofp.listen', {
                 'endpoint': '8888'
             })
-    for i in range(10):
+    for i in range(1):
         reply = conn.call_sync('ofp.connect', {
                     'endpoint': '127.0.0.1:8889', 
                     'tls_id': connectSecurityId, 
                     'options':['--raw']
                 })
                 
-    reply = conn.call_sync('ofp.connect', {
-                'endpoint': '127.0.0.1:8889', 
-                'tls_id': connectSecurityId, 
-                'options':['--raw', '--udp']
-            })
+#     reply = conn.call_sync('ofp.connect', {
+#                 'endpoint': '127.0.0.1:8889', 
+#                 'tls_id': connectSecurityId, 
+#                 'options':['--raw', '--udp']
+#             })
     
     #conn.call('ofp.listen', {'endpoint': '127.0.0.1:88'}, onResult)
     #conn.call('ofp.listen', {'endpoint': '127.0.0.1:8888'}, onResult)

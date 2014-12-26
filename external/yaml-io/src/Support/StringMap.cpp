@@ -70,7 +70,7 @@ unsigned StringMapImpl::LookupBucketFor(StringRef Name) {
   while (1) {
     StringMapEntryBase *BucketItem = TheTable[BucketNo];
     // If we found an empty bucket, this key isn't in the table yet, return it.
-    if (LLVM_LIKELY(BucketItem == nullptr)) {
+    if (LLVM_LIKELY(!BucketItem)) {
       // If we found a tombstone, we want to reuse the tombstone instead of an
       // empty bucket.  This reduces probing.
       if (FirstTombstone != -1) {
@@ -124,7 +124,7 @@ int StringMapImpl::FindKey(StringRef Key) const {
   while (1) {
     StringMapEntryBase *BucketItem = TheTable[BucketNo];
     // If we found an empty bucket, this key isn't in the table yet, return.
-    if (LLVM_LIKELY(BucketItem == nullptr))
+    if (LLVM_LIKELY(!BucketItem))
       return -1;
     
     if (BucketItem == getTombstoneVal()) {
@@ -181,7 +181,7 @@ StringMapEntryBase *StringMapImpl::RemoveKey(StringRef Key) {
 
 /// RehashTable - Grow the table, redistributing values into the buckets with
 /// the appropriate mod-of-hashtable-size.
-void StringMapImpl::RehashTable() {
+unsigned StringMapImpl::RehashTable(unsigned BucketNo) {
   unsigned NewSize;
   unsigned *HashTable = (unsigned *)(TheTable + NumBuckets + 1);
 
@@ -193,9 +193,10 @@ void StringMapImpl::RehashTable() {
   } else if (NumBuckets-(NumItems+NumTombstones) <= NumBuckets/8) {
     NewSize = NumBuckets;
   } else {
-    return;
+    return BucketNo;
   }
 
+  unsigned NewBucketNo = BucketNo;
   // Allocate one extra bucket which will always be non-empty.  This allows the
   // iterators to stop at end.
   StringMapEntryBase **NewTableArray =
@@ -212,9 +213,11 @@ void StringMapImpl::RehashTable() {
       // Fast case, bucket available.
       unsigned FullHash = HashTable[I];
       unsigned NewBucket = FullHash & (NewSize-1);
-      if (NewTableArray[NewBucket] == nullptr) {
+      if (!NewTableArray[NewBucket]) {
         NewTableArray[FullHash & (NewSize-1)] = Bucket;
         NewHashArray[FullHash & (NewSize-1)] = FullHash;
+        if (I == BucketNo)
+          NewBucketNo = NewBucket;
         continue;
       }
       
@@ -227,6 +230,8 @@ void StringMapImpl::RehashTable() {
       // Finally found a slot.  Fill it in.
       NewTableArray[NewBucket] = Bucket;
       NewHashArray[NewBucket] = FullHash;
+      if (I == BucketNo)
+        NewBucketNo = NewBucket;
     }
   }
   
@@ -235,4 +240,5 @@ void StringMapImpl::RehashTable() {
   TheTable = NewTableArray;
   NumBuckets = NewSize;
   NumTombstones = 0;
+  return NewBucketNo;
 }

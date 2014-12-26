@@ -33,7 +33,7 @@ INCLUDES=(
 	include/llvm/ADT/iterator_range.h
 	include/llvm/ADT/None.h
 	include/llvm/ADT/Optional.h
-	include/llvm/ADT/OwningPtr.h
+	include/llvm/ADT/PointerIntPair.h
 	include/llvm/ADT/SmallPtrSet.h
 	include/llvm/ADT/SmallString.h
 	include/llvm/ADT/SmallVector.h
@@ -44,19 +44,25 @@ INCLUDES=(
 	include/llvm/ADT/StringSwitch.h
 	include/llvm/ADT/Triple.h
 	include/llvm/ADT/Twine.h
+	include/llvm/Config/config.h.cmake
+	include/llvm/Config/llvm-config.h.cmake
 	include/llvm/Support/AlignOf.h
 	include/llvm/Support/Allocator.h
 	include/llvm/Support/Atomic.h
 	include/llvm/Support/Casting.h
 	include/llvm/Support/CBindingWrapping.h
+	include/llvm/Support/COFF.h
 	include/llvm/Support/CommandLine.h
 	include/llvm/Support/Compiler.h
 	include/llvm/Support/ConvertUTF.h
 	include/llvm/Support/DataStream.h
+	include/llvm/Support/DataTypes.h.cmake
 	include/llvm/Support/Debug.h
 	include/llvm/Support/Endian.h
+	include/llvm/Support/Errc.h
 	include/llvm/Support/Errno.h
 	include/llvm/Support/ErrorHandling.h
+	include/llvm/Support/ErrorOr.h
 	include/llvm/Support/FileSystem.h
 	include/llvm/Support/Format.h
 	include/llvm/Support/Host.h
@@ -76,7 +82,6 @@ INCLUDES=(
 	include/llvm/Support/SMLoc.h
 	include/llvm/Support/SourceMgr.h
 	include/llvm/Support/SwapByteOrder.h
-	include/llvm/Support/system_error.h
 	include/llvm/Support/Threading.h
 	include/llvm/Support/TimeValue.h
 	include/llvm/Support/type_traits.h
@@ -118,9 +123,9 @@ SOURCES=(
 	Support/SmallPtrSet.cpp
 	Support/SmallVector.cpp
 	Support/SourceMgr.cpp
+	Support/StringExtras.cpp
 	Support/StringMap.cpp
 	Support/StringRef.cpp
-	Support/system_error.cpp
 	Support/Threading.cpp
 	Support/TimeValue.cpp
 	Support/Triple.cpp
@@ -130,7 +135,6 @@ SOURCES=(
 	Support/Unix/Path.inc
 	Support/Unix/Process.inc
 	Support/Unix/Program.inc
-	Support/Unix/system_error.inc
 	Support/Unix/TimeValue.inc
 	Support/Unix/Unix.h
 	Support/Valgrind.cpp
@@ -155,8 +159,8 @@ done
 
 # Apply patches.
 
-patch "${WORKING_DIR}/include/llvm/Config/config.h" "$WORKING_DIR/src/Config.h.diff"
-patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+#patch "${WORKING_DIR}/include/llvm/Config/config.h" "$WORKING_DIR/src/Config.h.diff"
+#patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
+#patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 
 exit 0

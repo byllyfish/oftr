@@ -17,6 +17,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "llvm/Support/CommandLine.h"
+#include "llvm-c/Support.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/ADT/SmallString.h"
@@ -31,12 +32,14 @@
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/Path.h"
 #include "llvm/Support/raw_ostream.h"
-#include "llvm/Support/system_error.h"
 #include <cerrno>
 #include <cstdlib>
 #include <map>
+#include <system_error>
 using namespace llvm;
 using namespace cl;
+
+#define DEBUG_TYPE "commandline"
 
 //===----------------------------------------------------------------------===//
 // Template instantiations and anchors.
@@ -103,7 +106,7 @@ void cl::MarkOptionsChanged() {
 static Option *RegisteredOptionList = nullptr;
 
 void Option::addArgument() {
-  assert(NextRegistered == 0 && "argument multiply registered!");
+  assert(!NextRegistered && "argument multiply registered!");
 
   NextRegistered = RegisteredOptionList;
   RegisteredOptionList = this;
@@ -111,9 +114,15 @@ void Option::addArgument() {
 }
 
 void Option::removeArgument() {
-  assert(NextRegistered != 0 && "argument never registered");
-  assert(RegisteredOptionList == this && "argument is not the last registered");
-  RegisteredOptionList = NextRegistered;
+  if (RegisteredOptionList == this) {
+    RegisteredOptionList = NextRegistered;
+    MarkOptionsChanged();
+    return;
+  }
+  Option *O = RegisteredOptionList;
+  for (; O->NextRegistered != this; O = O->NextRegistered)
+    ;
+  O->NextRegistered = NextRegistered;
   MarkOptionsChanged();
 }
 
@@ -143,6 +152,7 @@ void OptionCategory::registerCategory() {
 static void GetOptionInfo(SmallVectorImpl<Option*> &PositionalOpts,
                           SmallVectorImpl<Option*> &SinkOpts,
                           StringMap<Option*> &OptionsMap) {
+  bool HadErrors = false;
   SmallVector<const char*, 16> OptionNames;
   Option *CAOpt = nullptr;  // The ConsumeAfter option if it exists.
   for (Option *O = RegisteredOptionList; O; O = O->getNextRegisteredOption()) {
@@ -155,9 +165,10 @@ static void GetOptionInfo(SmallVectorImpl<Option*> &PositionalOpts,
     // Handle named options.
     for (size_t i = 0, e = OptionNames.size(); i != e; ++i) {
       // Add argument to the argument map!
-      if (OptionsMap.GetOrCreateValue(OptionNames[i], O).second != O) {
-        errs() << ProgramName << ": CommandLine Error: Argument '"
-             << OptionNames[i] << "' defined more than once!\n";
+      if (!OptionsMap.insert(std::make_pair(OptionNames[i], O)).second) {
+        errs() << ProgramName << ": CommandLine Error: Option '"
+               << OptionNames[i] << "' registered more than once!\n";
+        HadErrors = true;
       }
     }
 
@@ -169,8 +180,10 @@ static void GetOptionInfo(SmallVectorImpl<Option*> &PositionalOpts,
     else if (O->getMiscFlags() & cl::Sink) // Remember sink options
       SinkOpts.push_back(O);
     else if (O->getNumOccurrencesFlag() == cl::ConsumeAfter) {
-      if (CAOpt)
+      if (CAOpt) {
         O->error("Cannot specify more than one option with cl::ConsumeAfter!");
+        HadErrors = true;
+      }
       CAOpt = O;
     }
   }
@@ -180,6 +193,12 @@ static void GetOptionInfo(SmallVectorImpl<Option*> &PositionalOpts,
 
   // Make sure that they are in order of registration not backwards.
   std::reverse(PositionalOpts.begin(), PositionalOpts.end());
+
+  // Fail hard if there were errors. These are strictly unrecoverable and
+  // indicate serious issues such as conflicting option names or an incorrectly
+  // linked LLVM distribution.
+  if (HadErrors)
+    report_fatal_error("inconsistency in registered CommandLine options");
 }
 
 
@@ -300,10 +319,11 @@ static inline bool ProvideOption(Option *Handler, StringRef ArgName,
   // Enforce value requirements
   switch (Handler->getValueExpectedFlag()) {
   case ValueRequired:
-    if (Value.data() == nullptr) { // No value specified?
+    if (!Value.data()) { // No value specified?
       if (i+1 >= argc)
         return Handler->error("requires a value!");
       // Steal the next argument, like for '-o filename'
+      assert(argv && "null check");
       Value = argv[++i];
     }
     break;
@@ -337,6 +357,7 @@ static inline bool ProvideOption(Option *Handler, StringRef ArgName,
   while (NumAdditionalVals > 0) {
     if (i+1 >= argc)
       return Handler->error("not enough values!");
+    assert(argv && "null check");
     Value = argv[++i];
 
     if (CommaSeparateAndAddOccurrence(Handler, i, ArgName, Value, MultiArg))
@@ -400,7 +421,7 @@ static Option *HandlePrefixedOrGroupedOption(StringRef &Arg, StringRef &Value,
   // Do the lookup!
   size_t Length = 0;
   Option *PGOpt = getOptionPred(Arg, Length, isPrefixedOrGrouping, OptionsMap);
-  if (PGOpt == nullptr) return nullptr;
+  if (!PGOpt) return nullptr;
 
   // If the option is a prefixed option, then the value is simply the
   // rest of the name...  so fall through to later processing, by
@@ -462,13 +483,18 @@ static bool isGNUSpecial(char C) {
 }
 
 void cl::TokenizeGNUCommandLine(StringRef Src, StringSaver &Saver,
-                                SmallVectorImpl<const char *> &NewArgv) {
+                                SmallVectorImpl<const char *> &NewArgv,
+                                bool MarkEOLs) {
   SmallString<128> Token;
   for (size_t I = 0, E = Src.size(); I != E; ++I) {
     // Consume runs of whitespace.
     if (Token.empty()) {
-      while (I != E && isWhitespace(Src[I]))
+      while (I != E && isWhitespace(Src[I])) {
+        // Mark the end of lines in response files
+        if (MarkEOLs && Src[I] == '\n')
+          NewArgv.push_back(nullptr);
         ++I;
+      }
       if (I == E) break;
     }
 
@@ -509,6 +535,9 @@ void cl::TokenizeGNUCommandLine(StringRef Src, StringSaver &Saver,
   // Append the last token after hitting EOF with no whitespace.
   if (!Token.empty())
     NewArgv.push_back(Saver.SaveString(Token.c_str()));
+  // Mark the end of response files
+  if (MarkEOLs)
+    NewArgv.push_back(nullptr);
 }
 
 /// Backslashes are interpreted in a rather complicated way in the Windows-style
@@ -550,7 +579,8 @@ static size_t parseBackslash(StringRef Src, size_t I, SmallString<128> &Token) {
 }
 
 void cl::TokenizeWindowsCommandLine(StringRef Src, StringSaver &Saver,
-                                    SmallVectorImpl<const char *> &NewArgv) {
+                                    SmallVectorImpl<const char *> &NewArgv,
+                                    bool MarkEOLs) {
   SmallString<128> Token;
 
   // This is a small state machine to consume characters until it reaches the
@@ -560,8 +590,12 @@ void cl::TokenizeWindowsCommandLine(StringRef Src, StringSaver &Saver,
     // INIT state indicates that the current input index is at the start of
     // the string or between tokens.
     if (State == INIT) {
-      if (isWhitespace(Src[I]))
+      if (isWhitespace(Src[I])) {
+        // Mark the end of lines in response files
+        if (MarkEOLs && Src[I] == '\n')
+          NewArgv.push_back(nullptr);
         continue;
+      }
       if (Src[I] == '"') {
         State = QUOTED;
         continue;
@@ -584,6 +618,9 @@ void cl::TokenizeWindowsCommandLine(StringRef Src, StringSaver &Saver,
         NewArgv.push_back(Saver.SaveString(Token.c_str()));
         Token.clear();
         State = INIT;
+        // Mark the end of lines in response files
+        if (MarkEOLs && Src[I] == '\n')
+          NewArgv.push_back(nullptr);
         continue;
       }
       if (Src[I] == '"') {
@@ -614,18 +651,24 @@ void cl::TokenizeWindowsCommandLine(StringRef Src, StringSaver &Saver,
   // Append the last token after hitting EOF with no whitespace.
   if (!Token.empty())
     NewArgv.push_back(Saver.SaveString(Token.c_str()));
+  // Mark the end of response files
+  if (MarkEOLs)
+    NewArgv.push_back(nullptr);
 }
 
 static bool ExpandResponseFile(const char *FName, StringSaver &Saver,
                                TokenizerCallback Tokenizer,
-                               SmallVectorImpl<const char *> &NewArgv) {
-  std::unique_ptr<MemoryBuffer> MemBuf;
-  if (MemoryBuffer::getFile(FName, MemBuf))
+                               SmallVectorImpl<const char *> &NewArgv,
+                               bool MarkEOLs = false) {
+  ErrorOr<std::unique_ptr<MemoryBuffer>> MemBufOrErr =
+      MemoryBuffer::getFile(FName);
+  if (!MemBufOrErr)
     return false;
-  StringRef Str(MemBuf->getBufferStart(), MemBuf->getBufferSize());
+  MemoryBuffer &MemBuf = *MemBufOrErr.get();
+  StringRef Str(MemBuf.getBufferStart(), MemBuf.getBufferSize());
 
   // If we have a UTF-16 byte order mark, convert to UTF-8 for parsing.
-  ArrayRef<char> BufRef(MemBuf->getBufferStart(), MemBuf->getBufferEnd());
+  ArrayRef<char> BufRef(MemBuf.getBufferStart(), MemBuf.getBufferEnd());
   std::string UTF8Buf;
   if (hasUTF16ByteOrderMark(BufRef)) {
     if (!convertUTF16ToUTF8String(BufRef, UTF8Buf))
@@ -634,7 +677,7 @@ static bool ExpandResponseFile(const char *FName, StringSaver &Saver,
   }
 
   // Tokenize the contents into NewArgv.
-  Tokenizer(Str, Saver, NewArgv);
+  Tokenizer(Str, Saver, NewArgv, MarkEOLs);
 
   return true;
 }
@@ -642,13 +685,19 @@ static bool ExpandResponseFile(const char *FName, StringSaver &Saver,
 /// \brief Expand response files on a command line recursively using the given
 /// StringSaver and tokenization strategy.
 bool cl::ExpandResponseFiles(StringSaver &Saver, TokenizerCallback Tokenizer,
-                             SmallVectorImpl<const char *> &Argv) {
+                             SmallVectorImpl<const char *> &Argv,
+                             bool MarkEOLs) {
   unsigned RspFiles = 0;
   bool AllExpanded = true;
 
   // Don't cache Argv.size() because it can change.
   for (unsigned I = 0; I != Argv.size(); ) {
     const char *Arg = Argv[I];
+    // Check if it is an EOL marker
+    if (Arg == nullptr) {
+      ++I;
+      continue;
+    }
     if (Arg[0] != '@') {
       ++I;
       continue;
@@ -664,7 +713,8 @@ bool cl::ExpandResponseFiles(StringSaver &Saver, TokenizerCallback Tokenizer,
     // FIXME: If a nested response file uses a relative path, is it relative to
     // the cwd of the process or the response file?
     SmallVector<const char *, 0> ExpandedArgv;
-    if (!ExpandResponseFile(Arg + 1, Saver, Tokenizer, ExpandedArgv)) {
+    if (!ExpandResponseFile(Arg + 1, Saver, Tokenizer, ExpandedArgv,
+                            MarkEOLs)) {
       // We couldn't read this file, so we leave it in the argument stream and
       // move on.
       AllExpanded = false;
@@ -746,7 +796,7 @@ void cl::ParseCommandLineOptions(int argc, const char * const *argv,
   argc = static_cast<int>(newArgv.size());
 
   // Copy the program name into ProgName, making sure not to overflow it.
-  std::string ProgName = sys::path::filename(argv[0]);
+  StringRef ProgName = sys::path::filename(argv[0]);
   size_t Len = std::min(ProgName.size(), size_t(79));
   memcpy(ProgramName, ProgName.data(), Len);
   ProgramName[Len] = '\0';
@@ -770,7 +820,7 @@ void cl::ParseCommandLineOptions(int argc, const char * const *argv,
 
     // Calculate how many positional values are _required_.
     bool UnboundedFound = false;
-    for (size_t i = ConsumeAfterOpt != nullptr, e = PositionalOpts.size();
+    for (size_t i = ConsumeAfterOpt ? 1 : 0, e = PositionalOpts.size();
          i != e; ++i) {
       Option *Opt = PositionalOpts[i];
       if (RequiresValue(Opt))
@@ -845,8 +895,7 @@ void cl::ParseCommandLineOptions(int argc, const char * const *argv,
         // All of the positional arguments have been fulfulled, give the rest to
         // the consume after option... if it's specified...
         //
-        if (PositionalVals.size() >= NumPositionalRequired &&
-            ConsumeAfterOpt != nullptr) {
+        if (PositionalVals.size() >= NumPositionalRequired && ConsumeAfterOpt) {
           for (++i; i < argc; ++i)
             PositionalVals.push_back(std::make_pair(argv[i],i));
           break;   // Handle outside of the argument processing loop...
@@ -884,18 +933,18 @@ void cl::ParseCommandLineOptions(int argc, const char * const *argv,
       Handler = LookupOption(ArgName, Value, Opts);
 
       // Check to see if this "option" is really a prefixed or grouped argument.
-      if (Handler == nullptr)
+      if (!Handler)
         Handler = HandlePrefixedOrGroupedOption(ArgName, Value,
                                                 ErrorParsing, Opts);
 
       // Otherwise, look for the closest available option to report to the user
       // in the upcoming error.
-      if (Handler == nullptr && SinkOpts.empty())
+      if (!Handler && SinkOpts.empty())
         NearestHandler = LookupNearestOption(ArgName, Opts,
                                              NearestHandlerString);
     }
 
-    if (Handler == nullptr) {
+    if (!Handler) {
       if (SinkOpts.empty()) {
         errs() << ProgramName << ": Unknown command line argument '"
              << argv[i] << "'.  Try: '" << argv[0] << " -help'\n";
@@ -939,7 +988,7 @@ void cl::ParseCommandLineOptions(int argc, const char * const *argv,
          << " positional arguments: See: " << argv[0] << " -help\n";
     ErrorParsing = true;
 
-  } else if (ConsumeAfterOpt == nullptr) {
+  } else if (!ConsumeAfterOpt) {
     // Positional args have already been handled if ConsumeAfter is specified.
     unsigned ValNo = 0, NumVals = static_cast<unsigned>(PositionalVals.size());
     for (size_t i = 0, e = PositionalOpts.size(); i != e; ++i) {
@@ -1005,13 +1054,12 @@ void cl::ParseCommandLineOptions(int argc, const char * const *argv,
   }
 
   // Loop over args and make sure all required args are specified!
-  for (StringMap<Option*>::iterator I = Opts.begin(),
-         E = Opts.end(); I != E; ++I) {
-    switch (I->second->getNumOccurrencesFlag()) {
+  for (const auto &Opt : Opts) {
+    switch (Opt.second->getNumOccurrencesFlag()) {
     case Required:
     case OneOrMore:
-      if (I->second->getNumOccurrences() == 0) {
-        I->second->error("must be specified at least once!");
+      if (Opt.second->getNumOccurrences() == 0) {
+        Opt.second->error("must be specified at least once!");
         ErrorParsing = true;
       }
       // Fall through
@@ -1044,7 +1092,7 @@ void cl::ParseCommandLineOptions(int argc, const char * const *argv,
 //
 
 bool Option::error(const Twine &Message, StringRef ArgName) {
-  if (ArgName.data() == nullptr) ArgName = ArgStr;
+  if (!ArgName.data()) ArgName = ArgStr;
   if (ArgName.empty())
     errs() << HelpStr;  // Be nice for positional arguments
   else
@@ -1409,7 +1457,7 @@ sortOpts(StringMap<Option*> &OptMap,
       continue;
 
     // If we've already seen this option, don't add it to the list again.
-    if (!OptionSet.insert(I->second))
+    if (!OptionSet.insert(I->second).second)
       continue;
 
     Opts.push_back(std::pair<const char *, Option*>(I->getKey().data(),
@@ -1698,7 +1746,7 @@ public:
     OS << "LLVM (http://llvm.org/):\n"
        << "  " << PACKAGE_NAME << " version " << PACKAGE_VERSION;
 #ifdef LLVM_VERSION_INFO
-    OS << LLVM_VERSION_INFO;
+    OS << " " << LLVM_VERSION_INFO;
 #endif
     OS << "\n  ";
 #ifndef __OPTIMIZE__
@@ -1779,7 +1827,7 @@ void cl::SetVersionPrinter(void (*func)()) {
 }
 
 void cl::AddExtraVersionPrinter(void (*func)()) {
-  if (ExtraVersionPrinters == nullptr)
+  if (!ExtraVersionPrinters)
     ExtraVersionPrinters = new std::vector<void (*)()>;
 
   ExtraVersionPrinters->push_back(func);
@@ -1793,4 +1841,9 @@ void cl::getRegisteredOptions(StringMap<Option*> &Map)
   assert(Map.size() == 0 && "StringMap must be empty");
   GetOptionInfo(PositionalOpts, SinkOpts, Map);
   return;
+}
+
+void LLVMParseCommandLineOptions(int argc, const char *const *argv,
+                                 const char *Overview) {
+  llvm::cl::ParseCommandLineOptions(argc, argv, Overview);
 }

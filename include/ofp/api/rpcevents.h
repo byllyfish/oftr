@@ -324,6 +324,8 @@ struct ScalarTraits<ofp::api::RpcMethod> {
 
     return "";
   }
+
+  static bool mustQuote(StringRef) { return false; }
 };
 
 template <>

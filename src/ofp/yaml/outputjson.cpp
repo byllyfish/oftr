@@ -112,7 +112,7 @@ const char *const ControlReplacement[] = {
     "u0018", "u0019", "u001A", "u001B", "u001C", "u001D", "u001E", "u001F",
 };
 
-void OutputJson::scalarString(StringRef &S) {
+void OutputJson::scalarString(StringRef &S, bool MustQuote) {
   // Output value wrapped in double-quotes. Escape any embedded double-quotes
   // or backslashes in the string. Replace control characters (ASCII < 32)
   // with \b, \t, \n, \f, \r or \uxxxx.
