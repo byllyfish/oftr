@@ -81,6 +81,30 @@ struct ScalarEnumerationTraits<ofp::OFPInstructionType> {
   }
 };
 
+#define YAML_ENUM_CONVERTER(EnumType)  \
+static_assert(sizeof(EnumType) == 1, "Expected byte-size enum."); \
+template <> \
+struct ScalarTraits<EnumType> { \
+  static ofp::yaml::EnumConverter<EnumType> converter; \
+  static void output(const EnumType &value, void *ctxt, \
+                     llvm::raw_ostream &out) { \
+    llvm::StringRef scalar; \
+    if (converter.convert(value, &scalar)) { \
+      out << scalar; \
+    } else { \
+      out << format("0x%02X", value); \
+    } \
+  } \
+  static StringRef input(StringRef scalar, void *ctxt, \
+                         EnumType &value) { \
+    if (converter.convert(scalar, &value)) { \
+      return ""; \
+    } \
+    return "Invalid enumerated constant."; \
+  } \
+  static bool mustQuote(StringRef) { return false; } \
+};
+
 template <>
 struct ScalarTraits<ofp::OFPPacketInReason> {
   static ofp::yaml::EnumConverter<ofp::OFPPacketInReason> converter;
@@ -141,6 +165,9 @@ struct ScalarEnumerationTraits<ofp::OFPMeterBandType> {
     OFP_YAML_ENUMCASE(OFPMBT_EXPERIMENTER);
   }
 };
+
+YAML_ENUM_CONVERTER(ofp::OFPFlowRemovedReason)
+
 
 #undef OFP_YAML_ENUMCASE
 

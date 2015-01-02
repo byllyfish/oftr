@@ -13,7 +13,7 @@ TEST(flowremovedbuilder, v1_3) {
 
   flowRemoved.setCookie(0x1111111111111111);
   flowRemoved.setPriority(0x2222);
-  flowRemoved.setReason(0x33);
+  flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
   flowRemoved.setDurationSec(0x55555555);
   flowRemoved.setDurationNSec(0x66666666);
@@ -44,7 +44,7 @@ TEST(flowremovedbuilder, v1_0) {
 
   flowRemoved.setCookie(0x1111111111111111);
   flowRemoved.setPriority(0x2222);
-  flowRemoved.setReason(0x33);
+  flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
   flowRemoved.setDurationSec(0x55555555);
   flowRemoved.setDurationNSec(0x66666666);
@@ -76,7 +76,7 @@ TEST(flowremovedbuilder, v1_1) {
 
   flowRemoved.setCookie(0x1111111111111111);
   flowRemoved.setPriority(0x2222);
-  flowRemoved.setReason(0x33);
+  flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
   flowRemoved.setDurationSec(0x55555555);
   flowRemoved.setDurationNSec(0x66666666);
@@ -108,7 +108,7 @@ TEST(flowremovedbuilder, v1_2) {
 
   flowRemoved.setCookie(0x1111111111111111);
   flowRemoved.setPriority(0x2222);
-  flowRemoved.setReason(0x33);
+  flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
   flowRemoved.setDurationSec(0x55555555);
   flowRemoved.setDurationNSec(0x66666666);

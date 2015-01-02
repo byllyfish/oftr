@@ -645,7 +645,7 @@ version:         0x03
 msg:             
   cookie:          0x0000000000000000
   priority:        0xFFFF
-  reason:          0x00
+  reason:          OFPRR_IDLE_TIMEOUT
   table_id:        0x00
   duration_sec:    0x00000003
   duration_nsec:   0x02E902A8
@@ -1542,7 +1542,7 @@ version:         0x04
 msg:             
   cookie:          0x0000000000000000
   priority:        0xFFFF
-  reason:          0x00
+  reason:          OFPRR_IDLE_TIMEOUT
   table_id:        0x00
   duration_sec:    0x00000003
   duration_nsec:   0x02E902A8
@@ -4492,7 +4492,7 @@ version:         0x05
 msg:             
   cookie:          0x0000000000000000
   priority:        0xFFFF
-  reason:          0x00
+  reason:          OFPRR_IDLE_TIMEOUT
   table_id:        0x00
   duration_sec:    0x00000003
   duration_nsec:   0x02E902A8

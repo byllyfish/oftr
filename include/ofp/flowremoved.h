@@ -19,7 +19,7 @@ class FlowRemoved
   UInt16 priority() const { return priority_; }
 
   /// One of OFPRR_*.
-  UInt8 reason() const { return reason_; }
+  OFPFlowRemovedReason reason() const { return reason_; }
 
   /// ID of the table
   UInt8 tableId() const { return tableId_; }
@@ -50,7 +50,7 @@ class FlowRemoved
   Header header_;
   Big64 cookie_;
   Big16 priority_;
-  Big8 reason_;
+  OFPFlowRemovedReason reason_;
   Big8 tableId_;
   Big32 durationSec_;
   Big32 durationNSec_;
@@ -87,7 +87,7 @@ class FlowRemovedBuilder {
 
   void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
   void setPriority(UInt16 priority) { msg_.priority_ = priority; }
-  void setReason(UInt8 reason) { msg_.reason_ = reason; }
+  void setReason(OFPFlowRemovedReason reason) { msg_.reason_ = reason; }
   void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
   void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
   void setDurationNSec(UInt32 durationNSec) {

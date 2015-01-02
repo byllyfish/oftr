@@ -318,6 +318,13 @@ enum OFPFlowModCommand : UInt8 {
   OFPFC_DELETE_STRICT = 4
 };
 
+enum OFPFlowRemovedReason : UInt8 {
+  OFPRR_IDLE_TIMEOUT = 0, 
+  OFPRR_HARD_TIMEOUT = 1, 
+  OFPRR_DELETE = 2, 
+  OFPRR_GROUP_DELETE = 3
+};
+
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,
