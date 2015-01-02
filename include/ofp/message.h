@@ -7,6 +7,7 @@
 #include "ofp/header.h"
 #include "ofp/datapathid.h"
 #include "ofp/validation.h"
+#include "ofp/timestamp.h"
 
 namespace ofp {
 
@@ -40,6 +41,11 @@ class Message {
     buf_.resize(size);
   }
 
+  void removeFront(size_t bytes) {
+    assert(bytes <= buf_.size());
+    buf_.remove(buf_.data(), bytes);
+  }
+
   const Header *header() const {
     return reinterpret_cast<const Header *>(buf_.data());
   }
@@ -50,10 +56,12 @@ class Message {
 
   void setData(const UInt8 *data, size_t length) { buf_.set(data, length); }
   void setSource(sys::Connection *source) { channel_ = source; }
+  void setTime(const Timestamp &time) { time_ = time; }
 
   const UInt8 *data() const { return buf_.data(); }
   size_t size() const { return buf_.size(); }
 
+  Timestamp time() const { return time_; }
   OFPType type() const { return header()->type(); }
   Channel *source() const;
   UInt32 xid() const { return header()->xid(); }
@@ -72,6 +80,7 @@ class Message {
  private:
   ByteList buf_;
   sys::Connection *channel_;
+  Timestamp time_;
 
   friend std::ostream &operator<<(std::ostream &os, const Message &msg);
   friend class Transmogrify;

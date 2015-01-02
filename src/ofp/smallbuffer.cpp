@@ -119,6 +119,9 @@ void SmallBuffer::remove(UInt8 *pos, UInt8 *posEnd) noexcept {
 
   size_t less = Unsigned_cast(posEnd - pos);
   std::memmove(posEnd - less, posEnd, Unsigned_cast(end_ - posEnd));
+  end_ -= less;
+
+  assertInvariant();
 }
 
 void SmallBuffer::resize(size_t length) noexcept {
@@ -271,7 +274,7 @@ size_t SmallBuffer::computeCapacity(size_t length) noexcept {
   if (length <= 524288) return 524288;
   if (length <= 4194304) return 4194304;
 
-  log::warning("SmallBuffer capacity > 4 MB:", length);
+  log::warning("SmallBuffer capacity > 4 MB:", 2*length);
 
   return 2 * length;
 }

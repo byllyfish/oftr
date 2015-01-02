@@ -6,6 +6,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/ydatapathid.h"
+#include "ofp/yaml/ytimestamp.h"
 #include "ofp/message.h"
 #include "ofp/channel.h"
 
@@ -47,6 +48,11 @@ struct MappingTraits<ofp::yaml::Decoder> {
     io.mapRequired("type", header.type_);
     io.mapRequired("xid", header.xid_);
     io.mapRequired("version", header.version_);
+
+    Timestamp time = decoder.msg_->time();
+    if (time.valid()) {
+      io.mapRequired("time", time);
+    }
 
     Channel *source = decoder.msg_->source();
     if (source) {

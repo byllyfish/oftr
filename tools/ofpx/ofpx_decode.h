@@ -4,11 +4,12 @@
 #define TOOLS_OFPX_OFPX_DECODE_H_
 
 #include "ofpx.h"
+#include "ofp/timestamp.h"
 
 namespace ofpx {
 
 // ofpx decode [--json|-j] [--silent|-s] [--invert-check|-v] [--keep-going|-k]
-// [--verify-output|-V] [<Input files>]
+// [--verify-output|-V] [--use-findx] [<Input files>]
 //
 // Decode binary OpenFlow messages in the input files and translate each
 // message to human-readable YAML output. If there is an invalid message,
@@ -19,7 +20,8 @@ namespace ofpx {
 //   --invert-check   Expect invalid messages only.
 //   --keep-going     Continue processing messages after errors.
 //   --verify-output  Verify output by translating it back to binary.
-//
+//   --use-findx      Use timestamps from '.findx' file(s).
+//   
 // Usage:
 //
 // To decode a file of binary OpenFlow messages to YAML:
@@ -47,7 +49,8 @@ class Decode : public Subprogram {
     DecodeSucceeded,
     VerifyOutputFailed,
     FileOpenFailed,
-    MessageReadFailed
+    MessageReadFailed,
+    IndexReadFailed
   };
 
   int run(int argc, const char *const *argv) override;
@@ -58,10 +61,13 @@ class Decode : public Subprogram {
   ExitStatus decodeFiles();
   ExitStatus decodeFile(const std::string &filename);
   ExitStatus decodeMessages(std::istream &input);
+  ExitStatus decodeMessagesWithIndex(std::istream &input, std::istream &index);
   ExitStatus checkError(std::istream &input, std::streamsize readLen,
                         bool header);
   ExitStatus decodeOneMessage(const ofp::Message *message,
-                              const ofp::Message *originalMessage);
+                              const ofp::Message *originalMessage, const ofp::Timestamp &timestamp);
+
+  static bool parseIndexLine(const llvm::StringRef &line, ofp::Timestamp *timestamp, size_t *length);
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
@@ -75,6 +81,7 @@ class Decode : public Subprogram {
   cl::opt<bool> verifyOutput_{
       "verify-output",
       cl::desc("Verify output by translating it back to binary")};
+  cl::opt<bool> useFindx_{"use-findx", cl::desc("Use timestamps from '.findx' file(s)")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
