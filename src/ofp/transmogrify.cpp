@@ -24,7 +24,9 @@ using deprecated::StandardMatch;
 Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
 
 void Transmogrify::normalize() {
-  assert(buf_.size() >= sizeof(Header));
+  if (buf_.size() < sizeof(Header)) {
+    log::fatal("Transmogrify::normalize called with invalid message");
+  }
 
   Header *hdr = header();
 

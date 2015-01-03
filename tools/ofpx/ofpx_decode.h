@@ -67,7 +67,7 @@ class Decode : public Subprogram {
   ExitStatus decodeOneMessage(const ofp::Message *message,
                               const ofp::Message *originalMessage, const ofp::Timestamp &timestamp);
 
-  static bool parseIndexLine(const llvm::StringRef &line, ofp::Timestamp *timestamp, size_t *length);
+  static bool parseIndexLine(const llvm::StringRef &line, size_t *pos, ofp::Timestamp *timestamp, size_t *length);
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",

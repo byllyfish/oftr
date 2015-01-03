@@ -161,6 +161,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &in
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
   ofp::Message buffer{nullptr};
+  size_t expectedPos = 0;
 
   buffer.shrink(0);
   assert(buffer.size() == 0);
@@ -168,13 +169,30 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &in
   // Read lines from index file.
   for (std::string line; std::getline(index, line);) {
     ofp::Timestamp timestamp;
+    size_t pos;
     size_t length;
 
-    // Parse line to obtain timestamp and length.
-    if (!parseIndexLine(line, &timestamp, &length)) {
-      std::cerr << "Error in parsing index: " << line << '\n';
+    // Parse line to obtain position, timestamp and length.
+    if (!parseIndexLine(line, &pos, &timestamp, &length)) {
+      std::cerr << "Error in parsing index: " << line << " file=" << currentFilename_ << '\n';
       return ExitStatus::IndexReadFailed;
     }
+
+    // Check for gaps in the stream.
+    if (pos < expectedPos) {
+      std::cerr << "Error in index; data offset is backwards: " << line << " file=" << currentFilename_ << '\n';
+      continue;
+      
+    } else if (pos > expectedPos) {
+      std::cerr << "Gap in stream (" << pos - expectedPos << " bytes) file=" << currentFilename_ << '\n';
+      auto jump = ofp::Signed_cast(pos - expectedPos);
+      if (!input.ignore(jump)) {
+        return checkError(input, jump, false);
+      }
+    }
+
+    // Set up next expectedPos.
+    expectedPos = pos + length;
 
     size_t offset = buffer.size();
     char *buf = reinterpret_cast<char *>(buffer.mutableData(offset + length));
@@ -199,9 +217,15 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &in
       message.setData(buffer.data(), buffer.header()->length());
       buffer.removeFront(buffer.header()->length());
 
+      if (message.size() < sizeof(ofp::Header)) {
+        // If message size is less than 8 bytes, report an error.
+        std::cerr << "Filename: " << currentFilename_ << ": " << line << '\n';
+        std::cerr << "Error: Invalid message header length: " << message.size() << " bytes\n";
+        return ExitStatus::DecodeFailed;
+      }
+
       // Save a copy of the original message binary before we transmogrify it
       // for parsing.
-
       originalMessage.assign(message);
       message.transmogrify();
 
@@ -335,23 +359,27 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 // p a r s e I n d e x L i n e //
 //-----------------------------//
 
-bool Decode::parseIndexLine(const llvm::StringRef &line, ofp::Timestamp *timestamp, size_t *length) {
+bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos, ofp::Timestamp *timestamp, size_t *length) {
   // Each line has the format:
   // 
-  //     offset|timestamp|length
+  //     pos|timestamp|length
   
-  auto offsetEnd = line.find_first_of('|');
-  if (offsetEnd == llvm::StringRef::npos) 
+  auto posEnd = line.find_first_of('|');
+  if (posEnd == llvm::StringRef::npos) 
     return false;
 
-  auto timestampEnd = line.find_first_of('|', offsetEnd + 1);
+  auto timestampEnd = line.find_first_of('|', posEnd + 1);
   if (timestampEnd == llvm::StringRef::npos) 
     return false;
 
-  assert(timestampEnd >= offsetEnd + 1);
+  assert(timestampEnd >= posEnd + 1);
   
-  auto timestampStr = line.substr(offsetEnd + 1, timestampEnd - offsetEnd - 1);
+  auto posStr = line.substr(0, posEnd);
+  auto timestampStr = line.substr(posEnd + 1, timestampEnd - posEnd - 1);
   auto lengthStr = line.substr(timestampEnd + 1);
+
+  if (posStr.getAsInteger(10, *pos))
+    return false;
 
   if (lengthStr.getAsInteger(10, *length)) 
     return false;
