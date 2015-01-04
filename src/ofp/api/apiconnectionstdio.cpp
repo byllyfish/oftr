@@ -5,6 +5,12 @@
 
 using ofp::api::ApiConnectionStdio;
 
+// The Stdio Text API uses UTF-8 and has JSON events delimited by '\n'. White
+// space characters (SPACE, HT, VT, FF, CR) are permitted. All other control 
+// characters are reserved.
+ 
+const char kEventDelimiter = '\n';
+
 ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
                                        asio::posix::stream_descriptor input,
                                        asio::posix::stream_descriptor output)
@@ -50,12 +56,12 @@ void ApiConnectionStdio::asyncRead() {
   auto self(shared_from_this());
 
   asio::async_read_until(
-      input_, streambuf_, '\n',
+      input_, streambuf_, kEventDelimiter,
       [this, self](const asio::error_code &err, size_t bytes_transferred) {
         if (!err) {
           std::istream is(&streambuf_);
           std::string line;
-          std::getline(is, line);
+          std::getline(is, line, kEventDelimiter);
           log::trace_rpc("Read RPC", 0, line.data(), line.size());
           handleEvent(line);
           asyncRead();

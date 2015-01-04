@@ -9,6 +9,8 @@ import time
 import heapq
 from distutils.spawn import find_executable
 
+EVENT_DELIMITER = '\n'
+
 
 def connect(url, **options):
     """
@@ -186,7 +188,7 @@ class SubprocessConnection(Connection):
         return 'SubprocessConnection: pid=%d' % self._process.pid
          
     def _send(self, event):
-        msg = json.dumps(event, separators=(',', ':')) + '\n'
+        msg = json.dumps(event, separators=(',', ':')) + EVENT_DELIMITER
         self._sockOutput.write(msg)
         
     def _recv(self):

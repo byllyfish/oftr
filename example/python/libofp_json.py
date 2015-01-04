@@ -11,6 +11,7 @@ import sys
 
 DEFAULT_OPENFLOW_PORT = 6633
 DEFAULT_DRIVER_PORT = 9191
+EVENT_DELIMITER = '\n'
 
 class _JsonObject:
     def __init__(self, d):
@@ -127,7 +128,7 @@ class LibOFP(object):
           'params': params
         }
         msg = json.dumps(rpc)
-        self._write(msg + '\n')
+        self._write(msg + EVENT_DELIMITER)
 
     def _call(self, method, id=None, **params):
         rpc = {
@@ -137,7 +138,7 @@ class LibOFP(object):
         if id is not None:
             rpc['id'] = id
         msg = json.dumps(rpc)
-        self._write(msg + '\n')
+        self._write(msg + EVENT_DELIMITER)
 
     def waitNextEvent(self):
         return self._eventGenerator.next()
