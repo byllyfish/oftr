@@ -110,7 +110,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     }
     case Error::type(): {
       ErrorBuilder error{header_.xid()};
-      io.mapOptional("msg", error);
+      io.mapRequired("msg", error);
       error.send(&channel_);
       break;
     }

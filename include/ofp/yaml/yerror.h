@@ -18,8 +18,8 @@ namespace yaml {
 template <>
 struct MappingTraits<ofp::Error> {
   static void mapping(IO &io, ofp::Error &msg) {
-    Hex16 type = msg.errorType();
-    Hex16 code = msg.errorCode();
+    ofp::OFPErrorType type = msg.errorTypeEnum();
+    ofp::OFPErrorCode code = msg.errorCodeEnum();
     ofp::ByteRange data = msg.errorData();
     io.mapRequired("type", type);
     io.mapRequired("code", code);
@@ -30,14 +30,14 @@ struct MappingTraits<ofp::Error> {
 template <>
 struct MappingTraits<ofp::ErrorBuilder> {
   static void mapping(IO &io, ofp::ErrorBuilder &msg) {
-    ofp::UInt16 type;
-    ofp::UInt16 code;
+    ofp::OFPErrorType type;
+    ofp::OFPErrorCode code;
     ofp::ByteList data;
     io.mapRequired("type", type);
     io.mapRequired("code", code);
     io.mapRequired("data", data);
-    msg.setErrorType(type);
-    msg.setErrorCode(code);
+    msg.setErrorTypeEnum(type);
+    msg.setErrorCodeEnum(code);
     msg.setErrorData(data.data(), data.size());
   }
 };

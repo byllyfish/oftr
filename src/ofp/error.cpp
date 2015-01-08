@@ -7,9 +7,174 @@
 
 using namespace ofp;
 
+// In OpenFlow 1.0, the error types are assigned different values.
+enum V1_ErrorTypes : UInt16 {
+  V1_OFPET_HELLO_FAILED = 0,
+  V1_OFPET_BAD_REQUEST = 1,
+  V1_OFPET_BAD_ACTION = 2,
+  V1_OFPET_FLOW_MOD_FAILED = 3,
+  V1_OFPET_PORT_MOD_FAILED = 4,
+  V1_OFPET_QUEUE_OP_FAILED = 5
+};
+
+// In OpenFlow 1.0, the OFPET_FLOW_MOD_FAILED error codes are assigned different
+// values.
+enum V1_FlowModFailedCodes : UInt16 {
+  V1_OFPFMFC_ALL_TABLES_FULL = 0,
+  V1_OFPFMFC_OVERLAP = 1,
+  V1_OFPFMFC_EPERM = 2,
+  V1_OFPFMFC_BAD_EMERG_TIMEOUT = 3,
+  V1_OFPFMFC_BAD_COMMAND = 4,
+  V1_OFPFMFC_UNSUPPORTED = 5,
+};
+
+struct ErrorType {
+  UInt16 v1ErrType;
+  OFPErrorType type;
+};
+
+struct ErrorCode {
+  UInt16 v1ErrCode;
+  OFPErrorCode code;
+};
+
+static ErrorType sErrorTypesV1[] = {
+  { V1_OFPET_HELLO_FAILED, OFPET_HELLO_FAILED },
+  { V1_OFPET_BAD_REQUEST, OFPET_BAD_REQUEST },
+  { V1_OFPET_BAD_ACTION, OFPET_BAD_ACTION },
+  { V1_OFPET_FLOW_MOD_FAILED, OFPET_FLOW_MOD_FAILED },
+  { V1_OFPET_PORT_MOD_FAILED, OFPET_PORT_MOD_FAILED },
+  { V1_OFPET_QUEUE_OP_FAILED, OFPET_QUEUE_OP_FAILED }
+};
+
+static ErrorCode sErrorFlowModFailedV1[] = {
+  { V1_OFPFMFC_ALL_TABLES_FULL, OFPFMFC_TABLE_FULL },
+  { V1_OFPFMFC_OVERLAP, OFPFMFC_OVERLAP },
+  { V1_OFPFMFC_EPERM, OFPFMFC_EPERM },
+  { V1_OFPFMFC_BAD_EMERG_TIMEOUT, OFPFMFC_BAD_TIMEOUT },
+  { V1_OFPFMFC_BAD_COMMAND, OFPFMFC_BAD_COMMAND },
+  { V1_OFPFMFC_UNSUPPORTED, OFPBAC_UNSUPPORTED_ORDER },
+};
+
+const OFPErrorType kMaxErrorType = OFPET_TABLE_FEATURES_FAILED;
+
+// Given the actual packet values in an error message, determine the correct
+// OFPErrorType enum value and return it. If the version and type do not
+// correspond to a defined OFPErrorType value, return the original type value
+// with the high bit set (OFPET_UNKNOWN_FLAG). If the type is the experimenter
+// type (0xffff), we will always return OFPET_EXPERIMENTER regardless of the
+// version.
+
+static OFPErrorType typeToEnum(UInt8 version, UInt16 type, UInt16 code) {
+  if (type == OFPET_EXPERIMENTER) {
+    return OFPET_EXPERIMENTER;
+  }
+
+  if (version == OFP_VERSION_1) {
+    // Map the OFPFMFC_UNSUPPORTED error code to OFPET_BAD_ACTION type.
+    if (type == V1_OFPET_FLOW_MOD_FAILED) {
+      return code == V1_OFPFMFC_UNSUPPORTED ? OFPET_BAD_ACTION : OFPET_FLOW_MOD_FAILED;
+    }
+
+    for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
+      if (type == sErrorTypesV1[i].v1ErrType)
+        return sErrorTypesV1[i].type;
+    }
+    type |= OFPET_UNKNOWN_FLAG;
+
+  } else if (type > kMaxErrorType) {
+    type |= OFPET_UNKNOWN_FLAG;
+  }
+
+  return static_cast<OFPErrorType>(type);
+}
+
+// Given an OFPErrorType and a version, determine the correct error type value
+// to use in an Error message. If the error type is OFPET_EXPERIMENTER, we
+// always map this to 0xffff regardless of the version. If the error type has
+// the high bit set (OFPET_UNKNOWN_FLAG), we return the type value with the 
+// high bit cleared.
+
+static UInt16 enumToType(UInt8 version, OFPErrorType type) {
+  if (type == OFPET_EXPERIMENTER) {
+    return OFPET_EXPERIMENTER;
+  }
+
+  if (type & OFPET_UNKNOWN_FLAG) {
+    return type & ~OFPET_UNKNOWN_FLAG;
+  }
+
+  if (version == OFP_VERSION_1) {
+    for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
+      if (type == sErrorTypesV1[i].type)
+        return sErrorTypesV1[i].v1ErrType;
+    }
+    log::warning("Unknown type enum in Error message:", static_cast<int>(type));
+  }
+
+  return type;
+}
+
+static UInt16 enumToCode(UInt8 version, OFPErrorCode code) {
+  if (version == OFP_VERSION_1) {
+    for (size_t i = 0; i < ArrayLength(sErrorFlowModFailedV1); ++i) {
+      if (code == sErrorFlowModFailedV1[i].code) {
+        return sErrorFlowModFailedV1[i].v1ErrCode;
+      }
+    }
+  }
+
+  return (code & 0xffff);
+}
+
+constexpr OFPErrorCode toErrorCode(UInt16 type, UInt16 code) {
+  return static_cast<OFPErrorCode>(OFPMakeErrorCode(type, code));
+}
+
+static OFPErrorCode codeToEnum(UInt8 version, UInt16 type, UInt16 code) {
+  if (type == OFPET_EXPERIMENTER) {
+    return toErrorCode(type, code);
+  }
+
+  if (version == OFP_VERSION_1) {
+    if (type == V1_OFPET_BAD_ACTION && code == V1_OFPFMFC_UNSUPPORTED) {
+      return OFPBAC_UNSUPPORTED_ORDER;
+    } else if (type == V1_OFPET_FLOW_MOD_FAILED) {
+      for (size_t i = 0; i < ArrayLength(sErrorFlowModFailedV1); ++i) {
+        if (code == sErrorFlowModFailedV1[i].v1ErrCode)
+          return sErrorFlowModFailedV1[i].code;
+      }
+    } 
+
+    OFPErrorType typeV1 = typeToEnum(version, type, code);
+    return toErrorCode(typeV1, code);
+  }
+
+  return toErrorCode(type, code);
+}
+
 ByteRange Error::errorData() const {
   return ByteRange{BytePtr(this) + sizeof(Error),
                    header_.length() - sizeof(Error)};
+}
+
+OFPErrorType Error::errorTypeEnum() const {
+  // The error type values differ in meaning between protocol version 1 and
+  // later versions. A type of EXPERIMENTER will always be honored.
+
+  UInt16 type = errorType();
+  UInt16 code = errorCode();
+  UInt8 version = msgHeader()->version();
+
+  return typeToEnum(version, type, code);
+}
+
+OFPErrorCode Error::errorCodeEnum() const {
+  UInt16 type = errorType();
+  UInt16 code = errorCode();
+  UInt8 version = msgHeader()->version();
+
+  return codeToEnum(version, type, code);
 }
 
 ErrorBuilder::ErrorBuilder(UInt32 xid) { msg_.header_.setXid(xid); }
@@ -40,7 +205,16 @@ void ErrorBuilder::send(Writable *channel) {
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
   msg_.header_.setXid(channel->nextXid());
 
+  Big16 savedCode = msg_.code_;
+  Big16 savedType = msg_.type_;
+
+  msg_.code_ = enumToCode(version, toErrorCode(msg_.errorType(), msg_.errorCode()));
+  msg_.type_ = enumToType(version, static_cast<OFPErrorType>(msg_.errorType()));
+  
   channel->write(&msg_, sizeof(msg_));
   channel->write(data_.data(), data_.size());
   channel->flush();
+
+  msg_.code_ = savedCode;
+  msg_.type_ = savedType;
 }

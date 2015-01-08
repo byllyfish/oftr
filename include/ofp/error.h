@@ -16,6 +16,9 @@ class Error : public ProtocolMsg<Error, OFPT_ERROR, 12, 65535, false> {
   UInt16 errorCode() const { return code_; }
   ByteRange errorData() const;
 
+  OFPErrorType errorTypeEnum() const;
+  OFPErrorCode errorCodeEnum() const;
+
   bool validateInput(Validation *context) const { return true; }
 
  private:
@@ -45,6 +48,9 @@ class ErrorBuilder {
   void setErrorData(const void *data, size_t length) {
     data_.set(data, length);
   }
+
+  void setErrorTypeEnum(OFPErrorType type) { msg_.type_ = type; }
+  void setErrorCodeEnum(OFPErrorCode code) { msg_.code_ = (code & 0xffff); }
 
   void setErrorData(const Message *message);
 

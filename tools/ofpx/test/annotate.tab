@@ -2,9 +2,9 @@ version	type	keypath	syntax	required	default	missing	modify
 1	OFPT_HELLO.v1	msg	object	False			
 1	OFPT_HELLO.v1	msg.versions	array	False			
 1	OFPT_HELLO.v1	msg.versions.0	uint8	False			
-1	OFPT_ERROR.v1	msg	object	False	msg.code=0,msg.data='',msg.type=0		
-1	OFPT_ERROR.v1	msg.type	uint16	True			True
-1	OFPT_ERROR.v1	msg.code	uint16	True			True
+1	OFPT_ERROR.v1	msg	object	True			
+1	OFPT_ERROR.v1	msg.type	OFPET_BAD_REQUEST	True			
+1	OFPT_ERROR.v1	msg.code	OFPBRC_BAD_TYPE	True			
 1	OFPT_ERROR.v1	msg.data	binary	True			True
 1	OFPT_ECHO_REQUEST.v1	msg	object	False	msg.data=''		
 1	OFPT_ECHO_REQUEST.v1	msg.data	binary	True			True
@@ -505,9 +505,9 @@ version	type	keypath	syntax	required	default	missing	modify
 2	OFPT_HELLO.v2	msg	object	False			
 2	OFPT_HELLO.v2	msg.versions	array	False			
 2	OFPT_HELLO.v2	msg.versions.0	uint8	False			
-2	OFPT_ERROR.v2	msg	object	False	msg.code=0,msg.data='',msg.type=0		
-2	OFPT_ERROR.v2	msg.type	uint16	True			True
-2	OFPT_ERROR.v2	msg.code	uint16	True			True
+2	OFPT_ERROR.v2	msg	object	True			
+2	OFPT_ERROR.v2	msg.type	OFPET_BAD_REQUEST	True			
+2	OFPT_ERROR.v2	msg.code	OFPBRC_BAD_TYPE	True			
 2	OFPT_ERROR.v2	msg.data	binary	True			True
 2	OFPT_ECHO_REQUEST.v2	msg	object	False	msg.data=''		
 2	OFPT_ECHO_REQUEST.v2	msg.data	binary	True			True
@@ -1008,9 +1008,9 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_HELLO.v3	msg	object	False			
 3	OFPT_HELLO.v3	msg.versions	array	False			
 3	OFPT_HELLO.v3	msg.versions.0	uint8	False			
-3	OFPT_ERROR.v3	msg	object	False	msg.code=0,msg.data='',msg.type=0		
-3	OFPT_ERROR.v3	msg.type	uint16	True			True
-3	OFPT_ERROR.v3	msg.code	uint16	True			True
+3	OFPT_ERROR.v3	msg	object	True			
+3	OFPT_ERROR.v3	msg.type	OFPET_BAD_REQUEST	True			
+3	OFPT_ERROR.v3	msg.code	OFPBRC_BAD_TYPE	True			
 3	OFPT_ERROR.v3	msg.data	binary	True			True
 3	OFPT_ECHO_REQUEST.v3	msg	object	False	msg.data=''		
 3	OFPT_ECHO_REQUEST.v3	msg.data	binary	True			True
@@ -1511,9 +1511,9 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_HELLO.v4	msg	object	False	msg.versions.0=4		
 4	OFPT_HELLO.v4	msg.versions	array	False	msg.versions.0=4		
 4	OFPT_HELLO.v4	msg.versions.0	uint8	False	msg.versions.0=4		True
-4	OFPT_ERROR.v4	msg	object	False	msg.code=0,msg.data='',msg.type=0		
-4	OFPT_ERROR.v4	msg.type	uint16	True			True
-4	OFPT_ERROR.v4	msg.code	uint16	True			True
+4	OFPT_ERROR.v4	msg	object	True			
+4	OFPT_ERROR.v4	msg.type	OFPET_BAD_REQUEST	True			
+4	OFPT_ERROR.v4	msg.code	OFPBRC_BAD_TYPE	True			
 4	OFPT_ERROR.v4	msg.data	binary	True			True
 4	OFPT_ECHO_REQUEST.v4	msg	object	False	msg.data=''		
 4	OFPT_ECHO_REQUEST.v4	msg.data	binary	True			True

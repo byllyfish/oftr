@@ -59,7 +59,7 @@ TEST(decoder, errorv1) {
       "010100130000006200010001FFFF1234567890",
       "---\ntype:            OFPT_ERROR\nxid:             "
       "0x00000062\nversion:         0x01\nmsg:             \n  type:      "
-      "      0x0001\n  code:            0x0001\n  data:            "
+      "      OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:            "
       "FFFF1234567890\n...\n");
 }
 

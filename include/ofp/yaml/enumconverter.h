@@ -40,8 +40,8 @@ bool ParseUnsignedInteger(llvm::StringRef name, Type *value) {
 template <class Type>
 class EnumConverter {
  public:
-  constexpr EnumConverter(llvm::ArrayRef<llvm::StringRef> names)
-      : names_{names} {}
+  EnumConverter(llvm::ArrayRef<llvm::StringRef> names, llvm::StringRef maxIntName = "")
+      : names_{names}, maxIntName_{maxIntName} {}
 
   bool convert(llvm::StringRef name, Type *value) {
     // Check for name match.
@@ -51,11 +51,19 @@ class EnumConverter {
         return true;
       }
     }
+    if (!maxIntName_.empty() && name.equals(maxIntName_)) {
+      *value = static_cast<Type>(detail::MaxIntValue<Type>());
+      return true;
+    }
     // If it doesn't match string, check for integer value.
     return ParseUnsignedInteger(name, value);
   }
 
   bool convert(Type value, llvm::StringRef *name) const {
+    if (!maxIntName_.empty() && value == detail::MaxIntValue<Type>()) {
+      *name = maxIntName_;
+      return true;
+    }
     if (value < names_.size() && value >= 0) {
       *name = names_[value];
       return true;
@@ -65,6 +73,42 @@ class EnumConverter {
 
  private:
   llvm::ArrayRef<llvm::StringRef> names_;
+  llvm::StringRef maxIntName_;
+};
+
+
+template <class Type>
+class EnumConverterSparse {
+ public:
+  using Entry = std::pair<Type, llvm::StringRef>;
+
+  EnumConverterSparse(llvm::ArrayRef<Entry> entries)
+      : entries_{entries} {}
+
+  bool convert(llvm::StringRef name, Type *value) {
+    // Check for name match.
+    for (size_t i = 0, len = entries_.size(); i < len; ++i) {
+      if (name.equals(entries_[i].second)) {
+        *value = entries_[i].first;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool convert(Type value, llvm::StringRef *name) const {
+    // Check for value match.
+    for (size_t i = 0, len = entries_.size(); i < len; ++i) {
+      if (value == entries_[i].first) {
+        *name = entries_[i].second;
+        return true;
+      }
+    }
+    return false;
+  }
+
+ private:
+  llvm::ArrayRef<Entry> entries_;
 };
 
 }  // namespace yaml

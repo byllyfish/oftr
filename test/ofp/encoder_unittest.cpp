@@ -114,6 +114,25 @@ msg:
   EXPECT_EQ(0x00, encoder.size());
 }
 
+TEST(encoder, error3) {
+  const char *input = R"""(
+type: OFPT_ERROR
+version: 3
+xid: 98
+msg:
+  type: OFPET_BAD_ACTION
+  code: OFPBAC_BAD_TAG
+  data: 'FFFF1234567890'
+)""";
+
+  Encoder encoder{input};
+
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x13, encoder.size());
+  EXPECT_HEX("03010013000000620002000CFFFF1234567890", encoder.data(),
+             encoder.size());
+}
+
 TEST(encoder, echorequest) {
   const char *input = R"""(
 type: OFPT_ECHO_REQUEST

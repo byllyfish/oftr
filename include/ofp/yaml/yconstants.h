@@ -81,18 +81,17 @@ struct ScalarEnumerationTraits<ofp::OFPInstructionType> {
   }
 };
 
-#define YAML_ENUM_CONVERTER(EnumType)  \
-static_assert(sizeof(EnumType) == 1, "Expected byte-size enum."); \
+#define YAML_ENUM_CONVERTER(ConverterType, EnumType, FormatExpr)  \
 template <> \
 struct ScalarTraits<EnumType> { \
-  static ofp::yaml::EnumConverter<EnumType> converter; \
+  static ConverterType<EnumType> converter; \
   static void output(const EnumType &value, void *ctxt, \
                      llvm::raw_ostream &out) { \
     llvm::StringRef scalar; \
     if (converter.convert(value, &scalar)) { \
       out << scalar; \
     } else { \
-      out << format("0x%02X", value); \
+      out << FormatExpr; \
     } \
   } \
   static StringRef input(StringRef scalar, void *ctxt, \
@@ -104,6 +103,32 @@ struct ScalarTraits<EnumType> { \
   } \
   static bool mustQuote(StringRef) { return false; } \
 };
+
+#if 0
+#define YAML_ENUM_CONVERTER_16(EnumType)  \
+static_assert(sizeof(EnumType) == 2, "Expected 16-bit enum."); \
+template <> \
+struct ScalarTraits<EnumType> { \
+  static ofp::yaml::EnumConverter<EnumType> converter; \
+  static void output(const EnumType &value, void *ctxt, \
+                     llvm::raw_ostream &out) { \
+    llvm::StringRef scalar; \
+    if (converter.convert(value, &scalar)) { \
+      out << scalar; \
+    } else { \
+      out << format("0x%04X", value); \
+    } \
+  } \
+  static StringRef input(StringRef scalar, void *ctxt, \
+                         EnumType &value) { \
+    if (converter.convert(scalar, &value)) { \
+      return ""; \
+    } \
+    return "Invalid enumerated constant."; \
+  } \
+  static bool mustQuote(StringRef) { return false; } \
+};
+#endif //0
 
 template <>
 struct ScalarTraits<ofp::OFPPacketInReason> {
@@ -166,8 +191,41 @@ struct ScalarEnumerationTraits<ofp::OFPMeterBandType> {
   }
 };
 
-YAML_ENUM_CONVERTER(ofp::OFPFlowRemovedReason)
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowRemovedReason, format("0x%02X", value))
 
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType, format("0x%04X", value))
+
+//YAML_ENUM_CONVERTER(ofp::yaml::EnumConverterSparse, ofp::OFPErrorCode, format("0x%08X", value))
+
+
+template <>
+struct ScalarTraits<ofp::OFPErrorCode> {
+  static ofp::yaml::EnumConverterSparse<ofp::OFPErrorCode> converter;
+
+  static void output(const ofp::OFPErrorCode &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    llvm::StringRef scalar;
+    if (converter.convert(value, &scalar)) {
+      out << scalar;
+    } else {
+      out << format("0x%04X", value & 0xffff);
+    }
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::OFPErrorCode &value) {
+    if (converter.convert(scalar, &value)) {
+      return "";
+    }
+    if (ofp::yaml::ParseUnsignedInteger(scalar, &value)) {
+      value = static_cast<ofp::OFPErrorCode>(value | ofp::OFPEC_UNKNOWN_FLAG);
+      return "";
+    }
+    return "Invalid enumerated constant.";
+  }
+
+  static bool mustQuote(StringRef) { return false; }
+};
 
 #undef OFP_YAML_ENUMCASE
 
