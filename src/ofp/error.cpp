@@ -33,10 +33,14 @@ struct ErrorType {
   OFPErrorType type;
 };
 
+OFP_BEGIN_IGNORE_PADDING
+
 struct ErrorCode {
   UInt16 v1ErrCode;
   OFPErrorCode code;
 };
+
+OFP_END_IGNORE_PADDING
 
 static ErrorType sErrorTypesV1[] = {
   { V1_OFPET_HELLO_FAILED, OFPET_HELLO_FAILED },
@@ -127,13 +131,9 @@ static UInt16 enumToCode(UInt8 version, OFPErrorCode code) {
   return (code & 0xffff);
 }
 
-constexpr OFPErrorCode toErrorCode(UInt16 type, UInt16 code) {
-  return static_cast<OFPErrorCode>(OFPMakeErrorCode(type, code));
-}
-
 static OFPErrorCode codeToEnum(UInt8 version, UInt16 type, UInt16 code) {
   if (type == OFPET_EXPERIMENTER) {
-    return toErrorCode(type, code);
+    return OFPErrorCodeMake(type, code);
   }
 
   if (version == OFP_VERSION_1) {
@@ -147,10 +147,10 @@ static OFPErrorCode codeToEnum(UInt8 version, UInt16 type, UInt16 code) {
     } 
 
     OFPErrorType typeV1 = typeToEnum(version, type, code);
-    return toErrorCode(typeV1, code);
+    return OFPErrorCodeMake(typeV1, code);
   }
 
-  return toErrorCode(type, code);
+  return OFPErrorCodeMake(type, code);
 }
 
 ByteRange Error::errorData() const {
@@ -158,23 +158,15 @@ ByteRange Error::errorData() const {
                    header_.length() - sizeof(Error)};
 }
 
-OFPErrorType Error::errorTypeEnum() const {
+OFPErrorType Error::errorType() const {
   // The error type values differ in meaning between protocol version 1 and
   // later versions. A type of EXPERIMENTER will always be honored.
 
-  UInt16 type = errorType();
-  UInt16 code = errorCode();
-  UInt8 version = msgHeader()->version();
-
-  return typeToEnum(version, type, code);
+  return typeToEnum(msgHeader()->version(), type_, code_);
 }
 
-OFPErrorCode Error::errorCodeEnum() const {
-  UInt16 type = errorType();
-  UInt16 code = errorCode();
-  UInt8 version = msgHeader()->version();
-
-  return codeToEnum(version, type, code);
+OFPErrorCode Error::errorCode() const {
+  return codeToEnum(msgHeader()->version(), type_, code_);
 }
 
 ErrorBuilder::ErrorBuilder(UInt32 xid) { msg_.header_.setXid(xid); }
@@ -192,6 +184,11 @@ void ErrorBuilder::setErrorData(const Message *message) {
   setErrorData(message->data(), len);
 }
 
+void ErrorBuilder::setErrorCode(OFPErrorCode code) {
+  msg_.type_ = OFPErrorCodeGetType(code);//(code >> 16) & 0xffff; 
+  msg_.code_ = OFPErrorCodeGetCode(code); //(code & 0xffff);  
+}
+
 void ErrorBuilder::send(Writable *channel) {
   size_t msgLen = sizeof(msg_) + data_.size();
 
@@ -205,11 +202,11 @@ void ErrorBuilder::send(Writable *channel) {
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
   msg_.header_.setXid(channel->nextXid());
 
-  Big16 savedCode = msg_.code_;
-  Big16 savedType = msg_.type_;
+  UInt16 savedCode = msg_.code_;
+  UInt16 savedType = msg_.type_;
 
-  msg_.code_ = enumToCode(version, toErrorCode(msg_.errorType(), msg_.errorCode()));
-  msg_.type_ = enumToType(version, static_cast<OFPErrorType>(msg_.errorType()));
+  msg_.code_ = enumToCode(version, OFPErrorCodeMake(savedType, savedCode));
+  msg_.type_ = enumToType(version, static_cast<OFPErrorType>(savedType));
   
   channel->write(&msg_, sizeof(msg_));
   channel->write(data_.data(), data_.size());

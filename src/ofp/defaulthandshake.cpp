@@ -75,7 +75,6 @@ void DefaultHandshake::onHello(const Message *message) {
                  std::make_pair("connid", channel_->connectionId()));
 
     ErrorBuilder error{message->xid()};
-    error.setErrorType(OFPET_HELLO_FAILED);
     error.setErrorCode(OFPHFC_INCOMPATIBLE);
     error.setErrorData(explanation.data(), explanation.size());
     error.send(channel_);

@@ -21,7 +21,6 @@ void TestAgent::onMessage(const Message *message) {
 
   } else if (message->isRequestType()) {
     ErrorBuilder error{message->xid()};
-    error.setErrorType(OFPET_BAD_REQUEST);
     error.setErrorCode(OFPBRC_BAD_TYPE);
     error.setErrorData(message);
     error.send(message->source());

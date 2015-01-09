@@ -5,9 +5,7 @@ using namespace ofp;
 
 TEST(error, experimenter) {
     ErrorBuilder errorBuilder{0x11111111};
-
-    errorBuilder.setErrorTypeEnum(OFPET_EXPERIMENTER);
-    errorBuilder.setErrorCode(1);
+    errorBuilder.setErrorCode(OFPErrorCodeMake(OFPET_EXPERIMENTER, 1));
 
     MemoryChannel channel{OFP_VERSION_1};
     errorBuilder.send(&channel);
@@ -18,18 +16,13 @@ TEST(error, experimenter) {
 
     const Error *error = Error::cast(&message);
 
-    EXPECT_EQ(0xffff, error->errorType());
-    EXPECT_EQ(1, error->errorCode());
-
-    EXPECT_EQ(OFPET_EXPERIMENTER, error->errorTypeEnum());
+    EXPECT_EQ(OFPET_EXPERIMENTER, error->errorType());
 }
 
 
 TEST(error, flowmod_failed_v1) {
     ErrorBuilder errorBuilder{0x11111111};
-
-    errorBuilder.setErrorTypeEnum(OFPET_FLOW_MOD_FAILED);
-    errorBuilder.setErrorCodeEnum(OFPFMFC_TABLE_FULL);
+    errorBuilder.setErrorCode(OFPFMFC_TABLE_FULL);
 
     MemoryChannel channel{OFP_VERSION_1};
     errorBuilder.send(&channel);
@@ -40,18 +33,13 @@ TEST(error, flowmod_failed_v1) {
 
     const Error *error = Error::cast(&message);
 
-    EXPECT_EQ(3, error->errorType());
-    EXPECT_EQ(0, error->errorCode());
-
-    EXPECT_EQ(OFPET_FLOW_MOD_FAILED, error->errorTypeEnum());
-    EXPECT_EQ(OFPFMFC_TABLE_FULL, error->errorCodeEnum());
+    EXPECT_EQ(OFPET_FLOW_MOD_FAILED, error->errorType());
+    EXPECT_EQ(OFPFMFC_TABLE_FULL, error->errorCode());
 }
 
 TEST(error, flowmod_failed_v4) {
     ErrorBuilder errorBuilder{0x11111111};
-
-    errorBuilder.setErrorTypeEnum(OFPET_FLOW_MOD_FAILED);
-    errorBuilder.setErrorCodeEnum(OFPFMFC_TABLE_FULL);
+    errorBuilder.setErrorCode(OFPFMFC_TABLE_FULL);
 
     MemoryChannel channel{OFP_VERSION_4};
     errorBuilder.send(&channel);
@@ -62,18 +50,13 @@ TEST(error, flowmod_failed_v4) {
 
     const Error *error = Error::cast(&message);
 
-    EXPECT_EQ(5, error->errorType());
-    EXPECT_EQ(1, error->errorCode());
-
-    EXPECT_EQ(OFPET_FLOW_MOD_FAILED, error->errorTypeEnum());
-    EXPECT_EQ(OFPFMFC_TABLE_FULL, error->errorCodeEnum());
+    EXPECT_EQ(OFPET_FLOW_MOD_FAILED, error->errorType());
+    EXPECT_EQ(OFPFMFC_TABLE_FULL, error->errorCode());
 }
 
 TEST(error, unsupported_order_v1) {
     ErrorBuilder errorBuilder{0x11111111};
-
-    errorBuilder.setErrorTypeEnum(OFPET_BAD_ACTION);
-    errorBuilder.setErrorCodeEnum(OFPBAC_UNSUPPORTED_ORDER);
+    errorBuilder.setErrorCode(OFPBAC_UNSUPPORTED_ORDER);
 
     MemoryChannel channel{OFP_VERSION_1};
     errorBuilder.send(&channel);
@@ -86,17 +69,12 @@ TEST(error, unsupported_order_v1) {
 
     EXPECT_EQ(OFP_VERSION_1, error->msgHeader()->version());
     EXPECT_EQ(OFPET_BAD_ACTION, error->errorType());
-    EXPECT_EQ(5, error->errorCode());
-
-    EXPECT_EQ(OFPET_BAD_ACTION, error->errorTypeEnum());
-    EXPECT_EQ(OFPBAC_UNSUPPORTED_ORDER, error->errorCodeEnum());
+    EXPECT_EQ(OFPBAC_UNSUPPORTED_ORDER, error->errorCode());
 }
 
 TEST(error, unsupported_order_v4) {
     ErrorBuilder errorBuilder{0x11111111};
-
-    errorBuilder.setErrorTypeEnum(OFPET_BAD_ACTION);
-    errorBuilder.setErrorCodeEnum(OFPBAC_UNSUPPORTED_ORDER);
+    errorBuilder.setErrorCode(OFPBAC_UNSUPPORTED_ORDER);
 
     MemoryChannel channel{OFP_VERSION_4};
     errorBuilder.send(&channel);
@@ -109,8 +87,25 @@ TEST(error, unsupported_order_v4) {
 
     EXPECT_EQ(OFP_VERSION_4, error->msgHeader()->version());
     EXPECT_EQ(OFPET_BAD_ACTION, error->errorType());
-    EXPECT_EQ(OFPBAC_UNSUPPORTED_ORDER & 0xffff, error->errorCode());
+    EXPECT_EQ(OFPBAC_UNSUPPORTED_ORDER, error->errorCode());
+}
 
-    EXPECT_EQ(OFPET_BAD_ACTION, error->errorTypeEnum());
-    EXPECT_EQ(OFPBAC_UNSUPPORTED_ORDER, error->errorCodeEnum());
+TEST(error, hello_failed_v1) {
+    std::string explanation = "Supported Versions: [1, 2, 3, 4]";
+
+    ErrorBuilder errorBuilder{0x12341234};
+    errorBuilder.setErrorCode(OFPHFC_INCOMPATIBLE);
+    errorBuilder.setErrorData(explanation.data(), explanation.size());
+
+    MemoryChannel channel{OFP_VERSION_1};
+    errorBuilder.send(&channel);
+
+    Message message{channel.data(), channel.size()};
+    message.transmogrify();
+    EXPECT_HEX("0101002C0000000100000000537570706F727465642056657273696F6E733A205B312C20322C20332C20345D", message.data(), message.size());
+
+    const Error *error = Error::cast(&message);
+
+    EXPECT_EQ(OFPET_HELLO_FAILED, error->errorType());
+    EXPECT_EQ(OFPHFC_INCOMPATIBLE, error->errorCode());
 }

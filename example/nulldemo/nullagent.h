@@ -36,7 +36,7 @@ class NullAgent : public ofp::ChannelListener {
   void onGetConfigRequest(const Message *message);
   void onBarrierRequest(const Message *message);
 
-  void sendError(UInt16 type, UInt16 code, const Message *message);
+  void sendError(ofp::OFPErrorCode err, const Message *message);
 };
 
 void NullAgent::onMessage(const Message *message) {
@@ -63,7 +63,7 @@ void NullAgent::onMessage(const Message *message) {
 
     default:
       ofp::log::debug("Unknown message type", static_cast<int>(message->type()));
-      sendError(1, 1, message);
+      sendError(ofp::OFPBRC_BAD_TYPE, message);
       break;
   }
 }
@@ -71,7 +71,7 @@ void NullAgent::onMessage(const Message *message) {
 void NullAgent::onSetConfig(const Message *message) {
   auto setConfig = ofp::SetConfig::cast(message);
   if (!setConfig) {
-    sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+    sendError(ofp::OFPBRC_BAD_TYPE, message);
     return;
   }
 
@@ -81,7 +81,7 @@ void NullAgent::onSetConfig(const Message *message) {
 void NullAgent::onFlowMod(const Message *message) {
   auto flowMod = ofp::FlowMod::cast(message);
   if (!flowMod) {
-    sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+    sendError(ofp::OFPBRC_BAD_TYPE, message);
     return;
   }
 
@@ -92,7 +92,7 @@ void NullAgent::onFlowMod(const Message *message) {
 void NullAgent::onGetAsyncRequest(const Message *message) {
   auto getAsyncReq = ofp::GetAsyncRequest::cast(message);
   if (!getAsyncReq) {
-    sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+    sendError(ofp::OFPBRC_BAD_TYPE, message);
     return;
   }
 
@@ -102,7 +102,7 @@ void NullAgent::onGetAsyncRequest(const Message *message) {
 void NullAgent::onGetConfigRequest(const Message *message) {
   auto getConfigReq = ofp::GetConfigRequest::cast(message);
   if (!getConfigReq) {
-    sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+    sendError(ofp::OFPBRC_BAD_TYPE, message);
     return;
   }
 
@@ -114,7 +114,7 @@ void NullAgent::onBarrierRequest(const Message *message) {
 
   auto barrierReq = ofp::BarrierRequest::cast(message);
   if (!barrierReq) {
-    sendError(ofp::OFPET_BAD_REQUEST, ofp::OFPBRC_BAD_TYPE, message);
+    sendError(ofp::OFPBRC_BAD_TYPE, message);
     return;
   }
 
@@ -122,10 +122,9 @@ void NullAgent::onBarrierRequest(const Message *message) {
   reply.send(message->source());
 }
 
-void NullAgent::sendError(UInt16 type, UInt16 code, const Message *message) {
+void NullAgent::sendError(ofp::OFPErrorCode err, const Message *message) {
   ofp::ErrorBuilder msg{message->xid()};
-  msg.setErrorType(type);
-  msg.setErrorCode(code);
+  msg.setErrorCode(err);
   msg.setErrorData(message);
   msg.send(message->source());
 }

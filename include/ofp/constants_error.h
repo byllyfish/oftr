@@ -158,6 +158,27 @@ enum OFPErrorCode : UInt32 {
   OFPEC_UNKNOWN_FLAG = 0x80000000
 };
 
+constexpr OFPErrorCode OFPErrorCodeMake(UInt16 type, UInt16 code) {
+  return static_cast<OFPErrorCode>(OFPMakeErrorCode(type, code));
+}
+
+constexpr OFPErrorType OFPErrorCodeGetType(OFPErrorCode code) {
+  return static_cast<OFPErrorType>((code >> 16) & 0xffff);
+}
+
+
+constexpr UInt16 OFPErrorCodeGetCode(OFPErrorCode code) {
+  return (code & 0xffff);
+}
+
+constexpr bool OFPErrorCodeIsUnknown(OFPErrorCode code) {
+  return (code & OFPEC_UNKNOWN_FLAG) != 0;
+}
+
+constexpr OFPErrorCode OFPErrorCodeSetType(OFPErrorCode code, UInt16 type) {
+  return OFPErrorCodeMake(type, code & 0xffff);
+}
+
 }  // namespace ofp
 
 #endif  // OFP_CONSTANTS_ERROR_H_

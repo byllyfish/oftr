@@ -12,12 +12,9 @@ namespace ofp {
 /// \brief Implements Error protocol message.
 class Error : public ProtocolMsg<Error, OFPT_ERROR, 12, 65535, false> {
  public:
-  UInt16 errorType() const { return type_; }
-  UInt16 errorCode() const { return code_; }
+  OFPErrorType errorType() const;
+  OFPErrorCode errorCode() const;
   ByteRange errorData() const;
-
-  OFPErrorType errorTypeEnum() const;
-  OFPErrorCode errorCodeEnum() const;
 
   bool validateInput(Validation *context) const { return true; }
 
@@ -42,15 +39,11 @@ class ErrorBuilder {
   explicit ErrorBuilder(UInt32 xid);
   explicit ErrorBuilder(const Error *msg);
 
-  void setErrorType(UInt16 type) { msg_.type_ = type; }
-  void setErrorCode(UInt16 code) { msg_.code_ = code; }
+  void setErrorCode(OFPErrorCode code);
 
   void setErrorData(const void *data, size_t length) {
     data_.set(data, length);
   }
-
-  void setErrorTypeEnum(OFPErrorType type) { msg_.type_ = type; }
-  void setErrorCodeEnum(OFPErrorCode code) { msg_.code_ = (code & 0xffff); }
 
   void setErrorData(const Message *message);
 
