@@ -98,7 +98,8 @@ struct ProtocolElement<ElemType, PROTOCOL_ITERATOR_SIZE_CONDITIONAL> {
 //
 // The actual element is padded to a multiple of 8 bytes.
 
-template <class ElemType,
+template <class ElemType, 
+          ProtocolIteratorType IterType = ProtocolIteratorType::Unspecified,
           size_t SizeOffset = ElemType::ProtocolIteratorSizeOffset,
           size_t Alignment = ElemType::ProtocolIteratorAlignment>
 class ProtocolIterator {

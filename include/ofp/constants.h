@@ -6,6 +6,7 @@
 #include "ofp/types.h"
 #include "ofp/constants_deprecated.h"
 #include "ofp/constants_error.h"
+#include "ofp/protocoliteratortype.h"
 
 namespace ofp {
 

@@ -8,7 +8,7 @@
 
 namespace ofp {
 
-using QueueIterator = ProtocolIterator<Queue>;
+using QueueIterator = ProtocolIterator<Queue, ProtocolIteratorType::Queue>;
 using QueueRange = ProtocolRange<QueueIterator>;
 
 }  // namespace ofp

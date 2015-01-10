@@ -8,7 +8,7 @@
 
 namespace ofp {
 
-using OXMIDIterator = ProtocolIterator<OXMID>;
+using OXMIDIterator = ProtocolIterator<OXMID, ProtocolIteratorType::OXMID>;
 using OXMIDRange = ProtocolRange<OXMIDIterator>;
 
 }  // namespace ofp

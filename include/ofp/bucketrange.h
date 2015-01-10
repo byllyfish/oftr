@@ -8,7 +8,7 @@
 
 namespace ofp {
 
-using BucketIterator = ProtocolIterator<Bucket>;
+using BucketIterator = ProtocolIterator<Bucket, ProtocolIteratorType::Bucket>;
 using BucketRange = ProtocolRange<BucketIterator>;
 
 }  // namespace ofp

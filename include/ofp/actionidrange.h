@@ -8,7 +8,7 @@
 
 namespace ofp {
 
-using ActionIDIterator = ProtocolIterator<ActionID>;
+using ActionIDIterator = ProtocolIterator<ActionID, ProtocolIteratorType::ActionID>;
 using ActionIDRange = ProtocolRange<ActionIDIterator>;
 
 }  // namespace ofp

@@ -32,7 +32,7 @@ class MeterBandIteratorItem : private NonCopyable {
 
 }  // namespace detail
 
-using MeterBandIterator = ProtocolIterator<detail::MeterBandIteratorItem>;
+using MeterBandIterator = ProtocolIterator<detail::MeterBandIteratorItem, ProtocolIteratorType::MeterBand>;
 using MeterBandRange = ProtocolRange<MeterBandIterator>;
 
 }  // namespace ofp

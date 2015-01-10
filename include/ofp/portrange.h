@@ -11,7 +11,7 @@ namespace ofp {
 class PortList;
 class Writable;
 
-using PortIterator = ProtocolIterator<Port>;
+using PortIterator = ProtocolIterator<Port, ProtocolIteratorType::Port>;
 
 class PortRange : public ProtocolRange<PortIterator> {
   using Inherited = ProtocolRange<PortIterator>;
