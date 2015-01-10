@@ -5,6 +5,7 @@ set(OFPX_SOURCES
   ofpx_decode.cpp
   ofpx_encode.cpp
   ofpx_jsonrpc.cpp
+  ofpx_help.cpp
 )
 
 if(APPLE AND UNIX)

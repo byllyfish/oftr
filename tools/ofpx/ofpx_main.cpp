@@ -6,6 +6,7 @@
 #include "ofpx_encode.h"
 #include "ofpx_ping.h"
 #include "ofpx_jsonrpc.h"
+#include "ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
@@ -18,7 +19,8 @@ struct SubprogramEntry {
 static SubprogramEntry programs[] = {{"ping", ofpx::Run<ofpx::Ping>},
                                      {"decode", ofpx::Run<ofpx::Decode>},
                                      {"encode", ofpx::Run<ofpx::Encode>},
-                                     {"jsonrpc", ofpx::Run<ofpx::JsonRpc>}};
+                                     {"jsonrpc", ofpx::Run<ofpx::JsonRpc>},
+                                     {"help", ofpx::Run<ofpx::Help>}};
 
 static int run_xpc_service();
 static void print_usage(std::ostream &out);
@@ -29,8 +31,7 @@ static void print_usage(std::ostream &out);
 
 int main(int argc, const char *const *argv) {
   // If the OFPX_JSONRPC_XPC_SERVICE environment variable is set to 1,
-  // immediately
-  // run the JSON-RPC XPC service (Mac OS X only).
+  // immediately run the JSON-RPC XPC service (Mac OS X only).
 
   if (const char *env = getenv("OFPX_JSONRPC_XPC_SERVICE")) {
     if (strcmp(env, "1") == 0) {
