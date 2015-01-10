@@ -33,8 +33,12 @@ class ProtocolMsg {
 
   /// \returns Pointer to message memory as given class or nullptr.
   static const MsgClass *cast(const Message *message) {
-    // FIXME - why is this in Message? Why not inline here?
-    return message->castMessage<MsgClass>();
+    OFPErrorCode error;
+    auto msg = message->castMessage<MsgClass>(&error);
+    if (!msg) {
+      message->replyError(error);
+    }
+    return msg;
   }
 
   /// \returns true if message length is potentially valid.

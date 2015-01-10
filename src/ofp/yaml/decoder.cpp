@@ -121,7 +121,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
     case MeterMod::type():
       return decode<MeterMod>(io, msg_);
     default:
-      Validation context{msg_};
+      OFPErrorCode error;
+      Validation context{msg_, &error};
       context.messageTypeIsNotSupported();
       break;
   }

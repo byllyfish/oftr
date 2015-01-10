@@ -71,9 +71,12 @@ class Message {
   bool isValidHeader();
   void transmogrify();
 
+  /// Send an error message back to the source of the message.
+  void replyError(OFPErrorCode error, const std::string &explanation = "") const;
+
   // Used by the ProtocolMsg::cast(message) operator.
   template <class MsgType>
-  const MsgType *castMessage() const;
+  const MsgType *castMessage(OFPErrorCode *error) const;
 
   void assign(const Message &message) { buf_ = message.buf_.toRange(); }
 
@@ -94,13 +97,13 @@ inline std::ostream &operator<<(std::ostream &os, const Message &msg) {
 
 // Provides convenient implementation of message cast.
 template <class MsgType>
-const MsgType *Message::castMessage() const {
+const MsgType *Message::castMessage(OFPErrorCode *error) const {
   assert(type() == MsgType::type());
 
   size_t length = size();
   assert(length == header()->length());
 
-  Validation context{this};
+  Validation context{this, error};
 
   if (!MsgType::isLengthValid(length)) {
     context.messageSizeIsInvalid();

@@ -36,7 +36,8 @@ TEST(packetin, version4) {
 
     auto packetIn = PacketIn::cast(&message);
 
-    Validation context{&message};
+    OFPErrorCode error;
+    Validation context{&message, &error};
     ASSERT_TRUE(packetIn->validateInput(&context));
 
     if (packetIn->validateInput(&context)) {

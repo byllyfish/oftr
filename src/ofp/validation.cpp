@@ -6,7 +6,9 @@
 
 using namespace ofp;
 
-Validation::Validation(const Message *msg) : msg_{msg} {
+Validation::Validation(const Message *msg, OFPErrorCode *error) : msg_{msg}, error_{error} {
+  assert(error_);
+  *error_ = OFPEC_UNKNOWN_FLAG;
   if (msg) {
     version_ = msg->version();
     length_ = msg->size();
@@ -17,21 +19,25 @@ Validation::Validation(const Message *msg) : msg_{msg} {
 }
 
 void Validation::messageSizeIsInvalid() {
+  *error_ = OFPBRC_BAD_LEN;
   log::info("Validation Failed: Message size is invalid", length_);
   logContext();
 }
 
 void Validation::messageTypeIsNotSupported() {
+  *error_ = OFPBRC_BAD_TYPE;
   log::info("Validation Failed: Message type is not supported");
   logContext();
 }
 
 void Validation::multipartTypeIsNotSupported() {
+  *error_ = OFPBRC_BAD_MULTIPART;
   log::info("Validation Failed: Multipart type is not supported");
   logContext();
 }
 
 void Validation::multipartTypeIsNotSupportedForVersion() {
+  *error_ = OFPBRC_BAD_MULTIPART;
   log::info(
       "Validation Failed: Multipart type is not supported for this protocol "
       "version");
@@ -39,12 +45,14 @@ void Validation::multipartTypeIsNotSupportedForVersion() {
 }
 
 void Validation::multipartSizeHasImproperAlignment() {
+  *error_ = OFPBRC_BAD_LEN;
   log::info("Validation Failed: Multipart size has improper alignment");
   logContext();
 }
 
 void Validation::lengthRemainingIsInvalid(const UInt8 *ptr,
                                           size_t expectedLength) {
+  *error_ = OFPBRC_BAD_LEN;
   log::info("Validation Failed: Length remaining is invalid", lengthRemaining(),
             "expected", expectedLength, "at offset", offset(ptr));
   logContext(ptr);
@@ -52,6 +60,7 @@ void Validation::lengthRemainingIsInvalid(const UInt8 *ptr,
 
 void Validation::rangeSizeHasImproperAlignment(const UInt8 *ptr,
                                                size_t alignment) {
+  *error_ = OFPBRC_BAD_LEN;
   log::info("Validation Failed: Range length has improper alignment at offset",
             offset(ptr), "alignment", alignment);
   logContext(ptr);
@@ -59,12 +68,14 @@ void Validation::rangeSizeHasImproperAlignment(const UInt8 *ptr,
 
 void Validation::rangeDataHasImproperAlignment(const UInt8 *ptr,
                                                size_t alignment) {
+  *error_ = OFPBRC_BAD_LEN;
   log::info("Validation Failed: Range data has improper alignment at offset",
             offset(ptr), "alignment", alignment);
   logContext(ptr);
 }
 
 void Validation::rangeElementSizeIsTooSmall(const UInt8 *ptr, size_t minSize) {
+  *error_ = OFPBRC_BAD_LEN;
   log::info("Validation Failed: Range element size is too small at offset",
             offset(ptr));
   logContext(ptr);
@@ -73,6 +84,7 @@ void Validation::rangeElementSizeIsTooSmall(const UInt8 *ptr, size_t minSize) {
 void Validation::rangeElementSizeHasImproperAlignment(const UInt8 *ptr,
                                                       size_t elemSize,
                                                       size_t alignment) {
+  *error_ = OFPBRC_BAD_LEN;
   log::info(
       "Validation Failed: Range element size has improper alignment at offset",
       offset(ptr), "elemSize", elemSize, "alignment", alignment);
@@ -81,6 +93,7 @@ void Validation::rangeElementSizeHasImproperAlignment(const UInt8 *ptr,
 
 void Validation::rangeElementSizeOverrunsEnd(const UInt8 *ptr,
                                              size_t jumpSize) {
+  *error_ = OFPBRC_BAD_LEN;
   log::info(
       "Validation Failed: Range element size overruns end of buffer at offset",
       offset(ptr), "jumpSize", jumpSize);
@@ -89,6 +102,7 @@ void Validation::rangeElementSizeOverrunsEnd(const UInt8 *ptr,
 
 void Validation::rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr,
                                                      size_t elementSize) {
+  *error_ = OFPBRC_BAD_LEN;
   log::info(
       "Validation Failed: Range size not a multiple of element size at offset",
       offset(ptr), "elementSize", elementSize);

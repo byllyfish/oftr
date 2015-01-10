@@ -58,7 +58,8 @@ void DefaultHandshake::onMessage(const Message *message) {
 
 void DefaultHandshake::onHello(const Message *message) {
   const Hello *msg = Hello::cast(message);
-  if (!msg) return;
+  if (!msg)
+    return;
 
   UInt8 msgVersion = msg->msgHeader()->version();
   UInt8 version =
@@ -74,10 +75,7 @@ void DefaultHandshake::onHello(const Message *message) {
                  explanation,
                  std::make_pair("connid", channel_->connectionId()));
 
-    ErrorBuilder error{message->xid()};
-    error.setErrorCode(OFPHFC_INCOMPATIBLE);
-    error.setErrorData(explanation.data(), explanation.size());
-    error.send(channel_);
+    message->replyError(OFPHFC_INCOMPATIBLE, explanation);
     channel_->shutdown();
     return;
   }
@@ -158,3 +156,4 @@ void DefaultHandshake::clearChannelListener() {
   channel_->setChannelListener(nullptr);
   ChannelListener::dispose(this);
 }
+

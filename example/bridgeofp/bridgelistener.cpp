@@ -73,7 +73,7 @@ void BridgeListener::forget(BridgeListener *other) {
 
 template <class MsgType, class MsgBuilder>
 static void translateFwd(const Message *message, Channel *channel) {
-  const MsgType *m = message->castMessage<MsgType>();
+  const MsgType *m = MsgType::cast(message);
   if (m) {
     MsgBuilder builder{m};
     builder.send(channel);

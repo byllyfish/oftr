@@ -9,6 +9,7 @@
 #include "ofp/instructionrange.h"
 #include "ofp/originalmatch.h"
 #include "ofp/transmogrify.h"
+#include "ofp/error.h"
 
 using namespace ofp;
 
@@ -37,4 +38,17 @@ bool Message::isRequestType() const {
 void Message::transmogrify() {
   Transmogrify tr{this};
   tr.normalize();
+}
+
+void Message::replyError(OFPErrorCode error, const std::string &explanation) const {
+  if (source()) {
+    ErrorBuilder errorBuilder{xid()};
+    errorBuilder.setErrorCode(error);
+    if (!explanation.empty()) {
+      errorBuilder.setErrorData(explanation.data(), explanation.size());
+    } else {
+      errorBuilder.setErrorData(this);
+    }
+    errorBuilder.send(source());
+  }
 }

@@ -41,6 +41,7 @@ TEST(multipartreply, mptablefeatures) {
   const MultipartReply *m = MultipartReply::cast(&message);
   ASSERT_TRUE(m != nullptr);
 
-  Validation context{&message};
+  OFPErrorCode error;
+  Validation context{&message, &error};
   EXPECT_TRUE(m->validateInput(&context));
 }

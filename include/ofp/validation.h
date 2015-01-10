@@ -15,7 +15,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Validation {
  public:
-  explicit Validation(const Message *msg);
+  explicit Validation(const Message *msg, OFPErrorCode *error);
 
   UInt8 version() const { return version_; }
   size_t length() const { return length_; }
@@ -64,6 +64,7 @@ class Validation {
   size_t length_;
   size_t lengthRemaining_ = 0;
   UInt8 version_;
+  OFPErrorCode *error_;
 
   size_t offset(const UInt8 *ptr) const;
   std::string hexContext(const UInt8 *ptr) const;
