@@ -56,3 +56,12 @@ TEST(oxmfields, OFB_IPV6_ND_SLL) {
   list.add(OFB_ICMPV6_TYPE{135});
   EXPECT_EQ(list.toRange(), *OFB_IPV6_ND_SLL::prerequisites());
 }
+
+TEST(oxmfields, NXM_NX_TCP_FLAGS) {
+  NXM_NX_TCP_FLAGS tcpflags{0x0102};
+
+  EXPECT_EQ(0x0102, tcpflags);
+  EXPECT_EQ(0x00014402, NXM_NX_TCP_FLAGS::type().oxmNative());
+  EXPECT_EQ(2, sizeof(NXM_NX_TCP_FLAGS));
+  EXPECT_TRUE(NXM_NX_TCP_FLAGS::maskSupported());
+}

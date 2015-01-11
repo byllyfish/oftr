@@ -20,7 +20,7 @@ static vector<string> Split(const string &str, char delimiter, bool trim);
 
 class OXMField {
  public:
-  enum { NumFields = 7 };
+  enum { NumFields = 8 };
 
   explicit OXMField(const vector<string> fields) : fields_{fields} {}
 
@@ -102,9 +102,10 @@ class OXMField {
     s << "WriteOXMTypeInfo(" << oxmType() << ", " << mask() << ", \"" << name()
       << "\", ";
     if (hasPrereqs())
-      s << "\"&ofp::OXMPrereq_" << name() << "\");\n";
+      s << "\"&ofp::OXMPrereq_" << name() << "\"";
     else
-      s << "\"nullptr\");\n";
+      s << "\"nullptr\"";
+    s << ", \"" << valueType() << "\", \"" << description() << "\");\n";
   }
 
  private:
@@ -246,8 +247,8 @@ static void WritePrereq(const char *name, const UInt8 *data, size_t len)
 }
 
 
-static void WriteOXMTypeInfo(OXMType type, bool maskSupported, const char *name, const char *prereqs) {
-  std::cout << "{ \"" << name << "\", " << prereqs << ", " << type << ", " << maskSupported << "},\n";
+static void WriteOXMTypeInfo(OXMType type, bool maskSupported, const char *nameStr, const char *prereqs, const char *typeStr, const char *descriptionStr) {
+  std::cout << "{ \"" << nameStr << "\", " << prereqs << ", " << type << ", " << maskSupported << ", \"" << typeStr << "\", \"" << descriptionStr << "\"},\n";
 }
 
 int main() {
@@ -340,5 +341,5 @@ namespace ofp {
 extern const OXMTypeInfo OXMTypeInfoArray[];
 extern const size_t OXMTypeInfoArraySize;
 }
-const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {{"none", nullptr, 0, false}};
+const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {{"none", nullptr, 0, false,"none","none"}};
 const size_t ofp::OXMTypeInfoArraySize = 0;

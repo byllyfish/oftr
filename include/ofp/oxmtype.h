@@ -94,6 +94,8 @@ struct OXMTypeInfo {
   const OXMRange *prerequisites;
   UInt32 value32;
   bool isMaskSupported;
+  const char *type;
+  const char *description;
 };
 
 OFP_END_IGNORE_PADDING
