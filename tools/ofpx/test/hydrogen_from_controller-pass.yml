@@ -295,15 +295,15 @@ msg:
   out_group:       0x00000000
   flags:           0x0001
   match:           
-    - field:           OFB_ETH_TYPE
+    - field:           ETH_TYPE
       value:           0x0800
-    - field:           OFB_IPV4_DST
+    - field:           IPV4_DST
       value:           10.0.0.1
   instructions:    
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
         - action:          OFPAT_SET_FIELD
-          field:           OFB_ETH_DST
+          field:           ETH_DST
           value:           '00:00:00:00:00:01'
         - action:          OFPAT_OUTPUT
           port:            0x00000001
@@ -332,15 +332,15 @@ msg:
   out_group:       0x00000000
   flags:           0x0001
   match:           
-    - field:           OFB_ETH_TYPE
+    - field:           ETH_TYPE
       value:           0x0800
-    - field:           OFB_IPV4_DST
+    - field:           IPV4_DST
       value:           10.0.0.2
   instructions:    
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
         - action:          OFPAT_SET_FIELD
-          field:           OFB_ETH_DST
+          field:           ETH_DST
           value:           '00:00:00:00:00:02'
         - action:          OFPAT_OUTPUT
           port:            0x00000002

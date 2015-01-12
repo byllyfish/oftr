@@ -227,7 +227,7 @@ TEST(decoder, ofmp_flowrequest_v4) {
       "   "
       "  0x00000003\n    cookie:          0x0000000000000004\n    cookie_mask: "
       "    0x0000000000000005\n    match:           \n      - field:           "
-      "OFB_IN_PORT\n        value:           0x12345678\n...\n");
+      "IN_PORT\n        value:           0x12345678\n...\n");
 }
 
 TEST(decoder, ofmp_flowrequest_v1) {
@@ -243,7 +243,7 @@ TEST(decoder, ofmp_flowrequest_v1) {
       "  "
       "   0x00000000\n    cookie:          0x0000000000000000\n    "
       "cookie_mask:     0x0000000000000000\n    match:           \n      - "
-      "field:           OFB_IN_PORT\n        value:           "
+      "field:           IN_PORT\n        value:           "
       "0x00005678\n...\n");
 }
 
@@ -259,7 +259,7 @@ TEST(decoder, ofmp_aggregaterequest_v4) {
       "out_port:        0x22222222\n    out_group:       "
       "0x33333333\n    cookie:          0x4444444444444444\n    "
       "cookie_mask:     0x5555555555555555\n    match:           "
-      "\n      - field:           OFB_IN_PORT\n        value:     "
+      "\n      - field:           IN_PORT\n        value:     "
       "      0x12345678\n...\n");
 }
 
@@ -276,7 +276,7 @@ TEST(decoder, ofmp_aggregaterequest_v1) {
       "  "
       "   0x00000000\n    cookie:          0x0000000000000000\n    "
       "cookie_mask:     0x0000000000000000\n    match:           \n      - "
-      "field:           OFB_IN_PORT\n        value:           "
+      "field:           IN_PORT\n        value:           "
       "0x00005678\n...\n");
 }
 
@@ -295,7 +295,7 @@ TEST(decoder, ofmp_flowreply_v4) {
       "       0x0007\n      cookie:          0x0000000000000008\n      "
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
-      "OFB_IN_PORT\n          value:           0x12345678\n      instructions: "
+      "IN_PORT\n          value:           0x12345678\n      instructions: "
       " "
       "  \n        - instruction:     OFPIT_GOTO_TABLE\n          table_id:    "
       "    0x01\n...\n");
@@ -319,7 +319,7 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "       0x0007\n      cookie:          0x0000000000000008\n      "
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
-      "OFB_IN_PORT\n          value:           0x12345678\n      instructions: "
+      "IN_PORT\n          value:           0x12345678\n      instructions: "
       " "
       "  \n    - table_id:        0x11\n      duration_sec:    0x00000022\n    "
       "  "
@@ -328,11 +328,11 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "       0x0077\n      cookie:          0x0000000000000088\n      "
       "packet_count:    0x9999999999999999\n      byte_count:      "
       "0xAAAAAAAAAAAAAAAA\n      match:           \n        - field:           "
-      "OFB_IN_PORT\n          value:           0x12345678\n        - field:    "
+      "IN_PORT\n          value:           0x12345678\n        - field:    "
       " "
-      "      OFB_ETH_SRC\n          value:           '10:20:30:40:50:60'\n     "
+      "      ETH_SRC\n          value:           '10:20:30:40:50:60'\n     "
       "  "
-      " - field:           OFB_ETH_DST\n          value:           "
+      " - field:           ETH_DST\n          value:           "
       "'aa:bb:cc:dd:ee:ff'\n      instructions:    \n        - instruction:    "
       " "
       "OFPIT_GOTO_TABLE\n          table_id:        0x01\n...\n");
@@ -354,7 +354,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "       0x0000\n      cookie:          0xAAAAAAAAAAAAAAAA\n      "
       "packet_count:    0xBBBBBBBBBBBBBBBB\n      byte_count:      "
       "0xCCCCCCCCCCCCCCCC\n      match:           \n        - field:           "
-      "OFB_IN_PORT\n          value:           0x0000DDDD\n      instructions: "
+      "IN_PORT\n          value:           0x0000DDDD\n      instructions: "
       "   "
       "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
@@ -379,7 +379,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "       0x0000\n      cookie:          0x0000000000000008\n      "
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
-      "OFB_IN_PORT\n          value:           0x00005678\n      instructions: "
+      "IN_PORT\n          value:           0x00005678\n      instructions: "
       "   "
       "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
@@ -390,11 +390,11 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "0x0055\n      hard_timeout:    0x0066\n      flags:           0x0000\n  "
       "    cookie:          0x0000000000000088\n      packet_count:    "
       "0x9999999999999999\n      byte_count:      0xAAAAAAAAAAAAAAAA\n      "
-      "match:           \n        - field:           OFB_IN_PORT\n          "
-      "value:           0x00005678\n        - field:           OFB_ETH_SRC\n   "
+      "match:           \n        - field:           IN_PORT\n          "
+      "value:           0x00005678\n        - field:           ETH_SRC\n   "
       "     "
       "  value:           '10:20:30:40:50:60'\n        - field:           "
-      "OFB_ETH_DST\n          value:           'aa:bb:cc:dd:ee:ff'\n      "
+      "ETH_DST\n          value:           'aa:bb:cc:dd:ee:ff'\n      "
       "instructions:    \n        - instruction:     OFPIT_APPLY_ACTIONS\n     "
       "     actions:         \n            - action:          OFPAT_OUTPUT\n   "
       "           port:            0x0000EEEE\n              max_len:         "
@@ -550,13 +550,13 @@ TEST(decoder, flowmodv4) {
       "hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       "
       "0x00000000\n  out_port:        0x00000000\n  out_group:       "
       "0x00000000\n  flags:           0x0000\n  match:           \n    - field:"
-      "           OFB_IN_PORT\n      value:           0x0000000D\n    - field: "
+      "           IN_PORT\n      value:           0x0000000D\n    - field: "
       "        "
-      "  OFB_ETH_TYPE\n      value:           0x0800\n    - field:           "
-      "OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
+      "  ETH_TYPE\n      value:           0x0800\n    - field:           "
+      "IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
       "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
       "    - action:          OFPAT_SET_FIELD\n          field:           "
-      "OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
+      "IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
 TEST(decoder, flowmodv4_2) {
@@ -572,13 +572,13 @@ TEST(decoder, flowmodv4_2) {
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x99999999\n  out_group:       "
       "0xAAAAAAAA\n  flags:           0xBBBB\n  match:           \n    - field:"
-      "           OFB_IN_PORT\n      value:           0xCCCCCCCC\n    - field: "
-      "          OFB_ETH_TYPE\n      value:           0x0800\n    - field:     "
+      "           IN_PORT\n      value:           0xCCCCCCCC\n    - field: "
+      "          ETH_TYPE\n      value:           0x0800\n    - field:     "
       "  "
-      "    OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:   "
+      "    IPV4_DST\n      value:           192.168.1.1\n  instructions:   "
       " \n    - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         "
       "\n        - action:          OFPAT_SET_FIELD\n          field:          "
-      " OFB_IPV4_DST\n          value:           192.168.2.1\n...\n");
+      " IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
 TEST(decoder, flowmodv1) {
@@ -595,14 +595,14 @@ TEST(decoder, flowmodv1) {
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x00009999\n  out_group:       "
       "0x00000000\n  flags:           0xBBBB\n  match:           \n    - field:"
-      "           OFB_IN_PORT\n      value:           0x0000CCCC\n    - field: "
+      "           IN_PORT\n      value:           0x0000CCCC\n    - field: "
       "     "
-      "     OFB_ETH_TYPE\n      value:           0x0800\n    - field:          "
+      "     ETH_TYPE\n      value:           0x0800\n    - field:          "
       " "
-      "OFB_IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
+      "IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
       "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
       "    - action:          OFPAT_SET_FIELD\n          field:           "
-      "OFB_IPV4_DST\n          value:           192.168.2.1\n...\n";
+      "IPV4_DST\n          value:           192.168.2.1\n...\n";
 
   auto s = HexToRawData(hex);
 
@@ -641,16 +641,16 @@ TEST(decoder, flowmod1_2) {
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x00009999\n  out_group:       "
       "0x00000000\n  flags:           0xBBBB\n  match:           \n    - field:"
-      "           OFB_IN_PORT\n      value:           0x0000CCCC\n    - field: "
+      "           IN_PORT\n      value:           0x0000CCCC\n    - field: "
       "     "
-      "     OFB_ETH_TYPE\n      value:           0x0800\n    - field:          "
+      "     ETH_TYPE\n      value:           0x0800\n    - field:          "
       " "
-      "OFB_IP_PROTO\n      value:           0x01\n    - field:           "
-      "OFB_IPV4_DST\n      value:           192.168.1.1\n    - field:          "
-      " OFB_ICMPV4_TYPE\n      value:           0xDD\n  instructions:    \n    "
+      "IP_PROTO\n      value:           0x01\n    - field:           "
+      "IPV4_DST\n      value:           192.168.1.1\n    - field:          "
+      " ICMPV4_TYPE\n      value:           0xDD\n  instructions:    \n    "
       "- instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n       "
       " - action:          OFPAT_SET_FIELD\n          field:           "
-      "OFB_ICMPV4_CODE\n          value:           0xEE\n        - action:     "
+      "ICMPV4_CODE\n          value:           0xEE\n        - action:     "
       " "
       "    OFPAT_COPY_TTL_OUT\n...\n");
 }
@@ -667,9 +667,9 @@ TEST(decoder, packetinv4) {
       " in_phy_port:     0x66666666\n  metadata:        0x7777777777777777\n  "
       "reason:          OFPR_ACTION\n  table_id:        0x88\n  cookie:        "
       "  0x9999999999999999\n  match:           \n    - field:           "
-      "OFB_IN_PORT\n      value:           0x55555555\n    - field:           "
-      "OFB_IN_PHY_PORT\n      value:           0x66666666\n    - field:        "
-      "   OFB_METADATA\n      value:           0x7777777777777777\n  data:     "
+      "IN_PORT\n      value:           0x55555555\n    - field:           "
+      "IN_PHY_PORT\n      value:           0x66666666\n    - field:        "
+      "   METADATA\n      value:           0x7777777777777777\n  data:     "
       "       "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
@@ -703,7 +703,7 @@ TEST(decoder, packetoutv4) {
       "max_len: "
       "        0x0014\n    - action:          OFPAT_SET_FIELD\n      field:    "
       "    "
-      "   OFB_IPV4_DST\n      value:           192.168.1.1\n  data:            "
+      "   IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
 }
@@ -722,7 +722,7 @@ TEST(decoder, packetoutv1) {
       "         OFPAT_OUTPUT\n      port:            0x00000005\n      "
       "max_len:         "
       "0x0014\n    - action:          OFPAT_SET_FIELD\n      field:           "
-      "OFB_IPV4_DST\n      value:           192.168.1.1\n  data:            "
+      "IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n";
 
@@ -803,11 +803,11 @@ TEST(decoder, groupmodv4) {
       "\n        - action:          OFPAT_OUTPUT\n          port:            "
       "0x00000005\n          max_len:         0x0014\n        - action:        "
       "  "
-      "OFPAT_SET_FIELD\n          field:           OFB_IPV4_DST\n          "
+      "OFPAT_SET_FIELD\n          field:           IPV4_DST\n          "
       "value:           192.168.1.1\n    - weight:          0x8888\n      "
       "watch_port:      0x99999999\n      watch_group:     0xAAAAAAAA\n      "
       "actions:         \n        - action:          OFPAT_SET_FIELD\n         "
-      " field:           OFB_ICMPV4_CODE\n          value:           0xEE\n    "
+      " field:           ICMPV4_CODE\n          value:           0xEE\n    "
       " "
       "   - action:          OFPAT_COPY_TTL_OUT\n...\n");
 }
@@ -954,7 +954,7 @@ TEST(decoder, flowremovedv4) {
       "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
-      "OFB_IN_PORT\n      value:           0x12345678\n...\n");
+      "IN_PORT\n      value:           0x12345678\n...\n");
 }
 
 TEST(decoder, flowremovedv1) {
@@ -972,7 +972,7 @@ TEST(decoder, flowremovedv1) {
       "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
-      "OFB_IN_PORT\n      value:           0x00005678\n...\n");
+      "IN_PORT\n      value:           0x00005678\n...\n");
 }
 
 TEST(decoder, flowremovedv2) {
@@ -991,7 +991,7 @@ TEST(decoder, flowremovedv2) {
       "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
-      "OFB_IN_PORT\n      value:           0x12345678\n...\n");
+      "IN_PORT\n      value:           0x12345678\n...\n");
 }
 
 TEST(decoder, flowremovedv3) {
@@ -1008,7 +1008,7 @@ TEST(decoder, flowremovedv3) {
       "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
-      "OFB_IN_PORT\n      value:           0x12345678\n...\n");
+      "IN_PORT\n      value:           0x12345678\n...\n");
 }
 
 TEST(decoder, ofmp_desc_request_v4) {

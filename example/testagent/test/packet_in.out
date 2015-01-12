@@ -213,11 +213,11 @@ msg:
   out_group:       0x00000000
   flags:           0x0000
   match:           
-    - field:           OFB_IN_PORT
+    - field:           IN_PORT
       value:           0x00000001
-    - field:           OFB_ETH_SRC
+    - field:           ETH_SRC
       value:           '8a:67:69:c6:9f:59'
-    - field:           OFB_ETH_DST
+    - field:           ETH_DST
       value:           'fa:9a:44:df:f4:42'
   instructions:    
     - instruction:     OFPIT_APPLY_ACTIONS
@@ -244,11 +244,11 @@ msg:
   out_group:       0x00000000
   flags:           0x0000
   match:           
-    - field:           OFB_IN_PORT
+    - field:           IN_PORT
       value:           0x00000002
-    - field:           OFB_ETH_SRC
+    - field:           ETH_SRC
       value:           'fa:9a:44:df:f4:42'
-    - field:           OFB_ETH_DST
+    - field:           ETH_DST
       value:           '8a:67:69:c6:9f:59'
   instructions:    
     - instruction:     OFPIT_APPLY_ACTIONS

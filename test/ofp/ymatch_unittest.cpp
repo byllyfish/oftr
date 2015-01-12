@@ -15,7 +15,7 @@ TEST(ymatch, decodeMatchYaml) {
 
   std::string input{
       R"""(---
-- field: OFB_IN_PORT
+- field: IN_PORT
   value: 1
 ...
 )"""};

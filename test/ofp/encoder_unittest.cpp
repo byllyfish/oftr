@@ -397,7 +397,7 @@ TEST(encoder, ofmp_flowrequest_v4) {
           cookie: 4
           cookie_mask: 5
           match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0x12345678
     )""";
 
@@ -422,7 +422,7 @@ TEST(encoder, ofmp_flowrequest_v1) {
           cookie: 0x4444444444444444
           cookie_mask: 0x5555555555555555
           match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0x12345678
     )""";
 
@@ -447,7 +447,7 @@ TEST(encoder, ofmp_aggregaterequest_v4) {
           cookie: 0x4444444444444444
           cookie_mask: 0x5555555555555555
           match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0x12345678
     )""";
 
@@ -472,7 +472,7 @@ TEST(encoder, ofmp_aggregaterequest_v1) {
           cookie: 0x4444444444444444
           cookie_mask: 0x5555555555555555
           match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0x12345678
     )""";
 
@@ -502,7 +502,7 @@ TEST(encoder, ofmp_flowreply_v4) {
            packet_count: 9
            byte_count: 10
            match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0x12345678
            instructions:
              - instruction: OFPIT_GOTO_TABLE
@@ -539,7 +539,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
            packet_count: 9
            byte_count: 10
            match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0x12345678
            instructions:
          - table_id: 0x11
@@ -553,9 +553,9 @@ TEST(encoder, ofmp_flowreply2_v4) {
            packet_count: 0x9999999999999999
            byte_count:   0xAAAAAAAAAAAAAAAA
            match:
-             - field: OFB_ETH_SRC
+             - field: ETH_SRC
                value: 10-20-30-40-50-60
-             - field: OFB_ETH_DST
+             - field: ETH_DST
                value: aa-bb-cc-dd-ee-ff
            instructions:
              - instruction: OFPIT_GOTO_TABLE
@@ -632,7 +632,7 @@ TEST(encoder, ofmp_flowreply_v1) {
            packet_count: 0xBBBBBBBBBBBBBBBB
            byte_count: 0xCCCCCCCCCCCCCCCC
            match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0xDDDDDDDD
            instructions:
              - instruction: OFPIT_APPLY_ACTIONS
@@ -674,7 +674,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
            packet_count: 9
            byte_count: 10
            match:
-             - field: OFB_IN_PORT
+             - field: IN_PORT
                value: 0x12345678
            instructions:
              - instruction: OFPIT_APPLY_ACTIONS
@@ -693,9 +693,9 @@ TEST(encoder, ofmp_flowreply2_v1) {
            packet_count: 0x9999999999999999
            byte_count:   0xAAAAAAAAAAAAAAAA
            match:
-             - field: OFB_ETH_SRC
+             - field: ETH_SRC
                value: 10-20-30-40-50-60
-             - field: OFB_ETH_DST
+             - field: ETH_DST
                value: aa-bb-cc-dd-ee-ff
            instructions:
              - instruction: OFPIT_GOTO_TABLE
@@ -973,17 +973,17 @@ TEST(encoder, flowmodv4) {
         out_group:       0x00000000
         flags:           0x0000
         match:           
-          - field:           OFB_IN_PORT
+          - field:           IN_PORT
             value:           13
-          - field:           OFB_ETH_TYPE
+          - field:           ETH_TYPE
             value:           2048
-          - field:           OFB_IPV4_DST
+          - field:           IPV4_DST
             value:           192.168.1.1
         instructions:
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 field: OFB_IPV4_DST
+                 field: IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -1016,17 +1016,17 @@ TEST(encoder, flowmodv4_2) {
         out_group:       0xAAAAAAAA
         flags:           0xBBBB
         match:           
-          - field:           OFB_IN_PORT
+          - field:           IN_PORT
             value:           0xCCCCCCCC
-          - field:           OFB_ETH_TYPE
+          - field:           ETH_TYPE
             value:           2048
-          - field:           OFB_IPV4_DST
+          - field:           IPV4_DST
             value:           192.168.1.1
         instructions:
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 field: OFB_IPV4_DST
+                 field: IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -1059,15 +1059,15 @@ TEST(encoder, flowmodv4_fail) {
         out_group:       0xAAAAAAAA
         flags:           0xBBBB
         match:           
-          - field:           OFB_IN_PORT
+          - field:           IN_PORT
             value:           13
-          - field:           OFB_TCP_DST
+          - field:           TCP_DST
             value:           80
         instructions:
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 field: OFB_IPV4_DST
+                 field: IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -1098,15 +1098,15 @@ TEST(encoder, flowmodv1) {
         out_group:       0xAAAAAAAA
         flags:           0xBBBB
         match:           
-          - field:           OFB_IN_PORT
+          - field:           IN_PORT
             value:           0xCCCCCCCC
-          - field:           OFB_IPV4_DST
+          - field:           IPV4_DST
             value:           192.168.1.1
         instructions:
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 field: OFB_IPV4_DST
+                 field: IPV4_DST
                  value: 192.168.2.1
       )""";
 
@@ -1138,17 +1138,17 @@ TEST(encoder, flowmodv1_2) {
         out_group:       0xAAAAAAAA
         flags:           0xBBBB
         match:           
-          - field:           OFB_IN_PORT
+          - field:           IN_PORT
             value:           0xCCCCCCCC
-          - field:           OFB_IPV4_DST
+          - field:           IPV4_DST
             value:           192.168.1.1
-          - field:           OFB_ICMPV4_TYPE
+          - field:           ICMPV4_TYPE
             value:           0xDD
         instructions:
           - instruction:    OFPIT_APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
-                 field: OFB_ICMPV4_CODE
+                 field: ICMPV4_CODE
                  value: 0xEE
                - action: OFPAT_COPY_TTL_OUT
       )""";
@@ -1232,7 +1232,7 @@ TEST(encoder, packetoutv1) {
             port: 5
             max_len: 20
           - action: OFPAT_SET_FIELD
-            field:  OFB_IPV4_DST
+            field:  IPV4_DST
             value:  192.168.1.1
         data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
@@ -1260,7 +1260,7 @@ TEST(encoder, packetoutv4) {
             port: 5
             max_len: 20
           - action: OFPAT_SET_FIELD
-            field:  OFB_IPV4_DST
+            field:  IPV4_DST
             value:  192.168.1.1
         data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
       )""";
@@ -1375,14 +1375,14 @@ TEST(encoder, groupmodv4) {
                 port: 5
                 max_len: 20
               - action: OFPAT_SET_FIELD
-                field:  OFB_IPV4_DST
+                field:  IPV4_DST
                 value:  192.168.1.1
           - weight: 0x8888
             watch_port: 0x99999999
             watch_group: 0xAAAAAAAA
             actions:
               - action: OFPAT_SET_FIELD
-                field: OFB_ICMPV4_CODE
+                field: ICMPV4_CODE
                 value: 0xEE
               - action: OFPAT_COPY_TTL_OUT
       )""";
@@ -1417,14 +1417,14 @@ TEST(encoder, groupmodv2) {
                 port: 5
                 max_len: 20
               - action: OFPAT_SET_FIELD
-                field:  OFB_IPV4_DST
+                field:  IPV4_DST
                 value:  192.168.1.1
           - weight: 0x8888
             watch_port: 0x99999999
             watch_group: 0xAAAAAAAA
             actions:
               - action: OFPAT_SET_FIELD
-                field: OFB_ICMPV4_CODE
+                field: ICMPV4_CODE
                 value: 0xEE
               - action: OFPAT_COPY_TTL_OUT
       )""";
@@ -1719,7 +1719,7 @@ TEST(encoder, flowremovedv4) {
         packet_count: 0xAAAAAAAAAAAAAAAA
         byte_count: 0xBBBBBBBBBBBBBBBB
         match:
-            - field: OFB_IN_PORT
+            - field: IN_PORT
               value: 0x12345678
       )""";
 
@@ -1750,7 +1750,7 @@ TEST(encoder, flowremovedv1) {
         packet_count: 0xAAAAAAAAAAAAAAAA
         byte_count: 0xBBBBBBBBBBBBBBBB
         match:
-            - field: OFB_IN_PORT
+            - field: IN_PORT
               value: 0x12345678
       )""";
 
@@ -1782,7 +1782,7 @@ TEST(encoder, flowremovedv2) {
         packet_count: 0xAAAAAAAAAAAAAAAA
         byte_count: 0xBBBBBBBBBBBBBBBB
         match:
-            - field: OFB_IN_PORT
+            - field: IN_PORT
               value: 0x12345678
       )""";
 
@@ -1816,7 +1816,7 @@ TEST(encoder, flowremovedv3) {
         packet_count: 0xAAAAAAAAAAAAAAAA
         byte_count: 0xBBBBBBBBBBBBBBBB
         match:
-            - field: OFB_IN_PORT
+            - field: IN_PORT
               value: 0x12345678
       )""";
 

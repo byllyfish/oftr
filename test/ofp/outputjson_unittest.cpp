@@ -76,9 +76,9 @@ TEST(outputjson, flowmod) {
       "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":\"OFPFC_ADD\","
       "\"idle_"
       "timeout\":0,\"hard_timeout\":0,\"priority\":0,\"buffer_id\":0,\"out_"
-      "port\":0,\"out_group\":0,\"flags\":0,\"match\":[{\"field\":\"OFB_IN_"
-      "PORT\",\"value\":27},{\"field\":\"OFB_ETH_TYPE\",\"value\":2048},{"
-      "\"field\":\"OFB_IP_PROTO\",\"value\":6},{\"field\":\"OFB_TCP_SRC\","
+      "port\":0,\"out_group\":0,\"flags\":0,\"match\":[{\"field\":\"IN_"
+      "PORT\",\"value\":27},{\"field\":\"ETH_TYPE\",\"value\":2048},{"
+      "\"field\":\"IP_PROTO\",\"value\":6},{\"field\":\"TCP_SRC\","
       "\"value\":80}],\"instructions\":[{\"instruction\":\"OFPIT_GOTO_TABLE\","
       "\"table_id\":3}]}}";
   EXPECT_EQ(expected, decodeJson.result().str());

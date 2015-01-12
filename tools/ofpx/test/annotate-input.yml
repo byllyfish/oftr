@@ -82,7 +82,7 @@ msg:
   table_id: 0xff
   cookie: 0xffffffffffffffff
   match:
-    - field: OFB_ETH_DST
+    - field: ETH_DST
       value: 'ff:ff:ff:ff:ff:ff'
       mask: 'ff:ff:ff:ff:ff:ff'
   data: 'ffffffff'
@@ -101,7 +101,7 @@ msg:
   packet_count: 0xffffffffffffffff
   byte_count: 0xffffffffffffffff
   match:
-    - field: OFB_ETH_DST
+    - field: ETH_DST
       value: 'ff:ff:ff:ff:ff:ff'
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
@@ -148,7 +148,7 @@ msg:
   out_group:    0xffffffff                
   flags:        0xffff                    
   match:
-    - field: OFB_ETH_DST
+    - field: ETH_DST
       value: 'ff:ff:ff:ff:ff:ff'
       mask: 'ff:ff:ff:ff:ff:ff'
   instructions:
@@ -219,7 +219,7 @@ msg:
     cookie: 0xffffffffffffffff
     cookie_mask: 0xffffffffffffffff
     match:
-      - field: OFB_ETH_DST
+      - field: ETH_DST
         value: 'ff:ff:ff:ff:ff:ff'
         mask: 'ff:ff:ff:ff:ff:ff'
 ---
@@ -240,7 +240,7 @@ msg:
       packet_count: 0xffffffffffffffff
       byte_count: 0xffffffffffffffff
       match:
-        - field: OFB_ETH_DST
+        - field: ETH_DST
           value: 'ff:ff:ff:ff:ff:ff'
           mask: 'ff:ff:ff:ff:ff:ff'
       instructions:
@@ -262,7 +262,7 @@ msg:
     cookie: 0xffffffffffffffff
     cookie_mask: 0xffffffffffffffff
     match:
-      - field: OFB_ETH_DST
+      - field: ETH_DST
         value: 'ff:ff:ff:ff:ff:ff'
         mask: 'ff:ff:ff:ff:ff:ff'
 ---
@@ -488,17 +488,17 @@ msg:
       apply_actions_miss:
         - OFPAT_COPY_TTL_OUT
       match:
-        - OFB_ETH_DST
+        - ETH_DST
       wildcards:
-        - OFB_ETH_DST
+        - ETH_DST
       write_set_field:
-        - OFB_ETH_DST
+        - ETH_DST
       write_set_field_miss:
-        - OFB_ETH_SRC
+        - ETH_SRC
       apply_set_field:
-        - OFB_ETH_DST
+        - ETH_DST
       apply_set_field_miss:
-        - OFB_ETH_SRC
+        - ETH_SRC
       properties:
 ---
 version: 0x04
@@ -530,17 +530,17 @@ msg:
       apply_actions_miss:
         - OFPAT_COPY_TTL_OUT
       match:
-        - OFB_ETH_DST
+        - ETH_DST
       wildcards:
-        - OFB_ETH_DST
+        - ETH_DST
       write_set_field:
-        - OFB_ETH_DST
+        - ETH_DST
       write_set_field_miss:
-        - OFB_ETH_SRC
+        - ETH_SRC
       apply_set_field:
-        - OFB_ETH_DST
+        - ETH_DST
       apply_set_field_miss:
-        - OFB_ETH_SRC
+        - ETH_SRC
       properties:
 ---
 version: 0x04

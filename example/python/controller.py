@@ -103,11 +103,11 @@ def addFlow(event, ethSource, ethDest, outPort):
         'out_group':       0,
         'flags':           0,
         'match': [
-          { 'field': 'OFB_IN_PORT', 
+          { 'field': 'IN_PORT', 
             'value': event.msg.in_port },
-          { 'field': 'OFB_ETH_SRC', 
+          { 'field': 'ETH_SRC', 
             'value': ethSource },
-          { 'field': 'OFB_ETH_DST', 
+          { 'field': 'ETH_DST', 
             'value': ethDest }
         ],
         'instructions': [
