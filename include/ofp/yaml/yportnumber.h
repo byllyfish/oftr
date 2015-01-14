@@ -44,8 +44,24 @@ struct ScalarTraits<ofp::PortNumber> {
 
   static bool mustQuote(StringRef) { return false; }
 
-  using json_type = uint32_t;
+  using json_type = ofp::PortNumber;
 };
+
+
+template<>
+inline std::string primitive_to_json(ofp::PortNumber value) {
+    llvm::StringRef scalar;
+    auto portNum = static_cast<ofp::OFPPortNo>(value);
+    if (ScalarTraits<ofp::PortNumber>::converter.convert(portNum, &scalar)) {
+      std::string result = "\"";
+      result += scalar;
+      result += '\"';
+      return result;
+    } else {
+      // Output PortNumber in hexadecimal.
+      return std::to_string(portNum);
+    }
+}
 
 }  // namespace yaml
 }  // namespace llvm

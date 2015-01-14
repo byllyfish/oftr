@@ -7,7 +7,7 @@ msg:
   in_port:         0xFFFFFFFD
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFC
+      port:            ALL
       max_len:         0xFFFF
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
@@ -117,7 +117,7 @@ msg:
   in_port:         0xFFFFFFFD
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFC
+      port:            ALL
       max_len:         0xFFFF
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
@@ -180,7 +180,7 @@ msg:
         - instruction:     OFPIT_APPLY_ACTIONS
           actions:         
             - action:          OFPAT_OUTPUT
-              port:            0xFFFFFFFA
+              port:            NORMAL
               max_len:         0x0000
     - table_id:        0x00
       duration_sec:    0x0004D33C
@@ -215,7 +215,7 @@ msg:
         - instruction:     OFPIT_WRITE_ACTIONS
           actions:         
             - action:          OFPAT_OUTPUT
-              port:            0xFFFFFFFD
+              port:            CONTROLLER
               max_len:         0xFFFF
 ...
 ---
@@ -926,7 +926,7 @@ msg:
   in_port:         0xFFFFFFFD
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFC
+      port:            ALL
       max_len:         0xFFFF
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
@@ -989,7 +989,7 @@ msg:
         - instruction:     OFPIT_APPLY_ACTIONS
           actions:         
             - action:          OFPAT_OUTPUT
-              port:            0xFFFFFFFA
+              port:            NORMAL
               max_len:         0x0000
     - table_id:        0x00
       duration_sec:    0x0004D33C
@@ -1063,7 +1063,7 @@ msg:
         - instruction:     OFPIT_WRITE_ACTIONS
           actions:         
             - action:          OFPAT_OUTPUT
-              port:            0xFFFFFFFD
+              port:            CONTROLLER
               max_len:         0xFFFF
 ...
 ---
@@ -3778,7 +3778,7 @@ msg:
   in_port:         0xFFFFFFFD
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFC
+      port:            ALL
       max_len:         0xFFFF
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
@@ -3841,7 +3841,7 @@ msg:
         - instruction:     OFPIT_APPLY_ACTIONS
           actions:         
             - action:          OFPAT_OUTPUT
-              port:            0xFFFFFFFA
+              port:            NORMAL
               max_len:         0x0000
     - table_id:        0x00
       duration_sec:    0x0004D33C
@@ -3915,7 +3915,7 @@ msg:
         - instruction:     OFPIT_WRITE_ACTIONS
           actions:         
             - action:          OFPAT_OUTPUT
-              port:            0xFFFFFFFD
+              port:            CONTROLLER
               max_len:         0xFFFF
 ...
 ---

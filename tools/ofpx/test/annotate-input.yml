@@ -129,7 +129,7 @@ msg:
   in_port: 0xffffffff
   actions:
     - action: OFPAT_OUTPUT
-      port: 0xffffffff
+      port: CONTROLLER
       max_len: 0xffff
   data: 'ffffffff'
 ---
@@ -155,7 +155,7 @@ msg:
     - instruction: OFPIT_APPLY_ACTIONS
       actions:
         - action: OFPAT_OUTPUT
-          port: 0xffffffff
+          port: CONTROLLER
           max_len: 0xffff
 ---
 version: 0x04
@@ -170,7 +170,7 @@ msg:
       watch_group: 0xffffffff
       actions:
         - action: OFPAT_OUTPUT
-          port: 0xffffffff
+          port: CONTROLLER
           max_len: 0xffff
 ---
 version: 0x04
@@ -247,7 +247,7 @@ msg:
         - instruction: OFPIT_APPLY_ACTIONS
           actions:
             - action: OFPAT_OUTPUT
-              port: 0xffffffff
+              port: CONTROLLER
               max_len: 0xffff
 ---
 version: 0x04

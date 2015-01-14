@@ -51,7 +51,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -65,7 +65,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -79,7 +79,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -93,7 +93,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -107,7 +107,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -121,7 +121,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -135,7 +135,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -149,7 +149,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -163,7 +163,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -177,7 +177,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...
@@ -191,7 +191,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OFPAT_OUTPUT
-      port:            0xFFFFFFFB
+      port:            FLOOD
       max_len:         0x0000
   data:            ''
 ...

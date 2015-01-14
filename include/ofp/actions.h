@@ -8,6 +8,7 @@
 #include "ofp/oxmtype.h"
 #include "ofp/constants.h"
 #include "ofp/oxmfields.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -44,15 +45,15 @@ class AT_OUTPUT {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 16); }
 
-  constexpr AT_OUTPUT(UInt32 port, UInt16 maxlen = 0)
+  constexpr AT_OUTPUT(PortNumber port, UInt16 maxlen = 0)
       : port_{port}, maxlen_{maxlen} {}
 
-  constexpr UInt32 port() const { return port_; }
+  constexpr PortNumber port() const { return port_; }
   constexpr UInt16 maxlen() const { return maxlen_; }
 
  private:
   const ActionType type_ = type();
-  const Big32 port_;
+  const PortNumber port_;
   const Big16 maxlen_;
   Padding<6> pad_;
 };

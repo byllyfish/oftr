@@ -78,6 +78,14 @@ TEST(actions, AT_OUTPUT) {
   EXPECT_EQ(sizeof(act), AT_OUTPUT::type().length());
 
   EXPECT_HEX("0000 0010 0000 0005 0009 000000000000", &act, sizeof(act));
+
+  AT_OUTPUT act2{OFPP_CONTROLLER, 9};
+  EXPECT_EQ(OFPP_CONTROLLER, act2.port());
+  EXPECT_EQ(9, act2.maxlen());
+  EXPECT_EQ(16, sizeof(act2));
+  EXPECT_EQ(sizeof(act2), AT_OUTPUT::type().length());
+
+  EXPECT_HEX("0000 0010 FFFFFFFD 0009 000000000000", &act2, sizeof(act2));
 }
 
 TEST(actions, AT_SET_MPLS_TTL) {

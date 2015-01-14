@@ -63,7 +63,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         break;
       case AT_OUTPUT::type(): {
         const AT_OUTPUT *action = item.action<AT_OUTPUT>();
-        Hex32 port = action->port();
+        PortNumber port = action->port();
         Hex16 maxlen = action->maxlen();
         io.mapRequired("port", port);
         io.mapRequired("max_len", maxlen);
@@ -194,7 +194,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
       }
       case OFPAT_OUTPUT: {
-        UInt32 port;
+        PortNumber port;
         UInt16 maxlen;
         io.mapRequired("port", port);
         io.mapRequired("max_len", maxlen);
