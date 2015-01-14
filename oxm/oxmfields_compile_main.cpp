@@ -166,6 +166,7 @@ static const char *HeaderFilePreamble =
 #include "ofp/enetaddress.h"
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
+#include "ofp/portnumber.h"
 
 )""";
 
@@ -232,7 +233,7 @@ using namespace ofp;
 
 // We need to define this array to get the linker to compile this tool.
 const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {
-	{"none", nullptr, 0, false}
+	{"none", nullptr, 0, false, "none", "none"}
 };
 const size_t ofp::OXMTypeInfoArraySize = 0;
 
