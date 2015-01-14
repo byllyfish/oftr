@@ -146,7 +146,8 @@ enum OFPPortNo : UInt32 {
   OFPP_ALL = 0xfffffffc,
   OFPP_CONTROLLER = 0xfffffffd,
   OFPP_LOCAL = 0xfffffffe,
-  OFPP_ANY = 0xffffffff
+  OFPP_ANY = 0xffffffff,
+  OFPP_NONE = 0xffffffff,     // Version 1.0 only
 };
 
 // Features of ports available in a datapath.

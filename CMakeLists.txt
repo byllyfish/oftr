@@ -179,6 +179,7 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
   src/ofp/yaml/yconstants.cpp
+  src/ofp/yaml/yportnumber.cpp
 )
 
 # Specify the config.h.in file.

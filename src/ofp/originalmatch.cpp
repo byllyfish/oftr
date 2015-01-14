@@ -31,7 +31,7 @@ OriginalMatch::OriginalMatch(const OXMRange &range) {
   for (auto &item : range) {
     switch (item.type()) {
       case OFB_IN_PORT::type():
-        in_port = UInt16_narrow_cast(item.value<OFB_IN_PORT>());
+        in_port = UInt16_narrow_cast(item.value<OFB_IN_PORT>().value());
         wc &= ~OFPFW_IN_PORT;
         break;
       case OFB_ETH_SRC::type():

@@ -183,9 +183,10 @@ TEST(actions, AT_SET_FIELD_16bit) {
 }
 
 TEST(actions, AT_SET_FIELD_32bit) {
-  AT_SET_FIELD<OFB_IN_PORT> act{5};
+  PortNumber port{5};
+  AT_SET_FIELD<OFB_IN_PORT> act{port};
 
-  EXPECT_EQ(5, act.value());
+  EXPECT_EQ(port, act.value());
   EXPECT_EQ(16, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IN_PORT>::type().length());
 

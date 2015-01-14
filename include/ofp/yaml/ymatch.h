@@ -8,6 +8,7 @@
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/yoxmtype.h"
+#include "ofp/yaml/yportnumber.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/yaml/encoder.h"

@@ -1,5 +1,5 @@
 Name	Class	Field	Size	ValueType	Mask	Prerequisite	Description
-OFB_IN_PORT	0x8000	0	4	Big32	false		Input Port
+OFB_IN_PORT	0x8000	0	4	PortNumber	false		Input Port
 OFB_IN_PHY_PORT	0x8000	1	4	Big32	false	OFB_IN_PORT{0} & OFB_IN_PORT{0}	Physical Input Port
 OFB_METADATA	0x8000	2	8	Big64	true		Metadata
 OFB_ETH_DST	0x8000	3	6	EnetAddress	true		Ethernet Destination
