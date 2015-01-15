@@ -13,7 +13,7 @@ class PacketOut
     : public ProtocolMsg<PacketOut, OFPT_PACKET_OUT, 24, 65535, false> {
  public:
   UInt32 bufferId() const { return bufferId_; }
-  UInt32 inPort() const { return inPort_; }
+  PortNumber inPort() const { return inPort_; }
 
   ActionRange actions() const;
   ByteRange enetFrame() const;
@@ -23,7 +23,7 @@ class PacketOut
  private:
   Header header_;
   Big32 bufferId_ = OFP_NO_BUFFER;
-  Big32 inPort_ = 0;
+  PortNumber inPort_ = 0;
   Big16 actionsLen_ = 0;
   Padding<6> pad_;
 
@@ -45,7 +45,7 @@ class PacketOutBuilder {
   explicit PacketOutBuilder(const PacketOut *msg);
 
   void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
-  void setInPort(UInt32 inPort) { msg_.inPort_ = inPort; }
+  void setInPort(PortNumber inPort) { msg_.inPort_ = inPort; }
   void setActions(const ActionRange &actions) { actions_ = actions; }
   void setEnetFrame(const ByteRange &enetFrame) { enetFrame_ = enetFrame; }
 

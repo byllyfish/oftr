@@ -4,7 +4,7 @@ xid:             0x00000000
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFD
+  in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL
@@ -114,7 +114,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFD
+  in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL
@@ -923,7 +923,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFD
+  in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL
@@ -3775,7 +3775,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFD
+  in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL

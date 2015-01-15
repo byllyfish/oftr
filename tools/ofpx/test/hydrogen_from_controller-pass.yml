@@ -63,7 +63,7 @@ xid:             0x360907F8
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000002
@@ -76,7 +76,7 @@ xid:             0x360907F9
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            LOCAL
@@ -219,7 +219,7 @@ xid:             0x36090804
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000001
@@ -245,7 +245,7 @@ xid:             0x36090806
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000002
@@ -258,7 +258,7 @@ xid:             0x36090807
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000001
@@ -271,7 +271,7 @@ xid:             0x36090808
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000001
@@ -549,7 +549,7 @@ xid:             0x3609081B
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000002
@@ -728,7 +728,7 @@ xid:             0x36090829
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000002
@@ -741,7 +741,7 @@ xid:             0x3609082A
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            LOCAL
@@ -754,7 +754,7 @@ xid:             0x3609082B
 version:         0x01
 msg:             
   buffer_id:       0xFFFFFFFF
-  in_port:         0xFFFFFFFF
+  in_port:         ANY
   actions:         
     - action:          OFPAT_OUTPUT
       port:            0x00000001

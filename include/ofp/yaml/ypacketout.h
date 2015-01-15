@@ -21,7 +21,7 @@ struct MappingTraits<ofp::PacketOut> {
     using namespace ofp;
 
     Hex32 bufferID = msg.bufferId();
-    Hex32 inPort = msg.inPort();
+    PortNumber inPort = msg.inPort();
 
     io.mapRequired("buffer_id", bufferID);
     io.mapRequired("in_port", inPort);

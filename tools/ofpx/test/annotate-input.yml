@@ -126,7 +126,7 @@ version: 0x04
 type: OFPT_PACKET_OUT
 msg:
   buffer_id: 0xffffffff
-  in_port: 0xffffffff
+  in_port: CONTROLLER
   actions:
     - action: OFPAT_OUTPUT
       port: CONTROLLER
