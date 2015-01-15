@@ -24,7 +24,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFC
+  out_port:        ALL
   out_group:       0x00000000
   flags:           0x0000
   match:           
@@ -283,7 +283,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -414,7 +414,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -805,7 +805,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -1131,7 +1131,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -1311,7 +1311,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -1627,7 +1627,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -3611,7 +3611,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -3983,7 +3983,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -4124,7 +4124,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -4347,7 +4347,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           
@@ -6288,7 +6288,7 @@ msg:
   hard_timeout:    0x0000
   priority:        0x007B
   buffer_id:       0x0000FFFF
-  out_port:        0xFFFFFFFF
+  out_port:        ANY
   out_group:       0xFFFFFFFF
   flags:           0x0000
   match:           

@@ -144,7 +144,7 @@ msg:
   hard_timeout: 0xffff             
   priority:     0xffff                 
   buffer_id:    0xffffffff               
-  out_port:     0xffffffff                 
+  out_port:     CONTROLLER                 
   out_group:    0xffffffff                
   flags:        0xffff                    
   match:
