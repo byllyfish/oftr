@@ -118,10 +118,16 @@ UInt8 PacketIn::tableID() const {
   }
 }
 
-UInt32 PacketIn::inPort() const {
+PortNumber PacketIn::inPort() const {
   switch (version()) {
-    case OFP_VERSION_1:
-      return offset<Big16>(14);
+    case OFP_VERSION_1: {
+      UInt32 port32 = offset<Big16>(14);
+      if (port32 > 0xFF00U) {
+        // Sign extend to 32-bits the "fake" ports.
+        port32 |= 0xFFFF0000UL;
+      }
+      return port32;
+    }
     case OFP_VERSION_2:
       return offset<Big32>(12);
     default:

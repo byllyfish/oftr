@@ -17,7 +17,7 @@ class PacketIn
 
   UInt32 bufferId() const { return bufferId_; }
   UInt16 totalLen() const;
-  UInt32 inPort() const;
+  PortNumber inPort() const;
   UInt32 inPhyPort() const;
   UInt64 metadata() const;
   OFPPacketInReason reason() const;
@@ -75,7 +75,7 @@ class PacketInBuilder {
 
   void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
   void setTotalLen(UInt16 totalLen) { msg_.totalLen_ = totalLen; }
-  void setInPort(UInt32 inPort) { inPort_ = inPort; }
+  void setInPort(PortNumber inPort) { inPort_ = inPort; }
   void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }
   void setMetadata(UInt64 metadata) { metadata_ = metadata; }
   void setReason(OFPPacketInReason reason) { msg_.reason_ = reason; }
@@ -88,7 +88,7 @@ class PacketInBuilder {
 
  private:
   PacketIn msg_;
-  Big32 inPort_ = 0;
+  PortNumber inPort_ = 0;
   Big32 inPhyPort_ = 0;
   Big64 metadata_ = 0;
   MatchBuilder match_;

@@ -75,7 +75,7 @@ type: OFPT_PACKET_IN
 msg:
   buffer_id: 0xffffffff
   total_len: 0xffff
-  in_port: 0xffffffff
+  in_port: CONTROLLER
   in_phy_port: 0xffffffff
   metadata: 0xffffffffffffffff
   reason: 0xff

@@ -66,7 +66,7 @@ version:         0x01
 msg:             
   buffer_id:       0x00000100
   total_len:       0x004E
-  in_port:         0x0000FFFE
+  in_port:         LOCAL
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          OFPR_NO_MATCH
@@ -133,7 +133,7 @@ version:         0x01
 msg:             
   buffer_id:       0x00000103
   total_len:       0x005A
-  in_port:         0x0000FFFE
+  in_port:         LOCAL
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          OFPR_NO_MATCH
@@ -149,7 +149,7 @@ version:         0x01
 msg:             
   buffer_id:       0x00000104
   total_len:       0x0046
-  in_port:         0x0000FFFE
+  in_port:         LOCAL
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          OFPR_NO_MATCH
@@ -2204,7 +2204,7 @@ version:         0x01
 msg:             
   buffer_id:       0x0000010F
   total_len:       0x0046
-  in_port:         0x0000FFFE
+  in_port:         LOCAL
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          OFPR_NO_MATCH
@@ -2220,7 +2220,7 @@ version:         0x01
 msg:             
   buffer_id:       0x00000110
   total_len:       0x005A
-  in_port:         0x0000FFFE
+  in_port:         LOCAL
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          OFPR_NO_MATCH
@@ -2268,7 +2268,7 @@ version:         0x01
 msg:             
   buffer_id:       0x00000113
   total_len:       0x005A
-  in_port:         0x0000FFFE
+  in_port:         LOCAL
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          OFPR_NO_MATCH
@@ -2370,7 +2370,7 @@ version:         0x01
 msg:             
   buffer_id:       0x00000116
   total_len:       0x0046
-  in_port:         0x0000FFFE
+  in_port:         LOCAL
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          OFPR_NO_MATCH

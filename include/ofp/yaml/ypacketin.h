@@ -32,7 +32,7 @@ struct MappingTraits<ofp::PacketIn> {
     io.mapRequired("buffer_id", bufferID);
     io.mapRequired("total_len", totalLen);
 
-    Hex32 inPort = msg.inPort();
+    PortNumber inPort = msg.inPort();
     Hex32 inPhyPort = msg.inPhyPort();
     Hex64 metadata = msg.metadata();
     io.mapRequired("in_port", inPort);
@@ -62,7 +62,7 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapRequired("buffer_id", msg.msg_.bufferId_);
     io.mapRequired("total_len", msg.msg_.totalLen_);
 
-    UInt32 inPort;
+    PortNumber inPort;
     UInt32 inPhyPort;
     UInt64 metadata;
     io.mapRequired("in_port", inPort);
