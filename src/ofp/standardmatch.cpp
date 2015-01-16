@@ -40,9 +40,26 @@ StandardMatch::StandardMatch(const OXMRange &range) {
         dl_dst_mask = item.mask<OFB_ETH_DST>();
         break;
       case OFB_VLAN_VID::type():
-        dl_vlan = item.value<OFB_VLAN_VID>();
+      {
+        UInt16 vlan = item.value<OFB_VLAN_VID>();
+        dl_vlan = (vlan == OFPVID_NONE ? v1::OFPVID_NONE : (vlan & ~OFPVID_PRESENT));
         wc &= ~OFPFW_DL_VLAN;
         break;
+      }
+      case OFB_VLAN_VID::typeWithMask():
+      {
+        UInt16 vlan = item.value<OFB_VLAN_VID>();
+        UInt16 mask = item.mask<OFB_VLAN_VID>();
+        if (vlan == OFPVID_PRESENT && mask == OFPVID_PRESENT) {
+          dl_vlan = v1::OFPVID_PRESENT;
+        } else {
+          if (mask != 0xffff) 
+            log::warning("StandardMatch: VLAN mask not supported. Reverting to specific match");
+          dl_vlan = (vlan & ~OFPVID_PRESENT);
+        }
+        wc &= ~OFPFW_DL_VLAN;
+        break;
+      }
       case OFB_VLAN_PCP::type():
         dl_vlan_pcp = item.value<OFB_VLAN_PCP>();
         wc &= ~OFPFW_DL_VLAN_PCP;
@@ -143,7 +160,7 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
     dl_dst_mask.clear();
   }
 
-  dl_vlan = match.dl_vlan;  // TODO(bfish) check flags
+  dl_vlan = match.dl_vlan;
   dl_vlan_pcp = match.dl_vlan_pcp;
   dl_type = match.dl_type;
   nw_tos = match.nw_tos;
@@ -187,7 +204,13 @@ OXMList StandardMatch::toOXMList() const {
   }
 
   if (!(wc & OFPFW_DL_VLAN)) {
-    list.add(OFB_VLAN_VID{dl_vlan});
+    if (dl_vlan == v1::OFPVID_NONE) {           // Vlan not present
+      list.add(OFB_VLAN_VID{OFPVID_NONE});
+    } else if (dl_vlan == v1::OFPVID_PRESENT) {    // Vlan present, any value
+      list.add(OFB_VLAN_VID{OFPVID_PRESENT}, OFB_VLAN_VID{OFPVID_PRESENT});
+    } else {                                  // Vlan present, specific value
+      list.add(OFB_VLAN_VID(dl_vlan | OFPVID_PRESENT));
+    }
   }
 
   if (!(wc & OFPFW_DL_VLAN_PCP)) {

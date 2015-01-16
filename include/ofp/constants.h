@@ -48,7 +48,10 @@ enum {
 
 enum { OFP_NO_BUFFER = 0xFFFFFFFFUL };
 
-enum { OFPVID_PRESENT = 0x1000, OFPVID_NONE = 0x0000 };
+enum : UInt16 { 
+  OFPVID_PRESENT = 0x1000, 
+  OFPVID_NONE = 0x0000
+};
 
 enum { OFPMT_STANDARD = 0, OFPMT_OXM = 1 };
 

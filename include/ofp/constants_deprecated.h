@@ -90,6 +90,13 @@ enum OFPType : UInt8 {
   OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
 };
 
+enum : UInt16 { 
+  OFPVID_NONE = 0xffff,
+
+  // Not in 1.0 spec, but allow it anyway.
+  OFPVID_PRESENT = 0xfffe 
+};
+
 }  // namespace v1
 
 namespace v2 {

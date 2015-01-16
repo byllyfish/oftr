@@ -85,3 +85,60 @@ TEST(standardmatch, oxm2) {
       "0000000000000000000000000000000000000000000000",
       &stdMatch, sizeof(stdMatch));
 }
+
+
+TEST(standardmatch, vlan_vid) {
+  // Test interpretation of vlan_vid field when converting from oxmrange.
+  
+  // Packets with *or* without any vlan tag.
+  {
+    MatchBuilder match;
+
+    StandardMatch stdMatch{match.toRange()};
+    EXPECT_EQ(0, stdMatch.dl_vlan);
+    EXPECT_EQ(1023, stdMatch.wildcards);
+
+    OXMList oxm = stdMatch.toOXMList();
+    EXPECT_EQ(0, oxm.size());
+    EXPECT_EQ(match.toRange(), oxm.toRange());
+  }
+
+  // Only packets without a vlan tag.
+  {
+    MatchBuilder match;
+    match.add(OFB_VLAN_VID{OFPVID_NONE});
+
+    StandardMatch stdMatch{match.toRange()};
+    EXPECT_EQ(0xffff, stdMatch.dl_vlan);
+    EXPECT_EQ(1021, stdMatch.wildcards);
+
+    OXMList oxm = stdMatch.toOXMList();
+    EXPECT_EQ(match.toRange(), oxm.toRange());
+  }
+
+  // Packets with any vlan tag present
+  {
+    MatchBuilder match;
+    match.add(OFB_VLAN_VID{OFPVID_PRESENT}, OFB_VLAN_VID{OFPVID_PRESENT});
+
+    StandardMatch stdMatch{match.toRange()};
+    EXPECT_EQ(0xfffe, stdMatch.dl_vlan);
+    EXPECT_EQ(1021, stdMatch.wildcards);
+
+    OXMList oxm = stdMatch.toOXMList();
+    EXPECT_EQ(match.toRange(), oxm.toRange());
+  }
+
+  // Packets with a specific vlan tag present
+  {
+    MatchBuilder match;
+    match.add(OFB_VLAN_VID{1 | OFPVID_PRESENT});
+
+    StandardMatch stdMatch{match.toRange()};
+    EXPECT_EQ(1, stdMatch.dl_vlan);
+    EXPECT_EQ(1021, stdMatch.wildcards);
+
+    OXMList oxm = stdMatch.toOXMList();
+    EXPECT_EQ(match.toRange(), oxm.toRange());
+  }
+}
