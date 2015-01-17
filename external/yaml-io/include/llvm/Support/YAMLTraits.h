@@ -528,6 +528,7 @@ public:
   virtual bool beginBitSetScalar(bool &) = 0;
   virtual bool bitSetMatch(const char*, bool) = 0;
   virtual void endBitSetScalar() = 0;
+  virtual bool bitSetMatchOther(uint32_t &) = 0;
 
   virtual void scalarString(StringRef &, bool) = 0;
   virtual void scalarJson(StringRef) {}
@@ -575,6 +576,15 @@ public:
                         uint32_t Mask) {
     if (bitSetMatch(Str, outputting() && (Val & Mask) == ConstVal))
       Val = Val | ConstVal;
+  }
+
+  template <typename T>
+  void bitSetCaseOther(T &Val, T Mask) {
+    uint32_t Temp = Val;
+    if (outputting()) 
+      Temp &= Mask;
+    if (bitSetMatchOther(Temp))
+      Val = static_cast<T>(Val | Temp);
   }
 
   void *getContext();
@@ -1064,6 +1074,7 @@ private:
   bool beginBitSetScalar(bool &) override;
   bool bitSetMatch(const char *, bool ) override;
   void endBitSetScalar() override;
+  bool bitSetMatchOther(uint32_t &) override;
   void scalarString(StringRef &, bool) override;
   void setError(const Twine &message) override;
   bool canElideEmptySequence() override;
@@ -1191,6 +1202,7 @@ public:
   bool beginBitSetScalar(bool &) override;
   bool bitSetMatch(const char *, bool ) override;
   void endBitSetScalar() override;
+  bool bitSetMatchOther(uint32_t &) override;
   void scalarString(StringRef &, bool) override;
   void setError(const Twine &message) override;
   bool canElideEmptySequence() override;

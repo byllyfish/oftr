@@ -40,7 +40,7 @@ msg:
   buffer_id:       0x00000000
   out_port:        ANY
   out_group:       0x00000000
-  flags:           0x0000
+  flags:           [  ]
   match:           
   instructions:    
 ...
@@ -293,7 +293,7 @@ msg:
   buffer_id:       0xFFFFFFFF
   out_port:        0x00000000
   out_group:       0x00000000
-  flags:           0x0001
+  flags:           [ SEND_FLOW_REM ]
   match:           
     - field:           ETH_TYPE
       value:           0x0800
@@ -330,7 +330,7 @@ msg:
   buffer_id:       0xFFFFFFFF
   out_port:        0x00000000
   out_group:       0x00000000
-  flags:           0x0001
+  flags:           [ SEND_FLOW_REM ]
   match:           
     - field:           ETH_TYPE
       value:           0x0800

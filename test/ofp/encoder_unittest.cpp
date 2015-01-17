@@ -971,7 +971,7 @@ TEST(encoder, flowmodv4) {
         buffer_id:       0x00000000
         out_port:        0x00000000
         out_group:       0x00000000
-        flags:           0x0000
+        flags:           []
         match:           
           - field:           IN_PORT
             value:           13
@@ -1014,7 +1014,7 @@ TEST(encoder, flowmodv4_2) {
         buffer_id:       0x88888888
         out_port:        0x99999999
         out_group:       0xAAAAAAAA
-        flags:           0xBBBB
+        flags:           [ '0xBBBB' ]
         match:           
           - field:           IN_PORT
             value:           0xCCCCCCCC
@@ -1057,7 +1057,7 @@ TEST(encoder, flowmodv4_fail) {
         buffer_id:       0x88888888
         out_port:        0x99999999
         out_group:       0xAAAAAAAA
-        flags:           0xBBBB
+        flags:           [ '0xBBBB' ]
         match:           
           - field:           IN_PORT
             value:           13
@@ -1096,7 +1096,7 @@ TEST(encoder, flowmodv1) {
         buffer_id:       0x88888888
         out_port:        0x99999999
         out_group:       0xAAAAAAAA
-        flags:           0xBBBB
+        flags:           [ '0xBBBB' ]
         match:           
           - field:           IN_PORT
             value:           0xCCCCCCCC
@@ -1136,7 +1136,7 @@ TEST(encoder, flowmodv1_2) {
         buffer_id:       0x88888888
         out_port:        0x99999999
         out_group:       0xAAAAAAAA
-        flags:           0xBBBB
+        flags:           [ '0xBBBB' ]
         match:           
           - field:           IN_PORT
             value:           0xCCCCCCCC

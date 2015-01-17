@@ -293,6 +293,29 @@ void Input::endBitSetScalar() {
   }
 }
 
+bool Input::bitSetMatchOther(uint32_t &Val) {
+  if (EC)
+    return false;
+  if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode)) {
+    unsigned Index = 0;
+    for (auto &N : SQ->Entries) {
+      if (ScalarHNode *SN = dyn_cast<ScalarHNode>(N.get())) {
+        StringRef S = SN->value();
+        if (!S.empty() && isdigit(S.front()) && !S.getAsInteger(0, Val)) {
+          BitValuesUsed[Index] = true;
+          return true;
+        }
+      } else {
+        setError(CurrentNode, "unexpected scalar in sequence of bit values");
+      }
+      ++Index;
+    }
+  } else {
+    setError(CurrentNode, "expected sequence of bit values");
+  }
+  return false;
+}
+
 void Input::scalarString(StringRef &S, bool) {
   if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
     S = SN->value();
@@ -546,6 +569,19 @@ bool Output::bitSetMatch(const char *Str, bool Matches) {
 
 void Output::endBitSetScalar() {
   this->outputUpToEndOfLine(" ]");
+}
+
+
+bool Output::bitSetMatchOther(uint32_t &Val) {
+  if (Val != 0) {
+    if (NeedBitValueComma)
+      output(", ");
+    char buf[16];
+    auto len = format("'0x%08X'", Val).print(buf, sizeof(buf));
+    this->output(StringRef{buf, len});
+    NeedBitValueComma = true;
+  }
+  return false;
 }
 
 void Output::scalarString(StringRef &S, bool MustQuote) {

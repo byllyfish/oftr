@@ -40,7 +40,7 @@ def clearFlows(datapath):
         'buffer_id':    0xFFFFFFFF,
         'out_port':     0xFFFFFFFF,
         'out_group':    0,
-        'flags':        0,
+        'flags':        [],
         'match':  [],
         'instructions': []
       }
@@ -101,7 +101,7 @@ def addFlow(event, ethSource, ethDest, outPort):
         'buffer_id':       event.msg.buffer_id,
         'out_port':        0,
         'out_group':       0,
-        'flags':           0,
+        'flags':           [],
         'match': [
           { 'field': 'IN_PORT', 
             'value': event.msg.in_port },

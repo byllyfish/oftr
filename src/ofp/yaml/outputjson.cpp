@@ -79,19 +79,34 @@ void OutputJson::endEnumScalar() {}
 
 bool OutputJson::beginBitSetScalar(bool &DoClear) {
   output("[");
+  NeedComma = false;
   return true;
 }
 
 bool OutputJson::bitSetMatch(const char *Str, bool Matches) {
   if (Matches) {
     if (NeedComma) output(",");
+    output("\"");
     output(Str);
+    output("\"");
     NeedComma = true;
   }
   return false;
 }
 
 void OutputJson::endBitSetScalar() { output("]"); }
+
+bool OutputJson::bitSetMatchOther(uint32_t &Val) {
+  if (Val != 0) {
+    if (NeedComma)
+      output(",");
+    char buf[16];
+    auto len = format("\"0x%08X\"", Val).print(buf, sizeof(buf));
+    this->output(StringRef{buf, len});
+    NeedComma = true;
+  }
+  return false;
+}
 
 // Return offset of next unsafe character -- either a control character, \ or ".
 static StringRef::size_type findUnsafe(const StringRef &s,

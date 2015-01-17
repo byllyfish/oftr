@@ -549,7 +549,7 @@ TEST(decoder, flowmodv4) {
       "      0x00\n  command:         OFPFC_ADD\n  idle_timeout:    0x0000\n  "
       "hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       "
       "0x00000000\n  out_port:        0x00000000\n  out_group:       "
-      "0x00000000\n  flags:           0x0000\n  match:           \n    - field:"
+      "0x00000000\n  flags:           [  ]\n  match:           \n    - field:"
       "           IN_PORT\n      value:           0x0000000D\n    - field: "
       "        "
       "  ETH_TYPE\n      value:           0x0800\n    - field:           "
@@ -571,7 +571,7 @@ TEST(decoder, flowmodv4_2) {
       "      0x33\n  command:         0x44\n  idle_timeout:    0x5555\n  "
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x99999999\n  out_group:       "
-      "0xAAAAAAAA\n  flags:           0xBBBB\n  match:           \n    - field:"
+      "0xAAAAAAAA\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    - field:"
       "           IN_PORT\n      value:           0xCCCCCCCC\n    - field: "
       "          ETH_TYPE\n      value:           0x0800\n    - field:     "
       "  "
@@ -594,7 +594,7 @@ TEST(decoder, flowmodv1) {
       "      0x00\n  command:         0x44\n  idle_timeout:    0x5555\n  "
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x00009999\n  out_group:       "
-      "0x00000000\n  flags:           0xBBBB\n  match:           \n    - field:"
+      "0x00000000\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    - field:"
       "           IN_PORT\n      value:           0x0000CCCC\n    - field: "
       "     "
       "     ETH_TYPE\n      value:           0x0800\n    - field:          "
@@ -604,6 +604,9 @@ TEST(decoder, flowmodv1) {
       "    - action:          OFPAT_SET_FIELD\n          field:           "
       "IPV4_DST\n          value:           192.168.2.1\n...\n";
 
+
+  testDecodeEncode(hex, yaml);
+  #if 0
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
@@ -626,6 +629,7 @@ TEST(decoder, flowmodv1) {
 
   EXPECT_EQ("", encoder.error());
   EXPECT_HEX(hex, encoder.data(), encoder.size());
+  #endif //0
 }
 
 TEST(decoder, flowmod1_2) {
@@ -640,7 +644,7 @@ TEST(decoder, flowmod1_2) {
       "      0x00\n  command:         0x44\n  idle_timeout:    0x5555\n  "
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x00009999\n  out_group:       "
-      "0x00000000\n  flags:           0xBBBB\n  match:           \n    - field:"
+      "0x00000000\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    - field:"
       "           IN_PORT\n      value:           0x0000CCCC\n    - field: "
       "     "
       "     ETH_TYPE\n      value:           0x0800\n    - field:          "
@@ -726,6 +730,9 @@ TEST(decoder, packetoutv1) {
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n";
 
+  testDecodeEncode(hex, yaml);
+
+#if 0
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
@@ -746,6 +753,7 @@ TEST(decoder, packetoutv1) {
 
   EXPECT_EQ("", encoder.error());
   EXPECT_HEX(hex, encoder.data(), encoder.size());
+#endif //0
 }
 
 TEST(decoder, setconfigv4) {

@@ -30,7 +30,7 @@ msg:
   buffer_id:       0xFFFFFFFF
   out_port:        ANY
   out_group:       0x00000000
-  flags:           0x0000
+  flags:           [  ]
   match:           
   instructions:    
 ...
@@ -211,7 +211,7 @@ msg:
   buffer_id:       0x0000010B
   out_port:        0x00000000
   out_group:       0x00000000
-  flags:           0x0000
+  flags:           [  ]
   match:           
     - field:           IN_PORT
       value:           0x00000001
@@ -242,7 +242,7 @@ msg:
   buffer_id:       0x0000010C
   out_port:        0x00000000
   out_group:       0x00000000
-  flags:           0x0000
+  flags:           [  ]
   match:           
     - field:           IN_PORT
       value:           0x00000002

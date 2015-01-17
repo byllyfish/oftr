@@ -146,7 +146,7 @@ msg:
   buffer_id:    0xffffffff               
   out_port:     CONTROLLER                 
   out_group:    0xffffffff                
-  flags:        0xffff                    
+  flags:        [ SEND_FLOW_REM ]
   match:
     - field: ETH_DST
       value: 'ff:ff:ff:ff:ff:ff'

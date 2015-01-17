@@ -330,6 +330,25 @@ enum OFPFlowRemovedReason : UInt8 {
   OFPRR_GROUP_DELETE = 3
 };
 
+enum OFPFlowModFlags : UInt16 {
+  OFPFF_NONE = 0,
+
+  OFPFF_SEND_FLOW_REM = 1 << 0,
+  OFPFF_CHECK_OVERLAP = 1 << 1,
+  OFPFF_RESET_COUNTS = 1 << 2,
+  OFPFF_NO_PKT_COUNTS = 1 << 3,
+  OFPFF_NO_BYT_COUNTS = 1 << 4,
+
+  // Not supported: 1.0 OFPFF_EMERG
+  
+  OFPFF_OTHER_FLAGS = 0xFFE0
+};
+
+inline OFPFlowModFlags operator|(OFPFlowModFlags lhs, OFPFlowModFlags rhs) {
+  return static_cast<OFPFlowModFlags>(static_cast<UInt16>(lhs) | rhs);
+}
+
+
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,

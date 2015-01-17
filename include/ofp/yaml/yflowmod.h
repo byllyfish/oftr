@@ -50,7 +50,8 @@ struct MappingTraits<ofp::FlowMod> {
     io.mapRequired("buffer_id", msg.bufferId_);
     io.mapRequired("out_port", msg.outPort_);
     io.mapRequired("out_group", msg.outGroup_);
-    io.mapRequired("flags", msg.flags_);
+    ofp::OFPFlowModFlags flags = msg.flags();
+    io.mapRequired("flags", flags);
 
     ofp::Match m = msg.match();
     io.mapRequired("match", m);
@@ -75,8 +76,9 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapRequired("buffer_id", msg.msg_.bufferId_);
     io.mapRequired("out_port", msg.msg_.outPort_);
     io.mapRequired("out_group", msg.msg_.outGroup_);
-    io.mapRequired("flags", msg.msg_.flags_);
-
+    ofp::OFPFlowModFlags flags;
+    io.mapRequired("flags", flags);
+    msg.setFlags(flags);
     io.mapRequired("match", msg.match_);
     io.mapRequired("instructions", msg.instructions_);
 

@@ -227,6 +227,23 @@ struct ScalarTraits<ofp::OFPErrorCode> {
   static bool mustQuote(StringRef) { return false; }
 };
 
+#define OFP_YAML_BITCASE(prefix, name)    io.bitSetCase(value, #name, ofp::prefix##name)
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
+  static void bitset(IO &io, ofp::OFPFlowModFlags &value) {
+    OFP_YAML_BITCASE(OFPFF_, SEND_FLOW_REM);
+    OFP_YAML_BITCASE(OFPFF_, CHECK_OVERLAP);
+    OFP_YAML_BITCASE(OFPFF_, RESET_COUNTS);
+    OFP_YAML_BITCASE(OFPFF_, NO_PKT_COUNTS);
+    OFP_YAML_BITCASE(OFPFF_, NO_BYT_COUNTS);
+
+    io.bitSetCaseOther(value, ofp::OFPFF_OTHER_FLAGS);
+  }
+};
+
+
+#undef OFP_YAML_BITCASE
 #undef OFP_YAML_ENUMCASE
 
 }  // namespace yaml
