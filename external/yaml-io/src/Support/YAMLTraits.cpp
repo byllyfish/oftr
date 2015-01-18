@@ -168,12 +168,10 @@ void Input::endMapping() {
 }
 
 unsigned Input::beginSequence() {
-  if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode)) {
+  if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode))
     return SQ->Entries.size();
-  } else if (dyn_cast<EmptyHNode>(CurrentNode)) {
+  if (isa<EmptyHNode>(CurrentNode))
     return 0;
-  }
-
   // Treat case where there's a scalar "null" value as an empty sequence.
   if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
     if (isNull(SN->value()))
