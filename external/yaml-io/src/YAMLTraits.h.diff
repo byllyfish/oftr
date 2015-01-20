@@ -1,5 +1,5 @@
 --- YAMLTraits.h	2014-11-02 14:03:23.000000000 -0700
-+++ YAMLTraits.h	2014-12-26 09:51:10.000000000 -0700
++++ YAMLTraits.h	2015-01-17 12:29:24.000000000 -0700
 @@ -20,7 +20,7 @@
  #include "llvm/ADT/StringSwitch.h"
  #include "llvm/ADT/Twine.h"
@@ -133,15 +133,34 @@
  
    virtual unsigned beginSequence() = 0;
    virtual bool preflightElement(unsigned, void *&) = 0;
-@@ -454,6 +530,7 @@
+@@ -452,8 +528,10 @@
+   virtual bool beginBitSetScalar(bool &) = 0;
+   virtual bool bitSetMatch(const char*, bool) = 0;
    virtual void endBitSetScalar() = 0;
++  virtual bool bitSetMatchOther(uint32_t &) = 0;
  
    virtual void scalarString(StringRef &, bool) = 0;
 +  virtual void scalarJson(StringRef) {}
  
    virtual void setError(const Twine &) = 0;
  
-@@ -607,9 +684,45 @@
+@@ -500,6 +578,15 @@
+       Val = Val | ConstVal;
+   }
+ 
++  template <typename T>
++  void bitSetCaseOther(T &Val, T Mask) {
++    uint32_t Temp = Val;
++    if (outputting()) 
++      Temp &= Mask;
++    if (bitSetMatchOther(Temp))
++      Val = static_cast<T>(Val | Temp);
++  }
++
+   void *getContext();
+   void setContext(void *);
+ 
+@@ -607,9 +694,45 @@
    }
  }
  
@@ -154,9 +173,8 @@
 +inline std::string primitive_to_json(bool value) {
 +  return value ? "true" : "false";
 +}
- 
- template<typename T>
--typename std::enable_if<has_ScalarTraits<T>::value,void>::type
++
++template<typename T>
 +typename std::enable_if<has_ScalarTraits<T>::value && has_ScalarJsonTraits<T>::value,void>::type
 +yamlize(IO &io, T &Val, bool) {
 +  if ( io.outputting() ) {
@@ -182,13 +200,14 @@
 +    }
 +  }
 +}
-+
-+template<typename T>
+ 
+ template<typename T>
+-typename std::enable_if<has_ScalarTraits<T>::value,void>::type
 +typename std::enable_if<has_ScalarTraits<T>::value && !has_ScalarJsonTraits<T>::value,void>::type
  yamlize(IO &io, T &Val, bool) {
    if ( io.outputting() ) {
      std::string Storage;
-@@ -664,7 +777,44 @@
+@@ -664,7 +787,44 @@
  }
  
  template<typename T>
@@ -234,7 +253,7 @@
  yamlize(IO &io, T &Seq, bool) {
    if ( has_FlowTraits< SequenceTraits<T> >::value ) {
      unsigned incnt = io.beginFlowSequence();
-@@ -698,6 +848,7 @@
+@@ -698,6 +858,7 @@
    static void output(const bool &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, bool &);
    static bool mustQuote(StringRef) { return false; }
@@ -242,7 +261,7 @@
  };
  
  template<>
-@@ -719,6 +870,7 @@
+@@ -719,6 +880,7 @@
    static void output(const uint8_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, uint8_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -250,7 +269,7 @@
  };
  
  template<>
-@@ -726,6 +878,7 @@
+@@ -726,6 +888,7 @@
    static void output(const uint16_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, uint16_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -258,7 +277,7 @@
  };
  
  template<>
-@@ -733,6 +886,7 @@
+@@ -733,6 +896,7 @@
    static void output(const uint32_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, uint32_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -266,7 +285,7 @@
  };
  
  template<>
-@@ -740,6 +894,7 @@
+@@ -740,6 +904,7 @@
    static void output(const uint64_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, uint64_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -274,7 +293,7 @@
  };
  
  template<>
-@@ -747,6 +902,7 @@
+@@ -747,6 +912,7 @@
    static void output(const int8_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, int8_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -282,7 +301,7 @@
  };
  
  template<>
-@@ -754,6 +910,7 @@
+@@ -754,6 +920,7 @@
    static void output(const int16_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, int16_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -290,7 +309,7 @@
  };
  
  template<>
-@@ -761,6 +918,7 @@
+@@ -761,6 +928,7 @@
    static void output(const int32_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, int32_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -298,7 +317,7 @@
  };
  
  template<>
-@@ -768,6 +926,7 @@
+@@ -768,6 +936,7 @@
    static void output(const int64_t &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, int64_t &);
    static bool mustQuote(StringRef) { return false; }
@@ -306,7 +325,7 @@
  };
  
  template<>
-@@ -775,6 +934,7 @@
+@@ -775,6 +944,7 @@
    static void output(const float &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, float &);
    static bool mustQuote(StringRef) { return false; }
@@ -314,7 +333,7 @@
  };
  
  template<>
-@@ -782,6 +942,7 @@
+@@ -782,6 +952,7 @@
    static void output(const double &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, double &);
    static bool mustQuote(StringRef) { return false; }
@@ -322,7 +341,23 @@
  };
  
  
-@@ -1102,6 +1263,7 @@
+@@ -903,6 +1074,7 @@
+   bool beginBitSetScalar(bool &) override;
+   bool bitSetMatch(const char *, bool ) override;
+   void endBitSetScalar() override;
++  bool bitSetMatchOther(uint32_t &) override;
+   void scalarString(StringRef &, bool) override;
+   void setError(const Twine &message) override;
+   bool canElideEmptySequence() override;
+@@ -1030,6 +1202,7 @@
+   bool beginBitSetScalar(bool &) override;
+   bool bitSetMatch(const char *, bool ) override;
+   void endBitSetScalar() override;
++  bool bitSetMatchOther(uint32_t &) override;
+   void scalarString(StringRef &, bool) override;
+   void setError(const Twine &message) override;
+   bool canElideEmptySequence() override;
+@@ -1102,6 +1275,7 @@
    static void output(const Hex8 &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, Hex8 &);
    static bool mustQuote(StringRef) { return false; }
@@ -330,7 +365,7 @@
  };
  
  template<>
-@@ -1109,6 +1271,7 @@
+@@ -1109,6 +1283,7 @@
    static void output(const Hex16 &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, Hex16 &);
    static bool mustQuote(StringRef) { return false; }
@@ -338,7 +373,7 @@
  };
  
  template<>
-@@ -1116,6 +1279,7 @@
+@@ -1116,6 +1291,7 @@
    static void output(const Hex32 &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, Hex32 &);
    static bool mustQuote(StringRef) { return false; }
@@ -346,7 +381,7 @@
  };
  
  template<>
-@@ -1123,6 +1287,7 @@
+@@ -1123,6 +1299,7 @@
    static void output(const Hex64 &, void*, llvm::raw_ostream &);
    static StringRef input(StringRef, void*, Hex64 &);
    static bool mustQuote(StringRef) { return false; }

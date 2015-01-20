@@ -1,36 +1,36 @@
---- /Users/bfish/code/llvm/lib/Support/YAMLTraits.cpp	2014-11-02 14:02:34.000000000 -0700
-+++ src/Support/YAMLTraits.cpp	2014-12-26 11:03:34.000000000 -0700
-@@ -170,7 +170,17 @@
- unsigned Input::beginSequence() {
-   if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode)) {
-     return SQ->Entries.size();
-+  } else if (dyn_cast<EmptyHNode>(CurrentNode)) {
-+    return 0;
+--- YAMLTraits.cpp	2015-01-18 12:39:20.000000000 -0700
++++ YAMLTraits.cpp	2015-01-18 12:43:02.000000000 -0700
+@@ -291,6 +291,29 @@
    }
-+
-+  // Treat case where there's a scalar "null" value as an empty sequence.
-+  if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
-+    if (isNull(SN->value()))
-+      return 0;
+ }
+ 
++bool Input::bitSetMatchOther(uint32_t &Val) {
++  if (EC)
++    return false;
++  if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode)) {
++    unsigned Index = 0;
++    for (auto &N : SQ->Entries) {
++      if (ScalarHNode *SN = dyn_cast<ScalarHNode>(N.get())) {
++        StringRef S = SN->value();
++        if (!S.empty() && isdigit(S.front()) && !S.getAsInteger(0, Val)) {
++          BitValuesUsed[Index] = true;
++          return true;
++        }
++      } else {
++        setError(CurrentNode, "unexpected scalar in sequence of bit values");
++      }
++      ++Index;
++    }
++  } else {
++    setError(CurrentNode, "expected sequence of bit values");
 +  }
-+  // Any other type of HNode is an error.
-+  setError(CurrentNode, "not a sequence");
-   return 0;
- }
- 
-@@ -193,10 +203,7 @@
- }
- 
- unsigned Input::beginFlowSequence() {
--  if (SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode)) {
--    return SQ->Entries.size();
--  }
--  return 0;
-+  return beginSequence();
- }
- 
- bool Input::preflightFlowElement(unsigned index, void *&SaveInfo) {
-@@ -343,7 +350,13 @@
++  return false;
++}
++
+ void Input::scalarString(StringRef &S, bool) {
+   if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
+     S = SN->value();
+@@ -348,7 +371,13 @@
          memcpy(Buf, &StringStorage[0], Len);
          KeyStr = StringRef(Buf, Len);
        }
@@ -45,3 +45,23 @@
        if (EC)
          break;
        mapHNode->Mapping[KeyStr] = std::move(ValueHNode);
+@@ -540,6 +569,19 @@
+   this->outputUpToEndOfLine(" ]");
+ }
+ 
++
++bool Output::bitSetMatchOther(uint32_t &Val) {
++  if (Val != 0) {
++    if (NeedBitValueComma)
++      output(", ");
++    char buf[16];
++    auto len = format("'0x%08X'", Val).print(buf, sizeof(buf));
++    this->output(StringRef{buf, len});
++    NeedBitValueComma = true;
++  }
++  return false;
++}
++
+ void Output::scalarString(StringRef &S, bool MustQuote) {
+   this->newLineCheck();
+   if (S.empty()) {
