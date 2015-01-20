@@ -228,6 +228,7 @@ struct ScalarTraits<ofp::OFPErrorCode> {
 };
 
 #define OFP_YAML_BITCASE(prefix, name)    io.bitSetCase(value, #name, ofp::prefix##name)
+#define OFP_YAML_BITCASE_V1(prefix, name) io.bitSetCase(value, #name, ofp::prefix##name##_V1)
 
 template <>
 struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
@@ -243,7 +244,46 @@ struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
 };
 
 
+template <>
+struct ScalarBitSetTraits<ofp::OFPActionTypeFlags> {
+  static void bitset(IO &io, ofp::OFPActionTypeFlags &value) {
+    OFP_YAML_BITCASE(OFPATF_, OUTPUT);
+    OFP_YAML_BITCASE(OFPATF_, SET_VLAN_VID);
+    OFP_YAML_BITCASE(OFPATF_, SET_VLAN_PCP);
+    OFP_YAML_BITCASE_V1(OFPATF_, STRIP_VLAN);   // special v1-only action
+    OFP_YAML_BITCASE(OFPATF_, SET_DL_SRC);
+    OFP_YAML_BITCASE(OFPATF_, SET_DL_DST);
+    OFP_YAML_BITCASE(OFPATF_, SET_NW_SRC);
+    OFP_YAML_BITCASE(OFPATF_, SET_NW_DST);
+    OFP_YAML_BITCASE(OFPATF_, SET_NW_TOS);
+    OFP_YAML_BITCASE(OFPATF_, SET_NW_ECN);
+    OFP_YAML_BITCASE(OFPATF_, SET_TP_SRC);
+    OFP_YAML_BITCASE(OFPATF_, SET_TP_DST);
+    OFP_YAML_BITCASE_V1(OFPATF_, ENQUEUE);    // special v1-only action
+    OFP_YAML_BITCASE(OFPATF_, COPY_TTL_OUT);
+    OFP_YAML_BITCASE(OFPATF_, COPY_TTL_IN);
+    OFP_YAML_BITCASE(OFPATF_, SET_MPLS_LABEL);
+    OFP_YAML_BITCASE(OFPATF_, SET_MPLS_TC);
+    OFP_YAML_BITCASE(OFPATF_, SET_MPLS_TTL);
+    OFP_YAML_BITCASE(OFPATF_, DEC_MPLS_TTL);
+    OFP_YAML_BITCASE(OFPATF_, PUSH_VLAN);
+    OFP_YAML_BITCASE(OFPATF_, POP_VLAN);
+    OFP_YAML_BITCASE(OFPATF_, PUSH_MPLS);
+    OFP_YAML_BITCASE(OFPATF_, POP_MPLS);
+    OFP_YAML_BITCASE(OFPATF_, SET_QUEUE);
+    OFP_YAML_BITCASE(OFPATF_, GROUP);
+    OFP_YAML_BITCASE(OFPATF_, SET_NW_TTL);
+    OFP_YAML_BITCASE(OFPATF_, DEC_NW_TTL);
+    OFP_YAML_BITCASE(OFPATF_, SET_FIELD);
+    OFP_YAML_BITCASE(OFPATF_, PUSH_PBB);
+    OFP_YAML_BITCASE(OFPATF_, POP_PBB);
+
+    io.bitSetCaseOther(value, ofp::OFPATF_OTHER_FLAGS);
+  }
+};
+
 #undef OFP_YAML_BITCASE
+#undef OFP_YAML_BITCASE_V1
 #undef OFP_YAML_ENUMCASE
 
 }  // namespace yaml

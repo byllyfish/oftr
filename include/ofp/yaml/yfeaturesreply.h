@@ -31,7 +31,6 @@ struct MappingTraits<ofp::FeaturesReply> {
     Hex8 tableCount = msg.tableCount();
     Hex8 auxiliaryId = msg.auxiliaryId();
     Hex32 capabilities = msg.capabilities();
-    Hex32 actions = msg.actions();
 
     io.mapRequired("datapath_id", dpid);
     io.mapRequired("n_buffers", bufferCount);
@@ -39,8 +38,10 @@ struct MappingTraits<ofp::FeaturesReply> {
     io.mapRequired("auxiliary_id", auxiliaryId);
     io.mapRequired("capabilities", capabilities);
 
-    if (msg.msgHeader()->version() == OFP_VERSION_1)
+    if (msg.msgHeader()->version() == OFP_VERSION_1) {
+      OFPActionTypeFlags actions = msg.actions();
       io.mapRequired("actions", actions);
+    } 
 
     PortRange ports = msg.ports();
     io.mapRequired("ports", ports);
@@ -57,14 +58,14 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
     UInt8 tableCount;
     UInt8 auxiliaryId;
     UInt32 capabilities;
-    UInt32 actions;
+    OFPActionTypeFlags actions;
 
     io.mapRequired("datapath_id", dpid);
     io.mapRequired("n_buffers", bufferCount);
     io.mapRequired("n_tables", tableCount);
     io.mapOptional("auxiliary_id", auxiliaryId, UInt8{});
     io.mapRequired("capabilities", capabilities);
-    io.mapOptional("actions", actions, UInt32{});
+    io.mapOptional("actions", actions, OFPActionTypeFlags{});
 
     msg.setDatapathId(dpid);
     msg.setBufferCount(bufferCount);

@@ -69,7 +69,7 @@ msg:
   n_tables:        0xFF
   auxiliary_id:    0x00
   capabilities:    0x000000A9
-  actions:         0x00000843
+  actions:         [ OUTPUT, SET_VLAN_VID, SET_NW_SRC, ENQUEUE ]
   ports:           
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'

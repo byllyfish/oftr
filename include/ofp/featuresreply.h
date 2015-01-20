@@ -21,7 +21,7 @@ class FeaturesReply
   UInt32 capabilities() const { return capabilities_; }
 
   // Protocol version 1 stores `actions` in reserved slot.
-  UInt32 actions() const { return reserved_; }
+  OFPActionTypeFlags actions() const;
 
   PortRange ports() const;
 
@@ -66,7 +66,7 @@ class FeaturesReplyBuilder {
   }
 
   // Protocol version 1 stores `actions` in reserved slot.
-  void setActions(UInt32 actions) { msg_.reserved_ = actions; }
+  void setActions(OFPActionTypeFlags actions);
   void setPorts(const PortRange &ports) { ports_.assign(ports); }
 
   UInt32 send(Writable *channel);

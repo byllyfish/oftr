@@ -5,6 +5,8 @@
 
 using namespace ofp;
 
+const OFPActionTypeFlags kFakeActions = static_cast<OFPActionTypeFlags>(0x77777777);
+
 TEST(featuresreply, v4) {
   PortBuilder portBuilder;
   portBuilder.setPortNo(0x11111111);
@@ -29,7 +31,7 @@ TEST(featuresreply, v4) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setActions(0x77777777);
+  msg.setActions(kFakeActions);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_4};
@@ -80,7 +82,7 @@ TEST(featuresreply, v3) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setActions(0x77777777);
+  msg.setActions(kFakeActions);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_3};
@@ -136,7 +138,7 @@ TEST(featuresreply, v2) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setActions(0x77777777);
+  msg.setActions(kFakeActions);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_2};
@@ -192,7 +194,7 @@ TEST(featuresreply, v1) {
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
   msg.setCapabilities(0x66666666);
-  msg.setActions(0x77777777);
+  msg.setActions(kFakeActions);
   msg.setPorts(ports);
 
   MemoryChannel channel{OFP_VERSION_1};
@@ -201,7 +203,7 @@ TEST(featuresreply, v1) {
   EXPECT_EQ(1, xid);
   EXPECT_EQ(0x80, channel.size());
   EXPECT_HEX(
-      "0106008000000001222222222222222233333333440000006666666677777777"
+      "01060080000000012222222222222222333333334400000066666666000006EF"
       "1111222222222222506F7274203300000000000000000000444444445555555566666666"
       "777777778888888899999999"
       "1111222222222222506F7274203300000000000000000000444444445555555566666666"
@@ -219,7 +221,7 @@ TEST(featuresreply, v1) {
   EXPECT_EQ(0x44, reply->tableCount());
   EXPECT_EQ(0, reply->auxiliaryId());
   EXPECT_EQ(0x66666666, reply->capabilities());
-  EXPECT_EQ(0x77777777, reply->actions());
+  EXPECT_EQ(0x40000677, reply->actions());
 
   EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
 }

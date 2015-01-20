@@ -349,6 +349,51 @@ inline OFPFlowModFlags operator|(OFPFlowModFlags lhs, OFPFlowModFlags rhs) {
 }
 
 
+enum OFPActionTypeFlags : UInt32 {
+  OFPATF_OUTPUT = 1 << 0,
+  OFPATF_SET_VLAN_VID = 1 << 1,
+  OFPATF_SET_VLAN_PCP = 1 << 2,
+  OFPATF_SET_DL_SRC = 1 << 3,
+  OFPATF_SET_DL_DST = 1 << 4,
+  OFPATF_SET_NW_SRC = 1 << 5,
+  OFPATF_SET_NW_DST = 1 << 6,
+  OFPATF_SET_NW_TOS = 1 << 7,
+  OFPATF_SET_NW_ECN = 1 << 8,
+  OFPATF_SET_TP_SRC = 1 << 9,
+  OFPATF_SET_TP_DST = 1 << 10,
+  OFPATF_COPY_TTL_OUT = 1 << 11,
+  OFPATF_COPY_TTL_IN = 1 << 12,
+  OFPATF_SET_MPLS_LABEL = 1 << 13,
+  OFPATF_SET_MPLS_TC = 1 << 14,
+  OFPATF_SET_MPLS_TTL = 1 << 15,
+  OFPATF_DEC_MPLS_TTL = 1 << 16,
+  OFPATF_PUSH_VLAN = 1 << 17,
+  OFPATF_POP_VLAN = 1 << 18,
+  OFPATF_PUSH_MPLS = 1 << 19,
+  OFPATF_POP_MPLS = 1 << 20,
+  OFPATF_SET_QUEUE = 1 << 21,
+  OFPATF_GROUP = 1 << 22,
+  OFPATF_SET_NW_TTL = 1 << 23,
+  OFPATF_DEC_NW_TTL = 1 << 24,
+  OFPATF_SET_FIELD = 1 << 25,
+  OFPATF_PUSH_PBB = 1 << 26,
+  OFPATF_POP_PBB = 1 << 27,
+
+  // Special values for version 1.0 actions
+  OFPATF_STRIP_VLAN_V1 = 1U << 30,
+  OFPATF_ENQUEUE_V1 = 1U << 31,
+
+  OFPATF_OTHER_FLAGS = 0x30000000
+};
+
+inline OFPActionTypeFlags operator|(OFPActionTypeFlags lhs, OFPActionTypeFlags rhs) {
+  return static_cast<OFPActionTypeFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+OFPActionTypeFlags OFPActionTypeFlagsConvertToV1(UInt32 actions);
+OFPActionTypeFlags OFPActionTypeFlagsConvertFromV1(UInt32 actions);
+
+
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,

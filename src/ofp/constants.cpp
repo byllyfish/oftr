@@ -90,3 +90,26 @@ const char *toCString(OFPMultipartType type) {
 }
 
 #undef ENUMCASE
+
+
+OFPActionTypeFlags ofp::OFPActionTypeFlagsConvertToV1(UInt32 actions) {
+  UInt32 result = actions & 0x0607;
+  UInt32 moved = (actions & 0x00F8) << 1;
+  result |= moved;
+  if (actions & OFPATF_STRIP_VLAN_V1)
+    result |= 1 << deprecated::v1::OFPAT_STRIP_VLAN;
+  if (actions & OFPATF_ENQUEUE_V1)
+    result |= 1 << deprecated::v1::OFPAT_ENQUEUE;
+  return static_cast<OFPActionTypeFlags>(result);
+}
+
+OFPActionTypeFlags ofp::OFPActionTypeFlagsConvertFromV1(UInt32 actions) {
+  UInt32 result = actions & 0x0607;
+  UInt32 moved = (actions & 0x01F0) >> 1;
+  result |= moved;
+  if (actions & (1 << deprecated::v1::OFPAT_STRIP_VLAN))
+    result |= OFPATF_STRIP_VLAN_V1;
+  if (actions & (1 << deprecated::v1::OFPAT_ENQUEUE)) 
+    result |= OFPATF_ENQUEUE_V1;
+  return static_cast<OFPActionTypeFlags>(result);
+}

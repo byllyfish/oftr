@@ -306,6 +306,7 @@ enum : UInt16 {
 }  // namespace v2
 
 namespace v3 {
+
 enum : UInt16 {
   OFPAT_OUTPUT = 0,
   // -OFPAT_SET_VLAN_VID = 1,
