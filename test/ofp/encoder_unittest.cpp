@@ -2109,3 +2109,33 @@ TEST(encoder, meter_mod_v4) {
       "666666667777777788000000",
       encoder.data(), encoder.size());
 }
+
+
+TEST(encoder, ofmp_groupfeatures_reply) {
+  const char *input = R"""(
+      version: 4
+      type: OFPT_MULTIPART_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        type: OFPMP_GROUP_FEATURES
+        flags: 0
+        body:
+          types: 0x11111111
+          capabilities: 0x22222222
+          max_groups_all: 0x33333333
+          max_groups_sel: 0x44444444
+          max_groups_ind: 0x55555555
+          max_groups_ff: 0x66666666
+          actions_all: [ '0x37777777' ]
+          actions_sel: [ '0x08888888' ]
+          actions_ind: [ '0x19999999' ]
+          actions_ff: [ '0x2AAAAAAA' ]
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(56, encoder.size());
+  EXPECT_HEX("041300381111111100080000000000001111111122222222333333334444444455555555666666663777777708888888199999992AAAAAAA", encoder.data(),
+             encoder.size());
+}

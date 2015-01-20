@@ -390,10 +390,10 @@ msg:
     max_groups_sel: 0xffffffff
     max_groups_ind: 0xffffffff
     max_groups_ff: 0xffffffff
-    actions_all: 0xffffffff
-    actions_sel: 0xffffffff
-    actions_ind: 0xffffffff
-    actions_ff: 0xffffffff
+    actions_all: [ 'SET_VLAN_VID' ]
+    actions_sel: [ 'SET_VLAN_VID' ]
+    actions_ind: [ 'SET_VLAN_VID' ]
+    actions_ff: [ 'SET_VLAN_VID' ]
 ---
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
