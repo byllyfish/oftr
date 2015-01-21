@@ -282,6 +282,22 @@ struct ScalarBitSetTraits<ofp::OFPActionTypeFlags> {
   }
 };
 
+template <>
+struct ScalarBitSetTraits<ofp::OFPCapabilitiesFlags> {
+  static void bitset(IO &io, ofp::OFPCapabilitiesFlags &value) {
+    OFP_YAML_BITCASE(OFPC_, FLOW_STATS);
+    OFP_YAML_BITCASE(OFPC_, TABLE_STATS);
+    OFP_YAML_BITCASE(OFPC_, PORT_STATS);
+    OFP_YAML_BITCASE(OFPC_, GROUP_STATS);
+    OFP_YAML_BITCASE(OFPC_, IP_REASM);
+    OFP_YAML_BITCASE(OFPC_, QUEUE_STATS);
+    OFP_YAML_BITCASE(OFPC_, ARP_MATCH_IP);
+    OFP_YAML_BITCASE(OFPC_, PORT_BLOCKED);
+
+    io.bitSetCaseOther(value, ofp::OFPC_OTHER_FLAGS);
+  }
+};
+
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1
 #undef OFP_YAML_ENUMCASE

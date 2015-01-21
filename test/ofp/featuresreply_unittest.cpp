@@ -6,6 +6,7 @@
 using namespace ofp;
 
 const OFPActionTypeFlags kFakeActions = static_cast<OFPActionTypeFlags>(0x77777777);
+const OFPCapabilitiesFlags kFakeCapabilities = static_cast<OFPCapabilitiesFlags>(0x66666666);
 
 TEST(featuresreply, v4) {
   PortBuilder portBuilder;
@@ -30,7 +31,7 @@ TEST(featuresreply, v4) {
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
-  msg.setCapabilities(0x66666666);
+  msg.setCapabilities(kFakeCapabilities);
   msg.setActions(kFakeActions);
   msg.setPorts(ports);
 
@@ -81,7 +82,7 @@ TEST(featuresreply, v3) {
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
-  msg.setCapabilities(0x66666666);
+  msg.setCapabilities(kFakeCapabilities);
   msg.setActions(kFakeActions);
   msg.setPorts(ports);
 
@@ -137,7 +138,7 @@ TEST(featuresreply, v2) {
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
-  msg.setCapabilities(0x66666666);
+  msg.setCapabilities(kFakeCapabilities);
   msg.setActions(kFakeActions);
   msg.setPorts(ports);
 
@@ -193,7 +194,7 @@ TEST(featuresreply, v1) {
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
-  msg.setCapabilities(0x66666666);
+  msg.setCapabilities(kFakeCapabilities);
   msg.setActions(kFakeActions);
   msg.setPorts(ports);
 

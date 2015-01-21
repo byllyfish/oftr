@@ -18,7 +18,7 @@ class FeaturesReply
   UInt32 bufferCount() const { return bufferCount_; }
   UInt8 tableCount() const { return tableCount_; }
   UInt8 auxiliaryId() const { return auxiliaryId_; }
-  UInt32 capabilities() const { return capabilities_; }
+  OFPCapabilitiesFlags capabilities() const { return capabilities_; }
 
   // Protocol version 1 stores `actions` in reserved slot.
   OFPActionTypeFlags actions() const;
@@ -34,7 +34,7 @@ class FeaturesReply
   Big8 tableCount_ = 0;
   Big8 auxiliaryId_ = 0;
   Padding<2> pad_;
-  Big32 capabilities_ = 0;
+  Big<OFPCapabilitiesFlags> capabilities_ = OFPC_NONE;
   Big32 reserved_ = 0;
 
   // Only FeaturesReplyBuilder can construct an actual instance.
@@ -61,7 +61,7 @@ class FeaturesReplyBuilder {
   void setBufferCount(UInt32 bufferCount) { msg_.bufferCount_ = bufferCount; }
   void setTableCount(UInt8 tableCount) { msg_.tableCount_ = tableCount; }
   void setAuxiliaryId(UInt8 auxiliaryId) { msg_.auxiliaryId_ = auxiliaryId; }
-  void setCapabilities(UInt32 capabilities) {
+  void setCapabilities(OFPCapabilitiesFlags capabilities) {
     msg_.capabilities_ = capabilities;
   }
 

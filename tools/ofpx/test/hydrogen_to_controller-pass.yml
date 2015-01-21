@@ -14,7 +14,7 @@ msg:
   n_buffers:       0x00000100
   n_tables:        0xFE
   auxiliary_id:    0x00
-  capabilities:    0x000000C7
+  capabilities:    [ FLOW_STATS, TABLE_STATS, PORT_STATS, QUEUE_STATS, ARP_MATCH_IP ]
   actions:         [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, STRIP_VLAN, SET_DL_SRC, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_TOS, SET_TP_SRC, SET_TP_DST, ENQUEUE ]
   ports:           
     - port_no:         0x00000001

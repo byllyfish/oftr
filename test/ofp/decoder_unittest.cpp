@@ -177,7 +177,7 @@ TEST(decoder, featuresreplyv1) {
       "---\ntype:            OFPT_FEATURES_REPLY\nxid:             "
       "0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
-      "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    0x00000000\n  "
+      "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
       "actions:         [  ]\n  ports:           \n...\n");
 }
 
@@ -190,7 +190,7 @@ TEST(decoder, featuresreplyv1ports) {
       "---\ntype:            OFPT_FEATURES_REPLY\nxid:             "
       "0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
-      "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    0x00000000\n  "
+      "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
       "actions:         [  ]\n  ports:           \n    - port_no:        "
       " 0x00001111\n      hw_addr:         '22:22:22:22:22:22'\n      name:    "
       "        Port 1\n      config:          0x33333333\n      state:         "
@@ -211,7 +211,7 @@ TEST(decoder, featuresreplyv4) {
       "---\ntype:            OFPT_FEATURES_REPLY\nxid:             "
       "0x000000BF\nversion:         0x04\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
-      "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    0x00000000\n  "
+      "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
       "ports:           \n...\n");
 }
 

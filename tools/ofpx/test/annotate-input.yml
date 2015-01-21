@@ -39,7 +39,7 @@ msg:
   n_buffers: 0xffffffff
   n_tables: 0xff
   auxiliary_id: 0xff
-  capabilities: 0xffffffff
+  capabilities: [ 'FLOW_STATS' ]
   actions: [ 'SET_VLAN_VID' ]
   ports:
     - port_no: 0xffffffff

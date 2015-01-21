@@ -307,7 +307,7 @@ TEST(encoder, featuresreplyv1) {
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
-      capabilities: 0
+      capabilities: []
       actions: []
       ports:
     )""";
@@ -327,7 +327,7 @@ TEST(encoder, featuresreplyv1ports) {
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
-      capabilities: 0
+      capabilities: []
       actions: []
       ports:
         - port_no: 0x1111
@@ -372,7 +372,7 @@ TEST(encoder, featuresreplyv4) {
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
-      capabilities: 0
+      capabilities: []
       actions: []
       ports:
     )""";

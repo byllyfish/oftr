@@ -68,7 +68,7 @@ msg:
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x00
-  capabilities:    0x000000A9
+  capabilities:    [ FLOW_STATS, GROUP_STATS, IP_REASM, ARP_MATCH_IP ]
   actions:         [ OUTPUT, SET_VLAN_VID, SET_NW_SRC, ENQUEUE ]
   ports:           
     - port_no:         0x00000007
@@ -767,7 +767,7 @@ msg:
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x00
-  capabilities:    0x0000004F
+  capabilities:    [ FLOW_STATS, TABLE_STATS, PORT_STATS, GROUP_STATS, QUEUE_STATS ]
   ports:           
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'
@@ -3595,7 +3595,7 @@ msg:
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x63
-  capabilities:    0x0000004F
+  capabilities:    [ FLOW_STATS, TABLE_STATS, PORT_STATS, GROUP_STATS, QUEUE_STATS ]
   ports:           
 ...
 ---
@@ -6395,7 +6395,7 @@ msg:
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x63
-  capabilities:    0x0000004F
+  capabilities:    [ FLOW_STATS, TABLE_STATS, PORT_STATS, GROUP_STATS, QUEUE_STATS ]
   ports:           
 ...
 ---

@@ -30,7 +30,7 @@ struct MappingTraits<ofp::FeaturesReply> {
     Hex32 bufferCount = msg.bufferCount();
     Hex8 tableCount = msg.tableCount();
     Hex8 auxiliaryId = msg.auxiliaryId();
-    Hex32 capabilities = msg.capabilities();
+    OFPCapabilitiesFlags capabilities = msg.capabilities();
 
     io.mapRequired("datapath_id", dpid);
     io.mapRequired("n_buffers", bufferCount);
@@ -57,7 +57,7 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
     UInt32 bufferCount;
     UInt8 tableCount;
     UInt8 auxiliaryId;
-    UInt32 capabilities;
+    OFPCapabilitiesFlags capabilities;
     OFPActionTypeFlags actions;
 
     io.mapRequired("datapath_id", dpid);

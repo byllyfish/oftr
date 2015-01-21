@@ -350,6 +350,8 @@ inline OFPFlowModFlags operator|(OFPFlowModFlags lhs, OFPFlowModFlags rhs) {
 
 
 enum OFPActionTypeFlags : UInt32 {
+  OFPATF_NONE = 0,
+
   OFPATF_OUTPUT = 1 << 0,
   OFPATF_SET_VLAN_VID = 1 << 1,
   OFPATF_SET_VLAN_PCP = 1 << 2,
@@ -393,6 +395,26 @@ inline OFPActionTypeFlags operator|(OFPActionTypeFlags lhs, OFPActionTypeFlags r
 OFPActionTypeFlags OFPActionTypeFlagsConvertToV1(UInt32 actions);
 OFPActionTypeFlags OFPActionTypeFlagsConvertFromV1(UInt32 actions);
 
+enum OFPCapabilitiesFlags : UInt32 {
+  OFPC_NONE = 0,
+
+  OFPC_FLOW_STATS = 1 << 0,
+  OFPC_TABLE_STATS = 1 << 1,
+  OFPC_PORT_STATS = 1 << 2,
+  OFPC_GROUP_STATS = 1 << 3,
+  // Unused = 1 << 4
+  OFPC_IP_REASM = 1 << 5,
+  OFPC_QUEUE_STATS = 1 << 6,
+  OFPC_ARP_MATCH_IP = 1 << 7,
+  OFPC_PORT_BLOCKED = 1 << 8,
+
+  OFPC_OTHER_FLAGS = 0xFFFFFE10
+};
+
+// TODO(bfish): Use template enabled only for enum/UInt32 types.
+inline OFPCapabilitiesFlags operator|(OFPCapabilitiesFlags lhs, OFPCapabilitiesFlags rhs) {
+  return static_cast<OFPCapabilitiesFlags>(static_cast<UInt32>(lhs) | rhs);
+}
 
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,
