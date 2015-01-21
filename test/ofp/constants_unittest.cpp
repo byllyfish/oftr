@@ -66,3 +66,15 @@ TEST(constants, OFPActionTypeFlagsConvertFromV1) {
     }
   }
 }
+
+TEST(constants, OFPCapabilitiesFlagsConvertToV1) {
+  EXPECT_EQ(0, OFPCapabilitiesFlagsConvertToV1(0));
+  EXPECT_EQ(0x7fffffff, OFPCapabilitiesFlagsConvertToV1(0xFFFFFFFF));
+  EXPECT_EQ(deprecated::v1::OFPC_STP, OFPCapabilitiesFlagsConvertToV1(OFPC_STP));
+}
+
+TEST(constants, OFPCapabilitiesFlagsConvertFromV1) {
+  EXPECT_EQ(0, OFPCapabilitiesFlagsConvertFromV1(0));
+  EXPECT_EQ(0xfffffff7, OFPCapabilitiesFlagsConvertFromV1(0xFFFFFFFF));
+  EXPECT_EQ(OFPC_STP, OFPCapabilitiesFlagsConvertFromV1(deprecated::v1::OFPC_STP));
+}

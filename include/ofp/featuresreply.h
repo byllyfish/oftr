@@ -18,7 +18,7 @@ class FeaturesReply
   UInt32 bufferCount() const { return bufferCount_; }
   UInt8 tableCount() const { return tableCount_; }
   UInt8 auxiliaryId() const { return auxiliaryId_; }
-  OFPCapabilitiesFlags capabilities() const { return capabilities_; }
+  OFPCapabilitiesFlags capabilities() const;
 
   // Protocol version 1 stores `actions` in reserved slot.
   OFPActionTypeFlags actions() const;
@@ -66,7 +66,7 @@ class FeaturesReplyBuilder {
   }
 
   // Protocol version 1 stores `actions` in reserved slot.
-  void setActions(OFPActionTypeFlags actions);
+  void setActions(OFPActionTypeFlags actions) { msg_.reserved_ = actions; }
   void setPorts(const PortRange &ports) { ports_.assign(ports); }
 
   UInt32 send(Writable *channel);

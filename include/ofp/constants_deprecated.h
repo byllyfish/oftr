@@ -97,6 +97,10 @@ enum : UInt16 {
   OFPVID_PRESENT = 0xfffe 
 };
 
+enum OFPCapabilitiesFlags : UInt32 {
+  OFPC_STP = 1 << 3
+};
+
 }  // namespace v1
 
 namespace v2 {

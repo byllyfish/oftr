@@ -68,7 +68,7 @@ msg:
   n_buffers:       0x00000000
   n_tables:        0xFF
   auxiliary_id:    0x00
-  capabilities:    [ FLOW_STATS, GROUP_STATS, IP_REASM, ARP_MATCH_IP ]
+  capabilities:    [ FLOW_STATS, STP, IP_REASM, ARP_MATCH_IP ]
   actions:         [ OUTPUT, SET_VLAN_VID, SET_NW_SRC, ENQUEUE ]
   ports:           
     - port_no:         0x00000007

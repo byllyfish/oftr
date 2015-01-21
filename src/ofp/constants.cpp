@@ -113,3 +113,21 @@ OFPActionTypeFlags ofp::OFPActionTypeFlagsConvertFromV1(UInt32 actions) {
     result |= OFPATF_ENQUEUE_V1;
   return static_cast<OFPActionTypeFlags>(result);
 }
+
+
+OFPCapabilitiesFlags ofp::OFPCapabilitiesFlagsConvertToV1(UInt32 capabilities) {
+  UInt32 result = capabilities & 0x7FFFFFFF;
+  if (capabilities & OFPC_STP) {
+    result |= deprecated::v1::OFPC_STP;
+  }
+  return static_cast<OFPCapabilitiesFlags>(result);
+}
+
+OFPCapabilitiesFlags ofp::OFPCapabilitiesFlagsConvertFromV1(UInt32 capabilities) {
+  UInt32 result = capabilities;
+  if (capabilities & deprecated::v1::OFPC_STP) {
+    result |= OFPC_STP;
+    result &= ~deprecated::v1::OFPC_STP;
+  }
+  return static_cast<OFPCapabilitiesFlags>(result);
+}
