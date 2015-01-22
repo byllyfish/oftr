@@ -13,7 +13,7 @@ class PortStatus
  public:
   UInt8 reason() const { return reason_; }
 
-  const Port &port() const { return port_; }
+  const Port &port() const { return *reinterpret_cast<const Port*>(BytePtr(this) + 16); }
 
   bool validateInput(Validation *context) const { return true; }
 
@@ -21,7 +21,7 @@ class PortStatus
   Header header_;
   UInt8 reason_;
   Padding<7> pad_;
-  Port port_;
+  //Port port_;
 
   // Only PortStatusBuilder can create an instance.
   PortStatus() : header_{type()} {}
@@ -31,7 +31,7 @@ class PortStatus
   friend struct llvm::yaml::MappingTraits;
 };
 
-static_assert(sizeof(PortStatus) == 80, "Unexpected size.");
+static_assert(sizeof(PortStatus) == 80 - sizeof(Port), "Unexpected size.");
 static_assert(IsStandardLayout<PortStatus>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<PortStatus>(),
               "Expected trivially copyable.");
@@ -42,12 +42,13 @@ class PortStatusBuilder {
   explicit PortStatusBuilder(const PortStatus *msg);
 
   void setReason(UInt8 reason) { msg_.reason_ = reason; }
-  void setPort(const PortBuilder &port) { msg_.port_ = port.toPort(); }
+  void setPort(const PortBuilder &port) { port_ = port; }
 
   UInt32 send(Writable *channel);
 
  private:
   PortStatus msg_;
+  PortBuilder port_;
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;

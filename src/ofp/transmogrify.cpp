@@ -225,7 +225,7 @@ void Transmogrify::normalizePortStatusV1() {
   pkt = buf_.mutableData();
   std::memcpy(pkt + 16, &port, sizeof(Port));
 
-  assert(buf_.size() == sizeof(PortStatus));
+  assert(buf_.size() == 80);
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 

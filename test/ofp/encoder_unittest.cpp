@@ -335,10 +335,10 @@ TEST(encoder, featuresreplyv1ports) {
           name: Port 1
           config: 0x33333333
           state:  0x44444444
-          curr:   0x55555555
-          advertised: 0x66666666
-          supported:  0x77777777
-          peer:  0x88888888
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
           curr_speed: 0x99999999
           max_speed: 0xAAAAAAAA
         - port_no: 0xBBBB
@@ -346,10 +346,10 @@ TEST(encoder, featuresreplyv1ports) {
           name: Port 2
           config: 0x33333333
           state:  0x44444444
-          curr:   0x55555555
-          advertised: 0x66666666
-          supported:  0x77777777
-          peer:  0x88888888
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
           curr_speed: 0x99999999
           max_speed: 0xAAAAAAAA
     )""";
@@ -357,9 +357,9 @@ TEST(encoder, featuresreplyv1ports) {
   testEncoderSuccess(input, 0x0080,
                      "01060080000000BF000001020304050600000100FF000000000000000"
                      "00000001111222222222222506F727420310000000000000000000033"
-                     "3333334444444455555555666666667777777788888888BBBBCCCCCCC"
+                     "3333334444444455550555666606667777077788880888BBBBCCCCCCC"
                      "CCCCC506F727420320000000000000000000033333333444444445555"
-                     "5555666666667777777788888888");
+                     "0555666606667777077788880888");
 }
 
 TEST(encoder, featuresreplyv4) {
@@ -1307,10 +1307,10 @@ TEST(encoder, portstatusv4) {
           name: 'Port 1'
           config: 0x44444444
           state: 0x55555555
-          curr: 0x66666666
-          advertised: 0x77777777
-          supported: 0x88888888
-          peer: 0x99999999
+          curr: [ '0x66666666' ]
+          advertised: [ '0x77777777' ]
+          supported: [ '0x88888888' ]
+          peer: [ '0x99999999' ]
           curr_speed: 0xAAAAAAAA
           max_speed: 0xBBBBBBBB
       )""";
@@ -1339,10 +1339,10 @@ TEST(encoder, portstatusv1) {
           name: 'Port 1'
           config: 0x44444444
           state: 0x55555555
-          curr: 0x66666666
-          advertised: 0x77777777
-          supported: 0x88888888
-          peer: 0x99999999
+          curr: [ '0x66666666' ]
+          advertised: [ '0x77777777' ]
+          supported: [ '0x88888888' ]
+          peer: [ '0x99999999' ]
           curr_speed: 0xAAAAAAAA
           max_speed: 0xBBBBBBBB
       )""";
@@ -1352,7 +1352,7 @@ TEST(encoder, portstatusv1) {
   EXPECT_EQ(0x40, encoder.size());
   EXPECT_HEX(
       "010C00401111111122000000000000003333AABBCCDDEEFF506F7274203100000"
-      "000000000000000444444445555555566666666777777778888888899999999",
+      "000000000000000444444445555555566660666777707778888088899990999",
       encoder.data(), encoder.size());
 }
 

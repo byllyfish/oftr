@@ -78,3 +78,17 @@ TEST(constants, OFPCapabilitiesFlagsConvertFromV1) {
   EXPECT_EQ(0xfffffff7, OFPCapabilitiesFlagsConvertFromV1(0xFFFFFFFF));
   EXPECT_EQ(OFPC_STP, OFPCapabilitiesFlagsConvertFromV1(deprecated::v1::OFPC_STP));
 }
+
+TEST(constants, OFPPortFeaturesFlagsConvertToV1) {
+  EXPECT_EQ(0, OFPPortFeaturesFlagsConvertToV1(0));
+  EXPECT_EQ(0xffff0fff, OFPPortFeaturesFlagsConvertToV1(0xFFFFFFFF));
+  EXPECT_EQ(deprecated::v1::OFPPF_COPPER, OFPPortFeaturesFlagsConvertToV1(OFPPF_COPPER));
+  EXPECT_EQ(deprecated::v1::OFPPF_PAUSE_ASYM, OFPPortFeaturesFlagsConvertToV1(OFPPF_PAUSE_ASYM));
+}
+
+TEST(constants, OFPPortFeaturesFlagsConvertFromV1) {
+  EXPECT_EQ(0, OFPPortFeaturesFlagsConvertFromV1(0));
+  EXPECT_EQ(0xfffff87f, OFPPortFeaturesFlagsConvertFromV1(0xFFFFFFFF));
+  EXPECT_EQ(OFPPF_COPPER, OFPPortFeaturesFlagsConvertFromV1(deprecated::v1::OFPPF_COPPER));
+  EXPECT_EQ(OFPPF_PAUSE_ASYM, OFPPortFeaturesFlagsConvertFromV1(deprecated::v1::OFPPF_PAUSE_ASYM));
+}

@@ -22,10 +22,10 @@ msg:
       name:            s1-eth1
       config:          0x00000000
       state:           0x00000001
-      curr:            0x000000C0
-      advertised:      0x00000000
-      supported:       0x00000000
-      peer:            0x00000000
+      curr:            [ 10GB_FD, COPPER ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
     - port_no:         0x00000002
@@ -33,10 +33,10 @@ msg:
       name:            s1-eth2
       config:          0x00000000
       state:           0x00000000
-      curr:            0x000000C0
-      advertised:      0x00000000
-      supported:       0x00000000
-      peer:            0x00000000
+      curr:            [ 10GB_FD, COPPER ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
     - port_no:         0x0000FFFE
@@ -44,10 +44,10 @@ msg:
       name:            s1
       config:          0x00000000
       state:           0x00000000
-      curr:            0x00000000
-      advertised:      0x00000000
-      supported:       0x00000000
-      peer:            0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
 ...
@@ -87,10 +87,10 @@ msg:
     name:            s1-eth1
     config:          0x00000000
     state:           0x00000000
-    curr:            0x000000C0
-    advertised:      0x00000000
-    supported:       0x00000000
-    peer:            0x00000000
+    curr:            [ 10GB_FD, COPPER ]
+    advertised:      [  ]
+    supported:       [  ]
+    peer:            [  ]
     curr_speed:      0x00000000
     max_speed:       0x00000000
 ...

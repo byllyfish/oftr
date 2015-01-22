@@ -18,7 +18,9 @@ template <>
 struct MappingTraits<ofp::PortStatus> {
   static void mapping(IO &io, ofp::PortStatus &msg) {
     io.mapRequired("reason", msg.reason_);
-    io.mapRequired("port", msg.port_);
+
+    ofp::Port &port = RemoveConst_cast(msg.port());
+    io.mapRequired("port", port);
   }
 };
 
@@ -26,7 +28,7 @@ template <>
 struct MappingTraits<ofp::PortStatusBuilder> {
   static void mapping(IO &io, ofp::PortStatusBuilder &msg) {
     io.mapRequired("reason", msg.msg_.reason_);
-    io.mapRequired("port", msg.msg_.port_);
+    io.mapRequired("port", msg.port_);
   }
 };
 

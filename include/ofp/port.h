@@ -31,10 +31,10 @@ class Port {
   const PortNameStr &name() const { return name_; }
   UInt32 config() const { return config_; }
   UInt32 state() const { return state_; }
-  UInt32 curr() const { return curr_; }
-  UInt32 advertised() const { return advertised_; }
-  UInt32 supported() const { return supported_; }
-  UInt32 peer() const { return peer_; }
+  OFPPortFeaturesFlags curr() const { return curr_; }
+  OFPPortFeaturesFlags advertised() const { return advertised_; }
+  OFPPortFeaturesFlags supported() const { return supported_; }
+  OFPPortFeaturesFlags peer() const { return peer_; }
   UInt32 currSpeed() const { return currSpeed_; }
   UInt32 maxSpeed() const { return maxSpeed_; }
 
@@ -48,10 +48,10 @@ class Port {
   PortNameStr name_;
   Big32 config_;
   Big32 state_;
-  Big32 curr_;
-  Big32 advertised_;
-  Big32 supported_;
-  Big32 peer_;
+  Big<OFPPortFeaturesFlags> curr_;
+  Big<OFPPortFeaturesFlags> advertised_;
+  Big<OFPPortFeaturesFlags> supported_;
+  Big<OFPPortFeaturesFlags> peer_;
   Big32 currSpeed_;
   Big32 maxSpeed_;
 
@@ -79,10 +79,10 @@ class PortBuilder {
   void setName(const PortNameStr &name) { msg_.name_ = name; }
   void setConfig(UInt32 config) { msg_.config_ = config; }
   void setState(UInt32 state) { msg_.state_ = state; }
-  void setCurr(UInt32 curr) { msg_.curr_ = curr; }
-  void setAdvertised(UInt32 advertised) { msg_.advertised_ = advertised; }
-  void setSupported(UInt32 supported) { msg_.supported_ = supported; }
-  void setPeer(UInt32 peer) { msg_.peer_ = peer; }
+  void setCurr(OFPPortFeaturesFlags curr) { msg_.curr_ = curr; }
+  void setAdvertised(OFPPortFeaturesFlags advertised) { msg_.advertised_ = advertised; }
+  void setSupported(OFPPortFeaturesFlags supported) { msg_.supported_ = supported; }
+  void setPeer(OFPPortFeaturesFlags peer) { msg_.peer_ = peer; }
   void setCurrSpeed(UInt32 currSpeed) { msg_.currSpeed_ = currSpeed; }
   void setMaxSpeed(UInt32 maxSpeed) { msg_.maxSpeed_ = maxSpeed; }
 
@@ -120,17 +120,17 @@ class PortV1 {
   UInt32 state() const { return state_; }
   void setState(UInt32 state) { state_ = state; }
 
-  UInt32 curr() const { return curr_; }
-  void setCurr(UInt32 curr) { curr_ = curr; }
+  OFPPortFeaturesFlags curr() const { return OFPPortFeaturesFlagsConvertFromV1(curr_); }
+  void setCurr(OFPPortFeaturesFlags curr) { curr_ = OFPPortFeaturesFlagsConvertToV1(curr); }
 
-  UInt32 advertised() const { return advertised_; }
-  void setAdvertised(UInt32 advertised) { advertised_ = advertised; }
+  OFPPortFeaturesFlags advertised() const { return OFPPortFeaturesFlagsConvertFromV1(advertised_); }
+  void setAdvertised(OFPPortFeaturesFlags advertised) { advertised_ = OFPPortFeaturesFlagsConvertToV1(advertised); }
 
-  UInt32 supported() const { return supported_; }
-  void setSupported(UInt32 supported) { supported_ = supported; }
+  OFPPortFeaturesFlags supported() const { return OFPPortFeaturesFlagsConvertFromV1(supported_); }
+  void setSupported(OFPPortFeaturesFlags supported) { supported_ = OFPPortFeaturesFlagsConvertToV1(supported); }
 
-  UInt32 peer() const { return peer_; }
-  void setPeer(UInt32 peer) { peer_ = peer; }
+  OFPPortFeaturesFlags peer() const { return OFPPortFeaturesFlagsConvertFromV1(peer_); }
+  void setPeer(OFPPortFeaturesFlags peer) { peer_ = OFPPortFeaturesFlagsConvertToV1(peer); }
 
  private:
   Big16 portNo_;
@@ -138,10 +138,10 @@ class PortV1 {
   PortNameStr name_;
   Big32 config_;
   Big32 state_;
-  Big32 curr_;
-  Big32 advertised_;
-  Big32 supported_;
-  Big32 peer_;
+  Big<OFPPortFeaturesFlags> curr_;
+  Big<OFPPortFeaturesFlags> advertised_;
+  Big<OFPPortFeaturesFlags> supported_;
+  Big<OFPPortFeaturesFlags> peer_;
 };
 
 static_assert(sizeof(PortV1) == 48, "Unexpected size.");

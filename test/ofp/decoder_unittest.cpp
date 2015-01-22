@@ -184,9 +184,9 @@ TEST(decoder, featuresreplyv1) {
 TEST(decoder, featuresreplyv1ports) {
   testDecodeEncode(
       "01060080000000BF000001020304050600000100FF000000000000000000000011112222"
-      "22222222506F727420310000000000000000000033333333444444445555555566666666"
-      "7777777788888888BBBBCCCCCCCCCCCC506F727420320000000000000000000033333333"
-      "4444444455555555666666667777777788888888",
+      "22222222506F727420310000000000000000000033333333444444445555055566660666"
+      "7777077788880888BBBBCCCCCCCCCCCC506F727420320000000000000000000033333333"
+      "4444444455550555666606667777077788880888",
       "---\ntype:            OFPT_FEATURES_REPLY\nxid:             "
       "0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
@@ -194,14 +194,14 @@ TEST(decoder, featuresreplyv1ports) {
       "actions:         [  ]\n  ports:           \n    - port_no:        "
       " 0x00001111\n      hw_addr:         '22:22:22:22:22:22'\n      name:    "
       "        Port 1\n      config:          0x33333333\n      state:         "
-      "  0x44444444\n      curr:            0x55555555\n      advertised:      "
-      "0x66666666\n      supported:       0x77777777\n      peer:            "
-      "0x88888888\n      curr_speed:      0x00000000\n      max_speed:       "
+      "  0x44444444\n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      advertised:      "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            "
+      "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      0x00000000\n      max_speed:       "
       "0x00000000\n    - port_no:         0x0000BBBB\n      hw_addr:         "
       "'cc:cc:cc:cc:cc:cc'\n      name:            Port 2\n      config:       "
       "   0x33333333\n      state:           0x44444444\n      curr:           "
-      " 0x55555555\n      advertised:      0x66666666\n      supported:       "
-      "0x77777777\n      peer:            0x88888888\n      curr_speed:      "
+      " [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       "
+      "[ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      "
       "0x00000000\n      max_speed:       0x00000000\n...\n");
 }
 
@@ -775,15 +775,15 @@ TEST(decoder, portstatusv4) {
       "       'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    config:    "
       "  "
       "    0x44444444\n    state:           0x55555555\n    curr:            "
-      "0x66666666\n    advertised:      0x77777777\n    supported:       "
-      "0x88888888\n    peer:            0x99999999\n    curr_speed:      "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       "
+      "[ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n    curr_speed:      "
       "0xAAAAAAAA\n    max_speed:       0xBBBBBBBB\n...\n");
 }
 
 TEST(decoder, portstatusv1) {
   testDecodeEncode(
       "010C00401111111122000000000000003333AABBCCDDEEFF506F72742031000000000000"
-      "00000000444444445555555566666666777777778888888899999999",
+      "00000000444444445555555566660666777707778888088899990999",
       "---\ntype:            OFPT_PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  reason:         "
       " "
@@ -791,8 +791,8 @@ TEST(decoder, portstatusv1) {
       "       'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    config:    "
       "  "
       "    0x44444444\n    state:           0x55555555\n    curr:            "
-      "0x66666666\n    advertised:      0x77777777\n    supported:       "
-      "0x88888888\n    peer:            0x99999999\n    curr_speed:      "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       "
+      "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n    curr_speed:      "
       "0x00000000\n    max_speed:       0x00000000\n...\n");
 }
 

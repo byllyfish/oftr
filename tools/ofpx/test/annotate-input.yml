@@ -47,10 +47,10 @@ msg:
       name: '...............'
       config: 0xffffffff
       state: 0xffffffff
-      curr: 0xffffffff
-      advertised: 0xffffffff
-      supported: 0xffffffff
-      peer: 0xffffffff
+      curr: [ 'COPPER' ]
+      advertised: [ 'COPPER' ]
+      supported: [ 'COPPER' ]
+      peer: [ 'COPPER' ]
       curr_speed: 0xffffffff
       max_speed: 0xffffffff
 ---
@@ -115,10 +115,10 @@ msg:
     name: '...............'
     config: 0xffffffff
     state: 0xffffffff
-    curr: 0xffffffff
-    advertised: 0xffffffff
-    supported: 0xffffffff
-    peer: 0xffffffff
+    curr: [ 'COPPER' ]
+    advertised: [ 'COPPER' ]
+    supported: [ 'COPPER' ]
+    peer: [ 'COPPER' ]
     curr_speed: 0xffffffff
     max_speed: 0xffffffff
 ---
@@ -561,10 +561,10 @@ msg:
       name: '...............'
       config: 0xffffffff
       state: 0xffffffff
-      curr: 0xffffffff
-      advertised: 0xffffffff
-      supported: 0xffffffff
-      peer: 0xffffffff
+      curr: [ 'COPPER' ]
+      advertised: [ 'COPPER' ]
+      supported: [ 'COPPER' ]
+      peer: [ 'COPPER' ]
       curr_speed: 0xffffffff
       max_speed: 0xffffffff
 ---

@@ -5,6 +5,11 @@
 
 using namespace ofp;
 
+const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x44444444);
+const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x55555555);
+const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x66666666);
+const OFPPortFeaturesFlags kFakePeer = static_cast<OFPPortFeaturesFlags>(0x77777777);
+
 TEST(port, test) {
   PortBuilder portBuilder;
 
@@ -13,10 +18,10 @@ TEST(port, test) {
   portBuilder.setName("Port 1");
   portBuilder.setConfig(0x22222222);
   portBuilder.setState(0x33333333);
-  portBuilder.setCurr(0x44444444);
-  portBuilder.setAdvertised(0x55555555);
-  portBuilder.setSupported(0x66666666);
-  portBuilder.setPeer(0x77777777);
+  portBuilder.setCurr(kFakeCurr);
+  portBuilder.setAdvertised(kFakeAdvertised);
+  portBuilder.setSupported(kFakeSupported);
+  portBuilder.setPeer(kFakePeer);
   portBuilder.setCurrSpeed(0x88888888);
   portBuilder.setMaxSpeed(0x99999999);
 
@@ -42,7 +47,7 @@ TEST(port, test) {
 
   EXPECT_HEX(
       "1111010203040506506F727420310000000000000000000022222222333333334"
-      "4444444555555556666666677777777",
+      "4440444555505556666066677770777",
       &portv1, sizeof(portv1));
 
   EXPECT_EQ(0x1111, portv1.portNo());
@@ -50,10 +55,10 @@ TEST(port, test) {
   EXPECT_TRUE(PortNameStr{"Port 1"} == portv1.name());
   EXPECT_EQ(0x22222222, portv1.config());
   EXPECT_EQ(0x33333333, portv1.state());
-  EXPECT_EQ(0x44444444, portv1.curr());
-  EXPECT_EQ(0x55555555, portv1.advertised());
-  EXPECT_EQ(0x66666666, portv1.supported());
-  EXPECT_EQ(0x77777777, portv1.peer());
+  EXPECT_EQ(0x44444044, portv1.curr());
+  EXPECT_EQ(0x55555055, portv1.advertised());
+  EXPECT_EQ(0x66666066, portv1.supported());
+  EXPECT_EQ(0x77777077, portv1.peer());
 
   PortBuilder port2Builder{portv1};
   const Port &port2 = port2Builder.toPort();
@@ -63,10 +68,10 @@ TEST(port, test) {
   EXPECT_TRUE(PortNameStr{"Port 1"} == port2.name());
   EXPECT_EQ(0x22222222, port2.config());
   EXPECT_EQ(0x33333333, port2.state());
-  EXPECT_EQ(0x44444444, port2.curr());
-  EXPECT_EQ(0x55555555, port2.advertised());
-  EXPECT_EQ(0x66666666, port2.supported());
-  EXPECT_EQ(0x77777777, port2.peer());
+  EXPECT_EQ(0x44444044, port2.curr());
+  EXPECT_EQ(0x55555055, port2.advertised());
+  EXPECT_EQ(0x66666066, port2.supported());
+  EXPECT_EQ(0x77777077, port2.peer());
   EXPECT_EQ(0, port2.currSpeed());
   EXPECT_EQ(0, port2.maxSpeed());
 }

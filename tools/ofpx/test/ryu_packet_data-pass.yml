@@ -76,10 +76,10 @@ msg:
       name:            Port7
       config:          0x00000000
       state:           0x00000010
-      curr:            0x00000288
-      advertised:      0x00000280
-      supported:       0x00000288
-      peer:            0x00000288
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
     - port_no:         0x00000006
@@ -87,10 +87,10 @@ msg:
       name:            Port6
       config:          0x00000000
       state:           0x00000002
-      curr:            0x00000288
-      advertised:      0x00000280
-      supported:       0x00000288
-      peer:            0x00000288
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
 ...
@@ -597,10 +597,10 @@ msg:
     name:            '私のポート'
     config:          0x00000000
     state:           0x00000004
-    curr:            0x00002808
-    advertised:      0x00002800
-    supported:       0x00002808
-    peer:            0x00002808
+    curr:            [ 100MB_FD, COPPER, AUTONEG ]
+    advertised:      [ COPPER, AUTONEG ]
+    supported:       [ 100MB_FD, COPPER, AUTONEG ]
+    peer:            [ 100MB_FD, COPPER, AUTONEG ]
     curr_speed:      0x00001388
     max_speed:       0x00001388
 ...
@@ -774,10 +774,10 @@ msg:
       name:            Port7
       config:          0x00000000
       state:           0x00000004
-      curr:            0x00002808
-      advertised:      0x00002800
-      supported:       0x00002808
-      peer:            0x00002808
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
     - port_no:         0x00000006
@@ -785,10 +785,10 @@ msg:
       name:            Port6
       config:          0x00000000
       state:           0x00000004
-      curr:            0x00002808
-      advertised:      0x00002800
-      supported:       0x00002808
-      peer:            0x00002808
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
 ...
@@ -1494,10 +1494,10 @@ msg:
     name:            '私のポート'
     config:          0x00000000
     state:           0x00000004
-    curr:            0x00002808
-    advertised:      0x00002800
-    supported:       0x00002808
-    peer:            0x00002808
+    curr:            [ 100MB_FD, COPPER, AUTONEG ]
+    advertised:      [ COPPER, AUTONEG ]
+    supported:       [ 100MB_FD, COPPER, AUTONEG ]
+    peer:            [ 100MB_FD, COPPER, AUTONEG ]
     curr_speed:      0x00001388
     max_speed:       0x00001388
 ...
@@ -1744,10 +1744,10 @@ msg:
       name:            Port7
       config:          0x00000000
       state:           0x00000004
-      curr:            0x00002808
-      advertised:      0x00002800
-      supported:       0x00002808
-      peer:            0x00002808
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
     - port_no:         0x00000006
@@ -1755,10 +1755,10 @@ msg:
       name:            Port6
       config:          0x00000000
       state:           0x00000004
-      curr:            0x00002808
-      advertised:      0x00002800
-      supported:       0x00002808
-      peer:            0x00002808
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
 ...

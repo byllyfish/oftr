@@ -101,6 +101,14 @@ enum OFPCapabilitiesFlags : UInt32 {
   OFPC_STP = 1 << 3
 };
 
+enum OFPPortFeaturesFlags : UInt32 {
+  OFPPF_COPPER = 1 << 7,
+  OFPPF_FIBER = 1 << 8,
+  OFPPF_AUTONEG = 1 << 9,
+  OFPPF_PAUSE = 1 << 10,
+  OFPPF_PAUSE_ASYM = 1 << 11 
+};
+
 }  // namespace v1
 
 namespace v2 {

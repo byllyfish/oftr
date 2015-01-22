@@ -39,10 +39,16 @@ struct MappingTraits<ofp::Port> {
     io.mapRequired("name", msg.name_);
     io.mapRequired("config", msg.config_);
     io.mapRequired("state", msg.state_);
-    io.mapRequired("curr", msg.curr_);
-    io.mapRequired("advertised", msg.advertised_);
-    io.mapRequired("supported", msg.supported_);
-    io.mapRequired("peer", msg.peer_);
+
+    ofp::OFPPortFeaturesFlags curr = msg.curr();
+    ofp::OFPPortFeaturesFlags advertised = msg.advertised();
+    ofp::OFPPortFeaturesFlags supported = msg.supported();
+    ofp::OFPPortFeaturesFlags peer = msg.peer();
+    io.mapRequired("curr", curr);
+    io.mapRequired("advertised", advertised);
+    io.mapRequired("supported", supported);
+    io.mapRequired("peer", peer);
+
     io.mapRequired("curr_speed", msg.currSpeed_);
     io.mapRequired("max_speed", msg.maxSpeed_);
   }
@@ -56,10 +62,20 @@ struct MappingTraits<ofp::PortBuilder> {
     io.mapRequired("name", msg.msg_.name_);
     io.mapRequired("config", msg.msg_.config_);
     io.mapRequired("state", msg.msg_.state_);
-    io.mapRequired("curr", msg.msg_.curr_);
-    io.mapRequired("advertised", msg.msg_.advertised_);
-    io.mapRequired("supported", msg.msg_.supported_);
-    io.mapRequired("peer", msg.msg_.peer_);
+
+    ofp::OFPPortFeaturesFlags curr;
+    ofp::OFPPortFeaturesFlags advertised;
+    ofp::OFPPortFeaturesFlags supported;
+    ofp::OFPPortFeaturesFlags peer;
+    io.mapRequired("curr", curr);
+    io.mapRequired("advertised", advertised);
+    io.mapRequired("supported", supported);
+    io.mapRequired("peer", peer);
+    msg.setCurr(curr);
+    msg.setAdvertised(advertised);
+    msg.setSupported(supported);
+    msg.setPeer(peer);
+
     io.mapRequired("curr_speed", msg.msg_.currSpeed_);
     io.mapRequired("max_speed", msg.msg_.maxSpeed_);
   }

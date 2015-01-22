@@ -25,13 +25,17 @@ version	type	keypath	syntax	required	default	missing	modify
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0	object	False	msg.auxiliary_id=0,msg.ports=null		
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0.hw_addr	macaddress	True			True
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0.curr_speed	uint32	True		msg.ports.0.curr_speed=0	
-1	OFPT_FEATURES_REPLY.v1	msg.ports.0.curr	uint32	True			True
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.curr	array	True			
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.curr.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.curr.0=COPPER,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.port_no=uint16		
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0.name	str15	True			True
-1	OFPT_FEATURES_REPLY.v1	msg.ports.0.supported	uint32	True			True
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.supported	array	True			
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.supported.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.port_no=uint16		
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0.state	uint32	True			True
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0.max_speed	uint32	True		msg.ports.0.max_speed=0	
-1	OFPT_FEATURES_REPLY.v1	msg.ports.0.advertised	uint32	True			True
-1	OFPT_FEATURES_REPLY.v1	msg.ports.0.peer	uint32	True			True
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.advertised	array	True			
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.advertised.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.advertised.0=COPPER,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.port_no=uint16		
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.peer	array	True			
+1	OFPT_FEATURES_REPLY.v1	msg.ports.0.peer.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.peer.0=COPPER,msg.ports.0.port_no=uint16		
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0.config	uint32	True			True
 1	OFPT_FEATURES_REPLY.v1	msg.ports.0.port_no	uint32	True		msg.ports.0.port_no=uint16	True
 1	OFPT_FEATURES_REPLY.v1	msg.actions	array	False	msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.port_no=uint16		
@@ -82,13 +86,17 @@ version	type	keypath	syntax	required	default	missing	modify
 1	OFPT_PORT_STATUS.v1	msg.port	object	True			
 1	OFPT_PORT_STATUS.v1	msg.port.hw_addr	macaddress	True			True
 1	OFPT_PORT_STATUS.v1	msg.port.curr_speed	uint32	True		msg.port.curr_speed=0	
-1	OFPT_PORT_STATUS.v1	msg.port.curr	uint32	True			True
+1	OFPT_PORT_STATUS.v1	msg.port.curr	array	True			
+1	OFPT_PORT_STATUS.v1	msg.port.curr.0	COPPER	False	msg.port.curr.0=COPPER,msg.port.curr_speed=0,msg.port.max_speed=0,msg.port.port_no=uint16		
 1	OFPT_PORT_STATUS.v1	msg.port.name	str15	True			True
-1	OFPT_PORT_STATUS.v1	msg.port.supported	uint32	True			True
+1	OFPT_PORT_STATUS.v1	msg.port.supported	array	True			
+1	OFPT_PORT_STATUS.v1	msg.port.supported.0	COPPER	False	msg.port.curr_speed=0,msg.port.max_speed=0,msg.port.port_no=uint16,msg.port.supported.0=COPPER		
 1	OFPT_PORT_STATUS.v1	msg.port.state	uint32	True			True
 1	OFPT_PORT_STATUS.v1	msg.port.max_speed	uint32	True		msg.port.max_speed=0	
-1	OFPT_PORT_STATUS.v1	msg.port.advertised	uint32	True			True
-1	OFPT_PORT_STATUS.v1	msg.port.peer	uint32	True			True
+1	OFPT_PORT_STATUS.v1	msg.port.advertised	array	True			
+1	OFPT_PORT_STATUS.v1	msg.port.advertised.0	COPPER	False	msg.port.advertised.0=COPPER,msg.port.curr_speed=0,msg.port.max_speed=0,msg.port.port_no=uint16		
+1	OFPT_PORT_STATUS.v1	msg.port.peer	array	True			
+1	OFPT_PORT_STATUS.v1	msg.port.peer.0	COPPER	False	msg.port.curr_speed=0,msg.port.max_speed=0,msg.port.peer.0=COPPER,msg.port.port_no=uint16		
 1	OFPT_PORT_STATUS.v1	msg.port.config	uint32	True			True
 1	OFPT_PORT_STATUS.v1	msg.port.port_no	uint32	True		msg.port.port_no=uint16	True
 1	OFPT_PACKET_OUT.v1	msg	object	True			
@@ -457,13 +465,17 @@ version	type	keypath	syntax	required	default	missing	modify
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0	object	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.hw_addr	macaddress	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.curr_speed	uint32	True			ERROR
-1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.curr	uint32	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.curr	array	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.curr.0	COPPER	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.name	str15	True			ERROR
-1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.supported	uint32	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.supported	array	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.supported.0	COPPER	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.state	uint32	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.max_speed	uint32	True			ERROR
-1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.advertised	uint32	True			ERROR
-1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.peer	uint32	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.advertised	array	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.advertised.0	COPPER	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.peer	array	True			ERROR
+1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.peer.0	COPPER	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.config	uint32	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.body.0.port_no	uint32	True			ERROR
 1	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v1	msg.type	OFPMP_PORT_DESC	True			ERROR
@@ -537,13 +549,17 @@ version	type	keypath	syntax	required	default	missing	modify
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0	object	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports=null		
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0.hw_addr	macaddress	True			True
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0.curr_speed	uint32	True			True
-2	OFPT_FEATURES_REPLY.v2	msg.ports.0.curr	uint32	True			True
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.curr	array	True			
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.curr.0=COPPER		
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0.name	str15	True			True
-2	OFPT_FEATURES_REPLY.v2	msg.ports.0.supported	uint32	True			True
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.supported	array	True			
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0.state	uint32	True			True
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0.max_speed	uint32	True			True
-2	OFPT_FEATURES_REPLY.v2	msg.ports.0.advertised	uint32	True			True
-2	OFPT_FEATURES_REPLY.v2	msg.ports.0.peer	uint32	True			True
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.advertised	array	True			
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.advertised.0=COPPER		
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.peer	array	True			
+2	OFPT_FEATURES_REPLY.v2	msg.ports.0.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.peer.0=COPPER		
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0.config	uint32	True			True
 2	OFPT_FEATURES_REPLY.v2	msg.ports.0.port_no	uint32	True			True
 2	OFPT_FEATURES_REPLY.v2	msg.actions	array	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0	msg.actions=array	
@@ -594,13 +610,17 @@ version	type	keypath	syntax	required	default	missing	modify
 2	OFPT_PORT_STATUS.v2	msg.port	object	True			
 2	OFPT_PORT_STATUS.v2	msg.port.hw_addr	macaddress	True			True
 2	OFPT_PORT_STATUS.v2	msg.port.curr_speed	uint32	True			True
-2	OFPT_PORT_STATUS.v2	msg.port.curr	uint32	True			True
+2	OFPT_PORT_STATUS.v2	msg.port.curr	array	True			
+2	OFPT_PORT_STATUS.v2	msg.port.curr.0	COPPER	False	msg.port.curr.0=COPPER		
 2	OFPT_PORT_STATUS.v2	msg.port.name	str15	True			True
-2	OFPT_PORT_STATUS.v2	msg.port.supported	uint32	True			True
+2	OFPT_PORT_STATUS.v2	msg.port.supported	array	True			
+2	OFPT_PORT_STATUS.v2	msg.port.supported.0	COPPER	False	msg.port.supported.0=COPPER		
 2	OFPT_PORT_STATUS.v2	msg.port.state	uint32	True			True
 2	OFPT_PORT_STATUS.v2	msg.port.max_speed	uint32	True			True
-2	OFPT_PORT_STATUS.v2	msg.port.advertised	uint32	True			True
-2	OFPT_PORT_STATUS.v2	msg.port.peer	uint32	True			True
+2	OFPT_PORT_STATUS.v2	msg.port.advertised	array	True			
+2	OFPT_PORT_STATUS.v2	msg.port.advertised.0	COPPER	False	msg.port.advertised.0=COPPER		
+2	OFPT_PORT_STATUS.v2	msg.port.peer	array	True			
+2	OFPT_PORT_STATUS.v2	msg.port.peer.0	COPPER	False	msg.port.peer.0=COPPER		
 2	OFPT_PORT_STATUS.v2	msg.port.config	uint32	True			True
 2	OFPT_PORT_STATUS.v2	msg.port.port_no	uint32	True			True
 2	OFPT_PACKET_OUT.v2	msg	object	True			
@@ -969,13 +989,17 @@ version	type	keypath	syntax	required	default	missing	modify
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0	object	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.hw_addr	macaddress	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.curr_speed	uint32	True			ERROR
-2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.curr	uint32	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.curr	array	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.curr.0	COPPER	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.name	str15	True			ERROR
-2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.supported	uint32	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.supported	array	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.supported.0	COPPER	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.state	uint32	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.max_speed	uint32	True			ERROR
-2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.advertised	uint32	True			ERROR
-2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.peer	uint32	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.advertised	array	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.advertised.0	COPPER	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.peer	array	True			ERROR
+2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.peer.0	COPPER	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.config	uint32	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.body.0.port_no	uint32	True			ERROR
 2	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v2	msg.type	OFPMP_PORT_DESC	True			ERROR
@@ -1049,13 +1073,17 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0	object	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports=null		
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0.hw_addr	macaddress	True			True
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0.curr_speed	uint32	True			True
-3	OFPT_FEATURES_REPLY.v3	msg.ports.0.curr	uint32	True			True
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.curr	array	True			
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.curr.0=COPPER		
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0.name	str15	True			True
-3	OFPT_FEATURES_REPLY.v3	msg.ports.0.supported	uint32	True			True
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.supported	array	True			
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0.state	uint32	True			True
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0.max_speed	uint32	True			True
-3	OFPT_FEATURES_REPLY.v3	msg.ports.0.advertised	uint32	True			True
-3	OFPT_FEATURES_REPLY.v3	msg.ports.0.peer	uint32	True			True
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.advertised	array	True			
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.advertised.0=COPPER		
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.peer	array	True			
+3	OFPT_FEATURES_REPLY.v3	msg.ports.0.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.peer.0=COPPER		
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0.config	uint32	True			True
 3	OFPT_FEATURES_REPLY.v3	msg.ports.0.port_no	uint32	True			True
 3	OFPT_FEATURES_REPLY.v3	msg.actions	array	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0	msg.actions=array	
@@ -1106,13 +1134,17 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_PORT_STATUS.v3	msg.port	object	True			
 3	OFPT_PORT_STATUS.v3	msg.port.hw_addr	macaddress	True			True
 3	OFPT_PORT_STATUS.v3	msg.port.curr_speed	uint32	True			True
-3	OFPT_PORT_STATUS.v3	msg.port.curr	uint32	True			True
+3	OFPT_PORT_STATUS.v3	msg.port.curr	array	True			
+3	OFPT_PORT_STATUS.v3	msg.port.curr.0	COPPER	False	msg.port.curr.0=COPPER		
 3	OFPT_PORT_STATUS.v3	msg.port.name	str15	True			True
-3	OFPT_PORT_STATUS.v3	msg.port.supported	uint32	True			True
+3	OFPT_PORT_STATUS.v3	msg.port.supported	array	True			
+3	OFPT_PORT_STATUS.v3	msg.port.supported.0	COPPER	False	msg.port.supported.0=COPPER		
 3	OFPT_PORT_STATUS.v3	msg.port.state	uint32	True			True
 3	OFPT_PORT_STATUS.v3	msg.port.max_speed	uint32	True			True
-3	OFPT_PORT_STATUS.v3	msg.port.advertised	uint32	True			True
-3	OFPT_PORT_STATUS.v3	msg.port.peer	uint32	True			True
+3	OFPT_PORT_STATUS.v3	msg.port.advertised	array	True			
+3	OFPT_PORT_STATUS.v3	msg.port.advertised.0	COPPER	False	msg.port.advertised.0=COPPER		
+3	OFPT_PORT_STATUS.v3	msg.port.peer	array	True			
+3	OFPT_PORT_STATUS.v3	msg.port.peer.0	COPPER	False	msg.port.peer.0=COPPER		
 3	OFPT_PORT_STATUS.v3	msg.port.config	uint32	True			True
 3	OFPT_PORT_STATUS.v3	msg.port.port_no	uint32	True			True
 3	OFPT_PACKET_OUT.v3	msg	object	True			
@@ -1481,13 +1513,17 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0	object	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.hw_addr	macaddress	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.curr_speed	uint32	True			ERROR
-3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.curr	uint32	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.curr	array	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.curr.0	COPPER	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.name	str15	True			ERROR
-3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.supported	uint32	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.supported	array	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.supported.0	COPPER	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.state	uint32	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.max_speed	uint32	True			ERROR
-3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.advertised	uint32	True			ERROR
-3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.peer	uint32	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.advertised	array	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.advertised.0	COPPER	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.peer	array	True			ERROR
+3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.peer.0	COPPER	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.config	uint32	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.body.0.port_no	uint32	True			ERROR
 3	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v3	msg.type	OFPMP_PORT_DESC	True			ERROR
@@ -1561,13 +1597,17 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0	object	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null		
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0.hw_addr	macaddress	True			
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0.curr_speed	uint32	True			
-4	OFPT_FEATURES_REPLY.v4	msg.ports.0.curr	uint32	True			
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.curr	array	True			
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null		
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0.name	str15	True			
-4	OFPT_FEATURES_REPLY.v4	msg.ports.0.supported	uint32	True			
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.supported	array	True			
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null		
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0.state	uint32	True			
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0.max_speed	uint32	True			
-4	OFPT_FEATURES_REPLY.v4	msg.ports.0.advertised	uint32	True			
-4	OFPT_FEATURES_REPLY.v4	msg.ports.0.peer	uint32	True			
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.advertised	array	True			
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null		
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.peer	array	True			
+4	OFPT_FEATURES_REPLY.v4	msg.ports.0.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null		
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0.config	uint32	True			
 4	OFPT_FEATURES_REPLY.v4	msg.ports.0.port_no	uint32	True			
 4	OFPT_FEATURES_REPLY.v4	msg.actions	array	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null	msg.actions=array	
@@ -1618,13 +1658,17 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_PORT_STATUS.v4	msg.port	object	True			
 4	OFPT_PORT_STATUS.v4	msg.port.hw_addr	macaddress	True			True
 4	OFPT_PORT_STATUS.v4	msg.port.curr_speed	uint32	True			True
-4	OFPT_PORT_STATUS.v4	msg.port.curr	uint32	True			True
+4	OFPT_PORT_STATUS.v4	msg.port.curr	array	True			
+4	OFPT_PORT_STATUS.v4	msg.port.curr.0	COPPER	False	msg.port.curr.0=COPPER		
 4	OFPT_PORT_STATUS.v4	msg.port.name	str15	True			True
-4	OFPT_PORT_STATUS.v4	msg.port.supported	uint32	True			True
+4	OFPT_PORT_STATUS.v4	msg.port.supported	array	True			
+4	OFPT_PORT_STATUS.v4	msg.port.supported.0	COPPER	False	msg.port.supported.0=COPPER		
 4	OFPT_PORT_STATUS.v4	msg.port.state	uint32	True			True
 4	OFPT_PORT_STATUS.v4	msg.port.max_speed	uint32	True			True
-4	OFPT_PORT_STATUS.v4	msg.port.advertised	uint32	True			True
-4	OFPT_PORT_STATUS.v4	msg.port.peer	uint32	True			True
+4	OFPT_PORT_STATUS.v4	msg.port.advertised	array	True			
+4	OFPT_PORT_STATUS.v4	msg.port.advertised.0	COPPER	False	msg.port.advertised.0=COPPER		
+4	OFPT_PORT_STATUS.v4	msg.port.peer	array	True			
+4	OFPT_PORT_STATUS.v4	msg.port.peer.0	COPPER	False	msg.port.peer.0=COPPER		
 4	OFPT_PORT_STATUS.v4	msg.port.config	uint32	True			True
 4	OFPT_PORT_STATUS.v4	msg.port.port_no	uint32	True			True
 4	OFPT_PACKET_OUT.v4	msg	object	True			
@@ -1993,13 +2037,17 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0	object	False	msg.body=null		
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.hw_addr	macaddress	True			True
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.curr_speed	uint32	True			True
-4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.curr	uint32	True			True
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.curr	array	True			
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.curr.0	COPPER	False	msg.body.0.curr.0=COPPER		
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.name	str15	True			True
-4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.supported	uint32	True			True
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.supported	array	True			
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.supported.0	COPPER	False	msg.body.0.supported.0=COPPER		
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.state	uint32	True			True
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.max_speed	uint32	True			True
-4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.advertised	uint32	True			True
-4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.peer	uint32	True			True
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.advertised	array	True			
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.advertised.0	COPPER	False	msg.body.0.advertised.0=COPPER		
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.peer	array	True			
+4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.peer.0	COPPER	False	msg.body.0.peer.0=COPPER		
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.config	uint32	True			True
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.body.0.port_no	uint32	True			True
 4	OFPT_MULTIPART_REPLY.OFPMP_PORT_DESC.v4	msg.type	OFPMP_PORT_DESC	True			

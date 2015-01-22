@@ -154,24 +154,34 @@ enum OFPPortNo : UInt32 {
 };
 
 // Features of ports available in a datapath.
-enum ofp_port_features {
-  OFPPF_10MB_HD = 1 << 0,     // 10 Mb half-duplex rate support.
-  OFPPF_10MB_FD = 1 << 1,     // 10 Mb full-duplex rate support.
-  OFPPF_100MB_HD = 1 << 2,    // 100 Mb half-duplex rate support.
-  OFPPF_100MB_FD = 1 << 3,    // 100 Mb full-duplex rate support.
-  OFPPF_1GB_HD = 1 << 4,      // 1 Gb half-duplex rate support.
-  OFPPF_1GB_FD = 1 << 5,      // 1 Gb full-duplex rate support.
-  OFPPF_10GB_FD = 1 << 6,     // 10 Gb full-duplex rate support.
-  OFPPF_40GB_FD = 1 << 7,     // 40 Gb full-duplex rate support.
-  OFPPF_100GB_FD = 1 << 8,    // 100 Gb full-duplex rate support.
-  OFPPF_1TB_FD = 1 << 9,      // 1 Tb full-duplex rate support.
-  OFPPF_OTHER = 1 << 10,      // Other rate, not in the list.
-  OFPPF_COPPER = 1 << 11,     // Copper medium.
-  OFPPF_FIBER = 1 << 12,      // Fiber medium.
-  OFPPF_AUTONEG = 1 << 13,    // Auto-negotiation.
-  OFPPF_PAUSE = 1 << 14,      // Pause.
-  OFPPF_PAUSE_ASYM = 1 << 15  // Asymmetric pause.
+enum OFPPortFeaturesFlags : UInt32 {
+  OFPPF_10MB_HD = 1 << 0,     
+  OFPPF_10MB_FD = 1 << 1,     
+  OFPPF_100MB_HD = 1 << 2,    
+  OFPPF_100MB_FD = 1 << 3,    
+  OFPPF_1GB_HD = 1 << 4,      
+  OFPPF_1GB_FD = 1 << 5,      
+  OFPPF_10GB_FD = 1 << 6,     
+  OFPPF_40GB_FD = 1 << 7,     
+  OFPPF_100GB_FD = 1 << 8,    
+  OFPPF_1TB_FD = 1 << 9,      
+  OFPPF_OTHER = 1 << 10,      
+  OFPPF_COPPER = 1 << 11,     
+  OFPPF_FIBER = 1 << 12,      
+  OFPPF_AUTONEG = 1 << 13,    
+  OFPPF_PAUSE = 1 << 14,      
+  OFPPF_PAUSE_ASYM = 1 << 15, 
+
+  OFPPF_OTHER_FEATURES_FLAGS = 0xFFFF0000
 };
+
+inline OFPPortFeaturesFlags operator|(OFPPortFeaturesFlags lhs, OFPPortFeaturesFlags rhs) {
+  return static_cast<OFPPortFeaturesFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+OFPPortFeaturesFlags OFPPortFeaturesFlagsConvertToV1(UInt32 features);
+OFPPortFeaturesFlags OFPPortFeaturesFlagsConvertFromV1(UInt32 features);
+
 
 enum ofp_controller_max_len {
   OFPCML_MAX = 0xffe5,  // maximum max_len value which can be used to request a

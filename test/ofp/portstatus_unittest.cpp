@@ -6,6 +6,11 @@
 
 using namespace ofp;
 
+const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x44444444);
+const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x55555555);
+const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x66666666);
+const OFPPortFeaturesFlags kFakePeer = static_cast<OFPPortFeaturesFlags>(0x77777777);
+
 TEST(portstatus, v4) {
   PortBuilder port;
   port.setPortNo(0x11111111);
@@ -13,10 +18,10 @@ TEST(portstatus, v4) {
   port.setName("Port 1");
   port.setConfig(0x22222222);
   port.setState(0x33333333);
-  port.setCurr(0x44444444);
-  port.setAdvertised(0x55555555);
-  port.setSupported(0x66666666);
-  port.setPeer(0x77777777);
+  port.setCurr(kFakeCurr);
+  port.setAdvertised(kFakeAdvertised);
+  port.setSupported(kFakeSupported);
+  port.setPeer(kFakePeer);
   port.setCurrSpeed(0x88888888);
   port.setMaxSpeed(0x99999999);
 
@@ -67,10 +72,10 @@ TEST(portstatus, v1) {
   port.setName("Port 1");
   port.setConfig(0x22222222);
   port.setState(0x33333333);
-  port.setCurr(0x44444444);
-  port.setAdvertised(0x55555555);
-  port.setSupported(0x66666666);
-  port.setPeer(0x77777777);
+  port.setCurr(kFakeCurr);
+  port.setAdvertised(kFakeAdvertised);
+  port.setSupported(kFakeSupported);
+  port.setPeer(kFakePeer);
   port.setCurrSpeed(0x88888888);
   port.setMaxSpeed(0x99999999);
 
@@ -85,7 +90,7 @@ TEST(portstatus, v1) {
   EXPECT_EQ(0x40, channel.size());
   EXPECT_HEX(
       "010C00400000000133000000000000001111010203040506506F72742031000"
-      "000000000000000002222222233333333444444445555555566666666777777"
+      "000000000000000002222222233333333444404445555055566660666777707"
       "77",
       channel.data(), channel.size());
 
@@ -104,10 +109,10 @@ TEST(portstatus, v1) {
     EXPECT_EQ(PortNameStr{"Port 1"}, p.name());
     EXPECT_EQ(0x22222222, p.config());
     EXPECT_EQ(0x33333333, p.state());
-    EXPECT_EQ(0x44444444, p.curr());
-    EXPECT_EQ(0x55555555, p.advertised());
-    EXPECT_EQ(0x66666666, p.supported());
-    EXPECT_EQ(0x77777777, p.peer());
+    EXPECT_EQ(0x44444044, p.curr());
+    EXPECT_EQ(0x55555055, p.advertised());
+    EXPECT_EQ(0x66666066, p.supported());
+    EXPECT_EQ(0x77777077, p.peer());
     EXPECT_EQ(0, p.currSpeed());
     EXPECT_EQ(0, p.maxSpeed());
   }

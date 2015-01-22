@@ -5,6 +5,11 @@
 
 using namespace ofp;
 
+const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x66666666);
+const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x77777777);
+const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x88888888);
+const OFPPortFeaturesFlags kFakePeer = static_cast<OFPPortFeaturesFlags>(0x99999999);
+
 const OFPActionTypeFlags kFakeActions = static_cast<OFPActionTypeFlags>(0x77777777);
 const OFPCapabilitiesFlags kFakeCapabilities = static_cast<OFPCapabilitiesFlags>(0x66666666);
 
@@ -15,10 +20,10 @@ TEST(featuresreply, v4) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(0x44444444);
   portBuilder.setState(0x55555555);
-  portBuilder.setCurr(0x66666666);
-  portBuilder.setAdvertised(0x77777777);
-  portBuilder.setSupported(0x88888888);
-  portBuilder.setPeer(0x99999999);
+  portBuilder.setCurr(kFakeCurr);
+  portBuilder.setAdvertised(kFakeAdvertised);
+  portBuilder.setSupported(kFakeSupported);
+  portBuilder.setPeer(kFakePeer);
   portBuilder.setCurrSpeed(0xAAAAAAAA);
   portBuilder.setMaxSpeed(0xBBBBBBBB);
 
@@ -66,10 +71,10 @@ TEST(featuresreply, v3) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(0x44444444);
   portBuilder.setState(0x55555555);
-  portBuilder.setCurr(0x66666666);
-  portBuilder.setAdvertised(0x77777777);
-  portBuilder.setSupported(0x88888888);
-  portBuilder.setPeer(0x99999999);
+  portBuilder.setCurr(kFakeCurr);
+  portBuilder.setAdvertised(kFakeAdvertised);
+  portBuilder.setSupported(kFakeSupported);
+  portBuilder.setPeer(kFakePeer);
   portBuilder.setCurrSpeed(0xAAAAAAAA);
   portBuilder.setMaxSpeed(0xBBBBBBBB);
 
@@ -122,10 +127,10 @@ TEST(featuresreply, v2) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(0x44444444);
   portBuilder.setState(0x55555555);
-  portBuilder.setCurr(0x66666666);
-  portBuilder.setAdvertised(0x77777777);
-  portBuilder.setSupported(0x88888888);
-  portBuilder.setPeer(0x99999999);
+  portBuilder.setCurr(kFakeCurr);
+  portBuilder.setAdvertised(kFakeAdvertised);
+  portBuilder.setSupported(kFakeSupported);
+  portBuilder.setPeer(kFakePeer);
   portBuilder.setCurrSpeed(0xAAAAAAAA);
   portBuilder.setMaxSpeed(0xBBBBBBBB);
 
@@ -178,10 +183,10 @@ TEST(featuresreply, v1) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(0x44444444);
   portBuilder.setState(0x55555555);
-  portBuilder.setCurr(0x66666666);
-  portBuilder.setAdvertised(0x77777777);
-  portBuilder.setSupported(0x88888888);
-  portBuilder.setPeer(0x99999999);
+  portBuilder.setCurr(kFakeCurr);
+  portBuilder.setAdvertised(kFakeAdvertised);
+  portBuilder.setSupported(kFakeSupported);
+  portBuilder.setPeer(kFakePeer);
   portBuilder.setCurrSpeed(0xAAAAAAAA);
   portBuilder.setMaxSpeed(0xBBBBBBBB);
 
@@ -205,10 +210,10 @@ TEST(featuresreply, v1) {
   EXPECT_EQ(0x80, channel.size());
   EXPECT_HEX(
       "01060080000000012222222222222222333333334400000066666666000006EF"
-      "1111222222222222506F7274203300000000000000000000444444445555555566666666"
-      "777777778888888899999999"
-      "1111222222222222506F7274203300000000000000000000444444445555555566666666"
-      "777777778888888899999999",
+      "1111222222222222506F7274203300000000000000000000444444445555555566660666"
+      "777707778888088899990999"
+      "1111222222222222506F7274203300000000000000000000444444445555555566660666"
+      "777707778888088899990999",
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};

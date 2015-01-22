@@ -131,3 +131,17 @@ OFPCapabilitiesFlags ofp::OFPCapabilitiesFlagsConvertFromV1(UInt32 capabilities)
   }
   return static_cast<OFPCapabilitiesFlags>(result);
 }
+
+
+OFPPortFeaturesFlags ofp::OFPPortFeaturesFlagsConvertToV1(UInt32 features) {
+  UInt32 result = features & ~0x0FF80U;
+  result |= (features & 0xF800) >> 4;
+  return static_cast<OFPPortFeaturesFlags>(result);
+}
+
+OFPPortFeaturesFlags ofp::OFPPortFeaturesFlagsConvertFromV1(UInt32 features) {
+  UInt32 result = features & ~0x0FF80U;
+  result |= (features & 0x00F80) << 4;
+  return static_cast<OFPPortFeaturesFlags>(result);
+}
+

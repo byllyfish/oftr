@@ -32,10 +32,10 @@ PortV1::PortV1(const Port &port) {
   name_ = port.name();
   config_ = port.config();
   state_ = port.state();
-  curr_ = port.curr();
-  advertised_ = port.advertised();
-  supported_ = port.supported();
-  peer_ = port.peer();
+  setCurr(port.curr());
+  setAdvertised(port.advertised());
+  setSupported(port.supported());
+  setPeer(port.peer());
 }
 
 }  // namespace deprecated
