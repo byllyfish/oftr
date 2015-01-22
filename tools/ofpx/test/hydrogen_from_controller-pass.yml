@@ -16,7 +16,7 @@ type:            OFPT_SET_CONFIG
 xid:             0x360907F4
 version:         0x01
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0xFFFF
 ...
 ---

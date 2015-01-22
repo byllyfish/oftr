@@ -8,12 +8,6 @@ using namespace ofp;
 GetConfigReplyBuilder::GetConfigReplyBuilder(const GetConfigReply *msg)
     : msg_{*msg} {}
 
-void GetConfigReplyBuilder::setFlags(UInt16 flags) { msg_.flags_ = flags; }
-
-void GetConfigReplyBuilder::setMissSendLen(UInt16 missSendLen) {
-  msg_.missSendLen_ = missSendLen;
-}
-
 UInt32 GetConfigReplyBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();
 

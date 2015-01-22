@@ -410,7 +410,7 @@ enum OFPCapabilitiesFlags : UInt32 {
 
   OFPC_STP = 1U << 31,           // Special value for 1.0
 
-  OFPC_OTHER_FLAGS = 0x7FFFFE10
+  OFPC_OTHER_CAPABILITIES_FLAGS = 0x7FFFFE10
 };
 
 // TODO(bfish): Use template enabled only for enum/UInt32 types.
@@ -420,6 +420,19 @@ inline OFPCapabilitiesFlags operator|(OFPCapabilitiesFlags lhs, OFPCapabilitiesF
 
 OFPCapabilitiesFlags OFPCapabilitiesFlagsConvertToV1(UInt32 capabilities);
 OFPCapabilitiesFlags OFPCapabilitiesFlagsConvertFromV1(UInt32 capabilities);
+
+enum OFPConfigFlags : UInt16 {
+  OFPC_FRAG_NORMAL = 0,
+  OFPC_FRAG_DROP = 1,
+  OFPC_FRAG_REASM = 2,
+  OFPC_FRAG_MASK = 3,
+
+  OFPC_OTHER_CONFIG_FLAGS = 0xFFFC
+};
+
+inline OFPConfigFlags operator|(OFPConfigFlags lhs, OFPConfigFlags rhs) {
+  return static_cast<OFPConfigFlags>(static_cast<UInt32>(lhs) | rhs);
+}
 
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,

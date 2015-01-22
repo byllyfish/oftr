@@ -10,14 +10,14 @@ namespace ofp {
 class GetConfigReply
     : public ProtocolMsg<GetConfigReply, OFPT_GET_CONFIG_REPLY, 12, 12, false> {
  public:
-  UInt16 flags() const { return flags_; }
+  OFPConfigFlags flags() const { return flags_; }
   UInt16 missSendLen() const { return missSendLen_; }
 
   bool validateInput(Validation *context) const { return true; }
 
  private:
   Header header_;
-  Big16 flags_;
+  Big<OFPConfigFlags> flags_;
   Big16 missSendLen_;
 
   // Only GetConfigReplyBuilder can construct an instance.
@@ -38,8 +38,8 @@ class GetConfigReplyBuilder {
   GetConfigReplyBuilder() = default;
   explicit GetConfigReplyBuilder(const GetConfigReply *msg);
 
-  void setFlags(UInt16 flags);
-  void setMissSendLen(UInt16 missSendLen);
+  void setFlags(OFPConfigFlags flags) { msg_.flags_ = flags; }
+  void setMissSendLen(UInt16 missSendLen) { msg_.missSendLen_ = missSendLen; }
 
   UInt32 send(Writable *channel);
 

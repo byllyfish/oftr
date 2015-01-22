@@ -229,6 +229,7 @@ struct ScalarTraits<ofp::OFPErrorCode> {
 
 #define OFP_YAML_BITCASE(prefix, name)    io.bitSetCase(value, #name, ofp::prefix##name)
 #define OFP_YAML_BITCASE_V1(prefix, name) io.bitSetCase(value, #name, ofp::prefix##name##_V1)
+#define OFP_YAML_MASKEDBITCASE(prefix, name, mask)  io.maskedBitSetCase(value, #name, ofp::prefix##name, ofp::mask)
 
 template <>
 struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
@@ -295,12 +296,24 @@ struct ScalarBitSetTraits<ofp::OFPCapabilitiesFlags> {
     OFP_YAML_BITCASE(OFPC_, ARP_MATCH_IP);
     OFP_YAML_BITCASE(OFPC_, PORT_BLOCKED);
 
-    io.bitSetCaseOther(value, ofp::OFPC_OTHER_FLAGS);
+    io.bitSetCaseOther(value, ofp::OFPC_OTHER_CAPABILITIES_FLAGS);
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPConfigFlags> {
+  static void bitset(IO &io, ofp::OFPConfigFlags &value) {
+    OFP_YAML_MASKEDBITCASE(OFPC_, FRAG_NORMAL, OFPC_FRAG_MASK);
+    OFP_YAML_MASKEDBITCASE(OFPC_, FRAG_DROP, OFPC_FRAG_MASK);
+    OFP_YAML_MASKEDBITCASE(OFPC_, FRAG_REASM, OFPC_FRAG_MASK);
+
+    io.bitSetCaseOther(value, ofp::OFPC_OTHER_CONFIG_FLAGS);
   }
 };
 
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1
+#undef OFP_YAML_MASKEDBITCASE
 #undef OFP_YAML_ENUMCASE
 
 }  // namespace yaml

@@ -16,7 +16,8 @@ namespace yaml {
 template <>
 struct MappingTraits<ofp::GetConfigReply> {
   static void mapping(IO &io, ofp::GetConfigReply &msg) {
-    io.mapRequired("flags", msg.flags_);
+    ofp::OFPConfigFlags flags = msg.flags();
+    io.mapRequired("flags", flags);
     io.mapRequired("miss_send_len", msg.missSendLen_);
   }
 };
@@ -24,7 +25,9 @@ struct MappingTraits<ofp::GetConfigReply> {
 template <>
 struct MappingTraits<ofp::GetConfigReplyBuilder> {
   static void mapping(IO &io, ofp::GetConfigReplyBuilder &msg) {
-    io.mapRequired("flags", msg.msg_.flags_);
+    ofp::OFPConfigFlags flags;
+    io.mapRequired("flags", flags);
+    msg.setFlags(flags);
     io.mapRequired("miss_send_len", msg.msg_.missSendLen_);
   }
 };

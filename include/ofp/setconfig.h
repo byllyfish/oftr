@@ -10,14 +10,14 @@ namespace ofp {
 class SetConfig
     : public ProtocolMsg<SetConfig, OFPT_SET_CONFIG, 12, 12, false> {
  public:
-  UInt16 flags() const { return flags_; }
+  OFPConfigFlags flags() const { return flags_; }
   UInt16 missSendLen() const { return missSendLen_; }
 
   bool validateInput(Validation *context) const { return true; }
 
  private:
   Header header_;
-  Big16 flags_ = 0;
+  Big<OFPConfigFlags> flags_ = OFPC_FRAG_NORMAL;
   Big16 missSendLen_ = 128;
 
   // Only SetConfigBuilder can construct an instance.
@@ -37,8 +37,8 @@ class SetConfigBuilder {
   SetConfigBuilder() = default;
   explicit SetConfigBuilder(const SetConfig *msg);
 
-  void setFlags(UInt16 flags);
-  void setMissSendLen(UInt16 missSendLen);
+  void setFlags(OFPConfigFlags flags) { msg_.flags_ = flags; }
+  void setMissSendLen(UInt16 missSendLen) { msg_.missSendLen_ = missSendLen; }
 
   UInt32 send(Writable *channel);
 

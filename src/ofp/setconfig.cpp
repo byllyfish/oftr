@@ -7,12 +7,6 @@ using namespace ofp;
 
 SetConfigBuilder::SetConfigBuilder(const SetConfig *msg) : msg_{*msg} {}
 
-void SetConfigBuilder::setFlags(UInt16 flags) { msg_.flags_ = flags; }
-
-void SetConfigBuilder::setMissSendLen(UInt16 missSendLen) {
-  msg_.missSendLen_ = missSendLen;
-}
-
 UInt32 SetConfigBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();
 

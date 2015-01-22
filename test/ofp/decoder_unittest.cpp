@@ -760,7 +760,7 @@ TEST(decoder, setconfigv4) {
   testDecodeEncode("0409000C11111111AAAABBBB",
                    "---\ntype:            OFPT_SET_CONFIG\nxid:             "
                    "0x11111111\nversion:         0x04\nmsg:             \n  "
-                   "flags:           0xAAAA\n  miss_send_len:   0xBBBB\n...\n");
+                   "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  miss_send_len:   0xBBBB\n...\n");
 }
 
 TEST(decoder, portstatusv4) {
@@ -934,7 +934,7 @@ TEST(decoder, getconfigreplyv4) {
   testDecodeEncode("0408000C11111111AAAABBBB",
                    "---\ntype:            OFPT_GET_CONFIG_REPLY\nxid:          "
                    "   0x11111111\nversion:         0x04\nmsg:             \n  "
-                   "flags:           0xAAAA\n  miss_send_len:   0xBBBB\n...\n");
+                   "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  miss_send_len:   0xBBBB\n...\n");
 }
 
 TEST(decoder, setasyncv4) {

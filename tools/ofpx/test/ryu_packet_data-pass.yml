@@ -886,7 +886,7 @@ type:            OFPT_SET_CONFIG
 xid:             0x00000000
 version:         0x03
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0x0080
 ...
 ---
@@ -900,7 +900,7 @@ type:            OFPT_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0x0080
 ...
 ---
@@ -3738,7 +3738,7 @@ type:            OFPT_SET_CONFIG
 xid:             0x00000000
 version:         0x04
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0x0080
 ...
 ---
@@ -3752,7 +3752,7 @@ type:            OFPT_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0x0080
 ...
 ---
@@ -6415,7 +6415,7 @@ type:            OFPT_SET_CONFIG
 xid:             0x00000000
 version:         0x05
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0x0080
 ...
 ---
@@ -6429,6 +6429,6 @@ type:            OFPT_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0x0080
 ...

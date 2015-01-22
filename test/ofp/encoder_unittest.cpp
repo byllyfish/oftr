@@ -1283,7 +1283,7 @@ TEST(encoder, setconfigv4) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        flags: 0xAAAA
+        flags: [ '0xAAAA' ]
         miss_send_len: 0xBBBB
       )""";
 
@@ -1669,7 +1669,7 @@ TEST(encoder, getconfigreplyv4) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        flags: 0xAAAA
+        flags: [ '0xAAAA' ]
         miss_send_len: 0xBBBB
       )""";
 

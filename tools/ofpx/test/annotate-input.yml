@@ -61,13 +61,13 @@ msg:
 version: 0x04
 type: OFPT_GET_CONFIG_REPLY
 msg:
-  flags: 0xffff
+  flags: [ 'FRAG_NORMAL' ]
   miss_send_len: 0xffff
 ---
 version: 0x04
 type: OFPT_SET_CONFIG
 msg:
-  flags: 0xffff
+  flags: [ 'FRAG_NORMAL' ]
   miss_send_len: 0xffff
 ---
 version: 0x04

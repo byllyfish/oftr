@@ -11,7 +11,7 @@ xid:             0x00000002
 version:         0x01
 conn_id:         0x0000000000000001
 msg:             
-  flags:           0x0000
+  flags:           [ FRAG_NORMAL ]
   miss_send_len:   0x000E
 ...
 ---

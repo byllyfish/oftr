@@ -20,7 +20,7 @@ def setConfig(datapath, length):
       'type': 'OFPT_SET_CONFIG',
       'datapath_id': datapath,
       'msg': {
-        'flags': 0,
+        'flags': [ 'FRAG_NORMAL' ],
         'miss_send_len': length
       }
     }
