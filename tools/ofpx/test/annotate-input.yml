@@ -45,8 +45,8 @@ msg:
     - port_no: 0xffffffff
       hw_addr: 'ff:ff:ff:ff:ff:ff'
       name: '...............'
-      config: 0xffffffff
-      state: 0xffffffff
+      config: [ 'PORT_DOWN' ]
+      state: [ 'LINK_DOWN' ]
       curr: [ 'COPPER' ]
       advertised: [ 'COPPER' ]
       supported: [ 'COPPER' ]
@@ -113,8 +113,8 @@ msg:
     port_no: 0xffffffff
     hw_addr: 'ff:ff:ff:ff:ff:ff'
     name: '...............'
-    config: 0xffffffff
-    state: 0xffffffff
+    config: [ 'PORT_DOWN' ]
+    state: [ 'LINK_DOWN' ]
     curr: [ 'COPPER' ]
     advertised: [ 'COPPER' ]
     supported: [ 'COPPER' ]
@@ -559,8 +559,8 @@ msg:
     - port_no: 0xffffffff
       hw_addr: 'ff:ff:ff:ff:ff:ff'
       name: '...............'
-      config: 0xffffffff
-      state: 0xffffffff
+      config: [ 'PORT_DOWN' ]
+      state: [ 'LINK_DOWN' ]
       curr: [ 'COPPER' ]
       advertised: [ 'COPPER' ]
       supported: [ 'COPPER' ]

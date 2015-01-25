@@ -35,12 +35,13 @@ Decoder::Decoder(const Message *msg, bool useJsonFormat) : msg_{msg} {
   assert(msg->size() >= sizeof(Header));
 
   llvm::raw_svector_ostream rss{result_};
+  YamlContext ctxt{this, msg->version()};
 
   if (useJsonFormat) {
-    ofp::yaml::OutputJson yout{rss};
+    ofp::yaml::OutputJson yout{rss, &ctxt};
     yout << *this;
   } else {
-    llvm::yaml::Output yout{rss};
+    llvm::yaml::Output yout{rss, &ctxt};
     yout << *this;
   }
 

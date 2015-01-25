@@ -43,7 +43,7 @@ class MatchBuilderInserter {
  public:
   MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder, OXMType type)
       : io_(io), builder_(builder), type_{type} {
-    yaml::Encoder *encoder = reinterpret_cast<yaml::Encoder *>(io.getContext());
+    yaml::Encoder *encoder = yaml::GetEncoderFromContext(io);
     if (encoder) {
       checkPrereqs_ = encoder->matchPrereqsChecked();
     }

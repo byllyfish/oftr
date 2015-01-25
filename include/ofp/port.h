@@ -29,8 +29,8 @@ class Port {
   UInt32 portNo() const { return portNo_; }
   const EnetAddress &hwAddr() const { return hwAddr_; }
   const PortNameStr &name() const { return name_; }
-  UInt32 config() const { return config_; }
-  UInt32 state() const { return state_; }
+  OFPPortConfigFlags config() const { return config_; }
+  OFPPortStateFlags state() const { return state_; }
   OFPPortFeaturesFlags curr() const { return curr_; }
   OFPPortFeaturesFlags advertised() const { return advertised_; }
   OFPPortFeaturesFlags supported() const { return supported_; }
@@ -46,8 +46,8 @@ class Port {
   EnetAddress hwAddr_;
   Padding<2> pad2_;
   PortNameStr name_;
-  Big32 config_;
-  Big32 state_;
+  Big<OFPPortConfigFlags> config_;
+  Big<OFPPortStateFlags> state_;
   Big<OFPPortFeaturesFlags> curr_;
   Big<OFPPortFeaturesFlags> advertised_;
   Big<OFPPortFeaturesFlags> supported_;
@@ -77,8 +77,8 @@ class PortBuilder {
   void setPortNo(UInt32 portNo) { msg_.portNo_ = portNo; }
   void setHwAddr(const EnetAddress &hwAddr) { msg_.hwAddr_ = hwAddr; }
   void setName(const PortNameStr &name) { msg_.name_ = name; }
-  void setConfig(UInt32 config) { msg_.config_ = config; }
-  void setState(UInt32 state) { msg_.state_ = state; }
+  void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }
+  void setState(OFPPortStateFlags state) { msg_.state_ = state; }
   void setCurr(OFPPortFeaturesFlags curr) { msg_.curr_ = curr; }
   void setAdvertised(OFPPortFeaturesFlags advertised) { msg_.advertised_ = advertised; }
   void setSupported(OFPPortFeaturesFlags supported) { msg_.supported_ = supported; }
@@ -114,11 +114,11 @@ class PortV1 {
   const PortNameStr &name() const { return name_; }
   void setName(const PortNameStr &name) { name_ = name; }
 
-  UInt32 config() const { return config_; }
-  void setConfig(UInt32 config) { config_ = config; }
+  OFPPortConfigFlags config() const { return config_; }
+  void setConfig(OFPPortConfigFlags config) { config_ = config; }
 
-  UInt32 state() const { return state_; }
-  void setState(UInt32 state) { state_ = state; }
+  OFPPortStateFlags state() const { return state_; }
+  void setState(OFPPortStateFlags state) { state_ = state; }
 
   OFPPortFeaturesFlags curr() const { return OFPPortFeaturesFlagsConvertFromV1(curr_); }
   void setCurr(OFPPortFeaturesFlags curr) { curr_ = OFPPortFeaturesFlagsConvertToV1(curr); }
@@ -136,8 +136,8 @@ class PortV1 {
   Big16 portNo_;
   EnetAddress hwAddr_;
   PortNameStr name_;
-  Big32 config_;
-  Big32 state_;
+  Big<OFPPortConfigFlags> config_;
+  Big<OFPPortStateFlags> state_;
   Big<OFPPortFeaturesFlags> curr_;
   Big<OFPPortFeaturesFlags> advertised_;
   Big<OFPPortFeaturesFlags> supported_;

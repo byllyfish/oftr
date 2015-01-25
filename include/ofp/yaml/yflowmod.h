@@ -82,8 +82,7 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapRequired("match", msg.match_);
     io.mapRequired("instructions", msg.instructions_);
 
-    ofp::yaml::Encoder *encoder =
-        reinterpret_cast<ofp::yaml::Encoder *>(io.getContext());
+    ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
     if (encoder && encoder->matchPrereqsChecked()) {
       if (!msg.match_.validate()) {
         // TODO(bfish) better error message

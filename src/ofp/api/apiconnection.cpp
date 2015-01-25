@@ -46,7 +46,7 @@ void ApiConnection::onChannel(Channel *channel, const char *status) {
 }
 
 void ApiConnection::onMessage(Channel *channel, const Message *message) {
-  yaml::Decoder decoder{RemoveConst_cast(message), true};
+  yaml::Decoder decoder{message, true};
 
   if (decoder.error().empty()) {
     // Send `ofp.message` notification event.

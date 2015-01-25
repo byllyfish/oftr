@@ -20,8 +20,8 @@ msg:
     - port_no:         0x00000001
       hw_addr:         '4e:50:2f:4b:2d:df'
       name:            s1-eth1
-      config:          0x00000000
-      state:           0x00000001
+      config:          [  ]
+      state:           [ LINK_DOWN, STP_LISTEN ]
       curr:            [ 10GB_FD, COPPER ]
       advertised:      [  ]
       supported:       [  ]
@@ -31,8 +31,8 @@ msg:
     - port_no:         0x00000002
       hw_addr:         '4e:b2:b4:4c:9a:40'
       name:            s1-eth2
-      config:          0x00000000
-      state:           0x00000000
+      config:          [  ]
+      state:           [ STP_LISTEN ]
       curr:            [ 10GB_FD, COPPER ]
       advertised:      [  ]
       supported:       [  ]
@@ -42,8 +42,8 @@ msg:
     - port_no:         0x0000FFFE
       hw_addr:         '02:69:3c:bf:39:47'
       name:            s1
-      config:          0x00000000
-      state:           0x00000000
+      config:          [  ]
+      state:           [ STP_LISTEN ]
       curr:            [  ]
       advertised:      [  ]
       supported:       [  ]
@@ -85,8 +85,8 @@ msg:
     port_no:         0x00000001
     hw_addr:         '4e:50:2f:4b:2d:df'
     name:            s1-eth1
-    config:          0x00000000
-    state:           0x00000000
+    config:          [  ]
+    state:           [ STP_LISTEN ]
     curr:            [ 10GB_FD, COPPER ]
     advertised:      [  ]
     supported:       [  ]

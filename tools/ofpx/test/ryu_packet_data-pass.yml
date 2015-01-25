@@ -74,8 +74,8 @@ msg:
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'
       name:            Port7
-      config:          0x00000000
-      state:           0x00000010
+      config:          [  ]
+      state:           [ STP_LISTEN, '0x00000010' ]
       curr:            [ 100MB_FD, COPPER, AUTONEG ]
       advertised:      [ COPPER, AUTONEG ]
       supported:       [ 100MB_FD, COPPER, AUTONEG ]
@@ -85,8 +85,8 @@ msg:
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
-      config:          0x00000000
-      state:           0x00000002
+      config:          [  ]
+      state:           [ BLOCKED, STP_LISTEN ]
       curr:            [ 100MB_FD, COPPER, AUTONEG ]
       advertised:      [ COPPER, AUTONEG ]
       supported:       [ 100MB_FD, COPPER, AUTONEG ]
@@ -595,8 +595,8 @@ msg:
     port_no:         0x00000007
     hw_addr:         'f2:0b:a4:d0:3f:70'
     name:            '私のポート'
-    config:          0x00000000
-    state:           0x00000004
+    config:          [  ]
+    state:           [ LIVE ]
     curr:            [ 100MB_FD, COPPER, AUTONEG ]
     advertised:      [ COPPER, AUTONEG ]
     supported:       [ 100MB_FD, COPPER, AUTONEG ]
@@ -772,8 +772,8 @@ msg:
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'
       name:            Port7
-      config:          0x00000000
-      state:           0x00000004
+      config:          [  ]
+      state:           [ LIVE ]
       curr:            [ 100MB_FD, COPPER, AUTONEG ]
       advertised:      [ COPPER, AUTONEG ]
       supported:       [ 100MB_FD, COPPER, AUTONEG ]
@@ -783,8 +783,8 @@ msg:
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
-      config:          0x00000000
-      state:           0x00000004
+      config:          [  ]
+      state:           [ LIVE ]
       curr:            [ 100MB_FD, COPPER, AUTONEG ]
       advertised:      [ COPPER, AUTONEG ]
       supported:       [ 100MB_FD, COPPER, AUTONEG ]
@@ -1492,8 +1492,8 @@ msg:
     port_no:         0x00000007
     hw_addr:         'f2:0b:a4:d0:3f:70'
     name:            '私のポート'
-    config:          0x00000000
-    state:           0x00000004
+    config:          [  ]
+    state:           [ LIVE ]
     curr:            [ 100MB_FD, COPPER, AUTONEG ]
     advertised:      [ COPPER, AUTONEG ]
     supported:       [ 100MB_FD, COPPER, AUTONEG ]
@@ -1742,8 +1742,8 @@ msg:
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'
       name:            Port7
-      config:          0x00000000
-      state:           0x00000004
+      config:          [  ]
+      state:           [ LIVE ]
       curr:            [ 100MB_FD, COPPER, AUTONEG ]
       advertised:      [ COPPER, AUTONEG ]
       supported:       [ 100MB_FD, COPPER, AUTONEG ]
@@ -1753,8 +1753,8 @@ msg:
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
-      config:          0x00000000
-      state:           0x00000004
+      config:          [  ]
+      state:           [ LIVE ]
       curr:            [ 100MB_FD, COPPER, AUTONEG ]
       advertised:      [ COPPER, AUTONEG ]
       supported:       [ 100MB_FD, COPPER, AUTONEG ]

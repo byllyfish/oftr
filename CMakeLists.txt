@@ -169,8 +169,6 @@ set(LIBOFP_SOURCES
 	src/ofp/api/apiconnection.cpp
   src/ofp/api/apiconnectionsession.cpp
   src/ofp/api/apiconnectionstdio.cpp
-	src/ofp/api/apiencoder.cpp
-	src/ofp/api/apievents.cpp
 	src/ofp/api/apiserver.cpp
   src/ofp/api/apisession.cpp
   src/ofp/api/rpcencoder.cpp
@@ -179,6 +177,7 @@ set(LIBOFP_SOURCES
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
   src/ofp/yaml/yconstants.cpp
+  src/ofp/yaml/ycontext.cpp
   src/ofp/yaml/yportnumber.cpp
 )
 

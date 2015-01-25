@@ -5,6 +5,7 @@
 
 #include "ofp/constants.h"
 #include "ofp/yaml/enumconverter.h"
+#include "ofp/yaml/ycontext.h"
 
 namespace llvm {
 namespace yaml {
@@ -332,6 +333,41 @@ struct ScalarBitSetTraits<ofp::OFPPortFeaturesFlags> {
     OFP_YAML_BITCASE(OFPPF_, PAUSE_ASYM);
 
     io.bitSetCaseOther(value, ofp::OFPPF_OTHER_FEATURES_FLAGS);
+  }
+};
+
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPPortConfigFlags> {
+  static void bitset(IO &io, ofp::OFPPortConfigFlags &value) {
+    OFP_YAML_BITCASE(OFPPC_, PORT_DOWN);
+    OFP_YAML_BITCASE(OFPPC_, NO_STP);
+    OFP_YAML_BITCASE(OFPPC_, NO_RECV);
+    OFP_YAML_BITCASE(OFPPC_, NO_RECV_STP);
+    OFP_YAML_BITCASE(OFPPC_, NO_FLOOD);
+    OFP_YAML_BITCASE(OFPPC_, NO_FWD);
+    OFP_YAML_BITCASE(OFPPC_, NO_PACKET_IN);
+
+    io.bitSetCaseOther(value, ofp::OFPPC_OTHER_CONFIG_FLAGS);
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPPortStateFlags> {
+  static void bitset(IO &io, ofp::OFPPortStateFlags &value) {
+    OFP_YAML_BITCASE(OFPPS_, LINK_DOWN);
+    OFP_YAML_BITCASE(OFPPS_, BLOCKED);
+    OFP_YAML_BITCASE(OFPPS_, LIVE);
+
+    if (ofp::yaml::GetVersionFromContext(io) <= ofp::OFP_VERSION_1) {
+      OFP_YAML_MASKEDBITCASE(OFPPS_, STP_LISTEN, OFPPS_STP_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPPS_, STP_LEARN, OFPPS_STP_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPPS_, STP_FORWARD, OFPPS_STP_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPPS_, STP_BLOCK, OFPPS_STP_MASK);
+      io.bitSetCaseOther(value, ofp::OFPPS_OTHER_STATE_FLAGS_V1);
+    } else {
+      io.bitSetCaseOther(value, ofp::OFPPS_OTHER_STATE_FLAGS);
+    }
   }
 };
 

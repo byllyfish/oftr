@@ -121,20 +121,42 @@ std::ostream &operator<<(std::ostream &os, OFPType type);
 // used in ofp_port to describe the current configuration.  They are
 // used in the ofp_port_mod message to configure the port's behavior.
 
-enum ofp_port_config {
-  OFPPC_PORT_DOWN = 1 << 0,    // Port is administratively down.
-  OFPPC_NO_RECV = 1 << 2,      // Drop all packets received by port.
-  OFPPC_NO_FWD = 1 << 5,       // Drop packets forwarded to port.
-  OFPPC_NO_PACKET_IN = 1 << 6  // Do not send packet-in msgs for port.
+enum OFPPortConfigFlags : UInt32 {
+  OFPPC_PORT_DOWN = 1 << 0,
+  OFPPC_NO_STP = 1 << 1,        // Version 1.0 only
+  OFPPC_NO_RECV = 1 << 2,
+  OFPPC_NO_RECV_STP = 1 << 3,
+  OFPPC_NO_FLOOD = 1 << 4,      // Version 1.0 only
+  OFPPC_NO_FWD = 1 << 5,
+  OFPPC_NO_PACKET_IN = 1 << 6,
+
+  OFPPC_OTHER_CONFIG_FLAGS = 0xffffff80
 };
+
+inline OFPPortConfigFlags operator|(OFPPortConfigFlags lhs, OFPPortConfigFlags rhs) {
+  return static_cast<OFPPortConfigFlags>(static_cast<UInt32>(lhs) | rhs);
+}
 
 // Current state of the physical port.  These are not configurable from
 // the controller.
-enum ofp_port_state {
-  OFPPS_LINK_DOWN = 1 << 0,  // No physical link present.
-  OFPPS_BLOCKED = 1 << 1,    // Port is blocked
-  OFPPS_LIVE = 1 << 2,       // Live for Fast Failover Group.
+enum OFPPortStateFlags : UInt32 {
+  OFPPS_LINK_DOWN = 1 << 0,
+  OFPPS_BLOCKED = 1 << 1,
+  OFPPS_LIVE = 1 << 2,
+
+  OFPPS_STP_LISTEN  = 0 << 8,   // Version 1.0 only
+  OFPPS_STP_LEARN   = 1 << 8,
+  OFPPS_STP_FORWARD = 2 << 8,
+  OFPPS_STP_BLOCK   = 3 << 8,
+  OFPPS_STP_MASK    = 3 << 8,
+
+  OFPPS_OTHER_STATE_FLAGS = 0xfffffff8,
+  OFPPS_OTHER_STATE_FLAGS_V1 = 0xfffffcf8
 };
+
+inline OFPPortStateFlags operator|(OFPPortStateFlags lhs, OFPPortStateFlags rhs) {
+  return static_cast<OFPPortStateFlags>(static_cast<UInt32>(lhs) | rhs);
+}
 
 // Special Port numbers.
 enum OFPPortNo : UInt32 {

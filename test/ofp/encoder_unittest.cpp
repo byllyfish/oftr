@@ -333,8 +333,8 @@ TEST(encoder, featuresreplyv1ports) {
         - port_no: 0x1111
           hw_addr: 22-22-22-22-22-22
           name: Port 1
-          config: 0x33333333
-          state:  0x44444444
+          config: [ '0x33333333' ]
+          state:  [ '0x44444444' ]
           curr:   [ '0x55555555' ]
           advertised: [ '0x66666666' ]
           supported:  [ '0x77777777' ]
@@ -344,8 +344,8 @@ TEST(encoder, featuresreplyv1ports) {
         - port_no: 0xBBBB
           hw_addr: CC-CC-CC-CC-CC-CC
           name: Port 2
-          config: 0x33333333
-          state:  0x44444444
+          config: [ '0x33333333' ]
+          state:  [ '0x44444444' ]
           curr:   [ '0x55555555' ]
           advertised: [ '0x66666666' ]
           supported:  [ '0x77777777' ]
@@ -1305,8 +1305,8 @@ TEST(encoder, portstatusv4) {
           port_no: 0x33333333
           hw_addr: 'aabbccddeeff'
           name: 'Port 1'
-          config: 0x44444444
-          state: 0x55555555
+          config: [ 0x44444444 ]
+          state: [ 0x55555555 ]
           curr: [ '0x66666666' ]
           advertised: [ '0x77777777' ]
           supported: [ '0x88888888' ]
@@ -1337,8 +1337,8 @@ TEST(encoder, portstatusv1) {
           port_no: 0x33333333
           hw_addr: 'aabbccddeeff'
           name: 'Port 1'
-          config: 0x44444444
-          state: 0x55555555
+          config: [ 0x44444444 ]
+          state: [ 0x55555555 ]
           curr: [ '0x66666666' ]
           advertised: [ '0x77777777' ]
           supported: [ '0x88888888' ]

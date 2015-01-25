@@ -89,8 +89,12 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     }
     case METHOD_SEND: {
+      void *savedContext = io.getContext();
       RpcSend send{id, finder_};
+      yaml::YamlContext ctxt{&send.params};
+      io.setContext(&ctxt);
       io.mapRequired("params", send.params);
+      io.setContext(savedContext);
       if (!errorFound(io)) {
         conn_->onRpcSend(&send);
       }

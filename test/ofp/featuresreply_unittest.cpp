@@ -5,6 +5,9 @@
 
 using namespace ofp;
 
+const OFPPortConfigFlags kFakeConfig = static_cast<OFPPortConfigFlags>(0x44444444);
+const OFPPortStateFlags kFakeState = static_cast<OFPPortStateFlags>(0x55555555);
+
 const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x66666666);
 const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x77777777);
 const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x88888888);
@@ -18,8 +21,8 @@ TEST(featuresreply, v4) {
   portBuilder.setPortNo(0x11111111);
   portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
-  portBuilder.setConfig(0x44444444);
-  portBuilder.setState(0x55555555);
+  portBuilder.setConfig(kFakeConfig);
+  portBuilder.setState(kFakeState);
   portBuilder.setCurr(kFakeCurr);
   portBuilder.setAdvertised(kFakeAdvertised);
   portBuilder.setSupported(kFakeSupported);
@@ -69,8 +72,8 @@ TEST(featuresreply, v3) {
   portBuilder.setPortNo(0x11111111);
   portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
-  portBuilder.setConfig(0x44444444);
-  portBuilder.setState(0x55555555);
+  portBuilder.setConfig(kFakeConfig);
+  portBuilder.setState(kFakeState);
   portBuilder.setCurr(kFakeCurr);
   portBuilder.setAdvertised(kFakeAdvertised);
   portBuilder.setSupported(kFakeSupported);
@@ -125,8 +128,8 @@ TEST(featuresreply, v2) {
   portBuilder.setPortNo(0x11111111);
   portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
-  portBuilder.setConfig(0x44444444);
-  portBuilder.setState(0x55555555);
+  portBuilder.setConfig(kFakeConfig);
+  portBuilder.setState(kFakeState);
   portBuilder.setCurr(kFakeCurr);
   portBuilder.setAdvertised(kFakeAdvertised);
   portBuilder.setSupported(kFakeSupported);
@@ -181,8 +184,8 @@ TEST(featuresreply, v1) {
   portBuilder.setPortNo(0x11111111);
   portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
-  portBuilder.setConfig(0x44444444);
-  portBuilder.setState(0x55555555);
+  portBuilder.setConfig(kFakeConfig);
+  portBuilder.setState(kFakeState);
   portBuilder.setCurr(kFakeCurr);
   portBuilder.setAdvertised(kFakeAdvertised);
   portBuilder.setSupported(kFakeSupported);

@@ -6,6 +6,9 @@
 
 using namespace ofp;
 
+const OFPPortConfigFlags kFakeConfig = static_cast<OFPPortConfigFlags>(0x22222222);
+const OFPPortStateFlags kFakeState = static_cast<OFPPortStateFlags>(0x33333333);
+
 const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x44444444);
 const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x55555555);
 const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x66666666);
@@ -16,8 +19,8 @@ TEST(portstatus, v4) {
   port.setPortNo(0x11111111);
   port.setHwAddr(EnetAddress{"010203040506"});
   port.setName("Port 1");
-  port.setConfig(0x22222222);
-  port.setState(0x33333333);
+  port.setConfig(kFakeConfig);
+  port.setState(kFakeState);
   port.setCurr(kFakeCurr);
   port.setAdvertised(kFakeAdvertised);
   port.setSupported(kFakeSupported);
@@ -70,8 +73,8 @@ TEST(portstatus, v1) {
   port.setPortNo(0x11111111);
   port.setHwAddr(EnetAddress{"010203040506"});
   port.setName("Port 1");
-  port.setConfig(0x22222222);
-  port.setState(0x33333333);
+  port.setConfig(kFakeConfig);
+  port.setState(kFakeState);
   port.setCurr(kFakeCurr);
   port.setAdvertised(kFakeAdvertised);
   port.setSupported(kFakeSupported);

@@ -37,8 +37,12 @@ struct MappingTraits<ofp::Port> {
     io.mapRequired("port_no", msg.portNo_);
     io.mapRequired("hw_addr", msg.hwAddr_);
     io.mapRequired("name", msg.name_);
-    io.mapRequired("config", msg.config_);
-    io.mapRequired("state", msg.state_);
+
+    ofp::OFPPortConfigFlags config = msg.config();
+    io.mapRequired("config", config);
+
+    ofp::OFPPortStateFlags state = msg.state();
+    io.mapRequired("state", state);
 
     ofp::OFPPortFeaturesFlags curr = msg.curr();
     ofp::OFPPortFeaturesFlags advertised = msg.advertised();
@@ -60,8 +64,14 @@ struct MappingTraits<ofp::PortBuilder> {
     io.mapRequired("port_no", msg.msg_.portNo_);
     io.mapRequired("hw_addr", msg.msg_.hwAddr_);
     io.mapRequired("name", msg.msg_.name_);
-    io.mapRequired("config", msg.msg_.config_);
-    io.mapRequired("state", msg.msg_.state_);
+
+    ofp::OFPPortConfigFlags config;
+    io.mapRequired("config", config);
+    msg.setConfig(config);
+
+    ofp::OFPPortStateFlags state;
+    io.mapRequired("state", state);
+    msg.setState(state);
 
     ofp::OFPPortFeaturesFlags curr;
     ofp::OFPPortFeaturesFlags advertised;

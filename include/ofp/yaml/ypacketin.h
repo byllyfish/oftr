@@ -79,8 +79,7 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapOptional("match", msg.match_);
     io.mapRequired("data", msg.enetFrame_);
 
-    ofp::yaml::Encoder *encoder =
-        reinterpret_cast<ofp::yaml::Encoder *>(io.getContext());
+    ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
     if (encoder && encoder->matchPrereqsChecked()) {
       if (!msg.match_.validate()) {
         // TODO(bfish) better error message

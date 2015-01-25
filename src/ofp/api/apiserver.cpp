@@ -6,7 +6,6 @@
 #include "ofp/sys/engine.h"
 #include "ofp/api/apichannellistener.h"
 #include "ofp/api/apisession.h"
-#include "ofp/api/apievents.h"
 #include "ofp/api/rpcevents.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/tcp_server.h"

@@ -43,7 +43,9 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
       finder_{finder},
       lineNumber_{lineNumber},
       matchPrereqsChecked_{matchPrereqsChecked} {
-  llvm::yaml::Input yin{input, this, Encoder::diagnosticHandler, this};
+
+  YamlContext ctxt{this};
+  llvm::yaml::Input yin{input, &ctxt, Encoder::diagnosticHandler, &ctxt};
   if (!yin.error()) {
     yin >> *this;
   }
@@ -69,7 +71,7 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
 }
 
 void Encoder::diagnosticHandler(const llvm::SMDiagnostic &d, void *context) {
-  Encoder *encoder = reinterpret_cast<Encoder *>(context);
+  Encoder *encoder = YamlContext::GetEncoder(context);
   encoder->addDiagnostic(d);
 }
 

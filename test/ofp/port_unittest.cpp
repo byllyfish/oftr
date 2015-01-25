@@ -5,6 +5,8 @@
 
 using namespace ofp;
 
+const OFPPortConfigFlags kFakeConfig = static_cast<OFPPortConfigFlags>(0x22222222);
+const OFPPortStateFlags kFakeState = static_cast<OFPPortStateFlags>(0x33333333);
 const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x44444444);
 const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x55555555);
 const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x66666666);
@@ -16,8 +18,8 @@ TEST(port, test) {
   portBuilder.setPortNo(0x11111111);
   portBuilder.setHwAddr(EnetAddress{"010203040506"});
   portBuilder.setName("Port 1");
-  portBuilder.setConfig(0x22222222);
-  portBuilder.setState(0x33333333);
+  portBuilder.setConfig(kFakeConfig);
+  portBuilder.setState(kFakeState);
   portBuilder.setCurr(kFakeCurr);
   portBuilder.setAdvertised(kFakeAdvertised);
   portBuilder.setSupported(kFakeSupported);
