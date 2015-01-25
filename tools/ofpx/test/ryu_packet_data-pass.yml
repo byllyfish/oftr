@@ -336,9 +336,9 @@ version:         0x03
 msg:             
   port_no:         0x00000001
   hw_addr:         '00:11:00:00:11:11'
-  config:          0x00000000
-  mask:            0x00000000
-  advertise:       0x00001000
+  config:          [  ]
+  mask:            [  ]
+  advertise:       [ FIBER ]
 ...
 ---
 type:            OFPT_TABLE_MOD
@@ -1210,9 +1210,9 @@ version:         0x04
 msg:             
   port_no:         0x00000001
   hw_addr:         '00:11:00:00:11:11'
-  config:          0x00000000
-  mask:            0x00000000
-  advertise:       0x00001000
+  config:          [  ]
+  mask:            [  ]
+  advertise:       [ FIBER ]
 ...
 ---
 type:            OFPT_TABLE_MOD

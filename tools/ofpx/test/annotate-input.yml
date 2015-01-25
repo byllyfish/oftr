@@ -178,9 +178,9 @@ type: OFPT_PORT_MOD
 msg:
   port_no: 0xffffffff
   hw_addr: 'ff:ff:ff:ff:ff:ff'
-  config: 0xffffffff
-  mask: 0xffffffff
-  advertise: 0xffffffff
+  config: [ '0xffffffff' ]
+  mask: [ '0xffffffff' ]
+  advertise: [ '0xffffffff' ]
 ---
 version: 0x04
 type: OFPT_TABLE_MOD

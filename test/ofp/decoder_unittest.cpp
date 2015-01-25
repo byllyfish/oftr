@@ -827,9 +827,9 @@ TEST(decoder, portmodv4) {
       "---\ntype:            OFPT_PORT_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "port_no:         0x22222222\n  hw_addr:         "
-      "'33:33:33:33:33:33'\n  config:          0x44444444\n  mask:  "
-      "          0x55555555\n  advertise:       "
-      "0x66666666\n...\n");
+      "'33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:  "
+      "          [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n...\n");
 }
 
 TEST(decoder, portmodv1) {
@@ -839,8 +839,8 @@ TEST(decoder, portmodv1) {
       "0x11111111\nversion:         0x01\nmsg:             \n  port_no:        "
       " "
       "0x00002222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          "
-      "0x44444444\n  mask:            0x55555555\n  advertise:       "
-      "0x66666666\n...\n");
+      "[ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n...\n");
 }
 
 TEST(decoder, tablemodv4) {

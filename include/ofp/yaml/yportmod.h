@@ -21,9 +21,14 @@ struct MappingTraits<ofp::PortMod> {
   static void mapping(IO &io, ofp::PortMod &msg) {
     io.mapRequired("port_no", msg.portNo_);
     io.mapRequired("hw_addr", msg.hwAddr_);
-    io.mapRequired("config", msg.config_);
-    io.mapRequired("mask", msg.mask_);
-    io.mapRequired("advertise", msg.advertise_);
+
+    ofp::OFPPortConfigFlags config = msg.config();
+    ofp::OFPPortConfigFlags mask = msg.mask();
+    io.mapRequired("config", config);
+    io.mapRequired("mask", mask);
+
+    ofp::OFPPortFeaturesFlags advertise = msg.advertise();
+    io.mapRequired("advertise", advertise);
   }
 };
 
@@ -32,9 +37,17 @@ struct MappingTraits<ofp::PortModBuilder> {
   static void mapping(IO &io, ofp::PortModBuilder &msg) {
     io.mapRequired("port_no", msg.msg_.portNo_);
     io.mapRequired("hw_addr", msg.msg_.hwAddr_);
-    io.mapRequired("config", msg.msg_.config_);
-    io.mapRequired("mask", msg.msg_.mask_);
-    io.mapRequired("advertise", msg.msg_.advertise_);
+
+    ofp::OFPPortConfigFlags config;
+    ofp::OFPPortConfigFlags mask;
+    io.mapRequired("config", config);
+    io.mapRequired("mask", mask);
+    msg.setConfig(config);
+    msg.setMask(mask);
+
+    ofp::OFPPortFeaturesFlags advertise;
+    io.mapRequired("advertise", advertise);
+    msg.setAdvertise(advertise);
   }
 };
 

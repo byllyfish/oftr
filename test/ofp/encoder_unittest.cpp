@@ -1449,9 +1449,9 @@ TEST(encoder, portmodv4) {
       msg:
         port_no: 0x22222222
         hw_addr: '333333333333'
-        config: 0x44444444
-        mask: 0x55555555
-        advertise: 0x66666666
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        advertise: [ 0x66666666 ]
       )""";
 
   Encoder encoder{input};
@@ -1472,9 +1472,9 @@ TEST(encoder, portmodv1) {
       msg:
         port_no: 0x2222
         hw_addr: '333333333333'
-        config: 0x44444444
-        mask: 0x55555555
-        advertise: 0x66666666
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        advertise: [ 0x66666666 ]
       )""";
 
   Encoder encoder{input};
