@@ -16,7 +16,8 @@ namespace yaml {
 template <>
 struct MappingTraits<ofp::RoleReply> {
   static void mapping(IO &io, ofp::RoleReply &msg) {
-    io.mapRequired("role", msg.role_);
+    ofp::OFPControllerRole role = msg.role();
+    io.mapRequired("role", role);
     io.mapRequired("generation_id", msg.generationId_);
   }
 };
@@ -24,7 +25,9 @@ struct MappingTraits<ofp::RoleReply> {
 template <>
 struct MappingTraits<ofp::RoleReplyBuilder> {
   static void mapping(IO &io, ofp::RoleReplyBuilder &msg) {
-    io.mapRequired("role", msg.msg_.role_);
+    ofp::OFPControllerRole role;
+    io.mapRequired("role", role);
+    msg.setRole(role);
     io.mapRequired("generation_id", msg.msg_.generationId_);
   }
 };

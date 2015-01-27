@@ -10,7 +10,7 @@ namespace ofp {
 
 class RoleRequest : public ProtocolMsg<RoleRequest, OFPT_ROLE_REQUEST, 24, 24> {
  public:
-  UInt32 role() const { return role_; }
+  OFPControllerRole role() const { return role_; }
   UInt64 generationId() const { return generationId_; }
 
   UInt32 xid() const { return header_.xid(); }
@@ -19,7 +19,7 @@ class RoleRequest : public ProtocolMsg<RoleRequest, OFPT_ROLE_REQUEST, 24, 24> {
 
  private:
   Header header_;
-  Big32 role_;
+  Big<OFPControllerRole> role_;
   Padding<4> pad_;
   Big64 generationId_;
 
@@ -41,7 +41,7 @@ class RoleRequestBuilder {
   RoleRequestBuilder() = default;
   explicit RoleRequestBuilder(const RoleRequest *msg);
 
-  void setRole(UInt32 role) { msg_.role_ = role; }
+  void setRole(OFPControllerRole role) { msg_.role_ = role; }
   void setGenerationId(UInt64 generationId) {
     msg_.generationId_ = generationId;
   }

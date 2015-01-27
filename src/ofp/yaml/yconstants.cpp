@@ -20,6 +20,13 @@ static const llvm::StringRef sFlowRemovedReason[] = {
     "OFPRR_IDLE_TIMEOUT", "OFPRR_HARD_TIMEOUT", "OFPRR_DELETE",
     "OFPRR_GROUP_DELETE"};
 
+static const llvm::StringRef sControllerRole[] = { 
+    "ROLE_NOCHANGE",
+    "ROLE_EQUAL",
+    "ROLE_MASTER",
+    "ROLE_SLAVE",
+};
+
 static const llvm::StringRef sErrorTypes[] = {
   "OFPET_HELLO_FAILED",
   "OFPET_BAD_REQUEST",
@@ -47,6 +54,8 @@ EnumConverter<OFPPacketInReason>
 
 EnumConverter<OFPFlowRemovedReason>
     llvm::yaml::ScalarTraits<OFPFlowRemovedReason>::converter{sFlowRemovedReason};
+
+EnumConverter<OFPControllerRole> llvm::yaml::ScalarTraits<OFPControllerRole>::converter{sControllerRole};
 
 EnumConverter<OFPErrorType>
     llvm::yaml::ScalarTraits<OFPErrorType>::converter{sErrorTypes, "OFPET_EXPERIMENTER"};

@@ -14,9 +14,9 @@
 {"type":"OFPT_EXPERIMENTER","xid":0,"version":3,"msg":{"experimenter":98765432,"exp_type":123456789,"data":"6E617A6F"}}
 {"type":"OFPT_BARRIER_REQUEST","xid":0,"version":3,"msg":{}}
 {"type":"OFPT_BARRIER_REPLY","xid":0,"version":3,"msg":{}}
-{"type":"OFPT_ROLE_REQUEST","xid":0,"version":3,"msg":{"role":2,"generation_id":17294086455919964160}}
+{"type":"OFPT_ROLE_REQUEST","xid":0,"version":3,"msg":{"role":"ROLE_MASTER","generation_id":17294086455919964160}}
 {"type":"OFPT_FLOW_MOD","xid":0,"version":3,"msg":{"cookie":0,"cookie_mask":0,"table_id":1,"command":"OFPFC_ADD","idle_timeout":0,"hard_timeout":0,"priority":123,"buffer_id":65535,"out_port":"ANY","out_group":4294967295,"flags":[],"match":[{"field":"ETH_DST","value":"f2:0b:a4:7d:f8:ea"}],"instructions":[{"instruction":"OFPIT_WRITE_ACTIONS","actions":[{"action":"OFPAT_SET_FIELD","field":"VLAN_VID","value":258},{"action":"OFPAT_OUTPUT","port":6,"max_len":65535}]},{"instruction":"OFPIT_APPLY_ACTIONS","actions":[{"action":"OFPAT_SET_FIELD","field":"ETH_SRC","value":"01:02:03:04:05:06"}]}]}}
-{"type":"OFPT_ROLE_REPLY","xid":0,"version":3,"msg":{"role":3,"generation_id":17294086455919964160}}
+{"type":"OFPT_ROLE_REPLY","xid":0,"version":3,"msg":{"role":"ROLE_SLAVE","generation_id":17294086455919964160}}
 {"type":"OFPT_GROUP_MOD","xid":0,"version":3,"msg":{"command":0,"type":0,"group_id":1,"buckets":[{"weight":1,"watch_port":1,"watch_group":1,"actions":[{"action":"OFPAT_OUTPUT","port":2,"max_len":65535}]}]}}
 {"type":"OFPT_PORT_MOD","xid":0,"version":3,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"advertise":["FIBER"]}}
 {"type":"OFPT_TABLE_MOD","xid":0,"version":3,"msg":{"table_id":255,"config":0}}
@@ -57,9 +57,9 @@
 {"type":"OFPT_EXPERIMENTER","xid":0,"version":4,"msg":{"experimenter":98765432,"exp_type":123456789,"data":"6E617A6F"}}
 {"type":"OFPT_BARRIER_REQUEST","xid":0,"version":4,"msg":{}}
 {"type":"OFPT_BARRIER_REPLY","xid":0,"version":4,"msg":{}}
-{"type":"OFPT_ROLE_REQUEST","xid":0,"version":4,"msg":{"role":2,"generation_id":17294086455919964160}}
+{"type":"OFPT_ROLE_REQUEST","xid":0,"version":4,"msg":{"role":"ROLE_MASTER","generation_id":17294086455919964160}}
 {"type":"OFPT_FLOW_MOD","xid":0,"version":4,"msg":{"cookie":0,"cookie_mask":0,"table_id":1,"command":"OFPFC_ADD","idle_timeout":0,"hard_timeout":0,"priority":123,"buffer_id":65535,"out_port":"ANY","out_group":4294967295,"flags":[],"match":[{"field":"ETH_DST","value":"f2:0b:a4:7d:f8:ea"}],"instructions":[{"instruction":"OFPIT_WRITE_ACTIONS","actions":[{"action":"OFPAT_SET_FIELD","field":"VLAN_VID","value":258},{"action":"OFPAT_COPY_TTL_OUT"},{"action":"OFPAT_COPY_TTL_IN"},{"action":"OFPAT_COPY_TTL_IN"},{"action":"OFPAT_POP_PBB"},{"action":"OFPAT_PUSH_PBB","ethertype":4660},{"action":"OFPAT_POP_MPLS","ethertype":39030},{"action":"OFPAT_PUSH_MPLS","mpls":2286354432},{"action":"OFPAT_POP_VLAN"},{"action":"OFPAT_PUSH_VLAN","vlan":33024},{"action":"OFPAT_DEC_MPLS_TTL"},{"action":"OFPAT_SET_MPLS_TTL","ttl":2560},{"action":"OFPAT_DEC_NW_TTL"},{"action":"OFPAT_SET_NW_TTL","ttl":10},{"action":"OFPAT_SET_QUEUE","queue":3},{"action":"OFPAT_GROUP","group":99},{"action":"OFPAT_OUTPUT","port":6,"max_len":65535}]},{"instruction":"OFPIT_APPLY_ACTIONS","actions":[{"action":"OFPAT_SET_FIELD","field":"ETH_SRC","value":"01:02:03:04:05:06"},{"action":"OFPAT_SET_FIELD","field":"0xFFFF0007","value":"4F4E46000A0001"}]}]}}
-{"type":"OFPT_ROLE_REPLY","xid":0,"version":4,"msg":{"role":3,"generation_id":17294086455919964160}}
+{"type":"OFPT_ROLE_REPLY","xid":0,"version":4,"msg":{"role":"ROLE_SLAVE","generation_id":17294086455919964160}}
 {"type":"OFPT_GROUP_MOD","xid":0,"version":4,"msg":{"command":0,"type":0,"group_id":1,"buckets":[{"weight":1,"watch_port":1,"watch_group":1,"actions":[{"action":"OFPAT_OUTPUT","port":2,"max_len":65535}]}]}}
 {"type":"OFPT_PORT_MOD","xid":0,"version":4,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"advertise":["FIBER"]}}
 {"type":"OFPT_TABLE_MOD","xid":0,"version":4,"msg":{"table_id":255,"config":0}}
@@ -121,9 +121,9 @@
 {"type":"OFPT_EXPERIMENTER","xid":0,"version":5,"msg":{"experimenter":98765432,"exp_type":123456789,"data":"6E617A6F"}}
 {"type":"OFPT_BARRIER_REQUEST","xid":0,"version":5,"msg":{}}
 {"type":"OFPT_BARRIER_REPLY","xid":0,"version":5,"msg":{}}
-{"type":"OFPT_ROLE_REQUEST","xid":0,"version":5,"msg":{"role":2,"generation_id":17294086455919964160}}
+{"type":"OFPT_ROLE_REQUEST","xid":0,"version":5,"msg":{"role":"ROLE_MASTER","generation_id":17294086455919964160}}
 {"type":"OFPT_FLOW_MOD","xid":0,"version":5,"msg":{"cookie":0,"cookie_mask":0,"table_id":1,"command":"OFPFC_ADD","idle_timeout":0,"hard_timeout":0,"priority":123,"buffer_id":65535,"out_port":"ANY","out_group":4294967295,"flags":[],"match":[{"field":"ETH_DST","value":"f2:0b:a4:7d:f8:ea"}],"instructions":[{"instruction":"OFPIT_WRITE_ACTIONS","actions":[{"action":"OFPAT_SET_FIELD","field":"VLAN_VID","value":258},{"action":"OFPAT_COPY_TTL_OUT"},{"action":"OFPAT_COPY_TTL_IN"},{"action":"OFPAT_COPY_TTL_IN"},{"action":"OFPAT_POP_PBB"},{"action":"OFPAT_PUSH_PBB","ethertype":4660},{"action":"OFPAT_POP_MPLS","ethertype":39030},{"action":"OFPAT_PUSH_MPLS","mpls":2286354432},{"action":"OFPAT_POP_VLAN"},{"action":"OFPAT_PUSH_VLAN","vlan":33024},{"action":"OFPAT_DEC_MPLS_TTL"},{"action":"OFPAT_SET_MPLS_TTL","ttl":2560},{"action":"OFPAT_DEC_NW_TTL"},{"action":"OFPAT_SET_NW_TTL","ttl":10},{"action":"OFPAT_EXPERIMENTER","experimenter":101,"data":"0001020304050607"},{"action":"OFPAT_SET_QUEUE","queue":3},{"action":"OFPAT_GROUP","group":99},{"action":"OFPAT_OUTPUT","port":6,"max_len":65535}]},{"instruction":"OFPIT_APPLY_ACTIONS","actions":[{"action":"OFPAT_SET_FIELD","field":"ETH_SRC","value":"01:02:03:04:05:06"},{"action":"OFPAT_SET_FIELD","field":"PBB_UCA","value":1}]}]}}
-{"type":"OFPT_ROLE_REPLY","xid":0,"version":5,"msg":{"role":3,"generation_id":17294086455919964160}}
+{"type":"OFPT_ROLE_REPLY","xid":0,"version":5,"msg":{"role":"ROLE_SLAVE","generation_id":17294086455919964160}}
 {"type":"OFPT_GROUP_MOD","xid":0,"version":5,"msg":{"command":0,"type":0,"group_id":1,"buckets":[{"weight":1,"watch_port":1,"watch_group":1,"actions":[{"action":"OFPAT_OUTPUT","port":2,"max_len":65535}]}]}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":5,"msg":{"type":"OFPMP_DESC","flags":0}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":5,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"table_id":255,"out_port":4294967295,"out_group":4294967295,"cookie":0,"cookie_mask":0,"match":[]}}}

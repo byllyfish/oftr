@@ -13,14 +13,14 @@ namespace ofp {
 
 class RoleReply : public ProtocolMsg<RoleReply, OFPT_ROLE_REPLY, 24, 24> {
  public:
-  UInt32 role() const { return role_; }
+  OFPControllerRole role() const { return role_; }
   UInt64 generationId() const { return generationId_; }
 
   bool validateInput(Validation *context) const { return true; }
 
  private:
   Header header_;
-  Big32 role_;
+  Big<OFPControllerRole> role_;
   Padding<4> pad_;
   Big64 generationId_;
 
@@ -42,7 +42,7 @@ class RoleReplyBuilder {
   explicit RoleReplyBuilder(const RoleRequest *request);
   explicit RoleReplyBuilder(const RoleReply *msg);
 
-  void setRole(UInt32 role) { msg_.role_ = role; }
+  void setRole(OFPControllerRole role) { msg_.role_ = role; }
   void setGenerationId(UInt64 generationId) {
     msg_.generationId_ = generationId;
   }

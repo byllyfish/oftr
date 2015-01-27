@@ -501,6 +501,12 @@ enum OFPTableFeatureProperty : UInt16 {
   OFPTFPT_EXPERIMENTER_MISS = 0xFFFF
 };
 
+enum OFPControllerRole : UInt32 {
+  OFPCR_ROLE_NOCHANGE = 0,
+  OFPCR_ROLE_EQUAL = 1, 
+  OFPCR_ROLE_MASTER = 2, 
+  OFPCR_ROLE_SLAVE = 3,
+};
 
 }  // namespace ofp
 
