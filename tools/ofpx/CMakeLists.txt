@@ -20,3 +20,7 @@ add_executable(ofpx ${OFPX_SOURCES})
 target_link_libraries(ofpx ofp ${LIBOFP_LINKED_LIBS})
 
 add_subdirectory(test)
+
+# Install ofpx.
+
+install(TARGETS ofpx DESTINATION bin)
