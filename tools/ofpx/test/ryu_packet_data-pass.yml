@@ -3,7 +3,7 @@ type:            OFPT_PACKET_OUT
 xid:             0x00000000
 version:         0x01
 msg:             
-  buffer_id:       0xFFFFFFFF
+  buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT
@@ -113,7 +113,7 @@ type:            OFPT_PACKET_OUT
 xid:             0x00000000
 version:         0x03
 msg:             
-  buffer_id:       0xFFFFFFFF
+  buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT
@@ -922,7 +922,7 @@ type:            OFPT_PACKET_OUT
 xid:             0x00000000
 version:         0x04
 msg:             
-  buffer_id:       0xFFFFFFFF
+  buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT
@@ -3774,7 +3774,7 @@ type:            OFPT_PACKET_OUT
 xid:             0x00000000
 version:         0x05
 msg:             
-  buffer_id:       0xFFFFFFFF
+  buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
     - action:          OFPAT_OUTPUT

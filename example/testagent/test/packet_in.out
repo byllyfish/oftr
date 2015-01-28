@@ -27,7 +27,7 @@ msg:
   idle_timeout:    0x0000
   hard_timeout:    0x0000
   priority:        0x8000
-  buffer_id:       0xFFFFFFFF
+  buffer_id:       NO_BUFFER
   out_port:        ANY
   out_group:       0x00000000
   flags:           [  ]

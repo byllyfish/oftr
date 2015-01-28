@@ -46,8 +46,6 @@ enum {
   OFP_MAX_SIZE = 65535
 };
 
-enum { OFP_NO_BUFFER = 0xFFFFFFFFUL };
-
 enum : UInt16 { 
   OFPVID_PRESENT = 0x1000, 
   OFPVID_NONE = 0x0000
@@ -116,6 +114,10 @@ enum OFPType : UInt8 {
 };
 
 std::ostream &operator<<(std::ostream &os, OFPType type);
+
+enum OFPBufferID : UInt32 { 
+  OFP_NO_BUFFER = 0xFFFFFFFFUL 
+};
 
 // Flags to indicate behavior of the physical port.  These flags are
 // used in ofp_port to describe the current configuration.  They are

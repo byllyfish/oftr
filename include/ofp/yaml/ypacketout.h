@@ -20,10 +20,10 @@ struct MappingTraits<ofp::PacketOut> {
   static void mapping(IO &io, ofp::PacketOut &msg) {
     using namespace ofp;
 
-    Hex32 bufferID = msg.bufferId();
+    BufferID bufferId = msg.bufferId();
     PortNumber inPort = msg.inPort();
 
-    io.mapRequired("buffer_id", bufferID);
+    io.mapRequired("buffer_id", bufferId);
     io.mapRequired("in_port", inPort);
 
     ActionRange actions = msg.actions();
@@ -39,7 +39,10 @@ struct MappingTraits<ofp::PacketOutBuilder> {
   static void mapping(IO &io, ofp::PacketOutBuilder &msg) {
     using namespace ofp;
 
-    io.mapRequired("buffer_id", msg.msg_.bufferId_);
+    BufferID bufferId;
+    io.mapRequired("buffer_id", bufferId);
+    msg.setBufferId(bufferId);
+    
     io.mapRequired("in_port", msg.msg_.inPort_);
 
     io.mapRequired("actions", msg.actions_);

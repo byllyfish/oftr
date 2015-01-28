@@ -3,7 +3,6 @@
 
 #include "ofp/portnumber.h"
 #include "ofp/yaml/enumconverter.h"
-#include "ofp/log.h"
 
 namespace llvm {
 namespace yaml {

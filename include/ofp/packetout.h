@@ -6,13 +6,14 @@
 #include "ofp/protocolmsg.h"
 #include "ofp/actionlist.h"
 #include "ofp/padding.h"
+#include "ofp/bufferid.h"
 
 namespace ofp {
 
 class PacketOut
     : public ProtocolMsg<PacketOut, OFPT_PACKET_OUT, 24, 65535, false> {
  public:
-  UInt32 bufferId() const { return bufferId_; }
+  BufferID bufferId() const { return bufferId_; }
   PortNumber inPort() const { return inPort_; }
 
   ActionRange actions() const;
@@ -22,7 +23,7 @@ class PacketOut
 
  private:
   Header header_;
-  Big32 bufferId_ = OFP_NO_BUFFER;
+  BufferID bufferId_ = OFP_NO_BUFFER;
   PortNumber inPort_ = 0;
   Big16 actionsLen_ = 0;
   Padding<6> pad_;
@@ -44,7 +45,7 @@ class PacketOutBuilder {
   PacketOutBuilder() = default;
   explicit PacketOutBuilder(const PacketOut *msg);
 
-  void setBufferId(UInt32 bufferId) { msg_.bufferId_ = bufferId; }
+  void setBufferId(BufferID bufferId) { msg_.bufferId_ = bufferId; }
   void setInPort(PortNumber inPort) { msg_.inPort_ = inPort; }
   void setActions(const ActionRange &actions) { actions_ = actions; }
   void setEnetFrame(const ByteRange &enetFrame) { enetFrame_ = enetFrame; }

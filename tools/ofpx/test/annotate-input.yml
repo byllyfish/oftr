@@ -73,7 +73,7 @@ msg:
 version: 0x04
 type: OFPT_PACKET_IN
 msg:
-  buffer_id: 0xffffffff
+  buffer_id: NO_BUFFER
   total_len: 0xffff
   in_port: CONTROLLER
   in_phy_port: 0xffffffff
@@ -125,7 +125,7 @@ msg:
 version: 0x04
 type: OFPT_PACKET_OUT
 msg:
-  buffer_id: 0xffffffff
+  buffer_id: NO_BUFFER
   in_port: CONTROLLER
   actions:
     - action: OFPAT_OUTPUT
@@ -143,7 +143,7 @@ msg:
   idle_timeout: 0xffff             
   hard_timeout: 0xffff             
   priority:     0xffff                 
-  buffer_id:    0xffffffff               
+  buffer_id:    NO_BUFFER
   out_port:     CONTROLLER                 
   out_group:    0xffffffff                
   flags:        [ SEND_FLOW_REM ]
