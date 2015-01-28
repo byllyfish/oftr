@@ -11,6 +11,7 @@
 #include "ofp/instructionlist.h"
 #include "ofp/instructionrange.h"
 #include "ofp/bufferid.h"
+#include "ofp/groupnumber.h"
 
 namespace ofp {
 
@@ -25,7 +26,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   UInt16 priority() const { return priority_; }
   BufferID bufferId() const { return bufferId_; }
   PortNumber outPort() const { return outPort_; }
-  UInt32 outGroup() const { return outGroup_; }
+  GroupNumber outGroup() const { return outGroup_; }
   OFPFlowModFlags flags() const { return flags_; }
 
   Match match() const;
@@ -44,7 +45,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   Big16 priority_ = 0;
   BufferID bufferId_ = 0;
   PortNumber outPort_ = 0;
-  Big32 outGroup_ = 0;
+  GroupNumber outGroup_ = 0;
   Big<OFPFlowModFlags> flags_ = OFPFF_NONE;
   Padding<2> pad_1;
 
@@ -82,7 +83,7 @@ class FlowModBuilder {
   void setPriority(UInt16 priority) { msg_.priority_ = priority; }
   void setBufferId(BufferID bufferId) { msg_.bufferId_ = bufferId; }
   void setOutPort(PortNumber outPort) { msg_.outPort_ = outPort; }
-  void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
+  void setOutGroup(GroupNumber outGroup) { msg_.outGroup_ = outGroup; }
   void setFlags(OFPFlowModFlags flags) { msg_.flags_ = flags; }
 
   MatchBuilder &match() { return match_; }

@@ -7,6 +7,7 @@
 #include "ofp/padding.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/match.h"
+#include "ofp/groupnumber.h"
 
 namespace ofp {
 
@@ -21,8 +22,8 @@ class MPFlowStatsRequest {
   MPFlowStatsRequest() = default;
 
   UInt8 tableId() const { return tableId_; }
-  UInt32 outPort() const { return outPort_; }
-  UInt32 outGroup() const { return outGroup_; }
+  PortNumber outPort() const { return outPort_; }
+  GroupNumber outGroup() const { return outGroup_; }
   UInt64 cookie() const { return cookie_; }
   UInt64 cookieMask() const { return cookieMask_; }
 
@@ -33,8 +34,8 @@ class MPFlowStatsRequest {
  private:
   Big8 tableId_;
   Padding<3> pad_1;
-  Big32 outPort_;
-  Big32 outGroup_;
+  PortNumber outPort_;
+  GroupNumber outGroup_;
   Padding<4> pad_2;
   Big64 cookie_;
   Big64 cookieMask_;
@@ -59,8 +60,8 @@ static_assert(IsStandardLayout<MPFlowStatsRequest>(),
 class MPFlowStatsRequestBuilder {
  public:
   void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
-  void setOutPort(UInt32 outPort) { msg_.outPort_ = outPort; }
-  void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
+  void setOutPort(PortNumber outPort) { msg_.outPort_ = outPort; }
+  void setOutGroup(GroupNumber outGroup) { msg_.outGroup_ = outGroup; }
   void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
   void setCookieMask(UInt64 cookieMask) { msg_.cookieMask_ = cookieMask; }
 

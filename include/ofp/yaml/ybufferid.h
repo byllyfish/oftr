@@ -27,7 +27,7 @@ struct ScalarTraits<ofp::BufferID> {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
       ofp::OFPBufferID bufferId; 
       if (!converter.convert(scalar, &bufferId)) {
-        return "Invalid port number value";
+        return "Invalid buffer id value";
       }
       value = bufferId;
       return "";

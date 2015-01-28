@@ -4,6 +4,7 @@
 #define OFP_YAML_YMPFLOWSTATSREQUEST_H_
 
 #include "ofp/mpflowstatsrequest.h"
+#include "ofp/yaml/ygroupnumber.h"
 
 namespace llvm {
 namespace yaml {

@@ -137,8 +137,8 @@ msg:
   flags:           0x0000
   body:            
     table_id:        0x00
-    out_port:        0xFFFFFFFF
-    out_group:       0xFFFFFFFF
+    out_port:        ANY
+    out_group:       ANY
     cookie:          0x0000000000000000
     cookie_mask:     0x0000000000000000
     match:           
@@ -284,7 +284,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           ETH_DST
@@ -365,8 +365,8 @@ msg:
   flags:           0x0000
   body:            
     table_id:        0xFF
-    out_port:        0xFFFFFFFF
-    out_group:       0xFFFFFFFF
+    out_port:        ANY
+    out_group:       ANY
     cookie:          0x0000000000000000
     cookie_mask:     0x0000000000000000
     match:           
@@ -415,7 +415,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           IN_PORT
@@ -806,7 +806,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           IN_PORT
@@ -946,8 +946,8 @@ msg:
   flags:           0x0000
   body:            
     table_id:        0x00
-    out_port:        0xFFFFFFFF
-    out_group:       0xFFFFFFFF
+    out_port:        ANY
+    out_group:       ANY
     cookie:          0x0000000000000000
     cookie_mask:     0x0000000000000000
     match:           
@@ -1132,7 +1132,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           ETH_DST
@@ -1239,8 +1239,8 @@ msg:
   flags:           0x0000
   body:            
     table_id:        0xFF
-    out_port:        0xFFFFFFFF
-    out_group:       0xFFFFFFFF
+    out_port:        ANY
+    out_group:       ANY
     cookie:          0x0000000000000000
     cookie_mask:     0x0000000000000000
     match:           
@@ -1312,7 +1312,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           IN_PORT
@@ -1628,7 +1628,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           ETH_DST
@@ -3612,7 +3612,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           IN_PORT
@@ -3798,8 +3798,8 @@ msg:
   flags:           0x0000
   body:            
     table_id:        0x00
-    out_port:        0xFFFFFFFF
-    out_group:       0xFFFFFFFF
+    out_port:        ANY
+    out_group:       ANY
     cookie:          0x0000000000000000
     cookie_mask:     0x0000000000000000
     match:           
@@ -3984,7 +3984,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           ETH_DST
@@ -4075,8 +4075,8 @@ msg:
   flags:           0x0000
   body:            
     table_id:        0xFF
-    out_port:        0xFFFFFFFF
-    out_group:       0xFFFFFFFF
+    out_port:        ANY
+    out_group:       ANY
     cookie:          0x0000000000000000
     cookie_mask:     0x0000000000000000
     match:           
@@ -4125,7 +4125,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           IN_PORT
@@ -4348,7 +4348,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           ETH_DST
@@ -6289,7 +6289,7 @@ msg:
   priority:        0x007B
   buffer_id:       0x0000FFFF
   out_port:        ANY
-  out_group:       0xFFFFFFFF
+  out_group:       ANY
   flags:           [  ]
   match:           
     - field:           IN_PORT

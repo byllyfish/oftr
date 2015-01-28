@@ -1171,7 +1171,7 @@ TEST(decoder, ofp_metermod_v4) {
 }
 
 TEST(decoder, ofp_mpaggregatestatsrequest_v1) {
-  testDecodeEncode("0110003800000018 00020000 003820ff0000000000000000000000000000 00000000000000000000000000000000 0000000000000800ffff", "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             0x00000018\nversion:         0x01\nmsg:             \n  type:            OFPMP_AGGREGATE\n  flags:           0x0000\n  body:            \n    table_id:        0x08\n    out_port:        0xFFFFFFFF\n    out_group:       0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:     0x0000000000000000\n    match:           \n...\n");
+  testDecodeEncode("0110003800000018 00020000 003820ff0000000000000000000000000000 00000000000000000000000000000000 0000000000000800ffff", "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             0x00000018\nversion:         0x01\nmsg:             \n  type:            OFPMP_AGGREGATE\n  flags:           0x0000\n  body:            \n    table_id:        0x08\n    out_port:        ANY\n    out_group:       0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:     0x0000000000000000\n    match:           \n...\n");
 }
 
 TEST(decoder, ofmp_groupfeatures_reply) {

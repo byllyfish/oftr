@@ -230,7 +230,7 @@ enum ofp_table {
 };
 
 // Group numbering. Groups can use any number up to OFPG_MAX.
-enum ofp_group {
+enum OFPGroupNo : UInt32 {
   // Last usable group number.
   OFPG_MAX = 0xffffff00,
   // Fake groups.

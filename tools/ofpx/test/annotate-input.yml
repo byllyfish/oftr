@@ -145,7 +145,7 @@ msg:
   priority:     0xffff                 
   buffer_id:    NO_BUFFER
   out_port:     CONTROLLER                 
-  out_group:    0xffffffff                
+  out_group:    ANY                
   flags:        [ SEND_FLOW_REM ]
   match:
     - field: ETH_DST
@@ -214,8 +214,8 @@ msg:
   flags: 0xffff
   body:
     table_id: 0xff
-    out_port: 0xffffffff
-    out_group: 0xffffffff
+    out_port: CONTROLLER
+    out_group: ANY
     cookie: 0xffffffffffffffff
     cookie_mask: 0xffffffffffffffff
     match:
@@ -257,8 +257,8 @@ msg:
   flags: 0xffff
   body:
     table_id: 0xff
-    out_port: 0xffffffff
-    out_group: 0xffffffff
+    out_port: CONTROLLER
+    out_group: ANY
     cookie: 0xffffffffffffffff
     cookie_mask: 0xffffffffffffffff
     match:
