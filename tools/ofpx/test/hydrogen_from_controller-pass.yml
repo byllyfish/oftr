@@ -307,7 +307,7 @@ msg:
           value:           '00:00:00:00:00:01'
         - action:          OFPAT_OUTPUT
           port:            0x00000001
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_BARRIER_REQUEST
@@ -344,7 +344,7 @@ msg:
           value:           '00:00:00:00:00:02'
         - action:          OFPAT_OUTPUT
           port:            0x00000002
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_BARRIER_REQUEST

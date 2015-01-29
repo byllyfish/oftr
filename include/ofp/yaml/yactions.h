@@ -7,6 +7,7 @@
 #include "ofp/actions.h"
 #include "ofp/yaml/ymatch.h"
 #include "ofp/yaml/yactiontype.h"
+#include "ofp/yaml/ycontrollermaxlen.h"
 
 namespace ofp {
 namespace detail {
@@ -64,7 +65,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       case AT_OUTPUT::type(): {
         const AT_OUTPUT *action = item.action<AT_OUTPUT>();
         PortNumber port = action->port();
-        Hex16 maxlen = action->maxlen();
+        ControllerMaxLen maxlen = action->maxlen();
         io.mapRequired("port", port);
         io.mapRequired("max_len", maxlen);
         break;
@@ -195,7 +196,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
       }
       case OFPAT_OUTPUT: {
         PortNumber port;
-        UInt16 maxlen;
+        ControllerMaxLen maxlen;
         io.mapRequired("port", port);
         io.mapRequired("max_len", maxlen);
         AT_OUTPUT action{port, maxlen};

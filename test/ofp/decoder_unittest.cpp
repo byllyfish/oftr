@@ -358,7 +358,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "   "
       "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
-      "           0x0000EEEE\n              max_len:         0xFFFF\n...\n");
+      "           0x0000EEEE\n              max_len:         NO_BUFFER\n...\n");
 }
 
 TEST(decoder, ofmp_flowreply2_v1) {
@@ -383,7 +383,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "   "
       "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
-      "           0x0000EEEE\n              max_len:         0xFFFF\n    - "
+      "           0x0000EEEE\n              max_len:         NO_BUFFER\n    - "
       "table_id: "
       "       0x11\n      duration_sec:    0x00000022\n      duration_nsec:   "
       "0x00000033\n      priority:        0x0044\n      idle_timeout:    "
@@ -398,7 +398,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "instructions:    \n        - instruction:     OFPIT_APPLY_ACTIONS\n     "
       "     actions:         \n            - action:          OFPAT_OUTPUT\n   "
       "           port:            0x0000EEEE\n              max_len:         "
-      "0xFFFF\n...\n");
+      "NO_BUFFER\n...\n");
 }
 
 TEST(decoder, ofmp_aggregatereply_v4) {

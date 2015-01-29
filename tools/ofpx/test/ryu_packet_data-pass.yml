@@ -8,7 +8,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL
-      max_len:         0xFFFF
+      max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
@@ -35,7 +35,7 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000006
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_PACKET_IN
@@ -118,7 +118,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL
-      max_len:         0xFFFF
+      max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
@@ -216,7 +216,7 @@ msg:
           actions:         
             - action:          OFPAT_OUTPUT
               port:            CONTROLLER
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_ECHO_REQUEST
@@ -297,7 +297,7 @@ msg:
           value:           0x0102
         - action:          OFPAT_OUTPUT
           port:            0x00000006
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
         - action:          OFPAT_SET_FIELD
@@ -327,7 +327,7 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000002
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_PORT_MOD
@@ -517,7 +517,7 @@ msg:
           actions:         
             - action:          OFPAT_OUTPUT
               port:            0x00000002
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_QUEUE_GET_CONFIG_REQUEST
@@ -927,7 +927,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL
-      max_len:         0xFFFF
+      max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
@@ -1051,7 +1051,7 @@ msg:
               group:           0x00000063
             - action:          OFPAT_OUTPUT
               port:            0x00000006
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
         - instruction:     OFPIT_APPLY_ACTIONS
           actions:         
             - action:          OFPAT_SET_FIELD
@@ -1064,7 +1064,7 @@ msg:
           actions:         
             - action:          OFPAT_OUTPUT
               port:            CONTROLLER
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_ECHO_REQUEST
@@ -1168,7 +1168,7 @@ msg:
           group:           0x00000063
         - action:          OFPAT_OUTPUT
           port:            0x00000006
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
         - action:          OFPAT_SET_FIELD
@@ -1201,7 +1201,7 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000002
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_PORT_MOD
@@ -1414,7 +1414,7 @@ msg:
           actions:         
             - action:          OFPAT_OUTPUT
               port:            0x00000002
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_QUEUE_GET_CONFIG_REQUEST
@@ -1640,7 +1640,7 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000006
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_MULTIPART_REQUEST
@@ -3779,7 +3779,7 @@ msg:
   actions:         
     - action:          OFPAT_OUTPUT
       port:            ALL
-      max_len:         0xFFFF
+      max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
@@ -3903,7 +3903,7 @@ msg:
               group:           0x00000063
             - action:          OFPAT_OUTPUT
               port:            0x00000006
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
         - instruction:     OFPIT_APPLY_ACTIONS
           actions:         
             - action:          OFPAT_SET_FIELD
@@ -3916,7 +3916,7 @@ msg:
           actions:         
             - action:          OFPAT_OUTPUT
               port:            CONTROLLER
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_ECHO_REQUEST
@@ -4023,7 +4023,7 @@ msg:
           group:           0x00000063
         - action:          OFPAT_OUTPUT
           port:            0x00000006
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
     - instruction:     OFPIT_APPLY_ACTIONS
       actions:         
         - action:          OFPAT_SET_FIELD
@@ -4056,7 +4056,7 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000002
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_MULTIPART_REQUEST
@@ -4188,7 +4188,7 @@ msg:
           actions:         
             - action:          OFPAT_OUTPUT
               port:            0x00000002
-              max_len:         0xFFFF
+              max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_MULTIPART_REQUEST
@@ -4360,7 +4360,7 @@ msg:
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000006
-          max_len:         0xFFFF
+          max_len:         NO_BUFFER
 ...
 ---
 type:            OFPT_MULTIPART_REQUEST
