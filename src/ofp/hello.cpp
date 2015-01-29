@@ -7,6 +7,12 @@
 
 using namespace ofp;
 
+// Hello element types
+enum {
+  OFPHET_VERSIONBITMAP = 1,  // Bitmap of version supported.
+};
+
+
 ProtocolVersions detail::HelloElement::versionBitMap() const {
   if (length_ >= sizeof(UInt32) + 4) {
     return ProtocolVersions::fromBitmap(*Big32_cast(BytePtr(this) + 4));

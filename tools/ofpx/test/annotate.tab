@@ -45,11 +45,11 @@ version	type	keypath	syntax	required	default	missing	modify
 1	OFPT_FEATURES_REPLY.v1	msg.n_buffers	uint32	True			True
 1	OFPT_GET_CONFIG_REQUEST.v1	msg	null	False			
 1	OFPT_GET_CONFIG_REPLY.v1	msg	object	True			
-1	OFPT_GET_CONFIG_REPLY.v1	msg.miss_send_len	uint16	True			True
+1	OFPT_GET_CONFIG_REPLY.v1	msg.miss_send_len	NO_BUFFER	True			
 1	OFPT_GET_CONFIG_REPLY.v1	msg.flags	array	True			
 1	OFPT_GET_CONFIG_REPLY.v1	msg.flags.0	FRAG_NORMAL	False			
 1	OFPT_SET_CONFIG.v1	msg	object	True			
-1	OFPT_SET_CONFIG.v1	msg.miss_send_len	uint16	True			True
+1	OFPT_SET_CONFIG.v1	msg.miss_send_len	NO_BUFFER	True			
 1	OFPT_SET_CONFIG.v1	msg.flags	array	True			
 1	OFPT_SET_CONFIG.v1	msg.flags.0	FRAG_NORMAL	False			
 1	OFPT_PACKET_IN.v1	msg	object	True			
@@ -578,11 +578,11 @@ version	type	keypath	syntax	required	default	missing	modify
 2	OFPT_FEATURES_REPLY.v2	msg.n_buffers	uint32	True			True
 2	OFPT_GET_CONFIG_REQUEST.v2	msg	null	False			
 2	OFPT_GET_CONFIG_REPLY.v2	msg	object	True			
-2	OFPT_GET_CONFIG_REPLY.v2	msg.miss_send_len	uint16	True			True
+2	OFPT_GET_CONFIG_REPLY.v2	msg.miss_send_len	NO_BUFFER	True			
 2	OFPT_GET_CONFIG_REPLY.v2	msg.flags	array	True			
 2	OFPT_GET_CONFIG_REPLY.v2	msg.flags.0	FRAG_NORMAL	False			
 2	OFPT_SET_CONFIG.v2	msg	object	True			
-2	OFPT_SET_CONFIG.v2	msg.miss_send_len	uint16	True			True
+2	OFPT_SET_CONFIG.v2	msg.miss_send_len	NO_BUFFER	True			
 2	OFPT_SET_CONFIG.v2	msg.flags	array	True			
 2	OFPT_SET_CONFIG.v2	msg.flags.0	FRAG_NORMAL	False			
 2	OFPT_PACKET_IN.v2	msg	object	True			ERROR
@@ -1111,11 +1111,11 @@ version	type	keypath	syntax	required	default	missing	modify
 3	OFPT_FEATURES_REPLY.v3	msg.n_buffers	uint32	True			True
 3	OFPT_GET_CONFIG_REQUEST.v3	msg	null	False			
 3	OFPT_GET_CONFIG_REPLY.v3	msg	object	True			
-3	OFPT_GET_CONFIG_REPLY.v3	msg.miss_send_len	uint16	True			True
+3	OFPT_GET_CONFIG_REPLY.v3	msg.miss_send_len	NO_BUFFER	True			
 3	OFPT_GET_CONFIG_REPLY.v3	msg.flags	array	True			
 3	OFPT_GET_CONFIG_REPLY.v3	msg.flags.0	FRAG_NORMAL	False			
 3	OFPT_SET_CONFIG.v3	msg	object	True			
-3	OFPT_SET_CONFIG.v3	msg.miss_send_len	uint16	True			True
+3	OFPT_SET_CONFIG.v3	msg.miss_send_len	NO_BUFFER	True			
 3	OFPT_SET_CONFIG.v3	msg.flags	array	True			
 3	OFPT_SET_CONFIG.v3	msg.flags.0	FRAG_NORMAL	False			
 3	OFPT_PACKET_IN.v3	msg	object	True			
@@ -1644,11 +1644,11 @@ version	type	keypath	syntax	required	default	missing	modify
 4	OFPT_FEATURES_REPLY.v4	msg.n_buffers	uint32	True			True
 4	OFPT_GET_CONFIG_REQUEST.v4	msg	null	False			
 4	OFPT_GET_CONFIG_REPLY.v4	msg	object	True			
-4	OFPT_GET_CONFIG_REPLY.v4	msg.miss_send_len	uint16	True			True
+4	OFPT_GET_CONFIG_REPLY.v4	msg.miss_send_len	NO_BUFFER	True			
 4	OFPT_GET_CONFIG_REPLY.v4	msg.flags	array	True			
 4	OFPT_GET_CONFIG_REPLY.v4	msg.flags.0	FRAG_NORMAL	False			
 4	OFPT_SET_CONFIG.v4	msg	object	True			
-4	OFPT_SET_CONFIG.v4	msg.miss_send_len	uint16	True			True
+4	OFPT_SET_CONFIG.v4	msg.miss_send_len	NO_BUFFER	True			
 4	OFPT_SET_CONFIG.v4	msg.flags	array	True			
 4	OFPT_SET_CONFIG.v4	msg.flags.0	FRAG_NORMAL	False			
 4	OFPT_PACKET_IN.v4	msg	object	True			

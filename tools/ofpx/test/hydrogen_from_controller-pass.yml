@@ -17,7 +17,7 @@ xid:             0x360907F4
 version:         0x01
 msg:             
   flags:           [ FRAG_NORMAL ]
-  miss_send_len:   0xFFFF
+  miss_send_len:   NO_BUFFER
 ...
 ---
 type:            OFPT_GET_CONFIG_REQUEST

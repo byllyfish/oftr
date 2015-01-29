@@ -4,6 +4,7 @@
 #define OFP_SETCONFIG_H_
 
 #include "ofp/protocolmsg.h"
+#include "ofp/controllermaxlen.h"
 
 namespace ofp {
 
@@ -11,14 +12,14 @@ class SetConfig
     : public ProtocolMsg<SetConfig, OFPT_SET_CONFIG, 12, 12, false> {
  public:
   OFPConfigFlags flags() const { return flags_; }
-  UInt16 missSendLen() const { return missSendLen_; }
+  ControllerMaxLen missSendLen() const { return missSendLen_; }
 
   bool validateInput(Validation *context) const { return true; }
 
  private:
   Header header_;
   Big<OFPConfigFlags> flags_ = OFPC_FRAG_NORMAL;
-  Big16 missSendLen_ = 128;
+  ControllerMaxLen missSendLen_ = 128;
 
   // Only SetConfigBuilder can construct an instance.
   SetConfig() : header_{type()} {}
@@ -38,7 +39,7 @@ class SetConfigBuilder {
   explicit SetConfigBuilder(const SetConfig *msg);
 
   void setFlags(OFPConfigFlags flags) { msg_.flags_ = flags; }
-  void setMissSendLen(UInt16 missSendLen) { msg_.missSendLen_ = missSendLen; }
+  void setMissSendLen(ControllerMaxLen missSendLen) { msg_.missSendLen_ = missSendLen; }
 
   UInt32 send(Writable *channel);
 

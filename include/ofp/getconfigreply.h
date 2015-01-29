@@ -4,6 +4,7 @@
 #define OFP_GETCONFIGREPLY_H_
 
 #include "ofp/protocolmsg.h"
+#include "ofp/controllermaxlen.h"
 
 namespace ofp {
 
@@ -11,14 +12,14 @@ class GetConfigReply
     : public ProtocolMsg<GetConfigReply, OFPT_GET_CONFIG_REPLY, 12, 12, false> {
  public:
   OFPConfigFlags flags() const { return flags_; }
-  UInt16 missSendLen() const { return missSendLen_; }
+  ControllerMaxLen missSendLen() const { return missSendLen_; }
 
   bool validateInput(Validation *context) const { return true; }
 
  private:
   Header header_;
   Big<OFPConfigFlags> flags_;
-  Big16 missSendLen_;
+  ControllerMaxLen missSendLen_;
 
   // Only GetConfigReplyBuilder can construct an instance.
   GetConfigReply() : header_{type()} {}
@@ -39,7 +40,7 @@ class GetConfigReplyBuilder {
   explicit GetConfigReplyBuilder(const GetConfigReply *msg);
 
   void setFlags(OFPConfigFlags flags) { msg_.flags_ = flags; }
-  void setMissSendLen(UInt16 missSendLen) { msg_.missSendLen_ = missSendLen; }
+  void setMissSendLen(ControllerMaxLen missSendLen) { msg_.missSendLen_ = missSendLen; }
 
   UInt32 send(Writable *channel);
 

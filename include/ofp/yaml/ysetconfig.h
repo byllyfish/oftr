@@ -6,6 +6,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/setconfig.h"
+#include "ofp/yaml/ycontrollermaxlen.h"
 
 namespace llvm {
 namespace yaml {

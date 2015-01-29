@@ -212,17 +212,9 @@ enum OFPPortStatusReason : UInt8 {
   OFPPR_MODIFY  = 2,
 };
 
-enum ofp_controller_max_len {
-  OFPCML_MAX = 0xffe5,  // maximum max_len value which can be used to request a
-                        // specific byte length.
-  OFPCML_NO_BUFFER = 0xffff  // indicates that no buffering should be applied
-                             // and the whole packet is to be sent to the
-                             // controller.
-};
-
-// Hello elements types.
-enum ofp_hello_elem_type {
-  OFPHET_VERSIONBITMAP = 1,  // Bitmap of version supported.
+enum OFPControllerMaxLen : UInt16 {
+  OFPCML_MAX = 0xffe5,
+  OFPCML_NO_BUFFER = 0xffff
 };
 
 // Table numbering. Tables can use any number up to OFPT_MAX.
