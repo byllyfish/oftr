@@ -206,6 +206,11 @@ inline OFPPortFeaturesFlags operator|(OFPPortFeaturesFlags lhs, OFPPortFeaturesF
 OFPPortFeaturesFlags OFPPortFeaturesFlagsConvertToV1(UInt32 features);
 OFPPortFeaturesFlags OFPPortFeaturesFlagsConvertFromV1(UInt32 features);
 
+enum OFPPortStatusReason : UInt8 {
+  OFPPR_ADD = 0,
+  OFPPR_DELETE  = 1,
+  OFPPR_MODIFY  = 2,
+};
 
 enum ofp_controller_max_len {
   OFPCML_MAX = 0xffe5,  // maximum max_len value which can be used to request a

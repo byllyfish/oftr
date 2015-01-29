@@ -11,7 +11,7 @@ namespace ofp {
 class PortStatus
     : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 80, 80, false> {
  public:
-  UInt8 reason() const { return reason_; }
+  OFPPortStatusReason reason() const { return reason_; }
 
   const Port &port() const { return *reinterpret_cast<const Port*>(BytePtr(this) + 16); }
 
@@ -19,9 +19,8 @@ class PortStatus
 
  private:
   Header header_;
-  UInt8 reason_;
+  OFPPortStatusReason reason_;
   Padding<7> pad_;
-  //Port port_;
 
   // Only PortStatusBuilder can create an instance.
   PortStatus() : header_{type()} {}
@@ -41,7 +40,7 @@ class PortStatusBuilder {
   PortStatusBuilder() = default;
   explicit PortStatusBuilder(const PortStatus *msg);
 
-  void setReason(UInt8 reason) { msg_.reason_ = reason; }
+  void setReason(OFPPortStatusReason reason) { msg_.reason_ = reason; }
   void setPort(const PortBuilder &port) { port_ = port; }
 
   UInt32 send(Writable *channel);

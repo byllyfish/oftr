@@ -14,6 +14,8 @@ const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0
 const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x66666666);
 const OFPPortFeaturesFlags kFakePeer = static_cast<OFPPortFeaturesFlags>(0x77777777);
 
+const OFPPortStatusReason kFakeReason = static_cast<OFPPortStatusReason>(0x33);
+
 TEST(portstatus, v4) {
   PortBuilder port;
   port.setPortNo(0x11111111);
@@ -29,7 +31,7 @@ TEST(portstatus, v4) {
   port.setMaxSpeed(0x99999999);
 
   PortStatusBuilder builder;
-  builder.setReason(0x33);
+  builder.setReason(kFakeReason);
   builder.setPort(port);
 
   MemoryChannel channel{OFP_VERSION_4};
@@ -83,7 +85,7 @@ TEST(portstatus, v1) {
   port.setMaxSpeed(0x99999999);
 
   PortStatusBuilder builder;
-  builder.setReason(0x33);
+  builder.setReason(kFakeReason);
   builder.setPort(port);
 
   MemoryChannel channel{OFP_VERSION_1};

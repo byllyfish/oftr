@@ -16,6 +16,12 @@ static const llvm::StringRef sFlowModCommands[] = {
 static const llvm::StringRef sPacketInReason[] = {
     "OFPR_NO_MATCH", "OFPR_ACTION", "OFPR_INVALID_TTL"};
 
+static const llvm::StringRef sPortStatusReason[] = {
+    "ADD",
+    "DELETE",
+    "MODIFY",
+};
+
 static const llvm::StringRef sFlowRemovedReason[] = {
     "OFPRR_IDLE_TIMEOUT", "OFPRR_HARD_TIMEOUT", "OFPRR_DELETE",
     "OFPRR_GROUP_DELETE"};
@@ -51,6 +57,9 @@ EnumConverter<OFPFlowModCommand>
 
 EnumConverter<OFPPacketInReason>
     llvm::yaml::ScalarTraits<OFPPacketInReason>::converter{sPacketInReason};
+
+EnumConverter<OFPPortStatusReason>
+    llvm::yaml::ScalarTraits<OFPPortStatusReason>::converter{sPortStatusReason};
 
 EnumConverter<OFPFlowRemovedReason>
     llvm::yaml::ScalarTraits<OFPFlowRemovedReason>::converter{sFlowRemovedReason};

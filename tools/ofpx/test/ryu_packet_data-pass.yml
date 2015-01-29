@@ -590,7 +590,7 @@ type:            OFPT_PORT_STATUS
 xid:             0x00000000
 version:         0x03
 msg:             
-  reason:          0
+  reason:          ADD
   port:            
     port_no:         0x00000007
     hw_addr:         'f2:0b:a4:d0:3f:70'
@@ -1487,7 +1487,7 @@ type:            OFPT_PORT_STATUS
 xid:             0x00000000
 version:         0x04
 msg:             
-  reason:          0
+  reason:          ADD
   port:            
     port_no:         0x00000007
     hw_addr:         'f2:0b:a4:d0:3f:70'

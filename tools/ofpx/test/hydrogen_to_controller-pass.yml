@@ -80,7 +80,7 @@ type:            OFPT_PORT_STATUS
 xid:             0x00000000
 version:         0x01
 msg:             
-  reason:          2
+  reason:          MODIFY
   port:            
     port_no:         0x00000001
     hw_addr:         '4e:50:2f:4b:2d:df'
