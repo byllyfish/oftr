@@ -1,6 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/api/rpcevents.h"
+#include "ofp/rpc/rpcevents.h"
 #include "ofp/yaml/outputjson.h"
 
 namespace {
@@ -18,7 +18,7 @@ std::string toJsonString(Type *event) {
 
 }  // namespace
 
-using namespace ofp::api;
+using namespace ofp::rpc;
 
 std::string RpcListenResponse::toJson() { return toJsonString(this); }
 
@@ -48,5 +48,5 @@ static llvm::StringRef sRpcMethods[] = {
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
-ofp::yaml::EnumConverter<ofp::api::RpcMethod>
-    llvm::yaml::ScalarTraits<ofp::api::RpcMethod>::converter{sRpcMethods};
+ofp::yaml::EnumConverter<ofp::rpc::RpcMethod>
+    llvm::yaml::ScalarTraits<ofp::rpc::RpcMethod>::converter{sRpcMethods};

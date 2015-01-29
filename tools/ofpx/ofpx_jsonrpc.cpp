@@ -3,7 +3,7 @@
 #include "ofpx_jsonrpc.h"
 #include <sys/resource.h>  // for getrlimit, setrlimit
 #include "ofpx_xpc.h"
-#include "ofp/api/apiserver.h"
+#include "ofp/rpc/rpcserver.h"
 
 using namespace ofpx;
 using ExitStatus = JsonRpc::ExitStatus;
@@ -60,7 +60,7 @@ void JsonRpc::setMaxOpenFiles() {
 
 void JsonRpc::runStdio() {
   ofp::Driver driver;
-  ofp::api::ApiServer server{&driver, STDIN, STDOUT};
+  ofp::rpc::RpcServer server{&driver, STDIN, STDOUT};
   driver.run();
 }
 

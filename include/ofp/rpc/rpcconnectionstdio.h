@@ -1,19 +1,19 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_API_APICONNECTIONSTDIO_H_
-#define OFP_API_APICONNECTIONSTDIO_H_
+#ifndef OFP_RPC_RPCCONNECTIONSTDIO_H_
+#define OFP_RPC_RPCCONNECTIONSTDIO_H_
 
 #include "ofp/sys/asio_utils.h"
-#include "ofp/api/apiconnection.h"
+#include "ofp/rpc/rpcconnection.h"
 
 namespace ofp {
-namespace api {
+namespace rpc {
 
 OFP_BEGIN_IGNORE_PADDING
 
-class ApiConnectionStdio : public ApiConnection {
+class RpcConnectionStdio : public RpcConnection {
  public:
-  ApiConnectionStdio(ApiServer *server, asio::posix::stream_descriptor input,
+  RpcConnectionStdio(RpcServer *server, asio::posix::stream_descriptor input,
                      asio::posix::stream_descriptor output);
 
   void setInput(int input);
@@ -40,7 +40,7 @@ class ApiConnectionStdio : public ApiConnection {
 
 OFP_END_IGNORE_PADDING
 
-}  // namespace api
+}  // namespace rpc
 }  // namespace ofp
 
-#endif  // OFP_API_APICONNECTIONSTDIO_H_
+#endif  // OFP_RPC_RPCCONNECTIONSTDIO_H_

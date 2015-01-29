@@ -1,15 +1,15 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/unittest.h"
-#include "ofp/api/apisession.h"
+#include "ofp/rpc/rpcsession.h"
 #include <future>
 
 using namespace ofp;
-using namespace ofp::api;
+using namespace ofp::rpc;
 
 OFP_BEGIN_IGNORE_PADDING
 
-class TestSession : public ApiSession {
+class TestSession : public RpcSession {
  public:
   void receive(const std::string &msg) override {
     log::debug("TestSession::receive", msg);
@@ -22,7 +22,7 @@ class TestSession : public ApiSession {
 
 OFP_END_IGNORE_PADDING
 
-TEST(apisession, test) {
+TEST(rpcsession, test) {
   TestSession session;
 
   session.send(

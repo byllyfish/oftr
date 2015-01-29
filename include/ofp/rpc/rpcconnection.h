@@ -1,14 +1,14 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_API_APICONNECTION_H_
-#define OFP_API_APICONNECTION_H_
+#ifndef OFP_RPC_RPCCONNECTION_H_
+#define OFP_RPC_RPCCONNECTION_H_
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/api/apiserver.h"
+#include "ofp/rpc/rpcserver.h"
 #include "ofp/bytelist.h"
 
 namespace ofp {
-namespace api {
+namespace rpc {
 
 struct RpcOpen;
 struct RpcOpenResponse;
@@ -18,10 +18,10 @@ struct RpcErrorResponse;
 
 OFP_BEGIN_IGNORE_PADDING
 
-class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
+class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
  public:
-  explicit ApiConnection(ApiServer *server);
-  virtual ~ApiConnection();
+  explicit RpcConnection(RpcServer *server);
+  virtual ~RpcConnection();
 
   virtual void asyncAccept() = 0;
 
@@ -47,12 +47,12 @@ class ApiConnection : public std::enable_shared_from_this<ApiConnection> {
   virtual void asyncRead() = 0;
 
  private:
-  ApiServer *server_;
+  RpcServer *server_;
 };
 
 OFP_END_IGNORE_PADDING
 
-}  // namespace api
+}  // namespace rpc
 }  // namespace ofp
 
-#endif  // OFP_API_APICONNECTION_H_
+#endif  // OFP_RPC_RPCCONNECTION_H_

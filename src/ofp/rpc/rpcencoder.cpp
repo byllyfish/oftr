@@ -1,9 +1,9 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/api/rpcencoder.h"
-#include "ofp/api/apiconnection.h"
+#include "ofp/rpc/rpcencoder.h"
+#include "ofp/rpc/rpcconnection.h"
 
-using ofp::api::RpcEncoder;
+using ofp::rpc::RpcEncoder;
 
 static bool errorFound(llvm::yaml::IO &io) {
   // This is a kludge. We need to know if the io object encountered an error
@@ -13,7 +13,7 @@ static bool errorFound(llvm::yaml::IO &io) {
   return static_cast<bool>(yin->error());
 }
 
-RpcEncoder::RpcEncoder(const std::string &input, ApiConnection *conn,
+RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,
                        yaml::Encoder::ChannelFinder finder)
     : conn_{conn}, errorStream_{error_}, finder_{finder} {
   llvm::yaml::Input yin{input, nullptr, RpcEncoder::diagnosticHandler, this};

@@ -1,17 +1,17 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_API_APISERVER_H_
-#define OFP_API_APISERVER_H_
+#ifndef OFP_RPC_RPCSERVER_H_
+#define OFP_RPC_RPCSERVER_H_
 
 #include <map>
 #include "ofp/driver.h"
 #include "ofp/datapathid.h"
 
 namespace ofp {
-namespace api {
+namespace rpc {
 
-class ApiConnection;
-class ApiSession;
+class RpcConnection;
+class RpcSession;
 
 struct RpcListen;
 struct RpcConnect;
@@ -25,25 +25,25 @@ OFP_BEGIN_IGNORE_PADDING
 /// \brief Implements a server that lets a client control and monitor an
 /// OpenFlow driver over stdin/stdout.
 /// The driver is controlled using YAML messages.
-class ApiServer {
+class RpcServer {
  public:
-  ApiServer(Driver *driver, int inputFD, int outputFD,
+  RpcServer(Driver *driver, int inputFD, int outputFD,
             Channel *defaultChannel = nullptr);
-  ApiServer(Driver *driver, ApiSession *session,
+  RpcServer(Driver *driver, RpcSession *session,
             Channel *defaultChannel = nullptr);
 
-  // Called by ApiConnection to update oneConn_.
-  void onConnect(ApiConnection *conn);
-  void onDisconnect(ApiConnection *conn);
+  // Called by RpcConnection to update oneConn_.
+  void onConnect(RpcConnection *conn);
+  void onDisconnect(RpcConnection *conn);
 
-  void onRpcListen(ApiConnection *conn, RpcListen *open);
-  void onRpcConnect(ApiConnection *conn, RpcConnect *connect);
-  void onRpcClose(ApiConnection *conn, RpcClose *close);
-  void onRpcSend(ApiConnection *conn, RpcSend *send);
-  void onRpcListConns(ApiConnection *conn, RpcListConns *list);
-  void onRpcAddIdentity(ApiConnection *conn, RpcAddIdentity *add);
+  void onRpcListen(RpcConnection *conn, RpcListen *open);
+  void onRpcConnect(RpcConnection *conn, RpcConnect *connect);
+  void onRpcClose(RpcConnection *conn, RpcClose *close);
+  void onRpcSend(RpcConnection *conn, RpcSend *send);
+  void onRpcListConns(RpcConnection *conn, RpcListConns *list);
+  void onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add);
 
-  // These methods are used to bridge ApiChannelListeners to ApiConnections.
+  // These methods are used to bridge RpcChannelListeners to RpcConnections.
   void onChannelUp(Channel *channel);
   void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
@@ -54,16 +54,16 @@ class ApiServer {
 
  private:
   sys::Engine *engine_;
-  ApiConnection *oneConn_ = nullptr;
+  RpcConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
 
-  static void connectResponse(ApiConnection *conn, UInt64 id, UInt64 connId,
+  static void connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
                               const std::error_code &err);
 };
 
 OFP_END_IGNORE_PADDING
 
-}  // namespace api
+}  // namespace rpc
 }  // namespace ofp
 
-#endif  // OFP_API_APISERVER_H_
+#endif  // OFP_RPC_RPCSERVER_H_

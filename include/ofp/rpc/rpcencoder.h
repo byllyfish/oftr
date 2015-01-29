@@ -1,15 +1,15 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_API_RPCENCODER_H_
-#define OFP_API_RPCENCODER_H_
+#ifndef OFP_RPC_RPCENCODER_H_
+#define OFP_RPC_RPCENCODER_H_
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/api/rpcevents.h"
+#include "ofp/rpc/rpcevents.h"
 
 namespace ofp {
-namespace api {
+namespace rpc {
 
-class ApiConnection;
+class RpcConnection;
 
 /// Parse YAML RPC events and pass them to the connection as event structures.
 /// If there is an error parsing the YAML, write an OFPLIB_PROTOCOL_ERROR event
@@ -20,7 +20,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class RpcEncoder {
  public:
-  explicit RpcEncoder(const std::string &input, ApiConnection *conn,
+  explicit RpcEncoder(const std::string &input, RpcConnection *conn,
                       yaml::Encoder::ChannelFinder finder);
 
   const std::string &error() {
@@ -29,33 +29,33 @@ class RpcEncoder {
   }
 
  private:
-  ApiConnection *conn_;
+  RpcConnection *conn_;
   std::string error_;
   llvm::raw_string_ostream errorStream_;
   yaml::Encoder::ChannelFinder finder_;
   std::string jsonrpc_;
   llvm::Optional<ofp::UInt64> id_;
-  RpcMethod method_ = ofp::api::METHOD_UNSUPPORTED;
+  RpcMethod method_ = ofp::rpc::METHOD_UNSUPPORTED;
 
   static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
   void addDiagnostic(const llvm::SMDiagnostic &diag);
 
   void encodeParams(llvm::yaml::IO &io);
 
-  friend struct llvm::yaml::MappingTraits<ofp::api::RpcEncoder>;
+  friend struct llvm::yaml::MappingTraits<ofp::rpc::RpcEncoder>;
 };
 
 OFP_END_IGNORE_PADDING
 
-}  // namespace api
+}  // namespace rpc
 }  // namespace ofp
 
 namespace llvm {
 namespace yaml {
 
 template <>
-struct MappingTraits<ofp::api::RpcEncoder> {
-  static void mapping(IO &io, ofp::api::RpcEncoder &encoder) {
+struct MappingTraits<ofp::rpc::RpcEncoder> {
+  static void mapping(IO &io, ofp::rpc::RpcEncoder &encoder) {
     io.mapOptional("jsonrpc", encoder.jsonrpc_);
     io.mapOptional("id", encoder.id_);
     io.mapRequired("method", encoder.method_);
@@ -67,4 +67,4 @@ struct MappingTraits<ofp::api::RpcEncoder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif  // OFP_API_RPCENCODER_H_
+#endif  // OFP_RPC_RPCENCODER_H_

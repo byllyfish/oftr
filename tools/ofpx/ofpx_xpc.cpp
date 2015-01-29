@@ -3,14 +3,14 @@
 #include "ofpx_xpc.h"
 #include <xpc/xpc.h>  // Mac OS X
 #include "ofp/log.h"
-#include "ofp/api/apisession.h"
+#include "ofp/rpc/rpcsession.h"
 
 static void ofpx_xpc_event_handler(xpc_connection_t peer);
 static void ofpx_xpc_peer_event_handler(xpc_connection_t peer,
                                         xpc_object_t event);
 static void *ofpx_xpc_server_thread(void *context);
 
-class XpcSession : public ofp::api::ApiSession {
+class XpcSession : public ofp::rpc::RpcSession {
  public:
   XpcSession(xpc_connection_t peer) : peer_{peer} {}
 
@@ -34,7 +34,7 @@ void ofpx::run_xpc_main(void) { xpc_main(ofpx_xpc_event_handler); }
 void ofpx_xpc_event_handler(xpc_connection_t peer) {
   // The peer event handlers runs on the main thread. The event handlers
   // simply pass messages to and from our own server thread using the
-  // libofp ApiSession protocol.
+  // libofp RpcSession protocol.
 
   dispatch_queue_t mainQueue = dispatch_get_main_queue();
   xpc_connection_set_target_queue(peer, mainQueue);

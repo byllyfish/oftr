@@ -3,7 +3,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/actionlist_unittest.cpp
 	ofp/actions_unittest.cpp
 	ofp/actiontype_unittest.cpp
-	ofp/apisession_unittest.cpp
 	ofp/asio_unittest.cpp
 	ofp/boost_asio_unittest.cpp
 	ofp/bucketlist_unittest.cpp
@@ -56,6 +55,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/queuegetconfigreply_unittest.cpp
 	ofp/queuegetconfigrequest_unittest.cpp
 	ofp/roundtrip_unittest.cpp
+	ofp/rpcsession_unittest.cpp
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
 	ofp/standardmatch_unittest.cpp

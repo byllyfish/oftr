@@ -165,14 +165,14 @@ set(LIBOFP_SOURCES
 	src/ofp/transmogrify.cpp
 	src/ofp/types.cpp
   src/ofp/validation.cpp
-	src/ofp/api/apichannellistener.cpp
-	src/ofp/api/apiconnection.cpp
-  src/ofp/api/apiconnectionsession.cpp
-  src/ofp/api/apiconnectionstdio.cpp
-	src/ofp/api/apiserver.cpp
-  src/ofp/api/apisession.cpp
-  src/ofp/api/rpcencoder.cpp
-  src/ofp/api/rpcevents.cpp
+	src/ofp/rpc/rpcchannellistener.cpp
+	src/ofp/rpc/rpcconnection.cpp
+  src/ofp/rpc/rpcconnectionsession.cpp
+  src/ofp/rpc/rpcconnectionstdio.cpp
+	src/ofp/rpc/rpcserver.cpp
+  src/ofp/rpc/rpcsession.cpp
+  src/ofp/rpc/rpcencoder.cpp
+  src/ofp/rpc/rpcevents.cpp
 	src/ofp/yaml/decoder.cpp
 	src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp

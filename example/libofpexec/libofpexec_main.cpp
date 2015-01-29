@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/ofp.h"
-#include "ofp/api/apiserver.h"
+#include "ofp/rpc/rpcserver.h"
 #include <iostream>
 
 using namespace ofp;
@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   log::setOutputStream(&std::clog);
 
   Driver driver;
-  api::ApiServer server{&driver, STDIN, STDOUT};
+  rpc::RpcServer server{&driver, STDIN, STDOUT};
 
   driver.run();
 

@@ -1,9 +1,9 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/api/apiconnectionstdio.h"
+#include "ofp/rpc/rpcconnectionstdio.h"
 #include "ofp/sys/asio_utils.h"
 
-using ofp::api::ApiConnectionStdio;
+using ofp::rpc::RpcConnectionStdio;
 
 // The Stdio Text API uses UTF-8 and has JSON events delimited by '\n'. White
 // space characters (SPACE, HT, VT, FF, CR) are permitted. All other control 
@@ -11,48 +11,48 @@ using ofp::api::ApiConnectionStdio;
  
 const char kEventDelimiter = '\n';
 
-ApiConnectionStdio::ApiConnectionStdio(ApiServer *server,
+RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
                                        asio::posix::stream_descriptor output)
-    : ApiConnection{server},
+    : RpcConnection{server},
       input_{std::move(input)},
       output_{std::move(output)} {}
 
-void ApiConnectionStdio::setInput(int input) {
+void RpcConnectionStdio::setInput(int input) {
   assert(input >= 0);
 
   std::error_code err;
   input_.assign(input, err);
 
   if (err) {
-    log::error("ApiConnectionStdio::setInput", input, err);
+    log::error("RpcConnectionStdio::setInput", input, err);
   }
 }
 
-void ApiConnectionStdio::setOutput(int output) {
+void RpcConnectionStdio::setOutput(int output) {
   assert(output >= 0);
 
   std::error_code err;
   output_.assign(output, err);
 
   if (err) {
-    log::error("ApiConnectionStdio::setOutput", output, err);
+    log::error("RpcConnectionStdio::setOutput", output, err);
   }
 }
 
-void ApiConnectionStdio::write(const std::string &msg) {
+void RpcConnectionStdio::write(const std::string &msg) {
   outgoing_[outgoingIdx_].add(msg.data(), msg.length());
   if (!writing_) {
     asyncWrite();
   }
 }
 
-void ApiConnectionStdio::asyncAccept() {
+void RpcConnectionStdio::asyncAccept() {
   // Start first async read.
   asyncRead();
 }
 
-void ApiConnectionStdio::asyncRead() {
+void RpcConnectionStdio::asyncRead() {
   auto self(shared_from_this());
 
   asio::async_read_until(
@@ -66,12 +66,12 @@ void ApiConnectionStdio::asyncRead() {
           handleEvent(line);
           asyncRead();
         } else if (err != asio::error::eof) {
-          log::error("ApiConnectionStdio::asyncRead", err);
+          log::error("RpcConnectionStdio::asyncRead", err);
         }
       });
 }
 
-void ApiConnectionStdio::asyncWrite() {
+void RpcConnectionStdio::asyncWrite() {
   assert(!writing_);
 
   int idx = outgoingIdx_;

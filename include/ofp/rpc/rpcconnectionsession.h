@@ -1,19 +1,19 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_API_APICONNECTIONSESSION_H_
-#define OFP_API_APICONNECTIONSESSION_H_
+#ifndef OFP_RPC_RPCCONNECTIONSESSION_H_
+#define OFP_RPC_RPCCONNECTIONSESSION_H_
 
 #include "ofp/sys/asio_utils.h"
-#include "ofp/api/apiconnection.h"
+#include "ofp/rpc/rpcconnection.h"
 
 namespace ofp {
-namespace api {
+namespace rpc {
 
 OFP_BEGIN_IGNORE_PADDING
 
-class ApiConnectionSession : public ApiConnection {
+class RpcConnectionSession : public RpcConnection {
  public:
-  ApiConnectionSession(ApiServer *server, ApiSession *session);
+  RpcConnectionSession(RpcServer *server, RpcSession *session);
 
   void asyncAccept() override {}
 
@@ -22,13 +22,13 @@ class ApiConnectionSession : public ApiConnection {
   void asyncRead() override;
 
  private:
-  ApiSession *session_;
+  RpcSession *session_;
   asio::io_service::work work_;
 };
 
 OFP_END_IGNORE_PADDING
 
-}  // namespace api
+}  // namespace rpc
 }  // namespace ofp
 
-#endif  // OFP_API_APICONNECTIONSESSION_H_
+#endif  // OFP_RPC_RPCCONNECTIONSESSION_H_

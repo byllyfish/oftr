@@ -1,42 +1,42 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/api/apiconnection.h"
-#include "ofp/api/rpcencoder.h"
+#include "ofp/rpc/rpcconnection.h"
+#include "ofp/rpc/rpcencoder.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
 #include "ofp/channel.h"
 
-using ofp::api::ApiConnection;
+using ofp::rpc::RpcConnection;
 
-ApiConnection::ApiConnection(ApiServer *server) : server_{server} {
+RpcConnection::RpcConnection(RpcServer *server) : server_{server} {
   server_->onConnect(this);
 }
 
-ApiConnection::~ApiConnection() { server_->onDisconnect(this); }
+RpcConnection::~RpcConnection() { server_->onDisconnect(this); }
 
-void ApiConnection::onRpcListen(RpcListen *listen) {
+void RpcConnection::onRpcListen(RpcListen *listen) {
   server_->onRpcListen(this, listen);
 }
 
-void ApiConnection::onRpcConnect(RpcConnect *connect) {
+void RpcConnection::onRpcConnect(RpcConnect *connect) {
   server_->onRpcConnect(this, connect);
 }
 
-void ApiConnection::onRpcClose(RpcClose *close) {
+void RpcConnection::onRpcClose(RpcClose *close) {
   server_->onRpcClose(this, close);
 }
 
-void ApiConnection::onRpcSend(RpcSend *send) { server_->onRpcSend(this, send); }
+void RpcConnection::onRpcSend(RpcSend *send) { server_->onRpcSend(this, send); }
 
-void ApiConnection::onRpcListConns(RpcListConns *list) {
+void RpcConnection::onRpcListConns(RpcListConns *list) {
   server_->onRpcListConns(this, list);
 }
 
-void ApiConnection::onRpcAddIdentity(RpcAddIdentity *add) {
+void RpcConnection::onRpcAddIdentity(RpcAddIdentity *add) {
   server_->onRpcAddIdentity(this, add);
 }
 
-void ApiConnection::onChannel(Channel *channel, const char *status) {
+void RpcConnection::onChannel(Channel *channel, const char *status) {
   RpcDatapath notification;
   notification.params.connId = channel->connectionId();
   notification.params.datapathId = channel->datapathId();
@@ -45,7 +45,7 @@ void ApiConnection::onChannel(Channel *channel, const char *status) {
   rpcReply(&notification);
 }
 
-void ApiConnection::onMessage(Channel *channel, const Message *message) {
+void RpcConnection::onMessage(Channel *channel, const Message *message) {
   yaml::Decoder decoder{message, true};
 
   if (decoder.error().empty()) {
@@ -67,7 +67,7 @@ void ApiConnection::onMessage(Channel *channel, const Message *message) {
   }
 }
 
-void ApiConnection::handleEvent(const std::string &eventText) {
+void RpcConnection::handleEvent(const std::string &eventText) {
   RpcEncoder encoder{eventText, this,
                      [this](const DatapathID &datapathId, UInt64 connId) {
     return server_->findDatapath(datapathId, connId);

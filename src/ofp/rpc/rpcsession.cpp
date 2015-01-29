@@ -1,20 +1,20 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/api/apisession.h"
-#include "ofp/api/apiconnectionsession.h"
+#include "ofp/rpc/rpcsession.h"
+#include "ofp/rpc/rpcconnectionsession.h"
 #include "ofp/sys/engine.h"
 
-using ofp::api::ApiSession;
+using ofp::rpc::RpcSession;
 
-void ApiSession::send(const std::string &msg) {
+void RpcSession::send(const std::string &msg) {
   asio::io_service &io = driver_.engine()->io();
 
   auto conn = conn_;
   io.post([conn, msg]() { conn->handleEvent(msg); });  // FIXME - is msg a ref?
 }
 
-void ApiSession::setConnection(
-    const std::shared_ptr<ApiConnectionSession> &conn) {
+void RpcSession::setConnection(
+    const std::shared_ptr<RpcConnectionSession> &conn) {
   assert(conn_.use_count() == 0);
 
   conn_ = conn;
