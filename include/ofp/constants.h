@@ -218,12 +218,11 @@ enum OFPControllerMaxLen : UInt16 {
 };
 
 // Table numbering. Tables can use any number up to OFPT_MAX.
-enum ofp_table {
+enum OFPTableNo : UInt8 {
   // Last usable table number.
   OFPTT_MAX = 0xfe,
   // Fake tables.
-  OFPTT_ALL = 0xff  // Wildcard table used for table config, flow stats and flow
-                    // deletes.
+  OFPTT_ALL = 0xff
 };
 
 // Group numbering. Groups can use any number up to OFPG_MAX.

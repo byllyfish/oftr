@@ -21,7 +21,7 @@
 {"type":"OFPT_PORT_MOD","xid":0,"version":3,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"advertise":["FIBER"]}}
 {"type":"OFPT_TABLE_MOD","xid":0,"version":3,"msg":{"table_id":255,"config":0}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":3,"msg":{"type":"OFPMP_DESC","flags":0}}
-{"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":3,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"table_id":255,"out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}
+{"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":3,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"table_id":"ALL","out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}
 {"type":"OFPT_MULTIPART_REPLY","xid":0,"version":3,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"packet_count":7,"byte_count":574,"flow_count":6}}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":3,"msg":{"type":"OFPMP_TABLE","flags":0}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":3,"msg":{"type":"OFPMP_PORT_STATS","flags":0,"body":{"port_no":4294967295}}}
@@ -64,7 +64,7 @@
 {"type":"OFPT_PORT_MOD","xid":0,"version":4,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"advertise":["FIBER"]}}
 {"type":"OFPT_TABLE_MOD","xid":0,"version":4,"msg":{"table_id":255,"config":0}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":4,"msg":{"type":"OFPMP_DESC","flags":0}}
-{"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":4,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"table_id":255,"out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}
+{"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":4,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"table_id":"ALL","out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}
 {"type":"OFPT_MULTIPART_REPLY","xid":0,"version":4,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"packet_count":7,"byte_count":574,"flow_count":6}}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":4,"msg":{"type":"OFPMP_TABLE","flags":0}}
 {"type":"OFPT_MULTIPART_REPLY","xid":0,"version":4,"msg":{"type":"OFPMP_TABLE","flags":0,"body":[{"table_id":0,"name":"","wildcards":0,"max_entries":0,"active_count":4,"lookup_count":4,"matched_count":4},{"table_id":1,"name":"","wildcards":0,"max_entries":0,"active_count":4,"lookup_count":4,"matched_count":4}]}}
@@ -126,7 +126,7 @@
 {"type":"OFPT_ROLE_REPLY","xid":0,"version":5,"msg":{"role":"ROLE_SLAVE","generation_id":17294086455919964160}}
 {"type":"OFPT_GROUP_MOD","xid":0,"version":5,"msg":{"command":0,"type":0,"group_id":1,"buckets":[{"weight":1,"watch_port":1,"watch_group":1,"actions":[{"action":"OFPAT_OUTPUT","port":2,"max_len":"NO_BUFFER"}]}]}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":5,"msg":{"type":"OFPMP_DESC","flags":0}}
-{"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":5,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"table_id":255,"out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}
+{"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":5,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"table_id":"ALL","out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}
 {"type":"OFPT_MULTIPART_REPLY","xid":0,"version":5,"msg":{"type":"OFPMP_AGGREGATE","flags":0,"body":{"packet_count":7,"byte_count":574,"flow_count":6}}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":5,"msg":{"type":"OFPMP_TABLE","flags":0}}
 {"type":"OFPT_MULTIPART_REQUEST","xid":0,"version":5,"msg":{"type":"OFPMP_PORT_STATS","flags":0,"body":{"port_no":4294967295}}}

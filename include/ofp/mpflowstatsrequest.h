@@ -8,6 +8,7 @@
 #include "ofp/matchbuilder.h"
 #include "ofp/match.h"
 #include "ofp/groupnumber.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -21,7 +22,7 @@ class MPFlowStatsRequest {
 
   MPFlowStatsRequest() = default;
 
-  UInt8 tableId() const { return tableId_; }
+  TableNumber tableId() const { return tableId_; }
   PortNumber outPort() const { return outPort_; }
   GroupNumber outGroup() const { return outGroup_; }
   UInt64 cookie() const { return cookie_; }
@@ -32,7 +33,7 @@ class MPFlowStatsRequest {
   bool validateInput(Validation *context) const;
 
  private:
-  Big8 tableId_;
+  TableNumber tableId_;
   Padding<3> pad_1;
   PortNumber outPort_;
   GroupNumber outGroup_;
@@ -59,7 +60,7 @@ static_assert(IsStandardLayout<MPFlowStatsRequest>(),
 
 class MPFlowStatsRequestBuilder {
  public:
-  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setOutPort(PortNumber outPort) { msg_.outPort_ = outPort; }
   void setOutGroup(GroupNumber outGroup) { msg_.outGroup_ = outGroup; }
   void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }

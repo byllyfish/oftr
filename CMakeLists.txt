@@ -182,6 +182,7 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/yportnumber.cpp
   src/ofp/yaml/ybufferid.cpp
   src/ofp/yaml/ycontrollermaxlen.cpp
+  src/ofp/yaml/ytablenumber.cpp
 )
 
 # Specify the config.h.in file.

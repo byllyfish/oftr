@@ -26,6 +26,8 @@ private:
     UInt32 value() const { return port_; }
 };
 
+static_assert(sizeof(PortNumber) == 4, "Unexpected size.");
+
 }  // namespace ofp
 
 #endif // OFP_PORTNUMBER_H_

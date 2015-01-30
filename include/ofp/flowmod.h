@@ -12,6 +12,7 @@
 #include "ofp/instructionrange.h"
 #include "ofp/bufferid.h"
 #include "ofp/groupnumber.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -19,7 +20,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
  public:
   UInt64 cookie() const { return cookie_; }
   UInt64 cookieMask() const { return cookieMask_; }
-  UInt8 tableId() const { return tableId_; }
+  TableNumber tableId() const { return tableId_; }
   OFPFlowModCommand command() const { return command_; }
   UInt16 idleTimeout() const { return idleTimeout_; }
   UInt16 hardTimeout() const { return hardTimeout_; }
@@ -38,7 +39,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   Header header_;
   Big64 cookie_ = 0;
   Big64 cookieMask_ = 0;
-  Big8 tableId_ = 0;
+  TableNumber tableId_ = 0;
   Big<OFPFlowModCommand> command_ = OFPFC_ADD;
   Big16 idleTimeout_ = 0;
   Big16 hardTimeout_ = 0;
@@ -76,7 +77,7 @@ class FlowModBuilder {
 
   void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
   void setCookieMask(UInt64 cookieMask) { msg_.cookieMask_ = cookieMask; }
-  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setCommand(OFPFlowModCommand command) { msg_.command_ = command; }
   void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
   void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }

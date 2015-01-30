@@ -138,7 +138,7 @@ type: OFPT_FLOW_MOD
 msg:
   cookie: 0xffffffffffffffff
   cookie_mask: 0xffffffffffffffff
-  table_id:     0xff                  
+  table_id:     ALL                  
   command:      0xff                  
   idle_timeout: 0xffff             
   hard_timeout: 0xffff             
@@ -213,7 +213,7 @@ msg:
   type: OFPMP_FLOW
   flags: 0xffff
   body:
-    table_id: 0xff
+    table_id: ALL
     out_port: CONTROLLER
     out_group: ANY
     cookie: 0xffffffffffffffff
@@ -256,7 +256,7 @@ msg:
   type: OFPMP_AGGREGATE
   flags: 0xffff
   body:
-    table_id: 0xff
+    table_id: ALL
     out_port: CONTROLLER
     out_group: ANY
     cookie: 0xffffffffffffffff

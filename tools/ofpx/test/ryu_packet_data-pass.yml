@@ -364,7 +364,7 @@ msg:
   type:            OFPMP_AGGREGATE
   flags:           0x0000
   body:            
-    table_id:        0xFF
+    table_id:        ALL
     out_port:        ANY
     out_group:       ANY
     cookie:          0x0000000000000000
@@ -1238,7 +1238,7 @@ msg:
   type:            OFPMP_AGGREGATE
   flags:           0x0000
   body:            
-    table_id:        0xFF
+    table_id:        ALL
     out_port:        ANY
     out_group:       ANY
     cookie:          0x0000000000000000
@@ -4074,7 +4074,7 @@ msg:
   type:            OFPMP_AGGREGATE
   flags:           0x0000
   body:            
-    table_id:        0xFF
+    table_id:        ALL
     out_port:        ANY
     out_group:       ANY
     cookie:          0x0000000000000000

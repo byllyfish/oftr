@@ -131,7 +131,7 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel) {
   hdr.setLength(msgLen);
   hdr.setXid(xid);
 
-  if (msg_.tableId_ != 0) {
+  if (msg_.tableId_) {
     log::info("FlowModBuilder: tableId not supported in version 1.");
     msg_.tableId_ = 0;
   }
