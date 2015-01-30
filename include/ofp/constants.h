@@ -307,6 +307,7 @@ enum OFPMultipartType : UInt16 {
 std::ostream &operator<<(std::ostream &os, OFPMultipartType type);
 
 enum OFPInstructionType : UInt16 {
+  OFPIT_NONE = 0,
   OFPIT_GOTO_TABLE = 1,
   OFPIT_WRITE_METADATA = 2,
   OFPIT_WRITE_ACTIONS = 3,
@@ -473,6 +474,7 @@ enum OFPQueueProperty : UInt16 {
 };
 
 enum OFPMeterBandType : UInt16 {
+  OFPMBT_NONE = 0,
   OFPMBT_DROP = 1,
   OFPMBT_DSCP_REMARK = 2,
   OFPMBT_EXPERIMENTER = 0xffff

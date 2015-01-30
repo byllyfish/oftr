@@ -9,6 +9,73 @@ using ofp::yaml::EnumConverterSparse;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
+
+static const llvm::StringRef sTypes[] = {
+    "OFPT_HELLO",
+    "OFPT_ERROR",
+    "OFPT_ECHO_REQUEST",
+    "OFPT_ECHO_REPLY",
+    "OFPT_EXPERIMENTER",
+    "OFPT_FEATURES_REQUEST",
+    "OFPT_FEATURES_REPLY",
+    "OFPT_GET_CONFIG_REQUEST",
+    "OFPT_GET_CONFIG_REPLY",
+    "OFPT_SET_CONFIG",
+    "OFPT_PACKET_IN",
+    "OFPT_FLOW_REMOVED",
+    "OFPT_PORT_STATUS",
+    "OFPT_PACKET_OUT",
+    "OFPT_FLOW_MOD",
+    "OFPT_GROUP_MOD",
+    "OFPT_PORT_MOD",
+    "OFPT_TABLE_MOD",
+    "OFPT_MULTIPART_REQUEST",
+    "OFPT_MULTIPART_REPLY",
+    "OFPT_BARRIER_REQUEST",
+    "OFPT_BARRIER_REPLY",
+    "OFPT_QUEUE_GET_CONFIG_REQUEST",
+    "OFPT_QUEUE_GET_CONFIG_REPLY",
+    "OFPT_ROLE_REQUEST",
+    "OFPT_ROLE_REPLY",
+    "OFPT_GET_ASYNC_REQUEST",
+    "OFPT_GET_ASYNC_REPLY",
+    "OFPT_SET_ASYNC",
+    "OFPT_METER_MOD",
+};
+
+static const llvm::StringRef sMultipartTypes[] = {
+    "OFPMP_DESC",
+    "OFPMP_FLOW",
+    "OFPMP_AGGREGATE",
+    "OFPMP_TABLE",
+    "OFPMP_PORT_STATS",
+    "OFPMP_QUEUE",
+    "OFPMP_GROUP",
+    "OFPMP_GROUP_DESC",
+    "OFPMP_GROUP_FEATURES",
+    "OFPMP_METER",
+    "OFPMP_METER_CONFIG",
+    "OFPMP_METER_FEATURES",
+    "OFPMP_TABLE_FEATURES",
+    "OFPMP_PORT_DESC",
+};
+
+static const llvm::StringRef sInstructionTypes[] = {
+    "OFPIT_NONE",
+    "OFPIT_GOTO_TABLE",
+    "OFPIT_WRITE_METADATA",
+    "OFPIT_WRITE_ACTIONS",
+    "OFPIT_APPLY_ACTIONS",
+    "OFPIT_CLEAR_ACTIONS",
+    "OFPIT_METER",
+};
+
+static const llvm::StringRef sMeterBandTypes[] = {
+    "OFPMBT_NONE",
+    "OFPMBT_DROP",
+    "OFPMBT_DSCP_REMARK",
+};
+
 static const llvm::StringRef sFlowModCommands[] = {
     "OFPFC_ADD", "OFPFC_MODIFY", "OFPFC_MODIFY_STRICT", "OFPFC_DELETE",
     "OFPFC_DELETE_STRICT"};
@@ -51,6 +118,19 @@ static const llvm::StringRef sErrorTypes[] = {
 };
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+
+EnumConverter<OFPType>
+    llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
+
+EnumConverter<OFPMultipartType>
+    llvm::yaml::ScalarTraits<OFPMultipartType>::converter{sMultipartTypes, "OFPMP_EXPERIMENTER"};
+
+EnumConverter<OFPInstructionType>
+    llvm::yaml::ScalarTraits<OFPInstructionType>::converter{sInstructionTypes, "OFPIT_EXPERIMENTER"};
+
+EnumConverter<OFPMeterBandType>
+    llvm::yaml::ScalarTraits<OFPMeterBandType>::converter{sMeterBandTypes, "OFPMBT_EXPERIMENTER"};
+
 
 EnumConverter<OFPFlowModCommand>
     llvm::yaml::ScalarTraits<OFPFlowModCommand>::converter{sFlowModCommands};
