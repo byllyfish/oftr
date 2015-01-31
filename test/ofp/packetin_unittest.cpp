@@ -12,7 +12,7 @@ TEST(packetin, version4) {
   PacketInBuilder msg;
   msg.setBufferId(1);
   msg.setTotalLen(2);
-  msg.setReason(OFPR_NO_MATCH);
+  msg.setReason(OFPR_TABLE_MISS);
   msg.setTableID(4);
   msg.setCookie(5);
   msg.setInPort(27);
@@ -43,7 +43,7 @@ TEST(packetin, version4) {
     if (packetIn->validateInput(&context)) {
       EXPECT_EQ(1, packetIn->bufferId());
       EXPECT_EQ(2, packetIn->totalLen());
-      EXPECT_EQ(OFPR_NO_MATCH, packetIn->reason());
+      EXPECT_EQ(OFPR_TABLE_MISS, packetIn->reason());
       EXPECT_EQ(27, packetIn->inPort());
     }
   }
@@ -55,7 +55,7 @@ TEST(packetin, version1) {
   builder.setTotalLen(0x0101);
   builder.setInPort(0x2222);
   builder.setInPhyPort(0x3333);
-  builder.setReason(OFPR_NO_MATCH);
+  builder.setReason(OFPR_TABLE_MISS);
   builder.setTableID(0xAA);
   builder.setCookie(0x05060708090a0b0c);
 
@@ -88,7 +88,7 @@ TEST(packetin, version1) {
     EXPECT_EQ(0x01020304, msg->bufferId());
     EXPECT_EQ(0x0101, msg->totalLen());
     EXPECT_EQ(0x2222, msg->inPort());
-    EXPECT_EQ(OFPR_NO_MATCH, msg->reason());
+    EXPECT_EQ(OFPR_TABLE_MISS, msg->reason());
 
     ByteRange enetFrame = msg->enetFrame();
     EXPECT_HEX("3737373737373737373737373737373737373737", enetFrame.data(),

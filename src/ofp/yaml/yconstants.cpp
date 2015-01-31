@@ -81,7 +81,13 @@ static const llvm::StringRef sFlowModCommands[] = {
     "OFPFC_DELETE_STRICT"};
 
 static const llvm::StringRef sPacketInReason[] = {
-    "OFPR_NO_MATCH", "OFPR_ACTION", "OFPR_INVALID_TTL"};
+  "TABLE_MISS",
+  "APPLY_ACTION",
+  "INVALID_TTL",
+  "ACTION_SET",
+  "GROUP",
+  "PACKET_OUT",
+};
 
 static const llvm::StringRef sPortStatusReason[] = {
     "ADD",

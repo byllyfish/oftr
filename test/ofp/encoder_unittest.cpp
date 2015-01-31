@@ -1174,7 +1174,7 @@ TEST(encoder, packetinv1) {
         in_port:         0x55555555
         in_phy_port:     0x66666666
         metadata:        0x7777777777777777
-        reason:          OFPR_ACTION
+        reason:          APPLY_ACTION
         table_id:        0x88
         cookie:          0x9999999999999999
         match:
@@ -1201,7 +1201,7 @@ TEST(encoder, packetinv4) {
         in_port:         0x55555555
         in_phy_port:     0x66666666
         metadata:        0x7777777777777777
-        reason:          OFPR_ACTION
+        reason:          APPLY_ACTION
         table_id:        0x88
         cookie:          0x9999999999999999
         match:

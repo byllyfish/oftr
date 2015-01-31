@@ -47,7 +47,7 @@ msg:
   in_port:         0x00000063
   in_phy_port:     0x00000000
   metadata:        0x0000000000000000
-  reason:          OFPR_ACTION
+  reason:          APPLY_ACTION
   table_id:        0x00
   cookie:          0x0000000000000000
   match:           
@@ -614,7 +614,7 @@ msg:
   in_port:         0x00000006
   in_phy_port:     0x00000006
   metadata:        0x0000000000000000
-  reason:          OFPR_ACTION
+  reason:          APPLY_ACTION
   table_id:        0x01
   cookie:          0x0000000000000000
   match:           
@@ -682,7 +682,7 @@ msg:
   in_port:         0x05060708
   in_phy_port:     0x01020304
   metadata:        0x0001020304050607
-  reason:          OFPR_NO_MATCH
+  reason:          TABLE_MISS
   table_id:        0xC8
   cookie:          0x0000000000000000
   match:           
@@ -1511,7 +1511,7 @@ msg:
   in_port:         0x00000006
   in_phy_port:     0x00000006
   metadata:        0x0000000000000000
-  reason:          OFPR_ACTION
+  reason:          APPLY_ACTION
   table_id:        0x01
   cookie:          0x0001020300000000
   match:           
@@ -3500,7 +3500,7 @@ msg:
   in_port:         0x05060708
   in_phy_port:     0x01020304
   metadata:        0x0001020304050607
-  reason:          OFPR_NO_MATCH
+  reason:          TABLE_MISS
   table_id:        0xC8
   cookie:          0x0001020300000000
   match:           
@@ -4283,7 +4283,7 @@ msg:
   in_port:         0x00000006
   in_phy_port:     0x00000006
   metadata:        0x0000000000000000
-  reason:          0x03
+  reason:          ACTION_SET
   table_id:        0x01
   cookie:          0x0001020300000000
   match:           
@@ -6189,7 +6189,7 @@ msg:
   in_port:         0x05060708
   in_phy_port:     0x01020304
   metadata:        0x0001020304050607
-  reason:          OFPR_NO_MATCH
+  reason:          TABLE_MISS
   table_id:        0xC8
   cookie:          0x0001020300000000
   match:           

@@ -669,7 +669,7 @@ TEST(decoder, packetinv4) {
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:      "
       " 0x33333333\n  total_len:       0x4444\n  in_port:         0x55555555\n "
       " in_phy_port:     0x66666666\n  metadata:        0x7777777777777777\n  "
-      "reason:          OFPR_ACTION\n  table_id:        0x88\n  cookie:        "
+      "reason:          APPLY_ACTION\n  table_id:        0x88\n  cookie:        "
       "  0x9999999999999999\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x55555555\n    - field:           "
       "IN_PHY_PORT\n      value:           0x66666666\n    - field:        "
@@ -688,7 +688,7 @@ TEST(decoder, packetinv1) {
       "0x00000002\nversion:         0x01\nmsg:             \n  buffer_id:      "
       " 0x33333333\n  total_len:       0x4444\n  in_port:         0x00005555\n "
       " in_phy_port:     0x00000000\n  metadata:        0x0000000000000000\n  "
-      "reason:          OFPR_ACTION\n  table_id:        0x00\n  cookie:        "
+      "reason:          APPLY_ACTION\n  table_id:        0x00\n  cookie:        "
       "  0x0000000000000000\n  match:           \n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");

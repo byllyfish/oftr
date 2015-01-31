@@ -341,9 +341,12 @@ enum OFPActionType : UInt16 {
 };
 
 enum OFPPacketInReason : UInt8 {
-  OFPR_NO_MATCH = 0,     ///< No matching flow (table-miss flow entry)
-  OFPR_ACTION = 1,       ///< Action explicitly output to controller
-  OFPR_INVALID_TTL = 2,  ///< Packet has invalid TTL (added in v1.2)
+  OFPR_TABLE_MISS = 0,      // 1.4 name; instead of OFPR_NO_MATCH
+  OFPR_APPLY_ACTION = 1,    // 1.4 name; instead of OFPR_ACTION
+  OFPR_INVALID_TTL = 2,     // added in 1.2
+  OFPR_ACTION_SET =3,       // added in 1.4
+  OFPR_GROUP = 4,           // added in 1.4
+  OFPR_PACKET_OUT = 5,      // added in 1.4
 };
 
 enum OFPFlowModCommand : UInt8 {
