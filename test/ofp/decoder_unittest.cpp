@@ -546,7 +546,7 @@ TEST(decoder, flowmodv4) {
       "0x00000001\nversion:         0x04\nmsg:             \n  cookie:         "
       " "
       "0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:  "
-      "      0x00\n  command:         OFPFC_ADD\n  idle_timeout:    0x0000\n  "
+      "      0x00\n  command:         ADD\n  idle_timeout:    0x0000\n  "
       "hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       "
       "0x00000000\n  out_port:        0x00000000\n  out_group:       "
       "0x00000000\n  flags:           [  ]\n  match:           \n    - field:"

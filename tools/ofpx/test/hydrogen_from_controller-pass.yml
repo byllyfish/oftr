@@ -33,7 +33,7 @@ msg:
   cookie:          0x0000000000000000
   cookie_mask:     0xFFFFFFFFFFFFFFFF
   table_id:        0x00
-  command:         OFPFC_DELETE
+  command:         DELETE
   idle_timeout:    0x0000
   hard_timeout:    0x0000
   priority:        0x0000
@@ -286,7 +286,7 @@ msg:
   cookie:          0x0000000000000000
   cookie_mask:     0xFFFFFFFFFFFFFFFF
   table_id:        0x00
-  command:         OFPFC_ADD
+  command:         ADD
   idle_timeout:    0x0000
   hard_timeout:    0x0000
   priority:        0x0001
@@ -323,7 +323,7 @@ msg:
   cookie:          0x0000000000000000
   cookie_mask:     0xFFFFFFFFFFFFFFFF
   table_id:        0x00
-  command:         OFPFC_ADD
+  command:         ADD
   idle_timeout:    0x0000
   hard_timeout:    0x0000
   priority:        0x0001

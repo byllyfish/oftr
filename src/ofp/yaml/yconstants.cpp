@@ -77,8 +77,12 @@ static const llvm::StringRef sMeterBandTypes[] = {
 };
 
 static const llvm::StringRef sFlowModCommands[] = {
-    "OFPFC_ADD", "OFPFC_MODIFY", "OFPFC_MODIFY_STRICT", "OFPFC_DELETE",
-    "OFPFC_DELETE_STRICT"};
+    "ADD", 
+    "MODIFY", 
+    "MODIFY_STRICT", 
+    "DELETE",
+    "DELETE_STRICT"
+};
 
 static const llvm::StringRef sPacketInReason[] = {
   "TABLE_MISS",
