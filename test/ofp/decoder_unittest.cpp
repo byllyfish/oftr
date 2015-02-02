@@ -1164,9 +1164,9 @@ TEST(decoder, ofp_metermod_v4) {
       "---\ntype:            OFPT_METER_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  command:        "
       " 0x0001\n  flags:           0x2222\n  meter_id:        0x33333333\n  "
-      "bands:           \n    - type:            OFPMBT_DROP\n      rate:      "
+      "bands:           \n    - type:            DROP\n      rate:      "
       "      1145324612\n      burst_size:      1431655765\n    - type:        "
-      "    OFPMBT_DSCP_REMARK\n      rate:            1717986918\n      "
+      "    DSCP_REMARK\n      rate:            1717986918\n      "
       "burst_size:      2004318071\n      prec_level:      136\n...\n");
 }
 

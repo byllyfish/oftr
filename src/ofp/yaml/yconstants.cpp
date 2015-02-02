@@ -71,9 +71,9 @@ static const llvm::StringRef sInstructionTypes[] = {
 };
 
 static const llvm::StringRef sMeterBandTypes[] = {
-    "OFPMBT_NONE",
-    "OFPMBT_DROP",
-    "OFPMBT_DSCP_REMARK",
+    "NONE",
+    "DROP",
+    "DSCP_REMARK",
 };
 
 static const llvm::StringRef sFlowModCommands[] = {
@@ -139,7 +139,7 @@ EnumConverter<OFPInstructionType>
     llvm::yaml::ScalarTraits<OFPInstructionType>::converter{sInstructionTypes, "OFPIT_EXPERIMENTER"};
 
 EnumConverter<OFPMeterBandType>
-    llvm::yaml::ScalarTraits<OFPMeterBandType>::converter{sMeterBandTypes, "OFPMBT_EXPERIMENTER"};
+    llvm::yaml::ScalarTraits<OFPMeterBandType>::converter{sMeterBandTypes, "EXPERIMENTER"};
 
 
 EnumConverter<OFPFlowModCommand>

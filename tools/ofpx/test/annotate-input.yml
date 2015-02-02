@@ -436,7 +436,7 @@ msg:
     - flags: 0xffff
       meter_id: 0xffffffff
       bands:
-        - type: OFPMBT_DROP
+        - type: DROP
           rate: 0xffffffff
           burst_size: 0xffffffff
 ---
@@ -635,7 +635,7 @@ msg:
   flags: 0xffff
   meter_id: 0xffffffff
   bands:
-    - type: OFPMBT_DROP
+    - type: DROP
       rate: 0xffffffff
       burst_size: 0xffffffff
 #---

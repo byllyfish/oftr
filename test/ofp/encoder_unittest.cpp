@@ -2092,10 +2092,10 @@ TEST(encoder, meter_mod_v4) {
         flags: 0x2222
         meter_id: 0x33333333
         bands:
-          - type: OFPMBT_DROP
+          - type: DROP
             rate: 0x44444444
             burst_size: 0x55555555
-          - type: OFPMBT_DSCP_REMARK
+          - type: DSCP_REMARK
             rate: 0x66666666
             burst_size: 0x77777777
             prec_level: 0x88

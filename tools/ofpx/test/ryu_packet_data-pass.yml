@@ -1602,14 +1602,14 @@ msg:
   flags:           0x000E
   meter_id:        0x00000064
   bands:           
-    - type:            OFPMBT_DROP
+    - type:            DROP
       rate:            1000
       burst_size:      10
-    - type:            OFPMBT_DSCP_REMARK
+    - type:            DSCP_REMARK
       rate:            1000
       burst_size:      10
       prec_level:      1
-    - type:            OFPMBT_EXPERIMENTER
+    - type:            EXPERIMENTER
       rate:            1000
       burst_size:      10
       experimenter:    999
@@ -1663,7 +1663,7 @@ msg:
     - flags:           0x000E
       meter_id:        0x00000064
       bands:           
-        - type:            OFPMBT_DROP
+        - type:            DROP
           rate:            1000
           burst_size:      10
 ...
@@ -4322,14 +4322,14 @@ msg:
   flags:           0x000E
   meter_id:        0x00000064
   bands:           
-    - type:            OFPMBT_DROP
+    - type:            DROP
       rate:            1000
       burst_size:      10
-    - type:            OFPMBT_DSCP_REMARK
+    - type:            DSCP_REMARK
       rate:            1000
       burst_size:      10
       prec_level:      1
-    - type:            OFPMBT_EXPERIMENTER
+    - type:            EXPERIMENTER
       rate:            1000
       burst_size:      10
       experimenter:    999
@@ -4383,7 +4383,7 @@ msg:
     - flags:           0x000E
       meter_id:        0x00000064
       bands:           
-        - type:            OFPMBT_DROP
+        - type:            DROP
           rate:            1000
           burst_size:      10
 ...
