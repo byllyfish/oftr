@@ -61,13 +61,13 @@ static const llvm::StringRef sMultipartTypes[] = {
 };
 
 static const llvm::StringRef sInstructionTypes[] = {
-    "OFPIT_NONE",
-    "OFPIT_GOTO_TABLE",
-    "OFPIT_WRITE_METADATA",
-    "OFPIT_WRITE_ACTIONS",
-    "OFPIT_APPLY_ACTIONS",
-    "OFPIT_CLEAR_ACTIONS",
-    "OFPIT_METER",
+    "NONE",
+    "GOTO_TABLE",
+    "WRITE_METADATA",
+    "WRITE_ACTIONS",
+    "APPLY_ACTIONS",
+    "CLEAR_ACTIONS",
+    "METER",
 };
 
 static const llvm::StringRef sMeterBandTypes[] = {

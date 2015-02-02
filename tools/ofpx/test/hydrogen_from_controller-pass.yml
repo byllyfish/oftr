@@ -300,7 +300,7 @@ msg:
     - field:           IPV4_DST
       value:           10.0.0.1
   instructions:    
-    - instruction:     OFPIT_APPLY_ACTIONS
+    - instruction:     APPLY_ACTIONS
       actions:         
         - action:          OFPAT_SET_FIELD
           field:           ETH_DST
@@ -337,7 +337,7 @@ msg:
     - field:           IPV4_DST
       value:           10.0.0.2
   instructions:    
-    - instruction:     OFPIT_APPLY_ACTIONS
+    - instruction:     APPLY_ACTIONS
       actions:         
         - action:          OFPAT_SET_FIELD
           field:           ETH_DST

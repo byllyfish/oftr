@@ -111,7 +111,7 @@ def addFlow(event, ethSource, ethDest, outPort):
             'value': ethDest }
         ],
         'instructions': [
-          { 'instruction': 'OFPIT_APPLY_ACTIONS',
+          { 'instruction': 'APPLY_ACTIONS',
             'actions': [
               { 'action': 'OFPAT_OUTPUT', 
                 'port': outPort, 

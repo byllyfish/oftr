@@ -220,7 +220,7 @@ msg:
     - field:           ETH_DST
       value:           'fa:9a:44:df:f4:42'
   instructions:    
-    - instruction:     OFPIT_APPLY_ACTIONS
+    - instruction:     APPLY_ACTIONS
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000002
@@ -251,7 +251,7 @@ msg:
     - field:           ETH_DST
       value:           '8a:67:69:c6:9f:59'
   instructions:    
-    - instruction:     OFPIT_APPLY_ACTIONS
+    - instruction:     APPLY_ACTIONS
       actions:         
         - action:          OFPAT_OUTPUT
           port:            0x00000001

@@ -505,7 +505,7 @@ TEST(encoder, ofmp_flowreply_v4) {
              - field: IN_PORT
                value: 0x12345678
            instructions:
-             - instruction: OFPIT_GOTO_TABLE
+             - instruction: GOTO_TABLE
                table_id: 1
     )""";
 
@@ -558,7 +558,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
              - field: ETH_DST
                value: aa-bb-cc-dd-ee-ff
            instructions:
-             - instruction: OFPIT_GOTO_TABLE
+             - instruction: GOTO_TABLE
                table_id: 1
     )""";
 
@@ -592,7 +592,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
            byte_count: 10
            match:
            instructions:
-             - instruction: OFPIT_APPLY_ACTIONS
+             - instruction: APPLY_ACTIONS
                actions:
                   - action: OFPAT_OUTPUT
                     port: 1
@@ -635,7 +635,7 @@ TEST(encoder, ofmp_flowreply_v1) {
              - field: IN_PORT
                value: 0xDDDDDDDD
            instructions:
-             - instruction: OFPIT_APPLY_ACTIONS
+             - instruction: APPLY_ACTIONS
                actions:
                   - action: OFPAT_OUTPUT
                     port: 0xEEEEEEEE
@@ -677,7 +677,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
              - field: IN_PORT
                value: 0x12345678
            instructions:
-             - instruction: OFPIT_APPLY_ACTIONS
+             - instruction: APPLY_ACTIONS
                actions:
                   - action: OFPAT_OUTPUT
                     port: 0xEEEEEEEE
@@ -698,9 +698,9 @@ TEST(encoder, ofmp_flowreply2_v1) {
              - field: ETH_DST
                value: aa-bb-cc-dd-ee-ff
            instructions:
-             - instruction: OFPIT_GOTO_TABLE
+             - instruction: GOTO_TABLE
                table_id: 1
-             - instruction: OFPIT_APPLY_ACTIONS
+             - instruction: APPLY_ACTIONS
                actions:
                   - action: OFPAT_OUTPUT
                     port: 0xEEEEEEEE
@@ -980,7 +980,7 @@ TEST(encoder, flowmodv4) {
           - field:           IPV4_DST
             value:           192.168.1.1
         instructions:
-          - instruction:    OFPIT_APPLY_ACTIONS
+          - instruction:    APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
                  field: IPV4_DST
@@ -1023,7 +1023,7 @@ TEST(encoder, flowmodv4_2) {
           - field:           IPV4_DST
             value:           192.168.1.1
         instructions:
-          - instruction:    OFPIT_APPLY_ACTIONS
+          - instruction:    APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
                  field: IPV4_DST
@@ -1064,7 +1064,7 @@ TEST(encoder, flowmodv4_fail) {
           - field:           TCP_DST
             value:           80
         instructions:
-          - instruction:    OFPIT_APPLY_ACTIONS
+          - instruction:    APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
                  field: IPV4_DST
@@ -1103,7 +1103,7 @@ TEST(encoder, flowmodv1) {
           - field:           IPV4_DST
             value:           192.168.1.1
         instructions:
-          - instruction:    OFPIT_APPLY_ACTIONS
+          - instruction:    APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
                  field: IPV4_DST
@@ -1145,7 +1145,7 @@ TEST(encoder, flowmodv1_2) {
           - field:           ICMPV4_TYPE
             value:           0xDD
         instructions:
-          - instruction:    OFPIT_APPLY_ACTIONS
+          - instruction:    APPLY_ACTIONS
             actions:
                - action: OFPAT_SET_FIELD
                  field: ICMPV4_CODE

@@ -297,7 +297,7 @@ TEST(decoder, ofmp_flowreply_v4) {
       "0x000000000000000A\n      match:           \n        - field:           "
       "IN_PORT\n          value:           0x12345678\n      instructions: "
       " "
-      "  \n        - instruction:     OFPIT_GOTO_TABLE\n          table_id:    "
+      "  \n        - instruction:     GOTO_TABLE\n          table_id:    "
       "    0x01\n...\n");
 }
 
@@ -335,7 +335,7 @@ TEST(decoder, ofmp_flowreply2_v4) {
       " - field:           ETH_DST\n          value:           "
       "'aa:bb:cc:dd:ee:ff'\n      instructions:    \n        - instruction:    "
       " "
-      "OFPIT_GOTO_TABLE\n          table_id:        0x01\n...\n");
+      "GOTO_TABLE\n          table_id:        0x01\n...\n");
 }
 
 TEST(decoder, ofmp_flowreply_v1) {
@@ -356,7 +356,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "0xCCCCCCCCCCCCCCCC\n      match:           \n        - field:           "
       "IN_PORT\n          value:           0x0000DDDD\n      instructions: "
       "   "
-      "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
+      "\n        - instruction:     APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
       "           0x0000EEEE\n              max_len:         NO_BUFFER\n...\n");
 }
@@ -381,7 +381,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "0x000000000000000A\n      match:           \n        - field:           "
       "IN_PORT\n          value:           0x00005678\n      instructions: "
       "   "
-      "\n        - instruction:     OFPIT_APPLY_ACTIONS\n          actions:    "
+      "\n        - instruction:     APPLY_ACTIONS\n          actions:    "
       "     \n            - action:          OFPAT_OUTPUT\n              port: "
       "           0x0000EEEE\n              max_len:         NO_BUFFER\n    - "
       "table_id: "
@@ -395,7 +395,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "     "
       "  value:           '10:20:30:40:50:60'\n        - field:           "
       "ETH_DST\n          value:           'aa:bb:cc:dd:ee:ff'\n      "
-      "instructions:    \n        - instruction:     OFPIT_APPLY_ACTIONS\n     "
+      "instructions:    \n        - instruction:     APPLY_ACTIONS\n     "
       "     actions:         \n            - action:          OFPAT_OUTPUT\n   "
       "           port:            0x0000EEEE\n              max_len:         "
       "NO_BUFFER\n...\n");
@@ -554,7 +554,7 @@ TEST(decoder, flowmodv4) {
       "        "
       "  ETH_TYPE\n      value:           0x0800\n    - field:           "
       "IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
-      "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
+      "   - instruction:     APPLY_ACTIONS\n      actions:         \n    "
       "    - action:          OFPAT_SET_FIELD\n          field:           "
       "IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
@@ -576,7 +576,7 @@ TEST(decoder, flowmodv4_2) {
       "          ETH_TYPE\n      value:           0x0800\n    - field:     "
       "  "
       "    IPV4_DST\n      value:           192.168.1.1\n  instructions:   "
-      " \n    - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         "
+      " \n    - instruction:     APPLY_ACTIONS\n      actions:         "
       "\n        - action:          OFPAT_SET_FIELD\n          field:          "
       " IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
@@ -600,7 +600,7 @@ TEST(decoder, flowmodv1) {
       "     ETH_TYPE\n      value:           0x0800\n    - field:          "
       " "
       "IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
-      "   - instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n    "
+      "   - instruction:     APPLY_ACTIONS\n      actions:         \n    "
       "    - action:          OFPAT_SET_FIELD\n          field:           "
       "IPV4_DST\n          value:           192.168.2.1\n...\n";
 
@@ -652,7 +652,7 @@ TEST(decoder, flowmod1_2) {
       "IP_PROTO\n      value:           0x01\n    - field:           "
       "IPV4_DST\n      value:           192.168.1.1\n    - field:          "
       " ICMPV4_TYPE\n      value:           0xDD\n  instructions:    \n    "
-      "- instruction:     OFPIT_APPLY_ACTIONS\n      actions:         \n       "
+      "- instruction:     APPLY_ACTIONS\n      actions:         \n       "
       " - action:          OFPAT_SET_FIELD\n          field:           "
       "ICMPV4_CODE\n          value:           0xEE\n        - action:     "
       " "

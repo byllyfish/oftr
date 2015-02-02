@@ -79,7 +79,7 @@ TEST(outputjson, flowmod) {
       "port\":0,\"out_group\":0,\"flags\":[],\"match\":[{\"field\":\"IN_"
       "PORT\",\"value\":27},{\"field\":\"ETH_TYPE\",\"value\":2048},{"
       "\"field\":\"IP_PROTO\",\"value\":6},{\"field\":\"TCP_SRC\","
-      "\"value\":80}],\"instructions\":[{\"instruction\":\"OFPIT_GOTO_TABLE\","
+      "\"value\":80}],\"instructions\":[{\"instruction\":\"GOTO_TABLE\","
       "\"table_id\":3}]}}";
   EXPECT_EQ(expected, decodeJson.result().str());
 }

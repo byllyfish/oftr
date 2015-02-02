@@ -6,13 +6,13 @@
 using namespace ofp;
 
 static const InstructionTypeInfo sInstructionInfo[] = {
-    {IT_GOTO_TABLE::type(), "OFPIT_GOTO_TABLE"},
-    {IT_WRITE_METADATA::type(), "OFPIT_WRITE_METADATA"},
-    {IT_WRITE_ACTIONS::type(), "OFPIT_WRITE_ACTIONS"},
-    {IT_APPLY_ACTIONS::type(), "OFPIT_APPLY_ACTIONS"},
-    {IT_CLEAR_ACTIONS::type(), "OFPIT_CLEAR_ACTIONS"},
-    {IT_METER::type(), "OFPIT_METER"},
-    {IT_EXPERIMENTER::type(), "OFPIT_EXPERIMENTER"},
+    {IT_GOTO_TABLE::type(), "GOTO_TABLE"},
+    {IT_WRITE_METADATA::type(), "WRITE_METADATA"},
+    {IT_WRITE_ACTIONS::type(), "WRITE_ACTIONS"},
+    {IT_APPLY_ACTIONS::type(), "APPLY_ACTIONS"},
+    {IT_CLEAR_ACTIONS::type(), "CLEAR_ACTIONS"},
+    {IT_METER::type(), "METER"},
+    {IT_EXPERIMENTER::type(), "EXPERIMENTER"},
 };
 
 bool InstructionType::parse(const std::string &s) {

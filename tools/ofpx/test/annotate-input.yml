@@ -152,7 +152,7 @@ msg:
       value: 'ff:ff:ff:ff:ff:ff'
       mask: 'ff:ff:ff:ff:ff:ff'
   instructions:
-    - instruction: OFPIT_APPLY_ACTIONS
+    - instruction: APPLY_ACTIONS
       actions:
         - action: OFPAT_OUTPUT
           port: CONTROLLER
@@ -244,7 +244,7 @@ msg:
           value: 'ff:ff:ff:ff:ff:ff'
           mask: 'ff:ff:ff:ff:ff:ff'
       instructions:
-        - instruction: OFPIT_APPLY_ACTIONS
+        - instruction: APPLY_ACTIONS
           actions:
             - action: OFPAT_OUTPUT
               port: CONTROLLER
@@ -472,9 +472,9 @@ msg:
       config: 0xffffffff
       max_entries: 0xffffffff
       instructions:
-        - OFPIT_APPLY_ACTIONS
+        - APPLY_ACTIONS
       instructions_miss:
-        - OFPIT_GOTO_TABLE
+        - GOTO_TABLE
       next_tables:
         - 0xff
       next_tables_miss:
@@ -514,9 +514,9 @@ msg:
       config: 0xffffffff
       max_entries: 0xffffffff
       instructions:
-        - OFPIT_APPLY_ACTIONS
+        - APPLY_ACTIONS
       instructions_miss:
-        - OFPIT_GOTO_TABLE
+        - GOTO_TABLE
       next_tables:
         - 0xff
       next_tables_miss:
