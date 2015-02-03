@@ -64,7 +64,7 @@ def flood(event):
         'buffer_id': event.msg.buffer_id,
         'in_port': event.msg.in_port,
         'actions': [
-          { 'action': 'OFPAT_OUTPUT', 
+          { 'action': 'OUTPUT', 
             'port': 0xfffffffb, 
             'max_len': 0 }
         ],
@@ -113,7 +113,7 @@ def addFlow(event, ethSource, ethDest, outPort):
         'instructions': [
           { 'instruction': 'APPLY_ACTIONS',
             'actions': [
-              { 'action': 'OFPAT_OUTPUT', 
+              { 'action': 'OUTPUT', 
                 'port': outPort, 
                 'max_len': 0 }
             ]

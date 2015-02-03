@@ -128,7 +128,7 @@ msg:
   buffer_id: NO_BUFFER
   in_port: CONTROLLER
   actions:
-    - action: OFPAT_OUTPUT
+    - action: OUTPUT
       port: CONTROLLER
       max_len: NO_BUFFER
   data: 'ffffffff'
@@ -154,7 +154,7 @@ msg:
   instructions:
     - instruction: APPLY_ACTIONS
       actions:
-        - action: OFPAT_OUTPUT
+        - action: OUTPUT
           port: CONTROLLER
           max_len: NO_BUFFER
 ---
@@ -169,7 +169,7 @@ msg:
       watch_port: 0xffffffff
       watch_group: 0xffffffff
       actions:
-        - action: OFPAT_OUTPUT
+        - action: OUTPUT
           port: CONTROLLER
           max_len: NO_BUFFER
 ---
@@ -246,7 +246,7 @@ msg:
       instructions:
         - instruction: APPLY_ACTIONS
           actions:
-            - action: OFPAT_OUTPUT
+            - action: OUTPUT
               port: CONTROLLER
               max_len: NO_BUFFER
 ---
@@ -480,13 +480,13 @@ msg:
       next_tables_miss:
         - 0x0f
       write_actions:
-        - OFPAT_OUTPUT
+        - OUTPUT
       write_actions_miss:
-        - OFPAT_COPY_TTL_OUT
+        - COPY_TTL_OUT
       apply_actions:
-        - OFPAT_OUTPUT
+        - OUTPUT
       apply_actions_miss:
-        - OFPAT_COPY_TTL_OUT
+        - COPY_TTL_OUT
       match:
         - ETH_DST
       wildcards:
@@ -522,13 +522,13 @@ msg:
       next_tables_miss:
         - 0x0f
       write_actions:
-        - OFPAT_OUTPUT
+        - OUTPUT
       write_actions_miss:
-        - OFPAT_COPY_TTL_OUT
+        - COPY_TTL_OUT
       apply_actions:
-        - OFPAT_OUTPUT
+        - OUTPUT
       apply_actions_miss:
-        - OFPAT_COPY_TTL_OUT
+        - COPY_TTL_OUT
       match:
         - ETH_DST
       wildcards:

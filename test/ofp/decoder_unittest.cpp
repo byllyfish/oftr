@@ -357,7 +357,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "IN_PORT\n          value:           0x0000DDDD\n      instructions: "
       "   "
       "\n        - instruction:     APPLY_ACTIONS\n          actions:    "
-      "     \n            - action:          OFPAT_OUTPUT\n              port: "
+      "     \n            - action:          OUTPUT\n              port: "
       "           0x0000EEEE\n              max_len:         NO_BUFFER\n...\n");
 }
 
@@ -382,7 +382,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "IN_PORT\n          value:           0x00005678\n      instructions: "
       "   "
       "\n        - instruction:     APPLY_ACTIONS\n          actions:    "
-      "     \n            - action:          OFPAT_OUTPUT\n              port: "
+      "     \n            - action:          OUTPUT\n              port: "
       "           0x0000EEEE\n              max_len:         NO_BUFFER\n    - "
       "table_id: "
       "       0x11\n      duration_sec:    0x00000022\n      duration_nsec:   "
@@ -396,7 +396,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "  value:           '10:20:30:40:50:60'\n        - field:           "
       "ETH_DST\n          value:           'aa:bb:cc:dd:ee:ff'\n      "
       "instructions:    \n        - instruction:     APPLY_ACTIONS\n     "
-      "     actions:         \n            - action:          OFPAT_OUTPUT\n   "
+      "     actions:         \n            - action:          OUTPUT\n   "
       "           port:            0x0000EEEE\n              max_len:         "
       "NO_BUFFER\n...\n");
 }
@@ -555,7 +555,7 @@ TEST(decoder, flowmodv4) {
       "  ETH_TYPE\n      value:           0x0800\n    - field:           "
       "IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
       "   - instruction:     APPLY_ACTIONS\n      actions:         \n    "
-      "    - action:          OFPAT_SET_FIELD\n          field:           "
+      "    - action:          SET_FIELD\n          field:           "
       "IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
@@ -577,7 +577,7 @@ TEST(decoder, flowmodv4_2) {
       "  "
       "    IPV4_DST\n      value:           192.168.1.1\n  instructions:   "
       " \n    - instruction:     APPLY_ACTIONS\n      actions:         "
-      "\n        - action:          OFPAT_SET_FIELD\n          field:          "
+      "\n        - action:          SET_FIELD\n          field:          "
       " IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
@@ -601,7 +601,7 @@ TEST(decoder, flowmodv1) {
       " "
       "IPV4_DST\n      value:           192.168.1.1\n  instructions:    \n "
       "   - instruction:     APPLY_ACTIONS\n      actions:         \n    "
-      "    - action:          OFPAT_SET_FIELD\n          field:           "
+      "    - action:          SET_FIELD\n          field:           "
       "IPV4_DST\n          value:           192.168.2.1\n...\n";
 
 
@@ -653,10 +653,10 @@ TEST(decoder, flowmod1_2) {
       "IPV4_DST\n      value:           192.168.1.1\n    - field:          "
       " ICMPV4_TYPE\n      value:           0xDD\n  instructions:    \n    "
       "- instruction:     APPLY_ACTIONS\n      actions:         \n       "
-      " - action:          OFPAT_SET_FIELD\n          field:           "
+      " - action:          SET_FIELD\n          field:           "
       "ICMPV4_CODE\n          value:           0xEE\n        - action:     "
       " "
-      "    OFPAT_COPY_TTL_OUT\n...\n");
+      "    COPY_TTL_OUT\n...\n");
 }
 
 TEST(decoder, packetinv4) {
@@ -703,9 +703,9 @@ TEST(decoder, packetoutv4) {
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:      "
       " "
       "0x33333333\n  in_port:         0x44444444\n  actions:         \n    - "
-      "action:          OFPAT_OUTPUT\n      port:            0x00000005\n      "
+      "action:          OUTPUT\n      port:            0x00000005\n      "
       "max_len: "
-      "        0x0014\n    - action:          OFPAT_SET_FIELD\n      field:    "
+      "        0x0014\n    - action:          SET_FIELD\n      field:    "
       "    "
       "   IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
@@ -723,9 +723,9 @@ TEST(decoder, packetoutv1) {
       " "
       "0x33333333\n  in_port:         0x00004444\n  actions:         \n    - "
       "action: "
-      "         OFPAT_OUTPUT\n      port:            0x00000005\n      "
+      "         OUTPUT\n      port:            0x00000005\n      "
       "max_len:         "
-      "0x0014\n    - action:          OFPAT_SET_FIELD\n      field:           "
+      "0x0014\n    - action:          SET_FIELD\n      field:           "
       "IPV4_DST\n      value:           192.168.1.1\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n";
@@ -808,16 +808,16 @@ TEST(decoder, groupmodv4) {
       "buckets:         \n    - weight:          0x5555\n      watch_port:     "
       " "
       "0x66666666\n      watch_group:     0x77777777\n      actions:         "
-      "\n        - action:          OFPAT_OUTPUT\n          port:            "
+      "\n        - action:          OUTPUT\n          port:            "
       "0x00000005\n          max_len:         0x0014\n        - action:        "
       "  "
-      "OFPAT_SET_FIELD\n          field:           IPV4_DST\n          "
+      "SET_FIELD\n          field:           IPV4_DST\n          "
       "value:           192.168.1.1\n    - weight:          0x8888\n      "
       "watch_port:      0x99999999\n      watch_group:     0xAAAAAAAA\n      "
-      "actions:         \n        - action:          OFPAT_SET_FIELD\n         "
+      "actions:         \n        - action:          SET_FIELD\n         "
       " field:           ICMPV4_CODE\n          value:           0xEE\n    "
       " "
-      "   - action:          OFPAT_COPY_TTL_OUT\n...\n");
+      "   - action:          COPY_TTL_OUT\n...\n");
 }
 
 TEST(decoder, portmodv4) {

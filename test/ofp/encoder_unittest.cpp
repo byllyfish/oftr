@@ -594,10 +594,10 @@ TEST(encoder, ofmp_flowreply3_v4) {
            instructions:
              - instruction: APPLY_ACTIONS
                actions:
-                  - action: OFPAT_OUTPUT
+                  - action: OUTPUT
                     port: 1
                     max_len: 0xFFFF
-                  - action: OFPAT_SET_NW_TTL
+                  - action: SET_NW_TTL
                     ttl: 64
     )""";
 
@@ -637,7 +637,7 @@ TEST(encoder, ofmp_flowreply_v1) {
            instructions:
              - instruction: APPLY_ACTIONS
                actions:
-                  - action: OFPAT_OUTPUT
+                  - action: OUTPUT
                     port: 0xEEEEEEEE
                     max_len: 0xFFFF
     )""";
@@ -679,7 +679,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
            instructions:
              - instruction: APPLY_ACTIONS
                actions:
-                  - action: OFPAT_OUTPUT
+                  - action: OUTPUT
                     port: 0xEEEEEEEE
                     max_len: 0xFFFF
          - table_id: 0x11
@@ -702,7 +702,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
                table_id: 1
              - instruction: APPLY_ACTIONS
                actions:
-                  - action: OFPAT_OUTPUT
+                  - action: OUTPUT
                     port: 0xEEEEEEEE
                     max_len: 0xFFFF
     )""";
@@ -982,7 +982,7 @@ TEST(encoder, flowmodv4) {
         instructions:
           - instruction:    APPLY_ACTIONS
             actions:
-               - action: OFPAT_SET_FIELD
+               - action: SET_FIELD
                  field: IPV4_DST
                  value: 192.168.2.1
       )""";
@@ -1025,7 +1025,7 @@ TEST(encoder, flowmodv4_2) {
         instructions:
           - instruction:    APPLY_ACTIONS
             actions:
-               - action: OFPAT_SET_FIELD
+               - action: SET_FIELD
                  field: IPV4_DST
                  value: 192.168.2.1
       )""";
@@ -1066,7 +1066,7 @@ TEST(encoder, flowmodv4_fail) {
         instructions:
           - instruction:    APPLY_ACTIONS
             actions:
-               - action: OFPAT_SET_FIELD
+               - action: SET_FIELD
                  field: IPV4_DST
                  value: 192.168.2.1
       )""";
@@ -1105,7 +1105,7 @@ TEST(encoder, flowmodv1) {
         instructions:
           - instruction:    APPLY_ACTIONS
             actions:
-               - action: OFPAT_SET_FIELD
+               - action: SET_FIELD
                  field: IPV4_DST
                  value: 192.168.2.1
       )""";
@@ -1147,10 +1147,10 @@ TEST(encoder, flowmodv1_2) {
         instructions:
           - instruction:    APPLY_ACTIONS
             actions:
-               - action: OFPAT_SET_FIELD
+               - action: SET_FIELD
                  field: ICMPV4_CODE
                  value: 0xEE
-               - action: OFPAT_COPY_TTL_OUT
+               - action: COPY_TTL_OUT
       )""";
 
   Encoder encoder{input};
@@ -1228,10 +1228,10 @@ TEST(encoder, packetoutv1) {
         buffer_id:       0x33333333
         in_port:         0x44444444
         actions:
-          - action: OFPAT_OUTPUT
+          - action: OUTPUT
             port: 5
             max_len: 20
-          - action: OFPAT_SET_FIELD
+          - action: SET_FIELD
             field:  IPV4_DST
             value:  192.168.1.1
         data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
@@ -1256,10 +1256,10 @@ TEST(encoder, packetoutv4) {
         buffer_id:       0x33333333
         in_port:         0x44444444
         actions:
-          - action: OFPAT_OUTPUT
+          - action: OUTPUT
             port: 5
             max_len: 20
-          - action: OFPAT_SET_FIELD
+          - action: SET_FIELD
             field:  IPV4_DST
             value:  192.168.1.1
         data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
@@ -1371,20 +1371,20 @@ TEST(encoder, groupmodv4) {
             watch_port: 0x66666666
             watch_group: 0x77777777
             actions:
-              - action: OFPAT_OUTPUT
+              - action: OUTPUT
                 port: 5
                 max_len: 20
-              - action: OFPAT_SET_FIELD
+              - action: SET_FIELD
                 field:  IPV4_DST
                 value:  192.168.1.1
           - weight: 0x8888
             watch_port: 0x99999999
             watch_group: 0xAAAAAAAA
             actions:
-              - action: OFPAT_SET_FIELD
+              - action: SET_FIELD
                 field: ICMPV4_CODE
                 value: 0xEE
-              - action: OFPAT_COPY_TTL_OUT
+              - action: COPY_TTL_OUT
       )""";
 
   Encoder encoder{input};
@@ -1413,20 +1413,20 @@ TEST(encoder, groupmodv2) {
             watch_port: 0x66666666
             watch_group: 0x77777777
             actions:
-              - action: OFPAT_OUTPUT
+              - action: OUTPUT
                 port: 5
                 max_len: 20
-              - action: OFPAT_SET_FIELD
+              - action: SET_FIELD
                 field:  IPV4_DST
                 value:  192.168.1.1
           - weight: 0x8888
             watch_port: 0x99999999
             watch_group: 0xAAAAAAAA
             actions:
-              - action: OFPAT_SET_FIELD
+              - action: SET_FIELD
                 field: ICMPV4_CODE
                 value: 0xEE
-              - action: OFPAT_COPY_TTL_OUT
+              - action: COPY_TTL_OUT
       )""";
 
   Encoder encoder{input};

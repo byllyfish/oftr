@@ -50,7 +50,7 @@ msg:
   buffer_id:       0x00000100
   in_port:         0x00000001
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -64,7 +64,7 @@ msg:
   buffer_id:       0x00000101
   in_port:         0x00000002
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -78,7 +78,7 @@ msg:
   buffer_id:       0x00000102
   in_port:         0x00000001
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -92,7 +92,7 @@ msg:
   buffer_id:       0x00000103
   in_port:         0x00000002
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -106,7 +106,7 @@ msg:
   buffer_id:       0x00000104
   in_port:         0x00000002
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -120,7 +120,7 @@ msg:
   buffer_id:       0x00000105
   in_port:         0x00000001
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -134,7 +134,7 @@ msg:
   buffer_id:       0x00000106
   in_port:         0x00000001
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -148,7 +148,7 @@ msg:
   buffer_id:       0x00000107
   in_port:         0x00000002
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -162,7 +162,7 @@ msg:
   buffer_id:       0x00000108
   in_port:         0x00000001
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -176,7 +176,7 @@ msg:
   buffer_id:       0x00000109
   in_port:         0x00000002
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -190,7 +190,7 @@ msg:
   buffer_id:       0x0000010A
   in_port:         0x00000002
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            FLOOD
       max_len:         0x0000
   data:            ''
@@ -222,7 +222,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000002
           max_len:         0x0000
 ...
@@ -253,7 +253,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000001
           max_len:         0x0000
 ...

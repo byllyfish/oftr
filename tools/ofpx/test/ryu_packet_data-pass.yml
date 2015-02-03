@@ -6,7 +6,7 @@ msg:
   buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
@@ -33,7 +33,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000006
           max_len:         NO_BUFFER
 ...
@@ -116,7 +116,7 @@ msg:
   buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
@@ -179,7 +179,7 @@ msg:
       instructions:    
         - instruction:     APPLY_ACTIONS
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            NORMAL
               max_len:         0x0000
     - table_id:        0x00
@@ -214,7 +214,7 @@ msg:
       instructions:    
         - instruction:     WRITE_ACTIONS
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            CONTROLLER
               max_len:         NO_BUFFER
 ...
@@ -292,15 +292,15 @@ msg:
   instructions:    
     - instruction:     WRITE_ACTIONS
       actions:         
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           VLAN_VID
           value:           0x0102
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000006
           max_len:         NO_BUFFER
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           ETH_SRC
           value:           '01:02:03:04:05:06'
 ...
@@ -325,7 +325,7 @@ msg:
       watch_port:      0x00000001
       watch_group:     0x00000001
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000002
           max_len:         NO_BUFFER
 ...
@@ -515,7 +515,7 @@ msg:
           watch_port:      0x00000001
           watch_group:     0x00000001
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            0x00000002
               max_len:         NO_BUFFER
 ...
@@ -925,7 +925,7 @@ msg:
   buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
@@ -988,7 +988,7 @@ msg:
       instructions:    
         - instruction:     APPLY_ACTIONS
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            NORMAL
               max_len:         0x0000
     - table_id:        0x00
@@ -1023,46 +1023,46 @@ msg:
       instructions:    
         - instruction:     WRITE_ACTIONS
           actions:         
-            - action:          OFPAT_SET_FIELD
+            - action:          SET_FIELD
               field:           VLAN_VID
               value:           0x0102
-            - action:          OFPAT_COPY_TTL_OUT
-            - action:          OFPAT_COPY_TTL_IN
-            - action:          OFPAT_COPY_TTL_IN
-            - action:          OFPAT_POP_PBB
-            - action:          OFPAT_PUSH_PBB
+            - action:          COPY_TTL_OUT
+            - action:          COPY_TTL_IN
+            - action:          COPY_TTL_IN
+            - action:          POP_PBB
+            - action:          PUSH_PBB
               ethertype:       0x1234
-            - action:          OFPAT_POP_MPLS
+            - action:          POP_MPLS
               ethertype:       0x9876
-            - action:          OFPAT_PUSH_MPLS
+            - action:          PUSH_MPLS
               mpls:            0x88470000
-            - action:          OFPAT_POP_VLAN
-            - action:          OFPAT_PUSH_VLAN
+            - action:          POP_VLAN
+            - action:          PUSH_VLAN
               vlan:            0x8100
-            - action:          OFPAT_DEC_MPLS_TTL
-            - action:          OFPAT_SET_MPLS_TTL
+            - action:          DEC_MPLS_TTL
+            - action:          SET_MPLS_TTL
               ttl:             0x0A00
-            - action:          OFPAT_DEC_NW_TTL
-            - action:          OFPAT_SET_NW_TTL
+            - action:          DEC_NW_TTL
+            - action:          SET_NW_TTL
               ttl:             0x0A
-            - action:          OFPAT_SET_QUEUE
+            - action:          SET_QUEUE
               queue:           0x00000003
-            - action:          OFPAT_GROUP
+            - action:          GROUP
               group:           0x00000063
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            0x00000006
               max_len:         NO_BUFFER
         - instruction:     APPLY_ACTIONS
           actions:         
-            - action:          OFPAT_SET_FIELD
+            - action:          SET_FIELD
               field:           ETH_SRC
               value:           '01:02:03:04:05:06'
-            - action:          OFPAT_SET_FIELD
+            - action:          SET_FIELD
               field:           0xFFFF0007
               value:           4F4E46000A0001
         - instruction:     WRITE_ACTIONS
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            CONTROLLER
               max_len:         NO_BUFFER
 ...
@@ -1140,41 +1140,41 @@ msg:
   instructions:    
     - instruction:     WRITE_ACTIONS
       actions:         
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           VLAN_VID
           value:           0x0102
-        - action:          OFPAT_COPY_TTL_OUT
-        - action:          OFPAT_COPY_TTL_IN
-        - action:          OFPAT_COPY_TTL_IN
-        - action:          OFPAT_POP_PBB
-        - action:          OFPAT_PUSH_PBB
+        - action:          COPY_TTL_OUT
+        - action:          COPY_TTL_IN
+        - action:          COPY_TTL_IN
+        - action:          POP_PBB
+        - action:          PUSH_PBB
           ethertype:       0x1234
-        - action:          OFPAT_POP_MPLS
+        - action:          POP_MPLS
           ethertype:       0x9876
-        - action:          OFPAT_PUSH_MPLS
+        - action:          PUSH_MPLS
           mpls:            0x88470000
-        - action:          OFPAT_POP_VLAN
-        - action:          OFPAT_PUSH_VLAN
+        - action:          POP_VLAN
+        - action:          PUSH_VLAN
           vlan:            0x8100
-        - action:          OFPAT_DEC_MPLS_TTL
-        - action:          OFPAT_SET_MPLS_TTL
+        - action:          DEC_MPLS_TTL
+        - action:          SET_MPLS_TTL
           ttl:             0x0A00
-        - action:          OFPAT_DEC_NW_TTL
-        - action:          OFPAT_SET_NW_TTL
+        - action:          DEC_NW_TTL
+        - action:          SET_NW_TTL
           ttl:             0x0A
-        - action:          OFPAT_SET_QUEUE
+        - action:          SET_QUEUE
           queue:           0x00000003
-        - action:          OFPAT_GROUP
+        - action:          GROUP
           group:           0x00000063
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000006
           max_len:         NO_BUFFER
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           ETH_SRC
           value:           '01:02:03:04:05:06'
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           0xFFFF0007
           value:           4F4E46000A0001
 ...
@@ -1199,7 +1199,7 @@ msg:
       watch_port:      0x00000001
       watch_group:     0x00000001
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000002
           max_len:         NO_BUFFER
 ...
@@ -1412,7 +1412,7 @@ msg:
           watch_port:      0x00000001
           watch_group:     0x00000001
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            0x00000002
               max_len:         NO_BUFFER
 ...
@@ -1638,7 +1638,7 @@ msg:
       meter:           0x00000001
     - instruction:     WRITE_ACTIONS
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000006
           max_len:         NO_BUFFER
 ...
@@ -1802,16 +1802,14 @@ msg:
                          229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 
                          239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 
                          249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1897,16 +1895,14 @@ msg:
                          230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 
                          240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 
                          250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1980,16 +1976,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2063,16 +2057,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2146,16 +2138,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2229,16 +2219,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2312,16 +2300,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2395,16 +2381,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2478,16 +2462,14 @@ msg:
                          234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 
                          244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 
                          254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2560,16 +2542,14 @@ msg:
                          225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 
                          235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 
                          245, 246, 247, 248, 249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2652,16 +2632,14 @@ msg:
                          229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 
                          239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 
                          249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2747,16 +2725,14 @@ msg:
                          230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 
                          240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 
                          250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2830,16 +2806,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2913,16 +2887,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2996,16 +2968,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3079,16 +3049,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3162,16 +3130,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3245,16 +3211,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3328,16 +3292,14 @@ msg:
                          234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 
                          244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 
                          254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3410,16 +3372,14 @@ msg:
                          225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 
                          235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 
                          245, 246, 247, 248, 249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3777,7 +3737,7 @@ msg:
   buffer_id:       NO_BUFFER
   in_port:         CONTROLLER
   actions:         
-    - action:          OFPAT_OUTPUT
+    - action:          OUTPUT
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
@@ -3840,7 +3800,7 @@ msg:
       instructions:    
         - instruction:     APPLY_ACTIONS
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            NORMAL
               max_len:         0x0000
     - table_id:        0x00
@@ -3875,46 +3835,46 @@ msg:
       instructions:    
         - instruction:     WRITE_ACTIONS
           actions:         
-            - action:          OFPAT_SET_FIELD
+            - action:          SET_FIELD
               field:           VLAN_VID
               value:           0x0102
-            - action:          OFPAT_COPY_TTL_OUT
-            - action:          OFPAT_COPY_TTL_IN
-            - action:          OFPAT_COPY_TTL_IN
-            - action:          OFPAT_POP_PBB
-            - action:          OFPAT_PUSH_PBB
+            - action:          COPY_TTL_OUT
+            - action:          COPY_TTL_IN
+            - action:          COPY_TTL_IN
+            - action:          POP_PBB
+            - action:          PUSH_PBB
               ethertype:       0x1234
-            - action:          OFPAT_POP_MPLS
+            - action:          POP_MPLS
               ethertype:       0x9876
-            - action:          OFPAT_PUSH_MPLS
+            - action:          PUSH_MPLS
               mpls:            0x88470000
-            - action:          OFPAT_POP_VLAN
-            - action:          OFPAT_PUSH_VLAN
+            - action:          POP_VLAN
+            - action:          PUSH_VLAN
               vlan:            0x8100
-            - action:          OFPAT_DEC_MPLS_TTL
-            - action:          OFPAT_SET_MPLS_TTL
+            - action:          DEC_MPLS_TTL
+            - action:          SET_MPLS_TTL
               ttl:             0x0A00
-            - action:          OFPAT_DEC_NW_TTL
-            - action:          OFPAT_SET_NW_TTL
+            - action:          DEC_NW_TTL
+            - action:          SET_NW_TTL
               ttl:             0x0A
-            - action:          OFPAT_SET_QUEUE
+            - action:          SET_QUEUE
               queue:           0x00000003
-            - action:          OFPAT_GROUP
+            - action:          GROUP
               group:           0x00000063
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            0x00000006
               max_len:         NO_BUFFER
         - instruction:     APPLY_ACTIONS
           actions:         
-            - action:          OFPAT_SET_FIELD
+            - action:          SET_FIELD
               field:           ETH_SRC
               value:           '01:02:03:04:05:06'
-            - action:          OFPAT_SET_FIELD
+            - action:          SET_FIELD
               field:           PBB_UCA
               value:           0x01
         - instruction:     WRITE_ACTIONS
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            CONTROLLER
               max_len:         NO_BUFFER
 ...
@@ -3992,44 +3952,44 @@ msg:
   instructions:    
     - instruction:     WRITE_ACTIONS
       actions:         
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           VLAN_VID
           value:           0x0102
-        - action:          OFPAT_COPY_TTL_OUT
-        - action:          OFPAT_COPY_TTL_IN
-        - action:          OFPAT_COPY_TTL_IN
-        - action:          OFPAT_POP_PBB
-        - action:          OFPAT_PUSH_PBB
+        - action:          COPY_TTL_OUT
+        - action:          COPY_TTL_IN
+        - action:          COPY_TTL_IN
+        - action:          POP_PBB
+        - action:          PUSH_PBB
           ethertype:       0x1234
-        - action:          OFPAT_POP_MPLS
+        - action:          POP_MPLS
           ethertype:       0x9876
-        - action:          OFPAT_PUSH_MPLS
+        - action:          PUSH_MPLS
           mpls:            0x88470000
-        - action:          OFPAT_POP_VLAN
-        - action:          OFPAT_PUSH_VLAN
+        - action:          POP_VLAN
+        - action:          PUSH_VLAN
           vlan:            0x8100
-        - action:          OFPAT_DEC_MPLS_TTL
-        - action:          OFPAT_SET_MPLS_TTL
+        - action:          DEC_MPLS_TTL
+        - action:          SET_MPLS_TTL
           ttl:             0x0A00
-        - action:          OFPAT_DEC_NW_TTL
-        - action:          OFPAT_SET_NW_TTL
+        - action:          DEC_NW_TTL
+        - action:          SET_NW_TTL
           ttl:             0x0A
-        - action:          OFPAT_EXPERIMENTER
+        - action:          EXPERIMENTER
           experimenter:    0x00000065
           data:            0001020304050607
-        - action:          OFPAT_SET_QUEUE
+        - action:          SET_QUEUE
           queue:           0x00000003
-        - action:          OFPAT_GROUP
+        - action:          GROUP
           group:           0x00000063
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000006
           max_len:         NO_BUFFER
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           ETH_SRC
           value:           '01:02:03:04:05:06'
-        - action:          OFPAT_SET_FIELD
+        - action:          SET_FIELD
           field:           PBB_UCA
           value:           0x01
 ...
@@ -4054,7 +4014,7 @@ msg:
       watch_port:      0x00000001
       watch_group:     0x00000001
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000002
           max_len:         NO_BUFFER
 ...
@@ -4186,7 +4146,7 @@ msg:
           watch_port:      0x00000001
           watch_group:     0x00000001
           actions:         
-            - action:          OFPAT_OUTPUT
+            - action:          OUTPUT
               port:            0x00000002
               max_len:         NO_BUFFER
 ...
@@ -4358,7 +4318,7 @@ msg:
       meter:           0x00000001
     - instruction:     WRITE_ACTIONS
       actions:         
-        - action:          OFPAT_OUTPUT
+        - action:          OUTPUT
           port:            0x00000006
           max_len:         NO_BUFFER
 ...
@@ -4491,16 +4451,14 @@ msg:
                          229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 
                          239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 
                          249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4586,16 +4544,14 @@ msg:
                          230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 
                          240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 
                          250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4669,16 +4625,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4752,16 +4706,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4835,16 +4787,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4918,16 +4868,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5001,16 +4949,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5084,16 +5030,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5167,16 +5111,14 @@ msg:
                          234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 
                          244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 
                          254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5249,16 +5191,14 @@ msg:
                          225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 
                          235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 
                          245, 246, 247, 248, 249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5341,16 +5281,14 @@ msg:
                          229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 
                          239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 
                          249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5436,16 +5374,14 @@ msg:
                          230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 
                          240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 
                          250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5519,16 +5455,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5602,16 +5536,14 @@ msg:
                          231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
                          241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 
                          251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5685,16 +5617,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5768,16 +5698,14 @@ msg:
                          232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 
                          242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 
                          252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5851,16 +5779,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5934,16 +5860,14 @@ msg:
                          233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 
                          243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 
                          253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -6017,16 +5941,14 @@ msg:
                          234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 
                          244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 
                          254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -6099,16 +6021,14 @@ msg:
                          225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 
                          235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 
                          245, 246, 247, 248, 249, 250, 251, 252, 253, 254 ]
-      write_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
-      apply_actions:   [ OFPAT_OUTPUT, OFPAT_GROUP, OFPAT_SET_QUEUE, OFPAT_SET_MPLS_TTL, 
-                         OFPAT_DEC_MPLS_TTL, OFPAT_SET_NW_TTL, OFPAT_DEC_NW_TTL, 
-                         OFPAT_COPY_TTL_OUT, OFPAT_COPY_TTL_IN, OFPAT_PUSH_VLAN, 
-                         OFPAT_POP_VLAN, OFPAT_PUSH_MPLS, OFPAT_POP_MPLS, 
-                         OFPAT_PUSH_PBB, OFPAT_POP_PBB, OFPAT_SET_FIELD ]
+      write_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
+      apply_actions:   [ OUTPUT, GROUP, SET_QUEUE, SET_MPLS_TTL, DEC_MPLS_TTL, 
+                         SET_NW_TTL, DEC_NW_TTL, COPY_TTL_OUT, COPY_TTL_IN, 
+                         PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, PUSH_PBB, 
+                         POP_PBB, SET_FIELD ]
       match:           [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
