@@ -1,5 +1,5 @@
 ---
-type:            OFPT_PACKET_OUT
+type:            PACKET_OUT
 xid:             0x00000000
 version:         0x01
 msg:             
@@ -12,7 +12,7 @@ msg:
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x01
 msg:             
@@ -38,7 +38,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_PACKET_IN
+type:            PACKET_IN
 xid:             0x00000000
 version:         0x01
 msg:             
@@ -54,13 +54,13 @@ msg:
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
 ...
 ---
-type:            OFPT_FEATURES_REQUEST
+type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x01
 msg:             
 ...
 ---
-type:            OFPT_FEATURES_REPLY
+type:            FEATURES_REPLY
 xid:             0x00000000
 version:         0x01
 msg:             
@@ -95,7 +95,7 @@ msg:
       max_speed:       0x00000000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -109,7 +109,7 @@ msg:
     dp_desc:         dp
 ...
 ---
-type:            OFPT_PACKET_OUT
+type:            PACKET_OUT
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -122,14 +122,14 @@ msg:
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
-type:            OFPT_HELLO
+type:            HELLO
 xid:             0x00000000
 version:         0x03
 msg:             
   versions:        [  ]
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -144,7 +144,7 @@ msg:
     match:           
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -219,21 +219,21 @@ msg:
               max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_ECHO_REQUEST
+type:            ECHO_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
   data:            686F6765
 ...
 ---
-type:            OFPT_ECHO_REPLY
+type:            ECHO_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
   data:            686F6765
 ...
 ---
-type:            OFPT_ERROR
+type:            ERROR
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -242,7 +242,7 @@ msg:
   data:            6675676166756761
 ...
 ---
-type:            OFPT_EXPERIMENTER
+type:            EXPERIMENTER
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -251,19 +251,19 @@ msg:
   data:            6E617A6F
 ...
 ---
-type:            OFPT_BARRIER_REQUEST
+type:            BARRIER_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            OFPT_BARRIER_REPLY
+type:            BARRIER_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            OFPT_ROLE_REQUEST
+type:            ROLE_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -271,7 +271,7 @@ msg:
   generation_id:   0xF000F000F000F000
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -305,7 +305,7 @@ msg:
           value:           '01:02:03:04:05:06'
 ...
 ---
-type:            OFPT_ROLE_REPLY
+type:            ROLE_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -313,7 +313,7 @@ msg:
   generation_id:   0xF000F000F000F000
 ...
 ---
-type:            OFPT_GROUP_MOD
+type:            GROUP_MOD
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -330,7 +330,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_PORT_MOD
+type:            PORT_MOD
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -341,7 +341,7 @@ msg:
   advertise:       [ FIBER ]
 ...
 ---
-type:            OFPT_TABLE_MOD
+type:            TABLE_MOD
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -349,7 +349,7 @@ msg:
   config:          0x00000000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -357,7 +357,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -372,7 +372,7 @@ msg:
     match:           
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -384,7 +384,7 @@ msg:
     flow_count:      0x00000006
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -392,7 +392,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -402,7 +402,7 @@ msg:
     port_no:         0xFFFFFFFF
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -427,7 +427,7 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -466,7 +466,7 @@ msg:
       duration_nsec:   0x00000000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -474,7 +474,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -493,7 +493,7 @@ msg:
     actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -501,7 +501,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -520,14 +520,14 @@ msg:
               max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_QUEUE_GET_CONFIG_REQUEST
+type:            QUEUE_GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
   port:            0xFFFFFFFF
 ...
 ---
-type:            OFPT_QUEUE_GET_CONFIG_REPLY
+type:            QUEUE_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -545,7 +545,7 @@ msg:
       properties:      
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -556,7 +556,7 @@ msg:
     queue_id:        0xFFFFFFFF
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -586,7 +586,7 @@ msg:
       duration_nsec:   0x00000000
 ...
 ---
-type:            OFPT_PORT_STATUS
+type:            PORT_STATUS
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -605,7 +605,7 @@ msg:
     max_speed:       0x00001388
 ...
 ---
-type:            OFPT_PACKET_IN
+type:            PACKET_IN
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -639,7 +639,7 @@ msg:
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
 ...
 ---
-type:            OFPT_FLOW_REMOVED
+type:            FLOW_REMOVED
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -658,7 +658,7 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
 ...
 ---
-type:            OFPT_ERROR
+type:            ERROR
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -667,13 +667,13 @@ msg:
   data:            000F423F6A696B6B656E2064617461
 ...
 ---
-type:            OFPT_FEATURES_REQUEST
+type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            OFPT_PACKET_IN
+type:            PACKET_IN
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -759,7 +759,7 @@ msg:
   data:            ''
 ...
 ---
-type:            OFPT_FEATURES_REPLY
+type:            FEATURES_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -793,7 +793,7 @@ msg:
       max_speed:       0x00001388
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -882,7 +882,7 @@ msg:
   instructions:    
 ...
 ---
-type:            OFPT_SET_CONFIG
+type:            SET_CONFIG
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -890,13 +890,13 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            OFPT_GET_CONFIG_REQUEST
+type:            GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            OFPT_GET_CONFIG_REPLY
+type:            GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
@@ -904,7 +904,7 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -918,7 +918,7 @@ msg:
     dp_desc:         dp
 ...
 ---
-type:            OFPT_PACKET_OUT
+type:            PACKET_OUT
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -931,14 +931,14 @@ msg:
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
-type:            OFPT_HELLO
+type:            HELLO
 xid:             0x00000000
 version:         0x04
 msg:             
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -953,7 +953,7 @@ msg:
     match:           
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1067,21 +1067,21 @@ msg:
               max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_ECHO_REQUEST
+type:            ECHO_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
   data:            686F6765
 ...
 ---
-type:            OFPT_ECHO_REPLY
+type:            ECHO_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
   data:            686F6765
 ...
 ---
-type:            OFPT_ERROR
+type:            ERROR
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1090,7 +1090,7 @@ msg:
   data:            6675676166756761
 ...
 ---
-type:            OFPT_EXPERIMENTER
+type:            EXPERIMENTER
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1099,19 +1099,19 @@ msg:
   data:            6E617A6F
 ...
 ---
-type:            OFPT_BARRIER_REQUEST
+type:            BARRIER_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            OFPT_BARRIER_REPLY
+type:            BARRIER_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            OFPT_ROLE_REQUEST
+type:            ROLE_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1119,7 +1119,7 @@ msg:
   generation_id:   0xF000F000F000F000
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1179,7 +1179,7 @@ msg:
           value:           4F4E46000A0001
 ...
 ---
-type:            OFPT_ROLE_REPLY
+type:            ROLE_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1187,7 +1187,7 @@ msg:
   generation_id:   0xF000F000F000F000
 ...
 ---
-type:            OFPT_GROUP_MOD
+type:            GROUP_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1204,7 +1204,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_PORT_MOD
+type:            PORT_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1215,7 +1215,7 @@ msg:
   advertise:       [ FIBER ]
 ...
 ---
-type:            OFPT_TABLE_MOD
+type:            TABLE_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1223,7 +1223,7 @@ msg:
   config:          0x00000000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1231,7 +1231,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1246,7 +1246,7 @@ msg:
     match:           
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1258,7 +1258,7 @@ msg:
     flow_count:      0x00000006
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1266,7 +1266,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1289,7 +1289,7 @@ msg:
       matched_count:   0x0000000000000004
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1299,7 +1299,7 @@ msg:
     port_no:         0xFFFFFFFF
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1324,7 +1324,7 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1363,7 +1363,7 @@ msg:
       duration_nsec:   0x00000000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1371,7 +1371,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1390,7 +1390,7 @@ msg:
     actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1398,7 +1398,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1417,14 +1417,14 @@ msg:
               max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_QUEUE_GET_CONFIG_REQUEST
+type:            QUEUE_GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
   port:            0xFFFFFFFF
 ...
 ---
-type:            OFPT_QUEUE_GET_CONFIG_REPLY
+type:            QUEUE_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1442,7 +1442,7 @@ msg:
       properties:      
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1453,7 +1453,7 @@ msg:
     queue_id:        0xFFFFFFFF
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1483,7 +1483,7 @@ msg:
       duration_nsec:   0x00000000
 ...
 ---
-type:            OFPT_PORT_STATUS
+type:            PORT_STATUS
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1502,7 +1502,7 @@ msg:
     max_speed:       0x00001388
 ...
 ---
-type:            OFPT_PACKET_IN
+type:            PACKET_IN
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1536,7 +1536,7 @@ msg:
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
 ...
 ---
-type:            OFPT_FLOW_REMOVED
+type:            FLOW_REMOVED
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1555,7 +1555,7 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
 ...
 ---
-type:            OFPT_ERROR
+type:            ERROR
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1564,25 +1564,13 @@ msg:
   data:            000F423F6A696B6B656E2064617461
 ...
 ---
-type:            OFPT_GET_ASYNC_REQUEST
+type:            GET_ASYNC_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            OFPT_GET_ASYNC_REPLY
-xid:             0x00000000
-version:         0x04
-msg:             
-  packet_in_mask_master: 0x00000005
-  packet_in_mask_slave: 0x00000001
-  port_status_mask_master: 0x00000007
-  port_status_mask_slave: 0x00000003
-  flow_removed_mask_master: 0x0000000F
-  flow_removed_mask_slave: 0x00000003
-...
----
-type:            OFPT_SET_ASYNC
+type:            GET_ASYNC_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1594,7 +1582,19 @@ msg:
   flow_removed_mask_slave: 0x00000003
 ...
 ---
-type:            OFPT_METER_MOD
+type:            SET_ASYNC
+xid:             0x00000000
+version:         0x04
+msg:             
+  packet_in_mask_master: 0x00000005
+  packet_in_mask_slave: 0x00000001
+  port_status_mask_master: 0x00000007
+  port_status_mask_slave: 0x00000003
+  flow_removed_mask_master: 0x0000000F
+  flow_removed_mask_slave: 0x00000003
+...
+---
+type:            METER_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1615,7 +1615,7 @@ msg:
       experimenter:    999
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1643,7 +1643,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1653,7 +1653,7 @@ msg:
     meter_id:        0xFFFFFFFF
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1668,7 +1668,7 @@ msg:
           burst_size:      10
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1678,13 +1678,13 @@ msg:
     meter_id:        0xFFFFFFFF
 ...
 ---
-type:            OFPT_FEATURES_REQUEST
+type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1702,7 +1702,7 @@ msg:
           byte_count:      0x0000000000000000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1710,7 +1710,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1724,7 +1724,7 @@ msg:
     max_color:       0x00
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1732,7 +1732,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -1763,7 +1763,7 @@ msg:
       max_speed:       0x00001388
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -2593,7 +2593,7 @@ msg:
       properties:      
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3423,7 +3423,7 @@ msg:
       properties:      
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3433,7 +3433,7 @@ msg:
     group_id:        0xFFFFFFFC
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3451,7 +3451,7 @@ msg:
           byte_count:      0x0000000000000929
 ...
 ---
-type:            OFPT_PACKET_IN
+type:            PACKET_IN
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3547,7 +3547,7 @@ msg:
   data:            ''
 ...
 ---
-type:            OFPT_FEATURES_REPLY
+type:            FEATURES_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3559,7 +3559,7 @@ msg:
   ports:           
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3658,7 +3658,7 @@ msg:
   instructions:    
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3670,7 +3670,7 @@ msg:
     data:            686F6765686F6765
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3682,7 +3682,7 @@ msg:
     data:            74657374646174613939393939393939
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3694,7 +3694,7 @@ msg:
     data:            05F5E100000F00000000001621000000000003E70031014BFFFFFFFFFF0000008000000405060708800002040102030480000408000102030405060780000A02080680000606FFFFFFFFFFFF80000806F20BA47DF8EA80000C0203E78000100109800012010380001401638000160401020304800018040102030480001A021F9080001C0246A080001E026DB080002002DA8080002202BBD080002402E7C08000260164800028016580002A02000180002C040A00000180002E040A00000380003006F20BA47DF8EA8000320600000000000080003410FE80000000000000F00BA4FFFE4828A580003610FE80000000000000F00BA4FFFE05B7DC800038040008432180003A01C880003C01C980003E10FE800000000000000A606EFFFE7F74E78000400600000000029A8000420600000000022B80004404000987658000460105800048010180004A03ABCDEF80004C08090909090909090980004E0201F4FFFF00074F4E46000A00010000000000
 ...
 ---
-type:            OFPT_SET_CONFIG
+type:            SET_CONFIG
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3702,13 +3702,13 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            OFPT_GET_CONFIG_REQUEST
+type:            GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            OFPT_GET_CONFIG_REPLY
+type:            GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
@@ -3716,7 +3716,7 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3730,7 +3730,7 @@ msg:
     dp_desc:         dp
 ...
 ---
-type:            OFPT_PACKET_OUT
+type:            PACKET_OUT
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3743,14 +3743,14 @@ msg:
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
 ...
 ---
-type:            OFPT_HELLO
+type:            HELLO
 xid:             0x00000000
 version:         0x05
 msg:             
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3765,7 +3765,7 @@ msg:
     match:           
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3879,21 +3879,21 @@ msg:
               max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_ECHO_REQUEST
+type:            ECHO_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
   data:            686F6765
 ...
 ---
-type:            OFPT_ECHO_REPLY
+type:            ECHO_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
   data:            686F6765
 ...
 ---
-type:            OFPT_ERROR
+type:            ERROR
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3902,7 +3902,7 @@ msg:
   data:            6675676166756761
 ...
 ---
-type:            OFPT_EXPERIMENTER
+type:            EXPERIMENTER
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3911,19 +3911,19 @@ msg:
   data:            6E617A6F
 ...
 ---
-type:            OFPT_BARRIER_REQUEST
+type:            BARRIER_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            OFPT_BARRIER_REPLY
+type:            BARRIER_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            OFPT_ROLE_REQUEST
+type:            ROLE_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3931,7 +3931,7 @@ msg:
   generation_id:   0xF000F000F000F000
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -3994,7 +3994,7 @@ msg:
           value:           0x01
 ...
 ---
-type:            OFPT_ROLE_REPLY
+type:            ROLE_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4002,7 +4002,7 @@ msg:
   generation_id:   0xF000F000F000F000
 ...
 ---
-type:            OFPT_GROUP_MOD
+type:            GROUP_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4019,7 +4019,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4027,7 +4027,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4042,7 +4042,7 @@ msg:
     match:           
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4054,7 +4054,7 @@ msg:
     flow_count:      0x00000006
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4062,7 +4062,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4072,7 +4072,7 @@ msg:
     port_no:         0xFFFFFFFF
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4097,7 +4097,7 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4105,7 +4105,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4124,7 +4124,7 @@ msg:
     actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4132,7 +4132,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4151,7 +4151,7 @@ msg:
               max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4162,7 +4162,7 @@ msg:
     queue_id:        0xFFFFFFFF
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4206,7 +4206,7 @@ msg:
       duration_nsec:   0x00000000
 ...
 ---
-type:            OFPT_FLOW_REMOVED
+type:            FLOW_REMOVED
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4225,7 +4225,7 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
 ...
 ---
-type:            OFPT_ERROR
+type:            ERROR
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4234,7 +4234,7 @@ msg:
   data:            000F423F6A696B6B656E2064617461
 ...
 ---
-type:            OFPT_PACKET_IN
+type:            PACKET_IN
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4268,13 +4268,13 @@ msg:
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
 ...
 ---
-type:            OFPT_GET_ASYNC_REQUEST
+type:            GET_ASYNC_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            OFPT_METER_MOD
+type:            METER_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4295,7 +4295,7 @@ msg:
       experimenter:    999
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4323,7 +4323,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4333,7 +4333,7 @@ msg:
     meter_id:        0xFFFFFFFF
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4348,7 +4348,7 @@ msg:
           burst_size:      10
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4358,7 +4358,7 @@ msg:
     meter_id:        0xFFFFFFFF
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4376,7 +4376,7 @@ msg:
           byte_count:      0x0000000000000000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4384,13 +4384,13 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_FEATURES_REQUEST
+type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4404,7 +4404,7 @@ msg:
     max_color:       0x00
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -4412,7 +4412,7 @@ msg:
   flags:           0x0000
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -5242,7 +5242,7 @@ msg:
       properties:      
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6072,7 +6072,7 @@ msg:
       properties:      
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6082,7 +6082,7 @@ msg:
     group_id:        0xFFFFFFFC
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6100,7 +6100,7 @@ msg:
           byte_count:      0x0000000000000929
 ...
 ---
-type:            OFPT_PACKET_IN
+type:            PACKET_IN
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6196,7 +6196,7 @@ msg:
   data:            ''
 ...
 ---
-type:            OFPT_FLOW_MOD
+type:            FLOW_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6295,7 +6295,7 @@ msg:
   instructions:    
 ...
 ---
-type:            OFPT_MULTIPART_REQUEST
+type:            MULTIPART_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6307,7 +6307,7 @@ msg:
     data:            686F6765686F6765
 ...
 ---
-type:            OFPT_FEATURES_REPLY
+type:            FEATURES_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6319,7 +6319,7 @@ msg:
   ports:           
 ...
 ---
-type:            OFPT_MULTIPART_REPLY
+type:            MULTIPART_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6331,7 +6331,7 @@ msg:
     data:            74657374646174613939393939393939
 ...
 ---
-type:            OFPT_SET_CONFIG
+type:            SET_CONFIG
 xid:             0x00000000
 version:         0x05
 msg:             
@@ -6339,13 +6339,13 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            OFPT_GET_CONFIG_REQUEST
+type:            GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            OFPT_GET_CONFIG_REPLY
+type:            GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x05
 msg:             

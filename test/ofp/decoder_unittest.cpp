@@ -41,7 +41,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
 TEST(decoder, hellov1) {
   testDecodeEncode(
       "0100000800000001",
-      "---\ntype:            OFPT_HELLO\nxid:             "
+      "---\ntype:            HELLO\nxid:             "
       "0x00000001\nversion:         0x01\nmsg:             \n  versions:  "
       "      [  ]\n...\n");
 }
@@ -49,7 +49,7 @@ TEST(decoder, hellov1) {
 TEST(decoder, hellov4) {
   testDecodeEncode(
       "04000010000000010001000800000012",
-      "---\ntype:            OFPT_HELLO\nxid:             "
+      "---\ntype:            HELLO\nxid:             "
       "0x00000001\nversion:         0x04\nmsg:             \n  versions:  "
       "      [ 1, 4 ]\n...\n");
 }
@@ -57,7 +57,7 @@ TEST(decoder, hellov4) {
 TEST(decoder, errorv1) {
   testDecodeEncode(
       "010100130000006200010001FFFF1234567890",
-      "---\ntype:            OFPT_ERROR\nxid:             "
+      "---\ntype:            ERROR\nxid:             "
       "0x00000062\nversion:         0x01\nmsg:             \n  type:      "
       "      OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:            "
       "FFFF1234567890\n...\n");
@@ -65,21 +65,21 @@ TEST(decoder, errorv1) {
 
 TEST(decoder, echoRequest) {
   testDecodeEncode("0102000E00000007AABBCCDDEEFF",
-                   "---\ntype:            OFPT_ECHO_REQUEST\nxid:            "
+                   "---\ntype:            ECHO_REQUEST\nxid:            "
                    " 0x00000007\nversion:         0x01\nmsg:             \n  "
                    "data:            AABBCCDDEEFF\n...\n");
 }
 
 TEST(decoder, echoReply) {
   testDecodeEncode("0103000E00000007AABBCCDDEEFF",
-                   "---\ntype:            OFPT_ECHO_REPLY\nxid:             "
+                   "---\ntype:            ECHO_REPLY\nxid:             "
                    "0x00000007\nversion:         0x01\nmsg:             \n  "
                    "data:            AABBCCDDEEFF\n...\n");
 }
 
 TEST(decoder, experimenterv4) {
   testDecodeEncode("0404001800000018DEADBEEFAABBCCDDABCDEF0123456789",
-                   "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
+                   "---\ntype:            EXPERIMENTER\nxid:             "
                    "0x00000018\nversion:         0x04\nmsg:             \n  "
                    "experimenter:    0xDEADBEEF\n  exp_type:        "
                    "0xAABBCCDD\n  data:            ABCDEF0123456789\n...\n");
@@ -88,7 +88,7 @@ TEST(decoder, experimenterv4) {
 TEST(decoder, experimenterv1) {
   testDecodeEncode(
       "010400140000001BDEADBEEFABCDEF0123456789",
-      "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
+      "---\ntype:            EXPERIMENTER\nxid:             "
       "0x0000001B\nversion:         0x01\nmsg:             \n  "
       "experimenter:    0xDEADBEEF\n  exp_type:        0x00000000\n  "
       "data:            ABCDEF0123456789\n...\n");
@@ -97,7 +97,7 @@ TEST(decoder, experimenterv1) {
 TEST(decoder, experimenterv2) {
   testDecodeEncode(
       "02040018000000FFDEADBEEF00000000ABCDEF0123456789",
-      "---\ntype:            OFPT_EXPERIMENTER\nxid:             "
+      "---\ntype:            EXPERIMENTER\nxid:             "
       "0x000000FF\nversion:         0x02\nmsg:             \n  "
       "experimenter:    0xDEADBEEF\n  exp_type:        0x00000000\n  "
       "data:            ABCDEF0123456789\n...\n");
@@ -106,7 +106,7 @@ TEST(decoder, experimenterv2) {
 TEST(decoder, featuresrequest) {
   testDecodeEncode("04050008000000BF",
                    "---\ntype:            "
-                   "OFPT_FEATURES_REQUEST\nxid:          "
+                   "FEATURES_REQUEST\nxid:          "
                    "   0x000000BF\nversion:         "
                    "0x04\nmsg:             \n...\n");
 }
@@ -114,7 +114,7 @@ TEST(decoder, featuresrequest) {
 TEST(decoder, getconfigrequest) {
   testDecodeEncode("04070008000000BF",
                    "---\ntype:            "
-                   "OFPT_GET_CONFIG_REQUEST\nxid:        "
+                   "GET_CONFIG_REQUEST\nxid:        "
                    "     0x000000BF\nversion:         "
                    "0x04\nmsg:             \n...\n");
 }
@@ -122,7 +122,7 @@ TEST(decoder, getconfigrequest) {
 TEST(decoder, barrierrequestv4) {
   testDecodeEncode("04140008000000BF",
                    "---\ntype:            "
-                   "OFPT_BARRIER_REQUEST\nxid:           "
+                   "BARRIER_REQUEST\nxid:           "
                    "  0x000000BF\nversion:         "
                    "0x04\nmsg:             \n...\n");
 }
@@ -130,7 +130,7 @@ TEST(decoder, barrierrequestv4) {
 TEST(decoder, barrierrequestv1) {
   testDecodeEncode("01120008000000BF",
                    "---\ntype:            "
-                   "OFPT_BARRIER_REQUEST\nxid:           "
+                   "BARRIER_REQUEST\nxid:           "
                    "  0x000000BF\nversion:         "
                    "0x01\nmsg:             \n...\n");
 }
@@ -138,7 +138,7 @@ TEST(decoder, barrierrequestv1) {
 TEST(decoder, barrierreplyv4) {
   testDecodeEncode("04150008000000BF",
                    "---\ntype:            "
-                   "OFPT_BARRIER_REPLY\nxid:             "
+                   "BARRIER_REPLY\nxid:             "
                    "0x000000BF\nversion:         0x04\nmsg: "
                    "            \n...\n");
 }
@@ -146,7 +146,7 @@ TEST(decoder, barrierreplyv4) {
 TEST(decoder, barrierreplyv1) {
   testDecodeEncode("01130008000000BF",
                    "---\ntype:            "
-                   "OFPT_BARRIER_REPLY\nxid:             "
+                   "BARRIER_REPLY\nxid:             "
                    "0x000000BF\nversion:         0x01\nmsg: "
                    "            \n...\n");
 }
@@ -154,7 +154,7 @@ TEST(decoder, barrierreplyv1) {
 TEST(decoder, getasyncrequestv4) {
   testDecodeEncode("041A0008000000BF",
                    "---\ntype:            "
-                   "OFPT_GET_ASYNC_REQUEST\nxid:         "
+                   "GET_ASYNC_REQUEST\nxid:         "
                    "    0x000000BF\nversion:         "
                    "0x04\nmsg:             \n...\n");
 }
@@ -174,7 +174,7 @@ TEST(decoder, getasyncrequestv1) {
 TEST(decoder, featuresreplyv1) {
   testDecodeEncode(
       "01060020000000BF000001020304050600000100FF0000000000000000000000",
-      "---\ntype:            OFPT_FEATURES_REPLY\nxid:             "
+      "---\ntype:            FEATURES_REPLY\nxid:             "
       "0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
       "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
@@ -187,7 +187,7 @@ TEST(decoder, featuresreplyv1ports) {
       "22222222506F727420310000000000000000000033333333444444445555055566660666"
       "7777077788880888BBBBCCCCCCCCCCCC506F727420320000000000000000000033333333"
       "4444444455550555666606667777077788880888",
-      "---\ntype:            OFPT_FEATURES_REPLY\nxid:             "
+      "---\ntype:            FEATURES_REPLY\nxid:             "
       "0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
       "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
@@ -208,7 +208,7 @@ TEST(decoder, featuresreplyv1ports) {
 TEST(decoder, featuresreplyv4) {
   testDecodeEncode(
       "04060020000000BF000001020304050600000100FF0000000000000000000000",
-      "---\ntype:            OFPT_FEATURES_REPLY\nxid:             "
+      "---\ntype:            FEATURES_REPLY\nxid:             "
       "0x000000BF\nversion:         0x04\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
       "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
@@ -219,7 +219,7 @@ TEST(decoder, ofmp_flowrequest_v4) {
   testDecodeEncode(
       "041200401122334400010000000000000100000000000002000000030000000000000000"
       "0000000400000000000000050001000C800000041234567800000000",
-      "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             "
+      "---\ntype:            MULTIPART_REQUEST\nxid:             "
       "0x11223344\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "FLOW\n  flags:           0x0000\n  body:            \n    "
@@ -235,7 +235,7 @@ TEST(decoder, ofmp_flowrequest_v1) {
       "011000381122334400010000003820FE567"
       "8000000000000000000000000000000000000000000"
       "0000000000000000000000000011002222",
-      "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             "
+      "---\ntype:            MULTIPART_REQUEST\nxid:             "
       "0x11223344\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "FLOW\n  flags:           0x0000\n  body:            \n    "
@@ -252,7 +252,7 @@ TEST(decoder, ofmp_aggregaterequest_v4) {
       "04120040112233440002000000000000110000002222222233333333000"
       "00000444444444444444455555555555555550001000C80000004123456"
       "7800000000",
-      "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+      "---\ntype:            MULTIPART_REQUEST\nxid:         "
       "    0x11223344\nversion:         0x04\nmsg:             \n  "
       "type:            AGGREGATE\n  flags:           "
       "0x0000\n  body:            \n    table_id:        0x11\n    "
@@ -268,7 +268,7 @@ TEST(decoder, ofmp_aggregaterequest_v1) {
       "011000381122334400020000003820FE567"
       "8000000000000000000000000000000000000000000"
       "0000000000000000000000000011002222",
-      "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             "
+      "---\ntype:            MULTIPART_REQUEST\nxid:             "
       "0x11223344\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "AGGREGATE\n  flags:           0x0000\n  body:            \n    "
@@ -285,7 +285,7 @@ TEST(decoder, ofmp_flowreply_v4) {
       "0413005811223344000100000000000000480100000000020000000300"
       "0400050006000700000000000000000000000800000000000000090000"
       "00000000000A0001000C8000000412345678000000000001000801000000",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "FLOW\n  flags:           0x0000\n  body:            \n    - "
@@ -309,7 +309,7 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "000330044005500660077000000000000000000000088999999999999"
       "9999AAAAAAAAAAAAAAAA0001002080000004123456788000080610203"
       "040506080000606AABBCCDDEEFF0001000801000000",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "FLOW\n  flags:           0x0000\n  body:            \n    - "
@@ -344,7 +344,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "000000000000000000000000000000000000000044444444555555556666777788880000"
       "00000000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCC00000008EEEEFFF"
       "F",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "FLOW\n  flags:           0x2222\n  body:            \n    - "
@@ -369,7 +369,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "00601100003820F25678102030405060AABBCCDDEEFF0000000000000000000000000000"
       "000000000000000000000022000000330044005500660000000000000000000000000088"
       "9999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "FLOW\n  flags:           0x0000\n  body:            \n    - "
@@ -405,7 +405,7 @@ TEST(decoder, ofmp_aggregatereply_v4) {
   testDecodeEncode(
       "041300281111111100022222000000003333333333333330444444444444444055555550"
       "00000000",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "AGGREGATE\n  flags:           0x2222\n  body:            \n    "
@@ -417,7 +417,7 @@ TEST(decoder, ofmp_aggregatereply_v1) {
   testDecodeEncode(
       "01110024111111110002222233333333333333304444444444444440555555500000000"
       "0",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "AGGREGATE\n  flags:           0x2222\n  body:            \n    "
@@ -429,7 +429,7 @@ TEST(decoder, ofmp_tablestats_v4) {
   testDecodeEncode(
       "041300401111111100032222000000003300000044444440555555555555555066666666"
       "6666666077000000888888809999999999999990AAAAAAAAAAAAAAA0",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "TABLE\n  flags:           0x2222\n  body:            \n    - "
@@ -450,7 +450,7 @@ TEST(decoder, ofmp_tablestats_v1) {
       "000000000000000000000000444444405555555066666660777777777777777088888888"
       "88888880110000005461626C652032000000000000000000000000000000000000000000"
       "0000000099999990AAAAAAA0BBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "TABLE\n  flags:           0x2222\n  body:            \n    - "
@@ -471,7 +471,7 @@ TEST(decoder, ofmp_portstats_v4) {
       "555555506666666666666660777777777777777088888888888888809999999999999990"
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF01111111022222220",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
@@ -493,7 +493,7 @@ TEST(decoder, ofmp_portstats_v1) {
       "6666666666666660777777777777777088888888888888809999999999999990AAAAAAAA"
       "AAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0"
       "FFFFFFFFFFFFFFF0",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
@@ -513,7 +513,7 @@ TEST(decoder, ofmp_queuestats_v4) {
   testDecodeEncode(
       "041300381111111100052222000000003333333044444440555555555555555066666666"
       "6666666077777777777777701111111022222220",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "QUEUE\n  flags:           0x2222\n  body:            \n    - "
@@ -527,7 +527,7 @@ TEST(decoder, ofmp_queuestats_v1) {
   testDecodeEncode(
       "0111002C1111111100052222333000004444444055555555555555506666666666666660"
       "7777777777777770",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
       "QUEUE\n  flags:           0x2222\n  body:            \n    - "
@@ -542,7 +542,7 @@ TEST(decoder, flowmodv4) {
       "040E00680000000100000000000000000000000000000000000000000000000000000000"
       "0000000000000000000000000001001A800000040000000D80000A02080080001804C0A8"
       "010100000000000000040018000000000019001080001804C0A8020100000000",
-      "---\ntype:            OFPT_FLOW_MOD\nxid:             "
+      "---\ntype:            FLOW_MOD\nxid:             "
       "0x00000001\nversion:         0x04\nmsg:             \n  cookie:         "
       " "
       "0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:  "
@@ -564,7 +564,7 @@ TEST(decoder, flowmodv4_2) {
       "040E00680000000111111111111111112222222222222222334455556666777788888888"
       "99999999AAAAAAAABBBB00000001001A80000004CCCCCCCC80000A02080080001804C0A8"
       "010100000000000000040018000000000019001080001804C0A8020100000000",
-      "---\ntype:            OFPT_FLOW_MOD\nxid:             "
+      "---\ntype:            FLOW_MOD\nxid:             "
       "0x00000001\nversion:         0x04\nmsg:             \n  cookie:         "
       " "
       "0x1111111111111111\n  cookie_mask:     0x2222222222222222\n  table_id:  "
@@ -587,7 +587,7 @@ TEST(decoder, flowmodv1) {
       "0008000000000000000000C0A801010000000011111111111111110044"
       "555566667777888888889999BBBB00070008C0A80201";
   const char *yaml =
-      "---\ntype:            OFPT_FLOW_MOD\nxid:             "
+      "---\ntype:            FLOW_MOD\nxid:             "
       "0x00000001\nversion:         0x01\nmsg:             \n  cookie:         "
       " "
       "0x1111111111111111\n  cookie_mask:     0xFFFFFFFFFFFFFFFF\n  table_id:  "
@@ -637,7 +637,7 @@ TEST(decoder, flowmod1_2) {
       "010E0058000000010030208ECCCC00000000000000000000000000000000080000010000"
       "00000000C0A8010100DD000011111111111111110044555566667777888888889999BBBB"
       "000A0008EE000000000B000800000000",
-      "---\ntype:            OFPT_FLOW_MOD\nxid:             "
+      "---\ntype:            FLOW_MOD\nxid:             "
       "0x00000001\nversion:         0x01\nmsg:             \n  cookie:         "
       " "
       "0x1111111111111111\n  cookie_mask:     0xFFFFFFFFFFFFFFFF\n  table_id:  "
@@ -665,7 +665,7 @@ TEST(decoder, packetinv4) {
       "80000004555555558000020466666666800004087777777777777777000"
       "0FFFFFFFFFFFF000000000001080600010800060400010000000000010A"
       "0000010000000000000A000002",
-      "---\ntype:            OFPT_PACKET_IN\nxid:             "
+      "---\ntype:            PACKET_IN\nxid:             "
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:      "
       " 0x33333333\n  total_len:       0x4444\n  in_port:         0x55555555\n "
       " in_phy_port:     0x66666666\n  metadata:        0x7777777777777777\n  "
@@ -684,7 +684,7 @@ TEST(decoder, packetinv1) {
       "010A003C0000000233333333444455550100FFFFFFFFFFFF00000000000"
       "1080600010800060400010000000000010A0000010000000000000A0000"
       "02",
-      "---\ntype:            OFPT_PACKET_IN\nxid:             "
+      "---\ntype:            PACKET_IN\nxid:             "
       "0x00000002\nversion:         0x01\nmsg:             \n  buffer_id:      "
       " 0x33333333\n  total_len:       0x4444\n  in_port:         0x00005555\n "
       " in_phy_port:     0x00000000\n  metadata:        0x0000000000000000\n  "
@@ -699,7 +699,7 @@ TEST(decoder, packetoutv4) {
       "040D00620000000133333333444444440020000000000000000000100000000500140000"
       "000000000019001080001804C0A8010100000000FFFFFFFFFFFF00000000000108060001"
       "0800060400010000000000010A0000010000000000000A000002",
-      "---\ntype:            OFPT_PACKET_OUT\nxid:             "
+      "---\ntype:            PACKET_OUT\nxid:             "
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:      "
       " "
       "0x33333333\n  in_port:         0x44444444\n  actions:         \n    - "
@@ -718,7 +718,7 @@ TEST(decoder, packetoutv1) {
       "A80101FFFFFFFFFFFF0000000000010806000108000604000100000000"
       "00010A0000010000000000000A000002";
   const char *yaml =
-      "---\ntype:            OFPT_PACKET_OUT\nxid:             "
+      "---\ntype:            PACKET_OUT\nxid:             "
       "0x00000001\nversion:         0x01\nmsg:             \n  buffer_id:      "
       " "
       "0x33333333\n  in_port:         0x00004444\n  actions:         \n    - "
@@ -758,7 +758,7 @@ TEST(decoder, packetoutv1) {
 
 TEST(decoder, setconfigv4) {
   testDecodeEncode("0409000C11111111AAAABBBB",
-                   "---\ntype:            OFPT_SET_CONFIG\nxid:             "
+                   "---\ntype:            SET_CONFIG\nxid:             "
                    "0x11111111\nversion:         0x04\nmsg:             \n  "
                    "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  miss_send_len:   0xBBBB\n...\n");
 }
@@ -768,7 +768,7 @@ TEST(decoder, portstatusv4) {
       "040C00501111111122000000000000003333333300000000AABBCCDDEEFF0000506F7274"
       "203100000000000000000000444444445555555566666666777777778888888899999999"
       "AAAAAAAABBBBBBBB",
-      "---\ntype:            OFPT_PORT_STATUS\nxid:             "
+      "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  reason:         "
       " "
       "0x22\n  port:            \n    port_no:         0x33333333\n    hw_addr:  "
@@ -784,7 +784,7 @@ TEST(decoder, portstatusv1) {
   testDecodeEncode(
       "010C00401111111122000000000000003333AABBCCDDEEFF506F72742031000000000000"
       "00000000444444445555555566660666777707778888088899990999",
-      "---\ntype:            OFPT_PORT_STATUS\nxid:             "
+      "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  reason:         "
       " "
       "0x22\n  port:            \n    port_no:         0x00003333\n    hw_addr:  "
@@ -801,7 +801,7 @@ TEST(decoder, groupmodv4) {
       "040F00681111111122223300444444440030555566666666777777770000000000000010"
       "0000000500140000000000000019001080001804C0A80101000000000028888899999999"
       "AAAAAAAA000000000019001080002801EE00000000000000000B000800000000",
-      "---\ntype:            OFPT_GROUP_MOD\nxid:             "
+      "---\ntype:            GROUP_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  command:        "
       " "
       "0x2222\n  type:            0x33\n  group_id:        0x44444444\n  "
@@ -824,7 +824,7 @@ TEST(decoder, portmodv4) {
   testDecodeEncode(
       "04100028111111112222222200000000333333333333000044444444555"
       "555556666666600000000",
-      "---\ntype:            OFPT_PORT_MOD\nxid:             "
+      "---\ntype:            PORT_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "port_no:         0x22222222\n  hw_addr:         "
       "'33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:  "
@@ -835,7 +835,7 @@ TEST(decoder, portmodv4) {
 TEST(decoder, portmodv1) {
   testDecodeEncode(
       "010F002011111111222233333333333344444444555555556666666600000000",
-      "---\ntype:            OFPT_PORT_MOD\nxid:             "
+      "---\ntype:            PORT_MOD\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  port_no:        "
       " "
       "0x00002222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          "
@@ -846,7 +846,7 @@ TEST(decoder, portmodv1) {
 TEST(decoder, tablemodv4) {
   testDecodeEncode(
       "04110010111111112200000033333333",
-      "---\ntype:            OFPT_TABLE_MOD\nxid:             "
+      "---\ntype:            TABLE_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "table_id:        0x22\n  config:          0x33333333\n...\n");
 }
@@ -854,7 +854,7 @@ TEST(decoder, tablemodv4) {
 TEST(decoder, tablemodv2) {
   testDecodeEncode(
       "02110010111111112200000033333333",
-      "---\ntype:            OFPT_TABLE_MOD\nxid:             "
+      "---\ntype:            TABLE_MOD\nxid:             "
       "0x11111111\nversion:         0x02\nmsg:             \n  "
       "table_id:        0x22\n  config:          0x33333333\n...\n");
 }
@@ -862,7 +862,7 @@ TEST(decoder, tablemodv2) {
 TEST(decoder, rolerequestv4) {
   testDecodeEncode(
       "041800181111111122222222000000003333333333333333",
-      "---\ntype:            OFPT_ROLE_REQUEST\nxid:             "
+      "---\ntype:            ROLE_REQUEST\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  role: "
       "           0x22222222\n  generation_id:   "
       "0x3333333333333333\n...\n");
@@ -871,7 +871,7 @@ TEST(decoder, rolerequestv4) {
 TEST(decoder, rolereplyv4) {
   testDecodeEncode(
       "041900181111111122222222000000003333333333333333",
-      "---\ntype:            OFPT_ROLE_REPLY\nxid:             "
+      "---\ntype:            ROLE_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  role: "
       "           0x22222222\n  generation_id:   "
       "0x3333333333333333\n...\n");
@@ -880,7 +880,7 @@ TEST(decoder, rolereplyv4) {
 TEST(decoder, getasyncreplyv4) {
   testDecodeEncode(
       "041B002011111111222222223333333344444444555555556666666677777777",
-      "---\ntype:            OFPT_GET_ASYNC_REPLY\nxid:             "
+      "---\ntype:            GET_ASYNC_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "packet_in_mask_master: 0x22222222\n  packet_in_mask_slave: 0x33333333\n "
       " port_status_mask_master: 0x44444444\n  port_status_mask_slave: "
@@ -891,7 +891,7 @@ TEST(decoder, getasyncreplyv4) {
 TEST(decoder, queuegetconfigrequestv4) {
   testDecodeEncode(
       "04160010111111112222222200000000",
-      "---\ntype:            OFPT_QUEUE_GET_CONFIG_REQUEST\nxid:  "
+      "---\ntype:            QUEUE_GET_CONFIG_REQUEST\nxid:  "
       "           0x11111111\nversion:         0x04\nmsg:            "
       " \n  port:            0x22222222\n...\n");
 }
@@ -902,7 +902,7 @@ TEST(decoder, queuegetconfigreplyv4) {
       "000000005555000000000000000200100000000066660000000000007777777788888888"
       "0030000000000000000100100000000099990000000000000002001000000000AAAA0000"
       "00000000",
-      "---\ntype:            OFPT_QUEUE_GET_CONFIG_REPLY\nxid:             "
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
       "   port:            0x44444444\n      min_rate:        0x5555\n      "
@@ -918,7 +918,7 @@ TEST(decoder, queuegetconfigreplyv4_experimenter) {
       "EEEEEEEE000000000001020304050000FFFF001300000000FFFFFFFF00000000ABCDEF00"
       "000000007777777788888888003000000000000000010010000000009999000000000000"
       "0002001000000000AAAA000000000000",
-      "---\ntype:            OFPT_QUEUE_GET_CONFIG_REPLY\nxid:             "
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
       "   port:            0x44444444\n      min_rate:        0x5555\n      "
@@ -932,7 +932,7 @@ TEST(decoder, queuegetconfigreplyv4_experimenter) {
 
 TEST(decoder, getconfigreplyv4) {
   testDecodeEncode("0408000C11111111AAAABBBB",
-                   "---\ntype:            OFPT_GET_CONFIG_REPLY\nxid:          "
+                   "---\ntype:            GET_CONFIG_REPLY\nxid:          "
                    "   0x11111111\nversion:         0x04\nmsg:             \n  "
                    "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  miss_send_len:   0xBBBB\n...\n");
 }
@@ -940,7 +940,7 @@ TEST(decoder, getconfigreplyv4) {
 TEST(decoder, setasyncv4) {
   testDecodeEncode(
       "041C002011111111222222223333333344444444555555556666666677777777",
-      "---\ntype:            OFPT_SET_ASYNC\nxid:             "
+      "---\ntype:            SET_ASYNC\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "packet_in_mask_master: 0x22222222\n  packet_in_mask_slave: 0x33333333\n "
       " port_status_mask_master: 0x44444444\n  port_status_mask_slave: "
@@ -952,7 +952,7 @@ TEST(decoder, flowremovedv4) {
   testDecodeEncode(
       "040B004011111111222222222222222233334455666666667777777788889999AAAAAAAA"
       "AAAAAAAABBBBBBBBBBBBBBBB0001000C800000041234567800000000",
-      "---\ntype:            OFPT_FLOW_REMOVED\nxid:             "
+      "---\ntype:            FLOW_REMOVED\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  cookie:         "
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
@@ -970,7 +970,7 @@ TEST(decoder, flowremovedv1) {
       "010B005811111111003820FE567800000000000000000000000000000000000000000000"
       "000000000000000000000000222222222222222233334400666666667777777788880000"
       "AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB",
-      "---\ntype:            OFPT_FLOW_REMOVED\nxid:             "
+      "---\ntype:            FLOW_REMOVED\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  cookie:         "
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
@@ -989,7 +989,7 @@ TEST(decoder, flowremovedv2) {
       "AAAAAAAABBBBBBBBBBBBBBBB0000005812345678000003FE000000000000000000000000"
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "00000000000000000000000000000000000000000000000000000000",
-      "---\ntype:            OFPT_FLOW_REMOVED\nxid:             "
+      "---\ntype:            FLOW_REMOVED\nxid:             "
       "0x11111111\nversion:         0x02\nmsg:             \n  cookie:         "
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
@@ -1006,7 +1006,7 @@ TEST(decoder, flowremovedv3) {
   testDecodeEncode(
       "030B004011111111222222222222222233334455666666667777777788889999AAAAAAAA"
       "AAAAAAAABBBBBBBBBBBBBBBB0001000C800000041234567800000000",
-      "---\ntype:            OFPT_FLOW_REMOVED\nxid:             "
+      "---\ntype:            FLOW_REMOVED\nxid:             "
       "0x11111111\nversion:         0x03\nmsg:             \n  cookie:         "
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
@@ -1022,7 +1022,7 @@ TEST(decoder, flowremovedv3) {
 TEST(decoder, ofmp_desc_request_v4) {
   testDecodeEncode(
       "04120010111111110000000000000000",
-      "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+      "---\ntype:            MULTIPART_REQUEST\nxid:         "
       "    0x11111111\nversion:         0x04\nmsg:             \n  "
       "type:            DESC\n  flags:           "
       "0x0000\n...\n");
@@ -1030,7 +1030,7 @@ TEST(decoder, ofmp_desc_request_v4) {
 
 TEST(decoder, ofmp_desc_request_v1) {
   testDecodeEncode("0110000C1111111100000000",
-                   "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+                   "---\ntype:            MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x01\nmsg:             \n "
                    " type:            DESC\n  flags:           "
                    "0x0000\n...\n");
@@ -1068,7 +1068,7 @@ TEST(decoder, ofmp_desc_reply_v4) {
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "00000000000000000000000000000000000000000000000000000000",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
       "DESC\n  flags:           0x0000\n  body:            \n    "
@@ -1111,7 +1111,7 @@ TEST(decoder, ofmp_desc_reply_v1) {
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000",
-      "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " DESC\n  flags:           0x0000\n  body:            \n    "
       "mfr_desc:        ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789\n    hw_desc:     "
@@ -1123,7 +1123,7 @@ TEST(decoder, ofmp_desc_reply_v1) {
 
 TEST(decoder, ofmp_portstats_v4_request) {
   testDecodeEncode("041200181111111100040000000000002222222200000000",
-                   "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+                   "---\ntype:            MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x04\nmsg:             \n "
                    " type:            PORT_STATS\n  flags:           "
                    "0x0000\n  body:            \n    port_no:         "
@@ -1132,7 +1132,7 @@ TEST(decoder, ofmp_portstats_v4_request) {
 
 TEST(decoder, ofmp_portstats_v1_request) {
   testDecodeEncode("0110001411111111000400002222000000000000",
-                   "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+                   "---\ntype:            MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x01\nmsg:             \n "
                    " type:            PORT_STATS\n  flags:           "
                    "0x0000\n  body:            \n    port_no:         "
@@ -1141,7 +1141,7 @@ TEST(decoder, ofmp_portstats_v1_request) {
 
 TEST(decoder, ofmp_queuestats_v4_request) {
   testDecodeEncode("041200181111111100050000000000002222222233333333",
-                   "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+                   "---\ntype:            MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x04\nmsg:             \n "
                    " type:            QUEUE\n  flags:           0x0000\n "
                    " body:            \n    port_no:         0x22222222\n    "
@@ -1150,7 +1150,7 @@ TEST(decoder, ofmp_queuestats_v4_request) {
 
 TEST(decoder, ofmp_queuestats_v1_request) {
   testDecodeEncode("0110001411111111000500002222000033333333",
-                   "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
+                   "---\ntype:            MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x01\nmsg:             \n "
                    " type:            QUEUE\n  flags:           0x0000\n "
                    " body:            \n    port_no:         0x00002222\n    "
@@ -1161,7 +1161,7 @@ TEST(decoder, ofp_metermod_v4) {
   testDecodeEncode(
       "041D00301111111100012222333333330001001044444444555555550000000000020010"
       "666666667777777788000000",
-      "---\ntype:            OFPT_METER_MOD\nxid:             "
+      "---\ntype:            METER_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  command:        "
       " 0x0001\n  flags:           0x2222\n  meter_id:        0x33333333\n  "
       "bands:           \n    - type:            DROP\n      rate:      "
@@ -1171,9 +1171,9 @@ TEST(decoder, ofp_metermod_v4) {
 }
 
 TEST(decoder, ofp_mpaggregatestatsrequest_v1) {
-  testDecodeEncode("0110003800000018 00020000 003820ff0000000000000000000000000000 00000000000000000000000000000000 0000000000000800ffff", "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             0x00000018\nversion:         0x01\nmsg:             \n  type:            AGGREGATE\n  flags:           0x0000\n  body:            \n    table_id:        0x08\n    out_port:        ANY\n    out_group:       0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:     0x0000000000000000\n    match:           \n...\n");
+  testDecodeEncode("0110003800000018 00020000 003820ff0000000000000000000000000000 00000000000000000000000000000000 0000000000000800ffff", "---\ntype:            MULTIPART_REQUEST\nxid:             0x00000018\nversion:         0x01\nmsg:             \n  type:            AGGREGATE\n  flags:           0x0000\n  body:            \n    table_id:        0x08\n    out_port:        ANY\n    out_group:       0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:     0x0000000000000000\n    match:           \n...\n");
 }
 
 TEST(decoder, ofmp_groupfeatures_reply) {
-  testDecodeEncode("041300381111111100080000000000001111111122222222333333334444444455555555666666663777777708888888199999992AAAAAAA", "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  type:            GROUP_FEATURES\n  flags:           0x0000\n  body:            \n    types:           0x11111111\n    capabilities:    0x22222222\n    max_groups_all:  0x33333333\n    max_groups_sel:  0x44444444\n    max_groups_ind:  0x55555555\n    max_groups_ff:   0x66666666\n    actions_all:     [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_ECN, SET_TP_SRC, SET_TP_DST, COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, DEC_NW_TTL, SET_FIELD, PUSH_PBB, '0x30000000' ]\n    actions_sel:     [ SET_DL_SRC, SET_NW_TOS, COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, SET_NW_TTL, POP_PBB ]\n    actions_ind:     [ OUTPUT, SET_DL_SRC, SET_DL_DST, SET_NW_TOS, SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_MPLS, POP_MPLS, SET_NW_TTL, DEC_NW_TTL, POP_PBB, '0x10000000' ]\n    actions_ff:      [ SET_VLAN_VID, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_SRC, COPY_TTL_OUT, SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' ]\n...\n");
+  testDecodeEncode("041300381111111100080000000000001111111122222222333333334444444455555555666666663777777708888888199999992AAAAAAA", "---\ntype:            MULTIPART_REPLY\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  type:            GROUP_FEATURES\n  flags:           0x0000\n  body:            \n    types:           0x11111111\n    capabilities:    0x22222222\n    max_groups_all:  0x33333333\n    max_groups_sel:  0x44444444\n    max_groups_ind:  0x55555555\n    max_groups_ff:   0x66666666\n    actions_all:     [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_ECN, SET_TP_SRC, SET_TP_DST, COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, DEC_NW_TTL, SET_FIELD, PUSH_PBB, '0x30000000' ]\n    actions_sel:     [ SET_DL_SRC, SET_NW_TOS, COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, SET_NW_TTL, POP_PBB ]\n    actions_ind:     [ OUTPUT, SET_DL_SRC, SET_DL_DST, SET_NW_TOS, SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_MPLS, POP_MPLS, SET_NW_TTL, DEC_NW_TTL, POP_PBB, '0x10000000' ]\n    actions_ff:      [ SET_VLAN_VID, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_SRC, COPY_TTL_OUT, SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' ]\n...\n");
 }

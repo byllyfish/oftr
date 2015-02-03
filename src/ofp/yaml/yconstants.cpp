@@ -11,36 +11,36 @@ OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 
 static const llvm::StringRef sTypes[] = {
-    "OFPT_HELLO",
-    "OFPT_ERROR",
-    "OFPT_ECHO_REQUEST",
-    "OFPT_ECHO_REPLY",
-    "OFPT_EXPERIMENTER",
-    "OFPT_FEATURES_REQUEST",
-    "OFPT_FEATURES_REPLY",
-    "OFPT_GET_CONFIG_REQUEST",
-    "OFPT_GET_CONFIG_REPLY",
-    "OFPT_SET_CONFIG",
-    "OFPT_PACKET_IN",
-    "OFPT_FLOW_REMOVED",
-    "OFPT_PORT_STATUS",
-    "OFPT_PACKET_OUT",
-    "OFPT_FLOW_MOD",
-    "OFPT_GROUP_MOD",
-    "OFPT_PORT_MOD",
-    "OFPT_TABLE_MOD",
-    "OFPT_MULTIPART_REQUEST",
-    "OFPT_MULTIPART_REPLY",
-    "OFPT_BARRIER_REQUEST",
-    "OFPT_BARRIER_REPLY",
-    "OFPT_QUEUE_GET_CONFIG_REQUEST",
-    "OFPT_QUEUE_GET_CONFIG_REPLY",
-    "OFPT_ROLE_REQUEST",
-    "OFPT_ROLE_REPLY",
-    "OFPT_GET_ASYNC_REQUEST",
-    "OFPT_GET_ASYNC_REPLY",
-    "OFPT_SET_ASYNC",
-    "OFPT_METER_MOD",
+    "HELLO",
+    "ERROR",
+    "ECHO_REQUEST",
+    "ECHO_REPLY",
+    "EXPERIMENTER",
+    "FEATURES_REQUEST",
+    "FEATURES_REPLY",
+    "GET_CONFIG_REQUEST",
+    "GET_CONFIG_REPLY",
+    "SET_CONFIG",
+    "PACKET_IN",
+    "FLOW_REMOVED",
+    "PORT_STATUS",
+    "PACKET_OUT",
+    "FLOW_MOD",
+    "GROUP_MOD",
+    "PORT_MOD",
+    "TABLE_MOD",
+    "MULTIPART_REQUEST",
+    "MULTIPART_REPLY",
+    "BARRIER_REQUEST",
+    "BARRIER_REPLY",
+    "QUEUE_GET_CONFIG_REQUEST",
+    "QUEUE_GET_CONFIG_REPLY",
+    "ROLE_REQUEST",
+    "ROLE_REPLY",
+    "GET_ASYNC_REQUEST",
+    "GET_ASYNC_REPLY",
+    "SET_ASYNC",
+    "METER_MOD",
 };
 
 static const llvm::StringRef sMultipartTypes[] = {
@@ -126,8 +126,6 @@ static const llvm::StringRef sErrorTypes[] = {
   "OFPET_METER_MOD_FAILED",
   "OFPET_TABLE_FEATURES_FAILED"
 };
-
-OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 EnumConverter<OFPType>
     llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
@@ -291,3 +289,5 @@ static std::pair<OFPErrorCode, llvm::StringRef> sErrorCodes[] = {
 
 EnumConverterSparse<OFPErrorCode>
     llvm::yaml::ScalarTraits<OFPErrorCode>::converter{sErrorCodes};
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

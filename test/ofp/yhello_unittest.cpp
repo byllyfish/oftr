@@ -12,7 +12,7 @@ using namespace ofp::yaml;
 TEST(yhello, test1) {
   // Standard version 4 works.
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 version: 4
 msg: 
   versions: [1, 2, 3, 4]
@@ -27,7 +27,7 @@ msg:
 TEST(yhello, test2) {
   // The protocol version is still version 1 -- ignore the versions bitmap.
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 version: 1
 msg: 
   versions: [1, 2, 3, 4]
@@ -41,7 +41,7 @@ msg:
 TEST(yhello, test3) {
   // Always use header version if available
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 version: 4
 msg: 
   versions: [1, 2]
@@ -56,7 +56,7 @@ msg:
 TEST(yhello, test4) {
   // Empty version list means use version from header.
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 version: 1
 msg:
   versions: []
@@ -70,7 +70,7 @@ msg:
 TEST(yhello, test5) {
   // Omitted version list means use version from header.
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 version: 3
 )";
 
@@ -82,7 +82,7 @@ version: 3
 TEST(yhello, test6) {
   // No version in header? Specify all versions.
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 msg:
   versions: []
 )";
@@ -96,7 +96,7 @@ msg:
 TEST(yhello, test7) {
   // No version in header? Specify all versions.
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 )";
 
   Encoder encoder{yaml};
@@ -107,7 +107,7 @@ type: OFPT_HELLO
 
 TEST(yhello, test8) {
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 version: 5
 msg:
   versions: [0, 1, 3, 10, 29]
@@ -121,7 +121,7 @@ msg:
 
 TEST(yhello, error1) {
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 msg:
   version: [1, 2, 3, 4]
 )";
@@ -134,7 +134,7 @@ msg:
 
 TEST(yhello, error2) {
   const char *yaml = R"(
-type: OFPT_HELLO
+type: HELLO
 msg:
 )";
 

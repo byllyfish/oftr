@@ -1,39 +1,39 @@
 ---
 version: 0x04
-type: OFPT_HELLO
+type: HELLO
 msg:
   versions: [ 0x0f ]
 ---
 version: 0x04
-type: OFPT_ERROR
+type: ERROR
 msg:
   type: OFPET_BAD_REQUEST
   code: OFPBRC_BAD_TYPE
   data: 'ffffffff'
 ---
 version: 0x04
-type: OFPT_ECHO_REQUEST
+type: ECHO_REQUEST
 msg:
   data: 'ffffffff'
 ---
 version: 0x04
-type: OFPT_ECHO_REPLY
+type: ECHO_REPLY
 msg:
   data: 'ffffffff'
 ---
 version: 0x04
-type: OFPT_EXPERIMENTER
+type: EXPERIMENTER
 msg:
   experimenter: 0xffffffff
   exp_type: 0xffffffff
   data: 'ffffffff'
 ---
 version: 0x04
-type: OFPT_FEATURES_REQUEST
+type: FEATURES_REQUEST
 msg:
 ---
 version: 0x04
-type: OFPT_FEATURES_REPLY
+type: FEATURES_REPLY
 msg:
   datapath_id: 'ff:ff:ff:ff:ff:ff:ff:ff'
   n_buffers: 0xffffffff
@@ -55,23 +55,23 @@ msg:
       max_speed: 0xffffffff
 ---
 version: 0x04
-type: OFPT_GET_CONFIG_REQUEST
+type: GET_CONFIG_REQUEST
 msg:
 ---
 version: 0x04
-type: OFPT_GET_CONFIG_REPLY
-msg:
-  flags: [ 'FRAG_NORMAL' ]
-  miss_send_len: NO_BUFFER
----
-version: 0x04
-type: OFPT_SET_CONFIG
+type: GET_CONFIG_REPLY
 msg:
   flags: [ 'FRAG_NORMAL' ]
   miss_send_len: NO_BUFFER
 ---
 version: 0x04
-type: OFPT_PACKET_IN
+type: SET_CONFIG
+msg:
+  flags: [ 'FRAG_NORMAL' ]
+  miss_send_len: NO_BUFFER
+---
+version: 0x04
+type: PACKET_IN
 msg:
   buffer_id: NO_BUFFER
   total_len: 0xffff
@@ -88,7 +88,7 @@ msg:
   data: 'ffffffff'
 ---
 version: 0x04
-type: OFPT_FLOW_REMOVED
+type: FLOW_REMOVED
 msg:
   cookie: 0xffffffffffffffff
   priority: 0xffff
@@ -106,7 +106,7 @@ msg:
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: OFPT_PORT_STATUS
+type: PORT_STATUS
 msg:
   reason: 0xff
   port:
@@ -123,7 +123,7 @@ msg:
     max_speed: 0xffffffff
 ---
 version: 0x04
-type: OFPT_PACKET_OUT
+type: PACKET_OUT
 msg:
   buffer_id: NO_BUFFER
   in_port: CONTROLLER
@@ -134,7 +134,7 @@ msg:
   data: 'ffffffff'
 ---
 version: 0x04
-type: OFPT_FLOW_MOD
+type: FLOW_MOD
 msg:
   cookie: 0xffffffffffffffff
   cookie_mask: 0xffffffffffffffff
@@ -159,7 +159,7 @@ msg:
           max_len: NO_BUFFER
 ---
 version: 0x04
-type: OFPT_GROUP_MOD
+type: GROUP_MOD
 msg:
   command: 0xffff
   type: 0xff
@@ -174,7 +174,7 @@ msg:
           max_len: NO_BUFFER
 ---
 version: 0x04
-type: OFPT_PORT_MOD
+type: PORT_MOD
 msg:
   port_no: 0xffffffff
   hw_addr: 'ff:ff:ff:ff:ff:ff'
@@ -183,20 +183,20 @@ msg:
   advertise: [ '0xffffffff' ]
 ---
 version: 0x04
-type: OFPT_TABLE_MOD
+type: TABLE_MOD
 msg:
   table_id: 0xff
   config: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: DESC
   flags: 0xffff
   #body:
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: DESC
   flags: 0xffff
@@ -208,7 +208,7 @@ msg:
     dp_desc: '...............................................................................................................................................................................................................................................................'
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: FLOW
   flags: 0xffff
@@ -224,7 +224,7 @@ msg:
         mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: FLOW
   flags: 0xffff
@@ -251,7 +251,7 @@ msg:
               max_len: NO_BUFFER
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: AGGREGATE
   flags: 0xffff
@@ -267,7 +267,7 @@ msg:
         mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: AGGREGATE
   flags: 0xffff
@@ -277,14 +277,14 @@ msg:
     flow_count: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: TABLE
   flags: 0xffff
   #body:
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: TABLE
   flags: 0xffff
@@ -295,7 +295,7 @@ msg:
       matched_count: 0xffffffffffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: PORT_STATS
   flags: 0xffff
@@ -303,7 +303,7 @@ msg:
     port_no: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: PORT_STATS
   flags: 0xffff
@@ -325,7 +325,7 @@ msg:
       duration_nsec: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: QUEUE
   flags: 0xffff
@@ -334,7 +334,7 @@ msg:
     queue_id: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: QUEUE
   flags: 0xffff
@@ -348,7 +348,7 @@ msg:
       duration_nsec: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: GROUP
   flags: 0xffff
@@ -356,7 +356,7 @@ msg:
     group_id: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: GROUP
   flags: 0xffff
@@ -372,14 +372,14 @@ msg:
           byte_count: 0xffffffffffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: GROUP_FEATURES
   flags: 0xffff
   #body:
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: GROUP_FEATURES
   flags: 0xffff
@@ -396,7 +396,7 @@ msg:
     actions_ff: [ 'SET_VLAN_VID' ]
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: METER
   flags: 0xffff
@@ -404,7 +404,7 @@ msg:
     meter_id: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: METER
   flags: 0xffff
@@ -420,7 +420,7 @@ msg:
           byte_count: 0xffffffffffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: METER_CONFIG
   flags: 0xffff
@@ -428,7 +428,7 @@ msg:
     meter_id: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: METER_CONFIG
   flags: 0xffff
@@ -441,14 +441,14 @@ msg:
           burst_size: 0xffffffff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: METER_FEATURES
   flags: 0xffff
   #body:
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: METER_FEATURES
   flags: 0xffff
@@ -460,7 +460,7 @@ msg:
     max_color: 0xff
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: TABLE_FEATURES
   flags: 0xffff
@@ -502,7 +502,7 @@ msg:
       properties:
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: TABLE_FEATURES
   flags: 0xffff
@@ -544,14 +544,14 @@ msg:
       properties:
 ---
 version: 0x04
-type: OFPT_MULTIPART_REQUEST
+type: MULTIPART_REQUEST
 msg:
   type: PORT_DESC
   flags: 0xffff
   #body:
 ---
 version: 0x04
-type: OFPT_MULTIPART_REPLY
+type: MULTIPART_REPLY
 msg:
   type: PORT_DESC
   flags: 0xffff
@@ -569,20 +569,20 @@ msg:
       max_speed: 0xffffffff
 ---
 version: 0x04
-type: OFPT_BARRIER_REQUEST
+type: BARRIER_REQUEST
 msg:
 ---
 version: 0x04
-type: OFPT_BARRIER_REPLY
+type: BARRIER_REPLY
 msg:
 ---
 version: 0x04
-type: OFPT_QUEUE_GET_CONFIG_REQUEST
+type: QUEUE_GET_CONFIG_REQUEST
 msg:
   port: 0xffffffff
 ---
 version: 0x04
-type: OFPT_QUEUE_GET_CONFIG_REPLY
+type: QUEUE_GET_CONFIG_REPLY
 msg:
   port: 0xffffffff
   queues:
@@ -593,23 +593,23 @@ msg:
       properties:
 ---
 version: 0x04
-type: OFPT_ROLE_REQUEST
+type: ROLE_REQUEST
 msg:
   role: 0xffffffff
   generation_id: 0xffffffffffffffff
 ---
 version: 0x04
-type: OFPT_ROLE_REPLY
+type: ROLE_REPLY
 msg:
   role: 0xffffffff
   generation_id: 0xffffffffffffffff
 ---
 version: 0x04
-type: OFPT_GET_ASYNC_REQUEST  # header only
+type: GET_ASYNC_REQUEST  # header only
 msg:  
 ---
 version: 0x04
-type: OFPT_GET_ASYNC_REPLY
+type: GET_ASYNC_REPLY
 msg:
   packet_in_mask_master: 0xffffffff
   packet_in_mask_slave: 0xffffffff
@@ -619,7 +619,7 @@ msg:
   flow_removed_mask_slave: 0xffffffff
 ---
 version: 0x04
-type: OFPT_SET_ASYNC
+type: SET_ASYNC
 msg:
   packet_in_mask_master: 0xffffffff
   packet_in_mask_slave: 0xffffffff
@@ -629,7 +629,7 @@ msg:
   flow_removed_mask_slave: 0xffffffff
 ---
 version: 0x04
-type: OFPT_METER_MOD
+type: METER_MOD
 msg:
   command: 0xffff
   flags: 0xffff
@@ -640,22 +640,22 @@ msg:
       burst_size: 0xffffffff
 #---
 # version: 0x05
-# type: OFPT_ROLE_STATUS
+# type: ROLE_STATUS
 # msg:
 # ---
 # version: 0x05
-# type: OFPT_TABLE_STATUS
+# type: TABLE_STATUS
 # msg:
 # ---
 # version: 0x05
-# type: OFPT_REQUEST_FORWARD
+# type: REQUEST_FORWARD
 # msg:
 # ---
 # version: 0x05
-# type: OFPT_BUNDLE_CONTROL
+# type: BUNDLE_CONTROL
 # msg:
 # ---
 # version: 0x05
-# type: OFPT_BUNDLE_ADD_MESSAGE
+# type: BUNDLE_ADD_MESSAGE
 # msg:
 # ---

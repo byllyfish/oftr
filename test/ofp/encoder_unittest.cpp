@@ -17,19 +17,19 @@ static void testEncoderSuccess(const char *yaml, size_t size, const char *hex) {
 }
 
 TEST(encoder, flowMod) {
-  const char *input = "{ type: OFPT_FLOW_MOD, version: 4, xid: 1 }";
+  const char *input = "{ type: FLOW_MOD, version: 4, xid: 1 }";
 
   Encoder encoder{input};
   const std::string &err = encoder.error();
 
   EXPECT_EQ(
       "YAML:1:3: error: missing required key 'msg'\n{ type: "
-      "OFPT_FLOW_MOD, version: 4, xid: 1 }\n  ^\n",
+      "FLOW_MOD, version: 4, xid: 1 }\n  ^\n",
       err);
 }
 
 TEST(encoder, hellov1) {
-  const char *input = "{ type: OFPT_HELLO, version: 1, xid: 1 }";
+  const char *input = "{ type: HELLO, version: 1, xid: 1 }";
 
   Encoder encoder{input};
   const std::string &err = encoder.error();
@@ -41,20 +41,20 @@ TEST(encoder, hellov1) {
 
 TEST(encoder, hellov4err) {
   const char *input =
-      "{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, 4}} }";
+      "{ type: HELLO, version: 4, xid: 1 msg:{versions{1, 4}} }";
 
   Encoder encoder{input};
 
   EXPECT_EQ(
-      "YAML:1:43: error: Found unexpected ':' while scanning a plain "
-      "scalar\n{ type: OFPT_HELLO, version: 4, xid: 1 msg:{versions{1, "
-      "4}} }\n                                          ^\n",
+      "YAML:1:38: error: Found unexpected ':' while scanning a plain "
+      "scalar\n{ type: HELLO, version: 4, xid: 1 msg:{versions{1, "
+      "4}} }\n                                     ^\n",
       encoder.error());
 }
 
 TEST(encoder, hellov4) {
   const char *input =
-      "{ 'type': 'OFPT_HELLO', 'version': 4, 'xid': 99, "
+      "{ 'type': 'HELLO', 'version': 4, 'xid': 99, "
       "'msg':{ 'versions': [1,4] } }";
 
   Encoder encoder{input};
@@ -67,7 +67,7 @@ TEST(encoder, hellov4) {
 
 TEST(encoder, helloNoVersionsV4) {
   const char *input = R"""(
-type: OFPT_HELLO
+type: HELLO
 version: 4
 msg: {}
 )""";
@@ -77,7 +77,7 @@ msg: {}
 
 TEST(encoder, error) {
   const char *input = R"""(
-type: OFPT_ERROR
+type: ERROR
 version: 1
 xid: 98
 msg:
@@ -96,7 +96,7 @@ msg:
 
 TEST(encoder, error2) {
   const char *input = R"""(
-type: OFPT_ERROR
+type: ERROR
 version: 1
 xid: 98
 msg:
@@ -116,7 +116,7 @@ msg:
 
 TEST(encoder, error3) {
   const char *input = R"""(
-type: OFPT_ERROR
+type: ERROR
 version: 3
 xid: 98
 msg:
@@ -135,7 +135,7 @@ msg:
 
 TEST(encoder, echorequest) {
   const char *input = R"""(
-type: OFPT_ECHO_REQUEST
+type: ECHO_REQUEST
 version: 1
 xid: 7
 msg:
@@ -151,7 +151,7 @@ msg:
 
 TEST(encoder, echoreply) {
   const char *input = R"""(
-type: OFPT_ECHO_REPLY
+type: ECHO_REPLY
 version: 1
 xid: 7
 msg:
@@ -167,7 +167,7 @@ msg:
 
 TEST(encoder, experimenterv4) {
   const char *input = R"""(
-type: OFPT_EXPERIMENTER
+type: EXPERIMENTER
 version: 4
 xid: 0x18
 msg:
@@ -182,7 +182,7 @@ msg:
 
 TEST(encoder, experimenterv1) {
   const char *input = R"""(
-type: OFPT_EXPERIMENTER
+type: EXPERIMENTER
 version: 1
 xid: 0x1B
 msg:
@@ -196,7 +196,7 @@ msg:
 
 TEST(encoder, experimenterv2) {
   const char *input = R"""(
-type: OFPT_EXPERIMENTER
+type: EXPERIMENTER
 version: 2
 xid: 0xFF
 msg:
@@ -211,7 +211,7 @@ msg:
 
 TEST(encoder, featuresrequest) {
   const char *input = R"""(
-   type: OFPT_FEATURES_REQUEST
+   type: FEATURES_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
@@ -222,7 +222,7 @@ TEST(encoder, featuresrequest) {
 
 TEST(encoder, getasyncrequestv4) {
   const char *input = R"""(
-   type: OFPT_GET_ASYNC_REQUEST
+   type: GET_ASYNC_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
@@ -233,7 +233,7 @@ TEST(encoder, getasyncrequestv4) {
 
 TEST(encoder, getasyncrequestv1) {
   const char *input = R"""(
-   type: OFPT_GET_ASYNC_REQUEST
+   type: GET_ASYNC_REQUEST
    version: 1
    xid: 0xBF
    msg: {}
@@ -244,7 +244,7 @@ TEST(encoder, getasyncrequestv1) {
 
 TEST(encoder, getconfigrequest) {
   const char *input = R"""(
-   type: OFPT_GET_CONFIG_REQUEST
+   type: GET_CONFIG_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
@@ -255,7 +255,7 @@ TEST(encoder, getconfigrequest) {
 
 TEST(encoder, barrierrequestv4) {
   const char *input = R"""(
-   type: OFPT_BARRIER_REQUEST
+   type: BARRIER_REQUEST
    version: 4
    xid: 0xBF
    msg: {}
@@ -266,7 +266,7 @@ TEST(encoder, barrierrequestv4) {
 
 TEST(encoder, barrierrequestv1) {
   const char *input = R"""(
-   type: OFPT_BARRIER_REQUEST
+   type: BARRIER_REQUEST
    version: 1
    xid: 0xBF
    msg: {}
@@ -277,7 +277,7 @@ TEST(encoder, barrierrequestv1) {
 
 TEST(encoder, barrierreplyv4) {
   const char *input = R"""(
-   type: OFPT_BARRIER_REPLY
+   type: BARRIER_REPLY
    version: 4
    xid: 0xBF
    msg: {}
@@ -288,7 +288,7 @@ TEST(encoder, barrierreplyv4) {
 
 TEST(encoder, barrierreplyv1) {
   const char *input = R"""(
-   type: OFPT_BARRIER_REPLY
+   type: BARRIER_REPLY
    version: 1
    xid: 0xBF
    msg: {}
@@ -299,7 +299,7 @@ TEST(encoder, barrierreplyv1) {
 
 TEST(encoder, featuresreplyv1) {
   const char *input = R"""(
-    type: OFPT_FEATURES_REPLY
+    type: FEATURES_REPLY
     version: 1
     xid: 0xBF
     msg:
@@ -319,7 +319,7 @@ TEST(encoder, featuresreplyv1) {
 
 TEST(encoder, featuresreplyv1ports) {
   const char *input = R"""(
-    type: OFPT_FEATURES_REPLY
+    type: FEATURES_REPLY
     version: 1
     xid: 0xBF
     msg:
@@ -364,7 +364,7 @@ TEST(encoder, featuresreplyv1ports) {
 
 TEST(encoder, featuresreplyv4) {
   const char *input = R"""(
-    type: OFPT_FEATURES_REPLY
+    type: FEATURES_REPLY
     version: 4
     xid: 0xBF
     msg:
@@ -384,7 +384,7 @@ TEST(encoder, featuresreplyv4) {
 
 TEST(encoder, ofmp_flowrequest_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REQUEST
+    type: MULTIPART_REQUEST
     version: 4
     xid: 0x11223344
     msg:
@@ -409,7 +409,7 @@ TEST(encoder, ofmp_flowrequest_v4) {
 
 TEST(encoder, ofmp_flowrequest_v1) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REQUEST
+    type: MULTIPART_REQUEST
     version: 1
     xid: 0x11223344
     msg:
@@ -434,7 +434,7 @@ TEST(encoder, ofmp_flowrequest_v1) {
 
 TEST(encoder, ofmp_aggregaterequest_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REQUEST
+    type: MULTIPART_REQUEST
     version: 4
     xid: 0x11223344
     msg:
@@ -459,7 +459,7 @@ TEST(encoder, ofmp_aggregaterequest_v4) {
 
 TEST(encoder, ofmp_aggregaterequest_v1) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REQUEST
+    type: MULTIPART_REQUEST
     version: 1
     xid: 0x11223344
     msg:
@@ -484,7 +484,7 @@ TEST(encoder, ofmp_aggregaterequest_v1) {
 
 TEST(encoder, ofmp_flowreply_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 4
     xid: 0x11223344
     msg:
@@ -521,7 +521,7 @@ TEST(encoder, ofmp_flowreply_v4) {
 
 TEST(encoder, ofmp_flowreply2_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 4
     xid: 0x11223344
     msg:
@@ -573,7 +573,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
 
 TEST(encoder, ofmp_flowreply3_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 4
     xid: 0x11223344
     msg:
@@ -614,7 +614,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
 
 TEST(encoder, ofmp_flowreply_v1) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 1
     xid: 0x11111111
     msg:
@@ -656,7 +656,7 @@ TEST(encoder, ofmp_flowreply_v1) {
 TEST(encoder, ofmp_flowreply2_v1) {
   // TODO(bfish): incorrect body for version 1?
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 1
     xid: 0x11223344
     msg:
@@ -719,7 +719,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
 
 TEST(encoder, ofmp_aggregatereply_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 4
     xid: 0x11111111
     msg:
@@ -742,7 +742,7 @@ TEST(encoder, ofmp_aggregatereply_v4) {
 
 TEST(encoder, ofmp_aggregatereply_v1) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 1
     xid: 0x11111111
     msg:
@@ -765,7 +765,7 @@ TEST(encoder, ofmp_aggregatereply_v1) {
 
 TEST(encoder, ofmp_tablestats_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 4
     xid: 0x11111111
     msg:
@@ -793,7 +793,7 @@ TEST(encoder, ofmp_tablestats_v4) {
 
 TEST(encoder, ofmp_tablestats_v1) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 1
     xid: 0x11111111
     msg:
@@ -829,7 +829,7 @@ TEST(encoder, ofmp_tablestats_v1) {
 
 TEST(encoder, ofmp_portstats_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 4
     xid: 0x11111111
     msg:
@@ -866,7 +866,7 @@ TEST(encoder, ofmp_portstats_v4) {
 
 TEST(encoder, ofmp_portstats_v1) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 1
     xid: 0x11111111
     msg:
@@ -903,7 +903,7 @@ TEST(encoder, ofmp_portstats_v1) {
 
 TEST(encoder, ofmp_queuestats_v4) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 4
     xid: 0x11111111
     msg:
@@ -930,7 +930,7 @@ TEST(encoder, ofmp_queuestats_v4) {
 
 TEST(encoder, ofmp_queuestats_v1) {
   const char *input = R"""(
-    type: OFPT_MULTIPART_REPLY
+    type: MULTIPART_REPLY
     version: 1
     xid: 0x11111111
     msg:
@@ -957,7 +957,7 @@ TEST(encoder, ofmp_queuestats_v1) {
 
 TEST(encoder, flowmodv4) {
   const char *input = R"""(
-      type:            OFPT_FLOW_MOD
+      type:            FLOW_MOD
       version:         4
       xid:             1
       msg:             
@@ -1000,7 +1000,7 @@ TEST(encoder, flowmodv4) {
 
 TEST(encoder, flowmodv4_2) {
   const char *input = R"""(
-      type:            OFPT_FLOW_MOD
+      type:            FLOW_MOD
       version:         4
       xid:             1
       msg:             
@@ -1043,7 +1043,7 @@ TEST(encoder, flowmodv4_2) {
 
 TEST(encoder, flowmodv4_fail) {
   const char *input = R"""(
-      type:            OFPT_FLOW_MOD
+      type:            FLOW_MOD
       version:         4
       xid:             1
       msg:             
@@ -1082,7 +1082,7 @@ TEST(encoder, flowmodv4_fail) {
 
 TEST(encoder, flowmodv1) {
   const char *input = R"""(
-      type:            OFPT_FLOW_MOD
+      type:            FLOW_MOD
       version:         1
       xid:             1
       msg:             
@@ -1122,7 +1122,7 @@ TEST(encoder, flowmodv1) {
 
 TEST(encoder, flowmodv1_2) {
   const char *input = R"""(
-      type:            OFPT_FLOW_MOD
+      type:            FLOW_MOD
       version:         1
       xid:             1
       msg:             
@@ -1165,7 +1165,7 @@ TEST(encoder, flowmodv1_2) {
 
 TEST(encoder, packetinv1) {
   const char *input = R"""(
-      type:            OFPT_PACKET_IN
+      type:            PACKET_IN
       version:         1
       xid:             2
       msg:             
@@ -1192,7 +1192,7 @@ TEST(encoder, packetinv1) {
 
 TEST(encoder, packetinv4) {
   const char *input = R"""(
-      type:            OFPT_PACKET_IN
+      type:            PACKET_IN
       version:         4
       xid:             1
       msg:             
@@ -1221,7 +1221,7 @@ TEST(encoder, packetinv4) {
 
 TEST(encoder, packetoutv1) {
   const char *input = R"""(
-      type:            OFPT_PACKET_OUT
+      type:            PACKET_OUT
       version:         1
       xid:             1
       msg:             
@@ -1249,7 +1249,7 @@ TEST(encoder, packetoutv1) {
 
 TEST(encoder, packetoutv4) {
   const char *input = R"""(
-      type:            OFPT_PACKET_OUT
+      type:            PACKET_OUT
       version:         4
       xid:             1
       msg:             
@@ -1279,7 +1279,7 @@ TEST(encoder, packetoutv4) {
 TEST(encoder, setconfigv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_SET_CONFIG
+      type: SET_CONFIG
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1296,7 +1296,7 @@ TEST(encoder, setconfigv4) {
 TEST(encoder, portstatusv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_PORT_STATUS
+      type: PORT_STATUS
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1328,7 +1328,7 @@ TEST(encoder, portstatusv4) {
 TEST(encoder, portstatusv1) {
   const char *input = R"""(
       version: 1
-      type: OFPT_PORT_STATUS
+      type: PORT_STATUS
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1359,7 +1359,7 @@ TEST(encoder, portstatusv1) {
 TEST(encoder, groupmodv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_GROUP_MOD
+      type: GROUP_MOD
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1401,7 +1401,7 @@ TEST(encoder, groupmodv4) {
 TEST(encoder, groupmodv2) {
   const char *input = R"""(
       version: 2
-      type: OFPT_GROUP_MOD
+      type: GROUP_MOD
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1443,7 +1443,7 @@ TEST(encoder, groupmodv2) {
 TEST(encoder, portmodv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_PORT_MOD
+      type: PORT_MOD
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1466,7 +1466,7 @@ TEST(encoder, portmodv4) {
 TEST(encoder, portmodv1) {
   const char *input = R"""(
       version: 1
-      type: OFPT_PORT_MOD
+      type: PORT_MOD
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1487,7 +1487,7 @@ TEST(encoder, portmodv1) {
 TEST(encoder, tablemodv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_TABLE_MOD
+      type: TABLE_MOD
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1505,7 +1505,7 @@ TEST(encoder, tablemodv4) {
 TEST(encoder, tablemodv2) {
   const char *input = R"""(
       version: 2
-      type: OFPT_TABLE_MOD
+      type: TABLE_MOD
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1523,7 +1523,7 @@ TEST(encoder, tablemodv2) {
 TEST(encoder, rolerequestv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_ROLE_REQUEST
+      type: ROLE_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1541,7 +1541,7 @@ TEST(encoder, rolerequestv4) {
 TEST(encoder, rolereplyv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_ROLE_REPLY
+      type: ROLE_REPLY
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1559,7 +1559,7 @@ TEST(encoder, rolereplyv4) {
 TEST(encoder, getasyncreplyv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_GET_ASYNC_REPLY
+      type: GET_ASYNC_REPLY
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1581,7 +1581,7 @@ TEST(encoder, getasyncreplyv4) {
 TEST(encoder, queuegetconfigrequestv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_QUEUE_GET_CONFIG_REQUEST
+      type: QUEUE_GET_CONFIG_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1598,7 +1598,7 @@ TEST(encoder, queuegetconfigrequestv4) {
 TEST(encoder, queuegetconfigreplyv4) {
   const char *input = R"""(
     version: 4
-    type: OFPT_QUEUE_GET_CONFIG_REPLY
+    type: QUEUE_GET_CONFIG_REPLY
     datapath_id: 0000-0000-0000-0001
     xid: 0x11111111
     msg:
@@ -1629,7 +1629,7 @@ TEST(encoder, queuegetconfigreplyv4) {
 TEST(encoder, queuegetconfigreplyv4_experimenter) {
   const char *input = R"""(
     version: 4
-    type: OFPT_QUEUE_GET_CONFIG_REPLY
+    type: QUEUE_GET_CONFIG_REPLY
     datapath_id: 0000-0000-0000-0001
     xid: 0x11111111
     msg:
@@ -1665,7 +1665,7 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
 TEST(encoder, getconfigreplyv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_GET_CONFIG_REPLY
+      type: GET_CONFIG_REPLY
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1682,7 +1682,7 @@ TEST(encoder, getconfigreplyv4) {
 TEST(encoder, setasyncv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_SET_ASYNC
+      type: SET_ASYNC
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1704,7 +1704,7 @@ TEST(encoder, setasyncv4) {
 TEST(encoder, flowremovedv4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_FLOW_REMOVED
+      type: FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1735,7 +1735,7 @@ TEST(encoder, flowremovedv4) {
 TEST(encoder, flowremovedv1) {
   const char *input = R"""(
       version: 1
-      type: OFPT_FLOW_REMOVED
+      type: FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1767,7 +1767,7 @@ TEST(encoder, flowremovedv1) {
 TEST(encoder, flowremovedv2) {
   const char *input = R"""(
       version: 2
-      type: OFPT_FLOW_REMOVED
+      type: FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1801,7 +1801,7 @@ TEST(encoder, flowremovedv2) {
 TEST(encoder, flowremovedv3) {
   const char *input = R"""(
       version: 3
-      type: OFPT_FLOW_REMOVED
+      type: FLOW_REMOVED
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1832,7 +1832,7 @@ TEST(encoder, flowremovedv3) {
 TEST(encoder, ofmp_desc_request) {
   const char *input = R"""(
       version: 4
-      type: OFPT_MULTIPART_REQUEST
+      type: MULTIPART_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1850,7 +1850,7 @@ TEST(encoder, ofmp_desc_request) {
 TEST(encoder, ofmp_desc_reply) {
   const char *input = R"""(
       version: 4
-      type: OFPT_MULTIPART_REPLY
+      type: MULTIPART_REPLY
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1904,7 +1904,7 @@ TEST(encoder, ofmp_desc_reply) {
 TEST(encoder, ofmp_desc_reply_error) {
   const char *input = R"""(
       version: 4
-      type: OFPT_MULTIPART_REPLY
+      type: MULTIPART_REPLY
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1931,7 +1931,7 @@ TEST(encoder, ofmp_desc_reply_error) {
 TEST(encoder, ofmp_desc_request_v1) {
   const char *input = R"""(
       version: 1
-      type: OFPT_MULTIPART_REQUEST
+      type: MULTIPART_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -1948,7 +1948,7 @@ TEST(encoder, ofmp_desc_request_v1) {
 TEST(encoder, ofmp_desc_reply_v1) {
   const char *input = R"""(
       version: 1
-      type: OFPT_MULTIPART_REPLY
+      type: MULTIPART_REPLY
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -2002,7 +2002,7 @@ TEST(encoder, ofmp_desc_reply_v1) {
 TEST(encoder, ofmp_portstats_v4_request) {
   const char *input = R"""(
       version: 4
-      type: OFPT_MULTIPART_REQUEST
+      type: MULTIPART_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -2022,7 +2022,7 @@ TEST(encoder, ofmp_portstats_v4_request) {
 TEST(encoder, ofmp_portstats_v1_request) {
   const char *input = R"""(
       version: 1
-      type: OFPT_MULTIPART_REQUEST
+      type: MULTIPART_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -2042,7 +2042,7 @@ TEST(encoder, ofmp_portstats_v1_request) {
 TEST(encoder, ofmp_queue_v4_request) {
   const char *input = R"""(
       version: 4
-      type: OFPT_MULTIPART_REQUEST
+      type: MULTIPART_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -2063,7 +2063,7 @@ TEST(encoder, ofmp_queue_v4_request) {
 TEST(encoder, ofmp_queue_v1_request) {
   const char *input = R"""(
       version: 1
-      type: OFPT_MULTIPART_REQUEST
+      type: MULTIPART_REQUEST
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -2084,7 +2084,7 @@ TEST(encoder, ofmp_queue_v1_request) {
 TEST(encoder, meter_mod_v4) {
   const char *input = R"""(
       version: 4
-      type: OFPT_METER_MOD
+      type: METER_MOD
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
@@ -2114,7 +2114,7 @@ TEST(encoder, meter_mod_v4) {
 TEST(encoder, ofmp_groupfeatures_reply) {
   const char *input = R"""(
       version: 4
-      type: OFPT_MULTIPART_REPLY
+      type: MULTIPART_REPLY
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:

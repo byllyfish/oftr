@@ -47,7 +47,7 @@ TEST(outputjson, hello) {
   Decoder decode{&msg, true};
 
   const char *expected =
-      "{\"type\":\"OFPT_HELLO\",\"xid\":1,\"version\":"
+      "{\"type\":\"HELLO\",\"xid\":1,\"version\":"
       "4,\"msg\":{\"versions\":[1,2,3,4]}}";
   EXPECT_EQ(expected, decode.result().str());
 }
@@ -72,7 +72,7 @@ TEST(outputjson, flowmod) {
   Decoder decodeJson{&msg, true};
 
   const char *expected =
-      "{\"type\":\"OFPT_FLOW_MOD\",\"xid\":1,\"version\":4,\"msg\":{"
+      "{\"type\":\"FLOW_MOD\",\"xid\":1,\"version\":4,\"msg\":{"
       "\"cookie\":0,\"cookie_mask\":0,\"table_id\":0,\"command\":\"ADD\","
       "\"idle_"
       "timeout\":0,\"hard_timeout\":0,\"priority\":0,\"buffer_id\":0,\"out_"

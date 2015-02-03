@@ -175,7 +175,7 @@ class OFPDocument(object):
         # Return type of message. If it's a multipart message, include the 
         # subtype.
         type = self.doc['type']
-        if type == 'OFPT_MULTIPART_REQUEST' or type == 'OFPT_MULTIPART_REPLY':
+        if type == 'MULTIPART_REQUEST' or type == 'MULTIPART_REPLY':
             type = '%s.%s' % (type, self.doc['msg']['type'])
         type = '%s.v%d' % (type, self.doc['version'])
         return type

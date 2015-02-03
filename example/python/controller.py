@@ -17,7 +17,7 @@ else:
 
 def setConfig(datapath, length):
     return {
-      'type': 'OFPT_SET_CONFIG',
+      'type': 'SET_CONFIG',
       'datapath_id': datapath,
       'msg': {
         'flags': [ 'FRAG_NORMAL' ],
@@ -27,7 +27,7 @@ def setConfig(datapath, length):
 
 def clearFlows(datapath):
     return {
-      'type': 'OFPT_FLOW_MOD',
+      'type': 'FLOW_MOD',
       'datapath_id': datapath,
       'msg': {
         'cookie':       0,
@@ -48,7 +48,7 @@ def clearFlows(datapath):
 
 def barrierRequest(datapath):
     return {
-      'type': 'OFPT_BARRIER_REQUEST',
+      'type': 'BARRIER_REQUEST',
       'datapath_id': datapath
     }
 
@@ -58,7 +58,7 @@ def isMulticast(enetAddr):
 # Tell switch to send the packet out all ports.
 def flood(event):
     return {
-      'type': 'OFPT_PACKET_OUT',
+      'type': 'PACKET_OUT',
       'datapath_id': event.datapath_id,
       'msg': {
         'buffer_id': event.msg.buffer_id,
@@ -76,7 +76,7 @@ def flood(event):
 # Tell the switch to drop the packet.
 def drop(event):
     return {
-      'type': 'OFPT_PACKET_OUT',
+      'type': 'PACKET_OUT',
       'datapath_id': event.datapath_id,
       'msg': {
         'buffer_id': event.msg.buffer_id,
@@ -88,7 +88,7 @@ def drop(event):
 
 def addFlow(event, ethSource, ethDest, outPort):
     return {
-      'type': 'OFPT_FLOW_MOD',
+      'type': 'FLOW_MOD',
       'datapath_id': event.datapath_id,
       'msg': {
         'cookie':          0,
@@ -163,5 +163,5 @@ if __name__ == '__main__':
             ofp.send(setConfig(event.params.datapath_id, 14))
             ofp.send(clearFlows(event.params.datapath_id))
             ofp.send(barrierRequest(event.params.datapath_id))
-        elif event.method == 'ofp.message' and event.params.type == 'OFPT_PACKET_IN':
+        elif event.method == 'ofp.message' and event.params.type == 'PACKET_IN':
             handlePacketIn(ofp, event.params)
