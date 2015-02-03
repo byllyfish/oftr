@@ -222,7 +222,7 @@ TEST(decoder, ofmp_flowrequest_v4) {
       "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             "
       "0x11223344\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    "
+      "FLOW\n  flags:           0x0000\n  body:            \n    "
       "table_id:        0x01\n    out_port:        0x00000002\n    out_group:  "
       "   "
       "  0x00000003\n    cookie:          0x0000000000000004\n    cookie_mask: "
@@ -238,7 +238,7 @@ TEST(decoder, ofmp_flowrequest_v1) {
       "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             "
       "0x11223344\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    "
+      "FLOW\n  flags:           0x0000\n  body:            \n    "
       "table_id:        0x11\n    out_port:        0x00002222\n    out_group:  "
       "  "
       "   0x00000000\n    cookie:          0x0000000000000000\n    "
@@ -254,7 +254,7 @@ TEST(decoder, ofmp_aggregaterequest_v4) {
       "7800000000",
       "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
       "    0x11223344\nversion:         0x04\nmsg:             \n  "
-      "type:            OFPMP_AGGREGATE\n  flags:           "
+      "type:            AGGREGATE\n  flags:           "
       "0x0000\n  body:            \n    table_id:        0x11\n    "
       "out_port:        0x22222222\n    out_group:       "
       "0x33333333\n    cookie:          0x4444444444444444\n    "
@@ -271,7 +271,7 @@ TEST(decoder, ofmp_aggregaterequest_v1) {
       "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             "
       "0x11223344\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_AGGREGATE\n  flags:           0x0000\n  body:            \n    "
+      "AGGREGATE\n  flags:           0x0000\n  body:            \n    "
       "table_id:        0x11\n    out_port:        0x00002222\n    out_group:  "
       "  "
       "   0x00000000\n    cookie:          0x0000000000000000\n    "
@@ -288,7 +288,7 @@ TEST(decoder, ofmp_flowreply_v4) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    - "
+      "FLOW\n  flags:           0x0000\n  body:            \n    - "
       "table_id:        0x01\n      duration_sec:    0x00000002\n      "
       "duration_nsec:   0x00000003\n      priority:        0x0004\n      "
       "idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:    "
@@ -312,7 +312,7 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    - "
+      "FLOW\n  flags:           0x0000\n  body:            \n    - "
       "table_id:        0x01\n      duration_sec:    0x00000002\n      "
       "duration_nsec:   0x00000003\n      priority:        0x0004\n      "
       "idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:    "
@@ -347,7 +347,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_FLOW\n  flags:           0x2222\n  body:            \n    - "
+      "FLOW\n  flags:           0x2222\n  body:            \n    - "
       "table_id:        0x33\n      duration_sec:    0x44444444\n      "
       "duration_nsec:   0x55555555\n      priority:        0x6666\n      "
       "idle_timeout:    0x7777\n      hard_timeout:    0x8888\n      flags:    "
@@ -372,7 +372,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11223344\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_FLOW\n  flags:           0x0000\n  body:            \n    - "
+      "FLOW\n  flags:           0x0000\n  body:            \n    - "
       "table_id:        0x01\n      duration_sec:    0x00000002\n      "
       "duration_nsec:   0x00000003\n      priority:        0x0004\n      "
       "idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:    "
@@ -408,7 +408,7 @@ TEST(decoder, ofmp_aggregatereply_v4) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_AGGREGATE\n  flags:           0x2222\n  body:            \n    "
+      "AGGREGATE\n  flags:           0x2222\n  body:            \n    "
       "packet_count:    0x3333333333333330\n    byte_count:      "
       "0x4444444444444440\n    flow_count:      0x55555550\n...\n");
 }
@@ -420,7 +420,7 @@ TEST(decoder, ofmp_aggregatereply_v1) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_AGGREGATE\n  flags:           0x2222\n  body:            \n    "
+      "AGGREGATE\n  flags:           0x2222\n  body:            \n    "
       "packet_count:    0x3333333333333330\n    byte_count:      "
       "0x4444444444444440\n    flow_count:      0x55555550\n...\n");
 }
@@ -432,7 +432,7 @@ TEST(decoder, ofmp_tablestats_v4) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_TABLE\n  flags:           0x2222\n  body:            \n    - "
+      "TABLE\n  flags:           0x2222\n  body:            \n    - "
       "table_id:        0x33\n      name:            ''\n      wildcards:      "
       " "
       "0x00000000\n      max_entries:     0x00000000\n      active_count:    "
@@ -453,7 +453,7 @@ TEST(decoder, ofmp_tablestats_v1) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_TABLE\n  flags:           0x2222\n  body:            \n    - "
+      "TABLE\n  flags:           0x2222\n  body:            \n    - "
       "table_id:        0x33\n      name:            Table 1\n      wildcards: "
       "  "
       "    0x44444440\n      max_entries:     0x55555550\n      active_count:  "
@@ -474,7 +474,7 @@ TEST(decoder, ofmp_portstats_v4) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
+      "PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
       "port_no:         0x33333330\n      rx_packets:      "
       "0x4444444444444440\n      tx_packets:      0x5555555555555550\n      "
       "rx_bytes:        0x6666666666666660\n      tx_bytes:        "
@@ -496,7 +496,7 @@ TEST(decoder, ofmp_portstats_v1) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
+      "PORT_STATS\n  flags:           0x2222\n  body:            \n    - "
       "port_no:         0x00003330\n      rx_packets:      "
       "0x4444444444444440\n      tx_packets:      0x5555555555555550\n      "
       "rx_bytes:        0x6666666666666660\n      tx_bytes:        "
@@ -516,7 +516,7 @@ TEST(decoder, ofmp_queuestats_v4) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_QUEUE\n  flags:           0x2222\n  body:            \n    - "
+      "QUEUE\n  flags:           0x2222\n  body:            \n    - "
       "port_no:         0x33333330\n      queue_id:        0x44444440\n      "
       "tx_packets:      0x6666666666666660\n      tx_bytes:        "
       "0x5555555555555550\n      tx_errors:       0x7777777777777770\n      "
@@ -530,7 +530,7 @@ TEST(decoder, ofmp_queuestats_v1) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "OFPMP_QUEUE\n  flags:           0x2222\n  body:            \n    - "
+      "QUEUE\n  flags:           0x2222\n  body:            \n    - "
       "port_no:         0x00003330\n      queue_id:        0x44444440\n      "
       "tx_packets:      0x6666666666666660\n      tx_bytes:        "
       "0x5555555555555550\n      tx_errors:       0x7777777777777770\n      "
@@ -1024,7 +1024,7 @@ TEST(decoder, ofmp_desc_request_v4) {
       "04120010111111110000000000000000",
       "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
       "    0x11111111\nversion:         0x04\nmsg:             \n  "
-      "type:            OFPMP_DESC\n  flags:           "
+      "type:            DESC\n  flags:           "
       "0x0000\n...\n");
 }
 
@@ -1032,7 +1032,7 @@ TEST(decoder, ofmp_desc_request_v1) {
   testDecodeEncode("0110000C1111111100000000",
                    "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x01\nmsg:             \n "
-                   " type:            OFPMP_DESC\n  flags:           "
+                   " type:            DESC\n  flags:           "
                    "0x0000\n...\n");
 }
 
@@ -1071,7 +1071,7 @@ TEST(decoder, ofmp_desc_reply_v4) {
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "OFPMP_DESC\n  flags:           0x0000\n  body:            \n    "
+      "DESC\n  flags:           0x0000\n  body:            \n    "
       "mfr_desc:        ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789\n    hw_desc:     "
       "    ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789\n    sw_desc:         "
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789\n    serial_num:      "
@@ -1113,7 +1113,7 @@ TEST(decoder, ofmp_desc_reply_v1) {
       "000000000000000000000000000000000000000000000000",
       "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
-      " OFPMP_DESC\n  flags:           0x0000\n  body:            \n    "
+      " DESC\n  flags:           0x0000\n  body:            \n    "
       "mfr_desc:        ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789\n    hw_desc:     "
       "    ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789\n    sw_desc:         "
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789\n    serial_num:      "
@@ -1125,7 +1125,7 @@ TEST(decoder, ofmp_portstats_v4_request) {
   testDecodeEncode("041200181111111100040000000000002222222200000000",
                    "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x04\nmsg:             \n "
-                   " type:            OFPMP_PORT_STATS\n  flags:           "
+                   " type:            PORT_STATS\n  flags:           "
                    "0x0000\n  body:            \n    port_no:         "
                    "0x22222222\n...\n");
 }
@@ -1134,7 +1134,7 @@ TEST(decoder, ofmp_portstats_v1_request) {
   testDecodeEncode("0110001411111111000400002222000000000000",
                    "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x01\nmsg:             \n "
-                   " type:            OFPMP_PORT_STATS\n  flags:           "
+                   " type:            PORT_STATS\n  flags:           "
                    "0x0000\n  body:            \n    port_no:         "
                    "0x00002222\n...\n");
 }
@@ -1143,7 +1143,7 @@ TEST(decoder, ofmp_queuestats_v4_request) {
   testDecodeEncode("041200181111111100050000000000002222222233333333",
                    "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x04\nmsg:             \n "
-                   " type:            OFPMP_QUEUE\n  flags:           0x0000\n "
+                   " type:            QUEUE\n  flags:           0x0000\n "
                    " body:            \n    port_no:         0x22222222\n    "
                    "queue_id:        0x33333333\n...\n");
 }
@@ -1152,7 +1152,7 @@ TEST(decoder, ofmp_queuestats_v1_request) {
   testDecodeEncode("0110001411111111000500002222000033333333",
                    "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:         "
                    "    0x11111111\nversion:         0x01\nmsg:             \n "
-                   " type:            OFPMP_QUEUE\n  flags:           0x0000\n "
+                   " type:            QUEUE\n  flags:           0x0000\n "
                    " body:            \n    port_no:         0x00002222\n    "
                    "queue_id:        0x33333333\n...\n");
 }
@@ -1171,9 +1171,9 @@ TEST(decoder, ofp_metermod_v4) {
 }
 
 TEST(decoder, ofp_mpaggregatestatsrequest_v1) {
-  testDecodeEncode("0110003800000018 00020000 003820ff0000000000000000000000000000 00000000000000000000000000000000 0000000000000800ffff", "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             0x00000018\nversion:         0x01\nmsg:             \n  type:            OFPMP_AGGREGATE\n  flags:           0x0000\n  body:            \n    table_id:        0x08\n    out_port:        ANY\n    out_group:       0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:     0x0000000000000000\n    match:           \n...\n");
+  testDecodeEncode("0110003800000018 00020000 003820ff0000000000000000000000000000 00000000000000000000000000000000 0000000000000800ffff", "---\ntype:            OFPT_MULTIPART_REQUEST\nxid:             0x00000018\nversion:         0x01\nmsg:             \n  type:            AGGREGATE\n  flags:           0x0000\n  body:            \n    table_id:        0x08\n    out_port:        ANY\n    out_group:       0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:     0x0000000000000000\n    match:           \n...\n");
 }
 
 TEST(decoder, ofmp_groupfeatures_reply) {
-  testDecodeEncode("041300381111111100080000000000001111111122222222333333334444444455555555666666663777777708888888199999992AAAAAAA", "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  type:            OFPMP_GROUP_FEATURES\n  flags:           0x0000\n  body:            \n    types:           0x11111111\n    capabilities:    0x22222222\n    max_groups_all:  0x33333333\n    max_groups_sel:  0x44444444\n    max_groups_ind:  0x55555555\n    max_groups_ff:   0x66666666\n    actions_all:     [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_ECN, SET_TP_SRC, SET_TP_DST, COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, DEC_NW_TTL, SET_FIELD, PUSH_PBB, '0x30000000' ]\n    actions_sel:     [ SET_DL_SRC, SET_NW_TOS, COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, SET_NW_TTL, POP_PBB ]\n    actions_ind:     [ OUTPUT, SET_DL_SRC, SET_DL_DST, SET_NW_TOS, SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_MPLS, POP_MPLS, SET_NW_TTL, DEC_NW_TTL, POP_PBB, '0x10000000' ]\n    actions_ff:      [ SET_VLAN_VID, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_SRC, COPY_TTL_OUT, SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' ]\n...\n");
+  testDecodeEncode("041300381111111100080000000000001111111122222222333333334444444455555555666666663777777708888888199999992AAAAAAA", "---\ntype:            OFPT_MULTIPART_REPLY\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  type:            GROUP_FEATURES\n  flags:           0x0000\n  body:            \n    types:           0x11111111\n    capabilities:    0x22222222\n    max_groups_all:  0x33333333\n    max_groups_sel:  0x44444444\n    max_groups_ind:  0x55555555\n    max_groups_ff:   0x66666666\n    actions_all:     [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_ECN, SET_TP_SRC, SET_TP_DST, COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, DEC_NW_TTL, SET_FIELD, PUSH_PBB, '0x30000000' ]\n    actions_sel:     [ SET_DL_SRC, SET_NW_TOS, COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, SET_NW_TTL, POP_PBB ]\n    actions_ind:     [ OUTPUT, SET_DL_SRC, SET_DL_DST, SET_NW_TOS, SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_MPLS, POP_MPLS, SET_NW_TTL, DEC_NW_TTL, POP_PBB, '0x10000000' ]\n    actions_ff:      [ SET_VLAN_VID, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_SRC, COPY_TTL_OUT, SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' ]\n...\n");
 }

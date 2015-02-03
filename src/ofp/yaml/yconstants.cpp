@@ -44,20 +44,20 @@ static const llvm::StringRef sTypes[] = {
 };
 
 static const llvm::StringRef sMultipartTypes[] = {
-    "OFPMP_DESC",
-    "OFPMP_FLOW",
-    "OFPMP_AGGREGATE",
-    "OFPMP_TABLE",
-    "OFPMP_PORT_STATS",
-    "OFPMP_QUEUE",
-    "OFPMP_GROUP",
-    "OFPMP_GROUP_DESC",
-    "OFPMP_GROUP_FEATURES",
-    "OFPMP_METER",
-    "OFPMP_METER_CONFIG",
-    "OFPMP_METER_FEATURES",
-    "OFPMP_TABLE_FEATURES",
-    "OFPMP_PORT_DESC",
+    "DESC",
+    "FLOW",
+    "AGGREGATE",
+    "TABLE",
+    "PORT_STATS",
+    "QUEUE",
+    "GROUP",
+    "GROUP_DESC",
+    "GROUP_FEATURES",
+    "METER",
+    "METER_CONFIG",
+    "METER_FEATURES",
+    "TABLE_FEATURES",
+    "PORT_DESC",
 };
 
 static const llvm::StringRef sInstructionTypes[] = {
@@ -133,10 +133,10 @@ EnumConverter<OFPType>
     llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
 EnumConverter<OFPMultipartType>
-    llvm::yaml::ScalarTraits<OFPMultipartType>::converter{sMultipartTypes, "OFPMP_EXPERIMENTER"};
+    llvm::yaml::ScalarTraits<OFPMultipartType>::converter{sMultipartTypes, "EXPERIMENTER"};
 
 EnumConverter<OFPInstructionType>
-    llvm::yaml::ScalarTraits<OFPInstructionType>::converter{sInstructionTypes, "OFPIT_EXPERIMENTER"};
+    llvm::yaml::ScalarTraits<OFPInstructionType>::converter{sInstructionTypes, "EXPERIMENTER"};
 
 EnumConverter<OFPMeterBandType>
     llvm::yaml::ScalarTraits<OFPMeterBandType>::converter{sMeterBandTypes, "EXPERIMENTER"};

@@ -388,7 +388,7 @@ TEST(encoder, ofmp_flowrequest_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: OFPMP_FLOW
+      type: FLOW
       flags: 0
       body:
           table_id: 1
@@ -413,7 +413,7 @@ TEST(encoder, ofmp_flowrequest_v1) {
     version: 1
     xid: 0x11223344
     msg:
-      type: OFPMP_FLOW
+      type: FLOW
       flags: 0
       body:
           table_id: 0x11
@@ -438,7 +438,7 @@ TEST(encoder, ofmp_aggregaterequest_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: OFPMP_AGGREGATE
+      type: AGGREGATE
       flags: 0
       body:
           table_id: 0x11
@@ -463,7 +463,7 @@ TEST(encoder, ofmp_aggregaterequest_v1) {
     version: 1
     xid: 0x11223344
     msg:
-      type: OFPMP_AGGREGATE
+      type: AGGREGATE
       flags: 0
       body:
           table_id: 0x11
@@ -488,7 +488,7 @@ TEST(encoder, ofmp_flowreply_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: OFPMP_FLOW
+      type: FLOW
       flags: 0
       body:
          - table_id: 1
@@ -525,7 +525,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: OFPMP_FLOW
+      type: FLOW
       flags: 0
       body:
          - table_id: 1
@@ -577,7 +577,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: OFPMP_FLOW
+      type: FLOW
       flags: 0
       body:
          - table_id: 1
@@ -618,7 +618,7 @@ TEST(encoder, ofmp_flowreply_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: OFPMP_FLOW
+      type: FLOW
       flags: 0x2222
       body:
          - table_id: 0x33
@@ -660,7 +660,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
     version: 1
     xid: 0x11223344
     msg:
-      type: OFPMP_FLOW
+      type: FLOW
       flags: 0
       body:
          - table_id: 1
@@ -723,7 +723,7 @@ TEST(encoder, ofmp_aggregatereply_v4) {
     version: 4
     xid: 0x11111111
     msg:
-      type: OFPMP_AGGREGATE
+      type: AGGREGATE
       flags: 0x2222
       body:
         packet_count: 0x3333333333333330
@@ -746,7 +746,7 @@ TEST(encoder, ofmp_aggregatereply_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: OFPMP_AGGREGATE
+      type: AGGREGATE
       flags: 0x2222
       body:
         packet_count: 0x3333333333333330
@@ -769,7 +769,7 @@ TEST(encoder, ofmp_tablestats_v4) {
     version: 4
     xid: 0x11111111
     msg:
-      type: OFPMP_TABLE
+      type: TABLE
       flags: 0x2222
       body:
         - table_id: 0x33
@@ -797,7 +797,7 @@ TEST(encoder, ofmp_tablestats_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: OFPMP_TABLE
+      type: TABLE
       flags: 0x2222
       body:
         - table_id: 0x33
@@ -833,7 +833,7 @@ TEST(encoder, ofmp_portstats_v4) {
     version: 4
     xid: 0x11111111
     msg:
-      type: OFPMP_PORT_STATS
+      type: PORT_STATS
       flags: 0x2222
       body:
         - port_no: 0x33333330
@@ -870,7 +870,7 @@ TEST(encoder, ofmp_portstats_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: OFPMP_PORT_STATS
+      type: PORT_STATS
       flags: 0x2222
       body:
         - port_no: 0x33333330
@@ -907,7 +907,7 @@ TEST(encoder, ofmp_queuestats_v4) {
     version: 4
     xid: 0x11111111
     msg:
-      type: OFPMP_QUEUE
+      type: QUEUE
       flags: 0x2222
       body:
         - port_no: 0x33333330
@@ -934,7 +934,7 @@ TEST(encoder, ofmp_queuestats_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: OFPMP_QUEUE
+      type: QUEUE
       flags: 0x2222
       body:
         - port_no: 0x33333330
@@ -1836,7 +1836,7 @@ TEST(encoder, ofmp_desc_request) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_DESC
+        type: DESC
         flags: 0
       )""";
 
@@ -1854,7 +1854,7 @@ TEST(encoder, ofmp_desc_reply) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_DESC
+        type: DESC
         flags: 0
         body:
           mfr_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
@@ -1908,7 +1908,7 @@ TEST(encoder, ofmp_desc_reply_error) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_DESC
+        type: DESC
         flags: 0
         body:
           mfr_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
@@ -1935,7 +1935,7 @@ TEST(encoder, ofmp_desc_request_v1) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_DESC
+        type: DESC
         flags: 0
       )""";
 
@@ -1952,7 +1952,7 @@ TEST(encoder, ofmp_desc_reply_v1) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_DESC
+        type: DESC
         flags: 0
         body:
           mfr_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
@@ -2006,7 +2006,7 @@ TEST(encoder, ofmp_portstats_v4_request) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_PORT_STATS
+        type: PORT_STATS
         flags: 0
         body:
           port_no: 0x22222222
@@ -2026,7 +2026,7 @@ TEST(encoder, ofmp_portstats_v1_request) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_PORT_STATS
+        type: PORT_STATS
         flags: 0
         body:
           port_no: 0x22222222
@@ -2046,7 +2046,7 @@ TEST(encoder, ofmp_queue_v4_request) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_QUEUE
+        type: QUEUE
         flags: 0
         body:
           port_no: 0x22222222
@@ -2067,7 +2067,7 @@ TEST(encoder, ofmp_queue_v1_request) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_QUEUE
+        type: QUEUE
         flags: 0
         body:
           port_no: 0x22222222
@@ -2118,7 +2118,7 @@ TEST(encoder, ofmp_groupfeatures_reply) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        type: OFPMP_GROUP_FEATURES
+        type: GROUP_FEATURES
         flags: 0
         body:
           types: 0x11111111

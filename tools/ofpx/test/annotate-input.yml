@@ -191,14 +191,14 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_DESC
+  type: DESC
   flags: 0xffff
   #body:
 ---
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_DESC
+  type: DESC
   flags: 0xffff
   body:
     mfr_desc: '...............................................................................................................................................................................................................................................................'
@@ -210,7 +210,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_FLOW
+  type: FLOW
   flags: 0xffff
   body:
     table_id: ALL
@@ -226,7 +226,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_FLOW
+  type: FLOW
   flags: 0xffff
   body:
     - table_id: 0xff
@@ -253,7 +253,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_AGGREGATE
+  type: AGGREGATE
   flags: 0xffff
   body:
     table_id: ALL
@@ -269,7 +269,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_AGGREGATE
+  type: AGGREGATE
   flags: 0xffff
   body:
     packet_count: 0xffffffffffffffff
@@ -279,14 +279,14 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_TABLE
+  type: TABLE
   flags: 0xffff
   #body:
 ---
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_TABLE
+  type: TABLE
   flags: 0xffff
   body:
     - table_id: 0xff
@@ -297,7 +297,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_PORT_STATS
+  type: PORT_STATS
   flags: 0xffff
   body:
     port_no: 0xffffffff
@@ -305,7 +305,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_PORT_STATS
+  type: PORT_STATS
   flags: 0xffff
   body:
     - port_no: 0xffffffff
@@ -327,7 +327,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_QUEUE
+  type: QUEUE
   flags: 0xffff
   body:
     port_no: 0xffffffff
@@ -336,7 +336,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_QUEUE
+  type: QUEUE
   flags: 0xffff
   body:
     - port_no: 0xffffffff
@@ -350,7 +350,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_GROUP
+  type: GROUP
   flags: 0xffff
   body:
     group_id: 0xffffffff
@@ -358,7 +358,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_GROUP
+  type: GROUP
   flags: 0xffff
   body:
     - group_id: 0xffffffff
@@ -374,14 +374,14 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_GROUP_FEATURES
+  type: GROUP_FEATURES
   flags: 0xffff
   #body:
 ---
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_GROUP_FEATURES
+  type: GROUP_FEATURES
   flags: 0xffff
   body:
     types: 0xffffffff
@@ -398,7 +398,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_METER
+  type: METER
   flags: 0xffff
   body:
     meter_id: 0xffffffff
@@ -406,7 +406,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_METER
+  type: METER
   flags: 0xffff
   body:
     - meter_id: 0xffffffff
@@ -422,7 +422,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_METER_CONFIG
+  type: METER_CONFIG
   flags: 0xffff
   body:
     meter_id: 0xffffffff
@@ -430,7 +430,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_METER_CONFIG
+  type: METER_CONFIG
   flags: 0xffff
   body:
     - flags: 0xffff
@@ -443,14 +443,14 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_METER_FEATURES
+  type: METER_FEATURES
   flags: 0xffff
   #body:
 ---
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_METER_FEATURES
+  type: METER_FEATURES
   flags: 0xffff
   body:
     max_meter: 0xffffffff
@@ -462,7 +462,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_TABLE_FEATURES
+  type: TABLE_FEATURES
   flags: 0xffff
   body:
     - table_id: 0xff
@@ -504,7 +504,7 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_TABLE_FEATURES
+  type: TABLE_FEATURES
   flags: 0xffff
   body:
     - table_id: 0xff
@@ -546,14 +546,14 @@ msg:
 version: 0x04
 type: OFPT_MULTIPART_REQUEST
 msg:
-  type: OFPMP_PORT_DESC
+  type: PORT_DESC
   flags: 0xffff
   #body:
 ---
 version: 0x04
 type: OFPT_MULTIPART_REPLY
 msg:
-  type: OFPMP_PORT_DESC
+  type: PORT_DESC
   flags: 0xffff
   body:
     - port_no: 0xffffffff
