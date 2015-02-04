@@ -157,7 +157,7 @@ msg:
       priority:        0xFFFF
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000000
       byte_count:      0x0000000000000000
@@ -169,7 +169,7 @@ msg:
       priority:        0xFFFE
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000000
       byte_count:      0x0000000000000000
@@ -188,7 +188,7 @@ msg:
       priority:        0x007B
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000003
       byte_count:      0x00000000000000EE
@@ -206,7 +206,7 @@ msg:
       priority:        0x0000
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000001
       byte_count:      0x0000000000000062
@@ -966,7 +966,7 @@ msg:
       priority:        0xFFFF
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000000
       byte_count:      0x0000000000000000
@@ -978,7 +978,7 @@ msg:
       priority:        0xFFFE
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000000
       byte_count:      0x0000000000000000
@@ -997,7 +997,7 @@ msg:
       priority:        0x007B
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000003
       byte_count:      0x00000000000000EE
@@ -1015,7 +1015,7 @@ msg:
       priority:        0x0000
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000001
       byte_count:      0x0000000000000062
@@ -3778,7 +3778,7 @@ msg:
       priority:        0xFFFF
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000000
       byte_count:      0x0000000000000000
@@ -3790,7 +3790,7 @@ msg:
       priority:        0xFFFE
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000000
       byte_count:      0x0000000000000000
@@ -3809,7 +3809,7 @@ msg:
       priority:        0x007B
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000003
       byte_count:      0x00000000000000EE
@@ -3827,7 +3827,7 @@ msg:
       priority:        0x0000
       idle_timeout:    0x0000
       hard_timeout:    0x0000
-      flags:           0x0000
+      flags:           [  ]
       cookie:          0x0000000000000000
       packet_count:    0x0000000000000001
       byte_count:      0x0000000000000062

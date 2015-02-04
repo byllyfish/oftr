@@ -6,6 +6,8 @@
 
 using namespace ofp;
 
+const OFPFlowModFlags kFakeFlags = static_cast<OFPFlowModFlags>(0x7777);
+
 TEST(mpflowstatsreply, test1_v4) {
   MPFlowStatsReplyBuilder reply;
 
@@ -15,7 +17,7 @@ TEST(mpflowstatsreply, test1_v4) {
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);
-  reply.setFlags(0x7777);
+  reply.setFlags(kFakeFlags);
   reply.setCookie(0x8888888888888888);
   reply.setPacketCount(0x9999999999999999);
   reply.setByteCount(0xAAAAAAAAAAAAAAAA);
@@ -39,7 +41,7 @@ TEST(mpflowstatsreply, test1_v1) {
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);
-  reply.setFlags(0x7777);
+  reply.setFlags(kFakeFlags);
   reply.setCookie(0x8888888888888888);
   reply.setPacketCount(0x9999999999999999);
   reply.setByteCount(0xAAAAAAAAAAAAAAAA);
@@ -72,7 +74,7 @@ TEST(mpflowstatsreply, test2_v4) {
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);
-  reply.setFlags(0x7777);
+  reply.setFlags(kFakeFlags);
   reply.setCookie(0x8888888888888888);
   reply.setPacketCount(0x9999999999999999);
   reply.setByteCount(0xAAAAAAAAAAAAAAAA);
@@ -108,7 +110,7 @@ TEST(mpflowstatsreply, test2_v1) {
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);
-  reply.setFlags(0x7777);
+  reply.setFlags(kFakeFlags);
   reply.setCookie(0x8888888888888888);
   reply.setPacketCount(0x9999999999999999);
   reply.setByteCount(0xAAAAAAAAAAAAAAAA);

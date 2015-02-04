@@ -235,7 +235,7 @@ msg:
       priority: 0xffff
       idle_timeout: 0xffff
       hard_timeout: 0xffff
-      flags: 0xffff
+      flags: [ SEND_FLOW_REM ]
       cookie: 0xffffffffffffffff
       packet_count: 0xffffffffffffffff
       byte_count: 0xffffffffffffffff

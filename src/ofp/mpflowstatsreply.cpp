@@ -70,7 +70,7 @@ void MPFlowStatsReplyBuilder::writeV1(Writable *channel) {
   size_t msgLen = 88 + actions.writeSize(channel);
 
   msg_.length_ = UInt16_narrow_cast(msgLen);
-  msg_.flags_ = 0;
+  msg_.flags_ = OFPFF_NONE;
 
   channel->write(&msg_, 4);
   channel->write(&origMatch, sizeof(origMatch));

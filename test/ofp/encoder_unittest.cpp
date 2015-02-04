@@ -497,7 +497,7 @@ TEST(encoder, ofmp_flowreply_v4) {
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
-           flags: 7
+           flags: [ 7 ]
            cookie: 8
            packet_count: 9
            byte_count: 10
@@ -534,7 +534,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
-           flags: 7
+           flags: [ 7 ]
            cookie: 8
            packet_count: 9
            byte_count: 10
@@ -548,7 +548,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
-           flags: 0x77
+           flags: [ 0x77 ]
            cookie: 0x88
            packet_count: 0x9999999999999999
            byte_count:   0xAAAAAAAAAAAAAAAA
@@ -586,7 +586,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
-           flags: 7
+           flags: [ 7 ]
            cookie: 8
            packet_count: 9
            byte_count: 10
@@ -627,7 +627,7 @@ TEST(encoder, ofmp_flowreply_v1) {
            priority: 0x6666
            idle_timeout: 0x7777
            hard_timeout: 0x8888
-           flags: 0x9999
+           flags: [ 0x9999 ]
            cookie: 0xAAAAAAAAAAAAAAAA
            packet_count: 0xBBBBBBBBBBBBBBBB
            byte_count: 0xCCCCCCCCCCCCCCCC
@@ -669,7 +669,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
-           flags: 7
+           flags: [ 7 ]
            cookie: 8
            packet_count: 9
            byte_count: 10
@@ -688,7 +688,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
-           flags: 0x77
+           flags: [ 0x77 ]
            cookie: 0x88
            packet_count: 0x9999999999999999
            byte_count:   0xAAAAAAAAAAAAAAAA
