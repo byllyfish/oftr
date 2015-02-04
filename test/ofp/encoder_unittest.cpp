@@ -389,7 +389,7 @@ TEST(encoder, ofmp_flowrequest_v4) {
     xid: 0x11223344
     msg:
       type: FLOW
-      flags: 0
+      flags: []
       body:
           table_id: 1
           out_port: 2
@@ -414,7 +414,7 @@ TEST(encoder, ofmp_flowrequest_v1) {
     xid: 0x11223344
     msg:
       type: FLOW
-      flags: 0
+      flags: []
       body:
           table_id: 0x11
           out_port: 0x22222222
@@ -439,7 +439,7 @@ TEST(encoder, ofmp_aggregaterequest_v4) {
     xid: 0x11223344
     msg:
       type: AGGREGATE
-      flags: 0
+      flags: []
       body:
           table_id: 0x11
           out_port: 0x22222222
@@ -464,7 +464,7 @@ TEST(encoder, ofmp_aggregaterequest_v1) {
     xid: 0x11223344
     msg:
       type: AGGREGATE
-      flags: 0
+      flags: []
       body:
           table_id: 0x11
           out_port: 0x22222222
@@ -489,7 +489,7 @@ TEST(encoder, ofmp_flowreply_v4) {
     xid: 0x11223344
     msg:
       type: FLOW
-      flags: 0
+      flags: []
       body:
          - table_id: 1
            duration_sec: 2
@@ -526,7 +526,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
     xid: 0x11223344
     msg:
       type: FLOW
-      flags: 0
+      flags: []
       body:
          - table_id: 1
            duration_sec: 2
@@ -578,7 +578,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
     xid: 0x11223344
     msg:
       type: FLOW
-      flags: 0
+      flags: []
       body:
          - table_id: 1
            duration_sec: 2
@@ -619,7 +619,7 @@ TEST(encoder, ofmp_flowreply_v1) {
     xid: 0x11111111
     msg:
       type: FLOW
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
          - table_id: 0x33
            duration_sec: 0x44444444
@@ -661,7 +661,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
     xid: 0x11223344
     msg:
       type: FLOW
-      flags: 0
+      flags: []
       body:
          - table_id: 1
            duration_sec: 2
@@ -724,7 +724,7 @@ TEST(encoder, ofmp_aggregatereply_v4) {
     xid: 0x11111111
     msg:
       type: AGGREGATE
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         packet_count: 0x3333333333333330
         byte_count: 0x4444444444444440
@@ -747,7 +747,7 @@ TEST(encoder, ofmp_aggregatereply_v1) {
     xid: 0x11111111
     msg:
       type: AGGREGATE
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         packet_count: 0x3333333333333330
         byte_count: 0x4444444444444440
@@ -770,7 +770,7 @@ TEST(encoder, ofmp_tablestats_v4) {
     xid: 0x11111111
     msg:
       type: TABLE
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         - table_id: 0x33
           active_count: 0x44444440
@@ -798,7 +798,7 @@ TEST(encoder, ofmp_tablestats_v1) {
     xid: 0x11111111
     msg:
       type: TABLE
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         - table_id: 0x33
           name: 'Table 1'
@@ -834,7 +834,7 @@ TEST(encoder, ofmp_portstats_v4) {
     xid: 0x11111111
     msg:
       type: PORT_STATS
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
           rx_packets: 0x4444444444444440
@@ -871,7 +871,7 @@ TEST(encoder, ofmp_portstats_v1) {
     xid: 0x11111111
     msg:
       type: PORT_STATS
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
           rx_packets: 0x4444444444444440
@@ -908,7 +908,7 @@ TEST(encoder, ofmp_queuestats_v4) {
     xid: 0x11111111
     msg:
       type: QUEUE
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
           queue_id: 0x44444440
@@ -935,7 +935,7 @@ TEST(encoder, ofmp_queuestats_v1) {
     xid: 0x11111111
     msg:
       type: QUEUE
-      flags: 0x2222
+      flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
           queue_id: 0x44444440
@@ -1837,7 +1837,7 @@ TEST(encoder, ofmp_desc_request) {
       xid: 0x11111111
       msg:
         type: DESC
-        flags: 0
+        flags: []
       )""";
 
   Encoder encoder{input};
@@ -1855,7 +1855,7 @@ TEST(encoder, ofmp_desc_reply) {
       xid: 0x11111111
       msg:
         type: DESC
-        flags: 0
+        flags: []
         body:
           mfr_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
           hw_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
@@ -1909,7 +1909,7 @@ TEST(encoder, ofmp_desc_reply_error) {
       xid: 0x11111111
       msg:
         type: DESC
-        flags: 0
+        flags: []
         body:
           mfr_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
           hw_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
@@ -1936,7 +1936,7 @@ TEST(encoder, ofmp_desc_request_v1) {
       xid: 0x11111111
       msg:
         type: DESC
-        flags: 0
+        flags: []
       )""";
 
   Encoder encoder{input};
@@ -1953,7 +1953,7 @@ TEST(encoder, ofmp_desc_reply_v1) {
       xid: 0x11111111
       msg:
         type: DESC
-        flags: 0
+        flags: []
         body:
           mfr_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
           hw_desc: ABCDEFGHIJKLMNOPQRSTUVWXYZ 123456789
@@ -2007,7 +2007,7 @@ TEST(encoder, ofmp_portstats_v4_request) {
       xid: 0x11111111
       msg:
         type: PORT_STATS
-        flags: 0
+        flags: []
         body:
           port_no: 0x22222222
       )""";
@@ -2027,7 +2027,7 @@ TEST(encoder, ofmp_portstats_v1_request) {
       xid: 0x11111111
       msg:
         type: PORT_STATS
-        flags: 0
+        flags: []
         body:
           port_no: 0x22222222
       )""";
@@ -2047,7 +2047,7 @@ TEST(encoder, ofmp_queue_v4_request) {
       xid: 0x11111111
       msg:
         type: QUEUE
-        flags: 0
+        flags: []
         body:
           port_no: 0x22222222
           queue_id: 0x33333333
@@ -2068,7 +2068,7 @@ TEST(encoder, ofmp_queue_v1_request) {
       xid: 0x11111111
       msg:
         type: QUEUE
-        flags: 0
+        flags: []
         body:
           port_no: 0x22222222
           queue_id: 0x33333333
@@ -2119,7 +2119,7 @@ TEST(encoder, ofmp_groupfeatures_reply) {
       xid: 0x11111111
       msg:
         type: GROUP_FEATURES
-        flags: 0
+        flags: []
         body:
           types: 0x11111111
           capabilities: 0x22222222

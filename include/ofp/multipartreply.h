@@ -13,7 +13,7 @@ class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
                                           16, 65535, false> {
  public:
   OFPMultipartType replyType() const { return type_; }
-  UInt16 replyFlags() const { return flags_; }
+  OFPMultipartFlags replyFlags() const { return flags_; }
 
   const UInt8 *replyBody() const {
     return BytePtr(this) + sizeof(MultipartReply);
@@ -35,7 +35,7 @@ class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
  private:
   Header header_;
   Big<OFPMultipartType> type_;
-  Big16 flags_;
+  Big<OFPMultipartFlags> flags_;
   Padding<4> pad_;
 
   // Only MultipartReplyBuilder can construct an instance.
@@ -61,7 +61,7 @@ class MultipartReplyBuilder {
   UInt8 version() const { return msg_.header_.version(); }
 
   void setReplyType(OFPMultipartType type) { msg_.type_ = type; }
-  void setReplyFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setReplyFlags(OFPMultipartFlags flags) { msg_.flags_ = flags; }
   void setReplyBody(const void *data, size_t length) {
     body_.set(data, length);
   }

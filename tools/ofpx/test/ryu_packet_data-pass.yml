@@ -100,7 +100,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            DESC
-  flags:           0x0000
+  flags:           [  ]
   body:            
     mfr_desc:        mfr
     hw_desc:         hw
@@ -134,7 +134,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            FLOW
-  flags:           0x0000
+  flags:           [  ]
   body:            
     table_id:        0x00
     out_port:        ANY
@@ -149,7 +149,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            FLOW
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - table_id:        0x00
       duration_sec:    0x00000166
@@ -354,7 +354,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -362,7 +362,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            AGGREGATE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     table_id:        ALL
     out_port:        ANY
@@ -377,7 +377,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            AGGREGATE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     packet_count:    0x0000000000000007
     byte_count:      0x000000000000023E
@@ -389,7 +389,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            TABLE
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -397,7 +397,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            PORT_STATS
-  flags:           0x0000
+  flags:           [  ]
   body:            
     port_no:         0xFFFFFFFF
 ...
@@ -432,7 +432,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            PORT_STATS
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - port_no:         0x00000007
       rx_packets:      0x0000000000000000
@@ -471,7 +471,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            GROUP_FEATURES
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -479,7 +479,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            GROUP_FEATURES
-  flags:           0x0000
+  flags:           [  ]
   body:            
     types:           0x0000000F
     capabilities:    0x00000005
@@ -498,7 +498,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            GROUP_DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -506,7 +506,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            GROUP_DESC
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - type:            0x00
       group_id:        0x00000001
@@ -550,7 +550,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            QUEUE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     port_no:         0xFFFFFFFF
     queue_id:        0xFFFFFFFF
@@ -561,7 +561,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   type:            QUEUE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - port_no:         0x00000007
       queue_id:        0x00000001
@@ -909,7 +909,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            DESC
-  flags:           0x0000
+  flags:           [  ]
   body:            
     mfr_desc:        mfr
     hw_desc:         hw
@@ -943,7 +943,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            FLOW
-  flags:           0x0000
+  flags:           [  ]
   body:            
     table_id:        0x00
     out_port:        ANY
@@ -958,7 +958,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            FLOW
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - table_id:        0x00
       duration_sec:    0x00000166
@@ -1228,7 +1228,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -1236,7 +1236,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            AGGREGATE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     table_id:        ALL
     out_port:        ANY
@@ -1251,7 +1251,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            AGGREGATE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     packet_count:    0x0000000000000007
     byte_count:      0x000000000000023E
@@ -1263,7 +1263,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            TABLE
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -1271,7 +1271,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            TABLE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - table_id:        0x00
       name:            ''
@@ -1294,7 +1294,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            PORT_STATS
-  flags:           0x0000
+  flags:           [  ]
   body:            
     port_no:         0xFFFFFFFF
 ...
@@ -1329,7 +1329,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            PORT_STATS
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - port_no:         0x00000007
       rx_packets:      0x0000000000000000
@@ -1368,7 +1368,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            GROUP_FEATURES
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -1376,7 +1376,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            GROUP_FEATURES
-  flags:           0x0000
+  flags:           [  ]
   body:            
     types:           0x0000000F
     capabilities:    0x00000005
@@ -1395,7 +1395,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            GROUP_DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -1403,7 +1403,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            GROUP_DESC
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - type:            0x00
       group_id:        0x00000001
@@ -1447,7 +1447,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            QUEUE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     port_no:         0xFFFFFFFF
     queue_id:        0xFFFFFFFF
@@ -1458,7 +1458,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            QUEUE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - port_no:         0x00000007
       queue_id:        0x00000001
@@ -1648,7 +1648,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            METER_CONFIG
-  flags:           0x0000
+  flags:           [  ]
   body:            
     meter_id:        0xFFFFFFFF
 ...
@@ -1658,7 +1658,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            METER_CONFIG
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - flags:           0x000E
       meter_id:        0x00000064
@@ -1673,7 +1673,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            METER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     meter_id:        0xFFFFFFFF
 ...
@@ -1689,7 +1689,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            METER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - meter_id:        0x00000064
       flow_count:      0x00000000
@@ -1707,7 +1707,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            METER_FEATURES
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -1715,7 +1715,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            METER_FEATURES
-  flags:           0x0000
+  flags:           [  ]
   body:            
     max_meter:       0x01000000
     band_types:      0x80000006
@@ -1729,7 +1729,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            PORT_DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -1737,7 +1737,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            PORT_DESC
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - port_no:         0x00000007
       hw_addr:         'f2:0b:a4:d0:3f:70'
@@ -1768,7 +1768,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            TABLE_FEATURES
-  flags:           0x0001
+  flags:           [ MORE ]
   body:            
     - table_id:        0x00
       name:            Flow Table 0x00
@@ -2598,7 +2598,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            TABLE_FEATURES
-  flags:           0x0001
+  flags:           [ MORE ]
   body:            
     - table_id:        0x00
       name:            '私のテーブル'
@@ -3428,7 +3428,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            GROUP
-  flags:           0x0000
+  flags:           [  ]
   body:            
     group_id:        0xFFFFFFFC
 ...
@@ -3438,7 +3438,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            GROUP
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - group_id:        0x00000001
       ref_count:       0x00000002
@@ -3663,7 +3663,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            EXPERIMENTER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     experimenter:    0xDEADBEAF
     exp_type:        0xCAFE8888
@@ -3675,7 +3675,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            EXPERIMENTER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     experimenter:    0xDEADBEAF
     exp_type:        0xCAFE7777
@@ -3687,7 +3687,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   type:            EXPERIMENTER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     experimenter:    0x4F4E4600
     exp_type:        0x0000074E
@@ -3721,7 +3721,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            DESC
-  flags:           0x0000
+  flags:           [  ]
   body:            
     mfr_desc:        mfr
     hw_desc:         hw
@@ -3755,7 +3755,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            FLOW
-  flags:           0x0000
+  flags:           [  ]
   body:            
     table_id:        0x00
     out_port:        ANY
@@ -3770,7 +3770,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            FLOW
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - table_id:        0x00
       duration_sec:    0x00000166
@@ -4024,7 +4024,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -4032,7 +4032,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            AGGREGATE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     table_id:        ALL
     out_port:        ANY
@@ -4047,7 +4047,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            AGGREGATE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     packet_count:    0x0000000000000007
     byte_count:      0x000000000000023E
@@ -4059,7 +4059,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            TABLE
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -4067,7 +4067,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            PORT_STATS
-  flags:           0x0000
+  flags:           [  ]
   body:            
     port_no:         0xFFFFFFFF
 ...
@@ -4102,7 +4102,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            GROUP_FEATURES
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -4110,7 +4110,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            GROUP_FEATURES
-  flags:           0x0000
+  flags:           [  ]
   body:            
     types:           0x0000000F
     capabilities:    0x00000005
@@ -4129,7 +4129,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            GROUP_DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REPLY
@@ -4137,7 +4137,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            GROUP_DESC
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - type:            0x00
       group_id:        0x00000001
@@ -4156,7 +4156,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            QUEUE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     port_no:         0xFFFFFFFF
     queue_id:        0xFFFFFFFF
@@ -4167,7 +4167,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            QUEUE
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - port_no:         0x00680000
       queue_id:        0x00000000
@@ -4328,7 +4328,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            METER_CONFIG
-  flags:           0x0000
+  flags:           [  ]
   body:            
     meter_id:        0xFFFFFFFF
 ...
@@ -4338,7 +4338,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            METER_CONFIG
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - flags:           0x000E
       meter_id:        0x00000064
@@ -4353,7 +4353,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            METER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     meter_id:        0xFFFFFFFF
 ...
@@ -4363,7 +4363,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            METER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - meter_id:        0x00000064
       flow_count:      0x00000000
@@ -4381,7 +4381,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            METER_FEATURES
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            FEATURES_REQUEST
@@ -4395,7 +4395,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            METER_FEATURES
-  flags:           0x0000
+  flags:           [  ]
   body:            
     max_meter:       0x01000000
     band_types:      0x80000006
@@ -4409,7 +4409,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            PORT_DESC
-  flags:           0x0000
+  flags:           [  ]
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -4417,7 +4417,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            TABLE_FEATURES
-  flags:           0x0001
+  flags:           [ MORE ]
   body:            
     - table_id:        0x00
       name:            Flow Table 0x00
@@ -5247,7 +5247,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            TABLE_FEATURES
-  flags:           0x0001
+  flags:           [ MORE ]
   body:            
     - table_id:        0x00
       name:            '私のテーブル'
@@ -6077,7 +6077,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            GROUP
-  flags:           0x0000
+  flags:           [  ]
   body:            
     group_id:        0xFFFFFFFC
 ...
@@ -6087,7 +6087,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            GROUP
-  flags:           0x0000
+  flags:           [  ]
   body:            
     - group_id:        0x00000001
       ref_count:       0x00000002
@@ -6300,7 +6300,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            EXPERIMENTER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     experimenter:    0xDEADBEAF
     exp_type:        0xCAFE8888
@@ -6324,7 +6324,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   type:            EXPERIMENTER
-  flags:           0x0000
+  flags:           [  ]
   body:            
     experimenter:    0xDEADBEAF
     exp_type:        0xCAFE7777

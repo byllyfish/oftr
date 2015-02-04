@@ -22,7 +22,7 @@ TEST(multipartreply, mptablefeatures) {
 
   MultipartReplyBuilder msg;
   msg.setReplyType(OFPMP_TABLE_FEATURES);
-  msg.setReplyFlags(0);
+  msg.setReplyFlags(OFPMPF_NONE);
   msg.setReplyBody(contents.data(), contents.size());
 
   MemoryChannel channel{4};

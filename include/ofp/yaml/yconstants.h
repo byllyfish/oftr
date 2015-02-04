@@ -216,6 +216,15 @@ struct ScalarBitSetTraits<ofp::OFPPortStateFlags> {
   }
 };
 
+template <>
+struct ScalarBitSetTraits<ofp::OFPMultipartFlags> {
+  static void bitset(IO &io, ofp::OFPMultipartFlags &value) {
+    OFP_YAML_BITCASE(OFPMPF_, MORE);
+
+    io.bitSetCaseOther(value, ofp::OFPMPF_OTHER_MULTIPART_FLAGS);
+  }
+};
+
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1
 #undef OFP_YAML_MASKEDBITCASE

@@ -512,6 +512,17 @@ enum OFPControllerRole : UInt32 {
   OFPCR_ROLE_SLAVE = 3,
 };
 
+enum OFPMultipartFlags : UInt16 {
+  OFPMPF_NONE = 0,
+  OFPMPF_MORE = 1 << 0,
+
+  OFPMPF_OTHER_MULTIPART_FLAGS = 0xFFFE
+};
+
+inline OFPMultipartFlags operator|(OFPMultipartFlags lhs, OFPMultipartFlags rhs) {
+  return static_cast<OFPMultipartFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 }  // namespace ofp
 
 #endif  // OFP_CONSTANTS_H_

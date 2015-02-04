@@ -46,7 +46,7 @@ static llvm::StringRef sRpcMethods[] = {
     "ofp.message", "ofp.message_error", "ofp.list_connections",
     "ofp.add_identity"};
 
-OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
-
 ofp::yaml::EnumConverter<ofp::rpc::RpcMethod>
     llvm::yaml::ScalarTraits<ofp::rpc::RpcMethod>::converter{sRpcMethods};
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

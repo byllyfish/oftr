@@ -33,7 +33,8 @@ struct MappingTraits<ofp::MultipartRequest> {
 
     OFPMultipartType type = msg.requestType();
     io.mapRequired("type", type);
-    io.mapRequired("flags", msg.flags_);
+    OFPMultipartFlags flags = msg.requestFlags();
+    io.mapRequired("flags", flags);
 
     switch (type) {
       case OFPMP_DESC:
@@ -113,9 +114,11 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
     using namespace ofp;
 
     OFPMultipartType type = OFPMP_DESC;
+    OFPMultipartFlags flags;
     io.mapRequired("type", type);
-    io.mapRequired("flags", msg.msg_.flags_);
+    io.mapRequired("flags", flags);
     msg.setRequestType(type);
+    msg.setRequestFlags(flags);
 
     switch (type) {
       case OFPMP_DESC:

@@ -36,8 +36,9 @@ struct MappingTraits<ofp::MultipartReply> {
     using namespace ofp;
 
     OFPMultipartType type = msg.replyType();
+    OFPMultipartFlags flags = msg.replyFlags();
     io.mapRequired("type", type);
-    io.mapRequired("flags", msg.flags_);
+    io.mapRequired("flags", flags);
 
     switch (type) {
       case OFPMP_DESC: {
@@ -145,9 +146,11 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
     using namespace ofp;
 
     OFPMultipartType type;
+    OFPMultipartFlags flags;
     io.mapRequired("type", type);
-    io.mapRequired("flags", msg.msg_.flags_);
+    io.mapRequired("flags", flags);
     msg.setReplyType(type);
+    msg.setReplyFlags(flags);
 
     switch (type) {
       case OFPMP_DESC: {

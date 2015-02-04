@@ -166,7 +166,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	TABLE_MOD.v1	msg.config	uint32	True			ERROR
 1	MULTIPART_REQUEST.DESC.v1	msg	object	True			
 1	MULTIPART_REQUEST.DESC.v1	msg.type	DESC	True			
-1	MULTIPART_REQUEST.DESC.v1	msg.flags	uint16	True			True
+1	MULTIPART_REQUEST.DESC.v1	msg.flags	array	True			
+1	MULTIPART_REQUEST.DESC.v1	msg.flags.0	MORE	False	msg.flags.0=MORE		
 1	MULTIPART_REPLY.DESC.v1	msg	object	True			
 1	MULTIPART_REPLY.DESC.v1	msg.body	object	True			
 1	MULTIPART_REPLY.DESC.v1	msg.body.sw_desc	str255	True			
@@ -175,7 +176,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.DESC.v1	msg.body.mfr_desc	str255	True			
 1	MULTIPART_REPLY.DESC.v1	msg.body.serial_num	str31	True			
 1	MULTIPART_REPLY.DESC.v1	msg.type	DESC	True			
-1	MULTIPART_REPLY.DESC.v1	msg.flags	uint16	True			True
+1	MULTIPART_REPLY.DESC.v1	msg.flags	array	True			
+1	MULTIPART_REPLY.DESC.v1	msg.flags.0	MORE	False	msg.flags.0=MORE		
 1	MULTIPART_REQUEST.FLOW.v1	msg	object	True			
 1	MULTIPART_REQUEST.FLOW.v1	msg.body	object	True			
 1	MULTIPART_REQUEST.FLOW.v1	msg.body.out_group	ANY	True		msg.body.out_group=0	
@@ -189,7 +191,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REQUEST.FLOW.v1	msg.body.match.0.value	macaddress	True		msg.body.match.0.value=macaddress	
 1	MULTIPART_REQUEST.FLOW.v1	msg.body.cookie_mask	uint64	True		msg.body.cookie_mask=0	
 1	MULTIPART_REQUEST.FLOW.v1	msg.type	FLOW	True			
-1	MULTIPART_REQUEST.FLOW.v1	msg.flags	uint16	True			True
+1	MULTIPART_REQUEST.FLOW.v1	msg.flags	array	True			
+1	MULTIPART_REQUEST.FLOW.v1	msg.flags.0	MORE	False	msg.body.cookie=0,msg.body.cookie_mask=0,msg.body.match=null,msg.body.match.0=object,msg.body.match.0.field=ETH_DST,msg.body.match.0.mask=macaddress,msg.body.match.0.value=macaddress,msg.body.out_group=0,msg.flags.0=MORE		
 1	MULTIPART_REPLY.FLOW.v1	msg	object	True			
 1	MULTIPART_REPLY.FLOW.v1	msg.body	array	True			
 1	MULTIPART_REPLY.FLOW.v1	msg.body.0	object	False	msg.body=null		
@@ -217,7 +220,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.FLOW.v1	msg.body.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
 1	MULTIPART_REPLY.FLOW.v1	msg.body.0.instructions.0.actions.0.port	CONTROLLER	True			
 1	MULTIPART_REPLY.FLOW.v1	msg.type	FLOW	True			
-1	MULTIPART_REPLY.FLOW.v1	msg.flags	uint16	True			True
+1	MULTIPART_REPLY.FLOW.v1	msg.flags	array	True			
+1	MULTIPART_REPLY.FLOW.v1	msg.flags.0	MORE	False	msg.body.0.flags=0,msg.body.0.match=null,msg.body.0.match.0=object,msg.body.0.match.0.field=ETH_DST,msg.body.0.match.0.mask=macaddress,msg.body.0.match.0.value=macaddress,msg.flags.0=MORE		
 1	MULTIPART_REQUEST.AGGREGATE.v1	msg	object	True			
 1	MULTIPART_REQUEST.AGGREGATE.v1	msg.body	object	True			
 1	MULTIPART_REQUEST.AGGREGATE.v1	msg.body.out_group	ANY	True		msg.body.out_group=0	
@@ -231,17 +235,20 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REQUEST.AGGREGATE.v1	msg.body.match.0.value	macaddress	True		msg.body.match.0.value=macaddress	
 1	MULTIPART_REQUEST.AGGREGATE.v1	msg.body.cookie_mask	uint64	True		msg.body.cookie_mask=0	
 1	MULTIPART_REQUEST.AGGREGATE.v1	msg.type	AGGREGATE	True			
-1	MULTIPART_REQUEST.AGGREGATE.v1	msg.flags	uint16	True			True
+1	MULTIPART_REQUEST.AGGREGATE.v1	msg.flags	array	True			
+1	MULTIPART_REQUEST.AGGREGATE.v1	msg.flags.0	MORE	False	msg.body.cookie=0,msg.body.cookie_mask=0,msg.body.match=null,msg.body.match.0=object,msg.body.match.0.field=ETH_DST,msg.body.match.0.mask=macaddress,msg.body.match.0.value=macaddress,msg.body.out_group=0,msg.flags.0=MORE		
 1	MULTIPART_REPLY.AGGREGATE.v1	msg	object	True			
 1	MULTIPART_REPLY.AGGREGATE.v1	msg.body	object	True			
 1	MULTIPART_REPLY.AGGREGATE.v1	msg.body.packet_count	uint64	True			True
 1	MULTIPART_REPLY.AGGREGATE.v1	msg.body.byte_count	uint64	True			True
 1	MULTIPART_REPLY.AGGREGATE.v1	msg.body.flow_count	uint32	True			True
 1	MULTIPART_REPLY.AGGREGATE.v1	msg.type	AGGREGATE	True			
-1	MULTIPART_REPLY.AGGREGATE.v1	msg.flags	uint16	True			True
+1	MULTIPART_REPLY.AGGREGATE.v1	msg.flags	array	True			
+1	MULTIPART_REPLY.AGGREGATE.v1	msg.flags.0	MORE	False	msg.flags.0=MORE		
 1	MULTIPART_REQUEST.TABLE.v1	msg	object	True			
 1	MULTIPART_REQUEST.TABLE.v1	msg.type	TABLE	True			
-1	MULTIPART_REQUEST.TABLE.v1	msg.flags	uint16	True			True
+1	MULTIPART_REQUEST.TABLE.v1	msg.flags	array	True			
+1	MULTIPART_REQUEST.TABLE.v1	msg.flags.0	MORE	False	msg.flags.0=MORE		
 1	MULTIPART_REPLY.TABLE.v1	msg	object	True			
 1	MULTIPART_REPLY.TABLE.v1	msg.body	array	True			
 1	MULTIPART_REPLY.TABLE.v1	msg.body.0	object	False	msg.body=null		
@@ -250,12 +257,14 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.TABLE.v1	msg.body.0.table_id	uint8	True			True
 1	MULTIPART_REPLY.TABLE.v1	msg.body.0.active_count	uint32	True			True
 1	MULTIPART_REPLY.TABLE.v1	msg.type	TABLE	True			
-1	MULTIPART_REPLY.TABLE.v1	msg.flags	uint16	True			True
+1	MULTIPART_REPLY.TABLE.v1	msg.flags	array	True			
+1	MULTIPART_REPLY.TABLE.v1	msg.flags.0	MORE	False	msg.body.0.max_entries=0,msg.body.0.name='',msg.body.0.wildcards=0,msg.flags.0=MORE		
 1	MULTIPART_REQUEST.PORT_STATS.v1	msg	object	True			
 1	MULTIPART_REQUEST.PORT_STATS.v1	msg.body	object	True			
 1	MULTIPART_REQUEST.PORT_STATS.v1	msg.body.port_no	uint32	True			True
 1	MULTIPART_REQUEST.PORT_STATS.v1	msg.type	PORT_STATS	True			
-1	MULTIPART_REQUEST.PORT_STATS.v1	msg.flags	uint16	True			True
+1	MULTIPART_REQUEST.PORT_STATS.v1	msg.flags	array	True			
+1	MULTIPART_REQUEST.PORT_STATS.v1	msg.flags.0	MORE	False	msg.flags.0=MORE		
 1	MULTIPART_REPLY.PORT_STATS.v1	msg	object	True			
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body	array	True			
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0	object	False	msg.body=null		
@@ -275,13 +284,15 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.tx_packets	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.port_no	uint32	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.type	PORT_STATS	True			
-1	MULTIPART_REPLY.PORT_STATS.v1	msg.flags	uint16	True			True
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.flags	array	True			
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.flags.0	MORE	False	msg.body.0.duration_nsec=0,msg.body.0.duration_sec=0,msg.flags.0=MORE		
 1	MULTIPART_REQUEST.QUEUE.v1	msg	object	True			
 1	MULTIPART_REQUEST.QUEUE.v1	msg.body	object	True			
 1	MULTIPART_REQUEST.QUEUE.v1	msg.body.port_no	uint32	True			True
 1	MULTIPART_REQUEST.QUEUE.v1	msg.body.queue_id	uint32	True			True
 1	MULTIPART_REQUEST.QUEUE.v1	msg.type	QUEUE	True			
-1	MULTIPART_REQUEST.QUEUE.v1	msg.flags	uint16	True			True
+1	MULTIPART_REQUEST.QUEUE.v1	msg.flags	array	True			
+1	MULTIPART_REQUEST.QUEUE.v1	msg.flags.0	MORE	False	msg.flags.0=MORE		
 1	MULTIPART_REPLY.QUEUE.v1	msg	object	True			
 1	MULTIPART_REPLY.QUEUE.v1	msg.body	array	True			
 1	MULTIPART_REPLY.QUEUE.v1	msg.body.0	object	False	msg.body=null		
@@ -293,12 +304,14 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.QUEUE.v1	msg.body.0.port_no	uint32	True			True
 1	MULTIPART_REPLY.QUEUE.v1	msg.body.0.duration_nsec	uint32	True		msg.body.0.duration_nsec=0	
 1	MULTIPART_REPLY.QUEUE.v1	msg.type	QUEUE	True			
-1	MULTIPART_REPLY.QUEUE.v1	msg.flags	uint16	True			True
+1	MULTIPART_REPLY.QUEUE.v1	msg.flags	array	True			
+1	MULTIPART_REPLY.QUEUE.v1	msg.flags.0	MORE	False	msg.body.0.duration_nsec=0,msg.body.0.duration_sec=0,msg.flags.0=MORE		
 1	MULTIPART_REQUEST.GROUP.v1	msg	object	True			ERROR
 1	MULTIPART_REQUEST.GROUP.v1	msg.body	object	True			ERROR
 1	MULTIPART_REQUEST.GROUP.v1	msg.body.group_id	uint32	True			ERROR
 1	MULTIPART_REQUEST.GROUP.v1	msg.type	GROUP	True			ERROR
-1	MULTIPART_REQUEST.GROUP.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REQUEST.GROUP.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REQUEST.GROUP.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REPLY.GROUP.v1	msg	object	True			ERROR
 1	MULTIPART_REPLY.GROUP.v1	msg.body	array	True			ERROR
 1	MULTIPART_REPLY.GROUP.v1	msg.body.0	object	True			ERROR
@@ -313,10 +326,12 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.GROUP.v1	msg.body.0.ref_count	uint32	True			ERROR
 1	MULTIPART_REPLY.GROUP.v1	msg.body.0.duration_nsec	uint32	True			ERROR
 1	MULTIPART_REPLY.GROUP.v1	msg.type	GROUP	True			ERROR
-1	MULTIPART_REPLY.GROUP.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REPLY.GROUP.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REPLY.GROUP.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REQUEST.GROUP_FEATURES.v1	msg	object	True			ERROR
 1	MULTIPART_REQUEST.GROUP_FEATURES.v1	msg.type	GROUP_FEATURES	True			ERROR
-1	MULTIPART_REQUEST.GROUP_FEATURES.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REQUEST.GROUP_FEATURES.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REQUEST.GROUP_FEATURES.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg	object	True			ERROR
 1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.body	object	True			ERROR
 1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.body.max_groups_ff	uint32	True			ERROR
@@ -334,12 +349,14 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.body.max_groups_sel	uint32	True			ERROR
 1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.body.types	uint32	True			ERROR
 1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.type	GROUP_FEATURES	True			ERROR
-1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REPLY.GROUP_FEATURES.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REQUEST.METER.v1	msg	object	True			ERROR
 1	MULTIPART_REQUEST.METER.v1	msg.body	object	True			ERROR
 1	MULTIPART_REQUEST.METER.v1	msg.body.meter_id	uint32	True			ERROR
 1	MULTIPART_REQUEST.METER.v1	msg.type	METER	True			ERROR
-1	MULTIPART_REQUEST.METER.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REQUEST.METER.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REQUEST.METER.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REPLY.METER.v1	msg	object	True			ERROR
 1	MULTIPART_REPLY.METER.v1	msg.body	array	True			ERROR
 1	MULTIPART_REPLY.METER.v1	msg.body.0	object	True			ERROR
@@ -354,12 +371,14 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.METER.v1	msg.body.0.bands.0.byte_count	uint64	True			ERROR
 1	MULTIPART_REPLY.METER.v1	msg.body.0.duration_nsec	uint32	True			ERROR
 1	MULTIPART_REPLY.METER.v1	msg.type	METER	True			ERROR
-1	MULTIPART_REPLY.METER.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REPLY.METER.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REPLY.METER.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REQUEST.METER_CONFIG.v1	msg	object	True			ERROR
 1	MULTIPART_REQUEST.METER_CONFIG.v1	msg.body	object	True			ERROR
 1	MULTIPART_REQUEST.METER_CONFIG.v1	msg.body.meter_id	uint32	True			ERROR
 1	MULTIPART_REQUEST.METER_CONFIG.v1	msg.type	METER_CONFIG	True			ERROR
-1	MULTIPART_REQUEST.METER_CONFIG.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REQUEST.METER_CONFIG.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REQUEST.METER_CONFIG.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REPLY.METER_CONFIG.v1	msg	object	True			ERROR
 1	MULTIPART_REPLY.METER_CONFIG.v1	msg.body	array	True			ERROR
 1	MULTIPART_REPLY.METER_CONFIG.v1	msg.body.0	object	True			ERROR
@@ -371,10 +390,12 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.METER_CONFIG.v1	msg.body.0.flags	uint16	True			ERROR
 1	MULTIPART_REPLY.METER_CONFIG.v1	msg.body.0.meter_id	uint32	True			ERROR
 1	MULTIPART_REPLY.METER_CONFIG.v1	msg.type	METER_CONFIG	True			ERROR
-1	MULTIPART_REPLY.METER_CONFIG.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REPLY.METER_CONFIG.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REPLY.METER_CONFIG.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REQUEST.METER_FEATURES.v1	msg	object	True			ERROR
 1	MULTIPART_REQUEST.METER_FEATURES.v1	msg.type	METER_FEATURES	True			ERROR
-1	MULTIPART_REQUEST.METER_FEATURES.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REQUEST.METER_FEATURES.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REQUEST.METER_FEATURES.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REPLY.METER_FEATURES.v1	msg	object	True			ERROR
 1	MULTIPART_REPLY.METER_FEATURES.v1	msg.body	object	True			ERROR
 1	MULTIPART_REPLY.METER_FEATURES.v1	msg.body.max_meter	uint32	True			ERROR
@@ -383,7 +404,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.METER_FEATURES.v1	msg.body.max_bands	uint8	True			ERROR
 1	MULTIPART_REPLY.METER_FEATURES.v1	msg.body.max_color	uint8	True			ERROR
 1	MULTIPART_REPLY.METER_FEATURES.v1	msg.type	METER_FEATURES	True			ERROR
-1	MULTIPART_REPLY.METER_FEATURES.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REPLY.METER_FEATURES.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REPLY.METER_FEATURES.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg	object	True			ERROR
 1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.body	array	True			ERROR
 1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.body.0	object	True			ERROR
@@ -423,7 +445,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.body.0.match	array	True			ERROR
 1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.body.0.match.0	ETH_DST	True			ERROR
 1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.type	TABLE_FEATURES	True			ERROR
-1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REQUEST.TABLE_FEATURES.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg	object	True			ERROR
 1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.body	array	True			ERROR
 1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.body.0	object	True			ERROR
@@ -463,10 +486,12 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.body.0.match	array	True			ERROR
 1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.body.0.match.0	ETH_DST	True			ERROR
 1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.type	TABLE_FEATURES	True			ERROR
-1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REPLY.TABLE_FEATURES.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REQUEST.PORT_DESC.v1	msg	object	True			ERROR
 1	MULTIPART_REQUEST.PORT_DESC.v1	msg.type	PORT_DESC	True			ERROR
-1	MULTIPART_REQUEST.PORT_DESC.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REQUEST.PORT_DESC.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REQUEST.PORT_DESC.v1	msg.flags.0	MORE	True			ERROR
 1	MULTIPART_REPLY.PORT_DESC.v1	msg	object	True			ERROR
 1	MULTIPART_REPLY.PORT_DESC.v1	msg.body	array	True			ERROR
 1	MULTIPART_REPLY.PORT_DESC.v1	msg.body.0	object	True			ERROR
@@ -488,7 +513,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.PORT_DESC.v1	msg.body.0.config.0	PORT_DOWN	True			ERROR
 1	MULTIPART_REPLY.PORT_DESC.v1	msg.body.0.port_no	uint32	True			ERROR
 1	MULTIPART_REPLY.PORT_DESC.v1	msg.type	PORT_DESC	True			ERROR
-1	MULTIPART_REPLY.PORT_DESC.v1	msg.flags	uint16	True			ERROR
+1	MULTIPART_REPLY.PORT_DESC.v1	msg.flags	array	True			ERROR
+1	MULTIPART_REPLY.PORT_DESC.v1	msg.flags.0	MORE	True			ERROR
 1	BARRIER_REQUEST.v1	msg	null	False			
 1	BARRIER_REPLY.v1	msg	null	False			
 1	QUEUE_GET_CONFIG_REQUEST.v1	msg	object	True			ERROR
@@ -699,7 +725,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	TABLE_MOD.v2	msg.config	uint32	True			True
 2	MULTIPART_REQUEST.DESC.v2	msg	object	True			
 2	MULTIPART_REQUEST.DESC.v2	msg.type	DESC	True			
-2	MULTIPART_REQUEST.DESC.v2	msg.flags	uint16	True			True
+2	MULTIPART_REQUEST.DESC.v2	msg.flags	array	True			
+2	MULTIPART_REQUEST.DESC.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REPLY.DESC.v2	msg	object	True			
 2	MULTIPART_REPLY.DESC.v2	msg.body	object	True			
 2	MULTIPART_REPLY.DESC.v2	msg.body.sw_desc	str255	True			
@@ -708,7 +735,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.DESC.v2	msg.body.mfr_desc	str255	True			
 2	MULTIPART_REPLY.DESC.v2	msg.body.serial_num	str31	True			
 2	MULTIPART_REPLY.DESC.v2	msg.type	DESC	True			
-2	MULTIPART_REPLY.DESC.v2	msg.flags	uint16	True			True
+2	MULTIPART_REPLY.DESC.v2	msg.flags	array	True			
+2	MULTIPART_REPLY.DESC.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REQUEST.FLOW.v2	msg	object	True			
 2	MULTIPART_REQUEST.FLOW.v2	msg.body	object	True			
 2	MULTIPART_REQUEST.FLOW.v2	msg.body.out_group	ANY	True			
@@ -722,7 +750,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REQUEST.FLOW.v2	msg.body.match.0.value	macaddress	True			True
 2	MULTIPART_REQUEST.FLOW.v2	msg.body.cookie_mask	uint64	True			True
 2	MULTIPART_REQUEST.FLOW.v2	msg.type	FLOW	True			
-2	MULTIPART_REQUEST.FLOW.v2	msg.flags	uint16	True			True
+2	MULTIPART_REQUEST.FLOW.v2	msg.flags	array	True			
+2	MULTIPART_REQUEST.FLOW.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REPLY.FLOW.v2	msg	object	True			
 2	MULTIPART_REPLY.FLOW.v2	msg.body	array	True			
 2	MULTIPART_REPLY.FLOW.v2	msg.body.0	object	False	msg.body=null		
@@ -750,7 +779,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.FLOW.v2	msg.body.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
 2	MULTIPART_REPLY.FLOW.v2	msg.body.0.instructions.0.actions.0.port	CONTROLLER	True			
 2	MULTIPART_REPLY.FLOW.v2	msg.type	FLOW	True			
-2	MULTIPART_REPLY.FLOW.v2	msg.flags	uint16	True			True
+2	MULTIPART_REPLY.FLOW.v2	msg.flags	array	True			
+2	MULTIPART_REPLY.FLOW.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REQUEST.AGGREGATE.v2	msg	object	True			
 2	MULTIPART_REQUEST.AGGREGATE.v2	msg.body	object	True			
 2	MULTIPART_REQUEST.AGGREGATE.v2	msg.body.out_group	ANY	True			
@@ -764,17 +794,20 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REQUEST.AGGREGATE.v2	msg.body.match.0.value	macaddress	True			True
 2	MULTIPART_REQUEST.AGGREGATE.v2	msg.body.cookie_mask	uint64	True			True
 2	MULTIPART_REQUEST.AGGREGATE.v2	msg.type	AGGREGATE	True			
-2	MULTIPART_REQUEST.AGGREGATE.v2	msg.flags	uint16	True			True
+2	MULTIPART_REQUEST.AGGREGATE.v2	msg.flags	array	True			
+2	MULTIPART_REQUEST.AGGREGATE.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REPLY.AGGREGATE.v2	msg	object	True			
 2	MULTIPART_REPLY.AGGREGATE.v2	msg.body	object	True			
 2	MULTIPART_REPLY.AGGREGATE.v2	msg.body.packet_count	uint64	True			True
 2	MULTIPART_REPLY.AGGREGATE.v2	msg.body.byte_count	uint64	True			True
 2	MULTIPART_REPLY.AGGREGATE.v2	msg.body.flow_count	uint32	True			True
 2	MULTIPART_REPLY.AGGREGATE.v2	msg.type	AGGREGATE	True			
-2	MULTIPART_REPLY.AGGREGATE.v2	msg.flags	uint16	True			True
+2	MULTIPART_REPLY.AGGREGATE.v2	msg.flags	array	True			
+2	MULTIPART_REPLY.AGGREGATE.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REQUEST.TABLE.v2	msg	object	True			
 2	MULTIPART_REQUEST.TABLE.v2	msg.type	TABLE	True			
-2	MULTIPART_REQUEST.TABLE.v2	msg.flags	uint16	True			True
+2	MULTIPART_REQUEST.TABLE.v2	msg.flags	array	True			
+2	MULTIPART_REQUEST.TABLE.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REPLY.TABLE.v2	msg	object	True			
 2	MULTIPART_REPLY.TABLE.v2	msg.body	array	True		msg.body=null	
 2	MULTIPART_REPLY.TABLE.v2	msg.body.0	object	False	msg.body=null		
@@ -783,12 +816,14 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.TABLE.v2	msg.body.0.table_id	uint8	True			
 2	MULTIPART_REPLY.TABLE.v2	msg.body.0.active_count	uint32	True			
 2	MULTIPART_REPLY.TABLE.v2	msg.type	TABLE	True			
-2	MULTIPART_REPLY.TABLE.v2	msg.flags	uint16	True			True
+2	MULTIPART_REPLY.TABLE.v2	msg.flags	array	True			
+2	MULTIPART_REPLY.TABLE.v2	msg.flags.0	MORE	False	msg.body=null,msg.flags.0=MORE		
 2	MULTIPART_REQUEST.PORT_STATS.v2	msg	object	True			
 2	MULTIPART_REQUEST.PORT_STATS.v2	msg.body	object	True			
 2	MULTIPART_REQUEST.PORT_STATS.v2	msg.body.port_no	uint32	True			True
 2	MULTIPART_REQUEST.PORT_STATS.v2	msg.type	PORT_STATS	True			
-2	MULTIPART_REQUEST.PORT_STATS.v2	msg.flags	uint16	True			True
+2	MULTIPART_REQUEST.PORT_STATS.v2	msg.flags	array	True			
+2	MULTIPART_REQUEST.PORT_STATS.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REPLY.PORT_STATS.v2	msg	object	True			
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body	array	True			
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0	object	False	msg.body=null		
@@ -808,13 +843,15 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.tx_packets	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.port_no	uint32	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.type	PORT_STATS	True			
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.flags	uint16	True			True
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.flags	array	True			
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REQUEST.QUEUE.v2	msg	object	True			
 2	MULTIPART_REQUEST.QUEUE.v2	msg.body	object	True			
 2	MULTIPART_REQUEST.QUEUE.v2	msg.body.port_no	uint32	True			True
 2	MULTIPART_REQUEST.QUEUE.v2	msg.body.queue_id	uint32	True			True
 2	MULTIPART_REQUEST.QUEUE.v2	msg.type	QUEUE	True			
-2	MULTIPART_REQUEST.QUEUE.v2	msg.flags	uint16	True			True
+2	MULTIPART_REQUEST.QUEUE.v2	msg.flags	array	True			
+2	MULTIPART_REQUEST.QUEUE.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REPLY.QUEUE.v2	msg	object	True			ERROR
 2	MULTIPART_REPLY.QUEUE.v2	msg.body	array	True			ERROR
 2	MULTIPART_REPLY.QUEUE.v2	msg.body.0	object	False	msg.body=null		ERROR
@@ -826,12 +863,14 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.QUEUE.v2	msg.body.0.port_no	uint32	True			ERROR
 2	MULTIPART_REPLY.QUEUE.v2	msg.body.0.duration_nsec	uint32	True			ERROR
 2	MULTIPART_REPLY.QUEUE.v2	msg.type	QUEUE	True			ERROR
-2	MULTIPART_REPLY.QUEUE.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REPLY.QUEUE.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REPLY.QUEUE.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REQUEST.GROUP.v2	msg	object	True			
 2	MULTIPART_REQUEST.GROUP.v2	msg.body	object	True			
 2	MULTIPART_REQUEST.GROUP.v2	msg.body.group_id	uint32	True			True
 2	MULTIPART_REQUEST.GROUP.v2	msg.type	GROUP	True			
-2	MULTIPART_REQUEST.GROUP.v2	msg.flags	uint16	True			True
+2	MULTIPART_REQUEST.GROUP.v2	msg.flags	array	True			
+2	MULTIPART_REQUEST.GROUP.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REPLY.GROUP.v2	msg	object	True			
 2	MULTIPART_REPLY.GROUP.v2	msg.body	array	True			
 2	MULTIPART_REPLY.GROUP.v2	msg.body.0	object	False	msg.body=null		
@@ -846,10 +885,12 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.GROUP.v2	msg.body.0.ref_count	uint32	True			True
 2	MULTIPART_REPLY.GROUP.v2	msg.body.0.duration_nsec	uint32	True			True
 2	MULTIPART_REPLY.GROUP.v2	msg.type	GROUP	True			
-2	MULTIPART_REPLY.GROUP.v2	msg.flags	uint16	True			True
+2	MULTIPART_REPLY.GROUP.v2	msg.flags	array	True			
+2	MULTIPART_REPLY.GROUP.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
 2	MULTIPART_REQUEST.GROUP_FEATURES.v2	msg	object	True			ERROR
 2	MULTIPART_REQUEST.GROUP_FEATURES.v2	msg.type	GROUP_FEATURES	True			ERROR
-2	MULTIPART_REQUEST.GROUP_FEATURES.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REQUEST.GROUP_FEATURES.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REQUEST.GROUP_FEATURES.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg	object	True			ERROR
 2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.body	object	True			ERROR
 2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.body.max_groups_ff	uint32	True			ERROR
@@ -867,12 +908,14 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.body.max_groups_sel	uint32	True			ERROR
 2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.body.types	uint32	True			ERROR
 2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.type	GROUP_FEATURES	True			ERROR
-2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REPLY.GROUP_FEATURES.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REQUEST.METER.v2	msg	object	True			ERROR
 2	MULTIPART_REQUEST.METER.v2	msg.body	object	True			ERROR
 2	MULTIPART_REQUEST.METER.v2	msg.body.meter_id	uint32	True			ERROR
 2	MULTIPART_REQUEST.METER.v2	msg.type	METER	True			ERROR
-2	MULTIPART_REQUEST.METER.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REQUEST.METER.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REQUEST.METER.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REPLY.METER.v2	msg	object	True			ERROR
 2	MULTIPART_REPLY.METER.v2	msg.body	array	True			ERROR
 2	MULTIPART_REPLY.METER.v2	msg.body.0	object	True			ERROR
@@ -887,12 +930,14 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.METER.v2	msg.body.0.bands.0.byte_count	uint64	True			ERROR
 2	MULTIPART_REPLY.METER.v2	msg.body.0.duration_nsec	uint32	True			ERROR
 2	MULTIPART_REPLY.METER.v2	msg.type	METER	True			ERROR
-2	MULTIPART_REPLY.METER.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REPLY.METER.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REPLY.METER.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REQUEST.METER_CONFIG.v2	msg	object	True			ERROR
 2	MULTIPART_REQUEST.METER_CONFIG.v2	msg.body	object	True			ERROR
 2	MULTIPART_REQUEST.METER_CONFIG.v2	msg.body.meter_id	uint32	True			ERROR
 2	MULTIPART_REQUEST.METER_CONFIG.v2	msg.type	METER_CONFIG	True			ERROR
-2	MULTIPART_REQUEST.METER_CONFIG.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REQUEST.METER_CONFIG.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REQUEST.METER_CONFIG.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REPLY.METER_CONFIG.v2	msg	object	True			ERROR
 2	MULTIPART_REPLY.METER_CONFIG.v2	msg.body	array	True			ERROR
 2	MULTIPART_REPLY.METER_CONFIG.v2	msg.body.0	object	True			ERROR
@@ -904,10 +949,12 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.METER_CONFIG.v2	msg.body.0.flags	uint16	True			ERROR
 2	MULTIPART_REPLY.METER_CONFIG.v2	msg.body.0.meter_id	uint32	True			ERROR
 2	MULTIPART_REPLY.METER_CONFIG.v2	msg.type	METER_CONFIG	True			ERROR
-2	MULTIPART_REPLY.METER_CONFIG.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REPLY.METER_CONFIG.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REPLY.METER_CONFIG.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REQUEST.METER_FEATURES.v2	msg	object	True			ERROR
 2	MULTIPART_REQUEST.METER_FEATURES.v2	msg.type	METER_FEATURES	True			ERROR
-2	MULTIPART_REQUEST.METER_FEATURES.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REQUEST.METER_FEATURES.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REQUEST.METER_FEATURES.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REPLY.METER_FEATURES.v2	msg	object	True			ERROR
 2	MULTIPART_REPLY.METER_FEATURES.v2	msg.body	object	True			ERROR
 2	MULTIPART_REPLY.METER_FEATURES.v2	msg.body.max_meter	uint32	True			ERROR
@@ -916,7 +963,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.METER_FEATURES.v2	msg.body.max_bands	uint8	True			ERROR
 2	MULTIPART_REPLY.METER_FEATURES.v2	msg.body.max_color	uint8	True			ERROR
 2	MULTIPART_REPLY.METER_FEATURES.v2	msg.type	METER_FEATURES	True			ERROR
-2	MULTIPART_REPLY.METER_FEATURES.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REPLY.METER_FEATURES.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REPLY.METER_FEATURES.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg	object	True			ERROR
 2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.body	array	True			ERROR
 2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.body.0	object	True			ERROR
@@ -956,7 +1004,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.body.0.match	array	True			ERROR
 2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.body.0.match.0	ETH_DST	True			ERROR
 2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.type	TABLE_FEATURES	True			ERROR
-2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REQUEST.TABLE_FEATURES.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg	object	True			ERROR
 2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.body	array	True			ERROR
 2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.body.0	object	True			ERROR
@@ -996,10 +1045,12 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.body.0.match	array	True			ERROR
 2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.body.0.match.0	ETH_DST	True			ERROR
 2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.type	TABLE_FEATURES	True			ERROR
-2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REPLY.TABLE_FEATURES.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REQUEST.PORT_DESC.v2	msg	object	True			ERROR
 2	MULTIPART_REQUEST.PORT_DESC.v2	msg.type	PORT_DESC	True			ERROR
-2	MULTIPART_REQUEST.PORT_DESC.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REQUEST.PORT_DESC.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REQUEST.PORT_DESC.v2	msg.flags.0	MORE	True			ERROR
 2	MULTIPART_REPLY.PORT_DESC.v2	msg	object	True			ERROR
 2	MULTIPART_REPLY.PORT_DESC.v2	msg.body	array	True			ERROR
 2	MULTIPART_REPLY.PORT_DESC.v2	msg.body.0	object	True			ERROR
@@ -1021,7 +1072,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.PORT_DESC.v2	msg.body.0.config.0	PORT_DOWN	True			ERROR
 2	MULTIPART_REPLY.PORT_DESC.v2	msg.body.0.port_no	uint32	True			ERROR
 2	MULTIPART_REPLY.PORT_DESC.v2	msg.type	PORT_DESC	True			ERROR
-2	MULTIPART_REPLY.PORT_DESC.v2	msg.flags	uint16	True			ERROR
+2	MULTIPART_REPLY.PORT_DESC.v2	msg.flags	array	True			ERROR
+2	MULTIPART_REPLY.PORT_DESC.v2	msg.flags.0	MORE	True			ERROR
 2	BARRIER_REQUEST.v2	msg	null	False			
 2	BARRIER_REPLY.v2	msg	null	False			
 2	QUEUE_GET_CONFIG_REQUEST.v2	msg	object	True			
@@ -1232,7 +1284,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	TABLE_MOD.v3	msg.config	uint32	True			True
 3	MULTIPART_REQUEST.DESC.v3	msg	object	True			
 3	MULTIPART_REQUEST.DESC.v3	msg.type	DESC	True			
-3	MULTIPART_REQUEST.DESC.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.DESC.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.DESC.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.DESC.v3	msg	object	True			
 3	MULTIPART_REPLY.DESC.v3	msg.body	object	True			
 3	MULTIPART_REPLY.DESC.v3	msg.body.sw_desc	str255	True			
@@ -1241,7 +1294,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.DESC.v3	msg.body.mfr_desc	str255	True			
 3	MULTIPART_REPLY.DESC.v3	msg.body.serial_num	str31	True			
 3	MULTIPART_REPLY.DESC.v3	msg.type	DESC	True			
-3	MULTIPART_REPLY.DESC.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.DESC.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.DESC.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REQUEST.FLOW.v3	msg	object	True			
 3	MULTIPART_REQUEST.FLOW.v3	msg.body	object	True			
 3	MULTIPART_REQUEST.FLOW.v3	msg.body.out_group	ANY	True			
@@ -1255,7 +1309,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REQUEST.FLOW.v3	msg.body.match.0.value	macaddress	True			True
 3	MULTIPART_REQUEST.FLOW.v3	msg.body.cookie_mask	uint64	True			True
 3	MULTIPART_REQUEST.FLOW.v3	msg.type	FLOW	True			
-3	MULTIPART_REQUEST.FLOW.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.FLOW.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.FLOW.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.FLOW.v3	msg	object	True			
 3	MULTIPART_REPLY.FLOW.v3	msg.body	array	True			
 3	MULTIPART_REPLY.FLOW.v3	msg.body.0	object	False	msg.body=null		
@@ -1283,7 +1338,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.FLOW.v3	msg.body.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
 3	MULTIPART_REPLY.FLOW.v3	msg.body.0.instructions.0.actions.0.port	CONTROLLER	True			
 3	MULTIPART_REPLY.FLOW.v3	msg.type	FLOW	True			
-3	MULTIPART_REPLY.FLOW.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.FLOW.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.FLOW.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REQUEST.AGGREGATE.v3	msg	object	True			
 3	MULTIPART_REQUEST.AGGREGATE.v3	msg.body	object	True			
 3	MULTIPART_REQUEST.AGGREGATE.v3	msg.body.out_group	ANY	True			
@@ -1297,17 +1353,20 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REQUEST.AGGREGATE.v3	msg.body.match.0.value	macaddress	True			True
 3	MULTIPART_REQUEST.AGGREGATE.v3	msg.body.cookie_mask	uint64	True			True
 3	MULTIPART_REQUEST.AGGREGATE.v3	msg.type	AGGREGATE	True			
-3	MULTIPART_REQUEST.AGGREGATE.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.AGGREGATE.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.AGGREGATE.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.AGGREGATE.v3	msg	object	True			
 3	MULTIPART_REPLY.AGGREGATE.v3	msg.body	object	True			
 3	MULTIPART_REPLY.AGGREGATE.v3	msg.body.packet_count	uint64	True			True
 3	MULTIPART_REPLY.AGGREGATE.v3	msg.body.byte_count	uint64	True			True
 3	MULTIPART_REPLY.AGGREGATE.v3	msg.body.flow_count	uint32	True			True
 3	MULTIPART_REPLY.AGGREGATE.v3	msg.type	AGGREGATE	True			
-3	MULTIPART_REPLY.AGGREGATE.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.AGGREGATE.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.AGGREGATE.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REQUEST.TABLE.v3	msg	object	True			
 3	MULTIPART_REQUEST.TABLE.v3	msg.type	TABLE	True			
-3	MULTIPART_REQUEST.TABLE.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.TABLE.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.TABLE.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.TABLE.v3	msg	object	True			
 3	MULTIPART_REPLY.TABLE.v3	msg.body	array	True		msg.body=null	
 3	MULTIPART_REPLY.TABLE.v3	msg.body.0	object	False	msg.body=null		
@@ -1316,12 +1375,14 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.TABLE.v3	msg.body.0.table_id	uint8	True			
 3	MULTIPART_REPLY.TABLE.v3	msg.body.0.active_count	uint32	True			
 3	MULTIPART_REPLY.TABLE.v3	msg.type	TABLE	True			
-3	MULTIPART_REPLY.TABLE.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.TABLE.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.TABLE.v3	msg.flags.0	MORE	False	msg.body=null,msg.flags.0=MORE		
 3	MULTIPART_REQUEST.PORT_STATS.v3	msg	object	True			
 3	MULTIPART_REQUEST.PORT_STATS.v3	msg.body	object	True			
 3	MULTIPART_REQUEST.PORT_STATS.v3	msg.body.port_no	uint32	True			True
 3	MULTIPART_REQUEST.PORT_STATS.v3	msg.type	PORT_STATS	True			
-3	MULTIPART_REQUEST.PORT_STATS.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.PORT_STATS.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.PORT_STATS.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.PORT_STATS.v3	msg	object	True			
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body	array	True			
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0	object	False	msg.body=null		
@@ -1341,13 +1402,15 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.tx_packets	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.port_no	uint32	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.type	PORT_STATS	True			
-3	MULTIPART_REPLY.PORT_STATS.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.flags.0	MORE	False	msg.body.0.duration_nsec=0,msg.body.0.duration_sec=0,msg.flags.0=MORE		
 3	MULTIPART_REQUEST.QUEUE.v3	msg	object	True			
 3	MULTIPART_REQUEST.QUEUE.v3	msg.body	object	True			
 3	MULTIPART_REQUEST.QUEUE.v3	msg.body.port_no	uint32	True			True
 3	MULTIPART_REQUEST.QUEUE.v3	msg.body.queue_id	uint32	True			True
 3	MULTIPART_REQUEST.QUEUE.v3	msg.type	QUEUE	True			
-3	MULTIPART_REQUEST.QUEUE.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.QUEUE.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.QUEUE.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.QUEUE.v3	msg	object	True			
 3	MULTIPART_REPLY.QUEUE.v3	msg.body	array	True			
 3	MULTIPART_REPLY.QUEUE.v3	msg.body.0	object	False	msg.body=null		
@@ -1359,12 +1422,14 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.QUEUE.v3	msg.body.0.port_no	uint32	True			True
 3	MULTIPART_REPLY.QUEUE.v3	msg.body.0.duration_nsec	uint32	True		msg.body.0.duration_nsec=0	
 3	MULTIPART_REPLY.QUEUE.v3	msg.type	QUEUE	True			
-3	MULTIPART_REPLY.QUEUE.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.QUEUE.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.QUEUE.v3	msg.flags.0	MORE	False	msg.body.0.duration_nsec=0,msg.body.0.duration_sec=0,msg.flags.0=MORE		
 3	MULTIPART_REQUEST.GROUP.v3	msg	object	True			
 3	MULTIPART_REQUEST.GROUP.v3	msg.body	object	True			
 3	MULTIPART_REQUEST.GROUP.v3	msg.body.group_id	uint32	True			True
 3	MULTIPART_REQUEST.GROUP.v3	msg.type	GROUP	True			
-3	MULTIPART_REQUEST.GROUP.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.GROUP.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.GROUP.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.GROUP.v3	msg	object	True			
 3	MULTIPART_REPLY.GROUP.v3	msg.body	array	True			
 3	MULTIPART_REPLY.GROUP.v3	msg.body.0	object	False	msg.body=null		
@@ -1379,10 +1444,12 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.GROUP.v3	msg.body.0.ref_count	uint32	True			True
 3	MULTIPART_REPLY.GROUP.v3	msg.body.0.duration_nsec	uint32	True			True
 3	MULTIPART_REPLY.GROUP.v3	msg.type	GROUP	True			
-3	MULTIPART_REPLY.GROUP.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.GROUP.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.GROUP.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REQUEST.GROUP_FEATURES.v3	msg	object	True			
 3	MULTIPART_REQUEST.GROUP_FEATURES.v3	msg.type	GROUP_FEATURES	True			
-3	MULTIPART_REQUEST.GROUP_FEATURES.v3	msg.flags	uint16	True			True
+3	MULTIPART_REQUEST.GROUP_FEATURES.v3	msg.flags	array	True			
+3	MULTIPART_REQUEST.GROUP_FEATURES.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg	object	True			
 3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.body	object	True			
 3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.body.max_groups_ff	uint32	True			True
@@ -1400,12 +1467,14 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.body.max_groups_sel	uint32	True			True
 3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.body.types	uint32	True			True
 3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.type	GROUP_FEATURES	True			
-3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.flags	uint16	True			True
+3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.flags	array	True			
+3	MULTIPART_REPLY.GROUP_FEATURES.v3	msg.flags.0	MORE	False	msg.flags.0=MORE		
 3	MULTIPART_REQUEST.METER.v3	msg	object	True			ERROR
 3	MULTIPART_REQUEST.METER.v3	msg.body	object	True			ERROR
 3	MULTIPART_REQUEST.METER.v3	msg.body.meter_id	uint32	True			ERROR
 3	MULTIPART_REQUEST.METER.v3	msg.type	METER	True			ERROR
-3	MULTIPART_REQUEST.METER.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REQUEST.METER.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REQUEST.METER.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REPLY.METER.v3	msg	object	True			ERROR
 3	MULTIPART_REPLY.METER.v3	msg.body	array	True			ERROR
 3	MULTIPART_REPLY.METER.v3	msg.body.0	object	True			ERROR
@@ -1420,12 +1489,14 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.METER.v3	msg.body.0.bands.0.byte_count	uint64	True			ERROR
 3	MULTIPART_REPLY.METER.v3	msg.body.0.duration_nsec	uint32	True			ERROR
 3	MULTIPART_REPLY.METER.v3	msg.type	METER	True			ERROR
-3	MULTIPART_REPLY.METER.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REPLY.METER.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REPLY.METER.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REQUEST.METER_CONFIG.v3	msg	object	True			ERROR
 3	MULTIPART_REQUEST.METER_CONFIG.v3	msg.body	object	True			ERROR
 3	MULTIPART_REQUEST.METER_CONFIG.v3	msg.body.meter_id	uint32	True			ERROR
 3	MULTIPART_REQUEST.METER_CONFIG.v3	msg.type	METER_CONFIG	True			ERROR
-3	MULTIPART_REQUEST.METER_CONFIG.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REQUEST.METER_CONFIG.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REQUEST.METER_CONFIG.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REPLY.METER_CONFIG.v3	msg	object	True			ERROR
 3	MULTIPART_REPLY.METER_CONFIG.v3	msg.body	array	True			ERROR
 3	MULTIPART_REPLY.METER_CONFIG.v3	msg.body.0	object	True			ERROR
@@ -1437,10 +1508,12 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.METER_CONFIG.v3	msg.body.0.flags	uint16	True			ERROR
 3	MULTIPART_REPLY.METER_CONFIG.v3	msg.body.0.meter_id	uint32	True			ERROR
 3	MULTIPART_REPLY.METER_CONFIG.v3	msg.type	METER_CONFIG	True			ERROR
-3	MULTIPART_REPLY.METER_CONFIG.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REPLY.METER_CONFIG.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REPLY.METER_CONFIG.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REQUEST.METER_FEATURES.v3	msg	object	True			ERROR
 3	MULTIPART_REQUEST.METER_FEATURES.v3	msg.type	METER_FEATURES	True			ERROR
-3	MULTIPART_REQUEST.METER_FEATURES.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REQUEST.METER_FEATURES.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REQUEST.METER_FEATURES.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REPLY.METER_FEATURES.v3	msg	object	True			ERROR
 3	MULTIPART_REPLY.METER_FEATURES.v3	msg.body	object	True			ERROR
 3	MULTIPART_REPLY.METER_FEATURES.v3	msg.body.max_meter	uint32	True			ERROR
@@ -1449,7 +1522,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.METER_FEATURES.v3	msg.body.max_bands	uint8	True			ERROR
 3	MULTIPART_REPLY.METER_FEATURES.v3	msg.body.max_color	uint8	True			ERROR
 3	MULTIPART_REPLY.METER_FEATURES.v3	msg.type	METER_FEATURES	True			ERROR
-3	MULTIPART_REPLY.METER_FEATURES.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REPLY.METER_FEATURES.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REPLY.METER_FEATURES.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg	object	True			ERROR
 3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.body	array	True			ERROR
 3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.body.0	object	True			ERROR
@@ -1489,7 +1563,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.body.0.match	array	True			ERROR
 3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.body.0.match.0	ETH_DST	True			ERROR
 3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.type	TABLE_FEATURES	True			ERROR
-3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REQUEST.TABLE_FEATURES.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg	object	True			ERROR
 3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.body	array	True			ERROR
 3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.body.0	object	True			ERROR
@@ -1529,10 +1604,12 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.body.0.match	array	True			ERROR
 3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.body.0.match.0	ETH_DST	True			ERROR
 3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.type	TABLE_FEATURES	True			ERROR
-3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REPLY.TABLE_FEATURES.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REQUEST.PORT_DESC.v3	msg	object	True			ERROR
 3	MULTIPART_REQUEST.PORT_DESC.v3	msg.type	PORT_DESC	True			ERROR
-3	MULTIPART_REQUEST.PORT_DESC.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REQUEST.PORT_DESC.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REQUEST.PORT_DESC.v3	msg.flags.0	MORE	True			ERROR
 3	MULTIPART_REPLY.PORT_DESC.v3	msg	object	True			ERROR
 3	MULTIPART_REPLY.PORT_DESC.v3	msg.body	array	True			ERROR
 3	MULTIPART_REPLY.PORT_DESC.v3	msg.body.0	object	True			ERROR
@@ -1554,7 +1631,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.PORT_DESC.v3	msg.body.0.config.0	PORT_DOWN	True			ERROR
 3	MULTIPART_REPLY.PORT_DESC.v3	msg.body.0.port_no	uint32	True			ERROR
 3	MULTIPART_REPLY.PORT_DESC.v3	msg.type	PORT_DESC	True			ERROR
-3	MULTIPART_REPLY.PORT_DESC.v3	msg.flags	uint16	True			ERROR
+3	MULTIPART_REPLY.PORT_DESC.v3	msg.flags	array	True			ERROR
+3	MULTIPART_REPLY.PORT_DESC.v3	msg.flags.0	MORE	True			ERROR
 3	BARRIER_REQUEST.v3	msg	null	False			
 3	BARRIER_REPLY.v3	msg	null	False			
 3	QUEUE_GET_CONFIG_REQUEST.v3	msg	object	True			
@@ -1765,7 +1843,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	TABLE_MOD.v4	msg.config	uint32	True			True
 4	MULTIPART_REQUEST.DESC.v4	msg	object	True			
 4	MULTIPART_REQUEST.DESC.v4	msg.type	DESC	True			
-4	MULTIPART_REQUEST.DESC.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.DESC.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.DESC.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.DESC.v4	msg	object	True			
 4	MULTIPART_REPLY.DESC.v4	msg.body	object	True			
 4	MULTIPART_REPLY.DESC.v4	msg.body.sw_desc	str255	True			
@@ -1774,7 +1853,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.DESC.v4	msg.body.mfr_desc	str255	True			
 4	MULTIPART_REPLY.DESC.v4	msg.body.serial_num	str31	True			
 4	MULTIPART_REPLY.DESC.v4	msg.type	DESC	True			
-4	MULTIPART_REPLY.DESC.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.DESC.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.DESC.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.FLOW.v4	msg	object	True			
 4	MULTIPART_REQUEST.FLOW.v4	msg.body	object	True			
 4	MULTIPART_REQUEST.FLOW.v4	msg.body.out_group	ANY	True			
@@ -1788,7 +1868,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REQUEST.FLOW.v4	msg.body.match.0.value	macaddress	True			True
 4	MULTIPART_REQUEST.FLOW.v4	msg.body.cookie_mask	uint64	True			True
 4	MULTIPART_REQUEST.FLOW.v4	msg.type	FLOW	True			
-4	MULTIPART_REQUEST.FLOW.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.FLOW.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.FLOW.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.FLOW.v4	msg	object	True			
 4	MULTIPART_REPLY.FLOW.v4	msg.body	array	True			
 4	MULTIPART_REPLY.FLOW.v4	msg.body.0	object	False	msg.body=null		
@@ -1816,7 +1897,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.FLOW.v4	msg.body.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
 4	MULTIPART_REPLY.FLOW.v4	msg.body.0.instructions.0.actions.0.port	CONTROLLER	True			
 4	MULTIPART_REPLY.FLOW.v4	msg.type	FLOW	True			
-4	MULTIPART_REPLY.FLOW.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.FLOW.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.FLOW.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.AGGREGATE.v4	msg	object	True			
 4	MULTIPART_REQUEST.AGGREGATE.v4	msg.body	object	True			
 4	MULTIPART_REQUEST.AGGREGATE.v4	msg.body.out_group	ANY	True			
@@ -1830,17 +1912,20 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REQUEST.AGGREGATE.v4	msg.body.match.0.value	macaddress	True			True
 4	MULTIPART_REQUEST.AGGREGATE.v4	msg.body.cookie_mask	uint64	True			True
 4	MULTIPART_REQUEST.AGGREGATE.v4	msg.type	AGGREGATE	True			
-4	MULTIPART_REQUEST.AGGREGATE.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.AGGREGATE.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.AGGREGATE.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.AGGREGATE.v4	msg	object	True			
 4	MULTIPART_REPLY.AGGREGATE.v4	msg.body	object	True			
 4	MULTIPART_REPLY.AGGREGATE.v4	msg.body.packet_count	uint64	True			True
 4	MULTIPART_REPLY.AGGREGATE.v4	msg.body.byte_count	uint64	True			True
 4	MULTIPART_REPLY.AGGREGATE.v4	msg.body.flow_count	uint32	True			True
 4	MULTIPART_REPLY.AGGREGATE.v4	msg.type	AGGREGATE	True			
-4	MULTIPART_REPLY.AGGREGATE.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.AGGREGATE.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.AGGREGATE.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.TABLE.v4	msg	object	True			
 4	MULTIPART_REQUEST.TABLE.v4	msg.type	TABLE	True			
-4	MULTIPART_REQUEST.TABLE.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.TABLE.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.TABLE.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.TABLE.v4	msg	object	True			
 4	MULTIPART_REPLY.TABLE.v4	msg.body	array	True			
 4	MULTIPART_REPLY.TABLE.v4	msg.body.0	object	False	msg.body=null		
@@ -1849,12 +1934,14 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.TABLE.v4	msg.body.0.table_id	uint8	True			True
 4	MULTIPART_REPLY.TABLE.v4	msg.body.0.active_count	uint32	True			True
 4	MULTIPART_REPLY.TABLE.v4	msg.type	TABLE	True			
-4	MULTIPART_REPLY.TABLE.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.TABLE.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.TABLE.v4	msg.flags.0	MORE	False	msg.body.0.max_entries=0,msg.body.0.name='',msg.body.0.wildcards=0,msg.flags.0=MORE		
 4	MULTIPART_REQUEST.PORT_STATS.v4	msg	object	True			
 4	MULTIPART_REQUEST.PORT_STATS.v4	msg.body	object	True			
 4	MULTIPART_REQUEST.PORT_STATS.v4	msg.body.port_no	uint32	True			True
 4	MULTIPART_REQUEST.PORT_STATS.v4	msg.type	PORT_STATS	True			
-4	MULTIPART_REQUEST.PORT_STATS.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.PORT_STATS.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.PORT_STATS.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.PORT_STATS.v4	msg	object	True			
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body	array	True			
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0	object	False	msg.body=null		
@@ -1874,13 +1961,15 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.tx_packets	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.port_no	uint32	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.type	PORT_STATS	True			
-4	MULTIPART_REPLY.PORT_STATS.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.QUEUE.v4	msg	object	True			
 4	MULTIPART_REQUEST.QUEUE.v4	msg.body	object	True			
 4	MULTIPART_REQUEST.QUEUE.v4	msg.body.port_no	uint32	True			True
 4	MULTIPART_REQUEST.QUEUE.v4	msg.body.queue_id	uint32	True			True
 4	MULTIPART_REQUEST.QUEUE.v4	msg.type	QUEUE	True			
-4	MULTIPART_REQUEST.QUEUE.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.QUEUE.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.QUEUE.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.QUEUE.v4	msg	object	True			
 4	MULTIPART_REPLY.QUEUE.v4	msg.body	array	True			
 4	MULTIPART_REPLY.QUEUE.v4	msg.body.0	object	False	msg.body=null		
@@ -1892,12 +1981,14 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.QUEUE.v4	msg.body.0.port_no	uint32	True			True
 4	MULTIPART_REPLY.QUEUE.v4	msg.body.0.duration_nsec	uint32	True			True
 4	MULTIPART_REPLY.QUEUE.v4	msg.type	QUEUE	True			
-4	MULTIPART_REPLY.QUEUE.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.QUEUE.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.QUEUE.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.GROUP.v4	msg	object	True			
 4	MULTIPART_REQUEST.GROUP.v4	msg.body	object	True			
 4	MULTIPART_REQUEST.GROUP.v4	msg.body.group_id	uint32	True			True
 4	MULTIPART_REQUEST.GROUP.v4	msg.type	GROUP	True			
-4	MULTIPART_REQUEST.GROUP.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.GROUP.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.GROUP.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.GROUP.v4	msg	object	True			
 4	MULTIPART_REPLY.GROUP.v4	msg.body	array	True			
 4	MULTIPART_REPLY.GROUP.v4	msg.body.0	object	False	msg.body=null		
@@ -1912,10 +2003,12 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.GROUP.v4	msg.body.0.ref_count	uint32	True			True
 4	MULTIPART_REPLY.GROUP.v4	msg.body.0.duration_nsec	uint32	True			True
 4	MULTIPART_REPLY.GROUP.v4	msg.type	GROUP	True			
-4	MULTIPART_REPLY.GROUP.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.GROUP.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.GROUP.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.GROUP_FEATURES.v4	msg	object	True			
 4	MULTIPART_REQUEST.GROUP_FEATURES.v4	msg.type	GROUP_FEATURES	True			
-4	MULTIPART_REQUEST.GROUP_FEATURES.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.GROUP_FEATURES.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.GROUP_FEATURES.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg	object	True			
 4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.body	object	True			
 4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.body.max_groups_ff	uint32	True			True
@@ -1933,12 +2026,14 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.body.max_groups_sel	uint32	True			True
 4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.body.types	uint32	True			True
 4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.type	GROUP_FEATURES	True			
-4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.GROUP_FEATURES.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.METER.v4	msg	object	True			
 4	MULTIPART_REQUEST.METER.v4	msg.body	object	True			
 4	MULTIPART_REQUEST.METER.v4	msg.body.meter_id	uint32	True			True
 4	MULTIPART_REQUEST.METER.v4	msg.type	METER	True			
-4	MULTIPART_REQUEST.METER.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.METER.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.METER.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.METER.v4	msg	object	True			
 4	MULTIPART_REPLY.METER.v4	msg.body	array	True			
 4	MULTIPART_REPLY.METER.v4	msg.body.0	object	False	msg.body=null		
@@ -1953,12 +2048,14 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.METER.v4	msg.body.0.bands.0.byte_count	uint64	True			True
 4	MULTIPART_REPLY.METER.v4	msg.body.0.duration_nsec	uint32	True			True
 4	MULTIPART_REPLY.METER.v4	msg.type	METER	True			
-4	MULTIPART_REPLY.METER.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.METER.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.METER.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.METER_CONFIG.v4	msg	object	True			
 4	MULTIPART_REQUEST.METER_CONFIG.v4	msg.body	object	True			
 4	MULTIPART_REQUEST.METER_CONFIG.v4	msg.body.meter_id	uint32	True			True
 4	MULTIPART_REQUEST.METER_CONFIG.v4	msg.type	METER_CONFIG	True			
-4	MULTIPART_REQUEST.METER_CONFIG.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.METER_CONFIG.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.METER_CONFIG.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.METER_CONFIG.v4	msg	object	True			
 4	MULTIPART_REPLY.METER_CONFIG.v4	msg.body	array	True			
 4	MULTIPART_REPLY.METER_CONFIG.v4	msg.body.0	object	False	msg.body=null		
@@ -1970,10 +2067,12 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.METER_CONFIG.v4	msg.body.0.flags	uint16	True			True
 4	MULTIPART_REPLY.METER_CONFIG.v4	msg.body.0.meter_id	uint32	True			True
 4	MULTIPART_REPLY.METER_CONFIG.v4	msg.type	METER_CONFIG	True			
-4	MULTIPART_REPLY.METER_CONFIG.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.METER_CONFIG.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.METER_CONFIG.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.METER_FEATURES.v4	msg	object	True			
 4	MULTIPART_REQUEST.METER_FEATURES.v4	msg.type	METER_FEATURES	True			
-4	MULTIPART_REQUEST.METER_FEATURES.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.METER_FEATURES.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.METER_FEATURES.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.METER_FEATURES.v4	msg	object	True			
 4	MULTIPART_REPLY.METER_FEATURES.v4	msg.body	object	True			
 4	MULTIPART_REPLY.METER_FEATURES.v4	msg.body.max_meter	uint32	True			True
@@ -1982,7 +2081,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.METER_FEATURES.v4	msg.body.max_bands	uint8	True			True
 4	MULTIPART_REPLY.METER_FEATURES.v4	msg.body.max_color	uint8	True			True
 4	MULTIPART_REPLY.METER_FEATURES.v4	msg.type	METER_FEATURES	True			
-4	MULTIPART_REPLY.METER_FEATURES.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.METER_FEATURES.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.METER_FEATURES.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg	object	True			
 4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.body	array	True			
 4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.body.0	object	False	msg.body=null		
@@ -2022,7 +2122,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.body.0.match	array	True			
 4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.body.0.match.0	ETH_DST	False	msg.body.0.match.0=ETH_DST		
 4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.type	TABLE_FEATURES	True			
-4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.TABLE_FEATURES.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg	object	True			
 4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.body	array	True			
 4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.body.0	object	False	msg.body=null		
@@ -2062,10 +2163,12 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.body.0.match	array	True			
 4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.body.0.match.0	ETH_DST	False	msg.body.0.match.0=ETH_DST		
 4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.type	TABLE_FEATURES	True			
-4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.TABLE_FEATURES.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REQUEST.PORT_DESC.v4	msg	object	True			
 4	MULTIPART_REQUEST.PORT_DESC.v4	msg.type	PORT_DESC	True			
-4	MULTIPART_REQUEST.PORT_DESC.v4	msg.flags	uint16	True			True
+4	MULTIPART_REQUEST.PORT_DESC.v4	msg.flags	array	True			
+4	MULTIPART_REQUEST.PORT_DESC.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	MULTIPART_REPLY.PORT_DESC.v4	msg	object	True			
 4	MULTIPART_REPLY.PORT_DESC.v4	msg.body	array	True			
 4	MULTIPART_REPLY.PORT_DESC.v4	msg.body.0	object	False	msg.body=null		
@@ -2087,7 +2190,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.PORT_DESC.v4	msg.body.0.config.0	PORT_DOWN	False	msg.body.0.config.0=PORT_DOWN		
 4	MULTIPART_REPLY.PORT_DESC.v4	msg.body.0.port_no	uint32	True			True
 4	MULTIPART_REPLY.PORT_DESC.v4	msg.type	PORT_DESC	True			
-4	MULTIPART_REPLY.PORT_DESC.v4	msg.flags	uint16	True			True
+4	MULTIPART_REPLY.PORT_DESC.v4	msg.flags	array	True			
+4	MULTIPART_REPLY.PORT_DESC.v4	msg.flags.0	MORE	False	msg.flags.0=MORE		
 4	BARRIER_REQUEST.v4	msg	null	False			
 4	BARRIER_REPLY.v4	msg	null	False			
 4	QUEUE_GET_CONFIG_REQUEST.v4	msg	object	True			

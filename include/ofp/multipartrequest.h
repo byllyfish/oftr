@@ -13,7 +13,7 @@ class MultipartRequest
                          false> {
  public:
   OFPMultipartType requestType() const { return type_; }
-  UInt16 requestFlags() const { return flags_; }
+  OFPMultipartFlags requestFlags() const { return flags_; }
   const UInt8 *requestBody() const {
     return BytePtr(this) + sizeof(MultipartRequest);
   }
@@ -39,7 +39,7 @@ class MultipartRequest
  private:
   Header header_;
   Big<OFPMultipartType> type_;
-  Big16 flags_;
+  Big<OFPMultipartFlags> flags_;
   Padding<4> pad_;
 
   // Only MultipartRequestBuilder can construct an instance.
@@ -66,7 +66,7 @@ class MultipartRequestBuilder {
   UInt8 version() const { return msg_.header_.version(); }
 
   void setRequestType(OFPMultipartType type) { msg_.type_ = type; }
-  void setRequestFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setRequestFlags(OFPMultipartFlags flags) { msg_.flags_ = flags; }
   void setRequestBody(const void *data, size_t length) {
     body_.set(data, length);
   }
