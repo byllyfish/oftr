@@ -92,7 +92,7 @@ type: FLOW_REMOVED
 msg:
   cookie: 0xffffffffffffffff
   priority: 0xffff
-  reason: 0xff
+  reason: IDLE_TIMEOUT
   table_id: 0xff
   duration_sec: 0xffffffff
   duration_nsec: 0xffffffff
