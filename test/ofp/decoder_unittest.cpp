@@ -1163,7 +1163,7 @@ TEST(decoder, ofp_metermod_v4) {
       "666666667777777788000000",
       "---\ntype:            METER_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  command:        "
-      " 0x0001\n  flags:           0x2222\n  meter_id:        0x33333333\n  "
+      " MODIFY\n  flags:           [ PKTPS, '0x00002220' ]\n  meter_id:        0x33333333\n  "
       "bands:           \n    - type:            DROP\n      rate:      "
       "      1145324612\n      burst_size:      1431655765\n    - type:        "
       "    DSCP_REMARK\n      rate:            1717986918\n      "

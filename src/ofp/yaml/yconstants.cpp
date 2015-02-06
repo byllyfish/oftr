@@ -110,6 +110,12 @@ static const llvm::StringRef sControllerRole[] = {
     "ROLE_SLAVE",
 };
 
+static const llvm::StringRef sMeterModCommand[] = { 
+    "ADD",
+    "MODIFY",
+    "DELETE",
+};
+
 static const llvm::StringRef sErrorTypes[] = {
   "OFPET_HELLO_FAILED",
   "OFPET_BAD_REQUEST",
@@ -154,9 +160,10 @@ EnumConverter<OFPFlowRemovedReason>
 
 EnumConverter<OFPControllerRole> llvm::yaml::ScalarTraits<OFPControllerRole>::converter{sControllerRole};
 
+EnumConverter<OFPMeterModCommand> llvm::yaml::ScalarTraits<OFPMeterModCommand>::converter{sMeterModCommand};
+
 EnumConverter<OFPErrorType>
     llvm::yaml::ScalarTraits<OFPErrorType>::converter{sErrorTypes, "OFPET_EXPERIMENTER"};
-
 
 #define STR_ENTRY(s)   { s, #s }
 

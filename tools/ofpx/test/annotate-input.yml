@@ -631,8 +631,8 @@ msg:
 version: 0x04
 type: METER_MOD
 msg:
-  command: 0xffff
-  flags: 0xffff
+  command: MODIFY
+  flags: [ KBPS ]
   meter_id: 0xffffffff
   bands:
     - type: DROP

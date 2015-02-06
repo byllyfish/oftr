@@ -12,8 +12,10 @@ namespace yaml {
 template <>
 struct MappingTraits<ofp::MeterMod> {
   static void mapping(IO &io, ofp::MeterMod &msg) {
-    io.mapRequired("command", msg.command_);
-    io.mapRequired("flags", msg.flags_);
+    ofp::OFPMeterModCommand command = msg.command();
+    ofp::OFPMeterConfigFlags flags = msg.flags();
+    io.mapRequired("command",command);
+    io.mapRequired("flags", flags);
     io.mapRequired("meter_id", msg.meterId_);
 
     ofp::MeterBandRange meterBands = msg.meterBands();
@@ -24,8 +26,12 @@ struct MappingTraits<ofp::MeterMod> {
 template <>
 struct MappingTraits<ofp::MeterModBuilder> {
   static void mapping(IO &io, ofp::MeterModBuilder &msg) {
-    io.mapRequired("command", msg.msg_.command_);
-    io.mapRequired("flags", msg.msg_.flags_);
+    ofp::OFPMeterModCommand command;
+    io.mapRequired("command", command);
+    msg.setCommand(command);
+    ofp::OFPMeterConfigFlags flags;
+    io.mapRequired("flags", flags);
+    msg.setFlags(flags);
     io.mapRequired("meter_id", msg.msg_.meterId_);
     io.mapRequired("bands", msg.meterBands_);
   }

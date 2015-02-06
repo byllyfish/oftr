@@ -10,8 +10,8 @@ namespace ofp {
 
 class MeterMod : public ProtocolMsg<MeterMod, OFPT_METER_MOD, 16> {
  public:
-  UInt16 command() const { return command_; }
-  UInt16 flags() const { return flags_; }
+  OFPMeterModCommand command() const { return command_; }
+  OFPMeterConfigFlags flags() const { return flags_; }
   UInt32 meterId() const { return meterId_; }
   MeterBandRange meterBands() const;
 
@@ -19,8 +19,8 @@ class MeterMod : public ProtocolMsg<MeterMod, OFPT_METER_MOD, 16> {
 
  private:
   Header header_;
-  Big16 command_;
-  Big16 flags_;
+  Big<OFPMeterModCommand> command_;
+  Big<OFPMeterConfigFlags> flags_;
   Big32 meterId_;
 
   // Only MeterModBuilder can construct an instance.
@@ -39,8 +39,8 @@ class MeterModBuilder {
  public:
   MeterModBuilder() = default;
 
-  void setCommand(UInt16 command) { msg_.command_ = command; }
-  void setFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setCommand(OFPMeterModCommand command) { msg_.command_ = command; }
+  void setFlags(OFPMeterConfigFlags flags) { msg_.flags_ = flags; }
   void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
   void setMeterBands(const MeterBandRange &meterBands) {
     meterBands_.assign(meterBands);

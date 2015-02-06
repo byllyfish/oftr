@@ -2088,8 +2088,8 @@ TEST(encoder, meter_mod_v4) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        command: 1
-        flags: 0x2222
+        command: MODIFY
+        flags: [ 0x2222 ]
         meter_id: 0x33333333
         bands:
           - type: DROP

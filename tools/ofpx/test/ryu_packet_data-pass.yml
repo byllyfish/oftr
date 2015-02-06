@@ -1598,8 +1598,8 @@ type:            METER_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
-  command:         0x0000
-  flags:           0x000E
+  command:         ADD
+  flags:           [ PKTPS, BURST, STATS ]
   meter_id:        0x00000064
   bands:           
     - type:            DROP
@@ -4278,8 +4278,8 @@ type:            METER_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
-  command:         0x0000
-  flags:           0x000E
+  command:         ADD
+  flags:           [ PKTPS, BURST, STATS ]
   meter_id:        0x00000064
   bands:           
     - type:            DROP

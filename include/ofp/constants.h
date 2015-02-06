@@ -523,6 +523,27 @@ inline OFPMultipartFlags operator|(OFPMultipartFlags lhs, OFPMultipartFlags rhs)
   return static_cast<OFPMultipartFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+enum OFPMeterModCommand : UInt16 {
+  OFPMC_ADD = 0,
+  OFPMC_MODIFY = 1,
+  OFPMC_DELETE = 2
+};
+
+enum OFPMeterConfigFlags : UInt16 {
+  OFPMF_NONE = 0,
+
+  OFPMF_KBPS = 1 << 0,
+  OFPMF_PKTPS = 1 << 1,
+  OFPMF_BURST = 1 << 2,
+  OFPMF_STATS = 1 << 3,
+
+  OFPMF_OTHER_METER_CONFIG_FLAGS = 0xFFF0
+};
+
+inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs, OFPMeterConfigFlags rhs) {
+  return static_cast<OFPMeterConfigFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 }  // namespace ofp
 
 #endif  // OFP_CONSTANTS_H_

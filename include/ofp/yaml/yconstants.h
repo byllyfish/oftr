@@ -42,6 +42,7 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowModCommand, format("0x
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPPortStatusReason, format("0x%02X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowRemovedReason, format("0x%02X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPControllerRole, format("0x%08X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterModCommand, format("0x%04X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType, format("0x%04X", value))
 
 template <>
@@ -222,6 +223,18 @@ struct ScalarBitSetTraits<ofp::OFPMultipartFlags> {
     OFP_YAML_BITCASE(OFPMPF_, MORE);
 
     io.bitSetCaseOther(value, ofp::OFPMPF_OTHER_MULTIPART_FLAGS);
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPMeterConfigFlags> {
+  static void bitset(IO &io, ofp::OFPMeterConfigFlags &value) {
+    OFP_YAML_BITCASE(OFPMF_, KBPS);
+    OFP_YAML_BITCASE(OFPMF_, PKTPS);
+    OFP_YAML_BITCASE(OFPMF_, BURST);
+    OFP_YAML_BITCASE(OFPMF_, STATS);
+
+    io.bitSetCaseOther(value, ofp::OFPMF_OTHER_METER_CONFIG_FLAGS);
   }
 };
 

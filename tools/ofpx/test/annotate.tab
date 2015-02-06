@@ -71,7 +71,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	FLOW_REMOVED.v1	msg.priority	uint16	True			True
 1	FLOW_REMOVED.v1	msg.hard_timeout	uint16	True		msg.hard_timeout=0	
 1	FLOW_REMOVED.v1	msg.byte_count	uint64	True			True
-1	FLOW_REMOVED.v1	msg.reason	uint8	True			True
+1	FLOW_REMOVED.v1	msg.reason	IDLE_TIMEOUT	True			
 1	FLOW_REMOVED.v1	msg.duration_nsec	uint32	True			True
 1	FLOW_REMOVED.v1	msg.packet_count	uint64	True			True
 1	FLOW_REMOVED.v1	msg.duration_sec	uint32	True			True
@@ -551,8 +551,9 @@ version	type	keypath	syntax	required	default	missing	modify
 1	SET_ASYNC.v1	msg.packet_in_mask_master	uint32	True			ERROR
 1	SET_ASYNC.v1	msg.packet_in_mask_slave	uint32	True			ERROR
 1	METER_MOD.v1	msg	object	True			ERROR
-1	METER_MOD.v1	msg.command	uint16	True			ERROR
-1	METER_MOD.v1	msg.flags	uint16	True			ERROR
+1	METER_MOD.v1	msg.command	MODIFY	True			ERROR
+1	METER_MOD.v1	msg.flags	array	True			ERROR
+1	METER_MOD.v1	msg.flags.0	KBPS	True			ERROR
 1	METER_MOD.v1	msg.meter_id	uint32	True			ERROR
 1	METER_MOD.v1	msg.bands	array	True			ERROR
 1	METER_MOD.v1	msg.bands.0	object	True			ERROR
@@ -631,7 +632,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FLOW_REMOVED.v2	msg.priority	uint16	True			True
 2	FLOW_REMOVED.v2	msg.hard_timeout	uint16	True		msg.hard_timeout=0	
 2	FLOW_REMOVED.v2	msg.byte_count	uint64	True			True
-2	FLOW_REMOVED.v2	msg.reason	uint8	True			True
+2	FLOW_REMOVED.v2	msg.reason	IDLE_TIMEOUT	True			
 2	FLOW_REMOVED.v2	msg.duration_nsec	uint32	True			True
 2	FLOW_REMOVED.v2	msg.packet_count	uint64	True			True
 2	FLOW_REMOVED.v2	msg.duration_sec	uint32	True			True
@@ -1111,8 +1112,9 @@ version	type	keypath	syntax	required	default	missing	modify
 2	SET_ASYNC.v2	msg.packet_in_mask_master	uint32	True			ERROR
 2	SET_ASYNC.v2	msg.packet_in_mask_slave	uint32	True			ERROR
 2	METER_MOD.v2	msg	object	True			ERROR
-2	METER_MOD.v2	msg.command	uint16	True			ERROR
-2	METER_MOD.v2	msg.flags	uint16	True			ERROR
+2	METER_MOD.v2	msg.command	MODIFY	True			ERROR
+2	METER_MOD.v2	msg.flags	array	True			ERROR
+2	METER_MOD.v2	msg.flags.0	KBPS	True			ERROR
 2	METER_MOD.v2	msg.meter_id	uint32	True			ERROR
 2	METER_MOD.v2	msg.bands	array	True			ERROR
 2	METER_MOD.v2	msg.bands.0	object	True			ERROR
@@ -1191,7 +1193,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FLOW_REMOVED.v3	msg.priority	uint16	True			True
 3	FLOW_REMOVED.v3	msg.hard_timeout	uint16	True			True
 3	FLOW_REMOVED.v3	msg.byte_count	uint64	True			True
-3	FLOW_REMOVED.v3	msg.reason	uint8	True			True
+3	FLOW_REMOVED.v3	msg.reason	IDLE_TIMEOUT	True			
 3	FLOW_REMOVED.v3	msg.duration_nsec	uint32	True			True
 3	FLOW_REMOVED.v3	msg.packet_count	uint64	True			True
 3	FLOW_REMOVED.v3	msg.duration_sec	uint32	True			True
@@ -1671,8 +1673,9 @@ version	type	keypath	syntax	required	default	missing	modify
 3	SET_ASYNC.v3	msg.packet_in_mask_master	uint32	True			ERROR
 3	SET_ASYNC.v3	msg.packet_in_mask_slave	uint32	True			ERROR
 3	METER_MOD.v3	msg	object	True			ERROR
-3	METER_MOD.v3	msg.command	uint16	True			ERROR
-3	METER_MOD.v3	msg.flags	uint16	True			ERROR
+3	METER_MOD.v3	msg.command	MODIFY	True			ERROR
+3	METER_MOD.v3	msg.flags	array	True			ERROR
+3	METER_MOD.v3	msg.flags.0	KBPS	True			ERROR
 3	METER_MOD.v3	msg.meter_id	uint32	True			ERROR
 3	METER_MOD.v3	msg.bands	array	True			ERROR
 3	METER_MOD.v3	msg.bands.0	object	True			ERROR
@@ -1751,7 +1754,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FLOW_REMOVED.v4	msg.priority	uint16	True			True
 4	FLOW_REMOVED.v4	msg.hard_timeout	uint16	True			True
 4	FLOW_REMOVED.v4	msg.byte_count	uint64	True			True
-4	FLOW_REMOVED.v4	msg.reason	uint8	True			True
+4	FLOW_REMOVED.v4	msg.reason	IDLE_TIMEOUT	True			
 4	FLOW_REMOVED.v4	msg.duration_nsec	uint32	True			True
 4	FLOW_REMOVED.v4	msg.packet_count	uint64	True			True
 4	FLOW_REMOVED.v4	msg.duration_sec	uint32	True			True
@@ -2231,8 +2234,9 @@ version	type	keypath	syntax	required	default	missing	modify
 4	SET_ASYNC.v4	msg.packet_in_mask_master	uint32	True			True
 4	SET_ASYNC.v4	msg.packet_in_mask_slave	uint32	True			True
 4	METER_MOD.v4	msg	object	True			
-4	METER_MOD.v4	msg.command	uint16	True			True
-4	METER_MOD.v4	msg.flags	uint16	True			True
+4	METER_MOD.v4	msg.command	MODIFY	True			
+4	METER_MOD.v4	msg.flags	array	True			
+4	METER_MOD.v4	msg.flags.0	KBPS	False	msg.flags.0=KBPS		
 4	METER_MOD.v4	msg.meter_id	uint32	True			True
 4	METER_MOD.v4	msg.bands	array	True			
 4	METER_MOD.v4	msg.bands.0	object	False	msg.bands=null		
