@@ -882,10 +882,10 @@ TEST(decoder, getasyncreplyv4) {
       "041B002011111111222222223333333344444444555555556666666677777777",
       "---\ntype:            GET_ASYNC_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "packet_in_mask_master: 0x22222222\n  packet_in_mask_slave: 0x33333333\n "
-      " port_status_mask_master: 0x44444444\n  port_status_mask_slave: "
-      "0x55555555\n  flow_removed_mask_master: 0x66666666\n  "
-      "flow_removed_mask_slave: 0x77777777\n...\n");
+      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n "
+      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  port_status_mask_slave: "
+      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, '0x66666660' ]\n  "
+      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, '0x77777770' ]\n...\n");
 }
 
 TEST(decoder, queuegetconfigrequestv4) {
@@ -942,10 +942,10 @@ TEST(decoder, setasyncv4) {
       "041C002011111111222222223333333344444444555555556666666677777777",
       "---\ntype:            SET_ASYNC\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "packet_in_mask_master: 0x22222222\n  packet_in_mask_slave: 0x33333333\n "
-      " port_status_mask_master: 0x44444444\n  port_status_mask_slave: "
-      "0x55555555\n  flow_removed_mask_master: 0x66666666\n  "
-      "flow_removed_mask_slave: 0x77777777\n...\n");
+      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n "
+      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  port_status_mask_slave: "
+      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, '0x66666660' ]\n  "
+      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, '0x77777770' ]\n...\n");
 }
 
 TEST(decoder, flowremovedv4) {

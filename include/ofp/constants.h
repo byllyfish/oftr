@@ -212,6 +212,18 @@ enum OFPPortStatusReason : UInt8 {
   OFPPR_MODIFY  = 2,
 };
 
+enum OFPPortStatusFlags : UInt32 {
+  OFPPRF_NONE = 0,
+  OFPPRF_ADD = 1 << 0,
+  OFPPRF_DELETE = 1 << 1,
+  OFPPRF_MODIFY = 1 << 2,
+  OFPPRF_OTHER_PORTSTATUS_FLAGS = 0xfffffff8
+};
+
+inline OFPPortStatusFlags operator|(OFPPortStatusFlags lhs, OFPPortStatusFlags rhs) {
+  return static_cast<OFPPortStatusFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPControllerMaxLen : UInt16 {
   OFPCML_MAX = 0xffe5,
   OFPCML_NO_BUFFER = 0xffff
@@ -345,10 +357,25 @@ enum OFPPacketInReason : UInt8 {
   OFPR_TABLE_MISS = 0,      // 1.4 name; instead of OFPR_NO_MATCH
   OFPR_APPLY_ACTION = 1,    // 1.4 name; instead of OFPR_ACTION
   OFPR_INVALID_TTL = 2,     // added in 1.2
-  OFPR_ACTION_SET =3,       // added in 1.4
+  OFPR_ACTION_SET = 3,      // added in 1.4
   OFPR_GROUP = 4,           // added in 1.4
   OFPR_PACKET_OUT = 5,      // added in 1.4
 };
+
+enum OFPPacketInFlags : UInt32 {
+  OFPRF_NONE = 0,
+  OFPRF_TABLE_MISS = 1 << 0,
+  OFPRF_APPLY_ACTION = 1 << 1,
+  OFPRF_INVALID_TTL = 1 << 2,
+  OFPRF_ACTION_SET = 1 << 3,
+  OFPRF_GROUP = 1 << 4,
+  OFPRF_PACKET_OUT = 1 << 5,
+  OFPRF_OTHER_PACKET_IN_FLAGS = 0xffffffC0
+};
+
+inline OFPPacketInFlags operator|(OFPPacketInFlags lhs, OFPPacketInFlags rhs) {
+  return static_cast<OFPPacketInFlags>(static_cast<UInt32>(lhs) | rhs);
+}
 
 enum OFPFlowModCommand : UInt8 {
   OFPFC_ADD = 0,
@@ -364,6 +391,19 @@ enum OFPFlowRemovedReason : UInt8 {
   OFPRR_DELETE = 2, 
   OFPRR_GROUP_DELETE = 3
 };
+
+enum OFPFlowRemovedFlags : UInt32 {
+  OFPRRF_NONE = 0,
+  OFPRRF_IDLE_TIMEOUT = 1 << 0, 
+  OFPRRF_HARD_TIMEOUT = 1 << 1, 
+  OFPRRF_DELETE = 1 << 2, 
+  OFPRRF_GROUP_DELETE = 1 << 3,
+  OFPRRF_OTHER_FLOWREMOVED_FLAGS = 0xfffffff0
+};
+
+inline OFPFlowRemovedFlags operator|(OFPFlowRemovedFlags lhs, OFPFlowRemovedFlags rhs) {
+  return static_cast<OFPFlowRemovedFlags>(static_cast<UInt32>(lhs) | rhs);
+}
 
 enum OFPFlowModFlags : UInt16 {
   OFPFF_NONE = 0,

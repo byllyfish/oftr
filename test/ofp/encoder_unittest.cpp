@@ -1563,12 +1563,12 @@ TEST(encoder, getasyncreplyv4) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        packet_in_mask_master: 0x22222222
-        packet_in_mask_slave: 0x33333333
-        port_status_mask_master: 0x44444444
-        port_status_mask_slave: 0x55555555
-        flow_removed_mask_master: 0x66666666
-        flow_removed_mask_slave: 0x77777777
+        packet_in_mask_master: [0x22222222]
+        packet_in_mask_slave: [0x33333333]
+        port_status_mask_master: [0x44444444]
+        port_status_mask_slave: [0x55555555]
+        flow_removed_mask_master: [0x66666666]
+        flow_removed_mask_slave: [0x77777777]
       )""";
 
   Encoder encoder{input};
@@ -1686,12 +1686,12 @@ TEST(encoder, setasyncv4) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        packet_in_mask_master: 0x22222222
-        packet_in_mask_slave: 0x33333333
-        port_status_mask_master: 0x44444444
-        port_status_mask_slave: 0x55555555
-        flow_removed_mask_master: 0x66666666
-        flow_removed_mask_slave: 0x77777777
+        packet_in_mask_master: [0x22222222]
+        packet_in_mask_slave: [0x33333333]
+        port_status_mask_master: [0x44444444]
+        port_status_mask_slave: [0x55555555]
+        flow_removed_mask_master: [0x66666666]
+        flow_removed_mask_slave: [0x77777777]
       )""";
 
   Encoder encoder{input};

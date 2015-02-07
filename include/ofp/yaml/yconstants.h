@@ -238,6 +238,43 @@ struct ScalarBitSetTraits<ofp::OFPMeterConfigFlags> {
   }
 };
 
+template <>
+struct ScalarBitSetTraits<ofp::OFPPacketInFlags> {
+  static void bitset(IO &io, ofp::OFPPacketInFlags &value) {
+    OFP_YAML_BITCASE(OFPRF_, TABLE_MISS);
+    OFP_YAML_BITCASE(OFPRF_, APPLY_ACTION);
+    OFP_YAML_BITCASE(OFPRF_, INVALID_TTL);
+    OFP_YAML_BITCASE(OFPRF_, ACTION_SET);
+    OFP_YAML_BITCASE(OFPRF_, GROUP);
+    OFP_YAML_BITCASE(OFPRF_, PACKET_OUT);
+
+    io.bitSetCaseOther(value, ofp::OFPRF_OTHER_PACKET_IN_FLAGS);
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPPortStatusFlags> {
+  static void bitset(IO &io, ofp::OFPPortStatusFlags &value) {
+    OFP_YAML_BITCASE(OFPPRF_, ADD);
+    OFP_YAML_BITCASE(OFPPRF_, DELETE);
+    OFP_YAML_BITCASE(OFPPRF_, MODIFY);
+
+    io.bitSetCaseOther(value, ofp::OFPPRF_OTHER_PORTSTATUS_FLAGS);
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPFlowRemovedFlags> {
+  static void bitset(IO &io, ofp::OFPFlowRemovedFlags &value) {
+    OFP_YAML_BITCASE(OFPRRF_, IDLE_TIMEOUT);
+    OFP_YAML_BITCASE(OFPRRF_, HARD_TIMEOUT);
+    OFP_YAML_BITCASE(OFPRRF_, DELETE);
+    OFP_YAML_BITCASE(OFPRRF_, GROUP_DELETE);
+
+    io.bitSetCaseOther(value, ofp::OFPRRF_OTHER_FLOWREMOVED_FLAGS);
+  }
+};
+
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1
 #undef OFP_YAML_MASKEDBITCASE

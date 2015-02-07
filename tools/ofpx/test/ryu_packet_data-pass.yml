@@ -1574,24 +1574,24 @@ type:            GET_ASYNC_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
-  packet_in_mask_master: 0x00000005
-  packet_in_mask_slave: 0x00000001
-  port_status_mask_master: 0x00000007
-  port_status_mask_slave: 0x00000003
-  flow_removed_mask_master: 0x0000000F
-  flow_removed_mask_slave: 0x00000003
+  packet_in_mask_master: [ TABLE_MISS, INVALID_TTL ]
+  packet_in_mask_slave: [ TABLE_MISS ]
+  port_status_mask_master: [ ADD, DELETE, MODIFY ]
+  port_status_mask_slave: [ ADD, DELETE ]
+  flow_removed_mask_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
+  flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT ]
 ...
 ---
 type:            SET_ASYNC
 xid:             0x00000000
 version:         0x04
 msg:             
-  packet_in_mask_master: 0x00000005
-  packet_in_mask_slave: 0x00000001
-  port_status_mask_master: 0x00000007
-  port_status_mask_slave: 0x00000003
-  flow_removed_mask_master: 0x0000000F
-  flow_removed_mask_slave: 0x00000003
+  packet_in_mask_master: [ TABLE_MISS, INVALID_TTL ]
+  packet_in_mask_slave: [ TABLE_MISS ]
+  port_status_mask_master: [ ADD, DELETE, MODIFY ]
+  port_status_mask_slave: [ ADD, DELETE ]
+  flow_removed_mask_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
+  flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT ]
 ...
 ---
 type:            METER_MOD

@@ -537,19 +537,31 @@ version	type	keypath	syntax	required	default	missing	modify
 1	ROLE_REPLY.v1	msg.generation_id	uint64	True			ERROR
 1	GET_ASYNC_REQUEST.v1	msg	null	True			ERROR
 1	GET_ASYNC_REPLY.v1	msg	object	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_master	uint32	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_slave	uint32	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_slave	uint32	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master	uint32	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_master	uint32	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_slave	uint32	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_mask_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_mask_master.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_mask_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_mask_slave.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
 1	SET_ASYNC.v1	msg	object	True			ERROR
-1	SET_ASYNC.v1	msg.port_status_mask_master	uint32	True			ERROR
-1	SET_ASYNC.v1	msg.port_status_mask_slave	uint32	True			ERROR
-1	SET_ASYNC.v1	msg.flow_removed_mask_slave	uint32	True			ERROR
-1	SET_ASYNC.v1	msg.flow_removed_mask_master	uint32	True			ERROR
-1	SET_ASYNC.v1	msg.packet_in_mask_master	uint32	True			ERROR
-1	SET_ASYNC.v1	msg.packet_in_mask_slave	uint32	True			ERROR
+1	SET_ASYNC.v1	msg.port_status_mask_master	array	True			ERROR
+1	SET_ASYNC.v1	msg.port_status_mask_master.0	DELETE	True			ERROR
+1	SET_ASYNC.v1	msg.port_status_mask_slave	array	True			ERROR
+1	SET_ASYNC.v1	msg.port_status_mask_slave.0	DELETE	True			ERROR
+1	SET_ASYNC.v1	msg.flow_removed_mask_slave	array	True			ERROR
+1	SET_ASYNC.v1	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
+1	SET_ASYNC.v1	msg.flow_removed_mask_master	array	True			ERROR
+1	SET_ASYNC.v1	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
+1	SET_ASYNC.v1	msg.packet_in_mask_master	array	True			ERROR
+1	SET_ASYNC.v1	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
+1	SET_ASYNC.v1	msg.packet_in_mask_slave	array	True			ERROR
+1	SET_ASYNC.v1	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
 1	METER_MOD.v1	msg	object	True			ERROR
 1	METER_MOD.v1	msg.command	MODIFY	True			ERROR
 1	METER_MOD.v1	msg.flags	array	True			ERROR
@@ -1098,19 +1110,31 @@ version	type	keypath	syntax	required	default	missing	modify
 2	ROLE_REPLY.v2	msg.generation_id	uint64	True			ERROR
 2	GET_ASYNC_REQUEST.v2	msg	null	True			ERROR
 2	GET_ASYNC_REPLY.v2	msg	object	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_master	uint32	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_slave	uint32	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_slave	uint32	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master	uint32	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_master	uint32	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_slave	uint32	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_mask_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_mask_master.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_mask_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_mask_slave.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
 2	SET_ASYNC.v2	msg	object	True			ERROR
-2	SET_ASYNC.v2	msg.port_status_mask_master	uint32	True			ERROR
-2	SET_ASYNC.v2	msg.port_status_mask_slave	uint32	True			ERROR
-2	SET_ASYNC.v2	msg.flow_removed_mask_slave	uint32	True			ERROR
-2	SET_ASYNC.v2	msg.flow_removed_mask_master	uint32	True			ERROR
-2	SET_ASYNC.v2	msg.packet_in_mask_master	uint32	True			ERROR
-2	SET_ASYNC.v2	msg.packet_in_mask_slave	uint32	True			ERROR
+2	SET_ASYNC.v2	msg.port_status_mask_master	array	True			ERROR
+2	SET_ASYNC.v2	msg.port_status_mask_master.0	DELETE	True			ERROR
+2	SET_ASYNC.v2	msg.port_status_mask_slave	array	True			ERROR
+2	SET_ASYNC.v2	msg.port_status_mask_slave.0	DELETE	True			ERROR
+2	SET_ASYNC.v2	msg.flow_removed_mask_slave	array	True			ERROR
+2	SET_ASYNC.v2	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
+2	SET_ASYNC.v2	msg.flow_removed_mask_master	array	True			ERROR
+2	SET_ASYNC.v2	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
+2	SET_ASYNC.v2	msg.packet_in_mask_master	array	True			ERROR
+2	SET_ASYNC.v2	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
+2	SET_ASYNC.v2	msg.packet_in_mask_slave	array	True			ERROR
+2	SET_ASYNC.v2	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
 2	METER_MOD.v2	msg	object	True			ERROR
 2	METER_MOD.v2	msg.command	MODIFY	True			ERROR
 2	METER_MOD.v2	msg.flags	array	True			ERROR
@@ -1659,19 +1683,31 @@ version	type	keypath	syntax	required	default	missing	modify
 3	ROLE_REPLY.v3	msg.generation_id	uint64	True			True
 3	GET_ASYNC_REQUEST.v3	msg	null	True			ERROR
 3	GET_ASYNC_REPLY.v3	msg	object	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_master	uint32	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_slave	uint32	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_slave	uint32	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master	uint32	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_master	uint32	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_slave	uint32	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_mask_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_mask_master.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_mask_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_mask_slave.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
 3	SET_ASYNC.v3	msg	object	True			ERROR
-3	SET_ASYNC.v3	msg.port_status_mask_master	uint32	True			ERROR
-3	SET_ASYNC.v3	msg.port_status_mask_slave	uint32	True			ERROR
-3	SET_ASYNC.v3	msg.flow_removed_mask_slave	uint32	True			ERROR
-3	SET_ASYNC.v3	msg.flow_removed_mask_master	uint32	True			ERROR
-3	SET_ASYNC.v3	msg.packet_in_mask_master	uint32	True			ERROR
-3	SET_ASYNC.v3	msg.packet_in_mask_slave	uint32	True			ERROR
+3	SET_ASYNC.v3	msg.port_status_mask_master	array	True			ERROR
+3	SET_ASYNC.v3	msg.port_status_mask_master.0	DELETE	True			ERROR
+3	SET_ASYNC.v3	msg.port_status_mask_slave	array	True			ERROR
+3	SET_ASYNC.v3	msg.port_status_mask_slave.0	DELETE	True			ERROR
+3	SET_ASYNC.v3	msg.flow_removed_mask_slave	array	True			ERROR
+3	SET_ASYNC.v3	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
+3	SET_ASYNC.v3	msg.flow_removed_mask_master	array	True			ERROR
+3	SET_ASYNC.v3	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
+3	SET_ASYNC.v3	msg.packet_in_mask_master	array	True			ERROR
+3	SET_ASYNC.v3	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
+3	SET_ASYNC.v3	msg.packet_in_mask_slave	array	True			ERROR
+3	SET_ASYNC.v3	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
 3	METER_MOD.v3	msg	object	True			ERROR
 3	METER_MOD.v3	msg.command	MODIFY	True			ERROR
 3	METER_MOD.v3	msg.flags	array	True			ERROR
@@ -2220,19 +2256,31 @@ version	type	keypath	syntax	required	default	missing	modify
 4	ROLE_REPLY.v4	msg.generation_id	uint64	True			True
 4	GET_ASYNC_REQUEST.v4	msg	null	False			
 4	GET_ASYNC_REPLY.v4	msg	object	True			
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_master	uint32	True			True
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_slave	uint32	True			True
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_slave	uint32	True			True
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master	uint32	True			True
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_master	uint32	True			True
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_slave	uint32	True			True
+4	GET_ASYNC_REPLY.v4	msg.port_status_mask_master	array	True			
+4	GET_ASYNC_REPLY.v4	msg.port_status_mask_master.0	DELETE	False	msg.port_status_mask_master.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.port_status_mask_slave	array	True			
+4	GET_ASYNC_REPLY.v4	msg.port_status_mask_slave.0	DELETE	False			
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_slave	array	True			
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	False	msg.flow_removed_mask_slave.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master	array	True			
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master.0	HARD_TIMEOUT	False	msg.flow_removed_mask_master.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_master	array	True			
+4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_master.0	INVALID_TTL	False	msg.packet_in_mask_master.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_slave	array	True			
+4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_slave.0	INVALID_TTL	False	msg.packet_in_mask_slave.0=INVALID_TTL		
 4	SET_ASYNC.v4	msg	object	True			
-4	SET_ASYNC.v4	msg.port_status_mask_master	uint32	True			True
-4	SET_ASYNC.v4	msg.port_status_mask_slave	uint32	True			True
-4	SET_ASYNC.v4	msg.flow_removed_mask_slave	uint32	True			True
-4	SET_ASYNC.v4	msg.flow_removed_mask_master	uint32	True			True
-4	SET_ASYNC.v4	msg.packet_in_mask_master	uint32	True			True
-4	SET_ASYNC.v4	msg.packet_in_mask_slave	uint32	True			True
+4	SET_ASYNC.v4	msg.port_status_mask_master	array	True			
+4	SET_ASYNC.v4	msg.port_status_mask_master.0	DELETE	False	msg.port_status_mask_master.0=DELETE		
+4	SET_ASYNC.v4	msg.port_status_mask_slave	array	True			
+4	SET_ASYNC.v4	msg.port_status_mask_slave.0	DELETE	False			
+4	SET_ASYNC.v4	msg.flow_removed_mask_slave	array	True			
+4	SET_ASYNC.v4	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	False	msg.flow_removed_mask_slave.0=HARD_TIMEOUT		
+4	SET_ASYNC.v4	msg.flow_removed_mask_master	array	True			
+4	SET_ASYNC.v4	msg.flow_removed_mask_master.0	HARD_TIMEOUT	False	msg.flow_removed_mask_master.0=HARD_TIMEOUT		
+4	SET_ASYNC.v4	msg.packet_in_mask_master	array	True			
+4	SET_ASYNC.v4	msg.packet_in_mask_master.0	INVALID_TTL	False	msg.packet_in_mask_master.0=INVALID_TTL		
+4	SET_ASYNC.v4	msg.packet_in_mask_slave	array	True			
+4	SET_ASYNC.v4	msg.packet_in_mask_slave.0	INVALID_TTL	False	msg.packet_in_mask_slave.0=INVALID_TTL		
 4	METER_MOD.v4	msg	object	True			
 4	METER_MOD.v4	msg.command	MODIFY	True			
 4	METER_MOD.v4	msg.flags	array	True			
