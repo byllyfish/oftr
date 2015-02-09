@@ -389,7 +389,9 @@ enum OFPFlowRemovedReason : UInt8 {
   OFPRR_IDLE_TIMEOUT = 0, 
   OFPRR_HARD_TIMEOUT = 1, 
   OFPRR_DELETE = 2, 
-  OFPRR_GROUP_DELETE = 3
+  OFPRR_GROUP_DELETE = 3,
+  OFPRR_METER_DELETE = 4,
+  OFPRR_EVICTION = 5,
 };
 
 enum OFPFlowRemovedFlags : UInt32 {
@@ -398,7 +400,10 @@ enum OFPFlowRemovedFlags : UInt32 {
   OFPRRF_HARD_TIMEOUT = 1 << 1, 
   OFPRRF_DELETE = 1 << 2, 
   OFPRRF_GROUP_DELETE = 1 << 3,
-  OFPRRF_OTHER_FLOWREMOVED_FLAGS = 0xfffffff0
+  OFPRRF_METER_DELETE = 1 << 4,
+  OFPRRF_EVICTION = 1 << 5,
+
+  OFPRRF_OTHER_FLOWREMOVED_FLAGS = 0xffffffC0
 };
 
 inline OFPFlowRemovedFlags operator|(OFPFlowRemovedFlags lhs, OFPFlowRemovedFlags rhs) {

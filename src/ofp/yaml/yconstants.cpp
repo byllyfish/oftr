@@ -101,7 +101,7 @@ static const llvm::StringRef sPortStatusReason[] = {
 
 static const llvm::StringRef sFlowRemovedReason[] = {
     "IDLE_TIMEOUT", "HARD_TIMEOUT", "DELETE",
-    "GROUP_DELETE"};
+    "GROUP_DELETE", "METER_DELETE", "EVICTION"};
 
 static const llvm::StringRef sControllerRole[] = { 
     "ROLE_NOCHANGE",

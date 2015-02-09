@@ -884,8 +884,8 @@ TEST(decoder, getasyncreplyv4) {
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n "
       " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  port_status_mask_slave: "
-      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, '0x66666660' ]\n  "
-      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, '0x77777770' ]\n...\n");
+      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
+      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
 }
 
 TEST(decoder, queuegetconfigrequestv4) {
@@ -944,8 +944,8 @@ TEST(decoder, setasyncv4) {
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n "
       " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  port_status_mask_slave: "
-      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, '0x66666660' ]\n  "
-      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, '0x77777770' ]\n...\n");
+      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
+      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
 }
 
 TEST(decoder, flowremovedv4) {
