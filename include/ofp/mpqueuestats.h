@@ -4,6 +4,7 @@
 #define OFP_MPQUEUESTATS_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -17,7 +18,7 @@ class MPQueueStats {
   bool validateInput(Validation *context) const { return true; }
 
  private:
-  Big32 portNo_;
+  PortNumber portNo_;
   Big32 queueId_;
   Big64 txBytes_;
   Big64 txPackets_;

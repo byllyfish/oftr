@@ -5,6 +5,7 @@
 
 #include "ofp/propertylist.h"
 #include "ofp/queueproperty.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -14,13 +15,13 @@ class Queue : private NonCopyable {
   enum { ProtocolIteratorSizeOffset = 8, ProtocolIteratorAlignment = 8 };
 
   UInt32 queueId() const { return queueId_; }
-  UInt32 port() const { return port_; }
+  PortNumber port() const { return port_; }
 
   PropertyRange properties() const;
 
  private:
   Big32 queueId_;
-  Big32 port_;
+  PortNumber port_;
   Big16 len_ = 0;
   Padding<6> pad_;
 
@@ -42,7 +43,7 @@ class QueueBuilder {
   QueueBuilder() = default;
 
   void setQueueId(UInt32 queueId) { queue_.queueId_ = queueId; }
-  void setPort(UInt32 port) { queue_.port_ = port; }
+  void setPort(PortNumber port) { queue_.port_ = port; }
 
   void setProperties(const PropertyRange &properties);
   void setProperties(const PropertyList &properties) {

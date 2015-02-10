@@ -42,7 +42,7 @@ msg:
   capabilities: [ 'FLOW_STATS' ]
   actions: [ 'SET_VLAN_VID' ]
   ports:
-    - port_no: 0xffffffff
+    - port_no: CONTROLLER
       hw_addr: 'ff:ff:ff:ff:ff:ff'
       name: '...............'
       config: [ 'PORT_DOWN' ]
@@ -110,7 +110,7 @@ type: PORT_STATUS
 msg:
   reason: 0xff
   port:
-    port_no: 0xffffffff
+    port_no: CONTROLLER
     hw_addr: 'ff:ff:ff:ff:ff:ff'
     name: '...............'
     config: [ 'PORT_DOWN' ]
@@ -166,7 +166,7 @@ msg:
   group_id: 0xffffffff
   buckets:
     - weight: 0xffff
-      watch_port: 0xffffffff
+      watch_port: CONTROLLER
       watch_group: 0xffffffff
       actions:
         - action: OUTPUT
@@ -176,7 +176,7 @@ msg:
 version: 0x04
 type: PORT_MOD
 msg:
-  port_no: 0xffffffff
+  port_no: CONTROLLER
   hw_addr: 'ff:ff:ff:ff:ff:ff'
   config: [ '0xffffffff' ]
   mask: [ '0xffffffff' ]
@@ -300,7 +300,7 @@ msg:
   type: PORT_STATS
   flags: [ 'MORE' ]
   body:
-    port_no: 0xffffffff
+    port_no: CONTROLLER
 ---
 version: 0x04
 type: MULTIPART_REPLY
@@ -308,7 +308,7 @@ msg:
   type: PORT_STATS
   flags: [ 'MORE' ]
   body:
-    - port_no: 0xffffffff
+    - port_no: CONTROLLER
       rx_packets: 0xffffffffffffffff
       tx_packets: 0xffffffffffffffff
       rx_bytes: 0xffffffffffffffff
@@ -330,7 +330,7 @@ msg:
   type: QUEUE
   flags: [ 'MORE' ]
   body:
-    port_no: 0xffffffff
+    port_no: CONTROLLER
     queue_id: 0xffffffff
 ---
 version: 0x04
@@ -339,7 +339,7 @@ msg:
   type: QUEUE
   flags: [ 'MORE' ]
   body:
-    - port_no: 0xffffffff
+    - port_no: CONTROLLER
       queue_id: 0xffffffff
       tx_packets: 0xffffffffffffffff
       tx_bytes: 0xffffffffffffffff
@@ -556,7 +556,7 @@ msg:
   type: PORT_DESC
   flags: [ 'MORE' ]
   body:
-    - port_no: 0xffffffff
+    - port_no: CONTROLLER
       hw_addr: 'ff:ff:ff:ff:ff:ff'
       name: '...............'
       config: [ 'PORT_DOWN' ]
@@ -579,15 +579,15 @@ msg:
 version: 0x04
 type: QUEUE_GET_CONFIG_REQUEST
 msg:
-  port: 0xffffffff
+  port: CONTROLLER
 ---
 version: 0x04
 type: QUEUE_GET_CONFIG_REPLY
 msg:
-  port: 0xffffffff
+  port: CONTROLLER
   queues:
     - queue_id: 0xffffffff
-      port: 0xffffffff
+      port: CONTROLLER
       min_rate: 0xffff
       max_rate: 0xffff
       properties:

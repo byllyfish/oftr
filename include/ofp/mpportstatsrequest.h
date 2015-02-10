@@ -5,6 +5,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -18,12 +19,12 @@ class MPPortStatsRequest {
 
   MPPortStatsRequest() = default;
 
-  UInt32 portNo() const { return portNo_; }
+  PortNumber portNo() const { return portNo_; }
 
   bool validateInput(Validation *context) const;
 
  private:
-  Big32 portNo_;
+  PortNumber portNo_;
   Padding<4> pad_;
 
   friend class MPPortStatsRequestBuilder;
@@ -39,7 +40,7 @@ class MPPortStatsRequestBuilder {
  public:
   MPPortStatsRequestBuilder() = default;
 
-  void setPortNo(UInt32 portNo) { msg_.portNo_ = portNo; }
+  void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
 
   void write(Writable *channel);
 

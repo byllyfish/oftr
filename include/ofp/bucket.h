@@ -5,6 +5,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/actionrange.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -13,14 +14,14 @@ class Bucket : private NonCopyable {
   enum { ProtocolIteratorSizeOffset = 0, ProtocolIteratorAlignment = 8 };
 
   UInt16 weight() const { return weight_; }
-  UInt32 watchPort() const { return watchPort_; }
+  PortNumber watchPort() const { return watchPort_; }
   UInt32 watchGroup() const { return watchGroup_; }
   ActionRange actions() const;
 
  private:
   Big16 len_;
   Big16 weight_ = 0;
-  Big32 watchPort_ = 0;
+  PortNumber watchPort_ = 0;
   Big32 watchGroup_ = 0;
   Padding<4> pad_;
 
@@ -39,7 +40,7 @@ class BucketBuilder {
   BucketBuilder() = default;
 
   void setWeight(UInt16 weight) { bkt_.weight_ = weight; }
-  void setWatchPort(UInt32 watchPort) { bkt_.watchPort_ = watchPort; }
+  void setWatchPort(PortNumber watchPort) { bkt_.watchPort_ = watchPort; }
   void setWatchGroup(UInt32 watchGroup) { bkt_.watchGroup_ = watchGroup; }
 
   ActionRange actions() const { return actions_; }

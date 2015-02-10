@@ -399,7 +399,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            FLOW_MOD
@@ -524,14 +524,14 @@ type:            QUEUE_GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
-  port:            0xFFFFFFFF
+  port:            ANY
 ...
 ---
 type:            QUEUE_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
-  port:            0xFFFFFFFF
+  port:            ANY
   queues:          
     - queue_id:        0x00000063
       port:            0x0000004D
@@ -552,7 +552,7 @@ msg:
   type:            QUEUE
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
     queue_id:        0xFFFFFFFF
 ...
 ---
@@ -1296,7 +1296,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            FLOW_MOD
@@ -1421,14 +1421,14 @@ type:            QUEUE_GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
-  port:            0xFFFFFFFF
+  port:            ANY
 ...
 ---
 type:            QUEUE_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
-  port:            0xFFFFFFFF
+  port:            ANY
   queues:          
     - queue_id:        0x00000063
       port:            0x0000004D
@@ -1449,7 +1449,7 @@ msg:
   type:            QUEUE
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
     queue_id:        0xFFFFFFFF
 ...
 ---
@@ -4069,7 +4069,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            FLOW_MOD
@@ -4158,7 +4158,7 @@ msg:
   type:            QUEUE
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
     queue_id:        0xFFFFFFFF
 ...
 ---

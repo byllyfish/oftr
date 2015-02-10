@@ -5,6 +5,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -15,13 +16,13 @@ class MPPortStats {
  public:
   MPPortStats() = default;
 
-  UInt32 portNo() const { return portNo_; }
+  PortNumber portNo() const { return portNo_; }
   UInt64 rxPackets() const { return rxPackets_; }
 
   bool validateInput(Validation *context) const { return true; }
 
  private:
-  Big32 portNo_;
+  PortNumber portNo_;
   Padding<4> pad_;
   Big64 rxPackets_;
   Big64 txPackets_;

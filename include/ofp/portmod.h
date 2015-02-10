@@ -5,12 +5,13 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
 class PortMod : public ProtocolMsg<PortMod, OFPT_PORT_MOD, 40, 40> {
  public:
-  UInt32 portNo() const { return portNo_; }
+  PortNumber portNo() const { return portNo_; }
   EnetAddress hwAddr() const { return hwAddr_; }
   OFPPortConfigFlags config() const { return config_; }
   OFPPortConfigFlags mask() const { return mask_; }
@@ -20,7 +21,7 @@ class PortMod : public ProtocolMsg<PortMod, OFPT_PORT_MOD, 40, 40> {
 
  private:
   Header header_;
-  Big32 portNo_;
+  PortNumber portNo_;
   Padding<4> pad1_;
   EnetAddress hwAddr_;
   Padding<2> pad2_;
@@ -46,7 +47,7 @@ class PortModBuilder {
   PortModBuilder() = default;
   explicit PortModBuilder(const PortMod *msg);
 
-  void setPortNo(UInt32 portNo) { msg_.portNo_ = portNo; }
+  void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
   void setHwAddr(const EnetAddress &hwAddr) { msg_.hwAddr_ = hwAddr; }
   void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }
   void setMask(OFPPortConfigFlags mask) { msg_.mask_ = mask; }

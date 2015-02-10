@@ -380,7 +380,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -528,7 +528,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            PACKET_OUT
@@ -641,7 +641,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -666,7 +666,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            ECHO_REPLY
@@ -695,7 +695,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -720,7 +720,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            PACKET_OUT
@@ -781,7 +781,7 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -806,5 +806,5 @@ msg:
   type:            PORT_STATS
   flags:           [  ]
   body:            
-    port_no:         0xFFFFFFFF
+    port_no:         ANY
 ...

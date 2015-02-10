@@ -7,6 +7,7 @@
 #include "ofp/strings.h"
 #include "ofp/padding.h"
 #include "ofp/enetaddress.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -26,7 +27,7 @@ class Port {
     ProtocolIteratorAlignment = 8
   };
 
-  UInt32 portNo() const { return portNo_; }
+  PortNumber portNo() const { return portNo_; }
   const EnetAddress &hwAddr() const { return hwAddr_; }
   const PortNameStr &name() const { return name_; }
   OFPPortConfigFlags config() const { return config_; }
@@ -41,7 +42,7 @@ class Port {
   bool validateInput(Validation *context) const { return true; }
 
  private:
-  Big32 portNo_;
+  PortNumber portNo_;
   Padding<4> pad1_;
   EnetAddress hwAddr_;
   Padding<2> pad2_;
@@ -74,7 +75,7 @@ class PortBuilder {
   PortBuilder() = default;
   explicit PortBuilder(const deprecated::PortV1 &port);
 
-  void setPortNo(UInt32 portNo) { msg_.portNo_ = portNo; }
+  void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
   void setHwAddr(const EnetAddress &hwAddr) { msg_.hwAddr_ = hwAddr; }
   void setName(const PortNameStr &name) { msg_.name_ = name; }
   void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }

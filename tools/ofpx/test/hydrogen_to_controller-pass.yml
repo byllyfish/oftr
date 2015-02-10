@@ -39,7 +39,7 @@ msg:
       peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
-    - port_no:         0x0000FFFE
+    - port_no:         LOCAL
       hw_addr:         '02:69:3c:bf:39:47'
       name:            s1
       config:          [  ]
@@ -362,7 +362,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000004
       tx_packets:      0x0000000000000001
       rx_bytes:        0x0000000000000148
@@ -2315,7 +2315,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000007
       tx_packets:      0x0000000000000001
       rx_bytes:        0x0000000000000242
@@ -2477,7 +2477,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000008
       tx_packets:      0x0000000000000001
       rx_bytes:        0x0000000000000288
@@ -4325,7 +4325,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000008
       tx_packets:      0x0000000000000001
       rx_bytes:        0x0000000000000288
@@ -4398,7 +4398,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000008
       tx_packets:      0x0000000000000001
       rx_bytes:        0x0000000000000288
@@ -6246,7 +6246,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000008
       tx_packets:      0x0000000000000001
       rx_bytes:        0x0000000000000288
@@ -6312,7 +6312,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000008
       tx_packets:      0x0000000000000002
       rx_bytes:        0x0000000000000288
@@ -8160,7 +8160,7 @@ msg:
       collisions:      0x0000000000000000
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0xFFFFFFFE
+    - port_no:         LOCAL
       rx_packets:      0x0000000000000008
       tx_packets:      0x0000000000000002
       rx_bytes:        0x0000000000000288

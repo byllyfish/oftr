@@ -6,7 +6,14 @@
 namespace ofp {
 
 PortBuilder::PortBuilder(const deprecated::PortV1 &port) {
-  setPortNo(port.portNo());
+  // Sign-extend the portNo.
+  UInt32 port32 = port.portNo();
+  if (port32 > 0xFF00U) {
+    // Sign extend to 32-bits the "fake" ports.
+    port32 |= 0xFFFF0000UL;
+  }
+  
+  setPortNo(port32);
   setHwAddr(port.hwAddr());
   setName(port.name());
   setConfig(port.config());

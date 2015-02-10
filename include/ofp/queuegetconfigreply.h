@@ -6,6 +6,7 @@
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/queuelist.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 
@@ -14,14 +15,14 @@ namespace ofp {
 class QueueGetConfigReply
     : public ProtocolMsg<QueueGetConfigReply, OFPT_QUEUE_GET_CONFIG_REPLY, 16> {
  public:
-  UInt32 port() const { return port_; }
+  PortNumber port() const { return port_; }
   QueueRange queues() const;
 
   bool validateInput(Validation *context) const;
 
  private:
   Header header_;
-  Big32 port_;
+  PortNumber port_;
   Padding<4> pad_;
 
   QueueGetConfigReply() : header_{type()} {}
@@ -41,7 +42,7 @@ class QueueGetConfigReplyBuilder {
  public:
   QueueGetConfigReplyBuilder() = default;
 
-  void setPort(UInt32 port) { msg_.port_ = port; }
+  void setPort(PortNumber port) { msg_.port_ = port; }
 
   void setQueues(const QueueRange &queues) { queues_.assign(queues); }
   void setQueues(const QueueList &queues) { setQueues(queues.toRange()); }
