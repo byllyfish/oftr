@@ -78,7 +78,7 @@ msg:
   in_port: CONTROLLER
   in_phy_port: 0xffffffff
   metadata: 0xffffffffffffffff
-  reason: 0xff
+  reason: TABLE_MISS
   table_id: 0xff
   cookie: 0xffffffffffffffff
   match:
@@ -139,7 +139,7 @@ msg:
   cookie: 0xffffffffffffffff
   cookie_mask: 0xffffffffffffffff
   table_id:     ALL                  
-  command:      0xff                  
+  command:      MODIFY_STRICT                  
   idle_timeout: 0xffff             
   hard_timeout: 0xffff             
   priority:     0xffff                 

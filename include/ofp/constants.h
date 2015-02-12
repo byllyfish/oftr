@@ -21,7 +21,8 @@ enum : UInt8 {
 enum : UInt16 {
   DATALINK_ARP = 0x0806,
   DATALINK_IPV4 = 0x0800,
-  DATALINK_IPV6 = 0x86dd
+  DATALINK_IPV6 = 0x86dd,
+  DATALINK_LLDP = 0x88cc,
 };
 
 enum : size_t {
