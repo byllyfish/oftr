@@ -257,7 +257,7 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
     
     match_.add(NXM_NX_IP_TTL{ip->ttl});
 
-    int hdrLen = ihl * 4;
+    unsigned hdrLen = ihl * 4;
     assert(hdrLen <= 60);
 
     if (hdrLen > length) {
@@ -274,7 +274,7 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
 void MatchPacket::decodeIPv4_NextHdr(const UInt8 *pkt, size_t length, UInt8 nextHdr) {
     switch (nextHdr) {
         case PROTOCOL_ICMP:
-            decodeICMP(pkt, length, false);
+            decodeICMPv4(pkt, length);
             break;
 
         case PROTOCOL_TCP:
@@ -307,6 +307,11 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
     UInt8 trafCls = (verClassLabel >> 20) & 0x0FF;
     UInt32 flowLabel = verClassLabel & 0x000FFFFF;
 
+    UInt8 dscp = trafCls >> 2;
+    UInt8 ecn = trafCls & 0x03;
+
+    match_.add(OFB_IP_DSCP{dscp});
+    match_.add(OFB_IP_ECN{ecn});
     match_.add(OFB_IPV6_SRC{ip->src});
     match_.add(OFB_IPV6_DST{ip->src});
     match_.add(OFB_IPV6_FLABEL{flowLabel});
@@ -359,7 +364,7 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length, UInt8 next
 
             case PROTOCOL_ICMPV6:
                 match_.addOrderedUnchecked(OFB_IP_PROTO{nextHdr});
-                decodeICMP(pkt, length, true);
+                decodeICMPv6(pkt, length);
                 nextHdr = pkt::IPv6_NoNextHeader;
                 break;
 
@@ -372,7 +377,17 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length, UInt8 next
     }
 }
 
-void MatchPacket::decodeICMP(const UInt8 *pkt, size_t length, bool version6) {
+void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {
+    auto icmp = pkt::ICMPHdr::cast(pkt, length);
+    if (!icmp) {
+        return;
+    }
+
+    match_.add(OFB_ICMPV4_TYPE{icmp->type});
+    match_.add(OFB_ICMPV4_CODE{icmp->code});
+}
+
+void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
     auto icmp = pkt::ICMPHdr::cast(pkt, length);
     if (!icmp) {
         return;
@@ -381,9 +396,7 @@ void MatchPacket::decodeICMP(const UInt8 *pkt, size_t length, bool version6) {
     match_.add(OFB_ICMPV6_TYPE{icmp->type});
     match_.add(OFB_ICMPV6_CODE{icmp->code});
 
-    if (version6) {
-        // TODO(bfish): neighbor discovery msgs.
-    }
+    // TODO(bfish): neighbor discovery msgs.
 }
 
 void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
