@@ -273,7 +273,7 @@ TEST(matchbuilder, OFP_ETH_SRC_mask) {
 
   match.add(OFB_ETH_DST{EnetAddress{"00-11-22-33-44-55"}},
             OFB_ETH_DST{EnetAddress{"ff-ff-ff-00-00-00"}});
-  EXPECT_HEX("8000070C001122334455FFFFFF000000", match.data(), match.size());
+  EXPECT_HEX("8000070C001122000000FFFFFF000000", match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }
 
@@ -314,4 +314,23 @@ TEST(matchbuilder, test_placeholders_2) {
   EXPECT_HEX("80000A020800800014010680001A020050800000040000001B", match.data(),
              match.size());
   EXPECT_TRUE(match.validate());
+}
+
+
+TEST(matchbuilder, addOrdered) {
+  MatchBuilder match;
+
+  match.addOrderedUnchecked(OFB_TCP_SRC{80});
+  match.addOrderedUnchecked(OFB_ETH_TYPE{0x0800});
+  match.addOrderedUnchecked(OFB_IN_PORT{27});
+
+  EXPECT_HEX("800000040000001B 80000A020800 80001A020050", match.data(), match.size());
+
+  match.clear();
+
+  match.addOrderedUnchecked(OFB_ETH_TYPE{0x0800});
+  match.addOrderedUnchecked(OFB_IN_PORT{27});
+  match.addOrderedUnchecked(OFB_TCP_SRC{80});
+
+  EXPECT_HEX("800000040000001B 80000A020800 80001A020050", match.data(), match.size());
 }

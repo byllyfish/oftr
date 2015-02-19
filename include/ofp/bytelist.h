@@ -62,6 +62,9 @@ class ByteList {
   /// \brief Append data to the end of the byte buffer.
   void add(const void *data, size_t length) { buf_.add(data, length); }
 
+  /// \brief Append data to the end of the byte buffer applying a mask.
+  void addMasked(const void *data, const void *mask, size_t length);
+
   /// \brief Insert data at the specified position in the byte buffer.
   void insert(const UInt8 *pos, const void *data, size_t length);
 

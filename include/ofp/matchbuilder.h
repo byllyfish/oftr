@@ -57,6 +57,12 @@ class MatchBuilder {
   }
 
   template <class ValueType>
+  void addOrderedUnchecked(ValueType value) {
+    static_assert(sizeof(value) < 256, "oxm_length must be <= 255.");
+    list_.addOrdered(ValueType::type(), &value, sizeof(value));
+  }
+
+  template <class ValueType>
   void addUnchecked(ValueType value, ValueType mask) {
     list_.add(value, mask);
   }

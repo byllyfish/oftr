@@ -33,6 +33,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/ipv6endpoint_unittest.cpp
 	ofp/matchbuilder_unittest.cpp
 	ofp/matchheader_unittest.cpp
+	ofp/matchpacket_unittest.cpp
 	ofp/message_unittest.cpp
 	ofp/multipartreply_unittest.cpp
 	ofp/originalmatch_unittest.cpp

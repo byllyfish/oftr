@@ -46,6 +46,8 @@ class IPv4Address {
   ArrayType addr_;
 };
 
+static_assert(sizeof(IPv4Address) == 4, "Unexpected size");
+static_assert(alignof(IPv4Address) == 1, "Unexpected alignment");
 static_assert(IsStandardLayout<IPv4Address>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv4Address>(),
               "Expected trivially copyable.");

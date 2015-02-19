@@ -152,3 +152,12 @@ bool ofp::IsMemFilled(const void *data, size_t len, char ch) {
   }
   return true;
 }
+
+void ofp::MemCopyMasked(void *dest, const void *data, const void *mask, size_t length) {
+  UInt8 *d = static_cast<UInt8 *>(dest);
+  const UInt8 *s = static_cast<const UInt8 *>(data);
+  const UInt8 *m = static_cast<const UInt8 *>(mask);
+  while (length-- > 0) {
+    *d++ = *s++ & *m++;
+  }
+}

@@ -15,7 +15,8 @@ enum : UInt8 {
   PROTOCOL_ICMP = 1,
   PROTOCOL_TCP = 6,
   PROTOCOL_UDP = 17,
-  PROTOCOL_SCTP = 132
+  PROTOCOL_ICMPV6 = 58,
+  PROTOCOL_SCTP = 132,
 };
 
 enum : UInt16 {
@@ -50,6 +51,13 @@ enum {
 enum : UInt16 { 
   OFPVID_PRESENT = 0x1000, 
   OFPVID_NONE = 0x0000
+};
+
+// NXM_NX_IP_FRAG
+enum : UInt8 {
+  NXM_FRAG_TYPE_NONE = 0x00,
+  NXM_FRAG_TYPE_ANY = 0x01,
+  NXM_FRAG_TYPE_LATER = 0x02,
 };
 
 enum { OFPMT_STANDARD = 0, OFPMT_OXM = 1 };

@@ -58,3 +58,27 @@ TEST(ipv4address, valid) {
   IPv4Address addr;
   EXPECT_FALSE(addr.valid());
 }
+
+TEST(ipv4address, misaligned) {
+  // IPv4Address should be "packed" when placed in a struct.
+
+  struct TestBuf {
+    UInt8 ignore;
+    IPv4Address addr;
+  };
+
+  static_assert(offsetof(TestBuf, addr) == 1, "Unexpected offset");
+
+  TestBuf buf;
+  EXPECT_FALSE(buf.addr.valid());
+  EXPECT_TRUE(buf.addr.parse("251.252.253.254"));
+  EXPECT_TRUE(buf.addr.valid());
+  EXPECT_EQ("251.252.253.254", buf.addr.toString());
+
+  UInt8 buf2[1 + sizeof(IPv4Address)] = {0};
+  IPv4Address &addr = *reinterpret_cast<IPv4Address *>(&buf2[1]);
+  EXPECT_FALSE(addr.valid());
+  EXPECT_TRUE(addr.parse("251.252.253.254"));
+  EXPECT_TRUE(addr.valid());
+  EXPECT_EQ("251.252.253.254", addr.toString());
+}

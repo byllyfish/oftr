@@ -36,6 +36,7 @@ class OXMList {
 
   void add(OXMType type, const void *data, size_t len);
   void add(OXMType type, const void *data, const void *mask, size_t len);
+  void addOrdered(OXMType type, const void *data, size_t len);
 
   void add(OXMIterator iter);
   void addSignal(OXMType signal);
@@ -56,6 +57,7 @@ class OXMList {
   void insert(OXMIterator pos, const void *data, size_t len);
 
   OXMIterator findValue(OXMType type) const;
+  OXMIterator findOrderedPos(OXMType type) const;
   void replaceValue(OXMIterator pos, const void *data, size_t len);
 };
 
@@ -118,7 +120,7 @@ inline void OXMList::add(OXMType type, const void *data, const void *mask,
   assert(type.length() == 2 * len);
 
   buf_.add(&type, sizeof(type));
-  buf_.add(data, len);  // FIXME - apply mask here.
+  buf_.addMasked(data, mask, len);
   buf_.add(mask, len);
 }
 

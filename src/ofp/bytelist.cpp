@@ -10,6 +10,13 @@ void ByteList::set(const void *data, size_t length) {
   buf_.assign(data, length);
 }
 
+/// \brief Append data to the end of the byte buffer applying a mask.
+void ByteList::addMasked(const void *data, const void *mask, size_t length) {
+  buf_.addUninitialized(length);
+  UInt8 *dest = buf_.end() - length;
+  MemCopyMasked(dest, data, mask, length);
+}
+
 /// \brief Insert data at the specified position in the byte buffer.
 void ByteList::insert(const UInt8 *pos, const void *data, size_t length) {
   buf_.insert(RemoveConst_cast(pos), data, length);

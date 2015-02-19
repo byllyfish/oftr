@@ -12,19 +12,25 @@ OXMList::OXMList(const OXMRange &range) {
   buf_.add(range.data(), range.size());
 }
 
+void OXMList::addOrdered(OXMType type, const void *data, size_t len) {
+  auto pos = findOrderedPos(type);
+  auto idx = buf_.offset(pos.data());
+  buf_.insertUninitialized(pos.data(), sizeof(type) + len);
+  std::memcpy(buf_.mutableData() + idx, &type, sizeof(type));
+  std::memcpy(buf_.mutableData() + idx + sizeof(type), data, len);
+}
+
+
 OXMIterator OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type,
                              const void *data, size_t len) {
   assert(type.length() == len);
   assert(end.data() > pos.data());
 
-  ptrdiff_t idx = buf_.offset(pos.data());
-  size_t newlen = sizeof(OXMType) + len;
+  const ptrdiff_t idx = buf_.offset(pos.data());
+  const size_t newlen = sizeof(type) + len;
   buf_.replaceUninitialized(pos.data(), end.data(), newlen);
-
-  const UInt8 *tptr = reinterpret_cast<const UInt8 *>(&type);
-  std::copy(tptr, tptr + sizeof(type), buf_.mutableData() + idx);
-  const UInt8 *dptr = static_cast<const UInt8 *>(data);
-  std::copy(dptr, dptr + len, buf_.mutableData() + idx + sizeof(type));
+  std::memcpy(buf_.mutableData() + idx, &type, sizeof(type));
+  std::memcpy(buf_.mutableData() + idx + sizeof(type), data, len);
 
   OXMIterator rest{buf_.data() + idx + newlen};
   assert(rest <= this->end());
@@ -37,6 +43,15 @@ OXMIterator OXMList::findValue(OXMType type) const {
   OXMIterator iterEnd = end();
   for (OXMIterator iter = begin(); iter < iterEnd; ++iter) {
     if (iter->type() == type) return iter;
+  }
+  return iterEnd;
+}
+
+OXMIterator OXMList::findOrderedPos(OXMType type) const {
+  OXMIterator iterEnd = end();
+  auto nativeType = type.oxmNative();
+  for (OXMIterator iter = begin(); iter < iterEnd; ++iter) {
+    if (iter->type().oxmNative() > nativeType) return iter;
   }
   return iterEnd;
 }

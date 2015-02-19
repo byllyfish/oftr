@@ -117,3 +117,13 @@ TEST(types, HexToRawData3) {
   EXPECT_EQ(0, std::memcmp(buf, "\xaa\xbb\0\0\0\0\0", 7));
   EXPECT_TRUE(error);
 }
+
+TEST(types, MemCopyMasked) {
+  UInt32 a = 0x12345678;
+  UInt32 b = 0xFFFF000F;
+
+  UInt32 d;
+  MemCopyMasked(&d, &a, &b, sizeof(a));
+  EXPECT_EQ(a & b, d);
+}
+
