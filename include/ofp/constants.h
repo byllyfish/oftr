@@ -598,6 +598,18 @@ inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs, OFPMeterConfigFlag
   return static_cast<OFPMeterConfigFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+enum OFPIPv6ExtHdrFlags : UInt16 {
+  OFPIEH_NONEXT = 1 << 0,
+  OFPIEH_ESP = 1 << 1,
+  OFPIEH_AUTH = 1 << 2,
+  OFPIEH_DEST = 1 << 3,
+  OFPIEH_FRAG = 1 << 4,
+  OFPIEH_ROUTER = 1 << 5,
+  OFPIEH_HOP = 1 << 6,
+  OFPIEH_UNREP = 1 << 7,
+  OFPIEH_UNSEQ = 1 << 8,
+};
+
 }  // namespace ofp
 
 #endif  // OFP_CONSTANTS_H_

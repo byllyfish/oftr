@@ -113,6 +113,28 @@ struct IPv6Hdr : public Castable<IPv6Hdr> {
 static_assert(sizeof(IPv6Hdr) == 40, "Unexpected size.");
 static_assert(alignof(IPv6Hdr) == 4, "Unexpected alignment.");
 
+enum : UInt8 {
+    IPv6Ext_Hop = 0,
+    IPv6Ext_Router = 43,
+    IPv6Ext_Fragment = 44,          // ignore hdrLen
+    IPv6Ext_ESP = 50,
+    IPv6Ext_Auth = 51,
+    IPv6Ext_NoNextHeader = 59,
+    IPv6Ext_Dest = 60,
+    IPv6Ext_Mobility = 135,
+    IPv6Ext_HostIdentity = 139,
+    IPv6Ext_Shim6 = 140,
+    IPv6Ext_Experimental253 = 253,
+    IPv6Ext_Experimental254 = 254
+};
+
+inline bool IPv6NextHeaderIsExtension(UInt8 nextHeader) {
+    const UInt8 buf[] = { IPv6Ext_Hop, IPv6Ext_Router, IPv6Ext_Fragment, IPv6Ext_ESP, IPv6Ext_Auth, IPv6Ext_Dest, IPv6Ext_Mobility, IPv6Ext_HostIdentity, IPv6Ext_Shim6, IPv6Ext_Experimental253, IPv6Ext_Experimental254 };
+    return std::memchr(buf, nextHeader, ArrayLength(buf)) != nullptr;
+}
+
+// RFC 6564 - Standardized extension header format
+// N.B. Fragment header is always 8 bytes long (ignore hdrLen)
 struct IPv6ExtHdr : public Castable<IPv6ExtHdr> {
     Big8 nextHeader;
     Big8 hdrLen;
@@ -121,10 +143,6 @@ struct IPv6ExtHdr : public Castable<IPv6ExtHdr> {
 
 static_assert(sizeof(IPv6ExtHdr) == 8, "Unexpected size.");
 static_assert(alignof(IPv6ExtHdr) == 1, "Unexpected alignment.");
-
-enum : UInt8 {
-    IPv6_NoNextHeader = 59
-};
 
 struct ICMPHdr : public Castable<ICMPHdr> {
     Big8 type;
@@ -160,6 +178,12 @@ static_assert(sizeof(UDPHdr) == 8, "Unexpected size.");
 static_assert(alignof(UDPHdr) == 2, "Unexpected alignment.");
 
 }  // namespace pkt
+
+
+// Flag used internally to represent OFPIEH_DEST when it appears in an IPv6
+// header chain just before a Router header.
+
+const UInt32 OFPIEH_DEST_ROUTER = 1UL << 31;
 
 
 void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
@@ -313,7 +337,7 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
     match_.add(OFB_IP_DSCP{dscp});
     match_.add(OFB_IP_ECN{ecn});
     match_.add(OFB_IPV6_SRC{ip->src});
-    match_.add(OFB_IPV6_DST{ip->src});
+    match_.add(OFB_IPV6_DST{ip->dst});
     match_.add(OFB_IPV6_FLABEL{flowLabel});
 
     pkt += sizeof(pkt::IPv6Hdr);
@@ -346,35 +370,44 @@ void MatchPacket::decodeUDP(const UInt8 *pkt, size_t length) {
 
 
 void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length, UInt8 nextHdr) {
+    UInt32 hdrFlags = 0;
 
-    while (nextHdr != pkt::IPv6_NoNextHeader) {
+    while (nextHdr != pkt::IPv6Ext_NoNextHeader) {
 
         switch (nextHdr) {
             case PROTOCOL_TCP:
                 match_.addOrderedUnchecked(OFB_IP_PROTO{nextHdr});
                 decodeTCP(pkt, length);
-                nextHdr = pkt::IPv6_NoNextHeader;
+                nextHdr = pkt::IPv6Ext_NoNextHeader;
                 break;
 
             case PROTOCOL_UDP:
                 match_.addOrderedUnchecked(OFB_IP_PROTO{nextHdr});
                 decodeUDP(pkt, length);
-                nextHdr = pkt::IPv6_NoNextHeader;
+                nextHdr = pkt::IPv6Ext_NoNextHeader;
                 break;
 
             case PROTOCOL_ICMPV6:
                 match_.addOrderedUnchecked(OFB_IP_PROTO{nextHdr});
                 decodeICMPv6(pkt, length);
-                nextHdr = pkt::IPv6_NoNextHeader;
+                nextHdr = pkt::IPv6Ext_NoNextHeader;
                 break;
 
             default:
                 // Record that we saw this extension header, then advance to
                 // the next.
-                nextHdr = nextIPv6ExtHdr(pkt, length);
+                nextHdr = nextIPv6ExtHdr(nextHdr, pkt, length, hdrFlags);
                 break;
         }
     }
+
+    if (hdrFlags == 0) {
+        hdrFlags |= OFPIEH_NONEXT;
+    } else if (hdrFlags & OFPIEH_DEST_ROUTER) {
+        hdrFlags = (hdrFlags & 0x0ffff) | OFPIEH_DEST;
+    }
+
+    match_.add(OFB_IPV6_EXTHDR{static_cast<OFPIPv6ExtHdrFlags>(hdrFlags)});
 }
 
 void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {
@@ -403,22 +436,111 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
 
 }
 
-UInt8 MatchPacket::nextIPv6ExtHdr(const UInt8 *&pkt, size_t &length) {
+UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt, size_t &length, UInt32 &flags) {
+    // RFC 2460 Section 4.1: Extension Header Order
+    //
+    //       Hop-by-Hop Options header
+    //       Destination Options header (*)
+    //       Routing header
+    //       Fragment header
+    //       Authentication header
+    //       Encapsulating Security Payload header
+    //       Destination Options header (*)
+    //
+    // Each extension header should occur at most once, except for the
+    // Destination Options header which should occur at most twice (once
+    // before a Routing header and once before the upper-layer header).
+
     assert(IsPtrAligned(pkt, 8));
+    assert(currHdr != pkt::IPv6Ext_NoNextHeader);
 
     auto ext = pkt::IPv6ExtHdr::cast(pkt, length);
     if (!ext) {
-        return pkt::IPv6_NoNextHeader;
+        return pkt::IPv6Ext_NoNextHeader;
     }
 
-    size_t extHdrLen = (ext->hdrLen + 1) * 8;
+    // Masks for ordering extension headers by examining predecessors.
+    const UInt32 kPreHopMask = 0;
+    const UInt32 kPreDestRouterMask = kPreHopMask | OFPIEH_HOP;
+    const UInt32 kPreRouterMask = kPreDestRouterMask | OFPIEH_DEST_ROUTER;
+    const UInt32 kPreFragmentMask = kPreRouterMask | OFPIEH_ROUTER;
+    const UInt32 kPreAuthMask = kPreFragmentMask | OFPIEH_FRAG;
+    const UInt32 kPreESPMask = kPreAuthMask | OFPIEH_AUTH;
+    const UInt32 kPreDestMask = kPreESPMask | OFPIEH_ESP;
+
+    UInt8 nextHdr = ext->nextHeader;
+
+    switch (currHdr) {
+        case pkt::IPv6Ext_Hop:
+            countIPv6ExtHdr(flags, OFPIEH_HOP, kPreHopMask);
+            break;
+
+        case pkt::IPv6Ext_Dest:
+            if (nextHdr == pkt::IPv6Ext_Router) {
+                countIPv6ExtHdr(flags, OFPIEH_DEST_ROUTER, kPreDestRouterMask);
+            } else if (!pkt::IPv6NextHeaderIsExtension(nextHdr)) {
+                countIPv6ExtHdr(flags, OFPIEH_DEST, kPreDestMask);
+            } else {
+                if (flags & OFPIEH_DEST)
+                    flags |= OFPIEH_UNREP;
+                flags |= (OFPIEH_DEST | OFPIEH_UNSEQ);
+            }
+            break;
+
+        case pkt::IPv6Ext_Router:
+            countIPv6ExtHdr(flags, OFPIEH_ROUTER, kPreRouterMask);
+            break;
+
+        case pkt::IPv6Ext_Fragment:
+            countIPv6ExtHdr(flags, OFPIEH_FRAG, kPreFragmentMask);
+            break;
+
+        case pkt::IPv6Ext_Auth:
+            countIPv6ExtHdr(flags, OFPIEH_AUTH, kPreAuthMask);
+            break;
+
+        case pkt::IPv6Ext_ESP:
+            countIPv6ExtHdr(flags, OFPIEH_ESP, kPreESPMask);
+            break;
+
+        case pkt::IPv6Ext_Mobility:
+        case pkt::IPv6Ext_HostIdentity:
+        case pkt::IPv6Ext_Shim6:
+        case pkt::IPv6Ext_Experimental253:
+        case pkt::IPv6Ext_Experimental254:
+            // OpenFlow protocol ignores these extension headers.
+            break;
+
+        default:
+            log::warning("MatchPacket: Unrecognized IPv6 nextHeader", currHdr);
+            return pkt::IPv6Ext_NoNextHeader;
+    }
+
+    // Fragment header is always 8 bytes in size. Otherwise, we need to compute
+    // header size from `hdrLen`.
+    size_t extHdrLen = 8;
+    if (currHdr != pkt::IPv6Ext_Fragment) {
+        extHdrLen = (ext->hdrLen + 1) * 8;
+    }
+
     if (extHdrLen > length) {
         log::warning("MatchPacket: IPv6 ext header extends past end of pkt");
-        return pkt::IPv6_NoNextHeader;
+        return pkt::IPv6Ext_NoNextHeader;
     }
 
     pkt += extHdrLen;
     length -= extHdrLen;
 
-    return ext->nextHeader;
+    return nextHdr;
 }
+
+void MatchPacket::countIPv6ExtHdr(UInt32 &flags, UInt32 hdr, UInt32 precedingHdrs) {
+    if (flags & ~(hdr | precedingHdrs)) {
+        flags |= OFPIEH_UNSEQ;
+    }
+    if (flags & hdr) {
+        flags |= OFPIEH_UNREP;
+    }
+    flags |= hdr;
+}
+

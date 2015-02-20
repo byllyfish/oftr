@@ -27,7 +27,8 @@ private:
     void decodeICMPv6(const UInt8 *pkt, size_t length);
     void decodeLLDP(const UInt8 *pkt, size_t length);
 
-    UInt8 nextIPv6ExtHdr(const UInt8 *&pkt, size_t &length);
+    UInt8 nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt, size_t &length, UInt32 &flags);
+    void countIPv6ExtHdr(UInt32 &flags, UInt32 hdr, UInt32 precedingHdrs);
 };
 
 }  // namespace ofp
