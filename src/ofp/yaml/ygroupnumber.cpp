@@ -6,6 +6,8 @@ using ofp::yaml::EnumConverterSparse;
 
 #define OFP_NAME(s)   { OFPG_##s, #s }
 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
 static std::pair<OFPGroupNo, llvm::StringRef> sGroupNumbers[] = {
   OFP_NAME(ALL),
   OFP_NAME(ANY),
@@ -13,3 +15,5 @@ static std::pair<OFPGroupNo, llvm::StringRef> sGroupNumbers[] = {
 
 EnumConverterSparse<OFPGroupNo>
     llvm::yaml::ScalarTraits<ofp::GroupNumber>::converter{sGroupNumbers};
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

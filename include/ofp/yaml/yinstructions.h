@@ -76,6 +76,11 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
         // FIXME - rest of experimenter
         break;
       }
+      case OFPIT_NONE:
+      case OFPIT_STAT_TRIGGER:
+      default:
+        log::warning("InstructionIterator: Unrecognized instructions");
+        break;
     }
   }
 };
@@ -132,6 +137,11 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
         list.add(IT_EXPERIMENTER{experimenterId});
         break;
       }
+      case OFPIT_NONE:
+      case OFPIT_STAT_TRIGGER:
+      default:
+        log::warning("InstructionInserter: Unrecognized instructions");
+        break;
     }
   }
 };

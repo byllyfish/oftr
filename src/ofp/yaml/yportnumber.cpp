@@ -6,6 +6,8 @@ using ofp::yaml::EnumConverterSparse;
 
 #define OFPP_NAME(s)   { OFPP_##s, #s }
 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
 static std::pair<OFPPortNo, llvm::StringRef> sPortNumbers[] = {
   OFPP_NAME(IN_PORT),
   OFPP_NAME(TABLE),
@@ -20,3 +22,5 @@ static std::pair<OFPPortNo, llvm::StringRef> sPortNumbers[] = {
 
 EnumConverterSparse<OFPPortNo>
     llvm::yaml::ScalarTraits<ofp::PortNumber>::converter{sPortNumbers};
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
