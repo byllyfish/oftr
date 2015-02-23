@@ -57,7 +57,9 @@ void DTLS_Adapter::connect() {
 
 void DTLS_Adapter::accept() {
   // Enable DTLS cookie exchange.
+#if !defined(OPENSSL_IS_BORINGSSL)
   (void)SSL_set_options(ssl_, SSL_OP_COOKIE_EXCHANGE);
+#endif // !defined(OPENSSL_IS_BORINGSSL)
 
   // Initialize DTLS connection to server mode.
   SSL_set_accept_state(ssl_);

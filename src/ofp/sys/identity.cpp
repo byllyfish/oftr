@@ -294,8 +294,10 @@ void Identity::prepareVerifier(SSL_CTX *ctx) {
 }
 
 void Identity::prepareDTLSCookies(SSL_CTX *ctx) {
+#if !defined(OPENSSL_IS_BORINGSSL)
   SSL_CTX_set_cookie_generate_cb(ctx, dtls_cookie_generate_callback);
   SSL_CTX_set_cookie_verify_cb(ctx, dtls_cookie_verify_callback);
+#endif // !defined(OPENSSL_IS_BORINGSSL)
 }
 
 //-------------------------------//
