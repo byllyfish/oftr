@@ -87,7 +87,7 @@ class BigEndianAligned {
  public:
   using NativeType = Type;
 
-  constexpr BigEndianAligned() = default;
+  constexpr BigEndianAligned() : n_{static_cast<Type>(0)} {}
   constexpr BigEndianAligned(Type n) : n_{HostSwapByteOrder(n)} {}
 
   // TODO(bfish): add assignment and copy constructors?

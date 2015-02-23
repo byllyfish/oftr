@@ -9,8 +9,7 @@ enum OFPPortNo : UInt32;
 
 class PortNumber {
 public:
-    constexpr PortNumber() = default;
-    constexpr PortNumber(UInt32 port) : port_{port} {}
+    constexpr PortNumber(UInt32 port = 0) : port_{port} {}
 
     // This is a convenience constructor (for efficiency).
     constexpr PortNumber(Big32 port) : port_{port} {}
@@ -23,7 +22,7 @@ public:
 private:
     Big32 port_;
 
-    UInt32 value() const { return port_; }
+    constexpr UInt32 value() const { return port_; }
 };
 
 static_assert(sizeof(PortNumber) == 4, "Unexpected size.");

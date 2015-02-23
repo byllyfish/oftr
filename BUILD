@@ -4,7 +4,12 @@ Build Instructions
 
 To obtain the software:
 
-   git clone --recursive git://...
+   git clone -b develop --recursive https://github.com/byllyfish/libofp.git
+   cd libofp
+   mkdir Build+Debug
+   cd Build+Debug
+   cmake ..
+
 
 If you cloned the repository without the --recursive option, you must initialize
 the googletest submodule manually. 
@@ -14,7 +19,8 @@ the googletest submodule manually.
 
 Before you can build the software, you need `cmake`:
 
-  sudo apt-get install cmake
+  sudo apt-get update
+  sudo apt-get install cmake -y
 
 Create a directory named "Build+Release" and enter it.
 
