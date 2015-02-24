@@ -21,9 +21,13 @@ struct YamlContext {
     Encoder *encoder;
     Decoder *decoder;
     UInt8 version;
-    const UInt8 magic[7] = "contxt";
 
-    bool validate() const { return std::memcmp(magic, "contxt", 7) == 0; }
+    // Use magic values to verify that context exists and is valid.
+    UInt8 magic1 = 'c';
+    UInt8 magic2 = 'o';
+    UInt8 padding[5];
+
+    bool validate() const { return magic1 == 'c' && magic2 == 'o'; }
 
     static Encoder *GetEncoder(void *context);
 };
