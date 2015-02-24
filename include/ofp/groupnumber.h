@@ -23,7 +23,7 @@ public:
 private:
     Big32 group_;
 
-    UInt32 value() const { return group_; }
+    constexpr UInt32 value() const { return group_; }
 };
 
 }  // namespace ofp

@@ -23,7 +23,7 @@ public:
 private:
     Big8 table_;
 
-    UInt8 value() const { return table_; }
+    constexpr UInt8 value() const { return table_; }
 };
 
 static_assert(sizeof(TableNumber) == 1, "Unexpected size.");

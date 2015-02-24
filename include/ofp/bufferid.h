@@ -21,7 +21,7 @@ public:
 private:
     Big32 id_;
 
-    UInt32 value() const { return id_; }
+    constexpr UInt32 value() const { return id_; }
 };
 
 }  // namespace ofp
