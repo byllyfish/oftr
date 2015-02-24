@@ -23,7 +23,7 @@ public:
 private:
     Big16 maxlen_;
 
-    UInt16 value() const { return maxlen_; }
+    constexpr UInt16 value() const { return maxlen_; }
 };
 
 }  // namespace ofp

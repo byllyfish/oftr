@@ -67,6 +67,7 @@ check_include_file(unistd.h HAVE_UNISTD_H)
 check_include_file(sys/param.h HAVE_SYS_PARAM_H)
 check_include_file(signal.h HAVE_SIGNAL_H)
 check_include_file(sys/time.h HAVE_SYS_TIME_H)
+check_include_file(sys/resource.h HAVE_SYS_RESOURCE_H)
 
 check_symbol_exists(getrusage sys/resource.h HAVE_GETRUSAGE)
 check_symbol_exists(futimens sys/stat.h HAVE_FUTIMENS)
