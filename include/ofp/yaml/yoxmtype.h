@@ -24,7 +24,7 @@ struct ScalarTraits<ofp::OXMType> {
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::OXMType &value) {
     if (!value.parse(scalar)) {
-      uint64_t num;
+      unsigned long long num;
       if (llvm::getAsUnsignedInteger(scalar, 0, num) == 0) {
         value.setOxmNative(ofp::UInt32_narrow_cast(num));
         return "";
