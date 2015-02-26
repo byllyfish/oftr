@@ -6,7 +6,7 @@
 using namespace ofp;
 
 
-static UInt32 pow10[10] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+static const UInt32 kPower10[10] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
 
 bool Timestamp::parse(const std::string &s) {
     UInt64 wholeNum = 0;
@@ -39,7 +39,7 @@ bool Timestamp::parse(const std::string &s) {
     if (fracDigits == 0 || fracDigits > 9)
         return false;
 
-    fracNum *= pow10[9 - fracDigits];
+    fracNum *= kPower10[9 - fracDigits];
 
     seconds_ = static_cast<time_t>(wholeNum);
     nanos_ = fracNum;
