@@ -27,6 +27,10 @@ TEST(asio, async_connect_v4) {
   EXPECT_FALSE(socket.is_open());
 }
 
+static bool isConnectionRefusedOrNetworkUnreachable(asio::error_code &err) {
+  return (err == asio::error::connection_refused) || (err == asio::error::network_unreachable);
+}
+
 TEST(asio, async_connect_v6) {
   auto localhost_v6 = asio::ip::address_v6::loopback();
 
@@ -41,7 +45,10 @@ TEST(asio, async_connect_v6) {
   service.run();
 
   EXPECT_TRUE(socket.is_open());
-  EXPECT_EQ(asio::error::connection_refused, result);
+
+  // A network connection to ::1 may be unreachable because IPv6 is disabled on
+  // the loopback interface.
+  EXPECT_TRUE(isConnectionRefusedOrNetworkUnreachable(result));
 
   socket.close();
   EXPECT_FALSE(socket.is_open());
