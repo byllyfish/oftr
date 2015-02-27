@@ -95,7 +95,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
       ofp::Message message{encoder.data(), encoder.size()};
       message.transmogrify();
 
-      ofp::yaml::Decoder decoder{&message};
+      ofp::yaml::Decoder decoder{&message, json_};
 
       err = decoder.error();
       if (!err.empty()) {
