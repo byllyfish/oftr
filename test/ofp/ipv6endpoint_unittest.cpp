@@ -46,4 +46,7 @@ TEST(ipv6endpoint, parse) {
 
   EXPECT_FALSE(endpt.parse("192.168.1.1"));
   EXPECT_FALSE(endpt.parse("2000::1"));
+  EXPECT_FALSE(endpt.parse("127.0.0.1"));
+
+  EXPECT_EQ("[::]:82", endpt.toString());
 }
