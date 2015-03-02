@@ -36,7 +36,11 @@ static size_t timestamp_now(char *buf, size_t buflen) {
                     date.tm_min, date.tm_sec, msec);
 
   assert(rc == 23);
-  return 23;
+  if (rc != 23) {
+    std::abort();
+  }
+  
+  return rc;
 }
 
 // Terminal Colors
