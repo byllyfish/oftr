@@ -1,6 +1,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ycontext.h"
 
+using ofp::yaml::detail::YamlContext;
 
 ofp::yaml::Encoder *ofp::yaml::GetEncoderFromContext(llvm::yaml::IO &io) {
     YamlContext *ctxt = reinterpret_cast<YamlContext *>(io.getContext());
@@ -30,7 +31,17 @@ ofp::UInt8 ofp::yaml::GetVersionFromContext(llvm::yaml::IO &io) {
 }
 
 
-ofp::yaml::Encoder *ofp::yaml::YamlContext::GetEncoder(void *context) {
+bool ofp::yaml::GetIncludePktMatchFromContext(llvm::yaml::IO &io) {
+    YamlContext *ctxt = reinterpret_cast<YamlContext *>(io.getContext());
+    if (ctxt) {
+        assert(ctxt->validate());
+        return ctxt->pktMatch;
+    }
+    return false;
+}
+
+
+ofp::yaml::Encoder *ofp::yaml::detail::YamlContext::GetEncoder(void *context) {
     YamlContext *ctxt = reinterpret_cast<YamlContext *>(context);
     if (ctxt) {
         assert(ctxt->validate());

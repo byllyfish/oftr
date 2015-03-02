@@ -31,11 +31,11 @@
 namespace ofp {
 namespace yaml {
 
-Decoder::Decoder(const Message *msg, bool useJsonFormat) : msg_{msg} {
+Decoder::Decoder(const Message *msg, bool useJsonFormat, bool includePktMatch) : msg_{msg} {
   assert(msg->size() >= sizeof(Header));
 
   llvm::raw_svector_ostream rss{result_};
-  YamlContext ctxt{this, msg->version()};
+  detail::YamlContext ctxt{this, msg->version(), includePktMatch};
 
   if (useJsonFormat) {
     ofp::yaml::OutputJson yout{rss, &ctxt};

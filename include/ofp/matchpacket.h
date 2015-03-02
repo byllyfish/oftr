@@ -9,6 +9,9 @@ class MatchPacket {
 public:
     explicit MatchPacket(const ByteRange &data);
 
+    OXMIterator begin() const { return match_.begin(); }
+    OXMIterator end() const { return match_.end(); }
+
     const UInt8 *data() const { return match_.data(); }
     size_t size() const { return match_.size(); }
 

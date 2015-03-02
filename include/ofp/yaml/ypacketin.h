@@ -5,6 +5,7 @@
 
 #include "ofp/packetin.h"
 #include "ofp/yaml/ybufferid.h"
+#include "ofp/yaml/ymatchpacket.h"
 
 namespace llvm {
 namespace yaml {
@@ -21,6 +22,7 @@ namespace yaml {
 //   cookie: <UInt64>               { Required }
 //   match: <Match>
 //   data: <Bytes>                  { Required }
+//   data_match: <Match>            { Output only }
 
 template <>
 struct MappingTraits<ofp::PacketIn> {
@@ -52,6 +54,11 @@ struct MappingTraits<ofp::PacketIn> {
 
     ofp::ByteRange enetFrame = msg.enetFrame();
     io.mapRequired("data", enetFrame);
+
+    if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
+        ofp::MatchPacket mp{enetFrame};
+        io.mapRequired("data_match", mp);
+    }
   }
 };
 
@@ -82,6 +89,9 @@ struct MappingTraits<ofp::PacketInBuilder> {
 
     io.mapOptional("match", msg.match_);
     io.mapRequired("data", msg.enetFrame_);
+
+    MatchBuilder ignoreDataMatch;  // FIXME(bfish)
+    io.mapOptional("data_match", ignoreDataMatch);
 
     ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
     if (encoder && encoder->matchPrereqsChecked()) {
