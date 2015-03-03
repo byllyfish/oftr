@@ -20,11 +20,6 @@ class MatchBuilder {
   const UInt8 *data() const { return list_.data(); }
   size_t size() const { return list_.size(); }
 
-  /// \returns number of items in the match.
-  size_t itemCount() const OFP_DEPRECATED {
-    return OXMIterator::distance(list_.begin(), list_.end());
-  }
-
   OXMIterator begin() const { return list_.begin(); }
   OXMIterator end() const { return list_.end(); }
 

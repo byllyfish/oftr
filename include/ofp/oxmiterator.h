@@ -68,18 +68,6 @@ class OXMIterator {
   constexpr const UInt8 *data() const { return position_; }
   size_t size() const { return sizeof(OXMType) + position_[3]; }
 
-  /// \returns Number of OXM elements between begin and end.
-  static size_t distance(OXMIterator begin, OXMIterator end) OFP_DEPRECATED {
-    assert(begin <= end);
-
-    size_t dist = 0;
-    while (begin != end) {
-      ++dist;
-      ++begin;
-    }
-    return dist;
-  }
-
  private:
   const UInt8 *position_;
 
