@@ -16,7 +16,7 @@ struct ScalarTraits<ofp::PortNumber> {
     llvm::StringRef scalar;
     auto portNum = static_cast<ofp::OFPPortNo>(value);
     if (converter.convert(portNum, &scalar)) {
-        out << scalar;
+      out << scalar;
     } else {
       // Output PortNumber in hexadecimal.
       ScalarTraits<Hex32>::output(portNum, ctxt, out);
@@ -25,7 +25,7 @@ struct ScalarTraits<ofp::PortNumber> {
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::PortNumber &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
-      ofp::OFPPortNo portNum; 
+      ofp::OFPPortNo portNum;
       if (!converter.convert(scalar, &portNum)) {
         return "Invalid port number value";
       }
@@ -46,23 +46,22 @@ struct ScalarTraits<ofp::PortNumber> {
   using json_type = ofp::PortNumber;
 };
 
-
-template<>
+template <>
 inline std::string primitive_to_json(ofp::PortNumber value) {
-    llvm::StringRef scalar;
-    auto portNum = static_cast<ofp::OFPPortNo>(value);
-    if (ScalarTraits<ofp::PortNumber>::converter.convert(portNum, &scalar)) {
-      std::string result = "\"";
-      result += scalar;
-      result += '\"';
-      return result;
-    } else {
-      // Output PortNumber in hexadecimal.
-      return std::to_string(portNum);
-    }
+  llvm::StringRef scalar;
+  auto portNum = static_cast<ofp::OFPPortNo>(value);
+  if (ScalarTraits<ofp::PortNumber>::converter.convert(portNum, &scalar)) {
+    std::string result = "\"";
+    result += scalar;
+    result += '\"';
+    return result;
+  } else {
+    // Output PortNumber in hexadecimal.
+    return std::to_string(portNum);
+  }
 }
 
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YPORTNUMBER_H_
+#endif  // OFP_YAML_YPORTNUMBER_H_

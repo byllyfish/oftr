@@ -42,7 +42,7 @@ struct MappingTraits<ofp::PacketOutBuilder> {
     BufferID bufferId;
     io.mapRequired("buffer_id", bufferId);
     msg.setBufferId(bufferId);
-    
+
     io.mapRequired("in_port", msg.msg_.inPort_);
 
     io.mapRequired("actions", msg.actions_);

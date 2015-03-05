@@ -48,10 +48,7 @@ enum {
   OFP_MAX_SIZE = 65535
 };
 
-enum : UInt16 { 
-  OFPVID_PRESENT = 0x1000, 
-  OFPVID_NONE = 0x0000
-};
+enum : UInt16 { OFPVID_PRESENT = 0x1000, OFPVID_NONE = 0x0000 };
 
 // NXM_NX_IP_FRAG
 enum : UInt8 {
@@ -124,9 +121,7 @@ enum OFPType : UInt8 {
 
 std::ostream &operator<<(std::ostream &os, OFPType type);
 
-enum OFPBufferID : UInt32 { 
-  OFP_NO_BUFFER = 0xFFFFFFFFUL 
-};
+enum OFPBufferID : UInt32 { OFP_NO_BUFFER = 0xFFFFFFFFUL };
 
 // Flags to indicate behavior of the physical port.  These flags are
 // used in ofp_port to describe the current configuration.  They are
@@ -135,17 +130,18 @@ enum OFPBufferID : UInt32 {
 enum OFPPortConfigFlags : UInt32 {
   OFPPC_NONE = 0,
   OFPPC_PORT_DOWN = 1 << 0,
-  OFPPC_NO_STP = 1 << 1,        // Version 1.0 only
+  OFPPC_NO_STP = 1 << 1,  // Version 1.0 only
   OFPPC_NO_RECV = 1 << 2,
   OFPPC_NO_RECV_STP = 1 << 3,
-  OFPPC_NO_FLOOD = 1 << 4,      // Version 1.0 only
+  OFPPC_NO_FLOOD = 1 << 4,  // Version 1.0 only
   OFPPC_NO_FWD = 1 << 5,
   OFPPC_NO_PACKET_IN = 1 << 6,
 
   OFPPC_OTHER_CONFIG_FLAGS = 0xffffff80
 };
 
-inline OFPPortConfigFlags operator|(OFPPortConfigFlags lhs, OFPPortConfigFlags rhs) {
+inline OFPPortConfigFlags operator|(OFPPortConfigFlags lhs,
+                                    OFPPortConfigFlags rhs) {
   return static_cast<OFPPortConfigFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -156,17 +152,18 @@ enum OFPPortStateFlags : UInt32 {
   OFPPS_BLOCKED = 1 << 1,
   OFPPS_LIVE = 1 << 2,
 
-  OFPPS_STP_LISTEN  = 0 << 8,   // Version 1.0 only
-  OFPPS_STP_LEARN   = 1 << 8,
+  OFPPS_STP_LISTEN = 0 << 8,  // Version 1.0 only
+  OFPPS_STP_LEARN = 1 << 8,
   OFPPS_STP_FORWARD = 2 << 8,
-  OFPPS_STP_BLOCK   = 3 << 8,
-  OFPPS_STP_MASK    = 3 << 8,
+  OFPPS_STP_BLOCK = 3 << 8,
+  OFPPS_STP_MASK = 3 << 8,
 
   OFPPS_OTHER_STATE_FLAGS = 0xfffffff8,
   OFPPS_OTHER_STATE_FLAGS_V1 = 0xfffffcf8
 };
 
-inline OFPPortStateFlags operator|(OFPPortStateFlags lhs, OFPPortStateFlags rhs) {
+inline OFPPortStateFlags operator|(OFPPortStateFlags lhs,
+                                   OFPPortStateFlags rhs) {
   return static_cast<OFPPortStateFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -184,32 +181,33 @@ enum OFPPortNo : UInt32 {
   OFPP_CONTROLLER = 0xfffffffd,
   OFPP_LOCAL = 0xfffffffe,
   OFPP_ANY = 0xffffffff,
-  OFPP_NONE = 0xffffffff,     // Version 1.0 only
+  OFPP_NONE = 0xffffffff,  // Version 1.0 only
 };
 
 // Features of ports available in a datapath.
 enum OFPPortFeaturesFlags : UInt32 {
-  OFPPF_10MB_HD = 1 << 0,     
-  OFPPF_10MB_FD = 1 << 1,     
-  OFPPF_100MB_HD = 1 << 2,    
-  OFPPF_100MB_FD = 1 << 3,    
-  OFPPF_1GB_HD = 1 << 4,      
-  OFPPF_1GB_FD = 1 << 5,      
-  OFPPF_10GB_FD = 1 << 6,     
-  OFPPF_40GB_FD = 1 << 7,     
-  OFPPF_100GB_FD = 1 << 8,    
-  OFPPF_1TB_FD = 1 << 9,      
-  OFPPF_OTHER = 1 << 10,      
-  OFPPF_COPPER = 1 << 11,     
-  OFPPF_FIBER = 1 << 12,      
-  OFPPF_AUTONEG = 1 << 13,    
-  OFPPF_PAUSE = 1 << 14,      
-  OFPPF_PAUSE_ASYM = 1 << 15, 
+  OFPPF_10MB_HD = 1 << 0,
+  OFPPF_10MB_FD = 1 << 1,
+  OFPPF_100MB_HD = 1 << 2,
+  OFPPF_100MB_FD = 1 << 3,
+  OFPPF_1GB_HD = 1 << 4,
+  OFPPF_1GB_FD = 1 << 5,
+  OFPPF_10GB_FD = 1 << 6,
+  OFPPF_40GB_FD = 1 << 7,
+  OFPPF_100GB_FD = 1 << 8,
+  OFPPF_1TB_FD = 1 << 9,
+  OFPPF_OTHER = 1 << 10,
+  OFPPF_COPPER = 1 << 11,
+  OFPPF_FIBER = 1 << 12,
+  OFPPF_AUTONEG = 1 << 13,
+  OFPPF_PAUSE = 1 << 14,
+  OFPPF_PAUSE_ASYM = 1 << 15,
 
   OFPPF_OTHER_FEATURES_FLAGS = 0xFFFF0000
 };
 
-inline OFPPortFeaturesFlags operator|(OFPPortFeaturesFlags lhs, OFPPortFeaturesFlags rhs) {
+inline OFPPortFeaturesFlags operator|(OFPPortFeaturesFlags lhs,
+                                      OFPPortFeaturesFlags rhs) {
   return static_cast<OFPPortFeaturesFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -218,8 +216,8 @@ OFPPortFeaturesFlags OFPPortFeaturesFlagsConvertFromV1(UInt32 features);
 
 enum OFPPortStatusReason : UInt8 {
   OFPPR_ADD = 0,
-  OFPPR_DELETE  = 1,
-  OFPPR_MODIFY  = 2,
+  OFPPR_DELETE = 1,
+  OFPPR_MODIFY = 2,
 };
 
 enum OFPPortStatusFlags : UInt32 {
@@ -230,7 +228,8 @@ enum OFPPortStatusFlags : UInt32 {
   OFPPRF_OTHER_PORTSTATUS_FLAGS = 0xfffffff8
 };
 
-inline OFPPortStatusFlags operator|(OFPPortStatusFlags lhs, OFPPortStatusFlags rhs) {
+inline OFPPortStatusFlags operator|(OFPPortStatusFlags lhs,
+                                    OFPPortStatusFlags rhs) {
   return static_cast<OFPPortStatusFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -334,8 +333,8 @@ enum OFPInstructionType : UInt16 {
   OFPIT_WRITE_ACTIONS = 3,
   OFPIT_APPLY_ACTIONS = 4,
   OFPIT_CLEAR_ACTIONS = 5,
-  OFPIT_METER = 6,            // OFPIT_DEPRECATED in v1.5
-  OFPIT_STAT_TRIGGER = 7,     // Added in v1.5
+  OFPIT_METER = 6,         // OFPIT_DEPRECATED in v1.5
+  OFPIT_STAT_TRIGGER = 7,  // Added in v1.5
   OFPIT_EXPERIMENTER = 0xFFFF
 };
 
@@ -364,12 +363,12 @@ enum OFPActionType : UInt16 {
 };
 
 enum OFPPacketInReason : UInt8 {
-  OFPR_TABLE_MISS = 0,      // 1.4 name; instead of OFPR_NO_MATCH
-  OFPR_APPLY_ACTION = 1,    // 1.4 name; instead of OFPR_ACTION
-  OFPR_INVALID_TTL = 2,     // added in 1.2
-  OFPR_ACTION_SET = 3,      // added in 1.4
-  OFPR_GROUP = 4,           // added in 1.4
-  OFPR_PACKET_OUT = 5,      // added in 1.4
+  OFPR_TABLE_MISS = 0,    // 1.4 name; instead of OFPR_NO_MATCH
+  OFPR_APPLY_ACTION = 1,  // 1.4 name; instead of OFPR_ACTION
+  OFPR_INVALID_TTL = 2,   // added in 1.2
+  OFPR_ACTION_SET = 3,    // added in 1.4
+  OFPR_GROUP = 4,         // added in 1.4
+  OFPR_PACKET_OUT = 5,    // added in 1.4
 };
 
 enum OFPPacketInFlags : UInt32 {
@@ -396,9 +395,9 @@ enum OFPFlowModCommand : UInt8 {
 };
 
 enum OFPFlowRemovedReason : UInt8 {
-  OFPRR_IDLE_TIMEOUT = 0, 
-  OFPRR_HARD_TIMEOUT = 1, 
-  OFPRR_DELETE = 2, 
+  OFPRR_IDLE_TIMEOUT = 0,
+  OFPRR_HARD_TIMEOUT = 1,
+  OFPRR_DELETE = 2,
   OFPRR_GROUP_DELETE = 3,
   OFPRR_METER_DELETE = 4,
   OFPRR_EVICTION = 5,
@@ -406,9 +405,9 @@ enum OFPFlowRemovedReason : UInt8 {
 
 enum OFPFlowRemovedFlags : UInt32 {
   OFPRRF_NONE = 0,
-  OFPRRF_IDLE_TIMEOUT = 1 << 0, 
-  OFPRRF_HARD_TIMEOUT = 1 << 1, 
-  OFPRRF_DELETE = 1 << 2, 
+  OFPRRF_IDLE_TIMEOUT = 1 << 0,
+  OFPRRF_HARD_TIMEOUT = 1 << 1,
+  OFPRRF_DELETE = 1 << 2,
   OFPRRF_GROUP_DELETE = 1 << 3,
   OFPRRF_METER_DELETE = 1 << 4,
   OFPRRF_EVICTION = 1 << 5,
@@ -416,7 +415,8 @@ enum OFPFlowRemovedFlags : UInt32 {
   OFPRRF_OTHER_FLOWREMOVED_FLAGS = 0xffffffC0
 };
 
-inline OFPFlowRemovedFlags operator|(OFPFlowRemovedFlags lhs, OFPFlowRemovedFlags rhs) {
+inline OFPFlowRemovedFlags operator|(OFPFlowRemovedFlags lhs,
+                                     OFPFlowRemovedFlags rhs) {
   return static_cast<OFPFlowRemovedFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -430,14 +430,13 @@ enum OFPFlowModFlags : UInt16 {
   OFPFF_NO_BYT_COUNTS = 1 << 4,
 
   // Not supported: 1.0 OFPFF_EMERG
-  
+
   OFPFF_OTHER_FLAGS = 0xFFE0
 };
 
 inline OFPFlowModFlags operator|(OFPFlowModFlags lhs, OFPFlowModFlags rhs) {
   return static_cast<OFPFlowModFlags>(static_cast<UInt16>(lhs) | rhs);
 }
-
 
 enum OFPActionTypeFlags : UInt32 {
   OFPATF_NONE = 0,
@@ -478,7 +477,8 @@ enum OFPActionTypeFlags : UInt32 {
   OFPATF_OTHER_FLAGS = 0x30000000
 };
 
-inline OFPActionTypeFlags operator|(OFPActionTypeFlags lhs, OFPActionTypeFlags rhs) {
+inline OFPActionTypeFlags operator|(OFPActionTypeFlags lhs,
+                                    OFPActionTypeFlags rhs) {
   return static_cast<OFPActionTypeFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -492,19 +492,20 @@ enum OFPCapabilitiesFlags : UInt32 {
   OFPC_TABLE_STATS = 1 << 1,
   OFPC_PORT_STATS = 1 << 2,
   OFPC_GROUP_STATS = 1 << 3,
-  //OFPC_RESERVED = 1 << 4
+  // OFPC_RESERVED = 1 << 4
   OFPC_IP_REASM = 1 << 5,
   OFPC_QUEUE_STATS = 1 << 6,
   OFPC_ARP_MATCH_IP = 1 << 7,
   OFPC_PORT_BLOCKED = 1 << 8,
 
-  OFPC_STP = 1U << 31,           // Special value for 1.0
+  OFPC_STP = 1U << 31,  // Special value for 1.0
 
   OFPC_OTHER_CAPABILITIES_FLAGS = 0x7FFFFE10
 };
 
 // TODO(bfish): Use template enabled only for enum/UInt32 types.
-inline OFPCapabilitiesFlags operator|(OFPCapabilitiesFlags lhs, OFPCapabilitiesFlags rhs) {
+inline OFPCapabilitiesFlags operator|(OFPCapabilitiesFlags lhs,
+                                      OFPCapabilitiesFlags rhs) {
   return static_cast<OFPCapabilitiesFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -562,8 +563,8 @@ enum OFPTableFeatureProperty : UInt16 {
 
 enum OFPControllerRole : UInt32 {
   OFPCR_ROLE_NOCHANGE = 0,
-  OFPCR_ROLE_EQUAL = 1, 
-  OFPCR_ROLE_MASTER = 2, 
+  OFPCR_ROLE_EQUAL = 1,
+  OFPCR_ROLE_MASTER = 2,
   OFPCR_ROLE_SLAVE = 3,
 };
 
@@ -574,7 +575,8 @@ enum OFPMultipartFlags : UInt16 {
   OFPMPF_OTHER_MULTIPART_FLAGS = 0xFFFE
 };
 
-inline OFPMultipartFlags operator|(OFPMultipartFlags lhs, OFPMultipartFlags rhs) {
+inline OFPMultipartFlags operator|(OFPMultipartFlags lhs,
+                                   OFPMultipartFlags rhs) {
   return static_cast<OFPMultipartFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -595,7 +597,8 @@ enum OFPMeterConfigFlags : UInt16 {
   OFPMF_OTHER_METER_CONFIG_FLAGS = 0xFFF0
 };
 
-inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs, OFPMeterConfigFlags rhs) {
+inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs,
+                                     OFPMeterConfigFlags rhs) {
   return static_cast<OFPMeterConfigFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 

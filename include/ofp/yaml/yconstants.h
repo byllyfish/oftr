@@ -10,40 +10,50 @@
 namespace llvm {
 namespace yaml {
 
-#define YAML_ENUM_CONVERTER(ConverterType, EnumType, FormatExpr)  \
-template <> \
-struct ScalarTraits<EnumType> { \
-  static ConverterType<EnumType> converter; \
-  static void output(const EnumType &value, void *ctxt, \
-                     llvm::raw_ostream &out) { \
-    llvm::StringRef scalar; \
-    if (converter.convert(value, &scalar)) { \
-      out << scalar; \
-    } else { \
-      out << FormatExpr; \
-    } \
-  } \
-  static StringRef input(StringRef scalar, void *ctxt, \
-                         EnumType &value) { \
-    if (converter.convert(scalar, &value)) { \
-      return ""; \
-    } \
-    return "Invalid enumerated constant."; \
-  } \
-  static bool mustQuote(StringRef) { return false; } \
-};
+#define YAML_ENUM_CONVERTER(ConverterType, EnumType, FormatExpr)            \
+  template <>                                                               \
+  struct ScalarTraits<EnumType> {                                           \
+    static ConverterType<EnumType> converter;                               \
+    static void output(const EnumType &value, void *ctxt,                   \
+                       llvm::raw_ostream &out) {                            \
+      llvm::StringRef scalar;                                               \
+      if (converter.convert(value, &scalar)) {                              \
+        out << scalar;                                                      \
+      } else {                                                              \
+        out << FormatExpr;                                                  \
+      }                                                                     \
+    }                                                                       \
+    static StringRef input(StringRef scalar, void *ctxt, EnumType &value) { \
+      if (converter.convert(scalar, &value)) {                              \
+        return "";                                                          \
+      }                                                                     \
+      return "Invalid enumerated constant.";                                \
+    }                                                                       \
+    static bool mustQuote(StringRef) { return false; }                      \
+  };
 
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPType, format("0x%02X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMultipartType, format("0x%04X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPInstructionType, format("0x%04X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterBandType, format("0x%04X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPPacketInReason, format("0x%02X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowModCommand, format("0x%02X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPPortStatusReason, format("0x%02X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowRemovedReason, format("0x%02X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPControllerRole, format("0x%08X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterModCommand, format("0x%04X", value))
-YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType, format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPType,
+                    format("0x%02X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMultipartType,
+                    format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPInstructionType,
+                    format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterBandType,
+                    format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPPacketInReason,
+                    format("0x%02X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowModCommand,
+                    format("0x%02X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPPortStatusReason,
+                    format("0x%02X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowRemovedReason,
+                    format("0x%02X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPControllerRole,
+                    format("0x%08X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterModCommand,
+                    format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType,
+                    format("0x%04X", value))
 
 template <>
 struct ScalarTraits<ofp::OFPErrorCode> {
@@ -74,9 +84,12 @@ struct ScalarTraits<ofp::OFPErrorCode> {
   static bool mustQuote(StringRef) { return false; }
 };
 
-#define OFP_YAML_BITCASE(prefix, name)    io.bitSetCase(value, #name, ofp::prefix##name)
-#define OFP_YAML_BITCASE_V1(prefix, name) io.bitSetCase(value, #name, ofp::prefix##name##_V1)
-#define OFP_YAML_MASKEDBITCASE(prefix, name, mask)  io.maskedBitSetCase(value, #name, ofp::prefix##name, ofp::mask)
+#define OFP_YAML_BITCASE(prefix, name) \
+  io.bitSetCase(value, #name, ofp::prefix##name)
+#define OFP_YAML_BITCASE_V1(prefix, name) \
+  io.bitSetCase(value, #name, ofp::prefix##name##_V1)
+#define OFP_YAML_MASKEDBITCASE(prefix, name, mask) \
+  io.maskedBitSetCase(value, #name, ofp::prefix##name, ofp::mask)
 
 template <>
 struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
@@ -91,14 +104,13 @@ struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
   }
 };
 
-
 template <>
 struct ScalarBitSetTraits<ofp::OFPActionTypeFlags> {
   static void bitset(IO &io, ofp::OFPActionTypeFlags &value) {
     OFP_YAML_BITCASE(OFPATF_, OUTPUT);
     OFP_YAML_BITCASE(OFPATF_, SET_VLAN_VID);
     OFP_YAML_BITCASE(OFPATF_, SET_VLAN_PCP);
-    OFP_YAML_BITCASE_V1(OFPATF_, STRIP_VLAN);   // special v1-only action
+    OFP_YAML_BITCASE_V1(OFPATF_, STRIP_VLAN);  // special v1-only action
     OFP_YAML_BITCASE(OFPATF_, SET_DL_SRC);
     OFP_YAML_BITCASE(OFPATF_, SET_DL_DST);
     OFP_YAML_BITCASE(OFPATF_, SET_NW_SRC);
@@ -107,7 +119,7 @@ struct ScalarBitSetTraits<ofp::OFPActionTypeFlags> {
     OFP_YAML_BITCASE(OFPATF_, SET_NW_ECN);
     OFP_YAML_BITCASE(OFPATF_, SET_TP_SRC);
     OFP_YAML_BITCASE(OFPATF_, SET_TP_DST);
-    OFP_YAML_BITCASE_V1(OFPATF_, ENQUEUE);    // special v1-only action
+    OFP_YAML_BITCASE_V1(OFPATF_, ENQUEUE);  // special v1-only action
     OFP_YAML_BITCASE(OFPATF_, COPY_TTL_OUT);
     OFP_YAML_BITCASE(OFPATF_, COPY_TTL_IN);
     OFP_YAML_BITCASE(OFPATF_, SET_MPLS_LABEL);
@@ -181,7 +193,6 @@ struct ScalarBitSetTraits<ofp::OFPPortFeaturesFlags> {
     io.bitSetCaseOther(value, ofp::OFPPF_OTHER_FEATURES_FLAGS);
   }
 };
-
 
 template <>
 struct ScalarBitSetTraits<ofp::OFPPortConfigFlags> {

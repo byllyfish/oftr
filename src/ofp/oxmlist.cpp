@@ -20,7 +20,6 @@ void OXMList::addOrdered(OXMType type, const void *data, size_t len) {
   std::memcpy(buf_.mutableData() + idx + sizeof(type), data, len);
 }
 
-
 OXMIterator OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type,
                              const void *data, size_t len) {
   assert(type.length() == len);

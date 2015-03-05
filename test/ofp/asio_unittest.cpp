@@ -28,7 +28,8 @@ TEST(asio, async_connect_v4) {
 }
 
 static bool isConnectionRefusedOrNetworkUnreachable(asio::error_code &err) {
-  return (err == asio::error::connection_refused) || (err == asio::error::network_unreachable);
+  return (err == asio::error::connection_refused) ||
+         (err == asio::error::network_unreachable);
 }
 
 TEST(asio, async_connect_v6) {

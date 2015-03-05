@@ -62,7 +62,8 @@ void NullAgent::onMessage(const Message *message) {
       break;
 
     default:
-      ofp::log::debug("Unknown message type", static_cast<int>(message->type()));
+      ofp::log::debug("Unknown message type",
+                      static_cast<int>(message->type()));
       sendError(ofp::OFPBRC_BAD_TYPE, message);
       break;
   }

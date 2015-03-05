@@ -38,7 +38,7 @@
 #define OFP_ALIGNAS(x) __attribute__((aligned(x)))
 #endif
 
-#define OFP_DEPRECATED  __attribute__((deprecated))
+#define OFP_DEPRECATED __attribute__((deprecated))
 
 namespace ofp {
 
@@ -241,12 +241,13 @@ std::string HexToRawData(const std::string &hex);
 bool IsMemFilled(const void *data, size_t length, char fill);
 
 /// Copy data to destination and mask it with the given data mask.
-/// 
+///
 /// \param  dest  pointer to destination
 /// \param  data  pointer to source
 /// \param  mask  pointer to mask bytes
 /// \param  length size of source and mask buffers
-void MemCopyMasked(void *dest, const void *data, const void *mask, size_t length);
+void MemCopyMasked(void *dest, const void *data, const void *mask,
+                   size_t length);
 
 /// Return true if pointer is aligned to specified byte boundary.
 ///

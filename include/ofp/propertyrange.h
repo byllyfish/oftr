@@ -33,7 +33,8 @@ class PropertyIteratorItem : private NonCopyable {
 
 }  // namespace detail
 
-using PropertyIterator = ProtocolIterator<detail::PropertyIteratorItem, ProtocolIteratorType::Property>;
+using PropertyIterator = ProtocolIterator<detail::PropertyIteratorItem,
+                                          ProtocolIteratorType::Property>;
 
 class PropertyRange : public ProtocolRange<PropertyIterator> {
   using Inherited = ProtocolRange<PropertyIterator>;

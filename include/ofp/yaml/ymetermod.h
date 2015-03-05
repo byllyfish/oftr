@@ -14,7 +14,7 @@ struct MappingTraits<ofp::MeterMod> {
   static void mapping(IO &io, ofp::MeterMod &msg) {
     ofp::OFPMeterModCommand command = msg.command();
     ofp::OFPMeterConfigFlags flags = msg.flags();
-    io.mapRequired("command",command);
+    io.mapRequired("command", command);
     io.mapRequired("flags", flags);
     io.mapRequired("meter_id", msg.meterId_);
 

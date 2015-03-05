@@ -13,8 +13,12 @@ class SetAsync : public ProtocolMsg<SetAsync, OFPT_SET_ASYNC, 32, 32> {
   OFPPacketInFlags slavePacketInMask() const { return packetInMask_[1]; }
   OFPPortStatusFlags masterPortStatusMask() const { return portStatusMask_[0]; }
   OFPPortStatusFlags slavePortStatusMask() const { return portStatusMask_[1]; }
-  OFPFlowRemovedFlags masterFlowRemovedMask() const { return flowRemovedMask_[0]; }
-  OFPFlowRemovedFlags slaveFlowRemovedMask() const { return flowRemovedMask_[1]; }
+  OFPFlowRemovedFlags masterFlowRemovedMask() const {
+    return flowRemovedMask_[0];
+  }
+  OFPFlowRemovedFlags slaveFlowRemovedMask() const {
+    return flowRemovedMask_[1];
+  }
 
   bool validateInput(Validation *context) const { return true; }
 
@@ -41,12 +45,24 @@ class SetAsyncBuilder {
   SetAsyncBuilder() = default;
   explicit SetAsyncBuilder(const SetAsync *msg);
 
-  void setMasterPacketInMask(OFPPacketInFlags mask) { msg_.packetInMask_[0] = mask; }
-  void setSlavePacketInMask(OFPPacketInFlags mask) { msg_.packetInMask_[1] = mask; }
-  void setMasterPortStatusMask(OFPPortStatusFlags mask) { msg_.portStatusMask_[0] = mask; }
-  void setSlavePortStatusMask(OFPPortStatusFlags mask) { msg_.portStatusMask_[1] = mask; }
-  void setMasterFlowRemovedMask(OFPFlowRemovedFlags mask) { msg_.flowRemovedMask_[0] = mask; }
-  void setSlaveFlowRemovedMask(OFPFlowRemovedFlags mask) { msg_.flowRemovedMask_[1] = mask; }
+  void setMasterPacketInMask(OFPPacketInFlags mask) {
+    msg_.packetInMask_[0] = mask;
+  }
+  void setSlavePacketInMask(OFPPacketInFlags mask) {
+    msg_.packetInMask_[1] = mask;
+  }
+  void setMasterPortStatusMask(OFPPortStatusFlags mask) {
+    msg_.portStatusMask_[0] = mask;
+  }
+  void setSlavePortStatusMask(OFPPortStatusFlags mask) {
+    msg_.portStatusMask_[1] = mask;
+  }
+  void setMasterFlowRemovedMask(OFPFlowRemovedFlags mask) {
+    msg_.flowRemovedMask_[0] = mask;
+  }
+  void setSlaveFlowRemovedMask(OFPFlowRemovedFlags mask) {
+    msg_.flowRemovedMask_[1] = mask;
+  }
 
   UInt32 send(Writable *channel);
 

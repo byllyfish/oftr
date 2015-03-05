@@ -42,7 +42,7 @@ struct OriginalMatch {
     OFPFW_NW_TOS = 1 << 21,       ///< IP ToS (DSCP field, 6 bits).
 
     // All fields wildcarded, but using OFPFW_NW_SRC_ALL and OFPFW_NW_DST_ALL.
-    // This replaces the definition from the spec: 
+    // This replaces the definition from the spec:
     //   OFPFW_ALL = ((1 << 22) - 1)
     OFPFW_ALL = 0x003820FF
   };

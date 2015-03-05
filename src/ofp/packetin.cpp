@@ -145,8 +145,7 @@ UInt32 PacketIn::inPhyPort() const {
       // If not present or zero, assume the value is identical to OFB_IN_PORT.
       OXMRange oxm = matchHeader()->oxmRange();
       UInt32 inPhyPort = oxm.get<OFB_IN_PHY_PORT>();
-      if (inPhyPort) 
-        return inPhyPort;
+      if (inPhyPort) return inPhyPort;
       return oxm.get<OFB_IN_PORT>();
     }
   }

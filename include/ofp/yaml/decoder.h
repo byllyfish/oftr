@@ -15,7 +15,8 @@ namespace yaml {
 
 class Decoder {
  public:
-  explicit Decoder(const Message *msg, bool useJsonFormat = false, bool includePktMatch = false);
+  explicit Decoder(const Message *msg, bool useJsonFormat = false,
+                   bool includePktMatch = false);
 
   const llvm::StringRef result() const { return result_; }
 

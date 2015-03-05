@@ -59,7 +59,8 @@ TEST(decoder, errorv1) {
       "010100130000006200010001FFFF1234567890",
       "---\ntype:            ERROR\nxid:             "
       "0x00000062\nversion:         0x01\nmsg:             \n  type:      "
-      "      OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:            "
+      "      OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:    "
+      "        "
       "FFFF1234567890\n...\n");
 }
 
@@ -193,15 +194,26 @@ TEST(decoder, featuresreplyv1ports) {
       "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
       "actions:         [  ]\n  ports:           \n    - port_no:        "
       " 0x00001111\n      hw_addr:         '22:22:22:22:22:22'\n      name:    "
-      "        Port 1\n      config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n      state:         "
-      "  [ LIVE, STP_LISTEN, '0x44444440' ]\n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      advertised:      "
-      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            "
-      "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      0x00000000\n      max_speed:       "
+      "        Port 1\n      config:          [ PORT_DOWN, NO_STP, NO_FLOOD, "
+      "NO_FWD, '0x33333300' ]\n      state:         "
+      "  [ LIVE, STP_LISTEN, '0x44444440' ]\n      curr:            [ 10MB_HD, "
+      "100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      "
+      "advertised:      "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n  "
+      "    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            "
+      "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      "
+      "0x00000000\n      max_speed:       "
       "0x00000000\n    - port_no:         0x0000BBBB\n      hw_addr:         "
       "'cc:cc:cc:cc:cc:cc'\n      name:            Port 2\n      config:       "
-      "   [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n      state:           [ LIVE, STP_LISTEN, '0x44444440' ]\n      curr:           "
-      " [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       "
-      "[ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      "
+      "   [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n      state:  "
+      "         [ LIVE, STP_LISTEN, '0x44444440' ]\n      curr:           "
+      " [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n   "
+      "   advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n      supported:       "
+      "[ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, "
+      "PAUSE, '0x77770000' ]\n      peer:            [ 100MB_FD, COPPER, "
+      "PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      "
       "0x00000000\n      max_speed:       0x00000000\n...\n");
 }
 
@@ -292,7 +304,8 @@ TEST(decoder, ofmp_flowreply_v4) {
       "table_id:        0x01\n      duration_sec:    0x00000002\n      "
       "duration_nsec:   0x00000003\n      priority:        0x0004\n      "
       "idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:    "
-      "       [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS ]\n      cookie:          0x0000000000000008\n      "
+      "       [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS ]\n      cookie:    "
+      "      0x0000000000000008\n      "
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
       "IN_PORT\n          value:           0x12345678\n      instructions: "
@@ -316,7 +329,8 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "table_id:        0x01\n      duration_sec:    0x00000002\n      "
       "duration_nsec:   0x00000003\n      priority:        0x0004\n      "
       "idle_timeout:    0x0005\n      hard_timeout:    0x0006\n      flags:    "
-      "       [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS ]\n      cookie:          0x0000000000000008\n      "
+      "       [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS ]\n      cookie:    "
+      "      0x0000000000000008\n      "
       "packet_count:    0x0000000000000009\n      byte_count:      "
       "0x000000000000000A\n      match:           \n        - field:           "
       "IN_PORT\n          value:           0x12345678\n      instructions: "
@@ -325,7 +339,8 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "  "
       "duration_nsec:   0x00000033\n      priority:        0x0044\n      "
       "idle_timeout:    0x0055\n      hard_timeout:    0x0066\n      flags:    "
-      "       [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS, NO_BYT_COUNTS, '0x00000060' ]\n      cookie:          0x0000000000000088\n      "
+      "       [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS, NO_BYT_COUNTS, "
+      "'0x00000060' ]\n      cookie:          0x0000000000000088\n      "
       "packet_count:    0x9999999999999999\n      byte_count:      "
       "0xAAAAAAAAAAAAAAAA\n      match:           \n        - field:           "
       "IN_PORT\n          value:           0x12345678\n        - field:    "
@@ -408,7 +423,8 @@ TEST(decoder, ofmp_aggregatereply_v4) {
       "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "AGGREGATE\n  flags:           [ '0x00002222' ]\n  body:            \n    "
+      "AGGREGATE\n  flags:           [ '0x00002222' ]\n  body:            \n   "
+      " "
       "packet_count:    0x3333333333333330\n    byte_count:      "
       "0x4444444444444440\n    flow_count:      0x55555550\n...\n");
 }
@@ -420,7 +436,8 @@ TEST(decoder, ofmp_aggregatereply_v1) {
       "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "AGGREGATE\n  flags:           [ '0x00002222' ]\n  body:            \n    "
+      "AGGREGATE\n  flags:           [ '0x00002222' ]\n  body:            \n   "
+      " "
       "packet_count:    0x3333333333333330\n    byte_count:      "
       "0x4444444444444440\n    flow_count:      0x55555550\n...\n");
 }
@@ -474,7 +491,8 @@ TEST(decoder, ofmp_portstats_v4) {
       "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
       " "
-      "PORT_STATS\n  flags:           [ '0x00002222' ]\n  body:            \n    - "
+      "PORT_STATS\n  flags:           [ '0x00002222' ]\n  body:            \n  "
+      "  - "
       "port_no:         0x33333330\n      rx_packets:      "
       "0x4444444444444440\n      tx_packets:      0x5555555555555550\n      "
       "rx_bytes:        0x6666666666666660\n      tx_bytes:        "
@@ -496,7 +514,8 @@ TEST(decoder, ofmp_portstats_v1) {
       "---\ntype:            MULTIPART_REPLY\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  type:           "
       " "
-      "PORT_STATS\n  flags:           [ '0x00002222' ]\n  body:            \n    - "
+      "PORT_STATS\n  flags:           [ '0x00002222' ]\n  body:            \n  "
+      "  - "
       "port_no:         0x00003330\n      rx_packets:      "
       "0x4444444444444440\n      tx_packets:      0x5555555555555550\n      "
       "rx_bytes:        0x6666666666666660\n      tx_bytes:        "
@@ -571,7 +590,9 @@ TEST(decoder, flowmodv4_2) {
       "      0x33\n  command:         0x44\n  idle_timeout:    0x5555\n  "
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x99999999\n  out_group:       "
-      "0xAAAAAAAA\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    - field:"
+      "0xAAAAAAAA\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, "
+      "NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    "
+      "- field:"
       "           IN_PORT\n      value:           0xCCCCCCCC\n    - field: "
       "          ETH_TYPE\n      value:           0x0800\n    - field:     "
       "  "
@@ -594,7 +615,9 @@ TEST(decoder, flowmodv1) {
       "      0x00\n  command:         0x44\n  idle_timeout:    0x5555\n  "
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x00009999\n  out_group:       "
-      "0x00000000\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    - field:"
+      "0x00000000\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, "
+      "NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    "
+      "- field:"
       "           IN_PORT\n      value:           0x0000CCCC\n    - field: "
       "     "
       "     ETH_TYPE\n      value:           0x0800\n    - field:          "
@@ -604,9 +627,8 @@ TEST(decoder, flowmodv1) {
       "    - action:          SET_FIELD\n          field:           "
       "IPV4_DST\n          value:           192.168.2.1\n...\n";
 
-
   testDecodeEncode(hex, yaml);
-  #if 0
+#if 0
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
@@ -629,7 +651,7 @@ TEST(decoder, flowmodv1) {
 
   EXPECT_EQ("", encoder.error());
   EXPECT_HEX(hex, encoder.data(), encoder.size());
-  #endif //0
+#endif  // 0
 }
 
 TEST(decoder, flowmod1_2) {
@@ -644,7 +666,9 @@ TEST(decoder, flowmod1_2) {
       "      0x00\n  command:         0x44\n  idle_timeout:    0x5555\n  "
       "hard_timeout:    0x6666\n  priority:        0x7777\n  buffer_id:       "
       "0x88888888\n  out_port:        0x00009999\n  out_group:       "
-      "0x00000000\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    - field:"
+      "0x00000000\n  flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, "
+      "NO_PKT_COUNTS, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    "
+      "- field:"
       "           IN_PORT\n      value:           0x0000CCCC\n    - field: "
       "     "
       "     ETH_TYPE\n      value:           0x0800\n    - field:          "
@@ -669,7 +693,8 @@ TEST(decoder, packetinv4) {
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:      "
       " 0x33333333\n  total_len:       0x4444\n  in_port:         0x55555555\n "
       " in_phy_port:     0x66666666\n  metadata:        0x7777777777777777\n  "
-      "reason:          APPLY_ACTION\n  table_id:        0x88\n  cookie:        "
+      "reason:          APPLY_ACTION\n  table_id:        0x88\n  cookie:       "
+      " "
       "  0x9999999999999999\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x55555555\n    - field:           "
       "IN_PHY_PORT\n      value:           0x66666666\n    - field:        "
@@ -688,7 +713,8 @@ TEST(decoder, packetinv1) {
       "0x00000002\nversion:         0x01\nmsg:             \n  buffer_id:      "
       " 0x33333333\n  total_len:       0x4444\n  in_port:         0x00005555\n "
       " in_phy_port:     0x00000000\n  metadata:        0x0000000000000000\n  "
-      "reason:          APPLY_ACTION\n  table_id:        0x00\n  cookie:        "
+      "reason:          APPLY_ACTION\n  table_id:        0x00\n  cookie:       "
+      " "
       "  0x0000000000000000\n  match:           \n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
@@ -753,14 +779,15 @@ TEST(decoder, packetoutv1) {
 
   EXPECT_EQ("", encoder.error());
   EXPECT_HEX(hex, encoder.data(), encoder.size());
-#endif //0
+#endif  // 0
 }
 
 TEST(decoder, setconfigv4) {
   testDecodeEncode("0409000C11111111AAAABBBB",
                    "---\ntype:            SET_CONFIG\nxid:             "
                    "0x11111111\nversion:         0x04\nmsg:             \n  "
-                   "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  miss_send_len:   0xBBBB\n...\n");
+                   "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  "
+                   "miss_send_len:   0xBBBB\n...\n");
 }
 
 TEST(decoder, portstatusv4) {
@@ -771,12 +798,19 @@ TEST(decoder, portstatusv4) {
       "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  reason:         "
       " "
-      "0x22\n  port:            \n    port_no:         0x33333333\n    hw_addr:  "
+      "0x22\n  port:            \n    port_no:         0x33333333\n    "
+      "hw_addr:  "
       "       'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    config:    "
       "  "
-      "    [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:           [ LINK_DOWN, LIVE, '0x55555550' ]\n    curr:            "
-      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       "
-      "[ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n    curr_speed:      "
+      "    [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:           [ "
+      "LINK_DOWN, LIVE, '0x55555550' ]\n    curr:            "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, "
+      "'0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, "
+      "1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, "
+      "PAUSE, '0x77770000' ]\n    supported:       "
+      "[ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:      "
+      "      [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, "
+      "PAUSE_ASYM, '0x99990000' ]\n    curr_speed:      "
       "0xAAAAAAAA\n    max_speed:       0xBBBBBBBB\n...\n");
 }
 
@@ -787,12 +821,18 @@ TEST(decoder, portstatusv1) {
       "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  reason:         "
       " "
-      "0x22\n  port:            \n    port_no:         0x00003333\n    hw_addr:  "
+      "0x22\n  port:            \n    port_no:         0x00003333\n    "
+      "hw_addr:  "
       "       'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    config:    "
       "  "
-      "    [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:           [ LINK_DOWN, LIVE, STP_LEARN, '0x55555450' ]\n    curr:            "
-      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       "
-      "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n    curr_speed:      "
+      "    [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:           [ "
+      "LINK_DOWN, LIVE, STP_LEARN, '0x55555450' ]\n    curr:            "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n  "
+      "  advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       "
+      "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ "
+      "10MB_HD, 100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n  "
+      "  curr_speed:      "
       "0x00000000\n    max_speed:       0x00000000\n...\n");
 }
 
@@ -827,9 +867,12 @@ TEST(decoder, portmodv4) {
       "---\ntype:            PORT_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
       "port_no:         0x22222222\n  hw_addr:         "
-      "'33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:  "
-      "          [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       "
-      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n...\n");
+      "'33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, "
+      "'0x44444400' ]\n  mask:  "
+      "          [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' "
+      "]\n  advertise:       "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, "
+      "'0x66660000' ]\n...\n");
 }
 
 TEST(decoder, portmodv1) {
@@ -839,8 +882,11 @@ TEST(decoder, portmodv1) {
       "0x11111111\nversion:         0x01\nmsg:             \n  port_no:        "
       " "
       "0x00002222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          "
-      "[ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       "
-      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n...\n");
+      "[ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:            [ "
+      "PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  "
+      "advertise:       "
+      "[ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, "
+      "'0x66660000' ]\n...\n");
 }
 
 TEST(decoder, tablemodv4) {
@@ -882,10 +928,15 @@ TEST(decoder, getasyncreplyv4) {
       "041B002011111111222222223333333344444444555555556666666677777777",
       "---\ntype:            GET_ASYNC_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n "
-      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  port_status_mask_slave: "
-      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
-      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
+      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  "
+      "packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, "
+      "'0x33333300' ]\n "
+      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  "
+      "port_status_mask_slave: "
+      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ "
+      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
+      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
+      "METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
 }
 
 TEST(decoder, queuegetconfigrequestv4) {
@@ -934,7 +985,8 @@ TEST(decoder, getconfigreplyv4) {
   testDecodeEncode("0408000C11111111AAAABBBB",
                    "---\ntype:            GET_CONFIG_REPLY\nxid:          "
                    "   0x11111111\nversion:         0x04\nmsg:             \n  "
-                   "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  miss_send_len:   0xBBBB\n...\n");
+                   "flags:           [ FRAG_REASM, '0x0000AAA8' ]\n  "
+                   "miss_send_len:   0xBBBB\n...\n");
 }
 
 TEST(decoder, setasyncv4) {
@@ -942,10 +994,15 @@ TEST(decoder, setasyncv4) {
       "041C002011111111222222223333333344444444555555556666666677777777",
       "---\ntype:            SET_ASYNC\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n "
-      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  port_status_mask_slave: "
-      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
-      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
+      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  "
+      "packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, "
+      "'0x33333300' ]\n "
+      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  "
+      "port_status_mask_slave: "
+      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ "
+      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
+      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
+      "METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
 }
 
 TEST(decoder, flowremovedv4) {
@@ -1163,7 +1220,8 @@ TEST(decoder, ofp_metermod_v4) {
       "666666667777777788000000",
       "---\ntype:            METER_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  command:        "
-      " MODIFY\n  flags:           [ PKTPS, '0x00002220' ]\n  meter_id:        0x33333333\n  "
+      " MODIFY\n  flags:           [ PKTPS, '0x00002220' ]\n  meter_id:        "
+      "0x33333333\n  "
       "bands:           \n    - type:            DROP\n      rate:      "
       "      1145324612\n      burst_size:      1431655765\n    - type:        "
       "    DSCP_REMARK\n      rate:            1717986918\n      "
@@ -1171,9 +1229,38 @@ TEST(decoder, ofp_metermod_v4) {
 }
 
 TEST(decoder, ofp_mpaggregatestatsrequest_v1) {
-  testDecodeEncode("0110003800000018 00020000 003820ff0000000000000000000000000000 00000000000000000000000000000000 0000000000000800ffff", "---\ntype:            MULTIPART_REQUEST\nxid:             0x00000018\nversion:         0x01\nmsg:             \n  type:            AGGREGATE\n  flags:           [  ]\n  body:            \n    table_id:        0x08\n    out_port:        ANY\n    out_group:       0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:     0x0000000000000000\n    match:           \n...\n");
+  testDecodeEncode(
+      "0110003800000018 00020000 003820ff0000000000000000000000000000 "
+      "00000000000000000000000000000000 0000000000000800ffff",
+      "---\ntype:            MULTIPART_REQUEST\nxid:             "
+      "0x00000018\nversion:         0x01\nmsg:             \n  type:           "
+      " AGGREGATE\n  flags:           [  ]\n  body:            \n    table_id: "
+      "       0x08\n    out_port:        ANY\n    out_group:       "
+      "0x00000000\n    cookie:          0x0000000000000000\n    cookie_mask:   "
+      "  0x0000000000000000\n    match:           \n...\n");
 }
 
 TEST(decoder, ofmp_groupfeatures_reply) {
-  testDecodeEncode("041300381111111100080000000000001111111122222222333333334444444455555555666666663777777708888888199999992AAAAAAA", "---\ntype:            MULTIPART_REPLY\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  type:            GROUP_FEATURES\n  flags:           [  ]\n  body:            \n    types:           0x11111111\n    capabilities:    0x22222222\n    max_groups_all:  0x33333333\n    max_groups_sel:  0x44444444\n    max_groups_ind:  0x55555555\n    max_groups_ff:   0x66666666\n    actions_all:     [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_ECN, SET_TP_SRC, SET_TP_DST, COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, DEC_NW_TTL, SET_FIELD, PUSH_PBB, '0x30000000' ]\n    actions_sel:     [ SET_DL_SRC, SET_NW_TOS, COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, SET_NW_TTL, POP_PBB ]\n    actions_ind:     [ OUTPUT, SET_DL_SRC, SET_DL_DST, SET_NW_TOS, SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_MPLS, POP_MPLS, SET_NW_TTL, DEC_NW_TTL, POP_PBB, '0x10000000' ]\n    actions_ff:      [ SET_VLAN_VID, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_SRC, COPY_TTL_OUT, SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' ]\n...\n");
+  testDecodeEncode(
+      "041300381111111100080000000000001111111122222222333333334444444455555555"
+      "666666663777777708888888199999992AAAAAAA",
+      "---\ntype:            MULTIPART_REPLY\nxid:             "
+      "0x11111111\nversion:         0x04\nmsg:             \n  type:           "
+      " GROUP_FEATURES\n  flags:           [  ]\n  body:            \n    "
+      "types:           0x11111111\n    capabilities:    0x22222222\n    "
+      "max_groups_all:  0x33333333\n    max_groups_sel:  0x44444444\n    "
+      "max_groups_ind:  0x55555555\n    max_groups_ff:   0x66666666\n    "
+      "actions_all:     [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, SET_DL_DST, "
+      "SET_NW_SRC, SET_NW_DST, SET_NW_ECN, SET_TP_SRC, SET_TP_DST, "
+      "COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, DEC_MPLS_TTL, PUSH_VLAN, "
+      "POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, DEC_NW_TTL, SET_FIELD, PUSH_PBB, "
+      "'0x30000000' ]\n    actions_sel:     [ SET_DL_SRC, SET_NW_TOS, "
+      "COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, SET_NW_TTL, POP_PBB ]\n    "
+      "actions_ind:     [ OUTPUT, SET_DL_SRC, SET_DL_DST, SET_NW_TOS, "
+      "SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, "
+      "PUSH_MPLS, POP_MPLS, SET_NW_TTL, DEC_NW_TTL, POP_PBB, '0x10000000' ]\n  "
+      "  actions_ff:      [ SET_VLAN_VID, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, "
+      "SET_TP_SRC, COPY_TTL_OUT, SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, "
+      "PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' "
+      "]\n...\n");
 }

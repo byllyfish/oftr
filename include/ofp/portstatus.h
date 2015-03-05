@@ -13,7 +13,9 @@ class PortStatus
  public:
   OFPPortStatusReason reason() const { return reason_; }
 
-  const Port &port() const { return *reinterpret_cast<const Port*>(BytePtr(this) + 16); }
+  const Port &port() const {
+    return *reinterpret_cast<const Port *>(BytePtr(this) + 16);
+  }
 
   bool validateInput(Validation *context) const { return true; }
 

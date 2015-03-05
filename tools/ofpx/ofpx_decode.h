@@ -21,7 +21,7 @@ namespace ofpx {
 //   --keep-going     Continue processing messages after errors.
 //   --verify-output  Verify output by translating it back to binary.
 //   --use-findx      Use timestamps from '.findx' file(s).
-//   
+//
 // Usage:
 //
 // To decode a file of binary OpenFlow messages to YAML:
@@ -65,9 +65,11 @@ class Decode : public Subprogram {
   ExitStatus checkError(std::istream &input, std::streamsize readLen,
                         bool header);
   ExitStatus decodeOneMessage(const ofp::Message *message,
-                              const ofp::Message *originalMessage, const ofp::Timestamp &timestamp);
+                              const ofp::Message *originalMessage,
+                              const ofp::Timestamp &timestamp);
 
-  static bool parseIndexLine(const llvm::StringRef &line, size_t *pos, ofp::Timestamp *timestamp, size_t *length);
+  static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
+                             ofp::Timestamp *timestamp, size_t *length);
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
@@ -81,7 +83,8 @@ class Decode : public Subprogram {
   cl::opt<bool> verifyOutput_{
       "verify-output",
       cl::desc("Verify output by translating it back to binary")};
-  cl::opt<bool> useFindx_{"use-findx", cl::desc("Use timestamps from '.findx' file(s)")};
+  cl::opt<bool> useFindx_{"use-findx",
+                          cl::desc("Use timestamps from '.findx' file(s)")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

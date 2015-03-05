@@ -46,24 +46,25 @@ OriginalMatch::OriginalMatch(const OXMRange &range) {
         dl_type = item.value<OFB_ETH_TYPE>();
         wc &= ~OFPFW_DL_TYPE;
         break;
-      case OFB_VLAN_VID::type():
-      {
+      case OFB_VLAN_VID::type(): {
         UInt16 vlan = item.value<OFB_VLAN_VID>();
-        dl_vlan = (vlan == OFPVID_NONE ? v1::OFPVID_NONE : (vlan & ~OFPVID_PRESENT));
+        dl_vlan =
+            (vlan == OFPVID_NONE ? v1::OFPVID_NONE : (vlan & ~OFPVID_PRESENT));
         wc &= ~OFPFW_DL_VLAN;
         break;
       }
-      case OFB_VLAN_VID::typeWithMask():
-      {
+      case OFB_VLAN_VID::typeWithMask(): {
         UInt16 vlan = item.value<OFB_VLAN_VID>();
         UInt16 mask = item.mask<OFB_VLAN_VID>();
         if (vlan == OFPVID_PRESENT && mask == OFPVID_PRESENT) {
-          // This is a OpenFlow 1.1 feature; I didn't see it mentioned in the 
+          // This is a OpenFlow 1.1 feature; I didn't see it mentioned in the
           // 1.0 specification. Allow it anyway.
           dl_vlan = v1::OFPVID_PRESENT;
         } else {
-          if (mask != 0xffff) 
-            log::warning("OriginalMatch: VLAN mask not supported. Reverting to specific match");
+          if (mask != 0xffff)
+            log::warning(
+                "OriginalMatch: VLAN mask not supported. Reverting to specific "
+                "match");
           dl_vlan = (vlan & ~OFPVID_PRESENT);
         }
         wc &= ~OFPFW_DL_VLAN;

@@ -156,7 +156,8 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
 // d e c o d e M e s s a g e s W i t h I n d e x //
 //-----------------------------------------------//
 
-ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &index) {
+ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
+                                           std::istream &index) {
   // Create message buffers.
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
@@ -174,17 +175,20 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &in
 
     // Parse line to obtain position, timestamp and length.
     if (!parseIndexLine(line, &pos, &timestamp, &length)) {
-      std::cerr << "Error in parsing index: " << line << " file=" << currentFilename_ << '\n';
+      std::cerr << "Error in parsing index: " << line
+                << " file=" << currentFilename_ << '\n';
       return ExitStatus::IndexReadFailed;
     }
 
     // Check for gaps in the stream.
     if (pos < expectedPos) {
-      std::cerr << "Error in index; data offset is backwards: " << line << " file=" << currentFilename_ << '\n';
+      std::cerr << "Error in index; data offset is backwards: " << line
+                << " file=" << currentFilename_ << '\n';
       continue;
-      
+
     } else if (pos > expectedPos) {
-      std::cerr << "Gap in stream (" << pos - expectedPos << " bytes) file=" << currentFilename_ << '\n';
+      std::cerr << "Gap in stream (" << pos - expectedPos
+                << " bytes) file=" << currentFilename_ << '\n';
       auto jump = ofp::Signed_cast(pos - expectedPos);
       if (!input.ignore(jump)) {
         return checkError(input, jump, false);
@@ -206,13 +210,17 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &in
 
     // Log when messages do not align to packet 'boundaries'.
     if (buffer.size() < sizeof(ofp::Header)) {
-      std::cerr << "Header fragmented (" << buffer.size() << " bytes) " << currentFilename_ << '\n';
+      std::cerr << "Header fragmented (" << buffer.size() << " bytes) "
+                << currentFilename_ << '\n';
     } else if (buffer.header()->length() > buffer.size()) {
-      std::cerr << "Message fragmented (" << length << " of " << buffer.header()->length() << " bytes) in " << currentFilename_ << '\n';
+      std::cerr << "Message fragmented (" << length << " of "
+                << buffer.header()->length() << " bytes) in "
+                << currentFilename_ << '\n';
     }
 
     // Decode complete messages and assign them the last read timestamp.
-    while (buffer.size() >= sizeof(ofp::Header) && buffer.header()->length() <= buffer.size()) {
+    while (buffer.size() >= sizeof(ofp::Header) &&
+           buffer.header()->length() <= buffer.size()) {
       message.setTime(timestamp);
       message.setData(buffer.data(), buffer.header()->length());
       buffer.removeFront(buffer.header()->length());
@@ -220,7 +228,8 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &in
       if (message.size() < sizeof(ofp::Header)) {
         // If message size is less than 8 bytes, report an error.
         std::cerr << "Filename: " << currentFilename_ << ": " << line << '\n';
-        std::cerr << "Error: Invalid message header length: " << message.size() << " bytes\n";
+        std::cerr << "Error: Invalid message header length: " << message.size()
+                  << " bytes\n";
         return ExitStatus::DecodeFailed;
       }
 
@@ -229,20 +238,22 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input, std::istream &in
       originalMessage.assign(message);
       message.transmogrify();
 
-      ExitStatus result = decodeOneMessage(&message, &originalMessage, timestamp);
+      ExitStatus result =
+          decodeOneMessage(&message, &originalMessage, timestamp);
       if (result != ExitStatus::Success && !keepGoing_) {
         return result;
-      }    
+      }
     }
   }
 
   // Check that we reached end of index file without error.
   if (!index.eof()) {
-    std::cerr << "Error: Error reading from index file " << currentFilename_ << ".findx\n";
+    std::cerr << "Error: Error reading from index file " << currentFilename_
+              << ".findx\n";
     return ExitStatus::IndexReadFailed;
   }
 
-  // We should not be able to read any more data from input. If we can, the 
+  // We should not be able to read any more data from input. If we can, the
   // index file is not synced with the input file.
   char ch;
   if (input.get(ch)) {
@@ -283,7 +294,8 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 //---------------------------------//
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
-                                    const ofp::Message *originalMessage, const ofp::Timestamp &timestamp) {
+                                    const ofp::Message *originalMessage,
+                                    const ofp::Timestamp &timestamp) {
   ofp::yaml::Decoder decoder{message, json_};
 
   if (!decoder.error().empty()) {
@@ -359,30 +371,27 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 // p a r s e I n d e x L i n e //
 //-----------------------------//
 
-bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos, ofp::Timestamp *timestamp, size_t *length) {
+bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
+                            ofp::Timestamp *timestamp, size_t *length) {
   // Each line has the format:
-  // 
+  //
   //     pos|timestamp|length
-  
+
   auto posEnd = line.find_first_of('|');
-  if (posEnd == llvm::StringRef::npos) 
-    return false;
+  if (posEnd == llvm::StringRef::npos) return false;
 
   auto timestampEnd = line.find_first_of('|', posEnd + 1);
-  if (timestampEnd == llvm::StringRef::npos) 
-    return false;
+  if (timestampEnd == llvm::StringRef::npos) return false;
 
   assert(timestampEnd >= posEnd + 1);
-  
+
   auto posStr = line.substr(0, posEnd);
   auto timestampStr = line.substr(posEnd + 1, timestampEnd - posEnd - 1);
   auto lengthStr = line.substr(timestampEnd + 1);
 
-  if (posStr.getAsInteger(10, *pos))
-    return false;
+  if (posStr.getAsInteger(10, *pos)) return false;
 
-  if (lengthStr.getAsInteger(10, *length)) 
-    return false;
+  if (lengthStr.getAsInteger(10, *length)) return false;
 
   return timestamp->parse(timestampStr);
 }

@@ -6,7 +6,8 @@
 
 using namespace ofp;
 
-Validation::Validation(const Message *msg, OFPErrorCode *error) : msg_{msg}, error_{error} {
+Validation::Validation(const Message *msg, OFPErrorCode *error)
+    : msg_{msg}, error_{error} {
   assert(error_);
   *error_ = OFPEC_UNKNOWN_FLAG;
   if (msg) {

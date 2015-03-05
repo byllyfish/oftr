@@ -8,9 +8,9 @@
 namespace ofpx {
 
 // ofpx help [<text>]
-// 
+//
 // Access built-in help features.
- 
+
 class Help : public Subprogram {
  public:
   enum class ExitStatus { Success = 0 };
@@ -25,4 +25,4 @@ class Help : public Subprogram {
 
 }  // namespace ofpx
 
-#endif // TOOLS_OFPX_OFPX_HELP_H_
+#endif  // TOOLS_OFPX_OFPX_HELP_H_

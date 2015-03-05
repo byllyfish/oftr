@@ -12,7 +12,8 @@ int main(int argc, char **argv) {
   IPv6Endpoint remoteEndpoint;
   if (!args.empty()) {
     if (!remoteEndpoint.parse(args[0])) {
-      std::cerr << "testagent: Argument 1 is not an endpoint: `" << args[0] << "`\n";
+      std::cerr << "testagent: Argument 1 is not an endpoint: `" << args[0]
+                << "`\n";
       return 1;
     }
   }
@@ -22,13 +23,15 @@ int main(int argc, char **argv) {
   driver.installSignalHandlers();
 
   if (remoteEndpoint.valid()) {
-    (void)driver.connect(ChannelMode::Raw, 0, remoteEndpoint, {OFP_VERSION_1},
-                         TestAgent::Factory,
-                         [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
-      std::cerr << "testagent: Error connecting to `" << remoteEndpoint << "`: connId=" << channel->connectionId()
-                << " err=" << err.message() << '\n';
-      error = err;
-    });
+    (void)driver.connect(
+        ChannelMode::Raw, 0, remoteEndpoint, {OFP_VERSION_1},
+        TestAgent::Factory,
+        [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
+          std::cerr << "testagent: Error connecting to `" << remoteEndpoint
+                    << "`: connId=" << channel->connectionId()
+                    << " err=" << err.message() << '\n';
+          error = err;
+        });
 
   } else {
     (void)driver.listen(ChannelMode::Raw, 0, IPv6Endpoint{OFP_DEFAULT_PORT},

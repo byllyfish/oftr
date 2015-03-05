@@ -86,10 +86,9 @@ TEST(standardmatch, oxm2) {
       &stdMatch, sizeof(stdMatch));
 }
 
-
 TEST(standardmatch, vlan_vid) {
   // Test interpretation of vlan_vid field when converting from oxmrange.
-  
+
   // Packets with *or* without any vlan tag.
   {
     MatchBuilder match;

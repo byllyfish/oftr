@@ -16,7 +16,7 @@ struct ScalarTraits<ofp::BufferID> {
     llvm::StringRef scalar;
     auto bufferId = static_cast<ofp::OFPBufferID>(value);
     if (converter.convert(bufferId, &scalar)) {
-        out << scalar;
+      out << scalar;
     } else {
       // Output BufferID in hexadecimal.
       ScalarTraits<Hex32>::output(bufferId, ctxt, out);
@@ -25,7 +25,7 @@ struct ScalarTraits<ofp::BufferID> {
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::BufferID &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
-      ofp::OFPBufferID bufferId; 
+      ofp::OFPBufferID bufferId;
       if (!converter.convert(scalar, &bufferId)) {
         return "Invalid buffer id value";
       }
@@ -46,23 +46,22 @@ struct ScalarTraits<ofp::BufferID> {
   using json_type = ofp::BufferID;
 };
 
-
-template<>
+template <>
 inline std::string primitive_to_json(ofp::BufferID value) {
-    llvm::StringRef scalar;
-    auto bufferId = static_cast<ofp::OFPBufferID>(value);
-    if (ScalarTraits<ofp::BufferID>::converter.convert(bufferId, &scalar)) {
-      std::string result = "\"";
-      result += scalar;
-      result += '\"';
-      return result;
-    } else {
-      // Output BufferID in hexadecimal.
-      return std::to_string(bufferId);
-    }
+  llvm::StringRef scalar;
+  auto bufferId = static_cast<ofp::OFPBufferID>(value);
+  if (ScalarTraits<ofp::BufferID>::converter.convert(bufferId, &scalar)) {
+    std::string result = "\"";
+    result += scalar;
+    result += '\"';
+    return result;
+  } else {
+    // Output BufferID in hexadecimal.
+    return std::to_string(bufferId);
+  }
 }
 
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YBUFFERID_H_
+#endif  // OFP_YAML_YBUFFERID_H_

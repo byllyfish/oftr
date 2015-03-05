@@ -58,8 +58,7 @@ void DefaultHandshake::onMessage(const Message *message) {
 
 void DefaultHandshake::onHello(const Message *message) {
   const Hello *msg = Hello::cast(message);
-  if (!msg)
-    return;
+  if (!msg) return;
 
   UInt8 msgVersion = msg->msgHeader()->version();
   UInt8 version =
@@ -156,4 +155,3 @@ void DefaultHandshake::clearChannelListener() {
   channel_->setChannelListener(nullptr);
   ChannelListener::dispose(this);
 }
-

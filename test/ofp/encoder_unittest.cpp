@@ -2110,7 +2110,6 @@ TEST(encoder, meter_mod_v4) {
       encoder.data(), encoder.size());
 }
 
-
 TEST(encoder, ofmp_groupfeatures_reply) {
   const char *input = R"""(
       version: 4
@@ -2136,6 +2135,8 @@ TEST(encoder, ofmp_groupfeatures_reply) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(56, encoder.size());
-  EXPECT_HEX("041300381111111100080000000000001111111122222222333333334444444455555555666666663777777708888888199999992AAAAAAA", encoder.data(),
-             encoder.size());
+  EXPECT_HEX(
+      "041300381111111100080000000000001111111122222222333333334444444455555555"
+      "666666663777777708888888199999992AAAAAAA",
+      encoder.data(), encoder.size());
 }

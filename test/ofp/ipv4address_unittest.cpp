@@ -69,7 +69,7 @@ TEST(ipv4address, misaligned) {
 
   static_assert(sizeof(TestBuf) == 5, "Unexpected size");
   static_assert(offsetof(TestBuf, addr) == 1, "Unexpected offset");
-  
+
   TestBuf buf;
   EXPECT_FALSE(buf.addr.valid());
   EXPECT_TRUE(buf.addr.parse("251.252.253.254"));

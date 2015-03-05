@@ -43,7 +43,7 @@ template <>
 struct MappingTraits<ofp::SetAsyncBuilder> {
   static void mapping(IO &io, ofp::SetAsyncBuilder &msg) {
     using namespace ofp;
-    
+
     OFPPacketInFlags pktMaster;
     OFPPacketInFlags pktSlave;
     io.mapRequired("packet_in_mask_master", pktMaster);

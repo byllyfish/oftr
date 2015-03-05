@@ -40,7 +40,9 @@ class GetConfigReplyBuilder {
   explicit GetConfigReplyBuilder(const GetConfigReply *msg);
 
   void setFlags(OFPConfigFlags flags) { msg_.flags_ = flags; }
-  void setMissSendLen(ControllerMaxLen missSendLen) { msg_.missSendLen_ = missSendLen; }
+  void setMissSendLen(ControllerMaxLen missSendLen) {
+    msg_.missSendLen_ = missSendLen;
+  }
 
   UInt32 send(Writable *channel);
 

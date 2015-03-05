@@ -316,7 +316,6 @@ TEST(matchbuilder, test_placeholders_2) {
   EXPECT_TRUE(match.validate());
 }
 
-
 TEST(matchbuilder, addOrdered) {
   MatchBuilder match;
 
@@ -324,7 +323,8 @@ TEST(matchbuilder, addOrdered) {
   match.addOrderedUnchecked(OFB_ETH_TYPE{0x0800});
   match.addOrderedUnchecked(OFB_IN_PORT{27});
 
-  EXPECT_HEX("800000040000001B 80000A020800 80001A020050", match.data(), match.size());
+  EXPECT_HEX("800000040000001B 80000A020800 80001A020050", match.data(),
+             match.size());
 
   match.clear();
 
@@ -332,5 +332,6 @@ TEST(matchbuilder, addOrdered) {
   match.addOrderedUnchecked(OFB_IN_PORT{27});
   match.addOrderedUnchecked(OFB_TCP_SRC{80});
 
-  EXPECT_HEX("800000040000001B 80000A020800 80001A020050", match.data(), match.size());
+  EXPECT_HEX("800000040000001B 80000A020800 80001A020050", match.data(),
+             match.size());
 }

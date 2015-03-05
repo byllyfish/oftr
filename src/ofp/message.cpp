@@ -40,7 +40,8 @@ void Message::transmogrify() {
   tr.normalize();
 }
 
-void Message::replyError(OFPErrorCode error, const std::string &explanation) const {
+void Message::replyError(OFPErrorCode error,
+                         const std::string &explanation) const {
   if (source()) {
     ErrorBuilder errorBuilder{xid()};
     errorBuilder.setErrorCode(error);

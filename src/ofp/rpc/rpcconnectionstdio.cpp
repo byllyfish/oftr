@@ -6,9 +6,9 @@
 using ofp::rpc::RpcConnectionStdio;
 
 // The Stdio Text API uses UTF-8 and has JSON events delimited by '\n'. White
-// space characters (SPACE, HT, VT, FF, CR) are permitted. All other control 
+// space characters (SPACE, HT, VT, FF, CR) are permitted. All other control
 // characters are reserved.
- 
+
 const char kEventDelimiter = '\n';
 
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,

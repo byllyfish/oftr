@@ -126,4 +126,3 @@ TEST(types, MemCopyMasked) {
   MemCopyMasked(&d, &a, &b, sizeof(a));
   EXPECT_EQ(a & b, d);
 }
-

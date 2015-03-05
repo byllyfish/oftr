@@ -72,7 +72,8 @@ class Message {
   void transmogrify();
 
   /// Send an error message back to the source of the message.
-  void replyError(OFPErrorCode error, const std::string &explanation = "") const;
+  void replyError(OFPErrorCode error,
+                  const std::string &explanation = "") const;
 
   // Used by the ProtocolMsg::cast(message) operator.
   template <class MsgType>

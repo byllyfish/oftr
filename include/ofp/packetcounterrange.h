@@ -8,7 +8,8 @@
 
 namespace ofp {
 
-using PacketCounterIterator = ProtocolIterator<PacketCounter, ProtocolIteratorType::PacketCounter>;
+using PacketCounterIterator =
+    ProtocolIterator<PacketCounter, ProtocolIteratorType::PacketCounter>;
 using PacketCounterRange = ProtocolRange<PacketCounterIterator>;
 
 }  // namespace ofp

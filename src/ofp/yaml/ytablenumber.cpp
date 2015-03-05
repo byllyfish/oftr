@@ -4,12 +4,13 @@
 using namespace ofp;
 using ofp::yaml::EnumConverterSparse;
 
-#define OFP_NAME(s)   { OFPTT_##s, #s }
+#define OFP_NAME(s) \
+  { OFPTT_##s, #s }
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static std::pair<OFPTableNo, llvm::StringRef> sTableNumbers[] = {
-  OFP_NAME(ALL),
+    OFP_NAME(ALL),
 };
 
 EnumConverterSparse<OFPTableNo>

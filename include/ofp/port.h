@@ -81,8 +81,12 @@ class PortBuilder {
   void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }
   void setState(OFPPortStateFlags state) { msg_.state_ = state; }
   void setCurr(OFPPortFeaturesFlags curr) { msg_.curr_ = curr; }
-  void setAdvertised(OFPPortFeaturesFlags advertised) { msg_.advertised_ = advertised; }
-  void setSupported(OFPPortFeaturesFlags supported) { msg_.supported_ = supported; }
+  void setAdvertised(OFPPortFeaturesFlags advertised) {
+    msg_.advertised_ = advertised;
+  }
+  void setSupported(OFPPortFeaturesFlags supported) {
+    msg_.supported_ = supported;
+  }
   void setPeer(OFPPortFeaturesFlags peer) { msg_.peer_ = peer; }
   void setCurrSpeed(UInt32 currSpeed) { msg_.currSpeed_ = currSpeed; }
   void setMaxSpeed(UInt32 maxSpeed) { msg_.maxSpeed_ = maxSpeed; }
@@ -121,17 +125,33 @@ class PortV1 {
   OFPPortStateFlags state() const { return state_; }
   void setState(OFPPortStateFlags state) { state_ = state; }
 
-  OFPPortFeaturesFlags curr() const { return OFPPortFeaturesFlagsConvertFromV1(curr_); }
-  void setCurr(OFPPortFeaturesFlags curr) { curr_ = OFPPortFeaturesFlagsConvertToV1(curr); }
+  OFPPortFeaturesFlags curr() const {
+    return OFPPortFeaturesFlagsConvertFromV1(curr_);
+  }
+  void setCurr(OFPPortFeaturesFlags curr) {
+    curr_ = OFPPortFeaturesFlagsConvertToV1(curr);
+  }
 
-  OFPPortFeaturesFlags advertised() const { return OFPPortFeaturesFlagsConvertFromV1(advertised_); }
-  void setAdvertised(OFPPortFeaturesFlags advertised) { advertised_ = OFPPortFeaturesFlagsConvertToV1(advertised); }
+  OFPPortFeaturesFlags advertised() const {
+    return OFPPortFeaturesFlagsConvertFromV1(advertised_);
+  }
+  void setAdvertised(OFPPortFeaturesFlags advertised) {
+    advertised_ = OFPPortFeaturesFlagsConvertToV1(advertised);
+  }
 
-  OFPPortFeaturesFlags supported() const { return OFPPortFeaturesFlagsConvertFromV1(supported_); }
-  void setSupported(OFPPortFeaturesFlags supported) { supported_ = OFPPortFeaturesFlagsConvertToV1(supported); }
+  OFPPortFeaturesFlags supported() const {
+    return OFPPortFeaturesFlagsConvertFromV1(supported_);
+  }
+  void setSupported(OFPPortFeaturesFlags supported) {
+    supported_ = OFPPortFeaturesFlagsConvertToV1(supported);
+  }
 
-  OFPPortFeaturesFlags peer() const { return OFPPortFeaturesFlagsConvertFromV1(peer_); }
-  void setPeer(OFPPortFeaturesFlags peer) { peer_ = OFPPortFeaturesFlagsConvertToV1(peer); }
+  OFPPortFeaturesFlags peer() const {
+    return OFPPortFeaturesFlagsConvertFromV1(peer_);
+  }
+  void setPeer(OFPPortFeaturesFlags peer) {
+    peer_ = OFPPortFeaturesFlagsConvertToV1(peer);
+  }
 
  private:
   Big16 portNo_;

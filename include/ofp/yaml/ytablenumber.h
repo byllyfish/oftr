@@ -16,16 +16,17 @@ struct ScalarTraits<ofp::TableNumber> {
     llvm::StringRef scalar;
     auto tableNum = static_cast<ofp::OFPTableNo>(value);
     if (converter.convert(tableNum, &scalar)) {
-        out << scalar;
+      out << scalar;
     } else {
       // Output TableNumber in hexadecimal.
       ScalarTraits<Hex8>::output(tableNum, ctxt, out);
     }
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::TableNumber &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::TableNumber &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
-      ofp::OFPTableNo tableNum; 
+      ofp::OFPTableNo tableNum;
       if (!converter.convert(scalar, &tableNum)) {
         return "Invalid table number value";
       }
@@ -46,23 +47,22 @@ struct ScalarTraits<ofp::TableNumber> {
   using json_type = ofp::TableNumber;
 };
 
-
-template<>
+template <>
 inline std::string primitive_to_json(ofp::TableNumber value) {
-    llvm::StringRef scalar;
-    auto tableNum = static_cast<ofp::OFPTableNo>(value);
-    if (ScalarTraits<ofp::TableNumber>::converter.convert(tableNum, &scalar)) {
-      std::string result = "\"";
-      result += scalar;
-      result += '\"';
-      return result;
-    } else {
-      // Output TableNumber in hexadecimal.
-      return std::to_string(tableNum);
-    }
+  llvm::StringRef scalar;
+  auto tableNum = static_cast<ofp::OFPTableNo>(value);
+  if (ScalarTraits<ofp::TableNumber>::converter.convert(tableNum, &scalar)) {
+    std::string result = "\"";
+    result += scalar;
+    result += '\"';
+    return result;
+  } else {
+    // Output TableNumber in hexadecimal.
+    return std::to_string(tableNum);
+  }
 }
 
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YTABLENUMBER_H_
+#endif  // OFP_YAML_YTABLENUMBER_H_

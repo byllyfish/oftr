@@ -16,16 +16,17 @@ struct ScalarTraits<ofp::GroupNumber> {
     llvm::StringRef scalar;
     auto groupNum = static_cast<ofp::OFPGroupNo>(value);
     if (converter.convert(groupNum, &scalar)) {
-        out << scalar;
+      out << scalar;
     } else {
       // Output GroupNumber in hexadecimal.
       ScalarTraits<Hex32>::output(groupNum, ctxt, out);
     }
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::GroupNumber &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::GroupNumber &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
-      ofp::OFPGroupNo groupNum; 
+      ofp::OFPGroupNo groupNum;
       if (!converter.convert(scalar, &groupNum)) {
         return "Invalid group number value";
       }
@@ -46,23 +47,22 @@ struct ScalarTraits<ofp::GroupNumber> {
   using json_type = ofp::GroupNumber;
 };
 
-
-template<>
+template <>
 inline std::string primitive_to_json(ofp::GroupNumber value) {
-    llvm::StringRef scalar;
-    auto groupNum = static_cast<ofp::OFPGroupNo>(value);
-    if (ScalarTraits<ofp::GroupNumber>::converter.convert(groupNum, &scalar)) {
-      std::string result = "\"";
-      result += scalar;
-      result += '\"';
-      return result;
-    } else {
-      // Output GroupNumber in hexadecimal.
-      return std::to_string(groupNum);
-    }
+  llvm::StringRef scalar;
+  auto groupNum = static_cast<ofp::OFPGroupNo>(value);
+  if (ScalarTraits<ofp::GroupNumber>::converter.convert(groupNum, &scalar)) {
+    std::string result = "\"";
+    result += scalar;
+    result += '\"';
+    return result;
+  } else {
+    // Output GroupNumber in hexadecimal.
+    return std::to_string(groupNum);
+  }
 }
 
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YGROUPNUMBER_H_
+#endif  // OFP_YAML_YGROUPNUMBER_H_

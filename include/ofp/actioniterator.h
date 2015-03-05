@@ -33,7 +33,8 @@ class ActionIteratorItem : private NonCopyable {
 
 }  // namespace detail
 
-using ActionIterator = ProtocolIterator<detail::ActionIteratorItem, ProtocolIteratorType::Action>;
+using ActionIterator =
+    ProtocolIterator<detail::ActionIteratorItem, ProtocolIteratorType::Action>;
 
 }  // namespace ofp
 

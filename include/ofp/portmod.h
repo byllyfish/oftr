@@ -51,7 +51,9 @@ class PortModBuilder {
   void setHwAddr(const EnetAddress &hwAddr) { msg_.hwAddr_ = hwAddr; }
   void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }
   void setMask(OFPPortConfigFlags mask) { msg_.mask_ = mask; }
-  void setAdvertise(OFPPortFeaturesFlags advertise) { msg_.advertise_ = advertise; }
+  void setAdvertise(OFPPortFeaturesFlags advertise) {
+    msg_.advertise_ = advertise;
+  }
 
   UInt32 send(Writable *channel);
 

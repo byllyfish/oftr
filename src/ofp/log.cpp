@@ -36,7 +36,7 @@ static size_t timestamp_now(char *buf, size_t buflen) {
                     date.tm_min, date.tm_sec, msec);
 
   assert(rc == 23);
-  
+
   return Unsigned_cast(rc);
 }
 

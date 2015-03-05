@@ -98,8 +98,7 @@ void OutputJson::endBitSetScalar() { output("]"); }
 
 bool OutputJson::bitSetMatchOther(uint32_t &Val) {
   if (Val != 0) {
-    if (NeedComma)
-      output(",");
+    if (NeedComma) output(",");
     char buf[16];
     auto len = format("\"0x%08X\"", Val).print(buf, sizeof(buf));
     this->output(StringRef{buf, len});

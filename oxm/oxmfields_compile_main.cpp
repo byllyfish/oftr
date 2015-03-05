@@ -345,5 +345,6 @@ namespace ofp {
 extern const OXMTypeInfo OXMTypeInfoArray[];
 extern const size_t OXMTypeInfoArraySize;
 }
-const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {{"none", nullptr, 0, false,"none","none"}};
+const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {
+    {"none", nullptr, 0, false, "none", "none"}};
 const size_t ofp::OXMTypeInfoArraySize = 0;

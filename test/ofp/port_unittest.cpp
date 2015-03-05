@@ -5,12 +5,17 @@
 
 using namespace ofp;
 
-const OFPPortConfigFlags kFakeConfig = static_cast<OFPPortConfigFlags>(0x22222222);
+const OFPPortConfigFlags kFakeConfig =
+    static_cast<OFPPortConfigFlags>(0x22222222);
 const OFPPortStateFlags kFakeState = static_cast<OFPPortStateFlags>(0x33333333);
-const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x44444444);
-const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x55555555);
-const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x66666666);
-const OFPPortFeaturesFlags kFakePeer = static_cast<OFPPortFeaturesFlags>(0x77777777);
+const OFPPortFeaturesFlags kFakeCurr =
+    static_cast<OFPPortFeaturesFlags>(0x44444444);
+const OFPPortFeaturesFlags kFakeAdvertised =
+    static_cast<OFPPortFeaturesFlags>(0x55555555);
+const OFPPortFeaturesFlags kFakeSupported =
+    static_cast<OFPPortFeaturesFlags>(0x66666666);
+const OFPPortFeaturesFlags kFakePeer =
+    static_cast<OFPPortFeaturesFlags>(0x77777777);
 
 TEST(port, test) {
   PortBuilder portBuilder;

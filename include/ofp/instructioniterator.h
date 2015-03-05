@@ -33,7 +33,8 @@ class InstructionIteratorItem : private NonCopyable {
 
 }  // namespace detail
 
-using InstructionIterator = ProtocolIterator<detail::InstructionIteratorItem, ProtocolIteratorType::Instruction>;
+using InstructionIterator = ProtocolIterator<detail::InstructionIteratorItem,
+                                             ProtocolIteratorType::Instruction>;
 
 }  // namespace ofp
 

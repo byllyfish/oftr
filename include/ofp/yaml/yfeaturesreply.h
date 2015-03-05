@@ -41,7 +41,7 @@ struct MappingTraits<ofp::FeaturesReply> {
     if (msg.msgHeader()->version() == OFP_VERSION_1) {
       OFPActionTypeFlags actions = msg.actions();
       io.mapRequired("actions", actions);
-    } 
+    }
 
     PortRange ports = msg.ports();
     io.mapRequired("ports", ports);

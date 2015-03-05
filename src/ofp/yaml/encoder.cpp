@@ -43,7 +43,6 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
       finder_{finder},
       lineNumber_{lineNumber},
       matchPrereqsChecked_{matchPrereqsChecked} {
-
   detail::YamlContext ctxt{this};
   llvm::yaml::Input yin{input, &ctxt, Encoder::diagnosticHandler, &ctxt};
   if (!yin.error()) {

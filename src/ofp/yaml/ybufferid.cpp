@@ -4,13 +4,13 @@
 using namespace ofp;
 using ofp::yaml::EnumConverterSparse;
 
-#define OFP_NAME(s)   { OFP_##s, #s }
+#define OFP_NAME(s) \
+  { OFP_##s, #s }
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static std::pair<OFPBufferID, llvm::StringRef> sBufferIds[] = {
-  OFP_NAME(NO_BUFFER)
-};
+    OFP_NAME(NO_BUFFER)};
 
 EnumConverterSparse<OFPBufferID>
     llvm::yaml::ScalarTraits<ofp::BufferID>::converter{sBufferIds};

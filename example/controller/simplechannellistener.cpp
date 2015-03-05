@@ -78,4 +78,3 @@ void SimpleChannelListener::onReply(const Message *message) {
     log::debug("Untracked XID:", xid);
   }
 }
-

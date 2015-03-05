@@ -11,7 +11,9 @@ template <>
 struct SequenceTraits<ofp::MatchPacket> {
   using iterator = ofp::OXMIterator;
 
-  static iterator begin(IO &io, ofp::MatchPacket &match) { return match.begin(); }
+  static iterator begin(IO &io, ofp::MatchPacket &match) {
+    return match.begin();
+  }
 
   static iterator end(IO &io, ofp::MatchPacket &match) { return match.end(); }
 
@@ -21,4 +23,4 @@ struct SequenceTraits<ofp::MatchPacket> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMATCHPACKET_H_
+#endif  // OFP_YAML_YMATCHPACKET_H_

@@ -31,7 +31,8 @@ static_assert(IsStandardLayout<HelloElement>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<HelloElement>(),
               "Expected trivially copyable.");
 
-using HelloIterator = ProtocolIterator<HelloElement, ProtocolIteratorType::HelloElement>;
+using HelloIterator =
+    ProtocolIterator<HelloElement, ProtocolIteratorType::HelloElement>;
 using HelloRange = ProtocolRange<HelloIterator>;
 
 }  // namespace detail

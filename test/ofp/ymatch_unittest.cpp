@@ -65,4 +65,3 @@ TEST(ymatch, decodeMatchYamlPortNumber) {
   ++iter;
   EXPECT_EQ(fields.end(), iter);
 }
-

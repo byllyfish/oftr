@@ -6,7 +6,7 @@
 
 // BoringSSL fix.
 void ERR_remove_state(unsigned long pid) {
-    ::ERR_remove_thread_state((const CRYPTO_THREADID *)pid);
+  ::ERR_remove_thread_state((const CRYPTO_THREADID *)pid);
 }
 
 #if ASIO_NO_EXCEPTIONS

@@ -43,7 +43,9 @@ class MPGroupFeaturesBuilder {
   MPGroupFeaturesBuilder() = default;
 
   void setTypes(UInt32 types) { msg_.types_ = types; }
-  void setCapabilities(UInt32 capabilities) { msg_.capabilities_ = capabilities; }
+  void setCapabilities(UInt32 capabilities) {
+    msg_.capabilities_ = capabilities;
+  }
 
   void setActionsALL(OFPActionTypeFlags actions) { msg_.actions_[0] = actions; }
   void setActionsSEL(OFPActionTypeFlags actions) { msg_.actions_[1] = actions; }

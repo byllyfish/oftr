@@ -128,9 +128,7 @@ struct MappingTraits<ofp::OXMIterator::Item> {
 
 template <>
 struct SequenceTraits<ofp::MatchBuilder> {
-  static size_t size(IO &io, ofp::MatchBuilder &match) {
-    return 0;
-  }
+  static size_t size(IO &io, ofp::MatchBuilder &match) { return 0; }
 
   static ofp::detail::MatchBuilderItem &element(IO &io,
                                                 ofp::MatchBuilder &match,

@@ -12,7 +12,7 @@ PortBuilder::PortBuilder(const deprecated::PortV1 &port) {
     // Sign extend to 32-bits the "fake" ports.
     port32 |= 0xFFFF0000UL;
   }
-  
+
   setPortNo(port32);
   setHwAddr(port.hwAddr());
   setName(port.name());

@@ -30,7 +30,7 @@ class MPFlowStatsReply {
   UInt64 cookie() const { return cookie_; }
   UInt64 packetCount() const { return packetCount_; }
   UInt64 byteCount() const { return byteCount_; }
-  
+
   Match match() const;
   InstructionRange instructions() const;
 

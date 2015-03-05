@@ -43,21 +43,20 @@ struct ErrorCode {
 OFP_END_IGNORE_PADDING
 
 static ErrorType sErrorTypesV1[] = {
-  { V1_OFPET_HELLO_FAILED, OFPET_HELLO_FAILED },
-  { V1_OFPET_BAD_REQUEST, OFPET_BAD_REQUEST },
-  { V1_OFPET_BAD_ACTION, OFPET_BAD_ACTION },
-  { V1_OFPET_FLOW_MOD_FAILED, OFPET_FLOW_MOD_FAILED },
-  { V1_OFPET_PORT_MOD_FAILED, OFPET_PORT_MOD_FAILED },
-  { V1_OFPET_QUEUE_OP_FAILED, OFPET_QUEUE_OP_FAILED }
-};
+    {V1_OFPET_HELLO_FAILED, OFPET_HELLO_FAILED},
+    {V1_OFPET_BAD_REQUEST, OFPET_BAD_REQUEST},
+    {V1_OFPET_BAD_ACTION, OFPET_BAD_ACTION},
+    {V1_OFPET_FLOW_MOD_FAILED, OFPET_FLOW_MOD_FAILED},
+    {V1_OFPET_PORT_MOD_FAILED, OFPET_PORT_MOD_FAILED},
+    {V1_OFPET_QUEUE_OP_FAILED, OFPET_QUEUE_OP_FAILED}};
 
 static ErrorCode sErrorFlowModFailedV1[] = {
-  { V1_OFPFMFC_ALL_TABLES_FULL, OFPFMFC_TABLE_FULL },
-  { V1_OFPFMFC_OVERLAP, OFPFMFC_OVERLAP },
-  { V1_OFPFMFC_EPERM, OFPFMFC_EPERM },
-  { V1_OFPFMFC_BAD_EMERG_TIMEOUT, OFPFMFC_BAD_TIMEOUT },
-  { V1_OFPFMFC_BAD_COMMAND, OFPFMFC_BAD_COMMAND },
-  { V1_OFPFMFC_UNSUPPORTED, OFPBAC_UNSUPPORTED_ORDER },
+    {V1_OFPFMFC_ALL_TABLES_FULL, OFPFMFC_TABLE_FULL},
+    {V1_OFPFMFC_OVERLAP, OFPFMFC_OVERLAP},
+    {V1_OFPFMFC_EPERM, OFPFMFC_EPERM},
+    {V1_OFPFMFC_BAD_EMERG_TIMEOUT, OFPFMFC_BAD_TIMEOUT},
+    {V1_OFPFMFC_BAD_COMMAND, OFPFMFC_BAD_COMMAND},
+    {V1_OFPFMFC_UNSUPPORTED, OFPBAC_UNSUPPORTED_ORDER},
 };
 
 const OFPErrorType kMaxErrorType = OFPET_TABLE_FEATURES_FAILED;
@@ -77,12 +76,12 @@ static OFPErrorType typeToEnum(UInt8 version, UInt16 type, UInt16 code) {
   if (version == OFP_VERSION_1) {
     // Map the OFPFMFC_UNSUPPORTED error code to OFPET_BAD_ACTION type.
     if (type == V1_OFPET_FLOW_MOD_FAILED) {
-      return code == V1_OFPFMFC_UNSUPPORTED ? OFPET_BAD_ACTION : OFPET_FLOW_MOD_FAILED;
+      return code == V1_OFPFMFC_UNSUPPORTED ? OFPET_BAD_ACTION
+                                            : OFPET_FLOW_MOD_FAILED;
     }
 
     for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
-      if (type == sErrorTypesV1[i].v1ErrType)
-        return sErrorTypesV1[i].type;
+      if (type == sErrorTypesV1[i].v1ErrType) return sErrorTypesV1[i].type;
     }
     type |= OFPET_UNKNOWN_FLAG;
 
@@ -96,7 +95,7 @@ static OFPErrorType typeToEnum(UInt8 version, UInt16 type, UInt16 code) {
 // Given an OFPErrorType and a version, determine the correct error type value
 // to use in an Error message. If the error type is OFPET_EXPERIMENTER, we
 // always map this to 0xffff regardless of the version. If the error type has
-// the high bit set (OFPET_UNKNOWN_FLAG), we return the type value with the 
+// the high bit set (OFPET_UNKNOWN_FLAG), we return the type value with the
 // high bit cleared.
 
 static UInt16 enumToType(UInt8 version, OFPErrorType type) {
@@ -110,8 +109,7 @@ static UInt16 enumToType(UInt8 version, OFPErrorType type) {
 
   if (version == OFP_VERSION_1) {
     for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
-      if (type == sErrorTypesV1[i].type)
-        return sErrorTypesV1[i].v1ErrType;
+      if (type == sErrorTypesV1[i].type) return sErrorTypesV1[i].v1ErrType;
     }
     log::warning("Unknown type enum in Error message:", static_cast<int>(type));
   }
@@ -144,7 +142,7 @@ static OFPErrorCode codeToEnum(UInt8 version, UInt16 type, UInt16 code) {
         if (code == sErrorFlowModFailedV1[i].v1ErrCode)
           return sErrorFlowModFailedV1[i].code;
       }
-    } 
+    }
 
     OFPErrorType typeV1 = typeToEnum(version, type, code);
     return OFPErrorCodeMake(typeV1, code);
@@ -185,8 +183,8 @@ void ErrorBuilder::setErrorData(const Message *message) {
 }
 
 void ErrorBuilder::setErrorCode(OFPErrorCode code) {
-  msg_.type_ = OFPErrorCodeGetType(code);//(code >> 16) & 0xffff; 
-  msg_.code_ = OFPErrorCodeGetCode(code); //(code & 0xffff);  
+  msg_.type_ = OFPErrorCodeGetType(code);  //(code >> 16) & 0xffff;
+  msg_.code_ = OFPErrorCodeGetCode(code);  //(code & 0xffff);
 }
 
 void ErrorBuilder::send(Writable *channel) {
@@ -207,7 +205,7 @@ void ErrorBuilder::send(Writable *channel) {
 
   msg_.code_ = enumToCode(version, OFPErrorCodeMake(savedType, savedCode));
   msg_.type_ = enumToType(version, static_cast<OFPErrorType>(savedType));
-  
+
   channel->write(&msg_, sizeof(msg_));
   channel->write(data_.data(), data_.size());
   channel->flush();

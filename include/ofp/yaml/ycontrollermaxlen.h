@@ -16,16 +16,17 @@ struct ScalarTraits<ofp::ControllerMaxLen> {
     llvm::StringRef scalar;
     auto maxLen = static_cast<ofp::OFPControllerMaxLen>(value);
     if (converter.convert(maxLen, &scalar)) {
-        out << scalar;
+      out << scalar;
     } else {
       // Output ControllerMaxLen in hexadecimal.
       ScalarTraits<Hex16>::output(maxLen, ctxt, out);
     }
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::ControllerMaxLen &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::ControllerMaxLen &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
-      ofp::OFPControllerMaxLen maxLen; 
+      ofp::OFPControllerMaxLen maxLen;
       if (!converter.convert(scalar, &maxLen)) {
         return "Invalid max_len value";
       }
@@ -46,23 +47,22 @@ struct ScalarTraits<ofp::ControllerMaxLen> {
   using json_type = ofp::ControllerMaxLen;
 };
 
-
-template<>
+template <>
 inline std::string primitive_to_json(ofp::ControllerMaxLen value) {
-    llvm::StringRef scalar;
-    auto maxLen = static_cast<ofp::OFPControllerMaxLen>(value);
-    if (ScalarTraits<ofp::ControllerMaxLen>::converter.convert(maxLen, &scalar)) {
-      std::string result = "\"";
-      result += scalar;
-      result += '\"';
-      return result;
-    } else {
-      // Output ControllerMaxLen in hexadecimal.
-      return std::to_string(maxLen);
-    }
+  llvm::StringRef scalar;
+  auto maxLen = static_cast<ofp::OFPControllerMaxLen>(value);
+  if (ScalarTraits<ofp::ControllerMaxLen>::converter.convert(maxLen, &scalar)) {
+    std::string result = "\"";
+    result += scalar;
+    result += '\"';
+    return result;
+  } else {
+    // Output ControllerMaxLen in hexadecimal.
+    return std::to_string(maxLen);
+  }
 }
 
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YCONTROLLERMAXLEN_H_
+#endif  // OFP_YAML_YCONTROLLERMAXLEN_H_

@@ -5,16 +5,23 @@
 
 using namespace ofp;
 
-const OFPPortConfigFlags kFakeConfig = static_cast<OFPPortConfigFlags>(0x44444444);
+const OFPPortConfigFlags kFakeConfig =
+    static_cast<OFPPortConfigFlags>(0x44444444);
 const OFPPortStateFlags kFakeState = static_cast<OFPPortStateFlags>(0x55555555);
 
-const OFPPortFeaturesFlags kFakeCurr = static_cast<OFPPortFeaturesFlags>(0x66666666);
-const OFPPortFeaturesFlags kFakeAdvertised = static_cast<OFPPortFeaturesFlags>(0x77777777);
-const OFPPortFeaturesFlags kFakeSupported = static_cast<OFPPortFeaturesFlags>(0x88888888);
-const OFPPortFeaturesFlags kFakePeer = static_cast<OFPPortFeaturesFlags>(0x99999999);
+const OFPPortFeaturesFlags kFakeCurr =
+    static_cast<OFPPortFeaturesFlags>(0x66666666);
+const OFPPortFeaturesFlags kFakeAdvertised =
+    static_cast<OFPPortFeaturesFlags>(0x77777777);
+const OFPPortFeaturesFlags kFakeSupported =
+    static_cast<OFPPortFeaturesFlags>(0x88888888);
+const OFPPortFeaturesFlags kFakePeer =
+    static_cast<OFPPortFeaturesFlags>(0x99999999);
 
-const OFPActionTypeFlags kFakeActions = static_cast<OFPActionTypeFlags>(0x77777777);
-const OFPCapabilitiesFlags kFakeCapabilities = static_cast<OFPCapabilitiesFlags>(0x66666666);
+const OFPActionTypeFlags kFakeActions =
+    static_cast<OFPActionTypeFlags>(0x77777777);
+const OFPCapabilitiesFlags kFakeCapabilities =
+    static_cast<OFPCapabilitiesFlags>(0x66666666);
 
 TEST(featuresreply, v4) {
   PortBuilder portBuilder;

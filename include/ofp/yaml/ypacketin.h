@@ -56,8 +56,8 @@ struct MappingTraits<ofp::PacketIn> {
     io.mapRequired("data", enetFrame);
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
-        ofp::MatchPacket mp{enetFrame};
-        io.mapRequired("data_match", mp);
+      ofp::MatchPacket mp{enetFrame};
+      io.mapRequired("data_match", mp);
     }
   }
 };

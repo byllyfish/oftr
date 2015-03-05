@@ -90,23 +90,21 @@ enum OFPType : UInt8 {
   OFPT_LAST = OFPT_QUEUE_GET_CONFIG_REPLY
 };
 
-enum : UInt16 { 
+enum : UInt16 {
   OFPVID_NONE = 0xffff,
 
   // Not in 1.0 spec, but allow it anyway.
-  OFPVID_PRESENT = 0xfffe 
+  OFPVID_PRESENT = 0xfffe
 };
 
-enum OFPCapabilitiesFlags : UInt32 {
-  OFPC_STP = 1 << 3
-};
+enum OFPCapabilitiesFlags : UInt32 { OFPC_STP = 1 << 3 };
 
 enum OFPPortFeaturesFlags : UInt32 {
   OFPPF_COPPER = 1 << 7,
   OFPPF_FIBER = 1 << 8,
   OFPPF_AUTONEG = 1 << 9,
   OFPPF_PAUSE = 1 << 10,
-  OFPPF_PAUSE_ASYM = 1 << 11 
+  OFPPF_PAUSE_ASYM = 1 << 11
 };
 
 }  // namespace v1

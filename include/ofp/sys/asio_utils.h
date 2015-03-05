@@ -10,13 +10,12 @@
 #if defined(OPENSSL_IS_BORINGSSL)
 extern "C" {
 #if !defined(SSL_R_SHORT_READ)
-# define SSL_R_SHORT_READ    SSL_R_UNEXPECTED_RECORD
-#endif // !defined(SSL_R_SHORT_READ)
+#define SSL_R_SHORT_READ SSL_R_UNEXPECTED_RECORD
+#endif  // !defined(SSL_R_SHORT_READ)
 // void ERR_remove_state(unsigned long pid);
 inline void CONF_modules_unload(int p) {}
 }
-#endif // defined(OPENSSL_IS_BORINGSSL)
-
+#endif  // defined(OPENSSL_IS_BORINGSSL)
 
 #include "ofp/sys/asio_openssl_init.h"
 #include <asio.hpp>
@@ -38,11 +37,13 @@ using EncryptedSocket = asio::ssl::stream<tcp::socket>;
 /// Convert an asio::ip::address into an ofp::IPv6Address.
 inline IPv6Address makeIPv6Address(const asio::ip::address &addr) {
   if (addr.is_v6()) {
-    asio::ip::address_v6 addr6 = asio::ip::address_cast<asio::ip::address_v6>(addr);
+    asio::ip::address_v6 addr6 =
+        asio::ip::address_cast<asio::ip::address_v6>(addr);
     return IPv6Address{addr6.to_bytes()};
   } else {
     assert(addr.is_v4());
-    asio::ip::address_v4 addr4 = asio::ip::address_cast<asio::ip::address_v4>(addr);
+    asio::ip::address_v4 addr4 =
+        asio::ip::address_cast<asio::ip::address_v4>(addr);
     IPv4Address v4{addr4.to_bytes()};
     return IPv6Address{v4};
   }

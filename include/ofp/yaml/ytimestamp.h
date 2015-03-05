@@ -15,8 +15,7 @@ struct ScalarTraits<ofp::Timestamp> {
     out << value.toString();
   }
 
-  static StringRef input(StringRef scalar, void *ctxt,
-                         ofp::Timestamp &value) {
+  static StringRef input(StringRef scalar, void *ctxt, ofp::Timestamp &value) {
     if (!value.parse(scalar)) {
       return "Invalid timestamp.";
     }
@@ -29,4 +28,4 @@ struct ScalarTraits<ofp::Timestamp> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YTIMESTAMP_H_
+#endif  // OFP_YAML_YTIMESTAMP_H_
