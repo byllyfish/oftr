@@ -12,9 +12,9 @@ TEST(padding, PadLength) {
   for (unsigned i = 1; i < 8; ++i) EXPECT_EQ(8, PadLength(i));
 
   for (unsigned i = 0; i < 100; ++i) {
-    EXPECT_TRUE(PadLength(i) % 8 == 0);
-    EXPECT_TRUE(PadLength(i) >= i);
-    EXPECT_TRUE(PadLength(i) - i <= 7);
+    EXPECT_EQ(0, PadLength(i) % 8);
+    EXPECT_LE(i, PadLength(i));
+    EXPECT_GE(7, PadLength(i) - i);
   }
 }
 

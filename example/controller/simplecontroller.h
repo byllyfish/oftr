@@ -6,7 +6,7 @@
 #include "ofp/ofp.h"
 #include <unordered_map>
 
-namespace controller {  // <namespace controller>
+namespace controller {
 
 using namespace ofp;
 
@@ -32,6 +32,6 @@ class SimpleController {
                       const EnetFrame *frame, UInt32 outPort);
 };
 
-}  // </namespace controller>
+}  // namespace controller
 
 #endif  // EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H

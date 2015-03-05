@@ -1,3 +1,4 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
 
 #ifndef OFP_YAML_YTIMESTAMP_H_
 #define OFP_YAML_YTIMESTAMP_H_

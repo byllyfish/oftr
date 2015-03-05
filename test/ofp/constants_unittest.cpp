@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #include "ofp/unittest.h"
 #include "ofp/constants.h"
 
@@ -9,9 +11,7 @@ static std::pair<UInt32, UInt32> actionTypes[] = {
     {OFPATF_SET_VLAN_VID, 1 << v1::OFPAT_SET_VLAN_VID},
     {OFPATF_SET_VLAN_PCP, 1 << v1::OFPAT_SET_VLAN_PCP},
     {OFPATF_STRIP_VLAN_V1, 1 << v1::OFPAT_STRIP_VLAN},
-    {
-     OFPATF_SET_DL_SRC, 1 << v1::OFPAT_SET_DL_SRC,
-    },
+    {OFPATF_SET_DL_SRC, 1 << v1::OFPAT_SET_DL_SRC},
     {OFPATF_SET_DL_DST, 1 << v1::OFPAT_SET_DL_DST},
     {OFPATF_SET_NW_SRC, 1 << v1::OFPAT_SET_NW_SRC},
     {OFPATF_SET_NW_DST, 1 << v1::OFPAT_SET_NW_DST},

@@ -183,8 +183,8 @@ void ErrorBuilder::setErrorData(const Message *message) {
 }
 
 void ErrorBuilder::setErrorCode(OFPErrorCode code) {
-  msg_.type_ = OFPErrorCodeGetType(code);  //(code >> 16) & 0xffff;
-  msg_.code_ = OFPErrorCodeGetCode(code);  //(code & 0xffff);
+  msg_.type_ = OFPErrorCodeGetType(code);
+  msg_.code_ = OFPErrorCodeGetCode(code);
 }
 
 void ErrorBuilder::send(Writable *channel) {

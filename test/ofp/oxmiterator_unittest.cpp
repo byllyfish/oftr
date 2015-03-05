@@ -19,7 +19,8 @@ const char *buffer =
     "8000 0002 0100"
     "8000 0c02 FFFF"
     "8000 2602 0064";
-}
+
+}  // namespace
 
 TEST(oxmiterator, test) {
   auto buf = HexToRawData(buffer);

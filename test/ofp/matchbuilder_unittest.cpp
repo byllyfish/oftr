@@ -109,7 +109,6 @@ TEST(matchbuilder, OFB_VLAN_VID_alt3) {
 
   match.add(OFB_VLAN_VID{5 | OFPVID_PRESENT});
 
-  //"80000C021005 80000E0102 80000C02000F"
   EXPECT_HEX("8000-0C02-1005 8000-0E01-02 7FF3-0100 8000-0C02-000F",
              match.data(), match.size());
   EXPECT_FALSE(match.validate());

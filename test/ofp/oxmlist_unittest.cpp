@@ -20,7 +20,8 @@ const char *buffer =
     "8000 0002 012c"
     "8000 0c02 00c8"
     "8000 2602 0064";
-}
+
+}  // namespace
 
 TEST(oxmlist, test) {
   OXMList list;

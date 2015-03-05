@@ -2,7 +2,7 @@
 
 #include "simplecontroller.h"
 
-namespace controller {  // <namespace controller>
+namespace controller {
 
 struct EnetFrame {
   EnetAddress dst;
@@ -114,4 +114,4 @@ void SimpleController::addFlow(Channel *channel, const PacketIn *msg,
   flowMod.send(channel);
 }
 
-}  // </namespace controller>
+}  // namespace controller

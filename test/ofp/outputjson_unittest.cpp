@@ -21,8 +21,8 @@ struct TestStruct {
 
 OFP_END_IGNORE_PADDING
 
-namespace llvm {  // <namespace llvm>
-namespace yaml {  // <namespace yaml>
+namespace llvm {
+namespace yaml {
 
 template <>
 struct MappingTraits<TestStruct> {
@@ -35,8 +35,8 @@ struct MappingTraits<TestStruct> {
   }
 };
 
-}  // </namespace yaml>
-}  // </namespace llvm>
+}  // namespace yaml
+}  // namespace llvm
 
 TEST(outputjson, hello) {
   MemoryChannel channel;
