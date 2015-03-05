@@ -51,8 +51,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
     msg.setMasterPacketInMask(pktMaster);
     msg.setSlavePacketInMask(pktSlave);
 
-    OFPPortStatusFlags portMaster;
-    OFPPortStatusFlags portSlave;
+    OFPPortStatusFlags portMaster = OFPPRF_NONE;
+    OFPPortStatusFlags portSlave = OFPPRF_NONE;
     io.mapRequired("port_status_mask_master", portMaster);
     io.mapRequired("port_status_mask_slave", portSlave);
     msg.setMasterPortStatusMask(portMaster);

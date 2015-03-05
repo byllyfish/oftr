@@ -38,8 +38,8 @@ struct MappingTraits<ofp::PortModBuilder> {
     io.mapRequired("port_no", msg.msg_.portNo_);
     io.mapRequired("hw_addr", msg.msg_.hwAddr_);
 
-    ofp::OFPPortConfigFlags config;
-    ofp::OFPPortConfigFlags mask;
+    ofp::OFPPortConfigFlags config = ofp::OFPPC_NONE;
+    ofp::OFPPortConfigFlags mask = ofp::OFPPC_NONE;
     io.mapRequired("config", config);
     io.mapRequired("mask", mask);
     msg.setConfig(config);

@@ -133,6 +133,7 @@ enum OFPBufferID : UInt32 {
 // used in the ofp_port_mod message to configure the port's behavior.
 
 enum OFPPortConfigFlags : UInt32 {
+  OFPPC_NONE = 0,
   OFPPC_PORT_DOWN = 1 << 0,
   OFPPC_NO_STP = 1 << 1,        // Version 1.0 only
   OFPPC_NO_RECV = 1 << 2,
