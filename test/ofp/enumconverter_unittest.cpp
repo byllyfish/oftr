@@ -12,7 +12,7 @@ TEST(enumconverter, convert) {
   ofp::yaml::EnumConverter<Kind> converter{names};
 
   {
-    Kind k;
+    Kind k = UNK;
     EXPECT_TRUE(converter.convert("A", &k));
     EXPECT_EQ(A, k);
 
@@ -22,7 +22,7 @@ TEST(enumconverter, convert) {
   }
 
   {
-    Kind k;
+    Kind k = UNK;
     EXPECT_TRUE(converter.convert("C", &k));
     EXPECT_EQ(C, k);
 

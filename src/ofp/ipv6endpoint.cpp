@@ -8,7 +8,7 @@ using namespace ofp;
 static bool scan(std::istream &stream, char delimiter) {
   auto pos = stream.tellg();
 
-  char ch;
+  char ch = 0;
   if (stream >> ch && ch == delimiter) {
     return true;
   }
