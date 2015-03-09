@@ -173,7 +173,7 @@ struct RpcCloseResponse {
 
 /// Represents a RPC request to list connection stats (METHOD_LIST_CONNS)
 struct RpcListConns {
-  explicit RpcListConns(UInt64 ident) : id{ident} {}
+  explicit RpcListConns(UInt64 ident) : id{ident} { params.connId = 0; }
 
   struct Params {
     UInt64 connId;

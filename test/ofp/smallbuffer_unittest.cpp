@@ -1,8 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <numeric>
 #include "ofp/unittest.h"
 #include "ofp/smallbuffer.h"
-#include <numeric>
 
 using namespace ofp;
 

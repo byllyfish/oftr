@@ -71,7 +71,7 @@ void SimpleChannelListener::onReply(const Message *message) {
   auto xid = message->xid();
   auto iter = tracker_.find(xid);
   if (iter != tracker_.end()) {
-    auto callback = iter->second;
+    auto &callback = iter->second;
     callback(message);
     tracker_.erase(iter);
   } else {

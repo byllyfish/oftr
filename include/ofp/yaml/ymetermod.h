@@ -26,10 +26,10 @@ struct MappingTraits<ofp::MeterMod> {
 template <>
 struct MappingTraits<ofp::MeterModBuilder> {
   static void mapping(IO &io, ofp::MeterModBuilder &msg) {
-    ofp::OFPMeterModCommand command;
+    ofp::OFPMeterModCommand command = ofp::OFPMC_ADD;
     io.mapRequired("command", command);
     msg.setCommand(command);
-    ofp::OFPMeterConfigFlags flags;
+    ofp::OFPMeterConfigFlags flags = ofp::OFPMF_NONE;
     io.mapRequired("flags", flags);
     msg.setFlags(flags);
     io.mapRequired("meter_id", msg.msg_.meterId_);

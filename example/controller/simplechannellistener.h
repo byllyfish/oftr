@@ -3,7 +3,6 @@
 #ifndef EXAMPLE_CONTROLLER_SIMPLECHANNELLISTENER_H_
 #define EXAMPLE_CONTROLLER_SIMPLECHANNELLISTENER_H_
 
-#include "ofp/ofp.h"
 #include <map>
 #include "simplecontroller.h"
 

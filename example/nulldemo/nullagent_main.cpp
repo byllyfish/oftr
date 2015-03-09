@@ -1,9 +1,9 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/ofp.h"
-#include "nullagent.h"
 #include <iostream>
 #include <vector>
+#include "ofp/ofp.h"
+#include "nullagent.h"
 
 using namespace ofp;
 

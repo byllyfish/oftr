@@ -4,8 +4,8 @@
 #define __STDC_LIMIT_MACROS 1
 #define __STDC_CONSTANT_MACROS 1
 
-#include "bridgelistener.h"
 #include <iostream>
+#include "bridgelistener.h"
 #include "llvm/Support/CommandLine.h"
 
 using namespace bridge;

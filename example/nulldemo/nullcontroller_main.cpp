@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofp/ofp.h"
 #include <iostream>
+#include "ofp/ofp.h"
 
 using namespace ofp;
 

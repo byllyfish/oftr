@@ -3,8 +3,8 @@
 #ifndef EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H
 #define EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H
 
-#include "ofp/ofp.h"
 #include <unordered_map>
+#include "ofp/ofp.h"
 
 namespace controller {
 

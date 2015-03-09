@@ -1,8 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <iostream>
 #include "ofp/ofp.h"
 #include "ofp/rpc/rpcserver.h"
-#include <iostream>
 
 using namespace ofp;
 

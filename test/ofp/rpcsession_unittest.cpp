@@ -1,8 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <future>
 #include "ofp/unittest.h"
 #include "ofp/rpc/rpcsession.h"
-#include <future>
 
 using namespace ofp;
 using namespace ofp::rpc;
