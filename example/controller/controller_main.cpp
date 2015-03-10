@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "ofp/ofp.h"
-#include "simplechannellistener.h"
+#include "./simplechannellistener.h"
 
 using namespace ofp;
 

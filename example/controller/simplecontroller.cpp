@@ -1,6 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "simplecontroller.h"
+#include "./simplecontroller.h"
 
 namespace controller {
 

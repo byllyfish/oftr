@@ -12,43 +12,43 @@ OFP_BEGIN_IGNORE_PADDING
 
 class OutputJson : public llvm::yaml::IO {
  public:
-  OutputJson(llvm::raw_ostream &yout, void *ctxt = NULL);
+  explicit OutputJson(llvm::raw_ostream &yout, void *ctxt = NULL);
   virtual ~OutputJson();
 
-  virtual bool outputting() override;
-  virtual bool outputtingJson() override { return true; }
+  bool outputting() override;
+  bool outputtingJson() override { return true; }
 
-  virtual unsigned beginSequence() override;
-  virtual bool preflightElement(unsigned Index, void *&SaveInfo) override;
-  virtual void postflightElement(void *SaveInfo) override;
-  virtual void endSequence() override;
-  virtual bool canElideEmptySequence() override;
+  unsigned beginSequence() override;
+  bool preflightElement(unsigned Index, void *&SaveInfo) override;
+  void postflightElement(void *SaveInfo) override;
+  void endSequence() override;
+  bool canElideEmptySequence() override;
 
-  virtual unsigned beginFlowSequence() override;
-  virtual bool preflightFlowElement(unsigned Index, void *&SaveInfo) override;
-  virtual void postflightFlowElement(void *SaveInfo) override;
-  virtual void endFlowSequence() override;
+  unsigned beginFlowSequence() override;
+  bool preflightFlowElement(unsigned Index, void *&SaveInfo) override;
+  void postflightFlowElement(void *SaveInfo) override;
+  void endFlowSequence() override;
 
-  virtual bool mapTag(llvm::StringRef Tag, bool Default = false) override;
-  virtual void beginMapping() override;
-  virtual void endMapping() override;
-  virtual bool preflightKey(const char *Key, bool Required, bool,
+  bool mapTag(llvm::StringRef Tag, bool Default = false) override;
+  void beginMapping() override;
+  void endMapping() override;
+  bool preflightKey(const char *Key, bool Required, bool,
                             bool &UseDefault, void *&SaveInfo) override;
-  virtual void postflightKey(void *SaveInfo) override;
+  void postflightKey(void *SaveInfo) override;
 
-  virtual void beginEnumScalar() override;
-  virtual bool matchEnumScalar(const char *Str, bool) override;
-  virtual void endEnumScalar() override;
+  void beginEnumScalar() override;
+  bool matchEnumScalar(const char *Str, bool) override;
+  void endEnumScalar() override;
 
-  virtual bool beginBitSetScalar(bool &DoClear) override;
-  virtual bool bitSetMatch(const char *Str, bool) override;
-  virtual void endBitSetScalar() override;
-  virtual bool bitSetMatchOther(uint32_t &);
+  bool beginBitSetScalar(bool &DoClear) override;
+  bool bitSetMatch(const char *Str, bool) override;
+  void endBitSetScalar() override;
+  bool bitSetMatchOther(uint32_t &) override;
 
-  virtual void scalarString(llvm::StringRef &S, bool) override;
-  virtual void scalarJson(llvm::StringRef s) override { output(s); }
+  void scalarString(llvm::StringRef &S, bool) override;
+  void scalarJson(llvm::StringRef s) override { output(s); }
 
-  virtual void setError(const llvm::Twine &message) override;
+  void setError(const llvm::Twine &message) override;
 
  public:
   // These are only used by operator<<. They could be private

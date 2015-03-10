@@ -3,7 +3,7 @@
 #ifndef TOOLS_OFPX_OFPX_DECODE_H_
 #define TOOLS_OFPX_OFPX_DECODE_H_
 
-#include "ofpx.h"
+#include "./ofpx.h"
 #include "ofp/timestamp.h"
 
 namespace ofpx {

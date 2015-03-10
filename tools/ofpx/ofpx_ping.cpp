@@ -1,6 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofpx_ping.h"
+#include "./ofpx_ping.h"
 #include <iostream>
 
 using namespace ofp;

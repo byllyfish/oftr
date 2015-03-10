@@ -1,8 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "testagent.h"
-#include "ofp/yaml/decoder.h"
+#include "./testagent.h"
 #include <iostream>
+#include "ofp/yaml/decoder.h"
 
 using namespace testagent;
 

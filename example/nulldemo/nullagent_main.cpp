@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "ofp/ofp.h"
-#include "nullagent.h"
+#include "./nullagent.h"
 
 using namespace ofp;
 

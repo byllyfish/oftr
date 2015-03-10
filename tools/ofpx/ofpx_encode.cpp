@@ -1,6 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofpx_encode.h"
+#include "./ofpx_encode.h"
 #include <iostream>
 #include <fstream>
 #include "ofp/yaml/encoder.h"

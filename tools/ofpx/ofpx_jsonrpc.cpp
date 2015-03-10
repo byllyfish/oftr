@@ -1,8 +1,8 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofpx_jsonrpc.h"
+#include "./ofpx_jsonrpc.h"
 #include <sys/resource.h>  // for getrlimit, setrlimit
-#include "ofpx_xpc.h"
+#include "./ofpx_xpc.h"
 #include "ofp/rpc/rpcserver.h"
 
 using namespace ofpx;

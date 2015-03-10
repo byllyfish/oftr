@@ -4,7 +4,7 @@
 #define EXAMPLE_CONTROLLER_SIMPLECHANNELLISTENER_H_
 
 #include <map>
-#include "simplecontroller.h"
+#include "./simplecontroller.h"
 
 namespace controller {
 

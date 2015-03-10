@@ -5,7 +5,7 @@
 #define __STDC_CONSTANT_MACROS 1
 
 #include <iostream>
-#include "bridgelistener.h"
+#include "./bridgelistener.h"
 #include "llvm/Support/CommandLine.h"
 
 using namespace bridge;

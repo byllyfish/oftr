@@ -1,6 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "simplechannellistener.h"
+#include "./simplechannellistener.h"
 
 using namespace controller;
 

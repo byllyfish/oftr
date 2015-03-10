@@ -2,11 +2,11 @@
 
 #include <iostream>
 #include "ofp/ofp.h"
-#include "ofpx_decode.h"
-#include "ofpx_encode.h"
-#include "ofpx_ping.h"
-#include "ofpx_jsonrpc.h"
-#include "ofpx_help.h"
+#include "./ofpx_decode.h"
+#include "./ofpx_encode.h"
+#include "./ofpx_ping.h"
+#include "./ofpx_jsonrpc.h"
+#include "./ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;

@@ -8,7 +8,7 @@ namespace sys {
 
 class MemBio {
  public:
-  explicit MemBio() : bio_{log::fatal_if_null(BIO_new(BIO_s_mem()))} {}
+  MemBio() : bio_{log::fatal_if_null(BIO_new(BIO_s_mem()))} {}
   explicit MemBio(const std::string &buf)
       : bio_{log::fatal_if_null(
             BIO_new_mem_buf(static_cast<void *>(const_cast<char *>(buf.data())),

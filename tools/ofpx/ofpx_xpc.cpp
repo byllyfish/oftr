@@ -1,6 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include "ofpx_xpc.h"
+#include "./ofpx_xpc.h"
 #include <xpc/xpc.h>  // Mac OS X
 #include "ofp/log.h"
 #include "ofp/rpc/rpcsession.h"

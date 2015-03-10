@@ -3,7 +3,7 @@
 #ifndef TOOLS_OFPX_OFPX_JSONRPC_H_
 #define TOOLS_OFPX_OFPX_JSONRPC_H_
 
-#include "ofpx.h"
+#include "./ofpx.h"
 
 namespace ofpx {
 

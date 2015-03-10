@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include <iostream>
-#include "testagent.h"
+#include "./testagent.h"
 
 using namespace testagent;
 
