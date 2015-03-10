@@ -26,7 +26,7 @@ constexpr uint64_t MaxIntValue() {
 
 template <class Type>
 bool ParseUnsignedInteger(llvm::StringRef name, Type *value) {
-  unsigned long long num;
+  unsigned long long num;  // NOLINT
   if (!llvm::getAsUnsignedInteger(name, 0, num)) {
     static_assert(detail::MaxIntValue<Type>() > 0, "Unexpected type");
     if (num <= detail::MaxIntValue<Type>()) {

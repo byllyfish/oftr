@@ -5,7 +5,7 @@
 #include "ofp/log.h"
 
 // BoringSSL fix.
-void ERR_remove_state(unsigned long pid) {
+void ERR_remove_state(unsigned long pid) {  // NOLINT
   ::ERR_remove_thread_state((const CRYPTO_THREADID *)pid);
 }
 

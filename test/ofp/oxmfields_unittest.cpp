@@ -20,7 +20,7 @@ TEST(oxmfields, OFB_TCP_DST) {
   for (auto &x : *OFB_TCP_DST::prerequisites()) {
     ASSERT_GT(ArrayLength(types), i);
     if (i >= ArrayLength(types)) break;
-    
+
     EXPECT_EQ(types[i], x.type());
     ++i;
   }
