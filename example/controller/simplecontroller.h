@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H
-#define EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H
+#ifndef EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H_
+#define EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H_
 
 #include <unordered_map>
 #include "ofp/ofp.h"
@@ -34,4 +34,4 @@ class SimpleController {
 
 }  // namespace controller
 
-#endif  // EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H
+#endif  // EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H_

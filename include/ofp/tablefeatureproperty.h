@@ -23,7 +23,7 @@ class TableFeatureProperty {
  public:
   constexpr static OFPTableFeatureProperty type() { return Type; }
 
-  TableFeatureProperty(RangeType range)
+  explicit TableFeatureProperty(RangeType range)
       : length_{UInt16_narrow_cast(range.size() + FixedHeaderSize)},
         range_{range} {}
 

@@ -12,7 +12,7 @@ class Validation;
 class TableIDRange {
  public:
   TableIDRange() = default;
-  TableIDRange(const ByteRange &range) : range_{range} {}
+  /* implicit NOLINT */ TableIDRange(const ByteRange &range) : range_{range} {}
 
   size_t size() const { return range_.size(); }
   const UInt8 *nthItem(size_t index) const { return range_.data() + index; }

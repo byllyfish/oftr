@@ -11,7 +11,7 @@ namespace detail {
 template <class ItemType>
 class TypedPropertyIterator {
  public:
-  TypedPropertyIterator(PropertyIterator iter) : iter_{iter} {}
+  explicit TypedPropertyIterator(PropertyIterator iter) : iter_{iter} {}
 
   ItemType &operator*() {
     return llvm::yaml::Ref_cast<ItemType>(RemoveConst_cast(*iter_));

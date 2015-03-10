@@ -12,7 +12,7 @@ static void *ofpx_xpc_server_thread(void *context);
 
 class XpcSession : public ofp::rpc::RpcSession {
  public:
-  XpcSession(xpc_connection_t peer) : peer_{peer} {}
+  explicit XpcSession(xpc_connection_t peer) : peer_{peer} {}
 
   virtual void receive(const std::string &msg) {
     xpc_object_t dict = xpc_dictionary_create(NULL, NULL, 0);
