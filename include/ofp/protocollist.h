@@ -16,7 +16,8 @@ class ProtocolList {
 
   ProtocolList() = default;
   /* implicit NOLINT */ ProtocolList(const ProtocolList &list) = default;
-  /* implicit NOLINT */ ProtocolList(const RangeType &range) : buf_{range.toByteRange()} {}
+  /* implicit NOLINT */ ProtocolList(const RangeType &range)
+      : buf_{range.toByteRange()} {}
   ProtocolList &operator=(const ProtocolList &list) = default;
 
   Iterator begin() const { return Iterator(buf_.begin()); }

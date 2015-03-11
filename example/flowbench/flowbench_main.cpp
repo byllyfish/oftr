@@ -64,8 +64,9 @@ static void logStats(const std::vector<int64_t> &data) {
   double mean = sum / data.size();
 
   double accum = 0.0;
-  std::for_each(data.begin(), data.end(),
-                [mean, &accum](uint64_t x) { accum += (x - mean) * (x - mean); });
+  std::for_each(data.begin(), data.end(), [mean, &accum](uint64_t x) {
+    accum += (x - mean) * (x - mean);
+  });
 
   double stddev = std::sqrt(accum / data.size());
 

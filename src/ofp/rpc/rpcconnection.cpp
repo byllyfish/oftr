@@ -70,6 +70,6 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
 void RpcConnection::handleEvent(const std::string &eventText) {
   RpcEncoder encoder{eventText, this,
                      [this](const DatapathID &datapathId, UInt64 connId) {
-    return server_->findDatapath(datapathId, connId);
-  }};
+                       return server_->findDatapath(datapathId, connId);
+                     }};
 }

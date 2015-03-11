@@ -32,8 +32,8 @@ class OutputJson : public llvm::yaml::IO {
   bool mapTag(llvm::StringRef Tag, bool Default = false) override;
   void beginMapping() override;
   void endMapping() override;
-  bool preflightKey(const char *Key, bool Required, bool,
-                            bool &UseDefault, void *&SaveInfo) override;
+  bool preflightKey(const char *Key, bool Required, bool, bool &UseDefault,
+                    void *&SaveInfo) override;
   void postflightKey(void *SaveInfo) override;
 
   void beginEnumScalar() override;

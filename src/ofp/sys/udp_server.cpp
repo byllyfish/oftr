@@ -235,23 +235,23 @@ void UDP_Server::asyncSend() {
   // log::trace("Write", datagram.connectionId(), datagram.data(),
   //           datagram.size());
 
-  socket_.async_send_to(asio::buffer(datagram.data(), datagram.size()),
-                        datagram.destination(),
-                        [this, self, &datagram](const asio::error_code &err,
-                                                size_t bytesTransferred) {
-    if (err == asio::error::operation_aborted) {
-      log::warning("UDP_Server::asyncSend: operation_aborted");
-      return;
-    }
+  socket_.async_send_to(
+      asio::buffer(datagram.data(), datagram.size()), datagram.destination(),
+      [this, self, &datagram](const asio::error_code &err,
+                              size_t bytesTransferred) {
+        if (err == asio::error::operation_aborted) {
+          log::warning("UDP_Server::asyncSend: operation_aborted");
+          return;
+        }
 
-    assert(&datagram == &datagrams_.front());
+        assert(&datagram == &datagrams_.front());
 
-    if (err) {
-      log::error("Error sending datagram to", datagram.destination(),
-                 std::make_pair("connid", datagram.connectionId()), err);
-    }
-    datagrams_.pop_front();
-  });
+        if (err) {
+          log::error("Error sending datagram to", datagram.destination(),
+                     std::make_pair("connid", datagram.connectionId()), err);
+        }
+        datagrams_.pop_front();
+      });
 }
 
 void UDP_Server::datagramReceived() {

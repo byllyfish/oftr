@@ -41,7 +41,7 @@ template <class Type>
 class EnumConverter {
  public:
   explicit EnumConverter(llvm::ArrayRef<llvm::StringRef> names,
-                llvm::StringRef maxIntName = "")
+                         llvm::StringRef maxIntName = "")
       : names_{names}, maxIntName_{maxIntName} {}
 
   bool convert(llvm::StringRef name, Type *value) {
@@ -82,7 +82,8 @@ class EnumConverterSparse {
  public:
   using Entry = std::pair<Type, llvm::StringRef>;
 
-  explicit EnumConverterSparse(llvm::ArrayRef<Entry> entries) : entries_{entries} {}
+  explicit EnumConverterSparse(llvm::ArrayRef<Entry> entries)
+      : entries_{entries} {}
 
   bool convert(llvm::StringRef name, Type *value) {
     // Check for name match.

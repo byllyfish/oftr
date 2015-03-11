@@ -165,8 +165,8 @@ Identity *Engine::findIdentity(UInt64 securityId) {
 
   auto iter = std::find_if(identities_.begin(), identities_.end(),
                            [securityId](std::unique_ptr<Identity> &identity) {
-    return identity->securityId() == securityId;
-  });
+                             return identity->securityId() == securityId;
+                           });
 
   return iter != identities_.end() ? iter->get() : nullptr;
 }

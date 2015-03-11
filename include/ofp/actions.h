@@ -297,8 +297,8 @@ class AT_UNKNOWN {
   // Variable length actions do not have a type().
 
   constexpr AT_UNKNOWN(ActionType type, const ByteRange &value)
-      : type_{
-            ActionType(type.enumType(), UInt16_narrow_cast(4U + value.size()))},
+      : type_{ActionType(type.enumType(),
+                         UInt16_narrow_cast(4U + value.size()))},
         value_{value} {}
 
   ByteRange value() const;
