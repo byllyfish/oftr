@@ -13,7 +13,8 @@ extern "C" {
 #define SSL_R_SHORT_READ SSL_R_UNEXPECTED_RECORD
 #endif  // !defined(SSL_R_SHORT_READ)
 // void ERR_remove_state(unsigned long pid);
-inline void CONF_modules_unload(int p) {}
+inline void CONF_modules_unload(int p) {
+}
 }
 #endif  // defined(OPENSSL_IS_BORINGSSL)
 

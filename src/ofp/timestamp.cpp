@@ -21,9 +21,11 @@ bool Timestamp::parse(const std::string &s) {
     ++p;
   }
 
-  if (p == wholeStart) return false;
+  if (p == wholeStart)
+    return false;
 
-  if (*p != '.') return false;
+  if (*p != '.')
+    return false;
   ++p;
 
   const char *fracStart = p;
@@ -32,10 +34,12 @@ bool Timestamp::parse(const std::string &s) {
     ++p;
   }
 
-  if (*p != 0) return false;
+  if (*p != 0)
+    return false;
 
   auto fracDigits = p - fracStart;
-  if (fracDigits == 0 || fracDigits > 9) return false;
+  if (fracDigits == 0 || fracDigits > 9)
+    return false;
 
   fracNum *= kPower10[9 - fracDigits];
 

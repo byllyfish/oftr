@@ -5,7 +5,8 @@
 
 using namespace ofp;
 
-static void MakeInstructionList(InstructionList &) {}
+static void MakeInstructionList(InstructionList &) {
+}
 
 template <class Type, class... Args>
 void MakeInstructionList(InstructionList &set, Type value, Args... args) {

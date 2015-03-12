@@ -50,7 +50,9 @@ Connection::~Connection() {
   engine()->releaseConnection(this);
 }
 
-Driver *Connection::driver() const { return engine_->driver(); }
+Driver *Connection::driver() const {
+  return engine_->driver();
+}
 
 void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
   assert(channel != nullptr);
@@ -101,7 +103,9 @@ void Connection::postMessage(Message *message) {
   }
 }
 
-void Connection::postIdle() { log::debug("postIdle() =========="); }
+void Connection::postIdle() {
+  log::debug("postIdle() ==========");
+}
 
 bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   if (auxiliaryId == 0 && IsChannelTransportUDP(transport())) {

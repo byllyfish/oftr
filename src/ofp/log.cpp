@@ -235,7 +235,8 @@ static void trace1(const char *type, UInt64 id, const void *data,
 }
 
 void trace(const char *type, UInt64 id, const void *data, size_t length) {
-  if (Level::Trace < detail::GlobalOutputLevelFilter) return;
+  if (Level::Trace < detail::GlobalOutputLevelFilter)
+    return;
 
   // The memory buffer may contain multiple messages. We need to log each one
   // separately.
@@ -259,12 +260,14 @@ void trace(const char *type, UInt64 id, const void *data, size_t length) {
 }
 
 void trace_rpc(const char *type, UInt64 id, const void *data, size_t length) {
-  if (Level::Trace < detail::GlobalOutputLevelFilter || length == 0) return;
+  if (Level::Trace < detail::GlobalOutputLevelFilter || length == 0)
+    return;
 
   const char *msg = static_cast<const char *>(data);
 
   // Remove trailing newline, if it exists.
-  if (msg[length - 1] == '\n') --length;
+  if (msg[length - 1] == '\n')
+    --length;
 
   detail::write_(Level::Trace, type, length, "bytes",
                  std::make_pair("connid", id), '\n',

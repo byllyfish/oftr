@@ -21,7 +21,8 @@ using namespace ofp;
 using deprecated::OriginalMatch;
 using deprecated::StandardMatch;
 
-Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
+Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {
+}
 
 void Transmogrify::normalize() {
   if (buf_.size() < sizeof(Header)) {
@@ -408,7 +409,8 @@ void Transmogrify::normalizeMultipartReplyV1() {
   size_t offset = sizeof(MultipartReply);
 
   if (replyType == OFPMP_FLOW) {
-    while (offset < buf_.size()) normalizeMPFlowReplyV1(&offset);
+    while (offset < buf_.size())
+      normalizeMPFlowReplyV1(&offset);
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_PORT_STATS) {
     while (offset < buf_.size())
@@ -465,7 +467,8 @@ void Transmogrify::normalizeMultipartReplyV4() {
   size_t offset = sizeof(MultipartReply);
 
   if (replyType == OFPMP_TABLE) {
-    while (offset < buf_.size()) normalizeMPTableStatsReplyV4(&offset);
+    while (offset < buf_.size())
+      normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());
   }
 
@@ -741,7 +744,8 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
 }
 
 int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
-  if ((*iter)->type() != deprecated::AT_OUTPUT_V1::type()) return 0;
+  if ((*iter)->type() != deprecated::AT_OUTPUT_V1::type())
+    return 0;
 
   ByteRange valueRange = (*iter)->value();
 

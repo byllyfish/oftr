@@ -180,7 +180,8 @@ UInt32 HeaderOnlyBuilder<HeaderOnlyType>::send(Writable *channel) {
     header->setType(newType);
     header->setVersion(version);
     header->setLength(sizeof(msg_));
-    if (!isReply_) header->setXid(xid);
+    if (!isReply_)
+      header->setXid(xid);
 
     channel->write(&msg_, sizeof(msg_));
     channel->flush();

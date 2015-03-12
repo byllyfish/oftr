@@ -11,7 +11,9 @@ ByteRange EchoReply::echoData() const {
                    header_.length() - sizeof(Header)};
 }
 
-EchoReplyBuilder::EchoReplyBuilder(UInt32 xid) { msg_.header_.setXid(xid); }
+EchoReplyBuilder::EchoReplyBuilder(UInt32 xid) {
+  msg_.header_.setXid(xid);
+}
 
 void EchoReplyBuilder::send(Writable *channel) {
   UInt8 version = channel->version();

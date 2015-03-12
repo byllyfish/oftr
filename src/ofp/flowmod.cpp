@@ -6,7 +6,9 @@
 
 namespace ofp {
 
-Match FlowMod::match() const { return Match{&matchHeader_}; }
+Match FlowMod::match() const {
+  return Match{&matchHeader_};
+}
 
 InstructionRange FlowMod::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();

@@ -19,7 +19,8 @@ DefaultHandshake::DefaultHandshake(Connection *channel, ChannelMode mode,
     : channel_{channel},
       versions_{versions},
       listenerFactory_{listenerFactory},
-      mode_{mode} {}
+      mode_{mode} {
+}
 
 void DefaultHandshake::onChannelUp(Channel *channel) {
   assert(channel == channel_);
@@ -58,7 +59,8 @@ void DefaultHandshake::onMessage(const Message *message) {
 
 void DefaultHandshake::onHello(const Message *message) {
   const Hello *msg = Hello::cast(message);
-  if (!msg) return;
+  if (!msg)
+    return;
 
   UInt8 msgVersion = msg->msgHeader()->version();
   UInt8 version =
@@ -104,7 +106,8 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
   }
 
   const FeaturesReply *msg = FeaturesReply::cast(message);
-  if (!msg) return;  // FIXME log
+  if (!msg)
+    return;  // FIXME log
 
   // Registering the connection allows us to attach auxiliary connections to
   // their main connections. A main connection (auxiliary_id == 0) cannot use
@@ -140,7 +143,8 @@ void DefaultHandshake::installNewChannelListener(const Message *message) {
     channel_->setChannelListener(newListener);
     newListener->onChannelUp(channel_);
 
-    if (message) newListener->onMessage(message);
+    if (message)
+      newListener->onMessage(message);
 
     ChannelListener::dispose(this);
 

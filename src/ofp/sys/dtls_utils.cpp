@@ -80,17 +80,20 @@ size_t ofp::sys::DTLS_GetRecordLength(const void *buffer, size_t length) {
   const UInt8 *data = BytePtr(buffer);
 
   // Make sure we can read record header.
-  if (length < DTLS1_RT_HEADER_LENGTH) return 0;
+  if (length < DTLS1_RT_HEADER_LENGTH)
+    return 0;
 
   // Check protocol version. DTLS 1.0 uses protocol version {254, 255}.
   // DTLS 1.2 uses protocol version { 254, 253 }.
-  if ((data[1] != 0xFE) || (data[2] != 0xFF && data[2] != 0xFD)) return 0;
+  if ((data[1] != 0xFE) || (data[2] != 0xFF && data[2] != 0xFD))
+    return 0;
 
   // Extract length of the record.
   UInt32 recordLen = (UInt32_cast(data[11]) << 8) | data[12];
 
   // Record length should not exceed 2^14.
-  if (recordLen > 16384) return 0;
+  if (recordLen > 16384)
+    return 0;
 
   // Return total record length including header (if it fits in buffer).
   size_t result = recordLen + DTLS1_RT_HEADER_LENGTH;

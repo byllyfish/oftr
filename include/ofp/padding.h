@@ -13,7 +13,9 @@ struct Padding {
   UInt8 pad_[N] = {};
 };
 
-constexpr size_t PadLength(size_t length) { return 8 * ((length + 7) / 8); }
+constexpr size_t PadLength(size_t length) {
+  return 8 * ((length + 7) / 8);
+}
 
 namespace detail {
 

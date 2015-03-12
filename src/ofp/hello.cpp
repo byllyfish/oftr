@@ -27,7 +27,8 @@ bool Hello::validateInput(Validation *context) const {
 
 ProtocolVersions Hello::protocolVersions() const {
   for (auto &elem : helloElements()) {
-    if (elem.type() == OFPHET_VERSIONBITMAP) return elem.versionBitMap();
+    if (elem.type() == OFPHET_VERSIONBITMAP)
+      return elem.versionBitMap();
   }
   return ProtocolVersions::None;
 }

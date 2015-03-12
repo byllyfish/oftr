@@ -47,16 +47,19 @@ static OFPType translateTypeFromVersion(UInt8 type, UInt8 version) {
 }
 
 OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
-  if (version == 0) return OFPT_UNSUPPORTED;
+  if (version == 0)
+    return OFPT_UNSUPPORTED;
 
-  if (version == newVersion) return OFPType(type);
+  if (version == newVersion)
+    return OFPType(type);
 
   assert(version == OFP_VERSION_4 || newVersion == OFP_VERSION_4);
 
   if (version > OFP_VERSION_4 || newVersion > OFP_VERSION_4)
     return OFPType(type);
 
-  if (type <= OFPT_FLOW_MOD) return OFPType(type);
+  if (type <= OFPT_FLOW_MOD)
+    return OFPType(type);
 
   if (version == OFP_VERSION_4) {
     return translateTypeToVersion(type, newVersion);

@@ -36,7 +36,8 @@ struct ScalarTraits<ofp::ByteList> {
     size_t actualSize =
         ofp::HexToRawData(scalar, value.mutableData(), value.size(), &error);
     value.resize(actualSize);
-    if (error) return "Invalid hexadecimal text.";
+    if (error)
+      return "Invalid hexadecimal text.";
     return "";
   }
 

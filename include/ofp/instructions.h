@@ -94,7 +94,8 @@ class IT_WithActions {
   }
 
   bool validateInput(Validation *context) const {
-    if (length_ < SizeWithoutActions) return false;
+    if (length_ < SizeWithoutActions)
+      return false;
     ActionRange actions = dataRange();
     return actions.validateInput(context);
   }

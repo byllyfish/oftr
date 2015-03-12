@@ -55,7 +55,8 @@ Decoder::Decoder(const Message *msg, bool useJsonFormat, bool includePktMatch)
 template <class MsgType>
 inline bool decode(llvm::yaml::IO &io, const Message *msg) {
   const MsgType *m = MsgType::cast(msg);
-  if (m == nullptr) return false;
+  if (m == nullptr)
+    return false;
   io.mapRequired("msg", RemoveConst_cast(*m));
   return true;
 }

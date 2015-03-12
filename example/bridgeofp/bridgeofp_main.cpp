@@ -16,7 +16,8 @@ struct IPv6EndpointParser : public cl::parser<ofp::IPv6Endpoint> {
   // parse - Return true on error.
   bool parse(cl::Option &O, llvm::StringRef ArgName, llvm::StringRef ArgValue,
              ofp::IPv6Endpoint &Val) {
-    if (Val.parse(ArgValue)) return false;
+    if (Val.parse(ArgValue))
+      return false;
     return O.error("Unexpected endpoint format '" + ArgValue + "'!");
   }
 };

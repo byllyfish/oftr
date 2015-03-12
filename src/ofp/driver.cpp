@@ -5,9 +5,12 @@
 
 using namespace ofp;
 
-Driver::Driver() : engine_{new sys::Engine{this}} {}
+Driver::Driver() : engine_{new sys::Engine{this}} {
+}
 
-Driver::~Driver() { delete engine_; }
+Driver::~Driver() {
+  delete engine_;
+}
 
 UInt64 Driver::listen(ChannelMode mode, UInt64 securityId,
                       const IPv6Endpoint &localEndpoint,
@@ -35,8 +38,14 @@ UInt64 Driver::connectUDP(ChannelMode mode, UInt64 securityId,
                              listenerFactory, error);
 }
 
-void Driver::run() { engine_->run(); }
+void Driver::run() {
+  engine_->run();
+}
 
-void Driver::stop(Milliseconds timeout) { engine_->stop(timeout); }
+void Driver::stop(Milliseconds timeout) {
+  engine_->stop(timeout);
+}
 
-void Driver::installSignalHandlers() { engine_->installSignalHandlers(); }
+void Driver::installSignalHandlers() {
+  engine_->installSignalHandlers();
+}

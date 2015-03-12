@@ -6,33 +6,44 @@ using namespace ofp::yaml;
 using namespace llvm;
 
 OutputJson::OutputJson(llvm::raw_ostream &yout, void *ctxt)
-    : IO{ctxt}, Out(yout), NeedComma{false} {}
+    : IO{ctxt}, Out(yout), NeedComma{false} {
+}
 
-OutputJson::~OutputJson() {}
+OutputJson::~OutputJson() {
+}
 
-bool OutputJson::outputting() { return true; }
+bool OutputJson::outputting() {
+  return true;
+}
 
 void OutputJson::beginMapping() {
   output("{");
   NeedComma = false;
 }
 
-bool OutputJson::mapTag(StringRef Tag, bool Use) { return Use; }
+bool OutputJson::mapTag(StringRef Tag, bool Use) {
+  return Use;
+}
 
-void OutputJson::endMapping() { output("}"); }
+void OutputJson::endMapping() {
+  output("}");
+}
 
 bool OutputJson::preflightKey(const char *Key, bool Required,
                               bool SameAsDefault, bool &UseDefault, void *&) {
   UseDefault = false;
   if (Required || !SameAsDefault) {
-    if (NeedComma) output(",");
+    if (NeedComma)
+      output(",");
     this->paddedKey(Key);
     return true;
   }
   return false;
 }
 
-void OutputJson::postflightKey(void *SaveInfo) { NeedComma = true; }
+void OutputJson::postflightKey(void *SaveInfo) {
+  NeedComma = true;
+}
 
 unsigned OutputJson::beginSequence() {
   output("[");
@@ -40,14 +51,19 @@ unsigned OutputJson::beginSequence() {
   return 0;
 }
 
-void OutputJson::endSequence() { output("]"); }
+void OutputJson::endSequence() {
+  output("]");
+}
 
 bool OutputJson::preflightElement(unsigned, void *&) {
-  if (NeedComma) output(",");
+  if (NeedComma)
+    output(",");
   return true;
 }
 
-void OutputJson::postflightElement(void *SaveInfo) { NeedComma = true; }
+void OutputJson::postflightElement(void *SaveInfo) {
+  NeedComma = true;
+}
 
 unsigned OutputJson::beginFlowSequence() {
   output("[");
@@ -55,16 +71,22 @@ unsigned OutputJson::beginFlowSequence() {
   return 0;
 }
 
-void OutputJson::endFlowSequence() { output("]"); }
+void OutputJson::endFlowSequence() {
+  output("]");
+}
 
 bool OutputJson::preflightFlowElement(unsigned, void *&) {
-  if (NeedComma) output(",");
+  if (NeedComma)
+    output(",");
   return true;
 }
 
-void OutputJson::postflightFlowElement(void *SaveInfo) { NeedComma = true; }
+void OutputJson::postflightFlowElement(void *SaveInfo) {
+  NeedComma = true;
+}
 
-void OutputJson::beginEnumScalar() {}
+void OutputJson::beginEnumScalar() {
+}
 
 bool OutputJson::matchEnumScalar(const char *Str, bool Match) {
   if (Match) {  // TODO(bfish): Check out caller...
@@ -75,7 +97,8 @@ bool OutputJson::matchEnumScalar(const char *Str, bool Match) {
   return false;
 }
 
-void OutputJson::endEnumScalar() {}
+void OutputJson::endEnumScalar() {
+}
 
 bool OutputJson::beginBitSetScalar(bool &DoClear) {
   output("[");
@@ -85,7 +108,8 @@ bool OutputJson::beginBitSetScalar(bool &DoClear) {
 
 bool OutputJson::bitSetMatch(const char *Str, bool Matches) {
   if (Matches) {
-    if (NeedComma) output(",");
+    if (NeedComma)
+      output(",");
     output("\"");
     output(Str);
     output("\"");
@@ -94,11 +118,14 @@ bool OutputJson::bitSetMatch(const char *Str, bool Matches) {
   return false;
 }
 
-void OutputJson::endBitSetScalar() { output("]"); }
+void OutputJson::endBitSetScalar() {
+  output("]");
+}
 
 bool OutputJson::bitSetMatchOther(uint32_t &Val) {
   if (Val != 0) {
-    if (NeedComma) output(",");
+    if (NeedComma)
+      output(",");
     char buf[16];
     auto len = format("\"0x%08X\"", Val).print(buf, sizeof(buf));
     this->output(StringRef{buf, len});
@@ -114,7 +141,8 @@ static StringRef::size_type findUnsafe(const StringRef &s,
   StringRef::size_type len = s.size();
   for (StringRef::size_type i = pos; i < len; ++i) {
     unsigned ch = static_cast<unsigned>(data[i]);
-    if (ch < 0x20 || ch == '\\' || ch == '"') return i;
+    if (ch < 0x20 || ch == '\\' || ch == '"')
+      return i;
   }
   return StringRef::npos;
 }
@@ -167,11 +195,16 @@ void OutputJson::scalarString(StringRef &S, bool MustQuote) {
   output("\"");  // closing quote
 }
 
-void OutputJson::setError(const Twine &message) {}
+void OutputJson::setError(const Twine &message) {
+}
 
-bool OutputJson::canElideEmptySequence() { return false; }
+bool OutputJson::canElideEmptySequence() {
+  return false;
+}
 
-void OutputJson::output(StringRef s) { Out << s; }
+void OutputJson::output(StringRef s) {
+  Out << s;
+}
 
 void OutputJson::paddedKey(StringRef key) {
   output("\"");

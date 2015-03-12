@@ -27,7 +27,8 @@ UInt64 Engine::listen(ChannelMode mode, UInt64 securityId,
                       std::error_code &error) {
   auto svrPtr = TCP_Server::create(this, mode, securityId, localEndpoint,
                                    versions, listenerFactory, error);
-  if (error) return 0;
+  if (error)
+    return 0;
 
   // If there's no error, the TCP_Server has registered itself with the engine.
   UInt64 connId = svrPtr->connectionId();
@@ -144,7 +145,8 @@ UInt64 Engine::addIdentity(const std::string &certData,
                            std::error_code &error) {
   auto idPtr =
       MakeUniquePtr<Identity>(certData, keyPassphrase, verifier, error);
-  if (error) return 0;
+  if (error)
+    return 0;
 
   UInt64 secId = assignSecurityId();
   assert(secId > 0);
@@ -261,7 +263,8 @@ void Engine::releaseDatapath(Connection *channel) {
     // verify that the datapathID _is_ registered to this connection.
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
-      if (item->second == channel) dpidMap_.erase(item);
+      if (item->second == channel)
+        dpidMap_.erase(item);
     }
   }
 }

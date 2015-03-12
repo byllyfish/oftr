@@ -134,7 +134,8 @@ size_t ofp::detail::ProtocolRangeItemCount(size_t elementSize,
     }
 
     size_t jumpSize = (alignment == 8) ? PadLength(elemSize) : elemSize;
-    if (jumpSize > len) break;
+    if (jumpSize > len)
+      break;
 
     len -= jumpSize;
     ptr += jumpSize;

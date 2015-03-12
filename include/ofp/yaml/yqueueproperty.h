@@ -88,7 +88,8 @@ struct SequenceTraits<ofp::detail::QueuePropertyRange> {
 
   static void skip(iterator &iter, iterator iterEnd) {
     for (; iter < iterEnd; ++iter) {
-      if (iter->type() >= ofp::OFPQT_UNUSED_MIN) break;
+      if (iter->type() >= ofp::OFPQT_UNUSED_MIN)
+        break;
     }
   }
 };

@@ -13,4 +13,6 @@ void ChannelListener::onChannelDown(Channel *channel) {
   log::debug("ChannelListener - onChannelDown ignored:", channel);
 }
 
-void ChannelListener::dispose(ChannelListener *listener) { delete listener; }
+void ChannelListener::dispose(ChannelListener *listener) {
+  delete listener;
+}

@@ -5,7 +5,8 @@
 
 using namespace ofp;
 
-PortModBuilder::PortModBuilder(const PortMod *msg) : msg_{*msg} {}
+PortModBuilder::PortModBuilder(const PortMod *msg) : msg_{*msg} {
+}
 
 UInt32 PortModBuilder::send(Writable *channel) {
   UInt8 version = channel->version();

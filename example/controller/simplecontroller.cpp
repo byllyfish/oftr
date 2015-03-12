@@ -13,7 +13,8 @@ struct EnetFrame {
 void SimpleController::onPacketIn(Channel *channel, const PacketIn *msg) {
   const EnetFrame *frame =
       reinterpret_cast<const EnetFrame *>(msg->enetFrame().data());
-  if (msg->enetFrame().size() < 14) return;
+  if (msg->enetFrame().size() < 14)
+    return;
 
   UInt32 inPort = msg->inPort();
   UInt32 outPort;

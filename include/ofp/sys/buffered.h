@@ -72,7 +72,8 @@ template <class StreamType>
 template <class CompletionHandler>
 void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
   const ByteList &outgoing = buffer_[bufferIdx_];
-  if (isFlushing_ || outgoing.size() == 0) return;
+  if (isFlushing_ || outgoing.size() == 0)
+    return;
 
   bufferIdx_ = !bufferIdx_;
   isFlushing_ = true;

@@ -8,10 +8,12 @@ using ofp::rpc::RpcConnectionSession;
 
 RpcConnectionSession::RpcConnectionSession(RpcServer *server,
                                            RpcSession *session)
-    : RpcConnection{server}, session_{session}, work_{server->engine()->io()} {}
+    : RpcConnection{server}, session_{session}, work_{server->engine()->io()} {
+}
 
 void RpcConnectionSession::write(const std::string &msg) {
   session_->receive(msg);
 }
 
-void RpcConnectionSession::asyncRead() {}
+void RpcConnectionSession::asyncRead() {
+}

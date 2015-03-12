@@ -11,14 +11,16 @@ using OW = OriginalMatch::Wildcards;
 using SW = StandardMatch::Wildcards;
 
 static void set_nw_src_mask(UInt32 &wc, unsigned prefix) {
-  if (prefix > 32) prefix = 32;
+  if (prefix > 32)
+    prefix = 32;
 
   wc = (wc & ~OW::OFPFW_NW_SRC_MASK) |
        ((32U - prefix) << OW::OFPFW_NW_SRC_SHIFT);
 }
 
 static void set_nw_dst_mask(UInt32 &wc, unsigned prefix) {
-  if (prefix > 32) prefix = 32;
+  if (prefix > 32)
+    prefix = 32;
 
   wc = (wc & ~OW::OFPFW_NW_DST_MASK) |
        ((32U - prefix) << OW::OFPFW_NW_DST_SHIFT);

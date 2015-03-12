@@ -33,7 +33,9 @@ bool MPFlowStatsRequest::validateInput(Validation *context) const {
   return true;
 }
 
-Match MPFlowStatsRequest::match() const { return Match{&matchHeader_}; }
+Match MPFlowStatsRequest::match() const {
+  return Match{&matchHeader_};
+}
 
 void MPFlowStatsRequestBuilder::write(Writable *channel) {
   UInt8 version = channel->version();

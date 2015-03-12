@@ -23,7 +23,9 @@ bool FlowRemoved::validateInput(Validation *context) const {
   return true;
 }
 
-Match FlowRemoved::match() const { return Match{&matchHeader_}; }
+Match FlowRemoved::match() const {
+  return Match{&matchHeader_};
+}
 
 FlowRemovedBuilder::FlowRemovedBuilder(const FlowRemoved *msg) : msg_{*msg} {
   // FIXME copy match...

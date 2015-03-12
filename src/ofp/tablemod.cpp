@@ -5,7 +5,8 @@
 
 using namespace ofp;
 
-TableModBuilder::TableModBuilder(const TableMod *msg) : msg_{*msg} {}
+TableModBuilder::TableModBuilder(const TableMod *msg) : msg_{*msg} {
+}
 
 UInt32 TableModBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

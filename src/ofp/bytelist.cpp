@@ -47,7 +47,9 @@ void ByteList::replaceUninitialized(const UInt8 *pos, const UInt8 *posEnd,
 }
 
 /// \brief Add zero bytes to the end of the byte buffer.
-void ByteList::addZeros(size_t length) { buf_.addZeros(length); }
+void ByteList::addZeros(size_t length) {
+  buf_.addZeros(length);
+}
 
 /// \brief Insert zero bytes at the specified position in the byte buffer.
 void ByteList::insertZeros(const UInt8 *pos, size_t length) {
@@ -60,13 +62,19 @@ void ByteList::remove(const UInt8 *pos, size_t length) {
 }
 
 /// \brief Resize buffer to specified length.
-void ByteList::resize(size_t length) { buf_.resize(length); }
+void ByteList::resize(size_t length) {
+  buf_.resize(length);
+}
 
 /// \brief Clear contents of the buffer.
-void ByteList::clear() { buf_.clear(); }
+void ByteList::clear() {
+  buf_.clear();
+}
 
 /// Return range of bytes.
-ByteRange ByteList::toRange() const { return ByteRange{data(), size()}; }
+ByteRange ByteList::toRange() const {
+  return ByteRange{data(), size()};
+}
 
 ByteList &ByteList::operator=(const ByteRange &range) {
   buf_.assign(range.data(), range.size());

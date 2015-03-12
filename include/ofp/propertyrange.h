@@ -45,7 +45,8 @@ class PropertyRange : public ProtocolRange<PropertyIterator> {
   /// \return Iterator to first property found with specified type.
   Iterator findProperty(UInt16 type) const {
     for (auto iter = begin(); iter < end(); ++iter) {
-      if (iter->type() == type) return iter;
+      if (iter->type() == type)
+        return iter;
     }
     return end();
   }

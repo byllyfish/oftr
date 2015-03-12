@@ -7,7 +7,9 @@
 
 using namespace ofp;
 
-Match MPFlowStatsReply::match() const { return Match{&matchHeader_}; }
+Match MPFlowStatsReply::match() const {
+  return Match{&matchHeader_};
+}
 
 InstructionRange MPFlowStatsReply::instructions() const {
   assert(matchHeader_.type() == OFPMT_OXM ||

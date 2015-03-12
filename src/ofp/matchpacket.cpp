@@ -435,7 +435,8 @@ void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
   // TODO(bfish): neighbor discovery msgs.
 }
 
-void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {}
+void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
+}
 
 UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
                                   size_t &length, UInt32 &flags) {
@@ -483,7 +484,8 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
       } else if (!pkt::IPv6NextHeaderIsExtension(nextHdr)) {
         countIPv6ExtHdr(flags, OFPIEH_DEST, kPreDestMask);
       } else {
-        if (flags & OFPIEH_DEST) flags |= OFPIEH_UNREP;
+        if (flags & OFPIEH_DEST)
+          flags |= OFPIEH_UNREP;
         flags |= (OFPIEH_DEST | OFPIEH_UNSEQ);
       }
       break;

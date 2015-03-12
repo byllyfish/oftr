@@ -153,7 +153,8 @@ void TCP_Connection<SocketType>::asyncConnect(
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncAccept() {
   // Do nothing if socket is not open.
-  if (!socket_.is_open()) return;
+  if (!socket_.is_open())
+    return;
 
   log::info("Accept TCP connection", localEndpoint(), "<--", remoteEndpoint(),
             std::make_pair("connid", connectionId()));

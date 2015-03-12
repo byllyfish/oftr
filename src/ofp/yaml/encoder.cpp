@@ -34,7 +34,8 @@ Encoder::Encoder(ChannelFinder finder)
     : errorStream_{error_},
       header_{OFPT_UNSUPPORTED},
       finder_{finder},
-      matchPrereqsChecked_{true} {}
+      matchPrereqsChecked_{true} {
+}
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
                  int lineNumber, ChannelFinder finder)

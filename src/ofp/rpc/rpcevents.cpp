@@ -20,23 +20,41 @@ std::string toJsonString(Type *event) {
 
 using namespace ofp::rpc;
 
-std::string RpcListenResponse::toJson() { return toJsonString(this); }
+std::string RpcListenResponse::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcConnectResponse::toJson() { return toJsonString(this); }
+std::string RpcConnectResponse::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcCloseResponse::toJson() { return toJsonString(this); }
+std::string RpcCloseResponse::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcSendResponse::toJson() { return toJsonString(this); }
+std::string RpcSendResponse::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcErrorResponse::toJson() { return toJsonString(this); }
+std::string RpcErrorResponse::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcDatapath::toJson() { return toJsonString(this); }
+std::string RpcDatapath::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcMessageError::toJson() { return toJsonString(this); }
+std::string RpcMessageError::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcListConnsResponse::toJson() { return toJsonString(this); }
+std::string RpcListConnsResponse::toJson() {
+  return toJsonString(this);
+}
 
-std::string RpcAddIdentityResponse::toJson() { return toJsonString(this); }
+std::string RpcAddIdentityResponse::toJson() {
+  return toJsonString(this);
+}
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 

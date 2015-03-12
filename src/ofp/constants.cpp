@@ -97,7 +97,8 @@ OFPActionTypeFlags ofp::OFPActionTypeFlagsConvertToV1(UInt32 actions) {
   result |= moved;
   if (actions & OFPATF_STRIP_VLAN_V1)
     result |= 1 << deprecated::v1::OFPAT_STRIP_VLAN;
-  if (actions & OFPATF_ENQUEUE_V1) result |= 1 << deprecated::v1::OFPAT_ENQUEUE;
+  if (actions & OFPATF_ENQUEUE_V1)
+    result |= 1 << deprecated::v1::OFPAT_ENQUEUE;
   return static_cast<OFPActionTypeFlags>(result);
 }
 

@@ -12,7 +12,9 @@ RpcConnection::RpcConnection(RpcServer *server) : server_{server} {
   server_->onConnect(this);
 }
 
-RpcConnection::~RpcConnection() { server_->onDisconnect(this); }
+RpcConnection::~RpcConnection() {
+  server_->onDisconnect(this);
+}
 
 void RpcConnection::onRpcListen(RpcListen *listen) {
   server_->onRpcListen(this, listen);
@@ -26,7 +28,9 @@ void RpcConnection::onRpcClose(RpcClose *close) {
   server_->onRpcClose(this, close);
 }
 
-void RpcConnection::onRpcSend(RpcSend *send) { server_->onRpcSend(this, send); }
+void RpcConnection::onRpcSend(RpcSend *send) {
+  server_->onRpcSend(this, send);
+}
 
 void RpcConnection::onRpcListConns(RpcListConns *list) {
   server_->onRpcListConns(this, list);

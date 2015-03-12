@@ -27,10 +27,14 @@ void *operator new[](size_t size) {
 }
 
 //
-void operator delete(void *p) noexcept { free(p); }
+void operator delete(void *p) noexcept {
+  free(p);
+}
 
 //
-void operator delete[](void *p) noexcept { free(p); }
+void operator delete[](void *p) noexcept {
+  free(p);
+}
 
 //
 
@@ -58,7 +62,8 @@ static void flowMod(Writable *channel, UInt32 inPort, UInt32 bufferId,
 }
 
 static void logStats(const std::vector<int64_t> &data) {
-  if (data.size() == 0) return;
+  if (data.size() == 0)
+    return;
 
   double sum = std::accumulate(data.begin(), data.end(), 0);
   double mean = sum / data.size();
@@ -101,7 +106,8 @@ int main(int argc, char **argv) {
     auto end = clock::now();
 
     // Ignore trial 0.
-    if (trial == 0) continue;
+    if (trial == 0)
+      continue;
 
     milliseconds duration =
         std::chrono::duration_cast<milliseconds>(end - start);

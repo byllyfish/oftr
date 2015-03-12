@@ -175,7 +175,8 @@ static void WriteHeaderFile(ostream &stream, vector<OXMField> &fields) {
   stream << "namespace ofp {\n\n";
 
   for (auto field : fields) {
-    if (field.hasPrereqs()) field.declareGlobalPrereq(stream);
+    if (field.hasPrereqs())
+      field.declareGlobalPrereq(stream);
   }
 
   stream << "\n\n/// \\brief Defines an internal ID in the contiguous range "
@@ -264,7 +265,8 @@ static void WriteSourceFile(ostream &stream, vector<OXMField> &fields) {
   stream << PrereqFunctionPreamble;
 
   for (auto field : fields) {
-    if (field.hasPrereqs()) field.writePrereqCode(stream);
+    if (field.hasPrereqs())
+      field.writePrereqCode(stream);
   }
 
   stream
@@ -334,7 +336,8 @@ static vector<string> Split(const string &str, char delimiter, bool trim) {
   vector<string> result;
   istringstream iss{str};
   for (string f; getline(iss, f, delimiter);) {
-    if (trim) Trim(f);
+    if (trim)
+      Trim(f);
     result.push_back(f);
   }
   return result;

@@ -15,7 +15,8 @@ using ExitStatus = Decode::ExitStatus;
 //
 static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
   for (size_t i = 0; i < size; ++i) {
-    if (lhs[i] != rhs[i]) return i;
+    if (lhs[i] != rhs[i])
+      return i;
   }
   return size;
 }
@@ -378,10 +379,12 @@ bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
   //     pos|timestamp|length
 
   auto posEnd = line.find_first_of('|');
-  if (posEnd == llvm::StringRef::npos) return false;
+  if (posEnd == llvm::StringRef::npos)
+    return false;
 
   auto timestampEnd = line.find_first_of('|', posEnd + 1);
-  if (timestampEnd == llvm::StringRef::npos) return false;
+  if (timestampEnd == llvm::StringRef::npos)
+    return false;
 
   assert(timestampEnd >= posEnd + 1);
 
@@ -389,9 +392,11 @@ bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
   auto timestampStr = line.substr(posEnd + 1, timestampEnd - posEnd - 1);
   auto lengthStr = line.substr(timestampEnd + 1);
 
-  if (posStr.getAsInteger(10, *pos)) return false;
+  if (posStr.getAsInteger(10, *pos))
+    return false;
 
-  if (lengthStr.getAsInteger(10, *length)) return false;
+  if (lengthStr.getAsInteger(10, *length))
+    return false;
 
   return timestamp->parse(timestampStr);
 }

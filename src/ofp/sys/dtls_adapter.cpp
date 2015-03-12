@@ -88,7 +88,8 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
         // We are waiting for some data to arrive before we can send
         // the next datagram. Add the datagram to our queue so we can retry
         // it later.
-        if (length > 0) enqueueDatagram(datagram, length);
+        if (length > 0)
+          enqueueDatagram(datagram, length);
         break;
 
       case SSL_ERROR_WANT_WRITE:

@@ -268,11 +268,16 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
 size_t SmallBuffer::computeCapacity(size_t length) noexcept {
   assert(length > IntrinsicBufSize);
 
-  if (length <= 1024) return 1024;
-  if (length <= 8192) return 8192;
-  if (length <= 65536) return 65536;
-  if (length <= 524288) return 524288;
-  if (length <= 4194304) return 4194304;
+  if (length <= 1024)
+    return 1024;
+  if (length <= 8192)
+    return 8192;
+  if (length <= 65536)
+    return 65536;
+  if (length <= 524288)
+    return 524288;
+  if (length <= 4194304)
+    return 4194304;
 
   log::warning("SmallBuffer capacity > 4 MB:", 2 * length);
 

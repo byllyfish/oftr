@@ -5,7 +5,8 @@
 
 using namespace ofp;
 
-SetConfigBuilder::SetConfigBuilder(const SetConfig *msg) : msg_{*msg} {}
+SetConfigBuilder::SetConfigBuilder(const SetConfig *msg) : msg_{*msg} {
+}
 
 UInt32 SetConfigBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

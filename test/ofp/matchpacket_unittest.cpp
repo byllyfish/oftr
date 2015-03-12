@@ -10,7 +10,8 @@ static void testPacket(const char *hex, const char *outHex) {
 
   // Make sure that packet is aligned to a byte boundary as expected.
   // (Bypass Short-String Optimization)
-  if (!IsPtrAligned(pkt.data(), 8)) pkt.reserve(256);
+  if (!IsPtrAligned(pkt.data(), 8))
+    pkt.reserve(256);
 
   MatchPacket match{ByteRange{pkt.data() + 2, pkt.size() - 2}};
   EXPECT_HEX(outHex, match.data(), match.size());

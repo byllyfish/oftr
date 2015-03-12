@@ -81,7 +81,8 @@ static OFPErrorType typeToEnum(UInt8 version, UInt16 type, UInt16 code) {
     }
 
     for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
-      if (type == sErrorTypesV1[i].v1ErrType) return sErrorTypesV1[i].type;
+      if (type == sErrorTypesV1[i].v1ErrType)
+        return sErrorTypesV1[i].type;
     }
     type |= OFPET_UNKNOWN_FLAG;
 
@@ -109,7 +110,8 @@ static UInt16 enumToType(UInt8 version, OFPErrorType type) {
 
   if (version == OFP_VERSION_1) {
     for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
-      if (type == sErrorTypesV1[i].type) return sErrorTypesV1[i].v1ErrType;
+      if (type == sErrorTypesV1[i].type)
+        return sErrorTypesV1[i].v1ErrType;
     }
     log::warning("Unknown type enum in Error message:", static_cast<int>(type));
   }
@@ -167,7 +169,9 @@ OFPErrorCode Error::errorCode() const {
   return codeToEnum(msgHeader()->version(), type_, code_);
 }
 
-ErrorBuilder::ErrorBuilder(UInt32 xid) { msg_.header_.setXid(xid); }
+ErrorBuilder::ErrorBuilder(UInt32 xid) {
+  msg_.header_.setXid(xid);
+}
 
 ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg} {
   // Only data is left to copy.
@@ -178,7 +182,8 @@ ErrorBuilder::ErrorBuilder(const Error *msg) : msg_{*msg} {
 void ErrorBuilder::setErrorData(const Message *message) {
   assert(message);
   size_t len = message->size();
-  if (len > 64) len = 64;
+  if (len > 64)
+    len = 64;
   setErrorData(message->data(), len);
 }
 

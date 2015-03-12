@@ -5,7 +5,8 @@
 
 using namespace ofp;
 
-SetAsyncBuilder::SetAsyncBuilder(const SetAsync *msg) : msg_{*msg} {}
+SetAsyncBuilder::SetAsyncBuilder(const SetAsync *msg) : msg_{*msg} {
+}
 
 UInt32 SetAsyncBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

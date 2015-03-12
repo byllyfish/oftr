@@ -13,7 +13,9 @@
 
 using namespace ofp;
 
-Channel *Message::source() const { return channel_; }
+Channel *Message::source() const {
+  return channel_;
+}
 
 bool Message::isRequestType() const {
   // Echo request is not included because it's handled by the connection

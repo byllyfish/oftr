@@ -53,7 +53,8 @@ UInt8 ProtocolVersions::negotiateVersion(UInt8 msgVersion,
 
 bool ProtocolVersions::isOnlyOneVersionSupported() const {
   UInt32 bits = bitmap_;
-  if (bits == 0) return false;
+  if (bits == 0)
+    return false;
 
   while ((bits & 0x01) == 0) {
     bits >>= 1;
@@ -85,7 +86,8 @@ std::string ProtocolVersions::toString() const {
 
   for (UInt8 i = 1; i <= MaxVersionSupported; ++i) {
     if ((bitmap_ >> i) & 1) {
-      if (needComma) out << ", ";
+      if (needComma)
+        out << ", ";
       out << static_cast<int>(i);
       needComma = true;
     }

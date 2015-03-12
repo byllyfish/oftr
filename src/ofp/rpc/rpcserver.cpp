@@ -84,7 +84,8 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   }
 
   if (!optionError.empty()) {
-    if (open->id == RPC_ID_MISSING) return;
+    if (open->id == RPC_ID_MISSING)
+      return;
     RpcErrorResponse response{open->id};
     response.error.code = ERROR_CODE_INVALID_OPTION;
     response.error.message = optionError;
@@ -97,7 +98,8 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
       ChannelMode::Controller, securityId, endpt, ProtocolVersions::All,
       [this]() { return new RpcChannelListener{this}; }, err);
 
-  if (open->id == RPC_ID_MISSING) return;
+  if (open->id == RPC_ID_MISSING)
+    return;
 
   if (!err) {
     RpcListenResponse response{open->id};
@@ -114,7 +116,8 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
 
 void RpcServer::connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
                                 const std::error_code &err) {
-  if (id == RPC_ID_MISSING) return;
+  if (id == RPC_ID_MISSING)
+    return;
 
   if (!err) {
     RpcConnectResponse response{id};
@@ -157,7 +160,8 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   }
 
   if (!optionError.empty()) {
-    if (connect->id == RPC_ID_MISSING) return;
+    if (connect->id == RPC_ID_MISSING)
+      return;
     RpcErrorResponse response{connect->id};
     response.error.code = ERROR_CODE_INVALID_OPTION;
     response.error.message = optionError;
@@ -189,7 +193,8 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
 void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
   size_t count = engine_->close(close->params.connId);
 
-  if (close->id == RPC_ID_MISSING) return;
+  if (close->id == RPC_ID_MISSING)
+    return;
 
   RpcCloseResponse response{close->id};
   response.result.count = UInt32_narrow_cast(count);
@@ -207,7 +212,8 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     channel->flush();
   }
 
-  if (send->id == RPC_ID_MISSING) return;
+  if (send->id == RPC_ID_MISSING)
+    return;
 
   RpcSendResponse response{send->id};
   response.result.connId = connId;
@@ -216,7 +222,8 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
 }
 
 void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
-  if (list->id == RPC_ID_MISSING) return;
+  if (list->id == RPC_ID_MISSING)
+    return;
 
   RpcListConnsResponse response{list->id};
   UInt64 desiredConnId = list->params.connId;
@@ -271,7 +278,8 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
 
   // add->params.password.fill('x');
 
-  if (add->id == RPC_ID_MISSING) return;
+  if (add->id == RPC_ID_MISSING)
+    return;
 
   if (!err) {
     RpcAddIdentityResponse response{add->id};
@@ -286,20 +294,24 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
 }
 
 void RpcServer::onChannelUp(Channel *channel) {
-  if (oneConn_) oneConn_->onChannel(channel, "UP");
+  if (oneConn_)
+    oneConn_->onChannel(channel, "UP");
 }
 
 void RpcServer::onChannelDown(Channel *channel) {
-  if (oneConn_) oneConn_->onChannel(channel, "DOWN");
+  if (oneConn_)
+    oneConn_->onChannel(channel, "DOWN");
 }
 
 void RpcServer::onMessage(Channel *channel, const Message *message) {
-  if (oneConn_) oneConn_->onMessage(channel, message);
+  if (oneConn_)
+    oneConn_->onMessage(channel, message);
 }
 
 ofp::Channel *RpcServer::findDatapath(const DatapathID &datapathId,
                                       UInt64 connId) {
-  if (defaultChannel_) return defaultChannel_;
+  if (defaultChannel_)
+    return defaultChannel_;
 
   return engine_->findDatapath(datapathId, connId);
 }

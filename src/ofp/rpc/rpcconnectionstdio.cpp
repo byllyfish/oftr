@@ -16,7 +16,8 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor output)
     : RpcConnection{server},
       input_{std::move(input)},
-      output_{std::move(output)} {}
+      output_{std::move(output)} {
+}
 
 void RpcConnectionStdio::setInput(int input) {
   assert(input >= 0);

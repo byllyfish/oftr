@@ -41,7 +41,8 @@ OXMIterator OXMList::replace(OXMIterator pos, OXMIterator end, OXMType type,
 OXMIterator OXMList::findValue(OXMType type) const {
   OXMIterator iterEnd = end();
   for (OXMIterator iter = begin(); iter < iterEnd; ++iter) {
-    if (iter->type() == type) return iter;
+    if (iter->type() == type)
+      return iter;
   }
   return iterEnd;
 }
@@ -50,7 +51,8 @@ OXMIterator OXMList::findOrderedPos(OXMType type) const {
   OXMIterator iterEnd = end();
   auto nativeType = type.oxmNative();
   for (OXMIterator iter = begin(); iter < iterEnd; ++iter) {
-    if (iter->type().oxmNative() > nativeType) return iter;
+    if (iter->type().oxmNative() > nativeType)
+      return iter;
   }
   return iterEnd;
 }

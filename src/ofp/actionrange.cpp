@@ -8,8 +8,8 @@
 using namespace ofp;
 
 // Delegating constructor.
-ActionRange::ActionRange(const ActionList &list)
-    : ActionRange{list.toRange()} {}
+ActionRange::ActionRange(const ActionList &list) : ActionRange{list.toRange()} {
+}
 
 /// \returns Size of action list when written to channel.
 size_t ActionRange::writeSize(Writable *channel) {

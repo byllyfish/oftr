@@ -29,7 +29,8 @@ TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
       mode_{mode},
       versions_{versions},
       factory_{listenerFactory},
-      securityId_{securityId} {}
+      securityId_{securityId} {
+}
 
 TCP_Server::~TCP_Server() {
   // If connId_ is non-zero, we need to de-register the TCP server.
@@ -87,13 +88,15 @@ void TCP_Server::listen(const IPv6Endpoint &localEndpt,
       addr.is_unspecified()) {
     log::info("TCP_Server: IPv6 is not supported. Using IPv4.");
     endpt = tcp::endpoint{tcp::v4(), endpt.port()};
-    if (acceptor_.open(endpt.protocol(), error)) return;
+    if (acceptor_.open(endpt.protocol(), error))
+      return;
   }
 
   if (acceptor_.set_option(asio::socket_base::reuse_address(true), error))
     return;
 
-  if (acceptor_.bind(endpt, error)) return;
+  if (acceptor_.bind(endpt, error))
+    return;
 
   acceptor_.listen(asio::socket_base::max_connections, error);
 }
@@ -105,7 +108,8 @@ void TCP_Server::asyncAccept() {
     // N.B. ASIO still sends a cancellation error even after
     // async_accept() throws an exception. Check for cancelled operation
     // first; our TCP_Server instance will have been destroyed.
-    if (err == asio::error::operation_aborted) return;
+    if (err == asio::error::operation_aborted)
+      return;
 
     if (!err) {
       if (securityId_ > 0) {

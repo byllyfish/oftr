@@ -145,7 +145,8 @@ UInt32 PacketIn::inPhyPort() const {
       // If not present or zero, assume the value is identical to OFB_IN_PORT.
       OXMRange oxm = matchHeader()->oxmRange();
       UInt32 inPhyPort = oxm.get<OFB_IN_PHY_PORT>();
-      if (inPhyPort) return inPhyPort;
+      if (inPhyPort)
+        return inPhyPort;
       return oxm.get<OFB_IN_PORT>();
     }
   }
@@ -306,12 +307,14 @@ UInt32 PacketInBuilder::sendV3(Writable *channel) {
   // TODO(bfish): check ordering of fields in resulting match. Especially if
   // there are other fields already added.
 
-  if (inPort_) match_.replaceUnchecked(OFB_IN_PORT{inPort_});
+  if (inPort_)
+    match_.replaceUnchecked(OFB_IN_PORT{inPort_});
 
   if (inPhyPort_ && (inPhyPort_ != inPort_))
     match_.replaceUnchecked(OFB_IN_PHY_PORT{inPhyPort_});
 
-  if (metadata_) match_.replaceUnchecked(OFB_METADATA{metadata_});
+  if (metadata_)
+    match_.replaceUnchecked(OFB_METADATA{metadata_});
 
   // TODO(bfish): TUNNEL_ID
 
@@ -364,12 +367,14 @@ UInt32 PacketInBuilder::sendV4(Writable *channel) {
   // TODO(bfish): check ordering of fields in resulting match. Especially if
   // there are other fields already added.
 
-  if (inPort_) match_.replaceUnchecked(OFB_IN_PORT{inPort_});
+  if (inPort_)
+    match_.replaceUnchecked(OFB_IN_PORT{inPort_});
 
   if (inPhyPort_ && (inPhyPort_ != inPort_))
     match_.replaceUnchecked(OFB_IN_PHY_PORT{inPhyPort_});
 
-  if (metadata_) match_.replaceUnchecked(OFB_METADATA{metadata_});
+  if (metadata_)
+    match_.replaceUnchecked(OFB_METADATA{metadata_});
 
   // TODO(bfish): TUNNEL_ID
 

@@ -29,7 +29,9 @@ class XpcSession : public ofp::rpc::RpcSession {
   xpc_connection_t peer_;
 };
 
-void ofpx::run_xpc_main(void) { xpc_main(ofpx_xpc_event_handler); }
+void ofpx::run_xpc_main(void) {
+  xpc_main(ofpx_xpc_event_handler);
+}
 
 void ofpx_xpc_event_handler(xpc_connection_t peer) {
   // The peer event handlers runs on the main thread. The event handlers

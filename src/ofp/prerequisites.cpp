@@ -164,7 +164,8 @@ bool Prerequisites::check(OXMIterator begin, OXMIterator end) const {
     OXMType preqType = preq.type();
 
     if (preqType.hasMask()) {
-      if (checkPreqMasked(preqType, preq, begin, end)) return true;
+      if (checkPreqMasked(preqType, preq, begin, end))
+        return true;
       advancePreq(preqType, preq, preqEnd);
 
     } else {
@@ -280,7 +281,8 @@ bool Prerequisites::matchValueWithMask(size_t length, const void *data,
   const UInt8 *preqMask = preqValue + length;
 
   for (size_t i = 0; i < length; ++i) {
-    if ((*value++ & *preqMask++) != *preqValue++) return false;
+    if ((*value++ & *preqMask++) != *preqValue++)
+      return false;
   }
 
   return true;
@@ -415,7 +417,8 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
           return true;
         }
         ++iter;
-        if (iter == iterEnd) break;
+        if (iter == iterEnd)
+          break;
       }
     }
   }

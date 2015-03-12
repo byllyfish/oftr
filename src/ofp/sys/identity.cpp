@@ -86,11 +86,13 @@ Identity::Identity(const std::string &certData,
   // Initialize the TLS context.
   error =
       initContext(tls_.native_handle(), certData, keyPassphrase, verifyData);
-  if (error) return;
+  if (error)
+    return;
 
   // Initialize the DTLS context identically.
   error = initContext(dtls_.get(), certData, keyPassphrase, verifyData);
-  if (error) return;
+  if (error)
+    return;
 
   // Save subject name of the certificate.
   MemX509 cert{certData};
@@ -105,7 +107,8 @@ Identity::~Identity() {
 
 SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
   auto iter = clientSessions_.find(remoteEndpt);
-  if (iter == clientSessions_.end()) return nullptr;
+  if (iter == clientSessions_.end())
+    return nullptr;
 
   return iter->second;
 }
@@ -193,7 +196,8 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
 
   while (true) {
     MemX509 caCert{PEM_read_bio_X509(bio.get(), 0, 0, 0)};
-    if (!caCert) break;
+    if (!caCert)
+      break;
 
     if (!SSL_CTX_add0_chain_cert(ctx, caCert.get())) {
       return sslError(::ERR_get_error());

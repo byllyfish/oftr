@@ -23,18 +23,21 @@ ActionRange InstructionRange::outputActions() const {
 }
 
 bool InstructionRange::validateInput(Validation *context) const {
-  if (!Inherited::validateInput(context)) return false;
+  if (!Inherited::validateInput(context))
+    return false;
 
   for (auto &item : *this) {
     switch (item.type()) {
       case IT_WRITE_ACTIONS::type(): {
         const IT_WRITE_ACTIONS *ins = item.instruction<IT_WRITE_ACTIONS>();
-        if (!ins->validateInput(context)) return false;
+        if (!ins->validateInput(context))
+          return false;
         break;
       }
       case IT_APPLY_ACTIONS::type(): {
         const IT_APPLY_ACTIONS *ins = item.instruction<IT_APPLY_ACTIONS>();
-        if (!ins->validateInput(context)) return false;
+        if (!ins->validateInput(context))
+          return false;
         break;
       }
       default:

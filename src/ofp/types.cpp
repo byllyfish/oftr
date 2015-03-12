@@ -106,7 +106,8 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen,
         idx = 0;
         assert(ch[0] < 16 && ch[1] < 16);
         *out++ = UInt8_narrow_cast((ch[0] << 4) | ch[1]);
-        if (out >= end) break;
+        if (out >= end)
+          break;
       }
     } else if (!nonhex && !std::isspace(*inp)) {
       // Ignore space characters when checking for non-hexadecimal values.
@@ -148,7 +149,8 @@ std::string ofp::HexToRawData(const std::string &hex) {
 bool ofp::IsMemFilled(const void *data, size_t len, char ch) {
   const UInt8 *p = static_cast<const UInt8 *>(data);
   while (len-- > 0) {
-    if (*p++ != UInt8_cast(ch)) return false;
+    if (*p++ != UInt8_cast(ch))
+      return false;
   }
   return true;
 }

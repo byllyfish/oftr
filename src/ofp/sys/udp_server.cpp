@@ -196,7 +196,8 @@ void UDP_Server::listen(const IPv6Endpoint &localEndpt,
       addr.is_unspecified()) {
     log::info("UDP_Server: IPv6 is not supported. Using IPv4.");
     endpt = udp::endpoint{udp::v4(), endpt.port()};
-    if (socket_.open(endpt.protocol(), error)) return;
+    if (socket_.open(endpt.protocol(), error))
+      return;
   }
 
   protocol_ = endpt.protocol();
@@ -211,7 +212,8 @@ void UDP_Server::asyncReceive() {
   socket_.async_receive_from(
       asio::buffer(buffer_.mutableData(), buffer_.size()), sender_,
       [this, self](const asio::error_code &err, size_t bytes_recvd) {
-        if (err == asio::error::operation_aborted) return;
+        if (err == asio::error::operation_aborted)
+          return;
 
         if (err) {
           log::error("Error receiving datagram",

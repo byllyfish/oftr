@@ -68,13 +68,15 @@ struct OriginalMatch {
 
   IPv4Address nw_src_mask() const {
     unsigned bits = (wildcards & OFPFW_NW_SRC_MASK) >> OFPFW_NW_SRC_SHIFT;
-    if (bits > 32) bits = 32;
+    if (bits > 32)
+      bits = 32;
     return IPv4Address::mask(32U - bits);
   }
 
   IPv4Address nw_dst_mask() const {
     unsigned bits = (wildcards & OFPFW_NW_DST_MASK) >> OFPFW_NW_DST_SHIFT;
-    if (bits > 32) bits = 32;
+    if (bits > 32)
+      bits = 32;
     return IPv4Address::mask(32U - bits);
   }
 

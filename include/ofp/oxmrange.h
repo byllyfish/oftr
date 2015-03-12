@@ -46,9 +46,11 @@ class OXMRange {
     const UInt8 *pos = begin_;
     size_t left = static_cast<size_t>(end_ - begin_);
     while (pos < end_) {
-      if (left < 4) return false;
+      if (left < 4)
+        return false;
       size_t len = sizeof(OXMType) + pos[3];
-      if (left < len) return false;
+      if (left < len)
+        return false;
       pos += len;
       left -= len;
     }

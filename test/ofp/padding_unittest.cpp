@@ -9,7 +9,8 @@ using namespace ofp;
 TEST(padding, PadLength) {
   EXPECT_EQ(0, PadLength(0));
   EXPECT_EQ(8, PadLength(8));
-  for (unsigned i = 1; i < 8; ++i) EXPECT_EQ(8, PadLength(i));
+  for (unsigned i = 1; i < 8; ++i)
+    EXPECT_EQ(8, PadLength(i));
 
   for (unsigned i = 0; i < 100; ++i) {
     EXPECT_EQ(0, PadLength(i) % 8);

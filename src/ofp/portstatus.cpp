@@ -6,7 +6,8 @@
 
 using namespace ofp;
 
-PortStatusBuilder::PortStatusBuilder(const PortStatus *msg) : msg_{*msg} {}
+PortStatusBuilder::PortStatusBuilder(const PortStatus *msg) : msg_{*msg} {
+}
 
 UInt32 PortStatusBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
