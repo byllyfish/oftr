@@ -103,6 +103,7 @@ void OutputJson::endEnumScalar() {
 bool OutputJson::beginBitSetScalar(bool &DoClear) {
   output("[");
   NeedComma = false;
+  DoClear = false;
   return true;
 }
 
