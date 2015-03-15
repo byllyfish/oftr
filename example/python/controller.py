@@ -1,19 +1,11 @@
 # Python Controller
 #
-# Set environment variable LIBOFPEXEC_PATH before running this program. If that
-# variable is not set, this program will use /usr/local/bin/libofpexec.
+# Set environment variable OFPX_PATH before running this program. If that
+# variable is not set, this program will use /usr/local/bin/ofpx.
 
 import os
 import sys
-
-# If the environment variable LIBOFP_YAML is set to 1, use YAML version;
-# otherwise default to json version.
-
-if os.environ.get('LIBOFP_YAML') == '1':
-  import libofp_yaml as libofp
-else:
-  import libofp_json as libofp
-
+import libofp_json as libofp
 
 def setConfig(datapath, length):
     return {
@@ -149,13 +141,12 @@ def handlePacketIn(ofp, event):
 if __name__ == '__main__':
     forwardTable = {}
 
-    libofpexec = os.environ.get('LIBOFPEXEC_PATH')
-    if not libofpexec:
-        libofpexec = '/usr/local/bin/libofpexec'
+    ofpx = os.environ.get('OFPX_PATH')
+    if not ofpx:
+        ofpx = '/usr/local/bin/ofpx'
 
-    ofp = libofp.LibOFP(libofpexec)
-    while True:
-        event = ofp.waitNextEvent()
+    ofp = libofp.LibOFP(ofpx)
+    for event in ofp:
 
         if hasattr(event, 'error'):
             print >>sys.stderr, event

@@ -50,20 +50,9 @@ class LibOFP(object):
                 value:  192.168.1.1
             enet_frame: FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
        '''
-
-
-    To schedule a "wake up call":
-
-        ofp.setTimer(datapath, timerID, timeout)
-
-    datapath is the datapathID of the switch.
-    timerID is an opaque unsigned integer.
-    timeout is in milliseconds.
-
-    When the timer expires, you will receive a LIBOFP_TIMER_EVENT.
     """
 
-    def __init__(self, driverPath='/usr/local/bin/libofpexec',
+    def __init__(self, driverPath='/usr/local/bin/ofpx',
                        openflowAddr=('', DEFAULT_OPENFLOW_PORT),
                        driverAddr=None,
                        listen=True):
@@ -123,12 +112,17 @@ class LibOFP(object):
             self._sock.close()
 
     def send(self, params):
-        rpc = {
-          'method': 'ofp.send', 
-          'params': params
-        }
-        msg = json.dumps(rpc)
-        self._write(msg + EVENT_DELIMITER)
+        self._call('ofp.send', id=None, **params)
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        line = self._sockInput.readline()
+        if not line:
+            raise StopIteration()
+        return json.loads(line, object_hook=_JsonObject)
+        #return self._eventGenerator.next()
 
     def _call(self, method, id=None, **params):
         rpc = {
@@ -137,34 +131,16 @@ class LibOFP(object):
         }
         if id is not None:
             rpc['id'] = id
-        msg = json.dumps(rpc)
-        self._write(msg + EVENT_DELIMITER)
-
-    def waitNextEvent(self):
-        return self._eventGenerator.next()
+        self._write(json.dumps(rpc) + EVENT_DELIMITER)
 
     def _sendListenRequest(self, openflowAddr):
         self._call('ofp.listen', endpoint='%s %d' % openflowAddr)
 
     def _makeEventGenerator(self):
-        msgLines = []
         # Simply using `for line in self._sockInput:` doesn't work for pipes in
         # Python 2.7.2.
         for line in iter(self._sockInput.readline, ''):
-            obj = json.loads(line, object_hook=_JsonObject)
-            yield obj
-
-            # if line == '...\n' and msgLines:
-            #     msg = ''.join(msgLines[1:])
-            #     #print msg
-            #     obj = _toObj(json.loads(msg))
-            #     obj.text = msg
-            #     if hasattr(obj,'method') and not hasattr(obj,'type'):
-            #         obj.type = obj.method
-            #     yield obj
-            #     msgLines = []
-            # else:
-            #     msgLines.append(line)
+            yield json.loads(line, object_hook=_JsonObject)
 
     def _writeToSocket(self, msg):
         self._sock.sendall(msg)
@@ -174,8 +150,7 @@ class LibOFP(object):
 
 
 if __name__ == '__main__':
-    ofp = LibOFP('/Users/bfish/code/ofp/Build+Debug/libofpexec')
-    while True:
-        event = ofp.waitNextEvent()
+    ofp = LibOFP('/Users/bfish/code/ofp/Build+Debug/tools/ofpx/ofpx')
+    for event in ofp:
         print event
 
