@@ -318,9 +318,7 @@ add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdat
 add_subdirectory(example/nulldemo)
 add_subdirectory(example/testagent)
 add_subdirectory(example/controller)
-add_subdirectory(example/libofpexec)
 add_subdirectory(example/python)
-add_subdirectory(example/bridgeofp)
 add_subdirectory(example/flowbench)
 
 #-------------------------------------------------------------------------------

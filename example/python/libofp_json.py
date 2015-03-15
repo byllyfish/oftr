@@ -27,9 +27,8 @@ class LibOFP(object):
     Example:
 
         ofp = libofp.LibOFP()
-        while True:
-            event = ofp.waitNextEvent()
-            if event.type == 'OFPT_PACKET_IN':
+        for event in ofp:
+            if event.type == 'PACKET_IN':
                 handlePacketIn(ofp, event)
 
 
@@ -84,11 +83,11 @@ class LibOFP(object):
             # Driver's path is specified, so launch the executable.
             if driverAddr:
                 # We're connecting to the driver over TCP.
-                self._process = subprocess.Popen([driverPath])
+                self._process = subprocess.Popen([driverPath, 'jsonrpc'])
             else:
                 # We're not connecting over TCP, so communicate with the driver
                 # using stdin and stdout (in line mode).
-                self._process = subprocess.Popen([driverPath],
+                self._process = subprocess.Popen([driverPath, 'jsonrpc'],
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
         if driverAddr:

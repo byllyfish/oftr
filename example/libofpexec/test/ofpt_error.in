@@ -1,5 +1,0 @@
-{params: {type: OFPT_ERROR, version: 1, msg: {type: 1, code: 1, data: '0123456789'}}, method: ofp.send, id: 1}
-{params: {type: OFPT_ERROR, msg: {type: 1, code: 1, data: '0123456789'}}, method: ofp.send, id: 2}
-{params: {type: OFPT_ERROR, version: 2, msg: {type: 1, code: 1, data: '0123456789'}}, method: ofp.send, id: 3}
-{params: {type: OFPT_ERROR, version: 3, msg: {type: 1, code: 1, data: '0123456789'}}, method: ofp.send, id: 4}
-{params: {type: OFPT_ERROR, version: 4, msg: {type: 1, code: 1, data: '0123456789'}}, method: ofp.send, id: 5}
