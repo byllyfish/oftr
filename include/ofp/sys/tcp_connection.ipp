@@ -173,6 +173,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
   }
 
   auto self(this->shared_from_this());
+  updateTimeReadStarted();
 
   asio::async_read(
       socket_,
@@ -218,8 +219,6 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               shutdown();
             }
           }));
-
-  updateLatestActivity();
 }
 
 template <class SocketType>
@@ -234,6 +233,7 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   }
 
   auto self(this->shared_from_this());
+  updateTimeReadStarted();
 
   asio::async_read(
       socket_, asio::buffer(message_.mutableData(msgLength) + sizeof(Header),
@@ -262,8 +262,6 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
               channelDown();
             }
           }));
-
-  updateLatestActivity();
 }
 
 template <class SocketType>

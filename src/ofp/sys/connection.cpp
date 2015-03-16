@@ -3,15 +3,23 @@
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
 #include "ofp/message.h"
+#include "ofp/echorequest.h"
+#include "ofp/echoreply.h"
 
 using namespace ofp;
 using namespace ofp::sys;
 
+const Milliseconds kKeepAliveDefaultTimeout = 10000_ms;
+const UInt32 kKeepAliveEchoXID = 0xFBD0FF86;
+const ByteRange kKeepAliveEchoData{"Bueller?", 8};
+
 Connection::Connection(Engine *engine, DefaultHandshake *handshake)
     : engine_{engine},
       listener_{handshake},  // handshake_{handshake},
-      mainConn_{this} {
+      mainConn_{this},
+      keepAliveTimeout_{kKeepAliveDefaultTimeout} {
   connId_ = engine_->registerConnection(this);
+  updateTimeReadStarted();
 }
 
 Connection::~Connection() {
@@ -87,13 +95,22 @@ void Connection::postMessage(Message *message) {
   log::trace("Read", message->source()->connectionId(), message->data(),
              message->size());
 
-  // Handle echo reply automatically. We just set the type to reply and write
-  // it back.
+  // Handle incoming echo requests automatically. Change the type to echo reply
+  // and send it right back.
   if (message->type() == OFPT_ECHO_REQUEST) {
     message->mutableHeader()->setType(OFPT_ECHO_REPLY);
     write(message->data(), message->size());
     flush();
     return;  // all done!
+  }
+
+  // Ignore incoming echo replies that originate from our "keep-alive" echo
+  // requests sent when the connection is idle.
+  if (message->type() == OFPT_ECHO_REPLY && message->xid() == kKeepAliveEchoXID) {
+    const EchoReply *reply = EchoReply::cast(message);
+    if (reply && reply->echoData() == kKeepAliveEchoData) {
+      return; // all done!
+    }
   }
 
   ChannelListener *listener = mainConn_->listener_;
@@ -104,7 +121,9 @@ void Connection::postMessage(Message *message) {
 }
 
 void Connection::postIdle() {
-  log::debug("postIdle() ==========");
+  log::debug("postIdle() entered");
+
+
 }
 
 bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
@@ -130,6 +149,21 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   return result;
 }
 
+void Connection::poll() {
+  auto age = std::chrono::steady_clock::now() - timeReadStarted_;
+  if (age < keepAliveTimeout_)
+    return;
+
+  if (version() < OFP_VERSION_1 || age >= 2*keepAliveTimeout_) {
+    shutdown();
+  } else if (!(flags() & kChannelIdle)) {
+    setFlags(flags() | kChannelIdle);
+    EchoRequestBuilder echoReq{kKeepAliveEchoXID};
+    echoReq.setEchoData(kKeepAliveEchoData.data(), kKeepAliveEchoData.size());
+    echoReq.send(this);
+  }
+}
+
 void Connection::channelUp() {
   if (!(flags() & kChannelUp)) {
     log::debug("channelUp", std::make_pair("connid", connectionId()));
@@ -150,4 +184,9 @@ void Connection::channelDown() {
       delegate->onChannelDown(this);
     }
   }
+}
+
+void Connection::updateTimeReadStarted() {
+  timeReadStarted_ = std::chrono::steady_clock::now();
+  setFlags(flags() & ~kChannelIdle);
 }

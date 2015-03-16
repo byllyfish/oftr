@@ -137,8 +137,13 @@ class Engine {
   // Timer that can be used to stop the engine.
   asio::steady_timer stopTimer_;
 
+  // Timer used to poll idle connections.
+  asio::steady_timer idleTimer_;
+
   mutable bool connListLock_ = false;
   mutable bool serverListLock_ = false;
+
+  void asyncIdle();
 };
 
 OFP_END_IGNORE_PADDING

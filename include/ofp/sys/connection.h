@@ -44,6 +44,11 @@ class Connection : public Channel {
     listener_ = listener;
   }
 
+  Milliseconds keepAliveTimeout() const override { return keepAliveTimeout_; }
+  void setKeepAliveTimeout(const Milliseconds &timeout) override {
+    keepAliveTimeout_ = timeout;
+  }
+
   void postMessage(Message *message);
   void postIdle();
   bool postDatapath(const DatapathID &datapath, UInt8 auxiliaryId);
@@ -80,7 +85,12 @@ class Connection : public Channel {
 
     /// Indicates connection shutdown completed (error possible).
     kShutdownDone = 0x0020,
+
+    /// Indicates connection is idle.
+    kChannelIdle = 0x0040,
   };
+
+  void poll() override;
 
  protected:
   /// Invoked by subclasses to inform channel delegate that channel is up.
@@ -88,6 +98,9 @@ class Connection : public Channel {
 
   /// Invoked by subclasses to inform channel delegate that channel is down.
   void channelDown();
+
+  /// Invoked by subclasses when an async read is initiated.
+  void updateTimeReadStarted();
 
  private:
   using AuxiliaryList = std::vector<Connection *>;
@@ -102,6 +115,8 @@ class Connection : public Channel {
   UInt16 flags_ = 0;
   UInt8 version_ = 0;
   UInt8 auxiliaryId_ = 0;
+  std::chrono::steady_clock::time_point timeReadStarted_;
+  Milliseconds keepAliveTimeout_;
 };
 
 OFP_END_IGNORE_PADDING

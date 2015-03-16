@@ -13,17 +13,20 @@ ByteRange EchoRequest::echoData() const {
 
 UInt32 EchoRequestBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
-  UInt32 xid = channel->nextXid();
   size_t msgLen = sizeof(Header) + data_.size();
   msg_.header_.setVersion(version);
-  msg_.header_.setXid(xid);
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+
+  // Assign xid only if xid is 0.
+  if (msg_.header_.xid() == 0) {
+    msg_.header_.setXid(channel->nextXid());
+  }
 
   channel->write(&msg_, sizeof(msg_));
   channel->write(data_.data(), data_.size());
   channel->flush();
 
-  return xid;
+  return msg_.header_.xid();
 }
 
 }  // namespace ofp

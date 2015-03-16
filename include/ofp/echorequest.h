@@ -26,7 +26,7 @@ class EchoRequest
 
 class EchoRequestBuilder {
  public:
-  EchoRequestBuilder() = default;
+  explicit EchoRequestBuilder(UInt32 xid = 0) { msg_.header_.setXid(xid); }
 
   void setEchoData(const void *data, size_t length) { data_.set(data, length); }
 

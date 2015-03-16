@@ -10,7 +10,7 @@ using namespace ofp::sys;
 using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
-    : driver_{driver}, signals_{io_}, stopTimer_{io_} {
+    : driver_{driver}, signals_{io_}, stopTimer_{io_}, idleTimer_{io_} {
   log::info("Engine ready - BoringSSL", log::hex(OPENSSL_VERSION_NUMBER));
 }
 
@@ -180,7 +180,11 @@ void Engine::run() {
     // Set isRunning_ to true when we are in io.run(). This guards against
     // re-entry and provides a flag to test when shutting down.
 
+    asyncIdle();
+
     io_.run();
+
+    idleTimer_.cancel();
 
     isRunning_ = false;
   }
@@ -314,6 +318,7 @@ void Engine::installSignalHandlers() {
         log::info("Signal received:", signame);
 
         signals_.cancel();
+        idleTimer_.cancel();
         (void)this->close(0);
 
         // TODO(bfish): tell external clients about shutdown wish?
@@ -353,4 +358,19 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
   }
 
   return nullptr;
+}
+
+void Engine::asyncIdle() {
+  asio::error_code error;
+  
+  idleTimer_.expires_from_now(1000_ms, error);
+  idleTimer_.async_wait([this](const asio::error_code &err) {
+    if (!err) {
+      forEachConnection([this](Connection *conn){
+        conn->poll();
+      });
+      asyncIdle();
+    }
+  });
+
 }

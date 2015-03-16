@@ -13,6 +13,9 @@
 using namespace ofp;
 using sys::Connection;
 
+const Milliseconds kControllerKeepAliveTimeout = 10000_ms;
+const Milliseconds kRawKeepAliveTimeout = 6000_ms;
+
 DefaultHandshake::DefaultHandshake(Connection *channel, ChannelMode mode,
                                    ProtocolVersions versions,
                                    Factory listenerFactory)
@@ -88,10 +91,13 @@ void DefaultHandshake::onHello(const Message *message) {
             std::make_pair("connid", channel_->connectionId()));
 
   if (mode_ == ChannelMode::Controller) {
+    channel_->setKeepAliveTimeout(kControllerKeepAliveTimeout);
+
     FeaturesRequestBuilder reply{};
     reply.send(channel_);
 
   } else {
+    channel_->setKeepAliveTimeout(kRawKeepAliveTimeout);
     installNewChannelListener(nullptr);
   }
 

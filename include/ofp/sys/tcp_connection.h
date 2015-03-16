@@ -61,17 +61,12 @@ class TCP_Connection
  private:
   Message message_;
   Buffered<SocketType> socket_;
-  std::chrono::steady_clock::time_point latestActivity_;
   handler_allocator allocator_;
 
   void asyncReadHeader();
   void asyncReadMessage(size_t length);
   void asyncWrite();
   void asyncHandshake(bool isClient);
-
-  void updateLatestActivity() {
-    latestActivity_ = std::chrono::steady_clock::now();
-  }
 
   void disableNagleAlgorithm();
 };
