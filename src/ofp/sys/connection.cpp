@@ -106,10 +106,11 @@ void Connection::postMessage(Message *message) {
 
   // Ignore incoming echo replies that originate from our "keep-alive" echo
   // requests sent when the connection is idle.
-  if (message->type() == OFPT_ECHO_REPLY && message->xid() == kKeepAliveEchoXID) {
+  if (message->type() == OFPT_ECHO_REPLY &&
+      message->xid() == kKeepAliveEchoXID) {
     const EchoReply *reply = EchoReply::cast(message);
     if (reply && reply->echoData() == kKeepAliveEchoData) {
-      return; // all done!
+      return;  // all done!
     }
   }
 
@@ -122,8 +123,6 @@ void Connection::postMessage(Message *message) {
 
 void Connection::postIdle() {
   log::debug("postIdle() entered");
-
-
 }
 
 bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
@@ -154,7 +153,7 @@ void Connection::poll() {
   if (age < keepAliveTimeout_)
     return;
 
-  if (version() < OFP_VERSION_1 || age >= 2*keepAliveTimeout_) {
+  if (version() < OFP_VERSION_1 || age >= 2 * keepAliveTimeout_) {
     shutdown();
   } else if (!(flags() & kChannelIdle)) {
     setFlags(flags() | kChannelIdle);

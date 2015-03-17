@@ -362,15 +362,12 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
 
 void Engine::asyncIdle() {
   asio::error_code error;
-  
+
   idleTimer_.expires_from_now(1000_ms, error);
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (!err) {
-      forEachConnection([this](Connection *conn){
-        conn->poll();
-      });
+      forEachConnection([this](Connection *conn) { conn->poll(); });
       asyncIdle();
     }
   });
-
 }

@@ -10,7 +10,7 @@ using ofp::rpc::RpcConnectionStdio;
 // characters are reserved.
 
 const char kEventDelimiter = '\n';
-const size_t kMaxRpcMessageSize = 1048576;     // 1MB
+const size_t kMaxRpcMessageSize = 1048576;  // 1MB
 
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
@@ -69,7 +69,8 @@ void RpcConnectionStdio::asyncRead() {
           handleEvent(line);
           asyncRead();
         } else if (err == asio::error::not_found) {
-          log::error("RpcConnectionStdio::asyncRead: input too large", kMaxRpcMessageSize, err);
+          log::error("RpcConnectionStdio::asyncRead: input too large",
+                     kMaxRpcMessageSize, err);
           rpcRequestTooBig();
         } else if (err != asio::error::eof) {
           log::error("RpcConnectionStdio::asyncRead error", err);
