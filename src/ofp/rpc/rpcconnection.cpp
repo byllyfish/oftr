@@ -77,3 +77,11 @@ void RpcConnection::handleEvent(const std::string &eventText) {
                        return server_->findDatapath(datapathId, connId);
                      }};
 }
+
+
+void RpcConnection::rpcRequestTooBig() {
+  RpcErrorResponse response{RPC_ID_MISSING};
+  response.error.code = ERROR_CODE_INVALID_REQUEST;
+  response.error.message = "RPC request is too big";
+  rpcReply(&response);
+}

@@ -46,6 +46,8 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   virtual void write(const std::string &msg) = 0;
   virtual void asyncRead() = 0;
 
+  void rpcRequestTooBig();
+
  private:
   RpcServer *server_;
 };
