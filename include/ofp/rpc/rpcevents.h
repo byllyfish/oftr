@@ -66,10 +66,6 @@ struct RpcConnectionStats {
   ChannelTransport transport;
 };
 
-//---------------------//
-// o f p . l i s t e n //
-//---------------------//
-
 /// Represents a RPC request to listen for new connections (METHOD_LISTEN)
 struct RpcListen {
   explicit RpcListen(UInt64 ident) : id{ident} {}
@@ -100,10 +96,6 @@ struct RpcListenResponse {
   UInt64 id;
   Result result;
 };
-
-//-----------------------//
-// o f p . c o n n e c t //
-//-----------------------//
 
 /// Represents a RPC request to make an outgoing connection (METHOD_CONNECT)
 struct RpcConnect {
@@ -136,10 +128,6 @@ struct RpcConnectResponse {
   Result result;
 };
 
-//-------------------//
-// o f p . c l o s e //
-//-------------------//
-
 /// Represents a RPC request to close a connection (METHOD_CLOSE)
 struct RpcClose {
   explicit RpcClose(UInt64 ident) : id{ident} {}
@@ -167,10 +155,6 @@ struct RpcCloseResponse {
   Result result;
 };
 
-//-----------------------------------------//
-// o f p . l i s t _ c o n n e c t i o n s //
-//-----------------------------------------//
-
 /// Represents a RPC request to list connection stats (METHOD_LIST_CONNS)
 struct RpcListConns {
   explicit RpcListConns(UInt64 ident) : id{ident} { params.connId = 0; }
@@ -192,10 +176,6 @@ struct RpcListConnsResponse {
   UInt64 id;
   Result result;
 };
-
-//---------------------------------//
-// o f p . a d d _ i d e n t i t y //
-//---------------------------------//
 
 /// Represents a RPC request to add an identity (METHOD_ADD_IDENTITY)
 struct RpcAddIdentity {
@@ -228,10 +208,6 @@ struct RpcAddIdentityResponse {
   Result result;
 };
 
-//-----------------//
-// o f p . s e n d //
-//-----------------//
-
 /// Represents a RPC request to send a message to datapath (METHOD_SEND).
 struct RpcSend {
   explicit RpcSend(UInt64 ident, yaml::Encoder::ChannelFinder finder)
@@ -255,10 +231,6 @@ struct RpcSendResponse {
   Result result;
 };
 
-//-------------------------//
-// o f p . d a t a p a t h //
-//-------------------------//
-
 /// Represents a RPC notification about a datapath (METHOD_DATAPATH)
 struct RpcDatapath {
   std::string toJson();
@@ -272,10 +244,6 @@ struct RpcDatapath {
 
   Params params;
 };
-
-//-----------------------------------//
-// o f p . m e s s a g e _ e r r o r //
-//-----------------------------------//
 
 /// Represents a RPC notification about an incoming message error
 /// (METHOD_MESSAGE_ERROR).

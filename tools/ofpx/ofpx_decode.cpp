@@ -21,10 +21,6 @@ static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
   return size;
 }
 
-//-------//
-// r u n //
-//-------//
-
 int Decode::run(int argc, const char *const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
 
@@ -35,10 +31,6 @@ int Decode::run(int argc, const char *const *argv) {
 
   return static_cast<int>(decodeFiles());
 }
-
-//-----------------------//
-// d e c o d e F i l e s //
-//-----------------------//
 
 ExitStatus Decode::decodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
@@ -52,10 +44,6 @@ ExitStatus Decode::decodeFiles() {
 
   return ExitStatus::Success;
 }
-
-//---------------------//
-// d e c o d e F i l e //
-//---------------------//
 
 ExitStatus Decode::decodeFile(const std::string &filename) {
   std::istream *input = nullptr;
@@ -100,10 +88,6 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
 
   return result;
 }
-
-//-----------------------------//
-// d e c o d e M e s s a g e s //
-//-----------------------------//
 
 ExitStatus Decode::decodeMessages(std::istream &input) {
   // Create message buffers.
@@ -152,10 +136,6 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
 
   return ExitStatus::Success;
 }
-
-//-----------------------------------------------//
-// d e c o d e M e s s a g e s W i t h I n d e x //
-//-----------------------------------------------//
 
 ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
                                            std::istream &index) {
@@ -265,10 +245,6 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   return ExitStatus::Success;
 }
 
-//---------------------//
-// c h e c k E r r o r //
-//---------------------//
-
 ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
                               bool header) {
   assert(!input);
@@ -289,10 +265,6 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
     return ExitStatus::Success;
   }
 }
-
-//---------------------------------//
-// d e c o d e O n e M e s s a g e //
-//---------------------------------//
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage,
@@ -367,10 +339,6 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 
   return ExitStatus::Success;
 }
-
-//-----------------------------//
-// p a r s e I n d e x L i n e //
-//-----------------------------//
 
 bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
                             ofp::Timestamp *timestamp, size_t *length) {

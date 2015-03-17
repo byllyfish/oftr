@@ -11,10 +11,6 @@ using ExitStatus = JsonRpc::ExitStatus;
 const int STDIN = 0;
 const int STDOUT = 1;
 
-//-------//
-// r u n //
-//-------//
-
 int JsonRpc::run(int argc, const char *const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
   setMaxOpenFiles();
@@ -29,10 +25,6 @@ int JsonRpc::run(int argc, const char *const *argv) {
 
   return 0;
 }
-
-//-------------------------------//
-// s e t M a x O p e n F i l e s //
-//-------------------------------//
 
 void JsonRpc::setMaxOpenFiles() {
   struct rlimit rlp;
@@ -54,19 +46,11 @@ void JsonRpc::setMaxOpenFiles() {
   ofp::log::info("Changed open file limit to", rlp.rlim_cur);
 }
 
-//-----------------//
-// r u n S t d i o //
-//-----------------//
-
 void JsonRpc::runStdio() {
   ofp::Driver driver;
   ofp::rpc::RpcServer server{&driver, STDIN, STDOUT};
   driver.run();
 }
-
-//-------------//
-// r u n X p c //
-//-------------//
 
 void JsonRpc::runXpc() {
 #if LIBOFP_TARGET_DARWIN

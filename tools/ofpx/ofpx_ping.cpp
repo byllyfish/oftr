@@ -6,10 +6,6 @@
 using namespace ofp;
 using namespace ofpx;
 
-//-------------------------//
-// P i n g L i s t e n e r //
-//-------------------------//
-
 OFP_BEGIN_IGNORE_PADDING
 
 class PingListener : public ChannelListener {
@@ -61,18 +57,10 @@ class PingListener : public ChannelListener {
 
 OFP_END_IGNORE_PADDING
 
-//-------//
-// r u n //
-//-------//
-
 int Ping::run(int argc, const char *const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
   return ping();
 }
-
-//---------//
-// p i n g //
-//---------//
 
 int Ping::ping() {
   int exitCode = 0;

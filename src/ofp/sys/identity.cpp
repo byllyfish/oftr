@@ -304,10 +304,6 @@ void Identity::prepareDTLSCookies(SSL_CTX *ctx) {
 #endif  // !defined(OPENSSL_IS_BORINGSSL)
 }
 
-//-------------------------------//
-// b e f o r e H a n d s h a k e //
-//-------------------------------//
-
 template <>
 void Identity::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient) {
   assert(conn->flags() & Connection::kRequiresHandshake);
@@ -398,10 +394,6 @@ void Identity::beforeClose<SSL>(Connection *conn, SSL *ssl) {
   }
 }
 
-//---------------------------------------//
-// t l s _ v e r i f y _ c a l l b a c k //
-//---------------------------------------//
-
 int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   log::fatal_if_null(ctx);
 
@@ -464,10 +456,6 @@ int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   return 1;
 }
 
-//-----------------------------------------------------------//
-// d t l s _ c o o k i e _ g e n e r a t e _ c a l l b a c k //
-//-----------------------------------------------------------//
-
 int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                             size_t *cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
@@ -480,10 +468,6 @@ int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
   *cookie_len = 16;
   return 1;
 }
-
-//-------------------------------------------------------//
-// d t l s _ c o o k i e _ v e r i f y _ c a l l b a c k //
-//-------------------------------------------------------//
 
 int Identity::dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                           size_t cookie_len) {

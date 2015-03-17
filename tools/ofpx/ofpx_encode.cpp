@@ -9,10 +9,6 @@
 using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;
 
-//-------//
-// r u n //
-//-------//
-
 int Encode::run(int argc, const char *const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
 
@@ -23,10 +19,6 @@ int Encode::run(int argc, const char *const *argv) {
 
   return static_cast<int>(encodeFiles());
 }
-
-//-----------------------//
-// e n c o d e F i l e s //
-//-----------------------//
 
 ExitStatus Encode::encodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
@@ -40,10 +32,6 @@ ExitStatus Encode::encodeFiles() {
 
   return ExitStatus::Success;
 }
-
-//---------------------//
-// e n c o d e F i l e //
-//---------------------//
 
 ExitStatus Encode::encodeFile(const std::string &filename) {
   ExitStatus result;
@@ -70,10 +58,6 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
 
   return result;
 }
-
-//-----------------------------//
-// e n c o d e M e s s a g e s //
-//-----------------------------//
 
 ExitStatus Encode::encodeMessages(std::istream &input) {
   std::string text;
@@ -121,18 +105,10 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   return ExitStatus::Success;
 }
 
-//-----------------------------------------------//
-// i s E m p t y O r W h i t e s p a c e O n l y //
-//-----------------------------------------------//
-
 static bool isEmptyOrWhitespaceOnly(std::string &s) {
   return std::find_if(s.begin(), s.end(),
                       [](char ch) { return !isspace(ch); }) == s.end();
 }
-
-//-----------------------//
-// r e a d M e s s a g e //
-//-----------------------//
 
 bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
   if (!input) {
