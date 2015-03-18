@@ -18,6 +18,7 @@ set(CMAKE_MODULE_PATH
 
 set(libofp_VERSION_MAJOR 0)
 set(libofp_VERSION_MINOR 2)
+set(libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher+libofp@gmail.com>")
 
 # Require out of source builds.
 
@@ -357,6 +358,8 @@ include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 set(CPACK_PACKAGE_VERSION_MAJOR "${libofp_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${libofp_VERSION_MINOR}")
+set(CPACK_PACKAGE_CONTACT "${libofp_MAINTAINER_EMAIL}")
+set(CPACK_STRIP_FILES "bin/ofpx")
 include(CPack)
 
 #-------------------------------------------------------------------------------
