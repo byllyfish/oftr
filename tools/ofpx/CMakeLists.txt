@@ -1,9 +1,8 @@
 
 set(OFPX_SOURCES
   ofpx_main.cpp
-  ofpx_ping.cpp
-  ofpx_decode.cpp
   ofpx_encode.cpp
+  ofpx_decode.cpp
   ofpx_jsonrpc.cpp
   ofpx_help.cpp
 )
