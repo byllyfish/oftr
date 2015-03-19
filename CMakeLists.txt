@@ -3,6 +3,18 @@
 # This is the top-level CMakeLists.txt file for the LibOFP project.
 #
 #=====--------------------------------------------------------------------=====#
+#
+# The CMakeLists.txt file supports building debug, 32 bit, or 64 bit builds. To
+# set the build options, create a Build directory with your options in the 
+# directory name. The following options are supported:
+#
+#    +debug    Build a debug version.
+#    +32bit    Build a 32-bit version.
+#    +64bit    Build a 64-bit version.
+#
+# For example, if the build directory is named `Build+Debug`, cmake will build
+# debug version.
+#
 
 cmake_minimum_required(VERSION 2.8.8)
 project(libofp)
@@ -355,7 +367,7 @@ endif()
 #-------------------------------------------------------------------------------
 
 include(InstallRequiredSystemLibraries)
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_PACKAGE_VERSION_MAJOR "${libofp_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${libofp_VERSION_MINOR}")
 set(CPACK_PACKAGE_CONTACT "${libofp_MAINTAINER_EMAIL}")
