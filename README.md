@@ -26,14 +26,14 @@ Build (Linux/Mininet VM)
 
 Before you build, you need a C++11 compiler, cmake and git.
 
-  ```
+  ```bash
   sudo apt-get -yq update
   sudo apt-get install build-essential cmake git
   ```
 
 To build the software:
 
-  ```
+  ```bash
   git clone -b develop --recursive https://github.com/byllyfish/libofp.git
   mkdir libofp/Build
   cd libofp/Build
@@ -48,5 +48,4 @@ Running (Linux/Mininet VM)
 
 To Do...
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/d49bd7af9f586e8c810523e5674e0496 "githalytics.com")](http://githalytics.com/byllyfish/libofp)
 
