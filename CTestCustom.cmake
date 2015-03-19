@@ -8,7 +8,6 @@ set(CTEST_CUSTOM_MEMCHECK_IGNORE
 	controller
 	libofpexec
 	python_json
-    python_yaml
 )
 
 # If PyYaml module is not installed, ignore the python_yaml test.
