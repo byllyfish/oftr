@@ -4,11 +4,6 @@
 #include "ofp/sys/asio_utils.h"
 #include "ofp/log.h"
 
-// BoringSSL fix.
-void ERR_remove_state(unsigned long pid) {  // NOLINT
-  ::ERR_remove_thread_state((const CRYPTO_THREADID *)pid);
-}
-
 #if ASIO_NO_EXCEPTIONS
 
 namespace asio {
