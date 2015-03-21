@@ -49,7 +49,7 @@ TEST(matchbuilder, OFB_IN_PHY_PORT_alt1) {
 TEST(matchbuilder, OFB_VLAN_VID) {
   MatchBuilder match;
 
-  // FIXME: should we allow VID to be set without OFPVID_PRESENT?
+  // N.B. We do not set OFPVID_PRESENT.
   match.add(OFB_VLAN_VID{15});
   EXPECT_HEX("8000-0C02-000F", match.data(), match.size());
   EXPECT_TRUE(match.validate());

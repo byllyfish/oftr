@@ -328,16 +328,17 @@ void Engine::installSignalHandlers() {
 }
 
 UInt64 Engine::assignConnectionId() {
-  // FIXME: handle case where connectionId wraps around...
   if (++lastConnId_ == 0) {
-    lastConnId_ = 1;
+    static_assert(sizeof(lastConnId_) == 8, "Expected 64-bit integer");
+    log::fatal("Engine::assignConnectionId: Ran out of 64-bit connectionIds");
   }
   return lastConnId_;
 }
 
 UInt64 Engine::assignSecurityId() {
   if (++lastSecurityId_ == 0) {
-    lastSecurityId_ = 1;
+    static_assert(sizeof(lastSecurityId_) == 8, "Expected 64-bit integer");
+    log::fatal("Engine::assignSecurityId: Ran out of 64-bit securityIds");
   }
   return lastSecurityId_;
 }
