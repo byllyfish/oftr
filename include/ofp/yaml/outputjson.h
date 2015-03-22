@@ -38,6 +38,7 @@ class OutputJson : public llvm::yaml::IO {
 
   void beginEnumScalar() override;
   bool matchEnumScalar(const char *Str, bool) override;
+  bool matchEnumFallback() override;
   void endEnumScalar() override;
 
   bool beginBitSetScalar(bool &DoClear) override;

@@ -1,6 +1,6 @@
---- YAMLTraits.cpp	2015-01-18 12:39:20.000000000 -0700
-+++ YAMLTraits.cpp	2015-01-18 12:43:02.000000000 -0700
-@@ -291,6 +291,29 @@
+--- YAMLTraits.cpp	2015-03-10 15:55:09.000000000 -0700
++++ YAMLTraits.cpp	2015-03-21 10:24:41.000000000 -0700
+@@ -296,6 +296,29 @@
    }
  }
  
@@ -30,7 +30,7 @@
  void Input::scalarString(StringRef &S, bool) {
    if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
      S = SN->value();
-@@ -348,7 +371,13 @@
+@@ -353,7 +376,13 @@
          memcpy(Buf, &StringStorage[0], Len);
          KeyStr = StringRef(Buf, Len);
        }
@@ -45,7 +45,7 @@
        if (EC)
          break;
        mapHNode->Mapping[KeyStr] = std::move(ValueHNode);
-@@ -540,6 +569,19 @@
+@@ -552,6 +581,19 @@
    this->outputUpToEndOfLine(" ]");
  }
  

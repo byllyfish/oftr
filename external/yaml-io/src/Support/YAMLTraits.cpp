@@ -8,12 +8,12 @@
 //===----------------------------------------------------------------------===//
 
 #include "llvm/Support/Errc.h"
-#include "llvm/Support/YAMLTraits.h"
 #include "llvm/ADT/Twine.h"
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/Format.h"
 #include "llvm/Support/YAMLParser.h"
+#include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/raw_ostream.h"
 #include <cctype>
 #include <cstring>
@@ -200,9 +200,7 @@ void Input::postflightElement(void *SaveInfo) {
   CurrentNode = reinterpret_cast<HNode *>(SaveInfo);
 }
 
-unsigned Input::beginFlowSequence() {
-  return beginSequence();
-}
+unsigned Input::beginFlowSequence() { return beginSequence(); }
 
 bool Input::preflightFlowElement(unsigned index, void *&SaveInfo) {
   if (EC)
@@ -236,6 +234,13 @@ bool Input::matchEnumScalar(const char *Str, bool) {
     }
   }
   return false;
+}
+
+bool Input::matchEnumFallback() {
+  if (ScalarMatchFound)
+    return false;
+  ScalarMatchFound = true;
+  return true;
 }
 
 void Input::endEnumScalar() {
@@ -542,6 +547,13 @@ bool Output::matchEnumScalar(const char *Str, bool Match) {
   return false;
 }
 
+bool Output::matchEnumFallback() {
+  if (EnumerationMatchFound)
+    return false;
+  EnumerationMatchFound = true;
+  return true;
+}
+
 void Output::endEnumScalar() {
   if (!EnumerationMatchFound)
     llvm_unreachable("bad runtime enum value");
@@ -716,7 +728,7 @@ StringRef ScalarTraits<StringRef>::input(StringRef Scalar, void *,
   Val = Scalar;
   return StringRef();
 }
- 
+
 void ScalarTraits<std::string>::output(const std::string &Val, void *,
                                      raw_ostream &Out) {
   Out << Val;

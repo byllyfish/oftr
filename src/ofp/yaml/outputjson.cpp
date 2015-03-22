@@ -97,6 +97,13 @@ bool OutputJson::matchEnumScalar(const char *Str, bool Match) {
   return false;
 }
 
+bool OutputJson::matchEnumFallback() {
+  //if (EnumerationMatchFound)
+  //  return false;
+  //EnumerationMatchFound = true;
+  return false;
+}
+
 void OutputJson::endEnumScalar() {
 }
 
@@ -148,12 +155,14 @@ static StringRef::size_type findUnsafe(const StringRef &s,
   return StringRef::npos;
 }
 
-const char *const ControlReplacement[] = {
+static const char *const ControlReplacement[] = {
     "u0000", "u0001", "u0002", "u0003", "u0004", "u0005", "u0006", "u0007",
     "b",     "t",     "n",     "u000B", "f",     "r",     "u000E", "u000F",
     "u0010", "u0011", "u0012", "u0013", "u0014", "u0015", "u0016", "u0017",
     "u0018", "u0019", "u001A", "u001B", "u001C", "u001D", "u001E", "u001F",
 };
+
+static_assert(ofp::ArrayLength(ControlReplacement) == 0x20, "Unexpected size");
 
 void OutputJson::scalarString(StringRef &S, bool MustQuote) {
   // Output value wrapped in double-quotes. Escape any embedded double-quotes
@@ -183,7 +192,7 @@ void OutputJson::scalarString(StringRef &S, bool MustQuote) {
       output(S.substr(pos, offset - pos));
       output("\\");
       ch = static_cast<unsigned>(S[offset]);
-      if (ch <= 0x20) {  // control character?
+      if (ch < 0x20) {  // control character?
         output(ControlReplacement[ch]);
         pos = offset + 1;
       } else {
