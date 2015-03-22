@@ -50,7 +50,8 @@ void RpcConnection::onChannel(Channel *channel, const char *status) {
 }
 
 void RpcConnection::onMessage(Channel *channel, const Message *message) {
-  yaml::Decoder decoder{message, true};
+  // useJson = true, pktMatch = true
+  yaml::Decoder decoder{message, true, true};
 
   if (decoder.error().empty()) {
     // Send `ofp.message` notification event.
