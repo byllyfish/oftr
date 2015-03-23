@@ -321,7 +321,8 @@ void Engine::installSignalHandlers() {
         idleTimer_.cancel();
         (void)this->close(0);
 
-        // TODO(bfish): tell external clients about shutdown wish?
+        // TODO(bfish): tell external clients like RpcServer and
+        // RpcConnections about shutdown wish.
       }
     });
   }

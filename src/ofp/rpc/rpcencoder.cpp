@@ -116,8 +116,8 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       }
       break;
     }
-    case METHOD_DATAPATH:
-      io.setError("'ofp.datapath' is for notifications only.");
+    case METHOD_CHANNEL:
+      io.setError("'ofp.channel' is for notifications only.");
       break;
     case METHOD_MESSAGE:
       io.setError(

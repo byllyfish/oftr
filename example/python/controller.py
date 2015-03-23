@@ -150,7 +150,7 @@ if __name__ == '__main__':
 
         if hasattr(event, 'error'):
             print >>sys.stderr, event
-        elif event.method == 'ofp.datapath' and event.params.status == 'UP':
+        elif event.method == 'ofp.channel' and event.params.status == 'UP':
             ofp.send(setConfig(event.params.datapath_id, 14))
             ofp.send(clearFlows(event.params.datapath_id))
             ofp.send(barrierRequest(event.params.datapath_id))

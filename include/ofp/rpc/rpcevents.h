@@ -24,7 +24,7 @@ enum RpcMethod : UInt32 {
   METHOD_CONNECT,        // ofp.connect
   METHOD_CLOSE,          // ofp.close
   METHOD_SEND,           // ofp.send
-  METHOD_DATAPATH,       // ofp.datapath
+  METHOD_CHANNEL,        // ofp.channel
   METHOD_MESSAGE,        // ofp.message
   METHOD_MESSAGE_ERROR,  // ofp.message_error
   METHOD_LIST_CONNS,     // ofp.list_connections
@@ -231,8 +231,8 @@ struct RpcSendResponse {
   Result result;
 };
 
-/// Represents a RPC notification about a datapath (METHOD_DATAPATH)
-struct RpcDatapath {
+/// Represents a RPC notification about a channel (METHOD_CHANNEL)
+struct RpcChannel {
   std::string toJson();
 
   struct Params {
@@ -462,17 +462,17 @@ struct MappingTraits<ofp::rpc::RpcErrorResponse::Error> {
 };
 
 template <>
-struct MappingTraits<ofp::rpc::RpcDatapath> {
-  static void mapping(IO &io, ofp::rpc::RpcDatapath &response) {
-    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_DATAPATH;
+struct MappingTraits<ofp::rpc::RpcChannel> {
+  static void mapping(IO &io, ofp::rpc::RpcChannel &response) {
+    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_CHANNEL;
     io.mapRequired("method", method);
     io.mapRequired("params", response.params);
   }
 };
 
 template <>
-struct MappingTraits<ofp::rpc::RpcDatapath::Params> {
-  static void mapping(IO &io, ofp::rpc::RpcDatapath::Params &params) {
+struct MappingTraits<ofp::rpc::RpcChannel::Params> {
+  static void mapping(IO &io, ofp::rpc::RpcChannel::Params &params) {
     io.mapRequired("conn_id", params.connId);
     io.mapRequired("datapath_id", params.datapathId);
     io.mapRequired("version", params.version);

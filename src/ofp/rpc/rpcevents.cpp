@@ -40,7 +40,7 @@ std::string RpcErrorResponse::toJson() {
   return toJsonString(this);
 }
 
-std::string RpcDatapath::toJson() {
+std::string RpcChannel::toJson() {
   return toJsonString(this);
 }
 
@@ -60,7 +60,7 @@ OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 // N.B. These strings must be in same order as RpcMethod enum.
 static llvm::StringRef sRpcMethods[] = {
-    "ofp.listen", "ofp.connect", "ofp.close", "ofp.send", "ofp.datapath",
+    "ofp.listen", "ofp.connect", "ofp.close", "ofp.send", "ofp.channel",
     "ofp.message", "ofp.message_error", "ofp.list_connections",
     "ofp.add_identity"};
 

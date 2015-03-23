@@ -41,7 +41,7 @@ void RpcConnection::onRpcAddIdentity(RpcAddIdentity *add) {
 }
 
 void RpcConnection::onChannel(Channel *channel, const char *status) {
-  RpcDatapath notification;
+  RpcChannel notification;
   notification.params.connId = channel->connectionId();
   notification.params.datapathId = channel->datapathId();
   notification.params.version = channel->version();
