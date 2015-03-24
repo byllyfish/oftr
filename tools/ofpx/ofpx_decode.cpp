@@ -144,6 +144,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   ofp::Message originalMessage{nullptr};
   ofp::Message buffer{nullptr};
   size_t expectedPos = 0;
+  ofp::Timestamp lastTimestamp;
 
   buffer.shrink(0);
   assert(buffer.size() == 0);
@@ -174,6 +175,14 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
       if (!input.ignore(jump)) {
         return checkError(input, jump, false);
       }
+    }
+
+    // Verify that packet timestamp always increases.
+    if (timestamp >= lastTimestamp) {
+      lastTimestamp = timestamp;
+    } else {
+      std::cerr << "Error in index; timestamp smaller than last seen: " << line
+                << " file=" << currentFilename_ << '\n';
     }
 
     // Set up next expectedPos.
