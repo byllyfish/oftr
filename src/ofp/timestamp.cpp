@@ -42,17 +42,16 @@ bool Timestamp::parse(const std::string &s) {
     return false;
 
   fracNum *= kPower10[9 - fracDigits];
+  assert(fracNum < 1000000000);
 
-  seconds_ = static_cast<time_t>(wholeNum);
-  nanos_ = fracNum;
-
-  assert(nanos_ < 1000000000);
+  time_.first = static_cast<time_t>(wholeNum);
+  time_.second = fracNum;
 
   return true;
 }
 
 std::string Timestamp::toString() const {
   std::stringstream strm;
-  strm << seconds_ << '.' << std::setfill('0') << std::setw(9) << nanos_;
+  strm << time_.first << '.' << std::setfill('0') << std::setw(9) << time_.second;
   return strm.str();
 }

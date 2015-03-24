@@ -77,3 +77,19 @@ TEST(timestamp, parseInvalid) {
   EXPECT_FALSE(t.parse("1.0000000001"));
   EXPECT_FALSE(t.parse("1.0000000000"));
 }
+
+TEST(timestamp, relational) {
+  Timestamp a{1, 1};
+  Timestamp b{2, 1};
+  Timestamp c{1, 2};
+
+  EXPECT_EQ(a, a);
+  EXPECT_EQ(c, c);
+  
+  EXPECT_NE(a, b);
+  EXPECT_NE(a, c);
+
+  EXPECT_GE(c, a);
+  EXPECT_GE(b, a);
+  EXPECT_GE(c, c);
+}
