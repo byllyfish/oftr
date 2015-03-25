@@ -80,6 +80,8 @@ class OXMField {
     s << "  {\n";
     s << "    OXMList list;\n";
     for (auto preq : prereqs()) {
+      if (preq == "/")
+        continue;
       if (preq.find('&') != string::npos) {
         auto vec = Split(preq, '&', true);
         if (vec.size() == 2) {
@@ -304,6 +306,9 @@ static void CompilePrereqs(vector<OXMField> &fields) {
 
   for (auto &field : fields) {
     vector<string> preqs = field.prereqs();
+    // If first preq is '/', do not process prereqs.
+    if (!preqs.empty() && preqs[0] == "/")
+      continue;
     // Find prereqStr for each preq and append it to preqresStr.
     unordered_set<string> processed;
     for (auto preq : preqs) {

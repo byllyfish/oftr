@@ -37,10 +37,6 @@ TEST(oxmfields, OFB_IPV6_ND_SLL) {
 
   EXPECT_NE(iter, end);
   EXPECT_EQ((*iter).type(), OFB_ETH_TYPE::type());
-  EXPECT_EQ((*iter).value<OFB_ETH_TYPE>(), 0x0800);
-  ++iter;
-  EXPECT_NE(iter, end);
-  EXPECT_EQ((*iter).type(), OFB_ETH_TYPE::type());
   EXPECT_EQ((*iter).value<OFB_ETH_TYPE>(), 0x86dd);
   ++iter;
   EXPECT_NE(iter, end);
@@ -54,7 +50,6 @@ TEST(oxmfields, OFB_IPV6_ND_SLL) {
   EXPECT_EQ(iter, end);
 
   OXMList list;
-  list.add(OFB_ETH_TYPE{0x0800});
   list.add(OFB_ETH_TYPE{0x86dd});
   list.add(OFB_IP_PROTO{58});
   list.add(OFB_ICMPV6_TYPE{135});

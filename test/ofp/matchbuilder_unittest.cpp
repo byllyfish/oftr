@@ -334,3 +334,12 @@ TEST(matchbuilder, addOrdered) {
   EXPECT_HEX("800000040000001B 80000A020800 80001A020050", match.data(),
              match.size());
 }
+
+TEST(matchbuilder, icmpv6Type) {
+  MatchBuilder match;
+
+  match.add(OFB_ICMPV6_TYPE{143});
+
+  EXPECT_HEX("80000A0286DD 800014013A 80003A018F", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+}
