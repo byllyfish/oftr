@@ -9,7 +9,7 @@ namespace ofp {
 
 class MatchPacket {
  public:
-  explicit MatchPacket(const ByteRange &data);
+  explicit MatchPacket(const ByteRange &data, bool warnMisaligned = true);
 
   OXMIterator begin() const { return match_.begin(); }
   OXMIterator end() const { return match_.end(); }

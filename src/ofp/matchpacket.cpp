@@ -17,7 +17,7 @@ static bool isAlignedPacket(const UInt8 *ptr) {
   return (reinterpret_cast<uintptr_t>(ptr) & 0x07) == 2;
 }
 
-MatchPacket::MatchPacket(const ByteRange &data) {
+MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   if (isAlignedPacket(data.data())) {
     decodeEthernet(data.data(), data.size());
     return;
@@ -25,8 +25,11 @@ MatchPacket::MatchPacket(const ByteRange &data) {
 
   auto misalignment = reinterpret_cast<uintptr_t>(data.data()) & 0x07;
   assert(misalignment != 2 && misalignment < 8);
-  log::warning("MatchPacket: Misaligned input: ", misalignment);
 
+  if (warnMisaligned) {
+    log::warning("MatchPacket: Misaligned input: ", misalignment);
+  }
+  
   // Make a copy of the packet that is appropriately aligned.
   size_t pad = (10 - misalignment) % 8;
   ByteList alignedData;

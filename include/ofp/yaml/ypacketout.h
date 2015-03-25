@@ -33,7 +33,7 @@ struct MappingTraits<ofp::PacketOut> {
     io.mapRequired("data", enetFrame);
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
-      ofp::MatchPacket mp{enetFrame};
+      ofp::MatchPacket mp{enetFrame, false};
       io.mapRequired("data_match", mp);
     }
   }
