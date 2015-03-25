@@ -278,7 +278,7 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage,
                                     const ofp::Timestamp &timestamp) {
-  ofp::yaml::Decoder decoder{message, json_};
+  ofp::yaml::Decoder decoder{message, json_, dataMatch_};
 
   if (!decoder.error().empty()) {
     // An error occurred in decoding the message.
