@@ -31,6 +31,11 @@ struct MappingTraits<ofp::PacketOut> {
 
     ByteRange enetFrame = msg.enetFrame();
     io.mapRequired("data", enetFrame);
+
+    if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
+      ofp::MatchPacket mp{enetFrame};
+      io.mapRequired("data_match", mp);
+    }
   }
 };
 

@@ -23,13 +23,16 @@ MatchPacket::MatchPacket(const ByteRange &data) {
     return;
   }
 
-  // Make a copy of the packet that is appropriately aligned.
-  log::warning("MatchPacket: Fixing misaligned input!");
+  auto misalignment = reinterpret_cast<uintptr_t>(data.data()) & 0x07;
+  assert(misalignment != 2 && misalignment < 8);
+  log::warning("MatchPacket: Misaligned input: ", misalignment);
 
+  // Make a copy of the packet that is appropriately aligned.
+  size_t pad = (10 - misalignment) % 8;
   ByteList alignedData;
-  alignedData.addZeros(2);
+  alignedData.addZeros(pad);
   alignedData.add(data.data(), data.size());
-  decodeEthernet(alignedData.data(), alignedData.size());
+  decodeEthernet(alignedData.data() + pad, alignedData.size() - pad);
 }
 
 namespace pkt {
