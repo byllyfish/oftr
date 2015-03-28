@@ -4,8 +4,8 @@
 using namespace ofp;
 
 Match MPFlowMonitorReply::match() const {
-    assert(full());
-    return Match{&matchHeader_};
+  assert(full());
+  return Match{&matchHeader_};
 }
 
 InstructionRange MPFlowMonitorReply::instructions() const {
@@ -55,23 +55,24 @@ bool MPFlowMonitorReply::validateInput(Validation *context) const {
 }
 
 void MPFlowMonitorReplyBuilder::write(Writable *channel) {
-    if (msg_.event_ >= OFPFME_ABBREV) {
-      writeAbbrev(channel);
-      return;
-    }
+  if (msg_.event_ >= OFPFME_ABBREV) {
+    writeAbbrev(channel);
+    return;
+  }
 
-    size_t msgMatchLen = MPFlowMonitorReply::UnpaddedSizeWithMatchHeader + match_.size();
-    size_t msgMatchLenPadded = PadLength(msgMatchLen);
-    size_t msgLen = msgMatchLenPadded + instructions_.size();
+  size_t msgMatchLen =
+      MPFlowMonitorReply::UnpaddedSizeWithMatchHeader + match_.size();
+  size_t msgMatchLenPadded = PadLength(msgMatchLen);
+  size_t msgLen = msgMatchLenPadded + instructions_.size();
 
-    msg_.length_ = UInt16_narrow_cast(msgLen);
-    msg_.matchHeader_.setType(OFPMT_OXM);
-    msg_.matchHeader_.setLength(sizeof(MatchHeader) + match_.size());
+  msg_.length_ = UInt16_narrow_cast(msgLen);
+  msg_.matchHeader_.setType(OFPMT_OXM);
+  msg_.matchHeader_.setLength(sizeof(MatchHeader) + match_.size());
 
-    channel->write(&msg_, MPFlowMonitorReply::UnpaddedSizeWithMatchHeader);
-    channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);
-    channel->write(instructions_.data(), instructions_.size());
-    channel->flush();
+  channel->write(&msg_, MPFlowMonitorReply::UnpaddedSizeWithMatchHeader);
+  channel->write(match_.data(), match_.size(), msgMatchLenPadded - msgMatchLen);
+  channel->write(instructions_.data(), instructions_.size());
+  channel->flush();
 }
 
 void MPFlowMonitorReplyBuilder::reset() {

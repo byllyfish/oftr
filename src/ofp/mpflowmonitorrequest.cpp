@@ -4,7 +4,8 @@
 
 using namespace ofp;
 
-const MPFlowMonitorRequest *MPFlowMonitorRequest::cast(const MultipartRequest *req) {
+const MPFlowMonitorRequest *MPFlowMonitorRequest::cast(
+    const MultipartRequest *req) {
   return req->body_cast<MPFlowMonitorRequest>();
 }
 

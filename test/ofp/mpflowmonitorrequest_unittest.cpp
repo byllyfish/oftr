@@ -17,7 +17,8 @@ TEST(mpflowmonitorrequest, emptyMatch) {
   msg.write(&channel);
 
   EXPECT_EQ(24, channel.size());
-  EXPECT_HEX("111111112222222233333333444455660001000400000000", channel.data(), channel.size());
+  EXPECT_HEX("111111112222222233333333444455660001000400000000", channel.data(),
+             channel.size());
 }
 
 TEST(mpflowmonitorrequest, withMatch) {
@@ -38,5 +39,6 @@ TEST(mpflowmonitorrequest, withMatch) {
   msg.write(&channel);
 
   EXPECT_EQ(32, channel.size());
-  EXPECT_HEX("111111112222222233333333444455660001000E80000606AA11223344550000", channel.data(), channel.size());
+  EXPECT_HEX("111111112222222233333333444455660001000E80000606AA11223344550000",
+             channel.data(), channel.size());
 }

@@ -38,4 +38,4 @@ struct MappingTraits<ofp::MPFlowMonitorRequestBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMPFLOWMONITORREQUEST_H_
+#endif  // OFP_YAML_YMPFLOWMONITORREQUEST_H_

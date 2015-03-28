@@ -48,7 +48,7 @@ class MPFlowStatsRequest {
   };
 
   MPFlowStatsRequest() = default;
-  
+
   friend class MPFlowStatsRequestBuilder;
   template <class T>
   friend struct llvm::yaml::MappingTraits;

@@ -85,7 +85,7 @@ TEST(timestamp, relational) {
 
   EXPECT_EQ(a, a);
   EXPECT_EQ(c, c);
-  
+
   EXPECT_NE(a, b);
   EXPECT_NE(a, c);
 

@@ -19,17 +19,11 @@ class Timestamp {
 
   std::string toString() const;
 
-  bool operator==(const Timestamp &rhs) const {
-    return time_ == rhs.time_;
-  }
+  bool operator==(const Timestamp &rhs) const { return time_ == rhs.time_; }
 
-  bool operator!=(const Timestamp &rhs) const {
-    return time_ != rhs.time_;
-  }
+  bool operator!=(const Timestamp &rhs) const { return time_ != rhs.time_; }
 
-  bool operator>=(const Timestamp &rhs) const {
-    return time_ >= rhs.time_;
-  }
+  bool operator>=(const Timestamp &rhs) const { return time_ >= rhs.time_; }
 
  private:
   std::pair<time_t, UInt32> time_;

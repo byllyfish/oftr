@@ -260,7 +260,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_FLOW_MONITOR: {
-        ofp::detail::MPReplyBuilderSeq<MPFlowMonitorReplyBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPFlowMonitorReplyBuilder> seq{
+            msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());

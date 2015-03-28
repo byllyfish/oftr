@@ -95,7 +95,7 @@ void Connection::postMessage(Message *message) {
   log::trace("Read", message->source()->connectionId(), message->data(),
              message->size());
 
-  // Once Hello's have been exchanged, handle incoming echo requests 
+  // Once Hello's have been exchanged, handle incoming echo requests
   // automatically. Change the type to echo reply and send it right back.
   if (message->type() == OFPT_ECHO_REQUEST && version() >= OFP_VERSION_1) {
     message->mutableHeader()->setType(OFPT_ECHO_REPLY);

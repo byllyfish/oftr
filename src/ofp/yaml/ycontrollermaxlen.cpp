@@ -12,8 +12,7 @@ using ofp::yaml::EnumConverterSparse;
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static std::pair<OFPControllerMaxLen, llvm::StringRef> sControllerMaxLen[] = {
-    OFP_NAME(MAX),
-    OFP_NAME(NO_BUFFER),
+    OFP_NAME(MAX), OFP_NAME(NO_BUFFER),
 };
 
 EnumConverterSparse<OFPControllerMaxLen>

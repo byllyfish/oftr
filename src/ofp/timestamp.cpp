@@ -52,6 +52,7 @@ bool Timestamp::parse(const std::string &s) {
 
 std::string Timestamp::toString() const {
   std::stringstream strm;
-  strm << time_.first << '.' << std::setfill('0') << std::setw(9) << time_.second;
+  strm << time_.first << '.' << std::setfill('0') << std::setw(9)
+       << time_.second;
   return strm.str();
 }

@@ -29,7 +29,7 @@ MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   if (warnMisaligned) {
     log::warning("MatchPacket: Misaligned input: ", misalignment);
   }
-  
+
   // Make a copy of the packet that is appropriately aligned.
   size_t pad = (10 - misalignment) % 8;
   ByteList alignedData;

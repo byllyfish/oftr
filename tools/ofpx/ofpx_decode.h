@@ -86,7 +86,9 @@ class Decode : public Subprogram {
       cl::desc("Verify output by translating it back to binary")};
   cl::opt<bool> useFindx_{"use-findx",
                           cl::desc("Use timestamps from '.findx' file(s)")};
-  cl::opt<bool> dataMatch_{"data-match", cl::desc("Include data_match in PacketIn/PacketOut decodes")};
+  cl::opt<bool> dataMatch_{
+      "data-match",
+      cl::desc("Include data_match in PacketIn/PacketOut decodes")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

@@ -98,9 +98,9 @@ bool OutputJson::matchEnumScalar(const char *Str, bool Match) {
 }
 
 bool OutputJson::matchEnumFallback() {
-  //if (EnumerationMatchFound)
+  // if (EnumerationMatchFound)
   //  return false;
-  //EnumerationMatchFound = true;
+  // EnumerationMatchFound = true;
   return false;
 }
 
