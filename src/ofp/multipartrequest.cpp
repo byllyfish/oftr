@@ -10,6 +10,7 @@
 #include "ofp/mpgroupstatsrequest.h"
 #include "ofp/mpmeterstatsrequest.h"
 #include "ofp/mptablefeatures.h"
+#include "ofp/mpflowmonitorrequest.h"
 #include "ofp/mpexperimenter.h"
 
 using namespace ofp;
@@ -54,6 +55,8 @@ bool MultipartRequest::validateInput(Validation *context) const {
                                                                  OFP_VERSION_4);
     case OFPMP_PORT_DESC:
       return context->validateEmpty(requestBody(), OFP_VERSION_4);
+    case OFPMP_FLOW_MONITOR:
+      return context->validate<MPFlowMonitorRequest>(requestBody(), OFP_VERSION_5);
     case OFPMP_EXPERIMENTER:
       return context->validate<MPExperimenter>(requestBody(), OFP_VERSION_1,
                                                false);

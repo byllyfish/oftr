@@ -2140,3 +2140,66 @@ TEST(encoder, ofmp_groupfeatures_reply) {
       "666666663777777708888888199999992AAAAAAA",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, ofmp_flowmonitor_request) {
+  const char *input = R"""(
+      version: 5
+      type: MULTIPART_REQUEST
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        type: FLOW_MONITOR
+        flags: []
+        body:
+          monitor_id: 0x11111111
+          out_port: 0x22222222
+          out_group: 0x33333333
+          flags: 0x4444
+          table_id: 0x55
+          command: 0x66
+          match:
+            - field: IN_PORT
+              value: 0x12345678
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(48, encoder.size());
+  EXPECT_HEX("05120030111111110010000000000000111111112222222233333333444455660001000C800000041234567800000000", encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_flowmonitor_reply) {
+  const char *input = R"""(
+      version: 5
+      type: MULTIPART_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        type: FLOW_MONITOR
+        flags: []
+        body:
+          - event: 0x0001
+            table_id: 0x11
+            reason: 0x22
+            idle_timeout: 0x3333
+            hard_timeout: 0x4444
+            priority: 0x5555
+            cookie: 0x6666666666666666
+            match:
+              - field: IN_PORT
+                value: 0x12345678
+            instructions:
+              - instruction:    APPLY_ACTIONS
+                actions:
+                   - action: SET_FIELD
+                     field: IPV4_DST
+                     value: 192.168.2.1
+          - event: 0x0004
+            xid: 0x22222222
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(88, encoder.size());
+  EXPECT_HEX("051300581111111100100000000000000040000111223333444455550000000066666666666666660001000C80000004123456780000000000040018000000000019001080001804C0A80201000000000008000422222222", encoder.data(), encoder.size());
+}

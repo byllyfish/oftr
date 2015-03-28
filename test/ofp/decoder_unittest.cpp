@@ -1264,3 +1264,11 @@ TEST(decoder, ofmp_groupfeatures_reply) {
       "PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' "
       "]\n...\n");
 }
+
+TEST(decoder, ofmp_flowmonitor_request) {
+  testDecodeEncode("05120030111111110010000000000000111111112222222233333333444455660001000C800000041234567800000000", "---\ntype:            MULTIPART_REQUEST\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  type:            FLOW_MONITOR\n  flags:           [  ]\n  body:            \n    monitor_id:      0x11111111\n    out_port:        0x22222222\n    out_group:       0x33333333\n    flags:           0x4444\n    table_id:        0x55\n    command:         0x66\n    match:           \n      - field:           IN_PORT\n        value:           0x12345678\n...\n");
+}
+
+TEST(decoder, ofmp_flowmonitor_reply) {
+  testDecodeEncode("051300581111111100100000000000000040000111223333444455550000000066666666666666660001000C80000004123456780000000000040018000000000019001080001804C0A80201000000000008000422222222", "---\ntype:            MULTIPART_REPLY\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  type:            FLOW_MONITOR\n  flags:           [  ]\n  body:            \n    - event:           0x0001\n      table_id:        0x11\n      reason:          0x22\n      idle_timeout:    0x3333\n      hard_timeout:    0x4444\n      priority:        0x5555\n      cookie:          0x6666666666666666\n      match:           \n        - field:           IN_PORT\n          value:           0x12345678\n      instructions:    \n        - instruction:     APPLY_ACTIONS\n          actions:         \n            - action:          SET_FIELD\n              field:           IPV4_DST\n              value:           192.168.2.1\n    - event:           0x0004\n      xid:             0x22222222\n...\n");
+}

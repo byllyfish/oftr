@@ -20,8 +20,6 @@ class MPFlowStatsRequest {
  public:
   static const MPFlowStatsRequest *cast(const MultipartRequest *req);
 
-  MPFlowStatsRequest() = default;
-
   TableNumber tableId() const { return tableId_; }
   PortNumber outPort() const { return outPort_; }
   GroupNumber outGroup() const { return outGroup_; }
@@ -49,6 +47,8 @@ class MPFlowStatsRequest {
     SizeWithoutMatchHeader = 32
   };
 
+  MPFlowStatsRequest() = default;
+  
   friend class MPFlowStatsRequestBuilder;
   template <class T>
   friend struct llvm::yaml::MappingTraits;

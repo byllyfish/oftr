@@ -109,6 +109,8 @@ set(LIBOFP_SOURCES
   src/ofp/flowremoved.cpp
 	src/ofp/mpflowstatsreply.cpp
 	src/ofp/mpflowstatsrequest.cpp
+  src/ofp/mpflowmonitorrequest.cpp
+  src/ofp/mpflowmonitorreply.cpp
   src/ofp/getasyncreply.cpp
 	src/ofp/getconfigreply.cpp
   src/ofp/groupmod.cpp

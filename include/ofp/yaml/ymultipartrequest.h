@@ -11,6 +11,7 @@
 #include "ofp/yaml/ympmeterconfigrequest.h"
 #include "ofp/yaml/ymptablefeatures.h"
 #include "ofp/yaml/ympgroupstatsrequest.h"
+#include "ofp/yaml/ympflowmonitorrequest.h"
 #include "ofp/yaml/ympexperimenter.h"
 #include "ofp/yaml/ympreplyseq.h"
 #include "ofp/mpmeterstatsrequest.h"
@@ -91,6 +92,13 @@ struct MappingTraits<ofp::MultipartRequest> {
       case OFPMP_TABLE_FEATURES: {
         ofp::detail::MPReplyVariableSizeSeq<MPTableFeatures> seq{msg};
         io.mapRequired("body", seq);
+        break;
+      }
+      case OFPMP_FLOW_MONITOR: {
+        const MPFlowMonitorRequest *monitor = MPFlowMonitorRequest::cast(&msg);
+        if (monitor) {
+          io.mapRequired("body", RemoveConst_cast(*monitor));
+        }
         break;
       }
       case OFPMP_EXPERIMENTER: {
@@ -184,6 +192,14 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         io.mapRequired("body", seq);
         seq.close();
         msg.setRequestBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_FLOW_MONITOR: {
+        MPFlowMonitorRequestBuilder monitor;
+        io.mapRequired("body", monitor);
+        MemoryChannel channel{msg.msg_.header_.version()};
+        monitor.write(&channel);
+        msg.setRequestBody(channel.data(), channel.size());
         break;
       }
       case OFPMP_EXPERIMENTER: {

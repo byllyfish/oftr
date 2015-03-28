@@ -24,7 +24,7 @@ static const llvm::StringRef sMultipartTypes[] = {
     "DESC",           "FLOW",      "AGGREGATE",    "TABLE",
     "PORT_STATS",     "QUEUE",     "GROUP",        "GROUP_DESC",
     "GROUP_FEATURES", "METER",     "METER_CONFIG", "METER_FEATURES",
-    "TABLE_FEATURES", "PORT_DESC",
+    "TABLE_FEATURES", "PORT_DESC", "TABLE_DESC", "QUEUE_DESC", "FLOW_MONITOR",
 };
 
 static const llvm::StringRef sInstructionTypes[] = {

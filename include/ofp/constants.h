@@ -37,6 +37,7 @@ enum {
   OFP_VERSION_2 = 0x02,
   OFP_VERSION_3 = 0x03,
   OFP_VERSION_4 = 0x04,
+  OFP_VERSION_5 = 0x05,
   OFP_VERSION_LAST = OFP_VERSION_4,
   OFP_VERSION_MAX_ALLOWED = 0x09
 };
@@ -317,10 +318,10 @@ enum OFPMultipartType : UInt16 {
   // The request body is empty.
   // The reply body is an array of struct ofp_port.
   OFPMP_PORT_DESC = 13,
-  // Experimenter extension.
-  // The request and reply bodies begin with
-  // struct ofp_experimenter_multipart_header.
-  // The request and reply bodies are otherwise experimenter-defined.
+  OFPMP_TABLE_DESC = 14,
+  OFPMP_QUEUE_DESC = 15,
+  OFPMP_FLOW_MONITOR = 16,
+
   OFPMP_EXPERIMENTER = 0xffff
 };
 
@@ -612,6 +613,16 @@ enum OFPIPv6ExtHdrFlags : UInt16 {
   OFPIEH_HOP = 1 << 6,
   OFPIEH_UNREP = 1 << 7,
   OFPIEH_UNSEQ = 1 << 8,
+};
+
+enum OFPFlowUpdateEvent : UInt16 {
+  OFPFME_INITIAL = 0,
+  OFPFME_ADDED = 1,
+  OFPFME_REMOVED = 2,
+  OFPFME_MODIFIED = 3,
+  OFPFME_ABBREV = 4,
+  OFPFME_PAUSED = 5,
+  OFPFME_RESUMED = 6,
 };
 
 }  // namespace ofp

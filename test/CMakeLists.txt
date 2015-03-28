@@ -22,6 +22,8 @@ set(LIBOFP_TEST_SOURCES
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
 	ofp/meterbandlist_unittest.cpp
+	ofp/mpflowmonitorrequest_unittest.cpp
+	ofp/mpflowmonitorreply_unittest.cpp
 	ofp/mpflowstatsreply_unittest.cpp
 	ofp/header_unittest.cpp
 	ofp/headeronly_unittest.cpp

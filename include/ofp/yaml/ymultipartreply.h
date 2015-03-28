@@ -17,6 +17,7 @@
 #include "ofp/yaml/ympmeterfeatures.h"
 #include "ofp/yaml/ymptablefeatures.h"
 #include "ofp/yaml/ympgroupstats.h"
+#include "ofp/yaml/ympflowmonitorreply.h"
 #include "ofp/yaml/ympexperimenter.h"
 #include "ofp/yaml/ympreplyseq.h"
 
@@ -120,6 +121,11 @@ struct MappingTraits<ofp::MultipartReply> {
       }
       case OFPMP_GROUP: {
         ofp::detail::MPReplyVariableSizeSeq<MPGroupStats> seq{msg};
+        io.mapRequired("body", seq);
+        break;
+      }
+      case OFPMP_FLOW_MONITOR: {
+        ofp::detail::MPReplyVariableSizeSeq<MPFlowMonitorReply> seq{msg};
         io.mapRequired("body", seq);
         break;
       }
@@ -248,6 +254,13 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       }
       case OFPMP_GROUP: {
         ofp::detail::MPReplyBuilderSeq<MPGroupStatsBuilder> seq{msg.version()};
+        io.mapRequired("body", seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_FLOW_MONITOR: {
+        ofp::detail::MPReplyBuilderSeq<MPFlowMonitorReplyBuilder> seq{msg.version()};
         io.mapRequired("body", seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());

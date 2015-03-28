@@ -17,6 +17,7 @@
 #include "ofp/mpmeterstats.h"
 #include "ofp/mpmeterconfig.h"
 #include "ofp/mptablefeatures.h"
+#include "ofp/mpflowmonitorreply.h"
 #include "ofp/mpexperimenter.h"
 
 using namespace ofp;
@@ -63,6 +64,8 @@ bool MultipartReply::validateInput(Validation *context) const {
                                                                  OFP_VERSION_4);
     case OFPMP_PORT_DESC:
       return context->validateArrayFixedSize<Port>(replyBody(), OFP_VERSION_4);
+    case OFPMP_FLOW_MONITOR:
+      return context->validateArrayVariableSize<MPFlowMonitorReply>(replyBody(), OFP_VERSION_5);
     case OFPMP_EXPERIMENTER:
       return context->validate<MPExperimenter>(replyBody(), OFP_VERSION_1,
                                                false);
