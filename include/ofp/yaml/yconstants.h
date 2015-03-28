@@ -54,6 +54,7 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterModCommand,
                     format("0x%04X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType,
                     format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowUpdateEvent, format("0x%04X", value))
 
 template <>
 struct ScalarTraits<ofp::OFPErrorCode> {

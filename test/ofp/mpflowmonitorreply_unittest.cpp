@@ -16,7 +16,7 @@ TEST(mpflowmonitorreply, test) {
   instructions.add(IT_APPLY_ACTIONS{&actions});
 
   MPFlowMonitorReplyBuilder msg;
-  msg.setEvent(0);
+  msg.setEvent(OFPFME_ADDED);
   msg.setTableId(0x11);
   msg.setReason(0x22);
   msg.setIdleTimeout(0x3333);
@@ -31,7 +31,7 @@ TEST(mpflowmonitorreply, test) {
 
   EXPECT_EQ(64, channel.size());
   EXPECT_HEX(
-      "0040000011223333444455550000000066666666666666660001000C8000000400000007"
+      "0040000111223333444455550000000066666666666666660001000C8000000400000007"
       "00000000000400180000000000000010000000630080000000000000",
       channel.data(), channel.size());
 }

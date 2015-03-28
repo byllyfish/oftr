@@ -2181,7 +2181,7 @@ TEST(encoder, ofmp_flowmonitor_reply) {
         type: FLOW_MONITOR
         flags: []
         body:
-          - event: 0x0001
+          - event: ADDED
             table_id: 0x11
             reason: 0x22
             idle_timeout: 0x3333
@@ -2197,7 +2197,7 @@ TEST(encoder, ofmp_flowmonitor_reply) {
                    - action: SET_FIELD
                      field: IPV4_DST
                      value: 192.168.2.1
-          - event: 0x0004
+          - event: ABBREV
             xid: 0x22222222
       )""";
 

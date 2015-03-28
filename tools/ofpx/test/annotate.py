@@ -5,7 +5,7 @@ import sys
 
 
 OFPX = '../ofpx'
-MAX_VERSION = 4
+MAX_VERSION = 5
 STR15 = '.' * 15
 STR31 = '.' * 31
 STR255 = '.' * 255

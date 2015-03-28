@@ -69,6 +69,16 @@ static const llvm::StringRef sErrorTypes[] = {
     "OFPET_ROLE_REQUEST_FAILED", "OFPET_METER_MOD_FAILED",
     "OFPET_TABLE_FEATURES_FAILED"};
 
+static const llvm::StringRef sFlowUpdateEvent[] = {
+    "INITIAL",
+    "ADDED",
+    "REMOVED",
+    "MODIFIED",
+    "ABBREV",
+    "PAUSED",
+    "RESUMED" 
+};
+
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
 EnumConverter<OFPMultipartType>
@@ -104,6 +114,8 @@ EnumConverter<OFPMeterModCommand>
 
 EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
     sErrorTypes, "OFPET_EXPERIMENTER"};
+
+EnumConverter<OFPFlowUpdateEvent> llvm::yaml::ScalarTraits<OFPFlowUpdateEvent>::converter{sFlowUpdateEvent};
 
 #define STR_ENTRY(s) \
   { s, #s }

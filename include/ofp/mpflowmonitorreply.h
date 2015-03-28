@@ -16,7 +16,7 @@ class MPFlowMonitorReply {
  public:
   enum { MPVariableSizeOffset = 0 };
 
-  UInt16 event() const { return event_; }
+  OFPFlowUpdateEvent event() const { return event_; }
 
   UInt32 xid() const {
     assert(abbrev());
@@ -27,22 +27,27 @@ class MPFlowMonitorReply {
     assert(full());
     return tableId_;
   }
+
   UInt8 reason() const {
     assert(full());
     return reason_;
   }
+
   UInt16 idleTimeout() const {
     assert(full());
     return idleTimeout_;
   }
+
   UInt16 hardTimeout() const {
     assert(full());
     return hardTimeout_;
   }
+
   UInt16 priority() const {
     assert(full());
     return priority_;
   }
+
   UInt64 cookie() const {
     assert(full());
     return cookie_;
@@ -55,7 +60,7 @@ class MPFlowMonitorReply {
 
  private:
   Big16 length_;
-  Big16 event_;
+  Big<OFPFlowUpdateEvent> event_;
   Big8 tableId_;
   Big8 reason_;
   Big16 idleTimeout_;
@@ -86,7 +91,7 @@ static_assert(IsStandardLayout<MPFlowMonitorReply>(),
 
 class MPFlowMonitorReplyBuilder {
  public:
-  void setEvent(UInt16 event) { msg_.event_ = event; }
+  void setEvent(OFPFlowUpdateEvent event) { msg_.event_ = event; }
 
   void setXid(UInt32 xid) { *Big32_cast(&msg_.tableId_) = xid; }
 

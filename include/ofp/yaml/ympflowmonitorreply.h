@@ -11,7 +11,7 @@ namespace yaml {
 template <>
 struct MappingTraits<ofp::MPFlowMonitorReply> {
   static void mapping(IO &io, ofp::MPFlowMonitorReply &msg) {
-    Hex16 event = msg.event();
+    ofp::OFPFlowUpdateEvent event = msg.event();
     io.mapRequired("event", event);
 
     if (event <= ofp::OFPFME_MODIFIED) {
@@ -38,7 +38,7 @@ struct MappingTraits<ofp::MPFlowMonitorReply> {
 template <>
 struct MappingTraits<ofp::MPFlowMonitorReplyBuilder> {
   static void mapping(IO &io, ofp::MPFlowMonitorReplyBuilder &msg) {
-    Hex16 event;
+    ofp::OFPFlowUpdateEvent event;
     io.mapRequired("event", event);
     msg.setEvent(event);
 

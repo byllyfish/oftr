@@ -568,6 +568,49 @@ msg:
       curr_speed: 0xffffffff
       max_speed: 0xffffffff
 ---
+version: 5
+type: MULTIPART_REQUEST
+msg:
+  type: FLOW_MONITOR
+  flags: [ 'MORE' ]
+  body:
+    monitor_id: 0xffffffff
+    out_port: 0xffffffff
+    out_group: 0xffffffff
+    flags: 0xffff
+    table_id: 0xff
+    command: 0xff
+    match:
+      - field: ETH_DST
+        value: 'ff:ff:ff:ff:ff:ff'
+        mask: 'ff:ff:ff:ff:ff:ff'
+---
+version: 5
+type: MULTIPART_REPLY
+msg:
+  type: FLOW_MONITOR
+  flags: [ 'MORE' ]
+  body:
+    - event: ADDED
+      table_id: 0xff
+      reason: 0xff
+      idle_timeout: 0xffff
+      hard_timeout: 0xffff
+      priority: 0xffff
+      cookie: 0xffffffffffffffff
+      match:
+        - field: ETH_DST
+          value: 'ff:ff:ff:ff:ff:ff'
+          mask: 'ff:ff:ff:ff:ff:ff'
+      instructions:
+        - instruction: APPLY_ACTIONS
+          actions:
+            - action: OUTPUT
+              port: CONTROLLER
+              max_len: NO_BUFFER
+    - event: ABBREV
+      xid: 0xffffffff
+---
 version: 0x04
 type: BARRIER_REQUEST
 msg:
