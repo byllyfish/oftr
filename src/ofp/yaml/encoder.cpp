@@ -26,6 +26,7 @@
 #include "ofp/yaml/ysetasync.h"
 #include "ofp/yaml/yflowremoved.h"
 #include "ofp/yaml/ymetermod.h"
+#include "ofp/yaml/yrolestatus.h"
 
 namespace ofp {
 namespace yaml {
@@ -282,6 +283,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       MeterModBuilder meterMod;
       io.mapRequired("msg", meterMod);
       meterMod.send(&channel_);
+      break;
+    }
+    case RoleStatus::type(): {
+      RoleStatusBuilder roleStatus;
+      io.mapRequired("msg", roleStatus);
+      roleStatus.send(&channel_);
       break;
     }
     default:

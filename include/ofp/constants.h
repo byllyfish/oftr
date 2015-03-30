@@ -113,9 +113,14 @@ enum OFPType : UInt8 {
 
   // Meters and rate limiters configuration messages.
   OFPT_METER_MOD = 29,  // Min: 1.3
+  OFPT_ROLE_STATUS = 30,  // Min: 1.4
+  OFPT_TABLE_STATUS = 31, // Min: 1.4
+  OFPT_REQUESTFORWARD = 32, // Min: 1.4
+  OFPT_BUNDLE_CONTROL = 33, // Min: 1.4
+  OFPT_BUNDLE_ADD_MESSAGE = 34, // Min: 1.4
 
   /// Used internally.
-  OFPT_LAST = OFPT_METER_MOD,
+  OFPT_LAST = OFPT_BUNDLE_ADD_MESSAGE,
   OFPT_MAX_ALLOWED = 64,
   OFPT_UNSUPPORTED = 0xF9,
 };

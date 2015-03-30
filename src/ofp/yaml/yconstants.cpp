@@ -17,7 +17,8 @@ static const llvm::StringRef sTypes[] = {
     "TABLE_MOD", "MULTIPART_REQUEST", "MULTIPART_REPLY", "BARRIER_REQUEST",
     "BARRIER_REPLY", "QUEUE_GET_CONFIG_REQUEST", "QUEUE_GET_CONFIG_REPLY",
     "ROLE_REQUEST", "ROLE_REPLY", "GET_ASYNC_REQUEST", "GET_ASYNC_REPLY",
-    "SET_ASYNC", "METER_MOD",
+    "SET_ASYNC", "METER_MOD", "ROLE_STATUS", "TABLE_STATUS", "REQUESTFORWARD",
+    "BUNDLE_CONTROL", "BUNDLE_ADD_MESSAGE"
 };
 
 static const llvm::StringRef sMultipartTypes[] = {
@@ -70,13 +71,7 @@ static const llvm::StringRef sErrorTypes[] = {
     "OFPET_TABLE_FEATURES_FAILED"};
 
 static const llvm::StringRef sFlowUpdateEvent[] = {
-    "INITIAL",
-    "ADDED",
-    "REMOVED",
-    "MODIFIED",
-    "ABBREV",
-    "PAUSED",
-    "RESUMED" 
+    "INITIAL", "ADDED", "REMOVED", "MODIFIED", "ABBREV", "PAUSED", "RESUMED" 
 };
 
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};

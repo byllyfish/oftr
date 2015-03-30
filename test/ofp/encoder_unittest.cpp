@@ -2210,3 +2210,23 @@ TEST(encoder, ofmp_flowmonitor_reply) {
       "C0A80201000000000008000422222222",
       encoder.data(), encoder.size());
 }
+
+
+TEST(encoder, rolestatusv5) {
+  const char *input = R"""(
+      version: 5
+      type: ROLE_STATUS
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        role: 0x22222222
+        reason: 0x01
+        generation_id: 0x3333333333333333
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x18, encoder.size());
+  EXPECT_HEX("051E00181111111122222222010000003333333333333333", encoder.data(),
+             encoder.size());
+}

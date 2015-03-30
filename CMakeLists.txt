@@ -163,6 +163,7 @@ set(LIBOFP_SOURCES
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/rolerequest.cpp
   src/ofp/rolereply.cpp
+  src/ofp/rolestatus.cpp
   src/ofp/setasync.cpp
 	src/ofp/setconfig.cpp
   src/ofp/smallbuffer.cpp

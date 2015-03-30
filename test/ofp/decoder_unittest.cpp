@@ -1296,3 +1296,7 @@ TEST(decoder, ofmp_flowmonitor_reply) {
       "   IPV4_DST\n              value:           192.168.2.1\n    - event:   "
       "        ABBREV\n      xid:             0x22222222\n...\n");
 }
+
+TEST(decoder, rolestatusv5) {
+  testDecodeEncode("051E00181111111122222222010000003333333333333333", "---\ntype:            ROLE_STATUS\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  role:            0x22222222\n  reason:          0x01\n  generation_id:   0x3333333333333333\n...\n");
+}

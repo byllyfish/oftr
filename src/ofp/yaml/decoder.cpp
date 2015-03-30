@@ -26,6 +26,7 @@
 #include "ofp/yaml/ysetasync.h"
 #include "ofp/yaml/yflowremoved.h"
 #include "ofp/yaml/ymetermod.h"
+#include "ofp/yaml/yrolestatus.h"
 #include "ofp/yaml/outputjson.h"
 
 namespace ofp {
@@ -123,6 +124,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
       return decode<FlowRemoved>(io, msg_);
     case MeterMod::type():
       return decode<MeterMod>(io, msg_);
+    case RoleStatus::type():
+      return decode<RoleStatus>(io, msg_);
     default:
       OFPErrorCode error;
       Validation context{msg_, &error};
