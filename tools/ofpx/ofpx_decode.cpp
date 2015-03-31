@@ -320,23 +320,26 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     ofp::yaml::Encoder encoder{decoder.result(), false};
 
     if (!encoder.error().empty()) {
+      std::cerr << "Filename: " << currentFilename_ << '\n';
       std::cerr << "Error: Decode succeeded but encode failed: "
                 << encoder.error() << '\n';
       return ExitStatus::VerifyOutputFailed;
     }
 
     if (encoder.size() != originalMessage->size()) {
+      std::cerr << "Filename: " << currentFilename_ << '\n';
       std::cerr << "Error: Encode yielded different size data: "
                 << encoder.size() << " vs. " << originalMessage->size() << '\n'
                 << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n'
                 << ofp::RawDataToHex(originalMessage->data(),
                                      originalMessage->size()) << '\n';
       return ExitStatus::VerifyOutputFailed;
+    }
 
-    } else if (std::memcmp(originalMessage->data(), encoder.data(),
-                           encoder.size()) != 0) {
+    if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
       size_t diffOffset = findDiffOffset(originalMessage->data(),
                                          encoder.data(), encoder.size());
+      std::cerr << "Filename: " << currentFilename_ << '\n';
       std::cerr << "Error: Encode yielded different data at byte offset "
                 << diffOffset << ":\n"
                 << ofp::RawDataToHex(encoder.data(), encoder.size()) << '\n'
