@@ -1,24 +1,44 @@
 #include "ofp/rolestatus.h"
 #include "ofp/writable.h"
+#include "ofp/rolestatusproperty.h"
 
 using namespace ofp;
 
 
-bool RoleStatus::validateInput(Validation *context) const {
-    // FIXME(bfish) for experimenter properties...
-    return true;
+PropertyRange RoleStatus::properties() const {
+  assert(header_.length() >= sizeof(RoleStatus));
+  return ByteRange{BytePtr(this) + sizeof(RoleStatus), header_.length() - sizeof(RoleStatus)};
 }
+
+bool RoleStatus::validateInput(Validation *context) const {
+  PropertyRange props = properties();
+  if (!props.validateInput(context)) {
+    return false;
+  }
+
+  if (!RoleStatusPropertyValidator::validateInput(props, context)) {
+    return false;
+  }
+
+  return true;
+}
+
+void RoleStatusBuilder::setProperties(const PropertyList &properties) {
+    properties_ = properties;
+  }
+
 
 UInt32 RoleStatusBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();
   UInt8 version = channel->version();
-  size_t msgLen = sizeof(msg_);
+  size_t msgLen = sizeof(msg_) + properties_.size();
 
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
   msg_.header_.setVersion(version);
   msg_.header_.setXid(xid);
 
   channel->write(&msg_, sizeof(msg_));
+  channel->write(properties_.data(), properties_.size());
   channel->flush();
 
   return xid;

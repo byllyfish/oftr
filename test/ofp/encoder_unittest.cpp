@@ -2222,11 +2222,16 @@ TEST(encoder, rolestatusv5) {
         role: 0x22222222
         reason: 0x01
         generation_id: 0x3333333333333333
+        properties:
+          - property: 0xffff
+            experimenter: 0x12345678
+            exp_type: 0xABCDABCD
+            data: '0000F1F1'
       )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
-  EXPECT_EQ(0x18, encoder.size());
-  EXPECT_HEX("051E00181111111122222222010000003333333333333333", encoder.data(),
+  EXPECT_EQ(40, encoder.size());
+  EXPECT_HEX("051E00281111111122222222010000003333333333333333FFFF001012345678ABCDABCD0000F1F1", encoder.data(),
              encoder.size());
 }

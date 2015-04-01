@@ -3,6 +3,7 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/propertylist.h"
 
 namespace ofp {
 
@@ -12,6 +13,8 @@ public:
     UInt8 reason() const { return reason_; }
     UInt64 generationId() const { return generationId_; }
 
+    PropertyRange properties() const;
+
     bool validateInput(Validation *context) const;
 
 private:
@@ -20,8 +23,6 @@ private:
     Big8 reason_;
     Padding<3> pad_;
     Big64 generationId_;
-
-    // TODO(bfish): Support properties...
     
     // Only RoleStatusBuilder can construct an instance.
     RoleStatus() : header_{type()} {}
@@ -41,11 +42,13 @@ public:
     void setRole(OFPControllerRole role) { msg_.role_ = role; }
     void setReason(UInt8 reason) { msg_.reason_ = reason; }
     void setGenerationId(UInt64 generationId) { msg_.generationId_ = generationId; }
+    void setProperties(const PropertyList &properties);
 
     UInt32 send(Writable *channel);
 
 private:
     RoleStatus msg_;
+    PropertyList properties_;
 
     template <class T>
     friend struct llvm::yaml::MappingTraits;

@@ -574,6 +574,11 @@ enum OFPControllerRole : UInt32 {
   OFPCR_ROLE_SLAVE = 3,
 };
 
+enum OFPRoleStatusProperty : UInt16 {
+  OFPRPT_UNUSED_MIN = 0,  // min unused property id
+  OFPRPT_EXPERIMENTER = 0xFFFF,
+};
+
 enum OFPMultipartFlags : UInt16 {
   OFPMPF_NONE = 0,
   OFPMPF_MORE = 1 << 0,

@@ -2,6 +2,7 @@
 #define OFP_YAML_YROLESTATUS_H_
 
 #include "ofp/rolestatus.h"
+#include "ofp/yaml/yrolestatusproperty.h"
 
 namespace llvm {
 namespace yaml {
@@ -19,6 +20,9 @@ struct MappingTraits<ofp::RoleStatus> {
     io.mapRequired("role", role);
     io.mapRequired("reason", msg.reason_);
     io.mapRequired("generation_id", msg.generationId_);
+
+    ofp::PropertyRange props = msg.properties();
+    io.mapRequired("properties", Ref_cast<ofp::detail::RoleStatusPropertyRange>(props));
   }
 };
 
@@ -30,6 +34,10 @@ struct MappingTraits<ofp::RoleStatusBuilder> {
     msg.setRole(role);
     io.mapRequired("reason", msg.msg_.reason_);
     io.mapRequired("generation_id", msg.msg_.generationId_);
+
+    ofp::PropertyList props;
+    io.mapRequired("properties", Ref_cast<ofp::detail::RoleStatusPropertyList>(props));
+    msg.setProperties(props);
   }
 };
 
