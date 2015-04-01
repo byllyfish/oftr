@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YROLESTATUSPROPERTY_H_
 #define OFP_YAML_YROLESTATUSPROPERTY_H_
 
@@ -9,7 +11,8 @@ namespace ofp {
 namespace detail {
 
 struct RoleStatusPropertyItem {};
-using RoleStatusPropertyIterator = TypedPropertyIterator<RoleStatusPropertyItem>;
+using RoleStatusPropertyIterator =
+    TypedPropertyIterator<RoleStatusPropertyItem>;
 struct RoleStatusPropertyRange {};
 struct RoleStatusPropertyInserter {};
 struct RoleStatusPropertyList {};
@@ -84,7 +87,6 @@ struct MappingTraits<ofp::detail::RoleStatusPropertyInserter> {
   }
 };
 
-
 template <>
 struct SequenceTraits<ofp::detail::RoleStatusPropertyRange> {
   using iterator = ofp::detail::RoleStatusPropertyIterator;
@@ -130,4 +132,4 @@ struct SequenceTraits<ofp::detail::RoleStatusPropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YROLESTATUSPROPERTY_H_
+#endif  // OFP_YAML_YROLESTATUSPROPERTY_H_

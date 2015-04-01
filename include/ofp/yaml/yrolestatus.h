@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YROLESTATUS_H_
 #define OFP_YAML_YROLESTATUS_H_
 
@@ -22,7 +24,8 @@ struct MappingTraits<ofp::RoleStatus> {
     io.mapRequired("generation_id", msg.generationId_);
 
     ofp::PropertyRange props = msg.properties();
-    io.mapRequired("properties", Ref_cast<ofp::detail::RoleStatusPropertyRange>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::RoleStatusPropertyRange>(props));
   }
 };
 
@@ -36,7 +39,8 @@ struct MappingTraits<ofp::RoleStatusBuilder> {
     io.mapRequired("generation_id", msg.msg_.generationId_);
 
     ofp::PropertyList props;
-    io.mapRequired("properties", Ref_cast<ofp::detail::RoleStatusPropertyList>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::RoleStatusPropertyList>(props));
     msg.setProperties(props);
   }
 };
@@ -44,4 +48,4 @@ struct MappingTraits<ofp::RoleStatusBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YROLESTATUS_H_
+#endif  // OFP_YAML_YROLESTATUS_H_

@@ -1,13 +1,15 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/rolestatus.h"
 #include "ofp/writable.h"
 #include "ofp/rolestatusproperty.h"
 
 using namespace ofp;
 
-
 PropertyRange RoleStatus::properties() const {
   assert(header_.length() >= sizeof(RoleStatus));
-  return ByteRange{BytePtr(this) + sizeof(RoleStatus), header_.length() - sizeof(RoleStatus)};
+  return ByteRange{BytePtr(this) + sizeof(RoleStatus),
+                   header_.length() - sizeof(RoleStatus)};
 }
 
 bool RoleStatus::validateInput(Validation *context) const {
@@ -24,9 +26,8 @@ bool RoleStatus::validateInput(Validation *context) const {
 }
 
 void RoleStatusBuilder::setProperties(const PropertyList &properties) {
-    properties_ = properties;
-  }
-
+  properties_ = properties;
+}
 
 UInt32 RoleStatusBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

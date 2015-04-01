@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_ROLESTATUSPROPERTY_H_
 #define OFP_ROLESTATUSPROPERTY_H_
 
@@ -8,14 +10,16 @@
 namespace ofp {
 
 class RoleStatusPropertyExperimenter {
-public:
-    constexpr static OFPRoleStatusProperty type() { return OFPRPT_EXPERIMENTER; }
+ public:
+  constexpr static OFPRoleStatusProperty type() { return OFPRPT_EXPERIMENTER; }
 
-    enum { FixedHeaderSize = 12 };
+  enum { FixedHeaderSize = 12 };
 
-  RoleStatusPropertyExperimenter(UInt32 experimenterId, UInt32 expType, const ByteRange &data)
+  RoleStatusPropertyExperimenter(UInt32 experimenterId, UInt32 expType,
+                                 const ByteRange &data)
       : len_(UInt16_narrow_cast(FixedHeaderSize + data.size())),
-        experimenter_{experimenterId}, expType_{expType}, 
+        experimenter_{experimenterId},
+        expType_{expType},
         data_{data} {}
 
   UInt32 size() const { return len_; }
@@ -38,7 +42,6 @@ public:
   friend class PropertyList;
 };
 
-
 class RoleStatusPropertyValidator {
  public:
   static bool validateInput(const PropertyRange &range, Validation *context);
@@ -46,4 +49,4 @@ class RoleStatusPropertyValidator {
 
 }  // namespace ofp
 
-#endif // OFP_ROLESTATUSPROPERTY_H_
+#endif  // OFP_ROLESTATUSPROPERTY_H_

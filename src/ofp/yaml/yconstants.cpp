@@ -18,8 +18,7 @@ static const llvm::StringRef sTypes[] = {
     "BARRIER_REPLY", "QUEUE_GET_CONFIG_REQUEST", "QUEUE_GET_CONFIG_REPLY",
     "ROLE_REQUEST", "ROLE_REPLY", "GET_ASYNC_REQUEST", "GET_ASYNC_REPLY",
     "SET_ASYNC", "METER_MOD", "ROLE_STATUS", "TABLE_STATUS", "REQUESTFORWARD",
-    "BUNDLE_CONTROL", "BUNDLE_ADD_MESSAGE"
-};
+    "BUNDLE_CONTROL", "BUNDLE_ADD_MESSAGE"};
 
 static const llvm::StringRef sMultipartTypes[] = {
     "DESC",           "FLOW",      "AGGREGATE",    "TABLE",
@@ -71,8 +70,7 @@ static const llvm::StringRef sErrorTypes[] = {
     "OFPET_TABLE_FEATURES_FAILED"};
 
 static const llvm::StringRef sFlowUpdateEvent[] = {
-    "INITIAL", "ADDED", "REMOVED", "MODIFIED", "ABBREV", "PAUSED", "RESUMED" 
-};
+    "INITIAL", "ADDED", "REMOVED", "MODIFIED", "ABBREV", "PAUSED", "RESUMED"};
 
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
@@ -110,7 +108,8 @@ EnumConverter<OFPMeterModCommand>
 EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
     sErrorTypes, "OFPET_EXPERIMENTER"};
 
-EnumConverter<OFPFlowUpdateEvent> llvm::yaml::ScalarTraits<OFPFlowUpdateEvent>::converter{sFlowUpdateEvent};
+EnumConverter<OFPFlowUpdateEvent>
+    llvm::yaml::ScalarTraits<OFPFlowUpdateEvent>::converter{sFlowUpdateEvent};
 
 #define STR_ENTRY(s) \
   { s, #s }

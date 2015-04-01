@@ -1298,5 +1298,13 @@ TEST(decoder, ofmp_flowmonitor_reply) {
 }
 
 TEST(decoder, rolestatusv5) {
-  testDecodeEncode("051E00281111111122222222010000003333333333333333FFFF001012345678ABCDABCD0000F1F1", "---\ntype:            ROLE_STATUS\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  role:            0x22222222\n  reason:          0x01\n  generation_id:   0x3333333333333333\n  properties:      \n    - property:        0xFFFF\n      experimenter:    0x12345678\n      exp_type:        0xABCDABCD\n      data:            0000F1F1\n...\n");
+  testDecodeEncode(
+      "051E00281111111122222222010000003333333333333333FFFF001012345678ABCDABCD"
+      "0000F1F1",
+      "---\ntype:            ROLE_STATUS\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  role:           "
+      " 0x22222222\n  reason:          0x01\n  generation_id:   "
+      "0x3333333333333333\n  properties:      \n    - property:        "
+      "0xFFFF\n      experimenter:    0x12345678\n      exp_type:        "
+      "0xABCDABCD\n      data:            0000F1F1\n...\n");
 }

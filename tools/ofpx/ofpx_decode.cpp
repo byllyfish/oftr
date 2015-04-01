@@ -336,7 +336,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
       return ExitStatus::VerifyOutputFailed;
     }
 
-    if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) != 0) {
+    if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) !=
+        0) {
       size_t diffOffset = findDiffOffset(originalMessage->data(),
                                          encoder.data(), encoder.size());
       std::cerr << "Filename: " << currentFilename_ << '\n';

@@ -2211,7 +2211,6 @@ TEST(encoder, ofmp_flowmonitor_reply) {
       encoder.data(), encoder.size());
 }
 
-
 TEST(encoder, rolestatusv5) {
   const char *input = R"""(
       version: 5
@@ -2232,6 +2231,8 @@ TEST(encoder, rolestatusv5) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(40, encoder.size());
-  EXPECT_HEX("051E00281111111122222222010000003333333333333333FFFF001012345678ABCDABCD0000F1F1", encoder.data(),
-             encoder.size());
+  EXPECT_HEX(
+      "051E00281111111122222222010000003333333333333333FFFF001012345678ABCDABCD"
+      "0000F1F1",
+      encoder.data(), encoder.size());
 }
