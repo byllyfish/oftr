@@ -161,6 +161,7 @@ set(LIBOFP_SOURCES
   src/ofp/queuegetconfigreply.cpp
   src/ofp/queue.cpp
   src/ofp/queuegetconfigrequest.cpp
+  src/ofp/requestforward.cpp
   src/ofp/rolerequest.cpp
   src/ofp/rolereply.cpp
   src/ofp/rolestatus.cpp

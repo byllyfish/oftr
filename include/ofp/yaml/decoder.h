@@ -27,8 +27,11 @@ class Decoder {
   llvm::SmallString<1024> result_;
   std::string error_;
 
-  bool decodeMsg(llvm::yaml::IO &io);
+  explicit Decoder(const Message *msg, const Decoder *decoder);
 
+  bool decodeMsg(llvm::yaml::IO &io);
+  bool decodeRequestForward(llvm::yaml::IO &io, const Message *msg);
+  
   friend struct llvm::yaml::MappingTraits<ofp::yaml::Decoder>;
 };
 

@@ -42,6 +42,11 @@ class GroupModBuilder {
   GroupModBuilder() = default;
   explicit GroupModBuilder(const GroupMod *msg);
 
+  void setCommand(UInt16 command) { msg_.command_ = command; }
+  void setGroupType(UInt8 groupType) { msg_.groupType_ = groupType; }
+  void setGroupId(UInt32 groupId) { msg_.groupId_ = groupId; }
+  void setBuckets(const BucketList &buckets) { buckets_ = buckets; }
+
   UInt32 send(Writable *channel);
 
  private:

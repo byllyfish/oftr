@@ -54,6 +54,8 @@ class Encoder {
   UInt8 auxiliaryId_ = 0;
   bool matchPrereqsChecked_;
 
+  explicit Encoder(const Encoder *encoder);
+
   static void diagnosticHandler(const llvm::SMDiagnostic &d, void *context);
   void addDiagnostic(const llvm::SMDiagnostic &d);
 
@@ -78,9 +80,7 @@ struct MappingTraits<ofp::yaml::Encoder> {
   static void mapping(IO &io, ofp::yaml::Encoder &encoder) {
     using namespace ofp;
 
-    // Header header{OFPT_UNSUPPORTED};
     Header &header = encoder.header_;
-    header.setVersion(0);
     header.setType(OFPT_UNSUPPORTED);
 
     io.mapOptional("version", header.version_);

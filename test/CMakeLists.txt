@@ -57,6 +57,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/queue_unittest.cpp
 	ofp/queuegetconfigreply_unittest.cpp
 	ofp/queuegetconfigrequest_unittest.cpp
+	ofp/requestforward_unittest.cpp
 	ofp/rolestatus_unittest.cpp
 	ofp/roundtrip_unittest.cpp
 	ofp/rpcsession_unittest.cpp

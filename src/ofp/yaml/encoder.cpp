@@ -27,6 +27,7 @@
 #include "ofp/yaml/yflowremoved.h"
 #include "ofp/yaml/ymetermod.h"
 #include "ofp/yaml/yrolestatus.h"
+#include "ofp/requestforward.h"
 
 namespace ofp {
 namespace yaml {
@@ -36,6 +37,16 @@ Encoder::Encoder(ChannelFinder finder)
       header_{OFPT_UNSUPPORTED},
       finder_{finder},
       matchPrereqsChecked_{true} {
+}
+
+/// \brief Private constructor used when an encoder needs to encode a message
+/// recursively.
+Encoder::Encoder(const Encoder *encoder)
+  : errorStream_{error_},
+    header_{encoder->header_},
+    finder_{encoder->finder_},
+    outputChannel_{encoder->outputChannel_},
+    matchPrereqsChecked_{encoder->matchPrereqsChecked_} {
 }
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
@@ -289,6 +300,14 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       RoleStatusBuilder roleStatus;
       io.mapRequired("msg", roleStatus);
       roleStatus.send(&channel_);
+      break;
+    }
+    case RequestForward::type(): {
+      Encoder request{this};
+      io.mapRequired("msg", request);
+      RequestForwardBuilder reqForward;
+      reqForward.setRequest(ByteRange{request.data(), request.size()});
+      reqForward.send(&channel_);
       break;
     }
     default:
