@@ -147,9 +147,9 @@ void Validation::logContext(const UInt8 *ptr) const {
       OFPMultipartType mpType =
           *reinterpret_cast<const Big<OFPMultipartType> *>(msg_->data() +
                                                            sizeof(Header));
-      oss << type << '.' << mpType << 'v' << static_cast<int>(version);
+      oss << type << '.' << mpType << ".v" << static_cast<int>(version);
     } else {
-      oss << type << 'v' << static_cast<int>(version);
+      oss << type << ".v" << static_cast<int>(version);
     }
 
     log::info("  Message type:", oss.str());

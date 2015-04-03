@@ -27,6 +27,7 @@
 #include "ofp/yaml/yflowremoved.h"
 #include "ofp/yaml/ymetermod.h"
 #include "ofp/yaml/yrolestatus.h"
+#include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/requestforward.h"
 #include "ofp/yaml/outputjson.h"
 
@@ -56,9 +57,8 @@ Decoder::Decoder(const Message *msg, bool useJsonFormat, bool includePktMatch)
 
 /// \brief Private constructor used when we need to recursively decode an
 /// inner OpenFlow message, like in RequestForward messages.
-Decoder::Decoder(const Message *msg, const Decoder *decoder)
-  : msg_{msg} {
-    assert(msg->size() >= sizeof(Header));
+Decoder::Decoder(const Message *msg, const Decoder *decoder) : msg_{msg} {
+  assert(msg->size() >= sizeof(Header));
 }
 
 template <class MsgType>
@@ -134,6 +134,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
       return decode<MeterMod>(io, msg_);
     case RoleStatus::type():
       return decode<RoleStatus>(io, msg_);
+    case BundleControl::type():
+      return decode<BundleControl>(io, msg_);
     case RequestForward::type():
       return decodeRequestForward(io, msg_);
     default:
@@ -148,7 +150,7 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
 
 bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
   const RequestForward *m = RequestForward::cast(msg);
-  if (m == nullptr) 
+  if (m == nullptr)
     return false;
   ByteRange request = m->request();
   Message message{request.data(), request.size()};
@@ -156,7 +158,6 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
   io.mapRequired("msg", decoder);
   return true;
 }
-
 
 }  // namespace yaml
 }  // namespace ofp

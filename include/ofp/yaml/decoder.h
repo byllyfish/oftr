@@ -31,7 +31,7 @@ class Decoder {
 
   bool decodeMsg(llvm::yaml::IO &io);
   bool decodeRequestForward(llvm::yaml::IO &io, const Message *msg);
-  
+
   friend struct llvm::yaml::MappingTraits<ofp::yaml::Decoder>;
 };
 

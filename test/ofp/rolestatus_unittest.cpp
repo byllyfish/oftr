@@ -18,7 +18,7 @@ TEST(rolestatus, builder) {
   msg.setProperties(props);
 
   MemoryChannel channel{OFP_VERSION_5};
-  UInt32 xid = msg.send(&channel);
+  (void)msg.send(&channel);
 
   EXPECT_EQ(40, channel.size());
   EXPECT_HEX(

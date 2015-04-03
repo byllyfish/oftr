@@ -44,8 +44,11 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
       msg.mutableHeader()->setLength(UInt16_narrow_cast(msg.size()));
       Decoder decoder{&msg, true};
 
-      // For the following message types, removing the last byte still yields a valid message.
-      std::array<OFPType, 6> allow= {{OFPT_ERROR, OFPT_ECHO_REQUEST, OFPT_ECHO_REPLY, OFPT_EXPERIMENTER, OFPT_PACKET_IN, OFPT_PACKET_OUT }};
+      // For the following message types, removing the last byte still yields a
+      // valid message.
+      std::array<OFPType, 6> allow = {{OFPT_ERROR, OFPT_ECHO_REQUEST,
+                                       OFPT_ECHO_REPLY, OFPT_EXPERIMENTER,
+                                       OFPT_PACKET_IN, OFPT_PACKET_OUT}};
 
       if (std::find(allow.begin(), allow.end(), msg.type()) == allow.end()) {
         // Expect an invalid message.
@@ -1330,5 +1333,30 @@ TEST(decoder, rolestatusv5) {
 }
 
 TEST(decoder, requestforwardv5) {
-  testDecodeEncode("0520004811111111050F0040AAAAAAAA222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A8010100000000", "---\ntype:            REQUESTFORWARD\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  type:            GROUP_MOD\n  xid:             0xAAAAAAAA\n  version:         0x05\n  msg:             \n    command:         0x2222\n    type:            0x33\n    group_id:        0x44444444\n    buckets:         \n      - weight:          0x5555\n        watch_port:      0x66666666\n        watch_group:     0x77777777\n        actions:         \n          - action:          OUTPUT\n            port:            0x00000005\n            max_len:         0x0014\n          - action:          SET_FIELD\n            field:           IPV4_DST\n            value:           192.168.1.1\n...\n");
+  testDecodeEncode(
+      "0520004811111111050F0040AAAAAAAA2222330044444444003055556666666677777777"
+      "00000000000000100000000500140000000000000019001080001804C0A801010000000"
+      "0",
+      "---\ntype:            REQUESTFORWARD\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  type:           "
+      " GROUP_MOD\n  xid:             0xAAAAAAAA\n  version:         0x05\n  "
+      "msg:             \n    command:         0x2222\n    type:            "
+      "0x33\n    group_id:        0x44444444\n    buckets:         \n      - "
+      "weight:          0x5555\n        watch_port:      0x66666666\n        "
+      "watch_group:     0x77777777\n        actions:         \n          - "
+      "action:          OUTPUT\n            port:            0x00000005\n      "
+      "      max_len:         0x0014\n          - action:          SET_FIELD\n "
+      "           field:           IPV4_DST\n            value:           "
+      "192.168.1.1\n...\n");
+}
+
+TEST(decoder, bundlecontrolv5) {
+  testDecodeEncode(
+      "05210020111111112222222233334444FFFF001012345678ABCDABCD0000F1F1",
+      "---\ntype:            BUNDLE_CONTROL\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:      "
+      " 0x22222222\n  type:            0x3333\n  flags:           0x4444\n  "
+      "properties:      \n    - property:        0xFFFF\n      experimenter:   "
+      " 0x12345678\n      exp_type:        0xABCDABCD\n      data:            "
+      "0000F1F1\n...\n");
 }

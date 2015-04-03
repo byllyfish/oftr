@@ -92,6 +92,7 @@ set(LIBOFP_SOURCES
   src/ofp/mpaggregatestatsreply.cpp
   src/ofp/bucket.cpp
   src/ofp/bucketlist.cpp
+  src/ofp/bundlecontrol.cpp
   src/ofp/bytelist.cpp
   src/ofp/byterange.cpp
 	src/ofp/channellistener.cpp
@@ -247,7 +248,7 @@ endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
 else()
-  set(LIBOFP_WARNINGS "-Wall")
+  set(LIBOFP_WARNINGS "-Wall -Wextra")
 endif()
 
 #-------------------------------------------------------------------------------

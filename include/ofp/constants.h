@@ -579,6 +579,11 @@ enum OFPRoleStatusProperty : UInt16 {
   OFPRPT_EXPERIMENTER = 0xFFFF,
 };
 
+enum OFPBundleProperty : UInt16 {
+  OFPBPT_UNUSED_MIN = 0,  // min unused property id
+  OFPBPT_EXPERIMENTER = 0xFFFF,
+};
+
 enum OFPMultipartFlags : UInt16 {
   OFPMPF_NONE = 0,
   OFPMPF_MORE = 1 << 0,

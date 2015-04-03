@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_REQUESTFORWARD_H_
 #define OFP_REQUESTFORWARD_H_
 
@@ -5,14 +7,15 @@
 
 namespace ofp {
 
-class RequestForward : public ProtocolMsg<RequestForward, OFPT_REQUESTFORWARD, 16, 65535, false> {
-public:
-    ByteRange request() const;
+class RequestForward : public ProtocolMsg<RequestForward, OFPT_REQUESTFORWARD,
+                                          16, 65535, false> {
+ public:
+  ByteRange request() const;
 
-    bool validateInput(Validation *context) const;
+  bool validateInput(Validation *context) const;
 
-private:
-    Header header_;
+ private:
+  Header header_;
 
   // Only RequestForwardBuilder can construct an instance.
   RequestForward() : header_{type()} {}
@@ -28,15 +31,14 @@ static_assert(IsTriviallyCopyable<RequestForward>(),
               "Expected trivially copyable.");
 
 class RequestForwardBuilder {
-public:
+ public:
+  void setRequest(const ByteList &request) { request_ = request; }
 
-    void setRequest(const ByteList &request) { request_ = request; }
+  UInt32 send(Writable *channel);
 
-    UInt32 send(Writable *channel);
-
-private:
-    RequestForward msg_;
-    ByteList request_;
+ private:
+  RequestForward msg_;
+  ByteList request_;
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;
@@ -44,4 +46,4 @@ private:
 
 }  // namespace ofp
 
-#endif // OFP_REQUESTFORWARD_H_
+#endif  // OFP_REQUESTFORWARD_H_

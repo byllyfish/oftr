@@ -59,12 +59,13 @@ const char *toCString(OFPType type) {
     ENUMCASE(OFPT_GET_ASYNC_REPLY);
     ENUMCASE(OFPT_SET_ASYNC);
     ENUMCASE(OFPT_METER_MOD);
+    ENUMCASE(OFPT_ROLE_STATUS);
+    ENUMCASE(OFPT_BUNDLE_CONTROL);
+    ENUMCASE(OFPT_REQUESTFORWARD);
     ENUMCASE(OFPT_UNSUPPORTED);
-    default:
-      break;
   }
 
-  return "Unknown_OFPType";
+  return nullptr;
 }
 
 const char *toCString(OFPMultipartType type) {

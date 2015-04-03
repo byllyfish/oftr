@@ -2266,6 +2266,33 @@ TEST(encoder, requestforwardv5) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(72, encoder.size());
-  EXPECT_HEX("0520004811111111050F0040AAAAAAAA222233004444444400305555666666667777777700000000000000100000000500140000000000000019001080001804C0A8010100000000",
+  EXPECT_HEX(
+      "0520004811111111050F0040AAAAAAAA2222330044444444003055556666666677777777"
+      "00000000000000100000000500140000000000000019001080001804C0A801010000000"
+      "0",
       encoder.data(), encoder.size());
+}
+
+TEST(encoder, bundlecontrolv5) {
+  const char *input = R"""(
+      version: 5
+      type: BUNDLE_CONTROL
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        bundle_id: 0x22222222
+        type: 0x3333
+        flags: 0x4444
+        properties:
+          - property: 0xffff
+            experimenter: 0x12345678
+            exp_type: 0xABCDABCD
+            data: '0000F1F1'
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(32, encoder.size());
+  EXPECT_HEX("05210020111111112222222233334444FFFF001012345678ABCDABCD0000F1F1",
+             encoder.data(), encoder.size());
 }
