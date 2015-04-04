@@ -92,6 +92,7 @@ set(LIBOFP_SOURCES
   src/ofp/mpaggregatestatsreply.cpp
   src/ofp/bucket.cpp
   src/ofp/bucketlist.cpp
+  src/ofp/bundleaddmessage.cpp
   src/ofp/bundlecontrol.cpp
   src/ofp/bytelist.cpp
   src/ofp/byterange.cpp

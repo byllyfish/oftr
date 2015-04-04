@@ -1360,3 +1360,17 @@ TEST(decoder, bundlecontrolv5) {
       " 0x12345678\n      exp_type:        0xABCDABCD\n      data:            "
       "0000F1F1\n...\n");
 }
+
+TEST(decoder, bundleaddmessagev5) {
+  testDecodeEncode(
+      "052200301111111122222222000033330502000A11111111ABCD000000000000FFFF0010"
+      "12345678ABCDABCD0000F1F1",
+      "---\ntype:            BUNDLE_ADD_MESSAGE\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:      "
+      " 0x22222222\n  flags:           0x3333\n  message:         \n    type:  "
+      "          ECHO_REQUEST\n    xid:             0x11111111\n    version:   "
+      "      0x05\n    msg:             \n      data:            ABCD\n  "
+      "properties:      \n    - property:        0xFFFF\n      experimenter:   "
+      " 0x12345678\n      exp_type:        0xABCDABCD\n      data:            "
+      "0000F1F1\n...\n");
+}

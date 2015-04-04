@@ -28,11 +28,12 @@
 #include "ofp/yaml/ymetermod.h"
 #include "ofp/yaml/yrolestatus.h"
 #include "ofp/yaml/ybundlecontrol.h"
+#include "ofp/yaml/ybundleaddmessage.h"
 #include "ofp/requestforward.h"
 #include "ofp/yaml/outputjson.h"
 
-namespace ofp {
-namespace yaml {
+using namespace ofp;
+using namespace ofp::yaml;
 
 Decoder::Decoder(const Message *msg, bool useJsonFormat, bool includePktMatch)
     : msg_{msg} {
@@ -136,6 +137,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
       return decode<RoleStatus>(io, msg_);
     case BundleControl::type():
       return decode<BundleControl>(io, msg_);
+    case BundleAddMessage::type():
+      return decode<BundleAddMessage>(io, msg_);
     case RequestForward::type():
       return decodeRequestForward(io, msg_);
     default:
@@ -152,12 +155,13 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
   const RequestForward *m = RequestForward::cast(msg);
   if (m == nullptr)
     return false;
-  ByteRange request = m->request();
-  Message message{request.data(), request.size()};
-  Decoder decoder{&message, this};
-  io.mapRequired("msg", decoder);
+  DecodeRecursively(io, "msg", m->request());
   return true;
 }
 
-}  // namespace yaml
-}  // namespace ofp
+void ofp::yaml::DecodeRecursively(llvm::yaml::IO &io, const char *key,
+                                  const ByteRange &data) {
+  Message message{data.data(), data.size()};
+  Decoder decoder{&message, GetDecoderFromContext(io)};
+  io.mapRequired(key, decoder);
+}

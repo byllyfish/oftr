@@ -29,4 +29,19 @@ inline DestType &Ref_cast(SourceType &obj) {
 }  // namespace yaml
 }  // namespace llvm
 
+namespace ofp {
+
+class ByteRange;
+class ByteList;
+
+namespace yaml {
+
+// Forward declare these here rather than stick them in their own header.
+void DecodeRecursively(llvm::yaml::IO &io, const char *key,
+                       const ByteRange &data);
+void EncodeRecursively(llvm::yaml::IO &io, const char *key, ByteList &data);
+
+}  // namespace yaml
+}  // namespace ofp
+
 #endif  // OFP_YAML_YLLVM_H_

@@ -1,0 +1,51 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
+#ifndef OFP_YAML_YBUNDLEADDMESSAGE_H_
+#define OFP_YAML_YBUNDLEADDMESSAGE_H_
+
+#include "ofp/bundleaddmessage.h"
+#include "ofp/yaml/ybundleproperty.h"
+
+namespace llvm {
+namespace yaml {
+
+// type: OFPT_BUNDLE_ADD_MESSAGE
+// msg:
+//   bundle_id: <UInt32>            { Required }
+//   flags: <UInt16>                { Required }
+//   message: <Message>             { Required }
+//   properties: [ <Property> ]
+
+template <>
+struct MappingTraits<ofp::BundleAddMessage> {
+  static void mapping(IO &io, ofp::BundleAddMessage &msg) {
+    io.mapRequired("bundle_id", msg.bundleId_);
+    io.mapRequired("flags", msg.flags_);
+
+    ofp::yaml::DecodeRecursively(io, "message", msg.message());
+
+    ofp::PropertyRange props = msg.properties();
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::BundlePropertyRange>(props));
+  }
+};
+
+template <>
+struct MappingTraits<ofp::BundleAddMessageBuilder> {
+  static void mapping(IO &io, ofp::BundleAddMessageBuilder &msg) {
+    io.mapRequired("bundle_id", msg.msg_.bundleId_);
+    io.mapRequired("flags", msg.msg_.flags_);
+
+    ofp::yaml::EncodeRecursively(io, "message", msg.message_);
+
+    ofp::PropertyList props;
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::BundlePropertyList>(props));
+    msg.setProperties(props);
+  }
+};
+
+}  // namespace yaml
+}  // namespace llvm
+
+#endif  // OFP_YAML_YBUNDLEADDMESSAGE_H_

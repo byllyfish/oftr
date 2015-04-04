@@ -28,10 +28,11 @@
 #include "ofp/yaml/ymetermod.h"
 #include "ofp/yaml/yrolestatus.h"
 #include "ofp/yaml/ybundlecontrol.h"
+#include "ofp/yaml/ybundleaddmessage.h"
 #include "ofp/requestforward.h"
 
-namespace ofp {
-namespace yaml {
+using namespace ofp;
+using namespace ofp::yaml;
 
 Encoder::Encoder(ChannelFinder finder)
     : errorStream_{error_},
@@ -309,11 +310,17 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       bundleControl.send(&channel_);
       break;
     }
+    case BundleAddMessage::type(): {
+      BundleAddMessageBuilder addMessage;
+      io.mapRequired("msg", addMessage);
+      addMessage.send(&channel_);
+      break;
+    }
     case RequestForward::type(): {
-      Encoder request{this};
-      io.mapRequired("msg", request);
+      ByteList data;
+      EncodeRecursively(io, "msg", data);
       RequestForwardBuilder reqForward;
-      reqForward.setRequest(ByteRange{request.data(), request.size()});
+      reqForward.setRequest(data);
       reqForward.send(&channel_);
       break;
     }
@@ -329,5 +336,9 @@ Channel *Encoder::NullChannelFinder(const DatapathID &datapathId,
   return nullptr;
 }
 
-}  // namespace yaml
-}  // namespace ofp
+void ofp::yaml::EncodeRecursively(llvm::yaml::IO &io, const char *key,
+                                  ByteList &data) {
+  Encoder encoder{GetEncoderFromContext(io)};
+  io.mapRequired(key, encoder);
+  data.set(encoder.data(), encoder.size());
+}

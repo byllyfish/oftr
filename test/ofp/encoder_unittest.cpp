@@ -2296,3 +2296,32 @@ TEST(encoder, bundlecontrolv5) {
   EXPECT_HEX("05210020111111112222222233334444FFFF001012345678ABCDABCD0000F1F1",
              encoder.data(), encoder.size());
 }
+
+TEST(encoder, bundleaddmessagev5) {
+  const char *input = R"""(
+      version: 5
+      type: BUNDLE_ADD_MESSAGE
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        bundle_id: 0x22222222
+        flags: 0x3333
+        message:
+          type: ECHO_REQUEST
+          msg:
+            data: 'ABCD'
+        properties:
+          - property: 0xffff
+            experimenter: 0x12345678
+            exp_type: 0xABCDABCD
+            data: '0000F1F1'
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(48, encoder.size());
+  EXPECT_HEX(
+      "052200301111111122222222000033330502000A11111111ABCD000000000000FFFF0010"
+      "12345678ABCDABCD0000F1F1",
+      encoder.data(), encoder.size());
+}

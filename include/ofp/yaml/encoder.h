@@ -65,6 +65,8 @@ class Encoder {
                                     UInt64 connId);
 
   friend struct llvm::yaml::MappingTraits<ofp::yaml::Encoder>;
+  friend void EncodeRecursively(llvm::yaml::IO &io, const char *key,
+                                ByteList &data);
 };
 
 OFP_END_IGNORE_PADDING
