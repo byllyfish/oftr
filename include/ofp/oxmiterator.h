@@ -72,7 +72,7 @@ class OXMIterator {
   const UInt8 *position_;
 
   constexpr explicit OXMIterator(const void *pos)
-      : position_{static_cast<const UInt8 *>(pos)} {}
+      : position_{BytePtr(pos)} {}
 
   friend class OXMRange;
   friend class OXMList;
