@@ -144,6 +144,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   ofp::Message originalMessage{nullptr};
   ofp::Message buffer{nullptr};
   size_t expectedPos = 0;
+  size_t previousPos = 0;
   ofp::Timestamp lastTimestamp;
 
   buffer.shrink(0);
@@ -162,10 +163,15 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
       return ExitStatus::IndexReadFailed;
     }
 
-    // Check for gaps in the stream.
+    // Check for gaps in the stream. Don't warn about duplicate lines in the 
+    // .findx file.
     if (pos < expectedPos) {
-      std::cerr << "Error in index; data offset is backwards: " << line
-                << " file=" << currentFilename_ << '\n';
+      // N.B. Ignore the timestamp when we check for duplicate lines in the
+      // .findx files; the timestamps are always slightly different.
+      if (!(pos == previousPos && pos + length == expectedPos)) {
+        std::cerr << "Error in index; data offset is backwards: " << line
+                  << " file=" << currentFilename_ << '\n';
+      }
       continue;
 
     } else if (pos > expectedPos) {
@@ -187,6 +193,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
     // Set up next expectedPos.
     expectedPos = pos + length;
+    previousPos = pos;
 
     size_t offset = buffer.size();
     char *buf = reinterpret_cast<char *>(buffer.mutableData(offset + length));
