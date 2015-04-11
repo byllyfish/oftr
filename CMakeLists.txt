@@ -77,7 +77,7 @@ endif()
 # source code be compiled with the same flags.
 
 set(LIBOFP_C_FLAGS "-fstrict-aliasing")
-set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11")
+set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++14")
 
 if (APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
