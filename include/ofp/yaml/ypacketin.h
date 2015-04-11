@@ -10,19 +10,19 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_PACKET_IN
+// type: PACKET_IN
 // msg:
-//   buffer_id: <UInt32>            { Required }
-//   total_len: <UInt16>            { Required }
-//   in_port: <UInt32>              { Required }
-//   in_phy_port: <UInt32>          { Required }
-//   metadata: <UInt64>             { Required }
-//   reason: <OFPPacketInReason>    { Required }
-//   table_id: <UInt8>              { Required }
-//   cookie: <UInt64>               { Required }
-//   match: <Match>
-//   data: <Bytes>                  { Required }
-//   data_match: <Match>            { Output only }
+//   buffer_id: UInt32 | NO_BUFFER
+//   total_len: UInt16
+//   in_port: PortNumber32
+//   in_phy_port: UInt32
+//   metadata: UInt64
+//   reason: PacketInReason8
+//   table_id: UInt8
+//   cookie: UInt64
+//   match: [ Field, ... ]
+//   data: HexString
+//   _data_pkt: [ Field, ... ]         # Output only; ignored on input
 
 template <>
 struct MappingTraits<ofp::PacketIn> {
@@ -57,7 +57,7 @@ struct MappingTraits<ofp::PacketIn> {
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
       ofp::MatchPacket mp{enetFrame};
-      io.mapRequired("data_match", mp);
+      io.mapRequired("_data_pkt", mp);
     }
   }
 };
@@ -91,7 +91,7 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapRequired("data", msg.enetFrame_);
 
     MatchBuilder ignoreDataMatch;  // FIXME(bfish)
-    io.mapOptional("data_match", ignoreDataMatch);
+    io.mapOptional("_data_pkt", ignoreDataMatch);
 
     ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
     if (encoder && encoder->matchPrereqsChecked()) {

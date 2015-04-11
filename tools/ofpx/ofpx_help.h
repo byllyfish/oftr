@@ -21,6 +21,8 @@ class Help : public Subprogram {
   // --- Command-line Arguments ---
 
   void listFields();
+
+  static const char *translateFieldType(const char *type);
 };
 
 }  // namespace ofpx

@@ -1819,7 +1819,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1829,7 +1829,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1839,7 +1839,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1849,7 +1849,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
         - property:        0xFFFE
           experimenter:    0x00000065
@@ -1912,7 +1912,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1922,7 +1922,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1932,7 +1932,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -1942,7 +1942,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x02
       name:            Flow Table 0x02
@@ -1993,7 +1993,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2003,7 +2003,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2013,7 +2013,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2023,7 +2023,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x03
       name:            Flow Table 0x03
@@ -2074,7 +2074,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2084,7 +2084,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2094,7 +2094,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2104,7 +2104,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x04
       name:            Flow Table 0x04
@@ -2155,7 +2155,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2165,7 +2165,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2175,7 +2175,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2185,7 +2185,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x05
       name:            Flow Table 0x05
@@ -2236,7 +2236,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2246,7 +2246,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2256,7 +2256,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2266,7 +2266,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x06
       name:            Flow Table 0x06
@@ -2317,7 +2317,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2327,7 +2327,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2337,7 +2337,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2347,7 +2347,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x07
       name:            Flow Table 0x07
@@ -2398,7 +2398,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2408,7 +2408,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2418,7 +2418,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2428,7 +2428,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x08
       name:            Flow Table 0x08
@@ -2479,7 +2479,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2489,7 +2489,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2499,7 +2499,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2509,7 +2509,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x09
       name:            Flow Table 0x09
@@ -2559,7 +2559,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2569,7 +2569,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2579,7 +2579,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2589,7 +2589,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
 ...
 ---
@@ -2649,7 +2649,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2659,7 +2659,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2669,7 +2669,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2679,7 +2679,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
         - property:        0xFFFE
           experimenter:    0x00000065
@@ -2742,7 +2742,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2752,7 +2752,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2762,7 +2762,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2772,7 +2772,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x02
       name:            Flow Table 0x02
@@ -2823,7 +2823,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2833,7 +2833,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2843,7 +2843,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2853,7 +2853,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x03
       name:            Flow Table 0x03
@@ -2904,7 +2904,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2914,7 +2914,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2924,7 +2924,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2934,7 +2934,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x04
       name:            Flow Table 0x04
@@ -2985,7 +2985,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -2995,7 +2995,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3005,7 +3005,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3015,7 +3015,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x05
       name:            Flow Table 0x05
@@ -3066,7 +3066,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3076,7 +3076,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3086,7 +3086,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3096,7 +3096,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x06
       name:            Flow Table 0x06
@@ -3147,7 +3147,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3157,7 +3157,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3167,7 +3167,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3177,7 +3177,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x07
       name:            Flow Table 0x07
@@ -3228,7 +3228,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3238,7 +3238,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3248,7 +3248,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3258,7 +3258,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x08
       name:            Flow Table 0x08
@@ -3309,7 +3309,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3319,7 +3319,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3329,7 +3329,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3339,7 +3339,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x09
       name:            Flow Table 0x09
@@ -3389,7 +3389,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3399,7 +3399,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3409,7 +3409,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -3419,7 +3419,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
 ...
 ---
@@ -3534,7 +3534,7 @@ msg:
       value:           0x00098765
     - field:           MPLS_TC
       value:           0x05
-    - field:           OFP_MPLS_BOS
+    - field:           MPLS_BOS
       value:           0x01
     - field:           0x80004A03
       value:           ABCDEF
@@ -3645,7 +3645,7 @@ msg:
       value:           0x00098765
     - field:           MPLS_TC
       value:           0x05
-    - field:           OFP_MPLS_BOS
+    - field:           MPLS_BOS
       value:           0x01
     - field:           0x80004A03
       value:           ABCDEF
@@ -4468,7 +4468,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4478,7 +4478,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4488,7 +4488,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4498,7 +4498,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
         - property:        0xFFFE
           experimenter:    0x00000065
@@ -4561,7 +4561,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4571,7 +4571,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4581,7 +4581,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4591,7 +4591,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x02
       name:            Flow Table 0x02
@@ -4642,7 +4642,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4652,7 +4652,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4662,7 +4662,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4672,7 +4672,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x03
       name:            Flow Table 0x03
@@ -4723,7 +4723,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4733,7 +4733,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4743,7 +4743,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4753,7 +4753,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x04
       name:            Flow Table 0x04
@@ -4804,7 +4804,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4814,7 +4814,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4824,7 +4824,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4834,7 +4834,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x05
       name:            Flow Table 0x05
@@ -4885,7 +4885,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4895,7 +4895,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4905,7 +4905,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4915,7 +4915,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x06
       name:            Flow Table 0x06
@@ -4966,7 +4966,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4976,7 +4976,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4986,7 +4986,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -4996,7 +4996,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x07
       name:            Flow Table 0x07
@@ -5047,7 +5047,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5057,7 +5057,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5067,7 +5067,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5077,7 +5077,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x08
       name:            Flow Table 0x08
@@ -5128,7 +5128,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5138,7 +5138,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5148,7 +5148,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5158,7 +5158,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x09
       name:            Flow Table 0x09
@@ -5208,7 +5208,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5218,7 +5218,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5228,7 +5228,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5238,7 +5238,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
 ...
 ---
@@ -5298,7 +5298,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5308,7 +5308,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5318,7 +5318,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5328,7 +5328,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
         - property:        0xFFFE
           experimenter:    0x00000065
@@ -5391,7 +5391,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5401,7 +5401,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5411,7 +5411,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5421,7 +5421,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x02
       name:            Flow Table 0x02
@@ -5472,7 +5472,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5482,7 +5482,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5492,7 +5492,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5502,7 +5502,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x03
       name:            Flow Table 0x03
@@ -5553,7 +5553,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5563,7 +5563,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5573,7 +5573,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5583,7 +5583,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x04
       name:            Flow Table 0x04
@@ -5634,7 +5634,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5644,7 +5644,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5654,7 +5654,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5664,7 +5664,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x05
       name:            Flow Table 0x05
@@ -5715,7 +5715,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5725,7 +5725,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5735,7 +5735,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5745,7 +5745,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x06
       name:            Flow Table 0x06
@@ -5796,7 +5796,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5806,7 +5806,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5816,7 +5816,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5826,7 +5826,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x07
       name:            Flow Table 0x07
@@ -5877,7 +5877,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5887,7 +5887,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5897,7 +5897,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5907,7 +5907,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x08
       name:            Flow Table 0x08
@@ -5958,7 +5958,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5968,7 +5968,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5978,7 +5978,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -5988,7 +5988,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
     - table_id:        0x09
       name:            Flow Table 0x09
@@ -6038,7 +6038,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       wildcards:       [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -6048,7 +6048,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       write_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -6058,7 +6058,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       apply_set_field: [ '~IN_PORT', '~METADATA', '~ETH_DST', '~ETH_SRC', 
                          '~ETH_TYPE', '~VLAN_VID', '~VLAN_PCP', '~IP_DSCP', 
                          '~IP_ECN', '~IP_PROTO', '~IPV4_SRC', '~IPV4_DST', 
@@ -6068,7 +6068,7 @@ msg:
                          '~ARP_THA', '~IPV6_SRC', '~IPV6_DST', '~IPV6_FLABEL', 
                          '~ICMPV6_TYPE', '~ICMPV6_CODE', '~IPV6_ND_TARGET', 
                          '~IPV6_ND_SLL', '~IPV6_ND_TLL', '~MPLS_LABEL', 
-                         '~MPLS_TC', '~OFP_MPLS_BOS', '~PBB_ISID' ]
+                         '~MPLS_TC', '~MPLS_BOS', '~PBB_ISID' ]
       properties:      
 ...
 ---
@@ -6183,7 +6183,7 @@ msg:
       value:           0x00098765
     - field:           MPLS_TC
       value:           0x05
-    - field:           OFP_MPLS_BOS
+    - field:           MPLS_BOS
       value:           0x01
     - field:           0x80004A03
       value:           ABCDEF
@@ -6282,7 +6282,7 @@ msg:
       value:           0x00098765
     - field:           MPLS_TC
       value:           0x05
-    - field:           OFP_MPLS_BOS
+    - field:           MPLS_BOS
       value:           0x01
     - field:           0x80004A03
       value:           ABCDEF
