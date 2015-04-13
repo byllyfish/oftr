@@ -8,12 +8,15 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_PACKET_OUT
-// msg:
-//   buffer_id: <UInt32>      { Required }
-//   in_port: <UInt32>        { Required }
-//   actions: [ <Action> ]    { Required }
-//   data: <Bytes>            { Required }
+const char *const kPacketOutSchema = R"""({Message/PACKET_OUT}
+type: 'PACKET_OUT'
+msg:
+  buffer_id: BufferID
+  in_port: PortNumber
+  actions: [{Action}...]
+  data: HexString
+  _data_pkt: [{Field}...]         # Output only; Optional
+)""";
 
 template <>
 struct MappingTraits<ofp::PacketOut> {
@@ -34,7 +37,7 @@ struct MappingTraits<ofp::PacketOut> {
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
       ofp::MatchPacket mp{enetFrame, false};
-      io.mapRequired("data_match", mp);
+      io.mapRequired("_data_pkt", mp);
     }
   }
 };

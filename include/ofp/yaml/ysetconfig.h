@@ -11,10 +11,12 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_SET_CONFIG
-// msg:
-//   flags: <UInt16>            { Required }
-//   miss_send_len: <UInt16>    { Required }
+const char *const kSetConfigSchema = R"""({Message/SET_CONFIG}
+type: 'SET_CONFIG'
+msg:
+  flags: ConfigFlags
+  miss_send_len: ControllerMaxLen
+)""";
 
 template <>
 struct MappingTraits<ofp::SetConfig> {

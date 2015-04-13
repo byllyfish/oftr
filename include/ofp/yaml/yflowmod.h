@@ -16,28 +16,23 @@
 namespace llvm {
 namespace yaml {
 
-/// Use a FLOW_MOD message to modify the flow table in a switch.
-///
-/// ~~~~~
-/// type:     OFPT_FLOW_MOD
-/// xid:      UInt64?
-/// version:  UInt8?
-/// msg:
-///   cookie:       UInt64
-///   cookie_mask:  UInt64
-///   table_id:     UInt8
-///   command:      UInt8
-///   idle_timeout: UInt16
-///   hard_timeout: UInt16
-///   priority:     UInt16
-///   buffer_id:    UInt32
-///   out_port:     UInt32
-///   out_group:    UInt32
-///   flags:        UInt16
-///   match:        [ MatchField* ]
-///   instructions: [ Instruction* ]
-/// ~~~~~
-///
+const char *const kFlowModSchema = R"""({Message/FLOW_MOD}
+type: 'FLOW_MOD'
+msg:
+  cookie: UInt64
+  cookie_mask: UInt64
+  table_id: UInt8
+  command: FlowModCommand
+  idle_timeout: UInt16
+  hard_timeout: UInt16
+  priority: UInt16
+  buffer_id: BufferID
+  out_port: PortNumber
+  out_group: GroupNumber
+  flags: FlowModFlags
+  match: [{Field}...]
+  instructions: [{Instruction}...]
+)""";
 
 template <>
 struct MappingTraits<ofp::FlowMod> {

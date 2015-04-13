@@ -9,11 +9,13 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_ERROR
-// msg:
-//   type: <UInt16>    { Required }
-//   code: <UInt16>    { Required }
-//   data: <Bytes>     { Required }
+const char *const kErrorSchema = R"""({Message/ERROR}
+type: 'ERROR'
+msg:
+  type: ErrorType
+  code: ErrorCode
+  data: HexString
+)""";
 
 template <>
 struct MappingTraits<ofp::Error> {

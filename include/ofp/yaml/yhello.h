@@ -10,9 +10,11 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_HELLO
-// msg:                       { Optional; versions defaults to All. }
-//   versions: [ <UInt8> ]    { Optional }
+const char *const kHelloSchema = R"""({Message/HELLO}
+type: 'HELLO'
+msg:                          # Optional
+  versions: [UInt8...]        # Default=[1,..,MAX]
+)""";
 
 template <>
 struct MappingTraits<ofp::Hello> {

@@ -10,19 +10,21 @@
 namespace llvm {
 namespace yaml {
 
-// type: PACKET_IN
-// msg:
-//   buffer_id: UInt32 | NO_BUFFER
-//   total_len: UInt16
-//   in_port: PortNumber32
-//   in_phy_port: UInt32
-//   metadata: UInt64
-//   reason: PacketInReason8
-//   table_id: UInt8
-//   cookie: UInt64
-//   match: [ Field, ... ]
-//   data: HexString
-//   _data_pkt: [ Field, ... ]         # Output only; ignored on input
+const char *const kPacketInSchema = R"""({Message/PACKET_IN}
+type: 'PACKET_IN'
+msg:
+  buffer_id: BufferID
+  total_len: UInt16
+  in_port: PortNumber
+  in_phy_port: UInt32
+  metadata: UInt64
+  reason: PacketInReason
+  table_id: UInt8
+  cookie: UInt64
+  match: [{Field}...]
+  data: HexString
+  _data_pkt: [{Field}...]        # Output only; Optional
+)""";
 
 template <>
 struct MappingTraits<ofp::PacketIn> {

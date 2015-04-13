@@ -11,15 +11,17 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_FEATURES_REPLY
-// msg:
-//   datapath_id: <DatapathID>    { Required }
-//   n_buffers: <UInt32>          { Required }
-//   n_tables: <UInt8>            { Required }
-//   auxiliary_id: <UInt8>        { Required }
-//   capabilities: <UInt32>       { Required }
-//   actions: <UInt32>            { Optional }
-//   ports: [ <Port> ]            { Required }
+const char *const kFeaturesReplySchema = R"""({Message/FEATURES_REPLY}
+type: 'FEATURES_REPLY'
+msg:
+  datapath_id: DatapathID
+  n_buffers: UInt32
+  n_tables: UInt8
+  auxiliary_id: UInt8
+  capabilities: CapabilitiesFlags
+  actions: ActionTypeFlags             # Version 1 only
+  ports: [{Port}...]
+)""";
 
 template <>
 struct MappingTraits<ofp::FeaturesReply> {

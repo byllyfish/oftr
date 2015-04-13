@@ -3,6 +3,7 @@
 #ifndef OFP_YAML_YBUFFERID_H_
 #define OFP_YAML_YBUFFERID_H_
 
+#include "ofp/yaml/yllvm.h"
 #include "ofp/bufferid.h"
 #include "ofp/yaml/enumconverter.h"
 

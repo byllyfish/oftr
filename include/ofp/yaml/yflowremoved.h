@@ -8,19 +8,21 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_FLOW_REMOVED
-// msg:
-//   cookie: <UInt64>           { Required }
-//   priority: <UInt16>         { Required }
-//   reason: <UInt8>            { Required }
-//   table_id: <UInt8>          { Required }
-//   duration_sec: <UInt32>     { Required }
-//   duration_nsec: <UInt32>    { Required }
-//   idle_timeout: <UInt16>     { Required }
-//   hard_timeout: <UInt16>     { Required }
-//   packet_count: <UInt64>     { Required }
-//   byte_count: <UInt64>       { Required }
-//   match: [ <MatchItem> ]     { Required }
+const char *const kFlowRemovedSchema = R"""({Message/FLOW_REMOVED}
+type: 'FLOW_REMOVED'
+msg:
+  cookie: UInt64
+  priority: UInt16
+  reason: FlowRemovedReason
+  table_id: UInt8
+  duration_sec: UInt32
+  duration_nsec: UInt32
+  idle_timeout: UInt16
+  hard_timeout: UInt16
+  packet_count: UInt64
+  byte_count: UInt64
+  match: [{Field}...]
+)""";
 
 template <>
 struct MappingTraits<ofp::FlowRemoved> {

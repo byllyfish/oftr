@@ -8,13 +8,15 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_PORT_MOD
-// msg:
-//   port_no: <UInt32>         { Required }
-//   hw_addr: <EnetAddress>    { Required }
-//   config: <UInt32>          { Required }
-//   mask: <UInt32>            { Required }
-//   advertise: <UInt32>       { Required }
+const char *const kPortModSchema = R"""({Message/PORT_MOD}
+type: 'PORT_MOD'
+msg:
+  port_no: PortNumber
+  hw_addr: EnetAddress
+  config: PortConfigFlags
+  mask: PortConfigFlags
+  advertise: PortFeaturesFlags
+)""";
 
 template <>
 struct MappingTraits<ofp::PortMod> {
