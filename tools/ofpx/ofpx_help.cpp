@@ -36,6 +36,29 @@ static const char *const kMessageSchemas[] = {
   llvm::yaml::kFlowRemovedSchema
 };
 
+using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
+
+static SchemaPair kEnumSchemas[] = {
+  { ofp::yaml::MakeSchema<ofp::OFPFlowModCommand>, "Enum/FlowModCommand" },
+  { ofp::yaml::MakeSchema<ofp::OFPPacketInReason>, "Enum/PacketInReason" },
+  { ofp::yaml::MakeSchema<ofp::OFPPortStatusReason>, "Enum/PortStatusReason" },
+  { ofp::yaml::MakeSchema<ofp::OFPFlowRemovedReason>, "Enum/FlowRemovedReason" },
+  { ofp::yaml::MakeSchema<ofp::OFPControllerRole>, "Enum/ControllerRole" },
+  { ofp::yaml::MakeSchema<ofp::OFPMeterModCommand>, "Enum/MeterModCommand" },
+  { ofp::yaml::MakeSchema<ofp::OFPErrorType>, "Enum/ErrorType" },
+  { ofp::yaml::MakeSchema<ofp::OFPFlowUpdateEvent>, "Enum/FlowUpdateEvent" },
+  { ofp::yaml::MakeSchema<ofp::OFPErrorCode>, "Enum/ErrorCode" },
+}; 
+
+static SchemaPair kMixedSchemas[] = {
+  { ofp::yaml::MakeSchema<ofp::PortNumber>, "Mixed/PortNumber" },
+  { ofp::yaml::MakeSchema<ofp::GroupNumber>, "Mixed/GroupNumber" },
+  { ofp::yaml::MakeSchema<ofp::BufferID>, "Mixed/BufferID" },
+  { ofp::yaml::MakeSchema<ofp::TableNumber>, "Mixed/TableNumber" },
+  { ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen" },
+};
+
+
 int Help::run(int argc, const char *const *argv) {
   cl::ParseCommandLineOptions(argc, argv);
   loadSchemas();
@@ -43,10 +66,14 @@ int Help::run(int argc, const char *const *argv) {
   if (fields_) {
     listFields();
   } else if (messages_) {
-    listMessages();
+    listSchemas("Message");
+  } else if (enums_) {
+    listSchemas("Enum");
+  } else if (dump_) {
+    dumpSchemas();
   } else {
     for (auto &arg : args_) {
-      printArg(arg);
+      printSchema(arg);
     }
   }
 
@@ -56,6 +83,14 @@ int Help::run(int argc, const char *const *argv) {
 void Help::loadSchemas() {
   for (auto &schema : kMessageSchemas) {
     schemas_.emplace_back(new Schema{schema});
+  }
+
+  for (auto &p : kEnumSchemas) {
+    schemas_.emplace_back(new Schema{p.first(p.second)});
+  }
+
+  for (auto &p : kMixedSchemas) {
+    schemas_.emplace_back(new Schema{p.first(p.second)});
   }
 }
 
@@ -74,9 +109,11 @@ Schema *Help::findNearestSchema(const std::string &key) {
   Schema *minSchema = nullptr;
 
   for (auto &schema : schemas_) {
-    if (schema->name().startswith(s))
+    auto buf = schema->name().upper();
+    auto name = llvm::StringRef{buf};
+    if (name.startswith(s))
       return schema.get();
-    unsigned dist = schema->name().edit_distance(s, true, minDistance);
+    unsigned dist = name.edit_distance(s, true, minDistance);
     if (dist < minDistance) {
       minDistance = dist;
       minSchema = schema.get();
@@ -111,25 +148,39 @@ void Help::listFields() {
   }
 }
 
-void Help::listMessages() {
-  // Print out the name of each 'Message' schema.
-  
+void Help::listSchemas(const std::string &type) {
+  // Print out the name of each schema with the specified type.
   for (auto &schema : schemas_) {
-    if (schema->type() == "Message") {
+    if (schema->type() == type) {
       std::cout << schema->name() << '\n';
     }
   }
 }
 
-void Help::printArg(const std::string &arg) {
-  auto schema = findSchema(arg);
+void Help::printSchema(const std::string &key) {
+  auto schema = findSchema(key);
   if (schema) {
-    std::cout << schema->value() << '\n';
-  } else {
-    schema = findNearestSchema(arg);
-    if (schema) {
-      std::cerr << "Unknown command line argument '" << arg << "'. Did you mean '" << schema->name() << "'?" << '\n';
+    schema->print(std::cout);
+
+    for (auto &s : schema->dependsOnSchemas()) {
+      auto depSchema = findSchema(s);
+      if (depSchema) {
+        depSchema->print(std::cout);
+      }
     }
+
+  } else {
+    schema = findNearestSchema(key);
+    if (schema) {
+      std::cerr << "Unknown command line argument '" << key << "'. Did you mean '" << schema->name() << "'?" << '\n';
+    }
+  }
+}
+
+/// Print out the type/name for each schema.
+void Help::dumpSchemas() {
+  for (auto &schema : schemas_) {
+    std::cout << schema->type().lower() << '/' << schema->name() << '\n';
   }
 }
 

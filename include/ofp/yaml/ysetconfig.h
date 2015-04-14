@@ -11,7 +11,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kSetConfigSchema = R"""({Message/SET_CONFIG}
+const char *const kSetConfigSchema = R"""({Message/SetConfig}
 type: 'SET_CONFIG'
 msg:
   flags: ConfigFlags

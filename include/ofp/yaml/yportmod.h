@@ -8,7 +8,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kPortModSchema = R"""({Message/PORT_MOD}
+const char *const kPortModSchema = R"""({Message/PortMod}
 type: 'PORT_MOD'
 msg:
   port_no: PortNumber

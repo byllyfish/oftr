@@ -8,7 +8,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kPacketOutSchema = R"""({Message/PACKET_OUT}
+const char *const kPacketOutSchema = R"""({Message/PacketOut}
 type: 'PACKET_OUT'
 msg:
   buffer_id: BufferID

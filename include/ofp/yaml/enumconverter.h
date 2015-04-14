@@ -72,6 +72,17 @@ class EnumConverter {
     return false;
   }
 
+  std::vector<llvm::StringRef> listAll() const {
+    std::vector<llvm::StringRef> result;
+    for (auto name : names_) {
+      result.push_back(name);
+    }
+    if (!maxIntName_.empty()) {
+      result.push_back(maxIntName_);
+    }
+    return result;
+  }
+
  private:
   llvm::ArrayRef<llvm::StringRef> names_;
   llvm::StringRef maxIntName_;
@@ -105,6 +116,14 @@ class EnumConverterSparse {
       }
     }
     return false;
+  }
+
+  std::vector<llvm::StringRef> listAll() const {
+    std::vector<llvm::StringRef> result;
+    for (auto entry : entries_) {
+      result.push_back(entry.second);
+    }
+    return result;
   }
 
  private:

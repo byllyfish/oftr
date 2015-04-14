@@ -9,7 +9,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kErrorSchema = R"""({Message/ERROR}
+const char *const kErrorSchema = R"""({Message/Error}
 type: 'ERROR'
 msg:
   type: ErrorType

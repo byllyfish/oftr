@@ -8,7 +8,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kFlowRemovedSchema = R"""({Message/FLOW_REMOVED}
+const char *const kFlowRemovedSchema = R"""({Message/FlowRemoved}
 type: 'FLOW_REMOVED'
 msg:
   cookie: UInt64

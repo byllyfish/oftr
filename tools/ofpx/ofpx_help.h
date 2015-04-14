@@ -47,8 +47,10 @@ class Help : public Subprogram {
   Schema *findNearestSchema(const std::string &key);
 
   void listFields();
-  void listMessages();
-  void printArg(const std::string &arg);
+  void listSchemas(const std::string &type);
+  void printSchema(const std::string &key);
+
+  void dumpSchemas();
 
   static const char *translateFieldType(const char *type);
 
@@ -57,6 +59,8 @@ class Help : public Subprogram {
   cl::opt<bool> actions_{"actions", cl::desc("List supported actions.")};
   cl::opt<bool> instructions_{"instructions", cl::desc("List supported instructions.")};
   cl::opt<bool> messages_{"messages", cl::desc("List supported messages.")};
+  cl::opt<bool> enums_{"enums", cl::desc("List supported enumerated types.")};
+  cl::opt<bool> dump_{"dump", cl::desc("List all schema names.")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
 };
 

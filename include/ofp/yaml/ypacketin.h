@@ -10,7 +10,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kPacketInSchema = R"""({Message/PACKET_IN}
+const char *const kPacketInSchema = R"""({Message/PacketIn}
 type: 'PACKET_IN'
 msg:
   buffer_id: BufferID

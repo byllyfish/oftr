@@ -10,7 +10,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kHelloSchema = R"""({Message/HELLO}
+const char *const kHelloSchema = R"""({Message/Hello}
 type: 'HELLO'
 msg:                          # Optional
   versions: [UInt8...]        # Default=[1,..,MAX]

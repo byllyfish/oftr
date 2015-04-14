@@ -11,7 +11,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kFeaturesReplySchema = R"""({Message/FEATURES_REPLY}
+const char *const kFeaturesReplySchema = R"""({Message/FeaturesReply}
 type: 'FEATURES_REPLY'
 msg:
   datapath_id: DatapathID

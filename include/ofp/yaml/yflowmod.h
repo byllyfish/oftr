@@ -16,7 +16,7 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kFlowModSchema = R"""({Message/FLOW_MOD}
+const char *const kFlowModSchema = R"""({Message/FlowMod}
 type: 'FLOW_MOD'
 msg:
   cookie: UInt64
