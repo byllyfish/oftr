@@ -154,19 +154,36 @@ class IT_METER {
 
 class IT_EXPERIMENTER {
  public:
+  enum : bool { VariableSize = true };
+  enum : size_t { HeaderSize = 8 };
+
   constexpr static InstructionType type() {
     return InstructionType{OFPIT_EXPERIMENTER};
   }
 
-  constexpr explicit IT_EXPERIMENTER(UInt32 experimenterId)
-      : experimenterId_{experimenterId} {}
+  constexpr explicit IT_EXPERIMENTER(UInt32 experimenterId, ByteRange data)
+      : length_{UInt16_narrow_cast(HeaderSize + data.size())}, experimenterId_{experimenterId}, data_{data} {}
 
   constexpr UInt32 experimenterId() const { return experimenterId_; }
+
+  const UInt8 *data() const { return data_.data(); }
+  size_t size() const { return data_.size(); }
+
+  ByteRange dataRange() const {
+    assert(length_ >= HeaderSize);
+    return ByteRange{BytePtr(this) + HeaderSize,
+                     length_ - HeaderSize};
+  }
+
+  bool validateInput(Validation *context) const {
+    return (length_ >= HeaderSize);
+  }
 
  private:
   InstructionType type_ = type();
   Big16 length_{8};
   Big32 experimenterId_;
+  ByteRange data_;
 
   friend struct llvm::yaml::MappingTraits<IT_EXPERIMENTER>;
   friend struct llvm::yaml::MappingTraits<IT_EXPERIMENTER *>;

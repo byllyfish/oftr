@@ -36,6 +36,36 @@ static const char *const kMessageSchemas[] = {
   llvm::yaml::kFlowRemovedSchema
 };
 
+static const char *const kInstructionSchemas[] = {
+  llvm::yaml::kGotoTableSchema,
+  llvm::yaml::kWriteMetadataSchema,
+  llvm::yaml::kWriteActionsSchema,
+  llvm::yaml::kApplyActionsSchema,
+  llvm::yaml::kClearActionsSchema,
+  llvm::yaml::kMeterSchema,
+  llvm::yaml::kExperimenterInstructionSchema,
+};
+
+static const char *const kActionSchemas[] = {
+  llvm::yaml::kCopyTTLOutSchema,
+  llvm::yaml::kCopyTTLInSchema,
+  llvm::yaml::kDecMPLSTTLSchema,
+  llvm::yaml::kPopVLANSchema,
+  llvm::yaml::kDecNwTTLSchema,
+  llvm::yaml::kPopPBBSchema,
+  llvm::yaml::kOutputSchema,
+  llvm::yaml::kSetMPLSTTLSchema,
+  llvm::yaml::kPushVLANSchema,
+  llvm::yaml::kPushMPLSSchema,
+  llvm::yaml::kPopMPLSSchema,
+  llvm::yaml::kSetQueueSchema,
+  llvm::yaml::kGroupSchema,
+  llvm::yaml::kSetNwTTLSchema,
+  llvm::yaml::kPushPBBSchema,
+  llvm::yaml::kSetFieldSchema,
+  llvm::yaml::kExperimenterActionSchema,
+};
+
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
 static SchemaPair kEnumSchemas[] = {
@@ -67,6 +97,10 @@ int Help::run(int argc, const char *const *argv) {
     listFields();
   } else if (messages_) {
     listSchemas("Message");
+  } else if (instructions_) {
+    listSchemas("Instruction");
+  } else if (actions_) {
+    listSchemas("Action");
   } else if (enums_) {
     listSchemas("Enum");
   } else if (dump_) {
@@ -82,6 +116,14 @@ int Help::run(int argc, const char *const *argv) {
 
 void Help::loadSchemas() {
   for (auto &schema : kMessageSchemas) {
+    schemas_.emplace_back(new Schema{schema});
+  }
+
+  for (auto &schema : kInstructionSchemas) {
+    schemas_.emplace_back(new Schema{schema});
+  }
+
+  for (auto &schema : kActionSchemas) {
     schemas_.emplace_back(new Schema{schema});
   }
 

@@ -62,6 +62,13 @@ class Help : public Subprogram {
   cl::opt<bool> enums_{"enums", cl::desc("List supported enumerated types.")};
   cl::opt<bool> dump_{"dump", cl::desc("List all schema names.")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
+
+  // --- Argument Aliases ---
+  cl::alias fAlias_{"f", cl::desc("Alias for -fields"), cl::aliasopt(fields_)};
+  cl::alias aAlias_{"a", cl::desc("Alias for -actions"), cl::aliasopt(actions_)};
+  cl::alias iAlias_{"i", cl::desc("Alias for -instructions"), cl::aliasopt(instructions_)};
+  cl::alias mAlias_{"m", cl::desc("Alias for -messages"), cl::aliasopt(messages_)};
+  cl::alias eAlias_{"e", cl::desc("Alias for -enums"), cl::aliasopt(enums_)};
 };
 
 }  // namespace ofpx

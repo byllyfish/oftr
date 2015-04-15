@@ -45,6 +45,88 @@ OFP_END_IGNORE_PADDING
 namespace llvm {
 namespace yaml {
 
+const char *const kCopyTTLOutSchema = R"""({Action/COPY_TTL_OUT}
+action: 'COPY_TTL_OUT'
+)""";
+
+const char *const kCopyTTLInSchema = R"""({Action/COPY_TTL_IN}
+action: 'COPY_TTL_IN'
+)""";
+
+const char *const kDecMPLSTTLSchema = R"""({Action/DEC_MPLS_TTL}
+action: 'DEC_MPLS_TTL'
+)""";
+
+const char *const kPopVLANSchema = R"""({Action/POP_VLAN}
+action: 'POP_VLAN'
+)""";
+
+const char *const kDecNwTTLSchema = R"""({Action/DEC_NW_TTL}
+action: 'DEC_NW_TTL'
+)""";
+
+const char *const kPopPBBSchema = R"""({Action/POP_PBB}
+action: 'POP_PBB'
+)""";
+
+const char *const kOutputSchema = R"""({Action/OUTPUT}
+action: 'OUTPUT'
+port: PortNumber
+max_len: ControllerMaxLen
+)""";
+
+const char *const kSetMPLSTTLSchema = R"""({Action/SET_MPLS_TTL}
+action: 'SET_MPLS_TTL'
+ttl: UInt16
+)""";
+
+const char *const kPushVLANSchema = R"""({Action/PUSH_VLAN}
+action: 'PUSH_VLAN'
+vlan: UInt16
+)""";
+
+const char *const kPushMPLSSchema = R"""({Action/PUSH_MPLS}
+action: 'PUSH_MPLS'
+mpls: UInt32
+)""";
+
+const char *const kPopMPLSSchema = R"""({Action/POP_MPLS}
+action: 'POP_MPLS'
+ethertype: UInt16
+)""";
+
+const char *const kSetQueueSchema = R"""({Action/SET_QUEUE}
+action: 'SET_QUEUE'
+queue: UInt32
+)""";
+
+const char *const kGroupSchema = R"""({Action/GROUP}
+action: 'GROUP'
+group: UInt32
+)""";
+
+const char *const kSetNwTTLSchema = R"""({Action/SET_NW_TTL}
+action: 'SET_NW_TTL'
+ttl: UInt8
+)""";
+
+const char *const kPushPBBSchema = R"""({Action/PUSH_PBB}
+action: 'PUSH_PBB'
+ethertype: UInt16
+)""";
+
+const char *const kSetFieldSchema = R"""({Action/SET_FIELD}
+action: 'SET_FIELD'
+field: <Field-Name>
+value: <Field-Value>
+)""";
+
+const char *const kExperimenterActionSchema = R"""({Action/EXPERIMENTER}
+action: 'EXPERIMENTER'
+experimenter: UInt32
+data: HexString
+)""";
+
 template <>
 struct MappingTraits<ofp::detail::ActionIteratorItem> {
   static void mapping(IO &io, ofp::detail::ActionIteratorItem &item) {

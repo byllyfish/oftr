@@ -19,6 +19,43 @@ struct InstructionInserter {};
 namespace llvm {
 namespace yaml {
 
+const char *const kGotoTableSchema = R"""({Instruction/GotoTable}
+instruction: 'GOTO_TABLE'
+table_id: UInt8
+)""";
+
+const char *const kWriteMetadataSchema = R"""({Instruction/WriteMetadata}
+instruction: 'WRITE_METADATA'
+metadata: UInt64
+mask: UInt64
+)""";
+
+const char *const kWriteActionsSchema = R"""({Instruction/WriteActions}
+instruction: 'WRITE_ACTIONS'
+actions: [{Action}...]
+)""";
+
+const char *const kApplyActionsSchema = R"""({Instruction/ApplyActions}
+instruction: 'APPLY_ACTIONS'
+actions: [{Action}...]
+)""";
+
+const char *const kClearActionsSchema = R"""({Instruction/ClearActions}
+instruction: 'CLEAR_ACTIONS'
+)""";
+
+const char *const kMeterSchema = R"""({Instruction/Meter}
+instruction: 'METER'
+meter: UInt32
+)""";
+
+const char *const kExperimenterInstructionSchema = R"""({Instruction/Experimenter}
+instruction: 'EXPERIMENTER'
+experimenter: UInt32
+data: HexString
+)""";
+
+
 template <>
 struct MappingTraits<ofp::InstructionIterator::Element> {
   static void mapping(IO &io, ofp::InstructionIterator::Element &item) {
@@ -72,8 +109,9 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
         IT_EXPERIMENTER *instr =
             RemoveConst_cast(item.instruction<IT_EXPERIMENTER>());
         Hex32 experimenterId = instr->experimenterId();
+        ByteRange data = instr->dataRange();
         io.mapRequired("experimenter", experimenterId);
-        // FIXME - rest of experimenter
+        io.mapRequired("data", data);
         break;
       }
       case OFPIT_NONE:
@@ -133,8 +171,10 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
       }
       case IT_EXPERIMENTER::type(): {
         UInt32 experimenterId;
+        ByteList data;
         io.mapRequired("experimenter", experimenterId);
-        list.add(IT_EXPERIMENTER{experimenterId});
+        io.mapRequired("data", data);
+        list.add(IT_EXPERIMENTER{experimenterId, data});
         break;
       }
       case OFPIT_NONE:

@@ -39,6 +39,12 @@ inline void InstructionList::add(const IT_APPLY_ACTIONS &instruction) {
   buf_.add(instruction.data(), instruction.size());
 }
 
+template <>
+inline void InstructionList::add(const IT_EXPERIMENTER &instruction) {
+  buf_.add(&instruction, IT_EXPERIMENTER::HeaderSize);
+  buf_.add(instruction.data(), instruction.size());
+}
+
 }  // namespace ofp
 
 #endif  // OFP_INSTRUCTIONLIST_H_
