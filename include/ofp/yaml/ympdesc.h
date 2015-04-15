@@ -8,6 +8,14 @@
 namespace llvm {
 namespace yaml {
 
+const char *const kMPDescSchema = R"""({Multipart/Desc}
+mfr_desc: Str255
+hw_desc: Str255
+sw_desc: Str255
+serial_num: Str32
+dp_desc: Str255
+)""";
+
 template <>
 struct MappingTraits<ofp::MPDesc> {
   static void mapping(IO &io, ofp::MPDesc &body) {

@@ -8,9 +8,11 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_QUEUE_GET_CONFIG_REQUEST
-// msg:
-//   port: <UInt32>    { Required }
+const char *const kQueueGetConfigRequestSchema = R"""({Message/QueueGetConfigRequest}
+type: 'QUEUE_GET_CONFIG_REQUEST'
+msg:
+  port: PortNumber
+)""";
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigRequest> {

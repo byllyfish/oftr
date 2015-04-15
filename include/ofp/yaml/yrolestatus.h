@@ -9,11 +9,14 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_ROLE_STATUS
-// msg:
-//   role: <OFPControllerRole>  { Required }
-//   reason: <UInt8>            { Required }
-//   generation_id: <UInt64>    { Required }
+const char *const kRoleStatusSchema = R"""({Message/RoleStatus}
+type: 'ROLE_STATUS'
+msg:
+  role: ControllerRole
+  reason: UInt8
+  generation_id: UInt64
+  properties: [{RoleStatusProperty}...]
+)""";
 
 template <>
 struct MappingTraits<ofp::RoleStatus> {

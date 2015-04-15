@@ -8,13 +8,30 @@
 #include "ofp/yaml/yerror.h"
 #include "ofp/yaml/yecho.h"
 #include "ofp/yaml/yfeaturesreply.h"
+#include "ofp/yaml/ygetconfigreply.h"
 #include "ofp/yaml/ysetconfig.h"
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
 #include "ofp/yaml/yflowmod.h"
 #include "ofp/yaml/yflowremoved.h"
 #include "ofp/yaml/yportmod.h"
+#include "ofp/yaml/yheaderonly.h"
 #include "ofp/yaml/yschema.h"
+#include "ofp/yaml/yportstatus.h"
+#include "ofp/yaml/ygroupmod.h"
+#include "ofp/yaml/ytablemod.h"
+#include "ofp/yaml/ymultipartrequest.h"
+#include "ofp/yaml/ymultipartreply.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yqueuegetconfigreply.h"
+#include "ofp/yaml/yrolerequest.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/ysetasync.h"
+#include "ofp/yaml/ymetermod.h"
+#include "ofp/yaml/yrolestatus.h"
+#include "ofp/yaml/ybundleaddmessage.h"
+#include "ofp/yaml/ybundlecontrol.h"
 
 using namespace ofpx;
 
@@ -27,13 +44,40 @@ static const char *const kMessageSchemas[] = {
   llvm::yaml::kErrorSchema,
   llvm::yaml::kEchoRequestSchema,
   llvm::yaml::kEchoReplySchema,
+  llvm::yaml::kFeaturesRequestSchema,
   llvm::yaml::kFeaturesReplySchema,
+  llvm::yaml::kGetConfigRequestSchema,
+  llvm::yaml::kGetConfigReplySchema,
   llvm::yaml::kSetConfigSchema,
-  llvm::yaml::kPortModSchema,
-  llvm::yaml::kPacketOutSchema,
   llvm::yaml::kPacketInSchema,
+  llvm::yaml::kFlowRemovedSchema,
+  llvm::yaml::kPortStatusSchema,
+  llvm::yaml::kPacketOutSchema,
   llvm::yaml::kFlowModSchema,
-  llvm::yaml::kFlowRemovedSchema
+  llvm::yaml::kGroupModSchema,
+  llvm::yaml::kPortModSchema,
+  llvm::yaml::kTableModSchema,
+  llvm::yaml::kMultipartRequestSchema,
+  llvm::yaml::kMultipartReplySchema,
+  llvm::yaml::kBarrierRequestSchema,
+  llvm::yaml::kBarrierReplySchema,
+  llvm::yaml::kQueueGetConfigRequestSchema,
+  llvm::yaml::kQueueGetConfigReplySchema,
+  llvm::yaml::kRoleRequestSchema,
+  llvm::yaml::kRoleReplySchema,
+  llvm::yaml::kGetAsyncRequestSchema,
+  llvm::yaml::kGetAsyncReplySchema,
+  llvm::yaml::kSetAsyncSchema,
+  llvm::yaml::kMeterModSchema,
+  llvm::yaml::kRoleStatusSchema,
+  //llvm::yaml::kTableStatusSchema,
+  //llvm::yaml::kRequestForwardSchema,
+  llvm::yaml::kBundleControlSchema,
+  llvm::yaml::kBundleAddMessageSchema,
+};
+
+static const char *const kMultipartSchemas[] = {
+  llvm::yaml::kMPDescSchema,
 };
 
 static const char *const kInstructionSchemas[] = {
@@ -97,6 +141,8 @@ int Help::run(int argc, const char *const *argv) {
     listFields();
   } else if (messages_) {
     listSchemas("Message");
+  } else if (multipart_) {
+    listSchemas("Multipart");
   } else if (instructions_) {
     listSchemas("Instruction");
   } else if (actions_) {
@@ -116,6 +162,10 @@ int Help::run(int argc, const char *const *argv) {
 
 void Help::loadSchemas() {
   for (auto &schema : kMessageSchemas) {
+    schemas_.emplace_back(new Schema{schema});
+  }
+
+  for (auto &schema : kMultipartSchemas) {
     schemas_.emplace_back(new Schema{schema});
   }
 

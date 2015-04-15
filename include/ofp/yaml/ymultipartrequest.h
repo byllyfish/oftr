@@ -20,12 +20,13 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_MULTIPART_REQUEST
-// msg:
-//   type: <OFPMultipartType>    { Required }
-//   flags: <UInt16>             { Required }
-//   body:
-//     { Depends on OFPMultipartType }
+const char *const kMultipartRequestSchema = R"""({Message/MultipartRequest}
+type: 'MULTIPART_REQUEST'
+msg:
+  type: <MultipartType>
+  flags: MultipartFlags
+  body: <MultipartBody>
+)""";
 
 template <>
 struct MappingTraits<ofp::MultipartRequest> {

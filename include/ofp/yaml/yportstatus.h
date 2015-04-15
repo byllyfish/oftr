@@ -9,10 +9,12 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_PORT_STATUS
-// msg:
-//   reason: <UInt8>    { Required }
-//   port: <Port>       { Required }
+const char *const kPortStatusSchema = R"""({Message/PortStatus}
+type: 'PORT_STATUS'
+msg:
+  reason: PortStatusReason
+  port: {Port}
+)""";
 
 template <>
 struct MappingTraits<ofp::PortStatus> {

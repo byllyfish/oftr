@@ -8,10 +8,12 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_TABLE_MOD
-// msg:
-//   table_id: <UInt8>    { Required }
-//   config: <UInt32>     { Required }
+const char *const kTableModSchema = R"""({Message/TableMod}
+type: 'TABLE_MOD'
+msg:
+  table_id: UInt8
+  config: UInt32
+)""";
 
 template <>
 struct MappingTraits<ofp::TableMod> {

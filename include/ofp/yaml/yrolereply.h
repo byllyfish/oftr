@@ -8,10 +8,12 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_ROLE_REPLY
-// msg:
-//   role: <UInt32>             { Required }
-//   generation_id: <UInt64>    { Required }
+const char *const kRoleReplySchema = R"""({Message/RoleReply}
+type: 'ROLE_REPLY'
+msg:
+  role: ControllerRole
+  generation_id: UInt64
+)""";
 
 template <>
 struct MappingTraits<ofp::RoleReply> {

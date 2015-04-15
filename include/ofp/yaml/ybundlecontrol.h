@@ -9,12 +9,14 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_BUNDLE_CONTROL
-// msg:
-//   bundle_id: <UInt32>  { Required }
-//   type: <UInt16>       { Required }
-//   flags: <UInt16>      { Required }
-//   properties: [ <Property> ]
+const char *const kBundleControlSchema = R"""({Message/BundleControl}
+type: 'BUNDLE_CONTROL'
+msg:
+  bundle_id: UInt32
+  type: UInt16
+  flags: UInt16
+  properties: [{BundleProperty}...]
+)""";
 
 template <>
 struct MappingTraits<ofp::BundleControl> {

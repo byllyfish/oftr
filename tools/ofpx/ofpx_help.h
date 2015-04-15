@@ -25,6 +25,7 @@ using ofp::yaml::Schema;
 //   --actions        List supported actions.
 //   --instructions   List supported instructions.
 //   --messages       List supported message types.
+//   --multipart      List supported multipart types.
 //   --enums          List supported enumeration types.
 //   --flags          List supported flags.
 //   --mixed          List supported mixed types.
@@ -59,6 +60,7 @@ class Help : public Subprogram {
   cl::opt<bool> actions_{"actions", cl::desc("List supported actions.")};
   cl::opt<bool> instructions_{"instructions", cl::desc("List supported instructions.")};
   cl::opt<bool> messages_{"messages", cl::desc("List supported messages.")};
+  cl::opt<bool> multipart_{"multipart", cl::desc("List supported multipart types.")};
   cl::opt<bool> enums_{"enums", cl::desc("List supported enumerated types.")};
   cl::opt<bool> dump_{"dump", cl::desc("List all schema names.")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};

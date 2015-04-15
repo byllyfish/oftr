@@ -8,10 +8,12 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_GET_CONFIG_REPLY
-// msg:
-//   flags: <UInt16>            { Required }
-//   miss_send_len: <UInt16>    { Required }
+const char *const kGetConfigReplySchema = R"""({Message/GetConfigReply}
+type: 'GET_CONFIG_REPLY'
+msg:
+  flags: ConfigFlags
+  miss_send_len: ControllerMaxLen
+)""";
 
 template <>
 struct MappingTraits<ofp::GetConfigReply> {

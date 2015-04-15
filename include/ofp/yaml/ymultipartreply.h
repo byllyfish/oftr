@@ -24,12 +24,13 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_MULTIPART_REPLY
-// msg:
-//   type: <OFPMultipartType>    { Required }
-//   flags: <UInt16>             { Required }
-//   body:
-//       { Depends on OFPMultipartType }
+const char *const kMultipartReplySchema = R"""({Message/MultipartReply}
+type: 'MULTIPART_REPLY'
+msg:
+  type: <MultipartType>
+  flags: MultipartFlags
+  body: <MultipartBody>
+)""";
 
 template <>
 struct MappingTraits<ofp::MultipartReply> {

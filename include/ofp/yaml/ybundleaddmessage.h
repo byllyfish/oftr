@@ -9,12 +9,14 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_BUNDLE_ADD_MESSAGE
-// msg:
-//   bundle_id: <UInt32>            { Required }
-//   flags: <UInt16>                { Required }
-//   message: <Message>             { Required }
-//   properties: [ <Property> ]
+const char *const kBundleAddMessageSchema = R"""({Message/BundleAddMessage}
+type: 'BUNDLE_ADD_MESSAGE'
+msg:
+  bundle_id: UInt32
+  flags: UInt16
+  message: {Message}
+  properties: [{BundleProperty}...]
+)""";
 
 template <>
 struct MappingTraits<ofp::BundleAddMessage> {

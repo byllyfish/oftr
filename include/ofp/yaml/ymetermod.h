@@ -9,6 +9,15 @@
 namespace llvm {
 namespace yaml {
 
+const char *const kMeterModSchema = R"""({Message/MeterMod}
+type: 'METER_MOD'
+msg:
+  command: MeterModCommand
+  flags: MeterConfigFlags
+  meter_id: UInt32
+  bands: [{MeterBand}...]
+)""";
+
 template <>
 struct MappingTraits<ofp::MeterMod> {
   static void mapping(IO &io, ofp::MeterMod &msg) {

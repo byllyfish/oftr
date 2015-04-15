@@ -8,8 +8,25 @@
 namespace llvm {
 namespace yaml {
 
-// type: OFPT_FEATURES_REQUEST
-// msg:
+const char *const kFeaturesRequestSchema = R"""({Message/FeaturesRequest}
+type: 'FEATURES_REQUEST'
+)""";
+
+const char *const kGetAsyncRequestSchema = R"""({Message/GetAsyncRequest}
+type: 'GET_ASYNC_REQUEST'
+)""";
+
+const char *const kGetConfigRequestSchema = R"""({Message/GetConfigRequest}
+type: 'GET_CONFIG_REQUEST'
+)""";
+
+const char *const kBarrierRequestSchema = R"""({Message/BarrierRequest}
+type: 'BARRIER_REQUEST'
+)""";
+
+const char *const kBarrierReplySchema = R"""({Message/BarrierReply}
+type: 'BARRIER_REPLY'
+)""";
 
 template <>
 struct MappingTraits<ofp::FeaturesRequest> {
@@ -21,9 +38,6 @@ struct MappingTraits<ofp::FeaturesRequestBuilder> {
   static void mapping(IO &io, ofp::FeaturesRequestBuilder &msg) {}
 };
 
-// type: OFPT_GET_ASYNC_REQUEST
-// msg:
-
 template <>
 struct MappingTraits<ofp::GetAsyncRequest> {
   static void mapping(IO &io, ofp::GetAsyncRequest &msg) {}
@@ -33,9 +47,6 @@ template <>
 struct MappingTraits<ofp::GetAsyncRequestBuilder> {
   static void mapping(IO &io, ofp::GetAsyncRequestBuilder &msg) {}
 };
-
-// type: OFPT_GET_CONFIG_REQUEST
-// msg:
 
 template <>
 struct MappingTraits<ofp::GetConfigRequest> {
@@ -47,9 +58,6 @@ struct MappingTraits<ofp::GetConfigRequestBuilder> {
   static void mapping(IO &io, ofp::GetConfigRequestBuilder &msg) {}
 };
 
-// type: OFPT_BARRIER_REQUEST
-// msg:
-
 template <>
 struct MappingTraits<ofp::BarrierRequest> {
   static void mapping(IO &io, ofp::BarrierRequest &msg) {}
@@ -59,9 +67,6 @@ template <>
 struct MappingTraits<ofp::BarrierRequestBuilder> {
   static void mapping(IO &io, ofp::BarrierRequestBuilder &msg) {}
 };
-
-// type: OFPT_BARRIER_REPLY
-// msg:
 
 template <>
 struct MappingTraits<ofp::BarrierReply> {
