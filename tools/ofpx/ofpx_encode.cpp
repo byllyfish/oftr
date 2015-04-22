@@ -64,7 +64,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   int lineNum;
 
   while (readMessage(input, text, lineNum)) {
-    ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum};
+    ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum, ofp::UInt8_narrow_cast(ofversion_.getValue())};
 
     auto err = encoder.error();
     if (!err.empty()) {

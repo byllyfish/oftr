@@ -24,7 +24,7 @@ class Encoder {
 
   explicit Encoder(ChannelFinder finder);
   Encoder(const std::string &input, bool matchPrereqsChecked = true,
-          int lineNumber = 0, ChannelFinder finder = NullChannelFinder);
+          int lineNumber = 0, UInt8 defaultVersion = 0, ChannelFinder finder = NullChannelFinder);
 
   const UInt8 *data() const { return channel_.data(); }
   size_t size() const { return channel_.size(); }
@@ -52,6 +52,7 @@ class Encoder {
   Channel *outputChannel_ = nullptr;
   int lineNumber_ = 0;
   UInt8 auxiliaryId_ = 0;
+  UInt8 defaultVersion_;
   bool matchPrereqsChecked_;
 
   explicit Encoder(const Encoder *encoder);
@@ -102,7 +103,9 @@ struct MappingTraits<ofp::yaml::Encoder> {
     if (encoder.header_.type() == ofp::OFPT_UNSUPPORTED) {
       return "";
     }
-
+    if (encoder.header_.version() == 0) {
+      return "protocol version unspecified";
+    }
     if (!encoder.header_.validateVersionAndType()) {
       return "invalid combination of version and type";
     }

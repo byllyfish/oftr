@@ -18,7 +18,8 @@ namespace ofpx {
 //   --unchecked-match, -M   Do not check items in match fields
 //   --roundtrip, -R         Roundtrip encoded binary message back to YAML
 //   --json, -j              Json input is separated by linefeeds
-//
+//   --ofversion=0           OpenFlow version to use when unspecified
+//       
 // Usage:
 //
 // To translate a text file into binary OpenFlow messages:
@@ -74,6 +75,7 @@ class Encode : public Subprogram {
   cl::opt<bool> roundtrip_{
       "roundtrip", cl::desc("Roundtrip encoded binary message back to YAML")};
   cl::opt<bool> json_{"json", cl::desc("Json input is separated by linefeeds")};
+  cl::opt<unsigned> ofversion_{"ofversion", cl::desc("OpenFlow version to use when unspecified"), cl::ValueRequired};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

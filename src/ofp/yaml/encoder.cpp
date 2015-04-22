@@ -38,6 +38,7 @@ Encoder::Encoder(ChannelFinder finder)
     : errorStream_{error_},
       header_{OFPT_UNSUPPORTED},
       finder_{finder},
+      defaultVersion_{0},
       matchPrereqsChecked_{true} {
 }
 
@@ -48,15 +49,17 @@ Encoder::Encoder(const Encoder *encoder)
       header_{encoder->header_},
       finder_{encoder->finder_},
       outputChannel_{encoder->outputChannel_},
+      defaultVersion_{encoder->defaultVersion_},
       matchPrereqsChecked_{encoder->matchPrereqsChecked_} {
 }
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
-                 int lineNumber, ChannelFinder finder)
+                 int lineNumber, UInt8 defaultVersion, ChannelFinder finder)
     : errorStream_{error_},
       header_{OFPT_UNSUPPORTED},
       finder_{finder},
       lineNumber_{lineNumber},
+      defaultVersion_{defaultVersion},
       matchPrereqsChecked_{matchPrereqsChecked} {
   detail::YamlContext ctxt{this};
   llvm::yaml::Input yin{input, &ctxt, Encoder::diagnosticHandler, &ctxt};
@@ -111,6 +114,9 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     if (header_.xid() == 0) {
       header_.setXid(outputChannel_->nextXid());
     }
+  } else if (!header_.version()) {
+    // If version is still unset, set it to the default version.
+    header_.setVersion(defaultVersion_);
   }
 
   // Set the version and xid for the memory channel.
