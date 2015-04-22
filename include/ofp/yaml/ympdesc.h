@@ -12,7 +12,7 @@ const char *const kMPDescSchema = R"""({Multipart/Desc}
 mfr_desc: Str255
 hw_desc: Str255
 sw_desc: Str255
-serial_num: Str32
+serial_num: Str31
 dp_desc: Str255
 )""";
 

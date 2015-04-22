@@ -12,8 +12,17 @@ class OXMList;
 
 class Prerequisites {
  public:
+
+  enum FailureReason {
+    kUnresolvedAmbiguity = 1,
+    kConflictingPrerequisites,
+    kInvalidMaskPresent,
+    kMissingPrerequisite,
+    kDuplicateFieldsDetected
+  };
+
   static void insertAll(OXMList *list, const OXMRange *preqs);
-  static bool checkAll(const OXMRange &oxm);
+  static bool checkAll(const OXMRange &oxm, FailureReason *reason);
 
   static bool substitute(OXMList *list, OXMType type, const void *value,
                          size_t len);

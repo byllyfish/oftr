@@ -343,3 +343,13 @@ TEST(matchbuilder, icmpv6Type) {
   EXPECT_HEX("80000A0286DD 800014013A 80003A018F", match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }
+
+TEST(matchbuilder, outOfOrder) {
+  MatchBuilder match;
+
+  match.add(OFB_TCP_DST{80});
+  match.add(OFB_ETH_TYPE{0x0800});
+
+  EXPECT_HEX("80000A020800800014010680001C020050", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+}

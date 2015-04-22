@@ -267,6 +267,23 @@ public:
 };
 
 
+// Test if SequenceTraits<T>::validate() is defined on type T.
+template <class T>
+struct has_SequenceValidateTraits
+{
+  typedef StringRef (*Signature_validate)(class IO&, T&);
+
+  template <typename U>
+  static char test(SameType<Signature_validate, &U::validate>*);
+
+  template <typename U>
+  static double test(...);
+
+public:
+  static bool const value = (sizeof(test<SequenceTraits<T> >(nullptr)) == 1);
+};
+
+
 
 // Test if SequenceTraits<T> is defined on type T.
 template <class T>
@@ -834,6 +851,19 @@ yamlize(IO &io, T &Seq, bool) {
   }
 }
 
+template <typename T>
+typename std::enable_if<has_SequenceValidateTraits<T>::value,void>::type
+validateSequenceTraits(IO &io, T &Seq) {
+  StringRef err = SequenceTraits<T>::validate(io, Seq);
+  if (!err.empty())
+    io.setError(err);
+}
+
+template <typename T>
+typename std::enable_if<!has_SequenceValidateTraits<T>::value,void>::type
+validateSequenceTraits(IO &io, T &Seq) {
+}
+
 template<typename T>
 typename std::enable_if<has_SequenceMethodTraits<T>::value,void>::type
 yamlize(IO &io, T &Seq, bool) {
@@ -861,6 +891,7 @@ yamlize(IO &io, T &Seq, bool) {
     }
     io.endSequence();
   }
+  validateSequenceTraits(io, Seq);
 }
 
 

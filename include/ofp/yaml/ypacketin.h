@@ -92,17 +92,8 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapOptional("match", msg.match_);
     io.mapRequired("data", msg.enetFrame_);
 
-    MatchBuilder ignoreDataMatch;  // FIXME(bfish)
+    MatchBuilder ignoreDataMatch;  // FIXME(bfish) Add `mapIgnore` method?
     io.mapOptional("_data_pkt", ignoreDataMatch);
-
-    ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
-    if (encoder && encoder->matchPrereqsChecked()) {
-      if (!msg.match_.validate()) {
-        // TODO(bfish) better error message
-        io.setError("Match is ambiguous.");
-        ofp::log::info("Match is ambiguous.");
-      }
-    }
   }
 };
 

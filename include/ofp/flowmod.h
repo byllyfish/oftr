@@ -90,12 +90,10 @@ class FlowModBuilder {
   MatchBuilder &match() { return match_; }
 
   void setMatch(const MatchBuilder &match) {
-    assert(match.validate());
     match_ = match;
   }
 
   void setMatch(MatchBuilder &&match) {
-    assert(match.validate());
     match_ = std::move(match);
   }
 

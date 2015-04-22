@@ -135,6 +135,24 @@ struct SequenceTraits<ofp::MatchBuilder> {
                                                 size_t index) {
     return Ref_cast<ofp::detail::MatchBuilderItem>(match);
   }
+
+  static StringRef validate(IO &io, ofp::MatchBuilder &match) {
+    ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
+    if (encoder && encoder->matchPrereqsChecked()) {
+      ofp::Prerequisites::FailureReason reason;
+      if (!match.validate(&reason)) {
+        switch (reason) {
+          case ofp::Prerequisites::kUnresolvedAmbiguity:
+            return "Invalid match: Missing prerequisites";
+          case ofp::Prerequisites::kConflictingPrerequisites:
+            return "Invalid match: Conflicting prerequisites";
+          default:
+            return "Invalid match";
+        }
+      }
+    }
+    return "";
+  }
 };
 
 template <>

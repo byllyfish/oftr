@@ -79,15 +79,6 @@ struct MappingTraits<ofp::FlowModBuilder> {
     msg.setFlags(flags);
     io.mapRequired("match", msg.match_);
     io.mapRequired("instructions", msg.instructions_);
-
-    ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
-    if (encoder && encoder->matchPrereqsChecked()) {
-      if (!msg.match_.validate()) {
-        // TODO(bfish) better error message
-        io.setError("Match is ambiguous.");
-        ofp::log::info("Match is ambiguous.");
-      }
-    }
   }
 };
 

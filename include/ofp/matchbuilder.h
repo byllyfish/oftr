@@ -70,8 +70,19 @@ class MatchBuilder {
   void clear() { list_.clear(); }
 
   bool validate() const {
-    return Prerequisites::checkAll(list_.toRange()) &&
-           !Prerequisites::duplicateFieldsDetected(list_.toRange());
+    Prerequisites::FailureReason ignore;
+    return validate(&ignore);
+  }
+  
+  bool validate(Prerequisites::FailureReason *reason) const {
+    if (!Prerequisites::checkAll(list_.toRange(), reason)) {
+      return false;
+    }
+    if (Prerequisites::duplicateFieldsDetected(list_.toRange())) {
+      *reason = Prerequisites::kDuplicateFieldsDetected;
+      return false;
+    }
+    return true;
   }
 
   OXMRange toRange() const { return list_.toRange(); }

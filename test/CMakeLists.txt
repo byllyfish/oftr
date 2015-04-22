@@ -17,6 +17,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/driver_unittest.cpp
 	ofp/dtls_utils_unittest.cpp
 	ofp/encoder_unittest.cpp
+	ofp/encoderfail_unittest.cpp
 	ofp/enetaddress_unittest.cpp
 	ofp/enumconverter_unittest.cpp
 	ofp/error_unittest.cpp

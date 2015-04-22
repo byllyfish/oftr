@@ -48,6 +48,7 @@ void Prerequisites::insertPreqMasked(OXMType preqTypeMasked, OXMIterator preq,
                                      OXMList *list) const {
   if (!checkPreqMasked(preqTypeMasked, preq, list->begin(), list->end())) {
     // We add the masked prereq with a signal.
+    log::info("MaskedPrereqSignal!!");
     list->addSignal(kMaskedPrereqSignal);
     list->add(preq);
   }
@@ -96,7 +97,7 @@ void Prerequisites::insertPreqValue(OXMType preqType, OXMIterator &preq,
   }
 }
 
-bool Prerequisites::checkAll(const OXMRange &oxm) {
+bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
   // For each OXM entry, we will check if its prerequisites are met.
   // Complexity: If there are n items and each item has m prerequisites, this
   // algorithm is O(n*m).
@@ -111,7 +112,12 @@ bool Prerequisites::checkAll(const OXMRange &oxm) {
     // treated as an illegal combination.
 
     if (type.isIllegal()) {
-      log::info("Illegal oxm type ", type);
+      log::info("Illegal oxm type ", log::hex(type));
+      if (type == kValuePrereqSignal || type == kMaskedPrereqSignal) {
+        *reason = kUnresolvedAmbiguity;
+      } else if (type == kPoisonPrereqSignal) {
+        *reason = kConflictingPrerequisites;
+      }
       goto FAILURE;
     }
 
@@ -119,7 +125,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm) {
     auto typeInfo = type.lookupInfo();
     if (typeInfo == nullptr) {
       // Unrecognized oxm type. No way to check prerequisites. Skip it.
-      log::info("Unknown oxm type ", type);
+      log::info("Unknown oxm type ", log::hex(type));
       continue;
     }
 
@@ -128,7 +134,8 @@ bool Prerequisites::checkAll(const OXMRange &oxm) {
     if (type.hasMask()) {
       // The oxm type has a mask. Check if it's allowed to have one.
       if (!typeInfo->isMaskSupported) {
-        log::info("Invalid mask for ", type);
+        log::info("Invalid mask for ", log::hex(type));
+        *reason = kInvalidMaskPresent;
         goto FAILURE;
       }
     }
@@ -139,7 +146,8 @@ bool Prerequisites::checkAll(const OXMRange &oxm) {
     if (typeInfo->prerequisites != nullptr) {
       Prerequisites preqs{typeInfo->prerequisites};
       if (!preqs.check(oxm.begin(), item.position())) {
-        log::info("Prerequisite check failed for type ", type);
+        log::info("Prerequisite check failed for type ", log::hex(type));
+        *reason = kMissingPrerequisite;
         goto FAILURE;
       }
     }
