@@ -103,7 +103,7 @@ struct MappingTraits<ofp::yaml::Encoder> {
     if (encoder.header_.type() == ofp::OFPT_UNSUPPORTED) {
       return "";
     }
-    if (encoder.header_.version() == 0) {
+    if (encoder.header_.version() == 0 && encoder.header_.type() != ofp::OFPT_HELLO) {
       return "protocol version unspecified";
     }
     if (!encoder.header_.validateVersionAndType()) {
