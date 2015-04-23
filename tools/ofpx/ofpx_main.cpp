@@ -7,6 +7,8 @@
 #include "./ofpx_jsonrpc.h"
 #include "./ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/Host.h"
+#include <openssl/ssl.h> // For SSLeay_version
 
 using namespace llvm;
 
@@ -22,6 +24,7 @@ static SubprogramEntry programs[] = {{"encode", ofpx::Run<ofpx::Encode>},
 
 static int run_xpc_service();
 static void print_usage(std::ostream &out);
+static void print_version();
 
 int main(int argc, const char *const *argv) {
   // If the OFPX_JSONRPC_XPC_SERVICE environment variable is set to 1,
@@ -49,6 +52,13 @@ int main(int argc, const char *const *argv) {
     return 0;
   }
 
+  if (name == "version" || name == "-v") {
+    print_version();
+    return 0;
+  }
+
+  cl::SetVersionPrinter(print_version);
+
   for (size_t i = 0; i < ofp::ArrayLength(programs); ++i) {
     if (name == programs[i].name) {
       return (*programs[i].run)(argc - 1, argv + 1);
@@ -72,5 +82,31 @@ void print_usage(std::ostream &out) {
   for (size_t i = 0; i < ofp::ArrayLength(programs); ++i) {
     out << "  " << programs[i].name << '\n';
   }
+  out << "  version\n";
   out << '\n';
+}
+
+void print_version() {
+  raw_ostream &os = outs();
+
+  os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << " (" << LIBOFP_DOWNLOAD_URL << ")\n";
+#ifndef __OPTIMIZE__
+  os << "  DEBUG build";
+#else
+  os << "  Optimized build";
+#endif
+#ifndef NDEBUG
+  os << " with assertions";
+#endif
+  std::string CPU = llvm::sys::getHostCPUName();
+  if (CPU == "generic")
+    CPU = "(unknown)";
+  os << ".\n"
+     << "  Default target: " << llvm::sys::getDefaultTargetTriple() << '\n'
+     << "  Host CPU: " << CPU << '\n';
+
+  unsigned major = (OPENSSL_VERSION_NUMBER >> 28) & 0x0F;
+  unsigned minor = (OPENSSL_VERSION_NUMBER >> 20) & 0xFF;
+  unsigned subminor = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
+  os << "  BoringSSL " << major << '.' << minor << '.' << subminor << '\n';
 }

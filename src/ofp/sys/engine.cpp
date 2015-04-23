@@ -11,7 +11,7 @@ using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
     : driver_{driver}, signals_{io_}, stopTimer_{io_}, idleTimer_{io_} {
-  log::info("Engine ready - BoringSSL", log::hex(OPENSSL_VERSION_NUMBER));
+  log::info("Engine ready");
 }
 
 Engine::~Engine() {

@@ -151,10 +151,13 @@ int Help::run(int argc, const char *const *argv) {
     listSchemas("Enum");
   } else if (dump_) {
     dumpSchemas();
-  } else {
+  } else if (!args_.empty()) {
     for (auto &arg : args_) {
       printSchema(arg);
     }
+  } else {
+    cl::PrintHelpMessage();
+    return 1;
   }
 
   return 0;
