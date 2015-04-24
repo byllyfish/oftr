@@ -17,12 +17,17 @@ namespace log {
 
 enum class Level {
   Debug = 0,
-  Trace = 1,
-  Info = 2,
-  Warning = 3,
-  Error = 4,
-  Fatal = 5,
-  Silent = 6
+  Info = 1,
+  Warning = 2,
+  Error = 3,
+  Fatal = 4,
+  Silent = 5,
+  Trace = 6
+};
+
+enum class Trace {
+  Msg = 0,
+  Rpc = 1,
 };
 
 /// Type of function called when an event is logged. There can be at most one
@@ -51,6 +56,9 @@ void setOutputStream(aslclient outputStream);
 
 /// \brief Sets the minimum desired level of output.
 void setOutputLevelFilter(Level level);
+
+/// \brief Sets the desired trace options for output.
+void setOutputTraceFilter(UInt32 trace);
 
 }  // namespace log
 }  // namespace ofp

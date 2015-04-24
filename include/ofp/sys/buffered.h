@@ -78,7 +78,7 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
   bufferIdx_ = !bufferIdx_;
   isFlushing_ = true;
 
-  log::trace("Write", id, outgoing.data(), outgoing.size());
+  log::trace_msg("Write", id, outgoing.data(), outgoing.size());
 
   async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
               make_custom_alloc_handler(

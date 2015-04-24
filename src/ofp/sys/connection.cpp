@@ -92,7 +92,7 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
 void Connection::postMessage(Message *message) {
   assert(message->source());
 
-  log::trace("Read", message->source()->connectionId(), message->data(),
+  log::trace_msg("Read", message->source()->connectionId(), message->data(),
              message->size());
 
   // Once Hello's have been exchanged, handle incoming echo requests

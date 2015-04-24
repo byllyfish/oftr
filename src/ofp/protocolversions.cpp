@@ -3,7 +3,7 @@
 #include "ofp/protocolversions.h"
 #include <sstream>
 
-namespace ofp {
+using namespace ofp;
 
 const ProtocolVersions ProtocolVersions::All(
     ProtocolVersions::VersionBitmapAll);
@@ -109,5 +109,3 @@ ProtocolVersions ProtocolVersions::fromVector(
 
   return result;
 }
-
-}  // namespace ofp

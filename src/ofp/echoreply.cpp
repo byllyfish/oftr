@@ -4,7 +4,7 @@
 #include "ofp/message.h"
 #include "ofp/writable.h"
 
-namespace ofp {
+using namespace ofp;
 
 ByteRange EchoReply::echoData() const {
   return ByteRange{BytePtr(this) + sizeof(Header),
@@ -27,4 +27,3 @@ void EchoReplyBuilder::send(Writable *channel) {
   channel->flush();
 }
 
-}  // namespace ofp

@@ -10,7 +10,7 @@ using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;
 
 int Encode::run(int argc, const char *const *argv) {
-  cl::ParseCommandLineOptions(argc, argv);
+  parseCommandLineOptions(argc, argv);
 
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {

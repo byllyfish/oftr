@@ -4,7 +4,7 @@
 #include "ofp/writable.h"
 #include "ofp/originalmatch.h"
 
-namespace ofp {
+using namespace ofp;
 
 Match FlowMod::match() const {
   return Match{&matchHeader_};
@@ -190,4 +190,3 @@ UInt32 FlowModBuilder::sendFastVersion1(Writable *channel, UInt32 inPort,
   return xid;
 }
 
-}  // namespace ofp

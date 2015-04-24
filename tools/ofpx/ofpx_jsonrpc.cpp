@@ -12,10 +12,8 @@ const int STDIN = 0;
 const int STDOUT = 1;
 
 int JsonRpc::run(int argc, const char *const *argv) {
-  cl::ParseCommandLineOptions(argc, argv);
+  parseCommandLineOptions(argc, argv);
   setMaxOpenFiles();
-
-  ofp::log::setOutputLevelFilter(ofp::log::Level::Debug);
 
   if (xpc_) {
     runXpc();
@@ -43,7 +41,7 @@ void JsonRpc::setMaxOpenFiles() {
     return;
   }
 
-  ofp::log::info("Changed open file limit to", rlp.rlim_cur);
+  ofp::log::debug("Changed open file limit to", rlp.rlim_cur);
 }
 
 void JsonRpc::runStdio() {

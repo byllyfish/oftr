@@ -24,6 +24,7 @@ namespace detail {
 extern OutputCallback GlobalOutputCallback;
 extern void *GlobalOutputCallbackContext;
 extern Level GlobalOutputLevelFilter;
+extern UInt32 GlobalOutputTraceFilter;
 
 template <class T1, class T2>
 std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p) {
@@ -60,11 +61,23 @@ void write_(Level level, Args &&... args) {
 #endif  // OFP_LOGGING_DISABLED
 }
 
+void trace_msg_internal(const char *type, UInt64 id, const void *data, size_t length);
+
+void trace_rpc_internal(const char *type, UInt64 id, const void *data, size_t length);
+
 }  // namespace detail
 
-void trace(const char *type, UInt64 id, const void *data, size_t length);
+inline void trace_msg(const char *type, UInt64 id, const void *data, size_t length) {
+  if ((detail::GlobalOutputTraceFilter & (1U << static_cast<int>(Trace::Msg))) != 0) {
+    detail::trace_msg_internal(type, id, data, length);
+  }
+}
 
-void trace_rpc(const char *type, UInt64 id, const void *data, size_t length);
+inline void trace_rpc(const char *type, UInt64 id, const void *data, size_t length) {
+  if ((detail::GlobalOutputTraceFilter & (1U << static_cast<int>(Trace::Rpc))) != 0) {
+    detail::trace_rpc_internal(type, id, data, length);
+  }
+}
 
 template <class... Args>
 inline void info(Args &&... args) {

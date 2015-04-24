@@ -4,7 +4,7 @@
 #include "ofp/ipv4address.h"
 #include "ofp/log.h"
 
-namespace ofp {
+using namespace ofp;
 
 IPv4Address::IPv4Address(const ArrayType &a) : addr_(a) {
 }
@@ -26,8 +26,6 @@ IPv4Address IPv4Address::mask(unsigned prefix) {
 
   unsigned d = std::min(4U, prefix / 8);
   unsigned r = prefix % 8;
-
-  log::debug("mask", d);
 
   std::memset(result.addr_.data(), 0xFF, d);
   if (d < 4) {
@@ -75,4 +73,3 @@ std::string IPv4Address::toString() const {
   return result ? ipv4str : "<inet_ntop_error4>";
 }
 
-}  // namespace ofp

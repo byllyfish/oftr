@@ -5,7 +5,7 @@
 #include "ofp/writable.h"
 #include "ofp/padding.h"
 
-namespace ofp {
+using namespace ofp;
 
 ByteRange Experimenter::expData() const {
   return ByteRange{BytePtr(this) + sizeof(Experimenter),
@@ -49,4 +49,3 @@ UInt32 ExperimenterBuilder::send(Writable *channel) {
   return xid;
 }
 
-}  // namespace ofp

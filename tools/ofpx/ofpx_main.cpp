@@ -1,6 +1,5 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include <iostream>
 #include "ofp/ofp.h"
 #include "./ofpx_decode.h"
 #include "./ofpx_encode.h"
@@ -36,11 +35,6 @@ int main(int argc, const char *const *argv) {
     }
   }
 
-  llvm::raw_fd_ostream logfile{2, true};
-  logfile.SetBufferSize(4096);
-  ofp::log::setOutputStream(&logfile);
-  ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
-
   if (argc < 2) {
     print_usage(std::cerr);
     return 1;
@@ -52,7 +46,7 @@ int main(int argc, const char *const *argv) {
     return 0;
   }
 
-  if (name == "version" || name == "-v") {
+  if (name == "version" || name == "-v" || name == "-version" || name == "--version") {
     print_version();
     return 0;
   }

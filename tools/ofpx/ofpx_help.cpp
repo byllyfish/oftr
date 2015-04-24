@@ -134,7 +134,7 @@ static SchemaPair kMixedSchemas[] = {
 
 
 int Help::run(int argc, const char *const *argv) {
-  cl::ParseCommandLineOptions(argc, argv);
+  parseCommandLineOptions(argc, argv);
   loadSchemas();
 
   if (fields_) {
@@ -156,7 +156,7 @@ int Help::run(int argc, const char *const *argv) {
       printSchema(arg);
     }
   } else {
-    cl::PrintHelpMessage();
+    cl::PrintHelpMessage(false, true);
     return 1;
   }
 

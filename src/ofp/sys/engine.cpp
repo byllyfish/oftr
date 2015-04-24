@@ -11,13 +11,13 @@ using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
     : driver_{driver}, signals_{io_}, stopTimer_{io_}, idleTimer_{io_} {
-  log::info("Engine ready");
+  log::debug("Engine ready");
 }
 
 Engine::~Engine() {
   // Shutdown all existing connections and servers.
   (void)close(0);
-  log::info("Engine shutting down");
+  log::debug("Engine shutting down");
 }
 
 UInt64 Engine::listen(ChannelMode mode, UInt64 securityId,

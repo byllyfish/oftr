@@ -38,6 +38,10 @@ namespace ofpx {
 //
 // If no input files are specified, use standard input (stdin). A single hyphen
 // also represents stdin.
+//
+// Each binary OpenFlow message will use the version specified by the textual
+// object. Normally, it is an error if no version is specified. However, you 
+// can specify a default OpenFlow version using the --ofversion option.
 
 OFP_BEGIN_IGNORE_PADDING
 

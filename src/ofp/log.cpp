@@ -89,8 +89,10 @@ static const char *levelPrefixColor(Level level) {
 
 #ifndef NDEBUG
 const Level kDefaultLevel = Level::Debug;
+const UInt32 kDefaultTrace = 0xFF;
 #else
 const Level kDefaultLevel = Level::Info;
+const UInt32 kDefaultTrace = 0;
 #endif
 
 namespace detail {
@@ -98,6 +100,7 @@ namespace detail {
 OutputCallback GlobalOutputCallback = nullptr;
 void *GlobalOutputCallbackContext = nullptr;
 Level GlobalOutputLevelFilter = Level::Silent;
+UInt32 GlobalOutputTraceFilter = 0;
 
 }  // namespace detail
 
@@ -106,14 +109,21 @@ void setOutputCallback(OutputCallback callback, void *context) {
   detail::GlobalOutputCallbackContext = context;
   if (callback == nullptr) {
     detail::GlobalOutputLevelFilter = Level::Silent;
+    detail::GlobalOutputTraceFilter = 0;
   } else if (detail::GlobalOutputLevelFilter == Level::Silent) {
     detail::GlobalOutputLevelFilter = kDefaultLevel;
+    detail::GlobalOutputTraceFilter = kDefaultTrace;
   }
 }
 
 void setOutputLevelFilter(Level level) {
   if (detail::GlobalOutputCallback != nullptr)
     detail::GlobalOutputLevelFilter = level;
+}
+
+void setOutputTraceFilter(UInt32 trace) {
+  if (detail::GlobalOutputCallback != nullptr)
+    detail::GlobalOutputTraceFilter = trace;
 }
 
 static void streamOutputCallback(Level level, const char *line, size_t size,
@@ -234,10 +244,9 @@ static void trace1(const char *type, UInt64 id, const void *data,
   }
 }
 
-void trace(const char *type, UInt64 id, const void *data, size_t length) {
-  if (Level::Trace < detail::GlobalOutputLevelFilter)
-    return;
+namespace detail {
 
+void trace_msg_internal(const char *type, UInt64 id, const void *data, size_t length) {
   // The memory buffer may contain multiple messages. We need to log each one
   // separately.
 
@@ -259,14 +268,11 @@ void trace(const char *type, UInt64 id, const void *data, size_t length) {
   }
 }
 
-void trace_rpc(const char *type, UInt64 id, const void *data, size_t length) {
-  if (Level::Trace < detail::GlobalOutputLevelFilter || length == 0)
-    return;
-
+void trace_rpc_internal(const char *type, UInt64 id, const void *data, size_t length) {
   const char *msg = static_cast<const char *>(data);
 
   // Remove trailing newline, if it exists.
-  if (msg[length - 1] == '\n')
+  if (length > 0 && msg[length - 1] == '\n')
     --length;
 
   detail::write_(Level::Trace, type, length, "bytes",
@@ -274,5 +280,6 @@ void trace_rpc(const char *type, UInt64 id, const void *data, size_t length) {
                  llvm::StringRef{msg, length});
 }
 
+}  // namespace detail
 }  // namespace log
 }  // namespace ofp

@@ -5,7 +5,10 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "llvm/Support/CommandLine.h"
+#include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/FileSystem.h"
 #include "ofp/ofp.h"
 
 namespace ofpx {
@@ -19,6 +22,52 @@ class Subprogram {
 
  protected:
   static const int MinExitStatus = 10;
+  std::unique_ptr<llvm::raw_ostream> logstream_;
+
+  void parseCommandLineOptions(int argc, const char *const *argv) {
+    cl::ParseCommandLineOptions(argc, argv);
+    setupLogging();
+  }
+
+  void setupLogging() {
+    using namespace llvm::sys;
+
+    if (!logfile_.empty()) {
+      std::error_code err;
+      logstream_.reset(new llvm::raw_fd_ostream{logfile_, err, fs::F_Append | fs::F_RW | fs::F_Text});
+      if (err) {
+        std::cerr << "ofpx: Failed to open log file '" << logfile_ << "'\n";
+        std::exit(1);
+      }
+
+    } else {
+      logstream_.reset(new llvm::raw_fd_ostream{2, true});
+    }
+
+    logstream_->SetBufferSize(4096);
+    ofp::log::setOutputStream(logstream_.get());
+
+    ofp::log::setOutputLevelFilter(loglevel_);
+    ofp::log::setOutputTraceFilter(logtrace_.getBits());
+  }
+
+  // --- Command-line Arguments ---
+  cl::OptionCategory logCategory_{"Logging Options"};
+  cl::opt<ofp::log::Level> loglevel_{"loglevel", cl::desc("Log level"), cl::ValueRequired, cl::Hidden, cl::cat(logCategory_), cl::init(ofp::log::Level::Fatal),
+    cl::values(
+      clEnumValN(ofp::log::Level::Silent, "none", "No log messages emitted"),
+      clEnumValN(ofp::log::Level::Debug, "debug", "Log debug messages and above"),
+      clEnumValN(ofp::log::Level::Info, "info", "Log info messages and above"),
+      clEnumValN(ofp::log::Level::Warning, "warning", "Log warning messages and above"),
+      clEnumValN(ofp::log::Level::Error, "error", "Log error messages and above"),
+      clEnumValN(ofp::log::Level::Fatal, "fatal", "Log fatal messages only - the default"),
+    clEnumValEnd)};
+  cl::opt<std::string> logfile_{"logfile", cl::desc("Log messages to this file"), cl::ValueRequired, cl::Hidden, cl::cat(logCategory_)};
+  cl::bits<ofp::log::Trace> logtrace_{"trace", cl::desc("Trace flags"), cl::CommaSeparated, cl::Hidden, cl::cat(logCategory_),
+    cl::values(
+      clEnumValN(ofp::log::Trace::Msg, "msg", "Log all OpenFlow messages sent and received"),
+      clEnumValN(ofp::log::Trace::Rpc, "rpc", "Log all JSON-RPC events sent and received"),
+    clEnumValEnd)};
 };
 
 using RunSubprogram = int (*)(int argc, const char *const *argv);

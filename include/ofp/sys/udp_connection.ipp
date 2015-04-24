@@ -103,7 +103,7 @@ void UDP_Connection<AdapterType>::write(const void *data, size_t length) {
 
 template <class AdapterType>
 void UDP_Connection<AdapterType>::flush() {
-  log::trace("Write", connectionId(), buffer_.data(), buffer_.size());
+  log::trace_msg("Write", connectionId(), buffer_.data(), buffer_.size());
   dtls_.sendDatagram(buffer_.data(), buffer_.size());
   buffer_.clear();
 }
