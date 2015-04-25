@@ -251,7 +251,7 @@ endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
 else()
-  set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter")
+  set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 endif()
 
 #-------------------------------------------------------------------------------
