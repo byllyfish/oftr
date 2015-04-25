@@ -39,6 +39,8 @@ using namespace ofpx;
 Help::Help() = default;
 Help::~Help() = default;
 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
 static const char *const kMessageSchemas[] = {
   llvm::yaml::kHelloSchema,
   llvm::yaml::kErrorSchema,
@@ -109,6 +111,8 @@ static const char *const kActionSchemas[] = {
   llvm::yaml::kSetFieldSchema,
   llvm::yaml::kExperimenterActionSchema,
 };
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
