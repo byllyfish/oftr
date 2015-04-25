@@ -112,8 +112,6 @@ static const char *const kActionSchemas[] = {
   llvm::yaml::kExperimenterActionSchema,
 };
 
-OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
-
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
 static SchemaPair kEnumSchemas[] = {
@@ -136,6 +134,15 @@ static SchemaPair kMixedSchemas[] = {
   { ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen" },
 };
 
+// Translate "BigNN" to "UIntNN" for documentation purposes.
+static std::pair<const char *, const char *> sFieldTypeMap[] = {
+  { "Big8", "UInt8" },
+  { "Big16", "UInt16" },
+  { "Big32", "UInt32" },
+  { "Big64", "UInt64" }
+};
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 int Help::run(int argc, const char *const *argv) {
   parseCommandLineOptions(argc, argv);
@@ -194,7 +201,7 @@ void Help::loadSchemas() {
 }
 
 Schema *Help::findSchema(const std::string &key) {
-  auto iter = std::find_if(schemas_.begin(), schemas_.end(), [&key](auto &schema){
+  auto iter = std::find_if(schemas_.begin(), schemas_.end(), [&key](std::unique_ptr<Schema> &schema){
     return schema->equals(key);
   });
 
@@ -282,14 +289,6 @@ void Help::dumpSchemas() {
     std::cout << schema->type().lower() << '/' << schema->name() << '\n';
   }
 }
-
-// Translate "BigNN" to "UIntNN" for documentation purposes.
-static std::pair<const char *, const char *> sFieldTypeMap[] = {
-  { "Big8", "UInt8" },
-  { "Big16", "UInt16" },
-  { "Big32", "UInt32" },
-  { "Big64", "UInt64" }
-};
 
 const char *Help::translateFieldType(const char *type) {
   for (auto &entry: sFieldTypeMap) {

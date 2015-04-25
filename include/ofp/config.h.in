@@ -5,5 +5,6 @@
 
 #define LIBOFP_VERSION_MAJOR        @libofp_VERSION_MAJOR@
 #define LIBOFP_VERSION_MINOR        @libofp_VERSION_MINOR@
+#define LIBOFP_DOWNLOAD_URL         "@libofp_DOWNLOAD_URL@"
 
 #endif  // OFP_CONFIG_H_  // NOLINT

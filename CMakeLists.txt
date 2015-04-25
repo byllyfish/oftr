@@ -30,6 +30,7 @@ set(CMAKE_MODULE_PATH
 
 set(libofp_VERSION_MAJOR 0)
 set(libofp_VERSION_MINOR 2)
+set(libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher+libofp@gmail.com>")
 
 # Require out of source builds.
@@ -77,7 +78,7 @@ endif()
 # source code be compiled with the same flags.
 
 set(LIBOFP_C_FLAGS "-fstrict-aliasing")
-set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++14")
+set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11")
 
 if (APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
