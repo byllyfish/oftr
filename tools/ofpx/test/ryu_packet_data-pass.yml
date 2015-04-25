@@ -240,6 +240,7 @@ msg:
   type:            OFPET_BAD_ACTION
   code:            OFPBAC_UNSUPPORTED_ORDER
   data:            6675676166756761
+  _text:           fugafuga
 ...
 ---
 type:            EXPERIMENTER
@@ -1088,6 +1089,7 @@ msg:
   type:            OFPET_BAD_ACTION
   code:            OFPBAC_UNSUPPORTED_ORDER
   data:            6675676166756761
+  _text:           fugafuga
 ...
 ---
 type:            EXPERIMENTER
@@ -3900,6 +3902,7 @@ msg:
   type:            OFPET_BAD_ACTION
   code:            OFPBAC_UNSUPPORTED_ORDER
   data:            6675676166756761
+  _text:           fugafuga
 ...
 ---
 type:            EXPERIMENTER

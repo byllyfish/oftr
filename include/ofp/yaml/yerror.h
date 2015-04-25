@@ -26,6 +26,11 @@ struct MappingTraits<ofp::Error> {
     io.mapRequired("type", type);
     io.mapRequired("code", code);
     io.mapRequired("data", data);
+
+    if (data.isPrintable()) {
+      llvm::StringRef message{reinterpret_cast<const char *>(data.data()), data.size()};
+      io.mapRequired("_text", message);
+    }
   }
 };
 
@@ -38,6 +43,9 @@ struct MappingTraits<ofp::ErrorBuilder> {
     io.mapRequired("type", type);
     io.mapRequired("code", code);
     io.mapRequired("data", data);
+
+    std::string ignore;
+    io.mapOptional("_text", ignore);
 
     if (type == ofp::OFPET_EXPERIMENTER || OFPErrorCodeIsUnknown(code)) {
       code = OFPErrorCodeSetType(code, type);
