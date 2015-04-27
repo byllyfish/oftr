@@ -35,7 +35,14 @@ int Decode::run(int argc, const char *const *argv) {
 ExitStatus Decode::decodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
 
-  for (const std::string &filename : files) {
+  for (std::string filename : files) {
+    // If filename ends in .findx when using --use-findx, strip the extension
+    // from filename.
+    llvm::StringRef fname{filename};
+    if (useFindx_ && fname.endswith(".findx")) {
+      filename = fname.drop_back(6);
+    }
+
     ExitStatus result = decodeFile(filename);
     if (result != ExitStatus::Success && !keepGoing_) {
       return result;
@@ -93,7 +100,6 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   // Create message buffers.
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
-  ofp::Timestamp timestamp;
 
   while (input) {
     // Read the message header.
@@ -128,7 +134,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
     originalMessage.assign(message);
     message.transmogrify();
 
-    ExitStatus result = decodeOneMessage(&message, &originalMessage, timestamp);
+    ExitStatus result = decodeOneMessage(&message, &originalMessage);
     if (result != ExitStatus::Success && !keepGoing_) {
       return result;
     }
@@ -236,7 +242,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
       message.transmogrify();
 
       ExitStatus result =
-          decodeOneMessage(&message, &originalMessage, timestamp);
+          decodeOneMessage(&message, &originalMessage);
       if (result != ExitStatus::Success && !keepGoing_) {
         return result;
       }
@@ -283,9 +289,8 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 }
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
-                                    const ofp::Message *originalMessage,
-                                    const ofp::Timestamp &timestamp) {
-  ofp::yaml::Decoder decoder{message, json_, dataMatch_};
+                                    const ofp::Message *originalMessage) {
+  ofp::yaml::Decoder decoder{message, json_, dataPkt_};
 
   if (!decoder.error().empty()) {
     // An error occurred in decoding the message.
@@ -303,7 +308,7 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 
   if (invertCheck_) {
     // There was no problem decoding the message, but we are expecting the data
-    // to be invalid. Report this as an error.
+    // to be invalid (because we are fuzz testing). Report this as an error.
 
     std::cerr << "Filename: " << currentFilename_ << '\n';
     std::cerr

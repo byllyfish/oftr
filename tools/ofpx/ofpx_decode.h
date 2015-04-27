@@ -9,7 +9,7 @@
 namespace ofpx {
 
 // ofpx decode [--json|-j] [--silent|-s] [--invert-check|-v] [--keep-going|-k]
-// [--verify-output|-V] [--use-findx] [--data-match] [<Input files>]
+// [--verify-output|-V] [--use-findx] [--data-pkt] [<Input files>]
 //
 // Decode binary OpenFlow messages in the input files and translate each
 // message to human-readable YAML output. If there is an invalid message,
@@ -21,7 +21,7 @@ namespace ofpx {
 //   --keep-going     Continue processing messages after errors.
 //   --verify-output  Verify output by translating it back to binary.
 //   --use-findx      Use timestamps from '.findx' file(s).
-//   --data-match     Include data_match in PacketIn/PacketOut decodes.
+//   --data-pkt       Include _data_pkt in PacketIn/PacketOut decodes.
 //
 // Usage:
 //
@@ -66,8 +66,7 @@ class Decode : public Subprogram {
   ExitStatus checkError(std::istream &input, std::streamsize readLen,
                         bool header);
   ExitStatus decodeOneMessage(const ofp::Message *message,
-                              const ofp::Message *originalMessage,
-                              const ofp::Timestamp &timestamp);
+                              const ofp::Message *originalMessage);
 
   static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
                              ofp::Timestamp *timestamp, size_t *length);
@@ -86,9 +85,9 @@ class Decode : public Subprogram {
       cl::desc("Verify output by translating it back to binary")};
   cl::opt<bool> useFindx_{"use-findx",
                           cl::desc("Use timestamps from '.findx' file(s)")};
-  cl::opt<bool> dataMatch_{
-      "data-match",
-      cl::desc("Include data_match in PacketIn/PacketOut decodes")};
+  cl::opt<bool> dataPkt_{
+      "data-pkt",
+      cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
