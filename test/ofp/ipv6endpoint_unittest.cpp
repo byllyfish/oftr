@@ -36,17 +36,59 @@ TEST(ipv6endpoint, parse) {
   EXPECT_EQ(IPv6Address{"192.168.1.1"}, endpt.address());
   EXPECT_EQ(77, endpt.port());
 
+  EXPECT_TRUE(endpt.parse(".820"));
+  EXPECT_EQ(IPv6Address{}, endpt.address());
+  EXPECT_EQ(820, endpt.port());
+
   EXPECT_TRUE(endpt.parse(":81"));
   EXPECT_EQ(IPv6Address{}, endpt.address());
   EXPECT_EQ(81, endpt.port());
+  EXPECT_FALSE(endpt.parse("xyz"));
+  EXPECT_EQ("[::]:81", endpt.toString());   // previous value unaffected
+}
 
-  EXPECT_TRUE(endpt.parse("82"));
+TEST(ipv6endpoint, parse2) {
+  IPv6Endpoint endpt;
+
+  EXPECT_TRUE(endpt.parse(":65535"));
   EXPECT_EQ(IPv6Address{}, endpt.address());
-  EXPECT_EQ(82, endpt.port());
+  EXPECT_EQ(65535, endpt.port());
+
+  EXPECT_TRUE(endpt.parse("127.000.000.001:06633"));
+  EXPECT_EQ(IPv6Address{"127.0.0.1"}, endpt.address());
+  EXPECT_EQ(6633, endpt.port());
+
+  EXPECT_TRUE(endpt.parse("127.000.000.001.06633"));
+  EXPECT_EQ(IPv6Address{"127.0.0.1"}, endpt.address());
+  EXPECT_EQ(6633, endpt.port());
+
+  EXPECT_TRUE(endpt.parse("::1.06633"));
+  EXPECT_EQ(IPv6Address{"::1"}, endpt.address());
+  EXPECT_EQ(6633, endpt.port());
+
+  EXPECT_TRUE(endpt.parse("::1:06633"));
+  EXPECT_EQ(IPv6Address{"::1"}, endpt.address());
+  EXPECT_EQ(6633, endpt.port());
+
+  EXPECT_TRUE(endpt.parse("[]:1234"));
+  EXPECT_EQ(IPv6Address{}, endpt.address());
+  EXPECT_EQ(1234, endpt.port());
+
+  EXPECT_TRUE(endpt.parse(" fe80::1 .4321 "));
+  EXPECT_EQ(IPv6Address{"fe80::1"}, endpt.address());
+  EXPECT_EQ(4321, endpt.port());
+}
+
+TEST(ipv6endpoint, parseFails) {
+  IPv6Endpoint endpt;
+
+  EXPECT_FALSE(endpt.parse("80"));
+  EXPECT_FALSE(endpt.parse("1.2.3.4 80"));
 
   EXPECT_FALSE(endpt.parse("192.168.1.1"));
   EXPECT_FALSE(endpt.parse("2000::1"));
   EXPECT_FALSE(endpt.parse("127.0.0.1"));
 
-  EXPECT_EQ("[::]:82", endpt.toString());
+  EXPECT_FALSE(endpt.parse("1.2.3.4:0"));
+  EXPECT_FALSE(endpt.parse("1.2.3.4:65536"));
 }

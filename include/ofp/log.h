@@ -102,8 +102,8 @@ inline void error(Args &&... args) {
 }
 
 template <class... Args>
-[[noreturn]] inline void fatal(Args &&... args) {
-  detail::write_(Level::Fatal, std::forward<Args>(args)...);
+[[noreturn]] inline void fatal(const char *msg, Args &&... args) {
+  detail::write_(Level::Fatal, msg, std::forward<Args>(args)...);
   std::abort();
 }
 

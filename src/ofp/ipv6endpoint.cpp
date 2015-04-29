@@ -1,67 +1,85 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#include <sstream>
+#include "llvm/ADT/StringRef.h"
 #include "ofp/ipv6endpoint.h"
+#include "ofp/log.h"
 
 using namespace ofp;
 
-static bool scan(std::istream &stream, char delimiter) {
-  auto pos = stream.tellg();
-
-  char ch = 0;
-  if (stream >> ch && ch == delimiter) {
-    return true;
-  }
-
-  stream.clear();
-  stream.seekg(pos);
-
-  return false;
-}
-
-static bool scan(std::istream &stream, std::string &str, char delimiter) {
-  auto pos = stream.tellg();
-
-  if (std::getline(stream, str, delimiter) && !stream.eof())
-    return true;
-
-  stream.clear();
-  stream.seekg(pos);
-
-  return false;
-}
-
 bool IPv6Endpoint::parse(const std::string &s) {
-  std::stringstream iss{s};
-  std::string addrStr;
+  using llvm::StringRef;
 
-  if (scan(iss, '[')) {
-    if (!scan(iss, addrStr, ']')) {
+  StringRef input = StringRef{s}.trim();
+  StringRef addrStr;
+  StringRef portStr;
+
+  if (input.empty())
+    return false;
+
+  log::debug("IPv6Endpoint::parseInput ", input);
+
+  if (input[0] == '[') {
+    // Check for address enclosed in brackets.
+    size_t endBracket = input.find(']');
+    if (endBracket == StringRef::npos)
       return false;
-    }
-    if (!scan(iss, ':')) {
+
+    // Obtain address substring and trim leading/trailing spaces.
+    addrStr = input.substr(1, endBracket - 1).trim();
+    
+    // Grab rest of the input after the ']'
+    StringRef restStr = input.substr(endBracket+1).ltrim();
+    if (restStr.empty())
       return false;
+
+    // The rest must begin with a ':' or a '.'
+    if (restStr[0] != ':' && restStr[0] != '.')
+      return false;
+
+    portStr = restStr.substr(1).ltrim();
+
+  } else {
+    // Check for address without brackets.
+    
+    size_t lastSeparator = input.rfind(':');
+    if (lastSeparator == StringRef::npos) {
+      lastSeparator = input.rfind('.');
+      if (lastSeparator == StringRef::npos) 
+        return false;
+
+    } else {
+      // There's a ':' in the input. We still need to check for the period
+      // separator -- ex: "::1.80" is valid input
+      size_t period = input.rfind('.');
+      if (period != StringRef::npos && period > lastSeparator)
+        lastSeparator = period;
     }
 
-  } else if (!scan(iss, addrStr, ':')) {
-    addrStr.clear();
+    assert(input[lastSeparator] == ':' || input[lastSeparator] == '.');
+    
+    addrStr = input.substr(0, lastSeparator).rtrim();
+    portStr = input.substr(lastSeparator + 1).ltrim();
   }
 
+  log::debug("IPv6Endpoint::parse ", addrStr, portStr);
+
+  if (portStr.empty())
+    return false;
+
+  // Parse value of base 10 port number. N.B. TRUE result signfies error.
   UInt16 port = 0;
-  iss >> port;
+  if (portStr.getAsInteger(10, port) || (port == 0))
+    return false;
 
-  if (iss.eof() && port != 0) {
-    if (addrStr.empty()) {
-      addr_.clear();
-    } else if (!addr_.parse(addrStr)) {
-      return false;
-    }
-
-    port_ = port;
-    return true;
+  if (addrStr.empty()) {
+    addr_.clear();
+  } else if (!addr_.parse(addrStr)) {
+    return false;
   }
 
-  return false;
+  port_ = port;
+
+  return true;
 }
 
 void IPv6Endpoint::clear() {

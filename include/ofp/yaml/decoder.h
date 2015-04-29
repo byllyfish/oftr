@@ -7,8 +7,10 @@
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/ydatapathid.h"
 #include "ofp/yaml/ytimestamp.h"
+#include "ofp/yaml/yaddress.h"
 #include "ofp/message.h"
 #include "ofp/channel.h"
+#include "ofp/messageinfo.h"
 
 namespace ofp {
 namespace yaml {
@@ -76,6 +78,16 @@ struct MappingTraits<ofp::yaml::Decoder> {
       if (auxID) {
         io.mapRequired("auxiliary_id", auxID);
       }
+    }
+
+    const MessageInfo *info = decoder.msg_->info();
+    if (info) {
+      UInt64 sessionId = info->sessionId();
+      IPv6Endpoint src = info->source();
+      IPv6Endpoint dst = info->dest();
+      io.mapRequired("_session", sessionId);
+      io.mapRequired("_source", src);
+      io.mapRequired("_dest", dst);
     }
 
     if (!decoder.decodeMsg(io)) {

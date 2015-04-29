@@ -53,6 +53,11 @@ class IPv6Address {
 
   bool operator!=(const IPv6Address &rhs) const { return !(*this == rhs); }
 
+  bool operator<(const IPv6Address &rhs) const { return addr_ < rhs.addr_; }
+  bool operator<=(const IPv6Address &rhs) const { return addr_ <= rhs.addr_; }
+
+  // FIXME(bfish): Implement rest of relational operators.
+
  private:
   ArrayType addr_;
 

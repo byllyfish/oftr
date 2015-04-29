@@ -32,6 +32,7 @@ class IPv6Endpoint {
     return port_ == rhs.port_ && addr_ == rhs.addr_;
   }
   bool operator!=(const IPv6Endpoint &rhs) const { return !(*this == rhs); }
+  bool operator<(const IPv6Endpoint &rhs) const { return addr_ < rhs.addr_ || (addr_ == rhs.addr_ && port_ < rhs.port_); }
 
  private:
   IPv6Address addr_;
@@ -53,6 +54,7 @@ struct hash<ofp::IPv6Endpoint> {
   size_t operator()(const ofp::IPv6Endpoint &endpt) const {
     std::hash<ofp::IPv6Address> h;
     std::hash<unsigned> i;
+    // FIXME(bfish): Better hash_combine
     return h(endpt.address()) ^ i(endpt.port());
   }
 };

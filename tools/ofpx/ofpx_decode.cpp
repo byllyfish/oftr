@@ -5,6 +5,7 @@
 #include <fstream>
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
+#include "llvm/Support/Path.h"
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -82,16 +83,16 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
       return ExitStatus::FileOpenFailed;
     }
 
-    currentFilename_ = filename;
+    setCurrentFilename(filename);
     result = decodeMessagesWithIndex(*input, index);
 
   } else {
     // Decode messages from file normally -- no index file.
-    currentFilename_ = filename;
+    setCurrentFilename(filename);
     result = decodeMessages(*input);
   }
 
-  currentFilename_ = "";
+  setCurrentFilename("");
 
   return result;
 }
@@ -149,6 +150,11 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
   ofp::Message buffer{nullptr};
+
+  if (hasSessionInfo_) {
+    message.setInfo(&sessionInfo_);
+  }
+
   size_t expectedPos = 0;
   size_t previousPos = 0;
   ofp::Timestamp lastTimestamp;
@@ -392,4 +398,86 @@ bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
     return false;
 
   return timestamp->parse(timestampStr);
+}
+
+/// Update the current file. To clear the current file, pass "".
+void Decode::setCurrentFilename(const std::string &filename) {
+  currentFilename_ = filename;
+
+  if (!filename.empty() && useFindx_) {
+    // When we are using '.findx' files, parse the filename to obtain information
+    // about the session, so we can set up the `sessionInfo_` structure with 
+    // source and destination information.
+    hasSessionInfo_ = parseFilename(filename, &sessionInfo_);
+  } else {
+    hasSessionInfo_ = false;
+  }
+}
+
+
+bool Decode::parseFilename(const std::string &filename, ofp::MessageInfo *info) {
+  // tcpflow uses base IPv4 filenames of the form:
+  // 
+  // (\d+T)?\d{3}.\d{3}.\d{3}.\d{3}.\d{5}-\d{3}.\d{3}.\d{3}.\d{3}.\d{5}(c\d+)?
+  
+  // Obtain file's base name.
+  llvm::StringRef basename = llvm::sys::path::filename(filename);
+
+  // Find the optional 'T' character and strip off the prefix.
+  size_t pos = basename.find('T');
+  if (pos != llvm::StringRef::npos) {
+    basename = basename.drop_front(pos + 1);
+  }
+
+  // Find the optional 'c' character and strip off the suffix.
+  pos = basename.rfind('c');
+  if (pos != llvm::StringRef::npos) {
+    basename = basename.drop_back(basename.size() - pos);
+  }
+
+  // Split the remaining portion on the hyphen.
+  auto pair = basename.split('-');
+  if (pair.second.empty()) {
+    std::cerr << "parseFilename: Unexpected filename format `" << basename << "`\n";
+    return false;
+  }
+
+  ofp::IPv6Endpoint source;
+  ofp::IPv6Endpoint dest;
+
+  if (!source.parse(pair.first)) {
+    std::cerr << "parseFilename: Unable to parse source endpoint `" << pair.first << "`\n";
+    return false;
+  }
+
+  if (!dest.parse(pair.second)) {
+    std::cerr << "parseFilename: Unable to parse destination endpoint `" << pair.first << "`\n";
+    return false;
+  }
+
+  ofp::UInt64 sessionId = lookupSessionId(source, dest);
+  *info = ofp::MessageInfo{sessionId, source, dest};
+
+  return true;
+}
+
+ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src, const ofp::IPv6Endpoint &dst) {
+  EndpointPair pair;
+
+  if (src < dst) {
+    pair.first = src;
+    pair.second = dst;
+  } else {
+    pair.first = dst;
+    pair.second = src;
+  }
+
+  auto iter = sessionIdMap_.find(pair);
+  if (iter != sessionIdMap_.end()) {
+    return iter->second;
+  }
+
+  sessionIdMap_[pair] = ++nextSessionId_;
+
+  return nextSessionId_;
 }

@@ -5,6 +5,8 @@
 
 #include "./ofpx.h"
 #include "ofp/timestamp.h"
+#include "ofp/messageinfo.h"
+#include <map>
 
 namespace ofpx {
 
@@ -42,6 +44,8 @@ namespace ofpx {
 // If no input files are specified, use standard input (stdin). A single hyphen
 // also represents stdin.
 
+OFP_BEGIN_IGNORE_PADDING
+
 class Decode : public Subprogram {
  public:
   enum class ExitStatus {
@@ -58,6 +62,12 @@ class Decode : public Subprogram {
 
  private:
   std::string currentFilename_;
+  ofp::MessageInfo sessionInfo_;
+  bool hasSessionInfo_ = false;
+
+  using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
+  std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
+  ofp::UInt64 nextSessionId_ = 0;
 
   ExitStatus decodeFiles();
   ExitStatus decodeFile(const std::string &filename);
@@ -70,6 +80,10 @@ class Decode : public Subprogram {
 
   static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
                              ofp::Timestamp *timestamp, size_t *length);
+
+  void setCurrentFilename(const std::string &filename);
+  bool parseFilename(const std::string &filename, ofp::MessageInfo *info);
+  ofp::UInt64 lookupSessionId(const ofp::IPv6Endpoint &src, const ofp::IPv6Endpoint &dst);
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
@@ -102,6 +116,8 @@ class Decode : public Subprogram {
   cl::alias VAlias_{"V", cl::desc("Alias for -verify-output"),
                     cl::aliasopt(verifyOutput_), cl::Grouping};
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace ofpx
 
