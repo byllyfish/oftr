@@ -24,6 +24,7 @@ namespace ofpx {
 //   --verify-output  Verify output by translating it back to binary.
 //   --use-findx      Use timestamps from '.findx' file(s).
 //   --data-pkt       Include _data_pkt in PacketIn/PacketOut decodes.
+//   --output=<file>  Write output to specified file.
 //
 // Usage:
 //
@@ -62,6 +63,7 @@ class Decode : public Subprogram {
 
  private:
   std::string currentFilename_;
+  std::ostream *output_ = nullptr;
   ofp::MessageInfo sessionInfo_;
   bool hasSessionInfo_ = false;
 
@@ -102,6 +104,7 @@ class Decode : public Subprogram {
   cl::opt<bool> dataPkt_{
       "data-pkt",
       cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
+  cl::opt<std::string> outputFile_{"output", "Write output to specified file", cl::ValueRequired};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
@@ -115,6 +118,7 @@ class Decode : public Subprogram {
                     cl::aliasopt(keepGoing_), cl::Grouping};
   cl::alias VAlias_{"V", cl::desc("Alias for -verify-output"),
                     cl::aliasopt(verifyOutput_), cl::Grouping};
+  cl::alias oAlias_{"o", cl::desc("Alias for -output"), cl::aliasopt(outputFile_)};
 };
 
 OFP_END_IGNORE_PADDING

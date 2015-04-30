@@ -13,7 +13,6 @@ using ExitStatus = Decode::ExitStatus;
 
 // Compare two buffers and return offset of the byte that differs. If buffers
 // are identical, return `size`.
-//
 static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
   for (size_t i = 0; i < size; ++i) {
     if (lhs[i] != rhs[i])
@@ -28,6 +27,19 @@ int Decode::run(int argc, const char *const *argv) {
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {
     inputFiles_.push_back("-");
+  }
+
+  // Set up output stream.
+  std::ofstream outStream;
+  if (outputFile_.empty()) {
+    output_ = &std::cout;
+  } else {
+    outStream.open(outputFile_);
+    if (!outStream) {
+      std::cerr << "Error: opening file for output " << outputFile_ << '\n';
+      return static_cast<int>(ExitStatus::FileOpenFailed);
+    }
+    output_ = &outStream;
   }
 
   return static_cast<int>(decodeFiles());
@@ -324,9 +336,9 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   }
 
   if (!silent_) {
-    std::cout << decoder.result();
+    *output_ << decoder.result();
     if (json_) {
-      std::cout << '\n';
+      *output_ << '\n';
     }
   }
 
