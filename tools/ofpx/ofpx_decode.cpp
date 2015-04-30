@@ -48,6 +48,12 @@ int Decode::run(int argc, const char *const *argv) {
 ExitStatus Decode::decodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
 
+  if (!silent_ && jsonArray_) {
+    // -json-array implies -json.
+    json_ = true;
+    *output_ << "[\n";
+  }
+
   for (std::string filename : files) {
     // If filename ends in .findx when using --use-findx, strip the extension
     // from filename.
@@ -60,6 +66,10 @@ ExitStatus Decode::decodeFiles() {
     if (result != ExitStatus::Success && !keepGoing_) {
       return result;
     }
+  }
+
+  if (!silent_ && jsonArray_) {
+    *output_ << "]\n";
   }
 
   return ExitStatus::Success;
@@ -337,7 +347,9 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 
   if (!silent_) {
     *output_ << decoder.result();
-    if (json_) {
+    if (jsonArray_) {
+      *output_ << ",\n";
+    } else if (json_) {
       *output_ << '\n';
     }
   }

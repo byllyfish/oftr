@@ -90,6 +90,7 @@ class Decode : public Subprogram {
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
                       cl::desc("Write compact JSON output instead of YAML")};
+  cl::opt<bool> jsonArray_{"json-array", cl::desc("Write output as JSON array")};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
   cl::opt<bool> invertCheck_{"invert-check",
