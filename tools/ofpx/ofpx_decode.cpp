@@ -51,6 +51,7 @@ ExitStatus Decode::decodeFiles() {
   if (!silent_ && jsonArray_) {
     // -json-array implies -json.
     json_ = true;
+    jsonNeedComma_ = false;
     *output_ << "[\n";
   }
 
@@ -346,11 +347,13 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   }
 
   if (!silent_) {
+    if (jsonArray_ && jsonNeedComma_) {
+      *output_ << ',';
+    }
     *output_ << decoder.result();
-    if (jsonArray_) {
-      *output_ << ",\n";
-    } else if (json_) {
+    if (json_) {
       *output_ << '\n';
+      jsonNeedComma_ = true;
     }
   }
 

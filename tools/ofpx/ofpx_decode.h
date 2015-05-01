@@ -66,7 +66,8 @@ class Decode : public Subprogram {
   std::ostream *output_ = nullptr;
   ofp::MessageInfo sessionInfo_;
   bool hasSessionInfo_ = false;
-
+  bool jsonNeedComma_ = false;
+  
   using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
   std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
   ofp::UInt64 nextSessionId_ = 0;
