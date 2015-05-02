@@ -12,14 +12,15 @@ namespace ofpx {
 // Encode OpenFlow messages to binary as specified in YAML input files. If there
 // is a syntax error in the YAML input, stop and report an error.
 //
-//   --hex, -h               Output hexadecimal rather than binary
+//   --hex, -x               Output hexadecimal rather than binary
 //   --silent, -S            Quiet mode; suppress normal output
 //   --keep-going, -k        Continue processing messages after errors
 //   --unchecked-match, -M   Do not check items in match fields
 //   --roundtrip, -R         Roundtrip encoded binary message back to YAML
 //   --json, -j              Json input is separated by linefeeds
 //   --ofversion=0           OpenFlow version to use when unspecified
-//       
+//   --output=<file>         Write output to specified file instead of stdout.
+// 
 // Usage:
 //
 // To translate a text file into binary OpenFlow messages:
@@ -49,9 +50,9 @@ class Encode : public Subprogram {
  public:
   enum class ExitStatus {
     Success = 0,
+    FileOpenFailed = FileOpenFailedExitStatus,
     EncodeFailed = MinExitStatus,
     RoundtripFailed,
-    FileOpenFailed,
     MessageReadFailed
   };
 
@@ -59,6 +60,7 @@ class Encode : public Subprogram {
 
  private:
   std::string currentFilename_;
+  std::ostream *output_ = nullptr;
   std::string lineBuf_;
   int lineNumber_ = 0;
 
@@ -80,10 +82,11 @@ class Encode : public Subprogram {
       "roundtrip", cl::desc("Roundtrip encoded binary message back to YAML")};
   cl::opt<bool> json_{"json", cl::desc("Json input is separated by linefeeds")};
   cl::opt<unsigned> ofversion_{"ofversion", cl::desc("OpenFlow version to use when unspecified"), cl::ValueRequired};
+  cl::opt<std::string> outputFile_{"output", cl::desc("Write output to specified file instead of stdout"), cl::ValueRequired};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
-  cl::alias hAlias_{"h", cl::desc("Alias for -hex"), cl::aliasopt(hex_),
+  cl::alias xAlias_{"x", cl::desc("Alias for -hex"), cl::aliasopt(hex_),
                     cl::Grouping};
   cl::alias sAlias_{"s", cl::desc("Alias for -silent"), cl::aliasopt(silent_),
                     cl::Grouping};
@@ -95,6 +98,7 @@ class Encode : public Subprogram {
                     cl::aliasopt(roundtrip_), cl::Grouping};
   cl::alias jAlias_{"j", cl::desc("Alias for -json"), cl::aliasopt(json_),
                     cl::Grouping};
+  cl::alias oAlias_{"o", cl::desc("Alias for -output"), cl::aliasopt(outputFile_)};
 };
 
 OFP_END_IGNORE_PADDING

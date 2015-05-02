@@ -21,11 +21,18 @@ class Subprogram {
   virtual int run(int argc, const char *const *argv) = 0;
 
  protected:
+  static const int FileOpenFailedExitStatus = 9;
   static const int MinExitStatus = 10;
+
   std::unique_ptr<llvm::raw_ostream> logstream_;
 
   void parseCommandLineOptions(int argc, const char *const *argv) {
     cl::ParseCommandLineOptions(argc, argv);
+
+    if (helpAlias_) {
+      cl::PrintHelpMessage(false, true);
+    }
+
     setupLogging();
   }
 
@@ -52,6 +59,7 @@ class Subprogram {
   }
 
   // --- Command-line Arguments ---
+  cl::opt<bool> helpAlias_{"h", cl::desc("Alias for -help"), cl::Grouping, cl::Hidden};
   cl::OptionCategory logCategory_{"Logging Options"};
   cl::opt<ofp::log::Level> loglevel_{"loglevel", cl::desc("Log level"), cl::ValueRequired, cl::Hidden, cl::cat(logCategory_), cl::init(ofp::log::Level::Fatal),
     cl::values(

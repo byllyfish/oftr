@@ -76,7 +76,6 @@ void print_usage(std::ostream &out) {
   for (size_t i = 0; i < ofp::ArrayLength(programs); ++i) {
     out << "  " << programs[i].name << '\n';
   }
-  out << "  version\n";
   out << '\n';
 }
 

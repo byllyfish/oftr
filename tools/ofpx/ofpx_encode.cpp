@@ -17,6 +17,19 @@ int Encode::run(int argc, const char *const *argv) {
     inputFiles_.push_back("-");
   }
 
+  // Set up output stream.
+  std::ofstream outStream;
+  if (outputFile_.empty()) {
+    output_ = &std::cout;
+  } else {
+    outStream.open(outputFile_);
+    if (!outStream) {
+      std::cerr << "Error: opening file for output " << outputFile_ << '\n';
+      return static_cast<int>(ExitStatus::FileOpenFailed);
+    }
+    output_ = &outStream;
+  }
+
   return static_cast<int>(encodeFiles());
 }
 
@@ -88,7 +101,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
           return ExitStatus::RoundtripFailed;
         }
       } else if (!silent_) {
-        std::cout << decoder.result();
+        *output_ << decoder.result();
       }
 
     } else if (!silent_) {
@@ -162,16 +175,16 @@ void Encode::output(const void *data, size_t length) {
     auto left = hex.size() % rowlen;
 
     for (auto i = 0U; i < rows; ++i) {
-      std::cout << hex.substr(i * rowlen, rowlen) << '\n';
+      *output_ << hex.substr(i * rowlen, rowlen) << '\n';
     }
 
     if (left) {
-      std::cout << hex.substr(rows * rowlen, left) << '\n';
+      *output_ << hex.substr(rows * rowlen, left) << '\n';
     }
-    std::cout << '\n';
+    *output_ << '\n';
 
   } else {
     // Write binary message to stdout.
-    std::cout.write(static_cast<const char *>(data), ofp::Signed_cast(length));
+    output_->write(static_cast<const char *>(data), ofp::Signed_cast(length));
   }
 }
