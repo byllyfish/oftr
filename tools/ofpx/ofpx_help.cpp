@@ -145,7 +145,7 @@ static std::pair<const char *, const char *> sFieldTypeMap[] = {
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 int Help::run(int argc, const char *const *argv) {
-  parseCommandLineOptions(argc, argv);
+  parseCommandLineOptions(argc, argv, "Provide information about the OpenFlow YAML schema\n");
   loadSchemas();
 
   if (fields_) {

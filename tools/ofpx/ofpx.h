@@ -26,8 +26,8 @@ class Subprogram {
 
   std::unique_ptr<llvm::raw_ostream> logstream_;
 
-  void parseCommandLineOptions(int argc, const char *const *argv) {
-    cl::ParseCommandLineOptions(argc, argv);
+  void parseCommandLineOptions(int argc, const char *const *argv, const char *overview) {
+    cl::ParseCommandLineOptions(argc, argv, overview);
 
     if (helpAlias_) {
       cl::PrintHelpMessage(false, true);
@@ -61,7 +61,7 @@ class Subprogram {
   // --- Command-line Arguments ---
   cl::opt<bool> helpAlias_{"h", cl::desc("Alias for -help"), cl::Grouping, cl::Hidden};
   cl::OptionCategory logCategory_{"Logging Options"};
-  cl::opt<ofp::log::Level> loglevel_{"loglevel", cl::desc("Log level"), cl::ValueRequired, cl::Hidden, cl::cat(logCategory_), cl::init(ofp::log::Level::Fatal),
+  cl::opt<ofp::log::Level> loglevel_{"loglevel", cl::desc("Log level (exactly one)"), cl::ValueRequired, cl::Hidden, cl::cat(logCategory_), cl::init(ofp::log::Level::Fatal),
     cl::values(
       clEnumValN(ofp::log::Level::Silent, "none", "No log messages emitted"),
       clEnumValN(ofp::log::Level::Debug, "debug", "Log debug messages and above"),
@@ -71,7 +71,7 @@ class Subprogram {
       clEnumValN(ofp::log::Level::Fatal, "fatal", "Log fatal messages only - the default"),
     clEnumValEnd)};
   cl::opt<std::string> logfile_{"logfile", cl::desc("Log messages to this file"), cl::ValueRequired, cl::Hidden, cl::cat(logCategory_)};
-  cl::bits<ofp::log::Trace> logtrace_{"trace", cl::desc("Trace flags"), cl::CommaSeparated, cl::Hidden, cl::cat(logCategory_),
+  cl::bits<ofp::log::Trace> logtrace_{"trace", cl::desc("Trace flags (one or more separated by commas)"), cl::CommaSeparated, cl::Hidden, cl::cat(logCategory_),
     cl::values(
       clEnumValN(ofp::log::Trace::Msg, "msg", "Log all OpenFlow messages sent and received"),
       clEnumValN(ofp::log::Trace::Rpc, "rpc", "Log all JSON-RPC events sent and received"),

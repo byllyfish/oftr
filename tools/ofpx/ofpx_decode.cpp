@@ -22,7 +22,7 @@ static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
 }
 
 int Decode::run(int argc, const char *const *argv) {
-  parseCommandLineOptions(argc, argv);
+  parseCommandLineOptions(argc, argv, "Translate binary OpenFlow messages in the input files to human-readable YAML\n");
 
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {

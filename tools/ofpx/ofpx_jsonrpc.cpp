@@ -12,7 +12,7 @@ const int STDIN = 0;
 const int STDOUT = 1;
 
 int JsonRpc::run(int argc, const char *const *argv) {
-  parseCommandLineOptions(argc, argv);
+  parseCommandLineOptions(argc, argv, "Run a JSON-RPC server\n");
   setMaxOpenFiles();
 
   if (xpc_) {
