@@ -18,13 +18,14 @@ namespace ofpx {
 // stop and report an error.
 //
 //   --json           Write compact JSON output instead of YAML.
+//   --json-array     Write output as a valid JSON array.
 //   --silent         Quiet mode; suppress normal output.
 //   --invert-check   Expect invalid messages only.
 //   --keep-going     Continue processing messages after errors.
 //   --verify-output  Verify output by translating it back to binary.
-//   --use-findx      Use timestamps from '.findx' file(s).
+//   --use-findx      Use metadata from tcpflow '.findx' files.
 //   --data-pkt       Include _data_pkt in PacketIn/PacketOut decodes.
-//   --output=<file>  Write output to specified file.
+//   --output=<file>  Write output to specified file instead of stdout.
 //
 // Usage:
 //
@@ -51,10 +52,10 @@ class Decode : public Subprogram {
  public:
   enum class ExitStatus {
     Success = 0,
+    FileOpenFailed = FileOpenFailedExitStatus,
     DecodeFailed = MinExitStatus,
     DecodeSucceeded,
     VerifyOutputFailed,
-    FileOpenFailed,
     MessageReadFailed,
     IndexReadFailed
   };
@@ -67,7 +68,7 @@ class Decode : public Subprogram {
   ofp::MessageInfo sessionInfo_;
   bool hasSessionInfo_ = false;
   bool jsonNeedComma_ = false;
-  
+
   using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
   std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
   ofp::UInt64 nextSessionId_ = 0;
@@ -91,7 +92,7 @@ class Decode : public Subprogram {
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
                       cl::desc("Write compact JSON output instead of YAML")};
-  cl::opt<bool> jsonArray_{"json-array", cl::desc("Write output as JSON array")};
+  cl::opt<bool> jsonArray_{"json-array", cl::desc("Write output as a valid JSON array")};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
   cl::opt<bool> invertCheck_{"invert-check",
@@ -102,11 +103,11 @@ class Decode : public Subprogram {
       "verify-output",
       cl::desc("Verify output by translating it back to binary")};
   cl::opt<bool> useFindx_{"use-findx",
-                          cl::desc("Use timestamps from '.findx' file(s)")};
+                          cl::desc("Use metadata from tcpflow '.findx' files")};
   cl::opt<bool> dataPkt_{
       "data-pkt",
       cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
-  cl::opt<std::string> outputFile_{"output", "Write output to specified file", cl::ValueRequired};
+  cl::opt<std::string> outputFile_{"output", cl::desc("Write output to specified file instead of stdout"), cl::ValueRequired};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
