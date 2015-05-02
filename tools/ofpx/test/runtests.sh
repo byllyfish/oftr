@@ -13,13 +13,13 @@ for input in $CURRENT_SOURCE_DIR/*-pass.bin ; do
   output_yml="$name.yml"
   output_json="$name.json"
 
-  echo "  Run ofpx decode to convert $input to $output_yml"
-  ../ofpx decode -V $input > $output_yml
+  echo "  Run libofp decode to convert $input to $output_yml"
+  ../libofp decode -V $input > $output_yml
   echo "  Compare $output_yml to $CURRENT_SOURCE_DIR/$name.yml"
   diff $output_yml "$CURRENT_SOURCE_DIR/$name.yml"
 
-  echo "  Run ofpx decode to convert $input to $output_json"
-  ../ofpx decode -Vj $input > $output_json
+  echo "  Run libofp decode to convert $input to $output_json"
+  ../libofp decode -Vj $input > $output_json
   echo "  Compare $output_json to $CURRENT_SOURCE_DIR/$name.json"
   diff $output_json "$CURRENT_SOURCE_DIR/$name.json"
 done
@@ -30,8 +30,8 @@ for input in $CURRENT_SOURCE_DIR/*-pass.yml ; do
   name=`basename "$input" .yml`
   output="$name.bin"
 
-  echo "  Run ofpx encode to convert $input to $output"
-  ../ofpx encode -M $input > $output
+  echo "  Run libofp encode to convert $input to $output"
+  ../libofp encode -M $input > $output
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.bin"
   diff $output "$CURRENT_SOURCE_DIR/$name.bin"
 done
@@ -42,8 +42,8 @@ for input in $CURRENT_SOURCE_DIR/*-pass.json ; do
   name=`basename "$input" .json`
   output="$name.bin"
 
-  echo "  Run ofpx encode to convert $input to $output"
-  ../ofpx encode -Mj $input > $output
+  echo "  Run libofp encode to convert $input to $output"
+  ../libofp encode -Mj $input > $output
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.bin"
   diff $output "$CURRENT_SOURCE_DIR/$name.bin"
 done

@@ -1,14 +1,14 @@
 add_test(
-  NAME ofpx
+  NAME libofp-test
   COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests.sh
 )
 
-set_tests_properties(ofpx PROPERTIES TIMEOUT 360)
+set_tests_properties(libofp-test PROPERTIES TIMEOUT 360)
 
 
 add_test(
-  NAME ofpx-annotate
+  NAME libofp-annotate
   COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-annotate.sh
 )
 
-set_tests_properties(ofpx-annotate PROPERTIES TIMEOUT 600)
+set_tests_properties(libofp-annotate PROPERTIES TIMEOUT 600)

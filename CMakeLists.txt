@@ -17,7 +17,7 @@
 #
 
 cmake_minimum_required(VERSION 2.8.8)
-project(libofp)
+project(Libofp)
 
 # Add path for custom modules
 
@@ -28,10 +28,10 @@ set(CMAKE_MODULE_PATH
 
 # Set the version number of the library.
 
-set(libofp_VERSION_MAJOR 0)
-set(libofp_VERSION_MINOR 2)
-set(libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
-set(libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher+libofp@gmail.com>")
+set(Libofp_VERSION_MAJOR 0)
+set(Libofp_VERSION_MINOR 2)
+set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
+set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher+libofp@gmail.com>")
 
 # Require out of source builds.
 
@@ -331,7 +331,7 @@ target_link_libraries(ofp yamlio ssl crypto)
 
 # Make sure the source is generated before the executable builds.
 
-add_dependencies(ofp libofp_oxmfields_h libofp_oxmfields_cpp libofp_oxmfieldsdata_cpp)
+add_dependencies(ofp Libofp_oxmfields_h Libofp_oxmfields_cpp Libofp_oxmfieldsdata_cpp)
 
 #-------------------------------------------------------------------------------
 # Build Examples
@@ -377,10 +377,10 @@ endif()
 
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
-set(CPACK_PACKAGE_VERSION_MAJOR "${libofp_VERSION_MAJOR}")
-set(CPACK_PACKAGE_VERSION_MINOR "${libofp_VERSION_MINOR}")
-set(CPACK_PACKAGE_CONTACT "${libofp_MAINTAINER_EMAIL}")
-set(CPACK_STRIP_FILES "bin/ofpx")
+set(CPACK_PACKAGE_VERSION_MAJOR "${Libofp_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${Libofp_VERSION_MINOR}")
+set(CPACK_PACKAGE_CONTACT "${Libofp_MAINTAINER_EMAIL}")
+set(CPACK_STRIP_FILES "bin/libofp")
 include(CPack)
 
 #-------------------------------------------------------------------------------

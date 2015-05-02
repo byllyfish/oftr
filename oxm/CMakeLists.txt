@@ -63,6 +63,6 @@ add_custom_command(
 )
 
 
-add_custom_target(libofp_oxmfields_h DEPENDS ${oxmfields_h})
-add_custom_target(libofp_oxmfields_cpp DEPENDS "${oxmfields_cpp}")
-add_custom_target(libofp_oxmfieldsdata_cpp DEPENDS "${oxmfieldsdata_cpp}")
+add_custom_target(Libofp_oxmfields_h DEPENDS "${oxmfields_h}")
+add_custom_target(Libofp_oxmfields_cpp DEPENDS "${oxmfields_cpp}")
+add_custom_target(Libofp_oxmfieldsdata_cpp DEPENDS "${oxmfieldsdata_cpp}")

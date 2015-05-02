@@ -11,15 +11,15 @@ if(APPLE AND UNIX)
   set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_xpc.cpp)
 endif()
 
-add_executable(ofpx ${OFPX_SOURCES})
+add_executable(libofp ${OFPX_SOURCES})
 
 # Tip: Add "-framework CoreFoundation" here on Mac OS X for measuring with
 # Instruments.
 
-target_link_libraries(ofpx ofp ${LIBOFP_LINKED_LIBS})
+target_link_libraries(libofp ofp ${LIBOFP_LINKED_LIBS})
 
 add_subdirectory(test)
 
-# Install ofpx.
+# Install 'libofp'.
 
-install(TARGETS ofpx DESTINATION bin)
+install(TARGETS libofp DESTINATION bin)

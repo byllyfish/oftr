@@ -4,7 +4,7 @@ import copy
 import sys
 
 
-OFPX = '../ofpx'
+LIBOFP = '../libofp'
 MAX_VERSION = 5
 STR15 = '.' * 15
 STR31 = '.' * 31
@@ -293,7 +293,7 @@ def roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
             return None
     input = yaml.dump(doc)
     #print >> sys.stderr, 'Input:\n' + input
-    exit, output = spawn([OFPX, 'encode', '-R'], input)
+    exit, output = spawn([LIBOFP, 'encode', '-R'], input)
     if not exit:
         return yaml.load(output)
     return None

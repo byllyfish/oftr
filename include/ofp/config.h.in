@@ -3,8 +3,8 @@
 #ifndef OFP_CONFIG_H_  // NOLINT
 #define OFP_CONFIG_H_
 
-#define LIBOFP_VERSION_MAJOR        @libofp_VERSION_MAJOR@
-#define LIBOFP_VERSION_MINOR        @libofp_VERSION_MINOR@
-#define LIBOFP_DOWNLOAD_URL         "@libofp_DOWNLOAD_URL@"
+#define LIBOFP_VERSION_MAJOR        @Libofp_VERSION_MAJOR@
+#define LIBOFP_VERSION_MINOR        @Libofp_VERSION_MINOR@
+#define LIBOFP_DOWNLOAD_URL         "@Libofp_DOWNLOAD_URL@"
 
 #endif  // OFP_CONFIG_H_  // NOLINT

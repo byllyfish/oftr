@@ -148,8 +148,3 @@ class LibOFP(object):
         self._sockOutput.write(msg)
 
 
-if __name__ == '__main__':
-    ofp = LibOFP('/Users/bfish/code/ofp/Build+Debug/tools/ofpx/ofpx')
-    for event in ofp:
-        print event
-
