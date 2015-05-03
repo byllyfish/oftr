@@ -82,7 +82,7 @@ void print_usage(std::ostream &out) {
 void print_version() {
   raw_ostream &os = outs();
 
-  os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << " (" << LIBOFP_DOWNLOAD_URL << ")\n";
+  os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.' << LIBOFP_VERSION_REVISION << " (" << LIBOFP_DOWNLOAD_URL << ")\n";
 #ifndef __OPTIMIZE__
   os << "  DEBUG build";
 #else

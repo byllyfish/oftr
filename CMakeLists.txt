@@ -30,6 +30,7 @@ set(CMAKE_MODULE_PATH
 
 set(Libofp_VERSION_MAJOR 0)
 set(Libofp_VERSION_MINOR 2)
+set(Libofp_VERSION_REVISION 1)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher+libofp@gmail.com>")
 
@@ -347,7 +348,7 @@ add_subdirectory(example/flowbench)
 # Build Tool
 #-------------------------------------------------------------------------------
 
-add_subdirectory(tools/ofpx)
+add_subdirectory(tools/libofp)
 
 #-------------------------------------------------------------------------------
 # Test
