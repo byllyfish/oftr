@@ -12,7 +12,6 @@ class OXMList;
 
 class Prerequisites {
  public:
-
   enum FailureReason {
     kUnresolvedAmbiguity = 1,
     kConflictingPrerequisites,

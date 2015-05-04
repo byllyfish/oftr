@@ -28,7 +28,10 @@ TEST(encoderfail, unknownOXM) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:30: error: Invalid OXM type.\n          - field:           IN_DORT\n                             ^~~~~~~\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:30: error: Invalid OXM type.\n          - field:           "
+      "IN_DORT\n                             ^~~~~~~\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
@@ -57,7 +60,10 @@ TEST(encoderfail, ambiguousOXM) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Missing prerequisites\n          - field:           TCP_DST\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Missing prerequisites\n          - "
+      "field:           TCP_DST\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
@@ -88,7 +94,10 @@ TEST(encoderfail, conflictingOXM) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Conflicting prerequisites\n          - field:           ICMPV6_TYPE\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Conflicting prerequisites\n          "
+      "- field:           ICMPV6_TYPE\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
@@ -117,7 +126,10 @@ TEST(encoderfail, ambiguousOXM2) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Missing prerequisites\n          - field:           MPLS_TC\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Missing prerequisites\n          - "
+      "field:           MPLS_TC\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
@@ -146,11 +158,13 @@ TEST(encoderfail, missingMaskedPrereq1) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Missing prerequisites\n          - field:           IN_PHY_PORT\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Missing prerequisites\n          - "
+      "field:           IN_PHY_PORT\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
-
 
 TEST(encoderfail, missingMaskedPrereq2) {
   const char *input = R"""(
@@ -178,7 +192,10 @@ TEST(encoderfail, missingMaskedPrereq2) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Missing prerequisites\n          - field:           VLAN_VID\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Missing prerequisites\n          - "
+      "field:           VLAN_VID\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
@@ -209,11 +226,13 @@ TEST(encoderfail, invalidPrereq) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Missing prerequisites\n          - field:           ETH_TYPE\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Missing prerequisites\n          - "
+      "field:           ETH_TYPE\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
-
 
 TEST(encoderfail, invalidPrereq2) {
   const char *input = R"""(
@@ -243,7 +262,10 @@ TEST(encoderfail, invalidPrereq2) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Conflicting prerequisites\n          - field:           ETH_TYPE\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Conflicting prerequisites\n          "
+      "- field:           ETH_TYPE\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
@@ -276,9 +298,11 @@ TEST(encoderfail, duplicateFieldsAllowSameValue) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(64, encoder.size());
-  EXPECT_HEX("040E0040000000011111111111111111222222222222222233445555666677778888888899999999AAAAAAAABBBB00000001000A80000A020800000000000000", encoder.data(), encoder.size());
+  EXPECT_HEX(
+      "040E00400000000111111111111111112222222222222222334455556666777788888888"
+      "99999999AAAAAAAABBBB00000001000A80000A020800000000000000",
+      encoder.data(), encoder.size());
 }
-
 
 TEST(encoderfail, duplicateFieldsDisallowDifferentValue) {
   const char *input = R"""(
@@ -306,7 +330,10 @@ TEST(encoderfail, duplicateFieldsDisallowDifferentValue) {
       )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:18:11: error: Invalid match: Conflicting prerequisites\n          - field:           ETH_TYPE\n          ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:18:11: error: Invalid match: Conflicting prerequisites\n          "
+      "- field:           ETH_TYPE\n          ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }

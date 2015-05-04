@@ -71,8 +71,7 @@ class OXMIterator {
  private:
   const UInt8 *position_;
 
-  constexpr explicit OXMIterator(const void *pos)
-      : position_{BytePtr(pos)} {}
+  constexpr explicit OXMIterator(const void *pos) : position_{BytePtr(pos)} {}
 
   friend class OXMRange;
   friend class OXMList;

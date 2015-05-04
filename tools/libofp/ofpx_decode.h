@@ -87,12 +87,14 @@ class Decode : public Subprogram {
 
   void setCurrentFilename(const std::string &filename);
   bool parseFilename(const std::string &filename, ofp::MessageInfo *info);
-  ofp::UInt64 lookupSessionId(const ofp::IPv6Endpoint &src, const ofp::IPv6Endpoint &dst);
+  ofp::UInt64 lookupSessionId(const ofp::IPv6Endpoint &src,
+                              const ofp::IPv6Endpoint &dst);
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
                       cl::desc("Write compact JSON output instead of YAML")};
-  cl::opt<bool> jsonArray_{"json-array", cl::desc("Write output as a valid JSON array")};
+  cl::opt<bool> jsonArray_{"json-array",
+                           cl::desc("Write output as a valid JSON array")};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
   cl::opt<bool> invertCheck_{"invert-check",
@@ -105,9 +107,10 @@ class Decode : public Subprogram {
   cl::opt<bool> useFindx_{"use-findx",
                           cl::desc("Use metadata from tcpflow '.findx' files")};
   cl::opt<bool> dataPkt_{
-      "data-pkt",
-      cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
-  cl::opt<std::string> outputFile_{"output", cl::desc("Write output to specified file instead of stdout"), cl::ValueRequired};
+      "data-pkt", cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
+  cl::opt<std::string> outputFile_{
+      "output", cl::desc("Write output to specified file instead of stdout"),
+      cl::ValueRequired};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
@@ -121,7 +124,8 @@ class Decode : public Subprogram {
                     cl::aliasopt(keepGoing_), cl::Grouping};
   cl::alias VAlias_{"V", cl::desc("Alias for -verify-output"),
                     cl::aliasopt(verifyOutput_), cl::Grouping};
-  cl::alias oAlias_{"o", cl::desc("Alias for -output"), cl::aliasopt(outputFile_)};
+  cl::alias oAlias_{"o", cl::desc("Alias for -output"),
+                    cl::aliasopt(outputFile_)};
 };
 
 OFP_END_IGNORE_PADDING

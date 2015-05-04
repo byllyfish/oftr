@@ -89,7 +89,7 @@ class Message {
   sys::Connection *channel_;
   Timestamp time_;
 
-  // MessageInfo stores extra information about the message's session (src, 
+  // MessageInfo stores extra information about the message's session (src,
   // dest, etc.) It is *not* owned by the message object.
   const MessageInfo *info_ = nullptr;
 

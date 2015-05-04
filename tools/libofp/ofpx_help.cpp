@@ -42,110 +42,84 @@ Help::~Help() = default;
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static const char *const kMessageSchemas[] = {
-  llvm::yaml::kHelloSchema,
-  llvm::yaml::kErrorSchema,
-  llvm::yaml::kEchoRequestSchema,
-  llvm::yaml::kEchoReplySchema,
-  llvm::yaml::kFeaturesRequestSchema,
-  llvm::yaml::kFeaturesReplySchema,
-  llvm::yaml::kGetConfigRequestSchema,
-  llvm::yaml::kGetConfigReplySchema,
-  llvm::yaml::kSetConfigSchema,
-  llvm::yaml::kPacketInSchema,
-  llvm::yaml::kFlowRemovedSchema,
-  llvm::yaml::kPortStatusSchema,
-  llvm::yaml::kPacketOutSchema,
-  llvm::yaml::kFlowModSchema,
-  llvm::yaml::kGroupModSchema,
-  llvm::yaml::kPortModSchema,
-  llvm::yaml::kTableModSchema,
-  llvm::yaml::kMultipartRequestSchema,
-  llvm::yaml::kMultipartReplySchema,
-  llvm::yaml::kBarrierRequestSchema,
-  llvm::yaml::kBarrierReplySchema,
-  llvm::yaml::kQueueGetConfigRequestSchema,
-  llvm::yaml::kQueueGetConfigReplySchema,
-  llvm::yaml::kRoleRequestSchema,
-  llvm::yaml::kRoleReplySchema,
-  llvm::yaml::kGetAsyncRequestSchema,
-  llvm::yaml::kGetAsyncReplySchema,
-  llvm::yaml::kSetAsyncSchema,
-  llvm::yaml::kMeterModSchema,
-  llvm::yaml::kRoleStatusSchema,
-  //llvm::yaml::kTableStatusSchema,
-  //llvm::yaml::kRequestForwardSchema,
-  llvm::yaml::kBundleControlSchema,
-  llvm::yaml::kBundleAddMessageSchema,
+    llvm::yaml::kHelloSchema, llvm::yaml::kErrorSchema,
+    llvm::yaml::kEchoRequestSchema, llvm::yaml::kEchoReplySchema,
+    llvm::yaml::kFeaturesRequestSchema, llvm::yaml::kFeaturesReplySchema,
+    llvm::yaml::kGetConfigRequestSchema, llvm::yaml::kGetConfigReplySchema,
+    llvm::yaml::kSetConfigSchema, llvm::yaml::kPacketInSchema,
+    llvm::yaml::kFlowRemovedSchema, llvm::yaml::kPortStatusSchema,
+    llvm::yaml::kPacketOutSchema, llvm::yaml::kFlowModSchema,
+    llvm::yaml::kGroupModSchema, llvm::yaml::kPortModSchema,
+    llvm::yaml::kTableModSchema, llvm::yaml::kMultipartRequestSchema,
+    llvm::yaml::kMultipartReplySchema, llvm::yaml::kBarrierRequestSchema,
+    llvm::yaml::kBarrierReplySchema, llvm::yaml::kQueueGetConfigRequestSchema,
+    llvm::yaml::kQueueGetConfigReplySchema, llvm::yaml::kRoleRequestSchema,
+    llvm::yaml::kRoleReplySchema, llvm::yaml::kGetAsyncRequestSchema,
+    llvm::yaml::kGetAsyncReplySchema, llvm::yaml::kSetAsyncSchema,
+    llvm::yaml::kMeterModSchema, llvm::yaml::kRoleStatusSchema,
+    // llvm::yaml::kTableStatusSchema,
+    // llvm::yaml::kRequestForwardSchema,
+    llvm::yaml::kBundleControlSchema, llvm::yaml::kBundleAddMessageSchema,
 };
 
 static const char *const kMultipartSchemas[] = {
-  llvm::yaml::kMPDescSchema,
+    llvm::yaml::kMPDescSchema,
 };
 
 static const char *const kInstructionSchemas[] = {
-  llvm::yaml::kGotoTableSchema,
-  llvm::yaml::kWriteMetadataSchema,
-  llvm::yaml::kWriteActionsSchema,
-  llvm::yaml::kApplyActionsSchema,
-  llvm::yaml::kClearActionsSchema,
-  llvm::yaml::kMeterSchema,
-  llvm::yaml::kExperimenterInstructionSchema,
+    llvm::yaml::kGotoTableSchema, llvm::yaml::kWriteMetadataSchema,
+    llvm::yaml::kWriteActionsSchema, llvm::yaml::kApplyActionsSchema,
+    llvm::yaml::kClearActionsSchema, llvm::yaml::kMeterSchema,
+    llvm::yaml::kExperimenterInstructionSchema,
 };
 
 static const char *const kActionSchemas[] = {
-  llvm::yaml::kCopyTTLOutSchema,
-  llvm::yaml::kCopyTTLInSchema,
-  llvm::yaml::kDecMPLSTTLSchema,
-  llvm::yaml::kPopVLANSchema,
-  llvm::yaml::kDecNwTTLSchema,
-  llvm::yaml::kPopPBBSchema,
-  llvm::yaml::kOutputSchema,
-  llvm::yaml::kSetMPLSTTLSchema,
-  llvm::yaml::kPushVLANSchema,
-  llvm::yaml::kPushMPLSSchema,
-  llvm::yaml::kPopMPLSSchema,
-  llvm::yaml::kSetQueueSchema,
-  llvm::yaml::kGroupSchema,
-  llvm::yaml::kSetNwTTLSchema,
-  llvm::yaml::kPushPBBSchema,
-  llvm::yaml::kSetFieldSchema,
-  llvm::yaml::kExperimenterActionSchema,
+    llvm::yaml::kCopyTTLOutSchema, llvm::yaml::kCopyTTLInSchema,
+    llvm::yaml::kDecMPLSTTLSchema, llvm::yaml::kPopVLANSchema,
+    llvm::yaml::kDecNwTTLSchema, llvm::yaml::kPopPBBSchema,
+    llvm::yaml::kOutputSchema, llvm::yaml::kSetMPLSTTLSchema,
+    llvm::yaml::kPushVLANSchema, llvm::yaml::kPushMPLSSchema,
+    llvm::yaml::kPopMPLSSchema, llvm::yaml::kSetQueueSchema,
+    llvm::yaml::kGroupSchema, llvm::yaml::kSetNwTTLSchema,
+    llvm::yaml::kPushPBBSchema, llvm::yaml::kSetFieldSchema,
+    llvm::yaml::kExperimenterActionSchema,
 };
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
 static SchemaPair kEnumSchemas[] = {
-  { ofp::yaml::MakeSchema<ofp::OFPFlowModCommand>, "Enum/FlowModCommand" },
-  { ofp::yaml::MakeSchema<ofp::OFPPacketInReason>, "Enum/PacketInReason" },
-  { ofp::yaml::MakeSchema<ofp::OFPPortStatusReason>, "Enum/PortStatusReason" },
-  { ofp::yaml::MakeSchema<ofp::OFPFlowRemovedReason>, "Enum/FlowRemovedReason" },
-  { ofp::yaml::MakeSchema<ofp::OFPControllerRole>, "Enum/ControllerRole" },
-  { ofp::yaml::MakeSchema<ofp::OFPMeterModCommand>, "Enum/MeterModCommand" },
-  { ofp::yaml::MakeSchema<ofp::OFPErrorType>, "Enum/ErrorType" },
-  { ofp::yaml::MakeSchema<ofp::OFPFlowUpdateEvent>, "Enum/FlowUpdateEvent" },
-  { ofp::yaml::MakeSchema<ofp::OFPErrorCode>, "Enum/ErrorCode" },
-}; 
+    {ofp::yaml::MakeSchema<ofp::OFPFlowModCommand>, "Enum/FlowModCommand"},
+    {ofp::yaml::MakeSchema<ofp::OFPPacketInReason>, "Enum/PacketInReason"},
+    {ofp::yaml::MakeSchema<ofp::OFPPortStatusReason>, "Enum/PortStatusReason"},
+    {ofp::yaml::MakeSchema<ofp::OFPFlowRemovedReason>,
+     "Enum/FlowRemovedReason"},
+    {ofp::yaml::MakeSchema<ofp::OFPControllerRole>, "Enum/ControllerRole"},
+    {ofp::yaml::MakeSchema<ofp::OFPMeterModCommand>, "Enum/MeterModCommand"},
+    {ofp::yaml::MakeSchema<ofp::OFPErrorType>, "Enum/ErrorType"},
+    {ofp::yaml::MakeSchema<ofp::OFPFlowUpdateEvent>, "Enum/FlowUpdateEvent"},
+    {ofp::yaml::MakeSchema<ofp::OFPErrorCode>, "Enum/ErrorCode"},
+};
 
 static SchemaPair kMixedSchemas[] = {
-  { ofp::yaml::MakeSchema<ofp::PortNumber>, "Mixed/PortNumber" },
-  { ofp::yaml::MakeSchema<ofp::GroupNumber>, "Mixed/GroupNumber" },
-  { ofp::yaml::MakeSchema<ofp::BufferID>, "Mixed/BufferID" },
-  { ofp::yaml::MakeSchema<ofp::TableNumber>, "Mixed/TableNumber" },
-  { ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen" },
+    {ofp::yaml::MakeSchema<ofp::PortNumber>, "Mixed/PortNumber"},
+    {ofp::yaml::MakeSchema<ofp::GroupNumber>, "Mixed/GroupNumber"},
+    {ofp::yaml::MakeSchema<ofp::BufferID>, "Mixed/BufferID"},
+    {ofp::yaml::MakeSchema<ofp::TableNumber>, "Mixed/TableNumber"},
+    {ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen"},
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.
 static std::pair<const char *, const char *> sFieldTypeMap[] = {
-  { "Big8", "UInt8" },
-  { "Big16", "UInt16" },
-  { "Big32", "UInt32" },
-  { "Big64", "UInt64" }
-};
+    {"Big8", "UInt8"},
+    {"Big16", "UInt16"},
+    {"Big32", "UInt32"},
+    {"Big64", "UInt64"}};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 int Help::run(int argc, const char *const *argv) {
-  parseCommandLineOptions(argc, argv, "Provide information about the OpenFlow YAML schema\n");
+  parseCommandLineOptions(
+      argc, argv, "Provide information about the OpenFlow YAML schema\n");
   loadSchemas();
 
   if (fields_) {
@@ -201,9 +175,9 @@ void Help::loadSchemas() {
 }
 
 Schema *Help::findSchema(const std::string &key) {
-  auto iter = std::find_if(schemas_.begin(), schemas_.end(), [&key](std::unique_ptr<Schema> &schema){
-    return schema->equals(key);
-  });
+  auto iter = std::find_if(
+      schemas_.begin(), schemas_.end(),
+      [&key](std::unique_ptr<Schema> &schema) { return schema->equals(key); });
 
   return iter != schemas_.end() ? iter->get() : nullptr;
 }
@@ -228,7 +202,6 @@ Schema *Help::findNearestSchema(const std::string &key) {
 
   return minSchema;
 }
-
 
 void Help::listFields() {
   // Determine the maximum width of the name and type fields.
@@ -278,7 +251,8 @@ void Help::printSchema(const std::string &key) {
   } else {
     schema = findNearestSchema(key);
     if (schema) {
-      std::cerr << "Unknown command line argument '" << key << "'. Did you mean '" << schema->name() << "'?" << '\n';
+      std::cerr << "Unknown command line argument '" << key
+                << "'. Did you mean '" << schema->name() << "'?" << '\n';
     }
   }
 }
@@ -291,7 +265,7 @@ void Help::dumpSchemas() {
 }
 
 const char *Help::translateFieldType(const char *type) {
-  for (auto &entry: sFieldTypeMap) {
+  for (auto &entry : sFieldTypeMap) {
     if (std::strcmp(type, entry.first) == 0) {
       return entry.second;
     }

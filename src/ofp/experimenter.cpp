@@ -48,4 +48,3 @@ UInt32 ExperimenterBuilder::send(Writable *channel) {
 
   return xid;
 }
-

@@ -89,13 +89,9 @@ class FlowModBuilder {
 
   MatchBuilder &match() { return match_; }
 
-  void setMatch(const MatchBuilder &match) {
-    match_ = match;
-  }
+  void setMatch(const MatchBuilder &match) { match_ = match; }
 
-  void setMatch(MatchBuilder &&match) {
-    match_ = std::move(match);
-  }
+  void setMatch(MatchBuilder &&match) { match_ = std::move(match); }
 
   InstructionList &instructions() { return instructions_; }
 

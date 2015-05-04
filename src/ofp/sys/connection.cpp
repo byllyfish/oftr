@@ -93,7 +93,7 @@ void Connection::postMessage(Message *message) {
   assert(message->source());
 
   log::trace_msg("Read", message->source()->connectionId(), message->data(),
-             message->size());
+                 message->size());
 
   // Once Hello's have been exchanged, handle incoming echo requests
   // automatically. Change the type to echo reply and send it right back.

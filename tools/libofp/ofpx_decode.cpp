@@ -22,7 +22,9 @@ static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
 }
 
 int Decode::run(int argc, const char *const *argv) {
-  parseCommandLineOptions(argc, argv, "Translate binary OpenFlow messages in the input files to human-readable YAML\n");
+  parseCommandLineOptions(argc, argv,
+                          "Translate binary OpenFlow messages in the input "
+                          "files to human-readable YAML\n");
 
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {
@@ -198,7 +200,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
       return ExitStatus::IndexReadFailed;
     }
 
-    // Check for gaps in the stream. Don't warn about duplicate lines in the 
+    // Check for gaps in the stream. Don't warn about duplicate lines in the
     // .findx file.
     if (pos < expectedPos) {
       // N.B. Ignore the timestamp when we check for duplicate lines in the
@@ -270,8 +272,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
       originalMessage.assign(message);
       message.transmogrify();
 
-      ExitStatus result =
-          decodeOneMessage(&message, &originalMessage);
+      ExitStatus result = decodeOneMessage(&message, &originalMessage);
       if (result != ExitStatus::Success && !keepGoing_) {
         return result;
       }
@@ -432,8 +433,9 @@ void Decode::setCurrentFilename(const std::string &filename) {
   currentFilename_ = filename;
 
   if (!filename.empty() && useFindx_) {
-    // When we are using '.findx' files, parse the filename to obtain information
-    // about the session, so we can set up the `sessionInfo_` structure with 
+    // When we are using '.findx' files, parse the filename to obtain
+    // information
+    // about the session, so we can set up the `sessionInfo_` structure with
     // source and destination information.
     hasSessionInfo_ = parseFilename(filename, &sessionInfo_);
   } else {
@@ -441,12 +443,12 @@ void Decode::setCurrentFilename(const std::string &filename) {
   }
 }
 
-
-bool Decode::parseFilename(const std::string &filename, ofp::MessageInfo *info) {
+bool Decode::parseFilename(const std::string &filename,
+                           ofp::MessageInfo *info) {
   // tcpflow uses base IPv4 filenames of the form:
-  // 
+  //
   // (\d+T)?\d{3}.\d{3}.\d{3}.\d{3}.\d{5}-\d{3}.\d{3}.\d{3}.\d{3}.\d{5}(c\d+)?
-  
+
   // Obtain file's base name.
   llvm::StringRef basename = llvm::sys::path::filename(filename);
 
@@ -465,7 +467,8 @@ bool Decode::parseFilename(const std::string &filename, ofp::MessageInfo *info) 
   // Split the remaining portion on the hyphen.
   auto pair = basename.split('-');
   if (pair.second.empty()) {
-    std::cerr << "parseFilename: Unexpected filename format `" << basename << "`\n";
+    std::cerr << "parseFilename: Unexpected filename format `" << basename
+              << "`\n";
     return false;
   }
 
@@ -473,12 +476,14 @@ bool Decode::parseFilename(const std::string &filename, ofp::MessageInfo *info) 
   ofp::IPv6Endpoint dest;
 
   if (!source.parse(pair.first)) {
-    std::cerr << "parseFilename: Unable to parse source endpoint `" << pair.first << "`\n";
+    std::cerr << "parseFilename: Unable to parse source endpoint `"
+              << pair.first << "`\n";
     return false;
   }
 
   if (!dest.parse(pair.second)) {
-    std::cerr << "parseFilename: Unable to parse destination endpoint `" << pair.first << "`\n";
+    std::cerr << "parseFilename: Unable to parse destination endpoint `"
+              << pair.first << "`\n";
     return false;
   }
 
@@ -488,7 +493,8 @@ bool Decode::parseFilename(const std::string &filename, ofp::MessageInfo *info) 
   return true;
 }
 
-ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src, const ofp::IPv6Endpoint &dst) {
+ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src,
+                                    const ofp::IPv6Endpoint &dst) {
   EndpointPair pair;
 
   if (src < dst) {

@@ -162,7 +162,9 @@ class IT_EXPERIMENTER {
   }
 
   constexpr explicit IT_EXPERIMENTER(UInt32 experimenterId, ByteRange data)
-      : length_{UInt16_narrow_cast(HeaderSize + data.size())}, experimenterId_{experimenterId}, data_{data} {}
+      : length_{UInt16_narrow_cast(HeaderSize + data.size())},
+        experimenterId_{experimenterId},
+        data_{data} {}
 
   constexpr UInt32 experimenterId() const { return experimenterId_; }
 
@@ -171,8 +173,7 @@ class IT_EXPERIMENTER {
 
   ByteRange dataRange() const {
     assert(length_ >= HeaderSize);
-    return ByteRange{BytePtr(this) + HeaderSize,
-                     length_ - HeaderSize};
+    return ByteRange{BytePtr(this) + HeaderSize, length_ - HeaderSize};
   }
 
   bool validateInput(Validation *context) const {

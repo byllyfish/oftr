@@ -1073,7 +1073,8 @@ TEST(encoder, flowmodv4_fail) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:18:11: error: Invalid match: Missing prerequisites\n          - field:           IN_PORT\n          ^\n",
+      "YAML:18:11: error: Invalid match: Missing prerequisites\n          - "
+      "field:           IN_PORT\n          ^\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
@@ -1112,7 +1113,11 @@ TEST(encoder, flowmodv4_outOfOrder) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(96, encoder.size());
-  EXPECT_HEX("040E0060000000011111111111111111222222222222222233445555666677778888888899999999AAAAAAAABBBB00000001001580000A020800800014010680001C02005000000000040018000000000019001080001804C0A8020100000000", encoder.data(), encoder.size());
+  EXPECT_HEX(
+      "040E00600000000111111111111111112222222222222222334455556666777788888888"
+      "99999999AAAAAAAABBBB00000001001580000A020800800014010680001C020050000000"
+      "00040018000000000019001080001804C0A8020100000000",
+      encoder.data(), encoder.size());
 }
 
 TEST(encoder, flowmodv1) {

@@ -240,7 +240,9 @@ class AT_EXPERIMENTER {
         value_{value} {}
 
   UInt32 experimenterid() const { return experimenterid_; }
-  ByteRange value() const { return {BytePtr(&value_), type_.length() - FixedSize}; }
+  ByteRange value() const {
+    return {BytePtr(&value_), type_.length() - FixedSize};
+  }
 
  private:
   const ActionType type_;

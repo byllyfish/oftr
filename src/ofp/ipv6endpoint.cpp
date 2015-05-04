@@ -26,9 +26,9 @@ bool IPv6Endpoint::parse(const std::string &s) {
 
     // Obtain address substring and trim leading/trailing spaces.
     addrStr = input.substr(1, endBracket - 1).trim();
-    
+
     // Grab rest of the input after the ']'
-    StringRef restStr = input.substr(endBracket+1).ltrim();
+    StringRef restStr = input.substr(endBracket + 1).ltrim();
     if (restStr.empty())
       return false;
 
@@ -40,11 +40,11 @@ bool IPv6Endpoint::parse(const std::string &s) {
 
   } else {
     // Check for address without brackets.
-    
+
     size_t lastSeparator = input.rfind(':');
     if (lastSeparator == StringRef::npos) {
       lastSeparator = input.rfind('.');
-      if (lastSeparator == StringRef::npos) 
+      if (lastSeparator == StringRef::npos)
         return false;
 
     } else {
@@ -56,7 +56,7 @@ bool IPv6Endpoint::parse(const std::string &s) {
     }
 
     assert(input[lastSeparator] == ':' || input[lastSeparator] == '.');
-    
+
     addrStr = input.substr(0, lastSeparator).rtrim();
     portStr = input.substr(lastSeparator + 1).ltrim();
   }

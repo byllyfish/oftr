@@ -30,7 +30,7 @@ class ByteRange {
   bool operator!=(const ByteRange &rhs) const { return !(*this == rhs); }
 
   bool isPrintable() const;
-  
+
  private:
   const UInt8 *begin_;
   const UInt8 *end_;

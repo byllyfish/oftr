@@ -9,7 +9,8 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kQueueGetConfigReplySchema = R"""({Message/QueueGetConfigReply}
+const char *const kQueueGetConfigReplySchema =
+    R"""({Message/QueueGetConfigReply}
 type: 'QUEUE_GET_CONFIG_REPLY'
 msg:
   port: PortNumber

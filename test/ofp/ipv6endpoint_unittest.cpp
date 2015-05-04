@@ -44,7 +44,7 @@ TEST(ipv6endpoint, parse) {
   EXPECT_EQ(IPv6Address{}, endpt.address());
   EXPECT_EQ(81, endpt.port());
   EXPECT_FALSE(endpt.parse("xyz"));
-  EXPECT_EQ("[::]:81", endpt.toString());   // previous value unaffected
+  EXPECT_EQ("[::]:81", endpt.toString());  // previous value unaffected
 }
 
 TEST(ipv6endpoint, parse2) {

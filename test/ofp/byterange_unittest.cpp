@@ -19,18 +19,18 @@ TEST(byterange, test) {
 }
 
 TEST(byterange, isPrintable) {
-    ByteRange a{" \n\t\v", 4};
-    EXPECT_TRUE(a.isPrintable());
+  ByteRange a{" \n\t\v", 4};
+  EXPECT_TRUE(a.isPrintable());
 
-    ByteRange b{"\0", 1};
-    EXPECT_FALSE(b.isPrintable());
+  ByteRange b{"\0", 1};
+  EXPECT_FALSE(b.isPrintable());
 
-    ByteRange c{"hello", 5};
-    EXPECT_TRUE(c.isPrintable());
+  ByteRange c{"hello", 5};
+  EXPECT_TRUE(c.isPrintable());
 
-    ByteRange d{"\x7F", 1};
-    EXPECT_FALSE(d.isPrintable());
+  ByteRange d{"\x7F", 1};
+  EXPECT_FALSE(d.isPrintable());
 
-    ByteRange e{"\xA0", 1};
-    EXPECT_FALSE(e.isPrintable());
+  ByteRange e{"\xA0", 1};
+  EXPECT_FALSE(e.isPrintable());
 }

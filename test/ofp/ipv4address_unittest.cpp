@@ -58,7 +58,7 @@ TEST(ipv4address, valid) {
   IPv4Address addr;
   EXPECT_FALSE(addr.valid());
 
-  std::array<UInt8, 4> buf = {{ 1, 2, 3, 4 }};
+  std::array<UInt8, 4> buf = {{1, 2, 3, 4}};
 
   IPv4Address *x = new (&buf) IPv4Address;
   EXPECT_FALSE(x->valid());

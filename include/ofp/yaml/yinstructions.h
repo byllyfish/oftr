@@ -49,12 +49,12 @@ instruction: 'METER'
 meter: UInt32
 )""";
 
-const char *const kExperimenterInstructionSchema = R"""({Instruction/Experimenter}
+const char *const kExperimenterInstructionSchema =
+    R"""({Instruction/Experimenter}
 instruction: 'EXPERIMENTER'
 experimenter: UInt32
 data: HexString
 )""";
-
 
 template <>
 struct MappingTraits<ofp::InstructionIterator::Element> {

@@ -20,7 +20,7 @@ namespace ofpx {
 //   --json, -j              Json input is separated by linefeeds
 //   --ofversion=0           OpenFlow version to use when unspecified
 //   --output=<file>         Write output to specified file instead of stdout.
-// 
+//
 // Usage:
 //
 // To translate a text file into binary OpenFlow messages:
@@ -41,7 +41,7 @@ namespace ofpx {
 // also represents stdin.
 //
 // Each binary OpenFlow message will use the version specified by the textual
-// object. Normally, it is an error if no version is specified. However, you 
+// object. Normally, it is an error if no version is specified. However, you
 // can specify a default OpenFlow version using the --ofversion option.
 
 OFP_BEGIN_IGNORE_PADDING
@@ -81,8 +81,12 @@ class Encode : public Subprogram {
   cl::opt<bool> roundtrip_{
       "roundtrip", cl::desc("Roundtrip encoded binary message back to YAML")};
   cl::opt<bool> json_{"json", cl::desc("Json input is separated by linefeeds")};
-  cl::opt<unsigned> ofversion_{"ofversion", cl::desc("OpenFlow version to use when unspecified"), cl::ValueRequired};
-  cl::opt<std::string> outputFile_{"output", cl::desc("Write output to specified file instead of stdout"), cl::ValueRequired};
+  cl::opt<unsigned> ofversion_{
+      "ofversion", cl::desc("OpenFlow version to use when unspecified"),
+      cl::ValueRequired};
+  cl::opt<std::string> outputFile_{
+      "output", cl::desc("Write output to specified file instead of stdout"),
+      cl::ValueRequired};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
@@ -98,7 +102,8 @@ class Encode : public Subprogram {
                     cl::aliasopt(roundtrip_), cl::Grouping};
   cl::alias jAlias_{"j", cl::desc("Alias for -json"), cl::aliasopt(json_),
                     cl::Grouping};
-  cl::alias oAlias_{"o", cl::desc("Alias for -output"), cl::aliasopt(outputFile_)};
+  cl::alias oAlias_{"o", cl::desc("Alias for -output"),
+                    cl::aliasopt(outputFile_)};
 };
 
 OFP_END_IGNORE_PADDING

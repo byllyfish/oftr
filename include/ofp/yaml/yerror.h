@@ -28,7 +28,8 @@ struct MappingTraits<ofp::Error> {
     io.mapRequired("data", data);
 
     if (data.isPrintable()) {
-      llvm::StringRef message{reinterpret_cast<const char *>(data.data()), data.size()};
+      llvm::StringRef message{reinterpret_cast<const char *>(data.data()),
+                              data.size()};
       io.mapRequired("_text", message);
     }
   }

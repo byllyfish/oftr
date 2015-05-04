@@ -26,13 +26,13 @@ set(CMAKE_MODULE_PATH
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 )
 
-# Set the version number of the library.
+# Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
 set(Libofp_VERSION_MINOR 2)
-set(Libofp_VERSION_REVISION 1)
+set(Libofp_VERSION_PATCH 0)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
-set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher+libofp@gmail.com>")
+set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
 
 # Require out of source builds.
 

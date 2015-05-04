@@ -17,7 +17,8 @@ namespace ofpx {
 
 using ofp::yaml::Schema;
 
-// ofpx help [--fields|-f] [--actions|-a] [--instructions|-i] [--messages|-m] [args...]
+// ofpx help [--fields|-f] [--actions|-a] [--instructions|-i] [--messages|-m]
+// [args...]
 //
 // Access built-in help features.
 //
@@ -58,18 +59,23 @@ class Help : public Subprogram {
   // --- Command-line Arguments ---
   cl::opt<bool> fields_{"fields", cl::desc("List supported match fields.")};
   cl::opt<bool> actions_{"actions", cl::desc("List supported actions.")};
-  cl::opt<bool> instructions_{"instructions", cl::desc("List supported instructions.")};
+  cl::opt<bool> instructions_{"instructions",
+                              cl::desc("List supported instructions.")};
   cl::opt<bool> messages_{"messages", cl::desc("List supported messages.")};
-  cl::opt<bool> multipart_{"multipart", cl::desc("List supported multipart types.")};
+  cl::opt<bool> multipart_{"multipart",
+                           cl::desc("List supported multipart types.")};
   cl::opt<bool> enums_{"enums", cl::desc("List supported enumerated types.")};
   cl::opt<bool> dump_{"dump", cl::desc("List all schema names.")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
 
   // --- Argument Aliases ---
   cl::alias fAlias_{"f", cl::desc("Alias for -fields"), cl::aliasopt(fields_)};
-  cl::alias aAlias_{"a", cl::desc("Alias for -actions"), cl::aliasopt(actions_)};
-  cl::alias iAlias_{"i", cl::desc("Alias for -instructions"), cl::aliasopt(instructions_)};
-  cl::alias mAlias_{"m", cl::desc("Alias for -messages"), cl::aliasopt(messages_)};
+  cl::alias aAlias_{"a", cl::desc("Alias for -actions"),
+                    cl::aliasopt(actions_)};
+  cl::alias iAlias_{"i", cl::desc("Alias for -instructions"),
+                    cl::aliasopt(instructions_)};
+  cl::alias mAlias_{"m", cl::desc("Alias for -messages"),
+                    cl::aliasopt(messages_)};
   cl::alias eAlias_{"e", cl::desc("Alias for -enums"), cl::aliasopt(enums_)};
 };
 

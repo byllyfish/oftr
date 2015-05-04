@@ -7,7 +7,7 @@
 #include "./ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/Host.h"
-#include <openssl/ssl.h> // For SSLeay_version
+#include <openssl/ssl.h>  // For SSLeay_version
 
 using namespace llvm;
 
@@ -46,7 +46,8 @@ int main(int argc, const char *const *argv) {
     return 0;
   }
 
-  if (name == "version" || name == "-v" || name == "-version" || name == "--version") {
+  if (name == "version" || name == "-v" || name == "-version" ||
+      name == "--version") {
     print_version();
     return 0;
   }
@@ -82,7 +83,8 @@ void print_usage(std::ostream &out) {
 void print_version() {
   raw_ostream &os = outs();
 
-  os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.' << LIBOFP_VERSION_REVISION << " (" << LIBOFP_DOWNLOAD_URL << ")\n";
+  os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
+     << LIBOFP_VERSION_PATCH << " (" << LIBOFP_DOWNLOAD_URL << ")\n";
 #ifndef __OPTIMIZE__
   os << "  DEBUG build";
 #else
@@ -100,6 +102,6 @@ void print_version() {
 
   unsigned major = (OPENSSL_VERSION_NUMBER >> 28) & 0x0F;
   unsigned minor = (OPENSSL_VERSION_NUMBER >> 20) & 0xFF;
-  unsigned subminor = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
-  os << "  BoringSSL " << major << '.' << minor << '.' << subminor << '\n';
+  unsigned patch = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
+  os << "  BoringSSL " << major << '.' << minor << '.' << patch << '\n';
 }

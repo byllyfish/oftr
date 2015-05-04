@@ -26,4 +26,3 @@ void EchoReplyBuilder::send(Writable *channel) {
   channel->write(data_.data(), data_.size());
   channel->flush();
 }
-

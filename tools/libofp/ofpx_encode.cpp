@@ -10,7 +10,9 @@ using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;
 
 int Encode::run(int argc, const char *const *argv) {
-  parseCommandLineOptions(argc, argv, "Translate OpenFlow messages specified by YAML input files to binary\n");
+  parseCommandLineOptions(
+      argc, argv,
+      "Translate OpenFlow messages specified by YAML input files to binary\n");
 
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {
@@ -77,7 +79,8 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   int lineNum;
 
   while (readMessage(input, text, lineNum)) {
-    ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum, ofp::UInt8_narrow_cast(ofversion_.getValue())};
+    ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum,
+                               ofp::UInt8_narrow_cast(ofversion_.getValue())};
 
     auto err = encoder.error();
     if (!err.empty()) {

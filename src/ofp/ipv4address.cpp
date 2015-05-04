@@ -72,4 +72,3 @@ std::string IPv4Address::toString() const {
       inet_ntop(AF_INET, addr_.data(), ipv4str, sizeof(ipv4str));
   return result ? ipv4str : "<inet_ntop_error4>";
 }
-

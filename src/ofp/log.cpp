@@ -246,7 +246,8 @@ static void trace1(const char *type, UInt64 id, const void *data,
 
 namespace detail {
 
-void trace_msg_internal(const char *type, UInt64 id, const void *data, size_t length) {
+void trace_msg_internal(const char *type, UInt64 id, const void *data,
+                        size_t length) {
   // The memory buffer may contain multiple messages. We need to log each one
   // separately.
 
@@ -268,7 +269,8 @@ void trace_msg_internal(const char *type, UInt64 id, const void *data, size_t le
   }
 }
 
-void trace_rpc_internal(const char *type, UInt64 id, const void *data, size_t length) {
+void trace_rpc_internal(const char *type, UInt64 id, const void *data,
+                        size_t length) {
   const char *msg = static_cast<const char *>(data);
 
   // Remove trailing newline, if it exists.

@@ -189,4 +189,3 @@ UInt32 FlowModBuilder::sendFastVersion1(Writable *channel, UInt32 inPort,
 
   return xid;
 }
-

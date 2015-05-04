@@ -73,7 +73,7 @@ class MatchBuilder {
     Prerequisites::FailureReason ignore;
     return validate(&ignore);
   }
-  
+
   bool validate(Prerequisites::FailureReason *reason) const {
     if (!Prerequisites::checkAll(list_.toRange(), reason)) {
       return false;

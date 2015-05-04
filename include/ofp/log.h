@@ -41,8 +41,7 @@ void write_(std::ostream &os, Level level, Type1 &&value1) {
 }
 
 template <class Type1, class... Args>
-void write_(std::ostream &os, Level level, Type1 &&value1,
-            Args &&... args) {
+void write_(std::ostream &os, Level level, Type1 &&value1, Args &&... args) {
   os << std::forward<Type1>(value1);
   os << ' ';
   write_(os, level, std::forward<Args>(args)...);
@@ -61,20 +60,26 @@ void write_(Level level, Args &&... args) {
 #endif  // OFP_LOGGING_DISABLED
 }
 
-void trace_msg_internal(const char *type, UInt64 id, const void *data, size_t length);
+void trace_msg_internal(const char *type, UInt64 id, const void *data,
+                        size_t length);
 
-void trace_rpc_internal(const char *type, UInt64 id, const void *data, size_t length);
+void trace_rpc_internal(const char *type, UInt64 id, const void *data,
+                        size_t length);
 
 }  // namespace detail
 
-inline void trace_msg(const char *type, UInt64 id, const void *data, size_t length) {
-  if ((detail::GlobalOutputTraceFilter & (1U << static_cast<int>(Trace::Msg))) != 0) {
+inline void trace_msg(const char *type, UInt64 id, const void *data,
+                      size_t length) {
+  if ((detail::GlobalOutputTraceFilter &
+       (1U << static_cast<int>(Trace::Msg))) != 0) {
     detail::trace_msg_internal(type, id, data, length);
   }
 }
 
-inline void trace_rpc(const char *type, UInt64 id, const void *data, size_t length) {
-  if ((detail::GlobalOutputTraceFilter & (1U << static_cast<int>(Trace::Rpc))) != 0) {
+inline void trace_rpc(const char *type, UInt64 id, const void *data,
+                      size_t length) {
+  if ((detail::GlobalOutputTraceFilter &
+       (1U << static_cast<int>(Trace::Rpc))) != 0) {
     detail::trace_rpc_internal(type, id, data, length);
   }
 }
@@ -109,12 +114,15 @@ template <class... Args>
 
 template <class Ptr, class... Args>
 inline Ptr fatal_if_null(Ptr value, Args &&... args) {
-  return (value == nullptr) ? fatal("fatal_if_null", std::forward<Args>(args)...), value : value;
+  return (value == nullptr)
+         ? fatal("fatal_if_null", std::forward<Args>(args)...),
+         value : value;
 }
 
 template <class... Args>
 inline bool fatal_if_false(bool value, Args &&... args) {
-  return !value ? fatal("fatal_if_false", std::forward<Args>(args)...), value : value;
+  return !value ? fatal("fatal_if_false", std::forward<Args>(args)...),
+         value : value;
 }
 
 // Use the LOG_LINE() macro to log source code file and line number.
