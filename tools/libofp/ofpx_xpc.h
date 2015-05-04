@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef TOOLS_OFPX_OFPX_XPC_H_
-#define TOOLS_OFPX_OFPX_XPC_H_
+#ifndef TOOLS_LIBOFP_OFPX_XPC_H_
+#define TOOLS_LIBOFP_OFPX_XPC_H_
 
 namespace ofpx {
 
@@ -9,4 +9,4 @@ namespace ofpx {
 
 }  // namespace ofpx
 
-#endif  // TOOLS_OFPX_OFPX_XPC_H_
+#endif  // TOOLS_LIBOFP_OFPX_XPC_H_

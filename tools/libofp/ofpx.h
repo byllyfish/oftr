@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef TOOLS_OFPX_OFPX_H_
-#define TOOLS_OFPX_OFPX_H_
+#ifndef TOOLS_LIBOFP_OFPX_H_
+#define TOOLS_LIBOFP_OFPX_H_
 
 #include <vector>
 #include <string>
@@ -114,4 +114,4 @@ struct IPv6EndpointParser : public cl::parser<ofp::IPv6Endpoint> {
 
 }  // namespace ofpx
 
-#endif  // TOOLS_OFPX_OFPX_H_
+#endif  // TOOLS_LIBOFP_OFPX_H_

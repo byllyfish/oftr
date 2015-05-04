@@ -1,7 +1,7 @@
 // Copyright 2015-present Bill Fisher. All rights reserved.
 
-#ifndef TOOLS_OFPX_OFPX_HELP_H_
-#define TOOLS_OFPX_OFPX_HELP_H_
+#ifndef TOOLS_LIBOFP_OFPX_HELP_H_
+#define TOOLS_LIBOFP_OFPX_HELP_H_
 
 #include "./ofpx.h"
 
@@ -81,4 +81,4 @@ class Help : public Subprogram {
 
 }  // namespace ofpx
 
-#endif  // TOOLS_OFPX_OFPX_HELP_H_
+#endif  // TOOLS_LIBOFP_OFPX_HELP_H_

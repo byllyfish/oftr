@@ -1,12 +1,12 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef TOOLS_OFPX_OFPX_DECODE_H_
-#define TOOLS_OFPX_OFPX_DECODE_H_
+#ifndef TOOLS_LIBOFP_OFPX_DECODE_H_
+#define TOOLS_LIBOFP_OFPX_DECODE_H_
 
+#include <map>
 #include "./ofpx.h"
 #include "ofp/timestamp.h"
 #include "ofp/messageinfo.h"
-#include <map>
 
 namespace ofpx {
 
@@ -132,4 +132,4 @@ OFP_END_IGNORE_PADDING
 
 }  // namespace ofpx
 
-#endif  // TOOLS_OFPX_OFPX_DECODE_H_
+#endif  // TOOLS_LIBOFP_OFPX_DECODE_H_

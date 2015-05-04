@@ -1,5 +1,6 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
+#include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
 #include "ofp/ofp.h"
 #include "./ofpx_decode.h"
 #include "./ofpx_encode.h"
@@ -7,7 +8,6 @@
 #include "./ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/Host.h"
-#include <openssl/ssl.h>  // For SSLeay_version
 
 using namespace llvm;
 

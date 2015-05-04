@@ -1,8 +1,10 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YSCHEMA_H_
 #define OFP_YAML_YSCHEMA_H_
 
-#include "ofp/yaml/yllvm.h"
 #include <set>
+#include "ofp/yaml/yllvm.h"
 
 namespace ofp {
 namespace yaml {

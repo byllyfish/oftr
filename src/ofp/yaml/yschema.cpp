@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/yaml/yschema.h"
 #include <sstream>
 
@@ -97,7 +99,7 @@ std::string Schema::MakeSchemaString(const char *const name,
     result += " | '" + unsignedTypeEnum(size) + "'";
   }
 
-  return std::string{name} + "\n" + result + "\n";
+  return std::string(name) + "\n" + result + "\n";
 }
 
 // Compare two strings case insensitively skipping non-alphanumeric chars.

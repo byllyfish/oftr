@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef TOOLS_OFPX_OFPX_JSONRPC_H_
-#define TOOLS_OFPX_OFPX_JSONRPC_H_
+#ifndef TOOLS_LIBOFP_OFPX_JSONRPC_H_
+#define TOOLS_LIBOFP_OFPX_JSONRPC_H_
 
 #include "./ofpx.h"
 
@@ -38,4 +38,4 @@ class JsonRpc : public Subprogram {
 
 }  // namespace ofpx
 
-#endif  // TOOLS_OFPX_OFPX_JSONRPC_H_
+#endif  // TOOLS_LIBOFP_OFPX_JSONRPC_H_
