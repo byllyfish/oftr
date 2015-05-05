@@ -10,7 +10,7 @@
 
 namespace ofpx {
 
-// ofpx decode [--json|-j] [--silent|-s] [--invert-check|-v] [--keep-going|-k]
+// libofp decode [--json|-j] [--silent|-s] [--invert-check|-v] [--keep-going|-k]
 // [--verify-output|-V] [--use-findx] [--data-pkt] [<Input files>]
 //
 // Decode binary OpenFlow messages in the input files and translate each
@@ -31,17 +31,17 @@ namespace ofpx {
 //
 // To decode a file of binary OpenFlow messages to YAML:
 //
-//     ofpx decode "filename"
+//     libofp decode "filename"
 //
 // To decode a file of binary OpenFlow messages to JSON:
 //
-//     ofpx decode --json "filename"
+//     libofp decode --json "filename"
 //
 // To process a file of invalid binary OpenFlow messages (e.g. fuzz test). This
 // will report an error if any message is structurally valid as an OpenFlow
 // message:
 //
-//     ofpx decode --invert-check "filename"
+//     libofp decode --invert-check "filename"
 //
 // If no input files are specified, use standard input (stdin). A single hyphen
 // also represents stdin.

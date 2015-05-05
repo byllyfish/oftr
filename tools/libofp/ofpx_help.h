@@ -17,7 +17,7 @@ namespace ofpx {
 
 using ofp::yaml::Schema;
 
-// ofpx help [--fields|-f] [--actions|-a] [--instructions|-i] [--messages|-m]
+// libofp help [--fields|-f] [--actions|-a] [--instructions|-i] [--messages|-m]
 // [args...]
 //
 // Access built-in help features.

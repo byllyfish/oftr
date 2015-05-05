@@ -60,8 +60,8 @@ int main(int argc, const char *const *argv) {
     }
   }
 
-  std::cerr << "ofpx: '" << name
-            << "' is not a ofpx command. See 'ofpx --help'.\n";
+  std::cerr << "libofp: '" << name
+            << "' is not a libofp command. See 'libofp --help'.\n";
 
   return 1;
 }
@@ -72,7 +72,7 @@ int run_xpc_service() {
 }
 
 void print_usage(std::ostream &out) {
-  out << "Usage: ofpx <command> [ <options> ]\n\n";
+  out << "Usage: libofp <command> [ <options> ]\n\n";
   out << "Commands:\n";
   for (size_t i = 0; i < ofp::ArrayLength(programs); ++i) {
     out << "  " << programs[i].name << '\n';

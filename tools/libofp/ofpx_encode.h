@@ -7,7 +7,7 @@
 
 namespace ofpx {
 
-// ofpx encode [options] [<Input files>]
+// libofp encode [options] [<Input files>]
 //
 // Encode OpenFlow messages to binary as specified in YAML input files. If there
 // is a syntax error in the YAML input, stop and report an error.
@@ -25,17 +25,17 @@ namespace ofpx {
 //
 // To translate a text file into binary OpenFlow messages:
 //
-//   ofpx encode "filename"
+//   libofp encode "filename"
 //
 // To translate a text file into binary OpenFlow messages, while ignoring
 // sets of match fields that violate prerequisites:
 //
-//   ofpx encode --unchecked-match "filename"
+//   libofp encode --unchecked-match "filename"
 //
 // To translate a text file of compact, single line JSON objects separated by
 // linefeeds:
 //
-//   ofpx encode --json "filename"
+//   libofp encode --json "filename"
 //
 // If no input files are specified, use standard input (stdin). A single hyphen
 // also represents stdin.
