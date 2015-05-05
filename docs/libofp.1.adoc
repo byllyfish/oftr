@@ -1,5 +1,15 @@
+// To make the manpage using asciidoc, use the following command:
+//
+//   a2x --doctype manpage --format manpage libofp.1.adoc
+// 
+// Use asciidoctor to produce the html version:
+// 
+//   asciidoctor libofp.1.adoc
+
 = LIBOFP(1)
+Bill Fisher <william.w.fisher@gmail.com>
 :doctype: manpage
+:github: <https://github.com/byllyfish/libofp>
 
 == NAME
 
@@ -38,6 +48,11 @@ started.
 The libofp program also includes a JSON-RPC microservice that can supports multiple
 simultaneous OpenFlow connections. See the `libofp-jsonrpc` man page for more details.
 
+The YAML schema used for OpenFlow messages is embedded in the tool itself. You can
+browse the schema using the `libofp help` command. See the `libofp-schema` man page
+for more details about the conventions used.
+
+
 == EXAMPLES
 
 To translate a text file into binary OpenFlow messages:
@@ -66,6 +81,11 @@ To decode binary OpenFlow messages to a valid JSON array of objects:
 
     libofp decode --json-array "filename"
 
+To decode binary OpenFlow messages with the additional check that the resulting
+YAML produces the same binary message when re-encoded:
+
+    libofp decode --verify-output "filename"
+
 You can use `netcat` in a UNIX pipe to feed OpenFlow messages to a switch or controller:
 
     libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
@@ -86,6 +106,7 @@ OpenFlow messages in YAML. To obtain information about the syntax for the
 To list all supported OXM fields:
 
     libofp help --fields
+
 
 == LIBOFP ENCODE
 
@@ -133,6 +154,7 @@ can specify a default OpenFlow version using the --ofversion option.
 *--unchecked-match*::
     Do not check items in match fields.
 
+
 == LIBOFP DECODE
 
 *libofp decode* [_OPTIONS_] [_INPUT_FILES_, ...]
@@ -176,6 +198,7 @@ also represents stdin.
 *-V, -verify-output*::
     Verify output by translating it back to binary.
 
+
 == LIBOFP JSONRPC
 
 *libofp jsonrpc* [_OPTIONS_]
@@ -189,6 +212,7 @@ Run a JSON-RPC server. By default, the control connection comes from stdio.
 
 *--xpc*::
     Run as a XPC service (Mac OS X only).
+
 
 == LIBOFP HELP
 
@@ -223,6 +247,7 @@ messages.
 *--multipart*::
     List supported multipart types.
 
+
 == LOGGING OPTIONS
 
 All commands support options that control the verbosity of log messages.
@@ -244,9 +269,11 @@ All commands support options that control the verbosity of log messages.
     - *msg* = Log all OpenFlow messages sent and received.
     - *rpc* = Log all JSON-RPC events send and received.
 
+
 == SEE ALSO
 
-_libofp-jsonrpc_(1)
+_libofp-jsonrpc_(1), _libofp-schema_(1)
+
 
 == EXIT STATUS
 
@@ -265,9 +292,11 @@ _libofp-jsonrpc_(1)
 *>= 11*::
     Failure: Uncommon failure.
 
+
 == RESOURCES
 
-GitHub: <https://github.com/byllyfish/libofp>
+GitHub: {github}
+
 
 == COPYING
 

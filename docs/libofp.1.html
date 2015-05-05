@@ -5,6 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.2">
+<meta name="author" content="Bill Fisher">
 <title>LIBOFP(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
@@ -463,6 +464,11 @@ started.</p>
 <p>The libofp program also includes a JSON-RPC microservice that can supports multiple
 simultaneous OpenFlow connections. See the <code>libofp-jsonrpc</code> man page for more details.</p>
 </div>
+<div class="paragraph">
+<p>The YAML schema used for OpenFlow messages is embedded in the tool itself. You can
+browse the schema using the <code>libofp help</code> command. See the <code>libofp-schema</code> man page
+for more details about the conventions used.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -516,6 +522,15 @@ linefeeds:</p>
 <div class="literalblock">
 <div class="content">
 <pre>libofp decode --json-array "filename"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To decode binary OpenFlow messages with the additional check that the resulting
+YAML produces the same binary message when re-encoded:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>libofp decode --verify-output "filename"</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -825,7 +840,7 @@ messages.</p>
 <h2 id="_see_also">SEE ALSO</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><em>libofp-jsonrpc</em>(1)</p>
+<p><em>libofp-jsonrpc</em>(1), <em>libofp-schema</em>(1)</p>
 </div>
 </div>
 </div>
@@ -878,7 +893,7 @@ granted under the terms of the MIT Licence.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-05-02 18:25:14 MST
+Last updated 2015-05-05 13:57:44 MST
 </div>
 </div>
 </body>
