@@ -9,7 +9,7 @@
 namespace ofp {
 
 class PortStatus
-    : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 80, 80, false> {
+    : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 56> {
  public:
   OFPPortStatusReason reason() const { return reason_; }
 
@@ -17,7 +17,7 @@ class PortStatus
     return *reinterpret_cast<const Port *>(BytePtr(this) + 16);
   }
 
-  bool validateInput(Validation *context) const { return true; }
+  bool validateInput(Validation *context) const;
 
  private:
   Header header_;
@@ -26,13 +26,13 @@ class PortStatus
 
   // Only PortStatusBuilder can create an instance.
   PortStatus() : header_{type()} {}
-
+  
   friend class PortStatusBuilder;
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };
 
-static_assert(sizeof(PortStatus) == 80 - sizeof(Port), "Unexpected size.");
+static_assert(sizeof(PortStatus) == 16, "Unexpected size.");
 static_assert(IsStandardLayout<PortStatus>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<PortStatus>(),
               "Expected trivially copyable.");
@@ -40,7 +40,7 @@ static_assert(IsTriviallyCopyable<PortStatus>(),
 class PortStatusBuilder {
  public:
   PortStatusBuilder() = default;
-  explicit PortStatusBuilder(const PortStatus *msg);
+  explicit PortStatusBuilder(const PortStatus *msg) : msg_{*msg} {}
 
   void setReason(OFPPortStatusReason reason) { msg_.reason_ = reason; }
   void setPort(const PortBuilder &port) { port_ = port; }

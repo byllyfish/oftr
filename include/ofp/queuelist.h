@@ -11,6 +11,7 @@ class QueueList : public ProtocolList<QueueRange> {
  public:
   void add(const QueueBuilder &queue) {
     const PropertyList &props = queue.properties_;
+    assert(queue.queue_.len_ == QueueBuilder::SizeWithoutProperties + props.size());
     buf_.add(&queue, QueueBuilder::SizeWithoutProperties);
     buf_.add(props.data(), props.size());
   }

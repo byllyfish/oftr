@@ -29,11 +29,8 @@ bool FeaturesReply::validateInput(Validation *context) const {
     return (context->length() == sizeof(FeaturesReply));
   }
 
-  // Make sure the size of the list is a multiple of the port size. (Note
-  // that we mean post-1.0 port size; validation happens after transmogrify.)
-  size_t portListSize = header_.length() - sizeof(FeaturesReply);
-
-  return (portListSize % sizeof(Port)) == 0;
+  context->setLengthRemaining(header_.length() - sizeof(FeaturesReply));
+  return ports().validateInput(context);
 }
 
 PortRange FeaturesReply::ports() const {

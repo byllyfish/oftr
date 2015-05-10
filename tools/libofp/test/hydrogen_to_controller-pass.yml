@@ -22,34 +22,37 @@ msg:
       name:            s1-eth1
       config:          [  ]
       state:           [ LINK_DOWN, STP_LISTEN ]
-      curr:            [ 10GB_FD, COPPER ]
-      advertised:      [  ]
-      supported:       [  ]
-      peer:            [  ]
-      curr_speed:      0x00000000
-      max_speed:       0x00000000
+      ethernet:        
+        curr:            [ 10GB_FD, COPPER ]
+        advertised:      [  ]
+        supported:       [  ]
+        peer:            [  ]
+        curr_speed:      0x00000000
+        max_speed:       0x00000000
     - port_no:         0x00000002
       hw_addr:         '4e:b2:b4:4c:9a:40'
       name:            s1-eth2
       config:          [  ]
       state:           [ STP_LISTEN ]
-      curr:            [ 10GB_FD, COPPER ]
-      advertised:      [  ]
-      supported:       [  ]
-      peer:            [  ]
-      curr_speed:      0x00000000
-      max_speed:       0x00000000
+      ethernet:        
+        curr:            [ 10GB_FD, COPPER ]
+        advertised:      [  ]
+        supported:       [  ]
+        peer:            [  ]
+        curr_speed:      0x00000000
+        max_speed:       0x00000000
     - port_no:         LOCAL
       hw_addr:         '02:69:3c:bf:39:47'
       name:            s1
       config:          [  ]
       state:           [ STP_LISTEN ]
-      curr:            [  ]
-      advertised:      [  ]
-      supported:       [  ]
-      peer:            [  ]
-      curr_speed:      0x00000000
-      max_speed:       0x00000000
+      ethernet:        
+        curr:            [  ]
+        advertised:      [  ]
+        supported:       [  ]
+        peer:            [  ]
+        curr_speed:      0x00000000
+        max_speed:       0x00000000
 ...
 ---
 type:            GET_CONFIG_REPLY
@@ -87,12 +90,13 @@ msg:
     name:            s1-eth1
     config:          [  ]
     state:           [ STP_LISTEN ]
-    curr:            [ 10GB_FD, COPPER ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+    ethernet:        
+      curr:            [ 10GB_FD, COPPER ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
 ...
 ---
 type:            PACKET_IN

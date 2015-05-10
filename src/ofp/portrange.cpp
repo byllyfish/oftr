@@ -12,24 +12,34 @@ PortRange::PortRange(const PortList &ports) : PortRange{ports.toRange()} {
 /// \returns Size of port list when written to channel using the specified
 /// protocol version.
 size_t PortRange::writeSize(Writable *channel) {
-  if (channel->version() == OFP_VERSION_1) {
-    return itemCount() * sizeof(deprecated::PortV1);
-  } else {
+  if (channel->version() >= OFP_VERSION_5) {
     return size();
+  
+  } else if (channel->version() >= OFP_VERSION_2) {
+    return itemCount() * sizeof(deprecated::PortV2);
+
+  } else {
+    return itemCount() * sizeof(deprecated::PortV1);
   }
 }
 
 /// \brief Writes port list to the channel using the specified protocol
 /// version.
 void PortRange::write(Writable *channel) {
-  if (channel->version() == OFP_VERSION_1) {
+  if (channel->version() >= OFP_VERSION_5) {
+    channel->write(data(), size());
+
+  } else if (channel->version() >= OFP_VERSION_2) {
+    // Version 2-4 uses the PortV2 structure instead.
+    for (auto &item : *this) {
+      deprecated::PortV2 portV2{item};
+      channel->write(&portV2, sizeof(portV2));
+    }    
+  } else {
     // Version 1 uses the PortV1 structure instead.
-    for (auto item : *this) {
+    for (auto &item : *this) {
       deprecated::PortV1 portV1{item};
       channel->write(&portV1, sizeof(portV1));
     }
-
-  } else {
-    channel->write(data(), size());
   }
 }

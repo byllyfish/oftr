@@ -137,6 +137,11 @@ bool Validation::validateArrayVariableSize(const UInt8 *body,
       return false;
     }
 
+    if (size < Offset + sizeof(Big16)) {
+      rangeElementSizeIsTooSmall(body, Offset + sizeof(Big16));
+      return false;
+    }
+
     if ((size % 8) != 0) {
       rangeElementSizeHasImproperAlignment(body, size, 8);
       return false;
@@ -146,6 +151,8 @@ bool Validation::validateArrayVariableSize(const UInt8 *body,
     if (!ptr->validateInput(this)) {
       return false;
     }
+
+    assert(size > 0);
 
     body += size;
     length -= size;

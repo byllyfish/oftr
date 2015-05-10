@@ -57,7 +57,8 @@ SmallBuffer &SmallBuffer::operator=(SmallBuffer &&buf) noexcept {
 void SmallBuffer::assign(const void *data, size_t length) noexcept {
   assertNoOverlap(data, length);
   assertInvariant();
-
+  assert(length <= 0xFFFFFFFF);
+  
   if (length > capacity()) {
     increaseCapacity(length);
   }
@@ -70,6 +71,7 @@ void SmallBuffer::insert(UInt8 *pos, const void *data, size_t length) noexcept {
   assertInRange(pos);
   assertNoOverlap(data, length);
   assertInvariant();
+  assert(length <= 0xFFFFFFFF);
 
   if (length > remaining()) {
     size_t posOffset = Unsigned_cast(pos - begin_);
@@ -89,6 +91,7 @@ void SmallBuffer::replace(UInt8 *pos, UInt8 *posEnd, const void *data,
   assertInRange(pos, posEnd);
   assertNoOverlap(data, length);
   assertInvariant();
+  assert(length <= 0xFFFFFFFF);
 
   size_t posLen = Unsigned_cast(posEnd - pos);
   if (length > posLen) {
@@ -126,6 +129,7 @@ void SmallBuffer::remove(UInt8 *pos, UInt8 *posEnd) noexcept {
 
 void SmallBuffer::resize(size_t length) noexcept {
   assertInvariant();
+  assert(length <= 0xFFFFFFFF);
 
   if (length > capacity()) {
     increaseCapacity(length);
@@ -135,6 +139,7 @@ void SmallBuffer::resize(size_t length) noexcept {
 
 void SmallBuffer::reset(size_t length) noexcept {
   assertInvariant();
+  assert(length <= 0xFFFFFFFF);
 
   if (!isSmall()) {
     std::free(begin_);
@@ -159,6 +164,7 @@ void SmallBuffer::reset(size_t length) noexcept {
 
 UInt8 *SmallBuffer::addUninitialized(size_t length) noexcept {
   assertInvariant();
+  assert(length <= 0xFFFFFFFF);
 
   if (length > remaining()) {
     increaseCapacity(size() + length);
@@ -172,6 +178,7 @@ UInt8 *SmallBuffer::addUninitialized(size_t length) noexcept {
 UInt8 *SmallBuffer::insertUninitialized(UInt8 *pos, size_t length) noexcept {
   assertInRange(pos);
   assertInvariant();
+  assert(length <= 0xFFFFFFFF);
 
   if (length > remaining()) {
     size_t posOffset = Unsigned_cast(pos - begin_);
@@ -190,6 +197,7 @@ UInt8 *SmallBuffer::replaceUninitialized(UInt8 *pos, UInt8 *posEnd,
                                          size_t length) noexcept {
   assertInRange(pos, posEnd);
   assertInvariant();
+  assert(length <= 0xFFFFFFFF);
 
   size_t posLen = Unsigned_cast(posEnd - pos);
   if (length > posLen) {

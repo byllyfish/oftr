@@ -10,14 +10,12 @@ namespace ofp {
 
 class PortList : public ProtocolList<PortRange> {
  public:
-  void add(const Port &port) { buf_.add(&port, sizeof(Port)); }
-  void add(const PortBuilder &port) { add(port.toPort()); }
-
-  // PortRange toRange() const { return buf_.toRange(); }
-  // void operator=(const PortRange &range) { buf_ = range.toByteRange(); }
-
-  // private:
-  //  ByteList buf_;
+  void add(const PortBuilder &port) { 
+    const PropertyList &props = port.properties_;
+    assert(port.msg_.length_ == PortBuilder::SizeWithoutProperties + props.size());
+    buf_.add(&port.msg_, PortBuilder::SizeWithoutProperties);
+    buf_.add(props.data(), props.size());
+  }
 };
 
 }  // namespace ofp

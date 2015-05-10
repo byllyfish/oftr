@@ -154,6 +154,7 @@ inline OFPPortConfigFlags operator|(OFPPortConfigFlags lhs,
 // Current state of the physical port.  These are not configurable from
 // the controller.
 enum OFPPortStateFlags : UInt32 {
+  OFPPS_NONE = 0,
   OFPPS_LINK_DOWN = 1 << 0,
   OFPPS_BLOCKED = 1 << 1,
   OFPPS_LIVE = 1 << 2,
@@ -192,6 +193,7 @@ enum OFPPortNo : UInt32 {
 
 // Features of ports available in a datapath.
 enum OFPPortFeaturesFlags : UInt32 {
+  OFPPF_NONE = 0,
   OFPPF_10MB_HD = 1 << 0,
   OFPPF_10MB_FD = 1 << 1,
   OFPPF_100MB_HD = 1 << 2,
@@ -582,6 +584,12 @@ enum OFPRoleStatusProperty : UInt16 {
 enum OFPBundleProperty : UInt16 {
   OFPBPT_UNUSED_MIN = 0,  // min unused property id
   OFPBPT_EXPERIMENTER = 0xFFFF,
+};
+
+enum OFPPortProperty : UInt16 {
+  OFPPDPT_ETHERNET = 0,
+  OFPPDPT_OPTICAL = 1,
+  OFPPDPT_EXPERIMENTER = 0xFFFF,
 };
 
 enum OFPMultipartFlags : UInt16 {

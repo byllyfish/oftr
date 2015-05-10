@@ -6,31 +6,38 @@
 
 using namespace ofp;
 
-PortStatusBuilder::PortStatusBuilder(const PortStatus *msg) : msg_{*msg} {
+bool PortStatus::validateInput(Validation *context) const {
+  size_t length = context->length();
+
+  if (length < sizeof(PortStatus) + sizeof(Port)) {
+    log::debug("PortStatus too small", length);
+    return false;
+  }
+
+  size_t remainingLength = length - sizeof(PortStatus);
+  context->setLengthRemaining(remainingLength);
+
+  // FIXME: make sure there is only one port?
+
+  if (!port().validateInput(context)) {
+    return false;
+  }
+
+  return true;
 }
 
 UInt32 PortStatusBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   UInt32 xid = channel->nextXid();
 
-  UInt16 msgLen = sizeof(msg_) + sizeof(Port);
-  if (version == OFP_VERSION_1) {
-    // Subtract difference between size of Port and PortV1.
-    msgLen -= 16;
-  }
+  UInt16 msgLen = sizeof(msg_) + port_.writeSize(channel);
 
   msg_.header_.setVersion(version);
   msg_.header_.setLength(msgLen);
   msg_.header_.setXid(xid);
 
   channel->write(&msg_, sizeof(msg_));
-
-  if (version == OFP_VERSION_1) {
-    deprecated::PortV1 port{port_.toPort()};
-    channel->write(&port, sizeof(port));
-  } else {
-    port_.write(channel);
-  }
+  port_.write(channel);
   channel->flush();
 
   return xid;

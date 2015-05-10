@@ -28,6 +28,7 @@ class Queue : private NonCopyable {
   // Only a QueueBuilder can create an instance.
   Queue() = default;
 
+  friend class QueueList;
   friend class QueueBuilder;
 
   template <class T>

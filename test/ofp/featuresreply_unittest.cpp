@@ -2,6 +2,7 @@
 
 #include "ofp/unittest.h"
 #include "ofp/featuresreply.h"
+#include "ofp/portproperty.h"
 
 using namespace ofp;
 
@@ -30,12 +31,18 @@ TEST(featuresreply, v4) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
-  portBuilder.setCurr(kFakeCurr);
-  portBuilder.setAdvertised(kFakeAdvertised);
-  portBuilder.setSupported(kFakeSupported);
-  portBuilder.setPeer(kFakePeer);
-  portBuilder.setCurrSpeed(0xAAAAAAAA);
-  portBuilder.setMaxSpeed(0xBBBBBBBB);
+
+  PortPropertyEthernet prop;
+  prop.setCurr(kFakeCurr);
+  prop.setAdvertised(kFakeAdvertised);
+  prop.setSupported(kFakeSupported);
+  prop.setPeer(kFakePeer);
+  prop.setCurrSpeed(0xAAAAAAAA);
+  prop.setMaxSpeed(0xBBBBBBBB);
+
+  PropertyList properties;
+  properties.add(prop);
+  portBuilder.setProperties(properties);
 
   PortList ports;
   ports.add(portBuilder);
@@ -53,6 +60,7 @@ TEST(featuresreply, v4) {
   MemoryChannel channel{OFP_VERSION_4};
   UInt32 xid = msg.send(&channel);
 
+  // N.B. OpenFlow 1.3 and above do not include port list in feature reply.
   EXPECT_EQ(1, xid);
   EXPECT_EQ(0x20, channel.size());
   EXPECT_HEX("0406002000000001222222222222222233333333445500006666666600000000",
@@ -62,7 +70,7 @@ TEST(featuresreply, v4) {
   message.transmogrify();
 
   const FeaturesReply *reply = FeaturesReply::cast(&message);
-  EXPECT_TRUE(reply);
+  ASSERT_TRUE(reply);
 
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
@@ -81,12 +89,18 @@ TEST(featuresreply, v3) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
-  portBuilder.setCurr(kFakeCurr);
-  portBuilder.setAdvertised(kFakeAdvertised);
-  portBuilder.setSupported(kFakeSupported);
-  portBuilder.setPeer(kFakePeer);
-  portBuilder.setCurrSpeed(0xAAAAAAAA);
-  portBuilder.setMaxSpeed(0xBBBBBBBB);
+
+  PortPropertyEthernet prop;
+  prop.setCurr(kFakeCurr);
+  prop.setAdvertised(kFakeAdvertised);
+  prop.setSupported(kFakeSupported);
+  prop.setPeer(kFakePeer);
+  prop.setCurrSpeed(0xAAAAAAAA);
+  prop.setMaxSpeed(0xBBBBBBBB);
+
+  PropertyList properties;
+  properties.add(prop);
+  portBuilder.setProperties(properties);
 
   PortList ports;
   ports.add(portBuilder);
@@ -118,7 +132,7 @@ TEST(featuresreply, v3) {
   message.transmogrify();
 
   const FeaturesReply *reply = FeaturesReply::cast(&message);
-  EXPECT_TRUE(reply);
+  ASSERT_TRUE(reply);
 
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
@@ -127,7 +141,28 @@ TEST(featuresreply, v3) {
   EXPECT_EQ(0x66666666, reply->capabilities());
   EXPECT_EQ(0, reply->actions());
 
-  EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
+  EXPECT_EQ(2, reply->ports().itemCount());
+
+  for (auto &p : reply->ports()) {
+    EXPECT_EQ(0x11111111, p.portNo());
+    EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());
+    EXPECT_EQ(SmallCString<16>("Port 3"), p.name());
+    EXPECT_EQ(kFakeConfig, p.config());
+    EXPECT_EQ(kFakeState, p.state());
+
+    auto props = p.properties();
+    auto iter = props.findProperty(PortPropertyEthernet::type());
+    ASSERT_NE(props.end(), iter);
+    EXPECT_EQ(sizeof(PortPropertyEthernet), iter->size());
+
+    auto eth = iter->property<PortPropertyEthernet>();
+    EXPECT_EQ(kFakeCurr, eth.curr());
+    EXPECT_EQ(kFakeAdvertised, eth.advertised());
+    EXPECT_EQ(kFakeSupported, eth.supported());
+    EXPECT_EQ(kFakePeer, eth.peer());
+    EXPECT_EQ(0xAAAAAAAA, eth.currSpeed());
+    EXPECT_EQ(0xBBBBBBBB, eth.maxSpeed());
+  }
 }
 
 TEST(featuresreply, v2) {
@@ -137,12 +172,18 @@ TEST(featuresreply, v2) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
-  portBuilder.setCurr(kFakeCurr);
-  portBuilder.setAdvertised(kFakeAdvertised);
-  portBuilder.setSupported(kFakeSupported);
-  portBuilder.setPeer(kFakePeer);
-  portBuilder.setCurrSpeed(0xAAAAAAAA);
-  portBuilder.setMaxSpeed(0xBBBBBBBB);
+
+  PortPropertyEthernet prop;
+  prop.setCurr(kFakeCurr);
+  prop.setAdvertised(kFakeAdvertised);
+  prop.setSupported(kFakeSupported);
+  prop.setPeer(kFakePeer);
+  prop.setCurrSpeed(0xAAAAAAAA);
+  prop.setMaxSpeed(0xBBBBBBBB);
+
+  PropertyList properties;
+  properties.add(prop);
+  portBuilder.setProperties(properties);
 
   PortList ports;
   ports.add(portBuilder);
@@ -174,7 +215,7 @@ TEST(featuresreply, v2) {
   message.transmogrify();
 
   const FeaturesReply *reply = FeaturesReply::cast(&message);
-  EXPECT_TRUE(reply);
+  ASSERT_TRUE(reply);
 
   EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
@@ -183,7 +224,28 @@ TEST(featuresreply, v2) {
   EXPECT_EQ(0x66666666, reply->capabilities());
   EXPECT_EQ(0, reply->actions());
 
-  EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
+  EXPECT_EQ(2, reply->ports().itemCount());
+  
+  for (auto &p : reply->ports()) {
+    EXPECT_EQ(0x11111111, p.portNo());
+    EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());
+    EXPECT_EQ(SmallCString<16>("Port 3"), p.name());
+    EXPECT_EQ(kFakeConfig, p.config());
+    EXPECT_EQ(kFakeState, p.state());
+
+    auto props = p.properties();
+    auto iter = props.findProperty(PortPropertyEthernet::type());
+    ASSERT_NE(props.end(), iter);
+    EXPECT_EQ(sizeof(PortPropertyEthernet), iter->size());
+
+    auto eth = iter->property<PortPropertyEthernet>();
+    EXPECT_EQ(kFakeCurr, eth.curr());
+    EXPECT_EQ(kFakeAdvertised, eth.advertised());
+    EXPECT_EQ(kFakeSupported, eth.supported());
+    EXPECT_EQ(kFakePeer, eth.peer());
+    EXPECT_EQ(0xAAAAAAAA, eth.currSpeed());
+    EXPECT_EQ(0xBBBBBBBB, eth.maxSpeed());
+  }
 }
 
 TEST(featuresreply, v1) {
@@ -193,12 +255,18 @@ TEST(featuresreply, v1) {
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
-  portBuilder.setCurr(kFakeCurr);
-  portBuilder.setAdvertised(kFakeAdvertised);
-  portBuilder.setSupported(kFakeSupported);
-  portBuilder.setPeer(kFakePeer);
-  portBuilder.setCurrSpeed(0xAAAAAAAA);
-  portBuilder.setMaxSpeed(0xBBBBBBBB);
+
+  PortPropertyEthernet prop;
+  prop.setCurr(kFakeCurr);
+  prop.setAdvertised(kFakeAdvertised);
+  prop.setSupported(kFakeSupported);
+  prop.setPeer(kFakePeer);
+  prop.setCurrSpeed(0xAAAAAAAA);
+  prop.setMaxSpeed(0xBBBBBBBB);
+
+  PropertyList properties;
+  properties.add(prop);
+  portBuilder.setProperties(properties);
 
   PortList ports;
   ports.add(portBuilder);
@@ -239,5 +307,27 @@ TEST(featuresreply, v1) {
   EXPECT_EQ(0x66666666, reply->capabilities());
   EXPECT_EQ(0x40000677, reply->actions());
 
-  EXPECT_EQ(2 * sizeof(Port), reply->ports().size());
+  EXPECT_EQ(2, reply->ports().itemCount());
+  
+  for (auto &p : reply->ports()) {
+    EXPECT_EQ(0x1111, p.portNo());
+    EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());
+    EXPECT_EQ(SmallCString<16>("Port 3"), p.name());
+    EXPECT_EQ(kFakeConfig, p.config());
+    EXPECT_EQ(kFakeState, p.state());
+
+    auto props = p.properties();
+    auto iter = props.findProperty(PortPropertyEthernet::type());
+    ASSERT_NE(props.end(), iter);
+    EXPECT_EQ(sizeof(PortPropertyEthernet), iter->size());
+
+    // N.B. loss of information
+    auto eth = iter->property<PortPropertyEthernet>();
+    EXPECT_EQ(0x66666066, eth.curr());
+    EXPECT_EQ(0x77777077, eth.advertised());
+    EXPECT_EQ(0x88888808, eth.supported());
+    EXPECT_EQ(0x99999819, eth.peer());
+    EXPECT_EQ(0, eth.currSpeed());
+    EXPECT_EQ(0, eth.maxSpeed());
+  }
 }

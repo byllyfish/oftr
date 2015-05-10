@@ -76,23 +76,25 @@ msg:
       name:            Port7
       config:          [  ]
       state:           [ STP_LISTEN, '0x00000010' ]
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00000000
-      max_speed:       0x00000000
+      ethernet:        
+        curr:            [ 100MB_FD, COPPER, AUTONEG ]
+        advertised:      [ COPPER, AUTONEG ]
+        supported:       [ 100MB_FD, COPPER, AUTONEG ]
+        peer:            [ 100MB_FD, COPPER, AUTONEG ]
+        curr_speed:      0x00000000
+        max_speed:       0x00000000
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
       config:          [  ]
       state:           [ BLOCKED, STP_LISTEN ]
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00000000
-      max_speed:       0x00000000
+      ethernet:        
+        curr:            [ 100MB_FD, COPPER, AUTONEG ]
+        advertised:      [ COPPER, AUTONEG ]
+        supported:       [ 100MB_FD, COPPER, AUTONEG ]
+        peer:            [ 100MB_FD, COPPER, AUTONEG ]
+        curr_speed:      0x00000000
+        max_speed:       0x00000000
 ...
 ---
 type:            MULTIPART_REPLY
@@ -598,12 +600,13 @@ msg:
     name:            '私のポート'
     config:          [  ]
     state:           [ LIVE ]
-    curr:            [ 100MB_FD, COPPER, AUTONEG ]
-    advertised:      [ COPPER, AUTONEG ]
-    supported:       [ 100MB_FD, COPPER, AUTONEG ]
-    peer:            [ 100MB_FD, COPPER, AUTONEG ]
-    curr_speed:      0x00001388
-    max_speed:       0x00001388
+    ethernet:        
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
+      curr_speed:      0x00001388
+      max_speed:       0x00001388
 ...
 ---
 type:            PACKET_IN
@@ -775,23 +778,25 @@ msg:
       name:            Port7
       config:          [  ]
       state:           [ LIVE ]
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00001388
-      max_speed:       0x00001388
+      ethernet:        
+        curr:            [ 100MB_FD, COPPER, AUTONEG ]
+        advertised:      [ COPPER, AUTONEG ]
+        supported:       [ 100MB_FD, COPPER, AUTONEG ]
+        peer:            [ 100MB_FD, COPPER, AUTONEG ]
+        curr_speed:      0x00001388
+        max_speed:       0x00001388
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
       config:          [  ]
       state:           [ LIVE ]
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00001388
-      max_speed:       0x00001388
+      ethernet:        
+        curr:            [ 100MB_FD, COPPER, AUTONEG ]
+        advertised:      [ COPPER, AUTONEG ]
+        supported:       [ 100MB_FD, COPPER, AUTONEG ]
+        peer:            [ 100MB_FD, COPPER, AUTONEG ]
+        curr_speed:      0x00001388
+        max_speed:       0x00001388
 ...
 ---
 type:            FLOW_MOD
@@ -1496,12 +1501,13 @@ msg:
     name:            '私のポート'
     config:          [  ]
     state:           [ LIVE ]
-    curr:            [ 100MB_FD, COPPER, AUTONEG ]
-    advertised:      [ COPPER, AUTONEG ]
-    supported:       [ 100MB_FD, COPPER, AUTONEG ]
-    peer:            [ 100MB_FD, COPPER, AUTONEG ]
-    curr_speed:      0x00001388
-    max_speed:       0x00001388
+    ethernet:        
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
+      curr_speed:      0x00001388
+      max_speed:       0x00001388
 ...
 ---
 type:            PACKET_IN
@@ -1746,23 +1752,25 @@ msg:
       name:            Port7
       config:          [  ]
       state:           [ LIVE ]
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00001388
-      max_speed:       0x00001388
+      ethernet:        
+        curr:            [ 100MB_FD, COPPER, AUTONEG ]
+        advertised:      [ COPPER, AUTONEG ]
+        supported:       [ 100MB_FD, COPPER, AUTONEG ]
+        peer:            [ 100MB_FD, COPPER, AUTONEG ]
+        curr_speed:      0x00001388
+        max_speed:       0x00001388
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
       config:          [  ]
       state:           [ LIVE ]
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00001388
-      max_speed:       0x00001388
+      ethernet:        
+        curr:            [ 100MB_FD, COPPER, AUTONEG ]
+        advertised:      [ COPPER, AUTONEG ]
+        supported:       [ 100MB_FD, COPPER, AUTONEG ]
+        peer:            [ 100MB_FD, COPPER, AUTONEG ]
+        curr_speed:      0x00001388
+        max_speed:       0x00001388
 ...
 ---
 type:            MULTIPART_REQUEST

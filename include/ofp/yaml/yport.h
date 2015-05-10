@@ -6,6 +6,7 @@
 #include "ofp/port.h"
 #include "ofp/portlist.h"
 #include "ofp/yaml/ysmallcstring.h"
+#include "ofp/yaml/yportproperty.h"
 
 namespace ofp {
 namespace detail {
@@ -34,20 +35,31 @@ namespace yaml {
 template <>
 struct MappingTraits<ofp::Port> {
   static void mapping(IO &io, ofp::Port &msg) {
+    using namespace ofp;
+
     io.mapRequired("port_no", msg.portNo_);
     io.mapRequired("hw_addr", msg.hwAddr_);
     io.mapRequired("name", msg.name_);
 
-    ofp::OFPPortConfigFlags config = msg.config();
+    OFPPortConfigFlags config = msg.config();
     io.mapRequired("config", config);
 
-    ofp::OFPPortStateFlags state = msg.state();
+    OFPPortStateFlags state = msg.state();
     io.mapRequired("state", state);
 
-    ofp::OFPPortFeaturesFlags curr = msg.curr();
-    ofp::OFPPortFeaturesFlags advertised = msg.advertised();
-    ofp::OFPPortFeaturesFlags supported = msg.supported();
-    ofp::OFPPortFeaturesFlags peer = msg.peer();
+    PropertyRange props = msg.properties();
+
+    auto prop = props.findProperty(PortPropertyEthernet::type());
+    if (prop != props.end()) {
+      const PortPropertyEthernet &eth = prop->property<PortPropertyEthernet>();
+      io.mapRequired("ethernet", RemoveConst_cast(eth));
+    }
+
+    #if 0
+    OFPPortFeaturesFlags curr = msg.curr();
+    OFPPortFeaturesFlags advertised = msg.advertised();
+    OFPPortFeaturesFlags supported = msg.supported();
+    OFPPortFeaturesFlags peer = msg.peer();
     io.mapRequired("curr", curr);
     io.mapRequired("advertised", advertised);
     io.mapRequired("supported", supported);
@@ -55,28 +67,39 @@ struct MappingTraits<ofp::Port> {
 
     io.mapRequired("curr_speed", msg.currSpeed_);
     io.mapRequired("max_speed", msg.maxSpeed_);
+    #endif //0
   }
 };
 
 template <>
 struct MappingTraits<ofp::PortBuilder> {
   static void mapping(IO &io, ofp::PortBuilder &msg) {
+    using namespace ofp;
+
     io.mapRequired("port_no", msg.msg_.portNo_);
     io.mapRequired("hw_addr", msg.msg_.hwAddr_);
     io.mapRequired("name", msg.msg_.name_);
 
-    ofp::OFPPortConfigFlags config;
+    OFPPortConfigFlags config;
     io.mapRequired("config", config);
     msg.setConfig(config);
 
-    ofp::OFPPortStateFlags state;
+    OFPPortStateFlags state;
     io.mapRequired("state", state);
     msg.setState(state);
 
-    ofp::OFPPortFeaturesFlags curr;
-    ofp::OFPPortFeaturesFlags advertised;
-    ofp::OFPPortFeaturesFlags supported;
-    ofp::OFPPortFeaturesFlags peer;
+    PortPropertyEthernet eth;
+    io.mapRequired("ethernet", eth);   // FIXME(bfish) - make optional...
+
+    PropertyList props;
+    props.add(eth);
+    msg.setProperties(props);
+
+    #if 0
+    OFPPortFeaturesFlags curr;
+    OFPPortFeaturesFlags advertised;
+    OFPPortFeaturesFlags supported;
+    OFPPortFeaturesFlags peer;
     io.mapRequired("curr", curr);
     io.mapRequired("advertised", advertised);
     io.mapRequired("supported", supported);
@@ -88,6 +111,7 @@ struct MappingTraits<ofp::PortBuilder> {
 
     io.mapRequired("curr_speed", msg.msg_.currSpeed_);
     io.mapRequired("max_speed", msg.msg_.maxSpeed_);
+    #endif //0
   }
 };
 

@@ -335,23 +335,25 @@ TEST(encoder, featuresreplyv1ports) {
           name: Port 1
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+          ethernet:
+            curr:   [ '0x55555555' ]
+            advertised: [ '0x66666666' ]
+            supported:  [ '0x77777777' ]
+            peer:  [ '0x88888888' ]
+            curr_speed: 0x99999999
+            max_speed: 0xAAAAAAAA
         - port_no: 0xBBBB
           hw_addr: CC-CC-CC-CC-CC-CC
           name: Port 2
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+          ethernet:
+            curr:   [ '0x55555555' ]
+            advertised: [ '0x66666666' ]
+            supported:  [ '0x77777777' ]
+            peer:  [ '0x88888888' ]
+            curr_speed: 0x99999999
+            max_speed: 0xAAAAAAAA
     )""";
 
   testEncoderSuccess(input, 0x0080,
@@ -1347,12 +1349,13 @@ TEST(encoder, portstatusv4) {
           name: 'Port 1'
           config: [ 0x44444444 ]
           state: [ 0x55555555 ]
-          curr: [ '0x66666666' ]
-          advertised: [ '0x77777777' ]
-          supported: [ '0x88888888' ]
-          peer: [ '0x99999999' ]
-          curr_speed: 0xAAAAAAAA
-          max_speed: 0xBBBBBBBB
+          ethernet:
+            curr: [ '0x66666666' ]
+            advertised: [ '0x77777777' ]
+            supported: [ '0x88888888' ]
+            peer: [ '0x99999999' ]
+            curr_speed: 0xAAAAAAAA
+            max_speed: 0xBBBBBBBB
       )""";
 
   Encoder encoder{input};
@@ -1379,12 +1382,13 @@ TEST(encoder, portstatusv1) {
           name: 'Port 1'
           config: [ 0x44444444 ]
           state: [ 0x55555555 ]
-          curr: [ '0x66666666' ]
-          advertised: [ '0x77777777' ]
-          supported: [ '0x88888888' ]
-          peer: [ '0x99999999' ]
-          curr_speed: 0xAAAAAAAA
-          max_speed: 0xBBBBBBBB
+          ethernet:
+            curr: [ '0x66666666' ]
+            advertised: [ '0x77777777' ]
+            supported: [ '0x88888888' ]
+            peer: [ '0x99999999' ]
+            curr_speed: 0xAAAAAAAA
+            max_speed: 0xBBBBBBBB
       )""";
 
   Encoder encoder{input};

@@ -2,6 +2,7 @@
 
 #include "ofp/unittest.h"
 #include "ofp/portstatus.h"
+#include "ofp/portproperty.h"
 #include "ofp/message.h"
 
 using namespace ofp;
@@ -28,12 +29,18 @@ TEST(portstatus, v4) {
   port.setName("Port 1");
   port.setConfig(kFakeConfig);
   port.setState(kFakeState);
-  port.setCurr(kFakeCurr);
-  port.setAdvertised(kFakeAdvertised);
-  port.setSupported(kFakeSupported);
-  port.setPeer(kFakePeer);
-  port.setCurrSpeed(0x88888888);
-  port.setMaxSpeed(0x99999999);
+
+  PortPropertyEthernet prop;
+  prop.setCurr(kFakeCurr);
+  prop.setAdvertised(kFakeAdvertised);
+  prop.setSupported(kFakeSupported);
+  prop.setPeer(kFakePeer);
+  prop.setCurrSpeed(0x88888888);
+  prop.setMaxSpeed(0x99999999);
+
+  PropertyList properties;
+  properties.add(prop);
+  port.setProperties(properties);
 
   PortStatusBuilder builder;
   builder.setReason(kFakeReason);
@@ -66,12 +73,18 @@ TEST(portstatus, v4) {
     EXPECT_EQ(PortNameStr{"Port 1"}, p.name());
     EXPECT_EQ(0x22222222, p.config());
     EXPECT_EQ(0x33333333, p.state());
-    EXPECT_EQ(0x44444444, p.curr());
-    EXPECT_EQ(0x55555555, p.advertised());
-    EXPECT_EQ(0x66666666, p.supported());
-    EXPECT_EQ(0x77777777, p.peer());
-    EXPECT_EQ(0x88888888, p.currSpeed());
-    EXPECT_EQ(0x99999999, p.maxSpeed());
+
+    auto iter = p.properties().findProperty(PortPropertyEthernet::type());
+    ASSERT_NE(p.properties().end(), iter);
+
+    auto pr = iter->property<PortPropertyEthernet>();
+
+    EXPECT_EQ(0x44444444, pr.curr());
+    EXPECT_EQ(0x55555555, pr.advertised());
+    EXPECT_EQ(0x66666666, pr.supported());
+    EXPECT_EQ(0x77777777, pr.peer());
+    EXPECT_EQ(0x88888888, pr.currSpeed());
+    EXPECT_EQ(0x99999999, pr.maxSpeed());
   }
 }
 
@@ -82,12 +95,18 @@ TEST(portstatus, v1) {
   port.setName("Port 1");
   port.setConfig(kFakeConfig);
   port.setState(kFakeState);
-  port.setCurr(kFakeCurr);
-  port.setAdvertised(kFakeAdvertised);
-  port.setSupported(kFakeSupported);
-  port.setPeer(kFakePeer);
-  port.setCurrSpeed(0x88888888);
-  port.setMaxSpeed(0x99999999);
+
+  PortPropertyEthernet prop;
+  prop.setCurr(kFakeCurr);
+  prop.setAdvertised(kFakeAdvertised);
+  prop.setSupported(kFakeSupported);
+  prop.setPeer(kFakePeer);
+  prop.setCurrSpeed(0x88888888);
+  prop.setMaxSpeed(0x99999999);
+
+  PropertyList properties;
+  properties.add(prop);
+  port.setProperties(properties);
 
   PortStatusBuilder builder;
   builder.setReason(kFakeReason);
@@ -119,11 +138,17 @@ TEST(portstatus, v1) {
     EXPECT_EQ(PortNameStr{"Port 1"}, p.name());
     EXPECT_EQ(0x22222222, p.config());
     EXPECT_EQ(0x33333333, p.state());
-    EXPECT_EQ(0x44444044, p.curr());
-    EXPECT_EQ(0x55555055, p.advertised());
-    EXPECT_EQ(0x66666066, p.supported());
-    EXPECT_EQ(0x77777077, p.peer());
-    EXPECT_EQ(0, p.currSpeed());
-    EXPECT_EQ(0, p.maxSpeed());
+
+    auto iter = p.properties().findProperty(PortPropertyEthernet::type());
+    ASSERT_NE(p.properties().end(), iter);
+
+    auto pr = iter->property<PortPropertyEthernet>();
+
+    EXPECT_EQ(0x44444044, pr.curr());
+    EXPECT_EQ(0x55555055, pr.advertised());
+    EXPECT_EQ(0x66666066, pr.supported());
+    EXPECT_EQ(0x77777077, pr.peer());
+    EXPECT_EQ(0, pr.currSpeed());
+    EXPECT_EQ(0, pr.maxSpeed());
   }
 }

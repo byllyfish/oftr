@@ -49,6 +49,7 @@ class MPReplyVariableSizeSeq {
     size_t len = 0;
     while (len < total) {
       UInt16 elemSize = *Big16_cast(buf + len + Offset);
+      assert(elemSize > 0);
       len += elemSize;
       ++result;
     }
@@ -57,7 +58,8 @@ class MPReplyVariableSizeSeq {
 
   Type &next() {
     const UInt8 *pos = position_;
-    position_ += *Big16_cast(position_);
+    position_ += *Big16_cast(position_ + Offset);
+    assert(position_ > pos);
     return RemoveConst_cast(*reinterpret_cast<const Type *>(pos));
   }
 
