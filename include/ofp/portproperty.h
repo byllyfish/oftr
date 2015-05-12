@@ -3,6 +3,8 @@
 #ifndef OFP_PORTPROPERTY_H_
 #define OFP_PORTPROPERTY_H_
 
+#include "ofp/experimenterproperty.h"
+
 namespace ofp {
 
 class PortPropertyEthernet {
@@ -40,16 +42,35 @@ private:
 
 static_assert(sizeof(PortPropertyEthernet) == 32, "Unexpected size.");
 
-
 class PortPropertyOptical {
 public:
   constexpr static OFPPortProperty type() { return OFPPDPT_OPTICAL; }
+
+  OFPOpticalPortFeaturesFlags supported() const { return supported_; }
+  UInt32 txMinFreqLmda() const { return txMinFreqLmda_; }
+  UInt32 txMaxFreqLmda() const { return txMaxFreqLmda_; }
+  UInt32 txGridFreqLmda() const { return txGridFreqLmda_; }
+  UInt32 rxMinFreqLmda() const { return rxMinFreqLmda_; }
+  UInt32 rxMaxFreqLmda() const { return rxMaxFreqLmda_; }
+  UInt32 rxGridFreqLmda() const { return rxGridFreqLmda_; }
+  UInt16 txPwrMin() const { return txPwrMin_; }
+  UInt16 txPwrMax() const { return txPwrMax_; }
+
+  void setSupported(OFPOpticalPortFeaturesFlags supported) { supported_ = supported; }
+  void setTxMinFreqLmda(UInt32 txMinFreqLmda) { txMinFreqLmda_ = txMinFreqLmda; }
+  void setTxMaxFreqLmda(UInt32 txMaxFreqLmda) { txMaxFreqLmda_ = txMaxFreqLmda; }
+  void setTxGridFreqLmda(UInt32 txGridFreqLmda) { txGridFreqLmda_ = txGridFreqLmda; }
+  void setRxMinFreqLmda(UInt32 rxMinFreqLmda) { rxMinFreqLmda_ = rxMinFreqLmda; }
+  void setRxMaxFreqLmda(UInt32 rxMaxFreqLmda) { rxMaxFreqLmda_ = rxMaxFreqLmda; }
+  void setRxGridFreqLmda(UInt32 rxGridFreqLmda) { rxGridFreqLmda_ = rxGridFreqLmda; }
+  void setTxPwrMin(UInt16 txPwrMin) { txPwrMin_ = txPwrMin; }
+  void setTxPwrMax(UInt16 txPwrMax) { txPwrMax_ = txPwrMax; }
 
 private:
   Big16 type_ = type();
   Big16 len_ = 40;
   Padding<4> pad_;
-  Big32 supported_;
+  Big<OFPOpticalPortFeaturesFlags> supported_;
   Big32 txMinFreqLmda_;
   Big32 txMaxFreqLmda_;
   Big32 txGridFreqLmda_;
@@ -58,7 +79,14 @@ private:
   Big32 rxGridFreqLmda_;
   Big16 txPwrMin_;
   Big16 txPwrMax_;
+
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
+
+static_assert(sizeof(PortPropertyOptical) == 40, "Unexpected size.");
+
+using PortPropertyExperimenter = detail::ExperimenterProperty<OFPPortProperty, OFPPDPT_EXPERIMENTER>;
 
 }  // namespace ofp
 

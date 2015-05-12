@@ -342,6 +342,7 @@ TEST(encoder, featuresreplyv1ports) {
             peer:  [ '0x88888888' ]
             curr_speed: 0x99999999
             max_speed: 0xAAAAAAAA
+          properties:
         - port_no: 0xBBBB
           hw_addr: CC-CC-CC-CC-CC-CC
           name: Port 2
@@ -354,6 +355,7 @@ TEST(encoder, featuresreplyv1ports) {
             peer:  [ '0x88888888' ]
             curr_speed: 0x99999999
             max_speed: 0xAAAAAAAA
+          properties:
     )""";
 
   testEncoderSuccess(input, 0x0080,
@@ -1356,6 +1358,7 @@ TEST(encoder, portstatusv4) {
             peer: [ '0x99999999' ]
             curr_speed: 0xAAAAAAAA
             max_speed: 0xBBBBBBBB
+          properties:
       )""";
 
   Encoder encoder{input};
@@ -1389,6 +1392,7 @@ TEST(encoder, portstatusv1) {
             peer: [ '0x99999999' ]
             curr_speed: 0xAAAAAAAA
             max_speed: 0xBBBBBBBB
+          properties:
       )""";
 
   Encoder encoder{input};

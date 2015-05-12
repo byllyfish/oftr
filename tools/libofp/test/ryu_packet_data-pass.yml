@@ -83,6 +83,7 @@ msg:
         peer:            [ 100MB_FD, COPPER, AUTONEG ]
         curr_speed:      0x00000000
         max_speed:       0x00000000
+      properties:      
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
@@ -95,6 +96,7 @@ msg:
         peer:            [ 100MB_FD, COPPER, AUTONEG ]
         curr_speed:      0x00000000
         max_speed:       0x00000000
+      properties:      
 ...
 ---
 type:            MULTIPART_REPLY
@@ -607,6 +609,7 @@ msg:
       peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
+    properties:      
 ...
 ---
 type:            PACKET_IN
@@ -785,6 +788,7 @@ msg:
         peer:            [ 100MB_FD, COPPER, AUTONEG ]
         curr_speed:      0x00001388
         max_speed:       0x00001388
+      properties:      
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
@@ -797,6 +801,7 @@ msg:
         peer:            [ 100MB_FD, COPPER, AUTONEG ]
         curr_speed:      0x00001388
         max_speed:       0x00001388
+      properties:      
 ...
 ---
 type:            FLOW_MOD
@@ -1508,6 +1513,7 @@ msg:
       peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
+    properties:      
 ...
 ---
 type:            PACKET_IN
@@ -1759,6 +1765,7 @@ msg:
         peer:            [ 100MB_FD, COPPER, AUTONEG ]
         curr_speed:      0x00001388
         max_speed:       0x00001388
+      properties:      
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
@@ -1771,6 +1778,7 @@ msg:
         peer:            [ 100MB_FD, COPPER, AUTONEG ]
         curr_speed:      0x00001388
         max_speed:       0x00001388
+      properties:      
 ...
 ---
 type:            MULTIPART_REQUEST

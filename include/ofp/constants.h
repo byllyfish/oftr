@@ -222,6 +222,21 @@ inline OFPPortFeaturesFlags operator|(OFPPortFeaturesFlags lhs,
 OFPPortFeaturesFlags OFPPortFeaturesFlagsConvertToV1(UInt32 features);
 OFPPortFeaturesFlags OFPPortFeaturesFlagsConvertFromV1(UInt32 features);
 
+enum OFPOpticalPortFeaturesFlags : UInt32 {
+  OFPOPF_NONE = 0,
+  OFPOPF_RX_TUNE = 1 << 0,
+  OFPOPF_TX_TUNE = 1 << 1,
+  OFPOPF_TX_PWR = 1 << 2,
+  OFPOPF_USE_FREQ  = 1 << 3,
+
+  OFPOPF_OTHER_FEATURES_FLAGS = 0xFFFFFFF0
+};
+
+inline OFPOpticalPortFeaturesFlags operator|(OFPOpticalPortFeaturesFlags lhs,
+                                      OFPOpticalPortFeaturesFlags rhs) {
+  return static_cast<OFPOpticalPortFeaturesFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPPortStatusReason : UInt8 {
   OFPPR_ADD = 0,
   OFPPR_DELETE = 1,
@@ -589,6 +604,7 @@ enum OFPBundleProperty : UInt16 {
 enum OFPPortProperty : UInt16 {
   OFPPDPT_ETHERNET = 0,
   OFPPDPT_OPTICAL = 1,
+  OFPPDPT_UNUSED_MIN = 2,  // min unused property id
   OFPPDPT_EXPERIMENTER = 0xFFFF,
 };
 

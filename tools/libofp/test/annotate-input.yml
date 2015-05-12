@@ -54,6 +54,7 @@ msg:
         peer: [ 'COPPER' ]
         curr_speed: 0xffffffff
         max_speed: 0xffffffff
+      properties:
 ---
 version: 0x04
 type: GET_CONFIG_REQUEST
@@ -123,6 +124,7 @@ msg:
       peer: [ 'COPPER' ]
       curr_speed: 0xffffffff
       max_speed: 0xffffffff
+    properties:
 ---
 version: 0x04
 type: PACKET_OUT
@@ -570,6 +572,7 @@ msg:
         peer: [ 'COPPER' ]
         curr_speed: 0xffffffff
         max_speed: 0xffffffff
+      properties:
 ---
 version: 5
 type: MULTIPART_REQUEST

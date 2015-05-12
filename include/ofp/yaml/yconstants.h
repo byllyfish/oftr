@@ -197,6 +197,18 @@ struct ScalarBitSetTraits<ofp::OFPPortFeaturesFlags> {
 };
 
 template <>
+struct ScalarBitSetTraits<ofp::OFPOpticalPortFeaturesFlags> {
+  static void bitset(IO &io, ofp::OFPOpticalPortFeaturesFlags &value) {
+    OFP_YAML_BITCASE(OFPOPF_, RX_TUNE);
+    OFP_YAML_BITCASE(OFPOPF_, TX_TUNE);
+    OFP_YAML_BITCASE(OFPOPF_, TX_PWR);
+    OFP_YAML_BITCASE(OFPOPF_, USE_FREQ);
+
+    io.bitSetCaseOther(value, ofp::OFPOPF_OTHER_FEATURES_FLAGS);
+  }
+};
+
+template <>
 struct ScalarBitSetTraits<ofp::OFPPortConfigFlags> {
   static void bitset(IO &io, ofp::OFPPortConfigFlags &value) {
     OFP_YAML_BITCASE(OFPPC_, PORT_DOWN);

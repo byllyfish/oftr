@@ -29,6 +29,7 @@ msg:
         peer:            [  ]
         curr_speed:      0x00000000
         max_speed:       0x00000000
+      properties:      
     - port_no:         0x00000002
       hw_addr:         '4e:b2:b4:4c:9a:40'
       name:            s1-eth2
@@ -41,6 +42,7 @@ msg:
         peer:            [  ]
         curr_speed:      0x00000000
         max_speed:       0x00000000
+      properties:      
     - port_no:         LOCAL
       hw_addr:         '02:69:3c:bf:39:47'
       name:            s1
@@ -53,6 +55,7 @@ msg:
         peer:            [  ]
         curr_speed:      0x00000000
         max_speed:       0x00000000
+      properties:      
 ...
 ---
 type:            GET_CONFIG_REPLY
@@ -97,6 +100,7 @@ msg:
       peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
+    properties:      
 ...
 ---
 type:            PACKET_IN

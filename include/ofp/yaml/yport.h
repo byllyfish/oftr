@@ -49,25 +49,19 @@ struct MappingTraits<ofp::Port> {
 
     PropertyRange props = msg.properties();
 
-    auto prop = props.findProperty(PortPropertyEthernet::type());
-    if (prop != props.end()) {
-      const PortPropertyEthernet &eth = prop->property<PortPropertyEthernet>();
+    auto eprop = props.findProperty(PortPropertyEthernet::type());
+    if (eprop != props.end()) {
+      const PortPropertyEthernet &eth = eprop->property<PortPropertyEthernet>();
       io.mapRequired("ethernet", RemoveConst_cast(eth));
     }
 
-    #if 0
-    OFPPortFeaturesFlags curr = msg.curr();
-    OFPPortFeaturesFlags advertised = msg.advertised();
-    OFPPortFeaturesFlags supported = msg.supported();
-    OFPPortFeaturesFlags peer = msg.peer();
-    io.mapRequired("curr", curr);
-    io.mapRequired("advertised", advertised);
-    io.mapRequired("supported", supported);
-    io.mapRequired("peer", peer);
+    auto oprop = props.findProperty(PortPropertyOptical::type());
+    if (oprop != props.end()) {
+      const PortPropertyOptical &opt = oprop->property<PortPropertyOptical>();
+      io.mapRequired("optical", RemoveConst_cast(opt));
+    }
 
-    io.mapRequired("curr_speed", msg.currSpeed_);
-    io.mapRequired("max_speed", msg.maxSpeed_);
-    #endif //0
+    io.mapRequired("properties", Ref_cast<ofp::detail::PortPropertyRange>(props));
   }
 };
 
@@ -91,27 +85,17 @@ struct MappingTraits<ofp::PortBuilder> {
     PortPropertyEthernet eth;
     io.mapRequired("ethernet", eth);   // FIXME(bfish) - make optional...
 
+    Optional<PortPropertyOptical> opt;
+    io.mapOptional("optical", opt);
+
     PropertyList props;
     props.add(eth);
+    if (opt) {
+        props.add(*opt);
+    }
+
+    io.mapRequired("properties", Ref_cast<ofp::detail::PortPropertyList>(props));
     msg.setProperties(props);
-
-    #if 0
-    OFPPortFeaturesFlags curr;
-    OFPPortFeaturesFlags advertised;
-    OFPPortFeaturesFlags supported;
-    OFPPortFeaturesFlags peer;
-    io.mapRequired("curr", curr);
-    io.mapRequired("advertised", advertised);
-    io.mapRequired("supported", supported);
-    io.mapRequired("peer", peer);
-    msg.setCurr(curr);
-    msg.setAdvertised(advertised);
-    msg.setSupported(supported);
-    msg.setPeer(peer);
-
-    io.mapRequired("curr_speed", msg.msg_.currSpeed_);
-    io.mapRequired("max_speed", msg.msg_.maxSpeed_);
-    #endif //0
   }
 };
 
