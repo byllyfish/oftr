@@ -1488,6 +1488,30 @@ TEST(encoder, groupmodv2) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, portmodv5) {
+  const char *input = R"""(
+      version: 5
+      type: PORT_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port_no: 0x22222222
+        hw_addr: '333333333333'
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x28, encoder.size());
+  EXPECT_HEX(
+      "05100028111111112222222200000000333333333333000044444444555555550000000866666666",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, portmodv4) {
   const char *input = R"""(
       version: 4
@@ -1499,7 +1523,9 @@ TEST(encoder, portmodv4) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        advertise: [ 0x66666666 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
       )""";
 
   Encoder encoder{input};
@@ -1522,13 +1548,15 @@ TEST(encoder, portmodv1) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        advertise: [ 0x66666666 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
       )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x20, encoder.size());
-  EXPECT_HEX("010F002011111111222233333333333344444444555555556666666600000000",
+  EXPECT_HEX("010F002011111111222233333333333344444444555555556666066600000000",
              encoder.data(), encoder.size());
 }
 

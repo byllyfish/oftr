@@ -184,7 +184,9 @@ msg:
   hw_addr: 'ff:ff:ff:ff:ff:ff'
   config: [ '0xffffffff' ]
   mask: [ '0xffffffff' ]
-  advertise: [ '0xffffffff' ]
+  ethernet:
+    advertise: [ '0xffffffff' ]
+  properties:
 ---
 version: 0x04
 type: TABLE_MOD

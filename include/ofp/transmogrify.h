@@ -28,6 +28,7 @@ class Transmogrify {
   void normalizeExperimenterV1();
   void normalizePacketOutV1();
   void normalizePortModV1();
+  void normalizePortModV2();
   void normalizeFlowRemovedV1();
   void normalizeMultipartRequestV1();
   void normalizeMultipartReplyV1();

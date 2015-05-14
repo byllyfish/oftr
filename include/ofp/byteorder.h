@@ -122,11 +122,13 @@ using Big8 = Big<UInt8>;
 using Big16 = Big<UInt16>;
 using Big32 = Big<UInt32>;
 using Big64 = Big<UInt64>;
+using SignedBig32 = Big<SignedInt32>;
 
 static_assert(IsLiteralType<Big8>(), "Literal type expected.");
 static_assert(IsLiteralType<Big16>(), "Literal type expected.");
 static_assert(IsLiteralType<Big32>(), "Literal type expected.");
 static_assert(IsLiteralType<Big64>(), "Literal type expected.");
+static_assert(IsLiteralType<SignedBig32>(), "Literal type expected.");
 
 // For compile-time conversions.
 template <class Type>

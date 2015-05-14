@@ -608,6 +608,13 @@ enum OFPPortProperty : UInt16 {
   OFPPDPT_EXPERIMENTER = 0xFFFF,
 };
 
+enum OFPPortModProperty : UInt16 {
+  OFPPMPT_ETHERNET = 0,
+  OFPPMPT_OPTICAL = 1,
+  OFPPMPT_UNUSED_MIN = 2,  // min unused property id
+  OFPPMPT_EXPERIMENTER = 0xFFFF,
+};
+
 enum OFPMultipartFlags : UInt16 {
   OFPMPF_NONE = 0,
   OFPMPF_MORE = 1 << 0,

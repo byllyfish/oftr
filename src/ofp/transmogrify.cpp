@@ -72,12 +72,16 @@ void Transmogrify::normalize() {
       normalizeFeaturesReplyV2();
     } else if (type == PortStatus::type()) {
       normalizePortStatusV2();
+    } else if (type == PortMod::type()) {
+      normalizePortModV2();
     }
   } else if (version == OFP_VERSION_3) {
     if (type == FeaturesReply::type()) {
       normalizeFeaturesReplyV2();
     } else if (type == PortStatus::type()) {
       normalizePortStatusV2();
+    } else if (type == PortMod::type()) {
+      normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV3();
     }
@@ -86,6 +90,8 @@ void Transmogrify::normalize() {
       normalizeFeaturesReplyV2();
     } else if (type == PortStatus::type()) {
       normalizePortStatusV2();
+    } else if (type == PortMod::type()) {
+      normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV4();
     }
@@ -406,8 +412,35 @@ void Transmogrify::normalizePortModV1() {
   std::memset(pkt + 12, 0, 4);
   std::memset(pkt + 22, 0, 2);
 
+  // Convert advertise into a property.
+  UInt32 advertise = *Big32_cast(pkt + 32);
+  *Big32_cast(pkt + 32) = 0x00000008;
+  *Big32_cast(pkt + 36) = OFPPortFeaturesFlagsConvertFromV1(advertise);
+
+  log::info("normalizePortModV1", buf_);
+
   // Update header length.
   header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizePortModV2() {
+  Header *hdr = header();
+
+  if (hdr->length() < 40) {
+    log::info("PortMod message is too short.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  log::info("normalizePortModV2", buf_);
+
+  // Convert advertise into a property.
+  UInt8 *pkt = buf_.mutableData();
+  UInt32 advertise = *Big32_cast(pkt + 32);
+  *Big32_cast(pkt + 32) = 0x00000008;
+  *Big32_cast(pkt + 36) = advertise;
+
+  // No change in length.
 }
 
 void Transmogrify::normalizeFlowRemovedV1() {

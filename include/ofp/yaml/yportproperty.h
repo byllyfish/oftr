@@ -109,7 +109,7 @@ struct MappingTraits<ofp::detail::PortPropertyInserter> {
     UInt16 property;
     io.mapRequired("property", property);
 
-    if (property == OFPBPT_EXPERIMENTER) {
+    if (property == OFPPDPT_EXPERIMENTER) {
       UInt32 experimenter;
       io.mapRequired("experimenter", experimenter);
 

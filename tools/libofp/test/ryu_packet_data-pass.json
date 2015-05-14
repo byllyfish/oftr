@@ -18,7 +18,7 @@
 {"type":"FLOW_MOD","xid":0,"version":3,"msg":{"cookie":0,"cookie_mask":0,"table_id":1,"command":"ADD","idle_timeout":0,"hard_timeout":0,"priority":123,"buffer_id":65535,"out_port":"ANY","out_group":"ANY","flags":[],"match":[{"field":"ETH_DST","value":"f2:0b:a4:7d:f8:ea"}],"instructions":[{"instruction":"WRITE_ACTIONS","actions":[{"action":"SET_FIELD","field":"VLAN_VID","value":258},{"action":"OUTPUT","port":6,"max_len":"NO_BUFFER"}]},{"instruction":"APPLY_ACTIONS","actions":[{"action":"SET_FIELD","field":"ETH_SRC","value":"01:02:03:04:05:06"}]}]}}
 {"type":"ROLE_REPLY","xid":0,"version":3,"msg":{"role":"ROLE_SLAVE","generation_id":17294086455919964160}}
 {"type":"GROUP_MOD","xid":0,"version":3,"msg":{"command":0,"type":0,"group_id":1,"buckets":[{"weight":1,"watch_port":1,"watch_group":1,"actions":[{"action":"OUTPUT","port":2,"max_len":"NO_BUFFER"}]}]}}
-{"type":"PORT_MOD","xid":0,"version":3,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"advertise":["FIBER"]}}
+{"type":"PORT_MOD","xid":0,"version":3,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"ethernet":{"advertise":["FIBER"]},"properties":[]}}
 {"type":"TABLE_MOD","xid":0,"version":3,"msg":{"table_id":255,"config":0}}
 {"type":"MULTIPART_REQUEST","xid":0,"version":3,"msg":{"type":"DESC","flags":[]}}
 {"type":"MULTIPART_REQUEST","xid":0,"version":3,"msg":{"type":"AGGREGATE","flags":[],"body":{"table_id":"ALL","out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}
@@ -61,7 +61,7 @@
 {"type":"FLOW_MOD","xid":0,"version":4,"msg":{"cookie":0,"cookie_mask":0,"table_id":1,"command":"ADD","idle_timeout":0,"hard_timeout":0,"priority":123,"buffer_id":65535,"out_port":"ANY","out_group":"ANY","flags":[],"match":[{"field":"ETH_DST","value":"f2:0b:a4:7d:f8:ea"}],"instructions":[{"instruction":"WRITE_ACTIONS","actions":[{"action":"SET_FIELD","field":"VLAN_VID","value":258},{"action":"COPY_TTL_OUT"},{"action":"COPY_TTL_IN"},{"action":"COPY_TTL_IN"},{"action":"POP_PBB"},{"action":"PUSH_PBB","ethertype":4660},{"action":"POP_MPLS","ethertype":39030},{"action":"PUSH_MPLS","mpls":2286354432},{"action":"POP_VLAN"},{"action":"PUSH_VLAN","vlan":33024},{"action":"DEC_MPLS_TTL"},{"action":"SET_MPLS_TTL","ttl":2560},{"action":"DEC_NW_TTL"},{"action":"SET_NW_TTL","ttl":10},{"action":"SET_QUEUE","queue":3},{"action":"GROUP","group":99},{"action":"OUTPUT","port":6,"max_len":"NO_BUFFER"}]},{"instruction":"APPLY_ACTIONS","actions":[{"action":"SET_FIELD","field":"ETH_SRC","value":"01:02:03:04:05:06"},{"action":"SET_FIELD","field":"0xFFFF0007","value":"4F4E46000A0001"}]}]}}
 {"type":"ROLE_REPLY","xid":0,"version":4,"msg":{"role":"ROLE_SLAVE","generation_id":17294086455919964160}}
 {"type":"GROUP_MOD","xid":0,"version":4,"msg":{"command":0,"type":0,"group_id":1,"buckets":[{"weight":1,"watch_port":1,"watch_group":1,"actions":[{"action":"OUTPUT","port":2,"max_len":"NO_BUFFER"}]}]}}
-{"type":"PORT_MOD","xid":0,"version":4,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"advertise":["FIBER"]}}
+{"type":"PORT_MOD","xid":0,"version":4,"msg":{"port_no":1,"hw_addr":"00:11:00:00:11:11","config":[],"mask":[],"ethernet":{"advertise":["FIBER"]},"properties":[]}}
 {"type":"TABLE_MOD","xid":0,"version":4,"msg":{"table_id":255,"config":0}}
 {"type":"MULTIPART_REQUEST","xid":0,"version":4,"msg":{"type":"DESC","flags":[]}}
 {"type":"MULTIPART_REQUEST","xid":0,"version":4,"msg":{"type":"AGGREGATE","flags":[],"body":{"table_id":"ALL","out_port":"ANY","out_group":"ANY","cookie":0,"cookie_mask":0,"match":[]}}}

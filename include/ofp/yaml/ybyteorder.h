@@ -101,6 +101,29 @@ struct ScalarTraits<ofp::Big64> {
   using json_type = uint64_t;
 };
 
+template <>
+struct ScalarTraits<ofp::SignedBig32> {
+  static void output(const ofp::SignedBig32 &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    // Output SignedBig32 in decimal.
+    int32_t num = value;
+    ScalarTraits<int32_t>::output(num, ctxt, out);
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt, ofp::SignedBig32 &value) {
+    int32_t num = 0;
+    auto err = ScalarTraits<int32_t>::input(scalar, ctxt, num);
+    if (err.empty()) {
+      value = num;
+    }
+    return err;
+  }
+
+  static bool mustQuote(StringRef) { return false; }
+
+  using json_type = int32_t;
+};
+
 }  // namespace yaml
 }  // namespace llvm
 

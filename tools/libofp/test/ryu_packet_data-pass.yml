@@ -343,7 +343,9 @@ msg:
   hw_addr:         '00:11:00:00:11:11'
   config:          [  ]
   mask:            [  ]
-  advertise:       [ FIBER ]
+  ethernet:        
+    advertise:       [ FIBER ]
+  properties:      
 ...
 ---
 type:            TABLE_MOD
@@ -1224,7 +1226,9 @@ msg:
   hw_addr:         '00:11:00:00:11:11'
   config:          [  ]
   mask:            [  ]
-  advertise:       [ FIBER ]
+  ethernet:        
+    advertise:       [ FIBER ]
+  properties:      
 ...
 ---
 type:            TABLE_MOD
