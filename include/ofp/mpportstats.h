@@ -6,6 +6,7 @@
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
+#include "ofp/propertylist.h"
 
 namespace ofp {
 
@@ -51,11 +52,26 @@ class MPPortStatsBuilder {
  public:
   MPPortStatsBuilder() = default;
 
+  void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
+  void setRxPackets(UInt64 rxPackets) { msg_.rxPackets_ = rxPackets; }
+  void setTxPackets(UInt64 txPackets) { msg_.txPackets_ = txPackets; }
+  void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
+  void setDurationNSec(UInt32 durationNSec) { msg_.durationNSec_ = durationNSec; }
+  void setRxErrors(UInt64 rxErrors) { msg_.rxErrors_ = rxErrors; }
+  void setTxErrors(UInt64 txErrors) { msg_.txErrors_ = txErrors; }
+  void setRxFrameErr(UInt64 rxFrameErr) { msg_.rxFrameErr_ = rxFrameErr; }
+  void setRxOverErr(UInt64 rxOverErr) { msg_.rxOverErr_ = rxOverErr; }
+  void setRxCrcErr(UInt64 rxCrcErr) { msg_.rxCrcErr_ = rxCrcErr; }
+  void setCollisions(UInt64 collisions) { msg_.collisions_ = collisions; }
+
+  void setProperties(const PropertyList &properties) { properties_ = properties; }
+
   void write(Writable *channel);
   void reset() {}
 
  private:
   MPPortStats msg_;
+  PropertyList properties_;
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;

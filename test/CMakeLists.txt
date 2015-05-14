@@ -28,6 +28,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/mpflowmonitorrequest_unittest.cpp
 	ofp/mpflowmonitorreply_unittest.cpp
 	ofp/mpflowstatsreply_unittest.cpp
+	ofp/mpportstats_unittest.cpp
 	ofp/header_unittest.cpp
 	ofp/headeronly_unittest.cpp
 	ofp/hello_unittest.cpp
