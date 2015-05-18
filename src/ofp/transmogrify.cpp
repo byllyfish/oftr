@@ -15,6 +15,7 @@
 #include "ofp/instructionrange.h"
 #include "ofp/originalmatch.h"
 #include "ofp/actions.h"
+#include "ofp/portstatsproperty.h"
 
 using namespace ofp;
 
@@ -74,6 +75,8 @@ void Transmogrify::normalize() {
       normalizePortStatusV2();
     } else if (type == PortMod::type()) {
       normalizePortModV2();
+    } else if (type == MultipartReply::type()) {
+      normalizeMultipartReplyV2();
     }
   } else if (version == OFP_VERSION_3) {
     if (type == FeaturesReply::type()) {
@@ -532,11 +535,34 @@ void Transmogrify::normalizeMultipartReplyV1() {
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_PORT_STATS) {
     while (offset < buf_.size())
-      normalizeMPPortOrQueueStatsReplyV1(&offset, 104);
+      normalizeMPPortStatsReplyV1(&offset);
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_QUEUE) {
     while (offset < buf_.size())
       normalizeMPPortOrQueueStatsReplyV1(&offset, 32);
+    assert(offset == buf_.size());
+  }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeMultipartReplyV2() {
+  Header *hdr = header();
+  if (hdr->length() < sizeof(MultipartReply)) {
+    log::info("MultipartReply v2 message is too short.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  const MultipartReply *multipartReply =
+      reinterpret_cast<const MultipartReply *>(hdr);
+
+  OFPMultipartType replyType = multipartReply->replyType();
+  size_t offset = sizeof(MultipartReply);
+
+  if (replyType == OFPMP_PORT_STATS) {
+    while (offset < buf_.size())
+      normalizeMPPortStatsReplyV2(&offset);
     assert(offset == buf_.size());
   }
 
@@ -559,7 +585,7 @@ void Transmogrify::normalizeMultipartReplyV3() {
 
   if (replyType == OFPMP_PORT_STATS) {
     while (offset < buf_.size())
-      normalizeMPPortOrQueueStatsReplyV3(&offset, 104);
+      normalizeMPPortStatsReplyV2(&offset);
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_QUEUE) {
     while (offset < buf_.size())
@@ -584,7 +610,11 @@ void Transmogrify::normalizeMultipartReplyV4() {
   OFPMultipartType replyType = multipartReply->replyType();
   size_t offset = sizeof(MultipartReply);
 
-  if (replyType == OFPMP_PORT_DESC) {
+  if (replyType == OFPMP_PORT_STATS) {
+    while (offset < buf_.size())
+      normalizeMPPortStatsReplyV4(&offset);
+    assert(offset == buf_.size());
+  } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyAllV4();
   } else if (replyType == OFPMP_TABLE) {
     while (offset < buf_.size())
@@ -778,6 +808,88 @@ void Transmogrify::normalizeMPPortDescReplyAllV4() {
 
   // Update header length. N.B. Make sure we use current header ptr.
   header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeMPPortStatsReplyV1(size_t *start) {
+  // Convert V1 port stats reply into V5 format.
+  
+  size_t offset = *start;
+  size_t remaining = buf_.size() - offset;
+
+  if (remaining < 104) {
+    *start = buf_.size();
+    return;
+  }
+
+  UInt8 *ptr = buf_.mutableData() + offset;
+
+  // Change port number from 16-bits to 32-bits.
+  *Big32_cast(ptr) = normPortNumberV1(ptr);
+
+  // Insert an additional 8-bytes for timestamps.
+  buf_.insertZeros(ptr + 104, 8);
+
+  // FIXME(bfish): Reusing the V4 code implies two buffer insertions here.
+  normalizeMPPortStatsReplyV4(start);
+}
+
+void Transmogrify::normalizeMPPortStatsReplyV2(size_t *start) {
+  // Convert V2 port stats reply into V5 format.
+  
+  size_t offset = *start;
+  size_t remaining = buf_.size() - offset;
+
+  if (remaining < 104) {
+    *start = buf_.size();
+    return;
+  }
+
+  UInt8 *ptr = buf_.mutableData() + offset;
+
+  // Insert an additional 8-bytes for timestamps.
+  buf_.insertZeros(ptr + 104, 8);
+
+  // FIXME(bfish): Reusing the V4 code implies two buffer insertions here.
+  normalizeMPPortStatsReplyV4(start);
+}
+
+void Transmogrify::normalizeMPPortStatsReplyV4(size_t *start) {
+  // Convert V4 port stats reply into V5 format.
+
+  size_t offset = *start;
+  size_t remaining = buf_.size() - offset;
+
+  if (remaining < 112) {
+    *start = buf_.size();
+    return;
+  }
+
+  // Swap portNo and pad.
+  UInt8 *ptr = buf_.mutableData() + offset;  
+  assert(IsPtrAligned(ptr, 8));
+  buf_.insertUninitialized(ptr + 112, 8);
+  ptr = buf_.mutableData() + offset;  
+
+  UInt32 *portNo = reinterpret_cast<UInt32 *>(ptr);
+  UInt32 *pad = reinterpret_cast<UInt32 *>(ptr + sizeof(UInt32));
+  std::swap(*portNo, *pad);
+  
+  // Copy Ethernet property values.
+  PortStatsPropertyEthernet eth;
+  std::memcpy(MutableBytePtr(&eth) + 8, ptr + 72, sizeof(UInt64)*4);
+
+  // Shift down rx_packets et al.
+  std::memmove(ptr + 16, ptr + 8, sizeof(UInt64)*8);
+
+  // Move duration fields up under port No.
+  std::memcpy(ptr + 8, ptr + 104, sizeof(UInt32)*2);
+
+  // Copy Ethernet property into end.
+  std::memcpy(ptr + 80, &eth, sizeof(eth));
+
+  // Set length_ field.
+  *Big16_cast(ptr) = 120;
+  *start += 120;
 }
 
 UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {

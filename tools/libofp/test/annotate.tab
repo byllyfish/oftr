@@ -275,20 +275,22 @@ version	type	keypath	syntax	required	default	missing	modify
 1	MULTIPART_REPLY.PORT_STATS.v1	msg	object	True			
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body	array	True			
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0	object	False	msg.body=null		
-1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.rx_over_err	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.tx_dropped	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.rx_packets	uint64	True			True
-1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.rx_frame_err	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.rx_bytes	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.tx_errors	uint64	True			True
-1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.rx_crc_err	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.duration_nsec	uint32	True		msg.body.0.duration_nsec=0	
-1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.collisions	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.duration_sec	uint32	True		msg.body.0.duration_sec=0	
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.rx_errors	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.tx_bytes	uint64	True			True
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.ethernet	object	True			
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.ethernet.rx_over_err	uint64	True			True
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.ethernet.collisions	uint64	True			True
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.ethernet.rx_crc_err	uint64	True			True
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.ethernet.rx_frame_err	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.rx_dropped	uint64	True			True
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.tx_packets	uint64	True			True
+1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.properties	null	True			
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.body.0.port_no	CONTROLLER	True			
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.type	PORT_STATS	True			
 1	MULTIPART_REPLY.PORT_STATS.v1	msg.flags	array	True			
@@ -901,24 +903,26 @@ version	type	keypath	syntax	required	default	missing	modify
 2	MULTIPART_REPLY.PORT_STATS.v2	msg	object	True			
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body	array	True			
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0	object	False	msg.body=null		
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.rx_over_err	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.tx_dropped	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.rx_packets	uint64	True			True
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.rx_frame_err	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.rx_bytes	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.tx_errors	uint64	True			True
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.rx_crc_err	uint64	True			True
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.duration_nsec	uint32	True			True
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.collisions	uint64	True			True
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.duration_sec	uint32	True			True
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.duration_nsec	uint32	True		msg.body.0.duration_nsec=0	
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.duration_sec	uint32	True		msg.body.0.duration_sec=0	
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.rx_errors	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.tx_bytes	uint64	True			True
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.ethernet	object	True			
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.ethernet.rx_over_err	uint64	True			True
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.ethernet.collisions	uint64	True			True
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.ethernet.rx_crc_err	uint64	True			True
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.ethernet.rx_frame_err	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.rx_dropped	uint64	True			True
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.tx_packets	uint64	True			True
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.properties	null	True			
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.body.0.port_no	CONTROLLER	True			
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.type	PORT_STATS	True			
 2	MULTIPART_REPLY.PORT_STATS.v2	msg.flags	array	True			
-2	MULTIPART_REPLY.PORT_STATS.v2	msg.flags.0	MORE	False	msg.flags.0=MORE		
+2	MULTIPART_REPLY.PORT_STATS.v2	msg.flags.0	MORE	False	msg.body.0.duration_nsec=0,msg.body.0.duration_sec=0,msg.flags.0=MORE		
 2	MULTIPART_REQUEST.QUEUE.v2	msg	object	True			
 2	MULTIPART_REQUEST.QUEUE.v2	msg.body	object	True			
 2	MULTIPART_REQUEST.QUEUE.v2	msg.body.port_no	CONTROLLER	True			
@@ -1527,20 +1531,22 @@ version	type	keypath	syntax	required	default	missing	modify
 3	MULTIPART_REPLY.PORT_STATS.v3	msg	object	True			
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body	array	True			
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0	object	False	msg.body=null		
-3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.rx_over_err	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.tx_dropped	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.rx_packets	uint64	True			True
-3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.rx_frame_err	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.rx_bytes	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.tx_errors	uint64	True			True
-3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.rx_crc_err	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.duration_nsec	uint32	True		msg.body.0.duration_nsec=0	
-3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.collisions	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.duration_sec	uint32	True		msg.body.0.duration_sec=0	
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.rx_errors	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.tx_bytes	uint64	True			True
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.ethernet	object	True			
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.ethernet.rx_over_err	uint64	True			True
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.ethernet.collisions	uint64	True			True
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.ethernet.rx_crc_err	uint64	True			True
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.ethernet.rx_frame_err	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.rx_dropped	uint64	True			True
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.tx_packets	uint64	True			True
+3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.properties	null	True			
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.body.0.port_no	CONTROLLER	True			
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.type	PORT_STATS	True			
 3	MULTIPART_REPLY.PORT_STATS.v3	msg.flags	array	True			
@@ -2153,20 +2159,22 @@ version	type	keypath	syntax	required	default	missing	modify
 4	MULTIPART_REPLY.PORT_STATS.v4	msg	object	True			
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body	array	True			
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0	object	False	msg.body=null		
-4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.rx_over_err	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.tx_dropped	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.rx_packets	uint64	True			True
-4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.rx_frame_err	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.rx_bytes	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.tx_errors	uint64	True			True
-4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.rx_crc_err	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.duration_nsec	uint32	True			True
-4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.collisions	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.duration_sec	uint32	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.rx_errors	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.tx_bytes	uint64	True			True
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.ethernet	object	True			
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.ethernet.rx_over_err	uint64	True			True
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.ethernet.collisions	uint64	True			True
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.ethernet.rx_crc_err	uint64	True			True
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.ethernet.rx_frame_err	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.rx_dropped	uint64	True			True
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.tx_packets	uint64	True			True
+4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.properties	null	True			
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.body.0.port_no	CONTROLLER	True			
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.type	PORT_STATS	True			
 4	MULTIPART_REPLY.PORT_STATS.v4	msg.flags	array	True			
@@ -2779,20 +2787,22 @@ version	type	keypath	syntax	required	default	missing	modify
 5	MULTIPART_REPLY.PORT_STATS.v5	msg	object	True			
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body	array	True			
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0	object	False	msg.body=null		
-5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.rx_over_err	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.tx_dropped	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.rx_packets	uint64	True			True
-5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.rx_frame_err	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.rx_bytes	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.tx_errors	uint64	True			True
-5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.rx_crc_err	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.duration_nsec	uint32	True			True
-5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.collisions	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.duration_sec	uint32	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.rx_errors	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.tx_bytes	uint64	True			True
+5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.ethernet	object	True			
+5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.ethernet.rx_over_err	uint64	True			True
+5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.ethernet.collisions	uint64	True			True
+5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.ethernet.rx_crc_err	uint64	True			True
+5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.ethernet.rx_frame_err	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.rx_dropped	uint64	True			True
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.tx_packets	uint64	True			True
+5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.properties	null	True			
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.body.0.port_no	CONTROLLER	True			
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.type	PORT_STATS	True			
 5	MULTIPART_REPLY.PORT_STATS.v5	msg.flags	array	True			

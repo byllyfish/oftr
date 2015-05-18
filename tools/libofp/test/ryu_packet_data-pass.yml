@@ -442,6 +442,8 @@ msg:
   flags:           [  ]
   body:            
     - port_no:         0x00000007
+      duration_sec:    0x00000000
+      duration_nsec:   0x00000000
       rx_packets:      0x0000000000000000
       tx_packets:      0x0000000000000004
       rx_bytes:        0x0000000000000000
@@ -450,13 +452,15 @@ msg:
       tx_dropped:      0x0000000000000000
       rx_errors:       0x0000000000000000
       tx_errors:       0x0000000000000000
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+      ethernet:        
+        rx_frame_err:    0x0000000000000000
+        rx_over_err:     0x0000000000000000
+        rx_crc_err:      0x0000000000000000
+        collisions:      0x0000000000000000
+      properties:      
+    - port_no:         0x00000006
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0x00000006
       rx_packets:      0x0000000000000004
       tx_packets:      0x0000000000000004
       rx_bytes:        0x0000000000000150
@@ -465,12 +469,12 @@ msg:
       tx_dropped:      0x0000000000000000
       rx_errors:       0x0000000000000000
       tx_errors:       0x0000000000000000
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
-      duration_sec:    0x00000000
-      duration_nsec:   0x00000000
+      ethernet:        
+        rx_frame_err:    0x0000000000000000
+        rx_over_err:     0x0000000000000000
+        rx_crc_err:      0x0000000000000000
+        collisions:      0x0000000000000000
+      properties:      
 ...
 ---
 type:            MULTIPART_REQUEST
@@ -1348,6 +1352,8 @@ msg:
   flags:           [  ]
   body:            
     - port_no:         0x00000007
+      duration_sec:    0x00000000
+      duration_nsec:   0x00000000
       rx_packets:      0x0000000000000000
       tx_packets:      0x0000000000000004
       rx_bytes:        0x0000000000000000
@@ -1356,13 +1362,15 @@ msg:
       tx_dropped:      0x0000000000000000
       rx_errors:       0x0000000000000000
       tx_errors:       0x0000000000000000
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+      ethernet:        
+        rx_frame_err:    0x0000000000000000
+        rx_over_err:     0x0000000000000000
+        rx_crc_err:      0x0000000000000000
+        collisions:      0x0000000000000000
+      properties:      
+    - port_no:         0x00000006
       duration_sec:    0x00000000
       duration_nsec:   0x00000000
-    - port_no:         0x00000006
       rx_packets:      0x0000000000000004
       tx_packets:      0x0000000000000004
       rx_bytes:        0x0000000000000150
@@ -1371,12 +1379,12 @@ msg:
       tx_dropped:      0x0000000000000000
       rx_errors:       0x0000000000000000
       tx_errors:       0x0000000000000000
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
-      duration_sec:    0x00000000
-      duration_nsec:   0x00000000
+      ethernet:        
+        rx_frame_err:    0x0000000000000000
+        rx_over_err:     0x0000000000000000
+        rx_crc_err:      0x0000000000000000
+        collisions:      0x0000000000000000
+      properties:      
 ...
 ---
 type:            MULTIPART_REQUEST

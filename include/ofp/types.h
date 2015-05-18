@@ -168,6 +168,11 @@ constexpr const UInt8 *BytePtr(const void *data) {
   return static_cast<const UInt8 *>(data);
 }
 
+/// \returns mutable byte pointer for any mutable memory address.
+constexpr UInt8 *MutableBytePtr(void *data) {
+  return static_cast<UInt8 *>(data);
+}
+
 /// Removes a `const` qualifier from a reference. This is necessary in rare
 /// cases when interacting with important external API's that are less
 /// `const-strict`. No other instances of const_cast should appear in the code.

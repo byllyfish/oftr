@@ -1,6 +1,6 @@
 #include "ofp/unittest.h"
 #include "ofp/mpportstats.h"
-
+#include "ofp/portstatsproperty.h"
 using namespace ofp;
 
 TEST(mpportstats, builder) {
@@ -13,11 +13,16 @@ TEST(mpportstats, builder) {
     statsBuilder.setDurationNSec(0x33333331);
     statsBuilder.setRxErrors(0x4444444444444441);
     statsBuilder.setTxErrors(0x5555555555555551);
-    statsBuilder.setRxFrameErr(0x6666666666666661);
-    statsBuilder.setRxOverErr(0x7777777777777771);
-    statsBuilder.setRxCrcErr(0x8888888888888881);
-    statsBuilder.setCollisions(0x9999999999999991);
 
+    PortStatsPropertyEthernet eth;
+    eth.setRxFrameErr(0x6666666666666661);
+    eth.setRxOverErr(0x7777777777777771);
+    eth.setRxCrcErr(0x8888888888888881);
+    eth.setCollisions(0x9999999999999991);
+
+    PropertyList props;
+    props.add(eth);
+    statsBuilder.setProperties(props);
 /*
     PortStatsPropertyEthernet eth;
     eth.setRxFrameErr(0x5555555555555555);

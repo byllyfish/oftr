@@ -79,6 +79,8 @@ ExitStatus Decode::decodeFiles() {
 }
 
 ExitStatus Decode::decodeFile(const std::string &filename) {
+  ofp::log::debug("decodeFile:", filename);
+
   std::istream *input = nullptr;
   std::ifstream file;
   if (filename != "-") {

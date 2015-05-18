@@ -841,6 +841,8 @@ TEST(encoder, ofmp_portstats_v4) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -849,12 +851,12 @@ TEST(encoder, ofmp_portstats_v4) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          rx_frame_err: 0xCCCCCCCCCCCCCCC0
-          rx_over_err:  0xDDDDDDDDDDDDDDD0
-          rx_crc_err:   0xEEEEEEEEEEEEEEE0
-          collisions:   0xFFFFFFFFFFFFFFF0
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          ethernet:
+            rx_frame_err: 0xCCCCCCCCCCCCCCC0
+            rx_over_err:  0xDDDDDDDDDDDDDDD0
+            rx_crc_err:   0xEEEEEEEEEEEEEEE0
+            collisions:   0xFFFFFFFFFFFFFFF0
+          properties:
     )""";
 
   Encoder encoder{input};
@@ -868,6 +870,78 @@ TEST(encoder, ofmp_portstats_v4) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, ofmp_portstats_v3) {
+  const char *input = R"""(
+    type: MULTIPART_REPLY
+    version: 3
+    xid: 0x11111111
+    msg:
+      type: PORT_STATS
+      flags: [ 0x2222 ]
+      body:
+        - port_no: 0x33333330
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
+          rx_packets: 0x4444444444444440
+          tx_packets: 0x5555555555555550
+          rx_bytes:   0x6666666666666660
+          tx_bytes:   0x7777777777777770
+          rx_dropped: 0x8888888888888880
+          tx_dropped: 0x9999999999999990
+          rx_errors:  0xAAAAAAAAAAAAAAA0
+          tx_errors:  0xBBBBBBBBBBBBBBB0
+          ethernet:
+            rx_frame_err: 0xCCCCCCCCCCCCCCC0
+            rx_over_err:  0xDDDDDDDDDDDDDDD0
+            rx_crc_err:   0xEEEEEEEEEEEEEEE0
+            collisions:   0xFFFFFFFFFFFFFFF0
+          properties:
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x78, encoder.size());
+  EXPECT_HEX(
+      "031300781111111100042222000000003333333000000000444444444444444055555555555555506666666666666660777777777777777088888888888888809999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0FFFFFFFFFFFFFFF0",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portstats_v2) {
+  const char *input = R"""(
+    type: MULTIPART_REPLY
+    version: 2
+    xid: 0x11111111
+    msg:
+      type: PORT_STATS
+      flags: [ 0x2222 ]
+      body:
+        - port_no: 0x33333330
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
+          rx_packets: 0x4444444444444440
+          tx_packets: 0x5555555555555550
+          rx_bytes:   0x6666666666666660
+          tx_bytes:   0x7777777777777770
+          rx_dropped: 0x8888888888888880
+          tx_dropped: 0x9999999999999990
+          rx_errors:  0xAAAAAAAAAAAAAAA0
+          tx_errors:  0xBBBBBBBBBBBBBBB0
+          ethernet:
+            rx_frame_err: 0xCCCCCCCCCCCCCCC0
+            rx_over_err:  0xDDDDDDDDDDDDDDD0
+            rx_crc_err:   0xEEEEEEEEEEEEEEE0
+            collisions:   0xFFFFFFFFFFFFFFF0
+          properties:
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x78, encoder.size());
+  EXPECT_HEX(
+      "021300781111111100042222000000003333333000000000444444444444444055555555555555506666666666666660777777777777777088888888888888809999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0FFFFFFFFFFFFFFF0",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, ofmp_portstats_v1) {
   const char *input = R"""(
     type: MULTIPART_REPLY
@@ -878,6 +952,8 @@ TEST(encoder, ofmp_portstats_v1) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
+          duration_sec:   0x11111110
+          duration_nsec:  0x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -886,12 +962,12 @@ TEST(encoder, ofmp_portstats_v1) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          rx_frame_err: 0xCCCCCCCCCCCCCCC0
-          rx_over_err:  0xDDDDDDDDDDDDDDD0
-          rx_crc_err:   0xEEEEEEEEEEEEEEE0
-          collisions:   0xFFFFFFFFFFFFFFF0
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          ethernet:
+            rx_frame_err: 0xCCCCCCCCCCCCCCC0
+            rx_over_err:  0xDDDDDDDDDDDDDDD0
+            rx_crc_err:   0xEEEEEEEEEEEEEEE0
+            collisions:   0xFFFFFFFFFFFFFFF0
+          properties:
     )""";
 
   Encoder encoder{input};

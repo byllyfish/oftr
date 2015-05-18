@@ -315,6 +315,8 @@ msg:
   flags: [ 'MORE' ]
   body:
     - port_no: CONTROLLER
+      duration_sec: 0xffffffff
+      duration_nsec: 0xffffffff
       rx_packets: 0xffffffffffffffff
       tx_packets: 0xffffffffffffffff
       rx_bytes: 0xffffffffffffffff
@@ -323,12 +325,12 @@ msg:
       tx_dropped: 0xffffffffffffffff
       rx_errors: 0xffffffffffffffff
       tx_errors: 0xffffffffffffffff
-      rx_frame_err: 0xffffffffffffffff
-      rx_over_err: 0xffffffffffffffff
-      rx_crc_err: 0xffffffffffffffff
-      collisions: 0xffffffffffffffff
-      duration_sec: 0xffffffff
-      duration_nsec: 0xffffffff
+      ethernet:
+        rx_frame_err: 0xffffffffffffffff
+        rx_over_err: 0xffffffffffffffff
+        rx_crc_err: 0xffffffffffffffff
+        collisions: 0xffffffffffffffff
+      properties:
 ---
 version: 0x04
 type: MULTIPART_REQUEST

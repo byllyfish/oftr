@@ -32,6 +32,7 @@ class Transmogrify {
   void normalizeFlowRemovedV1();
   void normalizeMultipartRequestV1();
   void normalizeMultipartReplyV1();
+  void normalizeMultipartReplyV2();
   void normalizeMultipartReplyV3();
   void normalizeMultipartReplyV4();
 
@@ -42,6 +43,9 @@ class Transmogrify {
   void normalizeMPPortStatsRequestV1();
   void normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len);
   void normalizeMPPortDescReplyAllV4();
+  void normalizeMPPortStatsReplyV1(size_t *start);
+  void normalizeMPPortStatsReplyV2(size_t *start);
+  void normalizeMPPortStatsReplyV4(size_t *start);
 
   UInt32 normPortNumberV1(const UInt8 *ptr);
 

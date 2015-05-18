@@ -69,7 +69,7 @@ struct MappingTraits<ofp::MultipartReply> {
         break;
       }
       case OFPMP_PORT_STATS: {
-        ofp::detail::MPReplyFixedSizeSeq<MPPortStats> seq{msg};
+        ofp::detail::MPReplyVariableSizeSeq<MPPortStats> seq{msg};
         io.mapRequired("body", seq);
         break;
       }
