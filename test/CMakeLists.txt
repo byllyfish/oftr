@@ -65,6 +65,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/rolestatus_unittest.cpp
 	ofp/roundtrip_unittest.cpp
 	ofp/rpcsession_unittest.cpp
+	ofp/setasync_unittest.cpp
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
 	ofp/standardmatch_unittest.cpp
