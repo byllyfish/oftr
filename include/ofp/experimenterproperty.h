@@ -30,6 +30,7 @@ class ExperimenterProperty {
   UInt32 expType() const { return expType_; }
 
   ByteRange expData() const {
+    assert(len_ >= FixedHeaderSize);
     return ByteRange{BytePtr(this) + FixedHeaderSize, size() - FixedHeaderSize};
   }
 

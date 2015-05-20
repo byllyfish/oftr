@@ -12,7 +12,7 @@ PropertyRange BundleControl::properties() const {
 }
 
 bool BundleControl::validateInput(Validation *context) const {
-  return true;
+  return properties().validateInput(context);
 }
 
 UInt32 BundleControlBuilder::send(Writable *channel) {

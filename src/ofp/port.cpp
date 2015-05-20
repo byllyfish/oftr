@@ -20,7 +20,9 @@ bool Port::validateInput(Validation *context) const {
     return false;
   }
 
-  if (remaining < length_) {    // FIXME
+  size_t len = length_;
+
+  if (len > remaining || len < sizeof(Port)) {
     return false;
   }
 

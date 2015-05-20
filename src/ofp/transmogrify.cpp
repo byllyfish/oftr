@@ -486,7 +486,7 @@ void Transmogrify::normalizeFlowRemovedV1() {
 
 void Transmogrify::normalizeMultipartRequestV1() {
   Header *hdr = header();
-  if (hdr->length() < sizeof(MultipartRequest::UnpaddedSizeVersion1)) {
+  if (hdr->length() < MultipartRequest::UnpaddedSizeVersion1) {
     log::info("MultipartRequest v1 message is too short.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
     return;
@@ -515,7 +515,7 @@ void Transmogrify::normalizeMultipartRequestV1() {
 
 void Transmogrify::normalizeMultipartReplyV1() {
   Header *hdr = header();
-  if (hdr->length() < sizeof(MultipartReply::UnpaddedSizeVersion1)) {
+  if (hdr->length() < MultipartReply::UnpaddedSizeVersion1) {
     log::info("MultipartReply v1 message is too short.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
     return;

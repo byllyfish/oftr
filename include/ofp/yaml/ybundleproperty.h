@@ -34,6 +34,8 @@ struct MappingTraits<ofp::detail::BundlePropertyItem> {
         const BundlePropertyExperimenter &p =
             elem.property<BundlePropertyExperimenter>();
 
+        assert(p.size() >= BundlePropertyExperimenter::FixedHeaderSize);
+        
         Hex32 experimenter = p.experimenter();
         io.mapRequired("experimenter", experimenter);
 

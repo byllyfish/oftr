@@ -23,6 +23,13 @@ PropertyRange BundleAddMessage::properties() const {
 }
 
 bool BundleAddMessage::validateInput(Validation *context) const {
+  const Header *msgHeader = reinterpret_cast<const Header *>(BytePtr(this) + sizeof(BundleAddMessage));
+  if (msgHeader->length() < sizeof(Header)) {
+    return false;
+  }
+
+  // FIXME(bfish): Validate embedded message here.
+  
   return true;
 }
 
