@@ -1838,18 +1838,42 @@ TEST(encoder, setasyncv4) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        packet_in_mask_master: [0x22222222]
-        packet_in_mask_slave: [0x33333333]
-        port_status_mask_master: [0x44444444]
-        port_status_mask_slave: [0x55555555]
-        flow_removed_mask_master: [0x66666666]
-        flow_removed_mask_slave: [0x77777777]
+        packet_in_master: [0x22222222]
+        packet_in_slave: [0x33333333]
+        port_status_master: [0x44444444]
+        port_status_slave: [0x55555555]
+        flow_removed_master: [0x66666666]
+        flow_removed_slave: [0x77777777]
+        properties:
       )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x20, encoder.size());
   EXPECT_HEX("041C002011111111222222223333333344444444555555556666666677777777",
+             encoder.data(), encoder.size());
+}
+
+TEST(encoder, setasyncv5) {
+  const char *input = R"""(
+      version: 5
+      type: SET_ASYNC
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        packet_in_master: [0x22222221]
+        port_status_master: [0x44444441]
+        port_status_slave: [0x55555551]
+        flow_removed_master: [0x66666661]
+        flow_removed_slave: [0x77777771]
+        role_status_master: [0x88888881]
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x38, encoder.size());
+  EXPECT_HEX("051C003811111111000100082222222100020008555555510003000844444441000400087777777100050008666666610007000888888881",
              encoder.data(), encoder.size());
 }
 

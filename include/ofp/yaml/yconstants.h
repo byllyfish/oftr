@@ -302,6 +302,38 @@ struct ScalarBitSetTraits<ofp::OFPFlowRemovedFlags> {
   }
 };
 
+template <>
+struct ScalarBitSetTraits<ofp::OFPRoleStatusFlags> {
+  static void bitset(IO &io, ofp::OFPRoleStatusFlags &value) {
+    OFP_YAML_BITCASE(OFPCRRF_, MASTER_REQUEST);
+    OFP_YAML_BITCASE(OFPCRRF_, CONFIG);
+    OFP_YAML_BITCASE(OFPCRRF_, EXPERIMENTER);
+
+    io.bitSetCaseOther(value, ofp::OFPCRRF_OTHER_ROLESTATUS_FLAGS);
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPTableStatusFlags> {
+  static void bitset(IO &io, ofp::OFPTableStatusFlags &value) {
+    OFP_YAML_BITCASE(OFPTRF_, VACANCY_DOWN),
+    OFP_YAML_BITCASE(OFPTRF_, VACANCY_UP),
+
+    io.bitSetCaseOther(value, ofp::OFPTRF_OTHER_TABLESTATUS_FLAGS);
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPRequestForwardFlags> {
+  static void bitset(IO &io, ofp::OFPRequestForwardFlags &value) {
+    OFP_YAML_BITCASE(OFPRFRF_, GROUP_MOD),
+    OFP_YAML_BITCASE(OFPRFRF_, METER_MOD),
+
+    io.bitSetCaseOther(value, ofp::OFPRFRF_OTHER_REQUESTFORWARD_FLAGS);
+  }
+};
+
+
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1
 #undef OFP_YAML_MASKEDBITCASE

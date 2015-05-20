@@ -64,6 +64,22 @@ class PropertyRange : public ProtocolRange<PropertyIterator> {
     return PropertyType::defaultValue();
   }
 
+  /// Get value of property, when size of property is fixed.
+  /// 
+  /// \return false if property is not present
+  ///
+  /// `PropertyType` must implement the `ValueType` concept.
+  template <class PropertyType,
+            class ValueType = typename PropertyType::ValueType>
+  bool value(ValueType *val) const {
+    auto iter = findProperty(PropertyType::type());
+    if (iter != end() && iter.size() == sizeof(PropertyType)) {
+      *val = iter->template property<PropertyType>().value();
+      return true;
+    }
+    return false;
+  }
+
   /// \return value of property, when it is a range (and size is variable)
   template <class PropertyType,
             class ValueType = typename PropertyType::ValueType>

@@ -548,6 +548,56 @@ inline OFPConfigFlags operator|(OFPConfigFlags lhs, OFPConfigFlags rhs) {
   return static_cast<OFPConfigFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+enum OFPRoleStatusReason : UInt8 {
+  OFPCRR_MASTER_REQUEST = 0,
+  OFPCRR_CONFIG = 1,
+  OFPCRR_EXPERIMENTER = 2,
+};
+
+enum OFPRoleStatusFlags : UInt32 {
+  OFPCRRF_MASTER_REQUEST = 1 << 0,
+  OFPCRRF_CONFIG = 1 << 1,
+  OFPCRRF_EXPERIMENTER = 1 << 2,
+
+  OFPCRRF_OTHER_ROLESTATUS_FLAGS = 0xFFFFFFF8
+};
+
+inline OFPRoleStatusFlags operator|(OFPRoleStatusFlags lhs, OFPRoleStatusFlags rhs) {
+  return static_cast<OFPRoleStatusFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+enum OFPTableStatusReason : UInt8 {
+  OFPTR_VACANCY_DOWN  = 3,
+  OFPTR_VACANCY_UP    = 4,
+};
+
+enum OFPTableStatusFlags : UInt32 {
+  OFPTRF_VACANCY_DOWN  = 1 << 3,
+  OFPTRF_VACANCY_UP    = 1 << 4,
+
+  OFPTRF_OTHER_TABLESTATUS_FLAGS = 0xFFFFFFE7
+};
+
+inline OFPTableStatusFlags operator|(OFPTableStatusFlags lhs, OFPTableStatusFlags rhs) {
+  return static_cast<OFPTableStatusFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+enum OFPRequestForwardReason : UInt8 {
+  OFPRFR_GROUP_MOD = 0,
+  OFPRFR_METER_MOD = 1,
+};
+
+enum OFPRequestForwardFlags : UInt32 {
+  OFPRFRF_GROUP_MOD = 1 << 0,
+  OFPRFRF_METER_MOD = 1 << 1,
+
+  OFPRFRF_OTHER_REQUESTFORWARD_FLAGS = 0xFFFFFFFC
+};
+
+inline OFPRequestForwardFlags operator|(OFPRequestForwardFlags lhs, OFPRequestForwardFlags rhs) {
+  return static_cast<OFPRequestForwardFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPQueueProperty : UInt16 {
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,
@@ -620,6 +670,24 @@ enum OFPPortStatsProperty : UInt16 {
   OFPPSPT_OPTICAL = 1,
   OFPPSPT_UNUSED_MIN = 2,  // min unused property id
   OFPPSPT_EXPERIMENTER = 0xFFFF,
+};
+
+enum OFPAsyncConfigProperty : UInt16 {
+  OFPACPT_PACKET_IN_SLAVE = 0,
+  OFPACPT_PACKET_IN_MASTER = 1,
+  OFPACPT_PORT_STATUS_SLAVE = 2,
+  OFPACPT_PORT_STATUS_MASTER = 3,
+  OFPACPT_FLOW_REMOVED_SLAVE = 4,
+  OFPACPT_FLOW_REMOVED_MASTER = 5,
+  OFPACPT_ROLE_STATUS_SLAVE = 6,
+  OFPACPT_ROLE_STATUS_MASTER = 7,
+  OFPACPT_TABLE_STATUS_SLAVE = 8,
+  OFPACPT_TABLE_STATUS_MASTER = 9,
+  OFPACPT_REQUESTFORWARD_SLAVE = 10,
+  OFPACPT_REQUESTFORWARD_MASTER = 11,
+  OFPACPT_UNUSED_MIN = 12,  // min unused property id
+  OFPACPT_EXPERIMENTER_SLAVE = 0xFFFE,
+  OFPACPT_EXPERIMENTER_MASTER = 0xFFFF,
 };
 
 enum OFPMultipartFlags : UInt16 {

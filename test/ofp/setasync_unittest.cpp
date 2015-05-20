@@ -1,5 +1,6 @@
 #include "ofp/unittest.h"
 #include "ofp/setasync.h"
+#include "ofp/asyncconfigproperty.h"
 
 using namespace ofp;
 
@@ -9,41 +10,29 @@ const OFPFlowRemovedFlags kFlowRemovedFlags = static_cast<OFPFlowRemovedFlags>(0
 
 
 TEST(setasync, builder) {
-    /*
+    
     PropertyList props;
-    props.add(AsyncConfigPropertyPacketInSlave{0});
-    props.add(AsyncConfigPropertyPacketInMaster{1});
-    props.add(AsyncConfigPropertyPortStatusSlave{0});
-    props.add(AsyncConfigPropertyPortStatusMaster{1});
-    props.add(AsyncConfigPropertyFlowRemovedSlave{0});
-    props.add(AsyncConfigPropertyFlowRemovedMaster{1});
-*/
+    props.add(AsyncConfigPropertyPacketInSlave{kPacketInFlags});
+    props.add(AsyncConfigPropertyPacketInMaster{kPacketInFlags});
+    props.add(AsyncConfigPropertyPortStatusSlave{kPortStatusFlags});
+    props.add(AsyncConfigPropertyPortStatusMaster{kPortStatusFlags});
+    props.add(AsyncConfigPropertyFlowRemovedSlave{kFlowRemovedFlags});
+    props.add(AsyncConfigPropertyFlowRemovedMaster{kFlowRemovedFlags});
 
     SetAsyncBuilder builder;
-    builder.setMasterPacketInMask(kPacketInFlags);
-    builder.setSlavePacketInMask(kPacketInFlags);
-    builder.setMasterPortStatusMask(kPortStatusFlags);
-    builder.setSlavePortStatusMask(kPortStatusFlags);
-    builder.setMasterFlowRemovedMask(kFlowRemovedFlags);
-    builder.setSlaveFlowRemovedMask(kFlowRemovedFlags);
+    builder.setProperties(props);
 
-    //builder.setProperties(props);
+    {
+        MemoryChannel channel{OFP_VERSION_5};
+        builder.send(&channel);
 
-    MemoryChannel channel{OFP_VERSION_4};
-    builder.send(&channel);
+        EXPECT_HEX("051C003800000001000000081111111200010008111111120002000822222221000300082222222100040008333333310005000833333331", channel.data(), channel.size());
+    }
 
-    EXPECT_HEX("041C002000000001111111121111111222222221222222213333333133333331", channel.data(), channel.size());
+    {
+        MemoryChannel channel{OFP_VERSION_4};
+        builder.send(&channel);
 
-    Message message(channel.data(), channel.size());
-    message.transmogrify();
-
-    const SetAsync *msg = SetAsync::cast(&message);
-    ASSERT_NE(nullptr, msg);
-
-    EXPECT_EQ(kPacketInFlags, msg->masterPacketInMask());
-    EXPECT_EQ(kPacketInFlags, msg->slavePacketInMask());
-    EXPECT_EQ(kPortStatusFlags, msg->masterPortStatusMask());
-    EXPECT_EQ(kPortStatusFlags, msg->slavePortStatusMask());
-    EXPECT_EQ(kFlowRemovedFlags, msg->masterFlowRemovedMask());
-    EXPECT_EQ(kFlowRemovedFlags, msg->slaveFlowRemovedMask());
+        EXPECT_HEX("041C002000000001111111121111111222222221222222213333333133333331", channel.data(), channel.size());
+    }
 }

@@ -930,17 +930,17 @@ TEST(decoder, getconfigreplyv4) {
 TEST(decoder, setasyncv4) {
   testDecodeEncode(
       "041C002011111111222222223333333344444444555555556666666677777777",
-      "---\ntype:            SET_ASYNC\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  "
-      "packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, "
-      "'0x33333300' ]\n "
-      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  "
-      "port_status_mask_slave: "
-      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ "
-      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
-      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
-      "METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
+      "---\ntype:            SET_ASYNC\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  packet_in_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n  port_status_master: [ MODIFY, '0x44444440' ]\n  port_status_slave: [ ADD, MODIFY, '0x55555550' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n  properties:      \n...\n");
+}
+
+TEST(decoder, setasyncv5) {
+  testDecodeEncode(
+      "051C003811111111000000083333333300010008222222220002000855555555000300084444444400040008777777770005000866666666",
+      "---\ntype:            SET_ASYNC\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  packet_in_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  packet_in_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n  port_status_master: [ MODIFY, '0x44444440' ]\n  port_status_slave: [ ADD, MODIFY, '0x55555550' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n  properties:      \n...\n");
+}
+
+TEST(decoder, setasyncv5_2) {
+  testDecodeEncode("051C003811111111000100082222222100020008555555510003000844444441000400087777777100050008666666610007000888888881", "---\ntype:            SET_ASYNC\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  packet_in_master: [ TABLE_MISS, PACKET_OUT, '0x22222200' ]\n  port_status_master: [ ADD, '0x44444440' ]\n  port_status_slave: [ ADD, '0x55555550' ]\n  flow_removed_master: [ IDLE_TIMEOUT, EVICTION, '0x66666640' ]\n  flow_removed_slave: [ IDLE_TIMEOUT, METER_DELETE, EVICTION, '0x77777740' ]\n  role_status_master: [ MASTER_REQUEST, '0x88888880' ]\n  properties:      \n...\n");
 }
 
 TEST(decoder, flowremovedv4) {

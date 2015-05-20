@@ -16,6 +16,7 @@
 #include "ofp/originalmatch.h"
 #include "ofp/actions.h"
 #include "ofp/portstatsproperty.h"
+#include "ofp/setasync.h"
 
 using namespace ofp;
 
@@ -97,6 +98,8 @@ void Transmogrify::normalize() {
       normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV4();
+    } else if (type == SetAsync::type()) {
+      normalizeSetAsyncV4();
     }
   }
 
@@ -620,6 +623,42 @@ void Transmogrify::normalizeMultipartReplyV4() {
     while (offset < buf_.size())
       normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());
+  }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeSetAsyncV4() {
+  Header *hdr = header();
+  if (hdr->length() != 32) {
+    log::info("SetAsync v4 message is wrong length.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  // New size is 56 bytes - up from 32 bytes.
+  buf_.addUninitialized(24);
+
+  UInt8 *ptr = buf_.mutableData() + sizeof(Header);
+
+  Big32 masks[6];
+  std::memcpy(masks, ptr, sizeof(masks));
+  std::swap(masks[0], masks[1]);
+  std::swap(masks[2], masks[3]);
+  std::swap(masks[4], masks[5]);
+
+  struct Prop {
+    Big16 type;
+    Big16 len;
+    Big32 value;
+  };
+
+  Prop *out = reinterpret_cast<Prop *>(ptr);
+  for (size_t i = 0; i < ArrayLength(masks); ++i) {
+    out->type = UInt16_narrow_cast(i);
+    out->len = 8;
+    out->value = masks[i];
+    ++out;
   }
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
