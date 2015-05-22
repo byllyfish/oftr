@@ -34,6 +34,7 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
     return isProtocolRangeFixedValid(elementSize, range, context);
   }
 
+  assert(elementSize >= 4);
   assert(sizeFieldOffset < 32 ||
          sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL);
 
@@ -65,6 +66,11 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
 
     if (elemSize < 4) {
       context->rangeElementSizeIsTooSmall(ptr, 4);
+      return false;
+    }
+
+    if (elemSize < elementSize && alignment == 8) {
+      context->rangeElementSizeIsTooSmall(ptr, elementSize);
       return false;
     }
 

@@ -97,6 +97,7 @@ class Decode : public Subprogram {
                            cl::desc("Write output as a valid JSON array")};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
+  cl::opt<bool> silentError_{"silent-error", cl::desc("Suppress error output for invalid messages and decode failures")};
   cl::opt<bool> invertCheck_{"invert-check",
                              cl::desc("Expect invalid messages only")};
   cl::opt<bool> keepGoing_{

@@ -322,6 +322,8 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage) {
+  ofp::log::debug("decodeOneMessage (transmogrified):", *message);
+  
   ofp::yaml::Decoder decoder{message, json_, dataPkt_};
 
   if (!decoder.error().empty()) {
@@ -332,9 +334,12 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
       return ExitStatus::Success;
     }
 
-    std::cerr << "Filename: " << currentFilename_ << '\n';
-    std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
-    std::cerr << *originalMessage << '\n';
+    if (!silentError_) {
+      std::cerr << "Filename: " << currentFilename_ << '\n';
+      std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
+      std::cerr << *originalMessage << '\n';
+    }
+    
     return ExitStatus::DecodeFailed;
   }
 

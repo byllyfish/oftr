@@ -24,7 +24,11 @@ struct MappingTraits<ofp::BundleAddMessage> {
     io.mapRequired("bundle_id", msg.bundleId_);
     io.mapRequired("flags", msg.flags_);
 
-    ofp::yaml::DecodeRecursively(io, "message", msg.message());
+    auto data = msg.message();
+    ofp::Message message{data.data(), data.size()};
+    message.transmogrify();
+
+    ofp::yaml::DecodeRecursively(io, "message", &message);
 
     ofp::PropertyRange props = msg.properties();
     io.mapRequired("properties",

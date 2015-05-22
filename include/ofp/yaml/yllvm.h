@@ -31,14 +31,13 @@ inline DestType &Ref_cast(SourceType &obj) {
 
 namespace ofp {
 
-class ByteRange;
 class ByteList;
+class Message;
 
 namespace yaml {
 
 // Forward declare these here rather than stick them in their own header.
-void DecodeRecursively(llvm::yaml::IO &io, const char *key,
-                       const ByteRange &data);
+void DecodeRecursively(llvm::yaml::IO &io, const char *key, const Message *msg);
 void EncodeRecursively(llvm::yaml::IO &io, const char *key, ByteList &data);
 
 }  // namespace yaml

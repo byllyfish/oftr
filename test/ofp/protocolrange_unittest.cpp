@@ -12,12 +12,12 @@ TEST(protocolrange, valid_empty) {
 
   ByteRange r1;
   Validation context1{nullptr, &error};
-  EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &context1));
+  EXPECT_TRUE(IsProtocolRangeValid(4, r1, 2, 8, &context1));
 
   UInt64 d2 = 0;
   ByteRange r2{&d2, 0UL};
   Validation context2{nullptr, &error};
-  EXPECT_TRUE(IsProtocolRangeValid(0, r2, 2, 8, &context2));
+  EXPECT_TRUE(IsProtocolRangeValid(4, r2, 2, 8, &context2));
 }
 
 TEST(protocolrange, invalid_empty) {
@@ -25,7 +25,7 @@ TEST(protocolrange, invalid_empty) {
   UInt8 d1[2];
   ByteRange r1{&d1[1], 0UL};
   Validation context1{nullptr, &error};
-  EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &context1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r1, 2, 8, &context1));
 }
 
 TEST(protocolrange, invalid_short) {
@@ -41,9 +41,9 @@ TEST(protocolrange, invalid_short) {
 
   Validation c1{nullptr, &error};
 
-  EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r3, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r1, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r2, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r3, 2, 8, &c1));
 }
 
 TEST(protocolrange, valid_short) {
@@ -59,9 +59,9 @@ TEST(protocolrange, valid_short) {
 
   Validation c1{nullptr, &error};
 
-  EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_TRUE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
-  EXPECT_TRUE(IsProtocolRangeValid(0, r3, 2, 8, &c1));
+  EXPECT_TRUE(IsProtocolRangeValid(4, r1, 2, 8, &c1));
+  EXPECT_TRUE(IsProtocolRangeValid(4, r2, 2, 8, &c1));
+  EXPECT_TRUE(IsProtocolRangeValid(4, r3, 2, 8, &c1));
 }
 
 TEST(protocolrange, valid_exact) {
@@ -70,7 +70,7 @@ TEST(protocolrange, valid_exact) {
   ByteRange r1{&d1, 8};
   Validation c1{nullptr, &error};
 
-  EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
+  EXPECT_TRUE(IsProtocolRangeValid(4, r1, 2, 8, &c1));
 }
 
 TEST(protocolrange, invalid1) {
@@ -84,9 +84,9 @@ TEST(protocolrange, invalid1) {
   OFPErrorCode error;
   Validation c1{nullptr, &error};
 
-  EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r3, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r1, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r2, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r3, 2, 8, &c1));
 }
 
 TEST(protocolrange, invalid2) {
@@ -96,8 +96,8 @@ TEST(protocolrange, invalid2) {
   OFPErrorCode error;
   Validation c1{nullptr, &error};
 
-  EXPECT_FALSE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
-  EXPECT_FALSE(IsProtocolRangeValid(0, r2, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r1, 2, 8, &c1));
+  EXPECT_FALSE(IsProtocolRangeValid(4, r2, 2, 8, &c1));
 }
 
 TEST(protocolrange, iteration) {
@@ -114,7 +114,7 @@ TEST(protocolrange, iteration) {
   ByteRange r1{data, sizeof(data)};
   OFPErrorCode error;
   Validation c1{nullptr, &error};
-  EXPECT_TRUE(IsProtocolRangeValid(0, r1, 2, 8, &c1));
+  EXPECT_TRUE(IsProtocolRangeValid(sizeof(Item), r1, 2, 8, &c1));
 
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};
   EXPECT_TRUE(iterable.validateInput(&c1));

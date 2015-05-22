@@ -28,7 +28,9 @@ bool BundleAddMessage::validateInput(Validation *context) const {
     return false;
   }
 
-  // FIXME(bfish): Validate embedded message here.
+  if (header_.length() < sizeof(BundleAddMessage) + msgHeader->length()) {
+    return false;
+  }
   
   return true;
 }

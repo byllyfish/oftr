@@ -753,6 +753,13 @@ void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start) {
   // Normalize the TableStatsReply V4 to look like a V1 message.
   size_t offset = *start;
   UInt8 *ptr = buf_.mutableData() + offset;
+  size_t length = buf_.size();
+
+  if (length - offset < 24) {
+    log::info("TableStatsReply v4 is wrong length:", length);
+    *start = buf_.size();
+    return;
+  }
 
   buf_.insertZeros(ptr + 4, 40);
 

@@ -155,13 +155,17 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
   const RequestForward *m = RequestForward::cast(msg);
   if (m == nullptr)
     return false;
-  DecodeRecursively(io, "msg", m->request());
+
+  auto data = m->request();
+  Message message(data.data(), data.size());
+  message.transmogrify();
+
+  DecodeRecursively(io, "msg", &message);
   return true;
 }
 
 void ofp::yaml::DecodeRecursively(llvm::yaml::IO &io, const char *key,
-                                  const ByteRange &data) {
-  Message message{data.data(), data.size()};
-  Decoder decoder{&message, GetDecoderFromContext(io)};
+                                  const Message *msg) {
+  Decoder decoder{msg, GetDecoderFromContext(io)};
   io.mapRequired(key, decoder);
 }

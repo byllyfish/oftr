@@ -35,8 +35,7 @@ class Decoder {
   bool decodeRequestForward(llvm::yaml::IO &io, const Message *msg);
 
   friend struct llvm::yaml::MappingTraits<ofp::yaml::Decoder>;
-  friend void DecodeRecursively(llvm::yaml::IO &io, const char *key,
-                                const ByteRange &data);
+  friend void DecodeRecursively(llvm::yaml::IO &io, const char *key, const Message *msg);
 };
 
 }  // namespace yaml
