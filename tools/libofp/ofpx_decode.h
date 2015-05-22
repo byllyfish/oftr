@@ -20,6 +20,7 @@ namespace ofpx {
 //   --json           Write compact JSON output instead of YAML.
 //   --json-array     Write output as a valid JSON array.
 //   --silent         Quiet mode; suppress normal output.
+//   --silent-error   Suppress error output for invalid messages.
 //   --invert-check   Expect invalid messages only.
 //   --keep-going     Continue processing messages after errors.
 //   --verify-output  Verify output by translating it back to binary.

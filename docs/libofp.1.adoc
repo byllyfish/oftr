@@ -192,6 +192,9 @@ also represents stdin.
 *-s, --silent*::
     Quiet mode; suppress normal output.
 
+*--silent-error*::
+    Suppress error output for invalid messages.
+
 *--use-findx*::
     Use metadata from tcpflow '.findx' files.
 
