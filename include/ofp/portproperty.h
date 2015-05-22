@@ -8,7 +8,7 @@
 namespace ofp {
 
 class PortPropertyEthernet {
-public:
+ public:
   constexpr static OFPPortProperty type() { return OFPPDPT_ETHERNET; }
 
   OFPPortFeaturesFlags curr() const { return curr_; }
@@ -19,13 +19,15 @@ public:
   UInt32 maxSpeed() const { return maxSpeed_; }
 
   void setCurr(OFPPortFeaturesFlags curr) { curr_ = curr; }
-  void setAdvertised(OFPPortFeaturesFlags advertised) { advertised_ = advertised; }
+  void setAdvertised(OFPPortFeaturesFlags advertised) {
+    advertised_ = advertised;
+  }
   void setSupported(OFPPortFeaturesFlags supported) { supported_ = supported; }
   void setPeer(OFPPortFeaturesFlags peer) { peer_ = peer; }
   void setCurrSpeed(UInt32 currSpeed) { currSpeed_ = currSpeed; }
   void setMaxSpeed(UInt32 maxSpeed) { maxSpeed_ = maxSpeed; }
 
-private:
+ private:
   Big16 type_ = type();
   Big16 len_ = 32;
   Padding<4> pad_;
@@ -43,7 +45,7 @@ private:
 static_assert(sizeof(PortPropertyEthernet) == 32, "Unexpected size.");
 
 class PortPropertyOptical {
-public:
+ public:
   constexpr static OFPPortProperty type() { return OFPPDPT_OPTICAL; }
 
   OFPOpticalPortFeaturesFlags supported() const { return supported_; }
@@ -56,17 +58,31 @@ public:
   UInt16 txPwrMin() const { return txPwrMin_; }
   UInt16 txPwrMax() const { return txPwrMax_; }
 
-  void setSupported(OFPOpticalPortFeaturesFlags supported) { supported_ = supported; }
-  void setTxMinFreqLmda(UInt32 txMinFreqLmda) { txMinFreqLmda_ = txMinFreqLmda; }
-  void setTxMaxFreqLmda(UInt32 txMaxFreqLmda) { txMaxFreqLmda_ = txMaxFreqLmda; }
-  void setTxGridFreqLmda(UInt32 txGridFreqLmda) { txGridFreqLmda_ = txGridFreqLmda; }
-  void setRxMinFreqLmda(UInt32 rxMinFreqLmda) { rxMinFreqLmda_ = rxMinFreqLmda; }
-  void setRxMaxFreqLmda(UInt32 rxMaxFreqLmda) { rxMaxFreqLmda_ = rxMaxFreqLmda; }
-  void setRxGridFreqLmda(UInt32 rxGridFreqLmda) { rxGridFreqLmda_ = rxGridFreqLmda; }
+  void setSupported(OFPOpticalPortFeaturesFlags supported) {
+    supported_ = supported;
+  }
+  void setTxMinFreqLmda(UInt32 txMinFreqLmda) {
+    txMinFreqLmda_ = txMinFreqLmda;
+  }
+  void setTxMaxFreqLmda(UInt32 txMaxFreqLmda) {
+    txMaxFreqLmda_ = txMaxFreqLmda;
+  }
+  void setTxGridFreqLmda(UInt32 txGridFreqLmda) {
+    txGridFreqLmda_ = txGridFreqLmda;
+  }
+  void setRxMinFreqLmda(UInt32 rxMinFreqLmda) {
+    rxMinFreqLmda_ = rxMinFreqLmda;
+  }
+  void setRxMaxFreqLmda(UInt32 rxMaxFreqLmda) {
+    rxMaxFreqLmda_ = rxMaxFreqLmda;
+  }
+  void setRxGridFreqLmda(UInt32 rxGridFreqLmda) {
+    rxGridFreqLmda_ = rxGridFreqLmda;
+  }
   void setTxPwrMin(UInt16 txPwrMin) { txPwrMin_ = txPwrMin; }
   void setTxPwrMax(UInt16 txPwrMax) { txPwrMax_ = txPwrMax; }
 
-private:
+ private:
   Big16 type_ = type();
   Big16 len_ = 40;
   Padding<4> pad_;
@@ -86,8 +102,9 @@ private:
 
 static_assert(sizeof(PortPropertyOptical) == 40, "Unexpected size.");
 
-using PortPropertyExperimenter = detail::ExperimenterProperty<OFPPortProperty, OFPPDPT_EXPERIMENTER>;
+using PortPropertyExperimenter =
+    detail::ExperimenterProperty<OFPPortProperty, OFPPDPT_EXPERIMENTER>;
 
 }  // namespace ofp
 
-#endif // OFP_PORTPROPERTY_H_
+#endif  // OFP_PORTPROPERTY_H_

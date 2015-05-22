@@ -9,7 +9,8 @@ namespace ofp {
 namespace detail {
 
 struct AsyncConfigPropertyItem {};
-using AsyncConfigPropertyIterator = TypedPropertyIterator<AsyncConfigPropertyItem>;
+using AsyncConfigPropertyIterator =
+    TypedPropertyIterator<AsyncConfigPropertyItem>;
 struct AsyncConfigPropertyRange {};
 struct AsyncConfigPropertyInserter {};
 struct AsyncConfigPropertyList {};
@@ -77,12 +78,12 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyInserter> {
 
       switch (property) {
         case OFPACPT_EXPERIMENTER_SLAVE:
-          props.add(
-              AsyncConfigPropertyExperimenterSlave{experimenter, expType, expData});
+          props.add(AsyncConfigPropertyExperimenterSlave{experimenter, expType,
+                                                         expData});
           break;
         case OFPACPT_EXPERIMENTER_MASTER:
           props.add(AsyncConfigPropertyExperimenterMaster{experimenter, expType,
-                                                         expData});
+                                                          expData});
           break;
       }
 
@@ -139,4 +140,4 @@ struct SequenceTraits<ofp::detail::AsyncConfigPropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YASYNCCONFIGPROPERTY_H_
+#endif  // OFP_YAML_YASYNCCONFIGPROPERTY_H_

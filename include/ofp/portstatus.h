@@ -8,8 +8,7 @@
 
 namespace ofp {
 
-class PortStatus
-    : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 56> {
+class PortStatus : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 56> {
  public:
   OFPPortStatusReason reason() const { return reason_; }
 
@@ -26,7 +25,7 @@ class PortStatus
 
   // Only PortStatusBuilder can create an instance.
   PortStatus() : header_{type()} {}
-  
+
   friend class PortStatusBuilder;
   template <class T>
   friend struct llvm::yaml::MappingTraits;

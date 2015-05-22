@@ -58,7 +58,7 @@ void SmallBuffer::assign(const void *data, size_t length) noexcept {
   assertNoOverlap(data, length);
   assertInvariant();
   assert(length <= 0xFFFFFFFF);
-  
+
   if (length > capacity()) {
     increaseCapacity(length);
   }

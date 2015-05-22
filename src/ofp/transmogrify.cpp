@@ -23,8 +23,10 @@ using namespace ofp;
 using deprecated::OriginalMatch;
 using deprecated::StandardMatch;
 
-// This is defined here instead of Transmogrify.h because of header dependencies.
-Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
+// This is defined here instead of Transmogrify.h because of header
+// dependencies.
+Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {
+}
 
 void Transmogrify::normalize() {
   if (buf_.size() < sizeof(Header)) {
@@ -277,7 +279,7 @@ void Transmogrify::normalizePortStatusV1() {
   const size_t PortStatusSize = 16;
 
   Header *hdr = header();
-  
+
   if (hdr->length() != PortStatusSize + sizeof(PortV1)) {
     log::info("PortStatus v1 message is wrong size.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
@@ -298,7 +300,6 @@ void Transmogrify::normalizePortStatusV1() {
   assert(buf_.size() == PortStatusSize + Port::DefaultSizeEthernet);
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
-
 
 void Transmogrify::normalizePortStatusV2() {
   using deprecated::PortV2;
@@ -858,7 +859,7 @@ void Transmogrify::normalizeMPPortDescReplyAllV4() {
 
 void Transmogrify::normalizeMPPortStatsReplyV1(size_t *start) {
   // Convert V1 port stats reply into V5 format.
-  
+
   size_t offset = *start;
   size_t remaining = buf_.size() - offset;
 
@@ -881,7 +882,7 @@ void Transmogrify::normalizeMPPortStatsReplyV1(size_t *start) {
 
 void Transmogrify::normalizeMPPortStatsReplyV2(size_t *start) {
   // Convert V2 port stats reply into V5 format.
-  
+
   size_t offset = *start;
   size_t remaining = buf_.size() - offset;
 
@@ -911,24 +912,24 @@ void Transmogrify::normalizeMPPortStatsReplyV4(size_t *start) {
   }
 
   // Swap portNo and pad.
-  UInt8 *ptr = buf_.mutableData() + offset;  
+  UInt8 *ptr = buf_.mutableData() + offset;
   assert(IsPtrAligned(ptr, 8));
   buf_.insertUninitialized(ptr + 112, 8);
-  ptr = buf_.mutableData() + offset;  
+  ptr = buf_.mutableData() + offset;
 
   UInt32 *portNo = reinterpret_cast<UInt32 *>(ptr);
   UInt32 *pad = reinterpret_cast<UInt32 *>(ptr + sizeof(UInt32));
   std::swap(*portNo, *pad);
-  
+
   // Copy Ethernet property values.
   PortStatsPropertyEthernet eth;
-  std::memcpy(MutableBytePtr(&eth) + 8, ptr + 72, sizeof(UInt64)*4);
+  std::memcpy(MutableBytePtr(&eth) + 8, ptr + 72, sizeof(UInt64) * 4);
 
   // Shift down rx_packets et al.
-  std::memmove(ptr + 16, ptr + 8, sizeof(UInt64)*8);
+  std::memmove(ptr + 16, ptr + 8, sizeof(UInt64) * 8);
 
   // Move duration fields up under port No.
-  std::memcpy(ptr + 8, ptr + 104, sizeof(UInt32)*2);
+  std::memcpy(ptr + 8, ptr + 104, sizeof(UInt32) * 2);
 
   // Copy Ethernet property into end.
   std::memcpy(ptr + 80, &eth, sizeof(eth));

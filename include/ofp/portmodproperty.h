@@ -8,7 +8,7 @@
 namespace ofp {
 
 class PortModPropertyEthernet {
-public:
+ public:
   constexpr static OFPPortModProperty type() { return OFPPMPT_ETHERNET; }
 
   using ValueType = OFPPortFeaturesFlags;
@@ -19,7 +19,7 @@ public:
   OFPPortFeaturesFlags value() const { return advertise_; }
   static OFPPortFeaturesFlags defaultValue() { return OFPPF_NONE; }
 
-private:
+ private:
   Big16 type_ = type();
   Big16 len_ = 8;
   Big<OFPPortFeaturesFlags> advertise_;
@@ -31,7 +31,7 @@ private:
 static_assert(sizeof(PortModPropertyEthernet) == 8, "Unexpected size.");
 
 class PortModPropertyOptical {
-public:
+ public:
   constexpr static OFPPortModProperty type() { return OFPPMPT_OPTICAL; }
 
   OFPOpticalPortFeaturesFlags configure() const { return configure_; }
@@ -40,13 +40,15 @@ public:
   UInt32 gridSpan() const { return gridSpan_; }
   UInt32 txPwr() const { return txPwr_; }
 
-  void setConfigure(OFPOpticalPortFeaturesFlags configure) { configure_ = configure; }
+  void setConfigure(OFPOpticalPortFeaturesFlags configure) {
+    configure_ = configure;
+  }
   void setFreqLmda(UInt32 freqLmda) { freqLmda_ = freqLmda; }
   void setFlOffset(SignedInt32 flOffset) { flOffset_ = flOffset; }
   void setGridSpan(UInt32 gridSpan) { gridSpan_ = gridSpan; }
   void setTxPwr(UInt32 txPwr) { txPwr_ = txPwr; }
-  
-private:
+
+ private:
   Big16 type_ = type();
   Big16 len_ = 24;
   Big<OFPOpticalPortFeaturesFlags> configure_;
@@ -61,8 +63,9 @@ private:
 
 static_assert(sizeof(PortModPropertyOptical) == 24, "Unexpected size.");
 
-using PortModPropertyExperimenter = detail::ExperimenterProperty<OFPPortModProperty, OFPPMPT_EXPERIMENTER>;
+using PortModPropertyExperimenter =
+    detail::ExperimenterProperty<OFPPortModProperty, OFPPMPT_EXPERIMENTER>;
 
 }  // namespace ofp
 
-#endif // OFP_PORTMODPROPERTY_H_
+#endif  // OFP_PORTMODPROPERTY_H_

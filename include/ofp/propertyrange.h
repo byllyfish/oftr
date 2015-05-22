@@ -65,7 +65,7 @@ class PropertyRange : public ProtocolRange<PropertyIterator> {
   }
 
   /// Get value of property, when size of property is fixed.
-  /// 
+  ///
   /// \return false if property is not present
   ///
   /// `PropertyType` must implement the `ValueType` concept.

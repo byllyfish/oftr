@@ -39,7 +39,7 @@ bool MultipartReply::validateInput(Validation *context) const {
                                                            OFP_VERSION_1);
     case OFPMP_PORT_STATS:
       return context->validateArrayVariableSize<MPPortStats>(replyBody(),
-                                                          OFP_VERSION_1);
+                                                             OFP_VERSION_1);
     case OFPMP_QUEUE:
       return context->validateArrayFixedSize<MPQueueStats>(replyBody(),
                                                            OFP_VERSION_1);
@@ -63,7 +63,8 @@ bool MultipartReply::validateInput(Validation *context) const {
       return context->validateArrayVariableSize<MPTableFeatures>(replyBody(),
                                                                  OFP_VERSION_4);
     case OFPMP_PORT_DESC:
-      return context->validateArrayVariableSize<Port>(replyBody(), OFP_VERSION_4);
+      return context->validateArrayVariableSize<Port>(replyBody(),
+                                                      OFP_VERSION_4);
     case OFPMP_TABLE_DESC:
       return false;
     case OFPMP_QUEUE_DESC:

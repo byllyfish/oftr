@@ -110,7 +110,8 @@ struct ScalarTraits<ofp::SignedBig32> {
     ScalarTraits<int32_t>::output(num, ctxt, out);
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::SignedBig32 &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::SignedBig32 &value) {
     int32_t num = 0;
     auto err = ScalarTraits<int32_t>::input(scalar, ctxt, num);
     if (err.empty()) {

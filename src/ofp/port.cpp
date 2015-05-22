@@ -7,7 +7,6 @@
 
 using namespace ofp;
 
-
 PropertyRange Port::properties() const {
   assert(length_ >= sizeof(Port));
   return ByteRange{BytePtr(this) + sizeof(Port), length_ - sizeof(Port)};
@@ -79,7 +78,7 @@ size_t PortBuilder::writeSize(Writable *channel) {
 
   if (version >= OFP_VERSION_5)
     return sizeof(msg_) + properties_.size();
-  if (version >= OFP_VERSION_2) 
+  if (version >= OFP_VERSION_2)
     return sizeof(deprecated::PortV2);
   return sizeof(deprecated::PortV1);
 }
@@ -165,7 +164,6 @@ deprecated::PortV1::PortV1(const PortBuilder &portBuilder) {
   }
 }
 
-
 deprecated::PortV2::PortV2(const Port &port) {
   portNo_ = port.portNo();
   hwAddr_ = port.hwAddr();
@@ -227,6 +225,3 @@ deprecated::PortV2::PortV2(const PortBuilder &portBuilder) {
     setMaxSpeed(0);
   }
 }
-
-
-

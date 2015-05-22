@@ -61,7 +61,8 @@ struct MappingTraits<ofp::Port> {
       io.mapRequired("optical", RemoveConst_cast(opt));
     }
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::PortPropertyRange>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::PortPropertyRange>(props));
   }
 };
 
@@ -83,7 +84,7 @@ struct MappingTraits<ofp::PortBuilder> {
     msg.setState(state);
 
     PortPropertyEthernet eth;
-    io.mapRequired("ethernet", eth);   // FIXME(bfish) - make optional...
+    io.mapRequired("ethernet", eth);  // FIXME(bfish) - make optional...
 
     Optional<PortPropertyOptical> opt;
     io.mapOptional("optical", opt);
@@ -91,10 +92,11 @@ struct MappingTraits<ofp::PortBuilder> {
     PropertyList props;
     props.add(eth);
     if (opt) {
-        props.add(*opt);
+      props.add(*opt);
     }
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::PortPropertyList>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::PortPropertyList>(props));
     msg.setProperties(props);
   }
 };

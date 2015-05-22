@@ -34,7 +34,9 @@ class SetAsyncBuilder {
   SetAsyncBuilder() = default;
   explicit SetAsyncBuilder(const SetAsync *msg);
 
-  void setProperties(const PropertyList &properties) { properties_ = properties; }
+  void setProperties(const PropertyList &properties) {
+    properties_ = properties;
+  }
 
   UInt32 send(Writable *channel);
 

@@ -22,7 +22,7 @@ template <>
 struct MappingTraits<ofp::PortStatsPropertyEthernet> {
   static void mapping(IO &io, ofp::PortStatsPropertyEthernet &prop) {
     using namespace ofp;
-    
+
     io.mapRequired("rx_frame_err", prop.rxFrameErr_);
     io.mapRequired("rx_over_err", prop.rxOverErr_);
     io.mapRequired("rx_crc_err", prop.rxCrcErr_);
@@ -34,7 +34,7 @@ template <>
 struct MappingTraits<ofp::PortStatsPropertyOptical> {
   static void mapping(IO &io, ofp::PortStatsPropertyOptical &prop) {
     using namespace ofp;
-    
+
     io.mapRequired("flags", prop.flags_);
     io.mapRequired("tx_freq_lmda", prop.txFreqLmda_);
     io.mapRequired("tx_offset", prop.txOffset_);
@@ -158,4 +158,4 @@ struct SequenceTraits<ofp::detail::PortStatsPropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YPORTSTATSPROPERTY_H_
+#endif  // OFP_YAML_YPORTSTATSPROPERTY_H_

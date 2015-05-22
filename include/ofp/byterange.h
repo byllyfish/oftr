@@ -38,11 +38,10 @@ class ByteRange {
 
 static_assert(IsConvertible<ByteList, ByteRange>(), "Expected conversion.");
 
-
-constexpr ByteRange MakeByteRange(const void *data, size_t length, size_t offset) {
-  return (length >= offset) ? 
-    ByteRange{BytePtr(data) + offset, length - offset} :
-    ByteRange{};
+constexpr ByteRange MakeByteRange(const void *data, size_t length,
+                                  size_t offset) {
+  return (length >= offset) ? ByteRange{BytePtr(data) + offset, length - offset}
+                            : ByteRange{};
 }
 
 /// \brief Write buffer to stream in hexadecimal format.

@@ -14,7 +14,7 @@ PortRange::PortRange(const PortList &ports) : PortRange{ports.toRange()} {
 size_t PortRange::writeSize(Writable *channel) {
   if (channel->version() >= OFP_VERSION_5) {
     return size();
-  
+
   } else if (channel->version() >= OFP_VERSION_2) {
     return itemCount() * sizeof(deprecated::PortV2);
 
@@ -34,7 +34,7 @@ void PortRange::write(Writable *channel) {
     for (auto &item : *this) {
       deprecated::PortV2 portV2{item};
       channel->write(&portV2, sizeof(portV2));
-    }    
+    }
   } else {
     // Version 1 uses the PortV1 structure instead.
     for (auto &item : *this) {

@@ -23,7 +23,8 @@ PropertyRange BundleAddMessage::properties() const {
 }
 
 bool BundleAddMessage::validateInput(Validation *context) const {
-  const Header *msgHeader = reinterpret_cast<const Header *>(BytePtr(this) + sizeof(BundleAddMessage));
+  const Header *msgHeader = reinterpret_cast<const Header *>(
+      BytePtr(this) + sizeof(BundleAddMessage));
   if (msgHeader->length() < sizeof(Header)) {
     return false;
   }
@@ -31,7 +32,7 @@ bool BundleAddMessage::validateInput(Validation *context) const {
   if (header_.length() < sizeof(BundleAddMessage) + msgHeader->length()) {
     return false;
   }
-  
+
   return true;
 }
 

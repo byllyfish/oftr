@@ -28,24 +28,27 @@ struct MappingTraits<ofp::MPPortStats> {
 
     auto eprop = props.findProperty(ofp::PortStatsPropertyEthernet::type());
     if (eprop != props.end()) {
-      const ofp::PortStatsPropertyEthernet &eth = eprop->property<ofp::PortStatsPropertyEthernet>();
+      const ofp::PortStatsPropertyEthernet &eth =
+          eprop->property<ofp::PortStatsPropertyEthernet>();
       io.mapRequired("ethernet", RemoveConst_cast(eth));
     }
 
     auto oprop = props.findProperty(ofp::PortStatsPropertyOptical::type());
     if (oprop != props.end()) {
-      const ofp::PortStatsPropertyOptical &opt = oprop->property<ofp::PortStatsPropertyOptical>();
+      const ofp::PortStatsPropertyOptical &opt =
+          oprop->property<ofp::PortStatsPropertyOptical>();
       io.mapRequired("optical", RemoveConst_cast(opt));
     }
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::PortStatsPropertyRange>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::PortStatsPropertyRange>(props));
 
-/*
-    io.mapRequired("rx_frame_err", body.rxFrameErr_);
-    io.mapRequired("rx_over_err", body.rxOverErr_);
-    io.mapRequired("rx_crc_err", body.rxCrcErr_);
-    io.mapRequired("collisions", body.collisions_);
-*/
+    /*
+        io.mapRequired("rx_frame_err", body.rxFrameErr_);
+        io.mapRequired("rx_over_err", body.rxOverErr_);
+        io.mapRequired("rx_crc_err", body.rxCrcErr_);
+        io.mapRequired("collisions", body.collisions_);
+    */
   }
 };
 
@@ -67,7 +70,7 @@ struct MappingTraits<ofp::MPPortStatsBuilder> {
     io.mapRequired("tx_errors", msg.msg_.txErrors_);
 
     PortStatsPropertyEthernet eth;
-    io.mapRequired("ethernet", eth);   // FIXME(bfish) - make optional...
+    io.mapRequired("ethernet", eth);  // FIXME(bfish) - make optional...
 
     Optional<PortStatsPropertyOptical> opt;
     io.mapOptional("optical", opt);
@@ -75,18 +78,19 @@ struct MappingTraits<ofp::MPPortStatsBuilder> {
     PropertyList props;
     props.add(eth);
     if (opt) {
-        props.add(*opt);
+      props.add(*opt);
     }
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::PortStatsPropertyList>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::PortStatsPropertyList>(props));
     msg.setProperties(props);
 
-/*
-    io.mapRequired("rx_frame_err", msg.msg_.rxFrameErr_);
-    io.mapRequired("rx_over_err", msg.msg_.rxOverErr_);
-    io.mapRequired("rx_crc_err", msg.msg_.rxCrcErr_);
-    io.mapRequired("collisions", msg.msg_.collisions_);
-*/
+    /*
+        io.mapRequired("rx_frame_err", msg.msg_.rxFrameErr_);
+        io.mapRequired("rx_over_err", msg.msg_.rxOverErr_);
+        io.mapRequired("rx_crc_err", msg.msg_.rxCrcErr_);
+        io.mapRequired("collisions", msg.msg_.collisions_);
+    */
   }
 };
 

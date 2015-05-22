@@ -62,17 +62,22 @@ class MPPortStatsBuilder {
 
   void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
   void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
-  void setDurationNSec(UInt32 durationNSec) { msg_.durationNSec_ = durationNSec; }
+  void setDurationNSec(UInt32 durationNSec) {
+    msg_.durationNSec_ = durationNSec;
+  }
   void setRxPackets(UInt64 rxPackets) { msg_.rxPackets_ = rxPackets; }
   void setTxPackets(UInt64 txPackets) { msg_.txPackets_ = txPackets; }
   void setRxErrors(UInt64 rxErrors) { msg_.rxErrors_ = rxErrors; }
   void setTxErrors(UInt64 txErrors) { msg_.txErrors_ = txErrors; }
-  //void setRxFrameErr(UInt64 rxFrameErr) { msg_.rxFrameErr_ = rxFrameErr; }
-  //void setRxOverErr(UInt64 rxOverErr) { msg_.rxOverErr_ = rxOverErr; }
-  //void setRxCrcErr(UInt64 rxCrcErr) { msg_.rxCrcErr_ = rxCrcErr; }
-  //void setCollisions(UInt64 collisions) { msg_.collisions_ = collisions; }
+  // void setRxFrameErr(UInt64 rxFrameErr) { msg_.rxFrameErr_ = rxFrameErr; }
+  // void setRxOverErr(UInt64 rxOverErr) { msg_.rxOverErr_ = rxOverErr; }
+  // void setRxCrcErr(UInt64 rxCrcErr) { msg_.rxCrcErr_ = rxCrcErr; }
+  // void setCollisions(UInt64 collisions) { msg_.collisions_ = collisions; }
 
-  void setProperties(const PropertyList &properties) { properties_ = properties; updateLen(); }
+  void setProperties(const PropertyList &properties) {
+    properties_ = properties;
+    updateLen();
+  }
 
   void write(Writable *channel);
   void reset() {}
@@ -83,7 +88,10 @@ class MPPortStatsBuilder {
 
   enum { SizeWithoutProperties = sizeof(msg_) };
 
-  void updateLen() { msg_.length_ = UInt16_narrow_cast(SizeWithoutProperties + properties_.size()); }
+  void updateLen() {
+    msg_.length_ =
+        UInt16_narrow_cast(SizeWithoutProperties + properties_.size());
+  }
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;

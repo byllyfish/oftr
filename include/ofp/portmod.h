@@ -52,7 +52,9 @@ class PortModBuilder {
   void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }
   void setMask(OFPPortConfigFlags mask) { msg_.mask_ = mask; }
 
-  void setProperties(const PropertyList &properties) { properties_ = properties; }
+  void setProperties(const PropertyList &properties) {
+    properties_ = properties;
+  }
 
   UInt32 send(Writable *channel);
 

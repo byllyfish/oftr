@@ -317,9 +317,9 @@ template <>
 struct ScalarBitSetTraits<ofp::OFPTableStatusFlags> {
   static void bitset(IO &io, ofp::OFPTableStatusFlags &value) {
     OFP_YAML_BITCASE(OFPTRF_, VACANCY_DOWN),
-    OFP_YAML_BITCASE(OFPTRF_, VACANCY_UP),
+        OFP_YAML_BITCASE(OFPTRF_, VACANCY_UP),
 
-    io.bitSetCaseOther(value, ofp::OFPTRF_OTHER_TABLESTATUS_FLAGS);
+        io.bitSetCaseOther(value, ofp::OFPTRF_OTHER_TABLESTATUS_FLAGS);
   }
 };
 
@@ -327,12 +327,11 @@ template <>
 struct ScalarBitSetTraits<ofp::OFPRequestForwardFlags> {
   static void bitset(IO &io, ofp::OFPRequestForwardFlags &value) {
     OFP_YAML_BITCASE(OFPRFRF_, GROUP_MOD),
-    OFP_YAML_BITCASE(OFPRFRF_, METER_MOD),
+        OFP_YAML_BITCASE(OFPRFRF_, METER_MOD),
 
-    io.bitSetCaseOther(value, ofp::OFPRFRF_OTHER_REQUESTFORWARD_FLAGS);
+        io.bitSetCaseOther(value, ofp::OFPRFRF_OTHER_REQUESTFORWARD_FLAGS);
   }
 };
-
 
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1

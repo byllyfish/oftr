@@ -26,7 +26,7 @@ template <>
 struct MappingTraits<ofp::PortPropertyEthernet> {
   static void mapping(IO &io, ofp::PortPropertyEthernet &prop) {
     using namespace ofp;
-    
+
     OFPPortFeaturesFlags curr = prop.curr();
     OFPPortFeaturesFlags advertised = prop.advertised();
     OFPPortFeaturesFlags supported = prop.supported();
@@ -49,7 +49,7 @@ template <>
 struct MappingTraits<ofp::PortPropertyOptical> {
   static void mapping(IO &io, ofp::PortPropertyOptical &prop) {
     using namespace ofp;
-    
+
     OFPOpticalPortFeaturesFlags supported = prop.supported();
     io.mapRequired("supported", supported);
     prop.setSupported(supported);
@@ -161,9 +161,7 @@ struct SequenceTraits<ofp::detail::PortPropertyRange> {
 
 template <>
 struct SequenceTraits<ofp::detail::PortPropertyList> {
-  static size_t size(IO &io, ofp::detail::PortPropertyList &props) {
-    return 0;
-  }
+  static size_t size(IO &io, ofp::detail::PortPropertyList &props) { return 0; }
 
   static ofp::detail::PortPropertyInserter &element(
       IO &io, ofp::detail::PortPropertyList &props, size_t index) {
@@ -174,4 +172,4 @@ struct SequenceTraits<ofp::detail::PortPropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YPORTPROPERTY_H_
+#endif  // OFP_YAML_YPORTPROPERTY_H_

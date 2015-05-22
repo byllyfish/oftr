@@ -227,14 +227,15 @@ enum OFPOpticalPortFeaturesFlags : UInt32 {
   OFPOPF_RX_TUNE = 1 << 0,
   OFPOPF_TX_TUNE = 1 << 1,
   OFPOPF_TX_PWR = 1 << 2,
-  OFPOPF_USE_FREQ  = 1 << 3,
+  OFPOPF_USE_FREQ = 1 << 3,
 
   OFPOPF_OTHER_FEATURES_FLAGS = 0xFFFFFFF0
 };
 
 inline OFPOpticalPortFeaturesFlags operator|(OFPOpticalPortFeaturesFlags lhs,
-                                      OFPOpticalPortFeaturesFlags rhs) {
-  return static_cast<OFPOpticalPortFeaturesFlags>(static_cast<UInt32>(lhs) | rhs);
+                                             OFPOpticalPortFeaturesFlags rhs) {
+  return static_cast<OFPOpticalPortFeaturesFlags>(static_cast<UInt32>(lhs) |
+                                                  rhs);
 }
 
 enum OFPPortStatusReason : UInt8 {
@@ -562,23 +563,25 @@ enum OFPRoleStatusFlags : UInt32 {
   OFPCRRF_OTHER_ROLESTATUS_FLAGS = 0xFFFFFFF8
 };
 
-inline OFPRoleStatusFlags operator|(OFPRoleStatusFlags lhs, OFPRoleStatusFlags rhs) {
+inline OFPRoleStatusFlags operator|(OFPRoleStatusFlags lhs,
+                                    OFPRoleStatusFlags rhs) {
   return static_cast<OFPRoleStatusFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
 enum OFPTableStatusReason : UInt8 {
-  OFPTR_VACANCY_DOWN  = 3,
-  OFPTR_VACANCY_UP    = 4,
+  OFPTR_VACANCY_DOWN = 3,
+  OFPTR_VACANCY_UP = 4,
 };
 
 enum OFPTableStatusFlags : UInt32 {
-  OFPTRF_VACANCY_DOWN  = 1 << 3,
-  OFPTRF_VACANCY_UP    = 1 << 4,
+  OFPTRF_VACANCY_DOWN = 1 << 3,
+  OFPTRF_VACANCY_UP = 1 << 4,
 
   OFPTRF_OTHER_TABLESTATUS_FLAGS = 0xFFFFFFE7
 };
 
-inline OFPTableStatusFlags operator|(OFPTableStatusFlags lhs, OFPTableStatusFlags rhs) {
+inline OFPTableStatusFlags operator|(OFPTableStatusFlags lhs,
+                                     OFPTableStatusFlags rhs) {
   return static_cast<OFPTableStatusFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -594,7 +597,8 @@ enum OFPRequestForwardFlags : UInt32 {
   OFPRFRF_OTHER_REQUESTFORWARD_FLAGS = 0xFFFFFFFC
 };
 
-inline OFPRequestForwardFlags operator|(OFPRequestForwardFlags lhs, OFPRequestForwardFlags rhs) {
+inline OFPRequestForwardFlags operator|(OFPRequestForwardFlags lhs,
+                                        OFPRequestForwardFlags rhs) {
   return static_cast<OFPRequestForwardFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 

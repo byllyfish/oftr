@@ -8,7 +8,8 @@ using namespace ofp;
 
 PropertyRange PortMod::properties() const {
   assert(header_.length() >= sizeof(PortMod));
-  return ByteRange{BytePtr(this) + sizeof(PortMod), header_.length() - sizeof(PortMod)};
+  return ByteRange{BytePtr(this) + sizeof(PortMod),
+                   header_.length() - sizeof(PortMod)};
 }
 
 bool PortMod::validateInput(Validation *context) const {
@@ -35,7 +36,8 @@ UInt32 PortModBuilder::send(Writable *channel) {
     return xid;
   }
 
-  OFPPortFeaturesFlags advertise = properties_.toRange().value<PortModPropertyEthernet>();
+  OFPPortFeaturesFlags advertise =
+      properties_.toRange().value<PortModPropertyEthernet>();
 
   if (version >= OFP_VERSION_2) {
     size_t msgLen = sizeof(msg_) + sizeof(OFPPortFeaturesFlags) + 4;
@@ -69,4 +71,3 @@ UInt32 PortModBuilder::send(Writable *channel) {
 
   return xid;
 }
-

@@ -10,7 +10,8 @@ using namespace ofp;
 
 PropertyRange MPPortStats::properties() const {
   assert(length_ >= sizeof(MPPortStats));
-  return ByteRange{BytePtr(this) + sizeof(MPPortStats), length_ - sizeof(MPPortStats)};
+  return ByteRange{BytePtr(this) + sizeof(MPPortStats),
+                   length_ - sizeof(MPPortStats)};
 }
 
 bool MPPortStats::validateInput(Validation *context) const {
@@ -29,7 +30,6 @@ void MPPortStatsBuilder::write(Writable *channel) {
     channel->write(properties_.data(), properties_.size());
 
   } else {
-
     if (version == OFP_VERSION_1) {
       struct {
         Big16 portNo;
@@ -52,7 +52,8 @@ void MPPortStatsBuilder::write(Writable *channel) {
     PropertyRange props = properties_.toRange();
     auto iter = props.findProperty(PortStatsPropertyEthernet::type());
     if (iter != props.end()) {
-      const PortStatsPropertyEthernet &eth = iter->property<PortStatsPropertyEthernet>();
+      const PortStatsPropertyEthernet &eth =
+          iter->property<PortStatsPropertyEthernet>();
       channel->write(&eth.rxFrameErr_, 32);
     } else {
       Padding<32> pad;
@@ -66,25 +67,25 @@ void MPPortStatsBuilder::write(Writable *channel) {
 
   channel->flush();
 
-/**
-  if (version == OFP_VERSION_1) {
-    struct {
-      Big16 portNo;
-      Padding<6> pad;
-    } p;
-    p.portNo = UInt16_narrow_cast(msg_.portNo_);
+  /**
+    if (version == OFP_VERSION_1) {
+      struct {
+        Big16 portNo;
+        Padding<6> pad;
+      } p;
+      p.portNo = UInt16_narrow_cast(msg_.portNo_);
 
-    channel->write(&p, sizeof(p));
-    channel->write(&msg_.rxPackets_, 8 * 12);
-    channel->flush();
+      channel->write(&p, sizeof(p));
+      channel->write(&msg_.rxPackets_, 8 * 12);
+      channel->flush();
 
-  } else if (version == OFP_VERSION_3 || version == OFP_VERSION_2) {
-    channel->write(&msg_, 104);
-    channel->flush();
+    } else if (version == OFP_VERSION_3 || version == OFP_VERSION_2) {
+      channel->write(&msg_, 104);
+      channel->flush();
 
-  } else {
-    channel->write(&msg_, sizeof(msg_));
-    channel->flush();
-  }
-  */
+    } else {
+      channel->write(&msg_, sizeof(msg_));
+      channel->flush();
+    }
+    */
 }

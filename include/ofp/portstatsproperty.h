@@ -8,16 +8,15 @@
 namespace ofp {
 
 class PortStatsPropertyEthernet {
-public:
+ public:
   constexpr static OFPPortStatsProperty type() { return OFPPSPT_ETHERNET; }
-
 
   void setRxFrameErr(UInt64 rxFrameErr) { rxFrameErr_ = rxFrameErr; }
   void setRxOverErr(UInt64 rxOverErr) { rxOverErr_ = rxOverErr; }
   void setRxCrcErr(UInt64 rxCrcErr) { rxCrcErr_ = rxCrcErr; }
   void setCollisions(UInt64 collisions) { collisions_ = collisions; }
 
-private:
+ private:
   Big16 type_ = type();
   Big16 len_ = 40;
   Padding<4> pad_;
@@ -34,10 +33,10 @@ private:
 static_assert(sizeof(PortStatsPropertyEthernet) == 40, "Unexpected size.");
 
 class PortStatsPropertyOptical {
-public:
+ public:
   constexpr static OFPPortStatsProperty type() { return OFPPSPT_OPTICAL; }
 
-private:
+ private:
   Big16 type_ = type();
   Big16 len_ = 44;
   Padding<4> pad_;
@@ -60,8 +59,9 @@ private:
 
 static_assert(sizeof(PortStatsPropertyOptical) == 48, "Unexpected size.");
 
-using PortStatsPropertyExperimenter = detail::ExperimenterProperty<OFPPortStatsProperty, OFPPSPT_EXPERIMENTER>;
+using PortStatsPropertyExperimenter =
+    detail::ExperimenterProperty<OFPPortStatsProperty, OFPPSPT_EXPERIMENTER>;
 
 }  // namespace ofp
 
-#endif // OFP_PORTSTATSPROPERTY_H_
+#endif  // OFP_PORTSTATSPROPERTY_H_

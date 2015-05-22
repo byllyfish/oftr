@@ -78,16 +78,19 @@ struct MappingTraits<ofp::SetAsync> {
     }
 
     OFPRequestForwardFlags requestForwMaster;
-    if (props.value<AsyncConfigPropertyRequestForwardSlave>(&requestForwMaster)) {
+    if (props.value<AsyncConfigPropertyRequestForwardSlave>(
+            &requestForwMaster)) {
       io.mapRequired("requestforward_master", requestForwMaster);
     }
 
     OFPRequestForwardFlags requestForwSlave;
-    if (props.value<AsyncConfigPropertyRequestForwardSlave>(&requestForwSlave)) {
+    if (props.value<AsyncConfigPropertyRequestForwardSlave>(
+            &requestForwSlave)) {
       io.mapRequired("requestforward_slave", requestForwSlave);
     }
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::AsyncConfigPropertyRange>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::AsyncConfigPropertyRange>(props));
   }
 };
 
@@ -133,7 +136,7 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
       props.add(AsyncConfigPropertyRoleStatusSlave{*roleSlave});
     if (roleMaster)
       props.add(AsyncConfigPropertyRoleStatusMaster{*roleMaster});
-    
+
     Optional<OFPTableStatusFlags> tableMaster;
     Optional<OFPTableStatusFlags> tableSlave;
     io.mapOptional("table_status_master", tableMaster);
@@ -152,7 +155,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
     if (forwMaster)
       props.add(AsyncConfigPropertyRequestForwardMaster{*forwMaster});
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::AsyncConfigPropertyList>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::AsyncConfigPropertyList>(props));
     msg.setProperties(props);
   }
 };

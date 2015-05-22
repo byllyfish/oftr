@@ -24,7 +24,7 @@ template <>
 struct MappingTraits<ofp::PortModPropertyEthernet> {
   static void mapping(IO &io, ofp::PortModPropertyEthernet &prop) {
     using namespace ofp;
-    
+
     OFPPortFeaturesFlags advertise = prop.advertise();
     io.mapRequired("advertise", advertise);
     prop.setAdvertise(advertise);
@@ -35,7 +35,7 @@ template <>
 struct MappingTraits<ofp::PortModPropertyOptical> {
   static void mapping(IO &io, ofp::PortModPropertyOptical &prop) {
     using namespace ofp;
-    
+
     OFPOpticalPortFeaturesFlags configure = prop.configure();
     io.mapRequired("configure", configure);
     prop.setConfigure(configure);
@@ -156,4 +156,4 @@ struct SequenceTraits<ofp::detail::PortModPropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YPORTMODPROPERTY_H_
+#endif  // OFP_YAML_YPORTMODPROPERTY_H_

@@ -23,10 +23,7 @@ class PortV2;
 
 class Port {
  public:
-  enum {
-    ProtocolIteratorSizeOffset = 4,
-    ProtocolIteratorAlignment = 8
-  };
+  enum { ProtocolIteratorSizeOffset = 4, ProtocolIteratorAlignment = 8 };
 
   enum { MPVariableSizeOffset = 4 };
 
@@ -81,22 +78,31 @@ class PortBuilder {
   void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }
   void setState(OFPPortStateFlags state) { msg_.state_ = state; }
 
-  void setProperties(PropertyRange properties) { properties_.assign(properties); updateLen(); }
-  void setProperties(const PropertyList &properties) { properties_ = properties; updateLen(); }
+  void setProperties(PropertyRange properties) {
+    properties_.assign(properties);
+    updateLen();
+  }
+  void setProperties(const PropertyList &properties) {
+    properties_ = properties;
+    updateLen();
+  }
 
   size_t writeSize(Writable *channel);
   void write(Writable *channel);
   void reset() {}
 
   void copyTo(UInt8 *ptr);
-  
+
  private:
   Port msg_;
   PropertyList properties_;
 
   enum { SizeWithoutProperties = sizeof(msg_) };
 
-  void updateLen() { msg_.length_ = UInt16_narrow_cast(SizeWithoutProperties + properties_.size()); }
+  void updateLen() {
+    msg_.length_ =
+        UInt16_narrow_cast(SizeWithoutProperties + properties_.size());
+  }
 
   friend class PortList;
   friend class deprecated::PortV1;
@@ -199,7 +205,9 @@ class PortV2 {
   void setCurr(OFPPortFeaturesFlags curr) { curr_ = curr; }
 
   OFPPortFeaturesFlags advertised() const { return advertised_; }
-  void setAdvertised(OFPPortFeaturesFlags advertised) { advertised_ = advertised; }
+  void setAdvertised(OFPPortFeaturesFlags advertised) {
+    advertised_ = advertised;
+  }
 
   OFPPortFeaturesFlags supported() const { return supported_; }
   void setSupported(OFPPortFeaturesFlags supported) { supported_ = supported; }

@@ -10,9 +10,10 @@ namespace ofp {
 
 class PortList : public ProtocolList<PortRange> {
  public:
-  void add(const PortBuilder &port) { 
+  void add(const PortBuilder &port) {
     const PropertyList &props = port.properties_;
-    assert(port.msg_.length_ == PortBuilder::SizeWithoutProperties + props.size());
+    assert(port.msg_.length_ ==
+           PortBuilder::SizeWithoutProperties + props.size());
     buf_.add(&port.msg_, PortBuilder::SizeWithoutProperties);
     buf_.add(props.data(), props.size());
   }

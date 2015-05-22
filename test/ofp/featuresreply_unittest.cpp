@@ -225,7 +225,7 @@ TEST(featuresreply, v2) {
   EXPECT_EQ(0, reply->actions());
 
   EXPECT_EQ(2, reply->ports().itemCount());
-  
+
   for (auto &p : reply->ports()) {
     EXPECT_EQ(0x11111111, p.portNo());
     EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());
@@ -308,7 +308,7 @@ TEST(featuresreply, v1) {
   EXPECT_EQ(0x40000677, reply->actions());
 
   EXPECT_EQ(2, reply->ports().itemCount());
-  
+
   for (auto &p : reply->ports()) {
     EXPECT_EQ(0x1111, p.portNo());
     EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());

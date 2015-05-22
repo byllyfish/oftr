@@ -34,17 +34,20 @@ struct MappingTraits<ofp::PortMod> {
 
     auto eprop = props.findProperty(ofp::PortModPropertyEthernet::type());
     if (eprop != props.end()) {
-      const ofp::PortModPropertyEthernet &eth = eprop->property<ofp::PortModPropertyEthernet>();
+      const ofp::PortModPropertyEthernet &eth =
+          eprop->property<ofp::PortModPropertyEthernet>();
       io.mapRequired("ethernet", RemoveConst_cast(eth));
     }
 
     auto oprop = props.findProperty(ofp::PortModPropertyOptical::type());
     if (oprop != props.end()) {
-      const ofp::PortModPropertyOptical &opt = oprop->property<ofp::PortModPropertyOptical>();
+      const ofp::PortModPropertyOptical &opt =
+          oprop->property<ofp::PortModPropertyOptical>();
       io.mapRequired("optical", RemoveConst_cast(opt));
     }
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::PortModPropertyRange>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::PortModPropertyRange>(props));
   }
 };
 
@@ -62,7 +65,7 @@ struct MappingTraits<ofp::PortModBuilder> {
     msg.setMask(mask);
 
     ofp::PortModPropertyEthernet eth;
-    io.mapRequired("ethernet", eth);   // FIXME(bfish) - make optional?
+    io.mapRequired("ethernet", eth);  // FIXME(bfish) - make optional?
 
     Optional<ofp::PortModPropertyOptical> opt;
     io.mapOptional("optical", opt);
@@ -70,10 +73,11 @@ struct MappingTraits<ofp::PortModBuilder> {
     ofp::PropertyList props;
     props.add(eth);
     if (opt) {
-        props.add(*opt);
+      props.add(*opt);
     }
 
-    io.mapRequired("properties", Ref_cast<ofp::detail::PortModPropertyList>(props));
+    io.mapRequired("properties",
+                   Ref_cast<ofp::detail::PortModPropertyList>(props));
     msg.setProperties(props);
   }
 };
