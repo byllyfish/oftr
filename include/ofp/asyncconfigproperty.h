@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_ASYNCCONFIGPROPERTY_H_
 #define OFP_ASYNCCONFIGPROPERTY_H_
 
