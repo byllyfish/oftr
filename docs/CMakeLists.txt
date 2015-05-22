@@ -9,3 +9,5 @@ if(DOXYGEN_FOUND)
     COMMENT "Generating API documentation with Doxygen" VERBATIM
   )
 endif(DOXYGEN_FOUND)
+
+install(FILES libofp.1 DESTINATION man)
