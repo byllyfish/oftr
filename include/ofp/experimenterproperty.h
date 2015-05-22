@@ -7,6 +7,9 @@
 #include "ofp/byterange.h"
 
 namespace ofp {
+
+class PropertyList;
+
 namespace detail {
 
 OFP_BEGIN_IGNORE_PADDING
