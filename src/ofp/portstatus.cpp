@@ -30,7 +30,7 @@ UInt32 PortStatusBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   UInt32 xid = channel->nextXid();
 
-  UInt16 msgLen = sizeof(msg_) + port_.writeSize(channel);
+  UInt16 msgLen = UInt16_narrow_cast(sizeof(msg_) + port_.writeSize(channel));
 
   msg_.header_.setVersion(version);
   msg_.header_.setLength(msgLen);
