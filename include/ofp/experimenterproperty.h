@@ -46,7 +46,7 @@ class ExperimenterProperty {
   Big32 expType_;
   ByteRange data_;
 
-  friend class PropertyList;
+  friend class ofp::PropertyList;
 };
 
 OFP_END_IGNORE_PADDING
