@@ -12,6 +12,13 @@ TEST(ipv4address, test) {
   EXPECT_EQ("192.168.1.1", addr.toString());
 }
 
+TEST(ipv4address, paddedTest) {
+  IPv4Address addr{"127.000.000.001"};
+
+  EXPECT_TRUE(addr.valid());
+  EXPECT_EQ("127.0.0.1", addr.toString());
+}
+
 TEST(ipv4address, mask) {
   IPv4Address a = IPv4Address::mask(0);
   EXPECT_EQ("0.0.0.0", a.toString());
