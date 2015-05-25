@@ -44,8 +44,6 @@ bool IPv6Endpoint::parse(const std::string &s) {
     size_t lastSeparator = input.rfind(':');
     if (lastSeparator == StringRef::npos) {
       lastSeparator = input.rfind('.');
-      if (lastSeparator == StringRef::npos)
-        return false;
 
     } else {
       // There's a ':' in the input. We still need to check for the period
@@ -55,10 +53,16 @@ bool IPv6Endpoint::parse(const std::string &s) {
         lastSeparator = period;
     }
 
-    assert(input[lastSeparator] == ':' || input[lastSeparator] == '.');
-
-    addrStr = input.substr(0, lastSeparator).rtrim();
-    portStr = input.substr(lastSeparator + 1).ltrim();
+    if (lastSeparator == StringRef::npos) {
+      // Input contains the port number only.
+      addrStr = "";
+      portStr = input;
+    
+    } else {
+      assert(input[lastSeparator] == ':' || input[lastSeparator] == '.');
+      addrStr = input.substr(0, lastSeparator).rtrim();
+      portStr = input.substr(lastSeparator + 1).ltrim();
+    }
   }
 
   log::debug("IPv6Endpoint::parse ", addrStr, portStr);

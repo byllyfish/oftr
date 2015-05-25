@@ -50,6 +50,10 @@ TEST(ipv6endpoint, parse) {
 TEST(ipv6endpoint, parse2) {
   IPv6Endpoint endpt;
 
+  EXPECT_TRUE(endpt.parse("80"));
+  EXPECT_EQ(IPv6Address{}, endpt.address());
+  EXPECT_EQ(80, endpt.port());
+
   EXPECT_TRUE(endpt.parse(":65535"));
   EXPECT_EQ(IPv6Address{}, endpt.address());
   EXPECT_EQ(65535, endpt.port());
@@ -82,7 +86,6 @@ TEST(ipv6endpoint, parse2) {
 TEST(ipv6endpoint, parseFails) {
   IPv6Endpoint endpt;
 
-  EXPECT_FALSE(endpt.parse("80"));
   EXPECT_FALSE(endpt.parse("1.2.3.4 80"));
 
   EXPECT_FALSE(endpt.parse("192.168.1.1"));
