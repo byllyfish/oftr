@@ -10,4 +10,4 @@ if(DOXYGEN_FOUND)
   )
 endif(DOXYGEN_FOUND)
 
-install(FILES libofp.1 DESTINATION man)
+install(FILES libofp.1 DESTINATION share/man/man1)
