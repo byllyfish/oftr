@@ -41,7 +41,8 @@ class RpcEncoder {
   void addDiagnostic(const llvm::SMDiagnostic &diag);
 
   void encodeParams(llvm::yaml::IO &io);
-
+  void replyError();
+  
   friend struct llvm::yaml::MappingTraits<ofp::rpc::RpcEncoder>;
 };
 

@@ -16,26 +16,34 @@ static bool errorFound(llvm::yaml::IO &io) {
 RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,
                        yaml::Encoder::ChannelFinder finder)
     : conn_{conn}, errorStream_{error_}, finder_{finder} {
-  llvm::yaml::Input yin{input, nullptr, RpcEncoder::diagnosticHandler, this};
+
+  // Check if input string is possibly a JSON/YAML quoted string.
+  std::string rawInput;
+  if (!input.empty() && input[0] == '"') {
+    log::debug("RpcEncoder: decodeString:", input);
+    llvm::yaml::Input ys{input, nullptr, RpcEncoder::diagnosticHandler, this};
+    if (!ys.error()) {
+      ys >> rawInput;
+    }
+    log::debug("RpcEncoder: result:", rawInput);
+    if (ys.error()) {
+      replyError();
+      return;
+    }
+  }
+
+  // If there's any rawInput, use that value. Otherwise decode the original 
+  // input.
+
+  const std::string &inputText = rawInput.empty() ? input : rawInput;
+
+  llvm::yaml::Input yin{inputText, nullptr, RpcEncoder::diagnosticHandler, this};
   if (!yin.error()) {
     yin >> *this;
   }
 
   if (yin.error()) {
-    // Error string will be empty if there's no content.
-
-    RpcErrorResponse response{id_ ? *id_ : 0};
-    response.error.message = llvm::StringRef{error()}.rtrim();
-
-    int code = ERROR_CODE_INVALID_REQUEST;
-    if (response.error.message.find("unknown method") != std::string::npos) {
-      code = ERROR_CODE_METHOD_NOT_FOUND;
-    }
-
-    response.error.code = code;
-    conn_->rpcReply(&response);
-
-    log::warning("JSON-RPC parse error:", response.error.message);
+    replyError();
   }
 }
 
@@ -129,4 +137,22 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
     default:
       break;
   }
+}
+
+
+void RpcEncoder::replyError() {
+  // Error string will be empty if there's no content.
+
+  RpcErrorResponse response{id_ ? *id_ : 0};
+  response.error.message = llvm::StringRef{error()}.rtrim();
+
+  int code = ERROR_CODE_INVALID_REQUEST;
+  if (response.error.message.find("unknown method") != std::string::npos) {
+    code = ERROR_CODE_METHOD_NOT_FOUND;
+  }
+
+  response.error.code = code;
+  conn_->rpcReply(&response);
+
+  log::warning("JSON-RPC parse error:", response.error.message);
 }

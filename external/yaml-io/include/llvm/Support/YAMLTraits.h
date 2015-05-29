@@ -1384,6 +1384,17 @@ operator>>(Input &yin, T &docSeq) {
   return yin;
 }
 
+// Define non-member operator>> so that Input can stream in a string as a
+// document.
+template <typename T>
+inline
+typename std::enable_if<has_ScalarTraits<T>::value, Input &>::type
+operator>>(Input &yin, T &docStr) {
+  yin.setCurrentDocument();
+  yamlize(yin, docStr, true);
+  return yin;
+}
+
 // Provide better error message about types missing a trait specialization
 template <typename T>
 inline
