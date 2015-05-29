@@ -9,6 +9,11 @@ set(OFPX_SOURCES
 
 if(APPLE AND UNIX)
   set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_xpc.cpp)
+
+  # Set up Info.plist file so there will be a version number in crashreporter
+  # output.
+  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in" "${CMAKE_CURRENT_BINARY_DIR}/Info.plist")
+  set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_LINK_EXECUTABLE} -Wl,-sectcreate,__TEXT,__info_plist,${CMAKE_CURRENT_BINARY_DIR}/Info.plist")
 endif()
 
 add_executable(libofp ${OFPX_SOURCES})
