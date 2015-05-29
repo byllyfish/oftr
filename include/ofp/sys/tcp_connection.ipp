@@ -96,10 +96,12 @@ void TCP_Connection<SocketType>::flush() {
 template <class SocketType>
 void TCP_Connection<SocketType>::shutdown() {
   if (!(flags() & Connection::kShutdownCalled)) {
+    // Do nothing if socket is not open.
+    if (!socket_.is_open())
+      return;
     setFlags(flags() | Connection::kShutdownCalled);
     log::debug("TCP_Connection::shutdown started",
                std::make_pair("connid", connectionId()));
-    assert(socket_.is_open());
     auto self(this->shared_from_this());
     socket_.async_shutdown([this, self](const std::error_code &error) {
       setFlags(flags() | Connection::kShutdownDone);
