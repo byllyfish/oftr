@@ -6,4 +6,4 @@ before_install:
   - sudo apt-get install -y cmake
 script: 
   - mkdir Build && cd Build
-  - cmake .. && make test
+  - cmake .. && make && make test
