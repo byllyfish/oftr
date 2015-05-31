@@ -229,6 +229,11 @@ static void trace1(const char *type, UInt64 id, const void *data,
   }
 
   Message message{data, length};
+
+  // Do not trace echo requests or echo replies.
+  if (message.type() == OFPT_ECHO_REQUEST || message.type() == OFPT_ECHO_REPLY) 
+    return;
+
   message.transmogrify();
 
   yaml::Decoder decoder{&message};
