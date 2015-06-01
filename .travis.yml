@@ -1,10 +1,12 @@
 language: cpp
 compiler: gcc
 before_install:
-  - sudo add-apt-repository --yes ppa:kalakris/cmake ppa:ubuntu-toolchain-r/test
+  - sudo add-apt-repository --yes ppa:kalakris/cmake 
+  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
   - sudo apt-get install -y cmake gcc-4.8
 script: 
+  - export CC="gcc-4.8"
   - export CXX="g++-4.8"
   - mkdir Build && cd Build
   - cmake .. && make && make test
