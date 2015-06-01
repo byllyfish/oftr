@@ -16,8 +16,6 @@ bool IPv6Endpoint::parse(const std::string &s) {
   if (input.empty())
     return false;
 
-  log::debug("IPv6Endpoint::parseInput ", input);
-
   if (input[0] == '[') {
     // Check for address enclosed in brackets.
     size_t endBracket = input.find(']');
@@ -64,8 +62,6 @@ bool IPv6Endpoint::parse(const std::string &s) {
       portStr = input.substr(lastSeparator + 1).ltrim();
     }
   }
-
-  log::debug("IPv6Endpoint::parse ", addrStr, portStr);
 
   if (portStr.empty())
     return false;
