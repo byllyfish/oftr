@@ -47,14 +47,14 @@ enum {
 
 template <class Type>
 struct Castable {
-  static const Type *const cast(const void *const ptr, size_t len) {
+  static const Type *cast(const void *ptr, size_t len) {
     assert(IsPtrAligned(ptr, alignof(Type)));
     if (len < sizeof(Type)) {
       log::warning("pkt::Castable: Data too short, actualLen:", len,
                    "minNeeded:", sizeof(Type));
       return nullptr;
     }
-    return reinterpret_cast<const Type *const>(ptr);
+    return reinterpret_cast<const Type *>(ptr);
   }
 };
 
