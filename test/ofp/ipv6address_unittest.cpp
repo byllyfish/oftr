@@ -23,12 +23,12 @@ TEST(ipv6address, v4) {
 }
 
 TEST(ipv6address, paddedv4) {
-  IPv6Address addr{"127.000.000.001"};
+  IPv6Address addr{"127.000.090.009"};
 
   EXPECT_TRUE(addr.valid());
-  EXPECT_HEX("0000 0000 0000 0000 0000 FFFF 7F00 0001", &addr, sizeof(addr));
+  EXPECT_HEX("0000 0000 0000 0000 0000 FFFF 7F00 5A09", &addr, sizeof(addr));
   EXPECT_TRUE(addr.isV4Mapped());
-  EXPECT_EQ("127.0.0.1", addr.toString());
+  EXPECT_EQ("127.0.90.9", addr.toString());
 }
 
 TEST(ipv6address, equals) {

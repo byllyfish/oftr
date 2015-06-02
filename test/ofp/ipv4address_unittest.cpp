@@ -13,10 +13,10 @@ TEST(ipv4address, test) {
 }
 
 TEST(ipv4address, paddedTest) {
-  IPv4Address addr{"127.000.000.001"};
+  IPv4Address addr{"127.000.090.009"};
 
   EXPECT_TRUE(addr.valid());
-  EXPECT_EQ("127.0.0.1", addr.toString());
+  EXPECT_EQ("127.0.90.9", addr.toString());
 }
 
 TEST(ipv4address, mask) {
@@ -87,4 +87,23 @@ TEST(ipv4address, misaligned) {
   EXPECT_TRUE(buf.addr.parse("251.252.253.254"));
   EXPECT_TRUE(buf.addr.valid());
   EXPECT_EQ("251.252.253.254", buf.addr.toString());
+}
+
+TEST(ipv4address, invalid) {
+  IPv4Address addr;
+
+  EXPECT_FALSE(addr.parse(""));
+  EXPECT_FALSE(addr.parse(" 1.2.3.4 "));
+  EXPECT_FALSE(addr.parse("1"));
+  EXPECT_FALSE(addr.parse("1.2"));
+  EXPECT_FALSE(addr.parse("1.2."));
+  EXPECT_FALSE(addr.parse("1.2.3"));
+  EXPECT_FALSE(addr.parse("1.2.3."));
+  EXPECT_FALSE(addr.parse("1.2.3.4."));
+  EXPECT_FALSE(addr.parse(".1.2.3"));
+  EXPECT_FALSE(addr.parse("1.2.3.4.5"));
+  EXPECT_FALSE(addr.parse("a.b.c.d"));
+  EXPECT_FALSE(addr.parse("1.2.3.256"));
+  EXPECT_FALSE(addr.parse("256.2.3.4"));
+  EXPECT_FALSE(addr.parse("-1.2.3.4"));
 }

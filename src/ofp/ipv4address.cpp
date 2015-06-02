@@ -6,6 +6,8 @@
 
 using namespace ofp;
 
+static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType addr);
+
 IPv4Address::IPv4Address(const ArrayType &a) : addr_(a) {
 }
 
@@ -59,6 +61,11 @@ unsigned IPv4Address::prefix() const {
 
 bool IPv4Address::parse(const std::string &s) {
   int result = inet_pton(AF_INET, s.c_str(), addr_.data());
+  if (!result) {
+    // inet_pton on Linux does not accept IPv4 addresses like: 127.000.000.001.
+    return alternateParse(s, addr_);
+  }
+
   return (result > 0);
 }
 
@@ -71,4 +78,26 @@ std::string IPv4Address::toString() const {
   const char *result =
       inet_ntop(AF_INET, addr_.data(), ipv4str, sizeof(ipv4str));
   return result ? ipv4str : "<inet_ntop_error4>";
+}
+
+static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType addr) {
+  using llvm::StringRef;
+  size_t sp = 0;
+
+  for (unsigned i = 0; i < 3; ++i) {
+    size_t ep = s.find_first_not_of("0123456789", sp);
+    if (ep == StringRef::npos || s[ep] != '.') 
+      return false;
+    if (s.slice(sp, ep).getAsInteger(10, addr[i]))
+      return false;
+    sp = ep + 1;
+  }
+  
+  if (sp == StringRef::npos || s.find_first_not_of("0123456789", sp) != StringRef::npos)
+    return false;
+
+  if (s.slice(sp, StringRef::npos).getAsInteger(10, addr[3]))
+    return false;
+  
+  return true;
 }
