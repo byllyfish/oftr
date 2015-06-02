@@ -17,6 +17,16 @@ TEST(ipv4address, paddedTest) {
 
   EXPECT_TRUE(addr.valid());
   EXPECT_EQ("127.0.90.9", addr.toString());
+
+  EXPECT_TRUE(addr.parse("001.002.003.0004"));
+  EXPECT_EQ("1.2.3.4", addr.toString());
+
+  EXPECT_TRUE(addr.parse("00.00002.003.000"));
+  EXPECT_EQ("0.2.3.0", addr.toString());
+
+  EXPECT_TRUE(addr.parse("000000.00000.0000.000"));
+  EXPECT_EQ("0.0.0.0", addr.toString());
+  EXPECT_FALSE(addr.valid());
 }
 
 TEST(ipv4address, mask) {
@@ -102,6 +112,7 @@ TEST(ipv4address, invalid) {
   EXPECT_FALSE(addr.parse("1.2.3.4."));
   EXPECT_FALSE(addr.parse(".1.2.3"));
   EXPECT_FALSE(addr.parse("1.2.3.4.5"));
+  EXPECT_FALSE(addr.parse("1.2..4"));
   EXPECT_FALSE(addr.parse("a.b.c.d"));
   EXPECT_FALSE(addr.parse("1.2.3.256"));
   EXPECT_FALSE(addr.parse("256.2.3.4"));

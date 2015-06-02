@@ -85,14 +85,9 @@ bool IPv6Address::parseIPv6Address(const std::string &s) {
 }
 
 bool IPv6Address::parseIPv4Address(const std::string &s) {
-  std::error_code err;
-  auto addr4 = asio::ip::address_v4::from_string(s, err);
-  if (!err) {
-    auto a = addr4.to_bytes();
-    std::memcpy(&addr_[12], a.data(), 4);
-    addr_[10] = 0xFF;
-    addr_[11] = 0xFF;
-    std::memset(addr_.data(), 0, 10);
+  IPv4Address addr;
+  if (addr.parse(s)) {
+    *this = IPv6Address(addr);
     return true;
   }
   return false;
