@@ -59,7 +59,7 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
     UInt32 bufferCount;
     UInt8 tableCount;
     UInt8 auxiliaryId;
-    OFPCapabilitiesFlags capabilities;
+    OFPCapabilitiesFlags capabilities = OFPC_NONE;
     OFPActionTypeFlags actions;
 
     io.mapRequired("datapath_id", dpid);

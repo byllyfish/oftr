@@ -21,8 +21,7 @@ msg:
 template <>
 struct MappingTraits<ofp::SetConfig> {
   static void mapping(IO &io, ofp::SetConfig &msg) {
-    ofp::OFPConfigFlags flags = msg.flags_;
-    io.mapRequired("flags", flags);
+    io.mapRequired("flags", msg.flags_);
     io.mapRequired("miss_send_len", msg.missSendLen_);
   }
 };
@@ -30,9 +29,7 @@ struct MappingTraits<ofp::SetConfig> {
 template <>
 struct MappingTraits<ofp::SetConfigBuilder> {
   static void mapping(IO &io, ofp::SetConfigBuilder &msg) {
-    ofp::OFPConfigFlags flags;
-    io.mapRequired("flags", flags);
-    msg.setFlags(flags);
+    io.mapRequired("flags", msg.msg_.flags_);
     io.mapRequired("miss_send_len", msg.msg_.missSendLen_);
   }
 };

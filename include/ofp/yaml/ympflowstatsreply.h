@@ -21,8 +21,7 @@ struct MappingTraits<ofp::MPFlowStatsReply> {
     io.mapRequired("priority", msg.priority_);
     io.mapRequired("idle_timeout", msg.idleTimeout_);
     io.mapRequired("hard_timeout", msg.hardTimeout_);
-    OFPFlowModFlags flags = msg.flags();
-    io.mapRequired("flags", flags);
+    io.mapRequired("flags", msg.flags_);
     io.mapRequired("cookie", msg.cookie_);
     io.mapRequired("packet_count", msg.packetCount_);
     io.mapRequired("byte_count", msg.byteCount_);
@@ -44,9 +43,7 @@ struct MappingTraits<ofp::MPFlowStatsReplyBuilder> {
     io.mapRequired("priority", msg.msg_.priority_);
     io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
     io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);
-    ofp::OFPFlowModFlags flags;
-    io.mapRequired("flags", flags);
-    msg.setFlags(flags);
+    io.mapRequired("flags", msg.msg_.flags_);
     io.mapRequired("cookie", msg.msg_.cookie_);
     io.mapRequired("packet_count", msg.msg_.packetCount_);
     io.mapRequired("byte_count", msg.msg_.byteCount_);

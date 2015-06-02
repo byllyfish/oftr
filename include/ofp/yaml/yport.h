@@ -74,14 +74,8 @@ struct MappingTraits<ofp::PortBuilder> {
     io.mapRequired("port_no", msg.msg_.portNo_);
     io.mapRequired("hw_addr", msg.msg_.hwAddr_);
     io.mapRequired("name", msg.msg_.name_);
-
-    OFPPortConfigFlags config;
-    io.mapRequired("config", config);
-    msg.setConfig(config);
-
-    //OFPPortStateFlags state;
+    io.mapRequired("config", msg.msg_.config_);
     io.mapRequired("state", msg.msg_.state_);
-    //msg.setState(state);
 
     PortPropertyEthernet eth;
     io.mapRequired("ethernet", eth);  // FIXME(bfish) - make optional...
