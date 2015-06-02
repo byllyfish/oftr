@@ -93,9 +93,7 @@ struct SequenceTraits<ofp::detail::RoleStatusPropertyRange> {
 
   static iterator begin(IO &io, ofp::detail::RoleStatusPropertyRange &range) {
     ofp::PropertyRange props = Ref_cast<ofp::PropertyRange>(range);
-    auto it = ofp::detail::RoleStatusPropertyIterator{props.begin()};
-    skip(it, end(io, range));
-    return it;
+    return ofp::detail::RoleStatusPropertyIterator{props.begin()};
   }
 
   static iterator end(IO &io, ofp::detail::RoleStatusPropertyRange &range) {
@@ -105,15 +103,6 @@ struct SequenceTraits<ofp::detail::RoleStatusPropertyRange> {
 
   static void next(iterator &iter, iterator iterEnd) {
     ++iter;
-    skip(iter, iterEnd);
-  }
-
-  static void skip(iterator &iter, iterator iterEnd) {
-    for (; iter < iterEnd; ++iter) {
-      ofp::UInt16 type = iter->type();
-      if (type >= ofp::OFPRPT_UNUSED_MIN)
-        break;
-    }
   }
 };
 

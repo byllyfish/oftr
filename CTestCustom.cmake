@@ -10,9 +10,9 @@ set(CTEST_CUSTOM_MEMCHECK_IGNORE
 	python_json
 )
 
-# If PyYaml module is not installed, ignore the python_yaml test.
+# If PyYaml module is not installed, ignore the libofp-annotate test.
 
 if(NOT "@PY_YAML_FOUND@" MATCHES "TRUE")
-    message("Ignoring python_yaml test.")
-    set(CTEST_CUSTOM_TESTS_IGNORE python_yaml)
+    message("Ignoring libofp-annotate test.")
+    set(CTEST_CUSTOM_TESTS_IGNORE "libofp-annotate")
 endif(NOT "@PY_YAML_FOUND@" MATCHES "TRUE")

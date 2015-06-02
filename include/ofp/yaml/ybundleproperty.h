@@ -92,9 +92,7 @@ struct SequenceTraits<ofp::detail::BundlePropertyRange> {
 
   static iterator begin(IO &io, ofp::detail::BundlePropertyRange &range) {
     ofp::PropertyRange props = Ref_cast<ofp::PropertyRange>(range);
-    auto it = ofp::detail::BundlePropertyIterator{props.begin()};
-    skip(it, end(io, range));
-    return it;
+    return ofp::detail::BundlePropertyIterator{props.begin()};
   }
 
   static iterator end(IO &io, ofp::detail::BundlePropertyRange &range) {
@@ -104,15 +102,6 @@ struct SequenceTraits<ofp::detail::BundlePropertyRange> {
 
   static void next(iterator &iter, iterator iterEnd) {
     ++iter;
-    skip(iter, iterEnd);
-  }
-
-  static void skip(iterator &iter, iterator iterEnd) {
-    for (; iter < iterEnd; ++iter) {
-      ofp::UInt16 type = iter->type();
-      if (type >= ofp::OFPBPT_UNUSED_MIN)
-        break;
-    }
   }
 };
 

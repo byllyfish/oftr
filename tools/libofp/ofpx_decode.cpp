@@ -441,9 +441,8 @@ void Decode::setCurrentFilename(const std::string &filename) {
 
   if (!filename.empty() && useFindx_) {
     // When we are using '.findx' files, parse the filename to obtain
-    // information
-    // about the session, so we can set up the `sessionInfo_` structure with
-    // source and destination information.
+    // information about the session, so we can set up the `sessionInfo_` 
+    // structure with source and destination information.
     hasSessionInfo_ = parseFilename(filename, &sessionInfo_);
   } else {
     hasSessionInfo_ = false;

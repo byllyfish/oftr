@@ -1,11 +1,37 @@
 = BUGS
 
+== OpenFlow Protocol
+
+=== Missing Support
+
+* Version 1.1
+** OFPMP_TABLE multipart reply message
+
+* Version 1.2
+** OFPMP_TABLE multipart reply message
+
+* Version 1.4
+** OFPT_TABLE_MOD message
+** OFPT_TABLE_STATUS message
+** OFPT_GET_ASYNC_REPLY message
+** OFPMP_TABLE_DESC multipart request and reply
+** OFPMP_QUEUE_DESC multipart request and reply
+
+== Security
+
+* The source code has not been inspected for input validation security vulnerabilities, including buffer overruns.
+
+* There are no sandbox mechanisms in place yet (e.g. seccomp-bpf)
+
+* TLS verification just checks the authenticity of the peer certificate chain against the provided *verifier* certificate. This assumes that the *verifier* certificate is a private authority. There is *no* checking of the subject name, host names, or addresses in the peer certificate (see Identity::tls_verify_callback in the source code).
+
+* DTLS cookies are not supported.
+
+== Miscellaneous
 
 * 64-bit integers are sent 'as is' when using JSON. This assumes the JSON deocder supports 64-bit unsigned integers. There is no provision for encoding them in strings for compatibility with JavaScript, which does not support integers >= 2^53.
 
 * There is currently no DNS support for host endpoints. All connections must use IP addresses.
 
-* TLS verification just checks the authenticity of the peer certificate chain against the provided *verifier* certificate. This assumes that the *verifier* certificate is a private authority. There is *no* checking of the subject name, host names, or addresses in the peer certificate (see Identity::tls_verify_callback).
 
-* DTLS cookies are not supported by BoringSSL.
 
