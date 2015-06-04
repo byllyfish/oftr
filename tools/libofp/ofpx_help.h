@@ -52,7 +52,8 @@ class Help : public Subprogram {
   void listSchemas(const std::string &type);
   void printSchema(const std::string &key);
 
-  void dumpSchemas();
+  void dumpSchemaNames();
+  void dumpSchemaAll();
 
   static const char *translateFieldType(const char *type);
 
@@ -65,7 +66,8 @@ class Help : public Subprogram {
   cl::opt<bool> multipart_{"multipart",
                            cl::desc("List supported multipart types.")};
   cl::opt<bool> enums_{"enums", cl::desc("List supported enumerated types.")};
-  cl::opt<bool> dump_{"dump", cl::desc("List all schema names.")};
+  cl::opt<bool> schemaNames_{"schema-names", cl::desc("List all schema names.")};
+  cl::opt<bool> schemaAll_{"schema-all", cl::desc("List complete schema.")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
 
   // --- Argument Aliases ---

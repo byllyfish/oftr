@@ -66,7 +66,7 @@ void Schema::printValue(std::ostream &os, unsigned indent) const {
   os << val;
 }
 
-void Schema::init(const char *const schema) {
+void Schema::init(const char *schema) {
   // Split first line from the rest.
   auto p = llvm::StringRef{schema}.split('\n');
 
@@ -100,6 +100,37 @@ std::string Schema::MakeSchemaString(const char *const name,
   }
 
   return std::string(name) + "\n" + result + "\n";
+}
+
+std::string Schema::MakeFlagSchemaString(const char *name, const std::string &values, size_t size) {
+  llvm::SmallVector<llvm::StringRef, 25> vals;
+  llvm::StringRef{values}.split(vals, ",");
+
+  std::vector<llvm::StringRef> words;
+  for (auto val : vals) {
+    if (!val.ltrim().startswith("'0x"))
+      words.push_back(val.trim());
+  }
+
+  // Sometimes `name` will be formatted as "type/name=VAL1,VAL2,...,VALN". Check
+  // for this syntax and include the extra values in the list. This is used
+  // to include values that consist of multiple masked bits.
+  llvm::StringRef key;
+  llvm::StringRef extraValues;
+  std::tie(key, extraValues) = llvm::StringRef{name}.split('=');
+
+  if (!extraValues.empty()) {
+    vals.clear();
+    llvm::StringRef{extraValues}.split(vals, ",");
+    for (auto val : vals) {
+      words.push_back(val.trim());
+    }
+  }
+
+  std::string result = stringJoin(words, " | ");
+  result += " | '" + unsignedTypeEnum(size) + "'";
+
+  return std::string(key) + "\n" + result + "\n";
 }
 
 // Compare two strings case insensitively skipping non-alphanumeric chars.

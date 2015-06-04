@@ -108,6 +108,25 @@ static SchemaPair kMixedSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen"},
 };
 
+static SchemaPair kFlagSchemas[] = {
+  {ofp::yaml::MakeFlagSchema<ofp::OFPFlowModFlags>, "Flag/FlowModFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPActionTypeFlags>, "Flag/ActionTypeFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPCapabilitiesFlags>, "Flag/CapabilitiesFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPConfigFlags>, "Flag/ConfigFlags=FRAG_NORMAL,FRAG_DROP,FRAG_REASM"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPPortFeaturesFlags>, "Flag/PortFeaturesFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPOpticalPortFeaturesFlags>, "Flag/OpticalPortFeaturesFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPPortConfigFlags>, "Flag/PortConfigFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPPortStateFlags>, "Flag/PortStateFlags=STP_LISTEN,STP_LEARN,STP_FORWARD"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPMultipartFlags>, "Flag/MultipartFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPMeterConfigFlags>, "Flag/MeterConfigFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPPacketInFlags>, "Flag/PacketInFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPPortStatusFlags>, "Flag/PortStatusFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPFlowRemovedFlags>, "Flag/FlowRemovedFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPRoleStatusFlags>, "Flag/RoleStatusFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPTableStatusFlags>, "Flag/TableStatusFlags"},
+  {ofp::yaml::MakeFlagSchema<ofp::OFPRequestForwardFlags>, "Flag/RequestForwardFlags"},
+};
+
 // Translate "BigNN" to "UIntNN" for documentation purposes.
 static std::pair<const char *, const char *> sFieldTypeMap[] = {
     {"Big8", "UInt8"},
@@ -134,8 +153,10 @@ int Help::run(int argc, const char *const *argv) {
     listSchemas("Action");
   } else if (enums_) {
     listSchemas("Enum");
-  } else if (dump_) {
-    dumpSchemas();
+  } else if (schemaAll_) {
+    dumpSchemaAll();
+  } else if (schemaNames_) {
+    dumpSchemaNames();
   } else if (!args_.empty()) {
     for (auto &arg : args_) {
       printSchema(arg);
@@ -170,6 +191,10 @@ void Help::loadSchemas() {
   }
 
   for (auto &p : kMixedSchemas) {
+    schemas_.emplace_back(new Schema{p.first(p.second)});
+  }
+
+  for (auto &p : kFlagSchemas) {
     schemas_.emplace_back(new Schema{p.first(p.second)});
   }
 }
@@ -258,9 +283,16 @@ void Help::printSchema(const std::string &key) {
 }
 
 /// Print out the type/name for each schema.
-void Help::dumpSchemas() {
+void Help::dumpSchemaNames() {
   for (auto &schema : schemas_) {
     std::cout << schema->type().lower() << '/' << schema->name() << '\n';
+  }
+}
+
+/// Print out each schema.
+void Help::dumpSchemaAll() {
+  for (auto &schema : schemas_) {
+    schema->print(std::cout);
   }
 }
 
