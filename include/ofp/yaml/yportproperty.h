@@ -22,6 +22,13 @@ struct PortPropertyList {};
 namespace llvm {
 namespace yaml {
 
+const char *const kExperimenterPropertySchema = R"""({Property/ExperimenterProperty}
+property: 'EXPERIMENTER'
+experimenter: UInt32
+exp_type: UInt32
+data: HexString
+)""";
+
 template <>
 struct MappingTraits<ofp::PortPropertyEthernet> {
   static void mapping(IO &io, ofp::PortPropertyEthernet &prop) {
@@ -54,14 +61,14 @@ struct MappingTraits<ofp::PortPropertyOptical> {
     io.mapRequired("supported", supported);
     prop.setSupported(supported);
 
-    io.mapRequired("txMinFreqLmda", prop.txMinFreqLmda_);
-    io.mapRequired("txMaxFreqLmda", prop.txMaxFreqLmda_);
-    io.mapRequired("txGridFreqLmda", prop.txGridFreqLmda_);
-    io.mapRequired("rxMinFreqLmda", prop.rxMinFreqLmda_);
-    io.mapRequired("rxMaxFreqLmda", prop.rxMaxFreqLmda_);
-    io.mapRequired("rxGridFreqLmda", prop.rxGridFreqLmda_);
-    io.mapRequired("txPwrMin", prop.txPwrMin_);
-    io.mapRequired("txPwrMax", prop.txPwrMax_);
+    io.mapRequired("tx_min_freq_lmda", prop.txMinFreqLmda_);
+    io.mapRequired("tx_max_freq_lmda", prop.txMaxFreqLmda_);
+    io.mapRequired("tx_grid_freq_lmda", prop.txGridFreqLmda_);
+    io.mapRequired("rx_min_freq_lmda", prop.rxMinFreqLmda_);
+    io.mapRequired("rx_max_freq_lmda", prop.rxMaxFreqLmda_);
+    io.mapRequired("rx_grid_freq_lmda", prop.rxGridFreqLmda_);
+    io.mapRequired("tx_pwr_min", prop.txPwrMin_);
+    io.mapRequired("tx_pwr_max", prop.txPwrMax_);
   }
 };
 

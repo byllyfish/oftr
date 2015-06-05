@@ -19,18 +19,31 @@ struct PortInserter {};
 namespace llvm {
 namespace yaml {
 
-// <Port> :=
-//   port_no: <UInt32>         { Required }
-//   hw_addr: <EnetAddress>    { Required }
-//   name: <Str15>             { Required }
-//   config: <UInt32>          { Required }
-//   state: <UInt32>           { Required }
-//   curr: <UInt32>            { Required }
-//   advertised: <UInt32>      { Required }
-//   supported: <UInt32>       { Required }
-//   peer: <UInt32>            { Required }
-//   curr_speed: <UInt32>      { Required }
-//   max_speed: <UInt32>       { Required }
+const char *const kPortSchema = R"""({Struct/Port}
+port_no: PortNumber
+hw_addr: EnetAddress
+name: Str15
+config: PortConfigFlags
+state: PortStateFlags
+ethernet:
+  curr: PortFeaturesFlags
+  advertised: PortFeaturesFlags
+  supported: PortFeaturesFlags
+  peer: PortFeaturesFlags
+  curr_speed: UInt32
+  max_speed: UInt32
+optical:                                  # Optional
+  supported: OpticalPortFeaturesFlags
+  tx_min_freq_lmda: UInt32
+  tx_max_freq_lmda: UInt32
+  tx_grid_freq_lmda: UInt32
+  rx_min_freq_lmda: UInt32
+  rx_max_freq_lmda: UInt32
+  rx_grid_freq_lmda: UInt32
+  tx_pwr_min: UInt16
+  tx_pwr_max: UInt16
+properties: [{ExperimenterProperty}]
+)""";
 
 template <>
 struct MappingTraits<ofp::Port> {

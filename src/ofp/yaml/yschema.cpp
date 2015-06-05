@@ -1,6 +1,7 @@
 // Copyright 2015-present Bill Fisher. All rights reserved.
 
 #include "ofp/yaml/yschema.h"
+#include "ofp/log.h"
 #include <sstream>
 
 using namespace ofp::yaml;
@@ -44,7 +45,7 @@ std::set<std::string> Schema::dependsOnSchemas() const {
 }
 
 void Schema::print(std::ostream &os) const {
-  os << name().str() << " ::= ";
+  os << type() << '/' << name().str() << " ::= ";
   if (isObject_) {
     os << '\n';
     printValue(os, 2);

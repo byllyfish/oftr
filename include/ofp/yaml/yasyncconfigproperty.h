@@ -23,6 +23,13 @@ struct AsyncConfigPropertyList {};
 namespace llvm {
 namespace yaml {
 
+const char *const kAsyncConfigExperimenterPropertySchema = R"""({Property/AsyncConfigExperimenterProperty}
+property: 'EXPERIMENTER_SLAVE' | 'EXPERIMENTER_MASTER'
+experimenter: UInt32
+exp_type: UInt32
+data: HexString
+)""";
+
 template <>
 struct MappingTraits<ofp::detail::AsyncConfigPropertyItem> {
   static void mapping(IO &io, ofp::detail::AsyncConfigPropertyItem &item) {

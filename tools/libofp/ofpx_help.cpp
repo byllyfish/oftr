@@ -85,6 +85,17 @@ static const char *const kActionSchemas[] = {
     llvm::yaml::kExperimenterActionSchema,
 };
 
+static const char *const kStructSchemas[] = {
+  llvm::yaml::kBucketSchema,
+  llvm::yaml::kPortSchema, 
+  llvm::yaml::kQueueSchema,
+};
+
+static const char *const kPropertySchemas[] = {
+  llvm::yaml::kExperimenterPropertySchema,
+  llvm::yaml::kAsyncConfigExperimenterPropertySchema,
+};
+
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
 static SchemaPair kEnumSchemas[] = {
@@ -183,6 +194,14 @@ void Help::loadSchemas() {
   }
 
   for (auto &schema : kActionSchemas) {
+    schemas_.emplace_back(new Schema{schema});
+  }
+
+  for (auto &schema : kStructSchemas) {
+    schemas_.emplace_back(new Schema{schema});
+  }
+
+  for (auto &schema : kPropertySchemas) {
     schemas_.emplace_back(new Schema{schema});
   }
 

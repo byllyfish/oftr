@@ -18,6 +18,13 @@ struct BucketInserter {};
 namespace llvm {
 namespace yaml {
 
+const char *const kBucketSchema = R"""({Struct/Bucket}
+weight: UInt16
+watch_port: PortNumber
+watch_group: UInt32
+actions: [{Action}]
+)""";
+
 template <>
 struct MappingTraits<ofp::detail::BucketInserter> {
   static void mapping(IO &io, ofp::detail::BucketInserter &inserter) {

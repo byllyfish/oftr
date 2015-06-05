@@ -16,7 +16,15 @@ msg:
   hw_addr: EnetAddress
   config: PortConfigFlags
   mask: PortConfigFlags
-  advertise: PortFeaturesFlags
+  ethernet:
+    advertise: PortFeaturesFlags
+  optical:
+    configure: OpticalPortFeaturesFlags
+    freq_lmda: UInt32
+    fl_offset: SInt32
+    grid_span: UInt32
+    tx_pwr: UInt32
+  properties: [{ExperimenterProperty}]
 )""";
 
 template <>

@@ -16,6 +16,14 @@ struct QueueInserter {};
 namespace llvm {
 namespace yaml {
 
+const char *const kQueueSchema = R"""({Struct/Queue}
+queue_id: UInt32
+port: PortNumber
+min_rate: UInt16
+max_rate: UInt16
+properties: [{ExperimenterProperty}]
+)""";
+
 // <Queue> := {
 //   queue_id: <UInt32>                 #required
 //   port: <UInt32>                     #required
