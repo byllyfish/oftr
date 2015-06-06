@@ -16,7 +16,6 @@ static bool errorFound(llvm::yaml::IO &io) {
 RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,
                        yaml::Encoder::ChannelFinder finder)
     : conn_{conn}, errorStream_{error_}, finder_{finder} {
-
   // Check if input string is possibly a JSON/YAML quoted string.
   std::string rawInput;
   if (!input.empty() && input[0] == '"') {
@@ -32,12 +31,13 @@ RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,
     }
   }
 
-  // If there's any rawInput, use that value. Otherwise decode the original 
+  // If there's any rawInput, use that value. Otherwise decode the original
   // input.
 
   const std::string &inputText = rawInput.empty() ? input : rawInput;
 
-  llvm::yaml::Input yin{inputText, nullptr, RpcEncoder::diagnosticHandler, this};
+  llvm::yaml::Input yin{inputText, nullptr, RpcEncoder::diagnosticHandler,
+                        this};
   if (!yin.error()) {
     yin >> *this;
   }
@@ -138,7 +138,6 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
   }
 }
-
 
 void RpcEncoder::replyError() {
   // Error string will be empty if there's no content.

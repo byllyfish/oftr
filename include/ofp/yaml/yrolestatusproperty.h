@@ -101,9 +101,7 @@ struct SequenceTraits<ofp::detail::RoleStatusPropertyRange> {
     return ofp::detail::RoleStatusPropertyIterator{props.end()};
   }
 
-  static void next(iterator &iter, iterator iterEnd) {
-    ++iter;
-  }
+  static void next(iterator &iter, iterator iterEnd) { ++iter; }
 };
 
 template <>

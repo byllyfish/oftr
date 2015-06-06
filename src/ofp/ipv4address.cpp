@@ -63,17 +63,17 @@ bool IPv4Address::parse(const std::string &s) {
   int result = inet_pton(AF_INET, s.c_str(), addr_.data());
 
 #if !defined(NDEBUG) && defined(LIBOFP_TARGET_DARWIN)
-    // Force consistency testing of alternate_parse on Mac OS X.
-    ArrayType temp;
-    bool alt_result = alternateParse(s, temp);
-    assert((result > 0) == alt_result);
-    if (result > 0) {
-      assert(temp == addr_);
-    }
+  // Force consistency testing of alternate_parse on Mac OS X.
+  ArrayType temp;
+  bool alt_result = alternateParse(s, temp);
+  assert((result > 0) == alt_result);
+  if (result > 0) {
+    assert(temp == addr_);
+  }
 #endif
 
   if (result == 0) {
-    // inet_pton() on Linux does not accept zero-padded IPv4 addresses like 
+    // inet_pton() on Linux does not accept zero-padded IPv4 addresses like
     // "127.000.000.001", which is accepted by the BSD implementation. Padded
     // IPv4 addresses are the default output format for tools like `tcpflow`.
     return alternateParse(s, addr_);
@@ -99,18 +99,19 @@ static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr) {
 
   for (unsigned i = 0; i < 3; ++i) {
     size_t ep = s.find_first_not_of("0123456789", sp);
-    if (ep == StringRef::npos || s[ep] != '.') 
+    if (ep == StringRef::npos || s[ep] != '.')
       return false;
     if (s.slice(sp, ep).getAsInteger(10, addr[i]))
       return false;
     sp = ep + 1;
   }
-  
-  if (sp == StringRef::npos || s.find_first_not_of("0123456789", sp) != StringRef::npos)
+
+  if (sp == StringRef::npos ||
+      s.find_first_not_of("0123456789", sp) != StringRef::npos)
     return false;
 
   if (s.slice(sp, StringRef::npos).getAsInteger(10, addr[3]))
     return false;
-  
+
   return true;
 }

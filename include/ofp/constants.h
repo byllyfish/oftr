@@ -61,57 +61,35 @@ enum : UInt8 {
 enum { OFPMT_STANDARD = 0, OFPMT_OXM = 1 };
 
 enum OFPType : UInt8 {
-  // Symmetric messages. Use OFPT_EXPERIMENTER in place of OFPT_VENDOR for
-  // earlier versions of the protocol.
   OFPT_HELLO = 0,
   OFPT_ERROR = 1,
   OFPT_ECHO_REQUEST = 2,
   OFPT_ECHO_REPLY = 3,
-  OFPT_EXPERIMENTER = 4,
-
-  // Switch configuration messages.
+  OFPT_EXPERIMENTER = 4,  // Use instead of OFPT_VENDOR
   OFPT_FEATURES_REQUEST = 5,
   OFPT_FEATURES_REPLY = 6,
   OFPT_GET_CONFIG_REQUEST = 7,
   OFPT_GET_CONFIG_REPLY = 8,
   OFPT_SET_CONFIG = 9,
-
-  // Asynchronous messages from Switch.
   OFPT_PACKET_IN = 10,
   OFPT_FLOW_REMOVED = 11,
   OFPT_PORT_STATUS = 12,
-
-  // Controller command messages.
   OFPT_PACKET_OUT = 13,
   OFPT_FLOW_MOD = 14,
   OFPT_GROUP_MOD = 15,  // Min: 1.1
   OFPT_PORT_MOD = 16,
-  OFPT_TABLE_MOD = 17,  // Min: 1.1
-
-  // Multipart messages. Use OFPT_MULTIPART_REQUEST in place of
-  // OFPT_STATS_REQUEST and OFPT_MULTIPART_REPLY in place of OFPT_STATS_REPLY
-  // for earlier versions of the protocol.
-  OFPT_MULTIPART_REQUEST = 18,
-  OFPT_MULTIPART_REPLY = 19,
-
-  // Barrier messages.
+  OFPT_TABLE_MOD = 17,          // Min: 1.1
+  OFPT_MULTIPART_REQUEST = 18,  // Use instead of OFPT_STATS_REQUEST
+  OFPT_MULTIPART_REPLY = 19,    // Use instead of OFPT_STATS_REPLY
   OFPT_BARRIER_REQUEST = 20,
   OFPT_BARRIER_REPLY = 21,
-
-  // Queue Configuration messages.
   OFPT_QUEUE_GET_CONFIG_REQUEST = 22,
   OFPT_QUEUE_GET_CONFIG_REPLY = 23,
-
-  // Controller role change request messages.
-  OFPT_ROLE_REQUEST = 24,  // Min: 1.2
-  OFPT_ROLE_REPLY = 25,    // Min: 1.2
-
-  // Asynchronous message configuration messages.
-  OFPT_GET_ASYNC_REQUEST = 26,  // Min: 1.3
-  OFPT_GET_ASYNC_REPLY = 27,    // Min: 1.3
-  OFPT_SET_ASYNC = 28,          // Min: 1.3
-
-  // Meters and rate limiters configuration messages.
+  OFPT_ROLE_REQUEST = 24,        // Min: 1.2
+  OFPT_ROLE_REPLY = 25,          // Min: 1.2
+  OFPT_GET_ASYNC_REQUEST = 26,   // Min: 1.3
+  OFPT_GET_ASYNC_REPLY = 27,     // Min: 1.3
+  OFPT_SET_ASYNC = 28,           // Min: 1.3
   OFPT_METER_MOD = 29,           // Min: 1.3
   OFPT_ROLE_STATUS = 30,         // Min: 1.4
   OFPT_TABLE_STATUS = 31,        // Min: 1.4
@@ -282,69 +260,25 @@ enum OFPGroupNo : UInt32 {
 };
 
 enum OFPMultipartType : UInt16 {
-  // Description of this OpenFlow switch.
-  // The request body is empty.
-  // The reply body is struct ofp_desc.
   OFPMP_DESC = 0,
-  // Individual flow statistics.
-  // The request body is struct ofp_flow_stats_request.
-  // The reply body is an array of struct ofp_flow_stats.
   OFPMP_FLOW = 1,
-  // Aggregate flow statistics.
-  // The request body is struct ofp_aggregate_stats_request.
-  // The reply body is struct ofp_aggregate_stats_reply.
   OFPMP_AGGREGATE = 2,
-  // Flow table statistics.
-  // The request body is empty.
-  // The reply body is an array of struct ofp_table_stats.
   OFPMP_TABLE = 3,
-  // Port statistics.
-  // The request body is struct ofp_port_stats_request.
-  // The reply body is an array of struct ofp_port_stats.
   OFPMP_PORT_STATS = 4,
-  // Queue statistics for a port
-  // The request body is struct ofp_queue_stats_request.
-  // The reply body is an array of struct ofp_queue_stats
   OFPMP_QUEUE = 5,
-  // Group counter statistics.
-  // The request body is struct ofp_group_stats_request.
-  // The reply is an array of struct ofp_group_stats.
   OFPMP_GROUP = 6,
-  // Group description.
-  // The request body is empty.
-  // The reply body is an array of struct ofp_group_desc.
   OFPMP_GROUP_DESC = 7,
-  // Group features.
-  // The request body is empty.
-  // The reply body is struct ofp_group_features.
   OFPMP_GROUP_FEATURES = 8,
-  // Meter statistics.
-  // The request body is struct ofp_meter_multipart_requests.
-  // The reply body is an array of struct ofp_meter_stats.
   OFPMP_METER = 9,
-  // Meter configuration.
-  // The request body is struct ofp_meter_multipart_requests.
-  // The reply body is an array of struct ofp_meter_config.
   OFPMP_METER_CONFIG = 10,
-  // Meter features.
-  // The request body is empty.
-  // The reply body is struct ofp_meter_features.
   OFPMP_METER_FEATURES = 11,
-  // Table features.
-  // The request body is either empty or contains an array of
-  // struct ofp_table_features containing the controller's
-  // desired view of the switch. If the switch is unable to
-  // set the specified view an error is returned.
-  // The reply body is an array of struct ofp_table_features.
   OFPMP_TABLE_FEATURES = 12,
-  // Port description.
-  // The request body is empty.
-  // The reply body is an array of struct ofp_port.
   OFPMP_PORT_DESC = 13,
   OFPMP_TABLE_DESC = 14,
   OFPMP_QUEUE_DESC = 15,
   OFPMP_FLOW_MONITOR = 16,
 
+  OFPMP_UNSUPPORTED = 0xf9f9,
   OFPMP_EXPERIMENTER = 0xffff
 };
 

@@ -86,14 +86,13 @@ static const char *const kActionSchemas[] = {
 };
 
 static const char *const kStructSchemas[] = {
-  llvm::yaml::kBucketSchema,
-  llvm::yaml::kPortSchema, 
-  llvm::yaml::kQueueSchema,
+    llvm::yaml::kBucketSchema, llvm::yaml::kPortSchema,
+    llvm::yaml::kQueueSchema,
 };
 
 static const char *const kPropertySchemas[] = {
-  llvm::yaml::kExperimenterPropertySchema,
-  llvm::yaml::kAsyncConfigExperimenterPropertySchema,
+    llvm::yaml::kExperimenterPropertySchema,
+    llvm::yaml::kAsyncConfigExperimenterPropertySchema,
 };
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
@@ -120,22 +119,35 @@ static SchemaPair kMixedSchemas[] = {
 };
 
 static SchemaPair kFlagSchemas[] = {
-  {ofp::yaml::MakeFlagSchema<ofp::OFPFlowModFlags>, "Flag/FlowModFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPActionTypeFlags>, "Flag/ActionTypeFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPCapabilitiesFlags>, "Flag/CapabilitiesFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPConfigFlags>, "Flag/ConfigFlags=FRAG_NORMAL,FRAG_DROP,FRAG_REASM"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPPortFeaturesFlags>, "Flag/PortFeaturesFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPOpticalPortFeaturesFlags>, "Flag/OpticalPortFeaturesFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPPortConfigFlags>, "Flag/PortConfigFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPPortStateFlags>, "Flag/PortStateFlags=STP_LISTEN,STP_LEARN,STP_FORWARD"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPMultipartFlags>, "Flag/MultipartFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPMeterConfigFlags>, "Flag/MeterConfigFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPPacketInFlags>, "Flag/PacketInFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPPortStatusFlags>, "Flag/PortStatusFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPFlowRemovedFlags>, "Flag/FlowRemovedFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPRoleStatusFlags>, "Flag/RoleStatusFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPTableStatusFlags>, "Flag/TableStatusFlags"},
-  {ofp::yaml::MakeFlagSchema<ofp::OFPRequestForwardFlags>, "Flag/RequestForwardFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPFlowModFlags>, "Flag/FlowModFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPActionTypeFlags>,
+     "Flag/ActionTypeFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPCapabilitiesFlags>,
+     "Flag/CapabilitiesFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPConfigFlags>,
+     "Flag/ConfigFlags=FRAG_NORMAL,FRAG_DROP,FRAG_REASM"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPPortFeaturesFlags>,
+     "Flag/PortFeaturesFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPOpticalPortFeaturesFlags>,
+     "Flag/OpticalPortFeaturesFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPPortConfigFlags>,
+     "Flag/PortConfigFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPPortStateFlags>,
+     "Flag/PortStateFlags=STP_LISTEN,STP_LEARN,STP_FORWARD"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPMultipartFlags>, "Flag/MultipartFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPMeterConfigFlags>,
+     "Flag/MeterConfigFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPPacketInFlags>, "Flag/PacketInFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPPortStatusFlags>,
+     "Flag/PortStatusFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPFlowRemovedFlags>,
+     "Flag/FlowRemovedFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPRoleStatusFlags>,
+     "Flag/RoleStatusFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPTableStatusFlags>,
+     "Flag/TableStatusFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPRequestForwardFlags>,
+     "Flag/RequestForwardFlags"},
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.

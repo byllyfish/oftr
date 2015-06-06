@@ -41,7 +41,9 @@ class Schema {
       const char *name, const std::vector<llvm::StringRef> &values,
       size_t size);
 
-  static std::string MakeFlagSchemaString(const char *name, const std::string &values, size_t size);
+  static std::string MakeFlagSchemaString(const char *name,
+                                          const std::string &values,
+                                          size_t size);
 
   template <class Type>
   friend std::string MakeSchema(const char *name);

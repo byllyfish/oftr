@@ -55,7 +55,7 @@ bool IPv6Endpoint::parse(const std::string &s) {
       // Input contains the port number only.
       addrStr = "";
       portStr = input;
-    
+
     } else {
       assert(input[lastSeparator] == ':' || input[lastSeparator] == '.');
       addrStr = input.substr(0, lastSeparator).rtrim();

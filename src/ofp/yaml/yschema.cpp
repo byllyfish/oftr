@@ -1,8 +1,8 @@
 // Copyright 2015-present Bill Fisher. All rights reserved.
 
 #include "ofp/yaml/yschema.h"
-#include "ofp/log.h"
 #include <sstream>
+#include "ofp/log.h"
 
 using namespace ofp::yaml;
 
@@ -103,7 +103,9 @@ std::string Schema::MakeSchemaString(const char *const name,
   return std::string(name) + "\n" + result + "\n";
 }
 
-std::string Schema::MakeFlagSchemaString(const char *name, const std::string &values, size_t size) {
+std::string Schema::MakeFlagSchemaString(const char *name,
+                                         const std::string &values,
+                                         size_t size) {
   llvm::SmallVector<llvm::StringRef, 25> vals;
   llvm::StringRef{values}.split(vals, ",");
 

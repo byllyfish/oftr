@@ -100,9 +100,7 @@ struct SequenceTraits<ofp::detail::BundlePropertyRange> {
     return ofp::detail::BundlePropertyIterator{props.end()};
   }
 
-  static void next(iterator &iter, iterator iterEnd) {
-    ++iter;
-  }
+  static void next(iterator &iter, iterator iterEnd) { ++iter; }
 };
 
 template <>

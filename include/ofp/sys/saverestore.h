@@ -3,6 +3,9 @@
 #ifndef OFP_SYS_SAVERESTORE_H_
 #define OFP_SYS_SAVERESTORE_H_
 
+namespace ofp {
+namespace sys {
+
 OFP_BEGIN_IGNORE_PADDING
 
 // RAII Utility class to prevent modification while iterating. (Not thread-safe)
@@ -20,5 +23,8 @@ class SaveRestore {
 };
 
 OFP_END_IGNORE_PADDING
+
+}  // namespace sys
+}  // namespace ofp
 
 #endif  // OFP_SYS_SAVERESTORE_H_

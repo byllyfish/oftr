@@ -11,13 +11,13 @@
 namespace llvm {
 namespace yaml {
 
-template<typename T>
-typename std::enable_if<has_ScalarBitSetTraits<T>::value,void>::type
-yamlize(IO &io, ofp::Big<T> &Val, bool) {
+template <typename T>
+typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
+    IO &io, ofp::Big<T> &Val, bool) {
   bool DoClear;
-  if ( io.beginBitSetScalar(DoClear) ) {
+  if (io.beginBitSetScalar(DoClear)) {
     T value = Val;
-    if ( DoClear )
+    if (DoClear)
       value = static_cast<T>(0);
     ScalarBitSetTraits<T>::bitset(io, value);
     Val = value;
@@ -347,7 +347,6 @@ struct ScalarBitSetTraits<ofp::OFPRequestForwardFlags> {
     io.bitSetCaseOther(value, ofp::OFPRFRF_OTHER_REQUESTFORWARD_FLAGS);
   }
 };
-
 
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1
