@@ -107,16 +107,33 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
   // finder to locate the channel for the given datapathID so we can set the
   // correct protocol version and possibly override the xid.
 
-  outputChannel_ = finder_(datapathId_, connId_);
-  if (outputChannel_) {
+  if (finder_) {
+    // If there's a datapath or connId specified, look up the channel.
+    outputChannel_ = finder_(datapathId_, connId_);
+    if (!outputChannel_) {
+      io.setError("unable to locate datapath connection");
+      return;
+    }
     // Channel version will override any version specified by input.
     header_.setVersion(outputChannel_->version());
     if (header_.xid() == 0) {
       header_.setXid(outputChannel_->nextXid());
     }
+
   } else if (!header_.version()) {
-    // If version is still unset, set it to the default version.
+    // If version is unset, set it to the default version. N.B. The `Hello`
+    // message type can infer its version number from its contents.
+    if (!defaultVersion_ && header_.type() != Hello::type()) {
+      io.setError("unspecified protocol version");
+      return;
+    }
     header_.setVersion(defaultVersion_);
+  }
+
+  // Make sure the message type is supported for this version number.
+  if (!header_.validateVersionAndType()) {
+    io.setError("invalid combination of version and type");
+    return;
   }
 
   // Set the version and xid for the memory channel.
@@ -204,13 +221,27 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     }
     case MultipartRequest::type(): {
       MultipartRequestBuilder multi{channel_.version()};
-      io.mapRequired("msg", multi);
+      if (subtype_ != OFPMP_UNSUPPORTED) {
+        multi.setRequestType(subtype_);
+        multi.setRequestFlags(flags_);
+        llvm::yaml::MappingTraits<MultipartRequestBuilder>::encode(io, multi, subtype_, "msg");
+      } else {
+        // This supports the older YAML input format for MultipartRequest.
+        io.mapRequired("msg", multi);
+      }
       multi.send(&channel_);
       break;
     }
     case MultipartReply::type(): {
       MultipartReplyBuilder multi{channel_.version()};
-      io.mapRequired("msg", multi);
+      if (subtype_ != OFPMP_UNSUPPORTED) {
+        multi.setReplyType(subtype_);
+        multi.setReplyFlags(flags_);
+        llvm::yaml::MappingTraits<MultipartReplyBuilder>::encode(io, multi, subtype_, "msg");
+      } else {
+        // This supports the older YAML input format for MultipartReply.
+        io.mapRequired("msg", multi);
+      }
       multi.send(&channel_);
       break;
     }
@@ -335,11 +366,6 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
                 static_cast<int>(header_.type()));
       break;
   }
-}
-
-Channel *Encoder::NullChannelFinder(const DatapathID &datapathId,
-                                    UInt64 connId) {
-  return nullptr;
 }
 
 void ofp::yaml::EncodeRecursively(llvm::yaml::IO &io, const char *key,

@@ -66,6 +66,8 @@ class Message {
   Timestamp time() const { return time_; }
   const MessageInfo *info() const { return info_; }
   OFPType type() const { return header()->type(); }
+  OFPMultipartType subtype() const;
+  OFPMultipartFlags flags() const;
   Channel *source() const;
   UInt32 xid() const { return header()->xid(); }
   UInt8 version() const { return header()->version(); }

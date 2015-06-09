@@ -8,6 +8,24 @@
 #include "ofp/yaml/ycontext.h"
 #include "ofp/byteorder.h"
 
+namespace ofp {
+namespace yaml {
+
+OFP_BEGIN_IGNORE_PADDING
+
+struct MessageType {
+    OFPType type;
+    OFPMultipartType subtype;
+
+    MessageType() : type{OFPT_UNSUPPORTED}, subtype{OFPMP_UNSUPPORTED} {}
+    explicit MessageType(OFPType t, OFPMultipartType mt) : type{t}, subtype{mt} {}
+};
+
+OFP_END_IGNORE_PADDING
+
+}  // namespace yaml
+}  // namespace ofp
+
 namespace llvm {
 namespace yaml {
 
@@ -96,6 +114,44 @@ struct ScalarTraits<ofp::OFPErrorCode> {
       return "";
     }
     return "Invalid enumerated constant.";
+  }
+
+  static bool mustQuote(StringRef) { return false; }
+};
+
+
+template <>
+struct ScalarTraits<ofp::yaml::MessageType> {
+
+  static void output(const ofp::yaml::MessageType &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    if (value.type == ofp::OFPT_MULTIPART_REQUEST) {
+      out << "REQUEST.";
+      ScalarTraits<ofp::OFPMultipartType>::output(value.subtype, ctxt, out);
+
+    } else if (value.type == ofp::OFPT_MULTIPART_REPLY) {
+      out << "REPLY.";
+      ScalarTraits<ofp::OFPMultipartType>::output(value.subtype, ctxt, out);
+
+    } else {
+      ScalarTraits<ofp::OFPType>::output(value.type, ctxt, out);
+    }
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::yaml::MessageType &value) {
+    if (scalar.startswith_lower("request.")) {
+      value.type = ofp::OFPT_MULTIPART_REQUEST;
+      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(8), ctxt, value.subtype);
+
+    } else if (scalar.startswith_lower("reply.")) {
+      value.type = ofp::OFPT_MULTIPART_REPLY;
+      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(6), ctxt, value.subtype);
+
+    } else {
+      value.subtype = ofp::OFPMP_UNSUPPORTED;
+      return ScalarTraits<ofp::OFPType>::input(scalar, ctxt, value.type);
+    }
   }
 
   static bool mustQuote(StringRef) { return false; }

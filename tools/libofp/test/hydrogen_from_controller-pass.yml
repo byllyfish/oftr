@@ -353,42 +353,36 @@ version:         0x01
 msg:             
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.EXPERIMENTER
+flags:           [  ]
 xid:             0x3609080B
 version:         0x01
 msg:             
-  type:            EXPERIMENTER
-  flags:           [  ]
-  body:            
-    experimenter:    0x00002320
-    exp_type:        0x00000000
-    data:            00000000FFFF0000FF000000
+  experimenter:    0x00002320
+  exp_type:        0x00000000
+  data:            00000000FFFF0000FF000000
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.DESC
+flags:           [  ]
 xid:             0x3609080C
 version:         0x01
 msg:             
-  type:            DESC
-  flags:           [  ]
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x3609080D
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.TABLE
+flags:           [  ]
 xid:             0x3609080E
 version:         0x01
 msg:             
-  type:            TABLE
-  flags:           [  ]
 ...
 ---
 type:            PACKET_OUT
@@ -521,14 +515,12 @@ msg:
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x36090819
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...
 ---
 type:            PACKET_OUT
@@ -622,34 +614,29 @@ msg:
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.EXPERIMENTER
+flags:           [  ]
 xid:             0x36090821
 version:         0x01
 msg:             
-  type:            EXPERIMENTER
-  flags:           [  ]
-  body:            
-    experimenter:    0x00002320
-    exp_type:        0x00000000
-    data:            00000000FFFF0000FF000000
+  experimenter:    0x00002320
+  exp_type:        0x00000000
+  data:            00000000FFFF0000FF000000
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x36090822
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.TABLE
+flags:           [  ]
 xid:             0x36090823
 version:         0x01
 msg:             
-  type:            TABLE
-  flags:           [  ]
 ...
 ---
 type:            ECHO_REPLY
@@ -659,14 +646,12 @@ msg:
   data:            ''
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x36090824
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...
 ---
 type:            ECHO_REPLY
@@ -676,34 +661,29 @@ msg:
   data:            ''
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.EXPERIMENTER
+flags:           [  ]
 xid:             0x36090825
 version:         0x01
 msg:             
-  type:            EXPERIMENTER
-  flags:           [  ]
-  body:            
-    experimenter:    0x00002320
-    exp_type:        0x00000000
-    data:            00000000FFFF0000FF000000
+  experimenter:    0x00002320
+  exp_type:        0x00000000
+  data:            00000000FFFF0000FF000000
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x36090826
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.TABLE
+flags:           [  ]
 xid:             0x36090827
 version:         0x01
 msg:             
-  type:            TABLE
-  flags:           [  ]
 ...
 ---
 type:            ECHO_REPLY
@@ -713,14 +693,12 @@ msg:
   data:            ''
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x36090828
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...
 ---
 type:            PACKET_OUT
@@ -762,34 +740,29 @@ msg:
   data:            0180C200000E00000000000188CC02070400000000000104020731060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C31404F467C30303A30303A30303A30303A30303A30303A30303A30310000
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.EXPERIMENTER
+flags:           [  ]
 xid:             0x3609082C
 version:         0x01
 msg:             
-  type:            EXPERIMENTER
-  flags:           [  ]
-  body:            
-    experimenter:    0x00002320
-    exp_type:        0x00000000
-    data:            00000000FFFF0000FF000000
+  experimenter:    0x00002320
+  exp_type:        0x00000000
+  data:            00000000FFFF0000FF000000
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x3609082D
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.TABLE
+flags:           [  ]
 xid:             0x3609082E
 version:         0x01
 msg:             
-  type:            TABLE
-  flags:           [  ]
 ...
 ---
 type:            ECHO_REPLY
@@ -799,12 +772,10 @@ msg:
   data:            ''
 ...
 ---
-type:            MULTIPART_REQUEST
+type:            REQUEST.PORT_STATS
+flags:           [  ]
 xid:             0x3609082F
 version:         0x01
 msg:             
-  type:            PORT_STATS
-  flags:           [  ]
-  body:            
-    port_no:         ANY
+  port_no:         ANY
 ...

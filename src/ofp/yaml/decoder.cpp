@@ -71,6 +71,15 @@ inline bool decode(llvm::yaml::IO &io, const Message *msg) {
   return true;
 }
 
+template <class MsgType>
+inline bool decodeMultipart(llvm::yaml::IO &io, const Message *msg) {
+  const MsgType *m = MsgType::cast(msg);
+  if (m == nullptr)
+    return false;
+  llvm::yaml::MappingTraits<MsgType>::decode(io, RemoveConst_cast(*m), msg->subtype(), "msg");
+  return true;
+}
+
 bool Decoder::decodeMsg(llvm::yaml::IO &io) {
   switch (msg_->type()) {
     case Hello::type():
@@ -94,9 +103,9 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
     case GetConfigReply::type():
       return decode<GetConfigReply>(io, msg_);
     case MultipartRequest::type():
-      return decode<MultipartRequest>(io, msg_);
+      return decodeMultipart<MultipartRequest>(io, msg_);
     case MultipartReply::type():
-      return decode<MultipartReply>(io, msg_);
+      return decodeMultipart<MultipartReply>(io, msg_);
     case BarrierRequest::type():
       return decode<BarrierRequest>(io, msg_);
     case BarrierReply::type():

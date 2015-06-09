@@ -405,7 +405,8 @@ bool Input::MapHNode::isValidKey(StringRef Key) {
 }
 
 void Input::setError(const Twine &Message) {
-  this->setError(CurrentNode, Message);
+  if (CurrentNode)
+    this->setError(CurrentNode, Message);
 }
 
 bool Input::canElideEmptySequence() {

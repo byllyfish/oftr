@@ -6,6 +6,89 @@
 using namespace ofp;
 using ofp::yaml::Encoder;
 
+TEST(encoderfail, unknownType) {
+  const char *input = R"""(
+    version: 1
+    type: FEATURE_REQUEST
+    msg:
+      data: '1234'
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:3:11: error: Invalid enumerated constant.\n    type: FEATURE_REQUEST\n          ^~~~~~~~~~~~~~~\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());   
+}
+
+TEST(encoderfail, unknownVersion) {
+  const char *input = R"""(
+    type: FEATURES_REQUEST
+    msg:
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:2:5: error: unspecified protocol version\n    type: FEATURES_REQUEST\n    ^\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());   
+}
+
+TEST(encoderfail, unknownKey) {
+  const char *input = R"""(
+    version: 1
+    type: FEATURES_REQUEST
+    foo: '1234'
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:4:10: error: unknown key 'foo'\n    foo: '1234'\n         ^~~~~~\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());   
+}
+
+TEST(encoderfail, unknownMultipartRequest) {
+  const char *input = R"""(
+    type: REQUEST.DES
+    version: 1
+    msg:
+      data: '1234'
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:2:11: error: Invalid enumerated constant.\n    type: REQUEST.DES\n          ^~~~~~~~~~~\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());   
+}
+
+TEST(encoderfail, unknownMultipartReply) {
+  const char *input = R"""(
+    type: REPLY.DES
+    version: 1
+    msg:
+      data: '1234'
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:2:11: error: Invalid enumerated constant.\n    type: REPLY.DES\n          ^~~~~~~~~\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());   
+}
+
+TEST(encoderfail, invalidVersionAndType) {
+  const char *input = R"""(
+    type: ROLE_REQUEST
+    version: 1
+    msg:
+      role: 0
+      generation_id: 0
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:2:5: error: invalid combination of version and type\n    type: ROLE_REQUEST\n    ^\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());   
+}
+
+
 TEST(encoderfail, unknownOXM) {
   const char *input = R"""(
       type:            FLOW_MOD

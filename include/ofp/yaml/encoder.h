@@ -25,7 +25,7 @@ class Encoder {
   explicit Encoder(ChannelFinder finder);
   Encoder(const std::string &input, bool matchPrereqsChecked = true,
           int lineNumber = 0, UInt8 defaultVersion = 0,
-          ChannelFinder finder = NullChannelFinder);
+          ChannelFinder finder = nullptr);
 
   const UInt8 *data() const { return channel_.data(); }
   size_t size() const { return channel_.size(); }
@@ -49,6 +49,8 @@ class Encoder {
   UInt64 connId_ = 0;
   DatapathID datapathId_;
   Header header_;
+  OFPMultipartType subtype_ = OFPMP_UNSUPPORTED;
+  OFPMultipartFlags flags_ = OFPMPF_NONE;
   ChannelFinder finder_;
   Channel *outputChannel_ = nullptr;
   int lineNumber_ = 0;
@@ -62,9 +64,6 @@ class Encoder {
   void addDiagnostic(const llvm::SMDiagnostic &d);
 
   void encodeMsg(llvm::yaml::IO &io);
-
-  static Channel *NullChannelFinder(const DatapathID &datapathId,
-                                    UInt64 connId);
 
   friend struct llvm::yaml::MappingTraits<ofp::yaml::Encoder>;
   friend void EncodeRecursively(llvm::yaml::IO &io, const char *key,
@@ -88,30 +87,23 @@ struct MappingTraits<ofp::yaml::Encoder> {
     header.setType(OFPT_UNSUPPORTED);
 
     io.mapOptional("version", header.version_);
-    io.mapRequired("type", header.type_);
-    io.mapOptional("xid", header.xid_);
 
+    ofp::yaml::MessageType msgType;
+    io.mapRequired("type", msgType);
+    header.setType(msgType.type);
+    encoder.subtype_ = msgType.subtype;
+
+    io.mapOptional("xid", header.xid_);
     io.mapOptional("conn_id", encoder.connId_, UInt64{});
     io.mapOptional("datapath_id", encoder.datapathId_, DatapathID{});
 
     UInt8 defaultAuxId = 0;
     io.mapOptional("auxiliary_id", encoder.auxiliaryId_, defaultAuxId);
+    io.mapOptional("flags", encoder.flags_, OFPMPF_NONE);
 
-    encoder.encodeMsg(io);
-  }
-
-  static StringRef validate(IO &io, ofp::yaml::Encoder &encoder) {
-    if (encoder.header_.type() == ofp::OFPT_UNSUPPORTED) {
-      return "";
+    if (header.type() != OFPT_UNSUPPORTED) {
+      encoder.encodeMsg(io);
     }
-    if (encoder.header_.version() == 0 &&
-        encoder.header_.type() != ofp::OFPT_HELLO) {
-      return "protocol version unspecified";
-    }
-    if (!encoder.header_.validateVersionAndType()) {
-      return "invalid combination of version and type";
-    }
-    return "";
   }
 };
 
