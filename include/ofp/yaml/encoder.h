@@ -34,7 +34,8 @@ class Encoder {
   const DatapathID &datapathId() const { return datapathId_; }
   UInt8 auxiliaryId() const { return auxiliaryId_; }
   Channel *outputChannel() const { return outputChannel_; }
-
+  llvm::yaml::Input *io() const { return io_; }
+  
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
   const std::string &error() {
@@ -46,6 +47,7 @@ class Encoder {
   MemoryChannel channel_;
   std::string error_;
   llvm::raw_string_ostream errorStream_;
+  llvm::yaml::Input *io_ = nullptr;
   UInt64 connId_ = 0;
   DatapathID datapathId_;
   Header header_;

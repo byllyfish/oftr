@@ -15,7 +15,7 @@ TEST(encoderfail, unknownType) {
     )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:3:11: error: Invalid enumerated constant.\n    type: FEATURE_REQUEST\n          ^~~~~~~~~~~~~~~\n", encoder.error());
+  EXPECT_EQ("YAML:3:11: error: unknown value \"FEATURE_REQUEST\" Did you mean \"FEATURES_REQUEST\"?\n    type: FEATURE_REQUEST\n          ^~~~~~~~~~~~~~~\n", encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());   
 }
@@ -54,7 +54,7 @@ TEST(encoderfail, unknownMultipartRequest) {
     )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:2:11: error: Invalid enumerated constant.\n    type: REQUEST.DES\n          ^~~~~~~~~~~\n", encoder.error());
+  EXPECT_EQ("YAML:2:11: error: unknown value \"DES\" Did you mean \"DESC\"?\n    type: REQUEST.DES\n          ^~~~~~~~~~~\n", encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());   
 }
@@ -68,7 +68,7 @@ TEST(encoderfail, unknownMultipartReply) {
     )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:2:11: error: Invalid enumerated constant.\n    type: REPLY.DES\n          ^~~~~~~~~\n", encoder.error());
+  EXPECT_EQ("YAML:2:11: error: unknown value \"DES\" Did you mean \"DESC\"?\n    type: REPLY.DES\n          ^~~~~~~~~\n", encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());   
 }
@@ -86,6 +86,23 @@ TEST(encoderfail, invalidVersionAndType) {
   EXPECT_EQ("YAML:2:5: error: invalid combination of version and type\n    type: ROLE_REQUEST\n    ^\n", encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());   
+}
+
+
+TEST(encoderfail, unknownTypeRequestForward) {
+  const char *input = R"""(
+    type: REQUESTFORWARD
+    version: 5
+    msg:
+      type: FOO_REQUEST
+      version: 1
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:5:13: error: unknown value \"FOO_REQUEST\" Did you mean \"ECHO_REQUEST\"?\n      type: FOO_REQUEST\n            ^~~~~~~~~~~\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());   
+
 }
 
 

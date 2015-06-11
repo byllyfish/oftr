@@ -63,9 +63,11 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
       matchPrereqsChecked_{matchPrereqsChecked} {
   detail::YamlContext ctxt{this};
   llvm::yaml::Input yin{input, &ctxt, Encoder::diagnosticHandler, &ctxt};
+  io_ = &yin;
   if (!yin.error()) {
     yin >> *this;
   }
+  io_ = nullptr;
 
   if (yin.error()) {
     // Make sure error string is set. There won't be an error string if the

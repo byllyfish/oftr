@@ -41,7 +41,7 @@ bool ofp::yaml::GetIncludePktMatchFromContext(llvm::yaml::IO &io) {
   return false;
 }
 
-ofp::yaml::Encoder *ofp::yaml::detail::YamlContext::GetEncoder(void *context) {
+ofp::yaml::Encoder *YamlContext::GetEncoder(void *context) {
   YamlContext *ctxt = reinterpret_cast<YamlContext *>(context);
   if (ctxt) {
     assert(ctxt->validate());

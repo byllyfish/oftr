@@ -7,6 +7,7 @@
 #include "ofp/yaml/enumconverter.h"
 #include "ofp/yaml/ycontext.h"
 #include "ofp/byteorder.h"
+#include "ofp/yaml/seterror.h"
 
 namespace ofp {
 namespace yaml {
@@ -29,6 +30,7 @@ OFP_END_IGNORE_PADDING
 namespace llvm {
 namespace yaml {
 
+// Support ScalarBitSetTraits for Big<Enum> types.
 template <typename T>
 typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
     IO &io, ofp::Big<T> &Val, bool) {
@@ -57,10 +59,9 @@ typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
       }                                                                     \
     }                                                                       \
     static StringRef input(StringRef scalar, void *ctxt, EnumType &value) { \
-      if (converter.convert(scalar, &value)) {                              \
+      if (converter.convert(scalar, &value))                                \
         return "";                                                          \
-      }                                                                     \
-      return "Invalid enumerated constant.";                                \
+      return ofp::yaml::SetEnumError(ctxt, scalar, converter.listAll());    \
     }                                                                       \
     static bool mustQuote(StringRef) { return false; }                      \
   };
@@ -113,7 +114,7 @@ struct ScalarTraits<ofp::OFPErrorCode> {
       value = static_cast<ofp::OFPErrorCode>(value | ofp::OFPEC_UNKNOWN_FLAG);
       return "";
     }
-    return "Invalid enumerated constant.";
+    return ofp::yaml::SetEnumError(ctxt, scalar, converter.listAll());
   }
 
   static bool mustQuote(StringRef) { return false; }
