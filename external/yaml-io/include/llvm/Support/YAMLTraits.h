@@ -547,6 +547,7 @@ public:
   virtual bool bitSetMatch(const char*, bool) = 0;
   virtual void endBitSetScalar() = 0;
   virtual bool bitSetMatchOther(uint32_t &) = 0;
+  virtual StringRef bitSetCaseUnmatched() = 0;
 
   virtual void scalarString(StringRef &, bool) = 0;
   virtual void scalarJson(StringRef) {}
@@ -1118,6 +1119,7 @@ private:
   bool bitSetMatch(const char *, bool ) override;
   void endBitSetScalar() override;
   bool bitSetMatchOther(uint32_t &) override;
+  StringRef bitSetCaseUnmatched() override;
   void scalarString(StringRef &, bool) override;
   void setError(const Twine &message) override;
   bool canElideEmptySequence() override;
@@ -1247,6 +1249,7 @@ public:
   bool bitSetMatch(const char *, bool ) override;
   void endBitSetScalar() override;
   bool bitSetMatchOther(uint32_t &) override;
+  StringRef bitSetCaseUnmatched() override;
   void scalarString(StringRef &, bool) override;
   void setError(const Twine &message) override;
   bool canElideEmptySequence() override;

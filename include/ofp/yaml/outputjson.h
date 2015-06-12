@@ -45,6 +45,7 @@ class OutputJson : public llvm::yaml::IO {
   bool bitSetMatch(const char *Str, bool) override;
   void endBitSetScalar() override;
   bool bitSetMatchOther(uint32_t &) override;
+  llvm::StringRef bitSetCaseUnmatched() override;
 
   void scalarString(llvm::StringRef &S, bool) override;
   void scalarJson(llvm::StringRef s) override { output(s); }

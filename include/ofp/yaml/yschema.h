@@ -64,13 +64,7 @@ std::string MakeSchema(const char *name) {
 
 template <class Type>
 std::string MakeFlagSchema(const char *name) {
-  std::string result;
-  llvm::raw_string_ostream rs{result};
-  llvm::yaml::Output out{rs};
-  Type val;
-  std::memset(&val, 0xFF, sizeof(val));
-  llvm::yaml::ScalarBitSetTraits<Type>::bitset(out, val);
-  return Schema::MakeFlagSchemaString(name, rs.str(), sizeof(Type));
+  return Schema::MakeFlagSchemaString(name, AllFlags<Type>(), sizeof(Type));
 }
 
 }  // namespace yaml

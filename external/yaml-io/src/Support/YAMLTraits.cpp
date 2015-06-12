@@ -319,6 +319,22 @@ bool Input::bitSetMatchOther(uint32_t &Val) {
   return false;
 }
 
+StringRef Input::bitSetCaseUnmatched() {
+  if (EC)
+    return "";
+  SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode);
+  if (!SQ)
+    return "";
+  assert(BitValuesUsed.size() == SQ->Entries.size());
+  for (unsigned i = 0; i < SQ->Entries.size(); ++i) {
+    if (!BitValuesUsed[i]) {
+      if (ScalarHNode *SN = dyn_cast<ScalarHNode>(SQ->Entries[i].get()))
+        return SN->value();
+    }
+  }
+  return "";
+}
+
 void Input::scalarString(StringRef &S, bool) {
   if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
     S = SN->value();
@@ -593,6 +609,10 @@ bool Output::bitSetMatchOther(uint32_t &Val) {
     NeedBitValueComma = true;
   }
   return false;
+}
+
+StringRef Output::bitSetCaseUnmatched() {
+  return "";
 }
 
 void Output::scalarString(StringRef &S, bool MustQuote) {

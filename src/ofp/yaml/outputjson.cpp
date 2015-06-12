@@ -142,6 +142,10 @@ bool OutputJson::bitSetMatchOther(uint32_t &Val) {
   return false;
 }
 
+StringRef OutputJson::bitSetCaseUnmatched() {
+  return "";
+}
+
 // Return offset of next unsafe character -- either a control character, \ or ".
 static StringRef::size_type findUnsafe(const StringRef &s,
                                        StringRef::size_type pos) {

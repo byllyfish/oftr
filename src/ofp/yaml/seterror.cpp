@@ -35,3 +35,17 @@ llvm::StringRef ofp::yaml::SetEnumError(void *ctxt, llvm::StringRef name, const 
     }
     return "";
 }
+
+
+void ofp::yaml::SetFlagError(llvm::yaml::IO &io, llvm::StringRef name, const std::string &schema) {
+    llvm::SmallVector<llvm::StringRef, 25> vals;
+    llvm::StringRef{schema}.split(vals, ",");
+
+    std::vector<llvm::StringRef> words;
+    for (auto val : vals) {
+    if (!val.ltrim().startswith("'0x"))
+      words.push_back(val.trim());
+    }
+
+    io.setError("unknown value \"" + name + "\". Did you mean \"" + closestValue(name, words) + "\"?");
+}

@@ -88,7 +88,6 @@ TEST(encoderfail, invalidVersionAndType) {
   EXPECT_HEX("", encoder.data(), encoder.size());   
 }
 
-
 TEST(encoderfail, unknownTypeRequestForward) {
   const char *input = R"""(
     type: REQUESTFORWARD
@@ -101,10 +100,21 @@ TEST(encoderfail, unknownTypeRequestForward) {
   Encoder encoder{input};
   EXPECT_EQ("YAML:5:13: error: unknown value \"FOO_REQUEST\" Did you mean \"ECHO_REQUEST\"?\n      type: FOO_REQUEST\n            ^~~~~~~~~~~\n", encoder.error());
   EXPECT_EQ(0, encoder.size());
-  EXPECT_HEX("", encoder.data(), encoder.size());   
-
+  EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
+TEST(encoderfail, unknownFlags) {
+  const char *input = R"""(
+    type: REQUEST.DESC
+    version: 4
+    flags: [ MOR ]
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:4:14: error: unknown value \"MOR\". Did you mean \"MORE\"?\n    flags: [ MOR ]\n             ^\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());  
+}
 
 TEST(encoderfail, unknownOXM) {
   const char *input = R"""(

@@ -24,6 +24,17 @@ struct MessageType {
 
 OFP_END_IGNORE_PADDING
 
+template <class Type>
+std::string AllFlags() {
+  std::string result;
+  llvm::raw_string_ostream rs{result};
+  llvm::yaml::Output out{rs};
+  Type val;
+  std::memset(&val, 0xFF, sizeof(val));
+  llvm::yaml::ScalarBitSetTraits<Type>::bitset(out, val);
+  return rs.str();
+}
+
 }  // namespace yaml
 }  // namespace ofp
 
@@ -175,6 +186,11 @@ struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
     OFP_YAML_BITCASE(OFPFF_, NO_BYT_COUNTS);
 
     io.bitSetCaseOther(value, ofp::OFPFF_OTHER_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPFlowModFlags>());
+    }
   }
 };
 
@@ -213,6 +229,11 @@ struct ScalarBitSetTraits<ofp::OFPActionTypeFlags> {
     OFP_YAML_BITCASE(OFPATF_, POP_PBB);
 
     io.bitSetCaseOther(value, ofp::OFPATF_OTHER_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPActionTypeFlags>());
+    }
   }
 };
 
@@ -230,6 +251,11 @@ struct ScalarBitSetTraits<ofp::OFPCapabilitiesFlags> {
     OFP_YAML_BITCASE(OFPC_, PORT_BLOCKED);
 
     io.bitSetCaseOther(value, ofp::OFPC_OTHER_CAPABILITIES_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPCapabilitiesFlags>());
+    }
   }
 };
 
@@ -241,6 +267,11 @@ struct ScalarBitSetTraits<ofp::OFPConfigFlags> {
     OFP_YAML_MASKEDBITCASE(OFPC_, FRAG_REASM, OFPC_FRAG_MASK);
 
     io.bitSetCaseOther(value, ofp::OFPC_OTHER_CONFIG_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, "FRAG_NORMAL,FRAG_DROP,FRAG_REASM");
+    }
   }
 };
 
@@ -265,6 +296,11 @@ struct ScalarBitSetTraits<ofp::OFPPortFeaturesFlags> {
     OFP_YAML_BITCASE(OFPPF_, PAUSE_ASYM);
 
     io.bitSetCaseOther(value, ofp::OFPPF_OTHER_FEATURES_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPortFeaturesFlags>());
+    }
   }
 };
 
@@ -277,6 +313,11 @@ struct ScalarBitSetTraits<ofp::OFPOpticalPortFeaturesFlags> {
     OFP_YAML_BITCASE(OFPOPF_, USE_FREQ);
 
     io.bitSetCaseOther(value, ofp::OFPOPF_OTHER_FEATURES_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPOpticalPortFeaturesFlags>());
+    }
   }
 };
 
@@ -292,6 +333,11 @@ struct ScalarBitSetTraits<ofp::OFPPortConfigFlags> {
     OFP_YAML_BITCASE(OFPPC_, NO_PACKET_IN);
 
     io.bitSetCaseOther(value, ofp::OFPPC_OTHER_CONFIG_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPortConfigFlags>());
+    }
   }
 };
 
@@ -311,6 +357,15 @@ struct ScalarBitSetTraits<ofp::OFPPortStateFlags> {
     } else {
       io.bitSetCaseOther(value, ofp::OFPPS_OTHER_STATE_FLAGS);
     }
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      std::string vals = ofp::yaml::AllFlags<ofp::OFPPortStateFlags>();
+      if (ofp::yaml::GetVersionFromContext(io) <= ofp::OFP_VERSION_1) {
+        vals += "STP_LISTEN,STP_LEARN,STP_FORWARD";
+      }
+      ofp::yaml::SetFlagError(io, val, vals);
+    }
   }
 };
 
@@ -320,6 +375,11 @@ struct ScalarBitSetTraits<ofp::OFPMultipartFlags> {
     OFP_YAML_BITCASE(OFPMPF_, MORE);
 
     io.bitSetCaseOther(value, ofp::OFPMPF_OTHER_MULTIPART_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPMultipartFlags>());
+    }
   }
 };
 
@@ -332,6 +392,11 @@ struct ScalarBitSetTraits<ofp::OFPMeterConfigFlags> {
     OFP_YAML_BITCASE(OFPMF_, STATS);
 
     io.bitSetCaseOther(value, ofp::OFPMF_OTHER_METER_CONFIG_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPMeterConfigFlags>());
+    }
   }
 };
 
@@ -346,6 +411,11 @@ struct ScalarBitSetTraits<ofp::OFPPacketInFlags> {
     OFP_YAML_BITCASE(OFPRF_, PACKET_OUT);
 
     io.bitSetCaseOther(value, ofp::OFPRF_OTHER_PACKET_IN_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPacketInFlags>());
+    }
   }
 };
 
@@ -357,6 +427,11 @@ struct ScalarBitSetTraits<ofp::OFPPortStatusFlags> {
     OFP_YAML_BITCASE(OFPPRF_, MODIFY);
 
     io.bitSetCaseOther(value, ofp::OFPPRF_OTHER_PORTSTATUS_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPortStatusFlags>());
+    }
   }
 };
 
@@ -371,6 +446,11 @@ struct ScalarBitSetTraits<ofp::OFPFlowRemovedFlags> {
     OFP_YAML_BITCASE(OFPRRF_, EVICTION);
 
     io.bitSetCaseOther(value, ofp::OFPRRF_OTHER_FLOWREMOVED_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPFlowRemovedFlags>());
+    }
   }
 };
 
@@ -382,6 +462,11 @@ struct ScalarBitSetTraits<ofp::OFPRoleStatusFlags> {
     OFP_YAML_BITCASE(OFPCRRF_, EXPERIMENTER);
 
     io.bitSetCaseOther(value, ofp::OFPCRRF_OTHER_ROLESTATUS_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPRoleStatusFlags>());
+    }
   }
 };
 
@@ -392,6 +477,11 @@ struct ScalarBitSetTraits<ofp::OFPTableStatusFlags> {
     OFP_YAML_BITCASE(OFPTRF_, VACANCY_UP);
 
     io.bitSetCaseOther(value, ofp::OFPTRF_OTHER_TABLESTATUS_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPTableStatusFlags>());
+    }
   }
 };
 
@@ -402,6 +492,11 @@ struct ScalarBitSetTraits<ofp::OFPRequestForwardFlags> {
     OFP_YAML_BITCASE(OFPRFRF_, METER_MOD);
 
     io.bitSetCaseOther(value, ofp::OFPRFRF_OTHER_REQUESTFORWARD_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPRequestForwardFlags>());
+    }
   }
 };
 
