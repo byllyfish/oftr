@@ -226,7 +226,8 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       if (subtype_ != OFPMP_UNSUPPORTED) {
         multi.setRequestType(subtype_);
         multi.setRequestFlags(flags_);
-        llvm::yaml::MappingTraits<MultipartRequestBuilder>::encode(io, multi, subtype_, "msg");
+        llvm::yaml::MappingTraits<MultipartRequestBuilder>::encode(
+            io, multi, subtype_, "msg");
       } else {
         // This supports the older YAML input format for MultipartRequest.
         io.mapRequired("msg", multi);
@@ -239,7 +240,8 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       if (subtype_ != OFPMP_UNSUPPORTED) {
         multi.setReplyType(subtype_);
         multi.setReplyFlags(flags_);
-        llvm::yaml::MappingTraits<MultipartReplyBuilder>::encode(io, multi, subtype_, "msg");
+        llvm::yaml::MappingTraits<MultipartReplyBuilder>::encode(
+            io, multi, subtype_, "msg");
       } else {
         // This supports the older YAML input format for MultipartReply.
         io.mapRequired("msg", multi);

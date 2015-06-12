@@ -15,7 +15,8 @@ using namespace ofp;
 
 OFPMultipartType Message::subtype() const {
   OFPType mtype = type();
-  if ((mtype == OFPT_MULTIPART_REQUEST || mtype == OFPT_MULTIPART_REPLY) && buf_.size() >= 12) {
+  if ((mtype == OFPT_MULTIPART_REQUEST || mtype == OFPT_MULTIPART_REPLY) &&
+      buf_.size() >= 12) {
     UInt16 subtype = *Big16_cast(buf_.data() + 8);
     return static_cast<OFPMultipartType>(subtype);
   } else {
@@ -25,12 +26,13 @@ OFPMultipartType Message::subtype() const {
 
 OFPMultipartFlags Message::flags() const {
   OFPType mtype = type();
-  if ((mtype == OFPT_MULTIPART_REQUEST || mtype == OFPT_MULTIPART_REPLY) && buf_.size() >= 12) {
+  if ((mtype == OFPT_MULTIPART_REQUEST || mtype == OFPT_MULTIPART_REPLY) &&
+      buf_.size() >= 12) {
     UInt16 flags = *Big16_cast(buf_.data() + 10);
     return static_cast<OFPMultipartFlags>(flags);
   } else {
     return OFPMPF_NONE;
-  }  
+  }
 }
 
 Channel *Message::source() const {

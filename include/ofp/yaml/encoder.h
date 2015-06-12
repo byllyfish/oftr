@@ -35,7 +35,7 @@ class Encoder {
   UInt8 auxiliaryId() const { return auxiliaryId_; }
   Channel *outputChannel() const { return outputChannel_; }
   llvm::yaml::Input *io() const { return io_; }
-  
+
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
   const std::string &error() {

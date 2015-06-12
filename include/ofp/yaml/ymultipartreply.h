@@ -44,7 +44,8 @@ struct MappingTraits<ofp::MultipartReply> {
     decode(io, msg, type, "body");
   }
 
-  static void decode(IO &io, ofp::MultipartReply &msg, ofp::OFPMultipartType type, const char *key) {
+  static void decode(IO &io, ofp::MultipartReply &msg,
+                     ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
 
     switch (type) {
@@ -165,7 +166,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
     encode(io, msg, type, "body");
   }
 
-  static void encode(IO &io, ofp::MultipartReplyBuilder &msg, ofp::OFPMultipartType type, const char *key) {
+  static void encode(IO &io, ofp::MultipartReplyBuilder &msg,
+                     ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
 
     switch (type) {

@@ -42,7 +42,8 @@ struct MappingTraits<ofp::MultipartRequest> {
     decode(io, msg, type, "body");
   }
 
-  static void decode(IO &io, ofp::MultipartRequest &msg, ofp::OFPMultipartType type, const char *key) {
+  static void decode(IO &io, ofp::MultipartRequest &msg,
+                     ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
 
     switch (type) {
@@ -227,10 +228,11 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
             "MultipartRequestBuilder MappingTraits not fully implemented.");
         break;
     }
-#endif //0
+#endif  // 0
   }
 
-  static void encode(IO &io, ofp::MultipartRequestBuilder &msg, ofp::OFPMultipartType type, const char *key) {
+  static void encode(IO &io, ofp::MultipartRequestBuilder &msg,
+                     ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
 
     switch (type) {

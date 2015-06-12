@@ -76,7 +76,8 @@ inline bool decodeMultipart(llvm::yaml::IO &io, const Message *msg) {
   const MsgType *m = MsgType::cast(msg);
   if (m == nullptr)
     return false;
-  llvm::yaml::MappingTraits<MsgType>::decode(io, RemoveConst_cast(*m), msg->subtype(), "msg");
+  llvm::yaml::MappingTraits<MsgType>::decode(io, RemoveConst_cast(*m),
+                                             msg->subtype(), "msg");
   return true;
 }
 

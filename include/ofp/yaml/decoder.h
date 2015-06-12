@@ -53,10 +53,12 @@ struct MappingTraits<ofp::yaml::Decoder> {
     Header header = *decoder.msg_->header();
     assert(header.length() == decoder.msg_->size());
 
-    ofp::yaml::MessageType msgType{decoder.msg_->type(), decoder.msg_->subtype()};
+    ofp::yaml::MessageType msgType{decoder.msg_->type(),
+                                   decoder.msg_->subtype()};
     io.mapRequired("type", msgType);
 
-    if (msgType.type == OFPT_MULTIPART_REQUEST || msgType.type == OFPT_MULTIPART_REPLY) {
+    if (msgType.type == OFPT_MULTIPART_REQUEST ||
+        msgType.type == OFPT_MULTIPART_REPLY) {
       OFPMultipartFlags flags = decoder.msg_->flags();
       io.mapRequired("flags", flags);
     }

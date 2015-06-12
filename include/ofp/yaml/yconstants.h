@@ -15,11 +15,11 @@ namespace yaml {
 OFP_BEGIN_IGNORE_PADDING
 
 struct MessageType {
-    OFPType type;
-    OFPMultipartType subtype;
+  OFPType type;
+  OFPMultipartType subtype;
 
-    MessageType() : type{OFPT_UNSUPPORTED}, subtype{OFPMP_UNSUPPORTED} {}
-    explicit MessageType(OFPType t, OFPMultipartType mt) : type{t}, subtype{mt} {}
+  MessageType() : type{OFPT_UNSUPPORTED}, subtype{OFPMP_UNSUPPORTED} {}
+  explicit MessageType(OFPType t, OFPMultipartType mt) : type{t}, subtype{mt} {}
 };
 
 OFP_END_IGNORE_PADDING
@@ -131,10 +131,8 @@ struct ScalarTraits<ofp::OFPErrorCode> {
   static bool mustQuote(StringRef) { return false; }
 };
 
-
 template <>
 struct ScalarTraits<ofp::yaml::MessageType> {
-
   static void output(const ofp::yaml::MessageType &value, void *ctxt,
                      llvm::raw_ostream &out) {
     if (value.type == ofp::OFPT_MULTIPART_REQUEST) {
@@ -154,11 +152,13 @@ struct ScalarTraits<ofp::yaml::MessageType> {
                          ofp::yaml::MessageType &value) {
     if (scalar.startswith_lower("request.")) {
       value.type = ofp::OFPT_MULTIPART_REQUEST;
-      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(8), ctxt, value.subtype);
+      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(8), ctxt,
+                                                        value.subtype);
 
     } else if (scalar.startswith_lower("reply.")) {
       value.type = ofp::OFPT_MULTIPART_REPLY;
-      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(6), ctxt, value.subtype);
+      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(6), ctxt,
+                                                        value.subtype);
 
     } else {
       value.subtype = ofp::OFPMP_UNSUPPORTED;
@@ -189,7 +189,8 @@ struct ScalarBitSetTraits<ofp::OFPFlowModFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPFlowModFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPFlowModFlags>());
     }
   }
 };
@@ -232,7 +233,8 @@ struct ScalarBitSetTraits<ofp::OFPActionTypeFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPActionTypeFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPActionTypeFlags>());
     }
   }
 };
@@ -254,7 +256,8 @@ struct ScalarBitSetTraits<ofp::OFPCapabilitiesFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPCapabilitiesFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPCapabilitiesFlags>());
     }
   }
 };
@@ -299,7 +302,8 @@ struct ScalarBitSetTraits<ofp::OFPPortFeaturesFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPortFeaturesFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPPortFeaturesFlags>());
     }
   }
 };
@@ -316,7 +320,8 @@ struct ScalarBitSetTraits<ofp::OFPOpticalPortFeaturesFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPOpticalPortFeaturesFlags>());
+      ofp::yaml::SetFlagError(
+          io, val, ofp::yaml::AllFlags<ofp::OFPOpticalPortFeaturesFlags>());
     }
   }
 };
@@ -336,7 +341,8 @@ struct ScalarBitSetTraits<ofp::OFPPortConfigFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPortConfigFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPPortConfigFlags>());
     }
   }
 };
@@ -378,7 +384,8 @@ struct ScalarBitSetTraits<ofp::OFPMultipartFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPMultipartFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPMultipartFlags>());
     }
   }
 };
@@ -395,7 +402,8 @@ struct ScalarBitSetTraits<ofp::OFPMeterConfigFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPMeterConfigFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPMeterConfigFlags>());
     }
   }
 };
@@ -414,7 +422,8 @@ struct ScalarBitSetTraits<ofp::OFPPacketInFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPacketInFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPPacketInFlags>());
     }
   }
 };
@@ -430,7 +439,8 @@ struct ScalarBitSetTraits<ofp::OFPPortStatusFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPPortStatusFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPPortStatusFlags>());
     }
   }
 };
@@ -449,7 +459,8 @@ struct ScalarBitSetTraits<ofp::OFPFlowRemovedFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPFlowRemovedFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPFlowRemovedFlags>());
     }
   }
 };
@@ -465,7 +476,8 @@ struct ScalarBitSetTraits<ofp::OFPRoleStatusFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPRoleStatusFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPRoleStatusFlags>());
     }
   }
 };
@@ -480,7 +492,8 @@ struct ScalarBitSetTraits<ofp::OFPTableStatusFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPTableStatusFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPTableStatusFlags>());
     }
   }
 };
@@ -495,7 +508,8 @@ struct ScalarBitSetTraits<ofp::OFPRequestForwardFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPRequestForwardFlags>());
+      ofp::yaml::SetFlagError(
+          io, val, ofp::yaml::AllFlags<ofp::OFPRequestForwardFlags>());
     }
   }
 };
