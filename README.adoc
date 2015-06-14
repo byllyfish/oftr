@@ -1,16 +1,21 @@
-= LIBOFP: OpenFlow to YAML Converter and Microservice image:https://travis-ci.org/byllyfish/libofp.svg?branch=develop["Build Status", link="https://travis-ci.org/byllyfish/libofp"]
-:source-highlighter: pygments
+= LIBOFP: OpenFlow to YAML Converter image:https://travis-ci.org/byllyfish/libofp.svg?branch=develop["Build Status", link="https://travis-ci.org/byllyfish/libofp"]
+:icons: font
 :toc:
+ifdef::env-github[]
+:toc-placement: preamble
+endif::[]
 
 == What is Libofp?
 
-The `libofp` program translates binary OpenFlow messages to YAML and back
+The *libofp* program translates binary OpenFlow messages to YAML and back
 again. It provides a simple, uniform object syntax for directly working with the
 OpenFlow protocol programmatically.
 
 NOTE: Libofp also supports JSON natively; JSON is a valid subset of YAML 1.2.
 
-For example, the following YAML input will produce an OpenFlow 1.3 message:
+=== YAML to OpenFlow
+
+The following YAML input will produce an OpenFlow 1.3 message:
 
 [source,yaml]
 ----
@@ -30,7 +35,7 @@ msg:
 <3> YAML supports hexadecimal numbers.
 
 The YAML syntax is based on OpenFlow 1.4, but the same input
-can generate earlier protocol version messages. `libofp` is intelligent about
+can generate earlier protocol version messages. Libofp is intelligent about
 translating between OpenFlows versions. For example,
 here's a FlowMod message specified using OpenFlow 1.4 syntax, but which will 
 output a "1.0" message because version 1 is explicitly specified.
@@ -68,6 +73,8 @@ output a "1.0" message because version 1 is explicitly specified.
 <3> Flags are specified using arrays of strings.
 <4> Match field dependencies are automatically added when necessary.
 
+=== OpenFlow to YAML
+
 Given a binary OpenFlow message, `libofp` can translate it back to a human-readable
 YAML (or JSON) object. Here's the binary for an OpenFlow OFPT_ERROR message in hexadecimal:
 
@@ -94,86 +101,122 @@ msg:
 Before you build, you need a C++11 compiler, cmake and git.
 
 On Ubuntu, use apt-get to install the dependencies.
-[source,bash]
+[source,console]
 ----
-sudo apt-get -yq update
-sudo apt-get install build-essential cmake git
+$ sudo apt-get -yq update
+$ sudo apt-get install build-essential cmake git
 ----
 
 On Mac OS X, you can obtain cmake from http://cmake.org/download/.
 
 To build the software:
 
-[source,bash]
+[source,console]
 ----
-git clone --recursive https://github.com/byllyfish/libofp.git
-mkdir libofp/Build
-cd libofp/Build
-cmake ..
-make
-make test
-make install
+$ git clone --recursive https://github.com/byllyfish/libofp.git
+$ mkdir libofp/Build
+$ cd libofp/Build
+$ cmake ..
+$ make
+$ make test
+$ make install
 ----
 
 == Examples
 
 To translate a text file into binary OpenFlow messages:
 
-    libofp encode -o output.bin input.yml
+[source,console]
+----
+$ libofp encode -o output.bin input.yml
+----
 
 To translate a text file into binary OpenFlow messages, while ignoring
 sets of match fields with missing prerequisites:
 
-    libofp encode --unchecked-match -o output.bin input.yml
+[source,console]
+----
+$ libofp encode --unchecked-match -o output.bin input.yml
+----
 
 To translate a text file of compact, single line JSON objects separated by
 linefeeds:
 
-    libofp encode --json input.json
+[source,console]
+----
+$ libofp encode --json input.json
+----
 
 To decode a file of binary OpenFlow messages to YAML:
 
-    libofp decode input.bin
+[source,console]
+----
+$ libofp decode input.bin
+----
 
 To decode a file of binary OpenFlow messages to compact single-line JSON objects:
 
-    libofp decode --json "filename"
+[source,console]
+----
+$ libofp decode --json "filename"
+----
 
 To decode binary OpenFlow messages to a valid JSON array of objects:
 
-    libofp decode --json-array "filename"
+[source,console]
+----
+$ libofp decode --json-array "filename"
+----
 
 To decode binary OpenFlow messages with the additional check that the resulting
 YAML produces the same binary message when re-encoded:
 
-    libofp decode --verify-output "filename"
+[source,console]
+----
+$ libofp decode --verify-output "filename"
+----
 
 You can use `netcat` in a UNIX pipe to feed OpenFlow messages to a switch or controller:
 
-    libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
+[source,console]
+----
+$ libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
+----
 
 You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
 messages, while retaining metadata:
 
-    #!/bin/bash
-    tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
-    libofp decode --use-findx "/tmp/flow_$$/*.findx"
+[source,bash]
+----
+#!/bin/bash
+tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
+libofp decode --use-findx "/tmp/flow_$$/*.findx"
+----
 
 The `libofp help` tool provides information about the schema used for reading/writing 
 OpenFlow messages in YAML. To obtain information about the syntax for the 
 'FLOW_MOD' message:
 
-    libofp help flow_mod
+[source,console]
+----
+$ libofp help flow_mod
+----
 
 To list all supported OXM fields:
 
-    libofp help --fields
+[source,console]
+----
+$ libofp help --fields
+----
 
-`libofp` implements a JSON-RPC microservice that can operate as an OpenFlow 
+Libofp implements a JSON-RPC microservice that can operate as an OpenFlow 
 controller, agent, or both simultaneously. The JSON-RPC microservice can control
 the OpenFlow protocol over an IPC channel using asynchronous JSON events.
 
-    libofp jsonrpc
+[source,console]
+----
+$ libofp jsonrpc
+----
 
 == Features
 
