@@ -41,7 +41,7 @@ DTLS_Adapter::~DTLS_Adapter() {
 void DTLS_Adapter::setMTU(size_t mtu) {
   if (mtu > 0) {
     ::SSL_set_options(ssl_, SSL_OP_NO_QUERY_MTU);
-    ::SSL_set_mtu(ssl_, static_cast<int32_t>(mtu));
+    ::SSL_set_mtu(ssl_, UInt32_narrow_cast(mtu));
   } else {
     ::SSL_clear_options(ssl_, SSL_OP_NO_QUERY_MTU);
   }

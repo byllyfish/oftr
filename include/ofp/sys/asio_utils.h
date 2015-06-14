@@ -38,13 +38,11 @@ using EncryptedSocket = asio::ssl::stream<tcp::socket>;
 /// Convert an asio::ip::address into an ofp::IPv6Address.
 inline IPv6Address makeIPv6Address(const asio::ip::address &addr) {
   if (addr.is_v6()) {
-    asio::ip::address_v6 addr6 =
-        asio::ip::address_cast<asio::ip::address_v6>(addr);
+    asio::ip::address_v6 addr6 = addr.to_v6();
     return IPv6Address{addr6.to_bytes()};
   } else {
     assert(addr.is_v4());
-    asio::ip::address_v4 addr4 =
-        asio::ip::address_cast<asio::ip::address_v4>(addr);
+    asio::ip::address_v4 addr4 = addr.to_v4();
     IPv4Address v4{addr4.to_bytes()};
     return IPv6Address{v4};
   }

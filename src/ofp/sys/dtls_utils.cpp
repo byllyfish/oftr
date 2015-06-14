@@ -9,6 +9,7 @@ using namespace ofp::sys;
 const UInt8 kHandshakeType = 22;
 const UInt8 kClientHelloRequest = 1;
 const UInt8 kHelloVerifyRequest = 3;
+const size_t kDTLS1_HeaderLength = 13;
 
 static const char *dtlsTypeString(UInt8 type) {
   switch (type) {
@@ -80,7 +81,7 @@ size_t ofp::sys::DTLS_GetRecordLength(const void *buffer, size_t length) {
   const UInt8 *data = BytePtr(buffer);
 
   // Make sure we can read record header.
-  if (length < DTLS1_RT_HEADER_LENGTH)
+  if (length < kDTLS1_HeaderLength)
     return 0;
 
   // Check protocol version. DTLS 1.0 uses protocol version {254, 255}.
@@ -96,7 +97,7 @@ size_t ofp::sys::DTLS_GetRecordLength(const void *buffer, size_t length) {
     return 0;
 
   // Return total record length including header (if it fits in buffer).
-  size_t result = recordLen + DTLS1_RT_HEADER_LENGTH;
+  size_t result = recordLen + kDTLS1_HeaderLength;
 
   return (result > length) ? 0 : result;
 }
