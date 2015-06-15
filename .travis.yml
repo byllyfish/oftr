@@ -8,4 +8,4 @@ before_install:
 script: 
   - export CXX="g++-4.8"
   - mkdir Build && cd Build
-  - cmake .. && make && make test
+  - cmake .. && ctest -D Experimental
