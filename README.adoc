@@ -7,9 +7,7 @@ endif::[]
 
 == What is Libofp?
 
-The *libofp* program translates binary OpenFlow messages to YAML and back
-again. It provides a simple, uniform object syntax for directly working with the
-OpenFlow protocol programmatically.
+The *libofp* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML] and back again. It provides a simple, uniform object syntax for working with the OpenFlow protocol programmatically.
 
 NOTE: Libofp also supports JSON natively; JSON is a valid subset of YAML 1.2.
 
@@ -73,6 +71,8 @@ output a "1.0" message because version 1 is explicitly specified.
 <3> Flags are specified using arrays of strings.
 <4> Match field dependencies are automatically added when necessary.
 
+NOTE: There is some trickiness under the hood to let one object syntax support multiple OpenFlow versions. Later versions of OpenFlow _recycle_ some enumerated values used in version 1.0 for different purposes. Libofp automatically translates these constants between versions and maps 1.4-based actions back to their corresponding 1.0-defined actions.
+
 === OpenFlow to YAML
 
 Given a binary OpenFlow message, `libofp` can translate it back to a human-readable
@@ -124,6 +124,23 @@ $ make install
 
 == Examples
 
+Libofp is a *tool* in the unix tradition. You can use `netcat` in a pipe to feed OpenFlow messages to a switch or controller:
+
+[source,console]
+----
+$ libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
+----
+
+You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
+messages, while retaining metadata such as timestamps:
+
+[source,bash]
+----
+#!/bin/bash
+tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
+libofp decode --use-findx "/tmp/flow_$$/*.findx"
+----
+
 To translate a text file into binary OpenFlow messages:
 
 [source,console]
@@ -174,23 +191,6 @@ YAML produces the same binary message when re-encoded:
 [source,console]
 ----
 $ libofp decode --verify-output "filename"
-----
-
-You can use `netcat` in a UNIX pipe to feed OpenFlow messages to a switch or controller:
-
-[source,console]
-----
-$ libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
-----
-
-You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
-messages, while retaining metadata:
-
-[source,bash]
-----
-#!/bin/bash
-tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
-libofp decode --use-findx "/tmp/flow_$$/*.findx"
 ----
 
 The `libofp help` tool provides information about the schema used for reading/writing 
