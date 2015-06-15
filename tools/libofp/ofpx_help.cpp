@@ -32,6 +32,7 @@
 #include "ofp/yaml/yrolestatus.h"
 #include "ofp/yaml/ybundleaddmessage.h"
 #include "ofp/yaml/ybundlecontrol.h"
+#include "ofp/yaml/yrequestforward.h"
 
 using namespace ofpx;
 
@@ -58,12 +59,8 @@ static const char *const kMessageSchemas[] = {
     llvm::yaml::kGetAsyncReplySchema, llvm::yaml::kSetAsyncSchema,
     llvm::yaml::kMeterModSchema, llvm::yaml::kRoleStatusSchema,
     // llvm::yaml::kTableStatusSchema,
-    // llvm::yaml::kRequestForwardSchema,
+    llvm::yaml::kRequestForwardSchema,
     llvm::yaml::kBundleControlSchema, llvm::yaml::kBundleAddMessageSchema,
-};
-
-static const char *const kMultipartSchemas[] = {
-    llvm::yaml::kMPDescSchema,
 };
 
 static const char *const kInstructionSchemas[] = {
@@ -194,11 +191,18 @@ int Help::run(int argc, const char *const *argv) {
 
 void Help::loadSchemas() {
   for (auto &schema : kMessageSchemas) {
-    schemas_.emplace_back(new Schema{schema});
-  }
+    // If the first line in the schema is empty, split it on the empty lines
+    // into multiple schema objects.
+    if (schema[0] == '\n') {
+      llvm::SmallVector<llvm::StringRef, 25> vals;
+      llvm::StringRef{schema+1}.split(vals, "\n\n", -1, false);
+      for (auto val : vals) {
+        schemas_.emplace_back(new Schema{val});
+      }
 
-  for (auto &schema : kMultipartSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    } else {
+      schemas_.emplace_back(new Schema{schema});
+    }
   }
 
   for (auto &schema : kInstructionSchemas) {

@@ -20,12 +20,113 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kMultipartRequestSchema = R"""({Message/MultipartRequest}
-type: 'MULTIPART_REQUEST'
+const char *const kMultipartRequestSchema = R"""(
+{Message/Request.Desc}
+type: 'REQUEST.DESC'
+
+{Message/Request.Table}
+type: 'REQUEST.TABLE'
+
+{Message/Request.PortDesc}
+type: 'REQUEST.PORT_DESC'
+
+{Message/Request.GroupDesc}
+type: 'REQUEST.GROUP_DESC'
+
+{Message/Request.GroupFeatures}
+type: 'REQUEST.GROUP_FEATURES'
+
+{Message/Request.MeterFeatures}
+type: 'REQUEST.METER_FEATURES'
+
+{Message/Request.Flow}
+type: 'REQUEST.FLOW'
 msg:
-  type: <MultipartType>
-  flags: MultipartFlags
-  body: <MultipartBody>
+  table_id: TableNumber
+  out_port: PortNumber
+  out_group: GroupNumber
+  cookie: UInt64
+  cookie_mask: UInt64
+  match: [{Field}]
+
+{Message/Request.Aggregate}
+type: 'REQUEST.AGGREGATE'
+msg:
+  table_id: TableNumber
+  out_port: PortNumber
+  out_group: GroupNumber
+  cookie: UInt64
+  cookie_mask: UInt64
+  match: [{Field}]
+
+{Message/Request.PortStats}
+type: 'REQUEST.PORT_STATS'
+msg:
+  port_no: PortNumber
+
+{Message/Request.Queue}
+type: 'REQUEST.QUEUE'
+msg:
+  port_no: PortNumber
+  queue_id: UInt32
+
+{Message/Request.MeterConfig}
+type: 'REQUEST.METER_CONFIG'
+msg:
+  meter_id: UInt32
+
+{Message/Request.Meter}
+type: 'REQUEST.METER'
+msg:
+  meter_id: UInt32
+
+{Message/Request.Group}
+type: 'REQUEST.GROUP'
+msg:
+  group_id: UInt32
+
+{Message/Request.TableFeatures}
+type: 'REQUEST.TABLE_FEATURES'
+msg:
+  - table_id: TableNumber
+    name: Str31
+    metadata_match: UInt64
+    metadata_write: UInt64
+    config: UInt32
+    max_entries: UInt32
+    instructions: [InstructionID]
+    instructions_miss: [InstructionID]     # Optional; Default=[]
+    next_tables: [TableID]
+    next_tables_miss: [TableID]            # Optional; Default=[]
+    write_actions: [ActionID]
+    write_actions_miss: [ActionID]         # Optional; Default=[]
+    apply_actions: [ActionID]
+    apply_actions_miss: [ActionID]         # Optional; Default=[]
+    match: [FieldID]
+    wildcards: [FieldID]
+    write_set_field: [FieldID]
+    write_set_field_miss: [FieldID]        # Optional; Default=[]
+    apply_set_field: [FieldID]
+    apply_set_field_miss: [FieldID]        # Optional; Default=[]
+    properties:
+
+{Message/Request.FlowMonitor}
+type: 'REQUEST.FLOW_MONITOR'
+msg:
+  monitor_id: UInt32
+  out_port: PortNumber
+  out_group: UInt32
+  flags: UInt16
+  table_id: UInt8
+  command: UInt8
+  match: [{Field}]
+
+{Message/Request.Experimenter}
+type: 'REQUEST.EXPERIMENTER'
+msg:
+  experimenter: UInt32
+  exp_type: UInt32 
+  data: HexString
 )""";
 
 struct EmptyObject {};
@@ -138,97 +239,6 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
     msg.setRequestType(type);
 
     encode(io, msg, type, "body");
-
-#if 0
-    switch (type) {
-      case OFPMP_DESC:
-      case OFPMP_TABLE:
-      case OFPMP_PORT_DESC:
-      case OFPMP_GROUP_DESC:
-      case OFPMP_GROUP_FEATURES:
-      case OFPMP_METER_FEATURES:
-        // empty request body
-        break;
-      case OFPMP_FLOW:
-      case OFPMP_AGGREGATE: {
-        MPFlowStatsRequestBuilder stats;
-        io.mapRequired("body", stats);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        stats.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      case OFPMP_PORT_STATS: {
-        MPPortStatsRequestBuilder stats;
-        io.mapRequired("body", stats);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        stats.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      case OFPMP_QUEUE: {
-        MPQueueStatsRequestBuilder stats;
-        io.mapRequired("body", stats);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        stats.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      case OFPMP_METER_CONFIG: {
-        MPMeterConfigRequestBuilder stats;
-        io.mapRequired("body", stats);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        stats.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      case OFPMP_METER: {
-        MPMeterStatsRequestBuilder stats;
-        io.mapRequired("body", stats);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        stats.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      case OFPMP_GROUP: {
-        MPGroupStatsRequestBuilder stats;
-        io.mapRequired("body", stats);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        stats.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      case OFPMP_TABLE_FEATURES: {
-        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{
-            msg.version()};
-        io.mapRequired("body", seq);
-        seq.close();
-        msg.setRequestBody(seq.data(), seq.size());
-        break;
-      }
-      case OFPMP_FLOW_MONITOR: {
-        MPFlowMonitorRequestBuilder monitor;
-        io.mapRequired("body", monitor);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        monitor.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      case OFPMP_EXPERIMENTER: {
-        MPExperimenterBuilder stats;
-        io.mapRequired("body", stats);
-        MemoryChannel channel{msg.msg_.header_.version()};
-        stats.write(&channel);
-        msg.setRequestBody(channel.data(), channel.size());
-        break;
-      }
-      default:
-        // FIXME - implement the rest.
-        log::debug(
-            "MultipartRequestBuilder MappingTraits not fully implemented.");
-        break;
-    }
-#endif  // 0
   }
 
   static void encode(IO &io, ofp::MultipartRequestBuilder &msg,

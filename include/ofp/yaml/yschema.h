@@ -14,6 +14,9 @@ OFP_BEGIN_IGNORE_PADDING
 class Schema {
  public:
   explicit Schema(const std::string &schema) : buf_{schema} {
+    // Make sure schema ends with a newline.
+    if (!buf_.empty() && buf_.back() != '\n')
+      buf_.push_back('\n');
     init(buf_.c_str());
   }
 
