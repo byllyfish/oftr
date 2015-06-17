@@ -91,6 +91,7 @@ const char *toCString(OFPMultipartType type) {
     ENUMCASE(OFPMP_QUEUE_DESC);
     ENUMCASE(OFPMP_FLOW_MONITOR);
     ENUMCASE(OFPMP_EXPERIMENTER);
+    ENUMCASE(OFPMP_UNSUPPORTED);
   }
 
   return nullptr;

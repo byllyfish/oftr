@@ -150,7 +150,9 @@ void DTLS_Adapter::writeOutput() {
   while (BIO_pending(bio_) > 0) {
     UInt8 buf[1500];
     int rc = BIO_read(bio_, buf, 13);
-    assert(rc == 13);
+    if (rc != 13) {
+      log::fatal("DTLS_Adapter: Expected 13 bytes from BIO_read");
+    }
 
     size_t recordLen = (UInt32_cast(buf[11]) << 8) | UInt32_cast(buf[12]);
     assert(recordLen <= 1500 - 13);

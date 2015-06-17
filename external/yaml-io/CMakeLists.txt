@@ -68,11 +68,16 @@ check_include_file(sys/param.h HAVE_SYS_PARAM_H)
 check_include_file(signal.h HAVE_SIGNAL_H)
 check_include_file(sys/time.h HAVE_SYS_TIME_H)
 check_include_file(sys/resource.h HAVE_SYS_RESOURCE_H)
+check_include_file(malloc.h HAVE_MALLOC_H)
+check_include_file(malloc/malloc.h HAVE_MALLOC_MALLOC_H)
+check_include_file(sys/wait.h HAVE_SYS_WAIT_H)
 
 check_symbol_exists(getrusage sys/resource.h HAVE_GETRUSAGE)
 check_symbol_exists(futimens sys/stat.h HAVE_FUTIMENS)
 check_symbol_exists(futimes sys/time.h HAVE_FUTIMES)
 check_symbol_exists(getpagesize unistd.h HAVE_GETPAGESIZE)
+check_symbol_exists(mallinfo malloc.h HAVE_MALLINFO)
+check_symbol_exists(malloc_zone_statistics malloc/malloc.h HAVE_MALLOC_ZONE_STATISTICS)
 
 set(headers "sys/types.h")
 
