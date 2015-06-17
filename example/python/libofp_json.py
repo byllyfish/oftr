@@ -53,62 +53,41 @@ class LibOFP(object):
 
     def __init__(self, driverPath='/usr/local/bin/ofpx',
                        openflowAddr=('', DEFAULT_OPENFLOW_PORT),
-                       driverAddr=None,
                        listen=True):
         """
         Open a connection to the driver and prepare to receive events.
 
         openflowAddr - Address for OpenFlow driver to listen on. Specified
                     as a 2-tuple (host, port). Specify host of '' for all
-                    local addresses. Specify port of 0 for default
-                    openflow port.
-        driverAddr - Address for driver to listen on. Specified as a
-                    2-tuple (host, port). Specify None to disable YAML
-                    TCP server.
+                    local addresses.
         """
 
         self._sockInput = None
         self._sockOutput = None
-        self._sock = None
         self._process = None
-        self._openDriver(driverPath, driverAddr)
+        self._openDriver(driverPath)
 
         if listen:
             self._sendListenRequest(openflowAddr)
         self._eventGenerator = self._makeEventGenerator()
 
-    def _openDriver(self, driverPath, driverAddr):
+    def _openDriver(self, driverPath):
+        assert driverPath
 
-        if driverPath:
-            # Driver's path is specified, so launch the executable.
-            if driverAddr:
-                # We're connecting to the driver over TCP.
-                self._process = subprocess.Popen([driverPath, 'jsonrpc'])
-            else:
-                # We're not connecting over TCP, so communicate with the driver
-                # using stdin and stdout (in line mode).
-                self._process = subprocess.Popen([driverPath, 'jsonrpc'],
-                                stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        # Driver's path is specified, so launch the executable.
+        # Communicate with the driver using stdin and stdout (in line mode).
+        self._process = subprocess.Popen([driverPath, 'jsonrpc', '--loglevel=info'],
+                        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
-        if driverAddr:
-            self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self._sock.connect(driverAddr)
-            self._sockInput = self._sock.makefile()
-            self._write = self._writeToSocket
-
-        else:
-            # Our input is the other process's stdout.
-            self._sockInput = self._process.stdout
-            self._sockOutput = self._process.stdin
-            self._write = self._writeToFile
+        # Our input is the other process's stdout.
+        self._sockInput = self._process.stdout
+        self._sockOutput = self._process.stdin
 
     def __del__(self):
         if self._sockInput:
             self._sockInput.close()
         if self._sockOutput and self._sockOutput is not self._sockInput:
             self._sockOutput.close()
-        if self._sock:
-            self._sock.close()
 
     def send(self, params):
         self._call('ofp.send', id=None, **params)
@@ -121,7 +100,6 @@ class LibOFP(object):
         if not line:
             raise StopIteration()
         return json.loads(line, object_hook=_JsonObject)
-        #return self._eventGenerator.next()
 
     def _call(self, method, id=None, **params):
         rpc = {
@@ -141,10 +119,7 @@ class LibOFP(object):
         for line in iter(self._sockInput.readline, ''):
             yield json.loads(line, object_hook=_JsonObject)
 
-    def _writeToSocket(self, msg):
-        self._sock.sendall(msg)
-
-    def _writeToFile(self, msg):
+    def _write(self, msg):
         self._sockOutput.write(msg)
 
 
