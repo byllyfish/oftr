@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Version 0.2 (xx March 2015)
+Version 0.3 (18 June 2015)
 ---------------------------
 
 - First public release.
