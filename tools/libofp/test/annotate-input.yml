@@ -7,7 +7,7 @@ msg:
 version: 0x04
 type: ERROR
 msg:
-  type: OFPET_BAD_REQUEST
+  type: BAD_REQUEST
   code: OFPBRC_BAD_TYPE
   data: 'ffffffff'
 ---

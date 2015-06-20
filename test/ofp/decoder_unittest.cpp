@@ -82,7 +82,7 @@ TEST(decoder, errorv1) {
       "010100130000006200010001FFFF1234567890",
       "---\ntype:            ERROR\nxid:             "
       "0x00000062\nversion:         0x01\nmsg:             \n  type:      "
-      "      OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:    "
+      "      BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:    "
       "        "
       "FFFF1234567890\n...\n");
 }
@@ -90,7 +90,7 @@ TEST(decoder, errorv1) {
 TEST(decoder, errorv1_2) {
   testDecodeEncode(
       "01010018000000620001000101111234567890AA00010000",
-      "---\ntype:            ERROR\nxid:             0x00000062\nversion:         0x01\nmsg:             \n  type:            OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:            01111234567890AA00010000\n  _text:           'Type: OFPT_MULTIPART_REPLY.OFPMP_FLOW'\n...\n");
+      "---\ntype:            ERROR\nxid:             0x00000062\nversion:         0x01\nmsg:             \n  type:            BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:            01111234567890AA00010000\n  _text:           'Type: OFPT_MULTIPART_REPLY.OFPMP_FLOW'\n...\n");
 }
 
 TEST(decoder, echoRequest) {

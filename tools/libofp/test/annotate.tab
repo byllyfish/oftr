@@ -3,7 +3,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	HELLO.v1	msg.versions	array	False			
 1	HELLO.v1	msg.versions.0	uint8	False			
 1	ERROR.v1	msg	object	True			
-1	ERROR.v1	msg.type	OFPET_BAD_REQUEST	True			
+1	ERROR.v1	msg.type	BAD_REQUEST	True			
 1	ERROR.v1	msg.code	OFPBRC_BAD_TYPE	True			
 1	ERROR.v1	msg.data	binary	True			True
 1	ECHO_REQUEST.v1	msg	object	False	msg.data=''		
@@ -525,7 +525,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	HELLO.v2	msg.versions	array	False			
 2	HELLO.v2	msg.versions.0	uint8	False			
 2	ERROR.v2	msg	object	True			
-2	ERROR.v2	msg.type	OFPET_BAD_REQUEST	True			
+2	ERROR.v2	msg.type	BAD_REQUEST	True			
 2	ERROR.v2	msg.code	OFPBRC_BAD_TYPE	True			
 2	ERROR.v2	msg.data	binary	True			True
 2	ECHO_REQUEST.v2	msg	object	False	msg.data=''		
@@ -1047,7 +1047,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	HELLO.v3	msg.versions	array	False			
 3	HELLO.v3	msg.versions.0	uint8	False			
 3	ERROR.v3	msg	object	True			
-3	ERROR.v3	msg.type	OFPET_BAD_REQUEST	True			
+3	ERROR.v3	msg.type	BAD_REQUEST	True			
 3	ERROR.v3	msg.code	OFPBRC_BAD_TYPE	True			
 3	ERROR.v3	msg.data	binary	True			True
 3	ECHO_REQUEST.v3	msg	object	False	msg.data=''		
@@ -1569,7 +1569,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	HELLO.v4	msg.versions	array	False	msg.versions.0=4		
 4	HELLO.v4	msg.versions.0	uint8	False	msg.versions.0=4		True
 4	ERROR.v4	msg	object	True			
-4	ERROR.v4	msg.type	OFPET_BAD_REQUEST	True			
+4	ERROR.v4	msg.type	BAD_REQUEST	True			
 4	ERROR.v4	msg.code	OFPBRC_BAD_TYPE	True			
 4	ERROR.v4	msg.data	binary	True			True
 4	ECHO_REQUEST.v4	msg	object	False	msg.data=''		
@@ -2091,7 +2091,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	HELLO.v5	msg.versions	array	False	msg.versions.0=5		
 5	HELLO.v5	msg.versions.0	uint8	False	msg.versions.0=5		True
 5	ERROR.v5	msg	object	True			
-5	ERROR.v5	msg.type	OFPET_BAD_REQUEST	True			
+5	ERROR.v5	msg.type	BAD_REQUEST	True			
 5	ERROR.v5	msg.code	OFPBRC_BAD_TYPE	True			
 5	ERROR.v5	msg.data	binary	True			True
 5	ECHO_REQUEST.v5	msg	object	False	msg.data=''		

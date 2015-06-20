@@ -120,7 +120,7 @@ type: ERROR
 version: 3
 xid: 98
 msg:
-  type: OFPET_BAD_ACTION
+  type: BAD_ACTION
   code: OFPBAC_BAD_TAG
   data: 'FFFF1234567890'
 )""";
