@@ -2510,3 +2510,164 @@ TEST(encoder, bundleaddmessagev5) {
       "12345678ABCDABCD0000F1F1",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, ofmp_portdesc_replyv1) {
+  const char *input = R"""(
+    version: 1
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(108, encoder.size());
+  EXPECT_HEX("0111006C11111111000D00001111222222222222506F7274203100000000000000000000333333334444444455550555666606667777077788880888BBBBCCCCCCCCCCCC506F7274203200000000000000000000333333334444444455550555666606667777077788880888", encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv2) {
+  const char *input = R"""(
+    version: 2
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(144, encoder.size());
+  EXPECT_HEX("0213009011111111000D00000000000000001111000000002222222222220000506F727420310000000000000000000033333333444444445555555566666666777777778888888899999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F727420320000000000000000000033333333444444445555555566666666777777778888888899999999AAAAAAAA", encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv4) {
+  const char *input = R"""(
+    version: 4
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(144, encoder.size());
+  EXPECT_HEX("0413009011111111000D00000000000000001111000000002222222222220000506F727420310000000000000000000033333333444444445555555566666666777777778888888899999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F727420320000000000000000000033333333444444445555555566666666777777778888888899999999AAAAAAAA", encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv5) {
+  const char *input = R"""(
+    version: 5
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(160, encoder.size());
+  EXPECT_HEX("051300A011111111000D00000000000000001111004800002222222222220000506F7274203100000000000000000000333333334444444400000020000000005555555566666666777777778888888899999999AAAAAAAA0000BBBB00480000CCCCCCCCCCCC0000506F7274203200000000000000000000333333334444444400000020000000005555555566666666777777778888888899999999AAAAAAAA", encoder.data(), encoder.size());
+}
+

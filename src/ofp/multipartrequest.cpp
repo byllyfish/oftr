@@ -54,7 +54,7 @@ bool MultipartRequest::validateInput(Validation *context) const {
       return context->validateArrayVariableSize<MPTableFeatures>(requestBody(),
                                                                  OFP_VERSION_4);
     case OFPMP_PORT_DESC:
-      return context->validateEmpty(requestBody(), OFP_VERSION_4);
+      return context->validateEmpty(requestBody(), OFP_VERSION_1);
     case OFPMP_TABLE_DESC:
       return false;
     case OFPMP_QUEUE_DESC:
