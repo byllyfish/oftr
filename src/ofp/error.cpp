@@ -169,6 +169,36 @@ OFPErrorCode Error::errorCode() const {
   return codeToEnum(msgHeader()->version(), type_, code_);
 }
 
+/// Return a textual description of the error data value.
+std::string Error::errorText() const {
+  ByteRange data = errorData();
+
+  if (data.isPrintable()) {
+    return std::string{reinterpret_cast<const char *>(data.data()), data.size()};
+  }
+
+  if (data.size() < 12) {
+    return "";
+  }
+
+  // Determine the message type.
+  if (data[0] <= OFP_VERSION_MAX_ALLOWED) {
+    OFPType msgType = Header::translateType(data[0], data[1], OFP_VERSION_4);
+    if (msgType != OFPT_UNSUPPORTED) {
+      std::stringstream ss;
+      ss << "Type: " << msgType;
+      if (msgType == OFPT_MULTIPART_REQUEST || msgType == OFPT_MULTIPART_REPLY) {
+        UInt16 type = *Big16_cast(data.data() + 8);
+        OFPMultipartType mpType = static_cast<OFPMultipartType>(type);
+        ss << "." << mpType;
+      }
+      return ss.str();
+    }
+  }
+
+  return "";
+}
+
 ErrorBuilder::ErrorBuilder(UInt32 xid) {
   msg_.header_.setXid(xid);
 }

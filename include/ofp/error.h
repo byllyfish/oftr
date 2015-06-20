@@ -15,7 +15,8 @@ class Error : public ProtocolMsg<Error, OFPT_ERROR, 12, 65535, false> {
   OFPErrorType errorType() const;
   OFPErrorCode errorCode() const;
   ByteRange errorData() const;
-
+  std::string errorText() const;
+  
   bool validateInput(Validation *context) const { return true; }
 
  private:

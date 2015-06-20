@@ -87,6 +87,12 @@ TEST(decoder, errorv1) {
       "FFFF1234567890\n...\n");
 }
 
+TEST(decoder, errorv1_2) {
+  testDecodeEncode(
+      "01010018000000620001000101111234567890AA00010000",
+      "---\ntype:            ERROR\nxid:             0x00000062\nversion:         0x01\nmsg:             \n  type:            OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:            01111234567890AA00010000\n  _text:           'Type: OFPT_MULTIPART_REPLY.OFPMP_FLOW'\n...\n");
+}
+
 TEST(decoder, echoRequest) {
   testDecodeEncode("0102000E00000007AABBCCDDEEFF",
                    "---\ntype:            ECHO_REQUEST\nxid:            "
