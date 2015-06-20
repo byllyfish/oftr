@@ -1,4 +1,4 @@
-= LIBOFP: OpenFlow to YAML Converter image:https://travis-ci.org/byllyfish/libofp.svg?branch=develop["Build Status", link="https://travis-ci.org/byllyfish/libofp"]
+= LIBOFP: OpenFlow to YAML Converter image:https://travis-ci.org/byllyfish/libofp.svg?branch=master["Build Status", link="https://travis-ci.org/byllyfish/libofp"]
 :icons: font
 :toc:
 ifdef::env-github[]
