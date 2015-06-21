@@ -1,6 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
+#include <asio/version.hpp>
 #include "ofp/ofp.h"
 #include "./ofpx_decode.h"
 #include "./ofpx_encode.h"
@@ -100,8 +101,17 @@ void print_version() {
      << "  Default target: " << llvm::sys::getDefaultTargetTriple() << '\n'
      << "  Host CPU: " << CPU << '\n';
 
-  unsigned major = (OPENSSL_VERSION_NUMBER >> 28) & 0x0F;
-  unsigned minor = (OPENSSL_VERSION_NUMBER >> 20) & 0xFF;
-  unsigned patch = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
-  os << "  BoringSSL " << major << '.' << minor << '.' << patch << '\n';
+  unsigned asioMajor = ASIO_VERSION / 100000;
+  unsigned asioMinor = ASIO_VERSION / 100 % 1000;
+  unsigned asioPatch = ASIO_VERSION % 100;
+  std::string asioCommit{LIBOFP_GIT_COMMIT_ASIO};
+
+  os << "  ASIO " << asioMajor << '.' << asioMinor << '.' << asioPatch << " (" << asioCommit.substr(0, 7) << ")\n";
+
+  unsigned sslMajor = (OPENSSL_VERSION_NUMBER >> 28) & 0x0F;
+  unsigned sslMinor = (OPENSSL_VERSION_NUMBER >> 20) & 0xFF;
+  unsigned sslPatch = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
+  std::string sslCommit{LIBOFP_GIT_COMMIT_BORINGSSL};
+
+  os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " (" << sslCommit.substr(0, 7) << ")\n";
 }

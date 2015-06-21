@@ -279,6 +279,16 @@ find_package(PythonInterp REQUIRED)
 find_package(PythonModule REQUIRED)
 find_python_module(yaml)
 
+# Look up the specific git commits for asio and boringssl.
+
+execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
+string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
+message("Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
+
+execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
+string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
+message("BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
+
 # Specify auto-generated config.h file.
 
 configure_file("${LIBOFP_CONFIG_IN}" "${LIBOFP_CONFIG}")
