@@ -143,7 +143,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	FLOW_MOD.v1	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 1	FLOW_MOD.v1	msg.instructions.0.actions.0.port	CONTROLLER	True			
 1	GROUP_MOD.v1	msg	object	True			ERROR
-1	GROUP_MOD.v1	msg.command	uint16	True			ERROR
+1	GROUP_MOD.v1	msg.command	ADD	True			ERROR
 1	GROUP_MOD.v1	msg.buckets	array	True			ERROR
 1	GROUP_MOD.v1	msg.buckets.0	object	True			ERROR
 1	GROUP_MOD.v1	msg.buckets.0.weight	uint16	True			ERROR
@@ -155,7 +155,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	GROUP_MOD.v1	msg.buckets.0.actions.0.port	CONTROLLER	True			ERROR
 1	GROUP_MOD.v1	msg.buckets.0.watch_port	CONTROLLER	True			ERROR
 1	GROUP_MOD.v1	msg.group_id	uint32	True			ERROR
-1	GROUP_MOD.v1	msg.type	uint8	True			ERROR
+1	GROUP_MOD.v1	msg.type	ALL	True			ERROR
 1	PORT_MOD.v1	msg	object	True			
 1	PORT_MOD.v1	msg.hw_addr	macaddress	True			True
 1	PORT_MOD.v1	msg.ethernet	object	True			
@@ -665,19 +665,19 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FLOW_MOD.v2	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 2	FLOW_MOD.v2	msg.instructions.0.actions.0.port	CONTROLLER	True			
 2	GROUP_MOD.v2	msg	object	True			
-2	GROUP_MOD.v2	msg.command	uint16	True			True
+2	GROUP_MOD.v2	msg.command	ADD	True			
 2	GROUP_MOD.v2	msg.buckets	array	True			
-2	GROUP_MOD.v2	msg.buckets.0	object	False	msg.buckets=null		
+2	GROUP_MOD.v2	msg.buckets.0	object	False	msg.buckets=null,msg.group_id=ANY		
 2	GROUP_MOD.v2	msg.buckets.0.weight	uint16	True			True
 2	GROUP_MOD.v2	msg.buckets.0.watch_group	uint32	True			True
 2	GROUP_MOD.v2	msg.buckets.0.actions	array	True			
-2	GROUP_MOD.v2	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null		
+2	GROUP_MOD.v2	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null,msg.group_id=ANY		
 2	GROUP_MOD.v2	msg.buckets.0.actions.0.action	OUTPUT	True			
 2	GROUP_MOD.v2	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
 2	GROUP_MOD.v2	msg.buckets.0.actions.0.port	CONTROLLER	True			
 2	GROUP_MOD.v2	msg.buckets.0.watch_port	CONTROLLER	True			
-2	GROUP_MOD.v2	msg.group_id	uint32	True			True
-2	GROUP_MOD.v2	msg.type	uint8	True			True
+2	GROUP_MOD.v2	msg.group_id	uint32	True		msg.group_id=ANY	True
+2	GROUP_MOD.v2	msg.type	ALL	True			
 2	PORT_MOD.v2	msg	object	True			
 2	PORT_MOD.v2	msg.hw_addr	macaddress	True			True
 2	PORT_MOD.v2	msg.ethernet	object	True			
@@ -1187,19 +1187,19 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FLOW_MOD.v3	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 3	FLOW_MOD.v3	msg.instructions.0.actions.0.port	CONTROLLER	True			
 3	GROUP_MOD.v3	msg	object	True			
-3	GROUP_MOD.v3	msg.command	uint16	True			True
+3	GROUP_MOD.v3	msg.command	ADD	True			
 3	GROUP_MOD.v3	msg.buckets	array	True			
-3	GROUP_MOD.v3	msg.buckets.0	object	False	msg.buckets=null		
+3	GROUP_MOD.v3	msg.buckets.0	object	False	msg.buckets=null,msg.group_id=ANY		
 3	GROUP_MOD.v3	msg.buckets.0.weight	uint16	True			True
 3	GROUP_MOD.v3	msg.buckets.0.watch_group	uint32	True			True
 3	GROUP_MOD.v3	msg.buckets.0.actions	array	True			
-3	GROUP_MOD.v3	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null		
+3	GROUP_MOD.v3	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null,msg.group_id=ANY		
 3	GROUP_MOD.v3	msg.buckets.0.actions.0.action	OUTPUT	True			
 3	GROUP_MOD.v3	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
 3	GROUP_MOD.v3	msg.buckets.0.actions.0.port	CONTROLLER	True			
 3	GROUP_MOD.v3	msg.buckets.0.watch_port	CONTROLLER	True			
-3	GROUP_MOD.v3	msg.group_id	uint32	True			True
-3	GROUP_MOD.v3	msg.type	uint8	True			True
+3	GROUP_MOD.v3	msg.group_id	uint32	True		msg.group_id=ANY	True
+3	GROUP_MOD.v3	msg.type	ALL	True			
 3	PORT_MOD.v3	msg	object	True			
 3	PORT_MOD.v3	msg.hw_addr	macaddress	True			True
 3	PORT_MOD.v3	msg.ethernet	object	True			
@@ -1709,19 +1709,19 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FLOW_MOD.v4	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 4	FLOW_MOD.v4	msg.instructions.0.actions.0.port	CONTROLLER	True			
 4	GROUP_MOD.v4	msg	object	True			
-4	GROUP_MOD.v4	msg.command	uint16	True			True
+4	GROUP_MOD.v4	msg.command	ADD	True			
 4	GROUP_MOD.v4	msg.buckets	array	True			
-4	GROUP_MOD.v4	msg.buckets.0	object	False	msg.buckets=null		
+4	GROUP_MOD.v4	msg.buckets.0	object	False	msg.buckets=null,msg.group_id=ANY		
 4	GROUP_MOD.v4	msg.buckets.0.weight	uint16	True			True
 4	GROUP_MOD.v4	msg.buckets.0.watch_group	uint32	True			True
 4	GROUP_MOD.v4	msg.buckets.0.actions	array	True			
-4	GROUP_MOD.v4	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null		
+4	GROUP_MOD.v4	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null,msg.group_id=ANY		
 4	GROUP_MOD.v4	msg.buckets.0.actions.0.action	OUTPUT	True			
 4	GROUP_MOD.v4	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
 4	GROUP_MOD.v4	msg.buckets.0.actions.0.port	CONTROLLER	True			
 4	GROUP_MOD.v4	msg.buckets.0.watch_port	CONTROLLER	True			
-4	GROUP_MOD.v4	msg.group_id	uint32	True			True
-4	GROUP_MOD.v4	msg.type	uint8	True			True
+4	GROUP_MOD.v4	msg.group_id	uint32	True		msg.group_id=ANY	True
+4	GROUP_MOD.v4	msg.type	ALL	True			
 4	PORT_MOD.v4	msg	object	True			
 4	PORT_MOD.v4	msg.hw_addr	macaddress	True			True
 4	PORT_MOD.v4	msg.ethernet	object	True			
@@ -2231,19 +2231,19 @@ version	type	keypath	syntax	required	default	missing	modify
 5	FLOW_MOD.v5	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 5	FLOW_MOD.v5	msg.instructions.0.actions.0.port	CONTROLLER	True			
 5	GROUP_MOD.v5	msg	object	True			
-5	GROUP_MOD.v5	msg.command	uint16	True			True
+5	GROUP_MOD.v5	msg.command	ADD	True			
 5	GROUP_MOD.v5	msg.buckets	array	True			
-5	GROUP_MOD.v5	msg.buckets.0	object	False	msg.buckets=null		
+5	GROUP_MOD.v5	msg.buckets.0	object	False	msg.buckets=null,msg.group_id=ANY		
 5	GROUP_MOD.v5	msg.buckets.0.weight	uint16	True			True
 5	GROUP_MOD.v5	msg.buckets.0.watch_group	uint32	True			True
 5	GROUP_MOD.v5	msg.buckets.0.actions	array	True			
-5	GROUP_MOD.v5	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null		
+5	GROUP_MOD.v5	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions=null,msg.group_id=ANY		
 5	GROUP_MOD.v5	msg.buckets.0.actions.0.action	OUTPUT	True			
 5	GROUP_MOD.v5	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
 5	GROUP_MOD.v5	msg.buckets.0.actions.0.port	CONTROLLER	True			
 5	GROUP_MOD.v5	msg.buckets.0.watch_port	CONTROLLER	True			
-5	GROUP_MOD.v5	msg.group_id	uint32	True			True
-5	GROUP_MOD.v5	msg.type	uint8	True			True
+5	GROUP_MOD.v5	msg.group_id	uint32	True		msg.group_id=ANY	True
+5	GROUP_MOD.v5	msg.type	ALL	True			
 5	PORT_MOD.v5	msg	object	True			
 5	PORT_MOD.v5	msg.hw_addr	macaddress	True			True
 5	PORT_MOD.v5	msg.ethernet	object	True			

@@ -56,6 +56,14 @@ typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
   }
 }
 
+// Support ScalarTraits for Big<Enum> types.
+template <typename T>
+typename std::enable_if<has_ScalarTraits<T>::value && std::is_enum<T>::value, void>::type yamlize(IO &io, ofp::Big<T> &Val, bool ignore) {
+  T value = Val;
+  yamlize(io, value, ignore);
+  Val = value;
+}
+
 #define YAML_ENUM_CONVERTER(ConverterType, EnumType, FormatExpr)            \
   template <>                                                               \
   struct ScalarTraits<EnumType> {                                           \
@@ -97,6 +105,10 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPControllerRole,
                     format("0x%08X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterModCommand,
                     format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPGroupModCommand,
+                    format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPGroupType,
+                    format("0x%02X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType,
                     format("0x%04X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowUpdateEvent,

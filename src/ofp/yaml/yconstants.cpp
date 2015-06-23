@@ -61,6 +61,14 @@ static const llvm::StringRef sMeterModCommand[] = {
     "ADD", "MODIFY", "DELETE",
 };
 
+static const llvm::StringRef sGroupModCommand[] = {
+    "ADD", "MODIFY", "DELETE",
+};
+
+static const llvm::StringRef sGroupType[] = {
+    "ALL", "SELECT", "INDIRECT", "FF",
+};
+
 static const llvm::StringRef sErrorTypes[] = {
     "HELLO_FAILED", "BAD_REQUEST", "BAD_ACTION",
     "BAD_INSTRUCTION", "BAD_MATCH", "FLOW_MOD_FAILED",
@@ -105,6 +113,12 @@ EnumConverter<OFPControllerRole>
 
 EnumConverter<OFPMeterModCommand>
     llvm::yaml::ScalarTraits<OFPMeterModCommand>::converter{sMeterModCommand};
+
+EnumConverter<OFPGroupModCommand>
+    llvm::yaml::ScalarTraits<OFPGroupModCommand>::converter{sGroupModCommand};
+
+EnumConverter<OFPGroupType>
+    llvm::yaml::ScalarTraits<OFPGroupType>::converter{sGroupType};
 
 EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
     sErrorTypes, "EXPERIMENTER"};

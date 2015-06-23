@@ -316,8 +316,8 @@ type:            GROUP_MOD
 xid:             0x00000000
 version:         0x03
 msg:             
-  command:         0x0000
-  type:            0x00
+  command:         ADD
+  type:            ALL
   group_id:        0x00000001
   buckets:         
     - weight:          0x0001
@@ -1177,8 +1177,8 @@ type:            GROUP_MOD
 xid:             0x00000000
 version:         0x04
 msg:             
-  command:         0x0000
-  type:            0x00
+  command:         ADD
+  type:            ALL
   group_id:        0x00000001
   buckets:         
     - weight:          0x0001
@@ -3948,8 +3948,8 @@ type:            GROUP_MOD
 xid:             0x00000000
 version:         0x05
 msg:             
-  command:         0x0000
-  type:            0x00
+  command:         ADD
+  type:            ALL
   group_id:        0x00000001
   buckets:         
     - weight:          0x0001

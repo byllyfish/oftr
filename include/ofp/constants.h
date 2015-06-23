@@ -643,6 +643,19 @@ inline OFPMultipartFlags operator|(OFPMultipartFlags lhs,
   return static_cast<OFPMultipartFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+enum OFPGroupModCommand : UInt16 {
+  OFPGC_ADD    = 0,
+  OFPGC_MODIFY = 1,
+  OFPGC_DELETE = 2
+};
+
+enum OFPGroupType : UInt8 {
+  OFPGT_ALL      = 0,
+  OFPGT_SELECT   = 1,
+  OFPGT_INDIRECT = 2,
+  OFPGT_FF       = 3
+};
+
 enum OFPMeterModCommand : UInt16 {
   OFPMC_ADD = 0,
   OFPMC_MODIFY = 1,

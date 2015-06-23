@@ -165,8 +165,8 @@ msg:
 version: 0x04
 type: GROUP_MOD
 msg:
-  command: 0xffff
-  type: 0xff
+  command: ADD
+  type: ALL
   group_id: 0xffffffff
   buckets:
     - weight: 0xffff
