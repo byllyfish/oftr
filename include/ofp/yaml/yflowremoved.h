@@ -14,7 +14,7 @@ msg:
   cookie: UInt64
   priority: UInt16
   reason: FlowRemovedReason
-  table_id: UInt8
+  table_id: TableNumber
   duration_sec: UInt32
   duration_nsec: UInt32
   idle_timeout: UInt16

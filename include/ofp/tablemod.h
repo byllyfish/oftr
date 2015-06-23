@@ -5,19 +5,20 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
 class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16, 16> {
  public:
-  UInt8 tableId() const { return tableId_; }
+  TableNumber tableId() const { return tableId_; }
   UInt32 config() const { return config_; }
 
   bool validateInput(Validation *context) const { return true; }
 
  private:
   Header header_;
-  Big8 tableId_;
+  TableNumber tableId_;
   Padding<3> pad_;
   Big32 config_;
 
@@ -38,7 +39,7 @@ class TableModBuilder {
   TableModBuilder() = default;
   explicit TableModBuilder(const TableMod *msg);
 
-  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setConfig(UInt32 config) { msg_.config_ = config; }
 
   UInt32 send(Writable *channel);

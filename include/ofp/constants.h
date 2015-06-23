@@ -240,23 +240,26 @@ enum OFPControllerMaxLen : UInt16 {
   OFPCML_NO_BUFFER = 0xffff
 };
 
-// Table numbering. Tables can use any number up to OFPT_MAX.
 enum OFPTableNo : UInt8 {
-  // Last usable table number.
   OFPTT_MAX = 0xfe,
-  // Fake tables.
   OFPTT_ALL = 0xff
 };
 
-// Group numbering. Groups can use any number up to OFPG_MAX.
 enum OFPGroupNo : UInt32 {
-  // Last usable group number.
   OFPG_MAX = 0xffffff00,
-  // Fake groups.
-  OFPG_ALL = 0xfffffffc,  // Represents all groups for group delete commands.
+  OFPG_ALL = 0xfffffffc,
   OFPG_ANY = 0xffffffff
-  // Wildcard group used only for flow stats requests. Selects all flows
-  // regardless of group (including flows with no group).
+};
+
+enum OFPQueueNo : UInt32 {
+  OFPQ_ALL = 0xffffffff
+};
+
+enum OFPMeterNo : UInt32 {
+  OFPM_MAX = 0xffff0000,
+  OFPM_SLOWPATH = 0xfffffffd,
+  OFPM_CONTROLLER = 0xfffffffe,
+  OFPM_ALL = 0xffffffff
 };
 
 enum OFPMultipartType : UInt16 {

@@ -117,7 +117,7 @@ msg:
   out_port: PortNumber
   out_group: UInt32
   flags: UInt16
-  table_id: UInt8
+  table_id: TableNumber
   command: UInt8
   match: [{Field}]
 

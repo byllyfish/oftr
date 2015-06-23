@@ -19,7 +19,7 @@ msg:
   in_phy_port: UInt32
   metadata: UInt64
   reason: PacketInReason
-  table_id: UInt8
+  table_id: TableNumber
   cookie: UInt64
   match: [{Field}...]
   data: HexString
@@ -45,7 +45,7 @@ struct MappingTraits<ofp::PacketIn> {
     io.mapRequired("metadata", metadata);
 
     OFPPacketInReason reason = msg.reason();
-    Hex8 tableID = msg.tableID();
+    TableNumber tableID = msg.tableID();
     Hex64 cookie = msg.cookie();
     io.mapRequired("reason", reason);
     io.mapRequired("table_id", tableID);

@@ -7,6 +7,7 @@
 #include "ofp/portnumber.h"
 #include "ofp/matchheader.h"
 #include "ofp/matchbuilder.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -22,7 +23,7 @@ class MPFlowMonitorRequest {
   PortNumber outPort() const { return outPort_; }
   UInt32 outGroup() const { return outGroup_; }
   UInt16 flags() const { return flags_; }
-  UInt8 tableId() const { return tableId_; }
+  TableNumber tableId() const { return tableId_; }
   UInt8 command() const { return command_; }
 
   Match match() const;
@@ -34,7 +35,7 @@ class MPFlowMonitorRequest {
   PortNumber outPort_;
   Big32 outGroup_;
   Big16 flags_;
-  Big8 tableId_;
+  TableNumber tableId_;
   Big8 command_;
   MatchHeader matchHeader_;
   Padding<4> pad_;
@@ -61,7 +62,7 @@ class MPFlowMonitorRequestBuilder {
   void setOutPort(PortNumber outPort) { msg_.outPort_ = outPort; }
   void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
   void setFlags(UInt16 flags) { msg_.flags_ = flags; }
-  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setCommand(UInt8 command) { msg_.command_ = command; }
 
   void setMatch(const MatchBuilder &match) { match_ = match; }
