@@ -9,7 +9,7 @@ endif::[]
 
 The *libofp* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML] and back again. It provides a simple, uniform object syntax for working with the OpenFlow protocol programmatically.
 
-* Support Linux and OS X
+* Supports Linux and OS X
 * Supports OpenFlow versions 1.0, 1.1, 1.2, 1.3, 1.4
 * Supports YAML 1.2 and JSON
 * Optional JSON RPC Microservice supports:
@@ -102,8 +102,6 @@ output a "1.0" message because version 1 is explicitly specified.
 <2> These values are `lost` because they are not supported in OpenFlow 1.0.
 <3> Flags are specified using arrays of strings.
 <4> Match field dependencies are automatically added when necessary.
-
-NOTE: There is some trickiness under the hood to let one object syntax support multiple OpenFlow versions. Later versions of OpenFlow _recycle_ some enumerated values used in version 1.0 for different purposes. Libofp automatically translates these constants between versions and maps 1.4-based actions back to their corresponding 1.0-defined actions.
 
 === OpenFlow to YAML
 
@@ -227,5 +225,12 @@ $ libofp help --fields
 == License
 
 This software is licensed under the terms of the *MIT License*.
+
+*libofp* relies on the following third-party source code:
+
+* http://llvm.org/docs/YamlIO.html[yamlio] from the http://llvm.org[llvm] project
+* https://github.com/chriskohlhoff/asio[asio]
+* https://boringssl.googlesource.com/boringssl[boringssl]
+* https://chromium.googlesource.com/external/googletest.git[googletest]
 
 
