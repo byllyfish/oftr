@@ -1651,7 +1651,7 @@ TEST(encoder, tablemodv4) {
       xid: 0x11111111
       msg:
         table_id: 0x22
-        config: 0x33333333
+        config: [0x33333333]
       )""";
 
   Encoder encoder{input};
@@ -1669,7 +1669,7 @@ TEST(encoder, tablemodv2) {
       xid: 0x11111111
       msg:
         table_id: 0x22
-        config: 0x33333333
+        config: [0x33333333]
       )""";
 
   Encoder encoder{input};

@@ -12,7 +12,7 @@ namespace ofp {
 class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16, 16> {
  public:
   TableNumber tableId() const { return tableId_; }
-  UInt32 config() const { return config_; }
+  OFPTableConfigFlags config() const { return config_; }
 
   bool validateInput(Validation *context) const { return true; }
 
@@ -20,7 +20,7 @@ class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16, 16> {
   Header header_;
   TableNumber tableId_;
   Padding<3> pad_;
-  Big32 config_;
+  Big<OFPTableConfigFlags> config_;
 
   // Only TableModBuilder can create an instance.
   TableMod() : header_{type()} {}
@@ -40,7 +40,7 @@ class TableModBuilder {
   explicit TableModBuilder(const TableMod *msg);
 
   void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
-  void setConfig(UInt32 config) { msg_.config_ = config; }
+  void setConfig(OFPTableConfigFlags config) { msg_.config_ = config; }
 
   UInt32 send(Writable *channel);
 

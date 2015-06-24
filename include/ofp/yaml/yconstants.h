@@ -478,6 +478,29 @@ struct ScalarBitSetTraits<ofp::OFPFlowRemovedFlags> {
 };
 
 template <>
+struct ScalarBitSetTraits<ofp::OFPTableConfigFlags> {
+  static void bitset(IO &io, ofp::OFPTableConfigFlags &value) {
+    OFP_YAML_BITCASE(OFPTC_, EVICTION);
+    OFP_YAML_BITCASE(OFPTC_, VACANCY_EVENTS);
+
+    if (ofp::yaml::GetVersionFromContext(io) <= ofp::OFP_VERSION_3) {
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTROLLER, OFPTC_TABLE_MISS_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTINUE, OFPTC_TABLE_MISS_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_DROP, OFPTC_TABLE_MISS_MASK);
+      io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2);
+    } else {
+      io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS);
+    }
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPTableConfigFlags>());
+    }
+  }
+};
+
+template <>
 struct ScalarBitSetTraits<ofp::OFPRoleStatusFlags> {
   static void bitset(IO &io, ofp::OFPRoleStatusFlags &value) {
     OFP_YAML_BITCASE(OFPCRRF_, MASTER_REQUEST);

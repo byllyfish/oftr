@@ -192,7 +192,7 @@ version: 0x04
 type: TABLE_MOD
 msg:
   table_id: 0xff
-  config: 0xffffffff
+  config: [ 0xffffffff ]
 ---
 version: 0x04
 type: REQUEST.DESC

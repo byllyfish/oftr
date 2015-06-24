@@ -678,6 +678,24 @@ inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs,
   return static_cast<OFPMeterConfigFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+enum OFPTableConfigFlags : UInt32 {
+  OFPTC_TABLE_MISS_CONTROLLER = 0,    // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_CONTINUE = 1,      // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_DROP = 2,          // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_MASK = 3,          // 1.1, 1.2 only
+
+  OFPTC_EVICTION = 1 << 2,            // 1.4+
+  OFPTC_VACANCY_EVENTS = 1 << 3,      // 1.4+
+
+  OFPTC_OTHER_TABLE_CONFIG_FLAGS = 0xFFFFFFF0,
+  OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2 = 0xFFFFFFF3
+};
+
+inline OFPTableConfigFlags operator|(OFPTableConfigFlags lhs,
+                                     OFPTableConfigFlags rhs) {
+  return static_cast<OFPTableConfigFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPIPv6ExtHdrFlags : UInt16 {
   OFPIEH_NONEXT = 1 << 0,
   OFPIEH_ESP = 1 << 1,

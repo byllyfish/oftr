@@ -347,7 +347,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   table_id:        ALL
-  config:          0x00000000
+  config:          [ TABLE_MISS_CONTROLLER ]
 ...
 ---
 type:            REQUEST.DESC
@@ -1208,7 +1208,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   table_id:        ALL
-  config:          0x00000000
+  config:          [  ]
 ...
 ---
 type:            REQUEST.DESC

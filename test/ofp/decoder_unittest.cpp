@@ -913,18 +913,18 @@ TEST(decoder, portmodv5) {
 
 TEST(decoder, tablemodv4) {
   testDecodeEncode(
-      "04110010111111112200000033333333",
+      "04110010111111112200000033333330",
       "---\ntype:            TABLE_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "table_id:        0x22\n  config:          0x33333333\n...\n");
+      "table_id:        0x22\n  config:          [ '0x33333330' ]\n...\n");
 }
 
 TEST(decoder, tablemodv2) {
   testDecodeEncode(
-      "02110010111111112200000033333333",
+      "02110010111111112200000033333330",
       "---\ntype:            TABLE_MOD\nxid:             "
       "0x11111111\nversion:         0x02\nmsg:             \n  "
-      "table_id:        0x22\n  config:          0x33333333\n...\n");
+      "table_id:        0x22\n  config:          [ TABLE_MISS_CONTROLLER, '0x33333330' ]\n...\n");
 }
 
 TEST(decoder, rolerequestv4) {
