@@ -9,7 +9,39 @@ endif::[]
 
 The *libofp* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML] and back again. It provides a simple, uniform object syntax for working with the OpenFlow protocol programmatically.
 
-NOTE: Libofp also supports JSON natively; JSON is a valid subset of YAML 1.2.
+* Support Linux and OS X
+* Supports OpenFlow versions 1.0, 1.1, 1.2, 1.3, 1.4
+* Supports YAML 1.2 and JSON
+* Optional JSON RPC Microservice supports:
+** multiple incoming or outgoing connections
+** auxiliary connections
+** TLS and DTLS
+
+Libofp is a *tool* in the unix tradition. You can use `netcat` in a pipe to feed OpenFlow messages to a switch or controller:
+
+[source,console]
+----
+$ libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
+----
+
+You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
+messages, while retaining metadata such as timestamps:
+
+[source,bash]
+----
+#!/bin/bash
+tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
+libofp decode --use-findx "/tmp/flow_$$/*.findx"
+----
+
+Libofp includes a JSON-RPC microservice that can operate as an OpenFlow 
+controller, agent, or both simultaneously. The JSON-RPC microservice can control
+the OpenFlow protocol over an IPC channel using asynchronous JSON events.
+
+[source,console]
+----
+$ libofp jsonrpc
+----
 
 === YAML to OpenFlow
 
@@ -124,23 +156,6 @@ $ make install
 
 == Examples
 
-Libofp is a *tool* in the unix tradition. You can use `netcat` in a pipe to feed OpenFlow messages to a switch or controller:
-
-[source,console]
-----
-$ libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
-----
-
-You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
-messages, while retaining metadata such as timestamps:
-
-[source,bash]
-----
-#!/bin/bash
-tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
-libofp decode --use-findx "/tmp/flow_$$/*.findx"
-----
-
 To translate a text file into binary OpenFlow messages:
 
 [source,console]
@@ -208,23 +223,6 @@ To list all supported OXM fields:
 ----
 $ libofp help --fields
 ----
-
-Libofp implements a JSON-RPC microservice that can operate as an OpenFlow 
-controller, agent, or both simultaneously. The JSON-RPC microservice can control
-the OpenFlow protocol over an IPC channel using asynchronous JSON events.
-
-[source,console]
-----
-$ libofp jsonrpc
-----
-
-== Features
-
-* Supports OpenFlow Protocol versions 1.0 - 1.4 (see BUGS for exceptions).
-
-* Supports YAML 1.2 and JSON.
-
-* JSON RPC service supports multiple OpenFlow connections over TCP, UDP, TLS and DTLS
 
 == License
 
