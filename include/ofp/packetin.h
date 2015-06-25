@@ -35,7 +35,7 @@ class PacketIn
   Header header_;
   BufferID bufferId_;
   Big16 totalLen_;
-  OFPPacketInReason reason_;
+  Big<OFPPacketInReason> reason_;
   TableNumber tableID_;
   Big64 cookie_;
 

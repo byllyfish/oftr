@@ -52,7 +52,7 @@ UInt32 PortModBuilder::send(Writable *channel) {
   } else {
     size_t msgLen = sizeof(msg_);
     // Temporarily set the message type to the V1 value.
-    msg_.header_.setType(deprecated::v1::OFPT_PORT_MOD);
+    msg_.header_.setRawType(deprecated::v1::OFPT_PORT_MOD);
     msg_.header_.setLength(UInt16_narrow_cast(msgLen));
     channel->write(&msg_.header_, sizeof(Header));
     msg_.header_.setType(OFPT_PORT_MOD);

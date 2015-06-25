@@ -90,7 +90,7 @@ UInt32 MultipartRequestBuilder::send(Writable *channel) {
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
   if (version == OFP_VERSION_1) {
-    msg_.header_.setType(deprecated::v1::OFPT_STATS_REQUEST);
+    msg_.header_.setRawType(deprecated::v1::OFPT_STATS_REQUEST);
     channel->write(&msg_, MultipartRequest::UnpaddedSizeVersion1);
   } else {
     msg_.header_.setType(OFPT_MULTIPART_REQUEST);

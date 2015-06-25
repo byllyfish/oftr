@@ -32,7 +32,7 @@ class FlowRemoved
   Header header_;
   Big64 cookie_;
   Big16 priority_;
-  OFPFlowRemovedReason reason_;
+  Big<OFPFlowRemovedReason> reason_;
   TableNumber tableId_;
   Big32 durationSec_;
   Big32 durationNSec_;

@@ -7,15 +7,7 @@
 namespace ofp {
 namespace deprecated {
 
-StandardMatch::StandardMatch() {
-  in_port = 0;
-  std::memset(&dl_src, 0, sizeof(StandardMatch) - 12);
-}
-
 StandardMatch::StandardMatch(const OXMRange &range) {
-  in_port = 0;
-  std::memset(&dl_src, 0, sizeof(StandardMatch) - 12);
-
   UInt32 wc = wildcards;
   for (auto &item : range) {
     switch (item.type()) {
