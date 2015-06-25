@@ -533,7 +533,7 @@ msg:
   monitor_id: 0xffffffff
   out_port: 0xffffffff
   out_group: 0xffffffff
-  flags: 0xffff
+  flags: [ NO_ABBREV ]
   table_id: 0xff
   command: 0xff
   match:

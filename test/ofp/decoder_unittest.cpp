@@ -1306,12 +1306,7 @@ TEST(decoder, ofmp_flowmonitor_request) {
   testDecodeEncode(
       "05120030111111110010000000000000111111112222222233333333444455660001000C"
       "800000041234567800000000",
-      "---\ntype:            REQUEST.FLOW_MONITOR\nflags:           [  ]\nxid: "
-      "            0x11111111\nversion:         0x05\nmsg:             \n  "
-      "monitor_id:      0x11111111\n  out_port:        0x22222222\n  "
-      "out_group:       0x33333333\n  flags:           0x4444\n  table_id:     "
-      "   0x55\n  command:         0x66\n  match:           \n    - field:     "
-      "      IN_PORT\n      value:           0x12345678\n...\n");
+      "---\ntype:            REQUEST.FLOW_MONITOR\nflags:           [  ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  monitor_id:      0x11111111\n  out_port:        0x22222222\n  out_group:       0x33333333\n  flags:           [ REMOVED, ONLY_OWN, '0x00004440' ]\n  table_id:        0x55\n  command:         0x66\n  match:           \n    - field:           IN_PORT\n      value:           0x12345678\n...\n");
 }
 
 TEST(decoder, ofmp_flowmonitor_reply) {

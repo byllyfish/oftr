@@ -8,6 +8,7 @@
 #include "ofp/matchheader.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/tablenumber.h"
+#include "ofp/groupnumber.h"
 
 namespace ofp {
 
@@ -21,10 +22,10 @@ class MPFlowMonitorRequest {
 
   UInt32 monitorId() const { return monitorId_; }
   PortNumber outPort() const { return outPort_; }
-  UInt32 outGroup() const { return outGroup_; }
-  UInt16 flags() const { return flags_; }
+  GroupNumber outGroup() const { return outGroup_; }
+  OFPFlowMonitorFlags flags() const { return flags_; }
   TableNumber tableId() const { return tableId_; }
-  UInt8 command() const { return command_; }
+  OFPFlowMonitorCommand command() const { return command_; }
 
   Match match() const;
 
@@ -33,10 +34,10 @@ class MPFlowMonitorRequest {
  private:
   Big32 monitorId_;
   PortNumber outPort_;
-  Big32 outGroup_;
-  Big16 flags_;
+  GroupNumber outGroup_;
+  Big<OFPFlowMonitorFlags> flags_;
   TableNumber tableId_;
-  Big8 command_;
+  Big<OFPFlowMonitorCommand> command_;
   MatchHeader matchHeader_;
   Padding<4> pad_;
 
@@ -60,10 +61,10 @@ class MPFlowMonitorRequestBuilder {
  public:
   void setMonitorId(UInt32 monitorId) { msg_.monitorId_ = monitorId; }
   void setOutPort(PortNumber outPort) { msg_.outPort_ = outPort; }
-  void setOutGroup(UInt32 outGroup) { msg_.outGroup_ = outGroup; }
-  void setFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setOutGroup(GroupNumber outGroup) { msg_.outGroup_ = outGroup; }
+  void setFlags(OFPFlowMonitorFlags flags) { msg_.flags_ = flags; }
   void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
-  void setCommand(UInt8 command) { msg_.command_ = command; }
+  void setCommand(OFPFlowMonitorCommand command) { msg_.command_ = command; }
 
   void setMatch(const MatchBuilder &match) { match_ = match; }
 

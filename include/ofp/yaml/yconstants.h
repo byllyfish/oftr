@@ -113,6 +113,8 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType,
                     format("0x%04X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowUpdateEvent,
                     format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowMonitorCommand,
+                    format("0x%02X", value))
 
 template <>
 struct ScalarTraits<ofp::OFPErrorCode> {
@@ -545,6 +547,27 @@ struct ScalarBitSetTraits<ofp::OFPRequestForwardFlags> {
     if (!val.empty()) {
       ofp::yaml::SetFlagError(
           io, val, ofp::yaml::AllFlags<ofp::OFPRequestForwardFlags>());
+    }
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPFlowMonitorFlags> {
+  static void bitset(IO &io, ofp::OFPFlowMonitorFlags &value) {
+    OFP_YAML_BITCASE(OFPFMF_, INITIAL);
+    OFP_YAML_BITCASE(OFPFMF_, ADD);
+    OFP_YAML_BITCASE(OFPFMF_, REMOVED);
+    OFP_YAML_BITCASE(OFPFMF_, MODIFY);
+    OFP_YAML_BITCASE(OFPFMF_, INSTRUCTIONS);
+    OFP_YAML_BITCASE(OFPFMF_, NO_ABBREV);
+    OFP_YAML_BITCASE(OFPFMF_, ONLY_OWN);
+
+    io.bitSetCaseOther(value, ofp::OFPFMF_OTHER_FLOW_MONITOR_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(
+          io, val, ofp::yaml::AllFlags<ofp::OFPFlowMonitorFlags>());
     }
   }
 };

@@ -81,6 +81,9 @@ static const llvm::StringRef sErrorTypes[] = {
 static const llvm::StringRef sFlowUpdateEvent[] = {
     "INITIAL", "ADDED", "REMOVED", "MODIFIED", "ABBREV", "PAUSED", "RESUMED"};
 
+static const llvm::StringRef sFlowMonitorCommand[] = {
+    "ADD", "MODIFY", "DELETE"};
+
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
 EnumConverter<OFPMultipartType>
@@ -125,6 +128,8 @@ EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
 
 EnumConverter<OFPFlowUpdateEvent>
     llvm::yaml::ScalarTraits<OFPFlowUpdateEvent>::converter{sFlowUpdateEvent};
+
+EnumConverter<OFPFlowMonitorCommand> llvm::yaml::ScalarTraits<OFPFlowMonitorCommand>::converter{sFlowMonitorCommand};
 
 #define STR_ENTRY(s) \
   { s, #s }

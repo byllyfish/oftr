@@ -2339,7 +2339,7 @@ TEST(encoder, ofmp_flowmonitor_request) {
           monitor_id: 0x11111111
           out_port: 0x22222222
           out_group: 0x33333333
-          flags: 0x4444
+          flags: [0x4444]
           table_id: 0x55
           command: 0x66
           match:

@@ -718,6 +718,29 @@ enum OFPFlowUpdateEvent : UInt16 {
   OFPFME_RESUMED = 6,
 };
 
+enum OFPFlowMonitorCommand : UInt8 {
+  OFPFMC_ADD = 0,
+  OFPFMC_MODIFY = 1,
+  OFPFMC_DELETE = 2,
+};
+
+enum OFPFlowMonitorFlags : UInt16 {
+  OFPFMF_INITIAL = 1 << 0, 
+  OFPFMF_ADD = 1 << 1, 
+  OFPFMF_REMOVED = 1 << 2, 
+  OFPFMF_MODIFY = 1 << 3,
+  OFPFMF_INSTRUCTIONS = 1 << 4,
+  OFPFMF_NO_ABBREV = 1 << 5, 
+  OFPFMF_ONLY_OWN = 1 << 6,
+
+  OFPFMF_OTHER_FLOW_MONITOR_FLAGS = 0xffc0
+};
+
+inline OFPFlowMonitorFlags operator|(OFPFlowMonitorFlags lhs,
+                                     OFPFlowMonitorFlags rhs) {
+  return static_cast<OFPFlowMonitorFlags>(static_cast<UInt16>(lhs) | rhs);
+}
+
 }  // namespace ofp
 
 #endif  // OFP_CONSTANTS_H_
