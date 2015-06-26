@@ -17,9 +17,7 @@ class Header {
 
   OFPType type() const { return type_; }
   void setType(OFPType type) { type_ = type; }
-  void setType(deprecated::v1::OFPType type) {
-    type_ = static_cast<OFPType>(type);
-  }
+  void setRawType(UInt8 type) { type_ = static_cast<OFPType>(type); }
 
   UInt16 length() const { return length_; }
   void setLength(UInt16 length) { length_ = length; }

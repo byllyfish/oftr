@@ -56,6 +56,16 @@ typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
   }
 }
 
+// Support ScalarTraits for Big<Enum> types.
+template <typename T>
+typename std::enable_if<has_ScalarTraits<T>::value && std::is_enum<T>::value,
+                        void>::type
+yamlize(IO &io, ofp::Big<T> &Val, bool ignore) {
+  T value = Val;
+  yamlize(io, value, ignore);
+  Val = value;
+}
+
 #define YAML_ENUM_CONVERTER(ConverterType, EnumType, FormatExpr)            \
   template <>                                                               \
   struct ScalarTraits<EnumType> {                                           \
@@ -97,10 +107,16 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPControllerRole,
                     format("0x%08X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterModCommand,
                     format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPGroupModCommand,
+                    format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPGroupType,
+                    format("0x%02X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPErrorType,
                     format("0x%04X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowUpdateEvent,
                     format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowMonitorCommand,
+                    format("0x%02X", value))
 
 template <>
 struct ScalarTraits<ofp::OFPErrorCode> {
@@ -466,6 +482,31 @@ struct ScalarBitSetTraits<ofp::OFPFlowRemovedFlags> {
 };
 
 template <>
+struct ScalarBitSetTraits<ofp::OFPTableConfigFlags> {
+  static void bitset(IO &io, ofp::OFPTableConfigFlags &value) {
+    OFP_YAML_BITCASE(OFPTC_, EVICTION);
+    OFP_YAML_BITCASE(OFPTC_, VACANCY_EVENTS);
+
+    if (ofp::yaml::GetVersionFromContext(io) <= ofp::OFP_VERSION_3) {
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTROLLER,
+                             OFPTC_TABLE_MISS_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTINUE,
+                             OFPTC_TABLE_MISS_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_DROP, OFPTC_TABLE_MISS_MASK);
+      io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2);
+    } else {
+      io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS);
+    }
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPTableConfigFlags>());
+    }
+  }
+};
+
+template <>
 struct ScalarBitSetTraits<ofp::OFPRoleStatusFlags> {
   static void bitset(IO &io, ofp::OFPRoleStatusFlags &value) {
     OFP_YAML_BITCASE(OFPCRRF_, MASTER_REQUEST);
@@ -510,6 +551,27 @@ struct ScalarBitSetTraits<ofp::OFPRequestForwardFlags> {
     if (!val.empty()) {
       ofp::yaml::SetFlagError(
           io, val, ofp::yaml::AllFlags<ofp::OFPRequestForwardFlags>());
+    }
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPFlowMonitorFlags> {
+  static void bitset(IO &io, ofp::OFPFlowMonitorFlags &value) {
+    OFP_YAML_BITCASE(OFPFMF_, INITIAL);
+    OFP_YAML_BITCASE(OFPFMF_, ADD);
+    OFP_YAML_BITCASE(OFPFMF_, REMOVED);
+    OFP_YAML_BITCASE(OFPFMF_, MODIFY);
+    OFP_YAML_BITCASE(OFPFMF_, INSTRUCTIONS);
+    OFP_YAML_BITCASE(OFPFMF_, NO_ABBREV);
+    OFP_YAML_BITCASE(OFPFMF_, ONLY_OWN);
+
+    io.bitSetCaseOther(value, ofp::OFPFMF_OTHER_FLOW_MONITOR_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPFlowMonitorFlags>());
     }
   }
 };

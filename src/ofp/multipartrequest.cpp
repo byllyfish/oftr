@@ -54,7 +54,7 @@ bool MultipartRequest::validateInput(Validation *context) const {
       return context->validateArrayVariableSize<MPTableFeatures>(requestBody(),
                                                                  OFP_VERSION_4);
     case OFPMP_PORT_DESC:
-      return context->validateEmpty(requestBody(), OFP_VERSION_4);
+      return context->validateEmpty(requestBody(), OFP_VERSION_1);
     case OFPMP_TABLE_DESC:
       return false;
     case OFPMP_QUEUE_DESC:
@@ -90,7 +90,7 @@ UInt32 MultipartRequestBuilder::send(Writable *channel) {
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
   if (version == OFP_VERSION_1) {
-    msg_.header_.setType(deprecated::v1::OFPT_STATS_REQUEST);
+    msg_.header_.setRawType(deprecated::v1::OFPT_STATS_REQUEST);
     channel->write(&msg_, MultipartRequest::UnpaddedSizeVersion1);
   } else {
     msg_.header_.setType(OFPT_MULTIPART_REQUEST);

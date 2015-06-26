@@ -43,7 +43,7 @@ class Identity {
 
  private:
   /// Unique non-zero ID used to reference this Identity.
-  UInt64 securityId_;
+  UInt64 securityId_ = 0;
 
   /// SSL context used for TLS connections over TCP.
   asio::ssl::context tls_;

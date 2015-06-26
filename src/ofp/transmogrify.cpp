@@ -545,6 +545,8 @@ void Transmogrify::normalizeMultipartReplyV1() {
     while (offset < buf_.size())
       normalizeMPPortOrQueueStatsReplyV1(&offset, 32);
     assert(offset == buf_.size());
+  } else if (replyType == OFPMP_PORT_DESC) {
+    normalizeMPPortDescReplyV1();
   }
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
@@ -568,6 +570,8 @@ void Transmogrify::normalizeMultipartReplyV2() {
     while (offset < buf_.size())
       normalizeMPPortStatsReplyV2(&offset);
     assert(offset == buf_.size());
+  } else if (replyType == OFPMP_PORT_DESC) {
+    normalizeMPPortDescReplyV4();
   }
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
@@ -595,6 +599,8 @@ void Transmogrify::normalizeMultipartReplyV3() {
     while (offset < buf_.size())
       normalizeMPPortOrQueueStatsReplyV3(&offset, 32);
     assert(offset == buf_.size());
+  } else if (replyType == OFPMP_PORT_DESC) {
+    normalizeMPPortDescReplyV4();
   }
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
@@ -619,7 +625,7 @@ void Transmogrify::normalizeMultipartReplyV4() {
       normalizeMPPortStatsReplyV4(&offset);
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_PORT_DESC) {
-    normalizeMPPortDescReplyAllV4();
+    normalizeMPPortDescReplyV4();
   } else if (replyType == OFPMP_TABLE) {
     while (offset < buf_.size())
       normalizeMPTableStatsReplyV4(&offset);
@@ -824,7 +830,40 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV3(size_t *start,
   *start += len + 8;
 }
 
-void Transmogrify::normalizeMPPortDescReplyAllV4() {
+void Transmogrify::normalizeMPPortDescReplyV1() {
+  using deprecated::PortV1;
+
+  // Verify size of port list.
+  size_t portListSize = buf_.size() - sizeof(MultipartReply);
+  if ((portListSize % sizeof(PortV1)) != 0) {
+    log::debug("Invalid PortDesc port list size.");
+    return;
+  }
+
+  // Normalize the port structures from V1 to normal size.
+  size_t portCount = portListSize / sizeof(PortV1);
+  UInt8 *pkt = buf_.mutableData();
+  const PortV1 *portV1 =
+      reinterpret_cast<const PortV1 *>(pkt + sizeof(MultipartReply));
+
+  PortList ports;
+  for (size_t i = 0; i < portCount; ++i) {
+    PortBuilder newPort{*portV1};
+    ports.add(newPort);
+    ++portV1;
+  }
+
+  // Copy new port list into packet.
+  buf_.addUninitialized(ports.size() - portListSize);
+  pkt = buf_.mutableData();
+  assert(buf_.size() == sizeof(MultipartReply) + ports.size());
+  std::memcpy(pkt + sizeof(MultipartReply), ports.data(), ports.size());
+
+  // Update header length. N.B. Make sure we use current header ptr.
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeMPPortDescReplyV4() {
   using deprecated::PortV2;
 
   // Verify size of port list.

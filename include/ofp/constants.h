@@ -240,23 +240,21 @@ enum OFPControllerMaxLen : UInt16 {
   OFPCML_NO_BUFFER = 0xffff
 };
 
-// Table numbering. Tables can use any number up to OFPT_MAX.
-enum OFPTableNo : UInt8 {
-  // Last usable table number.
-  OFPTT_MAX = 0xfe,
-  // Fake tables.
-  OFPTT_ALL = 0xff
+enum OFPTableNo : UInt8 { OFPTT_MAX = 0xfe, OFPTT_ALL = 0xff };
+
+enum OFPGroupNo : UInt32 {
+  OFPG_MAX = 0xffffff00,
+  OFPG_ALL = 0xfffffffc,
+  OFPG_ANY = 0xffffffff
 };
 
-// Group numbering. Groups can use any number up to OFPG_MAX.
-enum OFPGroupNo : UInt32 {
-  // Last usable group number.
-  OFPG_MAX = 0xffffff00,
-  // Fake groups.
-  OFPG_ALL = 0xfffffffc,  // Represents all groups for group delete commands.
-  OFPG_ANY = 0xffffffff
-  // Wildcard group used only for flow stats requests. Selects all flows
-  // regardless of group (including flows with no group).
+enum OFPQueueNo : UInt32 { OFPQ_ALL = 0xffffffff };
+
+enum OFPMeterNo : UInt32 {
+  OFPM_MAX = 0xffff0000,
+  OFPM_SLOWPATH = 0xfffffffd,
+  OFPM_CONTROLLER = 0xfffffffe,
+  OFPM_ALL = 0xffffffff
 };
 
 enum OFPMultipartType : UInt16 {
@@ -640,6 +638,19 @@ inline OFPMultipartFlags operator|(OFPMultipartFlags lhs,
   return static_cast<OFPMultipartFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+enum OFPGroupModCommand : UInt16 {
+  OFPGC_ADD = 0,
+  OFPGC_MODIFY = 1,
+  OFPGC_DELETE = 2
+};
+
+enum OFPGroupType : UInt8 {
+  OFPGT_ALL = 0,
+  OFPGT_SELECT = 1,
+  OFPGT_INDIRECT = 2,
+  OFPGT_FF = 3
+};
+
 enum OFPMeterModCommand : UInt16 {
   OFPMC_ADD = 0,
   OFPMC_MODIFY = 1,
@@ -660,6 +671,24 @@ enum OFPMeterConfigFlags : UInt16 {
 inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs,
                                      OFPMeterConfigFlags rhs) {
   return static_cast<OFPMeterConfigFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+enum OFPTableConfigFlags : UInt32 {
+  OFPTC_TABLE_MISS_CONTROLLER = 0,  // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_CONTINUE = 1,    // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_DROP = 2,        // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_MASK = 3,        // 1.1, 1.2 only
+
+  OFPTC_EVICTION = 1 << 2,        // 1.4+
+  OFPTC_VACANCY_EVENTS = 1 << 3,  // 1.4+
+
+  OFPTC_OTHER_TABLE_CONFIG_FLAGS = 0xFFFFFFF0,
+  OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2 = 0xFFFFFFF3
+};
+
+inline OFPTableConfigFlags operator|(OFPTableConfigFlags lhs,
+                                     OFPTableConfigFlags rhs) {
+  return static_cast<OFPTableConfigFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
 enum OFPIPv6ExtHdrFlags : UInt16 {
@@ -683,6 +712,29 @@ enum OFPFlowUpdateEvent : UInt16 {
   OFPFME_PAUSED = 5,
   OFPFME_RESUMED = 6,
 };
+
+enum OFPFlowMonitorCommand : UInt8 {
+  OFPFMC_ADD = 0,
+  OFPFMC_MODIFY = 1,
+  OFPFMC_DELETE = 2,
+};
+
+enum OFPFlowMonitorFlags : UInt16 {
+  OFPFMF_INITIAL = 1 << 0,
+  OFPFMF_ADD = 1 << 1,
+  OFPFMF_REMOVED = 1 << 2,
+  OFPFMF_MODIFY = 1 << 3,
+  OFPFMF_INSTRUCTIONS = 1 << 4,
+  OFPFMF_NO_ABBREV = 1 << 5,
+  OFPFMF_ONLY_OWN = 1 << 6,
+
+  OFPFMF_OTHER_FLOW_MONITOR_FLAGS = 0xffc0
+};
+
+inline OFPFlowMonitorFlags operator|(OFPFlowMonitorFlags lhs,
+                                     OFPFlowMonitorFlags rhs) {
+  return static_cast<OFPFlowMonitorFlags>(static_cast<UInt16>(lhs) | rhs);
+}
 
 }  // namespace ofp
 

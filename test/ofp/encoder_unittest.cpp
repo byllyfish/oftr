@@ -120,7 +120,7 @@ type: ERROR
 version: 3
 xid: 98
 msg:
-  type: OFPET_BAD_ACTION
+  type: BAD_ACTION
   code: OFPBAC_BAD_TAG
   data: 'FFFF1234567890'
 )""";
@@ -1651,7 +1651,7 @@ TEST(encoder, tablemodv4) {
       xid: 0x11111111
       msg:
         table_id: 0x22
-        config: 0x33333333
+        config: [0x33333333]
       )""";
 
   Encoder encoder{input};
@@ -1669,7 +1669,7 @@ TEST(encoder, tablemodv2) {
       xid: 0x11111111
       msg:
         table_id: 0x22
-        config: 0x33333333
+        config: [0x33333333]
       )""";
 
   Encoder encoder{input};
@@ -2339,7 +2339,7 @@ TEST(encoder, ofmp_flowmonitor_request) {
           monitor_id: 0x11111111
           out_port: 0x22222222
           out_group: 0x33333333
-          flags: 0x4444
+          flags: [0x4444]
           table_id: 0x55
           command: 0x66
           match:
@@ -2508,5 +2508,188 @@ TEST(encoder, bundleaddmessagev5) {
   EXPECT_HEX(
       "052200301111111122222222000033330502000A11111111ABCD000000000000FFFF0010"
       "12345678ABCDABCD0000F1F1",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv1) {
+  const char *input = R"""(
+    version: 1
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(108, encoder.size());
+  EXPECT_HEX(
+      "0111006C11111111000D00001111222222222222506F7274203100000000000000000000"
+      "333333334444444455550555666606667777077788880888BBBBCCCCCCCCCCCC506F7274"
+      "20320000000000000000000033333333444444445555055566660666777707778888088"
+      "8",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv2) {
+  const char *input = R"""(
+    version: 2
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(144, encoder.size());
+  EXPECT_HEX(
+      "0213009011111111000D00000000000000001111000000002222222222220000506F7274"
+      "203100000000000000000000333333334444444455555555666666667777777788888888"
+      "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
+      "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
+      "A",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv4) {
+  const char *input = R"""(
+    version: 4
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(144, encoder.size());
+  EXPECT_HEX(
+      "0413009011111111000D00000000000000001111000000002222222222220000506F7274"
+      "203100000000000000000000333333334444444455555555666666667777777788888888"
+      "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
+      "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
+      "A",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv5) {
+  const char *input = R"""(
+    version: 5
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22-22-22-22-22-22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      - port_no: 0xBBBB
+        hw_addr: CC-CC-CC-CC-CC-CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(160, encoder.size());
+  EXPECT_HEX(
+      "051300A011111111000D00000000000000001111004800002222222222220000506F7274"
+      "203100000000000000000000333333334444444400000020000000005555555566666666"
+      "777777778888888899999999AAAAAAAA0000BBBB00480000CCCCCCCCCCCC0000506F7274"
+      "203200000000000000000000333333334444444400000020000000005555555566666666"
+      "777777778888888899999999AAAAAAAA",
       encoder.data(), encoder.size());
 }

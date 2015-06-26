@@ -20,7 +20,7 @@ class PortStatus : public ProtocolMsg<PortStatus, OFPT_PORT_STATUS, 56> {
 
  private:
   Header header_;
-  OFPPortStatusReason reason_;
+  Big<OFPPortStatusReason> reason_;
   Padding<7> pad_;
 
   // Only PortStatusBuilder can create an instance.

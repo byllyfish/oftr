@@ -60,7 +60,7 @@ struct StandardMatch {
   Big64 metadata;
   Big64 metadata_mask;
 
-  StandardMatch();
+  StandardMatch() = default;
   explicit StandardMatch(const OXMRange &range);
   explicit StandardMatch(const OriginalMatch &match);
 

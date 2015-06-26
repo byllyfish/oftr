@@ -11,7 +11,7 @@ namespace yaml {
 const char *const kTableModSchema = R"""({Message/TableMod}
 type: 'TABLE_MOD'
 msg:
-  table_id: UInt8
+  table_id: TableNumber
   config: UInt32
 )""";
 

@@ -104,7 +104,7 @@ UInt32 FlowRemovedBuilder::sendOriginal(Writable *channel) {
   msg_.header_.setLength(msgLen);
   msg_.header_.setXid(xid);
 
-  if (msg_.tableId_ != 0) {
+  if (msg_.tableId_) {
     log::info("FlowRemovedBuilder: tableId not supported in version 1.");
     msg_.tableId_ = 0;
   }

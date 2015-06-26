@@ -54,7 +54,7 @@ class TestController : public ChannelListener {
   static int shutdownCount;
 
  private:
-  Channel *channel_;
+  Channel *channel_ = nullptr;
 };
 
 class TestAgent : public ChannelListener {

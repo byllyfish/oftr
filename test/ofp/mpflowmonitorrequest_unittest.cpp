@@ -5,15 +5,19 @@
 
 using namespace ofp;
 
+const OFPFlowMonitorFlags kFakeFlags = static_cast<OFPFlowMonitorFlags>(0x4444);
+const OFPFlowMonitorCommand kFakeCommand =
+    static_cast<OFPFlowMonitorCommand>(0x66);
+
 TEST(mpflowmonitorrequest, emptyMatch) {
   MPFlowMonitorRequestBuilder msg;
 
   msg.setMonitorId(0x11111111);
   msg.setOutPort(0x22222222);
   msg.setOutGroup(0x33333333);
-  msg.setFlags(0x4444);
+  msg.setFlags(kFakeFlags);
   msg.setTableId(0x55);
-  msg.setCommand(0x66);
+  msg.setCommand(kFakeCommand);
 
   MemoryChannel channel{OFP_VERSION_5};
   msg.write(&channel);
@@ -29,9 +33,9 @@ TEST(mpflowmonitorrequest, withMatch) {
   msg.setMonitorId(0x11111111);
   msg.setOutPort(0x22222222);
   msg.setOutGroup(0x33333333);
-  msg.setFlags(0x4444);
+  msg.setFlags(kFakeFlags);
   msg.setTableId(0x55);
-  msg.setCommand(0x66);
+  msg.setCommand(kFakeCommand);
 
   MatchBuilder match;
   match.add(OFB_ETH_DST{EnetAddress{"AA:11:22:33:44:55"}});

@@ -7,7 +7,7 @@ msg:
 version: 0x04
 type: ERROR
 msg:
-  type: OFPET_BAD_REQUEST
+  type: BAD_REQUEST
   code: OFPBRC_BAD_TYPE
   data: 'ffffffff'
 ---
@@ -165,8 +165,8 @@ msg:
 version: 0x04
 type: GROUP_MOD
 msg:
-  command: 0xffff
-  type: 0xff
+  command: ADD
+  type: ALL
   group_id: 0xffffffff
   buckets:
     - weight: 0xffff
@@ -192,7 +192,7 @@ version: 0x04
 type: TABLE_MOD
 msg:
   table_id: 0xff
-  config: 0xffffffff
+  config: [ 0xffffffff ]
 ---
 version: 0x04
 type: REQUEST.DESC
@@ -533,7 +533,7 @@ msg:
   monitor_id: 0xffffffff
   out_port: 0xffffffff
   out_group: 0xffffffff
-  flags: 0xffff
+  flags: [ NO_ABBREV ]
   table_id: 0xff
   command: 0xff
   match:

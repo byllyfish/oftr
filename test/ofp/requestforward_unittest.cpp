@@ -7,10 +7,13 @@
 
 using namespace ofp;
 
+const OFPGroupModCommand kFakeCommand = static_cast<OFPGroupModCommand>(0x1111);
+const OFPGroupType kFakeType = static_cast<OFPGroupType>(0x22);
+
 TEST(requestforward, test) {
   GroupModBuilder groupMod;
-  groupMod.setCommand(0x1111);
-  groupMod.setGroupType(0x22);
+  groupMod.setCommand(kFakeCommand);
+  groupMod.setGroupType(kFakeType);
   groupMod.setGroupId(0x33333333);
 
   ActionList actions;

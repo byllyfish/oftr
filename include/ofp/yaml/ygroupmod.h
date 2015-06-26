@@ -12,9 +12,9 @@ namespace yaml {
 const char *const kGroupModSchema = R"""({Message/GroupMod}
 type: 'GROUP_MOD'
 msg:
-  command: UInt16
-  type: UInt8
-  group_id: UInt32
+  command: GroupModCommand
+  type: GroupType
+  group_id: GroupNumber
   buckets: [{Bucket}...]
 )""";
 

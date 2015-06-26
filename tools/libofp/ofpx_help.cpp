@@ -59,8 +59,8 @@ static const char *const kMessageSchemas[] = {
     llvm::yaml::kGetAsyncReplySchema, llvm::yaml::kSetAsyncSchema,
     llvm::yaml::kMeterModSchema, llvm::yaml::kRoleStatusSchema,
     // llvm::yaml::kTableStatusSchema,
-    llvm::yaml::kRequestForwardSchema,
-    llvm::yaml::kBundleControlSchema, llvm::yaml::kBundleAddMessageSchema,
+    llvm::yaml::kRequestForwardSchema, llvm::yaml::kBundleControlSchema,
+    llvm::yaml::kBundleAddMessageSchema,
 };
 
 static const char *const kInstructionSchemas[] = {
@@ -195,7 +195,7 @@ void Help::loadSchemas() {
     // into multiple schema objects.
     if (schema[0] == '\n') {
       llvm::SmallVector<llvm::StringRef, 25> vals;
-      llvm::StringRef{schema+1}.split(vals, "\n\n", -1, false);
+      llvm::StringRef{schema + 1}.split(vals, "\n\n", -1, false);
       for (auto val : vals) {
         schemas_.emplace_back(new Schema{val});
       }

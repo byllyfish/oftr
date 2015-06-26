@@ -23,11 +23,17 @@ class ByteRange {
 
   constexpr const UInt8 *data() const { return begin_; }
   constexpr size_t size() const { return Unsigned_cast(end_ - begin_); }
+  constexpr bool empty() const { return begin_ == end_; }
 
   bool operator==(const ByteRange &rhs) const {
     return size() == rhs.size() && std::equal(begin_, end_, rhs.data());
   }
   bool operator!=(const ByteRange &rhs) const { return !(*this == rhs); }
+
+  const UInt8 &operator[](size_t indx) const {
+    assert(indx < size());
+    return begin_[indx];
+  }
 
   bool isPrintable() const;
 

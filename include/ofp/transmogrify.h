@@ -43,7 +43,8 @@ class Transmogrify {
   void normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len);
   void normalizeMPPortStatsRequestV1();
   void normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len);
-  void normalizeMPPortDescReplyAllV4();
+  void normalizeMPPortDescReplyV1();
+  void normalizeMPPortDescReplyV4();
   void normalizeMPPortStatsReplyV1(size_t *start);
   void normalizeMPPortStatsReplyV2(size_t *start);
   void normalizeMPPortStatsReplyV4(size_t *start);

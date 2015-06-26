@@ -75,6 +75,7 @@ static OFPErrorType typeToEnum(UInt8 version, UInt16 type, UInt16 code) {
 
   if (version == OFP_VERSION_1) {
     // Map the OFPFMFC_UNSUPPORTED error code to OFPET_BAD_ACTION type.
+    // coverity[mixed_enums] (Coverity infers type is an OFPErrorType)
     if (type == V1_OFPET_FLOW_MOD_FAILED) {
       return code == V1_OFPFMFC_UNSUPPORTED ? OFPET_BAD_ACTION
                                             : OFPET_FLOW_MOD_FAILED;
@@ -137,6 +138,7 @@ static OFPErrorCode codeToEnum(UInt8 version, UInt16 type, UInt16 code) {
   }
 
   if (version == OFP_VERSION_1) {
+    // coverity[mixed_enums] (Coverity infers type is an OFPErrorType)
     if (type == V1_OFPET_BAD_ACTION && code == V1_OFPFMFC_UNSUPPORTED) {
       return OFPBAC_UNSUPPORTED_ORDER;
     } else if (type == V1_OFPET_FLOW_MOD_FAILED) {
@@ -167,6 +169,38 @@ OFPErrorType Error::errorType() const {
 
 OFPErrorCode Error::errorCode() const {
   return codeToEnum(msgHeader()->version(), type_, code_);
+}
+
+/// Return a textual description of the error data value.
+std::string Error::errorText() const {
+  ByteRange data = errorData();
+
+  if (data.isPrintable()) {
+    return std::string{reinterpret_cast<const char *>(data.data()),
+                       data.size()};
+  }
+
+  if (data.size() < 12) {
+    return "";
+  }
+
+  // Determine the message type.
+  if (data[0] <= OFP_VERSION_MAX_ALLOWED) {
+    OFPType msgType = Header::translateType(data[0], data[1], OFP_VERSION_4);
+    if (msgType != OFPT_UNSUPPORTED) {
+      std::stringstream ss;
+      ss << "Type: " << msgType;
+      if (msgType == OFPT_MULTIPART_REQUEST ||
+          msgType == OFPT_MULTIPART_REPLY) {
+        UInt16 type = *Big16_cast(data.data() + 8);
+        OFPMultipartType mpType = static_cast<OFPMultipartType>(type);
+        ss << "." << mpType;
+      }
+      return ss.str();
+    }
+  }
+
+  return "";
 }
 
 ErrorBuilder::ErrorBuilder(UInt32 xid) {

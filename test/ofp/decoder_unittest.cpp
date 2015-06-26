@@ -82,9 +82,18 @@ TEST(decoder, errorv1) {
       "010100130000006200010001FFFF1234567890",
       "---\ntype:            ERROR\nxid:             "
       "0x00000062\nversion:         0x01\nmsg:             \n  type:      "
-      "      OFPET_BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:    "
+      "      BAD_REQUEST\n  code:            OFPBRC_BAD_TYPE\n  data:    "
       "        "
       "FFFF1234567890\n...\n");
+}
+
+TEST(decoder, errorv1_2) {
+  testDecodeEncode(
+      "01010018000000620001000101111234567890AA00010000",
+      "---\ntype:            ERROR\nxid:             0x00000062\nversion:      "
+      "   0x01\nmsg:             \n  type:            BAD_REQUEST\n  code:     "
+      "       OFPBRC_BAD_TYPE\n  data:            01111234567890AA00010000\n  "
+      "_text:           'Type: OFPT_MULTIPART_REPLY.OFPMP_FLOW'\n...\n");
 }
 
 TEST(decoder, echoRequest) {
@@ -907,18 +916,18 @@ TEST(decoder, portmodv5) {
 
 TEST(decoder, tablemodv4) {
   testDecodeEncode(
-      "04110010111111112200000033333333",
+      "04110010111111112200000033333330",
       "---\ntype:            TABLE_MOD\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "table_id:        0x22\n  config:          0x33333333\n...\n");
+      "table_id:        0x22\n  config:          [ '0x33333330' ]\n...\n");
 }
 
 TEST(decoder, tablemodv2) {
-  testDecodeEncode(
-      "02110010111111112200000033333333",
-      "---\ntype:            TABLE_MOD\nxid:             "
-      "0x11111111\nversion:         0x02\nmsg:             \n  "
-      "table_id:        0x22\n  config:          0x33333333\n...\n");
+  testDecodeEncode("02110010111111112200000033333330",
+                   "---\ntype:            TABLE_MOD\nxid:             "
+                   "0x11111111\nversion:         0x02\nmsg:             \n  "
+                   "table_id:        0x22\n  config:          [ "
+                   "TABLE_MISS_CONTROLLER, '0x33333330' ]\n...\n");
 }
 
 TEST(decoder, rolerequestv4) {
@@ -1303,9 +1312,10 @@ TEST(decoder, ofmp_flowmonitor_request) {
       "---\ntype:            REQUEST.FLOW_MONITOR\nflags:           [  ]\nxid: "
       "            0x11111111\nversion:         0x05\nmsg:             \n  "
       "monitor_id:      0x11111111\n  out_port:        0x22222222\n  "
-      "out_group:       0x33333333\n  flags:           0x4444\n  table_id:     "
-      "   0x55\n  command:         0x66\n  match:           \n    - field:     "
-      "      IN_PORT\n      value:           0x12345678\n...\n");
+      "out_group:       0x33333333\n  flags:           [ REMOVED, ONLY_OWN, "
+      "'0x00004440' ]\n  table_id:        0x55\n  command:         0x66\n  "
+      "match:           \n    - field:           IN_PORT\n      value:         "
+      "  0x12345678\n...\n");
 }
 
 TEST(decoder, ofmp_flowmonitor_reply) {
@@ -1404,4 +1414,176 @@ TEST(decoder, ofmp_portdescv4_reply) {
       "100MB_FD, COPPER, AUTONEG ]\n      peer:            [ 100MB_FD, COPPER, "
       "AUTONEG ]\n      curr_speed:      0x00001388\n      max_speed:       "
       "0x00001388\n    properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_portdescv1_reply) {
+  testDecodeEncode(
+      "011100CC00000000000D0000000362D37D762C7073312D65746833000000000000000000"
+      "0000000000000000000000C0000000000000000000000000000172DEF2D61E0C73312D65"
+      "7468310000000000000000000000000000000000000000C0000000000000000000000000"
+      "00027EE6C789081673312D657468320000000000000000000000000000000000000000C0"
+      "000000000000000000000000FFFEBA265A8B1E4573310000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x00000000\nversion:         0x01\nmsg:             \n  - "
+      "port_no:         0x00000003\n    hw_addr:         '62:d3:7d:76:2c:70'\n "
+      "   name:            s1-eth3\n    config:          [  ]\n    state:      "
+      "     [ STP_LISTEN ]\n    ethernet:        \n      curr:            [ "
+      "10GB_FD, COPPER ]\n      advertised:      [  ]\n      supported:       "
+      "[  ]\n      peer:            [  ]\n      curr_speed:      0x00000000\n  "
+      "    max_speed:       0x00000000\n    properties:      \n  - port_no:    "
+      "     0x00000001\n    hw_addr:         '72:de:f2:d6:1e:0c'\n    name:    "
+      "        s1-eth1\n    config:          [  ]\n    state:           [ "
+      "STP_LISTEN ]\n    ethernet:        \n      curr:            [ 10GB_FD, "
+      "COPPER ]\n      advertised:      [  ]\n      supported:       [  ]\n    "
+      "  peer:            [  ]\n      curr_speed:      0x00000000\n      "
+      "max_speed:       0x00000000\n    properties:      \n  - port_no:        "
+      " 0x00000002\n    hw_addr:         '7e:e6:c7:89:08:16'\n    name:        "
+      "    s1-eth2\n    config:          [  ]\n    state:           [ "
+      "STP_LISTEN ]\n    ethernet:        \n      curr:            [ 10GB_FD, "
+      "COPPER ]\n      advertised:      [  ]\n      supported:       [  ]\n    "
+      "  peer:            [  ]\n      curr_speed:      0x00000000\n      "
+      "max_speed:       0x00000000\n    properties:      \n  - port_no:        "
+      " LOCAL\n    hw_addr:         'ba:26:5a:8b:1e:45'\n    name:            "
+      "s1\n    config:          [  ]\n    state:           [ STP_LISTEN ]\n    "
+      "ethernet:        \n      curr:            [  ]\n      advertised:      "
+      "[  ]\n      supported:       [  ]\n      peer:            [  ]\n      "
+      "curr_speed:      0x00000000\n      max_speed:       0x00000000\n    "
+      "properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_portdescv2_reply) {
+  testDecodeEncode(
+      "0213009011111111000D00000000000000001111000000002222222222220000506F7274"
+      "203100000000000000000000333333334444444455555555666666667777777788888888"
+      "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
+      "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
+      "A",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x02\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    ethernet:        \n      curr:            [ "
+      "10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, "
+      "'0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, "
+      "10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n      "
+      "supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, "
+      "100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      "
+      "peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' "
+      "]\n      curr_speed:      0x99999999\n      max_speed:       "
+      "0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    "
+      "hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    "
+      "config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' "
+      "]\n    state:           [ LIVE, '0x44444440' ]\n    ethernet:        \n "
+      "     curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, "
+      "OTHER, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, "
+      "100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' "
+      "]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' "
+      "]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, "
+      "'0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:     "
+      "  0xAAAAAAAA\n    properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_portdescv3_reply) {
+  testDecodeEncode(
+      "0313009011111111000D00000000000000001111000000002222222222220000506F7274"
+      "203100000000000000000000333333334444444455555555666666667777777788888888"
+      "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
+      "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
+      "A",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x03\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    ethernet:        \n      curr:            [ "
+      "10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, "
+      "'0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, "
+      "10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n      "
+      "supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, "
+      "100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      "
+      "peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' "
+      "]\n      curr_speed:      0x99999999\n      max_speed:       "
+      "0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    "
+      "hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    "
+      "config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' "
+      "]\n    state:           [ LIVE, '0x44444440' ]\n    ethernet:        \n "
+      "     curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, "
+      "OTHER, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, "
+      "100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' "
+      "]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' "
+      "]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, "
+      "'0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:     "
+      "  0xAAAAAAAA\n    properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_portdescv4_reply2) {
+  testDecodeEncode(
+      "0413009011111111000D00000000000000001111000000002222222222220000506F7274"
+      "203100000000000000000000333333334444444455555555666666667777777788888888"
+      "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
+      "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
+      "A",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x04\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    ethernet:        \n      curr:            [ "
+      "10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, "
+      "'0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, "
+      "10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n      "
+      "supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, "
+      "100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      "
+      "peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' "
+      "]\n      curr_speed:      0x99999999\n      max_speed:       "
+      "0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    "
+      "hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    "
+      "config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' "
+      "]\n    state:           [ LIVE, '0x44444440' ]\n    ethernet:        \n "
+      "     curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, "
+      "OTHER, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, "
+      "100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' "
+      "]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' "
+      "]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, "
+      "'0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:     "
+      "  0xAAAAAAAA\n    properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_portdescv5_reply) {
+  testDecodeEncode(
+      "051300A011111111000D00000000000000001111004800002222222222220000506F7274"
+      "203100000000000000000000333333334444444400000020000000005555555566666666"
+      "777777778888888899999999AAAAAAAA0000BBBB00480000CCCCCCCCCCCC0000506F7274"
+      "203200000000000000000000333333334444444400000020000000005555555566666666"
+      "777777778888888899999999AAAAAAAA",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x05\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    ethernet:        \n      curr:            [ "
+      "10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, "
+      "'0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, "
+      "10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n      "
+      "supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, "
+      "100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      "
+      "peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' "
+      "]\n      curr_speed:      0x99999999\n      max_speed:       "
+      "0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    "
+      "hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    "
+      "config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' "
+      "]\n    state:           [ LIVE, '0x44444440' ]\n    ethernet:        \n "
+      "     curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, "
+      "OTHER, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, "
+      "100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' "
+      "]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' "
+      "]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, "
+      "'0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:     "
+      "  0xAAAAAAAA\n    properties:      \n...\n");
 }

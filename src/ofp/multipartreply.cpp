@@ -64,7 +64,7 @@ bool MultipartReply::validateInput(Validation *context) const {
                                                                  OFP_VERSION_4);
     case OFPMP_PORT_DESC:
       return context->validateArrayVariableSize<Port>(replyBody(),
-                                                      OFP_VERSION_4);
+                                                      OFP_VERSION_1);
     case OFPMP_TABLE_DESC:
       return false;
     case OFPMP_QUEUE_DESC:
@@ -100,7 +100,7 @@ UInt32 MultipartReplyBuilder::send(Writable *channel) {
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
 
   if (version == OFP_VERSION_1) {
-    msg_.header_.setType(deprecated::v1::OFPT_STATS_REPLY);
+    msg_.header_.setRawType(deprecated::v1::OFPT_STATS_REPLY);
     channel->write(&msg_, MultipartReply::UnpaddedSizeVersion1);
   } else {
     msg_.header_.setType(OFPT_MULTIPART_REPLY);

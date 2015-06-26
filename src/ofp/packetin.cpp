@@ -107,7 +107,7 @@ OFPPacketInReason PacketIn::reason() const {
   }
 }
 
-UInt8 PacketIn::tableID() const {
+TableNumber PacketIn::tableID() const {
   switch (version()) {
     case OFP_VERSION_1:
       return 0;

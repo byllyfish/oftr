@@ -48,7 +48,7 @@ struct RpcErrorResponse {
   std::string toJson();
 
   struct Error {
-    int code;
+    int code = 0;
     std::string message;
   };
 
@@ -90,7 +90,7 @@ struct RpcListenResponse {
 
   struct Result {
     /// Connection ID of listening connection.
-    UInt64 connId;
+    UInt64 connId = 0;
   };
 
   UInt64 id;
@@ -121,7 +121,7 @@ struct RpcConnectResponse {
 
   struct Result {
     /// Connection ID of outgoing connection.
-    UInt64 connId;
+    UInt64 connId = 0;
   };
 
   UInt64 id;
@@ -134,7 +134,7 @@ struct RpcClose {
 
   struct Params {
     /// Connection ID to close.
-    UInt64 connId;
+    UInt64 connId = 0;
   };
 
   UInt64 id;
@@ -148,7 +148,7 @@ struct RpcCloseResponse {
 
   struct Result {
     /// Count of closed connections.
-    UInt32 count;
+    UInt32 count = 0;
   };
 
   UInt64 id;
@@ -157,10 +157,10 @@ struct RpcCloseResponse {
 
 /// Represents a RPC request to list connection stats (METHOD_LIST_CONNS)
 struct RpcListConns {
-  explicit RpcListConns(UInt64 ident) : id{ident} { params.connId = 0; }
+  explicit RpcListConns(UInt64 ident) : id{ident} {}
 
   struct Params {
-    UInt64 connId;
+    UInt64 connId = 0;
   };
 
   UInt64 id;
@@ -201,7 +201,7 @@ struct RpcAddIdentityResponse {
 
   struct Result {
     /// Security ID of identity added.
-    UInt64 securityId;
+    UInt64 securityId = 0;
   };
 
   UInt64 id;
@@ -223,7 +223,7 @@ struct RpcSendResponse {
   std::string toJson();
 
   struct Result {
-    UInt64 connId;
+    UInt64 connId = 0;
     ByteRange data;
   };
 
@@ -236,7 +236,7 @@ struct RpcChannel {
   std::string toJson();
 
   struct Params {
-    UInt64 connId;
+    UInt64 connId = 0;
     DatapathID datapathId;
     std::string status;
     UInt8 version{};

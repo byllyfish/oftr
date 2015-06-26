@@ -8,6 +8,7 @@
 #include "ofp/matchbuilder.h"
 #include "ofp/matchheader.h"
 #include "ofp/bufferid.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -22,7 +23,7 @@ class PacketIn
   UInt32 inPhyPort() const;
   UInt64 metadata() const;
   OFPPacketInReason reason() const;
-  UInt8 tableID() const;
+  TableNumber tableID() const;
   UInt64 cookie() const;
 
   Match match() const;
@@ -34,8 +35,8 @@ class PacketIn
   Header header_;
   BufferID bufferId_;
   Big16 totalLen_;
-  OFPPacketInReason reason_;
-  Big8 tableID_;
+  Big<OFPPacketInReason> reason_;
+  TableNumber tableID_;
   Big64 cookie_;
 
   MatchHeader matchHeader_;
@@ -80,7 +81,7 @@ class PacketInBuilder {
   void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }
   void setMetadata(UInt64 metadata) { metadata_ = metadata; }
   void setReason(OFPPacketInReason reason) { msg_.reason_ = reason; }
-  void setTableID(UInt8 tableID) { msg_.tableID_ = tableID; }
+  void setTableID(TableNumber tableID) { msg_.tableID_ = tableID; }
   void setCookie(UInt64 cookie) { msg_.cookie_ = cookie; }
 
   void setEnetFrame(const ByteRange &enetFrame) { enetFrame_ = enetFrame; }
