@@ -4,11 +4,28 @@ before_install:
   - sudo add-apt-repository --yes ppa:kalakris/cmake 
   - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
+install:
   - sudo apt-get install -y cmake g++-4.8
-script: 
+script:
   - export CXX="g++-4.8"
-  - mkdir Build && cd Build
+  - mkdir -p Build && cd Build
   - cmake .. && ctest -D Experimental
 branches:
   except:
     - /^v\d+.*$/  # Skip tagged releases
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "gGSGCJVw6brriRha8ysR9JB5+LZJIZDihqibtlnmrYVFw6DdJ1mWWsYNUiYR7uLOBfssXDvoCUyqcr2mX3p3DDk4u/liBWiQn119UNuS6vEjWABcUNvziM3WKkn6zAszOx1H5X7SNFAwOcQ2wGUpq3LUdxM/nvzlF5hDsP0+LfL0IoNiwj31yseZiQaKQX0GdOfF8aGljv9YBW6UwsyQ+bbq+lATH9RITBMu5XPmppEnFzFuKoFUUeuTbvLXLoaacUJ/WG91NLWpVSVJSQ7nM/CMTwPs2TCvzKWggErj/m3csyegCPnAMtMwAuffTjqZraAoAOFcmdAy7jEKZJs7hAxcYEfuoqdmjpstEHY1G4OooFFhjceqzEY/KJkBivND92+i2B0UiYz+LuKaBw5i5yPv3PNUTQADCePR/0YlR/PQcrk0gG8cP2rlTFXAkFkt/4dagQzPNf1f2qxKB2GsaaQechdPib76ed1/ZNL9sHCLlGvUaEt1H8KZvX4X+bwqmrD6VGETMC0oXy8NVJYMSl+sjAUkriDzAO4zepDIFCe8Zfk5CVunsRh4duxRHlDRmobNlPjpDZ9JMnj8MnxkW4bJOgW3dW6+H+mtc1/BzW4ytJuMkqy2p6rZ5F9fVm+enjg4A4oQ8N4sFk9WuiFP420/HSOm4M0I53NPmpXNFc8="
+
+addons:
+  coverity_scan:
+    project:
+      name: "byllyfish/libofp"
+      description: "Build submitted via Travis CI"
+    notification_email: william.w.fisher@gmail.com
+    build_command_prepend: 'export CXX="g++-4.8" && mkdir -p Build && cd Build && cmake .. && make clean'
+    build_command:   make
+    branch_pattern: coverity_scan
