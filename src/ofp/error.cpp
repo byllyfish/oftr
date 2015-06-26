@@ -176,7 +176,8 @@ std::string Error::errorText() const {
   ByteRange data = errorData();
 
   if (data.isPrintable()) {
-    return std::string{reinterpret_cast<const char *>(data.data()), data.size()};
+    return std::string{reinterpret_cast<const char *>(data.data()),
+                       data.size()};
   }
 
   if (data.size() < 12) {
@@ -189,7 +190,8 @@ std::string Error::errorText() const {
     if (msgType != OFPT_UNSUPPORTED) {
       std::stringstream ss;
       ss << "Type: " << msgType;
-      if (msgType == OFPT_MULTIPART_REQUEST || msgType == OFPT_MULTIPART_REPLY) {
+      if (msgType == OFPT_MULTIPART_REQUEST ||
+          msgType == OFPT_MULTIPART_REPLY) {
         UInt16 type = *Big16_cast(data.data() + 8);
         OFPMultipartType mpType = static_cast<OFPMultipartType>(type);
         ss << "." << mpType;

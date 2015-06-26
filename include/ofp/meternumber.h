@@ -33,4 +33,4 @@ static_assert(sizeof(MeterNumber) == 4, "Unexpected size.");
 
 }  // namespace ofp
 
-#endif // OFP_METERNUMBER_H_
+#endif  // OFP_METERNUMBER_H_

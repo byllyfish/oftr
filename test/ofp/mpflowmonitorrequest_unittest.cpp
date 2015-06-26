@@ -6,7 +6,8 @@
 using namespace ofp;
 
 const OFPFlowMonitorFlags kFakeFlags = static_cast<OFPFlowMonitorFlags>(0x4444);
-const OFPFlowMonitorCommand kFakeCommand = static_cast<OFPFlowMonitorCommand>(0x66);
+const OFPFlowMonitorCommand kFakeCommand =
+    static_cast<OFPFlowMonitorCommand>(0x66);
 
 TEST(mpflowmonitorrequest, emptyMatch) {
   MPFlowMonitorRequestBuilder msg;

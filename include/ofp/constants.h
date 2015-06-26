@@ -240,10 +240,7 @@ enum OFPControllerMaxLen : UInt16 {
   OFPCML_NO_BUFFER = 0xffff
 };
 
-enum OFPTableNo : UInt8 {
-  OFPTT_MAX = 0xfe,
-  OFPTT_ALL = 0xff
-};
+enum OFPTableNo : UInt8 { OFPTT_MAX = 0xfe, OFPTT_ALL = 0xff };
 
 enum OFPGroupNo : UInt32 {
   OFPG_MAX = 0xffffff00,
@@ -251,9 +248,7 @@ enum OFPGroupNo : UInt32 {
   OFPG_ANY = 0xffffffff
 };
 
-enum OFPQueueNo : UInt32 {
-  OFPQ_ALL = 0xffffffff
-};
+enum OFPQueueNo : UInt32 { OFPQ_ALL = 0xffffffff };
 
 enum OFPMeterNo : UInt32 {
   OFPM_MAX = 0xffff0000,
@@ -644,16 +639,16 @@ inline OFPMultipartFlags operator|(OFPMultipartFlags lhs,
 }
 
 enum OFPGroupModCommand : UInt16 {
-  OFPGC_ADD    = 0,
+  OFPGC_ADD = 0,
   OFPGC_MODIFY = 1,
   OFPGC_DELETE = 2
 };
 
 enum OFPGroupType : UInt8 {
-  OFPGT_ALL      = 0,
-  OFPGT_SELECT   = 1,
+  OFPGT_ALL = 0,
+  OFPGT_SELECT = 1,
   OFPGT_INDIRECT = 2,
-  OFPGT_FF       = 3
+  OFPGT_FF = 3
 };
 
 enum OFPMeterModCommand : UInt16 {
@@ -679,13 +674,13 @@ inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs,
 }
 
 enum OFPTableConfigFlags : UInt32 {
-  OFPTC_TABLE_MISS_CONTROLLER = 0,    // 1.1, 1.2 only
-  OFPTC_TABLE_MISS_CONTINUE = 1,      // 1.1, 1.2 only
-  OFPTC_TABLE_MISS_DROP = 2,          // 1.1, 1.2 only
-  OFPTC_TABLE_MISS_MASK = 3,          // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_CONTROLLER = 0,  // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_CONTINUE = 1,    // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_DROP = 2,        // 1.1, 1.2 only
+  OFPTC_TABLE_MISS_MASK = 3,        // 1.1, 1.2 only
 
-  OFPTC_EVICTION = 1 << 2,            // 1.4+
-  OFPTC_VACANCY_EVENTS = 1 << 3,      // 1.4+
+  OFPTC_EVICTION = 1 << 2,        // 1.4+
+  OFPTC_VACANCY_EVENTS = 1 << 3,  // 1.4+
 
   OFPTC_OTHER_TABLE_CONFIG_FLAGS = 0xFFFFFFF0,
   OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2 = 0xFFFFFFF3
@@ -725,12 +720,12 @@ enum OFPFlowMonitorCommand : UInt8 {
 };
 
 enum OFPFlowMonitorFlags : UInt16 {
-  OFPFMF_INITIAL = 1 << 0, 
-  OFPFMF_ADD = 1 << 1, 
-  OFPFMF_REMOVED = 1 << 2, 
+  OFPFMF_INITIAL = 1 << 0,
+  OFPFMF_ADD = 1 << 1,
+  OFPFMF_REMOVED = 1 << 2,
   OFPFMF_MODIFY = 1 << 3,
   OFPFMF_INSTRUCTIONS = 1 << 4,
-  OFPFMF_NO_ABBREV = 1 << 5, 
+  OFPFMF_NO_ABBREV = 1 << 5,
   OFPFMF_ONLY_OWN = 1 << 6,
 
   OFPFMF_OTHER_FLOW_MONITOR_FLAGS = 0xffc0
