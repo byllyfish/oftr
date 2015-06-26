@@ -1,9 +1,12 @@
-= LIBOFP: OpenFlow to YAML Converter image:https://travis-ci.org/byllyfish/libofp.svg?branch=develop["Build Status", link="https://travis-ci.org/byllyfish/libofp"]
+= LIBOFP: OpenFlow to YAML Converter
 :icons: font
 :toc:
 ifdef::env-github[]
 :toc-placement: preamble
 endif::[]
+
+image:https://travis-ci.org/byllyfish/libofp.svg?branch=develop["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/libofp"]
+image:https://scan.coverity.com/projects/5587/badge.svg["Coverity Scan Build Status", link="https://scan.coverity.com/projects/5587"]
 
 == What is Libofp?
 
