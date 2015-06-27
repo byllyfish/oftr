@@ -70,19 +70,18 @@ static const llvm::StringRef sGroupType[] = {
 };
 
 static const llvm::StringRef sErrorTypes[] = {
-    "HELLO_FAILED", "BAD_REQUEST", "BAD_ACTION",
-    "BAD_INSTRUCTION", "BAD_MATCH", "FLOW_MOD_FAILED",
-    "GROUP_MOD_FAILED", "PORT_MOD_FAILED", "TABLE_MOD_FAILED",
-    "QUEUE_OP_FAILED", "SWITCH_CONFIG_FAILED",
-    "ROLE_REQUEST_FAILED", "METER_MOD_FAILED",
-    "TABLE_FEATURES_FAILED", "BAD_PROPERTY", "ASYNC_CONFIG_FAILED", 
-    "FLOW_MONITOR_FAILED", "BUNDLE_FAILED"};
+    "HELLO_FAILED", "BAD_REQUEST", "BAD_ACTION", "BAD_INSTRUCTION", "BAD_MATCH",
+    "FLOW_MOD_FAILED", "GROUP_MOD_FAILED", "PORT_MOD_FAILED",
+    "TABLE_MOD_FAILED", "QUEUE_OP_FAILED", "SWITCH_CONFIG_FAILED",
+    "ROLE_REQUEST_FAILED", "METER_MOD_FAILED", "TABLE_FEATURES_FAILED",
+    "BAD_PROPERTY", "ASYNC_CONFIG_FAILED", "FLOW_MONITOR_FAILED",
+    "BUNDLE_FAILED"};
 
 static const llvm::StringRef sFlowUpdateEvent[] = {
     "INITIAL", "ADDED", "REMOVED", "MODIFIED", "ABBREV", "PAUSED", "RESUMED"};
 
-static const llvm::StringRef sFlowMonitorCommand[] = {
-    "ADD", "MODIFY", "DELETE"};
+static const llvm::StringRef sFlowMonitorCommand[] = {"ADD", "MODIFY",
+                                                      "DELETE"};
 
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
@@ -120,8 +119,8 @@ EnumConverter<OFPMeterModCommand>
 EnumConverter<OFPGroupModCommand>
     llvm::yaml::ScalarTraits<OFPGroupModCommand>::converter{sGroupModCommand};
 
-EnumConverter<OFPGroupType>
-    llvm::yaml::ScalarTraits<OFPGroupType>::converter{sGroupType};
+EnumConverter<OFPGroupType> llvm::yaml::ScalarTraits<OFPGroupType>::converter{
+    sGroupType};
 
 EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
     sErrorTypes, "EXPERIMENTER"};
@@ -129,7 +128,9 @@ EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
 EnumConverter<OFPFlowUpdateEvent>
     llvm::yaml::ScalarTraits<OFPFlowUpdateEvent>::converter{sFlowUpdateEvent};
 
-EnumConverter<OFPFlowMonitorCommand> llvm::yaml::ScalarTraits<OFPFlowMonitorCommand>::converter{sFlowMonitorCommand};
+EnumConverter<OFPFlowMonitorCommand>
+    llvm::yaml::ScalarTraits<OFPFlowMonitorCommand>::converter{
+        sFlowMonitorCommand};
 
 #define STR_ENTRY(s) \
   { s, #s }

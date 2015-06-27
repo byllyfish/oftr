@@ -48,7 +48,7 @@ struct RpcErrorResponse {
   std::string toJson();
 
   struct Error {
-    int code;
+    int code = 0;
     std::string message;
   };
 
@@ -90,7 +90,7 @@ struct RpcListenResponse {
 
   struct Result {
     /// Connection ID of listening connection.
-    UInt64 connId;
+    UInt64 connId = 0;
   };
 
   UInt64 id;
@@ -121,7 +121,7 @@ struct RpcConnectResponse {
 
   struct Result {
     /// Connection ID of outgoing connection.
-    UInt64 connId;
+    UInt64 connId = 0;
   };
 
   UInt64 id;

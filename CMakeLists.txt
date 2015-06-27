@@ -29,7 +29,7 @@ set(CMAKE_MODULE_PATH
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 3)
+set(Libofp_VERSION_MINOR 4)
 set(Libofp_VERSION_PATCH 0)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
@@ -63,13 +63,18 @@ set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 
 set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include -isystem ${CMAKE_BINARY_DIR}/external/yaml-io/include -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
 
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
+  # MSVC does not support -isystem; replace -isystem with -I
+  string(REPLACE -isystem -I LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES}")
+endif()
+
 # Specify additional definitions.
 
 set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS")
 #set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
 # -D ASIO_NO_DEPRECATED -D ASIO_NO_IOSTREAM 
 
-if (APPLE AND UNIX)
+if(APPLE AND UNIX)
   set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D LIBOFP_TARGET_DARWIN")
 endif()
 
@@ -81,7 +86,7 @@ endif()
 set(LIBOFP_C_FLAGS "-fstrict-aliasing")
 set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11")
 
-if (APPLE AND UNIX)
+if(APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
 endif()
 
@@ -89,7 +94,7 @@ endif()
 # test/CMakeLists.txt.
 
 set(LIBOFP_SOURCES
-	src/ofp/actionrange.cpp
+  src/ofp/actionrange.cpp
   src/ofp/actiontype.cpp
   src/ofp/mpaggregatestatsreply.cpp
   src/ofp/bucket.cpp
@@ -98,38 +103,38 @@ set(LIBOFP_SOURCES
   src/ofp/bundlecontrol.cpp
   src/ofp/bytelist.cpp
   src/ofp/byterange.cpp
-	src/ofp/channellistener.cpp
+  src/ofp/channellistener.cpp
   src/ofp/constants.cpp
-	src/ofp/datapathid.cpp
-	src/ofp/defaulthandshake.cpp
-	src/ofp/driver.cpp
-	src/ofp/echoreply.cpp
-	src/ofp/echorequest.cpp
-	src/ofp/enetaddress.cpp
-	src/ofp/error.cpp
-	src/ofp/experimenter.cpp
-	src/ofp/featuresreply.cpp
-	src/ofp/flowmod.cpp
+  src/ofp/datapathid.cpp
+  src/ofp/defaulthandshake.cpp
+  src/ofp/driver.cpp
+  src/ofp/echoreply.cpp
+  src/ofp/echorequest.cpp
+  src/ofp/enetaddress.cpp
+  src/ofp/error.cpp
+  src/ofp/experimenter.cpp
+  src/ofp/featuresreply.cpp
+  src/ofp/flowmod.cpp
   src/ofp/flowremoved.cpp
-	src/ofp/mpflowstatsreply.cpp
-	src/ofp/mpflowstatsrequest.cpp
+  src/ofp/mpflowstatsreply.cpp
+  src/ofp/mpflowstatsrequest.cpp
   src/ofp/mpflowmonitorrequest.cpp
   src/ofp/mpflowmonitorreply.cpp
   src/ofp/getasyncreply.cpp
-	src/ofp/getconfigreply.cpp
+  src/ofp/getconfigreply.cpp
   src/ofp/groupmod.cpp
-	src/ofp/header.cpp
-	src/ofp/hello.cpp
+  src/ofp/header.cpp
+  src/ofp/hello.cpp
   src/ofp/instructionrange.cpp
   src/ofp/instructiontype.cpp
-	src/ofp/ipv4address.cpp
-	src/ofp/ipv6address.cpp
+  src/ofp/ipv4address.cpp
+  src/ofp/ipv6address.cpp
   src/ofp/ipv6endpoint.cpp
-	src/ofp/log.cpp
+  src/ofp/log.cpp
   src/ofp/match.cpp
   src/ofp/matchheader.cpp
   src/ofp/matchpacket.cpp
-	src/ofp/message.cpp
+  src/ofp/message.cpp
   src/ofp/metermod.cpp
   src/ofp/mpdesc.cpp
   src/ofp/mpexperimenter.cpp
@@ -147,21 +152,21 @@ set(LIBOFP_SOURCES
   src/ofp/mpqueuestatsrequest.cpp
   src/ofp/mptablefeatures.cpp
   src/ofp/mptablestats.cpp
-	src/ofp/multipartreply.cpp
-	src/ofp/multipartrequest.cpp
-	src/ofp/originalmatch.cpp
-	src/ofp/oxmlist.cpp
-	src/ofp/oxmtype.cpp
-	src/ofp/oxmtypeset.cpp
-	src/ofp/packetin.cpp
-	src/ofp/packetout.cpp
-	src/ofp/port.cpp
+  src/ofp/multipartreply.cpp
+  src/ofp/multipartrequest.cpp
+  src/ofp/originalmatch.cpp
+  src/ofp/oxmlist.cpp
+  src/ofp/oxmtype.cpp
+  src/ofp/oxmtypeset.cpp
+  src/ofp/packetin.cpp
+  src/ofp/packetout.cpp
+  src/ofp/port.cpp
   src/ofp/portmod.cpp
   src/ofp/portrange.cpp
-	src/ofp/portstatus.cpp
-	src/ofp/prerequisites.cpp
+  src/ofp/portstatus.cpp
+  src/ofp/prerequisites.cpp
   src/ofp/protocoliterator.cpp
-	src/ofp/protocolversions.cpp
+  src/ofp/protocolversions.cpp
   src/ofp/queuegetconfigreply.cpp
   src/ofp/queue.cpp
   src/ofp/queuegetconfigrequest.cpp
@@ -171,34 +176,34 @@ set(LIBOFP_SOURCES
   src/ofp/rolestatus.cpp
   src/ofp/rolestatusproperty.cpp
   src/ofp/setasync.cpp
-	src/ofp/setconfig.cpp
+  src/ofp/setconfig.cpp
   src/ofp/smallbuffer.cpp
   src/ofp/smallcstring.cpp
-	src/ofp/standardmatch.cpp
-	src/ofp/sys/asio_utils.cpp
-	src/ofp/sys/connection.cpp
+  src/ofp/standardmatch.cpp
+  src/ofp/sys/asio_utils.cpp
+  src/ofp/sys/connection.cpp
   src/ofp/sys/dtls_adapter.cpp
   src/ofp/sys/dtls_utils.cpp
-	src/ofp/sys/engine.cpp
+  src/ofp/sys/engine.cpp
   src/ofp/sys/identity.cpp
-	src/ofp/sys/tcp_server.cpp
-	src/ofp/sys/udp_server.cpp
+  src/ofp/sys/tcp_server.cpp
+  src/ofp/sys/udp_server.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp
   src/ofp/timestamp.cpp
-	src/ofp/transmogrify.cpp
-	src/ofp/types.cpp
+  src/ofp/transmogrify.cpp
+  src/ofp/types.cpp
   src/ofp/validation.cpp
-	src/ofp/rpc/rpcchannellistener.cpp
-	src/ofp/rpc/rpcconnection.cpp
+  src/ofp/rpc/rpcchannellistener.cpp
+  src/ofp/rpc/rpcconnection.cpp
   src/ofp/rpc/rpcconnectionsession.cpp
   src/ofp/rpc/rpcconnectionstdio.cpp
-	src/ofp/rpc/rpcserver.cpp
+  src/ofp/rpc/rpcserver.cpp
   src/ofp/rpc/rpcsession.cpp
   src/ofp/rpc/rpcencoder.cpp
   src/ofp/rpc/rpcevents.cpp
-	src/ofp/yaml/decoder.cpp
-	src/ofp/yaml/encoder.cpp
+  src/ofp/yaml/decoder.cpp
+  src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
   src/ofp/yaml/seterror.cpp
   src/ofp/yaml/yconstants.cpp
@@ -228,7 +233,7 @@ set(LIBOFP_SOURCES_GENERATED
 # comparison test for '+debug' is case-insensitive.
 
 string(TOLOWER "${CMAKE_BINARY_DIR}" binary_dir)
-if ("${binary_dir}" MATCHES "/[^/]*\\+debug[^/]*$")
+if("${binary_dir}" MATCHES "/[^/]*\\+debug[^/]*$")
   message(STATUS "Setting build type to DEBUG.")
   set(CMAKE_BUILD_TYPE debug)
 else()
@@ -238,7 +243,7 @@ endif()
 
 # If binary_dir contains +32bit or +64bit set the -m32 or -m64 flag respectively.
 
-if ("${binary_dir}" MATCHES "/[^/]*\\+64bit[^/]*$")
+if("${binary_dir}" MATCHES "/[^/]*\\+64bit[^/]*$")
   message(STATUS "Adding -m64 build option.")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m64")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -m64")
@@ -250,10 +255,13 @@ endif()
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
-else()
+  message("All clang warnings enabled.")
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
+else()
+  set(LIBOFP_WARNINGS "-Wall")
 endif()
 
 #-------------------------------------------------------------------------------

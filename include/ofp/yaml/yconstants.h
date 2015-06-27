@@ -58,7 +58,9 @@ typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
 
 // Support ScalarTraits for Big<Enum> types.
 template <typename T>
-typename std::enable_if<has_ScalarTraits<T>::value && std::is_enum<T>::value, void>::type yamlize(IO &io, ofp::Big<T> &Val, bool ignore) {
+typename std::enable_if<has_ScalarTraits<T>::value && std::is_enum<T>::value,
+                        void>::type
+yamlize(IO &io, ofp::Big<T> &Val, bool ignore) {
   T value = Val;
   yamlize(io, value, ignore);
   Val = value;
@@ -486,8 +488,10 @@ struct ScalarBitSetTraits<ofp::OFPTableConfigFlags> {
     OFP_YAML_BITCASE(OFPTC_, VACANCY_EVENTS);
 
     if (ofp::yaml::GetVersionFromContext(io) <= ofp::OFP_VERSION_3) {
-      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTROLLER, OFPTC_TABLE_MISS_MASK);
-      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTINUE, OFPTC_TABLE_MISS_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTROLLER,
+                             OFPTC_TABLE_MISS_MASK);
+      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTINUE,
+                             OFPTC_TABLE_MISS_MASK);
       OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_DROP, OFPTC_TABLE_MISS_MASK);
       io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2);
     } else {
@@ -566,8 +570,8 @@ struct ScalarBitSetTraits<ofp::OFPFlowMonitorFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(
-          io, val, ofp::yaml::AllFlags<ofp::OFPFlowMonitorFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPFlowMonitorFlags>());
     }
   }
 };

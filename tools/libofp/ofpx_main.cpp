@@ -106,12 +106,14 @@ void print_version() {
   unsigned asioPatch = ASIO_VERSION % 100;
   std::string asioCommit{LIBOFP_GIT_COMMIT_ASIO};
 
-  os << "  ASIO " << asioMajor << '.' << asioMinor << '.' << asioPatch << " (" << asioCommit.substr(0, 7) << ")\n";
+  os << "  ASIO " << asioMajor << '.' << asioMinor << '.' << asioPatch << " ("
+     << asioCommit.substr(0, 7) << ")\n";
 
   unsigned sslMajor = (OPENSSL_VERSION_NUMBER >> 28) & 0x0F;
   unsigned sslMinor = (OPENSSL_VERSION_NUMBER >> 20) & 0xFF;
   unsigned sslPatch = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
   std::string sslCommit{LIBOFP_GIT_COMMIT_BORINGSSL};
 
-  os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " (" << sslCommit.substr(0, 7) << ")\n";
+  os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
+     << sslCommit.substr(0, 7) << ")\n";
 }

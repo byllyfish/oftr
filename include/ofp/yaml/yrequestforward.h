@@ -6,7 +6,7 @@
 namespace llvm {
 namespace yaml {
 
-// The YAML mapping struct for OFPT_REQUESTFORWARD is just a message 
+// The YAML mapping struct for OFPT_REQUESTFORWARD is just a message
 // Encoder/Decoder.
 
 const char *const kRequestForwardSchema = R"""({Message/RequestForward}
@@ -17,4 +17,4 @@ msg: {Message}
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YREQUESTFORWARD_H_
+#endif  // OFP_YAML_YREQUESTFORWARD_H_

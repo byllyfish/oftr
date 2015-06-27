@@ -33,4 +33,4 @@ static_assert(sizeof(QueueNumber) == 4, "Unexpected size.");
 
 }  // namespace ofp
 
-#endif // OFP_QUEUENUMBER_H_
+#endif  // OFP_QUEUENUMBER_H_
