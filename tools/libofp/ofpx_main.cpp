@@ -93,8 +93,11 @@ void print_usage(std::ostream &out) {
 void print_version() {
   raw_ostream &os = outs();
 
+  std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
   os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
-     << LIBOFP_VERSION_PATCH << " (" << LIBOFP_DOWNLOAD_URL << ")\n";
+     << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+
+  os << "  <" << LIBOFP_DOWNLOAD_URL << ">\n";
 
 #ifndef __OPTIMIZE__
   os << "  DEBUG build";
@@ -104,7 +107,9 @@ void print_version() {
 #ifndef NDEBUG
   os << " with assertions";
 #endif
+  os << '\n';
 
+#if LIBOFP_ENABLE_JSONRPC
   unsigned asioMajor = ASIO_VERSION / 100000;
   unsigned asioMinor = ASIO_VERSION / 100 % 1000;
   unsigned asioPatch = ASIO_VERSION % 100;
@@ -120,4 +125,5 @@ void print_version() {
 
   os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
      << sslCommit.substr(0, 7) << ")\n";
+#endif // LIBOFP_ENABLE_JSONRPC
 }

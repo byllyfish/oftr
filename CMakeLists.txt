@@ -39,7 +39,7 @@ set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
 set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
 if(NOT LIBOFP_ENABLE_JSONRPC)
-  message("JSON-RPC server is disabled.")
+  message(STATUS "JSON-RPC server is disabled.")
 endif()
 
 # Require out of source builds.
@@ -265,7 +265,7 @@ endif()
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
-  message("All clang warnings enabled.")
+  message(STATUS "All clang warnings enabled.")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
@@ -301,15 +301,19 @@ find_package(PythonInterp REQUIRED)
 find_package(PythonModule REQUIRED)
 find_python_module(yaml)
 
-# Look up the specific git commits for asio and boringssl.
+# Look up the specific git commits for libofp, asio, and boringssl.
+
+execute_process(COMMAND git rev-parse --verify HEAD OUTPUT_VARIABLE Libofp_GIT_COMMIT_LIBOFP)
+string(STRIP "${Libofp_GIT_COMMIT_LIBOFP}" Libofp_GIT_COMMIT_LIBOFP)
+message(STATUS "Libofp commit: ${Libofp_GIT_COMMIT_LIBOFP}")
 
 execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
 string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
-message("Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
+message(STATUS "Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
 
 execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
 string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
-message("BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
+message(STATUS "BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
 
 # Specify auto-generated config.h file.
 

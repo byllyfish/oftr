@@ -8,9 +8,10 @@
 #define LIBOFP_VERSION_PATCH        @Libofp_VERSION_PATCH@
 #define LIBOFP_DOWNLOAD_URL         "@Libofp_DOWNLOAD_URL@"
 
-// These variables indicate the git commits of the asio and boringssl 
-// submodules used in this build.
+// These variables indicate the git commits of libofp, asio, and boringssl 
+// used in this build.
 
+#define LIBOFP_GIT_COMMIT_LIBOFP    "@Libofp_GIT_COMMIT_LIBOFP@"
 #define LIBOFP_GIT_COMMIT_ASIO      "@Libofp_GIT_COMMIT_ASIO@"
 #define LIBOFP_GIT_COMMIT_BORINGSSL "@Libofp_GIT_COMMIT_BORINGSSL@"
 
