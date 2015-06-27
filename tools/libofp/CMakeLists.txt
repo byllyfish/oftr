@@ -3,13 +3,17 @@ set(OFPX_SOURCES
   ofpx_main.cpp
   ofpx_encode.cpp
   ofpx_decode.cpp
-  ofpx_jsonrpc.cpp
   ofpx_help.cpp
 )
 
-if(APPLE AND UNIX)
-  set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_xpc.cpp)
+if(LIBOFP_ENABLE_JSONRPC)
+  set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_jsonrpc.cpp)
+  if(APPLE)
+    set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_xpc.cpp)
+  endif()
+endif()
 
+if(APPLE)
   # Set up Info.plist file so there will be a version number in crashreporter
   # output.
   configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in" "${CMAKE_CURRENT_BINARY_DIR}/Info.plist")

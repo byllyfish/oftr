@@ -34,6 +34,14 @@ set(Libofp_VERSION_PATCH 0)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
 
+# You can build libofp with or without the JSON-RPC server.
+
+set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
+
+if(NOT LIBOFP_ENABLE_JSONRPC)
+  message("JSON-RPC server is disabled.")
+endif()
+
 # Require out of source builds.
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -180,6 +188,12 @@ set(LIBOFP_SOURCES
   src/ofp/smallbuffer.cpp
   src/ofp/smallcstring.cpp
   src/ofp/standardmatch.cpp
+  src/ofp/tablefeatureproperty.cpp
+  src/ofp/tablemod.cpp
+  src/ofp/timestamp.cpp
+  src/ofp/transmogrify.cpp
+  src/ofp/types.cpp
+  src/ofp/validation.cpp
   src/ofp/sys/asio_utils.cpp
   src/ofp/sys/connection.cpp
   src/ofp/sys/dtls_adapter.cpp
@@ -188,12 +202,6 @@ set(LIBOFP_SOURCES
   src/ofp/sys/identity.cpp
   src/ofp/sys/tcp_server.cpp
   src/ofp/sys/udp_server.cpp
-  src/ofp/tablefeatureproperty.cpp
-  src/ofp/tablemod.cpp
-  src/ofp/timestamp.cpp
-  src/ofp/transmogrify.cpp
-  src/ofp/types.cpp
-  src/ofp/validation.cpp
   src/ofp/rpc/rpcchannellistener.cpp
   src/ofp/rpc/rpcconnection.cpp
   src/ofp/rpc/rpcconnectionsession.cpp
@@ -262,6 +270,12 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
   set(LIBOFP_WARNINGS "-Wall")
+endif()
+
+# Tell linker to remove dead code on OSX.
+
+if(APPLE)
+  set(CMAKE_EXE_LINKER_FLAGS "-Wl,-dead_strip")
 endif()
 
 #-------------------------------------------------------------------------------

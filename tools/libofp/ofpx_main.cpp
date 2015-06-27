@@ -5,7 +5,9 @@
 #include "ofp/ofp.h"
 #include "./ofpx_decode.h"
 #include "./ofpx_encode.h"
-#include "./ofpx_jsonrpc.h"
+#if LIBOFP_ENABLE_JSONRPC
+# include "./ofpx_jsonrpc.h"
+#endif // LIBOFP_ENABLE_JSONRPC
 #include "./ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/Host.h"
@@ -17,24 +19,36 @@ struct SubprogramEntry {
   ofpx::RunSubprogram run;
 };
 
-static SubprogramEntry programs[] = {{"encode", ofpx::Run<ofpx::Encode>},
-                                     {"decode", ofpx::Run<ofpx::Decode>},
-                                     {"jsonrpc", ofpx::Run<ofpx::JsonRpc>},
-                                     {"help", ofpx::Run<ofpx::Help>}};
+static SubprogramEntry programs[] = {
+  {"encode", ofpx::Run<ofpx::Encode>},
+  {"decode", ofpx::Run<ofpx::Decode>},
+#if LIBOFP_ENABLE_JSONRPC
+  {"jsonrpc", ofpx::Run<ofpx::JsonRpc>},
+#endif // LIBOFP_ENABLE_JSONRPC
+  {"help", ofpx::Run<ofpx::Help>}
+};
 
-static int run_xpc_service();
 static void print_usage(std::ostream &out);
 static void print_version();
+
+#if LIBOFP_ENABLE_JSONRPC
+static int run_xpc_service() {
+  const char *args[] = {"jsonrpc", "--xpc"};
+  return ofpx::Run<ofpx::JsonRpc>(2, args);
+}
+#endif // LIBOFP_ENABLE_JSONRPC
 
 int main(int argc, const char *const *argv) {
   // If the OFPX_JSONRPC_XPC_SERVICE environment variable is set to 1,
   // immediately run the JSON-RPC XPC service (Mac OS X only).
 
+#if LIBOFP_ENABLE_JSONRPC
   if (const char *env = getenv("OFPX_JSONRPC_XPC_SERVICE")) {
     if (strcmp(env, "1") == 0) {
       return run_xpc_service();
     }
   }
+#endif // LIBOFP_ENABLE_JSONRPC
 
   if (argc < 2) {
     print_usage(std::cerr);
@@ -67,11 +81,6 @@ int main(int argc, const char *const *argv) {
   return 1;
 }
 
-int run_xpc_service() {
-  const char *args[] = {"jsonrpc", "--xpc"};
-  return ofpx::Run<ofpx::JsonRpc>(2, args);
-}
-
 void print_usage(std::ostream &out) {
   out << "Usage: libofp <command> [ <options> ]\n\n";
   out << "Commands:\n";
@@ -86,6 +95,7 @@ void print_version() {
 
   os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
      << LIBOFP_VERSION_PATCH << " (" << LIBOFP_DOWNLOAD_URL << ")\n";
+
 #ifndef __OPTIMIZE__
   os << "  DEBUG build";
 #else
@@ -94,12 +104,6 @@ void print_version() {
 #ifndef NDEBUG
   os << " with assertions";
 #endif
-  std::string CPU = llvm::sys::getHostCPUName();
-  if (CPU == "generic")
-    CPU = "(unknown)";
-  os << ".\n"
-     << "  Default target: " << llvm::sys::getDefaultTargetTriple() << '\n'
-     << "  Host CPU: " << CPU << '\n';
 
   unsigned asioMajor = ASIO_VERSION / 100000;
   unsigned asioMinor = ASIO_VERSION / 100 % 1000;

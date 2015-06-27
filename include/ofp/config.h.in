@@ -8,7 +8,14 @@
 #define LIBOFP_VERSION_PATCH        @Libofp_VERSION_PATCH@
 #define LIBOFP_DOWNLOAD_URL         "@Libofp_DOWNLOAD_URL@"
 
+// These variables indicate the git commits of the asio and boringssl 
+// submodules used in this build.
+
 #define LIBOFP_GIT_COMMIT_ASIO      "@Libofp_GIT_COMMIT_ASIO@"
 #define LIBOFP_GIT_COMMIT_BORINGSSL "@Libofp_GIT_COMMIT_BORINGSSL@"
+
+// This variable controls whether we are building the JSON-RPC server.
+
+#cmakedefine01 LIBOFP_ENABLE_JSONRPC
 
 #endif  // OFP_CONFIG_H_  // NOLINT
