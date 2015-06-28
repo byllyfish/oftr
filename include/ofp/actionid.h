@@ -26,7 +26,7 @@ class ActionID {
   UInt32 experimenter() const { return experimenter_; }
 
   bool validateInput(Validation *context) const { return true; }
-  
+
  private:
   ActionType type_;
   Big32 experimenter_;

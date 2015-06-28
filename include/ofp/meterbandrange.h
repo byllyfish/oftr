@@ -26,7 +26,7 @@ class MeterBandIteratorItem : private NonCopyable {
   }
 
   bool validateInput(Validation *context) const { return true; }
-  
+
  private:
   Big<OFPMeterBandType> type_;
   Big16 len_;

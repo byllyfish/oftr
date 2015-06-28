@@ -9,7 +9,7 @@ ActionRange Bucket::actions() const {
 }
 
 bool Bucket::validateInput(Validation *context) const {
-  if (len_ < sizeof(Bucket)) 
+  if (len_ < sizeof(Bucket))
     return false;
 
   return actions().validateInput(context);

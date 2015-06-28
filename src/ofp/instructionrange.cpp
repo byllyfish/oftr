@@ -42,7 +42,7 @@ bool InstructionRange::validateInput(Validation *context) const {
       }
       case IT_EXPERIMENTER::type(): {
         const IT_EXPERIMENTER *ins = item.instruction<IT_EXPERIMENTER>();
-        if (!ins->validateInput(context)) 
+        if (!ins->validateInput(context))
           return false;
         break;
       }

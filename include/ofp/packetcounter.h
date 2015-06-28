@@ -19,7 +19,7 @@ class PacketCounter {
   UInt64 byteCount() const { return byteCount_; }
 
   bool validateInput(Validation *context) const { return true; }
-  
+
  private:
   Big64 packetCount_;
   Big64 byteCount_;

@@ -314,8 +314,8 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
     // EOF is a normal exit condition.
     std::cerr << "Filename: " << currentFilename_ << ":\n";
     const char *what = header ? "header" : "body";
-    std::cerr << "Error: Only " << input.gcount() << " bytes read of message " << what
-              << ". Expected to read " << readLen << " bytes.\n";
+    std::cerr << "Error: Only " << input.gcount() << " bytes read of message "
+              << what << ". Expected to read " << readLen << " bytes.\n";
     return ExitStatus::MessageReadFailed;
   } else {
     // EOF and everything is good.

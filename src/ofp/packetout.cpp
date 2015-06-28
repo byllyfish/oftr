@@ -13,7 +13,7 @@ bool PacketOut::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!actions().validateInput(context)) 
+  if (!actions().validateInput(context))
     return false;
 
   return true;

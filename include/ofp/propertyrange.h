@@ -27,7 +27,7 @@ class PropertyIteratorItem : private NonCopyable {
   ByteRange value() const { return ByteRange{BytePtr(this) + 4, len_ - 4U}; }
 
   bool validateInput(Validation *context) const { return true; }
-  
+
  private:
   Big16 type_;
   Big16 len_;
