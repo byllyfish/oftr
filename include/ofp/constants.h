@@ -105,7 +105,7 @@ enum OFPType : UInt8 {
 
 std::ostream &operator<<(std::ostream &os, OFPType type);
 
-enum OFPBufferID : UInt32 { OFP_NO_BUFFER = 0xFFFFFFFFUL };
+enum OFPBufferNo : UInt32 { OFP_NO_BUFFER = 0xFFFFFFFFUL };
 
 // Flags to indicate behavior of the physical port.  These flags are
 // used in ofp_port to describe the current configuration.  They are

@@ -110,7 +110,7 @@ static SchemaPair kEnumSchemas[] = {
 static SchemaPair kMixedSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::PortNumber>, "Mixed/PortNumber"},
     {ofp::yaml::MakeSchema<ofp::GroupNumber>, "Mixed/GroupNumber"},
-    {ofp::yaml::MakeSchema<ofp::BufferID>, "Mixed/BufferID"},
+    {ofp::yaml::MakeSchema<ofp::BufferNumber>, "Mixed/BufferNumber"},
     {ofp::yaml::MakeSchema<ofp::TableNumber>, "Mixed/TableNumber"},
     {ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen"},
 };

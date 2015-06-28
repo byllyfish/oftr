@@ -84,6 +84,11 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
   std::istream *input = nullptr;
   std::ifstream file;
   if (filename != "-") {
+    // Check if filename is a directory.
+    if (llvm::sys::fs::is_directory(filename)) {
+      std::cerr << "Error: can't open directory: " << filename << '\n';
+      return ExitStatus::FileOpenFailed;
+    }
     file.open(filename, std::ifstream::binary);
     input = &file;
   } else {

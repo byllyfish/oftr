@@ -11,7 +11,7 @@ namespace yaml {
 const char *const kPacketOutSchema = R"""({Message/PacketOut}
 type: 'PACKET_OUT'
 msg:
-  buffer_id: BufferID
+  buffer_id: BufferNumber
   in_port: PortNumber
   actions: [{Action}...]
   data: HexString
@@ -23,7 +23,7 @@ struct MappingTraits<ofp::PacketOut> {
   static void mapping(IO &io, ofp::PacketOut &msg) {
     using namespace ofp;
 
-    BufferID bufferId = msg.bufferId();
+    BufferNumber bufferId = msg.bufferId();
     PortNumber inPort = msg.inPort();
 
     io.mapRequired("buffer_id", bufferId);
@@ -47,7 +47,7 @@ struct MappingTraits<ofp::PacketOutBuilder> {
   static void mapping(IO &io, ofp::PacketOutBuilder &msg) {
     using namespace ofp;
 
-    BufferID bufferId;
+    BufferNumber bufferId;
     io.mapRequired("buffer_id", bufferId);
     msg.setBufferId(bufferId);
 
