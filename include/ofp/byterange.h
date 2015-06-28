@@ -44,11 +44,7 @@ class ByteRange {
 
 static_assert(IsConvertible<ByteList, ByteRange>(), "Expected conversion.");
 
-#ifdef NDEBUG
-constexpr
-#endif  // NDEBUG
-    inline ByteRange
-    SafeByteRange(const void *data, size_t length, size_t offset) {
+inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset) {
   assert(length >= offset);
   return (length >= offset) ? ByteRange{BytePtr(data) + offset, length - offset}
                             : ByteRange{};
