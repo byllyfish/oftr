@@ -66,7 +66,8 @@ void Message::transmogrify() {
 
 void Message::replyError(OFPErrorCode error,
                          const std::string &explanation) const {
-  if (source()) {
+  // Never reply to an Error message with an Error.
+  if (source() && type() != OFPT_ERROR) {
     ErrorBuilder errorBuilder{xid()};
     errorBuilder.setErrorCode(error);
     if (!explanation.empty()) {
