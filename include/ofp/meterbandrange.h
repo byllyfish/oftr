@@ -25,6 +25,8 @@ class MeterBandIteratorItem : private NonCopyable {
     return *reinterpret_cast<const Type *>(this);
   }
 
+  bool validateInput(Validation *context) const { return true; }
+  
  private:
   Big<OFPMeterBandType> type_;
   Big16 len_;

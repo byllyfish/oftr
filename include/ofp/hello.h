@@ -21,6 +21,8 @@ class HelloElement : private NonCopyable {
 
   ProtocolVersions versionBitMap() const;
 
+  bool validateInput(Validation *context) const { return true; }
+  
  private:
   Big16 type_;
   Big16 length_;

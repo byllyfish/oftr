@@ -5,7 +5,21 @@
 using namespace ofp;
 
 PropertyRange Queue::properties() const {
-  return ByteRange{BytePtr(this) + sizeof(Queue), len_ - sizeof(Queue)};
+  return SafeByteRange(this, len_, sizeof(Queue));
+}
+
+bool Queue::validateInput(Validation *context) const {
+  if (len_ < sizeof(Queue))
+    return false;
+
+  PropertyRange props = properties();
+  if (!props.validateInput(context))
+    return false;
+
+  if (!QueuePropertyValidator::validateInput(props, context))
+    return false;
+
+  return true;
 }
 
 void QueueBuilder::setProperties(const PropertyRange &properties) {

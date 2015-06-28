@@ -20,6 +20,8 @@ class OXMID {
   OXMType type() const { return type_; }
   UInt32 experimenter() const { return experimenter_; }
 
+  bool validateInput(Validation *context) const { return true; }
+  
  private:
   OXMType type_;
   Big32 experimenter_;

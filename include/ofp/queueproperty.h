@@ -3,9 +3,15 @@
 #ifndef OFP_QUEUEPROPERTY_H_
 #define OFP_QUEUEPROPERTY_H_
 
+#include "ofp/byteorder.h"
 #include "ofp/constants.h"
+#include "ofp/padding.h"
+#include "ofp/byterange.h"
 
 namespace ofp {
+
+class PropertyRange;
+class Validation;
 
 // N.B. These TLV property structures use the "old" format. These are *not*
 // "standardized" TLV's as used in OpenFlow 1.4 and later.
@@ -65,10 +71,10 @@ class QueuePropertyExperimenter {
 
   UInt32 size() const { return len_; }
   UInt32 experimenter() const { return experimenter_; }
-  ByteRange value() const {
-    return ByteRange{BytePtr(this) + FixedHeaderSize, size() - FixedHeaderSize};
-  }
+  ByteRange value() const { return SafeByteRange(this, len_, FixedHeaderSize); }
   ByteRange valueRef() const { return data_; }
+
+  bool validateInput(Validation *context) const;
 
  private:
   Big16 type_ = type();
@@ -88,7 +94,7 @@ static_assert(sizeof(QueuePropertyExperimenter) ==
 
 class QueuePropertyValidator {
  public:
-  static bool validateInput(PropertyRange range);
+  static bool validateInput(const PropertyRange &range, Validation *context);
 };
 
 }  // namespace ofp

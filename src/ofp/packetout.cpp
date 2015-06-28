@@ -13,13 +13,14 @@ bool PacketOut::validateInput(Validation *context) const {
     return false;
   }
 
-  // FIXME validate actions
+  if (!actions().validateInput(context)) 
+    return false;
 
   return true;
 }
 
 ActionRange PacketOut::actions() const {
-  return ActionRange{ByteRange{BytePtr(this) + sizeof(PacketOut), actionsLen_}};
+  return ByteRange{BytePtr(this) + sizeof(PacketOut), actionsLen_};
 }
 
 ByteRange PacketOut::enetFrame() const {

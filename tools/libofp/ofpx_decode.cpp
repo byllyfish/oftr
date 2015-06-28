@@ -305,14 +305,17 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 
   if (!input.eof()) {
     // Premature I/O error; we're not at EOF.
-    std::cerr << "Error: Error reading from file " << currentFilename_ << '\n';
+    // FIXME: print out the error
+    std::cerr << "Filename: " << currentFilename_ << ":\n";
+    std::cerr << "Error: I/O error reading from file\n";
     return ExitStatus::MessageReadFailed;
   } else if (input.gcount() != readLen && !(header && input.gcount() == 0)) {
     // EOF and insufficient input remaining. N.B. Zero bytes of header read at
     // EOF is a normal exit condition.
+    std::cerr << "Filename: " << currentFilename_ << ":\n";
     const char *what = header ? "header" : "body";
-    std::cerr << "Error: Only " << input.gcount() << " bytes read of " << what
-              << '\n';
+    std::cerr << "Error: Only " << input.gcount() << " bytes read of message " << what
+              << ". Expected to read " << readLen << " bytes.\n";
     return ExitStatus::MessageReadFailed;
   } else {
     // EOF and everything is good.

@@ -23,6 +23,8 @@ class InstructionID {
   InstructionType type() const { return type_; }
   UInt32 experimenter() const { return experimenter_; }
 
+  bool validateInput(Validation *context) const { return true; }
+
  private:
   InstructionType type_;
   Big16 len_;

@@ -109,6 +109,8 @@ TEST(protocolrange, iteration) {
     Big16 type;
     Big16 len;
     Big32 value;
+
+    bool validateInput(Validation *context) const { return true; }
   };
 
   ByteRange r1{data, sizeof(data)};
@@ -153,6 +155,7 @@ TEST(protocolrange, misalignedSeq) {
     Big16 type;
     Big16 len;
     Big32 data;
+    bool validateInput(Validation *context) const { return true; }
   };
 
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};

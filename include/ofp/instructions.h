@@ -172,8 +172,7 @@ class IT_EXPERIMENTER {
   size_t size() const { return data_.size(); }
 
   ByteRange dataRange() const {
-    assert(length_ >= HeaderSize);
-    return ByteRange{BytePtr(this) + HeaderSize, length_ - HeaderSize};
+    return SafeByteRange(this, length_, HeaderSize);
   }
 
   bool validateInput(Validation *context) const {
