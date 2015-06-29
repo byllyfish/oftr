@@ -92,11 +92,17 @@ struct MappingTraits<ofp::yaml::Decoder> {
     const MessageInfo *info = decoder.msg_->info();
     if (info) {
       UInt64 sessionId = info->sessionId();
-      IPv6Endpoint src = info->source();
-      IPv6Endpoint dst = info->dest();
-      io.mapRequired("_session", sessionId);
-      io.mapRequired("_source", src);
-      io.mapRequired("_dest", dst);
+      if (sessionId) {
+        IPv6Endpoint src = info->source();
+        IPv6Endpoint dst = info->dest();
+        io.mapRequired("_session", sessionId);
+        io.mapRequired("_source", src);
+        io.mapRequired("_dest", dst);
+      }
+      if (!info->filename().empty()) {
+        std::string filename = info->filename();
+        io.mapRequired("_file", filename);
+      }
     }
 
     if (!decoder.decodeMsg(io)) {

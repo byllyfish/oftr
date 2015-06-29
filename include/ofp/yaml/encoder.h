@@ -103,6 +103,9 @@ struct MappingTraits<ofp::yaml::Encoder> {
     io.mapOptional("auxiliary_id", encoder.auxiliaryId_, defaultAuxId);
     io.mapOptional("flags", encoder.flags_, OFPMPF_NONE);
 
+    std::string ignore;
+    io.mapOptional("_file", ignore);
+    
     if (header.type() != OFPT_UNSUPPORTED) {
       encoder.encodeMsg(io);
     }

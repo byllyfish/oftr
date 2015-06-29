@@ -134,6 +134,10 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
 
+  if (sessionInfo_.available()) {
+    message.setInfo(&sessionInfo_);
+  }
+
   while (input) {
     // Read the message header.
     char *msg =
@@ -183,7 +187,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   ofp::Message originalMessage{nullptr};
   ofp::Message buffer{nullptr};
 
-  if (hasSessionInfo_) {
+  if (sessionInfo_.available()) {
     message.setInfo(&sessionInfo_);
   }
 
@@ -447,13 +451,20 @@ bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
 void Decode::setCurrentFilename(const std::string &filename) {
   currentFilename_ = filename;
 
-  if (!filename.empty() && useFindx_) {
+  if (filename.empty()) {
+    sessionInfo_ = ofp::MessageInfo{};
+    return;
+  }
+
+  if (useFindx_) {
     // When we are using '.findx' files, parse the filename to obtain
     // information about the session, so we can set up the `sessionInfo_`
     // structure with source and destination information.
-    hasSessionInfo_ = parseFilename(filename, &sessionInfo_);
+    (void)parseFilename(filename, &sessionInfo_);
+  } else if (includeFilename_) {
+    sessionInfo_ = ofp::MessageInfo{filename};
   } else {
-    hasSessionInfo_ = false;
+    sessionInfo_ = ofp::MessageInfo{};
   }
 }
 
