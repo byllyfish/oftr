@@ -6,9 +6,9 @@ import sys
 
 LIBOFP = '../libofp'
 MAX_VERSION = 5
-STR15 = '.' * 15
-STR31 = '.' * 31
-STR255 = '.' * 255
+STR16 = '.' * 16
+STR32 = '.' * 32
+STR256 = '.' * 256
 
 def _getType(elem):
     if elem == None:
@@ -31,12 +31,12 @@ def _getType(elem):
             return 'macaddress'
         elif s == 'ff:ff:ff:ff:ff:ff:ff:ff' or s == 'ffff-ffff-ffff-ffff':
             return 'datapath'
-        elif s == STR15:
-            return 'str15'
-        elif s == STR31:
-            return 'str31'
-        elif s == STR255:
-            return 'str255'
+        elif s == STR16:
+            return 'str16'
+        elif s == STR32:
+            return 'str32'
+        elif s == STR256:
+            return 'str256'
         elif s == 'ffffffff':
             return 'binary'
         elif s == '255.255.255.255':

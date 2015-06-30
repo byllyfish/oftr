@@ -26,7 +26,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	FEATURES_REPLY.v1	msg.ports.0.hw_addr	macaddress	True			True
 1	FEATURES_REPLY.v1	msg.ports.0.state	array	True			
 1	FEATURES_REPLY.v1	msg.ports.0.state.0	LINK_DOWN	False	msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.state.0=STP_LISTEN		
-1	FEATURES_REPLY.v1	msg.ports.0.name	str15	True			True
+1	FEATURES_REPLY.v1	msg.ports.0.name	str16	True			
 1	FEATURES_REPLY.v1	msg.ports.0.ethernet	object	True			
 1	FEATURES_REPLY.v1	msg.ports.0.ethernet.curr_speed	uint32	True		msg.ports.0.ethernet.curr_speed=0	
 1	FEATURES_REPLY.v1	msg.ports.0.ethernet.max_speed	uint32	True		msg.ports.0.ethernet.max_speed=0	
@@ -91,7 +91,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	PORT_STATUS.v1	msg.port.hw_addr	macaddress	True			True
 1	PORT_STATUS.v1	msg.port.state	array	True			
 1	PORT_STATUS.v1	msg.port.state.0	LINK_DOWN	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.state.0=STP_LISTEN		
-1	PORT_STATUS.v1	msg.port.name	str15	True			True
+1	PORT_STATUS.v1	msg.port.name	str16	True			
 1	PORT_STATUS.v1	msg.port.ethernet	object	True			
 1	PORT_STATUS.v1	msg.port.ethernet.curr_speed	uint32	True		msg.port.ethernet.curr_speed=0	
 1	PORT_STATUS.v1	msg.port.ethernet.max_speed	uint32	True		msg.port.ethernet.max_speed=0	
@@ -173,11 +173,11 @@ version	type	keypath	syntax	required	default	missing	modify
 1	TABLE_MOD.v1	msg.config.0	uint32	True			ERROR
 1	REQUEST.DESC.v1	msg	null	False			
 1	REPLY.DESC.v1	msg	object	True			
-1	REPLY.DESC.v1	msg.sw_desc	str255	True			
-1	REPLY.DESC.v1	msg.hw_desc	str255	True			
-1	REPLY.DESC.v1	msg.dp_desc	str255	True			
-1	REPLY.DESC.v1	msg.mfr_desc	str255	True			
-1	REPLY.DESC.v1	msg.serial_num	str31	True			
+1	REPLY.DESC.v1	msg.sw_desc	str256	True			
+1	REPLY.DESC.v1	msg.hw_desc	str256	True			
+1	REPLY.DESC.v1	msg.dp_desc	str256	True			
+1	REPLY.DESC.v1	msg.mfr_desc	str256	True			
+1	REPLY.DESC.v1	msg.serial_num	str32	True			
 1	REQUEST.FLOW.v1	msg	object	True			
 1	REQUEST.FLOW.v1	msg.out_group	ANY	True		msg.out_group=0	
 1	REQUEST.FLOW.v1	msg.cookie	uint64	True		msg.cookie=0	
@@ -354,7 +354,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REQUEST.TABLE_FEATURES.v1	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.next_tables_miss	array	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.next_tables_miss.0	uint8	True			ERROR
-1	REQUEST.TABLE_FEATURES.v1	msg.0.name	str31	True			ERROR
+1	REQUEST.TABLE_FEATURES.v1	msg.0.name	str32	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.write_actions_miss	array	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.write_actions_miss.0	COPY_TTL_OUT	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.apply_actions_miss	array	True			ERROR
@@ -391,7 +391,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.TABLE_FEATURES.v1	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.next_tables_miss	array	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.next_tables_miss.0	uint8	True			ERROR
-1	REPLY.TABLE_FEATURES.v1	msg.0.name	str31	True			ERROR
+1	REPLY.TABLE_FEATURES.v1	msg.0.name	str32	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.write_actions_miss	array	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.write_actions_miss.0	COPY_TTL_OUT	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.apply_actions_miss	array	True			ERROR
@@ -412,7 +412,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.PORT_DESC.v1	msg.0.hw_addr	macaddress	True			True
 1	REPLY.PORT_DESC.v1	msg.0.state	array	True			
 1	REPLY.PORT_DESC.v1	msg.0.state.0	LINK_DOWN	False	msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.state.0=STP_LISTEN		
-1	REPLY.PORT_DESC.v1	msg.0.name	str15	True			True
+1	REPLY.PORT_DESC.v1	msg.0.name	str16	True			
 1	REPLY.PORT_DESC.v1	msg.0.ethernet	object	True			
 1	REPLY.PORT_DESC.v1	msg.0.ethernet.curr_speed	uint32	True		msg.0.ethernet.curr_speed=0	
 1	REPLY.PORT_DESC.v1	msg.0.ethernet.max_speed	uint32	True		msg.0.ethernet.max_speed=0	
@@ -550,7 +550,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FEATURES_REPLY.v2	msg.ports.0.hw_addr	macaddress	True			True
 2	FEATURES_REPLY.v2	msg.ports.0.state	array	True			
 2	FEATURES_REPLY.v2	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
-2	FEATURES_REPLY.v2	msg.ports.0.name	str15	True			True
+2	FEATURES_REPLY.v2	msg.ports.0.name	str16	True			
 2	FEATURES_REPLY.v2	msg.ports.0.ethernet	object	True			
 2	FEATURES_REPLY.v2	msg.ports.0.ethernet.curr_speed	uint32	True			True
 2	FEATURES_REPLY.v2	msg.ports.0.ethernet.max_speed	uint32	True			True
@@ -615,7 +615,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	PORT_STATUS.v2	msg.port.hw_addr	macaddress	True			True
 2	PORT_STATUS.v2	msg.port.state	array	True			
 2	PORT_STATUS.v2	msg.port.state.0	LINK_DOWN	False	msg.port.state.0=LINK_DOWN		
-2	PORT_STATUS.v2	msg.port.name	str15	True			True
+2	PORT_STATUS.v2	msg.port.name	str16	True			
 2	PORT_STATUS.v2	msg.port.ethernet	object	True			
 2	PORT_STATUS.v2	msg.port.ethernet.curr_speed	uint32	True			True
 2	PORT_STATUS.v2	msg.port.ethernet.max_speed	uint32	True			True
@@ -697,11 +697,11 @@ version	type	keypath	syntax	required	default	missing	modify
 2	TABLE_MOD.v2	msg.config.0	uint32	False	msg.config.0=TABLE_MISS_CONTROLLER,msg.table_id=ALL	msg.config.0=EVICTION	
 2	REQUEST.DESC.v2	msg	null	False			
 2	REPLY.DESC.v2	msg	object	True			
-2	REPLY.DESC.v2	msg.sw_desc	str255	True			
-2	REPLY.DESC.v2	msg.hw_desc	str255	True			
-2	REPLY.DESC.v2	msg.dp_desc	str255	True			
-2	REPLY.DESC.v2	msg.mfr_desc	str255	True			
-2	REPLY.DESC.v2	msg.serial_num	str31	True			
+2	REPLY.DESC.v2	msg.sw_desc	str256	True			
+2	REPLY.DESC.v2	msg.hw_desc	str256	True			
+2	REPLY.DESC.v2	msg.dp_desc	str256	True			
+2	REPLY.DESC.v2	msg.mfr_desc	str256	True			
+2	REPLY.DESC.v2	msg.serial_num	str32	True			
 2	REQUEST.FLOW.v2	msg	object	True			
 2	REQUEST.FLOW.v2	msg.out_group	ANY	True			
 2	REQUEST.FLOW.v2	msg.cookie	uint64	True			True
@@ -878,7 +878,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REQUEST.TABLE_FEATURES.v2	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.next_tables_miss	array	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.next_tables_miss.0	uint8	True			ERROR
-2	REQUEST.TABLE_FEATURES.v2	msg.0.name	str31	True			ERROR
+2	REQUEST.TABLE_FEATURES.v2	msg.0.name	str32	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.write_actions_miss	array	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.write_actions_miss.0	COPY_TTL_OUT	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.apply_actions_miss	array	True			ERROR
@@ -915,7 +915,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.TABLE_FEATURES.v2	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.next_tables_miss	array	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.next_tables_miss.0	uint8	True			ERROR
-2	REPLY.TABLE_FEATURES.v2	msg.0.name	str31	True			ERROR
+2	REPLY.TABLE_FEATURES.v2	msg.0.name	str32	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.write_actions_miss	array	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.write_actions_miss.0	COPY_TTL_OUT	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.apply_actions_miss	array	True			ERROR
@@ -936,7 +936,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.PORT_DESC.v2	msg.0.hw_addr	macaddress	True			True
 2	REPLY.PORT_DESC.v2	msg.0.state	array	True			
 2	REPLY.PORT_DESC.v2	msg.0.state.0	LINK_DOWN	False			
-2	REPLY.PORT_DESC.v2	msg.0.name	str15	True			True
+2	REPLY.PORT_DESC.v2	msg.0.name	str16	True			
 2	REPLY.PORT_DESC.v2	msg.0.ethernet	object	True			
 2	REPLY.PORT_DESC.v2	msg.0.ethernet.curr_speed	uint32	True			True
 2	REPLY.PORT_DESC.v2	msg.0.ethernet.max_speed	uint32	True			True
@@ -1074,7 +1074,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FEATURES_REPLY.v3	msg.ports.0.hw_addr	macaddress	True			True
 3	FEATURES_REPLY.v3	msg.ports.0.state	array	True			
 3	FEATURES_REPLY.v3	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
-3	FEATURES_REPLY.v3	msg.ports.0.name	str15	True			True
+3	FEATURES_REPLY.v3	msg.ports.0.name	str16	True			
 3	FEATURES_REPLY.v3	msg.ports.0.ethernet	object	True			
 3	FEATURES_REPLY.v3	msg.ports.0.ethernet.curr_speed	uint32	True			True
 3	FEATURES_REPLY.v3	msg.ports.0.ethernet.max_speed	uint32	True			True
@@ -1139,7 +1139,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	PORT_STATUS.v3	msg.port.hw_addr	macaddress	True			True
 3	PORT_STATUS.v3	msg.port.state	array	True			
 3	PORT_STATUS.v3	msg.port.state.0	LINK_DOWN	False	msg.port.state.0=LINK_DOWN		
-3	PORT_STATUS.v3	msg.port.name	str15	True			True
+3	PORT_STATUS.v3	msg.port.name	str16	True			
 3	PORT_STATUS.v3	msg.port.ethernet	object	True			
 3	PORT_STATUS.v3	msg.port.ethernet.curr_speed	uint32	True			True
 3	PORT_STATUS.v3	msg.port.ethernet.max_speed	uint32	True			True
@@ -1221,11 +1221,11 @@ version	type	keypath	syntax	required	default	missing	modify
 3	TABLE_MOD.v3	msg.config.0	uint32	False	msg.config.0=TABLE_MISS_CONTROLLER,msg.table_id=ALL	msg.config.0=EVICTION	
 3	REQUEST.DESC.v3	msg	null	False			
 3	REPLY.DESC.v3	msg	object	True			
-3	REPLY.DESC.v3	msg.sw_desc	str255	True			
-3	REPLY.DESC.v3	msg.hw_desc	str255	True			
-3	REPLY.DESC.v3	msg.dp_desc	str255	True			
-3	REPLY.DESC.v3	msg.mfr_desc	str255	True			
-3	REPLY.DESC.v3	msg.serial_num	str31	True			
+3	REPLY.DESC.v3	msg.sw_desc	str256	True			
+3	REPLY.DESC.v3	msg.hw_desc	str256	True			
+3	REPLY.DESC.v3	msg.dp_desc	str256	True			
+3	REPLY.DESC.v3	msg.mfr_desc	str256	True			
+3	REPLY.DESC.v3	msg.serial_num	str32	True			
 3	REQUEST.FLOW.v3	msg	object	True			
 3	REQUEST.FLOW.v3	msg.out_group	ANY	True			
 3	REQUEST.FLOW.v3	msg.cookie	uint64	True			True
@@ -1402,7 +1402,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REQUEST.TABLE_FEATURES.v3	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.next_tables_miss	array	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.next_tables_miss.0	uint8	True			ERROR
-3	REQUEST.TABLE_FEATURES.v3	msg.0.name	str31	True			ERROR
+3	REQUEST.TABLE_FEATURES.v3	msg.0.name	str32	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.write_actions_miss	array	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.write_actions_miss.0	COPY_TTL_OUT	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.apply_actions_miss	array	True			ERROR
@@ -1439,7 +1439,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.TABLE_FEATURES.v3	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.next_tables_miss	array	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.next_tables_miss.0	uint8	True			ERROR
-3	REPLY.TABLE_FEATURES.v3	msg.0.name	str31	True			ERROR
+3	REPLY.TABLE_FEATURES.v3	msg.0.name	str32	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.write_actions_miss	array	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.write_actions_miss.0	COPY_TTL_OUT	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.apply_actions_miss	array	True			ERROR
@@ -1460,7 +1460,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.PORT_DESC.v3	msg.0.hw_addr	macaddress	True			True
 3	REPLY.PORT_DESC.v3	msg.0.state	array	True			
 3	REPLY.PORT_DESC.v3	msg.0.state.0	LINK_DOWN	False			
-3	REPLY.PORT_DESC.v3	msg.0.name	str15	True			True
+3	REPLY.PORT_DESC.v3	msg.0.name	str16	True			
 3	REPLY.PORT_DESC.v3	msg.0.ethernet	object	True			
 3	REPLY.PORT_DESC.v3	msg.0.ethernet.curr_speed	uint32	True			True
 3	REPLY.PORT_DESC.v3	msg.0.ethernet.max_speed	uint32	True			True
@@ -1598,7 +1598,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FEATURES_REPLY.v4	msg.ports.0.hw_addr	macaddress	True			
 4	FEATURES_REPLY.v4	msg.ports.0.state	array	True			
 4	FEATURES_REPLY.v4	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null		
-4	FEATURES_REPLY.v4	msg.ports.0.name	str15	True			
+4	FEATURES_REPLY.v4	msg.ports.0.name	str16	True			
 4	FEATURES_REPLY.v4	msg.ports.0.ethernet	object	True			
 4	FEATURES_REPLY.v4	msg.ports.0.ethernet.curr_speed	uint32	True			
 4	FEATURES_REPLY.v4	msg.ports.0.ethernet.max_speed	uint32	True			
@@ -1663,7 +1663,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	PORT_STATUS.v4	msg.port.hw_addr	macaddress	True			True
 4	PORT_STATUS.v4	msg.port.state	array	True			
 4	PORT_STATUS.v4	msg.port.state.0	LINK_DOWN	False	msg.port.state.0=LINK_DOWN		
-4	PORT_STATUS.v4	msg.port.name	str15	True			True
+4	PORT_STATUS.v4	msg.port.name	str16	True			
 4	PORT_STATUS.v4	msg.port.ethernet	object	True			
 4	PORT_STATUS.v4	msg.port.ethernet.curr_speed	uint32	True			True
 4	PORT_STATUS.v4	msg.port.ethernet.max_speed	uint32	True			True
@@ -1745,11 +1745,11 @@ version	type	keypath	syntax	required	default	missing	modify
 4	TABLE_MOD.v4	msg.config.0	uint32	False	msg.config.0=uint32,msg.table_id=ALL	msg.config.0=EVICTION	
 4	REQUEST.DESC.v4	msg	null	False			
 4	REPLY.DESC.v4	msg	object	True			
-4	REPLY.DESC.v4	msg.sw_desc	str255	True			
-4	REPLY.DESC.v4	msg.hw_desc	str255	True			
-4	REPLY.DESC.v4	msg.dp_desc	str255	True			
-4	REPLY.DESC.v4	msg.mfr_desc	str255	True			
-4	REPLY.DESC.v4	msg.serial_num	str31	True			
+4	REPLY.DESC.v4	msg.sw_desc	str256	True			
+4	REPLY.DESC.v4	msg.hw_desc	str256	True			
+4	REPLY.DESC.v4	msg.dp_desc	str256	True			
+4	REPLY.DESC.v4	msg.mfr_desc	str256	True			
+4	REPLY.DESC.v4	msg.serial_num	str32	True			
 4	REQUEST.FLOW.v4	msg	object	True			
 4	REQUEST.FLOW.v4	msg.out_group	ANY	True			
 4	REQUEST.FLOW.v4	msg.cookie	uint64	True			True
@@ -1926,7 +1926,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REQUEST.TABLE_FEATURES.v4	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.next_tables_miss	array	False	msg.0.next_tables_miss=array,msg.0.next_tables_miss.0=uint8		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.next_tables_miss.0	uint8	False	msg.0.next_tables_miss.0=uint8		True
-4	REQUEST.TABLE_FEATURES.v4	msg.0.name	str31	True			
+4	REQUEST.TABLE_FEATURES.v4	msg.0.name	str32	True			
 4	REQUEST.TABLE_FEATURES.v4	msg.0.write_actions_miss	array	False	msg.0.write_actions_miss=array,msg.0.write_actions_miss.0=COPY_TTL_OUT		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.write_actions_miss.0	COPY_TTL_OUT	False	msg.0.write_actions_miss.0=COPY_TTL_OUT		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.apply_actions_miss	array	False	msg.0.apply_actions_miss=array,msg.0.apply_actions_miss.0=COPY_TTL_OUT		
@@ -1963,7 +1963,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.TABLE_FEATURES.v4	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 4	REPLY.TABLE_FEATURES.v4	msg.0.next_tables_miss	array	False	msg.0.next_tables_miss=array,msg.0.next_tables_miss.0=uint8		
 4	REPLY.TABLE_FEATURES.v4	msg.0.next_tables_miss.0	uint8	False	msg.0.next_tables_miss.0=uint8		True
-4	REPLY.TABLE_FEATURES.v4	msg.0.name	str31	True			
+4	REPLY.TABLE_FEATURES.v4	msg.0.name	str32	True			
 4	REPLY.TABLE_FEATURES.v4	msg.0.write_actions_miss	array	False	msg.0.write_actions_miss=array,msg.0.write_actions_miss.0=COPY_TTL_OUT		
 4	REPLY.TABLE_FEATURES.v4	msg.0.write_actions_miss.0	COPY_TTL_OUT	False	msg.0.write_actions_miss.0=COPY_TTL_OUT		
 4	REPLY.TABLE_FEATURES.v4	msg.0.apply_actions_miss	array	False	msg.0.apply_actions_miss=array,msg.0.apply_actions_miss.0=COPY_TTL_OUT		
@@ -1984,7 +1984,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.PORT_DESC.v4	msg.0.hw_addr	macaddress	True			True
 4	REPLY.PORT_DESC.v4	msg.0.state	array	True			
 4	REPLY.PORT_DESC.v4	msg.0.state.0	LINK_DOWN	False			
-4	REPLY.PORT_DESC.v4	msg.0.name	str15	True			True
+4	REPLY.PORT_DESC.v4	msg.0.name	str16	True			
 4	REPLY.PORT_DESC.v4	msg.0.ethernet	object	True			
 4	REPLY.PORT_DESC.v4	msg.0.ethernet.curr_speed	uint32	True			True
 4	REPLY.PORT_DESC.v4	msg.0.ethernet.max_speed	uint32	True			True
@@ -2122,7 +2122,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	FEATURES_REPLY.v5	msg.ports.0.hw_addr	macaddress	True			
 5	FEATURES_REPLY.v5	msg.ports.0.state	array	True			
 5	FEATURES_REPLY.v5	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.ports=null		
-5	FEATURES_REPLY.v5	msg.ports.0.name	str15	True			
+5	FEATURES_REPLY.v5	msg.ports.0.name	str16	True			
 5	FEATURES_REPLY.v5	msg.ports.0.ethernet	object	True			
 5	FEATURES_REPLY.v5	msg.ports.0.ethernet.curr_speed	uint32	True			
 5	FEATURES_REPLY.v5	msg.ports.0.ethernet.max_speed	uint32	True			
@@ -2187,7 +2187,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	PORT_STATUS.v5	msg.port.hw_addr	macaddress	True			True
 5	PORT_STATUS.v5	msg.port.state	array	True			
 5	PORT_STATUS.v5	msg.port.state.0	LINK_DOWN	False	msg.port.state.0=LINK_DOWN		
-5	PORT_STATUS.v5	msg.port.name	str15	True			True
+5	PORT_STATUS.v5	msg.port.name	str16	True			
 5	PORT_STATUS.v5	msg.port.ethernet	object	True			
 5	PORT_STATUS.v5	msg.port.ethernet.curr_speed	uint32	True			True
 5	PORT_STATUS.v5	msg.port.ethernet.max_speed	uint32	True			True
@@ -2269,11 +2269,11 @@ version	type	keypath	syntax	required	default	missing	modify
 5	TABLE_MOD.v5	msg.config.0	uint32	False	msg.config.0=uint32,msg.table_id=ALL	msg.config.0=EVICTION	
 5	REQUEST.DESC.v5	msg	null	False			
 5	REPLY.DESC.v5	msg	object	True			
-5	REPLY.DESC.v5	msg.sw_desc	str255	True			
-5	REPLY.DESC.v5	msg.hw_desc	str255	True			
-5	REPLY.DESC.v5	msg.dp_desc	str255	True			
-5	REPLY.DESC.v5	msg.mfr_desc	str255	True			
-5	REPLY.DESC.v5	msg.serial_num	str31	True			
+5	REPLY.DESC.v5	msg.sw_desc	str256	True			
+5	REPLY.DESC.v5	msg.hw_desc	str256	True			
+5	REPLY.DESC.v5	msg.dp_desc	str256	True			
+5	REPLY.DESC.v5	msg.mfr_desc	str256	True			
+5	REPLY.DESC.v5	msg.serial_num	str32	True			
 5	REQUEST.FLOW.v5	msg	object	True			
 5	REQUEST.FLOW.v5	msg.out_group	ANY	True			
 5	REQUEST.FLOW.v5	msg.cookie	uint64	True			True
@@ -2450,7 +2450,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.TABLE_FEATURES.v5	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.next_tables_miss	array	False	msg.0.next_tables_miss=array,msg.0.next_tables_miss.0=uint8		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.next_tables_miss.0	uint8	False	msg.0.next_tables_miss.0=uint8		True
-5	REQUEST.TABLE_FEATURES.v5	msg.0.name	str31	True			
+5	REQUEST.TABLE_FEATURES.v5	msg.0.name	str32	True			
 5	REQUEST.TABLE_FEATURES.v5	msg.0.write_actions_miss	array	False	msg.0.write_actions_miss=array,msg.0.write_actions_miss.0=COPY_TTL_OUT		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.write_actions_miss.0	COPY_TTL_OUT	False	msg.0.write_actions_miss.0=COPY_TTL_OUT		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.apply_actions_miss	array	False	msg.0.apply_actions_miss=array,msg.0.apply_actions_miss.0=COPY_TTL_OUT		
@@ -2487,7 +2487,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.TABLE_FEATURES.v5	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 5	REPLY.TABLE_FEATURES.v5	msg.0.next_tables_miss	array	False	msg.0.next_tables_miss=array,msg.0.next_tables_miss.0=uint8		
 5	REPLY.TABLE_FEATURES.v5	msg.0.next_tables_miss.0	uint8	False	msg.0.next_tables_miss.0=uint8		True
-5	REPLY.TABLE_FEATURES.v5	msg.0.name	str31	True			
+5	REPLY.TABLE_FEATURES.v5	msg.0.name	str32	True			
 5	REPLY.TABLE_FEATURES.v5	msg.0.write_actions_miss	array	False	msg.0.write_actions_miss=array,msg.0.write_actions_miss.0=COPY_TTL_OUT		
 5	REPLY.TABLE_FEATURES.v5	msg.0.write_actions_miss.0	COPY_TTL_OUT	False	msg.0.write_actions_miss.0=COPY_TTL_OUT		
 5	REPLY.TABLE_FEATURES.v5	msg.0.apply_actions_miss	array	False	msg.0.apply_actions_miss=array,msg.0.apply_actions_miss.0=COPY_TTL_OUT		
@@ -2508,7 +2508,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.PORT_DESC.v5	msg.0.hw_addr	macaddress	True			True
 5	REPLY.PORT_DESC.v5	msg.0.state	array	True			
 5	REPLY.PORT_DESC.v5	msg.0.state.0	LINK_DOWN	False			
-5	REPLY.PORT_DESC.v5	msg.0.name	str15	True			True
+5	REPLY.PORT_DESC.v5	msg.0.name	str16	True			
 5	REPLY.PORT_DESC.v5	msg.0.ethernet	object	True			
 5	REPLY.PORT_DESC.v5	msg.0.ethernet.curr_speed	uint32	True			True
 5	REPLY.PORT_DESC.v5	msg.0.ethernet.max_speed	uint32	True			True

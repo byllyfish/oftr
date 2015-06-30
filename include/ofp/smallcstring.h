@@ -20,7 +20,7 @@ std::string validUtf8String(const char *b, const char *e);
 
 }  // namespace detail
 
-/// \brief Implements a fixed size, null-terminated C string.
+/// \brief Implements a fixed size string.
 /// \remarks Binary representation is standard layout and trivially copyable.
 template <size_t Size>
 class SmallCString {
@@ -33,7 +33,7 @@ class SmallCString {
 
   /* implicit NOLINT */ SmallCString(const char *cstr) { operator=(cstr); }
 
-  constexpr size_t capacity() const { return Size - 1; }
+  constexpr size_t capacity() const { return Size; }
 
   bool empty() const { return str_.front() == 0; }
 
@@ -43,34 +43,26 @@ class SmallCString {
     return detail::validUtf8String(str_.data(), str_.data() + length());
   }
 
-  const ArrayType &toArray() const { return str_; }
-
   void operator=(const std::string &s);
   void operator=(const char *cstr);
 
+  bool operator==(const SmallCString &rhs) const {
+    return str_ == rhs.str_;
+  }
+
  private:
   ArrayType str_;
+
+  const ArrayType &toArray() const { return str_; }
 };
 
-// template <size_t Size>
-// bool operator==(const SmallCString<Size> &lhs, const SmallCString<Size>
-// &rhs);
-
-template <size_t Size>
-inline bool operator==(const SmallCString<Size> &lhs,
-                       const SmallCString<Size> &rhs) {
-  return lhs.toArray() == rhs.toArray();
-}
-
-/// Copies string and sets the remaining bytes to zero. The last byte will
-/// always be zero.
+/// Copies string and sets the remaining bytes to zero.
 template <size_t Size>
 inline void SmallCString<Size>::operator=(const std::string &s) {
   size_t len = std::min(s.length(), capacity());
   assert(len <= capacity());
   std::memcpy(&str_, s.data(), len);
   std::memset(&str_[len], 0, capacity() - len);
-  str_.back() = 0;
 }
 
 template <size_t Size>
@@ -79,7 +71,6 @@ inline void SmallCString<Size>::operator=(const char *cstr) {
   assert(len <= capacity());
   std::memcpy(&str_, cstr, len);
   std::memset(&str_[len], 0, capacity() - len);
-  str_.back() = 0;
 }
 
 }  // namespace ofp
