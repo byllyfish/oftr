@@ -17,6 +17,7 @@
 #include "ofp/actions.h"
 #include "ofp/portstatsproperty.h"
 #include "ofp/setasync.h"
+#include "ofp/queuegetconfigreply.h"
 
 using namespace ofp;
 
@@ -70,6 +71,8 @@ void Transmogrify::normalize() {
       normalizeMultipartRequestV1();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV1();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   } else if (version == OFP_VERSION_2) {
     if (type == FeaturesReply::type()) {
@@ -80,6 +83,8 @@ void Transmogrify::normalize() {
       normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV2();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   } else if (version == OFP_VERSION_3) {
     if (type == FeaturesReply::type()) {
@@ -90,6 +95,8 @@ void Transmogrify::normalize() {
       normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV3();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   } else if (version == OFP_VERSION_4) {
     if (type == FeaturesReply::type()) {
@@ -102,6 +109,8 @@ void Transmogrify::normalize() {
       normalizeMultipartReplyV4();
     } else if (type == SetAsync::type()) {
       normalizeSetAsyncV4();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   }
 
@@ -667,6 +676,21 @@ void Transmogrify::normalizeSetAsyncV4() {
     out->value = masks[i];
     ++out;
   }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeQueueGetConfigReply() {
+  // If length of message is not padded to a multiple of 8, pad it out.
+  Header *hdr = header();
+
+  size_t length = hdr->length();
+  if ((length % 8) == 0) {
+    return;
+  }
+
+  size_t newLength = PadLength(length);
+  buf_.addZeros(newLength - length);
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }

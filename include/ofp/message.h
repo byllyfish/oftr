@@ -57,14 +57,14 @@ class Message {
 
   void setData(const UInt8 *data, size_t length) { buf_.set(data, length); }
   void setSource(sys::Connection *source) { channel_ = source; }
-  void setInfo(const MessageInfo *info) { info_ = info; }
+  void setInfo(MessageInfo *info) { info_ = info; }
   void setTime(const Timestamp &time) { time_ = time; }
 
   const UInt8 *data() const { return buf_.data(); }
   size_t size() const { return buf_.size(); }
 
   Timestamp time() const { return time_; }
-  const MessageInfo *info() const { return info_; }
+  MessageInfo *info() const { return info_; }
   OFPType type() const { return header()->type(); }
   OFPMultipartType subtype() const;
   OFPMultipartFlags flags() const;
@@ -92,8 +92,8 @@ class Message {
   Timestamp time_;
 
   // MessageInfo stores extra information about the message's session (src,
-  // dest, etc.) It is *not* owned by the message object.
-  const MessageInfo *info_ = nullptr;
+  // dest, filename, etc.) It is *not* owned by the message object.
+  MessageInfo *info_ = nullptr;
 
   friend std::ostream &operator<<(std::ostream &os, const Message &msg);
   friend class Transmogrify;

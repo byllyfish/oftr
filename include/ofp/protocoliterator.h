@@ -56,7 +56,7 @@ namespace detail {
 /// \return true if byte range is a valid protocol iterable.
 bool IsProtocolRangeValid(size_t elementSize, const ByteRange &range,
                           size_t sizeFieldOffset, size_t alignment,
-                          Validation *context);
+                          Validation *context, ProtocolIteratorType iterType = ProtocolIteratorType::Unspecified);
 
 /// Return count of items in the protocol range.
 ///
@@ -170,7 +170,7 @@ class ProtocolIterator {
 
   static bool isValid(const ByteRange &range, Validation *context) {
     return detail::IsProtocolRangeValid(sizeof(ElemType), range, SizeOffset,
-                                        Alignment, context);
+                                        Alignment, context, IterType);
   }
 
   template <class I>

@@ -25,12 +25,16 @@ class MessageInfo {
   // Information about the message source if it's a file.
   const std::string &filename() const { return filename_; }
 
+  const std::string &errorMessage() const { return error_; }
+  void setErrorMessage(const std::string &error) { error_ = error; }
+
  private:
   UInt64 sessionId_ = 0;
   IPv6Endpoint source_;
   IPv6Endpoint dest_;
   bool available_ = true;
   std::string filename_;
+  std::string error_;
 };
 
 OFP_END_IGNORE_PADDING

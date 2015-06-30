@@ -58,7 +58,7 @@ class QueuePropertyMaxRate {
 
 static_assert(sizeof(QueuePropertyMaxRate) == 16, "Unexpected size.");
 
-class QueuePropertyExperimenter {
+class QueuePropertyExperimenter : private NonCopyable {
  public:
   constexpr static OFPQueueProperty type() { return OFPQT_EXPERIMENTER; }
 

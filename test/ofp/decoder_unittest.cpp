@@ -61,6 +61,19 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
   }
 }
 
+static void testDecodeOnly(const char *hex, const char *yaml) {
+  auto s = HexToRawData(hex);
+
+  Message msg{s.data(), s.size()};
+  msg.transmogrify();
+
+  // YAML test
+  Decoder decoder{&msg};
+
+  EXPECT_EQ("", decoder.error());
+  EXPECT_EQ(yaml, decoder.result().str());
+}
+
 TEST(decoder, hellov1) {
   testDecodeEncode(
       "0100000800000001",
@@ -1586,4 +1599,14 @@ TEST(decoder, ofmp_portdescv5_reply) {
       "]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, "
       "'0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:     "
       "  0xAAAAAAAA\n    properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
+  // Accept a slightly malformed packet.
+  testDecodeOnly("0413005800007777000C00000000000000445500000000005461626C6520310000000000000000000000000000000000000000000000000000000000008888880000000000999999000000AA000000BB0000000400000000", "---\ntype:            REPLY.TABLE_FEATURES\nflags:           [  ]\nxid:             0x00007777\nversion:         0x04\nmsg:             \n  - table_id:        0x55\n    name:            Table 1\n    metadata_match:  0x0000000000888888\n    metadata_write:  0x0000000000999999\n    config:          0x000000AA\n    max_entries:     0x000000BB\n    instructions:    [  ]\n    next_tables:     [  ]\n    write_actions:   [  ]\n    apply_actions:   [  ]\n    match:           [  ]\n    wildcards:       [  ]\n    write_set_field: [  ]\n    apply_set_field: [  ]\n    properties:      \n...\n");
+}
+
+TEST(decoder, queue_get_config_replyv4_fix) {
+  // Make sure issue where property was assigned/sliced is fixed.
+  testDecodeOnly("04170098BEC0D5180000000D000000002FC870660000000D0084000000000000FFFF007400000000C2E4427C000000006464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646400000000", "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             0xBEC0D518\nversion:         0x04\nmsg:             \n  port:            0x0000000D\n  queues:          \n    - queue_id:        0x2FC87066\n      port:            0x0000000D\n      min_rate:        0xFFFF\n      max_rate:        0xFFFF\n      properties:      \n        - experimenter:    3269739132\n          value:           64646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464\n...\n");
 }

@@ -6,6 +6,7 @@
 #include "ofp/byteorder.h"
 #include "ofp/byterange.h"
 #include "ofp/constants.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 
@@ -31,7 +32,7 @@ class Validation {
   void multipartSizeHasImproperAlignment();
   void lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength);
 
-  void rangeSizeHasImproperAlignment(const UInt8 *ptr, size_t alignment);
+  void rangeSizeHasImproperAlignment(const UInt8 *ptr, ProtocolIteratorType type);
   void rangeDataHasImproperAlignment(const UInt8 *ptr, size_t alignment);
   void rangeElementSizeIsTooSmall(const UInt8 *ptr, size_t minSize);
   void rangeElementSizeHasImproperAlignment(const UInt8 *ptr, size_t elemSize,
@@ -69,6 +70,8 @@ class Validation {
   size_t offset(const UInt8 *ptr) const;
   std::string hexContext(const UInt8 *ptr) const;
   void logContext(const UInt8 *ptr = nullptr) const;
+
+  void setErrorMessage(const char *errorMessage, size_t errorOffset = 0);
 };
 
 OFP_END_IGNORE_PADDING
@@ -114,7 +117,7 @@ bool Validation::validateArrayVariableSize(const UInt8 *body,
 
   size_t length = lengthRemaining();
   if ((length % 8) != 0) {
-    rangeSizeHasImproperAlignment(body, 8);
+    rangeSizeHasImproperAlignment(body, ProtocolIteratorType::Unspecified);
     return false;
   }
 
@@ -132,20 +135,22 @@ bool Validation::validateArrayVariableSize(const UInt8 *body,
     }
 
     size_t size = *Big16_cast(body + Offset);
-    if (size > length) {
-      rangeElementSizeOverrunsEnd(body, size);
-      return false;
-    }
 
     if (size < Offset + sizeof(Big16)) {
       rangeElementSizeIsTooSmall(body, Offset + sizeof(Big16));
       return false;
     }
 
-    if ((size % 8) != 0) {
-      rangeElementSizeHasImproperAlignment(body, size, 8);
+    size = PadLength(size);
+    if (size > length) {
+      rangeElementSizeOverrunsEnd(body, size);
       return false;
     }
+
+    //if ((size % 8) != 0) {
+    //  rangeElementSizeHasImproperAlignment(body, size, 8);
+    //  return false;
+    //}
 
     const Type *ptr = reinterpret_cast<const Type *>(body);
     if (!ptr->validateInput(this)) {

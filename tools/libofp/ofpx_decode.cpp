@@ -134,9 +134,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
 
-  if (sessionInfo_.available()) {
-    message.setInfo(&sessionInfo_);
-  }
+  message.setInfo(&sessionInfo_);
 
   while (input) {
     // Read the message header.
@@ -187,9 +185,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   ofp::Message originalMessage{nullptr};
   ofp::Message buffer{nullptr};
 
-  if (sessionInfo_.available()) {
-    message.setInfo(&sessionInfo_);
-  }
+  message.setInfo(&sessionInfo_);
 
   size_t expectedPos = 0;
   size_t previousPos = 0;

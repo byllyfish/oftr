@@ -90,7 +90,7 @@ struct MappingTraits<ofp::yaml::Decoder> {
     }
 
     const MessageInfo *info = decoder.msg_->info();
-    if (info) {
+    if (info && info->available()) {
       UInt64 sessionId = info->sessionId();
       if (sessionId) {
         IPv6Endpoint src = info->source();
@@ -106,7 +106,7 @@ struct MappingTraits<ofp::yaml::Decoder> {
     }
 
     if (!decoder.decodeMsg(io)) {
-      decoder.error_ = "Invalid data.";
+      decoder.error_ = info ? info->errorMessage() : "Invalid data.";
     }
   }
 };

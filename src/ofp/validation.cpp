@@ -3,6 +3,7 @@
 #include "ofp/validation.h"
 #include "ofp/log.h"
 #include "ofp/message.h"
+#include "ofp/messageinfo.h"
 
 using namespace ofp;
 
@@ -21,93 +22,69 @@ Validation::Validation(const Message *msg, OFPErrorCode *error)
 
 void Validation::messageSizeIsInvalid() {
   *error_ = OFPBRC_BAD_LEN;
-  log::info("Validation Failed: Message size is invalid", length_);
-  logContext();
+  setErrorMessage("Message size is invalid");
 }
 
 void Validation::messageTypeIsNotSupported() {
   *error_ = OFPBRC_BAD_TYPE;
-  log::info("Validation Failed: Message type is not supported");
-  logContext();
+  setErrorMessage("Message type is not supported");
 }
 
 void Validation::multipartTypeIsNotSupported() {
   *error_ = OFPBRC_BAD_MULTIPART;
-  log::info("Validation Failed: Multipart type is not supported");
-  logContext();
+  setErrorMessage("Multipart type is not supported");
 }
 
 void Validation::multipartTypeIsNotSupportedForVersion() {
   *error_ = OFPBRC_BAD_MULTIPART;
-  log::info(
-      "Validation Failed: Multipart type is not supported for this protocol "
-      "version");
-  logContext();
+  setErrorMessage("Multipart type is not supported for this protocol version");
 }
 
 void Validation::multipartSizeHasImproperAlignment() {
   *error_ = OFPBRC_BAD_LEN;
-  log::info("Validation Failed: Multipart size has improper alignment");
-  logContext();
+  setErrorMessage("Multipart size has improper alignment");
 }
 
 void Validation::lengthRemainingIsInvalid(const UInt8 *ptr,
                                           size_t expectedLength) {
   *error_ = OFPBRC_BAD_LEN;
-  log::info("Validation Failed: Length remaining is invalid", lengthRemaining(),
-            "expected", expectedLength, "at offset", offset(ptr));
-  logContext(ptr);
+  setErrorMessage("Length remaining is invalid", offset(ptr));
 }
 
-void Validation::rangeSizeHasImproperAlignment(const UInt8 *ptr,
-                                               size_t alignment) {
+void Validation::rangeSizeHasImproperAlignment(const UInt8 *ptr, ProtocolIteratorType type) {
   *error_ = OFPBRC_BAD_LEN;
-  log::info("Validation Failed: Range length has improper alignment at offset",
-            offset(ptr), "alignment", alignment);
-  logContext(ptr);
+  log::info("rangeSizeHasImproperAlignment", (int)type);
+  setErrorMessage("Range size has improper alignment", offset(ptr));
 }
 
 void Validation::rangeDataHasImproperAlignment(const UInt8 *ptr,
                                                size_t alignment) {
   *error_ = OFPBRC_BAD_LEN;
-  log::info("Validation Failed: Range data has improper alignment at offset",
-            offset(ptr), "alignment", alignment);
-  logContext(ptr);
+  setErrorMessage("Range data has improper alignment", offset(ptr));
 }
 
 void Validation::rangeElementSizeIsTooSmall(const UInt8 *ptr, size_t minSize) {
   *error_ = OFPBRC_BAD_LEN;
-  log::info("Validation Failed: Range element size is too small at offset",
-            offset(ptr));
-  logContext(ptr);
+  setErrorMessage("Range element size is too small", offset(ptr));
 }
 
 void Validation::rangeElementSizeHasImproperAlignment(const UInt8 *ptr,
                                                       size_t elemSize,
                                                       size_t alignment) {
   *error_ = OFPBRC_BAD_LEN;
-  log::info(
-      "Validation Failed: Range element size has improper alignment at offset",
-      offset(ptr), "elemSize", elemSize, "alignment", alignment);
-  logContext(ptr);
+  setErrorMessage("Range element size has improper alignment", offset(ptr));
 }
 
 void Validation::rangeElementSizeOverrunsEnd(const UInt8 *ptr,
                                              size_t jumpSize) {
   *error_ = OFPBRC_BAD_LEN;
-  log::info(
-      "Validation Failed: Range element size overruns end of buffer at offset",
-      offset(ptr), "jumpSize", jumpSize);
-  logContext(ptr);
+  setErrorMessage("Range element size overruns end", offset(ptr));
 }
 
 void Validation::rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr,
                                                      size_t elementSize) {
   *error_ = OFPBRC_BAD_LEN;
-  log::info(
-      "Validation Failed: Range size not a multiple of element size at offset",
-      offset(ptr), "elementSize", elementSize);
-  logContext(ptr);
+  setErrorMessage("Range size is not multiple of element size", offset(ptr));
 }
 
 size_t Validation::offset(const UInt8 *ptr) const {
@@ -117,6 +94,7 @@ size_t Validation::offset(const UInt8 *ptr) const {
   return Unsigned_cast(ptr - msg_->data());
 }
 
+#if 0
 std::string Validation::hexContext(const UInt8 *ptr) const {
   assert(msg_);
 
@@ -155,6 +133,17 @@ void Validation::logContext(const UInt8 *ptr) const {
     log::info("  Message type:", oss.str());
     if (ptr) {
       log::info("  Context(16 bytes):", hexContext(ptr));
+    }
+  }
+}
+#endif //0
+
+void Validation::setErrorMessage(const char *errorMessage, size_t errorOffset) {
+  log::info("Validation failed:", errorMessage, std::make_pair("offset", errorOffset));
+
+  if (msg_) {
+    if (MessageInfo *info = msg_->info()) {
+      info->setErrorMessage(errorMessage);
     }
   }
 }
