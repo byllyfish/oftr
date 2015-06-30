@@ -48,7 +48,7 @@ class MPReplyVariableSizeSeq {
     assert(IsPtrAligned(buf, 8));
     size_t len = 0;
     while (len < total) {
-      UInt16 elemSize = PadLength(*Big16_cast(buf + len + Offset));
+      size_t elemSize = PadLength(*Big16_cast(buf + len + Offset));
       assert(elemSize > 0);
       len += elemSize;
       ++result;

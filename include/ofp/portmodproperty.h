@@ -7,7 +7,7 @@
 
 namespace ofp {
 
-class PortModPropertyEthernet {
+class PortModPropertyEthernet : private NonCopyable {
  public:
   constexpr static OFPPortModProperty type() { return OFPPMPT_ETHERNET; }
 
@@ -29,6 +29,9 @@ class PortModPropertyEthernet {
 };
 
 static_assert(sizeof(PortModPropertyEthernet) == 8, "Unexpected size.");
+
+// PortModPropertyOptical needs to be `Copyable` since it is used as an
+// optional property.
 
 class PortModPropertyOptical {
  public:

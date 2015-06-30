@@ -16,7 +16,7 @@ class Validation;
 // N.B. These TLV property structures use the "old" format. These are *not*
 // "standardized" TLV's as used in OpenFlow 1.4 and later.
 
-class QueuePropertyMinRate {
+class QueuePropertyMinRate : private NonCopyable {
  public:
   constexpr static OFPQueueProperty type() { return OFPQT_MIN_RATE; }
 
@@ -37,7 +37,7 @@ class QueuePropertyMinRate {
 
 static_assert(sizeof(QueuePropertyMinRate) == 16, "Unexpected size.");
 
-class QueuePropertyMaxRate {
+class QueuePropertyMaxRate : private NonCopyable {
  public:
   constexpr static OFPQueueProperty type() { return OFPQT_MAX_RATE; }
 
