@@ -7,7 +7,7 @@
 
 namespace ofp {
 
-class MeterBandDrop {
+class MeterBandDrop : private NonCopyable {
  public:
   constexpr static OFPMeterBandType type() { return OFPMBT_DROP; }
 
@@ -27,7 +27,7 @@ class MeterBandDrop {
 
 static_assert(sizeof(MeterBandDrop) == 16, "Unexpected size.");
 
-class MeterBandDscpRemark {
+class MeterBandDscpRemark : private NonCopyable {
  public:
   constexpr static OFPMeterBandType type() { return OFPMBT_DSCP_REMARK; }
 
@@ -49,7 +49,7 @@ class MeterBandDscpRemark {
 
 static_assert(sizeof(MeterBandDscpRemark) == 16, "Unexpected size.");
 
-class MeterBandExperimenter {
+class MeterBandExperimenter : private NonCopyable {
  public:
   constexpr static OFPMeterBandType type() { return OFPMBT_EXPERIMENTER; }
 

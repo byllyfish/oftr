@@ -1007,16 +1007,7 @@ TEST(decoder, queuegetconfigreplyv4_experimenter) {
       "EEEEEEEE000000000001020304050000FFFF001300000000FFFFFFFF00000000ABCDEF00"
       "000000007777777788888888003000000000000000010010000000009999000000000000"
       "0002001000000000AAAA000000000000",
-      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
-      " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
-      "   port:            0x44444444\n      min_rate:        0x5555\n      "
-      "max_rate:        0x6666\n      properties:      \n        - "
-      "experimenter:    4008636142\n          value:           000102030405\n  "
-      "      - experimenter:    4294967295\n          value:           "
-      "ABCDEF\n    - queue_id:        0x77777777\n      port:            "
-      "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
-      "0xAAAA\n      properties:      \n...\n");
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  port:            0x22222222\n  queues:          \n    - queue_id:        0x33333333\n      port:            0x44444444\n      min_rate:        0x5555\n      max_rate:        0x6666\n      properties:      \n        - experimenter:    0xEEEEEEEE\n          value:           000102030405\n        - experimenter:    0xFFFFFFFF\n          value:           ABCDEF\n    - queue_id:        0x77777777\n      port:            0x88888888\n      min_rate:        0x9999\n      max_rate:        0xAAAA\n      properties:      \n...\n");
 }
 
 TEST(decoder, getconfigreplyv4) {
@@ -1273,14 +1264,7 @@ TEST(decoder, ofp_metermod_v4) {
   testDecodeEncode(
       "041D00301111111100012222333333330001001044444444555555550000000000020010"
       "666666667777777788000000",
-      "---\ntype:            METER_MOD\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  command:        "
-      " MODIFY\n  flags:           [ PKTPS, '0x00002220' ]\n  meter_id:        "
-      "0x33333333\n  "
-      "bands:           \n    - type:            DROP\n      rate:      "
-      "      1145324612\n      burst_size:      1431655765\n    - type:        "
-      "    DSCP_REMARK\n      rate:            1717986918\n      "
-      "burst_size:      2004318071\n      prec_level:      136\n...\n");
+      "---\ntype:            METER_MOD\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  command:         MODIFY\n  flags:           [ PKTPS, '0x00002220' ]\n  meter_id:        0x33333333\n  bands:           \n    - type:            DROP\n      rate:            0x44444444\n      burst_size:      0x55555555\n    - type:            DSCP_REMARK\n      rate:            0x66666666\n      burst_size:      0x77777777\n      prec_level:      0x88\n...\n");
 }
 
 TEST(decoder, ofmp_aggregatestatsrequest_v1) {
@@ -1608,5 +1592,5 @@ TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
 
 TEST(decoder, queue_get_config_replyv4_fix) {
   // Make sure issue where property was assigned/sliced is fixed.
-  testDecodeOnly("04170098BEC0D5180000000D000000002FC870660000000D0084000000000000FFFF007400000000C2E4427C000000006464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646400000000", "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             0xBEC0D518\nversion:         0x04\nmsg:             \n  port:            0x0000000D\n  queues:          \n    - queue_id:        0x2FC87066\n      port:            0x0000000D\n      min_rate:        0xFFFF\n      max_rate:        0xFFFF\n      properties:      \n        - experimenter:    3269739132\n          value:           64646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464\n...\n");
+  testDecodeOnly("04170098BEC0D5180000000D000000002FC870660000000D0084000000000000FFFF007400000000C2E4427C000000006464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646400000000", "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             0xBEC0D518\nversion:         0x04\nmsg:             \n  port:            0x0000000D\n  queues:          \n    - queue_id:        0x2FC87066\n      port:            0x0000000D\n      min_rate:        0xFFFF\n      max_rate:        0xFFFF\n      properties:      \n        - experimenter:    0xC2E4427C\n          value:           64646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464646464\n...\n");
 }
