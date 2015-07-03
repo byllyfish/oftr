@@ -7,3 +7,6 @@
 [submodule "external/boringssl"]
 	path = external/boringssl
 	url = https://boringssl.googlesource.com/boringssl
+[submodule "external/openflow-messages"]
+	path = external/openflow-messages
+	url = https://github.com/flowgrammable/openflow-messages
