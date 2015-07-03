@@ -70,6 +70,11 @@ class Transmogrify {
 
 template <class Type>
 int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
+  // Size must be multiple of 8.
+  if (((*iter)->size() % 8) != 0) {
+    return 0;
+  }
+
   ByteRange valueRange = (*iter)->value();
   size_t valueLen = valueRange.size();
 
@@ -83,7 +88,10 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
 
     int lengthChange =
         static_cast<int>(Signed_cast(list.size()) - Signed_cast(valueLen));
+
     ptrdiff_t offset = buf_.offset(iter->data());
+    ptrdiff_t endOffset = buf_.offset(iterEnd->data());
+
     if (lengthChange > 0) {
       buf_.insertUninitialized(valueRange.data(), Unsigned_cast(lengthChange));
 
@@ -91,7 +99,7 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
       buf_.remove(iter->data(), Unsigned_cast(-lengthChange));
     }
 
-    ActionRange range{{buf_.data() + offset, buf_.end()}};
+    ActionRange range{{buf_.data() + offset, buf_.data() + endOffset + lengthChange}};
     *iter = range.begin();
     *iterEnd = range.end();
 

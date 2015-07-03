@@ -161,7 +161,9 @@ class ProtocolIterator {
   const UInt8 *pos_;
 
   // Only a ProtocolRange or ProtocolList can construct a ProtocolIterator.
-  explicit ProtocolIterator(const UInt8 *pos) : pos_{pos} {}
+  explicit ProtocolIterator(const UInt8 *pos) : pos_{pos} {
+    assert(IsPtrAligned(pos, Alignment));
+  }
 
   static size_t itemCount(const ByteRange &range) {
     return detail::ProtocolRangeItemCount(sizeof(ElemType), range, SizeOffset,

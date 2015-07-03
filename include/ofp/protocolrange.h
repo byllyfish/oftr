@@ -17,7 +17,7 @@ class ProtocolRange {
 
   ProtocolRange() = default;
   /* implicit NOLINT */ ProtocolRange(const ByteRange &range) : range_{range} {
-    assert(begin() <= end());
+    assert(range.begin() <= range.end());
   }
 
   Iterator begin() const { return Iterator(range_.begin()); }
