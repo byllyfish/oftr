@@ -61,6 +61,11 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
     if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) {
       elemSize = *Big16_cast(ptr) == 0xffff ? 8 : 4;
     } else {
+      // Make sure there's enough room in the buffer to read the element size.
+      if (sizeFieldOffset + 2 > len) {
+        context->rangeElementSizeOverrunsEnd(ptr, 0);
+        return false;
+      }
       elemSize = *Big16_cast(ptr + sizeFieldOffset);
     }
 

@@ -422,7 +422,7 @@ void Transmogrify::normalizePacketOutV1() {
     log::warning("PacketOut v1 message has invalid action len", actionLen);
     hdr->setType(OFPT_UNSUPPORTED);
     return;
-  } else if (16 + actionLen > buf_.size()) {
+  } else if (16u + actionLen > buf_.size()) {
     log::warning("PacketOut v1 message action len overruns end", actionLen);
     hdr->setType(OFPT_UNSUPPORTED);
     return;
