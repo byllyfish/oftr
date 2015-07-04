@@ -1,5 +1,21 @@
 = Changelog
 
+== Version 0.5 (4 July 2015)
+
+- Validate Experimenter actions correctly.
+- Added openflow-messages test for libofp.
+- Fix bug in ProtocolIterator which leads to incorrect data access.
+- Fix incorrect validation in transmogrify module.
+- SmallCString no longer puts a zero at end of the string.
+- Use hex (not decimal) in decodes of QueueProperty and MeterBands.
+- Improve message decoder error messages - make them more specific.
+- Add '--include-filename' command-line argument to libofp decode.
+- Never reply to an Error message with an Error.
+- Rename BufferID to BufferNumber for consistency.
+- Validate Queue Properties correctly.
+- Version output now displays the git commit of libofp itself.
+- Add support for LIBOFP_ENABLE_JSONRPC cmake flag (enabled by default)
+
 == Version 0.4 (26 June 2015)
 
 - Multipart PORT_DESC requests/replies now work for versions 1, 2, 3.
