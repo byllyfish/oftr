@@ -105,7 +105,7 @@ struct MappingTraits<ofp::yaml::Encoder> {
 
     std::string ignore;
     io.mapOptional("_file", ignore);
-    
+
     if (header.type() != OFPT_UNSUPPORTED) {
       encoder.encodeMsg(io);
     }

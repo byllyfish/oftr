@@ -14,7 +14,7 @@ ActionRange::ActionRange(const ActionList &list) : ActionRange{list.toRange()} {
 bool ActionRange::validateInput(Validation *context) const {
   if (!Inherited::validateInput(context))
     return false;
-  
+
   for (auto &item : *this) {
     switch (item.type().enumType()) {
       case OFPAT_EXPERIMENTER:

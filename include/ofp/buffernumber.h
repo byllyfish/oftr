@@ -19,7 +19,9 @@ class BufferNumber {
     return static_cast<OFPBufferNo>(value());
   }
 
-  bool operator==(const BufferNumber &rhs) const { return buffer_ == rhs.buffer_; }
+  bool operator==(const BufferNumber &rhs) const {
+    return buffer_ == rhs.buffer_;
+  }
   bool operator!=(const BufferNumber &rhs) const { return !(*this == rhs); }
 
  private:

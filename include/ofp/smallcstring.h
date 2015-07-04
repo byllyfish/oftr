@@ -46,9 +46,7 @@ class SmallCString {
   void operator=(const std::string &s);
   void operator=(const char *cstr);
 
-  bool operator==(const SmallCString &rhs) const {
-    return str_ == rhs.str_;
-  }
+  bool operator==(const SmallCString &rhs) const { return str_ == rhs.str_; }
 
  private:
   ArrayType str_;

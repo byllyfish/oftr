@@ -110,7 +110,8 @@ class Decode : public Subprogram {
                           cl::desc("Use metadata from tcpflow '.findx' files")};
   cl::opt<bool> dataPkt_{
       "data-pkt", cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
-  cl::opt<bool> includeFilename_{"include-filename", cl::desc("Include file name in all decodes")};
+  cl::opt<bool> includeFilename_{"include-filename",
+                                 cl::desc("Include file name in all decodes")};
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};

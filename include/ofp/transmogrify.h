@@ -37,7 +37,7 @@ class Transmogrify {
   void normalizeMultipartReplyV4();
   void normalizeSetAsyncV4();
   void normalizeQueueGetConfigReply();
-  
+
   void normalizeMPFlowRequestV1();
   void normalizeMPFlowReplyV1(size_t *start);
   void normalizeMPTableStatsReplyV4(size_t *start);
@@ -99,7 +99,8 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
       buf_.remove(iter->data(), Unsigned_cast(-lengthChange));
     }
 
-    ActionRange range{{buf_.data() + offset, buf_.data() + endOffset + lengthChange}};
+    ActionRange range{
+        {buf_.data() + offset, buf_.data() + endOffset + lengthChange}};
     *iter = range.begin();
     *iterEnd = range.end();
 

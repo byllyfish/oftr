@@ -13,7 +13,7 @@ static void testDecodeFail(const char *hex, const char *err) {
   msg.transmogrify();
 
   log::debug("msg=", msg);
-  
+
   Decoder decoder{&msg};
 
   EXPECT_EQ(err, decoder.error());
@@ -21,9 +21,11 @@ static void testDecodeFail(const char *hex, const char *err) {
 }
 
 TEST(decoderfail, malformed_port_desc_v1) {
-  testDecodeFail("011500189C3CBB55000D00000000000089A6001000080000", "Range element size overruns end");
+  testDecodeFail("011500189C3CBB55000D00000000000089A6001000080000",
+                 "Range element size overruns end");
 }
 
 TEST(decoderfail, malformed_port_desc_v2) {
-  testDecodeFail("021700189C3CBB55000D00000000000089A6001000080000", "Range element size overruns end");
+  testDecodeFail("021700189C3CBB55000D00000000000089A6001000080000",
+                 "Range element size overruns end");
 }

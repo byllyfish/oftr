@@ -229,7 +229,7 @@ void Transmogrify::normalizeFlowModV1() {
   if (buf_.size() > 65535 - 72) {
     log::info("FlowMod v1 message is too long.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
-    return;    
+    return;
   }
 
   // Caution! Many magic numbers ahead...
@@ -310,7 +310,8 @@ void Transmogrify::normalizeFlowModV1() {
 
     pkt = buf_.mutableData();
     detail::InstructionHeaderWithPadding insHead{
-        OFPIT_APPLY_ACTIONS, UInt16_narrow_cast(Unsigned_cast(actLen + 8 + delta))};
+        OFPIT_APPLY_ACTIONS,
+        UInt16_narrow_cast(Unsigned_cast(actLen + 8 + delta))};
     std::memcpy(pkt + 136, &insHead, sizeof(insHead));
   }
 
@@ -417,7 +418,7 @@ void Transmogrify::normalizePacketOutV1() {
   UInt8 *pkt = buf_.mutableData();
   Big32 inPort = normPortNumberV1(pkt + 12);
   UInt16 actionLen = *Big16_cast(pkt + 14);
-  
+
   if ((actionLen % 8) != 0) {
     log::warning("PacketOut v1 message has invalid action len", actionLen);
     hdr->setType(OFPT_UNSUPPORTED);

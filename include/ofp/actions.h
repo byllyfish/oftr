@@ -246,7 +246,9 @@ class AT_EXPERIMENTER {
     return {BytePtr(&value_), type_.length() - FixedSize};
   }
 
-  bool validateInput(Validation *context) const { return type_.length() >= FixedSize; }
+  bool validateInput(Validation *context) const {
+    return type_.length() >= FixedSize;
+  }
 
  private:
   const ActionType type_;

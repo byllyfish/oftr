@@ -54,9 +54,10 @@ namespace detail {
 ///   - pointer to start of range is 8-byte aligned.
 ///
 /// \return true if byte range is a valid protocol iterable.
-bool IsProtocolRangeValid(size_t elementSize, const ByteRange &range,
-                          size_t sizeFieldOffset, size_t alignment,
-                          Validation *context, ProtocolIteratorType iterType = ProtocolIteratorType::Unspecified);
+bool IsProtocolRangeValid(
+    size_t elementSize, const ByteRange &range, size_t sizeFieldOffset,
+    size_t alignment, Validation *context,
+    ProtocolIteratorType iterType = ProtocolIteratorType::Unspecified);
 
 /// Return count of items in the protocol range.
 ///

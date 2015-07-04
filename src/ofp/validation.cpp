@@ -51,7 +51,8 @@ void Validation::lengthRemainingIsInvalid(const UInt8 *ptr,
   setErrorMessage("Length remaining is invalid", offset(ptr));
 }
 
-void Validation::rangeSizeHasImproperAlignment(const UInt8 *ptr, ProtocolIteratorType type) {
+void Validation::rangeSizeHasImproperAlignment(const UInt8 *ptr,
+                                               ProtocolIteratorType type) {
   *error_ = OFPBRC_BAD_LEN;
   setErrorMessage("Range size has improper alignment", offset(ptr));
 }
@@ -94,7 +95,8 @@ size_t Validation::offset(const UInt8 *ptr) const {
 }
 
 void Validation::setErrorMessage(const char *errorMessage, size_t errorOffset) {
-  log::info("Validation failed:", errorMessage, std::make_pair("offset", errorOffset));
+  log::info("Validation failed:", errorMessage,
+            std::make_pair("offset", errorOffset));
 
   if (msg_) {
     if (MessageInfo *info = msg_->info()) {

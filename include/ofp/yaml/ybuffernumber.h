@@ -26,7 +26,8 @@ struct ScalarTraits<ofp::BufferNumber> {
     }
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::BufferNumber &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::BufferNumber &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
       ofp::OFPBufferNo bufferId;
       if (!converter.convert(scalar, &bufferId)) {

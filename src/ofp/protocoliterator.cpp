@@ -29,7 +29,8 @@ static size_t protocolRangeFixedItemCount(size_t elementSize,
 bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
                                        const ByteRange &range,
                                        size_t sizeFieldOffset, size_t alignment,
-                                       Validation *context, ProtocolIteratorType iterType) {
+                                       Validation *context,
+                                       ProtocolIteratorType iterType) {
   if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_FIXED) {
     return isProtocolRangeFixedValid(elementSize, range, context);
   }

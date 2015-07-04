@@ -116,7 +116,8 @@ TEST(protocolrange, iteration) {
   ByteRange r1{data, sizeof(data)};
   OFPErrorCode error;
   Validation c1{nullptr, &error};
-  EXPECT_TRUE(IsProtocolRangeValid(sizeof(Item), r1, 2, 8, &c1, ProtocolIteratorType::Unspecified));
+  EXPECT_TRUE(IsProtocolRangeValid(sizeof(Item), r1, 2, 8, &c1,
+                                   ProtocolIteratorType::Unspecified));
 
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};
   EXPECT_TRUE(iterable.validateInput(&c1));

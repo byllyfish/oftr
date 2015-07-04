@@ -32,7 +32,8 @@ class Validation {
   void multipartSizeHasImproperAlignment();
   void lengthRemainingIsInvalid(const UInt8 *ptr, size_t expectedLength);
 
-  void rangeSizeHasImproperAlignment(const UInt8 *ptr, ProtocolIteratorType type);
+  void rangeSizeHasImproperAlignment(const UInt8 *ptr,
+                                     ProtocolIteratorType type);
   void rangeDataHasImproperAlignment(const UInt8 *ptr, size_t alignment);
   void rangeElementSizeIsTooSmall(const UInt8 *ptr, size_t minSize);
   void rangeElementSizeHasImproperAlignment(const UInt8 *ptr, size_t elemSize,
@@ -147,7 +148,7 @@ bool Validation::validateArrayVariableSize(const UInt8 *body,
       return false;
     }
 
-    //if ((size % 8) != 0) {
+    // if ((size % 8) != 0) {
     //  rangeElementSizeHasImproperAlignment(body, size, 8);
     //  return false;
     //}
