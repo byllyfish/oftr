@@ -18,9 +18,17 @@
 
 * [ ] Check build results.
 
-* [ ] Produce osx, linux release builds and produce SHA1 hashes.
+* [ ] Produce linux release build:
+** [ ] Reboot Linux VM so time is accurate.
+** [ ] Compile fresh linux build. `make`
+** [ ] Run tests. `make test`
+** [ ] Strip the binary. `strip libofp`
+** [ ] Test the binary version. `libofp version`
+** [ ] Create a zip archive.  `zip libofp-version-linux.zip libofp`
+** [ ] Compute sha1 hash.  `openssl sha1 libofp_X.Y_linux.zip`
+** [ ] Download binary to mac.
 
-* [ ] Attach binaries and tag the master branch.
+* [ ] Attach osx, linux binaries and tag the master branch.
 
 * [ ] Merge master into coverity_scan branch.
 
