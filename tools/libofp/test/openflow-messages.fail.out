@@ -1131,52 +1131,9 @@ Error: Only 77 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_0/rep/rep_14_00039.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=80 data=010E0050E50A94E5000000085ABCC18FB43D95A21FAB9BFC5EA99FDD340000800A9100003E2550EFC11C1E808FB2959C2BFDEBC3C8E2FEC30001001E003C000AE43A37C300020001FFFF000B41E11111]
----
-type:            FLOW_MOD
-xid:             0xE50A94E5
-version:         0x01
-msg:             
-  cookie:          0x2BFDEBC3C8E2FEC3
-  cookie_mask:     0xFFFFFFFFFFFFFFFF
-  table_id:        0x00
-  command:         MODIFY
-  idle_timeout:    0x001E
-  hard_timeout:    0x003C
-  priority:        0x000A
-  buffer_id:       0xE43A37C3
-  out_port:        0x00000002
-  out_group:       0x00000000
-  flags:           [ SEND_FLOW_REM ]
-  match:           
-    - field:           IN_PORT
-      value:           0x00005ABC
-    - field:           ETH_SRC
-      value:           'c1:8f:b4:3d:95:a2'
-    - field:           VLAN_VID
-      value:           0x9FDD
-    - field:           VLAN_PCP
-      value:           0x34
-    - field:           ETH_TYPE
-      value:           0x0080
-    - field:           IP_DSCP
-      value:           0x0A
-    - field:           IP_PROTO
-      value:           0x91
-    - field:           IPV4_SRC
-      value:           62.37.80.239
-    - field:           IPV4_DST
-      value:           193.28.30.128
-  instructions:    
-    - instruction:     APPLY_ACTIONS
-      actions:         
-        - action:          EXPERIMENTER
-          experimenter:    0x78787878
-          data:            ''
-...
 Filename: external/openflow-messages/v1_0/rep/rep_14_00040.fail
-Error: Encode yielded different data at byte offset 11:
-010E0050E50A94E5000000C85ABCC18FB43D95A20000000000008FDD340000800A9100003E2550EFC11C1E80000000002BFDEBC3C8E2FEC30001001E003C000AE43A37C300020001FFFF000878787878
-010E0050E50A94E5000000085ABCC18FB43D95A21FAB9BFC5EA99FDD340000800A9100003E2550EFC11C1E808FB2959C2BFDEBC3C8E2FEC30001001E003C000AE43A37C300020001FFFF000778787878
+Error: Decode failed: Range element size overruns end
+[ByteList size=80 data=010E0050E50A94E5000000085ABCC18FB43D95A21FAB9BFC5EA99FDD340000800A9100003E2550EFC11C1E808FB2959C2BFDEBC3C8E2FEC30001001E003C000AE43A37C300020001FFFF000778787878]
 Filename: external/openflow-messages/v1_0/rep/rep_14_00041.fail:
 Error: Only 70 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_0/rep/rep_14_00042.fail:

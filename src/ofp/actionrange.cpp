@@ -11,6 +11,24 @@ using namespace ofp;
 ActionRange::ActionRange(const ActionList &list) : ActionRange{list.toRange()} {
 }
 
+bool ActionRange::validateInput(Validation *context) const {
+  if (!Inherited::validateInput(context))
+    return false;
+  
+  for (auto &item : *this) {
+    switch (item.type().enumType()) {
+      case OFPAT_EXPERIMENTER:
+        if (!item.action<AT_EXPERIMENTER>()->validateInput(context))
+          return false;
+        break;
+      default:
+        break;
+    }
+  }
+
+  return true;
+}
+
 /// \returns Size of action list when written to channel.
 size_t ActionRange::writeSize(Writable *channel) {
   UInt8 version = channel->version();

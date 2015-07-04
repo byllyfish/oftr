@@ -13,6 +13,9 @@ cd $CURRENT_SOURCE_DIR/../../..
 
 LIBOFP=$CURRENT_TEST_DIR/../libofp
 
+# Make sure `sort` does the same thing on all systems.
+export LC_ALL=C
+
 # Decode all the *.pass messages in the openflow-messages repository. Collect
 # resulting output and any error messages in the file openflow-messages.pass.out.
 

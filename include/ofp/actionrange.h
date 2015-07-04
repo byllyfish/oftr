@@ -21,6 +21,8 @@ class ActionRange : public ProtocolRange<ActionIterator> {
   ActionRange() = default;
   /* implicit NOLINT */ ActionRange(const ActionList &list);
 
+  bool validateInput(Validation *context) const;
+  
   /// \returns Size of action list when written to channel using the specified
   /// protocol version.
   size_t writeSize(Writable *channel);
