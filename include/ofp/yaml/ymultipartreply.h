@@ -28,17 +28,17 @@ const char *const kMultipartReplySchema = R"""(
 {Message/Reply.Desc}
 type: 'REPLY.DESC'
 msg:
-  mfr_desc: Str255
-  hw_desc: Str255
-  sw_desc: Str255
-  serial_num: Str31
-  dp_desc: Str255
+  mfr_desc: Str256
+  hw_desc: Str256
+  sw_desc: Str256
+  serial_num: Str32
+  dp_desc: Str256
 
 {Message/Reply.Table}
 type: 'REPLY.TABLE'
 msg:
   - table_id: UInt8
-    name: Str31             # V1
+    name: Str32             # V1
     wildcards: UInt32
     max_entries: UInt32
     active_count: UInt32
