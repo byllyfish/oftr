@@ -45,10 +45,10 @@ class MPReplyVariableSizeSeq {
     size_t result = 0;
     size_t total = size_;
     const UInt8 *buf = buf_;
-    // FIXME check alignment
+    assert(IsPtrAligned(buf, 8));
     size_t len = 0;
     while (len < total) {
-      UInt16 elemSize = *Big16_cast(buf + len + Offset);
+      size_t elemSize = PadLength(*Big16_cast(buf + len + Offset));
       assert(elemSize > 0);
       len += elemSize;
       ++result;
@@ -58,8 +58,9 @@ class MPReplyVariableSizeSeq {
 
   Type &next() {
     const UInt8 *pos = position_;
-    position_ += *Big16_cast(position_ + Offset);
+    position_ += PadLength(*Big16_cast(position_ + Offset));
     assert(position_ > pos);
+    assert(IsPtrAligned(pos, 8));
     return RemoveConst_cast(*reinterpret_cast<const Type *>(pos));
   }
 

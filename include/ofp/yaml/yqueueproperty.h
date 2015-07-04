@@ -32,9 +32,9 @@ struct MappingTraits<ofp::detail::QueuePropertyItem> {
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
 
     if (elem.type() == QueuePropertyExperimenter::type()) {
-      auto p = elem.property<QueuePropertyExperimenter>();
+      auto &p = elem.property<QueuePropertyExperimenter>();
 
-      UInt32 experimenter = p.experimenter();
+      Hex32 experimenter = p.experimenter();
       ByteRange data = p.value();
 
       io.mapRequired("experimenter", experimenter);

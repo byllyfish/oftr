@@ -84,6 +84,11 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
   std::istream *input = nullptr;
   std::ifstream file;
   if (filename != "-") {
+    // Check if filename is a directory.
+    if (llvm::sys::fs::is_directory(filename)) {
+      std::cerr << "Error: can't open directory: " << filename << '\n';
+      return ExitStatus::FileOpenFailed;
+    }
     file.open(filename, std::ifstream::binary);
     input = &file;
   } else {
@@ -128,6 +133,8 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   // Create message buffers.
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
+
+  message.setInfo(&sessionInfo_);
 
   while (input) {
     // Read the message header.
@@ -178,9 +185,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   ofp::Message originalMessage{nullptr};
   ofp::Message buffer{nullptr};
 
-  if (hasSessionInfo_) {
-    message.setInfo(&sessionInfo_);
-  }
+  message.setInfo(&sessionInfo_);
 
   size_t expectedPos = 0;
   size_t previousPos = 0;
@@ -305,14 +310,17 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 
   if (!input.eof()) {
     // Premature I/O error; we're not at EOF.
-    std::cerr << "Error: Error reading from file " << currentFilename_ << '\n';
+    // FIXME: print out the error
+    std::cerr << "Filename: " << currentFilename_ << ":\n";
+    std::cerr << "Error: I/O error reading from file\n";
     return ExitStatus::MessageReadFailed;
   } else if (input.gcount() != readLen && !(header && input.gcount() == 0)) {
     // EOF and insufficient input remaining. N.B. Zero bytes of header read at
     // EOF is a normal exit condition.
+    std::cerr << "Filename: " << currentFilename_ << ":\n";
     const char *what = header ? "header" : "body";
-    std::cerr << "Error: Only " << input.gcount() << " bytes read of " << what
-              << '\n';
+    std::cerr << "Error: Only " << input.gcount() << " bytes read of message "
+              << what << ". Expected to read " << readLen << " bytes.\n";
     return ExitStatus::MessageReadFailed;
   } else {
     // EOF and everything is good.
@@ -439,13 +447,20 @@ bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
 void Decode::setCurrentFilename(const std::string &filename) {
   currentFilename_ = filename;
 
-  if (!filename.empty() && useFindx_) {
+  if (filename.empty()) {
+    sessionInfo_ = ofp::MessageInfo{};
+    return;
+  }
+
+  if (useFindx_) {
     // When we are using '.findx' files, parse the filename to obtain
     // information about the session, so we can set up the `sessionInfo_`
     // structure with source and destination information.
-    hasSessionInfo_ = parseFilename(filename, &sessionInfo_);
+    (void)parseFilename(filename, &sessionInfo_);
+  } else if (includeFilename_) {
+    sessionInfo_ = ofp::MessageInfo{filename};
   } else {
-    hasSessionInfo_ = false;
+    sessionInfo_ = ofp::MessageInfo{};
   }
 }
 

@@ -111,19 +111,19 @@ constexpr UInt64 UInt64_cast(T value) {
 
 template <class T>
 constexpr UInt8 UInt8_narrow_cast(T value) {
-  static_assert(sizeof(T) != sizeof(UInt8), "Use UInt8_cast().");
+  static_assert(sizeof(T) > sizeof(UInt8), "Use UInt8_cast().");
   return static_cast<UInt8>(value);
 }
 
 template <class T>
 constexpr UInt16 UInt16_narrow_cast(T value) {
-  static_assert(sizeof(T) != sizeof(UInt16), "Use UInt16_cast().");
+  static_assert(sizeof(T) > sizeof(UInt16), "Use UInt16_cast().");
   return static_cast<UInt16>(value);
 }
 
 template <class T>
 constexpr UInt32 UInt32_narrow_cast(T value) {
-  static_assert(sizeof(T) != sizeof(UInt32), "Use UInt32_cast().");
+  static_assert(sizeof(T) > sizeof(UInt32), "Use UInt32_cast().");
   return static_cast<UInt32>(value);
 }
 

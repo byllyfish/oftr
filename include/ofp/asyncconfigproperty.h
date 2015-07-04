@@ -9,7 +9,7 @@ namespace ofp {
 namespace detail {
 
 template <class ValueT, OFPAsyncConfigProperty Type>
-class AsyncConfigProperty {
+class AsyncConfigProperty : private NonCopyable {
  public:
   using ValueType = ValueT;
 

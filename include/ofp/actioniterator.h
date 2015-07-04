@@ -27,6 +27,9 @@ class ActionIteratorItem : private NonCopyable {
     return {BytePtr(this) + sizeof(ActionType), size() - sizeof(ActionType)};
   }
 
+  // N.B. ActionRange overrides validateInput.
+  bool validateInput(Validation *context) const { return true; }
+
  private:
   ActionType type_;
 };

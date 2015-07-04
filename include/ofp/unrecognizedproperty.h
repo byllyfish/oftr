@@ -7,7 +7,7 @@ namespace ofp {
 
 OFP_BEGIN_IGNORE_PADDING
 
-class UnrecognizedProperty {
+class UnrecognizedProperty : private NonCopyable {
  public:
   UnrecognizedProperty(UInt16 type, ByteRange data)
       : type_{type},

@@ -89,7 +89,7 @@ msg:
 type: 'REQUEST.TABLE_FEATURES'
 msg:
   - table_id: TableNumber
-    name: Str31
+    name: Str32
     metadata_match: UInt64
     metadata_write: UInt64
     config: UInt32

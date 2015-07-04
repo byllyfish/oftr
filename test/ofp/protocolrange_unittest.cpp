@@ -109,12 +109,15 @@ TEST(protocolrange, iteration) {
     Big16 type;
     Big16 len;
     Big32 value;
+
+    bool validateInput(Validation *context) const { return true; }
   };
 
   ByteRange r1{data, sizeof(data)};
   OFPErrorCode error;
   Validation c1{nullptr, &error};
-  EXPECT_TRUE(IsProtocolRangeValid(sizeof(Item), r1, 2, 8, &c1));
+  EXPECT_TRUE(IsProtocolRangeValid(sizeof(Item), r1, 2, 8, &c1,
+                                   ProtocolIteratorType::Unspecified));
 
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};
   EXPECT_TRUE(iterable.validateInput(&c1));
@@ -153,6 +156,7 @@ TEST(protocolrange, misalignedSeq) {
     Big16 type;
     Big16 len;
     Big32 data;
+    bool validateInput(Validation *context) const { return true; }
   };
 
   ProtocolRange<ProtocolIterator<Item>> iterable{r1};

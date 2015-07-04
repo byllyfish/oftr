@@ -18,6 +18,8 @@ class Bucket : private NonCopyable {
   UInt32 watchGroup() const { return watchGroup_; }
   ActionRange actions() const;
 
+  bool validateInput(Validation *context) const;
+
  private:
   Big16 len_;
   Big16 weight_ = 0;

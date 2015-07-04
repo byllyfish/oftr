@@ -17,7 +17,7 @@ class ProtocolRange {
 
   ProtocolRange() = default;
   /* implicit NOLINT */ ProtocolRange(const ByteRange &range) : range_{range} {
-    assert(begin() <= end());
+    assert(range.begin() <= range.end());
   }
 
   Iterator begin() const { return Iterator(range_.begin()); }
@@ -30,7 +30,13 @@ class ProtocolRange {
   size_t itemCount() const { return Iterator::itemCount(range_); }
 
   bool validateInput(Validation *context) const {
-    return Iterator::isValid(range_, context);
+    if (!Iterator::isValid(range_, context))
+      return false;
+    for (const Element &elem : *this) {
+      if (!elem.validateInput(context))
+        return false;
+    }
+    return true;
   }
 
   bool operator==(const ProtocolRange &rhs) const {

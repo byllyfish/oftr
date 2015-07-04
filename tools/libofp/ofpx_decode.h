@@ -67,7 +67,6 @@ class Decode : public Subprogram {
   std::string currentFilename_;
   std::ostream *output_ = nullptr;
   ofp::MessageInfo sessionInfo_;
-  bool hasSessionInfo_ = false;
   bool jsonNeedComma_ = false;
 
   using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
@@ -111,6 +110,8 @@ class Decode : public Subprogram {
                           cl::desc("Use metadata from tcpflow '.findx' files")};
   cl::opt<bool> dataPkt_{
       "data-pkt", cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
+  cl::opt<bool> includeFilename_{"include-filename",
+                                 cl::desc("Include file name in all decodes")};
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};

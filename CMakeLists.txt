@@ -29,10 +29,18 @@ set(CMAKE_MODULE_PATH
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 4)
+set(Libofp_VERSION_MINOR 5)
 set(Libofp_VERSION_PATCH 0)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
+
+# You can build libofp with or without the JSON-RPC server.
+
+set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
+
+if(NOT LIBOFP_ENABLE_JSONRPC)
+  message(STATUS "JSON-RPC server is disabled.")
+endif()
 
 # Require out of source builds.
 
@@ -170,6 +178,7 @@ set(LIBOFP_SOURCES
   src/ofp/queuegetconfigreply.cpp
   src/ofp/queue.cpp
   src/ofp/queuegetconfigrequest.cpp
+  src/ofp/queueproperty.cpp
   src/ofp/requestforward.cpp
   src/ofp/rolerequest.cpp
   src/ofp/rolereply.cpp
@@ -180,6 +189,12 @@ set(LIBOFP_SOURCES
   src/ofp/smallbuffer.cpp
   src/ofp/smallcstring.cpp
   src/ofp/standardmatch.cpp
+  src/ofp/tablefeatureproperty.cpp
+  src/ofp/tablemod.cpp
+  src/ofp/timestamp.cpp
+  src/ofp/transmogrify.cpp
+  src/ofp/types.cpp
+  src/ofp/validation.cpp
   src/ofp/sys/asio_utils.cpp
   src/ofp/sys/connection.cpp
   src/ofp/sys/dtls_adapter.cpp
@@ -188,12 +203,6 @@ set(LIBOFP_SOURCES
   src/ofp/sys/identity.cpp
   src/ofp/sys/tcp_server.cpp
   src/ofp/sys/udp_server.cpp
-  src/ofp/tablefeatureproperty.cpp
-  src/ofp/tablemod.cpp
-  src/ofp/timestamp.cpp
-  src/ofp/transmogrify.cpp
-  src/ofp/types.cpp
-  src/ofp/validation.cpp
   src/ofp/rpc/rpcchannellistener.cpp
   src/ofp/rpc/rpcconnection.cpp
   src/ofp/rpc/rpcconnectionsession.cpp
@@ -210,7 +219,7 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/ycontext.cpp
   src/ofp/yaml/ygroupnumber.cpp
   src/ofp/yaml/yportnumber.cpp
-  src/ofp/yaml/ybufferid.cpp
+  src/ofp/yaml/ybuffernumber.cpp
   src/ofp/yaml/ycontrollermaxlen.cpp
   src/ofp/yaml/ytablenumber.cpp
   src/ofp/yaml/yschema.cpp
@@ -257,11 +266,17 @@ endif()
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
-  message("All clang warnings enabled.")
+  message(STATUS "All clang warnings enabled.")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
   set(LIBOFP_WARNINGS "-Wall")
+endif()
+
+# Tell linker to remove dead code on OSX.
+
+if(APPLE)
+  set(CMAKE_EXE_LINKER_FLAGS "-Wl,-dead_strip")
 endif()
 
 #-------------------------------------------------------------------------------
@@ -287,15 +302,19 @@ find_package(PythonInterp REQUIRED)
 find_package(PythonModule REQUIRED)
 find_python_module(yaml)
 
-# Look up the specific git commits for asio and boringssl.
+# Look up the specific git commits for libofp, asio, and boringssl.
+
+execute_process(COMMAND git rev-parse --verify HEAD OUTPUT_VARIABLE Libofp_GIT_COMMIT_LIBOFP)
+string(STRIP "${Libofp_GIT_COMMIT_LIBOFP}" Libofp_GIT_COMMIT_LIBOFP)
+message(STATUS "Libofp commit: ${Libofp_GIT_COMMIT_LIBOFP}")
 
 execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
 string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
-message("Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
+message(STATUS "Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
 
 execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
 string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
-message("BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
+message(STATUS "BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
 
 # Specify auto-generated config.h file.
 

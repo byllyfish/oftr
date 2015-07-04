@@ -15,7 +15,7 @@ namespace detail {
 OFP_BEGIN_IGNORE_PADDING
 
 template <class PropEnum, PropEnum PropType>
-class ExperimenterProperty {
+class ExperimenterProperty : private NonCopyable {
  public:
   constexpr static PropEnum type() { return PropType; }
 

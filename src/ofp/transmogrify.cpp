@@ -17,6 +17,7 @@
 #include "ofp/actions.h"
 #include "ofp/portstatsproperty.h"
 #include "ofp/setasync.h"
+#include "ofp/queuegetconfigreply.h"
 
 using namespace ofp;
 
@@ -42,6 +43,8 @@ void Transmogrify::normalize() {
     log::info("Unsupported type for protocol version:", hdr->type());
   }
   hdr->setType(type);
+
+  log::debug("normalize", type);
 
   // If header length doesn't match buffer size, we have a problem.
   if (buf_.size() != hdr->length()) {
@@ -70,6 +73,8 @@ void Transmogrify::normalize() {
       normalizeMultipartRequestV1();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV1();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   } else if (version == OFP_VERSION_2) {
     if (type == FeaturesReply::type()) {
@@ -80,6 +85,8 @@ void Transmogrify::normalize() {
       normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV2();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   } else if (version == OFP_VERSION_3) {
     if (type == FeaturesReply::type()) {
@@ -90,6 +97,8 @@ void Transmogrify::normalize() {
       normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV3();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   } else if (version == OFP_VERSION_4) {
     if (type == FeaturesReply::type()) {
@@ -102,6 +111,8 @@ void Transmogrify::normalize() {
       normalizeMultipartReplyV4();
     } else if (type == SetAsync::type()) {
       normalizeSetAsyncV4();
+    } else if (type == QueueGetConfigReply::type()) {
+      normalizeQueueGetConfigReply();
     }
   }
 
@@ -139,6 +150,12 @@ void Transmogrify::normalizeFeaturesReplyV1() {
     PortBuilder newPort{*portV1};
     ports.add(newPort);
     ++portV1;
+  }
+
+  if (ports.size() > 65535 - sizeof(FeaturesReply)) {
+    log::debug("Invalid FeaturesReply new port list size too big");
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
   }
 
   // Copy new port list into packet.
@@ -184,6 +201,12 @@ void Transmogrify::normalizeFeaturesReplyV2() {
     ++portV2;
   }
 
+  if (ports.size() > 65535 - sizeof(FeaturesReply)) {
+    log::debug("Invalid FeaturesReply new port list size.");
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
   // Copy new port list into packet.
   buf_.addUninitialized(ports.size() - portListSize);
   pkt = buf_.mutableData();
@@ -199,6 +222,12 @@ void Transmogrify::normalizeFlowModV1() {
 
   if (hdr->length() < 72) {
     log::info("FlowMod v1 message is too short.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  if (buf_.size() > 65535 - 72) {
+    log::info("FlowMod v1 message is too long.", hdr->length());
     hdr->setType(OFPT_UNSUPPORTED);
     return;
   }
@@ -245,6 +274,11 @@ void Transmogrify::normalizeFlowModV1() {
   // We need to insert 64 bytes + optionally 8 bytes.
 
   UInt16 actLen = UInt16_narrow_cast(origSize - 72);
+  if ((actLen % 8) != 0) {
+    log::info("FlowMod v1 actions size not aligned", actLen);
+    return;
+  }
+
   size_t needed = 64;
   if (actLen > 0) {
     needed += 8;
@@ -260,13 +294,24 @@ void Transmogrify::normalizeFlowModV1() {
   std::memcpy(pkt + 48, &stdMatch, sizeof(stdMatch));
 
   if (actLen > 0) {
+    ActionRange actions{ByteRange{pkt + 144, actLen}};
+
+    // Validate actions.
+    OFPErrorCode error;
+    Validation context{nullptr, &error};
+    if (!actions.validateInput(&context)) {
+      log::warning("Invalid actions in FlowMod v1");
+      header()->setLength(UInt16_narrow_cast(buf_.size()));
+      return;
+    }
+
     // Normalize actions may move memory.
-    int delta = normActionsV1orV2(ActionRange{ByteRange{pkt + 144, actLen}},
-                                  stdMatch.nw_proto);
+    int delta = normActionsV1orV2(actions, stdMatch.nw_proto);
 
     pkt = buf_.mutableData();
     detail::InstructionHeaderWithPadding insHead{
-        OFPIT_APPLY_ACTIONS, UInt16_narrow_cast(actLen + 8 + delta)};
+        OFPIT_APPLY_ACTIONS,
+        UInt16_narrow_cast(Unsigned_cast(actLen + 8 + delta))};
     std::memcpy(pkt + 136, &insHead, sizeof(insHead));
   }
 
@@ -337,6 +382,12 @@ void Transmogrify::normalizeExperimenterV1() {
     return;
   }
 
+  if (hdr->length() > 65535 - 4) {
+    log::info("Experimenter v1 message is too long.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
   // Insert four zero bytes at position 12.
   Padding<4> pad;
   buf_.insert(buf_.data() + 12, &pad, sizeof(pad));
@@ -354,13 +405,29 @@ void Transmogrify::normalizePacketOutV1() {
     return;
   }
 
+  if (buf_.size() > 65535 - 8) {
+    log::info("PacketOut v1 message is too long.", hdr->length());
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
   // 1. Convert inPort from 16 to 32 bits.
   // 2. Insert 6 pad bytes after 32 bit inPort.
   // 3. Normalize actions, if present.
 
   UInt8 *pkt = buf_.mutableData();
   Big32 inPort = normPortNumberV1(pkt + 12);
-  UInt16 actionLen = *reinterpret_cast<Big16 *>(pkt + 14);
+  UInt16 actionLen = *Big16_cast(pkt + 14);
+
+  if ((actionLen % 8) != 0) {
+    log::warning("PacketOut v1 message has invalid action len", actionLen);
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  } else if (16u + actionLen > buf_.size()) {
+    log::warning("PacketOut v1 message action len overruns end", actionLen);
+    hdr->setType(OFPT_UNSUPPORTED);
+    return;
+  }
 
   // Insert 8 bytes at position 12 (2 for port, 6 pad).
   buf_.insertUninitialized(pkt + 12, 8);
@@ -380,6 +447,15 @@ void Transmogrify::normalizePacketOutV1() {
     // To do this, we pass an ipProto value of 0.
 
     ActionRange actions{ByteRange{pkt + 24, actLen}};
+
+    OFPErrorCode error;
+    Validation context{nullptr, &error};
+    if (!actions.validateInput(&context)) {
+      log::warning("Invalid actions in PacketOut v1");
+      header()->setLength(UInt16_narrow_cast(buf_.size()));
+      return;
+    }
+
     int lengthChange = normActionsV1orV2(actions, 0);
     pkt = buf_.mutableData();
 
@@ -671,6 +747,21 @@ void Transmogrify::normalizeSetAsyncV4() {
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
+void Transmogrify::normalizeQueueGetConfigReply() {
+  // If length of message is not padded to a multiple of 8, pad it out.
+  Header *hdr = header();
+
+  size_t length = hdr->length();
+  if ((length % 8) == 0) {
+    return;
+  }
+
+  size_t newLength = PadLength(length);
+  buf_.addZeros(newLength - length);
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
 void Transmogrify::normalizeMPFlowRequestV1() {
   // Check length of packet.
   if (buf_.size() != sizeof(MultipartRequest) + 44) {
@@ -709,6 +800,14 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   UInt8 *ptr = buf_.mutableData() + offset;
   UInt16 length = *reinterpret_cast<Big16 *>(ptr);
 
+  if (offset + length > buf_.size()) {
+    log::warning("FlowStatsReply v1 length overruns end");
+    *start = buf_.size();
+    return;
+  }
+
+  log::debug("normalizeMPFlowReplyv1 ", ByteRange{ptr, length});
+
   if (length < 88) {
     log::info("FlowStatsReply v1 is too short.", length);
     *start = buf_.size();
@@ -723,7 +822,13 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
 
   // Need at least 48 more bytes (136 - 88). If there's an action list, we need
   // 8 more bytes for the instruction header.
-  UInt16 actLen = UInt16_narrow_cast(length - 88);
+  UInt16 actLen = UInt16_narrow_cast(length - 88u);
+  if ((actLen % 8) != 0) {
+    log::info("FlowStatsReply v1 action length misaligned", actLen);
+    *start = buf_.size();
+    return;
+  }
+
   int needed = 48;
   if (actLen > 0) {
     needed += 8;
@@ -998,6 +1103,8 @@ int Transmogrify::normInstructionsV1orV2(const InstructionRange &instr,
 
 int Transmogrify::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto) {
   using namespace deprecated;
+
+  log::debug("normActionsV1orV2", actions.toByteRange());
 
   // Return change in length of action list.
   int lengthChange = 0;

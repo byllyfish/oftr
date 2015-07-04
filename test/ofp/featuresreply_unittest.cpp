@@ -155,7 +155,7 @@ TEST(featuresreply, v3) {
     ASSERT_NE(props.end(), iter);
     EXPECT_EQ(sizeof(PortPropertyEthernet), iter->size());
 
-    auto eth = iter->property<PortPropertyEthernet>();
+    auto &eth = iter->property<PortPropertyEthernet>();
     EXPECT_EQ(kFakeCurr, eth.curr());
     EXPECT_EQ(kFakeAdvertised, eth.advertised());
     EXPECT_EQ(kFakeSupported, eth.supported());
@@ -238,7 +238,7 @@ TEST(featuresreply, v2) {
     ASSERT_NE(props.end(), iter);
     EXPECT_EQ(sizeof(PortPropertyEthernet), iter->size());
 
-    auto eth = iter->property<PortPropertyEthernet>();
+    auto &eth = iter->property<PortPropertyEthernet>();
     EXPECT_EQ(kFakeCurr, eth.curr());
     EXPECT_EQ(kFakeAdvertised, eth.advertised());
     EXPECT_EQ(kFakeSupported, eth.supported());
@@ -322,7 +322,7 @@ TEST(featuresreply, v1) {
     EXPECT_EQ(sizeof(PortPropertyEthernet), iter->size());
 
     // N.B. loss of information
-    auto eth = iter->property<PortPropertyEthernet>();
+    auto &eth = iter->property<PortPropertyEthernet>();
     EXPECT_EQ(0x66666066, eth.curr());
     EXPECT_EQ(0x77777077, eth.advertised());
     EXPECT_EQ(0x88888808, eth.supported());

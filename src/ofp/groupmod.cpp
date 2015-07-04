@@ -6,8 +6,7 @@
 using namespace ofp;
 
 BucketRange GroupMod::buckets() const {
-  assert(header_.length() >= sizeof(GroupMod));
-  return BucketRange{MakeByteRange(this, header_.length(), sizeof(GroupMod))};
+  return SafeByteRange(this, header_.length(), sizeof(GroupMod));
 }
 
 bool GroupMod::validateInput(Validation *context) const {

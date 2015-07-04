@@ -131,13 +131,14 @@ msg:
 
 == Installation
 
-Before you build, you need a C++11 compiler, cmake and git.
+Before you build, you need a C++11 compiler, cmake and git. You will also need 
+Python, Perl and Go.
 
 On Ubuntu, use apt-get to install the dependencies.
 [source,console]
 ----
 $ sudo apt-get -yq update
-$ sudo apt-get install build-essential cmake git
+$ sudo apt-get install build-essential cmake git golang
 ----
 
 On Mac OS X, you can obtain cmake from http://cmake.org/download/.

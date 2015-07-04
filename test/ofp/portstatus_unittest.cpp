@@ -77,7 +77,7 @@ TEST(portstatus, v4) {
     auto iter = p.properties().findProperty(PortPropertyEthernet::type());
     ASSERT_NE(p.properties().end(), iter);
 
-    auto pr = iter->property<PortPropertyEthernet>();
+    auto &pr = iter->property<PortPropertyEthernet>();
 
     EXPECT_EQ(0x44444444, pr.curr());
     EXPECT_EQ(0x55555555, pr.advertised());
@@ -142,7 +142,7 @@ TEST(portstatus, v1) {
     auto iter = p.properties().findProperty(PortPropertyEthernet::type());
     ASSERT_NE(p.properties().end(), iter);
 
-    auto pr = iter->property<PortPropertyEthernet>();
+    auto &pr = iter->property<PortPropertyEthernet>();
 
     EXPECT_EQ(0x44444044, pr.curr());
     EXPECT_EQ(0x55555055, pr.advertised());

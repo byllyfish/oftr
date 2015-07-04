@@ -7,7 +7,7 @@
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/matchheader.h"
-#include "ofp/bufferid.h"
+#include "ofp/buffernumber.h"
 #include "ofp/tablenumber.h"
 
 namespace ofp {
@@ -17,7 +17,7 @@ class PacketIn
  public:
   UInt8 version() const { return header_.version(); }
 
-  BufferID bufferId() const { return bufferId_; }
+  BufferNumber bufferId() const { return bufferId_; }
   UInt16 totalLen() const;
   PortNumber inPort() const;
   UInt32 inPhyPort() const;
@@ -33,7 +33,7 @@ class PacketIn
 
  private:
   Header header_;
-  BufferID bufferId_;
+  BufferNumber bufferId_;
   Big16 totalLen_;
   Big<OFPPacketInReason> reason_;
   TableNumber tableID_;
@@ -75,7 +75,7 @@ class PacketInBuilder {
   PacketInBuilder() = default;
   explicit PacketInBuilder(const PacketIn *msg);
 
-  void setBufferId(BufferID bufferId) { msg_.bufferId_ = bufferId; }
+  void setBufferId(BufferNumber bufferId) { msg_.bufferId_ = bufferId; }
   void setTotalLen(UInt16 totalLen) { msg_.totalLen_ = totalLen; }
   void setInPort(PortNumber inPort) { inPort_ = inPort; }
   void setInPhyPort(UInt32 inPhyPort) { inPhyPort_ = inPhyPort; }

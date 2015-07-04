@@ -7,9 +7,8 @@
 using namespace ofp;
 
 PropertyRange MPTableFeatures::properties() const {
-  assert(length_ >= sizeof(MPTableFeatures));
-  return ByteRange{BytePtr(this) + sizeof(MPTableFeatures),
-                   length_ - sizeof(MPTableFeatures)};
+  // N.B. This length_ is padded out; just in case.
+  return SafeByteRange(this, PadLength(length_), sizeof(MPTableFeatures));
 }
 
 bool MPTableFeatures::validateInput(Validation *context) const {
@@ -22,6 +21,11 @@ bool MPTableFeatures::validateInput(Validation *context) const {
   size_t len = length_;
   if (len < sizeof(MPTableFeatures)) {
     return false;
+  }
+
+  if ((len % 8) != 0) {
+    log::info("Unpadded length in MPTableFeatures", len);
+    len = PadLength(len);
   }
 
   if (len > lengthRemaining) {

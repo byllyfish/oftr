@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/yaml/ybufferid.h"
+#include "ofp/yaml/ybuffernumber.h"
 
 using namespace ofp;
 using ofp::yaml::EnumConverterSparse;
@@ -11,10 +11,10 @@ using ofp::yaml::EnumConverterSparse;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
-static std::pair<OFPBufferID, llvm::StringRef> sBufferIds[] = {
+static std::pair<OFPBufferNo, llvm::StringRef> sBufferIds[] = {
     OFP_NAME(NO_BUFFER)};
 
-EnumConverterSparse<OFPBufferID>
-    llvm::yaml::ScalarTraits<ofp::BufferID>::converter{sBufferIds};
+EnumConverterSparse<OFPBufferNo>
+    llvm::yaml::ScalarTraits<ofp::BufferNumber>::converter{sBufferIds};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

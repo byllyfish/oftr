@@ -88,9 +88,7 @@ class IT_WithActions {
   size_t size() const { return actions_->size(); }
 
   ByteRange dataRange() const {
-    assert(length_ >= SizeWithoutActions);
-    return ByteRange{BytePtr(this) + SizeWithoutActions,
-                     length_ - SizeWithoutActions};
+    return SafeByteRange(this, length_, SizeWithoutActions);
   }
 
   bool validateInput(Validation *context) const {
@@ -172,8 +170,7 @@ class IT_EXPERIMENTER {
   size_t size() const { return data_.size(); }
 
   ByteRange dataRange() const {
-    assert(length_ >= HeaderSize);
-    return ByteRange{BytePtr(this) + HeaderSize, length_ - HeaderSize};
+    return SafeByteRange(this, length_, HeaderSize);
   }
 
   bool validateInput(Validation *context) const {
