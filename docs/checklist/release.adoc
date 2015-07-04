@@ -1,0 +1,26 @@
+= Release Checklist
+
+* [ ] Update submodules:  `git submodule update --remote`
+
+* [ ] Run clang-format:  `make format-all`
+
+* [ ] Run cpplint:  `make cpplint`
+
+* [ ] Update CHANGELOG
+
+* [ ] Push develop branch. Check build results.
+
+* [ ] Update CMakeLists.txt with new version.
+
+* [ ] Merge develop into master.
+
+* [ ] Push master branch.
+
+* [ ] Check build results.
+
+* [ ] Produce osx, linux release builds and produce SHA1 hashes.
+
+* [ ] Attach binaries and tag the master branch.
+
+* [ ] Merge master into coverity_scan branch.
+

@@ -26,28 +26,28 @@ struct MappingTraits<ofp::MeterBandIterator::Element> {
 
     switch (meterType) {
       case MeterBandDrop::type(): {
-        auto p = elem.meterBand<MeterBandDrop>();
-        UInt32 rate = p.rate();
-        UInt32 burstSize = p.burstSize();
+        auto &p = elem.meterBand<MeterBandDrop>();
+        Hex32 rate = p.rate();
+        Hex32 burstSize = p.burstSize();
         io.mapRequired("rate", rate);
         io.mapRequired("burst_size", burstSize);
         break;
       }
       case MeterBandDscpRemark::type(): {
-        auto p = elem.meterBand<MeterBandDscpRemark>();
-        UInt32 rate = p.rate();
-        UInt32 burstSize = p.burstSize();
-        UInt8 precLevel = p.precLevel();
+        auto &p = elem.meterBand<MeterBandDscpRemark>();
+        Hex32 rate = p.rate();
+        Hex32 burstSize = p.burstSize();
+        Hex8 precLevel = p.precLevel();
         io.mapRequired("rate", rate);
         io.mapRequired("burst_size", burstSize);
         io.mapRequired("prec_level", precLevel);
         break;
       }
       case MeterBandExperimenter::type(): {
-        auto p = elem.meterBand<MeterBandExperimenter>();
-        UInt32 rate = p.rate();
-        UInt32 burstSize = p.burstSize();
-        UInt32 experimenter = p.experimenter();
+        auto &p = elem.meterBand<MeterBandExperimenter>();
+        Hex32 rate = p.rate();
+        Hex32 burstSize = p.burstSize();
+        Hex32 experimenter = p.experimenter();
         io.mapRequired("rate", rate);
         io.mapRequired("burst_size", burstSize);
         io.mapRequired("experimenter", experimenter);

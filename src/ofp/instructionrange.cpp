@@ -40,6 +40,12 @@ bool InstructionRange::validateInput(Validation *context) const {
           return false;
         break;
       }
+      case IT_EXPERIMENTER::type(): {
+        const IT_EXPERIMENTER *ins = item.instruction<IT_EXPERIMENTER>();
+        if (!ins->validateInput(context))
+          return false;
+        break;
+      }
       default:
         break;
     }

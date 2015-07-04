@@ -19,6 +19,8 @@ class Queue : private NonCopyable {
 
   PropertyRange properties() const;
 
+  bool validateInput(Validation *context) const;
+
  private:
   Big32 queueId_;
   PortNumber port_;

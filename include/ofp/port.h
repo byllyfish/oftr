@@ -21,7 +21,7 @@ class PortV1;
 class PortV2;
 }  // namespace deprecated
 
-class Port {
+class Port : private NonCopyable {
  public:
   enum { ProtocolIteratorSizeOffset = 4, ProtocolIteratorAlignment = 8 };
 
@@ -52,7 +52,6 @@ class Port {
   // Only a PortBuilder can create an instance.
   Port() = default;
   Port(const Port &) = default;
-  Port &operator=(const Port &) = default;
 
   friend class PortList;
   friend class PortBuilder;
@@ -92,6 +91,9 @@ class PortBuilder {
   void reset() {}
 
   void copyTo(UInt8 *ptr);
+
+  // Custom assignment operator because msg_ is non-copyable.
+  PortBuilder &operator=(const PortBuilder &port);
 
  private:
   Port msg_;

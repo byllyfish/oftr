@@ -54,9 +54,10 @@ namespace detail {
 ///   - pointer to start of range is 8-byte aligned.
 ///
 /// \return true if byte range is a valid protocol iterable.
-bool IsProtocolRangeValid(size_t elementSize, const ByteRange &range,
-                          size_t sizeFieldOffset, size_t alignment,
-                          Validation *context);
+bool IsProtocolRangeValid(
+    size_t elementSize, const ByteRange &range, size_t sizeFieldOffset,
+    size_t alignment, Validation *context,
+    ProtocolIteratorType iterType = ProtocolIteratorType::Unspecified);
 
 /// Return count of items in the protocol range.
 ///
@@ -161,7 +162,9 @@ class ProtocolIterator {
   const UInt8 *pos_;
 
   // Only a ProtocolRange or ProtocolList can construct a ProtocolIterator.
-  explicit ProtocolIterator(const UInt8 *pos) : pos_{pos} {}
+  explicit ProtocolIterator(const UInt8 *pos) : pos_{pos} {
+    assert(IsPtrAligned(pos, Alignment));
+  }
 
   static size_t itemCount(const ByteRange &range) {
     return detail::ProtocolRangeItemCount(sizeof(ElemType), range, SizeOffset,
@@ -170,7 +173,7 @@ class ProtocolIterator {
 
   static bool isValid(const ByteRange &range, Validation *context) {
     return detail::IsProtocolRangeValid(sizeof(ElemType), range, SizeOffset,
-                                        Alignment, context);
+                                        Alignment, context, IterType);
   }
 
   template <class I>

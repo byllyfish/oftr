@@ -1576,16 +1576,16 @@ msg:
   meter_id:        0x00000064
   bands:           
     - type:            DROP
-      rate:            1000
-      burst_size:      10
+      rate:            0x000003E8
+      burst_size:      0x0000000A
     - type:            DSCP_REMARK
-      rate:            1000
-      burst_size:      10
-      prec_level:      1
+      rate:            0x000003E8
+      burst_size:      0x0000000A
+      prec_level:      0x01
     - type:            EXPERIMENTER
-      rate:            1000
-      burst_size:      10
-      experimenter:    999
+      rate:            0x000003E8
+      burst_size:      0x0000000A
+      experimenter:    0x000003E7
 ...
 ---
 type:            FLOW_MOD
@@ -1633,8 +1633,8 @@ msg:
     meter_id:        0x00000064
     bands:           
       - type:            DROP
-        rate:            1000
-        burst_size:      10
+        rate:            0x000003E8
+        burst_size:      0x0000000A
 ...
 ---
 type:            REQUEST.METER
@@ -4207,16 +4207,16 @@ msg:
   meter_id:        0x00000064
   bands:           
     - type:            DROP
-      rate:            1000
-      burst_size:      10
+      rate:            0x000003E8
+      burst_size:      0x0000000A
     - type:            DSCP_REMARK
-      rate:            1000
-      burst_size:      10
-      prec_level:      1
+      rate:            0x000003E8
+      burst_size:      0x0000000A
+      prec_level:      0x01
     - type:            EXPERIMENTER
-      rate:            1000
-      burst_size:      10
-      experimenter:    999
+      rate:            0x000003E8
+      burst_size:      0x0000000A
+      experimenter:    0x000003E7
 ...
 ---
 type:            FLOW_MOD
@@ -4264,8 +4264,8 @@ msg:
     meter_id:        0x00000064
     bands:           
       - type:            DROP
-        rate:            1000
-        burst_size:      10
+        rate:            0x000003E8
+        burst_size:      0x0000000A
 ...
 ---
 type:            REQUEST.METER

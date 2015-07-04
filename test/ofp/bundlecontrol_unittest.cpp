@@ -37,7 +37,7 @@ TEST(bundlecontrol, test) {
 
   for (auto &iter : m->properties()) {
     EXPECT_EQ(BundlePropertyExperimenter::type(), iter.type());
-    auto expProp = iter.property<BundlePropertyExperimenter>();
+    auto &expProp = iter.property<BundlePropertyExperimenter>();
     EXPECT_EQ(0x12345678, expProp.experimenter());
     EXPECT_EQ(0xABACABAC, expProp.expType());
     EXPECT_EQ(ByteRange("foo", 3), expProp.expData());

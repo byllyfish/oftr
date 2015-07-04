@@ -201,6 +201,9 @@ also represents stdin.
 *-V, -verify-output*::
     Verify output by translating it back to binary.
 
+*--include-filename*::
+    Include file name in all decodes.
+
 
 == LIBOFP JSONRPC
 

@@ -108,6 +108,14 @@ void PortBuilder::copyTo(UInt8 *ptr) {
   std::memcpy(ptr, properties_.data(), properties_.size());
 }
 
+PortBuilder &PortBuilder::operator=(const PortBuilder &port) {
+  if (&port != this) {
+    std::memcpy(&msg_, &port.msg_, sizeof(port.msg_));
+    properties_ = port.properties_;
+  }
+  return *this;
+}
+
 deprecated::PortV1::PortV1(const Port &port) {
   portNo_ = UInt16_narrow_cast(port.portNo());
   hwAddr_ = port.hwAddr();

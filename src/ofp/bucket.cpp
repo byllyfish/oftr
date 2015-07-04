@@ -5,10 +5,14 @@
 using namespace ofp;
 
 ActionRange Bucket::actions() const {
-  assert(len_ >= sizeof(Bucket));
+  return SafeByteRange(this, len_, sizeof(Bucket));
+}
 
-  size_t actLen = len_ - sizeof(Bucket);
-  return ActionRange{ByteRange{BytePtr(this) + sizeof(Bucket), actLen}};
+bool Bucket::validateInput(Validation *context) const {
+  if (len_ < sizeof(Bucket))
+    return false;
+
+  return actions().validateInput(context);
 }
 
 void BucketBuilder::setActions(ActionRange actions) {

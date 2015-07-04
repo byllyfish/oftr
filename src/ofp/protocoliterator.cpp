@@ -29,7 +29,8 @@ static size_t protocolRangeFixedItemCount(size_t elementSize,
 bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
                                        const ByteRange &range,
                                        size_t sizeFieldOffset, size_t alignment,
-                                       Validation *context) {
+                                       Validation *context,
+                                       ProtocolIteratorType iterType) {
   if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_FIXED) {
     return isProtocolRangeFixedValid(elementSize, range, context);
   }
@@ -43,7 +44,7 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
 
   // Length must be a multiple of `alignment`.
   if ((len % alignment) != 0) {
-    context->rangeSizeHasImproperAlignment(ptr, alignment);
+    context->rangeSizeHasImproperAlignment(ptr, iterType);
     return false;
   }
 
@@ -61,6 +62,11 @@ bool ofp::detail::IsProtocolRangeValid(size_t elementSize,
     if (sizeFieldOffset == PROTOCOL_ITERATOR_SIZE_CONDITIONAL) {
       elemSize = *Big16_cast(ptr) == 0xffff ? 8 : 4;
     } else {
+      // Make sure there's enough room in the buffer to read the element size.
+      if (sizeFieldOffset + 2 > len) {
+        context->rangeElementSizeOverrunsEnd(ptr, 0);
+        return false;
+      }
       elemSize = *Big16_cast(ptr + sizeFieldOffset);
     }
 

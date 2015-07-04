@@ -26,6 +26,9 @@ class InstructionIteratorItem : private NonCopyable {
     return reinterpret_cast<const Type *>(this);
   }
 
+  // N.B. InstructionRange overrides validateInput.
+  bool validateInput(Validation *context) const { return true; }
+
  private:
   InstructionType type_;
   Big16 len_;

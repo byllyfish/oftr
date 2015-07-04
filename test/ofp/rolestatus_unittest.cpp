@@ -40,7 +40,7 @@ TEST(rolestatus, builder) {
 
   for (auto &iter : m->properties()) {
     EXPECT_EQ(RoleStatusPropertyExperimenter::type(), iter.type());
-    auto expProp = iter.property<RoleStatusPropertyExperimenter>();
+    auto &expProp = iter.property<RoleStatusPropertyExperimenter>();
     EXPECT_EQ(0x12345678, expProp.experimenter());
     EXPECT_EQ(0xABACABAC, expProp.expType());
     EXPECT_EQ(ByteRange("foo", 3), expProp.expData());

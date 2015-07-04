@@ -19,7 +19,7 @@ namespace detail {
 OFP_BEGIN_IGNORE_PADDING
 
 template <class RangeType, OFPTableFeatureProperty Type>
-class TableFeatureProperty {
+class TableFeatureProperty : private NonCopyable {
  public:
   constexpr static OFPTableFeatureProperty type() { return Type; }
 
@@ -51,7 +51,7 @@ class TableFeatureProperty {
 };
 
 template <OFPTableFeatureProperty Type>
-class TableFeaturePropertyExperimenter {
+class TableFeaturePropertyExperimenter : private NonCopyable {
  public:
   constexpr static OFPTableFeatureProperty type() { return Type; }
 

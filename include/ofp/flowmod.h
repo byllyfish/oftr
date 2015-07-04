@@ -10,7 +10,7 @@
 #include "ofp/matchheader.h"
 #include "ofp/instructionlist.h"
 #include "ofp/instructionrange.h"
-#include "ofp/bufferid.h"
+#include "ofp/buffernumber.h"
 #include "ofp/groupnumber.h"
 #include "ofp/tablenumber.h"
 
@@ -25,7 +25,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   UInt16 idleTimeout() const { return idleTimeout_; }
   UInt16 hardTimeout() const { return hardTimeout_; }
   UInt16 priority() const { return priority_; }
-  BufferID bufferId() const { return bufferId_; }
+  BufferNumber bufferId() const { return bufferId_; }
   PortNumber outPort() const { return outPort_; }
   GroupNumber outGroup() const { return outGroup_; }
   OFPFlowModFlags flags() const { return flags_; }
@@ -44,7 +44,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   Big16 idleTimeout_ = 0;
   Big16 hardTimeout_ = 0;
   Big16 priority_ = 0;
-  BufferID bufferId_ = 0;
+  BufferNumber bufferId_ = 0;
   PortNumber outPort_ = 0;
   GroupNumber outGroup_ = 0;
   Big<OFPFlowModFlags> flags_ = OFPFF_NONE;
@@ -82,7 +82,7 @@ class FlowModBuilder {
   void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
   void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
   void setPriority(UInt16 priority) { msg_.priority_ = priority; }
-  void setBufferId(BufferID bufferId) { msg_.bufferId_ = bufferId; }
+  void setBufferId(BufferNumber bufferId) { msg_.bufferId_ = bufferId; }
   void setOutPort(PortNumber outPort) { msg_.outPort_ = outPort; }
   void setOutGroup(GroupNumber outGroup) { msg_.outGroup_ = outGroup; }
   void setFlags(OFPFlowModFlags flags) { msg_.flags_ = flags; }

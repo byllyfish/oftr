@@ -4,7 +4,7 @@
 #define OFP_YAML_YPACKETIN_H_
 
 #include "ofp/packetin.h"
-#include "ofp/yaml/ybufferid.h"
+#include "ofp/yaml/ybuffernumber.h"
 #include "ofp/yaml/ymatchpacket.h"
 
 namespace llvm {
@@ -13,7 +13,7 @@ namespace yaml {
 const char *const kPacketInSchema = R"""({Message/PacketIn}
 type: 'PACKET_IN'
 msg:
-  buffer_id: BufferID
+  buffer_id: BufferNumber
   total_len: UInt16
   in_port: PortNumber
   in_phy_port: UInt32
@@ -32,7 +32,7 @@ struct MappingTraits<ofp::PacketIn> {
     using namespace ofp;
 
     // Remember that PacketIn uses cross-wired accessors.
-    BufferID bufferID = msg.bufferId();
+    BufferNumber bufferID = msg.bufferId();
     Hex16 totalLen = msg.totalLen();
     io.mapRequired("buffer_id", bufferID);
     io.mapRequired("total_len", totalLen);
@@ -69,7 +69,7 @@ struct MappingTraits<ofp::PacketInBuilder> {
   static void mapping(IO &io, ofp::PacketInBuilder &msg) {
     using namespace ofp;
 
-    BufferID bufferId;
+    BufferNumber bufferId;
     io.mapRequired("buffer_id", bufferId);
     msg.setBufferId(bufferId);
 

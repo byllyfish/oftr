@@ -6,7 +6,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yinstructions.h"
-#include "ofp/yaml/ybufferid.h"
+#include "ofp/yaml/ybuffernumber.h"
 #include "ofp/yaml/ygroupnumber.h"
 #include "ofp/yaml/ytablenumber.h"
 #include "ofp/flowmod.h"
@@ -26,7 +26,7 @@ msg:
   idle_timeout: UInt16
   hard_timeout: UInt16
   priority: UInt16
-  buffer_id: BufferID
+  buffer_id: BufferNumber
   out_port: PortNumber
   out_group: GroupNumber
   flags: FlowModFlags
