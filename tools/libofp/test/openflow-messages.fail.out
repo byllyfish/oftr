@@ -1,6 +1,19 @@
-Filename: external/openflow-messages/v1_0/abs/abs_10_00001.fail
-Error: Decode failed: Message size is invalid
-[ByteList size=18 data=010A0012FCCB031C58D4811E000000040200]
+---
+type:            PACKET_IN
+xid:             0xFCCB031C
+version:         0x01
+msg:             
+  buffer_id:       0x58D4811E
+  total_len:       0x0000
+  in_port:         0x00000004
+  in_phy_port:     0x00000000
+  metadata:        0x0000000000000000
+  reason:          INVALID_TTL
+  table_id:        0x00
+  cookie:          0x0000000000000000
+  match:           
+  data:            ''
+...
 ---
 type:            FLOW_REMOVED
 xid:             0x00000122
@@ -70,13 +83,13 @@ msg:
   buffer_id:       0x00003424
   in_port:         0x000000CA
   actions:         
-    - action:          OUTPUT
+    - action:          0x0000
       data:            000101
   data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_13_00002.fail
 Error: Decode succeeded but encode failed: YAML:9:7: error: missing required key 'port'
-    - action:          OUTPUT
+    - action:          0x0000
       ^
 
 ---
@@ -175,17 +188,17 @@ msg:
           data:            C99F0000
         - action:          0x000A
           data:            00080000
-        - action:          COPY_TTL_OUT
-          data:            000400000000000022B7B722
+        - action:          ENQUEUE
+          port:            0x00000004
+          queue_id:        0x22B7B722
         - action:          EXPERIMENTER
           experimenter:    0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00001.fail
-Error: Decode succeeded but encode failed: YAML:70:28: error: unknown key 'data'
-          data:            000400000000000022B7B722
-                           ^~~~~~~~~~~~~~~~~~~~~~~~
-
+Error: Encode yielded different data at byte offset 11:
+010E00C8E50A94E5000000C85ABCC18FB43D95A20000000000008FDD340000800A9100003E2550EFC11C1E80000000002BFDEBC3C8E2FEC30005001E003C000AE43A37C300010001000000085B166BED00010008822C0000000200081F0000000003000800000000000400105DB882B70C9900000000000000050010B1B3128959DC00000000000000060008A08327F700070008E7D55F4D000800080200000000090008C99F0000000A000800080000000B0010000400000000000022B7B722FFFF000812345678
+010E00C8E50A94E5000000085ABCC18FB43D95A21FAB9BFC5EA99FDD340000800A9100003E2550EFC11C1E808FB2959C2BFDEBC3C8E2FEC30005001E003C000AE43A37C300010001000000085B166BED000100082C820000000200081F0000000003000800000000000400105DB882B70C9900000000000000050010B1B3128959DC00000000000000060008A08327F700070008E7D55F4D000800080200000000090008C99F0000000A000800080000000B0010000400000000000022B7B722FFFF000812345678
 ---
 type:            FLOW_MOD
 xid:             0xE50A94E5
@@ -254,17 +267,17 @@ msg:
           data:            C99F0000
         - action:          0x000A
           data:            00080000
-        - action:          COPY_TTL_OUT
-          data:            000400000000000022B7B722
+        - action:          ENQUEUE
+          port:            0x00000004
+          queue_id:        0x22B7B722
         - action:          EXPERIMENTER
           experimenter:    0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00002.fail
-Error: Decode succeeded but encode failed: YAML:70:28: error: unknown key 'data'
-          data:            000400000000000022B7B722
-                           ^~~~~~~~~~~~~~~~~~~~~~~~
-
+Error: Encode yielded different data at byte offset 11:
+010E00C8E50A94E5000000C85ABCC18FB43D95A20000000000008FDD340000800A9100003E2550EFC11C1E80000000002BFDEBC3C8E2FEC30005001E003C000AE43A37C300010004000000085B166BED00010008822C0000000200081F0000000003000800000000000400105DB882B70C9900000000000000050010B1B3128959DC00000000000000060008A08327F700070008E7D55F4D000800080200000000090008C99F0000000A000800080000000B0010000400000000000022B7B722FFFF000812345678
+010E00C8E50A94E5000000085ABCC18FB43D95A21FAB9BFC5EA99FDD340000800A9100003E2550EFC11C1E808FB2959C2BFDEBC3C8E2FEC30005001E003C000AE43A37C300010004000000085B166BED000100082C820000000200081F0000000003000800000000000400105DB882B70C9900000000000000050010B1B3128959DC00000000000000060008A08327F700070008E7D55F4D000800080200000000090008C99F0000000A000800080000000B0010000400000000000022B7B722FFFF000812345678
 ---
 type:            FLOW_MOD
 xid:             0xE50A94E5
@@ -333,17 +346,17 @@ msg:
           data:            C99F0000
         - action:          0x000A
           data:            00080000
-        - action:          COPY_TTL_OUT
-          data:            000400000000000022B7B722
+        - action:          ENQUEUE
+          port:            0x00000004
+          queue_id:        0x22B7B722
         - action:          EXPERIMENTER
           experimenter:    0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00003.fail
-Error: Decode succeeded but encode failed: YAML:70:28: error: unknown key 'data'
-          data:            000400000000000022B7B722
-                           ^~~~~~~~~~~~~~~~~~~~~~~~
-
+Error: Encode yielded different data at byte offset 11:
+010E00C8E50A94E5000000C85ABCC18FB43D95A20000000000008FDD340000800A9100003E2550EFC11C1E80000000002BFDEBC3C8E2FEC30005001E003C000AE43A37C300010000000000085B166BED00010008822C0000000200081F0000000003000800000000000400105DB882B70C9900000000000000050010B1B3128959DC00000000000000060008A08327F700070008E7D55F4D000800080200000000090008C99F0000000A000800080000000B0010000400000000000022B7B722FFFF000812345678
+010E00C8E50A94E5000000085ABCC18FB43D95A21FAB9BFC5EA99FDD340000800A9100003E2550EFC11C1E808FB2959C2BFDEBC3C8E2FEC30005001E003C000AE43A37C300010000000000085B166BED000100082C820000000200081F0000000003000800000000000400105DB882B70C9900000000000000050010B1B3128959DC00000000000000060008A08327F700070008E7D55F4D000800080200000000090008C99F0000000A000800080000000B0010000400000000000022B7B722FFFF000812345678
 ---
 type:            FLOW_MOD
 xid:             0xE50A94E5
@@ -509,9 +522,22 @@ Filename: external/openflow-messages/v1_0/rep/rep_10_00001.fail:
 Error: Only 2 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_0/rep/rep_10_00002.fail:
 Error: Only 7 bytes read of message body. Expected to read 10 bytes.
-Filename: external/openflow-messages/v1_0/rep/rep_10_00003.fail
-Error: Decode failed: Message size is invalid
-[ByteList size=18 data=010A0012FCCB031C58D4811E001600040000]
+---
+type:            PACKET_IN
+xid:             0xFCCB031C
+version:         0x01
+msg:             
+  buffer_id:       0x58D4811E
+  total_len:       0x0016
+  in_port:         0x00000004
+  in_phy_port:     0x00000000
+  metadata:        0x0000000000000000
+  reason:          TABLE_MISS
+  table_id:        0x00
+  cookie:          0x0000000000000000
+  match:           
+  data:            ''
+...
 ---
 type:            PACKET_IN
 xid:             0xFCCB031C
@@ -651,12 +677,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OUTPUT
+        - action:          0x0000
           data:            09F1
 ...
 Filename: external/openflow-messages/v1_0/rep/rep_14_00004.fail
 Error: Decode succeeded but encode failed: YAML:39:11: error: missing required key 'port'
-        - action:          OUTPUT
+        - action:          0x0000
           ^
 
 Filename: external/openflow-messages/v1_0/rep/rep_14_00005.fail:
@@ -1118,7 +1144,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_OUT
+        - action:          0x000B
           data:            B68A0000000000
 ...
 Filename: external/openflow-messages/v1_0/rep/rep_14_00037.fail
@@ -14481,7 +14507,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_OUT
+        - action:          0x000B
           data:            000000
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00054.fail
@@ -14520,7 +14546,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_IN
+        - action:          0x000C
           data:            00
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00057.fail
@@ -14635,12 +14661,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           data:            03
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00066.fail
 Error: Decode succeeded but encode failed: YAML:27:11: error: missing required key 'ttl'
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           ^
 
 Filename: external/openflow-messages/v1_1/rep/rep_14_00067.fail
@@ -14674,7 +14700,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_MPLS_TTL
+        - action:          0x0010
           data:            ''
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00069.fail
@@ -14721,7 +14747,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_VLAN
+        - action:          0x0012
           data:            00
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00075.fail
@@ -14760,12 +14786,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          PUSH_MPLS
+        - action:          0x0013
           data:            00
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00078.fail
 Error: Decode succeeded but encode failed: YAML:27:11: error: missing required key 'mpls'
-        - action:          PUSH_MPLS
+        - action:          0x0013
           ^
 
 Filename: external/openflow-messages/v1_1/rep/rep_14_00079.fail
@@ -14799,12 +14825,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_MPLS
+        - action:          0x0014
           data:            ''
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00081.fail
 Error: Decode succeeded but encode failed: YAML:27:11: error: missing required key 'ethertype'
-        - action:          POP_MPLS
+        - action:          0x0014
           ^
 
 Filename: external/openflow-messages/v1_1/rep/rep_14_00082.fail
@@ -14846,12 +14872,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          GROUP
+        - action:          0x0016
           data:            9A
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00087.fail
 Error: Decode succeeded but encode failed: YAML:27:11: error: missing required key 'group'
-        - action:          GROUP
+        - action:          0x0016
           ^
 
 Filename: external/openflow-messages/v1_1/rep/rep_14_00088.fail
@@ -14893,7 +14919,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_NW_TTL
+        - action:          0x0018
           data:            00
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00093.fail
@@ -15149,7 +15175,7 @@ msg:
     instructions:    
       - instruction:     APPLY_ACTIONS
         actions:         
-          - action:          POP_VLAN
+          - action:          0x0012
             data:            000000
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_19_00008.fail
@@ -17044,12 +17070,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OUTPUT
+        - action:          0x0000
           data:            0000000000000000000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000024.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'port'
-        - action:          OUTPUT
+        - action:          0x0000
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_000025.fail
@@ -17077,7 +17103,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_OUT
+        - action:          0x000B
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000027.fail
@@ -17120,7 +17146,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_IN
+        - action:          0x000C
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000030.fail
@@ -17153,12 +17179,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000033.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ttl'
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_000034.fail
@@ -17186,7 +17212,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_MPLS_TTL
+        - action:          0x0010
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000036.fail
@@ -17219,12 +17245,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          PUSH_VLAN
+        - action:          0x0011
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000039.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'vlan'
-        - action:          PUSH_VLAN
+        - action:          0x0011
           ^
 
 ---
@@ -17262,7 +17288,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_VLAN
+        - action:          0x0012
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000042.fail
@@ -17295,12 +17321,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          PUSH_MPLS
+        - action:          0x0013
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000045.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'mpls'
-        - action:          PUSH_MPLS
+        - action:          0x0013
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_000046.fail
@@ -17328,12 +17354,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_MPLS
+        - action:          0x0014
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000048.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ethertype'
-        - action:          POP_MPLS
+        - action:          0x0014
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_000049.fail
@@ -17363,12 +17389,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_QUEUE
+        - action:          0x0015
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000051.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'queue'
-        - action:          SET_QUEUE
+        - action:          0x0015
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_000052.fail
@@ -17396,12 +17422,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          GROUP
+        - action:          0x0016
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000054.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'group'
-        - action:          GROUP
+        - action:          0x0016
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_000055.fail
@@ -17429,12 +17455,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_NW_TTL
+        - action:          0x0017
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000057.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ttl'
-        - action:          SET_NW_TTL
+        - action:          0x0017
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_000058.fail
@@ -17487,7 +17513,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_NW_TTL
+        - action:          0x0018
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000060.fail
@@ -17872,12 +17898,12 @@ msg:
         - action:          OUTPUT
           port:            0x00009823
           max_len:         0x0000
-        - action:          GROUP
+        - action:          0x0016
           data:            0000005900170009FF000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_15_00014.fail
 Error: Decode succeeded but encode failed: YAML:17:11: error: missing required key 'group'
-        - action:          GROUP
+        - action:          0x0016
           ^
 
 Filename: external/openflow-messages/v1_2/rep/rep_15_00015.fail
@@ -20068,12 +20094,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OUTPUT
+        - action:          0x0000
           data:            0000000000000000000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000024.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'port'
-        - action:          OUTPUT
+        - action:          0x0000
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_000025.fail
@@ -20101,7 +20127,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_OUT
+        - action:          0x000B
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000027.fail
@@ -20144,7 +20170,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_IN
+        - action:          0x000C
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000030.fail
@@ -20177,12 +20203,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000033.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ttl'
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_000034.fail
@@ -20210,7 +20236,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_MPLS_TTL
+        - action:          0x0010
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000036.fail
@@ -20243,12 +20269,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          PUSH_VLAN
+        - action:          0x0011
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000039.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'vlan'
-        - action:          PUSH_VLAN
+        - action:          0x0011
           ^
 
 ---
@@ -20286,7 +20312,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_VLAN
+        - action:          0x0012
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000042.fail
@@ -20319,12 +20345,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          PUSH_MPLS
+        - action:          0x0013
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000045.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'mpls'
-        - action:          PUSH_MPLS
+        - action:          0x0013
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_000046.fail
@@ -20352,12 +20378,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_MPLS
+        - action:          0x0014
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000048.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ethertype'
-        - action:          POP_MPLS
+        - action:          0x0014
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_000049.fail
@@ -20387,12 +20413,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_QUEUE
+        - action:          0x0015
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000051.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'queue'
-        - action:          SET_QUEUE
+        - action:          0x0015
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_000052.fail
@@ -20420,12 +20446,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          GROUP
+        - action:          0x0016
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000054.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'group'
-        - action:          GROUP
+        - action:          0x0016
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_000055.fail
@@ -20453,12 +20479,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_NW_TTL
+        - action:          0x0017
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000057.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ttl'
-        - action:          SET_NW_TTL
+        - action:          0x0017
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_000058.fail
@@ -20511,7 +20537,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_NW_TTL
+        - action:          0x0018
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000060.fail
@@ -20896,12 +20922,12 @@ msg:
         - action:          OUTPUT
           port:            0x00009823
           max_len:         0x0000
-        - action:          GROUP
+        - action:          0x0016
           data:            0000005900170009FF000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_15_00014.fail
 Error: Decode succeeded but encode failed: YAML:17:11: error: missing required key 'group'
-        - action:          GROUP
+        - action:          0x0016
           ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_15_00015.fail
@@ -24386,12 +24412,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          OUTPUT
+        - action:          0x0000
           data:            0000000000000000000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000024.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'port'
-        - action:          OUTPUT
+        - action:          0x0000
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000025.fail
@@ -24419,7 +24445,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_OUT
+        - action:          0x000B
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000027.fail
@@ -24462,7 +24488,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          COPY_TTL_IN
+        - action:          0x000C
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000030.fail
@@ -24495,12 +24521,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000033.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ttl'
-        - action:          SET_MPLS_TTL
+        - action:          0x000F
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000034.fail
@@ -24528,7 +24554,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_MPLS_TTL
+        - action:          0x0010
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000036.fail
@@ -24561,12 +24587,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          PUSH_VLAN
+        - action:          0x0011
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000039.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'vlan'
-        - action:          PUSH_VLAN
+        - action:          0x0011
           ^
 
 ---
@@ -24604,7 +24630,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_VLAN
+        - action:          0x0012
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000042.fail
@@ -24637,12 +24663,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          PUSH_MPLS
+        - action:          0x0013
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000045.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'mpls'
-        - action:          PUSH_MPLS
+        - action:          0x0013
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000046.fail
@@ -24670,12 +24696,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          POP_MPLS
+        - action:          0x0014
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000048.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ethertype'
-        - action:          POP_MPLS
+        - action:          0x0014
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000049.fail
@@ -24705,12 +24731,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_QUEUE
+        - action:          0x0015
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000051.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'queue'
-        - action:          SET_QUEUE
+        - action:          0x0015
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000052.fail
@@ -24738,12 +24764,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          GROUP
+        - action:          0x0016
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000054.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'group'
-        - action:          GROUP
+        - action:          0x0016
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000055.fail
@@ -24771,12 +24797,12 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          SET_NW_TTL
+        - action:          0x0017
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000057.fail
 Error: Decode succeeded but encode failed: YAML:21:11: error: missing required key 'ttl'
-        - action:          SET_NW_TTL
+        - action:          0x0017
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000058.fail
@@ -24829,7 +24855,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          DEC_NW_TTL
+        - action:          0x0018
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000060.fail
@@ -25214,12 +25240,12 @@ msg:
         - action:          OUTPUT
           port:            0x00009823
           max_len:         0x0000
-        - action:          GROUP
+        - action:          0x0016
           data:            0000005900170009FF000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_15_00014.fail
 Error: Decode succeeded but encode failed: YAML:17:11: error: missing required key 'group'
-        - action:          GROUP
+        - action:          0x0016
           ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_15_00015.fail

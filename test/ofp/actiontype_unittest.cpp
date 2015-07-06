@@ -40,3 +40,31 @@ TEST(actiontype, AT_EXPERIMENTER_2) {
   auto expected = HexToRawData("FFFFFFFA");
   EXPECT_EQ(0, std::memcmp(expected.data(), &type, sizeof(type)));
 }
+
+TEST(actiontype, parse) {
+  ActionType action;
+
+  EXPECT_TRUE(action.parse("COPY_TTL_OUT"));
+  EXPECT_EQ(0x000B0008, action.nativeType());
+
+  EXPECT_TRUE(action.parse("ENQUEUE"));
+  EXPECT_EQ(0x000B0010, action.nativeType());
+}
+
+
+TEST(actiontype, lookupInfo) {
+  ActionType action1{OFPAT_OUTPUT, 16};
+  EXPECT_EQ("OUTPUT", action1.lookupInfo()->name);
+
+  ActionType action2{OFPAT_OUTPUT, 24};
+  EXPECT_EQ(nullptr, action2.lookupInfo());
+
+  ActionType action3{OFPAT_EXPERIMENTER, 24};
+  EXPECT_EQ("EXPERIMENTER", action3.lookupInfo()->name);
+
+  ActionType action4{static_cast<OFPActionType>(deprecated::v1::OFPAT_ENQUEUE), 16};
+  EXPECT_EQ("ENQUEUE", action4.lookupInfo()->name);
+
+  ActionType action5{OFPAT_COPY_TTL_OUT, 8};
+  EXPECT_EQ("COPY_TTL_OUT", action5.lookupInfo()->name);
+}
