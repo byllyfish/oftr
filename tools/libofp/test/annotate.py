@@ -1,4 +1,5 @@
 import yaml
+import json
 import subprocess
 import copy
 import sys
@@ -215,7 +216,7 @@ class OFPDocument(object):
             assert not result
 
     def roundtrip(self, omitField=None, modifyField=None, incrementField=None):
-        doc = roundtrip(self.doc, omitField, modifyField, incrementField)
+        doc = do_roundtrip(self.doc, omitField, modifyField, incrementField)
         if doc:
             return OFPDocument(doc)
         return None
@@ -257,9 +258,6 @@ class OFPDocument(object):
                     if fields[i].keypath.startswith(prefix):
                         del fields[i]
 
-    def toYaml(self):
-        return yaml.dump(self.doc)
-
     def output(self):
         type = self.type()
         version = self.doc['version']
@@ -275,10 +273,10 @@ def spawn(args, input):
     output, stderr = proc.communicate(input)
     assert proc.returncode >= 0 and "ofpx terminated with signal."
     #if proc.returncode:
-    #    print >> sys.stderr, 'Output:\n' + stderr
+    #print >> sys.stderr, 'Stderr:\n' + stderr
     return (proc.returncode, output)
 
-def roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
+def do_roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
     # if omitField is set, make a deep-copy of doc, and remove the specified
     # field.
     if omitField:
@@ -291,11 +289,10 @@ def roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
         doc = copy.deepcopy(doc)
         if not incrementField.increment(doc):
             return None
-    input = yaml.dump(doc)
-    #print >> sys.stderr, 'Input:\n' + input
-    exit, output = spawn([LIBOFP, 'encode', '-R'], input)
+    input = json.dumps(doc, separators=(',', ':'))
+    exit, output = spawn([LIBOFP, 'encode', '-jR'], input)
     if not exit:
-        return yaml.load(output)
+        return json.loads(output)
     return None
 
 if __name__ == '__main__':

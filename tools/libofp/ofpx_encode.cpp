@@ -9,6 +9,9 @@
 using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;
 
+static const char *kNullYamlMessage = "---\nnull\n...\n";
+static const char *kNullJsonMessage = "null\n";
+
 int Encode::run(int argc, const char *const *argv) {
   parseCommandLineOptions(
       argc, argv,
@@ -84,6 +87,8 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   int lineNum;
 
   while (readMessage(input, text, lineNum)) {
+    ofp::log::debug("readMessage returned", text);
+
     ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum,
                                ofp::UInt8_narrow_cast(ofversion_.getValue())};
 
@@ -104,12 +109,18 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
 
       err = decoder.error();
       if (!err.empty()) {
+        if (!silent_) {
+          // Send back an empty message to indicate `roundtrip` failure.
+          *output_ << (json_ ? kNullJsonMessage : kNullYamlMessage);
+        }
         std::cerr << err << '\n';
         if (!keepGoing_) {
           return ExitStatus::RoundtripFailed;
         }
       } else if (!silent_) {
         *output_ << decoder.result();
+        if (json_)
+          *output_ << '\n';
       }
 
     } else if (!silent_) {
@@ -139,8 +150,7 @@ bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
   msg.clear();
 
   int msgLines = 0;
-  while (input) {
-    std::getline(input, lineBuf_);
+  while (std::getline(input, lineBuf_)) {
     ++lineNumber_;
 
     if (json_) {
