@@ -95,6 +95,10 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
     auto err = encoder.error();
     if (!err.empty()) {
       // There was an error in converting the text to a binary message.
+      if (roundtrip_ && !silent_) {
+        // Send back an empty message to indicate `roundtrip` failure.
+        *output_ << (json_ ? kNullJsonMessage : kNullYamlMessage);
+      }      
       std::cerr << err << '\n';
       if (!keepGoing_) {
         return ExitStatus::EncodeFailed;
