@@ -113,6 +113,7 @@ set(LIBOFP_SOURCES
   src/ofp/byterange.cpp
   src/ofp/channellistener.cpp
   src/ofp/constants.cpp
+  src/ofp/constants_error.cpp
   src/ofp/datapathid.cpp
   src/ofp/defaulthandshake.cpp
   src/ofp/driver.cpp

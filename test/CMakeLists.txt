@@ -12,6 +12,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/byteorder_unittest.cpp
 	ofp/byterange_unittest.cpp
 	ofp/constants_unittest.cpp
+	ofp/constants_error_unittest.cpp
 	ofp/datapathid_unittest.cpp
 	ofp/decoder_unittest.cpp
 	ofp/decoderfail_unittest.cpp
