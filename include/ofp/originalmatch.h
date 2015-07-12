@@ -81,6 +81,8 @@ struct OriginalMatch {
   }
 
   UInt32 standardWildcards() const;
+
+  std::string toString() const;
 };
 
 static_assert(sizeof(OriginalMatch) == 40, "Unexpected size.");

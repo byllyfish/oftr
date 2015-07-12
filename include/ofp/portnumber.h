@@ -23,6 +23,14 @@ class PortNumber {
   bool operator==(const PortNumber &rhs) const { return port_ == rhs.port_; }
   bool operator!=(const PortNumber &rhs) const { return !(*this == rhs); }
 
+  // Handle conversions between 16-bit and 32-bit port numbers. Sign-extend the
+  // to 32-bits the "fake" ports.
+  constexpr UInt16 toV1() const { return UInt16_narrow_cast(port_); }
+
+  constexpr static PortNumber fromV1(UInt16 port) {
+    return port > 0xFF00U ? port | 0xFFFF0000UL : port;
+  }
+
  private:
   Big32 port_;
 

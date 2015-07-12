@@ -13,7 +13,7 @@
 namespace ofp {
 
 class PacketIn
-    : public ProtocolMsg<PacketIn, OFPT_PACKET_IN, 20, 65535, false> {
+    : public ProtocolMsg<PacketIn, OFPT_PACKET_IN, 18, 65535, false> {
  public:
   UInt8 version() const { return header_.version(); }
 

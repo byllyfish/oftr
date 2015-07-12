@@ -1,0 +1,1019 @@
+[
+  {
+    "msg": {
+      "versions": [
+        15
+      ]
+    }, 
+    "version": 4, 
+    "type": "HELLO"
+  }, 
+  {
+    "msg": {
+      "type": "BAD_REQUEST", 
+      "code": "OFPBRC_BAD_TYPE", 
+      "data": "ffffffff"
+    }, 
+    "version": 4, 
+    "type": "ERROR"
+  }, 
+  {
+    "msg": {
+      "data": "ffffffff"
+    }, 
+    "version": 4, 
+    "type": "ECHO_REQUEST"
+  }, 
+  {
+    "msg": {
+      "data": "ffffffff"
+    }, 
+    "version": 4, 
+    "type": "ECHO_REPLY"
+  }, 
+  {
+    "msg": {
+      "exp_type": 4294967295, 
+      "experimenter": 4294967295, 
+      "data": "ffffffff"
+    }, 
+    "version": 4, 
+    "type": "EXPERIMENTER"
+  }, 
+  {
+    "msg": {}, 
+    "version": 4, 
+    "type": "FEATURES_REQUEST"
+  }, 
+  {
+    "msg": {
+      "auxiliary_id": 255, 
+      "datapath_id": "ff:ff:ff:ff:ff:ff:ff:ff", 
+      "capabilities": [
+        "FLOW_STATS"
+      ], 
+      "n_tables": 255, 
+      "ports": [
+        {
+          "hw_addr": "ff:ff:ff:ff:ff:ff", 
+          "state": [
+            "LINK_DOWN"
+          ], 
+          "name": "................", 
+          "ethernet": {
+            "curr_speed": 4294967295, 
+            "max_speed": 4294967295, 
+            "curr": [
+              "COPPER"
+            ], 
+            "advertised": [
+              "COPPER"
+            ], 
+            "peer": [
+              "COPPER"
+            ], 
+            "supported": [
+              "COPPER"
+            ]
+          }, 
+          "config": [
+            "PORT_DOWN"
+          ], 
+          "properties": null, 
+          "port_no": "CONTROLLER"
+        }
+      ], 
+      "actions": [
+        "SET_VLAN_VID"
+      ], 
+      "n_buffers": 4294967295
+    }, 
+    "version": 4, 
+    "type": "FEATURES_REPLY"
+  }, 
+  {
+    "msg": {}, 
+    "version": 4, 
+    "type": "GET_CONFIG_REQUEST"
+  }, 
+  {
+    "msg": {
+      "miss_send_len": "NO_BUFFER", 
+      "flags": [
+        "FRAG_NORMAL"
+      ]
+    }, 
+    "version": 4, 
+    "type": "GET_CONFIG_REPLY"
+  }, 
+  {
+    "msg": {
+      "miss_send_len": "NO_BUFFER", 
+      "flags": [
+        "FRAG_NORMAL"
+      ]
+    }, 
+    "version": 4, 
+    "type": "SET_CONFIG"
+  }, 
+  {
+    "msg": {
+      "total_len": 65535, 
+      "in_phy_port": 4294967295, 
+      "buffer_id": "NO_BUFFER", 
+      "reason": "TABLE_MISS", 
+      "table_id": 255, 
+      "match": [
+        {
+          "field": "ETH_DST", 
+          "mask": "ff:ff:ff:ff:ff:ff", 
+          "value": "ff:ff:ff:ff:ff:ff"
+        }
+      ], 
+      "cookie": 18446744073709551615, 
+      "data": "ffffffff", 
+      "in_port": "CONTROLLER", 
+      "metadata": 18446744073709551615
+    }, 
+    "version": 4, 
+    "type": "PACKET_IN"
+  }, 
+  {
+    "msg": {
+      "priority": 65535, 
+      "hard_timeout": 65535, 
+      "byte_count": 18446744073709551615, 
+      "reason": "IDLE_TIMEOUT", 
+      "duration_nsec": 4294967295, 
+      "packet_count": 18446744073709551615, 
+      "duration_sec": 4294967295, 
+      "table_id": 255, 
+      "cookie": 18446744073709551615, 
+      "idle_timeout": 65535, 
+      "match": [
+        {
+          "field": "ETH_DST", 
+          "mask": "ff:ff:ff:ff:ff:ff", 
+          "value": "ff:ff:ff:ff:ff:ff"
+        }
+      ]
+    }, 
+    "version": 4, 
+    "type": "FLOW_REMOVED"
+  }, 
+  {
+    "msg": {
+      "reason": 255, 
+      "port": {
+        "hw_addr": "ff:ff:ff:ff:ff:ff", 
+        "state": [
+          "LINK_DOWN"
+        ], 
+        "name": "................", 
+        "ethernet": {
+          "curr_speed": 4294967295, 
+          "max_speed": 4294967295, 
+          "curr": [
+            "COPPER"
+          ], 
+          "advertised": [
+            "COPPER"
+          ], 
+          "peer": [
+            "COPPER"
+          ], 
+          "supported": [
+            "COPPER"
+          ]
+        }, 
+        "config": [
+          "PORT_DOWN"
+        ], 
+        "properties": null, 
+        "port_no": "CONTROLLER"
+      }
+    }, 
+    "version": 4, 
+    "type": "PORT_STATUS"
+  }, 
+  {
+    "msg": {
+      "data": "ffffffff", 
+      "in_port": "CONTROLLER", 
+      "actions": [
+        {
+          "action": "OUTPUT", 
+          "max_len": "NO_BUFFER", 
+          "port": "CONTROLLER"
+        }
+      ], 
+      "buffer_id": "NO_BUFFER"
+    }, 
+    "version": 4, 
+    "type": "PACKET_OUT"
+  }, 
+  {
+    "msg": {
+      "cookie": 18446744073709551615, 
+      "hard_timeout": 65535, 
+      "flags": [
+        "SEND_FLOW_REM"
+      ], 
+      "cookie_mask": 18446744073709551615, 
+      "buffer_id": "NO_BUFFER", 
+      "priority": 65535, 
+      "out_group": "ANY", 
+      "idle_timeout": 65535, 
+      "command": "MODIFY_STRICT", 
+      "out_port": "CONTROLLER", 
+      "table_id": "ALL", 
+      "match": [
+        {
+          "field": "ETH_DST", 
+          "mask": "ff:ff:ff:ff:ff:ff", 
+          "value": "ff:ff:ff:ff:ff:ff"
+        }
+      ], 
+      "instructions": [
+        {
+          "instruction": "APPLY_ACTIONS", 
+          "actions": [
+            {
+              "action": "OUTPUT", 
+              "max_len": "NO_BUFFER", 
+              "port": "CONTROLLER"
+            }
+          ]
+        }
+      ]
+    }, 
+    "version": 4, 
+    "type": "FLOW_MOD"
+  }, 
+  {
+    "msg": {
+      "command": "ADD", 
+      "buckets": [
+        {
+          "weight": 65535, 
+          "watch_group": 4294967295, 
+          "actions": [
+            {
+              "action": "OUTPUT", 
+              "max_len": "NO_BUFFER", 
+              "port": "CONTROLLER"
+            }
+          ], 
+          "watch_port": "CONTROLLER"
+        }
+      ], 
+      "group_id": 4294967295, 
+      "type": "ALL"
+    }, 
+    "version": 4, 
+    "type": "GROUP_MOD"
+  }, 
+  {
+    "msg": {
+      "hw_addr": "ff:ff:ff:ff:ff:ff", 
+      "ethernet": {
+        "advertise": [
+          "0xffffffff"
+        ]
+      }, 
+      "config": [
+        "0xffffffff"
+      ], 
+      "mask": [
+        "0xffffffff"
+      ], 
+      "properties": null, 
+      "port_no": "CONTROLLER"
+    }, 
+    "version": 4, 
+    "type": "PORT_MOD"
+  }, 
+  {
+    "msg": {
+      "table_id": 255, 
+      "config": [
+        4294967295
+      ]
+    }, 
+    "version": 4, 
+    "type": "TABLE_MOD"
+  }, 
+  {
+    "msg": {}, 
+    "type": "REQUEST.DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "sw_desc": "................................................................................................................................................................................................................................................................", 
+      "hw_desc": "................................................................................................................................................................................................................................................................", 
+      "dp_desc": "................................................................................................................................................................................................................................................................", 
+      "mfr_desc": "................................................................................................................................................................................................................................................................", 
+      "serial_num": "................................"
+    }, 
+    "type": "REPLY.DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "out_group": "ANY", 
+      "cookie": 18446744073709551615, 
+      "out_port": "CONTROLLER", 
+      "table_id": "ALL", 
+      "match": [
+        {
+          "field": "ETH_DST", 
+          "mask": "ff:ff:ff:ff:ff:ff", 
+          "value": "ff:ff:ff:ff:ff:ff"
+        }
+      ], 
+      "cookie_mask": 18446744073709551615
+    }, 
+    "type": "REQUEST.FLOW", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "priority": 65535, 
+        "hard_timeout": 65535, 
+        "byte_count": 18446744073709551615, 
+        "duration_sec": 4294967295, 
+        "duration_nsec": 4294967295, 
+        "packet_count": 18446744073709551615, 
+        "idle_timeout": 65535, 
+        "cookie": 18446744073709551615, 
+        "flags": [
+          "SEND_FLOW_REM"
+        ], 
+        "table_id": 255, 
+        "match": [
+          {
+            "field": "ETH_DST", 
+            "mask": "ff:ff:ff:ff:ff:ff", 
+            "value": "ff:ff:ff:ff:ff:ff"
+          }
+        ], 
+        "instructions": [
+          {
+            "instruction": "APPLY_ACTIONS", 
+            "actions": [
+              {
+                "action": "OUTPUT", 
+                "max_len": "NO_BUFFER", 
+                "port": "CONTROLLER"
+              }
+            ]
+          }
+        ]
+      }
+    ], 
+    "type": "REPLY.FLOW", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "out_group": "ANY", 
+      "cookie": 18446744073709551615, 
+      "out_port": "CONTROLLER", 
+      "table_id": "ALL", 
+      "match": [
+        {
+          "field": "ETH_DST", 
+          "mask": "ff:ff:ff:ff:ff:ff", 
+          "value": "ff:ff:ff:ff:ff:ff"
+        }
+      ], 
+      "cookie_mask": 18446744073709551615
+    }, 
+    "type": "REQUEST.AGGREGATE", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "packet_count": 18446744073709551615, 
+      "byte_count": 18446744073709551615, 
+      "flow_count": 4294967295
+    }, 
+    "type": "REPLY.AGGREGATE", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {}, 
+    "type": "REQUEST.TABLE", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "matched_count": 18446744073709551615, 
+        "lookup_count": 18446744073709551615, 
+        "table_id": 255, 
+        "active_count": 4294967295
+      }
+    ], 
+    "type": "REPLY.TABLE", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "port_no": "CONTROLLER"
+    }, 
+    "type": "REQUEST.PORT_STATS", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "tx_dropped": 18446744073709551615, 
+        "rx_packets": 18446744073709551615, 
+        "rx_bytes": 18446744073709551615, 
+        "tx_errors": 18446744073709551615, 
+        "duration_nsec": 4294967295, 
+        "duration_sec": 4294967295, 
+        "rx_errors": 18446744073709551615, 
+        "tx_bytes": 18446744073709551615, 
+        "ethernet": {
+          "rx_over_err": 18446744073709551615, 
+          "collisions": 18446744073709551615, 
+          "rx_crc_err": 18446744073709551615, 
+          "rx_frame_err": 18446744073709551615
+        }, 
+        "rx_dropped": 18446744073709551615, 
+        "tx_packets": 18446744073709551615, 
+        "properties": null, 
+        "port_no": "CONTROLLER"
+      }
+    ], 
+    "type": "REPLY.PORT_STATS", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "port_no": "CONTROLLER", 
+      "queue_id": 4294967295
+    }, 
+    "type": "REQUEST.QUEUE", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "duration_sec": 4294967295, 
+        "tx_errors": 18446744073709551615, 
+        "tx_bytes": 18446744073709551615, 
+        "queue_id": 4294967295, 
+        "tx_packets": 18446744073709551615, 
+        "port_no": "CONTROLLER", 
+        "duration_nsec": 4294967295
+      }
+    ], 
+    "type": "REPLY.QUEUE", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "group_id": 4294967295
+    }, 
+    "type": "REQUEST.GROUP", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "packet_count": 18446744073709551615, 
+        "duration_sec": 4294967295, 
+        "bucket_stats": [
+          {
+            "packet_count": 18446744073709551615, 
+            "byte_count": 18446744073709551615
+          }
+        ], 
+        "byte_count": 18446744073709551615, 
+        "group_id": 4294967295, 
+        "ref_count": 4294967295, 
+        "duration_nsec": 4294967295
+      }
+    ], 
+    "type": "REPLY.GROUP", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {}, 
+    "type": "REQUEST.GROUP_FEATURES", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "max_groups_ff": 4294967295, 
+      "actions_all": [
+        "SET_VLAN_VID"
+      ], 
+      "actions_ind": [
+        "SET_VLAN_VID"
+      ], 
+      "capabilities": 4294967295, 
+      "actions_sel": [
+        "SET_VLAN_VID"
+      ], 
+      "actions_ff": [
+        "SET_VLAN_VID"
+      ], 
+      "max_groups_all": 4294967295, 
+      "max_groups_ind": 4294967295, 
+      "max_groups_sel": 4294967295, 
+      "types": 4294967295
+    }, 
+    "type": "REPLY.GROUP_FEATURES", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "meter_id": 4294967295
+    }, 
+    "type": "REQUEST.METER", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "duration_sec": 4294967295, 
+        "byte_in_count": 18446744073709551615, 
+        "meter_id": 4294967295, 
+        "flow_count": 4294967295, 
+        "packet_in_count": 18446744073709551615, 
+        "bands": [
+          {
+            "packet_count": 18446744073709551615, 
+            "byte_count": 18446744073709551615
+          }
+        ], 
+        "duration_nsec": 4294967295
+      }
+    ], 
+    "type": "REPLY.METER", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "meter_id": 4294967295
+    }, 
+    "type": "REQUEST.METER_CONFIG", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "bands": [
+          {
+            "type": "DROP", 
+            "rate": 4294967295, 
+            "burst_size": 4294967295
+          }
+        ], 
+        "flags": 65535, 
+        "meter_id": 4294967295
+      }
+    ], 
+    "type": "REPLY.METER_CONFIG", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {}, 
+    "type": "REQUEST.METER_FEATURES", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "max_meter": 4294967295, 
+      "band_types": 4294967295, 
+      "capabilities": 4294967295, 
+      "max_bands": 255, 
+      "max_color": 255
+    }, 
+    "type": "REPLY.METER_FEATURES", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "wildcards": [
+          "ETH_DST"
+        ], 
+        "write_actions": [
+          "OUTPUT"
+        ], 
+        "next_tables": [
+          255
+        ], 
+        "apply_actions": [
+          "OUTPUT"
+        ], 
+        "max_entries": 4294967295, 
+        "apply_set_field": [
+          "ETH_DST"
+        ], 
+        "apply_set_field_miss": [
+          "ETH_SRC"
+        ], 
+        "write_set_field_miss": [
+          "ETH_SRC"
+        ], 
+        "properties": [], 
+        "instructions": [
+          "APPLY_ACTIONS"
+        ], 
+        "next_tables_miss": [
+          15
+        ], 
+        "name": "................................", 
+        "write_actions_miss": [
+          "COPY_TTL_OUT"
+        ], 
+        "apply_actions_miss": [
+          "COPY_TTL_OUT"
+        ], 
+        "write_set_field": [
+          "ETH_DST"
+        ], 
+        "instructions_miss": [
+          "GOTO_TABLE"
+        ], 
+        "metadata_match": 18446744073709551615, 
+        "table_id": 255, 
+        "config": 4294967295, 
+        "metadata_write": 18446744073709551615, 
+        "match": [
+          "ETH_DST"
+        ]
+      }
+    ], 
+    "type": "REQUEST.TABLE_FEATURES", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "wildcards": [
+          "ETH_DST"
+        ], 
+        "write_actions": [
+          "OUTPUT"
+        ], 
+        "next_tables": [
+          255
+        ], 
+        "apply_actions": [
+          "OUTPUT"
+        ], 
+        "max_entries": 4294967295, 
+        "apply_set_field": [
+          "ETH_DST"
+        ], 
+        "apply_set_field_miss": [
+          "ETH_SRC"
+        ], 
+        "write_set_field_miss": [
+          "ETH_SRC"
+        ], 
+        "properties": [], 
+        "instructions": [
+          "APPLY_ACTIONS"
+        ], 
+        "next_tables_miss": [
+          15
+        ], 
+        "name": "................................", 
+        "write_actions_miss": [
+          "COPY_TTL_OUT"
+        ], 
+        "apply_actions_miss": [
+          "COPY_TTL_OUT"
+        ], 
+        "write_set_field": [
+          "ETH_DST"
+        ], 
+        "instructions_miss": [
+          "GOTO_TABLE"
+        ], 
+        "metadata_match": 18446744073709551615, 
+        "table_id": 255, 
+        "config": 4294967295, 
+        "metadata_write": 18446744073709551615, 
+        "match": [
+          "ETH_DST"
+        ]
+      }
+    ], 
+    "type": "REPLY.TABLE_FEATURES", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {}, 
+    "type": "REQUEST.PORT_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "hw_addr": "ff:ff:ff:ff:ff:ff", 
+        "state": [
+          "LINK_DOWN"
+        ], 
+        "name": "................", 
+        "ethernet": {
+          "curr_speed": 4294967295, 
+          "max_speed": 4294967295, 
+          "curr": [
+            "COPPER"
+          ], 
+          "advertised": [
+            "COPPER"
+          ], 
+          "peer": [
+            "COPPER"
+          ], 
+          "supported": [
+            "COPPER"
+          ]
+        }, 
+        "config": [
+          "PORT_DOWN"
+        ], 
+        "properties": null, 
+        "port_no": "CONTROLLER"
+      }
+    ], 
+    "type": "REPLY.PORT_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
+      "out_group": 4294967295, 
+      "table_id": 255, 
+      "match": [
+        {
+          "field": "ETH_DST", 
+          "mask": "ff:ff:ff:ff:ff:ff", 
+          "value": "ff:ff:ff:ff:ff:ff"
+        }
+      ], 
+      "monitor_id": 4294967295, 
+      "command": 255, 
+      "flags": [
+        "NO_ABBREV"
+      ], 
+      "out_port": 4294967295
+    }, 
+    "type": "REQUEST.FLOW_MONITOR", 
+    "version": 5, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "hard_timeout": 65535, 
+        "idle_timeout": 65535, 
+        "priority": 65535, 
+        "reason": 255, 
+        "table_id": 255, 
+        "cookie": 18446744073709551615, 
+        "event": "ADDED", 
+        "match": [
+          {
+            "field": "ETH_DST", 
+            "mask": "ff:ff:ff:ff:ff:ff", 
+            "value": "ff:ff:ff:ff:ff:ff"
+          }
+        ], 
+        "instructions": [
+          {
+            "instruction": "APPLY_ACTIONS", 
+            "actions": [
+              {
+                "action": "OUTPUT", 
+                "max_len": "NO_BUFFER", 
+                "port": "CONTROLLER"
+              }
+            ]
+          }
+        ]
+      }, 
+      {
+        "xid": 4294967295, 
+        "event": "ABBREV"
+      }
+    ], 
+    "type": "REPLY.FLOW_MONITOR", 
+    "version": 5, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {}, 
+    "version": 4, 
+    "type": "BARRIER_REQUEST"
+  }, 
+  {
+    "msg": {}, 
+    "version": 4, 
+    "type": "BARRIER_REPLY"
+  }, 
+  {
+    "msg": {
+      "port": "CONTROLLER"
+    }, 
+    "version": 4, 
+    "type": "QUEUE_GET_CONFIG_REQUEST"
+  }, 
+  {
+    "msg": {
+      "queues": [
+        {
+          "min_rate": 65535, 
+          "queue_id": 4294967295, 
+          "max_rate": 65535, 
+          "properties": [], 
+          "port": "CONTROLLER"
+        }
+      ], 
+      "port": "CONTROLLER"
+    }, 
+    "version": 4, 
+    "type": "QUEUE_GET_CONFIG_REPLY"
+  }, 
+  {
+    "msg": {
+      "role": 4294967295, 
+      "generation_id": 18446744073709551615
+    }, 
+    "version": 4, 
+    "type": "ROLE_REQUEST"
+  }, 
+  {
+    "msg": {
+      "role": 4294967295, 
+      "generation_id": 18446744073709551615
+    }, 
+    "version": 4, 
+    "type": "ROLE_REPLY"
+  }, 
+  {
+    "msg": {}, 
+    "version": 4, 
+    "type": "GET_ASYNC_REQUEST"
+  }, 
+  {
+    "msg": {
+      "port_status_mask_master": [
+        "DELETE"
+      ], 
+      "port_status_mask_slave": [
+        "DELETE"
+      ], 
+      "flow_removed_mask_slave": [
+        "HARD_TIMEOUT"
+      ], 
+      "flow_removed_mask_master": [
+        "HARD_TIMEOUT"
+      ], 
+      "packet_in_mask_master": [
+        "INVALID_TTL"
+      ], 
+      "packet_in_mask_slave": [
+        "INVALID_TTL"
+      ]
+    }, 
+    "version": 4, 
+    "type": "GET_ASYNC_REPLY"
+  }, 
+  {
+    "msg": {
+      "port_status_slave": [
+        "DELETE"
+      ], 
+      "packet_in_slave": [
+        "INVALID_TTL"
+      ], 
+      "packet_in_master": [
+        "INVALID_TTL"
+      ], 
+      "flow_removed_slave": [
+        "HARD_TIMEOUT"
+      ], 
+      "port_status_master": [
+        "DELETE"
+      ], 
+      "properties": [], 
+      "flow_removed_master": [
+        "HARD_TIMEOUT"
+      ]
+    }, 
+    "version": 4, 
+    "type": "SET_ASYNC"
+  }, 
+  {
+    "msg": {
+      "command": "MODIFY", 
+      "flags": [
+        "KBPS"
+      ], 
+      "meter_id": 4294967295, 
+      "bands": [
+        {
+          "type": "DROP", 
+          "rate": 4294967295, 
+          "burst_size": 4294967295
+        }
+      ]
+    }, 
+    "version": 4, 
+    "type": "METER_MOD"
+  }
+]

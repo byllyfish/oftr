@@ -21,6 +21,7 @@ static const ActionTypeInfo sActionInfo[] = {
     {AT_DEC_NW_TTL::type(), "DEC_NW_TTL"},
     {AT_PUSH_PBB::type(), "PUSH_PBB"},
     {AT_POP_PBB::type(), "POP_PBB"},
+    {deprecated::AT_ENQUEUE_V1::type(), "ENQUEUE"},
     {ActionType{OFPAT_SET_FIELD, 0}, "SET_FIELD"},
     {ActionType{OFPAT_EXPERIMENTER, 0}, "EXPERIMENTER"}};
 
@@ -35,6 +36,26 @@ bool ActionType::parse(const std::string &s) {
 }
 
 const ActionTypeInfo *ActionType::lookupInfo() const {
+  for (unsigned i = 0; i < ArrayLength(sActionInfo); ++i) {
+    if (value32_ == sActionInfo[i].type) {
+      return &sActionInfo[i];
+    }
+  }
+
+  // Ignore length when checking for SET_FIELD or EXPERIMENTER actions.
+  const UInt32 mask = BigEndianToNative(0xFFFF0000);
+  UInt32 desiredValue = (value32_ & mask);
+  for (unsigned i = ArrayLength(sActionInfo) - 2; i < ArrayLength(sActionInfo);
+       ++i) {
+    if (desiredValue == sActionInfo[i].type) {
+      return &sActionInfo[i];
+    }
+  }
+
+  return nullptr;
+}
+
+const ActionTypeInfo *ActionType::lookupInfo_IgnoreLength() const {
   const UInt32 mask = BigEndianToNative(0xFFFF0000);
   UInt32 desiredValue = (value32_ & mask);
   for (unsigned i = 0; i < ArrayLength(sActionInfo); ++i) {

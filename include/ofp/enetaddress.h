@@ -46,9 +46,14 @@ static_assert(IsStandardLayout<EnetAddress>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<EnetAddress>(),
               "Expected trivially copyable.");
 
+inline std::ostream &operator<<(std::ostream &os, const EnetAddress &value) {
+  return os << value.toString();
+}
+
 }  // namespace ofp
 
 namespace std {
+
 template <>
 struct hash<ofp::EnetAddress> {
   size_t operator()(const ofp::EnetAddress &rhs) const {
@@ -56,6 +61,7 @@ struct hash<ofp::EnetAddress> {
     return hasher(rhs.toArray());
   }
 };
+
 }  // namespace std
 
 #endif  // OFP_ENETADDRESS_H_

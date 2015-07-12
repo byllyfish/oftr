@@ -4,8 +4,8 @@
 #include "ofp/oxmlist.h"
 #include "ofp/originalmatch.h"
 
-namespace ofp {
-namespace deprecated {
+using namespace ofp;
+using namespace ofp::deprecated;
 
 StandardMatch::StandardMatch(const OXMRange &range) {
   UInt32 wc = wildcards;
@@ -168,6 +168,10 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
   mpls_tc = 0;     // must be wildcarded
   metadata = 0;
   metadata_mask = 0;
+
+  log::debug("Convert original match to standard match:");
+  log::debug("origmatch:\n", match.toString());
+  log::debug("stdmatch:\n", toString());
 }
 
 OXMList StandardMatch::toOXMList() const {
@@ -212,15 +216,12 @@ OXMList StandardMatch::toOXMList() const {
 
   if (!(wc & OFPFW_DL_TYPE)) {
     list.add(OFB_ETH_TYPE{dl_type});
-  } else {
-    // DataLink type is wildcarded. None of the remaining NW settings apply.
-    return list;
-  }
 
-  // If dl_type is ARP (0x0806), process fields differently.
-  if (dl_type == DATALINK_ARP) {
-    convertDatalinkARP(wc, &list);
-    return list;
+    // If dl_type is ARP (0x0806), process fields differently.
+    if (dl_type == DATALINK_ARP) {
+      convertDatalinkARP(wc, &list);
+      return list;
+    }
   }
 
   if (!(wc & OFPFW_NW_TOS)) {
@@ -249,8 +250,10 @@ OXMList StandardMatch::toOXMList() const {
 
   if (!(wc & OFPFW_TP_SRC)) {
     if (wc & OFPFW_NW_PROTO) {
-      log::info(
-          "StandardMatch::toOXMList: OFPFW_TP_SRC is missing OFPFW_NW_PROTO.");
+      log::warning(
+          "StandardMatch::toOXMList: OFPFW_TP_SRC is missing OFPFW_NW_PROTO; "
+          "default to TCP");
+      list.add(OFB_TCP_SRC{tp_src});
     } else {
       switch (nw_proto) {
         case PROTOCOL_TCP:
@@ -266,10 +269,11 @@ OXMList StandardMatch::toOXMList() const {
           list.add(OFB_SCTP_SRC{tp_src});
           break;
         default:
-          log::info(
+          log::warning(
               "StandardMatch::toOXMList: OFPFW_TP_SRC has unsupported "
               "OFPFW_NW_PROTO:",
               nw_proto);
+          list.add(OFB_TCP_SRC{tp_src});
           break;
       }
     }
@@ -277,8 +281,10 @@ OXMList StandardMatch::toOXMList() const {
 
   if (!(wc & OFPFW_TP_DST)) {
     if ((wc & OFPFW_NW_PROTO)) {
-      log::info(
-          "StandardMatch::toOXMList: OFPFW_TP_DST is missing OFPFW_NW_PROTO.");
+      log::warning(
+          "StandardMatch::toOXMList: OFPFW_TP_DST is missing OFPFW_NW_PROTO; "
+          "default to TCP");
+      list.add(OFB_TCP_DST{tp_dst});
     } else {
       switch (nw_proto) {
         case PROTOCOL_TCP:
@@ -294,10 +300,11 @@ OXMList StandardMatch::toOXMList() const {
           list.add(OFB_SCTP_DST{tp_dst});
           break;
         default:
-          log::info(
+          log::warning(
               "StandardMatch::toOXMList: OFPFW_TP_DST has unsupported "
               "OFPFW_NW_PROTO:",
               nw_proto);
+          list.add(OFB_TCP_DST{tp_dst});
           break;
       }
     }
@@ -341,5 +348,30 @@ void StandardMatch::convertDatalinkARP(UInt32 wc, OXMList *list) const {
   }
 }
 
-}  // namespace deprecated
-}  // namespace ofp
+std::string StandardMatch::toString() const {
+  // A '*' after a value indicates the value is a wildcard.
+  auto wildcard =
+      [this](Wildcards wc) -> char { return wildcards & wc ? '*' : ' '; };
+
+  std::stringstream ss;
+  ss << "in_port: " << in_port << wildcard(OFPFW_IN_PORT) << '\n';
+  ss << "dl_src: " << dl_src << '/' << dl_src_mask << '\n';
+  ss << "dl_dst: " << dl_dst << '/' << dl_dst_mask << '\n';
+  ss << "dl_vlan: " << dl_vlan << wildcard(OFPFW_DL_VLAN) << '\n';
+  ss << "dl_vlan_pcp: " << static_cast<unsigned>(dl_vlan_pcp)
+     << wildcard(OFPFW_DL_VLAN_PCP) << '\n';
+  ss << "dl_type: " << dl_type << wildcard(OFPFW_DL_TYPE) << '\n';
+  ss << "nw_tos: " << static_cast<unsigned>(nw_tos) << wildcard(OFPFW_NW_TOS)
+     << '\n';
+  ss << "nw_proto: " << static_cast<unsigned>(nw_proto)
+     << wildcard(OFPFW_NW_PROTO) << '\n';
+  ss << "nw_src: " << nw_src << '/' << nw_src_mask << '\n';
+  ss << "nw_dst: " << nw_dst << '/' << nw_dst_mask << '\n';
+  ss << "tp_src: " << tp_src << wildcard(OFPFW_TP_SRC) << '\n';
+  ss << "tp_dst: " << tp_dst << wildcard(OFPFW_TP_DST) << '\n';
+  ss << "mpls_label: " << mpls_label << wildcard(OFPFW_MPLS_LABEL) << '\n';
+  ss << "mpls_tc: " << static_cast<unsigned>(mpls_tc) << wildcard(OFPFW_MPLS_TC)
+     << '\n';
+  ss << "metadata: " << metadata << '/' << metadata_mask << '\n';
+  return ss.str();
+}

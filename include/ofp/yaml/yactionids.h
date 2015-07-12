@@ -21,8 +21,13 @@ template <>
 struct ScalarTraits<ofp::ActionID> {
   static void output(const ofp::ActionID &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    ScalarTraits<ofp::ActionType>::output(value.type(), ctxt, out);
-    // out << value.type();
+    ofp::ActionType type = value.type();
+    auto info = type.lookupInfo_IgnoreLength();
+    if (info) {
+      out << info->name;
+    } else {
+      out << llvm::format("0x%04X", type.enumType());
+    }
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::ActionID &value) {
