@@ -396,6 +396,29 @@ static_assert(sizeof(AT_SET_TP_DST_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_TP_TYPE_V1) == 8, "Unexpected size.");
 static_assert(sizeof(AT_SET_TP_CODE_V1) == 8, "Unexpected size.");
 
+/// \brief Concrete type for AT_ENQUEUE_v1 action.
+class AT_ENQUEUE_V1 {
+ public:
+  constexpr static ActionType type() {
+    return ActionType(static_cast<OFPActionType>(v1::OFPAT_ENQUEUE), 16);
+  }
+
+  constexpr explicit AT_ENQUEUE_V1(PortNumber port, UInt32 queueId)
+      : port_{port.toV1()}, queueId_{queueId} {}
+
+  PortNumber port() const { return PortNumber::fromV1(port_); }
+  UInt32 queueId() const { return queueId_; }
+
+ private:
+  const ActionType type_ = type();
+  const Big16 port_;
+  const Padding<6> pad_;
+  const Big32 queueId_;
+};
+
+static_assert(sizeof(AT_ENQUEUE_V1) == 16, "Unexpected size.");
+static_assert(IsStandardLayout<AT_ENQUEUE_V1>(), "Unexpected layout");
+
 }  // namespace deprecated
 
 }  // namespace ofp

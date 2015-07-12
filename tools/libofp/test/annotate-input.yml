@@ -30,7 +30,7 @@ msg:
 ---
 version: 0x04
 type: FEATURES_REQUEST
-msg:
+msg: {}
 ---
 version: 0x04
 type: FEATURES_REPLY
@@ -58,7 +58,7 @@ msg:
 ---
 version: 0x04
 type: GET_CONFIG_REQUEST
-msg:
+msg: {}
 ---
 version: 0x04
 type: GET_CONFIG_REPLY
@@ -197,7 +197,7 @@ msg:
 version: 0x04
 type: REQUEST.DESC
 flags: [ 'MORE' ]
-msg:
+msg: {}
 ---
 version: 0x04
 type: REPLY.DESC
@@ -273,7 +273,7 @@ msg:
 version: 0x04
 type: REQUEST.TABLE
 flags: [ 'MORE' ]
-msg:
+msg: {}
 ---
 version: 0x04
 type: REPLY.TABLE
@@ -354,7 +354,7 @@ msg:
 version: 0x04
 type: REQUEST.GROUP_FEATURES
 flags: [ 'MORE' ]
-msg:
+msg: {}
 ---
 version: 0x04
 type: REPLY.GROUP_FEATURES
@@ -411,7 +411,7 @@ msg:
 version: 0x04
 type: REQUEST.METER_FEATURES
 flags: [ 'MORE' ]
-msg:
+msg: {}
 ---
 version: 0x04
 type: REPLY.METER_FEATURES
@@ -461,7 +461,7 @@ msg:
       - ETH_DST
     apply_set_field_miss:
       - ETH_SRC
-    properties:
+    properties: []
 ---
 version: 0x04
 type: REPLY.TABLE_FEATURES
@@ -501,12 +501,12 @@ msg:
       - ETH_DST
     apply_set_field_miss:
       - ETH_SRC
-    properties:
+    properties: []
 ---
 version: 0x04
 type: REQUEST.PORT_DESC
 flags: [ 'MORE' ]
-msg:
+msg: {}
 ---
 version: 0x04
 type: REPLY.PORT_DESC
@@ -567,11 +567,11 @@ msg:
 ---
 version: 0x04
 type: BARRIER_REQUEST
-msg:
+msg: {}
 ---
 version: 0x04
 type: BARRIER_REPLY
-msg:
+msg: {}
 ---
 version: 0x04
 type: QUEUE_GET_CONFIG_REQUEST
@@ -587,7 +587,7 @@ msg:
       port: CONTROLLER
       min_rate: 0xffff
       max_rate: 0xffff
-      properties:
+      properties: []
 ---
 version: 0x04
 type: ROLE_REQUEST
@@ -603,7 +603,7 @@ msg:
 ---
 version: 0x04
 type: GET_ASYNC_REQUEST  # header only
-msg:  
+msg:  {}
 ---
 version: 0x04
 type: GET_ASYNC_REPLY
@@ -624,7 +624,7 @@ msg:
   port_status_slave: [ DELETE ]
   flow_removed_master: [ HARD_TIMEOUT ]
   flow_removed_slave: [ HARD_TIMEOUT ]
-  properties:
+  properties: []
 ---
 version: 0x04
 type: METER_MOD

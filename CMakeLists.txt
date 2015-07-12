@@ -29,7 +29,7 @@ set(CMAKE_MODULE_PATH
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 5)
+set(Libofp_VERSION_MINOR 6)
 set(Libofp_VERSION_PATCH 0)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
@@ -113,6 +113,7 @@ set(LIBOFP_SOURCES
   src/ofp/byterange.cpp
   src/ofp/channellistener.cpp
   src/ofp/constants.cpp
+  src/ofp/constants_error.cpp
   src/ofp/datapathid.cpp
   src/ofp/defaulthandshake.cpp
   src/ofp/driver.cpp

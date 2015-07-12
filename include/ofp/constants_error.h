@@ -3,6 +3,8 @@
 #ifndef OFP_CONSTANTS_ERROR_H_
 #define OFP_CONSTANTS_ERROR_H_
 
+#include "ofp/constants.h"
+
 namespace ofp {
 
 enum OFPErrorType : UInt16 {
@@ -100,6 +102,7 @@ enum OFPErrorCode : UInt32 {
   OFPFMFC_BAD_TIMEOUT = OFPMakeErrorCode(OFPET_FLOW_MOD_FAILED, 5),
   OFPFMFC_BAD_COMMAND = OFPMakeErrorCode(OFPET_FLOW_MOD_FAILED, 6),
   OFPFMFC_BAD_FLAGS = OFPMakeErrorCode(OFPET_FLOW_MOD_FAILED, 7),
+  OFPFMFC_UNSUPPORTED = OFPMakeErrorCode(OFPET_FLOW_MOD_FAILED, 0x7f),  // 1.0
 
   OFPGMFC_GROUP_EXISTS = OFPMakeErrorCode(OFPET_GROUP_MOD_FAILED, 0),
   OFPGMFC_INVALID_GROUP = OFPMakeErrorCode(OFPET_GROUP_MOD_FAILED, 1),
@@ -181,6 +184,12 @@ constexpr bool OFPErrorCodeIsUnknown(OFPErrorCode code) {
 constexpr OFPErrorCode OFPErrorCodeSetType(OFPErrorCode code, UInt16 type) {
   return OFPErrorCodeMake(type, code & 0xffff);
 }
+
+OFPErrorType OFPErrorTypeFromValue(UInt8 version, UInt16 type, UInt16 code);
+UInt16 OFPErrorTypeToValue(UInt8 version, OFPErrorCode code);
+
+OFPErrorCode OFPErrorCodeFromValue(UInt8 version, UInt16 type, UInt16 code);
+UInt16 OFPErrorCodeToValue(UInt8 version, OFPErrorCode code);
 
 }  // namespace ofp
 

@@ -1,8 +1,14 @@
-import yaml
+import json
 import subprocess
 import copy
 import sys
+import os
 
+try:
+    import yaml
+    hasYaml = True
+except ImportError:
+    hasYaml = False
 
 LIBOFP = '../libofp'
 MAX_VERSION = 5
@@ -25,7 +31,7 @@ def _getType(elem):
         return 'uint32'
     elif elem == 0xffffffffffffffff:
         return 'uint64'
-    elif isinstance(elem, str):
+    elif isinstance(elem, str) or isinstance(elem, unicode):
         s = elem.lower()
         if s == 'ff:ff:ff:ff:ff:ff':
             return 'macaddress'
@@ -215,7 +221,7 @@ class OFPDocument(object):
             assert not result
 
     def roundtrip(self, omitField=None, modifyField=None, incrementField=None):
-        doc = roundtrip(self.doc, omitField, modifyField, incrementField)
+        doc = do_roundtrip(self.doc, omitField, modifyField, incrementField)
         if doc:
             return OFPDocument(doc)
         return None
@@ -257,28 +263,15 @@ class OFPDocument(object):
                     if fields[i].keypath.startswith(prefix):
                         del fields[i]
 
-    def toYaml(self):
-        return yaml.dump(self.doc)
-
     def output(self):
         type = self.type()
         version = self.doc['version']
-        for field in self.fields:
+        for field in sorted(self.fields, key=(lambda f: f.keypath)):
             row =[version, type, field.keypath, field.type, field.required, field.default(), field.effect(self.consequences), field.modified()]
             print '\t'.join(str(o) for o in row)
 
-# Spawn a subprocess to execute the given arguments; pass it the given input.
-# Return tuple (returnCode, stdout) of process.
 
-def spawn(args, input):
-    proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output, stderr = proc.communicate(input)
-    assert proc.returncode >= 0 and "ofpx terminated with signal."
-    #if proc.returncode:
-    #    print >> sys.stderr, 'Output:\n' + stderr
-    return (proc.returncode, output)
-
-def roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
+def do_roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
     # if omitField is set, make a deep-copy of doc, and remove the specified
     # field.
     if omitField:
@@ -291,24 +284,36 @@ def roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
         doc = copy.deepcopy(doc)
         if not incrementField.increment(doc):
             return None
-    input = yaml.dump(doc)
-    #print >> sys.stderr, 'Input:\n' + input
-    exit, output = spawn([LIBOFP, 'encode', '-R'], input)
-    if not exit:
-        return yaml.load(output)
-    return None
+    input = json.dumps(doc, separators=(',', ':')) + '\n'
+    PROC.stdin.write(input)
+    output = PROC.stdout.readline()
+    return json.loads(output)
+
+def convertYamlToJson(yamlFileName, jsonFileName):
+    with open(yamlFileName) as input:
+        docs = yaml.load_all(input)
+        with open(jsonFileName, 'w') as jsonFile:
+            json.dump(list(docs), jsonFile, indent=2)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print 'Usage: annotate.py <input-file>'
         sys.exit(1)
 
+    DEVNULL = open(os.devnull, 'w')
+    PROC = subprocess.Popen([LIBOFP, 'encode', '-jkR'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=DEVNULL)
+
     inputFile = sys.argv[1]
+    jsonFileName = inputFile + '.json'
+
+    if hasYaml and not os.path.exists(jsonFileName):
+        convertYamlToJson(inputFile, jsonFileName)
+
     header=['version', 'type', 'keypath', 'syntax', 'required', 'default', 'missing', 'modify']
     print '\t'.join(header)
     for version in range(1,MAX_VERSION+1):
-        with open(inputFile) as input:
-            docs = yaml.load_all(input)
+        with open(jsonFileName) as input:
+            docs = json.load(input)
             for doc in docs:
                 if doc:
                     doc['version'] = version

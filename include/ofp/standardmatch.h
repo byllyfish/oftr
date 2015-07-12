@@ -65,6 +65,7 @@ struct StandardMatch {
   explicit StandardMatch(const OriginalMatch &match);
 
   OXMList toOXMList() const;
+  std::string toString() const;
 
  private:
   void convertDatalinkARP(UInt32 wc, OXMList *list) const;

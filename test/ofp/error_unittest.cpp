@@ -57,23 +57,41 @@ TEST(error, flowmod_failed_v4) {
 
 TEST(error, unsupported_order_v1) {
   ErrorBuilder errorBuilder{0x11111111};
-  errorBuilder.setErrorCode(OFPBAC_UNSUPPORTED_ORDER);
+  errorBuilder.setErrorCode(OFPFMFC_UNSUPPORTED);
 
   MemoryChannel channel{OFP_VERSION_1};
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
   message.transmogrify();
-  EXPECT_HEX("0101000C0000000100020005", message.data(), message.size());
+  EXPECT_HEX("0101000C0000000100030005", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
 
   EXPECT_EQ(OFP_VERSION_1, error->msgHeader()->version());
+  EXPECT_EQ(OFPET_FLOW_MOD_FAILED, error->errorType());
+  EXPECT_EQ(OFPFMFC_UNSUPPORTED, error->errorCode());
+}
+
+TEST(error, unsupported_order_v4) {
+  ErrorBuilder errorBuilder{0x11111111};
+  errorBuilder.setErrorCode(OFPFMFC_UNSUPPORTED);
+
+  MemoryChannel channel{OFP_VERSION_4};
+  errorBuilder.send(&channel);
+
+  Message message{channel.data(), channel.size()};
+  message.transmogrify();
+  EXPECT_HEX("0401000C000000010002000B", message.data(), message.size());
+
+  const Error *error = Error::cast(&message);
+
+  EXPECT_EQ(OFP_VERSION_4, error->msgHeader()->version());
   EXPECT_EQ(OFPET_BAD_ACTION, error->errorType());
   EXPECT_EQ(OFPBAC_UNSUPPORTED_ORDER, error->errorCode());
 }
 
-TEST(error, unsupported_order_v4) {
+TEST(error, unsupported_action_order_v4) {
   ErrorBuilder errorBuilder{0x11111111};
   errorBuilder.setErrorCode(OFPBAC_UNSUPPORTED_ORDER);
 

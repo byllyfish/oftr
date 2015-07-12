@@ -200,6 +200,15 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         io.mapRequired("ethertype", ethertype);
         break;
       }
+      case deprecated::AT_ENQUEUE_V1::type(): {
+        const deprecated::AT_ENQUEUE_V1 *action =
+            item.action<deprecated::AT_ENQUEUE_V1>();
+        PortNumber port = action->port();
+        Hex32 queueId = action->queueId();
+        io.mapRequired("port", port);
+        io.mapRequired("queue_id", queueId);
+        break;
+      }
       default: {
         switch (type.enumType()) {
           case OFPAT_EXPERIMENTER: {
@@ -245,6 +254,17 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 
     ActionType type;
     io.mapRequired("action", type);
+
+    if (type == deprecated::AT_ENQUEUE_V1::type()) {
+      PortNumber port;
+      Hex32 queueId;
+      io.mapRequired("port", port);
+      io.mapRequired("queue_id", queueId);
+      deprecated::AT_ENQUEUE_V1 action{port, queueId};
+      list.add(action);
+      return;
+    }
+
     switch (type.enumType()) {
       case OFPAT_COPY_TTL_OUT: {
         AT_COPY_TTL_OUT action;
