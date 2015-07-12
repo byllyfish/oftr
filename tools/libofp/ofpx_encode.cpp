@@ -98,7 +98,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
       if (roundtrip_ && !silent_) {
         // Send back an empty message to indicate `roundtrip` failure.
         *output_ << (json_ ? kNullJsonMessage : kNullYamlMessage);
-      }      
+      }
       std::cerr << err << '\n';
       if (!keepGoing_) {
         return ExitStatus::EncodeFailed;

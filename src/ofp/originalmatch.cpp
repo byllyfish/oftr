@@ -168,21 +168,24 @@ UInt32 OriginalMatch::standardWildcards() const {
 
 std::string OriginalMatch::toString() const {
   // A '*' after a value indicates the value is a wildcard.
-  auto wildcard = [this](Wildcards wc) -> char { return wildcards & wc ? '*' : ' '; };
+  auto wildcard =
+      [this](Wildcards wc) -> char { return wildcards & wc ? '*' : ' '; };
 
   std::stringstream ss;
   ss << "in_port: " << in_port << wildcard(OFPFW_IN_PORT) << '\n';
   ss << "dl_src: " << dl_src << wildcard(OFPFW_DL_SRC) << '\n';
   ss << "dl_dst: " << dl_dst << wildcard(OFPFW_DL_DST) << '\n';
   ss << "dl_vlan: " << dl_vlan << wildcard(OFPFW_DL_VLAN) << '\n';
-  ss << "dl_vlan_pcp: " << static_cast<unsigned>(dl_vlan_pcp) << wildcard(OFPFW_DL_VLAN_PCP) << '\n';
+  ss << "dl_vlan_pcp: " << static_cast<unsigned>(dl_vlan_pcp)
+     << wildcard(OFPFW_DL_VLAN_PCP) << '\n';
   ss << "dl_type: " << dl_type << wildcard(OFPFW_DL_TYPE) << '\n';
-  ss << "nw_tos: " << static_cast<unsigned>(nw_tos) << wildcard(OFPFW_NW_TOS) << '\n';
-  ss << "nw_proto: " << static_cast<unsigned>(nw_proto) << wildcard(OFPFW_NW_PROTO) << '\n';
+  ss << "nw_tos: " << static_cast<unsigned>(nw_tos) << wildcard(OFPFW_NW_TOS)
+     << '\n';
+  ss << "nw_proto: " << static_cast<unsigned>(nw_proto)
+     << wildcard(OFPFW_NW_PROTO) << '\n';
   ss << "nw_src: " << nw_src << '/' << nw_src_mask() << '\n';
   ss << "nw_dst: " << nw_dst << '/' << nw_dst_mask() << '\n';
   ss << "tp_src: " << tp_src << wildcard(OFPFW_TP_SRC) << '\n';
   ss << "tp_dst: " << tp_dst << wildcard(OFPFW_TP_DST) << '\n';
   return ss.str();
 }
-

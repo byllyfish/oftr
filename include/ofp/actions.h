@@ -399,9 +399,12 @@ static_assert(sizeof(AT_SET_TP_CODE_V1) == 8, "Unexpected size.");
 /// \brief Concrete type for AT_ENQUEUE_v1 action.
 class AT_ENQUEUE_V1 {
  public:
-  constexpr static ActionType type() { return ActionType(static_cast<OFPActionType>(v1::OFPAT_ENQUEUE), 16); }
+  constexpr static ActionType type() {
+    return ActionType(static_cast<OFPActionType>(v1::OFPAT_ENQUEUE), 16);
+  }
 
-  constexpr explicit AT_ENQUEUE_V1(PortNumber port, UInt32 queueId) : port_{port.toV1()}, queueId_{queueId} {}
+  constexpr explicit AT_ENQUEUE_V1(PortNumber port, UInt32 queueId)
+      : port_{port.toV1()}, queueId_{queueId} {}
 
   PortNumber port() const { return PortNumber::fromV1(port_); }
   UInt32 queueId() const { return queueId_; }

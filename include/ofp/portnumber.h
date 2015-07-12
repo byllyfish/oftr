@@ -27,7 +27,7 @@ class PortNumber {
   // to 32-bits the "fake" ports.
   constexpr UInt16 toV1() const { return UInt16_narrow_cast(port_); }
 
-  constexpr static PortNumber fromV1(UInt16 port) { 
+  constexpr static PortNumber fromV1(UInt16 port) {
     return port > 0xFF00U ? port | 0xFFFF0000UL : port;
   }
 

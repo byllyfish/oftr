@@ -45,11 +45,12 @@ const ActionTypeInfo *ActionType::lookupInfo() const {
   // Ignore length when checking for SET_FIELD or EXPERIMENTER actions.
   const UInt32 mask = BigEndianToNative(0xFFFF0000);
   UInt32 desiredValue = (value32_ & mask);
-  for (unsigned i = ArrayLength(sActionInfo) - 2; i < ArrayLength(sActionInfo); ++i) {
+  for (unsigned i = ArrayLength(sActionInfo) - 2; i < ArrayLength(sActionInfo);
+       ++i) {
     if (desiredValue == sActionInfo[i].type) {
       return &sActionInfo[i];
     }
-  }  
+  }
 
   return nullptr;
 }

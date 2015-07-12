@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/constants_error.h"
 #include "ofp/log.h"
 
@@ -61,8 +63,9 @@ const OFPErrorType kMaxErrorType = OFPET_TABLE_FEATURES_FAILED;
 // OFPErrorType enum value and return it. If the version and type do not
 // correspond to a defined OFPErrorType value, return the original type value
 // with the high bit set (OFPET_UNKNOWN_FLAG).
-OFPErrorType ofp::OFPErrorTypeFromValue(UInt8 version, UInt16 type, UInt16 code) {
-  // If the type is the experimenter type (0xffff), always return 
+OFPErrorType ofp::OFPErrorTypeFromValue(UInt8 version, UInt16 type,
+                                        UInt16 code) {
+  // If the type is the experimenter type (0xffff), always return
   // OFPET_EXPERIMENTER regardless of the version.
   if (type == OFPET_EXPERIMENTER) {
     return OFPET_EXPERIMENTER;
@@ -112,8 +115,8 @@ UInt16 ofp::OFPErrorTypeToValue(UInt8 version, OFPErrorCode code) {
   return type;
 }
 
-
-OFPErrorCode ofp::OFPErrorCodeFromValue(UInt8 version, UInt16 type, UInt16 code) {
+OFPErrorCode ofp::OFPErrorCodeFromValue(UInt8 version, UInt16 type,
+                                        UInt16 code) {
   if (type == OFPET_EXPERIMENTER) {
     return OFPErrorCodeMake(type, code);
   }
@@ -133,7 +136,6 @@ OFPErrorCode ofp::OFPErrorCodeFromValue(UInt8 version, UInt16 type, UInt16 code)
 
   return OFPErrorCodeMake(type, code);
 }
-
 
 UInt16 ofp::OFPErrorCodeToValue(UInt8 version, OFPErrorCode code) {
   if (version == OFP_VERSION_1) {

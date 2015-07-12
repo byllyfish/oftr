@@ -201,7 +201,8 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         break;
       }
       case deprecated::AT_ENQUEUE_V1::type(): {
-        const deprecated::AT_ENQUEUE_V1 *action = item.action<deprecated::AT_ENQUEUE_V1>();
+        const deprecated::AT_ENQUEUE_V1 *action =
+            item.action<deprecated::AT_ENQUEUE_V1>();
         PortNumber port = action->port();
         Hex32 queueId = action->queueId();
         io.mapRequired("port", port);

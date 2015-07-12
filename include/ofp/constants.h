@@ -314,8 +314,8 @@ enum OFPActionType : UInt16 {
 
   // "Fake" Version 1 actions.
   OFPAT_STRIP_VLAN_V1 = 0x7FF1,  // FIXME(bfish): still necessary?
-  OFPAT_ENQUEUE_V1 = 0x7FF2,    // FIXME(bfish): still necessary?
-  OFPAT_EXPERIMENTER = 0xFFFF  // possible lengths: 8, 16, 24, 32, 40, ...
+  OFPAT_ENQUEUE_V1 = 0x7FF2,     // FIXME(bfish): still necessary?
+  OFPAT_EXPERIMENTER = 0xFFFF    // possible lengths: 8, 16, 24, 32, 40, ...
 };
 
 enum OFPPacketInReason : UInt8 {
