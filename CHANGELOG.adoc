@@ -1,5 +1,13 @@
 = Changelog
 
+== Version 0.6 (12 July 2015)
+
+- Fix bug in error code handling for OFPFMFC_UNSUPPORTED.
+- Remove annotate.py test's dependency on yaml module. Make annotate.py run faster.
+- Fix conversion of StdMatch to OXMRange when dl_type is wildcarded.
+- Fix support for v1 ENQUEUE action.
+- (No submodule updates this week; waiting for asio/boringssl fix)
+
 == Version 0.5 (4 July 2015)
 
 - Validate Experimenter actions correctly.
