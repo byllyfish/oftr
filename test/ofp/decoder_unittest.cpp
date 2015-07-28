@@ -1635,3 +1635,7 @@ TEST(decoder, queue_get_config_replyv4_fix) {
       "646464646464646464646464646464646464646464646464646464646464646464646464"
       "64646464646464646464646464646464646464646464646464646464\n...\n");
 }
+
+TEST(decoder, queue_get_config_replyv1) {
+  testDecodeEncode("01150020C1C49F86000D00000000000000000012001000000000000800000000", "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             0xC1C49F86\nversion:         0x01\nmsg:             \n  port:            0x0000000D\n  queues:          \n    - queue_id:        0x00000012\n      port:            0x00000000\n      min_rate:        0xFFFF\n      max_rate:        0xFFFF\n      properties:      \n...\n");
+}

@@ -26,7 +26,11 @@ struct has_FixedHeaderSize {
 }  // namespace detail
 
 class PropertyList : public ProtocolList<PropertyRange> {
+  using Inherited = ProtocolList<PropertyRange>;
+
  public:
+  using Inherited::Inherited;
+
   template <class PropertyType>
   EnableIf<detail::has_FixedHeaderSize<PropertyType>::value, void> add(
       const PropertyType &property) {

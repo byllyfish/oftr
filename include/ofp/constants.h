@@ -535,6 +535,7 @@ inline OFPRequestForwardFlags operator|(OFPRequestForwardFlags lhs,
 }
 
 enum OFPQueueProperty : UInt16 {
+  OFPQT_NONE = 0,  // used in 1.0, 1.1 to indicate default
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,
   OFPQT_UNUSED_MIN = 3,  // min unused property id

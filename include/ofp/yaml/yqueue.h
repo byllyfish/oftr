@@ -66,8 +66,10 @@ struct MappingTraits<ofp::QueueBuilder> {
     io.mapRequired("max_rate", maxRate);
 
     PropertyList props;
-    props.add(QueuePropertyMinRate{minRate});
-    props.add(QueuePropertyMaxRate{maxRate});
+    if (minRate != 0xffff)
+      props.add(QueuePropertyMinRate{minRate});
+    if (maxRate != 0xffff)
+      props.add(QueuePropertyMaxRate{maxRate});
 
     PropertyList &p = props;
     ofp::detail::QueuePropertyList &qp =

@@ -74,7 +74,7 @@ void Transmogrify::normalize() {
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV1();
     } else if (type == QueueGetConfigReply::type()) {
-      normalizeQueueGetConfigReply();
+      normalizeQueueGetConfigReplyV1();
     }
   } else if (version == OFP_VERSION_2) {
     if (type == FeaturesReply::type()) {
@@ -86,7 +86,7 @@ void Transmogrify::normalize() {
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV2();
     } else if (type == QueueGetConfigReply::type()) {
-      normalizeQueueGetConfigReply();
+      normalizeQueueGetConfigReplyV1();
     }
   } else if (version == OFP_VERSION_3) {
     if (type == FeaturesReply::type()) {
@@ -98,7 +98,7 @@ void Transmogrify::normalize() {
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV3();
     } else if (type == QueueGetConfigReply::type()) {
-      normalizeQueueGetConfigReply();
+      normalizeQueueGetConfigReplyV2();
     }
   } else if (version == OFP_VERSION_4) {
     if (type == FeaturesReply::type()) {
@@ -112,7 +112,7 @@ void Transmogrify::normalize() {
     } else if (type == SetAsync::type()) {
       normalizeSetAsyncV4();
     } else if (type == QueueGetConfigReply::type()) {
-      normalizeQueueGetConfigReply();
+      normalizeQueueGetConfigReplyV2();
     }
   }
 
@@ -747,7 +747,51 @@ void Transmogrify::normalizeSetAsyncV4() {
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
-void Transmogrify::normalizeQueueGetConfigReply() {
+void Transmogrify::normalizeQueueGetConfigReplyV1() {
+  Header *hdr = header();
+
+  size_t length = hdr->length();
+  if (length < sizeof(QueueGetConfigReply)) {
+    log::info("QueueGetConfigReply v1 is too short.", length);
+    header()->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  // Convert port number to 32-bits.
+  UInt8 *ptr = buf_.mutableData() + sizeof(Header);
+  PortNumber port = PortNumber::fromV1(*Big16_cast(ptr));
+  std::memcpy(ptr, &port, sizeof(port));
+
+  // Convert QueueV1 to Queue.
+  ByteRange data = SafeByteRange(buf_.mutableData(), buf_.size(), sizeof(QueueGetConfigReply));
+  deprecated::QueueV1Range queues{data};
+
+  Validation context;
+  if (!queues.validateInput(&context)) {
+    log::warning("Invalid queues in QueueGetConfigReply v1");
+    return;
+  }
+
+  QueueList newQueues;
+  for (auto &queue : queues) {
+    QueueBuilder newQueue{queue};
+    newQueues.add(newQueue);
+  }
+
+  // When converting to the regular `Queue` structure, we may exceed the max
+  // message size of 65535.
+  if (newQueues.size() > 65535 - sizeof(QueueGetConfigReply)) {
+    log::warning("QueueGetConfigReply v1 contains too many queues.", length);
+    header()->setType(OFPT_UNSUPPORTED);
+    return;
+  }
+
+  buf_.replace(data.begin(), data.end(), newQueues.data(), newQueues.size());
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeQueueGetConfigReplyV2() {
   // If length of message is not padded to a multiple of 8, pad it out.
   Header *hdr = header();
 

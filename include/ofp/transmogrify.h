@@ -36,7 +36,8 @@ class Transmogrify {
   void normalizeMultipartReplyV3();
   void normalizeMultipartReplyV4();
   void normalizeSetAsyncV4();
-  void normalizeQueueGetConfigReply();
+  void normalizeQueueGetConfigReplyV1();
+  void normalizeQueueGetConfigReplyV2();
 
   void normalizeMPFlowRequestV1();
   void normalizeMPFlowReplyV1(size_t *start);
