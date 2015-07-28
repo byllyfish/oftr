@@ -114,3 +114,25 @@ TEST(smallbuffer, resize) {
   buf.resize(10000);
   EXPECT_EQ(10000, buf.size());
 }
+
+TEST(smallbuffer, replace) {
+  SmallBuffer buf;
+
+  buf.add("XXXXXXXXXX", 10);
+  EXPECT_EQ(64, buf.capacity());
+
+  for (int i = 0; i < 10; ++i) {
+    UInt8 *pos = buf.begin();
+    buf.replace(pos, pos + 2, "1234567890", 10);
+  }
+
+  EXPECT_EQ(90, buf.size());
+  EXPECT_EQ(1024, buf.capacity());
+  EXPECT_HEX("313233343536373839303334353637383930333435363738393033343536373839303334353637383930333435363738393033343536373839303334353637383930333435363738393033343536373839305858585858585858", buf.begin(), buf.size());
+
+  buf.replace(buf.begin() + 1, buf.begin() + 75, "x", 1);
+
+  EXPECT_EQ(17, buf.size());
+  EXPECT_HEX("3178343536373839305858585858585858", buf.begin(), buf.size());
+}
+
