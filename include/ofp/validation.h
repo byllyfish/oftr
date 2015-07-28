@@ -16,7 +16,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Validation {
  public:
-  explicit Validation(const Message *msg, OFPErrorCode *error);
+  explicit Validation(const Message *msg = nullptr, OFPErrorCode *error = &defaultPtr_);
 
   UInt8 version() const { return version_; }
   size_t length() const { return length_; }
@@ -73,6 +73,8 @@ class Validation {
   void logContext(const UInt8 *ptr = nullptr) const;
 
   void setErrorMessage(const char *errorMessage, size_t errorOffset = 0);
+
+  static OFPErrorCode defaultPtr_;
 };
 
 OFP_END_IGNORE_PADDING

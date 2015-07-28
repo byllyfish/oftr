@@ -7,6 +7,8 @@
 
 using namespace ofp;
 
+OFPErrorCode Validation::defaultPtr_;
+
 Validation::Validation(const Message *msg, OFPErrorCode *error)
     : msg_{msg}, error_{error} {
   assert(error_);
