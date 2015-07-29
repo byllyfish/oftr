@@ -982,9 +982,17 @@ version:         0x01
 msg:             
   versions:        [  ]
 ...
+---
+type:            HELLO
+xid:             0x12345678
+version:         0x01
+msg:             
+  versions:        [  ]
+...
 Filename: external/openflow-messages/v1_0/rep/rep_0_00002.pass
-Error: Decode failed: Range element size overruns end
-[ByteList size=16 data=01000010123456783333333333333333]
+Error: Encode yielded different size data: 8 vs. 16
+0100000812345678
+01000010123456783333333333333333
 ---
 type:            PACKET_IN
 xid:             0xFCCB031C
@@ -2902,9 +2910,17 @@ version:         0x02
 msg:             
   versions:        [  ]
 ...
+---
+type:            HELLO
+xid:             0x12345678
+version:         0x02
+msg:             
+  versions:        [  ]
+...
 Filename: external/openflow-messages/v1_1/rep/rep_0_00002.pass
-Error: Decode failed: Range element size overruns end
-[ByteList size=16 data=02000010123456783333333333333333]
+Error: Encode yielded different size data: 8 vs. 16
+0200000812345678
+02000010123456783333333333333333
 Filename: external/openflow-messages/v1_1/rep/rep_10_00001.pass
 Error: Decode failed: Message type is not supported
 [ByteList size=24 data=020A001832A66378010D95270000002C0000000200000008]
@@ -34974,9 +34990,17 @@ version:         0x03
 msg:             
   versions:        [  ]
 ...
+---
+type:            HELLO
+xid:             0x12345678
+version:         0x03
+msg:             
+  versions:        [  ]
+...
 Filename: external/openflow-messages/v1_2/rep/rep_0_00002.pass
-Error: Decode failed: Range element size overruns end
-[ByteList size=16 data=03000010123456783333333333333333]
+Error: Encode yielded different size data: 8 vs. 16
+0300000812345678
+03000010123456783333333333333333
 ---
 type:            PACKET_IN
 xid:             0x00C1DBB4
@@ -47777,9 +47801,17 @@ Filename: external/openflow-messages/v1_3/rep/rep_0_00001.pass
 Error: Encode yielded different size data: 16 vs. 8
 04000010D18E900A0001000800000010
 04000008D18E900A
+---
+type:            HELLO
+xid:             0x12345678
+version:         0x04
+msg:             
+  versions:        [  ]
+...
 Filename: external/openflow-messages/v1_3/rep/rep_0_00002.pass
-Error: Decode failed: Range element size overruns end
-[ByteList size=16 data=04000010123456783333333333333333]
+Error: Encode yielded different data at byte offset 8:
+04000010123456780001000800000010
+04000010123456783333333333333333
 ---
 type:            PACKET_IN
 xid:             0xBABF8811

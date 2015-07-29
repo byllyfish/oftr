@@ -40,16 +40,16 @@ using HelloRange = ProtocolRange<HelloIterator>;
 }  // namespace detail
 
 /// \brief Immutable OpenFlow `Hello` protocol message.
-class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65528> {
+class Hello : public ProtocolMsg<Hello, OFPT_HELLO, 8, 65535> {
  public:
   ProtocolVersions protocolVersions() const;
 
-  bool validateInput(Validation *context) const;
+  bool validateInput(Validation *context) const { return true; }
 
  private:
   Header header_;
 
-  detail::HelloRange helloElements() const { return msgBody(); }
+  detail::HelloRange helloElements() const;
 
   // Only HelloBuilder can construct an actual instance.
   Hello() : header_{type()} {}
