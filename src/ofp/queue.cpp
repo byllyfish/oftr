@@ -46,7 +46,8 @@ bool deprecated::QueueV1::validateInput(Validation *context) const {
   return len_ >= sizeof(QueueV1);
 }
 
-deprecated::QueueV1Builder::QueueV1Builder(const Queue &queue) : properties_{queue.properties()} {
+deprecated::QueueV1Builder::QueueV1Builder(const Queue &queue)
+    : properties_{queue.properties()} {
   queue_.queueId_ = queue.queueId();
 
   if (properties_.size() > 0) {
@@ -71,4 +72,3 @@ void deprecated::QueueV1Builder::write(Writable *channel) {
     channel->write(&queueProp, sizeof(queueProp));
   }
 }
-

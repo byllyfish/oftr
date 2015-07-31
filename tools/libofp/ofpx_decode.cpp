@@ -392,7 +392,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
       std::cerr << "Error: Encode yielded different size data: "
                 << encoder.size() << " vs. " << originalMessage->size() << '\n'
                 << ofp::ByteRange{encoder.data(), encoder.size()} << '\n'
-                << ofp::ByteRange{originalMessage->data(), originalMessage->size()} << '\n';
+                << ofp::ByteRange{originalMessage->data(),
+                                  originalMessage->size()} << '\n';
       return ExitStatus::VerifyOutputFailed;
     }
 
@@ -404,7 +405,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
       std::cerr << "Error: Encode yielded different data at byte offset "
                 << diffOffset << ":\n"
                 << ofp::ByteRange{encoder.data(), encoder.size()} << '\n'
-                << ofp::ByteRange{originalMessage->data(), originalMessage->size()} << '\n';
+                << ofp::ByteRange{originalMessage->data(),
+                                  originalMessage->size()} << '\n';
       return ExitStatus::VerifyOutputFailed;
     }
   }

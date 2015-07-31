@@ -22,7 +22,6 @@ class Connection;
 /// \brief Implements a protocol message buffer.
 class Message {
  public:
-
   // Flags used (in version field) to indicate pre-processing errors.
   enum : UInt8 {
     kTooBigErrorFlag = 0xE0,
@@ -126,7 +125,7 @@ const MsgType *Message::castMessage(OFPErrorCode *error) const {
   if (versionFlag) {
     if (versionFlag == kTooBigErrorFlag)
       context.messagePreprocessTooBigError();
-    else if (versionFlag == kInvalidErrorFlag) 
+    else if (versionFlag == kInvalidErrorFlag)
       context.messagePreprocessFailure();
     return nullptr;
   }

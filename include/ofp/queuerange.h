@@ -29,7 +29,8 @@ class QueueRange : public ProtocolRange<QueueIterator> {
 
 namespace deprecated {
 
-using QueueV1Iterator = ProtocolIterator<QueueV1, ProtocolIteratorType::QueueV1>;
+using QueueV1Iterator =
+    ProtocolIterator<QueueV1, ProtocolIteratorType::QueueV1>;
 using QueueV1Range = ProtocolRange<QueueV1Iterator>;
 
 }  // namespace deprecated

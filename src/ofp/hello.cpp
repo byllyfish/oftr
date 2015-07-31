@@ -41,7 +41,6 @@ detail::HelloRange Hello::helloElements() const {
   return elems;
 }
 
-
 /// Construct a HelloBuilder from the given Hello message.
 HelloBuilder::HelloBuilder(const Hello *msg) : msg_{*msg} {
   setProtocolVersions(msg->protocolVersions());

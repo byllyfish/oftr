@@ -39,13 +39,12 @@ UInt32 QueueGetConfigReplyBuilder::send(Writable *channel) {
   return xid;
 }
 
-
 UInt32 QueueGetConfigReplyBuilder::sendV1(Writable *channel) {
   struct {
     Big16 port;
     Padding<6> pad;
   } reply;
-  
+
   static_assert(sizeof(reply) == 8, "Unexpected size");
 
   QueueRange queues = queues_.toRange();

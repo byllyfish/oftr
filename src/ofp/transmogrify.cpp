@@ -735,7 +735,8 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
   }
 
   // Convert QueueV1 to Queue.
-  ByteRange data = SafeByteRange(buf_.mutableData(), buf_.size(), sizeof(QueueGetConfigReply));
+  ByteRange data = SafeByteRange(buf_.mutableData(), buf_.size(),
+                                 sizeof(QueueGetConfigReply));
   deprecated::QueueV1Range queues{data};
 
   Validation context;

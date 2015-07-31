@@ -76,7 +76,7 @@ class QueueBuilder {
 namespace deprecated {
 
 class QueueV1 : private NonCopyable {
-public:
+ public:
   // Offset of len_ field.
   enum { ProtocolIteratorSizeOffset = 4, ProtocolIteratorAlignment = 8 };
 
@@ -84,8 +84,8 @@ public:
   PropertyRange properties() const;
 
   bool validateInput(Validation *context) const;
-  
-private:
+
+ private:
   Big32 queueId_;
   Big16 len_;
   Padding<2> pad_;
@@ -101,12 +101,12 @@ static_assert(IsStandardLayout<QueueV1>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<QueueV1>(), "Expected trivially copyable.");
 
 class QueueV1Builder {
-public:
+ public:
   explicit QueueV1Builder(const Queue &queue);
 
   void write(Writable *channel);
 
-private:
+ private:
   QueueV1 queue_;
   PropertyList properties_;
 };
