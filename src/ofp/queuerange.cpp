@@ -5,13 +5,13 @@ using namespace ofp;
 
 
 size_t QueueRange::writeSize(Writable *channel) {
-    if (channel->version() > OFP_VERSION_1) {
+    if (channel->version() > OFP_VERSION_2) {
         return size();
     }
     
-    // Version 1 uses the QueueV1 structure instead. This structure is 8ytes
-    // smaller than the Queue structure when encoded. However, a queue with 
-    // an empty property list adds the OFPQT_NONE property (8 bytes).
+    // Versions 1 and 2 use the QueueV1 structure instead. This structure is 
+    // 8 bytes smaller than the Queue structure when encoded. However, a queue 
+    // with an empty property list adds the OFPQT_NONE property (8 bytes).
     size_t size = 0;
     for (auto &item : *this) {
         size_t queueLen = item.len_;
@@ -24,7 +24,7 @@ size_t QueueRange::writeSize(Writable *channel) {
 
 
 void QueueRange::write(Writable *channel) {
-    if (channel->version() > OFP_VERSION_1) {
+    if (channel->version() > OFP_VERSION_2) {
         channel->write(data(), size());
 
     } else {

@@ -67,6 +67,9 @@ class Transmogrify {
   ByteList &buf_;
 
   Header *header() { return reinterpret_cast<Header *>(buf_.mutableData()); }
+
+  void markInputTooBig(const char *msg);
+  void markInputInvalid(const char *msg);
 };
 
 template <class Type>

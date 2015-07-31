@@ -40,17 +40,17 @@ void Transmogrify::normalize() {
   OFPType type =
       Header::translateType(hdr->version(), hdr->type(), OFP_VERSION_4);
   if (type == OFPT_UNSUPPORTED) {
-    log::info("Unsupported type for protocol version:", hdr->type());
+    markInputInvalid("Unsupported type for protocol version");
   }
   hdr->setType(type);
 
   log::debug("normalize", type);
 
-  // If header length doesn't match buffer size, we have a problem.
+  // If header length doesn't match buffer size, we have a problem. Under normal
+  // conditions, this should never be triggered.
   if (buf_.size() != hdr->length()) {
-    log::info("Unexpected header length:", hdr->length());
+    markInputInvalid("Unexpected header length");
     hdr->setLength(UInt16_narrow_cast(buf_.size()));
-    hdr->setType(OFPT_UNSUPPORTED);
   }
 
   UInt8 version = hdr->version();
@@ -124,18 +124,16 @@ void Transmogrify::normalizeFeaturesReplyV1() {
 
   Header *hdr = header();
 
-  // TODO(bfish): min length already checked?
+  // Check minimum size requirement.
   if (hdr->length() < sizeof(FeaturesReply)) {
-    log::debug("Invalid FeaturesReply size.");
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("FeaturesReply is too short");
     return;
   }
 
   // Verify size of port list.
   size_t portListSize = hdr->length() - sizeof(FeaturesReply);
   if ((portListSize % sizeof(PortV1)) != 0) {
-    log::debug("Invalid FeaturesReply port list size.");
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("FeaturesReply has invalid port list size");
     return;
   }
 
@@ -153,8 +151,7 @@ void Transmogrify::normalizeFeaturesReplyV1() {
   }
 
   if (ports.size() > 65535 - sizeof(FeaturesReply)) {
-    log::debug("Invalid FeaturesReply new port list size too big");
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputTooBig("FeaturesReply has too many ports");
     return;
   }
 
@@ -175,16 +172,14 @@ void Transmogrify::normalizeFeaturesReplyV2() {
   Header *hdr = header();
 
   if (hdr->length() < sizeof(FeaturesReply)) {
-    log::debug("Invalid FeaturesReply size.");
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("FeaturesReply is too short");
     return;
   }
 
   // Verify size of port list.
   size_t portListSize = hdr->length() - sizeof(FeaturesReply);
   if ((portListSize % sizeof(PortV2)) != 0) {
-    log::debug("Invalid FeaturesReply port list size.");
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("FeaturesReply has invalid port list size");
     return;
   }
 
@@ -202,8 +197,7 @@ void Transmogrify::normalizeFeaturesReplyV2() {
   }
 
   if (ports.size() > 65535 - sizeof(FeaturesReply)) {
-    log::debug("Invalid FeaturesReply new port list size.");
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputTooBig("FeaturesReply has too many ports");
     return;
   }
 
@@ -221,14 +215,12 @@ void Transmogrify::normalizeFlowModV1() {
   Header *hdr = header();
 
   if (hdr->length() < 72) {
-    log::info("FlowMod v1 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("FlowMod is too short");
     return;
   }
 
   if (buf_.size() > 65535 - 72) {
-    log::info("FlowMod v1 message is too long.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputTooBig("FlowMod is too big");
     return;
   }
 
@@ -275,7 +267,7 @@ void Transmogrify::normalizeFlowModV1() {
 
   UInt16 actLen = UInt16_narrow_cast(origSize - 72);
   if ((actLen % 8) != 0) {
-    log::info("FlowMod v1 actions size not aligned", actLen);
+    markInputInvalid("FlowMod action size is misaligned");
     return;
   }
 
@@ -300,7 +292,7 @@ void Transmogrify::normalizeFlowModV1() {
     OFPErrorCode error;
     Validation context{nullptr, &error};
     if (!actions.validateInput(&context)) {
-      log::warning("Invalid actions in FlowMod v1");
+      markInputInvalid("FlowMod actions are invalid");
       header()->setLength(UInt16_narrow_cast(buf_.size()));
       return;
     }
@@ -326,8 +318,7 @@ void Transmogrify::normalizePortStatusV1() {
   Header *hdr = header();
 
   if (hdr->length() != PortStatusSize + sizeof(PortV1)) {
-    log::info("PortStatus v1 message is wrong size.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("PortStatus has invalid size");
     return;
   }
 
@@ -353,8 +344,7 @@ void Transmogrify::normalizePortStatusV2() {
   Header *hdr = header();
 
   if (hdr->length() != PortStatusSize + sizeof(PortV2)) {
-    log::info("PortStatus v2 message is wrong size.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("PortStatus has invalid size");
     return;
   }
 
@@ -377,14 +367,12 @@ void Transmogrify::normalizeExperimenterV1() {
   Header *hdr = header();
 
   if (hdr->length() < 12) {
-    log::info("Experimenter v1 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("Experimenter is too short");
     return;
   }
 
   if (hdr->length() > 65535 - 4) {
-    log::info("Experimenter v1 message is too long.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputTooBig("Experimenter is too big");
     return;
   }
 
@@ -400,14 +388,12 @@ void Transmogrify::normalizePacketOutV1() {
   Header *hdr = header();
 
   if (hdr->length() < 16) {
-    log::info("PacketOut v1 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("PacketOut is too short");
     return;
   }
 
   if (buf_.size() > 65535 - 8) {
-    log::info("PacketOut v1 message is too long.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputTooBig("PacketOut is too big");
     return;
   }
 
@@ -420,12 +406,10 @@ void Transmogrify::normalizePacketOutV1() {
   UInt16 actionLen = *Big16_cast(pkt + 14);
 
   if ((actionLen % 8) != 0) {
-    log::warning("PacketOut v1 message has invalid action len", actionLen);
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("PacketOut action size is invalid");
     return;
   } else if (16u + actionLen > buf_.size()) {
-    log::warning("PacketOut v1 message action len overruns end", actionLen);
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("PacketOut action size overruns end");
     return;
   }
 
@@ -451,7 +435,7 @@ void Transmogrify::normalizePacketOutV1() {
     OFPErrorCode error;
     Validation context{nullptr, &error};
     if (!actions.validateInput(&context)) {
-      log::warning("Invalid actions in PacketOut v1");
+      markInputInvalid("PacketOut has invalid actions");
       header()->setLength(UInt16_narrow_cast(buf_.size()));
       return;
     }
@@ -473,8 +457,7 @@ void Transmogrify::normalizePortModV1() {
   Header *hdr = header();
 
   if (hdr->length() < 32) {
-    log::info("PortMod v1 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("PortMod is too short");
     return;
   }
 
@@ -500,8 +483,6 @@ void Transmogrify::normalizePortModV1() {
   *Big32_cast(pkt + 32) = 0x00000008;
   *Big32_cast(pkt + 36) = OFPPortFeaturesFlagsConvertFromV1(advertise);
 
-  log::info("normalizePortModV1", buf_);
-
   // Update header length.
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
@@ -510,12 +491,9 @@ void Transmogrify::normalizePortModV2() {
   Header *hdr = header();
 
   if (hdr->length() < 40) {
-    log::info("PortMod message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("PortMod is too short");
     return;
   }
-
-  log::info("normalizePortModV2", buf_);
 
   // Convert advertise into a property.
   UInt8 *pkt = buf_.mutableData();
@@ -530,8 +508,7 @@ void Transmogrify::normalizeFlowRemovedV1() {
   Header *hdr = header();
 
   if (hdr->length() != 88) {
-    log::info("FlowRemoved v1 message is wrong length.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("FlowRemoved has invalid size");
     return;
   }
 
@@ -564,8 +541,7 @@ void Transmogrify::normalizeFlowRemovedV1() {
 void Transmogrify::normalizeMultipartRequestV1() {
   Header *hdr = header();
   if (hdr->length() < MultipartRequest::UnpaddedSizeVersion1) {
-    log::info("MultipartRequest v1 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("MultipartRequest is too short");
     return;
   }
 
@@ -593,8 +569,7 @@ void Transmogrify::normalizeMultipartRequestV1() {
 void Transmogrify::normalizeMultipartReplyV1() {
   Header *hdr = header();
   if (hdr->length() < MultipartReply::UnpaddedSizeVersion1) {
-    log::info("MultipartReply v1 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("MultipartReply is too short");
     return;
   }
 
@@ -631,8 +606,7 @@ void Transmogrify::normalizeMultipartReplyV1() {
 void Transmogrify::normalizeMultipartReplyV2() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
-    log::info("MultipartReply v2 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("MultipartReply is too short");
     return;
   }
 
@@ -656,8 +630,7 @@ void Transmogrify::normalizeMultipartReplyV2() {
 void Transmogrify::normalizeMultipartReplyV3() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
-    log::info("MultipartReply v3 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("MultipartReply is too short");
     return;
   }
 
@@ -685,8 +658,7 @@ void Transmogrify::normalizeMultipartReplyV3() {
 void Transmogrify::normalizeMultipartReplyV4() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
-    log::info("MultipartReply v4 message is too short.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("MultipartReply is too short");
     return;
   }
 
@@ -714,8 +686,7 @@ void Transmogrify::normalizeMultipartReplyV4() {
 void Transmogrify::normalizeSetAsyncV4() {
   Header *hdr = header();
   if (hdr->length() != 32) {
-    log::info("SetAsync v4 message is wrong length.", hdr->length());
-    hdr->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("SetAsync has invalid size");
     return;
   }
 
@@ -752,15 +723,16 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
 
   size_t length = hdr->length();
   if (length < sizeof(QueueGetConfigReply)) {
-    log::info("QueueGetConfigReply v1 is too short.", length);
-    header()->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("QueueGetConfigReply is too short");
     return;
   }
 
-  // Convert port number to 32-bits.
-  UInt8 *ptr = buf_.mutableData() + sizeof(Header);
-  PortNumber port = PortNumber::fromV1(*Big16_cast(ptr));
-  std::memcpy(ptr, &port, sizeof(port));
+  if (hdr->version() == OFP_VERSION_1) {
+    // Convert port number to 32-bits -- only for OpenFlow 1.0.
+    UInt8 *ptr = buf_.mutableData() + sizeof(Header);
+    PortNumber port = PortNumber::fromV1(*Big16_cast(ptr));
+    std::memcpy(ptr, &port, sizeof(port));
+  }
 
   // Convert QueueV1 to Queue.
   ByteRange data = SafeByteRange(buf_.mutableData(), buf_.size(), sizeof(QueueGetConfigReply));
@@ -768,7 +740,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
 
   Validation context;
   if (!queues.validateInput(&context)) {
-    log::warning("Invalid queues in QueueGetConfigReply v1");
+    markInputInvalid("QueueGetConfigReply has invalid queues");
     return;
   }
 
@@ -781,8 +753,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
   // When converting to the regular `Queue` structure, we may exceed the max
   // message size of 65535.
   if (newQueues.size() > 65535 - sizeof(QueueGetConfigReply)) {
-    log::warning("QueueGetConfigReply v1 contains too many queues.", length);
-    header()->setType(OFPT_UNSUPPORTED);
+    markInputTooBig("QueueGetConfigReply is too big");
     return;
   }
 
@@ -809,8 +780,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
 void Transmogrify::normalizeMPFlowRequestV1() {
   // Check length of packet.
   if (buf_.size() != sizeof(MultipartRequest) + 44) {
-    log::info("MultipartRequest v1 OFPMP_FLOW is wrong length.", buf_.size());
-    header()->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("MultipartRequest.Flow has invalid size");
     return;
   }
 
@@ -845,15 +815,13 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   UInt16 length = *reinterpret_cast<Big16 *>(ptr);
 
   if (offset + length > buf_.size()) {
-    log::warning("FlowStatsReply v1 length overruns end");
+    markInputInvalid("MultipartReply.FlowStats size overruns end");
     *start = buf_.size();
     return;
   }
 
-  log::debug("normalizeMPFlowReplyv1 ", ByteRange{ptr, length});
-
   if (length < 88) {
-    log::info("FlowStatsReply v1 is too short.", length);
+    markInputInvalid("MultipartReply.FlowStats is too short");
     *start = buf_.size();
     return;
   }
@@ -868,7 +836,7 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   // 8 more bytes for the instruction header.
   UInt16 actLen = UInt16_narrow_cast(length - 88u);
   if ((actLen % 8) != 0) {
-    log::info("FlowStatsReply v1 action length misaligned", actLen);
+    markInputInvalid("MultipartReply.FlowStats action size is invalid");
     *start = buf_.size();
     return;
   }
@@ -899,10 +867,8 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   }
 
   // Update length.
-  *reinterpret_cast<Big16 *>(ptr) = UInt16_narrow_cast(length + needed);
+  *Big16_cast(ptr) = UInt16_narrow_cast(length + needed);
   *start = Unsigned_cast(Signed_cast(*start) + length + needed);
-
-  log::debug("normalizeFlowReplyV1", buf_);
 }
 
 void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start) {
@@ -912,7 +878,7 @@ void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start) {
   size_t length = buf_.size();
 
   if (length - offset < 24) {
-    log::info("TableStatsReply v4 is wrong length:", length);
+    markInputInvalid("MultipartReply.TableStats is too short");
     *start = buf_.size();
     return;
   }
@@ -947,10 +913,7 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start,
 void Transmogrify::normalizeMPPortStatsRequestV1() {
   // Check length of packet.
   if (buf_.size() != sizeof(MultipartRequest) + 8) {
-    log::info(
-        "MultipartRequest v1 OFPMP_PORT_STATS/OFPMP_QUEUE is wrong length.",
-        buf_.size());
-    header()->setType(OFPT_UNSUPPORTED);
+    markInputInvalid("MultipartRequest.PortStats/Queue has invalid size");
     return;
   }
 
@@ -985,7 +948,7 @@ void Transmogrify::normalizeMPPortDescReplyV1() {
   // Verify size of port list.
   size_t portListSize = buf_.size() - sizeof(MultipartReply);
   if ((portListSize % sizeof(PortV1)) != 0) {
-    log::debug("Invalid PortDesc port list size.");
+    markInputInvalid("MultipartReply.PortDesc has invalid size");
     return;
   }
 
@@ -1018,7 +981,7 @@ void Transmogrify::normalizeMPPortDescReplyV4() {
   // Verify size of port list.
   size_t portListSize = buf_.size() - sizeof(MultipartReply);
   if ((portListSize % sizeof(PortV2)) != 0) {
-    log::debug("Invalid PortDesc port list size.");
+    markInputInvalid("MultipartReply.PortDesc has invalid size");
     return;
   }
 
@@ -1148,8 +1111,6 @@ int Transmogrify::normInstructionsV1orV2(const InstructionRange &instr,
 int Transmogrify::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto) {
   using namespace deprecated;
 
-  log::debug("normActionsV1orV2", actions.toByteRange());
-
   // Return change in length of action list.
   int lengthChange = 0;
 
@@ -1271,4 +1232,14 @@ int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
   assert((*iter)->type() == AT_OUTPUT::type());
 
   return 8;
+}
+
+void Transmogrify::markInputTooBig(const char *msg) {
+  log::warning("Normalize:", msg);
+  header()->setVersion(Message::kTooBigErrorFlag | header()->version());
+}
+
+void Transmogrify::markInputInvalid(const char *msg) {
+  log::warning("Normalize:", msg);
+  header()->setVersion(Message::kInvalidErrorFlag | header()->version());
 }

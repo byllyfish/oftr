@@ -32,6 +32,16 @@ void Validation::messageTypeIsNotSupported() {
   setErrorMessage("Message type is not supported");
 }
 
+void Validation::messagePreprocessTooBigError() {
+  *error_ = OFPBRC_BAD_LEN;
+  setErrorMessage("Message is too big. See documentation for limits.");
+}
+
+void Validation::messagePreprocessFailure() {
+  *error_ = OFPBRC_BAD_LEN;
+  setErrorMessage("Message parse error");
+}
+
 void Validation::multipartTypeIsNotSupported() {
   *error_ = OFPBRC_BAD_MULTIPART;
   setErrorMessage("Multipart type is not supported");

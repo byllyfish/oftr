@@ -995,13 +995,13 @@ version	type	keypath	syntax	required	default	missing	modify
 2	QUEUE_GET_CONFIG_REQUEST.v2	msg	object	True			
 2	QUEUE_GET_CONFIG_REQUEST.v2	msg.port	CONTROLLER	True			
 2	QUEUE_GET_CONFIG_REPLY.v2	msg	object	True			
-2	QUEUE_GET_CONFIG_REPLY.v2	msg.port	CONTROLLER	True		msg.port=ANY	
+2	QUEUE_GET_CONFIG_REPLY.v2	msg.port	CONTROLLER	True			
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues	array	True			
-2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0	object	False	msg.port=ANY		
+2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0	object	False			
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.max_rate	uint16	True			True
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.min_rate	uint16	True			True
-2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.port	CONTROLLER	True			
-2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.properties	array	False	msg.port=ANY		
+2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.port	CONTROLLER	True		msg.queues.0.port=0	
+2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.properties	array	False	msg.queues.0.port=0		
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.queue_id	uint32	True			True
 2	ROLE_REQUEST.v2	msg	object	True			ERROR
 2	ROLE_REQUEST.v2	msg.generation_id	uint64	True			ERROR
