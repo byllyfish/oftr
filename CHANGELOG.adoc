@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.7 (1 August 2015)
+
+- Fix support for QueueGetConfigReply messages.
+- Improve logging output for normalization errors.
+- Ignore unrecognized data attached to v4+ Hello messages.
+- (No submodule updates)
+
 == Version 0.6 (12 July 2015)
 
 - Fix bug in error code handling for OFPFMFC_UNSUPPORTED.
