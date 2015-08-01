@@ -21,16 +21,24 @@ ProtocolVersions detail::HelloElement::versionBitMap() const {
   return ProtocolVersions::fromBitmap(0);
 }
 
-bool Hello::validateInput(Validation *context) const {
-  return helloElements().validateInput(context);
-}
-
 ProtocolVersions Hello::protocolVersions() const {
   for (auto &elem : helloElements()) {
     if (elem.type() == OFPHET_VERSIONBITMAP)
       return elem.versionBitMap();
   }
   return ProtocolVersions::None;
+}
+
+/// \return Range of hello elements, or the empty range if invalid.
+detail::HelloRange Hello::helloElements() const {
+  detail::HelloRange elems = msgBody();
+
+  Validation context;
+  if (!elems.validateInput(&context)) {
+    return {};
+  }
+
+  return elems;
 }
 
 /// Construct a HelloBuilder from the given Hello message.

@@ -53,6 +53,8 @@ class QueueGetConfigReplyBuilder {
   QueueGetConfigReply msg_;
   QueueList queues_;
 
+  UInt32 sendV1(Writable *channel);
+
   template <class T>
   friend struct llvm::yaml::MappingTraits;
 };

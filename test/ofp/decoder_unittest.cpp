@@ -1019,6 +1019,34 @@ TEST(decoder, queuegetconfigreplyv4_experimenter) {
       "0xAAAA\n      properties:      \n...\n");
 }
 
+TEST(decoder, queuegetconfigreplyv1) {
+  testDecodeEncode(
+      "011500601111111022210000000000003333333100280000000100100000000055510000"
+      "000000000002001000000000666100000000000077777771002800000001001000000000"
+      "99910000000000000002001000000000AAA1000000000000",
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
+      "0x11111110\nversion:         0x01\nmsg:             \n  port:           "
+      " 0x00002221\n  queues:          \n    - queue_id:        0x33333331\n   "
+      "   port:            0x00000000\n      min_rate:        0x5551\n      "
+      "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
+      " 0x77777771\n      port:            0x00000000\n      min_rate:        "
+      "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
+}
+
+TEST(decoder, queuegetconfigreplyv2) {
+  testDecodeEncode(
+      "021700601111111022222221000000003333333100280000000100100000000055510000"
+      "000000000002001000000000666100000000000077777771002800000001001000000000"
+      "99910000000000000002001000000000AAA1000000000000",
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
+      "0x11111110\nversion:         0x02\nmsg:             \n  port:           "
+      " 0x22222221\n  queues:          \n    - queue_id:        0x33333331\n   "
+      "   port:            0x00000000\n      min_rate:        0x5551\n      "
+      "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
+      " 0x77777771\n      port:            0x00000000\n      min_rate:        "
+      "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
+}
+
 TEST(decoder, getconfigreplyv4) {
   testDecodeEncode("0408000C11111111AAAABBBB",
                    "---\ntype:            GET_CONFIG_REPLY\nxid:          "
@@ -1634,4 +1662,14 @@ TEST(decoder, queue_get_config_replyv4_fix) {
       "646464646464646464646464646464646464646464646464646464646464646464646464"
       "646464646464646464646464646464646464646464646464646464646464646464646464"
       "64646464646464646464646464646464646464646464646464646464\n...\n");
+}
+
+TEST(decoder, queue_get_config_replyv1) {
+  testDecodeEncode(
+      "01150020C1C49F86000D00000000000000000012001000000000000800000000",
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
+      "0xC1C49F86\nversion:         0x01\nmsg:             \n  port:           "
+      " 0x0000000D\n  queues:          \n    - queue_id:        0x00000012\n   "
+      "   port:            0x00000000\n      min_rate:        0xFFFF\n      "
+      "max_rate:        0xFFFF\n      properties:      \n...\n");
 }

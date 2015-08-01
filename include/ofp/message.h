@@ -22,6 +22,12 @@ class Connection;
 /// \brief Implements a protocol message buffer.
 class Message {
  public:
+  // Flags used (in version field) to indicate pre-processing errors.
+  enum : UInt8 {
+    kTooBigErrorFlag = 0xE0,
+    kInvalidErrorFlag = 0xF0,
+  };
+
   explicit Message(sys::Connection *channel) : channel_{channel} {
     buf_.resize(sizeof(Header));
   }
@@ -114,6 +120,15 @@ const MsgType *Message::castMessage(OFPErrorCode *error) const {
   assert(length == header()->length());
 
   Validation context{this, error};
+
+  UInt8 versionFlag = version() & 0xF0;
+  if (versionFlag) {
+    if (versionFlag == kTooBigErrorFlag)
+      context.messagePreprocessTooBigError();
+    else if (versionFlag == kInvalidErrorFlag)
+      context.messagePreprocessFailure();
+    return nullptr;
+  }
 
   if (!MsgType::isLengthValid(length)) {
     context.messageSizeIsInvalid();
