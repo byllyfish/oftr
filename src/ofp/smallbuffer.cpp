@@ -99,7 +99,7 @@ void SmallBuffer::replace(UInt8 *pos, UInt8 *posEnd, const void *data,
     if (more > remaining()) {
       size_t posOffset = Unsigned_cast(pos - begin_);
       size_t posLength = Unsigned_cast(posEnd - pos);
-      increaseCapacity(more);
+      increaseCapacity(size() + more);
       pos = begin_ + posOffset;
       posEnd = pos + posLength;
 

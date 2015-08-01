@@ -1821,6 +1821,64 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, queuegetconfigreplyv1) {
+  const char *input = R"""(
+    version: 1
+    type: QUEUE_GET_CONFIG_REPLY
+    datapath_id: 0000-0000-0000-0001
+    xid: 0x11111110
+    msg:
+      port: 0x22222221
+      queues:
+        - queue_id: 0x33333331
+          port: 0x44444441
+          min_rate: 0x5551
+          max_rate: 0x6661
+        - queue_id: 0x77777771
+          port: 0x88888881
+          min_rate: 0x9991
+          max_rate: 0xAAA1
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(96, encoder.size());
+  EXPECT_HEX(
+      "011500601111111022210000000000003333333100280000000100100000000055510000"
+      "000000000002001000000000666100000000000077777771002800000001001000000000"
+      "99910000000000000002001000000000AAA1000000000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, queuegetconfigreplyv2) {
+  const char *input = R"""(
+    version: 2
+    type: QUEUE_GET_CONFIG_REPLY
+    datapath_id: 0000-0000-0000-0001
+    xid: 0x11111110
+    msg:
+      port: 0x22222221
+      queues:
+        - queue_id: 0x33333331
+          port: 0x44444441
+          min_rate: 0x5551
+          max_rate: 0x6661
+        - queue_id: 0x77777771
+          port: 0x88888881
+          min_rate: 0x9991
+          max_rate: 0xAAA1
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(96, encoder.size());
+  EXPECT_HEX(
+      "021700601111111022222221000000003333333100280000000100100000000055510000"
+      "000000000002001000000000666100000000000077777771002800000001001000000000"
+      "99910000000000000002001000000000AAA1000000000000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, getconfigreplyv4) {
   const char *input = R"""(
       version: 4

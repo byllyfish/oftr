@@ -470,15 +470,15 @@ version	type	keypath	syntax	required	default	missing	modify
 1	BARRIER_REPLY.v1	msg	object	False			
 1	QUEUE_GET_CONFIG_REQUEST.v1	msg	object	True			ERROR
 1	QUEUE_GET_CONFIG_REQUEST.v1	msg.port	CONTROLLER	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg	object	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.port	CONTROLLER	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues	array	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0	object	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.max_rate	uint16	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.min_rate	uint16	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.port	CONTROLLER	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.properties	array	True			ERROR
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.queue_id	uint32	True			ERROR
+1	QUEUE_GET_CONFIG_REPLY.v1	msg	object	True			
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.port	CONTROLLER	True			
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues	array	True			
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0	object	False			
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.max_rate	uint16	True			True
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.min_rate	uint16	True			True
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.port	CONTROLLER	True		msg.queues.0.port=0	
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.properties	array	False	msg.queues.0.port=0		
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.queue_id	uint32	True			True
 1	ROLE_REQUEST.v1	msg	object	True			ERROR
 1	ROLE_REQUEST.v1	msg.generation_id	uint64	True			ERROR
 1	ROLE_REQUEST.v1	msg.role	uint32	True			ERROR
@@ -1000,8 +1000,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0	object	False			
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.max_rate	uint16	True			True
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.min_rate	uint16	True			True
-2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.port	CONTROLLER	True			
-2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.properties	array	False			
+2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.port	CONTROLLER	True		msg.queues.0.port=0	
+2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.properties	array	False	msg.queues.0.port=0		
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.queue_id	uint32	True			True
 2	ROLE_REQUEST.v2	msg	object	True			ERROR
 2	ROLE_REQUEST.v2	msg.generation_id	uint64	True			ERROR

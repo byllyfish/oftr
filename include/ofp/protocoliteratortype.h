@@ -21,7 +21,8 @@ enum class ProtocolIteratorType {
   PacketCounter,
   Port,
   Property,
-  Queue
+  Queue,
+  QueueV1,
 };
 
 }  // namespace ofp

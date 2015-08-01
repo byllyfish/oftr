@@ -7,6 +7,8 @@
 
 using namespace ofp;
 
+OFPErrorCode Validation::defaultPtr_;
+
 Validation::Validation(const Message *msg, OFPErrorCode *error)
     : msg_{msg}, error_{error} {
   assert(error_);
@@ -28,6 +30,16 @@ void Validation::messageSizeIsInvalid() {
 void Validation::messageTypeIsNotSupported() {
   *error_ = OFPBRC_BAD_TYPE;
   setErrorMessage("Message type is not supported");
+}
+
+void Validation::messagePreprocessTooBigError() {
+  *error_ = OFPBRC_BAD_LEN;
+  setErrorMessage("Message is too big. See documentation for limits.");
+}
+
+void Validation::messagePreprocessFailure() {
+  *error_ = OFPBRC_BAD_LEN;
+  setErrorMessage("Message parse error");
 }
 
 void Validation::multipartTypeIsNotSupported() {

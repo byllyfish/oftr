@@ -36,15 +36,24 @@ inline std::ostream &operator<<(std::ostream &os, const std::error_code &e) {
 }
 
 template <class Type1>
-void write_(std::ostream &os, Level level, Type1 &&value1) {
+void write_(std::ostream &os, Type1 &&value1) {
   os << std::forward<Type1>(value1);
 }
 
+inline void write_(std::ostream &os, const char *value1) {
+  os << value1;
+}
+
 template <class Type1, class... Args>
-void write_(std::ostream &os, Level level, Type1 &&value1, Args &&... args) {
-  os << std::forward<Type1>(value1);
-  os << ' ';
-  write_(os, level, std::forward<Args>(args)...);
+void write_(std::ostream &os, Type1 &&value1, Args &&... args) {
+  os << std::forward<Type1>(value1) << ' ';
+  write_(os, std::forward<Args>(args)...);
+}
+
+template <class... Args>
+void write_(std::ostream &os, const char *value1, Args &&... args) {
+  os << value1 << ' ';
+  write_(os, std::forward<Args>(args)...);
 }
 
 template <class... Args>
@@ -52,7 +61,7 @@ void write_(Level level, Args &&... args) {
 #if !defined(LIBOFP_LOGGING_DISABLED)
   if (level >= detail::GlobalOutputLevelFilter) {
     std::ostringstream oss;
-    write_(oss, level, std::forward<Args>(args)...);
+    write_(oss, std::forward<Args>(args)...);
     std::string buf = oss.str();
     GlobalOutputCallback(level, buf.data(), buf.size(),
                          GlobalOutputCallbackContext);
