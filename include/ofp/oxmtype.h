@@ -52,7 +52,8 @@ class OXMType {
 
   constexpr UInt32 oxmNative() const { return BigEndianToNative(value32_); }
   void setOxmNative(UInt32 value) { value32_ = BigEndianFromNative(value); }
-
+  void setValue32(UInt32 value) { value32_ = value; }
+  
   const OXMTypeInfo *lookupInfo() const;
   const OXMTypeInfo *lookupInfo_IgnoreLength() const;
 
@@ -93,6 +94,7 @@ struct OXMTypeInfo {
   const char *name;
   const OXMRange *prerequisites;
   UInt32 value32;
+  UInt32 experimenter;
   bool isMaskSupported;
   const char *type;
   const char *description;

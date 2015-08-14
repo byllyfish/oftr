@@ -188,6 +188,30 @@ struct UDPHdr : public Castable<UDPHdr> {
 static_assert(sizeof(UDPHdr) == 8, "Unexpected size.");
 static_assert(alignof(UDPHdr) == 2, "Unexpected alignment.");
 
+struct LLDPTlv : public Castable<LLDPTlv> {
+  Big8 _taglen[2];            // Combined tag:7, length:9
+
+  UInt8 type() const { return (_taglen[0] >> 1); }
+  size_t length() const { return ((_taglen[0] & 0x01U) << 8U) | _taglen[1]; }
+  const UInt8 *data() const { return BytePtr(this) + sizeof(_taglen); }
+
+  enum {
+    END = 0,
+    CHASSIS_ID = 1,
+    PORT_ID = 2,
+    TTL = 3,
+    PORT_DESCR = 4,
+    SYS_NAME = 5,
+    SYS_DESCR = 6,
+    SYS_CAPABILITIES = 7,
+    MGMT_ADDRESS = 8,
+    ORG_SPECIFIC = 127
+  };
+};
+
+static_assert(sizeof(LLDPTlv) == 2, "Unexpected size.");
+static_assert(alignof(LLDPTlv) == 1, "Unexpected alignment.");
+
 }  // namespace pkt
 
 // Flag used internally to represent OFPIEH_DEST when it appears in an IPv6
@@ -442,6 +466,31 @@ void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
 }
 
 void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
+  // LLDP packets are composed of TLV sections (tag-length-value).
+  
+  while (length > 0) {
+    auto lldp = pkt::LLDPTlv::cast(pkt, length);
+    if (!lldp) {
+      return;
+    }
+
+    log::debug("decodeLLDP", (int)lldp->type(), (int)lldp->length(), RawDataToHex(lldp->data(), lldp->length()));
+
+    switch (lldp->type()) {
+      case pkt::LLDPTlv::END:
+        return;     // all done; ignore anything else
+
+      case pkt::LLDPTlv::CHASSIS_ID: 
+        match_.add(X_LLDP_CHASSIS_ID{ByteRange{lldp->data(), lldp->length()}});
+        break;
+    }
+
+    size_t jumpSize = lldp->length() + 2;
+    assert(length >= jumpSize);
+
+    pkt += jumpSize;
+    length -= jumpSize;
+  }
 }
 
 UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,

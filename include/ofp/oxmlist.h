@@ -8,9 +8,29 @@
 
 namespace ofp {
 
+namespace detail {
+
+template <typename T, T>
+struct SameType;
+
+// Test if type `ValueType` has an `experimenter()` static member function.
+template <class ValueType>
+struct has_ExperimenterTraits {
+  typedef UInt32 (*Signature_experimenter)();
+
+  template <typename U>
+  static char test(SameType<Signature_experimenter, &U::experimenter>*);
+
+  template <typename U>
+  static double test(...);
+
+  static const bool value = (sizeof(test<ValueType>(nullptr)) == 1);
+};
+
+}  // namespace detail
+
 // OXMList is an ordered sequence of values stored (without padding) in a
-// memory buffer.
-// It allows multiple values for the same key (used for prereqs).
+// memory buffer. It allows multiple values for the same key (used for prereqs).
 
 class OXMList {
  public:
@@ -25,8 +45,21 @@ class OXMList {
 
   OXMRange toRange() const { return OXMRange{buf_.data(), buf_.size()}; }
 
+  // Add regular value (non-experimenter).
   template <class ValueType>
-  void add(ValueType value);
+  EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, void>
+  add(ValueType value) {
+    static_assert(sizeof(value) < 256, "oxm_length must be <= 255.");
+    add(ValueType::type(), &value, sizeof(value));
+  }
+
+  // Add experiementer value.
+  template <class ValueType>
+  EnableIf<detail::has_ExperimenterTraits<ValueType>::value, void>
+  add(ValueType value) {
+    static_assert(sizeof(value) < 256, "oxm_length must be <= 255.");
+    addExperimenter(ValueType::type(), ValueType::experimenter(), &value, sizeof(value));
+  }
 
   template <class ValueType>
   void add(ValueType value, ValueType mask);
@@ -35,6 +68,14 @@ class OXMList {
   void replace(ValueType value);
 
   void add(OXMType type, const void *data, size_t len);
+
+  void addExperimenter(OXMType type, Big32 experimenter, const void *data, size_t len) {
+    assert(type.length() == len + 4);
+    buf_.add(&type, sizeof(type));
+    buf_.add(&experimenter, sizeof(experimenter));
+    buf_.add(data, len);
+  }
+
   void add(OXMType type, const void *data, const void *mask, size_t len);
   void addOrdered(OXMType type, const void *data, size_t len);
 
@@ -61,12 +102,14 @@ class OXMList {
   void replaceValue(OXMIterator pos, const void *data, size_t len);
 };
 
+#if 0
 template <class ValueType>
 inline void OXMList::add(ValueType value) {
   static_assert(sizeof(value) < 256, "oxm_length must be <= 255.");
 
   add(ValueType::type(), &value, sizeof(value));
 }
+#endif //0
 
 template <class ValueType>
 inline void OXMList::add(ValueType value, ValueType mask) {

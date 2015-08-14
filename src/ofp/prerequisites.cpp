@@ -33,7 +33,7 @@ void Prerequisites::insert(OXMList *list) const {
   OXMIterator preqEnd = preqs_->end();
 
   while (preq != preqEnd) {
-    OXMType preqType = preq.type();
+    OXMType preqType = preq->type();
 
     if (preqType.hasMask()) {
       insertPreqMasked(preqType, preq, list);
@@ -67,7 +67,7 @@ void Prerequisites::insertPreqValue(OXMType preqType, OXMIterator &preq,
 
     OXMIterator next = preq;
     ++next;
-    if (next != preqEnd && next.type() == preqType) {
+    if (next != preqEnd && next->type() == preqType) {
       // There are multiple preq values. Add the first preq with the
       // signal, then insert the remaining preqs.
       list->addSignal(kValuePrereqSignal);
@@ -76,7 +76,7 @@ void Prerequisites::insertPreqValue(OXMType preqType, OXMIterator &preq,
       preq = next;
 
       ++preq;
-      while (preq != preqEnd && preq.type() == preqType) {
+      while (preq != preqEnd && preq->type() == preqType) {
         list->add(preq);
         ++preq;
       }
@@ -169,7 +169,7 @@ bool Prerequisites::check(OXMIterator begin, OXMIterator end) const {
   bool conflict = false;
 
   while (preq < preqEnd) {
-    OXMType preqType = preq.type();
+    OXMType preqType = preq->type();
 
     if (preqType.hasMask()) {
       if (checkPreqMasked(preqType, preq, begin, end))
@@ -199,7 +199,7 @@ bool Prerequisites::checkPreqMasked(OXMType preqTypeMasked, OXMIterator preq,
   // Search for any values that match the preq. If we find one, return true.
   OXMIterator pos = begin;
   while (pos != end) {
-    OXMType posType = pos.type();
+    OXMType posType = pos->type();
     if (posType == preqType) {
       // Match `pos` value against prerequisite's value & mask.
       if (matchValueWithMask(valueLength, pos, preq)) {
@@ -234,7 +234,7 @@ bool Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin,
   // Search for any values that match the preq. If we find one, return true.
   OXMIterator pos = begin;
   while (pos < end) {
-    OXMType posType = pos.type();
+    OXMType posType = pos->type();
 
     OXMIterator preq = preqBegin;
     while (true) {
@@ -258,7 +258,7 @@ bool Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin,
       // value of same type, if there is one.
       *conflict = true;
       ++preq;
-      if (preq == preqEnd || preq.type() != preqType) {
+      if (preq == preqEnd || preq->type() != preqType) {
         break;
       }
     }
@@ -273,14 +273,14 @@ bool Prerequisites::checkPreqValue(OXMType preqType, OXMIterator preqBegin,
 
 bool Prerequisites::matchValueWithMask(size_t length, OXMIterator pos,
                                        OXMIterator preq) {
-  assert(length == pos.type().length());
+  assert(length == pos->type().length());
 
   return matchValueWithMask(length, pos.data() + sizeof(OXMType), preq);
 }
 
 bool Prerequisites::matchValueWithMask(size_t length, const void *data,
                                        OXMIterator preq) {
-  assert(2 * length == preq.type().length());
+  assert(2 * length == preq->type().length());
 
   // Return true if the value matches the value & mask in the preq.
 
@@ -298,8 +298,8 @@ bool Prerequisites::matchValueWithMask(size_t length, const void *data,
 
 bool Prerequisites::matchMaskWithMask(size_t length, OXMIterator pos,
                                       OXMIterator preq) {
-  assert(2 * length == pos.type().length());
-  assert(2 * length == preq.type().length());
+  assert(2 * length == pos->type().length());
+  assert(2 * length == preq->type().length());
 
   // Return true if masked value fits inside preq's mask.
 
@@ -320,14 +320,14 @@ bool Prerequisites::matchMaskWithMask(size_t length, OXMIterator pos,
 
 bool Prerequisites::matchValueWithValue(size_t length, OXMIterator pos,
                                         OXMIterator preq) {
-  assert(length == pos.type().length());
+  assert(length == pos->type().length());
 
   return matchValueWithValue(length, pos.data() + sizeof(OXMType), preq);
 }
 
 bool Prerequisites::matchValueWithValue(size_t length, const void *data,
                                         OXMIterator preq) {
-  assert(length == preq.type().length());
+  assert(length == preq->type().length());
 
   // Return true if values are identical.
 
@@ -345,8 +345,8 @@ bool Prerequisites::matchValueWithValue(size_t length, const void *data,
 
 bool Prerequisites::matchMaskWithValue(size_t length, OXMIterator pos,
                                        OXMIterator preq) {
-  assert(2 * length == pos.type().length());
-  assert(length == preq.type().length());
+  assert(2 * length == pos->type().length());
+  assert(length == preq->type().length());
 
   // Return true if pos mask is all ones and values are identical.
 
@@ -373,7 +373,7 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
   OXMIterator iterEnd = list->end();
 
   while (iter != iterEnd) {
-    auto escType = iter.type();
+    auto escType = iter->type();
 
     if (escType == type) {
       // If type is already in the list. Check if value conflicts.
@@ -396,7 +396,7 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
       break;
     }
 
-    auto preqType = iter.type();
+    auto preqType = iter->type();
     if (escType == kMaskedPrereqSignal) {
       assert(preqType.hasMask());
 
@@ -439,7 +439,7 @@ void Prerequisites::poisonDuplicatesAfterSubstitution(OXMList *list,
                                                       OXMIterator rest) {
   OXMIterator restEnd = list->end();
   while (rest != restEnd) {
-    if (rest.type() == type) {
+    if (rest->type() == type) {
       log::error("Duplicate item detected after substitution. Insert poison.");
       list->insertSignal(rest, kPoisonPrereqSignal);
       break;
@@ -472,7 +472,7 @@ bool Prerequisites::duplicateFieldsDetected(const OXMRange &oxm) {
 void Prerequisites::advancePreq(OXMType preqType, OXMIterator &preq,
                                 OXMIterator preqEnd) {
   ++preq;
-  while (preq != preqEnd && preq.type() == preqType) {
+  while (preq != preqEnd && preq->type() == preqType) {
     ++preq;
   }
 }

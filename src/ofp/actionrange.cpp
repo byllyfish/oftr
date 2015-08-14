@@ -104,7 +104,7 @@ unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
   using namespace deprecated;
 
   OXMIterator oxm = iter->oxmRange().begin();
-  switch (oxm.type()) {
+  switch (oxm->type()) {
     case OFB_ETH_SRC::type():
     case OFB_ETH_DST::type():
       return 0;
@@ -122,7 +122,7 @@ unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
       return 8;
     default:
       log::debug("ActionRange::writeSizeMinusSetFieldV1: Unexpected OXM type:",
-                 oxm.type());
+                 oxm->type());
       return 0;
   }
 }
@@ -131,7 +131,7 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
   using namespace deprecated;
 
   OXMIterator oxm = iter->oxmRange().begin();
-  switch (oxm.type()) {
+  switch (oxm->type()) {
     case OFB_VLAN_VID::type():
       writeAction<AT_SET_VLAN_VID_V1, OFB_VLAN_VID>(iter, channel);
       break;
@@ -173,7 +173,7 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
       break;
     default:
       log::debug("ActionRange::writeSetFieldV1: Unknown field type: ",
-                 oxm.type());
+                 oxm->type());
       break;
   }
 }

@@ -353,3 +353,12 @@ TEST(matchbuilder, outOfOrder) {
   EXPECT_HEX("80000A020800800014010680001C020050", match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }
+
+TEST(matchbuilder, experimenter) {
+  MatchBuilder match;
+
+  match.add(X_LLDP_CHASSIS_ID{ByteRange{"lldp", 4}});
+
+  EXPECT_HEX("FFFF024400FFFFFF046C6C64700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+}

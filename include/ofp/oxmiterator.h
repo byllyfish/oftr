@@ -15,6 +15,7 @@ class OXMIterator {
     Item &operator=(const Item &) = delete;
 
     OXMType type() const { return OXMType::fromBytes(BytePtr(this)); }
+    Big32 experimenter() const { return isExperimenter() ? Big32::fromBytes(BytePtr(this) + 4) : Big32{0}; }
 
     template <class ValueType>
     ValueType value() const {
@@ -35,6 +36,8 @@ class OXMIterator {
 
    private:
     Item() = default;
+
+    bool isExperimenter() const { return BytePtr(this)[0] == 0xFF && BytePtr(this)[1] == 0xFF; }
   };
 
   const Item &operator*() const {
@@ -45,7 +48,7 @@ class OXMIterator {
     return reinterpret_cast<const Item *>(position_);
   }
 
-  OXMType type() const { return OXMType::fromBytes(position_); }
+  //OXMType type() const { return OXMType::fromBytes(position_); }
 
   // No postfix ++
 

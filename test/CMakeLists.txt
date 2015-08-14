@@ -25,6 +25,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/featuresreply_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
+	ofp/lldpvalue_unittest.cpp
 	ofp/meterbandlist_unittest.cpp
 	ofp/mpflowmonitorrequest_unittest.cpp
 	ofp/mpflowmonitorreply_unittest.cpp
@@ -46,6 +47,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/originalmatch_unittest.cpp
 	ofp/outputjson_unittest.cpp
 	ofp/oxmfields_unittest.cpp
+	ofp/oxmfulltype_unittest.cpp
 	ofp/oxmiterator_unittest.cpp
 	ofp/oxmlist_unittest.cpp
 	ofp/oxmrange_unittest.cpp

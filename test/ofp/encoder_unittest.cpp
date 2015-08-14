@@ -1206,6 +1206,36 @@ TEST(encoder, flowmodv4_outOfOrder) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowmodv4_experimenter) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x0000000000000000
+        cookie_mask:     0x0000000000000000
+        table_id:        0
+        command:         0
+        idle_timeout:    0x0000
+        hard_timeout:    0x0000
+        priority:        0x0000
+        buffer_id:       0x00000000
+        out_port:        0x00000000
+        out_group:       0x00000000
+        flags:           []
+        match:           
+          - field:           X_LLDP_CHASSIS_ID
+            value:           0102030405
+        instructions:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(128, encoder.size());
+  EXPECT_HEX(
+      "040E008000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000001004CFFFF024400FFFFFF0501020304050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", encoder.data(), encoder.size());
+}
+
 TEST(encoder, flowmodv1) {
   const char *input = R"""(
       type:            FLOW_MOD

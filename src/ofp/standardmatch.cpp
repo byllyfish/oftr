@@ -326,7 +326,7 @@ void StandardMatch::convertDatalinkARP(UInt32 wc, OXMList *list) const {
 
   // nw_proto is ARP_OP (lower 8 bits)
   if (!(wc & OFPFW_NW_PROTO)) {
-    list->add(OFB_ARP_OP{nw_proto});
+    list->add(OFB_ARP_OP{Big16{nw_proto}});
   }
 
   // nw_src is ARP_SPA

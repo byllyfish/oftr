@@ -164,6 +164,7 @@ set(LIBOFP_SOURCES
   src/ofp/multipartreply.cpp
   src/ofp/multipartrequest.cpp
   src/ofp/originalmatch.cpp
+  src/ofp/oxmfulltype.cpp
   src/ofp/oxmlist.cpp
   src/ofp/oxmtype.cpp
   src/ofp/oxmtypeset.cpp

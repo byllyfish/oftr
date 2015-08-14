@@ -7,8 +7,9 @@
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
-#include "ofp/yaml/yoxmtype.h"
+#include "ofp/yaml/yoxmfulltype.h"
 #include "ofp/yaml/yportnumber.h"
+#include "ofp/yaml/ylldpvalue.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/yaml/encoder.h"
@@ -20,7 +21,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class OXMItemReader {
  public:
-  OXMItemReader(llvm::yaml::IO &io, OXMIterator::Item &item, OXMType type)
+  OXMItemReader(llvm::yaml::IO &io, OXMIterator::Item &item, OXMFullType type)
       : io_(io), item_(item), type_{type} {}
 
   template <class ValueType>
@@ -36,12 +37,12 @@ class OXMItemReader {
  private:
   llvm::yaml::IO &io_;
   OXMIterator::Item &item_;
-  OXMType type_;
+  OXMFullType type_;
 };
 
 class MatchBuilderInserter {
  public:
-  MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder, OXMType type)
+  MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder, OXMFullType type)
       : io_(io), builder_(builder), type_{type} {
     yaml::Encoder *encoder = yaml::GetEncoderFromContext(io);
     if (encoder) {
@@ -83,7 +84,7 @@ class MatchBuilderInserter {
  private:
   llvm::yaml::IO &io_;
   MatchBuilder &builder_;
-  OXMType type_;
+  OXMFullType type_;
   bool checkPrereqs_ = true;
 };
 
@@ -111,7 +112,7 @@ struct SequenceTraits<ofp::Match> {
 template <>
 struct MappingTraits<ofp::OXMIterator::Item> {
   static void mapping(IO &io, ofp::OXMIterator::Item &item) {
-    ofp::OXMType type = item.type();
+    ofp::OXMFullType type{item.type(), item.experimenter()};
     io.mapRequired("field", type);
 
     ofp::detail::OXMItemReader reader{io, item, type};
@@ -120,6 +121,7 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     if (id != ofp::OXMInternalID::UNKNOWN) {
       OXMDispatch(id, &reader);
     } else {
+      ofp::log::debug("Unrecognized match field", type);
       ofp::ByteRange data{item.unknownValuePtr(), type.length()};
       io.mapRequired("value", data);
     }
@@ -160,7 +162,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
   static void mapping(IO &io, ofp::detail::MatchBuilderItem &item) {
     ofp::MatchBuilder &builder = Ref_cast<ofp::MatchBuilder>(item);
 
-    ofp::OXMType type;
+    ofp::OXMFullType type;
     io.mapRequired("field", type);
 
     ofp::OXMInternalID id = type.internalID();
@@ -169,14 +171,15 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
       OXMDispatch(id, &inserter);
 
     } else {
+      ofp::log::debug("Unexpected match field", type);
       ofp::ByteList data;
       io.mapRequired("value", data);
       if (data.size() == type.length()) {
-        builder.addUnchecked(type, data);
+        // FIXME(bfish): Handle experimenter oxm's.
+        builder.addUnchecked(type.type(), data);
       } else {
         ofp::log::debug("Invalid data size:", type);
       }
-      // ofp::log::debug("Unknown oxmtype: ", type);
     }
   }
 };
