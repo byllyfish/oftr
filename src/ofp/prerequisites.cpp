@@ -121,6 +121,11 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
       goto FAILURE;
     }
 
+    // Skip experimenter types. Don't check prerequisites.
+    if (type.isExperimenter()) {
+      continue;
+    }
+
     // Look up information record for the oxm type.
     auto typeInfo = type.lookupInfo();
     if (typeInfo == nullptr) {
@@ -275,7 +280,7 @@ bool Prerequisites::matchValueWithMask(size_t length, OXMIterator pos,
                                        OXMIterator preq) {
   assert(length == pos->type().length());
 
-  return matchValueWithMask(length, pos.data() + sizeof(OXMType), preq);
+  return matchValueWithMask(length, pos->unknownValuePtr(), preq);
 }
 
 bool Prerequisites::matchValueWithMask(size_t length, const void *data,
@@ -285,7 +290,7 @@ bool Prerequisites::matchValueWithMask(size_t length, const void *data,
   // Return true if the value matches the value & mask in the preq.
 
   const UInt8 *value = static_cast<const UInt8 *>(data);
-  const UInt8 *preqValue = preq.data() + sizeof(OXMType);
+  const UInt8 *preqValue = preq->unknownValuePtr();
   const UInt8 *preqMask = preqValue + length;
 
   for (size_t i = 0; i < length; ++i) {
@@ -303,9 +308,9 @@ bool Prerequisites::matchMaskWithMask(size_t length, OXMIterator pos,
 
   // Return true if masked value fits inside preq's mask.
 
-  const UInt8 *value = pos.data() + sizeof(OXMType);
+  const UInt8 *value = pos->unknownValuePtr();
   const UInt8 *mask = value + length;
-  const UInt8 *preqValue = preq.data() + sizeof(OXMType);
+  const UInt8 *preqValue = preq->unknownValuePtr();
   const UInt8 *preqMask = preqValue + length;
 
   for (size_t i = 0; i < length; ++i) {
@@ -322,25 +327,15 @@ bool Prerequisites::matchValueWithValue(size_t length, OXMIterator pos,
                                         OXMIterator preq) {
   assert(length == pos->type().length());
 
-  return matchValueWithValue(length, pos.data() + sizeof(OXMType), preq);
+  return matchValueWithValue(length, pos->unknownValuePtr(), preq);
 }
 
 bool Prerequisites::matchValueWithValue(size_t length, const void *data,
                                         OXMIterator preq) {
-  assert(length == preq->type().length());
+  assert(length == preq->type().length() || preq->experimenter() != 0);
 
   // Return true if values are identical.
-
-  const UInt8 *value = static_cast<const UInt8 *>(data);
-  const UInt8 *preqValue = preq.data() + sizeof(OXMType);
-
-  for (size_t i = 0; i < length; ++i) {
-    if (*value++ != *preqValue++) {
-      return false;
-    }
-  }
-
-  return true;
+  return std::memcmp(data, preq->unknownValuePtr(), length) == 0;
 }
 
 bool Prerequisites::matchMaskWithValue(size_t length, OXMIterator pos,
@@ -350,9 +345,9 @@ bool Prerequisites::matchMaskWithValue(size_t length, OXMIterator pos,
 
   // Return true if pos mask is all ones and values are identical.
 
-  const UInt8 *value = pos.data() + sizeof(OXMType);
+  const UInt8 *value = pos->unknownValuePtr();
   const UInt8 *mask = value + length;
-  const UInt8 *preqValue = preq.data() + sizeof(OXMType);
+  const UInt8 *preqValue = preq->unknownValuePtr();
 
   for (size_t i = 0; i < length; ++i) {
     if ((*mask++ != 0xFF) || (*value++ != *preqValue++)) {
@@ -369,6 +364,10 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
   // type.
   assert(!type.hasMask());
 
+  if (type.isExperimenter()) {
+    return false;
+  }
+  
   OXMIterator iter = list->begin();
   OXMIterator iterEnd = list->end();
 

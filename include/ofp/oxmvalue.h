@@ -16,7 +16,7 @@ template <OXMInternalID ID, UInt16 Class, UInt8 Field, class ValueType,
 class OXMValue {
  public:
   // TODO(bfish): Size is redundant; same as ValueType's size.
-  //static_assert(Size == sizeof(ValueType), "Unexpected size.");
+  static_assert(Class != 0xFFFF ? Size == sizeof(ValueType) : Size == sizeof(ValueType) + 4, "Unexpected size.");
 
   using NativeType = typename NativeTypeOf<ValueType>::type;
 

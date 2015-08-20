@@ -21,12 +21,12 @@ public:
     constexpr static size_t maxSize() { return MaxSize; }
 
 private:
-    enum { MaxSize = 63 };
+    static const size_t MaxSize = 63;
 
     UInt8 buf_[MaxSize + 1] = {0};
 
     void assign(const UInt8 *data, size_t size) {
-        size_t len = size > maxSize() ? maxSize() : size;
+        size_t len = size > MaxSize ? MaxSize : size;
         std::memset(buf_, 0, sizeof(buf_));
         std::memcpy(mutableData(), data, len);
         resize(len);

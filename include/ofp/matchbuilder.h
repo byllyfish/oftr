@@ -46,6 +46,21 @@ class MatchBuilder {
     list_.add(type, data.data(), data.size());
   }
 
+  void addUnchecked(OXMType type, Big32 experimenter, const ByteRange &data) {
+    if (experimenter)
+      list_.addExperimenter(type, experimenter, data.data(), data.size());
+    else
+      list_.add(type, data.data(), data.size());
+  }
+
+  void addUnchecked(OXMType type, Big32 experimenter, const ByteRange &data, const ByteRange &mask) {
+    assert(data.size() == mask.size());
+    if (experimenter)
+      list_.addExperimenter(type, experimenter, data.data(), mask.data(), data.size());
+    else
+      list_.add(type, data.data(), mask.data(), data.size());
+  }
+
   template <class ValueType>
   void addUnchecked(ValueType value) {
     list_.add(value);
@@ -76,10 +91,6 @@ class MatchBuilder {
 
   bool validate(Prerequisites::FailureReason *reason) const {
     if (!Prerequisites::checkAll(list_.toRange(), reason)) {
-      return false;
-    }
-    if (Prerequisites::duplicateFieldsDetected(list_.toRange())) {
-      *reason = Prerequisites::kDuplicateFieldsDetected;
       return false;
     }
     return true;

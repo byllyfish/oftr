@@ -13,23 +13,40 @@ struct ScalarTraits<ofp::OXMFullType> {
     const ofp::OXMTypeInfo *info = value.lookupInfo();
     if (info) {
       out << info->name;
-    } else {
+    } else if (value.experimenter() == 0) {
+      // Format as:  `oxm`
       out << llvm::format("0x%08X", value.oxmNative());
+    } else {
+      // Format as:  `oxm.experimenter`
+      out << llvm::format("0x%08X.0x%08X", value.oxmNative(), value.experimenter());
     }
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::OXMFullType &value) {
-    if (!value.parse(scalar)) {
-      ofp::UInt32 num;
-      if (ofp::yaml::ParseUnsignedInteger(scalar, &num)) {
-        value.setOxmNative(num);
-        return "";
-      }
-
-      return "Invalid OXM type.";
+    if (value.parse(scalar)) {
+      return "";
     }
 
-    return "";
+    // Check for format `oxm.experimenter`
+    auto pair = scalar.split('.');
+    if (!pair.second.empty()) {
+      ofp::UInt32 oxm;
+      ofp::UInt32 experimenter;
+      if (ofp::yaml::ParseUnsignedInteger(pair.first, &oxm) &&
+          ofp::yaml::ParseUnsignedInteger(pair.second, &experimenter)) {
+        value.setOxmNative(oxm, experimenter);
+        return "";
+      }
+    }
+
+    // Check for format `oxm` only.
+    ofp::UInt32 num;
+    if (ofp::yaml::ParseUnsignedInteger(scalar, &num)) {
+      value.setOxmNative(num, 0);
+      return "";
+    }
+
+    return "Invalid OXM type.";
   }
 
   static bool mustQuote(StringRef) { return false; }

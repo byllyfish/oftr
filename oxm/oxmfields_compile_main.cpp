@@ -209,7 +209,10 @@ static void WriteHeaderFile(ostream &stream, vector<OXMField> &fields) {
 
   stream << "OFP_BEGIN_IGNORE_PADDING\n";
   stream << "  struct OXMTypeInternalMapEntry {\n";
-  stream << "    UInt32 value32;\n    OXMInternalID id;\n  };\n";
+  stream << "    UInt32 value32;\n";
+  stream << "    Big32 experimenter;\n";
+  stream << "    OXMInternalID id;\n";
+  stream << "  };\n";
   stream << "OFP_END_IGNORE_PADDING\n\n";
 
   for (auto field : fields) {

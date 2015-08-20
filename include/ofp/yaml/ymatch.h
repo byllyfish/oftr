@@ -121,11 +121,28 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     if (id != ofp::OXMInternalID::UNKNOWN) {
       OXMDispatch(id, &reader);
     } else {
-      ofp::log::debug("Unrecognized match field", type);
-      ofp::ByteRange data{item.unknownValuePtr(), type.length()};
-      io.mapRequired("value", data);
+      ofp::log::debug("MappingTraitss<OXMIterator::Item>: Unrecognized match field", type);
+      ofp::ByteRange data{item.unknownValuePtr(), item.unknownValueLength()};
+      if (type.hasMask()) {
+        // First half is value, second half is mask. 
+        auto pair = splitRangeInHalf(data);
+        io.mapRequired("value", pair.first);
+        io.mapRequired("mask", pair.second);
+
+      } else {
+        io.mapRequired("value", data);
+      }
     }
   }
+
+private:
+  static std::pair<ofp::ByteRange, ofp::ByteRange> splitRangeInHalf(const ofp::ByteRange &data) {
+    // Split range in half (approximately, if size is odd).
+    ofp::ByteRange first{data.data(), data.size()/2};
+    ofp::ByteRange second{data.data() + first.size(), data.size() - first.size()};
+    return {first, second};
+  }
+
 };
 
 template <>
@@ -171,14 +188,33 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
       OXMDispatch(id, &inserter);
 
     } else {
-      ofp::log::debug("Unexpected match field", type);
+      ofp::log::debug("MappingTraits<MatchBuilderItem>: Unexpected match field", type);
       ofp::ByteList data;
       io.mapRequired("value", data);
-      if (data.size() == type.length()) {
-        // FIXME(bfish): Handle experimenter oxm's.
-        builder.addUnchecked(type.type(), data);
+
+      if (!type.hasMask()) {
+        size_t len = data.size() + (type.experimenter() != 0 ? 4 : 0);
+        if (len == type.length()) {
+          builder.addUnchecked(type.type(), type.experimenter(), data);
+        } else {
+          ofp::log::debug("Invalid data size:", type);
+        }
       } else {
-        ofp::log::debug("Invalid data size:", type);
+        // Handle mask in unknown OXM field value.
+        ofp::ByteList mask;
+        io.mapRequired("mask", mask);
+
+        if (data.size() != mask.size()) {
+          ofp::log::debug("Mask size does not equal data size");
+          return;
+        }
+
+        size_t len = 2*data.size() + (type.experimenter() != 0 ? 4 : 0);
+        if (len == type.length()) {
+          builder.addUnchecked(type.type(), type.experimenter(), data, mask);
+        } else {
+          ofp::log::debug("Invalid data size:", type);
+        }
       }
     }
   }

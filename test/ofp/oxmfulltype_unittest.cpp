@@ -20,3 +20,9 @@ TEST(oxmfulltype, x_lldp_chassis_id) {
     EXPECT_EQ(OXMInternalID::X_LLDP_CHASSIS_ID, type.internalID());
     EXPECT_FALSE(type.hasMask());
 }
+
+TEST(oxmfulltype, x_experimenter_01) {
+    OXMFullType type{X_EXPERIMENTER_01::type(), X_EXPERIMENTER_01::experimenter()};
+
+    EXPECT_EQ(OXMInternalID::X_EXPERIMENTER_01, type.internalID());
+}

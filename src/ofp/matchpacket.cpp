@@ -195,6 +195,10 @@ struct LLDPTlv : public Castable<LLDPTlv> {
   size_t length() const { return ((_taglen[0] & 0x01U) << 8U) | _taglen[1]; }
   const UInt8 *data() const { return BytePtr(this) + sizeof(_taglen); }
 
+  ByteRange value() const { return ByteRange{data(), length()}; }
+  Big32 value32() const { return Big32::fromBytes(data(), length()); }
+  Big16 value16() const { return Big16::fromBytes(data(), length()); }
+  
   enum {
     END = 0,
     CHASSIS_ID = 1,
@@ -474,14 +478,22 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
       return;
     }
 
-    log::debug("decodeLLDP", (int)lldp->type(), (int)lldp->length(), RawDataToHex(lldp->data(), lldp->length()));
+    //log::debug("decodeLLDP", (int)lldp->type(), (int)lldp->length(), RawDataToHex(lldp->data(), lldp->length()));
 
     switch (lldp->type()) {
       case pkt::LLDPTlv::END:
         return;     // all done; ignore anything else
 
       case pkt::LLDPTlv::CHASSIS_ID: 
-        match_.add(X_LLDP_CHASSIS_ID{ByteRange{lldp->data(), lldp->length()}});
+        match_.add(X_LLDP_CHASSIS_ID{lldp->value()});
+        break;
+
+      case pkt::LLDPTlv::PORT_ID:
+        match_.add(X_LLDP_PORT_ID{lldp->value()});
+        break;
+
+      case pkt::LLDPTlv::TTL:
+        match_.add(X_LLDP_TTL{lldp->value16()});
         break;
     }
 

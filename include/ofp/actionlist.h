@@ -27,10 +27,17 @@ class ActionList : public ProtocolList<ActionRange> {
 template <>
 inline void ActionList::add(const AT_SET_FIELD_CUSTOM &action) {
   ByteRange value = action.value_;
-  size_t paddedLen = PadLength(value.size());
-  buf_.add(&action, AT_SET_FIELD_CUSTOM::FixedSize);
-  buf_.add(value.data(), value.size());
-  buf_.addZeros(paddedLen - value.size());
+  if (action.experimenter_) {
+    size_t paddedLen = PadLength(value.size() + 4);
+    buf_.add(&action, AT_SET_FIELD_CUSTOM::FixedSize + 4);
+    buf_.add(value.data(), value.size());
+    buf_.addZeros(paddedLen - value.size() - 4);
+  } else {
+    size_t paddedLen = PadLength(value.size());
+    buf_.add(&action, AT_SET_FIELD_CUSTOM::FixedSize);
+    buf_.add(value.data(), value.size());
+    buf_.addZeros(paddedLen - value.size());
+  }
 }
 
 template <>

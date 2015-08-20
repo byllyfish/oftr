@@ -103,6 +103,19 @@ class BigEndianAligned {
     return big;
   }
 
+  /// Copy data from given buffer into aligned big endian object. If there is
+  /// more than enough data, only copy the trailing bytes.
+  static BigEndianAligned fromBytes(const UInt8 *data, size_t size) {
+    BigEndianAligned big;
+    if (size == 0) 
+      return BigEndianAligned{};
+    if (size > sizeof(big)) {
+      return fromBytes(data + size - sizeof(big));
+    }
+    std::memcpy(MutableBytePtr(&big) + sizeof(big) - size, data, size);
+    return big;
+  }
+
  private:
   Type n_;
 };

@@ -33,5 +33,6 @@
 
 * There is currently no DNS support for host endpoints. All connections must use IP addresses.
 
+* Prerequisite checking for Experimenter OXM's is not supported.
 
 

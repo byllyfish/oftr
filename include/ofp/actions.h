@@ -278,14 +278,17 @@ class AT_SET_FIELD {
   const Padded<ValueType> value_;
 };
 
+OFP_BEGIN_IGNORE_PADDING
+
 class AT_SET_FIELD_CUSTOM {
  public:
   // Variable length actions do not have a type().
 
-  constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, const ByteRange &value)
+  constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, Big32 experimenter, const ByteRange &value)
       : type_{ActionType(OFPAT_SET_FIELD,
-                         UInt16_narrow_cast(8U + PadLength(value.size())))},
+                         UInt16_narrow_cast(PadLength(8U + value.size() + (experimenter != 0 ? 4 : 0))))},
         oxmtype_{oxmType},
+        experimenter_{experimenter},
         value_{value} {}
 
   ByteRange value() const;
@@ -293,12 +296,15 @@ class AT_SET_FIELD_CUSTOM {
  private:
   const ActionType type_;
   const OXMType oxmtype_;
+  const Big32 experimenter_;
   const ByteRange value_;
 
   enum : size_t { FixedSize = 8 };
 
   friend class ActionList;
 };
+
+OFP_END_IGNORE_PADDING
 
 class AT_UNKNOWN {
  public:

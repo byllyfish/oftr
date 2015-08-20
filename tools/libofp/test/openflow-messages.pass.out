@@ -56531,7 +56531,8 @@ msg:
   flags:           [  ]
   match:           
     - field:           0x80004B06
-      value:           123456123456
+      value:           123456
+      mask:            123456
   instructions:    
 ...
 ---
@@ -69967,7 +69968,8 @@ msg:
   flags:           [  ]
   match:           
     - field:           0x80004B06
-      value:           123456123456
+      value:           123456
+      mask:            123456
   instructions:    
 ...
 ---

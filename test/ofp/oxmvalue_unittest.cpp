@@ -12,7 +12,7 @@ constexpr OXMInternalID cast(int n) {
 using ofb_in_port = OXMValue<cast(0), 0x8000, 0, Big16, 2, false>;
 using ofb_vlan_vid = OXMValue<cast(1), 0x8000, 6, Big16, 2, true>;
 using ofb_tcp_src_port = OXMValue<cast(2), 0x8000, 19, Big16, 2, false>;
-using x_lldp_port = OXMValueExperimenter<cast(3), 0x00FFFFFF, 1, Big32, 4, false>;
+using x_lldp_port = OXMValueExperimenter<cast(3), 0x00FFFFFF, 1, Big32, 8, false>;
 
 
 TEST(OXMValue, ofb_in_port) {
