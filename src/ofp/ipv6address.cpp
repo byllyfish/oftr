@@ -2,7 +2,6 @@
 
 #include <arpa/inet.h>
 #include "ofp/ipv6address.h"
-#include "ofp/sys/asio_utils.h"
 #include "ofp/log.h"
 #include "ofp/byteorder.h"
 
@@ -75,6 +74,9 @@ bool IPv6Address::parse(const std::string &s) {
 }
 
 bool IPv6Address::parseIPv6Address(const std::string &s) {
+  int result = inet_pton(AF_INET6, s.c_str(), addr_.data());
+  return result > 0;
+#if 0
   std::error_code err;
   auto addr6 = asio::ip::address_v6::from_string(s, err);
   if (!err) {
@@ -82,6 +84,7 @@ bool IPv6Address::parseIPv6Address(const std::string &s) {
     return true;
   }
   return false;
+#endif //0
 }
 
 bool IPv6Address::parseIPv4Address(const std::string &s) {
