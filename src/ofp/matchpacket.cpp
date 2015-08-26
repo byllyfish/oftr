@@ -189,7 +189,7 @@ static_assert(sizeof(UDPHdr) == 8, "Unexpected size.");
 static_assert(alignof(UDPHdr) == 2, "Unexpected alignment.");
 
 struct LLDPTlv : public Castable<LLDPTlv> {
-  Big8 _taglen[2];            // Combined tag:7, length:9
+  Big8 _taglen[2];  // Combined tag:7, length:9
 
   UInt8 type() const { return (_taglen[0] >> 1); }
   size_t length() const { return ((_taglen[0] & 0x01U) << 8U) | _taglen[1]; }
@@ -198,7 +198,7 @@ struct LLDPTlv : public Castable<LLDPTlv> {
   ByteRange value() const { return ByteRange{data(), length()}; }
   Big32 value32() const { return Big32::fromBytes(data(), length()); }
   Big16 value16() const { return Big16::fromBytes(data(), length()); }
-  
+
   enum {
     END = 0,
     CHASSIS_ID = 1,
@@ -471,20 +471,21 @@ void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
 
 void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
   // LLDP packets are composed of TLV sections (tag-length-value).
-  
+
   while (length > 0) {
     auto lldp = pkt::LLDPTlv::cast(pkt, length);
     if (!lldp) {
       return;
     }
 
-    //log::debug("decodeLLDP", (int)lldp->type(), (int)lldp->length(), RawDataToHex(lldp->data(), lldp->length()));
+    // log::debug("decodeLLDP", (int)lldp->type(), (int)lldp->length(),
+    // RawDataToHex(lldp->data(), lldp->length()));
 
     switch (lldp->type()) {
       case pkt::LLDPTlv::END:
-        return;     // all done; ignore anything else
+        return;  // all done; ignore anything else
 
-      case pkt::LLDPTlv::CHASSIS_ID: 
+      case pkt::LLDPTlv::CHASSIS_ID:
         match_.add(X_LLDP_CHASSIS_ID{lldp->value()});
         break;
 

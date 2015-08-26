@@ -107,7 +107,7 @@ class BigEndianAligned {
   /// more than enough data, only copy the trailing bytes.
   static BigEndianAligned fromBytes(const UInt8 *data, size_t size) {
     BigEndianAligned big;
-    if (size == 0) 
+    if (size == 0)
       return BigEndianAligned{};
     if (size > sizeof(big)) {
       return fromBytes(data + size - sizeof(big));

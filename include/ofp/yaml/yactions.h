@@ -229,7 +229,8 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
                                                 oxmType};
               OXMDispatch(id, &reader);
             } else {
-              ByteRange data{iter->unknownValuePtr(), iter->unknownValueLength()};
+              ByteRange data{iter->unknownValuePtr(),
+                             iter->unknownValueLength()};
               io.mapRequired("value", data);
             }
             break;
@@ -381,7 +382,8 @@ struct MappingTraits<ofp::detail::ActionInserter> {
           ByteList data;
           io.mapRequired("value", data);
           // FIXME(bfish): Handle experimenter oxm's.
-          AT_SET_FIELD_CUSTOM action{oxmType.type(), oxmType.experimenter(), data};
+          AT_SET_FIELD_CUSTOM action{oxmType.type(), oxmType.experimenter(),
+                                     data};
           list.add(action);
         }
         break;

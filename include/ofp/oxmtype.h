@@ -34,18 +34,24 @@ class OXMType {
   constexpr bool hasMask() const { return value32_ & MaskBits; }
   constexpr bool isIllegal() const { return hasMask() && length() == 0; }
   constexpr bool isExperimenter() const { return oxmClass() == 0xffff; }
-  //constexpr bool isValid() const { return value32_ != 0; }
+  // constexpr bool isValid() const { return value32_ != 0; }
 
   // When we add the mask, double the length.
   constexpr OXMType withMask() const {
-    return hasMask() ? *this : OXMType{make(oxmClass(), oxmField(), (oxmSize() - expSize())*2 + expSize(), true)};
-    //return hasMask() ? *this : OXMType((value32_ & ~End8Bits) | MaskBits |
+    return hasMask()
+               ? *this
+               : OXMType{make(oxmClass(), oxmField(),
+                              (oxmSize() - expSize()) * 2 + expSize(), true)};
+    // return hasMask() ? *this : OXMType((value32_ & ~End8Bits) | MaskBits |
     //                                   ((value32_ & End7Bits)*2 + expSize()));
   }
 
   constexpr OXMType withoutMask() const {
-    return !hasMask() ? *this : OXMType{make(oxmClass(), oxmField(), (oxmSize() - expSize())/2 + expSize(), false)};
-    //return hasMask() ? OXMType((value32_ & ~End8Bits & ~MaskBits) |
+    return !hasMask()
+               ? *this
+               : OXMType{make(oxmClass(), oxmField(),
+                              (oxmSize() - expSize()) / 2 + expSize(), false)};
+    // return hasMask() ? OXMType((value32_ & ~End8Bits & ~MaskBits) |
     //                           ((value32_ & End8Bits)/2 - expSize()))
     //                 : *this;
   }
@@ -57,14 +63,14 @@ class OXMType {
   constexpr UInt32 oxmNative() const { return BigEndianToNative(value32_); }
   void setOxmNative(UInt32 value) { value32_ = BigEndianFromNative(value); }
   void setValue32(UInt32 value) { value32_ = value; }
-  
+
   const OXMTypeInfo *lookupInfo() const;
   const OXMTypeInfo *lookupInfo_IgnoreLength() const;
 
   OXMInternalID internalID() const;
   OXMInternalID internalID_IgnoreLength() const;
   OXMInternalID internalID_Experimenter(Big32 experimenter) const;
-  
+
   bool parse(const std::string &s);
 
   constexpr OXMType zeroLength() const { return OXMType(value32_ & ~End8Bits); }
@@ -82,12 +88,11 @@ class OXMType {
 
   constexpr explicit OXMType(UInt32 value) : value32_{value} {}
 
-  constexpr static UInt32 make(UInt16 oxmClass, UInt8 oxmField,
-                               UInt16 oxmSize, bool oxmMask) {
+  constexpr static UInt32 make(UInt16 oxmClass, UInt8 oxmField, UInt16 oxmSize,
+                               bool oxmMask) {
     return BigEndianFromNative((UInt32_cast(oxmClass) << 16) |
                                (UInt32_cast(oxmField & 0x7F) << 9) |
-                               (oxmMask ? 0x0100U : 0x0000U) |
-                               oxmSize);
+                               (oxmMask ? 0x0100U : 0x0000U) | oxmSize);
   }
 
   /// Size of experimenter id.

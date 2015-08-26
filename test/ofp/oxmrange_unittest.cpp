@@ -50,7 +50,7 @@ TEST(oxmrange, validateInput_invalid_1) {
 }
 
 TEST(oxmrange, validateInput_short_experimenter) {
-  // Experimenter OXM's do not have to include 4 bytes for the experimenter 
+  // Experimenter OXM's do not have to include 4 bytes for the experimenter
   // code.
   auto buf = HexToRawData("FFFF000300FFFF");
 
@@ -58,7 +58,6 @@ TEST(oxmrange, validateInput_short_experimenter) {
 
   EXPECT_TRUE(range.validateInput());
 }
-
 
 TEST(oxmrange, validateInput_zeroField) {
   auto buf = HexToRawData("00000000");

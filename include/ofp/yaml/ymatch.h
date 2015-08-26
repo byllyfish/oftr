@@ -42,7 +42,8 @@ class OXMItemReader {
 
 class MatchBuilderInserter {
  public:
-  MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder, OXMFullType type)
+  MatchBuilderInserter(llvm::yaml::IO &io, MatchBuilder &builder,
+                       OXMFullType type)
       : io_(io), builder_(builder), type_{type} {
     yaml::Encoder *encoder = yaml::GetEncoderFromContext(io);
     if (encoder) {
@@ -121,10 +122,11 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     if (id != ofp::OXMInternalID::UNKNOWN) {
       OXMDispatch(id, &reader);
     } else {
-      ofp::log::debug("MappingTraitss<OXMIterator::Item>: Unrecognized match field", type);
+      ofp::log::debug(
+          "MappingTraitss<OXMIterator::Item>: Unrecognized match field", type);
       ofp::ByteRange data{item.unknownValuePtr(), item.unknownValueLength()};
       if (type.hasMask()) {
-        // First half is value, second half is mask. 
+        // First half is value, second half is mask.
         auto pair = splitRangeInHalf(data);
         io.mapRequired("value", pair.first);
         io.mapRequired("mask", pair.second);
@@ -135,14 +137,15 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     }
   }
 
-private:
-  static std::pair<ofp::ByteRange, ofp::ByteRange> splitRangeInHalf(const ofp::ByteRange &data) {
+ private:
+  static std::pair<ofp::ByteRange, ofp::ByteRange> splitRangeInHalf(
+      const ofp::ByteRange &data) {
     // Split range in half (approximately, if size is odd).
-    ofp::ByteRange first{data.data(), data.size()/2};
-    ofp::ByteRange second{data.data() + first.size(), data.size() - first.size()};
+    ofp::ByteRange first{data.data(), data.size() / 2};
+    ofp::ByteRange second{data.data() + first.size(),
+                          data.size() - first.size()};
     return {first, second};
   }
-
 };
 
 template <>
@@ -188,7 +191,8 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
       OXMDispatch(id, &inserter);
 
     } else {
-      ofp::log::debug("MappingTraits<MatchBuilderItem>: Unexpected match field", type);
+      ofp::log::debug("MappingTraits<MatchBuilderItem>: Unexpected match field",
+                      type);
       ofp::ByteList data;
       io.mapRequired("value", data);
 
@@ -209,7 +213,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
           return;
         }
 
-        size_t len = 2*data.size() + (type.experimenter() != 0 ? 4 : 0);
+        size_t len = 2 * data.size() + (type.experimenter() != 0 ? 4 : 0);
         if (len == type.length()) {
           builder.addUnchecked(type.type(), type.experimenter(), data, mask);
         } else {

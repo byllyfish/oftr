@@ -26,34 +26,36 @@ class OXMList {
 
   // Add regular value (non-experimenter).
   template <class ValueType>
-  EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, void>
-  add(ValueType value) {
+  EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, void> add(
+      ValueType value) {
     static_assert(sizeof(value) < 256, "oxm_length must be <= 255.");
     add(ValueType::type(), &value, sizeof(value));
   }
 
   // Add experimenter value.
   template <class ValueType>
-  EnableIf<detail::has_ExperimenterTraits<ValueType>::value, void>
-  add(ValueType value) {
+  EnableIf<detail::has_ExperimenterTraits<ValueType>::value, void> add(
+      ValueType value) {
     static_assert(sizeof(value) < 256, "oxm_length must be <= 255.");
-    addExperimenter(ValueType::type(), ValueType::experimenter(), &value, sizeof(value));
+    addExperimenter(ValueType::type(), ValueType::experimenter(), &value,
+                    sizeof(value));
   }
 
   // Add regular value and mask (non-experimenter).
   template <class ValueType>
-  EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, void>
-  add(ValueType value, ValueType mask) {
+  EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, void> add(
+      ValueType value, ValueType mask) {
     static_assert(sizeof(value) < 128, "oxm_length must be <= 255.");
     add(ValueType::type().withMask(), &value, &mask, sizeof(value));
   }
 
   // Add experimenter value and mask.
   template <class ValueType>
-  EnableIf<detail::has_ExperimenterTraits<ValueType>::value, void>
-  add(ValueType value, ValueType mask) {
+  EnableIf<detail::has_ExperimenterTraits<ValueType>::value, void> add(
+      ValueType value, ValueType mask) {
     static_assert(sizeof(value) < 128, "oxm_length must be <= 255.");
-    addExperimenter(ValueType::type().withMask(), ValueType::experimenter(), &value, &mask, sizeof(value));
+    addExperimenter(ValueType::type().withMask(), ValueType::experimenter(),
+                    &value, &mask, sizeof(value));
   }
 
   template <class ValueType>
@@ -65,7 +67,8 @@ class OXMList {
     buf_.add(data, len);
   }
 
-  void addExperimenter(OXMType type, Big32 experimenter, const void *data, size_t len) {
+  void addExperimenter(OXMType type, Big32 experimenter, const void *data,
+                       size_t len) {
     assert(type.length() == len + 4);
     buf_.add(&type, sizeof(type));
     buf_.add(&experimenter, sizeof(experimenter));
@@ -79,7 +82,8 @@ class OXMList {
     buf_.add(mask, len);
   }
 
-  void addExperimenter(OXMType type, Big32 experimenter, const void *data, const void *mask, size_t len) {
+  void addExperimenter(OXMType type, Big32 experimenter, const void *data,
+                       const void *mask, size_t len) {
     log::debug("addExperimenter", type.length(), len);
     assert(type.length() == sizeof(experimenter) + 2 * len);
     buf_.add(&type, sizeof(type));

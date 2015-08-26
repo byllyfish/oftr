@@ -284,9 +284,11 @@ class AT_SET_FIELD_CUSTOM {
  public:
   // Variable length actions do not have a type().
 
-  constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, Big32 experimenter, const ByteRange &value)
-      : type_{ActionType(OFPAT_SET_FIELD,
-                         UInt16_narrow_cast(PadLength(8U + value.size() + (experimenter != 0 ? 4 : 0))))},
+  constexpr AT_SET_FIELD_CUSTOM(OXMType oxmType, Big32 experimenter,
+                                const ByteRange &value)
+      : type_{ActionType(OFPAT_SET_FIELD, UInt16_narrow_cast(PadLength(
+                                              8U + value.size() +
+                                              (experimenter != 0 ? 4 : 0))))},
         oxmtype_{oxmType},
         experimenter_{experimenter},
         value_{value} {}

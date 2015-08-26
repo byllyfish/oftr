@@ -68,7 +68,8 @@ class OXMField {
     } else {
       // If this is an experimenter field.
       s << "using " << name() << " = OXMValueExperimenter<"
-        << "OXMInternalID::" << name() << ", " << experimenter() << ", " << field();
+        << "OXMInternalID::" << name() << ", " << experimenter() << ", "
+        << field();
     }
 
     s << ", " << valueType() << ", " << size() << ", " << mask();
@@ -117,8 +118,8 @@ class OXMField {
   }
 
   void writeOXMTypeInfoCode(ostream &s) {
-    s << "WriteOXMTypeInfo(" << oxmType() << ", " << experimenter() << ", " << mask() << ", \"" << name()
-      << "\", ";
+    s << "WriteOXMTypeInfo(" << oxmType() << ", " << experimenter() << ", "
+      << mask() << ", \"" << name() << "\", ";
     if (hasPrereqs())
       s << "\"&ofp::OXMPrereq_" << name() << "\"";
     else

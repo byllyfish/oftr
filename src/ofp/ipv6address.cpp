@@ -84,7 +84,7 @@ bool IPv6Address::parseIPv6Address(const std::string &s) {
     return true;
   }
   return false;
-#endif //0
+#endif  // 0
 }
 
 bool IPv6Address::parseIPv4Address(const std::string &s) {

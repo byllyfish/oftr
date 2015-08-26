@@ -32,10 +32,10 @@ TEST(actionlist, two) {
   EXPECT_EQ(sizeof(AT_COPY_TTL_OUT) + sizeof(AT_OUTPUT), list.size());
 }
 
-
 TEST(actionlist, AT_SET_FIELD) {
   ByteRange data{"\xAA\xBB", 2};
-  AT_SET_FIELD_CUSTOM act{X_EXPERIMENTER_01::type(), X_EXPERIMENTER_01::experimenter(), data};
+  AT_SET_FIELD_CUSTOM act{X_EXPERIMENTER_01::type(),
+                          X_EXPERIMENTER_01::experimenter(), data};
 
   ActionList list;
   list.add(act);
@@ -43,5 +43,6 @@ TEST(actionlist, AT_SET_FIELD) {
 
   // FIXME(bfish): The second action in this test is not correct (There's no
   // experimenter value.)
-  EXPECT_HEX("00190010FFFF060600FFFFFEAABB000000190010FFFF06061234000000000000", list.data(), list.size());
+  EXPECT_HEX("00190010FFFF060600FFFFFEAABB000000190010FFFF06061234000000000000",
+             list.data(), list.size());
 }

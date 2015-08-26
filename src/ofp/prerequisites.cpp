@@ -367,7 +367,7 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
   if (type.isExperimenter()) {
     return false;
   }
-  
+
   OXMIterator iter = list->begin();
   OXMIterator iterEnd = list->end();
 

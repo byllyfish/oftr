@@ -53,10 +53,12 @@ class MatchBuilder {
       list_.add(type, data.data(), data.size());
   }
 
-  void addUnchecked(OXMType type, Big32 experimenter, const ByteRange &data, const ByteRange &mask) {
+  void addUnchecked(OXMType type, Big32 experimenter, const ByteRange &data,
+                    const ByteRange &mask) {
     assert(data.size() == mask.size());
     if (experimenter)
-      list_.addExperimenter(type, experimenter, data.data(), mask.data(), data.size());
+      list_.addExperimenter(type, experimenter, data.data(), mask.data(),
+                            data.size());
     else
       list_.add(type, data.data(), mask.data(), data.size());
   }

@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YLLDPVALUE_H_
 #define OFP_YAML_YLLDPVALUE_H_
 
@@ -10,7 +12,8 @@ template <>
 struct ScalarTraits<ofp::LLDPValue> {
   static void output(const ofp::LLDPValue &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    ofp::log::debug("LLDPValue:output", value.size(), RawDataToHex(&value, sizeof(value)));
+    ofp::log::debug("LLDPValue:output", value.size(),
+                    RawDataToHex(&value, sizeof(value)));
     out << ofp::RawDataToHex(value.data(), value.size());
   }
 
@@ -30,4 +33,4 @@ struct ScalarTraits<ofp::LLDPValue> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YLLDPVALUE_H_
+#endif  // OFP_YAML_YLLDPVALUE_H_

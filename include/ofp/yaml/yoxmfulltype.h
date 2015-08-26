@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YOXMFULLTYPE_H_
 #define OFP_YAML_YOXMFULLTYPE_H_
 
@@ -18,11 +20,13 @@ struct ScalarTraits<ofp::OXMFullType> {
       out << llvm::format("0x%08X", value.oxmNative());
     } else {
       // Format as:  `oxm.experimenter`
-      out << llvm::format("0x%08X.0x%08X", value.oxmNative(), value.experimenter());
+      out << llvm::format("0x%08X.0x%08X", value.oxmNative(),
+                          value.experimenter());
     }
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::OXMFullType &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::OXMFullType &value) {
     if (value.parse(scalar)) {
       return "";
     }
@@ -55,4 +59,4 @@ struct ScalarTraits<ofp::OXMFullType> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YOXMFULLTYPE_H_
+#endif  // OFP_YAML_YOXMFULLTYPE_H_

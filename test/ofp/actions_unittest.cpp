@@ -237,4 +237,3 @@ TEST(actions, AT_SET_FIELD_128bit) {
       HexToRawData("0019 0018 8000 3410 00000000000000000000000000000001");
   EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
 }
-

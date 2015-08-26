@@ -17,7 +17,7 @@ struct has_ExperimenterTraits {
   typedef UInt32 (*Signature_experimenter)();
 
   template <typename U>
-  static char test(SameType<Signature_experimenter, &U::experimenter>*);
+  static char test(SameType<Signature_experimenter, &U::experimenter> *);
 
   template <typename U>
   static double test(...);
@@ -35,7 +35,9 @@ class OXMIterator {
     Item &operator=(const Item &) = delete;
 
     OXMType type() const { return OXMType::fromBytes(BytePtr(this)); }
-    Big32 experimenter() const { return isExperimenter() ? Big32::fromBytes(BytePtr(this) + 4) : Big32{0}; }
+    Big32 experimenter() const {
+      return isExperimenter() ? Big32::fromBytes(BytePtr(this) + 4) : Big32{0};
+    }
 
     template <class ValueType>
     EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, ValueType>
@@ -47,9 +49,10 @@ class OXMIterator {
     EnableIf<detail::has_ExperimenterTraits<ValueType>::value, ValueType>
     value() const {
       assert(isExperimenter());
-      return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) + sizeof(Big32));
+      return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) +
+                                  sizeof(Big32));
     }
-    
+
     template <class ValueType>
     EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, ValueType>
     mask() const {
@@ -58,11 +61,11 @@ class OXMIterator {
     }
 
     template <class ValueType>
-    EnableIf<detail::has_ExperimenterTraits<ValueType>::value, ValueType>
-    mask() const {
+    EnableIf<detail::has_ExperimenterTraits<ValueType>::value, ValueType> mask()
+        const {
       assert(isExperimenter());
-      return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) + sizeof(Big32) +
-                                  sizeof(ValueType));
+      return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) +
+                                  sizeof(Big32) + sizeof(ValueType));
     }
 
     const UInt8 *unknownValuePtr() const {
@@ -79,9 +82,9 @@ class OXMIterator {
    private:
     Item() = default;
 
-    bool isExperimenter() const { 
+    bool isExperimenter() const {
       auto p = BytePtr(this);
-      return p[0] == 0xFF && p[1] == 0xFF && p[3] >= 4; 
+      return p[0] == 0xFF && p[1] == 0xFF && p[3] >= 4;
     }
   };
 
