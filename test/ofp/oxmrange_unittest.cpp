@@ -48,3 +48,20 @@ TEST(oxmrange, validateInput_invalid_1) {
 
   EXPECT_FALSE(range.validateInput());
 }
+
+TEST(oxmrange, validateInput_short_experimenter) {
+  // Experimenter OXM's do not have to include 4 bytes for the experimenter
+  // code.
+  auto buf = HexToRawData("FFFF000300FFFF");
+
+  OXMRange range{buf.data(), buf.size()};
+
+  EXPECT_TRUE(range.validateInput());
+}
+
+TEST(oxmrange, validateInput_zeroField) {
+  auto buf = HexToRawData("00000000");
+
+  OXMRange range{buf.data(), buf.size()};
+  EXPECT_TRUE(range.validateInput());
+}

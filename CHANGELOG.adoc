@@ -1,5 +1,14 @@
 = Changelog
 
+== Version 0.8 (26 August 2015)
+
+- Add support for experimenter OXM fields.
+- Initial support for LLDP decodes in MatchPacket.
+- Disable check for duplicate OXM fields in MatchBuilder.
+- Improve support for compiling with JSON-RPC server disabled.
+- Fix `libofp encode` when line ending is CR-LF.
+- (No submodule updates)
+
 == Version 0.7 (1 August 2015)
 
 - Fix support for QueueGetConfigReply messages.

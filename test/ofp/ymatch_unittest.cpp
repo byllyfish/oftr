@@ -29,7 +29,7 @@ TEST(ymatch, decodeMatchYaml) {
   EXPECT_GT(fields.size(), 0);
 
   OXMIterator iter = fields.begin();
-  EXPECT_EQ(OFB_IN_PORT::type(), iter.type());
+  EXPECT_EQ(OFB_IN_PORT::type(), iter->type());
 
   OFB_IN_PORT inPort = iter->value<OFB_IN_PORT>();
   EXPECT_EQ(1, inPort.value());
@@ -57,7 +57,7 @@ TEST(ymatch, decodeMatchYamlPortNumber) {
   EXPECT_GT(fields.size(), 0);
 
   OXMIterator iter = fields.begin();
-  EXPECT_EQ(OFB_IN_PORT::type(), iter.type());
+  EXPECT_EQ(OFB_IN_PORT::type(), iter->type());
 
   OFB_IN_PORT inPort = iter->value<OFB_IN_PORT>();
   EXPECT_EQ(OFPP_CONTROLLER, inPort.value());

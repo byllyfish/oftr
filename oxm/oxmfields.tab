@@ -51,3 +51,7 @@ NXM_NX_REG7	0x0001	7	4	Big32	true		(Nicira) Register 7
 NXM_NX_IP_FRAG	0x0001	26	1	Big8	true	OFB_ETH_TYPE{0x0800}, OFB_ETH_TYPE{0x86dd}	(Nicira) IPv4/v6 Fragment Bitmask
 NXM_NX_IP_TTL	0x0001	29	1	Big8	false	OFB_ETH_TYPE{0x0800}, OFB_ETH_TYPE{0x86dd}	(Nicira) IPv4/v6 TTL/Hop Limit
 NXM_NX_TCP_FLAGS	0x0001	34	2	Big16	true	OFB_IP_PROTO{6}	(Nicira) TCP Flags
+X_LLDP_CHASSIS_ID	0xFFFF	1.0x00FFFFFF	68	LLDPValue	false		(libofp) LLDP Chassis ID
+X_LLDP_PORT_ID	0xFFFF	2.0x00FFFFFF	68	LLDPValue	false		(libofp) LLDP Port ID
+X_LLDP_TTL	0xFFFF	3.0x00FFFFFF	6	Big16	false		(libofp) LLDP TTL
+X_EXPERIMENTER_01	0xFFFF	3.0x00FFFFFE	6	Big16	true		(libofp) Experimental Test Field

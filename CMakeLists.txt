@@ -15,6 +15,9 @@
 # For example, if the build directory is named `Build+Debug`, cmake will build
 # debug version.
 #
+# To build libofp without the JSON-RPC server:
+#
+#    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
 
 cmake_minimum_required(VERSION 2.8.8)
 project(Libofp)
@@ -29,7 +32,7 @@ set(CMAKE_MODULE_PATH
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 7)
+set(Libofp_VERSION_MINOR 8)
 set(Libofp_VERSION_PATCH 0)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
@@ -69,7 +72,12 @@ set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 # Specify include directories for third party headers. We use -isystem instead
 # of -I because we don't want to receive compiler warnings from these headers.
 
-set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include -isystem ${CMAKE_BINARY_DIR}/external/yaml-io/include -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
+set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include")
+set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_BINARY_DIR}/external/yaml-io/include")
+set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
+if(LIBOFP_ENABLE_JSONRPC)
+  set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
+endif()
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
   # MSVC does not support -isystem; replace -isystem with -I
@@ -116,7 +124,6 @@ set(LIBOFP_SOURCES
   src/ofp/constants_error.cpp
   src/ofp/datapathid.cpp
   src/ofp/defaulthandshake.cpp
-  src/ofp/driver.cpp
   src/ofp/echoreply.cpp
   src/ofp/echorequest.cpp
   src/ofp/enetaddress.cpp
@@ -164,6 +171,7 @@ set(LIBOFP_SOURCES
   src/ofp/multipartreply.cpp
   src/ofp/multipartrequest.cpp
   src/ofp/originalmatch.cpp
+  src/ofp/oxmfulltype.cpp
   src/ofp/oxmlist.cpp
   src/ofp/oxmtype.cpp
   src/ofp/oxmtypeset.cpp
@@ -197,22 +205,6 @@ set(LIBOFP_SOURCES
   src/ofp/transmogrify.cpp
   src/ofp/types.cpp
   src/ofp/validation.cpp
-  src/ofp/sys/asio_utils.cpp
-  src/ofp/sys/connection.cpp
-  src/ofp/sys/dtls_adapter.cpp
-  src/ofp/sys/dtls_utils.cpp
-  src/ofp/sys/engine.cpp
-  src/ofp/sys/identity.cpp
-  src/ofp/sys/tcp_server.cpp
-  src/ofp/sys/udp_server.cpp
-  src/ofp/rpc/rpcchannellistener.cpp
-  src/ofp/rpc/rpcconnection.cpp
-  src/ofp/rpc/rpcconnectionsession.cpp
-  src/ofp/rpc/rpcconnectionstdio.cpp
-  src/ofp/rpc/rpcserver.cpp
-  src/ofp/rpc/rpcsession.cpp
-  src/ofp/rpc/rpcencoder.cpp
-  src/ofp/rpc/rpcevents.cpp
   src/ofp/yaml/decoder.cpp
   src/ofp/yaml/encoder.cpp
   src/ofp/yaml/outputjson.cpp
@@ -226,6 +218,29 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/ytablenumber.cpp
   src/ofp/yaml/yschema.cpp
 )
+
+if(LIBOFP_ENABLE_JSONRPC)
+  set(LIBOFP_SOURCES
+    ${LIBOFP_SOURCES}
+    src/ofp/driver.cpp
+    src/ofp/sys/asio_utils.cpp
+    src/ofp/sys/connection.cpp
+    src/ofp/sys/dtls_adapter.cpp
+    src/ofp/sys/dtls_utils.cpp
+    src/ofp/sys/engine.cpp
+    src/ofp/sys/identity.cpp
+    src/ofp/sys/tcp_server.cpp
+    src/ofp/sys/udp_server.cpp
+    src/ofp/rpc/rpcchannellistener.cpp
+    src/ofp/rpc/rpcconnection.cpp
+    src/ofp/rpc/rpcconnectionsession.cpp
+    src/ofp/rpc/rpcconnectionstdio.cpp
+    src/ofp/rpc/rpcserver.cpp
+    src/ofp/rpc/rpcsession.cpp
+    src/ofp/rpc/rpcencoder.cpp
+    src/ofp/rpc/rpcevents.cpp
+  )
+endif()
 
 # Specify the config.h.in file.
 
@@ -295,8 +310,10 @@ include(CTest)
 
 # Use pthreads.
 
-find_package(Threads)
-set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT})
+if(LIBOFP_ENABLE_JSONRPC)
+  find_package(Threads)
+  set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT})
+endif()
 
 # Call custom function to check for Python YAML module (optional for testing).
 
@@ -342,7 +359,9 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 
 add_subdirectory(external/yaml-io)
 add_subdirectory(external/googletest)
-add_subdirectory(external/boringssl)
+if(LIBOFP_ENABLE_JSONRPC)
+  add_subdirectory(external/boringssl)
+endif()
 
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
@@ -368,7 +387,11 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-target_link_libraries(ofp yamlio ssl crypto)
+if(LIBOFP_ENABLE_JSONRPC)
+  target_link_libraries(ofp yamlio ssl crypto)
+else()
+  target_link_libraries(ofp yamlio)
+endif()
 
 # Make sure the source is generated before the executable builds.
 
@@ -378,11 +401,13 @@ add_dependencies(ofp Libofp_oxmfields_h Libofp_oxmfields_cpp Libofp_oxmfieldsdat
 # Build Examples
 #-------------------------------------------------------------------------------
 
-add_subdirectory(example/nulldemo)
-add_subdirectory(example/testagent)
-add_subdirectory(example/controller)
-add_subdirectory(example/python)
-add_subdirectory(example/flowbench)
+if(LIBOFP_ENABLE_JSONRPC)
+  add_subdirectory(example/nulldemo)
+  add_subdirectory(example/testagent)
+  add_subdirectory(example/controller)
+  add_subdirectory(example/python)
+  add_subdirectory(example/flowbench)
+endif()
 
 #-------------------------------------------------------------------------------
 # Build Tool

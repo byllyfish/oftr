@@ -63,6 +63,28 @@ OXMInternalID OXMType::internalID_IgnoreLength() const {
   return OXMInternalID::UNKNOWN;
 }
 
+// \returns Internal ID for OXMType, or OXMInternalID::UNKNOWN if not found.
+OXMInternalID OXMType::internalID_Experimenter(Big32 experimenter) const {
+  // Get unmasked value before we search for it.
+  UInt32 value32 = hasMask() ? withoutMask() : value32_;
+
+  const OXMTypeInternalMapEntry *begin = &OXMTypeInternalMapArray[0];
+  const OXMTypeInternalMapEntry *end = begin + OXMTypeInfoArraySize;
+
+  begin = std::lower_bound(begin, end, value32,
+                           [](const OXMTypeInternalMapEntry &item,
+                              UInt32 value) { return item.value32 < value; });
+
+  // Linear search for experimenter. (TODO: Sort by experimenter also...)
+  while (begin != end && begin->value32 == value32) {
+    if (begin->experimenter == experimenter)
+      return begin->id;
+    ++begin;
+  }
+
+  return OXMInternalID::UNKNOWN;
+}
+
 bool OXMType::parse(const std::string &s) {
   // TODO(bfish): make faster
   for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {

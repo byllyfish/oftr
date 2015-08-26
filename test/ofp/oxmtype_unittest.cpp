@@ -82,3 +82,19 @@ TEST(OXMType, constructFromMemory) {
   EXPECT_EQ(2, type.length());
   EXPECT_FALSE(type.hasMask());
 }
+
+TEST(OXMType, withMask_Experimenter) {
+  constexpr OXMType a{0xFFFF, 2, 8};
+
+  EXPECT_FALSE(a.hasMask());
+  EXPECT_TRUE(a.isExperimenter());
+  EXPECT_EQ(8, a.length());
+
+  constexpr OXMType b = a.withMask();
+  EXPECT_TRUE(b.hasMask());
+  EXPECT_TRUE(b.isExperimenter());
+  EXPECT_EQ(12, b.length());
+
+  EXPECT_NE(a, b);
+  EXPECT_EQ(a, b.withoutMask());
+}

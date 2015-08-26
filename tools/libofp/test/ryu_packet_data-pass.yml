@@ -1043,8 +1043,8 @@ msg:
             field:           ETH_SRC
             value:           '01:02:03:04:05:06'
           - action:          SET_FIELD
-            field:           0xFFFF0007
-            value:           4F4E46000A0001
+            field:           0xFFFF0007.0x4F4E4600
+            value:           0A0001
       - instruction:     WRITE_ACTIONS
         actions:         
           - action:          OUTPUT
@@ -1161,8 +1161,8 @@ msg:
           field:           ETH_SRC
           value:           '01:02:03:04:05:06'
         - action:          SET_FIELD
-          field:           0xFFFF0007
-          value:           4F4E46000A0001
+          field:           0xFFFF0007.0x4F4E4600
+          value:           0A0001
 ...
 ---
 type:            ROLE_REPLY
@@ -3495,8 +3495,8 @@ msg:
       value:           0x0909090909090909
     - field:           IPV6_EXTHDR
       value:           0x01F4
-    - field:           0xFFFF0007
-      value:           4F4E46000A0001
+    - field:           0xFFFF0007.0x4F4E4600
+      value:           0A0001
   data:            ''
 ...
 ---
@@ -3606,8 +3606,8 @@ msg:
       value:           0x0909090909090909
     - field:           IPV6_EXTHDR
       value:           0x01F4
-    - field:           0xFFFF0007
-      value:           4F4E46000A0001
+    - field:           0xFFFF0007.0x4F4E4600
+      value:           0A0001
   instructions:    
 ...
 ---

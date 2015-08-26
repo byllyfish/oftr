@@ -18,7 +18,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class SetFieldInserter {
  public:
-  SetFieldInserter(llvm::yaml::IO &io, ActionList &list, OXMType type)
+  SetFieldInserter(llvm::yaml::IO &io, ActionList &list, OXMFullType type)
       : io_(io), list_(list), type_{type} {
     assert(!type_.hasMask());
   }
@@ -34,7 +34,7 @@ class SetFieldInserter {
  private:
   llvm::yaml::IO &io_;
   ActionList &list_;
-  OXMType type_;
+  OXMFullType type_;
 };
 
 OFP_END_IGNORE_PADDING
@@ -221,7 +221,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
           }
           case OFPAT_SET_FIELD: {
             OXMIterator iter = item.oxmRange().begin();
-            OXMType oxmType = iter.type();
+            OXMFullType oxmType{iter->type(), iter->experimenter()};
             io.mapRequired("field", oxmType);
             OXMInternalID id = oxmType.internalID();
             if (id != ofp::OXMInternalID::UNKNOWN) {
@@ -229,7 +229,8 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
                                                 oxmType};
               OXMDispatch(id, &reader);
             } else {
-              ByteRange data{iter->unknownValuePtr(), oxmType.length()};
+              ByteRange data{iter->unknownValuePtr(),
+                             iter->unknownValueLength()};
               io.mapRequired("value", data);
             }
             break;
@@ -371,7 +372,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
       }
       case OFPAT_SET_FIELD: {
-        OXMType oxmType;
+        OXMFullType oxmType;
         io.mapRequired("field", oxmType);
         ofp::OXMInternalID id = oxmType.internalID();
         if (id != ofp::OXMInternalID::UNKNOWN) {
@@ -380,7 +381,9 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         } else {
           ByteList data;
           io.mapRequired("value", data);
-          AT_SET_FIELD_CUSTOM action{oxmType, data};
+          // FIXME(bfish): Handle experimenter oxm's.
+          AT_SET_FIELD_CUSTOM action{oxmType.type(), oxmType.experimenter(),
+                                     data};
           list.add(action);
         }
         break;
@@ -390,8 +393,6 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         io.mapRequired("data", data);
         AT_UNKNOWN action{type, data};
         list.add(action);
-        // log::info("MappingTraits<Inserter>: Unknown Action type:",
-        // int(type));
         break;
     }
   }
