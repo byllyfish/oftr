@@ -89,13 +89,32 @@ class BigEndianAligned {
 
   constexpr BigEndianAligned() : n_{static_cast<Type>(0)} {}
   constexpr BigEndianAligned(Type n) : n_{HostSwapByteOrder(n)} {}
-
-  // TODO(bfish): add assignment and copy constructors?
+  constexpr BigEndianAligned(const BigEndianAligned &n) = default;
 
   constexpr operator Type() const { return HostSwapByteOrder(n_); }
   constexpr bool operator!() const { return !n_; }
 
   void operator=(Type n) { n_ = HostSwapByteOrder(n); }
+  BigEndianAligned &operator=(const BigEndianAligned &n) = default;
+
+  static BigEndianAligned fromBytes(const UInt8 *data) {
+    BigEndianAligned big;
+    std::memcpy(&big, data, sizeof(big));
+    return big;
+  }
+
+  /// Copy data from given buffer into aligned big endian object. If there is
+  /// more than enough data, only copy the trailing bytes.
+  static BigEndianAligned fromBytes(const UInt8 *data, size_t size) {
+    BigEndianAligned big;
+    if (size == 0)
+      return BigEndianAligned{};
+    if (size > sizeof(big)) {
+      return fromBytes(data + size - sizeof(big));
+    }
+    std::memcpy(MutableBytePtr(&big) + sizeof(big) - size, data, size);
+    return big;
+  }
 
  private:
   Type n_;

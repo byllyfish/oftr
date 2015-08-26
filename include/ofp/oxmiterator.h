@@ -6,6 +6,26 @@
 #include "ofp/oxmtype.h"
 
 namespace ofp {
+namespace detail {
+
+template <typename T, T>
+struct SameType;
+
+// Test if type `ValueType` has an `experimenter()` static member function.
+template <class ValueType>
+struct has_ExperimenterTraits {
+  typedef UInt32 (*Signature_experimenter)();
+
+  template <typename U>
+  static char test(SameType<Signature_experimenter, &U::experimenter> *);
+
+  template <typename U>
+  static double test(...);
+
+  static const bool value = (sizeof(test<ValueType>(nullptr)) == 1);
+};
+
+}  // namespace detail
 
 class OXMIterator {
  public:
@@ -15,26 +35,57 @@ class OXMIterator {
     Item &operator=(const Item &) = delete;
 
     OXMType type() const { return OXMType::fromBytes(BytePtr(this)); }
+    Big32 experimenter() const {
+      return isExperimenter() ? Big32::fromBytes(BytePtr(this) + 4) : Big32{0};
+    }
 
     template <class ValueType>
-    ValueType value() const {
+    EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, ValueType>
+    value() const {
       return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType));
     }
 
     template <class ValueType>
-    ValueType mask() const {
+    EnableIf<detail::has_ExperimenterTraits<ValueType>::value, ValueType>
+    value() const {
+      assert(isExperimenter());
+      return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) +
+                                  sizeof(Big32));
+    }
+
+    template <class ValueType>
+    EnableIf<!detail::has_ExperimenterTraits<ValueType>::value, ValueType>
+    mask() const {
       return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) +
                                   sizeof(ValueType));
     }
 
+    template <class ValueType>
+    EnableIf<detail::has_ExperimenterTraits<ValueType>::value, ValueType> mask()
+        const {
+      assert(isExperimenter());
+      return ValueType::fromBytes(BytePtr(this) + sizeof(OXMType) +
+                                  sizeof(Big32) + sizeof(ValueType));
+    }
+
     const UInt8 *unknownValuePtr() const {
-      return BytePtr(this) + sizeof(OXMType);
+      return BytePtr(this) + sizeof(OXMType) + (isExperimenter() ? 4 : 0);
+    }
+
+    size_t unknownValueLength() const {
+      assert(!isExperimenter() || type().length() >= 4U);
+      return type().length() - (isExperimenter() ? 4U : 0U);
     }
 
     OXMIterator position() const { return OXMIterator{BytePtr(this)}; }
 
    private:
     Item() = default;
+
+    bool isExperimenter() const {
+      auto p = BytePtr(this);
+      return p[0] == 0xFF && p[1] == 0xFF && p[3] >= 4;
+    }
   };
 
   const Item &operator*() const {
@@ -44,10 +95,6 @@ class OXMIterator {
   const Item *operator->() const {
     return reinterpret_cast<const Item *>(position_);
   }
-
-  OXMType type() const { return OXMType::fromBytes(position_); }
-
-  // No postfix ++
 
   void operator++() { position_ += size(); }
 
@@ -65,13 +112,13 @@ class OXMIterator {
     return position_ < rhs.position_;
   }
 
-  constexpr const UInt8 *data() const { return position_; }
-  size_t size() const { return sizeof(OXMType) + position_[3]; }
-
  private:
   const UInt8 *position_;
 
   constexpr explicit OXMIterator(const void *pos) : position_{BytePtr(pos)} {}
+
+  constexpr const UInt8 *data() const { return position_; }
+  size_t size() const { return sizeof(OXMType) + position_[3]; }
 
   friend class OXMRange;
   friend class OXMList;

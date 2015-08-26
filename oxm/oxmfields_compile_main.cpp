@@ -18,6 +18,13 @@ using namespace std;
 
 static vector<string> Split(const string &str, char delimiter, bool trim);
 
+static string SplitField(const string &str, size_t whichOne) {
+  auto vals = Split(str, '.', true);
+  if (whichOne >= vals.size())
+    return "0";
+  return vals[whichOne];
+}
+
 class OXMField {
  public:
   enum { NumFields = 8 };
@@ -26,7 +33,8 @@ class OXMField {
 
   const string &name() const { return fields_.at(0); }
   const string &clas() const { return fields_.at(1); }
-  const string &field() const { return fields_.at(2); }
+  string field() const { return SplitField(fields_.at(2), 0); }
+  string experimenter() const { return SplitField(fields_.at(2), 1); }
   const string &size() const { return fields_.at(3); }
   const string &valueType() const { return fields_.at(4); }
   const string &mask() const { return fields_.at(5); }
@@ -53,9 +61,18 @@ class OXMField {
       s << "/// \\brief " << description() << '\n';
     }
 
-    s << "using " << name() << " = OXMValue<"
-      << "OXMInternalID::" << name() << ", " << clas() << ", " << field()
-      << ", " << valueType() << ", " << size() << ", " << mask();
+    if (experimenter() == "0") {
+      // If this is a regular (non-experimenter) field.
+      s << "using " << name() << " = OXMValue<"
+        << "OXMInternalID::" << name() << ", " << clas() << ", " << field();
+    } else {
+      // If this is an experimenter field.
+      s << "using " << name() << " = OXMValueExperimenter<"
+        << "OXMInternalID::" << name() << ", " << experimenter() << ", "
+        << field();
+    }
+
+    s << ", " << valueType() << ", " << size() << ", " << mask();
 
     if (hasPrereqs()) {
       s << ", &OXMPrereq_" << name();
@@ -101,8 +118,8 @@ class OXMField {
   }
 
   void writeOXMTypeInfoCode(ostream &s) {
-    s << "WriteOXMTypeInfo(" << oxmType() << ", " << mask() << ", \"" << name()
-      << "\", ";
+    s << "WriteOXMTypeInfo(" << oxmType() << ", " << experimenter() << ", "
+      << mask() << ", \"" << name() << "\", ";
     if (hasPrereqs())
       s << "\"&ofp::OXMPrereq_" << name() << "\"";
     else
@@ -169,6 +186,7 @@ static const char *HeaderFilePreamble =
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
 #include "ofp/portnumber.h"
+#include "ofp/lldpvalue.h"
 
 )""";
 
@@ -192,7 +210,10 @@ static void WriteHeaderFile(ostream &stream, vector<OXMField> &fields) {
 
   stream << "OFP_BEGIN_IGNORE_PADDING\n";
   stream << "  struct OXMTypeInternalMapEntry {\n";
-  stream << "    UInt32 value32;\n    OXMInternalID id;\n  };\n";
+  stream << "    UInt32 value32;\n";
+  stream << "    Big32 experimenter;\n";
+  stream << "    OXMInternalID id;\n";
+  stream << "  };\n";
   stream << "OFP_END_IGNORE_PADDING\n\n";
 
   for (auto field : fields) {
@@ -236,7 +257,7 @@ using namespace ofp;
 
 // We need to define this array to get the linker to compile this tool.
 const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {
-	{"none", nullptr, 0, false, "none", "none"}
+	{"none", nullptr, 0, 0, false, "none", "none"}
 };
 const size_t ofp::OXMTypeInfoArraySize = 0;
 
@@ -251,11 +272,11 @@ static void WritePrereq(const char *name, const UInt8 *data, size_t len)
 }
 
 
-static void WriteOXMTypeInfo(OXMType type, bool maskSupported, const char *nameStr, const char *prereqs, const char *typeStr, const char *descriptionStr) {
+static void WriteOXMTypeInfo(OXMType type, UInt32 experimenter, bool maskSupported, const char *nameStr, const char *prereqs, const char *typeStr, const char *descriptionStr) {
   if (std::strncmp("OFB_", nameStr, 4) == 0 || std::strncmp("NXM_", nameStr, 4) == 0) {
     nameStr += 4;
   }
-  std::cout << "{ \"" << nameStr << "\", " << prereqs << ", " << type << ", " << maskSupported << ", \"" << typeStr << "\", \"" << descriptionStr << "\"},\n";
+  std::cout << "{ \"" << nameStr << "\", " << prereqs << ", " << type << ", " << experimenter << ", " << maskSupported << ", \"" << typeStr << "\", \"" << descriptionStr << "\"},\n";
 }
 
 int main() {
@@ -354,5 +375,5 @@ extern const OXMTypeInfo OXMTypeInfoArray[];
 extern const size_t OXMTypeInfoArraySize;
 }
 const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {
-    {"none", nullptr, 0, false, "none", "none"}};
+    {"none", nullptr, 0, 0, false, "none", "none"}};
 const size_t ofp::OXMTypeInfoArraySize = 0;

@@ -3,8 +3,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/actionlist_unittest.cpp
 	ofp/actions_unittest.cpp
 	ofp/actiontype_unittest.cpp
-	ofp/asio_unittest.cpp
-	ofp/boost_asio_unittest.cpp
 	ofp/bucketlist_unittest.cpp
 	ofp/bundleaddmessage_unittest.cpp
 	ofp/bundlecontrol_unittest.cpp
@@ -15,8 +13,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/constants_error_unittest.cpp
 	ofp/datapathid_unittest.cpp
 	ofp/decoder_unittest.cpp
-	ofp/driver_unittest.cpp
-	ofp/dtls_utils_unittest.cpp
 	ofp/encoder_unittest.cpp
 	ofp/encoderfail_unittest.cpp
 	ofp/enetaddress_unittest.cpp
@@ -25,6 +21,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/featuresreply_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
+	ofp/lldpvalue_unittest.cpp
 	ofp/meterbandlist_unittest.cpp
 	ofp/mpflowmonitorrequest_unittest.cpp
 	ofp/mpflowmonitorreply_unittest.cpp
@@ -46,6 +43,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/originalmatch_unittest.cpp
 	ofp/outputjson_unittest.cpp
 	ofp/oxmfields_unittest.cpp
+	ofp/oxmfulltype_unittest.cpp
 	ofp/oxmiterator_unittest.cpp
 	ofp/oxmlist_unittest.cpp
 	ofp/oxmrange_unittest.cpp
@@ -64,8 +62,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/queuegetconfigrequest_unittest.cpp
 	ofp/requestforward_unittest.cpp
 	ofp/rolestatus_unittest.cpp
-	ofp/roundtrip_unittest.cpp
-	ofp/rpcsession_unittest.cpp
 	ofp/setasync_unittest.cpp
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
@@ -76,6 +72,18 @@ set(LIBOFP_TEST_SOURCES
 	ofp/yhello_unittest.cpp
 	ofp/ymatch_unittest.cpp
 )
+
+if(LIBOFP_ENABLE_JSONRPC)
+	set(LIBOFP_TEST_SOURCES
+		${LIBOFP_TEST_SOURCES}
+		ofp/asio_unittest.cpp
+		ofp/boost_asio_unittest.cpp
+		ofp/driver_unittest.cpp
+		ofp/dtls_utils_unittest.cpp
+		ofp/roundtrip_unittest.cpp
+		ofp/rpcsession_unittest.cpp
+	)
+endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include")
 

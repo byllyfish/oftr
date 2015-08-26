@@ -16,6 +16,7 @@ int main() {
   for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {
     OXMTypeInternalMapEntry entry;
     entry.value32 = OXMTypeInfoArray[i].value32;
+    entry.experimenter = OXMTypeInfoArray[i].experimenter;
     entry.id = static_cast<OXMInternalID>(i);
     entries.push_back(entry);
   }
@@ -34,7 +35,7 @@ int main() {
   std::cout << "const ofp::OXMTypeInternalMapEntry "
                "ofp::OXMTypeInternalMapArray[] = {\n";
   for (auto entry : entries) {
-    std::cout << "  { " << entry.value32 << ", ";
+    std::cout << "  { " << entry.value32 << ", " << entry.experimenter << ", ";
     std::cout << "static_cast<ofp::OXMInternalID>("
               << static_cast<int>(entry.id) << ") },\n";
   }

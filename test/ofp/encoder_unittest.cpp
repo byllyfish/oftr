@@ -1206,6 +1206,117 @@ TEST(encoder, flowmodv4_outOfOrder) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowmodv4_experimenter) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x0000000000000000
+        cookie_mask:     0x0000000000000000
+        table_id:        0
+        command:         0
+        idle_timeout:    0x0000
+        hard_timeout:    0x0000
+        priority:        0x0000
+        buffer_id:       0x00000000
+        out_port:        0x00000000
+        out_group:       0x00000000
+        flags:           []
+        match:           
+          - field:           X_LLDP_CHASSIS_ID
+            value:           0102030405
+          - field:           X_LLDP_TTL
+            value:           0x01234
+          - field:           X_EXPERIMENTER_01
+            value:           0x01
+        instructions:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(144, encoder.size());
+  EXPECT_HEX(
+      "040E00900000000100000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000010060FFFF024400FFFFFF050102030405000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000FFFF060600FFFFFF1234FFFF060600FFFFFE000"
+      "1",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, flowmodv4_experimenter_mask) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x0000000000000000
+        cookie_mask:     0x0000000000000000
+        table_id:        0
+        command:         0
+        idle_timeout:    0x0000
+        hard_timeout:    0x0000
+        priority:        0x0000
+        buffer_id:       0x00000000
+        out_port:        0x00000000
+        out_group:       0x00000000
+        flags:           []
+        match:           
+          - field:           X_LLDP_CHASSIS_ID
+            value:           0102030405
+          - field:           X_LLDP_TTL
+            value:           0x1234
+          - field:           X_EXPERIMENTER_01
+            value:           0x01
+            mask:            0xFF
+        instructions:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(152, encoder.size());
+  EXPECT_HEX(
+      "040E00980000000100000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000010062FFFF024400FFFFFF050102030405000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000FFFF060600FFFFFF1234FFFF070800FFFFFE0001"
+      "00FF000000000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, flowmodv4_experimenter_2) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x0000000000000000
+        cookie_mask:     0x0000000000000000
+        table_id:        0
+        command:         0
+        idle_timeout:    0x0000
+        hard_timeout:    0x0000
+        priority:        0x0000
+        buffer_id:       0x00000000
+        out_port:        0x00000000
+        out_group:       0x00000000
+        flags:           []
+        match:           
+          - field:           0xFFFFFE01
+            value:           01
+        instructions:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(64, encoder.size());
+  EXPECT_HEX(
+      "040E00400000000100000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000010009FFFFFE010100000000000000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, flowmodv1) {
   const char *input = R"""(
       type:            FLOW_MOD

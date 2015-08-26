@@ -628,6 +628,86 @@ TEST(decoder, flowmodv4_2) {
       " IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
+TEST(decoder, flowmodv4_experimenter_1) {
+  testDecodeEncode(
+      "040E00900000000100000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000001005FFFFF024400FFFFFF050102030405000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000FFFF060600FFFFFF1234FFFF020500FFFFFE010"
+      "0",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
+      "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
+      "       [  ]\n  match:           \n    - field:           "
+      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
+      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
+      "0xFFFF0205.0x00FFFFFE\n      value:           01\n  instructions:    "
+      "\n...\n");
+}
+
+TEST(decoder, flowmodv4_experimenter_mask_1) {
+  testDecodeEncode(
+      "040E00900000000100000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000010060FFFF024400FFFFFF050102030405000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000FFFF060600FFFFFF1234FFFF030600FFFFFE01F"
+      "F",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
+      "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
+      "       [  ]\n  match:           \n    - field:           "
+      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
+      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
+      "0xFFFF0306.0x00FFFFFE\n      value:           01\n      mask:           "
+      " FF\n  instructions:    \n...\n");
+}
+
+TEST(decoder, flowmodv4_experimenter_2) {
+  testDecodeEncode(
+      "040E00900000000100000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000010060FFFF024400FFFFFF050102030405000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000FFFF060600FFFFFF1234FFFF060600FFFFFE000"
+      "1",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
+      "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
+      "       [  ]\n  match:           \n    - field:           "
+      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
+      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
+      "X_EXPERIMENTER_01\n      value:           0x0001\n  instructions:    "
+      "\n...\n");
+}
+
+TEST(decoder, flowmodv4_experimenter_mask_2) {
+  testDecodeEncode(
+      "040E00980000000100000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000010062FFFF024400FFFFFF050102030405000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000FFFF060600FFFFFF1234FFFF070800FFFFFE0001"
+      "00FF000000000000",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
+      "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
+      "       [  ]\n  match:           \n    - field:           "
+      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
+      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
+      "X_EXPERIMENTER_01\n      value:           0x0001\n      mask:           "
+      " 0x00FF\n  instructions:    \n...\n");
+}
+
 TEST(decoder, flowmodv1) {
   const char *hex =
       "010E005000000001003020EECCCC000000000000000000000000000000"

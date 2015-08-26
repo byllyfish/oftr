@@ -146,6 +146,12 @@ static bool isEmptyOrWhitespaceOnly(std::string &s) {
                       [](char ch) { return !isspace(ch); }) == s.end();
 }
 
+static void chomp(std::string &s) {
+  if (!s.empty() && s.back() == '\r') {
+    s.erase(s.size() - 1);
+  }
+}
+
 bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
   if (!input) {
     return false;
@@ -155,6 +161,7 @@ bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
 
   int msgLines = 0;
   while (std::getline(input, lineBuf_)) {
+    chomp(lineBuf_);
     ++lineNumber_;
 
     if (json_) {
