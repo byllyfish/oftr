@@ -5,9 +5,9 @@ before_install:
   - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
 install:
-  - sudo apt-get install -y cmake g++-4.8
+  - sudo apt-get install -y cmake gcc-4.8 g++-4.8
 script:
-  - export CXX="g++-4.8"
+  - export CC="gcc-4.8" CXX="g++-4.8"
   - mkdir -p Build && cd Build
   - cmake .. && ctest -D Experimental
 branches:
@@ -26,6 +26,6 @@ addons:
       name: "byllyfish/libofp"
       description: "Build submitted via Travis CI"
     notification_email: william.w.fisher@gmail.com
-    build_command_prepend: 'export CXX="g++-4.8" && mkdir -p Build && cd Build && cmake .. && make clean'
+    build_command_prepend: 'export CC="gcc-4.8" CXX="g++-4.8" && mkdir -p Build && cd Build && cmake .. && make clean'
     build_command:   make
     branch_pattern: coverity_scan
