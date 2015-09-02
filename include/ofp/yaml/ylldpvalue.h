@@ -15,7 +15,8 @@ struct ScalarTraits<ofp::LLDPValue<Type>> {
     out << value.toString();
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::LLDPValue<Type> &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::LLDPValue<Type> &value) {
     if (!value.parse(scalar))
       return "Invalid LLDP Value.";
     return "";

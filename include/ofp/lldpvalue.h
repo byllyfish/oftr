@@ -10,7 +10,7 @@ namespace ofp {
 enum class LLDPType {
   ChassisID = 1,
   PortID = 2,
-  //TTL = 3, (Unused)
+  // TTL = 3, (Unused)
   PortDescr = 4,
   SysName = 5,
   SysDescr = 6,
@@ -45,7 +45,7 @@ class LLDPValue {
     buf_[0] = UInt8_narrow_cast(size);
   }
 
-  bool parse(const std::string &val) { 
+  bool parse(const std::string &val) {
     ByteList buf;
     if (!detail::LLDPParse(Type, val, &buf))
       return false;
