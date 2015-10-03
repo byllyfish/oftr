@@ -38,7 +38,7 @@ TEST(mpflowmonitorrequest, withMatch) {
   msg.setCommand(kFakeCommand);
 
   MatchBuilder match;
-  match.add(OFB_ETH_DST{EnetAddress{"AA:11:22:33:44:55"}});
+  match.add(OFB_ETH_DST{MacAddress{"AA:11:22:33:44:55"}});
   msg.setMatch(match);
 
   MemoryChannel channel{OFP_VERSION_5};

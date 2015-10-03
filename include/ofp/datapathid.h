@@ -5,7 +5,7 @@
 
 #include "ofp/types.h"
 #include "ofp/array.h"
-#include "ofp/enetaddress.h"
+#include "ofp/macaddress.h"
 #include "ofp/byteorder.h"
 
 namespace ofp {
@@ -18,12 +18,12 @@ class DatapathID {
 
   DatapathID() : dpid_{} {}
   explicit DatapathID(const ArrayType dpid) { dpid_ = dpid; }
-  explicit DatapathID(Big16 implementerDefined, EnetAddress macAddress);
+  explicit DatapathID(Big16 implementerDefined, MacAddress macAddress);
   explicit DatapathID(const std::string &dpid);
 
   bool empty() const { return toUInt64() == 0; }
   Big16 implementerDefined() const;
-  EnetAddress macAddress() const;
+  MacAddress macAddress() const;
   std::string toString() const;
 
   bool parse(const std::string &s);

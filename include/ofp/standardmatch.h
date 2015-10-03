@@ -4,7 +4,7 @@
 #define OFP_STANDARDMATCH_H_
 
 #include "ofp/oxmfields.h"
-#include "ofp/enetaddress.h"
+#include "ofp/macaddress.h"
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
 #include "ofp/oxmlist.h"
@@ -38,10 +38,10 @@ struct StandardMatch {
   Big16 length = OFPMT_STANDARD_LENGTH;
   Big32 in_port;
   Big32 wildcards = OFPFW_ALL;
-  EnetAddress dl_src;
-  EnetAddress dl_src_mask;
-  EnetAddress dl_dst;
-  EnetAddress dl_dst_mask;
+  MacAddress dl_src;
+  MacAddress dl_src_mask;
+  MacAddress dl_dst;
+  MacAddress dl_dst_mask;
   Big16 dl_vlan;
   Big8 dl_vlan_pcp;
   Padding<1> pad1_;

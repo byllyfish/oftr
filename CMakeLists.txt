@@ -126,7 +126,6 @@ set(LIBOFP_SOURCES
   src/ofp/defaulthandshake.cpp
   src/ofp/echoreply.cpp
   src/ofp/echorequest.cpp
-  src/ofp/enetaddress.cpp
   src/ofp/error.cpp
   src/ofp/experimenter.cpp
   src/ofp/featuresreply.cpp
@@ -148,6 +147,7 @@ set(LIBOFP_SOURCES
   src/ofp/ipv6endpoint.cpp
   src/ofp/lldpvalue.cpp
   src/ofp/log.cpp
+  src/ofp/macaddress.cpp
   src/ofp/match.cpp
   src/ofp/matchheader.cpp
   src/ofp/matchpacket.cpp

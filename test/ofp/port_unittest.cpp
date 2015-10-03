@@ -22,7 +22,7 @@ TEST(port, test) {
   PortBuilder portBuilder;
 
   portBuilder.setPortNo(0x11111111);
-  portBuilder.setHwAddr(EnetAddress{"010203040506"});
+  portBuilder.setHwAddr(MacAddress{"010203040506"});
   portBuilder.setName("Port 1");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
@@ -51,7 +51,7 @@ TEST(port, test) {
 #if 0
   const Port &port = portBuilder.toPort();
   EXPECT_EQ(0x11111111, port.portNo());
-  EXPECT_EQ(EnetAddress{"010203040506"}, port.hwAddr());
+  EXPECT_EQ(MacAddress{"010203040506"}, port.hwAddr());
   EXPECT_EQ(PortNameStr{"Port 1"}, port.name());
   EXPECT_EQ(0x22222222, port.config());
   EXPECT_EQ(0x33333333, port.state());
@@ -70,7 +70,7 @@ TEST(port, test) {
       &portv1, sizeof(portv1));
 
   EXPECT_EQ(0x1111, portv1.portNo());
-  EXPECT_EQ(EnetAddress{"010203040506"}, portv1.hwAddr());
+  EXPECT_EQ(MacAddress{"010203040506"}, portv1.hwAddr());
   EXPECT_EQ(PortNameStr{"Port 1"}, portv1.name());
   EXPECT_EQ(0x22222222, portv1.config());
   EXPECT_EQ(0x33333333, portv1.state());
@@ -83,7 +83,7 @@ TEST(port, test) {
   const Port &port2 = port2Builder.toPort();
 
   EXPECT_EQ(0x1111, port2.portNo());
-  EXPECT_EQ(EnetAddress{"010203040506"}, port2.hwAddr());
+  EXPECT_EQ(MacAddress{"010203040506"}, port2.hwAddr());
   EXPECT_EQ(PortNameStr{"Port 1"}, port2.name());
   EXPECT_EQ(0x22222222, port2.config());
   EXPECT_EQ(0x33333333, port2.state());

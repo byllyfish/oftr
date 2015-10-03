@@ -39,7 +39,7 @@ void operator delete[](void *p) noexcept {
 //
 
 static void flowMod(Writable *channel, UInt32 inPort, UInt32 bufferId,
-                    const EnetAddress &dst, const EnetAddress &src,
+                    const MacAddress &dst, const MacAddress &src,
                     UInt32 outPort) {
   FlowModBuilder flowMod;
 
@@ -82,8 +82,8 @@ int main(int argc, char **argv) {
   UInt32 inPort = 1;
   UInt32 outPort = 2;
   UInt32 bufferId = 249;
-  EnetAddress dst{"11-22-33-44-55-66"};
-  EnetAddress src{"11-77-88-99-AA-BB"};
+  MacAddress dst{"11-22-33-44-55-66"};
+  MacAddress src{"11-77-88-99-AA-BB"};
 
   MemoryChannel channel{OFP_VERSION_4};
 

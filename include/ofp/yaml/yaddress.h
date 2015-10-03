@@ -6,7 +6,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
-#include "ofp/enetaddress.h"
+#include "ofp/macaddress.h"
 #include "ofp/ipv6endpoint.h"
 
 namespace llvm {
@@ -59,14 +59,14 @@ struct ScalarTraits<ofp::IPv6Address> {
 };
 
 template <>
-struct ScalarTraits<ofp::EnetAddress> {
-  static void output(const ofp::EnetAddress &value, void *ctxt,
+struct ScalarTraits<ofp::MacAddress> {
+  static void output(const ofp::MacAddress &value, void *ctxt,
                      llvm::raw_ostream &out) {
     out << value.toString();
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
-                         ofp::EnetAddress &value) {
+                         ofp::MacAddress &value) {
     if (scalar.empty()) {
       value.clear();
       return "";

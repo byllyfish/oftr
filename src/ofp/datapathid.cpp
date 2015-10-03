@@ -4,7 +4,7 @@
 
 using namespace ofp;
 
-DatapathID::DatapathID(Big16 implementerDefined, EnetAddress macAddress) {
+DatapathID::DatapathID(Big16 implementerDefined, MacAddress macAddress) {
   std::memcpy(dpid_.data(), &implementerDefined, sizeof(implementerDefined));
   std::memcpy(dpid_.data() + 2, &macAddress, sizeof(macAddress));
 }
@@ -20,8 +20,8 @@ Big16 DatapathID::implementerDefined() const {
   return result;
 }
 
-EnetAddress DatapathID::macAddress() const {
-  EnetAddress result;
+MacAddress DatapathID::macAddress() const {
+  MacAddress result;
   std::memcpy(&result, dpid_.data() + 2, sizeof(result));
   return result;
 }

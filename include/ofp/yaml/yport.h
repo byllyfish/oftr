@@ -21,7 +21,7 @@ namespace yaml {
 
 const char *const kPortSchema = R"""({Struct/Port}
 port_no: PortNumber
-hw_addr: EnetAddress
+hw_addr: MacAddress
 name: Str16
 config: PortConfigFlags
 state: PortStateFlags

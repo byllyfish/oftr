@@ -25,7 +25,7 @@ const OFPPortStatusReason kFakeReason = static_cast<OFPPortStatusReason>(0x33);
 TEST(portstatus, v4) {
   PortBuilder port;
   port.setPortNo(0x11111111);
-  port.setHwAddr(EnetAddress{"010203040506"});
+  port.setHwAddr(MacAddress{"010203040506"});
   port.setName("Port 1");
   port.setConfig(kFakeConfig);
   port.setState(kFakeState);
@@ -69,7 +69,7 @@ TEST(portstatus, v4) {
 
     const Port &p = msg->port();
     EXPECT_EQ(0x11111111, p.portNo());
-    EXPECT_EQ(EnetAddress{"010203040506"}, p.hwAddr());
+    EXPECT_EQ(MacAddress{"010203040506"}, p.hwAddr());
     EXPECT_EQ(PortNameStr{"Port 1"}, p.name());
     EXPECT_EQ(0x22222222, p.config());
     EXPECT_EQ(0x33333333, p.state());
@@ -91,7 +91,7 @@ TEST(portstatus, v4) {
 TEST(portstatus, v1) {
   PortBuilder port;
   port.setPortNo(0x11111111);
-  port.setHwAddr(EnetAddress{"010203040506"});
+  port.setHwAddr(MacAddress{"010203040506"});
   port.setName("Port 1");
   port.setConfig(kFakeConfig);
   port.setState(kFakeState);
@@ -134,7 +134,7 @@ TEST(portstatus, v1) {
 
     const Port &p = msg->port();
     EXPECT_EQ(0x1111, p.portNo());
-    EXPECT_EQ(EnetAddress{"010203040506"}, p.hwAddr());
+    EXPECT_EQ(MacAddress{"010203040506"}, p.hwAddr());
     EXPECT_EQ(PortNameStr{"Port 1"}, p.name());
     EXPECT_EQ(0x22222222, p.config());
     EXPECT_EQ(0x33333333, p.state());

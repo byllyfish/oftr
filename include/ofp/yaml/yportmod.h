@@ -13,7 +13,7 @@ const char *const kPortModSchema = R"""({Message/PortMod}
 type: 'PORT_MOD'
 msg:
   port_no: PortNumber
-  hw_addr: EnetAddress
+  hw_addr: MacAddress
   config: PortConfigFlags
   mask: PortConfigFlags
   ethernet:

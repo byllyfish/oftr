@@ -28,9 +28,9 @@ TEST(oxmfields, OFB_TCP_DST) {
 }
 
 TEST(oxmfields, OFB_IPV6_ND_SLL) {
-  OFB_IPV6_ND_SLL ndsll{EnetAddress{}};
+  OFB_IPV6_ND_SLL ndsll{MacAddress{}};
 
-  EXPECT_EQ(ndsll.value(), EnetAddress{});
+  EXPECT_EQ(ndsll.value(), MacAddress{});
 
   auto iter = OFB_IPV6_ND_SLL::prerequisites()->begin();
   auto end = OFB_IPV6_ND_SLL::prerequisites()->end();

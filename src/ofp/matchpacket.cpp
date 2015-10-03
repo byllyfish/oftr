@@ -1,7 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/matchpacket.h"
-#include "ofp/enetaddress.h"
+#include "ofp/macaddress.h"
 #include "ofp/oxmfields.h"
 #include "ofp/constants.h"
 
@@ -59,8 +59,8 @@ struct Castable {
 };
 
 struct Ethernet : public Castable<Ethernet> {
-  EnetAddress dst;
-  EnetAddress src;
+  MacAddress dst;
+  MacAddress src;
   Big16 type;
 };
 
@@ -70,9 +70,9 @@ static_assert(alignof(Ethernet) == 2, "Unexpected alignment.");
 struct Arp : public Castable<Arp> {
   UInt8 prefix[6];  // fixed: ht, pt, hl, pl
   Big16 op;
-  EnetAddress sha;
+  MacAddress sha;
   IPv4Address spa;
-  EnetAddress tha;
+  MacAddress tha;
   IPv4Address tpa;
 };
 

@@ -98,8 +98,8 @@ TEST(flowmodbuilder, fastVersion1) {
   UInt32 inPort = 0x12121212;
   UInt32 outPort = 0x23232323;
   UInt32 bufferId = 0x59595959;
-  EnetAddress dst{"ABCDEFABCDEF"};
-  EnetAddress src{"123456123456"};
+  MacAddress dst{"ABCDEFABCDEF"};
+  MacAddress src{"123456123456"};
 
   FlowModBuilder flowMod;
 

@@ -2,8 +2,8 @@ Name	Class	Field	Size	ValueType	Mask	Prerequisite	Description
 OFB_IN_PORT	0x8000	0	4	PortNumber	false		Input Port
 OFB_IN_PHY_PORT	0x8000	1	4	Big32	false	OFB_IN_PORT{0} & OFB_IN_PORT{0}	Physical Input Port
 OFB_METADATA	0x8000	2	8	Big64	true		Metadata
-OFB_ETH_DST	0x8000	3	6	EnetAddress	true		Ethernet Destination
-OFB_ETH_SRC	0x8000	4	6	EnetAddress	true		Ethernet Source
+OFB_ETH_DST	0x8000	3	6	MacAddress	true		Ethernet Destination
+OFB_ETH_SRC	0x8000	4	6	MacAddress	true		Ethernet Source
 OFB_ETH_TYPE	0x8000	5	2	Big16	false		Ethernet Type
 OFB_VLAN_VID	0x8000	6	2	Big16	true		VLAN ID (0=no tag, 0x1yyy=tag yyy)
 OFB_VLAN_PCP	0x8000	7	1	Big8	false	OFB_VLAN_VID{0x1000} & OFB_VLAN_VID{0x1000}	VLAN Priority
@@ -23,16 +23,16 @@ OFB_ICMPV4_CODE	0x8000	20	1	Big8	false	OFB_IP_PROTO{1}	ICMPv4 Code
 OFB_ARP_OP	0x8000	21	2	Big16	false	OFB_ETH_TYPE{0x0806}	ARP Opcode
 OFB_ARP_SPA	0x8000	22	4	IPv4Address	true	OFB_ETH_TYPE{0x0806}	ARP Source IPv4 Address
 OFB_ARP_TPA	0x8000	23	4	IPv4Address	true	OFB_ETH_TYPE{0x0806}	ARP Target IPv4 Address
-OFB_ARP_SHA	0x8000	24	6	EnetAddress	true	OFB_ETH_TYPE{0x0806}	ARP Source Ethernet Address
-OFB_ARP_THA	0x8000	25	6	EnetAddress	true	OFB_ETH_TYPE{0x0806}	ARP Target Ethernet Address
+OFB_ARP_SHA	0x8000	24	6	MacAddress	true	OFB_ETH_TYPE{0x0806}	ARP Source Ethernet Address
+OFB_ARP_THA	0x8000	25	6	MacAddress	true	OFB_ETH_TYPE{0x0806}	ARP Target Ethernet Address
 OFB_IPV6_SRC	0x8000	26	16	IPv6Address	true	OFB_ETH_TYPE{0x86dd}	IPv6 Source Address
 OFB_IPV6_DST	0x8000	27	16	IPv6Address	true	OFB_ETH_TYPE{0x86dd}	IPv6 Destination Address
 OFB_IPV6_FLABEL	0x8000	28	4	Big32	true	OFB_ETH_TYPE{0x86dd}	IPv6 Flow Label
 OFB_ICMPV6_TYPE	0x8000	29	1	Big8	false	/, OFB_ETH_TYPE{0x86dd}, OFB_IP_PROTO{58}	ICMPv6 Type
 OFB_ICMPV6_CODE	0x8000	30	1	Big8	false	/, OFB_ETH_TYPE{0x86dd}, OFB_IP_PROTO{58}	ICMPv6 Code
 OFB_IPV6_ND_TARGET	0x8000	31	16	IPv6Address	false	OFB_ICMPV6_TYPE{135}, OFB_ICMPV6_TYPE{136}	ICMPv6 Neighbor Discovery Target IPv6
-OFB_IPV6_ND_SLL	0x8000	32	6	EnetAddress	false	OFB_ICMPV6_TYPE{135}	ICMPv6 Neighbor Discovery Source Ethernet Address
-OFB_IPV6_ND_TLL	0x8000	33	6	EnetAddress	false	OFB_ICMPV6_TYPE{136}	ICMPv6 Neighbor Discovery Target Ethernet Address
+OFB_IPV6_ND_SLL	0x8000	32	6	MacAddress	false	OFB_ICMPV6_TYPE{135}	ICMPv6 Neighbor Discovery Source Ethernet Address
+OFB_IPV6_ND_TLL	0x8000	33	6	MacAddress	false	OFB_ICMPV6_TYPE{136}	ICMPv6 Neighbor Discovery Target Ethernet Address
 OFB_MPLS_LABEL	0x8000	34	4	Big32	false	OFB_ETH_TYPE{0x8847}, OFB_ETH_TYPE{0x8848}	MPLS Label
 OFB_MPLS_TC	0x8000	35	1	Big8	false	OFB_ETH_TYPE{0x8847}, OFB_ETH_TYPE{0x8848}	MPLS Traffic Class
 OFB_MPLS_BOS	0x8000	36	1	Big8	false	OFB_ETH_TYPE{0x8847}, OFB_ETH_TYPE{0x8848}	MPLS Bottom of Stack

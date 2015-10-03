@@ -4,7 +4,7 @@
 #define OFP_ORIGINALMATCH_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/enetaddress.h"
+#include "ofp/macaddress.h"
 #include "ofp/ipv4address.h"
 #include "ofp/padding.h"
 #include "ofp/oxmrange.h"
@@ -52,8 +52,8 @@ struct OriginalMatch {
 
   Big32 wildcards;
   Big16 in_port;
-  EnetAddress dl_src;
-  EnetAddress dl_dst;
+  MacAddress dl_src;
+  MacAddress dl_dst;
   Big16 dl_vlan;
   Big8 dl_vlan_pcp;
   Padding<1> pad1;

@@ -27,7 +27,7 @@ const OFPCapabilitiesFlags kFakeCapabilities =
 TEST(featuresreply, v4) {
   PortBuilder portBuilder;
   portBuilder.setPortNo(0x11111111);
-  portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
+  portBuilder.setHwAddr(MacAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
@@ -85,7 +85,7 @@ TEST(featuresreply, v4) {
 TEST(featuresreply, v3) {
   PortBuilder portBuilder;
   portBuilder.setPortNo(0x11111111);
-  portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
+  portBuilder.setHwAddr(MacAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
@@ -145,7 +145,7 @@ TEST(featuresreply, v3) {
 
   for (auto &p : reply->ports()) {
     EXPECT_EQ(0x11111111, p.portNo());
-    EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());
+    EXPECT_EQ(MacAddress{"22-22-22-22-22-22"}, p.hwAddr());
     EXPECT_EQ(SmallCString<16>("Port 3"), p.name());
     EXPECT_EQ(kFakeConfig, p.config());
     EXPECT_EQ(kFakeState, p.state());
@@ -168,7 +168,7 @@ TEST(featuresreply, v3) {
 TEST(featuresreply, v2) {
   PortBuilder portBuilder;
   portBuilder.setPortNo(0x11111111);
-  portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
+  portBuilder.setHwAddr(MacAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
@@ -228,7 +228,7 @@ TEST(featuresreply, v2) {
 
   for (auto &p : reply->ports()) {
     EXPECT_EQ(0x11111111, p.portNo());
-    EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());
+    EXPECT_EQ(MacAddress{"22-22-22-22-22-22"}, p.hwAddr());
     EXPECT_EQ(SmallCString<16>("Port 3"), p.name());
     EXPECT_EQ(kFakeConfig, p.config());
     EXPECT_EQ(kFakeState, p.state());
@@ -251,7 +251,7 @@ TEST(featuresreply, v2) {
 TEST(featuresreply, v1) {
   PortBuilder portBuilder;
   portBuilder.setPortNo(0x11111111);
-  portBuilder.setHwAddr(EnetAddress{"22-22-22-22-22-22"});
+  portBuilder.setHwAddr(MacAddress{"22-22-22-22-22-22"});
   portBuilder.setName("Port 3");
   portBuilder.setConfig(kFakeConfig);
   portBuilder.setState(kFakeState);
@@ -311,7 +311,7 @@ TEST(featuresreply, v1) {
 
   for (auto &p : reply->ports()) {
     EXPECT_EQ(0x1111, p.portNo());
-    EXPECT_EQ(EnetAddress{"22-22-22-22-22-22"}, p.hwAddr());
+    EXPECT_EQ(MacAddress{"22-22-22-22-22-22"}, p.hwAddr());
     EXPECT_EQ(SmallCString<16>("Port 3"), p.name());
     EXPECT_EQ(kFakeConfig, p.config());
     EXPECT_EQ(kFakeState, p.state());

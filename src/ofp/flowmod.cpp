@@ -157,8 +157,8 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel) {
 // The fastest it can be done... useful for self-benchmarking.
 UInt32 FlowModBuilder::sendFastVersion1(Writable *channel, UInt32 inPort,
                                         UInt32 outPort, UInt32 bufferId,
-                                        const EnetAddress &dst,
-                                        const EnetAddress &src) {
+                                        const MacAddress &dst,
+                                        const MacAddress &src) {
   const char *const layout =
       "\x01\x0E\x00\x50\x00\x00\x00\x01"
       "\x00\x38\x20\xF2\xA2\xA2\xCD\xCD"

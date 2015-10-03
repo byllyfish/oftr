@@ -1,21 +1,21 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
-#ifndef OFP_ENETADDRESS_H_
-#define OFP_ENETADDRESS_H_
+#ifndef OFP_MACADDRESS_H_
+#define OFP_MACADDRESS_H_
 
 #include "ofp/types.h"
 #include "ofp/array.h"
 
 namespace ofp {
 
-class EnetAddress {
+class MacAddress {
  public:
   enum { Length = 6 };
 
   using ArrayType = std::array<UInt8, Length>;
 
-  EnetAddress() : addr_{} {}
-  /* implicit NOLINT */ EnetAddress(const std::string &s);
+  MacAddress() : addr_{} {}
+  /* implicit NOLINT */ MacAddress(const std::string &s);
 
   bool parse(const std::string &s);
 
@@ -33,20 +33,20 @@ class EnetAddress {
 
   const ArrayType &toArray() const { return addr_; }
 
-  bool operator==(const EnetAddress &rhs) const { return addr_ == rhs.addr_; }
+  bool operator==(const MacAddress &rhs) const { return addr_ == rhs.addr_; }
 
-  bool operator!=(const EnetAddress &rhs) const { return !(*this == rhs); }
+  bool operator!=(const MacAddress &rhs) const { return !(*this == rhs); }
 
  private:
   ArrayType addr_;
 };
 
-static_assert(sizeof(EnetAddress) == 6, "Unexpected size.");
-static_assert(IsStandardLayout<EnetAddress>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<EnetAddress>(),
+static_assert(sizeof(MacAddress) == 6, "Unexpected size.");
+static_assert(IsStandardLayout<MacAddress>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<MacAddress>(),
               "Expected trivially copyable.");
 
-inline std::ostream &operator<<(std::ostream &os, const EnetAddress &value) {
+inline std::ostream &operator<<(std::ostream &os, const MacAddress &value) {
   return os << value.toString();
 }
 
@@ -55,13 +55,13 @@ inline std::ostream &operator<<(std::ostream &os, const EnetAddress &value) {
 namespace std {
 
 template <>
-struct hash<ofp::EnetAddress> {
-  size_t operator()(const ofp::EnetAddress &rhs) const {
-    std::hash<ofp::EnetAddress::ArrayType> hasher;
+struct hash<ofp::MacAddress> {
+  size_t operator()(const ofp::MacAddress &rhs) const {
+    std::hash<ofp::MacAddress::ArrayType> hasher;
     return hasher(rhs.toArray());
   }
 };
 
 }  // namespace std
 
-#endif  // OFP_ENETADDRESS_H_
+#endif  // OFP_MACADDRESS_H_
