@@ -359,7 +359,7 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-add_subdirectory(external/googletest)
+add_subdirectory(external/googletest/googletest)
 if(LIBOFP_ENABLE_JSONRPC)
   add_subdirectory(external/boringssl)
 endif()
