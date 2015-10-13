@@ -10,8 +10,8 @@ namespace yaml {
 // Encoder/Decoder.
 
 const char *const kRequestForwardSchema = R"""({Message/RequestForward}
-type: 'REQUESTFORWARD'
-msg: {Message}
+type: REQUESTFORWARD
+msg: Message
 )""";
 
 }  // namespace yaml

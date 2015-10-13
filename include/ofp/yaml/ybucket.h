@@ -22,7 +22,7 @@ const char *const kBucketSchema = R"""({Struct/Bucket}
 weight: UInt16
 watch_port: PortNumber
 watch_group: UInt32
-actions: [{Action}]
+actions: [Action]
 )""";
 
 template <>

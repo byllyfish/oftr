@@ -9,7 +9,7 @@ namespace llvm {
 namespace yaml {
 
 const char *const kFlowRemovedSchema = R"""({Message/FlowRemoved}
-type: 'FLOW_REMOVED'
+type: FLOW_REMOVED
 msg:
   cookie: UInt64
   priority: UInt16
@@ -21,7 +21,7 @@ msg:
   hard_timeout: UInt16
   packet_count: UInt64
   byte_count: UInt64
-  match: [{Field}...]
+  match: [Field]
 )""";
 
 template <>

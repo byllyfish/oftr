@@ -10,7 +10,7 @@ namespace yaml {
 
 const char *const kQueueGetConfigRequestSchema =
     R"""({Message/QueueGetConfigRequest}
-type: 'QUEUE_GET_CONFIG_REQUEST'
+type: QUEUE_GET_CONFIG_REQUEST
 msg:
   port: PortNumber
 )""";

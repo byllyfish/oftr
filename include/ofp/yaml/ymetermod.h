@@ -10,12 +10,12 @@ namespace llvm {
 namespace yaml {
 
 const char *const kMeterModSchema = R"""({Message/MeterMod}
-type: 'METER_MOD'
+type: METER_MOD
 msg:
   command: MeterModCommand
-  flags: MeterConfigFlags
+  flags: [MeterConfigFlags]
   meter_id: UInt32
-  bands: [{MeterBand}...]
+  bands: [MeterBand]
 )""";
 
 template <>

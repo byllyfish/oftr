@@ -20,40 +20,40 @@ namespace llvm {
 namespace yaml {
 
 const char *const kGotoTableSchema = R"""({Instruction/GotoTable}
-instruction: 'GOTO_TABLE'
+instruction: GOTO_TABLE
 table_id: UInt8
 )""";
 
 const char *const kWriteMetadataSchema = R"""({Instruction/WriteMetadata}
-instruction: 'WRITE_METADATA'
+instruction: WRITE_METADATA
 metadata: UInt64
 mask: UInt64
 )""";
 
 const char *const kWriteActionsSchema = R"""({Instruction/WriteActions}
-instruction: 'WRITE_ACTIONS'
-actions: [{Action}...]
+instruction: WRITE_ACTIONS
+actions: [Action]
 )""";
 
 const char *const kApplyActionsSchema = R"""({Instruction/ApplyActions}
-instruction: 'APPLY_ACTIONS'
-actions: [{Action}...]
+instruction: APPLY_ACTIONS
+actions: [Action]
 )""";
 
 const char *const kClearActionsSchema = R"""({Instruction/ClearActions}
-instruction: 'CLEAR_ACTIONS'
+instruction: CLEAR_ACTIONS
 )""";
 
 const char *const kMeterSchema = R"""({Instruction/Meter}
-instruction: 'METER'
+instruction: METER
 meter: UInt32
 )""";
 
 const char *const kExperimenterInstructionSchema =
     R"""({Instruction/Experimenter}
-instruction: 'EXPERIMENTER'
+instruction: EXPERIMENTER
 experimenter: UInt32
-data: HexString
+data: HexData
 )""";
 
 template <>

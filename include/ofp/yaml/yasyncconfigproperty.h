@@ -25,10 +25,10 @@ namespace yaml {
 
 const char *const kAsyncConfigExperimenterPropertySchema =
     R"""({Property/AsyncConfigExperimenterProperty}
-property: 'EXPERIMENTER_SLAVE' | 'EXPERIMENTER_MASTER'
+property: EXPERIMENTER_SLAVE | EXPERIMENTER_MASTER
 experimenter: UInt32
 exp_type: UInt32
-data: HexString
+data: HexData
 )""";
 
 template <>

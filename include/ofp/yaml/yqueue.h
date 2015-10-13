@@ -21,16 +21,8 @@ queue_id: UInt32
 port: PortNumber
 min_rate: UInt16
 max_rate: UInt16
-properties: [{ExperimenterProperty}]
+properties: [ExperimenterProperty]
 )""";
-
-// <Queue> := {
-//   queue_id: <UInt32>                 #required
-//   port: <UInt32>                     #required
-//   min_rate: <UInt16>                 #default: 0xffff
-//   max_rate: <UInt16>                 #default: 0xffff
-//   properties: [ <QueuePropertyX>  ]  #required
-// }
 
 template <>
 struct MappingTraits<ofp::Queue> {

@@ -45,6 +45,9 @@ class Help : public Subprogram {
   std::vector<std::unique_ptr<Schema>> schemas_;
 
   void loadSchemas();
+  void addFieldSchemas();
+  void addBuiltinTypes();
+  
   Schema *findSchema(const std::string &key);
   Schema *findNearestSchema(const std::string &key);
 

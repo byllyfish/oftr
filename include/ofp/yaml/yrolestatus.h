@@ -10,12 +10,12 @@ namespace llvm {
 namespace yaml {
 
 const char *const kRoleStatusSchema = R"""({Message/RoleStatus}
-type: 'ROLE_STATUS'
+type: ROLE_STATUS
 msg:
   role: ControllerRole
   reason: UInt8
   generation_id: UInt64
-  properties: [{RoleStatusProperty}...]
+  properties: [RoleStatusProperty]
 )""";
 
 template <>

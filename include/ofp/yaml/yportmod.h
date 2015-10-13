@@ -10,21 +10,21 @@ namespace llvm {
 namespace yaml {
 
 const char *const kPortModSchema = R"""({Message/PortMod}
-type: 'PORT_MOD'
+type: PORT_MOD
 msg:
   port_no: PortNumber
   hw_addr: MacAddress
-  config: PortConfigFlags
-  mask: PortConfigFlags
+  config: [PortConfigFlags]
+  mask: [PortConfigFlags]
   ethernet:
-    advertise: PortFeaturesFlags
-  optical:
-    configure: OpticalPortFeaturesFlags
+    advertise: [PortFeaturesFlags]
+  optical:  # ?
+    configure: [OpticalPortFeaturesFlags]
     freq_lmda: UInt32
     fl_offset: SInt32
     grid_span: UInt32
     tx_pwr: UInt32
-  properties: [{ExperimenterProperty}]
+  properties: [ExperimenterProperty]
 )""";
 
 template <>

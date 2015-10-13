@@ -13,15 +13,17 @@ static void replaceAll(std::string &str, const std::string &from,
                        const std::string &to);
 static std::string unsignedTypeName(size_t size);
 static std::string unsignedTypeEnum(size_t size);
+static bool isTypeName(llvm::StringRef s);
 
 bool Schema::equals(llvm::StringRef s) const {
-  return equalsAlnum(name_, s);
+  return equalsAlnum(name_, s) || equalsAlnum(type_, s);
 }
 
 /// Return a set of schemas that this schema depends on.
 ///
 /// This is implemented by scanning each line of the schema value looking for
-/// the pattern "key: Type ..." where Type starts with a capital letter.
+/// the pattern "key: Type ..." where Type starts with a capital letter, but
+/// is not all caps.
 std::set<std::string> Schema::dependsOnSchemas() const {
   std::set<std::string> result;
   std::stringstream iss{value_.str()};
@@ -35,7 +37,7 @@ std::set<std::string> Schema::dependsOnSchemas() const {
       if (endType < type.size()) {
         type = type.drop_back(type.size() - endType);
       }
-      if (!type.empty() && !std::ispunct(type[0])) {
+      if (isTypeName(type)) {
         result.insert(type.str());
       }
     }
@@ -45,7 +47,7 @@ std::set<std::string> Schema::dependsOnSchemas() const {
 }
 
 void Schema::print(std::ostream &os) const {
-  os << type() << '/' << name().str() << " ::= ";
+  os << type() << '/' << name().str() << ": ";
   if (isObject_) {
     os << '\n';
     printValue(os, 2);
@@ -97,7 +99,7 @@ std::string Schema::MakeSchemaString(const char *const name,
   if (line.startswith_lower("mixed/")) {
     result = unsignedTypeName(size) + " | " + result;
   } else if (line.startswith_lower("enum/")) {
-    result += " | '" + unsignedTypeEnum(size) + "'";
+    result += " | " + unsignedTypeEnum(size);
   }
 
   return std::string(name) + "\n" + result + "\n";
@@ -131,7 +133,7 @@ std::string Schema::MakeFlagSchemaString(const char *name,
   }
 
   std::string result = stringJoin(words, " | ");
-  result += " | '" + unsignedTypeEnum(size) + "'";
+  result += " | " + unsignedTypeEnum(size);
 
   return std::string(key) + "\n" + result + "\n";
 }
@@ -166,14 +168,10 @@ static std::string stringJoin(const std::vector<llvm::StringRef> &vec,
   if (vec.empty())
     return result;
   for (size_t i = 0; i < vec.size() - 1; ++i) {
-    result += '\'';
     result += vec[i];
-    result += '\'';
     result += sep;
   }
-  result += '\'';
   result += vec[vec.size() - 1];
-  result += '\'';
   return result;
 }
 
@@ -206,14 +204,31 @@ static std::string unsignedTypeName(size_t size) {
 static std::string unsignedTypeEnum(size_t size) {
   switch (size) {
     case 1:
-      return "0xHH";
+      return "Hex8";
     case 2:
-      return "0xHHHH";
+      return "Hex16";
     case 4:
-      return "0xHHHHHHHH";
+      return "Hex32";
     case 8:
-      return "0xHHHHHHHHHHHHHHHH";
+      return "Hex64";
     default:
-      return "0x__";
+      return "HexXX";
   }
+}
+
+/// Return true if s begins with a capital letter, but is _not_ all caps.
+/// Ignores underscore and hyphen.
+static bool isTypeName(llvm::StringRef s) {
+  if (s.empty() || !std::isalpha(s[0]) || !std::isupper(s[0]))
+    return false;
+
+  for (char ch: s) {
+    if (ch == '_' || ch == '-')
+      continue;
+    if (std::isalpha(ch) && !std::isupper(ch)) {
+      return true;
+    }
+  }
+
+  return false;
 }

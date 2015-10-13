@@ -92,6 +92,11 @@ static const char *const kPropertySchemas[] = {
     llvm::yaml::kAsyncConfigExperimenterPropertySchema,
 };
 
+static const char *const kBuiltinTypes[] = {
+  "UInt8", "UInt16", "UInt32", "UInt64", "SInt32", "String", "Str16", "Str32", "Str256", "HexData", "DatapathID",
+  "MacAddress", "IPv4Address", "IPv6Address", 
+};
+
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
 static SchemaPair kEnumSchemas[] = {
@@ -232,6 +237,31 @@ void Help::loadSchemas() {
   for (auto &p : kFlagSchemas) {
     schemas_.emplace_back(new Schema{p.first(p.second)});
   }
+
+  addFieldSchemas();
+  addBuiltinTypes();
+}
+
+
+void Help::addFieldSchemas() {
+    for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
+      const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
+
+      std::stringstream sstr;
+      sstr << "{Field/" << info->name << "}\n";
+      sstr << "field: " << info->name << '\n';
+      sstr << "value: " << translateFieldType(info->type) << '\n';
+      sstr << "mask: !optout " << translateFieldType(info->type) << "\n";
+      
+      schemas_.emplace_back(new Schema(sstr.str()));
+    }
+}
+
+void Help::addBuiltinTypes() {
+  const std::string builtin{"Builtin/"};
+  for (auto &p : kBuiltinTypes) {
+    schemas_.emplace_back(new Schema(builtin + p + "\n<builtin>"));
+  }
 }
 
 Schema *Help::findSchema(const std::string &key) {
@@ -305,6 +335,8 @@ void Help::printSchema(const std::string &key) {
       auto depSchema = findSchema(s);
       if (depSchema) {
         depSchema->print(std::cout);
+      } else {
+        std::cerr << "Unknown dependent schema '" << s << "'\n";
       }
     }
 
@@ -324,10 +356,16 @@ void Help::dumpSchemaNames() {
   }
 }
 
-/// Print out each schema.
+/// Print out each schema. Check that dependent schema's exist.
 void Help::dumpSchemaAll() {
   for (auto &schema : schemas_) {
     schema->print(std::cout);
+
+    for (auto &s : schema->dependsOnSchemas()) {
+        if (!findSchema(s)) {
+          std::cerr << "Unknown dependent schema '" << s << "'\n";
+        }
+    }    
   }
 }
 

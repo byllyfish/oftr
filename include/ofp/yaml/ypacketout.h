@@ -9,13 +9,13 @@ namespace llvm {
 namespace yaml {
 
 const char *const kPacketOutSchema = R"""({Message/PacketOut}
-type: 'PACKET_OUT'
+type: PACKET_OUT
 msg:
   buffer_id: BufferNumber
   in_port: PortNumber
-  actions: [{Action}...]
-  data: HexString
-  _data_pkt: [{Field}...]         # Output only; Optional
+  actions: [Action]
+  data: HexData
+  _data_pkt: [Field]  # ?
 )""";
 
 template <>

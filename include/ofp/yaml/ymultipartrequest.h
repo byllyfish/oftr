@@ -22,71 +22,71 @@ namespace yaml {
 
 const char *const kMultipartRequestSchema = R"""(
 {Message/Request.Desc}
-type: 'REQUEST.DESC'
+type: REQUEST.DESC
 
 {Message/Request.Table}
-type: 'REQUEST.TABLE'
+type: REQUEST.TABLE
 
 {Message/Request.PortDesc}
-type: 'REQUEST.PORT_DESC'
+type: REQUEST.PORT_DESC
 
 {Message/Request.GroupDesc}
-type: 'REQUEST.GROUP_DESC'
+type: REQUEST.GROUP_DESC
 
 {Message/Request.GroupFeatures}
-type: 'REQUEST.GROUP_FEATURES'
+type: REQUEST.GROUP_FEATURES
 
 {Message/Request.MeterFeatures}
-type: 'REQUEST.METER_FEATURES'
+type: REQUEST.METER_FEATURES
 
 {Message/Request.Flow}
-type: 'REQUEST.FLOW'
+type: REQUEST.FLOW
 msg:
   table_id: TableNumber
   out_port: PortNumber
   out_group: GroupNumber
   cookie: UInt64
   cookie_mask: UInt64
-  match: [{Field}]
+  match: [Field]
 
 {Message/Request.Aggregate}
-type: 'REQUEST.AGGREGATE'
+type: REQUEST.AGGREGATE
 msg:
   table_id: TableNumber
   out_port: PortNumber
   out_group: GroupNumber
   cookie: UInt64
   cookie_mask: UInt64
-  match: [{Field}]
+  match: [Field]
 
 {Message/Request.PortStats}
-type: 'REQUEST.PORT_STATS'
+type: REQUEST.PORT_STATS
 msg:
   port_no: PortNumber
 
 {Message/Request.Queue}
-type: 'REQUEST.QUEUE'
+type: REQUEST.QUEUE
 msg:
   port_no: PortNumber
   queue_id: UInt32
 
 {Message/Request.MeterConfig}
-type: 'REQUEST.METER_CONFIG'
+type: REQUEST.METER_CONFIG
 msg:
   meter_id: UInt32
 
 {Message/Request.Meter}
-type: 'REQUEST.METER'
+type: REQUEST.METER
 msg:
   meter_id: UInt32
 
 {Message/Request.Group}
-type: 'REQUEST.GROUP'
+type: REQUEST.GROUP
 msg:
   group_id: UInt32
 
 {Message/Request.TableFeatures}
-type: 'REQUEST.TABLE_FEATURES'
+type: REQUEST.TABLE_FEATURES
 msg:
   - table_id: TableNumber
     name: Str32
@@ -95,38 +95,38 @@ msg:
     config: UInt32
     max_entries: UInt32
     instructions: [InstructionID]
-    instructions_miss: [InstructionID]     # Optional; Default=[]
+    instructions_miss: [InstructionID]  # []
     next_tables: [TableID]
-    next_tables_miss: [TableID]            # Optional; Default=[]
+    next_tables_miss: [TableID]  # []
     write_actions: [ActionID]
-    write_actions_miss: [ActionID]         # Optional; Default=[]
+    write_actions_miss: [ActionID]  # []
     apply_actions: [ActionID]
-    apply_actions_miss: [ActionID]         # Optional; Default=[]
+    apply_actions_miss: [ActionID]  # []
     match: [FieldID]
     wildcards: [FieldID]
     write_set_field: [FieldID]
-    write_set_field_miss: [FieldID]        # Optional; Default=[]
+    write_set_field_miss: [FieldID]  # []
     apply_set_field: [FieldID]
-    apply_set_field_miss: [FieldID]        # Optional; Default=[]
-    properties:
+    apply_set_field_miss: [FieldID]  # []
+    properties: [ExperimenterProperty]
 
 {Message/Request.FlowMonitor}
-type: 'REQUEST.FLOW_MONITOR'
+type: REQUEST.FLOW_MONITOR
 msg:
   monitor_id: UInt32
   out_port: PortNumber
-  out_group: UInt32
-  flags: UInt16
+  out_group: GroupNumber
+  flags: [FlowMonitorFlags]
   table_id: TableNumber
-  command: UInt8
-  match: [{Field}]
+  command: FlowMonitorCommand
+  match: [Field]
 
 {Message/Request.Experimenter}
-type: 'REQUEST.EXPERIMENTER'
+type: REQUEST.EXPERIMENTER
 msg:
   experimenter: UInt32
-  exp_type: UInt32 
-  data: HexString
+  exp_type: UInt32
+  data: HexData
 )""";
 
 struct EmptyObject {};

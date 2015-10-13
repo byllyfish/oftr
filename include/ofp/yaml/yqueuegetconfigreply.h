@@ -11,10 +11,10 @@ namespace yaml {
 
 const char *const kQueueGetConfigReplySchema =
     R"""({Message/QueueGetConfigReply}
-type: 'QUEUE_GET_CONFIG_REPLY'
+type: QUEUE_GET_CONFIG_REPLY
 msg:
   port: PortNumber
-  queues: [{Queue}...]
+  queues: [Queue]
 )""";
 
 template <>

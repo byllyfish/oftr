@@ -9,9 +9,9 @@ namespace llvm {
 namespace yaml {
 
 const char *const kGetConfigReplySchema = R"""({Message/GetConfigReply}
-type: 'GET_CONFIG_REPLY'
+type: GET_CONFIG_REPLY
 msg:
-  flags: ConfigFlags
+  flags: [ConfigFlags]
   miss_send_len: ControllerMaxLen
 )""";
 
