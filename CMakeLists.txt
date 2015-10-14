@@ -214,6 +214,7 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/ycontext.cpp
   src/ofp/yaml/ygroupnumber.cpp
   src/ofp/yaml/yportnumber.cpp
+  src/ofp/yaml/yqueuenumber.cpp
   src/ofp/yaml/ybuffernumber.cpp
   src/ofp/yaml/ycontrollermaxlen.cpp
   src/ofp/yaml/ytablenumber.cpp

@@ -260,13 +260,13 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.PORT_STATS.v1	msg.0.tx_packets	uint64	True			True
 1	REQUEST.QUEUE.v1	msg	object	True			
 1	REQUEST.QUEUE.v1	msg.port_no	CONTROLLER	True			
-1	REQUEST.QUEUE.v1	msg.queue_id	uint32	True			True
+1	REQUEST.QUEUE.v1	msg.queue_id	ALL	True			
 1	REPLY.QUEUE.v1	msg	array	True			
 1	REPLY.QUEUE.v1	msg.0	object	False			
 1	REPLY.QUEUE.v1	msg.0.duration_nsec	uint32	True		msg.0.duration_nsec=0	
 1	REPLY.QUEUE.v1	msg.0.duration_sec	uint32	True		msg.0.duration_sec=0	
 1	REPLY.QUEUE.v1	msg.0.port_no	CONTROLLER	True			
-1	REPLY.QUEUE.v1	msg.0.queue_id	uint32	True			True
+1	REPLY.QUEUE.v1	msg.0.queue_id	ALL	True			
 1	REPLY.QUEUE.v1	msg.0.tx_bytes	uint64	True			True
 1	REPLY.QUEUE.v1	msg.0.tx_errors	uint64	True			True
 1	REPLY.QUEUE.v1	msg.0.tx_packets	uint64	True			True
@@ -478,7 +478,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.min_rate	uint16	True			True
 1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.port	CONTROLLER	True		msg.queues.0.port=0	
 1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.properties	array	False	msg.queues.0.port=0		
-1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.queue_id	uint32	True			True
+1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.queue_id	ALL	True			
 1	ROLE_REQUEST.v1	msg	object	True			ERROR
 1	ROLE_REQUEST.v1	msg.generation_id	uint64	True			ERROR
 1	ROLE_REQUEST.v1	msg.role	uint32	True			ERROR
@@ -784,13 +784,13 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.PORT_STATS.v2	msg.0.tx_packets	uint64	True			True
 2	REQUEST.QUEUE.v2	msg	object	True			
 2	REQUEST.QUEUE.v2	msg.port_no	CONTROLLER	True			
-2	REQUEST.QUEUE.v2	msg.queue_id	uint32	True			True
+2	REQUEST.QUEUE.v2	msg.queue_id	ALL	True			
 2	REPLY.QUEUE.v2	msg	array	True			ERROR
 2	REPLY.QUEUE.v2	msg.0	object	False			ERROR
 2	REPLY.QUEUE.v2	msg.0.duration_nsec	uint32	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.duration_sec	uint32	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.port_no	CONTROLLER	True			ERROR
-2	REPLY.QUEUE.v2	msg.0.queue_id	uint32	True			ERROR
+2	REPLY.QUEUE.v2	msg.0.queue_id	ALL	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.tx_bytes	uint64	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.tx_errors	uint64	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.tx_packets	uint64	True			ERROR
@@ -1002,7 +1002,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.min_rate	uint16	True			True
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.port	CONTROLLER	True		msg.queues.0.port=0	
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.properties	array	False	msg.queues.0.port=0		
-2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.queue_id	uint32	True			True
+2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.queue_id	ALL	True			
 2	ROLE_REQUEST.v2	msg	object	True			ERROR
 2	ROLE_REQUEST.v2	msg.generation_id	uint64	True			ERROR
 2	ROLE_REQUEST.v2	msg.role	uint32	True			ERROR
@@ -1308,13 +1308,13 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.PORT_STATS.v3	msg.0.tx_packets	uint64	True			True
 3	REQUEST.QUEUE.v3	msg	object	True			
 3	REQUEST.QUEUE.v3	msg.port_no	CONTROLLER	True			
-3	REQUEST.QUEUE.v3	msg.queue_id	uint32	True			True
+3	REQUEST.QUEUE.v3	msg.queue_id	ALL	True			
 3	REPLY.QUEUE.v3	msg	array	True			
 3	REPLY.QUEUE.v3	msg.0	object	False			
 3	REPLY.QUEUE.v3	msg.0.duration_nsec	uint32	True		msg.0.duration_nsec=0	
 3	REPLY.QUEUE.v3	msg.0.duration_sec	uint32	True		msg.0.duration_sec=0	
 3	REPLY.QUEUE.v3	msg.0.port_no	CONTROLLER	True			
-3	REPLY.QUEUE.v3	msg.0.queue_id	uint32	True			True
+3	REPLY.QUEUE.v3	msg.0.queue_id	ALL	True			
 3	REPLY.QUEUE.v3	msg.0.tx_bytes	uint64	True			True
 3	REPLY.QUEUE.v3	msg.0.tx_errors	uint64	True			True
 3	REPLY.QUEUE.v3	msg.0.tx_packets	uint64	True			True
@@ -1526,7 +1526,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	QUEUE_GET_CONFIG_REPLY.v3	msg.queues.0.min_rate	uint16	True			True
 3	QUEUE_GET_CONFIG_REPLY.v3	msg.queues.0.port	CONTROLLER	True			
 3	QUEUE_GET_CONFIG_REPLY.v3	msg.queues.0.properties	array	False			
-3	QUEUE_GET_CONFIG_REPLY.v3	msg.queues.0.queue_id	uint32	True			True
+3	QUEUE_GET_CONFIG_REPLY.v3	msg.queues.0.queue_id	ALL	True			
 3	ROLE_REQUEST.v3	msg	object	True			
 3	ROLE_REQUEST.v3	msg.generation_id	uint64	True			True
 3	ROLE_REQUEST.v3	msg.role	uint32	True		msg.role=0xFFFFFFFF	
@@ -1832,13 +1832,13 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.PORT_STATS.v4	msg.0.tx_packets	uint64	True			True
 4	REQUEST.QUEUE.v4	msg	object	True			
 4	REQUEST.QUEUE.v4	msg.port_no	CONTROLLER	True			
-4	REQUEST.QUEUE.v4	msg.queue_id	uint32	True			True
+4	REQUEST.QUEUE.v4	msg.queue_id	ALL	True			
 4	REPLY.QUEUE.v4	msg	array	True			
 4	REPLY.QUEUE.v4	msg.0	object	False			
 4	REPLY.QUEUE.v4	msg.0.duration_nsec	uint32	True			True
 4	REPLY.QUEUE.v4	msg.0.duration_sec	uint32	True			True
 4	REPLY.QUEUE.v4	msg.0.port_no	CONTROLLER	True			
-4	REPLY.QUEUE.v4	msg.0.queue_id	uint32	True			True
+4	REPLY.QUEUE.v4	msg.0.queue_id	ALL	True			
 4	REPLY.QUEUE.v4	msg.0.tx_bytes	uint64	True			True
 4	REPLY.QUEUE.v4	msg.0.tx_errors	uint64	True			True
 4	REPLY.QUEUE.v4	msg.0.tx_packets	uint64	True			True
@@ -2050,7 +2050,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	QUEUE_GET_CONFIG_REPLY.v4	msg.queues.0.min_rate	uint16	True			True
 4	QUEUE_GET_CONFIG_REPLY.v4	msg.queues.0.port	CONTROLLER	True			
 4	QUEUE_GET_CONFIG_REPLY.v4	msg.queues.0.properties	array	False			
-4	QUEUE_GET_CONFIG_REPLY.v4	msg.queues.0.queue_id	uint32	True			True
+4	QUEUE_GET_CONFIG_REPLY.v4	msg.queues.0.queue_id	ALL	True			
 4	ROLE_REQUEST.v4	msg	object	True			
 4	ROLE_REQUEST.v4	msg.generation_id	uint64	True			True
 4	ROLE_REQUEST.v4	msg.role	uint32	True		msg.role=0xFFFFFFFF	
@@ -2356,13 +2356,13 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.PORT_STATS.v5	msg.0.tx_packets	uint64	True			True
 5	REQUEST.QUEUE.v5	msg	object	True			
 5	REQUEST.QUEUE.v5	msg.port_no	CONTROLLER	True			
-5	REQUEST.QUEUE.v5	msg.queue_id	uint32	True			True
+5	REQUEST.QUEUE.v5	msg.queue_id	ALL	True			
 5	REPLY.QUEUE.v5	msg	array	True			
 5	REPLY.QUEUE.v5	msg.0	object	False			
 5	REPLY.QUEUE.v5	msg.0.duration_nsec	uint32	True			True
 5	REPLY.QUEUE.v5	msg.0.duration_sec	uint32	True			True
 5	REPLY.QUEUE.v5	msg.0.port_no	CONTROLLER	True			
-5	REPLY.QUEUE.v5	msg.0.queue_id	uint32	True			True
+5	REPLY.QUEUE.v5	msg.0.queue_id	ALL	True			
 5	REPLY.QUEUE.v5	msg.0.tx_bytes	uint64	True			True
 5	REPLY.QUEUE.v5	msg.0.tx_errors	uint64	True			True
 5	REPLY.QUEUE.v5	msg.0.tx_packets	uint64	True			True
@@ -2574,7 +2574,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	QUEUE_GET_CONFIG_REPLY.v5	msg.queues.0.min_rate	uint16	True			True
 5	QUEUE_GET_CONFIG_REPLY.v5	msg.queues.0.port	CONTROLLER	True			
 5	QUEUE_GET_CONFIG_REPLY.v5	msg.queues.0.properties	array	False			
-5	QUEUE_GET_CONFIG_REPLY.v5	msg.queues.0.queue_id	uint32	True			True
+5	QUEUE_GET_CONFIG_REPLY.v5	msg.queues.0.queue_id	ALL	True			
 5	ROLE_REQUEST.v5	msg	object	True			
 5	ROLE_REQUEST.v5	msg.generation_id	uint64	True			True
 5	ROLE_REQUEST.v5	msg.role	uint32	True		msg.role=0xFFFFFFFF	

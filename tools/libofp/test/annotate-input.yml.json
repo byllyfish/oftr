@@ -486,7 +486,7 @@
   {
     "msg": {
       "port_no": "CONTROLLER", 
-      "queue_id": 4294967295
+      "queue_id": "ALL"
     }, 
     "type": "REQUEST.QUEUE", 
     "version": 4, 
@@ -500,7 +500,7 @@
         "duration_sec": 4294967295, 
         "tx_errors": 18446744073709551615, 
         "tx_bytes": 18446744073709551615, 
-        "queue_id": 4294967295, 
+        "queue_id": "ALL", 
         "tx_packets": 18446744073709551615, 
         "port_no": "CONTROLLER", 
         "duration_nsec": 4294967295
@@ -917,7 +917,7 @@
       "queues": [
         {
           "min_rate": 65535, 
-          "queue_id": 4294967295, 
+          "queue_id": "ALL", 
           "max_rate": 65535, 
           "properties": [], 
           "port": "CONTROLLER"

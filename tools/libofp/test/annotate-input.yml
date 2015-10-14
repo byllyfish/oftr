@@ -317,14 +317,14 @@ type: REQUEST.QUEUE
 flags: [ 'MORE' ]
 msg:
   port_no: CONTROLLER
-  queue_id: 0xffffffff
+  queue_id: ALL
 ---
 version: 0x04
 type: REPLY.QUEUE
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
-    queue_id: 0xffffffff
+    queue_id: ALL
     tx_packets: 0xffffffffffffffff
     tx_bytes: 0xffffffffffffffff
     tx_errors: 0xffffffffffffffff
@@ -583,7 +583,7 @@ type: QUEUE_GET_CONFIG_REPLY
 msg:
   port: CONTROLLER
   queues:
-    - queue_id: 0xffffffff
+    - queue_id: ALL
       port: CONTROLLER
       min_rate: 0xffff
       max_rate: 0xffff

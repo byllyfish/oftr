@@ -5,6 +5,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/portnumber.h"
+#include "ofp/queuenumber.h"
 
 namespace ofp {
 
@@ -19,7 +20,7 @@ class MPQueueStats {
 
  private:
   PortNumber portNo_;
-  Big32 queueId_;
+  QueueNumber queueId_;
   Big64 txBytes_;
   Big64 txPackets_;
   Big64 txErrors_;
