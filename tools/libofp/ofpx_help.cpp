@@ -94,7 +94,7 @@ static const char *const kPropertySchemas[] = {
 
 static const char *const kBuiltinTypes[] = {
   "UInt8", "UInt16", "UInt32", "UInt64", "SInt32", "String", "Str16", "Str32", "Str256", "HexData", "DatapathID",
-  "MacAddress", "IPv4Address", "IPv6Address", 
+  "MacAddress", "IPv4Address", "IPv6Address", "LLDPChassisID", "LLDPPortID"
 };
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
@@ -110,6 +110,9 @@ static SchemaPair kEnumSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::OFPErrorType>, "Enum/ErrorType"},
     {ofp::yaml::MakeSchema<ofp::OFPFlowUpdateEvent>, "Enum/FlowUpdateEvent"},
     {ofp::yaml::MakeSchema<ofp::OFPErrorCode>, "Enum/ErrorCode"},
+    {ofp::yaml::MakeSchema<ofp::OFPGroupModCommand>, "Enum/GroupModCommand"},
+    {ofp::yaml::MakeSchema<ofp::OFPGroupType>, "Enum/GroupType"},
+    {ofp::yaml::MakeSchema<ofp::OFPFlowMonitorCommand>, "Enum/FlowMonitorCommand"},
 };
 
 static SchemaPair kMixedSchemas[] = {
@@ -157,7 +160,9 @@ static std::pair<const char *, const char *> sFieldTypeMap[] = {
     {"Big8", "UInt8"},
     {"Big16", "UInt16"},
     {"Big32", "UInt32"},
-    {"Big64", "UInt64"}};
+    {"Big64", "UInt64"},
+    {"LLDPValue<LLDPType::ChassisID>", "LLDPChassisID"},
+    {"LLDPValue<LLDPType::PortID>", "LLDPPortID"}};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
@@ -358,14 +363,22 @@ void Help::dumpSchemaNames() {
 
 /// Print out each schema. Check that dependent schema's exist.
 void Help::dumpSchemaAll() {
+  bool missingDependentSchemas = false;
+
   for (auto &schema : schemas_) {
     schema->print(std::cout);
 
     for (auto &s : schema->dependsOnSchemas()) {
         if (!findSchema(s)) {
           std::cerr << "Unknown dependent schema '" << s << "'\n";
+          missingDependentSchemas = true;
         }
     }    
+  }
+
+  if (missingDependentSchemas) {
+    std::cerr << "Some dependent schemas are missing.\n";
+    ::exit(static_cast<int>(ExitStatus::MissingDependentSchemas));
   }
 }
 

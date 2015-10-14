@@ -17,3 +17,10 @@ add_test(
   COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-messages.sh
 )
 set_tests_properties(libofp-messages PROPERTIES TIMEOUT 360)
+
+
+add_test(
+  NAME libofp-schema
+  COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-schema.sh
+)
+set_tests_properties(libofp-schema PROPERTIES TIMEOUT 10)
