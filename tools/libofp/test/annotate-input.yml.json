@@ -582,7 +582,7 @@
   }, 
   {
     "msg": {
-      "meter_id": 4294967295
+      "meter_id": "ALL"
     }, 
     "type": "REQUEST.METER", 
     "version": 4, 
@@ -595,7 +595,7 @@
       {
         "duration_sec": 4294967295, 
         "byte_in_count": 18446744073709551615, 
-        "meter_id": 4294967295, 
+        "meter_id": "ALL", 
         "flow_count": 4294967295, 
         "packet_in_count": 18446744073709551615, 
         "bands": [
@@ -615,7 +615,7 @@
   }, 
   {
     "msg": {
-      "meter_id": 4294967295
+      "meter_id": "ALL"
     }, 
     "type": "REQUEST.METER_CONFIG", 
     "version": 4, 
@@ -634,7 +634,7 @@
           }
         ], 
         "flags": 65535, 
-        "meter_id": 4294967295
+        "meter_id": "ALL"
       }
     ], 
     "type": "REPLY.METER_CONFIG", 
@@ -1004,7 +1004,7 @@
       "flags": [
         "KBPS"
       ], 
-      "meter_id": 4294967295, 
+      "meter_id": "ALL", 
       "bands": [
         {
           "type": "DROP", 

@@ -375,13 +375,13 @@ version: 0x04
 type: REQUEST.METER
 flags: [ 'MORE' ]
 msg:
-  meter_id: 0xffffffff
+  meter_id: ALL
 ---
 version: 0x04
 type: REPLY.METER
 flags: [ 'MORE' ]
 msg:
-  - meter_id: 0xffffffff
+  - meter_id: ALL
     flow_count: 0xffffffff
     packet_in_count: 0xffffffffffffffff
     byte_in_count: 0xffffffffffffffff
@@ -395,14 +395,14 @@ version: 0x04
 type: REQUEST.METER_CONFIG
 flags: [ 'MORE' ]
 msg:
-  meter_id: 0xffffffff
+  meter_id: ALL
 ---
 version: 0x04
 type: REPLY.METER_CONFIG
 flags: [ 'MORE' ]
 msg:
   - flags: 0xffff
-    meter_id: 0xffffffff
+    meter_id: ALL
     bands:
       - type: DROP
         rate: 0xffffffff
@@ -631,7 +631,7 @@ type: METER_MOD
 msg:
   command: MODIFY
   flags: [ KBPS ]
-  meter_id: 0xffffffff
+  meter_id: ALL
   bands:
     - type: DROP
       rate: 0xffffffff

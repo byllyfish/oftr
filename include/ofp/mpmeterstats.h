@@ -5,6 +5,7 @@
 
 #include "ofp/packetcounterlist.h"
 #include "ofp/padding.h"
+#include "ofp/meternumber.h"
 
 namespace ofp {
 
@@ -14,7 +15,7 @@ class MPMeterStats {
  public:
   enum { MPVariableSizeOffset = 4 };
 
-  UInt32 meterId() const { return meterId_; }
+  MeterNumber meterId() const { return meterId_; }
   UInt32 flowCount() const { return flowCount_; }
   UInt64 packetInCount() const { return packetInCount_; }
   UInt64 byteInCount() const { return byteInCount_; }
@@ -26,7 +27,7 @@ class MPMeterStats {
   bool validateInput(Validation *context) const;
 
  private:
-  Big32 meterId_;
+  MeterNumber meterId_;
   Big16 len_;
   Padding<6> pad_;
   Big32 flowCount_;
@@ -47,7 +48,7 @@ class MPMeterStatsBuilder {
  public:
   MPMeterStatsBuilder() = default;
 
-  void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
+  void setMeterId(MeterNumber meterId) { msg_.meterId_ = meterId; }
   void setFlowCount(UInt32 flowCount) { msg_.flowCount_ = flowCount; }
   void setPacketInCount(UInt64 packetInCount) {
     msg_.packetInCount_ = packetInCount;

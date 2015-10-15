@@ -121,6 +121,7 @@ static SchemaPair kMixedSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::GroupNumber>, "Mixed/GroupNumber"},
     {ofp::yaml::MakeSchema<ofp::BufferNumber>, "Mixed/BufferNumber"},
     {ofp::yaml::MakeSchema<ofp::TableNumber>, "Mixed/TableNumber"},
+    {ofp::yaml::MakeSchema<ofp::MeterNumber>, "Mixed/MeterNumber"},
     {ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen"},
 };
 

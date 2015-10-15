@@ -68,17 +68,17 @@ msg:
 type: REQUEST.QUEUE
 msg:
   port_no: PortNumber
-  queue_id: UInt32
+  queue_id: QueueNumber
 
 {Message/Request.MeterConfig}
 type: REQUEST.METER_CONFIG
 msg:
-  meter_id: UInt32
+  meter_id: MeterNumber
 
 {Message/Request.Meter}
 type: REQUEST.METER
 msg:
-  meter_id: UInt32
+  meter_id: MeterNumber
 
 {Message/Request.Group}
 type: REQUEST.GROUP

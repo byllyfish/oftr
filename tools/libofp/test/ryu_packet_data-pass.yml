@@ -1621,7 +1621,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            REPLY.METER_CONFIG
@@ -1642,7 +1642,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            FEATURES_REQUEST
@@ -4252,7 +4252,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            REPLY.METER_CONFIG
@@ -4273,7 +4273,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            REPLY.METER

@@ -14,7 +14,7 @@ type: METER_MOD
 msg:
   command: MeterModCommand
   flags: [MeterConfigFlags]
-  meter_id: UInt32
+  meter_id: MeterNumber
   bands: [MeterBand]
 )""";
 

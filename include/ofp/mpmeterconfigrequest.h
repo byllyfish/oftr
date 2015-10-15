@@ -5,6 +5,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
+#include "ofp/meternumber.h"
 
 namespace ofp {
 
@@ -16,12 +17,12 @@ class MPMeterConfigRequest {
  public:
   static const MPMeterConfigRequest *cast(const MultipartRequest *req);
 
-  UInt32 meterId() const { return meterId_; }
+  MeterNumber meterId() const { return meterId_; }
 
   bool validateInput(Validation *context) const;
 
  private:
-  Big32 meterId_;
+  MeterNumber meterId_;
   Padding<4> pad_;
 
   friend class MPMeterConfigRequestBuilder;
@@ -37,7 +38,7 @@ class MPMeterConfigRequestBuilder {
  public:
   MPMeterConfigRequestBuilder() = default;
 
-  void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
+  void setMeterId(MeterNumber meterId) { msg_.meterId_ = meterId; }
 
   void write(Writable *channel);
   void reset() {}

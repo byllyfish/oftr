@@ -37,7 +37,7 @@ msg:
 {Message/Reply.Table}
 type: REPLY.TABLE
 msg:
-  - table_id: UInt8
+  - table_id: TableNumber
     name: Str32
     wildcards: UInt32
     max_entries: UInt32
@@ -82,7 +82,7 @@ msg:
 {Message/Reply.Flow}
 type: REPLY.FLOW
 msg:
-  table_id: UInt8
+  table_id: TableNumber
   duration_sec: UInt32
   duration_nsec: UInt32
   priority: UInt16
@@ -138,7 +138,7 @@ msg:
 type: REPLY.QUEUE
 msg:
   - port_no: PortNumber
-    queue_id: UInt32
+    queue_id: QueueNumber
     tx_packets: UInt64
     tx_bytes: UInt64
     tx_errors: UInt64
@@ -149,13 +149,13 @@ msg:
 type: REPLY.METER_CONFIG
 msg:
   - flags: UInt16
-    meter_id: UInt32
+    meter_id: MeterNumber
     bands: [MeterBand]
 
 {Message/Reply.Meter}
 type: REPLY.METER
 msg:
-  - meter_id: UInt32
+  - meter_id: MeterNumber
     flow_count: UInt32
     packet_in_count: UInt64
     bytes_in_count: UInt64
@@ -203,7 +203,7 @@ msg:
 type: REPLY.FLOW_MONITOR
 msg:
   - event: INITIAL | ADDED | REMOVED | MODIFIED
-    table_id: UInt8
+    table_id: TableNumber
     reason: UInt8
     idle_timeout: UInt16
     hard_timeout: UInt16
