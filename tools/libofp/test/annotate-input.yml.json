@@ -267,7 +267,7 @@
           "watch_port": "CONTROLLER"
         }
       ], 
-      "group_id": 4294967295, 
+      "group_id": "ANY", 
       "type": "ALL"
     }, 
     "version": 4, 
@@ -514,7 +514,7 @@
   }, 
   {
     "msg": {
-      "group_id": 4294967295
+      "group_id": "ANY"
     }, 
     "type": "REQUEST.GROUP", 
     "version": 4, 
@@ -534,7 +534,7 @@
           }
         ], 
         "byte_count": 18446744073709551615, 
-        "group_id": 4294967295, 
+        "group_id": "ANY", 
         "ref_count": 4294967295, 
         "duration_nsec": 4294967295
       }

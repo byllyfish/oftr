@@ -167,7 +167,7 @@ type: GROUP_MOD
 msg:
   command: ADD
   type: ALL
-  group_id: 0xffffffff
+  group_id: ANY
   buckets:
     - weight: 0xffff
       watch_port: CONTROLLER
@@ -335,13 +335,13 @@ version: 0x04
 type: REQUEST.GROUP
 flags: [ 'MORE' ]
 msg:
-  group_id: 0xffffffff
+  group_id: ANY
 ---
 version: 0x04
 type: REPLY.GROUP
 flags: [ 'MORE' ]
 msg:
-  - group_id: 0xffffffff
+  - group_id: ANY
     ref_count: 0xffffffff
     packet_count: 0xffffffffffffffff
     byte_count: 0xffffffffffffffff

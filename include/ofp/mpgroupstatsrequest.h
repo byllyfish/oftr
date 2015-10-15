@@ -5,6 +5,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
+#include "ofp/groupnumber.h"
 
 namespace ofp {
 
@@ -16,12 +17,12 @@ class MPGroupStatsRequest {
  public:
   static const MPGroupStatsRequest *cast(const MultipartRequest *req);
 
-  UInt32 groupId() const { return groupId_; }
+  GroupNumber groupId() const { return groupId_; }
 
   bool validateInput(Validation *context) const;
 
  private:
-  Big32 groupId_;
+  GroupNumber groupId_;
   Padding<4> pad_;
 
   friend class MPGroupStatsRequestBuilder;
@@ -37,7 +38,7 @@ class MPGroupStatsRequestBuilder {
  public:
   MPGroupStatsRequestBuilder() = default;
 
-  void setGroupId(UInt32 groupId) { msg_.groupId_ = groupId; }
+  void setGroupId(GroupNumber groupId) { msg_.groupId_ = groupId; }
 
   void write(Writable *channel);
   void reset() {}
