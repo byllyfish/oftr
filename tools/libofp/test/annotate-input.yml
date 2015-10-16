@@ -81,7 +81,7 @@ msg:
   in_phy_port: 0xffffffff
   metadata: 0xffffffffffffffff
   reason: TABLE_MISS
-  table_id: 0xff
+  table_id: ALL
   cookie: 0xffffffffffffffff
   match:
     - field: ETH_DST
@@ -95,7 +95,7 @@ msg:
   cookie: 0xffffffffffffffff
   priority: 0xffff
   reason: IDLE_TIMEOUT
-  table_id: 0xff
+  table_id: ALL
   duration_sec: 0xffffffff
   duration_nsec: 0xffffffff
   idle_timeout: 0xffff
@@ -171,7 +171,7 @@ msg:
   buckets:
     - weight: 0xffff
       watch_port: CONTROLLER
-      watch_group: 0xffffffff
+      watch_group: ANY
       actions:
         - action: OUTPUT
           port: CONTROLLER
@@ -191,8 +191,8 @@ msg:
 version: 0x04
 type: TABLE_MOD
 msg:
-  table_id: 0xff
-  config: [ 0xffffffff ]
+  table_id: ALL
+  config: [ EVICTION ]
 ---
 version: 0x04
 type: REQUEST.DESC
@@ -227,7 +227,7 @@ version: 0x04
 type: REPLY.FLOW
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     duration_sec: 0xffffffff
     duration_nsec: 0xffffffff
     priority: 0xffff
@@ -279,7 +279,7 @@ version: 0x04
 type: REPLY.TABLE
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     active_count: 0xffffffff
     lookup_count: 0xffffffffffffffff
     matched_count: 0xffffffffffffffff
@@ -427,7 +427,7 @@ version: 0x04
 type: REQUEST.TABLE_FEATURES
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     name: '................................'
     metadata_match: 0xffffffffffffffff
     metadata_write: 0xffffffffffffffff
@@ -467,7 +467,7 @@ version: 0x04
 type: REPLY.TABLE_FEATURES
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     name: '................................'
     metadata_match: 0xffffffffffffffff
     metadata_write: 0xffffffffffffffff
@@ -531,11 +531,11 @@ type: REQUEST.FLOW_MONITOR
 flags: [ 'MORE' ]
 msg:
   monitor_id: 0xffffffff
-  out_port: 0xffffffff
-  out_group: 0xffffffff
+  out_port: ALL
+  out_group: ALL
   flags: [ NO_ABBREV ]
-  table_id: 0xff
-  command: 0xff
+  table_id: ALL
+  command: DELETE
   match:
     - field: ETH_DST
       value: 'ff:ff:ff:ff:ff:ff'
@@ -546,8 +546,8 @@ type: REPLY.FLOW_MONITOR
 flags: [ 'MORE' ]
 msg:
   - event: ADDED
-    table_id: 0xff
-    reason: 0xff
+    table_id: ALL
+    reason: 0xFF
     idle_timeout: 0xffff
     hard_timeout: 0xffff
     priority: 0xffff

@@ -14,8 +14,8 @@ class BundleControl
     : public ProtocolMsg<BundleControl, OFPT_BUNDLE_CONTROL, 16, 65528> {
  public:
   UInt32 bundleId() const { return bundleId_; }
-  UInt16 ctrlType() const { return ctrlType_; }
-  UInt16 flags() const { return flags_; }
+  OFPBundleCtrlType ctrlType() const { return ctrlType_; }
+  OFPBundleFlags flags() const { return flags_; }
   PropertyRange properties() const;
 
   bool validateInput(Validation *context) const;
@@ -23,8 +23,8 @@ class BundleControl
  private:
   Header header_;
   Big32 bundleId_;
-  Big16 ctrlType_;
-  Big16 flags_;
+  Big<OFPBundleCtrlType> ctrlType_;
+  Big<OFPBundleFlags> flags_;
 
   // Only BundleControlBuilder can construct an instance.
   BundleControl() : header_{type()} {}
@@ -42,8 +42,8 @@ static_assert(IsTriviallyCopyable<BundleControl>(),
 class BundleControlBuilder {
  public:
   void setBundleId(UInt32 bundleId) { msg_.bundleId_ = bundleId; }
-  void setCtrlType(UInt16 ctrlType) { msg_.ctrlType_ = ctrlType; }
-  void setFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setCtrlType(OFPBundleCtrlType ctrlType) { msg_.ctrlType_ = ctrlType; }
+  void setFlags(OFPBundleFlags flags) { msg_.flags_ = flags; }
   void setProperties(const PropertyList &properties) {
     properties_ = properties;
   }

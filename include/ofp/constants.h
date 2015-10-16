@@ -737,6 +737,28 @@ inline OFPFlowMonitorFlags operator|(OFPFlowMonitorFlags lhs,
   return static_cast<OFPFlowMonitorFlags>(static_cast<UInt16>(lhs) | rhs);
 }
 
+enum OFPBundleCtrlType : UInt16 {
+  OFPBCT_OPEN_REQUEST = 0,
+  OFPBCT_OPEN_REPLY = 1,
+  OFPBCT_CLOSE_REQUEST = 2,
+  OFPBCT_CLOSE_REPLY = 3,
+  OFPBCT_COMMIT_REQUEST = 4,
+  OFPBCT_COMMIT_REPLY = 5,
+  OFPBCT_DISCARD_REQUEST = 6,
+  OFPBCT_DISCARD_REPLY = 7
+};
+
+enum OFPBundleFlags : UInt16 {
+  OFPBF_ATOMIC  = 1 << 0,
+  OFPBF_ORDERED = 1 << 1,
+
+  OFPBF_OTHER_BUNDLE_FLAGS = 0xfffc
+};
+
+inline OFPBundleFlags operator|(OFPBundleFlags lhs, OFPBundleFlags rhs) {
+  return static_cast<OFPBundleFlags>(static_cast<UInt16>(lhs) | rhs);
+}
+
 }  // namespace ofp
 
 #endif  // OFP_CONSTANTS_H_

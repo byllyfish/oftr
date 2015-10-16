@@ -7,6 +7,7 @@
 #include "ofp/matchheader.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionlist.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -23,7 +24,7 @@ class MPFlowMonitorReply {
     return *Big32_cast(&tableId_);
   }
 
-  UInt8 tableId() const {
+  TableNumber tableId() const {
     assert(full());
     return tableId_;
   }
@@ -61,7 +62,7 @@ class MPFlowMonitorReply {
  private:
   Big16 length_;
   Big<OFPFlowUpdateEvent> event_;
-  Big8 tableId_;
+  TableNumber tableId_;
   Big8 reason_;
   Big16 idleTimeout_;
   Big16 hardTimeout_;
@@ -95,7 +96,7 @@ class MPFlowMonitorReplyBuilder {
 
   void setXid(UInt32 xid) { *Big32_cast(&msg_.tableId_) = xid; }
 
-  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setReason(UInt8 reason) { msg_.reason_ = reason; }
   void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
   void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }

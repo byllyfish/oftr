@@ -83,6 +83,17 @@ static const llvm::StringRef sFlowUpdateEvent[] = {
 static const llvm::StringRef sFlowMonitorCommand[] = {"ADD", "MODIFY",
                                                       "DELETE"};
 
+static const llvm::StringRef sBundleCtrlType[] = {
+    "OPEN_REQUEST", 
+    "OPEN_REPLY",
+    "CLOSE_REQUEST",
+    "CLOSE_REPLY",
+    "COMMIT_REQUEST", 
+    "COMMIT_REPLY",
+    "DISCARD_REQUEST",
+    "DISCARD_REPLY"
+};
+
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
 EnumConverter<OFPMultipartType>
@@ -131,6 +142,10 @@ EnumConverter<OFPFlowUpdateEvent>
 EnumConverter<OFPFlowMonitorCommand>
     llvm::yaml::ScalarTraits<OFPFlowMonitorCommand>::converter{
         sFlowMonitorCommand};
+
+EnumConverter<OFPBundleCtrlType>
+    llvm::yaml::ScalarTraits<OFPBundleCtrlType>::converter{sBundleCtrlType};
+
 
 #define STR_ENTRY(s) \
   { s, #s }

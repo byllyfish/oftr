@@ -34,7 +34,7 @@ struct MappingTraits<ofp::detail::BucketInserter> {
 
     UInt16 weight;
     PortNumber watchPort;
-    UInt32 watchGroup;
+    GroupNumber watchGroup;
     io.mapRequired("weight", weight);
     io.mapRequired("watch_port", watchPort);
     io.mapRequired("watch_group", watchGroup);
@@ -58,7 +58,7 @@ struct MappingTraits<ofp::Bucket> {
 
     Hex16 weight = bucket.weight();
     PortNumber watchPort = bucket.watchPort();
-    Hex32 watchGroup = bucket.watchGroup();
+    GroupNumber watchGroup = bucket.watchGroup();
     io.mapRequired("weight", weight);
     io.mapRequired("watch_port", watchPort);
     io.mapRequired("watch_group", watchGroup);

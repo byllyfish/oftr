@@ -122,7 +122,7 @@
       "in_phy_port": 4294967295, 
       "buffer_id": "NO_BUFFER", 
       "reason": "TABLE_MISS", 
-      "table_id": 255, 
+      "table_id": "ALL", 
       "match": [
         {
           "field": "ETH_DST", 
@@ -147,7 +147,7 @@
       "duration_nsec": 4294967295, 
       "packet_count": 18446744073709551615, 
       "duration_sec": 4294967295, 
-      "table_id": 255, 
+      "table_id": "ALL", 
       "cookie": 18446744073709551615, 
       "idle_timeout": 65535, 
       "match": [
@@ -256,7 +256,7 @@
       "buckets": [
         {
           "weight": 65535, 
-          "watch_group": 4294967295, 
+          "watch_group": "ANY", 
           "actions": [
             {
               "action": "OUTPUT", 
@@ -295,9 +295,9 @@
   }, 
   {
     "msg": {
-      "table_id": 255, 
+      "table_id": "ALL", 
       "config": [
-        4294967295
+        "EVICTION"
       ]
     }, 
     "version": 4, 
@@ -360,7 +360,7 @@
         "flags": [
           "SEND_FLOW_REM"
         ], 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "match": [
           {
             "field": "ETH_DST", 
@@ -434,7 +434,7 @@
       {
         "matched_count": 18446744073709551615, 
         "lookup_count": 18446744073709551615, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "active_count": 4294967295
       }
     ], 
@@ -711,7 +711,7 @@
           "GOTO_TABLE"
         ], 
         "metadata_match": 18446744073709551615, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "config": 4294967295, 
         "metadata_write": 18446744073709551615, 
         "match": [
@@ -771,7 +771,7 @@
           "GOTO_TABLE"
         ], 
         "metadata_match": 18446744073709551615, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "config": 4294967295, 
         "metadata_write": 18446744073709551615, 
         "match": [
@@ -832,8 +832,8 @@
   }, 
   {
     "msg": {
-      "out_group": 4294967295, 
-      "table_id": 255, 
+      "out_group": "ALL", 
+      "table_id": "ALL", 
       "match": [
         {
           "field": "ETH_DST", 
@@ -842,11 +842,11 @@
         }
       ], 
       "monitor_id": 4294967295, 
-      "command": 255, 
+      "command": "DELETE", 
       "flags": [
         "NO_ABBREV"
       ], 
-      "out_port": 4294967295
+      "out_port": "ALL"
     }, 
     "type": "REQUEST.FLOW_MONITOR", 
     "version": 5, 
@@ -861,7 +861,7 @@
         "idle_timeout": 65535, 
         "priority": 65535, 
         "reason": 255, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "cookie": 18446744073709551615, 
         "event": "ADDED", 
         "match": [
