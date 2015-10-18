@@ -668,7 +668,17 @@ msg:
       experimenter: 0xffffffff
       exp_type: 0xffffffff
       data: ffffffff
-#version: 0x05
-#type: BUNDLE_ADD_MESSAGE
-#msg:
-#---
+---
+version: 0x05
+type: BUNDLE_ADD_MESSAGE
+msg:
+  bundle_id: 0xffffffff
+  flags: [ ATOMIC ]
+  message:
+    type: HELLO
+  properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
+...
