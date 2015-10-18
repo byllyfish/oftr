@@ -992,19 +992,7 @@ TEST(decoder, portmodv5) {
       "000010000001001800000003000005DC000007D000000BB80000012CFFFF000C00000065"
       "0000000000000000FFFF0010000000650000000100000001FFFF00140000006500000002"
       "000000010000000200000000",
-      "---\ntype:            PORT_MOD\nxid:             0x00000000\nversion:   "
-      "      0x05\nmsg:             \n  port_no:         0x00000001\n  "
-      "hw_addr:         '00:11:00:00:11:11'\n  config:          [  ]\n  mask:  "
-      "          [  ]\n  ethernet:        \n    advertise:       [ FIBER ]\n  "
-      "optical:         \n    configure:       [ RX_TUNE, TX_TUNE ]\n    "
-      "freq_lmda:       0x000005DC\n    fl_offset:       2000\n    grid_span:  "
-      "     0x00000BB8\n    tx_pwr:          0x0000012C\n  properties:      \n "
-      "   - property:        0xFFFF\n      experimenter:    0x00000065\n      "
-      "exp_type:        0x00000000\n      data:            ''\n    - property: "
-      "       0xFFFF\n      experimenter:    0x00000065\n      exp_type:       "
-      " 0x00000001\n      data:            00000001\n    - property:        "
-      "0xFFFF\n      experimenter:    0x00000065\n      exp_type:        "
-      "0x00000002\n      data:            0000000100000002\n...\n");
+      "---\ntype:            PORT_MOD\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  port_no:         0x00000001\n  hw_addr:         '00:11:00:00:11:11'\n  config:          [  ]\n  mask:            [  ]\n  ethernet:        \n    advertise:       [ FIBER ]\n  optical:         \n    configure:       [ RX_TUNE, TX_TUNE ]\n    freq_lmda:       0x000005DC\n    fl_offset:       2000\n    grid_span:       0x00000BB8\n    tx_pwr:          0x0000012C\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000000\n      data:            ''\n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000001\n      data:            00000001\n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000002\n      data:            0000000100000002\n...\n");
 }
 
 TEST(decoder, tablemodv4) {

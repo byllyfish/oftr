@@ -53,11 +53,11 @@ struct MappingTraits<ofp::detail::PortModPropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    Hex16 property = elem.type();
+    OFPExperimenterPropertyType property = static_cast<OFPExperimenterPropertyType>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {
-      case OFPPDPT_EXPERIMENTER: {
+      case OFP_EXPERIMENTER_PROPERTY_TYPE: {
         const PortModPropertyExperimenter &p =
             elem.property<PortModPropertyExperimenter>();
 
@@ -72,7 +72,7 @@ struct MappingTraits<ofp::detail::PortModPropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported PortModPropertyItem");
+        log::debug("Unsupported PortMod Property");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;
@@ -88,10 +88,10 @@ struct MappingTraits<ofp::detail::PortModPropertyInserter> {
 
     PropertyList &props = Ref_cast<PropertyList>(list);
 
-    UInt16 property;
+    OFPExperimenterPropertyType property;
     io.mapRequired("property", property);
 
-    if (property == OFPPMPT_EXPERIMENTER) {
+    if (property == OFP_EXPERIMENTER_PROPERTY_TYPE) {
       UInt32 experimenter;
       io.mapRequired("experimenter", experimenter);
 

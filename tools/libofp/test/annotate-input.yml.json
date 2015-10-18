@@ -287,7 +287,14 @@
       "mask": [
         "0xffffffff"
       ], 
-      "properties": null, 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ], 
       "port_no": "CONTROLLER"
     }, 
     "version": 4, 

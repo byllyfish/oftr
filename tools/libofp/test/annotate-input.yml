@@ -187,6 +187,10 @@ msg:
   ethernet:
     advertise: [ '0xffffffff' ]
   properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
 ---
 version: 0x04
 type: TABLE_MOD
