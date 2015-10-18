@@ -12,7 +12,7 @@ namespace ofp {
 class RoleStatus : public ProtocolMsg<RoleStatus, OFPT_ROLE_STATUS, 24, 65528> {
  public:
   OFPControllerRole role() const { return role_; }
-  UInt8 reason() const { return reason_; }
+  OFPRoleStatusReason reason() const { return reason_; }
   UInt64 generationId() const { return generationId_; }
 
   PropertyRange properties() const;
@@ -22,7 +22,7 @@ class RoleStatus : public ProtocolMsg<RoleStatus, OFPT_ROLE_STATUS, 24, 65528> {
  private:
   Header header_;
   Big<OFPControllerRole> role_;
-  Big8 reason_;
+  Big<OFPRoleStatusReason> reason_;
   Padding<3> pad_;
   Big64 generationId_;
 
@@ -42,7 +42,7 @@ static_assert(IsTriviallyCopyable<RoleStatus>(),
 class RoleStatusBuilder {
  public:
   void setRole(OFPControllerRole role) { msg_.role_ = role; }
-  void setReason(UInt8 reason) { msg_.reason_ = reason; }
+  void setReason(OFPRoleStatusReason reason) { msg_.reason_ = reason; }
   void setGenerationId(UInt64 generationId) {
     msg_.generationId_ = generationId;
   }

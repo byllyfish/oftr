@@ -61,14 +61,14 @@ type: REPLY.GROUP_FEATURES
 msg:
   types: UInt32
   capabilities: UInt32
-  max_groups_all: [ActionTypeFlag]
-  max_groups_sel: [ActionTypeFlag]
-  max_groups_ind: [ActionTypeFlag]
-  max_groups_ff: [ActionTypeFlag]
-  actions_groups_all: [ActionTypeFlag]
-  actions_groups_sel: [ActionTypeFlag]
-  actions_groups_ind: [ActionTypeFlag]
-  actions_groups_ff: [ActionTypeFlag]
+  max_groups_all: [ActionTypeFlags]
+  max_groups_sel: [ActionTypeFlags]
+  max_groups_ind: [ActionTypeFlags]
+  max_groups_ff: [ActionTypeFlags]
+  actions_groups_all: [ActionTypeFlags]
+  actions_groups_sel: [ActionTypeFlags]
+  actions_groups_ind: [ActionTypeFlags]
+  actions_groups_ff: [ActionTypeFlags]
 
 {Message/Reply.MeterFeatures}
 type: REPLY.METER_FEATURES
@@ -185,8 +185,8 @@ msg:
     max_entries: UInt32
     instructions: [InstructionID]
     instructions_miss: [InstructionID]  # []
-    next_tables: [TableID]
-    next_tables_miss: [TableID]  # []
+    next_tables: [UInt8]
+    next_tables_miss: [UInt8]  # []
     write_actions: [ActionID]
     write_actions_miss: [ActionID]  # []
     apply_actions: [ActionID]

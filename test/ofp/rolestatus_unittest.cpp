@@ -6,11 +6,13 @@
 
 using namespace ofp;
 
+const OFPRoleStatusReason kFakeReason = static_cast<OFPRoleStatusReason>(0x11);
+
 TEST(rolestatus, builder) {
   RoleStatusBuilder msg;
 
   msg.setRole(OFPCR_ROLE_MASTER);
-  msg.setReason(0x11);
+  msg.setReason(kFakeReason);
   msg.setGenerationId(0x2222222222222222);
 
   PropertyList props;
@@ -33,7 +35,7 @@ TEST(rolestatus, builder) {
   EXPECT_TRUE(m);
 
   EXPECT_EQ(OFPCR_ROLE_MASTER, m->role());
-  EXPECT_EQ(0x11, m->reason());
+  EXPECT_EQ(kFakeReason, m->reason());
   EXPECT_EQ(0x2222222222222222, m->generationId());
 
   EXPECT_EQ(1, m->properties().itemCount());

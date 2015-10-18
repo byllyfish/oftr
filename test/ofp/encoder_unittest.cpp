@@ -2576,7 +2576,7 @@ TEST(encoder, rolestatusv5) {
         reason: 0x01
         generation_id: 0x3333333333333333
         properties:
-          - property: 0xffff
+          - property: EXPERIMENTER
             experimenter: 0x12345678
             exp_type: 0xABCDABCD
             data: '0000F1F1'

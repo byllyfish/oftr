@@ -82,9 +82,14 @@ static const char *const kActionSchemas[] = {
     llvm::yaml::kExperimenterActionSchema,
 };
 
+static const char *const kMeterBandSchemas[] = {
+  llvm::yaml::kMeterBandDropSchema, llvm::yaml::kMeterBandDscpRemarkSchema,
+  llvm::yaml::kMeterBandExperimenterSchema,
+};
+
 static const char *const kStructSchemas[] = {
     llvm::yaml::kBucketSchema, llvm::yaml::kPortSchema,
-    llvm::yaml::kQueueSchema,
+    llvm::yaml::kQueueSchema, llvm::yaml::kPacketCounterSchema,
 };
 
 static const char *const kPropertySchemas[] = {
@@ -113,6 +118,8 @@ static SchemaPair kEnumSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::OFPGroupModCommand>, "Enum/GroupModCommand"},
     {ofp::yaml::MakeSchema<ofp::OFPGroupType>, "Enum/GroupType"},
     {ofp::yaml::MakeSchema<ofp::OFPFlowMonitorCommand>, "Enum/FlowMonitorCommand"},
+    {ofp::yaml::MakeSchema<ofp::OFPRoleStatusReason>, "Enum/RoleStatusReason"},
+    {ofp::yaml::MakeSchema<ofp::OFPBundleCtrlType>, "Enum/BundleCtrlType"},
 };
 
 static SchemaPair kMixedSchemas[] = {
@@ -153,8 +160,14 @@ static SchemaPair kFlagSchemas[] = {
      "Flag/RoleStatusFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPTableStatusFlags>,
      "Flag/TableStatusFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPTableConfigFlags>,
+     "Flag/TableConfigFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPRequestForwardFlags>,
      "Flag/RequestForwardFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPFlowMonitorFlags>,
+     "Flag/FlowMonitorFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPBundleFlags>,
+     "Flag/BundleFlags"},
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.
@@ -222,6 +235,10 @@ void Help::loadSchemas() {
   }
 
   for (auto &schema : kActionSchemas) {
+    schemas_.emplace_back(new Schema{schema});
+  }
+
+  for (auto &schema : kMeterBandSchemas) {
     schemas_.emplace_back(new Schema{schema});
   }
 

@@ -627,6 +627,10 @@ enum OFPAsyncConfigProperty : UInt16 {
   OFPACPT_EXPERIMENTER_MASTER = 0xFFFF,
 };
 
+enum OFPExperimenterPropertyType : UInt16 {
+  OFP_EXPERIMENTER_PROPERTY_TYPE = 0xFFFF
+};
+
 enum OFPMultipartFlags : UInt16 {
   OFPMPF_NONE = 0,
   OFPMPF_MORE = 1 << 0,

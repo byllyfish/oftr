@@ -94,6 +94,14 @@ static const llvm::StringRef sBundleCtrlType[] = {
     "DISCARD_REPLY"
 };
 
+static const llvm::StringRef sExperimenterPropertyList[] = { "EXPERIMENTER_0" };
+
+static const llvm::StringRef sRoleStatusReason[] = {
+    "MASTER_REQUEST",
+    "CONFIG",
+    "EXPERIMENTER",
+};
+
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
 EnumConverter<OFPMultipartType>
@@ -146,6 +154,11 @@ EnumConverter<OFPFlowMonitorCommand>
 EnumConverter<OFPBundleCtrlType>
     llvm::yaml::ScalarTraits<OFPBundleCtrlType>::converter{sBundleCtrlType};
 
+EnumConverter<OFPExperimenterPropertyType>
+    llvm::yaml::ScalarTraits<OFPExperimenterPropertyType>::converter{sExperimenterPropertyList,
+                                                          "EXPERIMENTER"};
+
+EnumConverter<OFPRoleStatusReason> llvm::yaml::ScalarTraits<OFPRoleStatusReason>::converter{sRoleStatusReason};
 
 #define STR_ENTRY(s) \
   { s, #s }

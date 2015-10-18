@@ -119,6 +119,10 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowMonitorCommand,
                     format("0x%02X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPBundleCtrlType,
                     format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPExperimenterPropertyType,
+                    format("0x%04X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPRoleStatusReason,
+                    format("0x%02X", value))
 
 template <>
 struct ScalarTraits<ofp::OFPErrorCode> {

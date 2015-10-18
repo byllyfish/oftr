@@ -16,6 +16,11 @@ struct PacketCounterInserter {};
 namespace llvm {
 namespace yaml {
 
+const char *const kPacketCounterSchema = R"""({Struct/PacketCounter}
+packet_count: UInt64
+byte_count: UInt64
+)""";
+
 template <>
 struct MappingTraits<ofp::PacketCounter> {
   static void mapping(IO &io, ofp::PacketCounter &stats) {

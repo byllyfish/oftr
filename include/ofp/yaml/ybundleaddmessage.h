@@ -13,9 +13,9 @@ const char *const kBundleAddMessageSchema = R"""({Message/BundleAddMessage}
 type: BUNDLE_ADD_MESSAGE
 msg:
   bundle_id: UInt32
-  flags: UInt16
+  flags: BundleFlags
   message: Message
-  properties: [BundleProperty]
+  properties: [ExperimenterProperty]
 )""";
 
 template <>

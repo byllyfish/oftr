@@ -636,10 +636,18 @@ msg:
     - type: DROP
       rate: 0xffffffff
       burst_size: 0xffffffff
-#---
-# version: 0x05
-# type: ROLE_STATUS
-# msg:
+---
+version: 0x05
+type: ROLE_STATUS
+msg:
+  role: ROLE_MASTER
+  reason: MASTER_REQUEST
+  generation_id: 0xffffffffffffffff
+  properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
 # ---
 # version: 0x05
 # type: TABLE_STATUS

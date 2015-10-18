@@ -23,7 +23,7 @@ bool Schema::equals(llvm::StringRef s) const {
 ///
 /// This is implemented by scanning each line of the schema value looking for
 /// the pattern "key: Type ..." where Type starts with a capital letter, but
-/// is not all caps.
+/// is not all caps. This function also checks for a type enclosed in brackets.
 std::set<std::string> Schema::dependsOnSchemas() const {
   std::set<std::string> result;
   std::stringstream iss{value_.str()};
@@ -33,9 +33,17 @@ std::set<std::string> Schema::dependsOnSchemas() const {
     auto pair = llvm::StringRef{line}.split(':');
     if (!pair.second.empty()) {
       auto type = pair.second.trim();
-      auto endType = type.find_first_of(" \t\n\v\f\r");
+      auto endType = type.find_first_of(" \t\n\v\f\r]");
+      // If the first word begins with '!', get the second word.
+      if (type.startswith("!")) {
+        type = type.drop_front(endType).ltrim();
+        endType = type.find_first_of(" \t\n\v\f\r]");
+      }
       if (endType < type.size()) {
         type = type.drop_back(type.size() - endType);
+      }
+      if (type.startswith("[")) {
+        type = type.drop_front(1);
       }
       if (isTypeName(type)) {
         result.insert(type.str());
@@ -219,6 +227,7 @@ static std::string unsignedTypeEnum(size_t size) {
 /// Return true if s begins with a capital letter, but is _not_ all caps.
 /// Ignores underscore and hyphen.
 static bool isTypeName(llvm::StringRef s) {
+  ofp::log::debug("isTypeName: ", s);
   if (s.empty() || !std::isalpha(s[0]) || !std::isupper(s[0]))
     return false;
 

@@ -96,8 +96,8 @@ msg:
     max_entries: UInt32
     instructions: [InstructionID]
     instructions_miss: [InstructionID]  # []
-    next_tables: [TableID]
-    next_tables_miss: [TableID]  # []
+    next_tables: [UInt8]
+    next_tables_miss: [UInt8]  # []
     write_actions: [ActionID]
     write_actions_miss: [ActionID]  # []
     apply_actions: [ActionID]

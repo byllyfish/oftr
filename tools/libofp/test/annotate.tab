@@ -523,6 +523,16 @@ version	type	keypath	syntax	required	default	missing	modify
 1	METER_MOD.v1	msg.flags	array	True			ERROR
 1	METER_MOD.v1	msg.flags.0	KBPS	True			ERROR
 1	METER_MOD.v1	msg.meter_id	ALL	True			ERROR
+1	ROLE_STATUS.v1	msg	object	True			ERROR
+1	ROLE_STATUS.v1	msg.generation_id	uint64	True			ERROR
+1	ROLE_STATUS.v1	msg.properties	array	True			ERROR
+1	ROLE_STATUS.v1	msg.properties.0	object	True			ERROR
+1	ROLE_STATUS.v1	msg.properties.0.data	binary	True			ERROR
+1	ROLE_STATUS.v1	msg.properties.0.exp_type	uint32	True			ERROR
+1	ROLE_STATUS.v1	msg.properties.0.experimenter	uint32	True			ERROR
+1	ROLE_STATUS.v1	msg.properties.0.property	EXPERIMENTER	True			ERROR
+1	ROLE_STATUS.v1	msg.reason	MASTER_REQUEST	True			ERROR
+1	ROLE_STATUS.v1	msg.role	ROLE_MASTER	True			ERROR
 2	HELLO.v2	msg	object	False			
 2	HELLO.v2	msg.versions	array	False			
 2	HELLO.v2	msg.versions.0	uint8	False			
@@ -1047,6 +1057,16 @@ version	type	keypath	syntax	required	default	missing	modify
 2	METER_MOD.v2	msg.flags	array	True			ERROR
 2	METER_MOD.v2	msg.flags.0	KBPS	True			ERROR
 2	METER_MOD.v2	msg.meter_id	ALL	True			ERROR
+2	ROLE_STATUS.v2	msg	object	True			ERROR
+2	ROLE_STATUS.v2	msg.generation_id	uint64	True			ERROR
+2	ROLE_STATUS.v2	msg.properties	array	True			ERROR
+2	ROLE_STATUS.v2	msg.properties.0	object	True			ERROR
+2	ROLE_STATUS.v2	msg.properties.0.data	binary	True			ERROR
+2	ROLE_STATUS.v2	msg.properties.0.exp_type	uint32	True			ERROR
+2	ROLE_STATUS.v2	msg.properties.0.experimenter	uint32	True			ERROR
+2	ROLE_STATUS.v2	msg.properties.0.property	EXPERIMENTER	True			ERROR
+2	ROLE_STATUS.v2	msg.reason	MASTER_REQUEST	True			ERROR
+2	ROLE_STATUS.v2	msg.role	ROLE_MASTER	True			ERROR
 3	HELLO.v3	msg	object	False			
 3	HELLO.v3	msg.versions	array	False			
 3	HELLO.v3	msg.versions.0	uint8	False			
@@ -1571,6 +1591,16 @@ version	type	keypath	syntax	required	default	missing	modify
 3	METER_MOD.v3	msg.flags	array	True			ERROR
 3	METER_MOD.v3	msg.flags.0	KBPS	True			ERROR
 3	METER_MOD.v3	msg.meter_id	ALL	True			ERROR
+3	ROLE_STATUS.v3	msg	object	True			ERROR
+3	ROLE_STATUS.v3	msg.generation_id	uint64	True			ERROR
+3	ROLE_STATUS.v3	msg.properties	array	True			ERROR
+3	ROLE_STATUS.v3	msg.properties.0	object	True			ERROR
+3	ROLE_STATUS.v3	msg.properties.0.data	binary	True			ERROR
+3	ROLE_STATUS.v3	msg.properties.0.exp_type	uint32	True			ERROR
+3	ROLE_STATUS.v3	msg.properties.0.experimenter	uint32	True			ERROR
+3	ROLE_STATUS.v3	msg.properties.0.property	EXPERIMENTER	True			ERROR
+3	ROLE_STATUS.v3	msg.reason	MASTER_REQUEST	True			ERROR
+3	ROLE_STATUS.v3	msg.role	ROLE_MASTER	True			ERROR
 4	HELLO.v4	msg	object	False	msg.versions.0=4		
 4	HELLO.v4	msg.versions	array	False	msg.versions.0=4		
 4	HELLO.v4	msg.versions.0	uint8	False	msg.versions.0=4		True
@@ -2095,6 +2125,16 @@ version	type	keypath	syntax	required	default	missing	modify
 4	METER_MOD.v4	msg.flags	array	True			
 4	METER_MOD.v4	msg.flags.0	KBPS	False	msg.flags.0=KBPS		
 4	METER_MOD.v4	msg.meter_id	ALL	True			
+4	ROLE_STATUS.v4	msg	object	True			
+4	ROLE_STATUS.v4	msg.generation_id	uint64	True			True
+4	ROLE_STATUS.v4	msg.properties	array	True			
+4	ROLE_STATUS.v4	msg.properties.0	object	False	msg.properties.0=object,msg.properties.0.data=binary,msg.properties.0.exp_type=uint32,msg.properties.0.experimenter=uint32,msg.properties.0.property=EXPERIMENTER		
+4	ROLE_STATUS.v4	msg.properties.0.data	binary	True			True
+4	ROLE_STATUS.v4	msg.properties.0.exp_type	uint32	True			True
+4	ROLE_STATUS.v4	msg.properties.0.experimenter	uint32	True			True
+4	ROLE_STATUS.v4	msg.properties.0.property	EXPERIMENTER	True			
+4	ROLE_STATUS.v4	msg.reason	MASTER_REQUEST	True			
+4	ROLE_STATUS.v4	msg.role	ROLE_MASTER	True			
 5	HELLO.v5	msg	object	False	msg.versions.0=5		
 5	HELLO.v5	msg.versions	array	False	msg.versions.0=5		
 5	HELLO.v5	msg.versions.0	uint8	False	msg.versions.0=5		True
@@ -2619,3 +2659,13 @@ version	type	keypath	syntax	required	default	missing	modify
 5	METER_MOD.v5	msg.flags	array	True			
 5	METER_MOD.v5	msg.flags.0	KBPS	False	msg.flags.0=KBPS		
 5	METER_MOD.v5	msg.meter_id	ALL	True			
+5	ROLE_STATUS.v5	msg	object	True			
+5	ROLE_STATUS.v5	msg.generation_id	uint64	True			True
+5	ROLE_STATUS.v5	msg.properties	array	True			
+5	ROLE_STATUS.v5	msg.properties.0	object	False	msg.properties.0=object,msg.properties.0.data=binary,msg.properties.0.exp_type=uint32,msg.properties.0.experimenter=uint32,msg.properties.0.property=EXPERIMENTER		
+5	ROLE_STATUS.v5	msg.properties.0.data	binary	True			True
+5	ROLE_STATUS.v5	msg.properties.0.exp_type	uint32	True			True
+5	ROLE_STATUS.v5	msg.properties.0.experimenter	uint32	True			True
+5	ROLE_STATUS.v5	msg.properties.0.property	EXPERIMENTER	True			
+5	ROLE_STATUS.v5	msg.reason	MASTER_REQUEST	True			
+5	ROLE_STATUS.v5	msg.role	ROLE_MASTER	True			

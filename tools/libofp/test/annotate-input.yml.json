@@ -1015,5 +1015,22 @@
     }, 
     "version": 4, 
     "type": "METER_MOD"
+  }, 
+  {
+    "msg": {
+      "reason": "MASTER_REQUEST", 
+      "role": "ROLE_MASTER", 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ], 
+      "generation_id": 18446744073709551615
+    }, 
+    "version": 5, 
+    "type": "ROLE_STATUS"
   }
 ]

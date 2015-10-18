@@ -13,9 +13,9 @@ const char *const kRoleStatusSchema = R"""({Message/RoleStatus}
 type: ROLE_STATUS
 msg:
   role: ControllerRole
-  reason: UInt8
+  reason: RoleStatusReason
   generation_id: UInt64
-  properties: [RoleStatusProperty]
+  properties: [ExperimenterProperty]
 )""";
 
 template <>

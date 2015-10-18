@@ -29,11 +29,11 @@ struct MappingTraits<ofp::detail::RoleStatusPropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    Hex16 property = elem.type();
+    OFPExperimenterPropertyType property = static_cast<OFPExperimenterPropertyType>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {
-      case OFPRPT_EXPERIMENTER: {
+      case OFP_EXPERIMENTER_PROPERTY_TYPE: {
         const RoleStatusPropertyExperimenter &p =
             elem.property<RoleStatusPropertyExperimenter>();
 
@@ -64,10 +64,10 @@ struct MappingTraits<ofp::detail::RoleStatusPropertyInserter> {
 
     PropertyList &props = Ref_cast<PropertyList>(list);
 
-    UInt16 property;
+    OFPExperimenterPropertyType property;
     io.mapRequired("property", property);
 
-    if (property == OFPRPT_EXPERIMENTER) {
+    if (property == OFP_EXPERIMENTER_PROPERTY_TYPE) {
       UInt32 experimenter;
       io.mapRequired("experimenter", experimenter);
 
