@@ -14,7 +14,7 @@ type: BUNDLE_CONTROL
 msg:
   bundle_id: UInt32
   type: BundleCtrlType
-  flags: BundleFlags
+  flags: [BundleFlags]
   properties: [ExperimenterProperty]
 )""";
 

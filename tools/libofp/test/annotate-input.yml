@@ -656,12 +656,19 @@ msg:
 # version: 0x05
 # type: REQUEST_FORWARD
 # msg:
-# ---
-# version: 0x05
-# type: BUNDLE_CONTROL
-# msg:
-# ---
-# version: 0x05
-# type: BUNDLE_ADD_MESSAGE
-# msg:
-# ---
+---
+version: 0x05
+type: BUNDLE_CONTROL
+msg:
+  bundle_id: 0xffffffff
+  type: OPEN_REQUEST
+  flags: [ ATOMIC ]
+  properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
+#version: 0x05
+#type: BUNDLE_ADD_MESSAGE
+#msg:
+#---

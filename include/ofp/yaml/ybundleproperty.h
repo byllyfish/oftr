@@ -4,6 +4,8 @@
 #define OFP_YAML_YBUNDLEPROPERTY_H_
 
 #include "ofp/bundleproperty.h"
+#include "ofp/unrecognizedproperty.h"
+#include "ofp/yaml/ytypedpropertyiterator.h"
 
 namespace ofp {
 namespace detail {
@@ -26,11 +28,11 @@ struct MappingTraits<ofp::detail::BundlePropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    Hex16 property = elem.type();
+    OFPExperimenterPropertyType property = static_cast<OFPExperimenterPropertyType>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {
-      case OFPBPT_EXPERIMENTER: {
+      case OFP_EXPERIMENTER_PROPERTY_TYPE: {
         const BundlePropertyExperimenter &p =
             elem.property<BundlePropertyExperimenter>();
 
@@ -47,7 +49,7 @@ struct MappingTraits<ofp::detail::BundlePropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported BundlePropertyItem");
+        log::debug("Unsupported Bundle Property");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;
@@ -63,10 +65,10 @@ struct MappingTraits<ofp::detail::BundlePropertyInserter> {
 
     PropertyList &props = Ref_cast<PropertyList>(list);
 
-    UInt16 property;
+    OFPExperimenterPropertyType property;
     io.mapRequired("property", property);
 
-    if (property == OFPBPT_EXPERIMENTER) {
+    if (property == OFP_EXPERIMENTER_PROPERTY_TYPE) {
       UInt32 experimenter;
       io.mapRequired("experimenter", experimenter);
 

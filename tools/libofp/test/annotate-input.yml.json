@@ -1032,5 +1032,24 @@
     }, 
     "version": 5, 
     "type": "ROLE_STATUS"
+  }, 
+  {
+    "msg": {
+      "bundle_id": 4294967295, 
+      "type": "OPEN_REQUEST", 
+      "flags": [
+        "ATOMIC"
+      ], 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ]
+    }, 
+    "version": 5, 
+    "type": "BUNDLE_CONTROL"
   }
 ]
