@@ -652,10 +652,11 @@ msg:
 # version: 0x05
 # type: TABLE_STATUS
 # msg:
-# ---
-# version: 0x05
-# type: REQUEST_FORWARD
-# msg:
+---
+version: 0x05
+type: REQUESTFORWARD
+msg:
+  type: HELLO
 ---
 version: 0x05
 type: BUNDLE_CONTROL

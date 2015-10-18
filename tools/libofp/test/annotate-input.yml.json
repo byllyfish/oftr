@@ -1035,6 +1035,13 @@
   }, 
   {
     "msg": {
+      "type": "HELLO"
+    }, 
+    "version": 5, 
+    "type": "REQUESTFORWARD"
+  }, 
+  {
+    "msg": {
       "bundle_id": 4294967295, 
       "type": "OPEN_REQUEST", 
       "flags": [
