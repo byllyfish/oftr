@@ -99,7 +99,7 @@ static const char *const kPropertySchemas[] = {
 
 static const char *const kBuiltinTypes[] = {
   "UInt8", "UInt16", "UInt32", "UInt64", "SInt32", "String", "Str16", "Str32", "Str256", "HexData", "DatapathID",
-  "MacAddress", "IPv4Address", "IPv6Address", "LLDPChassisID", "LLDPPortID"
+  "MacAddress", "IPv4Address", "IPv6Address", "LLDPChassisID", "LLDPPortID", "ActionID", "FieldID", "InstructionID",
 };
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
