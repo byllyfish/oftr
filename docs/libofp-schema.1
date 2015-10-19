@@ -1,0 +1,359 @@
+'\" t
+.\"     Title: libofp-schema
+.\"    Author: Bill Fisher <william.w.fisher@gmail.com>
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 10/19/2015
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "LIBOFP\-SCHEMA" "1" "10/19/2015" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+libofp-schema \- OpenFlow Message Schema Conventions
+.SH "DESCRIPTION"
+.sp
+This document defines the schema language used to document the OpenFlow messages, structures, and values in libofp\&.
+.sp
+Typing \fBlibofp help \-schema\-all\fR will dump all message templates in this schema language\&.
+.sp
+To look up any message, structure, or flag, type libofp help NAME\&.
+.SH "DESIGN"
+.sp
+The YAML message schema is parsable as YAML 1\&.2\&. A schema template can be converted into a message by replacement\&.
+.sp
+For example, here is the schema for the RoleRequest message\&.
+.PP
+\fBRoleRequest-Schema\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+Message/RoleRequest:
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [ MultipartFlags ]
+  time: !optout Timestamp
+  type: ROLE_REQUEST
+  msg:
+    role: ControllerRole
+    generation_id: UInt64
+
+Enum/ControllerRole: ROLE_NOCHANGE | ROLE_EQUAL | ROLE_MASTER | ROLE_SLAVE | Hex32
+
+Builtin/UInt64: <builtin>
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBTip\fR
+.ps -1
+.br
+.sp
+To look up this schema, you would type libofp help rolerequest\&.
+.sp .5v
+.RE
+.sp
+To produce a message, copy the Message/RoleRequest contents, delete the !optout lines and any !opt values that you don\(cqt need\&. Then, replace the capitalized type names with appropriate values\&.
+.sp
+Here is the resulting RoleRequest message:
+.PP
+\fBRoleRequest\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+  datapath_id: \*(Aq00:00:00:00:00:00:00:01\*(Aq
+  type: ROLE_REQUEST
+  msg:
+    role: ROLE_MASTER
+    generation_id: 1024
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.SH "CONVENTIONS"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Property names begin with a lower\-case letter, e\&.g\&.
+type\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Type names begin with a capital letter and use mixed case, e\&.g\&.
+UInt8,
+Field\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Literal strings are all\-caps, e\&.g\&.
+PACKET_IN\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Sequences are presented as an array with one element, e\&.g\&.
+[UInt8]\&. If the array has more than one element, then you have a sequence where each element has a choice of types\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Enumerations and flags are strings with choices separated by |, e\&.g\&.
+UInt32 | NO_BUFFER
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+By default, a property is required unless it has the !opt or !optout tag\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Unrecognized property names are not permitted\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+On input to libofp, properties are allowed to be in any order\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Messages output from libofp are always produced in the canonical encoding\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+!opt means the property may be omitted on input, but is always output in the canonical encoding\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+!optout means the property may be omitted, even in the canonical encoding\&. Client software should test for it\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Types with multiple sub\-choices are named at the top level with a
+\fI/\fR\&. For example, there are multiple
+\fIMessage\fR,
+\fIInstruction\fR,
+\fIAction\fR
+types\&.
+.RE
+.SH "EXAMPLE"
+.sp
+The FLOW_MOD message uses the following template:
+.PP
+\fBFlowMod-Schema\fR. 
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+Message/FlowMod:
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [ MultipartFlags ]
+  time: !optout Timestamp
+  type: FLOW_MOD
+  msg:
+    cookie: UInt64
+    cookie_mask: UInt64
+    table_id: UInt8
+    command: FlowModCommand
+    idle_timeout: UInt16
+    hard_timeout: UInt16
+    priority: UInt16
+    buffer_id: BufferNumber
+    out_port: PortNumber
+    out_group: GroupNumber
+    flags: [FlowModFlags]
+    match: [Field]
+    instructions: [Instruction]
+
+Mixed/BufferNumber: UInt32 | NO_BUFFER
+
+Field/IN_PORT:
+  field: IN_PORT
+  value: PortNumber
+  mask: !optout PortNumber
+
+Enum/FlowModCommand: ADD | MODIFY | MODIFY_STRICT | DELETE | DELETE_STRICT | Hex8
+
+Flag/FlowModFlags: SEND_FLOW_REM | CHECK_OVERLAP | RESET_COUNTS | NO_PKT_COUNTS | NO_BYT_COUNTS | Hex16
+
+Mixed/GroupNumber: UInt32 | ALL | ANY
+
+Instruction/GotoTable:
+  instruction: GOTO_TABLE
+  table_id: UInt8
+
+Mixed/PortNumber: UInt32 | IN_PORT | TABLE | NORMAL | FLOOD | ALL | CONTROLLER | LOCAL | ANY | NONE
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Here is a valid FlowMod message:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+  version: 4
+  datapath_id: \*(Aq00:00:00:00:00:00:ff:ff\*(Aq
+  xid: 258
+  type: FLOW_MOD
+  msg:
+    cookie: 0
+    cookie_mask: 0xffffffffffffffff
+    table_id: 0
+    command: ADD
+    idle_timeout: 30
+    hard_timeout: 30
+    priority: 0
+    buffer_id: NO_BUFFER
+    out_port: ANY
+    out_group: ANY
+    flags: [SEND_FLOW_REM, CHECK_OVERLAP]
+    match:
+      \- field: IN_PORT
+        value: 1
+    instructions:
+      \- instruction: APPLY_ACTIONS
+        actions:
+          \- action: OUTPUT
+            port: CONTROLLER
+            max_len: NO_BUFFER
+.fi
+.if n \{\
+.RE
+.\}
+.SH "SEE ALSO"
+.sp
+\fIlibofp\fR(1), \fIlibofp\-jsonrpc\fR(1)
+.SH "RESOURCES"
+.sp
+GitHub: https://github\&.com/byllyfish/libofp
+.SH "COPYING"
+.sp
+Copyright (C) 2015 Bill Fisher\&. Free use of this software is granted under the terms of the MIT Licence\&.
+.SH "AUTHOR"
+.PP
+\fBBill Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>
+.RS 4
+Author.
+.RE

@@ -32,7 +32,7 @@ ethernet:
   peer: [PortFeaturesFlags]
   curr_speed: UInt32
   max_speed: UInt32
-optical:  # ?
+optical: !optout
   supported: [OpticalPortFeaturesFlags]
   tx_min_freq_lmda: UInt32
   tx_max_freq_lmda: UInt32

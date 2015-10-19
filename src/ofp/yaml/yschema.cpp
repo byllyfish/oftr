@@ -6,6 +6,15 @@
 
 using namespace ofp::yaml;
 
+static const char *kMessagePrefix = R"""(  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [ MultipartFlags ]
+  time: !optout Timestamp
+)""";
+
 static bool equalsAlnum(llvm::StringRef lhs, llvm::StringRef rhs);
 static std::string stringJoin(const std::vector<llvm::StringRef> &vec,
                               const char *sep);
@@ -60,6 +69,9 @@ void Schema::print(std::ostream &os) const {
   os << type() << '/' << name().str() << ": ";
   if (isObject_) {
     os << '\n';
+    if (type().equals("Message")) {
+      os << kMessagePrefix;
+    }
     printValue(os, 2);
   } else {
     printValue(os);
