@@ -93,14 +93,15 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
     return;
   }
 
-  ProtocolVersions versions = ProtocolVersions::fromVector(open->params.versions);
-  if (versions.empty()) 
+  ProtocolVersions versions =
+      ProtocolVersions::fromVector(open->params.versions);
+  if (versions.empty())
     versions = ProtocolVersions::All;
 
   std::error_code err;
-  UInt64 connId = engine_->listen(
-      ChannelMode::Controller, securityId, endpt, versions,
-      [this]() { return new RpcChannelListener{this}; }, err);
+  UInt64 connId =
+      engine_->listen(ChannelMode::Controller, securityId, endpt, versions,
+                      [this]() { return new RpcChannelListener{this}; }, err);
 
   if (open->id == RPC_ID_MISSING)
     return;
@@ -177,8 +178,9 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   IPv6Endpoint endpt = connect->params.endpoint;
   UInt64 id = connect->id;
 
-  ProtocolVersions versions = ProtocolVersions::fromVector(connect->params.versions);
-  if (versions.empty()) 
+  ProtocolVersions versions =
+      ProtocolVersions::fromVector(connect->params.versions);
+  if (versions.empty())
     versions = ProtocolVersions::All;
 
   if (udp) {

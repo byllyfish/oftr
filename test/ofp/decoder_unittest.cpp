@@ -992,7 +992,20 @@ TEST(decoder, portmodv5) {
       "000010000001001800000003000005DC000007D000000BB80000012CFFFF000C00000065"
       "0000000000000000FFFF0010000000650000000100000001FFFF00140000006500000002"
       "000000010000000200000000",
-      "---\ntype:            PORT_MOD\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  port_no:         0x00000001\n  hw_addr:         '00:11:00:00:11:11'\n  config:          [  ]\n  mask:            [  ]\n  ethernet:        \n    advertise:       [ FIBER ]\n  optical:         \n    configure:       [ RX_TUNE, TX_TUNE ]\n    freq_lmda:       0x000005DC\n    fl_offset:       2000\n    grid_span:       0x00000BB8\n    tx_pwr:          0x0000012C\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000000\n      data:            ''\n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000001\n      data:            00000001\n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000002\n      data:            0000000100000002\n...\n");
+      "---\ntype:            PORT_MOD\nxid:             0x00000000\nversion:   "
+      "      0x05\nmsg:             \n  port_no:         0x00000001\n  "
+      "hw_addr:         '00:11:00:00:11:11'\n  config:          [  ]\n  mask:  "
+      "          [  ]\n  ethernet:        \n    advertise:       [ FIBER ]\n  "
+      "optical:         \n    configure:       [ RX_TUNE, TX_TUNE ]\n    "
+      "freq_lmda:       0x000005DC\n    fl_offset:       2000\n    grid_span:  "
+      "     0x00000BB8\n    tx_pwr:          0x0000012C\n  properties:      \n "
+      "   - property:        EXPERIMENTER\n      experimenter:    0x00000065\n "
+      "     exp_type:        0x00000000\n      data:            ''\n    - "
+      "property:        EXPERIMENTER\n      experimenter:    0x00000065\n      "
+      "exp_type:        0x00000001\n      data:            00000001\n    - "
+      "property:        EXPERIMENTER\n      experimenter:    0x00000065\n      "
+      "exp_type:        0x00000002\n      data:            "
+      "0000000100000002\n...\n");
 }
 
 TEST(decoder, tablemodv4) {
@@ -1448,7 +1461,12 @@ TEST(decoder, rolestatusv5) {
   testDecodeEncode(
       "051E00281111111122222222010000003333333333333333FFFF001012345678ABCDABCD"
       "0000F1F1",
-      "---\ntype:            ROLE_STATUS\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  role:            0x22222222\n  reason:          CONFIG\n  generation_id:   0x3333333333333333\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        0xABCDABCD\n      data:            0000F1F1\n...\n");
+      "---\ntype:            ROLE_STATUS\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  role:           "
+      " 0x22222222\n  reason:          CONFIG\n  generation_id:   "
+      "0x3333333333333333\n  properties:      \n    - property:        "
+      "EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        "
+      "0xABCDABCD\n      data:            0000F1F1\n...\n");
 }
 
 TEST(decoder, requestforwardv5) {
@@ -1472,14 +1490,26 @@ TEST(decoder, requestforwardv5) {
 TEST(decoder, bundlecontrolv5) {
   testDecodeEncode(
       "05210020111111112222222233334444FFFF001012345678ABCDABCD0000F1F1",
-      "---\ntype:            BUNDLE_CONTROL\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:       0x22222222\n  type:            0x3333\n  flags:           [ '0x00004444' ]\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        0xABCDABCD\n      data:            0000F1F1\n...\n");
+      "---\ntype:            BUNDLE_CONTROL\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:      "
+      " 0x22222222\n  type:            0x3333\n  flags:           [ "
+      "'0x00004444' ]\n  properties:      \n    - property:        "
+      "EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        "
+      "0xABCDABCD\n      data:            0000F1F1\n...\n");
 }
 
 TEST(decoder, bundleaddmessagev5) {
   testDecodeEncode(
       "052200301111111122222222000033330502000A11111111ABCD000000000000FFFF0010"
       "12345678ABCDABCD0000F1F1",
-      "---\ntype:            BUNDLE_ADD_MESSAGE\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:       0x22222222\n  flags:           [ ATOMIC, ORDERED, '0x00003330' ]\n  message:         \n    type:            ECHO_REQUEST\n    xid:             0x11111111\n    version:         0x05\n    msg:             \n      data:            ABCD\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        0xABCDABCD\n      data:            0000F1F1\n...\n");
+      "---\ntype:            BUNDLE_ADD_MESSAGE\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:      "
+      " 0x22222222\n  flags:           [ ATOMIC, ORDERED, '0x00003330' ]\n  "
+      "message:         \n    type:            ECHO_REQUEST\n    xid:          "
+      "   0x11111111\n    version:         0x05\n    msg:             \n      "
+      "data:            ABCD\n  properties:      \n    - property:        "
+      "EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        "
+      "0xABCDABCD\n      data:            0000F1F1\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv4_reply) {

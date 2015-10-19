@@ -12,8 +12,7 @@ using ofp::yaml::EnumConverterSparse;
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static std::pair<OFPMeterNo, llvm::StringRef> sMeterNumbers[] = {
-    OFPM_NAME(SLOWPATH), OFPM_NAME(CONTROLLER), OFPM_NAME(ALL)
-};
+    OFPM_NAME(SLOWPATH), OFPM_NAME(CONTROLLER), OFPM_NAME(ALL)};
 
 EnumConverterSparse<OFPMeterNo>
     llvm::yaml::ScalarTraits<ofp::MeterNumber>::converter{sMeterNumbers};

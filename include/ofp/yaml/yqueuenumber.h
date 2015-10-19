@@ -25,7 +25,8 @@ struct ScalarTraits<ofp::QueueNumber> {
     }
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::QueueNumber &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::QueueNumber &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
       ofp::OFPQueueNo queueNum;
       if (!converter.convert(scalar, &queueNum)) {
@@ -66,4 +67,4 @@ inline std::string primitive_to_json(ofp::QueueNumber value) {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YQUEUENUMBER_H_
+#endif  // OFP_YAML_YQUEUENUMBER_H_

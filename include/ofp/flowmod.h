@@ -107,8 +107,7 @@ class FlowModBuilder {
 
   static UInt32 sendFastVersion1(Writable *channel, UInt32 inPort,
                                  UInt32 outPort, UInt32 bufferId,
-                                 const MacAddress &dst,
-                                 const MacAddress &src);
+                                 const MacAddress &dst, const MacAddress &src);
 
  private:
   FlowMod msg_;

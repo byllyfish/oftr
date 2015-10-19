@@ -33,7 +33,7 @@ using ofp::yaml::Schema;
 
 class Help : public Subprogram {
  public:
-  enum class ExitStatus { 
+  enum class ExitStatus {
     Success = 0,
     MissingDependentSchemas = MinExitStatus
   };

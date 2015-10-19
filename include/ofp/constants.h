@@ -753,7 +753,7 @@ enum OFPBundleCtrlType : UInt16 {
 };
 
 enum OFPBundleFlags : UInt16 {
-  OFPBF_ATOMIC  = 1 << 0,
+  OFPBF_ATOMIC = 1 << 0,
   OFPBF_ORDERED = 1 << 1,
 
   OFPBF_OTHER_BUNDLE_FLAGS = 0xfffc

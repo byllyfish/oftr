@@ -25,7 +25,8 @@ struct ScalarTraits<ofp::MeterNumber> {
     }
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::MeterNumber &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::MeterNumber &value) {
     if (!scalar.empty() && std::isalpha(scalar.front())) {
       ofp::OFPMeterNo meterNum;
       if (!converter.convert(scalar, &meterNum)) {
@@ -66,4 +67,4 @@ inline std::string primitive_to_json(ofp::MeterNumber value) {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YMETERNUMBER_H_
+#endif  // OFP_YAML_YMETERNUMBER_H_

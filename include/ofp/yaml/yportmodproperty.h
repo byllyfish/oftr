@@ -53,7 +53,8 @@ struct MappingTraits<ofp::detail::PortModPropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    OFPExperimenterPropertyType property = static_cast<OFPExperimenterPropertyType>(elem.type());
+    OFPExperimenterPropertyType property =
+        static_cast<OFPExperimenterPropertyType>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {

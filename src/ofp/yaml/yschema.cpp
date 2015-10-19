@@ -231,7 +231,7 @@ static bool isTypeName(llvm::StringRef s) {
   if (s.empty() || !std::isalpha(s[0]) || !std::isupper(s[0]))
     return false;
 
-  for (char ch: s) {
+  for (char ch : s) {
     if (ch == '_' || ch == '-')
       continue;
     if (std::isalpha(ch) && !std::isupper(ch)) {

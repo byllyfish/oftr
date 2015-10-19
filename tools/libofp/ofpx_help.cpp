@@ -83,8 +83,8 @@ static const char *const kActionSchemas[] = {
 };
 
 static const char *const kMeterBandSchemas[] = {
-  llvm::yaml::kMeterBandDropSchema, llvm::yaml::kMeterBandDscpRemarkSchema,
-  llvm::yaml::kMeterBandExperimenterSchema,
+    llvm::yaml::kMeterBandDropSchema, llvm::yaml::kMeterBandDscpRemarkSchema,
+    llvm::yaml::kMeterBandExperimenterSchema,
 };
 
 static const char *const kStructSchemas[] = {
@@ -98,8 +98,10 @@ static const char *const kPropertySchemas[] = {
 };
 
 static const char *const kBuiltinTypes[] = {
-  "UInt8", "UInt16", "UInt32", "UInt64", "SInt32", "String", "Str16", "Str32", "Str256", "HexData", "DatapathID",
-  "MacAddress", "IPv4Address", "IPv6Address", "LLDPChassisID", "LLDPPortID", "ActionID", "FieldID", "InstructionID",
+    "UInt8",      "UInt16",     "UInt32",      "UInt64",        "SInt32",
+    "String",     "Str16",      "Str32",       "Str256",        "HexData",
+    "DatapathID", "MacAddress", "IPv4Address", "IPv6Address",   "LLDPChassisID",
+    "LLDPPortID", "ActionID",   "FieldID",     "InstructionID",
 };
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
@@ -117,7 +119,8 @@ static SchemaPair kEnumSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::OFPErrorCode>, "Enum/ErrorCode"},
     {ofp::yaml::MakeSchema<ofp::OFPGroupModCommand>, "Enum/GroupModCommand"},
     {ofp::yaml::MakeSchema<ofp::OFPGroupType>, "Enum/GroupType"},
-    {ofp::yaml::MakeSchema<ofp::OFPFlowMonitorCommand>, "Enum/FlowMonitorCommand"},
+    {ofp::yaml::MakeSchema<ofp::OFPFlowMonitorCommand>,
+     "Enum/FlowMonitorCommand"},
     {ofp::yaml::MakeSchema<ofp::OFPRoleStatusReason>, "Enum/RoleStatusReason"},
     {ofp::yaml::MakeSchema<ofp::OFPBundleCtrlType>, "Enum/BundleCtrlType"},
 };
@@ -166,8 +169,7 @@ static SchemaPair kFlagSchemas[] = {
      "Flag/RequestForwardFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPFlowMonitorFlags>,
      "Flag/FlowMonitorFlags"},
-    {ofp::yaml::MakeFlagSchema<ofp::OFPBundleFlags>,
-     "Flag/BundleFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPBundleFlags>, "Flag/BundleFlags"},
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.
@@ -266,19 +268,18 @@ void Help::loadSchemas() {
   addBuiltinTypes();
 }
 
-
 void Help::addFieldSchemas() {
-    for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
-      const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
+  for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
+    const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
 
-      std::stringstream sstr;
-      sstr << "{Field/" << info->name << "}\n";
-      sstr << "field: " << info->name << '\n';
-      sstr << "value: " << translateFieldType(info->type) << '\n';
-      sstr << "mask: !optout " << translateFieldType(info->type) << "\n";
-      
-      schemas_.emplace_back(new Schema(sstr.str()));
-    }
+    std::stringstream sstr;
+    sstr << "{Field/" << info->name << "}\n";
+    sstr << "field: " << info->name << '\n';
+    sstr << "value: " << translateFieldType(info->type) << '\n';
+    sstr << "mask: !optout " << translateFieldType(info->type) << "\n";
+
+    schemas_.emplace_back(new Schema(sstr.str()));
+  }
 }
 
 void Help::addBuiltinTypes() {
@@ -388,11 +389,11 @@ void Help::dumpSchemaAll() {
     schema->print(std::cout);
 
     for (auto &s : schema->dependsOnSchemas()) {
-        if (!findSchema(s)) {
-          std::cerr << "Unknown dependent schema '" << s << "'\n";
-          missingDependentSchemas = true;
-        }
-    }    
+      if (!findSchema(s)) {
+        std::cerr << "Unknown dependent schema '" << s << "'\n";
+        missingDependentSchemas = true;
+      }
+    }
   }
 
   if (missingDependentSchemas) {

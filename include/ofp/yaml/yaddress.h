@@ -65,8 +65,7 @@ struct ScalarTraits<ofp::MacAddress> {
     out << value.toString();
   }
 
-  static StringRef input(StringRef scalar, void *ctxt,
-                         ofp::MacAddress &value) {
+  static StringRef input(StringRef scalar, void *ctxt, ofp::MacAddress &value) {
     if (scalar.empty()) {
       value.clear();
       return "";
