@@ -230,11 +230,17 @@ $ libofp help --fields
 
 This software is licensed under the terms of the *MIT License*.
 
-*libofp* relies on the following third-party source code:
+*libofp* relies on the following third-party source code (static linked):
 
 * http://llvm.org/docs/YamlIO.html[yamlio] from the http://llvm.org[llvm] project
-* https://github.com/chriskohlhoff/asio[asio]
+* https://github.com/byllyfish/asio.git[asio] (forked to support boringssl)
 * https://boringssl.googlesource.com/boringssl[boringssl]
-* https://chromium.googlesource.com/external/googletest.git[googletest]
 
+For unit tests, *libofp* uses googletest:
 
+* https://github.com/google/googletest.git[googletest]
+
+For testing, *libofp* uses OpenFlow message samples from these projects:
+
+* https://github.com/flowgrammable/openflow-messages[openflow-messages]
+* https://github.com/osrg/ryu[ryu]

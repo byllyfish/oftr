@@ -23,7 +23,8 @@ bool Schema::equals(llvm::StringRef s) const {
 ///
 /// This is implemented by scanning each line of the schema value looking for
 /// the pattern "key: Type ..." where Type starts with a capital letter, but
-/// is not all caps. This function also checks for a type enclosed in brackets.
+/// is not all caps. This function also checks for a type enclosed in brackets,
+/// and recognizes YAML tags. (e.g. "key: !tag Type").
 std::set<std::string> Schema::dependsOnSchemas() const {
   std::set<std::string> result;
   std::stringstream iss{value_.str()};
@@ -36,7 +37,8 @@ std::set<std::string> Schema::dependsOnSchemas() const {
       auto endType = type.find_first_of(" \t\n\v\f\r]");
       // If the first word begins with '!', get the second word.
       if (type.startswith("!")) {
-        type = type.drop_front(endType).ltrim();
+        type = type.drop_front(endType < type.size() ? endType : type.size());
+        type = type.ltrim();
         endType = type.find_first_of(" \t\n\v\f\r]");
       }
       if (endType < type.size()) {

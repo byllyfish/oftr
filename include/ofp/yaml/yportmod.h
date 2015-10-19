@@ -18,7 +18,7 @@ msg:
   mask: [PortConfigFlags]
   ethernet:
     advertise: [PortFeaturesFlags]
-  optical:  # ?
+  optical: !optout
     configure: [OpticalPortFeaturesFlags]
     freq_lmda: UInt32
     fl_offset: SInt32

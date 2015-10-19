@@ -1,5 +1,15 @@
 = Changelog
 
+== Version 0.9 (19 October 2015)
+
+- Help command's schema-all output is YAML parsable and includes all dependent types.
+- Use GroupNumber, MeterNumber, QueueNumber mixed types in message classes to strengthen YAML types.
+- Add versions property to ofp.listen and ofp.connect RPC commands.
+- Improve on the LLDP types used in MatchPacket by adding a text-based (prefix) format.
+- Fix support for the BundleAddMessage and BundleControl messages.
+- Add a Big24 type to complement Big16, Big32, et al.
+- Update all submodules and their locations.
+
 == Version 0.8 (26 August 2015)
 
 - Add support for experimenter OXM fields.

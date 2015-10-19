@@ -15,7 +15,7 @@ msg:
   in_port: PortNumber
   actions: [Action]
   data: HexData
-  _data_pkt: [Field]  # ?
+  _data_pkt: !optout [Field]
 )""";
 
 template <>

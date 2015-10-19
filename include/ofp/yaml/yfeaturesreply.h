@@ -17,9 +17,9 @@ msg:
   datapath_id: DatapathID
   n_buffers: UInt32
   n_tables: UInt8
-  auxiliary_id: UInt8  # 0
+  auxiliary_id: !opt UInt8
   capabilities: [CapabilitiesFlags]
-  actions: [ActionTypeFlags]  # ? # v1
+  actions: !optout [ActionTypeFlags]  # version=1
   ports: [Port]
 )""";
 

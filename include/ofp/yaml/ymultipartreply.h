@@ -121,7 +121,7 @@ msg:
       rx_over_err: UInt64
       rx_crc_err: UInt64
       collisions: UInt64
-    optical:  # ?
+    optical: !optout
       flags: UInt32
       tx_freq_lmda: UInt32
       tx_offset: UInt32
@@ -184,19 +184,19 @@ msg:
     config: UInt32
     max_entries: UInt32
     instructions: [InstructionID]
-    instructions_miss: [InstructionID]  # []
+    instructions_miss: !optout [InstructionID]
     next_tables: [UInt8]
-    next_tables_miss: [UInt8]  # []
+    next_tables_miss: !optout [UInt8]
     write_actions: [ActionID]
-    write_actions_miss: [ActionID]  # []
+    write_actions_miss: !optout [ActionID]
     apply_actions: [ActionID]
-    apply_actions_miss: [ActionID]  # []
+    apply_actions_miss: !optout [ActionID]
     match: [FieldID]
     wildcards: [FieldID]
     write_set_field: [FieldID]
-    write_set_field_miss: [FieldID]  # []
+    write_set_field_miss: !optout [FieldID]
     apply_set_field: [FieldID]
-    apply_set_field_miss: [FieldID]  # []
+    apply_set_field_miss: !optout [FieldID]
     properties: [ExperimenterProperty]
 
 {Message/Reply.FlowMonitor}

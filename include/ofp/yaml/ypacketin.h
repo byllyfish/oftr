@@ -23,7 +23,7 @@ msg:
   cookie: UInt64
   match: [Field]
   data: HexData
-  _data_pkt: [Field]  # ?
+  _data_pkt: !optout [Field]
 )""";
 
 template <>

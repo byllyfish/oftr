@@ -13,7 +13,7 @@ namespace yaml {
 const char *const kHelloSchema = R"""({Message/Hello}
 type: HELLO
 msg:
-  versions: [UInt8]  # []
+  versions: !opt [UInt8]
 )""";
 
 template <>

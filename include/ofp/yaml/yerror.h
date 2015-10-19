@@ -15,7 +15,7 @@ msg:
   type: ErrorType
   code: ErrorCode
   data: HexData
-  _text: String  # ?
+  _text: !optout String
 )""";
 
 template <>
