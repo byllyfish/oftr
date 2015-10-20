@@ -19,8 +19,6 @@
 
 == Security
 
-* The source code has not been inspected for input validation security vulnerabilities, including buffer overruns.
-
 * There are no sandbox mechanisms in place yet (e.g. seccomp-bpf)
 
 * TLS verification just checks the authenticity of the peer certificate chain against the provided *verifier* certificate. This assumes that the *verifier* certificate is a private authority. There is *no* checking of the subject name, host names, or addresses in the peer certificate (see Identity::tls_verify_callback in the source code).

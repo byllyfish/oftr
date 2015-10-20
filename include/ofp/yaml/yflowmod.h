@@ -17,7 +17,7 @@ namespace llvm {
 namespace yaml {
 
 const char *const kFlowModSchema = R"""({Message/FlowMod}
-type: 'FLOW_MOD'
+type: FLOW_MOD
 msg:
   cookie: UInt64
   cookie_mask: UInt64
@@ -29,9 +29,9 @@ msg:
   buffer_id: BufferNumber
   out_port: PortNumber
   out_group: GroupNumber
-  flags: FlowModFlags
-  match: [{Field}...]
-  instructions: [{Instruction}...]
+  flags: [FlowModFlags]
+  match: [Field]
+  instructions: [Instruction]
 )""";
 
 template <>

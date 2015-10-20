@@ -642,10 +642,10 @@ TEST(decoder, flowmodv4_experimenter_1) {
       "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
       "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
       "       [  ]\n  match:           \n    - field:           "
-      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
-      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
-      "0xFFFF0205.0x00FFFFFE\n      value:           01\n  instructions:    "
-      "\n...\n");
+      "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
+      "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
+      "field:           0xFFFF0205.0x00FFFFFE\n      value:           01\n  "
+      "instructions:    \n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_mask_1) {
@@ -662,10 +662,10 @@ TEST(decoder, flowmodv4_experimenter_mask_1) {
       "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
       "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
       "       [  ]\n  match:           \n    - field:           "
-      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
-      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
-      "0xFFFF0306.0x00FFFFFE\n      value:           01\n      mask:           "
-      " FF\n  instructions:    \n...\n");
+      "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
+      "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
+      "field:           0xFFFF0306.0x00FFFFFE\n      value:           01\n     "
+      " mask:            FF\n  instructions:    \n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_2) {
@@ -682,10 +682,10 @@ TEST(decoder, flowmodv4_experimenter_2) {
       "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
       "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
       "       [  ]\n  match:           \n    - field:           "
-      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
-      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
-      "X_EXPERIMENTER_01\n      value:           0x0001\n  instructions:    "
-      "\n...\n");
+      "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
+      "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
+      "field:           X_EXPERIMENTER_01\n      value:           0x0001\n  "
+      "instructions:    \n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_mask_2) {
@@ -702,10 +702,10 @@ TEST(decoder, flowmodv4_experimenter_mask_2) {
       "0x0000\n  priority:        0x0000\n  buffer_id:       0x00000000\n  "
       "out_port:        0x00000000\n  out_group:       0x00000000\n  flags:    "
       "       [  ]\n  match:           \n    - field:           "
-      "X_LLDP_CHASSIS_ID\n      value:           0102030405\n    - field:      "
-      "     X_LLDP_TTL\n      value:           0x1234\n    - field:           "
-      "X_EXPERIMENTER_01\n      value:           0x0001\n      mask:           "
-      " 0x00FF\n  instructions:    \n...\n");
+      "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
+      "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
+      "field:           X_EXPERIMENTER_01\n      value:           0x0001\n     "
+      " mask:            0x00FF\n  instructions:    \n...\n");
 }
 
 TEST(decoder, flowmodv1) {
@@ -999,12 +999,13 @@ TEST(decoder, portmodv5) {
       "optical:         \n    configure:       [ RX_TUNE, TX_TUNE ]\n    "
       "freq_lmda:       0x000005DC\n    fl_offset:       2000\n    grid_span:  "
       "     0x00000BB8\n    tx_pwr:          0x0000012C\n  properties:      \n "
-      "   - property:        0xFFFF\n      experimenter:    0x00000065\n      "
-      "exp_type:        0x00000000\n      data:            ''\n    - property: "
-      "       0xFFFF\n      experimenter:    0x00000065\n      exp_type:       "
-      " 0x00000001\n      data:            00000001\n    - property:        "
-      "0xFFFF\n      experimenter:    0x00000065\n      exp_type:        "
-      "0x00000002\n      data:            0000000100000002\n...\n");
+      "   - property:        EXPERIMENTER\n      experimenter:    0x00000065\n "
+      "     exp_type:        0x00000000\n      data:            ''\n    - "
+      "property:        EXPERIMENTER\n      experimenter:    0x00000065\n      "
+      "exp_type:        0x00000001\n      data:            00000001\n    - "
+      "property:        EXPERIMENTER\n      experimenter:    0x00000065\n      "
+      "exp_type:        0x00000002\n      data:            "
+      "0000000100000002\n...\n");
 }
 
 TEST(decoder, tablemodv4) {
@@ -1462,9 +1463,9 @@ TEST(decoder, rolestatusv5) {
       "0000F1F1",
       "---\ntype:            ROLE_STATUS\nxid:             "
       "0x11111111\nversion:         0x05\nmsg:             \n  role:           "
-      " 0x22222222\n  reason:          0x01\n  generation_id:   "
+      " 0x22222222\n  reason:          CONFIG\n  generation_id:   "
       "0x3333333333333333\n  properties:      \n    - property:        "
-      "0xFFFF\n      experimenter:    0x12345678\n      exp_type:        "
+      "EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        "
       "0xABCDABCD\n      data:            0000F1F1\n...\n");
 }
 
@@ -1491,10 +1492,10 @@ TEST(decoder, bundlecontrolv5) {
       "05210020111111112222222233334444FFFF001012345678ABCDABCD0000F1F1",
       "---\ntype:            BUNDLE_CONTROL\nxid:             "
       "0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:      "
-      " 0x22222222\n  type:            0x3333\n  flags:           0x4444\n  "
-      "properties:      \n    - property:        0xFFFF\n      experimenter:   "
-      " 0x12345678\n      exp_type:        0xABCDABCD\n      data:            "
-      "0000F1F1\n...\n");
+      " 0x22222222\n  type:            0x3333\n  flags:           [ "
+      "'0x00004444' ]\n  properties:      \n    - property:        "
+      "EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        "
+      "0xABCDABCD\n      data:            0000F1F1\n...\n");
 }
 
 TEST(decoder, bundleaddmessagev5) {
@@ -1503,12 +1504,12 @@ TEST(decoder, bundleaddmessagev5) {
       "12345678ABCDABCD0000F1F1",
       "---\ntype:            BUNDLE_ADD_MESSAGE\nxid:             "
       "0x11111111\nversion:         0x05\nmsg:             \n  bundle_id:      "
-      " 0x22222222\n  flags:           0x3333\n  message:         \n    type:  "
-      "          ECHO_REQUEST\n    xid:             0x11111111\n    version:   "
-      "      0x05\n    msg:             \n      data:            ABCD\n  "
-      "properties:      \n    - property:        0xFFFF\n      experimenter:   "
-      " 0x12345678\n      exp_type:        0xABCDABCD\n      data:            "
-      "0000F1F1\n...\n");
+      " 0x22222222\n  flags:           [ ATOMIC, ORDERED, '0x00003330' ]\n  "
+      "message:         \n    type:            ECHO_REQUEST\n    xid:          "
+      "   0x11111111\n    version:         0x05\n    msg:             \n      "
+      "data:            ABCD\n  properties:      \n    - property:        "
+      "EXPERIMENTER\n      experimenter:    0x12345678\n      exp_type:        "
+      "0xABCDABCD\n      data:            0000F1F1\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv4_reply) {

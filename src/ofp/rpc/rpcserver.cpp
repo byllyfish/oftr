@@ -93,10 +93,15 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
     return;
   }
 
+  ProtocolVersions versions =
+      ProtocolVersions::fromVector(open->params.versions);
+  if (versions.empty())
+    versions = ProtocolVersions::All;
+
   std::error_code err;
-  UInt64 connId = engine_->listen(
-      ChannelMode::Controller, securityId, endpt, ProtocolVersions::All,
-      [this]() { return new RpcChannelListener{this}; }, err);
+  UInt64 connId =
+      engine_->listen(ChannelMode::Controller, securityId, endpt, versions,
+                      [this]() { return new RpcChannelListener{this}; }, err);
 
   if (open->id == RPC_ID_MISSING)
     return;
@@ -104,6 +109,7 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   if (!err) {
     RpcListenResponse response{open->id};
     response.result.connId = connId;
+    response.result.versions = versions.versions();
     conn->rpcReply(&response);
 
   } else {
@@ -172,16 +178,21 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   IPv6Endpoint endpt = connect->params.endpoint;
   UInt64 id = connect->id;
 
+  ProtocolVersions versions =
+      ProtocolVersions::fromVector(connect->params.versions);
+  if (versions.empty())
+    versions = ProtocolVersions::All;
+
   if (udp) {
     std::error_code err;
     UInt64 connId = engine_->connectUDP(
-        mode, securityId, endpt, ProtocolVersions::All,
+        mode, securityId, endpt, versions,
         [this]() { return new RpcChannelListener{this}; }, err);
     connectResponse(conn, id, connId, err);
 
   } else {
     auto connPtr = conn->shared_from_this();
-    engine_->connect(mode, securityId, endpt, ProtocolVersions::All,
+    engine_->connect(mode, securityId, endpt, versions,
                      [this]() { return new RpcChannelListener{this}; },
                      [connPtr, id](Channel *channel, std::error_code err) {
                        UInt64 connId = channel ? channel->connectionId() : 0;

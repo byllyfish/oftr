@@ -1,0 +1,316 @@
+// To make the manpage using asciidoc, use the following command:
+//
+//   a2x --doctype manpage --format manpage libofp-jsonrpc.1.adoc
+// 
+// Use asciidoctor to produce the html version:
+// 
+//   asciidoctor libofp-jsonrpc.1.adoc
+
+= LIBOFP-JSONRPC(1)
+Bill Fisher <william.w.fisher@gmail.com>
+:doctype: manpage
+:github: <https://github.com/byllyfish/libofp>
+
+== NAME
+
+libofp-jsonrpc - OpenFlow Microservice
+
+== SYNOPSIS
+
+*libofp jsonrpc* [_OPTIONS_]
+
+
+== DESCRIPTION
+
+The *libofp jsonrpc* tool runs a JSON-RPC service that enables programmatic 
+control of the OpenFlow protocol using JSON messages.
+
+program also includes a JSON-RPC microservice that can supports multiple
+simultaneous OpenFlow connections. See the `libofp-jsonrpc` man page for more details.
+
+
+== OPTIONS
+
+*--xpc*:: Run as an XPC service on Mac OS X.
+
+== RPC Overview
+
+The json-rpc server uses JSON-RPC protocol with some minor adjustments.
+
+in JSON-RPC, there are requests, replies, errors and notifications.
+
+Request ID's must be non-negative integers less than or equal to 2^63-2.
+
+There are five basic JSON-RPC requests:
+
+  - ofp.listen
+  - ofp.connect
+  - ofp.send
+  - ofp.close
+  - ofp.list_connections
+
+There are two basic JSON-RPC notifications sent:
+
+  - ofp.channel
+  - ofp.message
+
+Advanced Requests:
+
+  - ofp.add_identity
+  - ofp.list_identities (todo)
+  - ofp.set_options (todo)
+
+Advanced Notifications:
+
+  - ofp.message_error (disabled by default?)
+
+== RPC Commands
+
+
+=== ofp.connect
+
+Open an outgoing OpenFlow connection to the specified host and port.
+
+==== Request
+
+    id: UInt64
+    method: 'ofp.connect'
+    params:
+      endpoint: IPv6Endpoint
+      tls_id:  UInt64                   # Optional; Default: 0
+      options: [String...]              # Optional; Default: []
+
+*id*:: Request ID used to identify the reply (unsigned 64-bit integer).
+
+*method*:: Must be "ofp.connect".
+
+*endpoint*:: Destination to connect to. Must be a string that specifies an 
+    IPv4/IPv6 address and a TCP port number separated bya ':' or '.'. Formats 
+    include: "127.0.0.1:6653", "127.0.0.1.6653", "[::1]:6653", "::1.6653".
+
+*tls_id*:: Identifier for TLS/DTLS identity to use. See ofp.add_identity.
+
+*options*:: Additional options that control the connection.
+    - *--raw* = Raw mode; do not automatically send a features_request to determine the datapath_id.
+    - *--udp* = Use UDP instead of TCP. This option must be combined with --raw.
+
+==== Reply
+
+    id: UInt64
+    result:
+        conn_id: UInt64
+
+*conn_id*:: Connection ID associated with the new connection.
+
+=== ofp.listen
+
+Listen for incoming OpenFlow connections on the specified interface and port.
+
+==== Request 
+
+    id: UInt64
+    method: 'ofp.listen'
+    params:
+      endpoint: IPv6Endpoint
+      tls_id: UInt64
+      options: [String...]
+
+*endpoint*:: Local IP address and port number to listen on, e.g. "127.0.0.1:8000".
+    If the IP address is omitted, listen on all interface addresses. The IP 
+    address and port number must be separated by a space or colon when both are 
+    present. When using a colon separator, use brackets around an IPv6 address.
+
+*tls_id*:: TLS identity to use for securing the connection. The default identity is 0 (normally plaintext).
+
+*options*:: List of boolean flags. The default is empty.
+    - *raw* = Raw TCP mode; don't negotiate as a controller. Use this option to imitate an OpenFlow switch that listens for controller connections.
+
+==== Reply
+
+    id: UInt64
+    result:
+        conn_id: UInt64
+
+*conn_id*:: Unique, non-zero identifier representing the listening connection.
+
+==== Discussion
+
+By default, this command listens for incoming connections from OpenFlow switches.
+When a switch connects, we negotiate an OpenFlow connection and send a OpenFlow 
+FeaturesRequest. The response to the FeaturesRequest is passed as the first 
+ofp.message event.
+
+When a TCP auxiliary connection arrives from a switch, the FeaturesReply is not
+passed as a ofp.message.
+
+This command will also listen for UDP auxiliary connections from switches.
+
+If a non-zero tls_id is passed as an argument, we will use the specified TLS 
+settings (see ofp.tls.add_identity) for TLS and DTLS.
+
+There is one raw option for listen, raw_tcp. This option will listen for 
+incoming connections on the specified TCP endpoint only (no UDP), negotiate 
+an OpenFlow connection, but leave the rest of the connection alone.
+
+=== ofp.send
+
+Send the specified OpenFlow message.
+
+
+==== Request
+
+    id: UInt64
+    method: 'ofp.send'
+    params: Message
+
+==== Reply
+
+    TODO
+
+=== ofp.close
+
+Close the specified connection.
+
+==== Request
+
+    id: UInt64
+    method: 'ofp.close'
+    params:
+      conn_id: UInt64
+
+*conn_id*:: Specify the connection to close. Use 0 to close all connections.
+
+==== Reply
+
+    id: UInt64
+    result:
+      count: UInt64
+
+*count*:: Number of connections closed.
+
+=== ofp.list_connections
+
+List all connections.
+
+==== Request
+
+    id: UInt64
+    method: 'ofp.list_connections'
+    params:
+      conn_id: UInt64
+
+*conn_id*:: Specify a connection to obtain info for. Use 0 to list all connections.
+
+==== Reply
+
+    id: UInt64
+    result: [{ConnectionInfo}...]
+
+    {ConnectionInfo} ::=
+      local_endpoint: IPv6Endpoint
+      remote_endpoint: IPv6Endpoint
+      datapath_id: DatapathID
+      conn_id: UInt64
+      auxiliary_id: UInt8
+      transport: 'TCP' | 'UDP' | 'TLS' | 'DTLS' | 'NONE'
+
+=== ofp.add_identity
+
+Configure an identity for use in securing incoming or outgoing connections
+using Transport Layer Security (TLS).
+
+==== Request
+
+    id: UInt64
+    method: 'ofp.add_identity'
+    params:
+      certificate: String
+      verifier: String
+      password: String                      # Optional; Default = ""
+
+*certificate*:: PEM certificate chain data with PEM private key appended. The
+  PEM private key may be encrypted with a password.
+
+*verifier*:: Trusted PEM root certificate data.
+
+*password*:: Password for PEM private key, if needed.
+
+==== Reply
+
+  id: UInt64
+  result:
+    tls_id: UInt64
+
+*tls_id*:: Unique, non-zero identifier representing the TLS identity.
+
+== RPC Notifications
+
+=== ofp.channel
+
+==== Request
+
+  method: 'ofp.channel'
+  params:
+    conn_id: UInt64
+    datapath_id: DatapathID
+    status: 'UP' | 'DOWN'
+    version: UInt8
+
+=== ofp.message
+
+  method: 'ofp.message'
+  params: {Message}
+
+=== ofp.message_error
+
+  method: 'ofp.message_error'
+  params:
+    datapath_id: DatapathID
+    error: String
+    data: HexString
+
+== TRANSPORT PROTOCOL
+
+JSON-RPC messages are sent over a connection using a text-based protocol.
+
+=== LINE-BASED TRANSPORT
+
+Each JSON object is sent in one line terminated by a linefeed character (\n).
+The JSON object must be stripped of linefeeds. The line must begin with a curly 
+brace '{'. The line must be less than 1,048,576 bytes.
+
+When sending data back to the client, the line-based JSON transport will be used unless
+a command is sent to change the mode.
+
+If the line equals "---\n", read until we see "\n...\n". We parse the contained
+text as multi-line YAML or JSON. The text entire message, including the delimiters
+must be less than 1,048,576 bytes.
+
+All input is UTF-8. White space characters such as HT, LF, and CR are permitted.
+No other control characters (less than 0x20) may appear. (If they are inside JSON text, 
+they must be escaped due to JSON rules.)
+
+Future versions may support binary transport options that use CBOR.
+
+
+== SEE ALSO
+
+_libofp_(1), _libofp-schema_(1)
+
+== EXIT STATUS
+
+*0*::
+    Success
+
+*1*::
+    Failure: Syntax or usage error in command line arguments.
+
+
+== RESOURCES
+
+GitHub: {github}
+
+== COPYING
+
+Copyright \(C) 2015 Bill Fisher. Free use of this software is
+granted under the terms of the MIT Licence.

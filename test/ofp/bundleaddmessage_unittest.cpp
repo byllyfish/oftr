@@ -11,6 +11,7 @@ using namespace ofp;
 
 const OFPGroupModCommand kFakeCommand = static_cast<OFPGroupModCommand>(0x1111);
 const OFPGroupType kFakeType = static_cast<OFPGroupType>(0x22);
+const OFPBundleFlags kFakeFlags = static_cast<OFPBundleFlags>(0x3333);
 
 TEST(bundleaddmessage, groupMod) {
   GroupModBuilder groupMod;
@@ -36,7 +37,7 @@ TEST(bundleaddmessage, groupMod) {
 
   BundleAddMessageBuilder msg;
   msg.setBundleId(0x22222222);
-  msg.setFlags(0x3333);
+  msg.setFlags(kFakeFlags);
   msg.setMessage(ByteRange{channel.data(), channel.size()});
 
   PropertyList props;
@@ -60,7 +61,7 @@ TEST(bundleaddmessage, groupMod) {
   EXPECT_TRUE(m);
 
   EXPECT_EQ(0x22222222, m->bundleId());
-  EXPECT_EQ(0x3333, m->flags());
+  EXPECT_EQ(kFakeFlags, m->flags());
 
   ByteRange req = m->message();
   EXPECT_EQ(48, req.size());
@@ -83,7 +84,7 @@ TEST(bundleaddmessage, echoreq) {
 
   BundleAddMessageBuilder msg;
   msg.setBundleId(0x22222222);
-  msg.setFlags(0x3333);
+  msg.setFlags(kFakeFlags);
   msg.setMessage(ByteRange{channel.data(), channel.size()});
 
   PropertyList props;

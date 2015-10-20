@@ -33,7 +33,10 @@ using ofp::yaml::Schema;
 
 class Help : public Subprogram {
  public:
-  enum class ExitStatus { Success = 0 };
+  enum class ExitStatus {
+    Success = 0,
+    MissingDependentSchemas = MinExitStatus
+  };
 
   int run(int argc, const char *const *argv) override;
 
@@ -45,6 +48,9 @@ class Help : public Subprogram {
   std::vector<std::unique_ptr<Schema>> schemas_;
 
   void loadSchemas();
+  void addFieldSchemas();
+  void addBuiltinTypes();
+
   Schema *findSchema(const std::string &key);
   Schema *findNearestSchema(const std::string &key);
 

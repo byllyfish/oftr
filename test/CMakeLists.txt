@@ -15,13 +15,14 @@ set(LIBOFP_TEST_SOURCES
 	ofp/decoder_unittest.cpp
 	ofp/encoder_unittest.cpp
 	ofp/encoderfail_unittest.cpp
-	ofp/enetaddress_unittest.cpp
+	ofp/macaddress_unittest.cpp
 	ofp/enumconverter_unittest.cpp
 	ofp/error_unittest.cpp
 	ofp/featuresreply_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
 	ofp/lldpvalue_unittest.cpp
+	ofp/macaddress_unittest.cpp
 	ofp/meterbandlist_unittest.cpp
 	ofp/mpflowmonitorrequest_unittest.cpp
 	ofp/mpflowmonitorreply_unittest.cpp

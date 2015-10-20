@@ -5,8 +5,8 @@
 namespace controller {
 
 struct EnetFrame {
-  EnetAddress dst;
-  EnetAddress src;
+  MacAddress dst;
+  MacAddress src;
   Big16 type;
 };
 
@@ -46,7 +46,7 @@ void SimpleController::onError(Channel *channel, const Error *msg) {
   log::debug("SimpleController:: - error");
 }
 
-bool SimpleController::lookupPort(const EnetAddress &addr, UInt32 *port) const {
+bool SimpleController::lookupPort(const MacAddress &addr, UInt32 *port) const {
   auto iter = fwdTable_.find(addr);
   if (iter != fwdTable_.end()) {
     *port = iter->second;

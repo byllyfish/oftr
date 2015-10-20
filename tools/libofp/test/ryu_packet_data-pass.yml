@@ -540,7 +540,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   port_no:         ANY
-  queue_id:        0xFFFFFFFF
+  queue_id:        ALL
 ...
 ---
 type:            REPLY.QUEUE
@@ -1422,7 +1422,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   port_no:         ANY
-  queue_id:        0xFFFFFFFF
+  queue_id:        ALL
 ...
 ---
 type:            REPLY.QUEUE
@@ -1621,7 +1621,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            REPLY.METER_CONFIG
@@ -1642,7 +1642,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            FEATURES_REQUEST
@@ -3385,7 +3385,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  group_id:        0xFFFFFFFC
+  group_id:        ALL
 ...
 ---
 type:            REPLY.GROUP
@@ -4085,7 +4085,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   port_no:         ANY
-  queue_id:        0xFFFFFFFF
+  queue_id:        ALL
 ...
 ---
 type:            REPLY.QUEUE
@@ -4252,7 +4252,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            REPLY.METER_CONFIG
@@ -4273,7 +4273,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  meter_id:        0xFFFFFFFF
+  meter_id:        ALL
 ...
 ---
 type:            REPLY.METER
@@ -5983,7 +5983,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  group_id:        0xFFFFFFFC
+  group_id:        ALL
 ...
 ---
 type:            REPLY.GROUP

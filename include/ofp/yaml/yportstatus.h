@@ -10,10 +10,10 @@ namespace llvm {
 namespace yaml {
 
 const char *const kPortStatusSchema = R"""({Message/PortStatus}
-type: 'PORT_STATUS'
+type: PORT_STATUS
 msg:
   reason: PortStatusReason
-  port: {Port}
+  port: Port
 )""";
 
 template <>

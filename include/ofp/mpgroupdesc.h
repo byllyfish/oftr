@@ -4,6 +4,7 @@
 #define OFP_MPGROUPDESC_H_
 
 #include "ofp/bucketlist.h"
+#include "ofp/groupnumber.h"
 
 namespace ofp {
 
@@ -12,7 +13,7 @@ class MPGroupDesc {
   enum { MPVariableSizeOffset = 0 };
 
   UInt8 type() const { return type_; }
-  UInt32 groupId() const { return groupId_; }
+  GroupNumber groupId() const { return groupId_; }
   BucketRange buckets() const;
 
   bool validateInput(Validation *context) const;
@@ -21,7 +22,7 @@ class MPGroupDesc {
   Big16 length_;
   Big8 type_;
   Padding<1> pad_;
-  Big32 groupId_;
+  GroupNumber groupId_;
 
   friend class MPGroupDescBuilder;
   template <class T>
@@ -36,7 +37,7 @@ class MPGroupDescBuilder {
   MPGroupDescBuilder() = default;
 
   void setType(UInt8 type) { msg_.type_ = type; }
-  void setGroupId(UInt32 groupId) { msg_.groupId_ = groupId; }
+  void setGroupId(GroupNumber groupId) { msg_.groupId_ = groupId; }
   void setBuckets(const BucketRange &buckets);
 
   void write(Writable *channel);

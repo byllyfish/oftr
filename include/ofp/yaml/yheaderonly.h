@@ -9,23 +9,23 @@ namespace llvm {
 namespace yaml {
 
 const char *const kFeaturesRequestSchema = R"""({Message/FeaturesRequest}
-type: 'FEATURES_REQUEST'
+type: FEATURES_REQUEST
 )""";
 
 const char *const kGetAsyncRequestSchema = R"""({Message/GetAsyncRequest}
-type: 'GET_ASYNC_REQUEST'
+type: GET_ASYNC_REQUEST
 )""";
 
 const char *const kGetConfigRequestSchema = R"""({Message/GetConfigRequest}
-type: 'GET_CONFIG_REQUEST'
+type: GET_CONFIG_REQUEST
 )""";
 
 const char *const kBarrierRequestSchema = R"""({Message/BarrierRequest}
-type: 'BARRIER_REQUEST'
+type: BARRIER_REQUEST
 )""";
 
 const char *const kBarrierReplySchema = R"""({Message/BarrierReply}
-type: 'BARRIER_REPLY'
+type: BARRIER_REPLY
 )""";
 
 template <>

@@ -4,6 +4,7 @@
 #define OFP_YAML_YQUEUE_H_
 
 #include "ofp/yaml/yqueueproperty.h"
+#include "ofp/yaml/yqueuenumber.h"
 
 namespace ofp {
 namespace detail {
@@ -17,20 +18,12 @@ namespace llvm {
 namespace yaml {
 
 const char *const kQueueSchema = R"""({Struct/Queue}
-queue_id: UInt32
+queue_id: QueueNumber
 port: PortNumber
 min_rate: UInt16
 max_rate: UInt16
-properties: [{ExperimenterProperty}]
+properties: [ExperimenterProperty]
 )""";
-
-// <Queue> := {
-//   queue_id: <UInt32>                 #required
-//   port: <UInt32>                     #required
-//   min_rate: <UInt16>                 #default: 0xffff
-//   max_rate: <UInt16>                 #default: 0xffff
-//   properties: [ <QueuePropertyX>  ]  #required
-// }
 
 template <>
 struct MappingTraits<ofp::Queue> {

@@ -19,11 +19,11 @@ class SimpleController {
   void onError(Channel *channel, const Error *msg);
 
  private:
-  using FwdTable = std::unordered_map<EnetAddress, UInt32>;
+  using FwdTable = std::unordered_map<MacAddress, UInt32>;
 
   FwdTable fwdTable_;
 
-  bool lookupPort(const EnetAddress &addr, UInt32 *port) const;
+  bool lookupPort(const MacAddress &addr, UInt32 *port) const;
 
   static void flood(Channel *channel, const PacketIn *msg);
   static void drop(Channel *channel, const PacketIn *msg,

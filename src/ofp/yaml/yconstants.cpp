@@ -83,6 +83,16 @@ static const llvm::StringRef sFlowUpdateEvent[] = {
 static const llvm::StringRef sFlowMonitorCommand[] = {"ADD", "MODIFY",
                                                       "DELETE"};
 
+static const llvm::StringRef sBundleCtrlType[] = {
+    "OPEN_REQUEST",   "OPEN_REPLY",   "CLOSE_REQUEST",   "CLOSE_REPLY",
+    "COMMIT_REQUEST", "COMMIT_REPLY", "DISCARD_REQUEST", "DISCARD_REPLY"};
+
+static const llvm::StringRef sExperimenterPropertyList[] = {"EXPERIMENTER_0"};
+
+static const llvm::StringRef sRoleStatusReason[] = {
+    "MASTER_REQUEST", "CONFIG", "EXPERIMENTER",
+};
+
 EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
 EnumConverter<OFPMultipartType>
@@ -131,6 +141,16 @@ EnumConverter<OFPFlowUpdateEvent>
 EnumConverter<OFPFlowMonitorCommand>
     llvm::yaml::ScalarTraits<OFPFlowMonitorCommand>::converter{
         sFlowMonitorCommand};
+
+EnumConverter<OFPBundleCtrlType>
+    llvm::yaml::ScalarTraits<OFPBundleCtrlType>::converter{sBundleCtrlType};
+
+EnumConverter<OFPExperimenterPropertyType>
+    llvm::yaml::ScalarTraits<OFPExperimenterPropertyType>::converter{
+        sExperimenterPropertyList, "EXPERIMENTER"};
+
+EnumConverter<OFPRoleStatusReason>
+    llvm::yaml::ScalarTraits<OFPRoleStatusReason>::converter{sRoleStatusReason};
 
 #define STR_ENTRY(s) \
   { s, #s }

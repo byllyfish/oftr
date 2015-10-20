@@ -9,10 +9,10 @@ namespace llvm {
 namespace yaml {
 
 const char *const kTableModSchema = R"""({Message/TableMod}
-type: 'TABLE_MOD'
+type: TABLE_MOD
 msg:
   table_id: TableNumber
-  config: UInt32
+  config: [TableConfigFlags]
 )""";
 
 template <>

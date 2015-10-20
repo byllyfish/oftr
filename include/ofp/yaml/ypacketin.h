@@ -11,7 +11,7 @@ namespace llvm {
 namespace yaml {
 
 const char *const kPacketInSchema = R"""({Message/PacketIn}
-type: 'PACKET_IN'
+type: PACKET_IN
 msg:
   buffer_id: BufferNumber
   total_len: UInt16
@@ -21,9 +21,9 @@ msg:
   reason: PacketInReason
   table_id: TableNumber
   cookie: UInt64
-  match: [{Field}...]
-  data: HexString
-  _data_pkt: [{Field}...]        # Output only; Optional
+  match: [Field]
+  data: HexData
+  _data_pkt: !optout [Field]
 )""";
 
 template <>

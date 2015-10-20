@@ -8,26 +8,21 @@
 namespace llvm {
 namespace yaml {
 
-template <>
-struct ScalarTraits<ofp::LLDPValue> {
-  static void output(const ofp::LLDPValue &value, void *ctxt,
+template <ofp::LLDPType Type>
+struct ScalarTraits<ofp::LLDPValue<Type>> {
+  static void output(const ofp::LLDPValue<Type> &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    ofp::log::debug("LLDPValue:output", value.size(),
-                    RawDataToHex(&value, sizeof(value)));
-    out << ofp::RawDataToHex(value.data(), value.size());
+    out << value.toString();
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::LLDPValue &value) {
-    bool error = false;
-    size_t actualSize =
-        ofp::HexToRawData(scalar, value.mutableData(), value.maxSize(), &error);
-    value.resize(actualSize);
-    if (error)
-      return "Invalid hexadecimal text.";
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::LLDPValue<Type> &value) {
+    if (!value.parse(scalar))
+      return "Invalid LLDP Value.";
     return "";
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static bool mustQuote(StringRef) { return true; }
 };
 
 }  // namespace yaml

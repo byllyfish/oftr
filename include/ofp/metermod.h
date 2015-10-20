@@ -5,6 +5,7 @@
 
 #include "ofp/protocolmsg.h"
 #include "ofp/meterbandlist.h"
+#include "ofp/meternumber.h"
 
 namespace ofp {
 
@@ -12,7 +13,7 @@ class MeterMod : public ProtocolMsg<MeterMod, OFPT_METER_MOD, 16> {
  public:
   OFPMeterModCommand command() const { return command_; }
   OFPMeterConfigFlags flags() const { return flags_; }
-  UInt32 meterId() const { return meterId_; }
+  MeterNumber meterId() const { return meterId_; }
   MeterBandRange meterBands() const;
 
   bool validateInput(Validation *context) const;
@@ -21,7 +22,7 @@ class MeterMod : public ProtocolMsg<MeterMod, OFPT_METER_MOD, 16> {
   Header header_;
   Big<OFPMeterModCommand> command_;
   Big<OFPMeterConfigFlags> flags_;
-  Big32 meterId_;
+  MeterNumber meterId_;
 
   // Only MeterModBuilder can construct an instance.
   MeterMod() : header_{type()} {}
@@ -41,7 +42,7 @@ class MeterModBuilder {
 
   void setCommand(OFPMeterModCommand command) { msg_.command_ = command; }
   void setFlags(OFPMeterConfigFlags flags) { msg_.flags_ = flags; }
-  void setMeterId(UInt32 meterId) { msg_.meterId_ = meterId; }
+  void setMeterId(MeterNumber meterId) { msg_.meterId_ = meterId; }
   void setMeterBands(const MeterBandRange &meterBands) {
     meterBands_.assign(meterBands);
   }

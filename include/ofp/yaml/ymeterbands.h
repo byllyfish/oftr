@@ -16,6 +16,26 @@ struct MeterBandInserter {};
 namespace llvm {
 namespace yaml {
 
+const char *const kMeterBandDropSchema = R"""({MeterBand/DROP}
+type: DROP
+rate: UInt32
+burst_size: UInt32
+)""";
+
+const char *const kMeterBandDscpRemarkSchema = R"""({MeterBand/DSCP_REMARK}
+type: DSCP_REMARK
+rate: UInt32
+burst_size: UInt32
+prec_level: UInt8
+)""";
+
+const char *const kMeterBandExperimenterSchema = R"""({MeterBand/EXPERIMENTER}
+type: EXPERIMENTER
+rate: UInt32
+burst_size: UInt32
+experimenter: UInt32
+)""";
+
 template <>
 struct MappingTraits<ofp::MeterBandIterator::Element> {
   static void mapping(IO &io, ofp::MeterBandIterator::Element &elem) {

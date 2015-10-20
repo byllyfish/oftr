@@ -3,21 +3,6 @@
 #ifndef OFP_SYS_ASIO_UTILS_H_
 #define OFP_SYS_ASIO_UTILS_H_
 
-// BoringSSL porting fixes.
-
-#include "asio/ssl/detail/openssl_types.hpp"
-
-#if defined(OPENSSL_IS_BORINGSSL)
-extern "C" {
-#if !defined(SSL_R_SHORT_READ)
-#define SSL_R_SHORT_READ SSL_R_UNEXPECTED_RECORD
-#endif  // !defined(SSL_R_SHORT_READ)
-// void ERR_remove_state(unsigned long pid);
-inline void CONF_modules_unload(int p) {
-}
-}
-#endif  // defined(OPENSSL_IS_BORINGSSL)
-
 #include "ofp/sys/asio_openssl_init.h"
 #include <asio.hpp>
 #include <asio/ssl.hpp>

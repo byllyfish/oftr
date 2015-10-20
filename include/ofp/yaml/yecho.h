@@ -11,9 +11,9 @@ namespace llvm {
 namespace yaml {
 
 const char *const kEchoRequestSchema = R"""({Message/EchoRequest}
-type: 'ECHO_REQUEST'
+type: ECHO_REQUEST
 msg:
-  data: HexString
+  data: HexData
 )""";
 
 template <>
@@ -34,9 +34,9 @@ struct MappingTraits<ofp::EchoRequestBuilder> {
 };
 
 const char *const kEchoReplySchema = R"""({Message/EchoReply}
-type: 'ECHO_REPLY'
+type: ECHO_REPLY
 msg:
-  data: HexString
+  data: HexData
 )""";
 
 template <>

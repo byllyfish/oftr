@@ -14,7 +14,7 @@ class BundleAddMessage
     : public ProtocolMsg<BundleAddMessage, OFPT_BUNDLE_ADD_MESSAGE, 24, 65528> {
  public:
   UInt32 bundleId() const { return bundleId_; }
-  UInt16 flags() const { return flags_; }
+  OFPBundleFlags flags() const { return flags_; }
 
   ByteRange message() const;
   PropertyRange properties() const;
@@ -25,7 +25,7 @@ class BundleAddMessage
   Header header_;
   Big32 bundleId_;
   Padding<2> pad_;
-  Big16 flags_;
+  Big<OFPBundleFlags> flags_;
 
   // Only BundleAddMessageBuilder can construct an instance.
   BundleAddMessage() : header_{type()} {}
@@ -44,7 +44,7 @@ static_assert(IsTriviallyCopyable<BundleAddMessage>(),
 class BundleAddMessageBuilder {
  public:
   void setBundleId(UInt32 bundleId) { msg_.bundleId_ = bundleId; }
-  void setFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setFlags(OFPBundleFlags flags) { msg_.flags_ = flags; }
 
   void setMessage(const ByteList &message) { message_ = message; }
   void setProperties(const PropertyList &properties) {

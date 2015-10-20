@@ -21,19 +21,19 @@ namespace yaml {
 
 const char *const kPortSchema = R"""({Struct/Port}
 port_no: PortNumber
-hw_addr: EnetAddress
+hw_addr: MacAddress
 name: Str16
-config: PortConfigFlags
-state: PortStateFlags
+config: [PortConfigFlags]
+state: [PortStateFlags]
 ethernet:
-  curr: PortFeaturesFlags
-  advertised: PortFeaturesFlags
-  supported: PortFeaturesFlags
-  peer: PortFeaturesFlags
+  curr: [PortFeaturesFlags]
+  advertised: [PortFeaturesFlags]
+  supported: [PortFeaturesFlags]
+  peer: [PortFeaturesFlags]
   curr_speed: UInt32
   max_speed: UInt32
-optical:                                  # Optional
-  supported: OpticalPortFeaturesFlags
+optical: !optout
+  supported: [OpticalPortFeaturesFlags]
   tx_min_freq_lmda: UInt32
   tx_max_freq_lmda: UInt32
   tx_grid_freq_lmda: UInt32
@@ -42,7 +42,7 @@ optical:                                  # Optional
   rx_grid_freq_lmda: UInt32
   tx_pwr_min: UInt16
   tx_pwr_max: UInt16
-properties: [{ExperimenterProperty}]
+properties: [ExperimenterProperty]
 )""";
 
 template <>

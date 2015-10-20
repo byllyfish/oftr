@@ -149,6 +149,29 @@ static_assert(IsLiteralType<Big32>(), "Literal type expected.");
 static_assert(IsLiteralType<Big64>(), "Literal type expected.");
 static_assert(IsLiteralType<SignedBig32>(), "Literal type expected.");
 
+/// Literal Type representing a 24-bit unsigned integer in big-endian layout.
+class Big24 {
+ public:
+  using NativeType = UInt32;
+
+  constexpr Big24() : n_{0, 0, 0} {}
+  constexpr Big24(UInt32 n)
+      : n_{UInt8_narrow_cast((n >> 16) & 0xFF),
+           UInt8_narrow_cast((n >> 8) & 0xFF), UInt8_narrow_cast(n & 0xFF)} {}
+
+  constexpr operator UInt32() const {
+    return (UInt32_cast(n_[0]) << 16) | (UInt32_cast(n_[1]) << 8) |
+           UInt32_cast(n_[2]);
+  }
+  constexpr bool operator!() const { return !n_[0] || !n_[1] || !n_[0]; }
+
+ private:
+  UInt8 n_[3];
+};
+
+static_assert(sizeof(Big24) == 3, "Unexpected size.");
+static_assert(IsLiteralType<Big24>(), "Literal type expected.");
+
 // For compile-time conversions.
 template <class Type>
 constexpr EnableIf<std::is_integral<Type>::value, Type> BigEndianFromNative(

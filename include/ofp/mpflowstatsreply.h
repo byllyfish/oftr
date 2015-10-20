@@ -9,6 +9,7 @@
 #include "ofp/instructionrange.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/instructionlist.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -20,7 +21,7 @@ class MPFlowStatsReply {
 
   MPFlowStatsReply() = default;
 
-  UInt8 tableId() const { return tableId_; }
+  TableNumber tableId() const { return tableId_; }
   UInt32 durationSec() const { return durationSec_; }
   UInt32 durationNSec() const { return durationNSec_; }
   UInt16 priority() const { return priority_; }
@@ -38,7 +39,7 @@ class MPFlowStatsReply {
 
  private:
   Big16 length_;
-  Big8 tableId_;
+  TableNumber tableId_;
   Padding<1> pad_1;
   Big32 durationSec_;
   Big32 durationNSec_;

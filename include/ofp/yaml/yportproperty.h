@@ -24,10 +24,10 @@ namespace yaml {
 
 const char *const kExperimenterPropertySchema =
     R"""({Property/ExperimenterProperty}
-property: 'EXPERIMENTER'
+property: EXPERIMENTER
 experimenter: UInt32
 exp_type: UInt32
-data: HexString
+data: HexData
 )""";
 
 template <>

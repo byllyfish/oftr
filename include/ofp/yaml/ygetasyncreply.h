@@ -9,14 +9,14 @@ namespace llvm {
 namespace yaml {
 
 const char *const kGetAsyncReplySchema = R"""({Message/GetAsyncReply}
-type: 'GET_ASYNC_REPLY'
+type: GET_ASYNC_REPLY
 msg:
-  packet_in_mask_master: PacketInFlags
-  packet_in_mask_slave: PacketInFlags
-  port_status_mask_master: PortStatusFlags
-  port_status_mask_slave: PortStatusFlags
-  flow_removed_mask_master: FlowRemovedFlags
-  flow_removed_mask_slave: FlowRemovedFlags
+  packet_in_mask_master: [PacketInFlags]
+  packet_in_mask_slave: [PacketInFlags]
+  port_status_mask_master: [PortStatusFlags]
+  port_status_mask_slave: [PortStatusFlags]
+  flow_removed_mask_master: [FlowRemovedFlags]
+  flow_removed_mask_slave: [FlowRemovedFlags]
 )""";
 
 template <>

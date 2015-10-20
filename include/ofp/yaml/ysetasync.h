@@ -10,14 +10,14 @@ namespace llvm {
 namespace yaml {
 
 const char *const kSetAsyncSchema = R"""({Message/SetAsync}
-type: 'SET_ASYNC'
+type: SET_ASYNC
 msg:
-  packet_in_master: PacketInFlags
-  packet_in_slave: PacketInFlags
-  port_status_master: PortStatusFlags
-  port_status_slave: PortStatusFlags
-  flow_removed_master: FlowRemovedFlags
-  flow_removed_slave: FlowRemovedFlags
+  packet_in_master: [PacketInFlags]
+  packet_in_slave: [PacketInFlags]
+  port_status_master: [PortStatusFlags]
+  port_status_slave: [PortStatusFlags]
+  flow_removed_master: [FlowRemovedFlags]
+  flow_removed_slave: [FlowRemovedFlags]
 )""";
 
 template <>
