@@ -10,11 +10,12 @@ namespace llvm {
 namespace yaml {
 
 const char *const kErrorSchema = R"""({Message/Error}
-type: 'ERROR'
+type: ERROR
 msg:
   type: ErrorType
   code: ErrorCode
-  data: HexString
+  data: HexData
+  _text: !optout String
 )""";
 
 template <>

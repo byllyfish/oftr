@@ -25,7 +25,7 @@ class TestController : public ChannelListener {
                std::make_pair("connid", channel->connectionId()));
     channel_ = channel;
 
-    DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
+    DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};
     EXPECT_EQ(dpid, channel->datapathId());
     EXPECT_EQ(0, channel->auxiliaryId());
 
@@ -93,7 +93,7 @@ class TestAgent : public ChannelListener {
                std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REQUEST, message->type());
 
-    DatapathID dpid{0x1234, EnetAddress{"A1:B2:C3:D4:E5:F6"}};
+    DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};
     FeaturesReplyBuilder reply{message->xid()};
     reply.setDatapathId(dpid);
     reply.send(message->source());

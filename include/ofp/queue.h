@@ -6,6 +6,7 @@
 #include "ofp/propertylist.h"
 #include "ofp/queueproperty.h"
 #include "ofp/portnumber.h"
+#include "ofp/queuenumber.h"
 
 namespace ofp {
 
@@ -20,7 +21,7 @@ class Queue : private NonCopyable {
   // Offset of len_ field.
   enum { ProtocolIteratorSizeOffset = 8, ProtocolIteratorAlignment = 8 };
 
-  UInt32 queueId() const { return queueId_; }
+  QueueNumber queueId() const { return queueId_; }
   PortNumber port() const { return port_; }
 
   PropertyRange properties() const;
@@ -28,7 +29,7 @@ class Queue : private NonCopyable {
   bool validateInput(Validation *context) const;
 
  private:
-  Big32 queueId_;
+  QueueNumber queueId_;
   PortNumber port_;
   Big16 len_;
   Padding<6> pad_;
@@ -53,7 +54,7 @@ class QueueBuilder {
   QueueBuilder() = default;
   explicit QueueBuilder(const deprecated::QueueV1 &queue);
 
-  void setQueueId(UInt32 queueId) { queue_.queueId_ = queueId; }
+  void setQueueId(QueueNumber queueId) { queue_.queueId_ = queueId; }
   void setPort(PortNumber port) { queue_.port_ = port; }
 
   void setProperties(const PropertyRange &properties);
@@ -80,13 +81,13 @@ class QueueV1 : private NonCopyable {
   // Offset of len_ field.
   enum { ProtocolIteratorSizeOffset = 4, ProtocolIteratorAlignment = 8 };
 
-  UInt32 queueId() const { return queueId_; }
+  QueueNumber queueId() const { return queueId_; }
   PropertyRange properties() const;
 
   bool validateInput(Validation *context) const;
 
  private:
-  Big32 queueId_;
+  QueueNumber queueId_;
   Big16 len_;
   Padding<2> pad_;
 

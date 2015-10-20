@@ -10,12 +10,12 @@ namespace llvm {
 namespace yaml {
 
 const char *const kBundleAddMessageSchema = R"""({Message/BundleAddMessage}
-type: 'BUNDLE_ADD_MESSAGE'
+type: BUNDLE_ADD_MESSAGE
 msg:
   bundle_id: UInt32
-  flags: UInt16
-  message: {Message}
-  properties: [{BundleProperty}...]
+  flags: [BundleFlags]
+  message: Message
+  properties: [ExperimenterProperty]
 )""";
 
 template <>

@@ -12,15 +12,15 @@ namespace llvm {
 namespace yaml {
 
 const char *const kFeaturesReplySchema = R"""({Message/FeaturesReply}
-type: 'FEATURES_REPLY'
+type: FEATURES_REPLY
 msg:
   datapath_id: DatapathID
   n_buffers: UInt32
   n_tables: UInt8
-  auxiliary_id: UInt8
-  capabilities: CapabilitiesFlags
-  actions: ActionTypeFlags             # Version 1 only
-  ports: [{Port}...]
+  auxiliary_id: !opt UInt8
+  capabilities: [CapabilitiesFlags]
+  actions: !optout [ActionTypeFlags]  # version=1
+  ports: [Port]
 )""";
 
 template <>

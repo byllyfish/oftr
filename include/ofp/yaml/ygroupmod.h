@@ -10,12 +10,12 @@ namespace llvm {
 namespace yaml {
 
 const char *const kGroupModSchema = R"""({Message/GroupMod}
-type: 'GROUP_MOD'
+type: GROUP_MOD
 msg:
   command: GroupModCommand
   type: GroupType
   group_id: GroupNumber
-  buckets: [{Bucket}...]
+  buckets: [Bucket]
 )""";
 
 template <>

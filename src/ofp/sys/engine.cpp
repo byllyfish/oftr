@@ -350,14 +350,19 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
       return item->second;
+    } else {
+      return nullptr;
     }
+  }
 
-  } else if (connId != 0) {
-    // Otherwise use the connectionId, it it's non-zero.
+  // Otherwise use the connectionId, it it's non-zero.
+  if (connId != 0) {
     return findConnection([connId](Channel *channel) {
       return channel->connectionId() == connId;
     });
   }
+
+  assert(dpid.empty() && connId == 0);
 
   return nullptr;
 }

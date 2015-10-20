@@ -6,6 +6,7 @@
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
 #include "ofp/strings.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -18,7 +19,7 @@ class MPTableStats {
  public:
   MPTableStats() = default;
 
-  UInt8 tableId() const { return tableId_; }
+  TableNumber tableId() const { return tableId_; }
   std::string name() const { return name_.toString(); }
   UInt32 wildcards() const { return wildcards_; }
   UInt32 maxEntries() const { return maxEntries_; }
@@ -29,7 +30,7 @@ class MPTableStats {
   bool validateInput(Validation *context) const { return true; }
 
  private:
-  Big8 tableId_;
+  TableNumber tableId_;
   Padding<3> pad_;
   TableNameStr name_;
   Big32 wildcards_;

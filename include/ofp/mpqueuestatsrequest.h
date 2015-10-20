@@ -6,6 +6,7 @@
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
+#include "ofp/queuenumber.h"
 
 namespace ofp {
 
@@ -20,13 +21,13 @@ class MPQueueStatsRequest {
   MPQueueStatsRequest() = default;
 
   PortNumber portNo() const { return portNo_; }
-  UInt32 queueId() const { return queueId_; }
+  QueueNumber queueId() const { return queueId_; }
 
   bool validateInput(Validation *context) const;
 
  private:
   PortNumber portNo_;
-  Big32 queueId_;
+  QueueNumber queueId_;
 
   friend class MPQueueStatsRequestBuilder;
   template <class T>
@@ -42,7 +43,7 @@ class MPQueueStatsRequestBuilder {
   MPQueueStatsRequestBuilder() = default;
 
   void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
-  void setQueueId(UInt32 queueId) { msg_.queueId_ = queueId; }
+  void setQueueId(QueueNumber queueId) { msg_.queueId_ = queueId; }
 
   void write(Writable *channel);
 

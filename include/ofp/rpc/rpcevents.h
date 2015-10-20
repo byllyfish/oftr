@@ -73,6 +73,8 @@ struct RpcListen {
   struct Params {
     /// Endpoint to listen on.
     IPv6Endpoint endpoint;
+    /// Optional list of desired versions (empty means all).
+    std::vector<UInt8> versions;
     /// Optional TLS identity.
     UInt64 securityId = 0;
     /// Array of options.
@@ -91,6 +93,8 @@ struct RpcListenResponse {
   struct Result {
     /// Connection ID of listening connection.
     UInt64 connId = 0;
+    /// List of supported protocol versions.
+    std::vector<UInt8> versions;
   };
 
   UInt64 id;
@@ -104,6 +108,8 @@ struct RpcConnect {
   struct Params {
     /// Endpoint to connect to.
     IPv6Endpoint endpoint;
+    /// Optional list of desired versions (empty means all).
+    std::vector<UInt8> versions;
     /// Optional TLS identity.
     UInt64 securityId = 0;
     /// Array of options.
@@ -311,6 +317,7 @@ template <>
 struct MappingTraits<ofp::rpc::RpcListen::Params> {
   static void mapping(IO &io, ofp::rpc::RpcListen::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
+    io.mapOptional("versions", params.versions);
     io.mapOptional("tls_id", params.securityId);
     io.mapOptional("options", params.options);
   }
@@ -320,6 +327,7 @@ template <>
 struct MappingTraits<ofp::rpc::RpcConnect::Params> {
   static void mapping(IO &io, ofp::rpc::RpcConnect::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
+    io.mapOptional("versions", params.versions);
     io.mapOptional("tls_id", params.securityId);
     io.mapOptional("options", params.options);
   }
@@ -360,6 +368,7 @@ template <>
 struct MappingTraits<ofp::rpc::RpcListenResponse::Result> {
   static void mapping(IO &io, ofp::rpc::RpcListenResponse::Result &result) {
     io.mapRequired("conn_id", result.connId);
+    io.mapRequired("versions", result.versions);
   }
 };
 

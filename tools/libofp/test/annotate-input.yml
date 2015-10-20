@@ -81,7 +81,7 @@ msg:
   in_phy_port: 0xffffffff
   metadata: 0xffffffffffffffff
   reason: TABLE_MISS
-  table_id: 0xff
+  table_id: ALL
   cookie: 0xffffffffffffffff
   match:
     - field: ETH_DST
@@ -95,7 +95,7 @@ msg:
   cookie: 0xffffffffffffffff
   priority: 0xffff
   reason: IDLE_TIMEOUT
-  table_id: 0xff
+  table_id: ALL
   duration_sec: 0xffffffff
   duration_nsec: 0xffffffff
   idle_timeout: 0xffff
@@ -167,11 +167,11 @@ type: GROUP_MOD
 msg:
   command: ADD
   type: ALL
-  group_id: 0xffffffff
+  group_id: ANY
   buckets:
     - weight: 0xffff
       watch_port: CONTROLLER
-      watch_group: 0xffffffff
+      watch_group: ANY
       actions:
         - action: OUTPUT
           port: CONTROLLER
@@ -187,12 +187,16 @@ msg:
   ethernet:
     advertise: [ '0xffffffff' ]
   properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
 ---
 version: 0x04
 type: TABLE_MOD
 msg:
-  table_id: 0xff
-  config: [ 0xffffffff ]
+  table_id: ALL
+  config: [ EVICTION ]
 ---
 version: 0x04
 type: REQUEST.DESC
@@ -227,7 +231,7 @@ version: 0x04
 type: REPLY.FLOW
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     duration_sec: 0xffffffff
     duration_nsec: 0xffffffff
     priority: 0xffff
@@ -279,7 +283,7 @@ version: 0x04
 type: REPLY.TABLE
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     active_count: 0xffffffff
     lookup_count: 0xffffffffffffffff
     matched_count: 0xffffffffffffffff
@@ -317,14 +321,14 @@ type: REQUEST.QUEUE
 flags: [ 'MORE' ]
 msg:
   port_no: CONTROLLER
-  queue_id: 0xffffffff
+  queue_id: ALL
 ---
 version: 0x04
 type: REPLY.QUEUE
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
-    queue_id: 0xffffffff
+    queue_id: ALL
     tx_packets: 0xffffffffffffffff
     tx_bytes: 0xffffffffffffffff
     tx_errors: 0xffffffffffffffff
@@ -335,13 +339,13 @@ version: 0x04
 type: REQUEST.GROUP
 flags: [ 'MORE' ]
 msg:
-  group_id: 0xffffffff
+  group_id: ANY
 ---
 version: 0x04
 type: REPLY.GROUP
 flags: [ 'MORE' ]
 msg:
-  - group_id: 0xffffffff
+  - group_id: ANY
     ref_count: 0xffffffff
     packet_count: 0xffffffffffffffff
     byte_count: 0xffffffffffffffff
@@ -375,13 +379,13 @@ version: 0x04
 type: REQUEST.METER
 flags: [ 'MORE' ]
 msg:
-  meter_id: 0xffffffff
+  meter_id: ALL
 ---
 version: 0x04
 type: REPLY.METER
 flags: [ 'MORE' ]
 msg:
-  - meter_id: 0xffffffff
+  - meter_id: ALL
     flow_count: 0xffffffff
     packet_in_count: 0xffffffffffffffff
     byte_in_count: 0xffffffffffffffff
@@ -395,14 +399,14 @@ version: 0x04
 type: REQUEST.METER_CONFIG
 flags: [ 'MORE' ]
 msg:
-  meter_id: 0xffffffff
+  meter_id: ALL
 ---
 version: 0x04
 type: REPLY.METER_CONFIG
 flags: [ 'MORE' ]
 msg:
   - flags: 0xffff
-    meter_id: 0xffffffff
+    meter_id: ALL
     bands:
       - type: DROP
         rate: 0xffffffff
@@ -427,7 +431,7 @@ version: 0x04
 type: REQUEST.TABLE_FEATURES
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     name: '................................'
     metadata_match: 0xffffffffffffffff
     metadata_write: 0xffffffffffffffff
@@ -467,7 +471,7 @@ version: 0x04
 type: REPLY.TABLE_FEATURES
 flags: [ 'MORE' ]
 msg:
-  - table_id: 0xff
+  - table_id: ALL
     name: '................................'
     metadata_match: 0xffffffffffffffff
     metadata_write: 0xffffffffffffffff
@@ -531,11 +535,11 @@ type: REQUEST.FLOW_MONITOR
 flags: [ 'MORE' ]
 msg:
   monitor_id: 0xffffffff
-  out_port: 0xffffffff
-  out_group: 0xffffffff
+  out_port: ALL
+  out_group: ALL
   flags: [ NO_ABBREV ]
-  table_id: 0xff
-  command: 0xff
+  table_id: ALL
+  command: DELETE
   match:
     - field: ETH_DST
       value: 'ff:ff:ff:ff:ff:ff'
@@ -546,8 +550,8 @@ type: REPLY.FLOW_MONITOR
 flags: [ 'MORE' ]
 msg:
   - event: ADDED
-    table_id: 0xff
-    reason: 0xff
+    table_id: ALL
+    reason: 0xFF
     idle_timeout: 0xffff
     hard_timeout: 0xffff
     priority: 0xffff
@@ -583,7 +587,7 @@ type: QUEUE_GET_CONFIG_REPLY
 msg:
   port: CONTROLLER
   queues:
-    - queue_id: 0xffffffff
+    - queue_id: ALL
       port: CONTROLLER
       min_rate: 0xffff
       max_rate: 0xffff
@@ -631,29 +635,55 @@ type: METER_MOD
 msg:
   command: MODIFY
   flags: [ KBPS ]
-  meter_id: 0xffffffff
+  meter_id: ALL
   bands:
     - type: DROP
       rate: 0xffffffff
       burst_size: 0xffffffff
-#---
-# version: 0x05
-# type: ROLE_STATUS
-# msg:
+---
+version: 0x05
+type: ROLE_STATUS
+msg:
+  role: ROLE_MASTER
+  reason: MASTER_REQUEST
+  generation_id: 0xffffffffffffffff
+  properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
 # ---
 # version: 0x05
 # type: TABLE_STATUS
 # msg:
-# ---
-# version: 0x05
-# type: REQUEST_FORWARD
-# msg:
-# ---
-# version: 0x05
-# type: BUNDLE_CONTROL
-# msg:
-# ---
-# version: 0x05
-# type: BUNDLE_ADD_MESSAGE
-# msg:
-# ---
+---
+version: 0x05
+type: REQUESTFORWARD
+msg:
+  type: HELLO
+---
+version: 0x05
+type: BUNDLE_CONTROL
+msg:
+  bundle_id: 0xffffffff
+  type: OPEN_REQUEST
+  flags: [ ATOMIC ]
+  properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
+---
+version: 0x05
+type: BUNDLE_ADD_MESSAGE
+msg:
+  bundle_id: 0xffffffff
+  flags: [ ATOMIC ]
+  message:
+    type: HELLO
+  properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
+...

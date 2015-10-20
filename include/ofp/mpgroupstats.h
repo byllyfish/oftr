@@ -4,6 +4,7 @@
 #define OFP_MPGROUPSTATS_H_
 
 #include "ofp/packetcounterlist.h"
+#include "ofp/groupnumber.h"
 
 namespace ofp {
 
@@ -13,7 +14,7 @@ class MPGroupStats {
  public:
   enum { MPVariableSizeOffset = 0 };
 
-  UInt32 groupId() const { return groupId_; }
+  GroupNumber groupId() const { return groupId_; }
   UInt32 refCount() const { return refCount_; }
   UInt64 packetCount() const { return packetCount_; }
   UInt64 byteCount() const { return byteCount_; }
@@ -27,7 +28,7 @@ class MPGroupStats {
  private:
   Big16 length_;
   Padding<2> pad1_;
-  Big32 groupId_;
+  GroupNumber groupId_;
   Big32 refCount_;
   Padding<4> pad2_;
   Big64 packetCount_;

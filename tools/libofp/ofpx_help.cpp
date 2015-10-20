@@ -82,14 +82,26 @@ static const char *const kActionSchemas[] = {
     llvm::yaml::kExperimenterActionSchema,
 };
 
+static const char *const kMeterBandSchemas[] = {
+    llvm::yaml::kMeterBandDropSchema, llvm::yaml::kMeterBandDscpRemarkSchema,
+    llvm::yaml::kMeterBandExperimenterSchema,
+};
+
 static const char *const kStructSchemas[] = {
     llvm::yaml::kBucketSchema, llvm::yaml::kPortSchema,
-    llvm::yaml::kQueueSchema,
+    llvm::yaml::kQueueSchema, llvm::yaml::kPacketCounterSchema,
 };
 
 static const char *const kPropertySchemas[] = {
     llvm::yaml::kExperimenterPropertySchema,
     llvm::yaml::kAsyncConfigExperimenterPropertySchema,
+};
+
+static const char *const kBuiltinTypes[] = {
+    "UInt8",      "UInt16",     "UInt32",      "UInt64",        "SInt32",
+    "String",     "Str16",      "Str32",       "Str256",        "HexData",
+    "DatapathID", "MacAddress", "IPv4Address", "IPv6Address",   "LLDPChassisID",
+    "LLDPPortID", "ActionID",   "FieldID",     "InstructionID", "Timestamp"
 };
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
@@ -105,13 +117,21 @@ static SchemaPair kEnumSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::OFPErrorType>, "Enum/ErrorType"},
     {ofp::yaml::MakeSchema<ofp::OFPFlowUpdateEvent>, "Enum/FlowUpdateEvent"},
     {ofp::yaml::MakeSchema<ofp::OFPErrorCode>, "Enum/ErrorCode"},
+    {ofp::yaml::MakeSchema<ofp::OFPGroupModCommand>, "Enum/GroupModCommand"},
+    {ofp::yaml::MakeSchema<ofp::OFPGroupType>, "Enum/GroupType"},
+    {ofp::yaml::MakeSchema<ofp::OFPFlowMonitorCommand>,
+     "Enum/FlowMonitorCommand"},
+    {ofp::yaml::MakeSchema<ofp::OFPRoleStatusReason>, "Enum/RoleStatusReason"},
+    {ofp::yaml::MakeSchema<ofp::OFPBundleCtrlType>, "Enum/BundleCtrlType"},
 };
 
 static SchemaPair kMixedSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::PortNumber>, "Mixed/PortNumber"},
+    {ofp::yaml::MakeSchema<ofp::QueueNumber>, "Mixed/QueueNumber"},
     {ofp::yaml::MakeSchema<ofp::GroupNumber>, "Mixed/GroupNumber"},
     {ofp::yaml::MakeSchema<ofp::BufferNumber>, "Mixed/BufferNumber"},
     {ofp::yaml::MakeSchema<ofp::TableNumber>, "Mixed/TableNumber"},
+    {ofp::yaml::MakeSchema<ofp::MeterNumber>, "Mixed/MeterNumber"},
     {ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen"},
 };
 
@@ -143,8 +163,13 @@ static SchemaPair kFlagSchemas[] = {
      "Flag/RoleStatusFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPTableStatusFlags>,
      "Flag/TableStatusFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPTableConfigFlags>,
+     "Flag/TableConfigFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPRequestForwardFlags>,
      "Flag/RequestForwardFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPFlowMonitorFlags>,
+     "Flag/FlowMonitorFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPBundleFlags>, "Flag/BundleFlags"},
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.
@@ -152,7 +177,9 @@ static std::pair<const char *, const char *> sFieldTypeMap[] = {
     {"Big8", "UInt8"},
     {"Big16", "UInt16"},
     {"Big32", "UInt32"},
-    {"Big64", "UInt64"}};
+    {"Big64", "UInt64"},
+    {"LLDPValue<LLDPType::ChassisID>", "LLDPChassisID"},
+    {"LLDPValue<LLDPType::PortID>", "LLDPPortID"}};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
@@ -213,6 +240,10 @@ void Help::loadSchemas() {
     schemas_.emplace_back(new Schema{schema});
   }
 
+  for (auto &schema : kMeterBandSchemas) {
+    schemas_.emplace_back(new Schema{schema});
+  }
+
   for (auto &schema : kStructSchemas) {
     schemas_.emplace_back(new Schema{schema});
   }
@@ -231,6 +262,30 @@ void Help::loadSchemas() {
 
   for (auto &p : kFlagSchemas) {
     schemas_.emplace_back(new Schema{p.first(p.second)});
+  }
+
+  addFieldSchemas();
+  addBuiltinTypes();
+}
+
+void Help::addFieldSchemas() {
+  for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
+    const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
+
+    std::stringstream sstr;
+    sstr << "{Field/" << info->name << "}\n";
+    sstr << "field: " << info->name << '\n';
+    sstr << "value: " << translateFieldType(info->type) << '\n';
+    sstr << "mask: !optout " << translateFieldType(info->type) << "\n";
+
+    schemas_.emplace_back(new Schema(sstr.str()));
+  }
+}
+
+void Help::addBuiltinTypes() {
+  const std::string builtin{"Builtin/"};
+  for (auto &p : kBuiltinTypes) {
+    schemas_.emplace_back(new Schema(builtin + p + "\n<builtin>"));
   }
 }
 
@@ -305,6 +360,8 @@ void Help::printSchema(const std::string &key) {
       auto depSchema = findSchema(s);
       if (depSchema) {
         depSchema->print(std::cout);
+      } else {
+        std::cerr << "Unknown dependent schema '" << s << "'\n";
       }
     }
 
@@ -324,10 +381,24 @@ void Help::dumpSchemaNames() {
   }
 }
 
-/// Print out each schema.
+/// Print out each schema. Check that dependent schema's exist.
 void Help::dumpSchemaAll() {
+  bool missingDependentSchemas = false;
+
   for (auto &schema : schemas_) {
     schema->print(std::cout);
+
+    for (auto &s : schema->dependsOnSchemas()) {
+      if (!findSchema(s)) {
+        std::cerr << "Unknown dependent schema '" << s << "'\n";
+        missingDependentSchemas = true;
+      }
+    }
+  }
+
+  if (missingDependentSchemas) {
+    std::cerr << "Some dependent schemas are missing.\n";
+    ::exit(static_cast<int>(ExitStatus::MissingDependentSchemas));
   }
 }
 

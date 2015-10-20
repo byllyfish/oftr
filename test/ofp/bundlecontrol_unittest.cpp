@@ -6,11 +6,14 @@
 
 using namespace ofp;
 
+const OFPBundleCtrlType kFakeType = static_cast<OFPBundleCtrlType>(0x3333);
+const OFPBundleFlags kFakeFlags = static_cast<OFPBundleFlags>(0x4444);
+
 TEST(bundlecontrol, test) {
   BundleControlBuilder msg;
   msg.setBundleId(0x22222222);
-  msg.setCtrlType(0x3333);
-  msg.setFlags(0x4444);
+  msg.setCtrlType(kFakeType);
+  msg.setFlags(kFakeFlags);
 
   PropertyList props;
   props.add(BundlePropertyExperimenter{0x12345678, 0xABACABAC, {"foo", 3}});
@@ -30,8 +33,8 @@ TEST(bundlecontrol, test) {
   EXPECT_TRUE(m);
 
   EXPECT_EQ(0x22222222, m->bundleId());
-  EXPECT_EQ(0x3333, m->ctrlType());
-  EXPECT_EQ(0x4444, m->flags());
+  EXPECT_EQ(kFakeType, m->ctrlType());
+  EXPECT_EQ(kFakeFlags, m->flags());
 
   EXPECT_EQ(1, m->properties().itemCount());
 

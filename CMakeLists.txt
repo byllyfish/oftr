@@ -32,7 +32,7 @@ set(CMAKE_MODULE_PATH
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 8)
+set(Libofp_VERSION_MINOR 9)
 set(Libofp_VERSION_PATCH 0)
 set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
@@ -126,7 +126,6 @@ set(LIBOFP_SOURCES
   src/ofp/defaulthandshake.cpp
   src/ofp/echoreply.cpp
   src/ofp/echorequest.cpp
-  src/ofp/enetaddress.cpp
   src/ofp/error.cpp
   src/ofp/experimenter.cpp
   src/ofp/featuresreply.cpp
@@ -146,7 +145,9 @@ set(LIBOFP_SOURCES
   src/ofp/ipv4address.cpp
   src/ofp/ipv6address.cpp
   src/ofp/ipv6endpoint.cpp
+  src/ofp/lldpvalue.cpp
   src/ofp/log.cpp
+  src/ofp/macaddress.cpp
   src/ofp/match.cpp
   src/ofp/matchheader.cpp
   src/ofp/matchpacket.cpp
@@ -212,7 +213,9 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/yconstants.cpp
   src/ofp/yaml/ycontext.cpp
   src/ofp/yaml/ygroupnumber.cpp
+  src/ofp/yaml/ymeternumber.cpp
   src/ofp/yaml/yportnumber.cpp
+  src/ofp/yaml/yqueuenumber.cpp
   src/ofp/yaml/ybuffernumber.cpp
   src/ofp/yaml/ycontrollermaxlen.cpp
   src/ofp/yaml/ytablenumber.cpp
@@ -358,7 +361,7 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-add_subdirectory(external/googletest)
+add_subdirectory(external/googletest/googletest)
 if(LIBOFP_ENABLE_JSONRPC)
   add_subdirectory(external/boringssl)
 endif()

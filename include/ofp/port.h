@@ -6,7 +6,7 @@
 #include "ofp/byteorder.h"
 #include "ofp/strings.h"
 #include "ofp/padding.h"
-#include "ofp/enetaddress.h"
+#include "ofp/macaddress.h"
 #include "ofp/portnumber.h"
 #include "ofp/propertylist.h"
 #include "ofp/portproperty.h"
@@ -30,7 +30,7 @@ class Port : private NonCopyable {
   static const size_t DefaultSizeEthernet = 40 + sizeof(PortPropertyEthernet);
 
   PortNumber portNo() const { return portNo_; }
-  const EnetAddress &hwAddr() const { return hwAddr_; }
+  const MacAddress &hwAddr() const { return hwAddr_; }
   const PortNameStr &name() const { return name_; }
   OFPPortConfigFlags config() const { return config_; }
   OFPPortStateFlags state() const { return state_; }
@@ -43,7 +43,7 @@ class Port : private NonCopyable {
   PortNumber portNo_;
   Big16 length_ = 40;
   Padding<2> pad1_;
-  EnetAddress hwAddr_;
+  MacAddress hwAddr_;
   Padding<2> pad2_;
   PortNameStr name_;
   Big<OFPPortConfigFlags> config_;
@@ -72,7 +72,7 @@ class PortBuilder {
   explicit PortBuilder(const deprecated::PortV2 &port);
 
   void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
-  void setHwAddr(const EnetAddress &hwAddr) { msg_.hwAddr_ = hwAddr; }
+  void setHwAddr(const MacAddress &hwAddr) { msg_.hwAddr_ = hwAddr; }
   void setName(const PortNameStr &name) { msg_.name_ = name; }
   void setConfig(OFPPortConfigFlags config) { msg_.config_ = config; }
   void setState(OFPPortStateFlags state) { msg_.state_ = state; }
@@ -125,8 +125,8 @@ class PortV1 {
   UInt16 portNo() const { return portNo_; }
   void setPortNo(UInt16 portNo) { portNo_ = portNo; }
 
-  const EnetAddress &hwAddr() const { return hwAddr_; }
-  void setHwAddr(const EnetAddress &hwAddr) { hwAddr_ = hwAddr; }
+  const MacAddress &hwAddr() const { return hwAddr_; }
+  void setHwAddr(const MacAddress &hwAddr) { hwAddr_ = hwAddr; }
 
   const PortNameStr &name() const { return name_; }
   void setName(const PortNameStr &name) { name_ = name; }
@@ -167,7 +167,7 @@ class PortV1 {
 
  private:
   Big16 portNo_;
-  EnetAddress hwAddr_;
+  MacAddress hwAddr_;
   PortNameStr name_;
   Big<OFPPortConfigFlags> config_;
   Big<OFPPortStateFlags> state_;
@@ -191,8 +191,8 @@ class PortV2 {
   PortNumber portNo() const { return portNo_; }
   void setPortNo(PortNumber portNo) { portNo_ = portNo; }
 
-  const EnetAddress &hwAddr() const { return hwAddr_; }
-  void setHwAddr(const EnetAddress &hwAddr) { hwAddr_ = hwAddr; }
+  const MacAddress &hwAddr() const { return hwAddr_; }
+  void setHwAddr(const MacAddress &hwAddr) { hwAddr_ = hwAddr; }
 
   const PortNameStr &name() const { return name_; }
   void setName(const PortNameStr &name) { name_ = name; }
@@ -226,7 +226,7 @@ class PortV2 {
  private:
   PortNumber portNo_;
   Padding<4> pad1_;
-  EnetAddress hwAddr_;
+  MacAddress hwAddr_;
   Padding<2> pad2_;
   PortNameStr name_;
   Big<OFPPortConfigFlags> config_;

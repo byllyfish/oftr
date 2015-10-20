@@ -4,6 +4,7 @@
 #define OFP_YAML_YMPMETERCONFIG_H_
 
 #include "ofp/mpmeterconfig.h"
+#include "ofp/yaml/ymeternumber.h"
 
 namespace llvm {
 namespace yaml {

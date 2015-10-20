@@ -188,3 +188,17 @@ TEST(byteorder, operator_not) {
   EXPECT_FALSE(!a);
   EXPECT_TRUE(!b);
 }
+
+TEST(byteorder, Big24) {
+  Big24 a{0x04050607};
+  EXPECT_EQ(0, std::memcmp(&a, "\5\6\7", 3));
+  EXPECT_EQ(0x050607, a);
+
+  a = 0x01020304UL;
+  EXPECT_EQ(0, std::memcmp(&a, "\2\3\4", 3));
+  EXPECT_EQ(0x020304UL, a);
+
+  Big24 b;
+  EXPECT_EQ(0, std::memcmp(&b, "\0\0\0", 3));
+  EXPECT_EQ(0, b);
+}

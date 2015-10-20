@@ -5,6 +5,7 @@
 
 #include "ofp/propertylist.h"
 #include "ofp/strings.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 
@@ -14,7 +15,7 @@ class MPTableFeatures {
  public:
   enum { MPVariableSizeOffset = 0 };
 
-  UInt8 tableId() const { return tableId_; }
+  TableNumber tableId() const { return tableId_; }
   const TableNameStr &name() const { return name_; }
   UInt64 metadataMatch() const { return metadataMatch_; }
   UInt64 metadataWrite() const { return metadataWrite_; }
@@ -27,7 +28,7 @@ class MPTableFeatures {
 
  private:
   Big16 length_;
-  Big8 tableId_;
+  TableNumber tableId_;
   Padding<5> pad_;
   TableNameStr name_;
   Big64 metadataMatch_;
@@ -45,7 +46,7 @@ static_assert(IsStandardLayout<MPTableFeatures>(), "Expected standard layout.");
 
 class MPTableFeaturesBuilder {
  public:
-  void setTableId(UInt8 tableId) { msg_.tableId_ = tableId; }
+  void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setName(TableNameStr name) { msg_.name_ = name; }
   void setMetadataMatch(UInt64 metadataMatch) {
     msg_.metadataMatch_ = metadataMatch;

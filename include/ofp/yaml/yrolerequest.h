@@ -9,7 +9,7 @@ namespace llvm {
 namespace yaml {
 
 const char *const kRoleRequestSchema = R"""({Message/RoleRequest}
-type: 'ROLE_REQUEST'
+type: ROLE_REQUEST
 msg:
   role: ControllerRole
   generation_id: UInt64

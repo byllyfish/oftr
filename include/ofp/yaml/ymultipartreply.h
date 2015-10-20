@@ -26,7 +26,7 @@ namespace yaml {
 
 const char *const kMultipartReplySchema = R"""(
 {Message/Reply.Desc}
-type: 'REPLY.DESC'
+type: REPLY.DESC
 msg:
   mfr_desc: Str256
   hw_desc: Str256
@@ -35,10 +35,10 @@ msg:
   dp_desc: Str256
 
 {Message/Reply.Table}
-type: 'REPLY.TABLE'
+type: REPLY.TABLE
 msg:
-  - table_id: UInt8
-    name: Str32             # V1
+  - table_id: TableNumber
+    name: Str32
     wildcards: UInt32
     max_entries: UInt32
     active_count: UInt32
@@ -46,34 +46,32 @@ msg:
     matched_count: UInt64
 
 {Message/Reply.PortDesc}
-type: 'REPLY.PORT_DESC'
-msg:
-  - {Port}
+type: REPLY.PORT_DESC
+msg: [Port]
 
 {Message/Reply.GroupDesc}
-type: 'REPLY.GROUP_DESC'
+type: REPLY.GROUP_DESC
 msg:
   - type: UInt8
     group_id: UInt32
-    buckets:
-      - {Bucket}
+    buckets: [Bucket]
 
 {Message/Reply.GroupFeatures}
-type: 'REPLY.GROUP_FEATURES'
+type: REPLY.GROUP_FEATURES
 msg:
   types: UInt32
   capabilities: UInt32
-  max_groups_all: [ActionTypeFlag]
-  max_groups_sel: [ActionTypeFlag]
-  max_groups_ind: [ActionTypeFlag]
-  max_groups_ff: [ActionTypeFlag]
-  actions_groups_all: [ActionTypeFlag]
-  actions_groups_sel: [ActionTypeFlag]
-  actions_groups_ind: [ActionTypeFlag]
-  actions_groups_ff: [ActionTypeFlag]
+  max_groups_all: [ActionTypeFlags]
+  max_groups_sel: [ActionTypeFlags]
+  max_groups_ind: [ActionTypeFlags]
+  max_groups_ff: [ActionTypeFlags]
+  actions_groups_all: [ActionTypeFlags]
+  actions_groups_sel: [ActionTypeFlags]
+  actions_groups_ind: [ActionTypeFlags]
+  actions_groups_ff: [ActionTypeFlags]
 
 {Message/Reply.MeterFeatures}
-type: 'REPLY.METER_FEATURES'
+type: REPLY.METER_FEATURES
 msg:
   max_meter: UInt32
   band_types: UInt32
@@ -82,30 +80,30 @@ msg:
   max_color: UInt8
 
 {Message/Reply.Flow}
-type: 'REPLY.FLOW'
+type: REPLY.FLOW
 msg:
-  table_id: UInt8
+  table_id: TableNumber
   duration_sec: UInt32
   duration_nsec: UInt32
   priority: UInt16
   idle_timeout: UInt16
   hard_timeout: UInt16
-  flags: [FlowModFlag]
+  flags: [FlowModFlags]
   cookie: UInt64
   packet_count: UInt64
   byte_count: UInt64
-  match: [{Field}]
-  instructions: [{Instruction}]
+  match: [Field]
+  instructions: [Instruction]
 
 {Message/Reply.Aggregate}
-type: 'REPLY.AGGREGATE'
+type: REPLY.AGGREGATE
 msg:
   packet_count: UInt64
   byte_count: UInt64
   flow_count: UInt64
 
 {Message/Reply.PortStats}
-type: 'REPLY.PORT_STATS'
+type: REPLY.PORT_STATS
 msg:
   - port_no: PortNumber
     duration_sec: UInt32
@@ -123,7 +121,7 @@ msg:
       rx_over_err: UInt64
       rx_crc_err: UInt64
       collisions: UInt64
-    optical:                  # Optional
+    optical: !optout
       flags: UInt32
       tx_freq_lmda: UInt32
       tx_offset: UInt32
@@ -137,10 +135,10 @@ msg:
       temperature: UInt16
 
 {Message/Reply.Queue}
-type: 'REPLY.QUEUE'
+type: REPLY.QUEUE
 msg:
   - port_no: PortNumber
-    queue_id: UInt32
+    queue_id: QueueNumber
     tx_packets: UInt64
     tx_bytes: UInt64
     tx_errors: UInt64
@@ -148,25 +146,25 @@ msg:
     duration_nsec: UInt32
 
 {Message/Reply.MeterConfig}
-type: 'REPLY.METER_CONFIG'
+type: REPLY.METER_CONFIG
 msg:
   - flags: UInt16
-    meter_id: UInt32
-    bands: [{MeterBand}]
+    meter_id: MeterNumber
+    bands: [MeterBand]
 
 {Message/Reply.Meter}
-type: 'REPLY.METER'
+type: REPLY.METER
 msg:
-  - meter_id: UInt32
+  - meter_id: MeterNumber
     flow_count: UInt32
     packet_in_count: UInt64
     bytes_in_count: UInt64
     duration_sec: UInt32
     duration_nsec: UInt32
-    bands: [{PacketCounter}]
+    bands: [PacketCounter]
 
 {Message/Reply.Group}
-type: 'REPLY.GROUP'
+type: REPLY.GROUP
 msg:
   - group_id: UInt32
     ref_count: UInt32
@@ -174,54 +172,54 @@ msg:
     byte_count: UInt64
     duration_sec: UInt32
     duration_nsec: UInt32
-    bucket_stats: [{PacketCounter}]
+    bucket_stats: [PacketCounter]
 
 {Message/Reply.TableFeatures}
-type: 'REPLY.TABLE_FEATURES'
+type: REPLY.TABLE_FEATURES
 msg:
   - table_id: TableNumber
-    name: Str31
+    name: Str32
     metadata_match: UInt64
     metadata_write: UInt64
     config: UInt32
     max_entries: UInt32
     instructions: [InstructionID]
-    instructions_miss: [InstructionID]     # Optional; Default=[]
-    next_tables: [TableID]
-    next_tables_miss: [TableID]            # Optional; Default=[]
+    instructions_miss: !optout [InstructionID]
+    next_tables: [UInt8]
+    next_tables_miss: !optout [UInt8]
     write_actions: [ActionID]
-    write_actions_miss: [ActionID]         # Optional; Default=[]
+    write_actions_miss: !optout [ActionID]
     apply_actions: [ActionID]
-    apply_actions_miss: [ActionID]         # Optional; Default=[]
+    apply_actions_miss: !optout [ActionID]
     match: [FieldID]
     wildcards: [FieldID]
     write_set_field: [FieldID]
-    write_set_field_miss: [FieldID]        # Optional; Default=[]
+    write_set_field_miss: !optout [FieldID]
     apply_set_field: [FieldID]
-    apply_set_field_miss: [FieldID]        # Optional; Default=[]
-    properties:
+    apply_set_field_miss: !optout [FieldID]
+    properties: [ExperimenterProperty]
 
 {Message/Reply.FlowMonitor}
-type: 'REPLY.FLOW_MONITOR'
+type: REPLY.FLOW_MONITOR
 msg:
-  - event: 'INITIAL' | 'ADDED' | 'REMOVED' | 'MODIFIED'
-    table_id: UInt8
+  - event: INITIAL | ADDED | REMOVED | MODIFIED
+    table_id: TableNumber
     reason: UInt8
     idle_timeout: UInt16
     hard_timeout: UInt16
     priority: UInt16
     cookie: UInt64
-    match: [{Field}]
-    instructions: [{Instruction}]
-  - event: 'ABBREV' | 'PAUSED' | 'RESUMED'
+    match: [Field]
+    instructions: [Instruction]
+  - event: ABBREV | PAUSED | RESUMED
     xid: UInt32
 
 {Message/Reply.Experimenter}
-type: 'REPLY.EXPERIMENTER'
+type: REPLY.EXPERIMENTER
 msg:
   experimenter: UInt32
   exp_type: UInt32 
-  data: HexString
+  data: HexData
 )""";
 
 template <>

@@ -182,7 +182,7 @@ static const char *HeaderFilePreamble =
 
 #include "ofp/oxmrange.h"
 #include "ofp/oxmvalue.h"
-#include "ofp/enetaddress.h"
+#include "ofp/macaddress.h"
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
 #include "ofp/portnumber.h"

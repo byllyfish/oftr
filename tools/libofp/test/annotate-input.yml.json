@@ -122,7 +122,7 @@
       "in_phy_port": 4294967295, 
       "buffer_id": "NO_BUFFER", 
       "reason": "TABLE_MISS", 
-      "table_id": 255, 
+      "table_id": "ALL", 
       "match": [
         {
           "field": "ETH_DST", 
@@ -147,7 +147,7 @@
       "duration_nsec": 4294967295, 
       "packet_count": 18446744073709551615, 
       "duration_sec": 4294967295, 
-      "table_id": 255, 
+      "table_id": "ALL", 
       "cookie": 18446744073709551615, 
       "idle_timeout": 65535, 
       "match": [
@@ -256,7 +256,7 @@
       "buckets": [
         {
           "weight": 65535, 
-          "watch_group": 4294967295, 
+          "watch_group": "ANY", 
           "actions": [
             {
               "action": "OUTPUT", 
@@ -267,7 +267,7 @@
           "watch_port": "CONTROLLER"
         }
       ], 
-      "group_id": 4294967295, 
+      "group_id": "ANY", 
       "type": "ALL"
     }, 
     "version": 4, 
@@ -287,7 +287,14 @@
       "mask": [
         "0xffffffff"
       ], 
-      "properties": null, 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ], 
       "port_no": "CONTROLLER"
     }, 
     "version": 4, 
@@ -295,9 +302,9 @@
   }, 
   {
     "msg": {
-      "table_id": 255, 
+      "table_id": "ALL", 
       "config": [
-        4294967295
+        "EVICTION"
       ]
     }, 
     "version": 4, 
@@ -360,7 +367,7 @@
         "flags": [
           "SEND_FLOW_REM"
         ], 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "match": [
           {
             "field": "ETH_DST", 
@@ -434,7 +441,7 @@
       {
         "matched_count": 18446744073709551615, 
         "lookup_count": 18446744073709551615, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "active_count": 4294967295
       }
     ], 
@@ -486,7 +493,7 @@
   {
     "msg": {
       "port_no": "CONTROLLER", 
-      "queue_id": 4294967295
+      "queue_id": "ALL"
     }, 
     "type": "REQUEST.QUEUE", 
     "version": 4, 
@@ -500,7 +507,7 @@
         "duration_sec": 4294967295, 
         "tx_errors": 18446744073709551615, 
         "tx_bytes": 18446744073709551615, 
-        "queue_id": 4294967295, 
+        "queue_id": "ALL", 
         "tx_packets": 18446744073709551615, 
         "port_no": "CONTROLLER", 
         "duration_nsec": 4294967295
@@ -514,7 +521,7 @@
   }, 
   {
     "msg": {
-      "group_id": 4294967295
+      "group_id": "ANY"
     }, 
     "type": "REQUEST.GROUP", 
     "version": 4, 
@@ -534,7 +541,7 @@
           }
         ], 
         "byte_count": 18446744073709551615, 
-        "group_id": 4294967295, 
+        "group_id": "ANY", 
         "ref_count": 4294967295, 
         "duration_nsec": 4294967295
       }
@@ -582,7 +589,7 @@
   }, 
   {
     "msg": {
-      "meter_id": 4294967295
+      "meter_id": "ALL"
     }, 
     "type": "REQUEST.METER", 
     "version": 4, 
@@ -595,7 +602,7 @@
       {
         "duration_sec": 4294967295, 
         "byte_in_count": 18446744073709551615, 
-        "meter_id": 4294967295, 
+        "meter_id": "ALL", 
         "flow_count": 4294967295, 
         "packet_in_count": 18446744073709551615, 
         "bands": [
@@ -615,7 +622,7 @@
   }, 
   {
     "msg": {
-      "meter_id": 4294967295
+      "meter_id": "ALL"
     }, 
     "type": "REQUEST.METER_CONFIG", 
     "version": 4, 
@@ -634,7 +641,7 @@
           }
         ], 
         "flags": 65535, 
-        "meter_id": 4294967295
+        "meter_id": "ALL"
       }
     ], 
     "type": "REPLY.METER_CONFIG", 
@@ -711,7 +718,7 @@
           "GOTO_TABLE"
         ], 
         "metadata_match": 18446744073709551615, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "config": 4294967295, 
         "metadata_write": 18446744073709551615, 
         "match": [
@@ -771,7 +778,7 @@
           "GOTO_TABLE"
         ], 
         "metadata_match": 18446744073709551615, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "config": 4294967295, 
         "metadata_write": 18446744073709551615, 
         "match": [
@@ -832,8 +839,8 @@
   }, 
   {
     "msg": {
-      "out_group": 4294967295, 
-      "table_id": 255, 
+      "out_group": "ALL", 
+      "table_id": "ALL", 
       "match": [
         {
           "field": "ETH_DST", 
@@ -842,11 +849,11 @@
         }
       ], 
       "monitor_id": 4294967295, 
-      "command": 255, 
+      "command": "DELETE", 
       "flags": [
         "NO_ABBREV"
       ], 
-      "out_port": 4294967295
+      "out_port": "ALL"
     }, 
     "type": "REQUEST.FLOW_MONITOR", 
     "version": 5, 
@@ -861,7 +868,7 @@
         "idle_timeout": 65535, 
         "priority": 65535, 
         "reason": 255, 
-        "table_id": 255, 
+        "table_id": "ALL", 
         "cookie": 18446744073709551615, 
         "event": "ADDED", 
         "match": [
@@ -917,7 +924,7 @@
       "queues": [
         {
           "min_rate": 65535, 
-          "queue_id": 4294967295, 
+          "queue_id": "ALL", 
           "max_rate": 65535, 
           "properties": [], 
           "port": "CONTROLLER"
@@ -1004,7 +1011,7 @@
       "flags": [
         "KBPS"
       ], 
-      "meter_id": 4294967295, 
+      "meter_id": "ALL", 
       "bands": [
         {
           "type": "DROP", 
@@ -1015,5 +1022,69 @@
     }, 
     "version": 4, 
     "type": "METER_MOD"
+  }, 
+  {
+    "msg": {
+      "reason": "MASTER_REQUEST", 
+      "role": "ROLE_MASTER", 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ], 
+      "generation_id": 18446744073709551615
+    }, 
+    "version": 5, 
+    "type": "ROLE_STATUS"
+  }, 
+  {
+    "msg": {
+      "type": "HELLO"
+    }, 
+    "version": 5, 
+    "type": "REQUESTFORWARD"
+  }, 
+  {
+    "msg": {
+      "bundle_id": 4294967295, 
+      "type": "OPEN_REQUEST", 
+      "flags": [
+        "ATOMIC"
+      ], 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ]
+    }, 
+    "version": 5, 
+    "type": "BUNDLE_CONTROL"
+  }, 
+  {
+    "msg": {
+      "bundle_id": 4294967295, 
+      "message": {
+        "type": "HELLO"
+      }, 
+      "flags": [
+        "ATOMIC"
+      ], 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ]
+    }, 
+    "version": 5, 
+    "type": "BUNDLE_ADD_MESSAGE"
   }
 ]
