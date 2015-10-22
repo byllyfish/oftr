@@ -11,6 +11,7 @@
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/ytimestamp.h"
 
 namespace ofp {
 namespace rpc {
@@ -26,7 +27,7 @@ enum RpcMethod : UInt32 {
   METHOD_SEND,           // ofp.send
   METHOD_CHANNEL,        // ofp.channel
   METHOD_MESSAGE,        // ofp.message
-  METHOD_MESSAGE_ERROR,  // ofp.message_error
+  METHOD_ALERT,          // ofp.alert
   METHOD_LIST_CONNS,     // ofp.list_connections
   METHOD_ADD_IDENTITY,   // ofp.add_identity
   METHOD_UNSUPPORTED
@@ -251,14 +252,16 @@ struct RpcChannel {
   Params params;
 };
 
-/// Represents a RPC notification about an incoming message error
-/// (METHOD_MESSAGE_ERROR).
-struct RpcMessageError {
+/// Represents a RPC notification about some alert (e.g. malformed message)
+/// (METHOD_ALERT).
+struct RpcAlert {
   std::string toJson();
 
   struct Params {
     DatapathID datapathId;
-    std::string error;
+    UInt64 connId;
+    Timestamp time;
+    std::string alert;
     ByteRange data;
   };
 
@@ -490,19 +493,21 @@ struct MappingTraits<ofp::rpc::RpcChannel::Params> {
 };
 
 template <>
-struct MappingTraits<ofp::rpc::RpcMessageError> {
-  static void mapping(IO &io, ofp::rpc::RpcMessageError &response) {
-    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_MESSAGE_ERROR;
+struct MappingTraits<ofp::rpc::RpcAlert> {
+  static void mapping(IO &io, ofp::rpc::RpcAlert &response) {
+    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_ALERT;
     io.mapRequired("method", method);
     io.mapRequired("params", response.params);
   }
 };
 
 template <>
-struct MappingTraits<ofp::rpc::RpcMessageError::Params> {
-  static void mapping(IO &io, ofp::rpc::RpcMessageError::Params &params) {
+struct MappingTraits<ofp::rpc::RpcAlert::Params> {
+  static void mapping(IO &io, ofp::rpc::RpcAlert::Params &params) {
+    io.mapRequired("conn_id", params.connId);
     io.mapRequired("datapath_id", params.datapathId);
-    io.mapRequired("error", params.error);
+    io.mapRequired("time", params.time);
+    io.mapRequired("alert", params.alert);
     io.mapRequired("data", params.data);
   }
 };

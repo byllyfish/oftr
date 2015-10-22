@@ -131,8 +131,8 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       io.setError(
           "Use 'ofp.send' instead; 'ofp.message' is for notifications only.");
       break;
-    case METHOD_MESSAGE_ERROR:
-      io.setError("'ofp.message_error' is for notifications only.");
+    case METHOD_ALERT:
+      io.setError("'ofp.alert' is for notifications only.");
       break;
     default:
       break;

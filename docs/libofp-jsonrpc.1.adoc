@@ -15,6 +15,7 @@ Bill Fisher <william.w.fisher@gmail.com>
 
 libofp-jsonrpc - OpenFlow Microservice
 
+
 == SYNOPSIS
 
 *libofp jsonrpc* [_OPTIONS_]
@@ -33,39 +34,31 @@ simultaneous OpenFlow connections. See the `libofp-jsonrpc` man page for more de
 
 *--xpc*:: Run as an XPC service on Mac OS X.
 
+
 == RPC Overview
 
 The json-rpc server uses JSON-RPC protocol with some minor adjustments.
 
-in JSON-RPC, there are requests, replies, errors and notifications.
-
 Request ID's must be non-negative integers less than or equal to 2^63-2.
 
-There are five basic JSON-RPC requests:
+There are seven JSON-RPC requests:
 
   - ofp.listen
   - ofp.connect
   - ofp.send
   - ofp.close
+  - ofp.status
   - ofp.list_connections
+  - ofp.add_identity
 
-There are two basic JSON-RPC notifications sent:
+There are three JSON-RPC notifications:
 
   - ofp.channel
   - ofp.message
+  - ofp.alert
 
-Advanced Requests:
-
-  - ofp.add_identity
-  - ofp.list_identities (todo)
-  - ofp.set_options (todo)
-
-Advanced Notifications:
-
-  - ofp.message_error (disabled by default?)
 
 == RPC Commands
-
 
 === ofp.connect
 
@@ -109,11 +102,12 @@ Listen for incoming OpenFlow connections on the specified interface and port.
 ==== Request 
 
     id: UInt64
-    method: 'ofp.listen'
+    method: ofp.listen
     params:
       endpoint: IPv6Endpoint
+      versions: [UInt8]
       tls_id: UInt64
-      options: [String...]
+      options: [String]
 
 *endpoint*:: Local IP address and port number to listen on, e.g. "127.0.0.1:8000".
     If the IP address is omitted, listen on all interface addresses. The IP 
