@@ -48,6 +48,7 @@ class Help : public Subprogram {
   std::vector<std::unique_ptr<Schema>> schemas_;
 
   void loadSchemas();
+  void loadSchema(const std::string &schema);
   void addFieldSchemas();
   void addBuiltinTypes();
 

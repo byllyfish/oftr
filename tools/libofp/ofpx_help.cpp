@@ -33,6 +33,7 @@
 #include "ofp/yaml/ybundleaddmessage.h"
 #include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/yaml/yrequestforward.h"
+#include "ofp/rpc/rpcevents.h"
 
 using namespace ofpx;
 
@@ -100,8 +101,7 @@ static const char *const kPropertySchemas[] = {
 static const char *const kBuiltinTypes[] = {
     "UInt8",      "UInt16",     "UInt32",      "UInt64",        "SInt32",
     "String",     "Str16",      "Str32",       "Str256",        "HexData",
-    "DatapathID", "MacAddress", "IPv4Address", "IPv6Address",   "LLDPChassisID",
-    "LLDPPortID", "ActionID",   "FieldID",     "InstructionID", "Timestamp"
+    "DatapathID", "MacAddress", "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID", "LLDPPortID", "ActionID",   "FieldID",     "InstructionID", "Timestamp"
 };
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
@@ -217,55 +217,62 @@ int Help::run(int argc, const char *const *argv) {
 }
 
 void Help::loadSchemas() {
-  for (auto &schema : kMessageSchemas) {
-    // If the first line in the schema is empty, split it on the empty lines
-    // into multiple schema objects.
-    if (schema[0] == '\n') {
-      llvm::SmallVector<llvm::StringRef, 25> vals;
-      llvm::StringRef{schema + 1}.split(vals, "\n\n", -1, false);
-      for (auto val : vals) {
-        schemas_.emplace_back(new Schema{val});
-      }
+  loadSchema(llvm::yaml::kRpcSchema);
 
-    } else {
-      schemas_.emplace_back(new Schema{schema});
-    }
+  for (auto &schema : kMessageSchemas) {
+    loadSchema(schema);
   }
 
   for (auto &schema : kInstructionSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kActionSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kMeterBandSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kStructSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kPropertySchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &p : kEnumSchemas) {
-    schemas_.emplace_back(new Schema{p.first(p.second)});
+    loadSchema(p.first(p.second));
   }
 
   for (auto &p : kMixedSchemas) {
-    schemas_.emplace_back(new Schema{p.first(p.second)});
+    loadSchema(p.first(p.second));
   }
 
   for (auto &p : kFlagSchemas) {
-    schemas_.emplace_back(new Schema{p.first(p.second)});
+    loadSchema(p.first(p.second));
   }
 
   addFieldSchemas();
   addBuiltinTypes();
+}
+
+void Help::loadSchema(const std::string &schema) {
+  assert(!schema.empty());
+  // If the first line in the schema is empty, split it on the empty lines
+  // into multiple schema objects.
+  if (schema[0] == '\n') {
+    llvm::SmallVector<llvm::StringRef, 25> vals;
+    llvm::StringRef{schema}.drop_front(1).split(vals, "\n\n", -1, false);
+    for (auto val : vals) {
+      schemas_.emplace_back(new Schema{val});
+    }
+
+  } else {
+    schemas_.emplace_back(new Schema{schema});
+  }
 }
 
 void Help::addFieldSchemas() {
@@ -278,14 +285,14 @@ void Help::addFieldSchemas() {
     sstr << "value: " << translateFieldType(info->type) << '\n';
     sstr << "mask: !optout " << translateFieldType(info->type) << "\n";
 
-    schemas_.emplace_back(new Schema(sstr.str()));
+    loadSchema(sstr.str());
   }
 }
 
 void Help::addBuiltinTypes() {
   const std::string builtin{"Builtin/"};
   for (auto &p : kBuiltinTypes) {
-    schemas_.emplace_back(new Schema(builtin + p + "\n<builtin>"));
+    loadSchema(builtin + p + "\n<builtin>");
   }
 }
 

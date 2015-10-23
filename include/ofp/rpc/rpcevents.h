@@ -49,7 +49,7 @@ struct RpcErrorResponse {
   std::string toJson();
 
   struct Error {
-    int code = 0;
+    SignedInt32 code = 0;
     std::string message;
   };
 
@@ -258,8 +258,8 @@ struct RpcAlert {
   std::string toJson();
 
   struct Params {
-    DatapathID datapathId;
     UInt64 connId;
+    DatapathID datapathId;
     Timestamp time;
     std::string alert;
     ByteRange data;
@@ -277,6 +277,109 @@ LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats);
 
 namespace llvm {
 namespace yaml {
+
+const char *const kRpcSchema = R"""(
+{Rpc/ofp.listen}
+id: !opt UInt64
+method: !request ofp.listen
+params: !request
+  endpoint: IPv6Endpoint
+  versions: !opt [UInt8]
+  tls_id: !opt UInt64
+  options: !opt [String]
+result: !reply
+  conn_id: UInt64
+  versions: [UInt8]
+error: !error
+  code: SInt32
+  message: String
+
+{Rpc/ofp.connect}
+id: !opt UInt64
+method: !request ofp.connect
+params: !request
+  endpoint: IPv6Endpoint
+  versions: !opt [UInt8]
+  tls_id: !opt UInt64
+  options: !opt [String]
+result: !reply
+  conn_id: UInt64
+error: !error
+  code: SInt32
+  message: String
+
+{Rpc/ofp.close}
+id: !opt UInt64
+method: !request ofp.close
+params: !request
+  conn_id: UInt64
+result: !reply
+  count: UInt32
+error: !error
+  code: SInt32
+  message: String
+
+{Rpc/ofp.send}
+id: !opt UInt64
+method: !request ofp.send
+params: !request Message
+result: !reply
+  conn_id: UInt64
+  data: HexData
+error: !error
+  code: SInt32
+  message: String
+
+{Rpc/ofp.list_connections}
+id: !opt UInt64
+method: !request ofp.list_connections
+params: !request
+  conn_id: UInt64
+result: !reply
+  - local_endpoint: IPv6Endpoint
+    remote_endpoint: IPv6Endpoint
+    datapath_id: DatapathID
+    conn_id: UInt64
+    auxiliary_id: UInt8
+    transport: TCP | UDP | TLS | DTLS | NONE
+error: !error
+  code: SInt32
+  message: String
+
+{Rpc/ofp.add_identity}
+id: !opt UInt64
+method: !request ofp.add_identity
+params: !request
+  certificate: String
+  password: String
+  verifier: String
+result: !reply
+  tls_id: UInt64
+error: !error
+  code: SInt32
+  message: String
+
+{Rpc/ofp.message}
+method: !notify ofp.message
+params: !notify Message
+
+{Rpc/ofp.channel}
+method: !notify ofp.channel
+params: !notify
+  conn_id: UInt64
+  datapath_id: DatapathID
+  version: UInt8
+  status: UP | DOWN
+
+{Rpc/ofp.alert}
+method: !notify ofp.alert
+params: !notify
+  conn_id: UInt64
+  datapath_id: DatapathID
+  time: Timestamp
+  alert: String
+  data: HexData
+)""";
 
 template <>
 struct ScalarTraits<ofp::rpc::RpcMethod> {

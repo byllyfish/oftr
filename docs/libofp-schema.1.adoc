@@ -75,6 +75,8 @@ letter, e.g. `ofp.listen`.
 
 * Literal strings and property names are case-sensitive.
 
+* Input must conform to specified types.
+
 * Type names begin with a capital letter and use mixed case, e.g. `UInt8`, `Field`.
 
 * Sequences are presented as an array with one element, e.g. `[UInt8]`. If the array has more than one element, each element has a choice of types.
@@ -95,7 +97,8 @@ letter, e.g. `ofp.listen`.
 
 * Types with multiple sub-choices are named at the top level with a '/'. For example, there are multiple 'Message', 'Instruction', 'Action' types.
 
-== Example
+* RPC schemas include the result schema following the params section. To generate, a command, ignore the 
+== Examples
 
 The FLOW_MOD message uses the following template:
 
