@@ -1,3 +1,12 @@
+Rpc/ofp.description: 
+  id: UInt64
+  method: !request ofp.description
+  result: !reply
+    major_version: UInt16
+    minor_version: UInt16
+    software_version: String
+    ofp_versions: [UInt8]
+  
 Rpc/ofp.listen: 
   id: !opt UInt64
   method: !request ofp.listen
@@ -9,9 +18,6 @@ Rpc/ofp.listen:
   result: !reply
     conn_id: UInt64
     versions: [UInt8]
-  error: !error
-    code: SInt32
-    message: String
   
 Rpc/ofp.connect: 
   id: !opt UInt64
@@ -23,9 +29,6 @@ Rpc/ofp.connect:
     options: !opt [String]
   result: !reply
     conn_id: UInt64
-  error: !error
-    code: SInt32
-    message: String
   
 Rpc/ofp.close: 
   id: !opt UInt64
@@ -34,9 +37,6 @@ Rpc/ofp.close:
     conn_id: UInt64
   result: !reply
     count: UInt32
-  error: !error
-    code: SInt32
-    message: String
   
 Rpc/ofp.send: 
   id: !opt UInt64
@@ -45,9 +45,6 @@ Rpc/ofp.send:
   result: !reply
     conn_id: UInt64
     data: HexData
-  error: !error
-    code: SInt32
-    message: String
   
 Rpc/ofp.list_connections: 
   id: !opt UInt64
@@ -61,9 +58,6 @@ Rpc/ofp.list_connections:
       conn_id: UInt64
       auxiliary_id: UInt8
       transport: TCP | UDP | TLS | DTLS | NONE
-  error: !error
-    code: SInt32
-    message: String
   
 Rpc/ofp.add_identity: 
   id: !opt UInt64
@@ -74,9 +68,6 @@ Rpc/ofp.add_identity:
     verifier: String
   result: !reply
     tls_id: UInt64
-  error: !error
-    code: SInt32
-    message: String
   
 Rpc/ofp.message: 
   method: !notify ofp.message
@@ -98,6 +89,12 @@ Rpc/ofp.alert:
     time: Timestamp
     alert: String
     data: HexData
+  
+Rpc/rpc.error: 
+  id: UInt64
+  error:
+    code: SInt32
+    message: String
   
 Message/Hello: 
   version: !opt UInt8

@@ -40,6 +40,10 @@ void RpcConnection::onRpcAddIdentity(RpcAddIdentity *add) {
   server_->onRpcAddIdentity(this, add);
 }
 
+void RpcConnection::onRpcDescription(RpcDescription *desc) {
+  server_->onRpcDescription(this, desc);
+}
+
 void RpcConnection::onChannel(Channel *channel, const char *status) {
   RpcChannel notification;
   notification.params.connId = channel->connectionId();

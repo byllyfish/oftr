@@ -34,8 +34,13 @@ set(CMAKE_MODULE_PATH
 set(Libofp_VERSION_MAJOR 0)
 set(Libofp_VERSION_MINOR 9)
 set(Libofp_VERSION_PATCH 0)
-set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
+set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
+
+# Set version numbers for RPC API.
+
+set(Libofp_RPC_API_MAJOR 0)
+set(Libofp_RPC_API_MINOR 1)
 
 # You can build libofp with or without the JSON-RPC server.
 

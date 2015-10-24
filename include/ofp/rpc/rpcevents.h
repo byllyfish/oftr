@@ -30,6 +30,7 @@ enum RpcMethod : UInt32 {
   METHOD_ALERT,          // ofp.alert
   METHOD_LIST_CONNS,     // ofp.list_connections
   METHOD_ADD_IDENTITY,   // ofp.add_identity
+  METHOD_DESCRIPTION,    // ofp.description
   METHOD_UNSUPPORTED
 };
 
@@ -65,6 +66,32 @@ struct RpcConnectionStats {
   DatapathID datapathId;
   UInt8 auxiliaryId;
   ChannelTransport transport;
+};
+
+/// Represents a RPC request to describe the RPC server (METHOD_DESCRIPTION)
+struct RpcDescription {
+  explicit RpcDescription(UInt64 ident) : id{ident} {}
+
+  UInt64 id;
+};
+
+/// Represents a RPC response to describe the RPC server (METHOD_DESCRIPTION)
+struct RpcDescriptionResponse {
+  explicit RpcDescriptionResponse(UInt64 ident) : id{ident} {}
+  std::string toJson();
+
+  struct Result {
+    /// Current API version.
+    UInt16 major_version;
+    UInt16 minor_version;
+    /// Current version of this software.
+    std::string software_version;
+    /// List of supported OpenFlow versions.
+    std::vector<UInt8> ofp_versions;
+  };
+
+  UInt64 id;
+  Result result;
 };
 
 /// Represents a RPC request to listen for new connections (METHOD_LISTEN)
@@ -279,6 +306,15 @@ namespace llvm {
 namespace yaml {
 
 const char *const kRpcSchema = R"""(
+{Rpc/ofp.description}
+id: UInt64
+method: !request ofp.description
+result: !reply
+  major_version: UInt16
+  minor_version: UInt16
+  software_version: String
+  ofp_versions: [UInt8]
+
 {Rpc/ofp.listen}
 id: !opt UInt64
 method: !request ofp.listen
@@ -290,9 +326,6 @@ params: !request
 result: !reply
   conn_id: UInt64
   versions: [UInt8]
-error: !error
-  code: SInt32
-  message: String
 
 {Rpc/ofp.connect}
 id: !opt UInt64
@@ -304,9 +337,6 @@ params: !request
   options: !opt [String]
 result: !reply
   conn_id: UInt64
-error: !error
-  code: SInt32
-  message: String
 
 {Rpc/ofp.close}
 id: !opt UInt64
@@ -315,9 +345,6 @@ params: !request
   conn_id: UInt64
 result: !reply
   count: UInt32
-error: !error
-  code: SInt32
-  message: String
 
 {Rpc/ofp.send}
 id: !opt UInt64
@@ -326,9 +353,6 @@ params: !request Message
 result: !reply
   conn_id: UInt64
   data: HexData
-error: !error
-  code: SInt32
-  message: String
 
 {Rpc/ofp.list_connections}
 id: !opt UInt64
@@ -342,9 +366,6 @@ result: !reply
     conn_id: UInt64
     auxiliary_id: UInt8
     transport: TCP | UDP | TLS | DTLS | NONE
-error: !error
-  code: SInt32
-  message: String
 
 {Rpc/ofp.add_identity}
 id: !opt UInt64
@@ -355,9 +376,6 @@ params: !request
   verifier: String
 result: !reply
   tls_id: UInt64
-error: !error
-  code: SInt32
-  message: String
 
 {Rpc/ofp.message}
 method: !notify ofp.message
@@ -379,6 +397,12 @@ params: !notify
   time: Timestamp
   alert: String
   data: HexData
+
+{Rpc/rpc.error}
+id: UInt64
+error:
+  code: SInt32
+  message: String
 )""";
 
 template <>
@@ -459,6 +483,24 @@ struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
     io.mapRequired("certificate", params.certificate);
     io.mapOptional("password", params.password);
     io.mapRequired("verifier", params.verifier);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::rpc::RpcDescriptionResponse> {
+  static void mapping(IO &io, ofp::rpc::RpcDescriptionResponse &response) {
+    io.mapRequired("id", response.id);
+    io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::rpc::RpcDescriptionResponse::Result> {
+  static void mapping(IO &io, ofp::rpc::RpcDescriptionResponse::Result &result) {
+    io.mapRequired("major_version", result.major_version);
+    io.mapRequired("minor_version", result.minor_version);
+    io.mapRequired("software_version", result.software_version);
+    io.mapRequired("ofp_versions", result.ofp_versions);
   }
 };
 

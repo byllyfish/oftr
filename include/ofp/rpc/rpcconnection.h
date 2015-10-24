@@ -31,6 +31,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   void onRpcSend(RpcSend *send);
   void onRpcListConns(RpcListConns *list);
   void onRpcAddIdentity(RpcAddIdentity *add);
+  void onRpcDescription(RpcDescription *desc);
 
   template <class Response>
   void rpcReply(Response *response) {

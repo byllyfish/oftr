@@ -67,11 +67,12 @@ Open an outgoing OpenFlow connection to the specified host and port.
 ==== Request
 
     id: UInt64
-    method: 'ofp.connect'
+    method: ofp.connect
     params:
       endpoint: IPv6Endpoint
-      tls_id:  UInt64                   # Optional; Default: 0
-      options: [String...]              # Optional; Default: []
+      versions: !opt [UInt8]
+      tls_id:  !opt UInt64
+      options: !opt [String]
 
 *id*:: Request ID used to identify the reply (unsigned 64-bit integer).
 
@@ -81,9 +82,11 @@ Open an outgoing OpenFlow connection to the specified host and port.
     IPv4/IPv6 address and a TCP port number separated bya ':' or '.'. Formats 
     include: "127.0.0.1:6653", "127.0.0.1.6653", "[::1]:6653", "::1.6653".
 
+*versions*:: List of OpenFlow versions to support. Defaults to all.
+
 *tls_id*:: Identifier for TLS/DTLS identity to use. See ofp.add_identity.
 
-*options*:: Additional options that control the connection.
+*options*:: List of additional options that control the connection.
     - *--raw* = Raw mode; do not automatically send a features_request to determine the datapath_id.
     - *--udp* = Use UDP instead of TCP. This option must be combined with --raw.
 
@@ -113,6 +116,8 @@ Listen for incoming OpenFlow connections on the specified interface and port.
     If the IP address is omitted, listen on all interface addresses. The IP 
     address and port number must be separated by a space or colon when both are 
     present. When using a colon separator, use brackets around an IPv6 address.
+
+*versions*:: List of OpenFlow versions to support. Defaults to all.
 
 *tls_id*:: TLS identity to use for securing the connection. The default identity is 0 (normally plaintext).
 
@@ -265,27 +270,22 @@ using Transport Layer Security (TLS).
 
 == TRANSPORT PROTOCOL
 
-JSON-RPC messages are sent over a connection using a text-based protocol.
+JSON-RPC messages are sent over a connection using a UTF-8 text protocol. Each
+JSON message is separated by a newline. The maximum length of a line is 1 MB.
 
-=== LINE-BASED TRANSPORT
+  { "id": 1, "method": "ofp.description" }
 
-Each JSON object is sent in one line terminated by a linefeed character (\n).
-The JSON object must be stripped of linefeeds. The line must begin with a curly 
-brace '{'. The line must be less than 1,048,576 bytes.
+All responses are encoded in compact, single-line JSON representation.
 
-When sending data back to the client, the line-based JSON transport will be used unless
-a command is sent to change the mode.
+We're actually using a YAML parser, so the JSON input can use YAML encoding.
+Still, no newlines are allowed.
 
-If the line equals "---\n", read until we see "\n...\n". We parse the contained
-text as multi-line YAML or JSON. The text entire message, including the delimiters
-must be less than 1,048,576 bytes.
+  { id: 1, method: ofp.description }
 
-All input is UTF-8. White space characters such as HT, LF, and CR are permitted.
-No other control characters (less than 0x20) may appear. (If they are inside JSON text, 
-they must be escaped due to JSON rules.)
+A message encoded inside a JSON string is parsed using YAML. Escape newlines
+with "\n".
 
-Future versions may support binary transport options that use CBOR.
-
+  "id: 1\nmethod: ofp.description"
 
 == SEE ALSO
 

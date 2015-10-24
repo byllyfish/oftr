@@ -304,6 +304,18 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
   }
 }
 
+void RpcServer::onRpcDescription(RpcConnection *conn, RpcDescription *desc) {
+  if (desc->id == RPC_ID_MISSING)
+    return;
+
+  RpcDescriptionResponse response{desc->id};
+  response.result.major_version = LIBOFP_RPC_API_MAJOR;
+  response.result.minor_version = LIBOFP_RPC_API_MINOR;
+  response.result.software_version = softwareVersion();
+  response.result.ofp_versions = ProtocolVersions::All.versions();
+  conn->rpcReply(&response);
+}
+
 void RpcServer::onChannelUp(Channel *channel) {
   if (oneConn_)
     oneConn_->onChannel(channel, "UP");
@@ -325,4 +337,13 @@ ofp::Channel *RpcServer::findDatapath(const DatapathID &datapathId,
     return defaultChannel_;
 
   return engine_->findDatapath(datapathId, connId);
+}
+
+std::string RpcServer::softwareVersion() {
+  std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
+  std::stringstream sstr;
+
+  sstr << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.' << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+
+  return sstr.str();
 }

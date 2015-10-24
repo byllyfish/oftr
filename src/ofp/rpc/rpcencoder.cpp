@@ -134,6 +134,13 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
     case METHOD_ALERT:
       io.setError("'ofp.alert' is for notifications only.");
       break;
+    case METHOD_DESCRIPTION: {
+      RpcDescription desc{id};
+      if (!errorFound(io)) {
+        conn_->onRpcDescription(&desc);
+      }
+      break;
+    }
     default:
       break;
   }
