@@ -227,6 +227,9 @@ Run a JSON-RPC server. By default, the control connection comes from stdio.
 Access built-in information about the YAML schema used to describe all OpenFlow
 messages.
 
+Command-line options list one type of schema object or dump the entire schema. 
+Arguments will print the desired schema and all of its dependencies.
+
 === OPTIONS
 
 *-h, --help*::
@@ -235,11 +238,14 @@ messages.
 *-a, --actions*::
     List supported actions.
 
-*--dump*::
-    List all schema names.
+*-b, --brief*::
+    Display abbreviated form of message schema.
 
-*-e, --enums*::
+*--enums*::
     List supported enumerated types.
+
+*--field-table*::
+    List supported match fields in a table.
 
 *-f, --fields*::
     List supported match fields.
@@ -250,8 +256,17 @@ messages.
 *-m, --messages*::
     List supported messages.
 
-*--multipart*::
-    List supported multipart types.
+*--mixed*::
+    List supported mixed types.
+
+*-r, --rpc*::
+    List supported RPC commands.
+
+*--schema-all*::
+    List complete schema.
+
+*--schema-names*::
+    List all schema names.
 
 
 == LOGGING OPTIONS

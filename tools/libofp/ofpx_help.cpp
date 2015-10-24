@@ -188,18 +188,24 @@ int Help::run(int argc, const char *const *argv) {
       argc, argv, "Provide information about the OpenFlow YAML schema\n");
   loadSchemas();
 
-  if (fields_) {
-    listFields();
+  if (fieldTable_) {
+    dumpFieldTable();
   } else if (messages_) {
     listSchemas("Message");
-  } else if (multipart_) {
-    listSchemas("Multipart");
   } else if (instructions_) {
     listSchemas("Instruction");
   } else if (actions_) {
     listSchemas("Action");
+  } else if (fields_) {
+    listSchemas("Field");
   } else if (enums_) {
     listSchemas("Enum");
+  } else if (flags_) {
+    listSchemas("Flag");
+  } else if (mixed_) {
+    listSchemas("Mixed");
+  } else if (rpc_) {
+    listSchemas("Rpc");
   } else if (schemaAll_) {
     dumpSchemaAll();
   } else if (schemaNames_) {
@@ -257,6 +263,7 @@ void Help::loadSchemas() {
 
   addFieldSchemas();
   addBuiltinTypes();
+  initTopLevel();
 }
 
 void Help::loadSchema(const std::string &schema) {
@@ -283,7 +290,8 @@ void Help::addFieldSchemas() {
     sstr << "{Field/" << info->name << "}\n";
     sstr << "field: " << info->name << '\n';
     sstr << "value: " << translateFieldType(info->type) << '\n';
-    sstr << "mask: !optout " << translateFieldType(info->type) << "\n";
+    if (info->isMaskSupported)
+      sstr << "mask: !optout " << translateFieldType(info->type) << '\n';
 
     loadSchema(sstr.str());
   }
@@ -295,6 +303,14 @@ void Help::addBuiltinTypes() {
     loadSchema(builtin + p + "\n<builtin>");
   }
 }
+
+/// Build list of the names of the top level types in the schema list.
+void Help::initTopLevel() {
+  for (auto &s : schemas_) {
+    topLevel_.insert(s->type().lower());
+  }
+}
+
 
 Schema *Help::findSchema(const std::string &key) {
   auto iter = std::find_if(
@@ -325,9 +341,8 @@ Schema *Help::findNearestSchema(const std::string &key) {
   return minSchema;
 }
 
-void Help::listFields() {
+void Help::dumpFieldTable() {
   // Determine the maximum width of the name and type fields.
-
   int nameWidth = 0;
   int typeWidth = 0;
 
@@ -339,7 +354,6 @@ void Help::listFields() {
   }
 
   // Print out the name, type and description of each field.
-
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
     auto typeStr = translateFieldType(info->type);
@@ -359,14 +373,26 @@ void Help::listSchemas(const std::string &type) {
 }
 
 void Help::printSchema(const std::string &key) {
+  // If key is a top level type, we print out all sub-schemas, but no
+  // dependent types.
+  std::string lowerKey = llvm::StringRef{key}.lower();
+  if (topLevel_.find(lowerKey) != topLevel_.end()) {
+    for (auto &s : schemas_) {
+      if (s->type().equals_lower(lowerKey))
+        s->print(std::cout, brief_);
+    }
+    return;
+  }
+
+  // Otherwise, we search for the first schema name that matches.
   auto schema = findSchema(key);
   if (schema) {
-    schema->print(std::cout);
+    schema->print(std::cout, brief_);
 
     for (auto &s : schema->dependsOnSchemas()) {
       auto depSchema = findSchema(s);
       if (depSchema) {
-        depSchema->print(std::cout);
+        depSchema->print(std::cout, brief_);
       } else {
         std::cerr << "Unknown dependent schema '" << s << "'\n";
       }
@@ -393,7 +419,7 @@ void Help::dumpSchemaAll() {
   bool missingDependentSchemas = false;
 
   for (auto &schema : schemas_) {
-    schema->print(std::cout);
+    schema->print(std::cout, brief_);
 
     for (auto &s : schema->dependsOnSchemas()) {
       if (!findSchema(s)) {
