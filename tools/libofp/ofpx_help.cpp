@@ -345,6 +345,7 @@ void Help::dumpFieldTable() {
   // Determine the maximum width of the name and type fields.
   int nameWidth = 0;
   int typeWidth = 0;
+  int maskWidth = 4;
 
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
@@ -353,12 +354,26 @@ void Help::dumpFieldTable() {
     typeWidth = std::max(typeWidth, static_cast<int>(std::strlen(typeStr)));
   }
 
-  // Print out the name, type and description of each field.
+  // Print the header line.
+  std::cout << std::setw(nameWidth) << std::left << "Name" << " | "
+            << std::setw(typeWidth) << std::left << "Type" << " | "
+            << std::setw(maskWidth) << std::left << "Mask" << " | "
+            << "Description\n";
+  std::cout << std::setfill('-');
+  std::cout << std::setw(nameWidth) << "-" << "-|-"
+            << std::setw(typeWidth) << "-" << "-|-"
+            << std::setw(maskWidth) << "-" << "-|-"
+            << std::setw(12) << "-" << '\n';
+  std::cout << std::setfill(' ');
+
+  // Print the name, type and description of each field.
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
     auto typeStr = translateFieldType(info->type);
+    auto maskStr = info->isMaskSupported ? "Yes" : " ";
     std::cout << std::setw(nameWidth) << std::left << info->name << " | "
               << std::setw(typeWidth) << std::left << typeStr << " | "
+              << std::setw(maskWidth) << std::left << maskStr << " | "
               << info->description << '\n';
   }
 }
