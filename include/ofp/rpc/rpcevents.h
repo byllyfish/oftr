@@ -72,7 +72,10 @@ struct RpcConnectionStats {
 struct RpcDescription {
   explicit RpcDescription(UInt64 ident) : id{ident} {}
 
+  struct Params {};
+
   UInt64 id;
+  Params params;
 };
 
 /// Represents a RPC response to describe the RPC server (METHOD_DESCRIPTION)
@@ -121,8 +124,6 @@ struct RpcListenResponse {
   struct Result {
     /// Connection ID of listening connection.
     UInt64 connId = 0;
-    /// List of supported protocol versions.
-    std::vector<UInt8> versions;
   };
 
   UInt64 id;
@@ -325,7 +326,6 @@ params: !request
   options: !opt [String]
 result: !reply
   conn_id: UInt64
-  versions: [UInt8]
 
 {Rpc/ofp.connect}
 id: !opt UInt64
@@ -444,6 +444,11 @@ struct ScalarEnumerationTraits<ofp::ChannelTransport> {
 };
 
 template <>
+struct MappingTraits<ofp::rpc::RpcDescription::Params> {
+  static void mapping(IO &io, ofp::rpc::RpcDescription::Params &params) {}
+};
+
+template <>
 struct MappingTraits<ofp::rpc::RpcListen::Params> {
   static void mapping(IO &io, ofp::rpc::RpcListen::Params &params) {
     io.mapRequired("endpoint", params.endpoint);
@@ -516,7 +521,6 @@ template <>
 struct MappingTraits<ofp::rpc::RpcListenResponse::Result> {
   static void mapping(IO &io, ofp::rpc::RpcListenResponse::Result &result) {
     io.mapRequired("conn_id", result.connId);
-    io.mapRequired("versions", result.versions);
   }
 };
 

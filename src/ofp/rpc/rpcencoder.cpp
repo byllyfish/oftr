@@ -17,14 +17,13 @@ RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,
                        yaml::Encoder::ChannelFinder finder)
     : conn_{conn}, errorStream_{error_}, finder_{finder} {
   // Check if input string is possibly a JSON/YAML quoted string.
+  // FIXME: Checking for double-quote should ignore preceding white space.
   std::string rawInput;
   if (!input.empty() && input[0] == '"') {
-    log::debug("RpcEncoder: decodeString:", input);
     llvm::yaml::Input ys{input, nullptr, RpcEncoder::diagnosticHandler, this};
     if (!ys.error()) {
       ys >> rawInput;
     }
-    log::debug("RpcEncoder: result:", rawInput);
     if (ys.error()) {
       replyError();
       return;
@@ -136,6 +135,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     case METHOD_DESCRIPTION: {
       RpcDescription desc{id};
+      io.mapOptional("params", desc.params);
       if (!errorFound(io)) {
         conn_->onRpcDescription(&desc);
       }

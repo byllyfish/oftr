@@ -17,7 +17,6 @@ Rpc/ofp.listen:
     options: !opt [String]
   result: !reply
     conn_id: UInt64
-    versions: [UInt8]
   
 Rpc/ofp.connect: 
   id: !opt UInt64

@@ -89,7 +89,7 @@ msg:
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0400001000000000000100080000001E", encoder.data(),
+  EXPECT_HEX("0500001000000000000100080000003E", encoder.data(),
              encoder.size());
 }
 
@@ -101,7 +101,7 @@ type: HELLO
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0400001000000000000100080000001E", encoder.data(),
+  EXPECT_HEX("0500001000000000000100080000003E", encoder.data(),
              encoder.size());
 }
 

@@ -109,7 +109,6 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   if (!err) {
     RpcListenResponse response{open->id};
     response.result.connId = connId;
-    response.result.versions = versions.versions();
     conn->rpcReply(&response);
 
   } else {

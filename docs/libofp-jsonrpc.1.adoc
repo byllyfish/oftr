@@ -277,7 +277,9 @@ JSON message is separated by a newline. The maximum length of a line is 1 MB.
 
 All responses are encoded in compact, single-line JSON representation.
 
-We're actually using a YAML parser, so the JSON input can use YAML encoding.
+  {"id":1,"result":{"major_version":0,"minor_version":1, ... }}
+
+JSON input can also use YAML encoding, which is less stringent.
 Still, no newlines are allowed.
 
   { id: 1, method: ofp.description }
@@ -286,6 +288,7 @@ A message encoded inside a JSON string is parsed using YAML. Escape newlines
 with "\n".
 
   "id: 1\nmethod: ofp.description"
+
 
 == SEE ALSO
 
