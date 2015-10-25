@@ -17,6 +17,7 @@ struct TestStruct {
   bool c;
   Big32 d;
   double e;
+  UInt64 f;
 };
 
 OFP_END_IGNORE_PADDING
@@ -32,6 +33,7 @@ struct MappingTraits<TestStruct> {
     io.mapRequired("c", item.c);
     io.mapRequired("d", item.d);
     io.mapRequired("e", item.e);
+    io.mapRequired("f", item.f);
   }
 };
 
@@ -112,7 +114,7 @@ TEST(outputjson, scalarString) {
 }
 
 TEST(outputjson, testStruct) {
-  TestStruct s = {-54, "it works", true, 12345678, 3.141593};
+  TestStruct s = {-54, "it works", true, 12345678, 3.141593, 0xffffffffffffu};
 
   std::string result;
   llvm::raw_string_ostream rss{result};
@@ -121,7 +123,7 @@ TEST(outputjson, testStruct) {
   yout << s;
 
   const char *expected =
-      R"""({"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593})""";
+      R"""({"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593,"f":"281474976710655"})""";
 
   EXPECT_TRUE(result.empty());
 
