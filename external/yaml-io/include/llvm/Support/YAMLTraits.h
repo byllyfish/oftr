@@ -947,7 +947,7 @@ struct ScalarTraits<uint64_t> {
   static void output(const uint64_t &, void*, llvm::raw_ostream &);
   static StringRef input(StringRef, void*, uint64_t &);
   static bool mustQuote(StringRef) { return false; }
-  //using json_type = uint64_t;
+  using json_type = uint64_t;
 };
 
 template<>
@@ -979,7 +979,7 @@ struct ScalarTraits<int64_t> {
   static void output(const int64_t &, void*, llvm::raw_ostream &);
   static StringRef input(StringRef, void*, int64_t &);
   static bool mustQuote(StringRef) { return false; }
-  //using json_type = int64_t;
+  using json_type = int64_t;
 };
 
 template<>

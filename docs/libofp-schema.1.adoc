@@ -97,7 +97,8 @@ letter, e.g. `ofp.listen`.
 
 * Types with multiple sub-choices are named at the top level with a '/'. For example, there are multiple 'Message', 'Instruction', 'Action' types.
 
-* RPC schemas include the result schema following the params section. To generate, a command, ignore the 
+* RPC schemas include the result schema following the params section. To generate, a command, ignore this section.
+
 == Examples
 
 The FLOW_MOD message uses the following template:

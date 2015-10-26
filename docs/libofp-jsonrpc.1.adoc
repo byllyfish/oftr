@@ -26,9 +26,12 @@ libofp-jsonrpc - OpenFlow Microservice
 The *libofp jsonrpc* tool runs a JSON-RPC service that enables programmatic 
 control of the OpenFlow protocol using JSON messages.
 
-program also includes a JSON-RPC microservice that can supports multiple
-simultaneous OpenFlow connections. See the `libofp-jsonrpc` man page for more details.
+This program implements JSON-RPC 2.0 using a YAML 1.2 parser. Your JSON parser
+must support 64 bit integers, or you will run into trouble handling large counters
+and id's. 
 
+This implementation ignores the "jsonrpc" property defined in the 
+JSON-RPC 2.0 specification.
 
 == OPTIONS
 
@@ -57,6 +60,7 @@ There are three JSON-RPC notifications:
   - ofp.message
   - ofp.alert
 
+If you omit the 'id' property from a request, no reply will be sent.
 
 == RPC Commands
 
@@ -79,7 +83,7 @@ Open an outgoing OpenFlow connection to the specified host and port.
 *method*:: Must be "ofp.connect".
 
 *endpoint*:: Destination to connect to. Must be a string that specifies an 
-    IPv4/IPv6 address and a TCP port number separated bya ':' or '.'. Formats 
+    IPv4/IPv6 address and a TCP port number separated by a ':' or '.'. Formats 
     include: "127.0.0.1:6653", "127.0.0.1.6653", "[::1]:6653", "::1.6653".
 
 *versions*:: List of OpenFlow versions to support. Defaults to all.
