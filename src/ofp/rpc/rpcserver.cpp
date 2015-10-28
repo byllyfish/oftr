@@ -18,6 +18,7 @@ using ofp::UInt32;
 RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
     : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
+
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
 
@@ -48,18 +49,23 @@ RpcServer::RpcServer(Driver *driver, RpcSession *session,
   conn->asyncAccept();
 }
 
-void RpcServer::onConnect(RpcConnection *conn) {
-  assert(oneConn_ == nullptr);
+void RpcServer::close() {
+  log::debug("RpcServer::close");
+  if (oneConn_) {
+    oneConn_->close();
+  }
+}
 
+void RpcServer::onConnect(RpcConnection *conn) {
   log::debug("RpcServer::onConnect");
+  assert(oneConn_ == nullptr);
 
   oneConn_ = conn;
 }
 
 void RpcServer::onDisconnect(RpcConnection *conn) {
-  assert(oneConn_ == conn);
-
   log::debug("RpcServer::onDisconnect");
+  assert(oneConn_ == conn);
 
   // When the one API connection disconnects, shutdown the engine in 1.5 secs.
   // (Only if there are existing channels.)

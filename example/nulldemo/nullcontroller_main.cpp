@@ -27,7 +27,8 @@ int main(int argc, char **argv) {
   log::setOutputStream(&std::clog);
 
   Driver driver;
-
+  driver.installSignalHandlers();
+  
   if (addr.valid()) {
     (void)driver.connect(
         ChannelMode::Controller, 0, IPv6Endpoint{addr, OFP_DEFAULT_PORT},

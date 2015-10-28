@@ -33,6 +33,9 @@ class RpcServer {
   RpcServer(Driver *driver, RpcSession *session,
             Channel *defaultChannel = nullptr);
 
+  /// Close the control connection.
+  void close();
+
   // Called by RpcConnection to update oneConn_.
   void onConnect(RpcConnection *conn);
   void onDisconnect(RpcConnection *conn);

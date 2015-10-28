@@ -52,7 +52,7 @@ class Engine {
   void run();
   void stop(Milliseconds timeout = 0_ms);
   bool isRunning() const { return isRunning_; }
-  void installSignalHandlers();
+  void installSignalHandlers(std::function<void()> callback);
 
   asio::io_service &io() { return io_; }
 
@@ -131,7 +131,6 @@ class Engine {
   bool isRunning_ = false;
 
   // Sets up signal handlers to shut down runloop.
-  bool isSignalsInited_ = false;
   asio::signal_set signals_;
 
   // Timer that can be used to stop the engine.
