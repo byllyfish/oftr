@@ -2494,9 +2494,9 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.TABLE.v5	msg	object	False			
 5	REPLY.TABLE.v5	msg	array	True			
 5	REPLY.TABLE.v5	msg.0	object	False			
-5	REPLY.TABLE.v5	msg.0.active_count	uint32	True			
-5	REPLY.TABLE.v5	msg.0.lookup_count	uint64	True			
-5	REPLY.TABLE.v5	msg.0.matched_count	uint64	True			
+5	REPLY.TABLE.v5	msg.0.active_count	uint32	True			True
+5	REPLY.TABLE.v5	msg.0.lookup_count	uint64	True			True
+5	REPLY.TABLE.v5	msg.0.matched_count	uint64	True			True
 5	REPLY.TABLE.v5	msg.0.table_id	ALL	True			
 5	REQUEST.PORT_STATS.v5	msg	object	True			
 5	REQUEST.PORT_STATS.v5	msg.port_no	CONTROLLER	True			
