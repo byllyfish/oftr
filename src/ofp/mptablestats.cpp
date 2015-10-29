@@ -11,7 +11,7 @@ using namespace ofp;
 void MPTableStatsBuilder::write(Writable *channel) {
   UInt8 version = channel->version();
 
-  if (version == OFP_VERSION_4) {
+  if (version >= OFP_VERSION_4) {
     channel->write(&msg_, 4);
     channel->write(&msg_.activeCount_, 20);
     channel->flush();
