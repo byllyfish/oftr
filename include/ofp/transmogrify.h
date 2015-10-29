@@ -35,6 +35,7 @@ class Transmogrify {
   void normalizeMultipartReplyV2();
   void normalizeMultipartReplyV3();
   void normalizeMultipartReplyV4();
+  void normalizeMultipartReplyV5();
   void normalizeSetAsyncV4();
   void normalizeQueueGetConfigReplyV1();
   void normalizeQueueGetConfigReplyV2();

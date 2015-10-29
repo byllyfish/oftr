@@ -226,6 +226,8 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     connId = channel->connectionId();
     channel->write(params.data(), params.size());
     channel->flush();
+  } else {
+    log::error("onRpcSend unable to locate output channel");
   }
 
   if (send->id == RPC_ID_MISSING)

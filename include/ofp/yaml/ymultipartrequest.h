@@ -83,7 +83,7 @@ msg:
 {Message/Request.Group}
 type: REQUEST.GROUP
 msg:
-  group_id: UInt32
+  group_id: GroupNumber
 
 {Message/Request.TableFeatures}
 type: REQUEST.TABLE_FEATURES

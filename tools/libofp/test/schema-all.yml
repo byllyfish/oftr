@@ -512,7 +512,7 @@ Message/Request.Group:
   time: !optout Timestamp
   type: REQUEST.GROUP
   msg:
-    group_id: UInt32
+    group_id: GroupNumber
   
 Message/Request.TableFeatures: 
   version: !opt UInt8
