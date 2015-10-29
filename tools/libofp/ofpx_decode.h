@@ -82,6 +82,8 @@ class Decode : public Subprogram {
   ExitStatus decodeOneMessage(const ofp::Message *message,
                               const ofp::Message *originalMessage);
 
+  bool equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const;
+
   static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
                              ofp::Timestamp *timestamp, size_t *length);
 

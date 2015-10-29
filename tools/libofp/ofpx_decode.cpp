@@ -387,31 +387,40 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
       return ExitStatus::VerifyOutputFailed;
     }
 
-    if (encoder.size() != originalMessage->size()) {
-      std::cerr << "Filename: " << currentFilename_ << '\n';
-      std::cerr << "Error: Encode yielded different size data: "
-                << encoder.size() << " vs. " << originalMessage->size() << '\n'
-                << ofp::ByteRange{encoder.data(), encoder.size()} << '\n'
-                << ofp::ByteRange{originalMessage->data(),
-                                  originalMessage->size()} << '\n';
-      return ExitStatus::VerifyOutputFailed;
-    }
-
-    if (std::memcmp(originalMessage->data(), encoder.data(), encoder.size()) !=
-        0) {
-      size_t diffOffset = findDiffOffset(originalMessage->data(),
-                                         encoder.data(), encoder.size());
-      std::cerr << "Filename: " << currentFilename_ << '\n';
-      std::cerr << "Error: Encode yielded different data at byte offset "
-                << diffOffset << ":\n"
-                << ofp::ByteRange{encoder.data(), encoder.size()} << '\n'
-                << ofp::ByteRange{originalMessage->data(),
-                                  originalMessage->size()} << '\n';
+    if (!equalMessages({originalMessage->data(), originalMessage->size()}, {encoder.data(), encoder.size()})) {
       return ExitStatus::VerifyOutputFailed;
     }
   }
 
   return ExitStatus::Success;
+}
+
+/// Return true if the two messages are equal.
+bool Decode::equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const {
+  // First compare the size of the messages.
+  if (origData.size() != newData.size()) {
+    std::cerr << "Filename: " << currentFilename_ << '\n';
+    std::cerr << "Error: Encode yielded different size data: "
+              << newData.size() << " vs. " << origData.size() << '\n'
+              << newData << '\n'
+              << origData << '\n';
+    return false;
+  }
+
+  assert(origData.size() == newData.size());
+
+  // Next, compare the actual contents of the messages.
+  if (std::memcmp(origData.data(), newData.data(), newData.size()) != 0) {
+    size_t diffOffset = findDiffOffset(origData.data(), newData.data(), newData.size());
+    std::cerr << "Filename: " << currentFilename_ << '\n';
+    std::cerr << "Error: Encode yielded different data at byte offset "
+              << diffOffset << ":\n"
+              << newData << '\n'
+              << origData << '\n';
+    return false;
+  }
+
+  return true;
 }
 
 bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
