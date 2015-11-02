@@ -111,9 +111,7 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
 
     TableIDList tables;
     io.mapRequired("next_tables", tables);
-    if (!tables.empty()) {
-      props.add(TableFeaturePropertyNextTables{tables.toRange()});
-    }
+    props.add(TableFeaturePropertyNextTables{tables.toRange()});
 
     Optional<TableIDList> tablesMiss;
     io.mapOptional("next_tables_miss", tablesMiss);

@@ -5,7 +5,9 @@
 #include <fstream>
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/log.h"
 #include "llvm/Support/Path.h"
+#include "./ofpx_util.h"
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -397,6 +399,12 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 
 /// Return true if the two messages are equal.
 bool Decode::equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const {
+  ofp::ByteList buf;
+  if (normalizeTableFeaturesMessage(origData, buf)) {
+    ofp::log::debug("equalMessage: normalized TableFeatures message");
+    origData = buf.toRange();
+  }
+
   // First compare the size of the messages.
   if (origData.size() != newData.size()) {
     std::cerr << "Filename: " << currentFilename_ << '\n';
