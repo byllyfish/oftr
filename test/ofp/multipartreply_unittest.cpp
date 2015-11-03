@@ -6,6 +6,8 @@
 
 using namespace ofp;
 
+const OFPTableConfigFlags kFakeFlags = static_cast<OFPTableConfigFlags>(0x44444444);
+
 TEST(multipartreply, mptablefeatures) {
   MemoryChannel contents{4};
 
@@ -15,7 +17,7 @@ TEST(multipartreply, mptablefeatures) {
     features.setName("test");
     features.setMetadataMatch(0x2222222222222222);
     features.setMetadataWrite(0x3333333333333333);
-    features.setConfig(0x44444444);
+    features.setConfig(kFakeFlags);
     features.setMaxEntries(0x55555555);
     features.write(&contents);
   }

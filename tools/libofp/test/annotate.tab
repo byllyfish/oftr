@@ -347,7 +347,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REQUEST.TABLE_FEATURES.v1	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.apply_set_field_miss	array	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-1	REQUEST.TABLE_FEATURES.v1	msg.0.config	uint32	True			ERROR
+1	REQUEST.TABLE_FEATURES.v1	msg.0.config	array	True			ERROR
+1	REQUEST.TABLE_FEATURES.v1	msg.0.config.0	EVICTION	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.instructions	array	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.instructions_miss	array	True			ERROR
@@ -384,7 +385,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.TABLE_FEATURES.v1	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.apply_set_field_miss	array	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-1	REPLY.TABLE_FEATURES.v1	msg.0.config	uint32	True			ERROR
+1	REPLY.TABLE_FEATURES.v1	msg.0.config	array	True			ERROR
+1	REPLY.TABLE_FEATURES.v1	msg.0.config.0	EVICTION	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.instructions	array	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.instructions_miss	array	True			ERROR
@@ -911,7 +913,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REQUEST.TABLE_FEATURES.v2	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.apply_set_field_miss	array	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-2	REQUEST.TABLE_FEATURES.v2	msg.0.config	uint32	True			ERROR
+2	REQUEST.TABLE_FEATURES.v2	msg.0.config	array	True			ERROR
+2	REQUEST.TABLE_FEATURES.v2	msg.0.config.0	EVICTION	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.instructions	array	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.instructions_miss	array	True			ERROR
@@ -948,7 +951,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.TABLE_FEATURES.v2	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.apply_set_field_miss	array	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-2	REPLY.TABLE_FEATURES.v2	msg.0.config	uint32	True			ERROR
+2	REPLY.TABLE_FEATURES.v2	msg.0.config	array	True			ERROR
+2	REPLY.TABLE_FEATURES.v2	msg.0.config.0	EVICTION	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.instructions	array	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.instructions_miss	array	True			ERROR
@@ -1475,7 +1479,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REQUEST.TABLE_FEATURES.v3	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.apply_set_field_miss	array	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-3	REQUEST.TABLE_FEATURES.v3	msg.0.config	uint32	True			ERROR
+3	REQUEST.TABLE_FEATURES.v3	msg.0.config	array	True			ERROR
+3	REQUEST.TABLE_FEATURES.v3	msg.0.config.0	EVICTION	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.instructions	array	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.instructions_miss	array	True			ERROR
@@ -1512,7 +1517,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.TABLE_FEATURES.v3	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.apply_set_field_miss	array	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-3	REPLY.TABLE_FEATURES.v3	msg.0.config	uint32	True			ERROR
+3	REPLY.TABLE_FEATURES.v3	msg.0.config	array	True			ERROR
+3	REPLY.TABLE_FEATURES.v3	msg.0.config.0	EVICTION	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.instructions	array	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.instructions_miss	array	True			ERROR
@@ -2039,7 +2045,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REQUEST.TABLE_FEATURES.v4	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-4	REQUEST.TABLE_FEATURES.v4	msg.0.config	uint32	True			True
+4	REQUEST.TABLE_FEATURES.v4	msg.0.config	array	True			
+4	REQUEST.TABLE_FEATURES.v4	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.instructions	array	True			
 4	REQUEST.TABLE_FEATURES.v4	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		
@@ -2076,7 +2083,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.TABLE_FEATURES.v4	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 4	REPLY.TABLE_FEATURES.v4	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 4	REPLY.TABLE_FEATURES.v4	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-4	REPLY.TABLE_FEATURES.v4	msg.0.config	uint32	True			True
+4	REPLY.TABLE_FEATURES.v4	msg.0.config	array	True			
+4	REPLY.TABLE_FEATURES.v4	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 4	REPLY.TABLE_FEATURES.v4	msg.0.instructions	array	True			
 4	REPLY.TABLE_FEATURES.v4	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 4	REPLY.TABLE_FEATURES.v4	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		
@@ -2603,7 +2611,8 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.TABLE_FEATURES.v5	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-5	REQUEST.TABLE_FEATURES.v5	msg.0.config	uint32	True			True
+5	REQUEST.TABLE_FEATURES.v5	msg.0.config	array	True			
+5	REQUEST.TABLE_FEATURES.v5	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.instructions	array	True			
 5	REQUEST.TABLE_FEATURES.v5	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		
@@ -2640,7 +2649,8 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.TABLE_FEATURES.v5	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 5	REPLY.TABLE_FEATURES.v5	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 5	REPLY.TABLE_FEATURES.v5	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-5	REPLY.TABLE_FEATURES.v5	msg.0.config	uint32	True			True
+5	REPLY.TABLE_FEATURES.v5	msg.0.config	array	True			
+5	REPLY.TABLE_FEATURES.v5	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 5	REPLY.TABLE_FEATURES.v5	msg.0.instructions	array	True			
 5	REPLY.TABLE_FEATURES.v5	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 5	REPLY.TABLE_FEATURES.v5	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		

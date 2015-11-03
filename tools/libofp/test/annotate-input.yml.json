@@ -719,7 +719,9 @@
         ], 
         "metadata_match": 18446744073709551615, 
         "table_id": "ALL", 
-        "config": 4294967295, 
+        "config": [
+          "EVICTION"
+        ], 
         "metadata_write": 18446744073709551615, 
         "match": [
           "ETH_DST"
@@ -779,7 +781,9 @@
         ], 
         "metadata_match": 18446744073709551615, 
         "table_id": "ALL", 
-        "config": 4294967295, 
+        "config": [
+          "EVICTION"
+        ], 
         "metadata_write": 18446744073709551615, 
         "match": [
           "ETH_DST"

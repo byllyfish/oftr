@@ -1715,15 +1715,7 @@ TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
       "0413005800007777000C00000000000000445500000000005461626C6520310000000000"
       "000000000000000000000000000000000000000000000000008888880000000000999999"
       "000000AA000000BB0000000400000000",
-      "---\ntype:            REPLY.TABLE_FEATURES\nflags:           [  ]\nxid: "
-      "            0x00007777\nversion:         0x04\nmsg:             \n  - "
-      "table_id:        0x55\n    name:            Table 1\n    "
-      "metadata_match:  0x0000000000888888\n    metadata_write:  "
-      "0x0000000000999999\n    config:          0x000000AA\n    max_entries:   "
-      "  0x000000BB\n    instructions:    [  ]\n    next_tables:     [  ]\n    "
-      "write_actions:   [  ]\n    apply_actions:   [  ]\n    match:           "
-      "[  ]\n    wildcards:       [  ]\n    write_set_field: [  ]\n    "
-      "apply_set_field: [  ]\n    properties:      \n...\n");
+      "---\ntype:            REPLY.TABLE_FEATURES\nflags:           [  ]\nxid:             0x00007777\nversion:         0x04\nmsg:             \n  - table_id:        0x55\n    name:            Table 1\n    metadata_match:  0x0000000000888888\n    metadata_write:  0x0000000000999999\n    config:          [ VACANCY_EVENTS, '0x000000A0' ]\n    max_entries:     0x000000BB\n    instructions:    [  ]\n    next_tables:     [  ]\n    write_actions:   [  ]\n    apply_actions:   [  ]\n    match:           [  ]\n    wildcards:       [  ]\n    write_set_field: [  ]\n    apply_set_field: [  ]\n    properties:      \n...\n");
 }
 
 TEST(decoder, queue_get_config_replyv4_fix) {

@@ -19,7 +19,7 @@ class MPTableFeatures {
   const TableNameStr &name() const { return name_; }
   UInt64 metadataMatch() const { return metadataMatch_; }
   UInt64 metadataWrite() const { return metadataWrite_; }
-  UInt32 config() const { return config_; }
+  OFPTableConfigFlags config() const { return config_; }
   UInt32 maxEntries() const { return maxEntries_; }
 
   PropertyRange properties() const;
@@ -33,7 +33,7 @@ class MPTableFeatures {
   TableNameStr name_;
   Big64 metadataMatch_;
   Big64 metadataWrite_;
-  Big32 config_;
+  Big<OFPTableConfigFlags> config_;
   Big32 maxEntries_;
 
   friend class MPTableFeaturesBuilder;
@@ -54,7 +54,7 @@ class MPTableFeaturesBuilder {
   void setMetadataWrite(UInt64 metadataWrite) {
     msg_.metadataWrite_ = metadataWrite;
   }
-  void setConfig(UInt32 config) { msg_.config_ = config; }
+  void setConfig(OFPTableConfigFlags config) { msg_.config_ = config; }
   void setMaxEntries(UInt32 maxEntries) { msg_.maxEntries_ = maxEntries; }
 
   void setProperties(const PropertyList &properties) {

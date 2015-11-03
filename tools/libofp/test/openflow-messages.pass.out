@@ -58133,7 +58133,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58159,7 +58159,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS ]
     next_tables:     [  ]
@@ -58185,7 +58185,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -58211,7 +58211,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -58237,7 +58237,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58263,7 +58263,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]
@@ -58290,7 +58290,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58312,7 +58312,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [ 14 ]
@@ -58334,7 +58334,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [ 14, 25, 85, 0 ]
@@ -58356,7 +58356,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58382,7 +58382,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58409,7 +58409,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58435,7 +58435,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58461,7 +58461,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58487,7 +58487,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58513,7 +58513,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58539,7 +58539,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58566,7 +58566,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58592,7 +58592,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58618,7 +58618,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58644,7 +58644,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58671,7 +58671,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58697,7 +58697,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58723,7 +58723,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58749,7 +58749,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58775,7 +58775,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58801,7 +58801,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58827,7 +58827,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58853,7 +58853,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58879,7 +58879,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58905,7 +58905,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58932,7 +58932,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58958,7 +58958,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -58984,7 +58984,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -59010,7 +59010,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -59037,7 +59037,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -59052,7 +59052,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]
@@ -59874,7 +59874,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -59900,7 +59900,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS ]
     next_tables:     [  ]
@@ -59926,7 +59926,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -59952,7 +59952,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -59978,7 +59978,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -59993,7 +59993,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]
@@ -71578,7 +71578,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71604,7 +71604,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS ]
     next_tables:     [  ]
@@ -71630,7 +71630,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -71656,7 +71656,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -71682,7 +71682,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71708,7 +71708,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]
@@ -71735,7 +71735,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71757,7 +71757,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [ 14 ]
@@ -71779,7 +71779,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [ 14, 25, 85, 0 ]
@@ -71801,7 +71801,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71827,7 +71827,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71854,7 +71854,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71880,7 +71880,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71906,7 +71906,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71932,7 +71932,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71958,7 +71958,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -71984,7 +71984,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72011,7 +72011,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72037,7 +72037,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72063,7 +72063,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72089,7 +72089,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72116,7 +72116,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72142,7 +72142,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72168,7 +72168,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72194,7 +72194,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72220,7 +72220,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72246,7 +72246,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72272,7 +72272,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72298,7 +72298,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72324,7 +72324,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72350,7 +72350,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72377,7 +72377,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72403,7 +72403,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72429,7 +72429,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72455,7 +72455,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -72482,7 +72482,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -72497,7 +72497,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]
@@ -73319,7 +73319,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -73345,7 +73345,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS ]
     next_tables:     [  ]
@@ -73371,7 +73371,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -73397,7 +73397,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -73423,7 +73423,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ EXPERIMENTER ]
     next_tables:     [  ]
@@ -73438,7 +73438,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]

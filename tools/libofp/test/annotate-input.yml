@@ -435,7 +435,7 @@ msg:
     name: '................................'
     metadata_match: 0xffffffffffffffff
     metadata_write: 0xffffffffffffffff
-    config: 0xffffffff
+    config: [ EVICTION ]
     max_entries: 0xffffffff
     instructions:
       - APPLY_ACTIONS
@@ -475,7 +475,7 @@ msg:
     name: '................................'
     metadata_match: 0xffffffffffffffff
     metadata_write: 0xffffffffffffffff
-    config: 0xffffffff
+    config: [ EVICTION ]
     max_entries: 0xffffffff
     instructions:
       - APPLY_ACTIONS
