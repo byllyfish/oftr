@@ -332,7 +332,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.METER_CONFIG.v1	msg.0.meter_id	ALL	True			ERROR
 1	REQUEST.METER_FEATURES.v1	msg	object	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg	object	True			ERROR
-1	REPLY.METER_FEATURES.v1	msg.band_types	uint32	True			ERROR
+1	REPLY.METER_FEATURES.v1	msg.band_types	array	True			ERROR
+1	REPLY.METER_FEATURES.v1	msg.band_types.0	DSCP_REMARK	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg.capabilities	uint32	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg.max_bands	uint8	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg.max_color	uint8	True			ERROR
@@ -898,7 +899,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.METER_CONFIG.v2	msg.0.meter_id	ALL	True			ERROR
 2	REQUEST.METER_FEATURES.v2	msg	object	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg	object	True			ERROR
-2	REPLY.METER_FEATURES.v2	msg.band_types	uint32	True			ERROR
+2	REPLY.METER_FEATURES.v2	msg.band_types	array	True			ERROR
+2	REPLY.METER_FEATURES.v2	msg.band_types.0	DSCP_REMARK	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg.capabilities	uint32	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg.max_bands	uint8	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg.max_color	uint8	True			ERROR
@@ -1464,7 +1466,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.METER_CONFIG.v3	msg.0.meter_id	ALL	True			ERROR
 3	REQUEST.METER_FEATURES.v3	msg	object	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg	object	True			ERROR
-3	REPLY.METER_FEATURES.v3	msg.band_types	uint32	True			ERROR
+3	REPLY.METER_FEATURES.v3	msg.band_types	array	True			ERROR
+3	REPLY.METER_FEATURES.v3	msg.band_types.0	DSCP_REMARK	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg.capabilities	uint32	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg.max_bands	uint8	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg.max_color	uint8	True			ERROR
@@ -2030,7 +2033,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.METER_CONFIG.v4	msg.0.meter_id	ALL	True			
 4	REQUEST.METER_FEATURES.v4	msg	object	False			
 4	REPLY.METER_FEATURES.v4	msg	object	True			
-4	REPLY.METER_FEATURES.v4	msg.band_types	uint32	True			True
+4	REPLY.METER_FEATURES.v4	msg.band_types	array	True			
+4	REPLY.METER_FEATURES.v4	msg.band_types.0	DSCP_REMARK	False	msg.band_types.0=DSCP_REMARK		
 4	REPLY.METER_FEATURES.v4	msg.capabilities	uint32	True			True
 4	REPLY.METER_FEATURES.v4	msg.max_bands	uint8	True			True
 4	REPLY.METER_FEATURES.v4	msg.max_color	uint8	True			True
@@ -2596,7 +2600,8 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.METER_CONFIG.v5	msg.0.meter_id	ALL	True			
 5	REQUEST.METER_FEATURES.v5	msg	object	False			
 5	REPLY.METER_FEATURES.v5	msg	object	True			
-5	REPLY.METER_FEATURES.v5	msg.band_types	uint32	True			True
+5	REPLY.METER_FEATURES.v5	msg.band_types	array	True			
+5	REPLY.METER_FEATURES.v5	msg.band_types.0	DSCP_REMARK	False	msg.band_types.0=DSCP_REMARK		
 5	REPLY.METER_FEATURES.v5	msg.capabilities	uint32	True			True
 5	REPLY.METER_FEATURES.v5	msg.max_bands	uint8	True			True
 5	REPLY.METER_FEATURES.v5	msg.max_color	uint8	True			True

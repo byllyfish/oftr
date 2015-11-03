@@ -170,6 +170,7 @@ static SchemaPair kFlagSchemas[] = {
     {ofp::yaml::MakeFlagSchema<ofp::OFPFlowMonitorFlags>,
      "Flag/FlowMonitorFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPBundleFlags>, "Flag/BundleFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPMeterBandFlags>, "Flag/MeterBandFlags"},
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.

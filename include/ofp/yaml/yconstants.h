@@ -598,6 +598,23 @@ struct ScalarBitSetTraits<ofp::OFPBundleFlags> {
   }
 };
 
+template <>
+struct ScalarBitSetTraits<ofp::OFPMeterBandFlags> {
+  static void bitset(IO &io, ofp::OFPMeterBandFlags &value) {
+    OFP_YAML_BITCASE(OFPMBTF_, NONE);
+    OFP_YAML_BITCASE(OFPMBTF_, DROP);
+    OFP_YAML_BITCASE(OFPMBTF_, DSCP_REMARK);
+
+    io.bitSetCaseOther(value, ofp::OFPMBTF_OTHER_METERBAND_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPMeterBandFlags>());
+    }
+  }
+};
+
 #undef OFP_YAML_BITCASE
 #undef OFP_YAML_BITCASE_V1
 #undef OFP_YAML_MASKEDBITCASE

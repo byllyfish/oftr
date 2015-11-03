@@ -551,6 +551,19 @@ enum OFPMeterBandType : UInt16 {
   OFPMBT_EXPERIMENTER = 0xffff
 };
 
+enum OFPMeterBandFlags : UInt32 {
+  OFPMBTF_NONE = 1 << 0,
+  OFPMBTF_DROP = 1 << 1,
+  OFPMBTF_DSCP_REMARK = 1 << 2,
+
+  OFPMBTF_OTHER_METERBAND_FLAGS = 0xFFFFFFF8
+};
+
+inline OFPMeterBandFlags operator|(OFPMeterBandFlags lhs,
+                                   OFPMeterBandFlags rhs) {
+  return static_cast<OFPMeterBandFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPTableFeatureProperty : UInt16 {
   OFPTFPT_INSTRUCTIONS = 0,
   OFPTFPT_INSTRUCTIONS_MISS = 1,

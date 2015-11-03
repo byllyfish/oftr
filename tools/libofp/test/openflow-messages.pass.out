@@ -59779,7 +59779,7 @@ xid:             0x0000007C
 version:         0x04
 msg:             
   max_meter:       0x0000007C
-  band_types:      0x00000400
+  band_types:      [ '0x00000400' ]
   capabilities:    0x00001F9F
   max_bands:       0x7C
   max_color:       0xE6
@@ -73224,7 +73224,7 @@ xid:             0x0000007C
 version:         0x04
 msg:             
   max_meter:       0x0000007C
-  band_types:      0x00000400
+  band_types:      [ '0x00000400' ]
   capabilities:    0x00001F9F
   max_bands:       0x7C
   max_color:       0xE6

@@ -1891,7 +1891,7 @@ xid:             0x00001FA4
 version:         0x05
 msg:             
   max_meter:       0x00000000
-  band_types:      0x00000000
+  band_types:      [  ]
   capabilities:    0x00000000
   max_bands:       0x00
   max_color:       0x00

@@ -1680,7 +1680,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   max_meter:       0x01000000
-  band_types:      0x80000006
+  band_types:      [ DROP, DSCP_REMARK, '0x80000000' ]
   capabilities:    0x0000000F
   max_bands:       0xFF
   max_color:       0x00
@@ -4311,7 +4311,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   max_meter:       0x01000000
-  band_types:      0x80000006
+  band_types:      [ DROP, DSCP_REMARK, '0x80000000' ]
   capabilities:    0x0000000F
   max_bands:       0xFF
   max_color:       0x00

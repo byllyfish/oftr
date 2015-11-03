@@ -74,7 +74,7 @@ msg:
 type: REPLY.METER_FEATURES
 msg:
   max_meter: UInt32
-  band_types: UInt32
+  band_types: MeterBandFlags
   capabilities: UInt32
   max_bands: UInt8
   max_color: UInt8
