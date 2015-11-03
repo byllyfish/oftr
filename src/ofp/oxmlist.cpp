@@ -58,5 +58,5 @@ OXMIterator OXMList::findOrderedPos(OXMType type) const {
 }
 
 void OXMList::replaceValue(OXMIterator pos, const void *data, size_t len) {
-  std::memcpy(const_cast<UInt8 *>(pos->unknownValuePtr()), data, len);
+  std::memcpy(RemoveConst_cast(pos->unknownValuePtr()), data, len);
 }
