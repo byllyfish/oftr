@@ -53,14 +53,14 @@ msg: [Port]
 type: REPLY.GROUP_DESC
 msg:
   - type: UInt8
-    group_id: UInt32
+    group_id: GroupNumber
     buckets: [Bucket]
 
 {Message/Reply.GroupFeatures}
 type: REPLY.GROUP_FEATURES
 msg:
-  types: UInt32
-  capabilities: UInt32
+  types: GroupTypeFlags
+  capabilities: GroupCapabilityFlags
   max_groups_all: [ActionTypeFlags]
   max_groups_sel: [ActionTypeFlags]
   max_groups_ind: [ActionTypeFlags]
@@ -75,7 +75,7 @@ type: REPLY.METER_FEATURES
 msg:
   max_meter: UInt32
   band_types: MeterBandFlags
-  capabilities: UInt32
+  capabilities: MeterFlags
   max_bands: UInt8
   max_color: UInt8
 
@@ -166,7 +166,7 @@ msg:
 {Message/Reply.Group}
 type: REPLY.GROUP
 msg:
-  - group_id: UInt32
+  - group_id: GroupNumber
     ref_count: UInt32
     packet_count: UInt64
     byte_count: UInt64
@@ -181,7 +181,7 @@ msg:
     name: Str32
     metadata_match: UInt64
     metadata_write: UInt64
-    config: UInt32
+    config: TableConfigFlags
     max_entries: UInt32
     instructions: [InstructionID]
     instructions_miss: !optout [InstructionID]

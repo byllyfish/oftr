@@ -110,7 +110,7 @@ msg:
 version: 0x04
 type: PORT_STATUS
 msg:
-  reason: 0xff
+  reason: ADD
   port:
     port_no: CONTROLLER
     hw_addr: 'ff:ff:ff:ff:ff:ff'
@@ -596,13 +596,13 @@ msg:
 version: 0x04
 type: ROLE_REQUEST
 msg:
-  role: 0xffffffff
+  role: ROLE_EQUAL
   generation_id: 0xffffffffffffffff
 ---
 version: 0x04
 type: ROLE_REPLY
 msg:
-  role: 0xffffffff
+  role: ROLE_EQUAL
   generation_id: 0xffffffffffffffff
 ---
 version: 0x04

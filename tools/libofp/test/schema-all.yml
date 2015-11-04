@@ -634,7 +634,7 @@ Message/Reply.GroupDesc:
   type: REPLY.GROUP_DESC
   msg:
     - type: UInt8
-      group_id: UInt32
+      group_id: GroupNumber
       buckets: [Bucket]
   
 Message/Reply.GroupFeatures: 
@@ -647,8 +647,8 @@ Message/Reply.GroupFeatures:
   time: !optout Timestamp
   type: REPLY.GROUP_FEATURES
   msg:
-    types: UInt32
-    capabilities: UInt32
+    types: GroupTypeFlags
+    capabilities: GroupCapabilityFlags
     max_groups_all: [ActionTypeFlags]
     max_groups_sel: [ActionTypeFlags]
     max_groups_ind: [ActionTypeFlags]
@@ -670,7 +670,7 @@ Message/Reply.MeterFeatures:
   msg:
     max_meter: UInt32
     band_types: MeterBandFlags
-    capabilities: UInt32
+    capabilities: MeterFlags
     max_bands: UInt8
     max_color: UInt8
   
@@ -810,7 +810,7 @@ Message/Reply.Group:
   time: !optout Timestamp
   type: REPLY.GROUP
   msg:
-    - group_id: UInt32
+    - group_id: GroupNumber
       ref_count: UInt32
       packet_count: UInt64
       byte_count: UInt64
@@ -832,7 +832,7 @@ Message/Reply.TableFeatures:
       name: Str32
       metadata_match: UInt64
       metadata_write: UInt64
-      config: UInt32
+      config: TableConfigFlags
       max_entries: UInt32
       instructions: [InstructionID]
       instructions_miss: !optout [InstructionID]
@@ -1318,6 +1318,12 @@ Flag/FlowMonitorFlags: INITIAL | ADD | REMOVED | MODIFY | INSTRUCTIONS | NO_ABBR
 Flag/BundleFlags: ATOMIC | ORDERED | Hex16
 
 Flag/MeterBandFlags: NONE | DROP | DSCP_REMARK | Hex32
+
+Flag/GroupCapabilityFlags: SELECT_WEIGHT | SELECT_LIVENESS | CHAINING | CHAINING_CHECKS | Hex32
+
+Flag/GroupTypeFlags: ALL | SELECT | INDIRECT | FF | Hex32
+
+Flag/MeterFlags: KBPS | PKTPS | BURST | STATS | Hex32
 
 Field/IN_PORT: 
   field: IN_PORT
