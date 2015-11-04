@@ -671,6 +671,22 @@ enum OFPGroupType : UInt8 {
   OFPGT_FF = 3
 };
 
+enum OFPGroupTypeFlags : UInt32 {
+  OFPGTF_NONE = 0,
+
+  OFPGTF_ALL = 1 << 0,
+  OFPGTF_SELECT = 1 << 1,
+  OFPGTF_INDIRECT = 1 << 2,
+  OFPGTF_FF = 1 << 3,
+
+  OFPGTF_OTHER_GROUP_FLAGS = 0xFFFFFFF0
+};
+
+inline OFPGroupTypeFlags operator|(OFPGroupTypeFlags lhs,
+                                   OFPGroupTypeFlags rhs) {
+  return static_cast<OFPGroupTypeFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPGroupCapabilityFlags : UInt32 {
   OFPGFC_NONE = 0,
 

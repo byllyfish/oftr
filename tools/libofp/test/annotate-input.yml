@@ -364,7 +364,7 @@ version: 0x04
 type: REPLY.GROUP_FEATURES
 flags: [ 'MORE' ]
 msg:
-  types: 0xffffffff
+  types: [ INDIRECT ]
   capabilities: [ SELECT_WEIGHT ]
   max_groups_all: 0xffffffff
   max_groups_sel: 0xffffffff

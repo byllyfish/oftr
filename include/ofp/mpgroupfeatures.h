@@ -13,7 +13,7 @@ class Validation;
 
 class MPGroupFeatures {
  public:
-  UInt32 types() const { return types_; }
+  OFPGroupTypeFlags types() const { return types_; }
   OFPGroupCapabilityFlags capabilities() const { return capabilities_; }
 
   OFPActionTypeFlags actionsALL() const { return actions_[0]; }
@@ -24,7 +24,7 @@ class MPGroupFeatures {
   bool validateInput(Validation *context) const;
 
  private:
-  Big32 types_;
+  Big<OFPGroupTypeFlags> types_;
   Big<OFPGroupCapabilityFlags> capabilities_;
   Big32 maxGroups_[4];
   Big<OFPActionTypeFlags> actions_[4];
@@ -42,7 +42,7 @@ class MPGroupFeaturesBuilder {
  public:
   MPGroupFeaturesBuilder() = default;
 
-  void setTypes(UInt32 types) { msg_.types_ = types; }
+  void setTypes(OFPGroupTypeFlags types) { msg_.types_ = types; }
   void setCapabilities(OFPGroupCapabilityFlags capabilities) {
     msg_.capabilities_ = capabilities;
   }

@@ -581,7 +581,9 @@
       "max_groups_all": 4294967295, 
       "max_groups_ind": 4294967295, 
       "max_groups_sel": 4294967295, 
-      "types": 4294967295
+      "types": [
+        "INDIRECT"
+      ]
     }, 
     "type": "REPLY.GROUP_FEATURES", 
     "version": 4, 

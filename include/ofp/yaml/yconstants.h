@@ -634,6 +634,24 @@ struct ScalarBitSetTraits<ofp::OFPMeterBandFlags> {
 };
 
 template <>
+struct ScalarBitSetTraits<ofp::OFPGroupTypeFlags> {
+  static void bitset(IO &io, ofp::OFPGroupTypeFlags &value) {
+    OFP_YAML_BITCASE(OFPGTF_, ALL);
+    OFP_YAML_BITCASE(OFPGTF_, SELECT);
+    OFP_YAML_BITCASE(OFPGTF_, INDIRECT);
+    OFP_YAML_BITCASE(OFPGTF_, FF);
+
+    io.bitSetCaseOther(value, ofp::OFPGTF_OTHER_GROUP_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPGroupTypeFlags>());
+    }
+  }
+};
+
+template <>
 struct ScalarBitSetTraits<ofp::OFPGroupCapabilityFlags> {
   static void bitset(IO &io, ofp::OFPGroupCapabilityFlags &value) {
     OFP_YAML_BITCASE(OFPGFC_, SELECT_WEIGHT);

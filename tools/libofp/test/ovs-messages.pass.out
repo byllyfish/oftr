@@ -1873,7 +1873,7 @@ flags:           [  ]
 xid:             0x00001FA3
 version:         0x05
 msg:             
-  types:           0x0000000F
+  types:           [ ALL, SELECT, INDIRECT, FF ]
   capabilities:    [ SELECT_WEIGHT, SELECT_LIVENESS ]
   max_groups_all:  0xFFFFFF00
   max_groups_sel:  0xFFFFFF00
