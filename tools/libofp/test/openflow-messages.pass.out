@@ -2491,7 +2491,7 @@ flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0xAB653FED
     buckets:         
       - weight:          0xA4C0
@@ -33582,7 +33582,7 @@ flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0xAB653FED
     buckets:         
 ...
@@ -33592,7 +33592,7 @@ flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0xAB653FED
     buckets:         
       - weight:          0xA4C0
@@ -33608,7 +33608,7 @@ flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0xAB653FED
     buckets:         
       - weight:          0x6CD4
@@ -33630,7 +33630,7 @@ flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0xAB653FED
     buckets:         
       - weight:          0xA4C0
@@ -33639,7 +33639,7 @@ msg:
         actions:         
           - action:          0x000D
             data:            B86BA5EE
-  - type:            0x00
+  - type:            ALL
     group_id:        0xAB653FED
     buckets:         
       - weight:          0xA4C0
@@ -33648,7 +33648,7 @@ msg:
         actions:         
           - action:          0x000D
             data:            B86BA5EE
-  - type:            0x00
+  - type:            ALL
     group_id:        0x13535352
     buckets:         
       - weight:          0xAD10
@@ -46454,7 +46454,7 @@ flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x03
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
 ...
@@ -46464,7 +46464,7 @@ flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x03
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -46486,7 +46486,7 @@ flags:           [ MORE ]
 xid:             0x0000007B
 version:         0x03
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -46522,7 +46522,7 @@ msg:
             group:           0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -46537,7 +46537,7 @@ msg:
         watch_port:      0x0004F673
         watch_group:     0x00050F3C
         actions:         
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
 ...
@@ -59510,7 +59510,7 @@ flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
 ...
@@ -59520,7 +59520,7 @@ flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -59542,7 +59542,7 @@ flags:           [ MORE ]
 xid:             0x0000007B
 version:         0x04
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -59578,7 +59578,7 @@ msg:
             group:           0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -59593,7 +59593,7 @@ msg:
         watch_port:      0x0004F673
         watch_group:     0x00050F3C
         actions:         
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
 ...
@@ -72955,7 +72955,7 @@ flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
 ...
@@ -72965,7 +72965,7 @@ flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -72987,7 +72987,7 @@ flags:           [ MORE ]
 xid:             0x0000007B
 version:         0x04
 msg:             
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -73023,7 +73023,7 @@ msg:
             group:           0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
       - weight:          0x0EF5
@@ -73038,7 +73038,7 @@ msg:
         watch_port:      0x0004F673
         watch_group:     0x00050F3C
         actions:         
-  - type:            0x01
+  - type:            SELECT
     group_id:        0x0000015D
     buckets:         
 ...

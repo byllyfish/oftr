@@ -52,7 +52,7 @@ msg: [Port]
 {Message/Reply.GroupDesc}
 type: REPLY.GROUP_DESC
 msg:
-  - type: UInt8
+  - type: GroupType
     group_id: GroupNumber
     buckets: [Bucket]
 

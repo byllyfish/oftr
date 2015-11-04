@@ -554,6 +554,41 @@
   }, 
   {
     "msg": {}, 
+    "type": "REQUEST.GROUP_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "buckets": [
+          {
+            "weight": 65535, 
+            "watch_group": "ANY", 
+            "actions": [
+              {
+                "action": "OUTPUT", 
+                "max_len": "NO_BUFFER", 
+                "port": "CONTROLLER"
+              }
+            ], 
+            "watch_port": "CONTROLLER"
+          }
+        ], 
+        "group_id": "ANY", 
+        "type": "SELECT"
+      }
+    ], 
+    "type": "REPLY.GROUP_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {}, 
     "type": "REQUEST.GROUP_FEATURES", 
     "version": 4, 
     "flags": [

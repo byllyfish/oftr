@@ -356,6 +356,26 @@ msg:
         byte_count: 0xffffffffffffffff
 ---
 version: 0x04
+type: REQUEST.GROUP_DESC
+flags: [ 'MORE' ]
+msg: {}
+---
+version: 0x04
+type: REPLY.GROUP_DESC
+flags: [ 'MORE' ]
+msg:
+  - type: SELECT
+    group_id: ANY
+    buckets:
+      - weight: 0xffff
+        watch_port: CONTROLLER
+        watch_group: ANY
+        actions:
+          - action: OUTPUT
+            port: CONTROLLER
+            max_len: NO_BUFFER
+---
+version: 0x04
 type: REQUEST.GROUP_FEATURES
 flags: [ 'MORE' ]
 msg: {}

@@ -21,7 +21,7 @@ namespace yaml {
 const char *const kBucketSchema = R"""({Struct/Bucket}
 weight: UInt16
 watch_port: PortNumber
-watch_group: UInt32
+watch_group: GroupNumber
 actions: [Action]
 )""";
 
