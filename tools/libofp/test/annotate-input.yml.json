@@ -163,7 +163,7 @@
   }, 
   {
     "msg": {
-      "reason": 255, 
+      "reason": "ADD", 
       "port": {
         "hw_addr": "ff:ff:ff:ff:ff:ff", 
         "state": [
@@ -644,7 +644,9 @@
             "burst_size": 4294967295
           }
         ], 
-        "flags": 65535, 
+        "flags": [
+          "PKTPS"
+        ], 
         "meter_id": "ALL"
       }
     ], 
@@ -949,7 +951,7 @@
   }, 
   {
     "msg": {
-      "role": 4294967295, 
+      "role": "ROLE_EQUAL", 
       "generation_id": 18446744073709551615
     }, 
     "version": 4, 
@@ -957,7 +959,7 @@
   }, 
   {
     "msg": {
-      "role": 4294967295, 
+      "role": "ROLE_EQUAL", 
       "generation_id": 18446744073709551615
     }, 
     "version": 4, 

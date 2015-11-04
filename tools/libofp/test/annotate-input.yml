@@ -405,7 +405,7 @@ version: 0x04
 type: REPLY.METER_CONFIG
 flags: [ 'MORE' ]
 msg:
-  - flags: 0xffff
+  - flags: [ PKTPS ]
     meter_id: ALL
     bands:
       - type: DROP

@@ -59728,7 +59728,7 @@ flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
       - type:            DROP
@@ -59745,7 +59745,7 @@ flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
 ...
@@ -59755,7 +59755,7 @@ flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
       - type:            DROP
@@ -59765,10 +59765,10 @@ msg:
         rate:            0x000004D9
         burst_size:      0x0000007C
         prec_level:      0x00
-  - flags:           0x0010
+  - flags:           [ '0x00000010' ]
     meter_id:        0x000000E7
     bands:           
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
 ...
@@ -73173,7 +73173,7 @@ flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
       - type:            DROP
@@ -73190,7 +73190,7 @@ flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
 ...
@@ -73200,7 +73200,7 @@ flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
       - type:            DROP
@@ -73210,10 +73210,10 @@ msg:
         rate:            0x000004D9
         burst_size:      0x0000007C
         prec_level:      0x00
-  - flags:           0x0010
+  - flags:           [ '0x00000010' ]
     meter_id:        0x000000E7
     bands:           
-  - flags:           0x0001
+  - flags:           [ KBPS ]
     meter_id:        0x000000E7
     bands:           
 ...
