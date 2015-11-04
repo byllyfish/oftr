@@ -289,6 +289,21 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.GROUP.v1	msg.0.group_id	ANY	True			ERROR
 1	REPLY.GROUP.v1	msg.0.packet_count	uint64	True			ERROR
 1	REPLY.GROUP.v1	msg.0.ref_count	uint32	True			ERROR
+1	REQUEST.GROUP_DESC.v1	msg	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg	array	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets	array	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions	array	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0.action	OUTPUT	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0.port	CONTROLLER	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.watch_group	ANY	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.watch_port	CONTROLLER	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.weight	uint16	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.group_id	ANY	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.type	SELECT	True			ERROR
 1	REQUEST.GROUP_FEATURES.v1	msg	object	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg	object	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.actions_all	array	True			ERROR
@@ -473,7 +488,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.FLOW_MONITOR.v1	msg.0.match.0.mask	macaddress	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.0.match.0.value	macaddress	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.0.priority	uint16	True			ERROR
-1	REPLY.FLOW_MONITOR.v1	msg.0.reason	uint8	True			ERROR
+1	REPLY.FLOW_MONITOR.v1	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.0.table_id	ALL	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.1	object	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.1.event	ABBREV	True			ERROR
@@ -860,6 +875,21 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.GROUP.v2	msg.0.group_id	ANY	True			
 2	REPLY.GROUP.v2	msg.0.packet_count	uint64	True			True
 2	REPLY.GROUP.v2	msg.0.ref_count	uint32	True			True
+2	REQUEST.GROUP_DESC.v2	msg	object	False			
+2	REPLY.GROUP_DESC.v2	msg	array	True			
+2	REPLY.GROUP_DESC.v2	msg.0	object	False			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets	array	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions	array	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.watch_group	ANY	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.watch_port	CONTROLLER	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.weight	uint16	True			True
+2	REPLY.GROUP_DESC.v2	msg.0.group_id	ANY	True			
+2	REPLY.GROUP_DESC.v2	msg.0.type	SELECT	True			
 2	REQUEST.GROUP_FEATURES.v2	msg	object	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg	object	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.actions_all	array	True			ERROR
@@ -1044,7 +1074,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.FLOW_MONITOR.v2	msg.0.match.0.mask	macaddress	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.0.match.0.value	macaddress	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.0.priority	uint16	True			ERROR
-2	REPLY.FLOW_MONITOR.v2	msg.0.reason	uint8	True			ERROR
+2	REPLY.FLOW_MONITOR.v2	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.0.table_id	ALL	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.1	object	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.1.event	ABBREV	True			ERROR
@@ -1431,6 +1461,21 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.GROUP.v3	msg.0.group_id	ANY	True			
 3	REPLY.GROUP.v3	msg.0.packet_count	uint64	True			True
 3	REPLY.GROUP.v3	msg.0.ref_count	uint32	True			True
+3	REQUEST.GROUP_DESC.v3	msg	object	False			
+3	REPLY.GROUP_DESC.v3	msg	array	True			
+3	REPLY.GROUP_DESC.v3	msg.0	object	False			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets	array	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions	array	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.watch_group	ANY	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.watch_port	CONTROLLER	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.weight	uint16	True			True
+3	REPLY.GROUP_DESC.v3	msg.0.group_id	ANY	True			
+3	REPLY.GROUP_DESC.v3	msg.0.type	SELECT	True			
 3	REQUEST.GROUP_FEATURES.v3	msg	object	False			
 3	REPLY.GROUP_FEATURES.v3	msg	object	True			
 3	REPLY.GROUP_FEATURES.v3	msg.actions_all	array	True			
@@ -1615,7 +1660,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.FLOW_MONITOR.v3	msg.0.match.0.mask	macaddress	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.0.match.0.value	macaddress	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.0.priority	uint16	True			ERROR
-3	REPLY.FLOW_MONITOR.v3	msg.0.reason	uint8	True			ERROR
+3	REPLY.FLOW_MONITOR.v3	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.0.table_id	ALL	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.1	object	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.1.event	ABBREV	True			ERROR
@@ -2002,6 +2047,21 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.GROUP.v4	msg.0.group_id	ANY	True			
 4	REPLY.GROUP.v4	msg.0.packet_count	uint64	True			True
 4	REPLY.GROUP.v4	msg.0.ref_count	uint32	True			True
+4	REQUEST.GROUP_DESC.v4	msg	object	False			
+4	REPLY.GROUP_DESC.v4	msg	array	True			
+4	REPLY.GROUP_DESC.v4	msg.0	object	False			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets	array	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions	array	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.watch_group	ANY	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.watch_port	CONTROLLER	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.weight	uint16	True			True
+4	REPLY.GROUP_DESC.v4	msg.0.group_id	ANY	True			
+4	REPLY.GROUP_DESC.v4	msg.0.type	SELECT	True			
 4	REQUEST.GROUP_FEATURES.v4	msg	object	False			
 4	REPLY.GROUP_FEATURES.v4	msg	object	True			
 4	REPLY.GROUP_FEATURES.v4	msg.actions_all	array	True			
@@ -2186,7 +2246,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.FLOW_MONITOR.v4	msg.0.match.0.mask	macaddress	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.0.match.0.value	macaddress	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.0.priority	uint16	True			ERROR
-4	REPLY.FLOW_MONITOR.v4	msg.0.reason	uint8	True			ERROR
+4	REPLY.FLOW_MONITOR.v4	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.0.table_id	ALL	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.1	object	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.1.event	ABBREV	True			ERROR
@@ -2573,6 +2633,21 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.GROUP.v5	msg.0.group_id	ANY	True			
 5	REPLY.GROUP.v5	msg.0.packet_count	uint64	True			True
 5	REPLY.GROUP.v5	msg.0.ref_count	uint32	True			True
+5	REQUEST.GROUP_DESC.v5	msg	object	False			
+5	REPLY.GROUP_DESC.v5	msg	array	True			
+5	REPLY.GROUP_DESC.v5	msg.0	object	False			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets	array	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions	array	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.watch_group	ANY	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.watch_port	CONTROLLER	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.weight	uint16	True			True
+5	REPLY.GROUP_DESC.v5	msg.0.group_id	ANY	True			
+5	REPLY.GROUP_DESC.v5	msg.0.type	SELECT	True			
 5	REQUEST.GROUP_FEATURES.v5	msg	object	False			
 5	REPLY.GROUP_FEATURES.v5	msg	object	True			
 5	REPLY.GROUP_FEATURES.v5	msg.actions_all	array	True			
@@ -2738,7 +2813,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.FLOW_MONITOR.v5	msg.out_port	ALL	True			
 5	REQUEST.FLOW_MONITOR.v5	msg.table_id	ALL	True			
 5	REPLY.FLOW_MONITOR.v5	msg	array	True			
-5	REPLY.FLOW_MONITOR.v5	msg.0	object	False	msg.0.cookie=uint64,msg.0.event=ABBREV,msg.0.hard_timeout=uint16,msg.0.idle_timeout=uint16,msg.0.instructions=array,msg.0.instructions.0=object,msg.0.instructions.0.actions=array,msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port=CONTROLLER,msg.0.instructions.0.instruction=APPLY_ACTIONS,msg.0.match=array,msg.0.match.0=object,msg.0.match.0.field=ETH_DST,msg.0.match.0.mask=macaddress,msg.0.match.0.value=macaddress,msg.0.priority=uint16,msg.0.reason=uint8,msg.0.table_id=ALL,msg.0.xid=uint32		
+5	REPLY.FLOW_MONITOR.v5	msg.0	object	False	msg.0.cookie=uint64,msg.0.event=ABBREV,msg.0.hard_timeout=uint16,msg.0.idle_timeout=uint16,msg.0.instructions=array,msg.0.instructions.0=object,msg.0.instructions.0.actions=array,msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port=CONTROLLER,msg.0.instructions.0.instruction=APPLY_ACTIONS,msg.0.match=array,msg.0.match.0=object,msg.0.match.0.field=ETH_DST,msg.0.match.0.mask=macaddress,msg.0.match.0.value=macaddress,msg.0.priority=uint16,msg.0.reason=IDLE_TIMEOUT,msg.0.table_id=ALL,msg.0.xid=uint32		
 5	REPLY.FLOW_MONITOR.v5	msg.0.cookie	uint64	True			True
 5	REPLY.FLOW_MONITOR.v5	msg.0.event	ADDED	True			
 5	REPLY.FLOW_MONITOR.v5	msg.0.hard_timeout	uint16	True			True
@@ -2757,7 +2832,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.FLOW_MONITOR.v5	msg.0.match.0.mask	macaddress	False	msg.0.match.0.mask=macaddress		True
 5	REPLY.FLOW_MONITOR.v5	msg.0.match.0.value	macaddress	True			True
 5	REPLY.FLOW_MONITOR.v5	msg.0.priority	uint16	True			True
-5	REPLY.FLOW_MONITOR.v5	msg.0.reason	uint8	True			True
+5	REPLY.FLOW_MONITOR.v5	msg.0.reason	IDLE_TIMEOUT	True			
 5	REPLY.FLOW_MONITOR.v5	msg.0.table_id	ALL	True			
 5	REPLY.FLOW_MONITOR.v5	msg.1	object	False			
 5	REPLY.FLOW_MONITOR.v5	msg.1.event	ABBREV	True			

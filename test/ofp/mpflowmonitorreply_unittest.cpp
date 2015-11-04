@@ -5,6 +5,8 @@
 
 using namespace ofp;
 
+const OFPFlowRemovedReason kFakeReason = static_cast<OFPFlowRemovedReason>(0x22);
+
 TEST(mpflowmonitorreply, test) {
   MatchBuilder match;
   match.add(OFB_IN_PORT{7});
@@ -18,7 +20,7 @@ TEST(mpflowmonitorreply, test) {
   MPFlowMonitorReplyBuilder msg;
   msg.setEvent(OFPFME_ADDED);
   msg.setTableId(0x11);
-  msg.setReason(0x22);
+  msg.setReason(kFakeReason);
   msg.setIdleTimeout(0x3333);
   msg.setHardTimeout(0x4444);
   msg.setPriority(0x5555);

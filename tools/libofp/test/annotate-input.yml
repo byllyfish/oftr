@@ -571,7 +571,7 @@ flags: [ 'MORE' ]
 msg:
   - event: ADDED
     table_id: ALL
-    reason: 0xFF
+    reason: IDLE_TIMEOUT
     idle_timeout: 0xffff
     hard_timeout: 0xffff
     priority: 0xffff

@@ -916,7 +916,7 @@
         "hard_timeout": 65535, 
         "idle_timeout": 65535, 
         "priority": 65535, 
-        "reason": 255, 
+        "reason": "IDLE_TIMEOUT", 
         "table_id": "ALL", 
         "cookie": 18446744073709551615, 
         "event": "ADDED", 

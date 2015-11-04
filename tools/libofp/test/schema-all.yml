@@ -633,7 +633,7 @@ Message/Reply.GroupDesc:
   time: !optout Timestamp
   type: REPLY.GROUP_DESC
   msg:
-    - type: UInt8
+    - type: GroupType
       group_id: GroupNumber
       buckets: [Bucket]
   
@@ -1186,7 +1186,7 @@ MeterBand/EXPERIMENTER:
 Struct/Bucket: 
   weight: UInt16
   watch_port: PortNumber
-  watch_group: UInt32
+  watch_group: GroupNumber
   actions: [Action]
   
 Struct/Port: 
