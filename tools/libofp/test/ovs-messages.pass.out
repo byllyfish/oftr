@@ -1892,7 +1892,7 @@ version:         0x05
 msg:             
   max_meter:       0x00000000
   band_types:      [  ]
-  capabilities:    0x00000000
+  capabilities:    [  ]
   max_bands:       0x00
   max_color:       0x00
 ...

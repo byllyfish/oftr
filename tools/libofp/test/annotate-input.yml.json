@@ -664,7 +664,9 @@
       "band_types": [
         "DSCP_REMARK"
       ], 
-      "capabilities": 4294967295, 
+      "capabilities": [
+        "BURST"
+      ], 
       "max_bands": 255, 
       "max_color": 255
     }, 

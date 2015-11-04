@@ -59780,7 +59780,7 @@ version:         0x04
 msg:             
   max_meter:       0x0000007C
   band_types:      [ '0x00000400' ]
-  capabilities:    0x00001F9F
+  capabilities:    [ KBPS, PKTPS, BURST, STATS, '0x00001F90' ]
   max_bands:       0x7C
   max_color:       0xE6
 ...
@@ -73225,7 +73225,7 @@ version:         0x04
 msg:             
   max_meter:       0x0000007C
   band_types:      [ '0x00000400' ]
-  capabilities:    0x00001F9F
+  capabilities:    [ KBPS, PKTPS, BURST, STATS, '0x00001F90' ]
   max_bands:       0x7C
   max_color:       0xE6
 ...

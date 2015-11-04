@@ -423,7 +423,7 @@ flags: [ 'MORE' ]
 msg:
   max_meter: 0xffffffff
   band_types: [ DSCP_REMARK ]
-  capabilities: 0xffffffff
+  capabilities: [ BURST ]
   max_bands: 0xff
   max_color: 0xff
 ---

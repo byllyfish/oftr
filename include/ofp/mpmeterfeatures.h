@@ -15,7 +15,7 @@ class MPMeterFeatures {
  public:
   UInt32 maxMeter() const { return maxMeter_; }
   OFPMeterBandFlags bandTypes() const { return bandTypes_; }
-  UInt32 capabilities() const { return capabilities_; }
+  OFPMeterFlags capabilities() const { return capabilities_; }
   UInt8 maxBands() const { return maxBands_; }
   UInt8 maxColor() const { return maxColor_; }
 
@@ -24,7 +24,7 @@ class MPMeterFeatures {
  private:
   Big32 maxMeter_;
   Big<OFPMeterBandFlags> bandTypes_;
-  Big32 capabilities_;
+  Big<OFPMeterFlags> capabilities_;
   Big8 maxBands_;
   Big8 maxColor_;
   Padding<2> pad_;
@@ -41,7 +41,7 @@ class MPMeterFeaturesBuilder {
  public:
   void setMaxMeter(UInt32 maxMeter) { msg_.maxMeter_ = maxMeter; }
   void setBandTypes(OFPMeterBandFlags bandTypes) { msg_.bandTypes_ = bandTypes; }
-  void setCapabilities(UInt32 capabilities) {
+  void setCapabilities(OFPMeterFlags capabilities) {
     msg_.capabilities_ = capabilities;
   }
   void setMaxBands(UInt8 maxBands) { msg_.maxBands_ = maxBands; }
