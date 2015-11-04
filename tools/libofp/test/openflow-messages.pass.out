@@ -46548,7 +46548,7 @@ xid:             0x0000000C
 version:         0x03
 msg:             
   types:           0x00000007
-  capabilities:    0x00000004
+  capabilities:    [ CHAINING ]
   max_groups_all:  0x00005BC2
   max_groups_sel:  0x00000956
   max_groups_ind:  0x00000956
@@ -59604,7 +59604,7 @@ xid:             0x0000000C
 version:         0x04
 msg:             
   types:           0x00000007
-  capabilities:    0x00000004
+  capabilities:    [ CHAINING ]
   max_groups_all:  0x00005BC2
   max_groups_sel:  0x00000956
   max_groups_ind:  0x00000956
@@ -73049,7 +73049,7 @@ xid:             0x0000000C
 version:         0x04
 msg:             
   types:           0x00000007
-  capabilities:    0x00000004
+  capabilities:    [ CHAINING ]
   max_groups_all:  0x00005BC2
   max_groups_sel:  0x00000956
   max_groups_ind:  0x00000956

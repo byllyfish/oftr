@@ -569,7 +569,9 @@
       "actions_ind": [
         "SET_VLAN_VID"
       ], 
-      "capabilities": 4294967295, 
+      "capabilities": [
+        "SELECT_WEIGHT"
+      ], 
       "actions_sel": [
         "SET_VLAN_VID"
       ], 

@@ -14,7 +14,7 @@ class Validation;
 class MPGroupFeatures {
  public:
   UInt32 types() const { return types_; }
-  UInt32 capabilities() const { return capabilities_; }
+  OFPGroupCapabilityFlags capabilities() const { return capabilities_; }
 
   OFPActionTypeFlags actionsALL() const { return actions_[0]; }
   OFPActionTypeFlags actionsSEL() const { return actions_[1]; }
@@ -25,7 +25,7 @@ class MPGroupFeatures {
 
  private:
   Big32 types_;
-  Big32 capabilities_;
+  Big<OFPGroupCapabilityFlags> capabilities_;
   Big32 maxGroups_[4];
   Big<OFPActionTypeFlags> actions_[4];
 
@@ -43,7 +43,7 @@ class MPGroupFeaturesBuilder {
   MPGroupFeaturesBuilder() = default;
 
   void setTypes(UInt32 types) { msg_.types_ = types; }
-  void setCapabilities(UInt32 capabilities) {
+  void setCapabilities(OFPGroupCapabilityFlags capabilities) {
     msg_.capabilities_ = capabilities;
   }
 

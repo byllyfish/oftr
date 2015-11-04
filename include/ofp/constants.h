@@ -671,6 +671,22 @@ enum OFPGroupType : UInt8 {
   OFPGT_FF = 3
 };
 
+enum OFPGroupCapabilityFlags : UInt32 {
+  OFPGFC_NONE = 0,
+
+  OFPGFC_SELECT_WEIGHT = 1 << 0,
+  OFPGFC_SELECT_LIVENESS = 1 << 1,
+  OFPGFC_CHAINING = 1 << 2,
+  OFPGFC_CHAINING_CHECKS = 1 << 3,
+
+  OFPGFC_OTHER_GROUP_FLAGS = 0xFFFFFFF0
+};
+
+inline OFPGroupCapabilityFlags operator|(OFPGroupCapabilityFlags lhs,
+                                   OFPGroupCapabilityFlags rhs) {
+  return static_cast<OFPGroupCapabilityFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPMeterModCommand : UInt16 {
   OFPMC_ADD = 0,
   OFPMC_MODIFY = 1,

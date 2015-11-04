@@ -299,7 +299,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.GROUP_FEATURES.v1	msg.actions_ind.0	SET_VLAN_VID	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.actions_sel	array	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.actions_sel.0	SET_VLAN_VID	True			ERROR
-1	REPLY.GROUP_FEATURES.v1	msg.capabilities	uint32	True			ERROR
+1	REPLY.GROUP_FEATURES.v1	msg.capabilities	array	True			ERROR
+1	REPLY.GROUP_FEATURES.v1	msg.capabilities.0	SELECT_WEIGHT	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_all	uint32	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_ff	uint32	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_ind	uint32	True			ERROR
@@ -867,7 +868,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.GROUP_FEATURES.v2	msg.actions_ind.0	SET_VLAN_VID	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.actions_sel	array	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.actions_sel.0	SET_VLAN_VID	True			ERROR
-2	REPLY.GROUP_FEATURES.v2	msg.capabilities	uint32	True			ERROR
+2	REPLY.GROUP_FEATURES.v2	msg.capabilities	array	True			ERROR
+2	REPLY.GROUP_FEATURES.v2	msg.capabilities.0	SELECT_WEIGHT	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_all	uint32	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_ff	uint32	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_ind	uint32	True			ERROR
@@ -1435,7 +1437,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.GROUP_FEATURES.v3	msg.actions_ind.0	SET_VLAN_VID	False	msg.actions_ind.0=SET_VLAN_VID		
 3	REPLY.GROUP_FEATURES.v3	msg.actions_sel	array	True			
 3	REPLY.GROUP_FEATURES.v3	msg.actions_sel.0	SET_VLAN_VID	False	msg.actions_sel.0=SET_VLAN_VID		
-3	REPLY.GROUP_FEATURES.v3	msg.capabilities	uint32	True			True
+3	REPLY.GROUP_FEATURES.v3	msg.capabilities	array	True			
+3	REPLY.GROUP_FEATURES.v3	msg.capabilities.0	SELECT_WEIGHT	False	msg.capabilities.0=SELECT_WEIGHT		
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_all	uint32	True			True
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_ff	uint32	True			True
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_ind	uint32	True			True
@@ -2003,7 +2006,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.GROUP_FEATURES.v4	msg.actions_ind.0	SET_VLAN_VID	False	msg.actions_ind.0=SET_VLAN_VID		
 4	REPLY.GROUP_FEATURES.v4	msg.actions_sel	array	True			
 4	REPLY.GROUP_FEATURES.v4	msg.actions_sel.0	SET_VLAN_VID	False	msg.actions_sel.0=SET_VLAN_VID		
-4	REPLY.GROUP_FEATURES.v4	msg.capabilities	uint32	True			True
+4	REPLY.GROUP_FEATURES.v4	msg.capabilities	array	True			
+4	REPLY.GROUP_FEATURES.v4	msg.capabilities.0	SELECT_WEIGHT	False	msg.capabilities.0=SELECT_WEIGHT		
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_all	uint32	True			True
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_ff	uint32	True			True
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_ind	uint32	True			True
@@ -2571,7 +2575,8 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.GROUP_FEATURES.v5	msg.actions_ind.0	SET_VLAN_VID	False	msg.actions_ind.0=SET_VLAN_VID		
 5	REPLY.GROUP_FEATURES.v5	msg.actions_sel	array	True			
 5	REPLY.GROUP_FEATURES.v5	msg.actions_sel.0	SET_VLAN_VID	False	msg.actions_sel.0=SET_VLAN_VID		
-5	REPLY.GROUP_FEATURES.v5	msg.capabilities	uint32	True			True
+5	REPLY.GROUP_FEATURES.v5	msg.capabilities	array	True			
+5	REPLY.GROUP_FEATURES.v5	msg.capabilities.0	SELECT_WEIGHT	False	msg.capabilities.0=SELECT_WEIGHT		
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_all	uint32	True			True
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_ff	uint32	True			True
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_ind	uint32	True			True
