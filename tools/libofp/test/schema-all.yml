@@ -1559,6 +1559,26 @@ Field/NX_TCP_FLAGS:
   value: UInt16
   mask: !optout UInt16
   
+Field/NX_TUN_IP4_SRC: 
+  field: NX_TUN_IP4_SRC
+  value: IPv4Address
+  mask: !optout IPv4Address
+  
+Field/NX_TUN_IP4_DST: 
+  field: NX_TUN_IP4_DST
+  value: IPv4Address
+  mask: !optout IPv4Address
+  
+Field/NX_TUN_GBP_ID: 
+  field: NX_TUN_GBP_ID
+  value: UInt16
+  mask: !optout UInt16
+  
+Field/NX_TUN_GBP_FLAGS: 
+  field: NX_TUN_GBP_FLAGS
+  value: UInt8
+  mask: !optout UInt8
+  
 Field/X_LLDP_CHASSIS_ID: 
   field: X_LLDP_CHASSIS_ID
   value: LLDPChassisID
