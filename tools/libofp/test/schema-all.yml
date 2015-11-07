@@ -1505,6 +1505,26 @@ Field/PBB_UCA:
   field: PBB_UCA
   value: UInt8
   
+Field/PKT_REG0: 
+  field: PKT_REG0
+  value: UInt64
+  mask: !optout UInt64
+  
+Field/PKT_REG1: 
+  field: PKT_REG1
+  value: UInt64
+  mask: !optout UInt64
+  
+Field/PKT_REG2: 
+  field: PKT_REG2
+  value: UInt64
+  mask: !optout UInt64
+  
+Field/PKT_REG3: 
+  field: PKT_REG3
+  value: UInt64
+  mask: !optout UInt64
+  
 Field/NX_REG0: 
   field: NX_REG0
   value: UInt32

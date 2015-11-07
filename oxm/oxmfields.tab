@@ -40,6 +40,11 @@ OFB_PBB_ISID	0x8000	37	4	Big32	true	OFB_ETH_TYPE{0x88E7}	PBB I-SID
 OFB_TUNNEL_ID	0x8000	38	8	Big64	true		Tunnel ID
 OFB_IPV6_EXTHDR	0x8000	39	2	Big16	true	OFB_ETH_TYPE{0x86dd}	IPv6 Extension Header Pseudo-Field
 OFB_PBB_UCA	0x8000	41	1	Big8	false	OFB_ETH_TYPE{0x88E7}	PBB UCA
+OFB_PKT_REG0	0x8001	0	8	Big64	true		Packet Register 0
+OFB_PKT_REG1	0x8001	1	8	Big64	true		Packet Register 1
+OFB_PKT_REG2	0x8001	2	8	Big64	true		Packet Register 2
+OFB_PKT_REG3	0x8001	3	8	Big64	true		Packet Register 3
+# ONF_ONF_ACTSET_OUTPUT	0xFFFF	43.0x4F4E4600	8	PortNumber	false		(ONF) Egress port from action set
 NXM_NX_REG0	0x0001	0	4	Big32	true		(Nicira) Register 0
 NXM_NX_REG1	0x0001	1	4	Big32	true		(Nicira) Register 1
 NXM_NX_REG2	0x0001	2	4	Big32	true		(Nicira) Register 2
