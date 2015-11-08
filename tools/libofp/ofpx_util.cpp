@@ -9,6 +9,28 @@ using namespace ofp;
 static bool normalizeTableFeaturesEntry(const UInt8 *&ptr, size_t &remainingLength, ByteList &results);
 
 
+struct Prop {
+    Big16 type;
+    Big16 length;
+};
+
+struct EmptyProp {
+    Big16 type;
+    Big16 length;
+    Big32 empty;
+};
+
+static EmptyProp kDefaultEmptyProperties[] = {
+    { OFPTFPT_INSTRUCTIONS, 4, 0},
+    { OFPTFPT_NEXT_TABLES, 4, 0},
+    { OFPTFPT_WRITE_ACTIONS, 4, 0},
+    { OFPTFPT_APPLY_ACTIONS, 4, 0},
+    { OFPTFPT_MATCH, 4, 0 },
+    { OFPTFPT_WILDCARDS, 4, 0 },
+    { OFPTFPT_WRITE_SETFIELD, 4, 0 },
+    { OFPTFPT_APPLY_SETFIELD, 4, 0 },
+};
+
 bool ofpx::normalizeTableFeaturesMessage(const ByteRange &data, ByteList &results) {
     // Convert a multipart table features message into a standard form.
     
@@ -65,11 +87,6 @@ static bool normalizeTableFeaturesEntry(const UInt8 *&ptr, size_t &remainingLeng
         return false;
     }
 
-    struct Prop {
-        Big16 type;
-        Big16 length;
-    };
-
     // Build list of pointers to properties so we can sort them.
     std::vector<const Prop *>  props;
 
@@ -96,6 +113,15 @@ static bool normalizeTableFeaturesEntry(const UInt8 *&ptr, size_t &remainingLeng
 
         propPtr += offset;
         left -= offset;
+    }
+
+    // Add certain empty properties if they don't exist already.
+    for (const EmptyProp &prop : kDefaultEmptyProperties) {
+        // If property is not already in list, add it.
+        auto iter = std::find_if(props.begin(), props.end(), [&prop](const Prop *p){ return p->type == prop.type; });
+        if (iter == props.end()) {
+            props.push_back(reinterpret_cast<const Prop *>(&prop));
+        }
     }
 
     // Sort the property pointers.
