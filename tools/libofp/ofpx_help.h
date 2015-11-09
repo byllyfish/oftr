@@ -25,6 +25,7 @@ using ofp::yaml::Schema;
 //
 //   --fields         List supported match fields.
 //   --actions        List supported actions.
+//   --builtins       List supported builtin types.
 //   --instructions   List supported instructions.
 //   --messages       List supported message types.
 //   --enums          List supported enumeration types.
@@ -71,6 +72,7 @@ class Help : public Subprogram {
   cl::opt<bool> fields_{"fields", cl::desc("List supported match fields.")};
   cl::opt<bool> fieldTable_{"field-table", cl::desc("List supported match fields in a table.")};
   cl::opt<bool> actions_{"actions", cl::desc("List supported actions.")};
+  cl::opt<bool> builtins_{"builtins", cl::desc("List supported builtin types.")};
   cl::opt<bool> instructions_{"instructions",
                               cl::desc("List supported instructions.")};
   cl::opt<bool> messages_{"messages", cl::desc("List supported messages.")};

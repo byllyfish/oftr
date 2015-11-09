@@ -200,6 +200,8 @@ int Help::run(int argc, const char *const *argv) {
     listSchemas("Instruction");
   } else if (actions_) {
     listSchemas("Action");
+  } else if (builtins_) {
+    listSchemas("Builtin");
   } else if (fields_) {
     listSchemas("Field");
   } else if (enums_) {
