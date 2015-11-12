@@ -101,7 +101,7 @@ Message/Hello:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: HELLO
   msg:
@@ -113,7 +113,7 @@ Message/Error:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: ERROR
   msg:
@@ -128,7 +128,7 @@ Message/EchoRequest:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: ECHO_REQUEST
   msg:
@@ -140,7 +140,7 @@ Message/EchoReply:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: ECHO_REPLY
   msg:
@@ -152,7 +152,7 @@ Message/FeaturesRequest:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: FEATURES_REQUEST
   
@@ -162,7 +162,7 @@ Message/FeaturesReply:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: FEATURES_REPLY
   msg:
@@ -180,7 +180,7 @@ Message/GetConfigRequest:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: GET_CONFIG_REQUEST
   
@@ -190,7 +190,7 @@ Message/GetConfigReply:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: GET_CONFIG_REPLY
   msg:
@@ -203,7 +203,7 @@ Message/SetConfig:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: SET_CONFIG
   msg:
@@ -216,7 +216,7 @@ Message/PacketIn:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: PACKET_IN
   msg:
@@ -238,7 +238,7 @@ Message/FlowRemoved:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: FLOW_REMOVED
   msg:
@@ -260,7 +260,7 @@ Message/PortStatus:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: PORT_STATUS
   msg:
@@ -273,7 +273,7 @@ Message/PacketOut:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: PACKET_OUT
   msg:
@@ -289,7 +289,7 @@ Message/FlowMod:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: FLOW_MOD
   msg:
@@ -313,7 +313,7 @@ Message/GroupMod:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: GROUP_MOD
   msg:
@@ -328,7 +328,7 @@ Message/PortMod:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: PORT_MOD
   msg:
@@ -352,7 +352,7 @@ Message/TableMod:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: TABLE_MOD
   msg:
@@ -365,7 +365,7 @@ Message/Request.Desc:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.DESC
   
@@ -375,7 +375,7 @@ Message/Request.Table:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.TABLE
   
@@ -385,7 +385,7 @@ Message/Request.PortDesc:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.PORT_DESC
   
@@ -395,7 +395,7 @@ Message/Request.GroupDesc:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.GROUP_DESC
   
@@ -405,7 +405,7 @@ Message/Request.GroupFeatures:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.GROUP_FEATURES
   
@@ -415,7 +415,7 @@ Message/Request.MeterFeatures:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.METER_FEATURES
   
@@ -425,7 +425,7 @@ Message/Request.Flow:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.FLOW
   msg:
@@ -442,7 +442,7 @@ Message/Request.Aggregate:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.AGGREGATE
   msg:
@@ -459,7 +459,7 @@ Message/Request.PortStats:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.PORT_STATS
   msg:
@@ -471,7 +471,7 @@ Message/Request.Queue:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.QUEUE
   msg:
@@ -484,7 +484,7 @@ Message/Request.MeterConfig:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.METER_CONFIG
   msg:
@@ -496,7 +496,7 @@ Message/Request.Meter:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.METER
   msg:
@@ -508,7 +508,7 @@ Message/Request.Group:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.GROUP
   msg:
@@ -520,7 +520,7 @@ Message/Request.TableFeatures:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.TABLE_FEATURES
   msg:
@@ -552,7 +552,7 @@ Message/Request.FlowMonitor:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.FLOW_MONITOR
   msg:
@@ -570,7 +570,7 @@ Message/Request.Experimenter:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUEST.EXPERIMENTER
   msg:
@@ -584,7 +584,7 @@ Message/Reply.Desc:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.DESC
   msg:
@@ -600,7 +600,7 @@ Message/Reply.Table:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.TABLE
   msg:
@@ -618,7 +618,7 @@ Message/Reply.PortDesc:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.PORT_DESC
   msg: [Port]
@@ -629,7 +629,7 @@ Message/Reply.GroupDesc:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.GROUP_DESC
   msg:
@@ -643,7 +643,7 @@ Message/Reply.GroupFeatures:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.GROUP_FEATURES
   msg:
@@ -664,7 +664,7 @@ Message/Reply.MeterFeatures:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.METER_FEATURES
   msg:
@@ -680,7 +680,7 @@ Message/Reply.Flow:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.FLOW
   msg:
@@ -703,7 +703,7 @@ Message/Reply.Aggregate:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.AGGREGATE
   msg:
@@ -717,7 +717,7 @@ Message/Reply.PortStats:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.PORT_STATS
   msg:
@@ -756,7 +756,7 @@ Message/Reply.Queue:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.QUEUE
   msg:
@@ -774,7 +774,7 @@ Message/Reply.MeterConfig:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.METER_CONFIG
   msg:
@@ -788,7 +788,7 @@ Message/Reply.Meter:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.METER
   msg:
@@ -806,7 +806,7 @@ Message/Reply.Group:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.GROUP
   msg:
@@ -824,7 +824,7 @@ Message/Reply.TableFeatures:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.TABLE_FEATURES
   msg:
@@ -856,7 +856,7 @@ Message/Reply.FlowMonitor:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.FLOW_MONITOR
   msg:
@@ -878,7 +878,7 @@ Message/Reply.Experimenter:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REPLY.EXPERIMENTER
   msg:
@@ -892,7 +892,7 @@ Message/BarrierRequest:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: BARRIER_REQUEST
   
@@ -902,7 +902,7 @@ Message/BarrierReply:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: BARRIER_REPLY
   
@@ -912,7 +912,7 @@ Message/QueueGetConfigRequest:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: QUEUE_GET_CONFIG_REQUEST
   msg:
@@ -924,7 +924,7 @@ Message/QueueGetConfigReply:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: QUEUE_GET_CONFIG_REPLY
   msg:
@@ -937,7 +937,7 @@ Message/RoleRequest:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: ROLE_REQUEST
   msg:
@@ -950,7 +950,7 @@ Message/RoleReply:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: ROLE_REPLY
   msg:
@@ -963,7 +963,7 @@ Message/GetAsyncRequest:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: GET_ASYNC_REQUEST
   
@@ -973,7 +973,7 @@ Message/GetAsyncReply:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: GET_ASYNC_REPLY
   msg:
@@ -990,7 +990,7 @@ Message/SetAsync:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: SET_ASYNC
   msg:
@@ -1007,7 +1007,7 @@ Message/MeterMod:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: METER_MOD
   msg:
@@ -1022,7 +1022,7 @@ Message/RoleStatus:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: ROLE_STATUS
   msg:
@@ -1037,7 +1037,7 @@ Message/RequestForward:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: REQUESTFORWARD
   msg: Message
@@ -1048,7 +1048,7 @@ Message/BundleControl:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: BUNDLE_CONTROL
   msg:
@@ -1063,7 +1063,7 @@ Message/BundleAddMessage:
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
   type: BUNDLE_ADD_MESSAGE
   msg:
