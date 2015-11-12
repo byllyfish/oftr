@@ -1,0 +1,13 @@
+Source: libofp
+Section: devel
+Priority: optional
+Maintainer: Bill Fisher <william.w.fisher@gmail.com>
+Build-Depends: cmake, build-essential
+Homepage: https://github.com/byllyfish/libofp
+
+Package: libofp
+Architecture: any
+Depends:
+Description: OpenFlow to YAML Converter and Microservice
+ The libofp program translates OpenFlow messages to YAML or JSON. libofp 
+ provides a uniform text-based syntax for working with the OpenFlow protocol.
