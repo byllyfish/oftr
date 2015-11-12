@@ -11,7 +11,7 @@ static const char *kMessagePrefix = R"""(  version: !opt UInt8
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
 )""";
 
