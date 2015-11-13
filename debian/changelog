@@ -1,5 +1,5 @@
-libofp (0.9-0ppa0) unstable; urgency=low
+libofp (0.9-0ppa0) trusty; urgency=low
 
   * Initial upload
 
- -- Bill Fisher <william.w.fisher@gmail.com>  Thu, 12 Nov 2015 19:53:08 +0000
+ -- William W. Fisher <william.w.fisher@gmail.com>  Thu, 12 Nov 2015 21:17:34 +0000

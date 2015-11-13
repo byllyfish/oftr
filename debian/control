@@ -1,7 +1,7 @@
 Source: libofp
 Section: devel
 Priority: optional
-Maintainer: Bill Fisher <william.w.fisher@gmail.com>
+Maintainer: William W. Fisher <william.w.fisher@gmail.com>
 Build-Depends: cmake, build-essential
 Homepage: https://github.com/byllyfish/libofp
 
