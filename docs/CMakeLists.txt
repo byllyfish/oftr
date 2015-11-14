@@ -11,3 +11,5 @@ if(DOXYGEN_FOUND)
 endif(DOXYGEN_FOUND)
 
 install(FILES libofp.1 DESTINATION share/man/man1)
+install(FILES libofp-jsonrpc.1 DESTINATION share/man/man1)
+install(FILES libofp-schema.1 DESTINATION share/man/man1)
