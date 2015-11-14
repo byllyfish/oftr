@@ -463,7 +463,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_PACKAGE_VERSION_MAJOR "${Libofp_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${Libofp_VERSION_MINOR}")
 set(CPACK_PACKAGE_CONTACT "${Libofp_MAINTAINER_EMAIL}")
-set(CPACK_STRIP_FILES "bin/libofp")
+set(CPACK_STRIP_FILES TRUE)
 include(CPack)
 
 #-------------------------------------------------------------------------------
