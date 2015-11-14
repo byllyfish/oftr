@@ -24,7 +24,7 @@ project(Libofp)
 
 # Log version of cmake
 
-message(STATUS "Running cmake ${CMAKE_VERSION} on ${CMAKE_SYSTEM}")
+message(STATUS "Running cmake ${CMAKE_VERSION} on ${CMAKE_SYSTEM} ${CMAKE_SYSTEM_PROCESSOR}")
 
 # Add path for custom modules
 
