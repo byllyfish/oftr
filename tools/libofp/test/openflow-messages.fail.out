@@ -21713,7 +21713,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -21725,10 +21725,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_000124.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000125.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000126.fail
@@ -21764,22 +21760,18 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
     write_actions:   [  ]
     apply_actions:   [  ]
-    match:           [ '~0xFFFF0000' ]
+    match:           [ '~0xFFFF0000.0x000000D6' ]
     wildcards:       [  ]
     write_set_field: [  ]
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_000130.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0412006000007D8D000C00000000000000506F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000CFFFF00000000000000000000]
-[ByteRange size=96 data=0412006000007D8D000C000000000000004F6F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000CFFFF0000000000D600000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000131.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000132.fail
@@ -21822,22 +21814,18 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
     write_actions:   [  ]
     apply_actions:   [  ]
     match:           [  ]
-    wildcards:       [ ARP_OP, '~0xFFFF0000', ARP_OP/ ]
+    wildcards:       [ ARP_OP, '~0xFFFF0000.0x00000926', ARP_OP/ ]
     write_set_field: [  ]
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_000141.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000587200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000A001480002A02FFFF00000000000080002B0400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000577200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000A001480002A02FFFF00000000092680002B0400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000142.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000143.fail
@@ -21861,7 +21849,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -21873,10 +21861,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_000146.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000407300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000477300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000C000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000147.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000148.fail
@@ -21919,7 +21903,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -21928,14 +21912,10 @@ msg:
     match:           [  ]
     wildcards:       [  ]
     write_set_field: [  ]
-    write_set_field_miss: [ ARP_OP, '~0xFFFF0000', ARP_OP/ ]
+    write_set_field_miss: [ ARP_OP, '~0xFFFF0000.0x00000926', ARP_OP/ ]
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_000157.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000587600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000D001480002A02FFFF00000000000080002B0400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000577600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000D001480002A02FFFF00000000092680002B0400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000158.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000159.fail
@@ -21961,7 +21941,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -21973,10 +21953,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_000162.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000407700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000477700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000E000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000163.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000164.fail
@@ -22019,7 +21995,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22029,13 +22005,9 @@ msg:
     wildcards:       [  ]
     write_set_field: [  ]
     apply_set_field: [  ]
-    apply_set_field_miss: [ ARP_OP, '~0xFFFF0000', ARP_OP/ ]
+    apply_set_field_miss: [ ARP_OP, '~0xFFFF0000.0x00000926', ARP_OP/ ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_000173.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000587A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000F001480002A02FFFF00000000000080002B0400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000577A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000F001480002A02FFFF00000000092680002B0400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000174.fail:
 Error: Only 168 bytes read of message body. Expected to read 176 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000175.fail
@@ -22178,7 +22150,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -22191,9 +22163,9 @@ msg:
     properties:      
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00054.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0412006000007D8D000C00000000000000505B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF000800000000]
-[ByteRange size=96 data=0412006000007D8D000C000000000000004F5B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
+Error: Encode yielded different data at byte offset 94:
+[ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
+[ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00055.fail:
 Error: Only 80 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00056.fail
@@ -22218,7 +22190,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22230,10 +22202,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00059.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000405C00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000475C00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00060.fail:
 Error: Only 87 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00061.fail
@@ -22250,7 +22218,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]
@@ -22264,9 +22232,9 @@ msg:
     properties:      
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00062.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0412006000007D8D000C00000000000000505D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001001000040004FFFF000800000000]
-[ByteRange size=96 data=0412006000007D8D000C000000000000004F5D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
+Error: Encode yielded different data at byte offset 102:
+[ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
+[ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00063.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00064.fail
@@ -22336,7 +22304,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22348,10 +22316,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00078.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250003000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00079.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00080.fail
@@ -22368,7 +22332,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22381,10 +22345,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00081.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000486200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000300072220BE00]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000466200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000300072220BE00]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00082.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00083.fail
@@ -22408,7 +22368,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22420,10 +22380,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00086.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250004000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00087.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00088.fail
@@ -22440,7 +22396,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22452,10 +22408,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00089.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000486400000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040008000C0004]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476400000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040008000C0004]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00090.fail:
 Error: Only 87 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00091.fail
@@ -22480,7 +22432,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22492,10 +22444,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00095.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000586600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040014000C0004FFFF0008000000000019000400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000576600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040014000C0004FFFF0008000000000019000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00096.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00097.fail
@@ -22519,7 +22467,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22531,10 +22479,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00100.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250005000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00101.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00102.fail
@@ -22567,7 +22511,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22579,10 +22523,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00108.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406900000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476900000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250006000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00109.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00110.fail
@@ -22599,7 +22539,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22611,10 +22551,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00111.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000586A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500060014000C0004FFFF0008000000000019000400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000576A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500060014000C0004FFFF0008000000000019000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00112.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00113.fail
@@ -22638,7 +22574,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22650,10 +22586,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00116.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250007000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00117.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00118.fail
@@ -22670,7 +22602,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22683,10 +22615,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_18_00119.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000586C00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500070014000C0004FFFF0008000000000019000400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000566C00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500070014000C0004FFFF0008000000000019000400000000]
 ---
 type:            REQUEST.TABLE_DESC
 flags:           [ MORE ]
@@ -22709,7 +22637,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22724,9 +22652,9 @@ msg:
         data:            ''
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00183.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000486D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250009000400000000]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000446D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250009000400000000]
+Error: Encode yielded different size data: 152 vs. 144
+[ByteRange size=152 data=0412009800007D8D000C00000000000000886D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E0004000000000009000400000000]
+[ByteRange size=144 data=0412009000007D8D000C00000000000000806D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
 type:            REQUEST.TABLE_FEATURES
 flags:           [  ]
@@ -22738,7 +22666,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -22753,9 +22681,9 @@ msg:
         data:            ''
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00184.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000487100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000B000400000000]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000447100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000B000400000000]
+Error: Encode yielded different size data: 152 vs. 144
+[ByteRange size=152 data=0412009800007D8D000C00000000000000887100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000000B000400000000]
+[ByteRange size=144 data=0412009000007D8D000C00000000000000807100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00001.fail:
 Error: Only 1064 bytes read of message body. Expected to read 1065 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00002.fail:
@@ -23214,7 +23142,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -23227,9 +23155,9 @@ msg:
     properties:      
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00116.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0413006000007D8D000C00000000000000505B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF000800000000]
-[ByteRange size=96 data=0413006000007D8D000C000000000000004F5B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
+Error: Encode yielded different data at byte offset 94:
+[ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
+[ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00117.fail:
 Error: Only 168 bytes read of message body. Expected to read 176 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00118.fail
@@ -26263,7 +26191,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26275,10 +26203,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_000124.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000125.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000126.fail
@@ -26314,22 +26238,18 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
     write_actions:   [  ]
     apply_actions:   [  ]
-    match:           [ '~0xFFFF0000' ]
+    match:           [ '~0xFFFF0000.0x000000D6' ]
     wildcards:       [  ]
     write_set_field: [  ]
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_000130.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0412006000007D8D000C00000000000000506F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000CFFFF00000000000000000000]
-[ByteRange size=96 data=0412006000007D8D000C000000000000004F6F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000CFFFF0000000000D600000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000131.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000132.fail
@@ -26372,22 +26292,18 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
     write_actions:   [  ]
     apply_actions:   [  ]
     match:           [  ]
-    wildcards:       [ ARP_OP, '~0xFFFF0000', ARP_OP/ ]
+    wildcards:       [ ARP_OP, '~0xFFFF0000.0x00000926', ARP_OP/ ]
     write_set_field: [  ]
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_000141.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000587200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000A001480002A02FFFF00000000000080002B0400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000577200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000A001480002A02FFFF00000000092680002B0400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000142.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000143.fail
@@ -26411,7 +26327,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26423,10 +26339,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_000146.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000407300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000477300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000C000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000147.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000148.fail
@@ -26469,7 +26381,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26478,14 +26390,10 @@ msg:
     match:           [  ]
     wildcards:       [  ]
     write_set_field: [  ]
-    write_set_field_miss: [ ARP_OP, '~0xFFFF0000', ARP_OP/ ]
+    write_set_field_miss: [ ARP_OP, '~0xFFFF0000.0x00000926', ARP_OP/ ]
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_000157.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000587600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000D001480002A02FFFF00000000000080002B0400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000577600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000D001480002A02FFFF00000000092680002B0400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000158.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000159.fail
@@ -26511,7 +26419,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26523,10 +26431,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_000162.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000407700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000477700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000E000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000163.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000164.fail
@@ -26569,7 +26473,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26579,13 +26483,9 @@ msg:
     wildcards:       [  ]
     write_set_field: [  ]
     apply_set_field: [  ]
-    apply_set_field_miss: [ ARP_OP, '~0xFFFF0000', ARP_OP/ ]
+    apply_set_field_miss: [ ARP_OP, '~0xFFFF0000.0x00000926', ARP_OP/ ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_000173.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000587A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000F001480002A02FFFF00000000000080002B0400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000577A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000F001480002A02FFFF00000000092680002B0400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000174.fail:
 Error: Only 168 bytes read of message body. Expected to read 176 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000175.fail
@@ -26728,7 +26628,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -26741,9 +26641,9 @@ msg:
     properties:      
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00054.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0412006000007D8D000C00000000000000505B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF000800000000]
-[ByteRange size=96 data=0412006000007D8D000C000000000000004F5B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
+Error: Encode yielded different data at byte offset 94:
+[ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
+[ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00055.fail:
 Error: Only 80 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00056.fail
@@ -26768,7 +26668,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26780,10 +26680,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00059.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000405C00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000475C00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00060.fail:
 Error: Only 87 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00061.fail
@@ -26800,7 +26696,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     instructions_miss: [ APPLY_ACTIONS, EXPERIMENTER ]
@@ -26814,9 +26710,9 @@ msg:
     properties:      
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00062.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0412006000007D8D000C00000000000000505D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001001000040004FFFF000800000000]
-[ByteRange size=96 data=0412006000007D8D000C000000000000004F5D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
+Error: Encode yielded different data at byte offset 102:
+[ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
+[ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00063.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00064.fail
@@ -26886,7 +26782,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26898,10 +26794,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00078.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250003000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00079.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00080.fail
@@ -26918,7 +26810,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26931,10 +26823,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00081.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000486200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000300072220BE00]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000466200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000300072220BE00]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00082.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00083.fail
@@ -26958,7 +26846,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -26970,10 +26858,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00086.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250004000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00087.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00088.fail
@@ -26990,7 +26874,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27002,10 +26886,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00089.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000486400000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040008000C0004]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476400000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040008000C0004]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00090.fail:
 Error: Only 87 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00091.fail
@@ -27030,7 +26910,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27042,10 +26922,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00095.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000586600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040014000C0004FFFF0008000000000019000400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000576600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040014000C0004FFFF0008000000000019000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00096.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00097.fail
@@ -27069,7 +26945,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27081,10 +26957,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00100.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250005000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00101.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00102.fail
@@ -27117,7 +26989,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27129,10 +27001,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00108.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406900000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476900000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250006000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00109.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00110.fail
@@ -27149,7 +27017,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27161,10 +27029,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00111.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000586A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500060014000C0004FFFF0008000000000019000400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000576A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500060014000C0004FFFF0008000000000019000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00112.fail:
 Error: Only 80 bytes read of message body. Expected to read 81 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00113.fail
@@ -27188,7 +27052,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27200,10 +27064,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00116.fail
-Error: Encode yielded different size data: 80 vs. 88
-[ByteRange size=80 data=0412005000007D8D000C00000000000000406B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000476B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250007000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00117.fail:
 Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00118.fail
@@ -27220,7 +27080,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27233,10 +27093,6 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_18_00119.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=104 data=0412006800007D8D000C00000000000000586C00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500070014000C0004FFFF0008000000000019000400000000]
-[ByteRange size=104 data=0412006800007D8D000C00000000000000566C00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500070014000C0004FFFF0008000000000019000400000000]
 ---
 type:            REQUEST.TABLE_DESC
 flags:           [ MORE ]
@@ -27259,7 +27115,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27274,9 +27130,9 @@ msg:
         data:            ''
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00183.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000486D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250009000400000000]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000446D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250009000400000000]
+Error: Encode yielded different size data: 152 vs. 144
+[ByteRange size=152 data=0412009800007D8D000C00000000000000886D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E0004000000000009000400000000]
+[ByteRange size=144 data=0412009000007D8D000C00000000000000806D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
 type:            REQUEST.TABLE_FEATURES
 flags:           [  ]
@@ -27288,7 +27144,7 @@ msg:
     name:            Table 1
     metadata_match:  0x000000000012D9E1
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [  ]
     next_tables:     [  ]
@@ -27303,9 +27159,9 @@ msg:
         data:            ''
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00184.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=88 data=0412005800007D8D000C00000000000000487100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000B000400000000]
-[ByteRange size=88 data=0412005800007D8D000C00000000000000447100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000B000400000000]
+Error: Encode yielded different size data: 152 vs. 144
+[ByteRange size=152 data=0412009800007D8D000C00000000000000887100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000000B000400000000]
+[ByteRange size=144 data=0412009000007D8D000C00000000000000807100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00001.fail:
 Error: Only 1064 bytes read of message body. Expected to read 1065 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00002.fail:
@@ -27764,7 +27620,7 @@ msg:
     name:            Table 1
     metadata_match:  0x0000000000BC82BB
     metadata_write:  0x000000000023E4CC
-    config:          0x00000014
+    config:          [ EVICTION, '0x00000010' ]
     max_entries:     0x00003025
     instructions:    [ APPLY_ACTIONS, EXPERIMENTER ]
     next_tables:     [  ]
@@ -27777,9 +27633,9 @@ msg:
     properties:      
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00116.fail
-Error: Encode yielded different data at byte offset 17:
-[ByteRange size=96 data=0413006000007D8D000C00000000000000505B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF000800000000]
-[ByteRange size=96 data=0413006000007D8D000C000000000000004F5B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
+Error: Encode yielded different data at byte offset 94:
+[ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
+[ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00117.fail:
 Error: Only 168 bytes read of message body. Expected to read 176 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00118.fail

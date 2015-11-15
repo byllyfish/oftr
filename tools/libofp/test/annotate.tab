@@ -88,25 +88,25 @@ version	type	keypath	syntax	required	default	missing	modify
 1	PORT_STATUS.v1	msg	object	True			
 1	PORT_STATUS.v1	msg.port	object	True			
 1	PORT_STATUS.v1	msg.port.config	array	True			
-1	PORT_STATUS.v1	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN,msg.reason=0xFF		
+1	PORT_STATUS.v1	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
 1	PORT_STATUS.v1	msg.port.ethernet	object	True			
 1	PORT_STATUS.v1	msg.port.ethernet.advertised	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN,msg.reason=0xFF		
+1	PORT_STATUS.v1	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
 1	PORT_STATUS.v1	msg.port.ethernet.curr	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN,msg.reason=0xFF		
+1	PORT_STATUS.v1	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
 1	PORT_STATUS.v1	msg.port.ethernet.curr_speed	uint32	True		msg.port.ethernet.curr_speed=0	
 1	PORT_STATUS.v1	msg.port.ethernet.max_speed	uint32	True		msg.port.ethernet.max_speed=0	
 1	PORT_STATUS.v1	msg.port.ethernet.peer	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.ethernet.peer.0=COPPER,msg.port.properties=array,msg.port.state.1=STP_LISTEN,msg.reason=0xFF		
+1	PORT_STATUS.v1	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.ethernet.peer.0=COPPER,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
 1	PORT_STATUS.v1	msg.port.ethernet.supported	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.ethernet.supported.0=COPPER,msg.port.properties=array,msg.port.state.1=STP_LISTEN,msg.reason=0xFF		
+1	PORT_STATUS.v1	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.ethernet.supported.0=COPPER,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
 1	PORT_STATUS.v1	msg.port.hw_addr	macaddress	True			True
 1	PORT_STATUS.v1	msg.port.name	str16	True			
 1	PORT_STATUS.v1	msg.port.port_no	CONTROLLER	True			
 1	PORT_STATUS.v1	msg.port.properties	null	True		msg.port.properties=array	
 1	PORT_STATUS.v1	msg.port.state	array	True			
-1	PORT_STATUS.v1	msg.port.state.0	LINK_DOWN	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.0=STP_LISTEN,msg.reason=0xFF		
-1	PORT_STATUS.v1	msg.reason	uint8	True		msg.reason=0xFF	
+1	PORT_STATUS.v1	msg.port.state.0	LINK_DOWN	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.0=STP_LISTEN		
+1	PORT_STATUS.v1	msg.reason	ADD	True			
 1	PACKET_OUT.v1	msg	object	True			
 1	PACKET_OUT.v1	msg.actions	array	True			
 1	PACKET_OUT.v1	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -289,6 +289,21 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.GROUP.v1	msg.0.group_id	ANY	True			ERROR
 1	REPLY.GROUP.v1	msg.0.packet_count	uint64	True			ERROR
 1	REPLY.GROUP.v1	msg.0.ref_count	uint32	True			ERROR
+1	REQUEST.GROUP_DESC.v1	msg	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg	array	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets	array	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions	array	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0	object	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0.action	OUTPUT	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.actions.0.port	CONTROLLER	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.watch_group	ANY	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.watch_port	CONTROLLER	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.buckets.0.weight	uint16	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.group_id	ANY	True			ERROR
+1	REPLY.GROUP_DESC.v1	msg.0.type	SELECT	True			ERROR
 1	REQUEST.GROUP_FEATURES.v1	msg	object	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg	object	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.actions_all	array	True			ERROR
@@ -299,12 +314,14 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.GROUP_FEATURES.v1	msg.actions_ind.0	SET_VLAN_VID	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.actions_sel	array	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.actions_sel.0	SET_VLAN_VID	True			ERROR
-1	REPLY.GROUP_FEATURES.v1	msg.capabilities	uint32	True			ERROR
+1	REPLY.GROUP_FEATURES.v1	msg.capabilities	array	True			ERROR
+1	REPLY.GROUP_FEATURES.v1	msg.capabilities.0	SELECT_WEIGHT	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_all	uint32	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_ff	uint32	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_ind	uint32	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_sel	uint32	True			ERROR
-1	REPLY.GROUP_FEATURES.v1	msg.types	uint32	True			ERROR
+1	REPLY.GROUP_FEATURES.v1	msg.types	array	True			ERROR
+1	REPLY.GROUP_FEATURES.v1	msg.types.0	INDIRECT	True			ERROR
 1	REQUEST.METER.v1	msg	object	True			ERROR
 1	REQUEST.METER.v1	msg.meter_id	ALL	True			ERROR
 1	REPLY.METER.v1	msg	array	True			ERROR
@@ -328,12 +345,15 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.METER_CONFIG.v1	msg.0.bands.0.burst_size	uint32	True			ERROR
 1	REPLY.METER_CONFIG.v1	msg.0.bands.0.rate	uint32	True			ERROR
 1	REPLY.METER_CONFIG.v1	msg.0.bands.0.type	DROP	True			ERROR
-1	REPLY.METER_CONFIG.v1	msg.0.flags	uint16	True			ERROR
+1	REPLY.METER_CONFIG.v1	msg.0.flags	array	True			ERROR
+1	REPLY.METER_CONFIG.v1	msg.0.flags.0	PKTPS	True			ERROR
 1	REPLY.METER_CONFIG.v1	msg.0.meter_id	ALL	True			ERROR
 1	REQUEST.METER_FEATURES.v1	msg	object	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg	object	True			ERROR
-1	REPLY.METER_FEATURES.v1	msg.band_types	uint32	True			ERROR
-1	REPLY.METER_FEATURES.v1	msg.capabilities	uint32	True			ERROR
+1	REPLY.METER_FEATURES.v1	msg.band_types	array	True			ERROR
+1	REPLY.METER_FEATURES.v1	msg.band_types.0	DSCP_REMARK	True			ERROR
+1	REPLY.METER_FEATURES.v1	msg.capabilities	array	True			ERROR
+1	REPLY.METER_FEATURES.v1	msg.capabilities.0	BURST	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg.max_bands	uint8	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg.max_color	uint8	True			ERROR
 1	REPLY.METER_FEATURES.v1	msg.max_meter	uint32	True			ERROR
@@ -347,7 +367,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REQUEST.TABLE_FEATURES.v1	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.apply_set_field_miss	array	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-1	REQUEST.TABLE_FEATURES.v1	msg.0.config	uint32	True			ERROR
+1	REQUEST.TABLE_FEATURES.v1	msg.0.config	array	True			ERROR
+1	REQUEST.TABLE_FEATURES.v1	msg.0.config.0	EVICTION	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.instructions	array	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 1	REQUEST.TABLE_FEATURES.v1	msg.0.instructions_miss	array	True			ERROR
@@ -384,7 +405,8 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.TABLE_FEATURES.v1	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.apply_set_field_miss	array	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-1	REPLY.TABLE_FEATURES.v1	msg.0.config	uint32	True			ERROR
+1	REPLY.TABLE_FEATURES.v1	msg.0.config	array	True			ERROR
+1	REPLY.TABLE_FEATURES.v1	msg.0.config.0	EVICTION	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.instructions	array	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 1	REPLY.TABLE_FEATURES.v1	msg.0.instructions_miss	array	True			ERROR
@@ -466,7 +488,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.FLOW_MONITOR.v1	msg.0.match.0.mask	macaddress	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.0.match.0.value	macaddress	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.0.priority	uint16	True			ERROR
-1	REPLY.FLOW_MONITOR.v1	msg.0.reason	uint8	True			ERROR
+1	REPLY.FLOW_MONITOR.v1	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.0.table_id	ALL	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.1	object	True			ERROR
 1	REPLY.FLOW_MONITOR.v1	msg.1.event	ABBREV	True			ERROR
@@ -486,10 +508,10 @@ version	type	keypath	syntax	required	default	missing	modify
 1	QUEUE_GET_CONFIG_REPLY.v1	msg.queues.0.queue_id	ALL	True			
 1	ROLE_REQUEST.v1	msg	object	True			ERROR
 1	ROLE_REQUEST.v1	msg.generation_id	uint64	True			ERROR
-1	ROLE_REQUEST.v1	msg.role	uint32	True			ERROR
+1	ROLE_REQUEST.v1	msg.role	ROLE_EQUAL	True			ERROR
 1	ROLE_REPLY.v1	msg	object	True			ERROR
 1	ROLE_REPLY.v1	msg.generation_id	uint64	True			ERROR
-1	ROLE_REPLY.v1	msg.role	uint32	True			ERROR
+1	ROLE_REPLY.v1	msg.role	ROLE_EQUAL	True			ERROR
 1	GET_ASYNC_REQUEST.v1	msg	object	True			ERROR
 1	GET_ASYNC_REPLY.v1	msg	object	True			ERROR
 1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master	array	True			ERROR
@@ -652,25 +674,25 @@ version	type	keypath	syntax	required	default	missing	modify
 2	PORT_STATUS.v2	msg	object	True			
 2	PORT_STATUS.v2	msg.port	object	True			
 2	PORT_STATUS.v2	msg.port.config	array	True			
-2	PORT_STATUS.v2	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array,msg.reason=0xFF		
+2	PORT_STATUS.v2	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
 2	PORT_STATUS.v2	msg.port.ethernet	object	True			
 2	PORT_STATUS.v2	msg.port.ethernet.advertised	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+2	PORT_STATUS.v2	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
 2	PORT_STATUS.v2	msg.port.ethernet.curr	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+2	PORT_STATUS.v2	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
 2	PORT_STATUS.v2	msg.port.ethernet.curr_speed	uint32	True			True
 2	PORT_STATUS.v2	msg.port.ethernet.max_speed	uint32	True			True
 2	PORT_STATUS.v2	msg.port.ethernet.peer	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+2	PORT_STATUS.v2	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
 2	PORT_STATUS.v2	msg.port.ethernet.supported	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+2	PORT_STATUS.v2	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
 2	PORT_STATUS.v2	msg.port.hw_addr	macaddress	True			True
 2	PORT_STATUS.v2	msg.port.name	str16	True			
 2	PORT_STATUS.v2	msg.port.port_no	CONTROLLER	True			
 2	PORT_STATUS.v2	msg.port.properties	null	True		msg.port.properties=array	
 2	PORT_STATUS.v2	msg.port.state	array	True			
-2	PORT_STATUS.v2	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN,msg.reason=0xFF		
-2	PORT_STATUS.v2	msg.reason	uint8	True		msg.reason=0xFF	
+2	PORT_STATUS.v2	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+2	PORT_STATUS.v2	msg.reason	ADD	True			
 2	PACKET_OUT.v2	msg	object	True			
 2	PACKET_OUT.v2	msg.actions	array	True			
 2	PACKET_OUT.v2	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -853,6 +875,21 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.GROUP.v2	msg.0.group_id	ANY	True			
 2	REPLY.GROUP.v2	msg.0.packet_count	uint64	True			True
 2	REPLY.GROUP.v2	msg.0.ref_count	uint32	True			True
+2	REQUEST.GROUP_DESC.v2	msg	object	False			
+2	REPLY.GROUP_DESC.v2	msg	array	True			
+2	REPLY.GROUP_DESC.v2	msg.0	object	False			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets	array	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions	array	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.watch_group	ANY	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.watch_port	CONTROLLER	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.weight	uint16	True			True
+2	REPLY.GROUP_DESC.v2	msg.0.group_id	ANY	True			
+2	REPLY.GROUP_DESC.v2	msg.0.type	SELECT	True			
 2	REQUEST.GROUP_FEATURES.v2	msg	object	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg	object	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.actions_all	array	True			ERROR
@@ -863,12 +900,14 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.GROUP_FEATURES.v2	msg.actions_ind.0	SET_VLAN_VID	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.actions_sel	array	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.actions_sel.0	SET_VLAN_VID	True			ERROR
-2	REPLY.GROUP_FEATURES.v2	msg.capabilities	uint32	True			ERROR
+2	REPLY.GROUP_FEATURES.v2	msg.capabilities	array	True			ERROR
+2	REPLY.GROUP_FEATURES.v2	msg.capabilities.0	SELECT_WEIGHT	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_all	uint32	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_ff	uint32	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_ind	uint32	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_sel	uint32	True			ERROR
-2	REPLY.GROUP_FEATURES.v2	msg.types	uint32	True			ERROR
+2	REPLY.GROUP_FEATURES.v2	msg.types	array	True			ERROR
+2	REPLY.GROUP_FEATURES.v2	msg.types.0	INDIRECT	True			ERROR
 2	REQUEST.METER.v2	msg	object	True			ERROR
 2	REQUEST.METER.v2	msg.meter_id	ALL	True			ERROR
 2	REPLY.METER.v2	msg	array	True			ERROR
@@ -892,12 +931,15 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.METER_CONFIG.v2	msg.0.bands.0.burst_size	uint32	True			ERROR
 2	REPLY.METER_CONFIG.v2	msg.0.bands.0.rate	uint32	True			ERROR
 2	REPLY.METER_CONFIG.v2	msg.0.bands.0.type	DROP	True			ERROR
-2	REPLY.METER_CONFIG.v2	msg.0.flags	uint16	True			ERROR
+2	REPLY.METER_CONFIG.v2	msg.0.flags	array	True			ERROR
+2	REPLY.METER_CONFIG.v2	msg.0.flags.0	PKTPS	True			ERROR
 2	REPLY.METER_CONFIG.v2	msg.0.meter_id	ALL	True			ERROR
 2	REQUEST.METER_FEATURES.v2	msg	object	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg	object	True			ERROR
-2	REPLY.METER_FEATURES.v2	msg.band_types	uint32	True			ERROR
-2	REPLY.METER_FEATURES.v2	msg.capabilities	uint32	True			ERROR
+2	REPLY.METER_FEATURES.v2	msg.band_types	array	True			ERROR
+2	REPLY.METER_FEATURES.v2	msg.band_types.0	DSCP_REMARK	True			ERROR
+2	REPLY.METER_FEATURES.v2	msg.capabilities	array	True			ERROR
+2	REPLY.METER_FEATURES.v2	msg.capabilities.0	BURST	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg.max_bands	uint8	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg.max_color	uint8	True			ERROR
 2	REPLY.METER_FEATURES.v2	msg.max_meter	uint32	True			ERROR
@@ -911,7 +953,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REQUEST.TABLE_FEATURES.v2	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.apply_set_field_miss	array	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-2	REQUEST.TABLE_FEATURES.v2	msg.0.config	uint32	True			ERROR
+2	REQUEST.TABLE_FEATURES.v2	msg.0.config	array	True			ERROR
+2	REQUEST.TABLE_FEATURES.v2	msg.0.config.0	EVICTION	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.instructions	array	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 2	REQUEST.TABLE_FEATURES.v2	msg.0.instructions_miss	array	True			ERROR
@@ -948,7 +991,8 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.TABLE_FEATURES.v2	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.apply_set_field_miss	array	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-2	REPLY.TABLE_FEATURES.v2	msg.0.config	uint32	True			ERROR
+2	REPLY.TABLE_FEATURES.v2	msg.0.config	array	True			ERROR
+2	REPLY.TABLE_FEATURES.v2	msg.0.config.0	EVICTION	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.instructions	array	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 2	REPLY.TABLE_FEATURES.v2	msg.0.instructions_miss	array	True			ERROR
@@ -1030,7 +1074,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.FLOW_MONITOR.v2	msg.0.match.0.mask	macaddress	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.0.match.0.value	macaddress	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.0.priority	uint16	True			ERROR
-2	REPLY.FLOW_MONITOR.v2	msg.0.reason	uint8	True			ERROR
+2	REPLY.FLOW_MONITOR.v2	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.0.table_id	ALL	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.1	object	True			ERROR
 2	REPLY.FLOW_MONITOR.v2	msg.1.event	ABBREV	True			ERROR
@@ -1050,10 +1094,10 @@ version	type	keypath	syntax	required	default	missing	modify
 2	QUEUE_GET_CONFIG_REPLY.v2	msg.queues.0.queue_id	ALL	True			
 2	ROLE_REQUEST.v2	msg	object	True			ERROR
 2	ROLE_REQUEST.v2	msg.generation_id	uint64	True			ERROR
-2	ROLE_REQUEST.v2	msg.role	uint32	True			ERROR
+2	ROLE_REQUEST.v2	msg.role	ROLE_EQUAL	True			ERROR
 2	ROLE_REPLY.v2	msg	object	True			ERROR
 2	ROLE_REPLY.v2	msg.generation_id	uint64	True			ERROR
-2	ROLE_REPLY.v2	msg.role	uint32	True			ERROR
+2	ROLE_REPLY.v2	msg.role	ROLE_EQUAL	True			ERROR
 2	GET_ASYNC_REQUEST.v2	msg	object	True			ERROR
 2	GET_ASYNC_REPLY.v2	msg	object	True			ERROR
 2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master	array	True			ERROR
@@ -1216,25 +1260,25 @@ version	type	keypath	syntax	required	default	missing	modify
 3	PORT_STATUS.v3	msg	object	True			
 3	PORT_STATUS.v3	msg.port	object	True			
 3	PORT_STATUS.v3	msg.port.config	array	True			
-3	PORT_STATUS.v3	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array,msg.reason=0xFF		
+3	PORT_STATUS.v3	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
 3	PORT_STATUS.v3	msg.port.ethernet	object	True			
 3	PORT_STATUS.v3	msg.port.ethernet.advertised	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+3	PORT_STATUS.v3	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
 3	PORT_STATUS.v3	msg.port.ethernet.curr	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+3	PORT_STATUS.v3	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
 3	PORT_STATUS.v3	msg.port.ethernet.curr_speed	uint32	True			True
 3	PORT_STATUS.v3	msg.port.ethernet.max_speed	uint32	True			True
 3	PORT_STATUS.v3	msg.port.ethernet.peer	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+3	PORT_STATUS.v3	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
 3	PORT_STATUS.v3	msg.port.ethernet.supported	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+3	PORT_STATUS.v3	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
 3	PORT_STATUS.v3	msg.port.hw_addr	macaddress	True			True
 3	PORT_STATUS.v3	msg.port.name	str16	True			
 3	PORT_STATUS.v3	msg.port.port_no	CONTROLLER	True			
 3	PORT_STATUS.v3	msg.port.properties	null	True		msg.port.properties=array	
 3	PORT_STATUS.v3	msg.port.state	array	True			
-3	PORT_STATUS.v3	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN,msg.reason=0xFF		
-3	PORT_STATUS.v3	msg.reason	uint8	True		msg.reason=0xFF	
+3	PORT_STATUS.v3	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+3	PORT_STATUS.v3	msg.reason	ADD	True			
 3	PACKET_OUT.v3	msg	object	True			
 3	PACKET_OUT.v3	msg.actions	array	True			
 3	PACKET_OUT.v3	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -1417,6 +1461,21 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.GROUP.v3	msg.0.group_id	ANY	True			
 3	REPLY.GROUP.v3	msg.0.packet_count	uint64	True			True
 3	REPLY.GROUP.v3	msg.0.ref_count	uint32	True			True
+3	REQUEST.GROUP_DESC.v3	msg	object	False			
+3	REPLY.GROUP_DESC.v3	msg	array	True			
+3	REPLY.GROUP_DESC.v3	msg.0	object	False			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets	array	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions	array	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.watch_group	ANY	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.watch_port	CONTROLLER	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.weight	uint16	True			True
+3	REPLY.GROUP_DESC.v3	msg.0.group_id	ANY	True			
+3	REPLY.GROUP_DESC.v3	msg.0.type	SELECT	True			
 3	REQUEST.GROUP_FEATURES.v3	msg	object	False			
 3	REPLY.GROUP_FEATURES.v3	msg	object	True			
 3	REPLY.GROUP_FEATURES.v3	msg.actions_all	array	True			
@@ -1427,12 +1486,14 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.GROUP_FEATURES.v3	msg.actions_ind.0	SET_VLAN_VID	False	msg.actions_ind.0=SET_VLAN_VID		
 3	REPLY.GROUP_FEATURES.v3	msg.actions_sel	array	True			
 3	REPLY.GROUP_FEATURES.v3	msg.actions_sel.0	SET_VLAN_VID	False	msg.actions_sel.0=SET_VLAN_VID		
-3	REPLY.GROUP_FEATURES.v3	msg.capabilities	uint32	True			True
+3	REPLY.GROUP_FEATURES.v3	msg.capabilities	array	True			
+3	REPLY.GROUP_FEATURES.v3	msg.capabilities.0	SELECT_WEIGHT	False	msg.capabilities.0=SELECT_WEIGHT		
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_all	uint32	True			True
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_ff	uint32	True			True
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_ind	uint32	True			True
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_sel	uint32	True			True
-3	REPLY.GROUP_FEATURES.v3	msg.types	uint32	True			True
+3	REPLY.GROUP_FEATURES.v3	msg.types	array	True			
+3	REPLY.GROUP_FEATURES.v3	msg.types.0	INDIRECT	False			
 3	REQUEST.METER.v3	msg	object	True			ERROR
 3	REQUEST.METER.v3	msg.meter_id	ALL	True			ERROR
 3	REPLY.METER.v3	msg	array	True			ERROR
@@ -1456,12 +1517,15 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.METER_CONFIG.v3	msg.0.bands.0.burst_size	uint32	True			ERROR
 3	REPLY.METER_CONFIG.v3	msg.0.bands.0.rate	uint32	True			ERROR
 3	REPLY.METER_CONFIG.v3	msg.0.bands.0.type	DROP	True			ERROR
-3	REPLY.METER_CONFIG.v3	msg.0.flags	uint16	True			ERROR
+3	REPLY.METER_CONFIG.v3	msg.0.flags	array	True			ERROR
+3	REPLY.METER_CONFIG.v3	msg.0.flags.0	PKTPS	True			ERROR
 3	REPLY.METER_CONFIG.v3	msg.0.meter_id	ALL	True			ERROR
 3	REQUEST.METER_FEATURES.v3	msg	object	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg	object	True			ERROR
-3	REPLY.METER_FEATURES.v3	msg.band_types	uint32	True			ERROR
-3	REPLY.METER_FEATURES.v3	msg.capabilities	uint32	True			ERROR
+3	REPLY.METER_FEATURES.v3	msg.band_types	array	True			ERROR
+3	REPLY.METER_FEATURES.v3	msg.band_types.0	DSCP_REMARK	True			ERROR
+3	REPLY.METER_FEATURES.v3	msg.capabilities	array	True			ERROR
+3	REPLY.METER_FEATURES.v3	msg.capabilities.0	BURST	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg.max_bands	uint8	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg.max_color	uint8	True			ERROR
 3	REPLY.METER_FEATURES.v3	msg.max_meter	uint32	True			ERROR
@@ -1475,7 +1539,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REQUEST.TABLE_FEATURES.v3	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.apply_set_field_miss	array	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-3	REQUEST.TABLE_FEATURES.v3	msg.0.config	uint32	True			ERROR
+3	REQUEST.TABLE_FEATURES.v3	msg.0.config	array	True			ERROR
+3	REQUEST.TABLE_FEATURES.v3	msg.0.config.0	EVICTION	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.instructions	array	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 3	REQUEST.TABLE_FEATURES.v3	msg.0.instructions_miss	array	True			ERROR
@@ -1512,7 +1577,8 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.TABLE_FEATURES.v3	msg.0.apply_set_field.0	ETH_DST	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.apply_set_field_miss	array	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.apply_set_field_miss.0	ETH_SRC	True			ERROR
-3	REPLY.TABLE_FEATURES.v3	msg.0.config	uint32	True			ERROR
+3	REPLY.TABLE_FEATURES.v3	msg.0.config	array	True			ERROR
+3	REPLY.TABLE_FEATURES.v3	msg.0.config.0	EVICTION	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.instructions	array	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.instructions.0	APPLY_ACTIONS	True			ERROR
 3	REPLY.TABLE_FEATURES.v3	msg.0.instructions_miss	array	True			ERROR
@@ -1594,7 +1660,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.FLOW_MONITOR.v3	msg.0.match.0.mask	macaddress	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.0.match.0.value	macaddress	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.0.priority	uint16	True			ERROR
-3	REPLY.FLOW_MONITOR.v3	msg.0.reason	uint8	True			ERROR
+3	REPLY.FLOW_MONITOR.v3	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.0.table_id	ALL	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.1	object	True			ERROR
 3	REPLY.FLOW_MONITOR.v3	msg.1.event	ABBREV	True			ERROR
@@ -1614,10 +1680,10 @@ version	type	keypath	syntax	required	default	missing	modify
 3	QUEUE_GET_CONFIG_REPLY.v3	msg.queues.0.queue_id	ALL	True			
 3	ROLE_REQUEST.v3	msg	object	True			
 3	ROLE_REQUEST.v3	msg.generation_id	uint64	True			True
-3	ROLE_REQUEST.v3	msg.role	uint32	True		msg.role=0xFFFFFFFF	
+3	ROLE_REQUEST.v3	msg.role	ROLE_EQUAL	True			
 3	ROLE_REPLY.v3	msg	object	True			
 3	ROLE_REPLY.v3	msg.generation_id	uint64	True			True
-3	ROLE_REPLY.v3	msg.role	uint32	True		msg.role=0xFFFFFFFF	
+3	ROLE_REPLY.v3	msg.role	ROLE_EQUAL	True			
 3	GET_ASYNC_REQUEST.v3	msg	object	True			ERROR
 3	GET_ASYNC_REPLY.v3	msg	object	True			ERROR
 3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master	array	True			ERROR
@@ -1780,25 +1846,25 @@ version	type	keypath	syntax	required	default	missing	modify
 4	PORT_STATUS.v4	msg	object	True			
 4	PORT_STATUS.v4	msg.port	object	True			
 4	PORT_STATUS.v4	msg.port.config	array	True			
-4	PORT_STATUS.v4	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array,msg.reason=0xFF		
+4	PORT_STATUS.v4	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
 4	PORT_STATUS.v4	msg.port.ethernet	object	True			
 4	PORT_STATUS.v4	msg.port.ethernet.advertised	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+4	PORT_STATUS.v4	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
 4	PORT_STATUS.v4	msg.port.ethernet.curr	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+4	PORT_STATUS.v4	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
 4	PORT_STATUS.v4	msg.port.ethernet.curr_speed	uint32	True			True
 4	PORT_STATUS.v4	msg.port.ethernet.max_speed	uint32	True			True
 4	PORT_STATUS.v4	msg.port.ethernet.peer	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+4	PORT_STATUS.v4	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
 4	PORT_STATUS.v4	msg.port.ethernet.supported	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+4	PORT_STATUS.v4	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
 4	PORT_STATUS.v4	msg.port.hw_addr	macaddress	True			True
 4	PORT_STATUS.v4	msg.port.name	str16	True			
 4	PORT_STATUS.v4	msg.port.port_no	CONTROLLER	True			
 4	PORT_STATUS.v4	msg.port.properties	null	True		msg.port.properties=array	
 4	PORT_STATUS.v4	msg.port.state	array	True			
-4	PORT_STATUS.v4	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN,msg.reason=0xFF		
-4	PORT_STATUS.v4	msg.reason	uint8	True		msg.reason=0xFF	
+4	PORT_STATUS.v4	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+4	PORT_STATUS.v4	msg.reason	ADD	True			
 4	PACKET_OUT.v4	msg	object	True			
 4	PACKET_OUT.v4	msg.actions	array	True			
 4	PACKET_OUT.v4	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -1981,6 +2047,21 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.GROUP.v4	msg.0.group_id	ANY	True			
 4	REPLY.GROUP.v4	msg.0.packet_count	uint64	True			True
 4	REPLY.GROUP.v4	msg.0.ref_count	uint32	True			True
+4	REQUEST.GROUP_DESC.v4	msg	object	False			
+4	REPLY.GROUP_DESC.v4	msg	array	True			
+4	REPLY.GROUP_DESC.v4	msg.0	object	False			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets	array	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions	array	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.watch_group	ANY	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.watch_port	CONTROLLER	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.weight	uint16	True			True
+4	REPLY.GROUP_DESC.v4	msg.0.group_id	ANY	True			
+4	REPLY.GROUP_DESC.v4	msg.0.type	SELECT	True			
 4	REQUEST.GROUP_FEATURES.v4	msg	object	False			
 4	REPLY.GROUP_FEATURES.v4	msg	object	True			
 4	REPLY.GROUP_FEATURES.v4	msg.actions_all	array	True			
@@ -1991,12 +2072,14 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.GROUP_FEATURES.v4	msg.actions_ind.0	SET_VLAN_VID	False	msg.actions_ind.0=SET_VLAN_VID		
 4	REPLY.GROUP_FEATURES.v4	msg.actions_sel	array	True			
 4	REPLY.GROUP_FEATURES.v4	msg.actions_sel.0	SET_VLAN_VID	False	msg.actions_sel.0=SET_VLAN_VID		
-4	REPLY.GROUP_FEATURES.v4	msg.capabilities	uint32	True			True
+4	REPLY.GROUP_FEATURES.v4	msg.capabilities	array	True			
+4	REPLY.GROUP_FEATURES.v4	msg.capabilities.0	SELECT_WEIGHT	False	msg.capabilities.0=SELECT_WEIGHT		
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_all	uint32	True			True
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_ff	uint32	True			True
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_ind	uint32	True			True
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_sel	uint32	True			True
-4	REPLY.GROUP_FEATURES.v4	msg.types	uint32	True			True
+4	REPLY.GROUP_FEATURES.v4	msg.types	array	True			
+4	REPLY.GROUP_FEATURES.v4	msg.types.0	INDIRECT	False			
 4	REQUEST.METER.v4	msg	object	True			
 4	REQUEST.METER.v4	msg.meter_id	ALL	True			
 4	REPLY.METER.v4	msg	array	True			
@@ -2020,12 +2103,15 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.METER_CONFIG.v4	msg.0.bands.0.burst_size	uint32	True			True
 4	REPLY.METER_CONFIG.v4	msg.0.bands.0.rate	uint32	True			True
 4	REPLY.METER_CONFIG.v4	msg.0.bands.0.type	DROP	True			
-4	REPLY.METER_CONFIG.v4	msg.0.flags	uint16	True			True
+4	REPLY.METER_CONFIG.v4	msg.0.flags	array	True			
+4	REPLY.METER_CONFIG.v4	msg.0.flags.0	PKTPS	False	msg.0.flags.0=PKTPS		
 4	REPLY.METER_CONFIG.v4	msg.0.meter_id	ALL	True			
 4	REQUEST.METER_FEATURES.v4	msg	object	False			
 4	REPLY.METER_FEATURES.v4	msg	object	True			
-4	REPLY.METER_FEATURES.v4	msg.band_types	uint32	True			True
-4	REPLY.METER_FEATURES.v4	msg.capabilities	uint32	True			True
+4	REPLY.METER_FEATURES.v4	msg.band_types	array	True			
+4	REPLY.METER_FEATURES.v4	msg.band_types.0	DSCP_REMARK	False	msg.band_types.0=DSCP_REMARK		
+4	REPLY.METER_FEATURES.v4	msg.capabilities	array	True			
+4	REPLY.METER_FEATURES.v4	msg.capabilities.0	BURST	False	msg.capabilities.0=BURST		
 4	REPLY.METER_FEATURES.v4	msg.max_bands	uint8	True			True
 4	REPLY.METER_FEATURES.v4	msg.max_color	uint8	True			True
 4	REPLY.METER_FEATURES.v4	msg.max_meter	uint32	True			True
@@ -2039,7 +2125,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REQUEST.TABLE_FEATURES.v4	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-4	REQUEST.TABLE_FEATURES.v4	msg.0.config	uint32	True			True
+4	REQUEST.TABLE_FEATURES.v4	msg.0.config	array	True			
+4	REQUEST.TABLE_FEATURES.v4	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.instructions	array	True			
 4	REQUEST.TABLE_FEATURES.v4	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 4	REQUEST.TABLE_FEATURES.v4	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		
@@ -2076,7 +2163,8 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.TABLE_FEATURES.v4	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 4	REPLY.TABLE_FEATURES.v4	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 4	REPLY.TABLE_FEATURES.v4	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-4	REPLY.TABLE_FEATURES.v4	msg.0.config	uint32	True			True
+4	REPLY.TABLE_FEATURES.v4	msg.0.config	array	True			
+4	REPLY.TABLE_FEATURES.v4	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 4	REPLY.TABLE_FEATURES.v4	msg.0.instructions	array	True			
 4	REPLY.TABLE_FEATURES.v4	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 4	REPLY.TABLE_FEATURES.v4	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		
@@ -2158,7 +2246,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.FLOW_MONITOR.v4	msg.0.match.0.mask	macaddress	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.0.match.0.value	macaddress	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.0.priority	uint16	True			ERROR
-4	REPLY.FLOW_MONITOR.v4	msg.0.reason	uint8	True			ERROR
+4	REPLY.FLOW_MONITOR.v4	msg.0.reason	IDLE_TIMEOUT	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.0.table_id	ALL	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.1	object	True			ERROR
 4	REPLY.FLOW_MONITOR.v4	msg.1.event	ABBREV	True			ERROR
@@ -2178,10 +2266,10 @@ version	type	keypath	syntax	required	default	missing	modify
 4	QUEUE_GET_CONFIG_REPLY.v4	msg.queues.0.queue_id	ALL	True			
 4	ROLE_REQUEST.v4	msg	object	True			
 4	ROLE_REQUEST.v4	msg.generation_id	uint64	True			True
-4	ROLE_REQUEST.v4	msg.role	uint32	True		msg.role=0xFFFFFFFF	
+4	ROLE_REQUEST.v4	msg.role	ROLE_EQUAL	True			
 4	ROLE_REPLY.v4	msg	object	True			
 4	ROLE_REPLY.v4	msg.generation_id	uint64	True			True
-4	ROLE_REPLY.v4	msg.role	uint32	True		msg.role=0xFFFFFFFF	
+4	ROLE_REPLY.v4	msg.role	ROLE_EQUAL	True			
 4	GET_ASYNC_REQUEST.v4	msg	object	False			
 4	GET_ASYNC_REPLY.v4	msg	object	True			
 4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master	array	True			
@@ -2344,25 +2432,25 @@ version	type	keypath	syntax	required	default	missing	modify
 5	PORT_STATUS.v5	msg	object	True			
 5	PORT_STATUS.v5	msg.port	object	True			
 5	PORT_STATUS.v5	msg.port.config	array	True			
-5	PORT_STATUS.v5	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array,msg.reason=0xFF		
+5	PORT_STATUS.v5	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
 5	PORT_STATUS.v5	msg.port.ethernet	object	True			
 5	PORT_STATUS.v5	msg.port.ethernet.advertised	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+5	PORT_STATUS.v5	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
 5	PORT_STATUS.v5	msg.port.ethernet.curr	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+5	PORT_STATUS.v5	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
 5	PORT_STATUS.v5	msg.port.ethernet.curr_speed	uint32	True			True
 5	PORT_STATUS.v5	msg.port.ethernet.max_speed	uint32	True			True
 5	PORT_STATUS.v5	msg.port.ethernet.peer	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+5	PORT_STATUS.v5	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
 5	PORT_STATUS.v5	msg.port.ethernet.supported	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array,msg.reason=0xFF		
+5	PORT_STATUS.v5	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
 5	PORT_STATUS.v5	msg.port.hw_addr	macaddress	True			True
 5	PORT_STATUS.v5	msg.port.name	str16	True			
 5	PORT_STATUS.v5	msg.port.port_no	CONTROLLER	True			
 5	PORT_STATUS.v5	msg.port.properties	null	True		msg.port.properties=array	
 5	PORT_STATUS.v5	msg.port.state	array	True			
-5	PORT_STATUS.v5	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN,msg.reason=0xFF		
-5	PORT_STATUS.v5	msg.reason	uint8	True		msg.reason=0xFF	
+5	PORT_STATUS.v5	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+5	PORT_STATUS.v5	msg.reason	ADD	True			
 5	PACKET_OUT.v5	msg	object	True			
 5	PACKET_OUT.v5	msg.actions	array	True			
 5	PACKET_OUT.v5	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -2494,9 +2582,9 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.TABLE.v5	msg	object	False			
 5	REPLY.TABLE.v5	msg	array	True			
 5	REPLY.TABLE.v5	msg.0	object	False			
-5	REPLY.TABLE.v5	msg.0.active_count	uint32	True			
-5	REPLY.TABLE.v5	msg.0.lookup_count	uint64	True			
-5	REPLY.TABLE.v5	msg.0.matched_count	uint64	True			
+5	REPLY.TABLE.v5	msg.0.active_count	uint32	True			True
+5	REPLY.TABLE.v5	msg.0.lookup_count	uint64	True			True
+5	REPLY.TABLE.v5	msg.0.matched_count	uint64	True			True
 5	REPLY.TABLE.v5	msg.0.table_id	ALL	True			
 5	REQUEST.PORT_STATS.v5	msg	object	True			
 5	REQUEST.PORT_STATS.v5	msg.port_no	CONTROLLER	True			
@@ -2545,6 +2633,21 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.GROUP.v5	msg.0.group_id	ANY	True			
 5	REPLY.GROUP.v5	msg.0.packet_count	uint64	True			True
 5	REPLY.GROUP.v5	msg.0.ref_count	uint32	True			True
+5	REQUEST.GROUP_DESC.v5	msg	object	False			
+5	REPLY.GROUP_DESC.v5	msg	array	True			
+5	REPLY.GROUP_DESC.v5	msg.0	object	False			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets	array	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0	object	False	msg.0.buckets.0=object,msg.0.buckets.0.actions=array,msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER,msg.0.buckets.0.watch_group=ANY,msg.0.buckets.0.watch_port=CONTROLLER,msg.0.buckets.0.weight=uint16		
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions	array	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port=CONTROLLER		
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.action	OUTPUT	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.port	CONTROLLER	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.watch_group	ANY	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.watch_port	CONTROLLER	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.weight	uint16	True			True
+5	REPLY.GROUP_DESC.v5	msg.0.group_id	ANY	True			
+5	REPLY.GROUP_DESC.v5	msg.0.type	SELECT	True			
 5	REQUEST.GROUP_FEATURES.v5	msg	object	False			
 5	REPLY.GROUP_FEATURES.v5	msg	object	True			
 5	REPLY.GROUP_FEATURES.v5	msg.actions_all	array	True			
@@ -2555,12 +2658,14 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.GROUP_FEATURES.v5	msg.actions_ind.0	SET_VLAN_VID	False	msg.actions_ind.0=SET_VLAN_VID		
 5	REPLY.GROUP_FEATURES.v5	msg.actions_sel	array	True			
 5	REPLY.GROUP_FEATURES.v5	msg.actions_sel.0	SET_VLAN_VID	False	msg.actions_sel.0=SET_VLAN_VID		
-5	REPLY.GROUP_FEATURES.v5	msg.capabilities	uint32	True			True
+5	REPLY.GROUP_FEATURES.v5	msg.capabilities	array	True			
+5	REPLY.GROUP_FEATURES.v5	msg.capabilities.0	SELECT_WEIGHT	False	msg.capabilities.0=SELECT_WEIGHT		
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_all	uint32	True			True
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_ff	uint32	True			True
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_ind	uint32	True			True
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_sel	uint32	True			True
-5	REPLY.GROUP_FEATURES.v5	msg.types	uint32	True			True
+5	REPLY.GROUP_FEATURES.v5	msg.types	array	True			
+5	REPLY.GROUP_FEATURES.v5	msg.types.0	INDIRECT	False			
 5	REQUEST.METER.v5	msg	object	True			
 5	REQUEST.METER.v5	msg.meter_id	ALL	True			
 5	REPLY.METER.v5	msg	array	True			
@@ -2584,12 +2689,15 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.METER_CONFIG.v5	msg.0.bands.0.burst_size	uint32	True			True
 5	REPLY.METER_CONFIG.v5	msg.0.bands.0.rate	uint32	True			True
 5	REPLY.METER_CONFIG.v5	msg.0.bands.0.type	DROP	True			
-5	REPLY.METER_CONFIG.v5	msg.0.flags	uint16	True			True
+5	REPLY.METER_CONFIG.v5	msg.0.flags	array	True			
+5	REPLY.METER_CONFIG.v5	msg.0.flags.0	PKTPS	False	msg.0.flags.0=PKTPS		
 5	REPLY.METER_CONFIG.v5	msg.0.meter_id	ALL	True			
 5	REQUEST.METER_FEATURES.v5	msg	object	False			
 5	REPLY.METER_FEATURES.v5	msg	object	True			
-5	REPLY.METER_FEATURES.v5	msg.band_types	uint32	True			True
-5	REPLY.METER_FEATURES.v5	msg.capabilities	uint32	True			True
+5	REPLY.METER_FEATURES.v5	msg.band_types	array	True			
+5	REPLY.METER_FEATURES.v5	msg.band_types.0	DSCP_REMARK	False	msg.band_types.0=DSCP_REMARK		
+5	REPLY.METER_FEATURES.v5	msg.capabilities	array	True			
+5	REPLY.METER_FEATURES.v5	msg.capabilities.0	BURST	False	msg.capabilities.0=BURST		
 5	REPLY.METER_FEATURES.v5	msg.max_bands	uint8	True			True
 5	REPLY.METER_FEATURES.v5	msg.max_color	uint8	True			True
 5	REPLY.METER_FEATURES.v5	msg.max_meter	uint32	True			True
@@ -2603,7 +2711,8 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.TABLE_FEATURES.v5	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-5	REQUEST.TABLE_FEATURES.v5	msg.0.config	uint32	True			True
+5	REQUEST.TABLE_FEATURES.v5	msg.0.config	array	True			
+5	REQUEST.TABLE_FEATURES.v5	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.instructions	array	True			
 5	REQUEST.TABLE_FEATURES.v5	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 5	REQUEST.TABLE_FEATURES.v5	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		
@@ -2640,7 +2749,8 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.TABLE_FEATURES.v5	msg.0.apply_set_field.0	ETH_DST	False	msg.0.apply_set_field.0=ETH_DST		
 5	REPLY.TABLE_FEATURES.v5	msg.0.apply_set_field_miss	array	False	msg.0.apply_set_field_miss=array,msg.0.apply_set_field_miss.0=ETH_SRC		
 5	REPLY.TABLE_FEATURES.v5	msg.0.apply_set_field_miss.0	ETH_SRC	False	msg.0.apply_set_field_miss.0=ETH_SRC		
-5	REPLY.TABLE_FEATURES.v5	msg.0.config	uint32	True			True
+5	REPLY.TABLE_FEATURES.v5	msg.0.config	array	True			
+5	REPLY.TABLE_FEATURES.v5	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
 5	REPLY.TABLE_FEATURES.v5	msg.0.instructions	array	True			
 5	REPLY.TABLE_FEATURES.v5	msg.0.instructions.0	APPLY_ACTIONS	False	msg.0.instructions.0=APPLY_ACTIONS		
 5	REPLY.TABLE_FEATURES.v5	msg.0.instructions_miss	array	False	msg.0.instructions_miss=array,msg.0.instructions_miss.0=GOTO_TABLE		
@@ -2703,7 +2813,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.FLOW_MONITOR.v5	msg.out_port	ALL	True			
 5	REQUEST.FLOW_MONITOR.v5	msg.table_id	ALL	True			
 5	REPLY.FLOW_MONITOR.v5	msg	array	True			
-5	REPLY.FLOW_MONITOR.v5	msg.0	object	False	msg.0.cookie=uint64,msg.0.event=ABBREV,msg.0.hard_timeout=uint16,msg.0.idle_timeout=uint16,msg.0.instructions=array,msg.0.instructions.0=object,msg.0.instructions.0.actions=array,msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port=CONTROLLER,msg.0.instructions.0.instruction=APPLY_ACTIONS,msg.0.match=array,msg.0.match.0=object,msg.0.match.0.field=ETH_DST,msg.0.match.0.mask=macaddress,msg.0.match.0.value=macaddress,msg.0.priority=uint16,msg.0.reason=uint8,msg.0.table_id=ALL,msg.0.xid=uint32		
+5	REPLY.FLOW_MONITOR.v5	msg.0	object	False	msg.0.cookie=uint64,msg.0.event=ABBREV,msg.0.hard_timeout=uint16,msg.0.idle_timeout=uint16,msg.0.instructions=array,msg.0.instructions.0=object,msg.0.instructions.0.actions=array,msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port=CONTROLLER,msg.0.instructions.0.instruction=APPLY_ACTIONS,msg.0.match=array,msg.0.match.0=object,msg.0.match.0.field=ETH_DST,msg.0.match.0.mask=macaddress,msg.0.match.0.value=macaddress,msg.0.priority=uint16,msg.0.reason=IDLE_TIMEOUT,msg.0.table_id=ALL,msg.0.xid=uint32		
 5	REPLY.FLOW_MONITOR.v5	msg.0.cookie	uint64	True			True
 5	REPLY.FLOW_MONITOR.v5	msg.0.event	ADDED	True			
 5	REPLY.FLOW_MONITOR.v5	msg.0.hard_timeout	uint16	True			True
@@ -2722,7 +2832,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.FLOW_MONITOR.v5	msg.0.match.0.mask	macaddress	False	msg.0.match.0.mask=macaddress		True
 5	REPLY.FLOW_MONITOR.v5	msg.0.match.0.value	macaddress	True			True
 5	REPLY.FLOW_MONITOR.v5	msg.0.priority	uint16	True			True
-5	REPLY.FLOW_MONITOR.v5	msg.0.reason	uint8	True			True
+5	REPLY.FLOW_MONITOR.v5	msg.0.reason	IDLE_TIMEOUT	True			
 5	REPLY.FLOW_MONITOR.v5	msg.0.table_id	ALL	True			
 5	REPLY.FLOW_MONITOR.v5	msg.1	object	False			
 5	REPLY.FLOW_MONITOR.v5	msg.1.event	ABBREV	True			
@@ -2742,10 +2852,10 @@ version	type	keypath	syntax	required	default	missing	modify
 5	QUEUE_GET_CONFIG_REPLY.v5	msg.queues.0.queue_id	ALL	True			
 5	ROLE_REQUEST.v5	msg	object	True			
 5	ROLE_REQUEST.v5	msg.generation_id	uint64	True			True
-5	ROLE_REQUEST.v5	msg.role	uint32	True		msg.role=0xFFFFFFFF	
+5	ROLE_REQUEST.v5	msg.role	ROLE_EQUAL	True			
 5	ROLE_REPLY.v5	msg	object	True			
 5	ROLE_REPLY.v5	msg.generation_id	uint64	True			True
-5	ROLE_REPLY.v5	msg.role	uint32	True		msg.role=0xFFFFFFFF	
+5	ROLE_REPLY.v5	msg.role	ROLE_EQUAL	True			
 5	GET_ASYNC_REQUEST.v5	msg	object	False			
 5	GET_ASYNC_REPLY.v5	msg	object	True			
 5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_master	array	True			

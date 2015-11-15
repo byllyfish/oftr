@@ -212,7 +212,8 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               }
 
             } else {
-              if (err != asio::error::eof) {
+              if (err != asio::error::eof &&
+                  err != asio::error::operation_aborted) {
                 log::error("asyncReadHeader error",
                            std::make_pair("connid", connectionId()), err);
               }

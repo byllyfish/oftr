@@ -415,17 +415,35 @@ struct ScalarBitSetTraits<ofp::OFPMultipartFlags> {
 template <>
 struct ScalarBitSetTraits<ofp::OFPMeterConfigFlags> {
   static void bitset(IO &io, ofp::OFPMeterConfigFlags &value) {
-    OFP_YAML_BITCASE(OFPMF_, KBPS);
-    OFP_YAML_BITCASE(OFPMF_, PKTPS);
-    OFP_YAML_BITCASE(OFPMF_, BURST);
-    OFP_YAML_BITCASE(OFPMF_, STATS);
+    OFP_YAML_BITCASE(OFPMCF_, KBPS);
+    OFP_YAML_BITCASE(OFPMCF_, PKTPS);
+    OFP_YAML_BITCASE(OFPMCF_, BURST);
+    OFP_YAML_BITCASE(OFPMCF_, STATS);
 
-    io.bitSetCaseOther(value, ofp::OFPMF_OTHER_METER_CONFIG_FLAGS);
+    io.bitSetCaseOther(value, ofp::OFPMCF_OTHER_METER_CONFIG_FLAGS);
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
       ofp::yaml::SetFlagError(io, val,
                               ofp::yaml::AllFlags<ofp::OFPMeterConfigFlags>());
+    }
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPMeterFlags> {
+  static void bitset(IO &io, ofp::OFPMeterFlags &value) {
+    OFP_YAML_BITCASE(OFPMF_, KBPS);
+    OFP_YAML_BITCASE(OFPMF_, PKTPS);
+    OFP_YAML_BITCASE(OFPMF_, BURST);
+    OFP_YAML_BITCASE(OFPMF_, STATS);
+
+    io.bitSetCaseOther(value, ofp::OFPMF_OTHER_METER_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPMeterFlags>());
     }
   }
 };
@@ -594,6 +612,59 @@ struct ScalarBitSetTraits<ofp::OFPBundleFlags> {
     if (!val.empty()) {
       ofp::yaml::SetFlagError(io, val,
                               ofp::yaml::AllFlags<ofp::OFPBundleFlags>());
+    }
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPMeterBandFlags> {
+  static void bitset(IO &io, ofp::OFPMeterBandFlags &value) {
+    OFP_YAML_BITCASE(OFPMBTF_, NONE);
+    OFP_YAML_BITCASE(OFPMBTF_, DROP);
+    OFP_YAML_BITCASE(OFPMBTF_, DSCP_REMARK);
+
+    io.bitSetCaseOther(value, ofp::OFPMBTF_OTHER_METERBAND_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPMeterBandFlags>());
+    }
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPGroupTypeFlags> {
+  static void bitset(IO &io, ofp::OFPGroupTypeFlags &value) {
+    OFP_YAML_BITCASE(OFPGTF_, ALL);
+    OFP_YAML_BITCASE(OFPGTF_, SELECT);
+    OFP_YAML_BITCASE(OFPGTF_, INDIRECT);
+    OFP_YAML_BITCASE(OFPGTF_, FF);
+
+    io.bitSetCaseOther(value, ofp::OFPGTF_OTHER_GROUP_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPGroupTypeFlags>());
+    }
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPGroupCapabilityFlags> {
+  static void bitset(IO &io, ofp::OFPGroupCapabilityFlags &value) {
+    OFP_YAML_BITCASE(OFPGFC_, SELECT_WEIGHT);
+    OFP_YAML_BITCASE(OFPGFC_, SELECT_LIVENESS);
+    OFP_YAML_BITCASE(OFPGFC_, CHAINING);
+    OFP_YAML_BITCASE(OFPGFC_, CHAINING_CHECKS);
+
+    io.bitSetCaseOther(value, ofp::OFPGFC_OTHER_GROUP_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(
+          io, val, ofp::yaml::AllFlags<ofp::OFPGroupCapabilityFlags>());
     }
   }
 };

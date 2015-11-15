@@ -17,6 +17,11 @@ void MockChannelListener::onMessage(const Message *message) {
 
 TEST(driver, test) {
   Driver driver;
+
+  // Test installing signal handlers more than once.
+  driver.installSignalHandlers();
+  driver.installSignalHandlers();
+
   std::error_code err;
 
   UInt64 connId = driver.listen(
@@ -24,5 +29,7 @@ TEST(driver, test) {
       ProtocolVersions::All, [] { return new MockChannelListener; }, err);
 
   EXPECT_NE(0, connId);
+
+  // Don't call driver.run(). This test just tests initialization.
   // driver.run();
 }

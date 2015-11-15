@@ -47,6 +47,7 @@ void JsonRpc::setMaxOpenFiles() {
 void JsonRpc::runStdio() {
   ofp::Driver driver;
   ofp::rpc::RpcServer server{&driver, STDIN, STDOUT};
+  driver.installSignalHandlers([&server]() { server.close(); });
   driver.run();
 }
 

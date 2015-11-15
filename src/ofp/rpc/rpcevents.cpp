@@ -20,6 +20,10 @@ std::string toJsonString(Type *event) {
 
 using namespace ofp::rpc;
 
+std::string RpcDescriptionResponse::toJson() {
+  return toJsonString(this);
+}
+
 std::string RpcListenResponse::toJson() {
   return toJsonString(this);
 }
@@ -44,7 +48,7 @@ std::string RpcChannel::toJson() {
   return toJsonString(this);
 }
 
-std::string RpcMessageError::toJson() {
+std::string RpcAlert::toJson() {
   return toJsonString(this);
 }
 
@@ -61,8 +65,8 @@ OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 // N.B. These strings must be in same order as RpcMethod enum.
 static llvm::StringRef sRpcMethods[] = {
     "ofp.listen", "ofp.connect", "ofp.close", "ofp.send", "ofp.channel",
-    "ofp.message", "ofp.message_error", "ofp.list_connections",
-    "ofp.add_identity"};
+    "ofp.message", "ofp.alert", "ofp.list_connections", "ofp.add_identity",
+    "ofp.description"};
 
 ofp::yaml::EnumConverter<ofp::rpc::RpcMethod>
     llvm::yaml::ScalarTraits<ofp::rpc::RpcMethod>::converter{sRpcMethods};

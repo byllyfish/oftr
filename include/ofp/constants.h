@@ -38,7 +38,9 @@ enum {
   OFP_VERSION_3 = 0x03,
   OFP_VERSION_4 = 0x04,
   OFP_VERSION_5 = 0x05,
-  OFP_VERSION_LAST = OFP_VERSION_4,
+
+  // The last supported version.
+  OFP_VERSION_LAST = OFP_VERSION_5,
   OFP_VERSION_MAX_ALLOWED = 0x09
 };
 
@@ -549,6 +551,19 @@ enum OFPMeterBandType : UInt16 {
   OFPMBT_EXPERIMENTER = 0xffff
 };
 
+enum OFPMeterBandFlags : UInt32 {
+  OFPMBTF_NONE = 1 << 0,
+  OFPMBTF_DROP = 1 << 1,
+  OFPMBTF_DSCP_REMARK = 1 << 2,
+
+  OFPMBTF_OTHER_METERBAND_FLAGS = 0xFFFFFFF8
+};
+
+inline OFPMeterBandFlags operator|(OFPMeterBandFlags lhs,
+                                   OFPMeterBandFlags rhs) {
+  return static_cast<OFPMeterBandFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPTableFeatureProperty : UInt16 {
   OFPTFPT_INSTRUCTIONS = 0,
   OFPTFPT_INSTRUCTIONS_MISS = 1,
@@ -656,6 +671,38 @@ enum OFPGroupType : UInt8 {
   OFPGT_FF = 3
 };
 
+enum OFPGroupTypeFlags : UInt32 {
+  OFPGTF_NONE = 0,
+
+  OFPGTF_ALL = 1 << 0,
+  OFPGTF_SELECT = 1 << 1,
+  OFPGTF_INDIRECT = 1 << 2,
+  OFPGTF_FF = 1 << 3,
+
+  OFPGTF_OTHER_GROUP_FLAGS = 0xFFFFFFF0
+};
+
+inline OFPGroupTypeFlags operator|(OFPGroupTypeFlags lhs,
+                                   OFPGroupTypeFlags rhs) {
+  return static_cast<OFPGroupTypeFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+enum OFPGroupCapabilityFlags : UInt32 {
+  OFPGFC_NONE = 0,
+
+  OFPGFC_SELECT_WEIGHT = 1 << 0,
+  OFPGFC_SELECT_LIVENESS = 1 << 1,
+  OFPGFC_CHAINING = 1 << 2,
+  OFPGFC_CHAINING_CHECKS = 1 << 3,
+
+  OFPGFC_OTHER_GROUP_FLAGS = 0xFFFFFFF0
+};
+
+inline OFPGroupCapabilityFlags operator|(OFPGroupCapabilityFlags lhs,
+                                         OFPGroupCapabilityFlags rhs) {
+  return static_cast<OFPGroupCapabilityFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
 enum OFPMeterModCommand : UInt16 {
   OFPMC_ADD = 0,
   OFPMC_MODIFY = 1,
@@ -663,6 +710,25 @@ enum OFPMeterModCommand : UInt16 {
 };
 
 enum OFPMeterConfigFlags : UInt16 {
+  OFPMCF_NONE = 0,
+
+  OFPMCF_KBPS = 1 << 0,
+  OFPMCF_PKTPS = 1 << 1,
+  OFPMCF_BURST = 1 << 2,
+  OFPMCF_STATS = 1 << 3,
+
+  OFPMCF_OTHER_METER_CONFIG_FLAGS = 0xFFF0
+};
+
+inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs,
+                                     OFPMeterConfigFlags rhs) {
+  return static_cast<OFPMeterConfigFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+// OFPMeterFlags is the 32-bit equivalent of OFPMeterConfigFlags. It is needed
+// because MeterMod assumes 16-bit and MeterFeatures assumes 32-bit.
+
+enum OFPMeterFlags : UInt32 {
   OFPMF_NONE = 0,
 
   OFPMF_KBPS = 1 << 0,
@@ -670,12 +736,11 @@ enum OFPMeterConfigFlags : UInt16 {
   OFPMF_BURST = 1 << 2,
   OFPMF_STATS = 1 << 3,
 
-  OFPMF_OTHER_METER_CONFIG_FLAGS = 0xFFF0
+  OFPMF_OTHER_METER_FLAGS = 0xFFFFFFF0
 };
 
-inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs,
-                                     OFPMeterConfigFlags rhs) {
-  return static_cast<OFPMeterConfigFlags>(static_cast<UInt32>(lhs) | rhs);
+inline OFPMeterFlags operator|(OFPMeterFlags lhs, OFPMeterFlags rhs) {
+  return static_cast<OFPMeterFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
 enum OFPTableConfigFlags : UInt32 {

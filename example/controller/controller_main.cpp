@@ -10,6 +10,7 @@ int main(int argc, char **argv) {
   log::setOutputStream(&std::clog);
 
   Driver driver;
+  driver.installSignalHandlers();
 
   std::error_code err;
   (void)driver.listen(ChannelMode::Controller, 0,

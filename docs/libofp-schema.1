@@ -2,12 +2,12 @@
 .\"     Title: libofp-schema
 .\"    Author: Bill Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 10/19/2015
+.\"      Date: 11/15/2015
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-SCHEMA" "1" "10/19/2015" "\ \&" "\ \&"
+.TH "LIBOFP\-SCHEMA" "1" "11/15/2015" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -116,8 +116,31 @@ Here is the resulting RoleRequest message:
 .sp -1
 .IP \(bu 2.3
 .\}
-Property names begin with a lower\-case letter, e\&.g\&.
-type\&.
+Literal strings are all\-caps, e\&.g\&.
+PACKET_IN, or they begin with a lower\-case letter, e\&.g\&.
+ofp\&.listen\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Literal strings and property names are case\-sensitive\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Input must conform to specified types\&.
 .RE
 .sp
 .RS 4
@@ -141,20 +164,8 @@ Field\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-Literal strings are all\-caps, e\&.g\&.
-PACKET_IN\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
 Sequences are presented as an array with one element, e\&.g\&.
-[UInt8]\&. If the array has more than one element, then you have a sequence where each element has a choice of types\&.
+[UInt8]\&. If the array has more than one element, each element has a choice of types\&.
 .RE
 .sp
 .RS 4
@@ -188,7 +199,7 @@ By default, a property is required unless it has the !opt or !optout tag\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-Unrecognized property names are not permitted\&.
+Unrecognized property names are not permitted\&. This is a closed schema\&.
 .RE
 .sp
 .RS 4
@@ -210,7 +221,7 @@ On input to libofp, properties are allowed to be in any order\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-Messages output from libofp are always produced in the canonical encoding\&.
+Messages output from libofp are always produced in the canonical order\&.
 .RE
 .sp
 .RS 4
@@ -221,7 +232,7 @@ Messages output from libofp are always produced in the canonical encoding\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-!opt means the property may be omitted on input, but is always output in the canonical encoding\&.
+!opt means the property may be omitted on input, but is always output in the canonical output\&.
 .RE
 .sp
 .RS 4
@@ -232,7 +243,7 @@ Messages output from libofp are always produced in the canonical encoding\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-!optout means the property may be omitted, even in the canonical encoding\&. Client software should test for it\&.
+!optout means the property may be omitted, even in the canonical output\&. Client software should test for it\&.
 .RE
 .sp
 .RS 4
@@ -250,7 +261,18 @@ Types with multiple sub\-choices are named at the top level with a
 \fIAction\fR
 types\&.
 .RE
-.SH "EXAMPLE"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+RPC schemas include the result schema following the params section\&. To generate, a command, ignore this section\&.
+.RE
+.SH "EXAMPLES"
 .sp
 The FLOW_MOD message uses the following template:
 .PP

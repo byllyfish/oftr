@@ -43,7 +43,7 @@ class Driver {
 
   sys::Engine *engine() { return engine_; }
 
-  void installSignalHandlers();
+  void installSignalHandlers(std::function<void()> callback = nullptr);
 
  private:
   sys::Engine *engine_;

@@ -95,7 +95,7 @@ void print_version() {
   os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
      << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
 
-  os << "  <" << LIBOFP_DOWNLOAD_URL << ">\n";
+  os << "  <" << LIBOFP_GITHUB_URL << ">\n";
 
 #ifndef __OPTIMIZE__
   os << "  DEBUG build";

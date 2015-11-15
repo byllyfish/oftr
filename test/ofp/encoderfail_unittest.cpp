@@ -71,6 +71,23 @@ TEST(encoderfail, unknownMultipartRequest) {
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
+TEST(encoderfail, unknownMultipartRequest2) {
+  const char *input = R"""(
+    type: REQUEST_DESC
+    version: 5
+    msg:
+      data: '1234'
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ(
+      "YAML:2:11: error: unknown value \"REQUEST_DESC\" Did you mean "
+      "\"REQUESTFORWARD\"?\n    type: REQUEST_DESC\n          ^~~~~~~~~~~~\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
 TEST(encoderfail, unknownMultipartReply) {
   const char *input = R"""(
     type: REPLY.DES

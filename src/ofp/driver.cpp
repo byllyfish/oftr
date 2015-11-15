@@ -46,6 +46,6 @@ void Driver::stop(Milliseconds timeout) {
   engine_->stop(timeout);
 }
 
-void Driver::installSignalHandlers() {
-  engine_->installSignalHandlers();
+void Driver::installSignalHandlers(std::function<void()> callback) {
+  engine_->installSignalHandlers(callback);
 }

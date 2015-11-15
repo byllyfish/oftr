@@ -2474,8 +2474,8 @@ TEST(encoder, ofmp_groupfeatures_reply) {
         type: GROUP_FEATURES
         flags: []
         body:
-          types: 0x11111111
-          capabilities: 0x22222222
+          types: [ 0x11111111 ]
+          capabilities: [ 0x22222222 ]
           max_groups_all: 0x33333333
           max_groups_sel: 0x44444444
           max_groups_ind: 0x55555555

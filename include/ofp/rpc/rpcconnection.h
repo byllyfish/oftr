@@ -24,6 +24,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   virtual ~RpcConnection();
 
   virtual void asyncAccept() = 0;
+  virtual void close() = 0;
 
   void onRpcListen(RpcListen *listen);
   void onRpcConnect(RpcConnect *connect);
@@ -31,6 +32,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   void onRpcSend(RpcSend *send);
   void onRpcListConns(RpcListConns *list);
   void onRpcAddIdentity(RpcAddIdentity *add);
+  void onRpcDescription(RpcDescription *desc);
 
   template <class Response>
   void rpcReply(Response *response) {

@@ -163,7 +163,7 @@
   }, 
   {
     "msg": {
-      "reason": 255, 
+      "reason": "ADD", 
       "port": {
         "hw_addr": "ff:ff:ff:ff:ff:ff", 
         "state": [
@@ -554,6 +554,41 @@
   }, 
   {
     "msg": {}, 
+    "type": "REQUEST.GROUP_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "buckets": [
+          {
+            "weight": 65535, 
+            "watch_group": "ANY", 
+            "actions": [
+              {
+                "action": "OUTPUT", 
+                "max_len": "NO_BUFFER", 
+                "port": "CONTROLLER"
+              }
+            ], 
+            "watch_port": "CONTROLLER"
+          }
+        ], 
+        "group_id": "ANY", 
+        "type": "SELECT"
+      }
+    ], 
+    "type": "REPLY.GROUP_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {}, 
     "type": "REQUEST.GROUP_FEATURES", 
     "version": 4, 
     "flags": [
@@ -569,7 +604,9 @@
       "actions_ind": [
         "SET_VLAN_VID"
       ], 
-      "capabilities": 4294967295, 
+      "capabilities": [
+        "SELECT_WEIGHT"
+      ], 
       "actions_sel": [
         "SET_VLAN_VID"
       ], 
@@ -579,7 +616,9 @@
       "max_groups_all": 4294967295, 
       "max_groups_ind": 4294967295, 
       "max_groups_sel": 4294967295, 
-      "types": 4294967295
+      "types": [
+        "INDIRECT"
+      ]
     }, 
     "type": "REPLY.GROUP_FEATURES", 
     "version": 4, 
@@ -640,7 +679,9 @@
             "burst_size": 4294967295
           }
         ], 
-        "flags": 65535, 
+        "flags": [
+          "PKTPS"
+        ], 
         "meter_id": "ALL"
       }
     ], 
@@ -661,8 +702,12 @@
   {
     "msg": {
       "max_meter": 4294967295, 
-      "band_types": 4294967295, 
-      "capabilities": 4294967295, 
+      "band_types": [
+        "DSCP_REMARK"
+      ], 
+      "capabilities": [
+        "BURST"
+      ], 
       "max_bands": 255, 
       "max_color": 255
     }, 
@@ -719,7 +764,9 @@
         ], 
         "metadata_match": 18446744073709551615, 
         "table_id": "ALL", 
-        "config": 4294967295, 
+        "config": [
+          "EVICTION"
+        ], 
         "metadata_write": 18446744073709551615, 
         "match": [
           "ETH_DST"
@@ -779,7 +826,9 @@
         ], 
         "metadata_match": 18446744073709551615, 
         "table_id": "ALL", 
-        "config": 4294967295, 
+        "config": [
+          "EVICTION"
+        ], 
         "metadata_write": 18446744073709551615, 
         "match": [
           "ETH_DST"
@@ -867,7 +916,7 @@
         "hard_timeout": 65535, 
         "idle_timeout": 65535, 
         "priority": 65535, 
-        "reason": 255, 
+        "reason": "IDLE_TIMEOUT", 
         "table_id": "ALL", 
         "cookie": 18446744073709551615, 
         "event": "ADDED", 
@@ -937,7 +986,7 @@
   }, 
   {
     "msg": {
-      "role": 4294967295, 
+      "role": "ROLE_EQUAL", 
       "generation_id": 18446744073709551615
     }, 
     "version": 4, 
@@ -945,7 +994,7 @@
   }, 
   {
     "msg": {
-      "role": 4294967295, 
+      "role": "ROLE_EQUAL", 
       "generation_id": 18446744073709551615
     }, 
     "version": 4, 

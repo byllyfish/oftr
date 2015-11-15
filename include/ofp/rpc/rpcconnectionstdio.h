@@ -20,6 +20,7 @@ class RpcConnectionStdio : public RpcConnection {
   void setOutput(int output);
 
   void asyncAccept() override;
+  void close() override;
 
  protected:
   void write(const std::string &msg) override;

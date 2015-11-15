@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
   log::setOutputStream(&std::clog);
 
   Driver driver;
+  driver.installSignalHandlers();
 
   if (addr.valid()) {
     (void)driver.connect(

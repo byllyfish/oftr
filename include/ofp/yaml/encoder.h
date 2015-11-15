@@ -108,6 +108,8 @@ struct MappingTraits<ofp::yaml::Encoder> {
 
     if (header.type() != OFPT_UNSUPPORTED) {
       encoder.encodeMsg(io);
+    } else {
+      log::error("Unrecognized message type");
     }
   }
 };

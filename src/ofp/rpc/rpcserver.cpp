@@ -48,18 +48,23 @@ RpcServer::RpcServer(Driver *driver, RpcSession *session,
   conn->asyncAccept();
 }
 
-void RpcServer::onConnect(RpcConnection *conn) {
-  assert(oneConn_ == nullptr);
+void RpcServer::close() {
+  log::debug("RpcServer::close");
+  if (oneConn_) {
+    oneConn_->close();
+  }
+}
 
+void RpcServer::onConnect(RpcConnection *conn) {
   log::debug("RpcServer::onConnect");
+  assert(oneConn_ == nullptr);
 
   oneConn_ = conn;
 }
 
 void RpcServer::onDisconnect(RpcConnection *conn) {
-  assert(oneConn_ == conn);
-
   log::debug("RpcServer::onDisconnect");
+  assert(oneConn_ == conn);
 
   // When the one API connection disconnects, shutdown the engine in 1.5 secs.
   // (Only if there are existing channels.)
@@ -109,7 +114,6 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   if (!err) {
     RpcListenResponse response{open->id};
     response.result.connId = connId;
-    response.result.versions = versions.versions();
     conn->rpcReply(&response);
 
   } else {
@@ -221,6 +225,8 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     connId = channel->connectionId();
     channel->write(params.data(), params.size());
     channel->flush();
+  } else {
+    log::error("onRpcSend unable to locate output channel");
   }
 
   if (send->id == RPC_ID_MISSING)
@@ -304,6 +310,18 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
   }
 }
 
+void RpcServer::onRpcDescription(RpcConnection *conn, RpcDescription *desc) {
+  if (desc->id == RPC_ID_MISSING)
+    return;
+
+  RpcDescriptionResponse response{desc->id};
+  response.result.major_version = LIBOFP_RPC_API_MAJOR;
+  response.result.minor_version = LIBOFP_RPC_API_MINOR;
+  response.result.software_version = softwareVersion();
+  response.result.ofp_versions = ProtocolVersions::All.versions();
+  conn->rpcReply(&response);
+}
+
 void RpcServer::onChannelUp(Channel *channel) {
   if (oneConn_)
     oneConn_->onChannel(channel, "UP");
@@ -325,4 +343,14 @@ ofp::Channel *RpcServer::findDatapath(const DatapathID &datapathId,
     return defaultChannel_;
 
   return engine_->findDatapath(datapathId, connId);
+}
+
+std::string RpcServer::softwareVersion() {
+  std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
+  std::stringstream sstr;
+
+  sstr << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
+       << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+
+  return sstr.str();
 }

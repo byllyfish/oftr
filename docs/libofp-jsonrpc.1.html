@@ -435,8 +435,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 control of the OpenFlow protocol using JSON messages.</p>
 </div>
 <div class="paragraph">
-<p>program also includes a JSON-RPC microservice that can supports multiple
-simultaneous OpenFlow connections. See the <code>libofp-jsonrpc</code> man page for more details.</p>
+<p>This program implements JSON-RPC 2.0 using a YAML 1.2 parser. Your JSON parser
+must support 64 bit integers, or you will run into trouble handling large counters
+and id&#8217;s.</p>
+</div>
+<div class="paragraph">
+<p>This implementation ignores the "jsonrpc" property defined in the
+JSON-RPC 2.0 specification.</p>
 </div>
 </div>
 </div>
@@ -460,13 +465,10 @@ simultaneous OpenFlow connections. See the <code>libofp-jsonrpc</code> man page 
 <p>The json-rpc server uses JSON-RPC protocol with some minor adjustments.</p>
 </div>
 <div class="paragraph">
-<p>in JSON-RPC, there are requests, replies, errors and notifications.</p>
-</div>
-<div class="paragraph">
 <p>Request ID&#8217;s must be non-negative integers less than or equal to 2^63-2.</p>
 </div>
 <div class="paragraph">
-<p>There are five basic JSON-RPC requests:</p>
+<p>There are seven JSON-RPC requests:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -483,12 +485,18 @@ simultaneous OpenFlow connections. See the <code>libofp-jsonrpc</code> man page 
 <p>ofp.close</p>
 </li>
 <li>
+<p>ofp.status</p>
+</li>
+<li>
 <p>ofp.list_connections</p>
+</li>
+<li>
+<p>ofp.add_identity</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>There are two basic JSON-RPC notifications sent:</p>
+<p>There are three JSON-RPC notifications:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -498,33 +506,13 @@ simultaneous OpenFlow connections. See the <code>libofp-jsonrpc</code> man page 
 <li>
 <p>ofp.message</p>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Advanced Requests:</p>
-</div>
-<div class="ulist">
-<ul>
 <li>
-<p>ofp.add_identity</p>
-</li>
-<li>
-<p>ofp.list_identities (todo)</p>
-</li>
-<li>
-<p>ofp.set_options (todo)</p>
+<p>ofp.alert</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Advanced Notifications:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>ofp.message_error (disabled by default?)</p>
-</li>
-</ul>
+<p>If you omit the 'id' property from a request, no reply will be sent.</p>
 </div>
 </div>
 </div>
@@ -541,11 +529,12 @@ simultaneous OpenFlow connections. See the <code>libofp-jsonrpc</code> man page 
 <div class="literalblock">
 <div class="content">
 <pre>id: UInt64
-method: 'ofp.connect'
+method: ofp.connect
 params:
   endpoint: IPv6Endpoint
-  tls_id:  UInt64                   # Optional; Default: 0
-  options: [String...]              # Optional; Default: []</pre>
+  versions: !opt [UInt8]
+  tls_id:  !opt UInt64
+  options: !opt [String]</pre>
 </div>
 </div>
 <div class="dlist">
@@ -561,8 +550,12 @@ params:
 <dt class="hdlist1"><strong>endpoint</strong></dt>
 <dd>
 <p>Destination to connect to. Must be a string that specifies an
-IPv4/IPv6 address and a TCP port number separated bya ':' or '.'. Formats
+IPv4/IPv6 address and a TCP port number separated by a ':' or '.'. Formats
 include: "127.0.0.1:6653", "127.0.0.1.6653", "[::1]:6653", "::1.6653".</p>
+</dd>
+<dt class="hdlist1"><strong>versions</strong></dt>
+<dd>
+<p>List of OpenFlow versions to support. Defaults to all.</p>
 </dd>
 <dt class="hdlist1"><strong>tls_id</strong></dt>
 <dd>
@@ -570,7 +563,7 @@ include: "127.0.0.1:6653", "127.0.0.1.6653", "[::1]:6653", "::1.6653".</p>
 </dd>
 <dt class="hdlist1"><strong>options</strong></dt>
 <dd>
-<p>Additional options that control the connection.</p>
+<p>List of additional options that control the connection.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -614,11 +607,12 @@ result:
 <div class="literalblock">
 <div class="content">
 <pre>id: UInt64
-method: 'ofp.listen'
+method: ofp.listen
 params:
   endpoint: IPv6Endpoint
+  versions: [UInt8]
   tls_id: UInt64
-  options: [String...]</pre>
+  options: [String]</pre>
 </div>
 </div>
 <div class="dlist">
@@ -629,6 +623,10 @@ params:
 If the IP address is omitted, listen on all interface addresses. The IP
 address and port number must be separated by a space or colon when both are
 present. When using a colon separator, use brackets around an IPv6 address.</p>
+</dd>
+<dt class="hdlist1"><strong>versions</strong></dt>
+<dd>
+<p>List of OpenFlow versions to support. Defaults to all.</p>
 </dd>
 <dt class="hdlist1"><strong>tls_id</strong></dt>
 <dd>
@@ -907,31 +905,38 @@ params:
 <h2 id="_transport_protocol">TRANSPORT PROTOCOL</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>JSON-RPC messages are sent over a connection using a text-based protocol.</p>
+<p>JSON-RPC messages are sent over a connection using a UTF-8 text protocol. Each
+JSON message is separated by a newline. The maximum length of a line is 1 MB.</p>
 </div>
-<div class="sect2">
-<h3 id="_line_based_transport">LINE-BASED TRANSPORT</h3>
-<div class="paragraph">
-<p>Each JSON object is sent in one line terminated by a linefeed character (\n).
-The JSON object must be stripped of linefeeds. The line must begin with a curly
-brace '{'. The line must be less than 1,048,576 bytes.</p>
+<div class="literalblock">
+<div class="content">
+<pre>{ "id": 1, "method": "ofp.description" }</pre>
 </div>
-<div class="paragraph">
-<p>When sending data back to the client, the line-based JSON transport will be used unless
-a command is sent to change the mode.</p>
 </div>
 <div class="paragraph">
-<p>If the line equals "---\n", read until we see "\n&#8230;&#8203;\n". We parse the contained
-text as multi-line YAML or JSON. The text entire message, including the delimiters
-must be less than 1,048,576 bytes.</p>
+<p>All responses are encoded in compact, single-line JSON representation.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{"id":1,"result":{"major_version":0,"minor_version":1, ... }}</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>All input is UTF-8. White space characters such as HT, LF, and CR are permitted.
-No other control characters (less than 0x20) may appear. (If they are inside JSON text,
-they must be escaped due to JSON rules.)</p>
+<p>JSON input can also use YAML encoding, which is less stringent.
+Still, no newlines are allowed.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{ id: 1, method: ofp.description }</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Future versions may support binary transport options that use CBOR.</p>
+<p>A message encoded inside a JSON string is parsed using YAML. Escape newlines
+with "\n".</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"id: 1\nmethod: ofp.description"</pre>
 </div>
 </div>
 </div>
@@ -981,7 +986,7 @@ granted under the terms of the MIT Licence.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-10-19 13:20:23 MST
+Last updated 2015-10-26 09:42:21 MST
 </div>
 </div>
 </body>
