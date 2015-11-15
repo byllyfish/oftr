@@ -126,3 +126,20 @@ TEST(types, MemCopyMasked) {
   MemCopyMasked(&d, &a, &b, sizeof(a));
   EXPECT_EQ(a & b, d);
 }
+
+TEST(types, IsPtrAligned) {
+  OFP_ALIGNAS(8) UInt64 buf;
+  const UInt8 *p = BytePtr(&buf);
+
+  EXPECT_TRUE(IsPtrAligned(p, 8));
+  EXPECT_TRUE(IsPtrAligned(p, 4));
+  EXPECT_TRUE(IsPtrAligned(p, 2));
+
+  EXPECT_FALSE(IsPtrAligned(p+1, 8));
+  EXPECT_FALSE(IsPtrAligned(p+1, 4));
+  EXPECT_FALSE(IsPtrAligned(p+1, 2));
+
+  EXPECT_FALSE(IsPtrAligned(p+2, 8));
+  EXPECT_FALSE(IsPtrAligned(p+2, 4));
+  EXPECT_TRUE(IsPtrAligned(p+2, 2));
+}
