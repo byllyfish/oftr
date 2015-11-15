@@ -6,21 +6,15 @@
 using namespace ofp;
 
 static void testPacket(const char *hex, const char *outHex) {
-  std::string pkt = HexToRawData(hex);
+  ByteList buf{HexToRawData(hex)};
 
-  // Make sure that packet is aligned to a byte boundary as expected.
-  // (Bypass Short-String Optimization)
-  if (!IsPtrAligned(pkt.data(), 8))
-    pkt.reserve(256);
+  // Insert two zero bytes at the beginning. MatchPacket expects packet data
+  // to be aligned at 2 bytes past the 8-byte alignment.
+  buf.insertZeros(buf.begin(), 2);
 
-  ASSERT_TRUE(IsPtrAligned(pkt.data(), 8));
+  ASSERT_TRUE(IsPtrAligned(buf.data(), 8));
 
-  // Insert two zero bytes at the beginning of the data. MatchPacket expects
-  // packet data to be aligned at 2 bytes *past* the 8-byte alignment. The
-  // actual value of the two bytes is irrelevant.
-  pkt.insert(0, "xx", 2);
-
-  MatchPacket match{ByteRange{pkt.data() + 2, pkt.size() - 2}};
+  MatchPacket match{ByteRange{buf.data() + 2, buf.size() - 2}};
   EXPECT_HEX(outHex, match.data(), match.size());
 }
 
