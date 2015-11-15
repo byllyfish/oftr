@@ -6,6 +6,8 @@
 
 * [ ] Run cpplint:  `make cpplint`
 
+* [ ] Update documentation: 
+
 * [ ] Update CHANGELOG
 
 * [ ] Push develop branch. Check build results.

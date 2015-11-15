@@ -1,0 +1,557 @@
+# _ is used to indicate a preface.
+# __ is used to indicate additional notes.
+
+Rpc:
+  _: RPC commands and notifications.
+
+  ofp.description:
+    _: Retrieve information about the RPC server.
+    major_version: Major protocol version number.
+    minor_version: Minor protocol version number.
+    software_version: Software version number.
+    ofp_versions: List of OpenFlow versions supported by the server.
+    __: >
+      The major_version is incremented when there are changes that affect backward compatibility. 
+      The minor_version is incremented when protocol changes maintain backward compatibility.
+
+  ofp.connect:
+    _: Open an outgoing OpenFlow connection to the specified host and port.
+    endpoint: IP address and port number to connect to.
+    versions: List of OpenFlow versions to support. Defaults to all.
+    tls_id: TLS identity used to secure the connection. Defaults to none/plaintext.
+    options: List of additional options that control the connection. Defaults to empty.
+    conn_id: Unique connection ID.
+    __: >
+      There are two options: --raw and --udp. `--raw` specifies that no Features_Request 
+      should be sent when starting the OpenFlow connection. `--udp` specifies that the
+      OpenFlow connection should use UDP instead of TCP. The `--udp` option must be
+      combined with `--raw`. This command ignores unrecognized options.
+
+  ofp.listen:
+    _: Listen for incoming OpenFlow connections on the specified interface and port.
+    endpoint: Local IP address and port number to listen on.
+    versions: List of OpenFlow versions to support. Defaults to all.
+    tls_id: TLS identity used to secure the connection. Defaults to none/plaintext.
+    options: List of additional options that control the connection. Defaults to empty.
+    conn_id: Unique connection ID.
+    __: >
+      By default, this command listens on both TCP and UDP.
+      There is one option: --raw. `--raw` specifies that no Features_Request 
+      should be sent when starting an OpenFlow connection. This command ignores 
+      unrecognized options.
+
+  ofp.list_connections:
+    _: List matching connections.
+    request__conn_id: Connection ID desired. Zero indicates all connections.
+    result__conn_id: Connection ID.
+    local_endpoint: 
+    remote_endpoint: 
+    datapath_id: 
+    conn_id: 
+    auxiliary_id: 
+
+  ofp.close:
+    _: Close connection.
+
+  ofp.send:
+    _: Send an OpenFlow message.
+
+  ofp.add_identity:
+    _: Add a TLS identity.
+
+  ofp.message:
+    _: Notification of incoming message.
+
+  ofp.channel:
+    _: Notification of channel update.
+
+  ofp.alert:
+    _: Miscellaneous notification.
+
+  rpc.error:
+    _: RPC error reply.
+
+Message:
+  _: OpenFlow messages.
+  Hello:
+    _: Hello message.
+  Error:
+    _: Error message.
+  EchoRequest:
+    _: EchoRequest message.
+  EchoReply:
+    _: EchoReply message.
+  FeaturesRequest:
+    _: FeaturesRequest message.
+  FeaturesReply:
+    _: FeaturesReply message.
+  GetConfigRequest:
+    _: GetConfigRequest message.
+  GetConfigReply:
+    _: GetConfigReply message.
+  SetConfig:
+    _: SetConfig message.
+  PacketIn:
+    _: PacketIn message.
+  FlowRemoved:
+    _: FlowRemoved message.
+  PortStatus:
+    _: PortStatus message.
+  PacketOut:
+    _: PacketOut message.
+  FlowMod:
+    _: FlowMod message.
+  GroupMod:
+    _: GroupMod message.
+  PortMod:
+    _: PortMod message.
+  TableMod:
+    _: TableMod message.
+  Request.Desc:
+    _: Desc multipart request message.
+  Request.Table:
+    _: Table multipart request message.
+  Request.PortDesc:
+    _: Request.PortDesc
+  Request.GroupDesc:
+    _: Request.GroupDesc
+  Request.GroupFeatures:
+    _: Request.GroupFeatures
+  Request.MeterFeatures:
+    _: Request.MeterFeatures
+  Request.Flow:
+    _: Request.Flow
+  Request.Aggregate:
+    _: Request.Aggregate
+  Request.PortStats:
+    _: Request.PortStats
+  Request.Queue:
+    _: Request.Queue
+  Request.MeterConfig:
+    _: Request.MeterConfig
+  Request.Meter:
+    _: Request.Meter
+  Request.Group:
+    _: Request.Group
+  Request.TableFeatures:
+    _: Request.TableFeatures
+  Request.FlowMonitor:
+    _: Request.FlowMonitor
+  Request.Experimenter:
+    _: Request.Experimenter
+  Reply.Desc:
+    _: Desc multipart reply message.
+  Reply.Table:
+    _: Table multipart reply message.
+  Reply.PortDesc:
+    _: Reply.PortDesc
+  Reply.GroupDesc:
+    _: Reply.GroupDesc
+  Reply.GroupFeatures:
+    _: Reply.GroupFeatures
+  Reply.MeterFeatures:
+    _: Reply.MeterFeatures
+  Reply.Flow:
+    _: Reply.Flow
+  Reply.Aggregate:
+    _: Reply.Aggregate
+  Reply.PortStats:
+    _: Reply.PortStats
+  Reply.Queue:
+    _: Reply.Queue
+  Reply.MeterConfig:
+    _: Reply.MeterConfig
+  Reply.Meter:
+    _: Reply.Meter
+  Reply.Group:
+    _: Reply.Group
+  Reply.TableFeatures:
+    _: Reply.TableFeatures
+  Reply.FlowMonitor:
+    _: Reply.FlowMonitor
+  Reply.Experimenter:
+    _: Reply.Experimenter
+  BarrierRequest:
+    _: BarrierRequest message.
+  BarrierReply:
+    _: BarrierReply message.
+  QueueGetConfigRequest:
+    _: QueueGetConfigRequest message.
+  QueueGetConfigReply:
+    _: QueueGetConfigReply message.
+  RoleRequest:
+    _: RoleRequest message.
+  RoleReply:
+    _: RoleReply message.
+  GetAsyncRequest:
+    _: GetAsyncRequest message.
+  GetAsyncReply:
+    _: GetAsyncReply message.
+  SetAsync:
+    _: SetAsync message.
+  MeterMod:
+    _: MeterMod message.
+  RoleStatus:
+    _: RoleStatus message.
+  RequestForward:
+    _: RequestForward message.
+  BundleControl:
+    _: BundleControl message.
+  BundleAddMessage:
+    _: BundleAddMessage message.
+
+Instruction:
+  _: OpenFlow instructions.
+  GotoTable:
+    _: GotoTable instruction.
+  WriteMetadata:
+    _: 
+  WriteActions:
+    _:
+  ApplyActions:
+    _:
+  ClearActions:
+    _:
+  Meter:
+    _:
+  Experimenter:
+    _:
+
+Action:
+  _: OpenFlow actions.
+  COPY_TTL_OUT:
+    _:
+  COPY_TTL_IN:
+    _:
+  DEC_MPLS_TTL:
+    _:
+  POP_VLAN:
+    _:
+  DEC_NW_TTL:
+    _:
+  POP_PBB:
+    _:
+  OUTPUT:
+    _:
+  SET_MPLS_TTL:
+    _:
+  PUSH_VLAN:
+    _:
+  PUSH_MPLS:
+    _:
+  POP_MPLS:
+    _:
+  SET_QUEUE:
+    _:
+  GROUP:
+    _:
+  SET_NW_TTL:
+    _:
+  PUSH_PBB:
+    _:
+  SET_FIELD:
+    _:
+  EXPERIMENTER:
+    _:
+
+MeterBand:
+  _: OpenFlow meter bands.
+  DROP:
+    _:
+  DSCP_REMARK:
+    _:
+  EXPERIMENTER:
+    _:
+
+Struct:
+  _: OpenFlow structures.
+  Bucket:
+    _:
+  Port:
+    _:
+  Queue:
+    _:
+  PacketCounter:
+    _:
+
+Property:
+  _: OpenFlow properties.
+  ExperimenterProperty:
+    _:
+  AsyncConfigExperimenterProperty:
+    _:
+
+Enum:
+  _: OpenFlow enumerations.
+  FlowModCommand:
+    _:
+  PacketInReason:
+    _:
+  PortStatusReason:
+    _:
+  FlowRemovedReason:
+    _:
+  ControllerRole:
+    _:
+  MeterModCommand:
+    _:
+  ErrorType:
+    _:
+  ErrorCode:
+    _:
+  FlowUpdateEvent:
+    _:
+  GroupModCommand:
+    _:
+  GroupType:
+    _:
+  FlowMonitorCommand:
+    _:
+  RoleStatusReason:
+    _:
+  BundleCtrlType:
+    _:
+
+Mixed:
+  _: OpenFlow mixed types may be a number or enumeration.
+  PortNumber:
+    _:
+  GroupNumber:
+    _:
+  MeterNumber: 
+    _:
+  QueueNumber:
+    _:
+  BufferNumber:
+    _:
+  TableNumber:
+    _:
+  ControllerMaxLen:
+    _:
+
+Flag:
+  _: OpenFlow flags.
+  FlowModFlags:
+    _:
+  ActionTypeFlags:
+    _:
+  CapabilitiesFlags:
+    _:
+  ConfigFlags:
+    _:
+  PortFeaturesFlags:
+    _:
+  OpticalPortFeaturesFlags:
+    _:
+  PortConfigFlags:
+    _:
+  PortStateFlags:
+    _:
+  MultipartFlags:
+    _:
+  MeterConfigFlags:
+    _:
+  PacketInFlags:
+    _:
+  PortStatusFlags:
+    _:
+  FlowRemovedFlags:
+    _:
+  RoleStatusFlags:
+    _:
+  TableStatusFlags:
+    _:
+  TableConfigFlags:
+    _:
+  RequestForwardFlags:
+    _:
+  FlowMonitorFlags:
+    _:
+  BundleFlags:
+    _:
+  MeterBandFlags:
+    _:
+  GroupCapabilityFlags:
+    _:
+  GroupTypeFlags:
+    _:
+  MeterFlags:
+    _:
+
+Builtin:
+  _: Builtin types.
+  UInt8:
+    _: 
+  UInt16:
+    _: 
+  UInt32:
+    _: 
+  UInt64:
+    _: 
+  SInt32:
+    _: 
+  String:
+    _: 
+  Str16:
+    _: 
+  Str32:
+    _: 
+  Str256:
+    _: 
+  HexData:
+    _: 
+  DatapathID:
+    _: 
+  MacAddress:
+    _: 
+  IPv4Address:
+    _: 
+  IPv6Address:
+    _: 
+  IPv6Endpoint:
+    _: 
+  LLDPChassisID:
+    _: 
+  LLDPPortID:
+    _: 
+  ActionID:
+    _: 
+  FieldID:
+    _: 
+  InstructionID:
+    _: 
+  Timestamp:
+    _: 
+
+Field:
+  _: OpenFlow fields.
+  IN_PORT:
+    _: Input Port
+  IN_PHY_PORT:
+    _: Physical Input Port
+  METADATA:
+    _: Metadata
+  ETH_DST:
+    _: Ethernet Destination
+  ETH_SRC:
+    _: Ethernet Source
+  ETH_TYPE:
+    _: Ethernet Type
+  VLAN_VID:
+    _: VLAN ID (0=no tag, 0x1yyy=tag yyy)
+  VLAN_PCP:
+    _: VLAN Priority
+  IP_DSCP:
+    _: IPv4/v6 DSCP
+  IP_ECN:
+    _: IPv4/v6 ECN
+  IP_PROTO:
+    _: IPv4/v6 Protocol
+  IPV4_SRC:
+    _: IPv4 Source Address
+  IPV4_DST:
+    _: IPv4 Destination Address
+  TCP_SRC:
+    _: TCP Source Port
+  TCP_DST:
+    _: TCP Destination Port
+  UDP_SRC:
+    _: UDP Source Port
+  UDP_DST:
+    _: UDP Destination Port
+  SCTP_SRC:
+    _: SCTP Source Port
+  SCTP_DST:
+    _: SCTP Destination Port
+  ICMPV4_TYPE:
+    _: ICMPv4 Type
+  ICMPV4_CODE:
+    _: ICMPv4 Code
+  ARP_OP:
+    _: ARP Opcode
+  ARP_SPA:
+    _: ARP Source IPv4 Address
+  ARP_TPA:
+    _: ARP Target IPv4 Address
+  ARP_SHA:
+    _: ARP Source Ethernet Address
+  ARP_THA:
+    _: ARP Target Ethernet Address
+  IPV6_SRC:
+    _: IPv6 Source Address
+  IPV6_DST:
+    _: IPv6 Destination Address
+  IPV6_FLABEL:
+    _: IPv6 Flow Label
+  ICMPV6_TYPE:
+    _: ICMPv6 Type
+  ICMPV6_CODE:
+    _: ICMPv6 Code
+  IPV6_ND_TARGET:
+    _: ICMPv6 Neighbor Discovery Target IPv6
+  IPV6_ND_SLL:
+    _: ICMPv6 Neighbor Discovery Source Ethernet Address
+  IPV6_ND_TLL:
+    _: ICMPv6 Neighbor Discovery Target Ethernet Address
+  MPLS_LABEL:
+    _: MPLS Label
+  MPLS_TC:
+    _: MPLS Traffic Class
+  MPLS_BOS:
+    _: MPLS Bottom of Stack
+  PBB_ISID:
+    _: PBB I-SID
+  TUNNEL_ID:
+    _: Tunnel ID
+  IPV6_EXTHDR:
+    _: IPv6 Extension Header Pseudo-Field
+  PBB_UCA:
+    _: PBB UCA
+  PKT_REG0:
+    _: Packet Register 0
+  PKT_REG1:
+    _: Packet Register 1
+  PKT_REG2:
+    _: Packet Register 2
+  PKT_REG3:
+    _: Packet Register 3
+  NX_REG0:
+    _: (Nicira) Register 0
+  NX_REG1:
+    _: (Nicira) Register 1
+  NX_REG2:
+    _: (Nicira) Register 2
+  NX_REG3:
+    _: (Nicira) Register 3
+  NX_REG4:
+    _: (Nicira) Register 4
+  NX_REG5:
+    _: (Nicira) Register 5
+  NX_REG6:
+    _: (Nicira) Register 6
+  NX_REG7:
+    _: (Nicira) Register 7
+  NX_IP_FRAG:
+    _: (Nicira) IPv4/v6 Fragment Bitmask
+  NX_IP_TTL:
+    _: (Nicira) IPv4/v6 TTL/Hop Limit
+  NX_TCP_FLAGS:
+    _: (Nicira) TCP Flags
+  NX_TUN_IP4_SRC:
+    _: (Nicira) Tunnel IPv4 Source Field
+  NX_TUN_IP4_DST:
+    _: (Nicira) Tunnel IPv4 Destination Field
+  NX_TUN_GBP_ID:
+    _: (Nicira) VXLAN Group Policy ID
+  NX_TUN_GBP_FLAGS:
+    _: (Nicira) VXLAN Group Policy flags
+  X_LLDP_CHASSIS_ID:
+    _: (libofp) LLDP Chassis ID
+  X_LLDP_PORT_ID:
+    _: (libofp) LLDP Port ID
+  X_LLDP_TTL:
+    _: (libofp) LLDP TTL
+  X_EXPERIMENTER_01:
+    _: (libofp) Experimental Test Field
+
+

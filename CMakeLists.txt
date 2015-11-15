@@ -22,6 +22,10 @@
 cmake_minimum_required(VERSION 2.8.8)
 project(Libofp)
 
+# Log version of cmake
+
+message(STATUS "Running cmake ${CMAKE_VERSION} on ${CMAKE_SYSTEM} ${CMAKE_SYSTEM_PROCESSOR}")
+
 # Add path for custom modules
 
 set(CMAKE_MODULE_PATH
@@ -32,10 +36,15 @@ set(CMAKE_MODULE_PATH
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 9)
+set(Libofp_VERSION_MINOR 10)
 set(Libofp_VERSION_PATCH 0)
-set(Libofp_DOWNLOAD_URL "https://github.com/byllyfish/libofp")
+set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
+
+# Set version numbers for RPC API.
+
+set(Libofp_RPC_API_MAJOR 0)
+set(Libofp_RPC_API_MINOR 1)
 
 # You can build libofp with or without the JSON-RPC server.
 
@@ -324,18 +333,23 @@ find_package(PythonInterp REQUIRED)
 find_package(PythonModule REQUIRED)
 find_python_module(yaml)
 
-# Look up the specific git commits for libofp, asio, and boringssl.
+# Look up the specific git commits for libofp, asio, and boringssl. If we are
+# building from a tarball instead of a git repo, the git commits will be empty.
 
 execute_process(COMMAND git rev-parse --verify HEAD OUTPUT_VARIABLE Libofp_GIT_COMMIT_LIBOFP)
 string(STRIP "${Libofp_GIT_COMMIT_LIBOFP}" Libofp_GIT_COMMIT_LIBOFP)
 message(STATUS "Libofp commit: ${Libofp_GIT_COMMIT_LIBOFP}")
 
 execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
-string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
+if(NOT "${Libofp_GIT_COMMIT_ASIO}" STREQUAL "")
+  string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
+endif()
 message(STATUS "Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
 
 execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
-string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
+if(NOT "${Libofp_GIT_COMMIT_BORINGSSL}" STREQUAL "")
+  string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
+endif()
 message(STATUS "BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
 
 # Specify auto-generated config.h file.
@@ -449,7 +463,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_PACKAGE_VERSION_MAJOR "${Libofp_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${Libofp_VERSION_MINOR}")
 set(CPACK_PACKAGE_CONTACT "${Libofp_MAINTAINER_EMAIL}")
-set(CPACK_STRIP_FILES "bin/libofp")
+set(CPACK_STRIP_FILES TRUE)
 include(CPack)
 
 #-------------------------------------------------------------------------------

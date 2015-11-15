@@ -4,6 +4,7 @@
 #define TOOLS_LIBOFP_OFPX_HELP_H_
 
 #include "./ofpx.h"
+#include <set>
 
 namespace ofp {
 namespace yaml {
@@ -24,12 +25,13 @@ using ofp::yaml::Schema;
 //
 //   --fields         List supported match fields.
 //   --actions        List supported actions.
+//   --builtins       List supported builtin types.
 //   --instructions   List supported instructions.
 //   --messages       List supported message types.
-//   --multipart      List supported multipart types.
 //   --enums          List supported enumeration types.
 //   --flags          List supported flags.
 //   --mixed          List supported mixed types.
+//   --rpc            List supported RPC commands.
 
 class Help : public Subprogram {
  public:
@@ -46,15 +48,18 @@ class Help : public Subprogram {
 
  private:
   std::vector<std::unique_ptr<Schema>> schemas_;
+  std::set<std::string> topLevel_;
 
   void loadSchemas();
+  void loadSchema(const std::string &schema);
   void addFieldSchemas();
   void addBuiltinTypes();
+  void initTopLevel();
 
   Schema *findSchema(const std::string &key);
   Schema *findNearestSchema(const std::string &key);
 
-  void listFields();
+  void dumpFieldTable();
   void listSchemas(const std::string &type);
   void printSchema(const std::string &key);
 
@@ -65,16 +70,23 @@ class Help : public Subprogram {
 
   // --- Command-line Arguments ---
   cl::opt<bool> fields_{"fields", cl::desc("List supported match fields.")};
+  cl::opt<bool> fieldTable_{
+      "field-table", cl::desc("List supported match fields in a table.")};
   cl::opt<bool> actions_{"actions", cl::desc("List supported actions.")};
+  cl::opt<bool> builtins_{"builtins",
+                          cl::desc("List supported builtin types.")};
   cl::opt<bool> instructions_{"instructions",
                               cl::desc("List supported instructions.")};
   cl::opt<bool> messages_{"messages", cl::desc("List supported messages.")};
-  cl::opt<bool> multipart_{"multipart",
-                           cl::desc("List supported multipart types.")};
   cl::opt<bool> enums_{"enums", cl::desc("List supported enumerated types.")};
+  cl::opt<bool> flags_{"flags", cl::desc("List supported flag types.")};
+  cl::opt<bool> mixed_{"mixed", cl::desc("List supported mixed types.")};
+  cl::opt<bool> rpc_{"rpc", cl::desc("List supported RPC commands.")};
   cl::opt<bool> schemaNames_{"schema-names",
                              cl::desc("List all schema names.")};
   cl::opt<bool> schemaAll_{"schema-all", cl::desc("List complete schema.")};
+  cl::opt<bool> brief_{"brief",
+                       cl::desc("Display abbreviated form of message schema")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
 
   // --- Argument Aliases ---
@@ -85,7 +97,8 @@ class Help : public Subprogram {
                     cl::aliasopt(instructions_)};
   cl::alias mAlias_{"m", cl::desc("Alias for -messages"),
                     cl::aliasopt(messages_)};
-  cl::alias eAlias_{"e", cl::desc("Alias for -enums"), cl::aliasopt(enums_)};
+  cl::alias rAlias_{"r", cl::desc("Alias for -rpc"), cl::aliasopt(rpc_)};
+  cl::alias bAlias_{"b", cl::desc("Alias for -brief"), cl::aliasopt(brief_)};
 };
 
 }  // namespace ofpx

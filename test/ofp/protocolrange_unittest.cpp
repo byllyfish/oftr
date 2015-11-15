@@ -15,7 +15,7 @@ TEST(protocolrange, valid_empty) {
   EXPECT_TRUE(IsProtocolRangeValid(4, r1, 2, 8, &context1));
 
   UInt64 d2 = 0;
-  ByteRange r2{&d2, 0UL};
+  ByteRange r2{&d2, static_cast<size_t>(0)};
   Validation context2{nullptr, &error};
   EXPECT_TRUE(IsProtocolRangeValid(4, r2, 2, 8, &context2));
 }
@@ -23,7 +23,7 @@ TEST(protocolrange, valid_empty) {
 TEST(protocolrange, invalid_empty) {
   OFPErrorCode error;
   UInt8 d1[2];
-  ByteRange r1{&d1[1], 0UL};
+  ByteRange r1{&d1[1], static_cast<size_t>(0)};
   Validation context1{nullptr, &error};
   EXPECT_FALSE(IsProtocolRangeValid(4, r1, 2, 8, &context1));
 }

@@ -238,7 +238,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
 
   std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
       ::PEM_read_bio_PrivateKey(bio.get(), 0, passwordCallback,
-                                const_cast<char *>(passphrase.c_str())),
+                                RemoveConst_cast(passphrase.c_str())),
       EVP_PKEY_free};
 
   if (!privateKey) {

@@ -5,6 +5,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
+#include "ofp/constants.h"
 
 namespace ofp {
 
@@ -13,8 +14,8 @@ class Validation;
 class MPMeterFeatures {
  public:
   UInt32 maxMeter() const { return maxMeter_; }
-  UInt32 bandTypes() const { return bandTypes_; }
-  UInt32 capabilities() const { return capabilities_; }
+  OFPMeterBandFlags bandTypes() const { return bandTypes_; }
+  OFPMeterFlags capabilities() const { return capabilities_; }
   UInt8 maxBands() const { return maxBands_; }
   UInt8 maxColor() const { return maxColor_; }
 
@@ -22,8 +23,8 @@ class MPMeterFeatures {
 
  private:
   Big32 maxMeter_;
-  Big32 bandTypes_;
-  Big32 capabilities_;
+  Big<OFPMeterBandFlags> bandTypes_;
+  Big<OFPMeterFlags> capabilities_;
   Big8 maxBands_;
   Big8 maxColor_;
   Padding<2> pad_;
@@ -39,8 +40,10 @@ static_assert(IsStandardLayout<MPMeterFeatures>(), "Expected standard layout.");
 class MPMeterFeaturesBuilder {
  public:
   void setMaxMeter(UInt32 maxMeter) { msg_.maxMeter_ = maxMeter; }
-  void setBandTypes(UInt32 bandTypes) { msg_.bandTypes_ = bandTypes; }
-  void setCapabilities(UInt32 capabilities) {
+  void setBandTypes(OFPMeterBandFlags bandTypes) {
+    msg_.bandTypes_ = bandTypes;
+  }
+  void setCapabilities(OFPMeterFlags capabilities) {
     msg_.capabilities_ = capabilities;
   }
   void setMaxBands(UInt8 maxBands) { msg_.maxBands_ = maxBands; }

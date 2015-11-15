@@ -29,7 +29,7 @@ class MPFlowMonitorReply {
     return tableId_;
   }
 
-  UInt8 reason() const {
+  OFPFlowRemovedReason reason() const {
     assert(full());
     return reason_;
   }
@@ -63,7 +63,7 @@ class MPFlowMonitorReply {
   Big16 length_;
   Big<OFPFlowUpdateEvent> event_;
   TableNumber tableId_;
-  Big8 reason_;
+  Big<OFPFlowRemovedReason> reason_;
   Big16 idleTimeout_;
   Big16 hardTimeout_;
   Big16 priority_;
@@ -97,7 +97,7 @@ class MPFlowMonitorReplyBuilder {
   void setXid(UInt32 xid) { *Big32_cast(&msg_.tableId_) = xid; }
 
   void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
-  void setReason(UInt8 reason) { msg_.reason_ = reason; }
+  void setReason(OFPFlowRemovedReason reason) { msg_.reason_ = reason; }
   void setIdleTimeout(UInt16 idleTimeout) { msg_.idleTimeout_ = idleTimeout; }
   void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
   void setPriority(UInt16 priority) { msg_.priority_ = priority; }

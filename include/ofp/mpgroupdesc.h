@@ -12,7 +12,7 @@ class MPGroupDesc {
  public:
   enum { MPVariableSizeOffset = 0 };
 
-  UInt8 type() const { return type_; }
+  OFPGroupType type() const { return type_; }
   GroupNumber groupId() const { return groupId_; }
   BucketRange buckets() const;
 
@@ -20,7 +20,7 @@ class MPGroupDesc {
 
  private:
   Big16 length_;
-  Big8 type_;
+  Big<OFPGroupType> type_;
   Padding<1> pad_;
   GroupNumber groupId_;
 
@@ -36,7 +36,7 @@ class MPGroupDescBuilder {
  public:
   MPGroupDescBuilder() = default;
 
-  void setType(UInt8 type) { msg_.type_ = type; }
+  void setType(OFPGroupType type) { msg_.type_ = type; }
   void setGroupId(GroupNumber groupId) { msg_.groupId_ = groupId; }
   void setBuckets(const BucketRange &buckets);
 

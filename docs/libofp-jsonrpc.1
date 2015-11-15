@@ -2,12 +2,12 @@
 .\"     Title: libofp-jsonrpc
 .\"    Author: Bill Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 10/19/2015
+.\"      Date: 11/15/2015
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-JSONRPC" "1" "10/19/2015" "\ \&" "\ \&"
+.TH "LIBOFP\-JSONRPC" "1" "11/15/2015" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -36,7 +36,9 @@ libofp-jsonrpc \- OpenFlow Microservice
 .sp
 The \fBlibofp jsonrpc\fR tool runs a JSON\-RPC service that enables programmatic control of the OpenFlow protocol using JSON messages\&.
 .sp
-program also includes a JSON\-RPC microservice that can supports multiple simultaneous OpenFlow connections\&. See the libofp\-jsonrpc man page for more details\&.
+This program implements JSON\-RPC 2\&.0 using a YAML 1\&.2 parser\&. Your JSON parser must support 64 bit integers, or you will run into trouble handling large counters and id\(cqs\&.
+.sp
+This implementation ignores the "jsonrpc" property defined in the JSON\-RPC 2\&.0 specification\&.
 .SH "OPTIONS"
 .PP
 \fB\-\-xpc\fR
@@ -47,11 +49,9 @@ Run as an XPC service on Mac OS X\&.
 .sp
 The json\-rpc server uses JSON\-RPC protocol with some minor adjustments\&.
 .sp
-in JSON\-RPC, there are requests, replies, errors and notifications\&.
-.sp
 Request ID\(cqs must be non\-negative integers less than or equal to 2^63\-2\&.
 .sp
-There are five basic JSON\-RPC requests:
+There are seven JSON\-RPC requests:
 .sp
 .RS 4
 .ie n \{\
@@ -105,10 +105,32 @@ ofp\&.close
 .sp -1
 .IP \(bu 2.3
 .\}
+ofp\&.status
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
 ofp\&.list_connections
 .RE
 .sp
-There are two basic JSON\-RPC notifications sent:
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+ofp\&.add_identity
+.RE
+.sp
+There are three JSON\-RPC notifications:
 .sp
 .RS 4
 .ie n \{\
@@ -132,8 +154,6 @@ ofp\&.channel
 ofp\&.message
 .RE
 .sp
-Advanced Requests:
-.sp
 .RS 4
 .ie n \{\
 \h'-04'\(bu\h'+03'\c
@@ -142,43 +162,10 @@ Advanced Requests:
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.add_identity
+ofp\&.alert
 .RE
 .sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-ofp\&.list_identities (todo)
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-ofp\&.set_options (todo)
-.RE
-.sp
-Advanced Notifications:
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-ofp\&.message_error (disabled by default?)
-.RE
+If you omit the \fIid\fR property from a request, no reply will be sent\&.
 .SH "RPC COMMANDS"
 .SS "ofp\&.connect"
 .sp
@@ -197,11 +184,12 @@ Open an outgoing OpenFlow connection to the specified host and port\&.
 .\}
 .nf
 id: UInt64
-method: \*(Aqofp\&.connect\*(Aq
+method: ofp\&.connect
 params:
   endpoint: IPv6Endpoint
-  tls_id:  UInt64                   # Optional; Default: 0
-  options: [String\&.\&.\&.]              # Optional; Default: []
+  versions: !opt [UInt8]
+  tls_id:  !opt UInt64
+  options: !opt [String]
 .fi
 .if n \{\
 .RE
@@ -219,10 +207,15 @@ Must be "ofp\&.connect"\&.
 .PP
 \fBendpoint\fR
 .RS 4
-Destination to connect to\&. Must be a string that specifies an IPv4/IPv6 address and a TCP port number separated bya
+Destination to connect to\&. Must be a string that specifies an IPv4/IPv6 address and a TCP port number separated by a
 \fI:\fR
 or
 \fI\&.\fR\&. Formats include: "127\&.0\&.0\&.1:6653", "127\&.0\&.0\&.1\&.6653", "[::1]:6653", "::1\&.6653"\&.
+.RE
+.PP
+\fBversions\fR
+.RS 4
+List of OpenFlow versions to support\&. Defaults to all\&.
 .RE
 .PP
 \fBtls_id\fR
@@ -232,7 +225,7 @@ Identifier for TLS/DTLS identity to use\&. See ofp\&.add_identity\&.
 .PP
 \fBoptions\fR
 .RS 4
-Additional options that control the connection\&.
+List of additional options that control the connection\&.
 .sp
 .RS 4
 .ie n \{\
@@ -302,11 +295,12 @@ Listen for incoming OpenFlow connections on the specified interface and port\&.
 .\}
 .nf
 id: UInt64
-method: \*(Aqofp\&.listen\*(Aq
+method: ofp\&.listen
 params:
   endpoint: IPv6Endpoint
+  versions: [UInt8]
   tls_id: UInt64
-  options: [String\&.\&.\&.]
+  options: [String]
 .fi
 .if n \{\
 .RE
@@ -315,6 +309,11 @@ params:
 \fBendpoint\fR
 .RS 4
 Local IP address and port number to listen on, e\&.g\&. "127\&.0\&.0\&.1:8000"\&. If the IP address is omitted, listen on all interface addresses\&. The IP address and port number must be separated by a space or colon when both are present\&. When using a colon separator, use brackets around an IPv6 address\&.
+.RE
+.PP
+\fBversions\fR
+.RS 4
+List of OpenFlow versions to support\&. Defaults to all\&.
 .RE
 .PP
 \fBtls_id\fR
@@ -672,18 +671,53 @@ params:
 .\}
 .SH "TRANSPORT PROTOCOL"
 .sp
-JSON\-RPC messages are sent over a connection using a text\-based protocol\&.
-.SS "LINE\-BASED TRANSPORT"
+JSON\-RPC messages are sent over a connection using a UTF\-8 text protocol\&. Each JSON message is separated by a newline\&. The maximum length of a line is 1 MB\&.
 .sp
-Each JSON object is sent in one line terminated by a linefeed character (\en)\&. The JSON object must be stripped of linefeeds\&. The line must begin with a curly brace \fI{\fR\&. The line must be less than 1,048,576 bytes\&.
+.if n \{\
+.RS 4
+.\}
+.nf
+{ "id": 1, "method": "ofp\&.description" }
+.fi
+.if n \{\
+.RE
+.\}
 .sp
-When sending data back to the client, the line\-based JSON transport will be used unless a command is sent to change the mode\&.
+All responses are encoded in compact, single\-line JSON representation\&.
 .sp
-If the line equals "\-\-\-\en", read until we see "\en\&...\en"\&. We parse the contained text as multi\-line YAML or JSON\&. The text entire message, including the delimiters must be less than 1,048,576 bytes\&.
+.if n \{\
+.RS 4
+.\}
+.nf
+{"id":1,"result":{"major_version":0,"minor_version":1, \&.\&.\&. }}
+.fi
+.if n \{\
+.RE
+.\}
 .sp
-All input is UTF\-8\&. White space characters such as HT, LF, and CR are permitted\&. No other control characters (less than 0x20) may appear\&. (If they are inside JSON text, they must be escaped due to JSON rules\&.)
+JSON input can also use YAML encoding, which is less stringent\&. Still, no newlines are allowed\&.
 .sp
-Future versions may support binary transport options that use CBOR\&.
+.if n \{\
+.RS 4
+.\}
+.nf
+{ id: 1, method: ofp\&.description }
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+A message encoded inside a JSON string is parsed using YAML\&. Escape newlines with "\en"\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+"id: 1\enmethod: ofp\&.description"
+.fi
+.if n \{\
+.RE
+.\}
 .SH "SEE ALSO"
 .sp
 \fIlibofp\fR(1), \fIlibofp\-schema\fR(1)

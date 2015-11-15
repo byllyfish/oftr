@@ -28,7 +28,7 @@ class Schema {
 
   std::set<std::string> dependsOnSchemas() const;
 
-  void print(std::ostream &os) const;
+  void print(std::ostream &os, bool brief = false) const;
   void printValue(std::ostream &os, unsigned indent = 0) const;
 
  private:

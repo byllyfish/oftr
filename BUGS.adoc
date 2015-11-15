@@ -27,8 +27,6 @@
 
 == Miscellaneous
 
-* 64-bit integers are sent 'as is' when using JSON. This assumes the JSON decoder supports 64-bit unsigned integers. There is no provision for encoding them in strings for compatibility with JavaScript, which does not support integers >= 2^53.
-
 * There is currently no DNS support for host endpoints. All connections must use IP addresses.
 
 * Prerequisite checking for Experimenter OXM's is not supported.

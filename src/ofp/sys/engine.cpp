@@ -34,9 +34,6 @@ UInt64 Engine::listen(ChannelMode mode, UInt64 securityId,
   UInt64 connId = svrPtr->connectionId();
   assert(connId > 0);
 
-  // Register signal handlers.
-  installSignalHandlers();
-
   return connId;
 }
 
@@ -303,29 +300,38 @@ void Engine::releaseConnection(Connection *connection) {
   }
 }
 
-void Engine::installSignalHandlers() {
-  if (!isSignalsInited_) {
-    isSignalsInited_ = true;
+void Engine::installSignalHandlers(std::function<void()> callback) {
+  log::debug("Install signal handlers");
 
-    signals_.add(SIGINT);
-    signals_.add(SIGTERM);
+  std::error_code ignore;
+  signals_.cancel(ignore);
+  signals_.clear(ignore);
+  signals_.add(SIGINT);
+  signals_.add(SIGTERM);
 
-    signals_.async_wait([this](const asio::error_code &error, int signum) {
-      if (!error) {
-        const char *signame = (signum == SIGTERM)
-                                  ? "SIGTERM"
-                                  : (signum == SIGINT) ? "SIGINT" : "???";
-        log::info("Signal received:", signame);
+  OFP_BEGIN_IGNORE_PADDING
 
-        signals_.cancel();
-        idleTimer_.cancel();
-        (void)this->close(0);
+  signals_.async_wait(
+      [this, callback](const asio::error_code &error, int signum) {
+        if (!error) {
+          const char *signame = (signum == SIGTERM)
+                                    ? "SIGTERM"
+                                    : (signum == SIGINT) ? "SIGINT" : "???";
+          log::info("Signal received:", signame);
 
-        // TODO(bfish): tell external clients like RpcServer and
-        // RpcConnections about shutdown wish.
-      }
-    });
-  }
+          signals_.cancel();
+          idleTimer_.cancel();
+          (void)this->close(0);
+
+          if (callback)
+            callback();
+
+        } else {
+          log::error("Signal error", signum, error);
+        }
+      });
+
+  OFP_END_IGNORE_PADDING
 }
 
 UInt64 Engine::assignConnectionId() {

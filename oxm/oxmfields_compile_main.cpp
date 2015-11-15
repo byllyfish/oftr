@@ -156,12 +156,19 @@ static vector<OXMField> ReadInput(istream &stream) {
   int lineNum = 0;
   std::string line;
   while (std::getline(stream, line)) {
-    if (++lineNum == 1)  // skip first line
+    ++lineNum;
+    // Skip empty lines or lines beginning with '#'.
+    if (line.empty() || line[0] == '#')
       continue;
+    // Split line at each tab into a list of strings.
     auto fields = Split(line, '\t', true);
     if (fields.size() >= OXMField::NumFields) {
+      // Skip header line
+      if (fields[0] == "Name")
+        continue;
       records.push_back(OXMField{fields});
     } else {
+      // If there are not enough fields, log an error and skip the line.
       cerr << "Ignored:" << lineNum << ": " << line << '\n';
     }
   }
@@ -273,7 +280,9 @@ static void WritePrereq(const char *name, const UInt8 *data, size_t len)
 
 
 static void WriteOXMTypeInfo(OXMType type, UInt32 experimenter, bool maskSupported, const char *nameStr, const char *prereqs, const char *typeStr, const char *descriptionStr) {
-  if (std::strncmp("OFB_", nameStr, 4) == 0 || std::strncmp("NXM_", nameStr, 4) == 0) {
+  if (std::strncmp("OFB_", nameStr, 4) == 0 ||
+      std::strncmp("NXM_", nameStr, 4) == 0 ||
+      std::strncmp("ONF_", nameStr, 4) == 0) {
     nameStr += 4;
   }
   std::cout << "{ \"" << nameStr << "\", " << prereqs << ", " << type << ", " << experimenter << ", " << maskSupported << ", \"" << typeStr << "\", \"" << descriptionStr << "\"},\n";

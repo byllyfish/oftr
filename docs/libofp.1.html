@@ -443,22 +443,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <strong>libofp</strong> program translates binary OpenFlow messages to YAML and back
-again. This program expects that all YAML input is UTF-8.</p>
+<p>The <strong>libofp</strong> program translates binary OpenFlow messages to YAML. It also
+translates YAML messages to OpenFlow. This program expects that all YAML input
+is UTF-8.</p>
 </div>
 <div class="paragraph">
-<p>The translation from binary to YAML is designed to be lossless. If you translate
-an OpenFlow message to YAML, then back to binary, you will obtain the original
-sequence of bytes (exception: non-zero padding bytes in the original message are
-replaced by zeros in the new binary message).</p>
+<p>If you translate an OpenFlow message to YAML, then back to binary, you will
+obtain the original sequence of bytes (modulo differences in property ordering).</p>
 </div>
 <div class="paragraph">
-<p>Going the other way, you may lose some information if the desired OpenFlow version
-does not support all the YAML fields. For example, if your YAML specifies
-OpenFlow version 1.0, the binary OpenFlow message will ignore values that are
-not relevant to version 1.0. Therefore, if you translate the binary message back
-to YAML, you may obtain a different YAML value than the one with which you
-started.</p>
+<p>The YAML schema is based on OpenFlow 1.4.x. If your YAML message specifies an
+earlier OpenFlow version that does not support all message attributes, the
+current implementation ignores those attributes when constructing the binary OpenFlow
+message.</p>
 </div>
 <div class="paragraph">
 <p>The libofp program also includes a JSON-RPC microservice that can supports multiple
@@ -702,6 +699,10 @@ also represents stdin.</p>
 <dd>
 <p>Verify output by translating it back to binary.</p>
 </dd>
+<dt class="hdlist1"><strong>--include-filename</strong></dt>
+<dd>
+<p>Include file name in all decodes.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -743,6 +744,10 @@ also represents stdin.</p>
 <p>Access built-in information about the YAML schema used to describe all OpenFlow
 messages.</p>
 </div>
+<div class="paragraph">
+<p>Command-line options list one type of schema object or dump the entire schema.
+Arguments will print the desired schema and all of its dependencies.</p>
+</div>
 <div class="sect2">
 <h3 id="_options_4">OPTIONS</h3>
 <div class="dlist">
@@ -755,13 +760,21 @@ messages.</p>
 <dd>
 <p>List supported actions.</p>
 </dd>
-<dt class="hdlist1"><strong>--dump</strong></dt>
+<dt class="hdlist1"><strong>-b, --brief</strong></dt>
 <dd>
-<p>List all schema names.</p>
+<p>Display abbreviated form of message schema.</p>
 </dd>
-<dt class="hdlist1"><strong>-e, --enums</strong></dt>
+<dt class="hdlist1"><strong>--builtins</strong></dt>
+<dd>
+<p>List supported builtin types.</p>
+</dd>
+<dt class="hdlist1"><strong>--enums</strong></dt>
 <dd>
 <p>List supported enumerated types.</p>
+</dd>
+<dt class="hdlist1"><strong>--field-table</strong></dt>
+<dd>
+<p>List supported match fields in a table.</p>
 </dd>
 <dt class="hdlist1"><strong>-f, --fields</strong></dt>
 <dd>
@@ -775,9 +788,21 @@ messages.</p>
 <dd>
 <p>List supported messages.</p>
 </dd>
-<dt class="hdlist1"><strong>--multipart</strong></dt>
+<dt class="hdlist1"><strong>--mixed</strong></dt>
 <dd>
-<p>List supported multipart types.</p>
+<p>List supported mixed types.</p>
+</dd>
+<dt class="hdlist1"><strong>-r, --rpc</strong></dt>
+<dd>
+<p>List supported RPC commands.</p>
+</dd>
+<dt class="hdlist1"><strong>--schema-all</strong></dt>
+<dd>
+<p>List complete schema.</p>
+</dd>
+<dt class="hdlist1"><strong>--schema-names</strong></dt>
+<dd>
+<p>List all schema names.</p>
 </dd>
 </dl>
 </div>
@@ -897,7 +922,7 @@ granted under the terms of the MIT Licence.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-05-22 11:11:53 MST
+Last updated 2015-11-09 12:41:34 MST
 </div>
 </div>
 </body>

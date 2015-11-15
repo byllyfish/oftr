@@ -114,6 +114,10 @@ void Transmogrify::normalize() {
     } else if (type == QueueGetConfigReply::type()) {
       normalizeQueueGetConfigReplyV2();
     }
+  } else if (version >= OFP_VERSION_5) {
+    if (type == MultipartReply::type()) {
+      normalizeMultipartReplyV5();
+    }
   }
 
   assert(buf_.size() == header()->length());
@@ -675,6 +679,28 @@ void Transmogrify::normalizeMultipartReplyV4() {
   } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyV4();
   } else if (replyType == OFPMP_TABLE) {
+    while (offset < buf_.size())
+      normalizeMPTableStatsReplyV4(&offset);
+    assert(offset == buf_.size());
+  }
+
+  header()->setLength(UInt16_narrow_cast(buf_.size()));
+}
+
+void Transmogrify::normalizeMultipartReplyV5() {
+  Header *hdr = header();
+  if (hdr->length() < sizeof(MultipartReply)) {
+    markInputInvalid("MultipartReply is too short");
+    return;
+  }
+
+  const MultipartReply *multipartReply =
+      reinterpret_cast<const MultipartReply *>(hdr);
+
+  OFPMultipartType replyType = multipartReply->replyType();
+  size_t offset = sizeof(MultipartReply);
+
+  if (replyType == OFPMP_TABLE) {
     while (offset < buf_.size())
       normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());

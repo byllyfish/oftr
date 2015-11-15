@@ -473,8 +473,8 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x03
 msg:             
-  types:           0x0000000F
-  capabilities:    0x00000005
+  types:           [ ALL, SELECT, INDIRECT, FF ]
+  capabilities:    [ SELECT_WEIGHT, CHAINING ]
   max_groups_all:  0x01000000
   max_groups_sel:  0x01000000
   max_groups_ind:  0x01000000
@@ -497,7 +497,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x03
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0x00000001
     buckets:         
       - weight:          0x0001
@@ -1355,8 +1355,8 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  types:           0x0000000F
-  capabilities:    0x00000005
+  types:           [ ALL, SELECT, INDIRECT, FF ]
+  capabilities:    [ SELECT_WEIGHT, CHAINING ]
   max_groups_all:  0x01000000
   max_groups_sel:  0x01000000
   max_groups_ind:  0x01000000
@@ -1379,7 +1379,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0x00000001
     buckets:         
       - weight:          0x0001
@@ -1629,7 +1629,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
-  - flags:           0x000E
+  - flags:           [ PKTPS, BURST, STATS ]
     meter_id:        0x00000064
     bands:           
       - type:            DROP
@@ -1680,8 +1680,8 @@ xid:             0x00000000
 version:         0x04
 msg:             
   max_meter:       0x01000000
-  band_types:      0x80000006
-  capabilities:    0x0000000F
+  band_types:      [ DROP, DSCP_REMARK, '0x80000000' ]
+  capabilities:    [ KBPS, PKTPS, BURST, STATS ]
   max_bands:       0xFF
   max_color:       0x00
 ...
@@ -1735,7 +1735,7 @@ msg:
     name:            Flow Table 0x00
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -1828,7 +1828,7 @@ msg:
     name:            Flow Table 0x01
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -1909,7 +1909,7 @@ msg:
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -1990,7 +1990,7 @@ msg:
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2071,7 +2071,7 @@ msg:
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2152,7 +2152,7 @@ msg:
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2233,7 +2233,7 @@ msg:
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2314,7 +2314,7 @@ msg:
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2395,7 +2395,7 @@ msg:
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2475,7 +2475,7 @@ msg:
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2562,7 +2562,7 @@ msg:
     name:            '私のテーブル'
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2655,7 +2655,7 @@ msg:
     name:            Flow Table 0x01
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2736,7 +2736,7 @@ msg:
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2817,7 +2817,7 @@ msg:
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2898,7 +2898,7 @@ msg:
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -2979,7 +2979,7 @@ msg:
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -3060,7 +3060,7 @@ msg:
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -3141,7 +3141,7 @@ msg:
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -3222,7 +3222,7 @@ msg:
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -3302,7 +3302,7 @@ msg:
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4043,8 +4043,8 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  types:           0x0000000F
-  capabilities:    0x00000005
+  types:           [ ALL, SELECT, INDIRECT, FF ]
+  capabilities:    [ SELECT_WEIGHT, CHAINING ]
   max_groups_all:  0x01000000
   max_groups_sel:  0x01000000
   max_groups_ind:  0x01000000
@@ -4067,7 +4067,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  - type:            0x00
+  - type:            ALL
     group_id:        0x00000001
     buckets:         
       - weight:          0x0001
@@ -4260,7 +4260,7 @@ flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
-  - flags:           0x000E
+  - flags:           [ PKTPS, BURST, STATS ]
     meter_id:        0x00000064
     bands:           
       - type:            DROP
@@ -4311,8 +4311,8 @@ xid:             0x00000000
 version:         0x05
 msg:             
   max_meter:       0x01000000
-  band_types:      0x80000006
-  capabilities:    0x0000000F
+  band_types:      [ DROP, DSCP_REMARK, '0x80000000' ]
+  capabilities:    [ KBPS, PKTPS, BURST, STATS ]
   max_bands:       0xFF
   max_color:       0x00
 ...
@@ -4333,7 +4333,7 @@ msg:
     name:            Flow Table 0x00
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4426,7 +4426,7 @@ msg:
     name:            Flow Table 0x01
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4507,7 +4507,7 @@ msg:
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4588,7 +4588,7 @@ msg:
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4669,7 +4669,7 @@ msg:
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4750,7 +4750,7 @@ msg:
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4831,7 +4831,7 @@ msg:
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4912,7 +4912,7 @@ msg:
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -4993,7 +4993,7 @@ msg:
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5073,7 +5073,7 @@ msg:
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5160,7 +5160,7 @@ msg:
     name:            '私のテーブル'
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5253,7 +5253,7 @@ msg:
     name:            Flow Table 0x01
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5334,7 +5334,7 @@ msg:
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5415,7 +5415,7 @@ msg:
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5496,7 +5496,7 @@ msg:
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5577,7 +5577,7 @@ msg:
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5658,7 +5658,7 @@ msg:
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5739,7 +5739,7 @@ msg:
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5820,7 +5820,7 @@ msg:
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]
@@ -5900,7 +5900,7 @@ msg:
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
-    config:          0x00000000
+    config:          [  ]
     max_entries:     0x01000000
     instructions:    [ GOTO_TABLE, WRITE_METADATA, WRITE_ACTIONS, APPLY_ACTIONS, 
                        CLEAR_ACTIONS, METER ]

@@ -117,7 +117,7 @@ class BigEndianAligned {
   }
 
  private:
-  Type n_;
+  OFP_ALIGNAS(sizeof(Type)) Type n_;
 };
 
 template <class Type>

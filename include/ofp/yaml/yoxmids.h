@@ -26,6 +26,13 @@ struct ScalarTraits<ofp::OXMID> {
       out << '~';
     }
     ScalarTraits<ofp::OXMType>::output(type, ctxt, out);
+    // If the oxmid is an experimenter type, tack on the experimenter code
+    // following a period.
+    if (type.isExperimenter()) {
+      Hex32 experimenter = value.experimenter();
+      out << '.';
+      ScalarTraits<Hex32>::output(experimenter, ctxt, out);
+    }
     if (type.hasMask()) {
       out << '/';
     }
@@ -45,6 +52,15 @@ struct ScalarTraits<ofp::OXMID> {
       hasMask = true;
     }
 
+    // Check for experimenter format <type>.<code>
+    Hex32 experimenter = 0;
+    size_t period = scalar.find_last_of('.');
+    if (period != StringRef::npos) {
+      auto part = scalar.substr(period + 1);
+      ScalarTraits<Hex32>::input(part, ctxt, experimenter);
+      scalar = scalar.substr(0, period);
+    }
+
     ofp::OXMType type;
     StringRef result = ScalarTraits<ofp::OXMType>::input(scalar, ctxt, type);
     if (result.empty()) {
@@ -54,7 +70,7 @@ struct ScalarTraits<ofp::OXMID> {
       if (hasZeroLength) {
         type = type.zeroLength();
       }
-      value = ofp::OXMID{type, 0};
+      value = ofp::OXMID{type, experimenter};
     }
 
     return result;

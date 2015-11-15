@@ -32,5 +32,14 @@ find external/openflow-messages -name '*.fail' -print | sort | xargs $LIBOFP dec
 echo "Compare openflow-messages.fail.out to $CURRENT_SOURCE_DIR/openflow-messages.fail.out"
 diff "$CURRENT_TEST_DIR/openflow-messages.fail.out" "$CURRENT_SOURCE_DIR/openflow-messages.fail.out"
 
+# Decode all messages in ovs-messages.pass. Collect resulting error messages 
+# (and output) in the file ovs-messages.pass.out.
+
+echo "Test ovs-messages.pass"
+$LIBOFP decode -kV "$CURRENT_SOURCE_DIR/ovs-messages.pass" > "$CURRENT_TEST_DIR/ovs-messages.pass.out" 2>&1
+
+echo "Compare ovs-messages.pass.out to $CURRENT_SOURCE_DIR/ovs-messages.pass.out"
+diff "$CURRENT_TEST_DIR/ovs-messages.pass.out" "$CURRENT_SOURCE_DIR/ovs-messages.pass.out"
+
 echo "Done."
 exit 0

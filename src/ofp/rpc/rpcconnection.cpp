@@ -40,6 +40,10 @@ void RpcConnection::onRpcAddIdentity(RpcAddIdentity *add) {
   server_->onRpcAddIdentity(this, add);
 }
 
+void RpcConnection::onRpcDescription(RpcDescription *desc) {
+  server_->onRpcDescription(this, desc);
+}
+
 void RpcConnection::onChannel(Channel *channel, const char *status) {
   RpcChannel notification;
   notification.params.connId = channel->connectionId();
@@ -60,12 +64,15 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     write(",\"method\":\"ofp.message\"}\n");
 
   } else {
-    // Send `ofp.message_error` notification event.
-    RpcMessageError messageError;
-    messageError.params.datapathId = channel->datapathId();
-    messageError.params.error = decoder.error();
-    messageError.params.data = {message->data(), message->size()};
-    rpcReply(&messageError);
+    // Send `ofp.alert` notification event.
+    RpcAlert messageAlert;
+    messageAlert.params.connId = channel->connectionId();
+    messageAlert.params.datapathId = channel->datapathId();
+    messageAlert.params.time = message->time();
+    messageAlert.params.alert = "DECODE FAILED: ";
+    messageAlert.params.alert += decoder.error();
+    messageAlert.params.data = {message->data(), message->size()};
+    rpcReply(&messageAlert);
 
     log::warning("OpenFlow parse error:", decoder.error(),
                  std::make_pair("connid", message->source()->connectionId()));

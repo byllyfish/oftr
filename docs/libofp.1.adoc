@@ -30,20 +30,17 @@ libofp - YAML/JSON interface to the OpenFlow Protocol 1.0 - 1.4
 
 == DESCRIPTION
 
-The *libofp* program translates binary OpenFlow messages to YAML and back
-again. This program expects that all YAML input is UTF-8.
+The *libofp* program translates binary OpenFlow messages to YAML. It also 
+translates YAML messages to OpenFlow. This program expects that all YAML input 
+is UTF-8.
 
-The translation from binary to YAML is designed to be lossless. If you translate
-an OpenFlow message to YAML, then back to binary, you will obtain the original
-sequence of bytes (exception: non-zero padding bytes in the original message are
-replaced by zeros in the new binary message).
+If you translate an OpenFlow message to YAML, then back to binary, you will 
+obtain the original sequence of bytes (modulo differences in property ordering).
 
-Going the other way, you may lose some information if the desired OpenFlow version 
-does not support all the YAML fields. For example, if your YAML specifies 
-OpenFlow version 1.0, the binary OpenFlow message will ignore values that are
-not relevant to version 1.0. Therefore, if you translate the binary message back
-to YAML, you may obtain a different YAML value than the one with which you 
-started.
+The YAML schema is based on OpenFlow 1.4.x. If your YAML message specifies an 
+earlier OpenFlow version that does not support all message attributes, the 
+current implementation ignores those attributes when constructing the binary OpenFlow
+message.
 
 The libofp program also includes a JSON-RPC microservice that can supports multiple
 simultaneous OpenFlow connections. See the `libofp-jsonrpc` man page for more details.
@@ -227,6 +224,9 @@ Run a JSON-RPC server. By default, the control connection comes from stdio.
 Access built-in information about the YAML schema used to describe all OpenFlow
 messages.
 
+Command-line options list one type of schema object or dump the entire schema. 
+Arguments will print the desired schema and all of its dependencies.
+
 === OPTIONS
 
 *-h, --help*::
@@ -235,11 +235,17 @@ messages.
 *-a, --actions*::
     List supported actions.
 
-*--dump*::
-    List all schema names.
+*-b, --brief*::
+    Display abbreviated form of message schema.
 
-*-e, --enums*::
+*--builtins*::
+    List supported builtin types.
+
+*--enums*::
     List supported enumerated types.
+
+*--field-table*::
+    List supported match fields in a table.
 
 *-f, --fields*::
     List supported match fields.
@@ -250,8 +256,17 @@ messages.
 *-m, --messages*::
     List supported messages.
 
-*--multipart*::
-    List supported multipart types.
+*--mixed*::
+    List supported mixed types.
+
+*-r, --rpc*::
+    List supported RPC commands.
+
+*--schema-all*::
+    List complete schema.
+
+*--schema-names*::
+    List all schema names.
 
 
 == LOGGING OPTIONS

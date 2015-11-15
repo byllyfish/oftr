@@ -50,6 +50,11 @@ void RpcConnectionStdio::write(const std::string &msg) {
   }
 }
 
+void RpcConnectionStdio::close() {
+  input_.close();
+  output_.close();
+}
+
 void RpcConnectionStdio::asyncAccept() {
   // Start first async read.
   asyncRead();
@@ -72,7 +77,8 @@ void RpcConnectionStdio::asyncRead() {
           log::error("RpcConnectionStdio::asyncRead: input too large",
                      kMaxRpcMessageSize, err);
           rpcRequestTooBig();
-        } else if (err != asio::error::eof) {
+        } else if (err != asio::error::eof &&
+                   err != asio::error::operation_aborted) {
           log::error("RpcConnectionStdio::asyncRead error", err);
         }
       });

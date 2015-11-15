@@ -19,6 +19,7 @@ struct RpcClose;
 struct RpcSend;
 struct RpcListConns;
 struct RpcAddIdentity;
+struct RpcDescription;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -32,6 +33,9 @@ class RpcServer {
   RpcServer(Driver *driver, RpcSession *session,
             Channel *defaultChannel = nullptr);
 
+  /// Close the control connection.
+  void close();
+
   // Called by RpcConnection to update oneConn_.
   void onConnect(RpcConnection *conn);
   void onDisconnect(RpcConnection *conn);
@@ -42,6 +46,7 @@ class RpcServer {
   void onRpcSend(RpcConnection *conn, RpcSend *send);
   void onRpcListConns(RpcConnection *conn, RpcListConns *list);
   void onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add);
+  void onRpcDescription(RpcConnection *conn, RpcDescription *desc);
 
   // These methods are used to bridge RpcChannelListeners to RpcConnections.
   void onChannelUp(Channel *channel);
@@ -59,6 +64,8 @@ class RpcServer {
 
   static void connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
                               const std::error_code &err);
+
+  static std::string softwareVersion();
 };
 
 OFP_END_IGNORE_PADDING

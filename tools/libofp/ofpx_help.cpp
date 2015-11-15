@@ -33,6 +33,7 @@
 #include "ofp/yaml/ybundleaddmessage.h"
 #include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/yaml/yrequestforward.h"
+#include "ofp/rpc/rpcevents.h"
 
 using namespace ofpx;
 
@@ -98,11 +99,12 @@ static const char *const kPropertySchemas[] = {
 };
 
 static const char *const kBuiltinTypes[] = {
-    "UInt8",      "UInt16",     "UInt32",      "UInt64",        "SInt32",
-    "String",     "Str16",      "Str32",       "Str256",        "HexData",
-    "DatapathID", "MacAddress", "IPv4Address", "IPv6Address",   "LLDPChassisID",
-    "LLDPPortID", "ActionID",   "FieldID",     "InstructionID", "Timestamp"
-};
+    "UInt8",       "UInt16",      "UInt32",       "UInt64",
+    "SInt32",      "String",      "Str16",        "Str32",
+    "Str256",      "HexData",     "DatapathID",   "MacAddress",
+    "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID",
+    "LLDPPortID",  "ActionID",    "FieldID",      "InstructionID",
+    "Timestamp"};
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
@@ -170,6 +172,11 @@ static SchemaPair kFlagSchemas[] = {
     {ofp::yaml::MakeFlagSchema<ofp::OFPFlowMonitorFlags>,
      "Flag/FlowMonitorFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPBundleFlags>, "Flag/BundleFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPMeterBandFlags>, "Flag/MeterBandFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPGroupCapabilityFlags>,
+     "Flag/GroupCapabilityFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPGroupTypeFlags>, "Flag/GroupTypeFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPMeterFlags>, "Flag/MeterFlags"},
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.
@@ -188,18 +195,26 @@ int Help::run(int argc, const char *const *argv) {
       argc, argv, "Provide information about the OpenFlow YAML schema\n");
   loadSchemas();
 
-  if (fields_) {
-    listFields();
+  if (fieldTable_) {
+    dumpFieldTable();
   } else if (messages_) {
     listSchemas("Message");
-  } else if (multipart_) {
-    listSchemas("Multipart");
   } else if (instructions_) {
     listSchemas("Instruction");
   } else if (actions_) {
     listSchemas("Action");
+  } else if (builtins_) {
+    listSchemas("Builtin");
+  } else if (fields_) {
+    listSchemas("Field");
   } else if (enums_) {
     listSchemas("Enum");
+  } else if (flags_) {
+    listSchemas("Flag");
+  } else if (mixed_) {
+    listSchemas("Mixed");
+  } else if (rpc_) {
+    listSchemas("Rpc");
   } else if (schemaAll_) {
     dumpSchemaAll();
   } else if (schemaNames_) {
@@ -217,55 +232,63 @@ int Help::run(int argc, const char *const *argv) {
 }
 
 void Help::loadSchemas() {
-  for (auto &schema : kMessageSchemas) {
-    // If the first line in the schema is empty, split it on the empty lines
-    // into multiple schema objects.
-    if (schema[0] == '\n') {
-      llvm::SmallVector<llvm::StringRef, 25> vals;
-      llvm::StringRef{schema + 1}.split(vals, "\n\n", -1, false);
-      for (auto val : vals) {
-        schemas_.emplace_back(new Schema{val});
-      }
+  loadSchema(llvm::yaml::kRpcSchema);
 
-    } else {
-      schemas_.emplace_back(new Schema{schema});
-    }
+  for (auto &schema : kMessageSchemas) {
+    loadSchema(schema);
   }
 
   for (auto &schema : kInstructionSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kActionSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kMeterBandSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kStructSchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &schema : kPropertySchemas) {
-    schemas_.emplace_back(new Schema{schema});
+    loadSchema(schema);
   }
 
   for (auto &p : kEnumSchemas) {
-    schemas_.emplace_back(new Schema{p.first(p.second)});
+    loadSchema(p.first(p.second));
   }
 
   for (auto &p : kMixedSchemas) {
-    schemas_.emplace_back(new Schema{p.first(p.second)});
+    loadSchema(p.first(p.second));
   }
 
   for (auto &p : kFlagSchemas) {
-    schemas_.emplace_back(new Schema{p.first(p.second)});
+    loadSchema(p.first(p.second));
   }
 
   addFieldSchemas();
   addBuiltinTypes();
+  initTopLevel();
+}
+
+void Help::loadSchema(const std::string &schema) {
+  assert(!schema.empty());
+  // If the first line in the schema is empty, split it on the empty lines
+  // into multiple schema objects.
+  if (schema[0] == '\n') {
+    llvm::SmallVector<llvm::StringRef, 25> vals;
+    llvm::StringRef{schema}.drop_front(1).split(vals, "\n\n", -1, false);
+    for (auto val : vals) {
+      schemas_.emplace_back(new Schema{val});
+    }
+
+  } else {
+    schemas_.emplace_back(new Schema{schema});
+  }
 }
 
 void Help::addFieldSchemas() {
@@ -276,16 +299,24 @@ void Help::addFieldSchemas() {
     sstr << "{Field/" << info->name << "}\n";
     sstr << "field: " << info->name << '\n';
     sstr << "value: " << translateFieldType(info->type) << '\n';
-    sstr << "mask: !optout " << translateFieldType(info->type) << "\n";
+    if (info->isMaskSupported)
+      sstr << "mask: !optout " << translateFieldType(info->type) << '\n';
 
-    schemas_.emplace_back(new Schema(sstr.str()));
+    loadSchema(sstr.str());
   }
 }
 
 void Help::addBuiltinTypes() {
   const std::string builtin{"Builtin/"};
   for (auto &p : kBuiltinTypes) {
-    schemas_.emplace_back(new Schema(builtin + p + "\n<builtin>"));
+    loadSchema(builtin + p + "\n<builtin>");
+  }
+}
+
+/// Build list of the names of the top level types in the schema list.
+void Help::initTopLevel() {
+  for (auto &s : schemas_) {
+    topLevel_.insert(s->type().lower());
   }
 }
 
@@ -318,11 +349,11 @@ Schema *Help::findNearestSchema(const std::string &key) {
   return minSchema;
 }
 
-void Help::listFields() {
+void Help::dumpFieldTable() {
   // Determine the maximum width of the name and type fields.
-
   int nameWidth = 0;
   int typeWidth = 0;
+  int maskWidth = 4;
 
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
@@ -331,13 +362,27 @@ void Help::listFields() {
     typeWidth = std::max(typeWidth, static_cast<int>(std::strlen(typeStr)));
   }
 
-  // Print out the name, type and description of each field.
+  // Print the header line.
+  std::cout << std::setw(nameWidth) << std::left << "Name"
+            << " | " << std::setw(typeWidth) << std::left << "Type"
+            << " | " << std::setw(maskWidth) << std::left << "Mask"
+            << " | "
+            << "Description\n";
+  std::cout << std::setfill('-');
+  std::cout << std::setw(nameWidth) << "-"
+            << "-|-" << std::setw(typeWidth) << "-"
+            << "-|-" << std::setw(maskWidth) << "-"
+            << "-|-" << std::setw(12) << "-" << '\n';
+  std::cout << std::setfill(' ');
 
+  // Print the name, type and description of each field.
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
     auto typeStr = translateFieldType(info->type);
+    auto maskStr = info->isMaskSupported ? "Yes" : " ";
     std::cout << std::setw(nameWidth) << std::left << info->name << " | "
               << std::setw(typeWidth) << std::left << typeStr << " | "
+              << std::setw(maskWidth) << std::left << maskStr << " | "
               << info->description << '\n';
   }
 }
@@ -352,14 +397,26 @@ void Help::listSchemas(const std::string &type) {
 }
 
 void Help::printSchema(const std::string &key) {
+  // If key is a top level type, we print out all sub-schemas, but no
+  // dependent types.
+  std::string lowerKey = llvm::StringRef{key}.lower();
+  if (topLevel_.find(lowerKey) != topLevel_.end()) {
+    for (auto &s : schemas_) {
+      if (s->type().equals_lower(lowerKey))
+        s->print(std::cout, brief_);
+    }
+    return;
+  }
+
+  // Otherwise, we search for the first schema name that matches.
   auto schema = findSchema(key);
   if (schema) {
-    schema->print(std::cout);
+    schema->print(std::cout, brief_);
 
     for (auto &s : schema->dependsOnSchemas()) {
       auto depSchema = findSchema(s);
       if (depSchema) {
-        depSchema->print(std::cout);
+        depSchema->print(std::cout, brief_);
       } else {
         std::cerr << "Unknown dependent schema '" << s << "'\n";
       }
@@ -386,7 +443,7 @@ void Help::dumpSchemaAll() {
   bool missingDependentSchemas = false;
 
   for (auto &schema : schemas_) {
-    schema->print(std::cout);
+    schema->print(std::cout, brief_);
 
     for (auto &s : schema->dependsOnSchemas()) {
       if (!findSchema(s)) {

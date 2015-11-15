@@ -11,9 +11,11 @@ static const char *kMessagePrefix = R"""(  version: !opt UInt8
   xid: !opt UInt32
   conn_id: !opt UInt64
   auxiliary_id: !opt UInt8
-  flags: !optout [ MultipartFlags ]
+  flags: !optout [MultipartFlags]
   time: !optout Timestamp
 )""";
+
+static const char *kBriefMessagePrefix = "  datapath_id: !opt DatapathID\n";
 
 static bool equalsAlnum(llvm::StringRef lhs, llvm::StringRef rhs);
 static std::string stringJoin(const std::vector<llvm::StringRef> &vec,
@@ -65,12 +67,16 @@ std::set<std::string> Schema::dependsOnSchemas() const {
   return result;
 }
 
-void Schema::print(std::ostream &os) const {
+void Schema::print(std::ostream &os, bool brief) const {
   os << type() << '/' << name().str() << ": ";
   if (isObject_) {
     os << '\n';
     if (type().equals("Message")) {
-      os << kMessagePrefix;
+      if (brief) {
+        os << kBriefMessagePrefix;
+      } else {
+        os << kMessagePrefix;
+      }
     }
     printValue(os, 2);
   } else {

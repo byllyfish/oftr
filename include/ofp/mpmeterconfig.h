@@ -14,7 +14,7 @@ class MPMeterConfig {
  public:
   enum { MPVariableSizeOffset = 0 };
 
-  UInt16 flags() const { return flags_; }
+  OFPMeterConfigFlags flags() const { return flags_; }
   MeterNumber meterId() const { return meterId_; }
 
   MeterBandRange bands() const;
@@ -23,7 +23,7 @@ class MPMeterConfig {
 
  private:
   Big16 length_;
-  Big16 flags_;
+  Big<OFPMeterConfigFlags> flags_;
   MeterNumber meterId_;
 
   friend class MPMeterConfigBuilder;
@@ -36,7 +36,7 @@ static_assert(IsStandardLayout<MPMeterConfig>(), "Expected standard layout.");
 
 class MPMeterConfigBuilder {
  public:
-  void setFlags(UInt16 flags) { msg_.flags_ = flags; }
+  void setFlags(OFPMeterConfigFlags flags) { msg_.flags_ = flags; }
   void setMeterId(MeterNumber meterId) { msg_.meterId_ = meterId; }
 
   void write(Writable *channel);
