@@ -2,12 +2,12 @@
 .\"     Title: libofp
 .\"    Author: Bill Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 05/22/2015
+.\"      Date: 11/15/2015
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP" "1" "05/22/2015" "\ \&" "\ \&"
+.TH "LIBOFP" "1" "11/15/2015" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -42,11 +42,11 @@ libofp \- YAML/JSON interface to the OpenFlow Protocol 1\&.0 \- 1\&.4
 \fBlibofp [\-\-version|\-\-help]\fR
 .SH "DESCRIPTION"
 .sp
-The \fBlibofp\fR program translates binary OpenFlow messages to YAML and back again\&. This program expects that all YAML input is UTF\-8\&.
+The \fBlibofp\fR program translates binary OpenFlow messages to YAML\&. It also translates YAML messages to OpenFlow\&. This program expects that all YAML input is UTF\-8\&.
 .sp
-The translation from binary to YAML is designed to be lossless\&. If you translate an OpenFlow message to YAML, then back to binary, you will obtain the original sequence of bytes (exception: non\-zero padding bytes in the original message are replaced by zeros in the new binary message)\&.
+If you translate an OpenFlow message to YAML, then back to binary, you will obtain the original sequence of bytes (modulo differences in property ordering)\&.
 .sp
-Going the other way, you may lose some information if the desired OpenFlow version does not support all the YAML fields\&. For example, if your YAML specifies OpenFlow version 1\&.0, the binary OpenFlow message will ignore values that are not relevant to version 1\&.0\&. Therefore, if you translate the binary message back to YAML, you may obtain a different YAML value than the one with which you started\&.
+The YAML schema is based on OpenFlow 1\&.4\&.x\&. If your YAML message specifies an earlier OpenFlow version that does not support all message attributes, the current implementation ignores those attributes when constructing the binary OpenFlow message\&.
 .sp
 The libofp program also includes a JSON\-RPC microservice that can supports multiple simultaneous OpenFlow connections\&. See the libofp\-jsonrpc man page for more details\&.
 .sp
@@ -308,6 +308,11 @@ files\&.
 .RS 4
 Verify output by translating it back to binary\&.
 .RE
+.PP
+\fB\-\-include\-filename\fR
+.RS 4
+Include file name in all decodes\&.
+.RE
 .SH "LIBOFP JSONRPC"
 .sp
 \fBlibofp jsonrpc\fR [\fIOPTIONS\fR]
@@ -329,6 +334,8 @@ Run as a XPC service (Mac OS X only)\&.
 \fBlibofp help\fR [\fIOPTIONS\fR] [\fIARGS\fR, \&...]
 .sp
 Access built\-in information about the YAML schema used to describe all OpenFlow messages\&.
+.sp
+Command\-line options list one type of schema object or dump the entire schema\&. Arguments will print the desired schema and all of its dependencies\&.
 .SS "OPTIONS"
 .PP
 \fB\-h, \-\-help\fR
@@ -341,14 +348,24 @@ Print out usage information for the command\&.
 List supported actions\&.
 .RE
 .PP
-\fB\-\-dump\fR
+\fB\-b, \-\-brief\fR
 .RS 4
-List all schema names\&.
+Display abbreviated form of message schema\&.
 .RE
 .PP
-\fB\-e, \-\-enums\fR
+\fB\-\-builtins\fR
+.RS 4
+List supported builtin types\&.
+.RE
+.PP
+\fB\-\-enums\fR
 .RS 4
 List supported enumerated types\&.
+.RE
+.PP
+\fB\-\-field\-table\fR
+.RS 4
+List supported match fields in a table\&.
 .RE
 .PP
 \fB\-f, \-\-fields\fR
@@ -366,9 +383,24 @@ List supported instructions\&.
 List supported messages\&.
 .RE
 .PP
-\fB\-\-multipart\fR
+\fB\-\-mixed\fR
 .RS 4
-List supported multipart types\&.
+List supported mixed types\&.
+.RE
+.PP
+\fB\-r, \-\-rpc\fR
+.RS 4
+List supported RPC commands\&.
+.RE
+.PP
+\fB\-\-schema\-all\fR
+.RS 4
+List complete schema\&.
+.RE
+.PP
+\fB\-\-schema\-names\fR
+.RS 4
+List all schema names\&.
 .RE
 .SH "LOGGING OPTIONS"
 .sp
