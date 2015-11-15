@@ -70,9 +70,11 @@ class Help : public Subprogram {
 
   // --- Command-line Arguments ---
   cl::opt<bool> fields_{"fields", cl::desc("List supported match fields.")};
-  cl::opt<bool> fieldTable_{"field-table", cl::desc("List supported match fields in a table.")};
+  cl::opt<bool> fieldTable_{
+      "field-table", cl::desc("List supported match fields in a table.")};
   cl::opt<bool> actions_{"actions", cl::desc("List supported actions.")};
-  cl::opt<bool> builtins_{"builtins", cl::desc("List supported builtin types.")};
+  cl::opt<bool> builtins_{"builtins",
+                          cl::desc("List supported builtin types.")};
   cl::opt<bool> instructions_{"instructions",
                               cl::desc("List supported instructions.")};
   cl::opt<bool> messages_{"messages", cl::desc("List supported messages.")};
@@ -83,7 +85,8 @@ class Help : public Subprogram {
   cl::opt<bool> schemaNames_{"schema-names",
                              cl::desc("List all schema names.")};
   cl::opt<bool> schemaAll_{"schema-all", cl::desc("List complete schema.")};
-  cl::opt<bool> brief_{"brief", cl::desc("Display abbreviated form of message schema")};
+  cl::opt<bool> brief_{"brief",
+                       cl::desc("Display abbreviated form of message schema")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
 
   // --- Argument Aliases ---

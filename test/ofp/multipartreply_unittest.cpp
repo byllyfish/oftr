@@ -6,7 +6,8 @@
 
 using namespace ofp;
 
-const OFPTableConfigFlags kFakeFlags = static_cast<OFPTableConfigFlags>(0x44444444);
+const OFPTableConfigFlags kFakeFlags =
+    static_cast<OFPTableConfigFlags>(0x44444444);
 
 TEST(multipartreply, mptablefeatures) {
   MemoryChannel contents{4};

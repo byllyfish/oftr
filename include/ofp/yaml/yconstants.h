@@ -663,8 +663,8 @@ struct ScalarBitSetTraits<ofp::OFPGroupCapabilityFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val,
-                              ofp::yaml::AllFlags<ofp::OFPGroupCapabilityFlags>());
+      ofp::yaml::SetFlagError(
+          io, val, ofp::yaml::AllFlags<ofp::OFPGroupCapabilityFlags>());
     }
   }
 };

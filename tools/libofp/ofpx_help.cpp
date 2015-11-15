@@ -99,10 +99,12 @@ static const char *const kPropertySchemas[] = {
 };
 
 static const char *const kBuiltinTypes[] = {
-    "UInt8",      "UInt16",     "UInt32",      "UInt64",        "SInt32",
-    "String",     "Str16",      "Str32",       "Str256",        "HexData",
-    "DatapathID", "MacAddress", "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID", "LLDPPortID", "ActionID",   "FieldID",     "InstructionID", "Timestamp"
-};
+    "UInt8",       "UInt16",      "UInt32",       "UInt64",
+    "SInt32",      "String",      "Str16",        "Str32",
+    "Str256",      "HexData",     "DatapathID",   "MacAddress",
+    "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID",
+    "LLDPPortID",  "ActionID",    "FieldID",      "InstructionID",
+    "Timestamp"};
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
@@ -171,7 +173,8 @@ static SchemaPair kFlagSchemas[] = {
      "Flag/FlowMonitorFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPBundleFlags>, "Flag/BundleFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPMeterBandFlags>, "Flag/MeterBandFlags"},
-    {ofp::yaml::MakeFlagSchema<ofp::OFPGroupCapabilityFlags>, "Flag/GroupCapabilityFlags"},
+    {ofp::yaml::MakeFlagSchema<ofp::OFPGroupCapabilityFlags>,
+     "Flag/GroupCapabilityFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPGroupTypeFlags>, "Flag/GroupTypeFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPMeterFlags>, "Flag/MeterFlags"},
 };
@@ -317,7 +320,6 @@ void Help::initTopLevel() {
   }
 }
 
-
 Schema *Help::findSchema(const std::string &key) {
   auto iter = std::find_if(
       schemas_.begin(), schemas_.end(),
@@ -361,15 +363,16 @@ void Help::dumpFieldTable() {
   }
 
   // Print the header line.
-  std::cout << std::setw(nameWidth) << std::left << "Name" << " | "
-            << std::setw(typeWidth) << std::left << "Type" << " | "
-            << std::setw(maskWidth) << std::left << "Mask" << " | "
+  std::cout << std::setw(nameWidth) << std::left << "Name"
+            << " | " << std::setw(typeWidth) << std::left << "Type"
+            << " | " << std::setw(maskWidth) << std::left << "Mask"
+            << " | "
             << "Description\n";
   std::cout << std::setfill('-');
-  std::cout << std::setw(nameWidth) << "-" << "-|-"
-            << std::setw(typeWidth) << "-" << "-|-"
-            << std::setw(maskWidth) << "-" << "-|-"
-            << std::setw(12) << "-" << '\n';
+  std::cout << std::setw(nameWidth) << "-"
+            << "-|-" << std::setw(typeWidth) << "-"
+            << "-|-" << std::setw(maskWidth) << "-"
+            << "-|-" << std::setw(12) << "-" << '\n';
   std::cout << std::setfill(' ');
 
   // Print the name, type and description of each field.

@@ -17,7 +17,7 @@ class RpcConnectionSession : public RpcConnection {
 
   void asyncAccept() override {}
   void close() override {}
-  
+
  protected:
   void write(const std::string &msg) override;
   void asyncRead() override;

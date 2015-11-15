@@ -311,24 +311,25 @@ void Engine::installSignalHandlers(std::function<void()> callback) {
 
   OFP_BEGIN_IGNORE_PADDING
 
-  signals_.async_wait([this, callback](const asio::error_code &error, int signum) {
-    if (!error) {
-      const char *signame = (signum == SIGTERM)
-                                ? "SIGTERM"
-                                : (signum == SIGINT) ? "SIGINT" : "???";
-      log::info("Signal received:", signame);
+  signals_.async_wait(
+      [this, callback](const asio::error_code &error, int signum) {
+        if (!error) {
+          const char *signame = (signum == SIGTERM)
+                                    ? "SIGTERM"
+                                    : (signum == SIGINT) ? "SIGINT" : "???";
+          log::info("Signal received:", signame);
 
-      signals_.cancel();
-      idleTimer_.cancel();
-      (void)this->close(0);
+          signals_.cancel();
+          idleTimer_.cancel();
+          (void)this->close(0);
 
-      if (callback)
-        callback();
-      
-    } else {
-      log::error("Signal error", signum, error);
-    }
-  });
+          if (callback)
+            callback();
+
+        } else {
+          log::error("Signal error", signum, error);
+        }
+      });
 
   OFP_END_IGNORE_PADDING
 }

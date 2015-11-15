@@ -40,7 +40,9 @@ static_assert(IsStandardLayout<MPMeterFeatures>(), "Expected standard layout.");
 class MPMeterFeaturesBuilder {
  public:
   void setMaxMeter(UInt32 maxMeter) { msg_.maxMeter_ = maxMeter; }
-  void setBandTypes(OFPMeterBandFlags bandTypes) { msg_.bandTypes_ = bandTypes; }
+  void setBandTypes(OFPMeterBandFlags bandTypes) {
+    msg_.bandTypes_ = bandTypes;
+  }
   void setCapabilities(OFPMeterFlags capabilities) {
     msg_.capabilities_ = capabilities;
   }

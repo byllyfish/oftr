@@ -18,7 +18,6 @@ using ofp::UInt32;
 RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
     : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
-
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
 
@@ -350,7 +349,8 @@ std::string RpcServer::softwareVersion() {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
   std::stringstream sstr;
 
-  sstr << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.' << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+  sstr << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
+       << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
 
   return sstr.str();
 }

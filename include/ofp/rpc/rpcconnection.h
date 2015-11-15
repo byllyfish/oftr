@@ -25,7 +25,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
 
   virtual void asyncAccept() = 0;
   virtual void close() = 0;
-  
+
   void onRpcListen(RpcListen *listen);
   void onRpcConnect(RpcConnect *connect);
   void onRpcClose(RpcClose *close);

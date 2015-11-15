@@ -21,16 +21,16 @@ const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 
 /// RPC Methods
 enum RpcMethod : UInt32 {
-  METHOD_LISTEN = 0,     // ofp.listen
-  METHOD_CONNECT,        // ofp.connect
-  METHOD_CLOSE,          // ofp.close
-  METHOD_SEND,           // ofp.send
-  METHOD_CHANNEL,        // ofp.channel
-  METHOD_MESSAGE,        // ofp.message
-  METHOD_ALERT,          // ofp.alert
-  METHOD_LIST_CONNS,     // ofp.list_connections
-  METHOD_ADD_IDENTITY,   // ofp.add_identity
-  METHOD_DESCRIPTION,    // ofp.description
+  METHOD_LISTEN = 0,    // ofp.listen
+  METHOD_CONNECT,       // ofp.connect
+  METHOD_CLOSE,         // ofp.close
+  METHOD_SEND,          // ofp.send
+  METHOD_CHANNEL,       // ofp.channel
+  METHOD_MESSAGE,       // ofp.message
+  METHOD_ALERT,         // ofp.alert
+  METHOD_LIST_CONNS,    // ofp.list_connections
+  METHOD_ADD_IDENTITY,  // ofp.add_identity
+  METHOD_DESCRIPTION,   // ofp.description
   METHOD_UNSUPPORTED
 };
 
@@ -501,7 +501,8 @@ struct MappingTraits<ofp::rpc::RpcDescriptionResponse> {
 
 template <>
 struct MappingTraits<ofp::rpc::RpcDescriptionResponse::Result> {
-  static void mapping(IO &io, ofp::rpc::RpcDescriptionResponse::Result &result) {
+  static void mapping(IO &io,
+                      ofp::rpc::RpcDescriptionResponse::Result &result) {
     io.mapRequired("major_version", result.major_version);
     io.mapRequired("minor_version", result.minor_version);
     io.mapRequired("software_version", result.software_version);

@@ -389,7 +389,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
       return ExitStatus::VerifyOutputFailed;
     }
 
-    if (!equalMessages({originalMessage->data(), originalMessage->size()}, {encoder.data(), encoder.size()})) {
+    if (!equalMessages({originalMessage->data(), originalMessage->size()},
+                       {encoder.data(), encoder.size()})) {
       return ExitStatus::VerifyOutputFailed;
     }
   }
@@ -398,7 +399,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 }
 
 /// Return true if the two messages are equal.
-bool Decode::equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const {
+bool Decode::equalMessages(ofp::ByteRange origData,
+                           ofp::ByteRange newData) const {
   ofp::ByteList buf;
   if (normalizeTableFeaturesMessage(origData, buf)) {
     ofp::log::debug("equalMessage: normalized TableFeatures message");
@@ -408,9 +410,8 @@ bool Decode::equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) cons
   // First compare the size of the messages.
   if (origData.size() != newData.size()) {
     std::cerr << "Filename: " << currentFilename_ << '\n';
-    std::cerr << "Error: Encode yielded different size data: "
-              << newData.size() << " vs. " << origData.size() << '\n'
-              << newData << '\n'
+    std::cerr << "Error: Encode yielded different size data: " << newData.size()
+              << " vs. " << origData.size() << '\n' << newData << '\n'
               << origData << '\n';
     return false;
   }
@@ -419,12 +420,11 @@ bool Decode::equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) cons
 
   // Next, compare the actual contents of the messages.
   if (std::memcmp(origData.data(), newData.data(), newData.size()) != 0) {
-    size_t diffOffset = findDiffOffset(origData.data(), newData.data(), newData.size());
+    size_t diffOffset =
+        findDiffOffset(origData.data(), newData.data(), newData.size());
     std::cerr << "Filename: " << currentFilename_ << '\n';
     std::cerr << "Error: Encode yielded different data at byte offset "
-              << diffOffset << ":\n"
-              << newData << '\n'
-              << origData << '\n';
+              << diffOffset << ":\n" << newData << '\n' << origData << '\n';
     return false;
   }
 

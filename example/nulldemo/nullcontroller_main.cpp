@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
   Driver driver;
   driver.installSignalHandlers();
-  
+
   if (addr.valid()) {
     (void)driver.connect(
         ChannelMode::Controller, 0, IPv6Endpoint{addr, OFP_DEFAULT_PORT},

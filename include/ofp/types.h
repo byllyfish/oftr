@@ -124,7 +124,8 @@ constexpr UInt16 UInt16_narrow_cast(T value) {
 template <class T>
 constexpr UInt32 UInt32_narrow_cast(T value) {
   // Support case where T == size_t on 32-bit system
-  static_assert(sizeof(T) > sizeof(UInt32) || std::is_same<T, size_t>::value, "Use UInt32_cast().");
+  static_assert(sizeof(T) > sizeof(UInt32) || std::is_same<T, size_t>::value,
+                "Use UInt32_cast().");
   return static_cast<UInt32>(value);
 }
 

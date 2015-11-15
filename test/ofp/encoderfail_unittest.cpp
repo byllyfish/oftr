@@ -80,7 +80,9 @@ TEST(encoderfail, unknownMultipartRequest2) {
     )""";
 
   Encoder encoder{input};
-  EXPECT_EQ("YAML:2:11: error: unknown value \"REQUEST_DESC\" Did you mean \"REQUESTFORWARD\"?\n    type: REQUEST_DESC\n          ^~~~~~~~~~~~\n",
+  EXPECT_EQ(
+      "YAML:2:11: error: unknown value \"REQUEST_DESC\" Did you mean "
+      "\"REQUESTFORWARD\"?\n    type: REQUEST_DESC\n          ^~~~~~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());

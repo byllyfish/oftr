@@ -56,7 +56,7 @@ struct ScalarTraits<ofp::OXMID> {
     Hex32 experimenter = 0;
     size_t period = scalar.find_last_of('.');
     if (period != StringRef::npos) {
-      auto part = scalar.substr(period+1);
+      auto part = scalar.substr(period + 1);
       ScalarTraits<Hex32>::input(part, ctxt, experimenter);
       scalar = scalar.substr(0, period);
     }

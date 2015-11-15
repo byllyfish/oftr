@@ -77,7 +77,8 @@ void RpcConnectionStdio::asyncRead() {
           log::error("RpcConnectionStdio::asyncRead: input too large",
                      kMaxRpcMessageSize, err);
           rpcRequestTooBig();
-        } else if (err != asio::error::eof && err != asio::error::operation_aborted) {
+        } else if (err != asio::error::eof &&
+                   err != asio::error::operation_aborted) {
           log::error("RpcConnectionStdio::asyncRead error", err);
         }
       });

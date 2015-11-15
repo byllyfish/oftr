@@ -699,7 +699,7 @@ enum OFPGroupCapabilityFlags : UInt32 {
 };
 
 inline OFPGroupCapabilityFlags operator|(OFPGroupCapabilityFlags lhs,
-                                   OFPGroupCapabilityFlags rhs) {
+                                         OFPGroupCapabilityFlags rhs) {
   return static_cast<OFPGroupCapabilityFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
@@ -727,7 +727,7 @@ inline OFPMeterConfigFlags operator|(OFPMeterConfigFlags lhs,
 
 // OFPMeterFlags is the 32-bit equivalent of OFPMeterConfigFlags. It is needed
 // because MeterMod assumes 16-bit and MeterFeatures assumes 32-bit.
- 
+
 enum OFPMeterFlags : UInt32 {
   OFPMF_NONE = 0,
 
@@ -739,8 +739,7 @@ enum OFPMeterFlags : UInt32 {
   OFPMF_OTHER_METER_FLAGS = 0xFFFFFFF0
 };
 
-inline OFPMeterFlags operator|(OFPMeterFlags lhs,
-                                     OFPMeterFlags rhs) {
+inline OFPMeterFlags operator|(OFPMeterFlags lhs, OFPMeterFlags rhs) {
   return static_cast<OFPMeterFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 

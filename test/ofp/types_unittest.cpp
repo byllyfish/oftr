@@ -135,11 +135,11 @@ TEST(types, IsPtrAligned) {
   EXPECT_TRUE(IsPtrAligned(p, 4));
   EXPECT_TRUE(IsPtrAligned(p, 2));
 
-  EXPECT_FALSE(IsPtrAligned(p+1, 8));
-  EXPECT_FALSE(IsPtrAligned(p+1, 4));
-  EXPECT_FALSE(IsPtrAligned(p+1, 2));
+  EXPECT_FALSE(IsPtrAligned(p + 1, 8));
+  EXPECT_FALSE(IsPtrAligned(p + 1, 4));
+  EXPECT_FALSE(IsPtrAligned(p + 1, 2));
 
-  EXPECT_FALSE(IsPtrAligned(p+2, 8));
-  EXPECT_FALSE(IsPtrAligned(p+2, 4));
-  EXPECT_TRUE(IsPtrAligned(p+2, 2));
+  EXPECT_FALSE(IsPtrAligned(p + 2, 8));
+  EXPECT_FALSE(IsPtrAligned(p + 2, 4));
+  EXPECT_TRUE(IsPtrAligned(p + 2, 2));
 }

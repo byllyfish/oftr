@@ -5,7 +5,8 @@
 
 using namespace ofp;
 
-const OFPFlowRemovedReason kFakeReason = static_cast<OFPFlowRemovedReason>(0x22);
+const OFPFlowRemovedReason kFakeReason =
+    static_cast<OFPFlowRemovedReason>(0x22);
 
 TEST(mpflowmonitorreply, test) {
   MatchBuilder match;

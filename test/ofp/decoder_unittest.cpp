@@ -1406,7 +1406,24 @@ TEST(decoder, ofmp_groupfeatures_reply) {
   testDecodeEncode(
       "041300381111111100080000000000001111111122222222333333334444444455555555"
       "666666663777777708888888199999992AAAAAAA",
-      "---\ntype:            REPLY.GROUP_FEATURES\nflags:           [  ]\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  types:           [ ALL, '0x11111110' ]\n  capabilities:    [ SELECT_LIVENESS, '0x22222220' ]\n  max_groups_all:  0x33333333\n  max_groups_sel:  0x44444444\n  max_groups_ind:  0x55555555\n  max_groups_ff:   0x66666666\n  actions_all:     [ OUTPUT, SET_VLAN_VID, SET_VLAN_PCP, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_ECN, SET_TP_SRC, SET_TP_DST, COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, DEC_NW_TTL, SET_FIELD, PUSH_PBB, '0x30000000' ]\n  actions_sel:     [ SET_DL_SRC, SET_NW_TOS, COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, SET_NW_TTL, POP_PBB ]\n  actions_ind:     [ OUTPUT, SET_DL_SRC, SET_DL_DST, SET_NW_TOS, SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_MPLS, POP_MPLS, SET_NW_TTL, DEC_NW_TTL, POP_PBB, '0x10000000' ]\n  actions_ff:      [ SET_VLAN_VID, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_SRC, COPY_TTL_OUT, SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, PUSH_MPLS, SET_QUEUE, SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' ]\n...\n");
+      "---\ntype:            REPLY.GROUP_FEATURES\nflags:           [  ]\nxid: "
+      "            0x11111111\nversion:         0x04\nmsg:             \n  "
+      "types:           [ ALL, '0x11111110' ]\n  capabilities:    [ "
+      "SELECT_LIVENESS, '0x22222220' ]\n  max_groups_all:  0x33333333\n  "
+      "max_groups_sel:  0x44444444\n  max_groups_ind:  0x55555555\n  "
+      "max_groups_ff:   0x66666666\n  actions_all:     [ OUTPUT, SET_VLAN_VID, "
+      "SET_VLAN_PCP, SET_DL_DST, SET_NW_SRC, SET_NW_DST, SET_NW_ECN, "
+      "SET_TP_SRC, SET_TP_DST, COPY_TTL_IN, SET_MPLS_LABEL, SET_MPLS_TC, "
+      "DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, POP_MPLS, SET_QUEUE, GROUP, "
+      "DEC_NW_TTL, SET_FIELD, PUSH_PBB, '0x30000000' ]\n  actions_sel:     [ "
+      "SET_DL_SRC, SET_NW_TOS, COPY_TTL_OUT, SET_MPLS_TTL, PUSH_MPLS, "
+      "SET_NW_TTL, POP_PBB ]\n  actions_ind:     [ OUTPUT, SET_DL_SRC, "
+      "SET_DL_DST, SET_NW_TOS, SET_NW_ECN, COPY_TTL_OUT, COPY_TTL_IN, "
+      "SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_MPLS, POP_MPLS, SET_NW_TTL, "
+      "DEC_NW_TTL, POP_PBB, '0x10000000' ]\n  actions_ff:      [ SET_VLAN_VID, "
+      "SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_SRC, COPY_TTL_OUT, "
+      "SET_MPLS_LABEL, SET_MPLS_TTL, PUSH_VLAN, PUSH_MPLS, SET_QUEUE, "
+      "SET_NW_TTL, SET_FIELD, POP_PBB, '0x20000000' ]\n...\n");
 }
 
 TEST(decoder, ofmp_flowmonitor_request) {
@@ -1698,7 +1715,16 @@ TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
       "0413005800007777000C00000000000000445500000000005461626C6520310000000000"
       "000000000000000000000000000000000000000000000000008888880000000000999999"
       "000000AA000000BB0000000400000000",
-      "---\ntype:            REPLY.TABLE_FEATURES\nflags:           [  ]\nxid:             0x00007777\nversion:         0x04\nmsg:             \n  - table_id:        0x55\n    name:            Table 1\n    metadata_match:  0x0000000000888888\n    metadata_write:  0x0000000000999999\n    config:          [ VACANCY_EVENTS, '0x000000A0' ]\n    max_entries:     0x000000BB\n    instructions:    [  ]\n    next_tables:     [  ]\n    write_actions:   [  ]\n    apply_actions:   [  ]\n    match:           [  ]\n    wildcards:       [  ]\n    write_set_field: [  ]\n    apply_set_field: [  ]\n    properties:      \n...\n");
+      "---\ntype:            REPLY.TABLE_FEATURES\nflags:           [  ]\nxid: "
+      "            0x00007777\nversion:         0x04\nmsg:             \n  - "
+      "table_id:        0x55\n    name:            Table 1\n    "
+      "metadata_match:  0x0000000000888888\n    metadata_write:  "
+      "0x0000000000999999\n    config:          [ VACANCY_EVENTS, '0x000000A0' "
+      "]\n    max_entries:     0x000000BB\n    instructions:    [  ]\n    "
+      "next_tables:     [  ]\n    write_actions:   [  ]\n    apply_actions:   "
+      "[  ]\n    match:           [  ]\n    wildcards:       [  ]\n    "
+      "write_set_field: [  ]\n    apply_set_field: [  ]\n    properties:      "
+      "\n...\n");
 }
 
 TEST(decoder, queue_get_config_replyv4_fix) {

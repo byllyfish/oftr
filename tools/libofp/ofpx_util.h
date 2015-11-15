@@ -5,8 +5,9 @@
 
 namespace ofpx {
 
-bool normalizeTableFeaturesMessage(const ofp::ByteRange &data, ofp::ByteList &results);
+bool normalizeTableFeaturesMessage(const ofp::ByteRange &data,
+                                   ofp::ByteList &results);
 
 }  // namespace ofpx
 
-#endif // TOOLS_LIBOFP_OFPX_UTIL_H_
+#endif  // TOOLS_LIBOFP_OFPX_UTIL_H_
