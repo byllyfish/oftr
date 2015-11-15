@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef TOOLS_LIBOFP_OFPX_UTIL_H_
 #define TOOLS_LIBOFP_OFPX_UTIL_H_
 

@@ -1,7 +1,9 @@
-#include "ofpx_util.h"
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
+#include "./ofpx_util.h"
+#include <vector>
 #include "ofp/constants.h"
 #include "ofp/byteorder.h"
-#include <vector>
 #include "ofp/padding.h"
 
 using namespace ofp;
