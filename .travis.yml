@@ -1,15 +1,15 @@
+sudo: false
 language: cpp
 compiler: g++
-before_install:
-  - sudo add-apt-repository --yes ppa:kalakris/cmake 
-  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-install:
-  - sudo apt-get install -y cmake gcc-4.8 g++-4.8
+#before_install:
+#  - sudo add-apt-repository --yes ppa:kalakris/cmake 
+#  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+#  - sudo apt-get update -qq
+#install:
+#  - sudo apt-get install -y cmake gcc-4.8 g++-4.8
 script:
   - export CC="gcc-4.8" CXX="g++-4.8"
-  - mkdir -p Build && cd Build
-  - cmake .. && ctest -D Experimental
+  - mkdir -p Build && cd Build && cmake .. && ctest -D Experimental
 branches:
   except:
     - /^v\d+.*$/  # Skip tagged releases
@@ -29,3 +29,11 @@ addons:
     build_command_prepend: 'export CC="gcc-4.8" CXX="g++-4.8" && mkdir -p Build && cd Build && cmake .. && make clean'
     build_command:   make
     branch_pattern: coverity_scan
+  apt:
+    sources:
+      - kalakris-cmake
+      - ubuntu-toolchain-r-test
+    packages:
+      - cmake
+      - gcc-4.8
+      - g++-4.8
