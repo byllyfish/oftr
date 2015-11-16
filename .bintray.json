@@ -1,0 +1,22 @@
+{
+    "package": {
+        "name": "libofp",
+        "repo": "generic",
+        "subject": "byllyfish"
+    },
+
+    "version": {
+        "name": "latest"
+    },
+
+    "files": 
+        [
+            {
+                "includePattern": "Build/tools/libofp/(libofp-.*\\.zip)",
+                "uploadPattern": "$1",
+                "matrixParams": {"override": 1}
+            }
+        ],
+
+    "publish": true
+}
