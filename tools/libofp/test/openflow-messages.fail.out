@@ -18801,25 +18801,15 @@ Filename: external/openflow-messages/v1_2/rep/rep_22_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_22_00002.fail:
 Error: Only 7 bytes read of message body. Expected to read 8 bytes.
----
-type:            QUEUE_GET_CONFIG_REPLY
-xid:             0xBEC0D518
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_23_00001.fail
-msg:             
-  port:            0x0000000D
-  queues:          
-...
 Filename: external/openflow-messages/v1_2/rep/rep_23_00001.fail
-Error: Encode yielded different size data: 16 vs. 15
-[ByteRange size=16 data=03170010BEC0D5180000000D00000000]
-[ByteRange size=15 data=0317000FBEC0D5180000000D000000]
+Error: Decode failed: Message size is invalid
+[ByteList size=15 data=0317000FBEC0D5180000000D000000]
 Filename: external/openflow-messages/v1_2/rep/rep_23_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_23_00002.fail:
 Error: Only 7 bytes read of message body. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_23_00005.fail
-Error: Decode failed: Range element size overruns end
+Error: Decode failed: Message size is invalid
 [ByteList size=39 data=03170027BEC0D5180000000D000000002FC870660000000D002000000000000000000008000000]
 Filename: external/openflow-messages/v1_2/rep/rep_23_00005.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
@@ -18856,7 +18846,7 @@ Filename: external/openflow-messages/v1_2/rep/rep_23_00012.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=48 data=03170030BEC0D5180000000D000000002FC870660000000D002100000000000000010010000000000000000000000000]
 Filename: external/openflow-messages/v1_2/rep/rep_23_00013.fail
-Error: Decode failed: Range element size overruns end
+Error: Decode failed: Range element size is too small
 [ByteList size=48 data=03170030BEC0D5180000000D000000002FC870660000000D001200000000000000010010000000000000000000000000]
 ---
 type:            QUEUE_GET_CONFIG_REPLY
@@ -23199,25 +23189,15 @@ Filename: external/openflow-messages/v1_3/rep/rep_22_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_22_00002.fail:
 Error: Only 7 bytes read of message body. Expected to read 8 bytes.
----
-type:            QUEUE_GET_CONFIG_REPLY
-xid:             0xBEC0D518
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_23_00001.fail
-msg:             
-  port:            0x0000000D
-  queues:          
-...
 Filename: external/openflow-messages/v1_3/rep/rep_23_00001.fail
-Error: Encode yielded different size data: 16 vs. 15
-[ByteRange size=16 data=04170010BEC0D5180000000D00000000]
-[ByteRange size=15 data=0417000FBEC0D5180000000D000000]
+Error: Decode failed: Message size is invalid
+[ByteList size=15 data=0417000FBEC0D5180000000D000000]
 Filename: external/openflow-messages/v1_3/rep/rep_23_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_23_00002.fail:
 Error: Only 7 bytes read of message body. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_23_00005.fail
-Error: Decode failed: Range element size overruns end
+Error: Decode failed: Message size is invalid
 [ByteList size=39 data=04170027BEC0D5180000000D000000002FC870660000000D002000000000000000000008000000]
 Filename: external/openflow-messages/v1_3/rep/rep_23_00005.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
@@ -23254,7 +23234,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_23_00012.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=48 data=04170030BEC0D5180000000D000000002FC870660000000D002100000000000000010010000000000000000000000000]
 Filename: external/openflow-messages/v1_3/rep/rep_23_00013.fail
-Error: Decode failed: Range element size overruns end
+Error: Decode failed: Range element size is too small
 [ByteList size=48 data=04170030BEC0D5180000000D000000002FC870660000000D001200000000000000010010000000000000000000000000]
 ---
 type:            QUEUE_GET_CONFIG_REPLY
@@ -27677,25 +27657,15 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_22_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_22_00002.fail:
 Error: Only 7 bytes read of message body. Expected to read 8 bytes.
----
-type:            QUEUE_GET_CONFIG_REPLY
-xid:             0xBEC0D518
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_23_00001.fail
-msg:             
-  port:            0x0000000D
-  queues:          
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_23_00001.fail
-Error: Encode yielded different size data: 16 vs. 15
-[ByteRange size=16 data=04170010BEC0D5180000000D00000000]
-[ByteRange size=15 data=0417000FBEC0D5180000000D000000]
+Error: Decode failed: Message size is invalid
+[ByteList size=15 data=0417000FBEC0D5180000000D000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_23_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_23_00002.fail:
 Error: Only 7 bytes read of message body. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_23_00005.fail
-Error: Decode failed: Range element size overruns end
+Error: Decode failed: Message size is invalid
 [ByteList size=39 data=04170027BEC0D5180000000D000000002FC870660000000D002000000000000000000008000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_23_00005.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
@@ -27732,7 +27702,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_23_00012.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=48 data=04170030BEC0D5180000000D000000002FC870660000000D002100000000000000010010000000000000000000000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_23_00013.fail
-Error: Decode failed: Range element size overruns end
+Error: Decode failed: Range element size is too small
 [ByteList size=48 data=04170030BEC0D5180000000D000000002FC870660000000D001200000000000000010010000000000000000000000000]
 ---
 type:            QUEUE_GET_CONFIG_REPLY

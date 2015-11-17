@@ -2,10 +2,15 @@
 # tree by 'configure_file'.
 
 # Specify tests to ignore during memcheck phase.
-
 set(CTEST_CUSTOM_MEMCHECK_IGNORE
 	nulldemo
 	controller
 	libofpexec
 	python_json
+)
+
+# Ignore build warnings on Mac OS X
+SET(CTEST_CUSTOM_WARNING_EXCEPTION
+	${CTEST_CUSTOM_WARNING_EXCEPTION}
+	"ranlib: file: .* has no symbols"
 )

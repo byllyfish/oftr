@@ -790,16 +790,45 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
 }
 
 void Transmogrify::normalizeQueueGetConfigReplyV2() {
-  // If length of message is not padded to a multiple of 8, pad it out.
+  // Pad all queues to a multiple of 8. You can only get a queue whose size is
+  // not a multiple of 8 if it contains an experimenter property with an
+  // unusual length. This code does *not* handle the case where there are
+  // more than one experimenter property with an improper length inside a queue.
+
   Header *hdr = header();
 
   size_t length = hdr->length();
-  if ((length % 8) == 0) {
+  if (length < sizeof(QueueGetConfigReply))
+    return;
+  
+  ByteRange data = SafeByteRange(buf_.mutableData(), buf_.size(),
+                                 sizeof(QueueGetConfigReply));
+
+  size_t remaining = data.size();
+  const UInt8 *ptr = data.data();
+
+  ByteList newBuf;
+  while (remaining > 16) {
+    // Read 16-bit queue length from a potentially mis-aligned position.
+    UInt16 queueLen = Big16_copy(ptr + 8);
+    if (queueLen > remaining)
+      return;
+    newBuf.add(ptr, queueLen);
+    if ((queueLen % 8) != 0) {
+      newBuf.addZeros(PadLength(queueLen) - queueLen);
+    }
+    ptr += queueLen;
+    remaining -= queueLen;
+  }
+
+  // When padding the regular `Queue` structure, we may exceed the max
+  // message size of 65535.
+  if (newBuf.size() > 65535 - sizeof(QueueGetConfigReply)) {
+    markInputTooBig("QueueGetConfigReply is too big");
     return;
   }
 
-  size_t newLength = PadLength(length);
-  buf_.addZeros(newLength - length);
+  buf_.replace(data.begin(), data.end(), newBuf.data(), newBuf.size());
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
