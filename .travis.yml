@@ -37,8 +37,10 @@ addons:
       - g++-4.8
 
 before_deploy:
-  - ZIPNAME=Build/tools/libofp/libofp-latest-${TRAVIS_OS_NAME}.zip
-  - zip $ZIPNAME Build/tools/libofp/libofp
+  - pwd; ls
+  - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
+  - echo ${TOOLDIR}
+  - zip ${TOOLDIR}/libofp-latest-${TRAVIS_OS_NAME}.zip ${TOOLDIR}/libofp
 
 deploy:
   provider: bintray
