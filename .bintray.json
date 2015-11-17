@@ -12,7 +12,7 @@
     "files": 
         [
             {
-                "includePattern": "Build/tools/libofp/(libofp-.*\\.zip)",
+                "includePattern": "Build/tools/libofp/(libofp-.*)",
                 "uploadPattern": "$1",
                 "matrixParams": {"override": 1}
             }

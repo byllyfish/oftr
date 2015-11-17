@@ -38,11 +38,13 @@ addons:
 before_deploy:
   - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
   - zip ${TOOLDIR}/libofp-latest-${TRAVIS_OS_NAME}.zip ${TOOLDIR}/libofp
+  - pwd
 
 deploy:
   provider: bintray
   file: ${TRAVIS_BUILD_DIR}/.bintray.json
   user: byllyfish
+  skip_cleanup: true
   key:
     secure: "nyFUM5j49UzG1q9ac+mkI99jABDtOZ8iQof/N9RHJt/3kMkL+S1MAGCS+u9TQQqlmsB9fe4w+KtDRfVouv9Sfapkk8r3JBIL4w1dtm9bFgv1fxVpXbDekiHuO/WGTD+JrmDRKf9yJ6acX411BpL8fLVvGtY2qCjKWEqOhKgS7OEaE7ec/JipZjkXeXW7J040q1DHKxwjJJJgEtjuPjT8G67QhOoFfMuhXq75Ru6f2Nz9Nu5y1AVPyJO0nVPsodHMdXMdL9rskAt47a+w8ckV5Chepvw5+l58HgqE3dUfz+m683kguuUvl6NmSC2qlfzB14KivyMVU2FJNMB4N+rDhlMVLwZYauIqICSPcBNEi7OYqte8VnJwIB7NHXIeY7pBrEFYmlTL1b4vvG/LY4X6+boLTHklywTMKEy6ETHacD2GvCb1B//DCJfSDFcjn2ghGA07hFp4hKuodUO7Xu5OG7c94lCfECYAcQJRvhVwE5TeROFtWFo+eEeXkHXV/i1wqccPbxHfGm6SdgH2tlhx2+hdhxx11fpMBnvZHGZVxt+NOeDwHJcvF8JRrUaVw6QI7KgtJ98dz2M+OoPVkCQhMO97OEXz58LwF2N0j8tjy1HMna7sTp/kSQUsfP4zezsCj7WH6gDv7w3IfOS8hmJoeQVc9K+H5YOoknlcmDFVY1M="
   on: develop
