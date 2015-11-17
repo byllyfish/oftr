@@ -37,7 +37,8 @@ addons:
 
 before_deploy:
   - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
-  - zip ${TOOLDIR}/libofp-latest-${TRAVIS_OS_NAME}.zip ${TOOLDIR}/libofp
+  - ZIPFILE=libofp-latest-${TRAVIS_OS_NAME}.zip
+  - pushd ${TOOLDIR}; zip ${ZIPFILE} libofp; popd
   - pwd
 
 deploy:
