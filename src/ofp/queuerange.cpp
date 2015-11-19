@@ -6,8 +6,17 @@
 using namespace ofp;
 
 size_t QueueRange::writeSize(Writable *channel) {
-  if (channel->version() > OFP_VERSION_2) {
+  if (channel->version() > OFP_VERSION_4) {
     return size();
+  }
+
+  if (channel->version() > OFP_VERSION_2) {
+    // Determine size of queues when packed together without padding.
+    size_t size = 0;
+    for (auto &item : *this) {
+      size += queueSize(item);
+    }
+    return size;
   }
 
   // Versions 1 and 2 use the QueueV1 structure instead. This structure is
@@ -24,8 +33,22 @@ size_t QueueRange::writeSize(Writable *channel) {
 }
 
 void QueueRange::write(Writable *channel) {
-  if (channel->version() > OFP_VERSION_2) {
+  if (channel->version() > OFP_VERSION_4) {
     channel->write(data(), size());
+
+  } else if (channel->version() > OFP_VERSION_2) {
+    // We need to pack the queues together. They are not necessarily aligned
+    // to 8-byte boundaries (as they are stored internally).
+    
+    for (auto &item : *this) {
+      Queue slice;
+      std::memcpy(&slice, &item, sizeof(slice));
+      slice.len_ = UInt16_narrow_cast(queueSize(item));
+      channel->write(&slice, sizeof(slice));
+      for (auto &prop : item.properties()) {
+        channel->write(&prop, prop.size());
+      }
+    }
 
   } else {
     // Version 1 uses the QueueV1 structure instead.
@@ -34,4 +57,12 @@ void QueueRange::write(Writable *channel) {
       queueV1.write(channel);
     }
   }
+}
+
+size_t QueueRange::queueSize(const Queue &queue) {
+  size_t size = sizeof(Queue);
+  for (auto &prop : queue.properties()) {
+    size += prop.size();
+  }
+  return size;
 }

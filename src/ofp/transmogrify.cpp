@@ -792,8 +792,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
 void Transmogrify::normalizeQueueGetConfigReplyV2() {
   // Pad all queues to a multiple of 8. You can only get a queue whose size is
   // not a multiple of 8 if it contains an experimenter property with an
-  // unusual length. This code does *not* handle the case where there are
-  // more than one experimenter property with an improper length inside a queue.
+  // unusual length.
 
   Header *hdr = header();
 
@@ -811,14 +810,41 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
   while (remaining > 16) {
     // Read 16-bit queue length from a potentially mis-aligned position.
     UInt16 queueLen = Big16_copy(ptr + 8);
-    if (queueLen > remaining)
+    if (queueLen > remaining || queueLen < 16)
       return;
-    newBuf.add(ptr, queueLen);
-    if ((queueLen % 8) != 0) {
-      newBuf.addZeros(PadLength(queueLen) - queueLen);
+    // Copy queue header.
+    newBuf.add(ptr, 16);
+
+    // Iterate over properties and pad out the properties whose sizes are not
+    // multiples of 8.
+    const UInt8 *prop = ptr + 16;
+    size_t propLeft = queueLen - 16;
+    while (propLeft > 4) {
+      UInt16 propSize = Big16_copy(prop + 2);
+      if (propSize > propLeft || propSize < 4)
+        return;
+      newBuf.add(prop, propSize);
+      if ((propSize % 8) != 0) {
+        newBuf.addZeros(PadLength(propSize) - propSize);
+      }
+      prop += propSize;
+      propLeft -= propSize;
     }
+
+    if (propLeft != 0) {
+      log::debug("normalizeQueueGetConfigReplyV2: propLeft != 0");
+      return;
+    }
+
     ptr += queueLen;
+    assert(prop == ptr);
+
     remaining -= queueLen;
+  }
+
+  if (remaining != 0) {
+    log::debug("normalizeQueueGetConfigReplyV2: remaining != 0");
+    return;
   }
 
   // When padding the regular `Queue` structure, we may exceed the max

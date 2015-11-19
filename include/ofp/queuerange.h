@@ -25,6 +25,9 @@ class QueueRange : public ProtocolRange<QueueIterator> {
   /// \brief Writes queue list to the channel using the specified protocol
   /// version.
   void write(Writable *channel);
+
+ private:
+  size_t queueSize(const Queue &queue);
 };
 
 namespace deprecated {

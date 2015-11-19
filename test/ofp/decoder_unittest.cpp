@@ -1083,13 +1083,28 @@ TEST(decoder, queuegetconfigreplyv4) {
 
 TEST(decoder, queuegetconfigreplyv4_experimenter) {
   testDecodeEncode(
-      "041700A01111111122222222000000003333333344444444006000000000000000010010"
+      "04170099111111112222222200000000333333334444444400590000000000000001001000000000555500000000000000020010000000006666000000000000FFFF001600000000EEEEEEEE00000000000102030405FFFF001300000000FFFFFFFF00000000ABCDEF77777777888888880030000000000000000100100000000099990000000000000002001000000000AAAA000000000000",
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
+      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
+      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "max_rate:        0x6666\n      properties:      \n        - "
+      "experimenter:    0xEEEEEEEE\n          value:           000102030405\n  "
+      "      - experimenter:    0xFFFFFFFF\n          value:           "
+      "ABCDEF\n    - queue_id:        0x77777777\n      port:            "
+      "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
+      "0xAAAA\n      properties:      \n...\n");
+}
+
+TEST(decoder, queuegetconfigreplyv5_experimenter) {
+  testDecodeEncode(
+      "051700A01111111122222222000000003333333344444444006000000000000000010010"
       "00000000555500000000000000020010000000006666000000000000FFFF001600000000"
       "EEEEEEEE000000000001020304050000FFFF001300000000FFFFFFFF00000000ABCDEF00"
       "000000007777777788888888003000000000000000010010000000009999000000000000"
       "0002001000000000AAAA000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x05\nmsg:             \n  port:           "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
       "   port:            0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n        - "
