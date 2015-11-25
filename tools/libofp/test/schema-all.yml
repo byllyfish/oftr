@@ -358,6 +358,13 @@ Message/TableMod:
   msg:
     table_id: TableNumber
     config: [TableConfigFlags]
+    eviction: !optout
+      flags: UInt32
+    vacancy: !optout
+      vacancy_down: UInt8
+      vacancy_up: UInt8
+      vacancy: UInt8
+    properties: !opt [ExperimenterProperty]
   
 Message/Request.Desc: 
   version: !opt UInt8
@@ -1219,7 +1226,7 @@ Struct/Queue:
   port: PortNumber
   min_rate: UInt16
   max_rate: UInt16
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
   
 Struct/PacketCounter: 
   packet_count: UInt64

@@ -6,15 +6,18 @@
 #include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/tablenumber.h"
+#include "ofp/propertylist.h"
 
 namespace ofp {
 
-class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16, 16> {
+class TableMod : public ProtocolMsg<TableMod, OFPT_TABLE_MOD, 16> {
  public:
   TableNumber tableId() const { return tableId_; }
   OFPTableConfigFlags config() const { return config_; }
 
-  bool validateInput(Validation *context) const { return true; }
+  PropertyRange properties() const;
+
+  bool validateInput(Validation *context) const;
 
  private:
   Header header_;
@@ -42,10 +45,15 @@ class TableModBuilder {
   void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setConfig(OFPTableConfigFlags config) { msg_.config_ = config; }
 
+  void setProperties(const PropertyList &properties) {
+    properties_ = properties;
+  }
+  
   UInt32 send(Writable *channel);
 
  private:
   TableMod msg_;
+  PropertyList properties_;
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;

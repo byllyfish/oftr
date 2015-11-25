@@ -2252,6 +2252,7 @@ version:         0x02
 msg:             
   table_id:        0x02
   config:          [ TABLE_MISS_CONTROLLER ]
+  properties:      
 ...
 ---
 type:            TABLE_MOD
@@ -2260,6 +2261,7 @@ version:         0x02
 msg:             
   table_id:        0x02
   config:          [ '0x00000003' ]
+  properties:      
 ...
 ---
 type:            REQUEST.DESC
@@ -33162,6 +33164,7 @@ version:         0x02
 msg:             
   table_id:        0x02
   config:          [ TABLE_MISS_DROP, '0x00000002' ]
+  properties:      
 ...
 ---
 type:            REQUEST.DESC
@@ -34368,6 +34371,7 @@ version:         0x03
 msg:             
   table_id:        0x02
   config:          [ TABLE_MISS_CONTROLLER ]
+  properties:      
 ...
 ---
 type:            TABLE_MOD
@@ -34376,6 +34380,7 @@ version:         0x03
 msg:             
   table_id:        0x02
   config:          [ '0x00000003' ]
+  properties:      
 ...
 ---
 type:            REQUEST.DESC
@@ -45942,6 +45947,7 @@ version:         0x03
 msg:             
   table_id:        0x02
   config:          [ TABLE_MISS_DROP, '0x00000002' ]
+  properties:      
 ...
 ---
 type:            REQUEST.DESC
@@ -57975,6 +57981,7 @@ version:         0x04
 msg:             
   table_id:        0x02
   config:          [  ]
+  properties:      
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_17_00001.pass
 Error: Encode yielded different data at byte offset 15:
@@ -71292,6 +71299,7 @@ version:         0x04
 msg:             
   table_id:        0x02
   config:          [  ]
+  properties:      
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_17_00001.pass
 Error: Encode yielded different data at byte offset 15:

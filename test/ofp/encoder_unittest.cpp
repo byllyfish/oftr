@@ -2894,3 +2894,40 @@ TEST(encoder, ofmp_portdesc_replyv5) {
       "777777778888888899999999AAAAAAAA",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, tablemodv5) {
+  const char *input = R"""(
+    type:            TABLE_MOD
+    xid:             0x00000000
+    version:         0x05
+    msg:             
+      table_id:        ALL
+      config:          [  ]
+      eviction:        
+        flags:           0x11223344
+      vacancy:         
+        vacancy_down:    0x11
+        vacancy_up:      0x22
+        vacancy:         0x33
+      properties:      
+        - property:        EXPERIMENTER
+          experimenter:    0x44444441
+          exp_type:        0x55555551
+          data:            ''
+        - property:        EXPERIMENTER
+          experimenter:    0x66666661
+          exp_type:        0x77777771
+          data:            88888888
+        - property:        EXPERIMENTER
+          experimenter:    0x99999991
+          exp_type:        0xAAAAAAA1
+          data:            0000000100000002
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(88, encoder.size());
+  EXPECT_HEX(
+      "0511005800000000FF0000000000000000020008112233440003000811223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991AAAAAAA1000000010000000200000000",
+      encoder.data(), encoder.size());
+}

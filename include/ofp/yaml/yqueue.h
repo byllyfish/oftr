@@ -22,7 +22,7 @@ queue_id: QueueNumber
 port: PortNumber
 min_rate: UInt16
 max_rate: UInt16
-properties: [ExperimenterProperty]
+properties: !opt [ExperimenterProperty]
 )""";
 
 template <>

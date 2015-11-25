@@ -1762,6 +1762,7 @@ _file:           external/openflow-messages/v1_1/abs/abs_17_00001.fail
 msg:             
   table_id:        0x02
   config:          [ EVICTION, TABLE_MISS_CONTROLLER ]
+  properties:      
 ...
 ---
 type:            ERROR
@@ -16085,6 +16086,7 @@ _file:           external/openflow-messages/v1_2/abs/abs_17_00001.fail
 msg:             
   table_id:        0x02
   config:          [ EVICTION, TABLE_MISS_CONTROLLER ]
+  properties:      
 ...
 ---
 type:            ERROR

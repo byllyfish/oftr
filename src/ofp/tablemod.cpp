@@ -5,6 +5,19 @@
 
 using namespace ofp;
 
+PropertyRange TableMod::properties() const {
+    return SafeByteRange(this, header_.length(), sizeof(TableMod));
+}
+
+bool TableMod::validateInput(Validation *context) const {
+    // Versions 1.3 and earlier do not have properties.
+    if (header_.version() <= OFP_VERSION_4) {
+        return header_.length() == sizeof(TableMod);
+    }
+
+    return properties().validateInput(context);
+}
+
 TableModBuilder::TableModBuilder(const TableMod *msg) : msg_{*msg} {
 }
 
@@ -13,11 +26,19 @@ UInt32 TableModBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   size_t msgLen = sizeof(TableMod);
 
+  if (version >= OFP_VERSION_5) {
+    msgLen += properties_.size();
+  }
+
   msg_.header_.setVersion(version);
   msg_.header_.setLength(UInt16_narrow_cast(msgLen));
   msg_.header_.setXid(xid);
 
   channel->write(&msg_, sizeof(msg_));
+  if (version >= OFP_VERSION_5) {
+    channel->write(properties_.data(), properties_.size());
+  }
+
   channel->flush();
 
   return xid;

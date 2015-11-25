@@ -1011,17 +1011,12 @@ TEST(decoder, portmodv5) {
 TEST(decoder, tablemodv4) {
   testDecodeEncode(
       "04110010111111112200000033333330",
-      "---\ntype:            TABLE_MOD\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "table_id:        0x22\n  config:          [ '0x33333330' ]\n...\n");
+      "---\ntype:            TABLE_MOD\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  table_id:        0x22\n  config:          [ '0x33333330' ]\n  properties:      \n...\n");
 }
 
 TEST(decoder, tablemodv2) {
   testDecodeEncode("02110010111111112200000033333330",
-                   "---\ntype:            TABLE_MOD\nxid:             "
-                   "0x11111111\nversion:         0x02\nmsg:             \n  "
-                   "table_id:        0x22\n  config:          [ "
-                   "TABLE_MISS_CONTROLLER, '0x33333330' ]\n...\n");
+                   "---\ntype:            TABLE_MOD\nxid:             0x11111111\nversion:         0x02\nmsg:             \n  table_id:        0x22\n  config:          [ TABLE_MISS_CONTROLLER, '0x33333330' ]\n  properties:      \n...\n");
 }
 
 TEST(decoder, rolerequestv4) {
@@ -1769,4 +1764,10 @@ TEST(decoder, queue_get_config_replyv1) {
       " 0x0000000D\n  queues:          \n    - queue_id:        0x00000012\n   "
       "   port:            0x00000000\n      min_rate:        0xFFFF\n      "
       "max_rate:        0xFFFF\n      properties:      \n...\n");
+}
+
+TEST(decoder, tablemodv5) {
+  testDecodeEncode(
+      "0511005800000000FF0000000000000000020008112233440003000811223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991AAAAAAA1000000010000000200000000",
+      "---\ntype:            TABLE_MOD\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  table_id:        ALL\n  config:          [  ]\n  eviction:        \n    flags:           0x11223344\n  vacancy:         \n    vacancy_down:    0x11\n    vacancy_up:      0x22\n    vacancy:         0x33\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x44444441\n      exp_type:        0x55555551\n      data:            ''\n    - property:        EXPERIMENTER\n      experimenter:    0x66666661\n      exp_type:        0x77777771\n      data:            88888888\n    - property:        EXPERIMENTER\n      experimenter:    0x99999991\n      exp_type:        0xAAAAAAA1\n      data:            0000000100000002\n...\n");
 }

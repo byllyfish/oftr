@@ -348,6 +348,7 @@ version:         0x03
 msg:             
   table_id:        ALL
   config:          [ TABLE_MISS_CONTROLLER ]
+  properties:      
 ...
 ---
 type:            REQUEST.DESC
@@ -1209,6 +1210,7 @@ version:         0x04
 msg:             
   table_id:        ALL
   config:          [  ]
+  properties:      
 ...
 ---
 type:            REQUEST.DESC
