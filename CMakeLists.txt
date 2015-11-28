@@ -211,6 +211,7 @@ set(LIBOFP_SOURCES
   src/ofp/standardmatch.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp
+  src/ofp/tablemodproperty.cpp
   src/ofp/timestamp.cpp
   src/ofp/transmogrify.cpp
   src/ofp/types.cpp

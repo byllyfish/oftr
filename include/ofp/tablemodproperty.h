@@ -5,6 +5,7 @@
 
 #include "ofp/experimenterproperty.h"
 #include "ofp/constants.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 
@@ -19,6 +20,8 @@ class TableModPropertyEviction {
   constexpr static OFPTableModProperty type() { return OFPTMPT_EVICTION; }
 
   void setFlags(UInt32 flags) { flags_ = flags; }
+
+  bool validateInput(Validation *context) const { return len_ == 8; }
 
  private:
   Big16 type_ = type();
@@ -42,6 +45,8 @@ class TableModPropertyVacancy {
   void setVacancyDown(UInt8 vacancyDown) { vacancyDown_ = vacancyDown; }
   void setVacancyUp(UInt8 vacancyUp) { vacancyUp_ = vacancyUp; }
   void setVacancy(UInt8 vacancy) { vacancy_ = vacancy; }
+
+  bool validateInput(Validation *context) const { return len_ == 8; }
 
  private:
   Big16 type_ = type();

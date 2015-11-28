@@ -130,7 +130,7 @@ struct SequenceTraits<ofp::detail::TableModPropertyRange> {
   static void skip(iterator &iter, iterator iterEnd) {
     for (; iter < iterEnd; ++iter) {
       ofp::UInt16 type = iter->type();
-      if (type >= ofp::OFPTMPT_UNUSED_MIN)
+      if (type >= ofp::OFPTMPT_UNUSED_MIN || type <= ofp::OFPTMPT_UNUSED_MAX)
         break;
     }
   }

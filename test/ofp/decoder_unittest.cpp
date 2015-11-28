@@ -1771,3 +1771,9 @@ TEST(decoder, tablemodv5) {
       "0511005800000000FF0000000000000000020008112233440003000811223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991AAAAAAA1000000010000000200000000",
       "---\ntype:            TABLE_MOD\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  table_id:        ALL\n  config:          [  ]\n  eviction:        \n    flags:           0x11223344\n  vacancy:         \n    vacancy_down:    0x11\n    vacancy_up:      0x22\n    vacancy:         0x33\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x44444441\n      exp_type:        0x55555551\n      data:            ''\n    - property:        EXPERIMENTER\n      experimenter:    0x66666661\n      exp_type:        0x77777771\n      data:            88888888\n    - property:        EXPERIMENTER\n      experimenter:    0x99999991\n      exp_type:        0xAAAAAAA1\n      data:            0000000100000002\n...\n");
 }
+
+TEST(decoder, tablemod_unrecognized_prop_v5) 
+{
+  testDecodeEncode("0511002000000000 FF00000000000000 0001001011223344 5566778899AABBCC", "---\ntype:            TABLE_MOD\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  table_id:        ALL\n  config:          [  ]\n  properties:      \n    - property:        0x0001\n      data:            112233445566778899AABBCC\n...\n");
+}
+

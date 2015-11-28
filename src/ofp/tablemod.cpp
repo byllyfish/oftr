@@ -2,6 +2,7 @@
 
 #include "ofp/tablemod.h"
 #include "ofp/writable.h"
+#include "ofp/tablemodproperty.h"
 
 using namespace ofp;
 
@@ -15,10 +16,11 @@ bool TableMod::validateInput(Validation *context) const {
         return header_.length() == sizeof(TableMod);
     }
 
-    return properties().validateInput(context);
-}
+    PropertyRange props = properties();
+    if (!props.validateInput(context)) 
+      return false;
 
-TableModBuilder::TableModBuilder(const TableMod *msg) : msg_{*msg} {
+    return TableModPropertyValidator::validateInput(props, context);
 }
 
 UInt32 TableModBuilder::send(Writable *channel) {
