@@ -94,11 +94,15 @@ target_link_libraries(ofp_unittest gtest ofp ${LIBOFP_LINKED_LIBS})
 
 # Add tests here.
 
-add_test(
-  NAME unittests
-  COMMAND ofp_unittest
-)
-
-# Unit tests may need more than 10 seconds when running under valgrind.
-
+add_test(NAME unittests COMMAND ofp_unittest)
 set_tests_properties(unittests PROPERTIES TIMEOUT 60)
+
+if(NOT MEMORYCHECK_COMMAND STREQUAL "")
+	SET(MEMCHECK ${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS})
+	separate_arguments(MEMCHECK)
+    add_test(NAME memcheck_unittests COMMAND ${MEMCHECK} ./ofp_unittest)
+    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60)
+endif()
+
+
+

@@ -5,7 +5,6 @@
 set(CTEST_CUSTOM_MEMCHECK_IGNORE
 	nulldemo
 	controller
-	libofpexec
 	python_json
 )
 
