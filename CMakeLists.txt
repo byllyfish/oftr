@@ -321,6 +321,12 @@ set(MEMORYCHECK_COMMAND_OPTIONS "-v --trace-children=yes --trace-children-skip=/
 set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
+if(MEMORYCHECK_COMMAND)
+  set(LIBOFP_MEMCHECK ${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS})
+  separate_arguments(LIBOFP_MEMCHECK)
+  message(STATUS "Memcheck command: ${MEMORYCHECK_COMMAND}")
+endif()
+
 # Use pthreads.
 
 if(LIBOFP_ENABLE_JSONRPC)

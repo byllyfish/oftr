@@ -34,6 +34,7 @@ addons:
       - cmake
       - gcc-4.8
       - g++-4.8
+      - valgrind
 
 before_deploy:
   - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
