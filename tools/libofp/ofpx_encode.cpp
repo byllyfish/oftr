@@ -84,7 +84,7 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
 
 ExitStatus Encode::encodeMessages(std::istream &input) {
   std::string text;
-  int lineNum;
+  int lineNum = 0;
 
   while (readMessage(input, text, lineNum)) {
     ofp::log::debug("readMessage returned", text);

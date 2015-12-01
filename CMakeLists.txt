@@ -316,7 +316,6 @@ endif()
 # Prepare for testing. Subdirectories can add tests.
 
 set(MEMORYCHECK_COMMAND_OPTIONS "-v --leak-check=no --error-exitcode=99")
-#set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
 if(MEMORYCHECK_COMMAND)

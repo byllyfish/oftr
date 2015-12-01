@@ -53,8 +53,8 @@ struct MappingTraits<ofp::QueueBuilder> {
     io.mapRequired("queue_id", msg.queue_.queueId_);
     io.mapRequired("port", msg.queue_.port_);
 
-    UInt16 minRate;
-    UInt16 maxRate;
+    UInt16 minRate = 0;
+    UInt16 maxRate = 0;
     io.mapRequired("min_rate", minRate);
     io.mapRequired("max_rate", maxRate);
 

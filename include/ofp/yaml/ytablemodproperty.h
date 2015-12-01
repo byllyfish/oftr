@@ -83,7 +83,7 @@ struct MappingTraits<ofp::detail::TableModPropertyInserter> {
 
     PropertyList &props = Ref_cast<PropertyList>(list);
 
-    OFPExperimenterPropertyType property;
+    OFPExperimenterPropertyType property = OFP_EXPERIMENTER_PROPERTY_TYPE;
     io.mapRequired("property", property);
 
     if (property == OFP_EXPERIMENTER_PROPERTY_TYPE) {

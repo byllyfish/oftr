@@ -76,8 +76,8 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapRequired("total_len", msg.msg_.totalLen_);
 
     PortNumber inPort;
-    UInt32 inPhyPort;
-    UInt64 metadata;
+    UInt32 inPhyPort = 0;
+    UInt64 metadata = 0;
     io.mapRequired("in_port", inPort);
     io.mapRequired("in_phy_port", inPhyPort);
     io.mapRequired("metadata", metadata);
