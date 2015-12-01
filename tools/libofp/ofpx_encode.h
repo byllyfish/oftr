@@ -13,7 +13,8 @@ namespace ofpx {
 // is a syntax error in the YAML input, stop and report an error.
 //
 //   --hex, -x               Output hexadecimal rather than binary
-//   --silent, -S            Quiet mode; suppress normal output
+//   --silent, -s            Quiet mode; suppress normal output
+//   --silent-error          Suppress error output for invalid messages.
 //   --keep-going, -k        Continue processing messages after errors
 //   --unchecked-match, -M   Do not check items in match fields
 //   --roundtrip, -R         Roundtrip encoded binary message back to YAML
@@ -74,6 +75,8 @@ class Encode : public Subprogram {
   cl::opt<bool> hex_{"hex", cl::desc("Output hexadecimal rather than binary")};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
+  cl::opt<bool> silentError_{
+      "silent-error", cl::desc("Suppress error output for invalid messages")};
   cl::opt<bool> keepGoing_{
       "keep-going", cl::desc("Continue processing messages after errors")};
   cl::opt<bool> uncheckedMatch_{"unchecked-match",

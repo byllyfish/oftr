@@ -5,12 +5,13 @@ add_test(
 set_tests_properties(libofp-test PROPERTIES TIMEOUT 360)
 
 
-add_test(
-  NAME libofp-annotate
-  COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-annotate.sh
-)
+add_test(NAME libofp-annotate COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-annotate.sh)
 set_tests_properties(libofp-annotate PROPERTIES TIMEOUT 600)
 
+if(LIBOFP_MEMCHECK)
+  add_test(NAME memcheck_libofp-annotate COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-annotate.sh)
+  set_tests_properties(memcheck_libofp-annotate PROPERTIES TIMEOUT 600 ENVIRONMENT "LIBOFP_MEMCHECK=${LIBOFP_MEMCHECK}")
+endif()
 
 add_test(
   NAME libofp-messages

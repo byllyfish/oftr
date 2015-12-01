@@ -314,17 +314,14 @@ endif()
 #-------------------------------------------------------------------------------
 
 # Prepare for testing. Subdirectories can add tests.
-# N.B. The suppressions file must be defined before `include(CTest)`; otherwise
-# the correct value will not appear in the generated DartConfiguration.tcl.
 
-set(MEMORYCHECK_COMMAND_OPTIONS "-v --trace-children=yes --trace-children-skip=/bin/sleep,/usr/bin/diff,/usr/bin/basename,/usr/bin/dirname,/usr/bin/find,/usr/bin/sort,/usr/bin/xargs --leak-check=no --error-exitcode=99")
-set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
+set(MEMORYCHECK_COMMAND_OPTIONS "-v --leak-check=no --error-exitcode=99")
+#set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
 include(CTest)
 
 if(MEMORYCHECK_COMMAND)
-  set(LIBOFP_MEMCHECK ${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS})
-  separate_arguments(LIBOFP_MEMCHECK)
-  message(STATUS "Memcheck command: ${MEMORYCHECK_COMMAND}")
+  set(LIBOFP_MEMCHECK "${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS}")
+  message(STATUS "Memcheck command: ${LIBOFP_MEMCHECK}")
 endif()
 
 # Use pthreads.

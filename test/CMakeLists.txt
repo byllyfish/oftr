@@ -98,7 +98,8 @@ add_test(NAME unittests COMMAND ofp_unittest)
 set_tests_properties(unittests PROPERTIES TIMEOUT 60)
 
 if(LIBOFP_MEMCHECK)
-    add_test(NAME memcheck_unittests COMMAND ${LIBOFP_MEMCHECK} ./ofp_unittest)
+	separate_arguments(cmd UNIX_COMMAND "${LIBOFP_MEMCHECK} ./ofp_unittest")
+    add_test(NAME memcheck_unittests COMMAND ${cmd})
     set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60)
 endif()
 
