@@ -12,6 +12,11 @@
 # To build libofp without the JSON-RPC server:
 #
 #    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
+#
+# To build without memcheck tests:
+#
+#    cmake -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
+#
 
 cmake_minimum_required(VERSION 2.8.8)
 project(Libofp)
@@ -46,6 +51,13 @@ set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
 if(NOT LIBOFP_ENABLE_JSONRPC)
   message(STATUS "JSON-RPC server is disabled.")
+endif()
+
+# You can disable the valgrind memcheck tests.
+
+set(LIBOFP_ENABLE_MEMCHECK_TESTS TRUE CACHE BOOL "Enable additional valgrind memcheck tests")
+if(NOT LIBOFP_ENABLE_MEMCHECK_TESTS)
+  message(STATUS "Memcheck tests are disabled.")
 endif()
 
 # Require out of source builds.
@@ -298,7 +310,7 @@ endif()
 set(MEMORYCHECK_COMMAND_OPTIONS "-q --leak-check=no --error-exitcode=99")
 include(CTest)
 
-if(MEMORYCHECK_COMMAND)
+if(MEMORYCHECK_COMMAND AND LIBOFP_ENABLE_MEMCHECK_TESTS)
   set(LIBOFP_MEMCHECK "${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS}")
   message(STATUS "Memcheck command: ${LIBOFP_MEMCHECK}")
 endif()
@@ -317,22 +329,27 @@ find_package(PythonModule REQUIRED)
 find_python_module(yaml)
 
 # Look up the specific git commits for libofp, asio, and boringssl. If we are
-# building from a tarball instead of a git repo, the git commits will be empty.
+# building from a tarball instead of a git repo, the git commits will be empty,
+# and they need to be loaded from the GIT-VERSION.cmake file.
 
-execute_process(COMMAND git rev-parse --verify HEAD OUTPUT_VARIABLE Libofp_GIT_COMMIT_LIBOFP)
-string(STRIP "${Libofp_GIT_COMMIT_LIBOFP}" Libofp_GIT_COMMIT_LIBOFP)
+include(GIT-VERSION.cmake OPTIONAL)
+if(NOT Libofp_GIT_COMMIT_LIBOFP)  
+  execute_process(COMMAND git rev-parse --verify HEAD OUTPUT_VARIABLE Libofp_GIT_COMMIT_LIBOFP)
+  string(STRIP "${Libofp_GIT_COMMIT_LIBOFP}" Libofp_GIT_COMMIT_LIBOFP)
+
+  execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
+  if(NOT "${Libofp_GIT_COMMIT_ASIO}" STREQUAL "")
+    string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
+  endif()
+
+  execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
+  if(NOT "${Libofp_GIT_COMMIT_BORINGSSL}" STREQUAL "")
+    string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
+  endif()
+endif()
+
 message(STATUS "Libofp commit: ${Libofp_GIT_COMMIT_LIBOFP}")
-
-execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
-if(NOT "${Libofp_GIT_COMMIT_ASIO}" STREQUAL "")
-  string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
-endif()
 message(STATUS "Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
-
-execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
-if(NOT "${Libofp_GIT_COMMIT_BORINGSSL}" STREQUAL "")
-  string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
-endif()
 message(STATUS "BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
 
 # Specify auto-generated config.h file.
