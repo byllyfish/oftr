@@ -1,11 +1,19 @@
 = Changelog
 
+== Version 0.11 (2 December 2015)
+
+- Add support for TableMod message with properties (1.4+).
+- Fix QueueGetConfigReply message for OpenFlow versions 1.2, 1.3.
+- Update boringssl and googletest submodules.
+- Add tests using valgrind memcheck. Fix uninitialized variable warnings.
+- Add `--silent-error` command line argument to `libofp encode` command.
+
 == Version 0.10 (15 November 2015)
 
 - Update asio, boringssl, and googletest submodules.
 - Fix 32-bit compilation.
 - Add debian packaging support for launchpad ppa.
-- Add --builtins command line argument to help command.
+- Add --builtins command line argument to `help` command.
 - Include empty properties when building tablefeatures messages
 - Add OpenFlow PKT_REGX fields.
 - Add Nicira fields: NXM_NX_TUN_IP4_SRC, NXM_NX_TUN_IP4_DST, NXM_NX_TUN_GBP_ID,  NXM_NX_TUN_GBP_FLAGS
