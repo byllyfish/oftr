@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YTABLEMODPROPERTY_H_
 #define OFP_YAML_YTABLEMODPROPERTY_H_
 
@@ -9,12 +11,11 @@ namespace ofp {
 namespace detail {
 
 struct TableModPropertyItem {};
-using TableModPropertyIterator =
-    TypedPropertyIterator<TableModPropertyItem>;
+using TableModPropertyIterator = TypedPropertyIterator<TableModPropertyItem>;
 struct TableModPropertyRange {};
 struct TableModPropertyInserter {};
 struct TableModPropertyList {
-    // Need begin/end to allow mapOptional("properties", ...)
+  // Need begin/end to allow mapOptional("properties", ...)
   int begin() const { return 0; }
   int end() const { return 0; }
 };
@@ -122,7 +123,7 @@ struct SequenceTraits<ofp::detail::TableModPropertyRange> {
     return ofp::detail::TableModPropertyIterator{props.end()};
   }
 
-  static void next(iterator &iter, iterator iterEnd) { 
+  static void next(iterator &iter, iterator iterEnd) {
     ++iter;
     skip(iter, iterEnd);
   }
@@ -151,5 +152,4 @@ struct SequenceTraits<ofp::detail::TableModPropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-
-#endif // OFP_YAML_YTABLEMODPROPERTY_H_
+#endif  // OFP_YAML_YTABLEMODPROPERTY_H_

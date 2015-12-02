@@ -40,7 +40,7 @@ static_assert(IsTriviallyCopyable<TableMod>(), "Expected trivially copyable.");
 class TableModBuilder {
  public:
   TableModBuilder() = default;
-  explicit TableModBuilder(const TableMod *msg): msg_{*msg} {}
+  explicit TableModBuilder(const TableMod *msg) : msg_{*msg} {}
 
   void setTableId(TableNumber tableId) { msg_.tableId_ = tableId; }
   void setConfig(OFPTableConfigFlags config) { msg_.config_ = config; }
@@ -48,7 +48,7 @@ class TableModBuilder {
   void setProperties(const PropertyList &properties) {
     properties_ = properties;
   }
-  
+
   UInt32 send(Writable *channel);
 
  private:

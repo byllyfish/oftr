@@ -33,7 +33,8 @@ class TableModPropertyEviction {
 };
 
 static_assert(sizeof(TableModPropertyEviction) == 8, "Unexpected size");
-static_assert(IsStandardLayout<TableModPropertyEviction>(), "Expected standard layout.");
+static_assert(IsStandardLayout<TableModPropertyEviction>(),
+              "Expected standard layout.");
 
 // TableModPropertyVacancy needs to be `Copyable` since it is used as an
 // optional property.
@@ -61,8 +62,8 @@ class TableModPropertyVacancy {
 };
 
 static_assert(sizeof(TableModPropertyVacancy) == 8, "Unexpected size");
-static_assert(IsStandardLayout<TableModPropertyVacancy>(), "Expected standard layout.");
-
+static_assert(IsStandardLayout<TableModPropertyVacancy>(),
+              "Expected standard layout.");
 
 using TableModPropertyExperimenter =
     detail::ExperimenterProperty<OFPTableModProperty, OFPTMPT_EXPERIMENTER>;
@@ -74,4 +75,4 @@ class TableModPropertyValidator {
 
 }  // namespace ofp
 
-#endif // OFP_TABLEMODPROPERTY_H_
+#endif  // OFP_TABLEMODPROPERTY_H_

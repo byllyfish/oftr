@@ -39,7 +39,7 @@ void QueueRange::write(Writable *channel) {
   } else if (channel->version() > OFP_VERSION_2) {
     // We need to pack the queues together. They are not necessarily aligned
     // to 8-byte boundaries (as they are stored internally).
-    
+
     for (auto &item : *this) {
       Queue slice;
       std::memcpy(&slice, &item, sizeof(slice));

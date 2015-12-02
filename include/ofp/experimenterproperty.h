@@ -40,7 +40,9 @@ class ExperimenterProperty : private NonCopyable {
 
   ByteRange valueRef() const { return data_; }
 
-  bool validateInput(Validation *context) const { return len_ >= FixedHeaderSize; }
+  bool validateInput(Validation *context) const {
+    return len_ >= FixedHeaderSize;
+  }
 
  private:
   Big16 type_ = type();

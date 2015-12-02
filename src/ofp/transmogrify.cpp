@@ -799,7 +799,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
   size_t length = hdr->length();
   if (length < sizeof(QueueGetConfigReply))
     return;
-  
+
   ByteRange data = SafeByteRange(buf_.mutableData(), buf_.size(),
                                  sizeof(QueueGetConfigReply));
 

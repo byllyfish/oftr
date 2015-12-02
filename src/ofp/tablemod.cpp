@@ -7,20 +7,20 @@
 using namespace ofp;
 
 PropertyRange TableMod::properties() const {
-    return SafeByteRange(this, header_.length(), sizeof(TableMod));
+  return SafeByteRange(this, header_.length(), sizeof(TableMod));
 }
 
 bool TableMod::validateInput(Validation *context) const {
-    // Versions 1.3 and earlier do not have properties.
-    if (header_.version() <= OFP_VERSION_4) {
-        return header_.length() == sizeof(TableMod);
-    }
+  // Versions 1.3 and earlier do not have properties.
+  if (header_.version() <= OFP_VERSION_4) {
+    return header_.length() == sizeof(TableMod);
+  }
 
-    PropertyRange props = properties();
-    if (!props.validateInput(context)) 
-      return false;
+  PropertyRange props = properties();
+  if (!props.validateInput(context))
+    return false;
 
-    return TableModPropertyValidator::validateInput(props, context);
+  return TableModPropertyValidator::validateInput(props, context);
 }
 
 UInt32 TableModBuilder::send(Writable *channel) {
