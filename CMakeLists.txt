@@ -268,7 +268,7 @@ string(TOLOWER "${CMAKE_BINARY_DIR}" binary_dir)
 if(binary_dir MATCHES "/[^/]*\\+debug[^/]*$")
   set(CMAKE_BUILD_TYPE Debug)
 elseif(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE MinSizeRel)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
@@ -426,16 +426,6 @@ add_subdirectory(test)
 #-------------------------------------------------------------------------------
 
 add_subdirectory(docs)
-
-#-------------------------------------------------------------------------------
-# Install Library
-#-------------------------------------------------------------------------------
-
-# Set install prefix to local if CMAKE_BUILD_TYPE is debug.
-
-if(CMAKE_BUILD_TYPE STREQUAL "debug")
-  set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/local)
-endif()
 
 #-------------------------------------------------------------------------------
 # CPack Installer Support
