@@ -9,3 +9,4 @@ docs/html
 *\+*/
 *.pyc
 old/
+Build/

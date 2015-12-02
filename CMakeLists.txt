@@ -4,16 +4,10 @@
 #
 #=====--------------------------------------------------------------------=====#
 #
-# The CMakeLists.txt file supports building debug, 32 bit, or 64 bit builds. To
-# set the build options, create a Build directory with your options in the 
-# directory name. The following options are supported:
+# If the build directory is named `Build+Debug`, cmake will build a debug
+# version. Alternatively, you can build a debug version explicitly:
 #
-#    +debug    Build a debug version.
-#    +32bit    Build a 32-bit version.
-#    +64bit    Build a 64-bit version.
-#
-# For example, if the build directory is named `Build+Debug`, cmake will build
-# debug version.
+#    cmake -DCMAKE_BUILD_TYPE=debug
 #
 # To build libofp without the JSON-RPC server:
 #
@@ -268,29 +262,15 @@ set(LIBOFP_SOURCES_GENERATED
 )
 
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
-# '+debug', set the build type to 'debug', otherwise set to release build. The
-# comparison test for '+debug' is case-insensitive.
+# '+debug', set the build type to 'debug'.
 
 string(TOLOWER "${CMAKE_BINARY_DIR}" binary_dir)
-if("${binary_dir}" MATCHES "/[^/]*\\+debug[^/]*$")
-  message(STATUS "Setting build type to DEBUG.")
-  set(CMAKE_BUILD_TYPE debug)
-else()
-  message(STATUS "Setting build type to RELEASE.")
-  set(CMAKE_BUILD_TYPE release)
+if(binary_dir MATCHES "/[^/]*\\+debug[^/]*$")
+  set(CMAKE_BUILD_TYPE Debug)
+elseif(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE MinSizeRel)
 endif()
-
-# If binary_dir contains +32bit or +64bit set the -m32 or -m64 flag respectively.
-
-if("${binary_dir}" MATCHES "/[^/]*\\+64bit[^/]*$")
-  message(STATUS "Adding -m64 build option.")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m64")
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -m64")
-elseif("${binary_dir}" MATCHES "/[^/]*\\+32bit[^/]*$")
-  message(STATUS "Adding -m32 build option.")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m32")
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -m32")
-endif()
+message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
@@ -315,7 +295,7 @@ endif()
 
 # Prepare for testing. Subdirectories can add tests.
 
-set(MEMORYCHECK_COMMAND_OPTIONS "-v --leak-check=no --error-exitcode=99")
+set(MEMORYCHECK_COMMAND_OPTIONS "-q --leak-check=no --error-exitcode=99")
 include(CTest)
 
 if(MEMORYCHECK_COMMAND)
