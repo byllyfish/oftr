@@ -148,6 +148,9 @@ can specify a default OpenFlow version using the --ofversion option.
 *-s, --silent*::
     Quiet mode; suppress normal output.
 
+*--silent-error*::
+    Suppress error output for invalid messages.
+
 *--unchecked-match*::
     Do not check items in match fields.
 

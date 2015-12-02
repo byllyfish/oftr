@@ -41,6 +41,8 @@ class FeaturesReply
   FeaturesReply() : header_{type()} {}
 
   friend class FeaturesReplyBuilder;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 static_assert(sizeof(FeaturesReply) == 32, "Unexpected size.");
@@ -74,6 +76,9 @@ class FeaturesReplyBuilder {
  private:
   FeaturesReply msg_;
   PortList ports_;
+
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp

@@ -38,7 +38,7 @@ struct MappingTraits<ofp::MPFlowMonitorReply> {
 template <>
 struct MappingTraits<ofp::MPFlowMonitorReplyBuilder> {
   static void mapping(IO &io, ofp::MPFlowMonitorReplyBuilder &msg) {
-    ofp::OFPFlowUpdateEvent event;
+    ofp::OFPFlowUpdateEvent event = ofp::OFPFME_INITIAL;
     io.mapRequired("event", event);
     msg.setEvent(event);
 

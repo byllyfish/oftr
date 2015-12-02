@@ -197,6 +197,17 @@ type: TABLE_MOD
 msg:
   table_id: ALL
   config: [ EVICTION ]
+  eviction:
+    flags:  0xffffffff
+  vacancy:
+    vacancy_down: 0xff
+    vacancy_up: 0xff
+    vacancy: 0xff
+  properties:
+    - property: EXPERIMENTER
+      experimenter: 0xffffffff
+      exp_type: 0xffffffff
+      data: ffffffff
 ---
 version: 0x04
 type: REQUEST.DESC

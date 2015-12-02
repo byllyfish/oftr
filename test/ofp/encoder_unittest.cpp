@@ -1922,9 +1922,45 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(153, encoder.size());
+  EXPECT_HEX(
+      "041700991111111122222222000000003333333344444444005900000000000000010010"
+      "00000000555500000000000000020010000000006666000000000000FFFF001600000000"
+      "EEEEEEEE00000000000102030405FFFF001300000000FFFFFFFF00000000ABCDEF777777"
+      "778888888800300000000000000001001000000000999900000000000000020010000000"
+      "00AAAA000000000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, queuegetconfigreplyv5_experimenter) {
+  const char *input = R"""(
+    version: 5
+    type: QUEUE_GET_CONFIG_REPLY
+    datapath_id: 0000-0000-0000-0001
+    xid: 0x11111111
+    msg:
+      port: 0x22222222
+      queues:
+        - queue_id: 0x33333333
+          port: 0x44444444
+          min_rate: 0x5555
+          max_rate: 0x6666
+          properties:
+            - experimenter: 0xEEEEEEEE
+              value: 000102030405
+            - experimenter: 0xFFFFFFFF
+              value: abcdef
+        - queue_id: 0x77777777
+          port: 0x88888888
+          min_rate: 0x9999
+          max_rate: 0xAAAA
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0xA0, encoder.size());
   EXPECT_HEX(
-      "041700A01111111122222222000000003333333344444444006000000000000000010010"
+      "051700A01111111122222222000000003333333344444444006000000000000000010010"
       "00000000555500000000000000020010000000006666000000000000FFFF001600000000"
       "EEEEEEEE000000000001020304050000FFFF001300000000FFFFFFFF00000000ABCDEF00"
       "000000007777777788888888003000000000000000010010000000009999000000000000"
@@ -2860,5 +2896,44 @@ TEST(encoder, ofmp_portdesc_replyv5) {
       "777777778888888899999999AAAAAAAA0000BBBB00480000CCCCCCCCCCCC0000506F7274"
       "203200000000000000000000333333334444444400000020000000005555555566666666"
       "777777778888888899999999AAAAAAAA",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, tablemodv5) {
+  const char *input = R"""(
+    type:            TABLE_MOD
+    xid:             0x00000000
+    version:         0x05
+    msg:             
+      table_id:        ALL
+      config:          [  ]
+      eviction:        
+        flags:           0x11223344
+      vacancy:         
+        vacancy_down:    0x11
+        vacancy_up:      0x22
+        vacancy:         0x33
+      properties:      
+        - property:        EXPERIMENTER
+          experimenter:    0x44444441
+          exp_type:        0x55555551
+          data:            ''
+        - property:        EXPERIMENTER
+          experimenter:    0x66666661
+          exp_type:        0x77777771
+          data:            88888888
+        - property:        EXPERIMENTER
+          experimenter:    0x99999991
+          exp_type:        0xAAAAAAA1
+          data:            0000000100000002
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(88, encoder.size());
+  EXPECT_HEX(
+      "0511005800000000FF0000000000000000020008112233440003000811223300FFFF000C"
+      "444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991"
+      "AAAAAAA1000000010000000200000000",
       encoder.data(), encoder.size());
 }

@@ -9,3 +9,5 @@ docs/html
 *\+*/
 *.pyc
 old/
+Build/
+GIT-VERSION.cmake

@@ -28,16 +28,12 @@ struct MappingTraits<ofp::FeaturesReply> {
   static void mapping(IO &io, ofp::FeaturesReply &msg) {
     using namespace ofp;
 
-    DatapathID dpid = msg.datapathId();
-    Hex32 bufferCount = msg.bufferCount();
-    Hex8 tableCount = msg.tableCount();
-    Hex8 auxiliaryId = msg.auxiliaryId();
-    OFPCapabilitiesFlags capabilities = msg.capabilities();
+    io.mapRequired("datapath_id", msg.datapathId_);
+    io.mapRequired("n_buffers", msg.bufferCount_);
+    io.mapRequired("n_tables", msg.tableCount_);
+    io.mapRequired("auxiliary_id", msg.auxiliaryId_);
 
-    io.mapRequired("datapath_id", dpid);
-    io.mapRequired("n_buffers", bufferCount);
-    io.mapRequired("n_tables", tableCount);
-    io.mapRequired("auxiliary_id", auxiliaryId);
+    OFPCapabilitiesFlags capabilities = msg.capabilities();
     io.mapRequired("capabilities", capabilities);
 
     if (msg.msgHeader()->version() == OFP_VERSION_1) {
@@ -55,25 +51,14 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
   static void mapping(IO &io, ofp::FeaturesReplyBuilder &msg) {
     using namespace ofp;
 
-    DatapathID dpid;
-    UInt32 bufferCount;
-    UInt8 tableCount;
-    UInt8 auxiliaryId;
-    OFPCapabilitiesFlags capabilities = OFPC_NONE;
-    OFPActionTypeFlags actions;
+    io.mapRequired("datapath_id", msg.msg_.datapathId_);
+    io.mapRequired("n_buffers", msg.msg_.bufferCount_);
+    io.mapRequired("n_tables", msg.msg_.tableCount_);
+    io.mapOptional("auxiliary_id", msg.msg_.auxiliaryId_);
+    io.mapRequired("capabilities", msg.msg_.capabilities_);
 
-    io.mapRequired("datapath_id", dpid);
-    io.mapRequired("n_buffers", bufferCount);
-    io.mapRequired("n_tables", tableCount);
-    io.mapOptional("auxiliary_id", auxiliaryId, UInt8{});
-    io.mapRequired("capabilities", capabilities);
+    OFPActionTypeFlags actions = OFPATF_NONE;
     io.mapOptional("actions", actions, OFPActionTypeFlags{});
-
-    msg.setDatapathId(dpid);
-    msg.setBufferCount(bufferCount);
-    msg.setTableCount(tableCount);
-    msg.setAuxiliaryId(auxiliaryId);
-    msg.setCapabilities(capabilities);
     msg.setActions(actions);
 
     PortList ports;

@@ -86,7 +86,7 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
 
     MeterBandList &list = Ref_cast<MeterBandList>(inserter);
 
-    OFPMeterBandType meterType;
+    OFPMeterBandType meterType = OFPMBT_NONE;
     io.mapRequired("type", meterType);
 
     switch (meterType) {
