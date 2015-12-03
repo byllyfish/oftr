@@ -300,8 +300,9 @@ if __name__ == '__main__':
         print 'Usage: annotate.py <input-file>'
         sys.exit(1)
 
-    DEVNULL = open(os.devnull, 'w')
-    PROC = subprocess.Popen([LIBOFP, 'encode', '-jkR'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=DEVNULL)
+    cmd = os.environ.get('LIBOFP_MEMCHECK', '').split()
+    cmd += [LIBOFP, 'encode', '-jkR', '--silent-error']
+    PROC = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
     inputFile = sys.argv[1]
     jsonFileName = inputFile + '.json'
@@ -321,4 +322,7 @@ if __name__ == '__main__':
                     d.check()
                     d.output()
 
-
+    PROC.stdout.close()
+    PROC.stdin.close()
+    ret = PROC.wait()
+    sys.exit(ret)

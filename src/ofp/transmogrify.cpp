@@ -790,16 +790,71 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
 }
 
 void Transmogrify::normalizeQueueGetConfigReplyV2() {
-  // If length of message is not padded to a multiple of 8, pad it out.
+  // Pad all queues to a multiple of 8. You can only get a queue whose size is
+  // not a multiple of 8 if it contains an experimenter property with an
+  // unusual length.
+
   Header *hdr = header();
 
   size_t length = hdr->length();
-  if ((length % 8) == 0) {
+  if (length < sizeof(QueueGetConfigReply))
+    return;
+
+  ByteRange data = SafeByteRange(buf_.mutableData(), buf_.size(),
+                                 sizeof(QueueGetConfigReply));
+
+  size_t remaining = data.size();
+  const UInt8 *ptr = data.data();
+
+  ByteList newBuf;
+  while (remaining > 16) {
+    // Read 16-bit queue length from a potentially mis-aligned position.
+    UInt16 queueLen = Big16_copy(ptr + 8);
+    if (queueLen > remaining || queueLen < 16)
+      return;
+    // Copy queue header.
+    newBuf.add(ptr, 16);
+
+    // Iterate over properties and pad out the properties whose sizes are not
+    // multiples of 8.
+    const UInt8 *prop = ptr + 16;
+    size_t propLeft = queueLen - 16;
+    while (propLeft > 4) {
+      UInt16 propSize = Big16_copy(prop + 2);
+      if (propSize > propLeft || propSize < 4)
+        return;
+      newBuf.add(prop, propSize);
+      if ((propSize % 8) != 0) {
+        newBuf.addZeros(PadLength(propSize) - propSize);
+      }
+      prop += propSize;
+      propLeft -= propSize;
+    }
+
+    if (propLeft != 0) {
+      log::debug("normalizeQueueGetConfigReplyV2: propLeft != 0");
+      return;
+    }
+
+    ptr += queueLen;
+    assert(prop == ptr);
+
+    remaining -= queueLen;
+  }
+
+  if (remaining != 0) {
+    log::debug("normalizeQueueGetConfigReplyV2: remaining != 0");
     return;
   }
 
-  size_t newLength = PadLength(length);
-  buf_.addZeros(newLength - length);
+  // When padding the regular `Queue` structure, we may exceed the max
+  // message size of 65535.
+  if (newBuf.size() > 65535 - sizeof(QueueGetConfigReply)) {
+    markInputTooBig("QueueGetConfigReply is too big");
+    return;
+  }
+
+  buf_.replace(data.begin(), data.end(), newBuf.data(), newBuf.size());
 
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }

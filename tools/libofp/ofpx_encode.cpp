@@ -84,7 +84,7 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
 
 ExitStatus Encode::encodeMessages(std::istream &input) {
   std::string text;
-  int lineNum;
+  int lineNum = 0;
 
   while (readMessage(input, text, lineNum)) {
     ofp::log::debug("readMessage returned", text);
@@ -99,7 +99,9 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
         // Send back an empty message to indicate `roundtrip` failure.
         *output_ << (json_ ? kNullJsonMessage : kNullYamlMessage);
       }
-      std::cerr << err << '\n';
+      if (!silentError_) {
+        std::cerr << err << '\n';
+      }
       if (!keepGoing_) {
         return ExitStatus::EncodeFailed;
       }
@@ -117,7 +119,9 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
           // Send back an empty message to indicate `roundtrip` failure.
           *output_ << (json_ ? kNullJsonMessage : kNullYamlMessage);
         }
-        std::cerr << err << '\n';
+        if (!silentError_) {
+          std::cerr << err << '\n';
+        }
         if (!keepGoing_) {
           return ExitStatus::RoundtripFailed;
         }

@@ -7,9 +7,7 @@
 using namespace ofp;
 
 PropertyRange PortMod::properties() const {
-  assert(header_.length() >= sizeof(PortMod));
-  return ByteRange{BytePtr(this) + sizeof(PortMod),
-                   header_.length() - sizeof(PortMod)};
+  return SafeByteRange(this, header_.length(), sizeof(PortMod));
 }
 
 bool PortMod::validateInput(Validation *context) const {

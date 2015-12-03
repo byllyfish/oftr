@@ -67,6 +67,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
 	ofp/standardmatch_unittest.cpp
+	ofp/tablemod_unittest.cpp
 	ofp/timestamp_unittest.cpp
 	ofp/types_unittest.cpp
 	ofp/unittest_unittest.cpp
@@ -93,11 +94,14 @@ target_link_libraries(ofp_unittest gtest ofp ${LIBOFP_LINKED_LIBS})
 
 # Add tests here.
 
-add_test(
-  NAME unittests
-  COMMAND ofp_unittest
-)
-
-# Unit tests may need more than 10 seconds when running under valgrind.
-
+add_test(NAME unittests COMMAND ofp_unittest)
 set_tests_properties(unittests PROPERTIES TIMEOUT 60)
+
+if(LIBOFP_MEMCHECK)
+	separate_arguments(cmd UNIX_COMMAND "${LIBOFP_MEMCHECK} ./ofp_unittest")
+    add_test(NAME memcheck_unittests COMMAND ${cmd})
+    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60)
+endif()
+
+
+

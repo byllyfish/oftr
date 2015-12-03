@@ -598,6 +598,14 @@ enum OFPRoleStatusProperty : UInt16 {
   OFPRPT_EXPERIMENTER = 0xFFFF,
 };
 
+enum OFPTableModProperty : UInt16 {
+  OFPTMPT_UNUSED_MAX = 1,  // max unused property id
+  OFPTMPT_EVICTION = 2,
+  OFPTMPT_VACANCY = 3,
+  OFPTMPT_UNUSED_MIN = 4,  // min unused property id
+  OFPTMPT_EXPERIMENTER = 0xFFFF,
+};
+
 enum OFPBundleProperty : UInt16 {
   OFPBPT_UNUSED_MIN = 0,  // min unused property id
   OFPBPT_EXPERIMENTER = 0xFFFF,

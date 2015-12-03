@@ -9,7 +9,7 @@ CURRENT_SOURCE_DIR=`dirname "$0"`
 echo "Test annotate.py."
 
 echo "  Run libofp encode to verify format of $CURRENT_SOURCE_DIR/annotate-input.yml"
-../libofp encode -s $CURRENT_SOURCE_DIR/annotate-input.yml
+$LIBOFP_MEMCHECK ../libofp encode -s $CURRENT_SOURCE_DIR/annotate-input.yml
 
 echo "  Run annotate.py to produce annotate.tab"
 python $CURRENT_SOURCE_DIR/annotate.py $CURRENT_SOURCE_DIR/annotate-input.yml > annotate.tab

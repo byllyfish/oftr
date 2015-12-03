@@ -1009,11 +1009,11 @@ TEST(decoder, portmodv5) {
 }
 
 TEST(decoder, tablemodv4) {
-  testDecodeEncode(
-      "04110010111111112200000033333330",
-      "---\ntype:            TABLE_MOD\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "table_id:        0x22\n  config:          [ '0x33333330' ]\n...\n");
+  testDecodeEncode("04110010111111112200000033333330",
+                   "---\ntype:            TABLE_MOD\nxid:             "
+                   "0x11111111\nversion:         0x04\nmsg:             \n  "
+                   "table_id:        0x22\n  config:          [ '0x33333330' "
+                   "]\n  properties:      \n...\n");
 }
 
 TEST(decoder, tablemodv2) {
@@ -1021,7 +1021,8 @@ TEST(decoder, tablemodv2) {
                    "---\ntype:            TABLE_MOD\nxid:             "
                    "0x11111111\nversion:         0x02\nmsg:             \n  "
                    "table_id:        0x22\n  config:          [ "
-                   "TABLE_MISS_CONTROLLER, '0x33333330' ]\n...\n");
+                   "TABLE_MISS_CONTROLLER, '0x33333330' ]\n  properties:      "
+                   "\n...\n");
 }
 
 TEST(decoder, rolerequestv4) {
@@ -1083,13 +1084,32 @@ TEST(decoder, queuegetconfigreplyv4) {
 
 TEST(decoder, queuegetconfigreplyv4_experimenter) {
   testDecodeEncode(
-      "041700A01111111122222222000000003333333344444444006000000000000000010010"
+      "041700991111111122222222000000003333333344444444005900000000000000010010"
+      "00000000555500000000000000020010000000006666000000000000FFFF001600000000"
+      "EEEEEEEE00000000000102030405FFFF001300000000FFFFFFFF00000000ABCDEF777777"
+      "778888888800300000000000000001001000000000999900000000000000020010000000"
+      "00AAAA000000000000",
+      "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
+      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
+      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "max_rate:        0x6666\n      properties:      \n        - "
+      "experimenter:    0xEEEEEEEE\n          value:           000102030405\n  "
+      "      - experimenter:    0xFFFFFFFF\n          value:           "
+      "ABCDEF\n    - queue_id:        0x77777777\n      port:            "
+      "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
+      "0xAAAA\n      properties:      \n...\n");
+}
+
+TEST(decoder, queuegetconfigreplyv5_experimenter) {
+  testDecodeEncode(
+      "051700A01111111122222222000000003333333344444444006000000000000000010010"
       "00000000555500000000000000020010000000006666000000000000FFFF001600000000"
       "EEEEEEEE000000000001020304050000FFFF001300000000FFFFFFFF00000000ABCDEF00"
       "000000007777777788888888003000000000000000010010000000009999000000000000"
       "0002001000000000AAAA000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x05\nmsg:             \n  port:           "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
       "   port:            0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n        - "
@@ -1754,4 +1774,31 @@ TEST(decoder, queue_get_config_replyv1) {
       " 0x0000000D\n  queues:          \n    - queue_id:        0x00000012\n   "
       "   port:            0x00000000\n      min_rate:        0xFFFF\n      "
       "max_rate:        0xFFFF\n      properties:      \n...\n");
+}
+
+TEST(decoder, tablemodv5) {
+  testDecodeEncode(
+      "0511005800000000FF0000000000000000020008112233440003000811223300FFFF000C"
+      "444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991"
+      "AAAAAAA1000000010000000200000000",
+      "---\ntype:            TABLE_MOD\nxid:             0x00000000\nversion:  "
+      "       0x05\nmsg:             \n  table_id:        ALL\n  config:       "
+      "   [  ]\n  eviction:        \n    flags:           0x11223344\n  "
+      "vacancy:         \n    vacancy_down:    0x11\n    vacancy_up:      "
+      "0x22\n    vacancy:         0x33\n  properties:      \n    - property:   "
+      "     EXPERIMENTER\n      experimenter:    0x44444441\n      exp_type:   "
+      "     0x55555551\n      data:            ''\n    - property:        "
+      "EXPERIMENTER\n      experimenter:    0x66666661\n      exp_type:        "
+      "0x77777771\n      data:            88888888\n    - property:        "
+      "EXPERIMENTER\n      experimenter:    0x99999991\n      exp_type:        "
+      "0xAAAAAAA1\n      data:            0000000100000002\n...\n");
+}
+
+TEST(decoder, tablemod_unrecognized_prop_v5) {
+  testDecodeEncode(
+      "0511002000000000 FF00000000000000 0001001011223344 5566778899AABBCC",
+      "---\ntype:            TABLE_MOD\nxid:             0x00000000\nversion:  "
+      "       0x05\nmsg:             \n  table_id:        ALL\n  config:       "
+      "   [  ]\n  properties:      \n    - property:        0x0001\n      "
+      "data:            112233445566778899AABBCC\n...\n");
 }

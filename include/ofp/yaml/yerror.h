@@ -37,8 +37,8 @@ struct MappingTraits<ofp::Error> {
 template <>
 struct MappingTraits<ofp::ErrorBuilder> {
   static void mapping(IO &io, ofp::ErrorBuilder &msg) {
-    ofp::OFPErrorType type;
-    ofp::OFPErrorCode code;
+    ofp::OFPErrorType type = ofp::OFPET_UNKNOWN_FLAG;
+    ofp::OFPErrorCode code = ofp::OFPEC_UNKNOWN_FLAG;
     ofp::ByteList data;
     io.mapRequired("type", type);
     io.mapRequired("code", code);

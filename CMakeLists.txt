@@ -4,20 +4,19 @@
 #
 #=====--------------------------------------------------------------------=====#
 #
-# The CMakeLists.txt file supports building debug, 32 bit, or 64 bit builds. To
-# set the build options, create a Build directory with your options in the 
-# directory name. The following options are supported:
+# If the build directory is named `Build+Debug`, cmake will build a debug
+# version. Alternatively, you can build a debug version explicitly:
 #
-#    +debug    Build a debug version.
-#    +32bit    Build a 32-bit version.
-#    +64bit    Build a 64-bit version.
-#
-# For example, if the build directory is named `Build+Debug`, cmake will build
-# debug version.
+#    cmake -DCMAKE_BUILD_TYPE=debug
 #
 # To build libofp without the JSON-RPC server:
 #
 #    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
+#
+# To build without memcheck tests:
+#
+#    cmake -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
+#
 
 cmake_minimum_required(VERSION 2.8.8)
 project(Libofp)
@@ -36,7 +35,7 @@ set(CMAKE_MODULE_PATH
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 10)
+set(Libofp_VERSION_MINOR 11)
 set(Libofp_VERSION_PATCH 0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
@@ -52,6 +51,13 @@ set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
 if(NOT LIBOFP_ENABLE_JSONRPC)
   message(STATUS "JSON-RPC server is disabled.")
+endif()
+
+# You can disable the valgrind memcheck tests.
+
+set(LIBOFP_ENABLE_MEMCHECK_TESTS TRUE CACHE BOOL "Enable additional valgrind memcheck tests")
+if(NOT LIBOFP_ENABLE_MEMCHECK_TESTS)
+  message(STATUS "Memcheck tests are disabled.")
 endif()
 
 # Require out of source builds.
@@ -211,6 +217,7 @@ set(LIBOFP_SOURCES
   src/ofp/standardmatch.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp
+  src/ofp/tablemodproperty.cpp
   src/ofp/timestamp.cpp
   src/ofp/transmogrify.cpp
   src/ofp/types.cpp
@@ -267,29 +274,15 @@ set(LIBOFP_SOURCES_GENERATED
 )
 
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
-# '+debug', set the build type to 'debug', otherwise set to release build. The
-# comparison test for '+debug' is case-insensitive.
+# '+debug', set the build type to 'debug'.
 
 string(TOLOWER "${CMAKE_BINARY_DIR}" binary_dir)
-if("${binary_dir}" MATCHES "/[^/]*\\+debug[^/]*$")
-  message(STATUS "Setting build type to DEBUG.")
-  set(CMAKE_BUILD_TYPE debug)
-else()
-  message(STATUS "Setting build type to RELEASE.")
-  set(CMAKE_BUILD_TYPE release)
+if(binary_dir MATCHES "/[^/]*\\+debug[^/]*$")
+  set(CMAKE_BUILD_TYPE Debug)
+elseif(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
-
-# If binary_dir contains +32bit or +64bit set the -m32 or -m64 flag respectively.
-
-if("${binary_dir}" MATCHES "/[^/]*\\+64bit[^/]*$")
-  message(STATUS "Adding -m64 build option.")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m64")
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -m64")
-elseif("${binary_dir}" MATCHES "/[^/]*\\+32bit[^/]*$")
-  message(STATUS "Adding -m32 build option.")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -m32")
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -m32")
-endif()
+message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
@@ -313,12 +306,14 @@ endif()
 #-------------------------------------------------------------------------------
 
 # Prepare for testing. Subdirectories can add tests.
-# N.B. The suppressions file must be defined before `include(CTest)`; otherwise
-# the correct value will not appear in the generated DartConfiguration.tcl.
 
-set(MEMORYCHECK_COMMAND_OPTIONS "-v --trace-children=yes --trace-children-skip=/bin/sleep,/usr/bin/diff,/usr/bin/basename,/usr/bin/dirname,/usr/bin/find,/usr/bin/sort,/usr/bin/xargs --leak-check=no --error-exitcode=99")
-set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/test/valgrind.supp")
+set(MEMORYCHECK_COMMAND_OPTIONS "-q --leak-check=no --error-exitcode=99")
 include(CTest)
+
+if(MEMORYCHECK_COMMAND AND LIBOFP_ENABLE_MEMCHECK_TESTS)
+  set(LIBOFP_MEMCHECK "${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS}")
+  message(STATUS "Memcheck command: ${LIBOFP_MEMCHECK}")
+endif()
 
 # Use pthreads.
 
@@ -334,22 +329,27 @@ find_package(PythonModule REQUIRED)
 find_python_module(yaml)
 
 # Look up the specific git commits for libofp, asio, and boringssl. If we are
-# building from a tarball instead of a git repo, the git commits will be empty.
+# building from a tarball instead of a git repo, the git commits will be empty,
+# and they need to be loaded from the GIT-VERSION.cmake file.
 
-execute_process(COMMAND git rev-parse --verify HEAD OUTPUT_VARIABLE Libofp_GIT_COMMIT_LIBOFP)
-string(STRIP "${Libofp_GIT_COMMIT_LIBOFP}" Libofp_GIT_COMMIT_LIBOFP)
+include(GIT-VERSION.cmake OPTIONAL)
+if(NOT Libofp_GIT_COMMIT_LIBOFP)  
+  execute_process(COMMAND git rev-parse --verify HEAD OUTPUT_VARIABLE Libofp_GIT_COMMIT_LIBOFP)
+  string(STRIP "${Libofp_GIT_COMMIT_LIBOFP}" Libofp_GIT_COMMIT_LIBOFP)
+
+  execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
+  if(NOT "${Libofp_GIT_COMMIT_ASIO}" STREQUAL "")
+    string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
+  endif()
+
+  execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
+  if(NOT "${Libofp_GIT_COMMIT_BORINGSSL}" STREQUAL "")
+    string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
+  endif()
+endif()
+
 message(STATUS "Libofp commit: ${Libofp_GIT_COMMIT_LIBOFP}")
-
-execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/asio OUTPUT_VARIABLE Libofp_GIT_COMMIT_ASIO)
-if(NOT "${Libofp_GIT_COMMIT_ASIO}" STREQUAL "")
-  string(SUBSTRING "${Libofp_GIT_COMMIT_ASIO}" 1 40 Libofp_GIT_COMMIT_ASIO)
-endif()
 message(STATUS "Asio commit: ${Libofp_GIT_COMMIT_ASIO}")
-
-execute_process(COMMAND git submodule status ${CMAKE_SOURCE_DIR}/external/boringssl OUTPUT_VARIABLE Libofp_GIT_COMMIT_BORINGSSL)
-if(NOT "${Libofp_GIT_COMMIT_BORINGSSL}" STREQUAL "")
-  string(SUBSTRING "${Libofp_GIT_COMMIT_BORINGSSL}" 1 40 Libofp_GIT_COMMIT_BORINGSSL)
-endif()
 message(STATUS "BoringSSL commit: ${Libofp_GIT_COMMIT_BORINGSSL}")
 
 # Specify auto-generated config.h file.
@@ -443,16 +443,6 @@ add_subdirectory(test)
 #-------------------------------------------------------------------------------
 
 add_subdirectory(docs)
-
-#-------------------------------------------------------------------------------
-# Install Library
-#-------------------------------------------------------------------------------
-
-# Set install prefix to local if CMAKE_BUILD_TYPE is debug.
-
-if(CMAKE_BUILD_TYPE STREQUAL "debug")
-  set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/local)
-endif()
 
 #-------------------------------------------------------------------------------
 # CPack Installer Support
