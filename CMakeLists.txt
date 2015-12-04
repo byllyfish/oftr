@@ -27,10 +27,7 @@ message(STATUS "Running cmake ${CMAKE_VERSION} on ${CMAKE_SYSTEM} ${CMAKE_SYSTEM
 
 # Add path for custom modules
 
-set(CMAKE_MODULE_PATH
-  ${CMAKE_MODULE_PATH}
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
-)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
@@ -375,7 +372,6 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-add_subdirectory(external/googletest/googletest)
 if(LIBOFP_ENABLE_JSONRPC)
   add_subdirectory(external/boringssl)
 endif()
