@@ -1,6 +1,7 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/smallbuffer.h"
+#include "ofp/padding.h"
 
 using ofp::SmallBuffer;
 using ofp::UInt8;
@@ -151,15 +152,17 @@ void SmallBuffer::reset(size_t length) noexcept {
     capacity_ = begin_ + IntrinsicBufSize;
 
   } else {
-    UInt8 *newBuf = static_cast<UInt8 *>(std::malloc(length));
+    size_t newCapacity = PadLength(length);
+    UInt8 *newBuf = static_cast<UInt8 *>(std::malloc(newCapacity));
     if (!newBuf) {
-      log::fatal("ofp::SmallBuffer: malloc failed:", length);
-      std::abort();
+      log::fatal("ofp::SmallBuffer: malloc failed:", newCapacity);
     }
     begin_ = newBuf;
     end_ = begin_ + length;
-    capacity_ = end_;
+    capacity_ = begin_ + newCapacity;
   }
+
+  assertInvariant();
 }
 
 UInt8 *SmallBuffer::addUninitialized(size_t length) noexcept {
@@ -239,6 +242,8 @@ void SmallBuffer::replaceZeros(UInt8 *pos, UInt8 *posEnd,
 }
 
 void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
+  assertInvariant();
+
   size_t newCapacity = computeCapacity(newLength);
   size_t len = size();
   UInt8 *newBuf = nullptr;
@@ -252,7 +257,6 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
     newBuf = static_cast<UInt8 *>(std::malloc(newCapacity));
     if (!newBuf) {
       log::fatal("ofp::SmallBuffer: malloc failed:", newCapacity);
-      std::abort();
     }
 
     std::memcpy(newBuf, begin_, len);
@@ -264,13 +268,14 @@ void SmallBuffer::increaseCapacity(size_t newLength) noexcept {
     newBuf = static_cast<UInt8 *>(std::realloc(begin_, newCapacity));
     if (!newBuf) {
       log::fatal("ofp::SmallBuffer: realloc failed:", newCapacity);
-      std::abort();
     }
   }
 
   begin_ = newBuf;
   end_ = begin_ + len;
   capacity_ = begin_ + newCapacity;
+
+  assertInvariant();
 }
 
 size_t SmallBuffer::computeCapacity(size_t length) noexcept {
@@ -289,5 +294,5 @@ size_t SmallBuffer::computeCapacity(size_t length) noexcept {
 
   log::warning("SmallBuffer capacity > 4 MB:", 2 * length);
 
-  return 2 * length;
+  return 2 * PadLength(length);
 }
