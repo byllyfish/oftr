@@ -99,12 +99,12 @@ target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS})
 # Add tests here.
 
 add_test(NAME unittests COMMAND ofp_unittest)
-set_tests_properties(unittests PROPERTIES TIMEOUT 60)
+set_tests_properties(unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=16653")
 
 if(LIBOFP_MEMCHECK)
 	separate_arguments(cmd UNIX_COMMAND "${LIBOFP_MEMCHECK} ./ofp_unittest")
     add_test(NAME memcheck_unittests COMMAND ${cmd})
-    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60)
+    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=16653")
 endif()
 
 add_test(NAME test_install COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test_install.sh)

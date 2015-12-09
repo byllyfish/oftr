@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
   if (addr.valid()) {
     (void)driver.connect(
-        ChannelMode::Controller, 0, IPv6Endpoint{addr, OFP_DEFAULT_PORT},
+        ChannelMode::Controller, 0, IPv6Endpoint{addr, OFPGetDefaultPort()},
         ProtocolVersions::All, NullController::Factory,
         [](Channel *channel, std::error_code err) {
           std::cout << "Result: connId=" << channel->connectionId()
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
   } else {
     std::error_code err;
     (void)driver.listen(ChannelMode::Controller, 0,
-                        IPv6Endpoint{OFP_DEFAULT_PORT}, ProtocolVersions::All,
+                        IPv6Endpoint{OFPGetDefaultPort()}, ProtocolVersions::All,
                         NullController::Factory, err);
   }
 

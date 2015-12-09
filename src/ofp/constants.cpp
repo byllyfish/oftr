@@ -4,6 +4,19 @@
 
 using namespace ofp;
 
+UInt16 ofp::OFPGetDefaultPort() {
+  const char *portStr = std::getenv("LIBOFP_DEFAULT_PORT");
+  if (!portStr)
+    return OFP_DEFAULT_PORT;
+
+  long portNum = std::strtol(portStr, NULL, 10);
+  if (portNum > 0 && portNum < 0xffff) {
+    return UInt16_narrow_cast(portNum);
+  }
+
+  return OFP_DEFAULT_PORT;
+}
+
 static const char *toCString(OFPType type);
 static const char *toCString(OFPMultipartType type);
 

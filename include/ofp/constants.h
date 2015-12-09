@@ -45,11 +45,15 @@ enum {
 };
 
 enum {
-  OFP_DEFAULT_PORT = 6633,
+  OFP_DEFAULT_PORT = 6653,
 
   // Maximum size of an OpenFlow message.
   OFP_MAX_SIZE = 65535
 };
+
+/// Retrieve default OpenFlow port, which may be overidden by an environment
+/// variable.
+UInt16 OFPGetDefaultPort();
 
 enum : UInt16 { OFPVID_PRESENT = 0x1000, OFPVID_NONE = 0x0000 };
 

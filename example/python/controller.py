@@ -1,7 +1,7 @@
 # Python Controller
 #
-# Set environment variable OFPX_PATH before running this program. If that
-# variable is not set, this program will use /usr/local/bin/ofpx.
+# Set environment variable LIBOFP_PATH before running this program. If that
+# variable is not set, this program will use /usr/local/bin/libofp.
 
 import os
 import sys
@@ -141,9 +141,9 @@ def handlePacketIn(ofp, event):
 if __name__ == '__main__':
     forwardTable = {}
 
-    ofpx = os.environ.get('OFPX_PATH')
+    ofpx = os.environ.get('LIBOFP_PATH')
     if not ofpx:
-        ofpx = '/usr/local/bin/ofpx'
+        ofpx = '/usr/local/bin/libofp'
 
     ofp = libofp.LibOFP(ofpx)
     for event in ofp:
