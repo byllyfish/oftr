@@ -192,7 +192,7 @@ void Engine::stop(Milliseconds timeout) {
     io_.stop();
   } else {
     asio::error_code error;
-    stopTimer_.expires_from_now(timeout, error);
+    stopTimer_.expires_after(timeout, error);
     if (error) {
       io_.stop();
       return;
@@ -376,7 +376,7 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
 void Engine::asyncIdle() {
   asio::error_code error;
 
-  idleTimer_.expires_from_now(1000_ms, error);
+  idleTimer_.expires_after(1000_ms, error);
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (!err) {
       forEachConnection([this](Connection *conn) { conn->poll(); });

@@ -22,15 +22,15 @@ class Buffered : private StreamType {
 
   // using inherited::inherited;
 
-  Buffered(asio::io_service &io, asio::ssl::context *context)
+  Buffered(asio::io_context &io, asio::ssl::context *context)
       : inherited{io, *context} {}
 
   Buffered(tcp::socket sock, asio::ssl::context *context)
-      : inherited{sock.get_io_service(), *context} {
+      : inherited{sock.get_executor().context(), *context} {
     lowest_layer() = std::move(sock);
   }
 
-  using inherited::get_io_service;
+  using inherited::get_executor;
   using inherited::async_read_some;
   // using inherited::async_write_some;
   using inherited::lowest_layer;

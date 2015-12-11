@@ -98,7 +98,7 @@ endif()
 
 # Specify additional definitions.
 
-set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS")
+set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_NO_DEPRECATED")
 #set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
 # -D ASIO_NO_DEPRECATED -D ASIO_NO_IOSTREAM 
 
@@ -111,8 +111,8 @@ endif()
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_C_FLAGS "-fstrict-aliasing")
-set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11")
+set(LIBOFP_C_FLAGS "-fstrict-aliasing -fvisibility=hidden")
+set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
 
 if(APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
