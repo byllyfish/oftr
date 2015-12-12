@@ -643,22 +643,23 @@ msg:  {}
 version: 0x04
 type: GET_ASYNC_REPLY
 msg:
-  packet_in_mask_master: [ INVALID_TTL ]
-  packet_in_mask_slave: [ INVALID_TTL ]
-  port_status_mask_master: [ DELETE ]
-  port_status_mask_slave: [ DELETE ]
-  flow_removed_mask_master: [ HARD_TIMEOUT ]
-  flow_removed_mask_slave: [ HARD_TIMEOUT ]
+  packet_in_slave: [ INVALID_TTL ]
+  packet_in_master: [ INVALID_TTL ]
+  port_status_slave: [ DELETE ]
+  port_status_master: [ DELETE ]
+  flow_removed_slave: [ HARD_TIMEOUT ]
+  flow_removed_master: [ HARD_TIMEOUT ]
+  properties: []
 ---
 version: 0x04
 type: SET_ASYNC
 msg:
-  packet_in_master: [ INVALID_TTL ]
   packet_in_slave: [ INVALID_TTL ]
-  port_status_master: [ DELETE ]
+  packet_in_master: [ INVALID_TTL ]
   port_status_slave: [ DELETE ]
-  flow_removed_master: [ HARD_TIMEOUT ]
+  port_status_master: [ DELETE ]
   flow_removed_slave: [ HARD_TIMEOUT ]
+  flow_removed_master: [ HARD_TIMEOUT ]
   properties: []
 ---
 version: 0x04

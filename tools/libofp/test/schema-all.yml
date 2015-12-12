@@ -984,12 +984,19 @@ Message/GetAsyncReply:
   time: !optout Timestamp
   type: GET_ASYNC_REPLY
   msg:
-    packet_in_mask_master: [PacketInFlags]
-    packet_in_mask_slave: [PacketInFlags]
-    port_status_mask_master: [PortStatusFlags]
-    port_status_mask_slave: [PortStatusFlags]
-    flow_removed_mask_master: [FlowRemovedFlags]
-    flow_removed_mask_slave: [FlowRemovedFlags]
+    packet_in_slave: !optout [PacketInFlags]
+    packet_in_master: !optout [PacketInFlags]
+    port_status_slave: !optout [PortStatusFlags]
+    port_status_master: !optout [PortStatusFlags]
+    flow_removed_slave: !optout [FlowRemovedFlags]
+    flow_removed_master: !optout [FlowRemovedFlags]
+    role_status_slave: !optout [RoleStatusFlags]
+    role_status_master: !optout [RoleStatusFlags]
+    table_status_slave: !optout [TableStatusFlags]
+    table_status_master: !optout [TableStatusFlags]
+    request_forward_slave: !optout [RequestForwardFlags]
+    request_forward_master: !optout [RequestForwardFlags]
+    properties: [ExperimenterProperty]
   
 Message/SetAsync: 
   version: !opt UInt8
@@ -1001,12 +1008,19 @@ Message/SetAsync:
   time: !optout Timestamp
   type: SET_ASYNC
   msg:
-    packet_in_master: [PacketInFlags]
-    packet_in_slave: [PacketInFlags]
-    port_status_master: [PortStatusFlags]
-    port_status_slave: [PortStatusFlags]
-    flow_removed_master: [FlowRemovedFlags]
-    flow_removed_slave: [FlowRemovedFlags]
+    packet_in_slave: !optout [PacketInFlags]
+    packet_in_master: !optout [PacketInFlags]
+    port_status_slave: !optout [PortStatusFlags]
+    port_status_master: !optout [PortStatusFlags]
+    flow_removed_slave: !optout [FlowRemovedFlags]
+    flow_removed_master: !optout [FlowRemovedFlags]
+    role_status_slave: !optout [RoleStatusFlags]
+    role_status_master: !optout [RoleStatusFlags]
+    table_status_slave: !optout [TableStatusFlags]
+    table_status_master: !optout [TableStatusFlags]
+    request_forward_slave: !optout [RequestForwardFlags]
+    request_forward_master: !optout [RequestForwardFlags]
+    properties: [ExperimenterProperty]
   
 Message/MeterMod: 
   version: !opt UInt8

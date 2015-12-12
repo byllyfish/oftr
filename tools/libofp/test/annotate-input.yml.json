@@ -1023,23 +1023,24 @@
   }, 
   {
     "msg": {
-      "port_status_mask_master": [
+      "port_status_slave": [
         "DELETE"
       ], 
-      "port_status_mask_slave": [
+      "packet_in_slave": [
+        "INVALID_TTL"
+      ], 
+      "packet_in_master": [
+        "INVALID_TTL"
+      ], 
+      "port_status_master": [
         "DELETE"
       ], 
-      "flow_removed_mask_slave": [
+      "flow_removed_slave": [
         "HARD_TIMEOUT"
       ], 
-      "flow_removed_mask_master": [
+      "properties": [], 
+      "flow_removed_master": [
         "HARD_TIMEOUT"
-      ], 
-      "packet_in_mask_master": [
-        "INVALID_TTL"
-      ], 
-      "packet_in_mask_slave": [
-        "INVALID_TTL"
       ]
     }, 
     "version": 4, 
@@ -1056,11 +1057,11 @@
       "packet_in_master": [
         "INVALID_TTL"
       ], 
-      "flow_removed_slave": [
-        "HARD_TIMEOUT"
-      ], 
       "port_status_master": [
         "DELETE"
+      ], 
+      "flow_removed_slave": [
+        "HARD_TIMEOUT"
       ], 
       "properties": [], 
       "flow_removed_master": [

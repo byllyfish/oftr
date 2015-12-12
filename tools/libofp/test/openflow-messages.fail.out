@@ -23329,7 +23329,7 @@ Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_26_00002.fail:
 Error: Only 23 bytes read of message body. Expected to read 24 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_27_00001.fail
-Error: Decode failed: Message size is invalid
+Error: Decode failed: Message parse error
 [ByteList size=31 data=041B001F0A3A4727BF3C75675B7300E0780043805050BD022F40B9E5A9B582]
 Filename: external/openflow-messages/v1_3/rep/rep_27_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
@@ -27763,7 +27763,7 @@ Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_26_00002.fail:
 Error: Only 23 bytes read of message body. Expected to read 24 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_27_00001.fail
-Error: Decode failed: Message size is invalid
+Error: Decode failed: Message parse error
 [ByteList size=31 data=041B001F0A3A4727BF3C75675B7300E0780043805050BD022F40B9E5A9B582]
 Filename: external/openflow-messages/v1_3_1/rep/rep_27_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.

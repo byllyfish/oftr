@@ -526,18 +526,19 @@ version	type	keypath	syntax	required	default	missing	modify
 1	ROLE_REPLY.v1	msg.role	ROLE_EQUAL	True			ERROR
 1	GET_ASYNC_REQUEST.v1	msg	object	True			ERROR
 1	GET_ASYNC_REPLY.v1	msg	object	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_slave	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_master	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_slave	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_master	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_master.0	DELETE	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_slave	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_slave.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_slave.0	HARD_TIMEOUT	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_master.0	INVALID_TTL	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_slave.0	INVALID_TTL	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_master.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_slave.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.properties	array	True			ERROR
 1	SET_ASYNC.v1	msg	object	True			ERROR
 1	SET_ASYNC.v1	msg.flow_removed_master	array	True			ERROR
 1	SET_ASYNC.v1	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
@@ -1124,18 +1125,19 @@ version	type	keypath	syntax	required	default	missing	modify
 2	ROLE_REPLY.v2	msg.role	ROLE_EQUAL	True			ERROR
 2	GET_ASYNC_REQUEST.v2	msg	object	True			ERROR
 2	GET_ASYNC_REPLY.v2	msg	object	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_slave	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_master	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_slave	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_master	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_master.0	DELETE	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_slave	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_slave.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_slave.0	HARD_TIMEOUT	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_master.0	INVALID_TTL	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_slave.0	INVALID_TTL	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_master.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_slave.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.properties	array	True			ERROR
 2	SET_ASYNC.v2	msg	object	True			ERROR
 2	SET_ASYNC.v2	msg.flow_removed_master	array	True			ERROR
 2	SET_ASYNC.v2	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
@@ -1722,18 +1724,19 @@ version	type	keypath	syntax	required	default	missing	modify
 3	ROLE_REPLY.v3	msg.role	ROLE_EQUAL	True			
 3	GET_ASYNC_REQUEST.v3	msg	object	True			ERROR
 3	GET_ASYNC_REPLY.v3	msg	object	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_slave	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_master	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_slave	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_master	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_master.0	DELETE	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_slave	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_slave.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_slave.0	HARD_TIMEOUT	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_master.0	INVALID_TTL	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_slave.0	INVALID_TTL	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_master.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_slave.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.properties	array	True			ERROR
 3	SET_ASYNC.v3	msg	object	True			ERROR
 3	SET_ASYNC.v3	msg.flow_removed_master	array	True			ERROR
 3	SET_ASYNC.v3	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
@@ -2320,18 +2323,19 @@ version	type	keypath	syntax	required	default	missing	modify
 4	ROLE_REPLY.v4	msg.role	ROLE_EQUAL	True			
 4	GET_ASYNC_REQUEST.v4	msg	object	False			
 4	GET_ASYNC_REPLY.v4	msg	object	True			
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master	array	True			
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master.0	HARD_TIMEOUT	False	msg.flow_removed_mask_master.0=HARD_TIMEOUT		
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_slave	array	True			
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	False	msg.flow_removed_mask_slave.0=HARD_TIMEOUT		
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_master	array	True			
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_master.0	INVALID_TTL	False	msg.packet_in_mask_master.0=INVALID_TTL		
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_slave	array	True			
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_slave.0	INVALID_TTL	False	msg.packet_in_mask_slave.0=INVALID_TTL		
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_master	array	True			
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_master.0	DELETE	False	msg.port_status_mask_master.0=DELETE		
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_slave	array	True			
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_slave.0	DELETE	False			
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_master	array	False	msg.flow_removed_master.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_slave	array	False	msg.flow_removed_slave.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_slave.0	HARD_TIMEOUT	False	msg.flow_removed_slave.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_master	array	False	msg.packet_in_master.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_master.0	INVALID_TTL	False	msg.packet_in_master.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_slave	array	False	msg.packet_in_slave.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_slave.0	INVALID_TTL	False	msg.packet_in_slave.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.port_status_master	array	False	msg.port_status_master.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.port_status_master.0	DELETE	False	msg.port_status_master.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.port_status_slave	array	False	msg.port_status_slave.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.port_status_slave.0	DELETE	False	msg.port_status_slave.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.properties	array	True			
 4	SET_ASYNC.v4	msg	object	True			
 4	SET_ASYNC.v4	msg.flow_removed_master	array	False	msg.flow_removed_master.0=HARD_TIMEOUT		
 4	SET_ASYNC.v4	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		
@@ -2918,18 +2922,19 @@ version	type	keypath	syntax	required	default	missing	modify
 5	ROLE_REPLY.v5	msg.role	ROLE_EQUAL	True			
 5	GET_ASYNC_REQUEST.v5	msg	object	False			
 5	GET_ASYNC_REPLY.v5	msg	object	True			
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_master	array	True			
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_master.0	HARD_TIMEOUT	False	msg.flow_removed_mask_master.0=HARD_TIMEOUT		
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_slave	array	True			
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	False	msg.flow_removed_mask_slave.0=HARD_TIMEOUT		
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_master	array	True			
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_master.0	INVALID_TTL	False	msg.packet_in_mask_master.0=INVALID_TTL		
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_slave	array	True			
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_slave.0	INVALID_TTL	False	msg.packet_in_mask_slave.0=INVALID_TTL		
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_master	array	True			
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_master.0	DELETE	False	msg.port_status_mask_master.0=DELETE		
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_slave	array	True			
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_slave.0	DELETE	False			
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_master	array	False	msg.flow_removed_master=array,msg.flow_removed_master.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_slave	array	False	msg.flow_removed_slave=array,msg.flow_removed_slave.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_slave.0	HARD_TIMEOUT	False	msg.flow_removed_slave.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_master	array	False	msg.packet_in_master=array,msg.packet_in_master.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_master.0	INVALID_TTL	False	msg.packet_in_master.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_slave	array	False	msg.packet_in_slave=array,msg.packet_in_slave.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_slave.0	INVALID_TTL	False	msg.packet_in_slave.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.port_status_master	array	False	msg.port_status_master=array,msg.port_status_master.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.port_status_master.0	DELETE	False	msg.port_status_master.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.port_status_slave	array	False	msg.port_status_slave=array,msg.port_status_slave.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.port_status_slave.0	DELETE	False	msg.port_status_slave.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.properties	array	True			
 5	SET_ASYNC.v5	msg	object	True			
 5	SET_ASYNC.v5	msg.flow_removed_master	array	False	msg.flow_removed_master=array,msg.flow_removed_master.0=HARD_TIMEOUT		
 5	SET_ASYNC.v5	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		

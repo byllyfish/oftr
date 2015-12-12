@@ -12,12 +12,19 @@ namespace yaml {
 const char *const kSetAsyncSchema = R"""({Message/SetAsync}
 type: SET_ASYNC
 msg:
-  packet_in_master: [PacketInFlags]
-  packet_in_slave: [PacketInFlags]
-  port_status_master: [PortStatusFlags]
-  port_status_slave: [PortStatusFlags]
-  flow_removed_master: [FlowRemovedFlags]
-  flow_removed_slave: [FlowRemovedFlags]
+  packet_in_slave: !optout [PacketInFlags]
+  packet_in_master: !optout [PacketInFlags]
+  port_status_slave: !optout [PortStatusFlags]
+  port_status_master: !optout [PortStatusFlags]
+  flow_removed_slave: !optout [FlowRemovedFlags]
+  flow_removed_master: !optout [FlowRemovedFlags]
+  role_status_slave: !optout [RoleStatusFlags]
+  role_status_master: !optout [RoleStatusFlags]
+  table_status_slave: !optout [TableStatusFlags]
+  table_status_master: !optout [TableStatusFlags]
+  request_forward_slave: !optout [RequestForwardFlags]
+  request_forward_master: !optout [RequestForwardFlags]
+  properties: [ExperimenterProperty]
 )""";
 
 template <>
@@ -27,19 +34,14 @@ struct MappingTraits<ofp::SetAsync> {
 
     PropertyRange props = msg.properties();
 
-    OFPPacketInFlags pktInMaster;
-    if (props.value<AsyncConfigPropertyPacketInMaster>(&pktInMaster)) {
-      io.mapRequired("packet_in_master", pktInMaster);
-    }
-
     OFPPacketInFlags pktInSlave;
     if (props.value<AsyncConfigPropertyPacketInSlave>(&pktInSlave)) {
       io.mapRequired("packet_in_slave", pktInSlave);
     }
 
-    OFPPortStatusFlags portStatusMaster;
-    if (props.value<AsyncConfigPropertyPortStatusMaster>(&portStatusMaster)) {
-      io.mapRequired("port_status_master", portStatusMaster);
+    OFPPacketInFlags pktInMaster;
+    if (props.value<AsyncConfigPropertyPacketInMaster>(&pktInMaster)) {
+      io.mapRequired("packet_in_master", pktInMaster);
     }
 
     OFPPortStatusFlags portStatusSlave;
@@ -47,9 +49,9 @@ struct MappingTraits<ofp::SetAsync> {
       io.mapRequired("port_status_slave", portStatusSlave);
     }
 
-    OFPFlowRemovedFlags flowRemovedMaster;
-    if (props.value<AsyncConfigPropertyFlowRemovedMaster>(&flowRemovedMaster)) {
-      io.mapRequired("flow_removed_master", flowRemovedMaster);
+    OFPPortStatusFlags portStatusMaster;
+    if (props.value<AsyncConfigPropertyPortStatusMaster>(&portStatusMaster)) {
+      io.mapRequired("port_status_master", portStatusMaster);
     }
 
     OFPFlowRemovedFlags flowRemovedSlave;
@@ -57,9 +59,9 @@ struct MappingTraits<ofp::SetAsync> {
       io.mapRequired("flow_removed_slave", flowRemovedSlave);
     }
 
-    OFPRoleStatusFlags roleStatusMaster;
-    if (props.value<AsyncConfigPropertyRoleStatusMaster>(&roleStatusMaster)) {
-      io.mapRequired("role_status_master", roleStatusMaster);
+    OFPFlowRemovedFlags flowRemovedMaster;
+    if (props.value<AsyncConfigPropertyFlowRemovedMaster>(&flowRemovedMaster)) {
+      io.mapRequired("flow_removed_master", flowRemovedMaster);
     }
 
     OFPRoleStatusFlags roleStatusSlave;
@@ -67,9 +69,9 @@ struct MappingTraits<ofp::SetAsync> {
       io.mapRequired("role_status_slave", roleStatusSlave);
     }
 
-    OFPTableStatusFlags tableStatusMaster;
-    if (props.value<AsyncConfigPropertyTableStatusMaster>(&tableStatusMaster)) {
-      io.mapRequired("table_status_master", tableStatusMaster);
+    OFPRoleStatusFlags roleStatusMaster;
+    if (props.value<AsyncConfigPropertyRoleStatusMaster>(&roleStatusMaster)) {
+      io.mapRequired("role_status_master", roleStatusMaster);
     }
 
     OFPTableStatusFlags tableStatusSlave;
@@ -77,16 +79,21 @@ struct MappingTraits<ofp::SetAsync> {
       io.mapRequired("table_status_slave", tableStatusSlave);
     }
 
-    OFPRequestForwardFlags requestForwMaster;
-    if (props.value<AsyncConfigPropertyRequestForwardSlave>(
-            &requestForwMaster)) {
-      io.mapRequired("requestforward_master", requestForwMaster);
+    OFPTableStatusFlags tableStatusMaster;
+    if (props.value<AsyncConfigPropertyTableStatusMaster>(&tableStatusMaster)) {
+      io.mapRequired("table_status_master", tableStatusMaster);
     }
 
     OFPRequestForwardFlags requestForwSlave;
     if (props.value<AsyncConfigPropertyRequestForwardSlave>(
             &requestForwSlave)) {
       io.mapRequired("requestforward_slave", requestForwSlave);
+    }
+
+    OFPRequestForwardFlags requestForwMaster;
+    if (props.value<AsyncConfigPropertyRequestForwardSlave>(
+            &requestForwMaster)) {
+      io.mapRequired("requestforward_master", requestForwMaster);
     }
 
     io.mapRequired("properties",
@@ -103,8 +110,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
 
     Optional<OFPPacketInFlags> pktMaster;
     Optional<OFPPacketInFlags> pktSlave;
-    io.mapOptional("packet_in_master", pktMaster);
     io.mapOptional("packet_in_slave", pktSlave);
+    io.mapOptional("packet_in_master", pktMaster);
     if (pktSlave)
       props.add(AsyncConfigPropertyPacketInSlave{*pktSlave});
     if (pktMaster)
@@ -112,8 +119,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
 
     Optional<OFPPortStatusFlags> portMaster;
     Optional<OFPPortStatusFlags> portSlave;
-    io.mapOptional("port_status_master", portMaster);
     io.mapOptional("port_status_slave", portSlave);
+    io.mapOptional("port_status_master", portMaster);
     if (portSlave)
       props.add(AsyncConfigPropertyPortStatusSlave{*portSlave});
     if (portMaster)
@@ -121,8 +128,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
 
     Optional<OFPFlowRemovedFlags> flowMaster;
     Optional<OFPFlowRemovedFlags> flowSlave;
-    io.mapOptional("flow_removed_master", flowMaster);
     io.mapOptional("flow_removed_slave", flowSlave);
+    io.mapOptional("flow_removed_master", flowMaster);
     if (flowSlave)
       props.add(AsyncConfigPropertyFlowRemovedSlave{*flowSlave});
     if (flowMaster)
@@ -130,8 +137,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
 
     Optional<OFPRoleStatusFlags> roleMaster;
     Optional<OFPRoleStatusFlags> roleSlave;
-    io.mapOptional("role_status_master", roleMaster);
     io.mapOptional("role_status_slave", roleSlave);
+    io.mapOptional("role_status_master", roleMaster);
     if (roleSlave)
       props.add(AsyncConfigPropertyRoleStatusSlave{*roleSlave});
     if (roleMaster)
@@ -139,8 +146,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
 
     Optional<OFPTableStatusFlags> tableMaster;
     Optional<OFPTableStatusFlags> tableSlave;
-    io.mapOptional("table_status_master", tableMaster);
     io.mapOptional("table_status_slave", tableSlave);
+    io.mapOptional("table_status_master", tableMaster);
     if (tableSlave)
       props.add(AsyncConfigPropertyTableStatusSlave{*tableSlave});
     if (tableMaster)
@@ -148,8 +155,8 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
 
     Optional<OFPRequestForwardFlags> forwMaster;
     Optional<OFPRequestForwardFlags> forwSlave;
-    io.mapOptional("requestforward_master", forwMaster);
     io.mapOptional("requestforward_slave", forwSlave);
+    io.mapOptional("requestforward_master", forwMaster);
     if (forwSlave)
       props.add(AsyncConfigPropertyRequestForwardSlave{*forwSlave});
     if (forwMaster)
