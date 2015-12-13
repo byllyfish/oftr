@@ -212,9 +212,11 @@ set(LIBOFP_SOURCES
   src/ofp/smallbuffer.cpp
   src/ofp/smallcstring.cpp
   src/ofp/standardmatch.cpp
+  src/ofp/tabledesc.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp
   src/ofp/tablemodproperty.cpp
+  src/ofp/tablestatus.cpp
   src/ofp/timestamp.cpp
   src/ofp/transmogrify.cpp
   src/ofp/types.cpp

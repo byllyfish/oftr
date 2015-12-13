@@ -1868,8 +1868,10 @@ TEST(encoder, getasyncreplyv5) {
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(56, encoder.size());
-  EXPECT_HEX("051B003811111111000000083333333300010008222222220002000855555555000300084444444400040008777777770005000866666666",
-             encoder.data(), encoder.size());
+  EXPECT_HEX(
+      "051B00381111111100000008333333330001000822222222000200085555555500030008"
+      "4444444400040008777777770005000866666666",
+      encoder.data(), encoder.size());
 }
 
 TEST(encoder, queuegetconfigrequestv4) {

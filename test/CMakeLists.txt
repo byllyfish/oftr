@@ -67,7 +67,9 @@ set(LIBOFP_TEST_SOURCES
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
 	ofp/standardmatch_unittest.cpp
+	ofp/tabledesc_unittest.cpp
 	ofp/tablemod_unittest.cpp
+	ofp/tablestatus_unittest.cpp
 	ofp/timestamp_unittest.cpp
 	ofp/types_unittest.cpp
 	ofp/unittest_unittest.cpp

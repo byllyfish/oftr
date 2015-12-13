@@ -5,7 +5,6 @@
 
 using namespace ofp;
 
-
 PropertyRange GetAsyncReply::properties() const {
   return SafeByteRange(this, header_.length(), sizeof(GetAsyncReply));
 }
@@ -13,7 +12,6 @@ PropertyRange GetAsyncReply::properties() const {
 bool GetAsyncReply::validateInput(Validation *context) const {
   return properties().validateInput(context);
 }
-
 
 GetAsyncReplyBuilder::GetAsyncReplyBuilder(UInt32 xid) {
   msg_.header_.setXid(xid);

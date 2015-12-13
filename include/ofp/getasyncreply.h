@@ -38,7 +38,9 @@ class GetAsyncReplyBuilder {
   explicit GetAsyncReplyBuilder(const GetAsyncRequest *request);
   explicit GetAsyncReplyBuilder(const GetAsyncReply *msg);
 
-  void setProperties(const PropertyList &properties) { properties_ = properties; }
+  void setProperties(const PropertyList &properties) {
+    properties_ = properties;
+  }
 
   UInt32 send(Writable *channel);
 

@@ -40,6 +40,14 @@
 
 #define OFP_DEPRECATED __attribute__((deprecated))
 
+// Use OFP_CONSTEXPR_NDEBUG instead of `constexpr` in places where we want to
+// use asserts in constexpr functions.
+#ifdef NDEBUG
+#define OFP_CONSTEXPR_NDEBUG constexpr
+#else
+#define OFP_CONSTEXPR_NDEBUG
+#endif
+
 namespace ofp {
 
 // Metaprogramming Utilities
@@ -290,6 +298,14 @@ class NonCopyable {
 };
 
 static_assert(IsTriviallyCopyable<NonCopyable>(), "Expected trivial copyable.");
+
+/// Cast a const pointer to another type, asserting that the ptr has the
+/// expected alignment in debug build.
+template <class T>
+OFP_CONSTEXPR_NDEBUG const T *Interpret_cast(const void *ptr) {
+  assert(IsPtrAligned(ptr, alignof(T)) && "ptr has unexpected alignment");
+  return reinterpret_cast<const T *>(ptr);
+}
 
 }  // namespace ofp
 

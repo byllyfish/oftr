@@ -41,8 +41,8 @@ int main(int argc, char **argv) {
   } else {
     std::error_code err;
     (void)driver.listen(ChannelMode::Controller, 0,
-                        IPv6Endpoint{OFPGetDefaultPort()}, ProtocolVersions::All,
-                        NullController::Factory, err);
+                        IPv6Endpoint{OFPGetDefaultPort()},
+                        ProtocolVersions::All, NullController::Factory, err);
   }
 
   driver.run();
