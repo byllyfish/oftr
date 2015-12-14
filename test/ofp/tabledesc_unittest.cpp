@@ -4,11 +4,13 @@
 
 using namespace ofp;
 
+const OFPTableConfigFlags kFakeFlags = static_cast<OFPTableConfigFlags>(0x21222324);
+
 TEST(tabledesc, test) {
   TableDescBuilder tableBuilder;
 
   tableBuilder.setTableId(0x11);
-  tableBuilder.setConfig(0x21222324);
+  tableBuilder.setConfig(kFakeFlags);
 
   TableModPropertyEviction eviction;
   eviction.setFlags(0x31323334);

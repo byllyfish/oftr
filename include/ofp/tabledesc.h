@@ -1,6 +1,7 @@
 #ifndef OFP_TABLEDESC_H_
 #define OFP_TABLEDESC_H_
 
+#include "ofp/tablenumber.h"
 #include "ofp/propertylist.h"
 
 namespace ofp {
@@ -12,8 +13,8 @@ class TableDesc : private NonCopyable {
   enum { ProtocolIteratorSizeOffset = 0, ProtocolIteratorAlignment = 8 };
   enum { MPVariableSizeOffset = 0 };
 
-  UInt8 tableId() const { return tableId_; }
-  UInt32 config() const { return config_; }
+  TableNumber tableId() const { return tableId_; }
+  OFPTableConfigFlags config() const { return config_; }
 
   PropertyRange properties() const;
 
@@ -21,9 +22,9 @@ class TableDesc : private NonCopyable {
 
  private:
   Big16 length_ = 8;
-  Big8 tableId_;
+  TableNumber tableId_;
   Padding<1> pad_;
-  Big32 config_;
+  Big<OFPTableConfigFlags> config_;
 
   friend class TableDescBuilder;
   template <class T>
@@ -38,8 +39,8 @@ class TableDescBuilder {
  public:
   TableDescBuilder() = default;
 
-  void setTableId(UInt8 tableId) { desc_.tableId_ = tableId; }
-  void setConfig(UInt32 config) { desc_.config_ = config; }
+  void setTableId(TableNumber tableId) { desc_.tableId_ = tableId; }
+  void setConfig(OFPTableConfigFlags config) { desc_.config_ = config; }
 
   void setProperties(const PropertyList &properties) {
     properties_ = properties;
@@ -62,6 +63,9 @@ class TableDescBuilder {
     desc_.length_ =
         UInt16_narrow_cast(SizeWithoutProperties + properties_.size());
   }
+
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp

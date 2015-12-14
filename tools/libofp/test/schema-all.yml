@@ -1052,6 +1052,19 @@ Message/RoleStatus:
     generation_id: UInt64
     properties: [ExperimenterProperty]
   
+Message/TableStatus: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  type: TABLE_STATUS
+  msg:
+    reason: TableStatusReason
+    table: TableDesc
+  
 Message/RequestForward: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
@@ -1242,6 +1255,17 @@ Struct/Queue:
   max_rate: UInt16
   properties: !opt [ExperimenterProperty]
   
+Struct/TableDesc: 
+  table_id: TableNumber
+  config: [TableConfigFlags]
+  eviction: !optout
+    flags: UInt32
+  vacancy: !optout
+    vacancy_down: UInt8
+    vacancy_up: UInt8
+    vacancy: UInt8
+  properties: !opt [ExperimenterProperty]
+  
 Struct/PacketCounter: 
   packet_count: UInt64
   byte_count: UInt64
@@ -1265,6 +1289,8 @@ Enum/PacketInReason: TABLE_MISS | APPLY_ACTION | INVALID_TTL | ACTION_SET | GROU
 Enum/PortStatusReason: ADD | DELETE | MODIFY | Hex8
 
 Enum/FlowRemovedReason: IDLE_TIMEOUT | HARD_TIMEOUT | DELETE | GROUP_DELETE | METER_DELETE | EVICTION | Hex8
+
+Enum/TableStatusReason: 0x00 | 0x01 | VACANCY_DOWN | VACANCY_UP | Hex8
 
 Enum/ControllerRole: ROLE_NOCHANGE | ROLE_EQUAL | ROLE_MASTER | ROLE_SLAVE | Hex32
 
