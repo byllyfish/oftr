@@ -23132,13 +23132,9 @@ Error: Decode failed: Range element size overruns end
 Filename: external/openflow-messages/v1_3/rep/rep_19_00121.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=176 data=041300B000000CA9000C00010000000000505A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D20000000000585D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
----
-type:            REPLY.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00000017
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00122.fail
-...
+Filename: external/openflow-messages/v1_3/rep/rep_19_00122.fail
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=16 data=0413001000000017000E000100000000]
 Filename: external/openflow-messages/v1_3/rep/rep_1_00001.fail
 Error: Decode failed: Message size is invalid
 [ByteList size=11 data=0401000B00000122000000]
@@ -27566,13 +27562,9 @@ Error: Decode failed: Range element size overruns end
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00121.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=176 data=041300B000000CA9000C00010000000000505A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D20000000000585D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
----
-type:            REPLY.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00000017
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00122.fail
-...
+Filename: external/openflow-messages/v1_3_1/rep/rep_19_00122.fail
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=16 data=0413001000000017000E000100000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_1_00001.fail
 Error: Decode failed: Message size is invalid
 [ByteList size=11 data=0401000B00000122000000]

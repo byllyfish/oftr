@@ -3044,5 +3044,20 @@ TEST(encoder, mptabledescv5) {
   EXPECT_HEX(
       "0513007000000000000E000000000000005001000000000000020008112233440003000811223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991AAAAAAA100000001000000020000000000100200000000080003000810203000",
       encoder.data(), encoder.size());
+}
 
+TEST(encoder, mptabledescv5_request) {
+  const char *input = R"""(
+    type:            REQUEST.TABLE_DESC
+    xid:             0x00000000
+    version:         0x05
+    msg:
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(16, encoder.size());
+  EXPECT_HEX(
+      "0512001000000000000E000000000000",
+      encoder.data(), encoder.size());
 }
