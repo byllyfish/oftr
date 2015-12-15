@@ -37,7 +37,7 @@ class DatapathID {
  private:
   ArrayType dpid_;
 
-  UInt64 toUInt64() const { return *reinterpret_cast<const UInt64 *>(&dpid_); }
+  UInt64 toUInt64() const { return *Interpret_cast<UInt64>(&dpid_); }
 };
 
 std::ostream &operator<<(std::ostream &os, const DatapathID &value);

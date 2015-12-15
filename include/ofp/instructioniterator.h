@@ -23,7 +23,7 @@ class InstructionIteratorItem : private NonCopyable {
 
   template <class Type>
   const Type *instruction() const {
-    return reinterpret_cast<const Type *>(this);
+    return Interpret_cast<Type>(this);
   }
 
   // N.B. InstructionRange overrides validateInput.

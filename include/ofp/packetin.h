@@ -49,7 +49,7 @@ class PacketIn
 
   template <class Type>
   Type offset(size_t offset) const {
-    return *reinterpret_cast<const Type *>(BytePtr(this) + offset);
+    return *Interpret_cast<Type>(BytePtr(this) + offset);
   }
 
   bool validateInputV1(Validation *context) const;

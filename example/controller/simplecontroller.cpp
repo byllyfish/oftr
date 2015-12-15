@@ -11,8 +11,7 @@ struct EnetFrame {
 };
 
 void SimpleController::onPacketIn(Channel *channel, const PacketIn *msg) {
-  const EnetFrame *frame =
-      reinterpret_cast<const EnetFrame *>(msg->enetFrame().data());
+  const EnetFrame *frame = Interpret_cast<EnetFrame>(msg->enetFrame().data());
   if (msg->enetFrame().size() < 14)
     return;
 

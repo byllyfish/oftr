@@ -25,7 +25,7 @@ class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
 
   template <class Type>
   const Type *body_cast() const {
-    return reinterpret_cast<const Type *>(replyBody());
+    return Interpret_cast<Type>(replyBody());
   }
 
   bool validateInput(Validation *context) const;
