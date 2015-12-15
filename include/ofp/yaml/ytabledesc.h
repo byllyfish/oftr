@@ -1,5 +1,8 @@
-#ifndef OFP_YAML_YTABLESTATUS_H_
-#define OFP_YAML_YTABLESTATUS_H_
+#ifndef OFP_YAML_YTABLEDESC_H_
+#define OFP_YAML_YTABLEDESC_H_
+
+#include "ofp/tabledesc.h"
+#include "ofp/yaml/ytablemodproperty.h"
 
 namespace llvm {
 namespace yaml {
@@ -35,7 +38,7 @@ struct MappingTraits<ofp::TableDesc> {
     auto vprop = props.findProperty(ofp::TableModPropertyVacancy::type());
     if (vprop != props.end()) {
       const ofp::TableModPropertyVacancy &vac =
-          eprop->property<ofp::TableModPropertyVacancy>();
+          vprop->property<ofp::TableModPropertyVacancy>();
       io.mapRequired("vacancy", RemoveConst_cast(vac));
     }
 
@@ -74,4 +77,4 @@ struct MappingTraits<ofp::TableDescBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YTABLESTATUS_H_
+#endif // OFP_YAML_YTABLEDESC_H_

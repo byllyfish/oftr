@@ -3002,3 +3002,47 @@ TEST(encoder, tablestatusv5) {
       "051F00600000000010000000000000000050FF000000000000020008112233440003000811223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991AAAAAAA1000000010000000200000000",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, mptabledescv5) {
+  const char *input = R"""(
+    type:            REPLY.TABLE_DESC
+    xid:             0x00000000
+    version:         0x05
+    msg:            
+      - table_id:        1
+        config:          [  ]
+        eviction:        
+          flags:           0x11223344
+        vacancy:         
+          vacancy_down:    0x11
+          vacancy_up:      0x22
+          vacancy:         0x33
+        properties:      
+          - property:        EXPERIMENTER
+            experimenter:    0x44444441
+            exp_type:        0x55555551
+            data:            ''
+          - property:        EXPERIMENTER
+            experimenter:    0x66666661
+            exp_type:        0x77777771
+            data:            88888888
+          - property:        EXPERIMENTER
+            experimenter:    0x99999991
+            exp_type:        0xAAAAAAA1
+            data:            0000000100000002
+      - table_id:        2
+        config:          [ VACANCY_EVENTS ]
+        vacancy:         
+          vacancy_down:    0x10
+          vacancy_up:      0x20
+          vacancy:         0x30
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(112, encoder.size());
+  EXPECT_HEX(
+      "0513007000000000000E000000000000005001000000000000020008112233440003000811223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991AAAAAAA100000001000000020000000000100200000000080003000810203000",
+      encoder.data(), encoder.size());
+
+}

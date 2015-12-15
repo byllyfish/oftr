@@ -20,6 +20,7 @@
 #include "ofp/yaml/ympflowmonitorreply.h"
 #include "ofp/yaml/ympexperimenter.h"
 #include "ofp/yaml/ympreplyseq.h"
+#include "ofp/yaml/ytabledesc.h"
 
 namespace llvm {
 namespace yaml {
@@ -199,6 +200,19 @@ msg:
     apply_set_field_miss: !optout [FieldID]
     properties: [ExperimenterProperty]
 
+{Message/Reply.TableDesc}
+type: REPLY.TABLE_DESC
+msg:
+  - table_id: TableNumber
+    config: [TableConfigFlags]
+    eviction: !optout
+      flags: UInt32
+    vacancy: !optout
+      vacancy_down: UInt8
+      vacancy_up: UInt8
+      vacancy: UInt8
+    properties: !opt [ExperimenterProperty]
+
 {Message/Reply.FlowMonitor}
 type: REPLY.FLOW_MONITOR
 msg:
@@ -313,6 +327,12 @@ struct MappingTraits<ofp::MultipartReply> {
       }
       case OFPMP_TABLE_FEATURES: {
         ofp::detail::MPReplyVariableSizeSeq<MPTableFeatures> seq{msg};
+        io.mapRequired(key, seq);
+        break;
+      }
+      case OFPMP_TABLE_DESC: {
+        ofp::log::debug("OFPMP_TABLE_DESC");
+        ofp::detail::MPReplyVariableSizeSeq<TableDesc> seq{msg};
         io.mapRequired(key, seq);
         break;
       }
@@ -449,6 +469,13 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       case OFPMP_TABLE_FEATURES: {
         ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{
             msg.version()};
+        io.mapRequired(key, seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_TABLE_DESC: {
+        ofp::detail::MPReplyBuilderSeq<TableDescBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());

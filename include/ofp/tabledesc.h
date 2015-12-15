@@ -49,7 +49,8 @@ class TableDescBuilder {
 
   size_t writeSize(Writable *channel);
   void write(Writable *channel);
-
+  void reset() {}
+  
   // Custom assignment operator because desc_ is non-copyable.
   TableDescBuilder &operator=(const TableDescBuilder &table);
 

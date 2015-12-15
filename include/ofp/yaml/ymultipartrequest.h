@@ -110,6 +110,9 @@ msg:
     apply_set_field_miss: !optout [FieldID]
     properties: [ExperimenterProperty]
 
+{Message/Request.TableDesc}
+type: REQUEST.TABLE_DESC
+
 {Message/Request.FlowMonitor}
 type: REQUEST.FLOW_MONITOR
 msg:
@@ -153,7 +156,8 @@ struct MappingTraits<ofp::MultipartRequest> {
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
-      case OFPMP_METER_FEATURES: {
+      case OFPMP_METER_FEATURES: 
+      case OFPMP_TABLE_DESC: {
         EmptyObject empty;
         io.mapRequired(key, empty);
         break;
@@ -251,7 +255,8 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
-      case OFPMP_METER_FEATURES: {
+      case OFPMP_METER_FEATURES: 
+      case OFPMP_TABLE_DESC: {
         EmptyObject empty;
         io.mapOptional(key, empty);
         break;

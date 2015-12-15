@@ -8,6 +8,9 @@ PropertyRange TableDesc::properties() const {
 }
 
 bool TableDesc::validateInput(Validation *context) const {
+  if (length_ < sizeof(TableDesc))
+    return false;
+
   return properties().validateInput(context);
 }
 
@@ -20,6 +23,9 @@ void TableDescBuilder::write(Writable *channel) {
 
   channel->write(&desc_, sizeof(desc_));
   channel->write(properties_.data(), properties_.size());
+
+  // FIXME(bfish): Do we want this here?
+  channel->flush();
 }
 
 TableDescBuilder &TableDescBuilder::operator=(const TableDescBuilder &table) {
