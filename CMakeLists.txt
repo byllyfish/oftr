@@ -116,7 +116,7 @@ set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fv
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -pie -fPIE -rdynamic")
 endif()
 
 if(APPLE AND UNIX)
