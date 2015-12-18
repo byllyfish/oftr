@@ -11,6 +11,7 @@
 #include "./ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/Host.h"
+#include "libofp.h"
 
 using namespace llvm;
 
@@ -28,6 +29,7 @@ static SubprogramEntry programs[] = {{"encode", ofpx::Run<ofpx::Encode>},
 
 static void print_usage(std::ostream &out);
 static void print_version();
+static void force_link_api();
 
 #if LIBOFP_ENABLE_JSONRPC
 static int run_xpc_service() {
@@ -49,6 +51,8 @@ int main(int argc, const char *const *argv) {
 #endif  // LIBOFP_ENABLE_JSONRPC
 
   if (argc < 2) {
+    if (argc == 0)
+      force_link_api();
     print_usage(std::cerr);
     return 1;
   }
@@ -124,4 +128,18 @@ void print_version() {
   os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
      << sslCommit.substr(0, 7) << ")\n";
 #endif  // LIBOFP_ENABLE_JSONRPC
+}
+
+
+void force_link_api() {
+  libofp_buffer buf;
+  libofp_version(&buf);
+  libofp_buffer_free(&buf);
+
+  libofp_buffer empty = { nullptr, 0 };
+  libofp_encode(&buf, &empty, 0);
+  libofp_buffer_free(&buf);
+
+  libofp_decode(&buf, &empty, 0);
+  libofp_buffer_free(&buf);
 }
