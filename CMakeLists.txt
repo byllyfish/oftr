@@ -114,6 +114,11 @@ endif()
 set(LIBOFP_C_FLAGS "-fstrict-aliasing -fvisibility=hidden")
 set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
+endif()
+
 if(APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
 endif()
@@ -285,10 +290,10 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
   set(LIBOFP_WARNINGS "-Wall")
@@ -383,6 +388,9 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
 set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
+
+message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
+message(STATUS "LIBOFP_CXX_FLAGS: ${LIBOFP_CXX_FLAGS}")
 
 # Set up the source include directory. N.B. Includes for third-party sources are
 # baked into CMAKE_CXX_FLAGS using -isystem.
