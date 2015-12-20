@@ -19,7 +19,7 @@ size_t TableDescBuilder::writeSize(Writable *channel) {
 }
 
 void TableDescBuilder::write(Writable *channel) {
-  assert(desc_.length_ == SizeWithoutProperties + properties_.size());
+  assert(desc_.length_ == sizeof(desc_) + properties_.size());
 
   channel->write(&desc_, sizeof(desc_));
   channel->write(properties_.data(), properties_.size());

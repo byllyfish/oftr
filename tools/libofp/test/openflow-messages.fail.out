@@ -22573,17 +22573,9 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
----
-type:            REQUEST.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00003037
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_18_00182.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00182.fail
-Error: Encode yielded different size data: 16 vs. 56
-[ByteRange size=16 data=0412001000003037000E000100000000]
-[ByteRange size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
 ---
 type:            REQUEST.TABLE_FEATURES
 flags:           [  ]
@@ -27003,17 +26995,9 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
----
-type:            REQUEST.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00003037
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_18_00182.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00182.fail
-Error: Encode yielded different size data: 16 vs. 56
-[ByteRange size=16 data=0412001000003037000E000100000000]
-[ByteRange size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
 ---
 type:            REQUEST.TABLE_FEATURES
 flags:           [  ]

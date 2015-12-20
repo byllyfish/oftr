@@ -3007,7 +3007,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.PORT_DESC.v5	msg.0.properties	null	True		msg.0.properties=array	
 5	REPLY.PORT_DESC.v5	msg.0.state	array	True			
 5	REPLY.PORT_DESC.v5	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
-5	REQUEST.TABLE_DESC.v5	msg	object	True			ERROR
+5	REQUEST.TABLE_DESC.v5	msg	object	False			
 5	REPLY.TABLE_DESC.v5	msg	array	True			
 5	REPLY.TABLE_DESC.v5	msg.0	object	False			
 5	REPLY.TABLE_DESC.v5	msg.0.config	array	True			

@@ -14,6 +14,7 @@
 #include "ofp/yaml/ympflowmonitorrequest.h"
 #include "ofp/yaml/ympexperimenter.h"
 #include "ofp/yaml/ympreplyseq.h"
+#include "ofp/yaml/ympqueuedescrequest.h"
 #include "ofp/mpmeterstatsrequest.h"
 #include "ofp/memorychannel.h"
 
@@ -149,7 +150,7 @@ struct MappingTraits<ofp::MultipartRequest> {
   static void decode(IO &io, ofp::MultipartRequest &msg,
                      ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
-
+    
     switch (type) {
       case OFPMP_DESC:
       case OFPMP_TABLE:
@@ -181,6 +182,13 @@ struct MappingTraits<ofp::MultipartRequest> {
         const MPQueueStatsRequest *stats = MPQueueStatsRequest::cast(&msg);
         if (stats) {
           io.mapRequired(key, RemoveConst_cast(*stats));
+        }
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        const MPQueueDescRequest *req = MPQueueDescRequest::cast(&msg);
+        if (req) {
+          io.mapRequired(key, RemoveConst_cast(*req));
         }
         break;
       }
@@ -283,6 +291,14 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         io.mapRequired(key, stats);
         MemoryChannel channel{msg.msg_.header_.version()};
         stats.write(&channel);
+        msg.setRequestBody(channel.data(), channel.size());
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        MPQueueDescRequestBuilder req;
+        io.mapRequired(key, req);
+        MemoryChannel channel{msg.msg_.header_.version()};
+        req.write(&channel);
         msg.setRequestBody(channel.data(), channel.size());
         break;
       }

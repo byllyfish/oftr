@@ -58,11 +58,9 @@ class TableDescBuilder {
   TableDesc desc_;
   PropertyList properties_;
 
-  enum { SizeWithoutProperties = sizeof(desc_) };
-
   void updateLen() {
     desc_.length_ =
-        UInt16_narrow_cast(SizeWithoutProperties + properties_.size());
+        UInt16_narrow_cast(sizeof(desc_) + properties_.size());
   }
 
   template <class T>

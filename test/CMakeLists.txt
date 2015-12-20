@@ -59,6 +59,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/protocolrange_unittest.cpp
 	ofp/protocolversions_unittest.cpp
 	ofp/queue_unittest.cpp
+	ofp/queuedesc_unittest.cpp
 	ofp/queuegetconfigreply_unittest.cpp
 	ofp/queuegetconfigrequest_unittest.cpp
 	ofp/requestforward_unittest.cpp

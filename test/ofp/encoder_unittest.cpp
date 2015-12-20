@@ -3061,3 +3061,44 @@ TEST(encoder, mptabledescv5_request) {
       "0512001000000000000E000000000000",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, mpqueuedescrequest_v5) {
+  const char *input = R"""(
+    type:            REQUEST.QUEUE_DESC
+    xid:             0x01020304
+    version:         0x05
+    msg:
+      port_no: 0x1111111f
+      queue_id: 0x2222222f
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(24, encoder.size());
+  EXPECT_HEX("0512001801020304000F0000000000001111111F2222222F",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, mpqueuedescreply_v5) {
+  const char *input = R"""(
+    type:            REPLY.QUEUE_DESC
+    xid:             0x01020304
+    version:         0x05
+    msg:
+      - port_no: 0x1111111f
+        queue_id: 0x2222222f
+        min_rate: 0x1234
+        max_rate: 0x5678
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0xAABBCCDD
+            exp_type: 0xDDEEFF11
+            data: DEADBEEF12
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(72, encoder.size());
+  EXPECT_HEX("0513004801020304000F0000000000001111111F2222222F003800000000000000010008123400000002000856780000FFFF0011AABBCCDDDDEEFF11DEADBEEF1200000000000000",
+      encoder.data(), encoder.size());
+}

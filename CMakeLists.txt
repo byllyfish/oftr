@@ -182,6 +182,7 @@ set(LIBOFP_SOURCES
   src/ofp/mpmeterstats.cpp
   src/ofp/mpportstats.cpp
   src/ofp/mpportstatsrequest.cpp
+  src/ofp/mpqueuedescrequest.cpp
   src/ofp/mpqueuestats.cpp
   src/ofp/mpqueuestatsrequest.cpp
   src/ofp/mptablefeatures.cpp
@@ -204,6 +205,7 @@ set(LIBOFP_SOURCES
   src/ofp/protocolversions.cpp
   src/ofp/queuegetconfigreply.cpp
   src/ofp/queue.cpp
+  src/ofp/queuedesc.cpp
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/queueproperty.cpp
   src/ofp/queuerange.cpp

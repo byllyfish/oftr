@@ -1824,3 +1824,11 @@ TEST(decoder, tablestatusv5) {
 TEST(decoder, mptabledescv5) {
   testDecodeEncode("0513007000000000000E000000000000005001000000000000020008112233440003000811223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991AAAAAAA100000001000000020000000000100200000000080003000810203000", "---\ntype:            REPLY.TABLE_DESC\nflags:           [  ]\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  - table_id:        0x01\n    config:          [  ]\n    eviction:        \n      flags:           0x11223344\n    vacancy:         \n      vacancy_down:    0x11\n      vacancy_up:      0x22\n      vacancy:         0x33\n    properties:      \n      - property:        EXPERIMENTER\n        experimenter:    0x44444441\n        exp_type:        0x55555551\n        data:            ''\n      - property:        EXPERIMENTER\n        experimenter:    0x66666661\n        exp_type:        0x77777771\n        data:            88888888\n      - property:        EXPERIMENTER\n        experimenter:    0x99999991\n        exp_type:        0xAAAAAAA1\n        data:            0000000100000002\n  - table_id:        0x02\n    config:          [ VACANCY_EVENTS ]\n    vacancy:         \n      vacancy_down:    0x10\n      vacancy_up:      0x20\n      vacancy:         0x30\n    properties:      \n...\n");
 }
+
+TEST(decoder, mpqueuedescrequestv5) {
+  testDecodeEncode("0512001801020304000F0000000000001111111F2222222F", "---\ntype:            REQUEST.QUEUE_DESC\nflags:           [  ]\nxid:             0x01020304\nversion:         0x05\nmsg:             \n  port_no:         0x1111111F\n  queue_id:        0x2222222F\n...\n");
+}
+
+TEST(decoder, mpqueuedescreplyv5) {
+  testDecodeEncode("0513004801020304000F0000000000001111111F2222222F003800000000000000010008123400000002000856780000FFFF0011AABBCCDDDDEEFF11DEADBEEF1200000000000000", "---\ntype:            REPLY.QUEUE_DESC\nflags:           [  ]\nxid:             0x01020304\nversion:         0x05\nmsg:             \n  - port_no:         0x1111111F\n    queue_id:        0x2222222F\n    min_rate:        0x1234\n    max_rate:        0x5678\n    properties:      \n      - property:        EXPERIMENTER\n        experimenter:    0xAABBCCDD\n        exp_type:        0xDDEEFF11\n        data:            DEADBEEF12\n...\n");
+}

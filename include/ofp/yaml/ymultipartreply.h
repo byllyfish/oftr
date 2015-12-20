@@ -21,6 +21,7 @@
 #include "ofp/yaml/ympexperimenter.h"
 #include "ofp/yaml/ympreplyseq.h"
 #include "ofp/yaml/ytabledesc.h"
+#include "ofp/yaml/yqueuedesc.h"
 
 namespace llvm {
 namespace yaml {
@@ -331,8 +332,12 @@ struct MappingTraits<ofp::MultipartReply> {
         break;
       }
       case OFPMP_TABLE_DESC: {
-        ofp::log::debug("OFPMP_TABLE_DESC");
         ofp::detail::MPReplyVariableSizeSeq<TableDesc> seq{msg};
+        io.mapRequired(key, seq);
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        ofp::detail::MPReplyVariableSizeSeq<QueueDesc> seq{msg};
         io.mapRequired(key, seq);
         break;
       }
@@ -476,6 +481,13 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       }
       case OFPMP_TABLE_DESC: {
         ofp::detail::MPReplyBuilderSeq<TableDescBuilder> seq{msg.version()};
+        io.mapRequired(key, seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        ofp::detail::MPReplyBuilderSeq<QueueDescBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
