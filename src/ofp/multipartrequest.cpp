@@ -59,7 +59,8 @@ bool MultipartRequest::validateInput(Validation *context) const {
     case OFPMP_TABLE_DESC:
       return context->validateEmpty(requestBody(), OFP_VERSION_5);
     case OFPMP_QUEUE_DESC:
-      return context->validate<MPQueueDescRequest>(requestBody(), OFP_VERSION_5);
+      return context->validate<MPQueueDescRequest>(requestBody(),
+                                                   OFP_VERSION_5);
     case OFPMP_FLOW_MONITOR:
       return context->validate<MPFlowMonitorRequest>(requestBody(),
                                                      OFP_VERSION_5);

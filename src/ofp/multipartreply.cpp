@@ -68,9 +68,11 @@ bool MultipartReply::validateInput(Validation *context) const {
       return context->validateArrayVariableSize<Port>(replyBody(),
                                                       OFP_VERSION_1);
     case OFPMP_TABLE_DESC:
-      return context->validateArrayVariableSize<TableDesc>(replyBody(), OFP_VERSION_5);
+      return context->validateArrayVariableSize<TableDesc>(replyBody(),
+                                                           OFP_VERSION_5);
     case OFPMP_QUEUE_DESC:
-      return context->validateArrayVariableSize<QueueDesc>(replyBody(), OFP_VERSION_5);
+      return context->validateArrayVariableSize<QueueDesc>(replyBody(),
+                                                           OFP_VERSION_5);
     case OFPMP_FLOW_MONITOR:
       return context->validateArrayVariableSize<MPFlowMonitorReply>(
           replyBody(), OFP_VERSION_5);

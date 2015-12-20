@@ -1,10 +1,13 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/mpqueuedescrequest.h"
 #include "ofp/multipartrequest.h"
 #include "ofp/writable.h"
 
 using namespace ofp;
 
-const MPQueueDescRequest *MPQueueDescRequest::cast(const MultipartRequest *req) {
+const MPQueueDescRequest *MPQueueDescRequest::cast(
+    const MultipartRequest *req) {
   log::debug("cast to MPQueueDescRequest");
   return req->body_cast<MPQueueDescRequest>();
 }

@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/tabledesc.h"
 #include "ofp/writable.h"
 

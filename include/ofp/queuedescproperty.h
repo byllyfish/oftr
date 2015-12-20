@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_QUEUEDESCPROPERTY_H_
 #define OFP_QUEUEDESCPROPERTY_H_
 
@@ -8,7 +10,7 @@
 namespace ofp {
 
 class QueueDescPropertyMinRate : private NonCopyable {
-public:
+ public:
   constexpr static OFPQueueDescProperty type() { return OFPQDPT_MIN_RATE; }
 
   using ValueType = UInt16;
@@ -28,7 +30,7 @@ public:
 static_assert(sizeof(QueueDescPropertyMinRate) == 8, "Unexpected size.");
 
 class QueueDescPropertyMaxRate : private NonCopyable {
-public:
+ public:
   constexpr static OFPQueueDescProperty type() { return OFPQDPT_MAX_RATE; }
 
   using ValueType = UInt16;
@@ -47,11 +49,9 @@ public:
 
 static_assert(sizeof(QueueDescPropertyMaxRate) == 8, "Unexpected size.");
 
-
 using QueueDescPropertyExperimenter =
     detail::ExperimenterProperty<OFPQueueDescProperty, OFPQDPT_EXPERIMENTER>;
 
-
 }  // namespace ofp
 
-#endif // OFP_QUEUEDESCPROPERTY_H_
+#endif  // OFP_QUEUEDESCPROPERTY_H_

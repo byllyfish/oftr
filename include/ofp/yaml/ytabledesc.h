@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YTABLEDESC_H_
 #define OFP_YAML_YTABLEDESC_H_
 
@@ -73,8 +75,7 @@ struct MappingTraits<ofp::TableDescBuilder> {
   }
 };
 
-
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YTABLEDESC_H_
+#endif  // OFP_YAML_YTABLEDESC_H_

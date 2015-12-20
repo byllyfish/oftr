@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YQUEUEDESC_H_
 #define OFP_YAML_YQUEUEDESC_H_
 
@@ -63,4 +65,4 @@ struct MappingTraits<ofp::QueueDescBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YQUEUEDESC_H_
+#endif  // OFP_YAML_YQUEUEDESC_H_

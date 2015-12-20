@@ -1,3 +1,5 @@
+// Copyright 2014-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_QUEUEDESC_H_
 #define OFP_QUEUEDESC_H_
 
@@ -10,7 +12,7 @@ namespace ofp {
 class Writable;
 
 class QueueDesc : private NonCopyable {
-public:
+ public:
   // Offset of len_ field.
   enum { ProtocolIteratorSizeOffset = 8, ProtocolIteratorAlignment = 8 };
   enum { MPVariableSizeOffset = 8 };
@@ -22,7 +24,7 @@ public:
 
   bool validateInput(Validation *context) const;
 
-private:
+ private:
   PortNumber portNo_;
   QueueNumber queueId_;
   Big16 len_;
@@ -41,28 +43,33 @@ static_assert(IsStandardLayout<QueueDesc>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<QueueDesc>(), "Expected trivially copyable.");
 
 class QueueDescBuilder {
-public:
-    QueueDescBuilder() = default;
+ public:
+  QueueDescBuilder() = default;
 
-    void setQueueId(QueueNumber queueId) { desc_.queueId_ = queueId; }
-    void setPort(PortNumber portNo) { desc_.portNo_ = portNo; }
+  void setQueueId(QueueNumber queueId) { desc_.queueId_ = queueId; }
+  void setPort(PortNumber portNo) { desc_.portNo_ = portNo; }
 
-    void setProperties(const PropertyList &properties) { properties_ = properties; updateLen(); }
+  void setProperties(const PropertyList &properties) {
+    properties_ = properties;
+    updateLen();
+  }
 
-    size_t writeSize(Writable *channel);
-    void write(Writable *channel);
-    void reset() {}
+  size_t writeSize(Writable *channel);
+  void write(Writable *channel);
+  void reset() {}
 
-private:
-    QueueDesc desc_;
-    PropertyList properties_;
+ private:
+  QueueDesc desc_;
+  PropertyList properties_;
 
-    void updateLen() { desc_.len_ = UInt16_narrow_cast(sizeof(desc_) + properties_.size()); }
+  void updateLen() {
+    desc_.len_ = UInt16_narrow_cast(sizeof(desc_) + properties_.size());
+  }
 
-    template <class T>
-    friend struct llvm::yaml::MappingTraits;
+  template <class T>
+  friend struct llvm::yaml::MappingTraits;
 };
 
 }  // namespace ofp
 
-#endif // OFP_QUEUEDESC_H_
+#endif  // OFP_QUEUEDESC_H_

@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_YAML_YQUEUEDESCPROPERTY_H_
 #define OFP_YAML_YQUEUEDESCPROPERTY_H_
 
@@ -133,4 +135,4 @@ struct SequenceTraits<ofp::detail::QueueDescPropertyList> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YQUEUEDESCPROPERTY_H_
+#endif  // OFP_YAML_YQUEUEDESCPROPERTY_H_

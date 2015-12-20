@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_TABLESTATUS_H_
 #define OFP_TABLESTATUS_H_
 

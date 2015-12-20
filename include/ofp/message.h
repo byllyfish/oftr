@@ -53,9 +53,7 @@ class Message {
     buf_.remove(buf_.data(), bytes);
   }
 
-  const Header *header() const {
-    return Interpret_cast<Header>(buf_.data());
-  }
+  const Header *header() const { return Interpret_cast<Header>(buf_.data()); }
 
   Header *mutableHeader() {
     return reinterpret_cast<Header *>(buf_.mutableData());

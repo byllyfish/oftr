@@ -11,7 +11,7 @@
 #include "./ofpx_help.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/Host.h"
-#include "libofp.h"
+#include "./libofp.h"
 
 using namespace llvm;
 
@@ -130,13 +130,12 @@ void print_version() {
 #endif  // LIBOFP_ENABLE_JSONRPC
 }
 
-
 void force_link_api() {
   libofp_buffer buf;
   libofp_version(&buf);
   libofp_buffer_free(&buf);
 
-  libofp_buffer empty = { nullptr, 0 };
+  libofp_buffer empty = {nullptr, 0};
   libofp_encode(&buf, &empty, 0);
   libofp_buffer_free(&buf);
 

@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/unittest.h"
 #include "ofp/queuedesc.h"
 #include "ofp/queuedescproperty.h"
@@ -19,6 +21,6 @@ TEST(queuedesc, test) {
   queue.write(&channel);
   channel.flush();
 
-  EXPECT_HEX("2222222F1111111F002000000000000000010008002200000002000800640000", channel.data(),
-             channel.size());
+  EXPECT_HEX("2222222F1111111F002000000000000000010008002200000002000800640000",
+             channel.data(), channel.size());
 }

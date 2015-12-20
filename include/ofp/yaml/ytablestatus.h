@@ -1,5 +1,7 @@
-#ifndef OFP_YAML_TABLESTATUS_H_
-#define OFP_YAML_TABLESTATUS_H_
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
+#ifndef OFP_YAML_YTABLESTATUS_H_
+#define OFP_YAML_YTABLESTATUS_H_
 
 #include "ofp/tablestatus.h"
 #include "ofp/yaml/ytabledesc.h"
@@ -36,4 +38,4 @@ struct MappingTraits<ofp::TableStatusBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_TABLESTATUS_H_
+#endif  // OFP_YAML_YTABLESTATUS_H_

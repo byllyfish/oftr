@@ -1,5 +1,7 @@
-#ifndef OFP_YAML_YQUEUEDESCREQUEST_H_
-#define OFP_YAML_YQUEUEDESCREQUEST_H_
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
+#ifndef OFP_YAML_YMPQUEUEDESCREQUEST_H_
+#define OFP_YAML_YMPQUEUEDESCREQUEST_H_
 
 #include "ofp/mpqueuedescrequest.h"
 
@@ -25,4 +27,4 @@ struct MappingTraits<ofp::MPQueueDescRequestBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YQUEUEDESCREQUEST_H_
+#endif  // OFP_YAML_YMPQUEUEDESCREQUEST_H_

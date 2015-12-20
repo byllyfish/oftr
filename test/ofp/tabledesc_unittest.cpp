@@ -1,10 +1,13 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/unittest.h"
 #include "ofp/tabledesc.h"
 #include "ofp/tablemodproperty.h"
 
 using namespace ofp;
 
-const OFPTableConfigFlags kFakeFlags = static_cast<OFPTableConfigFlags>(0x21222324);
+const OFPTableConfigFlags kFakeFlags =
+    static_cast<OFPTableConfigFlags>(0x21222324);
 
 TEST(tabledesc, test) {
   TableDescBuilder tableBuilder;

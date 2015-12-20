@@ -60,9 +60,8 @@ static const char *const kMessageSchemas[] = {
     llvm::yaml::kRoleReplySchema, llvm::yaml::kGetAsyncRequestSchema,
     llvm::yaml::kGetAsyncReplySchema, llvm::yaml::kSetAsyncSchema,
     llvm::yaml::kMeterModSchema, llvm::yaml::kRoleStatusSchema,
-    llvm::yaml::kTableStatusSchema,
-    llvm::yaml::kRequestForwardSchema, llvm::yaml::kBundleControlSchema,
-    llvm::yaml::kBundleAddMessageSchema,
+    llvm::yaml::kTableStatusSchema, llvm::yaml::kRequestForwardSchema,
+    llvm::yaml::kBundleControlSchema, llvm::yaml::kBundleAddMessageSchema,
 };
 
 static const char *const kInstructionSchemas[] = {
@@ -90,8 +89,9 @@ static const char *const kMeterBandSchemas[] = {
 };
 
 static const char *const kStructSchemas[] = {
-    llvm::yaml::kBucketSchema, llvm::yaml::kPortSchema,
-    llvm::yaml::kQueueSchema, llvm::yaml::kTableDescSchema, llvm::yaml::kPacketCounterSchema,
+    llvm::yaml::kBucketSchema,        llvm::yaml::kPortSchema,
+    llvm::yaml::kQueueSchema,         llvm::yaml::kTableDescSchema,
+    llvm::yaml::kPacketCounterSchema,
 };
 
 static const char *const kPropertySchemas[] = {
@@ -115,7 +115,8 @@ static SchemaPair kEnumSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::OFPPortStatusReason>, "Enum/PortStatusReason"},
     {ofp::yaml::MakeSchema<ofp::OFPFlowRemovedReason>,
      "Enum/FlowRemovedReason"},
-    {ofp::yaml::MakeSchema<ofp::OFPTableStatusReason>, "Enum/TableStatusReason"},
+    {ofp::yaml::MakeSchema<ofp::OFPTableStatusReason>,
+     "Enum/TableStatusReason"},
     {ofp::yaml::MakeSchema<ofp::OFPControllerRole>, "Enum/ControllerRole"},
     {ofp::yaml::MakeSchema<ofp::OFPMeterModCommand>, "Enum/MeterModCommand"},
     {ofp::yaml::MakeSchema<ofp::OFPErrorType>, "Enum/ErrorType"},

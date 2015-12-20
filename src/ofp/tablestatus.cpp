@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #include "ofp/tablestatus.h"
 #include "ofp/writable.h"
 
@@ -15,7 +17,6 @@ bool TableStatus::validateInput(Validation *context) const {
   context->setLengthRemaining(remainingLength);
 
   // FIXME: make sure there is only one table?
-
   if (!table().validateInput(context)) {
     return false;
   }

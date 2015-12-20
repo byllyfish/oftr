@@ -1,3 +1,5 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
 #ifndef OFP_TABLEDESC_H_
 #define OFP_TABLEDESC_H_
 
@@ -50,7 +52,7 @@ class TableDescBuilder {
   size_t writeSize(Writable *channel);
   void write(Writable *channel);
   void reset() {}
-  
+
   // Custom assignment operator because desc_ is non-copyable.
   TableDescBuilder &operator=(const TableDescBuilder &table);
 
@@ -59,8 +61,7 @@ class TableDescBuilder {
   PropertyList properties_;
 
   void updateLen() {
-    desc_.length_ =
-        UInt16_narrow_cast(sizeof(desc_) + properties_.size());
+    desc_.length_ = UInt16_narrow_cast(sizeof(desc_) + properties_.size());
   }
 
   template <class T>

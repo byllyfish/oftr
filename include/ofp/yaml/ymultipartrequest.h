@@ -150,14 +150,14 @@ struct MappingTraits<ofp::MultipartRequest> {
   static void decode(IO &io, ofp::MultipartRequest &msg,
                      ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
-    
+
     switch (type) {
       case OFPMP_DESC:
       case OFPMP_TABLE:
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
-      case OFPMP_METER_FEATURES: 
+      case OFPMP_METER_FEATURES:
       case OFPMP_TABLE_DESC: {
         EmptyObject empty;
         io.mapRequired(key, empty);
@@ -263,7 +263,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
-      case OFPMP_METER_FEATURES: 
+      case OFPMP_METER_FEATURES:
       case OFPMP_TABLE_DESC: {
         EmptyObject empty;
         io.mapOptional(key, empty);

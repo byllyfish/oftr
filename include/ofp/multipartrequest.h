@@ -30,7 +30,8 @@ class MultipartRequest
 
   template <class Type>
   static const MultipartRequest *msg_cast(const Type *body) {
-    return Interpret_cast<MultipartRequest>(BytePtr(body) - sizeof(MultipartRequest));
+    return Interpret_cast<MultipartRequest>(BytePtr(body) -
+                                            sizeof(MultipartRequest));
   }
 
   enum : size_t { UnpaddedSizeVersion1 = 12 };
