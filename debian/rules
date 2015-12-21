@@ -6,7 +6,7 @@ build:
 	mkdir $(BUILDDIR);
 	cd $(BUILDDIR); cmake -DCMAKE_INSTALL_PREFIX=../debian/tmp/usr ..
 	make -C $(BUILDDIR)
-	make -C $(BUILDDIR) test ARGS="--output-on-failure"
+	-make -C $(BUILDDIR) test ARGS="--output-on-failure"
 
 binary: binary-indep binary-arch
 
