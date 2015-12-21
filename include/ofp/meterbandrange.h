@@ -22,7 +22,7 @@ class MeterBandIteratorItem : private NonCopyable {
 
   template <class Type>
   const Type &meterBand() const {
-    return *reinterpret_cast<const Type *>(this);
+    return *Interpret_cast<Type>(this);
   }
 
   bool validateInput(Validation *context) const { return true; }

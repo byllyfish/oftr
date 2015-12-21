@@ -60035,24 +60035,25 @@ type:            GET_ASYNC_REPLY
 xid:             0x0A3A4727
 version:         0x04
 msg:             
-  packet_in_mask_master: [ TABLE_MISS, APPLY_ACTION, INVALID_TTL, PACKET_OUT, '0xBF3C7540' ]
-  packet_in_mask_slave: [ PACKET_OUT, '0x5B7300C0' ]
-  port_status_mask_master: [ '0x78004380' ]
-  port_status_mask_slave: [ DELETE, '0x5050BD00' ]
-  flow_removed_mask_master: [ IDLE_TIMEOUT, DELETE, EVICTION, '0x2F40B9C0' ]
-  flow_removed_mask_slave: [ METER_DELETE, '0xA9B58200' ]
+  packet_in_slave: [ PACKET_OUT, '0x5B7300C0' ]
+  packet_in_master: [ TABLE_MISS, APPLY_ACTION, INVALID_TTL, PACKET_OUT, '0xBF3C7540' ]
+  port_status_slave: [ DELETE, '0x5050BD00' ]
+  port_status_master: [ '0x78004380' ]
+  flow_removed_slave: [ METER_DELETE, '0xA9B58200' ]
+  flow_removed_master: [ IDLE_TIMEOUT, DELETE, EVICTION, '0x2F40B9C0' ]
+  properties:      
 ...
 ---
 type:            SET_ASYNC
 xid:             0xFE16F9A9
 version:         0x04
 msg:             
-  packet_in_master: [ APPLY_ACTION, INVALID_TTL, ACTION_SET, '0x2603CB00' ]
   packet_in_slave: [ APPLY_ACTION, INVALID_TTL, ACTION_SET, GROUP, PACKET_OUT, '0x472E14C0' ]
-  port_status_master: [ '0xC1A31450' ]
+  packet_in_master: [ APPLY_ACTION, INVALID_TTL, ACTION_SET, '0x2603CB00' ]
   port_status_slave: [ ADD, DELETE, MODIFY, '0x59B223D8' ]
-  flow_removed_master: [ HARD_TIMEOUT, DELETE, '0x6674A940' ]
+  port_status_master: [ '0xC1A31450' ]
   flow_removed_slave: [ HARD_TIMEOUT, DELETE, GROUP_DELETE, '0x658F2580' ]
+  flow_removed_master: [ HARD_TIMEOUT, DELETE, '0x6674A940' ]
   properties:      
 ...
 ---
@@ -73353,24 +73354,25 @@ type:            GET_ASYNC_REPLY
 xid:             0x0A3A4727
 version:         0x04
 msg:             
-  packet_in_mask_master: [ TABLE_MISS, APPLY_ACTION, INVALID_TTL, PACKET_OUT, '0xBF3C7540' ]
-  packet_in_mask_slave: [ PACKET_OUT, '0x5B7300C0' ]
-  port_status_mask_master: [ '0x78004380' ]
-  port_status_mask_slave: [ DELETE, '0x5050BD00' ]
-  flow_removed_mask_master: [ IDLE_TIMEOUT, DELETE, EVICTION, '0x2F40B9C0' ]
-  flow_removed_mask_slave: [ METER_DELETE, '0xA9B58200' ]
+  packet_in_slave: [ PACKET_OUT, '0x5B7300C0' ]
+  packet_in_master: [ TABLE_MISS, APPLY_ACTION, INVALID_TTL, PACKET_OUT, '0xBF3C7540' ]
+  port_status_slave: [ DELETE, '0x5050BD00' ]
+  port_status_master: [ '0x78004380' ]
+  flow_removed_slave: [ METER_DELETE, '0xA9B58200' ]
+  flow_removed_master: [ IDLE_TIMEOUT, DELETE, EVICTION, '0x2F40B9C0' ]
+  properties:      
 ...
 ---
 type:            SET_ASYNC
 xid:             0xFE16F9A9
 version:         0x04
 msg:             
-  packet_in_master: [ APPLY_ACTION, INVALID_TTL, ACTION_SET, '0x2603CB00' ]
   packet_in_slave: [ APPLY_ACTION, INVALID_TTL, ACTION_SET, GROUP, PACKET_OUT, '0x472E14C0' ]
-  port_status_master: [ '0xC1A31450' ]
+  packet_in_master: [ APPLY_ACTION, INVALID_TTL, ACTION_SET, '0x2603CB00' ]
   port_status_slave: [ ADD, DELETE, MODIFY, '0x59B223D8' ]
-  flow_removed_master: [ HARD_TIMEOUT, DELETE, '0x6674A940' ]
+  port_status_master: [ '0xC1A31450' ]
   flow_removed_slave: [ HARD_TIMEOUT, DELETE, GROUP_DELETE, '0x658F2580' ]
+  flow_removed_master: [ HARD_TIMEOUT, DELETE, '0x6674A940' ]
   properties:      
 ...
 ---

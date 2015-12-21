@@ -291,6 +291,18 @@ class NonCopyable {
 
 static_assert(IsTriviallyCopyable<NonCopyable>(), "Expected trivial copyable.");
 
+/// Cast a const pointer to another type, asserting that the ptr has the
+/// expected alignment in debug build.
+template <class T>
+#ifdef NDEBUG
+constexpr const T *Interpret_cast(const void *ptr) {
+#else
+inline const T *Interpret_cast(const void *ptr) {
+  assert(IsPtrAligned(ptr, alignof(T)) && "ptr has unexpected alignment");
+#endif  // NDEBUG
+  return reinterpret_cast<const T *>(ptr);
+}
+
 }  // namespace ofp
 
 // Place forward declarations of YAML classes here.

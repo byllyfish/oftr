@@ -45,11 +45,15 @@ enum {
 };
 
 enum {
-  OFP_DEFAULT_PORT = 6633,
+  OFP_DEFAULT_PORT = 6653,
 
   // Maximum size of an OpenFlow message.
   OFP_MAX_SIZE = 65535
 };
+
+/// Retrieve default OpenFlow port, which may be overidden by an environment
+/// variable.
+UInt16 OFPGetDefaultPort();
 
 enum : UInt16 { OFPVID_PRESENT = 0x1000, OFPVID_NONE = 0x0000 };
 
@@ -536,12 +540,20 @@ inline OFPRequestForwardFlags operator|(OFPRequestForwardFlags lhs,
   return static_cast<OFPRequestForwardFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+// Pre-1.4 Queue properties; new ones are OFPQueueDescProperty.
 enum OFPQueueProperty : UInt16 {
   OFPQT_NONE = 0,  // used in 1.0, 1.1 to indicate default
   OFPQT_MIN_RATE = 1,
   OFPQT_MAX_RATE = 2,
   OFPQT_UNUSED_MIN = 3,  // min unused property id
   OFPQT_EXPERIMENTER = 0xffff
+};
+
+enum OFPQueueDescProperty : UInt16 {
+  OFPQDPT_MIN_RATE = 1,
+  OFPQDPT_MAX_RATE = 2,
+  OFPQDPT_UNUSED_MIN = 3,
+  OFPQDPT_EXPERIMENTER = 0xffff
 };
 
 enum OFPMeterBandType : UInt16 {

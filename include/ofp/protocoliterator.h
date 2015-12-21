@@ -123,7 +123,7 @@ class ProtocolIterator {
   const ElemType &operator*() const { return *operator->(); }
 
   const ElemType *operator->() const {
-    return reinterpret_cast<const ElemType *>(data());
+    return Interpret_cast<ElemType>(data());
   }
 
   const UInt8 *data() const {

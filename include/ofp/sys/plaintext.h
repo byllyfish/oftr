@@ -30,7 +30,7 @@ class Plaintext : private StreamType, public asio::ssl::stream_base {
   Plaintext(Arg &arg, asio::ssl::context &ctx)
       : next_layer_type(arg) {}
 
-  using inherited::get_io_service;
+  using inherited::get_executor;
   using inherited::async_read_some;
   using inherited::async_write_some;
   using inherited::lowest_layer;

@@ -29,6 +29,7 @@
 #include "ofp/yaml/yrolestatus.h"
 #include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/yaml/ybundleaddmessage.h"
+#include "ofp/yaml/ytablestatus.h"
 #include "ofp/requestforward.h"
 
 using namespace ofp;
@@ -363,6 +364,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       RequestForwardBuilder reqForward;
       reqForward.setRequest(data);
       reqForward.send(&channel_);
+      break;
+    }
+    case TableStatus::type(): {
+      TableStatusBuilder tableStatus;
+      io.mapRequired("msg", tableStatus);
+      tableStatus.send(&channel_);
       break;
     }
     default:

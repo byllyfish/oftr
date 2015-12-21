@@ -11,9 +11,6 @@
 ** OFPMP_TABLE multipart reply message
 
 * Version 1.4
-** OFPT_TABLE_MOD message
-** OFPT_TABLE_STATUS message
-** OFPT_GET_ASYNC_REPLY message
 ** OFPMP_TABLE_DESC multipart request and reply
 ** OFPMP_QUEUE_DESC multipart request and reply
 

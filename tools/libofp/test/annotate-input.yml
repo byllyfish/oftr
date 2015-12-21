@@ -347,6 +347,27 @@ msg:
     duration_nsec: 0xffffffff
 ---
 version: 0x04
+type: REQUEST.QUEUE_DESC
+flags: [ 'MORE' ]
+msg:
+  port_no: CONTROLLER
+  queue_id: ALL
+---
+version: 0x04
+type: REPLY.QUEUE_DESC
+flags: [ 'MORE' ]
+msg:
+  - port_no: CONTROLLER
+    queue_id: ALL
+    min_rate: 0xffff
+    max_rate: 0xffff
+    properties:
+      - property: EXPERIMENTER
+        experimenter: 0xffffffff
+        exp_type: 0xffffffff
+        data: ffffffff
+---
+version: 0x04
 type: REQUEST.GROUP
 flags: [ 'MORE' ]
 msg:
@@ -561,6 +582,29 @@ msg:
       max_speed: 0xffffffff
     properties:
 ---
+version: 0x04
+type: REQUEST.TABLE_DESC
+flags: [ 'MORE' ]
+msg: {}
+---
+version: 0x04
+type: REPLY.TABLE_DESC
+flags: [ 'MORE' ]
+msg:
+  - table_id: ALL
+    config: [ EVICTION ]
+    eviction:
+      flags:  0xffffffff
+    vacancy:
+      vacancy_down: 0xff
+      vacancy_up: 0xff
+      vacancy: 0xff
+    properties:
+      - property: EXPERIMENTER
+        experimenter: 0xffffffff
+        exp_type: 0xffffffff
+        data: ffffffff
+---
 version: 5
 type: REQUEST.FLOW_MONITOR
 flags: [ 'MORE' ]
@@ -643,22 +687,23 @@ msg:  {}
 version: 0x04
 type: GET_ASYNC_REPLY
 msg:
-  packet_in_mask_master: [ INVALID_TTL ]
-  packet_in_mask_slave: [ INVALID_TTL ]
-  port_status_mask_master: [ DELETE ]
-  port_status_mask_slave: [ DELETE ]
-  flow_removed_mask_master: [ HARD_TIMEOUT ]
-  flow_removed_mask_slave: [ HARD_TIMEOUT ]
+  packet_in_slave: [ INVALID_TTL ]
+  packet_in_master: [ INVALID_TTL ]
+  port_status_slave: [ DELETE ]
+  port_status_master: [ DELETE ]
+  flow_removed_slave: [ HARD_TIMEOUT ]
+  flow_removed_master: [ HARD_TIMEOUT ]
+  properties: []
 ---
 version: 0x04
 type: SET_ASYNC
 msg:
-  packet_in_master: [ INVALID_TTL ]
   packet_in_slave: [ INVALID_TTL ]
-  port_status_master: [ DELETE ]
+  packet_in_master: [ INVALID_TTL ]
   port_status_slave: [ DELETE ]
-  flow_removed_master: [ HARD_TIMEOUT ]
+  port_status_master: [ DELETE ]
   flow_removed_slave: [ HARD_TIMEOUT ]
+  flow_removed_master: [ HARD_TIMEOUT ]
   properties: []
 ---
 version: 0x04
@@ -683,10 +728,25 @@ msg:
       experimenter: 0xffffffff
       exp_type: 0xffffffff
       data: ffffffff
-# ---
-# version: 0x05
-# type: TABLE_STATUS
-# msg:
+---
+version: 0x05
+type: TABLE_STATUS
+msg:
+  reason: VACANCY_DOWN
+  table:
+    table_id: ALL
+    config: [ EVICTION ]
+    eviction:
+      flags:  0xffffffff
+    vacancy:
+      vacancy_down: 0xff
+      vacancy_up: 0xff
+      vacancy: 0xff
+    properties:
+      - property: EXPERIMENTER
+        experimenter: 0xffffffff
+        exp_type: 0xffffffff
+        data: ffffffff
 ---
 version: 0x05
 type: REQUESTFORWARD

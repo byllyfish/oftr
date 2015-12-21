@@ -22573,17 +22573,9 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
----
-type:            REQUEST.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00003037
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_18_00182.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00182.fail
-Error: Encode yielded different size data: 16 vs. 56
-[ByteRange size=16 data=0412001000003037000E000100000000]
-[ByteRange size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
 ---
 type:            REQUEST.TABLE_FEATURES
 flags:           [  ]
@@ -23132,13 +23124,9 @@ Error: Decode failed: Range element size overruns end
 Filename: external/openflow-messages/v1_3/rep/rep_19_00121.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=176 data=041300B000000CA9000C00010000000000505A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D20000000000585D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
----
-type:            REPLY.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00000017
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00122.fail
-...
+Filename: external/openflow-messages/v1_3/rep/rep_19_00122.fail
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=16 data=0413001000000017000E000100000000]
 Filename: external/openflow-messages/v1_3/rep/rep_1_00001.fail
 Error: Decode failed: Message size is invalid
 [ByteList size=11 data=0401000B00000122000000]
@@ -23329,7 +23317,7 @@ Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_26_00002.fail:
 Error: Only 23 bytes read of message body. Expected to read 24 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_27_00001.fail
-Error: Decode failed: Message size is invalid
+Error: Decode failed: Message parse error
 [ByteList size=31 data=041B001F0A3A4727BF3C75675B7300E0780043805050BD022F40B9E5A9B582]
 Filename: external/openflow-messages/v1_3/rep/rep_27_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
@@ -27007,17 +26995,9 @@ msg:
     apply_set_field: [  ]
     properties:      
 ...
----
-type:            REQUEST.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00003037
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_18_00182.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00182.fail
-Error: Encode yielded different size data: 16 vs. 56
-[ByteRange size=16 data=0412001000003037000E000100000000]
-[ByteRange size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
 ---
 type:            REQUEST.TABLE_FEATURES
 flags:           [  ]
@@ -27566,13 +27546,9 @@ Error: Decode failed: Range element size overruns end
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00121.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=176 data=041300B000000CA9000C00010000000000505A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D20000000000585D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
----
-type:            REPLY.TABLE_DESC
-flags:           [ MORE ]
-xid:             0x00000017
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00122.fail
-...
+Filename: external/openflow-messages/v1_3_1/rep/rep_19_00122.fail
+Error: Decode failed: Multipart type is not supported for this protocol version
+[ByteList size=16 data=0413001000000017000E000100000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_1_00001.fail
 Error: Decode failed: Message size is invalid
 [ByteList size=11 data=0401000B00000122000000]
@@ -27763,7 +27739,7 @@ Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_26_00002.fail:
 Error: Only 23 bytes read of message body. Expected to read 24 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_27_00001.fail
-Error: Decode failed: Message size is invalid
+Error: Decode failed: Message parse error
 [ByteList size=31 data=041B001F0A3A4727BF3C75675B7300E0780043805050BD022F40B9E5A9B582]
 Filename: external/openflow-messages/v1_3_1/rep/rep_27_00001.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.

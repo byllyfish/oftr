@@ -1048,15 +1048,28 @@ TEST(decoder, getasyncreplyv4) {
       "041B002011111111222222223333333344444444555555556666666677777777",
       "---\ntype:            GET_ASYNC_REPLY\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  "
-      "packet_in_mask_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  "
-      "packet_in_mask_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, "
-      "'0x33333300' ]\n "
-      " port_status_mask_master: [ MODIFY, '0x44444440' ]\n  "
-      "port_status_mask_slave: "
-      "[ ADD, MODIFY, '0x55555550' ]\n  flow_removed_mask_master: [ "
-      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  "
-      "flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
-      "METER_DELETE, EVICTION, '0x77777740' ]\n...\n");
+      "packet_in_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, "
+      "'0x33333300' ]\n  packet_in_master: [ APPLY_ACTION, PACKET_OUT, "
+      "'0x22222200' ]\n  port_status_slave: [ ADD, MODIFY, '0x55555550' ]\n  "
+      "port_status_master: [ MODIFY, '0x44444440' ]\n  flow_removed_slave: [ "
+      "IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, "
+      "'0x77777740' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
+      "EVICTION, '0x66666640' ]\n  properties:      \n...\n");
+}
+
+TEST(decoder, getasyncreplyv5) {
+  testDecodeEncode(
+      "051B00381111111100000008333333330001000822222222000200085555555500030008"
+      "4444444400040008777777770005000866666666",
+      "---\ntype:            GET_ASYNC_REPLY\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  "
+      "packet_in_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, "
+      "'0x33333300' ]\n  packet_in_master: [ APPLY_ACTION, PACKET_OUT, "
+      "'0x22222200' ]\n  port_status_slave: [ ADD, MODIFY, '0x55555550' ]\n  "
+      "port_status_master: [ MODIFY, '0x44444440' ]\n  flow_removed_slave: [ "
+      "IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, "
+      "'0x77777740' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
+      "EVICTION, '0x66666640' ]\n  properties:      \n...\n");
 }
 
 TEST(decoder, queuegetconfigrequestv4) {
@@ -1160,14 +1173,14 @@ TEST(decoder, setasyncv4) {
   testDecodeEncode(
       "041C002011111111222222223333333344444444555555556666666677777777",
       "---\ntype:            SET_ASYNC\nxid:             0x11111111\nversion:  "
-      "       0x04\nmsg:             \n  packet_in_master: [ APPLY_ACTION, "
-      "PACKET_OUT, '0x22222200' ]\n  packet_in_slave: [ TABLE_MISS, "
-      "APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n  port_status_master: "
-      "[ MODIFY, '0x44444440' ]\n  port_status_slave: [ ADD, MODIFY, "
-      "'0x55555550' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
-      "EVICTION, '0x66666640' ]\n  flow_removed_slave: [ IDLE_TIMEOUT, "
-      "HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n  "
-      "properties:      \n...\n");
+      "       0x04\nmsg:             \n  packet_in_slave: [ TABLE_MISS, "
+      "APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n  packet_in_master: [ "
+      "APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  port_status_slave: [ ADD, "
+      "MODIFY, '0x55555550' ]\n  port_status_master: [ MODIFY, '0x44444440' "
+      "]\n  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
+      "METER_DELETE, EVICTION, '0x77777740' ]\n  flow_removed_master: [ "
+      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  properties:      "
+      "\n...\n");
 }
 
 TEST(decoder, setasyncv5) {
@@ -1175,14 +1188,14 @@ TEST(decoder, setasyncv5) {
       "051C00381111111100000008333333330001000822222222000200085555555500030008"
       "4444444400040008777777770005000866666666",
       "---\ntype:            SET_ASYNC\nxid:             0x11111111\nversion:  "
-      "       0x05\nmsg:             \n  packet_in_master: [ APPLY_ACTION, "
-      "PACKET_OUT, '0x22222200' ]\n  packet_in_slave: [ TABLE_MISS, "
-      "APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n  port_status_master: "
-      "[ MODIFY, '0x44444440' ]\n  port_status_slave: [ ADD, MODIFY, "
-      "'0x55555550' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
-      "EVICTION, '0x66666640' ]\n  flow_removed_slave: [ IDLE_TIMEOUT, "
-      "HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n  "
-      "properties:      \n...\n");
+      "       0x05\nmsg:             \n  packet_in_slave: [ TABLE_MISS, "
+      "APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n  packet_in_master: [ "
+      "APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  port_status_slave: [ ADD, "
+      "MODIFY, '0x55555550' ]\n  port_status_master: [ MODIFY, '0x44444440' "
+      "]\n  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
+      "METER_DELETE, EVICTION, '0x77777740' ]\n  flow_removed_master: [ "
+      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  properties:      "
+      "\n...\n");
 }
 
 TEST(decoder, setasyncv5_2) {
@@ -1191,10 +1204,10 @@ TEST(decoder, setasyncv5_2) {
       "7777777100050008666666610007000888888881",
       "---\ntype:            SET_ASYNC\nxid:             0x11111111\nversion:  "
       "       0x05\nmsg:             \n  packet_in_master: [ TABLE_MISS, "
-      "PACKET_OUT, '0x22222200' ]\n  port_status_master: [ ADD, '0x44444440' "
-      "]\n  port_status_slave: [ ADD, '0x55555550' ]\n  flow_removed_master: [ "
-      "IDLE_TIMEOUT, EVICTION, '0x66666640' ]\n  flow_removed_slave: [ "
+      "PACKET_OUT, '0x22222200' ]\n  port_status_slave: [ ADD, '0x55555550' "
+      "]\n  port_status_master: [ ADD, '0x44444440' ]\n  flow_removed_slave: [ "
       "IDLE_TIMEOUT, METER_DELETE, EVICTION, '0x77777740' ]\n  "
+      "flow_removed_master: [ IDLE_TIMEOUT, EVICTION, '0x66666640' ]\n  "
       "role_status_master: [ MASTER_REQUEST, '0x88888880' ]\n  properties:     "
       " \n...\n");
 }
@@ -1801,4 +1814,70 @@ TEST(decoder, tablemod_unrecognized_prop_v5) {
       "       0x05\nmsg:             \n  table_id:        ALL\n  config:       "
       "   [  ]\n  properties:      \n    - property:        0x0001\n      "
       "data:            112233445566778899AABBCC\n...\n");
+}
+
+TEST(decoder, tablestatusv5) {
+  testDecodeEncode(
+      "051F00600000000010000000000000000050FF0000000000000200081122334400030008"
+      "11223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888"
+      "FFFF001499999991AAAAAAA1000000010000000200000000",
+      "---\ntype:            TABLE_STATUS\nxid:             "
+      "0x00000000\nversion:         0x05\nmsg:             \n  reason:         "
+      " 0x10\n  table:           \n    table_id:        ALL\n    config:       "
+      "   [  ]\n    eviction:        \n      flags:           0x11223344\n    "
+      "vacancy:         \n      vacancy_down:    0x11\n      vacancy_up:      "
+      "0x22\n      vacancy:         0x33\n    properties:      \n      - "
+      "property:        EXPERIMENTER\n        experimenter:    0x44444441\n    "
+      "    exp_type:        0x55555551\n        data:            ''\n      - "
+      "property:        EXPERIMENTER\n        experimenter:    0x66666661\n    "
+      "    exp_type:        0x77777771\n        data:            88888888\n    "
+      "  - property:        EXPERIMENTER\n        experimenter:    "
+      "0x99999991\n        exp_type:        0xAAAAAAA1\n        data:          "
+      "  0000000100000002\n...\n");
+}
+
+TEST(decoder, mptabledescv5) {
+  testDecodeEncode(
+      "0513007000000000000E0000000000000050010000000000000200081122334400030008"
+      "11223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888"
+      "FFFF001499999991AAAAAAA1000000010000000200000000001002000000000800030008"
+      "10203000",
+      "---\ntype:            REPLY.TABLE_DESC\nflags:           [  ]\nxid:     "
+      "        0x00000000\nversion:         0x05\nmsg:             \n  - "
+      "table_id:        0x01\n    config:          [  ]\n    eviction:        "
+      "\n      flags:           0x11223344\n    vacancy:         \n      "
+      "vacancy_down:    0x11\n      vacancy_up:      0x22\n      vacancy:      "
+      "   0x33\n    properties:      \n      - property:        EXPERIMENTER\n "
+      "       experimenter:    0x44444441\n        exp_type:        "
+      "0x55555551\n        data:            ''\n      - property:        "
+      "EXPERIMENTER\n        experimenter:    0x66666661\n        exp_type:    "
+      "    0x77777771\n        data:            88888888\n      - property:    "
+      "    EXPERIMENTER\n        experimenter:    0x99999991\n        "
+      "exp_type:        0xAAAAAAA1\n        data:            "
+      "0000000100000002\n  - table_id:        0x02\n    config:          [ "
+      "VACANCY_EVENTS ]\n    vacancy:         \n      vacancy_down:    0x10\n  "
+      "    vacancy_up:      0x20\n      vacancy:         0x30\n    properties: "
+      "     \n...\n");
+}
+
+TEST(decoder, mpqueuedescrequestv5) {
+  testDecodeEncode("0512001801020304000F0000000000001111111F2222222F",
+                   "---\ntype:            REQUEST.QUEUE_DESC\nflags:           "
+                   "[  ]\nxid:             0x01020304\nversion:         "
+                   "0x05\nmsg:             \n  port_no:         0x1111111F\n  "
+                   "queue_id:        0x2222222F\n...\n");
+}
+
+TEST(decoder, mpqueuedescreplyv5) {
+  testDecodeEncode(
+      "0513004801020304000F0000000000001111111F2222222F003800000000000000010008"
+      "123400000002000856780000FFFF0011AABBCCDDDDEEFF11DEADBEEF120000000000000"
+      "0",
+      "---\ntype:            REPLY.QUEUE_DESC\nflags:           [  ]\nxid:     "
+      "        0x01020304\nversion:         0x05\nmsg:             \n  - "
+      "port_no:         0x1111111F\n    queue_id:        0x2222222F\n    "
+      "min_rate:        0x1234\n    max_rate:        0x5678\n    properties:   "
+      "   \n      - property:        EXPERIMENTER\n        experimenter:    "
+      "0xAABBCCDD\n        exp_type:        0xDDEEFF11\n        data:          "
+      "  DEADBEEF12\n...\n");
 }

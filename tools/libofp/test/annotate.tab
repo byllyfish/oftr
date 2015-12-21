@@ -287,6 +287,21 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.QUEUE.v1	msg.0.tx_bytes	uint64	True			True
 1	REPLY.QUEUE.v1	msg.0.tx_errors	uint64	True			True
 1	REPLY.QUEUE.v1	msg.0.tx_packets	uint64	True			True
+1	REQUEST.QUEUE_DESC.v1	msg	object	True			ERROR
+1	REQUEST.QUEUE_DESC.v1	msg.port_no	CONTROLLER	True			ERROR
+1	REQUEST.QUEUE_DESC.v1	msg.queue_id	ALL	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg	array	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0	object	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.max_rate	uint16	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.min_rate	uint16	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.port_no	CONTROLLER	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties	array	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0	object	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.data	binary	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.exp_type	uint32	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.experimenter	uint32	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.queue_id	ALL	True			ERROR
 1	REQUEST.GROUP.v1	msg	object	True			ERROR
 1	REQUEST.GROUP.v1	msg.group_id	ANY	True			ERROR
 1	REPLY.GROUP.v1	msg	array	True			ERROR
@@ -467,6 +482,24 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.PORT_DESC.v1	msg.0.properties	null	True		msg.0.properties=array	
 1	REPLY.PORT_DESC.v1	msg.0.state	array	True			
 1	REPLY.PORT_DESC.v1	msg.0.state.0	LINK_DOWN	False	msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.properties=array,msg.0.state.0=STP_LISTEN		
+1	REQUEST.TABLE_DESC.v1	msg	object	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg	array	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0	object	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.config	array	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.config.0	EVICTION	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.eviction	object	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.eviction.flags	uint32	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.properties	array	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.properties.0	object	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.properties.0.data	binary	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.properties.0.exp_type	uint32	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.properties.0.experimenter	uint32	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.table_id	ALL	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.vacancy	object	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.vacancy.vacancy	uint8	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.vacancy.vacancy_down	uint8	True			ERROR
+1	REPLY.TABLE_DESC.v1	msg.0.vacancy.vacancy_up	uint8	True			ERROR
 1	REQUEST.FLOW_MONITOR.v1	msg	object	True			ERROR
 1	REQUEST.FLOW_MONITOR.v1	msg.command	DELETE	True			ERROR
 1	REQUEST.FLOW_MONITOR.v1	msg.flags	array	True			ERROR
@@ -526,18 +559,19 @@ version	type	keypath	syntax	required	default	missing	modify
 1	ROLE_REPLY.v1	msg.role	ROLE_EQUAL	True			ERROR
 1	GET_ASYNC_REQUEST.v1	msg	object	True			ERROR
 1	GET_ASYNC_REPLY.v1	msg	object	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_slave	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_master	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_slave	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_master	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_master.0	DELETE	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_slave	array	True			ERROR
-1	GET_ASYNC_REPLY.v1	msg.port_status_mask_slave.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.flow_removed_slave.0	HARD_TIMEOUT	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_master.0	INVALID_TTL	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.packet_in_slave.0	INVALID_TTL	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_master	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_master.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_slave	array	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.port_status_slave.0	DELETE	True			ERROR
+1	GET_ASYNC_REPLY.v1	msg.properties	array	True			ERROR
 1	SET_ASYNC.v1	msg	object	True			ERROR
 1	SET_ASYNC.v1	msg.flow_removed_master	array	True			ERROR
 1	SET_ASYNC.v1	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
@@ -572,6 +606,24 @@ version	type	keypath	syntax	required	default	missing	modify
 1	ROLE_STATUS.v1	msg.properties.0.property	EXPERIMENTER	True			ERROR
 1	ROLE_STATUS.v1	msg.reason	MASTER_REQUEST	True			ERROR
 1	ROLE_STATUS.v1	msg.role	ROLE_MASTER	True			ERROR
+1	TABLE_STATUS.v1	msg	object	True			ERROR
+1	TABLE_STATUS.v1	msg.reason	VACANCY_DOWN	True			ERROR
+1	TABLE_STATUS.v1	msg.table	object	True			ERROR
+1	TABLE_STATUS.v1	msg.table.config	array	True			ERROR
+1	TABLE_STATUS.v1	msg.table.config.0	EVICTION	True			ERROR
+1	TABLE_STATUS.v1	msg.table.eviction	object	True			ERROR
+1	TABLE_STATUS.v1	msg.table.eviction.flags	uint32	True			ERROR
+1	TABLE_STATUS.v1	msg.table.properties	array	True			ERROR
+1	TABLE_STATUS.v1	msg.table.properties.0	object	True			ERROR
+1	TABLE_STATUS.v1	msg.table.properties.0.data	binary	True			ERROR
+1	TABLE_STATUS.v1	msg.table.properties.0.exp_type	uint32	True			ERROR
+1	TABLE_STATUS.v1	msg.table.properties.0.experimenter	uint32	True			ERROR
+1	TABLE_STATUS.v1	msg.table.properties.0.property	EXPERIMENTER	True			ERROR
+1	TABLE_STATUS.v1	msg.table.table_id	ALL	True			ERROR
+1	TABLE_STATUS.v1	msg.table.vacancy	object	True			ERROR
+1	TABLE_STATUS.v1	msg.table.vacancy.vacancy	uint8	True			ERROR
+1	TABLE_STATUS.v1	msg.table.vacancy.vacancy_down	uint8	True			ERROR
+1	TABLE_STATUS.v1	msg.table.vacancy.vacancy_up	uint8	True			ERROR
 1	REQUESTFORWARD.v1	msg	object	True			ERROR
 1	REQUESTFORWARD.v1	msg.type	HELLO	True			ERROR
 1	BUNDLE_CONTROL.v1	msg	object	True			ERROR
@@ -885,6 +937,21 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.QUEUE.v2	msg.0.tx_bytes	uint64	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.tx_errors	uint64	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.tx_packets	uint64	True			ERROR
+2	REQUEST.QUEUE_DESC.v2	msg	object	True			ERROR
+2	REQUEST.QUEUE_DESC.v2	msg.port_no	CONTROLLER	True			ERROR
+2	REQUEST.QUEUE_DESC.v2	msg.queue_id	ALL	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg	array	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0	object	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.max_rate	uint16	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.min_rate	uint16	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.port_no	CONTROLLER	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties	array	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0	object	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.data	binary	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.exp_type	uint32	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.experimenter	uint32	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.queue_id	ALL	True			ERROR
 2	REQUEST.GROUP.v2	msg	object	True			
 2	REQUEST.GROUP.v2	msg.group_id	ANY	True			
 2	REPLY.GROUP.v2	msg	array	True			
@@ -1065,6 +1132,24 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.PORT_DESC.v2	msg.0.properties	null	True		msg.0.properties=array	
 2	REPLY.PORT_DESC.v2	msg.0.state	array	True			
 2	REPLY.PORT_DESC.v2	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+2	REQUEST.TABLE_DESC.v2	msg	object	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg	array	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0	object	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.config	array	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.config.0	EVICTION	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.eviction	object	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.eviction.flags	uint32	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.properties	array	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.properties.0	object	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.properties.0.data	binary	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.properties.0.exp_type	uint32	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.properties.0.experimenter	uint32	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.table_id	ALL	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.vacancy	object	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.vacancy.vacancy	uint8	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.vacancy.vacancy_down	uint8	True			ERROR
+2	REPLY.TABLE_DESC.v2	msg.0.vacancy.vacancy_up	uint8	True			ERROR
 2	REQUEST.FLOW_MONITOR.v2	msg	object	True			ERROR
 2	REQUEST.FLOW_MONITOR.v2	msg.command	DELETE	True			ERROR
 2	REQUEST.FLOW_MONITOR.v2	msg.flags	array	True			ERROR
@@ -1124,18 +1209,19 @@ version	type	keypath	syntax	required	default	missing	modify
 2	ROLE_REPLY.v2	msg.role	ROLE_EQUAL	True			ERROR
 2	GET_ASYNC_REQUEST.v2	msg	object	True			ERROR
 2	GET_ASYNC_REPLY.v2	msg	object	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_slave	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_master	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_slave	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_master	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_master.0	DELETE	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_slave	array	True			ERROR
-2	GET_ASYNC_REPLY.v2	msg.port_status_mask_slave.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.flow_removed_slave.0	HARD_TIMEOUT	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_master.0	INVALID_TTL	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.packet_in_slave.0	INVALID_TTL	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_master	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_master.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_slave	array	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.port_status_slave.0	DELETE	True			ERROR
+2	GET_ASYNC_REPLY.v2	msg.properties	array	True			ERROR
 2	SET_ASYNC.v2	msg	object	True			ERROR
 2	SET_ASYNC.v2	msg.flow_removed_master	array	True			ERROR
 2	SET_ASYNC.v2	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
@@ -1170,6 +1256,24 @@ version	type	keypath	syntax	required	default	missing	modify
 2	ROLE_STATUS.v2	msg.properties.0.property	EXPERIMENTER	True			ERROR
 2	ROLE_STATUS.v2	msg.reason	MASTER_REQUEST	True			ERROR
 2	ROLE_STATUS.v2	msg.role	ROLE_MASTER	True			ERROR
+2	TABLE_STATUS.v2	msg	object	True			ERROR
+2	TABLE_STATUS.v2	msg.reason	VACANCY_DOWN	True			ERROR
+2	TABLE_STATUS.v2	msg.table	object	True			ERROR
+2	TABLE_STATUS.v2	msg.table.config	array	True			ERROR
+2	TABLE_STATUS.v2	msg.table.config.0	EVICTION	True			ERROR
+2	TABLE_STATUS.v2	msg.table.eviction	object	True			ERROR
+2	TABLE_STATUS.v2	msg.table.eviction.flags	uint32	True			ERROR
+2	TABLE_STATUS.v2	msg.table.properties	array	True			ERROR
+2	TABLE_STATUS.v2	msg.table.properties.0	object	True			ERROR
+2	TABLE_STATUS.v2	msg.table.properties.0.data	binary	True			ERROR
+2	TABLE_STATUS.v2	msg.table.properties.0.exp_type	uint32	True			ERROR
+2	TABLE_STATUS.v2	msg.table.properties.0.experimenter	uint32	True			ERROR
+2	TABLE_STATUS.v2	msg.table.properties.0.property	EXPERIMENTER	True			ERROR
+2	TABLE_STATUS.v2	msg.table.table_id	ALL	True			ERROR
+2	TABLE_STATUS.v2	msg.table.vacancy	object	True			ERROR
+2	TABLE_STATUS.v2	msg.table.vacancy.vacancy	uint8	True			ERROR
+2	TABLE_STATUS.v2	msg.table.vacancy.vacancy_down	uint8	True			ERROR
+2	TABLE_STATUS.v2	msg.table.vacancy.vacancy_up	uint8	True			ERROR
 2	REQUESTFORWARD.v2	msg	object	True			ERROR
 2	REQUESTFORWARD.v2	msg.type	HELLO	True			ERROR
 2	BUNDLE_CONTROL.v2	msg	object	True			ERROR
@@ -1483,6 +1587,21 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.QUEUE.v3	msg.0.tx_bytes	uint64	True			True
 3	REPLY.QUEUE.v3	msg.0.tx_errors	uint64	True			True
 3	REPLY.QUEUE.v3	msg.0.tx_packets	uint64	True			True
+3	REQUEST.QUEUE_DESC.v3	msg	object	True			ERROR
+3	REQUEST.QUEUE_DESC.v3	msg.port_no	CONTROLLER	True			ERROR
+3	REQUEST.QUEUE_DESC.v3	msg.queue_id	ALL	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg	array	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0	object	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.max_rate	uint16	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.min_rate	uint16	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.port_no	CONTROLLER	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties	array	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0	object	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.data	binary	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.exp_type	uint32	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.experimenter	uint32	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.queue_id	ALL	True			ERROR
 3	REQUEST.GROUP.v3	msg	object	True			
 3	REQUEST.GROUP.v3	msg.group_id	ANY	True			
 3	REPLY.GROUP.v3	msg	array	True			
@@ -1663,6 +1782,24 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.PORT_DESC.v3	msg.0.properties	null	True		msg.0.properties=array	
 3	REPLY.PORT_DESC.v3	msg.0.state	array	True			
 3	REPLY.PORT_DESC.v3	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+3	REQUEST.TABLE_DESC.v3	msg	object	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg	array	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0	object	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.config	array	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.config.0	EVICTION	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.eviction	object	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.eviction.flags	uint32	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.properties	array	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.properties.0	object	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.properties.0.data	binary	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.properties.0.exp_type	uint32	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.properties.0.experimenter	uint32	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.table_id	ALL	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.vacancy	object	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.vacancy.vacancy	uint8	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.vacancy.vacancy_down	uint8	True			ERROR
+3	REPLY.TABLE_DESC.v3	msg.0.vacancy.vacancy_up	uint8	True			ERROR
 3	REQUEST.FLOW_MONITOR.v3	msg	object	True			ERROR
 3	REQUEST.FLOW_MONITOR.v3	msg.command	DELETE	True			ERROR
 3	REQUEST.FLOW_MONITOR.v3	msg.flags	array	True			ERROR
@@ -1722,18 +1859,19 @@ version	type	keypath	syntax	required	default	missing	modify
 3	ROLE_REPLY.v3	msg.role	ROLE_EQUAL	True			
 3	GET_ASYNC_REQUEST.v3	msg	object	True			ERROR
 3	GET_ASYNC_REPLY.v3	msg	object	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_master.0	HARD_TIMEOUT	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_slave	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_master	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_master.0	INVALID_TTL	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_slave	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.packet_in_mask_slave.0	INVALID_TTL	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_master	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_master.0	DELETE	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_slave	array	True			ERROR
-3	GET_ASYNC_REPLY.v3	msg.port_status_mask_slave.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.flow_removed_slave.0	HARD_TIMEOUT	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_master.0	INVALID_TTL	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.packet_in_slave.0	INVALID_TTL	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_master	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_master.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_slave	array	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.port_status_slave.0	DELETE	True			ERROR
+3	GET_ASYNC_REPLY.v3	msg.properties	array	True			ERROR
 3	SET_ASYNC.v3	msg	object	True			ERROR
 3	SET_ASYNC.v3	msg.flow_removed_master	array	True			ERROR
 3	SET_ASYNC.v3	msg.flow_removed_master.0	HARD_TIMEOUT	True			ERROR
@@ -1768,6 +1906,24 @@ version	type	keypath	syntax	required	default	missing	modify
 3	ROLE_STATUS.v3	msg.properties.0.property	EXPERIMENTER	True			ERROR
 3	ROLE_STATUS.v3	msg.reason	MASTER_REQUEST	True			ERROR
 3	ROLE_STATUS.v3	msg.role	ROLE_MASTER	True			ERROR
+3	TABLE_STATUS.v3	msg	object	True			ERROR
+3	TABLE_STATUS.v3	msg.reason	VACANCY_DOWN	True			ERROR
+3	TABLE_STATUS.v3	msg.table	object	True			ERROR
+3	TABLE_STATUS.v3	msg.table.config	array	True			ERROR
+3	TABLE_STATUS.v3	msg.table.config.0	EVICTION	True			ERROR
+3	TABLE_STATUS.v3	msg.table.eviction	object	True			ERROR
+3	TABLE_STATUS.v3	msg.table.eviction.flags	uint32	True			ERROR
+3	TABLE_STATUS.v3	msg.table.properties	array	True			ERROR
+3	TABLE_STATUS.v3	msg.table.properties.0	object	True			ERROR
+3	TABLE_STATUS.v3	msg.table.properties.0.data	binary	True			ERROR
+3	TABLE_STATUS.v3	msg.table.properties.0.exp_type	uint32	True			ERROR
+3	TABLE_STATUS.v3	msg.table.properties.0.experimenter	uint32	True			ERROR
+3	TABLE_STATUS.v3	msg.table.properties.0.property	EXPERIMENTER	True			ERROR
+3	TABLE_STATUS.v3	msg.table.table_id	ALL	True			ERROR
+3	TABLE_STATUS.v3	msg.table.vacancy	object	True			ERROR
+3	TABLE_STATUS.v3	msg.table.vacancy.vacancy	uint8	True			ERROR
+3	TABLE_STATUS.v3	msg.table.vacancy.vacancy_down	uint8	True			ERROR
+3	TABLE_STATUS.v3	msg.table.vacancy.vacancy_up	uint8	True			ERROR
 3	REQUESTFORWARD.v3	msg	object	True			ERROR
 3	REQUESTFORWARD.v3	msg.type	HELLO	True			ERROR
 3	BUNDLE_CONTROL.v3	msg	object	True			ERROR
@@ -2081,6 +2237,21 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.QUEUE.v4	msg.0.tx_bytes	uint64	True			True
 4	REPLY.QUEUE.v4	msg.0.tx_errors	uint64	True			True
 4	REPLY.QUEUE.v4	msg.0.tx_packets	uint64	True			True
+4	REQUEST.QUEUE_DESC.v4	msg	object	True			ERROR
+4	REQUEST.QUEUE_DESC.v4	msg.port_no	CONTROLLER	True			ERROR
+4	REQUEST.QUEUE_DESC.v4	msg.queue_id	ALL	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg	array	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0	object	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.max_rate	uint16	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.min_rate	uint16	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.port_no	CONTROLLER	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties	array	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0	object	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.data	binary	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.exp_type	uint32	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.experimenter	uint32	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.queue_id	ALL	True			ERROR
 4	REQUEST.GROUP.v4	msg	object	True			
 4	REQUEST.GROUP.v4	msg.group_id	ANY	True			
 4	REPLY.GROUP.v4	msg	array	True			
@@ -2261,6 +2432,24 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.PORT_DESC.v4	msg.0.properties	null	True		msg.0.properties=array	
 4	REPLY.PORT_DESC.v4	msg.0.state	array	True			
 4	REPLY.PORT_DESC.v4	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+4	REQUEST.TABLE_DESC.v4	msg	object	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg	array	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0	object	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.config	array	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.config.0	EVICTION	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.eviction	object	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.eviction.flags	uint32	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.properties	array	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.properties.0	object	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.properties.0.data	binary	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.properties.0.exp_type	uint32	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.properties.0.experimenter	uint32	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.table_id	ALL	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.vacancy	object	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.vacancy.vacancy	uint8	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.vacancy.vacancy_down	uint8	True			ERROR
+4	REPLY.TABLE_DESC.v4	msg.0.vacancy.vacancy_up	uint8	True			ERROR
 4	REQUEST.FLOW_MONITOR.v4	msg	object	True			ERROR
 4	REQUEST.FLOW_MONITOR.v4	msg.command	DELETE	True			ERROR
 4	REQUEST.FLOW_MONITOR.v4	msg.flags	array	True			ERROR
@@ -2320,18 +2509,19 @@ version	type	keypath	syntax	required	default	missing	modify
 4	ROLE_REPLY.v4	msg.role	ROLE_EQUAL	True			
 4	GET_ASYNC_REQUEST.v4	msg	object	False			
 4	GET_ASYNC_REPLY.v4	msg	object	True			
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master	array	True			
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_master.0	HARD_TIMEOUT	False	msg.flow_removed_mask_master.0=HARD_TIMEOUT		
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_slave	array	True			
-4	GET_ASYNC_REPLY.v4	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	False	msg.flow_removed_mask_slave.0=HARD_TIMEOUT		
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_master	array	True			
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_master.0	INVALID_TTL	False	msg.packet_in_mask_master.0=INVALID_TTL		
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_slave	array	True			
-4	GET_ASYNC_REPLY.v4	msg.packet_in_mask_slave.0	INVALID_TTL	False	msg.packet_in_mask_slave.0=INVALID_TTL		
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_master	array	True			
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_master.0	DELETE	False	msg.port_status_mask_master.0=DELETE		
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_slave	array	True			
-4	GET_ASYNC_REPLY.v4	msg.port_status_mask_slave.0	DELETE	False			
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_master	array	False	msg.flow_removed_master.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_slave	array	False	msg.flow_removed_slave.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.flow_removed_slave.0	HARD_TIMEOUT	False	msg.flow_removed_slave.0=HARD_TIMEOUT		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_master	array	False	msg.packet_in_master.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_master.0	INVALID_TTL	False	msg.packet_in_master.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_slave	array	False	msg.packet_in_slave.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.packet_in_slave.0	INVALID_TTL	False	msg.packet_in_slave.0=INVALID_TTL		
+4	GET_ASYNC_REPLY.v4	msg.port_status_master	array	False	msg.port_status_master.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.port_status_master.0	DELETE	False	msg.port_status_master.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.port_status_slave	array	False	msg.port_status_slave.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.port_status_slave.0	DELETE	False	msg.port_status_slave.0=DELETE		
+4	GET_ASYNC_REPLY.v4	msg.properties	array	True			
 4	SET_ASYNC.v4	msg	object	True			
 4	SET_ASYNC.v4	msg.flow_removed_master	array	False	msg.flow_removed_master.0=HARD_TIMEOUT		
 4	SET_ASYNC.v4	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		
@@ -2366,6 +2556,24 @@ version	type	keypath	syntax	required	default	missing	modify
 4	ROLE_STATUS.v4	msg.properties.0.property	EXPERIMENTER	True			
 4	ROLE_STATUS.v4	msg.reason	MASTER_REQUEST	True			
 4	ROLE_STATUS.v4	msg.role	ROLE_MASTER	True			
+4	TABLE_STATUS.v4	msg	object	True			
+4	TABLE_STATUS.v4	msg.reason	VACANCY_DOWN	True			
+4	TABLE_STATUS.v4	msg.table	object	True			
+4	TABLE_STATUS.v4	msg.table.config	array	True			
+4	TABLE_STATUS.v4	msg.table.config.0	EVICTION	False	msg.table.config.0=EVICTION		
+4	TABLE_STATUS.v4	msg.table.eviction	object	False	msg.table.eviction=object,msg.table.eviction.flags=uint32		
+4	TABLE_STATUS.v4	msg.table.eviction.flags	uint32	True			True
+4	TABLE_STATUS.v4	msg.table.properties	array	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
+4	TABLE_STATUS.v4	msg.table.properties.0	object	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
+4	TABLE_STATUS.v4	msg.table.properties.0.data	binary	True			True
+4	TABLE_STATUS.v4	msg.table.properties.0.exp_type	uint32	True			True
+4	TABLE_STATUS.v4	msg.table.properties.0.experimenter	uint32	True			True
+4	TABLE_STATUS.v4	msg.table.properties.0.property	EXPERIMENTER	True			
+4	TABLE_STATUS.v4	msg.table.table_id	ALL	True			
+4	TABLE_STATUS.v4	msg.table.vacancy	object	False			
+4	TABLE_STATUS.v4	msg.table.vacancy.vacancy	uint8	True			True
+4	TABLE_STATUS.v4	msg.table.vacancy.vacancy_down	uint8	True			True
+4	TABLE_STATUS.v4	msg.table.vacancy.vacancy_up	uint8	True			True
 4	REQUESTFORWARD.v4	msg	object	True			
 4	REQUESTFORWARD.v4	msg.type	HELLO	True			
 4	BUNDLE_CONTROL.v4	msg	object	True			
@@ -2679,6 +2887,21 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.QUEUE.v5	msg.0.tx_bytes	uint64	True			True
 5	REPLY.QUEUE.v5	msg.0.tx_errors	uint64	True			True
 5	REPLY.QUEUE.v5	msg.0.tx_packets	uint64	True			True
+5	REQUEST.QUEUE_DESC.v5	msg	object	True			
+5	REQUEST.QUEUE_DESC.v5	msg.port_no	CONTROLLER	True			
+5	REQUEST.QUEUE_DESC.v5	msg.queue_id	ALL	True			
+5	REPLY.QUEUE_DESC.v5	msg	array	True			
+5	REPLY.QUEUE_DESC.v5	msg.0	object	False			
+5	REPLY.QUEUE_DESC.v5	msg.0.max_rate	uint16	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.min_rate	uint16	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.port_no	CONTROLLER	True			
+5	REPLY.QUEUE_DESC.v5	msg.0.properties	array	False	msg.0.properties.0=object,msg.0.properties.0.data=binary,msg.0.properties.0.exp_type=uint32,msg.0.properties.0.experimenter=uint32,msg.0.properties.0.property=EXPERIMENTER		
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0	object	False	msg.0.properties.0=object,msg.0.properties.0.data=binary,msg.0.properties.0.exp_type=uint32,msg.0.properties.0.experimenter=uint32,msg.0.properties.0.property=EXPERIMENTER		
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.data	binary	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.exp_type	uint32	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.experimenter	uint32	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.property	EXPERIMENTER	True			
+5	REPLY.QUEUE_DESC.v5	msg.0.queue_id	ALL	True			
 5	REQUEST.GROUP.v5	msg	object	True			
 5	REQUEST.GROUP.v5	msg.group_id	ANY	True			
 5	REPLY.GROUP.v5	msg	array	True			
@@ -2859,6 +3082,24 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.PORT_DESC.v5	msg.0.properties	null	True		msg.0.properties=array	
 5	REPLY.PORT_DESC.v5	msg.0.state	array	True			
 5	REPLY.PORT_DESC.v5	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+5	REQUEST.TABLE_DESC.v5	msg	object	False			
+5	REPLY.TABLE_DESC.v5	msg	array	True			
+5	REPLY.TABLE_DESC.v5	msg.0	object	False			
+5	REPLY.TABLE_DESC.v5	msg.0.config	array	True			
+5	REPLY.TABLE_DESC.v5	msg.0.config.0	EVICTION	False	msg.0.config.0=EVICTION		
+5	REPLY.TABLE_DESC.v5	msg.0.eviction	object	False	msg.0.eviction=object,msg.0.eviction.flags=uint32		
+5	REPLY.TABLE_DESC.v5	msg.0.eviction.flags	uint32	True			True
+5	REPLY.TABLE_DESC.v5	msg.0.properties	array	False	msg.0.properties.0=object,msg.0.properties.0.data=binary,msg.0.properties.0.exp_type=uint32,msg.0.properties.0.experimenter=uint32,msg.0.properties.0.property=EXPERIMENTER		
+5	REPLY.TABLE_DESC.v5	msg.0.properties.0	object	False	msg.0.properties.0=object,msg.0.properties.0.data=binary,msg.0.properties.0.exp_type=uint32,msg.0.properties.0.experimenter=uint32,msg.0.properties.0.property=EXPERIMENTER		
+5	REPLY.TABLE_DESC.v5	msg.0.properties.0.data	binary	True			True
+5	REPLY.TABLE_DESC.v5	msg.0.properties.0.exp_type	uint32	True			True
+5	REPLY.TABLE_DESC.v5	msg.0.properties.0.experimenter	uint32	True			True
+5	REPLY.TABLE_DESC.v5	msg.0.properties.0.property	EXPERIMENTER	True			
+5	REPLY.TABLE_DESC.v5	msg.0.table_id	ALL	True			
+5	REPLY.TABLE_DESC.v5	msg.0.vacancy	object	False			
+5	REPLY.TABLE_DESC.v5	msg.0.vacancy.vacancy	uint8	True			True
+5	REPLY.TABLE_DESC.v5	msg.0.vacancy.vacancy_down	uint8	True			True
+5	REPLY.TABLE_DESC.v5	msg.0.vacancy.vacancy_up	uint8	True			True
 5	REQUEST.FLOW_MONITOR.v5	msg	object	True			
 5	REQUEST.FLOW_MONITOR.v5	msg.command	DELETE	True			
 5	REQUEST.FLOW_MONITOR.v5	msg.flags	array	True			
@@ -2918,18 +3159,19 @@ version	type	keypath	syntax	required	default	missing	modify
 5	ROLE_REPLY.v5	msg.role	ROLE_EQUAL	True			
 5	GET_ASYNC_REQUEST.v5	msg	object	False			
 5	GET_ASYNC_REPLY.v5	msg	object	True			
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_master	array	True			
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_master.0	HARD_TIMEOUT	False	msg.flow_removed_mask_master.0=HARD_TIMEOUT		
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_slave	array	True			
-5	GET_ASYNC_REPLY.v5	msg.flow_removed_mask_slave.0	HARD_TIMEOUT	False	msg.flow_removed_mask_slave.0=HARD_TIMEOUT		
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_master	array	True			
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_master.0	INVALID_TTL	False	msg.packet_in_mask_master.0=INVALID_TTL		
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_slave	array	True			
-5	GET_ASYNC_REPLY.v5	msg.packet_in_mask_slave.0	INVALID_TTL	False	msg.packet_in_mask_slave.0=INVALID_TTL		
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_master	array	True			
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_master.0	DELETE	False	msg.port_status_mask_master.0=DELETE		
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_slave	array	True			
-5	GET_ASYNC_REPLY.v5	msg.port_status_mask_slave.0	DELETE	False			
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_master	array	False	msg.flow_removed_master=array,msg.flow_removed_master.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_slave	array	False	msg.flow_removed_slave=array,msg.flow_removed_slave.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.flow_removed_slave.0	HARD_TIMEOUT	False	msg.flow_removed_slave.0=HARD_TIMEOUT		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_master	array	False	msg.packet_in_master=array,msg.packet_in_master.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_master.0	INVALID_TTL	False	msg.packet_in_master.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_slave	array	False	msg.packet_in_slave=array,msg.packet_in_slave.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.packet_in_slave.0	INVALID_TTL	False	msg.packet_in_slave.0=INVALID_TTL		
+5	GET_ASYNC_REPLY.v5	msg.port_status_master	array	False	msg.port_status_master=array,msg.port_status_master.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.port_status_master.0	DELETE	False	msg.port_status_master.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.port_status_slave	array	False	msg.port_status_slave=array,msg.port_status_slave.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.port_status_slave.0	DELETE	False	msg.port_status_slave.0=DELETE		
+5	GET_ASYNC_REPLY.v5	msg.properties	array	True			
 5	SET_ASYNC.v5	msg	object	True			
 5	SET_ASYNC.v5	msg.flow_removed_master	array	False	msg.flow_removed_master=array,msg.flow_removed_master.0=HARD_TIMEOUT		
 5	SET_ASYNC.v5	msg.flow_removed_master.0	HARD_TIMEOUT	False	msg.flow_removed_master.0=HARD_TIMEOUT		
@@ -2964,6 +3206,24 @@ version	type	keypath	syntax	required	default	missing	modify
 5	ROLE_STATUS.v5	msg.properties.0.property	EXPERIMENTER	True			
 5	ROLE_STATUS.v5	msg.reason	MASTER_REQUEST	True			
 5	ROLE_STATUS.v5	msg.role	ROLE_MASTER	True			
+5	TABLE_STATUS.v5	msg	object	True			
+5	TABLE_STATUS.v5	msg.reason	VACANCY_DOWN	True			
+5	TABLE_STATUS.v5	msg.table	object	True			
+5	TABLE_STATUS.v5	msg.table.config	array	True			
+5	TABLE_STATUS.v5	msg.table.config.0	EVICTION	False	msg.table.config.0=EVICTION		
+5	TABLE_STATUS.v5	msg.table.eviction	object	False	msg.table.eviction=object,msg.table.eviction.flags=uint32		
+5	TABLE_STATUS.v5	msg.table.eviction.flags	uint32	True			True
+5	TABLE_STATUS.v5	msg.table.properties	array	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
+5	TABLE_STATUS.v5	msg.table.properties.0	object	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
+5	TABLE_STATUS.v5	msg.table.properties.0.data	binary	True			True
+5	TABLE_STATUS.v5	msg.table.properties.0.exp_type	uint32	True			True
+5	TABLE_STATUS.v5	msg.table.properties.0.experimenter	uint32	True			True
+5	TABLE_STATUS.v5	msg.table.properties.0.property	EXPERIMENTER	True			
+5	TABLE_STATUS.v5	msg.table.table_id	ALL	True			
+5	TABLE_STATUS.v5	msg.table.vacancy	object	False			
+5	TABLE_STATUS.v5	msg.table.vacancy.vacancy	uint8	True			True
+5	TABLE_STATUS.v5	msg.table.vacancy.vacancy_down	uint8	True			True
+5	TABLE_STATUS.v5	msg.table.vacancy.vacancy_up	uint8	True			True
 5	REQUESTFORWARD.v5	msg	object	True			
 5	REQUESTFORWARD.v5	msg.type	HELLO	True			
 5	BUNDLE_CONTROL.v5	msg	object	True			

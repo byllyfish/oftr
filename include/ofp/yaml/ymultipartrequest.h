@@ -14,6 +14,7 @@
 #include "ofp/yaml/ympflowmonitorrequest.h"
 #include "ofp/yaml/ympexperimenter.h"
 #include "ofp/yaml/ympreplyseq.h"
+#include "ofp/yaml/ympqueuedescrequest.h"
 #include "ofp/mpmeterstatsrequest.h"
 #include "ofp/memorychannel.h"
 
@@ -70,6 +71,12 @@ msg:
   port_no: PortNumber
   queue_id: QueueNumber
 
+{Message/Request.QueueDesc}
+type: REQUEST.QUEUE_DESC
+msg:
+  port_no: PortNumber
+  queue_id: QueueNumber
+
 {Message/Request.MeterConfig}
 type: REQUEST.METER_CONFIG
 msg:
@@ -109,6 +116,9 @@ msg:
     apply_set_field: [FieldID]
     apply_set_field_miss: !optout [FieldID]
     properties: [ExperimenterProperty]
+
+{Message/Request.TableDesc}
+type: REQUEST.TABLE_DESC
 
 {Message/Request.FlowMonitor}
 type: REQUEST.FLOW_MONITOR
@@ -153,7 +163,8 @@ struct MappingTraits<ofp::MultipartRequest> {
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
-      case OFPMP_METER_FEATURES: {
+      case OFPMP_METER_FEATURES:
+      case OFPMP_TABLE_DESC: {
         EmptyObject empty;
         io.mapRequired(key, empty);
         break;
@@ -177,6 +188,13 @@ struct MappingTraits<ofp::MultipartRequest> {
         const MPQueueStatsRequest *stats = MPQueueStatsRequest::cast(&msg);
         if (stats) {
           io.mapRequired(key, RemoveConst_cast(*stats));
+        }
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        const MPQueueDescRequest *req = MPQueueDescRequest::cast(&msg);
+        if (req) {
+          io.mapRequired(key, RemoveConst_cast(*req));
         }
         break;
       }
@@ -251,7 +269,8 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
-      case OFPMP_METER_FEATURES: {
+      case OFPMP_METER_FEATURES:
+      case OFPMP_TABLE_DESC: {
         EmptyObject empty;
         io.mapOptional(key, empty);
         break;
@@ -278,6 +297,14 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         io.mapRequired(key, stats);
         MemoryChannel channel{msg.msg_.header_.version()};
         stats.write(&channel);
+        msg.setRequestBody(channel.data(), channel.size());
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        MPQueueDescRequestBuilder req;
+        io.mapRequired(key, req);
+        MemoryChannel channel{msg.msg_.header_.version()};
+        req.write(&channel);
         msg.setRequestBody(channel.data(), channel.size());
         break;
       }

@@ -7,8 +7,8 @@ TEST(asio, async_connect_v4) {
   auto localhost_v4 = asio::ip::address_v4::loopback();
 
   asio::error_code result;
-  asio::io_service service;
-  asio::ip::tcp::socket socket{service};
+  asio::io_context io;
+  asio::ip::tcp::socket socket{io};
 
   EXPECT_FALSE(socket.is_open());
 
@@ -18,7 +18,7 @@ TEST(asio, async_connect_v4) {
 
   EXPECT_TRUE(socket.is_open());
 
-  service.run();
+  io.run();
 
   EXPECT_TRUE(socket.is_open());
   EXPECT_EQ(asio::error::connection_refused, result);
@@ -36,14 +36,14 @@ TEST(asio, async_connect_v6) {
   auto localhost_v6 = asio::ip::address_v6::loopback();
 
   asio::error_code result;
-  asio::io_service service;
-  asio::ip::tcp::socket socket{service};
+  asio::io_context io;
+  asio::ip::tcp::socket socket{io};
 
   socket.async_connect(
       {localhost_v6, 9},
       [&result](const asio::error_code &error) { result = error; });
 
-  service.run();
+  io.run();
 
   EXPECT_TRUE(socket.is_open());
 

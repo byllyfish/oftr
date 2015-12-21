@@ -59,6 +59,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/protocolrange_unittest.cpp
 	ofp/protocolversions_unittest.cpp
 	ofp/queue_unittest.cpp
+	ofp/queuedesc_unittest.cpp
 	ofp/queuegetconfigreply_unittest.cpp
 	ofp/queuegetconfigrequest_unittest.cpp
 	ofp/requestforward_unittest.cpp
@@ -67,7 +68,9 @@ set(LIBOFP_TEST_SOURCES
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
 	ofp/standardmatch_unittest.cpp
+	ofp/tabledesc_unittest.cpp
 	ofp/tablemod_unittest.cpp
+	ofp/tablestatus_unittest.cpp
 	ofp/timestamp_unittest.cpp
 	ofp/types_unittest.cpp
 	ofp/unittest_unittest.cpp
@@ -87,21 +90,25 @@ if(LIBOFP_ENABLE_JSONRPC)
 	)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include")
+# Include 'gtest-all.cc' source file when building ofp_unittest. Avoid googletest's
+# CMakeLists.txt because it wants to install googletest.
 
-add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES})
-target_link_libraries(ofp_unittest gtest ofp ${LIBOFP_LINKED_LIBS})
+set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include -isystem ${gtest_SOURCE_DIR}")
+
+add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES} ${gtest_SOURCE_DIR}/src/gtest-all.cc)
+target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS})
 
 # Add tests here.
 
 add_test(NAME unittests COMMAND ofp_unittest)
-set_tests_properties(unittests PROPERTIES TIMEOUT 60)
+set_tests_properties(unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=16653")
 
 if(LIBOFP_MEMCHECK)
 	separate_arguments(cmd UNIX_COMMAND "${LIBOFP_MEMCHECK} ./ofp_unittest")
     add_test(NAME memcheck_unittests COMMAND ${cmd})
-    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60)
+    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=16653")
 endif()
 
-
-
+add_test(NAME test_install COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test_install.sh)
+set_tests_properties(test_install PROPERTIES TIMEOUT 60)

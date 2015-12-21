@@ -5,6 +5,7 @@ set(OFPX_SOURCES
   ofpx_decode.cpp
   ofpx_help.cpp
   ofpx_util.cpp
+  libofp.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)

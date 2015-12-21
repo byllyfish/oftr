@@ -54,7 +54,7 @@ class Engine {
   bool isRunning() const { return isRunning_; }
   void installSignalHandlers(std::function<void()> callback);
 
-  asio::io_service &io() { return io_; }
+  asio::io_context &io() { return io_; }
 
   Driver *driver() const { return driver_; }
 
@@ -125,9 +125,9 @@ class Engine {
   UInt64 lastConnId_ = 0;
   UInt64 lastSecurityId_ = 0;
 
-  // The io_service must be one of the first objects to be destroyed when
+  // The io_context must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to update bookkeeping objects.
-  asio::io_service io_{1};
+  asio::io_context io_{1};
   bool isRunning_ = false;
 
   // Sets up signal handlers to shut down runloop.

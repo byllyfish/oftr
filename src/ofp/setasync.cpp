@@ -7,9 +7,7 @@
 using namespace ofp;
 
 PropertyRange SetAsync::properties() const {
-  assert(header_.length() >= sizeof(SetAsync));
-  return ByteRange{BytePtr(this) + sizeof(SetAsync),
-                   header_.length() - sizeof(SetAsync)};
+  return SafeByteRange(this, header_.length(), sizeof(SetAsync));
 }
 
 bool SetAsync::validateInput(Validation *context) const {

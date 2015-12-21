@@ -53,9 +53,7 @@ class Message {
     buf_.remove(buf_.data(), bytes);
   }
 
-  const Header *header() const {
-    return reinterpret_cast<const Header *>(buf_.data());
-  }
+  const Header *header() const { return Interpret_cast<Header>(buf_.data()); }
 
   Header *mutableHeader() {
     return reinterpret_cast<Header *>(buf_.mutableData());
@@ -135,7 +133,7 @@ const MsgType *Message::castMessage(OFPErrorCode *error) const {
     return nullptr;
   }
 
-  const MsgType *msg = reinterpret_cast<const MsgType *>(data());
+  const MsgType *msg = Interpret_cast<MsgType>(data());
   if (!msg->validateInput(&context)) {
     return nullptr;
   }

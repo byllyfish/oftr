@@ -88,13 +88,9 @@ class OXMIterator {
     }
   };
 
-  const Item &operator*() const {
-    return *reinterpret_cast<const Item *>(position_);
-  }
+  const Item &operator*() const { return *Interpret_cast<Item>(position_); }
 
-  const Item *operator->() const {
-    return reinterpret_cast<const Item *>(position_);
-  }
+  const Item *operator->() const { return Interpret_cast<Item>(position_); }
 
   void operator++() { position_ += size(); }
 
