@@ -24,7 +24,7 @@ class RpcConnectionSession : public RpcConnection {
 
  private:
   RpcSession *session_;
-  asio::io_service::work work_;
+  asio::io_context::work work_;
 };
 
 OFP_END_IGNORE_PADDING

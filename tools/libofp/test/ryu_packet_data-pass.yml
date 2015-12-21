@@ -1548,24 +1548,25 @@ type:            GET_ASYNC_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
-  packet_in_mask_master: [ TABLE_MISS, INVALID_TTL ]
-  packet_in_mask_slave: [ TABLE_MISS ]
-  port_status_mask_master: [ ADD, DELETE, MODIFY ]
-  port_status_mask_slave: [ ADD, DELETE ]
-  flow_removed_mask_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
-  flow_removed_mask_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT ]
+  packet_in_slave: [ TABLE_MISS ]
+  packet_in_master: [ TABLE_MISS, INVALID_TTL ]
+  port_status_slave: [ ADD, DELETE ]
+  port_status_master: [ ADD, DELETE, MODIFY ]
+  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT ]
+  flow_removed_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
+  properties:      
 ...
 ---
 type:            SET_ASYNC
 xid:             0x00000000
 version:         0x04
 msg:             
-  packet_in_master: [ TABLE_MISS, INVALID_TTL ]
   packet_in_slave: [ TABLE_MISS ]
-  port_status_master: [ ADD, DELETE, MODIFY ]
+  packet_in_master: [ TABLE_MISS, INVALID_TTL ]
   port_status_slave: [ ADD, DELETE ]
-  flow_removed_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
+  port_status_master: [ ADD, DELETE, MODIFY ]
   flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT ]
+  flow_removed_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
   properties:      
 ...
 ---

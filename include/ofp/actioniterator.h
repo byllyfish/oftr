@@ -19,7 +19,7 @@ class ActionIteratorItem : private NonCopyable {
 
   template <class Type>
   const Type *action() const {
-    return reinterpret_cast<const Type *>(this);
+    return Interpret_cast<Type>(this);
   }
 
   OXMRange oxmRange() const { return value(); }

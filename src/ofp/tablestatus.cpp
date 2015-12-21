@@ -1,0 +1,42 @@
+// Copyright 2015-present Bill Fisher. All rights reserved.
+
+#include "ofp/tablestatus.h"
+#include "ofp/writable.h"
+
+using namespace ofp;
+
+bool TableStatus::validateInput(Validation *context) const {
+  size_t length = context->length();
+
+  if (length < sizeof(TableStatus) + sizeof(TableDesc)) {
+    log::debug("TableStatus too small", length);
+    return false;
+  }
+
+  size_t remainingLength = length - sizeof(TableStatus);
+  context->setLengthRemaining(remainingLength);
+
+  // FIXME: make sure there is only one table?
+  if (!table().validateInput(context)) {
+    return false;
+  }
+
+  return true;
+}
+
+UInt32 TableStatusBuilder::send(Writable *channel) {
+  UInt8 version = channel->version();
+  UInt32 xid = channel->nextXid();
+
+  UInt16 msgLen = UInt16_narrow_cast(sizeof(msg_) + table_.writeSize(channel));
+
+  msg_.header_.setVersion(version);
+  msg_.header_.setLength(msgLen);
+  msg_.header_.setXid(xid);
+
+  channel->write(&msg_, sizeof(msg_));
+  table_.write(channel);
+  channel->flush();
+
+  return xid;
+}

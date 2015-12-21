@@ -53,6 +53,9 @@ static const llvm::StringRef sFlowRemovedReason[] = {
     "IDLE_TIMEOUT", "HARD_TIMEOUT", "DELETE",
     "GROUP_DELETE", "METER_DELETE", "EVICTION"};
 
+static const llvm::StringRef sTableStatusReason[] = {
+    "0x00", "0x01", "VACANCY_DOWN", "VACANCY_UP"};
+
 static const llvm::StringRef sControllerRole[] = {
     "ROLE_NOCHANGE", "ROLE_EQUAL", "ROLE_MASTER", "ROLE_SLAVE",
 };
@@ -119,6 +122,10 @@ EnumConverter<OFPPortStatusReason>
 EnumConverter<OFPFlowRemovedReason>
     llvm::yaml::ScalarTraits<OFPFlowRemovedReason>::converter{
         sFlowRemovedReason};
+
+EnumConverter<OFPTableStatusReason>
+    llvm::yaml::ScalarTraits<OFPTableStatusReason>::converter{
+        sTableStatusReason};
 
 EnumConverter<OFPControllerRole>
     llvm::yaml::ScalarTraits<OFPControllerRole>::converter{sControllerRole};

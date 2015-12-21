@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Test script for python controller (relies on testagent). You must pass in the
-# path to the testagent executable and the ofpx executable.
+# path to the testagent executable and the libofp executable.
 
 set -e
 
 CURRENT_SOURCE_DIR=`dirname "$0"`
 TESTAGENT="$1"
 
-export OFPX_PATH="$2"
+export LIBOFP_PATH="$2"
 
 echo "Working Directory:" `pwd`
 

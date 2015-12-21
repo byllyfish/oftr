@@ -20,6 +20,8 @@
 #include "ofp/yaml/ympflowmonitorreply.h"
 #include "ofp/yaml/ympexperimenter.h"
 #include "ofp/yaml/ympreplyseq.h"
+#include "ofp/yaml/ytabledesc.h"
+#include "ofp/yaml/yqueuedesc.h"
 
 namespace llvm {
 namespace yaml {
@@ -145,6 +147,15 @@ msg:
     duration_sec: UInt32
     duration_nsec: UInt32
 
+{Message/Reply.QueueDesc}
+type: REPLY.QUEUE_DESC
+msg:
+  - port_no: PortNumber
+    queue_id: QueueNumber
+    min_rate: UInt16
+    max_rate: UInt16
+    properties: !opt [ExperimenterProperty]
+
 {Message/Reply.MeterConfig}
 type: REPLY.METER_CONFIG
 msg:
@@ -198,6 +209,19 @@ msg:
     apply_set_field: [FieldID]
     apply_set_field_miss: !optout [FieldID]
     properties: [ExperimenterProperty]
+
+{Message/Reply.TableDesc}
+type: REPLY.TABLE_DESC
+msg:
+  - table_id: TableNumber
+    config: [TableConfigFlags]
+    eviction: !optout
+      flags: UInt32
+    vacancy: !optout
+      vacancy_down: UInt8
+      vacancy_up: UInt8
+      vacancy: UInt8
+    properties: !opt [ExperimenterProperty]
 
 {Message/Reply.FlowMonitor}
 type: REPLY.FLOW_MONITOR
@@ -313,6 +337,16 @@ struct MappingTraits<ofp::MultipartReply> {
       }
       case OFPMP_TABLE_FEATURES: {
         ofp::detail::MPReplyVariableSizeSeq<MPTableFeatures> seq{msg};
+        io.mapRequired(key, seq);
+        break;
+      }
+      case OFPMP_TABLE_DESC: {
+        ofp::detail::MPReplyVariableSizeSeq<TableDesc> seq{msg};
+        io.mapRequired(key, seq);
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        ofp::detail::MPReplyVariableSizeSeq<QueueDesc> seq{msg};
         io.mapRequired(key, seq);
         break;
       }
@@ -449,6 +483,20 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       case OFPMP_TABLE_FEATURES: {
         ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{
             msg.version()};
+        io.mapRequired(key, seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_TABLE_DESC: {
+        ofp::detail::MPReplyBuilderSeq<TableDescBuilder> seq{msg.version()};
+        io.mapRequired(key, seq);
+        seq.close();
+        msg.setReplyBody(seq.data(), seq.size());
+        break;
+      }
+      case OFPMP_QUEUE_DESC: {
+        ofp::detail::MPReplyBuilderSeq<QueueDescBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());

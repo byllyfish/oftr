@@ -29,6 +29,7 @@
 #include "ofp/yaml/yrolestatus.h"
 #include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/yaml/ybundleaddmessage.h"
+#include "ofp/yaml/ytablestatus.h"
 #include "ofp/requestforward.h"
 #include "ofp/yaml/outputjson.h"
 
@@ -151,6 +152,8 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
       return decode<BundleAddMessage>(io, msg_);
     case RequestForward::type():
       return decodeRequestForward(io, msg_);
+    case TableStatus::type():
+      return decode<TableStatus>(io, msg_);
     default:
       OFPErrorCode error;
       Validation context{msg_, &error};

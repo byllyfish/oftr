@@ -18,6 +18,8 @@
 #include "ofp/mpmeterconfig.h"
 #include "ofp/mptablefeatures.h"
 #include "ofp/mpflowmonitorreply.h"
+#include "ofp/tabledesc.h"
+#include "ofp/queuedesc.h"
 #include "ofp/mpexperimenter.h"
 
 using namespace ofp;
@@ -66,9 +68,11 @@ bool MultipartReply::validateInput(Validation *context) const {
       return context->validateArrayVariableSize<Port>(replyBody(),
                                                       OFP_VERSION_1);
     case OFPMP_TABLE_DESC:
-      return false;
+      return context->validateArrayVariableSize<TableDesc>(replyBody(),
+                                                           OFP_VERSION_5);
     case OFPMP_QUEUE_DESC:
-      return false;
+      return context->validateArrayVariableSize<QueueDesc>(replyBody(),
+                                                           OFP_VERSION_5);
     case OFPMP_FLOW_MONITOR:
       return context->validateArrayVariableSize<MPFlowMonitorReply>(
           replyBody(), OFP_VERSION_5);

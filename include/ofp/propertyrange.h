@@ -21,7 +21,7 @@ class PropertyIteratorItem : private NonCopyable {
 
   template <class Type>
   const Type &property() const {
-    return *reinterpret_cast<const Type *>(this);
+    return *Interpret_cast<Type>(this);
   }
 
   ByteRange value() const { return ByteRange{BytePtr(this) + 4, len_ - 4U}; }

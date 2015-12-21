@@ -103,6 +103,8 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPPortStatusReason,
                     format("0x%02X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPFlowRemovedReason,
                     format("0x%02X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPTableStatusReason,
+                    format("0x%02X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPControllerRole,
                     format("0x%08X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPMeterModCommand,

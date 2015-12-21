@@ -7,10 +7,10 @@
 using ofp::rpc::RpcSession;
 
 void RpcSession::send(const std::string &msg) {
-  asio::io_service &io = driver_.engine()->io();
+  asio::io_context &io = driver_.engine()->io();
 
   auto conn = conn_;
-  io.post([conn, msg]() { conn->handleEvent(msg); });
+  asio::post(io.get_executor(), [conn, msg]() { conn->handleEvent(msg); });
 }
 
 void RpcSession::setConnection(

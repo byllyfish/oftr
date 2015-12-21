@@ -12,7 +12,7 @@ namespace ofp {
 /// array.
 ///
 /// A SmallBuffer uses malloc/realloc to allocate memory when its content grows
-/// beyond its intrinsic size. The maximum size of a SmallBuffer is 65535 bytes.
+/// beyond its intrinsic size.
 
 class SmallBuffer {
  public:

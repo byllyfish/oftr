@@ -27,15 +27,12 @@ message(STATUS "Running cmake ${CMAKE_VERSION} on ${CMAKE_SYSTEM} ${CMAKE_SYSTEM
 
 # Add path for custom modules
 
-set(CMAKE_MODULE_PATH
-  ${CMAKE_MODULE_PATH}
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
-)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 11)
+set(Libofp_VERSION_MINOR 12)
 set(Libofp_VERSION_PATCH 0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
@@ -101,7 +98,7 @@ endif()
 
 # Specify additional definitions.
 
-set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS")
+set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_NO_DEPRECATED")
 #set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
 # -D ASIO_NO_DEPRECATED -D ASIO_NO_IOSTREAM 
 
@@ -114,8 +111,13 @@ endif()
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_C_FLAGS "-fstrict-aliasing")
-set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11")
+set(LIBOFP_C_FLAGS "-fstrict-aliasing -fvisibility=hidden")
+set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -pie -fPIE -rdynamic")
+endif()
 
 if(APPLE AND UNIX)
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -stdlib=libc++")
@@ -180,6 +182,7 @@ set(LIBOFP_SOURCES
   src/ofp/mpmeterstats.cpp
   src/ofp/mpportstats.cpp
   src/ofp/mpportstatsrequest.cpp
+  src/ofp/mpqueuedescrequest.cpp
   src/ofp/mpqueuestats.cpp
   src/ofp/mpqueuestatsrequest.cpp
   src/ofp/mptablefeatures.cpp
@@ -202,6 +205,7 @@ set(LIBOFP_SOURCES
   src/ofp/protocolversions.cpp
   src/ofp/queuegetconfigreply.cpp
   src/ofp/queue.cpp
+  src/ofp/queuedesc.cpp
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/queueproperty.cpp
   src/ofp/queuerange.cpp
@@ -215,9 +219,11 @@ set(LIBOFP_SOURCES
   src/ofp/smallbuffer.cpp
   src/ofp/smallcstring.cpp
   src/ofp/standardmatch.cpp
+  src/ofp/tabledesc.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp
   src/ofp/tablemodproperty.cpp
+  src/ofp/tablestatus.cpp
   src/ofp/timestamp.cpp
   src/ofp/transmogrify.cpp
   src/ofp/types.cpp
@@ -286,10 +292,10 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
   set(LIBOFP_WARNINGS "-Wall")
@@ -375,7 +381,6 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-add_subdirectory(external/googletest/googletest)
 if(LIBOFP_ENABLE_JSONRPC)
   add_subdirectory(external/boringssl)
 endif()
@@ -385,6 +390,9 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
 set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
+
+message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
+message(STATUS "LIBOFP_CXX_FLAGS: ${LIBOFP_CXX_FLAGS}")
 
 # Set up the source include directory. N.B. Includes for third-party sources are
 # baked into CMAKE_CXX_FLAGS using -isystem.
@@ -424,6 +432,7 @@ if(LIBOFP_ENABLE_JSONRPC)
   add_subdirectory(example/controller)
   add_subdirectory(example/python)
   add_subdirectory(example/flowbench)
+  add_subdirectory(example/ctypes)
 endif()
 
 #-------------------------------------------------------------------------------

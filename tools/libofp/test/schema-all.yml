@@ -485,6 +485,19 @@ Message/Request.Queue:
     port_no: PortNumber
     queue_id: QueueNumber
   
+Message/Request.QueueDesc: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  type: REQUEST.QUEUE_DESC
+  msg:
+    port_no: PortNumber
+    queue_id: QueueNumber
+  
 Message/Request.MeterConfig: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
@@ -552,6 +565,16 @@ Message/Request.TableFeatures:
       apply_set_field: [FieldID]
       apply_set_field_miss: !optout [FieldID]
       properties: [ExperimenterProperty]
+  
+Message/Request.TableDesc: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  type: REQUEST.TABLE_DESC
   
 Message/Request.FlowMonitor: 
   version: !opt UInt8
@@ -775,6 +798,22 @@ Message/Reply.Queue:
       duration_sec: UInt32
       duration_nsec: UInt32
   
+Message/Reply.QueueDesc: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  type: REPLY.QUEUE_DESC
+  msg:
+    - port_no: PortNumber
+      queue_id: QueueNumber
+      min_rate: UInt16
+      max_rate: UInt16
+      properties: !opt [ExperimenterProperty]
+  
 Message/Reply.MeterConfig: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
@@ -856,6 +895,26 @@ Message/Reply.TableFeatures:
       apply_set_field: [FieldID]
       apply_set_field_miss: !optout [FieldID]
       properties: [ExperimenterProperty]
+  
+Message/Reply.TableDesc: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  type: REPLY.TABLE_DESC
+  msg:
+    - table_id: TableNumber
+      config: [TableConfigFlags]
+      eviction: !optout
+        flags: UInt32
+      vacancy: !optout
+        vacancy_down: UInt8
+        vacancy_up: UInt8
+        vacancy: UInt8
+      properties: !opt [ExperimenterProperty]
   
 Message/Reply.FlowMonitor: 
   version: !opt UInt8
@@ -984,12 +1043,19 @@ Message/GetAsyncReply:
   time: !optout Timestamp
   type: GET_ASYNC_REPLY
   msg:
-    packet_in_mask_master: [PacketInFlags]
-    packet_in_mask_slave: [PacketInFlags]
-    port_status_mask_master: [PortStatusFlags]
-    port_status_mask_slave: [PortStatusFlags]
-    flow_removed_mask_master: [FlowRemovedFlags]
-    flow_removed_mask_slave: [FlowRemovedFlags]
+    packet_in_slave: !optout [PacketInFlags]
+    packet_in_master: !optout [PacketInFlags]
+    port_status_slave: !optout [PortStatusFlags]
+    port_status_master: !optout [PortStatusFlags]
+    flow_removed_slave: !optout [FlowRemovedFlags]
+    flow_removed_master: !optout [FlowRemovedFlags]
+    role_status_slave: !optout [RoleStatusFlags]
+    role_status_master: !optout [RoleStatusFlags]
+    table_status_slave: !optout [TableStatusFlags]
+    table_status_master: !optout [TableStatusFlags]
+    request_forward_slave: !optout [RequestForwardFlags]
+    request_forward_master: !optout [RequestForwardFlags]
+    properties: [ExperimenterProperty]
   
 Message/SetAsync: 
   version: !opt UInt8
@@ -1001,12 +1067,19 @@ Message/SetAsync:
   time: !optout Timestamp
   type: SET_ASYNC
   msg:
-    packet_in_master: [PacketInFlags]
-    packet_in_slave: [PacketInFlags]
-    port_status_master: [PortStatusFlags]
-    port_status_slave: [PortStatusFlags]
-    flow_removed_master: [FlowRemovedFlags]
-    flow_removed_slave: [FlowRemovedFlags]
+    packet_in_slave: !optout [PacketInFlags]
+    packet_in_master: !optout [PacketInFlags]
+    port_status_slave: !optout [PortStatusFlags]
+    port_status_master: !optout [PortStatusFlags]
+    flow_removed_slave: !optout [FlowRemovedFlags]
+    flow_removed_master: !optout [FlowRemovedFlags]
+    role_status_slave: !optout [RoleStatusFlags]
+    role_status_master: !optout [RoleStatusFlags]
+    table_status_slave: !optout [TableStatusFlags]
+    table_status_master: !optout [TableStatusFlags]
+    request_forward_slave: !optout [RequestForwardFlags]
+    request_forward_master: !optout [RequestForwardFlags]
+    properties: [ExperimenterProperty]
   
 Message/MeterMod: 
   version: !opt UInt8
@@ -1037,6 +1110,19 @@ Message/RoleStatus:
     reason: RoleStatusReason
     generation_id: UInt64
     properties: [ExperimenterProperty]
+  
+Message/TableStatus: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  type: TABLE_STATUS
+  msg:
+    reason: TableStatusReason
+    table: TableDesc
   
 Message/RequestForward: 
   version: !opt UInt8
@@ -1228,6 +1314,17 @@ Struct/Queue:
   max_rate: UInt16
   properties: !opt [ExperimenterProperty]
   
+Struct/TableDesc: 
+  table_id: TableNumber
+  config: [TableConfigFlags]
+  eviction: !optout
+    flags: UInt32
+  vacancy: !optout
+    vacancy_down: UInt8
+    vacancy_up: UInt8
+    vacancy: UInt8
+  properties: !opt [ExperimenterProperty]
+  
 Struct/PacketCounter: 
   packet_count: UInt64
   byte_count: UInt64
@@ -1251,6 +1348,8 @@ Enum/PacketInReason: TABLE_MISS | APPLY_ACTION | INVALID_TTL | ACTION_SET | GROU
 Enum/PortStatusReason: ADD | DELETE | MODIFY | Hex8
 
 Enum/FlowRemovedReason: IDLE_TIMEOUT | HARD_TIMEOUT | DELETE | GROUP_DELETE | METER_DELETE | EVICTION | Hex8
+
+Enum/TableStatusReason: 0x00 | 0x01 | VACANCY_DOWN | VACANCY_UP | Hex8
 
 Enum/ControllerRole: ROLE_NOCHANGE | ROLE_EQUAL | ROLE_MASTER | ROLE_SLAVE | Hex32
 

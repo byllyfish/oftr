@@ -17,6 +17,7 @@
 #include "ofp/actions.h"
 #include "ofp/portstatsproperty.h"
 #include "ofp/setasync.h"
+#include "ofp/getasyncreply.h"
 #include "ofp/queuegetconfigreply.h"
 
 using namespace ofp;
@@ -109,8 +110,8 @@ void Transmogrify::normalize() {
       normalizePortModV2();
     } else if (type == MultipartReply::type()) {
       normalizeMultipartReplyV4();
-    } else if (type == SetAsync::type()) {
-      normalizeSetAsyncV4();
+    } else if (type == SetAsync::type() || type == GetAsyncReply::type()) {
+      normalizeAsyncConfigV4();
     } else if (type == QueueGetConfigReply::type()) {
       normalizeQueueGetConfigReplyV2();
     }
@@ -709,14 +710,15 @@ void Transmogrify::normalizeMultipartReplyV5() {
   header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
-void Transmogrify::normalizeSetAsyncV4() {
+void Transmogrify::normalizeAsyncConfigV4() {
+  // Both GetAsyncReply and SetAsync have the same message layout.
   Header *hdr = header();
   if (hdr->length() != 32) {
-    markInputInvalid("SetAsync has invalid size");
+    markInputInvalid("AsyncConfig has invalid size");
     return;
   }
 
-  // New size is 56 bytes - up from 32 bytes.
+  // New size is 56 bytes. Up from 32 bytes.
   buf_.addUninitialized(24);
 
   UInt8 *ptr = buf_.mutableData() + sizeof(Header);

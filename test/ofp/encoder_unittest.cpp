@@ -1833,12 +1833,13 @@ TEST(encoder, getasyncreplyv4) {
       datapath_id: 0000-0000-0000-0001
       xid: 0x11111111
       msg:
-        packet_in_mask_master: [0x22222222]
-        packet_in_mask_slave: [0x33333333]
-        port_status_mask_master: [0x44444444]
-        port_status_mask_slave: [0x55555555]
-        flow_removed_mask_master: [0x66666666]
-        flow_removed_mask_slave: [0x77777777]
+        packet_in_master: [0x22222222]
+        packet_in_slave: [0x33333333]
+        port_status_master: [0x44444444]
+        port_status_slave: [0x55555555]
+        flow_removed_master: [0x66666666]
+        flow_removed_slave: [0x77777777]
+        properties: []
       )""";
 
   Encoder encoder{input};
@@ -1846,6 +1847,31 @@ TEST(encoder, getasyncreplyv4) {
   EXPECT_EQ(0x20, encoder.size());
   EXPECT_HEX("041B002011111111222222223333333344444444555555556666666677777777",
              encoder.data(), encoder.size());
+}
+
+TEST(encoder, getasyncreplyv5) {
+  const char *input = R"""(
+      version: 5
+      type: GET_ASYNC_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        packet_in_master: [0x22222222]
+        packet_in_slave: [0x33333333]
+        port_status_master: [0x44444444]
+        port_status_slave: [0x55555555]
+        flow_removed_master: [0x66666666]
+        flow_removed_slave: [0x77777777]
+        properties: []
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(56, encoder.size());
+  EXPECT_HEX(
+      "051B00381111111100000008333333330001000822222222000200085555555500030008"
+      "4444444400040008777777770005000866666666",
+      encoder.data(), encoder.size());
 }
 
 TEST(encoder, queuegetconfigrequestv4) {
@@ -2935,5 +2961,151 @@ TEST(encoder, tablemodv5) {
       "0511005800000000FF0000000000000000020008112233440003000811223300FFFF000C"
       "444444415555555100000000FFFF0010666666617777777188888888FFFF001499999991"
       "AAAAAAA1000000010000000200000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, tablestatusv5) {
+  const char *input = R"""(
+    type:            TABLE_STATUS
+    xid:             0x00000000
+    version:         0x05
+    msg: 
+      reason:        0x10 
+      table:            
+        table_id:        ALL
+        config:          [  ]
+        eviction:        
+          flags:           0x11223344
+        vacancy:         
+          vacancy_down:    0x11
+          vacancy_up:      0x22
+          vacancy:         0x33
+        properties:      
+          - property:        EXPERIMENTER
+            experimenter:    0x44444441
+            exp_type:        0x55555551
+            data:            ''
+          - property:        EXPERIMENTER
+            experimenter:    0x66666661
+            exp_type:        0x77777771
+            data:            88888888
+          - property:        EXPERIMENTER
+            experimenter:    0x99999991
+            exp_type:        0xAAAAAAA1
+            data:            0000000100000002
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(96, encoder.size());
+  EXPECT_HEX(
+      "051F00600000000010000000000000000050FF0000000000000200081122334400030008"
+      "11223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888"
+      "FFFF001499999991AAAAAAA1000000010000000200000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, mptabledescv5) {
+  const char *input = R"""(
+    type:            REPLY.TABLE_DESC
+    xid:             0x00000000
+    version:         0x05
+    msg:            
+      - table_id:        1
+        config:          [  ]
+        eviction:        
+          flags:           0x11223344
+        vacancy:         
+          vacancy_down:    0x11
+          vacancy_up:      0x22
+          vacancy:         0x33
+        properties:      
+          - property:        EXPERIMENTER
+            experimenter:    0x44444441
+            exp_type:        0x55555551
+            data:            ''
+          - property:        EXPERIMENTER
+            experimenter:    0x66666661
+            exp_type:        0x77777771
+            data:            88888888
+          - property:        EXPERIMENTER
+            experimenter:    0x99999991
+            exp_type:        0xAAAAAAA1
+            data:            0000000100000002
+      - table_id:        2
+        config:          [ VACANCY_EVENTS ]
+        vacancy:         
+          vacancy_down:    0x10
+          vacancy_up:      0x20
+          vacancy:         0x30
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(112, encoder.size());
+  EXPECT_HEX(
+      "0513007000000000000E0000000000000050010000000000000200081122334400030008"
+      "11223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888"
+      "FFFF001499999991AAAAAAA1000000010000000200000000001002000000000800030008"
+      "10203000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, mptabledescv5_request) {
+  const char *input = R"""(
+    type:            REQUEST.TABLE_DESC
+    xid:             0x00000000
+    version:         0x05
+    msg:
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(16, encoder.size());
+  EXPECT_HEX("0512001000000000000E000000000000", encoder.data(),
+             encoder.size());
+}
+
+TEST(encoder, mpqueuedescrequest_v5) {
+  const char *input = R"""(
+    type:            REQUEST.QUEUE_DESC
+    xid:             0x01020304
+    version:         0x05
+    msg:
+      port_no: 0x1111111f
+      queue_id: 0x2222222f
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(24, encoder.size());
+  EXPECT_HEX("0512001801020304000F0000000000001111111F2222222F", encoder.data(),
+             encoder.size());
+}
+
+TEST(encoder, mpqueuedescreply_v5) {
+  const char *input = R"""(
+    type:            REPLY.QUEUE_DESC
+    xid:             0x01020304
+    version:         0x05
+    msg:
+      - port_no: 0x1111111f
+        queue_id: 0x2222222f
+        min_rate: 0x1234
+        max_rate: 0x5678
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0xAABBCCDD
+            exp_type: 0xDDEEFF11
+            data: DEADBEEF12
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(72, encoder.size());
+  EXPECT_HEX(
+      "0513004801020304000F0000000000001111111F2222222F003800000000000000010008"
+      "123400000002000856780000FFFF0011AABBCCDDDDEEFF11DEADBEEF120000000000000"
+      "0",
       encoder.data(), encoder.size());
 }

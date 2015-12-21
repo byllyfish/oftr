@@ -537,6 +537,40 @@
   }, 
   {
     "msg": {
+      "port_no": "CONTROLLER", 
+      "queue_id": "ALL"
+    }, 
+    "type": "REQUEST.QUEUE_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "min_rate": 65535, 
+        "max_rate": 65535, 
+        "properties": [
+          {
+            "exp_type": 4294967295, 
+            "experimenter": 4294967295, 
+            "property": "EXPERIMENTER", 
+            "data": "ffffffff"
+          }
+        ], 
+        "port_no": "CONTROLLER", 
+        "queue_id": "ALL"
+      }
+    ], 
+    "type": "REPLY.QUEUE_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
       "group_id": "ANY"
     }, 
     "type": "REQUEST.GROUP", 
@@ -903,6 +937,45 @@
     ]
   }, 
   {
+    "msg": {}, 
+    "type": "REQUEST.TABLE_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "vacancy": {
+          "vacancy": 255, 
+          "vacancy_up": 255, 
+          "vacancy_down": 255
+        }, 
+        "table_id": "ALL", 
+        "eviction": {
+          "flags": 4294967295
+        }, 
+        "config": [
+          "EVICTION"
+        ], 
+        "properties": [
+          {
+            "exp_type": 4294967295, 
+            "experimenter": 4294967295, 
+            "property": "EXPERIMENTER", 
+            "data": "ffffffff"
+          }
+        ]
+      }
+    ], 
+    "type": "REPLY.TABLE_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
     "msg": {
       "out_group": "ALL", 
       "table_id": "ALL", 
@@ -1023,23 +1096,24 @@
   }, 
   {
     "msg": {
-      "port_status_mask_master": [
+      "port_status_slave": [
         "DELETE"
       ], 
-      "port_status_mask_slave": [
+      "packet_in_slave": [
+        "INVALID_TTL"
+      ], 
+      "packet_in_master": [
+        "INVALID_TTL"
+      ], 
+      "port_status_master": [
         "DELETE"
       ], 
-      "flow_removed_mask_slave": [
+      "flow_removed_slave": [
         "HARD_TIMEOUT"
       ], 
-      "flow_removed_mask_master": [
+      "properties": [], 
+      "flow_removed_master": [
         "HARD_TIMEOUT"
-      ], 
-      "packet_in_mask_master": [
-        "INVALID_TTL"
-      ], 
-      "packet_in_mask_slave": [
-        "INVALID_TTL"
       ]
     }, 
     "version": 4, 
@@ -1056,11 +1130,11 @@
       "packet_in_master": [
         "INVALID_TTL"
       ], 
-      "flow_removed_slave": [
-        "HARD_TIMEOUT"
-      ], 
       "port_status_master": [
         "DELETE"
+      ], 
+      "flow_removed_slave": [
+        "HARD_TIMEOUT"
       ], 
       "properties": [], 
       "flow_removed_master": [
@@ -1104,6 +1178,35 @@
     }, 
     "version": 5, 
     "type": "ROLE_STATUS"
+  }, 
+  {
+    "msg": {
+      "table": {
+        "vacancy": {
+          "vacancy": 255, 
+          "vacancy_up": 255, 
+          "vacancy_down": 255
+        }, 
+        "table_id": "ALL", 
+        "eviction": {
+          "flags": 4294967295
+        }, 
+        "config": [
+          "EVICTION"
+        ], 
+        "properties": [
+          {
+            "exp_type": 4294967295, 
+            "experimenter": 4294967295, 
+            "property": "EXPERIMENTER", 
+            "data": "ffffffff"
+          }
+        ]
+      }, 
+      "reason": "VACANCY_DOWN"
+    }, 
+    "version": 5, 
+    "type": "TABLE_STATUS"
   }, 
   {
     "msg": {

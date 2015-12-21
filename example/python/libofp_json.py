@@ -8,9 +8,16 @@ import json
 import socket
 import subprocess
 import sys
+import os
 
-DEFAULT_OPENFLOW_PORT = 6633
-DEFAULT_DRIVER_PORT = 9191
+def getDefaultPort():
+    try:
+        return int(os.environ.get('LIBOFP_DEFAULT_PORT'))
+    except:
+        return 6653
+
+
+DEFAULT_OPENFLOW_PORT = getDefaultPort()
 EVENT_DELIMITER = '\n'
 
 class _JsonObject:
@@ -51,7 +58,7 @@ class LibOFP(object):
        '''
     """
 
-    def __init__(self, driverPath='/usr/local/bin/ofpx',
+    def __init__(self, driverPath='/usr/local/bin/libofp',
                        openflowAddr=('', DEFAULT_OPENFLOW_PORT),
                        listen=True):
         """

@@ -158,7 +158,7 @@ template <OFPType MsgType>
 const HeaderOnly<MsgType> *HeaderOnly<MsgType>::cast(const Message *message) {
   assert(message->type() == MsgType);
 
-  const HeaderOnly *msg = reinterpret_cast<const HeaderOnly *>(message->data());
+  const HeaderOnly *msg = Interpret_cast<HeaderOnly>(message->data());
 
   if (message->size() != 8) {
     return nullptr;
