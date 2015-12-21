@@ -71,6 +71,12 @@ msg:
   port_no: PortNumber
   queue_id: QueueNumber
 
+{Message/Request.QueueDesc}
+type: REQUEST.QUEUE_DESC
+msg:
+  port_no: PortNumber
+  queue_id: QueueNumber
+
 {Message/Request.MeterConfig}
 type: REQUEST.METER_CONFIG
 msg:

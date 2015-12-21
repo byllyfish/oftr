@@ -287,6 +287,21 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.QUEUE.v1	msg.0.tx_bytes	uint64	True			True
 1	REPLY.QUEUE.v1	msg.0.tx_errors	uint64	True			True
 1	REPLY.QUEUE.v1	msg.0.tx_packets	uint64	True			True
+1	REQUEST.QUEUE_DESC.v1	msg	object	True			ERROR
+1	REQUEST.QUEUE_DESC.v1	msg.port_no	CONTROLLER	True			ERROR
+1	REQUEST.QUEUE_DESC.v1	msg.queue_id	ALL	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg	array	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0	object	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.max_rate	uint16	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.min_rate	uint16	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.port_no	CONTROLLER	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties	array	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0	object	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.data	binary	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.exp_type	uint32	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.experimenter	uint32	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+1	REPLY.QUEUE_DESC.v1	msg.0.queue_id	ALL	True			ERROR
 1	REQUEST.GROUP.v1	msg	object	True			ERROR
 1	REQUEST.GROUP.v1	msg.group_id	ANY	True			ERROR
 1	REPLY.GROUP.v1	msg	array	True			ERROR
@@ -922,6 +937,21 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.QUEUE.v2	msg.0.tx_bytes	uint64	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.tx_errors	uint64	True			ERROR
 2	REPLY.QUEUE.v2	msg.0.tx_packets	uint64	True			ERROR
+2	REQUEST.QUEUE_DESC.v2	msg	object	True			ERROR
+2	REQUEST.QUEUE_DESC.v2	msg.port_no	CONTROLLER	True			ERROR
+2	REQUEST.QUEUE_DESC.v2	msg.queue_id	ALL	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg	array	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0	object	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.max_rate	uint16	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.min_rate	uint16	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.port_no	CONTROLLER	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties	array	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0	object	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.data	binary	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.exp_type	uint32	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.experimenter	uint32	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+2	REPLY.QUEUE_DESC.v2	msg.0.queue_id	ALL	True			ERROR
 2	REQUEST.GROUP.v2	msg	object	True			
 2	REQUEST.GROUP.v2	msg.group_id	ANY	True			
 2	REPLY.GROUP.v2	msg	array	True			
@@ -1557,6 +1587,21 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.QUEUE.v3	msg.0.tx_bytes	uint64	True			True
 3	REPLY.QUEUE.v3	msg.0.tx_errors	uint64	True			True
 3	REPLY.QUEUE.v3	msg.0.tx_packets	uint64	True			True
+3	REQUEST.QUEUE_DESC.v3	msg	object	True			ERROR
+3	REQUEST.QUEUE_DESC.v3	msg.port_no	CONTROLLER	True			ERROR
+3	REQUEST.QUEUE_DESC.v3	msg.queue_id	ALL	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg	array	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0	object	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.max_rate	uint16	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.min_rate	uint16	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.port_no	CONTROLLER	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties	array	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0	object	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.data	binary	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.exp_type	uint32	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.experimenter	uint32	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+3	REPLY.QUEUE_DESC.v3	msg.0.queue_id	ALL	True			ERROR
 3	REQUEST.GROUP.v3	msg	object	True			
 3	REQUEST.GROUP.v3	msg.group_id	ANY	True			
 3	REPLY.GROUP.v3	msg	array	True			
@@ -2192,6 +2237,21 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.QUEUE.v4	msg.0.tx_bytes	uint64	True			True
 4	REPLY.QUEUE.v4	msg.0.tx_errors	uint64	True			True
 4	REPLY.QUEUE.v4	msg.0.tx_packets	uint64	True			True
+4	REQUEST.QUEUE_DESC.v4	msg	object	True			ERROR
+4	REQUEST.QUEUE_DESC.v4	msg.port_no	CONTROLLER	True			ERROR
+4	REQUEST.QUEUE_DESC.v4	msg.queue_id	ALL	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg	array	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0	object	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.max_rate	uint16	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.min_rate	uint16	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.port_no	CONTROLLER	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties	array	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0	object	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.data	binary	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.exp_type	uint32	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.experimenter	uint32	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
+4	REPLY.QUEUE_DESC.v4	msg.0.queue_id	ALL	True			ERROR
 4	REQUEST.GROUP.v4	msg	object	True			
 4	REQUEST.GROUP.v4	msg.group_id	ANY	True			
 4	REPLY.GROUP.v4	msg	array	True			
@@ -2827,6 +2887,21 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.QUEUE.v5	msg.0.tx_bytes	uint64	True			True
 5	REPLY.QUEUE.v5	msg.0.tx_errors	uint64	True			True
 5	REPLY.QUEUE.v5	msg.0.tx_packets	uint64	True			True
+5	REQUEST.QUEUE_DESC.v5	msg	object	True			
+5	REQUEST.QUEUE_DESC.v5	msg.port_no	CONTROLLER	True			
+5	REQUEST.QUEUE_DESC.v5	msg.queue_id	ALL	True			
+5	REPLY.QUEUE_DESC.v5	msg	array	True			
+5	REPLY.QUEUE_DESC.v5	msg.0	object	False			
+5	REPLY.QUEUE_DESC.v5	msg.0.max_rate	uint16	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.min_rate	uint16	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.port_no	CONTROLLER	True			
+5	REPLY.QUEUE_DESC.v5	msg.0.properties	array	False	msg.0.properties.0=object,msg.0.properties.0.data=binary,msg.0.properties.0.exp_type=uint32,msg.0.properties.0.experimenter=uint32,msg.0.properties.0.property=EXPERIMENTER		
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0	object	False	msg.0.properties.0=object,msg.0.properties.0.data=binary,msg.0.properties.0.exp_type=uint32,msg.0.properties.0.experimenter=uint32,msg.0.properties.0.property=EXPERIMENTER		
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.data	binary	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.exp_type	uint32	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.experimenter	uint32	True			True
+5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.property	EXPERIMENTER	True			
+5	REPLY.QUEUE_DESC.v5	msg.0.queue_id	ALL	True			
 5	REQUEST.GROUP.v5	msg	object	True			
 5	REQUEST.GROUP.v5	msg.group_id	ANY	True			
 5	REPLY.GROUP.v5	msg	array	True			

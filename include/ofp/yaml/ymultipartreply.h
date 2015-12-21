@@ -147,6 +147,15 @@ msg:
     duration_sec: UInt32
     duration_nsec: UInt32
 
+{Message/Reply.QueueDesc}
+type: REPLY.QUEUE_DESC
+msg:
+  - port_no: PortNumber
+    queue_id: QueueNumber
+    min_rate: UInt16
+    max_rate: UInt16
+    properties: !opt [ExperimenterProperty]
+
 {Message/Reply.MeterConfig}
 type: REPLY.METER_CONFIG
 msg:

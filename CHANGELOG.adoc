@@ -1,5 +1,15 @@
 = Changelog
 
+== Version 0.12 (20 December 2015)
+
+- Support QueueDesc multipart message. (1.4+)
+- Preliminary C API and position-independent executable support.
+- Support TableDesc for TableStatus message, multipart message.
+- GetAsyncReply message. (1.4+)
+- Enable ASIO no-deprecated flag.
+- Fix issue where google-test headers were being installed.
+- Update asio, boringssl, and googletest submodules.
+
 == Version 0.11 (2 December 2015)
 
 - Add support for TableMod message with properties (1.4+).

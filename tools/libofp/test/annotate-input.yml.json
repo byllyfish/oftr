@@ -537,6 +537,40 @@
   }, 
   {
     "msg": {
+      "port_no": "CONTROLLER", 
+      "queue_id": "ALL"
+    }, 
+    "type": "REQUEST.QUEUE_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": [
+      {
+        "min_rate": 65535, 
+        "max_rate": 65535, 
+        "properties": [
+          {
+            "exp_type": 4294967295, 
+            "experimenter": 4294967295, 
+            "property": "EXPERIMENTER", 
+            "data": "ffffffff"
+          }
+        ], 
+        "port_no": "CONTROLLER", 
+        "queue_id": "ALL"
+      }
+    ], 
+    "type": "REPLY.QUEUE_DESC", 
+    "version": 4, 
+    "flags": [
+      "MORE"
+    ]
+  }, 
+  {
+    "msg": {
       "group_id": "ANY"
     }, 
     "type": "REQUEST.GROUP", 
