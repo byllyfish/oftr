@@ -91,7 +91,7 @@ if(LIBOFP_ENABLE_JSONRPC)
   set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
 endif()
 
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
+if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   # MSVC does not support -isystem; replace -isystem with -I
   string(REPLACE -isystem -I LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES}")
 endif()
@@ -111,8 +111,8 @@ endif()
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_C_FLAGS "-fstrict-aliasing -fvisibility=hidden")
-set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
+set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing -fvisibility=hidden")
+set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
