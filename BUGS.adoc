@@ -10,10 +10,6 @@
 * Version 1.2
 ** OFPMP_TABLE multipart reply message
 
-* Version 1.4
-** OFPMP_TABLE_DESC multipart request and reply
-** OFPMP_QUEUE_DESC multipart request and reply
-
 == Security
 
 * There are no sandbox mechanisms in place yet (e.g. seccomp-bpf)

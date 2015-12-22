@@ -1,4 +1,0 @@
-/usr/local/bin/libofp
-/usr/local/share/man/man1/libofp.1
-/usr/local/share/man/man1/libofp-jsonrpc.1
-/usr/local/share/man/man1/libofp-schema.1
