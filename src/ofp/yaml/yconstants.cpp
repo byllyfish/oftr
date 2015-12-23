@@ -238,7 +238,15 @@ static std::pair<OFPErrorCode, llvm::StringRef> sErrorCodes[] = {
     STR_ENTRY(OFPTFFC_BAD_ARGUMENT), STR_ENTRY(OFPTFFC_EPERM),
 };
 
+static std::pair<OFPAsyncConfigProperty, llvm::StringRef> sAsyncConfigProperty[] = {
+    {OFPACPT_EXPERIMENTER_SLAVE, "EXPERIMENTER_SLAVE"},
+    {OFPACPT_EXPERIMENTER_MASTER, "EXPERIMENTER_MASTER"}
+};
+
 EnumConverterSparse<OFPErrorCode>
     llvm::yaml::ScalarTraits<OFPErrorCode>::converter{sErrorCodes};
+
+EnumConverterSparse<OFPAsyncConfigProperty>
+    llvm::yaml::ScalarTraits<OFPAsyncConfigProperty>::converter{sAsyncConfigProperty};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

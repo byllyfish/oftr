@@ -37,7 +37,7 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    Hex16 property = elem.type();
+    OFPAsyncConfigProperty property = static_cast<OFPAsyncConfigProperty>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {
@@ -73,7 +73,7 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyInserter> {
 
     PropertyList &props = Ref_cast<PropertyList>(list);
 
-    UInt16 property;
+    OFPAsyncConfigProperty property;
     io.mapRequired("property", property);
 
     if (property >= OFPACPT_EXPERIMENTER_SLAVE) {
