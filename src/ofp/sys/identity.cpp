@@ -476,3 +476,16 @@ int Identity::dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
              std::make_pair("connid", conn->connectionId()));
   return 1;
 }
+
+asio::ssl::context *Identity::plaintextContext() {
+  static asio::ssl::context *buf = nullptr;
+  if (!buf) {
+    // This ssl::context is a magic value. We can't use null because we have 
+    // to pass it by reference and this is undefined behavior. Just allocate a 
+    // token zeroed buffer once.
+    buf = reinterpret_cast<asio::ssl::context *>(malloc(sizeof(asio::ssl::context)));
+    log::fatal_if_null(buf, LOG_LINE());
+    memset(buf, 0, sizeof(*buf));
+  }
+  return buf;
+}

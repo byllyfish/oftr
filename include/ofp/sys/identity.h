@@ -41,6 +41,8 @@ class Identity {
   template <class SocketType>
   static void beforeClose(Connection *conn, SocketType *ssl) {}
 
+  static asio::ssl::context *plaintextContext();
+  
  private:
   /// Unique non-zero ID used to reference this Identity.
   UInt64 securityId_ = 0;

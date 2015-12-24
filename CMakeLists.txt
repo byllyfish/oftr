@@ -307,6 +307,13 @@ if(APPLE)
   set(CMAKE_EXE_LINKER_FLAGS "-Wl,-dead_strip")
 endif()
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
+  # -fsanitize=undefined doesn't work because we are compiling -no-rtti.
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fsanitize=address,alignment,bool,null,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fsanitize=address,alignment,bool,null,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,alignment,bool,null,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+endif()
+
 #-------------------------------------------------------------------------------
 # Build Library
 #-------------------------------------------------------------------------------

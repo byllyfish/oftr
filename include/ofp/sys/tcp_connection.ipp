@@ -26,7 +26,11 @@ template <>
 inline asio::ssl::context *tcpContext<PlaintextSocket>(Engine *engine,
                                                        UInt64 securityId) {
   assert(securityId == 0);
-  return nullptr;
+  // Return a dummy pointer that points to something that exists. I originally
+  // returns `nullptr` here but the undefined sanitizer complained. The
+  // PlaintextSocket type does not use or access the asio::ssl::context passed
+  // in; the ssl::context here is a placeholder.
+  return Identity::plaintextContext();
 }
 
 }  // namespace detail
