@@ -138,7 +138,7 @@ TEST(byteorder, BigEnum32) {
 
 TEST(byteorder, BigEnum) {
   // Plain unadorned enum.
-  enum Foo { a, b, c };
+  enum Foo : int { a, b, c };
   Big<Foo> x;
 
   static_assert(sizeof(x) == sizeof(int), "Unexpected enum size.");
