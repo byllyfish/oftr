@@ -95,6 +95,8 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyInserter> {
           props.add(AsyncConfigPropertyExperimenterMaster{experimenter, expType,
                                                           expData});
           break;
+        default:
+          break;
       }
 
     } else {
