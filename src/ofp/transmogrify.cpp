@@ -45,7 +45,14 @@ void Transmogrify::normalize() {
   }
   hdr->setType(type);
 
-  log::debug("normalize", type);
+#if !defined(NDEBUG)
+  if ((type == MultipartReply::type() || type == MultipartRequest::type()) && buf_.size() >= 16) {
+    UInt16 multiType = *Big16_cast(buf_.data() + 8);
+    log::debug("normalize", type, static_cast<OFPMultipartType>(multiType));
+  } else {
+    log::debug("normalize", type);
+  }
+#endif // !defined(NDEBUG)
 
   // If header length doesn't match buffer size, we have a problem. Under normal
   // conditions, this should never be triggered.

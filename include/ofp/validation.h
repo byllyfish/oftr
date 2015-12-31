@@ -7,6 +7,7 @@
 #include "ofp/byterange.h"
 #include "ofp/constants.h"
 #include "ofp/padding.h"
+#include "ofp/log.h"
 
 namespace ofp {
 
@@ -48,6 +49,9 @@ class Validation {
   // Used in validating multipart section lengths. Verifies that length is at
   // least `minSize` and is aligned.
   bool validateAlignedLength(size_t length, size_t minSize) {
+    if (length < minSize) {
+      log::debug("validateAlignedLength: length", length, " is smaller than minSize", minSize);
+    }
     return validateBool((length >= minSize) && ((length % 8) == 0), "Length too small or not aligned");
   }
 

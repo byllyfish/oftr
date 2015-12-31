@@ -169,9 +169,9 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
   metadata = 0;
   metadata_mask = 0;
 
-  log::debug("Convert original match to standard match:");
-  log::debug("origmatch:\n", match.toString());
-  log::debug("stdmatch:\n", toString());
+  // log::debug("Convert original match to standard match:");
+  // log::debug("origmatch:\n", match.toString());
+  // log::debug("stdmatch:\n", toString());
 }
 
 OXMList StandardMatch::toOXMList() const {
