@@ -13,7 +13,7 @@ PacketCounterRange MPGroupStats::bucketStats() const {
 }
 
 bool MPGroupStats::validateInput(Validation *context) const {
-  if (!context->validateLength(length_, sizeof(MPGroupStats))) {
+  if (!context->validateAlignedLength(length_, sizeof(MPGroupStats))) {
     return false;
   }
 

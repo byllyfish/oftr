@@ -13,7 +13,7 @@ BucketRange MPGroupDesc::buckets() const {
 }
 
 bool MPGroupDesc::validateInput(Validation *context) const {
-  if (!context->validateLength(length_, sizeof(MPGroupDesc))) {
+  if (!context->validateAlignedLength(length_, sizeof(MPGroupDesc))) {
     return false;
   }
 

@@ -13,7 +13,7 @@ PacketCounterRange MPMeterStats::bandStats() const {
 }
 
 bool MPMeterStats::validateInput(Validation *context) const {
-  if (!context->validateLength(len_, sizeof(MPMeterStats))) {
+  if (!context->validateAlignedLength(len_, sizeof(MPMeterStats))) {
     return false;
   }
 

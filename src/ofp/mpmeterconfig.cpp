@@ -13,7 +13,7 @@ MeterBandRange MPMeterConfig::bands() const {
 }
 
 bool MPMeterConfig::validateInput(Validation *context) const {
-  if (!context->validateLength(length_, sizeof(MPMeterConfig))) {
+  if (!context->validateAlignedLength(length_, sizeof(MPMeterConfig))) {
     return false;
   }
 

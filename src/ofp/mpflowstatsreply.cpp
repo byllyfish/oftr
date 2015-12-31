@@ -23,7 +23,7 @@ InstructionRange MPFlowStatsReply::instructions() const {
 
 bool MPFlowStatsReply::validateInput(Validation *context) const {
   size_t length = length_;
-  if (!context->validateLength(length_, UnpaddedSizeWithMatchHeader)) {
+  if (!context->validateAlignedLength(length, UnpaddedSizeWithMatchHeader)) {
     return false;
   }
 

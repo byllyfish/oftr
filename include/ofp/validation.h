@@ -45,14 +45,13 @@ class Validation {
   void rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr,
                                            size_t elementSize);
 
-  // Used in validating multipart section lengths.
-
-  bool validateLength(size_t length, size_t minSize) {
-    return (length >= minSize) && ((length % 8) == 0);
+  // Used in validating multipart section lengths. Verifies that length is at
+  // least `minSize` and is aligned.
+  bool validateAlignedLength(size_t length, size_t minSize) {
+    return validateBool((length >= minSize) && ((length % 8) == 0), "Length too small or not aligned");
   }
 
   // Used in validating multipart request/reply.
-
   bool validateEmpty(const UInt8 *body, UInt8 minVersion);
 
   template <class Type>
@@ -63,6 +62,14 @@ class Validation {
 
   template <class Type>
   bool validateArrayFixedSize(const UInt8 *body, UInt8 minVersion);
+
+  bool validateBool(bool condition, const char *errorMessage) {
+    if (!condition) {
+      setErrorMessage(errorMessage);
+      return false;
+    }
+    return true;
+  }
 
  private:
   const Message *msg_;

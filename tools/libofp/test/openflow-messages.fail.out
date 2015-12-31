@@ -15571,18 +15571,9 @@ Filename: external/openflow-messages/v1_1/rep/rep_19_00026.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_19_00027.fail:
 Error: Only 7 bytes read of message body. Expected to read 104 bytes.
----
-type:            REPLY.GROUP
-flags:           [  ]
-xid:             0x6BBCDD50
-version:         0x02
-_file:           external/openflow-messages/v1_1/rep/rep_19_00029.fail
-...
 Filename: external/openflow-messages/v1_1/rep/rep_19_00029.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=112 data=021300706BBCDD5000060000000000000032000061DA1372B462001F00000000295DDA012C9D27CF87F743EDF585FF6130B1142DF1FA76FA94AB3D6F630DB942003000005C7D082923DD3D3E0000000090469966A782CD9C46624FDB08271771F7D9B3380D1FA5B1D9B13FC33F05700C]
 Filename: external/openflow-messages/v1_1/rep/rep_19_00030.fail:
 Error: Only 103 bytes read of message body. Expected to read 104 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_19_00031.fail
@@ -15590,18 +15581,9 @@ Error: Decode failed: Range size has improper alignment
 [ByteList size=23 data=02130017C439BE40000700000000000000080000AB653F]
 Filename: external/openflow-messages/v1_1/rep/rep_19_00031.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
----
-type:            REPLY.GROUP_DESC
-flags:           [  ]
-xid:             0xC439BE40
-version:         0x02
-_file:           external/openflow-messages/v1_1/rep/rep_19_00032.fail
-...
 Filename: external/openflow-messages/v1_1/rep/rep_19_00032.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP_DESC
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=24 data=02130018C439BE40000700000000000000070000AB653FED]
 Filename: external/openflow-messages/v1_1/rep/rep_19_00033.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=24 data=02130018C439BE40000700000000000000090000AB653FED]
@@ -18647,18 +18629,9 @@ Error: Only 456 bytes read of message body. Expected to read 464 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00020.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=464 data=031301D000003039000100010000000000787B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
----
-type:            REPLY.FLOW
-flags:           [ MORE ]
-xid:             0x00003039
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_19_00021.fail
-...
 Filename: external/openflow-messages/v1_2/rep/rep_19_00021.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.FLOW
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=464 data=031301D0000030390001000100000000006F7B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 Filename: external/openflow-messages/v1_2/rep/rep_19_00022.fail:
 Error: Only 455 bytes read of message body. Expected to read 456 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00023.fail:
@@ -18700,18 +18673,9 @@ Error: Only 38 bytes read of message body. Expected to read 40 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00041.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=48 data=031300300000B26E000600010000000000220000000000590000093700000000000000000023F420000000000166F0C3]
----
-type:            REPLY.GROUP
-flags:           [ MORE ]
-xid:             0x0000B26E
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_19_00042.fail
-...
 Filename: external/openflow-messages/v1_2/rep/rep_19_00042.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=48 data=031300300000B26E0006000100000000001F0000000000590000093700000000000000000023F420000000000166F0C3]
 Filename: external/openflow-messages/v1_2/rep/rep_19_00043.fail:
 Error: Only 88 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00044.fail:
@@ -18737,18 +18701,9 @@ Error: Only 14 bytes read of message body. Expected to read 16 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00053.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=24 data=031300180000000C0007000100000000000901000000015D]
----
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_19_00054.fail
-...
 Filename: external/openflow-messages/v1_2/rep/rep_19_00054.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP_DESC
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=24 data=031300180000000C0007000100000000000601000000015D]
 Filename: external/openflow-messages/v1_2/rep/rep_19_00055.fail:
 Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00056.fail:
@@ -18756,18 +18711,9 @@ Error: Only 62 bytes read of message body. Expected to read 64 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00057.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=72 data=031300480000000C0007000100000000003901000000015D00100EF50004F67300050F3C0000000000100EF50004F67300050F3C0000000000100EF50004F67300050F3C00000000]
----
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_19_00058.fail
-...
 Filename: external/openflow-messages/v1_2/rep/rep_19_00058.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP_DESC
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=72 data=031300480000000C0007000100000000003601000000015D00100EF50004F67300050F3C0000000000100EF50004F67300050F3C0000000000100EF50004F67300050F3C00000000]
 Filename: external/openflow-messages/v1_2/rep/rep_19_00060.fail:
 Error: Only 216 bytes read of message body. Expected to read 224 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00061.fail:
@@ -22777,18 +22723,9 @@ Error: Only 456 bytes read of message body. Expected to read 464 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00020.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=464 data=041301D000003039000100010000000000787B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
----
-type:            REPLY.FLOW
-flags:           [ MORE ]
-xid:             0x00003039
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00021.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00021.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.FLOW
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=464 data=041301D0000030390001000100000000006F7B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00022.fail:
 Error: Only 455 bytes read of message body. Expected to read 456 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00023.fail:
@@ -22830,18 +22767,9 @@ Error: Only 47 bytes read of message body. Expected to read 48 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00041.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=56 data=041300380000B26E000600010000000000290000000000590000093700000000000000000023F420000000000166F0C3000009E200000145]
----
-type:            REPLY.GROUP
-flags:           [ MORE ]
-xid:             0x0000B26E
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00042.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00042.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=56 data=041300380000B26E000600010000000000270000000000590000093700000000000000000023F420000000000166F0C3000009E200000145]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00043.fail:
 Error: Only 96 bytes read of message body. Expected to read 104 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00044.fail:
@@ -22849,18 +22777,9 @@ Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00045.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=041300680000B26E000600010000000000600000000000590000093700000000000000000023F420000000000166F0C3000009E200000145000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C]
----
-type:            REPLY.GROUP
-flags:           [ MORE ]
-xid:             0x0000B26E
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00046.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00046.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=104 data=041300680000B26E000600010000000000570000000000590000093700000000000000000023F420000000000166F0C3000009E200000145000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00047.fail:
 Error: Only 224 bytes read of message body. Expected to read 225 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00048.fail:
@@ -22876,18 +22795,9 @@ Error: Only 14 bytes read of message body. Expected to read 16 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00053.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=24 data=041300180000000C0007000100000000000901000000015D]
----
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00054.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00054.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP_DESC
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=24 data=041300180000000C0007000100000000000601000000015D]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00055.fail:
 Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00056.fail:
@@ -22895,18 +22805,9 @@ Error: Only 62 bytes read of message body. Expected to read 64 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00057.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=72 data=041300480000000C0007000100000000003901000000015D00100EF50004F67300050F3C0000000000100EF50004F67300050F3C0000000000100EF50004F67300050F3C00000000]
----
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00058.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00058.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP_DESC
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=72 data=041300480000000C0007000100000000003601000000015D00100EF50004F67300050F3C0000000000100EF50004F67300050F3C0000000000100EF50004F67300050F3C00000000]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00060.fail:
 Error: Only 216 bytes read of message body. Expected to read 224 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00061.fail:
@@ -22932,18 +22833,9 @@ Error: Only 47 bytes read of message body. Expected to read 48 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00071.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=56 data=04130038000004D20009000100000000000004D000300000000000000000308700000000000F423F000000000012CA4A000000200000085D]
----
-type:            REPLY.METER
-flags:           [ MORE ]
-xid:             0x000004D2
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00072.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00072.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=56 data=04130038000004D20009000100000000000004D000200000000000000000308700000000000F423F000000000012CA4A000000200000085D]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00073.fail:
 Error: Only 96 bytes read of message body. Expected to read 97 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00074.fail:
@@ -22951,18 +22843,9 @@ Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00075.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=04130068000004D20009000100000000000004D000590000000000000000308700000000000F423F000000000012CA4A000000200000085D000000000000097F000000000000007C0000000000005EA7000000000000007C000000000000308F000000000000007C]
----
-type:            REPLY.METER
-flags:           [ MORE ]
-xid:             0x000004D2
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00076.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00076.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=104 data=04130068000004D20009000100000000000004D000570000000000000000308700000000000F423F000000000012CA4A000000200000085D000000000000097F000000000000007C0000000000005EA7000000000000007C000000000000308F000000000000007C]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00077.fail:
 Error: Only 224 bytes read of message body. Expected to read 232 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00078.fail:
@@ -22978,18 +22861,9 @@ Error: Only 47 bytes read of message body. Expected to read 48 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00083.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=56 data=0413003800000529000A00010000000000290001000000E7000100100000007C000000EB0000000000020010000004D90000007C00000000]
----
-type:            REPLY.METER_CONFIG
-flags:           [ MORE ]
-xid:             0x00000529
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00084.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00084.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER_CONFIG
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=56 data=0413003800000529000A00010000000000270001000000E7000100100000007C000000EB0000000000020010000004D90000007C00000000]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00085.fail:
 Error: Only 16 bytes read of message body. Expected to read 17 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00086.fail:
@@ -22997,18 +22871,9 @@ Error: Only 15 bytes read of message body. Expected to read 16 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00087.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=24 data=0413001800000529000A00010000000000090001000000E7]
----
-type:            REPLY.METER_CONFIG
-flags:           [ MORE ]
-xid:             0x00000529
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_19_00088.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_19_00088.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER_CONFIG
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=24 data=0413001800000529000A00010000000000070001000000E7]
 Filename: external/openflow-messages/v1_3/rep/rep_19_00089.fail:
 Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00090.fail:
@@ -27199,18 +27064,9 @@ Error: Only 456 bytes read of message body. Expected to read 464 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00020.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=464 data=041301D000003039000100010000000000787B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
----
-type:            REPLY.FLOW
-flags:           [ MORE ]
-xid:             0x00003039
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00021.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00021.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.FLOW
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=464 data=041301D0000030390001000100000000006F7B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00022.fail:
 Error: Only 455 bytes read of message body. Expected to read 456 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00023.fail:
@@ -27252,18 +27108,9 @@ Error: Only 47 bytes read of message body. Expected to read 48 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00041.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=56 data=041300380000B26E000600010000000000290000000000590000093700000000000000000023F420000000000166F0C3000009E200000145]
----
-type:            REPLY.GROUP
-flags:           [ MORE ]
-xid:             0x0000B26E
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00042.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00042.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=56 data=041300380000B26E000600010000000000270000000000590000093700000000000000000023F420000000000166F0C3000009E200000145]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00043.fail:
 Error: Only 96 bytes read of message body. Expected to read 104 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00044.fail:
@@ -27271,18 +27118,9 @@ Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00045.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=041300680000B26E000600010000000000600000000000590000093700000000000000000023F420000000000166F0C3000009E200000145000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C]
----
-type:            REPLY.GROUP
-flags:           [ MORE ]
-xid:             0x0000B26E
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00046.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00046.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=104 data=041300680000B26E000600010000000000570000000000590000093700000000000000000023F420000000000166F0C3000009E200000145000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00047.fail:
 Error: Only 224 bytes read of message body. Expected to read 225 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00048.fail:
@@ -27298,18 +27136,9 @@ Error: Only 14 bytes read of message body. Expected to read 16 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00053.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=24 data=041300180000000C0007000100000000000901000000015D]
----
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00054.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00054.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP_DESC
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=24 data=041300180000000C0007000100000000000601000000015D]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00055.fail:
 Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00056.fail:
@@ -27317,18 +27146,9 @@ Error: Only 62 bytes read of message body. Expected to read 64 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00057.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=72 data=041300480000000C0007000100000000003901000000015D00100EF50004F67300050F3C0000000000100EF50004F67300050F3C0000000000100EF50004F67300050F3C00000000]
----
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00058.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00058.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.GROUP_DESC
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=72 data=041300480000000C0007000100000000003601000000015D00100EF50004F67300050F3C0000000000100EF50004F67300050F3C0000000000100EF50004F67300050F3C00000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00060.fail:
 Error: Only 216 bytes read of message body. Expected to read 224 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00061.fail:
@@ -27354,18 +27174,9 @@ Error: Only 47 bytes read of message body. Expected to read 48 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00071.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=56 data=04130038000004D20009000100000000000004D000300000000000000000308700000000000F423F000000000012CA4A000000200000085D]
----
-type:            REPLY.METER
-flags:           [ MORE ]
-xid:             0x000004D2
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00072.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00072.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=56 data=04130038000004D20009000100000000000004D000200000000000000000308700000000000F423F000000000012CA4A000000200000085D]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00073.fail:
 Error: Only 96 bytes read of message body. Expected to read 97 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00074.fail:
@@ -27373,18 +27184,9 @@ Error: Only 95 bytes read of message body. Expected to read 96 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00075.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=04130068000004D20009000100000000000004D000590000000000000000308700000000000F423F000000000012CA4A000000200000085D000000000000097F000000000000007C0000000000005EA7000000000000007C000000000000308F000000000000007C]
----
-type:            REPLY.METER
-flags:           [ MORE ]
-xid:             0x000004D2
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00076.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00076.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=104 data=04130068000004D20009000100000000000004D000570000000000000000308700000000000F423F000000000012CA4A000000200000085D000000000000097F000000000000007C0000000000005EA7000000000000007C000000000000308F000000000000007C]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00077.fail:
 Error: Only 224 bytes read of message body. Expected to read 232 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00078.fail:
@@ -27400,18 +27202,9 @@ Error: Only 47 bytes read of message body. Expected to read 48 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00083.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=56 data=0413003800000529000A00010000000000290001000000E7000100100000007C000000EB0000000000020010000004D90000007C00000000]
----
-type:            REPLY.METER_CONFIG
-flags:           [ MORE ]
-xid:             0x00000529
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00084.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00084.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER_CONFIG
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=56 data=0413003800000529000A00010000000000270001000000E7000100100000007C000000EB0000000000020010000004D90000007C00000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00085.fail:
 Error: Only 16 bytes read of message body. Expected to read 17 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00086.fail:
@@ -27419,18 +27212,9 @@ Error: Only 15 bytes read of message body. Expected to read 16 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00087.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=24 data=0413001800000529000A00010000000000090001000000E7]
----
-type:            REPLY.METER_CONFIG
-flags:           [ MORE ]
-xid:             0x00000529
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_19_00088.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00088.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.METER_CONFIG
-^
-
+Error: Decode failed: Length too small or not aligned
+[ByteList size=24 data=0413001800000529000A00010000000000070001000000E7]
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00089.fail:
 Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00090.fail:

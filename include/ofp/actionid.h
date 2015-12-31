@@ -5,6 +5,7 @@
 
 #include "ofp/constants.h"
 #include "ofp/actiontype.h"
+#include "ofp/validation.h"
 
 namespace ofp {
 
@@ -25,7 +26,13 @@ class ActionID {
   ActionType type() const { return type_.zeroLength(); }
   UInt32 experimenter() const { return experimenter_; }
 
-  bool validateInput(Validation *context) const { return true; }
+  bool validateInput(Validation *context) const {
+    const auto len = type_.length();
+    if (!context->validateBool(len == 4 || len == 8, "Invalid ActionID")) {
+      return false;
+    }
+    return true;
+  }
 
  private:
   ActionType type_;
