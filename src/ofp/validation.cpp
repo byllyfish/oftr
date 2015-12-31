@@ -32,6 +32,11 @@ void Validation::messageTypeIsNotSupported() {
   setErrorMessage("Message type is not supported");
 }
 
+void Validation::messageTypeIsNotImplemented() {
+  *error_ = OFPBRC_BAD_TYPE;
+  setErrorMessage("Message type is not implemented");
+}
+
 void Validation::messagePreprocessTooBigError() {
   *error_ = OFPBRC_BAD_LEN;
   setErrorMessage("Message is too big. See documentation for limits.");

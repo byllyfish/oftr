@@ -29,6 +29,7 @@ class Validation {
 
   void messageSizeIsInvalid();
   void messageTypeIsNotSupported();
+  void messageTypeIsNotImplemented();
   void messagePreprocessTooBigError();
   void messagePreprocessFailure();
   void multipartTypeIsNotSupported();

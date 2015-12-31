@@ -66,7 +66,7 @@ bool PacketIn::validateInputV1(Validation *context) const {
 
 bool PacketIn::validateInputV2(Validation *context) const {
   // FIXME - Unimplemented
-  context->messageTypeIsNotSupported();
+  context->messageTypeIsNotImplemented();
   return false;
 }
 
