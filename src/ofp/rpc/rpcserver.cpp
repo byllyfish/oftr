@@ -349,8 +349,7 @@ std::string RpcServer::softwareVersion() {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
   std::stringstream sstr;
 
-  sstr << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
-       << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+  sstr << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7) << ")";
 
   return sstr.str();
 }

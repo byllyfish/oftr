@@ -3,6 +3,7 @@
 #ifndef OFP_CONFIG_H_  // NOLINT
 #define OFP_CONFIG_H_
 
+#define LIBOFP_VERSION_STRING       "@Libofp_VERSION@"
 #define LIBOFP_VERSION_MAJOR        @Libofp_VERSION_MAJOR@
 #define LIBOFP_VERSION_MINOR        @Libofp_VERSION_MINOR@
 #define LIBOFP_VERSION_PATCH        @Libofp_VERSION_PATCH@

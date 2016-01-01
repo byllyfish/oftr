@@ -23,8 +23,7 @@ void libofp_version(libofp_buffer *result) {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
   std::ostringstream oss;
 
-  oss << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
-      << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+  oss << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7) << ")";
 
   oss << "  <" << LIBOFP_GITHUB_URL << ">";
 
