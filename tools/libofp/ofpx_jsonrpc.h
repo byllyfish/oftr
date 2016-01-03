@@ -11,8 +11,6 @@ namespace ofpx {
 //
 // Run a JSON-RPC server. By default, the control connection comes from stdio.
 //
-//   --xpc              Run as a XPC service (Mac OS X only)
-//
 // Usage:
 //
 // To run JSON-RPC server over stdin and stdout:
@@ -28,12 +26,10 @@ class JsonRpc : public Subprogram {
 
  private:
   // --- Command-line Arguments ---
-  cl::opt<bool> xpc_{"xpc", cl::desc("Run as a XPC service (Mac OS X only)")};
+  // None
 
   void setMaxOpenFiles();
   void runStdio();
-
-  [[noreturn]] void runXpc();
 };
 
 }  // namespace ofpx
