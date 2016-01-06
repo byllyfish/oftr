@@ -66,8 +66,8 @@ void DefaultHandshake::onHello(const Message *message) {
     return;
 
   UInt8 msgVersion = msg->msgHeader()->version();
-  UInt8 version =
-      versions_.negotiateVersion(msgVersion, msg->protocolVersions());
+  ProtocolVersions msgVersionSet = msg->protocolVersions();
+  UInt8 version = versions_.negotiateVersion(msgVersion, msgVersionSet);
 
   if (version == 0) {
     // If there are no versions in common, send an error and terminate the
@@ -75,7 +75,7 @@ void DefaultHandshake::onHello(const Message *message) {
     channel_->setVersion(versions_.highestVersion());
     std::string explanation = "Supported versions: ";
     explanation += versions_.toString();
-    log::warning("OpenFlow incompatible version:", static_cast<int>(msgVersion),
+    log::warning("OpenFlow incompatible version:", static_cast<int>(msgVersion), msgVersionSet.toString(),
                  explanation,
                  std::make_pair("connid", channel_->connectionId()));
 
@@ -83,6 +83,8 @@ void DefaultHandshake::onHello(const Message *message) {
     channel_->shutdown();
     return;
   }
+
+  log::debug("Negotiated version is", static_cast<int>(version));
 
   channel_->setVersion(version);
 

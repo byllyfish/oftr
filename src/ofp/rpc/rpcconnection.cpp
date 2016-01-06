@@ -64,7 +64,7 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     write(",\"method\":\"OFP.MESSAGE\"}\n");
 
   } else {
-    // Send `ofp.alert` notification event.
+    // Send `OFP.ALERT` notification event.
     RpcAlert messageAlert;
     messageAlert.params.connId = channel->connectionId();
     messageAlert.params.datapathId = channel->datapathId();
