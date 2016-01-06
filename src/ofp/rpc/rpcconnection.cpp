@@ -58,10 +58,10 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
   yaml::Decoder decoder{message, true, true};
 
   if (decoder.error().empty()) {
-    // Send `ofp.message` notification event.
+    // Send `OFP.MESSAGE` notification event.
     write("{\"params\":");
     write(decoder.result());
-    write(",\"method\":\"ofp.message\"}\n");
+    write(",\"method\":\"OFP.MESSAGE\"}\n");
 
   } else {
     // Send `ofp.alert` notification event.

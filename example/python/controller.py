@@ -147,12 +147,12 @@ if __name__ == '__main__':
 
     ofp = libofp.LibOFP(ofpx)
     for event in ofp:
-
+        
         if hasattr(event, 'error'):
             print >>sys.stderr, event
-        elif event.method == 'ofp.channel' and event.params.status == 'UP':
+        elif event.method == 'OFP.CHANNEL' and event.params.status == 'UP':
             ofp.send(setConfig(event.params.datapath_id, 14))
             ofp.send(clearFlows(event.params.datapath_id))
             ofp.send(barrierRequest(event.params.datapath_id))
-        elif event.method == 'ofp.message' and event.params.type == 'PACKET_IN':
+        elif event.method == 'OFP.MESSAGE' and event.params.type == 'PACKET_IN':
             handlePacketIn(ofp, event.params)

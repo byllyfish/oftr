@@ -1,15 +1,15 @@
-Rpc/ofp.description: 
+Rpc/OFP.DESCRIPTION: 
   id: UInt64
-  method: !request ofp.description
+  method: !request OFP.DESCRIPTION
   result: !reply
     major_version: UInt16
     minor_version: UInt16
     software_version: String
     ofp_versions: [UInt8]
   
-Rpc/ofp.listen: 
+Rpc/OFP.LISTEN: 
   id: !opt UInt64
-  method: !request ofp.listen
+  method: !request OFP.LISTEN
   params: !request
     endpoint: IPv6Endpoint
     versions: !opt [UInt8]
@@ -18,9 +18,9 @@ Rpc/ofp.listen:
   result: !reply
     conn_id: UInt64
   
-Rpc/ofp.connect: 
+Rpc/OFP.CONNECT: 
   id: !opt UInt64
-  method: !request ofp.connect
+  method: !request OFP.CONNECT
   params: !request
     endpoint: IPv6Endpoint
     versions: !opt [UInt8]
@@ -29,25 +29,25 @@ Rpc/ofp.connect:
   result: !reply
     conn_id: UInt64
   
-Rpc/ofp.close: 
+Rpc/OFP.CLOSE: 
   id: !opt UInt64
-  method: !request ofp.close
+  method: !request OFP.CLOSE
   params: !request
     conn_id: UInt64
   result: !reply
     count: UInt32
   
-Rpc/ofp.send: 
+Rpc/OFP.SEND: 
   id: !opt UInt64
-  method: !request ofp.send
+  method: !request OFP.SEND
   params: !request Message
   result: !reply
     conn_id: UInt64
     data: HexData
   
-Rpc/ofp.list_connections: 
+Rpc/OFP.LIST_CONNECTIONS: 
   id: !opt UInt64
-  method: !request ofp.list_connections
+  method: !request OFP.LIST_CONNECTIONS
   params: !request
     conn_id: UInt64
   result: !reply
@@ -58,9 +58,9 @@ Rpc/ofp.list_connections:
       auxiliary_id: UInt8
       transport: TCP | UDP | TLS | DTLS | NONE
   
-Rpc/ofp.add_identity: 
+Rpc/OFP.ADD_IDENTITY: 
   id: !opt UInt64
-  method: !request ofp.add_identity
+  method: !request OFP.ADD_IDENTITY
   params: !request
     certificate: String
     password: String
@@ -68,20 +68,20 @@ Rpc/ofp.add_identity:
   result: !reply
     tls_id: UInt64
   
-Rpc/ofp.message: 
-  method: !notify ofp.message
+Rpc/OFP.MESSAGE: 
+  method: !notify OFP.MESSAGE
   params: !notify Message
   
-Rpc/ofp.channel: 
-  method: !notify ofp.channel
+Rpc/OFP.CHANNEL: 
+  method: !notify OFP.CHANNEL
   params: !notify
     conn_id: UInt64
     datapath_id: DatapathID
     version: UInt8
     status: UP | DOWN
   
-Rpc/ofp.alert: 
-  method: !notify ofp.alert
+Rpc/OFP.ALERT: 
+  method: !notify OFP.ALERT
   params: !notify
     conn_id: UInt64
     datapath_id: DatapathID

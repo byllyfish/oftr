@@ -64,9 +64,9 @@ OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 // N.B. These strings must be in same order as RpcMethod enum.
 static llvm::StringRef sRpcMethods[] = {
-    "ofp.listen", "ofp.connect", "ofp.close", "ofp.send", "ofp.channel",
-    "ofp.message", "ofp.alert", "ofp.list_connections", "ofp.add_identity",
-    "ofp.description"};
+    "OFP.LISTEN", "OFP.CONNECT", "OFP.CLOSE", "OFP.SEND", "OFP.CHANNEL",
+    "OFP.MESSAGE", "OFP.ALERT", "OFP.LIST_CONNECTIONS", "OFP.ADD_IDENTITY",
+    "OFP.DESCRIPTION"};
 
 ofp::yaml::EnumConverter<ofp::rpc::RpcMethod>
     llvm::yaml::ScalarTraits<ofp::rpc::RpcMethod>::converter{sRpcMethods};

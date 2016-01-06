@@ -26,9 +26,11 @@ int main(int argc, char **argv) {
         ChannelMode::Raw, 0, remoteEndpoint, {OFP_VERSION_1},
         TestAgent::Factory,
         [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
-          std::cerr << "testagent: Error connecting to `" << remoteEndpoint
-                    << "`: connId=" << channel->connectionId()
-                    << " err=" << err.message() << '\n';
+          if (err) {
+            std::cerr << "testagent: Error connecting to `" << remoteEndpoint
+                      << "`: connId=" << channel->connectionId()
+                      << " err=" << err.message() << '\n';
+          }
           error = err;
         });
 

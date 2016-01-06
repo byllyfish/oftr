@@ -50,8 +50,12 @@ struct Castable {
   static const Type *cast(const void *ptr, size_t len) {
     assert(IsPtrAligned(ptr, alignof(Type)));
     if (len < sizeof(Type)) {
-      log::warning("pkt::Castable: Data too short, actualLen:", len,
-                   "minNeeded:", sizeof(Type));
+      // Only warn if there is some data.
+      if (len > 0) {
+        log::warning("pkt::Castable: Data too short, actualLen:", len, "minNeeded:", sizeof(Type));
+      } else {
+        log::debug("pkt::Castable: No data. minNeeded:", sizeof(Type));
+      }
       return nullptr;
     }
     return reinterpret_cast<const Type *>(ptr);

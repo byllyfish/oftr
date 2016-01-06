@@ -70,8 +70,7 @@ Here is the resulting RoleRequest message:
 
 == CONVENTIONS 
 
-* Literal strings are all-caps, e.g. `PACKET_IN`, or they begin with a lower-case
-letter, e.g. `ofp.listen`.
+* Literal strings are all-caps, e.g. `PACKET_IN`, `OFP.LISTEN`.
 
 * Literal strings and property names are case-sensitive.
 

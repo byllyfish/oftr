@@ -42,6 +42,7 @@ class MacAddress {
 };
 
 static_assert(sizeof(MacAddress) == 6, "Unexpected size.");
+static_assert(alignof(MacAddress) == 1, "Unexpected alignment.");
 static_assert(IsStandardLayout<MacAddress>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<MacAddress>(),
               "Expected trivially copyable.");
