@@ -150,6 +150,8 @@ void Connection::poll() {
     return;
 
   if (version() < OFP_VERSION_1 || age >= 2 * keepAliveTimeout_) {
+    // Keep alive timeout has expired.
+    engine()->alert(this, "No response to echo request on idle channel", {});
     shutdown();
   } else if (!(flags() & kChannelIdle)) {
     setFlags(flags() | kChannelIdle);

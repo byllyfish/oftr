@@ -105,6 +105,10 @@ class Engine {
   UInt64 assignConnectionId();
   UInt64 assignSecurityId();
 
+  using AlertCallback = void (*)(Channel *, const std::string &, const ByteRange &, void *);
+  void setAlertCallback(AlertCallback callback, void *context);
+  void alert(Channel *conn, const std::string &alert, const ByteRange &data);
+
  private:
   // Pointer to driver object that owns engine.
   Driver *driver_;
@@ -141,6 +145,11 @@ class Engine {
 
   mutable bool connListLock_ = false;
   mutable bool serverListLock_ = false;
+
+  // Optional function to handle (unusual) alerts, used when there is no other
+  // available callback mechanism.
+  AlertCallback alertCallback_ = nullptr;
+  void *alertContext_ = nullptr;
 
   void asyncIdle();
 };

@@ -8,6 +8,9 @@
 #include "ofp/datapathid.h"
 
 namespace ofp {
+
+class ByteRange;
+
 namespace rpc {
 
 class RpcConnection;
@@ -32,6 +35,7 @@ class RpcServer {
             Channel *defaultChannel = nullptr);
   RpcServer(Driver *driver, RpcSession *session,
             Channel *defaultChannel = nullptr);
+  ~RpcServer();
 
   /// Close the control connection.
   void close();
@@ -64,7 +68,7 @@ class RpcServer {
 
   static void connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
                               const std::error_code &err);
-
+  static void alertCallback(Channel *channel, const std::string &alert, const ByteRange &data, void *context);
   static std::string softwareVersion();
 };
 

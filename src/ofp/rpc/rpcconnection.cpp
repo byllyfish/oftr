@@ -79,6 +79,17 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
   }
 }
 
+void RpcConnection::onAlert(Channel *channel, const std::string &alert, const ByteRange &data) {
+    // Send `OFP.ALERT` notification event.
+    RpcAlert messageAlert;
+    messageAlert.params.connId = channel->connectionId();
+    messageAlert.params.datapathId = channel->datapathId();
+    messageAlert.params.alert = alert;
+    messageAlert.params.data = data;
+    rpcReply(&messageAlert);
+
+}
+
 void RpcConnection::handleEvent(const std::string &eventText) {
   RpcEncoder encoder{eventText, this,
                      [this](const DatapathID &datapathId, UInt64 connId) {

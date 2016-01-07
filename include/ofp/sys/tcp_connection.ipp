@@ -213,6 +213,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
                 log::debug("asyncReadHeader header validation failed",
                            std::make_pair("connid", connectionId()));
                 channelDown();
+                engine()->alert(this, "Invalid OpenFlow message header", {hdr, sizeof(*hdr)});
               }
 
             } else {

@@ -34,6 +34,7 @@ RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
   }
 
   conn->asyncAccept();
+  engine_->setAlertCallback(alertCallback, this);
 }
 
 RpcServer::RpcServer(Driver *driver, RpcSession *session,
@@ -46,6 +47,11 @@ RpcServer::RpcServer(Driver *driver, RpcSession *session,
 
   session->setConnection(conn);
   conn->asyncAccept();
+  engine_->setAlertCallback(alertCallback, this);
+}
+
+RpcServer::~RpcServer() {
+  engine_->setAlertCallback(nullptr, nullptr);
 }
 
 void RpcServer::close() {
@@ -343,6 +349,14 @@ ofp::Channel *RpcServer::findDatapath(const DatapathID &datapathId,
     return defaultChannel_;
 
   return engine_->findDatapath(datapathId, connId);
+}
+
+
+void RpcServer::alertCallback(Channel *channel, const std::string &alert, const ByteRange &data, void *context) {
+  RpcServer *self = reinterpret_cast<RpcServer *>(context);
+  if (self->oneConn_) {
+    self->oneConn_->onAlert(channel, alert, data);
+  }
 }
 
 std::string RpcServer::softwareVersion() {

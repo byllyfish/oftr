@@ -1,7 +1,9 @@
 // Copyright 2014-present Bill Fisher. All rights reserved.
 
 #include "ofp/defaulthandshake.h"
+#include <sstream>
 #include "ofp/sys/connection.h"
+#include "ofp/sys/engine.h"
 #include "ofp/hello.h"
 #include "ofp/message.h"
 #include "ofp/headeronly.h"
@@ -65,7 +67,8 @@ void DefaultHandshake::onHello(const Message *message) {
   if (!msg)
     return;
 
-  UInt8 msgVersion = msg->msgHeader()->version();
+  const Header *header = msg->msgHeader();
+  UInt8 msgVersion = header->version();
   ProtocolVersions msgVersionSet = msg->protocolVersions();
   UInt8 version = versions_.negotiateVersion(msgVersion, msgVersionSet);
 
@@ -73,11 +76,15 @@ void DefaultHandshake::onHello(const Message *message) {
     // If there are no versions in common, send an error and terminate the
     // connection.
     channel_->setVersion(versions_.highestVersion());
-    std::string explanation = "Supported versions: ";
-    explanation += versions_.toString();
-    log::warning("OpenFlow incompatible version:", static_cast<int>(msgVersion), msgVersionSet.toString(),
-                 explanation,
-                 std::make_pair("connid", channel_->connectionId()));
+
+    std::stringstream sstr;
+    sstr << "Incompatible OpenFlow version: ";
+    sstr << static_cast<int>(msgVersion) << ' ' << msgVersionSet.toString();
+    sstr << " Supported versions: " << versions_.toString();
+    auto explanation = sstr.str();
+
+    log::warning(explanation, std::make_pair("connid", channel_->connectionId()));
+    channel_->engine()->alert(channel_, explanation, {header, sizeof(*header)});
 
     message->replyError(OFPHFC_INCOMPATIBLE, explanation);
     channel_->shutdown();

@@ -93,3 +93,9 @@ TEST(timestamp, relational) {
   EXPECT_GE(b, a);
   EXPECT_GE(c, c);
 }
+
+TEST(timestamp, now) {
+  log::debug("Timestamp::now", Timestamp::now().toString());
+  log::debug("Timestamp::now", Timestamp::now().toString());
+  log::debug("Timestamp::now", Timestamp::now().toString());
+}

@@ -384,3 +384,14 @@ void Engine::asyncIdle() {
     }
   });
 }
+
+void Engine::setAlertCallback(AlertCallback callback, void *context) {
+  alertCallback_ = callback;
+  alertContext_ = context;
+}
+
+void Engine::alert(Channel *conn, const std::string &alert, const ByteRange &data) {
+  if (alertCallback_) {
+    alertCallback_(conn, alert, data, alertContext_);
+  }
+}
