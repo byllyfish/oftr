@@ -482,8 +482,11 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
       return;
     }
 
-    // log::debug("decodeLLDP", (int)lldp->type(), (int)lldp->length(),
-    // RawDataToHex(lldp->data(), lldp->length()));
+    auto jumpSize = lldp->length() + 2;
+    if (jumpSize > length) {
+      log::warning("decodeLLDP: malformed lldp tlv");
+      return;  // ignore the rest
+    }
 
     switch (lldp->type()) {
       case pkt::LLDPTlv::END:
@@ -502,7 +505,6 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
         break;
     }
 
-    size_t jumpSize = lldp->length() + 2;
     assert(length >= jumpSize);
 
     pkt += jumpSize;
