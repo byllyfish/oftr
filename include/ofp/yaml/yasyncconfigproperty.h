@@ -37,7 +37,8 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    OFPAsyncConfigProperty property = static_cast<OFPAsyncConfigProperty>(elem.type());
+    OFPAsyncConfigProperty property =
+        static_cast<OFPAsyncConfigProperty>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {

@@ -51,9 +51,11 @@ class Validation {
   // least `minSize` and is aligned.
   bool validateAlignedLength(size_t length, size_t minSize) {
     if (length < minSize) {
-      log::debug("validateAlignedLength: length", length, " is smaller than minSize", minSize);
+      log::debug("validateAlignedLength: length", length,
+                 " is smaller than minSize", minSize);
     }
-    return validateBool((length >= minSize) && ((length % 8) == 0), "Length too small or not aligned");
+    return validateBool((length >= minSize) && ((length % 8) == 0),
+                        "Length too small or not aligned");
   }
 
   // Used in validating multipart request/reply.

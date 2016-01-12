@@ -44,4 +44,3 @@ void JsonRpc::runStdio() {
   driver.installSignalHandlers([&server]() { server.close(); });
   driver.run();
 }
-

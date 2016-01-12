@@ -83,7 +83,8 @@ void DefaultHandshake::onHello(const Message *message) {
     sstr << " Supported versions: " << versions_.toString();
     auto explanation = sstr.str();
 
-    log::warning(explanation, std::make_pair("connid", channel_->connectionId()));
+    log::warning(explanation,
+                 std::make_pair("connid", channel_->connectionId()));
     channel_->engine()->alert(channel_, explanation, {header, sizeof(*header)});
 
     message->replyError(OFPHFC_INCOMPATIBLE, explanation);

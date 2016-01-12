@@ -351,8 +351,8 @@ ofp::Channel *RpcServer::findDatapath(const DatapathID &datapathId,
   return engine_->findDatapath(datapathId, connId);
 }
 
-
-void RpcServer::alertCallback(Channel *channel, const std::string &alert, const ByteRange &data, void *context) {
+void RpcServer::alertCallback(Channel *channel, const std::string &alert,
+                              const ByteRange &data, void *context) {
   RpcServer *self = reinterpret_cast<RpcServer *>(context);
   if (self->oneConn_) {
     self->oneConn_->onAlert(channel, alert, data);

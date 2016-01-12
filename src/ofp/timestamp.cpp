@@ -64,5 +64,6 @@ Timestamp Timestamp::now() {
   auto duration = now.time_since_epoch();
   auto nano = duration_cast<std::chrono::nanoseconds>(duration).count();
 
-  return Timestamp{static_cast<time_t>(nano / 1000000000), UInt32_narrow_cast(nano % 1000000000)};
+  return Timestamp{static_cast<time_t>(nano / 1000000000),
+                   UInt32_narrow_cast(nano % 1000000000)};
 }

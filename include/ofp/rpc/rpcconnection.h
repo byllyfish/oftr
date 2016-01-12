@@ -41,8 +41,9 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
 
   void onChannel(Channel *channel, const char *status);
   void onMessage(Channel *channel, const Message *message);
-  void onAlert(Channel *channel, const std::string &alert, const ByteRange &data);
-  
+  void onAlert(Channel *channel, const std::string &alert,
+               const ByteRange &data);
+
   void handleEvent(const std::string &event);
 
  protected:

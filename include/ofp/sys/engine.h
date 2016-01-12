@@ -105,7 +105,8 @@ class Engine {
   UInt64 assignConnectionId();
   UInt64 assignSecurityId();
 
-  using AlertCallback = void (*)(Channel *, const std::string &, const ByteRange &, void *);
+  using AlertCallback = void (*)(Channel *, const std::string &,
+                                 const ByteRange &, void *);
   void setAlertCallback(AlertCallback callback, void *context);
   void alert(Channel *conn, const std::string &alert, const ByteRange &data);
 

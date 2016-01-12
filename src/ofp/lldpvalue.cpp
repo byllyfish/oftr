@@ -141,7 +141,7 @@ static std::string toAddress(const ByteRange &data, size_t offset) {
 }
 
 // Convert LLDP ChassisID to a string.
-// 
+//
 // Formatted as:
 //     LocallyAssigned      <text>
 //     ChassisComponent     chassis <hex>
@@ -179,7 +179,7 @@ static std::string chassisIDToString(const ByteRange &data) {
 }
 
 // Convert string to LLDP ChassisID.
-// 
+//
 // Formats accepted:
 //     <text>                   LocallyAssigned
 //     ifalias <text>           InterfaceAlias

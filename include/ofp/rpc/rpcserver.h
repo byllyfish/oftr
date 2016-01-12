@@ -68,7 +68,8 @@ class RpcServer {
 
   static void connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
                               const std::error_code &err);
-  static void alertCallback(Channel *channel, const std::string &alert, const ByteRange &data, void *context);
+  static void alertCallback(Channel *channel, const std::string &alert,
+                            const ByteRange &data, void *context);
   static std::string softwareVersion();
 };
 

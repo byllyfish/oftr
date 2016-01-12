@@ -29,7 +29,8 @@ class SimpleChannelListener : public ChannelListener {
   // Implement a simple reply tracker that will allow us to register callbacks
   // for our requests. The reply callbacks will be pointers to member
   // functions.
-  using Tracker = std::unordered_map<UInt32, std::function<void(const Message *message)>>;
+  using Tracker =
+      std::unordered_map<UInt32, std::function<void(const Message *message)>>;
 
   // Our tracker to map xid -> handler function.
   Tracker tracker_;
