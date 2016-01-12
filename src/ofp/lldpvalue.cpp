@@ -53,7 +53,7 @@ static bool fromRaw(const std::string &val, ByteList *data, UInt8 subtype) {
 }
 
 static std::string toRaw(const std::string &tag, const ByteRange &data,
-                         size_t offset = 0) {
+                         size_t offset) {
   assert(offset <= data.size());
   assert(!tag.empty());
   return tag + " " + RawDataToHex(data.data() + offset, data.size() - offset);
@@ -74,10 +74,10 @@ static std::string toText(const ByteRange &data) {
 static std::string toText(const std::string &tag, const ByteRange &data,
                           size_t offset = 0) {
   assert(offset <= data.size());
-  assert(!tag.empty());
   const char *b = reinterpret_cast<const char *>(data.begin()) + offset;
   const char *e = reinterpret_cast<const char *>(data.end());
-  return tag + " " + detail::validUtf8String(b, e);
+  auto utf8 = detail::validUtf8String(b, e);
+  return tag.empty() ? utf8 : tag + " " + utf8;
 }
 
 static bool fromAddressV4(const std::string &val, ByteList *data,
@@ -100,7 +100,7 @@ static std::string toAddressV4(const ByteRange &data, size_t offset) {
     return "ip " + addr.toString();
   }
 
-  return toRaw("raw", data);
+  return toRaw("unknown", data, 0);
 }
 
 static bool fromAddressV6(const std::string &val, ByteList *data,
@@ -123,12 +123,12 @@ static std::string toAddressV6(const ByteRange &data, size_t offset) {
     return "ip6 " + addr.toString();
   }
 
-  return toRaw("raw", data);
+  return toRaw("unknown", data, 0);
 }
 
 static std::string toAddress(const ByteRange &data, size_t offset) {
   if (data.empty() || offset >= data.size())
-    return toRaw("raw", data);
+    return toRaw("unknown", data, 0);
 
   switch (data[offset]) {
     case asByte(IANA::IPv4):
@@ -137,21 +137,26 @@ static std::string toAddress(const ByteRange &data, size_t offset) {
       return toAddressV6(data, 2);
   }
 
-  return toRaw("raw", data);
+  return toRaw("unknown", data, 0);
 }
 
+// Convert LLDP ChassisID to a string.
+// 
 // Formatted as:
-//     chassis <hex>
-//     ifalias <text>
-//     port <hex>
-//     mac <hex>
-//     ip <ipv4>
-//     ip6 <ipv6>
-//     ifname <text>
-//     local <hex>
-//
+//     LocallyAssigned      <text>
+//     ChassisComponent     chassis <hex>
+//     InterfaceAlias       ifalias <text>
+//     PortComponent        port <hex>
+//     MacAddress           mac <hex>
+//     NetworkAddress       ip <ipv4>
+//     NetworkAddress       ip6 <ipv6>
+//     InterfaceName        ifname <text>
+//     Other subtype        unknown <hex>   (Hex includes subtype byte)
+
 static std::string chassisIDToString(const ByteRange &data) {
-  assert(!data.empty());
+  if (data.empty()) {
+    return "unknown";
+  }
 
   switch (data[0]) {
     case asByte(ChassisIDSubtype::ChassisComponent):
@@ -167,28 +172,29 @@ static std::string chassisIDToString(const ByteRange &data) {
     case asByte(ChassisIDSubtype::InterfaceName):
       return toText("ifname", data, 1);
     case asByte(ChassisIDSubtype::LocallyAssigned):
-      return toRaw("local", data, 1);
+      return toText("", data, 1);
   }
 
-  return toRaw("raw", data);
+  return toRaw("unknown", data, 0);
 }
 
+// Convert string to LLDP ChassisID.
+// 
 // Formats accepted:
-//     <hex>
-//     raw <hex>
-//     ifalias <text>
-//     chassis <hex>
-//     port <hex>
-//     ifname <text>
-//     mac <hex>
-//     ip <ipv4>
-//     ip6 <ipv6>
-//     local <hex>
-//
+//     <text>                   LocallyAssigned
+//     ifalias <text>           InterfaceAlias
+//     chassis <hex>            ChassisComponent
+//     port <hex>               PortComponent
+//     ifname <text>            InterfaceName
+//     mac <hex>                MacAddress
+//     ip <ipv4>                NetworkAddress
+//     ip6 <ipv6>               NetworkAddress
+//     unknown <hex>            Hex includes subtype byte
+
 static bool chassisIDFromString(const std::string &val, ByteList *data) {
   auto pair = llvm::StringRef{val}.split(' ');
 
-  if (pair.first == "raw")
+  if (pair.first == "unknown")
     return fromRaw(pair.second, data, 0);
 
   if (pair.first == "ifalias")
@@ -216,15 +222,13 @@ static bool chassisIDFromString(const std::string &val, ByteList *data) {
     return fromAddressV6(pair.second, data,
                          asByte(ChassisIDSubtype::NetworkAddress));
 
-  if (pair.first == "local")
-    return fromRaw(pair.second, data,
-                   asByte(ChassisIDSubtype::LocallyAssigned));
-
-  return fromRaw(val, data, 0);
+  return fromText(val, data, asByte(ChassisIDSubtype::LocallyAssigned));
 }
 
 static std::string portIDToString(const ByteRange &data) {
-  assert(!data.empty());
+  if (data.empty()) {
+    return "unknown";
+  }
 
   switch (data[0]) {
     case asByte(PortIDSubtype::InterfaceAlias):
@@ -240,16 +244,16 @@ static std::string portIDToString(const ByteRange &data) {
     case asByte(PortIDSubtype::AgentCircuitID):
       return toRaw("circuit", data, 1);
     case asByte(PortIDSubtype::LocallyAssigned):
-      return toRaw("local", data, 1);
+      return toText("", data, 1);
   }
 
-  return toRaw("raw", data);
+  return toRaw("unknown", data, 0);
 }
 
 static bool portIDFromString(const std::string &val, ByteList *data) {
   auto pair = llvm::StringRef{val}.split(' ');
 
-  if (pair.first == "raw")
+  if (pair.first == "unknown")
     return fromRaw(pair.second, data, 0);
 
   if (pair.first == "ifalias")
@@ -275,10 +279,7 @@ static bool portIDFromString(const std::string &val, ByteList *data) {
   if (pair.first == "circuit")
     return fromRaw(pair.second, data, asByte(PortIDSubtype::AgentCircuitID));
 
-  if (pair.first == "local")
-    return fromRaw(pair.second, data, asByte(PortIDSubtype::LocallyAssigned));
-
-  return fromRaw(val, data, 0);
+  return fromText(val, data, asByte(PortIDSubtype::LocallyAssigned));
 }
 
 /// Parse a string into the value of a LLDP TLV. The interpretation of the
@@ -305,9 +306,6 @@ bool ofp::detail::LLDPParse(LLDPType type, const std::string &val,
 
 /// Convert a LLDP TLV's byte value into a string.
 std::string ofp::detail::LLDPToString(LLDPType type, const ByteRange &data) {
-  if (data.empty())
-    return "";
-
   switch (type) {
     case LLDPType::ChassisID:
       return chassisIDToString(data);

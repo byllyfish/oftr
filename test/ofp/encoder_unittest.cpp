@@ -1225,7 +1225,7 @@ TEST(encoder, flowmodv4_experimenter) {
         flags:           []
         match:           
           - field:           X_LLDP_CHASSIS_ID
-            value:           0102030405
+            value:           unknown 0102030405
           - field:           X_LLDP_TTL
             value:           0x01234
           - field:           X_EXPERIMENTER_01
@@ -1264,7 +1264,7 @@ TEST(encoder, flowmodv4_experimenter_mask) {
         flags:           []
         match:           
           - field:           X_LLDP_CHASSIS_ID
-            value:           0102030405
+            value:           unknown 0102030405
           - field:           X_LLDP_TTL
             value:           0x1234
           - field:           X_EXPERIMENTER_01
