@@ -102,7 +102,6 @@ endif()
 
 set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_NO_DEPRECATED")
 #set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
-# -D ASIO_NO_DEPRECATED -D ASIO_NO_IOSTREAM 
 
 if(APPLE AND UNIX)
   set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D LIBOFP_TARGET_DARWIN")
@@ -298,7 +297,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
+  set(LIBOFP_WARNINGS "-Wpedantic -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
   set(LIBOFP_WARNINGS "-Wall")
 endif()
