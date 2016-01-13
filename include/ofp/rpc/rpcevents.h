@@ -301,7 +301,7 @@ OFP_END_IGNORE_PADDING
 }  // namespace rpc
 }  // namespace ofp
 
-LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats);
+LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats)
 
 namespace llvm {
 namespace yaml {
