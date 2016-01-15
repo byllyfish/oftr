@@ -15,9 +15,8 @@ build-arch:
 	# Log the CXX flags used in building the tool.
 	-cat $(BUILDDIR)/tools/libofp/CMakeFiles/libofp.dir/flags.make
 	make -C $(BUILDDIR)
-	# strip -x $(BUILDDIR)/tools/libofp/libofp
+	strip --strip-debug $(BUILDDIR)/tools/libofp/libofp
 	-make -C $(BUILDDIR) test ARGS="--output-on-failure"
-	-hardening-check $(BUILDDIR)/tools/libofp/libofp
 
 binary: binary-indep binary-arch
 
