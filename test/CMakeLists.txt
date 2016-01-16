@@ -109,6 +109,3 @@ if(LIBOFP_MEMCHECK)
     add_test(NAME memcheck_unittests COMMAND ${cmd})
     set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=16653")
 endif()
-
-add_test(NAME test_install COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test_install.sh)
-set_tests_properties(test_install PROPERTIES TIMEOUT 60)

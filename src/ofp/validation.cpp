@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/validation.h"
 #include "ofp/log.h"
@@ -30,6 +31,11 @@ void Validation::messageSizeIsInvalid() {
 void Validation::messageTypeIsNotSupported() {
   *error_ = OFPBRC_BAD_TYPE;
   setErrorMessage("Message type is not supported");
+}
+
+void Validation::messageTypeIsNotImplemented() {
+  *error_ = OFPBRC_BAD_TYPE;
+  setErrorMessage("Message type is not implemented");
 }
 
 void Validation::messagePreprocessTooBigError() {

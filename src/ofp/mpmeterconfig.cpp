@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/mpmeterconfig.h"
 #include "ofp/writable.h"
@@ -13,7 +14,7 @@ MeterBandRange MPMeterConfig::bands() const {
 }
 
 bool MPMeterConfig::validateInput(Validation *context) const {
-  if (!context->validateLength(length_, sizeof(MPMeterConfig))) {
+  if (!context->validateAlignedLength(length_, sizeof(MPMeterConfig))) {
     return false;
   }
 

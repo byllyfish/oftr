@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YLLVM_H_
 #define OFP_YAML_YLLVM_H_
@@ -9,8 +10,8 @@
 #include "ofp/yaml/yconstants.h"
 #include "ofp/header.h"
 
-LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8);
-LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(std::string);
+LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8)
+LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(std::string)
 
 namespace llvm {
 namespace yaml {

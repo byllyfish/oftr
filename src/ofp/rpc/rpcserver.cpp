@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcserver.h"
 #include "ofp/rpc/rpcconnectionstdio.h"
@@ -34,6 +35,7 @@ RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
   }
 
   conn->asyncAccept();
+  engine_->setAlertCallback(alertCallback, this);
 }
 
 RpcServer::RpcServer(Driver *driver, RpcSession *session,
@@ -46,6 +48,11 @@ RpcServer::RpcServer(Driver *driver, RpcSession *session,
 
   session->setConnection(conn);
   conn->asyncAccept();
+  engine_->setAlertCallback(alertCallback, this);
+}
+
+RpcServer::~RpcServer() {
+  engine_->setAlertCallback(nullptr, nullptr);
 }
 
 void RpcServer::close() {
@@ -345,12 +352,19 @@ ofp::Channel *RpcServer::findDatapath(const DatapathID &datapathId,
   return engine_->findDatapath(datapathId, connId);
 }
 
+void RpcServer::alertCallback(Channel *channel, const std::string &alert,
+                              const ByteRange &data, void *context) {
+  RpcServer *self = reinterpret_cast<RpcServer *>(context);
+  if (self->oneConn_) {
+    self->oneConn_->onAlert(channel, alert, data);
+  }
+}
+
 std::string RpcServer::softwareVersion() {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
   std::stringstream sstr;
 
-  sstr << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
-       << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+  sstr << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7) << ")";
 
   return sstr.str();
 }

@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include <system_error>
 #include "ofp/sys/asio_utils.h"
@@ -10,7 +11,7 @@ namespace asio {
 namespace detail {
 
 template <typename Exception>
-void throw_exception(const Exception &e) {
+[[noreturn]] void throw_exception(const Exception &e) {
   // With ASIO_NO_EXPCEPTIONS defined, we need to define our own version of
   // asio::detail::throw_exception. GCC requires ASIO_NO_EXCEPTIONS to compile
   // with -fno-exceptions. (Clang does not.)

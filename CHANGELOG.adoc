@@ -1,5 +1,20 @@
 = Changelog
 
+== Version 0.13 (16 January 2016)
+
+- Fix issue in parsing LLDP packets.
+- RPC method names are now in upper case.
+- Fix OpenFlow protocol negotiation.
+- Remove Apple xpc support.
+- Add hardening options to debian package build.
+- Add support for OFP.ALERT callbacks before OFP.CHANNEL_UP.
+- Make sure that experimenter properties display as "EXPERIMENTER", not 0xfff.
+- Fix issues identified by using -fanalyze.
+- asio throw_exception function should have a noreturn attribute.
+- Enable check for arc4random in yamlio.
+- Update copyright years.
+- Update boringssl and googletest submodules.
+
 == Version 0.12 (20 December 2015)
 
 - Support QueueDesc multipart message. (1.4+)

@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/standardmatch.h"
 #include "ofp/oxmlist.h"
@@ -169,9 +170,9 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
   metadata = 0;
   metadata_mask = 0;
 
-  log::debug("Convert original match to standard match:");
-  log::debug("origmatch:\n", match.toString());
-  log::debug("stdmatch:\n", toString());
+  // log::debug("Convert original match to standard match:");
+  // log::debug("origmatch:\n", match.toString());
+  // log::debug("stdmatch:\n", toString());
 }
 
 OXMList StandardMatch::toOXMList() const {

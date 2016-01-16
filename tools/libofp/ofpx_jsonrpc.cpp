@@ -1,8 +1,8 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "./ofpx_jsonrpc.h"
 #include <sys/resource.h>  // for getrlimit, setrlimit
-#include "./ofpx_xpc.h"
 #include "ofp/rpc/rpcserver.h"
 
 using namespace ofpx;
@@ -14,12 +14,7 @@ const int STDOUT = 1;
 int JsonRpc::run(int argc, const char *const *argv) {
   parseCommandLineOptions(argc, argv, "Run a JSON-RPC server\n");
   setMaxOpenFiles();
-
-  if (xpc_) {
-    runXpc();
-  } else {
-    runStdio();
-  }
+  runStdio();
 
   return 0;
 }
@@ -49,15 +44,4 @@ void JsonRpc::runStdio() {
   ofp::rpc::RpcServer server{&driver, STDIN, STDOUT};
   driver.installSignalHandlers([&server]() { server.close(); });
   driver.run();
-}
-
-void JsonRpc::runXpc() {
-#if LIBOFP_TARGET_DARWIN
-  // Use ASL on Darwin.
-  ofp::log::setOutputStream(static_cast<aslclient>(nullptr));
-  ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
-  run_xpc_main();
-#else
-  ofp::log::fatal("XPC service is only available on Darwin/MacOS/IOS.");
-#endif
 }

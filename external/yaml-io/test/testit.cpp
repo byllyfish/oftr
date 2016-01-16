@@ -17,7 +17,7 @@ struct TestContainer {
     std::vector<TestStruct> d;
 };
 
-LLVM_YAML_IS_SEQUENCE_VECTOR(TestStruct);
+LLVM_YAML_IS_SEQUENCE_VECTOR(TestStruct)
 
 namespace llvm { // <namespace llvm>
 namespace yaml { // <namespace yaml>

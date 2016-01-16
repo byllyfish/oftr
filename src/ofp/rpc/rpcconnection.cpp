@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnection.h"
 #include "ofp/rpc/rpcencoder.h"
@@ -58,13 +59,13 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
   yaml::Decoder decoder{message, true, true};
 
   if (decoder.error().empty()) {
-    // Send `ofp.message` notification event.
+    // Send `OFP.MESSAGE` notification event.
     write("{\"params\":");
     write(decoder.result());
-    write(",\"method\":\"ofp.message\"}\n");
+    write(",\"method\":\"OFP.MESSAGE\"}\n");
 
   } else {
-    // Send `ofp.alert` notification event.
+    // Send `OFP.ALERT` notification event.
     RpcAlert messageAlert;
     messageAlert.params.connId = channel->connectionId();
     messageAlert.params.datapathId = channel->datapathId();
@@ -77,6 +78,17 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     log::warning("OpenFlow parse error:", decoder.error(),
                  std::make_pair("connid", message->source()->connectionId()));
   }
+}
+
+void RpcConnection::onAlert(Channel *channel, const std::string &alert,
+                            const ByteRange &data) {
+  // Send `OFP.ALERT` notification event.
+  RpcAlert messageAlert;
+  messageAlert.params.connId = channel->connectionId();
+  messageAlert.params.datapathId = channel->datapathId();
+  messageAlert.params.alert = alert;
+  messageAlert.params.data = data;
+  rpcReply(&messageAlert);
 }
 
 void RpcConnection::handleEvent(const std::string &eventText) {

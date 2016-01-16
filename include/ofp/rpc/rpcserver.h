@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_RPC_RPCSERVER_H_
 #define OFP_RPC_RPCSERVER_H_
@@ -8,6 +9,9 @@
 #include "ofp/datapathid.h"
 
 namespace ofp {
+
+class ByteRange;
+
 namespace rpc {
 
 class RpcConnection;
@@ -32,6 +36,7 @@ class RpcServer {
             Channel *defaultChannel = nullptr);
   RpcServer(Driver *driver, RpcSession *session,
             Channel *defaultChannel = nullptr);
+  ~RpcServer();
 
   /// Close the control connection.
   void close();
@@ -64,7 +69,8 @@ class RpcServer {
 
   static void connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
                               const std::error_code &err);
-
+  static void alertCallback(Channel *channel, const std::string &alert,
+                            const ByteRange &data, void *context);
   static std::string softwareVersion();
 };
 

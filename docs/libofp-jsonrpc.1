@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: libofp-jsonrpc
-.\"    Author: Bill Fisher <william.w.fisher@gmail.com>
-.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 11/15/2015
+.\"    Author: William W. Fisher <william.w.fisher@gmail.com>
+.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
+.\"      Date: 01/15/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-JSONRPC" "1" "11/15/2015" "\ \&" "\ \&"
+.TH "LIBOFP\-JSONRPC" "1" "01/15/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -61,7 +61,7 @@ There are seven JSON\-RPC requests:
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.listen
+OFP\&.LISTEN
 .RE
 .sp
 .RS 4
@@ -72,7 +72,7 @@ ofp\&.listen
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.connect
+OFP\&.CONNECT
 .RE
 .sp
 .RS 4
@@ -83,7 +83,7 @@ ofp\&.connect
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.send
+OFP\&.SEND
 .RE
 .sp
 .RS 4
@@ -94,7 +94,7 @@ ofp\&.send
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.close
+OFP\&.CLOSE
 .RE
 .sp
 .RS 4
@@ -105,7 +105,7 @@ ofp\&.close
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.status
+OFP\&.STATUS
 .RE
 .sp
 .RS 4
@@ -116,7 +116,7 @@ ofp\&.status
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.list_connections
+OFP\&.LIST_CONNECTIONS
 .RE
 .sp
 .RS 4
@@ -127,7 +127,7 @@ ofp\&.list_connections
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.add_identity
+OFP\&.ADD_IDENTITY
 .RE
 .sp
 There are three JSON\-RPC notifications:
@@ -140,7 +140,7 @@ There are three JSON\-RPC notifications:
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.channel
+OFP\&.CHANNEL
 .RE
 .sp
 .RS 4
@@ -151,7 +151,7 @@ ofp\&.channel
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.message
+OFP\&.MESSAGE
 .RE
 .sp
 .RS 4
@@ -162,12 +162,12 @@ ofp\&.message
 .sp -1
 .IP \(bu 2.3
 .\}
-ofp\&.alert
+OFP\&.ALERT
 .RE
 .sp
 If you omit the \fIid\fR property from a request, no reply will be sent\&.
 .SH "RPC COMMANDS"
-.SS "ofp\&.connect"
+.SS "OFP\&.CONNECT"
 .sp
 Open an outgoing OpenFlow connection to the specified host and port\&.
 .sp
@@ -184,7 +184,7 @@ Open an outgoing OpenFlow connection to the specified host and port\&.
 .\}
 .nf
 id: UInt64
-method: ofp\&.connect
+method: OFP\&.CONNECT
 params:
   endpoint: IPv6Endpoint
   versions: !opt [UInt8]
@@ -202,7 +202,7 @@ Request ID used to identify the reply (unsigned 64\-bit integer)\&.
 .PP
 \fBmethod\fR
 .RS 4
-Must be "ofp\&.connect"\&.
+Must be "OFP\&.CONNECT"\&.
 .RE
 .PP
 \fBendpoint\fR
@@ -278,7 +278,7 @@ result:
 Connection ID associated with the new connection\&.
 .RE
 .RE
-.SS "ofp\&.listen"
+.SS "OFP\&.LISTEN"
 .sp
 Listen for incoming OpenFlow connections on the specified interface and port\&.
 .sp
@@ -295,7 +295,7 @@ Listen for incoming OpenFlow connections on the specified interface and port\&.
 .\}
 .nf
 id: UInt64
-method: ofp\&.listen
+method: OFP\&.LISTEN
 params:
   endpoint: IPv6Endpoint
   versions: [UInt8]
@@ -383,7 +383,7 @@ If a non\-zero tls_id is passed as an argument, we will use the specified TLS se
 .sp
 There is one raw option for listen, raw_tcp\&. This option will listen for incoming connections on the specified TCP endpoint only (no UDP), negotiate an OpenFlow connection, but leave the rest of the connection alone\&.
 .RE
-.SS "ofp\&.send"
+.SS "OFP\&.SEND"
 .sp
 Send the specified OpenFlow message\&.
 .sp
@@ -400,7 +400,7 @@ Send the specified OpenFlow message\&.
 .\}
 .nf
 id: UInt64
-method: \*(Aqofp\&.send\*(Aq
+method: OFP\&.SEND
 params: Message
 .fi
 .if n \{\
@@ -426,7 +426,7 @@ TODO
 .RE
 .\}
 .RE
-.SS "ofp\&.close"
+.SS "OFP\&.CLOSE"
 .sp
 Close the specified connection\&.
 .sp
@@ -443,7 +443,7 @@ Close the specified connection\&.
 .\}
 .nf
 id: UInt64
-method: \*(Aqofp\&.close\*(Aq
+method: OFP\&.CLOSE
 params:
   conn_id: UInt64
 .fi
@@ -482,7 +482,7 @@ result:
 Number of connections closed\&.
 .RE
 .RE
-.SS "ofp\&.list_connections"
+.SS "OFP\&.LIST_CONNECTIONS"
 .sp
 List all connections\&.
 .sp
@@ -499,7 +499,7 @@ List all connections\&.
 .\}
 .nf
 id: UInt64
-method: \*(Aqofp\&.list_connections\*(Aq
+method: OFP\&.LIST_CONNECTIONS
 params:
   conn_id: UInt64
 .fi
@@ -548,7 +548,7 @@ result: [{ConnectionInfo}\&.\&.\&.]
 .RE
 .\}
 .RE
-.SS "ofp\&.add_identity"
+.SS "OFP\&.ADD_IDENTITY"
 .sp
 Configure an identity for use in securing incoming or outgoing connections using Transport Layer Security (TLS)\&.
 .sp
@@ -565,7 +565,7 @@ Configure an identity for use in securing incoming or outgoing connections using
 .\}
 .nf
 id: UInt64
-method: \*(Aqofp\&.add_identity\*(Aq
+method: OFP\&.ADD_IDENTITY
 params:
   certificate: String
   verifier: String
@@ -617,7 +617,7 @@ Unique, non\-zero identifier representing the TLS identity\&.
 .RE
 .RE
 .SH "RPC NOTIFICATIONS"
-.SS "ofp\&.channel"
+.SS "OFP\&.CHANNEL"
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
@@ -631,7 +631,7 @@ Unique, non\-zero identifier representing the TLS identity\&.
 .RS 4
 .\}
 .nf
-method: \*(Aqofp\&.channel\*(Aq
+method: OFP\&.CHANNEL
 params:
   conn_id: UInt64
   datapath_id: DatapathID
@@ -642,13 +642,13 @@ params:
 .RE
 .\}
 .RE
-.SS "ofp\&.message"
+.SS "OFP\&.MESSAGE"
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-method: \*(Aqofp\&.message\*(Aq
+method: OFP\&.MESSAGE
 params: {Message}
 .fi
 .if n \{\
@@ -737,10 +737,10 @@ Failure: Syntax or usage error in command line arguments\&.
 GitHub: https://github\&.com/byllyfish/libofp
 .SH "COPYING"
 .sp
-Copyright (C) 2015 Bill Fisher\&. Free use of this software is granted under the terms of the MIT Licence\&.
+Copyright (C) 2015\-2016 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT Licence\&.
 .SH "AUTHOR"
 .PP
-\fBBill Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>
+\fBWilliam W\&. Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>
 .RS 4
 Author.
 .RE

@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
 #include <asio/version.hpp>
@@ -31,25 +32,7 @@ static void print_usage(std::ostream &out);
 static void print_version();
 static void force_link_api();
 
-#if LIBOFP_ENABLE_JSONRPC
-static int run_xpc_service() {
-  const char *args[] = {"jsonrpc", "--xpc"};
-  return ofpx::Run<ofpx::JsonRpc>(2, args);
-}
-#endif  // LIBOFP_ENABLE_JSONRPC
-
 int main(int argc, const char *const *argv) {
-// If the OFPX_JSONRPC_XPC_SERVICE environment variable is set to 1,
-// immediately run the JSON-RPC XPC service (Mac OS X only).
-
-#if LIBOFP_ENABLE_JSONRPC
-  if (const char *env = getenv("OFPX_JSONRPC_XPC_SERVICE")) {
-    if (strcmp(env, "1") == 0) {
-      return run_xpc_service();
-    }
-  }
-#endif  // LIBOFP_ENABLE_JSONRPC
-
   if (argc < 2) {
     if (argc == 0)
       force_link_api();
@@ -96,8 +79,8 @@ void print_version() {
   raw_ostream &os = outs();
 
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
-  os << "libofp " << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
-     << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+  os << "libofp " << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7)
+     << ")";
 
   os << "  <" << LIBOFP_GITHUB_URL << ">\n";
 

@@ -1,11 +1,12 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/log.h"
 #if defined(LIBOFP_TARGET_DARWIN)
 #include <syslog.h>  // for LOG_ constants
 #endif               // defined(LIBOFP_TARGET_DARWIN)
-#include <chrono>
 #include <iomanip>
+#include "ofp/timestamp.h"
 #include "ofp/yaml/decoder.h"
 
 namespace ofp {
@@ -21,10 +22,9 @@ static size_t timestamp_now(char *buf, size_t buflen) {
 
   assert(buflen >= 24);
 
-  auto now = system_clock::now();
-  auto secs = system_clock::to_time_t(now);
-  UInt32 msec = UInt32_narrow_cast(
-      (duration_cast<microseconds>(now.time_since_epoch()) % 1000000).count());
+  auto now = Timestamp::now();
+  auto secs = now.seconds();
+  auto msec = now.milliseconds();
 
   struct tm date;
   localtime_r(&secs, &date);

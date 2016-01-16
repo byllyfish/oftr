@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_SYS_ENGINE_H_
 #define OFP_SYS_ENGINE_H_
@@ -105,6 +106,11 @@ class Engine {
   UInt64 assignConnectionId();
   UInt64 assignSecurityId();
 
+  using AlertCallback = void (*)(Channel *, const std::string &,
+                                 const ByteRange &, void *);
+  void setAlertCallback(AlertCallback callback, void *context);
+  void alert(Channel *conn, const std::string &alert, const ByteRange &data);
+
  private:
   // Pointer to driver object that owns engine.
   Driver *driver_;
@@ -141,6 +147,11 @@ class Engine {
 
   mutable bool connListLock_ = false;
   mutable bool serverListLock_ = false;
+
+  // Optional function to handle (unusual) alerts, used when there is no other
+  // available callback mechanism.
+  AlertCallback alertCallback_ = nullptr;
+  void *alertContext_ = nullptr;
 
   void asyncIdle();
 };

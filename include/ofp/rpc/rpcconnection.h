@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_RPC_RPCCONNECTION_H_
 #define OFP_RPC_RPCCONNECTION_H_
@@ -41,6 +42,8 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
 
   void onChannel(Channel *channel, const char *status);
   void onMessage(Channel *channel, const Message *message);
+  void onAlert(Channel *channel, const std::string &alert,
+               const ByteRange &data);
 
   void handleEvent(const std::string &event);
 

@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_MACADDRESS_H_
 #define OFP_MACADDRESS_H_
@@ -42,6 +43,7 @@ class MacAddress {
 };
 
 static_assert(sizeof(MacAddress) == 6, "Unexpected size.");
+static_assert(alignof(MacAddress) == 1, "Unexpected alignment.");
 static_assert(IsStandardLayout<MacAddress>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<MacAddress>(),
               "Expected trivially copyable.");

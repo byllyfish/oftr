@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/unittest.h"
 #include "ofp/yaml/encoder.h"
@@ -1225,7 +1226,7 @@ TEST(encoder, flowmodv4_experimenter) {
         flags:           []
         match:           
           - field:           X_LLDP_CHASSIS_ID
-            value:           0102030405
+            value:           unknown 0102030405
           - field:           X_LLDP_TTL
             value:           0x01234
           - field:           X_EXPERIMENTER_01
@@ -1264,7 +1265,7 @@ TEST(encoder, flowmodv4_experimenter_mask) {
         flags:           []
         match:           
           - field:           X_LLDP_CHASSIS_ID
-            value:           0102030405
+            value:           unknown 0102030405
           - field:           X_LLDP_TTL
             value:           0x1234
           - field:           X_EXPERIMENTER_01
