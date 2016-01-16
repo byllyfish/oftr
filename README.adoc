@@ -10,24 +10,23 @@ image:https://scan.coverity.com/projects/5587/badge.svg["Coverity Scan Build Sta
 
 == What is Libofp?
 
-The *libofp* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML] and back again. It provides a simple, uniform object syntax for working with the OpenFlow protocol programmatically.
+The *libofp* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML 1.2] and back again. It provides a uniform object syntax for working with the OpenFlow protocol programmatically.
 
 * Supports Linux and OS X
 * Supports OpenFlow versions 1.0, 1.1, 1.2, 1.3, 1.4
-* Supports YAML 1.2 and JSON
 * Optional JSON RPC Microservice supports:
 ** multiple incoming or outgoing connections
 ** auxiliary connections
 ** TLS and DTLS
 
-Libofp is a *tool* in the unix tradition. You can use `netcat` in a pipe to feed OpenFlow messages to a switch or controller:
+Libofp is a *tool* in the unix tradition. Use `netcat` in a pipe to feed OpenFlow messages to a switch or controller:
 
 [source,console]
 ----
 $ libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
 ----
 
-You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
+Parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
 messages, while retaining metadata such as timestamps:
 
 [source,bash]
@@ -53,19 +52,16 @@ The following YAML input will produce an OpenFlow 1.3 message:
 [source,yaml]
 ----
 type: PACKET_OUT
-version: 4  // <1>
+version: 4    # OpenFlow 1.3
 msg:
   buffer_id: NO_BUFFER
-  in_port: CONTROLLER  // <2>
+  in_port: CONTROLLER    # Use strings for special values and flags
   actions: 
     - action: OUTPUT
-      port: 0x11  // <3>
+      port: 0x11    # YAML supports hexadecimal numbers
       max_len: MAX
   data: 'ffffffffffff0000000000010800'
 ----
-<1> For version, we use the `wire version`; 4 refers to the 1.3 spec.
-<2> Use strings for special values and flags.
-<3> YAML supports hexadecimal numbers.
 
 The YAML syntax is based on OpenFlow 1.4, but the same input
 can generate earlier protocol version messages. Libofp is intelligent about
@@ -76,11 +72,11 @@ output a "1.0" message because version 1 is explicitly specified.
 [source,yaml]
 ----
   type: FLOW_MOD
-  version: 1  // <1>
+  version: 1    # OpenFlow 1.0
   msg:
     cookie: 0
-    cookie_mask: 0xFFFFFFFFFFFFFFFF   // <2>
-    table_id: 0  // <2>
+    cookie_mask: 0xFFFFFFFFFFFFFFFF   # Ignored; not present in OpenFlow 1.0
+    table_id: 0    # Ignored; not present in OpenFlow 1.0
     command: ADD
     idle_timeout: 10
     hard_timeout: 30
@@ -88,11 +84,11 @@ output a "1.0" message because version 1 is explicitly specified.
     buffer_id: NO_BUFFER
     out_port: ANY
     out_group: ANY
-    flags: [ SEND_FLOW_REM, CHECK_OVERLAP ] // <3>
+    flags: [ SEND_FLOW_REM, CHECK_OVERLAP ]   # Flags as array of strings
     match:
       - field: IN_PORT
         value: 1
-      - field: IPV4_SRC   // <4>
+      - field: IPV4_SRC     # Match field dependencies added automatically
         value: '192.168.1.1'
     instructions:
       - instruction: APPLY_ACTIONS
@@ -101,15 +97,11 @@ output a "1.0" message because version 1 is explicitly specified.
             port: 2
             max_len: MAX
 ----
-<1> Here, we're specifying the 1.0 OpenFlow specification.
-<2> These values are `lost` because they are not supported in OpenFlow 1.0.
-<3> Flags are specified using arrays of strings.
-<4> Match field dependencies are automatically added when necessary.
 
 === OpenFlow to YAML
 
 Given a binary OpenFlow message, `libofp` can translate it back to a human-readable
-YAML (or JSON) object. Here's the binary for an OpenFlow OFPT_ERROR message in hexadecimal:
+YAML object. Here's the binary for an OpenFlow OFPT_ERROR message in hexadecimal:
 
 [source,hex]
 ----
