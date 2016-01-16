@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/unittest.h"
 #include "ofp/types.h"
@@ -16,21 +17,21 @@ TEST(types, Unsigned_cast) {
 
   std::int16_t b = -25;
   EXPECT_EQ(65511, Unsigned_cast(b));
-  EXPECT_EQ(4294967246, Unsigned_cast(b << 1));
+  EXPECT_EQ(4294967246, Unsigned_cast(b * 2));
 
   std::int8_t c = -25;
   EXPECT_EQ(231, Unsigned_cast(c));
-  EXPECT_EQ(4294967246, Unsigned_cast(c << 1));
+  EXPECT_EQ(4294967246, Unsigned_cast(c * 2));
 }
 
 TEST(types, UInt16_cast) {
   std::int16_t a = -25;
   EXPECT_EQ(65511, UInt16_cast(a));
-  EXPECT_EQ(65486, UInt16_narrow_cast(a << 1));
+  EXPECT_EQ(65486, UInt16_narrow_cast(a * 2));
 
   std::int8_t b = -25;
   EXPECT_EQ(231, UInt16_cast(b));  // result is different from static_cast.
-  EXPECT_EQ(65486, UInt16_narrow_cast(b << 1));
+  EXPECT_EQ(65486, UInt16_narrow_cast(b * 2));
 }
 
 TEST(types, ArrayLength) {

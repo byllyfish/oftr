@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_OXMITERATOR_H_
 #define OFP_OXMITERATOR_H_

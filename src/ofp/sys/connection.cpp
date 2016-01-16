@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
@@ -150,6 +151,8 @@ void Connection::poll() {
     return;
 
   if (version() < OFP_VERSION_1 || age >= 2 * keepAliveTimeout_) {
+    // Keep alive timeout has expired.
+    engine()->alert(this, "No response to echo request on idle channel", {});
     shutdown();
   } else if (!(flags() & kChannelIdle)) {
     setFlags(flags() | kChannelIdle);

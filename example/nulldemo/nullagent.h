@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef EXAMPLE_NULLDEMO_NULLAGENT_H_
 #define EXAMPLE_NULLDEMO_NULLAGENT_H_

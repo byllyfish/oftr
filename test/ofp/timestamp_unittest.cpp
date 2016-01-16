@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/unittest.h"
 #include "ofp/timestamp.h"
@@ -92,4 +93,10 @@ TEST(timestamp, relational) {
   EXPECT_GE(c, a);
   EXPECT_GE(b, a);
   EXPECT_GE(c, c);
+}
+
+TEST(timestamp, now) {
+  log::debug("Timestamp::now", Timestamp::now().toString());
+  log::debug("Timestamp::now", Timestamp::now().toString());
+  log::debug("Timestamp::now", Timestamp::now().toString());
 }

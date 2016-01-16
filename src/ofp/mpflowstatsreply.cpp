@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/mpflowstatsreply.h"
 #include "ofp/writable.h"
@@ -23,7 +24,7 @@ InstructionRange MPFlowStatsReply::instructions() const {
 
 bool MPFlowStatsReply::validateInput(Validation *context) const {
   size_t length = length_;
-  if (!context->validateLength(length_, UnpaddedSizeWithMatchHeader)) {
+  if (!context->validateAlignedLength(length, UnpaddedSizeWithMatchHeader)) {
     return false;
   }
 

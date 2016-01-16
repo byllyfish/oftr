@@ -1,4 +1,5 @@
-// Copyright 2015-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/oxmfulltype.h"
 

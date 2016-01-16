@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/sys/engine.h"
 #include "ofp/log.h"
@@ -383,4 +384,16 @@ void Engine::asyncIdle() {
       asyncIdle();
     }
   });
+}
+
+void Engine::setAlertCallback(AlertCallback callback, void *context) {
+  alertCallback_ = callback;
+  alertContext_ = context;
+}
+
+void Engine::alert(Channel *conn, const std::string &alert,
+                   const ByteRange &data) {
+  if (alertCallback_) {
+    alertCallback_(conn, alert, data, alertContext_);
+  }
 }

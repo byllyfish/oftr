@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_RPC_RPCEVENTS_H_
 #define OFP_RPC_RPCEVENTS_H_
@@ -21,16 +22,16 @@ const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 
 /// RPC Methods
 enum RpcMethod : UInt32 {
-  METHOD_LISTEN = 0,    // ofp.listen
-  METHOD_CONNECT,       // ofp.connect
-  METHOD_CLOSE,         // ofp.close
-  METHOD_SEND,          // ofp.send
-  METHOD_CHANNEL,       // ofp.channel
-  METHOD_MESSAGE,       // ofp.message
-  METHOD_ALERT,         // ofp.alert
-  METHOD_LIST_CONNS,    // ofp.list_connections
-  METHOD_ADD_IDENTITY,  // ofp.add_identity
-  METHOD_DESCRIPTION,   // ofp.description
+  METHOD_LISTEN = 0,    // OFP.LISTEN
+  METHOD_CONNECT,       // OFP.CONNECT
+  METHOD_CLOSE,         // OFP.CLOSE
+  METHOD_SEND,          // OFP.SEND
+  METHOD_CHANNEL,       // OFP.CHANNEL
+  METHOD_MESSAGE,       // OFP.MESSAGE
+  METHOD_ALERT,         // OFP.ALERT
+  METHOD_LIST_CONNS,    // OFP.LIST_CONNECTIONS
+  METHOD_ADD_IDENTITY,  // OFP.ADD_IDENTITY
+  METHOD_DESCRIPTION,   // OFP.DESCRIPTION
   METHOD_UNSUPPORTED
 };
 
@@ -301,24 +302,24 @@ OFP_END_IGNORE_PADDING
 }  // namespace rpc
 }  // namespace ofp
 
-LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats);
+LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats)
 
 namespace llvm {
 namespace yaml {
 
 const char *const kRpcSchema = R"""(
-{Rpc/ofp.description}
+{Rpc/OFP.DESCRIPTION}
 id: UInt64
-method: !request ofp.description
+method: !request OFP.DESCRIPTION
 result: !reply
   major_version: UInt16
   minor_version: UInt16
   software_version: String
   ofp_versions: [UInt8]
 
-{Rpc/ofp.listen}
+{Rpc/OFP.LISTEN}
 id: !opt UInt64
-method: !request ofp.listen
+method: !request OFP.LISTEN
 params: !request
   endpoint: IPv6Endpoint
   versions: !opt [UInt8]
@@ -327,9 +328,9 @@ params: !request
 result: !reply
   conn_id: UInt64
 
-{Rpc/ofp.connect}
+{Rpc/OFP.CONNECT}
 id: !opt UInt64
-method: !request ofp.connect
+method: !request OFP.CONNECT
 params: !request
   endpoint: IPv6Endpoint
   versions: !opt [UInt8]
@@ -338,25 +339,25 @@ params: !request
 result: !reply
   conn_id: UInt64
 
-{Rpc/ofp.close}
+{Rpc/OFP.CLOSE}
 id: !opt UInt64
-method: !request ofp.close
+method: !request OFP.CLOSE
 params: !request
   conn_id: UInt64
 result: !reply
   count: UInt32
 
-{Rpc/ofp.send}
+{Rpc/OFP.SEND}
 id: !opt UInt64
-method: !request ofp.send
+method: !request OFP.SEND
 params: !request Message
 result: !reply
   conn_id: UInt64
   data: HexData
 
-{Rpc/ofp.list_connections}
+{Rpc/OFP.LIST_CONNECTIONS}
 id: !opt UInt64
-method: !request ofp.list_connections
+method: !request OFP.LIST_CONNECTIONS
 params: !request
   conn_id: UInt64
 result: !reply
@@ -367,9 +368,9 @@ result: !reply
     auxiliary_id: UInt8
     transport: TCP | UDP | TLS | DTLS | NONE
 
-{Rpc/ofp.add_identity}
+{Rpc/OFP.ADD_IDENTITY}
 id: !opt UInt64
-method: !request ofp.add_identity
+method: !request OFP.ADD_IDENTITY
 params: !request
   certificate: String
   password: String
@@ -377,20 +378,20 @@ params: !request
 result: !reply
   tls_id: UInt64
 
-{Rpc/ofp.message}
-method: !notify ofp.message
+{Rpc/OFP.MESSAGE}
+method: !notify OFP.MESSAGE
 params: !notify Message
 
-{Rpc/ofp.channel}
-method: !notify ofp.channel
+{Rpc/OFP.CHANNEL}
+method: !notify OFP.CHANNEL
 params: !notify
   conn_id: UInt64
   datapath_id: DatapathID
   version: UInt8
   status: UP | DOWN
 
-{Rpc/ofp.alert}
-method: !notify ofp.alert
+{Rpc/OFP.ALERT}
+method: !notify OFP.ALERT
 params: !notify
   conn_id: UInt64
   datapath_id: DatapathID

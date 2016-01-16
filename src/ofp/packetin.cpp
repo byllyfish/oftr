@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/packetin.h"
 #include "ofp/writable.h"
@@ -66,7 +67,7 @@ bool PacketIn::validateInputV1(Validation *context) const {
 
 bool PacketIn::validateInputV2(Validation *context) const {
   // FIXME - Unimplemented
-  context->messageTypeIsNotSupported();
+  context->messageTypeIsNotImplemented();
   return false;
 }
 

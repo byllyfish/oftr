@@ -1,9 +1,10 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/timestamp.h"
 #include <sstream>
 #include <iomanip>
-#include "ofp/log.h"
+#include <chrono>
 
 using namespace ofp;
 
@@ -55,4 +56,15 @@ std::string Timestamp::toString() const {
   strm << time_.first << '.' << std::setfill('0') << std::setw(9)
        << time_.second;
   return strm.str();
+}
+
+Timestamp Timestamp::now() {
+  using namespace std::chrono;
+
+  auto now = system_clock::now();
+  auto duration = now.time_since_epoch();
+  auto nano = duration_cast<std::chrono::nanoseconds>(duration).count();
+
+  return Timestamp{static_cast<time_t>(nano / 1000000000),
+                   UInt32_narrow_cast(nano % 1000000000)};
 }

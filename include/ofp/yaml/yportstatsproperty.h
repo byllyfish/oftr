@@ -1,4 +1,5 @@
-// Copyright 2015-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YPORTSTATSPROPERTY_H_
 #define OFP_YAML_YPORTSTATSPROPERTY_H_
@@ -57,11 +58,12 @@ struct MappingTraits<ofp::detail::PortStatsPropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    Hex16 property = elem.type();
+    OFPExperimenterPropertyType property =
+        static_cast<OFPExperimenterPropertyType>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {
-      case OFPPSPT_EXPERIMENTER: {
+      case OFP_EXPERIMENTER_PROPERTY_TYPE: {
         const PortStatsPropertyExperimenter &p =
             elem.property<PortStatsPropertyExperimenter>();
 
@@ -92,10 +94,10 @@ struct MappingTraits<ofp::detail::PortStatsPropertyInserter> {
 
     PropertyList &props = Ref_cast<PropertyList>(list);
 
-    UInt16 property;
+    OFPExperimenterPropertyType property = OFP_EXPERIMENTER_PROPERTY_TYPE;
     io.mapRequired("property", property);
 
-    if (property == OFPPMPT_EXPERIMENTER) {
+    if (property == OFP_EXPERIMENTER_PROPERTY_TYPE) {
       UInt32 experimenter;
       io.mapRequired("experimenter", experimenter);
 

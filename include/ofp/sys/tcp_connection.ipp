@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/tcp_server.h"
@@ -26,7 +27,11 @@ template <>
 inline asio::ssl::context *tcpContext<PlaintextSocket>(Engine *engine,
                                                        UInt64 securityId) {
   assert(securityId == 0);
-  return nullptr;
+  // Return a dummy pointer that points to something that exists. I originally
+  // returns `nullptr` here but the undefined sanitizer complained. The
+  // PlaintextSocket type does not use or access the asio::ssl::context passed
+  // in; the ssl::context here is a placeholder.
+  return Identity::plaintextContext();
 }
 
 }  // namespace detail
@@ -209,6 +214,8 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
                 log::debug("asyncReadHeader header validation failed",
                            std::make_pair("connid", connectionId()));
                 channelDown();
+                engine()->alert(this, "Invalid OpenFlow message header",
+                                {hdr, sizeof(*hdr)});
               }
 
             } else {

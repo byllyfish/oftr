@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/yconstants.h"
@@ -238,7 +239,16 @@ static std::pair<OFPErrorCode, llvm::StringRef> sErrorCodes[] = {
     STR_ENTRY(OFPTFFC_BAD_ARGUMENT), STR_ENTRY(OFPTFFC_EPERM),
 };
 
+static std::pair<OFPAsyncConfigProperty, llvm::StringRef>
+    sAsyncConfigProperty[] = {
+        {OFPACPT_EXPERIMENTER_SLAVE, "EXPERIMENTER_SLAVE"},
+        {OFPACPT_EXPERIMENTER_MASTER, "EXPERIMENTER_MASTER"}};
+
 EnumConverterSparse<OFPErrorCode>
     llvm::yaml::ScalarTraits<OFPErrorCode>::converter{sErrorCodes};
+
+EnumConverterSparse<OFPAsyncConfigProperty>
+    llvm::yaml::ScalarTraits<OFPAsyncConfigProperty>::converter{
+        sAsyncConfigProperty};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

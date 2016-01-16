@@ -1,12 +1,22 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
 BUILDDIR = build_dir
 
-build:
-	mkdir $(BUILDDIR);
+build: build-indep build-arch
+
+build-indep:
+	# nothing to be done
+
+build-arch:
+	mkdir $(BUILDDIR)
 	cd $(BUILDDIR); cmake -DCMAKE_INSTALL_PREFIX=../debian/tmp/usr ..
+	# Log the CXX flags used in building the tool.
+	-cat $(BUILDDIR)/tools/libofp/CMakeFiles/libofp.dir/flags.make
 	make -C $(BUILDDIR)
-	make -C $(BUILDDIR) test
+	strip --strip-debug $(BUILDDIR)/tools/libofp/libofp
+	-make -C $(BUILDDIR) test ARGS="--output-on-failure"
 
 binary: binary-indep binary-arch
 
@@ -23,4 +33,4 @@ clean:
 	rm -f build
 	rm -rf $(BUILDDIR)
 
-.PHONY: binary binary-arch binary-indep clean
+.PHONY: build build-arch build-indep binary binary-arch binary-indep clean

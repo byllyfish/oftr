@@ -31,11 +31,13 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION_MAJOR 0)
-set(Libofp_VERSION_MINOR 12)
-set(Libofp_VERSION_PATCH 0)
+set(Libofp_VERSION 0.13.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
-set(Libofp_MAINTAINER_EMAIL "Bill Fisher <william.w.fisher@gmail.com>")
+set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
+
+string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\1" Libofp_VERSION_MAJOR ${Libofp_VERSION})
+string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\2" Libofp_VERSION_MINOR ${Libofp_VERSION})
+string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" Libofp_VERSION_PATCH ${Libofp_VERSION})
 
 # Set version numbers for RPC API.
 
@@ -91,7 +93,7 @@ if(LIBOFP_ENABLE_JSONRPC)
   set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
 endif()
 
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
+if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   # MSVC does not support -isystem; replace -isystem with -I
   string(REPLACE -isystem -I LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES}")
 endif()
@@ -100,7 +102,6 @@ endif()
 
 set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_NO_DEPRECATED")
 #set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
-# -D ASIO_NO_DEPRECATED -D ASIO_NO_IOSTREAM 
 
 if(APPLE AND UNIX)
   set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D LIBOFP_TARGET_DARWIN")
@@ -111,8 +112,8 @@ endif()
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_C_FLAGS "-fstrict-aliasing -fvisibility=hidden")
-set(LIBOFP_CXX_FLAGS "-fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
+set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing -fvisibility=hidden")
+set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
@@ -296,7 +297,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set(LIBOFP_WARNINGS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
+  set(LIBOFP_WARNINGS "-Wpedantic -Wall -Wextra -Wformat=2 -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
   set(LIBOFP_WARNINGS "-Wall")
 endif()
@@ -305,6 +306,14 @@ endif()
 
 if(APPLE)
   set(CMAKE_EXE_LINKER_FLAGS "-Wl,-dead_strip")
+endif()
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
+  # -fsanitize=undefined doesn't seem to work with Clang 7.0.2, even with -frtti
+  # added back in.
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
 endif()
 
 #-------------------------------------------------------------------------------

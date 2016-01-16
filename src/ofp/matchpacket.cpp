@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/matchpacket.h"
 #include "ofp/macaddress.h"
@@ -50,8 +51,13 @@ struct Castable {
   static const Type *cast(const void *ptr, size_t len) {
     assert(IsPtrAligned(ptr, alignof(Type)));
     if (len < sizeof(Type)) {
-      log::warning("pkt::Castable: Data too short, actualLen:", len,
-                   "minNeeded:", sizeof(Type));
+      // Only warn if there is some data.
+      if (len > 0) {
+        log::warning("pkt::Castable: Data too short, actualLen:", len,
+                     "minNeeded:", sizeof(Type));
+      } else {
+        log::debug("pkt::Castable: No data. minNeeded:", sizeof(Type));
+      }
       return nullptr;
     }
     return reinterpret_cast<const Type *>(ptr);
@@ -478,8 +484,11 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
       return;
     }
 
-    // log::debug("decodeLLDP", (int)lldp->type(), (int)lldp->length(),
-    // RawDataToHex(lldp->data(), lldp->length()));
+    auto jumpSize = lldp->length() + 2;
+    if (jumpSize > length) {
+      log::warning("decodeLLDP: malformed lldp tlv");
+      return;  // ignore the rest
+    }
 
     switch (lldp->type()) {
       case pkt::LLDPTlv::END:
@@ -498,7 +507,6 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
         break;
     }
 
-    size_t jumpSize = lldp->length() + 2;
     assert(length >= jumpSize);
 
     pkt += jumpSize;

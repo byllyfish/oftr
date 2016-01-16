@@ -1,4 +1,5 @@
-// Copyright 2015-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "./libofp.h"
 #include <stdlib.h>
@@ -23,8 +24,7 @@ void libofp_version(libofp_buffer *result) {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
   std::ostringstream oss;
 
-  oss << LIBOFP_VERSION_MAJOR << '.' << LIBOFP_VERSION_MINOR << '.'
-      << LIBOFP_VERSION_PATCH << " (" << libofpCommit.substr(0, 7) << ")";
+  oss << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7) << ")";
 
   oss << "  <" << LIBOFP_GITHUB_URL << ">";
 

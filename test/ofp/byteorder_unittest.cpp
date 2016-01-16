@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/unittest.h"
 #include "ofp/byteorder.h"
@@ -138,7 +139,7 @@ TEST(byteorder, BigEnum32) {
 
 TEST(byteorder, BigEnum) {
   // Plain unadorned enum.
-  enum Foo { a, b, c };
+  enum Foo : int { a, b, c };
   Big<Foo> x;
 
   static_assert(sizeof(x) == sizeof(int), "Unexpected enum size.");

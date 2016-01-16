@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_VALIDATION_H_
 #define OFP_VALIDATION_H_
@@ -7,6 +8,7 @@
 #include "ofp/byterange.h"
 #include "ofp/constants.h"
 #include "ofp/padding.h"
+#include "ofp/log.h"
 
 namespace ofp {
 
@@ -28,6 +30,7 @@ class Validation {
 
   void messageSizeIsInvalid();
   void messageTypeIsNotSupported();
+  void messageTypeIsNotImplemented();
   void messagePreprocessTooBigError();
   void messagePreprocessFailure();
   void multipartTypeIsNotSupported();
@@ -45,14 +48,18 @@ class Validation {
   void rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr,
                                            size_t elementSize);
 
-  // Used in validating multipart section lengths.
-
-  bool validateLength(size_t length, size_t minSize) {
-    return (length >= minSize) && ((length % 8) == 0);
+  // Used in validating multipart section lengths. Verifies that length is at
+  // least `minSize` and is aligned.
+  bool validateAlignedLength(size_t length, size_t minSize) {
+    if (length < minSize) {
+      log::debug("validateAlignedLength: length", length,
+                 " is smaller than minSize", minSize);
+    }
+    return validateBool((length >= minSize) && ((length % 8) == 0),
+                        "Length too small or not aligned");
   }
 
   // Used in validating multipart request/reply.
-
   bool validateEmpty(const UInt8 *body, UInt8 minVersion);
 
   template <class Type>
@@ -63,6 +70,14 @@ class Validation {
 
   template <class Type>
   bool validateArrayFixedSize(const UInt8 *body, UInt8 minVersion);
+
+  bool validateBool(bool condition, const char *errorMessage) {
+    if (!condition) {
+      setErrorMessage(errorMessage);
+      return false;
+    }
+    return true;
+  }
 
  private:
   const Message *msg_;

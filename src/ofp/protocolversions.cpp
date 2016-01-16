@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/protocolversions.h"
 #include <sstream>
@@ -35,20 +36,21 @@ UInt8 ProtocolVersions::highestVersion() const {
 /// HelloElement with supported versions.
 UInt8 ProtocolVersions::negotiateVersion(UInt8 msgVersion,
                                          ProtocolVersions msgVersions) const {
-  UInt8 myVersion = highestVersion();
-
-  if (myVersion == msgVersion) {
-    return myVersion;
-  } else if (myVersion >= OFP_VERSION_4 && !msgVersions.empty()) {
+  if (msgVersion >= OFP_VERSION_4 && !msgVersions.empty()) {
     ProtocolVersions inCommon = intersection(msgVersions);
     return inCommon.highestVersion();
-  } else if (myVersion < msgVersion) {
-    return myVersion;
-  } else if (containsVersion(msgVersion)) {
-    return msgVersion;
-  } else {
-    return 0;
   }
+
+  UInt8 myVersion = highestVersion();
+  if (myVersion <= msgVersion) {
+    return myVersion;
+  }
+
+  if (containsVersion(msgVersion)) {
+    return msgVersion;
+  }
+
+  return 0;
 }
 
 bool ProtocolVersions::isOnlyOneVersionSupported() const {

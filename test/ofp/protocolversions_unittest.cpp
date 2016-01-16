@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/unittest.h"
 #include "ofp/protocolversions.h"
@@ -73,10 +74,12 @@ TEST(protocolversions, negotiateVersion) {
     ProtocolVersions vers{1};
 
     EXPECT_EQ(1, vers.negotiateVersion(4, {1, 2, 3, 4}));
-    EXPECT_EQ(1, vers.negotiateVersion(4, {2, 3, 4}));
+    EXPECT_EQ(0, vers.negotiateVersion(4, {2, 3, 4}));
     EXPECT_EQ(1, vers.negotiateVersion(3, ProtocolVersions::None));
     EXPECT_EQ(1, vers.negotiateVersion(2, ProtocolVersions::None));
     EXPECT_EQ(1, vers.negotiateVersion(1, ProtocolVersions::None));
+
+    EXPECT_EQ(0, vers.negotiateVersion(4, {4}));
   }
 
   {
@@ -87,6 +90,8 @@ TEST(protocolversions, negotiateVersion) {
     EXPECT_EQ(0, vers.negotiateVersion(3, ProtocolVersions::None));
     EXPECT_EQ(0, vers.negotiateVersion(2, ProtocolVersions::None));
     EXPECT_EQ(0, vers.negotiateVersion(1, ProtocolVersions::None));
+
+    EXPECT_EQ(4, vers.negotiateVersion(4, {4}));
   }
 
   {
@@ -97,6 +102,8 @@ TEST(protocolversions, negotiateVersion) {
     EXPECT_EQ(0, vers.negotiateVersion(3, ProtocolVersions::None));
     EXPECT_EQ(0, vers.negotiateVersion(2, ProtocolVersions::None));
     EXPECT_EQ(1, vers.negotiateVersion(1, ProtocolVersions::None));
+
+    EXPECT_EQ(4, vers.negotiateVersion(4, {4}));
   }
 
   {
@@ -107,6 +114,8 @@ TEST(protocolversions, negotiateVersion) {
     EXPECT_EQ(3, vers.negotiateVersion(3, ProtocolVersions::None));
     EXPECT_EQ(2, vers.negotiateVersion(2, ProtocolVersions::None));
     EXPECT_EQ(0, vers.negotiateVersion(1, ProtocolVersions::None));
+
+    EXPECT_EQ(4, vers.negotiateVersion(4, {4}));
   }
 
   {
@@ -117,6 +126,8 @@ TEST(protocolversions, negotiateVersion) {
     EXPECT_EQ(3, vers.negotiateVersion(3, ProtocolVersions::None));
     EXPECT_EQ(2, vers.negotiateVersion(2, ProtocolVersions::None));
     EXPECT_EQ(0, vers.negotiateVersion(1, ProtocolVersions::None));
+
+    EXPECT_EQ(0, vers.negotiateVersion(4, {4}));
   }
 }
 

@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YCONSTANTS_H_
 #define OFP_YAML_YCONSTANTS_H_
@@ -124,6 +125,8 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPBundleCtrlType,
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPExperimenterPropertyType,
                     format("0x%04X", value))
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPRoleStatusReason,
+                    format("0x%02X", value))
+YAML_ENUM_CONVERTER(ofp::yaml::EnumConverterSparse, ofp::OFPAsyncConfigProperty,
                     format("0x%02X", value))
 
 template <>

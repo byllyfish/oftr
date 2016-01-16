@@ -10,9 +10,6 @@ set(OFPX_SOURCES
 
 if(LIBOFP_ENABLE_JSONRPC)
   set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_jsonrpc.cpp)
-  if(APPLE)
-    set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_xpc.cpp)
-  endif()
 endif()
 
 if(APPLE)

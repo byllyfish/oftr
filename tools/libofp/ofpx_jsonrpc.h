@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef TOOLS_LIBOFP_OFPX_JSONRPC_H_
 #define TOOLS_LIBOFP_OFPX_JSONRPC_H_
@@ -10,8 +11,6 @@ namespace ofpx {
 // libofp jsonrpc [options]
 //
 // Run a JSON-RPC server. By default, the control connection comes from stdio.
-//
-//   --xpc              Run as a XPC service (Mac OS X only)
 //
 // Usage:
 //
@@ -28,12 +27,10 @@ class JsonRpc : public Subprogram {
 
  private:
   // --- Command-line Arguments ---
-  cl::opt<bool> xpc_{"xpc", cl::desc("Run as a XPC service (Mac OS X only)")};
+  // None
 
   void setMaxOpenFiles();
   void runStdio();
-
-  [[noreturn]] void runXpc();
 };
 
 }  // namespace ofpx

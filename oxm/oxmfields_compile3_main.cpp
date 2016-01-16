@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 /// \file
 /// \brief Program to sort OXM types by typeID and output C++ source file
 /// `oxmfieldsdata.cpp`.

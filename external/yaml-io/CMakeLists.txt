@@ -78,6 +78,7 @@ check_symbol_exists(futimes sys/time.h HAVE_FUTIMES)
 check_symbol_exists(getpagesize unistd.h HAVE_GETPAGESIZE)
 check_symbol_exists(mallinfo malloc.h HAVE_MALLINFO)
 check_symbol_exists(malloc_zone_statistics malloc/malloc.h HAVE_MALLOC_ZONE_STATISTICS)
+check_symbol_exists(arc4random stdlib.h HAVE_DECL_ARC4RANDOM)
 
 set(headers "sys/types.h")
 

@@ -1,4 +1,5 @@
-// Copyright 2015-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YASYNCCONFIGPROPERTY_H_
 #define OFP_YAML_YASYNCCONFIGPROPERTY_H_
@@ -37,7 +38,8 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyItem> {
     using namespace ofp;
 
     PropertyIterator::Element &elem = Ref_cast<PropertyIterator::Element>(item);
-    Hex16 property = elem.type();
+    OFPAsyncConfigProperty property =
+        static_cast<OFPAsyncConfigProperty>(elem.type());
     io.mapRequired("property", property);
 
     switch (property) {
@@ -73,7 +75,7 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyInserter> {
 
     PropertyList &props = Ref_cast<PropertyList>(list);
 
-    UInt16 property;
+    OFPAsyncConfigProperty property;
     io.mapRequired("property", property);
 
     if (property >= OFPACPT_EXPERIMENTER_SLAVE) {
@@ -94,6 +96,8 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyInserter> {
         case OFPACPT_EXPERIMENTER_MASTER:
           props.add(AsyncConfigPropertyExperimenterMaster{experimenter, expType,
                                                           expData});
+          break;
+        default:
           break;
       }
 

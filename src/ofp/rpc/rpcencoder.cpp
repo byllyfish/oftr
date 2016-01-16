@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcencoder.h"
 #include "ofp/rpc/rpcconnection.h"
@@ -124,14 +125,14 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     }
     case METHOD_CHANNEL:
-      io.setError("'ofp.channel' is for notifications only.");
+      io.setError("'OFP.CHANNEL' is for notifications only.");
       break;
     case METHOD_MESSAGE:
       io.setError(
-          "Use 'ofp.send' instead; 'ofp.message' is for notifications only.");
+          "Use 'OFP.SEND' instead; 'OFP.MESSAGE' is for notifications only.");
       break;
     case METHOD_ALERT:
-      io.setError("'ofp.alert' is for notifications only.");
+      io.setError("'OFP.ALERT' is for notifications only.");
       break;
     case METHOD_DESCRIPTION: {
       RpcDescription desc{id};

@@ -1,4 +1,5 @@
-// Copyright 2014-present Bill Fisher. All rights reserved.
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
 #include <iostream>
 #include "./testagent.h"
@@ -26,9 +27,11 @@ int main(int argc, char **argv) {
         ChannelMode::Raw, 0, remoteEndpoint, {OFP_VERSION_1},
         TestAgent::Factory,
         [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
-          std::cerr << "testagent: Error connecting to `" << remoteEndpoint
-                    << "`: connId=" << channel->connectionId()
-                    << " err=" << err.message() << '\n';
+          if (err) {
+            std::cerr << "testagent: Error connecting to `" << remoteEndpoint
+                      << "`: connId=" << channel->connectionId()
+                      << " err=" << err.message() << '\n';
+          }
           error = err;
         });
 
