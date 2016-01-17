@@ -114,11 +114,11 @@ void print_version() {
 }
 
 void force_link_api() {
-  libofp_buffer buf;
+  libofp_buffer buf = {nullptr, 0};
   libofp_version(&buf);
   libofp_buffer_free(&buf);
 
-  libofp_buffer empty = {nullptr, 0};
+  libofp_buffer empty = {"", 0};
   libofp_encode(&buf, &empty, 0);
   libofp_buffer_free(&buf);
 
