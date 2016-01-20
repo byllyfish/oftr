@@ -36,6 +36,12 @@ class Subprogram {
     }
 
     setupLogging();
+
+    if (initialSleep_ > 0) {
+      // Sleep immediately to allow a debugger or performance tool to attach.
+      ofp::log::info("Initial sleep for", initialSleep_, "seconds");
+      ::sleep(initialSleep_);
+    }
   }
 
   void setupLogging() {
@@ -92,6 +98,7 @@ class Subprogram {
                  clEnumValN(ofp::log::Trace::Rpc, "rpc",
                             "Log all JSON-RPC events sent and received"),
                  clEnumValEnd)};
+  cl::opt<unsigned> initialSleep_{"initial-sleep", cl::desc("Sleep immediately at startup"), cl::Hidden, cl::init(0)};
 };
 
 using RunSubprogram = int (*)(int argc, const char *const *argv);
