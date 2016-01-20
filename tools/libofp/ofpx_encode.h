@@ -13,15 +13,15 @@ namespace ofpx {
 // Encode OpenFlow messages to binary as specified in YAML input files. If there
 // is a syntax error in the YAML input, stop and report an error.
 //
-//   --hex, -x               Output hexadecimal rather than binary
-//   --silent, -s            Quiet mode; suppress normal output
-//   --silent-error          Suppress error output for invalid messages.
-//   --keep-going, -k        Continue processing messages after errors
-//   --unchecked-match, -M   Do not check items in match fields
-//   --roundtrip, -R         Roundtrip encoded binary message back to YAML
-//   --json, -j              Json input is separated by linefeeds
-//   --ofversion=0           OpenFlow version to use when unspecified
-//   --output=<file>         Write output to specified file instead of stdout.
+//   --hex (-x)               Output hexadecimal rather than binary
+//   --silent (-s)            Quiet mode; suppress normal output
+//   --silent-error           Suppress error output for invalid messages.
+//   --keep-going (-k)        Continue processing messages after errors
+//   --unchecked-match (-M)   Do not check items in match fields
+//   --roundtrip (-R)         Roundtrip encoded binary message back to YAML
+//   --json (-j)              Json input is separated by linefeeds
+//   --ofversion=0            OpenFlow version to use when unspecified
+//   --output=<file> (-o)     Write output to specified file instead of stdout.
 //
 // Usage:
 //
@@ -43,8 +43,8 @@ namespace ofpx {
 // also represents stdin.
 //
 // Each binary OpenFlow message will use the version specified by the textual
-// object. Normally, it is an error if no version is specified. However, you
-// can specify a default OpenFlow version using the --ofversion option.
+// object. It is an error if no version is specified. You can specify a default
+// OpenFlow version using the --ofversion option.
 
 OFP_BEGIN_IGNORE_PADDING
 

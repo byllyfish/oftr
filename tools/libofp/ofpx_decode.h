@@ -11,23 +11,23 @@
 
 namespace ofpx {
 
-// libofp decode [--json|-j] [--silent|-s] [--invert-check|-v] [--keep-going|-k]
-// [--verify-output|-V] [--use-findx] [--data-pkt] [<Input files>]
+// libofp decode [<options>] [<Input files>]
 //
 // Decode binary OpenFlow messages in the input files and translate each
 // message to human-readable YAML output. If there is an invalid message,
 // stop and report an error.
 //
-//   --json           Write compact JSON output instead of YAML.
-//   --json-array     Write output as a valid JSON array.
-//   --silent         Quiet mode; suppress normal output.
-//   --silent-error   Suppress error output for invalid messages.
-//   --invert-check   Expect invalid messages only.
-//   --keep-going     Continue processing messages after errors.
-//   --verify-output  Verify output by translating it back to binary.
-//   --use-findx      Use metadata from tcpflow '.findx' files.
-//   --data-pkt       Include _data_pkt in PacketIn/PacketOut decodes.
-//   --output=<file>  Write output to specified file instead of stdout.
+//   --json (-j)           Write compact JSON output instead of YAML.
+//   --json-array          Write output as a valid JSON array.
+//   --silent (-s)         Quiet mode; suppress normal output.
+//   --silent-error        Suppress error output for invalid messages.
+//   --invert-check (-v)   Expect invalid messages only.
+//   --keep-going (-k)     Continue processing messages after errors.
+//   --verify-output (-V)  Verify output by translating it back to binary.
+//   --use-findx           Use metadata from tcpflow '.findx' files.
+//   --data-pkt            Include _data_pkt in PacketIn/PacketOut decodes.
+//   --include-filename    Include file name in all decodes.
+//   --output=<file> (-o)  Write output to specified file instead of stdout.
 //
 // Usage:
 //
