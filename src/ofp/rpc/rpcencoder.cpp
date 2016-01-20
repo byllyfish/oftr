@@ -153,6 +153,16 @@ void RpcEncoder::replyError() {
   RpcErrorResponse response{id_ ? *id_ : 0};
   response.error.message = llvm::StringRef{error()}.rtrim();
 
+  // Handle case where the generated error response is too big to send back.
+  // Use max rpc message size minus some slop. When message is truncated, tack
+  // on '...(truncated)'
+  const size_t kMaxMessageLen = RPC_MAX_MESSAGE_SIZE - 500;
+  size_t messageLen = response.error.message.length();
+  if (messageLen > kMaxMessageLen) {
+    response.error.message.resize(kMaxMessageLen);
+    response.error.message += "...(truncated)";
+  }
+
   int code = ERROR_CODE_INVALID_REQUEST;
   if (response.error.message.find("unknown method") != std::string::npos) {
     code = ERROR_CODE_METHOD_NOT_FOUND;

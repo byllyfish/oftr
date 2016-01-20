@@ -20,6 +20,9 @@ namespace rpc {
 /// Indicates that `id` is missing from RPC message.
 const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 
+/// The maximum RPC message size is 1MB.
+const size_t RPC_MAX_MESSAGE_SIZE = 1048576;
+
 /// RPC Methods
 enum RpcMethod : UInt32 {
   METHOD_LISTEN = 0,    // OFP.LISTEN
