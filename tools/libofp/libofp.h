@@ -5,12 +5,9 @@
 //
 // Example 1: libofp_encode
 //
-//     libofp_buffer input = { 0, 0 };
-//     input.data = "type: HELLO\nversion: 4";
-//     input.length = strlen(input.data);
-//
-//     libofp_buffer result;
-//     if (libofp_encode(&result, &input, 0) < 0) {
+//     const char *yaml_input = "type: HELLO\nversion: 4";
+//     libofp_buffer result = { nullptr, 0 };
+//     if (libofp_encode(&result, yaml, 0) < 0) {
 //         printf("error: %s", result.data);
 //     } else {
 //         /* do something with result */
@@ -19,19 +16,15 @@
 //
 // Example 2: libofp_version
 //
-//     libofp_buffer result = { 0, 0 };
+//     libofp_buffer result = { nullptr, 0 };
 //     libofp_version(&result);
 //     printf("version: %s", result.data);
 //     libofp_buffer_free(&result);
 //
-// The original contents of the mutable `result` buffer are never used. Its
+// The original contents of the mutable `result` buffer are ignored. The buffer
 // value is always overwritten with a newly allocated pointer. You must always
 // call `libofp_buffer_free` to free the buffer when you are done -- even when
 // there is an error.
-//
-// It is a good idea to initialize the result buffer to { 0, 0 }. The API may
-// change in the future to allow for a pre-allocated result buffer. A null
-// buffer will signal that the result buffer should be allocated.
 
 #ifndef TOOLS_LIBOFP_LIBOFP_H_
 #define TOOLS_LIBOFP_LIBOFP_H_
@@ -46,7 +39,7 @@ extern "C" {
 #define LIBOFP_EXPORT __attribute__((visibility("default")))
 
 typedef struct {
-  char *data;
+  void *data;
   size_t length;
 } libofp_buffer;
 
@@ -62,7 +55,7 @@ LIBOFP_EXPORT void libofp_version(libofp_buffer *result);
 ///
 /// Client is responsible for calling `libofp_buffer_free` on result buffer.
 LIBOFP_EXPORT int libofp_encode(libofp_buffer *result,
-                                const libofp_buffer *input, uint32_t flags);
+                                const char *yaml_input, uint32_t flags);
 
 /// Translate a binary OpenFlow message to YAML.
 ///
@@ -71,7 +64,7 @@ LIBOFP_EXPORT int libofp_encode(libofp_buffer *result,
 ///
 /// Client is responsible for calling `libofp_buffer_free` on result buffer.
 LIBOFP_EXPORT int libofp_decode(libofp_buffer *result,
-                                const libofp_buffer *input, uint32_t flags);
+                                const libofp_buffer *buffer, uint32_t flags);
 
 /// Dispose of `buffer` object returned by library functions.
 LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer);

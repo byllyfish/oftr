@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <unistd.h>
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/FileSystem.h"
