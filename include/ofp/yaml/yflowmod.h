@@ -41,16 +41,14 @@ struct MappingTraits<ofp::FlowMod> {
     io.mapRequired("cookie", msg.cookie_);
     io.mapRequired("cookie_mask", msg.cookieMask_);
     io.mapRequired("table_id", msg.tableId_);
-    ofp::OFPFlowModCommand command = msg.command();
-    io.mapRequired("command", command);
+    io.mapRequired("command", msg.command_);
     io.mapRequired("idle_timeout", msg.idleTimeout_);
     io.mapRequired("hard_timeout", msg.hardTimeout_);
     io.mapRequired("priority", msg.priority_);
     io.mapRequired("buffer_id", msg.bufferId_);
     io.mapRequired("out_port", msg.outPort_);
     io.mapRequired("out_group", msg.outGroup_);
-    ofp::OFPFlowModFlags flags = msg.flags();
-    io.mapRequired("flags", flags);
+    io.mapRequired("flags", msg.flags_);
 
     ofp::Match m = msg.match();
     io.mapRequired("match", m);
@@ -66,18 +64,14 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapRequired("cookie", msg.msg_.cookie_);
     io.mapRequired("cookie_mask", msg.msg_.cookieMask_);
     io.mapRequired("table_id", msg.msg_.tableId_);
-    ofp::OFPFlowModCommand command;
-    io.mapRequired("command", command);
-    msg.setCommand(command);
+    io.mapRequired("command", msg.msg_.command_);
     io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
     io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);
     io.mapRequired("priority", msg.msg_.priority_);
     io.mapRequired("buffer_id", msg.msg_.bufferId_);
     io.mapRequired("out_port", msg.msg_.outPort_);
     io.mapRequired("out_group", msg.msg_.outGroup_);
-    ofp::OFPFlowModFlags flags;
-    io.mapRequired("flags", flags);
-    msg.setFlags(flags);
+    io.mapRequired("flags", msg.msg_.flags_);
     io.mapRequired("match", msg.match_);
     io.mapRequired("instructions", msg.instructions_);
   }

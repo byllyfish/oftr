@@ -1,3 +1,4 @@
+#include "llvm/ADT/StringRef.h"
 
 namespace llvm { // <namespace llvm>
 
@@ -30,4 +31,11 @@ void llvm_unreachable_internal(char const*, char const*, unsigned int)
 
 bool DebugFlag;
 
+
+namespace sys {
+
+std::string getDefaultTargetTriple() { return ""; }
+StringRef getHostCPUName() { return ""; }
+
+}  // namespace sys
 } // </namespace llvm>

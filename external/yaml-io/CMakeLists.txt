@@ -11,7 +11,8 @@ set(YAMLIO_SOURCES
 	src/Support/Errno.cpp
 	src/Support/FoldingSet.cpp
 	src/Support/Hashing.cpp
-	src/Support/Host.cpp
+	#src/Support/Host.cpp
+    src/Support/LineIterator.cpp
 	src/Support/ManagedStatic.cpp
 	src/Support/Memory.cpp
 	src/Support/MemoryBuffer.cpp
@@ -26,9 +27,10 @@ set(YAMLIO_SOURCES
     src/Support/StringExtras.cpp
 	src/Support/StringMap.cpp
 	src/Support/StringRef.cpp
+    src/Support/StringSaver.cpp
 	src/Support/Threading.cpp
 	src/Support/TimeValue.cpp
-	src/Support/Triple.cpp
+	#src/Support/Triple.cpp
 	src/Support/Twine.cpp
 	src/Support/Valgrind.cpp
 	src/Support/YAMLParser.cpp

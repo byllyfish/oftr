@@ -18,6 +18,12 @@ WORKING_DIR=`dirname $0`
 test -d "$LLVM_SOURCE_DIR/include" || usage
 test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 
+
+# Update patch (during development)
+diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff1" || true
+diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff1" || true
+diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff1" || true
+
 # Include files to copy from llvm source tree.
 INCLUDES=(
 	include/llvm/ADT/APInt.h
@@ -25,6 +31,7 @@ INCLUDES=(
 	include/llvm/ADT/DenseMap.h
 	include/llvm/ADT/DenseMapInfo.h
 	include/llvm/ADT/edit_distance.h
+	include/llvm/ADT/EpochTracker.h
 	include/llvm/ADT/FoldingSet.h
 	include/llvm/ADT/Hashing.h
 	include/llvm/ADT/ilist.h
@@ -67,6 +74,7 @@ INCLUDES=(
 	include/llvm/Support/FileSystem.h
 	include/llvm/Support/Format.h
 	include/llvm/Support/Host.h
+	include/llvm/Support/LineIterator.h
 	include/llvm/Support/ManagedStatic.h
 	include/llvm/Support/MathExtras.h
 	include/llvm/Support/Memory.h
@@ -81,7 +89,10 @@ INCLUDES=(
 	include/llvm/Support/Recycler.h
 	include/llvm/Support/SMLoc.h
 	include/llvm/Support/SourceMgr.h
+	include/llvm/Support/StringSaver.h
 	include/llvm/Support/SwapByteOrder.h
+	include/llvm/Support/TargetParser.h
+	include/llvm/Support/ARMTargetParser.def
 	include/llvm/Support/Threading.h
 	include/llvm/Support/TimeValue.h
 	include/llvm/Support/type_traits.h
@@ -90,6 +101,7 @@ INCLUDES=(
 	include/llvm/Support/YAMLTraits.h
 	include/llvm-c/Core.h
 	include/llvm-c/Support.h
+	include/llvm-c/Types.h
 )
 
 # Source files to copy from llvm source tree.
@@ -105,6 +117,7 @@ SOURCES=(
 	Support/Hashing.cpp
 	Support/Host.cpp
 	Support/ManagedStatic.cpp
+	Support/LineIterator.cpp
 	Support/Memory.cpp
 	#Support/Memory.inc
 	Support/MemoryBuffer.cpp
@@ -119,6 +132,7 @@ SOURCES=(
 	Support/StringExtras.cpp
 	Support/StringMap.cpp
 	Support/StringRef.cpp
+	Support/StringSaver.cpp
 	Support/Threading.cpp
 	Support/TimeValue.cpp
 	Support/Triple.cpp
@@ -147,8 +161,8 @@ done
 
 # Apply patches.
 
-patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
-patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff1"
+patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff1"
+patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff1"
 
 exit 0

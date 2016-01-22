@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/YAMLTraits.h"
 #include "llvm/Support/YAMLParser.h"
 
