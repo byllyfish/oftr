@@ -20,9 +20,9 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 
 
 # Update patch (during development)
-diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff1" || true
-diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff1" || true
-diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff1" || true
+diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff" || true
+diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff" || true
+diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
 
 # Include files to copy from llvm source tree.
 INCLUDES=(
@@ -50,7 +50,6 @@ INCLUDES=(
 	include/llvm/ADT/StringMap.h
 	include/llvm/ADT/StringRef.h
 	include/llvm/ADT/StringSwitch.h
-	include/llvm/ADT/Triple.h
 	include/llvm/ADT/Twine.h
 	include/llvm/Config/config.h.cmake
 	include/llvm/Config/llvm-config.h.cmake
@@ -115,7 +114,6 @@ SOURCES=(
 	Support/Errno.cpp
 	Support/FoldingSet.cpp
 	Support/Hashing.cpp
-	Support/Host.cpp
 	Support/ManagedStatic.cpp
 	Support/LineIterator.cpp
 	Support/Memory.cpp
@@ -135,9 +133,8 @@ SOURCES=(
 	Support/StringSaver.cpp
 	Support/Threading.cpp
 	Support/TimeValue.cpp
-	Support/Triple.cpp
 	Support/Twine.cpp
-	Support/Unix/Host.inc
+	#Support/Unix/Host.inc
 	Support/Unix/Memory.inc
 	Support/Unix/Path.inc
 	Support/Unix/Process.inc
@@ -161,8 +158,8 @@ done
 
 # Apply patches.
 
-patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff1"
-patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff1"
-patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff1"
+patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
+patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
+patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 
 exit 0
