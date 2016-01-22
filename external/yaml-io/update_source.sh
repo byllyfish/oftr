@@ -20,9 +20,9 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 
 
 # Update patch (during development)
-diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff" || true
-diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff" || true
-diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
+#diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff" || true
+#diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff" || true
+#diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
 
 # Include files to copy from llvm source tree.
 INCLUDES=(
@@ -115,7 +115,6 @@ SOURCES=(
 	Support/ManagedStatic.cpp
 	Support/LineIterator.cpp
 	Support/Memory.cpp
-	#Support/Memory.inc
 	Support/MemoryBuffer.cpp
 	Support/Mutex.cpp
 	Support/Path.cpp
@@ -132,7 +131,6 @@ SOURCES=(
 	Support/Threading.cpp
 	Support/TimeValue.cpp
 	Support/Twine.cpp
-	#Support/Unix/Host.inc
 	Support/Unix/Memory.inc
 	Support/Unix/Path.inc
 	Support/Unix/Process.inc
