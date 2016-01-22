@@ -90,8 +90,6 @@ INCLUDES=(
 	include/llvm/Support/SourceMgr.h
 	include/llvm/Support/StringSaver.h
 	include/llvm/Support/SwapByteOrder.h
-	include/llvm/Support/TargetParser.h
-	include/llvm/Support/ARMTargetParser.def
 	include/llvm/Support/Threading.h
 	include/llvm/Support/TimeValue.h
 	include/llvm/Support/type_traits.h

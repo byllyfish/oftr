@@ -1,6 +1,6 @@
---- YAMLTraits.cpp	2015-03-10 15:55:09.000000000 -0700
-+++ YAMLTraits.cpp	2015-03-21 10:24:41.000000000 -0700
-@@ -296,6 +296,29 @@
+--- ../../../llvm/lib/Support/YAMLTraits.cpp	2016-01-20 17:28:10.000000000 -0700
++++ ./src/Support/YAMLTraits.cpp	2016-01-22 10:34:30.000000000 -0700
+@@ -306,6 +306,45 @@
    }
  }
  
@@ -27,25 +27,26 @@
 +  return false;
 +}
 +
++StringRef Input::bitSetCaseUnmatched() {
++  if (EC)
++    return "";
++  SequenceHNode *SQ = dyn_cast<SequenceHNode>(CurrentNode);
++  if (!SQ)
++    return "";
++  assert(BitValuesUsed.size() == SQ->Entries.size());
++  for (unsigned i = 0; i < SQ->Entries.size(); ++i) {
++    if (!BitValuesUsed[i]) {
++      if (ScalarHNode *SN = dyn_cast<ScalarHNode>(SQ->Entries[i].get()))
++        return SN->value();
++    }
++  }
++  return "";
++}
++
  void Input::scalarString(StringRef &S, bool) {
    if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
      S = SN->value();
-@@ -353,7 +376,13 @@
-         memcpy(Buf, &StringStorage[0], Len);
-         KeyStr = StringRef(Buf, Len);
-       }
--      auto ValueHNode = this->createHNodes(KVN.getValue());
-+      Node *ValueNode = KVN.getValue();
-+      if (!ValueNode) {
-+        assert(Strm->failed() && "Root is NULL iff parsing failed");
-+        EC = make_error_code(errc::invalid_argument);
-+        break;
-+      }
-+      auto ValueHNode = this->createHNodes(ValueNode);
-       if (EC)
-         break;
-       mapHNode->Mapping[KeyStr] = std::move(ValueHNode);
-@@ -552,6 +581,19 @@
+@@ -583,6 +622,23 @@
    this->outputUpToEndOfLine(" ]");
  }
  
@@ -60,6 +61,10 @@
 +    NeedBitValueComma = true;
 +  }
 +  return false;
++}
++
++StringRef Output::bitSetCaseUnmatched() {
++  return "";
 +}
 +
  void Output::scalarString(StringRef &S, bool MustQuote) {
