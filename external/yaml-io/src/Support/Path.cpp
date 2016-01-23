@@ -157,6 +157,7 @@ enum FSEntity {
   FS_Name
 };
 
+#if 0
 static std::error_code createUniqueEntity(const Twine &Model, int &ResultFD,
                                           SmallVectorImpl<char> &ResultPath,
                                           bool MakeAbsolute, unsigned Mode,
@@ -224,6 +225,7 @@ retry_random_path:
   }
   llvm_unreachable("Invalid Type");
 }
+#endif //0
 
 namespace llvm {
 namespace sys  {
@@ -719,6 +721,7 @@ std::error_code getUniqueID(const Twine Path, UniqueID &Result) {
   return std::error_code();
 }
 
+#if 0
 std::error_code createUniqueFile(const Twine &Model, int &ResultFd,
                                  SmallVectorImpl<char> &ResultPath,
                                  unsigned Mode) {
@@ -772,6 +775,7 @@ std::error_code createUniqueDirectory(const Twine &Prefix,
   return createUniqueEntity(Prefix + "-%%%%%%", Dummy, ResultPath,
                             true, 0, FS_Dir);
 }
+#endif //0
 
 static std::error_code make_absolute(const Twine &current_directory,
                                      SmallVectorImpl<char> &path,
