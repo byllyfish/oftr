@@ -23,6 +23,9 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 #diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff" || true
 #diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff" || true
 #diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
+#diff -u "${LLVM_SOURCE_DIR}/lib/Support/Path.cpp" "${WORKING_DIR}/src/Support/Path.cpp" > "$WORKING_DIR/src/Path.cpp.diff" || true
+#diff -u "${LLVM_SOURCE_DIR}/lib/Support/Unix/Process.inc" "${WORKING_DIR}/src/Support/Unix/Process.inc" > "$WORKING_DIR/src/Process.inc.diff" || true
+
 
 # Include files to copy from llvm source tree.
 INCLUDES=(
@@ -157,5 +160,7 @@ done
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
 patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
 patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+patch "${WORKING_DIR}/src/Support/Path.cpp" "$WORKING_DIR/src/Path.cpp.diff"
+patch "${WORKING_DIR}/src/Support/Unix/Process.inc" "$WORKING_DIR/src/Process.inc.diff"
 
 exit 0
