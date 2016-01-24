@@ -93,7 +93,8 @@ class IT_WithActions {
   }
 
   bool validateInput(Validation *context) const {
-    if (!context->validateBool(length_ >= SizeWithoutActions, "Invalid Instruction length"))
+    if (!context->validateBool(length_ >= SizeWithoutActions,
+                               "Invalid Instruction length"))
       return false;
     ActionRange actions = dataRange();
     return actions.validateInput(context);
@@ -175,7 +176,8 @@ class IT_EXPERIMENTER {
   }
 
   bool validateInput(Validation *context) const {
-    return context->validateBool(length_ >= HeaderSize, "Invalid Experimenter instruction");
+    return context->validateBool(length_ >= HeaderSize,
+                                 "Invalid Experimenter instruction");
   }
 
  private:

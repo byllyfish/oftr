@@ -14,12 +14,14 @@ PropertyRange Port::properties() const {
 
 bool Port::validateInput(Validation *context) const {
   size_t remaining = context->lengthRemaining();
-  if (!context->validateBool(remaining >= sizeof(Port), "Length remaining too short for Port")) {
+  if (!context->validateBool(remaining >= sizeof(Port),
+                             "Length remaining too short for Port")) {
     return false;
   }
 
   size_t len = length_;
-  if (!context->validateBool(len <= remaining && len >= sizeof(Port), "Invalid length for Port")) {
+  if (!context->validateBool(len <= remaining && len >= sizeof(Port),
+                             "Invalid length for Port")) {
     return false;
   }
 

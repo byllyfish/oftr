@@ -43,7 +43,8 @@ class ExperimenterProperty : private NonCopyable {
   ByteRange valueRef() const { return data_; }
 
   bool validateInput(Validation *context) const {
-    return context->validateBool(len_ >= FixedHeaderSize, "Invalid Experimenter property");
+    return context->validateBool(len_ >= FixedHeaderSize,
+                                 "Invalid Experimenter property");
   }
 
  private:

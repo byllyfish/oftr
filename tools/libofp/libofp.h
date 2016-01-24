@@ -54,8 +54,8 @@ LIBOFP_EXPORT void libofp_version(libofp_buffer *result);
 /// Returns -1 and result contains error message if there is an error.
 ///
 /// Client is responsible for calling `libofp_buffer_free` on result buffer.
-LIBOFP_EXPORT int libofp_encode(libofp_buffer *result,
-                                const char *yaml_input, uint32_t flags);
+LIBOFP_EXPORT int libofp_encode(libofp_buffer *result, const char *yaml_input,
+                                uint32_t flags);
 
 /// Translate a binary OpenFlow message to YAML.
 ///

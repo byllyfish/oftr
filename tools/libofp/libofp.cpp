@@ -32,7 +32,8 @@ void libofp_version(libofp_buffer *result) {
   buf_set(result, oss.str());
 }
 
-int libofp_encode(libofp_buffer *result, const char *yaml_input, uint32_t flags) {
+int libofp_encode(libofp_buffer *result, const char *yaml_input,
+                  uint32_t flags) {
   // `flags` unused for now
   llvm::StringRef text{yaml_input};
   ofp::yaml::Encoder encoder{text, false, 1, 0};

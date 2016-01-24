@@ -249,7 +249,8 @@ class AT_EXPERIMENTER {
   }
 
   bool validateInput(Validation *context) const {
-    return context->validateBool(type_.length() >= FixedSize, "Invalid EXPERIMENTER action");
+    return context->validateBool(type_.length() >= FixedSize,
+                                 "Invalid EXPERIMENTER action");
   }
 
  private:

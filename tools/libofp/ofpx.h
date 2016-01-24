@@ -4,10 +4,10 @@
 #ifndef TOOLS_LIBOFP_OFPX_H_
 #define TOOLS_LIBOFP_OFPX_H_
 
+#include <unistd.h>
 #include <vector>
 #include <string>
 #include <iostream>
-#include <unistd.h>
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/FileSystem.h"
@@ -99,7 +99,9 @@ class Subprogram {
                  clEnumValN(ofp::log::Trace::Rpc, "rpc",
                             "Log all JSON-RPC events sent and received"),
                  clEnumValEnd)};
-  cl::opt<unsigned> initialSleep_{"initial-sleep", cl::desc("Sleep immediately at startup"), cl::Hidden, cl::init(0)};
+  cl::opt<unsigned> initialSleep_{"initial-sleep",
+                                  cl::desc("Sleep immediately at startup"),
+                                  cl::Hidden, cl::init(0)};
 };
 
 using RunSubprogram = int (*)(int argc, const char *const *argv);
