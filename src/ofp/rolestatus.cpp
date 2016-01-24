@@ -8,9 +8,7 @@
 using namespace ofp;
 
 PropertyRange RoleStatus::properties() const {
-  assert(header_.length() >= sizeof(RoleStatus));
-  return ByteRange{BytePtr(this) + sizeof(RoleStatus),
-                   header_.length() - sizeof(RoleStatus)};
+  return SafeByteRange(this, header_.length(), sizeof(RoleStatus));
 }
 
 bool RoleStatus::validateInput(Validation *context) const {

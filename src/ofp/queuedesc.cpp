@@ -11,7 +11,7 @@ PropertyRange QueueDesc::properties() const {
 }
 
 bool QueueDesc::validateInput(Validation *context) const {
-  if (len_ < sizeof(QueueDesc))
+  if (!context->validateBool(len_ >= sizeof(QueueDesc), "QueueDesc too short"))
     return false;
 
   return properties().validateInput(context);

@@ -20,7 +20,7 @@ PropertyRange BundleAddMessage::properties() const {
       BytePtr(this) + sizeof(BundleAddMessage));
   size_t offset = sizeof(BundleAddMessage) + PadLength(msgHeader->length());
   assert(header_.length() >= offset);
-  return ByteRange{BytePtr(this) + offset, header_.length() - offset};
+  return SafeByteRange(this, header_.length(), offset);
 }
 
 bool BundleAddMessage::validateInput(Validation *context) const {

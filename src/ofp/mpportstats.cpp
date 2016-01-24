@@ -10,9 +10,7 @@
 using namespace ofp;
 
 PropertyRange MPPortStats::properties() const {
-  assert(length_ >= sizeof(MPPortStats));
-  return ByteRange{BytePtr(this) + sizeof(MPPortStats),
-                   length_ - sizeof(MPPortStats)};
+  return SafeByteRange(this, length_, sizeof(MPPortStats));
 }
 
 bool MPPortStats::validateInput(Validation *context) const {
