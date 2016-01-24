@@ -13,6 +13,13 @@ namespace ofpx {
 // Encode OpenFlow messages to binary as specified in YAML input files. If there
 // is a syntax error in the YAML input, stop and report an error.
 //
+// If no input files are specified, use standard input (stdin). A single hyphen
+// also represents stdin.
+//
+// Each binary OpenFlow message will use the version specified by the textual
+// object. It is an error if no version is specified. You can specify a default
+// OpenFlow version using the --ofversion option.
+//
 //   --hex (-x)               Output hexadecimal rather than binary
 //   --silent (-s)            Quiet mode; suppress normal output
 //   --silent-error           Suppress error output for invalid messages.
@@ -39,12 +46,6 @@ namespace ofpx {
 //
 //   libofp encode --json "filename"
 //
-// If no input files are specified, use standard input (stdin). A single hyphen
-// also represents stdin.
-//
-// Each binary OpenFlow message will use the version specified by the textual
-// object. It is an error if no version is specified. You can specify a default
-// OpenFlow version using the --ofversion option.
 
 OFP_BEGIN_IGNORE_PADDING
 

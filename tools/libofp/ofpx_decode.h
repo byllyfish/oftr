@@ -17,6 +17,9 @@ namespace ofpx {
 // message to human-readable YAML output. If there is an invalid message,
 // stop and report an error.
 //
+// If no input files are specified, use standard input (stdin). A single hyphen
+// also represents stdin.
+//
 //   --json (-j)           Write compact JSON output instead of YAML.
 //   --json-array          Write output as a valid JSON array.
 //   --silent (-s)         Quiet mode; suppress normal output.
@@ -45,8 +48,6 @@ namespace ofpx {
 //
 //     libofp decode --invert-check "filename"
 //
-// If no input files are specified, use standard input (stdin). A single hyphen
-// also represents stdin.
 
 OFP_BEGIN_IGNORE_PADDING
 
