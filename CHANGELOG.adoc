@@ -1,5 +1,19 @@
 = Changelog
 
+== Version 0.14 (27 January 2016)
+
+- Add endpoint parameter to OFP.CHANNEL notification.
+- datapath_id parameter is now optional in OFP.CHANNEL notification.
+- Replace std::map with std::unordered_map in Engine.cpp
+- Replace ChannelMode with ChannelOptions: FEATURES_REQ, AUXILIARY, LISTEN_UDP, CONNECT_UDP, DEFAULT_CONTROLLER, DEFAULT_AGENT.
+- The default options for OFP.LISTEN and OFP.CONNECT are now `DEFAULT_AGENT`.
+- Auxiliary OpenFlow connections are off by default; you have to explicitly enable them using the AUXILIARY option.
+- UDP listening is off by default you have to explicitly enable it using the LISTEN_UDP option.
+- Update yamlio to recent source code from llvm project. Remove code for Random numbers.
+- Minor changes to libofp C api.
+- Add --initial-sleep hidden argument to libofp tool.
+- Truncate JSON-RPC error responses before they exceed the max message size.
+
 == Version 0.13 (16 January 2016)
 
 - Fix issue in parsing LLDP packets.
