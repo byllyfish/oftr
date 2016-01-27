@@ -37,7 +37,7 @@ class DatapathID {
   bool operator!=(const DatapathID &rhs) const { return !operator==(rhs); }
 
  private:
-  OFP_ALIGNAS(UInt64) ArrayType dpid_;
+  OFP_ALIGNAS(8) ArrayType dpid_;
 
   UInt64 toUInt64() const { return *Interpret_cast<UInt64>(&dpid_); }
 };
