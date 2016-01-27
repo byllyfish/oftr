@@ -278,6 +278,7 @@ struct RpcChannel {
     UInt64 connId = 0;
     DatapathID datapathId;
     std::string status;
+    IPv6Endpoint endpoint;
     UInt8 version{};
   };
 
@@ -390,6 +391,7 @@ method: !notify OFP.CHANNEL
 params: !notify
   conn_id: UInt64
   datapath_id: DatapathID
+  endpoint: IPv6Endpoint
   version: UInt8
   status: UP | DOWN
 
@@ -640,7 +642,8 @@ template <>
 struct MappingTraits<ofp::rpc::RpcChannel::Params> {
   static void mapping(IO &io, ofp::rpc::RpcChannel::Params &params) {
     io.mapRequired("conn_id", params.connId);
-    io.mapOptional("datapath_id", params.datapathId);
+    io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
+    io.mapRequired("endpoint", params.endpoint);
     io.mapRequired("version", params.version);
     io.mapRequired("status", params.status);
   }

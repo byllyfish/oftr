@@ -325,6 +325,7 @@ certificate chain presented by the other end of the connection.
   params:
     conn_id: UInt64
     datapath_id: DatapathID      # Optional
+    endpoint: IPv6Endpoint
     status: 'UP' | 'DOWN'
     version: UInt8
 

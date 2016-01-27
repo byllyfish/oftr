@@ -77,6 +77,7 @@ Rpc/OFP.CHANNEL:
   params: !notify
     conn_id: UInt64
     datapath_id: DatapathID
+    endpoint: IPv6Endpoint
     version: UInt8
     status: UP | DOWN
   
