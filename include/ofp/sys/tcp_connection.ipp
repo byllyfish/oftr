@@ -232,7 +232,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
 
             } else {
               assert(err);
-              
+
               if (err != asio::error::eof &&
                   err != asio::error::operation_aborted) {
                 log::error("asyncReadHeader error",
