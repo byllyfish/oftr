@@ -32,11 +32,11 @@ inline SSL_CTX *udpContext<Plaintext_Adapter>(UDP_Server *server,
 
 template <class AdapterType>
 UDP_Connection<AdapterType>::UDP_Connection(UDP_Server *server,
-                                            ChannelMode mode, UInt64 securityId,
+                                            ChannelOptions options, UInt64 securityId,
                                             ProtocolVersions versions,
                                             ChannelListener::Factory factory)
     : Connection{server->engine(),
-                 new DefaultHandshake{this, mode, versions, factory}},
+                 new DefaultHandshake{this, options, versions, factory}},
       server_{server},
       dtls_{detail::udpContext<AdapterType>(server, securityId), sendCallback,
             receiveCallback, this} {

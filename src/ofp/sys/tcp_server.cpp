@@ -10,24 +10,24 @@
 using namespace ofp::sys;
 
 std::shared_ptr<TCP_Server> TCP_Server::create(
-    Engine *engine, ChannelMode mode, UInt64 securityId,
+    Engine *engine, ChannelOptions options, UInt64 securityId,
     const IPv6Endpoint &localEndpt, ProtocolVersions versions,
     ChannelListener::Factory listenerFactory, std::error_code &error) {
   auto ptr =
-      std::make_shared<TCP_Server>(PrivateToken{}, engine, mode, securityId,
+      std::make_shared<TCP_Server>(PrivateToken{}, engine, options, securityId,
                                    localEndpt, versions, listenerFactory);
   ptr->asyncListen(localEndpt, error);
   return ptr;
 }
 
-TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelOptions options,
                        UInt64 securityId, const IPv6Endpoint &localEndpt,
                        ProtocolVersions versions,
                        ChannelListener::Factory listenerFactory)
     : engine_{engine},
       acceptor_{engine->io()},
       socket_{engine->io()},
-      mode_{mode},
+      options_{options},
       versions_{versions},
       factory_{listenerFactory},
       securityId_{securityId} {
@@ -41,7 +41,7 @@ TCP_Server::~TCP_Server() {
 
   if (connId_) {
     // Dispose of UDP server first.
-    udpServer_->shutdown();
+    shutdownUDP();
 
     log::info("Stop listening on TCP", std::make_pair("tlsid", securityId_),
               std::make_pair("connid", connId_));
@@ -56,7 +56,7 @@ ofp::IPv6Endpoint TCP_Server::localEndpoint() const {
 
 void TCP_Server::shutdown() {
   acceptor_.close();
-  udpServer_->shutdown();
+  shutdownUDP();
 }
 
 void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt,
@@ -69,7 +69,11 @@ void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt,
               std::make_pair("tlsid", securityId_),
               std::make_pair("connid", connId_));
     asyncAccept();
-    listenUDP(localEndpt, error);
+
+    // Start listening on UDP, if requested.
+    if ((options_ & ChannelOptions::LISTEN_UDP) != 0) {
+      listenUDP(localEndpt, error);
+    }
 
   } else {
     connId_ = 0;
@@ -115,12 +119,12 @@ void TCP_Server::asyncAccept() {
     if (!err) {
       if (securityId_ > 0) {
         auto conn = std::make_shared<TCP_Connection<EncryptedSocket>>(
-            engine_, std::move(socket_), mode_, securityId_, versions_,
+            engine_, std::move(socket_), options_, securityId_, versions_,
             factory_);
         conn->asyncAccept();
       } else {
         auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(
-            engine_, std::move(socket_), mode_, securityId_, versions_,
+            engine_, std::move(socket_), options_, securityId_, versions_,
             factory_);
         conn->asyncAccept();
       }
@@ -135,6 +139,11 @@ void TCP_Server::asyncAccept() {
 
 void TCP_Server::listenUDP(const IPv6Endpoint &localEndpt,
                            std::error_code &error) {
-  udpServer_ = UDP_Server::create(engine_, mode_, securityId_, localEndpt,
+  udpServer_ = UDP_Server::create(engine_, options_, securityId_, localEndpt,
                                   versions_, connId_, error);
+}
+
+void TCP_Server::shutdownUDP() {
+  if (udpServer_) 
+    udpServer_->shutdown();
 }

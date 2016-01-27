@@ -13,13 +13,13 @@
 using namespace ofp;
 using namespace ofp::sys;
 
-std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelMode mode,
+std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelOptions options,
                                                UInt64 securityId,
                                                const IPv6Endpoint &localEndpt,
                                                ProtocolVersions versions,
                                                UInt64 connId,
                                                std::error_code &error) {
-  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, mode,
+  auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, options,
                                           securityId, versions, connId);
   ptr->asyncListen(localEndpt, error);
   return ptr;
@@ -35,11 +35,11 @@ std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine,
   return ptr;
 }
 
-UDP_Server::UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+UDP_Server::UDP_Server(PrivateToken t, Engine *engine, ChannelOptions options,
                        UInt64 securityId, ProtocolVersions versions,
                        UInt64 connId)
     : engine_{engine},
-      mode_{mode},
+      options_{options},
       versions_{versions},
       socket_{engine->io()},
       connId_{connId},
@@ -49,7 +49,7 @@ UDP_Server::UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
 
 UDP_Server::UDP_Server(PrivateToken t, Engine *engine)
     : engine_{engine},
-      mode_{ChannelMode::Raw},
+      options_{ChannelOptions::NONE},
       versions_{ProtocolVersions::All},
       socket_{engine->io()},
       connId_{0},
@@ -91,12 +91,12 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
   }
 
   if (securityId != 0) {
-    auto conn = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId,
+    auto conn = new UDP_Connection<DTLS_Adapter>(this, options_, securityId,
                                                  versions_, factory);
     conn->connect(endpt);
     return conn->connectionId();
   } else {
-    auto conn = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId,
+    auto conn = new UDP_Connection<Plaintext_Adapter>(this, options_, securityId,
                                                       versions_, factory);
     conn->connect(endpt);
     return conn->connectionId();
@@ -267,12 +267,12 @@ void UDP_Server::datagramReceived() {
     // TODO(bfish): check if this UDP server allows incoming UDP connections...
 
     if (securityId_ != 0) {
-      auto udp = new UDP_Connection<DTLS_Adapter>(this, mode_, securityId_,
+      auto udp = new UDP_Connection<DTLS_Adapter>(this, options_, securityId_,
                                                   versions_, nullptr);
       udp->accept(sender_);
       conn = udp;
     } else {
-      auto udp = new UDP_Connection<Plaintext_Adapter>(this, mode_, securityId_,
+      auto udp = new UDP_Connection<Plaintext_Adapter>(this, options_, securityId_,
                                                        versions_, nullptr);
       udp->accept(sender_);
       conn = udp;

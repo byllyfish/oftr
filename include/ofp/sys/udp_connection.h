@@ -31,7 +31,7 @@ OFP_BEGIN_IGNORE_PADDING
 template <class AdapterType>
 class UDP_Connection : public Connection {
  public:
-  UDP_Connection(UDP_Server *server, ChannelMode mode, UInt64 securityId,
+  UDP_Connection(UDP_Server *server, ChannelOptions options, UInt64 securityId,
                  ProtocolVersions versions, ChannelListener::Factory factory);
   ~UDP_Connection();
 

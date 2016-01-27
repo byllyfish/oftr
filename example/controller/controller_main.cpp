@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
   driver.installSignalHandlers();
 
   std::error_code err;
-  (void)driver.listen(ChannelMode::Controller, 0,
+  (void)driver.listen(ChannelOptions::DEFAULT_CONTROLLER, 0,
                       IPv6Endpoint{OFPGetDefaultPort()}, ProtocolVersions::All,
                       []() { return new controller::SimpleChannelListener; },
                       err);

@@ -89,6 +89,9 @@ class Connection : public Channel {
 
     /// Indicates connection is idle.
     kChannelIdle = 0x0040,
+
+    /// Indicates permission for auxiliary connections.
+    kPermitsAuxiliary = 0x0080
   };
 
   void poll() override;

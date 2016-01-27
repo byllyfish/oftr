@@ -21,12 +21,18 @@ Engine::~Engine() {
   log::debug("Engine shutting down");
 }
 
-UInt64 Engine::listen(ChannelMode mode, UInt64 securityId,
+UInt64 Engine::listen(ChannelOptions options, UInt64 securityId,
                       const IPv6Endpoint &localEndpoint,
                       ProtocolVersions versions,
                       ChannelListener::Factory listenerFactory,
                       std::error_code &error) {
-  auto svrPtr = TCP_Server::create(this, mode, securityId, localEndpoint,
+  // Verify the channel options.
+  if (!AreChannelOptionsValid(options)) {
+    error = std::make_error_code(std::errc::invalid_argument);
+    return 0;
+  }
+
+  auto svrPtr = TCP_Server::create(this, options, securityId, localEndpoint,
                                    versions, listenerFactory, error);
   if (error)
     return 0;
@@ -39,20 +45,34 @@ UInt64 Engine::listen(ChannelMode mode, UInt64 securityId,
 }
 
 UInt64 Engine::connect(
-    ChannelMode mode, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
+    ChannelOptions options, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
     ProtocolVersions versions, ChannelListener::Factory listenerFactory,
     std::function<void(Channel *, std::error_code)> resultHandler) {
+  // Verify the channel options.
+  if (!AreChannelOptionsValid(options)) {
+    resultHandler(nullptr, std::make_error_code(std::errc::invalid_argument));
+    return 0;
+  }
+
   UInt64 connId = 0;
+
+  // Check for CONNECT_UDP option.
+  if ((options & ChannelOptions::CONNECT_UDP) != 0) {
+    std::error_code error;
+    connId = connectUDP(securityId, remoteEndpoint, listenerFactory, error);
+    resultHandler(nullptr, error);
+    return connId;
+  }
 
   if (securityId != 0) {
     auto connPtr = std::make_shared<TCP_Connection<EncryptedSocket>>(
-        this, mode, securityId, versions, listenerFactory);
+        this, options, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
 
   } else {
     auto connPtr = std::make_shared<TCP_Connection<PlaintextSocket>>(
-        this, mode, securityId, versions, listenerFactory);
+        this, options, securityId, versions, listenerFactory);
     connPtr->asyncConnect(remoteEndpoint, resultHandler);
     connId = connPtr->connectionId();
   }
@@ -60,9 +80,8 @@ UInt64 Engine::connect(
   return connId;
 }
 
-UInt64 Engine::connectUDP(ChannelMode mode, UInt64 securityId,
+UInt64 Engine::connectUDP(UInt64 securityId,
                           const IPv6Endpoint &remoteEndpoint,
-                          ProtocolVersions versions,
                           ChannelListener::Factory listenerFactory,
                           std::error_code &error) {
   UInt64 connId = 0;
@@ -242,7 +261,13 @@ bool Engine::registerDatapath(Connection *channel) {
     // don't find a main connection, close the auxiliary channel.
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
-      channel->setMainConnection(item->second, auxID);
+      Connection *parent = item->second;
+      if (parent->flags() & Connection::kPermitsAuxiliary) {
+        channel->setMainConnection(parent, auxID);
+      } else {
+        log::warning("registerDatapath: Auxiliary connection not permitted for datapath", dpid, "aux", static_cast<int>(auxID), std::make_pair("conn_id", channel->connectionId()));
+        return false;
+      }
 
     } else {
       log::warning("registerDatapath: Main connection not found for datapath",

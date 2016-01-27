@@ -7,7 +7,7 @@
 #include "ofp/channellistener.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/protocolversions.h"
-#include "ofp/channelmode.h"
+#include "ofp/channeloptions.h"
 #include "ofp/channeltransport.h"
 
 namespace ofp {
@@ -21,21 +21,15 @@ class Driver {
   Driver();
   ~Driver();
 
-  UInt64 listen(ChannelMode mode, UInt64 securityId,
+  UInt64 listen(ChannelOptions options, UInt64 securityId,
                 const IPv6Endpoint &localEndpoint, ProtocolVersions versions,
                 ChannelListener::Factory listenerFactory,
                 std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, UInt64 securityId,
+  UInt64 connect(ChannelOptions options, UInt64 securityId,
                  const IPv6Endpoint &remoteEndpoint, ProtocolVersions versions,
                  ChannelListener::Factory listenerFactory,
                  std::function<void(Channel *, std::error_code)> resultHandler);
-
-  UInt64 connectUDP(ChannelMode mode, UInt64 securityId,
-                    const IPv6Endpoint &remoteEndpoint,
-                    ProtocolVersions versions,
-                    ChannelListener::Factory listenerFactory,
-                    std::error_code &error);
 
   void run();
 

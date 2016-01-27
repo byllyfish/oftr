@@ -120,14 +120,14 @@ TEST(roundtrip, basic_test) {
     IPv6Address localhost{"127.0.0.1"};
 
     std::error_code err1;
-    (void)driver.listen(ChannelMode::Controller, 0,
+    (void)driver.listen(ChannelOptions::DEFAULT_CONTROLLER, 0,
                         IPv6Endpoint{localhost, kTestingPort},
                         ProtocolVersions::All, TestController::factory, err1);
     // There should be no error on listen, unless the port is in use.
     EXPECT_FALSE(err1);
 
     (void)driver.connect(
-        ChannelMode::Raw, 0, IPv6Endpoint{localhost, kTestingPort},
+        ChannelOptions::DEFAULT_AGENT, 0, IPv6Endpoint{localhost, kTestingPort},
         ProtocolVersions::All, TestAgent::factory,
         [](Channel *, std::error_code err) { EXPECT_FALSE(err); });
 
@@ -152,14 +152,14 @@ TEST(roundtrip, shutdown_test) {
     IPv6Address localhost{"127.0.0.1"};
 
     std::error_code err1;
-    (void)driver.listen(ChannelMode::Controller, 0,
+    (void)driver.listen(ChannelOptions::DEFAULT_CONTROLLER, 0,
                         IPv6Endpoint{localhost, kTestingPort},
                         ProtocolVersions::All, TestController::factory, err1);
 
     EXPECT_FALSE(err1);
 
     (void)driver.connect(
-        ChannelMode::Raw, 0, IPv6Endpoint{localhost, kTestingPort},
+        ChannelOptions::DEFAULT_AGENT, 0, IPv6Endpoint{localhost, kTestingPort},
         ProtocolVersions::All, TestAgent::factory,
         [](Channel *, std::error_code err) { EXPECT_FALSE(err); });
 
