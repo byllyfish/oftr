@@ -325,4 +325,4 @@ GitHub: {github}
 == COPYING
 
 Copyright \(C) 2015-2016 William W. Fisher. Free use of this software is
-granted under the terms of the MIT Licence.
+granted under the terms of the MIT License.

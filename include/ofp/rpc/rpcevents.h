@@ -222,11 +222,11 @@ struct RpcAddIdentity {
 
   struct Params {
     /// Certificate chain in PEM format (which also contains private key).
-    std::string certificate;
-    /// Optional password for encrypted private key.
-    std::string password;
+    std::string cert;
     /// PEM certificate for trusted CA to use for verifying a peer certificate.
-    std::string verifier;
+    std::string cert_auth;
+    /// Optional password for encrypted private key.
+    std::string privkey_password;
   };
 
   UInt64 id;
@@ -375,9 +375,9 @@ result: !reply
 id: !opt UInt64
 method: !request OFP.ADD_IDENTITY
 params: !request
-  certificate: String
-  password: String
-  verifier: String
+  cert: String
+  cert_auth: String
+  privkey_password: !opt String
 result: !reply
   tls_id: UInt64
 
@@ -489,9 +489,9 @@ struct MappingTraits<ofp::rpc::RpcListConns::Params> {
 template <>
 struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAddIdentity::Params &params) {
-    io.mapRequired("certificate", params.certificate);
-    io.mapOptional("password", params.password);
-    io.mapRequired("verifier", params.verifier);
+    io.mapRequired("cert", params.cert);
+    io.mapRequired("cert_auth", params.cert_auth);
+    io.mapOptional("privkey_password", params.privkey_password);
   }
 };
 
@@ -640,7 +640,7 @@ template <>
 struct MappingTraits<ofp::rpc::RpcChannel::Params> {
   static void mapping(IO &io, ofp::rpc::RpcChannel::Params &params) {
     io.mapRequired("conn_id", params.connId);
-    io.mapRequired("datapath_id", params.datapathId);
+    io.mapOptional("datapath_id", params.datapathId);
     io.mapRequired("version", params.version);
     io.mapRequired("status", params.status);
   }
