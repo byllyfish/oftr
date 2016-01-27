@@ -131,13 +131,13 @@ size_t Engine::close(UInt64 connId) {
 
     size_t result = serverList_.size() + connList_.size();
 
-    ServerList servers;
+    std::vector<TCP_Server *> servers;
     servers.swap(serverList_);
     for (auto svr : servers) {
       svr->shutdown();
     }
 
-    ConnectionList conns;
+    std::vector<Connection *> conns;
     conns.swap(connList_);
     for (auto conn : conns) {
       conn->shutdown();

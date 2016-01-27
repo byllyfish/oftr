@@ -109,18 +109,14 @@ class Engine {
   // Pointer to driver object that owns engine.
   Driver *driver_;
 
-  using DatapathMap = std::map<DatapathID, Connection *>;
-  using ServerList = std::vector<TCP_Server *>;
-  using ConnectionList = std::vector<Connection *>;
-
   // The identities_ vector must be the last object destroyed, since io_service
   // objects may depend on it.
 
   std::vector<std::unique_ptr<Identity>> identities_;
 
-  ConnectionList connList_;
-  ServerList serverList_;
-  DatapathMap dpidMap_;
+  std::vector<Connection *> connList_;
+  std::vector<TCP_Server *> serverList_;
+  std::unordered_map<DatapathID, Connection *> dpidMap_;
   std::shared_ptr<UDP_Server> udpConnect_;
   UInt64 lastConnId_ = 0;
   UInt64 lastSecurityId_ = 0;
