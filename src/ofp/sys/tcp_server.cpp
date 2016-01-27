@@ -144,6 +144,6 @@ void TCP_Server::listenUDP(const IPv6Endpoint &localEndpt,
 }
 
 void TCP_Server::shutdownUDP() {
-  if (udpServer_) 
+  if (udpServer_)
     udpServer_->shutdown();
 }

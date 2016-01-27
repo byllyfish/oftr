@@ -13,12 +13,10 @@
 using namespace ofp;
 using namespace ofp::sys;
 
-std::shared_ptr<UDP_Server> UDP_Server::create(Engine *engine, ChannelOptions options,
-                                               UInt64 securityId,
-                                               const IPv6Endpoint &localEndpt,
-                                               ProtocolVersions versions,
-                                               UInt64 connId,
-                                               std::error_code &error) {
+std::shared_ptr<UDP_Server> UDP_Server::create(
+    Engine *engine, ChannelOptions options, UInt64 securityId,
+    const IPv6Endpoint &localEndpt, ProtocolVersions versions, UInt64 connId,
+    std::error_code &error) {
   auto ptr = std::make_shared<UDP_Server>(PrivateToken{}, engine, options,
                                           securityId, versions, connId);
   ptr->asyncListen(localEndpt, error);
@@ -96,8 +94,8 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
     conn->connect(endpt);
     return conn->connectionId();
   } else {
-    auto conn = new UDP_Connection<Plaintext_Adapter>(this, options_, securityId,
-                                                      versions_, factory);
+    auto conn = new UDP_Connection<Plaintext_Adapter>(
+        this, options_, securityId, versions_, factory);
     conn->connect(endpt);
     return conn->connectionId();
   }
@@ -272,8 +270,8 @@ void UDP_Server::datagramReceived() {
       udp->accept(sender_);
       conn = udp;
     } else {
-      auto udp = new UDP_Connection<Plaintext_Adapter>(this, options_, securityId_,
-                                                       versions_, nullptr);
+      auto udp = new UDP_Connection<Plaintext_Adapter>(
+          this, options_, securityId_, versions_, nullptr);
       udp->accept(sender_);
       conn = udp;
     }

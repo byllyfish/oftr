@@ -37,11 +37,13 @@ inline asio::ssl::context *tcpContext<PlaintextSocket>(Engine *engine,
 }  // namespace detail
 
 template <class SocketType>
-TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelOptions options,
+TCP_Connection<SocketType>::TCP_Connection(Engine *engine,
+                                           ChannelOptions options,
                                            UInt64 securityId,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, options, versions, factory}},
+    : Connection{engine,
+                 new DefaultHandshake{this, options, versions, factory}},
       message_{this},
       socket_{engine->io(),
               detail::tcpContext<SocketType>(engine, securityId)} {
@@ -56,10 +58,12 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelOptions option
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
-                                           ChannelOptions options, UInt64 securityId,
+                                           ChannelOptions options,
+                                           UInt64 securityId,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, options, versions, factory}},
+    : Connection{engine,
+                 new DefaultHandshake{this, options, versions, factory}},
       message_{this},
       socket_{std::move(socket),
               detail::tcpContext<SocketType>(engine, securityId)} {

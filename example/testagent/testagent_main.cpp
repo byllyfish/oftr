@@ -36,8 +36,9 @@ int main(int argc, char **argv) {
         });
 
   } else {
-    (void)driver.listen(ChannelOptions::DEFAULT_AGENT, 0, IPv6Endpoint{OFPGetDefaultPort()},
-                        {OFP_VERSION_1}, TestAgent::Factory, error);
+    (void)driver.listen(ChannelOptions::DEFAULT_AGENT, 0,
+                        IPv6Endpoint{OFPGetDefaultPort()}, {OFP_VERSION_1},
+                        TestAgent::Factory, error);
   }
 
   driver.run();

@@ -32,9 +32,9 @@ int main(int argc, char **argv) {
 
   if (addr.valid()) {
     (void)driver.connect(
-        ChannelOptions::DEFAULT_CONTROLLER, 0, IPv6Endpoint{addr, OFPGetDefaultPort()},
-        ProtocolVersions::All, NullController::Factory,
-        [](Channel *channel, std::error_code err) {
+        ChannelOptions::DEFAULT_CONTROLLER, 0,
+        IPv6Endpoint{addr, OFPGetDefaultPort()}, ProtocolVersions::All,
+        NullController::Factory, [](Channel *channel, std::error_code err) {
           std::cout << "Result: connId=" << channel->connectionId()
                     << " err=" << err << '\n';
         });

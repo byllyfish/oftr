@@ -45,8 +45,9 @@ UInt64 Engine::listen(ChannelOptions options, UInt64 securityId,
 }
 
 UInt64 Engine::connect(
-    ChannelOptions options, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
-    ProtocolVersions versions, ChannelListener::Factory listenerFactory,
+    ChannelOptions options, UInt64 securityId,
+    const IPv6Endpoint &remoteEndpoint, ProtocolVersions versions,
+    ChannelListener::Factory listenerFactory,
     std::function<void(Channel *, std::error_code)> resultHandler) {
   // Verify the channel options.
   if (!AreChannelOptionsValid(options)) {
@@ -80,8 +81,7 @@ UInt64 Engine::connect(
   return connId;
 }
 
-UInt64 Engine::connectUDP(UInt64 securityId,
-                          const IPv6Endpoint &remoteEndpoint,
+UInt64 Engine::connectUDP(UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
                           ChannelListener::Factory listenerFactory,
                           std::error_code &error) {
   UInt64 connId = 0;
@@ -265,7 +265,10 @@ bool Engine::registerDatapath(Connection *channel) {
       if (parent->flags() & Connection::kPermitsAuxiliary) {
         channel->setMainConnection(parent, auxID);
       } else {
-        log::warning("registerDatapath: Auxiliary connection not permitted for datapath", dpid, "aux", static_cast<int>(auxID), std::make_pair("conn_id", channel->connectionId()));
+        log::warning(
+            "registerDatapath: Auxiliary connection not permitted for datapath",
+            dpid, "aux", static_cast<int>(auxID),
+            std::make_pair("conn_id", channel->connectionId()));
         return false;
       }
 

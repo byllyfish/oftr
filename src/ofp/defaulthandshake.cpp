@@ -131,7 +131,8 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
   // a UDP transport.
 
   if (channel_->postDatapath(msg->datapathId(), msg->auxiliaryId())) {
-    if ((options_ & ChannelOptions::AUXILIARY) != 0 && channel_->mainConnection() != channel_) {
+    if ((options_ & ChannelOptions::AUXILIARY) != 0 &&
+        channel_->mainConnection() != channel_) {
       assert(msg->auxiliaryId() != 0);
       // This is an auxiliary connection, clear its channel listener. Note
       // that we do not pass the (auxiliary) FeaturesReply message to the

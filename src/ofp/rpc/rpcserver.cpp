@@ -354,7 +354,8 @@ std::string RpcServer::softwareVersion() {
   return sstr.str();
 }
 
-ChannelOptions RpcServer::parseOptions(const std::vector<std::string> &options) {
+ChannelOptions RpcServer::parseOptions(
+    const std::vector<std::string> &options) {
   ChannelOptions result = ChannelOptions::NONE;
 
   for (auto opt : options) {

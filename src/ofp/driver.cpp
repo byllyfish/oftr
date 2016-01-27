@@ -23,8 +23,9 @@ UInt64 Driver::listen(ChannelOptions options, UInt64 securityId,
 }
 
 UInt64 Driver::connect(
-    ChannelOptions options, UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
-    ProtocolVersions versions, ChannelListener::Factory listenerFactory,
+    ChannelOptions options, UInt64 securityId,
+    const IPv6Endpoint &remoteEndpoint, ProtocolVersions versions,
+    ChannelListener::Factory listenerFactory,
     std::function<void(Channel *, std::error_code)> resultHandler) {
   return engine_->connect(options, securityId, remoteEndpoint, versions,
                           listenerFactory, resultHandler);

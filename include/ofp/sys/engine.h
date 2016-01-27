@@ -147,8 +147,7 @@ class Engine {
   AlertCallback alertCallback_ = nullptr;
   void *alertContext_ = nullptr;
 
-  UInt64 connectUDP(UInt64 securityId,
-                    const IPv6Endpoint &remoteEndpoint,
+  UInt64 connectUDP(UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
                     ChannelListener::Factory listenerFactory,
                     std::error_code &error);
   void asyncIdle();

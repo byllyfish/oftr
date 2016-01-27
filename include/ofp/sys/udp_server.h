@@ -25,12 +25,10 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   class PrivateToken {};
 
  public:
-  static std::shared_ptr<UDP_Server> create(Engine *engine, ChannelOptions options,
-                                            UInt64 securityId,
-                                            const IPv6Endpoint &localEndpt,
-                                            ProtocolVersions versions,
-                                            UInt64 connId,
-                                            std::error_code &error);
+  static std::shared_ptr<UDP_Server> create(
+      Engine *engine, ChannelOptions options, UInt64 securityId,
+      const IPv6Endpoint &localEndpt, ProtocolVersions versions, UInt64 connId,
+      std::error_code &error);
   static std::shared_ptr<UDP_Server> create(Engine *engine,
                                             std::error_code &error);
 
