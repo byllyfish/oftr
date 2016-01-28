@@ -22,11 +22,11 @@ class TCP_Server : public std::enable_shared_from_this<TCP_Server> {
 
  public:
   static std::shared_ptr<TCP_Server> create(
-      Engine *engine, ChannelMode mode, UInt64 securityId,
+      Engine *engine, ChannelOptions options, UInt64 securityId,
       const IPv6Endpoint &localEndpt, ProtocolVersions versions,
       ChannelListener::Factory listenerFactory, std::error_code &error);
 
-  TCP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+  TCP_Server(PrivateToken t, Engine *engine, ChannelOptions options,
              UInt64 securityId, const IPv6Endpoint &localEndpt,
              ProtocolVersions versions,
              ChannelListener::Factory listenerFactory);
@@ -40,7 +40,7 @@ class TCP_Server : public std::enable_shared_from_this<TCP_Server> {
   Engine *engine_;
   tcp::acceptor acceptor_;
   tcp::socket socket_;
-  ChannelMode mode_;
+  ChannelOptions options_;
   ProtocolVersions versions_;
   ChannelListener::Factory factory_;
   UInt64 connId_ = 0;
@@ -52,6 +52,7 @@ class TCP_Server : public std::enable_shared_from_this<TCP_Server> {
   void asyncAccept();
 
   void listenUDP(const IPv6Endpoint &localEndpt, std::error_code &error);
+  void shutdownUDP();
 };
 
 OFP_END_IGNORE_PADDING

@@ -14,7 +14,7 @@
 
 using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
-using ofp::UInt32;
+using namespace ofp;
 
 RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
@@ -86,21 +86,27 @@ void RpcServer::onDisconnect(RpcConnection *conn) {
 }
 
 void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
-  std::string optionError;
   IPv6Endpoint endpt = open->params.endpoint;
   UInt64 securityId = open->params.securityId;
+  ChannelOptions options = parseOptions(open->params.options);
+
+  // Verify the channel options.
+  std::string errMesg;
+  if (!AreChannelOptionsValid(options)) {
+    errMesg += "Invalid combination of options.\n";
+  }
 
   // Check that securityId exists.
   if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
-    optionError += "Invalid tls_id: " + std::to_string(securityId);
+    errMesg += "Invalid tls_id: " + std::to_string(securityId);
   }
 
-  if (!optionError.empty()) {
+  if (!errMesg.empty()) {
     if (open->id == RPC_ID_MISSING)
       return;
     RpcErrorResponse response{open->id};
     response.error.code = ERROR_CODE_INVALID_OPTION;
-    response.error.message = optionError;
+    response.error.message = errMesg;
     conn->rpcReply(&response);
     return;
   }
@@ -112,7 +118,7 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
 
   std::error_code err;
   UInt64 connId =
-      engine_->listen(ChannelMode::Controller, securityId, endpt, versions,
+      engine_->listen(options, securityId, endpt, versions,
                       [this]() { return new RpcChannelListener{this}; }, err);
 
   if (open->id == RPC_ID_MISSING)
@@ -150,38 +156,26 @@ void RpcServer::connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
 
 void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   std::string optionError;
-  ChannelMode mode = ChannelMode::Controller;
   UInt64 securityId = connect->params.securityId;
-  bool udp = false;
+  ChannelOptions options = parseOptions(connect->params.options);
 
-  for (auto opt : connect->params.options) {
-    if (opt == "--raw" || opt == "-raw") {
-      mode = ChannelMode::Raw;
-    } else if (opt == "--udp" || opt == "-udp") {
-      udp = true;
-    } else {
-      optionError += "Unknown option: " + opt;
-      break;
-    }
-  }
-
-  // Check for invalid combination of mode and transport.
-  if (udp && mode != ChannelMode::Raw) {
-    optionError += "Invalid option: --udp must be combined with --raw";
+  // Verify the channel options.
+  std::string errMesg;
+  if (!AreChannelOptionsValid(options)) {
+    errMesg += "Invalid combination of options.\n";
   }
 
   // Check that securityId exists.
-  if (optionError.empty() && securityId != 0 &&
-      engine_->findIdentity(securityId) == nullptr) {
-    optionError += "Invalid tls_id: " + std::to_string(securityId);
+  if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
+    errMesg += "Invalid tls_id: " + std::to_string(securityId);
   }
 
-  if (!optionError.empty()) {
+  if (!errMesg.empty()) {
     if (connect->id == RPC_ID_MISSING)
       return;
     RpcErrorResponse response{connect->id};
     response.error.code = ERROR_CODE_INVALID_OPTION;
-    response.error.message = optionError;
+    response.error.message = errMesg;
     conn->rpcReply(&response);
     return;
   }
@@ -194,22 +188,13 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   if (versions.empty())
     versions = ProtocolVersions::All;
 
-  if (udp) {
-    std::error_code err;
-    UInt64 connId = engine_->connectUDP(
-        mode, securityId, endpt, versions,
-        [this]() { return new RpcChannelListener{this}; }, err);
-    connectResponse(conn, id, connId, err);
-
-  } else {
-    auto connPtr = conn->shared_from_this();
-    engine_->connect(mode, securityId, endpt, versions,
-                     [this]() { return new RpcChannelListener{this}; },
-                     [connPtr, id](Channel *channel, std::error_code err) {
-                       UInt64 connId = channel ? channel->connectionId() : 0;
-                       connectResponse(connPtr.get(), id, connId, err);
-                     });
-  }
+  auto connPtr = conn->shared_from_this();
+  engine_->connect(options, securityId, endpt, versions,
+                   [this]() { return new RpcChannelListener{this}; },
+                   [connPtr, id](Channel *channel, std::error_code err) {
+                     UInt64 connId = channel ? channel->connectionId() : 0;
+                     connectResponse(connPtr.get(), id, connId, err);
+                   });
 }
 
 void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
@@ -297,10 +282,9 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
 
 void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
   std::error_code err;
-  UInt64 securityId = engine_->addIdentity(
-      add->params.certificate, add->params.password, add->params.verifier, err);
-
-  // add->params.password.fill('x');
+  UInt64 securityId =
+      engine_->addIdentity(add->params.cert, add->params.privkey_password,
+                           add->params.cert_auth, err);
 
   if (add->id == RPC_ID_MISSING)
     return;
@@ -367,4 +351,29 @@ std::string RpcServer::softwareVersion() {
   sstr << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7) << ")";
 
   return sstr.str();
+}
+
+ChannelOptions RpcServer::parseOptions(
+    const std::vector<std::string> &options) {
+  ChannelOptions result = ChannelOptions::NONE;
+
+  for (auto opt : options) {
+    if (opt == "FEATURES_REQ") {
+      result = result | ChannelOptions::FEATURES_REQ;
+    } else if (opt == "AUXILIARY") {
+      result = result | ChannelOptions::AUXILIARY;
+    } else if (opt == "LISTEN_UDP") {
+      result = result | ChannelOptions::LISTEN_UDP;
+    } else if (opt == "CONNECT_UDP") {
+      result = result | ChannelOptions::CONNECT_UDP;
+    } else if (opt == "DEFAULT_CONTROLLER") {
+      result = result | ChannelOptions::DEFAULT_CONTROLLER;
+    } else if (opt == "DEFAULT_AGENT") {
+      result = result | ChannelOptions::DEFAULT_AGENT;
+    } else {
+      log::warning("RpcServer: Unrecognized option skipped:", opt);
+    }
+  }
+
+  return result;
 }

@@ -118,7 +118,7 @@ class LibOFP(object):
         self._write(json.dumps(rpc) + EVENT_DELIMITER)
 
     def _sendListenRequest(self, openflowAddr):
-        self._call('OFP.LISTEN', endpoint='[%s]:%d' % openflowAddr)
+        self._call('OFP.LISTEN', endpoint='[%s]:%d' % openflowAddr, options=['DEFAULT_CONTROLLER'])
 
     def _makeEventGenerator(self):
         # Simply using `for line in self._sockInput:` doesn't work for pipes in

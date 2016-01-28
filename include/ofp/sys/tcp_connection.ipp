@@ -28,7 +28,7 @@ inline asio::ssl::context *tcpContext<PlaintextSocket>(Engine *engine,
                                                        UInt64 securityId) {
   assert(securityId == 0);
   // Return a dummy pointer that points to something that exists. I originally
-  // returns `nullptr` here but the undefined sanitizer complained. The
+  // returnd `nullptr` here but the undefined sanitizer complained. The
   // PlaintextSocket type does not use or access the asio::ssl::context passed
   // in; the ssl::context here is a placeholder.
   return Identity::plaintextContext();
@@ -37,30 +37,42 @@ inline asio::ssl::context *tcpContext<PlaintextSocket>(Engine *engine,
 }  // namespace detail
 
 template <class SocketType>
-TCP_Connection<SocketType>::TCP_Connection(Engine *engine, ChannelMode mode,
+TCP_Connection<SocketType>::TCP_Connection(Engine *engine,
+                                           ChannelOptions options,
                                            UInt64 securityId,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
+    : Connection{engine,
+                 new DefaultHandshake{this, options, versions, factory}},
       message_{this},
       socket_{engine->io(),
               detail::tcpContext<SocketType>(engine, securityId)} {
   if (securityId != 0) {
     setFlags(flags() | kRequiresHandshake);
   }
+
+  if ((options & ChannelOptions::AUXILIARY) != 0) {
+    setFlags(flags() | kPermitsAuxiliary);
+  }
 }
 
 template <class SocketType>
 TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
-                                           ChannelMode mode, UInt64 securityId,
+                                           ChannelOptions options,
+                                           UInt64 securityId,
                                            ProtocolVersions versions,
                                            ChannelListener::Factory factory)
-    : Connection{engine, new DefaultHandshake{this, mode, versions, factory}},
+    : Connection{engine,
+                 new DefaultHandshake{this, options, versions, factory}},
       message_{this},
       socket_{std::move(socket),
               detail::tcpContext<SocketType>(engine, securityId)} {
   if (securityId != 0) {
     setFlags(flags() | kRequiresHandshake);
+  }
+
+  if ((options & ChannelOptions::AUXILIARY) != 0) {
+    setFlags(flags() | kPermitsAuxiliary);
   }
 }
 
@@ -219,6 +231,8 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               }
 
             } else {
+              assert(err);
+
               if (err != asio::error::eof &&
                   err != asio::error::operation_aborted) {
                 log::error("asyncReadHeader error",

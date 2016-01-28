@@ -42,8 +42,8 @@ earlier OpenFlow version that does not support all message attributes, the
 current implementation ignores those attributes when constructing the binary OpenFlow
 message.
 
-The libofp program also includes a JSON-RPC microservice that can supports multiple
-simultaneous OpenFlow connections. See the `libofp-jsonrpc` man page for more details.
+The libofp program includes a JSON-RPC microservice that supports multiple
+OpenFlow connections. See the `libofp-jsonrpc` man page for more details.
 
 The YAML schema used for OpenFlow messages is embedded in the tool itself. You can
 browse the schema using the `libofp help` command. See the `libofp-schema` man page
@@ -116,8 +116,8 @@ If no input files are specified, use standard input (stdin). A single hyphen
 also represents stdin.
 
 Each binary OpenFlow message will use the version specified by the textual
-object. Normally, it is an error if no version is specified. However, you 
-can specify a default OpenFlow version using the --ofversion option.
+object. It is an error if no version is specified. You can specify a default 
+OpenFlow version using the --ofversion option.
 
 === OPTIONS
 
@@ -151,7 +151,7 @@ can specify a default OpenFlow version using the --ofversion option.
 *--silent-error*::
     Suppress error output for invalid messages.
 
-*--unchecked-match*::
+*-M, --unchecked-match*::
     Do not check items in match fields.
 
 
@@ -216,9 +216,6 @@ Run a JSON-RPC server. By default, the control connection comes from stdio.
 *-h, --help*::
     Print out usage information for the command.
 
-*--xpc*::
-    Run as a XPC service (Mac OS X only).
-
 
 == LIBOFP HELP
 
@@ -253,6 +250,9 @@ Arguments will print the desired schema and all of its dependencies.
 *-f, --fields*::
     List supported match fields.
 
+*--flags*::
+    List supported flag types.
+    
 *-i, --instructions*::
     List supported instructions.
 
@@ -325,4 +325,4 @@ GitHub: {github}
 == COPYING
 
 Copyright \(C) 2015-2016 William W. Fisher. Free use of this software is
-granted under the terms of the MIT Licence.
+granted under the terms of the MIT License.

@@ -11,6 +11,7 @@
 #include "ofp/oxmfields.h"
 #include "ofp/portnumber.h"
 #include "ofp/controllermaxlen.h"
+#include "ofp/validation.h"
 
 namespace ofp {
 
@@ -248,7 +249,8 @@ class AT_EXPERIMENTER {
   }
 
   bool validateInput(Validation *context) const {
-    return type_.length() >= FixedSize;
+    return context->validateBool(type_.length() >= FixedSize,
+                                 "Invalid EXPERIMENTER action");
   }
 
  private:

@@ -21,10 +21,9 @@
 #ifndef LLVM_ADT_INTRUSIVEREFCNTPTR_H
 #define LLVM_ADT_INTRUSIVEREFCNTPTR_H
 
-#include "llvm/Support/Casting.h"
-#include "llvm/Support/Compiler.h"
 #include <atomic>
-#include <memory>
+#include <cassert>
+#include <cstddef>
 
 namespace llvm {
 
@@ -155,7 +154,7 @@ public:
 
     template <class X>
     IntrusiveRefCntPtr(IntrusiveRefCntPtr<X>&& S) : Obj(S.get()) {
-      S.Obj = 0;
+      S.Obj = nullptr;
     }
 
     template <class X>
@@ -191,7 +190,7 @@ public:
     }
 
     void resetWithoutRelease() {
-      Obj = 0;
+      Obj = nullptr;
     }
 
   private:
@@ -267,6 +266,8 @@ public:
 //===----------------------------------------------------------------------===//
 // LLVM-style downcasting support for IntrusiveRefCntPtr objects
 //===----------------------------------------------------------------------===//
+
+  template <typename From> struct simplify_type;
 
   template<class T> struct simplify_type<IntrusiveRefCntPtr<T> > {
     typedef T* SimpleType;

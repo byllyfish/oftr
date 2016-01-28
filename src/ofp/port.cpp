@@ -9,20 +9,19 @@
 using namespace ofp;
 
 PropertyRange Port::properties() const {
-  assert(length_ >= sizeof(Port));
-  return ByteRange{BytePtr(this) + sizeof(Port), length_ - sizeof(Port)};
+  return SafeByteRange(this, length_, sizeof(Port));
 }
 
 bool Port::validateInput(Validation *context) const {
   size_t remaining = context->lengthRemaining();
-
-  if (remaining < sizeof(Port)) {
+  if (!context->validateBool(remaining >= sizeof(Port),
+                             "Length remaining too short for Port")) {
     return false;
   }
 
   size_t len = length_;
-
-  if (len > remaining || len < sizeof(Port)) {
+  if (!context->validateBool(len <= remaining && len >= sizeof(Port),
+                             "Invalid length for Port")) {
     return false;
   }
 

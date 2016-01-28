@@ -46,7 +46,7 @@ Connection::~Connection() {
       // Remove ourselves from the auxiliary connection list of our main
       // connection.
       assert(mainConn_ != nullptr);
-      AuxiliaryList &auxList = mainConn_->auxList_;
+      auto &auxList = mainConn_->auxList_;
       auto iter = std::find(auxList.begin(), auxList.end(), this);
       if (iter != auxList.end()) {
         auxList.erase(iter);
@@ -74,7 +74,7 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
   datapathId_ = mainConn_->datapathId();
   auxiliaryId_ = auxID;
 
-  AuxiliaryList &auxList = mainConn_->auxList_;
+  auto &auxList = mainConn_->auxList_;
 
   // Check if there is already an auxiliary connection with the same ID.
   // If so, close it so we can replace it with this one.

@@ -58,10 +58,6 @@ class Connection : public Channel {
 
   void setStartingXid(UInt32 xid) override { nextXid_ = xid; }
 
-  /// Does this class require a delete() to finish shutdown? (See
-  /// UDP_Connection.) FIXME(bfish) - replace this with a flags_ field.
-  // virtual bool shutdownRequiresManualDelete() const { return false; }
-
   // UDP subclass implementation needs this to receive datagrams...
   virtual void datagramReceived(const void *data, size_t length) {}
 
@@ -89,6 +85,9 @@ class Connection : public Channel {
 
     /// Indicates connection is idle.
     kChannelIdle = 0x0040,
+
+    /// Indicates permission for auxiliary connections.
+    kPermitsAuxiliary = 0x0080
   };
 
   void poll() override;
@@ -104,12 +103,10 @@ class Connection : public Channel {
   void updateTimeReadStarted();
 
  private:
-  using AuxiliaryList = std::vector<Connection *>;
-
   sys::Engine *engine_;
   ChannelListener *listener_ = nullptr;
   Connection *mainConn_;
-  AuxiliaryList auxList_;
+  std::vector<Connection *> auxList_;
   DatapathID datapathId_;
   UInt64 connId_ = 0;
   UInt32 nextXid_ = 0;

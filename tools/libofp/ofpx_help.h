@@ -19,20 +19,27 @@ namespace ofpx {
 
 using ofp::yaml::Schema;
 
-// libofp help [--fields|-f] [--actions|-a] [--instructions|-i] [--messages|-m]
-// [args...]
+// libofp help [<options>] [<arguments>]
 //
-// Access built-in help features.
+// Access built-in information about the YAML schema used to describe all
+// OpenFlow messages.
 //
-//   --fields         List supported match fields.
-//   --actions        List supported actions.
-//   --builtins       List supported builtin types.
-//   --instructions   List supported instructions.
-//   --messages       List supported message types.
-//   --enums          List supported enumeration types.
-//   --flags          List supported flags.
-//   --mixed          List supported mixed types.
-//   --rpc            List supported RPC commands.
+// Command-line options list one type of schema object or dump the entire
+// schema. Arguments will print the desired schema and all of its dependencies.
+//
+//   --fields (-f)         List supported match fields.
+//   --field-table         List supported match fields in a table.
+//   --actions (-a)        List supported actions.
+//   --brief (-b)          Display abbreviated form of message schema
+//   --builtins            List supported builtin types.
+//   --instructions (-i)   List supported instructions.
+//   --messages (-m)       List supported message types.
+//   --enums               List supported enumeration types.
+//   --flags               List supported flags.
+//   --mixed               List supported mixed types.
+//   --rpc (-r)            List supported RPC commands.
+//   --schema-all          List complete schema.
+//   --schema-names        List all schema names.
 
 class Help : public Subprogram {
  public:

@@ -37,6 +37,9 @@ class OutputJson : public llvm::yaml::IO {
                     void *&SaveInfo) override;
   void postflightKey(void *SaveInfo) override;
 
+  void beginFlowMapping() override { beginMapping(); }
+  void endFlowMapping() override { endMapping(); }
+
   void beginEnumScalar() override;
   bool matchEnumScalar(const char *Str, bool) override;
   bool matchEnumFallback() override;
@@ -50,6 +53,7 @@ class OutputJson : public llvm::yaml::IO {
 
   void scalarString(llvm::StringRef &S, bool) override;
   void scalarJson(llvm::StringRef s) override { output(s); }
+  void blockScalarString(llvm::StringRef &S) override { scalarString(S, true); }
 
   void setError(const llvm::Twine &message) override;
 

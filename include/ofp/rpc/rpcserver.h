@@ -72,6 +72,7 @@ class RpcServer {
   static void alertCallback(Channel *channel, const std::string &alert,
                             const ByteRange &data, void *context);
   static std::string softwareVersion();
+  static ChannelOptions parseOptions(const std::vector<std::string> &options);
 };
 
 OFP_END_IGNORE_PADDING

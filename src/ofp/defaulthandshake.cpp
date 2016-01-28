@@ -19,13 +19,13 @@ using sys::Connection;
 const Milliseconds kControllerKeepAliveTimeout = 10000_ms;
 const Milliseconds kRawKeepAliveTimeout = 6000_ms;
 
-DefaultHandshake::DefaultHandshake(Connection *channel, ChannelMode mode,
+DefaultHandshake::DefaultHandshake(Connection *channel, ChannelOptions options,
                                    ProtocolVersions versions,
                                    Factory listenerFactory)
     : channel_{channel},
       versions_{versions},
       listenerFactory_{listenerFactory},
-      mode_{mode} {
+      options_{options} {
 }
 
 void DefaultHandshake::onChannelUp(Channel *channel) {
@@ -101,7 +101,7 @@ void DefaultHandshake::onHello(const Message *message) {
             msg->protocolVersions().toString(),
             std::make_pair("connid", channel_->connectionId()));
 
-  if (mode_ == ChannelMode::Controller) {
+  if ((options_ & ChannelOptions::FEATURES_REQ) != 0) {
     channel_->setKeepAliveTimeout(kControllerKeepAliveTimeout);
 
     FeaturesRequestBuilder reply{};
@@ -118,7 +118,7 @@ void DefaultHandshake::onHello(const Message *message) {
 
 void DefaultHandshake::onFeaturesReply(const Message *message) {
   // Only a controller should be receiving a features reply message.
-  if (mode_ != ChannelMode::Controller) {
+  if ((options_ & ChannelOptions::FEATURES_REQ) == 0) {
     return;
   }
 
@@ -131,10 +131,10 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
   // a UDP transport.
 
   if (channel_->postDatapath(msg->datapathId(), msg->auxiliaryId())) {
-    if (mode_ == ChannelMode::Controller &&
+    if ((options_ & ChannelOptions::AUXILIARY) != 0 &&
         channel_->mainConnection() != channel_) {
       assert(msg->auxiliaryId() != 0);
-      // If this is an auxiliary connection, clear its channel listener. Note
+      // This is an auxiliary connection, clear its channel listener. Note
       // that we do not pass the (auxiliary) FeaturesReply message to the
       // channel.
       clearChannelListener();
