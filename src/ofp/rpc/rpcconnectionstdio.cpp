@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnectionstdio.h"
+#include "ofp/rpc/rpcevents.h"
 #include "ofp/sys/asio_utils.h"
 
 using ofp::rpc::RpcConnectionStdio;
@@ -10,8 +11,7 @@ using ofp::rpc::RpcConnectionStdio;
 // space characters (SPACE, HT, VT, FF, CR) are permitted. All other control
 // characters are reserved.
 
-const char kEventDelimiter = '\n';
-const size_t kMaxRpcMessageSize = 1048576;  // 1MB
+const char RPC_EVENT_DELIMITER_CHAR = '\n';
 
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
@@ -19,7 +19,7 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
     : RpcConnection{server},
       input_{std::move(input)},
       output_{std::move(output)},
-      streambuf_{kMaxRpcMessageSize} {
+      streambuf_{RPC_MAX_MESSAGE_SIZE} {
 }
 
 void RpcConnectionStdio::setInput(int input) {
@@ -65,18 +65,18 @@ void RpcConnectionStdio::asyncRead() {
   auto self(shared_from_this());
 
   asio::async_read_until(
-      input_, streambuf_, kEventDelimiter,
+      input_, streambuf_, RPC_EVENT_DELIMITER_CHAR,
       [this, self](const asio::error_code &err, size_t bytes_transferred) {
         if (!err) {
           std::istream is(&streambuf_);
           std::string line;
-          std::getline(is, line, kEventDelimiter);
+          std::getline(is, line, RPC_EVENT_DELIMITER_CHAR);
           log::trace_rpc("Read RPC", 0, line.data(), line.size());
           handleEvent(line);
           asyncRead();
         } else if (err == asio::error::not_found) {
           log::error("RpcConnectionStdio::asyncRead: input too large",
-                     kMaxRpcMessageSize, err);
+                     RPC_MAX_MESSAGE_SIZE, err);
           rpcRequestTooBig();
         } else if (err != asio::error::eof &&
                    err != asio::error::operation_aborted) {

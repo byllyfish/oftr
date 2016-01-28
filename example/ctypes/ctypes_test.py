@@ -55,7 +55,7 @@ assert executable[0] == '/'   # must be absolute path; don't search library path
 dll = cdll.LoadLibrary(executable)
 
 dll.libofp_version.argtypes = [POINTER(libofp_buffer)]
-dll.libofp_encode.argtypes = [POINTER(libofp_buffer), POINTER(libofp_buffer), c_uint32]
+dll.libofp_encode.argtypes = [POINTER(libofp_buffer), c_char_p, c_uint32]
 dll.libofp_decode.argtypes = [POINTER(libofp_buffer), POINTER(libofp_buffer), c_uint32]
 dll.libofp_buffer_free.argtypes = [POINTER(libofp_buffer)]
 
@@ -67,7 +67,7 @@ def version():
 
 def encode(text):
     with libofp_buffer() as result:
-        if dll.libofp_encode(result, libofp_buffer(text), 0) < 0:
+        if dll.libofp_encode(result, text, 0) < 0:
             raise ValueError(result.str())
         return result.bytes()
 

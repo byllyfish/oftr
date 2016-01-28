@@ -26,6 +26,7 @@ class DatapathID {
   Big16 implementerDefined() const;
   MacAddress macAddress() const;
   std::string toString() const;
+  const ArrayType &toArray() const { return dpid_; }
 
   bool parse(const std::string &s);
   void clear() { dpid_.fill(0); }
@@ -36,7 +37,7 @@ class DatapathID {
   bool operator!=(const DatapathID &rhs) const { return !operator==(rhs); }
 
  private:
-  ArrayType dpid_;
+  OFP_ALIGNAS(8) ArrayType dpid_;
 
   UInt64 toUInt64() const { return *Interpret_cast<UInt64>(&dpid_); }
 };
@@ -48,5 +49,17 @@ inline std::ostream &operator<<(std::ostream &os, const DatapathID &value) {
 }
 
 }  // namespace ofp
+
+namespace std {
+
+template <>
+struct hash<ofp::DatapathID> {
+  size_t operator()(const ofp::DatapathID &addr) const {
+    std::hash<ofp::DatapathID::ArrayType> h;
+    return h(addr.toArray());
+  }
+};
+
+}  // namespace std
 
 #endif  // OFP_DATAPATHID_H_

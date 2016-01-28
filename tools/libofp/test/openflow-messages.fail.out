@@ -14350,17 +14350,9 @@ Error: Decode failed: Range element size overruns end
 [ByteList size=160 data=020E00A0131BE831CAC499EA6F90646AD73823D188EC7C11010C003C005A00026C1D0455000000020000000C000100000000005814073576000003FF2E233B8B3F0AD2F2DD8BF082DDEA61DF9176DE3486FBB4E030112A0000802B833D7A913F7FE213A188C49063C1E085DD10F4290AB0540B4481000000B13C6D3833CC09040000000000000000000200280000000000000000000004D2000000000000006F]
 Filename: external/openflow-messages/v1_1/rep/rep_14_00008.fail:
 Error: Only 144 bytes read of message body. Expected to read 152 bytes.
----
-type:            FLOW_MOD
-xid:             0x131BE831
-version:         0x02
-_file:           external/openflow-messages/v1_1/rep/rep_14_00009.fail
-...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00009.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Instruction length
+[ByteList size=144 data=020E0090131BE831CAC499EA6F90646AD73823D188EC7C11010C003C005A00026C1D0455000000020000000C000100000000005814073576000003FF2E233B8B3F0AD2F2DD8BF082DDEA61DF9176DE3486FBB4E030112A0000802B833D7A913F7FE213A188C49063C1E085DD10F4290AB0540B4481000000B13C6D3833CC090400000000000000000003000500000000]
 Filename: external/openflow-messages/v1_1/rep/rep_14_00010.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=160 data=020E00A0131BE831CAC499EA6F90646AD73823D188EC7C11010C003C005A00026C1D0455000000020000000C000100000000005814073576000003FF2E233B8B3F0AD2F2DD8BF082DDEA61DF9176DE3486FBB4E030112A0000802B833D7A913F7FE213A188C49063C1E085DD10F4290AB0540B4481000000B13C6D3833CC09040000000000000000000400190000000000030010010203040506000000000000]
@@ -16697,17 +16689,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_0000119.fail:
 Error: Only 55 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_14_000012.fail
-...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000012.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Instruction length
+[ByteList size=64 data=030E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD00000003000000030000000000010004000000000003000700000000]
 ---
 type:            FLOW_MOD
 xid:             0xD6FF7129
@@ -16953,17 +16937,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_0000149.fail:
 Error: Only 55 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_14_000015.fail
-...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000015.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Instruction length
+[ByteList size=64 data=030E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD00000003000000030000000000010004000000000004000700000000]
 ---
 type:            FLOW_MOD
 xid:             0xD6FF7129
@@ -17481,17 +17457,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_2/rep/rep_14_0000209.fail:
 Error: Only 52 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x03
-_file:           external/openflow-messages/v1_2/rep/rep_14_000021.fail
-...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000021.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Experimenter instruction
+[ByteList size=64 data=030E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD0000000300000003000000000001000400000000FFFF000700000000]
 Filename: external/openflow-messages/v1_2/rep/rep_14_000022.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=64 data=030E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD0000000300000003000000000001000400000000FFFF000900000000]
@@ -19836,17 +19804,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_0000119.fail:
 Error: Only 55 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_14_000012.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000012.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Instruction length
+[ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD00000003000000030000000000010004000000000003000700000000]
 ---
 type:            FLOW_MOD
 xid:             0xD6FF7129
@@ -20092,17 +20052,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_0000149.fail:
 Error: Only 55 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_14_000015.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000015.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Instruction length
+[ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD00000003000000030000000000010004000000000004000700000000]
 ---
 type:            FLOW_MOD
 xid:             0xD6FF7129
@@ -20620,17 +20572,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_3/rep/rep_14_0000209.fail:
 Error: Only 52 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x04
-_file:           external/openflow-messages/v1_3/rep/rep_14_000021.fail
-...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000021.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Experimenter instruction
+[ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD0000000300000003000000000001000400000000FFFF000700000000]
 Filename: external/openflow-messages/v1_3/rep/rep_14_000022.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD0000000300000003000000000001000400000000FFFF000900000000]
@@ -24177,17 +24121,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_0000119.fail:
 Error: Only 55 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_14_000012.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000012.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Instruction length
+[ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD00000003000000030000000000010004000000000003000700000000]
 ---
 type:            FLOW_MOD
 xid:             0xD6FF7129
@@ -24433,17 +24369,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_0000149.fail:
 Error: Only 55 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_14_000015.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000015.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Instruction length
+[ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD00000003000000030000000000010004000000000004000700000000]
 ---
 type:            FLOW_MOD
 xid:             0xD6FF7129
@@ -24961,17 +24889,9 @@ type:            FLOW_MOD
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_0000209.fail:
 Error: Only 52 bytes read of message body. Expected to read 56 bytes.
----
-type:            FLOW_MOD
-xid:             0xD6FF7129
-version:         0x04
-_file:           external/openflow-messages/v1_3_1/rep/rep_14_000021.fail
-...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000021.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            FLOW_MOD
-^
-
+Error: Decode failed: Invalid Experimenter instruction
+[ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD0000000300000003000000000001000400000000FFFF000700000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000022.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=64 data=040E0040D6FF7129A1A707214E333188B3263F1CE8B90A1A0101001E003C0000F6EA1EBD0000000300000003000000000001000400000000FFFF000900000000]

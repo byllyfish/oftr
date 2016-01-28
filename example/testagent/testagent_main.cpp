@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 
   if (remoteEndpoint.valid()) {
     (void)driver.connect(
-        ChannelMode::Raw, 0, remoteEndpoint, {OFP_VERSION_1},
+        ChannelOptions::DEFAULT_AGENT, 0, remoteEndpoint, {OFP_VERSION_1},
         TestAgent::Factory,
         [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
           if (err) {
@@ -36,8 +36,9 @@ int main(int argc, char **argv) {
         });
 
   } else {
-    (void)driver.listen(ChannelMode::Raw, 0, IPv6Endpoint{OFPGetDefaultPort()},
-                        {OFP_VERSION_1}, TestAgent::Factory, error);
+    (void)driver.listen(ChannelOptions::DEFAULT_AGENT, 0,
+                        IPv6Endpoint{OFPGetDefaultPort()}, {OFP_VERSION_1},
+                        TestAgent::Factory, error);
   }
 
   driver.run();

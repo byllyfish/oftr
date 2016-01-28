@@ -6,6 +6,7 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/byterange.h"
+#include "ofp/validation.h"
 
 namespace ofp {
 
@@ -42,7 +43,8 @@ class ExperimenterProperty : private NonCopyable {
   ByteRange valueRef() const { return data_; }
 
   bool validateInput(Validation *context) const {
-    return len_ >= FixedHeaderSize;
+    return context->validateBool(len_ >= FixedHeaderSize,
+                                 "Invalid Experimenter property");
   }
 
  private:

@@ -70,11 +70,7 @@ Here is the resulting RoleRequest message:
 
 == CONVENTIONS 
 
-* Literal strings are all-caps, e.g. `PACKET_IN`, `OFP.LISTEN`.
-
-* Literal strings and property names are case-sensitive.
-
-* Input must conform to specified types.
+* Constants are all-caps, e.g. `PACKET_IN`, `OFP.LISTEN`.
 
 * Type names begin with a capital letter and use mixed case, e.g. `UInt8`, `Field`.
 
@@ -83,12 +79,6 @@ Here is the resulting RoleRequest message:
 * Enumerations and flags are strings with choices separated by |, e.g. `UInt32 | NO_BUFFER`
 
 * By default, a property is required unless it has the !opt or !optout tag.
-
-* Unrecognized property names are not permitted. This is a closed schema.
-
-* On input to libofp, properties are allowed to be in any order.
-
-* Messages output from libofp are always produced in the canonical order.
 
 * !opt means the property may be omitted on input, but is always output in the canonical output.
 
@@ -193,4 +183,4 @@ GitHub: {github}
 == COPYING
 
 Copyright \(C) 2015-2016 William W. Fisher. Free use of this software is
-granted under the terms of the MIT Licence.
+granted under the terms of the MIT License.

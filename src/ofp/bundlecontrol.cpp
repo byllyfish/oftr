@@ -7,9 +7,7 @@
 using namespace ofp;
 
 PropertyRange BundleControl::properties() const {
-  assert(header_.length() >= sizeof(BundleControl));
-  return ByteRange{BytePtr(this) + sizeof(BundleControl),
-                   header_.length() - sizeof(BundleControl)};
+  return SafeByteRange(this, header_.length(), sizeof(BundleControl));
 }
 
 bool BundleControl::validateInput(Validation *context) const {

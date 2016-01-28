@@ -18,14 +18,14 @@ OFP_BEGIN_IGNORE_PADDING
 
 class DefaultHandshake : public ChannelListener {
  public:
-  DefaultHandshake(sys::Connection *channel, ChannelMode mode,
+  DefaultHandshake(sys::Connection *channel, ChannelOptions options,
                    ProtocolVersions versions, Factory listenerFactory);
 
   void onChannelUp(Channel *channel) override;
   void onChannelDown(Channel *channel) override;
   void onMessage(const Message *message) override;
 
-  ChannelMode mode() const { return mode_; }
+  ChannelOptions options() const { return options_; }
   ProtocolVersions versions() const { return versions_; }
 
   void setStartingXid(UInt32 xid) { startingXid_ = xid; }
@@ -35,7 +35,7 @@ class DefaultHandshake : public ChannelListener {
   sys::Connection *channel_;
   ProtocolVersions versions_;
   Factory listenerFactory_;
-  ChannelMode mode_;
+  ChannelOptions options_;
   UInt32 startingXid_ = 0;
 
   void onHello(const Message *message);

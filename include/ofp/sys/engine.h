@@ -26,21 +26,15 @@ class Engine {
   explicit Engine(Driver *driver);
   ~Engine();
 
-  UInt64 listen(ChannelMode mode, UInt64 securityId,
+  UInt64 listen(ChannelOptions options, UInt64 securityId,
                 const IPv6Endpoint &localEndpoint, ProtocolVersions versions,
                 ChannelListener::Factory listenerFactory,
                 std::error_code &error);
 
-  UInt64 connect(ChannelMode mode, UInt64 securityId,
+  UInt64 connect(ChannelOptions options, UInt64 securityId,
                  const IPv6Endpoint &remoteEndpoint, ProtocolVersions versions,
                  ChannelListener::Factory listenerFactory,
                  std::function<void(Channel *, std::error_code)> resultHandler);
-
-  UInt64 connectUDP(ChannelMode mode, UInt64 securityId,
-                    const IPv6Endpoint &remoteEndpoint,
-                    ProtocolVersions versions,
-                    ChannelListener::Factory listenerFactory,
-                    std::error_code &error);
 
   size_t close(UInt64 connId);
 
@@ -115,18 +109,14 @@ class Engine {
   // Pointer to driver object that owns engine.
   Driver *driver_;
 
-  using DatapathMap = std::map<DatapathID, Connection *>;
-  using ServerList = std::vector<TCP_Server *>;
-  using ConnectionList = std::vector<Connection *>;
-
   // The identities_ vector must be the last object destroyed, since io_service
   // objects may depend on it.
 
   std::vector<std::unique_ptr<Identity>> identities_;
 
-  ConnectionList connList_;
-  ServerList serverList_;
-  DatapathMap dpidMap_;
+  std::vector<Connection *> connList_;
+  std::vector<TCP_Server *> serverList_;
+  std::unordered_map<DatapathID, Connection *> dpidMap_;
   std::shared_ptr<UDP_Server> udpConnect_;
   UInt64 lastConnId_ = 0;
   UInt64 lastSecurityId_ = 0;
@@ -153,6 +143,9 @@ class Engine {
   AlertCallback alertCallback_ = nullptr;
   void *alertContext_ = nullptr;
 
+  UInt64 connectUDP(UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
+                    ChannelListener::Factory listenerFactory,
+                    std::error_code &error);
   void asyncIdle();
 };
 

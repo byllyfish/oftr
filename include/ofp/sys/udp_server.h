@@ -25,16 +25,14 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   class PrivateToken {};
 
  public:
-  static std::shared_ptr<UDP_Server> create(Engine *engine, ChannelMode mode,
-                                            UInt64 securityId,
-                                            const IPv6Endpoint &localEndpt,
-                                            ProtocolVersions versions,
-                                            UInt64 connId,
-                                            std::error_code &error);
+  static std::shared_ptr<UDP_Server> create(
+      Engine *engine, ChannelOptions options, UInt64 securityId,
+      const IPv6Endpoint &localEndpt, ProtocolVersions versions, UInt64 connId,
+      std::error_code &error);
   static std::shared_ptr<UDP_Server> create(Engine *engine,
                                             std::error_code &error);
 
-  UDP_Server(PrivateToken t, Engine *engine, ChannelMode mode,
+  UDP_Server(PrivateToken t, Engine *engine, ChannelOptions options,
              UInt64 securityId, ProtocolVersions versions, UInt64 connId);
   UDP_Server(PrivateToken t, Engine *engine);
   ~UDP_Server();
@@ -64,7 +62,7 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   enum { MaxDatagramLength = 4000 };  // FIXME?
 
   Engine *engine_;
-  ChannelMode mode_;
+  ChannelOptions options_;
   ProtocolVersions versions_;
   udp::socket socket_;
   udp::endpoint sender_;

@@ -24,33 +24,25 @@ libofp-jsonrpc - OpenFlow Microservice
 == DESCRIPTION
 
 The *libofp jsonrpc* tool runs a JSON-RPC service that enables programmatic 
-control of the OpenFlow protocol using JSON messages.
+control of the OpenFlow protocol. The control connection runs overs stdin/stdout. 
+All text uses UTF-8 encoding.
 
-This program implements JSON-RPC 2.0 using a YAML 1.2 parser. Your JSON parser
-must support 64 bit integers, or you will run into trouble handling large counters
-and id's. 
-
-This implementation ignores the "jsonrpc" property defined in the 
-JSON-RPC 2.0 specification.
-
-== OPTIONS
-
-*--xpc*:: Run as an XPC service on Mac OS X.
+The control connection reads JSON messages from stdin, each one separated by a newline
+character. The maximum length of a message, including the newline, is 1 megabyte.
+A JSON-RPC message will normally be a JSON mapping that begins with '{' and ends
+with '}'.  Alternately, a JSON-RPC message may be enclosed in double quotes, and the contents
+of the JSON string will be parsed as YAML.
 
 
 == RPC Overview
 
-The json-rpc server uses JSON-RPC protocol with some minor adjustments.
+There are seven core JSON-RPC requests with corresponding replies.
 
-Request ID's must be non-negative integers less than or equal to 2^63-2.
-
-There are seven JSON-RPC requests:
-
+  - OFP.DESCRIPTION
   - OFP.LISTEN
   - OFP.CONNECT
   - OFP.SEND
   - OFP.CLOSE
-  - OFP.STATUS
   - OFP.LIST_CONNECTIONS
   - OFP.ADD_IDENTITY
 
@@ -60,9 +52,47 @@ There are three JSON-RPC notifications:
   - OFP.MESSAGE
   - OFP.ALERT
 
-If you omit the 'id' property from a request, no reply will be sent.
 
 == RPC Commands
+
+=== OFP.DESCRIPTION
+
+Request information about the `libofp` implementation.
+
+=== Request
+
+    id: UInt64
+    method: OFP.DESCRIPTION
+
+*id*:: Request ID used to identify the reply (unsigned 64-bit integer).
+
+=== Reply
+
+    id: UInt64
+    result:
+      major_version: UInt16
+      minor_version: UInt16
+      software_version: String
+      ofp_versions: [UInt8]
+
+*major_version*:: Major API version.
+
+*minor_version*:: Minor API version.
+
+*software_version*:: Software version.
+
+*ofp_versions*:: List of supported OpenFlow versions.
+
+=== Discussion
+
+The reply contains the software version, API version, and supported OpenFlow 
+protocol versions. The OFP.DESCRIPTION result will never change at runtime.
+
+The major API version is incremented when there are changes that are incompatible
+with previous versions of the API. The minor API version is incremented when the
+API changes are backward compatible.
+
+The `ofp_versions` value is an array of OpenFlow wire versions (i.e. OpenFlow 1.3 is wire version 4.)
 
 === OFP.CONNECT
 
@@ -88,11 +118,13 @@ Open an outgoing OpenFlow connection to the specified host and port.
 
 *versions*:: List of OpenFlow versions to support. Defaults to all.
 
-*tls_id*:: Identifier for TLS/DTLS identity to use. See ofp.add_identity.
+*tls_id*:: Identifier for TLS/DTLS identity to use. See OFP.ADD_IDENTITY.
 
 *options*:: List of additional options that control the connection.
-    - *--raw* = Raw mode; do not automatically send a features_request to determine the datapath_id.
-    - *--udp* = Use UDP instead of TCP. This option must be combined with --raw.
+    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
+    - *CONNECT_UDP* = Use UDP instead of TCP. (Not supported with FEATURES_REQ)
+    - *DEFAULT_CONTROLLER* = Alias for [FEATURES_REQ].
+    - *DEFAULT_AGENT* = Alias for [].
 
 ==== Reply
 
@@ -100,7 +132,20 @@ Open an outgoing OpenFlow connection to the specified host and port.
     result:
         conn_id: UInt64
 
-*conn_id*:: Connection ID associated with the new connection.
+*conn_id*:: Unique, non-zero identifier representing the new connection.
+
+==== Discussion
+
+The reply is sent when the connection is established. The reply contains the unique 
+connection ID associated with the new connection.
+
+If `FEATURES_REQ` option is specified, send a FEATURES_REQUEST message to obtain
+the datapath_id from the other end. The channel will be reported up when this 
+transaction completes, and the connection is assigned a datapath_id.
+
+If `CONNECT_UDP` option is specified, make an auxiliary connection via UDP to the
+specified endpoint.
+
 
 === OFP.LISTEN
 
@@ -125,8 +170,12 @@ Listen for incoming OpenFlow connections on the specified interface and port.
 
 *tls_id*:: TLS identity to use for securing the connection. The default identity is 0 (normally plaintext).
 
-*options*:: List of boolean flags. The default is empty.
-    - *raw* = Raw TCP mode; don't negotiate as a controller. Use this option to imitate an OpenFlow switch that listens for controller connections.
+*options*:: List of additional options that control the connection.
+    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
+    - *AUXILIARY* = Support auxiliary connections over TCP (requires FEATURES_REQ).
+    - *LISTEN_UDP* = Support auxiliary connections over UDP also (requires AUXILIARY).
+    - *DEFAULT_CONTROLLER* = Alias for [FEATURES_REQ].
+    - *DEFAULT_AGENT* = Alias for [].
 
 ==== Reply
 
@@ -138,27 +187,21 @@ Listen for incoming OpenFlow connections on the specified interface and port.
 
 ==== Discussion
 
-By default, this command listens for incoming connections from OpenFlow switches.
-When a switch connects, we negotiate an OpenFlow connection and send a OpenFlow 
-FeaturesRequest. The response to the FeaturesRequest is passed as the first 
-ofp.message event.
+This command listens for incoming connections from OpenFlow switches. The reply contains
+a unique connection ID representing the listener.
 
-When a TCP auxiliary connection arrives from a switch, the FeaturesReply is not
-passed as a ofp.message.
+If `FEATURES_REQ` option is specified, send a FEATURES_REQUEST message to obtain
+the datapath_id from the other end. The channel will be reported up when this 
+transaction completes, and the connection is assigned a datapath_id.
 
-This command will also listen for UDP auxiliary connections from switches.
+If `AUXILIARY` option is specified, support auxiliary OpenFlow connections.
 
-If a non-zero tls_id is passed as an argument, we will use the specified TLS 
-settings (see ofp.tls.add_identity) for TLS and DTLS.
-
-There is one raw option for listen, raw_tcp. This option will listen for 
-incoming connections on the specified TCP endpoint only (no UDP), negotiate 
-an OpenFlow connection, but leave the rest of the connection alone.
+If `LISTEN_UDP` option is specified, listen for auxiliary UDP connections in addition to TCP.
+The UDP listener will use the same conn_id as the TCP listener.
 
 === OFP.SEND
 
 Send the specified OpenFlow message.
-
 
 ==== Request
 
@@ -168,7 +211,19 @@ Send the specified OpenFlow message.
 
 ==== Reply
 
-    TODO
+    id:
+    result:
+      conn_id: UInt64
+      data: HexData
+
+*conn_id*:: Identifier for the outgoing connection used.
+
+*data*:: Binary OpenFlow message sent.
+
+==== Discussion
+
+To send an OpenFlow message, use the `OFP.SEND` command. Omit the `id` parameter 
+to prevent the reply from being sent back.
 
 === OFP.CLOSE
 
@@ -191,9 +246,14 @@ Close the specified connection.
 
 *count*:: Number of connections closed.
 
+==== Discussion
+
+Use the OFP.CLOSE command to close a connection, or close all connections. The reply
+contains the number of matching connections that were closed.
+
 === OFP.LIST_CONNECTIONS
 
-List all connections.
+List statistics for a connection.
 
 ==== Request
 
@@ -202,20 +262,22 @@ List all connections.
     params:
       conn_id: UInt64
 
-*conn_id*:: Specify a connection to obtain info for. Use 0 to list all connections.
+*conn_id*:: Specify a connection. Use 0 to list all connections.
 
 ==== Reply
 
     id: UInt64
-    result: [{ConnectionInfo}...]
+    result:
+      - local_endpoint: IPv6Endpoint
+        remote_endpoint: IPv6Endpoint
+        datapath_id: DatapathID
+        conn_id: UInt64
+        auxiliary_id: UInt8
+        transport: 'TCP' | 'UDP' | 'TLS' | 'DTLS' | 'NONE'
 
-    {ConnectionInfo} ::=
-      local_endpoint: IPv6Endpoint
-      remote_endpoint: IPv6Endpoint
-      datapath_id: DatapathID
-      conn_id: UInt64
-      auxiliary_id: UInt8
-      transport: 'TCP' | 'UDP' | 'TLS' | 'DTLS' | 'NONE'
+==== Discussion
+
+Use `OFP.LIST_CONNECTIONS` to retrieve a list of connections and their information.
 
 === OFP.ADD_IDENTITY
 
@@ -227,16 +289,16 @@ using Transport Layer Security (TLS).
     id: UInt64
     method: OFP.ADD_IDENTITY
     params:
-      certificate: String
-      verifier: String
-      password: String                      # Optional; Default = ""
+      cert: String
+      cert_auth: String
+      privkey_password: String        # Optional
 
-*certificate*:: PEM certificate chain data with PEM private key appended. The
+*cert*:: PEM certificate chain data with PEM private key appended. The
   PEM private key may be encrypted with a password.
 
-*verifier*:: Trusted PEM root certificate data.
+*cert_auth*:: Trusted PEM root certificate. One certificate, not a list.
 
-*password*:: Password for PEM private key, if needed.
+*privkey_password*:: Password for PEM private key, if needed. (Optional)
 
 ==== Reply
 
@@ -246,53 +308,65 @@ using Transport Layer Security (TLS).
 
 *tls_id*:: Unique, non-zero identifier representing the TLS identity.
 
+==== Discussion
+
+Use the `OFP.ADD_IDENTITY` command to add a SSL/TLS identity for use in encrypting
+connections. The reply contains the unique `tls_id` to pass to OFP.CONNECT and
+OFP.LISTEN commands.
+
+The `cert_auth` parameter contains the certificate authority used to authenticate the 
+certificate chain presented by the other end of the connection.
+
 == RPC Notifications
 
 === OFP.CHANNEL
 
-==== Request
-
   method: OFP.CHANNEL
   params:
     conn_id: UInt64
-    datapath_id: DatapathID
+    datapath_id: DatapathID      # Optional
+    endpoint: IPv6Endpoint
     status: 'UP' | 'DOWN'
     version: UInt8
+
+==== Discussion
+
+The `OFP.CHANNEL` event is sent when an OpenFlow channel goes up or down. If the
+`FEATURES_REQ` option is specified, the channel is not considered up until we know
+the datapath_id of the connection from the FEATURES_REPLY.
+
+If `FEATURES_REQ` is not specified, the channel up event is sent after the first
+HELLO messages are exchanged, and the datapath_id parameter is not included.
 
 === OFP.MESSAGE
 
   method: OFP.MESSAGE
-  params: {Message}
+  params: Message
 
-=== ofp.message_error
+==== Discussion
 
-  method: 'ofp.message_error'
+The `OFP.MESSAGE` event is sent when an OpenFlow message is received.
+
+=== OFP.ALERT
+
+  method: 'OFP.ALERT'
   params:
+    conn_id: UInt64
     datapath_id: DatapathID
-    error: String
+    time: Timestamp
+    alert: String
     data: HexString
 
-== TRANSPORT PROTOCOL
+==== Discussion
 
-JSON-RPC messages are sent over a connection using a UTF-8 text protocol. Each
-JSON message is separated by a newline. The maximum length of a line is 1 MB.
+The `OFP.ALERT` event is sent when something unusual or abnormal happens. The
+alert parameter contains the reason for the message. The contents of the data 
+parameter depend on the type of alert.
 
-  { "id": 1, "method": "ofp.description" }
+Here are some examples of why an alert message might be sent.
 
-All responses are encoded in compact, single-line JSON representation.
-
-  {"id":1,"result":{"major_version":0,"minor_version":1, ... }}
-
-JSON input can also use YAML encoding, which is less stringent.
-Still, no newlines are allowed.
-
-  { id: 1, method: ofp.description }
-
-A message encoded inside a JSON string is parsed using YAML. Escape newlines
-with "\n".
-
-  "id: 1\nmethod: ofp.description"
-
+- An incoming OpenFlow message cannot be decoded.
+- An OpenFlow connection fails to negotiate a version.
 
 == SEE ALSO
 
@@ -314,4 +388,4 @@ GitHub: {github}
 == COPYING
 
 Copyright \(C) 2015-2016 William W. Fisher. Free use of this software is
-granted under the terms of the MIT Licence.
+granted under the terms of the MIT License.

@@ -101,15 +101,13 @@ namespace llvm {
       /// A pointer to a SmallString instance.
       SmallStringKind,
 
-      /// A char value reinterpreted as a pointer, to render as a character.
+      /// A char value, to render as a character.
       CharKind,
 
-      /// An unsigned int value reinterpreted as a pointer, to render as an
-      /// unsigned decimal integer.
+      /// An unsigned int value, to render as an unsigned decimal integer.
       DecUIKind,
 
-      /// An int value reinterpreted as a pointer, to render as a signed
-      /// decimal integer.
+      /// An int value, to render as a signed decimal integer.
       DecIKind,
 
       /// A pointer to an unsigned long value, to render as an unsigned decimal
@@ -430,7 +428,7 @@ namespace llvm {
     /// Return the twine contents as a std::string.
     std::string str() const;
 
-    /// Write the concatenated string into the given SmallString or SmallVector.
+    /// Append the concatenated string into the given SmallString or SmallVector.
     void toVector(SmallVectorImpl<char> &Out) const;
 
     /// This returns the twine as a single StringRef.  This method is only valid

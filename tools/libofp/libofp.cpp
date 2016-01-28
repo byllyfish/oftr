@@ -9,11 +9,12 @@
 #include "ofp/yaml/decoder.h"
 
 static void buf_set(libofp_buffer *buf, const void *data, size_t len) {
-  buf->data = static_cast<char *>(malloc(len + 1));
-  ofp::log::fatal_if_null(buf->data);
-  memcpy(buf->data, data, len);
+  char *newbuf = static_cast<char *>(malloc(len + 1));
+  ofp::log::fatal_if_null(newbuf);
+  memcpy(newbuf, data, len);
+  newbuf[len] = 0;
+  buf->data = newbuf;
   buf->length = len;
-  buf->data[len] = 0;
 }
 
 static void buf_set(libofp_buffer *buf, const llvm::StringRef &val) {
@@ -31,12 +32,10 @@ void libofp_version(libofp_buffer *result) {
   buf_set(result, oss.str());
 }
 
-int libofp_encode(libofp_buffer *result, const libofp_buffer *input,
+int libofp_encode(libofp_buffer *result, const char *yaml_input,
                   uint32_t flags) {
   // `flags` unused for now
-  llvm::StringRef text{input->data, input->length};
-
-  ofp::log::info("libofp_encode", text);
+  llvm::StringRef text{yaml_input};
   ofp::yaml::Encoder encoder{text, false, 1, 0};
 
   auto err = encoder.error();

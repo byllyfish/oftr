@@ -49,6 +49,7 @@ void RpcConnection::onChannel(Channel *channel, const char *status) {
   RpcChannel notification;
   notification.params.connId = channel->connectionId();
   notification.params.datapathId = channel->datapathId();
+  notification.params.endpoint = channel->remoteEndpoint();
   notification.params.version = channel->version();
   notification.params.status = status;
   rpcReply(&notification);

@@ -29,10 +29,7 @@ class ActionID {
 
   bool validateInput(Validation *context) const {
     const auto len = type_.length();
-    if (!context->validateBool(len == 4 || len == 8, "Invalid ActionID")) {
-      return false;
-    }
-    return true;
+    return context->validateBool(len == 4 || len == 8, "Invalid ActionID");
   }
 
  private:
