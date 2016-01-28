@@ -2,12 +2,12 @@
 .\"     Title: libofp-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/15/2016
+.\"      Date: 01/28/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-JSONRPC" "1" "01/15/2016" "\ \&" "\ \&"
+.TH "LIBOFP\-JSONRPC" "1" "01/28/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -34,24 +34,23 @@ libofp-jsonrpc \- OpenFlow Microservice
 \fBlibofp jsonrpc\fR [\fIOPTIONS\fR]
 .SH "DESCRIPTION"
 .sp
-The \fBlibofp jsonrpc\fR tool runs a JSON\-RPC service that enables programmatic control of the OpenFlow protocol using JSON messages\&.
+The \fBlibofp jsonrpc\fR tool runs a JSON\-RPC service that enables programmatic control of the OpenFlow protocol\&. The control connection runs overs stdin/stdout\&. All text uses UTF\-8 encoding\&.
 .sp
-This program implements JSON\-RPC 2\&.0 using a YAML 1\&.2 parser\&. Your JSON parser must support 64 bit integers, or you will run into trouble handling large counters and id\(cqs\&.
-.sp
-This implementation ignores the "jsonrpc" property defined in the JSON\-RPC 2\&.0 specification\&.
-.SH "OPTIONS"
-.PP
-\fB\-\-xpc\fR
-.RS 4
-Run as an XPC service on Mac OS X\&.
-.RE
+The control connection reads JSON messages from stdin, each one separated by a newline character\&. The maximum length of a message, including the newline, is 1 megabyte\&. A JSON\-RPC message will normally be a JSON mapping that begins with \fI{\fR and ends with \fI}\fR\&. Alternately, a JSON\-RPC message may be enclosed in double quotes, and the contents of the JSON string will be parsed as YAML\&.
 .SH "RPC OVERVIEW"
 .sp
-The json\-rpc server uses JSON\-RPC protocol with some minor adjustments\&.
+There are seven core JSON\-RPC requests with corresponding replies\&.
 .sp
-Request ID\(cqs must be non\-negative integers less than or equal to 2^63\-2\&.
-.sp
-There are seven JSON\-RPC requests:
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.DESCRIPTION
+.RE
 .sp
 .RS 4
 .ie n \{\
@@ -95,17 +94,6 @@ OFP\&.SEND
 .IP \(bu 2.3
 .\}
 OFP\&.CLOSE
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-OFP\&.STATUS
 .RE
 .sp
 .RS 4
@@ -164,9 +152,70 @@ OFP\&.MESSAGE
 .\}
 OFP\&.ALERT
 .RE
-.sp
-If you omit the \fIid\fR property from a request, no reply will be sent\&.
 .SH "RPC COMMANDS"
+.SS "OFP\&.DESCRIPTION"
+.sp
+Request information about the libofp implementation\&.
+.SS "Request"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.DESCRIPTION
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBid\fR
+.RS 4
+Request ID used to identify the reply (unsigned 64\-bit integer)\&.
+.RE
+.SS "Reply"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+  major_version: UInt16
+  minor_version: UInt16
+  software_version: String
+  ofp_versions: [UInt8]
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBmajor_version\fR
+.RS 4
+Major API version\&.
+.RE
+.PP
+\fBminor_version\fR
+.RS 4
+Minor API version\&.
+.RE
+.PP
+\fBsoftware_version\fR
+.RS 4
+Software version\&.
+.RE
+.PP
+\fBofp_versions\fR
+.RS 4
+List of supported OpenFlow versions\&.
+.RE
+.SS "Discussion"
+.sp
+The reply contains the software version, API version, and supported OpenFlow protocol versions\&. The OFP\&.DESCRIPTION result will never change at runtime\&.
+.sp
+The major API version is incremented when there are changes that are incompatible with previous versions of the API\&. The minor API version is incremented when the API changes are backward compatible\&.
+.sp
+The ofp_versions value is an array of OpenFlow wire versions (i\&.e\&. OpenFlow 1\&.3 is wire version 4\&.)
 .SS "OFP\&.CONNECT"
 .sp
 Open an outgoing OpenFlow connection to the specified host and port\&.
@@ -220,7 +269,7 @@ List of OpenFlow versions to support\&. Defaults to all\&.
 .PP
 \fBtls_id\fR
 .RS 4
-Identifier for TLS/DTLS identity to use\&. See ofp\&.add_identity\&.
+Identifier for TLS/DTLS identity to use\&. See OFP\&.ADD_IDENTITY\&.
 .RE
 .PP
 \fBoptions\fR
@@ -235,8 +284,8 @@ List of additional options that control the connection\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-\fB\-\-raw\fR
-= Raw mode; do not automatically send a features_request to determine the datapath_id\&.
+\fBFEATURES_REQ\fR
+= Send a FEATURES_REQUEST to obtain datapath_id from other end\&.
 .RE
 .sp
 .RS 4
@@ -247,8 +296,32 @@ List of additional options that control the connection\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-\fB\-\-udp\fR
-= Use UDP instead of TCP\&. This option must be combined with \-\-raw\&.
+\fBCONNECT_UDP\fR
+= Use UDP instead of TCP\&. (Not supported with FEATURES_REQ)
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBDEFAULT_CONTROLLER\fR
+= Alias for [FEATURES_REQ]\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBDEFAULT_AGENT\fR
+= Alias for []\&.
 .RE
 .RE
 .RE
@@ -275,8 +348,23 @@ result:
 .PP
 \fBconn_id\fR
 .RS 4
-Connection ID associated with the new connection\&.
+Unique, non\-zero identifier representing the new connection\&.
 .RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+The reply is sent when the connection is established\&. The reply contains the unique connection ID associated with the new connection\&.
+.sp
+If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. The channel will be reported up when this transaction completes, and the connection is assigned a datapath_id\&.
+.sp
+If CONNECT_UDP option is specified, make an auxiliary connection via UDP to the specified endpoint\&.
 .RE
 .SS "OFP\&.LISTEN"
 .sp
@@ -323,7 +411,7 @@ TLS identity to use for securing the connection\&. The default identity is 0 (no
 .PP
 \fBoptions\fR
 .RS 4
-List of boolean flags\&. The default is empty\&.
+List of additional options that control the connection\&.
 .sp
 .RS 4
 .ie n \{\
@@ -333,8 +421,56 @@ List of boolean flags\&. The default is empty\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-\fBraw\fR
-= Raw TCP mode; don\(cqt negotiate as a controller\&. Use this option to imitate an OpenFlow switch that listens for controller connections\&.
+\fBFEATURES_REQ\fR
+= Send a FEATURES_REQUEST to obtain datapath_id from other end\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBAUXILIARY\fR
+= Support auxiliary connections over TCP (requires FEATURES_REQ)\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBLISTEN_UDP\fR
+= Support auxiliary connections over UDP also (requires AUXILIARY)\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBDEFAULT_CONTROLLER\fR
+= Alias for [FEATURES_REQ]\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBDEFAULT_AGENT\fR
+= Alias for []\&.
 .RE
 .RE
 .RE
@@ -373,15 +509,13 @@ Unique, non\-zero identifier representing the listening connection\&.
 \fBDiscussion\fR
 .RS 4
 .sp
-By default, this command listens for incoming connections from OpenFlow switches\&. When a switch connects, we negotiate an OpenFlow connection and send a OpenFlow FeaturesRequest\&. The response to the FeaturesRequest is passed as the first ofp\&.message event\&.
+This command listens for incoming connections from OpenFlow switches\&. The reply contains a unique connection ID representing the listener\&.
 .sp
-When a TCP auxiliary connection arrives from a switch, the FeaturesReply is not passed as a ofp\&.message\&.
+If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. The channel will be reported up when this transaction completes, and the connection is assigned a datapath_id\&.
 .sp
-This command will also listen for UDP auxiliary connections from switches\&.
+If AUXILIARY option is specified, support auxiliary OpenFlow connections\&.
 .sp
-If a non\-zero tls_id is passed as an argument, we will use the specified TLS settings (see ofp\&.tls\&.add_identity) for TLS and DTLS\&.
-.sp
-There is one raw option for listen, raw_tcp\&. This option will listen for incoming connections on the specified TCP endpoint only (no UDP), negotiate an OpenFlow connection, but leave the rest of the connection alone\&.
+If LISTEN_UDP option is specified, listen for auxiliary UDP connections in addition to TCP\&. The UDP listener will use the same conn_id as the TCP listener\&.
 .RE
 .SS "OFP\&.SEND"
 .sp
@@ -420,11 +554,35 @@ params: Message
 .RS 4
 .\}
 .nf
-TODO
+id:
+result:
+  conn_id: UInt64
+  data: HexData
 .fi
 .if n \{\
 .RE
 .\}
+.PP
+\fBconn_id\fR
+.RS 4
+Identifier for the outgoing connection used\&.
+.RE
+.PP
+\fBdata\fR
+.RS 4
+Binary OpenFlow message sent\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+To send an OpenFlow message, use the OFP\&.SEND command\&. Omit the id parameter to prevent the reply from being sent back\&.
 .RE
 .SS "OFP\&.CLOSE"
 .sp
@@ -482,9 +640,20 @@ result:
 Number of connections closed\&.
 .RE
 .RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+Use the OFP\&.CLOSE command to close a connection, or close all connections\&. The reply contains the number of matching connections that were closed\&.
+.RE
 .SS "OFP\&.LIST_CONNECTIONS"
 .sp
-List all connections\&.
+List statistics for a connection\&.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
@@ -509,7 +678,7 @@ params:
 .PP
 \fBconn_id\fR
 .RS 4
-Specify a connection to obtain info for\&. Use 0 to list all connections\&.
+Specify a connection\&. Use 0 to list all connections\&.
 .RE
 .RE
 .sp
@@ -526,27 +695,28 @@ Specify a connection to obtain info for\&. Use 0 to list all connections\&.
 .\}
 .nf
 id: UInt64
-result: [{ConnectionInfo}\&.\&.\&.]
+result:
+  \- local_endpoint: IPv6Endpoint
+    remote_endpoint: IPv6Endpoint
+    datapath_id: DatapathID
+    conn_id: UInt64
+    auxiliary_id: UInt8
+    transport: \*(AqTCP\*(Aq | \*(AqUDP\*(Aq | \*(AqTLS\*(Aq | \*(AqDTLS\*(Aq | \*(AqNONE\*(Aq
 .fi
 .if n \{\
 .RE
 .\}
+.RE
 .sp
-.if n \{\
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
 .RS 4
-.\}
-.nf
-{ConnectionInfo} ::=
-  local_endpoint: IPv6Endpoint
-  remote_endpoint: IPv6Endpoint
-  datapath_id: DatapathID
-  conn_id: UInt64
-  auxiliary_id: UInt8
-  transport: \*(AqTCP\*(Aq | \*(AqUDP\*(Aq | \*(AqTLS\*(Aq | \*(AqDTLS\*(Aq | \*(AqNONE\*(Aq
-.fi
-.if n \{\
-.RE
-.\}
+.sp
+Use OFP\&.LIST_CONNECTIONS to retrieve a list of connections and their information\&.
 .RE
 .SS "OFP\&.ADD_IDENTITY"
 .sp
@@ -567,27 +737,27 @@ Configure an identity for use in securing incoming or outgoing connections using
 id: UInt64
 method: OFP\&.ADD_IDENTITY
 params:
-  certificate: String
-  verifier: String
-  password: String                      # Optional; Default = ""
+  cert: String
+  cert_auth: String
+  privkey_password: String        # Optional
 .fi
 .if n \{\
 .RE
 .\}
 .PP
-\fBcertificate\fR
+\fBcert\fR
 .RS 4
 PEM certificate chain data with PEM private key appended\&. The PEM private key may be encrypted with a password\&.
 .RE
 .PP
-\fBverifier\fR
+\fBcert_auth\fR
 .RS 4
-Trusted PEM root certificate data\&.
+Trusted PEM root certificate\&. One certificate, not a list\&.
 .RE
 .PP
-\fBpassword\fR
+\fBprivkey_password\fR
 .RS 4
-Password for PEM private key, if needed\&.
+Password for PEM private key, if needed\&. (Optional)
 .RE
 .RE
 .sp
@@ -616,16 +786,21 @@ result:
 Unique, non\-zero identifier representing the TLS identity\&.
 .RE
 .RE
-.SH "RPC NOTIFICATIONS"
-.SS "OFP\&.CHANNEL"
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
 .ps +1
-\fBRequest\fR
+\fBDiscussion\fR
 .RS 4
+.sp
+Use the OFP\&.ADD_IDENTITY command to add a SSL/TLS identity for use in encrypting connections\&. The reply contains the unique tls_id to pass to OFP\&.CONNECT and OFP\&.LISTEN commands\&.
+.sp
+The cert_auth parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&.
+.RE
+.SH "RPC NOTIFICATIONS"
+.SS "OFP\&.CHANNEL"
 .sp
 .if n \{\
 .RS 4
@@ -634,13 +809,26 @@ Unique, non\-zero identifier representing the TLS identity\&.
 method: OFP\&.CHANNEL
 params:
   conn_id: UInt64
-  datapath_id: DatapathID
+  datapath_id: DatapathID      # Optional
+  endpoint: IPv6Endpoint
   status: \*(AqUP\*(Aq | \*(AqDOWN\*(Aq
   version: UInt8
 .fi
 .if n \{\
 .RE
 .\}
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+The OFP\&.CHANNEL event is sent when an OpenFlow channel goes up or down\&. If the FEATURES_REQ option is specified, the channel is not considered up until we know the datapath_id of the connection from the FEATURES_REPLY\&.
+.sp
+If FEATURES_REQ is not specified, the channel up event is sent after the first HELLO messages are exchanged, and the datapath_id parameter is not included\&.
 .RE
 .SS "OFP\&.MESSAGE"
 .sp
@@ -649,75 +837,74 @@ params:
 .\}
 .nf
 method: OFP\&.MESSAGE
-params: {Message}
+params: Message
 .fi
 .if n \{\
 .RE
 .\}
-.SS "ofp\&.message_error"
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+The OFP\&.MESSAGE event is sent when an OpenFlow message is received\&.
+.RE
+.SS "OFP\&.ALERT"
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-method: \*(Aqofp\&.message_error\*(Aq
+method: \*(AqOFP\&.ALERT\*(Aq
 params:
+  conn_id: UInt64
   datapath_id: DatapathID
-  error: String
+  time: Timestamp
+  alert: String
   data: HexString
 .fi
 .if n \{\
 .RE
 .\}
-.SH "TRANSPORT PROTOCOL"
 .sp
-JSON\-RPC messages are sent over a connection using a UTF\-8 text protocol\&. Each JSON message is separated by a newline\&. The maximum length of a line is 1 MB\&.
-.sp
-.if n \{\
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
 .RS 4
-.\}
-.nf
-{ "id": 1, "method": "ofp\&.description" }
-.fi
-.if n \{\
-.RE
-.\}
 .sp
-All responses are encoded in compact, single\-line JSON representation\&.
+The OFP\&.ALERT event is sent when something unusual or abnormal happens\&. The alert parameter contains the reason for the message\&. The contents of the data parameter depend on the type of alert\&.
 .sp
-.if n \{\
+Here are some examples of why an alert message might be sent\&.
+.sp
 .RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
 .\}
-.nf
-{"id":1,"result":{"major_version":0,"minor_version":1, \&.\&.\&. }}
-.fi
-.if n \{\
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+An incoming OpenFlow message cannot be decoded\&.
 .RE
-.\}
 .sp
-JSON input can also use YAML encoding, which is less stringent\&. Still, no newlines are allowed\&.
-.sp
-.if n \{\
 .RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
 .\}
-.nf
-{ id: 1, method: ofp\&.description }
-.fi
-.if n \{\
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+An OpenFlow connection fails to negotiate a version\&.
 .RE
-.\}
-.sp
-A message encoded inside a JSON string is parsed using YAML\&. Escape newlines with "\en"\&.
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-"id: 1\enmethod: ofp\&.description"
-.fi
-.if n \{\
 .RE
-.\}
 .SH "SEE ALSO"
 .sp
 \fIlibofp\fR(1), \fIlibofp\-schema\fR(1)
@@ -737,7 +924,7 @@ Failure: Syntax or usage error in command line arguments\&.
 GitHub: https://github\&.com/byllyfish/libofp
 .SH "COPYING"
 .sp
-Copyright (C) 2015\-2016 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT Licence\&.
+Copyright (C) 2015\-2016 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.
 .SH "AUTHOR"
 .PP
 \fBWilliam W\&. Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>

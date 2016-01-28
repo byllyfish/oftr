@@ -2,12 +2,12 @@
 .\"     Title: libofp
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/15/2016
+.\"      Date: 01/28/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP" "1" "01/15/2016" "\ \&" "\ \&"
+.TH "LIBOFP" "1" "01/28/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -48,7 +48,7 @@ If you translate an OpenFlow message to YAML, then back to binary, you will obta
 .sp
 The YAML schema is based on OpenFlow 1\&.4\&.x\&. If your YAML message specifies an earlier OpenFlow version that does not support all message attributes, the current implementation ignores those attributes when constructing the binary OpenFlow message\&.
 .sp
-The libofp program also includes a JSON\-RPC microservice that can supports multiple simultaneous OpenFlow connections\&. See the libofp\-jsonrpc man page for more details\&.
+The libofp program includes a JSON\-RPC microservice that supports multiple OpenFlow connections\&. See the libofp\-jsonrpc man page for more details\&.
 .sp
 The YAML schema used for OpenFlow messages is embedded in the tool itself\&. You can browse the schema using the libofp help command\&. See the libofp\-schema man page for more details about the conventions used\&.
 .SH "EXAMPLES"
@@ -194,7 +194,7 @@ Encode OpenFlow messages to binary as specified by YAML input files\&. If there 
 .sp
 If no input files are specified, use standard input (stdin)\&. A single hyphen also represents stdin\&.
 .sp
-Each binary OpenFlow message will use the version specified by the textual object\&. Normally, it is an error if no version is specified\&. However, you can specify a default OpenFlow version using the \-\-ofversion option\&.
+Each binary OpenFlow message will use the version specified by the textual object\&. It is an error if no version is specified\&. You can specify a default OpenFlow version using the \-\-ofversion option\&.
 .SS "OPTIONS"
 .PP
 \fB\-h, \-\-help\fR
@@ -244,7 +244,7 @@ Quiet mode; suppress normal output\&.
 Suppress error output for invalid messages\&.
 .RE
 .PP
-\fB\-\-unchecked\-match\fR
+\fB\-M, \-\-unchecked\-match\fR
 .RS 4
 Do not check items in match fields\&.
 .RE
@@ -329,11 +329,6 @@ Run a JSON\-RPC server\&. By default, the control connection comes from stdio\&.
 .RS 4
 Print out usage information for the command\&.
 .RE
-.PP
-\fB\-\-xpc\fR
-.RS 4
-Run as a XPC service (Mac OS X only)\&.
-.RE
 .SH "LIBOFP HELP"
 .sp
 \fBlibofp help\fR [\fIOPTIONS\fR] [\fIARGS\fR, \&...]
@@ -376,6 +371,11 @@ List supported match fields in a table\&.
 \fB\-f, \-\-fields\fR
 .RS 4
 List supported match fields\&.
+.RE
+.PP
+\fB\-\-flags\fR
+.RS 4
+List supported flag types\&.
 .RE
 .PP
 \fB\-i, \-\-instructions\fR
@@ -557,7 +557,7 @@ Failure: Uncommon failure\&.
 GitHub: https://github\&.com/byllyfish/libofp
 .SH "COPYING"
 .sp
-Copyright (C) 2015\-2016 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT Licence\&.
+Copyright (C) 2015\-2016 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.
 .SH "AUTHOR"
 .PP
 \fBWilliam W\&. Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>
