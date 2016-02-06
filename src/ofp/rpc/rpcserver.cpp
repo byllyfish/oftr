@@ -90,24 +90,9 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   UInt64 securityId = open->params.securityId;
   ChannelOptions options = parseOptions(open->params.options);
 
-  // Verify the channel options.
-  std::string errMesg;
-  if (!AreChannelOptionsValid(options)) {
-    errMesg += "Invalid combination of options.\n";
-  }
-
-  // Check that securityId exists.
-  if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
-    errMesg += "Invalid tls_id: " + std::to_string(securityId);
-  }
-
-  if (!errMesg.empty()) {
-    if (open->id == RPC_ID_MISSING)
-      return;
-    RpcErrorResponse response{open->id};
-    response.error.code = ERROR_CODE_INVALID_OPTION;
-    response.error.message = errMesg;
-    conn->rpcReply(&response);
+  // Verify the channel options and that securityId exists.
+  if (!verifyOptions(conn, open->id, securityId, options)) {
+    // Reply sent if values are invalid.
     return;
   }
 
@@ -159,24 +144,9 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   UInt64 securityId = connect->params.securityId;
   ChannelOptions options = parseOptions(connect->params.options);
 
-  // Verify the channel options.
-  std::string errMesg;
-  if (!AreChannelOptionsValid(options)) {
-    errMesg += "Invalid combination of options.\n";
-  }
-
-  // Check that securityId exists.
-  if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
-    errMesg += "Invalid tls_id: " + std::to_string(securityId);
-  }
-
-  if (!errMesg.empty()) {
-    if (connect->id == RPC_ID_MISSING)
-      return;
-    RpcErrorResponse response{connect->id};
-    response.error.code = ERROR_CODE_INVALID_OPTION;
-    response.error.message = errMesg;
-    conn->rpcReply(&response);
+  // Verify the channel options and that securityId exists.
+  if (!verifyOptions(conn, connect->id, securityId, options)) {
+    // Reply sent if values are invalid.
     return;
   }
 
@@ -209,25 +179,27 @@ void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
 }
 
 void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
-  UInt64 connId = 0;
   yaml::Encoder &params = send->params;
 
   Channel *channel = params.outputChannel();
   if (channel) {
-    connId = channel->connectionId();
+    assert(params.error().empty());
+    assert(params.size() > 0);
+
+    // Outgoing channel exists, deliver the message on it.
     channel->write(params.data(), params.size());
     channel->flush();
+
+    // Message delivered successfully to channel. Send optional reply.
+    if (send->id != RPC_ID_MISSING) {
+      RpcSendResponse response{send->id};
+      response.result.data = {params.data(), std::min<std::size_t>(params.size(), 8)};
+      conn->rpcReply(&response);
+    }
+
   } else {
-    log::error("onRpcSend unable to locate output channel");
+    log::warning("RpcServer:onRpcSend: no outgoing channel");
   }
-
-  if (send->id == RPC_ID_MISSING)
-    return;
-
-  RpcSendResponse response{send->id};
-  response.result.connId = connId;
-  response.result.data = {params.data(), params.size()};
-  conn->rpcReply(&response);
 }
 
 void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
@@ -377,3 +349,27 @@ ChannelOptions RpcServer::parseOptions(
 
   return result;
 }
+
+bool RpcServer::verifyOptions(RpcConnection *conn, UInt64 id, UInt64 securityId, ChannelOptions options) {
+  // Verify the channel options and that securityId exists.
+  std::string errMesg;
+  RpcErrorCode errCode = ERROR_CODE_INVALID_REQUEST;
+  if (!AreChannelOptionsValid(options)) {
+    errMesg += "Invalid combination of options";
+  } else if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
+    errMesg += "Invalid tls_id: " + std::to_string(securityId);
+  }
+
+  if (!errMesg.empty()) {
+    if (id != RPC_ID_MISSING) {
+      RpcErrorResponse response{id};
+      response.error.code = errCode;
+      response.error.message = errMesg;
+      conn->rpcReply(&response);
+    }
+    return false;
+  }
+
+  return true;
+}
+

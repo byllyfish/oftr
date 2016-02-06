@@ -63,13 +63,13 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
       lineNumber_{lineNumber},
       defaultVersion_{defaultVersion},
       matchPrereqsChecked_{matchPrereqsChecked} {
-  detail::YamlContext ctxt{this};
-  llvm::yaml::Input yin{input, &ctxt, Encoder::diagnosticHandler, &ctxt};
-  io_ = &yin;
+  llvm::yaml::Input yin{input, nullptr, Encoder::diagnosticHandler, this};
+  detail::YamlContext ctxt{this, &yin};
+  yin.setContext(&ctxt);
   if (!yin.error()) {
     yin >> *this;
   }
-  io_ = nullptr;
+  yin.setContext(nullptr);
 
   if (yin.error()) {
     // Make sure error string is set. There won't be an error string if the
@@ -92,7 +92,7 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
 }
 
 void Encoder::diagnosticHandler(const llvm::SMDiagnostic &d, void *context) {
-  Encoder *encoder = detail::YamlContext::GetEncoder(context);
+  Encoder *encoder = reinterpret_cast<Encoder *>(context);
   encoder->addDiagnostic(d);
 }
 
@@ -115,7 +115,13 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     // If there's a datapath or connId specified, look up the channel.
     outputChannel_ = finder_(datapathId_, connId_);
     if (!outputChannel_) {
-      io.setError("unable to locate datapath connection");
+      if (!datapathId_.empty()) {
+        io.setError("unable to locate datapath_id " + datapathId_.toString());
+      } else if (connId_ != 0) {
+        io.setError("unable to locate conn_id " + std::to_string(connId_));
+      } else {
+        io.setError("unable to locate connection; no datapath_id or conn_id");
+      }
       return;
     }
     // Channel version will override any version specified by input.

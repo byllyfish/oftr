@@ -42,8 +42,9 @@ enum RpcMethod : UInt32 {
 enum RpcErrorCode {
   ERROR_CODE_INVALID_REQUEST = -32600,
   ERROR_CODE_METHOD_NOT_FOUND = -32601,
-  ERROR_CODE_DATAPATH_NOT_FOUND = -65000,
-  ERROR_CODE_INVALID_OPTION = -65001,
+  ERROR_CODE_CONNECTION_NOT_FOUND = -65000,
+  ERROR_CODE_TLS_ID_NOT_FOUND = -65001,
+  ERROR_CODE_INVALID_OPTIONS = -65002,
 };
 
 OFP_BEGIN_IGNORE_PADDING
@@ -262,8 +263,7 @@ struct RpcSendResponse {
   std::string toJson();
 
   struct Result {
-    UInt64 connId = 0;
-    ByteRange data;
+    ByteRange data;       // header of message sent
   };
 
   UInt64 id;
@@ -356,7 +356,6 @@ id: !opt UInt64
 method: !request OFP.SEND
 params: !request Message
 result: !reply
-  conn_id: UInt64
   data: HexData
 
 {Rpc/OFP.LIST_CONNECTIONS}
@@ -608,7 +607,6 @@ struct MappingTraits<ofp::rpc::RpcSendResponse> {
 template <>
 struct MappingTraits<ofp::rpc::RpcSendResponse::Result> {
   static void mapping(IO &io, ofp::rpc::RpcSendResponse::Result &result) {
-    io.mapRequired("conn_id", result.connId);
     io.mapRequired("data", result.data);
   }
 };

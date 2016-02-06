@@ -30,15 +30,14 @@ static llvm::StringRef closestValue(llvm::StringRef name,
 llvm::StringRef ofp::yaml::SetEnumError(
     void *ctxt, llvm::StringRef name,
     const std::vector<llvm::StringRef> &vals) {
-  Encoder *encoder = detail::YamlContext::GetEncoder(ctxt);
-  if (encoder) {
-    llvm::yaml::IO *io = encoder->io();
-    if (io) {
-      io->setError("unknown value \"" + name + "\" Did you mean \"" +
-                   closestValue(name, vals) + "\"?");
-    }
+  llvm::yaml::IO *io = detail::YamlContext::GetIO(ctxt);
+  if (io) {
+    io->setError("unknown value \"" + name + "\" Did you mean \"" +
+                 closestValue(name, vals) + "\"?");
+    return "";
   }
-  return "";
+  log::warning("SetEnumError: unknown io object?");
+  return "unknown enum value";
 }
 
 void ofp::yaml::SetFlagError(llvm::yaml::IO &io, llvm::StringRef name,

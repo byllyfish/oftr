@@ -23,8 +23,8 @@ namespace detail {
 // the `data_match` field when decoding a PacketIn message.
 
 struct YamlContext {
-  explicit YamlContext(Encoder *enc)
-      : encoder{enc}, decoder{nullptr}, version{0}, pktMatch{false} {
+  explicit YamlContext(Encoder *enc, llvm::yaml::IO *_io)
+      : encoder{enc}, decoder{nullptr}, io{_io}, version{0}, pktMatch{false} {
     assert(validate());
   }
   explicit YamlContext(Decoder *dec, UInt8 ver, bool pMatch)
@@ -34,6 +34,7 @@ struct YamlContext {
 
   Encoder *encoder;
   Decoder *decoder;
+  llvm::yaml::IO *io = nullptr;
   UInt8 version;
   bool pktMatch;
 
@@ -45,6 +46,7 @@ struct YamlContext {
   bool validate() const { return magic1 == 'c' && magic2 == 'o'; }
 
   static Encoder *GetEncoder(void *context);
+  static llvm::yaml::IO *GetIO(void *context);
 };
 
 }  // namespace detail

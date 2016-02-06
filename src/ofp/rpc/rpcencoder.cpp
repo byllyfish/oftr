@@ -58,13 +58,19 @@ void RpcEncoder::addDiagnostic(const llvm::SMDiagnostic &diag) {
 }
 
 void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
+  // Check jsonrpc_ value, if provided.
+  if (!jsonrpc_.empty() && jsonrpc_ != "2.0") {
+    io.setError("Unsupported jsonrpc version");
+    return;
+  }
+
   // Make sure no one uses an explicit ID value of 2^64 - 1. We use this value
-  // to indicate a missing ID value. (FIXME)
+  // to indicate a missing ID value.
   UInt64 id;
   if (id_) {
     id = *id_;
     if (id == RPC_ID_MISSING) {
-      method_ = METHOD_UNSUPPORTED;
+      io.setError("id value too big");
       return;
     }
   } else {
@@ -99,7 +105,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
     case METHOD_SEND: {
       void *savedContext = io.getContext();
       RpcSend send{id, finder_};
-      yaml::detail::YamlContext ctxt{&send.params};
+      yaml::detail::YamlContext ctxt{&send.params, &io};
       io.setContext(&ctxt);
       io.mapRequired("params", send.params);
       io.setContext(savedContext);
@@ -125,14 +131,14 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     }
     case METHOD_CHANNEL:
-      io.setError("'OFP.CHANNEL' is for notifications only.");
+      io.setError("'OFP.CHANNEL' is for notifications only");
       break;
     case METHOD_MESSAGE:
       io.setError(
-          "Use 'OFP.SEND' instead; 'OFP.MESSAGE' is for notifications only.");
+          "Use 'OFP.SEND' instead; 'OFP.MESSAGE' is for notifications only");
       break;
     case METHOD_ALERT:
-      io.setError("'OFP.ALERT' is for notifications only.");
+      io.setError("'OFP.ALERT' is for notifications only");
       break;
     case METHOD_DESCRIPTION: {
       RpcDescription desc{id};
@@ -166,10 +172,16 @@ void RpcEncoder::replyError() {
   int code = ERROR_CODE_INVALID_REQUEST;
   if (response.error.message.find("unknown method") != std::string::npos) {
     code = ERROR_CODE_METHOD_NOT_FOUND;
+  } else if (response.error.message.find("unable to locate") != std::string::npos) {
+    code = ERROR_CODE_CONNECTION_NOT_FOUND;
   }
 
   response.error.code = code;
-  conn_->rpcReply(&response);
+  log::warning("JSON-RPC error:", response.error.message);
 
-  log::warning("JSON-RPC parse error:", response.error.message);
+  if (conn_) {
+    // conn_ is set to null in one of the unit tests. Under normal conditions,
+    // conn_ should never be null.
+    conn_->rpcReply(&response);
+  }
 }

@@ -42,7 +42,6 @@ Rpc/OFP.SEND:
   method: !request OFP.SEND
   params: !request Message
   result: !reply
-    conn_id: UInt64
     data: HexData
   
 Rpc/OFP.LIST_CONNECTIONS: 

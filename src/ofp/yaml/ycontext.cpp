@@ -50,3 +50,12 @@ ofp::yaml::Encoder *YamlContext::GetEncoder(void *context) {
   }
   return nullptr;
 }
+
+llvm::yaml::IO *YamlContext::GetIO(void *context) {
+  YamlContext *ctxt = reinterpret_cast<YamlContext *>(context);
+  if (ctxt) {
+    assert(ctxt->validate());
+    return ctxt->io;
+  }
+  return nullptr;
+}
