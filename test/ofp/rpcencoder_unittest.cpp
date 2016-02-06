@@ -3,11 +3,18 @@
 
 using namespace ofp;
 
-TEST(rpcencoder, test) {
+TEST(rpcencoder, ofp_send_invalid_type) {
     // N.B. we are passing a null RpcConnection. This will cause a crash if the
     // rpc call does not have an error. We are only testing *invalid* rpc calls.
 
     rpc::RpcEncoder encoder{R"""({"id":321,"method":"OFP.SEND","params":{"type":"foo"}})""", nullptr, nullptr};
 
     EXPECT_EQ("YAML:1:48: error: unknown value \"foo\" Did you mean \"HELLO\"?\n{\"id\":321,\"method\":\"OFP.SEND\",\"params\":{\"type\":\"foo\"}}\n                                               ^~~~~\n", encoder.error());
+}
+
+
+TEST(rpcencoder, end_brace_only) {
+    rpc::RpcEncoder encoder{"  }", nullptr, nullptr};
+
+    EXPECT_EQ("xxx", encoder.error());
 }

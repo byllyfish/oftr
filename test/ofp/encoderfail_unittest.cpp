@@ -491,3 +491,13 @@ TEST(encoderfail, duplicateFieldsDisallowDifferentValue) {
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
+
+
+TEST(encoderfail, end_brace_only) {
+  const char *input = "  }";
+
+  Encoder encoder{input};
+  EXPECT_EQ("xxx", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}

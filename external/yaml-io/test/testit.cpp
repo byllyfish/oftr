@@ -119,6 +119,24 @@ static void test_Yaml_IsFloat() {
     EXPECT(!llvm::yaml::isFloat("0e0 "));
 }
 
+static void test_YamlParser_EndBraceOnly() {
+    // If the brace is only preceded by spaces, it's an error.
+    {
+        llvm::SourceMgr sm;
+        llvm::yaml::Stream stream("  }", sm);
+        EXPECT(!stream.validate());
+        EXPECT(stream.failed());
+    }
+
+    // If the brace is preceded by a valid char, it's okay.
+    {
+        llvm::SourceMgr sm;
+        llvm::yaml::Stream stream("  a}", sm);
+        EXPECT(stream.validate());
+        EXPECT(!stream.failed());
+    }
+}
+
 int main()
 {
     {
@@ -287,6 +305,7 @@ d: 3
 
     test_YamlParser_MissingEndQuote();
     test_Yaml_IsFloat();
+    test_YamlParser_EndBraceOnly();
 
     return 0;
 }
