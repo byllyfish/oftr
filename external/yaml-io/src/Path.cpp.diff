@@ -1,6 +1,15 @@
---- ../../../llvm/lib/Support/Path.cpp	2016-01-20 17:28:10.000000000 -0700
-+++ ./src/Support/Path.cpp	2016-01-22 18:51:29.000000000 -0700
-@@ -157,6 +157,7 @@
+--- ../../../llvm/lib/Support/Path.cpp	2016-02-06 14:00:09.000000000 -0700
++++ ./src/Support/Path.cpp	2016-02-07 11:52:27.000000000 -0700
+@@ -12,7 +12,7 @@
+ //===----------------------------------------------------------------------===//
+ 
+ #include "llvm/Support/COFF.h"
+-#include "llvm/Support/MachO.h"
++//#include "llvm/Support/MachO.h"
+ #include "llvm/Support/Endian.h"
+ #include "llvm/Support/Errc.h"
+ #include "llvm/Support/ErrorHandling.h"
+@@ -158,6 +158,7 @@
    FS_Name
  };
  
@@ -8,7 +17,7 @@
  static std::error_code createUniqueEntity(const Twine &Model, int &ResultFD,
                                            SmallVectorImpl<char> &ResultPath,
                                            bool MakeAbsolute, unsigned Mode,
-@@ -224,6 +225,7 @@
+@@ -225,6 +226,7 @@
    }
    llvm_unreachable("Invalid Type");
  }
@@ -16,7 +25,7 @@
  
  namespace llvm {
  namespace sys  {
-@@ -719,6 +721,7 @@
+@@ -720,6 +722,7 @@
    return std::error_code();
  }
  
@@ -24,7 +33,7 @@
  std::error_code createUniqueFile(const Twine &Model, int &ResultFd,
                                   SmallVectorImpl<char> &ResultPath,
                                   unsigned Mode) {
-@@ -772,6 +775,7 @@
+@@ -773,6 +776,7 @@
    return createUniqueEntity(Prefix + "-%%%%%%", Dummy, ResultPath,
                              true, 0, FS_Dir);
  }
@@ -32,3 +41,19 @@
  
  static std::error_code make_absolute(const Twine &current_directory,
                                       SmallVectorImpl<char> &path,
+@@ -951,6 +955,7 @@
+   Status = st;
+ }
+ 
++#if 0
+ /// @brief Identify the magic in magic.
+ file_magic identify_magic(StringRef Magic) {
+   if (Magic.size() < 4)
+@@ -1126,6 +1131,7 @@
+   Result = identify_magic(StringRef(Buffer, Length));
+   return std::error_code();
+ }
++#endif //0
+ 
+ std::error_code directory_entry::status(file_status &result) const {
+   return fs::status(Path, result);
