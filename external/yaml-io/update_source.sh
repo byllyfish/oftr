@@ -25,6 +25,7 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 #diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
 #diff -u "${LLVM_SOURCE_DIR}/lib/Support/Path.cpp" "${WORKING_DIR}/src/Support/Path.cpp" > "$WORKING_DIR/src/Path.cpp.diff" || true
 #diff -u "${LLVM_SOURCE_DIR}/lib/Support/Unix/Process.inc" "${WORKING_DIR}/src/Support/Unix/Process.inc" > "$WORKING_DIR/src/Process.inc.diff" || true
+#diff -u "${LLVM_SOURCE_DIR}/unittests/Support/YAMLParserTest.cpp" "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" > "$WORKING_DIR/src/YAMLParserTest.cpp.diff" || true
 
 
 # Include files to copy from llvm source tree.
@@ -145,6 +146,11 @@ SOURCES=(
 	Support/YAMLTraits.cpp
 )
 
+TESTS=(
+	unittests/Support/YAMLIOTest.cpp
+	unittests/Support/YAMLParserTest.cpp
+)
+
 # Copy the include files.
 for file in "${INCLUDES[@]}"; do
   cp -v "$LLVM_SOURCE_DIR/$file" "$WORKING_DIR/$file"
@@ -155,6 +161,11 @@ for file in "${SOURCES[@]}"; do
   cp -v "$LLVM_SOURCE_DIR/lib/$file" "$WORKING_DIR/src/$file"
 done
 
+# Copy the test files.
+for file in "${TESTS[@]}"; do
+  cp -v "$LLVM_SOURCE_DIR/$file" "$WORKING_DIR/$file"
+done
+
 # Apply patches.
 
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
@@ -162,5 +173,6 @@ patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.c
 patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 patch "${WORKING_DIR}/src/Support/Path.cpp" "$WORKING_DIR/src/Path.cpp.diff"
 patch "${WORKING_DIR}/src/Support/Unix/Process.inc" "$WORKING_DIR/src/Process.inc.diff"
+patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
 
 exit 0

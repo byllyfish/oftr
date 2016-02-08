@@ -1,0 +1,14 @@
+--- ../../../llvm/unittests/Support/YAMLParserTest.cpp	2016-01-20 17:28:09.000000000 -0700
++++ ./unittests/Support/YAMLParserTest.cpp	2016-02-08 10:24:11.000000000 -0700
+@@ -17,6 +17,11 @@
+ 
+ namespace llvm {
+ 
++// Allow llvm::StringRef to write to a std::ostream.
++inline std::ostream &operator<<(std::ostream &os, const StringRef &s) {
++  return os.write(s.data(), static_cast<std::streamsize>(s.size()));
++}
++
+ static void SuppressDiagnosticsOutput(const SMDiagnostic &, void *) {
+   // Prevent SourceMgr from writing errors to stderr
+   // to reduce noise in unit test runs.
