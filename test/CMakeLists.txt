@@ -80,6 +80,17 @@ set(LIBOFP_TEST_SOURCES
 	ofp/ymatch_unittest.cpp
 )
 
+set(YAML_IO_TEST_DIR ${CMAKE_SOURCE_DIR}/external/yaml-io/unittests/Support)
+set(LIBOFP_TEST_SOURCES
+	${LIBOFP_TEST_SOURCES}
+	${YAML_IO_TEST_DIR}/YAMLIOTest.cpp
+	${YAML_IO_TEST_DIR}/YAMLParserTest.cpp
+)
+set_source_files_properties(
+	${YAML_IO_TEST_DIR}/YAMLIOTest.cpp 
+	${YAML_IO_TEST_DIR}/YAMLParserTest.cpp 
+	PROPERTIES COMPILE_FLAGS "-Wno-padded -Wno-global-constructors -Wno-shorten-64-to-32 -Wno-conversion -Wno-old-style-cast -Wno-shadow")
+
 if(LIBOFP_ENABLE_JSONRPC)
 	set(LIBOFP_TEST_SOURCES
 		${LIBOFP_TEST_SOURCES}
