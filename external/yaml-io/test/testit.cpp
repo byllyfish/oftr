@@ -119,22 +119,39 @@ static void test_Yaml_IsFloat() {
     EXPECT(!llvm::yaml::isFloat("0e0 "));
 }
 
-static void test_YamlParser_EndBraceOnly() {
+static void test_yaml_input_fail(const char *yaml) {
+    llvm::SourceMgr sm;
+    llvm::yaml::Stream stream(yaml, sm);
+    EXPECT(!stream.validate());
+    EXPECT(stream.failed());
+}
+
+static void test_yaml_input_success(const char *yaml) {
+    llvm::SourceMgr sm;
+    llvm::yaml::Stream stream(yaml, sm);
+    EXPECT(stream.validate());
+    EXPECT(!stream.failed());
+}
+
+
+static void test_YamlParser_VariousInput() {
     // If the brace is only preceded by spaces, it's an error.
-    {
-        llvm::SourceMgr sm;
-        llvm::yaml::Stream stream("  }", sm);
-        EXPECT(!stream.validate());
-        EXPECT(stream.failed());
-    }
+    test_yaml_input_fail("  }");
 
     // If the brace is preceded by a valid char, it's okay.
-    {
-        llvm::SourceMgr sm;
-        llvm::yaml::Stream stream("  a}", sm);
-        EXPECT(stream.validate());
-        EXPECT(!stream.failed());
-    }
+    test_yaml_input_success("  a}");
+
+    // If the bracket is only preceded by spaces, it's an error.
+    test_yaml_input_fail("  ]");
+
+    // If the bracket is preceded by a valid char, it's okay.
+    test_yaml_input_success("  a]");
+
+    // If there are two ore more tags, it's an error.
+    test_yaml_input_fail("  !opt !opt");
+
+    // If there are two or more anchors, it's an error.
+    test_yaml_input_fail("  &opt &opt");
 }
 
 int main()
@@ -305,7 +322,7 @@ d: 3
 
     test_YamlParser_MissingEndQuote();
     test_Yaml_IsFloat();
-    test_YamlParser_EndBraceOnly();
+    test_YamlParser_VariousInput();
 
     return 0;
 }

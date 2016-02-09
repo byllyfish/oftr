@@ -16,5 +16,5 @@ TEST(rpcencoder, ofp_send_invalid_type) {
 TEST(rpcencoder, end_brace_only) {
     rpc::RpcEncoder encoder{"  }", nullptr, nullptr};
 
-    EXPECT_EQ("xxx", encoder.error());
+    EXPECT_EQ("YAML:1:3: error: Unexpected token\n  }\n  ^\n", encoder.error());
 }

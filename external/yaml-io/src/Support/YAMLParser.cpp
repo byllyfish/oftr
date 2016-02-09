@@ -2314,7 +2314,7 @@ parse_property:
   case Token::TK_Anchor:
     if (AnchorInfo.Kind == Token::TK_Anchor) {
       setError("Already encountered an anchor for this node!", T);
-      return nullptr;
+      return new (NodeAllocator) NullNode(stream.CurrentDoc);
     }
     AnchorInfo = getNext(); // Consume TK_Anchor.
     T = peekNext();
@@ -2322,7 +2322,7 @@ parse_property:
   case Token::TK_Tag:
     if (TagInfo.Kind == Token::TK_Tag) {
       setError("Already encountered a tag for this node!", T);
-      return nullptr;
+      return new (NodeAllocator) NullNode(stream.CurrentDoc);
     }
     TagInfo = getNext(); // Consume TK_Tag.
     T = peekNext();
@@ -2368,6 +2368,10 @@ parse_property:
                  , AnchorInfo.Range.substr(1)
                  , TagInfo.Range
                  , MappingNode::MT_Flow);
+  case Token::TK_FlowSequenceEnd:
+  case Token::TK_FlowMappingEnd:
+    setError("Unexpected token", T);
+    return new (NodeAllocator) NullNode(stream.CurrentDoc);
   case Token::TK_Scalar:
     getNext();
     return new (NodeAllocator)

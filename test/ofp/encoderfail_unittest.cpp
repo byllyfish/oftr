@@ -497,7 +497,7 @@ TEST(encoderfail, end_brace_only) {
   const char *input = "  }";
 
   Encoder encoder{input};
-  EXPECT_EQ("xxx", encoder.error());
+  EXPECT_EQ("YAML:1:3: error: Unexpected token\n  }\n  ^\n", encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
