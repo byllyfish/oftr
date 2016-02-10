@@ -1,5 +1,5 @@
 --- ../../../llvm/lib/Support/Unix/Process.inc	2016-01-20 17:28:10.000000000 -0700
-+++ ./src/Support/Unix/Process.inc	2016-02-07 11:44:53.000000000 -0700
++++ ./src/Support/Unix/Process.inc	2016-02-10 13:39:55.000000000 -0700
 @@ -427,6 +427,7 @@
    return "\033[0m";
  }
