@@ -100,7 +100,7 @@ void RpcConnection::handleEvent(const std::string &eventText) {
 }
 
 void RpcConnection::rpcRequestTooBig() {
-  RpcErrorResponse response{RPC_ID_MISSING};
+  RpcErrorResponse response{RpcID::NULL_VALUE};
   response.error.code = ERROR_CODE_INVALID_REQUEST;
   response.error.message = "RPC request is too big";
   rpcReply(&response);

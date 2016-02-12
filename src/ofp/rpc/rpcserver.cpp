@@ -106,7 +106,7 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
       engine_->listen(options, securityId, endpt, versions,
                       [this]() { return new RpcChannelListener{this}; }, err);
 
-  if (open->id == RPC_ID_MISSING)
+  if (open->id.is_missing())
     return;
 
   if (!err) {
@@ -122,9 +122,9 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   }
 }
 
-void RpcServer::connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
+void RpcServer::connectResponse(RpcConnection *conn, RpcID id, UInt64 connId,
                                 const std::error_code &err) {
-  if (id == RPC_ID_MISSING)
+  if (id.is_missing())
     return;
 
   if (!err) {
@@ -151,7 +151,7 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   }
 
   IPv6Endpoint endpt = connect->params.endpoint;
-  UInt64 id = connect->id;
+  RpcID id = connect->id;
 
   ProtocolVersions versions =
       ProtocolVersions::fromVector(connect->params.versions);
@@ -170,7 +170,7 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
 void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
   size_t count = engine_->close(close->params.connId);
 
-  if (close->id == RPC_ID_MISSING)
+  if (close->id.is_missing())
     return;
 
   RpcCloseResponse response{close->id};
@@ -191,7 +191,7 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     channel->flush();
 
     // Message delivered successfully to channel. Send optional reply.
-    if (send->id != RPC_ID_MISSING) {
+    if (!send->id.is_missing()) {
       RpcSendResponse response{send->id};
       response.result.data = {params.data(), std::min<std::size_t>(params.size(), 8)};
       conn->rpcReply(&response);
@@ -203,7 +203,7 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
 }
 
 void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
-  if (list->id == RPC_ID_MISSING)
+  if (list->id.is_missing())
     return;
 
   RpcListConnsResponse response{list->id};
@@ -258,7 +258,7 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
       engine_->addIdentity(add->params.cert, add->params.privkey_password,
                            add->params.cert_auth, err);
 
-  if (add->id == RPC_ID_MISSING)
+  if (add->id.is_missing())
     return;
 
   if (!err) {
@@ -274,7 +274,7 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
 }
 
 void RpcServer::onRpcDescription(RpcConnection *conn, RpcDescription *desc) {
-  if (desc->id == RPC_ID_MISSING)
+  if (desc->id.is_missing())
     return;
 
   RpcDescriptionResponse response{desc->id};
@@ -350,7 +350,7 @@ ChannelOptions RpcServer::parseOptions(
   return result;
 }
 
-bool RpcServer::verifyOptions(RpcConnection *conn, UInt64 id, UInt64 securityId, ChannelOptions options) {
+bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId, ChannelOptions options) {
   // Verify the channel options and that securityId exists.
   std::string errMesg;
   RpcErrorCode errCode = ERROR_CODE_INVALID_REQUEST;
@@ -361,7 +361,7 @@ bool RpcServer::verifyOptions(RpcConnection *conn, UInt64 id, UInt64 securityId,
   }
 
   if (!errMesg.empty()) {
-    if (id != RPC_ID_MISSING) {
+    if (!id.is_missing()) {
       RpcErrorResponse response{id};
       response.error.code = errCode;
       response.error.message = errMesg;

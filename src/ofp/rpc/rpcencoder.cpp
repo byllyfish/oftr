@@ -42,7 +42,7 @@ RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,
     yin >> *this;
   }
 
-  if (yin.error()) {
+  if (yin.error() && method_ != METHOD_SEND) {
     replyError();
   }
 }
@@ -64,22 +64,9 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
     return;
   }
 
-  // Make sure no one uses an explicit ID value of 2^64 - 1. We use this value
-  // to indicate a missing ID value.
-  UInt64 id;
-  if (id_) {
-    id = *id_;
-    if (id == RPC_ID_MISSING) {
-      io.setError("id value too big");
-      return;
-    }
-  } else {
-    id = RPC_ID_MISSING;
-  }
-
   switch (method_) {
     case METHOD_LISTEN: {
-      RpcListen listen{id};
+      RpcListen listen{id_};
       io.mapRequired("params", listen.params);
       if (!errorFound(io)) {
         conn_->onRpcListen(&listen);
@@ -87,7 +74,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     }
     case METHOD_CONNECT: {
-      RpcConnect connect{id};
+      RpcConnect connect{id_};
       io.mapRequired("params", connect.params);
       if (!errorFound(io)) {
         conn_->onRpcConnect(&connect);
@@ -95,7 +82,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     }
     case METHOD_CLOSE: {
-      RpcClose close{id};
+      RpcClose close{id_};
       io.mapRequired("params", close.params);
       if (!errorFound(io)) {
         conn_->onRpcClose(&close);
@@ -104,18 +91,20 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
     }
     case METHOD_SEND: {
       void *savedContext = io.getContext();
-      RpcSend send{id, finder_};
+      RpcSend send{id_, finder_};
       yaml::detail::YamlContext ctxt{&send.params, &io};
       io.setContext(&ctxt);
       io.mapRequired("params", send.params);
       io.setContext(savedContext);
       if (!errorFound(io)) {
         conn_->onRpcSend(&send);
+      } else {
+        replySendError();
       }
       break;
     }
     case METHOD_LIST_CONNS: {
-      RpcListConns list{id};
+      RpcListConns list{id_};
       io.mapRequired("params", list.params);
       if (!errorFound(io)) {
         conn_->onRpcListConns(&list);
@@ -123,7 +112,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     }
     case METHOD_ADD_IDENTITY: {
-      RpcAddIdentity add{id};
+      RpcAddIdentity add{id_};
       io.mapRequired("params", add.params);
       if (!errorFound(io)) {
         conn_->onRpcAddIdentity(&add);
@@ -135,13 +124,13 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       break;
     case METHOD_MESSAGE:
       io.setError(
-          "Use 'OFP.SEND' instead; 'OFP.MESSAGE' is for notifications only");
+          "Use 'OFP.SEND'. 'OFP.MESSAGE' is for notifications only");
       break;
     case METHOD_ALERT:
       io.setError("'OFP.ALERT' is for notifications only");
       break;
     case METHOD_DESCRIPTION: {
-      RpcDescription desc{id};
+      RpcDescription desc{id_};
       io.mapOptional("params", desc.params);
       if (!errorFound(io)) {
         conn_->onRpcDescription(&desc);
@@ -156,7 +145,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
 void RpcEncoder::replyError() {
   // Error string will be empty if there's no content.
 
-  RpcErrorResponse response{id_ ? *id_ : 0};
+  RpcErrorResponse response{id_.is_missing() ? RpcID::NULL_VALUE : id_};
   response.error.message = llvm::StringRef{error()}.rtrim();
 
   // Handle case where the generated error response is too big to send back.
@@ -183,5 +172,20 @@ void RpcEncoder::replyError() {
     // conn_ is set to null in one of the unit tests. Under normal conditions,
     // conn_ should never be null.
     conn_->rpcReply(&response);
+  }
+}
+
+void RpcEncoder::replySendError() {
+  if (!id_.is_missing()) {
+    replyError();
+  } else {
+    // Send OFP.ALERT to report failure to send message.
+    
+    RpcAlert notification;
+    notification.params.time = Timestamp::now();
+    notification.params.alert = llvm::StringRef{error()}.rtrim();
+    if (conn_) {
+      conn_->rpcReply(&notification);
+    }
   }
 }
