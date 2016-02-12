@@ -492,7 +492,6 @@ TEST(encoderfail, duplicateFieldsDisallowDifferentValue) {
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
-
 TEST(encoderfail, end_brace_only) {
   const char *input = "  }";
 

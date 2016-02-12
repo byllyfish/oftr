@@ -261,7 +261,7 @@ struct RpcSendResponse {
   std::string toJson();
 
   struct Result {
-    ByteRange data;       // header of message sent
+    ByteRange data;  // header of message sent
   };
 
   RpcID id;

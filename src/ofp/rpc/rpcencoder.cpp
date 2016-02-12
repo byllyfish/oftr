@@ -123,8 +123,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       io.setError("'OFP.CHANNEL' is for notifications only");
       break;
     case METHOD_MESSAGE:
-      io.setError(
-          "Use 'OFP.SEND'. 'OFP.MESSAGE' is for notifications only");
+      io.setError("Use 'OFP.SEND'. 'OFP.MESSAGE' is for notifications only");
       break;
     case METHOD_ALERT:
       io.setError("'OFP.ALERT' is for notifications only");
@@ -161,7 +160,8 @@ void RpcEncoder::replyError() {
   int code = ERROR_CODE_INVALID_REQUEST;
   if (response.error.message.find("unknown method") != std::string::npos) {
     code = ERROR_CODE_METHOD_NOT_FOUND;
-  } else if (response.error.message.find("unable to locate") != std::string::npos) {
+  } else if (response.error.message.find("unable to locate") !=
+             std::string::npos) {
     code = ERROR_CODE_CONNECTION_NOT_FOUND;
   }
 
@@ -180,7 +180,7 @@ void RpcEncoder::replySendError() {
     replyError();
   } else {
     // Send OFP.ALERT to report failure to send message.
-    
+
     RpcAlert notification;
     notification.params.time = Timestamp::now();
     notification.params.alert = llvm::StringRef{error()}.rtrim();

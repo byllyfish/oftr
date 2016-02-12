@@ -75,7 +75,8 @@ class RpcServer {
   static std::string softwareVersion();
   static ChannelOptions parseOptions(const std::vector<std::string> &options);
 
-  bool verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId, ChannelOptions options);
+  bool verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
+                     ChannelOptions options);
 };
 
 OFP_END_IGNORE_PADDING

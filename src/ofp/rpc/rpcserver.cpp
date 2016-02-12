@@ -193,7 +193,8 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     // Message delivered successfully to channel. Send optional reply.
     if (!send->id.is_missing()) {
       RpcSendResponse response{send->id};
-      response.result.data = {params.data(), std::min<std::size_t>(params.size(), 8)};
+      response.result.data = {params.data(),
+                              std::min<std::size_t>(params.size(), 8)};
       conn->rpcReply(&response);
     }
 
@@ -350,7 +351,8 @@ ChannelOptions RpcServer::parseOptions(
   return result;
 }
 
-bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId, ChannelOptions options) {
+bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
+                              ChannelOptions options) {
   // Verify the channel options and that securityId exists.
   std::string errMesg;
   RpcErrorCode errCode = ERROR_CODE_INVALID_REQUEST;
@@ -372,4 +374,3 @@ bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId, 
 
   return true;
 }
-
