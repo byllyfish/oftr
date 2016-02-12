@@ -23,7 +23,7 @@ public:
 
     bool parse(llvm::StringRef value) {
         UInt64 id;
-        if (llvm::getAsUnsignedInteger(value, 0, id)) {
+        if (value.getAsInteger(0, id)) {
             // value is not an unsigned integer...
             if (value == "null") {
                 id = NULL_VALUE;
