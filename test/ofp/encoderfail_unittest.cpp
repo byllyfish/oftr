@@ -500,3 +500,25 @@ TEST(encoderfail, end_brace_only) {
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
+
+TEST(encoderfail, xid_present) {
+  // Make sure xid is still available after an encoder failure.
+  const char *input = R"""(
+    version: 1
+    type: FEATURE_REQUEST
+    xid: 54321
+    msg:
+      data: '1234'
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ(
+      "YAML:3:11: error: unknown value \"FEATURE_REQUEST\" Did you mean "
+      "\"FEATURES_REQUEST\"?\n    type: FEATURE_REQUEST\n          "
+      "^~~~~~~~~~~~~~~\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+  EXPECT_EQ(54321, encoder.xid());
+}
+

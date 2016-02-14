@@ -36,7 +36,7 @@ class Encoder {
   UInt8 auxiliaryId() const { return auxiliaryId_; }
   Channel *outputChannel() const { return outputChannel_; }
   UInt32 xid() const { return header_.xid(); }
-  
+
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
   const std::string &error() {
@@ -88,6 +88,8 @@ struct MappingTraits<ofp::yaml::Encoder> {
     Header &header = encoder.header_;
     header.setType(OFPT_UNSUPPORTED);
 
+    // Read xid first. If present, we may need it for error reporting later.
+    io.mapOptional("xid", header.xid_);
     io.mapOptional("version", header.version_);
 
     ofp::yaml::MessageType msgType;
@@ -95,7 +97,6 @@ struct MappingTraits<ofp::yaml::Encoder> {
     header.setType(msgType.type);
     encoder.subtype_ = msgType.subtype;
 
-    io.mapOptional("xid", header.xid_);
     io.mapOptional("conn_id", encoder.connId_, UInt64{});
     io.mapOptional("datapath_id", encoder.datapathId_, DatapathID{});
 
