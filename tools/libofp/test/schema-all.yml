@@ -85,6 +85,7 @@ Rpc/OFP.ALERT:
   params: !notify
     conn_id: UInt64
     datapath_id: DatapathID
+    xid: UInt32
     time: Timestamp
     alert: String
     data: HexData

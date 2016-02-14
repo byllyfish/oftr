@@ -35,7 +35,8 @@ class Encoder {
   const DatapathID &datapathId() const { return datapathId_; }
   UInt8 auxiliaryId() const { return auxiliaryId_; }
   Channel *outputChannel() const { return outputChannel_; }
-
+  UInt32 xid() const { return header_.xid(); }
+  
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
   const std::string &error() {

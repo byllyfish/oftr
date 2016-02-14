@@ -99,7 +99,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       if (!errorFound(io)) {
         conn_->onRpcSend(&send);
       } else {
-        replySendError();
+        replySendError(send.params.xid());
       }
       break;
     }
@@ -175,7 +175,7 @@ void RpcEncoder::replyError() {
   }
 }
 
-void RpcEncoder::replySendError() {
+void RpcEncoder::replySendError(UInt32 xid) {
   if (!id_.is_missing()) {
     replyError();
   } else {
@@ -184,6 +184,7 @@ void RpcEncoder::replySendError() {
     RpcAlert notification;
     notification.params.time = Timestamp::now();
     notification.params.alert = llvm::StringRef{error()}.rtrim();
+    notification.params.xid = xid;
     if (conn_) {
       conn_->rpcReply(&notification);
     }

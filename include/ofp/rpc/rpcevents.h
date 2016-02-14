@@ -292,6 +292,7 @@ struct RpcAlert {
     UInt64 connId = 0;
     DatapathID datapathId;
     Timestamp time;
+    UInt32 xid = 0;
     std::string alert;
     ByteRange data;
   };
@@ -397,6 +398,7 @@ method: !notify OFP.ALERT
 params: !notify
   conn_id: UInt64
   datapath_id: DatapathID
+  xid: UInt32
   time: Timestamp
   alert: String
   data: HexData
@@ -659,6 +661,7 @@ struct MappingTraits<ofp::rpc::RpcAlert::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAlert::Params &params) {
     io.mapRequired("conn_id", params.connId);
     io.mapRequired("datapath_id", params.datapathId);
+    io.mapRequired("xid", params.xid);
     io.mapRequired("time", params.time);
     io.mapRequired("alert", params.alert);
     io.mapRequired("data", params.data);
