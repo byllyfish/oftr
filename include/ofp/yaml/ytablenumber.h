@@ -12,7 +12,7 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::TableNumber> {
-  static ofp::yaml::EnumConverterSparse<ofp::OFPTableNo> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPTableNo> converter;
 
   static void output(const ofp::TableNumber &value, void *ctxt,
                      llvm::raw_ostream &out) {

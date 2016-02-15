@@ -64,12 +64,12 @@ std::string RpcAddIdentityResponse::toJson() {
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 // N.B. These strings must be in same order as RpcMethod enum.
-static llvm::StringRef sRpcMethods[] = {
+static const llvm::StringRef sRpcMethods[] = {
     "OFP.LISTEN", "OFP.CONNECT", "OFP.CLOSE", "OFP.SEND", "OFP.CHANNEL",
     "OFP.MESSAGE", "OFP.ALERT", "OFP.LIST_CONNECTIONS", "OFP.ADD_IDENTITY",
     "OFP.DESCRIPTION"};
 
-ofp::yaml::EnumConverter<ofp::rpc::RpcMethod>
+const ofp::yaml::EnumConverter<ofp::rpc::RpcMethod>
     llvm::yaml::ScalarTraits<ofp::rpc::RpcMethod>::converter{sRpcMethods};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

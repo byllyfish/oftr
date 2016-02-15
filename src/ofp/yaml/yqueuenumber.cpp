@@ -12,10 +12,10 @@ using ofp::yaml::EnumConverterSparse;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
-static std::pair<OFPQueueNo, llvm::StringRef> sQueueNumbers[] = {
+static const std::pair<OFPQueueNo, llvm::StringRef> sQueueNumbers[] = {
     OFPQ_NAME(ALL)};
 
-EnumConverterSparse<OFPQueueNo>
+const EnumConverterSparse<OFPQueueNo>
     llvm::yaml::ScalarTraits<ofp::QueueNumber>::converter{sQueueNumbers};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

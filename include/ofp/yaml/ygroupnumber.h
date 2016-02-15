@@ -12,7 +12,7 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::GroupNumber> {
-  static ofp::yaml::EnumConverterSparse<ofp::OFPGroupNo> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPGroupNo> converter;
 
   static void output(const ofp::GroupNumber &value, void *ctxt,
                      llvm::raw_ostream &out) {

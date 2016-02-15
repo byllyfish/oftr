@@ -45,7 +45,7 @@ class EnumConverter {
                          llvm::StringRef maxIntName = "")
       : names_{names}, maxIntName_{maxIntName} {}
 
-  bool convert(llvm::StringRef name, Type *value) {
+  bool convert(llvm::StringRef name, Type *value) const {
     // Check for name match.
     for (size_t i = 0, len = names_.size(); i < len; ++i) {
       if (name.equals(names_[i])) {
@@ -97,7 +97,7 @@ class EnumConverterSparse {
   explicit EnumConverterSparse(llvm::ArrayRef<Entry> entries)
       : entries_{entries} {}
 
-  bool convert(llvm::StringRef name, Type *value) {
+  bool convert(llvm::StringRef name, Type *value) const {
     // Check for name match.
     for (size_t i = 0, len = entries_.size(); i < len; ++i) {
       if (name.equals(entries_[i].second)) {

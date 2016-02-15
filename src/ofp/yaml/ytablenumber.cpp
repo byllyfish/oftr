@@ -12,11 +12,11 @@ using ofp::yaml::EnumConverterSparse;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
-static std::pair<OFPTableNo, llvm::StringRef> sTableNumbers[] = {
+static const std::pair<OFPTableNo, llvm::StringRef> sTableNumbers[] = {
     OFP_NAME(ALL),
 };
 
-EnumConverterSparse<OFPTableNo>
+const EnumConverterSparse<OFPTableNo>
     llvm::yaml::ScalarTraits<ofp::TableNumber>::converter{sTableNumbers};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

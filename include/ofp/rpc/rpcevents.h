@@ -412,7 +412,7 @@ error:
 
 template <>
 struct ScalarTraits<ofp::rpc::RpcMethod> {
-  static ofp::yaml::EnumConverter<ofp::rpc::RpcMethod> converter;
+  static const ofp::yaml::EnumConverter<ofp::rpc::RpcMethod> converter;
 
   static void output(const ofp::rpc::RpcMethod &value, void *ctxt,
                      llvm::raw_ostream &out) {

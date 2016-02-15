@@ -12,10 +12,10 @@ using ofp::yaml::EnumConverterSparse;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
-static std::pair<OFPBufferNo, llvm::StringRef> sBufferIds[] = {
+static const std::pair<OFPBufferNo, llvm::StringRef> sBufferIds[] = {
     OFP_NAME(NO_BUFFER)};
 
-EnumConverterSparse<OFPBufferNo>
+const EnumConverterSparse<OFPBufferNo>
     llvm::yaml::ScalarTraits<ofp::BufferNumber>::converter{sBufferIds};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

@@ -10,8 +10,8 @@
 using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;
 
-static const char *kNullYamlMessage = "---\nnull\n...\n";
-static const char *kNullJsonMessage = "null\n";
+const char *const kNullYamlMessage = "---\nnull\n...\n";
+const char *const kNullJsonMessage = "null\n";
 
 int Encode::run(int argc, const char *const *argv) {
   parseCommandLineOptions(

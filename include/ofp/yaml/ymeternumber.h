@@ -12,7 +12,7 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::MeterNumber> {
-  static ofp::yaml::EnumConverterSparse<ofp::OFPMeterNo> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPMeterNo> converter;
 
   static void output(const ofp::MeterNumber &value, void *ctxt,
                      llvm::raw_ostream &out) {

@@ -70,7 +70,7 @@ yamlize(IO &io, ofp::Big<T> &Val, bool ignore) {
 #define YAML_ENUM_CONVERTER(ConverterType, EnumType, FormatExpr)            \
   template <>                                                               \
   struct ScalarTraits<EnumType> {                                           \
-    static ConverterType<EnumType> converter;                               \
+    static const ConverterType<EnumType> converter;                         \
     static void output(const EnumType &value, void *ctxt,                   \
                        llvm::raw_ostream &out) {                            \
       llvm::StringRef scalar;                                               \
@@ -131,7 +131,7 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverterSparse, ofp::OFPAsyncConfigProperty,
 
 template <>
 struct ScalarTraits<ofp::OFPErrorCode> {
-  static ofp::yaml::EnumConverterSparse<ofp::OFPErrorCode> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPErrorCode> converter;
 
   static void output(const ofp::OFPErrorCode &value, void *ctxt,
                      llvm::raw_ostream &out) {

@@ -97,67 +97,67 @@ static const llvm::StringRef sRoleStatusReason[] = {
     "MASTER_REQUEST", "CONFIG", "EXPERIMENTER",
 };
 
-EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
+const EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
 
-EnumConverter<OFPMultipartType>
+const EnumConverter<OFPMultipartType>
     llvm::yaml::ScalarTraits<OFPMultipartType>::converter{sMultipartTypes,
                                                           "EXPERIMENTER"};
 
-EnumConverter<OFPInstructionType>
+const EnumConverter<OFPInstructionType>
     llvm::yaml::ScalarTraits<OFPInstructionType>::converter{sInstructionTypes,
                                                             "EXPERIMENTER"};
 
-EnumConverter<OFPMeterBandType>
+const EnumConverter<OFPMeterBandType>
     llvm::yaml::ScalarTraits<OFPMeterBandType>::converter{sMeterBandTypes,
                                                           "EXPERIMENTER"};
 
-EnumConverter<OFPFlowModCommand>
+const EnumConverter<OFPFlowModCommand>
     llvm::yaml::ScalarTraits<OFPFlowModCommand>::converter{sFlowModCommands};
 
-EnumConverter<OFPPacketInReason>
+const EnumConverter<OFPPacketInReason>
     llvm::yaml::ScalarTraits<OFPPacketInReason>::converter{sPacketInReason};
 
-EnumConverter<OFPPortStatusReason>
+const EnumConverter<OFPPortStatusReason>
     llvm::yaml::ScalarTraits<OFPPortStatusReason>::converter{sPortStatusReason};
 
-EnumConverter<OFPFlowRemovedReason>
+const EnumConverter<OFPFlowRemovedReason>
     llvm::yaml::ScalarTraits<OFPFlowRemovedReason>::converter{
         sFlowRemovedReason};
 
-EnumConverter<OFPTableStatusReason>
+const EnumConverter<OFPTableStatusReason>
     llvm::yaml::ScalarTraits<OFPTableStatusReason>::converter{
         sTableStatusReason};
 
-EnumConverter<OFPControllerRole>
+const EnumConverter<OFPControllerRole>
     llvm::yaml::ScalarTraits<OFPControllerRole>::converter{sControllerRole};
 
-EnumConverter<OFPMeterModCommand>
+const EnumConverter<OFPMeterModCommand>
     llvm::yaml::ScalarTraits<OFPMeterModCommand>::converter{sMeterModCommand};
 
-EnumConverter<OFPGroupModCommand>
+const EnumConverter<OFPGroupModCommand>
     llvm::yaml::ScalarTraits<OFPGroupModCommand>::converter{sGroupModCommand};
 
-EnumConverter<OFPGroupType> llvm::yaml::ScalarTraits<OFPGroupType>::converter{
+const EnumConverter<OFPGroupType> llvm::yaml::ScalarTraits<OFPGroupType>::converter{
     sGroupType};
 
-EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
+const EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
     sErrorTypes, "EXPERIMENTER"};
 
-EnumConverter<OFPFlowUpdateEvent>
+const EnumConverter<OFPFlowUpdateEvent>
     llvm::yaml::ScalarTraits<OFPFlowUpdateEvent>::converter{sFlowUpdateEvent};
 
-EnumConverter<OFPFlowMonitorCommand>
+const EnumConverter<OFPFlowMonitorCommand>
     llvm::yaml::ScalarTraits<OFPFlowMonitorCommand>::converter{
         sFlowMonitorCommand};
 
-EnumConverter<OFPBundleCtrlType>
+const EnumConverter<OFPBundleCtrlType>
     llvm::yaml::ScalarTraits<OFPBundleCtrlType>::converter{sBundleCtrlType};
 
-EnumConverter<OFPExperimenterPropertyType>
+const EnumConverter<OFPExperimenterPropertyType>
     llvm::yaml::ScalarTraits<OFPExperimenterPropertyType>::converter{
         sExperimenterPropertyList, "EXPERIMENTER"};
 
-EnumConverter<OFPRoleStatusReason>
+const EnumConverter<OFPRoleStatusReason>
     llvm::yaml::ScalarTraits<OFPRoleStatusReason>::converter{sRoleStatusReason};
 
 #define STR_ENTRY(s) \
@@ -244,10 +244,10 @@ static std::pair<OFPAsyncConfigProperty, llvm::StringRef>
         {OFPACPT_EXPERIMENTER_SLAVE, "EXPERIMENTER_SLAVE"},
         {OFPACPT_EXPERIMENTER_MASTER, "EXPERIMENTER_MASTER"}};
 
-EnumConverterSparse<OFPErrorCode>
+const EnumConverterSparse<OFPErrorCode>
     llvm::yaml::ScalarTraits<OFPErrorCode>::converter{sErrorCodes};
 
-EnumConverterSparse<OFPAsyncConfigProperty>
+const EnumConverterSparse<OFPAsyncConfigProperty>
     llvm::yaml::ScalarTraits<OFPAsyncConfigProperty>::converter{
         sAsyncConfigProperty};
 

@@ -7,7 +7,7 @@
 
 using namespace ofp::yaml;
 
-static const char *kMessagePrefix = R"""(  version: !opt UInt8
+const char *const kMessagePrefix = R"""(  version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
   conn_id: !opt UInt64
@@ -16,7 +16,7 @@ static const char *kMessagePrefix = R"""(  version: !opt UInt8
   time: !optout Timestamp
 )""";
 
-static const char *kBriefMessagePrefix = "  datapath_id: !opt DatapathID\n";
+const char *const kBriefMessagePrefix = "  datapath_id: !opt DatapathID\n";
 
 static bool equalsAlnum(llvm::StringRef lhs, llvm::StringRef rhs);
 static std::string stringJoin(const std::vector<llvm::StringRef> &vec,
@@ -164,7 +164,7 @@ std::string Schema::MakeFlagSchemaString(const char *name,
   std::string result = stringJoin(words, " | ");
   result += " | " + unsignedTypeEnum(size);
 
-  return std::string(key) + "\n" + result + "\n";
+  return std::string(key) + '\n' + result + '\n';
 }
 
 // Compare two strings case insensitively skipping non-alphanumeric chars.
