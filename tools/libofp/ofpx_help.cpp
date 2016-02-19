@@ -110,7 +110,7 @@ static const char *const kBuiltinTypes[] = {
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
-static SchemaPair kEnumSchemas[] = {
+static const SchemaPair kEnumSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::OFPFlowModCommand>, "Enum/FlowModCommand"},
     {ofp::yaml::MakeSchema<ofp::OFPPacketInReason>, "Enum/PacketInReason"},
     {ofp::yaml::MakeSchema<ofp::OFPPortStatusReason>, "Enum/PortStatusReason"},
@@ -131,7 +131,7 @@ static SchemaPair kEnumSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::OFPBundleCtrlType>, "Enum/BundleCtrlType"},
 };
 
-static SchemaPair kMixedSchemas[] = {
+static const SchemaPair kMixedSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::PortNumber>, "Mixed/PortNumber"},
     {ofp::yaml::MakeSchema<ofp::QueueNumber>, "Mixed/QueueNumber"},
     {ofp::yaml::MakeSchema<ofp::GroupNumber>, "Mixed/GroupNumber"},
@@ -141,7 +141,7 @@ static SchemaPair kMixedSchemas[] = {
     {ofp::yaml::MakeSchema<ofp::ControllerMaxLen>, "Mixed/ControllerMaxLen"},
 };
 
-static SchemaPair kFlagSchemas[] = {
+static const SchemaPair kFlagSchemas[] = {
     {ofp::yaml::MakeFlagSchema<ofp::OFPFlowModFlags>, "Flag/FlowModFlags"},
     {ofp::yaml::MakeFlagSchema<ofp::OFPActionTypeFlags>,
      "Flag/ActionTypeFlags"},
@@ -184,7 +184,7 @@ static SchemaPair kFlagSchemas[] = {
 };
 
 // Translate "BigNN" to "UIntNN" for documentation purposes.
-static std::pair<const char *, const char *> sFieldTypeMap[] = {
+static const std::pair<const char *, const char *> kFieldTypeMap[] = {
     {"Big8", "UInt8"},
     {"Big16", "UInt16"},
     {"Big32", "UInt32"},
@@ -464,7 +464,7 @@ void Help::dumpSchemaAll() {
 }
 
 const char *Help::translateFieldType(const char *type) {
-  for (auto &entry : sFieldTypeMap) {
+  for (auto &entry : kFieldTypeMap) {
     if (std::strcmp(type, entry.first) == 0) {
       return entry.second;
     }

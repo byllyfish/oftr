@@ -24,7 +24,7 @@ struct EmptyProp {
   Big32 empty;
 };
 
-static EmptyProp kDefaultEmptyProperties[] = {
+static const EmptyProp kDefaultEmptyProperties[] = {
     {OFPTFPT_INSTRUCTIONS, 4, 0},
     {OFPTFPT_NEXT_TABLES, 4, 0},
     {OFPTFPT_WRITE_ACTIONS, 4, 0},
