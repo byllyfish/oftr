@@ -418,6 +418,21 @@ struct ScalarBitSetTraits<ofp::OFPMultipartFlags> {
 };
 
 template <>
+struct ScalarBitSetTraits<ofp::OFPMessageFlags> {
+  static void bitset(IO &io, ofp::OFPMessageFlags &value) {
+    OFP_YAML_BITCASE(OFP_, MORE);
+    OFP_YAML_BITCASE(OFP_, NO_FLUSH);
+
+    io.bitSetCaseOther(value, ofp::OFP_OTHER_MESSAGE_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPMessageFlags>());
+    }
+  }
+};
+
+template <>
 struct ScalarBitSetTraits<ofp::OFPMeterConfigFlags> {
   static void bitset(IO &io, ofp::OFPMeterConfigFlags &value) {
     OFP_YAML_BITCASE(OFPMCF_, KBPS);

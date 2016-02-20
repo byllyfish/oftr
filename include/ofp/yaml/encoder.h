@@ -36,7 +36,8 @@ class Encoder {
   UInt8 auxiliaryId() const { return auxiliaryId_; }
   Channel *outputChannel() const { return outputChannel_; }
   UInt32 xid() const { return header_.xid(); }
-
+  OFPMessageFlags flags() const { return flags_; }
+  
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
   const std::string &error() {
@@ -52,7 +53,7 @@ class Encoder {
   DatapathID datapathId_;
   Header header_;
   OFPMultipartType subtype_ = OFPMP_UNSUPPORTED;
-  OFPMultipartFlags flags_ = OFPMPF_NONE;
+  OFPMessageFlags flags_ = OFP_DEFAULT_MESSAGE_FLAGS;
   ChannelFinder finder_;
   Channel *outputChannel_ = nullptr;
   int lineNumber_ = 0;
@@ -102,7 +103,7 @@ struct MappingTraits<ofp::yaml::Encoder> {
 
     UInt8 defaultAuxId = 0;
     io.mapOptional("auxiliary_id", encoder.auxiliaryId_, defaultAuxId);
-    io.mapOptional("flags", encoder.flags_, OFPMPF_NONE);
+    io.mapOptional("flags", encoder.flags_, OFP_DEFAULT_MESSAGE_FLAGS);
 
     std::string ignore;
     io.mapOptional("_file", ignore);

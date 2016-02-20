@@ -679,6 +679,23 @@ inline OFPMultipartFlags operator|(OFPMultipartFlags lhs,
   return static_cast<OFPMultipartFlags>(static_cast<UInt32>(lhs) | rhs);
 }
 
+enum OFPMessageFlags : UInt32 {
+  // Lower 16 bits are OFPMultipartFlags. The rest are internal message flags.
+  OFP_DEFAULT_MESSAGE_FLAGS = 0,
+  OFP_MORE = static_cast<UInt32>(OFPMPF_MORE),
+  OFP_NO_FLUSH = 1 << 16,
+
+  OFP_OTHER_MESSAGE_FLAGS = 0xFFFEFFFE
+};
+
+inline OFPMessageFlags operator|(OFPMessageFlags lhs, OFPMessageFlags rhs) {
+  return static_cast<OFPMessageFlags>(static_cast<UInt32>(lhs) | rhs);
+}
+
+inline OFPMultipartFlags toMultipartFlags(OFPMessageFlags flags) {
+  return static_cast<OFPMultipartFlags>(flags & 0xffff);
+}
+
 enum OFPGroupModCommand : UInt16 {
   OFPGC_ADD = 0,
   OFPGC_MODIFY = 1,

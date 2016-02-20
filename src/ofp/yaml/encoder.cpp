@@ -233,7 +233,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       MultipartRequestBuilder multi{channel_.version()};
       if (subtype_ != OFPMP_UNSUPPORTED) {
         multi.setRequestType(subtype_);
-        multi.setRequestFlags(flags_);
+        multi.setRequestFlags(toMultipartFlags(flags_));
         llvm::yaml::MappingTraits<MultipartRequestBuilder>::encode(
             io, multi, subtype_, "msg");
       } else {
@@ -247,7 +247,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       MultipartReplyBuilder multi{channel_.version()};
       if (subtype_ != OFPMP_UNSUPPORTED) {
         multi.setReplyType(subtype_);
-        multi.setReplyFlags(flags_);
+        multi.setReplyFlags(toMultipartFlags(flags_));
         llvm::yaml::MappingTraits<MultipartReplyBuilder>::encode(
             io, multi, subtype_, "msg");
       } else {

@@ -100,9 +100,10 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::localEndpoint() const {
 
 template <class SocketType>
 void TCP_Connection<SocketType>::flush() {
+  log::debug("TCP_Connection::flush started", std::make_pair("connid", connectionId()));
   auto self(this->shared_from_this());
   socket_.buf_flush(connectionId(), [this, self](const std::error_code &error) {
-    log::debug("TCP_Connection::flush",
+    log::debug("TCP_Connection::flush finished",
                std::make_pair("connid", connectionId()), error);
     if (error) {
       socket_.lowest_layer().close();

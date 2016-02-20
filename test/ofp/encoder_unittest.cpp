@@ -148,6 +148,7 @@ msg:
   EXPECT_EQ("", encoder.error());
   EXPECT_EQ(0x0E, encoder.size());
   EXPECT_HEX("0102000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
+  EXPECT_EQ(ofp::OFP_DEFAULT_MESSAGE_FLAGS, encoder.flags());
 }
 
 TEST(encoder, echoreply) {
@@ -3146,5 +3147,23 @@ TEST(encoder, ofmp_portstats_v4_flags) {
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF01111111022222220",
       encoder.data(), encoder.size());
+}
+
+TEST(encoder, echorequest_no_flush) {
+  const char *input = R"""(
+type: ECHO_REQUEST
+version: 1
+xid: 7
+flags: [NO_FLUSH]
+msg:
+  data: 'aabbccddeeff'
+)""";
+
+  Encoder encoder{input};
+
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x0E, encoder.size());
+  EXPECT_HEX("0102000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
+  EXPECT_EQ(ofp::OFP_NO_FLUSH, encoder.flags());
 }
 
