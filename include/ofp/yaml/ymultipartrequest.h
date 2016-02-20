@@ -100,7 +100,7 @@ msg:
     name: Str32
     metadata_match: UInt64
     metadata_write: UInt64
-    config: UInt32
+    config: TableConfigFlags
     max_entries: UInt32
     instructions: [InstructionID]
     instructions_miss: !optout [InstructionID]
