@@ -16,7 +16,7 @@ UInt32 EchoRequestBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   size_t msgLen = sizeof(Header) + data_.size();
   msg_.header_.setVersion(version);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
 
   // Assign xid only if xid is 0.
   if (msg_.header_.xid() == 0) {

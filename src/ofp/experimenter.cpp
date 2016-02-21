@@ -28,7 +28,7 @@ UInt32 ExperimenterBuilder::send(Writable *channel) {
 
   msg_.header_.setVersion(version);
   msg_.header_.setXid(xid);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
 
   if (version == OFP_VERSION_1) {
     // Header + experimenter (12 bytes)

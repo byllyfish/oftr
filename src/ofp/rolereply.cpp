@@ -23,7 +23,7 @@ UInt32 RoleReplyBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
 
   msg_.header_.setVersion(version);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
 
   channel->write(&msg_, sizeof(msg_));
   channel->flush();

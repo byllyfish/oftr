@@ -42,7 +42,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
     // Simple fuzz test: remove 1 trailing byte
     if (msg.size() > sizeof(Header)) {
       msg.shrink(msg.size() - 1);
-      msg.mutableHeader()->setLength(UInt16_narrow_cast(msg.size()));
+      msg.mutableHeader()->setLength(msg.size());
       Decoder decoder{&msg, true};
 
       // For the following message types, removing the last byte still yields a

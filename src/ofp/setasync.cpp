@@ -27,7 +27,7 @@ UInt32 SetAsyncBuilder::send(Writable *channel) {
 
   if (version >= OFP_VERSION_5) {
     size_t msgLen = sizeof(msg_) + properties_.size();
-    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+    msg_.header_.setLength(msgLen);
 
     channel->write(&msg_, sizeof(msg_));
     channel->write(properties_.data(), properties_.size());

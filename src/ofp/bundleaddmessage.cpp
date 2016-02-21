@@ -44,7 +44,7 @@ UInt32 BundleAddMessageBuilder::send(Writable *channel) {
   size_t paddedMessageLen = PadLength(message_.size());
   size_t msgLen = sizeof(msg_) + paddedMessageLen + properties_.size();
 
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
   msg_.header_.setVersion(version);
   msg_.header_.setXid(xid);
 

@@ -90,7 +90,7 @@ UInt32 HelloBuilder::send(Writable *channel) {
   }
 
   UInt32 xid = channel->nextXid();
-  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setLength(msgLen);
   hdr.setXid(xid);
 
   elem_.setType(OFPHET_VERSIONBITMAP);

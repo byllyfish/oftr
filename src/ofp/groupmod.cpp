@@ -26,7 +26,7 @@ UInt32 GroupModBuilder::send(Writable *channel) {
   size_t msgLen = sizeof(msg_) + buckets_.size();
 
   msg_.header_.setVersion(channel->version());
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
   msg_.header_.setXid(xid);
 
   channel->write(&msg_, sizeof(msg_));

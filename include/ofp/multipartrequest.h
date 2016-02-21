@@ -69,6 +69,7 @@ class MultipartRequestBuilder {
   void setRequestType(OFPMultipartType type) { msg_.type_ = type; }
   void setRequestFlags(OFPMultipartFlags flags) { msg_.flags_ = flags; }
   void setRequestBody(const void *data, size_t length) {
+    assert(length <= OFP_MAX_SIZE - sizeof(msg_));
     body_.set(data, length);
   }
 
