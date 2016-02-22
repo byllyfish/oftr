@@ -45,6 +45,11 @@ class Encoder {
     return error_;
   }
 
+  MemoryChannel *memoryChannel() { return &channel_; }
+
+  bool recursive() const { return recursive_; }
+  void setRecursive(bool recursive) { recursive_ = recursive; }
+  
  private:
   MemoryChannel channel_;
   std::string error_;
@@ -60,6 +65,7 @@ class Encoder {
   UInt8 auxiliaryId_ = 0;
   UInt8 defaultVersion_;
   bool matchPrereqsChecked_;
+  bool recursive_ = false;
 
   explicit Encoder(const Encoder *encoder);
 

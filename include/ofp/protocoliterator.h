@@ -68,6 +68,12 @@ bool IsProtocolRangeValid(
 size_t ProtocolRangeItemCount(size_t elementSize, const ByteRange &range,
                               size_t sizeFieldOffset, size_t alignment = 8);
 
+/// Return byte offset where the protocol range can be safely split before
+/// it exceeds the given `chunkSize`.
+/// 
+/// \return byte offset <= chunkSize
+size_t ProtocolRangeSplitOffset(size_t chunkSize, size_t elementSize, const ByteRange &range, size_t sizeFieldOffset);
+
 template <class ElemType, size_t SizeOffset>
 struct ProtocolElement {
   static size_t size(const UInt8 *ptr) {

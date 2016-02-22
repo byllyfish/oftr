@@ -49,11 +49,10 @@ Encoder::Encoder(ChannelFinder finder)
 Encoder::Encoder(const Encoder *encoder)
     : errorStream_{error_},
       header_{encoder->header_},
-      finder_{encoder->finder_},
+      finder_{nullptr},
       outputChannel_{encoder->outputChannel_},
       defaultVersion_{encoder->defaultVersion_},
-      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {
-}
+      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {}
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
                  int lineNumber, UInt8 defaultVersion, ChannelFinder finder)
@@ -388,7 +387,10 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
 
 void ofp::yaml::EncodeRecursively(llvm::yaml::IO &io, const char *key,
                                   ByteList &data) {
-  Encoder encoder{GetEncoderFromContext(io)};
+  auto parent = GetEncoderFromContext(io);
+  parent->setRecursive(true);
+  Encoder encoder{parent};
   io.mapRequired(key, encoder);
   data.set(encoder.data(), encoder.size());
+  parent->setRecursive(false);
 }

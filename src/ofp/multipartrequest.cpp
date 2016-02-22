@@ -14,6 +14,7 @@
 #include "ofp/mpflowmonitorrequest.h"
 #include "ofp/mpqueuedescrequest.h"
 #include "ofp/mpexperimenter.h"
+#include "ofp/memorychannel.h"
 
 using namespace ofp;
 
@@ -104,4 +105,29 @@ UInt32 MultipartRequestBuilder::send(Writable *channel) {
   channel->flush();
 
   return xid;
+}
+
+void MultipartRequestBuilder::sendUsingRequestBody(MemoryChannel *channel, const void *data, size_t length) {
+  // Break request body into chunks on a clean boundary. (assume for now that
+  // the first 16 bits are the length) FIXME
+
+  ByteRange body{data, length};
+
+  while (body.size() > MAX_BODY_SIZE) {
+    size_t chunkSize = detail::ProtocolRangeSplitOffset(MAX_BODY_SIZE, 0, body, 0);
+    assert(chunkSize <= MAX_BODY_SIZE);
+    assert(chunkSize <= body.size());
+
+    setRequestFlags(OFPMPF_MORE);
+    setRequestBody(body.data(), chunkSize);
+    send(channel);
+
+    // Keep sending messages with the same xid.
+    channel->setNextXid(msg_.header_.xid());
+
+    body = SafeByteRange(body.data(), body.size(), chunkSize);
+  }
+
+  setRequestFlags(OFPMPF_NONE);
+  setRequestBody(body.data(), body.size());
 }

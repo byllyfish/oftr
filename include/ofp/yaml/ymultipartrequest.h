@@ -338,7 +338,20 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
             msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setRequestBody(seq.data(), seq.size());
+        if (seq.size() <= OFP_MAX_SIZE) {
+          msg.setRequestBody(seq.data(), seq.size());
+        } else {
+          // Break message into chunks. Note that `sendWithRequestBody` leaves
+          // the request body set to the final chunk, and does *not* send it.
+          auto encoder = ofp::yaml::GetEncoderFromContext(io);
+          if (encoder && !encoder->recursive()) {
+            ofp::log::debug("Sending multipart chunks");
+            msg.sendUsingRequestBody(encoder->memoryChannel(), seq.data(), seq.size());
+          } else {
+            ofp::log::warning("Recursive multipart request forbidden");
+            io.setError("Recursive multipart request forbidden");
+          }
+        }
         break;
       }
       case OFPMP_FLOW_MONITOR: {
