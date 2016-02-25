@@ -22,10 +22,10 @@ namespace ofp {
 namespace log {
 namespace detail {
 
-extern OutputCallback GlobalOutputCallback;
-extern void *GlobalOutputCallbackContext;
-extern Level GlobalOutputLevelFilter;
-extern UInt32 GlobalOutputTraceFilter;
+extern OutputCallback GLOBAL_OutputCallback;
+extern void *GLOBAL_OutputCallbackContext;
+extern Level GLOBAL_OutputLevelFilter;
+extern UInt32 GLOBAL_OutputTraceFilter;
 
 template <class T1, class T2>
 std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p) {
@@ -60,12 +60,12 @@ void write_(std::ostream &os, const char *value1, Args &&... args) {
 template <class... Args>
 void write_(Level level, Args &&... args) {
 #if !defined(LIBOFP_LOGGING_DISABLED)
-  if (level >= detail::GlobalOutputLevelFilter) {
+  if (level >= detail::GLOBAL_OutputLevelFilter) {
     std::ostringstream oss;
     write_(oss, std::forward<Args>(args)...);
     std::string buf = oss.str();
-    GlobalOutputCallback(level, buf.data(), buf.size(),
-                         GlobalOutputCallbackContext);
+    GLOBAL_OutputCallback(level, buf.data(), buf.size(),
+                         GLOBAL_OutputCallbackContext);
   }
 #endif  // OFP_LOGGING_DISABLED
 }
@@ -80,7 +80,7 @@ void trace_rpc_internal(const char *type, UInt64 id, const void *data,
 
 inline void trace_msg(const char *type, UInt64 id, const void *data,
                       size_t length) {
-  if ((detail::GlobalOutputTraceFilter &
+  if ((detail::GLOBAL_OutputTraceFilter &
        (1U << static_cast<int>(Trace::Msg))) != 0) {
     detail::trace_msg_internal(type, id, data, length);
   }
@@ -88,7 +88,7 @@ inline void trace_msg(const char *type, UInt64 id, const void *data,
 
 inline void trace_rpc(const char *type, UInt64 id, const void *data,
                       size_t length) {
-  if ((detail::GlobalOutputTraceFilter &
+  if ((detail::GLOBAL_OutputTraceFilter &
        (1U << static_cast<int>(Trace::Rpc))) != 0) {
     detail::trace_rpc_internal(type, id, data, length);
   }

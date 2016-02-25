@@ -12,16 +12,16 @@ class TestController : public ChannelListener {
  public:
   TestController() {
     log::debug("TestController constructed");
-    ++controllerCount;
+    ++GLOBAL_controllerCount;
   }
 
   ~TestController() {
     log::debug("TestController destroyed");
-    --controllerCount;
+    --GLOBAL_controllerCount;
   }
 
   void onChannelUp(Channel *channel) override {
-    ++controllerCount;
+    ++GLOBAL_controllerCount;
     log::debug("TestController::onChannelUp",
                std::make_pair("connid", channel->connectionId()));
     channel_ = channel;
@@ -32,14 +32,14 @@ class TestController : public ChannelListener {
 
     channel->driver()->stop(1000_ms);
 
-    if (shutdownCount > 0) {
-      --shutdownCount;
+    if (GLOBAL_shutdownCount > 0) {
+      --GLOBAL_shutdownCount;
       channel->shutdown();
     }
   }
 
   void onChannelDown(Channel *channel) override {
-    --controllerCount;
+    --GLOBAL_controllerCount;
     log::debug("TestController::onChannelDown",
                std::make_pair("connid", channel->connectionId()));
   }
@@ -51,8 +51,8 @@ class TestController : public ChannelListener {
   }
 
   static ChannelListener *factory() { return new TestController; }
-  static int controllerCount;
-  static int shutdownCount;
+  static int GLOBAL_controllerCount;
+  static int GLOBAL_shutdownCount;
 
  private:
   Channel *channel_ = nullptr;
@@ -61,17 +61,17 @@ class TestController : public ChannelListener {
 class TestAgent : public ChannelListener {
  public:
   TestAgent() {
-    ++agentCount;
+    ++GLOBAL_agentCount;
     log::debug("TestAgent constructed");
   }
 
   ~TestAgent() {
-    --agentCount;
+    --GLOBAL_agentCount;
     log::debug("TestAgent destroyed");
   }
 
   void onChannelUp(Channel *channel) override {
-    ++agentCount;
+    ++GLOBAL_agentCount;
     log::debug("TestAgent::onChannelUp",
                std::make_pair("connid", channel->connectionId()));
 
@@ -84,7 +84,7 @@ class TestAgent : public ChannelListener {
   }
 
   void onChannelDown(Channel *channel) override {
-    --agentCount;
+    --GLOBAL_agentCount;
     log::debug("TestAgent::onChannelDown",
                std::make_pair("connid", channel->connectionId()));
   }
@@ -101,19 +101,19 @@ class TestAgent : public ChannelListener {
   }
 
   static ChannelListener *factory() { return new TestAgent; }
-  static int agentCount;
-  static int auxCount;
+  static int GLOBAL_agentCount;
+  static int GLOBAL_auxCount;
 };
 
-int TestController::controllerCount = 0;
-int TestController::shutdownCount = 0;
-int TestAgent::agentCount = 0;
-int TestAgent::auxCount = 0;
+int TestController::GLOBAL_controllerCount = 0;
+int TestController::GLOBAL_shutdownCount = 0;
+int TestAgent::GLOBAL_agentCount = 0;
+int TestAgent::GLOBAL_auxCount = 0;
 
 TEST(roundtrip, basic_test) {
   // Before we start, there are no controller or agent listeners.
-  TestController::controllerCount = 0;
-  TestAgent::agentCount = 0;
+  TestController::GLOBAL_controllerCount = 0;
+  TestAgent::GLOBAL_agentCount = 0;
 
   {
     Driver driver;
@@ -134,18 +134,18 @@ TEST(roundtrip, basic_test) {
     // The driver will run until the Controller shuts it down.
     driver.run();
 
-    EXPECT_EQ(2, TestController::controllerCount);
-    EXPECT_EQ(2, TestAgent::agentCount);
+    EXPECT_EQ(2, TestController::GLOBAL_controllerCount);
+    EXPECT_EQ(2, TestAgent::GLOBAL_agentCount);
   }
 
   // Destruction is complete when Driver goes out of scope.
-  EXPECT_EQ(0, TestController::controllerCount);
-  EXPECT_EQ(0, TestAgent::agentCount);
+  EXPECT_EQ(0, TestController::GLOBAL_controllerCount);
+  EXPECT_EQ(0, TestAgent::GLOBAL_agentCount);
 }
 
 TEST(roundtrip, shutdown_test) {
-  TestController::controllerCount = 0;
-  TestAgent::agentCount = 0;
+  TestController::GLOBAL_controllerCount = 0;
+  TestAgent::GLOBAL_agentCount = 0;
 
   {
     Driver driver;
@@ -163,15 +163,15 @@ TEST(roundtrip, shutdown_test) {
         ProtocolVersions::All, TestAgent::factory,
         [](Channel *, std::error_code err) { EXPECT_FALSE(err); });
 
-    TestController::shutdownCount = 1;
+    TestController::GLOBAL_shutdownCount = 1;
     driver.run();
 
-    EXPECT_EQ(0, TestController::shutdownCount);
-    EXPECT_EQ(0, TestController::controllerCount);
-    EXPECT_EQ(0, TestAgent::agentCount);
+    EXPECT_EQ(0, TestController::GLOBAL_shutdownCount);
+    EXPECT_EQ(0, TestController::GLOBAL_controllerCount);
+    EXPECT_EQ(0, TestAgent::GLOBAL_agentCount);
   }
 
   // Destruction is complete when Driver goes out of scope.
-  EXPECT_EQ(0, TestController::controllerCount);
-  EXPECT_EQ(0, TestAgent::agentCount);
+  EXPECT_EQ(0, TestController::GLOBAL_controllerCount);
+  EXPECT_EQ(0, TestAgent::GLOBAL_agentCount);
 }

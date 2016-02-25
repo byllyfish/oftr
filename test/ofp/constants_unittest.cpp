@@ -7,7 +7,7 @@
 using namespace ofp;
 using namespace deprecated;
 
-static std::pair<UInt32, UInt32> actionTypes[] = {
+static const std::pair<UInt32, UInt32> actionTypes[] = {
     {OFPATF_OUTPUT, 1 << v1::OFPAT_OUTPUT},
     {OFPATF_SET_VLAN_VID, 1 << v1::OFPAT_SET_VLAN_VID},
     {OFPATF_SET_VLAN_PCP, 1 << v1::OFPAT_SET_VLAN_PCP},

@@ -97,33 +97,33 @@ const UInt32 kDefaultTrace = 0;
 
 namespace detail {
 
-OutputCallback GlobalOutputCallback = nullptr;
-void *GlobalOutputCallbackContext = nullptr;
-Level GlobalOutputLevelFilter = Level::Silent;
-UInt32 GlobalOutputTraceFilter = 0;
+OutputCallback GLOBAL_OutputCallback = nullptr;
+void *GLOBAL_OutputCallbackContext = nullptr;
+Level GLOBAL_OutputLevelFilter = Level::Silent;
+UInt32 GLOBAL_OutputTraceFilter = 0;
 
 }  // namespace detail
 
 void setOutputCallback(OutputCallback callback, void *context) {
-  detail::GlobalOutputCallback = callback;
-  detail::GlobalOutputCallbackContext = context;
+  detail::GLOBAL_OutputCallback = callback;
+  detail::GLOBAL_OutputCallbackContext = context;
   if (callback == nullptr) {
-    detail::GlobalOutputLevelFilter = Level::Silent;
-    detail::GlobalOutputTraceFilter = 0;
-  } else if (detail::GlobalOutputLevelFilter == Level::Silent) {
-    detail::GlobalOutputLevelFilter = kDefaultLevel;
-    detail::GlobalOutputTraceFilter = kDefaultTrace;
+    detail::GLOBAL_OutputLevelFilter = Level::Silent;
+    detail::GLOBAL_OutputTraceFilter = 0;
+  } else if (detail::GLOBAL_OutputLevelFilter == Level::Silent) {
+    detail::GLOBAL_OutputLevelFilter = kDefaultLevel;
+    detail::GLOBAL_OutputTraceFilter = kDefaultTrace;
   }
 }
 
 void setOutputLevelFilter(Level level) {
-  if (detail::GlobalOutputCallback != nullptr)
-    detail::GlobalOutputLevelFilter = level;
+  if (detail::GLOBAL_OutputCallback != nullptr)
+    detail::GLOBAL_OutputLevelFilter = level;
 }
 
 void setOutputTraceFilter(UInt32 trace) {
-  if (detail::GlobalOutputCallback != nullptr)
-    detail::GlobalOutputTraceFilter = trace;
+  if (detail::GLOBAL_OutputCallback != nullptr)
+    detail::GLOBAL_OutputTraceFilter = trace;
 }
 
 static void streamOutputCallback(Level level, const char *line, size_t size,

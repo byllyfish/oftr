@@ -163,7 +163,7 @@ const EnumConverter<OFPRoleStatusReason>
 #define STR_ENTRY(s) \
   { s, #s }
 
-static std::pair<OFPErrorCode, llvm::StringRef> sErrorCodes[] = {
+static const std::pair<OFPErrorCode, llvm::StringRef> sErrorCodes[] = {
     STR_ENTRY(OFPHFC_INCOMPATIBLE), STR_ENTRY(OFPHFC_EPERM),
 
     STR_ENTRY(OFPBRC_BAD_VERSION), STR_ENTRY(OFPBRC_BAD_TYPE),
@@ -239,7 +239,7 @@ static std::pair<OFPErrorCode, llvm::StringRef> sErrorCodes[] = {
     STR_ENTRY(OFPTFFC_BAD_ARGUMENT), STR_ENTRY(OFPTFFC_EPERM),
 };
 
-static std::pair<OFPAsyncConfigProperty, llvm::StringRef>
+static const std::pair<OFPAsyncConfigProperty, llvm::StringRef>
     sAsyncConfigProperty[] = {
         {OFPACPT_EXPERIMENTER_SLAVE, "EXPERIMENTER_SLAVE"},
         {OFPACPT_EXPERIMENTER_MASTER, "EXPERIMENTER_MASTER"}};
