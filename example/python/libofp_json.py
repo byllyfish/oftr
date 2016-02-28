@@ -41,21 +41,11 @@ class LibOFP(object):
 
     To send a message:
 
-       ofp.send('''
-          type:            OFPT_PACKET_OUT
-          datapath_id:     0000-0000-0000-0001
-          msg:
-            buffer_id:       0x33333333
-            in_port:         0x44444444
-            actions:
-              - action: OFPAT_OUTPUT
-                port:   5
-                maxlen: 20
-              - action: OFPAT_SET_FIELD
-                type:   OFB_IPV4_DST
-                value:  192.168.1.1
-            enet_frame: FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
-       '''
+       ofp.send({
+            'type': 'BARRIER_REQUEST',
+            'datapath_id': datapath
+        })
+    }
     """
 
     def __init__(self, driverPath='/usr/local/bin/libofp',
@@ -73,6 +63,7 @@ class LibOFP(object):
         self._sockOutput = None
         self._process = None
         self._openDriver(driverPath)
+        self._xid = 2
 
         if listen:
             self._sendListenRequest(openflowAddr)
@@ -115,6 +106,9 @@ class LibOFP(object):
         }
         if id is not None:
             rpc['id'] = id
+        if method == 'OFP.SEND' and 'xid' not in params:
+            params['xid'] = self._xid
+            self._xid += 1
         self._write(json.dumps(rpc) + EVENT_DELIMITER)
 
     def _sendListenRequest(self, openflowAddr):

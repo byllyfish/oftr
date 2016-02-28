@@ -105,10 +105,10 @@ void Encoder::addDiagnostic(const llvm::SMDiagnostic &d) {
 
 void Encoder::encodeMsg(llvm::yaml::IO &io) {
   // At this point, we know the datapathID. The YAML message may not contain
-  // the version and xid, and even if it does, we still need to override the
+  // the version, and even if it does, we still need to override the
   // version if the channel corresponds to an actual channel. Use the channel
   // finder to locate the channel for the given datapathID so we can set the
-  // correct protocol version and possibly override the xid.
+  // correct protocol version.
 
   if (finder_) {
     // If there's a datapath or connId specified, look up the channel.
@@ -125,9 +125,6 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     }
     // Channel version will override any version specified by input.
     header_.setVersion(outputChannel_->version());
-    if (header_.xid() == 0) {
-      header_.setXid(outputChannel_->nextXid());
-    }
 
   } else if (!header_.version()) {
     // If version is unset, set it to the default version. N.B. The `Hello`
