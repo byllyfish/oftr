@@ -28,15 +28,16 @@ void JsonRpc::setMaxOpenFiles() {
     return;
   }
 
+  ofp::log::debug("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
+  
   rlp.rlim_cur = 1000;
-
   if (::setrlimit(RLIMIT_NOFILE, &rlp) < 0) {
     std::error_code err{errno, std::generic_category()};
     ofp::log::error("setrlimit failed for RLIMIT_NOFILE:", rlp.rlim_cur, err);
     return;
   }
 
-  ofp::log::debug("Changed open file limit to", rlp.rlim_cur);
+  ofp::log::debug("Changed open file limit to", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
 }
 
 void JsonRpc::runStdio() {
