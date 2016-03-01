@@ -206,7 +206,7 @@ size_t ofp::detail::ProtocolRangeSplitOffset(size_t chunkSize, size_t elementSiz
   assert(IsPtrAligned(ptr, kAlignment));
 
   if (len <= chunkSize)
-    return chunkSize;
+    return len;
 
   const size_t minSize = sizeFieldOffset + sizeof(Big16);
 
@@ -229,6 +229,7 @@ size_t ofp::detail::ProtocolRangeSplitOffset(size_t chunkSize, size_t elementSiz
   }
 
   assert((result & kAlignment) == 0);
+  log::fatal_if_false(result != 0, "Unable to split protocol range into chunks");
 
   return result;
 }

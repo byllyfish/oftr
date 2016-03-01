@@ -117,7 +117,8 @@ void MultipartRequestBuilder::sendUsingRequestBody(MemoryChannel *channel, const
     size_t chunkSize = detail::ProtocolRangeSplitOffset(MAX_BODY_SIZE, 0, body, 0);
     assert(chunkSize <= MAX_BODY_SIZE);
     assert(chunkSize <= body.size());
-
+    assert(chunkSize > 0);
+    
     setRequestFlags(OFPMPF_MORE);
     setRequestBody(body.data(), chunkSize);
     send(channel);

@@ -61,6 +61,8 @@ static_assert(IsTriviallyCopyable<MultipartRequest>(),
 
 class MultipartRequestBuilder {
  public:
+  static const size_t MAX_BODY_SIZE = OFP_MAX_SIZE - sizeof(MultipartRequest);
+
   MultipartRequestBuilder() = default;
   explicit MultipartRequestBuilder(UInt8 version) {
     msg_.header_.setVersion(version);
@@ -84,8 +86,6 @@ class MultipartRequestBuilder {
  private:
   MultipartRequest msg_;
   ByteList body_;
-
-  static const size_t MAX_BODY_SIZE = OFP_MAX_SIZE - sizeof(msg_);
 
   template <class T>
   friend struct llvm::yaml::MappingTraits;

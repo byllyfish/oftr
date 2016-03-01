@@ -15,3 +15,16 @@ TEST(protocoliterator, ProtocolRangeItemCount) {
         EXPECT_EQ(0, detail::ProtocolRangeItemCount(unused, data, offset));
     }
 }
+
+
+TEST(protocoliterator, ProtocolRangeSplitOffset) {
+    UInt64 buffer = 0;
+    ByteRange data{&buffer, 0UL};
+    const size_t unused = ~0UL;
+
+    EXPECT_EQ(0, detail::ProtocolRangeSplitOffset(8, unused, data, 0));
+
+    *Big16_cast(&buffer) = 8;
+    ByteRange data8{&buffer, sizeof(buffer)};
+    EXPECT_EQ(8, detail::ProtocolRangeSplitOffset(8, unused, data8, 0));
+}
