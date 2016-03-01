@@ -6,6 +6,8 @@
 #include "ofp/rpc/rpcserver.h"
 
 using namespace ofpx;
+using namespace ofp;
+
 using ExitStatus = JsonRpc::ExitStatus;
 
 const int STDIN = 0;
@@ -24,25 +26,31 @@ void JsonRpc::setMaxOpenFiles() {
 
   if (::getrlimit(RLIMIT_NOFILE, &rlp) < 0) {
     std::error_code err{errno, std::generic_category()};
-    ofp::log::error("getrlimit failed for RLIMIT_NOFILE:", err);
+    log::error("getrlimit failed for RLIMIT_NOFILE:", err);
     return;
   }
 
-  ofp::log::debug("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
-  
-  rlp.rlim_cur = 1000;
+  log::debug("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
+
+#ifdef __APPLE__
+  // Set soft limit to lower of OPEN_MAX and rlim_max.
+  rlp.rlim_cur = std::min<UInt64>(OPEN_MAX, rlp.rlim_max);
+#else
+  rlp.rlim_cur = rlp.rlim_max;
+#endif
+
   if (::setrlimit(RLIMIT_NOFILE, &rlp) < 0) {
     std::error_code err{errno, std::generic_category()};
-    ofp::log::error("setrlimit failed for RLIMIT_NOFILE:", rlp.rlim_cur, err);
+    log::error("setrlimit failed for RLIMIT_NOFILE:", rlp.rlim_cur, err);
     return;
   }
 
-  ofp::log::debug("Changed open file limit to", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
+  log::info("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
 }
 
 void JsonRpc::runStdio() {
-  ofp::Driver driver;
-  ofp::rpc::RpcServer server{&driver, STDIN, STDOUT};
+  Driver driver;
+  rpc::RpcServer server{&driver, STDIN, STDOUT};
   driver.installSignalHandlers([&server]() { server.close(); });
   driver.run();
 }
