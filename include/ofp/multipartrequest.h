@@ -81,7 +81,7 @@ class MultipartRequestBuilder {
 
   // Break request body into chunks and send each chunk, except the last.
   // Upon return, the last chunk is loaded so client can call send().
-  void sendUsingRequestBody(MemoryChannel *channel, const void *data, size_t length);
+  void sendUsingRequestBody(MemoryChannel *channel, const void *data, size_t length, size_t offset);
 
  private:
   MultipartRequest msg_;
