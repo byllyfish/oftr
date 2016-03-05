@@ -715,18 +715,18 @@ Message/Reply.Flow:
   time: !optout Timestamp
   type: REPLY.FLOW
   msg:
-    table_id: TableNumber
-    duration_sec: UInt32
-    duration_nsec: UInt32
-    priority: UInt16
-    idle_timeout: UInt16
-    hard_timeout: UInt16
-    flags: [FlowModFlags]
-    cookie: UInt64
-    packet_count: UInt64
-    byte_count: UInt64
-    match: [Field]
-    instructions: [Instruction]
+    - table_id: TableNumber
+      duration_sec: UInt32
+      duration_nsec: UInt32
+      priority: UInt16
+      idle_timeout: UInt16
+      hard_timeout: UInt16
+      flags: [FlowModFlags]
+      cookie: UInt64
+      packet_count: UInt64
+      byte_count: UInt64
+      match: [Field]
+      instructions: [Instruction]
   
 Message/Reply.Aggregate: 
   version: !opt UInt8
