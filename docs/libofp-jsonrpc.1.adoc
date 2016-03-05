@@ -137,6 +137,7 @@ Open an outgoing OpenFlow connection to the specified host and port.
     - *CONNECT_UDP* = Use UDP instead of TCP. (Not supported with FEATURES_REQ)
     - *DEFAULT_CONTROLLER* = Alias for [FEATURES_REQ].
     - *DEFAULT_AGENT* = Alias for [].
+    - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
 
 ==== Reply
 
@@ -158,6 +159,9 @@ transaction completes, and the connection is assigned a datapath_id.
 If `CONNECT_UDP` option is specified, make an auxiliary connection via UDP to the
 specified endpoint.
 
+If `NO_VERSION_CHECK` option is specified, accept messages with different versions
+after the initial version negotiation using HELLO messages. The default is to close
+the connection when a message is received with an incorrect version.
 
 === OFP.LISTEN
 
@@ -188,6 +192,7 @@ Listen for incoming OpenFlow connections on the specified interface and port.
     - *LISTEN_UDP* = Support auxiliary connections over UDP also (requires AUXILIARY).
     - *DEFAULT_CONTROLLER* = Alias for [FEATURES_REQ].
     - *DEFAULT_AGENT* = Alias for [].
+    - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
 
 ==== Reply
 
@@ -210,6 +215,10 @@ If `AUXILIARY` option is specified, support auxiliary OpenFlow connections.
 
 If `LISTEN_UDP` option is specified, listen for auxiliary UDP connections in addition to TCP.
 The UDP listener will use the same conn_id as the TCP listener.
+
+If `NO_VERSION_CHECK` option is specified, accept messages with different versions
+after the initial version negotiation using HELLO messages. The default is to close
+the connection when a message is received with an incorrect version.
 
 === OFP.SEND
 

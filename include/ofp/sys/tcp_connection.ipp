@@ -47,13 +47,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine,
       message_{this},
       socket_{engine->io(),
               detail::tcpContext<SocketType>(engine, securityId)} {
-  if (securityId != 0) {
-    setFlags(flags() | kRequiresHandshake);
-  }
-
-  if ((options & ChannelOptions::AUXILIARY) != 0) {
-    setFlags(flags() | kPermitsAuxiliary);
-  }
+  setFlags(securityId, options);
 }
 
 template <class SocketType>
@@ -67,13 +61,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
       message_{this},
       socket_{std::move(socket),
               detail::tcpContext<SocketType>(engine, securityId)} {
-  if (securityId != 0) {
-    setFlags(flags() | kRequiresHandshake);
-  }
-
-  if ((options & ChannelOptions::AUXILIARY) != 0) {
-    setFlags(flags() | kPermitsAuxiliary);
-  }
+  setFlags(securityId, options);
 }
 
 template <class SocketType>
@@ -206,7 +194,9 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               assert(length == sizeof(Header));
               const Header *hdr = message_.header();
 
-              if (hdr->validateInput(version())) {
+              UInt8 negotiatedVersion = (flags() & kPermitsOtherVersions) ? 0 : version();
+
+              if (hdr->validateInput(negotiatedVersion)) {
                 // The header has passed our rudimentary validation checks.
                 UInt16 msgLength = hdr->length();
 

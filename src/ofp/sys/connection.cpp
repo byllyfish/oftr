@@ -188,3 +188,22 @@ void Connection::updateTimeReadStarted() {
   timeReadStarted_ = std::chrono::steady_clock::now();
   setFlags(flags() & ~kChannelIdle);
 }
+
+
+void Connection::setFlags(UInt64 securityId, ChannelOptions options) {
+  UInt16 newFlags = flags();
+
+  if (securityId != 0) {
+    newFlags |= kRequiresHandshake;
+  }
+
+  if ((options & ChannelOptions::AUXILIARY) != 0) {
+    newFlags |= kPermitsAuxiliary;
+  }
+
+  if ((options & ChannelOptions::NO_VERSION_CHECK) != 0) {
+    newFlags |= kPermitsOtherVersions;
+  }
+
+  setFlags(newFlags);
+}

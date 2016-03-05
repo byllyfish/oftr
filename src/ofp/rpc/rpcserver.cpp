@@ -349,6 +349,8 @@ ChannelOptions RpcServer::parseOptions(
       result = result | ChannelOptions::DEFAULT_CONTROLLER;
     } else if (opt == "DEFAULT_AGENT") {
       result = result | ChannelOptions::DEFAULT_AGENT;
+    } else if (opt == "NO_VERSION_CHECK") {
+      result = result | ChannelOptions::NO_VERSION_CHECK;
     } else {
       log::warning("RpcServer: Unrecognized option skipped:", opt);
     }

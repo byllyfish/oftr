@@ -87,7 +87,10 @@ class Connection : public Channel {
     kChannelIdle = 0x0040,
 
     /// Indicates permission for auxiliary connections.
-    kPermitsAuxiliary = 0x0080
+    kPermitsAuxiliary = 0x0080,
+
+    /// Indicates permission for other versions after negotiating with HELLO.
+    kPermitsOtherVersions = 0x0100
   };
 
   void poll() override;
@@ -101,6 +104,9 @@ class Connection : public Channel {
 
   /// Invoked by subclasses when an async read is initiated.
   void updateTimeReadStarted();
+
+  /// Convenience function for initializer.
+  void setFlags(UInt64 securityId, ChannelOptions options);
 
  private:
   sys::Engine *engine_;
