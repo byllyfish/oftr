@@ -4,6 +4,8 @@
 #ifndef OFP_YAML_YMETERNUMBER_H_
 #define OFP_YAML_YMETERNUMBER_H_
 
+#include "ofp/yaml/yllvm.h"
+
 #include "ofp/meternumber.h"
 #include "ofp/yaml/enumconverter.h"
 

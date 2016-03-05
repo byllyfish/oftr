@@ -4,6 +4,8 @@
 #ifndef OFP_YAML_YTABLENUMBER_H_
 #define OFP_YAML_YTABLENUMBER_H_
 
+#include "ofp/yaml/yllvm.h"
+
 #include "ofp/tablenumber.h"
 #include "ofp/yaml/enumconverter.h"
 

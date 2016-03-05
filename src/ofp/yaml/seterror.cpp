@@ -3,8 +3,8 @@
 
 #include "ofp/yaml/yllvm.h"
 
-#include "ofp/yaml/seterror.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/seterror.h"
 #include "ofp/yaml/ycontext.h"
 
 static llvm::StringRef closestValue(llvm::StringRef name,

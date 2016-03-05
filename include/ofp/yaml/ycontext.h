@@ -4,8 +4,6 @@
 #ifndef OFP_YAML_YCONTEXT_H_
 #define OFP_YAML_YCONTEXT_H_
 
-#include "ofp/types.h"
-
 namespace ofp {
 namespace yaml {
 

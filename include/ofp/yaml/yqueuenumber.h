@@ -4,6 +4,8 @@
 #ifndef OFP_YAML_YQUEUENUMBER_H_
 #define OFP_YAML_YQUEUENUMBER_H_
 
+#include "ofp/yaml/yllvm.h"
+
 #include "ofp/queuenumber.h"
 #include "ofp/yaml/enumconverter.h"
 

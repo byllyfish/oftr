@@ -4,6 +4,8 @@
 #ifndef OFP_YAML_YGROUPNUMBER_H_
 #define OFP_YAML_YGROUPNUMBER_H_
 
+#include "ofp/yaml/yllvm.h"
+
 #include "ofp/groupnumber.h"
 #include "ofp/yaml/enumconverter.h"
 

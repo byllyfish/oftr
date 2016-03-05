@@ -1,8 +1,6 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/yaml/ygroupnumber.h"
 
 using namespace ofp;

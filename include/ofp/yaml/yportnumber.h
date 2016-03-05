@@ -4,6 +4,8 @@
 #ifndef OFP_YAML_YPORTNUMBER_H_
 #define OFP_YAML_YPORTNUMBER_H_
 
+#include "ofp/yaml/yllvm.h"
+
 #include "ofp/portnumber.h"
 #include "ofp/yaml/enumconverter.h"
 
