@@ -4,10 +4,10 @@
 #ifndef OFP_GROUPMOD_H_
 #define OFP_GROUPMOD_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/bucketlist.h"
 #include "ofp/bucketrange.h"
 #include "ofp/groupnumber.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

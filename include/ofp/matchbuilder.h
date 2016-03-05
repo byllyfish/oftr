@@ -4,11 +4,11 @@
 #ifndef OFP_MATCHBUILDER_H_
 #define OFP_MATCHBUILDER_H_
 
+#include "ofp/constants.h"
+#include "ofp/match.h"
 #include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"
 #include "ofp/prerequisites.h"
-#include "ofp/constants.h"
-#include "ofp/match.h"
 
 namespace ofp {
 

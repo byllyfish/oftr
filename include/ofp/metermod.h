@@ -4,9 +4,9 @@
 #ifndef OFP_METERMOD_H_
 #define OFP_METERMOD_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/meterbandlist.h"
 #include "ofp/meternumber.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

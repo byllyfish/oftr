@@ -4,8 +4,8 @@
 #ifndef OFP_ACTIONID_H_
 #define OFP_ACTIONID_H_
 
-#include "ofp/constants.h"
 #include "ofp/actiontype.h"
+#include "ofp/constants.h"
 #include "ofp/validation.h"
 
 namespace ofp {

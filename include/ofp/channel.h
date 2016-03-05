@@ -4,10 +4,10 @@
 #ifndef OFP_CHANNEL_H_
 #define OFP_CHANNEL_H_
 
-#include "ofp/writable.h"
-#include "ofp/ipv6endpoint.h"
-#include "ofp/datapathid.h"
 #include "ofp/channeltransport.h"
+#include "ofp/datapathid.h"
+#include "ofp/ipv6endpoint.h"
+#include "ofp/writable.h"
 
 namespace ofp {
 

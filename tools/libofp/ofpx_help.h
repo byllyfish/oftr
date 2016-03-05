@@ -4,8 +4,8 @@
 #ifndef TOOLS_LIBOFP_OFPX_HELP_H_
 #define TOOLS_LIBOFP_OFPX_HELP_H_
 
-#include "./ofpx.h"
 #include <set>
+#include "./ofpx.h"
 
 namespace ofp {
 namespace yaml {

@@ -2,10 +2,10 @@
 // This file is distributed under the MIT License.
 
 #include "./ofpx_encode.h"
-#include <iostream>
 #include <fstream>
-#include "ofp/yaml/encoder.h"
+#include <iostream>
 #include "ofp/yaml/decoder.h"
+#include "ofp/yaml/encoder.h"
 
 using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;

@@ -18,8 +18,7 @@ bool GroupMod::validateInput(Validation *context) const {
 }
 
 GroupModBuilder::GroupModBuilder(const GroupMod *msg)
-    : msg_{*msg}, buckets_{msg->buckets()} {
-}
+    : msg_{*msg}, buckets_{msg->buckets()} {}
 
 UInt32 GroupModBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

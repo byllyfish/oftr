@@ -7,8 +7,8 @@
 #include "ofp/byteorder.h"
 #include "ofp/byterange.h"
 #include "ofp/constants.h"
-#include "ofp/padding.h"
 #include "ofp/log.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 

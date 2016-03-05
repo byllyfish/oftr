@@ -5,8 +5,8 @@
 #define OFP_PROTOCOLRANGE_H_
 
 #include <algorithm>
-#include "ofp/protocoliterator.h"
 #include "ofp/log.h"
+#include "ofp/protocoliterator.h"
 
 namespace ofp {
 

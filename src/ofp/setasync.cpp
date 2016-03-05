@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/setasync.h"
-#include "ofp/writable.h"
 #include "ofp/asyncconfigproperty.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 
@@ -15,8 +15,7 @@ bool SetAsync::validateInput(Validation *context) const {
   return properties().validateInput(context);
 }
 
-SetAsyncBuilder::SetAsyncBuilder(const SetAsync *msg) : msg_{*msg} {
-}
+SetAsyncBuilder::SetAsyncBuilder(const SetAsync *msg) : msg_{*msg} {}
 
 UInt32 SetAsyncBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

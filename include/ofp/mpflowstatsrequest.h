@@ -5,10 +5,10 @@
 #define OFP_MPFLOWSTATSREQUEST_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/padding.h"
-#include "ofp/matchbuilder.h"
-#include "ofp/match.h"
 #include "ofp/groupnumber.h"
+#include "ofp/match.h"
+#include "ofp/matchbuilder.h"
+#include "ofp/padding.h"
 #include "ofp/tablenumber.h"
 
 namespace ofp {

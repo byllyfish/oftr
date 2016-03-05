@@ -9,6 +9,8 @@
 
 namespace ofp {
 
+class Validation;
+
 class PacketCounter {
  public:
   enum {

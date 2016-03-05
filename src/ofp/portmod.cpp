@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/portmod.h"
-#include "ofp/writable.h"
 #include "ofp/portmodproperty.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 
@@ -15,8 +15,7 @@ bool PortMod::validateInput(Validation *context) const {
   return properties().validateInput(context);
 }
 
-PortModBuilder::PortModBuilder(const PortMod *msg) : msg_{*msg} {
-}
+PortModBuilder::PortModBuilder(const PortMod *msg) : msg_{*msg} {}
 
 UInt32 PortModBuilder::send(Writable *channel) {
   UInt8 version = channel->version();

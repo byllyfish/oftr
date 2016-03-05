@@ -4,8 +4,8 @@
 #ifndef OFP_RPC_RPCCONNECTIONSESSION_H_
 #define OFP_RPC_RPCCONNECTIONSESSION_H_
 
-#include "ofp/sys/asio_utils.h"
 #include "ofp/rpc/rpcconnection.h"
+#include "ofp/sys/asio_utils.h"
 
 namespace ofp {
 namespace rpc {

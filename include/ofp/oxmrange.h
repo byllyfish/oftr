@@ -4,8 +4,8 @@
 #ifndef OFP_OXMRANGE_H_
 #define OFP_OXMRANGE_H_
 
-#include "ofp/oxmiterator.h"
 #include "ofp/byterange.h"
+#include "ofp/oxmiterator.h"
 
 namespace ofp {
 

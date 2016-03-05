@@ -4,12 +4,14 @@
 #ifndef OFP_SYS_ASIO_UTILS_H_
 #define OFP_SYS_ASIO_UTILS_H_
 
+// This #include must be first.
 #include "ofp/sys/asio_openssl_init.h"
+
 #include <asio.hpp>
 #include <asio/ssl.hpp>
 
-#include "ofp/log.h"
 #include "ofp/ipv6endpoint.h"
+#include "ofp/log.h"
 #include "ofp/sys/plaintext.h"
 
 namespace ofp {

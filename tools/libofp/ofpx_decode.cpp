@@ -2,13 +2,13 @@
 // This file is distributed under the MIT License.
 
 #include "./ofpx_decode.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include "./ofpx_util.h"
+#include "llvm/Support/Path.h"
+#include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
-#include "ofp/log.h"
-#include "llvm/Support/Path.h"
-#include "./ofpx_util.h"
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -412,7 +412,8 @@ bool Decode::equalMessages(ofp::ByteRange origData,
   if (origData.size() != newData.size()) {
     std::cerr << "Filename: " << currentFilename_ << '\n';
     std::cerr << "Error: Encode yielded different size data: " << newData.size()
-              << " vs. " << origData.size() << '\n' << newData << '\n'
+              << " vs. " << origData.size() << '\n'
+              << newData << '\n'
               << origData << '\n';
     return false;
   }
@@ -425,7 +426,9 @@ bool Decode::equalMessages(ofp::ByteRange origData,
         findDiffOffset(origData.data(), newData.data(), newData.size());
     std::cerr << "Filename: " << currentFilename_ << '\n';
     std::cerr << "Error: Encode yielded different data at byte offset "
-              << diffOffset << ":\n" << newData << '\n' << origData << '\n';
+              << diffOffset << ":\n"
+              << newData << '\n'
+              << origData << '\n';
     return false;
   }
 

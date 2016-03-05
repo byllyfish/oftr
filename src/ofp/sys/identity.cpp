@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/identity.h"
+#include "ofp/sys/connection.h"
 #include "ofp/sys/membio.h"
 #include "ofp/sys/memx509.h"
-#include "ofp/sys/connection.h"
 
 using namespace ofp;
 using namespace ofp::sys;

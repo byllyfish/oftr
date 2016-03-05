@@ -4,8 +4,8 @@
 #ifndef OFP_INSTRUCTIONITERATOR_H_
 #define OFP_INSTRUCTIONITERATOR_H_
 
-#include "ofp/protocoliterator.h"
 #include "ofp/instructiontype.h"
+#include "ofp/protocoliterator.h"
 
 namespace ofp {
 

@@ -4,8 +4,8 @@
 #ifndef OFP_PREREQUISITES_H_
 #define OFP_PREREQUISITES_H_
 
-#include "ofp/oxmtype.h"
 #include "ofp/oxmrange.h"
+#include "ofp/oxmtype.h"
 
 namespace ofp {
 

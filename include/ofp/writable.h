@@ -4,8 +4,8 @@
 #ifndef OFP_WRITABLE_H_
 #define OFP_WRITABLE_H_
 
-#include "ofp/types.h"
 #include "ofp/padding.h"
+#include "ofp/types.h"
 
 namespace ofp {
 

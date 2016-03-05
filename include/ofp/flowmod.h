@@ -4,15 +4,15 @@
 #ifndef OFP_FLOWMOD_H_
 #define OFP_FLOWMOD_H_
 
-#include "ofp/protocolmsg.h"
-#include "ofp/padding.h"
+#include "ofp/buffernumber.h"
+#include "ofp/groupnumber.h"
+#include "ofp/instructionlist.h"
+#include "ofp/instructionrange.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/matchheader.h"
-#include "ofp/instructionlist.h"
-#include "ofp/instructionrange.h"
-#include "ofp/buffernumber.h"
-#include "ofp/groupnumber.h"
+#include "ofp/padding.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/tablenumber.h"
 
 namespace ofp {

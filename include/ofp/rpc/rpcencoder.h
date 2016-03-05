@@ -4,8 +4,8 @@
 #ifndef OFP_RPC_RPCENCODER_H_
 #define OFP_RPC_RPCENCODER_H_
 
-#include "ofp/yaml/yllvm.h"
 #include "ofp/rpc/rpcevents.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace ofp {
 namespace rpc {

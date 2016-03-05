@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/matchpacket.h"
+#include "ofp/constants.h"
 #include "ofp/macaddress.h"
 #include "ofp/oxmfields.h"
-#include "ofp/constants.h"
 
 using namespace ofp;
 
@@ -143,10 +143,17 @@ enum : UInt8 {
 };
 
 inline bool IPv6NextHeaderIsExtension(UInt8 nextHeader) {
-  const UInt8 buf[] = {IPv6Ext_Hop, IPv6Ext_Router, IPv6Ext_Fragment,
-                       IPv6Ext_ESP, IPv6Ext_Auth, IPv6Ext_Dest,
-                       IPv6Ext_Mobility, IPv6Ext_HostIdentity, IPv6Ext_Shim6,
-                       IPv6Ext_Experimental253, IPv6Ext_Experimental254};
+  const UInt8 buf[] = {IPv6Ext_Hop,
+                       IPv6Ext_Router,
+                       IPv6Ext_Fragment,
+                       IPv6Ext_ESP,
+                       IPv6Ext_Auth,
+                       IPv6Ext_Dest,
+                       IPv6Ext_Mobility,
+                       IPv6Ext_HostIdentity,
+                       IPv6Ext_Shim6,
+                       IPv6Ext_Experimental253,
+                       IPv6Ext_Experimental254};
   return std::memchr(buf, nextHeader, ArrayLength(buf)) != nullptr;
 }
 

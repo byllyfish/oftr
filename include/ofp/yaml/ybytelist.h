@@ -5,6 +5,7 @@
 #define OFP_YAML_YBYTELIST_H_
 
 #include "ofp/yaml/yllvm.h"
+
 #include "ofp/bytelist.h"
 
 namespace llvm {

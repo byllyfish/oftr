@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/tablemod.h"
-#include "ofp/writable.h"
 #include "ofp/tablemodproperty.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 

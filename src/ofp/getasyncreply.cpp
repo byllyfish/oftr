@@ -23,8 +23,7 @@ GetAsyncReplyBuilder::GetAsyncReplyBuilder(const GetAsyncRequest *request) {
 }
 
 GetAsyncReplyBuilder::GetAsyncReplyBuilder(const GetAsyncReply *msg)
-    : msg_{*msg} {
-}
+    : msg_{*msg} {}
 
 UInt32 GetAsyncReplyBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

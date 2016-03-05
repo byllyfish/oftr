@@ -4,16 +4,16 @@
 #ifndef OFP_RPC_RPCEVENTS_H_
 #define OFP_RPC_RPCEVENTS_H_
 
-#include "ofp/yaml/yllvm.h"
 #include "ofp/datapathid.h"
-#include "ofp/yaml/ydatapathid.h"
 #include "ofp/driver.h"
 #include "ofp/padding.h"
-#include "ofp/yaml/ybytelist.h"
-#include "ofp/yaml/yaddress.h"
-#include "ofp/yaml/encoder.h"
-#include "ofp/yaml/ytimestamp.h"
 #include "ofp/rpc/rpcid.h"
+#include "ofp/yaml/encoder.h"
+#include "ofp/yaml/yaddress.h"
+#include "ofp/yaml/ybytelist.h"
+#include "ofp/yaml/ydatapathid.h"
+#include "ofp/yaml/yllvm.h"
+#include "ofp/yaml/ytimestamp.h"
 
 namespace ofp {
 namespace rpc {

@@ -4,14 +4,14 @@
 #ifndef OFP_SYS_TCP_CONNECTION_H_
 #define OFP_SYS_TCP_CONNECTION_H_
 
-#include "ofp/types.h"
-#include "ofp/sys/asio_utils.h"
-#include "ofp/sys/engine.h"
-#include "ofp/message.h"
-#include "ofp/sys/connection.h"
 #include "ofp/driver.h"
+#include "ofp/message.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/sys/buffered.h"
+#include "ofp/sys/connection.h"
+#include "ofp/sys/engine.h"
 #include "ofp/sys/handler_allocator.h"
+#include "ofp/types.h"
 
 namespace ofp {
 

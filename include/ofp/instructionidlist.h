@@ -4,8 +4,8 @@
 #ifndef OFP_INSTRUCTIONIDLIST_H_
 #define OFP_INSTRUCTIONIDLIST_H_
 
-#include "ofp/protocollist.h"
 #include "ofp/instructionidrange.h"
+#include "ofp/protocollist.h"
 
 namespace ofp {
 

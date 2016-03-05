@@ -1,12 +1,12 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include <ofp/unittest.h>
 #include "ofp/flowmod.h"
-#include "ofp/matchbuilder.h"
-#include "ofp/instructions.h"
-#include "ofp/bytelist.h"
+#include <ofp/unittest.h>
 #include "ofp/actions.h"
+#include "ofp/bytelist.h"
+#include "ofp/instructions.h"
+#include "ofp/matchbuilder.h"
 
 using namespace ofp;
 

@@ -42,8 +42,7 @@ PortRange FeaturesReply::ports() const {
 }
 
 FeaturesReplyBuilder::FeaturesReplyBuilder(const FeaturesReply *msg)
-    : msg_{*msg} {
-}
+    : msg_{*msg} {}
 
 FeaturesReplyBuilder::FeaturesReplyBuilder(UInt32 xid) {
   // Set xid of reply to request's xid.

@@ -4,14 +4,14 @@
 #ifndef OFP_STANDARDMATCH_H_
 #define OFP_STANDARDMATCH_H_
 
-#include "ofp/oxmfields.h"
-#include "ofp/macaddress.h"
+#include "ofp/constants.h"
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
+#include "ofp/log.h"
+#include "ofp/macaddress.h"
+#include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"
 #include "ofp/padding.h"
-#include "ofp/log.h"
-#include "ofp/constants.h"
 
 namespace ofp {
 namespace deprecated {

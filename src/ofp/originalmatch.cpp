@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include <iterator>
 #include "ofp/originalmatch.h"
+#include <iterator>
 #include "ofp/standardmatch.h"
 
 using namespace ofp;
@@ -169,8 +169,9 @@ UInt32 OriginalMatch::standardWildcards() const {
 
 std::string OriginalMatch::toString() const {
   // A '*' after a value indicates the value is a wildcard.
-  auto wildcard =
-      [this](Wildcards wc) -> char { return wildcards & wc ? '*' : ' '; };
+  auto wildcard = [this](Wildcards wc) -> char {
+    return wildcards & wc ? '*' : ' ';
+  };
 
   std::stringstream ss;
   ss << "in_port: " << in_port << wildcard(OFPFW_IN_PORT) << '\n';

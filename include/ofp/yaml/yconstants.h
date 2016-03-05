@@ -4,11 +4,11 @@
 #ifndef OFP_YAML_YCONSTANTS_H_
 #define OFP_YAML_YCONSTANTS_H_
 
+#include "ofp/byteorder.h"
 #include "ofp/constants.h"
 #include "ofp/yaml/enumconverter.h"
-#include "ofp/yaml/ycontext.h"
-#include "ofp/byteorder.h"
 #include "ofp/yaml/seterror.h"
+#include "ofp/yaml/ycontext.h"
 
 namespace ofp {
 namespace yaml {

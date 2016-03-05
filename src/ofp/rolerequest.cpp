@@ -6,8 +6,7 @@
 
 using namespace ofp;
 
-RoleRequestBuilder::RoleRequestBuilder(const RoleRequest *msg) : msg_{*msg} {
-}
+RoleRequestBuilder::RoleRequestBuilder(const RoleRequest *msg) : msg_{*msg} {}
 
 UInt32 RoleRequestBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

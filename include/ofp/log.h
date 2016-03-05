@@ -5,8 +5,8 @@
 #define OFP_LOG_H_
 
 #include <sstream>
-#include "ofp/loglevel.h"
 #include "llvm/ADT/StringRef.h"
+#include "ofp/loglevel.h"
 
 namespace llvm {
 

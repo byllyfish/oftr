@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/error.h"
+#include "ofp/log.h"
 #include "ofp/message.h"
 #include "ofp/writable.h"
-#include "ofp/log.h"
 
 using namespace ofp;
 

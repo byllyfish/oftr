@@ -19,8 +19,7 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
     : RpcConnection{server},
       input_{std::move(input)},
       output_{std::move(output)},
-      streambuf_{RPC_MAX_MESSAGE_SIZE} {
-}
+      streambuf_{RPC_MAX_MESSAGE_SIZE} {}
 
 void RpcConnectionStdio::setInput(int input) {
   assert(input >= 0);

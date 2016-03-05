@@ -4,8 +4,8 @@
 #ifndef OFP_TABLEMODPROPERTY_H_
 #define OFP_TABLEMODPROPERTY_H_
 
-#include "ofp/experimenterproperty.h"
 #include "ofp/constants.h"
+#include "ofp/experimenterproperty.h"
 #include "ofp/padding.h"
 
 namespace ofp {

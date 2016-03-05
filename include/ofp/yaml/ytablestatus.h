@@ -5,8 +5,8 @@
 #define OFP_YAML_YTABLESTATUS_H_
 
 #include "ofp/tablestatus.h"
-#include "ofp/yaml/ytabledesc.h"
 #include "ofp/yaml/yconstants.h"
+#include "ofp/yaml/ytabledesc.h"
 
 namespace llvm {
 namespace yaml {

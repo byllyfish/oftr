@@ -1,5 +1,5 @@
-#include "ofp/unittest.h"
 #include "ofp/protocoliterator.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 

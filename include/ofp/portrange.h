@@ -4,8 +4,8 @@
 #ifndef OFP_PORTRANGE_H_
 #define OFP_PORTRANGE_H_
 
-#include "ofp/protocolrange.h"
 #include "ofp/port.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 

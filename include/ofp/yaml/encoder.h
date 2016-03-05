@@ -5,13 +5,15 @@
 #define OFP_YAML_ENCODER_H_
 
 #include "ofp/yaml/yllvm.h"
+
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/ydatapathid.h"
-#include "ofp/header.h"
+
 #include "ofp/bytelist.h"
-#include "ofp/memorychannel.h"
-#include "ofp/log.h"
 #include "ofp/channel.h"
+#include "ofp/header.h"
+#include "ofp/log.h"
+#include "ofp/memorychannel.h"
 
 namespace ofp {
 namespace yaml {

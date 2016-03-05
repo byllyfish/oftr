@@ -4,12 +4,12 @@
 #ifndef OFP_MPFLOWMONITORREQUEST_H_
 #define OFP_MPFLOWMONITORREQUEST_H_
 
+#include "ofp/groupnumber.h"
+#include "ofp/matchbuilder.h"
+#include "ofp/matchheader.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
-#include "ofp/matchheader.h"
-#include "ofp/matchbuilder.h"
 #include "ofp/tablenumber.h"
-#include "ofp/groupnumber.h"
 
 namespace ofp {
 

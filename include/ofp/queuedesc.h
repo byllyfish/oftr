@@ -5,8 +5,8 @@
 #define OFP_QUEUEDESC_H_
 
 #include "ofp/portnumber.h"
-#include "ofp/queuenumber.h"
 #include "ofp/propertylist.h"
+#include "ofp/queuenumber.h"
 
 namespace ofp {
 

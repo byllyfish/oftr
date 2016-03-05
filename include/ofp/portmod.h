@@ -4,10 +4,10 @@
 #ifndef OFP_PORTMOD_H_
 #define OFP_PORTMOD_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
 #include "ofp/propertylist.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

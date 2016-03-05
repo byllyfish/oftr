@@ -4,6 +4,8 @@
 #ifndef OFP_BUFFERNUMBER_H_
 #define OFP_BUFFERNUMBER_H_
 
+#include "ofp/byteorder.h"
+
 namespace ofp {
 
 enum OFPBufferNo : UInt32;

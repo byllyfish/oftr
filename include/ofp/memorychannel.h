@@ -4,10 +4,10 @@
 #ifndef OFP_MEMORYCHANNEL_H_
 #define OFP_MEMORYCHANNEL_H_
 
-#include "ofp/writable.h"
 #include "ofp/bytelist.h"
-#include "ofp/padding.h"
 #include "ofp/constants.h"
+#include "ofp/padding.h"
+#include "ofp/writable.h"
 
 namespace ofp {
 

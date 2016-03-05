@@ -2,10 +2,10 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnection.h"
+#include "ofp/channel.h"
 #include "ofp/rpc/rpcencoder.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
-#include "ofp/channel.h"
 
 using ofp::rpc::RpcConnection;
 

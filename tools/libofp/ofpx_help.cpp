@@ -2,40 +2,40 @@
 // This file is distributed under the MIT License.
 
 #include "./ofpx_help.h"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include "ofp/oxmtype.h"
-#include "ofp/yaml/yhello.h"
-#include "ofp/yaml/yerror.h"
-#include "ofp/yaml/yecho.h"
-#include "ofp/yaml/yfeaturesreply.h"
-#include "ofp/yaml/ygetconfigreply.h"
-#include "ofp/yaml/ysetconfig.h"
-#include "ofp/yaml/ypacketin.h"
-#include "ofp/yaml/ypacketout.h"
-#include "ofp/yaml/yflowmod.h"
-#include "ofp/yaml/yflowremoved.h"
-#include "ofp/yaml/yportmod.h"
-#include "ofp/yaml/yheaderonly.h"
-#include "ofp/yaml/yschema.h"
-#include "ofp/yaml/yportstatus.h"
-#include "ofp/yaml/ygroupmod.h"
-#include "ofp/yaml/ytablemod.h"
-#include "ofp/yaml/ymultipartrequest.h"
-#include "ofp/yaml/ymultipartreply.h"
-#include "ofp/yaml/yqueuegetconfigrequest.h"
-#include "ofp/yaml/yqueuegetconfigreply.h"
-#include "ofp/yaml/yrolerequest.h"
-#include "ofp/yaml/yrolereply.h"
-#include "ofp/yaml/ygetasyncreply.h"
-#include "ofp/yaml/ysetasync.h"
-#include "ofp/yaml/ymetermod.h"
-#include "ofp/yaml/yrolestatus.h"
+#include "ofp/rpc/rpcevents.h"
 #include "ofp/yaml/ybundleaddmessage.h"
 #include "ofp/yaml/ybundlecontrol.h"
+#include "ofp/yaml/yecho.h"
+#include "ofp/yaml/yerror.h"
+#include "ofp/yaml/yfeaturesreply.h"
+#include "ofp/yaml/yflowmod.h"
+#include "ofp/yaml/yflowremoved.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/ygetconfigreply.h"
+#include "ofp/yaml/ygroupmod.h"
+#include "ofp/yaml/yheaderonly.h"
+#include "ofp/yaml/yhello.h"
+#include "ofp/yaml/ymetermod.h"
+#include "ofp/yaml/ymultipartreply.h"
+#include "ofp/yaml/ymultipartrequest.h"
+#include "ofp/yaml/ypacketin.h"
+#include "ofp/yaml/ypacketout.h"
+#include "ofp/yaml/yportmod.h"
+#include "ofp/yaml/yportstatus.h"
+#include "ofp/yaml/yqueuegetconfigreply.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
 #include "ofp/yaml/yrequestforward.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/yrolerequest.h"
+#include "ofp/yaml/yrolestatus.h"
+#include "ofp/yaml/yschema.h"
+#include "ofp/yaml/ysetasync.h"
+#include "ofp/yaml/ysetconfig.h"
+#include "ofp/yaml/ytablemod.h"
 #include "ofp/yaml/ytablestatus.h"
-#include "ofp/rpc/rpcevents.h"
 
 using namespace ofpx;
 
@@ -46,41 +46,69 @@ Help::~Help() = default;
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static const char *const kMessageSchemas[] = {
-    llvm::yaml::kHelloSchema, llvm::yaml::kErrorSchema,
-    llvm::yaml::kEchoRequestSchema, llvm::yaml::kEchoReplySchema,
-    llvm::yaml::kFeaturesRequestSchema, llvm::yaml::kFeaturesReplySchema,
-    llvm::yaml::kGetConfigRequestSchema, llvm::yaml::kGetConfigReplySchema,
-    llvm::yaml::kSetConfigSchema, llvm::yaml::kPacketInSchema,
-    llvm::yaml::kFlowRemovedSchema, llvm::yaml::kPortStatusSchema,
-    llvm::yaml::kPacketOutSchema, llvm::yaml::kFlowModSchema,
-    llvm::yaml::kGroupModSchema, llvm::yaml::kPortModSchema,
-    llvm::yaml::kTableModSchema, llvm::yaml::kMultipartRequestSchema,
-    llvm::yaml::kMultipartReplySchema, llvm::yaml::kBarrierRequestSchema,
-    llvm::yaml::kBarrierReplySchema, llvm::yaml::kQueueGetConfigRequestSchema,
-    llvm::yaml::kQueueGetConfigReplySchema, llvm::yaml::kRoleRequestSchema,
-    llvm::yaml::kRoleReplySchema, llvm::yaml::kGetAsyncRequestSchema,
-    llvm::yaml::kGetAsyncReplySchema, llvm::yaml::kSetAsyncSchema,
-    llvm::yaml::kMeterModSchema, llvm::yaml::kRoleStatusSchema,
-    llvm::yaml::kTableStatusSchema, llvm::yaml::kRequestForwardSchema,
-    llvm::yaml::kBundleControlSchema, llvm::yaml::kBundleAddMessageSchema,
+    llvm::yaml::kHelloSchema,
+    llvm::yaml::kErrorSchema,
+    llvm::yaml::kEchoRequestSchema,
+    llvm::yaml::kEchoReplySchema,
+    llvm::yaml::kFeaturesRequestSchema,
+    llvm::yaml::kFeaturesReplySchema,
+    llvm::yaml::kGetConfigRequestSchema,
+    llvm::yaml::kGetConfigReplySchema,
+    llvm::yaml::kSetConfigSchema,
+    llvm::yaml::kPacketInSchema,
+    llvm::yaml::kFlowRemovedSchema,
+    llvm::yaml::kPortStatusSchema,
+    llvm::yaml::kPacketOutSchema,
+    llvm::yaml::kFlowModSchema,
+    llvm::yaml::kGroupModSchema,
+    llvm::yaml::kPortModSchema,
+    llvm::yaml::kTableModSchema,
+    llvm::yaml::kMultipartRequestSchema,
+    llvm::yaml::kMultipartReplySchema,
+    llvm::yaml::kBarrierRequestSchema,
+    llvm::yaml::kBarrierReplySchema,
+    llvm::yaml::kQueueGetConfigRequestSchema,
+    llvm::yaml::kQueueGetConfigReplySchema,
+    llvm::yaml::kRoleRequestSchema,
+    llvm::yaml::kRoleReplySchema,
+    llvm::yaml::kGetAsyncRequestSchema,
+    llvm::yaml::kGetAsyncReplySchema,
+    llvm::yaml::kSetAsyncSchema,
+    llvm::yaml::kMeterModSchema,
+    llvm::yaml::kRoleStatusSchema,
+    llvm::yaml::kTableStatusSchema,
+    llvm::yaml::kRequestForwardSchema,
+    llvm::yaml::kBundleControlSchema,
+    llvm::yaml::kBundleAddMessageSchema,
 };
 
 static const char *const kInstructionSchemas[] = {
-    llvm::yaml::kGotoTableSchema, llvm::yaml::kWriteMetadataSchema,
-    llvm::yaml::kWriteActionsSchema, llvm::yaml::kApplyActionsSchema,
-    llvm::yaml::kClearActionsSchema, llvm::yaml::kMeterSchema,
+    llvm::yaml::kGotoTableSchema,
+    llvm::yaml::kWriteMetadataSchema,
+    llvm::yaml::kWriteActionsSchema,
+    llvm::yaml::kApplyActionsSchema,
+    llvm::yaml::kClearActionsSchema,
+    llvm::yaml::kMeterSchema,
     llvm::yaml::kExperimenterInstructionSchema,
 };
 
 static const char *const kActionSchemas[] = {
-    llvm::yaml::kCopyTTLOutSchema, llvm::yaml::kCopyTTLInSchema,
-    llvm::yaml::kDecMPLSTTLSchema, llvm::yaml::kPopVLANSchema,
-    llvm::yaml::kDecNwTTLSchema, llvm::yaml::kPopPBBSchema,
-    llvm::yaml::kOutputSchema, llvm::yaml::kSetMPLSTTLSchema,
-    llvm::yaml::kPushVLANSchema, llvm::yaml::kPushMPLSSchema,
-    llvm::yaml::kPopMPLSSchema, llvm::yaml::kSetQueueSchema,
-    llvm::yaml::kGroupSchema, llvm::yaml::kSetNwTTLSchema,
-    llvm::yaml::kPushPBBSchema, llvm::yaml::kSetFieldSchema,
+    llvm::yaml::kCopyTTLOutSchema,
+    llvm::yaml::kCopyTTLInSchema,
+    llvm::yaml::kDecMPLSTTLSchema,
+    llvm::yaml::kPopVLANSchema,
+    llvm::yaml::kDecNwTTLSchema,
+    llvm::yaml::kPopPBBSchema,
+    llvm::yaml::kOutputSchema,
+    llvm::yaml::kSetMPLSTTLSchema,
+    llvm::yaml::kPushVLANSchema,
+    llvm::yaml::kPushMPLSSchema,
+    llvm::yaml::kPopMPLSSchema,
+    llvm::yaml::kSetQueueSchema,
+    llvm::yaml::kGroupSchema,
+    llvm::yaml::kSetNwTTLSchema,
+    llvm::yaml::kPushPBBSchema,
+    llvm::yaml::kSetFieldSchema,
     llvm::yaml::kExperimenterActionSchema,
 };
 

@@ -4,8 +4,8 @@
 #ifndef OFP_YAML_ENUMCONVERTER_H_
 #define OFP_YAML_ENUMCONVERTER_H_
 
-#include "llvm/ADT/StringRef.h"
 #include "llvm/ADT/ArrayRef.h"
+#include "llvm/ADT/StringRef.h"
 
 namespace ofp {
 namespace yaml {

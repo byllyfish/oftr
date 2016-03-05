@@ -6,9 +6,9 @@
 
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
-#include "ofp/yaml/ymatch.h"
 #include "ofp/yaml/yactiontype.h"
 #include "ofp/yaml/ycontrollermaxlen.h"
+#include "ofp/yaml/ymatch.h"
 
 namespace ofp {
 namespace detail {

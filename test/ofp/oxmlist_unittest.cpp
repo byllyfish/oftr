@@ -1,11 +1,11 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/oxmlist.h"
-#include "ofp/oxmvalue.h"
-#include "ofp/oxmfields.h"
 #include "ofp/log.h"
+#include "ofp/oxmfields.h"
+#include "ofp/oxmvalue.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 

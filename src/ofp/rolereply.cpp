@@ -15,8 +15,7 @@ RoleReplyBuilder::RoleReplyBuilder(const RoleRequest *request) {
   msg_.header_.setXid(request->xid());
 }
 
-RoleReplyBuilder::RoleReplyBuilder(const RoleReply *msg) : msg_{*msg} {
-}
+RoleReplyBuilder::RoleReplyBuilder(const RoleReply *msg) : msg_{*msg} {}
 
 UInt32 RoleReplyBuilder::send(Writable *channel) {
   size_t msgLen = sizeof(msg_);

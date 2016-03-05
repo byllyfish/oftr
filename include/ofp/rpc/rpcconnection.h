@@ -4,9 +4,9 @@
 #ifndef OFP_RPC_RPCCONNECTION_H_
 #define OFP_RPC_RPCCONNECTION_H_
 
-#include "ofp/yaml/yllvm.h"
-#include "ofp/rpc/rpcserver.h"
 #include "ofp/bytelist.h"
+#include "ofp/rpc/rpcserver.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace ofp {
 namespace rpc {

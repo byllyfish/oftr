@@ -4,10 +4,10 @@
 #ifndef OFP_QUEUE_H_
 #define OFP_QUEUE_H_
 
-#include "ofp/propertylist.h"
-#include "ofp/queueproperty.h"
 #include "ofp/portnumber.h"
+#include "ofp/propertylist.h"
 #include "ofp/queuenumber.h"
+#include "ofp/queueproperty.h"
 
 namespace ofp {
 

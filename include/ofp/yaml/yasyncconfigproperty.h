@@ -5,8 +5,8 @@
 #define OFP_YAML_YASYNCCONFIGPROPERTY_H_
 
 #include "ofp/asyncconfigproperty.h"
-#include "ofp/yaml/ytypedpropertyiterator.h"
 #include "ofp/unrecognizedproperty.h"
+#include "ofp/yaml/ytypedpropertyiterator.h"
 
 namespace ofp {
 namespace detail {

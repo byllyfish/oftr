@@ -2,10 +2,10 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/connection.h"
-#include "ofp/sys/engine.h"
-#include "ofp/message.h"
-#include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
+#include "ofp/echorequest.h"
+#include "ofp/message.h"
+#include "ofp/sys/engine.h"
 
 using namespace ofp;
 using namespace ofp::sys;

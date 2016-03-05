@@ -4,9 +4,9 @@
 #ifndef OFP_MULTIPARTREPLY_H_
 #define OFP_MULTIPARTREPLY_H_
 
-#include "ofp/protocolmsg.h"
-#include "ofp/padding.h"
 #include "ofp/bytelist.h"
+#include "ofp/padding.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

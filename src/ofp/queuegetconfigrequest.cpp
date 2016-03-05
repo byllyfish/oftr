@@ -8,8 +8,7 @@ using namespace ofp;
 
 QueueGetConfigRequestBuilder::QueueGetConfigRequestBuilder(
     const QueueGetConfigRequest *msg)
-    : msg_{*msg} {
-}
+    : msg_{*msg} {}
 
 UInt32 QueueGetConfigRequestBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

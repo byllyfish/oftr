@@ -2,24 +2,24 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/transmogrify.h"
-#include "ofp/message.h"
+#include "ofp/actions.h"
+#include "ofp/experimenter.h"
 #include "ofp/featuresreply.h"
 #include "ofp/flowmod.h"
-#include "ofp/portstatus.h"
-#include "ofp/experimenter.h"
+#include "ofp/flowremoved.h"
+#include "ofp/getasyncreply.h"
+#include "ofp/instructionrange.h"
+#include "ofp/instructions.h"
+#include "ofp/message.h"
+#include "ofp/multipartreply.h"
+#include "ofp/multipartrequest.h"
+#include "ofp/originalmatch.h"
 #include "ofp/packetout.h"
 #include "ofp/portmod.h"
-#include "ofp/flowremoved.h"
-#include "ofp/multipartrequest.h"
-#include "ofp/multipartreply.h"
-#include "ofp/instructions.h"
-#include "ofp/instructionrange.h"
-#include "ofp/originalmatch.h"
-#include "ofp/actions.h"
 #include "ofp/portstatsproperty.h"
-#include "ofp/setasync.h"
-#include "ofp/getasyncreply.h"
+#include "ofp/portstatus.h"
 #include "ofp/queuegetconfigreply.h"
+#include "ofp/setasync.h"
 
 using namespace ofp;
 
@@ -28,8 +28,7 @@ using deprecated::StandardMatch;
 
 // This is defined here instead of Transmogrify.h because of header
 // dependencies.
-Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {
-}
+Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
 
 void Transmogrify::normalize() {
   if (buf_.size() < sizeof(Header)) {

@@ -1,10 +1,10 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include <arpa/inet.h>
 #include "ofp/ipv6address.h"
-#include "ofp/log.h"
+#include <arpa/inet.h>
 #include "ofp/byteorder.h"
+#include "ofp/log.h"
 
 using namespace ofp;
 
@@ -15,8 +15,7 @@ IPv6Address::IPv6Address(const IPv4Address &addr) {
   std::memset(addr_.data(), 0, 10);
 }
 
-IPv6Address::IPv6Address(const ArrayType &a) : addr_(a) {
-}
+IPv6Address::IPv6Address(const ArrayType &a) : addr_(a) {}
 
 IPv6Address::IPv6Address(const std::string &s) {
   if (!parse(s))

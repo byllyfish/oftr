@@ -2,15 +2,15 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/actionrange.h"
+#include "ofp/actionlist.h"
 #include "ofp/actions.h"
 #include "ofp/oxmfields.h"
-#include "ofp/actionlist.h"
 
 using namespace ofp;
 
 // Delegating constructor.
-ActionRange::ActionRange(const ActionList &list) : ActionRange{list.toRange()} {
-}
+ActionRange::ActionRange(const ActionList &list)
+    : ActionRange{list.toRange()} {}
 
 bool ActionRange::validateInput(Validation *context) const {
   if (!Inherited::validateInput(context))

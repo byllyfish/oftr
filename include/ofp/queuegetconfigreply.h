@@ -4,10 +4,10 @@
 #ifndef OFP_QUEUEGETCONFIGREPLY_H_
 #define OFP_QUEUEGETCONFIGREPLY_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
-#include "ofp/queuelist.h"
 #include "ofp/portnumber.h"
+#include "ofp/protocolmsg.h"
+#include "ofp/queuelist.h"
 
 namespace ofp {
 

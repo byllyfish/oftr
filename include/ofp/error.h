@@ -4,9 +4,9 @@
 #ifndef OFP_ERROR_H_
 #define OFP_ERROR_H_
 
-#include "ofp/protocolmsg.h"
-#include "ofp/padding.h"
 #include "ofp/bytelist.h"
+#include "ofp/padding.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

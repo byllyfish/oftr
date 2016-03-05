@@ -4,9 +4,9 @@
 #ifndef OFP_INSTRUCTIONRANGE_H_
 #define OFP_INSTRUCTIONRANGE_H_
 
-#include "ofp/protocolrange.h"
-#include "ofp/instructioniterator.h"
 #include "ofp/actionrange.h"
+#include "ofp/instructioniterator.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 

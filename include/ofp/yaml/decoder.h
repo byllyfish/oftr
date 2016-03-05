@@ -5,12 +5,14 @@
 #define OFP_YAML_DECODER_H_
 
 #include "ofp/yaml/yllvm.h"
+
+#include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/ydatapathid.h"
 #include "ofp/yaml/ytimestamp.h"
-#include "ofp/yaml/yaddress.h"
-#include "ofp/message.h"
+
 #include "ofp/channel.h"
+#include "ofp/message.h"
 #include "ofp/messageinfo.h"
 
 namespace ofp {

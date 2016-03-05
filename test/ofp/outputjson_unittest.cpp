@@ -1,11 +1,11 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/yaml/outputjson.h"
-#include "ofp/yaml/decoder.h"
-#include "ofp/hello.h"
 #include "ofp/flowmod.h"
+#include "ofp/hello.h"
+#include "ofp/unittest.h"
+#include "ofp/yaml/decoder.h"
 
 using namespace ofp;
 using namespace yaml;

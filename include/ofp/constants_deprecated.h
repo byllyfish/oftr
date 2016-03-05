@@ -4,6 +4,8 @@
 #ifndef OFP_CONSTANTS_DEPRECATED_H_
 #define OFP_CONSTANTS_DEPRECATED_H_
 
+#include "ofp/types.h"
+
 namespace ofp {
 namespace deprecated {
 

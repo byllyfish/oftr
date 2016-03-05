@@ -1,16 +1,15 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include <arpa/inet.h>
 #include "ofp/ipv4address.h"
+#include <arpa/inet.h>
 #include "ofp/log.h"
 
 using namespace ofp;
 
 static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr);
 
-IPv4Address::IPv4Address(const ArrayType &a) : addr_(a) {
-}
+IPv4Address::IPv4Address(const ArrayType &a) : addr_(a) {}
 
 IPv4Address::IPv4Address(const std::string &s) {
   // TODO(bfish): this function should handle / notation. ie. "/24" should give

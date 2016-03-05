@@ -5,10 +5,10 @@
 #define OFP_ORIGINALMATCH_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/macaddress.h"
 #include "ofp/ipv4address.h"
-#include "ofp/padding.h"
+#include "ofp/macaddress.h"
 #include "ofp/oxmrange.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 namespace deprecated {

@@ -1,10 +1,10 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/originalmatch.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/oxmfields.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 using namespace deprecated;

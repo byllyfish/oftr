@@ -4,8 +4,8 @@
 #ifndef OFP_METERBANDRANGE_H_
 #define OFP_METERBANDRANGE_H_
 
-#include "ofp/protocolrange.h"
 #include "ofp/constants.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 

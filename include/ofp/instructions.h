@@ -4,9 +4,9 @@
 #ifndef OFP_INSTRUCTIONS_H_
 #define OFP_INSTRUCTIONS_H_
 
+#include "ofp/actionlist.h"
 #include "ofp/instructiontype.h"
 #include "ofp/padding.h"
-#include "ofp/actionlist.h"
 
 namespace ofp {
 namespace detail {

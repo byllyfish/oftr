@@ -2,36 +2,36 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/encoder.h"
-#include "ofp/yaml/yhello.h"
-#include "ofp/yaml/yerror.h"
-#include "ofp/yaml/yflowmod.h"
+#include "ofp/requestforward.h"
+#include "ofp/yaml/ybundleaddmessage.h"
+#include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/yaml/yecho.h"
+#include "ofp/yaml/yerror.h"
 #include "ofp/yaml/yexperimenter.h"
-#include "ofp/yaml/yheaderonly.h"
 #include "ofp/yaml/yfeaturesreply.h"
-#include "ofp/yaml/ymultipartrequest.h"
+#include "ofp/yaml/yflowmod.h"
+#include "ofp/yaml/yflowremoved.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/ygetconfigreply.h"
+#include "ofp/yaml/ygroupmod.h"
+#include "ofp/yaml/yheaderonly.h"
+#include "ofp/yaml/yhello.h"
+#include "ofp/yaml/ymetermod.h"
 #include "ofp/yaml/ymultipartreply.h"
+#include "ofp/yaml/ymultipartrequest.h"
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
-#include "ofp/yaml/ysetconfig.h"
-#include "ofp/yaml/yportstatus.h"
-#include "ofp/yaml/ygroupmod.h"
 #include "ofp/yaml/yportmod.h"
-#include "ofp/yaml/ytablemod.h"
-#include "ofp/yaml/yrolerequest.h"
-#include "ofp/yaml/yrolereply.h"
-#include "ofp/yaml/ygetasyncreply.h"
-#include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yportstatus.h"
 #include "ofp/yaml/yqueuegetconfigreply.h"
-#include "ofp/yaml/ygetconfigreply.h"
-#include "ofp/yaml/ysetasync.h"
-#include "ofp/yaml/yflowremoved.h"
-#include "ofp/yaml/ymetermod.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/yrolerequest.h"
 #include "ofp/yaml/yrolestatus.h"
-#include "ofp/yaml/ybundlecontrol.h"
-#include "ofp/yaml/ybundleaddmessage.h"
+#include "ofp/yaml/ysetasync.h"
+#include "ofp/yaml/ysetconfig.h"
+#include "ofp/yaml/ytablemod.h"
 #include "ofp/yaml/ytablestatus.h"
-#include "ofp/requestforward.h"
 
 using namespace ofp;
 using namespace ofp::yaml;
@@ -41,8 +41,7 @@ Encoder::Encoder(ChannelFinder finder)
       header_{OFPT_UNSUPPORTED},
       finder_{finder},
       defaultVersion_{0},
-      matchPrereqsChecked_{true} {
-}
+      matchPrereqsChecked_{true} {}
 
 /// \brief Private constructor used when an encoder needs to encode a message
 /// recursively.
@@ -52,8 +51,7 @@ Encoder::Encoder(const Encoder *encoder)
       finder_{nullptr},
       outputChannel_{encoder->outputChannel_},
       defaultVersion_{encoder->defaultVersion_},
-      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {
-}
+      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {}
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
                  int lineNumber, UInt8 defaultVersion, ChannelFinder finder)
@@ -97,9 +95,10 @@ void Encoder::diagnosticHandler(const llvm::SMDiagnostic &d, void *context) {
 }
 
 void Encoder::addDiagnostic(const llvm::SMDiagnostic &d) {
-  llvm::SMDiagnostic diag{*d.getSourceMgr(), d.getLoc(), d.getFilename(),
-                          d.getLineNo() + lineNumber_, d.getColumnNo(),
-                          d.getKind(), d.getMessage(), d.getLineContents(),
+  llvm::SMDiagnostic diag{*d.getSourceMgr(), d.getLoc(),
+                          d.getFilename(),   d.getLineNo() + lineNumber_,
+                          d.getColumnNo(),   d.getKind(),
+                          d.getMessage(),    d.getLineContents(),
                           d.getRanges()};
   diag.print("", errorStream_, false);
 }

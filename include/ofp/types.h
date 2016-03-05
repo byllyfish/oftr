@@ -4,17 +4,17 @@
 #ifndef OFP_TYPES_H_
 #define OFP_TYPES_H_
 
+#include <cassert>  // for assert macro
+#include <chrono>
 #include <cstddef>       // for std::size_t, etc.
 #include <cstdint>       // for std::uint8_t, etc.
-#include <cstring>       // for std::strlen, std::memcpy, etc.
 #include <cstdlib>       // for std::malloc, etc.
-#include <type_traits>   // for std::make_unsigned<T>, etc.
-#include <string>        // for std::string
-#include <cassert>       // for assert macro
-#include <ostream>       // for std::ostream (used for now) NOLINT
+#include <cstring>       // for std::strlen, std::memcpy, etc.
 #include <memory>        // for std::unique_ptr<T>
+#include <ostream>       // for std::ostream (used for now) NOLINT
+#include <string>        // for std::string
 #include <system_error>  // for std::error_code
-#include <chrono>
+#include <type_traits>   // for std::make_unsigned<T>, etc.
 #include "ofp/config.h"
 
 #if defined(__clang__)
@@ -162,7 +162,7 @@ constexpr bool IsConvertible() {
 
 /// \returns number of elements in array.
 template <class T, size_t N>
-constexpr size_t ArrayLength(T(&)[N]) {
+constexpr size_t ArrayLength(T (&)[N]) {
   return N;
 }
 
