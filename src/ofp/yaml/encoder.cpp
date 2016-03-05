@@ -124,7 +124,11 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       return;
     }
     // Channel version will override any version specified by input.
-    header_.setVersion(outputChannel_->version());
+    if (!header_.version()) {
+      header_.setVersion(outputChannel_->version());
+    } else if (header_.version() != outputChannel_->version()) {
+      log::warning("Message version", header_.version(), "does not match channel version", outputChannel_->version());
+    }
 
   } else if (!header_.version()) {
     // If version is unset, set it to the default version. N.B. The `Hello`

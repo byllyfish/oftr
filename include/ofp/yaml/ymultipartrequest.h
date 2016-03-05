@@ -338,7 +338,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
             msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), 0);
+        sendMultipleParts(io, msg, seq.data(), seq.size(), MPTableFeatures::MPVariableSizeOffset);
         break;
       }
       case OFPMP_FLOW_MONITOR: {

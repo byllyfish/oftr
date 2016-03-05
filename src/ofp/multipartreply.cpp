@@ -22,6 +22,7 @@
 #include "ofp/tabledesc.h"
 #include "ofp/queuedesc.h"
 #include "ofp/mpexperimenter.h"
+#include "ofp/memorychannel.h"
 
 using namespace ofp;
 
@@ -116,4 +117,30 @@ UInt32 MultipartReplyBuilder::send(Writable *channel) {
   channel->flush();
 
   return xid;
+}
+
+void MultipartReplyBuilder::sendUsingReplyBody(MemoryChannel *channel, const void *data, size_t length, size_t offset) {
+  // Break reply body into chunks on a clean boundary. Offset specifies where
+  // the length is located.
+
+  ByteRange body{data, length};
+
+  while (body.size() > MAX_BODY_SIZE) {
+    size_t chunkSize = detail::ProtocolRangeSplitOffset(MAX_BODY_SIZE, 0, body, offset);
+    assert(chunkSize <= MAX_BODY_SIZE);
+    assert(chunkSize <= body.size());
+    assert(chunkSize > 0);
+
+    setReplyFlags(OFPMPF_MORE);
+    setReplyBody(body.data(), chunkSize);
+    send(channel);
+
+    // Keep sending messages with the same xid.
+    channel->setNextXid(msg_.header_.xid());
+
+    body = SafeByteRange(body.data(), body.size(), chunkSize);
+  }
+
+  setReplyFlags(OFPMPF_NONE);
+  setReplyBody(body.data(), body.size());
 }
