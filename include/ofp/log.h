@@ -36,6 +36,11 @@ inline std::ostream &operator<<(std::ostream &os, const std::error_code &e) {
   return os << "{msg: " << e.message() << ", err: " << e.value() << '}';
 }
 
+// Print out UInt8 as an integer, not the char value.
+inline std::ostream &operator<<(std::ostream &os, UInt8 n) {
+  return os << static_cast<int>(n);
+}
+
 template <class Type1>
 void write_(std::ostream &os, Type1 &&value1) {
   os << std::forward<Type1>(value1);
