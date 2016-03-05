@@ -37,7 +37,7 @@ class Encoder {
   Channel *outputChannel() const { return outputChannel_; }
   UInt32 xid() const { return header_.xid(); }
   OFPMessageFlags flags() const { return flags_; }
-  
+
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
   const std::string &error() {
@@ -49,7 +49,7 @@ class Encoder {
 
   bool recursive() const { return recursive_; }
   void setRecursive(bool recursive) { recursive_ = recursive; }
-  
+
  private:
   MemoryChannel channel_;
   std::string error_;

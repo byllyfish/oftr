@@ -88,7 +88,8 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::localEndpoint() const {
 
 template <class SocketType>
 void TCP_Connection<SocketType>::flush() {
-  log::debug("TCP_Connection::flush started", std::make_pair("connid", connectionId()));
+  log::debug("TCP_Connection::flush started",
+             std::make_pair("connid", connectionId()));
   auto self(this->shared_from_this());
   socket_.buf_flush(connectionId(), [this, self](const std::error_code &error) {
     log::debug("TCP_Connection::flush finished",
@@ -194,7 +195,8 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               assert(length == sizeof(Header));
               const Header *hdr = message_.header();
 
-              UInt8 negotiatedVersion = (flags() & kPermitsOtherVersions) ? 0 : version();
+              UInt8 negotiatedVersion =
+                  (flags() & kPermitsOtherVersions) ? 0 : version();
 
               if (hdr->validateInput(negotiatedVersion)) {
                 // The header has passed our rudimentary validation checks.

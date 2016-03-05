@@ -6,10 +6,10 @@
 
 using namespace ofp;
 
-static const UInt8 MaxTypeByVersion[] = {0, UInt8_cast(deprecated::v1::OFPT_LAST),
-                                   UInt8_cast(deprecated::v2::OFPT_LAST),
-                                   UInt8_cast(deprecated::v3::OFPT_LAST),
-                                   UInt8_cast(OFPT_LAST)};
+static const UInt8 MaxTypeByVersion[] = {
+    0, UInt8_cast(deprecated::v1::OFPT_LAST),
+    UInt8_cast(deprecated::v2::OFPT_LAST),
+    UInt8_cast(deprecated::v3::OFPT_LAST), UInt8_cast(OFPT_LAST)};
 
 static OFPType translateTypeToVersion(UInt8 type, UInt8 version) {
   assert(type > OFPT_FLOW_MOD);

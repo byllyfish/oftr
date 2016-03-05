@@ -12,7 +12,8 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::ControllerMaxLen> {
-  static const ofp::yaml::EnumConverterSparse<ofp::OFPControllerMaxLen> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPControllerMaxLen>
+      converter;
 
   static void output(const ofp::ControllerMaxLen &value, void *ctxt,
                      llvm::raw_ostream &out) {

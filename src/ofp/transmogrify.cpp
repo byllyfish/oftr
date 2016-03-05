@@ -134,7 +134,7 @@ void Transmogrify::normalize() {
     markInputTooBig("Message truncated to OFP_MAX_SIZE");
     buf_.resize(OFP_MAX_SIZE);
   }
-  
+
   header()->setLength(buf_.size());
   assert(buf_.size() == header()->length());
 }

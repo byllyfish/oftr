@@ -97,7 +97,8 @@ static const llvm::StringRef sRoleStatusReason[] = {
     "MASTER_REQUEST", "CONFIG", "EXPERIMENTER",
 };
 
-const EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{sTypes};
+const EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{
+    sTypes};
 
 const EnumConverter<OFPMultipartType>
     llvm::yaml::ScalarTraits<OFPMultipartType>::converter{sMultipartTypes,
@@ -137,11 +138,12 @@ const EnumConverter<OFPMeterModCommand>
 const EnumConverter<OFPGroupModCommand>
     llvm::yaml::ScalarTraits<OFPGroupModCommand>::converter{sGroupModCommand};
 
-const EnumConverter<OFPGroupType> llvm::yaml::ScalarTraits<OFPGroupType>::converter{
-    sGroupType};
+const EnumConverter<OFPGroupType>
+    llvm::yaml::ScalarTraits<OFPGroupType>::converter{sGroupType};
 
-const EnumConverter<OFPErrorType> llvm::yaml::ScalarTraits<OFPErrorType>::converter{
-    sErrorTypes, "EXPERIMENTER"};
+const EnumConverter<OFPErrorType>
+    llvm::yaml::ScalarTraits<OFPErrorType>::converter{sErrorTypes,
+                                                      "EXPERIMENTER"};
 
 const EnumConverter<OFPFlowUpdateEvent>
     llvm::yaml::ScalarTraits<OFPFlowUpdateEvent>::converter{sFlowUpdateEvent};

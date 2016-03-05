@@ -192,8 +192,10 @@ static size_t protocolRangeFixedItemCount(size_t elementSize,
   return range.size() / elementSize;
 }
 
-
-size_t ofp::detail::ProtocolRangeSplitOffset(size_t chunkSize, size_t elementSize, const ByteRange &range, size_t sizeFieldOffset) {
+size_t ofp::detail::ProtocolRangeSplitOffset(size_t chunkSize,
+                                             size_t elementSize,
+                                             const ByteRange &range,
+                                             size_t sizeFieldOffset) {
   assert(sizeFieldOffset < 32);
   assert(chunkSize >= 8);
 
@@ -214,7 +216,8 @@ size_t ofp::detail::ProtocolRangeSplitOffset(size_t chunkSize, size_t elementSiz
   while (len > 0) {
     assert(len >= kAlignment);
 
-    size_t elemSize = std::max<size_t>(minSize, *Big16_cast(ptr + sizeFieldOffset));
+    size_t elemSize =
+        std::max<size_t>(minSize, *Big16_cast(ptr + sizeFieldOffset));
     assert(elemSize > 0);
 
     size_t jumpSize = (kAlignment == 8) ? PadLength(elemSize) : elemSize;
@@ -232,7 +235,8 @@ size_t ofp::detail::ProtocolRangeSplitOffset(size_t chunkSize, size_t elementSiz
   }
 
   assert((result % kAlignment) == 0);
-  log::fatal_if_false(result != 0, "Unable to split protocol range into chunks");
+  log::fatal_if_false(result != 0,
+                      "Unable to split protocol range into chunks");
 
   return result;
 }

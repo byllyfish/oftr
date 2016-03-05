@@ -521,4 +521,3 @@ TEST(encoderfail, xid_present) {
   EXPECT_HEX("", encoder.data(), encoder.size());
   EXPECT_EQ(54321, encoder.xid());
 }
-

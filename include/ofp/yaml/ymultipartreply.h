@@ -408,7 +408,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
             msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), MPFlowStatsReply::MPVariableSizeOffset);
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPFlowStatsReply::MPVariableSizeOffset);
         break;
       }
       case OFPMP_AGGREGATE: {
@@ -422,35 +423,40 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), PROTOCOL_ITERATOR_SIZE_FIXED);
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          PROTOCOL_ITERATOR_SIZE_FIXED);
         break;
       }
       case OFPMP_PORT_STATS: {
         ofp::detail::MPReplyBuilderSeq<MPPortStatsBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), MPPortStats::MPVariableSizeOffset);
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPPortStats::MPVariableSizeOffset);
         break;
       }
       case OFPMP_QUEUE: {
         ofp::detail::MPReplyBuilderSeq<MPQueueStatsBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), PROTOCOL_ITERATOR_SIZE_FIXED);
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          PROTOCOL_ITERATOR_SIZE_FIXED);
         break;
       }
       case OFPMP_PORT_DESC: {
         ofp::detail::MPReplyBuilderSeq<PortBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), Port::MPVariableSizeOffset);
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          Port::MPVariableSizeOffset);
         break;
       }
       case OFPMP_GROUP_DESC: {
         ofp::detail::MPReplyBuilderSeq<MPGroupDescBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), MPGroupDesc::MPVariableSizeOffset);
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPGroupDesc::MPVariableSizeOffset);
         break;
       }
       case OFPMP_GROUP_FEATURES: {
@@ -464,7 +470,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         ofp::detail::MPReplyBuilderSeq<MPMeterConfigBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        sendMultipleParts(io, msg, seq.data(), seq.size(), MPMeterConfig::MPVariableSizeOffset);
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPMeterConfig::MPVariableSizeOffset);
         break;
       }
       case OFPMP_METER: {
@@ -534,8 +541,10 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
     }
   }
 
-private:
-  static void sendMultipleParts(IO &io, ofp::MultipartReplyBuilder &msg, const void *data, size_t length, size_t offset) {
+ private:
+  static void sendMultipleParts(IO &io, ofp::MultipartReplyBuilder &msg,
+                                const void *data, size_t length,
+                                size_t offset) {
     if (length <= ofp::MultipartReplyBuilder::MAX_BODY_SIZE) {
       msg.setReplyBody(data, length);
     } else {

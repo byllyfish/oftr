@@ -109,7 +109,6 @@ size_t Validation::offset(const UInt8 *ptr) const {
   return Unsigned_cast(ptr - msg_->data());
 }
 
-
 void Validation::setErrorCode(OFPErrorCode error) {
   if (error_ != nullptr)
     *error_ = error;

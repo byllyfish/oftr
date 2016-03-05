@@ -189,7 +189,6 @@ void Connection::updateTimeReadStarted() {
   setFlags(flags() & ~kChannelIdle);
 }
 
-
 void Connection::setFlags(UInt64 securityId, ChannelOptions options) {
   UInt16 newFlags = flags();
 

@@ -119,14 +119,17 @@ UInt32 MultipartReplyBuilder::send(Writable *channel) {
   return xid;
 }
 
-void MultipartReplyBuilder::sendUsingReplyBody(MemoryChannel *channel, const void *data, size_t length, size_t offset) {
+void MultipartReplyBuilder::sendUsingReplyBody(MemoryChannel *channel,
+                                               const void *data, size_t length,
+                                               size_t offset) {
   // Break reply body into chunks on a clean boundary. Offset specifies where
   // the length is located.
 
   ByteRange body{data, length};
 
   while (body.size() > MAX_BODY_SIZE) {
-    size_t chunkSize = detail::ProtocolRangeSplitOffset(MAX_BODY_SIZE, 0, body, offset);
+    size_t chunkSize =
+        detail::ProtocolRangeSplitOffset(MAX_BODY_SIZE, 0, body, offset);
     assert(chunkSize <= MAX_BODY_SIZE);
     assert(chunkSize <= body.size());
     assert(chunkSize > 0);

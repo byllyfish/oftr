@@ -193,7 +193,8 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     if (!(params.flags() & OFP_NO_FLUSH)) {
       channel->flush();
     } else {
-      log::debug("onRpcSend: NO_FLUSH", std::make_pair("connid", channel->connectionId()));
+      log::debug("onRpcSend: NO_FLUSH",
+                 std::make_pair("connid", channel->connectionId()));
     }
 
     // Message delivered successfully to channel. Send optional reply.

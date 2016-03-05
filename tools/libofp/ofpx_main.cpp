@@ -21,12 +21,13 @@ struct SubprogramEntry {
   ofpx::RunSubprogram run;
 };
 
-static const SubprogramEntry programs[] = {{"encode", ofpx::Run<ofpx::Encode>},
-                                     {"decode", ofpx::Run<ofpx::Decode>},
+static const SubprogramEntry programs[] = {
+    {"encode", ofpx::Run<ofpx::Encode>},
+    {"decode", ofpx::Run<ofpx::Decode>},
 #if LIBOFP_ENABLE_JSONRPC
-                                     {"jsonrpc", ofpx::Run<ofpx::JsonRpc>},
+    {"jsonrpc", ofpx::Run<ofpx::JsonRpc>},
 #endif  // LIBOFP_ENABLE_JSONRPC
-                                     {"help", ofpx::Run<ofpx::Help>}};
+    {"help", ofpx::Run<ofpx::Help>}};
 
 static void print_usage(std::ostream &out);
 static void print_version();

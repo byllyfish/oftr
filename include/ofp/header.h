@@ -21,7 +21,10 @@ class Header {
   void setRawType(UInt8 type) { type_ = static_cast<OFPType>(type); }
 
   UInt16 length() const { return length_; }
-  void setLength(size_t length) { assert(length <= OFP_MAX_SIZE); length_ = UInt16_narrow_cast(length); }
+  void setLength(size_t length) {
+    assert(length <= OFP_MAX_SIZE);
+    length_ = UInt16_narrow_cast(length);
+  }
 
   UInt32 xid() const { return xid_; }
   void setXid(UInt32 xid) { xid_ = xid; }

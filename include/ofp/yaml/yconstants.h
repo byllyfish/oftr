@@ -427,7 +427,8 @@ struct ScalarBitSetTraits<ofp::OFPMessageFlags> {
 
     auto val = io.bitSetCaseUnmatched();
     if (!val.empty()) {
-      ofp::yaml::SetFlagError(io, val, ofp::yaml::AllFlags<ofp::OFPMessageFlags>());
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPMessageFlags>());
     }
   }
 };

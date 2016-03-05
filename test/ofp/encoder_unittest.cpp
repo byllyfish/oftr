@@ -3166,4 +3166,3 @@ msg:
   EXPECT_HEX("0102000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
   EXPECT_EQ(ofp::OFP_NO_FLUSH, encoder.flags());
 }
-

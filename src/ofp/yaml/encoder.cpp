@@ -52,7 +52,8 @@ Encoder::Encoder(const Encoder *encoder)
       finder_{nullptr},
       outputChannel_{encoder->outputChannel_},
       defaultVersion_{encoder->defaultVersion_},
-      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {}
+      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {
+}
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
                  int lineNumber, UInt8 defaultVersion, ChannelFinder finder)
@@ -127,7 +128,8 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     if (!header_.version()) {
       header_.setVersion(outputChannel_->version());
     } else if (header_.version() != outputChannel_->version()) {
-      log::warning("Message version", header_.version(), "does not match channel version", outputChannel_->version());
+      log::warning("Message version", header_.version(),
+                   "does not match channel version", outputChannel_->version());
     }
 
   } else if (!header_.version()) {

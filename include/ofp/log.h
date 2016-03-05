@@ -70,7 +70,7 @@ void write_(Level level, Args &&... args) {
     write_(oss, std::forward<Args>(args)...);
     std::string buf = oss.str();
     GLOBAL_OutputCallback(level, buf.data(), buf.size(),
-                         GLOBAL_OutputCallbackContext);
+                          GLOBAL_OutputCallbackContext);
   }
 #endif  // OFP_LOGGING_DISABLED
 }
