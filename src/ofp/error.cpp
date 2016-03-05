@@ -90,7 +90,7 @@ void ErrorBuilder::send(Writable *channel) {
 
   msg_.header_.setVersion(version);
   msg_.header_.setLength(msgLen);
-  msg_.header_.setXid(channel->nextXid());
+  // Use the initialized value for xid.
 
   UInt16 savedCode = msg_.code_;
   UInt16 savedType = msg_.type_;
