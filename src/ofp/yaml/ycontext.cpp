@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/yllvm.h"
+
 #include "ofp/yaml/ycontext.h"
 
 using ofp::yaml::detail::YamlContext;
@@ -47,6 +48,15 @@ ofp::yaml::Encoder *YamlContext::GetEncoder(void *context) {
   if (ctxt) {
     assert(ctxt->validate());
     return ctxt->encoder;
+  }
+  return nullptr;
+}
+
+llvm::yaml::IO *YamlContext::GetIO(void *context) {
+  YamlContext *ctxt = reinterpret_cast<YamlContext *>(context);
+  if (ctxt) {
+    assert(ctxt->validate());
+    return ctxt->io;
   }
   return nullptr;
 }

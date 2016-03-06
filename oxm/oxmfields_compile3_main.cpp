@@ -5,9 +5,9 @@
 /// `oxmfieldsdata.cpp`.
 
 #include "ofp/oxmfields.h"
-#include <vector>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <vector>
 
 using namespace ofp;
 

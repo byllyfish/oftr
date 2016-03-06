@@ -4,10 +4,10 @@
 #ifndef OFP_ACTIONLIST_H_
 #define OFP_ACTIONLIST_H_
 
-#include "ofp/types.h"
-#include "ofp/protocollist.h"
 #include "ofp/actionrange.h"
 #include "ofp/actions.h"
+#include "ofp/protocollist.h"
+#include "ofp/types.h"
 
 namespace ofp {
 

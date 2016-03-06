@@ -2,16 +2,16 @@
 // This file is distributed under the MIT License.
 
 #include "./ofpx_encode.h"
-#include <iostream>
 #include <fstream>
-#include "ofp/yaml/encoder.h"
+#include <iostream>
 #include "ofp/yaml/decoder.h"
+#include "ofp/yaml/encoder.h"
 
 using namespace ofpx;
 using ExitStatus = Encode::ExitStatus;
 
-static const char *kNullYamlMessage = "---\nnull\n...\n";
-static const char *kNullJsonMessage = "null\n";
+const char *const kNullYamlMessage = "---\nnull\n...\n";
+const char *const kNullJsonMessage = "null\n";
 
 int Encode::run(int argc, const char *const *argv) {
   parseCommandLineOptions(

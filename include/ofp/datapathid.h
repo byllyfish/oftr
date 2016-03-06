@@ -4,10 +4,10 @@
 #ifndef OFP_DATAPATHID_H_
 #define OFP_DATAPATHID_H_
 
-#include "ofp/types.h"
 #include "ofp/array.h"
-#include "ofp/macaddress.h"
 #include "ofp/byteorder.h"
+#include "ofp/macaddress.h"
+#include "ofp/types.h"
 
 namespace ofp {
 

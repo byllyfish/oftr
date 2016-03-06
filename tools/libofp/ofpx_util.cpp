@@ -3,8 +3,8 @@
 
 #include "./ofpx_util.h"
 #include <vector>
-#include "ofp/constants.h"
 #include "ofp/byteorder.h"
+#include "ofp/constants.h"
 #include "ofp/padding.h"
 
 using namespace ofp;
@@ -24,15 +24,11 @@ struct EmptyProp {
   Big32 empty;
 };
 
-static EmptyProp kDefaultEmptyProperties[] = {
-    {OFPTFPT_INSTRUCTIONS, 4, 0},
-    {OFPTFPT_NEXT_TABLES, 4, 0},
-    {OFPTFPT_WRITE_ACTIONS, 4, 0},
-    {OFPTFPT_APPLY_ACTIONS, 4, 0},
-    {OFPTFPT_MATCH, 4, 0},
-    {OFPTFPT_WILDCARDS, 4, 0},
-    {OFPTFPT_WRITE_SETFIELD, 4, 0},
-    {OFPTFPT_APPLY_SETFIELD, 4, 0},
+static const EmptyProp kDefaultEmptyProperties[] = {
+    {OFPTFPT_INSTRUCTIONS, 4, 0},   {OFPTFPT_NEXT_TABLES, 4, 0},
+    {OFPTFPT_WRITE_ACTIONS, 4, 0},  {OFPTFPT_APPLY_ACTIONS, 4, 0},
+    {OFPTFPT_MATCH, 4, 0},          {OFPTFPT_WILDCARDS, 4, 0},
+    {OFPTFPT_WRITE_SETFIELD, 4, 0}, {OFPTFPT_APPLY_SETFIELD, 4, 0},
 };
 
 bool ofpx::normalizeTableFeaturesMessage(const ByteRange &data,

@@ -4,10 +4,10 @@
 #ifndef OFP_TABLEMOD_H_
 #define OFP_TABLEMOD_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
-#include "ofp/tablenumber.h"
 #include "ofp/propertylist.h"
+#include "ofp/protocolmsg.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 

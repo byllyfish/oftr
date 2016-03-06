@@ -7,8 +7,7 @@
 using namespace ofp;
 
 GetConfigReplyBuilder::GetConfigReplyBuilder(const GetConfigReply *msg)
-    : msg_{*msg} {
-}
+    : msg_{*msg} {}
 
 UInt32 GetConfigReplyBuilder::send(Writable *channel) {
   UInt32 xid = channel->nextXid();

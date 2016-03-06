@@ -5,14 +5,15 @@
 #define OFP_YAML_YFLOWMOD_H_
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/yaml/ybyteorder.h"
-#include "ofp/yaml/yinstructions.h"
-#include "ofp/yaml/ybuffernumber.h"
-#include "ofp/yaml/ygroupnumber.h"
-#include "ofp/yaml/ytablenumber.h"
+
 #include "ofp/flowmod.h"
 #include "ofp/match.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/ybuffernumber.h"
+#include "ofp/yaml/ybyteorder.h"
+#include "ofp/yaml/ygroupnumber.h"
+#include "ofp/yaml/yinstructions.h"
+#include "ofp/yaml/ytablenumber.h"
 
 namespace llvm {
 namespace yaml {

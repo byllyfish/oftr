@@ -41,7 +41,7 @@ struct ErrorCode {
 
 OFP_END_IGNORE_PADDING
 
-static ErrorType sErrorTypesV1[] = {
+static const ErrorType sErrorTypesV1[] = {
     {V1_OFPET_HELLO_FAILED, OFPET_HELLO_FAILED},
     {V1_OFPET_BAD_REQUEST, OFPET_BAD_REQUEST},
     {V1_OFPET_BAD_ACTION, OFPET_BAD_ACTION},
@@ -49,7 +49,7 @@ static ErrorType sErrorTypesV1[] = {
     {V1_OFPET_PORT_MOD_FAILED, OFPET_PORT_MOD_FAILED},
     {V1_OFPET_QUEUE_OP_FAILED, OFPET_QUEUE_OP_FAILED}};
 
-static ErrorCode sErrorFlowModFailedV1[] = {
+static const ErrorCode sErrorFlowModFailedV1[] = {
     {V1_OFPFMFC_ALL_TABLES_FULL, OFPFMFC_TABLE_FULL},
     {V1_OFPFMFC_OVERLAP, OFPFMFC_OVERLAP},
     {V1_OFPFMFC_EPERM, OFPFMFC_EPERM},

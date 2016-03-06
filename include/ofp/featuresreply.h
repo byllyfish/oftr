@@ -4,10 +4,10 @@
 #ifndef OFP_FEATURESREPLY_H_
 #define OFP_FEATURESREPLY_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
-#include "ofp/portrange.h"
 #include "ofp/portlist.h"
+#include "ofp/portrange.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

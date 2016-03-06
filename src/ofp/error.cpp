@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/error.h"
+#include "ofp/log.h"
 #include "ofp/message.h"
 #include "ofp/writable.h"
-#include "ofp/log.h"
 
 using namespace ofp;
 
@@ -89,8 +89,8 @@ void ErrorBuilder::send(Writable *channel) {
   }
 
   msg_.header_.setVersion(version);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
-  msg_.header_.setXid(channel->nextXid());
+  msg_.header_.setLength(msgLen);
+  // Use the initialized value for xid.
 
   UInt16 savedCode = msg_.code_;
   UInt16 savedType = msg_.type_;

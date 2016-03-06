@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/standardmatch.h"
-#include "ofp/oxmlist.h"
 #include "ofp/originalmatch.h"
+#include "ofp/oxmlist.h"
 
 using namespace ofp;
 using namespace ofp::deprecated;
@@ -351,8 +351,9 @@ void StandardMatch::convertDatalinkARP(UInt32 wc, OXMList *list) const {
 
 std::string StandardMatch::toString() const {
   // A '*' after a value indicates the value is a wildcard.
-  auto wildcard =
-      [this](Wildcards wc) -> char { return wildcards & wc ? '*' : ' '; };
+  auto wildcard = [this](Wildcards wc) -> char {
+    return wildcards & wc ? '*' : ' ';
+  };
 
   std::stringstream ss;
   ss << "in_port: " << in_port << wildcard(OFPFW_IN_PORT) << '\n';

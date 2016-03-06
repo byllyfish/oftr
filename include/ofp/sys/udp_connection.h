@@ -4,11 +4,11 @@
 #ifndef OFP_SYS_UDP_CONNECTION_H_
 #define OFP_SYS_UDP_CONNECTION_H_
 
-#include "ofp/sys/connection.h"
-#include "ofp/driver.h"
-#include "ofp/sys/asio_utils.h"
-#include "ofp/protocolversions.h"
 #include "ofp/bytelist.h"
+#include "ofp/driver.h"
+#include "ofp/protocolversions.h"
+#include "ofp/sys/asio_utils.h"
+#include "ofp/sys/connection.h"
 
 namespace ofp {
 

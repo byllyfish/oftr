@@ -1,7 +1,6 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ytablenumber.h"
 
 using namespace ofp;
@@ -12,11 +11,11 @@ using ofp::yaml::EnumConverterSparse;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
-static std::pair<OFPTableNo, llvm::StringRef> sTableNumbers[] = {
+static const std::pair<OFPTableNo, llvm::StringRef> sTableNumbers[] = {
     OFP_NAME(ALL),
 };
 
-EnumConverterSparse<OFPTableNo>
+const EnumConverterSparse<OFPTableNo>
     llvm::yaml::ScalarTraits<ofp::TableNumber>::converter{sTableNumbers};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

@@ -4,8 +4,8 @@
 #ifndef OFP_ECHOREPLY_H_
 #define OFP_ECHOREPLY_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/bytelist.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

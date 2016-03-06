@@ -109,14 +109,4 @@ configure_file(include/llvm/Support/DataTypes.h.cmake include/llvm/Support/DataT
 
 add_library(yamlio ${YAMLIO_SOURCES})
 
-add_executable(yamlio_test test/testit.cpp)
-target_link_libraries(yamlio_test yamlio)
-
-add_test(NAME yaml_test COMMAND yamlio_test)
-set_tests_properties(yaml_test PROPERTIES TIMEOUT 10)
-
-if(LIBOFP_MEMCHECK)
-  separate_arguments(cmd UNIX_COMMAND "${LIBOFP_MEMCHECK} ./yamlio_test")
-  add_test(NAME memcheck_yaml_test COMMAND ${cmd})
-  set_tests_properties(memcheck_yaml_test PROPERTIES TIMEOUT 60)
-endif()
+add_subdirectory(unittests)

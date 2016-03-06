@@ -4,8 +4,8 @@
 #ifndef OFP_YAML_YMATCHPACKET_H_
 #define OFP_YAML_YMATCHPACKET_H_
 
-#include "ofp/yaml/ymatch.h"
 #include "ofp/matchpacket.h"
+#include "ofp/yaml/ymatch.h"
 
 namespace llvm {
 namespace yaml {

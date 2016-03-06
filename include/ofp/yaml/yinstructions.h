@@ -5,9 +5,9 @@
 #define OFP_YAML_YINSTRUCTIONS_H_
 
 #include "ofp/instructionlist.h"
-#include "ofp/yaml/ybyteorder.h"
-#include "ofp/yaml/yactions.h"
 #include "ofp/instructionrange.h"
+#include "ofp/yaml/yactions.h"
+#include "ofp/yaml/ybyteorder.h"
 
 namespace ofp {
 namespace detail {

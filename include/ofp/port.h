@@ -5,12 +5,12 @@
 #define OFP_PORT_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/strings.h"
-#include "ofp/padding.h"
 #include "ofp/macaddress.h"
+#include "ofp/padding.h"
 #include "ofp/portnumber.h"
-#include "ofp/propertylist.h"
 #include "ofp/portproperty.h"
+#include "ofp/propertylist.h"
+#include "ofp/strings.h"
 
 namespace ofp {
 

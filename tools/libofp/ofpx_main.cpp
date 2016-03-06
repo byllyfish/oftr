@@ -3,16 +3,17 @@
 
 #include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
 #include <asio/version.hpp>
-#include "ofp/ofp.h"
+
 #include "./ofpx_decode.h"
 #include "./ofpx_encode.h"
+#include "ofp/ofp.h"
 #if LIBOFP_ENABLE_JSONRPC
 #include "./ofpx_jsonrpc.h"
 #endif  // LIBOFP_ENABLE_JSONRPC
-#include "./ofpx_help.h"
-#include "llvm/Support/raw_ostream.h"
-#include "llvm/Support/Host.h"
 #include "./libofp.h"
+#include "./ofpx_help.h"
+#include "llvm/Support/Host.h"
+#include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
 
@@ -21,12 +22,13 @@ struct SubprogramEntry {
   ofpx::RunSubprogram run;
 };
 
-static SubprogramEntry programs[] = {{"encode", ofpx::Run<ofpx::Encode>},
-                                     {"decode", ofpx::Run<ofpx::Decode>},
+static const SubprogramEntry programs[] = {
+    {"encode", ofpx::Run<ofpx::Encode>},
+    {"decode", ofpx::Run<ofpx::Decode>},
 #if LIBOFP_ENABLE_JSONRPC
-                                     {"jsonrpc", ofpx::Run<ofpx::JsonRpc>},
+    {"jsonrpc", ofpx::Run<ofpx::JsonRpc>},
 #endif  // LIBOFP_ENABLE_JSONRPC
-                                     {"help", ofpx::Run<ofpx::Help>}};
+    {"help", ofpx::Run<ofpx::Help>}};
 
 static void print_usage(std::ostream &out);
 static void print_version();

@@ -25,7 +25,7 @@ UInt32 MeterModBuilder::send(Writable *channel) {
 
   msg_.header_.setXid(xid);
   msg_.header_.setVersion(version);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
 
   channel->write(&msg_, sizeof(msg_));
   channel->write(meterBands_.data(), meterBands_.size());

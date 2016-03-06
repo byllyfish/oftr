@@ -4,10 +4,10 @@
 #ifndef OFP_BUCKET_H_
 #define OFP_BUCKET_H_
 
-#include "ofp/byteorder.h"
 #include "ofp/actionrange.h"
-#include "ofp/portnumber.h"
+#include "ofp/byteorder.h"
 #include "ofp/groupnumber.h"
+#include "ofp/portnumber.h"
 
 namespace ofp {
 

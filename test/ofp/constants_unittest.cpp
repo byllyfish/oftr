@@ -1,13 +1,13 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/constants.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 using namespace deprecated;
 
-static std::pair<UInt32, UInt32> actionTypes[] = {
+static const std::pair<UInt32, UInt32> actionTypes[] = {
     {OFPATF_OUTPUT, 1 << v1::OFPAT_OUTPUT},
     {OFPATF_SET_VLAN_VID, 1 << v1::OFPAT_SET_VLAN_VID},
     {OFPATF_SET_VLAN_PCP, 1 << v1::OFPAT_SET_VLAN_PCP},

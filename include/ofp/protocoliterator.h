@@ -34,9 +34,9 @@
 #define OFP_PROTOCOLITERATOR_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/padding.h"
 #include "ofp/byterange.h"
 #include "ofp/constants.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 
@@ -67,6 +67,13 @@ bool IsProtocolRangeValid(
 /// \return number of items in iterable.
 size_t ProtocolRangeItemCount(size_t elementSize, const ByteRange &range,
                               size_t sizeFieldOffset, size_t alignment = 8);
+
+/// Return byte offset where the protocol range can be safely split before
+/// it exceeds the given `chunkSize`.
+///
+/// \return byte offset <= chunkSize
+size_t ProtocolRangeSplitOffset(size_t chunkSize, size_t elementSize,
+                                const ByteRange &range, size_t sizeFieldOffset);
 
 template <class ElemType, size_t SizeOffset>
 struct ProtocolElement {

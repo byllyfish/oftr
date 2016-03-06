@@ -4,8 +4,8 @@
 #ifndef OFP_ACTIONIDRANGE_H_
 #define OFP_ACTIONIDRANGE_H_
 
-#include "ofp/protocolrange.h"
 #include "ofp/actionid.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 

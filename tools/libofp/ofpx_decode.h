@@ -6,8 +6,8 @@
 
 #include <map>
 #include "./ofpx.h"
-#include "ofp/timestamp.h"
 #include "ofp/messageinfo.h"
+#include "ofp/timestamp.h"
 
 namespace ofpx {
 

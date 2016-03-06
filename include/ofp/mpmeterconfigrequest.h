@@ -5,8 +5,8 @@
 #define OFP_MPMETERCONFIGREQUEST_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/padding.h"
 #include "ofp/meternumber.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 

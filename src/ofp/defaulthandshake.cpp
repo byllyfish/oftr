@@ -3,15 +3,15 @@
 
 #include "ofp/defaulthandshake.h"
 #include <sstream>
+#include "ofp/constants.h"
+#include "ofp/error.h"
+#include "ofp/featuresreply.h"
+#include "ofp/headeronly.h"
+#include "ofp/hello.h"
+#include "ofp/log.h"
+#include "ofp/message.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
-#include "ofp/hello.h"
-#include "ofp/message.h"
-#include "ofp/headeronly.h"
-#include "ofp/featuresreply.h"
-#include "ofp/error.h"
-#include "ofp/log.h"
-#include "ofp/constants.h"
 
 using namespace ofp;
 using sys::Connection;
@@ -25,8 +25,7 @@ DefaultHandshake::DefaultHandshake(Connection *channel, ChannelOptions options,
     : channel_{channel},
       versions_{versions},
       listenerFactory_{listenerFactory},
-      options_{options} {
-}
+      options_{options} {}
 
 void DefaultHandshake::onChannelUp(Channel *channel) {
   assert(channel == channel_);

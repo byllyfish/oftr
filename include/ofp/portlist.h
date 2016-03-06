@@ -4,8 +4,8 @@
 #ifndef OFP_PORTLIST_H_
 #define OFP_PORTLIST_H_
 
-#include "ofp/protocollist.h"
 #include "ofp/portrange.h"
+#include "ofp/protocollist.h"
 
 namespace ofp {
 

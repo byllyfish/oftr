@@ -4,8 +4,8 @@
 #ifndef OFP_QUEUEDESCPROPERTY_H_
 #define OFP_QUEUEDESCPROPERTY_H_
 
-#include "ofp/experimenterproperty.h"
 #include "ofp/constants.h"
+#include "ofp/experimenterproperty.h"
 #include "ofp/padding.h"
 
 namespace ofp {

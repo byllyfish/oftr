@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/tcp_server.h"
-#include "ofp/sys/engine.h"
 #include "ofp/log.h"
+#include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/udp_server.h"
 
@@ -30,8 +30,7 @@ TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelOptions options,
       options_{options},
       versions_{versions},
       factory_{listenerFactory},
-      securityId_{securityId} {
-}
+      securityId_{securityId} {}
 
 TCP_Server::~TCP_Server() {
   // If connId_ is non-zero, we need to de-register the TCP server.

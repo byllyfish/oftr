@@ -5,24 +5,24 @@
 #define OFP_YAML_YMULTIPARTREPLY_H_
 
 #include "ofp/multipartreply.h"
-#include "ofp/yaml/ympflowstatsreply.h"
-#include "ofp/yaml/ympdesc.h"
 #include "ofp/yaml/ympaggregatestatsreply.h"
-#include "ofp/yaml/ymptablestats.h"
-#include "ofp/yaml/ympportstats.h"
-#include "ofp/yaml/ympqueuestats.h"
+#include "ofp/yaml/ympdesc.h"
+#include "ofp/yaml/ympexperimenter.h"
+#include "ofp/yaml/ympflowmonitorreply.h"
+#include "ofp/yaml/ympflowstatsreply.h"
 #include "ofp/yaml/ympgroupdesc.h"
 #include "ofp/yaml/ympgroupfeatures.h"
-#include "ofp/yaml/ympmeterconfig.h"
-#include "ofp/yaml/ympmeterstats.h"
-#include "ofp/yaml/ympmeterfeatures.h"
-#include "ofp/yaml/ymptablefeatures.h"
 #include "ofp/yaml/ympgroupstats.h"
-#include "ofp/yaml/ympflowmonitorreply.h"
-#include "ofp/yaml/ympexperimenter.h"
+#include "ofp/yaml/ympmeterconfig.h"
+#include "ofp/yaml/ympmeterfeatures.h"
+#include "ofp/yaml/ympmeterstats.h"
+#include "ofp/yaml/ympportstats.h"
+#include "ofp/yaml/ympqueuestats.h"
 #include "ofp/yaml/ympreplyseq.h"
-#include "ofp/yaml/ytabledesc.h"
+#include "ofp/yaml/ymptablefeatures.h"
+#include "ofp/yaml/ymptablestats.h"
 #include "ofp/yaml/yqueuedesc.h"
+#include "ofp/yaml/ytabledesc.h"
 
 namespace llvm {
 namespace yaml {
@@ -85,18 +85,18 @@ msg:
 {Message/Reply.Flow}
 type: REPLY.FLOW
 msg:
-  table_id: TableNumber
-  duration_sec: UInt32
-  duration_nsec: UInt32
-  priority: UInt16
-  idle_timeout: UInt16
-  hard_timeout: UInt16
-  flags: [FlowModFlags]
-  cookie: UInt64
-  packet_count: UInt64
-  byte_count: UInt64
-  match: [Field]
-  instructions: [Instruction]
+  - table_id: TableNumber
+    duration_sec: UInt32
+    duration_nsec: UInt32
+    priority: UInt16
+    idle_timeout: UInt16
+    hard_timeout: UInt16
+    flags: [FlowModFlags]
+    cookie: UInt64
+    packet_count: UInt64
+    byte_count: UInt64
+    match: [Field]
+    instructions: [Instruction]
 
 {Message/Reply.Aggregate}
 type: REPLY.AGGREGATE
@@ -408,7 +408,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
             msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setReplyBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPFlowStatsReply::MPVariableSizeOffset);
         break;
       }
       case OFPMP_AGGREGATE: {
@@ -422,35 +423,40 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setReplyBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          PROTOCOL_ITERATOR_SIZE_FIXED);
         break;
       }
       case OFPMP_PORT_STATS: {
         ofp::detail::MPReplyBuilderSeq<MPPortStatsBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setReplyBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPPortStats::MPVariableSizeOffset);
         break;
       }
       case OFPMP_QUEUE: {
         ofp::detail::MPReplyBuilderSeq<MPQueueStatsBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setReplyBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          PROTOCOL_ITERATOR_SIZE_FIXED);
         break;
       }
       case OFPMP_PORT_DESC: {
         ofp::detail::MPReplyBuilderSeq<PortBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setReplyBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          Port::MPVariableSizeOffset);
         break;
       }
       case OFPMP_GROUP_DESC: {
         ofp::detail::MPReplyBuilderSeq<MPGroupDescBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setReplyBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPGroupDesc::MPVariableSizeOffset);
         break;
       }
       case OFPMP_GROUP_FEATURES: {
@@ -464,7 +470,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         ofp::detail::MPReplyBuilderSeq<MPMeterConfigBuilder> seq{msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setReplyBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPMeterConfig::MPVariableSizeOffset);
         break;
       }
       case OFPMP_METER: {
@@ -531,6 +538,25 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         log::info("MultiPartReplyBuilder: MappingTraits not fully implemented.",
                   static_cast<int>(type));
         break;
+    }
+  }
+
+ private:
+  static void sendMultipleParts(IO &io, ofp::MultipartReplyBuilder &msg,
+                                const void *data, size_t length,
+                                size_t offset) {
+    if (length <= ofp::MultipartReplyBuilder::MAX_BODY_SIZE) {
+      msg.setReplyBody(data, length);
+    } else {
+      // Break message into chunks. Note that `sendWithReplyBody` leaves
+      // the reply body set to the final chunk, and does *not* send it.
+      auto encoder = ofp::yaml::GetEncoderFromContext(io);
+      if (encoder && !encoder->recursive()) {
+        msg.sendUsingReplyBody(encoder->memoryChannel(), data, length, offset);
+      } else {
+        ofp::log::warning("Recursive multipart reply forbidden");
+        io.setError("Recursive multipart reply forbidden");
+      }
     }
   }
 };

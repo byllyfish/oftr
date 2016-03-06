@@ -2,24 +2,24 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/transmogrify.h"
-#include "ofp/message.h"
+#include "ofp/actions.h"
+#include "ofp/experimenter.h"
 #include "ofp/featuresreply.h"
 #include "ofp/flowmod.h"
-#include "ofp/portstatus.h"
-#include "ofp/experimenter.h"
+#include "ofp/flowremoved.h"
+#include "ofp/getasyncreply.h"
+#include "ofp/instructionrange.h"
+#include "ofp/instructions.h"
+#include "ofp/message.h"
+#include "ofp/multipartreply.h"
+#include "ofp/multipartrequest.h"
+#include "ofp/originalmatch.h"
 #include "ofp/packetout.h"
 #include "ofp/portmod.h"
-#include "ofp/flowremoved.h"
-#include "ofp/multipartrequest.h"
-#include "ofp/multipartreply.h"
-#include "ofp/instructions.h"
-#include "ofp/instructionrange.h"
-#include "ofp/originalmatch.h"
-#include "ofp/actions.h"
 #include "ofp/portstatsproperty.h"
-#include "ofp/setasync.h"
-#include "ofp/getasyncreply.h"
+#include "ofp/portstatus.h"
 #include "ofp/queuegetconfigreply.h"
+#include "ofp/setasync.h"
 
 using namespace ofp;
 
@@ -28,8 +28,7 @@ using deprecated::StandardMatch;
 
 // This is defined here instead of Transmogrify.h because of header
 // dependencies.
-Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {
-}
+Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
 
 void Transmogrify::normalize() {
   if (buf_.size() < sizeof(Header)) {
@@ -60,7 +59,7 @@ void Transmogrify::normalize() {
   // conditions, this should never be triggered.
   if (buf_.size() != hdr->length()) {
     markInputInvalid("Unexpected header length");
-    hdr->setLength(UInt16_narrow_cast(buf_.size()));
+    hdr->setLength(buf_.size());
   }
 
   UInt8 version = hdr->version();
@@ -130,6 +129,12 @@ void Transmogrify::normalize() {
     }
   }
 
+  if (buf_.size() > OFP_MAX_SIZE) {
+    markInputTooBig("Message truncated to OFP_MAX_SIZE");
+    buf_.resize(OFP_MAX_SIZE);
+  }
+
+  header()->setLength(buf_.size());
   assert(buf_.size() == header()->length());
 }
 
@@ -174,10 +179,6 @@ void Transmogrify::normalizeFeaturesReplyV1() {
   pkt = buf_.mutableData();
   assert(buf_.size() == sizeof(FeaturesReply) + ports.size());
   std::memcpy(pkt + sizeof(FeaturesReply), ports.data(), ports.size());
-
-  // Update header length. N.B. Make sure we use current header ptr.
-  // TODO(bfish): Put header fix up at end of calling method?
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeFeaturesReplyV2() {
@@ -220,9 +221,6 @@ void Transmogrify::normalizeFeaturesReplyV2() {
   pkt = buf_.mutableData();
   assert(buf_.size() == sizeof(FeaturesReply) + ports.size());
   std::memcpy(pkt + sizeof(FeaturesReply), ports.data(), ports.size());
-
-  // Update header length. N.B. Make sure we use current header ptr.
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeFlowModV1() {
@@ -307,7 +305,6 @@ void Transmogrify::normalizeFlowModV1() {
     Validation context{nullptr, &error};
     if (!actions.validateInput(&context)) {
       markInputInvalid("FlowMod actions are invalid");
-      header()->setLength(UInt16_narrow_cast(buf_.size()));
       return;
     }
 
@@ -320,9 +317,6 @@ void Transmogrify::normalizeFlowModV1() {
         UInt16_narrow_cast(Unsigned_cast(actLen + 8 + delta))};
     std::memcpy(pkt + 136, &insHead, sizeof(insHead));
   }
-
-  // Update header length. N.B. Make sure we use current header ptr.
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizePortStatusV1() {
@@ -348,7 +342,6 @@ void Transmogrify::normalizePortStatusV1() {
   portBuilder.copyTo(pkt + PortStatusSize);
 
   assert(buf_.size() == PortStatusSize + Port::DefaultSizeEthernet);
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizePortStatusV2() {
@@ -374,7 +367,6 @@ void Transmogrify::normalizePortStatusV2() {
   portBuilder.copyTo(pkt + PortStatusSize);
 
   assert(buf_.size() == PortStatusSize + Port::DefaultSizeEthernet);
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeExperimenterV1() {
@@ -393,9 +385,6 @@ void Transmogrify::normalizeExperimenterV1() {
   // Insert four zero bytes at position 12.
   Padding<4> pad;
   buf_.insert(buf_.data() + 12, &pad, sizeof(pad));
-
-  // Update header length. N.B. Make sure we use current header ptr.
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizePacketOutV1() {
@@ -450,7 +439,6 @@ void Transmogrify::normalizePacketOutV1() {
     Validation context{nullptr, &error};
     if (!actions.validateInput(&context)) {
       markInputInvalid("PacketOut has invalid actions");
-      header()->setLength(UInt16_narrow_cast(buf_.size()));
       return;
     }
 
@@ -462,9 +450,6 @@ void Transmogrify::normalizePacketOutV1() {
 
   Big16 bigLen = actionLen;
   std::memcpy(pkt + 16, &bigLen, sizeof(bigLen));
-
-  // Update header length. N.B. Make sure we use current header ptr.
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizePortModV1() {
@@ -496,9 +481,6 @@ void Transmogrify::normalizePortModV1() {
   UInt32 advertise = *Big32_cast(pkt + 32);
   *Big32_cast(pkt + 32) = 0x00000008;
   *Big32_cast(pkt + 36) = OFPPortFeaturesFlagsConvertFromV1(advertise);
-
-  // Update header length.
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizePortModV2() {
@@ -548,8 +530,6 @@ void Transmogrify::normalizeFlowRemovedV1() {
 
   pkt = buf_.mutableData();
   std::memcpy(pkt + 48, &stdMatch, sizeof(stdMatch));
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMultipartRequestV1() {
@@ -576,8 +556,6 @@ void Transmogrify::normalizeMultipartRequestV1() {
     // first field.
     normalizeMPPortStatsRequestV1();
   }
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMultipartReplyV1() {
@@ -613,8 +591,6 @@ void Transmogrify::normalizeMultipartReplyV1() {
   } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyV1();
   }
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMultipartReplyV2() {
@@ -637,8 +613,6 @@ void Transmogrify::normalizeMultipartReplyV2() {
   } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyV4();
   }
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMultipartReplyV3() {
@@ -665,8 +639,6 @@ void Transmogrify::normalizeMultipartReplyV3() {
   } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyV4();
   }
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMultipartReplyV4() {
@@ -693,8 +665,6 @@ void Transmogrify::normalizeMultipartReplyV4() {
       normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());
   }
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMultipartReplyV5() {
@@ -715,8 +685,6 @@ void Transmogrify::normalizeMultipartReplyV5() {
       normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());
   }
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeAsyncConfigV4() {
@@ -751,8 +719,6 @@ void Transmogrify::normalizeAsyncConfigV4() {
     out->value = masks[i];
     ++out;
   }
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeQueueGetConfigReplyV1() {
@@ -796,8 +762,6 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
   }
 
   buf_.replace(data.begin(), data.end(), newQueues.data(), newQueues.size());
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeQueueGetConfigReplyV2() {
@@ -866,8 +830,6 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
   }
 
   buf_.replace(data.begin(), data.end(), newBuf.data(), newBuf.size());
-
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMPFlowRequestV1() {
@@ -1063,9 +1025,6 @@ void Transmogrify::normalizeMPPortDescReplyV1() {
   pkt = buf_.mutableData();
   assert(buf_.size() == sizeof(MultipartReply) + ports.size());
   std::memcpy(pkt + sizeof(MultipartReply), ports.data(), ports.size());
-
-  // Update header length. N.B. Make sure we use current header ptr.
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMPPortDescReplyV4() {
@@ -1096,9 +1055,6 @@ void Transmogrify::normalizeMPPortDescReplyV4() {
   pkt = buf_.mutableData();
   assert(buf_.size() == sizeof(MultipartReply) + ports.size());
   std::memcpy(pkt + sizeof(MultipartReply), ports.data(), ports.size());
-
-  // Update header length. N.B. Make sure we use current header ptr.
-  header()->setLength(UInt16_narrow_cast(buf_.size()));
 }
 
 void Transmogrify::normalizeMPPortStatsReplyV1(size_t *start) {

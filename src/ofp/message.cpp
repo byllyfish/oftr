@@ -2,15 +2,15 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/message.h"
-#include "ofp/sys/connection.h"
-#include "ofp/flowmod.h"
-#include "ofp/portstatus.h"
-#include "ofp/experimenter.h"
-#include "ofp/instructions.h"
-#include "ofp/instructionrange.h"
-#include "ofp/originalmatch.h"
-#include "ofp/transmogrify.h"
 #include "ofp/error.h"
+#include "ofp/experimenter.h"
+#include "ofp/flowmod.h"
+#include "ofp/instructionrange.h"
+#include "ofp/instructions.h"
+#include "ofp/originalmatch.h"
+#include "ofp/portstatus.h"
+#include "ofp/sys/connection.h"
+#include "ofp/transmogrify.h"
 
 using namespace ofp;
 

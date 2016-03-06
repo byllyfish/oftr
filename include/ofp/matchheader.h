@@ -4,8 +4,8 @@
 #ifndef OFP_MATCHHEADER_H_
 #define OFP_MATCHHEADER_H_
 
-#include "ofp/constants.h"
 #include "ofp/byteorder.h"
+#include "ofp/constants.h"
 #include "ofp/oxmrange.h"
 #include "ofp/standardmatch.h"
 

@@ -1,12 +1,12 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/sys/udp_connection.h"
 #include "ofp/defaulthandshake.h"
-#include "ofp/sys/udp_server.h"
 #include "ofp/log.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/plaintext_adapter.h"
+#include "ofp/sys/udp_connection.h"
+#include "ofp/sys/udp_server.h"
 
 namespace ofp {
 namespace sys {

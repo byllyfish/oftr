@@ -4,8 +4,8 @@
 #ifndef OFP_OXMFULLTYPE_H_
 #define OFP_OXMFULLTYPE_H_
 
-#include "ofp/oxmtype.h"
 #include "ofp/oxmfields.h"
+#include "ofp/oxmtype.h"
 
 namespace ofp {
 

@@ -4,8 +4,8 @@
 #ifndef OFP_PACKETCOUNTERRANGE_H_
 #define OFP_PACKETCOUNTERRANGE_H_
 
-#include "ofp/protocolrange.h"
 #include "ofp/packetcounter.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 

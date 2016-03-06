@@ -4,8 +4,8 @@
 #ifndef OFP_PORTSTATUS_H_
 #define OFP_PORTSTATUS_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/port.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

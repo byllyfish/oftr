@@ -4,8 +4,8 @@
 #ifndef OFP_MATCH_H_
 #define OFP_MATCH_H_
 
-#include "ofp/standardmatch.h"
 #include "ofp/matchheader.h"
+#include "ofp/standardmatch.h"
 
 namespace ofp {
 

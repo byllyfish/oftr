@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/mpqueuestatsrequest.h"
-#include "ofp/writable.h"
 #include "ofp/constants.h"
 #include "ofp/multipartrequest.h"
+#include "ofp/writable.h"
 
 using ofp::MPQueueStatsRequest;
 using ofp::MPQueueStatsRequestBuilder;

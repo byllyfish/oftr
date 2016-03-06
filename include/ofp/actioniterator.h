@@ -4,9 +4,9 @@
 #ifndef OFP_ACTIONITERATOR_H_
 #define OFP_ACTIONITERATOR_H_
 
-#include "ofp/protocoliterator.h"
 #include "ofp/actiontype.h"
 #include "ofp/oxmrange.h"
+#include "ofp/protocoliterator.h"
 
 namespace ofp {
 namespace detail {

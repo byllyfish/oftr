@@ -3,8 +3,8 @@
 
 #include "ofp/flowremoved.h"
 #include "ofp/message.h"
-#include "ofp/writable.h"
 #include "ofp/originalmatch.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 
@@ -49,7 +49,7 @@ UInt32 FlowRemovedBuilder::send(Writable *channel) {
   size_t msgLen = msgMatchLenPadded;
 
   msg_.header_.setVersion(version);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
   msg_.header_.setXid(xid);
 
   // Fill in the match header.
@@ -73,7 +73,7 @@ UInt32 FlowRemovedBuilder::sendStandard(Writable *channel) {
   UInt32 xid = channel->nextXid();
 
   msg_.header_.setVersion(version);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
   msg_.header_.setXid(xid);
 
   if (msg_.hardTimeout_ != 0) {

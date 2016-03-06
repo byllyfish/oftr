@@ -265,7 +265,7 @@ UInt32 PacketInBuilder::sendV1(Writable *channel) {
   Header &hdr = msg_.header_;
   hdr.setVersion(version);
   hdr.setType(PacketIn::type());
-  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setLength(msgLen);
   hdr.setXid(xid);
 
   // Write out first 14 bytes.
@@ -336,7 +336,7 @@ UInt32 PacketInBuilder::sendV3(Writable *channel) {
   Header &hdr = msg_.header_;
   hdr.setVersion(OFP_VERSION_3);
   hdr.setType(PacketIn::type());
-  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setLength(msgLen);
   hdr.setXid(xid);
 
   // Fill in the match header.
@@ -395,7 +395,7 @@ UInt32 PacketInBuilder::sendV4(Writable *channel) {
   Header &hdr = msg_.header_;
   hdr.setVersion(channel->version());
   hdr.setType(PacketIn::type());
-  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setLength(msgLen);
   hdr.setXid(xid);
 
   // Fill in the match header.

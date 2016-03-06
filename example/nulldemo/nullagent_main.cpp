@@ -1,10 +1,10 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
+#include "./nullagent.h"
 #include <iostream>
 #include <vector>
 #include "ofp/ofp.h"
-#include "./nullagent.h"
 
 using namespace ofp;
 

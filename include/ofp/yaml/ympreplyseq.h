@@ -5,6 +5,7 @@
 #define OFP_YAML_YMPREPLYSEQ_H_
 
 #include "ofp/multipartreply.h"
+#include "ofp/multipartrequest.h"
 
 namespace ofp {
 namespace detail {

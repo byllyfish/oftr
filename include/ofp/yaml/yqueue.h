@@ -4,8 +4,8 @@
 #ifndef OFP_YAML_YQUEUE_H_
 #define OFP_YAML_YQUEUE_H_
 
-#include "ofp/yaml/yqueueproperty.h"
 #include "ofp/yaml/yqueuenumber.h"
+#include "ofp/yaml/yqueueproperty.h"
 
 namespace ofp {
 namespace detail {

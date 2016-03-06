@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 using ofp::yaml::Encoder;
@@ -490,4 +490,34 @@ TEST(encoderfail, duplicateFieldsDisallowDifferentValue) {
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
+TEST(encoderfail, end_brace_only) {
+  const char *input = "  }";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:1:3: error: Unexpected token\n  }\n  ^\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
+TEST(encoderfail, xid_present) {
+  // Make sure xid is still available after an encoder failure.
+  const char *input = R"""(
+    version: 1
+    type: FEATURE_REQUEST
+    xid: 54321
+    msg:
+      data: '1234'
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ(
+      "YAML:3:11: error: unknown value \"FEATURE_REQUEST\" Did you mean "
+      "\"FEATURES_REQUEST\"?\n    type: FEATURE_REQUEST\n          "
+      "^~~~~~~~~~~~~~~\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+  EXPECT_EQ(54321, encoder.xid());
 }

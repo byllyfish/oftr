@@ -5,6 +5,7 @@
 #define OFP_YAML_YBYTEORDER_H_
 
 #include "ofp/yaml/yllvm.h"
+
 #include "ofp/byteorder.h"
 
 namespace llvm {

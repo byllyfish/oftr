@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/yaml/decoder.h"
+#include "ofp/unittest.h"
 #include "ofp/yaml/encoder.h"
 
 using namespace ofp;
@@ -42,7 +42,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
     // Simple fuzz test: remove 1 trailing byte
     if (msg.size() > sizeof(Header)) {
       msg.shrink(msg.size() - 1);
-      msg.mutableHeader()->setLength(UInt16_narrow_cast(msg.size()));
+      msg.mutableHeader()->setLength(msg.size());
       Decoder decoder{&msg, true};
 
       // For the following message types, removing the last byte still yields a

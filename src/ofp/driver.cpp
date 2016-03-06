@@ -6,8 +6,7 @@
 
 using namespace ofp;
 
-Driver::Driver() : engine_{new sys::Engine{this}} {
-}
+Driver::Driver() : engine_{new sys::Engine{this}} {}
 
 Driver::~Driver() {
   delete engine_;

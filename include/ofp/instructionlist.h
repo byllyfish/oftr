@@ -4,11 +4,11 @@
 #ifndef OFP_INSTRUCTIONLIST_H_
 #define OFP_INSTRUCTIONLIST_H_
 
-#include "ofp/protocollist.h"
-#include "ofp/instructions.h"
+#include "ofp/bytelist.h"
 #include "ofp/instructioniterator.h"
 #include "ofp/instructionrange.h"
-#include "ofp/bytelist.h"
+#include "ofp/instructions.h"
+#include "ofp/protocollist.h"
 
 namespace ofp {
 

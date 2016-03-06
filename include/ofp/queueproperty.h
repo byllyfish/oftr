@@ -5,9 +5,9 @@
 #define OFP_QUEUEPROPERTY_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/byterange.h"
 #include "ofp/constants.h"
 #include "ofp/padding.h"
-#include "ofp/byterange.h"
 
 namespace ofp {
 

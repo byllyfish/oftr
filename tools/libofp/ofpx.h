@@ -5,12 +5,12 @@
 #define TOOLS_LIBOFP_OFPX_H_
 
 #include <unistd.h>
-#include <vector>
-#include <string>
 #include <iostream>
+#include <string>
+#include <vector>
 #include "llvm/Support/CommandLine.h"
-#include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/FileSystem.h"
+#include "llvm/Support/raw_ostream.h"
 #include "ofp/ofp.h"
 
 namespace ofpx {

@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/flowmod.h"
-#include "ofp/writable.h"
 #include "ofp/originalmatch.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 
@@ -73,7 +73,7 @@ UInt32 FlowModBuilder::send(Writable *channel) {
   Header &hdr = msg_.header_;
   hdr.setVersion(version);
   hdr.setType(FlowMod::type());
-  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setLength(msgLen);
   hdr.setXid(xid);
 
   // Fill in the match header.
@@ -104,7 +104,7 @@ UInt32 FlowModBuilder::sendStandard(Writable *channel) {
   Header &hdr = msg_.header_;
   hdr.setVersion(version);
   hdr.setType(FlowMod::type());
-  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setLength(msgLen);
   hdr.setXid(xid);
 
   channel->write(&msg_, FlowMod::SizeWithoutMatchHeader);

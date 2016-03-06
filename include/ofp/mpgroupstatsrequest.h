@@ -5,8 +5,8 @@
 #define OFP_MPGROUPSTATSREQUEST_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/padding.h"
 #include "ofp/groupnumber.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 

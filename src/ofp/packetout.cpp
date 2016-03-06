@@ -51,7 +51,7 @@ UInt32 PacketOutBuilder::send(Writable *channel) {
   Header &hdr = msg_.header_;
   hdr.setVersion(version);
   hdr.setType(PacketOut::type());
-  hdr.setLength(UInt16_narrow_cast(msgLen));
+  hdr.setLength(msgLen);
   hdr.setXid(xid);
 
   // Fill in length of actions section.

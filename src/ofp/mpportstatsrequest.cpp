@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/mpportstatsrequest.h"
-#include "ofp/writable.h"
 #include "ofp/constants.h"
 #include "ofp/multipartrequest.h"
+#include "ofp/writable.h"
 
 using ofp::MPPortStatsRequest;
 using ofp::MPPortStatsRequestBuilder;

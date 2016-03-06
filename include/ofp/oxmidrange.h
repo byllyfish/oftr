@@ -4,8 +4,8 @@
 #ifndef OFP_OXMIDRANGE_H_
 #define OFP_OXMIDRANGE_H_
 
-#include "ofp/protocolrange.h"
 #include "ofp/oxmid.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 

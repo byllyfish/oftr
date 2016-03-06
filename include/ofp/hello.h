@@ -5,8 +5,8 @@
 #define OFP_HELLO_H_
 
 #include "ofp/protocolmsg.h"
-#include "ofp/protocolversions.h"
 #include "ofp/protocolrange.h"
+#include "ofp/protocolversions.h"
 
 namespace ofp {
 namespace detail {

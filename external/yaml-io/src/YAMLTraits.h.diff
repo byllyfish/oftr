@@ -1,5 +1,5 @@
 --- ../../../llvm/include/llvm/Support/YAMLTraits.h	2016-01-20 17:27:57.000000000 -0700
-+++ ./include/llvm/Support/YAMLTraits.h	2016-01-22 12:35:08.000000000 -0700
++++ ./include/llvm/Support/YAMLTraits.h	2016-02-10 13:39:55.000000000 -0700
 @@ -14,12 +14,13 @@
  #include "llvm/ADT/DenseMapInfo.h"
  #include "llvm/ADT/Optional.h"

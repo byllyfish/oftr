@@ -4,8 +4,8 @@
 #ifndef OFP_SETCONFIG_H_
 #define OFP_SETCONFIG_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/controllermaxlen.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

@@ -4,11 +4,13 @@
 #ifndef OFP_MULTIPARTREPLY_H_
 #define OFP_MULTIPARTREPLY_H_
 
-#include "ofp/protocolmsg.h"
-#include "ofp/padding.h"
 #include "ofp/bytelist.h"
+#include "ofp/padding.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
+
+class MemoryChannel;
 
 class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
                                           16, 65535, false> {
@@ -54,6 +56,8 @@ static_assert(IsTriviallyCopyable<MultipartReply>(),
 
 class MultipartReplyBuilder {
  public:
+  static const size_t MAX_BODY_SIZE = OFP_MAX_SIZE - sizeof(MultipartReply);
+
   MultipartReplyBuilder() = default;
   explicit MultipartReplyBuilder(UInt8 version) {
     msg_.header_.setVersion(version);
@@ -68,6 +72,11 @@ class MultipartReplyBuilder {
   }
 
   UInt32 send(Writable *channel);
+
+  // Break reply body into chunks and send each chunk, except the last.
+  // Upon return, the last chunk is loaded so client can call send().
+  void sendUsingReplyBody(MemoryChannel *channel, const void *data,
+                          size_t length, size_t offset);
 
  private:
   MultipartReply msg_;

@@ -4,20 +4,20 @@
 #ifndef OFP_YAML_YMULTIPARTREQUEST_H_
 #define OFP_YAML_YMULTIPARTREQUEST_H_
 
-#include "ofp/multipartrequest.h"
-#include "ofp/mpflowstatsrequest.h"
-#include "ofp/yaml/ympflowstatsrequest.h"
-#include "ofp/yaml/ympportstatsrequest.h"
-#include "ofp/yaml/ympqueuestatsrequest.h"
-#include "ofp/yaml/ympmeterconfigrequest.h"
-#include "ofp/yaml/ymptablefeatures.h"
-#include "ofp/yaml/ympgroupstatsrequest.h"
-#include "ofp/yaml/ympflowmonitorrequest.h"
-#include "ofp/yaml/ympexperimenter.h"
-#include "ofp/yaml/ympreplyseq.h"
-#include "ofp/yaml/ympqueuedescrequest.h"
-#include "ofp/mpmeterstatsrequest.h"
 #include "ofp/memorychannel.h"
+#include "ofp/mpflowstatsrequest.h"
+#include "ofp/mpmeterstatsrequest.h"
+#include "ofp/multipartrequest.h"
+#include "ofp/yaml/ympexperimenter.h"
+#include "ofp/yaml/ympflowmonitorrequest.h"
+#include "ofp/yaml/ympflowstatsrequest.h"
+#include "ofp/yaml/ympgroupstatsrequest.h"
+#include "ofp/yaml/ympmeterconfigrequest.h"
+#include "ofp/yaml/ympportstatsrequest.h"
+#include "ofp/yaml/ympqueuedescrequest.h"
+#include "ofp/yaml/ympqueuestatsrequest.h"
+#include "ofp/yaml/ympreplyseq.h"
+#include "ofp/yaml/ymptablefeatures.h"
 
 namespace llvm {
 namespace yaml {
@@ -100,7 +100,7 @@ msg:
     name: Str32
     metadata_match: UInt64
     metadata_write: UInt64
-    config: UInt32
+    config: TableConfigFlags
     max_entries: UInt32
     instructions: [InstructionID]
     instructions_miss: !optout [InstructionID]
@@ -338,7 +338,8 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
             msg.version()};
         io.mapRequired(key, seq);
         seq.close();
-        msg.setRequestBody(seq.data(), seq.size());
+        sendMultipleParts(io, msg, seq.data(), seq.size(),
+                          MPTableFeatures::MPVariableSizeOffset);
         break;
       }
       case OFPMP_FLOW_MONITOR: {
@@ -362,6 +363,26 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         log::debug(
             "MultipartRequestBuilder MappingTraits not fully implemented.");
         break;
+    }
+  }
+
+ private:
+  static void sendMultipleParts(IO &io, ofp::MultipartRequestBuilder &msg,
+                                const void *data, size_t length,
+                                size_t offset) {
+    if (length <= ofp::MultipartRequestBuilder::MAX_BODY_SIZE) {
+      msg.setRequestBody(data, length);
+    } else {
+      // Break message into chunks. Note that `sendWithRequestBody` leaves
+      // the request body set to the final chunk, and does *not* send it.
+      auto encoder = ofp::yaml::GetEncoderFromContext(io);
+      if (encoder && !encoder->recursive()) {
+        msg.sendUsingRequestBody(encoder->memoryChannel(), data, length,
+                                 offset);
+      } else {
+        ofp::log::warning("Recursive multipart request forbidden");
+        io.setError("Recursive multipart request forbidden");
+      }
     }
   }
 };

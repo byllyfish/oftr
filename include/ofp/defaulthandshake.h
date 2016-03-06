@@ -5,8 +5,8 @@
 #define OFP_DEFAULTHANDSHAKE_H_
 
 #include "ofp/channellistener.h"
-#include "ofp/protocolversions.h"
 #include "ofp/driver.h"
+#include "ofp/protocolversions.h"
 
 namespace ofp {
 

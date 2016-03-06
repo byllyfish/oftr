@@ -4,8 +4,8 @@
 #ifndef OFP_METERBANDLIST_H_
 #define OFP_METERBANDLIST_H_
 
-#include "ofp/protocollist.h"
 #include "ofp/meterbandrange.h"
+#include "ofp/protocollist.h"
 
 namespace ofp {
 

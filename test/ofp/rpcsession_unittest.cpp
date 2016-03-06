@@ -1,9 +1,9 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
+#include "ofp/rpc/rpcsession.h"
 #include <future>
 #include "ofp/unittest.h"
-#include "ofp/rpc/rpcsession.h"
 
 using namespace ofp;
 using namespace ofp::rpc;

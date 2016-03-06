@@ -7,8 +7,7 @@
 using namespace ofp;
 
 ByteRange::ByteRange(const ByteList &data)
-    : begin_{data.begin()}, end_{data.end()} {
-}
+    : begin_{data.begin()}, end_{data.end()} {}
 
 /// \brief Return true if contents of this byte range are printable ascii chars.
 bool ByteRange::isPrintable() const {

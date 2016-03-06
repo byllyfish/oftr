@@ -4,8 +4,8 @@
 #ifndef OFP_ROLESTATUSPROPERTY_H_
 #define OFP_ROLESTATUSPROPERTY_H_
 
-#include "ofp/experimenterproperty.h"
 #include "ofp/constants.h"
+#include "ofp/experimenterproperty.h"
 
 namespace ofp {
 

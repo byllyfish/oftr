@@ -5,13 +5,15 @@
 #define OFP_YAML_ENCODER_H_
 
 #include "ofp/yaml/yllvm.h"
+
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/ydatapathid.h"
-#include "ofp/header.h"
+
 #include "ofp/bytelist.h"
-#include "ofp/memorychannel.h"
-#include "ofp/log.h"
 #include "ofp/channel.h"
+#include "ofp/header.h"
+#include "ofp/log.h"
+#include "ofp/memorychannel.h"
 
 namespace ofp {
 namespace yaml {
@@ -35,7 +37,8 @@ class Encoder {
   const DatapathID &datapathId() const { return datapathId_; }
   UInt8 auxiliaryId() const { return auxiliaryId_; }
   Channel *outputChannel() const { return outputChannel_; }
-  llvm::yaml::Input *io() const { return io_; }
+  UInt32 xid() const { return header_.xid(); }
+  OFPMessageFlags flags() const { return flags_; }
 
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
@@ -44,22 +47,27 @@ class Encoder {
     return error_;
   }
 
+  MemoryChannel *memoryChannel() { return &channel_; }
+
+  bool recursive() const { return recursive_; }
+  void setRecursive(bool recursive) { recursive_ = recursive; }
+
  private:
   MemoryChannel channel_;
   std::string error_;
   llvm::raw_string_ostream errorStream_;
-  llvm::yaml::Input *io_ = nullptr;
   UInt64 connId_ = 0;
   DatapathID datapathId_;
   Header header_;
   OFPMultipartType subtype_ = OFPMP_UNSUPPORTED;
-  OFPMultipartFlags flags_ = OFPMPF_NONE;
+  OFPMessageFlags flags_ = OFP_DEFAULT_MESSAGE_FLAGS;
   ChannelFinder finder_;
   Channel *outputChannel_ = nullptr;
   int lineNumber_ = 0;
   UInt8 auxiliaryId_ = 0;
   UInt8 defaultVersion_;
   bool matchPrereqsChecked_;
+  bool recursive_ = false;
 
   explicit Encoder(const Encoder *encoder);
 
@@ -89,6 +97,8 @@ struct MappingTraits<ofp::yaml::Encoder> {
     Header &header = encoder.header_;
     header.setType(OFPT_UNSUPPORTED);
 
+    // Read xid first. If present, we may need it for error reporting later.
+    io.mapOptional("xid", header.xid_);
     io.mapOptional("version", header.version_);
 
     ofp::yaml::MessageType msgType;
@@ -96,21 +106,18 @@ struct MappingTraits<ofp::yaml::Encoder> {
     header.setType(msgType.type);
     encoder.subtype_ = msgType.subtype;
 
-    io.mapOptional("xid", header.xid_);
     io.mapOptional("conn_id", encoder.connId_, UInt64{});
     io.mapOptional("datapath_id", encoder.datapathId_, DatapathID{});
 
     UInt8 defaultAuxId = 0;
     io.mapOptional("auxiliary_id", encoder.auxiliaryId_, defaultAuxId);
-    io.mapOptional("flags", encoder.flags_, OFPMPF_NONE);
+    io.mapOptional("flags", encoder.flags_, OFP_DEFAULT_MESSAGE_FLAGS);
 
     std::string ignore;
     io.mapOptional("_file", ignore);
 
     if (header.type() != OFPT_UNSUPPORTED) {
       encoder.encodeMsg(io);
-    } else {
-      log::error("Unrecognized message type");
     }
   }
 };

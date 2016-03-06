@@ -2,36 +2,36 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/encoder.h"
-#include "ofp/yaml/yhello.h"
-#include "ofp/yaml/yerror.h"
-#include "ofp/yaml/yflowmod.h"
+#include "ofp/requestforward.h"
+#include "ofp/yaml/ybundleaddmessage.h"
+#include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/yaml/yecho.h"
+#include "ofp/yaml/yerror.h"
 #include "ofp/yaml/yexperimenter.h"
-#include "ofp/yaml/yheaderonly.h"
 #include "ofp/yaml/yfeaturesreply.h"
-#include "ofp/yaml/ymultipartrequest.h"
+#include "ofp/yaml/yflowmod.h"
+#include "ofp/yaml/yflowremoved.h"
+#include "ofp/yaml/ygetasyncreply.h"
+#include "ofp/yaml/ygetconfigreply.h"
+#include "ofp/yaml/ygroupmod.h"
+#include "ofp/yaml/yheaderonly.h"
+#include "ofp/yaml/yhello.h"
+#include "ofp/yaml/ymetermod.h"
 #include "ofp/yaml/ymultipartreply.h"
+#include "ofp/yaml/ymultipartrequest.h"
 #include "ofp/yaml/ypacketin.h"
 #include "ofp/yaml/ypacketout.h"
-#include "ofp/yaml/ysetconfig.h"
-#include "ofp/yaml/yportstatus.h"
-#include "ofp/yaml/ygroupmod.h"
 #include "ofp/yaml/yportmod.h"
-#include "ofp/yaml/ytablemod.h"
-#include "ofp/yaml/yrolerequest.h"
-#include "ofp/yaml/yrolereply.h"
-#include "ofp/yaml/ygetasyncreply.h"
-#include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yportstatus.h"
 #include "ofp/yaml/yqueuegetconfigreply.h"
-#include "ofp/yaml/ygetconfigreply.h"
-#include "ofp/yaml/ysetasync.h"
-#include "ofp/yaml/yflowremoved.h"
-#include "ofp/yaml/ymetermod.h"
+#include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yrolereply.h"
+#include "ofp/yaml/yrolerequest.h"
 #include "ofp/yaml/yrolestatus.h"
-#include "ofp/yaml/ybundlecontrol.h"
-#include "ofp/yaml/ybundleaddmessage.h"
+#include "ofp/yaml/ysetasync.h"
+#include "ofp/yaml/ysetconfig.h"
+#include "ofp/yaml/ytablemod.h"
 #include "ofp/yaml/ytablestatus.h"
-#include "ofp/requestforward.h"
 
 using namespace ofp;
 using namespace ofp::yaml;
@@ -41,19 +41,17 @@ Encoder::Encoder(ChannelFinder finder)
       header_{OFPT_UNSUPPORTED},
       finder_{finder},
       defaultVersion_{0},
-      matchPrereqsChecked_{true} {
-}
+      matchPrereqsChecked_{true} {}
 
 /// \brief Private constructor used when an encoder needs to encode a message
 /// recursively.
 Encoder::Encoder(const Encoder *encoder)
     : errorStream_{error_},
       header_{encoder->header_},
-      finder_{encoder->finder_},
+      finder_{nullptr},
       outputChannel_{encoder->outputChannel_},
       defaultVersion_{encoder->defaultVersion_},
-      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {
-}
+      matchPrereqsChecked_{encoder->matchPrereqsChecked_} {}
 
 Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
                  int lineNumber, UInt8 defaultVersion, ChannelFinder finder)
@@ -63,13 +61,13 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
       lineNumber_{lineNumber},
       defaultVersion_{defaultVersion},
       matchPrereqsChecked_{matchPrereqsChecked} {
-  detail::YamlContext ctxt{this};
-  llvm::yaml::Input yin{input, &ctxt, Encoder::diagnosticHandler, &ctxt};
-  io_ = &yin;
+  llvm::yaml::Input yin{input, nullptr, Encoder::diagnosticHandler, this};
+  detail::YamlContext ctxt{this, &yin};
+  yin.setContext(&ctxt);
   if (!yin.error()) {
     yin >> *this;
   }
-  io_ = nullptr;
+  yin.setContext(nullptr);
 
   if (yin.error()) {
     // Make sure error string is set. There won't be an error string if the
@@ -92,36 +90,45 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
 }
 
 void Encoder::diagnosticHandler(const llvm::SMDiagnostic &d, void *context) {
-  Encoder *encoder = detail::YamlContext::GetEncoder(context);
+  Encoder *encoder = reinterpret_cast<Encoder *>(context);
   encoder->addDiagnostic(d);
 }
 
 void Encoder::addDiagnostic(const llvm::SMDiagnostic &d) {
-  llvm::SMDiagnostic diag{*d.getSourceMgr(), d.getLoc(), d.getFilename(),
-                          d.getLineNo() + lineNumber_, d.getColumnNo(),
-                          d.getKind(), d.getMessage(), d.getLineContents(),
+  llvm::SMDiagnostic diag{*d.getSourceMgr(), d.getLoc(),
+                          d.getFilename(),   d.getLineNo() + lineNumber_,
+                          d.getColumnNo(),   d.getKind(),
+                          d.getMessage(),    d.getLineContents(),
                           d.getRanges()};
   diag.print("", errorStream_, false);
 }
 
 void Encoder::encodeMsg(llvm::yaml::IO &io) {
   // At this point, we know the datapathID. The YAML message may not contain
-  // the version and xid, and even if it does, we still need to override the
+  // the version, and even if it does, we still need to override the
   // version if the channel corresponds to an actual channel. Use the channel
   // finder to locate the channel for the given datapathID so we can set the
-  // correct protocol version and possibly override the xid.
+  // correct protocol version.
 
   if (finder_) {
     // If there's a datapath or connId specified, look up the channel.
     outputChannel_ = finder_(datapathId_, connId_);
     if (!outputChannel_) {
-      io.setError("unable to locate datapath connection");
+      if (!datapathId_.empty()) {
+        io.setError("unable to locate datapath_id " + datapathId_.toString());
+      } else if (connId_ != 0) {
+        io.setError("unable to locate conn_id " + std::to_string(connId_));
+      } else {
+        io.setError("unable to locate connection; no datapath_id or conn_id");
+      }
       return;
     }
     // Channel version will override any version specified by input.
-    header_.setVersion(outputChannel_->version());
-    if (header_.xid() == 0) {
-      header_.setXid(outputChannel_->nextXid());
+    if (!header_.version()) {
+      header_.setVersion(outputChannel_->version());
+    } else if (header_.version() != outputChannel_->version()) {
+      log::warning("Message version", header_.version(),
+                   "does not match channel version", outputChannel_->version());
     }
 
   } else if (!header_.version()) {
@@ -227,7 +234,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       MultipartRequestBuilder multi{channel_.version()};
       if (subtype_ != OFPMP_UNSUPPORTED) {
         multi.setRequestType(subtype_);
-        multi.setRequestFlags(flags_);
+        multi.setRequestFlags(toMultipartFlags(flags_));
         llvm::yaml::MappingTraits<MultipartRequestBuilder>::encode(
             io, multi, subtype_, "msg");
       } else {
@@ -241,7 +248,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       MultipartReplyBuilder multi{channel_.version()};
       if (subtype_ != OFPMP_UNSUPPORTED) {
         multi.setReplyType(subtype_);
-        multi.setReplyFlags(flags_);
+        multi.setReplyFlags(toMultipartFlags(flags_));
         llvm::yaml::MappingTraits<MultipartReplyBuilder>::encode(
             io, multi, subtype_, "msg");
       } else {
@@ -382,7 +389,10 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
 
 void ofp::yaml::EncodeRecursively(llvm::yaml::IO &io, const char *key,
                                   ByteList &data) {
-  Encoder encoder{GetEncoderFromContext(io)};
+  auto parent = GetEncoderFromContext(io);
+  parent->setRecursive(true);
+  Encoder encoder{parent};
   io.mapRequired(key, encoder);
   data.set(encoder.data(), encoder.size());
+  parent->setRecursive(false);
 }

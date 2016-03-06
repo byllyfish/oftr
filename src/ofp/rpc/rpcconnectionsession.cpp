@@ -2,19 +2,17 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnectionsession.h"
-#include "ofp/sys/engine.h"
 #include "ofp/rpc/rpcsession.h"
+#include "ofp/sys/engine.h"
 
 using ofp::rpc::RpcConnectionSession;
 
 RpcConnectionSession::RpcConnectionSession(RpcServer *server,
                                            RpcSession *session)
-    : RpcConnection{server}, session_{session}, work_{server->engine()->io()} {
-}
+    : RpcConnection{server}, session_{session}, work_{server->engine()->io()} {}
 
 void RpcConnectionSession::write(const std::string &msg) {
   session_->receive(msg);
 }
 
-void RpcConnectionSession::asyncRead() {
-}
+void RpcConnectionSession::asyncRead() {}

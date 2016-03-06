@@ -4,21 +4,19 @@
 #ifndef OFP_RPC_RPCEVENTS_H_
 #define OFP_RPC_RPCEVENTS_H_
 
-#include "ofp/yaml/yllvm.h"
 #include "ofp/datapathid.h"
-#include "ofp/yaml/ydatapathid.h"
 #include "ofp/driver.h"
 #include "ofp/padding.h"
-#include "ofp/yaml/ybytelist.h"
-#include "ofp/yaml/yaddress.h"
+#include "ofp/rpc/rpcid.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/yaddress.h"
+#include "ofp/yaml/ybytelist.h"
+#include "ofp/yaml/ydatapathid.h"
+#include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/ytimestamp.h"
 
 namespace ofp {
 namespace rpc {
-
-/// Indicates that `id` is missing from RPC message.
-const UInt64 RPC_ID_MISSING = 0xffffffffffffffffUL;
 
 /// The maximum RPC message size is 1MB.
 const size_t RPC_MAX_MESSAGE_SIZE = 1048576;
@@ -42,15 +40,16 @@ enum RpcMethod : UInt32 {
 enum RpcErrorCode {
   ERROR_CODE_INVALID_REQUEST = -32600,
   ERROR_CODE_METHOD_NOT_FOUND = -32601,
-  ERROR_CODE_DATAPATH_NOT_FOUND = -65000,
-  ERROR_CODE_INVALID_OPTION = -65001,
+  ERROR_CODE_CONNECTION_NOT_FOUND = -65000,
+  ERROR_CODE_TLS_ID_NOT_FOUND = -65001,
+  ERROR_CODE_INVALID_OPTIONS = -65002,
 };
 
 OFP_BEGIN_IGNORE_PADDING
 
 /// Represents the general JSON-RPC error response.
 struct RpcErrorResponse {
-  explicit RpcErrorResponse(UInt64 ident) : id{ident} {}
+  explicit RpcErrorResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   struct Error {
@@ -58,7 +57,7 @@ struct RpcErrorResponse {
     std::string message;
   };
 
-  UInt64 id;
+  RpcID id;
   Error error;
 };
 
@@ -74,17 +73,17 @@ struct RpcConnectionStats {
 
 /// Represents a RPC request to describe the RPC server (METHOD_DESCRIPTION)
 struct RpcDescription {
-  explicit RpcDescription(UInt64 ident) : id{ident} {}
+  explicit RpcDescription(RpcID ident) : id{ident} {}
 
   struct Params {};
 
-  UInt64 id;
+  RpcID id;
   Params params;
 };
 
 /// Represents a RPC response to describe the RPC server (METHOD_DESCRIPTION)
 struct RpcDescriptionResponse {
-  explicit RpcDescriptionResponse(UInt64 ident) : id{ident} {}
+  explicit RpcDescriptionResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   struct Result {
@@ -97,13 +96,13 @@ struct RpcDescriptionResponse {
     std::vector<UInt8> ofp_versions;
   };
 
-  UInt64 id;
+  RpcID id;
   Result result;
 };
 
 /// Represents a RPC request to listen for new connections (METHOD_LISTEN)
 struct RpcListen {
-  explicit RpcListen(UInt64 ident) : id{ident} {}
+  explicit RpcListen(RpcID ident) : id{ident} {}
 
   struct Params {
     /// Endpoint to listen on.
@@ -116,13 +115,13 @@ struct RpcListen {
     std::vector<std::string> options;
   };
 
-  UInt64 id;
+  RpcID id;
   Params params;
 };
 
 /// Represents a RPC response to listen for new connections (METHOD_LISTEN)
 struct RpcListenResponse {
-  explicit RpcListenResponse(UInt64 ident) : id{ident} {}
+  explicit RpcListenResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   struct Result {
@@ -130,13 +129,13 @@ struct RpcListenResponse {
     UInt64 connId = 0;
   };
 
-  UInt64 id;
+  RpcID id;
   Result result;
 };
 
 /// Represents a RPC request to make an outgoing connection (METHOD_CONNECT)
 struct RpcConnect {
-  explicit RpcConnect(UInt64 ident) : id{ident} {}
+  explicit RpcConnect(RpcID ident) : id{ident} {}
 
   struct Params {
     /// Endpoint to connect to.
@@ -149,13 +148,13 @@ struct RpcConnect {
     std::vector<std::string> options;
   };
 
-  UInt64 id;
+  RpcID id;
   Params params;
 };
 
 /// Represents a RPC response to make an outgoing connection (METHOD_CONNECT)
 struct RpcConnectResponse {
-  explicit RpcConnectResponse(UInt64 ident) : id{ident} {}
+  explicit RpcConnectResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   struct Result {
@@ -163,26 +162,26 @@ struct RpcConnectResponse {
     UInt64 connId = 0;
   };
 
-  UInt64 id;
+  RpcID id;
   Result result;
 };
 
 /// Represents a RPC request to close a connection (METHOD_CLOSE)
 struct RpcClose {
-  explicit RpcClose(UInt64 ident) : id{ident} {}
+  explicit RpcClose(RpcID ident) : id{ident} {}
 
   struct Params {
     /// Connection ID to close.
     UInt64 connId = 0;
   };
 
-  UInt64 id;
+  RpcID id;
   Params params;
 };
 
 /// Represents a RPC response to close a connection (METHOD_CLOSE)
 struct RpcCloseResponse {
-  explicit RpcCloseResponse(UInt64 ident) : id{ident} {}
+  explicit RpcCloseResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   struct Result {
@@ -190,35 +189,35 @@ struct RpcCloseResponse {
     UInt32 count = 0;
   };
 
-  UInt64 id;
+  RpcID id;
   Result result;
 };
 
 /// Represents a RPC request to list connection stats (METHOD_LIST_CONNS)
 struct RpcListConns {
-  explicit RpcListConns(UInt64 ident) : id{ident} {}
+  explicit RpcListConns(RpcID ident) : id{ident} {}
 
   struct Params {
     UInt64 connId = 0;
   };
 
-  UInt64 id;
+  RpcID id;
   Params params;
 };
 
 struct RpcListConnsResponse {
-  explicit RpcListConnsResponse(UInt64 ident) : id{ident} {}
+  explicit RpcListConnsResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   using Result = std::vector<RpcConnectionStats>;
 
-  UInt64 id;
+  RpcID id;
   Result result;
 };
 
 /// Represents a RPC request to add an identity (METHOD_ADD_IDENTITY)
 struct RpcAddIdentity {
-  explicit RpcAddIdentity(UInt64 ident) : id{ident} {}
+  explicit RpcAddIdentity(RpcID ident) : id{ident} {}
 
   struct Params {
     /// Certificate chain in PEM format (which also contains private key).
@@ -229,13 +228,13 @@ struct RpcAddIdentity {
     std::string privkey_password;
   };
 
-  UInt64 id;
+  RpcID id;
   Params params;
 };
 
 /// Represents a RPC response to add an identity (METHOD_ADD_IDENTITY)
 struct RpcAddIdentityResponse {
-  explicit RpcAddIdentityResponse(UInt64 ident) : id{ident} {}
+  explicit RpcAddIdentityResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   struct Result {
@@ -243,30 +242,29 @@ struct RpcAddIdentityResponse {
     UInt64 securityId = 0;
   };
 
-  UInt64 id;
+  RpcID id;
   Result result;
 };
 
 /// Represents a RPC request to send a message to datapath (METHOD_SEND).
 struct RpcSend {
-  explicit RpcSend(UInt64 ident, yaml::Encoder::ChannelFinder finder)
+  explicit RpcSend(RpcID ident, yaml::Encoder::ChannelFinder finder)
       : id{ident}, params{finder} {}
 
-  UInt64 id;
+  RpcID id;
   yaml::Encoder params;
 };
 
 /// Represnts a RPC response to send a message to datapath (METHOD_SEND).
 struct RpcSendResponse {
-  explicit RpcSendResponse(UInt64 ident) : id{ident} {}
+  explicit RpcSendResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
   struct Result {
-    UInt64 connId = 0;
-    ByteRange data;
+    ByteRange data;  // header of message sent
   };
 
-  UInt64 id;
+  RpcID id;
   Result result;
 };
 
@@ -291,9 +289,10 @@ struct RpcAlert {
   std::string toJson();
 
   struct Params {
-    UInt64 connId;
+    UInt64 connId = 0;
     DatapathID datapathId;
     Timestamp time;
+    UInt32 xid = 0;
     std::string alert;
     ByteRange data;
   };
@@ -356,7 +355,6 @@ id: !opt UInt64
 method: !request OFP.SEND
 params: !request Message
 result: !reply
-  conn_id: UInt64
   data: HexData
 
 {Rpc/OFP.LIST_CONNECTIONS}
@@ -400,6 +398,7 @@ method: !notify OFP.ALERT
 params: !notify
   conn_id: UInt64
   datapath_id: DatapathID
+  xid: UInt32
   time: Timestamp
   alert: String
   data: HexData
@@ -413,7 +412,7 @@ error:
 
 template <>
 struct ScalarTraits<ofp::rpc::RpcMethod> {
-  static ofp::yaml::EnumConverter<ofp::rpc::RpcMethod> converter;
+  static const ofp::yaml::EnumConverter<ofp::rpc::RpcMethod> converter;
 
   static void output(const ofp::rpc::RpcMethod &value, void *ctxt,
                      llvm::raw_ostream &out) {
@@ -608,7 +607,6 @@ struct MappingTraits<ofp::rpc::RpcSendResponse> {
 template <>
 struct MappingTraits<ofp::rpc::RpcSendResponse::Result> {
   static void mapping(IO &io, ofp::rpc::RpcSendResponse::Result &result) {
-    io.mapRequired("conn_id", result.connId);
     io.mapRequired("data", result.data);
   }
 };
@@ -663,6 +661,7 @@ struct MappingTraits<ofp::rpc::RpcAlert::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAlert::Params &params) {
     io.mapRequired("conn_id", params.connId);
     io.mapRequired("datapath_id", params.datapathId);
+    io.mapRequired("xid", params.xid);
     io.mapRequired("time", params.time);
     io.mapRequired("alert", params.alert);
     io.mapRequired("data", params.data);
