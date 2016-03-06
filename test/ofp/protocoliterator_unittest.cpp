@@ -8,7 +8,7 @@ using namespace ofp;
 
 TEST(protocoliterator, ProtocolRangeItemCount) {
   UInt64 buffer;
-  ByteRange data{&buffer, 0UL};
+  ByteRange data{&buffer, static_cast<size_t>(0)};
   const size_t unused = ~0UL;
 
   EXPECT_EQ(
@@ -21,7 +21,7 @@ TEST(protocoliterator, ProtocolRangeItemCount) {
 
 TEST(protocoliterator, ProtocolRangeSplitOffset) {
   UInt64 buffer = 0;
-  ByteRange data{&buffer, 0UL};
+  ByteRange data{&buffer, static_cast<size_t>(0)};
   const size_t unused = ~0UL;
 
   EXPECT_EQ(0, detail::ProtocolRangeSplitOffset(8, unused, data, 0));
