@@ -302,10 +302,16 @@ else()
   set(LIBOFP_WARNINGS "-Wall")
 endif()
 
-# Tell linker to remove dead code on OSX.
+# Tell linker to remove dead code.
 
 if(APPLE)
-  set(CMAKE_EXE_LINKER_FLAGS "-Wl,-dead_strip")
+  # Apple makes it easy.
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-dead_strip")
+else()
+  # Dead-strip the GCC build.
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fdata-sections -ffunction-sections")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fdata-sections -ffunction-sections")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --gc-sections")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
