@@ -2,12 +2,12 @@
 .\"     Title: libofp-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/28/2016
+.\"      Date: 03/06/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-JSONRPC" "1" "01/28/2016" "\ \&" "\ \&"
+.TH "LIBOFP\-JSONRPC" "1" "03/06/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -36,7 +36,72 @@ libofp-jsonrpc \- OpenFlow Microservice
 .sp
 The \fBlibofp jsonrpc\fR tool runs a JSON\-RPC service that enables programmatic control of the OpenFlow protocol\&. The control connection runs overs stdin/stdout\&. All text uses UTF\-8 encoding\&.
 .sp
-The control connection reads JSON messages from stdin, each one separated by a newline character\&. The maximum length of a message, including the newline, is 1 megabyte\&. A JSON\-RPC message will normally be a JSON mapping that begins with \fI{\fR and ends with \fI}\fR\&. Alternately, a JSON\-RPC message may be enclosed in double quotes, and the contents of the JSON string will be parsed as YAML\&.
+The control connection reads JSON messages from stdin, each one separated by a newline character\&. The maximum length of a message, including the newline, is 1 megabyte\&. The message must not contain any other newline characters\&. The jsonrpc server accepts YAML input, but always returns strict JSON\&.
+.sp
+A JSON\-RPC message is a JSON mapping that begins with \fI{\fR and ends with \fI}\fR\&. Alternately, a JSON\-RPC message may be enclosed in double quotes, and the contents of the JSON string will be treated as JSON\-RPC input\&.
+.sp
+The jsonrpc service is a JSON\-RPC 2\&.0 server (http://www\&.jsonrpc\&.org/)\&. Here are the deviations from the spec:
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The
+\fIid\fR
+member is a 64\-bit unsigned integer\&. Null id\(cqs are not allowed\&. String id\(cqs must be in decimal or hexadecimal format (i\&.e\&. "0x1234")\&. Negative id\(cqs are not allowed\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The
+\fIjsonrpc\fR
+member is never sent\&. If used by a client, its value must be exactly "2\&.0"\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+No result or error is ever sent in response to a message missing an
+\fIid\fR
+member\&. However, a message delivery failure may elicit an outgoing notification (see OFP\&.ALERT)\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Replies may be returned in a different order than requests are submitted\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Batch requests are not supported\&.
+.RE
 .SH "RPC OVERVIEW"
 .sp
 There are seven core JSON\-RPC requests with corresponding replies\&.
@@ -323,6 +388,18 @@ List of additional options that control the connection\&.
 \fBDEFAULT_AGENT\fR
 = Alias for []\&.
 .RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBNO_VERSION_CHECK\fR
+= Permit messages with other versions after HELLO negotiation\&.
+.RE
 .RE
 .RE
 .sp
@@ -365,6 +442,8 @@ The reply is sent when the connection is established\&. The reply contains the u
 If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. The channel will be reported up when this transaction completes, and the connection is assigned a datapath_id\&.
 .sp
 If CONNECT_UDP option is specified, make an auxiliary connection via UDP to the specified endpoint\&.
+.sp
+If NO_VERSION_CHECK option is specified, accept messages with different versions after the initial version negotiation using HELLO messages\&. The default is to close the connection when a message is received with an incorrect version\&.
 .RE
 .SS "OFP\&.LISTEN"
 .sp
@@ -472,6 +551,18 @@ List of additional options that control the connection\&.
 \fBDEFAULT_AGENT\fR
 = Alias for []\&.
 .RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBNO_VERSION_CHECK\fR
+= Permit messages with other versions after HELLO negotiation\&.
+.RE
 .RE
 .RE
 .sp
@@ -516,6 +607,8 @@ If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain t
 If AUXILIARY option is specified, support auxiliary OpenFlow connections\&.
 .sp
 If LISTEN_UDP option is specified, listen for auxiliary UDP connections in addition to TCP\&. The UDP listener will use the same conn_id as the TCP listener\&.
+.sp
+If NO_VERSION_CHECK option is specified, accept messages with different versions after the initial version negotiation using HELLO messages\&. The default is to close the connection when a message is received with an incorrect version\&.
 .RE
 .SS "OFP\&.SEND"
 .sp
@@ -536,10 +629,35 @@ Send the specified OpenFlow message\&.
 id: UInt64
 method: OFP\&.SEND
 params: Message
+  datapath_id: !opt DatapathID
+  conn_id: !opt UInt64
+  xid: !opt UInt32
+  type: \&.\&.\&.
+  msg: \&.\&.\&.
 .fi
 .if n \{\
 .RE
 .\}
+.PP
+\fBdatapath_id\fR
+.RS 4
+Destination Datapath ID\&.
+.RE
+.PP
+\fBconn_id\fR
+.RS 4
+Destination connection ID\&. This is consulted only if the datapath_id member is not present\&.
+.RE
+.PP
+\fBxid\fR
+.RS 4
+Message ID to use in outgoing OpenFlow header\&.
+.RE
+.PP
+\fBtype, msg\fR
+.RS 4
+See the schema for Message\&.
+.RE
 .RE
 .sp
 .it 1 an-trap
@@ -554,23 +672,17 @@ params: Message
 .RS 4
 .\}
 .nf
-id:
+id: UInt64
 result:
-  conn_id: UInt64
   data: HexData
 .fi
 .if n \{\
 .RE
 .\}
 .PP
-\fBconn_id\fR
-.RS 4
-Identifier for the outgoing connection used\&.
-.RE
-.PP
 \fBdata\fR
 .RS 4
-Binary OpenFlow message sent\&.
+Header of OpenFlow message sent\&.
 .RE
 .RE
 .sp
@@ -582,7 +694,13 @@ Binary OpenFlow message sent\&.
 \fBDiscussion\fR
 .RS 4
 .sp
-To send an OpenFlow message, use the OFP\&.SEND command\&. Omit the id parameter to prevent the reply from being sent back\&.
+To send an OpenFlow message, use the OFP\&.SEND command\&. The destination of the message is determined from the datapath_id or conn_id members\&. datapath_id is consulted first\&. If the datapath_id is missing or the its value is not found, the conn_id is used\&.
+.sp
+Normally, you will omit the id member to prevent an RPC reply from being sent back\&. If you include the id member, the reply contains the OpenFlow header of the binary message sent\&.
+.sp
+The destination channel determines the OpenFlow version\&. The outgoing message uses the negotiated version\&.
+.sp
+The xid member controls the outgoing message id\&. If no xid is provided, the channel assigns an auto\-incrementing value\&.
 .RE
 .SS "OFP\&.CLOSE"
 .sp
@@ -863,6 +981,7 @@ method: \*(AqOFP\&.ALERT\*(Aq
 params:
   conn_id: UInt64
   datapath_id: DatapathID
+  xid: !optout UInt32
   time: Timestamp
   alert: String
   data: HexString
@@ -892,6 +1011,17 @@ Here are some examples of why an alert message might be sent\&.
 .IP \(bu 2.3
 .\}
 An incoming OpenFlow message cannot be decoded\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+An outgoing OpenFlow message cannot be delivered (OFP\&.SEND failure)\&.
 .RE
 .sp
 .RS 4
