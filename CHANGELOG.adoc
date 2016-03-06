@@ -1,5 +1,18 @@
 = Changelog
 
+== Version 0.15 (6 March 2016)
+
+- Add a class for RPC ID's to support null and missing RPC ID values.
+- Add NO_FLUSH flag to OFP.SEND.
+- Let xid of zero remain at zero. (The previous behavior turned 0 into an auto-incrementing value.)
+- Take OPEN_MAX into account on Apple systems when limiting max number of fd's.
+- Add the NO_VERSION_CHECK option to OFP.LISTEN and OFP.CONNECT methods.
+- Support chunking TableFeatures multipart request from large YAML input.
+- Initial support for chunking multipart replies from large YAML input.
+- Don't overwrite xid in Error reply message.
+- Format code with latest clang-format (which sorts header #includes).
+- Update YAML IO from latest llvm sources.
+
 == Version 0.14 (27 January 2016)
 
 - Add endpoint parameter to OFP.CHANNEL notification.
