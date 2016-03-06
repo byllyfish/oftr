@@ -1,11 +1,12 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/ofp.h"
 #include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
 #include <asio/version.hpp>
+
 #include "./ofpx_decode.h"
 #include "./ofpx_encode.h"
+#include "ofp/ofp.h"
 #if LIBOFP_ENABLE_JSONRPC
 #include "./ofpx_jsonrpc.h"
 #endif  // LIBOFP_ENABLE_JSONRPC
