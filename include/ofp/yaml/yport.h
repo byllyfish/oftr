@@ -6,8 +6,8 @@
 
 #include "ofp/port.h"
 #include "ofp/portlist.h"
-#include "ofp/yaml/ysmallcstring.h"
 #include "ofp/yaml/yportproperty.h"
+#include "ofp/yaml/ysmallcstring.h"
 
 namespace ofp {
 namespace detail {

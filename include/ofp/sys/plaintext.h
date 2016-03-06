@@ -28,8 +28,7 @@ class Plaintext : private StreamType, public asio::ssl::stream_base {
 
   // Add a constructor to take the ssl::context and ignore it.
   template <typename Arg>
-  Plaintext(Arg &arg, asio::ssl::context &ctx)
-      : next_layer_type(arg) {}
+  Plaintext(Arg &arg, asio::ssl::context &ctx) : next_layer_type(arg) {}
 
   using inherited::get_executor;
   using inherited::async_read_some;

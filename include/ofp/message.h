@@ -5,10 +5,10 @@
 #define OFP_MESSAGE_H_
 
 #include "ofp/bytelist.h"
-#include "ofp/header.h"
 #include "ofp/datapathid.h"
-#include "ofp/validation.h"
+#include "ofp/header.h"
 #include "ofp/timestamp.h"
+#include "ofp/validation.h"
 
 namespace ofp {
 

@@ -5,15 +5,16 @@
 #define OFP_YAML_YMATCH_H_
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/yaml/ybyteorder.h"
-#include "ofp/yaml/yaddress.h"
-#include "ofp/yaml/ybytelist.h"
-#include "ofp/yaml/yoxmfulltype.h"
-#include "ofp/yaml/yportnumber.h"
-#include "ofp/yaml/ylldpvalue.h"
+
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/yaddress.h"
+#include "ofp/yaml/ybytelist.h"
+#include "ofp/yaml/ybyteorder.h"
+#include "ofp/yaml/ylldpvalue.h"
+#include "ofp/yaml/yoxmfulltype.h"
+#include "ofp/yaml/yportnumber.h"
 
 namespace ofp {
 namespace detail {

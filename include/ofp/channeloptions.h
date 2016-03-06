@@ -10,6 +10,7 @@ namespace ofp {
 /// AUXILIARY    -- support auxiliary connections (requires FEATURE_REQ)
 /// LISTEN_UDP   -- listen for UDP connections also (requires AUXILIARY)
 /// CONNECT_UDP  -- connect over UDP *instead of* TCP (requires !FEATURE_REQ)
+/// NO_VERSION_CHECK -- allow versions other than the one negotiated with HELLO
 
 enum class ChannelOptions : UInt8 {
   NONE = 0,
@@ -17,6 +18,7 @@ enum class ChannelOptions : UInt8 {
   AUXILIARY = 1 << 1,
   LISTEN_UDP = 1 << 2,
   CONNECT_UDP = 1 << 3,
+  NO_VERSION_CHECK = 1 << 4,
 
   DEFAULT_CONTROLLER = FEATURES_REQ,
   DEFAULT_AGENT = NONE,

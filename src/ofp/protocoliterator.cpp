@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include <algorithm>
 #include "ofp/protocoliterator.h"
+#include <algorithm>
 #include "ofp/log.h"
 #include "ofp/validation.h"
 
@@ -190,4 +190,53 @@ static size_t protocolRangeFixedItemCount(size_t elementSize,
   assert((elementSize % 8) == 0 && "Element size must be multiple of 8.");
 
   return range.size() / elementSize;
+}
+
+size_t ofp::detail::ProtocolRangeSplitOffset(size_t chunkSize,
+                                             size_t elementSize,
+                                             const ByteRange &range,
+                                             size_t sizeFieldOffset) {
+  assert(sizeFieldOffset < 32);
+  assert(chunkSize >= 8);
+
+  size_t result = 0;
+  const size_t kAlignment = 8;
+
+  const UInt8 *ptr = range.begin();
+  size_t len = range.size();
+
+  assert((len % kAlignment) == 0);
+  assert(IsPtrAligned(ptr, kAlignment));
+
+  if (len <= chunkSize)
+    return len;
+
+  const size_t minSize = sizeFieldOffset + sizeof(Big16);
+
+  while (len > 0) {
+    assert(len >= kAlignment);
+
+    size_t elemSize =
+        std::max<size_t>(minSize, *Big16_cast(ptr + sizeFieldOffset));
+    assert(elemSize > 0);
+
+    size_t jumpSize = (kAlignment == 8) ? PadLength(elemSize) : elemSize;
+    if (jumpSize > len)
+      break;
+
+    if (result + jumpSize > chunkSize)
+      break;
+
+    assert((jumpSize % kAlignment) == 0);
+
+    len -= jumpSize;
+    ptr += jumpSize;
+    result += jumpSize;
+  }
+
+  assert((result % kAlignment) == 0);
+  log::fatal_if_false(result != 0,
+                      "Unable to split protocol range into chunks");
+
+  return result;
 }

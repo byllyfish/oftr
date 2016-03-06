@@ -4,9 +4,9 @@
 #ifndef OFP_MPEXPERIMENTER_H_
 #define OFP_MPEXPERIMENTER_H_
 
+#include "ofp/bytelist.h"
 #include "ofp/byteorder.h"
 #include "ofp/padding.h"
-#include "ofp/bytelist.h"
 
 namespace ofp {
 

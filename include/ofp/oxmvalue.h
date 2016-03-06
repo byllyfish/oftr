@@ -5,8 +5,8 @@
 #define OFP_OXMVALUE_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/oxmtype.h"
 #include "ofp/oxmrange.h"
+#include "ofp/oxmtype.h"
 
 namespace ofp {
 
@@ -35,8 +35,7 @@ class OXMValue {
             typename = EnableIf<std::is_same<T, ValueType>::value &&
                                     !std::is_same<T, NativeType>::value,
                                 T>>
-  /* implicit NOLINT */ OXMValue(const T &value)
-      : value_{value} {}
+  /* implicit NOLINT */ OXMValue(const T &value) : value_{value} {}
 
   NativeType value() const { return value_; }
   operator NativeType() const { return value_; }

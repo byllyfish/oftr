@@ -4,8 +4,8 @@
 #ifndef OFP_OXMLIST_H_
 #define OFP_OXMLIST_H_
 
-#include "ofp/oxmrange.h"
 #include "ofp/bytelist.h"
+#include "ofp/oxmrange.h"
 
 namespace ofp {
 

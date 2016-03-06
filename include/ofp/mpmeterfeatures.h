@@ -5,8 +5,8 @@
 #define OFP_MPMETERFEATURES_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/padding.h"
 #include "ofp/constants.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 

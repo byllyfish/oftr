@@ -2,10 +2,10 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/connection.h"
-#include "ofp/sys/engine.h"
-#include "ofp/message.h"
-#include "ofp/echorequest.h"
 #include "ofp/echoreply.h"
+#include "ofp/echorequest.h"
+#include "ofp/message.h"
+#include "ofp/sys/engine.h"
 
 using namespace ofp;
 using namespace ofp::sys;
@@ -187,4 +187,22 @@ void Connection::channelDown() {
 void Connection::updateTimeReadStarted() {
   timeReadStarted_ = std::chrono::steady_clock::now();
   setFlags(flags() & ~kChannelIdle);
+}
+
+void Connection::setFlags(UInt64 securityId, ChannelOptions options) {
+  UInt16 newFlags = flags();
+
+  if (securityId != 0) {
+    newFlags |= kRequiresHandshake;
+  }
+
+  if ((options & ChannelOptions::AUXILIARY) != 0) {
+    newFlags |= kPermitsAuxiliary;
+  }
+
+  if ((options & ChannelOptions::NO_VERSION_CHECK) != 0) {
+    newFlags |= kPermitsOtherVersions;
+  }
+
+  setFlags(newFlags);
 }

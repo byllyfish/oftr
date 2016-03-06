@@ -4,8 +4,8 @@
 #ifndef OFP_MPAGGREGATESTATSREPLY_H_
 #define OFP_MPAGGREGATESTATSREPLY_H_
 
-#include "ofp/padding.h"
 #include "ofp/byteorder.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 

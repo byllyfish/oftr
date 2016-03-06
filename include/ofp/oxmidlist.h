@@ -4,8 +4,8 @@
 #ifndef OFP_OXMIDLIST_H_
 #define OFP_OXMIDLIST_H_
 
-#include "ofp/protocollist.h"
 #include "ofp/oxmidrange.h"
+#include "ofp/protocollist.h"
 
 namespace ofp {
 

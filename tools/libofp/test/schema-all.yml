@@ -42,7 +42,6 @@ Rpc/OFP.SEND:
   method: !request OFP.SEND
   params: !request Message
   result: !reply
-    conn_id: UInt64
     data: HexData
   
 Rpc/OFP.LIST_CONNECTIONS: 
@@ -86,6 +85,7 @@ Rpc/OFP.ALERT:
   params: !notify
     conn_id: UInt64
     datapath_id: DatapathID
+    xid: UInt32
     time: Timestamp
     alert: String
     data: HexData
@@ -549,7 +549,7 @@ Message/Request.TableFeatures:
       name: Str32
       metadata_match: UInt64
       metadata_write: UInt64
-      config: UInt32
+      config: TableConfigFlags
       max_entries: UInt32
       instructions: [InstructionID]
       instructions_miss: !optout [InstructionID]
@@ -715,18 +715,18 @@ Message/Reply.Flow:
   time: !optout Timestamp
   type: REPLY.FLOW
   msg:
-    table_id: TableNumber
-    duration_sec: UInt32
-    duration_nsec: UInt32
-    priority: UInt16
-    idle_timeout: UInt16
-    hard_timeout: UInt16
-    flags: [FlowModFlags]
-    cookie: UInt64
-    packet_count: UInt64
-    byte_count: UInt64
-    match: [Field]
-    instructions: [Instruction]
+    - table_id: TableNumber
+      duration_sec: UInt32
+      duration_nsec: UInt32
+      priority: UInt16
+      idle_timeout: UInt16
+      hard_timeout: UInt16
+      flags: [FlowModFlags]
+      cookie: UInt64
+      packet_count: UInt64
+      byte_count: UInt64
+      match: [Field]
+      instructions: [Instruction]
   
 Message/Reply.Aggregate: 
   version: !opt UInt8

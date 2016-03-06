@@ -4,8 +4,8 @@
 #ifndef OFP_MPGROUPSTATS_H_
 #define OFP_MPGROUPSTATS_H_
 
-#include "ofp/packetcounterlist.h"
 #include "ofp/groupnumber.h"
+#include "ofp/packetcounterlist.h"
 
 namespace ofp {
 

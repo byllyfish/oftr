@@ -7,11 +7,9 @@ using namespace ofp::yaml;
 using namespace llvm;
 
 OutputJson::OutputJson(llvm::raw_ostream &yout, void *ctxt)
-    : IO{ctxt}, Out(yout), NeedComma{false} {
-}
+    : IO{ctxt}, Out(yout), NeedComma{false} {}
 
-OutputJson::~OutputJson() {
-}
+OutputJson::~OutputJson() {}
 
 bool OutputJson::outputting() {
   return true;
@@ -86,8 +84,7 @@ void OutputJson::postflightFlowElement(void *SaveInfo) {
   NeedComma = true;
 }
 
-void OutputJson::beginEnumScalar() {
-}
+void OutputJson::beginEnumScalar() {}
 
 bool OutputJson::matchEnumScalar(const char *Str, bool Match) {
   if (Match) {  // TODO(bfish): Check out caller...
@@ -105,8 +102,7 @@ bool OutputJson::matchEnumFallback() {
   return false;
 }
 
-void OutputJson::endEnumScalar() {
-}
+void OutputJson::endEnumScalar() {}
 
 bool OutputJson::beginBitSetScalar(bool &DoClear) {
   output("[");
@@ -210,8 +206,7 @@ void OutputJson::scalarString(StringRef &S, bool MustQuote) {
   output("\"");  // closing quote
 }
 
-void OutputJson::setError(const Twine &message) {
-}
+void OutputJson::setError(const Twine &message) {}
 
 bool OutputJson::canElideEmptySequence() {
   return false;

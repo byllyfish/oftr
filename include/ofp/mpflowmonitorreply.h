@@ -4,10 +4,10 @@
 #ifndef OFP_MPFLOWMONITORREPLY_H_
 #define OFP_MPFLOWMONITORREPLY_H_
 
-#include "ofp/padding.h"
-#include "ofp/matchheader.h"
-#include "ofp/matchbuilder.h"
 #include "ofp/instructionlist.h"
+#include "ofp/matchbuilder.h"
+#include "ofp/matchheader.h"
+#include "ofp/padding.h"
 #include "ofp/tablenumber.h"
 
 namespace ofp {

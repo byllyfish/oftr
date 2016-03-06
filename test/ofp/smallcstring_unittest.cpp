@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/smallcstring.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
@@ -108,7 +108,6 @@ TEST(smallcstring, validUtf8String) {
   EXPECT_EQ("????", validTest("\xF4\x9F\xBF\xBF"));
   EXPECT_EQ("abc???", validTest("abc\xF4\x80\x80"));
 
-  EXPECT_EQ("a?a", validTest(
-                       "a\xFF"
-                       "a"));
+  EXPECT_EQ("a?a", validTest("a\xFF"
+                             "a"));
 }

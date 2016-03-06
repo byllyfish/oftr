@@ -6,8 +6,8 @@
 
 #include <initializer_list>
 #include <vector>
-#include "ofp/types.h"
 #include "ofp/constants.h"
+#include "ofp/types.h"
 
 namespace ofp {
 

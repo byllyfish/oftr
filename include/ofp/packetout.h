@@ -4,10 +4,10 @@
 #ifndef OFP_PACKETOUT_H_
 #define OFP_PACKETOUT_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/actionlist.h"
-#include "ofp/padding.h"
 #include "ofp/buffernumber.h"
+#include "ofp/padding.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

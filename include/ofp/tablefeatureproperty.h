@@ -4,9 +4,9 @@
 #ifndef OFP_TABLEFEATUREPROPERTY_H_
 #define OFP_TABLEFEATUREPROPERTY_H_
 
+#include "ofp/actionidlist.h"
 #include "ofp/constants.h"
 #include "ofp/instructionidlist.h"
-#include "ofp/actionidlist.h"
 #include "ofp/oxmidlist.h"
 #include "ofp/tableidlist.h"
 

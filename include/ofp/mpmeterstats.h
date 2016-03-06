@@ -4,9 +4,9 @@
 #ifndef OFP_MPMETERSTATS_H_
 #define OFP_MPMETERSTATS_H_
 
+#include "ofp/meternumber.h"
 #include "ofp/packetcounterlist.h"
 #include "ofp/padding.h"
-#include "ofp/meternumber.h"
 
 namespace ofp {
 

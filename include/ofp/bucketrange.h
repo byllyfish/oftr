@@ -4,8 +4,8 @@
 #ifndef OFP_BUCKETRANGE_H_
 #define OFP_BUCKETRANGE_H_
 
-#include "ofp/protocolrange.h"
 #include "ofp/bucket.h"
+#include "ofp/protocolrange.h"
 
 namespace ofp {
 

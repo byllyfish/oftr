@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include <iostream>
-#include "ofp/ofp.h"
 #include "./simplechannellistener.h"
+#include "ofp/ofp.h"
 
 using namespace ofp;
 

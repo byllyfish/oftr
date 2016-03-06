@@ -4,8 +4,8 @@
 #ifndef OFP_RPC_RPCENCODER_H_
 #define OFP_RPC_RPCENCODER_H_
 
-#include "ofp/yaml/yllvm.h"
 #include "ofp/rpc/rpcevents.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace ofp {
 namespace rpc {
@@ -35,7 +35,7 @@ class RpcEncoder {
   llvm::raw_string_ostream errorStream_;
   yaml::Encoder::ChannelFinder finder_;
   std::string jsonrpc_;
-  llvm::Optional<ofp::UInt64> id_;
+  RpcID id_;
   RpcMethod method_ = ofp::rpc::METHOD_UNSUPPORTED;
 
   static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context);
@@ -43,6 +43,7 @@ class RpcEncoder {
 
   void encodeParams(llvm::yaml::IO &io);
   void replyError();
+  void replySendError(UInt32 xid);
 
   friend struct llvm::yaml::MappingTraits<ofp::rpc::RpcEncoder>;
 };

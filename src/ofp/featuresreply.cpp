@@ -42,8 +42,7 @@ PortRange FeaturesReply::ports() const {
 }
 
 FeaturesReplyBuilder::FeaturesReplyBuilder(const FeaturesReply *msg)
-    : msg_{*msg} {
-}
+    : msg_{*msg} {}
 
 FeaturesReplyBuilder::FeaturesReplyBuilder(UInt32 xid) {
   // Set xid of reply to request's xid.
@@ -71,7 +70,7 @@ UInt32 FeaturesReplyBuilder::send(Writable *channel) {
   }
 
   msg_.header_.setVersion(version);
-  msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+  msg_.header_.setLength(msgLen);
 
   channel->write(&msg_, sizeof(msg_));
 

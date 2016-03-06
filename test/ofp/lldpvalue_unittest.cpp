@@ -1,9 +1,9 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
+#include "ofp/lldpvalue.h"
 #include <numeric>
 #include "ofp/unittest.h"
-#include "ofp/lldpvalue.h"
 
 using namespace ofp;
 

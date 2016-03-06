@@ -72,7 +72,7 @@ public:
 /// unary * and -> operators provide pointer like access to the value. Accessing
 /// the value when there is an error has undefined behavior.
 ///
-/// When T is a reference type the behaivor is slightly different. The reference
+/// When T is a reference type the behavior is slightly different. The reference
 /// is held in a std::reference_wrapper<std::remove_reference<T>::type>, and
 /// there is special handling to make operator -> work as if T was not a
 /// reference.
@@ -98,7 +98,7 @@ public:
   ErrorOr(E ErrorCode,
           typename std::enable_if<std::is_error_code_enum<E>::value ||
                                       std::is_error_condition_enum<E>::value,
-                                  void *>::type = 0)
+                                  void *>::type = nullptr)
       : HasError(true) {
     new (getErrorStorage()) std::error_code(make_error_code(ErrorCode));
   }
@@ -278,7 +278,6 @@ private:
     return const_cast<ErrorOr<T> *>(this)->getErrorStorage();
   }
 
-
   union {
     AlignedCharArrayUnion<storage_type> TStorage;
     AlignedCharArrayUnion<std::error_code> ErrorStorage;
@@ -295,4 +294,4 @@ operator==(const ErrorOr<T> &Err, E Code) {
 }
 } // end namespace llvm
 
-#endif
+#endif // LLVM_SUPPORT_ERROROR_H

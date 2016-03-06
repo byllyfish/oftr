@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "llvm/ADT/StringRef.h"
 #include "ofp/ipv6endpoint.h"
+#include "llvm/ADT/StringRef.h"
 #include "ofp/log.h"
 
 using namespace ofp;

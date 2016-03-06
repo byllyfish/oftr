@@ -5,10 +5,10 @@
 #define OFP_HEADERONLY_H_
 
 #include "ofp/header.h"
-#include "ofp/writable.h"
+#include "ofp/log.h"
 #include "ofp/message.h"
 #include "ofp/padding.h"
-#include "ofp/log.h"
+#include "ofp/writable.h"
 
 namespace ofp {
 namespace detail {

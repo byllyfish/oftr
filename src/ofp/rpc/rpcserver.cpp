@@ -2,13 +2,13 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcserver.h"
-#include "ofp/rpc/rpcconnectionstdio.h"
-#include "ofp/rpc/rpcconnectionsession.h"
-#include "ofp/sys/engine.h"
 #include "ofp/rpc/rpcchannellistener.h"
-#include "ofp/rpc/rpcsession.h"
+#include "ofp/rpc/rpcconnectionsession.h"
+#include "ofp/rpc/rpcconnectionstdio.h"
 #include "ofp/rpc/rpcevents.h"
+#include "ofp/rpc/rpcsession.h"
 #include "ofp/sys/connection.h"
+#include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/udp_server.h"
 
@@ -90,24 +90,9 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   UInt64 securityId = open->params.securityId;
   ChannelOptions options = parseOptions(open->params.options);
 
-  // Verify the channel options.
-  std::string errMesg;
-  if (!AreChannelOptionsValid(options)) {
-    errMesg += "Invalid combination of options.\n";
-  }
-
-  // Check that securityId exists.
-  if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
-    errMesg += "Invalid tls_id: " + std::to_string(securityId);
-  }
-
-  if (!errMesg.empty()) {
-    if (open->id == RPC_ID_MISSING)
-      return;
-    RpcErrorResponse response{open->id};
-    response.error.code = ERROR_CODE_INVALID_OPTION;
-    response.error.message = errMesg;
-    conn->rpcReply(&response);
+  // Verify the channel options and that securityId exists.
+  if (!verifyOptions(conn, open->id, securityId, options)) {
+    // Reply sent if values are invalid.
     return;
   }
 
@@ -121,7 +106,7 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
       engine_->listen(options, securityId, endpt, versions,
                       [this]() { return new RpcChannelListener{this}; }, err);
 
-  if (open->id == RPC_ID_MISSING)
+  if (open->id.is_missing())
     return;
 
   if (!err) {
@@ -137,9 +122,9 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
   }
 }
 
-void RpcServer::connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
+void RpcServer::connectResponse(RpcConnection *conn, RpcID id, UInt64 connId,
                                 const std::error_code &err) {
-  if (id == RPC_ID_MISSING)
+  if (id.is_missing())
     return;
 
   if (!err) {
@@ -159,29 +144,14 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
   UInt64 securityId = connect->params.securityId;
   ChannelOptions options = parseOptions(connect->params.options);
 
-  // Verify the channel options.
-  std::string errMesg;
-  if (!AreChannelOptionsValid(options)) {
-    errMesg += "Invalid combination of options.\n";
-  }
-
-  // Check that securityId exists.
-  if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
-    errMesg += "Invalid tls_id: " + std::to_string(securityId);
-  }
-
-  if (!errMesg.empty()) {
-    if (connect->id == RPC_ID_MISSING)
-      return;
-    RpcErrorResponse response{connect->id};
-    response.error.code = ERROR_CODE_INVALID_OPTION;
-    response.error.message = errMesg;
-    conn->rpcReply(&response);
+  // Verify the channel options and that securityId exists.
+  if (!verifyOptions(conn, connect->id, securityId, options)) {
+    // Reply sent if values are invalid.
     return;
   }
 
   IPv6Endpoint endpt = connect->params.endpoint;
-  UInt64 id = connect->id;
+  RpcID id = connect->id;
 
   ProtocolVersions versions =
       ProtocolVersions::fromVector(connect->params.versions);
@@ -200,7 +170,7 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
 void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
   size_t count = engine_->close(close->params.connId);
 
-  if (close->id == RPC_ID_MISSING)
+  if (close->id.is_missing())
     return;
 
   RpcCloseResponse response{close->id};
@@ -209,29 +179,39 @@ void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
 }
 
 void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
-  UInt64 connId = 0;
   yaml::Encoder &params = send->params;
 
   Channel *channel = params.outputChannel();
   if (channel) {
-    connId = channel->connectionId();
+    assert(params.error().empty());
+    assert(params.size() > 0);
+
+    // Outgoing channel exists, deliver the message on it.
     channel->write(params.data(), params.size());
-    channel->flush();
+
+    // Flush the message (unless NO_FLUSH flag is specified)
+    if (!(params.flags() & OFP_NO_FLUSH)) {
+      channel->flush();
+    } else {
+      log::debug("onRpcSend: NO_FLUSH",
+                 std::make_pair("connid", channel->connectionId()));
+    }
+
+    // Message delivered successfully to channel. Send optional reply.
+    if (!send->id.is_missing()) {
+      RpcSendResponse response{send->id};
+      response.result.data = {params.data(),
+                              std::min<std::size_t>(params.size(), 8)};
+      conn->rpcReply(&response);
+    }
+
   } else {
-    log::error("onRpcSend unable to locate output channel");
+    log::warning("RpcServer:onRpcSend: no outgoing channel");
   }
-
-  if (send->id == RPC_ID_MISSING)
-    return;
-
-  RpcSendResponse response{send->id};
-  response.result.connId = connId;
-  response.result.data = {params.data(), params.size()};
-  conn->rpcReply(&response);
 }
 
 void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
-  if (list->id == RPC_ID_MISSING)
+  if (list->id.is_missing())
     return;
 
   RpcListConnsResponse response{list->id};
@@ -286,7 +266,7 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
       engine_->addIdentity(add->params.cert, add->params.privkey_password,
                            add->params.cert_auth, err);
 
-  if (add->id == RPC_ID_MISSING)
+  if (add->id.is_missing())
     return;
 
   if (!err) {
@@ -302,7 +282,7 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
 }
 
 void RpcServer::onRpcDescription(RpcConnection *conn, RpcDescription *desc) {
-  if (desc->id == RPC_ID_MISSING)
+  if (desc->id.is_missing())
     return;
 
   RpcDescriptionResponse response{desc->id};
@@ -370,10 +350,36 @@ ChannelOptions RpcServer::parseOptions(
       result = result | ChannelOptions::DEFAULT_CONTROLLER;
     } else if (opt == "DEFAULT_AGENT") {
       result = result | ChannelOptions::DEFAULT_AGENT;
+    } else if (opt == "NO_VERSION_CHECK") {
+      result = result | ChannelOptions::NO_VERSION_CHECK;
     } else {
       log::warning("RpcServer: Unrecognized option skipped:", opt);
     }
   }
 
   return result;
+}
+
+bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
+                              ChannelOptions options) {
+  // Verify the channel options and that securityId exists.
+  std::string errMesg;
+  RpcErrorCode errCode = ERROR_CODE_INVALID_REQUEST;
+  if (!AreChannelOptionsValid(options)) {
+    errMesg += "Invalid combination of options";
+  } else if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
+    errMesg += "Invalid tls_id: " + std::to_string(securityId);
+  }
+
+  if (!errMesg.empty()) {
+    if (!id.is_missing()) {
+      RpcErrorResponse response{id};
+      response.error.code = errCode;
+      response.error.message = errMesg;
+      conn->rpcReply(&response);
+    }
+    return false;
+  }
+
+  return true;
 }

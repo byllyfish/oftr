@@ -4,9 +4,9 @@
 #ifndef OFP_SYS_TCP_SERVER_H_
 #define OFP_SYS_TCP_SERVER_H_
 
-#include "ofp/types.h"
-#include "ofp/sys/asio_utils.h"
 #include "ofp/driver.h"
+#include "ofp/sys/asio_utils.h"
+#include "ofp/types.h"
 
 namespace ofp {
 namespace sys {

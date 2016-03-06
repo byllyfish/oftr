@@ -1,13 +1,13 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
 #include "ofp/error.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
 TEST(error, experimenter) {
-  ErrorBuilder errorBuilder{0x11111111};
+  ErrorBuilder errorBuilder{0x11111112};
   errorBuilder.setErrorCode(OFPErrorCodeMake(OFPET_EXPERIMENTER, 1));
 
   MemoryChannel channel{OFP_VERSION_1};
@@ -15,7 +15,7 @@ TEST(error, experimenter) {
 
   Message message{channel.data(), channel.size()};
   message.transmogrify();
-  EXPECT_HEX("0101000C00000001FFFF0001", message.data(), message.size());
+  EXPECT_HEX("0101000C11111112FFFF0001", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
 
@@ -23,7 +23,7 @@ TEST(error, experimenter) {
 }
 
 TEST(error, flowmod_failed_v1) {
-  ErrorBuilder errorBuilder{0x11111111};
+  ErrorBuilder errorBuilder{0x11111112};
   errorBuilder.setErrorCode(OFPFMFC_TABLE_FULL);
 
   MemoryChannel channel{OFP_VERSION_1};
@@ -31,7 +31,7 @@ TEST(error, flowmod_failed_v1) {
 
   Message message{channel.data(), channel.size()};
   message.transmogrify();
-  EXPECT_HEX("0101000C0000000100030000", message.data(), message.size());
+  EXPECT_HEX("0101000C1111111200030000", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
 
@@ -40,7 +40,7 @@ TEST(error, flowmod_failed_v1) {
 }
 
 TEST(error, flowmod_failed_v4) {
-  ErrorBuilder errorBuilder{0x11111111};
+  ErrorBuilder errorBuilder{0x11111112};
   errorBuilder.setErrorCode(OFPFMFC_TABLE_FULL);
 
   MemoryChannel channel{OFP_VERSION_4};
@@ -48,7 +48,7 @@ TEST(error, flowmod_failed_v4) {
 
   Message message{channel.data(), channel.size()};
   message.transmogrify();
-  EXPECT_HEX("0401000C0000000100050001", message.data(), message.size());
+  EXPECT_HEX("0401000C1111111200050001", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
 
@@ -57,7 +57,7 @@ TEST(error, flowmod_failed_v4) {
 }
 
 TEST(error, unsupported_order_v1) {
-  ErrorBuilder errorBuilder{0x11111111};
+  ErrorBuilder errorBuilder{0x11111112};
   errorBuilder.setErrorCode(OFPFMFC_UNSUPPORTED);
 
   MemoryChannel channel{OFP_VERSION_1};
@@ -65,7 +65,7 @@ TEST(error, unsupported_order_v1) {
 
   Message message{channel.data(), channel.size()};
   message.transmogrify();
-  EXPECT_HEX("0101000C0000000100030005", message.data(), message.size());
+  EXPECT_HEX("0101000C1111111200030005", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
 
@@ -75,7 +75,7 @@ TEST(error, unsupported_order_v1) {
 }
 
 TEST(error, unsupported_order_v4) {
-  ErrorBuilder errorBuilder{0x11111111};
+  ErrorBuilder errorBuilder{0x11111112};
   errorBuilder.setErrorCode(OFPFMFC_UNSUPPORTED);
 
   MemoryChannel channel{OFP_VERSION_4};
@@ -83,7 +83,7 @@ TEST(error, unsupported_order_v4) {
 
   Message message{channel.data(), channel.size()};
   message.transmogrify();
-  EXPECT_HEX("0401000C000000010002000B", message.data(), message.size());
+  EXPECT_HEX("0401000C111111120002000B", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
 
@@ -93,7 +93,7 @@ TEST(error, unsupported_order_v4) {
 }
 
 TEST(error, unsupported_action_order_v4) {
-  ErrorBuilder errorBuilder{0x11111111};
+  ErrorBuilder errorBuilder{0x11111112};
   errorBuilder.setErrorCode(OFPBAC_UNSUPPORTED_ORDER);
 
   MemoryChannel channel{OFP_VERSION_4};
@@ -101,7 +101,7 @@ TEST(error, unsupported_action_order_v4) {
 
   Message message{channel.data(), channel.size()};
   message.transmogrify();
-  EXPECT_HEX("0401000C000000010002000B", message.data(), message.size());
+  EXPECT_HEX("0401000C111111120002000B", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
 
@@ -123,7 +123,7 @@ TEST(error, hello_failed_v1) {
   Message message{channel.data(), channel.size()};
   message.transmogrify();
   EXPECT_HEX(
-      "0101002C0000000100000000537570706F727465642056657273696F6E733A205B312C20"
+      "0101002C1234123400000000537570706F727465642056657273696F6E733A205B312C20"
       "322C20332C20345D",
       message.data(), message.size());
 

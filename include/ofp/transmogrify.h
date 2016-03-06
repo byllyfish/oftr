@@ -5,11 +5,11 @@
 #define OFP_TRANSMOGRIFY_H_
 
 #include "ofp/actioniterator.h"
-#include "ofp/instructionrange.h"
 #include "ofp/actionrange.h"
 #include "ofp/bytelist.h"
-#include "ofp/oxmlist.h"
+#include "ofp/instructionrange.h"
 #include "ofp/log.h"
+#include "ofp/oxmlist.h"
 
 namespace ofp {
 

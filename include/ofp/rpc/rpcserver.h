@@ -5,8 +5,9 @@
 #define OFP_RPC_RPCSERVER_H_
 
 #include <map>
-#include "ofp/driver.h"
 #include "ofp/datapathid.h"
+#include "ofp/driver.h"
+#include "ofp/rpc/rpcid.h"
 
 namespace ofp {
 
@@ -67,12 +68,15 @@ class RpcServer {
   RpcConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
 
-  static void connectResponse(RpcConnection *conn, UInt64 id, UInt64 connId,
+  static void connectResponse(RpcConnection *conn, RpcID id, UInt64 connId,
                               const std::error_code &err);
   static void alertCallback(Channel *channel, const std::string &alert,
                             const ByteRange &data, void *context);
   static std::string softwareVersion();
   static ChannelOptions parseOptions(const std::vector<std::string> &options);
+
+  bool verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
+                     ChannelOptions options);
 };
 
 OFP_END_IGNORE_PADDING

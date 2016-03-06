@@ -4,8 +4,8 @@
 #ifndef OFP_ROLEREQUEST_H_
 #define OFP_ROLEREQUEST_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

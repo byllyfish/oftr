@@ -4,8 +4,8 @@
 #ifndef OFP_BYTELIST_H_
 #define OFP_BYTELIST_H_
 
-#include "ofp/smallbuffer.h"
 #include "ofp/byterange.h"
+#include "ofp/smallbuffer.h"
 
 namespace ofp {
 

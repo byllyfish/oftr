@@ -4,8 +4,8 @@
 #ifndef OFP_SYS_BUFFERED_H_
 #define OFP_SYS_BUFFERED_H_
 
-#include "ofp/sys/asio_utils.h"
 #include "ofp/bytelist.h"
+#include "ofp/sys/asio_utils.h"
 #include "ofp/sys/handler_allocator.h"
 
 namespace ofp {

@@ -4,9 +4,9 @@
 #ifndef OFP_GETASYNCREPLY_H_
 #define OFP_GETASYNCREPLY_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/headeronly.h"
 #include "ofp/propertylist.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

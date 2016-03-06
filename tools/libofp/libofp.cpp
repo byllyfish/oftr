@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string>
 #include "ofp/log.h"
-#include "ofp/yaml/encoder.h"
 #include "ofp/yaml/decoder.h"
+#include "ofp/yaml/encoder.h"
 
 static void buf_set(libofp_buffer *buf, const void *data, size_t len) {
   char *newbuf = static_cast<char *>(malloc(len + 1));

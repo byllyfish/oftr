@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/portmod.h"
-#include "ofp/writable.h"
 #include "ofp/portmodproperty.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
 
@@ -15,8 +15,7 @@ bool PortMod::validateInput(Validation *context) const {
   return properties().validateInput(context);
 }
 
-PortModBuilder::PortModBuilder(const PortMod *msg) : msg_{*msg} {
-}
+PortModBuilder::PortModBuilder(const PortMod *msg) : msg_{*msg} {}
 
 UInt32 PortModBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
@@ -27,7 +26,7 @@ UInt32 PortModBuilder::send(Writable *channel) {
 
   if (version >= OFP_VERSION_5) {
     size_t msgLen = sizeof(msg_) + properties_.size();
-    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+    msg_.header_.setLength(msgLen);
 
     channel->write(&msg_, sizeof(msg_));
     channel->write(properties_.data(), properties_.size());
@@ -40,7 +39,7 @@ UInt32 PortModBuilder::send(Writable *channel) {
 
   if (version >= OFP_VERSION_2) {
     size_t msgLen = sizeof(msg_) + sizeof(OFPPortFeaturesFlags) + 4;
-    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+    msg_.header_.setLength(msgLen);
     channel->write(&msg_, sizeof(msg_));
 
     Big<OFPPortFeaturesFlags> adv = advertise;
@@ -52,7 +51,7 @@ UInt32 PortModBuilder::send(Writable *channel) {
     size_t msgLen = sizeof(msg_);
     // Temporarily set the message type to the V1 value.
     msg_.header_.setRawType(deprecated::v1::OFPT_PORT_MOD);
-    msg_.header_.setLength(UInt16_narrow_cast(msgLen));
+    msg_.header_.setLength(msgLen);
     channel->write(&msg_.header_, sizeof(Header));
     msg_.header_.setType(OFPT_PORT_MOD);
 

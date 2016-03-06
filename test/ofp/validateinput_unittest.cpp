@@ -1,15 +1,15 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
-#include "ofp/validation.h"
 #include "ofp/actionrange.h"
-#include "ofp/instructionrange.h"
 #include "ofp/bucketrange.h"
+#include "ofp/instructionrange.h"
 #include "ofp/meterbandrange.h"
 #include "ofp/packetcounterrange.h"
-#include "ofp/queuerange.h"
 #include "ofp/port.h"
+#include "ofp/queuerange.h"
+#include "ofp/unittest.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 

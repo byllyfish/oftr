@@ -4,10 +4,12 @@
 #ifndef OFP_MULTIPARTREQUEST_H_
 #define OFP_MULTIPARTREQUEST_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
+
+class MemoryChannel;
 
 class MultipartRequest
     : public ProtocolMsg<MultipartRequest, OFPT_MULTIPART_REQUEST, 16, 65535,
@@ -59,6 +61,8 @@ static_assert(IsTriviallyCopyable<MultipartRequest>(),
 
 class MultipartRequestBuilder {
  public:
+  static const size_t MAX_BODY_SIZE = OFP_MAX_SIZE - sizeof(MultipartRequest);
+
   MultipartRequestBuilder() = default;
   explicit MultipartRequestBuilder(UInt8 version) {
     msg_.header_.setVersion(version);
@@ -69,10 +73,16 @@ class MultipartRequestBuilder {
   void setRequestType(OFPMultipartType type) { msg_.type_ = type; }
   void setRequestFlags(OFPMultipartFlags flags) { msg_.flags_ = flags; }
   void setRequestBody(const void *data, size_t length) {
+    assert(length <= MAX_BODY_SIZE);
     body_.set(data, length);
   }
 
   UInt32 send(Writable *channel);
+
+  // Break request body into chunks and send each chunk, except the last.
+  // Upon return, the last chunk is loaded so client can call send().
+  void sendUsingRequestBody(MemoryChannel *channel, const void *data,
+                            size_t length, size_t offset);
 
  private:
   MultipartRequest msg_;

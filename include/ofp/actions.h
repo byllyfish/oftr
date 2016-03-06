@@ -5,12 +5,12 @@
 #define OFP_ACTIONS_H_
 
 #include "ofp/actiontype.h"
-#include "ofp/padding.h"
-#include "ofp/oxmtype.h"
 #include "ofp/constants.h"
-#include "ofp/oxmfields.h"
-#include "ofp/portnumber.h"
 #include "ofp/controllermaxlen.h"
+#include "ofp/oxmfields.h"
+#include "ofp/oxmtype.h"
+#include "ofp/padding.h"
+#include "ofp/portnumber.h"
 #include "ofp/validation.h"
 
 namespace ofp {

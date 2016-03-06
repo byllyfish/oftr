@@ -1,11 +1,11 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
+#include "ofp/defaulthandshake.h"
+#include "ofp/log.h"
+#include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/tcp_server.h"
-#include "ofp/sys/engine.h"
-#include "ofp/log.h"
-#include "ofp/defaulthandshake.h"
 
 namespace ofp {
 namespace sys {
@@ -47,13 +47,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine,
       message_{this},
       socket_{engine->io(),
               detail::tcpContext<SocketType>(engine, securityId)} {
-  if (securityId != 0) {
-    setFlags(flags() | kRequiresHandshake);
-  }
-
-  if ((options & ChannelOptions::AUXILIARY) != 0) {
-    setFlags(flags() | kPermitsAuxiliary);
-  }
+  setFlags(securityId, options);
 }
 
 template <class SocketType>
@@ -67,13 +61,7 @@ TCP_Connection<SocketType>::TCP_Connection(Engine *engine, tcp::socket socket,
       message_{this},
       socket_{std::move(socket),
               detail::tcpContext<SocketType>(engine, securityId)} {
-  if (securityId != 0) {
-    setFlags(flags() | kRequiresHandshake);
-  }
-
-  if ((options & ChannelOptions::AUXILIARY) != 0) {
-    setFlags(flags() | kPermitsAuxiliary);
-  }
+  setFlags(securityId, options);
 }
 
 template <class SocketType>
@@ -100,9 +88,11 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::localEndpoint() const {
 
 template <class SocketType>
 void TCP_Connection<SocketType>::flush() {
+  log::debug("TCP_Connection::flush started",
+             std::make_pair("connid", connectionId()));
   auto self(this->shared_from_this());
   socket_.buf_flush(connectionId(), [this, self](const std::error_code &error) {
-    log::debug("TCP_Connection::flush",
+    log::debug("TCP_Connection::flush finished",
                std::make_pair("connid", connectionId()), error);
     if (error) {
       socket_.lowest_layer().close();
@@ -205,7 +195,10 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               assert(length == sizeof(Header));
               const Header *hdr = message_.header();
 
-              if (hdr->validateInput(version())) {
+              UInt8 negotiatedVersion =
+                  (flags() & kPermitsOtherVersions) ? 0 : version();
+
+              if (hdr->validateInput(negotiatedVersion)) {
                 // The header has passed our rudimentary validation checks.
                 UInt16 msgLength = hdr->length();
 

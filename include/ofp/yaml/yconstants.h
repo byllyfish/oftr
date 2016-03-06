@@ -4,11 +4,11 @@
 #ifndef OFP_YAML_YCONSTANTS_H_
 #define OFP_YAML_YCONSTANTS_H_
 
+#include "ofp/byteorder.h"
 #include "ofp/constants.h"
 #include "ofp/yaml/enumconverter.h"
-#include "ofp/yaml/ycontext.h"
-#include "ofp/byteorder.h"
 #include "ofp/yaml/seterror.h"
+#include "ofp/yaml/ycontext.h"
 
 namespace ofp {
 namespace yaml {
@@ -70,7 +70,7 @@ yamlize(IO &io, ofp::Big<T> &Val, bool ignore) {
 #define YAML_ENUM_CONVERTER(ConverterType, EnumType, FormatExpr)            \
   template <>                                                               \
   struct ScalarTraits<EnumType> {                                           \
-    static ConverterType<EnumType> converter;                               \
+    static const ConverterType<EnumType> converter;                         \
     static void output(const EnumType &value, void *ctxt,                   \
                        llvm::raw_ostream &out) {                            \
       llvm::StringRef scalar;                                               \
@@ -131,7 +131,7 @@ YAML_ENUM_CONVERTER(ofp::yaml::EnumConverterSparse, ofp::OFPAsyncConfigProperty,
 
 template <>
 struct ScalarTraits<ofp::OFPErrorCode> {
-  static ofp::yaml::EnumConverterSparse<ofp::OFPErrorCode> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPErrorCode> converter;
 
   static void output(const ofp::OFPErrorCode &value, void *ctxt,
                      llvm::raw_ostream &out) {
@@ -413,6 +413,22 @@ struct ScalarBitSetTraits<ofp::OFPMultipartFlags> {
     if (!val.empty()) {
       ofp::yaml::SetFlagError(io, val,
                               ofp::yaml::AllFlags<ofp::OFPMultipartFlags>());
+    }
+  }
+};
+
+template <>
+struct ScalarBitSetTraits<ofp::OFPMessageFlags> {
+  static void bitset(IO &io, ofp::OFPMessageFlags &value) {
+    OFP_YAML_BITCASE(OFP_, MORE);
+    OFP_YAML_BITCASE(OFP_, NO_FLUSH);
+
+    io.bitSetCaseOther(value, ofp::OFP_OTHER_MESSAGE_FLAGS);
+
+    auto val = io.bitSetCaseUnmatched();
+    if (!val.empty()) {
+      ofp::yaml::SetFlagError(io, val,
+                              ofp::yaml::AllFlags<ofp::OFPMessageFlags>());
     }
   }
 };

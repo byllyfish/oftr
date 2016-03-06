@@ -4,8 +4,8 @@
 #ifndef OFP_SMALLCSTRING_H_
 #define OFP_SMALLCSTRING_H_
 
-#include <array>
 #include <algorithm>
+#include <array>
 #include "ofp/types.h"
 
 namespace ofp {

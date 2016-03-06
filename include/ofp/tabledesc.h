@@ -4,8 +4,8 @@
 #ifndef OFP_TABLEDESC_H_
 #define OFP_TABLEDESC_H_
 
-#include "ofp/tablenumber.h"
 #include "ofp/propertylist.h"
+#include "ofp/tablenumber.h"
 
 namespace ofp {
 

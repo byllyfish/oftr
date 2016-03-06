@@ -5,10 +5,10 @@
 #define OFP_DRIVER_H_
 
 #include "ofp/channellistener.h"
-#include "ofp/ipv6endpoint.h"
-#include "ofp/protocolversions.h"
 #include "ofp/channeloptions.h"
 #include "ofp/channeltransport.h"
+#include "ofp/ipv6endpoint.h"
+#include "ofp/protocolversions.h"
 
 namespace ofp {
 

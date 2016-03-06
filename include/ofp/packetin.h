@@ -4,11 +4,11 @@
 #ifndef OFP_PACKETIN_H_
 #define OFP_PACKETIN_H_
 
-#include "ofp/protocolmsg.h"
+#include "ofp/buffernumber.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/matchheader.h"
-#include "ofp/buffernumber.h"
+#include "ofp/protocolmsg.h"
 #include "ofp/tablenumber.h"
 
 namespace ofp {

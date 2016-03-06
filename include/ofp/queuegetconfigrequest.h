@@ -4,9 +4,9 @@
 #ifndef OFP_QUEUEGETCONFIGREQUEST_H_
 #define OFP_QUEUEGETCONFIGREQUEST_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

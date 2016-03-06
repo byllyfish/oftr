@@ -6,8 +6,8 @@
 
 #include "ofp/tablefeatureproperty.h"
 #include "ofp/unrecognizedproperty.h"
-#include "ofp/yaml/yinstructionids.h"
 #include "ofp/yaml/yactionids.h"
+#include "ofp/yaml/yinstructionids.h"
 #include "ofp/yaml/yoxmids.h"
 #include "ofp/yaml/ytableids.h"
 #include "ofp/yaml/ytypedpropertyiterator.h"

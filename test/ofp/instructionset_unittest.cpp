@@ -1,13 +1,14 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/unittest.h"
+#include "ofp/protocollist.h"
+
 #include "ofp/instructionlist.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
-static void MakeInstructionList(InstructionList &) {
-}
+static void MakeInstructionList(InstructionList &) {}
 
 template <class Type, class... Args>
 void MakeInstructionList(InstructionList &set, Type value, Args... args) {

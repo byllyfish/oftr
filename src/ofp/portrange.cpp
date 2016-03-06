@@ -7,8 +7,7 @@
 
 using ofp::PortRange;
 
-PortRange::PortRange(const PortList &ports) : PortRange{ports.toRange()} {
-}
+PortRange::PortRange(const PortList &ports) : PortRange{ports.toRange()} {}
 
 /// \returns Size of port list when written to channel using the specified
 /// protocol version.

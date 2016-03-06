@@ -4,8 +4,8 @@
 #ifndef OFP_SETASYNC_H_
 #define OFP_SETASYNC_H_
 
-#include "ofp/protocolmsg.h"
 #include "ofp/propertylist.h"
+#include "ofp/protocolmsg.h"
 
 namespace ofp {
 

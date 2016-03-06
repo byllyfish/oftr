@@ -5,8 +5,9 @@
 #define OFP_YAML_YECHO_H_
 
 #include "ofp/yaml/yllvm.h"
-#include "ofp/echorequest.h"
+
 #include "ofp/echoreply.h"
+#include "ofp/echorequest.h"
 
 namespace llvm {
 namespace yaml {

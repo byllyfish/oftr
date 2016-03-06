@@ -2,12 +2,12 @@
 .\"     Title: libofp-schema
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/15/2016
+.\"      Date: 03/06/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-SCHEMA" "1" "01/15/2016" "\ \&" "\ \&"
+.TH "LIBOFP\-SCHEMA" "1" "03/06/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -116,31 +116,9 @@ Here is the resulting RoleRequest message:
 .sp -1
 .IP \(bu 2.3
 .\}
-Literal strings are all\-caps, e\&.g\&.
+Constants are all\-caps, e\&.g\&.
 PACKET_IN,
 OFP\&.LISTEN\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-Literal strings and property names are case\-sensitive\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-Input must conform to specified types\&.
 .RE
 .sp
 .RS 4
@@ -189,39 +167,6 @@ UInt32 | NO_BUFFER
 .IP \(bu 2.3
 .\}
 By default, a property is required unless it has the !opt or !optout tag\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-Unrecognized property names are not permitted\&. This is a closed schema\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-On input to libofp, properties are allowed to be in any order\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-Messages output from libofp are always produced in the canonical order\&.
 .RE
 .sp
 .RS 4
@@ -372,7 +317,7 @@ Here is a valid FlowMod message:
 GitHub: https://github\&.com/byllyfish/libofp
 .SH "COPYING"
 .sp
-Copyright (C) 2015\-2016 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT Licence\&.
+Copyright (C) 2015\-2016 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.
 .SH "AUTHOR"
 .PP
 \fBWilliam W\&. Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>

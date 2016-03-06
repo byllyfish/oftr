@@ -4,8 +4,8 @@
 #ifndef OFP_PROPERTYLIST_H_
 #define OFP_PROPERTYLIST_H_
 
-#include "ofp/protocollist.h"
 #include "ofp/propertyrange.h"
+#include "ofp/protocollist.h"
 #include "ofp/queueproperty.h"
 #include "ofp/tablefeatureproperty.h"
 

@@ -4,6 +4,8 @@
 #ifndef OFP_YAML_YCONTROLLERMAXLEN_H_
 #define OFP_YAML_YCONTROLLERMAXLEN_H_
 
+#include "ofp/yaml/yllvm.h"
+
 #include "ofp/controllermaxlen.h"
 #include "ofp/yaml/enumconverter.h"
 
@@ -12,7 +14,8 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::ControllerMaxLen> {
-  static ofp::yaml::EnumConverterSparse<ofp::OFPControllerMaxLen> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPControllerMaxLen>
+      converter;
 
   static void output(const ofp::ControllerMaxLen &value, void *ctxt,
                      llvm::raw_ostream &out) {

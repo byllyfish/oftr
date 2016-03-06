@@ -5,6 +5,7 @@
 #define OFP_YAML_YBUFFERNUMBER_H_
 
 #include "ofp/yaml/yllvm.h"
+
 #include "ofp/buffernumber.h"
 #include "ofp/yaml/enumconverter.h"
 
@@ -13,7 +14,7 @@ namespace yaml {
 
 template <>
 struct ScalarTraits<ofp::BufferNumber> {
-  static ofp::yaml::EnumConverterSparse<ofp::OFPBufferNo> converter;
+  static const ofp::yaml::EnumConverterSparse<ofp::OFPBufferNo> converter;
 
   static void output(const ofp::BufferNumber &value, void *ctxt,
                      llvm::raw_ostream &out) {

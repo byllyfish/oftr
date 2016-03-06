@@ -3,9 +3,9 @@
 
 #include "ofp/sys/engine.h"
 #include "ofp/log.h"
+#include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/udp_server.h"
-#include "ofp/sys/tcp_connection.h"
 
 using namespace ofp::sys;
 using ofp::UInt64;
