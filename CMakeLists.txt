@@ -311,9 +311,10 @@ endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
   # -fsanitize=undefined doesn't seem to work with Clang 7.0.2, even with -frtti
   # added back in.
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_FSANITIZE "-fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_FSANITIZE}")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_FSANITIZE}")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_FSANITIZE}")
 endif()
 
 #-------------------------------------------------------------------------------
