@@ -17,6 +17,10 @@
 #
 #    cmake -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
 #
+# To build with code coverage:
+#
+#    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
+#
 
 cmake_minimum_required(VERSION 2.8.8)
 project(Libofp)
@@ -57,6 +61,13 @@ endif()
 set(LIBOFP_ENABLE_MEMCHECK_TESTS TRUE CACHE BOOL "Enable additional valgrind memcheck tests")
 if(NOT LIBOFP_ENABLE_MEMCHECK_TESTS)
   message(STATUS "Memcheck tests are disabled.")
+endif()
+
+# You can enable code-coverage collection.
+
+set(LIBOFP_ENABLE_CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
+if(LIBOFP_ENABLE_CODE_COVERAGE)
+  message(STATUS "Code coverage is enabled.")
 endif()
 
 # Require out of source builds.
@@ -323,6 +334,14 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_FSANITIZE}")
 endif()
 
+# Compile with code coverage support.
+
+if(LIBOFP_ENABLE_CODE_COVERAGE)
+  set(LIBOFP_COVERAGE "-fprofile-arcs -ftest-coverage")
+else()
+  set(LIBOFP_COVERAGE "")
+endif()
+
 #-------------------------------------------------------------------------------
 # Build Library
 #-------------------------------------------------------------------------------
@@ -404,8 +423,9 @@ endif()
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE}")
 
 message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
 message(STATUS "LIBOFP_CXX_FLAGS: ${LIBOFP_CXX_FLAGS}")
