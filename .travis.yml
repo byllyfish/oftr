@@ -1,32 +1,18 @@
+# Support for codecov.
+
 sudo: false
 language: cpp
 script:
-  - if [ $TRAVIS_OS_NAME == linux ]; then export CC="gcc-4.8" CXX="g++-4.8"; fi
-  - mkdir -p Build && cd Build && cmake .. && ctest -D Experimental
-branches:
-  except:
-    - /^v\d+.*$/  # Skip tagged releases
+  - export CC="gcc-4.8" CXX="g++-4.8"
+  - mkdir -p Build+Debug
+  - cd Build+Debug
+  - cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
+  - ctest -D Experimental
 
 os:
   - linux
-  - osx
-
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "gGSGCJVw6brriRha8ysR9JB5+LZJIZDihqibtlnmrYVFw6DdJ1mWWsYNUiYR7uLOBfssXDvoCUyqcr2mX3p3DDk4u/liBWiQn119UNuS6vEjWABcUNvziM3WKkn6zAszOx1H5X7SNFAwOcQ2wGUpq3LUdxM/nvzlF5hDsP0+LfL0IoNiwj31yseZiQaKQX0GdOfF8aGljv9YBW6UwsyQ+bbq+lATH9RITBMu5XPmppEnFzFuKoFUUeuTbvLXLoaacUJ/WG91NLWpVSVJSQ7nM/CMTwPs2TCvzKWggErj/m3csyegCPnAMtMwAuffTjqZraAoAOFcmdAy7jEKZJs7hAxcYEfuoqdmjpstEHY1G4OooFFhjceqzEY/KJkBivND92+i2B0UiYz+LuKaBw5i5yPv3PNUTQADCePR/0YlR/PQcrk0gG8cP2rlTFXAkFkt/4dagQzPNf1f2qxKB2GsaaQechdPib76ed1/ZNL9sHCLlGvUaEt1H8KZvX4X+bwqmrD6VGETMC0oXy8NVJYMSl+sjAUkriDzAO4zepDIFCe8Zfk5CVunsRh4duxRHlDRmobNlPjpDZ9JMnj8MnxkW4bJOgW3dW6+H+mtc1/BzW4ytJuMkqy2p6rZ5F9fVm+enjg4A4oQ8N4sFk9WuiFP420/HSOm4M0I53NPmpXNFc8="
 
 addons:
-  coverity_scan:
-    project:
-      name: "byllyfish/libofp"
-      description: "Build submitted via Travis CI"
-    notification_email: william.w.fisher@gmail.com
-    # I only want to do a coverity_scan on the linux build
-    build_command_prepend: 'test $TRAVIS_OS_NAME == linux && export CC="gcc-4.8" CXX="g++-4.8" && mkdir -p Build && cd Build && cmake .. && make clean'
-    build_command:   make
-    branch_pattern: coverity_scan
   apt:
     sources:
       - kalakris-cmake
@@ -35,20 +21,8 @@ addons:
       - cmake
       - gcc-4.8
       - g++-4.8
-      - valgrind
 
-before_deploy:
-  - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
-  - ZIPFILE=libofp-develop-${TRAVIS_OS_NAME}.zip
-  - if [ $TRAVIS_OS_NAME == linux ]; then strip --strip-debug ${TOOLDIR}/libofp; fi
-  - pushd ${TOOLDIR}; zip ${ZIPFILE} libofp; popd
-
-deploy:
-  provider: bintray
-  file: ${TRAVIS_BUILD_DIR}/.bintray.json
-  user: byllyfish
-  skip_cleanup: true
-  key:
-    secure: "nyFUM5j49UzG1q9ac+mkI99jABDtOZ8iQof/N9RHJt/3kMkL+S1MAGCS+u9TQQqlmsB9fe4w+KtDRfVouv9Sfapkk8r3JBIL4w1dtm9bFgv1fxVpXbDekiHuO/WGTD+JrmDRKf9yJ6acX411BpL8fLVvGtY2qCjKWEqOhKgS7OEaE7ec/JipZjkXeXW7J040q1DHKxwjJJJgEtjuPjT8G67QhOoFfMuhXq75Ru6f2Nz9Nu5y1AVPyJO0nVPsodHMdXMdL9rskAt47a+w8ckV5Chepvw5+l58HgqE3dUfz+m683kguuUvl6NmSC2qlfzB14KivyMVU2FJNMB4N+rDhlMVLwZYauIqICSPcBNEi7OYqte8VnJwIB7NHXIeY7pBrEFYmlTL1b4vvG/LY4X6+boLTHklywTMKEy6ETHacD2GvCb1B//DCJfSDFcjn2ghGA07hFp4hKuodUO7Xu5OG7c94lCfECYAcQJRvhVwE5TeROFtWFo+eEeXkHXV/i1wqccPbxHfGm6SdgH2tlhx2+hdhxx11fpMBnvZHGZVxt+NOeDwHJcvF8JRrUaVw6QI7KgtJ98dz2M+OoPVkCQhMO97OEXz58LwF2N0j8tjy1HMna7sTp/kSQUsfP4zezsCj7WH6gDv7w3IfOS8hmJoeQVc9K+H5YOoknlcmDFVY1M="
-  on: develop
-
+before_install:
+  - pip install codecov
+after_success:
+  - codecov
