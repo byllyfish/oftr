@@ -1,4 +1,4 @@
-# Support for codecov.
+# Support for codecov. (Simplified travis.yml file)
 
 sudo: false
 language: cpp
@@ -22,7 +22,6 @@ addons:
       - gcc-4.8
       - g++-4.8
 
-before_install:
-  - pip install codecov
+# From C/C++ directions for codecov.
 after_success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
