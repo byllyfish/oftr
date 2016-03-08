@@ -5,8 +5,9 @@ ifdef::env-github[]
 :toc-placement: preamble
 endif::[]
 
-image:https://travis-ci.org/byllyfish/libofp.svg?branch=develop["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/libofp"]
+image:https://travis-ci.org/byllyfish/libofp.svg?branch=codecov["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/libofp"]
 image:https://scan.coverity.com/projects/5587/badge.svg["Coverity Scan Build Status", link="https://scan.coverity.com/projects/5587"]
+image:https://codecov.io/github/byllyfish/libofp/coverage.svg?branch=codecov["Code Coverage Status", link="https://codecov.io/github/byllyfish/libofp?branch=codecov"]
 
 == What is Libofp?
 
