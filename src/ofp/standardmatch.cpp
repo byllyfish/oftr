@@ -126,8 +126,28 @@ StandardMatch::StandardMatch(const OXMRange &range) {
         metadata = item.value<OFB_METADATA>();
         metadata_mask = item.mask<OFB_METADATA>();
         break;
+      case OFB_ARP_OP::type():
+        nw_proto = item.value<OFB_ARP_OP>();
+        wc &= ~OFPFW_NW_PROTO;
+        break;
+      case OFB_ARP_SPA::type():
+        nw_src = item.value<OFB_ARP_SPA>();
+        nw_src_mask.setAllOnes();
+        break;
+      case OFB_ARP_SPA::typeWithMask():
+        nw_src = item.value<OFB_ARP_SPA>();
+        nw_src_mask = item.mask<OFB_ARP_SPA>();
+        break;
+      case OFB_ARP_TPA::type():
+        nw_dst = item.value<OFB_ARP_TPA>();
+        nw_dst_mask.setAllOnes();
+        break;
+      case OFB_ARP_TPA::typeWithMask():
+        nw_dst = item.value<OFB_ARP_TPA>();
+        nw_dst_mask = item.mask<OFB_ARP_TPA>();
+        break;
       default:
-        log::debug("StandardMatch: Unexpected oxm type.");
+        log::debug("StandardMatch: Unexpected oxm type:", item.type());
         break;
     }
   }
