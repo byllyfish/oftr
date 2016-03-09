@@ -116,4 +116,11 @@ TEST(ipv6endpoint, relational) {
   EXPECT_TRUE(b != a);
 }
 
-TEST(ipv6endpoint, hash) {}
+TEST(ipv6endpoint, hash) {
+  IPv6Endpoint a{"[2001::01]:1"};
+  IPv6Endpoint b{"[2001::01]:2"};
+
+  std::hash<IPv6Endpoint> hasher;
+  EXPECT_EQ(1003530261314592127, hasher(a));
+  EXPECT_EQ(1003530261314591934, hasher(b));
+}

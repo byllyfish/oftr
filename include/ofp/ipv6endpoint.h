@@ -71,8 +71,8 @@ template <>
 struct hash<ofp::IPv6Endpoint> {
   size_t operator()(const ofp::IPv6Endpoint &endpt) const {
     size_t result = 0;
-    ofp::HashCombine(result, std::hash<ofp::IPv6Address>{}(endpt.address()));
     ofp::HashCombine(result, std::hash<unsigned>{}(endpt.port()));
+    ofp::HashCombine(result, std::hash<ofp::IPv6Address>{}(endpt.address()));
     return result;
   }
 };
