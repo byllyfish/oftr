@@ -99,3 +99,11 @@ TEST(OXMType, withMask_Experimenter) {
   EXPECT_NE(a, b);
   EXPECT_EQ(a, b.withoutMask());
 }
+
+TEST(oxmtype, stream) {
+  OXMType a{0xFFFF, 2, 8};
+
+  std::ostringstream oss;
+  oss << a;
+  EXPECT_EQ("FFFF0408", oss.str());
+}

@@ -149,6 +149,8 @@ $ make test
 $ make install
 ----
 
+On Ubuntu, you can also install the software from a https://launchpad.net/~byllyfish/+archive/ubuntu/libofp[Launchpad PPA].
+
 == Examples
 
 To translate a text file into binary OpenFlow messages:
@@ -218,6 +220,8 @@ To list all supported OXM fields:
 ----
 $ libofp help --fields
 ----
+
+See the three man pages for details:  https://github.com/byllyfish/libofp/blob/master/docs/libofp.1.adoc[libofp], https://github.com/byllyfish/libofp/blob/master/docs/libofp-jsonrpc.1.adoc[libofp-jsonrpc], https://github.com/byllyfish/libofp/blob/master/docs/libofp-schema.1.adoc[libofp-schema].
 
 == License
 

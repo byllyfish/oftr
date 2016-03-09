@@ -31,10 +31,12 @@ class DatapathID {
   bool parse(const std::string &s);
   void clear() { dpid_.fill(0); }
 
+  bool operator==(const DatapathID &rhs) const { return dpid_ == rhs.dpid_; }
+  bool operator!=(const DatapathID &rhs) const { return dpid_ != rhs.dpid_; }
   bool operator<(const DatapathID &rhs) const { return dpid_ < rhs.dpid_; }
   bool operator>(const DatapathID &rhs) const { return dpid_ > rhs.dpid_; }
-  bool operator==(const DatapathID &rhs) const { return dpid_ == rhs.dpid_; }
-  bool operator!=(const DatapathID &rhs) const { return !operator==(rhs); }
+  bool operator<=(const DatapathID &rhs) const { return dpid_ <= rhs.dpid_; }
+  bool operator>=(const DatapathID &rhs) const { return dpid_ >= rhs.dpid_; }
 
  private:
   OFP_ALIGNAS(8) ArrayType dpid_;
@@ -42,7 +44,11 @@ class DatapathID {
   UInt64 toUInt64() const { return *Interpret_cast<UInt64>(&dpid_); }
 };
 
-std::ostream &operator<<(std::ostream &os, const DatapathID &value);
+static_assert(sizeof(DatapathID) == 8, "Unexpected size.");
+static_assert(alignof(DatapathID) == 8, "Unexpected alignment.");
+static_assert(IsStandardLayout<DatapathID>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<DatapathID>(),
+              "Expected trivially copyable.");
 
 inline std::ostream &operator<<(std::ostream &os, const DatapathID &value) {
   return os << value.toString();

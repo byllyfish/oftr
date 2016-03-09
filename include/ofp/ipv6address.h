@@ -18,14 +18,14 @@ class IPv6Address {
 
   IPv6Address() : addr_{} {}
   /* implicit NOLINT */ IPv6Address(const IPv4Address &addr);
-  explicit IPv6Address(const ArrayType &a);
+  explicit IPv6Address(const ArrayType &a) : addr_(a) {}
   /* implicit NOLINT */ IPv6Address(const std::string &s);
 
   /// \returns zone_id for link-local address.
   UInt32 zone() const;
 
   bool parse(const std::string &s);
-  void clear();
+  void clear() { addr_.fill(0); }
 
   bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
 
@@ -51,13 +51,11 @@ class IPv6Address {
   const ArrayType &toArray() const { return addr_; }
 
   bool operator==(const IPv6Address &rhs) const { return addr_ == rhs.addr_; }
-
-  bool operator!=(const IPv6Address &rhs) const { return !(*this == rhs); }
-
+  bool operator!=(const IPv6Address &rhs) const { return addr_ != rhs.addr_; }
   bool operator<(const IPv6Address &rhs) const { return addr_ < rhs.addr_; }
+  bool operator>(const IPv6Address &rhs) const { return addr_ > rhs.addr_; }
   bool operator<=(const IPv6Address &rhs) const { return addr_ <= rhs.addr_; }
-
-  // FIXME(bfish): Implement rest of relational operators.
+  bool operator>=(const IPv6Address &rhs) const { return addr_ >= rhs.addr_; }
 
  private:
   ArrayType addr_;
@@ -73,8 +71,6 @@ static_assert(alignof(IPv6Address) == 1, "Unexpected alignment.");
 static_assert(IsStandardLayout<IPv6Address>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv6Address>(),
               "Expected trivially copyable.");
-
-std::ostream &operator<<(std::ostream &os, const IPv6Address &value);
 
 inline std::ostream &operator<<(std::ostream &os, const IPv6Address &value) {
   return os << value.toString();

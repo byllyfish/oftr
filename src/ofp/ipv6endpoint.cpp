@@ -7,6 +7,11 @@
 
 using namespace ofp;
 
+IPv6Endpoint::IPv6Endpoint(const std::string &s) {
+  if (!parse(s))
+    clear();
+}
+
 bool IPv6Endpoint::parse(const std::string &s) {
   using llvm::StringRef;
 
