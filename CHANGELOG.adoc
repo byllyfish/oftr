@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.16 (9 March 2016)
+
+- Fix potential null pointer dereference.
+- Support for collecting code coverage stats.
+- Dead-strip the gcc/linux build.
+- Fix 32-bit compiler ambiguity.
+
 == Version 0.15 (6 March 2016)
 
 - Add a class for RPC ID's to support null and missing RPC ID values.
