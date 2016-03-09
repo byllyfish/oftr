@@ -127,7 +127,7 @@ StandardMatch::StandardMatch(const OXMRange &range) {
         metadata_mask = item.mask<OFB_METADATA>();
         break;
       case OFB_ARP_OP::type():
-        nw_proto = item.value<OFB_ARP_OP>();
+        nw_proto = UInt8_narrow_cast(item.value<OFB_ARP_OP>());
         wc &= ~OFPFW_NW_PROTO;
         break;
       case OFB_ARP_SPA::type():
