@@ -155,7 +155,7 @@ TEST(ipv6address, rfc5952) {
 
 TEST(ipv6address, invalid2) {
   IPv6Address a{"127x"};
-  EXPECT_FALSE(a.valid());  
+  EXPECT_FALSE(a.valid());
 }
 
 TEST(ipv6address, stream) {

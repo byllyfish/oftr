@@ -116,6 +116,4 @@ TEST(ipv6endpoint, relational) {
   EXPECT_TRUE(b != a);
 }
 
-TEST(ipv6endpoint, hash) {
-  
-}
+TEST(ipv6endpoint, hash) {}

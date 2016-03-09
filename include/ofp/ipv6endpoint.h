@@ -33,8 +33,8 @@ class IPv6Endpoint {
   bool operator==(const IPv6Endpoint &rhs) const {
     return addr_ == rhs.addr_ && port_ == rhs.port_;
   }
-  bool operator!=(const IPv6Endpoint &rhs) const { 
-    return addr_ != rhs.addr_ || port_ != rhs.port_; 
+  bool operator!=(const IPv6Endpoint &rhs) const {
+    return addr_ != rhs.addr_ || port_ != rhs.port_;
   }
   bool operator<(const IPv6Endpoint &rhs) const {
     return addr_ < rhs.addr_ || (addr_ == rhs.addr_ && port_ < rhs.port_);

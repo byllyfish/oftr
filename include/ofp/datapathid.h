@@ -47,7 +47,8 @@ class DatapathID {
 static_assert(sizeof(DatapathID) == 8, "Unexpected size.");
 static_assert(alignof(DatapathID) == 8, "Unexpected alignment.");
 static_assert(IsStandardLayout<DatapathID>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<DatapathID>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<DatapathID>(),
+              "Expected trivially copyable.");
 
 inline std::ostream &operator<<(std::ostream &os, const DatapathID &value) {
   return os << value.toString();
