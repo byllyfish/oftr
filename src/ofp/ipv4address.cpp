@@ -9,14 +9,9 @@ using namespace ofp;
 
 static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr);
 
-IPv4Address::IPv4Address(const ArrayType &a) : addr_(a) {}
-
 IPv4Address::IPv4Address(const std::string &s) {
-  // TODO(bfish): this function should handle / notation. ie. "/24" should give
-  // you a network mask 255.255.255.0. and a.b.c.d/24 should give you a.b.c.0
-
   if (!parse(s)) {
-    addr_.fill(0);
+    clear();
   }
 }
 
@@ -80,10 +75,6 @@ bool IPv4Address::parse(const std::string &s) {
   }
 
   return (result > 0);
-}
-
-void IPv4Address::clear() {
-  std::memset(addr_.data(), 0, sizeof(addr_));
 }
 
 std::string IPv4Address::toString() const {

@@ -152,3 +152,44 @@ TEST(ipv6address, rfc5952) {
   IPv6Address h{"2001:0DBA::000F"};
   EXPECT_EQ("2001:dba::f", h.toString());
 }
+
+TEST(ipv6address, invalid2) {
+  IPv6Address a{"127x"};
+  EXPECT_FALSE(a.valid());  
+}
+
+TEST(ipv6address, stream) {
+  IPv6Address ip{"2000::1"};
+
+  std::ostringstream oss;
+  oss << ip;
+  EXPECT_EQ("2000::1", oss.str());
+}
+
+TEST(ipv6address, relational) {
+  IPv6Address a{"2001::1"};
+  IPv6Address b{"2001::2"};
+
+  EXPECT_TRUE(a < b);
+  EXPECT_TRUE(a <= b);
+  EXPECT_FALSE(a > b);
+  EXPECT_FALSE(a >= b);
+  EXPECT_FALSE(a == b);
+  EXPECT_TRUE(a != b);
+
+  EXPECT_FALSE(b < a);
+  EXPECT_FALSE(b <= a);
+  EXPECT_TRUE(b > a);
+  EXPECT_TRUE(b >= a);
+  EXPECT_FALSE(b == a);
+  EXPECT_TRUE(b != a);
+}
+
+TEST(ipv6address, hash) {
+  IPv6Address a{"2001::1"};
+  IPv6Address b{"2001::2"};
+
+  std::hash<IPv6Address> hasher;
+  EXPECT_EQ(1003530086136274462, hasher(a));
+  EXPECT_EQ(2007060172272548861, hasher(b));
+}

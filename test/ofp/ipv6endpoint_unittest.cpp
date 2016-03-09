@@ -96,3 +96,26 @@ TEST(ipv6endpoint, parseFails) {
   EXPECT_FALSE(endpt.parse("1.2.3.4:0"));
   EXPECT_FALSE(endpt.parse("1.2.3.4:65536"));
 }
+
+TEST(ipv6endpoint, relational) {
+  IPv6Endpoint a{"[2001::01]:1"};
+  IPv6Endpoint b{"[2001::01]:2"};
+
+  EXPECT_TRUE(a < b);
+  EXPECT_FALSE(a > b);
+  EXPECT_TRUE(a <= b);
+  EXPECT_FALSE(a >= b);
+  EXPECT_FALSE(a == b);
+  EXPECT_TRUE(a != b);
+
+  EXPECT_FALSE(b < a);
+  EXPECT_FALSE(b <= a);
+  EXPECT_TRUE(b > a);
+  EXPECT_TRUE(b >= a);
+  EXPECT_FALSE(b == a);
+  EXPECT_TRUE(b != a);
+}
+
+TEST(ipv6endpoint, hash) {
+  
+}

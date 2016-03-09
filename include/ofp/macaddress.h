@@ -35,8 +35,11 @@ class MacAddress {
   const ArrayType &toArray() const { return addr_; }
 
   bool operator==(const MacAddress &rhs) const { return addr_ == rhs.addr_; }
-
-  bool operator!=(const MacAddress &rhs) const { return !(*this == rhs); }
+  bool operator!=(const MacAddress &rhs) const { return addr_ != rhs.addr_; }
+  bool operator<(const MacAddress &rhs) const { return addr_ < rhs.addr_; }
+  bool operator>(const MacAddress &rhs) const { return addr_ > rhs.addr_; }
+  bool operator<=(const MacAddress &rhs) const { return addr_ <= rhs.addr_; }
+  bool operator>=(const MacAddress &rhs) const { return addr_ >= rhs.addr_; }
 
  private:
   ArrayType addr_;

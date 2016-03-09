@@ -16,7 +16,7 @@ class IPv4Address {
   using ArrayType = std::array<UInt8, Length>;
 
   IPv4Address() : addr_{} {}
-  explicit IPv4Address(const ArrayType &a);
+  explicit IPv4Address(const ArrayType &a) : addr_(a) {}
   /* implicit NOLINT */ IPv4Address(const std::string &s);
 
   static IPv4Address mask(unsigned prefix);
@@ -28,20 +28,21 @@ class IPv4Address {
     return IsMemFilled(addr_.data(), sizeof(addr_), '\xff');
   }
 
-  void setAllOnes() { std::memset(addr_.data(), 0xFF, sizeof(addr_)); }
+  void setAllOnes() { addr_.fill(0xFF); }
 
   bool parse(const std::string &s);
-  void clear();
+  void clear() { addr_.fill(0); }
 
   std::string toString() const;
 
   const ArrayType &toArray() const { return addr_; }
 
   bool operator==(const IPv4Address &rhs) const { return addr_ == rhs.addr_; }
-
-  bool operator!=(const IPv4Address &rhs) const { return !(*this == rhs); }
-
-  bool fromString(const std::string &s);
+  bool operator!=(const IPv4Address &rhs) const { return addr_ != rhs.addr_; }
+  bool operator<(const IPv4Address &rhs) const { return addr_ < rhs.addr_; }
+  bool operator>(const IPv4Address &rhs) const { return addr_ > rhs.addr_; }
+  bool operator<=(const IPv4Address &rhs) const { return addr_ <= rhs.addr_; }
+  bool operator>=(const IPv4Address &rhs) const { return addr_ >= rhs.addr_; }
 
  private:
   ArrayType addr_;
