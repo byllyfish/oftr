@@ -390,6 +390,8 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
 void ofp::yaml::EncodeRecursively(llvm::yaml::IO &io, const char *key,
                                   ByteList &data) {
   auto parent = GetEncoderFromContext(io);
+  log::fatal_if_null(parent, "EncodeRecursively: missing context");
+
   parent->setRecursive(true);
   Encoder encoder{parent};
   io.mapRequired(key, encoder);

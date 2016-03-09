@@ -304,6 +304,13 @@ inline const T *Interpret_cast(const void *ptr) {
   return reinterpret_cast<const T *>(ptr);
 }
 
+/// Utility function to combine hash values.
+/// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3876.pdf
+template <typename T>
+void HashCombine(size_t &seed, const T &val) {
+  seed ^= std::hash<T>{}(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
 }  // namespace ofp
 
 // Place forward declarations of YAML classes here.

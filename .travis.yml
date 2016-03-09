@@ -40,6 +40,7 @@ addons:
 before_deploy:
   - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
   - ZIPFILE=libofp-master-${TRAVIS_OS_NAME}.zip
+  - if [ $TRAVIS_OS_NAME == linux ]; then strip --strip-debug ${TOOLDIR}/libofp; fi
   - pushd ${TOOLDIR}; zip ${ZIPFILE} libofp; popd
 
 deploy:

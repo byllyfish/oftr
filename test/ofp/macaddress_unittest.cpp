@@ -19,6 +19,13 @@ TEST(macaddress, valid) {
 }
 
 TEST(macaddress, invalid) {
+  MacAddress enet;
+
+  EXPECT_FALSE(enet.valid());
+  EXPECT_EQ("00:00:00:00:00:00", enet.toString());
+}
+
+TEST(macaddress, invalid2) {
   MacAddress enet{"01:02:03:04:05"};
 
   EXPECT_FALSE(enet.valid());
@@ -46,4 +53,23 @@ TEST(macaddress, canonical) {
 
   EXPECT_TRUE(enet2.valid());
   EXPECT_EQ("aa:bb:cc:dd:ee:ff", enet2.toString());
+}
+
+TEST(macaddress, relational) {
+  MacAddress a{"01:00:00:00:00:01"};
+  MacAddress b{"01:00:00:00:00:02"};
+
+  EXPECT_TRUE(a < b);
+  EXPECT_FALSE(a > b);
+  EXPECT_TRUE(a <= b);
+  EXPECT_FALSE(a >= b);
+  EXPECT_FALSE(a == b);
+  EXPECT_TRUE(a != b);
+
+  EXPECT_FALSE(b < a);
+  EXPECT_FALSE(b <= a);
+  EXPECT_TRUE(b > a);
+  EXPECT_TRUE(b >= a);
+  EXPECT_FALSE(b == a);
+  EXPECT_TRUE(b != a);
 }

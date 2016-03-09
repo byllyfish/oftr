@@ -119,3 +119,44 @@ TEST(ipv4address, invalid) {
   EXPECT_FALSE(addr.parse("256.2.3.4"));
   EXPECT_FALSE(addr.parse("-1.2.3.4"));
 }
+
+TEST(ipv4address, invalid2) {
+  IPv4Address addr{"127.x"};
+  EXPECT_FALSE(addr.valid());
+}
+
+TEST(ipv4address, stream) {
+  IPv4Address ip{"127.0.0.1"};
+
+  std::ostringstream oss;
+  oss << ip;
+  EXPECT_EQ("127.0.0.1", oss.str());
+}
+
+TEST(ipv4address, relational) {
+  IPv4Address a{"127.0.0.1"};
+  IPv4Address b{"127.0.0.2"};
+
+  EXPECT_TRUE(a < b);
+  EXPECT_FALSE(a > b);
+  EXPECT_TRUE(a <= b);
+  EXPECT_FALSE(a >= b);
+  EXPECT_FALSE(a == b);
+  EXPECT_TRUE(a != b);
+
+  EXPECT_FALSE(b < a);
+  EXPECT_FALSE(b <= a);
+  EXPECT_TRUE(b > a);
+  EXPECT_TRUE(b >= a);
+  EXPECT_FALSE(b == a);
+  EXPECT_TRUE(b != a);
+}
+
+TEST(ipv4address, hash) {
+  IPv4Address a{"127.0.0.1"};
+  IPv4Address b{"127.0.0.2"};
+
+  std::hash<IPv4Address> hasher;
+  EXPECT_EQ(29918, hasher(a));
+  EXPECT_EQ(59709, hasher(b));
+}

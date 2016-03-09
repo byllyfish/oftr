@@ -17,6 +17,10 @@
 #
 #    cmake -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
 #
+# To build with code coverage:
+#
+#    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
+#
 
 cmake_minimum_required(VERSION 2.8.8)
 project(Libofp)
@@ -31,7 +35,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.15.0)
+set(Libofp_VERSION 0.16.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 
@@ -57,6 +61,13 @@ endif()
 set(LIBOFP_ENABLE_MEMCHECK_TESTS TRUE CACHE BOOL "Enable additional valgrind memcheck tests")
 if(NOT LIBOFP_ENABLE_MEMCHECK_TESTS)
   message(STATUS "Memcheck tests are disabled.")
+endif()
+
+# You can enable code-coverage collection.
+
+set(LIBOFP_ENABLE_CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
+if(LIBOFP_ENABLE_CODE_COVERAGE)
+  message(STATUS "Code coverage is enabled.")
 endif()
 
 # Require out of source builds.
@@ -302,18 +313,33 @@ else()
   set(LIBOFP_WARNINGS "-Wall")
 endif()
 
-# Tell linker to remove dead code on OSX.
+# Tell linker to remove dead code.
 
 if(APPLE)
-  set(CMAKE_EXE_LINKER_FLAGS "-Wl,-dead_strip")
+  # Apple makes it easy.
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-dead_strip")
+else()
+  # Dead-strip the GCC build.
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fdata-sections -ffunction-sections")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fdata-sections -ffunction-sections")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
   # -fsanitize=undefined doesn't seem to work with Clang 7.0.2, even with -frtti
   # added back in.
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_FSANITIZE "-fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_FSANITIZE}")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_FSANITIZE}")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_FSANITIZE}")
+endif()
+
+# Compile with code coverage support.
+
+if(LIBOFP_ENABLE_CODE_COVERAGE)
+  set(LIBOFP_COVERAGE "-fprofile-arcs -ftest-coverage")
+else()
+  set(LIBOFP_COVERAGE "")
 endif()
 
 #-------------------------------------------------------------------------------
@@ -397,8 +423,9 @@ endif()
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES}")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE}")
 
 message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
 message(STATUS "LIBOFP_CXX_FLAGS: ${LIBOFP_CXX_FLAGS}")
