@@ -97,3 +97,11 @@ bool OXMType::parse(const std::string &s) {
 
   return false;
 }
+
+std::string OXMType::toString() const {
+  auto info = lookupInfo();
+  if (info) {
+    return info->name;
+  }
+  return RawDataToHex(&value32_, sizeof(value32_));
+}

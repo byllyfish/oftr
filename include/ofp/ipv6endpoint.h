@@ -16,6 +16,7 @@ class IPv6Endpoint {
   IPv6Endpoint(const std::string &addr, UInt16 port)
       : addr_{addr}, port_{port} {}
   explicit IPv6Endpoint(UInt16 port) : addr_{}, port_{port} {}
+  explicit IPv6Endpoint(const std::string &s);
 
   bool parse(const std::string &s);
   void clear();
@@ -30,11 +31,22 @@ class IPv6Endpoint {
   std::string toString() const;
 
   bool operator==(const IPv6Endpoint &rhs) const {
-    return port_ == rhs.port_ && addr_ == rhs.addr_;
+    return addr_ == rhs.addr_ && port_ == rhs.port_;
   }
-  bool operator!=(const IPv6Endpoint &rhs) const { return !(*this == rhs); }
+  bool operator!=(const IPv6Endpoint &rhs) const {
+    return addr_ != rhs.addr_ || port_ != rhs.port_;
+  }
   bool operator<(const IPv6Endpoint &rhs) const {
     return addr_ < rhs.addr_ || (addr_ == rhs.addr_ && port_ < rhs.port_);
+  }
+  bool operator>(const IPv6Endpoint &rhs) const {
+    return addr_ > rhs.addr_ || (addr_ == rhs.addr_ && port_ > rhs.port_);
+  }
+  bool operator<=(const IPv6Endpoint &rhs) const {
+    return addr_ < rhs.addr_ || (addr_ == rhs.addr_ && port_ <= rhs.port_);
+  }
+  bool operator>=(const IPv6Endpoint &rhs) const {
+    return addr_ > rhs.addr_ || (addr_ == rhs.addr_ && port_ >= rhs.port_);
   }
 
  private:
@@ -42,7 +54,10 @@ class IPv6Endpoint {
   UInt16 port_ = 0;
 };
 
-std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value);
+static_assert(alignof(IPv6Endpoint) == 2, "Unexpected alignment");
+static_assert(IsStandardLayout<IPv6Endpoint>(), "Expected standard layout.");
+static_assert(IsTriviallyCopyable<IPv6Endpoint>(),
+              "Expected trivially copyable.");
 
 inline std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value) {
   return os << value.toString();
@@ -55,10 +70,10 @@ namespace std {
 template <>
 struct hash<ofp::IPv6Endpoint> {
   size_t operator()(const ofp::IPv6Endpoint &endpt) const {
-    std::hash<ofp::IPv6Address> h;
-    std::hash<unsigned> i;
-    // FIXME(bfish): Better hash_combine
-    return h(endpt.address()) ^ i(endpt.port());
+    size_t result = 0;
+    ofp::HashCombine(result, std::hash<unsigned>{}(endpt.port()));
+    ofp::HashCombine(result, std::hash<ofp::IPv6Address>{}(endpt.address()));
+    return result;
   }
 };
 

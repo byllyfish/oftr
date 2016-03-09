@@ -15,11 +15,9 @@ IPv6Address::IPv6Address(const IPv4Address &addr) {
   std::memset(addr_.data(), 0, 10);
 }
 
-IPv6Address::IPv6Address(const ArrayType &a) : addr_(a) {}
-
 IPv6Address::IPv6Address(const std::string &s) {
   if (!parse(s))
-    addr_.fill(0);
+    clear();
 }
 
 UInt32 IPv6Address::zone() const {
@@ -76,15 +74,6 @@ bool IPv6Address::parse(const std::string &s) {
 bool IPv6Address::parseIPv6Address(const std::string &s) {
   int result = inet_pton(AF_INET6, s.c_str(), addr_.data());
   return result > 0;
-#if 0
-  std::error_code err;
-  auto addr6 = asio::ip::address_v6::from_string(s, err);
-  if (!err) {
-    addr_ = addr6.to_bytes();
-    return true;
-  }
-  return false;
-#endif  // 0
 }
 
 bool IPv6Address::parseIPv4Address(const std::string &s) {
@@ -94,10 +83,6 @@ bool IPv6Address::parseIPv4Address(const std::string &s) {
     return true;
   }
   return false;
-}
-
-void IPv6Address::clear() {
-  std::memset(addr_.data(), 0, sizeof(addr_));
 }
 
 std::string IPv6Address::toString() const {
