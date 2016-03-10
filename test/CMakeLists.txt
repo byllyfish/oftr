@@ -9,6 +9,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/bytelist_unittest.cpp
 	ofp/byteorder_unittest.cpp
 	ofp/byterange_unittest.cpp
+	ofp/channeloptions_unittest.cpp
 	ofp/constants_unittest.cpp
 	ofp/constants_error_unittest.cpp
 	ofp/datapathid_unittest.cpp
