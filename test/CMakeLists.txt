@@ -91,6 +91,7 @@ if(LIBOFP_ENABLE_JSONRPC)
 		ofp/dtls_utils_unittest.cpp
 		ofp/roundtrip_unittest.cpp
 		ofp/rpcsession_unittest.cpp
+		ofp/identity_unittest.cpp
 	)
 endif()
 
