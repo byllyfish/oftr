@@ -197,7 +197,7 @@ TEST(ipv6address, hash) {
 TEST(ipv6address, parse_fails) {
   IPv6Address addr;
 
-  EXPECT_FALSE(addr.parse("x%1"));  // not ipv6 address
+  EXPECT_FALSE(addr.parse("x%1"));        // not ipv6 address
   EXPECT_FALSE(addr.parse("2000::1%1"));  // not link-local
   EXPECT_FALSE(addr.parse("fe80::1122:33ff:fe44:5566%"));
   EXPECT_FALSE(addr.parse("fe80::1122:33ff:fe44:5566%1x"));
