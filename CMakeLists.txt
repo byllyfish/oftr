@@ -152,7 +152,6 @@ set(LIBOFP_SOURCES
   src/ofp/constants.cpp
   src/ofp/constants_error.cpp
   src/ofp/datapathid.cpp
-  src/ofp/defaulthandshake.cpp
   src/ofp/echoreply.cpp
   src/ofp/echorequest.cpp
   src/ofp/error.cpp
@@ -259,6 +258,7 @@ set(LIBOFP_SOURCES
 if(LIBOFP_ENABLE_JSONRPC)
   set(LIBOFP_SOURCES
     ${LIBOFP_SOURCES}
+    src/ofp/defaulthandshake.cpp
     src/ofp/driver.cpp
     src/ofp/sys/asio_utils.cpp
     src/ofp/sys/connection.cpp
