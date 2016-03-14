@@ -221,8 +221,8 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
       [desiredConnId, &response](sys::TCP_Server *server) {
         UInt64 connId = server->connectionId();
         if (!desiredConnId || connId == desiredConnId) {
-          response.result.emplace_back();
-          RpcConnectionStats &stats = response.result.back();
+          response.result.stats.emplace_back();
+          RpcConnectionStats &stats = response.result.stats.back();
           stats.localEndpoint = server->localEndpoint();
           stats.connId = connId;
           stats.auxiliaryId = 0;
@@ -234,8 +234,8 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
       [desiredConnId, &response](sys::UDP_Server *server) {
         UInt64 connId = server->connectionId();
         if (!desiredConnId || connId == desiredConnId) {
-          response.result.emplace_back();
-          RpcConnectionStats &stats = response.result.back();
+          response.result.stats.emplace_back();
+          RpcConnectionStats &stats = response.result.stats.back();
           stats.localEndpoint = server->localEndpoint();
           stats.connId = connId;
           stats.auxiliaryId = 0;
@@ -246,8 +246,8 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
   engine_->forEachConnection([desiredConnId, &response](Channel *channel) {
     UInt64 connId = channel->connectionId();
     if (!desiredConnId || connId == desiredConnId) {
-      response.result.emplace_back();
-      RpcConnectionStats &stats = response.result.back();
+      response.result.stats.emplace_back();
+      RpcConnectionStats &stats = response.result.stats.back();
       stats.localEndpoint = channel->localEndpoint();
       stats.remoteEndpoint = channel->remoteEndpoint();
       stats.connId = connId;
