@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.17 (19 March 2016)
+
+- Change API slightly for OFP.LIST_CONNECTIONS.
+- Fix compilation with LIBOFP_ENABLE_JSONRPC=false.
+- More unit test coverage.
+- Update boringssl and google-test submodules.
+
 == Version 0.16 (9 March 2016)
 
 - Fix potential null pointer dereference.
