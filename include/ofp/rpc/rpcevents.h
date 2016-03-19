@@ -209,7 +209,10 @@ struct RpcListConnsResponse {
   explicit RpcListConnsResponse(RpcID ident) : id{ident} {}
   std::string toJson();
 
-  using Result = std::vector<RpcConnectionStats>;
+  struct Result {
+    /// List of connections.
+    std::vector<RpcConnectionStats> stats;
+  };
 
   RpcID id;
   Result result;
@@ -363,12 +366,13 @@ method: !request OFP.LIST_CONNECTIONS
 params: !request
   conn_id: UInt64
 result: !reply
-  - local_endpoint: IPv6Endpoint
-    remote_endpoint: IPv6Endpoint
-    datapath_id: DatapathID
-    conn_id: UInt64
-    auxiliary_id: UInt8
-    transport: TCP | UDP | TLS | DTLS | NONE
+  stats:
+    - local_endpoint: IPv6Endpoint
+      remote_endpoint: IPv6Endpoint
+      datapath_id: DatapathID
+      conn_id: UInt64
+      auxiliary_id: UInt8
+      transport: TCP | UDP | TLS | DTLS | NONE
 
 {Rpc/OFP.ADD_IDENTITY}
 id: !opt UInt64
@@ -565,6 +569,13 @@ struct MappingTraits<ofp::rpc::RpcListConnsResponse> {
   static void mapping(IO &io, ofp::rpc::RpcListConnsResponse &response) {
     io.mapRequired("id", response.id);
     io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::rpc::RpcListConnsResponse::Result> {
+  static void mapping(IO &io, ofp::rpc::RpcListConnsResponse::Result &result) {
+    io.mapRequired("stats", result.stats);
   }
 };
 

@@ -6,7 +6,7 @@
 
 * [ ] Run cpplint:  `make cpplint`
 
-* [ ] Update documentation: 
+* [ ] Update documentation: `make manpages`
 
 * [ ] Update CHANGELOG
 
