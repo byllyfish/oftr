@@ -50,12 +50,13 @@ Rpc/OFP.LIST_CONNECTIONS:
   params: !request
     conn_id: UInt64
   result: !reply
-    - local_endpoint: IPv6Endpoint
-      remote_endpoint: IPv6Endpoint
-      datapath_id: DatapathID
-      conn_id: UInt64
-      auxiliary_id: UInt8
-      transport: TCP | UDP | TLS | DTLS | NONE
+    stats:
+      - local_endpoint: IPv6Endpoint
+        remote_endpoint: IPv6Endpoint
+        datapath_id: DatapathID
+        conn_id: UInt64
+        auxiliary_id: UInt8
+        transport: TCP | UDP | TLS | DTLS | NONE
   
 Rpc/OFP.ADD_IDENTITY: 
   id: !opt UInt64

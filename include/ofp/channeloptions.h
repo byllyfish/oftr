@@ -4,6 +4,8 @@
 #ifndef OFP_CHANNELOPTIONS_H_
 #define OFP_CHANNELOPTIONS_H_
 
+#include "ofp/types.h"
+
 namespace ofp {
 
 /// FEATURES_REQ -- automatically send FeaturesRequest to obtain datapath_id

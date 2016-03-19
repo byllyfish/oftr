@@ -9,6 +9,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/bytelist_unittest.cpp
 	ofp/byteorder_unittest.cpp
 	ofp/byterange_unittest.cpp
+	ofp/channeloptions_unittest.cpp
 	ofp/constants_unittest.cpp
 	ofp/constants_error_unittest.cpp
 	ofp/datapathid_unittest.cpp
@@ -65,7 +66,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/queuegetconfigrequest_unittest.cpp
 	ofp/requestforward_unittest.cpp
 	ofp/rolestatus_unittest.cpp
-	ofp/rpcencoder_unittest.cpp
 	ofp/setasync_unittest.cpp
 	ofp/smallbuffer_unittest.cpp
 	ofp/smallcstring_unittest.cpp
@@ -89,7 +89,9 @@ if(LIBOFP_ENABLE_JSONRPC)
 		ofp/driver_unittest.cpp
 		ofp/dtls_utils_unittest.cpp
 		ofp/roundtrip_unittest.cpp
+		ofp/rpcencoder_unittest.cpp
 		ofp/rpcsession_unittest.cpp
+		ofp/identity_unittest.cpp
 	)
 endif()
 

@@ -203,3 +203,17 @@ TEST(byteorder, Big24) {
   EXPECT_EQ(0, std::memcmp(&b, "\0\0\0", 3));
   EXPECT_EQ(0, b);
 }
+
+TEST(byteorder, fromBytes) {
+  Big32 val32 = 0x11111111;
+  Big64 val64 = 0x1111111122222222;
+
+  auto a = Big32::fromBytes(BytePtr(&val32), 0);
+  EXPECT_EQ(0, a);
+
+  auto b = Big32::fromBytes(BytePtr(&val32), 4);
+  EXPECT_EQ(0x11111111, b);
+
+  auto c = Big32::fromBytes(BytePtr(&val64), 8);
+  EXPECT_EQ(0x22222222, c);
+}

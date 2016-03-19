@@ -312,12 +312,15 @@ List statistics for a connection.
 
     id: UInt64
     result:
-      - local_endpoint: IPv6Endpoint
-        remote_endpoint: IPv6Endpoint
-        datapath_id: DatapathID
-        conn_id: UInt64
-        auxiliary_id: UInt8
-        transport: 'TCP' | 'UDP' | 'TLS' | 'DTLS' | 'NONE'
+      stats:
+        - local_endpoint: IPv6Endpoint
+          remote_endpoint: IPv6Endpoint
+          datapath_id: DatapathID
+          conn_id: UInt64
+          auxiliary_id: UInt8
+          transport: 'TCP' | 'UDP' | 'TLS' | 'DTLS' | 'NONE'
+
+*stats*:: List of connection stat objects.
 
 ==== Discussion
 

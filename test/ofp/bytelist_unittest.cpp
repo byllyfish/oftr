@@ -102,3 +102,12 @@ TEST(bytelist, move) {
   list2 = std::move(list);
   EXPECT_EQ(0, list.size());
 }
+
+TEST(bytelist, remove) {
+  ByteList list;
+  list.add("1234", 4);
+
+  list.remove(list.data() + 1, 1);
+  EXPECT_EQ(list.size(), 3);
+  EXPECT_HEX("313334", list.data(), list.size());
+}

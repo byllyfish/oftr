@@ -87,6 +87,7 @@ TEST(ipv6endpoint, parse2) {
 TEST(ipv6endpoint, parseFails) {
   IPv6Endpoint endpt;
 
+  EXPECT_FALSE(endpt.parse(""));
   EXPECT_FALSE(endpt.parse("1.2.3.4 80"));
 
   EXPECT_FALSE(endpt.parse("192.168.1.1"));
@@ -95,6 +96,17 @@ TEST(ipv6endpoint, parseFails) {
 
   EXPECT_FALSE(endpt.parse("1.2.3.4:0"));
   EXPECT_FALSE(endpt.parse("1.2.3.4:65536"));
+
+  EXPECT_FALSE(endpt.parse("[2000::1"));
+  EXPECT_FALSE(endpt.parse("[2000::1]"));
+  EXPECT_FALSE(endpt.parse("[2000::1]x"));
+  EXPECT_FALSE(endpt.parse("[2000::1]:"));
+  EXPECT_FALSE(endpt.parse("[2000::1]:x"));
+}
+
+TEST(ipv6endpoint, parseFails2) {
+  IPv6Endpoint endpt{"xyz"};
+  EXPECT_FALSE(endpt.valid());
 }
 
 TEST(ipv6endpoint, relational) {
