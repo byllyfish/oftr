@@ -2,12 +2,12 @@
 .\"     Title: libofp-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 03/06/2016
+.\"      Date: 03/19/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-JSONRPC" "1" "03/06/2016" "\ \&" "\ \&"
+.TH "LIBOFP\-JSONRPC" "1" "03/19/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -814,16 +814,22 @@ Specify a connection\&. Use 0 to list all connections\&.
 .nf
 id: UInt64
 result:
-  \- local_endpoint: IPv6Endpoint
-    remote_endpoint: IPv6Endpoint
-    datapath_id: DatapathID
-    conn_id: UInt64
-    auxiliary_id: UInt8
-    transport: \*(AqTCP\*(Aq | \*(AqUDP\*(Aq | \*(AqTLS\*(Aq | \*(AqDTLS\*(Aq | \*(AqNONE\*(Aq
+  stats:
+    \- local_endpoint: IPv6Endpoint
+      remote_endpoint: IPv6Endpoint
+      datapath_id: DatapathID
+      conn_id: UInt64
+      auxiliary_id: UInt8
+      transport: \*(AqTCP\*(Aq | \*(AqUDP\*(Aq | \*(AqTLS\*(Aq | \*(AqDTLS\*(Aq | \*(AqNONE\*(Aq
 .fi
 .if n \{\
 .RE
 .\}
+.PP
+\fBstats\fR
+.RS 4
+List of connection stat objects\&.
+.RE
 .RE
 .sp
 .it 1 an-trap
