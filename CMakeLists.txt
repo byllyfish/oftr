@@ -258,10 +258,10 @@ set(LIBOFP_SOURCES
 if(LIBOFP_ENABLE_JSONRPC)
   set(LIBOFP_SOURCES
     ${LIBOFP_SOURCES}
-    src/ofp/defaulthandshake.cpp
     src/ofp/driver.cpp
     src/ofp/sys/asio_utils.cpp
     src/ofp/sys/connection.cpp
+    src/ofp/sys/defaulthandshake.cpp
     src/ofp/sys/dtls_adapter.cpp
     src/ofp/sys/dtls_utils.cpp
     src/ofp/sys/engine.cpp
