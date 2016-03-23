@@ -20,7 +20,7 @@ static bool isAlignedPacket(const UInt8 *ptr) {
 
 MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   if (isAlignedPacket(data.data())) {
-    decodeEthernet(data.data(), data.size());
+    decode(data.data(), data.size());
     return;
   }
 
@@ -36,7 +36,7 @@ MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   ByteList alignedData;
   alignedData.addZeros(pad);
   alignedData.add(data.data(), data.size());
-  decodeEthernet(alignedData.data() + pad, alignedData.size() - pad);
+  decode(alignedData.data() + pad, alignedData.size() - pad);
 }
 
 namespace pkt {
@@ -236,6 +236,17 @@ static_assert(alignof(LLDPTlv) == 1, "Unexpected alignment.");
 
 const UInt32 OFPIEH_DEST_ROUTER = 1UL << 31;
 
+void MatchPacket::decode(const UInt8 *pkt, size_t length) {
+  assert(isAlignedPacket(pkt));
+
+  decodeEthernet(pkt, length);
+
+  // If all the data is not accounted for, report offset using X_PKT_MARK.
+  if (offset_ < length) {
+    match_.add(X_PKT_MARK{UInt16_narrow_cast(offset_)});
+  }
+}
+
 void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
   assert(isAlignedPacket(pkt));
 
@@ -247,9 +258,10 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
   match_.add(OFB_ETH_DST(eth->dst));
   match_.add(OFB_ETH_SRC(eth->src));
   match_.add(OFB_ETH_TYPE(eth->type));
-
+  
   pkt += sizeof(pkt::Ethernet);
   length -= sizeof(pkt::Ethernet);
+  offset_ += sizeof(pkt::Ethernet);
 
   switch (eth->type) {
     case DATALINK_ARP:
@@ -292,6 +304,8 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
   match_.add(OFB_ARP_SHA(arp->sha));
   match_.add(OFB_ARP_THA(arp->tha));
 
+  offset_ += sizeof(pkt::Arp);
+
   if (length > sizeof(pkt::Arp)) {
     log::warning("MatchPacket: Ignoring extra data in arp message");
   }
@@ -331,9 +345,9 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
 
   match_.add(NXM_NX_IP_TTL{ip->ttl});
 
-  unsigned hdrLen = ihl * 4;
-  assert(hdrLen <= 60);
+  assert(ihl <= 15);
 
+  unsigned hdrLen = ihl * 4;
   if (hdrLen > length) {
     log::warning("MatchPacket: Extended IPv4 Header too long", hdrLen);
     return;
@@ -341,6 +355,7 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
 
   pkt += hdrLen;
   length -= hdrLen;
+  offset_ += hdrLen;
 
   decodeIPv4_NextHdr(pkt, length, ip->proto);
 }
@@ -393,6 +408,7 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
 
   pkt += sizeof(pkt::IPv6Hdr);
   length -= sizeof(pkt::IPv6Hdr);
+  offset_ += sizeof(pkt::IPv6Hdr);
 
   decodeIPv6_NextHdr(pkt, length, ip->nextHeader);
 }
@@ -407,6 +423,8 @@ void MatchPacket::decodeTCP(const UInt8 *pkt, size_t length) {
   match_.add(OFB_TCP_SRC{tcp->srcPort});
   match_.add(OFB_TCP_DST{tcp->dstPort});
   match_.add(NXM_NX_TCP_FLAGS{flags});
+
+  offset_ += sizeof(pkt::TCPHdr);
 }
 
 void MatchPacket::decodeUDP(const UInt8 *pkt, size_t length) {
@@ -417,6 +435,8 @@ void MatchPacket::decodeUDP(const UInt8 *pkt, size_t length) {
 
   match_.add(OFB_UDP_SRC{udp->srcPort});
   match_.add(OFB_UDP_DST{udp->dstPort});
+
+  offset_ += sizeof(pkt::UDPHdr);
 }
 
 void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length,
@@ -468,6 +488,8 @@ void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {
 
   match_.add(OFB_ICMPV4_TYPE{icmp->type});
   match_.add(OFB_ICMPV4_CODE{icmp->code});
+
+  offset_ += sizeof(pkt::ICMPHdr);
 }
 
 void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
@@ -479,6 +501,8 @@ void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
   match_.add(OFB_ICMPV6_TYPE{icmp->type});
   match_.add(OFB_ICMPV6_CODE{icmp->code});
 
+  offset_ += sizeof(pkt::ICMPHdr);
+
   // TODO(bfish): neighbor discovery msgs.
 }
 
@@ -488,6 +512,7 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
   while (length > 0) {
     auto lldp = pkt::LLDPTlv::cast(pkt, length);
     if (!lldp) {
+      log::warning("decodeLLDP: missing lldp end tlv");
       return;
     }
 
@@ -499,6 +524,7 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
 
     switch (lldp->type()) {
       case pkt::LLDPTlv::END:
+        offset_ += jumpSize;
         return;  // all done; ignore anything else
 
       case pkt::LLDPTlv::CHASSIS_ID:
@@ -518,6 +544,7 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
 
     pkt += jumpSize;
     length -= jumpSize;
+    offset_ += jumpSize;
   }
 }
 
@@ -616,6 +643,7 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
 
   pkt += extHdrLen;
   length -= extHdrLen;
+  offset_ += extHdrLen;
 
   return nextHdr;
 }

@@ -20,7 +20,9 @@ class MatchPacket {
 
  private:
   MatchBuilder match_;
+  size_t offset_ = 0;
 
+  void decode(const UInt8 *pkt, size_t length);
   void decodeEthernet(const UInt8 *pkt, size_t length);
   void decodeARP(const UInt8 *pkt, size_t length);
   void decodeIPv4(const UInt8 *pkt, size_t length);
