@@ -13,7 +13,8 @@ RUN set -ex \
         perl \
         python \
         linux-headers \
-    && git clone --recursive https://github.com/byllyfish/libofp.git \
+        bash \
+    && git clone -b develop --single-branch --recursive https://github.com/byllyfish/libofp.git \
     && mkdir libofp/Build \
     && cd libofp/Build \
     && cmake .. \
