@@ -258,7 +258,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
   match_.add(OFB_ETH_DST(eth->dst));
   match_.add(OFB_ETH_SRC(eth->src));
   match_.add(OFB_ETH_TYPE(eth->type));
-  
+
   pkt += sizeof(pkt::Ethernet);
   length -= sizeof(pkt::Ethernet);
   offset_ += sizeof(pkt::Ethernet);

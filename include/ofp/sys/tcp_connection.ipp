@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/sys/defaulthandshake.h"
 #include "ofp/log.h"
+#include "ofp/sys/defaulthandshake.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/tcp_server.h"
