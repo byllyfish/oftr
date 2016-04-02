@@ -93,8 +93,8 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapOptional("match", msg.match_);
     io.mapRequired("data", msg.enetFrame_);
 
-    MatchBuilder ignoreDataMatch;  // FIXME(bfish) Add `mapIgnore` method?
-    io.mapOptional("_pkt_decode", ignoreDataMatch);
+    MatchBuilder ignorePktDecode;  // FIXME(bfish) Add `mapIgnore` method?
+    io.mapOptional("_pkt_decode", ignorePktDecode);
   }
 };
 

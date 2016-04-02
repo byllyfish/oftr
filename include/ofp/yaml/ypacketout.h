@@ -56,6 +56,9 @@ struct MappingTraits<ofp::PacketOutBuilder> {
 
     io.mapRequired("actions", msg.actions_);
     io.mapRequired("data", msg.enetFrame_);
+
+    MatchBuilder ignorePktDecode;  // FIXME(bfish) Add `mapIgnore` method?
+    io.mapOptional("_pkt_decode", ignorePktDecode);
   }
 };
 
