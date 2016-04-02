@@ -28,7 +28,7 @@ namespace ofpx {
 //   --keep-going (-k)     Continue processing messages after errors.
 //   --verify-output (-V)  Verify output by translating it back to binary.
 //   --use-findx           Use metadata from tcpflow '.findx' files.
-//   --data-pkt            Include _data_pkt in PacketIn/PacketOut decodes.
+//   --pkt-decode          Include _pkt_decode in PacketIn/PacketOut decodes.
 //   --include-filename    Include file name in all decodes.
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //
@@ -112,8 +112,7 @@ class Decode : public Subprogram {
       cl::desc("Verify output by translating it back to binary")};
   cl::opt<bool> useFindx_{"use-findx",
                           cl::desc("Use metadata from tcpflow '.findx' files")};
-  cl::opt<bool> dataPkt_{
-      "data-pkt", cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
+  cl::opt<bool> pktDecode_{"pkt-decode", cl::desc("Include _pkt_decode in PacketIn/PacketOut decodes")};
   cl::opt<bool> includeFilename_{"include-filename",
                                  cl::desc("Include file name in all decodes")};
   cl::opt<std::string> outputFile_{
