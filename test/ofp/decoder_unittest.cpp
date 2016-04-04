@@ -709,6 +709,12 @@ TEST(decoder, flowmodv4_experimenter_mask_2) {
       " mask:            0x00FF\n  instructions:    \n...\n");
 }
 
+TEST(decoder, flowmodv4_minimal) {
+    testDecodeEncode(
+      "040E003800000001000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF000000000001000400000000",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  cookie:          0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n  match:           \n  instructions:    \n...\n");
+}
+
 TEST(decoder, flowmodv1) {
   const char *hex =
       "010E005000000001003020EECCCC000000000000000000000000000000"

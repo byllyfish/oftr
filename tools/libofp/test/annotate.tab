@@ -117,15 +117,15 @@ version	type	keypath	syntax	required	default	missing	modify
 1	PACKET_OUT.v1	msg.data	binary	True			True
 1	PACKET_OUT.v1	msg.in_port	CONTROLLER	True			
 1	FLOW_MOD.v1	msg	object	True			
-1	FLOW_MOD.v1	msg.buffer_id	NO_BUFFER	True			
+1	FLOW_MOD.v1	msg.buffer_id	NO_BUFFER	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
 1	FLOW_MOD.v1	msg.command	MODIFY_STRICT	True			
-1	FLOW_MOD.v1	msg.cookie	uint64	True			True
-1	FLOW_MOD.v1	msg.cookie_mask	uint64	True			
-1	FLOW_MOD.v1	msg.flags	array	True			
+1	FLOW_MOD.v1	msg.cookie	uint64	False	msg.cookie=0,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		True
+1	FLOW_MOD.v1	msg.cookie_mask	uint64	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
+1	FLOW_MOD.v1	msg.flags	array	False	msg.flags.0=SEND_FLOW_REM,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
 1	FLOW_MOD.v1	msg.flags.0	SEND_FLOW_REM	False	msg.flags.0=SEND_FLOW_REM,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
-1	FLOW_MOD.v1	msg.hard_timeout	uint16	True			True
-1	FLOW_MOD.v1	msg.idle_timeout	uint16	True			True
-1	FLOW_MOD.v1	msg.instructions	array	True			
+1	FLOW_MOD.v1	msg.hard_timeout	uint16	False	msg.hard_timeout=0,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		True
+1	FLOW_MOD.v1	msg.idle_timeout	uint16	False	msg.idle_timeout=0,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		True
+1	FLOW_MOD.v1	msg.instructions	array	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
 1	FLOW_MOD.v1	msg.instructions.0	object	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
 1	FLOW_MOD.v1	msg.instructions.0.actions	array	True			
 1	FLOW_MOD.v1	msg.instructions.0.actions.0	object	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
@@ -133,14 +133,14 @@ version	type	keypath	syntax	required	default	missing	modify
 1	FLOW_MOD.v1	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 1	FLOW_MOD.v1	msg.instructions.0.actions.0.port	CONTROLLER	True			
 1	FLOW_MOD.v1	msg.instructions.0.instruction	APPLY_ACTIONS	True			
-1	FLOW_MOD.v1	msg.match	array	True			
+1	FLOW_MOD.v1	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
 1	FLOW_MOD.v1	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0	msg.match.0=object	
 1	FLOW_MOD.v1	msg.match.0.field	ETH_DST	True		msg.match.0.field=ETH_DST	
 1	FLOW_MOD.v1	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress,msg.out_group=0,msg.table_id=0	msg.match.0.mask=macaddress	
 1	FLOW_MOD.v1	msg.match.0.value	macaddress	True		msg.match.0.value=macaddress	
-1	FLOW_MOD.v1	msg.out_group	ANY	True		msg.out_group=0	
-1	FLOW_MOD.v1	msg.out_port	CONTROLLER	True			
-1	FLOW_MOD.v1	msg.priority	uint16	True			True
+1	FLOW_MOD.v1	msg.out_group	ANY	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0	msg.out_group=0	
+1	FLOW_MOD.v1	msg.out_port	CONTROLLER	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.out_port=ANY,msg.table_id=0		
+1	FLOW_MOD.v1	msg.priority	uint16	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.priority=0,msg.table_id=0		True
 1	FLOW_MOD.v1	msg.table_id	ALL	True		msg.table_id=0	
 1	GROUP_MOD.v1	msg	object	True			ERROR
 1	GROUP_MOD.v1	msg.buckets	array	True			ERROR
@@ -767,15 +767,15 @@ version	type	keypath	syntax	required	default	missing	modify
 2	PACKET_OUT.v2	msg.data	binary	True			True
 2	PACKET_OUT.v2	msg.in_port	CONTROLLER	True			
 2	FLOW_MOD.v2	msg	object	True			
-2	FLOW_MOD.v2	msg.buffer_id	NO_BUFFER	True			
+2	FLOW_MOD.v2	msg.buffer_id	NO_BUFFER	False	msg.match.0.mask=macaddress		
 2	FLOW_MOD.v2	msg.command	MODIFY_STRICT	True			
-2	FLOW_MOD.v2	msg.cookie	uint64	True			True
-2	FLOW_MOD.v2	msg.cookie_mask	uint64	True			True
-2	FLOW_MOD.v2	msg.flags	array	True			
+2	FLOW_MOD.v2	msg.cookie	uint64	False	msg.cookie=0,msg.match.0.mask=macaddress		True
+2	FLOW_MOD.v2	msg.cookie_mask	uint64	False	msg.cookie_mask=0,msg.match.0.mask=macaddress		True
+2	FLOW_MOD.v2	msg.flags	array	False	msg.flags.0=SEND_FLOW_REM,msg.match.0.mask=macaddress		
 2	FLOW_MOD.v2	msg.flags.0	SEND_FLOW_REM	False	msg.flags.0=SEND_FLOW_REM,msg.match.0.mask=macaddress		
-2	FLOW_MOD.v2	msg.hard_timeout	uint16	True			True
-2	FLOW_MOD.v2	msg.idle_timeout	uint16	True			True
-2	FLOW_MOD.v2	msg.instructions	array	True			
+2	FLOW_MOD.v2	msg.hard_timeout	uint16	False	msg.hard_timeout=0,msg.match.0.mask=macaddress		True
+2	FLOW_MOD.v2	msg.idle_timeout	uint16	False	msg.idle_timeout=0,msg.match.0.mask=macaddress		True
+2	FLOW_MOD.v2	msg.instructions	array	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS,msg.match.0.mask=macaddress		
 2	FLOW_MOD.v2	msg.instructions.0	object	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS,msg.match.0.mask=macaddress		
 2	FLOW_MOD.v2	msg.instructions.0.actions	array	True			
 2	FLOW_MOD.v2	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.match.0.mask=macaddress		
@@ -783,14 +783,14 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FLOW_MOD.v2	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 2	FLOW_MOD.v2	msg.instructions.0.actions.0.port	CONTROLLER	True			
 2	FLOW_MOD.v2	msg.instructions.0.instruction	APPLY_ACTIONS	True			
-2	FLOW_MOD.v2	msg.match	array	True			
+2	FLOW_MOD.v2	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 2	FLOW_MOD.v2	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 2	FLOW_MOD.v2	msg.match.0.field	ETH_DST	True			
 2	FLOW_MOD.v2	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress	msg.match.0.mask=macaddress	True
 2	FLOW_MOD.v2	msg.match.0.value	macaddress	True			True
-2	FLOW_MOD.v2	msg.out_group	ANY	True			
-2	FLOW_MOD.v2	msg.out_port	CONTROLLER	True			
-2	FLOW_MOD.v2	msg.priority	uint16	True			True
+2	FLOW_MOD.v2	msg.out_group	ANY	False	msg.match.0.mask=macaddress		
+2	FLOW_MOD.v2	msg.out_port	CONTROLLER	False	msg.match.0.mask=macaddress,msg.out_port=ANY		
+2	FLOW_MOD.v2	msg.priority	uint16	False	msg.match.0.mask=macaddress,msg.priority=0		True
 2	FLOW_MOD.v2	msg.table_id	ALL	True			
 2	GROUP_MOD.v2	msg	object	True			
 2	GROUP_MOD.v2	msg.buckets	array	True			
@@ -1417,15 +1417,15 @@ version	type	keypath	syntax	required	default	missing	modify
 3	PACKET_OUT.v3	msg.data	binary	True			True
 3	PACKET_OUT.v3	msg.in_port	CONTROLLER	True			
 3	FLOW_MOD.v3	msg	object	True			
-3	FLOW_MOD.v3	msg.buffer_id	NO_BUFFER	True			
+3	FLOW_MOD.v3	msg.buffer_id	NO_BUFFER	False			
 3	FLOW_MOD.v3	msg.command	MODIFY_STRICT	True			
-3	FLOW_MOD.v3	msg.cookie	uint64	True			True
-3	FLOW_MOD.v3	msg.cookie_mask	uint64	True			True
-3	FLOW_MOD.v3	msg.flags	array	True			
+3	FLOW_MOD.v3	msg.cookie	uint64	False	msg.cookie=0		True
+3	FLOW_MOD.v3	msg.cookie_mask	uint64	False	msg.cookie_mask=0		True
+3	FLOW_MOD.v3	msg.flags	array	False	msg.flags.0=SEND_FLOW_REM		
 3	FLOW_MOD.v3	msg.flags.0	SEND_FLOW_REM	False	msg.flags.0=SEND_FLOW_REM		
-3	FLOW_MOD.v3	msg.hard_timeout	uint16	True			True
-3	FLOW_MOD.v3	msg.idle_timeout	uint16	True			True
-3	FLOW_MOD.v3	msg.instructions	array	True			
+3	FLOW_MOD.v3	msg.hard_timeout	uint16	False	msg.hard_timeout=0		True
+3	FLOW_MOD.v3	msg.idle_timeout	uint16	False	msg.idle_timeout=0		True
+3	FLOW_MOD.v3	msg.instructions	array	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS		
 3	FLOW_MOD.v3	msg.instructions.0	object	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS		
 3	FLOW_MOD.v3	msg.instructions.0.actions	array	True			
 3	FLOW_MOD.v3	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER		
@@ -1433,14 +1433,14 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FLOW_MOD.v3	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 3	FLOW_MOD.v3	msg.instructions.0.actions.0.port	CONTROLLER	True			
 3	FLOW_MOD.v3	msg.instructions.0.instruction	APPLY_ACTIONS	True			
-3	FLOW_MOD.v3	msg.match	array	True			
+3	FLOW_MOD.v3	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 3	FLOW_MOD.v3	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 3	FLOW_MOD.v3	msg.match.0.field	ETH_DST	True			
 3	FLOW_MOD.v3	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
 3	FLOW_MOD.v3	msg.match.0.value	macaddress	True			True
-3	FLOW_MOD.v3	msg.out_group	ANY	True			
-3	FLOW_MOD.v3	msg.out_port	CONTROLLER	True			
-3	FLOW_MOD.v3	msg.priority	uint16	True			True
+3	FLOW_MOD.v3	msg.out_group	ANY	False			
+3	FLOW_MOD.v3	msg.out_port	CONTROLLER	False	msg.out_port=ANY		
+3	FLOW_MOD.v3	msg.priority	uint16	False	msg.priority=0		True
 3	FLOW_MOD.v3	msg.table_id	ALL	True			
 3	GROUP_MOD.v3	msg	object	True			
 3	GROUP_MOD.v3	msg.buckets	array	True			
@@ -2067,15 +2067,15 @@ version	type	keypath	syntax	required	default	missing	modify
 4	PACKET_OUT.v4	msg.data	binary	True			True
 4	PACKET_OUT.v4	msg.in_port	CONTROLLER	True			
 4	FLOW_MOD.v4	msg	object	True			
-4	FLOW_MOD.v4	msg.buffer_id	NO_BUFFER	True			
+4	FLOW_MOD.v4	msg.buffer_id	NO_BUFFER	False			
 4	FLOW_MOD.v4	msg.command	MODIFY_STRICT	True			
-4	FLOW_MOD.v4	msg.cookie	uint64	True			True
-4	FLOW_MOD.v4	msg.cookie_mask	uint64	True			True
-4	FLOW_MOD.v4	msg.flags	array	True			
+4	FLOW_MOD.v4	msg.cookie	uint64	False	msg.cookie=0		True
+4	FLOW_MOD.v4	msg.cookie_mask	uint64	False	msg.cookie_mask=0		True
+4	FLOW_MOD.v4	msg.flags	array	False	msg.flags.0=SEND_FLOW_REM		
 4	FLOW_MOD.v4	msg.flags.0	SEND_FLOW_REM	False	msg.flags.0=SEND_FLOW_REM		
-4	FLOW_MOD.v4	msg.hard_timeout	uint16	True			True
-4	FLOW_MOD.v4	msg.idle_timeout	uint16	True			True
-4	FLOW_MOD.v4	msg.instructions	array	True			
+4	FLOW_MOD.v4	msg.hard_timeout	uint16	False	msg.hard_timeout=0		True
+4	FLOW_MOD.v4	msg.idle_timeout	uint16	False	msg.idle_timeout=0		True
+4	FLOW_MOD.v4	msg.instructions	array	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS		
 4	FLOW_MOD.v4	msg.instructions.0	object	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS		
 4	FLOW_MOD.v4	msg.instructions.0.actions	array	True			
 4	FLOW_MOD.v4	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER		
@@ -2083,14 +2083,14 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FLOW_MOD.v4	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 4	FLOW_MOD.v4	msg.instructions.0.actions.0.port	CONTROLLER	True			
 4	FLOW_MOD.v4	msg.instructions.0.instruction	APPLY_ACTIONS	True			
-4	FLOW_MOD.v4	msg.match	array	True			
+4	FLOW_MOD.v4	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 4	FLOW_MOD.v4	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 4	FLOW_MOD.v4	msg.match.0.field	ETH_DST	True			
 4	FLOW_MOD.v4	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
 4	FLOW_MOD.v4	msg.match.0.value	macaddress	True			True
-4	FLOW_MOD.v4	msg.out_group	ANY	True			
-4	FLOW_MOD.v4	msg.out_port	CONTROLLER	True			
-4	FLOW_MOD.v4	msg.priority	uint16	True			True
+4	FLOW_MOD.v4	msg.out_group	ANY	False			
+4	FLOW_MOD.v4	msg.out_port	CONTROLLER	False	msg.out_port=ANY		
+4	FLOW_MOD.v4	msg.priority	uint16	False	msg.priority=0		True
 4	FLOW_MOD.v4	msg.table_id	ALL	True			
 4	GROUP_MOD.v4	msg	object	True			
 4	GROUP_MOD.v4	msg.buckets	array	True			
@@ -2717,15 +2717,15 @@ version	type	keypath	syntax	required	default	missing	modify
 5	PACKET_OUT.v5	msg.data	binary	True			True
 5	PACKET_OUT.v5	msg.in_port	CONTROLLER	True			
 5	FLOW_MOD.v5	msg	object	True			
-5	FLOW_MOD.v5	msg.buffer_id	NO_BUFFER	True			
+5	FLOW_MOD.v5	msg.buffer_id	NO_BUFFER	False			
 5	FLOW_MOD.v5	msg.command	MODIFY_STRICT	True			
-5	FLOW_MOD.v5	msg.cookie	uint64	True			True
-5	FLOW_MOD.v5	msg.cookie_mask	uint64	True			True
-5	FLOW_MOD.v5	msg.flags	array	True			
+5	FLOW_MOD.v5	msg.cookie	uint64	False	msg.cookie=0		True
+5	FLOW_MOD.v5	msg.cookie_mask	uint64	False	msg.cookie_mask=0		True
+5	FLOW_MOD.v5	msg.flags	array	False	msg.flags.0=SEND_FLOW_REM		
 5	FLOW_MOD.v5	msg.flags.0	SEND_FLOW_REM	False	msg.flags.0=SEND_FLOW_REM		
-5	FLOW_MOD.v5	msg.hard_timeout	uint16	True			True
-5	FLOW_MOD.v5	msg.idle_timeout	uint16	True			True
-5	FLOW_MOD.v5	msg.instructions	array	True			
+5	FLOW_MOD.v5	msg.hard_timeout	uint16	False	msg.hard_timeout=0		True
+5	FLOW_MOD.v5	msg.idle_timeout	uint16	False	msg.idle_timeout=0		True
+5	FLOW_MOD.v5	msg.instructions	array	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS		
 5	FLOW_MOD.v5	msg.instructions.0	object	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS		
 5	FLOW_MOD.v5	msg.instructions.0.actions	array	True			
 5	FLOW_MOD.v5	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port=CONTROLLER		
@@ -2733,14 +2733,14 @@ version	type	keypath	syntax	required	default	missing	modify
 5	FLOW_MOD.v5	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
 5	FLOW_MOD.v5	msg.instructions.0.actions.0.port	CONTROLLER	True			
 5	FLOW_MOD.v5	msg.instructions.0.instruction	APPLY_ACTIONS	True			
-5	FLOW_MOD.v5	msg.match	array	True			
+5	FLOW_MOD.v5	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 5	FLOW_MOD.v5	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
 5	FLOW_MOD.v5	msg.match.0.field	ETH_DST	True			
 5	FLOW_MOD.v5	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
 5	FLOW_MOD.v5	msg.match.0.value	macaddress	True			True
-5	FLOW_MOD.v5	msg.out_group	ANY	True			
-5	FLOW_MOD.v5	msg.out_port	CONTROLLER	True			
-5	FLOW_MOD.v5	msg.priority	uint16	True			True
+5	FLOW_MOD.v5	msg.out_group	ANY	False			
+5	FLOW_MOD.v5	msg.out_port	CONTROLLER	False	msg.out_port=ANY		
+5	FLOW_MOD.v5	msg.priority	uint16	False	msg.priority=0		True
 5	FLOW_MOD.v5	msg.table_id	ALL	True			
 5	GROUP_MOD.v5	msg	object	True			
 5	GROUP_MOD.v5	msg.buckets	array	True			

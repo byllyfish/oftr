@@ -21,19 +21,19 @@ namespace yaml {
 const char *const kFlowModSchema = R"""({Message/FlowMod}
 type: FLOW_MOD
 msg:
-  cookie: UInt64
-  cookie_mask: UInt64
+  cookie: !opt UInt64               # default=0
+  cookie_mask: !opt UInt64          # default=0
   table_id: UInt8
   command: FlowModCommand
-  idle_timeout: UInt16
-  hard_timeout: UInt16
-  priority: UInt16
-  buffer_id: BufferNumber
-  out_port: PortNumber
-  out_group: GroupNumber
-  flags: [FlowModFlags]
-  match: [Field]
-  instructions: [Instruction]
+  idle_timeout: !opt UInt16         # default=0
+  hard_timeout: !opt UInt16         # default=0
+  priority: !opt UInt16             # default=0
+  buffer_id: !opt BufferNumber      # default=NO_BUFFER
+  out_port: !opt PortNumber         # default=ANY
+  out_group: !opt GroupNumber       # default=ANY
+  flags: !opt [FlowModFlags]        # default=[]
+  match: !opt [Field]               # default=[]
+  instructions: !opt [Instruction]  # default=[]
 )""";
 
 template <>
@@ -62,19 +62,19 @@ struct MappingTraits<ofp::FlowMod> {
 template <>
 struct MappingTraits<ofp::FlowModBuilder> {
   static void mapping(IO &io, ofp::FlowModBuilder &msg) {
-    io.mapRequired("cookie", msg.msg_.cookie_);
-    io.mapRequired("cookie_mask", msg.msg_.cookieMask_);
+    io.mapOptional("cookie", msg.msg_.cookie_, 0);
+    io.mapOptional("cookie_mask", msg.msg_.cookieMask_, 0);
     io.mapRequired("table_id", msg.msg_.tableId_);
     io.mapRequired("command", msg.msg_.command_);
-    io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
-    io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);
-    io.mapRequired("priority", msg.msg_.priority_);
-    io.mapRequired("buffer_id", msg.msg_.bufferId_);
-    io.mapRequired("out_port", msg.msg_.outPort_);
-    io.mapRequired("out_group", msg.msg_.outGroup_);
-    io.mapRequired("flags", msg.msg_.flags_);
-    io.mapRequired("match", msg.match_);
-    io.mapRequired("instructions", msg.instructions_);
+    io.mapOptional("idle_timeout", msg.msg_.idleTimeout_, 0);
+    io.mapOptional("hard_timeout", msg.msg_.hardTimeout_, 0);
+    io.mapOptional("priority", msg.msg_.priority_, 0);
+    io.mapOptional("buffer_id", msg.msg_.bufferId_, ofp::OFP_NO_BUFFER);
+    io.mapOptional("out_port", msg.msg_.outPort_, ofp::OFPP_ANY);
+    io.mapOptional("out_group", msg.msg_.outGroup_, ofp::OFPG_ANY);
+    io.mapOptional("flags", msg.msg_.flags_);
+    io.mapOptional("match", msg.match_);
+    io.mapOptional("instructions", msg.instructions_);
   }
 };
 

@@ -295,19 +295,19 @@ Message/FlowMod:
   time: !optout Timestamp
   type: FLOW_MOD
   msg:
-    cookie: UInt64
-    cookie_mask: UInt64
+    cookie: !opt UInt64               # default=0
+    cookie_mask: !opt UInt64          # default=0
     table_id: UInt8
     command: FlowModCommand
-    idle_timeout: UInt16
-    hard_timeout: UInt16
-    priority: UInt16
-    buffer_id: BufferNumber
-    out_port: PortNumber
-    out_group: GroupNumber
-    flags: [FlowModFlags]
-    match: [Field]
-    instructions: [Instruction]
+    idle_timeout: !opt UInt16         # default=0
+    hard_timeout: !opt UInt16         # default=0
+    priority: !opt UInt16             # default=0
+    buffer_id: !opt BufferNumber      # default=NO_BUFFER
+    out_port: !opt PortNumber         # default=ANY
+    out_group: !opt GroupNumber       # default=ANY
+    flags: !opt [FlowModFlags]        # default=[]
+    match: !opt [Field]               # default=[]
+    instructions: !opt [Instruction]  # default=[]
   
 Message/GroupMod: 
   version: !opt UInt8
