@@ -12,8 +12,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Timestamp {
  public:
-  Timestamp() : time_{0, 0} {}
-  Timestamp(time_t seconds, UInt32 nanos) : time_{seconds, nanos} {}
+  Timestamp(time_t seconds = 0, UInt32 nanos = 0) : time_{seconds, nanos} {}
 
   time_t seconds() const { return time_.first; }
   UInt32 nanoseconds() const { return time_.second; }
@@ -25,9 +24,10 @@ class Timestamp {
   std::string toString() const;
 
   bool operator==(const Timestamp &rhs) const { return time_ == rhs.time_; }
-
   bool operator!=(const Timestamp &rhs) const { return time_ != rhs.time_; }
-
+  bool operator<(const Timestamp &rhs) const { return time_ < rhs.time_; }
+  bool operator>(const Timestamp &rhs) const { return time_ > rhs.time_; }
+  bool operator<=(const Timestamp &rhs) const { return time_ <= rhs.time_; }
   bool operator>=(const Timestamp &rhs) const { return time_ >= rhs.time_; }
 
   static Timestamp now();
@@ -37,6 +37,10 @@ class Timestamp {
 };
 
 OFP_END_IGNORE_PADDING
+
+inline std::ostream &operator<<(std::ostream &os, const Timestamp &value) {
+  return os << value.toString();
+}
 
 }  // namespace ofp
 

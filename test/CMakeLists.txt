@@ -41,6 +41,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/matchheader_unittest.cpp
 	ofp/matchpacket_unittest.cpp
 	ofp/message_unittest.cpp
+	ofp/messagesource_unittest.cpp
 	ofp/multipartreply_unittest.cpp
 	ofp/originalmatch_unittest.cpp
 	ofp/outputjson_unittest.cpp
@@ -55,6 +56,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/packetin_unittest.cpp
 	ofp/packetout_unittest.cpp
 	ofp/padding_unittest.cpp
+	ofp/pktsource_unittest.cpp
 	ofp/port_unittest.cpp
 	ofp/portstatus_unittest.cpp
 	ofp/protocoliterator_unittest.cpp
