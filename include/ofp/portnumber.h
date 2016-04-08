@@ -22,7 +22,9 @@ class PortNumber {
   }
 
   bool operator==(const PortNumber &rhs) const { return port_ == rhs.port_; }
-  bool operator==(OFPPortNo rhs) const { return port_ == static_cast<UInt32>(rhs); }
+  bool operator==(OFPPortNo rhs) const {
+    return port_ == static_cast<UInt32>(rhs);
+  }
   bool operator!=(const PortNumber &rhs) const { return !(*this == rhs); }
 
   // Handle conversions between 16-bit and 32-bit port numbers. Sign-extend the

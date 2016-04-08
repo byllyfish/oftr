@@ -2,9 +2,9 @@
 #define OFP_PKT_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/constants.h"
 #include "ofp/log.h"
 #include "ofp/macaddress.h"
-#include "ofp/constants.h"
 
 namespace ofp {
 namespace pkt {
@@ -200,4 +200,4 @@ static_assert(alignof(LLDPTlv) == 1, "Unexpected alignment.");
 }  // namespace pkt
 }  // namespace ofp
 
-#endif // OFP_PKT_H_
+#endif  // OFP_PKT_H_

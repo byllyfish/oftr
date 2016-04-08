@@ -22,7 +22,9 @@ class GroupNumber {
   }
 
   bool operator==(const GroupNumber &rhs) const { return group_ == rhs.group_; }
-  bool operator==(OFPGroupNo rhs) const { return group_ == static_cast<UInt32>(rhs); }
+  bool operator==(OFPGroupNo rhs) const {
+    return group_ == static_cast<UInt32>(rhs);
+  }
   bool operator!=(const GroupNumber &rhs) const { return !(*this == rhs); }
 
  private:

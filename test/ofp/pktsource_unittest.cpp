@@ -1,12 +1,11 @@
-#include "ofp/unittest.h"
 #include "ofp/demux/pktsource.h"
 #include "ofp/timestamp.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
-
 TEST(pktsource, test) {
-    demux::PktSource src;
+  demux::PktSource src;
 
 #if 0
     if (src.openDevice("en0", "tcp")) {
@@ -16,14 +15,15 @@ TEST(pktsource, test) {
     } else {
         log::debug("PktSource error:", src.error());
     }
-#endif //0
+#endif  // 0
 
-
-    if (src.openFile("/Users/bfish/Downloads/cap_single,3-default-default.pcap", "tcp")) {
-        src.runLoop(0, [](Timestamp ts, ByteRange data, unsigned len, void *context) {
-            log::debug("pcap_handler:", ts, len, data);
-        });
-    } else {
-        log::debug("PktSource error:", src.error());
-    }
+  if (src.openFile("/Users/bfish/Downloads/cap_single,3-default-default.pcap",
+                   "tcp")) {
+    src.runLoop(0,
+                [](Timestamp ts, ByteRange data, unsigned len, void *context) {
+                  log::debug("pcap_handler:", ts, len, data);
+                });
+  } else {
+    log::debug("PktSource error:", src.error());
+  }
 }
