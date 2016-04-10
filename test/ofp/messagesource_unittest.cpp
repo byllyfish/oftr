@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/demux/messagesource.h"
 #include "ofp/demux/pktsource.h"
 #include "ofp/message.h"
@@ -8,7 +11,7 @@ using namespace ofp;
 using demux::PktSource;
 using demux::MessageSource;
 
-static void callback(Message *message) {
+static void callback(Message *message, void *context) {
   message->transmogrify();
 
   ofp::yaml::Decoder decoder{message, false, true};
@@ -21,7 +24,7 @@ static void callback(Message *message) {
 
 TEST(messagesource, test) {
   PktSource pkt;
-  MessageSource msg(callback);
+  MessageSource msg(callback, nullptr);
 
   if (pkt.openFile("/Users/bfish/Downloads/"
                    "cap_single,3-ovsk,protocols=OpenFlow13-remote,port=6653."

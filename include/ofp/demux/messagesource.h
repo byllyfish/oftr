@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_DEMUX_MESSAGESOURCE_H_
 #define OFP_DEMUX_MESSAGESOURCE_H_
 
@@ -19,15 +22,16 @@ OFP_BEGIN_IGNORE_PADDING
 
 class MessageSource {
  public:
-  using MessageCallback = void (*)(Message *);
+  using MessageCallback = void (*)(Message *, void *);
 
-  explicit MessageSource(MessageCallback callback) : callback_{callback} {}
+  explicit MessageSource(MessageCallback callback, void *context) : callback_{callback}, context_{context} {}
 
   void submitPacket(Timestamp ts, ByteRange capture);
   void close();
 
  private:
   MessageCallback callback_ = nullptr;
+  void *context_ = nullptr;
   Timestamp ts_;
   IPv6Address src_;
   IPv6Address dst_;

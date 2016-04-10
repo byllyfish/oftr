@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/demux/messagesource.h"
 #include "ofp/header.h"
 #include "ofp/message.h"
@@ -137,5 +140,5 @@ void MessageSource::deliverMessage(const UInt8 *data, size_t length) {
   message.setTime(ts_);
 
   if (callback_)
-    callback_(&message);
+    callback_(&message, context_);
 }

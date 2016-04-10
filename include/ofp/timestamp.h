@@ -12,7 +12,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Timestamp {
  public:
-  Timestamp(time_t seconds = 0, UInt32 nanos = 0) : time_{seconds, nanos} {}
+  explicit Timestamp(time_t seconds = 0, UInt32 nanos = 0) : time_{seconds, nanos} {}
 
   time_t seconds() const { return time_.first; }
   UInt32 nanoseconds() const { return time_.second; }

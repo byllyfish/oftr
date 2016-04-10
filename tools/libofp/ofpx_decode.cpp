@@ -9,6 +9,8 @@
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/demux/pktsource.h"
+#include "ofp/demux/messagesource.h"
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -29,11 +31,6 @@ int Decode::run(int argc, const char *const *argv) {
                           "Translate binary OpenFlow messages in the input "
                           "files to human-readable YAML\n");
 
-  // If there are no input files, add "-" to indicate stdin.
-  if (inputFiles_.empty()) {
-    inputFiles_.push_back("-");
-  }
-
   // Set up output stream.
   std::ofstream outStream;
   if (outputFile_.empty()) {
@@ -47,7 +44,22 @@ int Decode::run(int argc, const char *const *argv) {
     output_ = &outStream;
   }
 
-  return static_cast<int>(decodeFiles());
+  // If --pcap-device option is specified, decode from packet capture device.
+  if (!pcapDevice_.empty()) {
+    return static_cast<int>(decodePcapDevice(pcapDevice_));
+  }
+
+  // If there are no input files, add "-" to indicate stdin.
+  if (inputFiles_.empty()) {
+    inputFiles_.push_back("-");
+  }
+
+  // Decode messages from input files.
+  if (pcapFormat_) {
+    return static_cast<int>(decodePcapFiles());
+  } else {
+    return static_cast<int>(decodeFiles());
+  }
 }
 
 ExitStatus Decode::decodeFiles() {
@@ -307,6 +319,56 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   return ExitStatus::Success;
 }
 
+ExitStatus Decode::decodePcapDevice(const std::string &device) {
+  using namespace ofp;
+  using namespace ofp::demux;
+
+  PktSource pcap;
+  MessageSource msg{pcapMessageCallback, this};
+
+  if (!pcap.openDevice(device.c_str(), "tcp")) {
+    std::cerr << "Error: " << pcap.error() << '\n';
+    return ExitStatus::FileOpenFailed;
+  }
+
+  pcap.runLoop(0,
+              [](Timestamp ts, ByteRange data, unsigned len, void *context) {
+                MessageSource *src =
+                    reinterpret_cast<MessageSource *>(context);
+                src->submitPacket(ts, data);
+              },
+              &msg);
+
+  return ExitStatus::Success;
+}
+
+ExitStatus Decode::decodePcapFiles() {
+  using namespace ofp;
+  using namespace ofp::demux;
+
+  const std::vector<std::string> &files = inputFiles_;
+
+  PktSource pcap;
+  MessageSource msg{pcapMessageCallback, this};
+
+  for (auto &filename: files) {
+    if (!pcap.openFile(filename, "tcp")) {
+      std::cerr << "Error: " << pcap.error() << '\n';
+      return ExitStatus::FileOpenFailed;
+    }
+
+    pcap.runLoop(0,
+                [](Timestamp ts, ByteRange data, unsigned len, void *context) {
+                  MessageSource *src =
+                      reinterpret_cast<MessageSource *>(context);
+                  src->submitPacket(ts, data);
+                },
+                &msg);
+  }
+
+  return ExitStatus::Success;
+}
+
 ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
                               bool header) {
   assert(!input);
@@ -555,4 +617,19 @@ ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src,
   sessionIdMap_[pair] = ++nextSessionId_;
 
   return nextSessionId_;
+}
+
+void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
+  Decode *decode = reinterpret_cast<Decode *>(context);
+
+  // Save a copy of the original message binary before we transmogrify it
+  // for parsing.
+  ofp::Message originalMessage{nullptr};
+  originalMessage.assign(*message);
+  message->transmogrify();
+
+  ExitStatus result = decode->decodeOneMessage(message, &originalMessage);
+  if (result != ExitStatus::Success) {
+    std::cerr << "pcapMessageCallback: Failed to decode message";
+  }
 }
