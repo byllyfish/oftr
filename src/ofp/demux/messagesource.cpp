@@ -11,7 +11,7 @@ using namespace ofp;
 using namespace ofp::demux;
 
 void MessageSource::submitPacket(Timestamp ts, ByteRange capture) {
-  // log::debug("submitPacket", capture);
+  log::debug("submitPacket", capture);
 
   const UInt8 *data = capture.data();
   size_t length = capture.size();
@@ -64,12 +64,17 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
     return;
   }
 
+  src_.setAddress(ip->src);
+  dst_.setAddress(ip->dst);
+  len_ = ip->length;
+
+  if (len_ < length) {
+    log::warning("MessageSource: IPv4 packet is padded", length - len_);
+    length = len_;
+  }
+
   data += hdrLen;
   length -= hdrLen;
-
-  src_ = ip->src;
-  dst_ = ip->dst;
-  len_ = ip->length;
 
   if (ip->proto == PROTOCOL_TCP) {
     submitTCP(data, length);
@@ -80,7 +85,9 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
   }
 }
 
-void MessageSource::submitIPv6(const UInt8 *data, size_t length) {}
+void MessageSource::submitIPv6(const UInt8 *data, size_t length) {
+  log::error("submitIPv6: IPv6 not implemented");
+}
 
 void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   auto tcp = pkt::TCPHdr::cast(data, length);
@@ -89,11 +96,7 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
     return;
   }
 
-  srcPort_ = tcp->srcPort;
-  dstPort_ = tcp->dstPort;
   flags_ = tcp->flags;
-  seqNum_ = tcp->seqNum;
-  ackNum_ = tcp->ackNum;
 
   unsigned tcpHdrLen = (flags_ >> 12) * 4;
   if (tcpHdrLen < sizeof(pkt::TCPHdr) || tcpHdrLen > length) {
@@ -101,40 +104,68 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
     return;
   }
 
+  src_.setPort(tcp->srcPort);
+  dst_.setPort(tcp->dstPort);
+  seqNum_ = tcp->seqNum;
+
   data += tcpHdrLen;
   length -= tcpHdrLen;
 
-  submitPayload(data, length);
+  if (flags_ & TCP_SYN) {
+    ++seqNum_;
+    if (length > 0) {
+      log::warning("MessageSource: TCP SYN unexpected data", length);
+      return;
+    }
+  }
+
+  auto read = flows_.receive(ts_, src_, dst_, seqNum_ + length, {data, length}, UInt8_narrow_cast(flags_));
+  if (read.size() > 0) {
+    size_t n = submitPayload(read.data(), read.size());
+    log::debug("submitTCP: consume", n, "bytes");
+    read.consume(n);
+  }
 }
 
 void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
 
-void MessageSource::submitPayload(const UInt8 *data, size_t length) {
-  // log::debug("submitPayload", src_, srcPort_, dst_, dstPort_, flags_, len_,
-  // ByteRange{data, length});
+size_t MessageSource::submitPayload(const UInt8 *data, size_t length) {
+  log::debug("submitPayload", src_, dst_, len_, ByteRange{data, length});
 
   // Deliver completed messages in the payload buffer.
-  UInt16 msgLen = 0;
-  while (length >= sizeof(Header)) {
-    msgLen = Big16_copy(data + 2);
-    if (length >= msgLen) {
+  size_t remaining = length;
+
+  while (remaining >= sizeof(Header)) {
+    UInt16 msgLen = Big16_copy(data + 2);
+
+    if (msgLen < sizeof(Header)) {
+      log::warning("submitPayload: msg length < 8 bytes", msgLen);
+      msgLen = 8;
+    }
+
+    if (remaining >= msgLen) {
       deliverMessage(data, msgLen);
       data += msgLen;
-      length -= msgLen;
+      remaining -= msgLen;
     } else {
       break;
     }
   }
 
-  if (length != 0) {
-    log::warning("submitPayload: Incomplete message", msgLen, length);
-  }
+  assert(length >= remaining);
+
+  return length - remaining;
 }
 
 void MessageSource::deliverMessage(const UInt8 *data, size_t length) {
-  log::info("deliverMessage:", seqNum_, ackNum_, ByteRange(data, length));
+  log::info("deliverMessage:", seqNum_, ByteRange(data, length));
 
-  MessageInfo info{1, {src_, srcPort_}, {dst_, dstPort_}};
+  if (length < 8) {
+    log::warning("deliverMessage: Message too small");
+    return;
+  }
+
+  MessageInfo info{1, src_, dst_};
   Message message{data, length};
   message.setInfo(&info);
   message.setTime(ts_);
@@ -142,3 +173,4 @@ void MessageSource::deliverMessage(const UInt8 *data, size_t length) {
   if (callback_)
     callback_(&message, context_);
 }
+

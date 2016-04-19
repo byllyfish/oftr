@@ -255,6 +255,9 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/yschema.cpp
   src/ofp/demux/messagesource.cpp
   src/ofp/demux/pktsource.cpp
+  src/ofp/demux/segmentcache.cpp
+  src/ofp/demux/flowcache.cpp
+  src/ofp/demux/flowstate.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
