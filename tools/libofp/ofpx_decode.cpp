@@ -6,11 +6,11 @@
 #include <iostream>
 #include "./ofpx_util.h"
 #include "llvm/Support/Path.h"
+#include "ofp/demux/messagesource.h"
+#include "ofp/demux/pktsource.h"
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
-#include "ofp/demux/pktsource.h"
-#include "ofp/demux/messagesource.h"
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -332,12 +332,12 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
   }
 
   pcap.runLoop(0,
-              [](Timestamp ts, ByteRange data, unsigned len, void *context) {
-                MessageSource *src =
-                    reinterpret_cast<MessageSource *>(context);
-                src->submitPacket(ts, data);
-              },
-              &msg);
+               [](Timestamp ts, ByteRange data, unsigned len, void *context) {
+                 MessageSource *src =
+                     reinterpret_cast<MessageSource *>(context);
+                 src->submitPacket(ts, data);
+               },
+               &msg);
 
   return ExitStatus::Success;
 }
@@ -351,19 +351,19 @@ ExitStatus Decode::decodePcapFiles() {
   PktSource pcap;
   MessageSource msg{pcapMessageCallback, this};
 
-  for (auto &filename: files) {
+  for (auto &filename : files) {
     if (!pcap.openFile(filename, "tcp")) {
       std::cerr << "Error: " << pcap.error() << '\n';
       return ExitStatus::FileOpenFailed;
     }
 
     pcap.runLoop(0,
-                [](Timestamp ts, ByteRange data, unsigned len, void *context) {
-                  MessageSource *src =
-                      reinterpret_cast<MessageSource *>(context);
-                  src->submitPacket(ts, data);
-                },
-                &msg);
+                 [](Timestamp ts, ByteRange data, unsigned len, void *context) {
+                   MessageSource *src =
+                       reinterpret_cast<MessageSource *>(context);
+                   src->submitPacket(ts, data);
+                 },
+                 &msg);
   }
 
   return ExitStatus::Success;

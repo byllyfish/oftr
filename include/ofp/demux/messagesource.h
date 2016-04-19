@@ -5,9 +5,9 @@
 #define OFP_DEMUX_MESSAGESOURCE_H_
 
 #include "ofp/byterange.h"
+#include "ofp/demux/flowcache.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/timestamp.h"
-#include "ofp/demux/flowcache.h"
 
 namespace ofp {
 
@@ -25,7 +25,8 @@ class MessageSource {
  public:
   using MessageCallback = void (*)(Message *, void *);
 
-  explicit MessageSource(MessageCallback callback, void *context) : callback_{callback}, context_{context} {}
+  explicit MessageSource(MessageCallback callback, void *context)
+      : callback_{callback}, context_{context} {}
 
   void submitPacket(Timestamp ts, ByteRange capture);
   void close();

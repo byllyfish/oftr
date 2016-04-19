@@ -119,7 +119,7 @@ struct MappingTraits<ofp::yaml::Encoder> {
     io.mapOptional("_source", ignore);
     io.mapOptional("_dest", ignore);
     io.mapOptional("time", ignore);
-    
+
     if (header.type() != OFPT_UNSUPPORTED) {
       encoder.encodeMsg(io);
     }

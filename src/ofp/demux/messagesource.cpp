@@ -119,7 +119,8 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
     }
   }
 
-  auto read = flows_.receive(ts_, src_, dst_, seqNum_ + length, {data, length}, UInt8_narrow_cast(flags_));
+  auto read = flows_.receive(ts_, src_, dst_, seqNum_ + length, {data, length},
+                             UInt8_narrow_cast(flags_));
   if (read.size() > 0) {
     size_t n = submitPayload(read.data(), read.size());
     log::debug("submitTCP: consume", n, "bytes");
@@ -173,4 +174,3 @@ void MessageSource::deliverMessage(const UInt8 *data, size_t length) {
   if (callback_)
     callback_(&message, context_);
 }
-

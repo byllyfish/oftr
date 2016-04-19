@@ -33,7 +33,7 @@ namespace ofpx {
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
 //   --pcap-format          Treat input files as .pcap format.
-//   
+//
 // Usage:
 //
 // To decode a file of binary OpenFlow messages to YAML:
@@ -126,8 +126,12 @@ class Decode : public Subprogram {
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};
-  cl::opt<std::string> pcapDevice_{"pcap-device", cl::desc("Reassemble OpenFlow messages from specified device"), cl::ValueRequired};
-  cl::opt<bool> pcapFormat_{"pcap-format", cl::desc("Treat input files as .pcap format")};
+  cl::opt<std::string> pcapDevice_{
+      "pcap-device",
+      cl::desc("Reassemble OpenFlow messages from specified device"),
+      cl::ValueRequired};
+  cl::opt<bool> pcapFormat_{"pcap-format",
+                            cl::desc("Treat input files as .pcap format")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

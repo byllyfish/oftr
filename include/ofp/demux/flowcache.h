@@ -1,9 +1,9 @@
 #ifndef OFP_DEMUX_FLOWCACHE_H_
 #define OFP_DEMUX_FLOWCACHE_H_
 
-#include "ofp/ipv6endpoint.h"
-#include "ofp/demux/flowstate.h"
 #include <unordered_map>
+#include "ofp/demux/flowstate.h"
+#include "ofp/ipv6endpoint.h"
 
 namespace ofp {
 namespace demux {
@@ -19,7 +19,9 @@ struct FlowCacheKey {
   IPv6Endpoint y;
 
   FlowCacheKey(const IPv6Endpoint &src, const IPv6Endpoint &dst, bool &srcIsX);
-  bool operator==(const FlowCacheKey &key) const { return x == key.x && y == key.y; }
+  bool operator==(const FlowCacheKey &key) const {
+    return x == key.x && y == key.y;
+  }
 };
 
 // Entry used in FlowCache.
@@ -60,28 +62,30 @@ enum TCPControlBits : UInt8 {
 };
 
 /// Usage:
-/// 
+///
 ///    FlowCache cache;
-///    
+///
 ///    FlowData data = cache.receive(ts, src, dst, seq, data, flags);
 ///    if (data.size() > 0) {
 ///       process(ts, src, dst, data.data(), data.size());
 ///       data.consume(data.size());
 ///    }
-///    
+///
 class FlowCache {
-public:
+ public:
   // Submit data from a tcp segment to update the cache.
-  FlowData receive(const Timestamp &ts, const IPv6Endpoint &src, const IPv6Endpoint &dst, UInt32 seq, ByteRange data, UInt8 flags = 0);
+  FlowData receive(const Timestamp &ts, const IPv6Endpoint &src,
+                   const IPv6Endpoint &dst, UInt32 seq, ByteRange data,
+                   UInt8 flags = 0);
 
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
-private:
+ private:
   std::unordered_map<detail::FlowCacheKey, detail::FlowCacheEntry> cache_;
   UInt64 sessionID_ = 0;
 
-  UInt64 assignSessionID() { 
+  UInt64 assignSessionID() {
     if (++sessionID_ == 0) {
       return ++sessionID_;
     }
@@ -92,4 +96,4 @@ private:
 }  // namespace demux
 }  // namespace ofp
 
-#endif // OFP_DEMUX_FLOWCACHE_H_
+#endif  // OFP_DEMUX_FLOWCACHE_H_
