@@ -75,7 +75,7 @@ class PktSource {
 
 OFP_END_IGNORE_PADDING
 
-}  // namespace pcap
+}  // namespace demux
 }  // namespace ofp
 
 #endif  // OFP_DEMUX_PKTSOURCE_H_

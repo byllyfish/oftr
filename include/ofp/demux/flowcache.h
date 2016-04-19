@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_DEMUX_FLOWCACHE_H_
 #define OFP_DEMUX_FLOWCACHE_H_
 

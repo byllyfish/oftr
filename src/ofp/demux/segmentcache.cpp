@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/demux/segmentcache.h"
 
 using namespace ofp;
@@ -101,7 +104,7 @@ void SegmentCache::update(size_t idx) {
       seg.append(next.data());
       segments_.erase(segments_.begin() + idx + 1);
     } else {
-      // TODO: check for overlapping segments.
+      // TODO(bfish): check for overlapping segments.
     }
   }
 }
