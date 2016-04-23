@@ -30,13 +30,8 @@ TEST(messagesource, test) {
                    "cap_single,3-ovsk,protocols=OpenFlow13-remote,port=6653."
                    "pcap",
                    "tcp")) {
-    pkt.runLoop(0,
-                [](Timestamp ts, ByteRange data, unsigned len, void *context) {
-                  MessageSource *src =
-                      reinterpret_cast<MessageSource *>(context);
-                  src->submitPacket(ts, data);
-                },
-                &msg);
+    msg.runLoop(&pkt);
+
   } else {
     log::debug("PktSource error:", pkt.error());
   }

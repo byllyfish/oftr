@@ -15,6 +15,8 @@ class Message;
 
 namespace demux {
 
+class PktSource;
+
 /// \brief Given captured packets, reassemble annotated OpenFlow messages.
 ///
 /// - Does not support fragmented TCP packets.
@@ -28,8 +30,11 @@ class MessageSource {
   explicit MessageSource(MessageCallback callback, void *context)
       : callback_{callback}, context_{context} {}
 
-  void submitPacket(Timestamp ts, ByteRange capture);
-  void close();
+  void runLoop(PktSource *pcap);
+
+  void submitEthernet(Timestamp ts, ByteRange capture);
+  void submitIP(Timestamp ts, ByteRange capture);
+  void finish();
 
  private:
   MessageCallback callback_ = nullptr;
@@ -42,13 +47,16 @@ class MessageSource {
   UInt16 flags_ = 0;
   FlowCache flows_;
 
+  void submitEthernet(const UInt8 *data, size_t length);
   void submitIPv4(const UInt8 *data, size_t length);
   void submitIPv6(const UInt8 *data, size_t length);
   void submitTCP(const UInt8 *data, size_t length);
   void submitUDP(const UInt8 *data, size_t length);
-  size_t submitPayload(const UInt8 *data, size_t length);
 
-  void deliverMessage(const UInt8 *data, size_t length);
+  size_t submitPayload(const UInt8 *data, size_t length, UInt64 sessionID);
+  void deliverMessage(const UInt8 *data, size_t length, UInt64 sessionID);
+
+  static void debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow, size_t n);
 };
 
 OFP_END_IGNORE_PADDING

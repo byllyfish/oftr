@@ -23,10 +23,13 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
                             const IPv6Endpoint &dst, UInt32 seq, ByteRange data,
                             UInt8 flags) {
   // Only update cache entry if there is data, or a SYN|FIN|RST flag is present.
-  const UInt8 kFlags = TCP_SYN | TCP_FIN | TCP_RST;
+  const UInt8 kInterestingFlags = TCP_SYN | TCP_FIN | TCP_RST;
+  const UInt8 kFinalFlags = TCP_FIN | TCP_RST;
 
-  if (data.empty() && (flags & kFlags) == 0)
-    return FlowData{};
+  if (data.empty() && (flags & kInterestingFlags) == 0)
+    return FlowData{0};
+
+  bool final = (flags & kFinalFlags) != 0;
 
   bool isX;
   detail::FlowCacheKey key{src, dst, isX};
@@ -37,9 +40,9 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   }
 
   if (isX) {
-    return entry.x.receive(ts, seq, data, entry.sessionID);
+    return entry.x.receive(ts, seq, data, entry.sessionID, final);
   } else {
-    return entry.y.receive(ts, seq, data, entry.sessionID);
+    return entry.y.receive(ts, seq, data, entry.sessionID, final);
   }
 }
 
@@ -54,4 +57,21 @@ FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
   }
 
   return nullptr;
+}
+
+void FlowCache::finish(FlowCallback callback) {
+  for (auto &iter : cache_) {
+    auto &key = iter.first;
+    auto &entry = iter.second;
+
+    callback(key.x, key.y, entry.x.latestData(entry.sessionID));
+    callback(key.y, key.x, entry.y.latestData(entry.sessionID));
+  }
+}
+
+UInt64 FlowCache::assignSessionID() {
+  if (++sessionID_ == 0) {
+    return ++sessionID_;
+  }
+  return sessionID_;
 }

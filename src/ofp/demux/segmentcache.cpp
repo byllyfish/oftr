@@ -17,9 +17,9 @@ bool Segment::lessThan(UInt32 lhs, UInt32 rhs) {
   return false;
 }
 
-void SegmentCache::store(UInt32 end, const ByteRange &data) {
-  // Do nothing if new data segment is empty.
-  if (data.empty())
+void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
+  // Do nothing if new data segment is empty, unless it's the final segment.
+  if (data.empty() && !final)
     return;
 
   UInt32 begin = end - UInt32_narrow_cast(data.size());
@@ -28,18 +28,26 @@ void SegmentCache::store(UInt32 end, const ByteRange &data) {
     Segment &seg = segments_[i];
 
     if (begin == seg.end()) {
-      seg.append(data);
-      update(i);
+      if (seg.final()) {
+        log::warning("SegmentCache: can't append data to final segment");
+      } else {
+        seg.append(data, final);
+        update(i, final);
+      }
       goto DONE;
     }
 
     if (end == seg.begin()) {
-      seg.prepend(data);
+      if (final) {
+        insert(end, data, i, final);
+      } else {
+        seg.prepend(data);
+      }
       goto DONE;
     }
 
     if (Segment::lessThan(end, seg.begin())) {
-      insert(end, data, i);
+      insert(end, data, i, final);
       goto DONE;
     }
 
@@ -52,9 +60,14 @@ void SegmentCache::store(UInt32 end, const ByteRange &data) {
       // FIXME: ignore overlapping data for now...
       goto DONE;
     }
+
+    if (seg.final()) {
+      log::warning("SegmentCache: final segment seen already");
+      goto DONE;
+    }
   }
 
-  append(end, data);
+  append(end, data, final);
 
 DONE:
   assert(checkInvariant());
@@ -71,6 +84,7 @@ void SegmentCache::consume(size_t len) {
   if (!segments_.empty()) {
     Segment &seg = segments_[0];
     if (len >= seg.size()) {
+      assert(len == seg.size());
       segments_.erase(segments_.begin());
     } else {
       seg.consume(len);
@@ -83,25 +97,32 @@ std::string SegmentCache::toString() const {
   std::ostringstream oss;
   for (auto &seg : segments_) {
     oss << " [" << seg.begin() << "," << seg.end() << ")";
+    if (seg.final())
+      oss << '*';
   }
   return oss.str();
 }
 
-void SegmentCache::append(UInt32 end, const ByteRange &data) {
-  segments_.emplace_back(end, data);
+void SegmentCache::append(UInt32 end, const ByteRange &data, bool final) {
+  segments_.emplace_back(end, data, final);
 }
 
-void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx) {
-  segments_.emplace(segments_.begin() + idx, end, data);
+void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx, bool final) {
+  segments_.emplace(segments_.begin() + idx, end, data, final);
 }
 
-void SegmentCache::update(size_t idx) {
+void SegmentCache::update(size_t idx, bool final) {
+  // TODO(bfish): if final is true, we need to clear out the rest of the segments.
+
   if (idx < segments_.size() - 1) {
     // Check next segment for overlap.
     auto &seg = segments_[idx];
     auto &next = segments_[idx + 1];
+
+    assert(!seg.final());
+    
     if (seg.end() == next.begin()) {
-      seg.append(next.data());
+      seg.append(next.data(), next.final());
       segments_.erase(segments_.begin() + idx + 1);
     } else {
       // TODO(bfish): check for overlapping segments.
@@ -112,11 +133,27 @@ void SegmentCache::update(size_t idx) {
 bool SegmentCache::checkInvariant() {
   if (!segments_.empty()) {
     auto *seg = &segments_[0];
+
     for (size_t i = 1; i < segments_.size(); ++i) {
       auto *next = &segments_[i];
+
+      // Verify that segments are in non-overlapping sorted order.
       if (seg->end() != next->begin() &&
-          !Segment::lessThan(seg->end(), next->begin()))
+          !Segment::lessThan(seg->end(), next->begin())) {
+        log::debug("SegmentCache: segments out of order", toString());
         return false;
+      }
+      // Verify that only the final segment is empty.
+      if (seg->size() == 0 && !seg->final()) {
+        log::debug("SegmentCache: empty segment", toString());
+        return false;
+      }
+      // Verify that only the last segment is marked final.
+      if (seg->final()) {
+        log::debug("SegmentCache: final segment isn't last", toString());
+        return false;
+      }
+
       seg = next;
     }
   }

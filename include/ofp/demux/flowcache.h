@@ -22,6 +22,7 @@ struct FlowCacheKey {
   IPv6Endpoint y;
 
   FlowCacheKey(const IPv6Endpoint &src, const IPv6Endpoint &dst, bool &srcIsX);
+
   bool operator==(const FlowCacheKey &key) const {
     return x == key.x && y == key.y;
   }
@@ -33,6 +34,8 @@ struct FlowCacheEntry {
   FlowState x;
   FlowState y;
 };
+
+using FlowMap = std::unordered_map<FlowCacheKey, FlowCacheEntry>;
 
 }  // namespace detail
 }  // namespace demux
@@ -70,9 +73,15 @@ enum TCPControlBits : UInt8 {
 ///
 ///    FlowData data = cache.receive(ts, src, dst, seq, data, flags);
 ///    if (data.size() > 0) {
-///       process(ts, src, dst, data.data(), data.size());
-///       data.consume(data.size());
+///      process(ts, src, dst, data.data(), data.size());
+///      data.consume(data.size());
 ///    }
+///    
+///    ...
+///    
+///    cache.finish([](const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow) {
+//       process(src, dst, data.data(), data.size());
+//     });
 ///
 class FlowCache {
  public:
@@ -84,16 +93,19 @@ class FlowCache {
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
+  using FlowCallback = void (*)(const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &);
+
+  // Call a function to process remaining data in the cache.
+  void finish(FlowCallback callback);
+
+  // Erase all data from the cache.
+  void clear() { cache_.clear(); }
+
  private:
-  std::unordered_map<detail::FlowCacheKey, detail::FlowCacheEntry> cache_;
+  detail::FlowMap cache_;
   UInt64 sessionID_ = 0;
 
-  UInt64 assignSessionID() {
-    if (++sessionID_ == 0) {
-      return ++sessionID_;
-    }
-    return sessionID_;
-  }
+  UInt64 assignSessionID();
 };
 
 }  // namespace demux

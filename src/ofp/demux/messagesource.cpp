@@ -2,31 +2,98 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/messagesource.h"
+#include "ofp/demux/pktsource.h"
 #include "ofp/header.h"
 #include "ofp/message.h"
 #include "ofp/messageinfo.h"
 #include "ofp/pkt.h"
+#include <fstream>   // for debugWrite method
 
 using namespace ofp;
 using namespace ofp::demux;
 
-void MessageSource::submitPacket(Timestamp ts, ByteRange capture) {
-  log::debug("submitPacket", capture);
+const UInt16 DATALINK_8021Q = 0x8100;
+const size_t k8021QHeaderSize = 4;
+
+static void sEthernetCallback(Timestamp ts, ByteRange data, unsigned len, void *context) {
+  MessageSource *src = reinterpret_cast<MessageSource *>(context);
+  src->submitEthernet(ts, data);
+}
+
+static void sIPCallback(Timestamp ts, ByteRange data, unsigned len, void *context) {
+  MessageSource *src = reinterpret_cast<MessageSource *>(context);
+  src->submitIP(ts, data);
+}
+
+void MessageSource::runLoop(PktSource *pcap) {
+  PktSource::PktCallback callback;
+
+  if (pcap->encapsulation() == PktSource::ENCAP_ETHERNET) {
+    callback = sEthernetCallback;
+  } else {
+    callback = sIPCallback;
+  }
+
+  pcap->runLoop(callback, this);
+  finish();
+}
+
+void MessageSource::submitEthernet(Timestamp ts, ByteRange capture) {
+  log::debug("submitEthernet", ts, capture);
 
   const UInt8 *data = capture.data();
   size_t length = capture.size();
 
+  ts_ = ts;
+  submitEthernet(data, length);
+}
+
+void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
+  log::debug("submitIP", ts, capture);
+
+  const UInt8 *data = capture.data();
+  size_t length = capture.size();
+
+  ts_ = ts;
+
+  if (length > 0) {
+    UInt8 vers = (data[0] >> 4);
+    if (vers == pkt::kIPv4Version) {
+      submitIPv4(data, length);
+    } else if (vers == pkt::kIPv6Version) {
+      submitIPv6(data, length);
+    } else {
+      log::debug("MessageSource: Unknown IP version", vers);
+    }
+  }
+}
+
+void MessageSource::finish() {
+  flows_.finish([](const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow){
+    debugWrite(src, dst, flow, flow.size());
+  });
+  flows_.clear();
+}
+
+void MessageSource::submitEthernet(const UInt8 *data, size_t length) {
   auto eth = pkt::Ethernet::cast(data, length);
   if (!eth) {
     log::warning("MessageSource: No ethernet header");
     return;
   }
 
-  ts_ = ts;
   data += sizeof(pkt::Ethernet);
   length -= sizeof(pkt::Ethernet);
 
   UInt16 ethType = eth->type;
+
+  // Ignore 802.1Q header and vlan.
+  if (ethType == DATALINK_8021Q && length >= k8021QHeaderSize) {
+    ethType = *Big16_cast(data + 2);
+    data += k8021QHeaderSize;
+    length -= k8021QHeaderSize;
+  }
+
   if (ethType == DATALINK_IPV4) {
     submitIPv4(data, length);
   } else if (ethType == DATALINK_IPV6) {
@@ -35,8 +102,6 @@ void MessageSource::submitPacket(Timestamp ts, ByteRange capture) {
     log::debug("MessageSource: Skip ethernet type", ethType);
   }
 }
-
-void MessageSource::close() {}
 
 void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
   auto ip = pkt::IPv4Hdr::cast(data, length);
@@ -86,7 +151,35 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
 }
 
 void MessageSource::submitIPv6(const UInt8 *data, size_t length) {
-  log::error("submitIPv6: IPv6 not implemented");
+  auto ip = pkt::IPv6Hdr::cast(data, length);
+  if (!ip) {
+    log::warning("MessageSource: No IPv6 header");
+    return;
+  }
+
+  UInt32 verClassLabel = ip->verClassLabel;
+  UInt8 vers = verClassLabel >> 28;
+  if (vers != pkt::kIPv6Version) {
+    log::warning("MatchPacket: Unexpected IPv6 version", vers);
+    return;
+  }
+
+  src_.setAddress(ip->src);
+  dst_.setAddress(ip->dst);
+  len_ = ip->payloadLength;
+
+  data += sizeof(pkt::IPv6Hdr);
+  length -= sizeof(pkt::IPv6Hdr);
+
+  log::debug("IPv6 payloadLength:", len_, length);
+
+  if (ip->nextHeader == PROTOCOL_TCP) {
+    submitTCP(data, length);
+  } else if (ip->nextHeader == PROTOCOL_UDP) {
+    submitUDP(data, length);
+  } else {
+    log::debug("MessageSource: Ignored IPv6 proto", ip->nextHeader);
+  }
 }
 
 void MessageSource::submitTCP(const UInt8 *data, size_t length) {
@@ -119,19 +212,23 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
     }
   }
 
-  auto read = flows_.receive(ts_, src_, dst_, seqNum_ + length, {data, length},
+  auto flow = flows_.receive(ts_, src_, dst_, seqNum_ + length, {data, length},
                              UInt8_narrow_cast(flags_));
-  if (read.size() > 0) {
-    size_t n = submitPayload(read.data(), read.size());
-    log::debug("submitTCP: consume", n, "bytes");
-    read.consume(n);
+
+  if (flow.size() > 0) {
+    size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
+    log::debug("submitTCP: consume", n, "bytes from session", flow.sessionID());
+    debugWrite(src_, dst_, flow, n);
+    flow.consume(n);
+  } else if (flow.final()) {
+    debugWrite(src_, dst_, flow, 0);
   }
 }
 
 void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
 
-size_t MessageSource::submitPayload(const UInt8 *data, size_t length) {
-  log::debug("submitPayload", src_, dst_, len_, ByteRange{data, length});
+size_t MessageSource::submitPayload(const UInt8 *data, size_t length, UInt64 sessionID) {
+  log::debug("submitPayload", sessionID, src_, dst_, ByteRange{data, length});
 
   // Deliver completed messages in the payload buffer.
   size_t remaining = length;
@@ -145,7 +242,7 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length) {
     }
 
     if (remaining >= msgLen) {
-      deliverMessage(data, msgLen);
+      deliverMessage(data, msgLen, sessionID);
       data += msgLen;
       remaining -= msgLen;
     } else {
@@ -158,19 +255,39 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length) {
   return length - remaining;
 }
 
-void MessageSource::deliverMessage(const UInt8 *data, size_t length) {
-  log::info("deliverMessage:", seqNum_, ByteRange(data, length));
+void MessageSource::deliverMessage(const UInt8 *data, size_t length, UInt64 sessionID) {
+  log::debug("deliverMessage:", sessionID, ByteRange(data, length));
+  assert(length >= 8);
 
-  if (length < 8) {
-    log::warning("deliverMessage: Message too small");
-    return;
-  }
-
-  MessageInfo info{1, src_, dst_};
+  MessageInfo info{sessionID, src_, dst_};
   Message message{data, length};
   message.setInfo(&info);
   message.setTime(ts_);
 
   if (callback_)
     callback_(&message, context_);
+}
+
+void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow, size_t n) {
+  // If this is the last segment of the flow, we need to write all of it.
+  if (flow.final()) {
+    n = flow.size();
+  }
+
+  // If there's no data, don't create any files.
+  if (n == 0)
+    return;
+
+  // Write flow to a file "/tmp/com.libofp.messagesource/$src-$dst"
+  std::ostringstream oss;
+  oss << "/tmp/com.libofp.messagesource/" << flow.sessionID() << '-' << src << '-' << dst;
+  auto filename = oss.str();
+
+  std::ofstream out{filename, std::ios::out|std::ios::app|std::ios::binary};
+  if (!out) {
+    log::error("MessageSource: Unable to open file", filename);
+    return;
+  }
+
+  out.write(reinterpret_cast<const char *>(flow.data()), n);
 }

@@ -29,6 +29,7 @@ TEST(segmentcache, test1Segment) {
   EXPECT_HEX("55", seg->data().data(), seg->data().size());
   EXPECT_EQ(0, seg->begin());
   EXPECT_EQ(1, seg->end());
+  EXPECT_FALSE(seg->final());
 }
 
 TEST(segmentcache, testAdjacentSegments) {
@@ -46,6 +47,7 @@ TEST(segmentcache, testAdjacentSegments) {
   EXPECT_HEX("00112233", seg->data().data(), seg->data().size());
   EXPECT_EQ(0, seg->begin());
   EXPECT_EQ(4, seg->end());
+  EXPECT_FALSE(seg->final());
 
   cache.store(8, data.toRange());
   EXPECT_EQ(1, cache.size());
@@ -56,6 +58,7 @@ TEST(segmentcache, testAdjacentSegments) {
   EXPECT_HEX("0011223300112233", seg->data().data(), seg->data().size());
   EXPECT_EQ(0, seg->begin());
   EXPECT_EQ(8, seg->end());
+  EXPECT_FALSE(seg->final());
 }
 
 TEST(segmentcache, testNonAdjacentSegments) {
@@ -166,7 +169,78 @@ TEST(segmentcache, testDrainPartial) {
   EXPECT_EQ(4, seg->end());
 }
 
+TEST(segmentcache, testFinal) {
+  // Storing a final, empty segment [0,0) should leave cache with one segment.
+  SegmentCache cache;
+  cache.store(0, {}, true);
+  EXPECT_EQ(1, cache.size());
+
+  auto seg = cache.current();
+  ASSERT_NE(nullptr, cache.current());
+  EXPECT_TRUE(seg->final());
+  EXPECT_EQ(0, seg->size());
+}
+
+TEST(segmentcache, testAdjSegmentsSeg2Final) {
+  // Storing two adjacent segments [0,4) and [4, 8) should combine them
+  // into one segment. The second segment is final.
+  SegmentCache cache;
+  ByteList data{HexToRawData("00112233")};
+
+  cache.store(4, data.toRange());
+  EXPECT_EQ(1, cache.size());
+
+  auto seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("00112233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(0, seg->begin());
+  EXPECT_EQ(4, seg->end());
+  EXPECT_FALSE(seg->final());
+
+  cache.store(8, data.toRange(), true);
+  EXPECT_EQ(1, cache.size());
+
+  seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("0011223300112233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(0, seg->begin());
+  EXPECT_EQ(8, seg->end());
+  EXPECT_TRUE(seg->final());
+}
+
+TEST(segmentcache, testAdjSegmentsSeg1Final) {
+  // Storing two adjacent segments [0,4) and [4, 8) should ignore the second
+  // segment when the first segment is final.
+  SegmentCache cache;
+  ByteList data{HexToRawData("00112233")};
+
+  cache.store(4, data.toRange(), true);
+  EXPECT_EQ(1, cache.size());
+
+  auto seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("00112233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(0, seg->begin());
+  EXPECT_EQ(4, seg->end());
+  EXPECT_TRUE(seg->final());
+
+  cache.store(8, data.toRange(), false);
+  EXPECT_EQ(1, cache.size());
+
+  seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("00112233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(0, seg->begin());
+  EXPECT_EQ(4, seg->end());
+  EXPECT_TRUE(seg->final());
+}
+
 TEST(segmentcache, lessThan) {
+  // Segment::lessThan() should do the right thing mod 2^32.
   EXPECT_TRUE(Segment::lessThan(0, 1));
   EXPECT_TRUE(Segment::lessThan(1, 2));
   EXPECT_TRUE(Segment::lessThan(0xFFFFFFFF - 1, 0xFFFFFFFF));

@@ -20,8 +20,7 @@ namespace demux {
 ///
 ///     PktSource src;
 ///     if (src.openDevice("en0", "tcp")) {
-///         src.runLoop([](Timestamp ts, unsigned len, ByteRange data, void
-///         *context) {
+///         src.runLoop([](Timestamp ts, ByteRange data, unsigned len, void *context) {
 ///             log::debug("pkt", ts, len, data);
 ///         });
 ///     }
@@ -29,9 +28,8 @@ namespace demux {
 /// To read packets offline from the file "data.pcap":
 ///
 ///     PktSource src;
-///     if (src.openFile("data.pcap")) {
-///         src.runLoop([](Timestamp ts, unsigned len, ByteRange data, void
-///         *context) {
+///     if (src.openFile("data.pcap", "tcp")) {
+///         src.runLoop([](Timestamp ts, ByteRange data, unsigned len, void *context) {
 ///             log::debug("pkt", ts, len, data);
 ///         });
 ///     }
@@ -47,16 +45,24 @@ class PktSource {
     DEFAULT_BUFFER_SIZE = 5 * 1024 * 1024,  // 5 MB
   };
 
+  enum Encapsulation {
+    ENCAP_UNSUPPORTED = 0,
+    ENCAP_ETHERNET = 1,
+    ENCAP_IP = 2,
+  };
+
   using PktCallback = void (*)(Timestamp, ByteRange, unsigned, void *);
 
   PktSource() = default;
   ~PktSource() { close(); }
 
+  Encapsulation encapsulation() const { return encap_; }
+
   bool openDevice(const std::string &device, const std::string &filter);
   bool openFile(const std::string &file, const std::string &filter);
   void close();
 
-  bool runLoop(int count, PktCallback callback, void *context = nullptr);
+  bool runLoop(PktCallback callback, void *context = nullptr);
 
   const std::string error() const { return error_; }
 
@@ -64,13 +70,17 @@ class PktSource {
   pcap_t *pcap_ = nullptr;
   std::string error_;
   UInt32 nanosec_factor_ = 0;
+  Encapsulation encap_ = ENCAP_UNSUPPORTED;
 
   bool create(const std::string &device);
   bool activate();
+  bool checkDatalink();
   bool setFilter(const std::string &filter);
   void setTimestampPrecision();
   void setError(const char *func, const std::string &device,
                 const char *result);
+
+  static Encapsulation lookupEncapsulation(int datalink);
 };
 
 OFP_END_IGNORE_PADDING

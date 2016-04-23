@@ -36,6 +36,8 @@ class ByteRange {
     return begin_[indx];
   }
 
+  void clear() { end_ = begin_; }
+  
   bool isPrintable() const;
 
  private:

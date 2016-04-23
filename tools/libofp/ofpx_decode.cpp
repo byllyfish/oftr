@@ -320,50 +320,36 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 }
 
 ExitStatus Decode::decodePcapDevice(const std::string &device) {
-  using namespace ofp;
-  using namespace ofp::demux;
-
-  PktSource pcap;
-  MessageSource msg{pcapMessageCallback, this};
+  ofp::demux::PktSource pcap;
+  ofp::demux::MessageSource msg{pcapMessageCallback, this};
 
   if (!pcap.openDevice(device.c_str(), "tcp")) {
     std::cerr << "Error: " << pcap.error() << '\n';
     return ExitStatus::FileOpenFailed;
   }
 
-  pcap.runLoop(0,
-               [](Timestamp ts, ByteRange data, unsigned len, void *context) {
-                 MessageSource *src =
-                     reinterpret_cast<MessageSource *>(context);
-                 src->submitPacket(ts, data);
-               },
-               &msg);
+  msg.runLoop(&pcap);
+  pcap.close();
 
   return ExitStatus::Success;
 }
 
 ExitStatus Decode::decodePcapFiles() {
-  using namespace ofp;
-  using namespace ofp::demux;
-
   const std::vector<std::string> &files = inputFiles_;
 
-  PktSource pcap;
-  MessageSource msg{pcapMessageCallback, this};
+  ofp::demux::PktSource pcap;
+  ofp::demux::MessageSource msg{pcapMessageCallback, this};
 
   for (auto &filename : files) {
     if (!pcap.openFile(filename, "tcp")) {
-      std::cerr << "Error: " << pcap.error() << '\n';
+      std::cerr << "Error: " << filename << ": " << pcap.error() << '\n';
       return ExitStatus::FileOpenFailed;
     }
 
-    pcap.runLoop(0,
-                 [](Timestamp ts, ByteRange data, unsigned len, void *context) {
-                   MessageSource *src =
-                       reinterpret_cast<MessageSource *>(context);
-                   src->submitPacket(ts, data);
-                 },
-                 &msg);
+    setCurrentFilename(filename);
+    msg.runLoop(&pcap);
+    pcap.close();
+    setCurrentFilename("");
   }
 
   return ExitStatus::Success;
