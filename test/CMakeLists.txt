@@ -81,6 +81,9 @@ set(LIBOFP_TEST_SOURCES
 	ofp/validateinput_unittest.cpp
 	ofp/yhello_unittest.cpp
 	ofp/ymatch_unittest.cpp
+	ofp/demux/flowcache_unittest.cpp
+	ofp/demux/flowstate_unittest.cpp
+	ofp/demux/segmentcache_unittest.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
