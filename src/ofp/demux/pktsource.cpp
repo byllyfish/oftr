@@ -15,7 +15,8 @@ struct sHandlerInfo {
   PktSource::PktCallback callback;
   void *context;
   UInt32 nanosec_factor;
-  int alignment;
+  UInt32 alignPad;
+  UInt32 frameSkip;
   ByteList buffer;
 };
 
@@ -28,12 +29,30 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
   Timestamp ts(hdr->ts.tv_sec,
                Unsigned_cast(hdr->ts.tv_usec) * info->nanosec_factor);
 
-  const int align = info->alignment;
-  buf.replace(buf.data() + align, buf.end(), data, hdr->caplen);
-  ByteRange pkt{buf.data() + align, buf.size() - align};
+  const UInt32 alignPad = info->alignPad;
+  const UInt32 frameSkip = info->frameSkip;
+
+  if (frameSkip > hdr->caplen) {
+    log::debug("PktSource: caplen less than frameSkip!");
+    return;
+  }
+
+  const u_char *cap = data + frameSkip;
+  const size_t caplen = hdr->caplen - frameSkip;
+
+  buf.replace(buf.data() + alignPad, buf.end(), cap, caplen);
+  ByteRange pkt{buf.data() + alignPad, buf.size() - alignPad};
   info->callback(ts, pkt, hdr->len, info->context);
 }
 
+std::string PktSource::datalink() const {
+  if (datalink_ >= 0) {
+    const char *name = pcap_datalink_val_to_name(datalink_);
+    return !name ? "NULL" : name;
+  } else {
+    return "<not open>";
+  }
+}
 
 /// \brief Open capture device to read live packets from the network.
 ///
@@ -112,11 +131,14 @@ void PktSource::close() {
     pcap_close(pcap_);
     pcap_ = nullptr;
     encap_ = ENCAP_UNSUPPORTED;
+    datalink_ = -1;
   }
 }
 
 bool PktSource::runLoop(PktCallback callback, void *context) {
   assert(pcap_);
+
+  log::debug("PktSource::runLoop entered");
 
   int kAllPackets = -1;
 
@@ -124,15 +146,16 @@ bool PktSource::runLoop(PktCallback callback, void *context) {
   info.callback = callback;
   info.context = context;
   info.nanosec_factor = nanosec_factor_;
-  info.alignment = encapsulation() == ENCAP_ETHERNET ? 2 : 0;
-  info.buffer.addZeros(info.alignment);
-
-  log::debug("PktSource::runLoop");
+  info.alignPad = (encapsulation() == ENCAP_ETHERNET) ? 2 : 0;
+  info.frameSkip = frameSkip_;
+  info.buffer.addZeros(info.alignPad);
 
   int result = pcap_loop(pcap_, kAllPackets, sHandler, MutableBytePtr(&info));
   if (result != 0) {
     log::debug("pcap_loop returned", result);
   }
+
+  log::debug("PktSource::runLoop exited");
 
   return result == 0;
 }
@@ -182,21 +205,15 @@ bool PktSource::create(const std::string &device) {
 bool PktSource::checkDatalink() {
   assert(pcap_);
 
-  int result = pcap_datalink(pcap_);
-  if (result < 0) {
+  datalink_ = pcap_datalink(pcap_);
+  if (datalink_ < 0) {
     setError("pcap_datalink", "", "");
     return false;
   }
 
-  encap_ = lookupEncapsulation(result);
+  encap_ = lookupEncapsulation(datalink_, &frameSkip_);
 
-  const char *name = pcap_datalink_val_to_name(result);
-  if (!name) {
-    name = "unknown";
-  }
-  log::debug("pcap_datalink returned", result, name, encap_);
-
-  return true;
+  return encap_ != ENCAP_UNSUPPORTED;
 }
 
 bool PktSource::setFilter(const std::string &filter) {
@@ -243,7 +260,7 @@ void PktSource::setTimestampPrecision() {
     }
     pcap_free_tstamp_types(tsTypes);
   } else if (tsCount == PCAP_ERROR) {
-    log::debug("pcap_list_tstamp_types:", pcap_geterr(pcap_));
+    log::debug("pcap_list_tstamp_types error:", pcap_geterr(pcap_));
   }
 
   nanosec_factor_ = 1000;
@@ -291,21 +308,24 @@ void PktSource::setError(const char *func, const std::string &arg,
 struct DatalinkInfo {
   int dlType;
   PktSource::Encapsulation encap;
+  UInt32 frameSkip;
 
   bool operator==(int type) const { return dlType == type; }
 };
 
 static const DatalinkInfo sDatalinkInfo[] = {
-  { DLT_NULL, PktSource::ENCAP_IP },
-  { DLT_EN10MB, PktSource::ENCAP_ETHERNET },
-  { DLT_RAW, PktSource::ENCAP_IP },
+  { DLT_NULL, PktSource::ENCAP_IP, 4 },
+  { DLT_EN10MB, PktSource::ENCAP_ETHERNET, 0 },
+  { DLT_RAW, PktSource::ENCAP_IP, 0 },
+  // TODO(bfish):
   //{ DLT_LINUX_SLL, PktSource::ENCAP_ETHERNET },
   //{ DLT_LOOP  , PktSource::ENCAP_IP }
 };
 
-PktSource::Encapsulation PktSource::lookupEncapsulation(int datalink) {
+PktSource::Encapsulation PktSource::lookupEncapsulation(int datalink, UInt32 *frameSkip) {
   auto iter = std::find(std::begin(sDatalinkInfo), std::end(sDatalinkInfo), datalink);
   if (iter != std::end(sDatalinkInfo)) {
+    *frameSkip = iter->frameSkip;
     return iter->encap;
   }
   return ENCAP_UNSUPPORTED;

@@ -42,7 +42,6 @@ class MessageSource {
   Timestamp ts_;
   IPv6Endpoint src_;
   IPv6Endpoint dst_;
-  UInt32 len_ = 0;
   UInt32 seqNum_ = 0;
   UInt16 flags_ = 0;
   FlowCache flows_;

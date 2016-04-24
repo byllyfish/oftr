@@ -123,7 +123,13 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
     return;
   }
 
-  unsigned hdrLen = ihl * 4;
+  UInt32 len = ip->length;
+  if (len < length) {
+    log::warning("MessageSource: IPv4 packet is padded to length", length);
+    length = len;
+  }
+
+  UInt32 hdrLen = ihl * 4;
   if (hdrLen > length) {
     log::warning("MessageSource: IPv4 Header too long", hdrLen);
     return;
@@ -131,12 +137,8 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
 
   src_.setAddress(ip->src);
   dst_.setAddress(ip->dst);
-  len_ = ip->length;
 
-  if (len_ < length) {
-    log::warning("MessageSource: IPv4 packet is padded", length - len_);
-    length = len_;
-  }
+  assert(length >= hdrLen);
 
   data += hdrLen;
   length -= hdrLen;
@@ -160,18 +162,21 @@ void MessageSource::submitIPv6(const UInt8 *data, size_t length) {
   UInt32 verClassLabel = ip->verClassLabel;
   UInt8 vers = verClassLabel >> 28;
   if (vers != pkt::kIPv6Version) {
-    log::warning("MatchPacket: Unexpected IPv6 version", vers);
+    log::warning("MessageSource: Unexpected IPv6 version", vers);
     return;
   }
 
+  UInt32 len = ip->payloadLength;
   src_.setAddress(ip->src);
   dst_.setAddress(ip->dst);
-  len_ = ip->payloadLength;
 
   data += sizeof(pkt::IPv6Hdr);
   length -= sizeof(pkt::IPv6Hdr);
 
-  log::debug("IPv6 payloadLength:", len_, length);
+  if (len < length) {
+    log::warning("MessageSource: IPv6 packet is padded to length", length);
+    length = len;
+  }
 
   if (ip->nextHeader == PROTOCOL_TCP) {
     submitTCP(data, length);

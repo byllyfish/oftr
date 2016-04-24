@@ -57,6 +57,7 @@ class PktSource {
   ~PktSource() { close(); }
 
   Encapsulation encapsulation() const { return encap_; }
+  std::string datalink() const;
 
   bool openDevice(const std::string &device, const std::string &filter);
   bool openFile(const std::string &file, const std::string &filter);
@@ -71,6 +72,8 @@ class PktSource {
   std::string error_;
   UInt32 nanosec_factor_ = 0;
   Encapsulation encap_ = ENCAP_UNSUPPORTED;
+  UInt32 frameSkip_ = 0;
+  int datalink_ = -1;
 
   bool create(const std::string &device);
   bool activate();
@@ -80,7 +83,7 @@ class PktSource {
   void setError(const char *func, const std::string &device,
                 const char *result);
 
-  static Encapsulation lookupEncapsulation(int datalink);
+  static Encapsulation lookupEncapsulation(int datalink, UInt32 *frameSkip);
 };
 
 OFP_END_IGNORE_PADDING
