@@ -33,6 +33,7 @@ namespace ofpx {
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
 //   --pcap-format          Treat input files as .pcap format.
+//   --pcap-debug           Write reassembled TCP streams to /tmp/libofp.msgs.
 //
 // Usage:
 //
@@ -132,6 +133,7 @@ class Decode : public Subprogram {
       cl::ValueRequired};
   cl::opt<bool> pcapFormat_{"pcap-format",
                             cl::desc("Treat input files as .pcap format")};
+  cl::opt<bool> pcapDebug_{"pcap-debug", cl::desc("Write reassembled TCP streams to /tmp/libofp.msgs.")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

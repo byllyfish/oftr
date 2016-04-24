@@ -7,7 +7,8 @@
 #include "ofp/message.h"
 #include "ofp/messageinfo.h"
 #include "ofp/pkt.h"
-#include <fstream>   // for debugWrite method
+#include <fstream>   // for debugWrite
+#include <sys/stat.h>   // mkdir for debugWrite
 
 using namespace ofp;
 using namespace ofp::demux;
@@ -69,9 +70,11 @@ void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
 }
 
 void MessageSource::finish() {
-  flows_.finish([](const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow){
-    debugWrite(src, dst, flow, flow.size());
-  });
+  if (debug_) {
+    flows_.finish([](const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow){
+      debugWrite(src, dst, flow, flow.size());
+    });
+  }
   flows_.clear();
 }
 
@@ -223,11 +226,16 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   if (flow.size() > 0) {
     size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
     log::debug("submitTCP: consume", n, "bytes from session", flow.sessionID());
-    debugWrite(src_, dst_, flow, n);
+    if (debug_) {
+      debugWrite(src_, dst_, flow, n);
+    }
     flow.consume(n);
-  } else if (flow.final()) {
+  }
+  #if 0
+  else if (flow.final()) {
     debugWrite(src_, dst_, flow, 0);
   }
+  #endif //0
 }
 
 void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
@@ -283,16 +291,24 @@ void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
   if (n == 0)
     return;
 
-  // Write flow to a file "/tmp/com.libofp.messagesource/$src-$dst"
-  std::ostringstream oss;
-  oss << "/tmp/com.libofp.messagesource/" << flow.sessionID() << '-' << src << '-' << dst;
-  auto filename = oss.str();
+  // Create directory DEBUG_MSG_DIR, if it doesn't exist.
+  const char *DEBUG_MSG_DIR = "/tmp/libofp.msgs";
 
-  std::ofstream out{filename, std::ios::out|std::ios::app|std::ios::binary};
-  if (!out) {
-    log::error("MessageSource: Unable to open file", filename);
+  if (::mkdir(DEBUG_MSG_DIR, 0700) < 0 && errno != EEXIST) {
+    log::error("MessageSource: Unable to create directory", DEBUG_MSG_DIR);
     return;
   }
 
-  out.write(reinterpret_cast<const char *>(flow.data()), n);
+  // Construct filename "/tmp/libofp.msgs/_tcp-$session-$src-$dst"
+  std::ostringstream oss;
+  oss << DEBUG_MSG_DIR << "/_tcp-" << flow.sessionID() << '-' << src << '-' << dst;
+  auto filename = oss.str();
+
+  // Write flow to a file.
+  std::ofstream out{filename, std::ios::out|std::ios::app|std::ios::binary};
+  if (out) {
+    out.write(reinterpret_cast<const char *>(flow.data()), n);
+  } else {
+    log::error("MessageSource: Unable to open file", filename);
+  }
 }

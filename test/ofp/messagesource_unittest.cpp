@@ -24,7 +24,7 @@ static void callback(Message *message, void *context) {
 
 TEST(messagesource, test) {
   PktSource pkt;
-  MessageSource msg(callback, nullptr);
+  MessageSource msg(callback, nullptr, false);
 
   if (pkt.openFile("/Users/bfish/Downloads/"
                    "cap_single,3-ovsk,protocols=OpenFlow13-remote,port=6653."

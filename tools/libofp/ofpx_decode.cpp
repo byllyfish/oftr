@@ -321,7 +321,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
 ExitStatus Decode::decodePcapDevice(const std::string &device) {
   ofp::demux::PktSource pcap;
-  ofp::demux::MessageSource msg{pcapMessageCallback, this};
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapDebug_};
 
   if (!pcap.openDevice(device.c_str(), "tcp")) {
     std::cerr << "Error: " << pcap.error() << '\n';
@@ -338,7 +338,7 @@ ExitStatus Decode::decodePcapFiles() {
   const std::vector<std::string> &files = inputFiles_;
 
   ofp::demux::PktSource pcap;
-  ofp::demux::MessageSource msg{pcapMessageCallback, this};
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapDebug_};
 
   for (auto &filename : files) {
     if (!pcap.openFile(filename, "tcp")) {

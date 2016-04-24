@@ -27,8 +27,8 @@ class MessageSource {
  public:
   using MessageCallback = void (*)(Message *, void *);
 
-  explicit MessageSource(MessageCallback callback, void *context)
-      : callback_{callback}, context_{context} {}
+  explicit MessageSource(MessageCallback callback, void *context, bool debug)
+      : callback_{callback}, context_{context}, debug_{debug} {}
 
   void runLoop(PktSource *pcap);
 
@@ -44,6 +44,7 @@ class MessageSource {
   IPv6Endpoint dst_;
   UInt32 seqNum_ = 0;
   UInt16 flags_ = 0;
+  bool debug_ = false;
   FlowCache flows_;
 
   void submitEthernet(const UInt8 *data, size_t length);
