@@ -350,6 +350,16 @@ else()
 endif()
 
 #-------------------------------------------------------------------------------
+# Check system header files and symbols
+#-------------------------------------------------------------------------------
+
+include(CheckIncludeFile)
+include(CheckSymbolExists)
+
+check_include_file(pcap/pcap.h HAVE_PCAP_PCAP_H)
+check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
+
+#-------------------------------------------------------------------------------
 # Build Library
 #-------------------------------------------------------------------------------
 

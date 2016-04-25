@@ -94,17 +94,27 @@ bool PktSource::openFile(const std::string &path, const std::string &filter) {
     close();
 
   char errbuf[PCAP_ERRBUF_SIZE];
+
+#if HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
+  // Use the newer `pcap_open_offline_with_tstamp_precision` API if it is
+  // available, since it provides access to nanosecond precision timestamps.
   pcap_ = pcap_open_offline_with_tstamp_precision(
       path.c_str(), PCAP_TSTAMP_PRECISION_NANO, errbuf);
+  // pcap library will convert to nanoseconds for us.
+  nanosec_factor_ = 1;
+#else // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
+  // Use the original `pcap_open_offline` API if the newer API is not available.
+  pcap_ = pcap_open_offline(path.c_str(), errbuf);
+  // Convert microseconds to nanoseconds.
+  nanosec_factor_ = 1000;
+#endif  // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
+
   if (!pcap_) {
     // Set the error string directly; the pcap error message includes the
     // file name.
     error_ = errbuf;
     return false;
   }
-
-  // pcap library will convert to nanoseconds for us.
-  nanosec_factor_ = 1;
 
   // Verify we support this datalink type.
   if (!checkDatalink()) {

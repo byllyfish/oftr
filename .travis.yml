@@ -36,6 +36,7 @@ addons:
       - gcc-4.8
       - g++-4.8
       - valgrind
+      - libpcap-dev
 
 before_deploy:
   - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
