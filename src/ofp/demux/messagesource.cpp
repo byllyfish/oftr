@@ -207,20 +207,12 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
 
   src_.setPort(tcp->srcPort);
   dst_.setPort(tcp->dstPort);
-  seqNum_ = tcp->seqNum;
+  seq_ = tcp->seqNum;
 
   data += tcpHdrLen;
   length -= tcpHdrLen;
 
-  if (flags_ & TCP_SYN) {
-    ++seqNum_;
-    if (length > 0) {
-      log::warning("MessageSource: TCP SYN unexpected data", length);
-      return;
-    }
-  }
-
-  auto flow = flows_.receive(ts_, src_, dst_, seqNum_ + length, {data, length},
+  auto flow = flows_.receive(ts_, src_, dst_, seq_, {data, length},
                              UInt8_narrow_cast(flags_));
 
   if (flow.size() > 0) {
@@ -231,11 +223,6 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
     }
     flow.consume(n);
   }
-  #if 0
-  else if (flow.final()) {
-    debugWrite(src_, dst_, flow, 0);
-  }
-  #endif //0
 }
 
 void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
@@ -307,7 +294,7 @@ void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
   // Write flow to a file.
   std::ofstream out{filename, std::ios::out|std::ios::app|std::ios::binary};
   if (out) {
-    out.write(reinterpret_cast<const char *>(flow.data()), n);
+    out.write(reinterpret_cast<const char *>(flow.data()), Signed_cast(n));
   } else {
     log::error("MessageSource: Unable to open file", filename);
   }

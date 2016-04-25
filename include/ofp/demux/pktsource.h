@@ -70,16 +70,16 @@ class PktSource {
  private:
   pcap_t *pcap_ = nullptr;
   std::string error_;
-  UInt32 nanosec_factor_ = 0;
+  UInt32 nanosec_factor_ = 1000;
   Encapsulation encap_ = ENCAP_UNSUPPORTED;
   UInt32 frameSkip_ = 0;
   int datalink_ = -1;
 
   bool create(const std::string &device);
+  bool openOffline(const std::string &path);
   bool activate();
   bool checkDatalink();
   bool setFilter(const std::string &filter);
-  void setTimestampPrecision();
   void setError(const char *func, const std::string &device,
                 const char *result);
 

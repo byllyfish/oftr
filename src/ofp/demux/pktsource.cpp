@@ -93,26 +93,7 @@ bool PktSource::openFile(const std::string &path, const std::string &filter) {
   if (pcap_)
     close();
 
-  char errbuf[PCAP_ERRBUF_SIZE];
-
-#if HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
-  // Use the newer `pcap_open_offline_with_tstamp_precision` API if it is
-  // available, since it provides access to nanosecond precision timestamps.
-  pcap_ = pcap_open_offline_with_tstamp_precision(
-      path.c_str(), PCAP_TSTAMP_PRECISION_NANO, errbuf);
-  // pcap library will convert to nanoseconds for us.
-  nanosec_factor_ = 1;
-#else // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
-  // Use the original `pcap_open_offline` API if the newer API is not available.
-  pcap_ = pcap_open_offline(path.c_str(), errbuf);
-  // Convert microseconds to nanoseconds.
-  nanosec_factor_ = 1000;
-#endif  // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
-
-  if (!pcap_) {
-    // Set the error string directly; the pcap error message includes the
-    // file name.
-    error_ = errbuf;
+  if (!openOffline(path)) {
     return false;
   }
 
@@ -204,7 +185,33 @@ bool PktSource::create(const std::string &device) {
     return false;
   }
 
-  setTimestampPrecision();
+  return true;
+}
+
+
+bool PktSource::openOffline(const std::string &path) {
+  char errbuf[PCAP_ERRBUF_SIZE];
+
+#if HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
+  // Use the newer `pcap_open_offline_with_tstamp_precision` API if it is
+  // available, since it provides access to nanosecond precision timestamps.
+  pcap_ = pcap_open_offline_with_tstamp_precision(
+      path.c_str(), PCAP_TSTAMP_PRECISION_NANO, errbuf);
+  // pcap library will convert to nanoseconds for us.
+  nanosec_factor_ = 1;
+#else // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
+  // Use the original `pcap_open_offline` API if the newer API is not available.
+  pcap_ = pcap_open_offline(path.c_str(), errbuf);
+  // Convert microseconds to nanoseconds.
+  nanosec_factor_ = 1000;
+#endif  // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
+
+  if (!pcap_) {
+    // Set the error string directly; the pcap error message includes the
+    // file name.
+    error_ = errbuf;
+    return false;
+  }
 
   return true;
 }
@@ -256,30 +263,6 @@ bool PktSource::setFilter(const std::string &filter) {
   pcap_freecode(&prog);
 
   return (result == 0);
-}
-
-void PktSource::setTimestampPrecision() {
-  assert(pcap_);
-
-  int *tsTypes = nullptr;
-  int tsCount = pcap_list_tstamp_types(pcap_, &tsTypes);
-  log::debug("pcap_list_tstamp_types returned", tsCount);
-  if (tsCount > 0) {
-    for (int i = 0; i < tsCount; ++i) {
-      log::debug("tstamp type:", tsTypes[i]);
-    }
-    pcap_free_tstamp_types(tsTypes);
-  } else if (tsCount == PCAP_ERROR) {
-    log::debug("pcap_list_tstamp_types error:", pcap_geterr(pcap_));
-  }
-
-  nanosec_factor_ = 1000;
-
-  // int result = pcap_set_tstamp_type(pcap_, int tstamp_type);
-  // if (result) {
-  //    setError("pcap_set_tstamp_type", "", "failed");
-  //    return false;
-  //}
 }
 
 bool PktSource::activate() {

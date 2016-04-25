@@ -22,12 +22,27 @@ detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
 FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
                             const IPv6Endpoint &dst, UInt32 seq, ByteRange data,
                             UInt8 flags) {
+  // `seq` is the sequence number from the incoming segment. Internally, we
+  // represent all segments [a, b) by the end `b`. Convert seq to `end`.
+  UInt32 end;
+  if (flags & TCP_SYN) {
+    // If the SYN flag is included, `seq` is the initial seqeuence number.
+    end = seq + 1;
+    if (data.size() > 0) {
+      log::warning("FlowCache: TCP SYN has unexpected data", data.size());
+      return FlowData{0};
+    }
+  } else {
+    end = seq + UInt32_narrow_cast(data.size());
+  }
+
   // Only update cache entry if there is data, or a SYN|FIN|RST flag is present.
   const UInt8 kInterestingFlags = TCP_SYN | TCP_FIN | TCP_RST;
   const UInt8 kFinalFlags = TCP_FIN | TCP_RST;
 
-  if (data.empty() && (flags & kInterestingFlags) == 0)
+  if (data.empty() && (flags & kInterestingFlags) == 0) {
     return FlowData{0};
+  }
 
   bool final = (flags & kFinalFlags) != 0;
 
@@ -40,9 +55,9 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   }
 
   if (isX) {
-    return entry.x.receive(ts, seq, data, entry.sessionID, final);
+    return entry.x.receive(ts, end, data, entry.sessionID, final);
   } else {
-    return entry.y.receive(ts, seq, data, entry.sessionID, final);
+    return entry.y.receive(ts, end, data, entry.sessionID, final);
   }
 }
 

@@ -15,7 +15,9 @@ static std::string segmentStr(UInt32 begin, UInt32 end) {
 void FlowData::consume(size_t len) {
   if (state_ == nullptr) {
     // Do nothing if there's no data to consume.
-    assert(len == 0);
+    if (len > 0) {
+      log::debug("FlowData::consume: empty - can't consume", len);
+    }
     return;
   }
 
@@ -28,7 +30,7 @@ void FlowData::consume(size_t len) {
     state_->cache_.consume(len);
   } else if (len < data_.size()) {
     ByteRange left{data_.data() + len, data_.size() - len};
-    state_->cache_.store(state_->end_ + left.size(), left);
+    state_->cache_.store(state_->end_ + UInt32_narrow_cast(left.size()), left);
   }
 
   state_ = nullptr;
@@ -37,7 +39,7 @@ void FlowData::consume(size_t len) {
 
 FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
                             const ByteRange &data, UInt64 sessionID, bool final) {
-  UInt32 begin = end - data.size();
+  UInt32 begin = end - UInt32_narrow_cast(data.size());
 
   if (!first_.valid()) {
     first_ = ts;
