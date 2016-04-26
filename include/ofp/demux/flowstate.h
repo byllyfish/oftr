@@ -52,14 +52,19 @@ class FlowState {
                    UInt64 sessionID, bool final);
 
   const Timestamp &first() const { return first_; }
+  const Timestamp &last() const { return last_; }
   UInt32 end() const { return end_; }
   bool empty() const { return cache_.empty(); }
 
   FlowData latestData(UInt64 sessionID);
 
+  void clear();
+
  private:
   Timestamp first_;
+  Timestamp last_;
   UInt32 end_ = 0;
+  bool finished_ = false;
   SegmentCache cache_;
 
   friend class FlowData;

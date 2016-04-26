@@ -33,6 +33,13 @@ struct FlowCacheEntry {
   UInt64 sessionID = 0;
   FlowState x;
   FlowState y;
+
+  bool expired(const Timestamp &ts) const;
+  void clear(UInt64 sessID) {
+    sessionID = sessID;
+    x.clear();
+    y.clear();
+  }
 };
 
 using FlowMap = std::unordered_map<FlowCacheKey, FlowCacheEntry>;

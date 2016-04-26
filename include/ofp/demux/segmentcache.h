@@ -71,6 +71,9 @@ class SegmentCache {
   // Return description of cached segments for debugging.
   std::string toString() const;
 
+  // Erase all data.
+  void clear() { segments_.clear(); }
+
  private:
   std::vector<Segment> segments_;
 

@@ -217,7 +217,11 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
 
   if (flow.size() > 0) {
     size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
-    log::debug("submitTCP: consume", n, "bytes from session", flow.sessionID());
+    if (flow.final() && n != flow.size()) {
+      log::warning("MessageSource: TCP done before full message received", flow.sessionID());
+      // Make sure we consume all of the remaining data.
+      n = flow.size();
+    }
     if (debug_) {
       debugWrite(src_, dst_, flow, n);
     }
@@ -269,11 +273,6 @@ void MessageSource::deliverMessage(const UInt8 *data, size_t length, UInt64 sess
 }
 
 void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow, size_t n) {
-  // If this is the last segment of the flow, we need to write all of it.
-  if (flow.final()) {
-    n = flow.size();
-  }
-
   // If there's no data, don't create any files.
   if (n == 0)
     return;
@@ -295,6 +294,7 @@ void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
   std::ofstream out{filename, std::ios::out|std::ios::app|std::ios::binary};
   if (out) {
     out.write(reinterpret_cast<const char *>(flow.data()), Signed_cast(n));
+    log::info("MessageSource::debugWrite", flow.sessionID(), ByteRange{flow.data(), n});
   } else {
     log::error("MessageSource: Unable to open file", filename);
   }

@@ -51,14 +51,16 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
     log::debug("FlowState: receive segment", segmentStr(begin, end), finalStr);
   }
 
-  //if (data.empty()) {
-  //  return FlowData{};
-  //}
+  // Record timestamp of latest segment.
+  last_ = ts;
 
-  if (cache_.empty()) {
+  if (cache_.empty() && !finished_) {
     // We have no data cached. Is this the latest data? If so, return
     // a FlowData object representing new data.
     if (begin == end_) {
+      if (final) {
+        finished_ = true;
+      }
       return FlowData{this, data, sessionID, false, final};
     }
   }
@@ -71,21 +73,11 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   // Cache the data segment.
   cache_.store(end, data, final);
 
-  return latestData(sessionID);
-
-#if 0
-  const Segment *seg = cache_.current();
-  if (seg && seg->begin() == end_) {
-    log::debug("FlowState: return flow data",
-               segmentStr(seg->begin(), seg->end()));
-    return FlowData{this, seg->data(), sessionID, true, seg->final()};
+  if (final) {
+    finished_ = true;
   }
 
-  log::debug("Flowstate: current cached begin", begin,
-               "does not match flow end", end_);
-
-  return FlowData{sessionID};
-#endif //0
+  return latestData(sessionID);
 }
 
 FlowData FlowState::latestData(UInt64 sessionID) {
@@ -97,4 +89,12 @@ FlowData FlowState::latestData(UInt64 sessionID) {
   }
 
   return FlowData{sessionID};
+}
+
+void FlowState::clear() {
+  first_.clear();
+  last_.clear();
+  end_ = 0;
+  finished_ = false;
+  cache_.clear();
 }

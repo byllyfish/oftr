@@ -19,6 +19,11 @@ detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
   }
 }
 
+ bool detail::FlowCacheEntry::expired(const Timestamp &ts) const {
+  Timestamp last = std::max(x.last(), y.last());
+  return ts.secondsSince(last) >= 60 * 5.0;
+ }
+
 FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
                             const IPv6Endpoint &dst, UInt32 seq, ByteRange data,
                             UInt8 flags) {
@@ -52,6 +57,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
 
   if (entry.sessionID == 0) {
     entry.sessionID = assignSessionID();
+  } else if ((flags & TCP_SYN) != 0 && entry.expired(ts)) {
+    entry.clear(assignSessionID());
   }
 
   if (isX) {
