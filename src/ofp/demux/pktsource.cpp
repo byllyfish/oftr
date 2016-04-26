@@ -274,12 +274,16 @@ bool PktSource::activate() {
   // FIXME(bfish): Fill out the rest of this code.
   switch (result) {
     case PCAP_WARNING_PROMISC_NOTSUP:
+#if defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING_TSTAMP_TYPE_NOTSUP:
+#endif // defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING:
     case PCAP_ERROR_ACTIVATED:
     case PCAP_ERROR_NO_SUCH_DEVICE:
     case PCAP_ERROR_PERM_DENIED:
+#if defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_PROMISC_PERM_DENIED:
+#endif // defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_RFMON_NOTSUP:
     case PCAP_ERROR_IFACE_NOT_UP:
     default:
