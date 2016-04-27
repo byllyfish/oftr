@@ -31,6 +31,8 @@ LIBOFP=$CURRENT_TEST_DIR/../libofp
 echo "Run libofp decode on $CURRENT_SOURCE_DIR/tcp.pcap"
 $LIBOFP_MEMCHECK $LIBOFP decode --pcap-format --pcap-debug "$CURRENT_SOURCE_DIR/tcp.pcap"
 
+verify_sha1 "$CURRENT_SOURCE_DIR/tcp.pcap" "08cf1e8ab8b499cfa8d03398e74c09ad59d3a731"
+
 verify_sha1 "$MSG_DIR/_tcp-1-127.0.0.1:61278-127.0.0.1:8888" "b0372f0c19e464a30bb2faa54510dd80e1496417"
 verify_sha1 "$MSG_DIR/_tcp-1-127.0.0.1:8888-127.0.0.1:61278" "759cca92810046305aab8fd1789ef38965ae81a0"
 verify_sha1 "$MSG_DIR/_tcp-2-127.0.0.1:61279-127.0.0.1:8888" "7a4fbdd6be80779d4c3990ce128caaadd2e14b66"

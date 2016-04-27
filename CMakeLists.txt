@@ -318,8 +318,6 @@ else()
   set(LIBOFP_WARNINGS "-Wall")
 endif()
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lpcap")
-
 # Tell linker to remove dead code.
 
 if(APPLE)
