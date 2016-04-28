@@ -41,8 +41,8 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
                             const ByteRange &data, UInt64 sessionID, bool final) {
   UInt32 begin = end - UInt32_narrow_cast(data.size());
 
-  if (!first_.valid()) {
-    first_ = ts;
+  if (!firstSeen_.valid()) {
+    firstSeen_ = ts;
     end_ = begin;
     const char *finalStr = final ? "final" : "";
     log::debug("FlowState: new flow segment", segmentStr(begin, end), finalStr);
@@ -52,14 +52,14 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   }
 
   // Record timestamp of latest segment.
-  last_ = ts;
+  lastSeen_ = ts;
 
   if (cache_.empty() && !finished_) {
     // We have no data cached. Is this the latest data? If so, return
     // a FlowData object representing new data.
     if (begin == end_) {
       if (final) {
-        finished_ = true;
+        setFinished(sessionID);
       }
       return FlowData{this, data, sessionID, false, final};
     }
@@ -74,7 +74,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   cache_.store(end, data, final);
 
   if (final) {
-    finished_ = true;
+    setFinished(sessionID);
   }
 
   return latestData(sessionID);
@@ -92,9 +92,16 @@ FlowData FlowState::latestData(UInt64 sessionID) {
 }
 
 void FlowState::clear() {
-  first_.clear();
-  last_.clear();
+  firstSeen_.clear();
+  lastSeen_.clear();
   end_ = 0;
   finished_ = false;
   cache_.clear();
+}
+
+void FlowState::setFinished(UInt64 sessionID) {
+  if (!finished_) {
+    finished_ = true;
+    log::info("Finish TCP session", sessionID, "seconds", lastSeen().secondsSince(firstSeen()));
+  }
 }

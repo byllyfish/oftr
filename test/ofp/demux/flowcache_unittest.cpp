@@ -23,7 +23,7 @@ TEST(flowcache, initialSegment) {
   auto state = cache.lookup(src, dst);
   ASSERT_NE(nullptr, state);
   EXPECT_EQ(1, state->end());
-  EXPECT_EQ(ts, state->first());
+  EXPECT_EQ(ts, state->firstSeen());
   EXPECT_TRUE(state->empty());
 }
 
@@ -91,7 +91,7 @@ TEST(flowcache, partialSegments) {
     auto state = cache.lookup(src, dst);
     ASSERT_NE(nullptr, state);
     EXPECT_EQ(4, state->end());
-    EXPECT_EQ(ts, state->first());
+    EXPECT_EQ(ts, state->firstSeen());
     EXPECT_FALSE(state->empty());
   }
 

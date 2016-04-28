@@ -239,11 +239,17 @@ bool PktSource::setFilter(const std::string &filter) {
   std::string fullFilter;
   bool supportsVlan = encapsulation() == ENCAP_ETHERNET;
   
-  if (supportsVlan) {
+  if (filter.empty()) {
+    // If filter is empty, capture everything.
+    fullFilter = "";
+  } else if (supportsVlan) {
+    // If the datalink supports 802.1q vlans, combine our filter with the
+    // magic 'vlan' option.
     std::ostringstream oss;
     oss << "(" << filter << ") or (vlan and (" << filter << "))";
     fullFilter = oss.str();
   } else {
+    // Use the filter "as is".
     fullFilter = filter;
   }
 

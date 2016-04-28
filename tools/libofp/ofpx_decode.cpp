@@ -323,7 +323,7 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
   ofp::demux::PktSource pcap;
   ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapDebug_};
 
-  if (!pcap.openDevice(device.c_str(), "tcp")) {
+  if (!pcap.openDevice(device.c_str(), pcapFilter_)) {
     std::cerr << "Error: " << pcap.error() << '\n';
     return ExitStatus::FileOpenFailed;
   }
@@ -341,7 +341,7 @@ ExitStatus Decode::decodePcapFiles() {
   ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapDebug_};
 
   for (auto &filename : files) {
-    if (!pcap.openFile(filename, "tcp")) {
+    if (!pcap.openFile(filename, pcapFilter_)) {
       std::cerr << "Error: " << filename << ": " << pcap.error() << '\n';
       return ExitStatus::FileOpenFailed;
     }

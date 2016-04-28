@@ -29,7 +29,7 @@ fi
 LIBOFP=$CURRENT_TEST_DIR/../libofp
 
 echo "Run libofp decode on $CURRENT_SOURCE_DIR/tcp.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format --pcap-debug "$CURRENT_SOURCE_DIR/tcp.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format --pcap-debug --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap"
 
 verify_sha1 "$CURRENT_SOURCE_DIR/tcp.pcap" "08cf1e8ab8b499cfa8d03398e74c09ad59d3a731"
 

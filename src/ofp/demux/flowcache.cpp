@@ -20,7 +20,7 @@ detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
 }
 
  bool detail::FlowCacheEntry::expired(const Timestamp &ts) const {
-  Timestamp last = std::max(x.last(), y.last());
+  Timestamp last = std::max(x.lastSeen(), y.lastSeen());
   return ts.secondsSince(last) >= 60 * 5.0;
  }
 
@@ -57,8 +57,10 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
 
   if (entry.sessionID == 0) {
     entry.sessionID = assignSessionID();
+    log::info("New TCP session", entry.sessionID, src, "to", dst);
   } else if ((flags & TCP_SYN) != 0 && entry.expired(ts)) {
     entry.clear(assignSessionID());
+    log::info("New TCP session (recycle)", entry.sessionID, src, "to", dst);
   }
 
   if (isX) {

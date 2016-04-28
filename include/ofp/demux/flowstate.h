@@ -51,8 +51,8 @@ class FlowState {
   FlowData receive(const Timestamp &ts, UInt32 end, const ByteRange &data,
                    UInt64 sessionID, bool final);
 
-  const Timestamp &first() const { return first_; }
-  const Timestamp &last() const { return last_; }
+  const Timestamp &firstSeen() const { return firstSeen_; }
+  const Timestamp &lastSeen() const { return lastSeen_; }
   UInt32 end() const { return end_; }
   bool empty() const { return cache_.empty(); }
 
@@ -61,11 +61,13 @@ class FlowState {
   void clear();
 
  private:
-  Timestamp first_;
-  Timestamp last_;
+  Timestamp firstSeen_;
+  Timestamp lastSeen_;
   UInt32 end_ = 0;
   bool finished_ = false;
   SegmentCache cache_;
+
+  void setFinished(UInt64 sessionID);
 
   friend class FlowData;
 };
