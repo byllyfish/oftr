@@ -20,12 +20,15 @@ class Timestamp {
   UInt32 milliseconds() const { return nanoseconds() / 1000; }
 
   double secondsSince(const Timestamp &ts) const;
-  
+
   bool parse(const std::string &s);
   bool valid() const { return !(time_.first == 0 && time_.second == 0); }
   std::string toString() const;
 
-  void clear() { time_.first = 0; time_.second = 0; }
+  void clear() {
+    time_.first = 0;
+    time_.second = 0;
+  }
 
   bool operator==(const Timestamp &rhs) const { return time_ == rhs.time_; }
   bool operator!=(const Timestamp &rhs) const { return time_ != rhs.time_; }

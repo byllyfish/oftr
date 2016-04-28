@@ -14,7 +14,8 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Segment {
  public:
-  Segment(UInt32 end, const ByteRange &data, bool final) : end_{end}, final_{final}, data_{data} {}
+  Segment(UInt32 end, const ByteRange &data, bool final)
+      : end_{end}, final_{final}, data_{data} {}
 
   UInt32 begin() const { return end_ - UInt32_narrow_cast(data_.size()); }
   UInt32 end() const { return end_; }
@@ -42,7 +43,7 @@ class Segment {
 
  private:
   UInt32 end_ = 0;
-  bool final_ = false;    // is this the last segment?
+  bool final_ = false;  // is this the last segment?
   ByteList data_;
 };
 

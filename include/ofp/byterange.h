@@ -37,7 +37,7 @@ class ByteRange {
   }
 
   void clear() { end_ = begin_; }
-  
+
   bool isPrintable() const;
 
  private:

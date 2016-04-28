@@ -101,7 +101,7 @@ class Decode : public Subprogram {
                               const ofp::IPv6Endpoint &dst);
 
   static void pcapMessageCallback(ofp::Message *message, void *context);
-  
+
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
                       cl::desc("Write compact JSON output instead of YAML")};
@@ -134,8 +134,11 @@ class Decode : public Subprogram {
       cl::ValueRequired};
   cl::opt<bool> pcapFormat_{"pcap-format",
                             cl::desc("Treat input files as .pcap format")};
-  cl::opt<bool> pcapDebug_{"pcap-debug", cl::desc("Write reassembled TCP streams to /tmp/libofp.msgs")};
-  cl::opt<std::string> pcapFilter_{"pcap-filter", cl::desc("Filter for packet capture"), cl::init("tcp")};
+  cl::opt<bool> pcapDebug_{
+      "pcap-debug",
+      cl::desc("Write reassembled TCP streams to /tmp/libofp.msgs")};
+  cl::opt<std::string> pcapFilter_{
+      "pcap-filter", cl::desc("Filter for packet capture"), cl::init("tcp")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

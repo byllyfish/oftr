@@ -83,10 +83,11 @@ enum TCPControlBits : UInt8 {
 ///      process(ts, src, dst, data.data(), data.size());
 ///      data.consume(data.size());
 ///    }
-///    
+///
 ///    ...
-///    
-///    cache.finish([](const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow) {
+///
+///    cache.finish([](const IPv6Endpoint &src, const IPv6Endpoint &dst, const
+///    FlowData &flow) {
 //       process(src, dst, data.data(), data.size());
 //     });
 ///
@@ -100,7 +101,8 @@ class FlowCache {
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
-  using FlowCallback = void (*)(const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &);
+  using FlowCallback = void (*)(const IPv6Endpoint &, const IPv6Endpoint &dst,
+                                const FlowData &);
 
   // Call a function to process remaining data in the cache.
   void finish(FlowCallback callback);

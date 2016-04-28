@@ -2,13 +2,13 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/messagesource.h"
+#include <sys/stat.h>  // mkdir for debugWrite
+#include <fstream>     // for debugWrite
 #include "ofp/demux/pktsource.h"
 #include "ofp/header.h"
 #include "ofp/message.h"
 #include "ofp/messageinfo.h"
 #include "ofp/pkt.h"
-#include <fstream>   // for debugWrite
-#include <sys/stat.h>   // mkdir for debugWrite
 
 using namespace ofp;
 using namespace ofp::demux;
@@ -16,12 +16,14 @@ using namespace ofp::demux;
 const UInt16 DATALINK_8021Q = 0x8100;
 const size_t k8021QHeaderSize = 4;
 
-static void sEthernetCallback(Timestamp ts, ByteRange data, unsigned len, void *context) {
+static void sEthernetCallback(Timestamp ts, ByteRange data, unsigned len,
+                              void *context) {
   MessageSource *src = reinterpret_cast<MessageSource *>(context);
   src->submitEthernet(ts, data);
 }
 
-static void sIPCallback(Timestamp ts, ByteRange data, unsigned len, void *context) {
+static void sIPCallback(Timestamp ts, ByteRange data, unsigned len,
+                        void *context) {
   MessageSource *src = reinterpret_cast<MessageSource *>(context);
   src->submitIP(ts, data);
 }
@@ -71,9 +73,9 @@ void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
 
 void MessageSource::finish() {
   if (debug_) {
-    flows_.finish([](const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow){
-      debugWrite(src, dst, flow, flow.size());
-    });
+    flows_.finish(
+        [](const IPv6Endpoint &src, const IPv6Endpoint &dst,
+           const FlowData &flow) { debugWrite(src, dst, flow, flow.size()); });
   }
   flows_.clear();
 }
@@ -218,7 +220,8 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   if (flow.size() > 0) {
     size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
     if (flow.final() && n != flow.size()) {
-      log::warning("MessageSource: TCP done before full message received", flow.sessionID());
+      log::warning("MessageSource: TCP done before full message received",
+                   flow.sessionID());
       // Make sure we consume all of the remaining data.
       n = flow.size();
     }
@@ -231,7 +234,8 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
 
 void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
 
-size_t MessageSource::submitPayload(const UInt8 *data, size_t length, UInt64 sessionID) {
+size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
+                                    UInt64 sessionID) {
   log::debug("submitPayload", sessionID, src_, dst_, ByteRange{data, length});
 
   // Deliver completed messages in the payload buffer.
@@ -259,7 +263,8 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length, UInt64 ses
   return length - remaining;
 }
 
-void MessageSource::deliverMessage(const UInt8 *data, size_t length, UInt64 sessionID) {
+void MessageSource::deliverMessage(const UInt8 *data, size_t length,
+                                   UInt64 sessionID) {
   log::debug("deliverMessage:", sessionID, ByteRange(data, length));
   assert(length >= 8);
 
@@ -272,7 +277,8 @@ void MessageSource::deliverMessage(const UInt8 *data, size_t length, UInt64 sess
     callback_(&message, context_);
 }
 
-void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow, size_t n) {
+void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
+                               const FlowData &flow, size_t n) {
   // If there's no data, don't create any files.
   if (n == 0)
     return;
@@ -287,14 +293,16 @@ void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
 
   // Construct filename "/tmp/libofp.msgs/_tcp-$session-$src-$dst"
   std::ostringstream oss;
-  oss << DEBUG_MSG_DIR << "/_tcp-" << flow.sessionID() << '-' << src << '-' << dst;
+  oss << DEBUG_MSG_DIR << "/_tcp-" << flow.sessionID() << '-' << src << '-'
+      << dst;
   auto filename = oss.str();
 
   // Write flow to a file.
-  std::ofstream out{filename, std::ios::out|std::ios::app|std::ios::binary};
+  std::ofstream out{filename, std::ios::out | std::ios::app | std::ios::binary};
   if (out) {
     out.write(reinterpret_cast<const char *>(flow.data()), Signed_cast(n));
-    log::info("MessageSource::debugWrite", flow.sessionID(), ByteRange{flow.data(), n});
+    log::info("MessageSource::debugWrite", flow.sessionID(),
+              ByteRange{flow.data(), n});
   } else {
     log::error("MessageSource: Unable to open file", filename);
   }

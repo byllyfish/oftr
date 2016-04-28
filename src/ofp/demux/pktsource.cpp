@@ -102,7 +102,7 @@ bool PktSource::openFile(const std::string &path, const std::string &filter) {
     close();
     return false;
   }
-  
+
   // Set the appropriate bpf filter.
   if (!setFilter(filter)) {
     close();
@@ -188,7 +188,6 @@ bool PktSource::create(const std::string &device) {
   return true;
 }
 
-
 bool PktSource::openOffline(const std::string &path) {
   char errbuf[PCAP_ERRBUF_SIZE];
 
@@ -199,7 +198,7 @@ bool PktSource::openOffline(const std::string &path) {
       path.c_str(), PCAP_TSTAMP_PRECISION_NANO, errbuf);
   // pcap library will convert to nanoseconds for us.
   nanosec_factor_ = 1;
-#else // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
+#else   // !HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
   // Use the original `pcap_open_offline` API if the newer API is not available.
   pcap_ = pcap_open_offline(path.c_str(), errbuf);
   // Convert microseconds to nanoseconds.
@@ -217,7 +216,7 @@ bool PktSource::openOffline(const std::string &path) {
 }
 
 /// \brief Inspect data link type to determine encapsulation.
-/// 
+///
 /// \return false if the data link type is not supported
 bool PktSource::checkDatalink() {
   assert(pcap_);
@@ -238,7 +237,7 @@ bool PktSource::setFilter(const std::string &filter) {
 
   std::string fullFilter;
   bool supportsVlan = encapsulation() == ENCAP_ETHERNET;
-  
+
   if (filter.empty()) {
     // If filter is empty, capture everything.
     fullFilter = "";
@@ -282,14 +281,14 @@ bool PktSource::activate() {
     case PCAP_WARNING_PROMISC_NOTSUP:
 #if defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING_TSTAMP_TYPE_NOTSUP:
-#endif // defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
+#endif  // defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING:
     case PCAP_ERROR_ACTIVATED:
     case PCAP_ERROR_NO_SUCH_DEVICE:
     case PCAP_ERROR_PERM_DENIED:
 #if defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_PROMISC_PERM_DENIED:
-#endif // defined(PCAP_ERROR_PROMISC_PERM_DENIED)
+#endif  // defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_RFMON_NOTSUP:
     case PCAP_ERROR_IFACE_NOT_UP:
     default:
@@ -307,7 +306,6 @@ void PktSource::setError(const char *func, const std::string &arg,
   error_ = oss.str();
 }
 
-
 struct DatalinkInfo {
   int dlType;
   PktSource::Encapsulation encap;
@@ -317,16 +315,18 @@ struct DatalinkInfo {
 };
 
 static const DatalinkInfo sDatalinkInfo[] = {
-  { DLT_NULL, PktSource::ENCAP_IP, 4 },
-  { DLT_EN10MB, PktSource::ENCAP_ETHERNET, 0 },
-  { DLT_RAW, PktSource::ENCAP_IP, 0 },
-  // TODO(bfish):
-  //{ DLT_LINUX_SLL, PktSource::ENCAP_ETHERNET },
-  //{ DLT_LOOP  , PktSource::ENCAP_IP }
+    {DLT_NULL, PktSource::ENCAP_IP, 4},
+    {DLT_EN10MB, PktSource::ENCAP_ETHERNET, 0},
+    {DLT_RAW, PktSource::ENCAP_IP, 0},
+    // TODO(bfish):
+    //{ DLT_LINUX_SLL, PktSource::ENCAP_ETHERNET },
+    //{ DLT_LOOP  , PktSource::ENCAP_IP }
 };
 
-PktSource::Encapsulation PktSource::lookupEncapsulation(int datalink, UInt32 *frameSkip) {
-  auto iter = std::find(std::begin(sDatalinkInfo), std::end(sDatalinkInfo), datalink);
+PktSource::Encapsulation PktSource::lookupEncapsulation(int datalink,
+                                                        UInt32 *frameSkip) {
+  auto iter =
+      std::find(std::begin(sDatalinkInfo), std::end(sDatalinkInfo), datalink);
   if (iter != std::end(sDatalinkInfo)) {
     *frameSkip = iter->frameSkip;
     return iter->encap;

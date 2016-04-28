@@ -107,12 +107,14 @@ void SegmentCache::append(UInt32 end, const ByteRange &data, bool final) {
   segments_.emplace_back(end, data, final);
 }
 
-void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx, bool final) {
+void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx,
+                          bool final) {
   segments_.emplace(segments_.begin() + Signed_cast(idx), end, data, final);
 }
 
 void SegmentCache::update(size_t idx, bool final) {
-  // TODO(bfish): if final is true, we need to clear out the rest of the segments.
+  // TODO(bfish): if final is true, we need to clear out the rest of the
+  // segments.
 
   if (idx < segments_.size() - 1) {
     // Check next segment for overlap.
@@ -120,7 +122,7 @@ void SegmentCache::update(size_t idx, bool final) {
     auto &next = segments_[idx + 1];
 
     assert(!seg.final());
-    
+
     if (seg.end() == next.begin()) {
       seg.append(next.data(), next.final());
       segments_.erase(segments_.begin() + Signed_cast(idx) + 1);

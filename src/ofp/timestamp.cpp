@@ -11,9 +11,9 @@ using namespace ofp;
 const UInt32 kNanosecondsPerSec = 1000000000;
 
 /// \brief Compute difference in seconds.
-/// 
+///
 /// \returns elapsed seconds between `this` and `ts.
-/// 
+///
 /// Value is negative if ts > this.
 double Timestamp::secondsSince(const Timestamp &ts) const {
   if (ts > *this) {
@@ -24,10 +24,15 @@ double Timestamp::secondsSince(const Timestamp &ts) const {
 
   UInt64 diff = Unsigned_cast(seconds() - ts.seconds());
   if (nanoseconds() >= ts.nanoseconds()) {
-    return diff + static_cast<double>(nanoseconds() - ts.nanoseconds()) / kNanosecondsPerSec;
+    return diff +
+           static_cast<double>(nanoseconds() - ts.nanoseconds()) /
+               kNanosecondsPerSec;
   } else {
     assert(diff > 0);
-    return (diff - 1) + static_cast<double>(kNanosecondsPerSec - ts.nanoseconds() + nanoseconds())/ kNanosecondsPerSec;
+    return (diff - 1) +
+           static_cast<double>(kNanosecondsPerSec - ts.nanoseconds() +
+                               nanoseconds()) /
+               kNanosecondsPerSec;
   }
 }
 

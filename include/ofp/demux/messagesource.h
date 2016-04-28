@@ -56,7 +56,8 @@ class MessageSource {
   size_t submitPayload(const UInt8 *data, size_t length, UInt64 sessionID);
   void deliverMessage(const UInt8 *data, size_t length, UInt64 sessionID);
 
-  static void debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow, size_t n);
+  static void debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
+                         const FlowData &flow, size_t n);
 };
 
 OFP_END_IGNORE_PADDING

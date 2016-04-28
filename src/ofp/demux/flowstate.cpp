@@ -38,7 +38,8 @@ void FlowData::consume(size_t len) {
 }
 
 FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
-                            const ByteRange &data, UInt64 sessionID, bool final) {
+                            const ByteRange &data, UInt64 sessionID,
+                            bool final) {
   UInt32 begin = end - UInt32_narrow_cast(data.size());
 
   if (!firstSeen_.valid()) {
@@ -84,7 +85,8 @@ FlowData FlowState::latestData(UInt64 sessionID) {
   const Segment *seg = cache_.current();
 
   if (seg && seg->begin() == end_) {
-    log::debug("FlowState: return flow data", segmentStr(seg->begin(), seg->end()));
+    log::debug("FlowState: return flow data",
+               segmentStr(seg->begin(), seg->end()));
     return FlowData{this, seg->data(), sessionID, true, seg->final()};
   }
 
@@ -102,6 +104,7 @@ void FlowState::clear() {
 void FlowState::setFinished(UInt64 sessionID) {
   if (!finished_) {
     finished_ = true;
-    log::info("Finish TCP session", sessionID, "seconds", lastSeen().secondsSince(firstSeen()));
+    log::info("Finish TCP session", sessionID, "seconds",
+              lastSeen().secondsSince(firstSeen()));
   }
 }

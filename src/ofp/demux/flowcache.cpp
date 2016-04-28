@@ -19,10 +19,10 @@ detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
   }
 }
 
- bool detail::FlowCacheEntry::expired(const Timestamp &ts) const {
+bool detail::FlowCacheEntry::expired(const Timestamp &ts) const {
   Timestamp last = std::max(x.lastSeen(), y.lastSeen());
   return ts.secondsSince(last) >= 60 * 5.0;
- }
+}
 
 FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
                             const IPv6Endpoint &dst, UInt32 seq, ByteRange data,
