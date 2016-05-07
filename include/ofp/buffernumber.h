@@ -21,8 +21,12 @@ class BufferNumber {
     return static_cast<OFPBufferNo>(value());
   }
 
-  bool operator==(const BufferNumber &rhs) const { return buffer_ == rhs.buffer_; }
-  bool operator==(OFPBufferNo rhs) const { return buffer_ == static_cast<UInt32>(rhs); }
+  bool operator==(const BufferNumber &rhs) const {
+    return buffer_ == rhs.buffer_;
+  }
+  bool operator==(OFPBufferNo rhs) const {
+    return buffer_ == static_cast<UInt32>(rhs);
+  }
   bool operator!=(const BufferNumber &rhs) const { return !(*this == rhs); }
 
  private:
