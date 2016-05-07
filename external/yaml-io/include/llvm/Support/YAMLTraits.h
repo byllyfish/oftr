@@ -682,8 +682,8 @@ public:
     this->processKey(Key, Val, false);
   }
 
-  template <typename T>
-  void mapOptional(const char* Key, T& Val, const T& Default) {
+  template <typename T, typename U>
+  void mapOptional(const char* Key, T& Val, const U& Default) {
     this->processKeyWithDefault(Key, Val, Default, false);
   }
 
@@ -708,8 +708,8 @@ private:
     }
   }
 
-  template <typename T>
-  void processKeyWithDefault(const char *Key, T &Val, const T& DefaultValue,
+  template <typename T, typename U>
+  void processKeyWithDefault(const char *Key, T &Val, const U& DefaultValue,
                                                                 bool Required) {
     void *SaveInfo;
     bool UseDefault;

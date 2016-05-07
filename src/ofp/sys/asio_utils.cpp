@@ -11,7 +11,7 @@ namespace asio {
 namespace detail {
 
 template <typename Exception>
-[[noreturn]] void throw_exception(const Exception &e) {
+void throw_exception(const Exception &e) {
   // With ASIO_NO_EXPCEPTIONS defined, we need to define our own version of
   // asio::detail::throw_exception. GCC requires ASIO_NO_EXCEPTIONS to compile
   // with -fno-exceptions. (Clang does not.)

@@ -171,8 +171,8 @@ also represents stdin.
 *-h, --help*::
     Print out usage information for the command.
 
-*--data-pkt*::
-    Include _data_pkt in PacketIn/PacketOut decodes.
+*--pkt-decode*::
+    Include _pkt_decode in PacketIn/PacketOut decodes.
 
 *-v, --invert-check*::
     Expect invalid messages only. This option is used for internal testing.

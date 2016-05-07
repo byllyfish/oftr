@@ -16,7 +16,7 @@ msg:
   in_port: PortNumber
   actions: [Action]
   data: HexData
-  _data_pkt: !optout [Field]
+  _pkt_decode: !optout [Field]
 )""";
 
 template <>
@@ -38,7 +38,7 @@ struct MappingTraits<ofp::PacketOut> {
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
       ofp::MatchPacket mp{enetFrame, false};
-      io.mapRequired("_data_pkt", mp);
+      io.mapRequired("_pkt_decode", mp);
     }
   }
 };
@@ -56,6 +56,9 @@ struct MappingTraits<ofp::PacketOutBuilder> {
 
     io.mapRequired("actions", msg.actions_);
     io.mapRequired("data", msg.enetFrame_);
+
+    MatchBuilder ignorePktDecode;  // FIXME(bfish) Add `mapIgnore` method?
+    io.mapOptional("_pkt_decode", ignorePktDecode);
   }
 };
 

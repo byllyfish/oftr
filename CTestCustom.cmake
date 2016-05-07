@@ -9,7 +9,12 @@ set(CTEST_CUSTOM_MEMCHECK_IGNORE
 )
 
 # Ignore build warnings on Mac OS X
-SET(CTEST_CUSTOM_WARNING_EXCEPTION
+set(CTEST_CUSTOM_WARNING_EXCEPTION
 	${CTEST_CUSTOM_WARNING_EXCEPTION}
 	"ranlib: file: .* has no symbols"
 )
+
+# Ignore ctypes test on alpine linux.
+if(EXISTS "/etc/alpine-release")
+  set(CTEST_CUSTOM_TESTS_IGNORE python-ctypes)
+endif()
