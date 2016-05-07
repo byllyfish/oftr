@@ -1,4 +1,4 @@
 #!/bin/bash
 
-curl -O http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
+curl -O https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py
 

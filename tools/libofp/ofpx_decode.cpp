@@ -335,7 +335,7 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage) {
   ofp::log::debug("decodeOneMessage (transmogrified):", *message);
 
-  ofp::yaml::Decoder decoder{message, json_, dataPkt_};
+  ofp::yaml::Decoder decoder{message, json_, pktDecode_};
 
   if (!decoder.error().empty()) {
     // An error occurred in decoding the message.

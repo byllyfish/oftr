@@ -56,6 +56,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            3333FFB499BA02693CBF394786DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FFB499BA87001E8D00000000FE80000000000000B4BC75FFFEB499BA
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:ff:b4:99:ba'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           '::'
+    - field:           IPV6_DST
+      value:           'ff02::1:ffb4:99ba'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x87
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -69,6 +96,19 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020732060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '01:80:c2:00:00:0e'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x88CC
+    - field:           X_LLDP_CHASSIS_ID
+      value:           'mac 000000000001'
+    - field:           X_LLDP_PORT_ID
+      value:           '2'
+    - field:           X_LLDP_TTL
+      value:           0x0078
 ...
 ---
 type:            PACKET_OUT
@@ -82,6 +122,19 @@ msg:
       port:            LOCAL
       max_len:         0x0000
   data:            0180C200000E00000000000188CC0207040000000000010403072D32060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE240026E1004F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '01:80:c2:00:00:0e'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x88CC
+    - field:           X_LLDP_CHASSIS_ID
+      value:           'mac 000000000001'
+    - field:           X_LLDP_PORT_ID
+      value:           '-2'
+    - field:           X_LLDP_TTL
+      value:           0x0078
 ...
 ---
 type:            PACKET_OUT
@@ -95,6 +148,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            3333FF00000200000000000286DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FF00000287007B2300000000FE80000000000000020000FFFE000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:ff:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           '::'
+    - field:           IPV6_DST
+      value:           'ff02::1:ff00:2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x87
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -108,6 +188,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            3333FF00000100000000000186DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FF00000187007B2500000000FE80000000000000020000FFFE000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:ff:00:00:01'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           '::'
+    - field:           IPV6_DST
+      value:           'ff02::1:ff00:1'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x87
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -121,6 +228,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -134,6 +268,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -147,6 +308,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -160,6 +348,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -173,6 +388,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0072050000000102000000FF0200000000000000000001FF000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:2'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -186,6 +428,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:2'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -199,6 +468,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:1'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -212,6 +508,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:1'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -225,6 +548,19 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020731060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C31404F467C30303A30303A30303A30303A30303A30303A30303A30310000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '01:80:c2:00:00:0e'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x88CC
+    - field:           X_LLDP_CHASSIS_ID
+      value:           'mac 000000000001'
+    - field:           X_LLDP_PORT_ID
+      value:           '1'
+    - field:           X_LLDP_TTL
+      value:           0x0078
 ...
 ---
 type:            PACKET_OUT
@@ -238,6 +574,23 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'ff:ff:ff:ff:ff:ff'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0001
+    - field:           ARP_SPA
+      value:           10.0.0.1
+    - field:           ARP_TPA
+      value:           10.0.0.2
+    - field:           ARP_SHA
+      value:           '00:00:00:00:00:01'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:00'
 ...
 ---
 type:            PACKET_OUT
@@ -251,6 +604,23 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            FFFFFFFFFFFF0A0027000000080600010800060400010A0027000000000000000000000000000A000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'ff:ff:ff:ff:ff:ff'
+    - field:           ETH_SRC
+      value:           '0a:00:27:00:00:00'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0001
+    - field:           ARP_SPA
+      value:           0.0.0.0
+    - field:           ARP_TPA
+      value:           10.0.0.2
+    - field:           ARP_SHA
+      value:           '0a:00:27:00:00:00'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:00'
 ...
 ---
 type:            PACKET_OUT
@@ -264,6 +634,23 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            FFFFFFFFFFFF0A0027000000080600010800060400010A0027000000000000000000000000000A000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'ff:ff:ff:ff:ff:ff'
+    - field:           ETH_SRC
+      value:           '0a:00:27:00:00:00'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0001
+    - field:           ARP_SPA
+      value:           0.0.0.0
+    - field:           ARP_TPA
+      value:           10.0.0.2
+    - field:           ARP_SHA
+      value:           '0a:00:27:00:00:00'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:00'
 ...
 ---
 type:            PACKET_OUT
@@ -277,6 +664,23 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            000000000001000000000002080600010800060400020000000000020A0000020000000000010A000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0002
+    - field:           ARP_SPA
+      value:           10.0.0.2
+    - field:           ARP_TPA
+      value:           10.0.0.1
+    - field:           ARP_SHA
+      value:           '00:00:00:00:00:02'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:01'
 ...
 ---
 type:            FLOW_MOD
@@ -396,6 +800,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0072050000000102000000FF0200000000000000000001FF000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:2'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -409,6 +840,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0070050000000104000000FF0200000000000000000001FF000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:2'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -422,6 +880,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -435,6 +920,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -448,6 +960,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00136F0000000104000000FF0200000000000000000001FFB499BA
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -461,6 +1000,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00136F0000000104000000FF0200000000000000000001FFB499BA
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -474,6 +1040,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:2'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -487,6 +1080,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:1'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -500,6 +1120,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -513,6 +1160,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            REQUEST.PORT_STATS
@@ -534,6 +1208,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0070070000000104000000FF0200000000000000000001FF000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:1'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            PACKET_OUT
@@ -547,6 +1248,23 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            000000000002000000000001080600010800060400020000000000010A0000010000000000020A000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0002
+    - field:           ARP_SPA
+      value:           10.0.0.1
+    - field:           ARP_TPA
+      value:           10.0.0.2
+    - field:           ARP_SHA
+      value:           '00:00:00:00:00:01'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:02'
 ...
 ---
 type:            PACKET_OUT
@@ -560,6 +1278,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -573,6 +1318,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '02:69:3c:bf:39:47'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::b4bc:75ff:feb4:99ba'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -586,6 +1358,33 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:02'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:2'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -599,6 +1398,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:02'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:1'
+    - field:           IPV6_DST
+      value:           'ff02::2'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x85
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0001
+    - field:           X_PKT_MARK
+      value:           0x003A
 ...
 ---
 type:            PACKET_OUT
@@ -612,6 +1438,33 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '33:33:00:00:00:16'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x86DD
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x3A
+    - field:           IPV6_SRC
+      value:           'fe80::200:ff:fe00:1'
+    - field:           IPV6_DST
+      value:           'ff02::16'
+    - field:           IPV6_FLABEL
+      value:           0x00000000
+    - field:           ICMPV6_TYPE
+      value:           0x8F
+    - field:           ICMPV6_CODE
+      value:           0x00
+    - field:           IPV6_EXTHDR
+      value:           0x0040
+    - field:           X_PKT_MARK
+      value:           0x0042
 ...
 ---
 type:            REQUEST.EXPERIMENTER
@@ -712,6 +1565,19 @@ msg:
       port:            0x00000002
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020732060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '01:80:c2:00:00:0e'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x88CC
+    - field:           X_LLDP_CHASSIS_ID
+      value:           'mac 000000000001'
+    - field:           X_LLDP_PORT_ID
+      value:           '2'
+    - field:           X_LLDP_TTL
+      value:           0x0078
 ...
 ---
 type:            PACKET_OUT
@@ -725,6 +1591,19 @@ msg:
       port:            LOCAL
       max_len:         0x0000
   data:            0180C200000E00000000000188CC0207040000000000010403072D32060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE240026E1004F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '01:80:c2:00:00:0e'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x88CC
+    - field:           X_LLDP_CHASSIS_ID
+      value:           'mac 000000000001'
+    - field:           X_LLDP_PORT_ID
+      value:           '-2'
+    - field:           X_LLDP_TTL
+      value:           0x0078
 ...
 ---
 type:            PACKET_OUT
@@ -738,6 +1617,19 @@ msg:
       port:            0x00000001
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020731060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C31404F467C30303A30303A30303A30303A30303A30303A30303A30310000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           '01:80:c2:00:00:0e'
+    - field:           ETH_SRC
+      value:           '00:00:00:00:00:01'
+    - field:           ETH_TYPE
+      value:           0x88CC
+    - field:           X_LLDP_CHASSIS_ID
+      value:           'mac 000000000001'
+    - field:           X_LLDP_PORT_ID
+      value:           '1'
+    - field:           X_LLDP_TTL
+      value:           0x0078
 ...
 ---
 type:            REQUEST.EXPERIMENTER

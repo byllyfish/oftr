@@ -18,7 +18,7 @@ export LC_ALL=C
 # resulting output and any error messages in the file openflow-messages.pass.out.
 
 echo "Test openflow-messages '*.pass'"
-find external/openflow-messages -name '*.pass' -print | sort | xargs $LIBOFP_MEMCHECK $LIBOFP decode -kV > "$CURRENT_TEST_DIR/openflow-messages.pass.out" 2>&1
+find external/openflow-messages -name '*.pass' -print | sort | xargs $LIBOFP_MEMCHECK $LIBOFP decode -kV --pkt-decode > "$CURRENT_TEST_DIR/openflow-messages.pass.out" 2>&1
 
 echo "Compare openflow-messages.pass.out to $CURRENT_SOURCE_DIR/openflow-messages.pass.out"
 diff "$CURRENT_TEST_DIR/openflow-messages.pass.out" "$CURRENT_SOURCE_DIR/openflow-messages.pass.out"
@@ -36,7 +36,7 @@ diff "$CURRENT_TEST_DIR/openflow-messages.fail.out" "$CURRENT_SOURCE_DIR/openflo
 # (and output) in the file ovs-messages.pass.out.
 
 echo "Test ovs-messages.pass"
-$LIBOFP_MEMCHECK $LIBOFP decode -kV "$CURRENT_SOURCE_DIR/ovs-messages.pass" > "$CURRENT_TEST_DIR/ovs-messages.pass.out" 2>&1
+$LIBOFP_MEMCHECK $LIBOFP decode -kV --pkt-decode "$CURRENT_SOURCE_DIR/ovs-messages.pass" > "$CURRENT_TEST_DIR/ovs-messages.pass.out" 2>&1
 
 echo "Compare ovs-messages.pass.out to $CURRENT_SOURCE_DIR/ovs-messages.pass.out"
 diff "$CURRENT_TEST_DIR/ovs-messages.pass.out" "$CURRENT_SOURCE_DIR/ovs-messages.pass.out"

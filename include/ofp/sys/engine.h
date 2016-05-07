@@ -7,9 +7,9 @@
 #include <map>
 #include "ofp/channel.h"
 #include "ofp/datapathid.h"
-#include "ofp/defaulthandshake.h"
 #include "ofp/driver.h"
 #include "ofp/sys/asio_utils.h"
+#include "ofp/sys/defaulthandshake.h"
 #include "ofp/sys/identity.h"
 #include "ofp/sys/saverestore.h"
 #include "ofp/sys/tcp_server.h"

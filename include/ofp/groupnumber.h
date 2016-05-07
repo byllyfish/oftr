@@ -12,8 +12,7 @@ enum OFPGroupNo : UInt32;
 
 class GroupNumber {
  public:
-  constexpr GroupNumber() = default;
-  constexpr GroupNumber(UInt32 group) : group_{group} {}
+  constexpr GroupNumber(UInt32 group = 0) : group_{group} {}
 
   // This is a convenience constructor (for efficiency).
   constexpr GroupNumber(Big32 group) : group_{group} {}
@@ -23,6 +22,9 @@ class GroupNumber {
   }
 
   bool operator==(const GroupNumber &rhs) const { return group_ == rhs.group_; }
+  bool operator==(OFPGroupNo rhs) const {
+    return group_ == static_cast<UInt32>(rhs);
+  }
   bool operator!=(const GroupNumber &rhs) const { return !(*this == rhs); }
 
  private:

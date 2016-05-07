@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#ifndef OFP_DEFAULTHANDSHAKE_H_
-#define OFP_DEFAULTHANDSHAKE_H_
+#ifndef OFP_SYS_DEFAULTHANDSHAKE_H_
+#define OFP_SYS_DEFAULTHANDSHAKE_H_
 
 #include "ofp/channellistener.h"
 #include "ofp/driver.h"
@@ -50,4 +50,4 @@ OFP_END_IGNORE_PADDING
 
 }  // namespace ofp
 
-#endif  // OFP_DEFAULTHANDSHAKE_H_
+#endif  // OFP_SYS_DEFAULTHANDSHAKE_H_

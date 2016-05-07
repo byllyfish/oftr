@@ -10,6 +10,31 @@ msg:
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'f2:0b:a4:d0:3f:70'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0800
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x01
+    - field:           IPV4_SRC
+      value:           10.0.0.1
+    - field:           IPV4_DST
+      value:           10.0.0.2
+    - field:           NX_IP_TTL
+      value:           0xFF
+    - field:           ICMPV4_TYPE
+      value:           0x08
+    - field:           ICMPV4_CODE
+      value:           0x00
+    - field:           X_PKT_MARK
+      value:           0x0026
 ...
 ---
 type:            FLOW_MOD
@@ -52,6 +77,23 @@ msg:
   cookie:          0x0000000000000000
   match:           
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'ff:ff:ff:ff:ff:ff'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0001
+    - field:           ARP_SPA
+      value:           10.0.0.1
+    - field:           ARP_TPA
+      value:           10.0.0.3
+    - field:           ARP_SHA
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:00'
 ...
 ---
 type:            FEATURES_REQUEST
@@ -122,6 +164,31 @@ msg:
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'f2:0b:a4:d0:3f:70'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0800
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x01
+    - field:           IPV4_SRC
+      value:           10.0.0.1
+    - field:           IPV4_DST
+      value:           10.0.0.2
+    - field:           NX_IP_TTL
+      value:           0xFF
+    - field:           ICMPV4_TYPE
+      value:           0x08
+    - field:           ICMPV4_CODE
+      value:           0x00
+    - field:           X_PKT_MARK
+      value:           0x0026
 ...
 ---
 type:            HELLO
@@ -625,6 +692,23 @@ msg:
     - field:           ARP_THA
       value:           '00:00:00:00:00:00'
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'ff:ff:ff:ff:ff:ff'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0001
+    - field:           ARP_SPA
+      value:           10.0.0.1
+    - field:           ARP_TPA
+      value:           10.0.0.3
+    - field:           ARP_SHA
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:00'
 ...
 ---
 type:            FLOW_REMOVED
@@ -745,6 +829,7 @@ msg:
     - field:           MPLS_TC
       value:           0x05
   data:            ''
+  _pkt_decode:     
 ...
 ---
 type:            FEATURES_REPLY
@@ -919,6 +1004,31 @@ msg:
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'f2:0b:a4:d0:3f:70'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0800
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x01
+    - field:           IPV4_SRC
+      value:           10.0.0.1
+    - field:           IPV4_DST
+      value:           10.0.0.2
+    - field:           NX_IP_TTL
+      value:           0xFF
+    - field:           ICMPV4_TYPE
+      value:           0x08
+    - field:           ICMPV4_CODE
+      value:           0x00
+    - field:           X_PKT_MARK
+      value:           0x0026
 ...
 ---
 type:            HELLO
@@ -1508,6 +1618,23 @@ msg:
     - field:           ARP_THA
       value:           '00:00:00:00:00:00'
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'ff:ff:ff:ff:ff:ff'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0001
+    - field:           ARP_SPA
+      value:           10.0.0.1
+    - field:           ARP_TPA
+      value:           10.0.0.3
+    - field:           ARP_SHA
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:00'
 ...
 ---
 type:            FLOW_REMOVED
@@ -3501,6 +3628,7 @@ msg:
     - field:           0xFFFF0007.0x4F4E4600
       value:           0A0001
   data:            ''
+  _pkt_decode:     
 ...
 ---
 type:            FEATURES_REPLY
@@ -3689,6 +3817,31 @@ msg:
       port:            ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'f2:0b:a4:d0:3f:70'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0800
+    - field:           IP_DSCP
+      value:           0x00
+    - field:           IP_ECN
+      value:           0x00
+    - field:           IP_PROTO
+      value:           0x01
+    - field:           IPV4_SRC
+      value:           10.0.0.1
+    - field:           IPV4_DST
+      value:           10.0.0.2
+    - field:           NX_IP_TTL
+      value:           0xFF
+    - field:           ICMPV4_TYPE
+      value:           0x08
+    - field:           ICMPV4_CODE
+      value:           0x00
+    - field:           X_PKT_MARK
+      value:           0x0026
 ...
 ---
 type:            HELLO
@@ -4193,6 +4346,23 @@ msg:
     - field:           ARP_THA
       value:           '00:00:00:00:00:00'
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
+  _pkt_decode:     
+    - field:           ETH_DST
+      value:           'ff:ff:ff:ff:ff:ff'
+    - field:           ETH_SRC
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ETH_TYPE
+      value:           0x0806
+    - field:           ARP_OP
+      value:           0x0001
+    - field:           ARP_SPA
+      value:           10.0.0.1
+    - field:           ARP_TPA
+      value:           10.0.0.3
+    - field:           ARP_SHA
+      value:           'f2:0b:a4:7d:f8:ea'
+    - field:           ARP_THA
+      value:           '00:00:00:00:00:00'
 ...
 ---
 type:            GET_ASYNC_REQUEST
@@ -6099,6 +6269,7 @@ msg:
     - field:           PBB_UCA
       value:           0x01
   data:            ''
+  _pkt_decode:     
 ...
 ---
 type:            FLOW_MOD

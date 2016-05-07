@@ -1319,6 +1319,25 @@ TEST(encoder, flowmodv4_experimenter_2) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowmodv4_minimal) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        table_id:        0
+        command:         ADD
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(56, encoder.size());
+  EXPECT_HEX(
+      "040E003800000001000000000000000000000000000000000000000000000000FFFFFFFF"
+      "FFFFFFFFFFFFFFFF000000000001000400000000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, flowmodv1) {
   const char *input = R"""(
       type:            FLOW_MOD
