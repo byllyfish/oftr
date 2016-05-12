@@ -32,8 +32,8 @@ namespace ofpx {
 //   --include-filename    Include file name in all decodes.
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
-//   --pcap-format          Treat input files as .pcap format.
-//   --pcap-debug           Write reassembled TCP streams to /tmp/libofp.msgs.
+//   --pcap-format=auto|yes|no Treat input files as .pcap format.
+//   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir>.
 //   --pcap-filter          Filter for packet capture.
 //
 // Usage:
@@ -59,12 +59,13 @@ class Decode : public Subprogram {
  public:
   enum class ExitStatus {
     Success = 0,
+    InvalidArguments = InvalidArgumentsExitStatus,
     FileOpenFailed = FileOpenFailedExitStatus,
     DecodeFailed = MinExitStatus,
     DecodeSucceeded,
     VerifyOutputFailed,
     MessageReadFailed,
-    IndexReadFailed
+    IndexReadFailed,
   };
 
   int run(int argc, const char *const *argv) override;
@@ -78,6 +79,8 @@ class Decode : public Subprogram {
   using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
   std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
   ofp::UInt64 nextSessionId_ = 0;
+
+  bool validateCommandLineArguments();
 
   ExitStatus decodeFiles();
   ExitStatus decodeFile(const std::string &filename);
@@ -101,6 +104,13 @@ class Decode : public Subprogram {
                               const ofp::IPv6Endpoint &dst);
 
   static void pcapMessageCallback(ofp::Message *message, void *context);
+  bool pcapFormat() const;
+
+  enum PcapFormat {
+    kPcapFormatAuto,
+    kPcapFormatYes,
+    kPcapFormatNo
+  };
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
@@ -128,17 +138,21 @@ class Decode : public Subprogram {
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};
+  cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{
       "pcap-device",
       cl::desc("Reassemble OpenFlow messages from specified device"),
-      cl::ValueRequired};
-  cl::opt<bool> pcapFormat_{"pcap-format",
-                            cl::desc("Treat input files as .pcap format")};
-  cl::opt<bool> pcapDebug_{
-      "pcap-debug",
-      cl::desc("Write reassembled TCP streams to /tmp/libofp.msgs")};
+      cl::ValueRequired, cl::cat(pcapCategory_)};
+  cl::opt<PcapFormat> pcapFormat_{"pcap-format", cl::desc("Treat all input files as .pcap format"), cl::values(
+    clEnumValN(kPcapFormatAuto , "auto", "If any file name ends in .pcap (default)"),
+    clEnumValN(kPcapFormatYes, "yes", "Yes"),
+    clEnumValN(kPcapFormatNo, "no", "No"),
+   clEnumValEnd), cl::cat(pcapCategory_), cl::init(kPcapFormatAuto)};
+  cl::opt<std::string> pcapOutputDir_{
+      "pcap-output-dir",
+      cl::desc("Write reassembled TCP streams to directory"), cl::cat(pcapCategory_), cl::ValueRequired};
   cl::opt<std::string> pcapFilter_{
-      "pcap-filter", cl::desc("Filter for packet capture"), cl::init("tcp")};
+      "pcap-filter", cl::desc("Filter for packet capture"), cl::cat(pcapCategory_), cl::init("tcp")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

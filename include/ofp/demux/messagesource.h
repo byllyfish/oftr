@@ -27,8 +27,8 @@ class MessageSource {
  public:
   using MessageCallback = void (*)(Message *, void *);
 
-  explicit MessageSource(MessageCallback callback, void *context, bool debug)
-      : callback_{callback}, context_{context}, debug_{debug} {}
+  explicit MessageSource(MessageCallback callback, void *context, const std::string &outputDir)
+      : callback_{callback}, context_{context}, outputDir_{outputDir} {}
 
   void runLoop(PktSource *pcap);
 
@@ -44,7 +44,7 @@ class MessageSource {
   IPv6Endpoint dst_;
   UInt32 seq_ = 0;
   UInt16 flags_ = 0;
-  bool debug_ = false;
+  std::string outputDir_;
   FlowCache flows_;
 
   void submitEthernet(const UInt8 *data, size_t length);
@@ -56,8 +56,8 @@ class MessageSource {
   size_t submitPayload(const UInt8 *data, size_t length, UInt64 sessionID);
   void deliverMessage(const UInt8 *data, size_t length, UInt64 sessionID);
 
-  static void debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
-                         const FlowData &flow, size_t n);
+  bool hasOutputDir() const { return !outputDir_.empty(); }
+  void outputWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow, size_t n);
 };
 
 OFP_END_IGNORE_PADDING

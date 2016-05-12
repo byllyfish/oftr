@@ -101,8 +101,7 @@ class FlowCache {
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
-  using FlowCallback = void (*)(const IPv6Endpoint &, const IPv6Endpoint &dst,
-                                const FlowData &);
+  using FlowCallback = std::function<void(const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &)>;
 
   // Call a function to process remaining data in the cache.
   void finish(FlowCallback callback);

@@ -31,6 +31,10 @@ int Decode::run(int argc, const char *const *argv) {
                           "Translate binary OpenFlow messages in the input "
                           "files to human-readable YAML\n");
 
+  if (!validateCommandLineArguments()) {
+    return static_cast<int>(ExitStatus::InvalidArguments);
+  }
+
   // Set up output stream.
   std::ofstream outStream;
   if (outputFile_.empty()) {
@@ -45,8 +49,32 @@ int Decode::run(int argc, const char *const *argv) {
   }
 
   // If --pcap-device option is specified, decode from packet capture device.
+  // Otherwise, decode messages from pcap or binary files.
+
+  ExitStatus result;
   if (!pcapDevice_.empty()) {
-    return static_cast<int>(decodePcapDevice(pcapDevice_));
+    result = decodePcapDevice(pcapDevice_);
+  } else if (pcapFormat()) {
+    result = decodePcapFiles();
+  } else {
+    result = decodeFiles();
+  }
+
+  return static_cast<int>(result);
+}
+
+bool Decode::validateCommandLineArguments() {
+  // It's an error to specify any input files in combination with live packet
+  // capture.
+  if (!pcapDevice_.empty() && !inputFiles_.empty()) {
+    std::cerr << "Error: File list provided with live packet capture\n";
+    return false;
+  }
+
+  // If `pcapOutputDir_` is specified, it must exist.
+  if (!pcapOutputDir_.empty() && !llvm::sys::fs::is_directory(pcapOutputDir_)) {
+    std::cerr << "Error: Directory " << pcapOutputDir_ << " does not exist\n";
+    return false;
   }
 
   // If there are no input files, add "-" to indicate stdin.
@@ -54,12 +82,7 @@ int Decode::run(int argc, const char *const *argv) {
     inputFiles_.push_back("-");
   }
 
-  // Decode messages from input files.
-  if (pcapFormat_) {
-    return static_cast<int>(decodePcapFiles());
-  } else {
-    return static_cast<int>(decodeFiles());
-  }
+  return true;
 }
 
 ExitStatus Decode::decodeFiles() {
@@ -74,7 +97,7 @@ ExitStatus Decode::decodeFiles() {
 
   for (std::string filename : files) {
     // If filename ends in .findx when using --use-findx, strip the extension
-    // from filename.
+    // from filename. N.B. `filename` is an independent copy.
     llvm::StringRef fname{filename};
     if (useFindx_ && fname.endswith(".findx")) {
       filename = fname.drop_back(6);
@@ -321,15 +344,17 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
 ExitStatus Decode::decodePcapDevice(const std::string &device) {
   ofp::demux::PktSource pcap;
-  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapDebug_};
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_};
 
   if (!pcap.openDevice(device.c_str(), pcapFilter_)) {
     std::cerr << "Error: " << pcap.error() << '\n';
     return ExitStatus::FileOpenFailed;
   }
 
+  setCurrentFilename(std::string{"pcap:"} + device);
   msg.runLoop(&pcap);
   pcap.close();
+  setCurrentFilename("");
 
   return ExitStatus::Success;
 }
@@ -337,10 +362,14 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
 ExitStatus Decode::decodePcapFiles() {
   const std::vector<std::string> &files = inputFiles_;
 
+  // Use the same MessageSource object for all files, so we can stitch
+  // together TCP streams that may cross over files.
+
   ofp::demux::PktSource pcap;
-  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapDebug_};
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_};
 
   for (auto &filename : files) {
+    // Try to read the file as a .pcap file.
     if (!pcap.openFile(filename, pcapFilter_)) {
       std::cerr << "Error: " << filename << ": " << pcap.error() << '\n';
       return ExitStatus::FileOpenFailed;
@@ -616,6 +645,26 @@ void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
 
   ExitStatus result = decode->decodeOneMessage(message, &originalMessage);
   if (result != ExitStatus::Success) {
-    std::cerr << "pcapMessageCallback: Failed to decode message";
+    ofp::log::debug("pcapMessageCallback: Failed to decode message");
   }
+}
+
+bool Decode::pcapFormat() const {
+  if (pcapFormat_ == kPcapFormatNo)
+    return false;
+
+  if (pcapFormat_ == kPcapFormatYes)
+    return true;
+
+  assert(pcapFormat_ == kPcapFormatAuto);
+
+  // Check if any of the input files have the .pcap file extension.
+  for (const auto &filename : inputFiles_) {
+    llvm::StringRef fname{filename};
+    if (fname.endswith(".pcap")) {
+      return true;
+    }
+  }
+
+  return false;
 }

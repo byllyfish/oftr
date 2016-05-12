@@ -72,10 +72,10 @@ void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
 }
 
 void MessageSource::finish() {
-  if (debug_) {
+  if (hasOutputDir()) {
     flows_.finish(
-        [](const IPv6Endpoint &src, const IPv6Endpoint &dst,
-           const FlowData &flow) { debugWrite(src, dst, flow, flow.size()); });
+        [this](const IPv6Endpoint &src, const IPv6Endpoint &dst,
+           const FlowData &flow) { outputWrite(src, dst, flow, flow.size()); });
   }
   flows_.clear();
 }
@@ -225,8 +225,8 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
       // Make sure we consume all of the remaining data.
       n = flow.size();
     }
-    if (debug_) {
-      debugWrite(src_, dst_, flow, n);
+    if (hasOutputDir()) {
+      outputWrite(src_, dst_, flow, n);
     }
     flow.consume(n);
   }
@@ -277,23 +277,17 @@ void MessageSource::deliverMessage(const UInt8 *data, size_t length,
     callback_(&message, context_);
 }
 
-void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
+void MessageSource::outputWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
                                const FlowData &flow, size_t n) {
+  assert(hasOutputDir());
+
   // If there's no data, don't create any files.
   if (n == 0)
     return;
 
-  // Create directory DEBUG_MSG_DIR, if it doesn't exist.
-  const char *DEBUG_MSG_DIR = "/tmp/libofp.msgs";
-
-  if (::mkdir(DEBUG_MSG_DIR, 0700) < 0 && errno != EEXIST) {
-    log::error("MessageSource: Unable to create directory", DEBUG_MSG_DIR);
-    return;
-  }
-
-  // Construct filename "/tmp/libofp.msgs/_tcp-$session-$src-$dst"
+  // Construct filename "$outputDir/_tcp-$session-$src-$dst"
   std::ostringstream oss;
-  oss << DEBUG_MSG_DIR << "/_tcp-" << flow.sessionID() << '-' << src << '-'
+  oss << outputDir_ << "/_tcp-" << flow.sessionID() << '-' << src << '-'
       << dst;
   auto filename = oss.str();
 
@@ -301,9 +295,7 @@ void MessageSource::debugWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
   std::ofstream out{filename, std::ios::out | std::ios::app | std::ios::binary};
   if (out) {
     out.write(reinterpret_cast<const char *>(flow.data()), Signed_cast(n));
-    log::info("MessageSource::debugWrite", flow.sessionID(),
-              ByteRange{flow.data(), n});
   } else {
-    log::error("MessageSource: Unable to open file", filename);
+    log::error("MessageSource: Unable to open output file", filename);
   }
 }

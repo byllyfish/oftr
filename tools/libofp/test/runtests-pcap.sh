@@ -2,6 +2,8 @@
 
 set -e
 
+# Compare the SHA1 hash of a file to a known good value.
+# Usage: verify_sha1 <filename> <hash_value>
 function verify_sha1 {
     if [ ! -f "$1" ]; then
         echo "verify_sha1 failed: file not found: $1"
@@ -15,7 +17,6 @@ function verify_sha1 {
     echo "verify_sha1 success: $1"
 }
 
-
 CURRENT_SOURCE_DIR=`dirname "$0"`
 CURRENT_TEST_DIR=`pwd`
 MSG_DIR="/tmp/libofp.msgs"
@@ -24,12 +25,14 @@ echo "Working Directory: $CURRENT_TEST_DIR"
 
 if [ -d "$MSG_DIR" ]; then
     /bin/rm -f $MSG_DIR/_tcp-*
+else
+    mkdir $MSG_DIR
 fi
 
 LIBOFP=$CURRENT_TEST_DIR/../libofp
 
 echo "Run libofp decode on $CURRENT_SOURCE_DIR/tcp.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format --pcap-debug --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format=yes --pcap-output-dir=$MSG_DIR --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap"
 
 verify_sha1 "$CURRENT_SOURCE_DIR/tcp.pcap" "08cf1e8ab8b499cfa8d03398e74c09ad59d3a731"
 
@@ -60,6 +63,14 @@ verify_sha1 "$MSG_DIR/_tcp-11-[::1]:61988-[::1]:8888" "aa207c3edc5b664ab732935e1
 verify_sha1 "$MSG_DIR/_tcp-11-[::1]:8888-[::1]:61988" "bece5ea2bca550bac3477e2f1c98493d4ada8fde"
 verify_sha1 "$MSG_DIR/_tcp-12-[::1]:61994-[::1]:8888" "33aededd23f957c2daae1ff7aab626a493c7f3f6"
 verify_sha1 "$MSG_DIR/_tcp-12-[::1]:8888-[::1]:61994" "d9bcd4b5b044938c6d77dd3a7def9f44013a66c6"
+
+# Check illegal argument combinations to make sure they are rejected.
+
+# You cannot combine the --pcap-device option with any input arguments.
+! $LIBOFP_MEMCHECK $LIBOFP decode --pcap-device=en0 filename || {
+    echo "Test Failed: Don't use --pcap-device with files. ($?)"
+    exit 1
+}
 
 echo "Done."
 exit 0
