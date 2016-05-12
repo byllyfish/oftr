@@ -111,7 +111,7 @@ class FlowCache {
 
  private:
   detail::FlowMap cache_;
-  UInt64 sessionID_ = 0;
+  UInt64 assignSessionID_ = 0;
 
   UInt64 assignSessionID();
 };

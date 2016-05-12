@@ -17,13 +17,7 @@ OFP_BEGIN_IGNORE_PADDING
 class FlowData {
  public:
   explicit FlowData(UInt64 sessionID) : sessionID_{sessionID} {}
-  FlowData(FlowState *state, const ByteRange &data, UInt64 sessionID,
-           bool cached, bool final)
-      : state_{state},
-        data_{data},
-        sessionID_{sessionID},
-        cached_{cached},
-        final_{final} {}
+
   FlowData(FlowData &&other)
       : state_{other.state_},
         data_{other.data_},
@@ -49,6 +43,17 @@ class FlowData {
   UInt64 sessionID_ = 0;
   bool cached_ = false;
   bool final_ = false;
+
+  // Private constructor for use by FlowState class.
+  FlowData(FlowState *state, const ByteRange &data, UInt64 sessionID,
+           bool cached, bool final)
+      : state_{state},
+        data_{data},
+        sessionID_{sessionID},
+        cached_{cached},
+        final_{final} {}
+
+  friend class FlowState;
 };
 
 class FlowState {

@@ -94,8 +94,8 @@ void FlowCache::finish(FlowCallback callback) {
 }
 
 UInt64 FlowCache::assignSessionID() {
-  if (++sessionID_ == 0) {
-    return ++sessionID_;
+  if (++assignSessionID_ == 0) {
+    return ++assignSessionID_;
   }
-  return sessionID_;
+  return assignSessionID_;
 }
