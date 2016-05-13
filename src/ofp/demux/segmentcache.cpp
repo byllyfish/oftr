@@ -29,7 +29,9 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
     if (begin == seg.end()) {
       if (seg.final()) {
-        log::warning("SegmentCache: can't append data to final segment");
+        if (!final || !data.empty()) {
+          log::warning("SegmentCache: can't append data to final segment:", data.size());
+        }
       } else {
         seg.append(data, final);
         update(i, final);
@@ -62,7 +64,9 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
     }
 
     if (seg.final()) {
-      log::warning("SegmentCache: final segment seen already");
+      if (!final || !data.empty()) {
+        log::warning("SegmentCache: final segment seen already");
+      }
       goto DONE;
     }
   }
