@@ -120,11 +120,14 @@ void SegmentCache::update(size_t idx, bool final) {
   // TODO(bfish): if final is true, we need to clear out the rest of the
   // segments.
 
+  assert(!segments_.empty());
+
   if (idx < segments_.size() - 1) {
+    assert(idx + 1 < segments_.size());
+
     // Check next segment for overlap.
     auto &seg = segments_[idx];
     auto &next = segments_[idx + 1];
-
     assert(!seg.final());
 
     if (seg.end() == next.begin()) {

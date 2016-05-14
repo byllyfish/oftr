@@ -248,3 +248,29 @@ TEST(segmentcache, lessThan) {
   EXPECT_FALSE(Segment::lessThan(0x7FFFFFFF, 0));
   EXPECT_FALSE(Segment::lessThan(1, 0));
 }
+
+TEST(segmentcache, segmentMove) {
+  Segment seg1{2, {"1234", 4}, true};
+
+  EXPECT_EQ(2, seg1.end());
+  EXPECT_EQ(0xfffffffe, seg1.begin());
+  EXPECT_EQ(4, seg1.size());
+  EXPECT_TRUE(seg1.final());
+
+  Segment seg2{0, {"", 0UL}, false};
+  seg2 = std::move(seg1);
+  EXPECT_EQ(0, seg1.size());
+
+  EXPECT_EQ(2, seg2.end());
+  EXPECT_EQ(0xfffffffe, seg2.begin());
+  EXPECT_EQ(4, seg2.size());
+  EXPECT_TRUE(seg2.final());
+
+  seg1 = std::move(seg2);
+  EXPECT_EQ(0, seg2.size());
+
+  EXPECT_EQ(2, seg1.end());
+  EXPECT_EQ(0xfffffffe, seg1.begin());
+  EXPECT_EQ(4, seg1.size());
+  EXPECT_TRUE(seg1.final());
+}
