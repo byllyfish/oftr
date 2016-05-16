@@ -12,7 +12,7 @@ TEST(segmentcache, testEmpty) {
   SegmentCache cache;
   cache.store(0, {});
   EXPECT_EQ(nullptr, cache.current());
-  EXPECT_EQ(0, cache.size());
+  EXPECT_EQ(0, cache.segmentCount());
 }
 
 TEST(segmentcache, test1Segment) {
@@ -21,7 +21,7 @@ TEST(segmentcache, test1Segment) {
   ByteList data{HexToRawData("55")};
 
   cache.store(1, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -39,7 +39,7 @@ TEST(segmentcache, testAdjacentSegments) {
   ByteList data{HexToRawData("00112233")};
 
   cache.store(4, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -50,7 +50,7 @@ TEST(segmentcache, testAdjacentSegments) {
   EXPECT_FALSE(seg->final());
 
   cache.store(8, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -69,7 +69,7 @@ TEST(segmentcache, testNonAdjacentSegments) {
   ByteList data{HexToRawData("00112233")};
 
   cache.store(4, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -79,7 +79,7 @@ TEST(segmentcache, testNonAdjacentSegments) {
   EXPECT_EQ(4, seg->end());
 
   cache.store(10, data.toRange());
-  EXPECT_EQ(2, cache.size());
+  EXPECT_EQ(2, cache.segmentCount());
 
   seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -89,7 +89,7 @@ TEST(segmentcache, testNonAdjacentSegments) {
   EXPECT_EQ(4, seg->end());
 
   cache.store(6, ByteRange{"  ", 2});
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -108,7 +108,7 @@ TEST(segmentcache, testAdjacentSegments2) {
   ByteList data{HexToRawData("00112233")};
 
   cache.store(0xFFFFFFFF, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -118,7 +118,7 @@ TEST(segmentcache, testAdjacentSegments2) {
   EXPECT_EQ(kBegin + 4, seg->end());
 
   cache.store(3, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -133,7 +133,7 @@ TEST(segmentcache, testDrainAll) {
   ByteList data{HexToRawData("00112233")};
 
   cache.store(4, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -142,7 +142,7 @@ TEST(segmentcache, testDrainAll) {
   EXPECT_EQ(4, seg->end());
 
   cache.consume(4);
-  EXPECT_EQ(0, cache.size());
+  EXPECT_EQ(0, cache.segmentCount());
   EXPECT_EQ(nullptr, cache.current());
 }
 
@@ -151,7 +151,7 @@ TEST(segmentcache, testDrainPartial) {
   ByteList data{HexToRawData("00112233")};
 
   cache.store(4, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -160,7 +160,7 @@ TEST(segmentcache, testDrainPartial) {
   EXPECT_EQ(4, seg->end());
 
   cache.consume(2);
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -173,7 +173,7 @@ TEST(segmentcache, testFinal) {
   // Storing a final, empty segment [0,0) should leave cache with one segment.
   SegmentCache cache;
   cache.store(0, {}, true);
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, cache.current());
@@ -188,7 +188,7 @@ TEST(segmentcache, testAdjSegmentsSeg2Final) {
   ByteList data{HexToRawData("00112233")};
 
   cache.store(4, data.toRange());
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -199,7 +199,7 @@ TEST(segmentcache, testAdjSegmentsSeg2Final) {
   EXPECT_FALSE(seg->final());
 
   cache.store(8, data.toRange(), true);
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -217,7 +217,7 @@ TEST(segmentcache, testAdjSegmentsSeg1Final) {
   ByteList data{HexToRawData("00112233")};
 
   cache.store(4, data.toRange(), true);
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   auto seg = cache.current();
   ASSERT_NE(nullptr, seg);
@@ -228,7 +228,7 @@ TEST(segmentcache, testAdjSegmentsSeg1Final) {
   EXPECT_TRUE(seg->final());
 
   cache.store(8, data.toRange(), false);
-  EXPECT_EQ(1, cache.size());
+  EXPECT_EQ(1, cache.segmentCount());
 
   seg = cache.current();
   ASSERT_NE(nullptr, seg);

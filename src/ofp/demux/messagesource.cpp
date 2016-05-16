@@ -42,7 +42,7 @@ void MessageSource::runLoop(PktSource *pcap) {
 }
 
 void MessageSource::submitEthernet(Timestamp ts, ByteRange capture) {
-  log::debug("submitEthernet", ts, capture);
+  //log::debug("submitEthernet", ts, capture);
 
   const UInt8 *data = capture.data();
   size_t length = capture.size();
@@ -52,7 +52,7 @@ void MessageSource::submitEthernet(Timestamp ts, ByteRange capture) {
 }
 
 void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
-  log::debug("submitIP", ts, capture);
+  //log::debug("submitIP", ts, capture);
 
   const UInt8 *data = capture.data();
   size_t length = capture.size();
@@ -220,7 +220,7 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   if (flow.size() > 0) {
     size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
     if (flow.final() && n != flow.size()) {
-      log::warning("MessageSource: TCP done before full message received",
+      log::debug("MessageSource: TCP done before full message received",
                    flow.sessionID());
       // Make sure we consume all of the remaining data.
       n = flow.size();
@@ -236,7 +236,7 @@ void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
 
 size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
                                     UInt64 sessionID) {
-  log::debug("submitPayload", sessionID, src_, dst_, ByteRange{data, length});
+  //log::debug("submitPayload", sessionID, src_, dst_, ByteRange{data, length});
 
   // Deliver completed messages in the payload buffer.
   size_t remaining = length;

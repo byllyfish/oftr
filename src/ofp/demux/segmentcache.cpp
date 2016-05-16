@@ -169,3 +169,11 @@ bool SegmentCache::checkInvariant() {
 
   return true;
 }
+
+size_t SegmentCache::cacheSize() const {
+  size_t sum = 0;
+  for (const auto &seg : segments_) {
+    sum += seg.size();
+  }
+  return sum;
+}

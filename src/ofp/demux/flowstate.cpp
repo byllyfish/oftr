@@ -62,6 +62,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
       if (final) {
         setFinished(sessionID);
       }
+      log::debug("FlowState: return flow data", segmentStr(begin, end));
       return FlowData{this, data, sessionID, false, final};
     }
   }
@@ -98,6 +99,9 @@ void FlowState::clear() {
   lastSeen_.clear();
   end_ = 0;
   finished_ = false;
+  if (!cache_.empty()) {
+    log::warning("FlowState: clearing", cache_.cacheSize(), "bytes");
+  }
   cache_.clear();
 }
 

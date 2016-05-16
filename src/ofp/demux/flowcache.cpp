@@ -57,11 +57,11 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
 
   if (entry.sessionID == 0) {
     entry.sessionID = assignSessionID();
-    log::info("New TCP session", entry.sessionID, src, "to", dst);
   } else if ((flags & TCP_SYN) != 0 && entry.expired(ts)) {
     entry.clear(assignSessionID());
-    log::info("New TCP session (recycle)", entry.sessionID, src, "to", dst);
   }
+
+  log::debug("TCP segment", entry.sessionID, src, "to", dst, end - data.size(), end);
 
   if (isX) {
     return entry.x.receive(ts, end, data, entry.sessionID, final);

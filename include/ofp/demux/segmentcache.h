@@ -64,7 +64,7 @@ class SegmentCache {
   void consume(size_t len);
 
   // Return number of segments.
-  size_t size() const { return segments_.size(); }
+  size_t segmentCount() const { return segments_.size(); }
 
   // Return true if cache is empty.
   bool empty() const { return segments_.empty(); }
@@ -74,6 +74,9 @@ class SegmentCache {
 
   // Erase all data.
   void clear() { segments_.clear(); }
+
+  // Return total number of bytes cached.
+  size_t cacheSize() const;
 
  private:
   std::vector<Segment> segments_;
