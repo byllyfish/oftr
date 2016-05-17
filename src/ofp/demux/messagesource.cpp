@@ -42,8 +42,6 @@ void MessageSource::runLoop(PktSource *pcap) {
 }
 
 void MessageSource::submitEthernet(Timestamp ts, ByteRange capture) {
-  //log::debug("submitEthernet", ts, capture);
-
   const UInt8 *data = capture.data();
   size_t length = capture.size();
 
@@ -52,8 +50,6 @@ void MessageSource::submitEthernet(Timestamp ts, ByteRange capture) {
 }
 
 void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
-  //log::debug("submitIP", ts, capture);
-
   const UInt8 *data = capture.data();
   size_t length = capture.size();
 
@@ -130,7 +126,7 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
 
   UInt32 len = ip->length;
   if (len < length) {
-    log::warning("MessageSource: IPv4 packet is padded to length", length);
+    // IPv4 packet is padded; set the proper length based on IP header.
     length = len;
   }
 
@@ -179,7 +175,7 @@ void MessageSource::submitIPv6(const UInt8 *data, size_t length) {
   length -= sizeof(pkt::IPv6Hdr);
 
   if (len < length) {
-    log::warning("MessageSource: IPv6 packet is padded to length", length);
+    // IPv6 packet is padded; set the proper length based on IPv6 header.
     length = len;
   }
 
@@ -236,7 +232,10 @@ void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
 
 size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
                                     UInt64 sessionID) {
-  //log::debug("submitPayload", sessionID, src_, dst_, ByteRange{data, length});
+  // Ignore the payload; this option is useful for debugging only.
+  if (skipPayload_) {
+    return length;
+  }
 
   // Deliver completed messages in the payload buffer.
   size_t remaining = length;

@@ -344,7 +344,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
 ExitStatus Decode::decodePcapDevice(const std::string &device) {
   ofp::demux::PktSource pcap;
-  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_};
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_, pcapSkipPayload_};
 
   if (!pcap.openDevice(device.c_str(), pcapFilter_)) {
     std::cerr << "Error: " << pcap.error() << '\n';
@@ -366,7 +366,7 @@ ExitStatus Decode::decodePcapFiles() {
   // together TCP streams that may cross over files.
 
   ofp::demux::PktSource pcap;
-  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_};
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_, pcapSkipPayload_};
 
   for (auto &filename : files) {
     // Try to read the file as a .pcap file.

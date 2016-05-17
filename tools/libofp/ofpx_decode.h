@@ -34,7 +34,8 @@ namespace ofpx {
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
 //   --pcap-format=auto|yes|no Treat input files as .pcap format.
 //   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir>.
-//   --pcap-filter          Filter for packet capture.
+//   --pcap-filter=<filter>  Filter for packet capture.
+//   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
 //
 // Usage:
 //
@@ -153,6 +154,7 @@ class Decode : public Subprogram {
       cl::desc("Write reassembled TCP streams to directory"), cl::cat(pcapCategory_), cl::ValueRequired};
   cl::opt<std::string> pcapFilter_{
       "pcap-filter", cl::desc("Filter for packet capture"), cl::cat(pcapCategory_), cl::init("tcp")};
+  cl::opt<bool> pcapSkipPayload_{"pcap-skip-payload", cl::desc("Skip payload from TCP streams (for debugging)")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

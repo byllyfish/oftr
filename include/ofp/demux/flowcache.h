@@ -34,15 +34,15 @@ struct FlowCacheEntry {
   FlowState x;
   FlowState y;
 
-  bool expired(const Timestamp &ts) const;
-  void clear(UInt64 sessID) {
-    sessionID = sessID;
-    x.clear();
-    y.clear();
-  }
+  bool expired(const Timestamp &ts, double seconds) const;
+  bool finished() const;
+  double timeDelta(const Timestamp &ts) const;
+  void clear(UInt64 sessID);
+
 };
 
 using FlowMap = std::unordered_map<FlowCacheKey, FlowCacheEntry>;
+using FlowCallback = std::function<void(const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &)>;
 
 }  // namespace detail
 }  // namespace demux
@@ -101,10 +101,8 @@ class FlowCache {
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
-  using FlowCallback = std::function<void(const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &)>;
-
   // Call a function to process remaining data in the cache.
-  void finish(FlowCallback callback);
+  void finish(detail::FlowCallback callback);
 
   // Erase all data from the cache.
   void clear() { cache_.clear(); }

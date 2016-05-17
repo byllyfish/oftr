@@ -6,9 +6,15 @@
 using namespace ofp;
 using namespace ofp::demux;
 
-static std::string segmentStr(UInt32 begin, UInt32 end) {
+static std::string segmentStr(UInt32 begin, UInt32 end, bool final) {
   std::ostringstream oss;
-  oss << "[" << begin << "," << end << ")";
+  if (begin != end) {
+    oss << "[" << begin << "," << end << ")";
+  } else {
+    oss << "[" << begin << ")";
+  }
+  if (final)
+    oss << '*';
   return oss.str();
 }
 
@@ -45,12 +51,9 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   if (!firstSeen_.valid()) {
     firstSeen_ = ts;
     end_ = begin;
-    const char *finalStr = final ? "final" : "";
-    log::debug("FlowState: new flow segment", segmentStr(begin, end), finalStr);
-  } else {
-    const char *finalStr = final ? "final" : "";
-    log::debug("FlowState: receive segment", segmentStr(begin, end), finalStr);
   }
+
+  log::debug("FlowState: receive segment", segmentStr(begin, end, final));
 
   // Record timestamp of latest segment.
   lastSeen_ = ts;
@@ -60,15 +63,15 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
     // a FlowData object representing new data.
     if (begin == end_) {
       if (final) {
-        setFinished(sessionID);
+        finished_ = true;
       }
-      log::debug("FlowState: return flow data", segmentStr(begin, end));
+      log::debug("FlowState: return flow data", segmentStr(begin, end, final));
       return FlowData{this, data, sessionID, false, final};
     }
   }
 
   if (Segment::lessThan(begin, end_)) {
-    log::warning("FlowState: drop early segment", segmentStr(begin, end));
+    log::warning("FlowState: drop early segment", segmentStr(begin, end, final));
     return FlowData{sessionID};
   }
 
@@ -76,7 +79,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   cache_.store(end, data, final);
 
   if (final) {
-    setFinished(sessionID);
+    finished_ = true;
   }
 
   return latestData(sessionID);
@@ -87,7 +90,7 @@ FlowData FlowState::latestData(UInt64 sessionID) {
 
   if (seg && seg->begin() == end_) {
     log::debug("FlowState: return flow data",
-               segmentStr(seg->begin(), seg->end()));
+               segmentStr(seg->begin(), seg->end(), seg->final()));
     return FlowData{this, seg->data(), sessionID, true, seg->final()};
   }
 
@@ -105,10 +108,3 @@ void FlowState::clear() {
   cache_.clear();
 }
 
-void FlowState::setFinished(UInt64 sessionID) {
-  if (!finished_) {
-    finished_ = true;
-    log::info("Finish TCP session", sessionID, "seconds",
-              lastSeen().secondsSince(firstSeen()));
-  }
-}

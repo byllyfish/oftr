@@ -27,8 +27,8 @@ class MessageSource {
  public:
   using MessageCallback = void (*)(Message *, void *);
 
-  explicit MessageSource(MessageCallback callback, void *context, const std::string &outputDir)
-      : callback_{callback}, context_{context}, outputDir_{outputDir} {}
+  explicit MessageSource(MessageCallback callback, void *context, const std::string &outputDir, bool skipPayload = false)
+      : callback_{callback}, context_{context}, outputDir_{outputDir}, skipPayload_{skipPayload} {}
 
   void runLoop(PktSource *pcap);
 
@@ -44,8 +44,9 @@ class MessageSource {
   IPv6Endpoint dst_;
   UInt32 seq_ = 0;
   UInt16 flags_ = 0;
-  std::string outputDir_;
   FlowCache flows_;
+  std::string outputDir_;
+  bool skipPayload_;
 
   void submitEthernet(const UInt8 *data, size_t length);
   void submitIPv4(const UInt8 *data, size_t length);
