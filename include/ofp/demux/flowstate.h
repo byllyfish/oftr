@@ -71,6 +71,9 @@ class FlowState {
 
   void clear();
 
+  /// Return a string describing the flow's state (for debugging).
+  std::string toString() const;
+
  private:
   Timestamp firstSeen_;
   Timestamp lastSeen_;

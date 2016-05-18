@@ -107,6 +107,9 @@ class FlowCache {
   // Erase all data from the cache.
   void clear() { cache_.clear(); }
 
+  // Describe the contents of the cache (for debugging).
+  std::string toString() const;
+
  private:
   detail::FlowMap cache_;
   UInt64 assignSessionID_ = 0;

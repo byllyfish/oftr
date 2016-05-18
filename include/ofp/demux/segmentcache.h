@@ -21,6 +21,7 @@ class Segment {
   UInt32 end() const { return end_; }
   ByteRange data() const { return data_.toRange(); }
   size_t size() const { return data_.size(); }
+  bool empty() const { return data_.empty(); }
   bool final() const { return final_; }
 
   void append(const ByteRange &data, bool final) {
@@ -87,6 +88,11 @@ class SegmentCache {
 
   bool checkInvariant();
 };
+
+/// Describe segment as half-open interval. Final segments have a '*' suffix.
+/// e.g. "[12345,12346)", "[23456,23457)*"
+/// Empty segments use only one sequence number: "[34567)"
+std::string SegmentToString(UInt32 begin, UInt32 end, bool final);
 
 }  // namespace demux
 }  // namespace ofp

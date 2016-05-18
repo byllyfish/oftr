@@ -68,6 +68,8 @@ void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
 }
 
 void MessageSource::finish() {
+  log::debug("MessageSource::finish\n", flows_.toString());
+
   if (hasOutputDir()) {
     flows_.finish(
         [this](const IPv6Endpoint &src, const IPv6Endpoint &dst,
@@ -126,7 +128,7 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
 
   UInt32 len = ip->length;
   if (len < length) {
-    // IPv4 packet is padded; set the proper length based on IP header.
+    // IPv4 packet is padded; shorten length based on IP header.
     length = len;
   }
 
@@ -175,7 +177,7 @@ void MessageSource::submitIPv6(const UInt8 *data, size_t length) {
   length -= sizeof(pkt::IPv6Hdr);
 
   if (len < length) {
-    // IPv6 packet is padded; set the proper length based on IPv6 header.
+    // IPv6 packet is padded; shorten length based on IPv6 header.
     length = len;
   }
 

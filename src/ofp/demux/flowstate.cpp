@@ -6,18 +6,6 @@
 using namespace ofp;
 using namespace ofp::demux;
 
-static std::string segmentStr(UInt32 begin, UInt32 end, bool final) {
-  std::ostringstream oss;
-  if (begin != end) {
-    oss << "[" << begin << "," << end << ")";
-  } else {
-    oss << "[" << begin << ")";
-  }
-  if (final)
-    oss << '*';
-  return oss.str();
-}
-
 void FlowData::consume(size_t len) {
   if (state_ == nullptr) {
     // Do nothing if there's no data to consume.
@@ -53,25 +41,29 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
     end_ = begin;
   }
 
-  log::debug("FlowState: receive segment", segmentStr(begin, end, final));
+  log::debug("FlowState: receive segment", SegmentToString(begin, end, final));
 
   // Record timestamp of latest segment.
   lastSeen_ = ts;
 
-  if (cache_.empty() && !finished_) {
-    // We have no data cached. Is this the latest data? If so, return
-    // a FlowData object representing new data.
-    if (begin == end_) {
+  if (cache_.empty()) {
+    if (finished_) {
+      // Handle packets that arrive after flow is officially finished.
+      log::warning("FlowState: drop late segment", SegmentToString(begin, end, final));
+      return FlowData{sessionID};
+
+    } else if (begin == end_) {
+      // We have no data cached and this is the next data segment.
       if (final) {
         finished_ = true;
       }
-      log::debug("FlowState: return flow data", segmentStr(begin, end, final));
+      log::debug("FlowState: return flow data", SegmentToString(begin, end, final));
       return FlowData{this, data, sessionID, false, final};
     }
   }
 
   if (Segment::lessThan(begin, end_)) {
-    log::warning("FlowState: drop early segment", segmentStr(begin, end, final));
+    log::warning("FlowState: drop unexpected segment", SegmentToString(begin, end, final));
     return FlowData{sessionID};
   }
 
@@ -90,7 +82,7 @@ FlowData FlowState::latestData(UInt64 sessionID) {
 
   if (seg && seg->begin() == end_) {
     log::debug("FlowState: return flow data",
-               segmentStr(seg->begin(), seg->end(), seg->final()));
+               SegmentToString(seg->begin(), seg->end(), seg->final()));
     return FlowData{this, seg->data(), sessionID, true, seg->final()};
   }
 
@@ -108,3 +100,11 @@ void FlowState::clear() {
   cache_.clear();
 }
 
+std::string FlowState::toString() const {
+  // If there are no cached segments, return either "FIN" or "up".
+  if (empty()) {
+    return finished_ ? "FIN" : "up";
+  } else {
+    return cache_.toString();
+  }
+}

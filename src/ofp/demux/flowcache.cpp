@@ -89,7 +89,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     if ((flags & TCP_SYN) != 0 || entry.expired(ts, kTwoMinuteTimeout)) {
       entry.clear(assignSessionID());
     } else {
-      log::warning("TCP late segment", entry.sessionID, tcpFlagToString(flags), src, dst, end);
+      log::warning("TCP late segment ignored", entry.sessionID, tcpFlagToString(flags), src, dst, end);
+      return FlowData{0};
     }
   } else if ((flags & TCP_SYN) != 0 && entry.expired(ts, kFiveMinuteTimeout)) {
     // This is a SYN or SYN-ACK for an unfinished entry. We open a new session
@@ -136,6 +137,18 @@ UInt64 FlowCache::assignSessionID() {
   }
   return assignSessionID_;
 }
+
+std::string FlowCache::toString() const {
+  std::ostringstream oss;
+  for (const auto &iter : cache_) {
+    auto &key = iter.first;
+    auto &entry = iter.second;
+
+    oss << entry.sessionID << ' ' << key.x << "<->" << key.y << ' ' << entry.x.toString() << '|' << entry.y.toString() << '\n';
+  }
+  return oss.str();
+}
+
 
 static std::string tcpFlagToString(UInt8 flags) {
   std::string result;

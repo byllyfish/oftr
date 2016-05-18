@@ -24,6 +24,7 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
   UInt32 begin = end - UInt32_narrow_cast(data.size());
 
+  // Search for a segment where we can append the incoming segment [begin,end).
   for (size_t i = 0; i < segments_.size(); ++i) {
     Segment &seg = segments_[i];
 
@@ -79,9 +80,7 @@ DONE:
 }
 
 const Segment *SegmentCache::current() const {
-  if (segments_.empty())
-    return nullptr;
-  return &segments_[0];
+  return segments_.empty() ? nullptr : &segments_[0];
 }
 
 void SegmentCache::consume(size_t len) {
@@ -97,12 +96,20 @@ void SegmentCache::consume(size_t len) {
   log::debug("SegmentCache::consume", len, "bytes", toString());
 }
 
+
 std::string SegmentCache::toString() const {
+  // Examples:  "[segment1)...[segmentN)=size"
+  //            "[segment1)...[segmentN)*=size"
+  //            "[segment)*"
+  // (empty)    ""
   std::ostringstream oss;
-  for (auto &seg : segments_) {
-    oss << " [" << seg.begin() << "," << seg.end() << ")";
-    if (seg.final())
-      oss << '*';
+  size_t sum = 0;
+  for (const auto &seg : segments_) {
+    oss << SegmentToString(seg.begin(), seg.end(), seg.final());
+    sum += seg.size();
+  }
+  if (sum > 0) {
+    oss << '=' << sum;
   }
   return oss.str();
 }
@@ -153,7 +160,7 @@ bool SegmentCache::checkInvariant() {
         return false;
       }
       // Verify that only the final segment is empty.
-      if (seg->size() == 0 && !seg->final()) {
+      if (seg->empty() && !seg->final()) {
         log::debug("SegmentCache: empty segment", toString());
         return false;
       }
@@ -167,6 +174,14 @@ bool SegmentCache::checkInvariant() {
     }
   }
 
+  // Warn if the segment cache contains only one empty final segment.
+  if (segments_.size() == 1) {
+    const auto &seg = segments_[0];
+    if (seg.empty()) {
+      log::warning("SegmentCache: exactly one empty segment present!");
+    }
+  }
+
   return true;
 }
 
@@ -176,4 +191,16 @@ size_t SegmentCache::cacheSize() const {
     sum += seg.size();
   }
   return sum;
+}
+
+std::string ofp::demux::SegmentToString(UInt32 begin, UInt32 end, bool final) {
+  std::ostringstream oss;
+  if (begin != end) {
+    oss << "[" << begin << "," << end << ")";
+  } else {
+    oss << "[" << begin << ")";
+  }
+  if (final)
+    oss << '*';
+  return oss.str();
 }
