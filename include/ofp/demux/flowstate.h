@@ -68,6 +68,7 @@ class FlowState {
   bool finished() const { return finished_ && empty(); }
 
   FlowData latestData(UInt64 sessionID);
+  void addMissingData(size_t maxMissingBytes);
 
   void clear();
 

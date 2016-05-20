@@ -102,7 +102,7 @@ class FlowCache {
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
   // Call a function to process remaining data in the cache.
-  void finish(detail::FlowCallback callback);
+  void finish(detail::FlowCallback callback, size_t maxMissingBytes = 0);
 
   // Erase all data from the cache.
   void clear() { cache_.clear(); }

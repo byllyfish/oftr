@@ -10,6 +10,11 @@
 namespace ofp {
 namespace demux {
 
+/// Describe segment as half-open interval. Final segments have a '*' suffix.
+/// e.g. "[12345,12346)" or "[23456,23457)*"
+/// Empty segments use only one sequence number, e.g. "[34567)"
+std::string SegmentToString(UInt32 begin, UInt32 end, bool final);
+
 OFP_BEGIN_IGNORE_PADDING
 
 class Segment {
@@ -19,11 +24,12 @@ class Segment {
 
   UInt32 begin() const { return end_ - UInt32_narrow_cast(data_.size()); }
   UInt32 end() const { return end_; }
-  ByteRange data() const { return data_.toRange(); }
   size_t size() const { return data_.size(); }
   bool empty() const { return data_.empty(); }
   bool final() const { return final_; }
-
+  ByteRange data() const { return data_.toRange(); }
+  ByteRange data(size_t overlap) const { return SafeByteRange(data_.data(), data_.size(), overlap); }
+  
   void append(const ByteRange &data, bool final) {
     assert(!final_);
     data_.add(data.data(), data.size());
@@ -41,6 +47,8 @@ class Segment {
   }
 
   static bool lessThan(UInt32 lhs, UInt32 rhs);
+
+  std::string toString() const { return SegmentToString(begin(), end(), final()); }
 
  private:
   UInt32 end_ = 0;
@@ -79,6 +87,9 @@ class SegmentCache {
   // Return total number of bytes cached.
   size_t cacheSize() const;
 
+  // Fill in gaps between segments where the gap <= maxMissingBytes.
+  void addMissingData(UInt32 end, size_t maxMissingBytes);
+
  private:
   std::vector<Segment> segments_;
 
@@ -88,11 +99,6 @@ class SegmentCache {
 
   bool checkInvariant();
 };
-
-/// Describe segment as half-open interval. Final segments have a '*' suffix.
-/// e.g. "[12345,12346)", "[23456,23457)*"
-/// Empty segments use only one sequence number: "[34567)"
-std::string SegmentToString(UInt32 begin, UInt32 end, bool final);
 
 }  // namespace demux
 }  // namespace ofp

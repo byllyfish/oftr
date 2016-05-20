@@ -63,7 +63,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   }
 
   if (Segment::lessThan(begin, end_)) {
-    log::warning("FlowState: drop unexpected segment", SegmentToString(begin, end, final));
+    log::warning("FlowState: drop unexpected segment", SegmentToString(begin, end, final), "end is", end_);
     return FlowData{sessionID};
   }
 
@@ -87,6 +87,10 @@ FlowData FlowState::latestData(UInt64 sessionID) {
   }
 
   return FlowData{sessionID};
+}
+
+void FlowState::addMissingData(size_t maxMissingBytes) {
+  cache_.addMissingData(end_, maxMissingBytes);
 }
 
 void FlowState::clear() {

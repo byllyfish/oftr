@@ -58,8 +58,7 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
     if (Segment::lessThan(begin, seg.end())) {
       // New segment overlaps with existing data.
-      log::warning("SegmentCache: data [", begin, ",", end, ") overlaps with [",
-                   seg.begin(), ",", seg.end(), ")");
+      log::error("SegmentCache:", SegmentToString(begin, end, final), "overlaps", seg.toString(), ':', toString());
       // FIXME: ignore overlapping data for now...
       goto DONE;
     }
@@ -121,6 +120,13 @@ void SegmentCache::append(UInt32 end, const ByteRange &data, bool final) {
 void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx,
                           bool final) {
   segments_.emplace(segments_.begin() + Signed_cast(idx), end, data, final);
+
+  // If segment is final, clear out the remaining segments.
+  if (final) {
+    log::error("SegmentCache: Final segment inserted before others:", toString());
+    assert(idx < segments_.size());
+    segments_.erase(segments_.begin() + Signed_cast(idx) + 1, segments_.end());
+  }
 }
 
 void SegmentCache::update(size_t idx, bool final) {
@@ -140,8 +146,11 @@ void SegmentCache::update(size_t idx, bool final) {
     if (seg.end() == next.begin()) {
       seg.append(next.data(), next.final());
       segments_.erase(segments_.begin() + Signed_cast(idx) + 1);
-    } else {
-      // TODO(bfish): check for overlapping segments.
+    } else if (Segment::lessThan(next.begin(), seg.end())) {
+      log::warning("SegmentCache: fixing up overlapping segments", seg.toString(), next.toString());
+      size_t overlap = seg.end() - next.begin();
+      seg.append(next.data(overlap), next.final());
+      segments_.erase(segments_.begin() + Signed_cast(idx) + 1);
     }
   }
 }
@@ -156,17 +165,17 @@ bool SegmentCache::checkInvariant() {
       // Verify that segments are in non-overlapping sorted order.
       if (seg->end() != next->begin() &&
           !Segment::lessThan(seg->end(), next->begin())) {
-        log::debug("SegmentCache: segments out of order", toString());
+        log::error("SegmentCache: segments out of order", toString());
         return false;
       }
       // Verify that only the final segment is empty.
       if (seg->empty() && !seg->final()) {
-        log::debug("SegmentCache: empty segment", toString());
+        log::error("SegmentCache: empty segment", toString());
         return false;
       }
       // Verify that only the last segment is marked final.
       if (seg->final()) {
-        log::debug("SegmentCache: final segment isn't last", toString());
+        log::error("SegmentCache: final segment isn't last", toString());
         return false;
       }
 
@@ -193,6 +202,56 @@ size_t SegmentCache::cacheSize() const {
   return sum;
 }
 
+void SegmentCache::addMissingData(UInt32 end, size_t maxMissingBytes) {
+  if (empty())
+    return;
+
+  std::string zeroBuf(maxMissingBytes, '\0');
+  
+  // If the first segment is empty, there's nothing to do.
+  Segment &seg = segments_[0];
+  if (seg.empty()) {
+    assert(seg.final());
+    return;
+  }
+
+  // Fill in gap from end to beginning of first non-empty segment.
+  if (Segment::lessThan(end, seg.begin())) {
+    UInt32 gapSize = seg.begin() - end;
+    if (gapSize <= maxMissingBytes) {
+      seg.prepend({zeroBuf.data(), gapSize});
+    } else {
+      log::warning("SegmentCache::addMissingData: gap too large", gapSize);
+    }
+  }
+
+  // Fill in remaining gaps between segments. Stop if we reach an empty segment.
+  while (segments_.size() > 1) {
+    Segment &first = segments_[0];
+    Segment &second = segments_[1];
+
+    if (second.empty()) {
+      assert(second.final());
+      break;
+    }
+
+    if (Segment::lessThan(first.end(), second.begin())) {
+      UInt32 gapSize = second.begin() - first.end();
+      if (gapSize > maxMissingBytes) {
+        log::warning("SegmentCache::addMissingData: gap too large", gapSize);
+        break;
+      }
+      first.append({zeroBuf.data(), gapSize}, false);
+      first.append(second.data(), second.final());
+      segments_.erase(segments_.begin() + 1);
+    }
+  }
+}
+
+/// Return description of segment as half-open interval.
+/// e.g.   "[12345,12347)", "[12345)", "[12345,12347)*"
+/// The asterisk indicates the final segment. Empty segments are described with 
+/// a single number.
 std::string ofp::demux::SegmentToString(UInt32 begin, UInt32 end, bool final) {
   std::ostringstream oss;
   if (begin != end) {
@@ -204,3 +263,4 @@ std::string ofp::demux::SegmentToString(UInt32 begin, UInt32 end, bool final) {
     oss << '*';
   return oss.str();
 }
+

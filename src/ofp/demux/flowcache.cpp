@@ -121,10 +121,13 @@ FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
   return nullptr;
 }
 
-void FlowCache::finish(detail::FlowCallback callback) {
+void FlowCache::finish(detail::FlowCallback callback, size_t maxMissingBytes) {
   for (auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;
+
+    entry.x.addMissingData(maxMissingBytes);
+    entry.y.addMissingData(maxMissingBytes);
 
     callback(key.x, key.y, entry.x.latestData(entry.sessionID));
     callback(key.y, key.x, entry.y.latestData(entry.sessionID));

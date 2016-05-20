@@ -71,9 +71,10 @@ void MessageSource::finish() {
   log::debug("MessageSource::finish\n", flows_.toString());
 
   if (hasOutputDir()) {
+    const size_t kMaxMissingBytes = 100000;
     flows_.finish(
         [this](const IPv6Endpoint &src, const IPv6Endpoint &dst,
-           const FlowData &flow) { outputWrite(src, dst, flow, flow.size()); });
+           const FlowData &flow) { outputWrite(src, dst, flow, flow.size()); }, kMaxMissingBytes);
   }
   flows_.clear();
 }
