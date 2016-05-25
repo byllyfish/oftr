@@ -71,7 +71,9 @@ enum TCPControlBits : UInt8 {
   TCP_PSH = (1 << 3),
   TCP_RST = (1 << 2),
   TCP_SYN = (1 << 1),
-  TCP_FIN = (1 << 0)
+  TCP_FIN = (1 << 0),
+
+  TCP_SYNACK = (TCP_SYN | TCP_ACK)
 };
 
 /// Usage:

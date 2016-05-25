@@ -20,6 +20,7 @@ class Timestamp {
   UInt32 milliseconds() const { return nanoseconds() / 1000; }
 
   double secondsSince(const Timestamp &ts) const;
+  void addSeconds(time_t seconds) { time_.first += seconds; }
 
   bool parse(const std::string &s);
   bool valid() const { return !(time_.first == 0 && time_.second == 0); }

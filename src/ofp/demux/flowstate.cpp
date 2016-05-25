@@ -43,9 +43,6 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
 
   log::debug("FlowState: receive segment", SegmentToString(begin, end, final));
 
-  // Record timestamp of latest segment.
-  lastSeen_ = ts;
-
   if (cache_.empty()) {
     if (finished_) {
       // Handle packets that arrive after flow is officially finished.
@@ -54,6 +51,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
 
     } else if (begin == end_) {
       // We have no data cached and this is the next data segment.
+      lastSeen_ = ts;
       if (final) {
         finished_ = true;
       }
@@ -70,6 +68,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   // Cache the data segment.
   cache_.store(end, data, final);
 
+  lastSeen_ = ts;
   if (final) {
     finished_ = true;
   }

@@ -7,7 +7,6 @@ using namespace ofp;
 using namespace ofp::demux;
 
 const double kTwoMinuteTimeout = 120.0;
-const double kFiveMinuteTimeout = 300.0;
 
 static std::string tcpFlagToString(UInt8 flags);
 
@@ -49,14 +48,18 @@ void detail::FlowCacheEntry::clear(UInt64 sessID) {
 FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
                             const IPv6Endpoint &dst, UInt32 seq, ByteRange data,
                             UInt8 flags) {
+  const UInt8 kInterestingFlags = TCP_SYN | TCP_FIN | TCP_RST;
+  const UInt8 kFinalFlags = TCP_FIN | TCP_RST;
+
   // `seq` is the sequence number from the incoming segment. Internally, we
   // represent all segments [a, b) by the end `b`. Convert seq to `end`.
   UInt32 end;
   if (flags & TCP_SYN) {
-    // If the SYN flag is included, `seq` is the initial seqeuence number.
+    // If the SYN flag is included, `seq` is the initial seqeuence number. A
+    // SYN or SYN-ACK packet must not contain any data.
     end = seq + 1;
     if (data.size() > 0) {
-      log::warning("FlowCache: TCP SYN has unexpected data", data.size());
+      log::warning("FlowCache: TCP SYN has unexpected data", data.size(), "bytes:", data);
       return FlowData{0};
     }
   } else {
@@ -64,15 +67,14 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   }
 
   // Only update cache entry if there is data, or a SYN|FIN|RST flag is present.
-  // We drop plain empty ACK segments for example.
-  const UInt8 kInterestingFlags = TCP_SYN | TCP_FIN | TCP_RST;
-  const UInt8 kFinalFlags = TCP_FIN | TCP_RST;
-
+  // We drop plain empty ACK segments for example. Specify a session ID of 0,
+  // since we're dropping the segment before looking up the session entry.
   if (data.empty() && (flags & kInterestingFlags) == 0) {
     log::debug("TCP ignore empty", tcpFlagToString(flags), src, dst, end);
     return FlowData{0};
   }
 
+  // Is the FIN or RST flag set?
   bool final = (flags & kFinalFlags) != 0;
 
   bool isX;
@@ -84,17 +86,17 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     entry.sessionID = assignSessionID();
   } else if (entry.finished()) {
     // This is a packet for a finished entry. We check for expiry so we don't 
-    // open a new session just because of a late re-transmit. However, a SYN
-    // flag means we can skip the timeout.
+    // open a new session just because of a late re-transmit. However, a 
+    // SYN or SYN-ACK flag means we can skip the timeout.
     if ((flags & TCP_SYN) != 0 || entry.expired(ts, kTwoMinuteTimeout)) {
       entry.clear(assignSessionID());
     } else {
       log::warning("TCP late segment ignored", entry.sessionID, tcpFlagToString(flags), src, dst, end);
-      return FlowData{0};
+      return FlowData{entry.sessionID};
     }
-  } else if ((flags & TCP_SYN) != 0 && entry.expired(ts, kFiveMinuteTimeout)) {
-    // This is a SYN or SYN-ACK for an unfinished entry. We open a new session
-    // if the connection has been silent for five minutes.
+  } else if ((flags & TCP_SYNACK) == TCP_SYN && entry.expired(ts, kTwoMinuteTimeout)) {
+    // This is a SYN (but not SYN-ACK) for an *unfinished* entry. We open a new session
+    // if the connection has been idle for two minutes.
     log::warning("TCP SYN for unfinished entry", entry.sessionID, tcpFlagToString(flags), src, dst, end);
     entry.clear(assignSessionID());
   }
