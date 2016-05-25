@@ -60,13 +60,23 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
     }
   }
 
-  if (Segment::lessThan(begin, end_)) {
+  // Check if segment's end <= our `end_` value.
+  if (!Segment::lessThan(end_, end)) {
     log::warning("FlowState: drop unexpected segment", SegmentToString(begin, end, final), "end is", end_);
     return FlowData{sessionID};
   }
 
+  // Determine the data in the segment that is *new*.
+  ByteRange newData;
+  if (Segment::lessThan(begin, end_)) {
+    log::warning("FlowState: overlapping segment detected", SegmentToString(begin, end, final), "end is", end_);
+    newData = SafeByteRange(data.begin(), data.size(), end_ - begin);
+  } else {
+    newData = data;
+  }
+
   // Cache the data segment.
-  cache_.store(end, data, final);
+  cache_.store(end, newData, final);
 
   lastSeen_ = ts;
   if (final) {

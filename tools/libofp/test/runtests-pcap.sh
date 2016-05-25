@@ -19,7 +19,7 @@ function verify_sha1 {
 
 CURRENT_SOURCE_DIR=`dirname "$0"`
 CURRENT_TEST_DIR=`pwd`
-MSG_DIR="/tmp/libofp.msgs"
+MSG_DIR="$CURRENT_TEST_DIR/libofp.msgs"
 
 echo "Working Directory: $CURRENT_TEST_DIR"
 
@@ -32,9 +32,10 @@ fi
 LIBOFP=$CURRENT_TEST_DIR/../libofp
 
 echo "Run libofp decode on $CURRENT_SOURCE_DIR/tcp.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format=yes --pcap-output-dir=$MSG_DIR --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format=yes --pcap-output-dir=$MSG_DIR --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap" "$CURRENT_SOURCE_DIR/flow58899.pcap"
 
 verify_sha1 "$CURRENT_SOURCE_DIR/tcp.pcap" "08cf1e8ab8b499cfa8d03398e74c09ad59d3a731"
+verify_sha1 "$CURRENT_SOURCE_DIR/flow58899.pcap" "69d160c2773defae44daf7d037c649df0f9a6bd0"
 
 verify_sha1 "$MSG_DIR/_tcp-1-127.0.0.1:61278-127.0.0.1:8888" "b0372f0c19e464a30bb2faa54510dd80e1496417"
 verify_sha1 "$MSG_DIR/_tcp-1-127.0.0.1:8888-127.0.0.1:61278" "759cca92810046305aab8fd1789ef38965ae81a0"
@@ -63,6 +64,10 @@ verify_sha1 "$MSG_DIR/_tcp-11-[::1]:61988-[::1]:8888" "aa207c3edc5b664ab732935e1
 verify_sha1 "$MSG_DIR/_tcp-11-[::1]:8888-[::1]:61988" "bece5ea2bca550bac3477e2f1c98493d4ada8fde"
 verify_sha1 "$MSG_DIR/_tcp-12-[::1]:61994-[::1]:8888" "33aededd23f957c2daae1ff7aab626a493c7f3f6"
 verify_sha1 "$MSG_DIR/_tcp-12-[::1]:8888-[::1]:61994" "d9bcd4b5b044938c6d77dd3a7def9f44013a66c6"
+
+verify_sha1 "$MSG_DIR/_tcp-17-172.16.133.78:58899-184.96.221.120:64510" "bfc6e8b49f6c9eed91ff67c4da8ab07906dccb60"
+verify_sha1 "$MSG_DIR/_tcp-17-184.96.221.120:64510-172.16.133.78:58899" "07bd16f5e3c64ad41de2c69f21d37f0904a0caed"
+verify_sha1 "$MSG_DIR/_tcp-18-172.16.133.84:58899-172.16.139.250:5440" "ec6139bad6d010c782e2dc07e889fc45b75f8132"
 
 # Check illegal argument combinations to make sure they are rejected.
 
