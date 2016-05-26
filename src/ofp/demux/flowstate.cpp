@@ -33,12 +33,12 @@ void FlowData::consume(size_t len) {
 
 FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
                             const ByteRange &data, UInt64 sessionID,
-                            bool final) {
+                            bool final, Timestamp *lastSeen) {
   UInt32 begin = end - UInt32_narrow_cast(data.size());
 
-  if (!firstSeen_.valid()) {
-    firstSeen_ = ts;
+  if (!started_) {
     end_ = begin;
+    started_ = true;
   }
 
   log::debug("FlowState: receive segment", SegmentToString(begin, end, final));
@@ -51,7 +51,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
 
     } else if (begin == end_) {
       // We have no data cached and this is the next data segment.
-      lastSeen_ = ts;
+      *lastSeen = ts;
       if (final) {
         finished_ = true;
       }
@@ -78,7 +78,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   // Cache the data segment.
   cache_.store(end, newData, final);
 
-  lastSeen_ = ts;
+  *lastSeen = ts;
   if (final) {
     finished_ = true;
   }
@@ -103,9 +103,8 @@ void FlowState::addMissingData(size_t maxMissingBytes) {
 }
 
 void FlowState::clear() {
-  firstSeen_.clear();
-  lastSeen_.clear();
   end_ = 0;
+  started_ = false;
   finished_ = false;
   if (!cache_.empty()) {
     log::warning("FlowState: clearing", cache_.cacheSize(), "bytes");
@@ -115,8 +114,16 @@ void FlowState::clear() {
 
 std::string FlowState::toString() const {
   // If there are no cached segments, return either "FIN" or "up".
+  // If no segments have been seen at all, return "INIT". If there are cached
+  // segments, return a description of the segment cache.
   if (empty()) {
-    return finished_ ? "FIN" : "up";
+    if (finished_) {
+      return "FIN";
+    } else if (started_) {
+      return "up";
+    } else {
+      return "INIT";
+    }
   } else {
     return cache_.toString();
   }

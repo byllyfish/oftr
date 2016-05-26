@@ -20,11 +20,18 @@ TEST(flowcache, initialSegment) {
   EXPECT_EQ(1, cache.size());
   data.consume(0);
 
+  // Check the flow state.
   auto state = cache.lookup(src, dst);
   ASSERT_NE(nullptr, state);
   EXPECT_EQ(1, state->end());
-  EXPECT_EQ(ts, state->firstSeen());
   EXPECT_TRUE(state->empty());
+
+  // Check the cache entry's timestamps and sessionID.
+  auto entry = cache.findEntry(src, dst);
+  ASSERT_NE(nullptr, entry);
+  EXPECT_EQ(ts, entry->firstSeen);
+  EXPECT_EQ(ts, entry->lastSeen);
+  EXPECT_EQ(1, entry->sessionID);
 }
 
 TEST(flowcache, twoDataSegments) {
@@ -91,7 +98,6 @@ TEST(flowcache, partialSegments) {
     auto state = cache.lookup(src, dst);
     ASSERT_NE(nullptr, state);
     EXPECT_EQ(4, state->end());
-    EXPECT_EQ(ts, state->firstSeen());
     EXPECT_FALSE(state->empty());
   }
 

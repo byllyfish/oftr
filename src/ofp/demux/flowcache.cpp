@@ -24,25 +24,12 @@ detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
   }
 }
 
-bool detail::FlowCacheEntry::expired(const Timestamp &ts, double seconds) const {
-  Timestamp last = std::max(x.lastSeen(), y.lastSeen());
-  return ts.secondsSince(last) >= seconds;
-}
-
-/// An entry is `finished` when it's closed in both directions.
-bool detail::FlowCacheEntry::finished() const {
-  return x.finished() && y.finished();
-}
-
-double detail::FlowCacheEntry::timeDelta(const Timestamp &ts) const {
-  Timestamp last = std::max(x.lastSeen(), y.lastSeen());
-  return ts.secondsSince(last);
-}
-
-void detail::FlowCacheEntry::clear(UInt64 sessID) {
-  sessionID = sessID;
+void detail::FlowCacheEntry::reset(const Timestamp &ts, UInt64 sessID) {
   x.clear();
   y.clear();
+  lastSeen.clear();
+  firstSeen = ts;
+  sessionID = sessID;
 }
 
 FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
@@ -83,30 +70,30 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
 
   if (entry.sessionID == 0) {
     // This is a new entry. Assign a new ID to the session.
-    entry.sessionID = assignSessionID();
+    entry.reset(ts, assignSessionID());
   } else if (entry.finished()) {
     // This is a packet for a finished entry. We check for expiry so we don't 
     // open a new session just because of a late re-transmit. However, a 
     // SYN or SYN-ACK flag means we can skip the timeout.
-    if ((flags & TCP_SYN) != 0 || entry.expired(ts, kTwoMinuteTimeout)) {
-      entry.clear(assignSessionID());
+    if ((flags & TCP_SYN) != 0 || entry.secondsSince(ts) >= kTwoMinuteTimeout) {
+      entry.reset(ts, assignSessionID());
     } else {
       log::warning("TCP late segment ignored", entry.sessionID, tcpFlagToString(flags), src, dst, end);
       return FlowData{entry.sessionID};
     }
-  } else if ((flags & TCP_SYNACK) == TCP_SYN && entry.expired(ts, kTwoMinuteTimeout)) {
+  } else if ((flags & TCP_SYNACK) == TCP_SYN && entry.secondsSince(ts) >= kTwoMinuteTimeout) {
     // This is a SYN (but not SYN-ACK) for an *unfinished* entry. We open a new session
     // if the connection has been idle for two minutes.
     log::warning("TCP SYN for unfinished entry", entry.sessionID, tcpFlagToString(flags), src, dst, end);
-    entry.clear(assignSessionID());
+    entry.reset(ts, assignSessionID());
   }
 
-  log::debug("TCP segment", entry.sessionID, tcpFlagToString(flags), src, dst, entry.timeDelta(ts));
+  log::debug("TCP segment", entry.sessionID, tcpFlagToString(flags), src, dst, entry.secondsSince(ts));
 
   if (isX) {
-    return entry.x.receive(ts, end, data, entry.sessionID, final);
+    return entry.x.receive(ts, end, data, entry.sessionID, final, &entry.lastSeen);
   } else {
-    return entry.y.receive(ts, end, data, entry.sessionID, final);
+    return entry.y.receive(ts, end, data, entry.sessionID, final, &entry.lastSeen);
   }
 }
 
@@ -118,6 +105,19 @@ FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
   if (iter != cache_.end()) {
     auto &entry = iter->second;
     return isX ? &entry.x : &entry.y;
+  }
+
+  return nullptr;
+}
+
+
+detail::FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
+  bool isX;
+  detail::FlowCacheKey key{src, dst, isX};
+
+  auto iter = cache_.find(key);
+  if (iter != cache_.end()) {
+    return &iter->second;
   }
 
   return nullptr;

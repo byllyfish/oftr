@@ -59,10 +59,8 @@ class FlowData {
 class FlowState {
  public:
   FlowData receive(const Timestamp &ts, UInt32 end, const ByteRange &data,
-                   UInt64 sessionID, bool final);
+                   UInt64 sessionID, bool final, Timestamp *lastSeen);
 
-  const Timestamp &firstSeen() const { return firstSeen_; }
-  const Timestamp &lastSeen() const { return lastSeen_; }
   UInt32 end() const { return end_; }
   bool empty() const { return cache_.empty(); }
   bool finished() const { return finished_ && empty(); }
@@ -72,13 +70,12 @@ class FlowState {
 
   void clear();
 
-  /// Return a string describing the flow's state (for debugging).
+  /// Describe the flow's state (for debugging).
   std::string toString() const;
 
  private:
-  Timestamp firstSeen_;
-  Timestamp lastSeen_;
   UInt32 end_ = 0;
+  bool started_ = false;
   bool finished_ = false;
   SegmentCache cache_;
 
