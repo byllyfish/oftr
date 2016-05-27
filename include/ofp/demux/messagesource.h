@@ -27,8 +27,8 @@ class MessageSource {
  public:
   using MessageCallback = void (*)(Message *, void *);
 
-  explicit MessageSource(MessageCallback callback, void *context, const std::string &outputDir, bool skipPayload = false)
-      : callback_{callback}, context_{context}, outputDir_{outputDir}, skipPayload_{skipPayload} {}
+  explicit MessageSource(MessageCallback callback, void *context, const std::string &outputDir, bool skipPayload = false, size_t maxMissingBytes=0)
+      : callback_{callback}, context_{context}, outputDir_{outputDir}, maxMissingBytes_{maxMissingBytes}, skipPayload_{skipPayload} {}
 
   void runLoop(PktSource *pcap);
 
@@ -46,6 +46,7 @@ class MessageSource {
   UInt16 flags_ = 0;
   FlowCache flows_;
   std::string outputDir_;
+  size_t maxMissingBytes_;
   bool skipPayload_;
 
   void submitEthernet(const UInt8 *data, size_t length);

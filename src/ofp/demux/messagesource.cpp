@@ -71,10 +71,9 @@ void MessageSource::finish() {
   log::debug("MessageSource::finish\n", flows_.toString());
 
   if (hasOutputDir()) {
-    const size_t kMaxMissingBytes = 100000;
     flows_.finish(
         [this](const IPv6Endpoint &src, const IPv6Endpoint &dst,
-           const FlowData &flow) { outputWrite(src, dst, flow, flow.size()); }, kMaxMissingBytes);
+           const FlowData &flow) { outputWrite(src, dst, flow, flow.size()); }, maxMissingBytes_);
   }
   flows_.clear();
 }
@@ -246,15 +245,14 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
   while (remaining >= sizeof(Header)) {
     UInt16 msgLen = Big16_copy(data + 2);
 
-    if (msgLen < sizeof(Header)) {
-      log::warning("submitPayload: msg length < 8 bytes", msgLen);
-      msgLen = 8;
-    }
-
-    if (remaining >= msgLen) {
+    if (msgLen >= sizeof(Header) && remaining >= msgLen) {
       deliverMessage(data, msgLen, sessionID);
       data += msgLen;
       remaining -= msgLen;
+    } else if (msgLen < sizeof(Header)) {
+      log::warning("submitPayload: msgLen smaller than 8 bytes:", msgLen, "(skip 8 bytes)");
+      data += sizeof(Header);
+      remaining -= sizeof(Header);
     } else {
       break;
     }
@@ -268,7 +266,7 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
 void MessageSource::deliverMessage(const UInt8 *data, size_t length,
                                    UInt64 sessionID) {
   log::debug("deliverMessage:", sessionID, ByteRange(data, length));
-  assert(length >= 8);
+  assert(length >= sizeof(Header));
 
   MessageInfo info{sessionID, src_, dst_};
   Message message{data, length};

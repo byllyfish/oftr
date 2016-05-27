@@ -18,6 +18,8 @@ void FlowData::consume(size_t len) {
   assert(state_ != nullptr);
   assert(len <= data_.size());
 
+  log::debug("FlowData::consume", len, "bytes");
+  
   state_->end_ += len;
 
   if (cached_) {

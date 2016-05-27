@@ -36,6 +36,7 @@ namespace ofpx {
 //   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir>.
 //   --pcap-filter=<filter>  Filter for packet capture.
 //   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
+//   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams (for debugging).
 //
 // Usage:
 //
@@ -155,6 +156,7 @@ class Decode : public Subprogram {
   cl::opt<std::string> pcapFilter_{
       "pcap-filter", cl::desc("Filter for packet capture"), cl::cat(pcapCategory_), cl::init("tcp")};
   cl::opt<bool> pcapSkipPayload_{"pcap-skip-payload", cl::desc("Skip payload from TCP streams (for debugging)")};
+  cl::opt<ofp::UInt32> pcapMaxMissingBytes_{"pcap-max-missing-bytes", cl::desc("Add missing zero bytes to partial streams (for debugging)")};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

@@ -31,8 +31,8 @@ fi
 
 LIBOFP=$CURRENT_TEST_DIR/../libofp
 
-echo "Run libofp decode on $CURRENT_SOURCE_DIR/tcp.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format=yes --pcap-output-dir=$MSG_DIR --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap" "$CURRENT_SOURCE_DIR/flow58899.pcap"
+echo "Run libofp decode on $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --pcap-format=yes --pcap-output-dir=$MSG_DIR --pcap-max-missing-bytes=100000 --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap" "$CURRENT_SOURCE_DIR/flow58899.pcap"
 
 verify_sha1 "$CURRENT_SOURCE_DIR/tcp.pcap" "08cf1e8ab8b499cfa8d03398e74c09ad59d3a731"
 verify_sha1 "$CURRENT_SOURCE_DIR/flow58899.pcap" "69d160c2773defae44daf7d037c649df0f9a6bd0"
