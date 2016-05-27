@@ -65,8 +65,8 @@ verify_sha1 "$MSG_DIR/_tcp-11-[::1]:8888-[::1]:61988" "bece5ea2bca550bac3477e2f1
 verify_sha1 "$MSG_DIR/_tcp-12-[::1]:61994-[::1]:8888" "33aededd23f957c2daae1ff7aab626a493c7f3f6"
 verify_sha1 "$MSG_DIR/_tcp-12-[::1]:8888-[::1]:61994" "d9bcd4b5b044938c6d77dd3a7def9f44013a66c6"
 
-verify_sha1 "$MSG_DIR/_tcp-17-172.16.133.78:58899-184.96.221.120:64510" "bfc6e8b49f6c9eed91ff67c4da8ab07906dccb60"
-verify_sha1 "$MSG_DIR/_tcp-17-184.96.221.120:64510-172.16.133.78:58899" "07bd16f5e3c64ad41de2c69f21d37f0904a0caed"
+verify_sha1 "$MSG_DIR/_tcp-17-172.16.133.78:58899-184.96.221.120:64510" "c08dc3ddc802c6d89ef3e8dd1b9e41f2823e6e66"
+verify_sha1 "$MSG_DIR/_tcp-17-184.96.221.120:64510-172.16.133.78:58899" "f18d85da70cf6c082640988b4c58baceabcfb8d6"
 verify_sha1 "$MSG_DIR/_tcp-18-172.16.133.84:58899-172.16.139.250:5440" "ec6139bad6d010c782e2dc07e889fc45b75f8132"
 
 # Check illegal argument combinations to make sure they are rejected.

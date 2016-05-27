@@ -58,8 +58,14 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
     if (Segment::lessThan(begin, seg.end())) {
       // New segment overlaps with existing data.
-      log::error("SegmentCache:", SegmentToString(begin, end, final), "overlaps", seg.toString(), ':', toString());
-      // FIXME: ignore overlapping data for now...
+      log::error("SegmentCache:", SegmentToString(begin, end, final), "overlaps", seg.toString());
+      // Append new part of overlapping data, if there is a new part.
+      ByteRange newData = SafeByteRange(data.data(), data.size(), seg.end() - begin);
+      if (!newData.empty()) {
+        seg.append(newData, final);
+        update(i, final);
+        log::error("SegmentCache: result is", toString());
+      }
       goto DONE;
     }
 

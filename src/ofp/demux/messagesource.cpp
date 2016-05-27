@@ -294,6 +294,7 @@ void MessageSource::outputWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst
   // Write flow to a file.
   std::ofstream out{filename, std::ios::out | std::ios::app | std::ios::binary};
   if (out) {
+    log::debug("outputWrite", filename, ByteRange{flow.data(), n});
     out.write(reinterpret_cast<const char *>(flow.data()), Signed_cast(n));
   } else {
     log::error("MessageSource: Unable to open output file", filename);
