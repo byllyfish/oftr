@@ -59,13 +59,21 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
     if (Segment::lessThan(begin, seg.end())) {
       // New segment overlaps with existing data.
       log::error("SegmentCache:", SegmentToString(begin, end, final), "overlaps", seg.toString());
-      // Append new part of overlapping data, if there is a new part.
+      // Include new part of overlapping data, if there is a new part.
+      if (Segment::lessThan(begin, seg.begin())) {
+        size_t offset = seg.begin() - begin;
+        ByteRange newData = ByteRange{data.data(), std::min(data.size(), offset)};
+        if (!newData.empty()) {
+          seg.prepend(newData);
+          // TODO: if final?
+        }
+      }
       ByteRange newData = SafeByteRange(data.data(), data.size(), seg.end() - begin);
       if (!newData.empty()) {
         seg.append(newData, final);
         update(i, final);
-        log::error("SegmentCache: result is", toString());
       }
+      log::error("SegmentCache: result is", toString());
       goto DONE;
     }
 

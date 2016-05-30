@@ -250,6 +250,7 @@ TEST(segmentcache, lessThan) {
 }
 
 TEST(segmentcache, segmentMove) {
+  // Moving a segment should just work with no asserts.
   Segment seg1{2, {"1234", 4}, true};
 
   EXPECT_EQ(2, seg1.end());
@@ -273,4 +274,73 @@ TEST(segmentcache, segmentMove) {
   EXPECT_EQ(0xfffffffe, seg1.begin());
   EXPECT_EQ(4, seg1.size());
   EXPECT_TRUE(seg1.final());
+}
+
+TEST(segmentcache, overlapping1) {
+  // Storing two overlapping segments [4, 8) and [6, 10) should merge the 
+  // segments.
+
+  SegmentCache cache;
+  ByteList data{HexToRawData("00112233")};
+
+  cache.store(8, data.toRange(), false);
+  cache.store(10, data.toRange(), false);
+
+  auto seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("001122332233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(4, seg->begin());
+  EXPECT_EQ(10, seg->end());
+}
+
+TEST(segmentcache, overlapping2) {
+  // Storing two overlapping segments [6, 10) and [4, 8) should merge the 
+  // segments. (same as overlapping1 except different order).
+
+  SegmentCache cache;
+  ByteList data{HexToRawData("00112233")};
+
+  cache.store(10, data.toRange(), false);
+  cache.store(8, data.toRange(), false);
+
+  auto seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("001100112233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(4, seg->begin());
+  EXPECT_EQ(10, seg->end());
+}
+
+TEST(segmentcache, overlapping3) {
+  // Storing two overlapping segments [4, 8) and [5, 6) should have no effect.
+  SegmentCache cache;
+  ByteList data{HexToRawData("00112233")};
+
+  cache.store(8, data.toRange(), false);
+  cache.store(6, ByteRange{"x", 1}, false);
+
+  auto seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("00112233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(4, seg->begin());
+  EXPECT_EQ(8, seg->end());
+}
+
+TEST(segmentcache, overlapping4) {
+  // Storing two overlapping segments [5, 6) and [4, 8) should leave [4, 8),
+  // but the "x" byte from the original segment should remain at [5,6).
+  SegmentCache cache;
+  ByteList data{HexToRawData("00112233")};
+
+  cache.store(6, ByteRange{"x", 1}, false);
+  cache.store(8, data.toRange(), false);
+
+  auto seg = cache.current();
+  ASSERT_NE(nullptr, seg);
+
+  EXPECT_HEX("00782233", seg->data().data(), seg->data().size());
+  EXPECT_EQ(4, seg->begin());
+  EXPECT_EQ(8, seg->end());
 }
