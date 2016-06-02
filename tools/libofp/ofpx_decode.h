@@ -32,9 +32,9 @@ namespace ofpx {
 //   --include-filename    Include file name in all decodes.
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
-//   --pcap-format=auto|yes|no Treat input files as .pcap format.
-//   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir>.
 //   --pcap-filter=<filter>  Filter for packet capture.
+//   --pcap-format=auto|yes|no Treat input files as .pcap format.
+//   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir> (for debugging).
 //   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
 //   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams (for debugging).
 //
@@ -152,11 +152,11 @@ class Decode : public Subprogram {
    clEnumValEnd), cl::cat(pcapCategory_), cl::init(kPcapFormatAuto)};
   cl::opt<std::string> pcapOutputDir_{
       "pcap-output-dir",
-      cl::desc("Write reassembled TCP streams to directory"), cl::cat(pcapCategory_), cl::ValueRequired};
+      cl::desc("Write reassembled TCP streams to directory (for debugging)"), cl::cat(pcapCategory_), cl::ValueRequired, cl::Hidden};
   cl::opt<std::string> pcapFilter_{
-      "pcap-filter", cl::desc("Filter for packet capture"), cl::cat(pcapCategory_), cl::init("tcp")};
-  cl::opt<bool> pcapSkipPayload_{"pcap-skip-payload", cl::desc("Skip payload from TCP streams (for debugging)")};
-  cl::opt<ofp::UInt32> pcapMaxMissingBytes_{"pcap-max-missing-bytes", cl::desc("Add missing zero bytes to partial streams (for debugging)")};
+      "pcap-filter", cl::desc("Filter for packet capture"), cl::cat(pcapCategory_), cl::init("tcp port 6653 or 6633")};
+  cl::opt<bool> pcapSkipPayload_{"pcap-skip-payload", cl::desc("Skip payload from TCP streams (for debugging)"), cl::cat(pcapCategory_), cl::Hidden};
+  cl::opt<ofp::UInt32> pcapMaxMissingBytes_{"pcap-max-missing-bytes", cl::desc("Add missing zero bytes to partial streams (for debugging)"), cl::cat(pcapCategory_), cl::Hidden};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
