@@ -138,6 +138,13 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
     return;
   }
 
+  // Check for fragmented IPv4 packet.
+  UInt16 frag = ip->frag & (pkt::IPv4_MoreFragMask | pkt::IPv4_FragOffsetMask);
+  if (frag) {
+    log::warning("MessageSource: IPv4 packet is fragment");
+    return;
+  }
+
   src_.setAddress(ip->src);
   dst_.setAddress(ip->dst);
 
