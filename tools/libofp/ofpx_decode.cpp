@@ -352,7 +352,7 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
     return ExitStatus::FileOpenFailed;
   }
 
-  setCurrentFilename(std::string{"pcap:"} + device);
+  setCurrentFilename(std::string("pcap:") + device);
   msg.runLoop(&pcap);
   pcap.close();
   setCurrentFilename("");

@@ -68,7 +68,7 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
             ByteRange{data.data(), std::min(data.size(), offset)};
         if (!newData.empty()) {
           seg.prepend(newData);
-          // TODO: if final?
+          // TODO(bfish): if final?
         }
       }
       ByteRange newData =
