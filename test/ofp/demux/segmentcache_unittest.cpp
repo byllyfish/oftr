@@ -277,7 +277,7 @@ TEST(segmentcache, segmentMove) {
 }
 
 TEST(segmentcache, overlapping1) {
-  // Storing two overlapping segments [4, 8) and [6, 10) should merge the 
+  // Storing two overlapping segments [4, 8) and [6, 10) should merge the
   // segments.
 
   SegmentCache cache;
@@ -295,7 +295,7 @@ TEST(segmentcache, overlapping1) {
 }
 
 TEST(segmentcache, overlapping2) {
-  // Storing two overlapping segments [6, 10) and [4, 8) should merge the 
+  // Storing two overlapping segments [6, 10) and [4, 8) should merge the
   // segments. (same as overlapping1 except different order).
 
   SegmentCache cache;

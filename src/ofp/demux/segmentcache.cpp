@@ -31,7 +31,8 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
     if (begin == seg.end()) {
       if (seg.final()) {
         if (!final || !data.empty()) {
-          log::warning("SegmentCache: can't append data to final segment:", data.size());
+          log::warning("SegmentCache: can't append data to final segment:",
+                       data.size());
         }
       } else {
         seg.append(data, final);
@@ -58,17 +59,20 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
     if (Segment::lessThan(begin, seg.end())) {
       // New segment overlaps with existing data.
-      log::error("SegmentCache:", SegmentToString(begin, end, final), "overlaps", seg.toString());
+      log::error("SegmentCache:", SegmentToString(begin, end, final),
+                 "overlaps", seg.toString());
       // Include new part of overlapping data, if there is a new part.
       if (Segment::lessThan(begin, seg.begin())) {
         size_t offset = seg.begin() - begin;
-        ByteRange newData = ByteRange{data.data(), std::min(data.size(), offset)};
+        ByteRange newData =
+            ByteRange{data.data(), std::min(data.size(), offset)};
         if (!newData.empty()) {
           seg.prepend(newData);
           // TODO: if final?
         }
       }
-      ByteRange newData = SafeByteRange(data.data(), data.size(), seg.end() - begin);
+      ByteRange newData =
+          SafeByteRange(data.data(), data.size(), seg.end() - begin);
       if (!newData.empty()) {
         seg.append(newData, final);
         update(i, final);
@@ -109,7 +113,6 @@ void SegmentCache::consume(size_t len) {
   log::debug("SegmentCache::consume", len, "bytes", toString());
 }
 
-
 std::string SegmentCache::toString() const {
   // Examples:  "[segment1)...[segmentN)=size"
   //            "[segment1)...[segmentN)*=size"
@@ -137,7 +140,8 @@ void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx,
 
   // If segment is final, clear out the remaining segments.
   if (final) {
-    log::error("SegmentCache: Final segment inserted before others:", toString());
+    log::error("SegmentCache: Final segment inserted before others:",
+               toString());
     assert(idx < segments_.size());
     segments_.erase(segments_.begin() + Signed_cast(idx) + 1, segments_.end());
   }
@@ -161,7 +165,8 @@ void SegmentCache::update(size_t idx, bool final) {
       seg.append(next.data(), next.final());
       segments_.erase(segments_.begin() + Signed_cast(idx) + 1);
     } else if (Segment::lessThan(next.begin(), seg.end())) {
-      log::warning("SegmentCache: fixing up overlapping segments", seg.toString(), next.toString());
+      log::warning("SegmentCache: fixing up overlapping segments",
+                   seg.toString(), next.toString());
       size_t overlap = seg.end() - next.begin();
       seg.append(next.data(overlap), next.final());
       segments_.erase(segments_.begin() + Signed_cast(idx) + 1);
@@ -221,7 +226,7 @@ void SegmentCache::addMissingData(UInt32 end, size_t maxMissingBytes) {
     return;
 
   std::string zeroBuf(maxMissingBytes, '\0');
-  
+
   // If the first segment is empty, there's nothing to do.
   Segment &seg = segments_[0];
   if (seg.empty()) {
@@ -264,7 +269,7 @@ void SegmentCache::addMissingData(UInt32 end, size_t maxMissingBytes) {
 
 /// Return description of segment as half-open interval.
 /// e.g.   "[12345,12347)", "[12345)", "[12345,12347)*"
-/// The asterisk indicates the final segment. Empty segments are described with 
+/// The asterisk indicates the final segment. Empty segments are described with
 /// a single number.
 std::string ofp::demux::SegmentToString(UInt32 begin, UInt32 end, bool final) {
   std::ostringstream oss;
@@ -277,4 +282,3 @@ std::string ofp::demux::SegmentToString(UInt32 begin, UInt32 end, bool final) {
     oss << '*';
   return oss.str();
 }
-

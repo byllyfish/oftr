@@ -27,8 +27,14 @@ class MessageSource {
  public:
   using MessageCallback = void (*)(Message *, void *);
 
-  explicit MessageSource(MessageCallback callback, void *context, const std::string &outputDir, bool skipPayload = false, size_t maxMissingBytes=0)
-      : callback_{callback}, context_{context}, outputDir_{outputDir}, maxMissingBytes_{maxMissingBytes}, skipPayload_{skipPayload} {}
+  explicit MessageSource(MessageCallback callback, void *context,
+                         const std::string &outputDir, bool skipPayload = false,
+                         size_t maxMissingBytes = 0)
+      : callback_{callback},
+        context_{context},
+        outputDir_{outputDir},
+        maxMissingBytes_{maxMissingBytes},
+        skipPayload_{skipPayload} {}
 
   void runLoop(PktSource *pcap);
 
@@ -59,7 +65,8 @@ class MessageSource {
   void deliverMessage(const UInt8 *data, size_t length, UInt64 sessionID);
 
   bool hasOutputDir() const { return !outputDir_.empty(); }
-  void outputWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst, const FlowData &flow, size_t n);
+  void outputWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
+                   const FlowData &flow, size_t n);
 };
 
 OFP_END_IGNORE_PADDING

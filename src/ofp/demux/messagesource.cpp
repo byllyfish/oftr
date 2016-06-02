@@ -73,7 +73,10 @@ void MessageSource::finish() {
   if (hasOutputDir()) {
     flows_.finish(
         [this](const IPv6Endpoint &src, const IPv6Endpoint &dst,
-           const FlowData &flow) { outputWrite(src, dst, flow, flow.size()); }, maxMissingBytes_);
+               const FlowData &flow) {
+          outputWrite(src, dst, flow, flow.size());
+        },
+        maxMissingBytes_);
   }
   flows_.clear();
 }
@@ -226,7 +229,7 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
     size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
     if (flow.final() && n != flow.size()) {
       log::debug("MessageSource: TCP done before full message received",
-                   flow.sessionID());
+                 flow.sessionID());
       // Make sure we consume all of the remaining data.
       n = flow.size();
     }
@@ -257,7 +260,8 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
       data += msgLen;
       remaining -= msgLen;
     } else if (msgLen < sizeof(Header)) {
-      log::warning("submitPayload: msgLen smaller than 8 bytes:", msgLen, "(skip 8 bytes)");
+      log::warning("submitPayload: msgLen smaller than 8 bytes:", msgLen,
+                   "(skip 8 bytes)");
       data += sizeof(Header);
       remaining -= sizeof(Header);
     } else {
@@ -284,8 +288,9 @@ void MessageSource::deliverMessage(const UInt8 *data, size_t length,
     callback_(&message, context_);
 }
 
-void MessageSource::outputWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst,
-                               const FlowData &flow, size_t n) {
+void MessageSource::outputWrite(const IPv6Endpoint &src,
+                                const IPv6Endpoint &dst, const FlowData &flow,
+                                size_t n) {
   assert(hasOutputDir());
 
   // If there's no data, don't create any files.
@@ -294,8 +299,7 @@ void MessageSource::outputWrite(const IPv6Endpoint &src, const IPv6Endpoint &dst
 
   // Construct filename "$outputDir/_tcp-$session-$src-$dst"
   std::ostringstream oss;
-  oss << outputDir_ << "/_tcp-" << flow.sessionID() << '-' << src << '-'
-      << dst;
+  oss << outputDir_ << "/_tcp-" << flow.sessionID() << '-' << src << '-' << dst;
   auto filename = oss.str();
 
   // Write flow to a file.

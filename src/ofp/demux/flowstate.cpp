@@ -19,7 +19,7 @@ void FlowData::consume(size_t len) {
   assert(len <= data_.size());
 
   log::debug("FlowData::consume", len, "bytes");
-  
+
   state_->end_ += len;
 
   if (cached_) {
@@ -34,8 +34,8 @@ void FlowData::consume(size_t len) {
 }
 
 FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
-                            const ByteRange &data, UInt64 sessionID,
-                            bool final, Timestamp *lastSeen) {
+                            const ByteRange &data, UInt64 sessionID, bool final,
+                            Timestamp *lastSeen) {
   UInt32 begin = end - UInt32_narrow_cast(data.size());
 
   if (!started_) {
@@ -48,7 +48,8 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   if (cache_.empty()) {
     if (finished_) {
       // Handle packets that arrive after flow is officially finished.
-      log::warning("FlowState: drop late segment", SegmentToString(begin, end, final));
+      log::warning("FlowState: drop late segment",
+                   SegmentToString(begin, end, final));
       return FlowData{sessionID};
 
     } else if (begin == end_) {
@@ -57,21 +58,24 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
       if (final) {
         finished_ = true;
       }
-      log::debug("FlowState: return flow data", SegmentToString(begin, end, final));
+      log::debug("FlowState: return flow data",
+                 SegmentToString(begin, end, final));
       return FlowData{this, data, sessionID, false, final};
     }
   }
 
   // Check if segment's end <= our `end_` value.
   if (!Segment::lessThan(end_, end)) {
-    log::warning("FlowState: drop unexpected segment", SegmentToString(begin, end, final), "end is", end_);
+    log::warning("FlowState: drop unexpected segment",
+                 SegmentToString(begin, end, final), "end is", end_);
     return FlowData{sessionID};
   }
 
   // Determine the data in the segment that is *new*.
   ByteRange newData;
   if (Segment::lessThan(begin, end_)) {
-    log::warning("FlowState: overlapping segment detected", SegmentToString(begin, end, final), "end is", end_);
+    log::warning("FlowState: overlapping segment detected",
+                 SegmentToString(begin, end, final), "end is", end_);
     newData = SafeByteRange(data.begin(), data.size(), end_ - begin);
   } else {
     newData = data;

@@ -28,8 +28,10 @@ class Segment {
   bool empty() const { return data_.empty(); }
   bool final() const { return final_; }
   ByteRange data() const { return data_.toRange(); }
-  ByteRange data(size_t overlap) const { return SafeByteRange(data_.data(), data_.size(), overlap); }
-  
+  ByteRange data(size_t overlap) const {
+    return SafeByteRange(data_.data(), data_.size(), overlap);
+  }
+
   void append(const ByteRange &data, bool final) {
     assert(!final_);
     data_.add(data.data(), data.size());
@@ -48,7 +50,9 @@ class Segment {
 
   static bool lessThan(UInt32 lhs, UInt32 rhs);
 
-  std::string toString() const { return SegmentToString(begin(), end(), final()); }
+  std::string toString() const {
+    return SegmentToString(begin(), end(), final());
+  }
 
  private:
   UInt32 end_ = 0;

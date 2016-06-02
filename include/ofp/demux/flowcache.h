@@ -36,13 +36,16 @@ struct FlowCacheEntry {
   Timestamp firstSeen;
   Timestamp lastSeen;
 
-  double secondsSince(const Timestamp &ts) const { return ts.secondsSince(lastSeen); }
+  double secondsSince(const Timestamp &ts) const {
+    return ts.secondsSince(lastSeen);
+  }
   bool finished() const { return x.finished() && y.finished(); }
   void reset(const Timestamp &ts, UInt64 sessID);
 };
 
 using FlowMap = std::unordered_map<FlowCacheKey, FlowCacheEntry>;
-using FlowCallback = std::function<void(const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &)>;
+using FlowCallback = std::function<void(
+    const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &)>;
 
 }  // namespace detail
 }  // namespace demux
@@ -102,7 +105,8 @@ class FlowCache {
 
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
-  detail::FlowCacheEntry *findEntry(const IPv6Endpoint &src, const IPv6Endpoint &dst);
+  detail::FlowCacheEntry *findEntry(const IPv6Endpoint &src,
+                                    const IPv6Endpoint &dst);
 
   // Call a function to process remaining data in the cache.
   void finish(detail::FlowCallback callback, size_t maxMissingBytes = 0);

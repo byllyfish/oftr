@@ -25,7 +25,8 @@ TEST(flowstate, basicTest) {
 
   {  // Receive segment [0, 4). Consume 4 bytes.
     Timestamp lastSeen;
-    auto data = state.receive(ts, 4, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
+    auto data =
+        state.receive(ts, 4, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
     EXPECT_EQ(4, data.size());
     EXPECT_FALSE(data.final());
     EXPECT_HEX("00112233", data.data(), data.size());
@@ -35,7 +36,8 @@ TEST(flowstate, basicTest) {
 
   {  // Receive segment [4, 8). Consume only 3 bytes.
     Timestamp lastSeen;
-    auto data = state.receive(ts, 8, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
+    auto data =
+        state.receive(ts, 8, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
     EXPECT_EQ(4, data.size());
     EXPECT_FALSE(data.final());
     EXPECT_HEX("00112233", data.data(), data.size());
@@ -45,7 +47,8 @@ TEST(flowstate, basicTest) {
 
   {  // Receive segment [8, 12). Consume all 5 bytes. Final segment.
     Timestamp lastSeen;
-    auto data = state.receive(ts, 12, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
+    auto data =
+        state.receive(ts, 12, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
     EXPECT_EQ(5, data.size());
     EXPECT_FALSE(data.final());
     EXPECT_HEX("3300112233", data.data(), data.size());
@@ -82,7 +85,8 @@ TEST(flowstate, outOfOrderTest) {
 
   {  // Receive segment [8, 12). Consume 0 bytes.
     Timestamp lastSeen;
-    auto data = state.receive(ts, 12, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
+    auto data =
+        state.receive(ts, 12, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
     EXPECT_EQ(0, data.size());
     EXPECT_EQ(ts, lastSeen);
     data.consume(0);
@@ -90,7 +94,8 @@ TEST(flowstate, outOfOrderTest) {
 
   {  // Receive segment [0, 4). Consume 0 bytes. (should be discarded)
     Timestamp lastSeen;
-    auto data = state.receive(ts, 4, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
+    auto data =
+        state.receive(ts, 4, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
     EXPECT_EQ(0, data.size());
     EXPECT_FALSE(lastSeen.valid());
     data.consume(0);
@@ -98,7 +103,8 @@ TEST(flowstate, outOfOrderTest) {
 
   {  // Receive segment [12, 16). Consume 0 bytes.
     Timestamp lastSeen;
-    auto data = state.receive(ts, 16, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
+    auto data =
+        state.receive(ts, 16, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
     EXPECT_EQ(0, data.size());
     EXPECT_EQ(ts, lastSeen);
     data.consume(0);
@@ -106,7 +112,8 @@ TEST(flowstate, outOfOrderTest) {
 
   {  // Receive segment [4, 8). Consume 8 bytes.
     Timestamp lastSeen;
-    auto data = state.receive(ts, 8, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
+    auto data =
+        state.receive(ts, 8, buf.toRange(), kSessionID, kNotFinal, &lastSeen);
     EXPECT_EQ(12, data.size());
     EXPECT_HEX("001122330011223300112233", data.data(), data.size());
     EXPECT_EQ(ts, lastSeen);

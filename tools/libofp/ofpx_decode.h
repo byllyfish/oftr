@@ -34,9 +34,11 @@ namespace ofpx {
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
 //   --pcap-filter=<filter>  Filter for packet capture.
 //   --pcap-format=auto|yes|no Treat input files as .pcap format.
-//   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir> (for debugging).
+//   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir> (for
+//   debugging).
 //   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
-//   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams (for debugging).
+//   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams
+//   (for debugging).
 //
 // Usage:
 //
@@ -108,11 +110,7 @@ class Decode : public Subprogram {
   static void pcapMessageCallback(ofp::Message *message, void *context);
   bool pcapFormat() const;
 
-  enum PcapFormat {
-    kPcapFormatAuto,
-    kPcapFormatYes,
-    kPcapFormatNo
-  };
+  enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
@@ -145,18 +143,28 @@ class Decode : public Subprogram {
       "pcap-device",
       cl::desc("Reassemble OpenFlow messages from specified device"),
       cl::ValueRequired, cl::cat(pcapCategory_)};
-  cl::opt<PcapFormat> pcapFormat_{"pcap-format", cl::desc("Treat all input files as .pcap format"), cl::values(
-    clEnumValN(kPcapFormatAuto , "auto", "If any file name ends in .pcap (default)"),
-    clEnumValN(kPcapFormatYes, "yes", "Yes"),
-    clEnumValN(kPcapFormatNo, "no", "No"),
-   clEnumValEnd), cl::cat(pcapCategory_), cl::init(kPcapFormatAuto)};
+  cl::opt<PcapFormat> pcapFormat_{
+      "pcap-format", cl::desc("Treat all input files as .pcap format"),
+      cl::values(clEnumValN(kPcapFormatAuto, "auto",
+                            "If any file name ends in .pcap (default)"),
+                 clEnumValN(kPcapFormatYes, "yes", "Yes"),
+                 clEnumValN(kPcapFormatNo, "no", "No"), clEnumValEnd),
+      cl::cat(pcapCategory_), cl::init(kPcapFormatAuto)};
   cl::opt<std::string> pcapOutputDir_{
       "pcap-output-dir",
-      cl::desc("Write reassembled TCP streams to directory (for debugging)"), cl::cat(pcapCategory_), cl::ValueRequired, cl::Hidden};
+      cl::desc("Write reassembled TCP streams to directory (for debugging)"),
+      cl::cat(pcapCategory_), cl::ValueRequired, cl::Hidden};
   cl::opt<std::string> pcapFilter_{
-      "pcap-filter", cl::desc("Filter for packet capture"), cl::cat(pcapCategory_), cl::init("tcp port 6653 or 6633")};
-  cl::opt<bool> pcapSkipPayload_{"pcap-skip-payload", cl::desc("Skip payload from TCP streams (for debugging)"), cl::cat(pcapCategory_), cl::Hidden};
-  cl::opt<ofp::UInt32> pcapMaxMissingBytes_{"pcap-max-missing-bytes", cl::desc("Add missing zero bytes to partial streams (for debugging)"), cl::cat(pcapCategory_), cl::Hidden};
+      "pcap-filter", cl::desc("Filter for packet capture"),
+      cl::cat(pcapCategory_), cl::init("tcp port 6653 or 6633")};
+  cl::opt<bool> pcapSkipPayload_{
+      "pcap-skip-payload",
+      cl::desc("Skip payload from TCP streams (for debugging)"),
+      cl::cat(pcapCategory_), cl::Hidden};
+  cl::opt<ofp::UInt32> pcapMaxMissingBytes_{
+      "pcap-max-missing-bytes",
+      cl::desc("Add missing zero bytes to partial streams (for debugging)"),
+      cl::cat(pcapCategory_), cl::Hidden};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---
