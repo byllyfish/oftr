@@ -663,7 +663,7 @@ bool Decode::pcapFormat() const {
   // Check if any of the input files have the .pcap file extension.
   for (const auto &filename : inputFiles_) {
     llvm::StringRef fname{filename};
-    if (fname.endswith(".pcap")) {
+    if (fname.endswith(".pcap") || fname.endswith(".pcapng")) {
       return true;
     }
   }
