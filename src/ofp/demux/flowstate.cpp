@@ -50,7 +50,8 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
       // Drop packets that arrive after flow is officially finished. Only log
       // a warning if the segment is not final.
       if (!final) {
-        log::warning("FlowState: drop late segment", SegmentToString(begin, end, final));
+        log::warning("FlowState: drop late segment",
+                     SegmentToString(begin, end, final));
       }
       return FlowData{sessionID};
 
