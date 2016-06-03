@@ -202,14 +202,6 @@ bool SegmentCache::checkInvariant() {
     }
   }
 
-  // Warn if the segment cache contains only one empty final segment.
-  if (segments_.size() == 1) {
-    const auto &seg = segments_[0];
-    if (seg.empty()) {
-      log::warning("SegmentCache: exactly one empty segment present!");
-    }
-  }
-
   return true;
 }
 
