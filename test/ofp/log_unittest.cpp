@@ -15,20 +15,21 @@ static int never_call(int x) {
   ofp::log::fatal("never_call()", x);
 }
 
+#define LOG_NOOP_    (void)0
+
 // Arguments of the LOG_ macros are only evaluated at the given log level.
 
 #define LOG_IF_LEVEL_(lvl_, ...)                                              \
   if (::ofp::log::Level::lvl_ < ::ofp::log::detail::GLOBAL_OutputLevelFilter) \
-    0;                                                                        \
-  else                                                                        \
-  ::ofp::log::detail::write_(::ofp::log::Level::lvl_, __VA_ARGS__)
+    LOG_NOOP_;                                                                \
+  else ::ofp::log::detail::write_(::ofp::log::Level::lvl_, __VA_ARGS__)
 
 #define LOG_ERROR(...) LOG_IF_LEVEL_(Error, __VA_ARGS__)
 // #define LOG_WARNING(...)  LOG_IF_LEVEL_(Warning, __VA_ARGS__)
 // #define LOG_INFO(...)     LOG_IF_LEVEL_(Info, __VA_ARGS__)
 
 #if defined(NDEBUG)
-#define LOG_DEBUG(...) 0
+#define LOG_DEBUG(...) LOG_NOOP_
 #else
 #define LOG_DEBUG(...) LOG_IF_LEVEL_(Debug, __VA_ARGS__)
 #endif
