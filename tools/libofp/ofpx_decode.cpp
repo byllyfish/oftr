@@ -6,6 +6,8 @@
 #include <iostream>
 #include "./ofpx_util.h"
 #include "llvm/Support/Path.h"
+#include "ofp/demux/messagesource.h"
+#include "ofp/demux/pktsource.h"
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
@@ -29,9 +31,8 @@ int Decode::run(int argc, const char *const *argv) {
                           "Translate binary OpenFlow messages in the input "
                           "files to human-readable YAML\n");
 
-  // If there are no input files, add "-" to indicate stdin.
-  if (inputFiles_.empty()) {
-    inputFiles_.push_back("-");
+  if (!validateCommandLineArguments()) {
+    return static_cast<int>(ExitStatus::InvalidArguments);
   }
 
   // Set up output stream.
@@ -47,7 +48,41 @@ int Decode::run(int argc, const char *const *argv) {
     output_ = &outStream;
   }
 
-  return static_cast<int>(decodeFiles());
+  // If --pcap-device option is specified, decode from packet capture device.
+  // Otherwise, decode messages from pcap or binary files.
+
+  ExitStatus result;
+  if (!pcapDevice_.empty()) {
+    result = decodePcapDevice(pcapDevice_);
+  } else if (pcapFormat()) {
+    result = decodePcapFiles();
+  } else {
+    result = decodeFiles();
+  }
+
+  return static_cast<int>(result);
+}
+
+bool Decode::validateCommandLineArguments() {
+  // It's an error to specify any input files in combination with live packet
+  // capture.
+  if (!pcapDevice_.empty() && !inputFiles_.empty()) {
+    std::cerr << "Error: File list provided with live packet capture\n";
+    return false;
+  }
+
+  // If `pcapOutputDir_` is specified, it must exist.
+  if (!pcapOutputDir_.empty() && !llvm::sys::fs::is_directory(pcapOutputDir_)) {
+    std::cerr << "Error: Directory " << pcapOutputDir_ << " does not exist\n";
+    return false;
+  }
+
+  // If there are no input files, add "-" to indicate stdin.
+  if (inputFiles_.empty()) {
+    inputFiles_.push_back("-");
+  }
+
+  return true;
 }
 
 ExitStatus Decode::decodeFiles() {
@@ -62,7 +97,7 @@ ExitStatus Decode::decodeFiles() {
 
   for (std::string filename : files) {
     // If filename ends in .findx when using --use-findx, strip the extension
-    // from filename.
+    // from filename. N.B. `filename` is an independent copy.
     llvm::StringRef fname{filename};
     if (useFindx_ && fname.endswith(".findx")) {
       filename = fname.drop_back(6);
@@ -302,6 +337,50 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   if (input.get(ch)) {
     std::cerr << "Error: Unexpected data in file " << currentFilename_ << '\n';
     return ExitStatus::MessageReadFailed;
+  }
+
+  return ExitStatus::Success;
+}
+
+ExitStatus Decode::decodePcapDevice(const std::string &device) {
+  ofp::demux::PktSource pcap;
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_,
+                                pcapSkipPayload_, pcapMaxMissingBytes_};
+
+  if (!pcap.openDevice(device.c_str(), pcapFilter_)) {
+    std::cerr << "Error: " << pcap.error() << '\n';
+    return ExitStatus::FileOpenFailed;
+  }
+
+  setCurrentFilename(std::string("pcap:") + device);
+  msg.runLoop(&pcap);
+  pcap.close();
+  setCurrentFilename("");
+
+  return ExitStatus::Success;
+}
+
+ExitStatus Decode::decodePcapFiles() {
+  const std::vector<std::string> &files = inputFiles_;
+
+  // Use the same MessageSource object for all files, so we can stitch
+  // together TCP streams that may cross over files.
+
+  ofp::demux::PktSource pcap;
+  ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_,
+                                pcapSkipPayload_, pcapMaxMissingBytes_};
+
+  for (auto &filename : files) {
+    // Try to read the file as a .pcap file.
+    if (!pcap.openFile(filename, pcapFilter_)) {
+      std::cerr << "Error: " << filename << ": " << pcap.error() << '\n';
+      return ExitStatus::FileOpenFailed;
+    }
+
+    setCurrentFilename(filename);
+    msg.runLoop(&pcap);
+    pcap.close();
+    setCurrentFilename("");
   }
 
   return ExitStatus::Success;
@@ -555,4 +634,39 @@ ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src,
   sessionIdMap_[pair] = ++nextSessionId_;
 
   return nextSessionId_;
+}
+
+void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
+  Decode *decode = reinterpret_cast<Decode *>(context);
+
+  // Save a copy of the original message binary before we transmogrify it
+  // for parsing.
+  ofp::Message originalMessage{nullptr};
+  originalMessage.assign(*message);
+  message->transmogrify();
+
+  ExitStatus result = decode->decodeOneMessage(message, &originalMessage);
+  if (result != ExitStatus::Success) {
+    ofp::log::debug("pcapMessageCallback: Failed to decode message");
+  }
+}
+
+bool Decode::pcapFormat() const {
+  if (pcapFormat_ == kPcapFormatNo)
+    return false;
+
+  if (pcapFormat_ == kPcapFormatYes)
+    return true;
+
+  assert(pcapFormat_ == kPcapFormatAuto);
+
+  // Check if any of the input files have the .pcap file extension.
+  for (const auto &filename : inputFiles_) {
+    llvm::StringRef fname{filename};
+    if (fname.endswith(".pcap") || fname.endswith(".pcapng")) {
+      return true;
+    }
+  }
+
+  return false;
 }

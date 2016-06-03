@@ -70,6 +70,10 @@ To decode a file of binary OpenFlow messages to YAML:
 
     libofp decode input.bin
 
+To decode the OpenFlow messages in a ".pcap" file:
+
+    libofp decode "filename.pcap"
+
 To decode a file of binary OpenFlow messages to compact single-line JSON objects:
 
     libofp decode --json "filename"
@@ -204,6 +208,33 @@ also represents stdin.
 *--include-filename*::
     Include file name in all decodes.
 
+=== Packet Capture Options
+
+*--pcap-device*='DEVICE'::
+    Specify interface where packets should be captured.
+
+*--pcap-filter*='FILTER'::
+    Specify the packet capture filter. The default filter is `tcp port 6653 or 6633`.
+    To capture all packets specify ''. A non-empty filter is augmented to ignore
+    exactly one vlan tag. The actual filter passed to libpcap is `FILTER or (vlan and FILTER)`.
+
+*--pcap-format*='auto|yes|no'::
+    Specify whether to treat all input files as .pcap format. `yes` causes the decoder
+    to open the file using libpcap. `no` causes the decoder to always treat the
+    file as binary. The default `auto` sets the --pcap-format to yes if there is at
+    least one file name that ends in ".pcap". It is an error if we fail to open 
+    a .pcap file.
+
+*--pcap-max-missing-bytes*=SIZE::
+    Add missing zero bytes to partial streams (for debugging).
+
+*--pcap-output-dir*=DIRECTORY::
+    Write reassembled TCP streams to this directory (for debugging). It is an error
+    if the directory does not exist.
+
+*--pcap-skip-payload*::
+    Skip payload from TCP streams (for debugging). This option makes sure that
+    every byte of data is consumed immediately.
 
 == LIBOFP JSONRPC
 

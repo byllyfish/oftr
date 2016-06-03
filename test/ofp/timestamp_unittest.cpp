@@ -100,3 +100,19 @@ TEST(timestamp, now) {
   log::debug("Timestamp::now", Timestamp::now().toString());
   log::debug("Timestamp::now", Timestamp::now().toString());
 }
+
+TEST(timestamp, secondsSince) {
+  Timestamp a{1, 1000000};
+  Timestamp b{1, 0};
+  Timestamp c{0, 9000000};
+  Timestamp d{0, 1000000};
+
+  EXPECT_DOUBLE_EQ(0.001, a.secondsSince(b));
+  EXPECT_DOUBLE_EQ(-0.001, b.secondsSince(a));
+
+  EXPECT_DOUBLE_EQ(0.991, b.secondsSince(c));
+  EXPECT_DOUBLE_EQ(-0.991, c.secondsSince(b));
+
+  EXPECT_DOUBLE_EQ(0.008, c.secondsSince(d));
+  EXPECT_DOUBLE_EQ(-0.008, d.secondsSince(c));
+}
