@@ -23,6 +23,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
 	ofp/lldpvalue_unittest.cpp
+	ofp/log_unittest.cpp
 	ofp/macaddress_unittest.cpp
 	ofp/meterbandlist_unittest.cpp
 	ofp/mpflowmonitorrequest_unittest.cpp
