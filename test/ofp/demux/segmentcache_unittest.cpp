@@ -258,7 +258,7 @@ TEST(segmentcache, segmentMove) {
   EXPECT_EQ(4, seg1.size());
   EXPECT_TRUE(seg1.final());
 
-  Segment seg2{0, {"", 0UL}, false};
+  Segment seg2{0, ByteRange{}, false};
   seg2 = std::move(seg1);
   EXPECT_EQ(0, seg1.size());
 
