@@ -115,6 +115,16 @@ TEST(ipv6address, zones) {
     EXPECT_HEX("FE80 FFFE FFFF 0000 1122 33FF fe44 5566", &a, sizeof(a));
     EXPECT_EQ("fe80::1122:33ff:fe44:5566%4294967294", a.toString());
   }
+
+  { // 0x11223344 == 287454020
+    IPv6Address a{"fe80::1122:33ff:fe44:5566%287454020"};
+    EXPECT_TRUE(a.valid());
+    EXPECT_TRUE(a.isLinkLocal());
+    EXPECT_EQ(287454020, a.zone());
+    EXPECT_HEX("FE80 3344 1122 0000 1122 33FF fe44 5566", &a, sizeof(a));
+    EXPECT_EQ("fe80::1122:33ff:fe44:5566%287454020", a.toString());
+  }
+
 }
 
 TEST(ipv6address, rfc5952) {
@@ -190,8 +200,8 @@ TEST(ipv6address, hash) {
   IPv6Address b{"2001::2"};
 
   std::hash<IPv6Address> hasher;
-  EXPECT_EQ(1003530086136274462, hasher(a));
-  EXPECT_EQ(2007060172272548861, hasher(b));
+  EXPECT_EQ(0xe191de1e, hasher(a) & 0xffffffff);
+  EXPECT_EQ(0xc323bbfd, hasher(b) & 0xffffffff);
 }
 
 TEST(ipv6address, parse_fails) {
