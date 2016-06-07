@@ -11,7 +11,7 @@
 namespace ofp {
 namespace demux {
 
-/// \brief A concrete class that adapts the libpcap API.
+/// \brief A concrete class that adapts the libpcap API for packet capture.
 ///
 /// PktSource can capture live packets from the network. PktSource can also
 /// read packets from a `pcap` file offline.
@@ -35,6 +35,9 @@ namespace demux {
 ///             log::debug("pkt", ts, len, data);
 ///         });
 ///     }
+///     
+/// If `openFile`, `openDevice` or `runLoop` return false, call `error()` to 
+/// retrieve the error message.
 
 OFP_BEGIN_IGNORE_PADDING
 

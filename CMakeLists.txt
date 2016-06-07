@@ -254,6 +254,7 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/ytablenumber.cpp
   src/ofp/yaml/yschema.cpp
   src/ofp/demux/messagesource.cpp
+  src/ofp/demux/pktsink.cpp
   src/ofp/demux/pktsource.cpp
   src/ofp/demux/segmentcache.cpp
   src/ofp/demux/flowcache.cpp
@@ -357,6 +358,7 @@ set(CMAKE_REQUIRED_LIBRARIES pcap)
 
 check_include_file(pcap/pcap.h HAVE_PCAP_PCAP_H)
 check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
+check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
 
 #-------------------------------------------------------------------------------
 # Build Library

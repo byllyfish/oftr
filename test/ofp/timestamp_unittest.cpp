@@ -116,3 +116,11 @@ TEST(timestamp, secondsSince) {
   EXPECT_DOUBLE_EQ(0.008, c.secondsSince(d));
   EXPECT_DOUBLE_EQ(-0.008, d.secondsSince(c));
 }
+
+TEST(timestamp, units) {
+  Timestamp a{1, 1000000};
+
+  EXPECT_EQ(1000000, a.nanoseconds());
+  EXPECT_EQ(1000, a.microseconds());
+  EXPECT_EQ(1, a.milliseconds());
+}

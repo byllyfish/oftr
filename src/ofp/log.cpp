@@ -24,7 +24,7 @@ static size_t timestamp_now(char *buf, size_t buflen) {
 
   auto now = Timestamp::now();
   auto secs = now.seconds();
-  auto msec = now.milliseconds();
+  auto usec = now.microseconds();
 
   struct tm date;
   localtime_r(&secs, &date);
@@ -33,7 +33,7 @@ static size_t timestamp_now(char *buf, size_t buflen) {
 
   int rc = snprintf(buf, buflen, "%04d%02d%02d %02d%02d%02d.%06d ",
                     date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
-                    date.tm_min, date.tm_sec, msec);
+                    date.tm_min, date.tm_sec, usec);
 
   assert(rc == 23);
 

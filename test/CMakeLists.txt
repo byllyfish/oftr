@@ -83,6 +83,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/demux/flowcache_unittest.cpp
 	ofp/demux/flowstate_unittest.cpp
 	ofp/demux/segmentcache_unittest.cpp
+	ofp/demux/pktsink_unittest.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
