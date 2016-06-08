@@ -30,7 +30,7 @@ namespace ofpx {
 //   --verify-output (-V)  Verify output by translating it back to binary.
 //   --use-findx           Use metadata from tcpflow '.findx' files.
 //   --pkt-decode          Include _pkt_decode in PacketIn/PacketOut decodes.
-//   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to .pcap file
+//   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to .pcap file.
 //   --include-filename    Include file name in all decodes.
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
