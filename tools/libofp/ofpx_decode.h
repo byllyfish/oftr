@@ -8,6 +8,7 @@
 #include "./ofpx.h"
 #include "ofp/messageinfo.h"
 #include "ofp/timestamp.h"
+#include "ofp/demux/pktsink.h"
 
 namespace ofpx {
 
@@ -29,6 +30,7 @@ namespace ofpx {
 //   --verify-output (-V)  Verify output by translating it back to binary.
 //   --use-findx           Use metadata from tcpflow '.findx' files.
 //   --pkt-decode          Include _pkt_decode in PacketIn/PacketOut decodes.
+//   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to .pcap file
 //   --include-filename    Include file name in all decodes.
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
@@ -84,6 +86,8 @@ class Decode : public Subprogram {
   std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
   ofp::UInt64 nextSessionId_ = 0;
 
+  std::unique_ptr<ofp::demux::PktSink> pktSinkFile_;
+
   bool validateCommandLineArguments();
 
   ExitStatus decodeFiles();
@@ -110,6 +114,8 @@ class Decode : public Subprogram {
   static void pcapMessageCallback(ofp::Message *message, void *context);
   bool pcapFormat() const;
 
+  void extractPacketDataToFile(const ofp::Message *message);
+
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
 
   // --- Command-line Arguments (Order is important here.) ---
@@ -133,6 +139,8 @@ class Decode : public Subprogram {
   cl::opt<bool> pktDecode_{
       "pkt-decode",
       cl::desc("Include _pkt_decode in PacketIn/PacketOut decodes")};
+  cl::opt<std::string> pktWriteFile_{"pkt-write-file", cl::desc("Write data from PacketIn/PacketOut messages to .pcap file"),
+      cl::ValueRequired};
   cl::opt<bool> includeFilename_{"include-filename",
                                  cl::desc("Include file name in all decodes")};
   cl::opt<std::string> outputFile_{

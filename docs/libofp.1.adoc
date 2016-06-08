@@ -208,6 +208,9 @@ also represents stdin.
 *--include-filename*::
     Include file name in all decodes.
 
+*--pkt-write-file*='FILE'::
+    Write data from PacketIn/PacketOut messages to .pcap file.
+
 === Packet Capture Options
 
 *--pcap-device*='DEVICE'::

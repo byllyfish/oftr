@@ -77,6 +77,15 @@ bool Decode::validateCommandLineArguments() {
     return false;
   }
 
+  // If `pktWriteFile_` is specified, open the `pktSinkFile_`.
+  if (!pktWriteFile_.empty()) {
+    pktSinkFile_ = ofp::MakeUniquePtr<ofp::demux::PktSink>();
+    if (!pktSinkFile_->openFile(pktWriteFile_)) {
+      std::cerr << "Error: " << pktSinkFile_->error() << '\n';
+      return false;
+    }
+  }
+
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {
     inputFiles_.push_back("-");
@@ -475,6 +484,11 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     }
   }
 
+  // Optionally, write data from PacketIn or PacketOut messages.
+  if (pktSinkFile_) {
+    extractPacketDataToFile(message);
+  }
+
   return ExitStatus::Success;
 }
 
@@ -669,4 +683,30 @@ bool Decode::pcapFormat() const {
   }
 
   return false;
+}
+
+// If message is a PacketIn or PacketOut, write it's data payload to a .pcap
+// file `pktSinkFile_`. Don't write the data from a PacketOut message if the
+// data is empty.
+void Decode::extractPacketDataToFile(const ofp::Message *message) {
+  using namespace ofp;
+
+  OFPErrorCode unused;
+
+  if (message->type() == OFPT_PACKET_IN) {
+    const PacketIn *packetIn = message->castMessage<PacketIn>(&unused);
+    if (packetIn) {
+      pktSinkFile_->write(message->time(), packetIn->enetFrame(), packetIn->totalLen());
+    }
+
+  } else if (message->type() == OFPT_PACKET_OUT) {
+    const PacketOut *packetOut = message->castMessage<PacketOut>(&unused);
+    if (packetOut) {
+      ByteRange enetFrame = packetOut->enetFrame();
+      UInt32 totalLen = UInt32_narrow_cast(enetFrame.size());
+      if (totalLen > 0) {
+        pktSinkFile_->write(message->time(), enetFrame, totalLen);
+      }
+    }
+  }
 }
