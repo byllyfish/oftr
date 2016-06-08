@@ -1,5 +1,8 @@
-#include "ofp/unittest.h"
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/demux/pktsink.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
@@ -15,5 +18,5 @@ TEST(pktsink, test) {
             sink.write(ts, data.toRange(), 1000);
         }
     }
-#endif //0
+#endif  // 0
 }

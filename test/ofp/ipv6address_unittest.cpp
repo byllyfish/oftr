@@ -116,7 +116,7 @@ TEST(ipv6address, zones) {
     EXPECT_EQ("fe80::1122:33ff:fe44:5566%4294967294", a.toString());
   }
 
-  { // 0x11223344 == 287454020
+  {  // 0x11223344 == 287454020
     IPv6Address a{"fe80::1122:33ff:fe44:5566%287454020"};
     EXPECT_TRUE(a.valid());
     EXPECT_TRUE(a.isLinkLocal());
@@ -124,7 +124,6 @@ TEST(ipv6address, zones) {
     EXPECT_HEX("FE80 3344 1122 0000 1122 33FF fe44 5566", &a, sizeof(a));
     EXPECT_EQ("fe80::1122:33ff:fe44:5566%287454020", a.toString());
   }
-
 }
 
 TEST(ipv6address, rfc5952) {

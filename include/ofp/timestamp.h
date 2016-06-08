@@ -19,7 +19,7 @@ class Timestamp {
   UInt32 nanoseconds() const { return time_.second; }
   UInt32 microseconds() const { return nanoseconds() / 1000; }
   UInt32 milliseconds() const { return nanoseconds() / 1000000; }
-  
+
   double secondsSince(const Timestamp &ts) const;
   void addSeconds(int seconds) { time_.first += seconds; }
 

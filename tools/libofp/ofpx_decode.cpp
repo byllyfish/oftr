@@ -696,7 +696,8 @@ void Decode::extractPacketDataToFile(const ofp::Message *message) {
   if (message->type() == OFPT_PACKET_IN) {
     const PacketIn *packetIn = message->castMessage<PacketIn>(&unused);
     if (packetIn) {
-      pktSinkFile_->write(message->time(), packetIn->enetFrame(), packetIn->totalLen());
+      pktSinkFile_->write(message->time(), packetIn->enetFrame(),
+                          packetIn->totalLen());
     }
 
   } else if (message->type() == OFPT_PACKET_OUT) {

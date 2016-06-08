@@ -35,8 +35,8 @@ namespace demux {
 ///             log::debug("pkt", ts, len, data);
 ///         });
 ///     }
-///     
-/// If `openFile`, `openDevice` or `runLoop` return false, call `error()` to 
+///
+/// If `openFile`, `openDevice` or `runLoop` return false, call `error()` to
 /// retrieve the error message.
 
 OFP_BEGIN_IGNORE_PADDING
