@@ -69,6 +69,6 @@ TEST(datapathid, hash) {
   DatapathID b{"00:01:02:03:04:00:00:02"};
 
   std::hash<DatapathID> hasher;
-  EXPECT_EQ(27516399521, hasher(a));
-  EXPECT_EQ(55029013632, hasher(b));
+  EXPECT_EQ(0x681aefa1, hasher(a) & 0xffffffff);
+  EXPECT_EQ(0xcffc1c80, hasher(b) & 0xffffffff);
 }

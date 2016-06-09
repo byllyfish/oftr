@@ -35,7 +35,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.17.0)
+set(Libofp_VERSION 0.19.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 
@@ -253,6 +253,12 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/ycontrollermaxlen.cpp
   src/ofp/yaml/ytablenumber.cpp
   src/ofp/yaml/yschema.cpp
+  src/ofp/demux/messagesource.cpp
+  src/ofp/demux/pktsink.cpp
+  src/ofp/demux/pktsource.cpp
+  src/ofp/demux/segmentcache.cpp
+  src/ofp/demux/flowcache.cpp
+  src/ofp/demux/flowstate.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
@@ -341,6 +347,18 @@ if(LIBOFP_ENABLE_CODE_COVERAGE)
 else()
   set(LIBOFP_COVERAGE "")
 endif()
+
+#-------------------------------------------------------------------------------
+# Check system header files and symbols
+#-------------------------------------------------------------------------------
+
+include(CheckIncludeFile)
+include(CheckSymbolExists)
+set(CMAKE_REQUIRED_LIBRARIES pcap)
+
+check_include_file(pcap/pcap.h HAVE_PCAP_PCAP_H)
+check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
+check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
 
 #-------------------------------------------------------------------------------
 # Build Library
