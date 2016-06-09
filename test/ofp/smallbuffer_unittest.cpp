@@ -140,3 +140,68 @@ TEST(smallbuffer, replace) {
   EXPECT_EQ(17, buf.size());
   EXPECT_HEX("3178343536373839305858585858585858", buf.begin(), buf.size());
 }
+
+TEST(smallbuffer, moveAssignSmall) {
+  SmallBuffer buf1;
+  buf1.add("XXXXXXXXXX", 10);
+
+  EXPECT_EQ(10, buf1.size());
+  EXPECT_EQ(64, buf1.capacity());
+
+  SmallBuffer original = buf1;
+  SmallBuffer buf2;
+  buf2 = std::move(buf1);
+
+  EXPECT_EQ(10, buf2.size());
+  EXPECT_EQ(64, buf2.capacity());
+
+  EXPECT_EQ(0, buf1.size());
+  EXPECT_EQ(64, buf1.capacity());
+
+  EXPECT_EQ(original, buf2);
+
+  // Make sure we can move *into* a buffer that has previously been moved from.
+  buf1 = std::move(buf2);
+
+  EXPECT_EQ(10, buf1.size());
+  EXPECT_EQ(64, buf1.capacity());
+
+  EXPECT_EQ(0, buf2.size());
+  EXPECT_EQ(64, buf2.capacity());
+
+  EXPECT_EQ(original, buf1);
+}
+
+TEST(smallbuffer, moveAssignLarge) {
+  SmallBuffer buf1;
+
+  for (int i = 0; i < 10; ++i) {
+    buf1.add("XXXXXXXXXX", 10);
+  }
+
+  EXPECT_EQ(100, buf1.size());
+  EXPECT_EQ(1024, buf1.capacity());
+
+  SmallBuffer original = buf1;
+  SmallBuffer buf2;
+  buf2 = std::move(buf1);
+
+  EXPECT_EQ(100, buf2.size());
+  EXPECT_EQ(1024, buf2.capacity());
+
+  EXPECT_EQ(0, buf1.size());
+  EXPECT_EQ(64, buf1.capacity());
+
+  EXPECT_EQ(original, buf2);
+
+  // Make sure we can move *into* a buffer that has previously been moved from.
+  buf1 = std::move(buf2);
+
+  EXPECT_EQ(100, buf1.size());
+  EXPECT_EQ(1024, buf1.capacity());
+
+  EXPECT_EQ(0, buf2.size());
+  EXPECT_EQ(64, buf2.capacity());
+
+  EXPECT_EQ(original, buf1);
+}

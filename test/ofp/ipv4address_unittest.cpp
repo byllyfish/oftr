@@ -157,6 +157,6 @@ TEST(ipv4address, hash) {
   IPv4Address b{"127.0.0.2"};
 
   std::hash<IPv4Address> hasher;
-  EXPECT_EQ(29918, hasher(a));
-  EXPECT_EQ(59709, hasher(b));
+  EXPECT_EQ(0x74de, hasher(a) & 0xffffffff);
+  EXPECT_EQ(0xe93d, hasher(b) & 0xffffffff);
 }

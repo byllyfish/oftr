@@ -23,6 +23,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
 	ofp/lldpvalue_unittest.cpp
+	ofp/log_unittest.cpp
 	ofp/macaddress_unittest.cpp
 	ofp/meterbandlist_unittest.cpp
 	ofp/mpflowmonitorrequest_unittest.cpp
@@ -79,6 +80,10 @@ set(LIBOFP_TEST_SOURCES
 	ofp/validateinput_unittest.cpp
 	ofp/yhello_unittest.cpp
 	ofp/ymatch_unittest.cpp
+	ofp/demux/flowcache_unittest.cpp
+	ofp/demux/flowstate_unittest.cpp
+	ofp/demux/segmentcache_unittest.cpp
+	ofp/demux/pktsink_unittest.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
@@ -102,7 +107,7 @@ set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include -isystem ${gtest_SOURCE_DIR}")
 
 add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES} ${gtest_SOURCE_DIR}/src/gtest-all.cc)
-target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS})
+target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} -lpcap)
 
 # Add tests here.
 

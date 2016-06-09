@@ -53,12 +53,11 @@ bool IPv6Address::parse(const std::string &s) {
     if (zoneStr.empty())
       return false;
 
-    char *end = nullptr;
-    UInt64 zone = std::strtoul(zoneStr.c_str(), &end, 10);
-    if (*end != '\0' || zone > UINT32_MAX)
+    UInt32 zone;
+    if (llvm::StringRef{zoneStr}.getAsInteger(10, zone))
       return false;
 
-    setZone(UInt32_narrow_cast(zone));
+    setZone(zone);
 
     return true;
   }
