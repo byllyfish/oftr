@@ -12,22 +12,31 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Timestamp {
  public:
-  Timestamp() : time_{0, 0} {}
-  Timestamp(time_t seconds, UInt32 nanos) : time_{seconds, nanos} {}
+  explicit Timestamp(time_t seconds = 0, UInt32 nanos = 0)
+      : time_{seconds, nanos} {}
 
   time_t seconds() const { return time_.first; }
   UInt32 nanoseconds() const { return time_.second; }
-  UInt32 milliseconds() const { return nanoseconds() / 1000; }
+  UInt32 microseconds() const { return nanoseconds() / 1000; }
+  UInt32 milliseconds() const { return nanoseconds() / 1000000; }
+
+  double secondsSince(const Timestamp &ts) const;
+  void addSeconds(int seconds) { time_.first += seconds; }
 
   bool parse(const std::string &s);
   bool valid() const { return !(time_.first == 0 && time_.second == 0); }
-
   std::string toString() const;
 
+  void clear() {
+    time_.first = 0;
+    time_.second = 0;
+  }
+
   bool operator==(const Timestamp &rhs) const { return time_ == rhs.time_; }
-
   bool operator!=(const Timestamp &rhs) const { return time_ != rhs.time_; }
-
+  bool operator<(const Timestamp &rhs) const { return time_ < rhs.time_; }
+  bool operator>(const Timestamp &rhs) const { return time_ > rhs.time_; }
+  bool operator<=(const Timestamp &rhs) const { return time_ <= rhs.time_; }
   bool operator>=(const Timestamp &rhs) const { return time_ >= rhs.time_; }
 
   static Timestamp now();
@@ -37,6 +46,10 @@ class Timestamp {
 };
 
 OFP_END_IGNORE_PADDING
+
+inline std::ostream &operator<<(std::ostream &os, const Timestamp &value) {
+  return os << value.toString();
+}
 
 }  // namespace ofp
 

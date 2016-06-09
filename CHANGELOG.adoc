@@ -1,5 +1,20 @@
 = Changelog
 
+== Version 0.19 (8 June 2016)
+
+- Add support for the --pkt-write-file command line option.
+- Add support for reconstructing OpenFlow message streams directly from libpcap sources.
+- Update boringssl and google-test submodules.
+
+== Version 0.18 (7 May 2016)
+
+- Most FlowMod YAML properties are now optional.
+- Add internal X_PKT_MARK OXM field to report offset of partially decoded packets.
+- Rename _data_pkt to _pkt_decode in PacketIn/PacketOut messages.
+- Rename --data-pkt command line option to --pkt-decode.
+- libofp decode tests now use --pkt-decode command line option.
+- Add alpine linux Dockerfile.
+
 == Version 0.17 (19 March 2016)
 
 - Change API slightly for OFP.LIST_CONNECTIONS.

@@ -22,9 +22,7 @@ SmallBuffer::SmallBuffer(SmallBuffer &&buf) noexcept {
     capacity_ = buf.capacity_;
   }
   // We're done with buf.
-  buf.begin_ = buf.buf_;
-  buf.end_ = buf.begin_;
-  buf.capacity_ = buf.begin_;
+  buf.init();
 }
 
 SmallBuffer &SmallBuffer::operator=(const SmallBuffer &buf) noexcept {
@@ -50,9 +48,7 @@ SmallBuffer &SmallBuffer::operator=(SmallBuffer &&buf) noexcept {
     capacity_ = buf.capacity_;
   }
   // We're done with buf.
-  buf.begin_ = buf.buf_;
-  buf.end_ = buf.begin_;
-  buf.capacity_ = buf.begin_;
+  buf.init();
   return *this;
 }
 

@@ -327,14 +327,14 @@ void Help::addFieldSchemas() {
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
 
-    std::stringstream sstr;
-    sstr << "{Field/" << info->name << "}\n";
-    sstr << "field: " << info->name << '\n';
-    sstr << "value: " << translateFieldType(info->type) << '\n';
+    std::ostringstream oss;
+    oss << "{Field/" << info->name << "}\n";
+    oss << "field: " << info->name << '\n';
+    oss << "value: " << translateFieldType(info->type) << '\n';
     if (info->isMaskSupported)
-      sstr << "mask: !optout " << translateFieldType(info->type) << '\n';
+      oss << "mask: !optout " << translateFieldType(info->type) << '\n';
 
-    loadSchema(sstr.str());
+    loadSchema(oss.str());
   }
 }
 

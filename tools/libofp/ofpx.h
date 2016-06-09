@@ -23,6 +23,7 @@ class Subprogram {
   virtual int run(int argc, const char *const *argv) = 0;
 
  protected:
+  static const int InvalidArgumentsExitStatus = 8;
   static const int FileOpenFailedExitStatus = 9;
   static const int MinExitStatus = 10;
 

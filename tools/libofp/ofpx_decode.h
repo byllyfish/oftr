@@ -6,6 +6,7 @@
 
 #include <map>
 #include "./ofpx.h"
+#include "ofp/demux/pktsink.h"
 #include "ofp/messageinfo.h"
 #include "ofp/timestamp.h"
 
@@ -28,9 +29,19 @@ namespace ofpx {
 //   --keep-going (-k)     Continue processing messages after errors.
 //   --verify-output (-V)  Verify output by translating it back to binary.
 //   --use-findx           Use metadata from tcpflow '.findx' files.
-//   --data-pkt            Include _data_pkt in PacketIn/PacketOut decodes.
+//   --pkt-decode          Include _pkt_decode in PacketIn/PacketOut decodes.
+//   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to
+//   .pcap file.
 //   --include-filename    Include file name in all decodes.
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
+//   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
+//   --pcap-filter=<filter>  Filter for packet capture.
+//   --pcap-format=auto|yes|no Treat input files as .pcap format.
+//   --pcap-output-dir=<dir> Write reassembled TCP streams to <dir> (for
+//   debugging).
+//   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
+//   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams
+//   (for debugging).
 //
 // Usage:
 //
@@ -55,12 +66,13 @@ class Decode : public Subprogram {
  public:
   enum class ExitStatus {
     Success = 0,
+    InvalidArguments = InvalidArgumentsExitStatus,
     FileOpenFailed = FileOpenFailedExitStatus,
     DecodeFailed = MinExitStatus,
     DecodeSucceeded,
     VerifyOutputFailed,
     MessageReadFailed,
-    IndexReadFailed
+    IndexReadFailed,
   };
 
   int run(int argc, const char *const *argv) override;
@@ -75,10 +87,16 @@ class Decode : public Subprogram {
   std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
   ofp::UInt64 nextSessionId_ = 0;
 
+  std::unique_ptr<ofp::demux::PktSink> pktSinkFile_;
+
+  bool validateCommandLineArguments();
+
   ExitStatus decodeFiles();
   ExitStatus decodeFile(const std::string &filename);
   ExitStatus decodeMessages(std::istream &input);
   ExitStatus decodeMessagesWithIndex(std::istream &input, std::istream &index);
+  ExitStatus decodePcapDevice(const std::string &device);
+  ExitStatus decodePcapFiles();
   ExitStatus checkError(std::istream &input, std::streamsize readLen,
                         bool header);
   ExitStatus decodeOneMessage(const ofp::Message *message,
@@ -93,6 +111,13 @@ class Decode : public Subprogram {
   bool parseFilename(const std::string &filename, ofp::MessageInfo *info);
   ofp::UInt64 lookupSessionId(const ofp::IPv6Endpoint &src,
                               const ofp::IPv6Endpoint &dst);
+
+  static void pcapMessageCallback(ofp::Message *message, void *context);
+  bool pcapFormat() const;
+
+  void extractPacketDataToFile(const ofp::Message *message);
+
+  enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
@@ -112,13 +137,45 @@ class Decode : public Subprogram {
       cl::desc("Verify output by translating it back to binary")};
   cl::opt<bool> useFindx_{"use-findx",
                           cl::desc("Use metadata from tcpflow '.findx' files")};
-  cl::opt<bool> dataPkt_{
-      "data-pkt", cl::desc("Include _data_pkt in PacketIn/PacketOut decodes")};
+  cl::opt<bool> pktDecode_{
+      "pkt-decode",
+      cl::desc("Include _pkt_decode in PacketIn/PacketOut decodes")};
+  cl::opt<std::string> pktWriteFile_{
+      "pkt-write-file",
+      cl::desc("Write data from PacketIn/PacketOut messages to .pcap file"),
+      cl::ValueRequired};
   cl::opt<bool> includeFilename_{"include-filename",
                                  cl::desc("Include file name in all decodes")};
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};
+  cl::OptionCategory pcapCategory_{"Packet Capture Options"};
+  cl::opt<std::string> pcapDevice_{
+      "pcap-device",
+      cl::desc("Reassemble OpenFlow messages from specified device"),
+      cl::ValueRequired, cl::cat(pcapCategory_)};
+  cl::opt<PcapFormat> pcapFormat_{
+      "pcap-format", cl::desc("Treat all input files as .pcap format"),
+      cl::values(clEnumValN(kPcapFormatAuto, "auto",
+                            "If any file name ends in .pcap (default)"),
+                 clEnumValN(kPcapFormatYes, "yes", "Yes"),
+                 clEnumValN(kPcapFormatNo, "no", "No"), clEnumValEnd),
+      cl::cat(pcapCategory_), cl::init(kPcapFormatAuto)};
+  cl::opt<std::string> pcapOutputDir_{
+      "pcap-output-dir",
+      cl::desc("Write reassembled TCP streams to directory (for debugging)"),
+      cl::cat(pcapCategory_), cl::ValueRequired, cl::Hidden};
+  cl::opt<std::string> pcapFilter_{
+      "pcap-filter", cl::desc("Filter for packet capture"),
+      cl::cat(pcapCategory_), cl::init("tcp port 6653 or 6633")};
+  cl::opt<bool> pcapSkipPayload_{
+      "pcap-skip-payload",
+      cl::desc("Skip payload from TCP streams (for debugging)"),
+      cl::cat(pcapCategory_), cl::Hidden};
+  cl::opt<ofp::UInt32> pcapMaxMissingBytes_{
+      "pcap-max-missing-bytes",
+      cl::desc("Add missing zero bytes to partial streams (for debugging)"),
+      cl::cat(pcapCategory_), cl::Hidden};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
   // --- Argument Aliases (May be grouped into one argument) ---

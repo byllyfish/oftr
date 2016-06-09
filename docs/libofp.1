@@ -2,12 +2,12 @@
 .\"     Title: libofp
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 03/19/2016
+.\"      Date: 06/08/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP" "1" "03/19/2016" "\ \&" "\ \&"
+.TH "LIBOFP" "1" "06/08/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -96,6 +96,18 @@ To decode a file of binary OpenFlow messages to YAML:
 .\}
 .nf
 libofp decode input\&.bin
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+To decode the OpenFlow messages in a "\&.pcap" file:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+libofp decode "filename\&.pcap"
 .fi
 .if n \{\
 .RE
@@ -262,11 +274,6 @@ If no input files are specified, use standard input (stdin)\&. A single hyphen a
 Print out usage information for the command\&.
 .RE
 .PP
-\fB\-\-data\-pkt\fR
-.RS 4
-Include _data_pkt in PacketIn/PacketOut decodes\&.
-.RE
-.PP
 \fB\-v, \-\-invert\-check\fR
 .RS 4
 Expect invalid messages only\&. This option is used for internal testing\&.
@@ -317,6 +324,53 @@ Verify output by translating it back to binary\&.
 \fB\-\-include\-filename\fR
 .RS 4
 Include file name in all decodes\&.
+.RE
+.PP
+\fB\-\-pkt\-decode\fR
+.RS 4
+Include _pkt_decode in PacketIn/PacketOut decodes\&.
+.RE
+.PP
+\fB\-\-pkt\-write\-file\fR=\fIFILE\fR
+.RS 4
+Write data from PacketIn/PacketOut messages to \&.pcap file\&.
+.RE
+.SS "Packet Capture Options"
+.PP
+\fB\-\-pcap\-device\fR=\fIDEVICE\fR
+.RS 4
+Specify interface where packets should be captured\&.
+.RE
+.PP
+\fB\-\-pcap\-filter\fR=\fIFILTER\fR
+.RS 4
+Specify the packet capture filter\&. The default filter is \(oqtcp port 6653 or 6633\&. To capture all packets specify \*(Aq\(cq\&. A non\-empty filter is augmented to ignore exactly one vlan tag\&. The actual filter passed to libpcap is `FILTER or (vlan and FILTER)\&.
+.RE
+.PP
+\fB\-\-pcap\-format\fR=\fIauto|yes|no\fR
+.RS 4
+Specify whether to treat all input files as \&.pcap format\&.
+yes
+causes the decoder to open the file using libpcap\&.
+no
+causes the decoder to always treat the file as binary\&. The default
+auto
+sets the \-\-pcap\-format to yes if there is at least one file name that ends in "\&.pcap"\&. It is an error if we fail to open a \&.pcap file\&.
+.RE
+.PP
+\fB\-\-pcap\-max\-missing\-bytes\fR=SIZE
+.RS 4
+Add missing zero bytes to partial streams (for debugging)\&.
+.RE
+.PP
+\fB\-\-pcap\-output\-dir\fR=DIRECTORY
+.RS 4
+Write reassembled TCP streams to this directory (for debugging)\&. It is an error if the directory does not exist\&.
+.RE
+.PP
+\fB\-\-pcap\-skip\-payload\fR
+.RS 4
+Skip payload from TCP streams (for debugging)\&. This option makes sure that every byte of data is consumed immediately\&.
 .RE
 .SH "LIBOFP JSONRPC"
 .sp

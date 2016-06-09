@@ -17,9 +17,7 @@ namespace ofp {
 
 class SmallBuffer {
  public:
-  SmallBuffer() noexcept : begin_{buf_},
-                           end_{begin_},
-                           capacity_{begin_ + IntrinsicBufSize} {}
+  SmallBuffer() noexcept { init(); }
 
   SmallBuffer(const void *data, size_t length) noexcept : SmallBuffer{} {
     assign(data, length);
@@ -103,6 +101,12 @@ class SmallBuffer {
 
   static size_t computeCapacity(size_t length) noexcept;
 
+  void init() {
+    begin_ = buf_;
+    end_ = begin_;
+    capacity_ = begin_ + IntrinsicBufSize;
+  }
+
   /// \brief Helper function to verify pointer is valid for byte buffer.
   void assertInRange(const UInt8 *pos) const noexcept {
     assert((pos != nullptr) && "position is null");
@@ -123,7 +127,8 @@ class SmallBuffer {
   void assertInvariant() const noexcept {
     assert(begin_ <= end_);
     assert(end_ <= capacity_);
-    assert(begin_ < capacity_ && ((capacity_ - begin_) % 8) == 0);
+    assert(begin_ < capacity_);
+    assert(((capacity_ - begin_) % 8) == 0);
     assert((begin_ != buf_) || (capacity_ == begin_ + IntrinsicBufSize));
   }
 };

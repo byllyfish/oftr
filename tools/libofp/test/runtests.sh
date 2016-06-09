@@ -14,7 +14,7 @@ for input in $CURRENT_SOURCE_DIR/*-pass.bin ; do
   output_json="$name.json"
 
   echo "  Run libofp decode to convert $input to $output_yml"
-  $LIBOFP_MEMCHECK ../libofp decode -V $input > $output_yml
+  $LIBOFP_MEMCHECK ../libofp decode -V --pkt-decode $input > $output_yml
   echo "  Compare $output_yml to $CURRENT_SOURCE_DIR/$name.yml"
   diff $output_yml "$CURRENT_SOURCE_DIR/$name.yml"
 

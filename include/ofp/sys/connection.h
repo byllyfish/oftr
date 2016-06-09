@@ -6,7 +6,7 @@
 
 #include "ofp/channel.h"
 #include "ofp/channellistener.h"
-#include "ofp/defaulthandshake.h"
+#include "ofp/sys/defaulthandshake.h"
 
 namespace ofp {
 

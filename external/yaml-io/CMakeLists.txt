@@ -42,23 +42,23 @@ include(CheckIncludeFile)
 include(CheckSymbolExists)
 include(CheckCXXSourceCompiles)
 
-# Helper macros and functions
-macro(add_cxx_include result files)
-  set(${result} "")
-  foreach (file_name ${files})
-     set(${result} "${${result}}#include<${file_name}>\n")
-  endforeach()
-endmacro(add_cxx_include files result)
+# Helper macros and functions (not used)
+# macro(add_cxx_include result files)
+#   set(${result} "")
+#   foreach (file_name ${files})
+#      set(${result} "${${result}}#include<${file_name}>\n")
+#   endforeach()
+# endmacro(add_cxx_include files result)
 
-function(check_type_exists type files variable)
-  add_cxx_include(includes "${files}")
-  CHECK_CXX_SOURCE_COMPILES("
-    ${includes} ${type} typeVar;
-    int main() {
-        return 0;
-    }
-    " ${variable})
-endfunction()
+# function(check_type_exists type files variable)
+#   add_cxx_include(includes "${files}")
+#   CHECK_CXX_SOURCE_COMPILES("
+#     ${includes} ${type} typeVar;
+#     int main() {
+#         return 0;
+#     }
+#     " ${variable})
+# endfunction()
 
 check_include_file(stdint.h HAVE_STDINT_H)
 check_include_file(sys/mman.h HAVE_SYS_MMAN_H)
@@ -82,19 +82,24 @@ check_symbol_exists(mallinfo malloc.h HAVE_MALLINFO)
 check_symbol_exists(malloc_zone_statistics malloc/malloc.h HAVE_MALLOC_ZONE_STATISTICS)
 check_symbol_exists(arc4random stdlib.h HAVE_DECL_ARC4RANDOM)
 
-set(headers "sys/types.h")
+# set(headers "sys/types.h")
 
-if (HAVE_INTTYPES_H)
-  set(headers ${headers} "inttypes.h")
-endif()
+# if (HAVE_INTTYPES_H)
+#   set(headers ${headers} "inttypes.h")
+# endif()
 
-if (HAVE_STDINT_H)
-  set(headers ${headers} "stdint.h")
-endif()
+# if (HAVE_STDINT_H)
+#   set(headers ${headers} "stdint.h")
+# endif()
 
-check_type_exists(int64_t "${headers}" HAVE_INT64_T)
-check_type_exists(uint64_t "${headers}" HAVE_UINT64_T)
-check_type_exists(u_int64_t "${headers}" HAVE_U_INT64_T)
+# check_type_exists(int64_t "${headers}" HAVE_INT64_T)
+# check_type_exists(uint64_t "${headers}" HAVE_UINT64_T)
+# check_type_exists(u_int64_t "${headers}" HAVE_U_INT64_T)
+
+# C++11 only; just assume they exist.
+set(HAVE_INT64_T 1)
+set(HAVE_UINT64_T 1)
+set(HAVE_U_INT64_T 0)
 
 set(PACKAGE_NAME "yamlio")
 set(PACKAGE_VERSION "3.6.0svn")
