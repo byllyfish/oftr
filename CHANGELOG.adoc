@@ -1,5 +1,11 @@
 = Changelog
 
+== Version 0.19 (8 June 2016)
+
+- Add support for the --pkt-write-file command line option.
+- Add support for reconstructing OpenFlow message streams directly from libpcap sources.
+- Update boringssl and google-test submodules.
+
 == Version 0.18 (7 May 2016)
 
 - Most FlowMod YAML properties are now optional.
