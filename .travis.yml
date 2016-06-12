@@ -25,4 +25,4 @@ addons:
 
 # We must use gcov-4.8 when using gcc-4.8.
 after_success:
-  - curl -s https://codecov.io/bash | bash /dev/stdin -x gcov-4.8
+  - curl -s https://codecov.io/bash | bash /dev/stdin -v -x gcov-4.8
