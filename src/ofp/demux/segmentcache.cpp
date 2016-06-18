@@ -159,7 +159,7 @@ void SegmentCache::update(size_t idx, bool final) {
     // Check next segment for overlap.
     auto &seg = segments_[idx];
     auto &next = segments_[idx + 1];
-    assert(!seg.final());
+    assert(!seg.final() || final);
 
     if (seg.end() == next.begin()) {
       seg.append(next.data(), next.final());
