@@ -41,7 +41,7 @@ class Subprogram {
 
     if (initialSleep_ > 0) {
       // Sleep immediately to allow a debugger or performance tool to attach.
-      ofp::log::info("Initial sleep for", initialSleep_, "seconds");
+      log_info("Initial sleep for", initialSleep_, "seconds");
       ::sleep(initialSleep_);
     }
   }

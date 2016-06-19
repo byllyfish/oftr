@@ -126,7 +126,7 @@ ExitStatus Decode::decodeFiles() {
 }
 
 ExitStatus Decode::decodeFile(const std::string &filename) {
-  ofp::log::debug("decodeFile:", filename);
+  log_debug("decodeFile:", filename);
 
   std::istream *input = nullptr;
   std::ifstream file;
@@ -421,7 +421,7 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage) {
-  ofp::log::debug("decodeOneMessage (transmogrified):", *message);
+  log_debug("decodeOneMessage (transmogrified):", *message);
 
   ofp::yaml::Decoder decoder{message, json_, pktDecode_};
 
@@ -497,7 +497,7 @@ bool Decode::equalMessages(ofp::ByteRange origData,
                            ofp::ByteRange newData) const {
   ofp::ByteList buf;
   if (normalizeTableFeaturesMessage(origData, buf)) {
-    ofp::log::debug("equalMessage: normalized TableFeatures message");
+    log_debug("equalMessage: normalized TableFeatures message");
     origData = buf.toRange();
   }
 
@@ -661,7 +661,7 @@ void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
 
   ExitStatus result = decode->decodeOneMessage(message, &originalMessage);
   if (result != ExitStatus::Success) {
-    ofp::log::debug("pcapMessageCallback: Failed to decode message");
+    log_debug("pcapMessageCallback: Failed to decode message");
   }
 }
 

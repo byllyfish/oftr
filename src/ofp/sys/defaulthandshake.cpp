@@ -37,7 +37,7 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 }
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
-  log::warning("DefaultHandshake: Channel down before handshake could complete",
+  log_warning("DefaultHandshake: Channel down before handshake could complete",
                std::make_pair("connid", channel->connectionId()));
 }
 
@@ -56,7 +56,7 @@ void DefaultHandshake::onMessage(const Message *message) {
       break;
 
     default:
-      log::warning("DefaultHandshake: Ignored message type", message->type(),
+      log_warning("DefaultHandshake: Ignored message type", message->type(),
                    std::make_pair("connid", message->source()->connectionId()));
       break;
   }
@@ -83,7 +83,7 @@ void DefaultHandshake::onHello(const Message *message) {
     sstr << " Supported versions: " << versions_.toString();
     auto explanation = sstr.str();
 
-    log::warning(explanation,
+    log_warning(explanation,
                  std::make_pair("connid", channel_->connectionId()));
     channel_->engine()->alert(channel_, explanation, {header, sizeof(*header)});
 
@@ -92,11 +92,11 @@ void DefaultHandshake::onHello(const Message *message) {
     return;
   }
 
-  log::debug("Negotiated version is", static_cast<int>(version));
+  log_debug("Negotiated version is", static_cast<int>(version));
 
   channel_->setVersion(version);
 
-  log::info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:",
+  log_info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:",
             msg->protocolVersions().toString(),
             std::make_pair("connid", channel_->connectionId()));
 

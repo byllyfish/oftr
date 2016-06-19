@@ -51,7 +51,7 @@ struct MappingTraits<ofp::detail::BundlePropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported Bundle Property");
+        log_debug("Unsupported Bundle Property");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

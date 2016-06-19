@@ -12,12 +12,12 @@ bool FlowRemoved::validateInput(Validation *context) const {
   size_t length = context->length();
 
   if (length != SizeWithoutMatchHeader + matchHeader_.paddedLength()) {
-    log::debug("FlowRemoved: Invalid length.");
+    log_debug("FlowRemoved: Invalid length.");
     return false;
   }
 
   if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
-    log::debug("FlowRemoved: Invalid match.");
+    log_debug("FlowRemoved: Invalid match.");
     return false;
   }
 
@@ -77,7 +77,7 @@ UInt32 FlowRemovedBuilder::sendStandard(Writable *channel) {
   msg_.header_.setXid(xid);
 
   if (msg_.hardTimeout_ != 0) {
-    log::info("FlowRemovedBuilder: hardTimeout not supported in version 2.");
+    log_info("FlowRemovedBuilder: hardTimeout not supported in version 2.");
     msg_.hardTimeout_ = 0;
   }
 
@@ -106,12 +106,12 @@ UInt32 FlowRemovedBuilder::sendOriginal(Writable *channel) {
   msg_.header_.setXid(xid);
 
   if (msg_.tableId_) {
-    log::info("FlowRemovedBuilder: tableId not supported in version 1.");
+    log_info("FlowRemovedBuilder: tableId not supported in version 1.");
     msg_.tableId_ = 0;
   }
 
   if (msg_.hardTimeout_ != 0) {
-    log::info("FlowRemovedBuilder: hardTimeout not supported in version 1.");
+    log_info("FlowRemovedBuilder: hardTimeout not supported in version 1.");
     msg_.hardTimeout_ = 0;
   }
 

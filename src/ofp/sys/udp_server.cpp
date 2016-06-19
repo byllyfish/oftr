@@ -59,7 +59,7 @@ UDP_Server::~UDP_Server() {
   if (!connMap_.empty()) {
     // By this point, all connections should have removed themselves. If any
     // exist, we need to shut them down.
-    log::info(connMap_.size(), "UDP connections still exist!",
+    log_info(connMap_.size(), "UDP connections still exist!",
               std::make_pair("connid", connId_));
 
     // Safe way to iterate over connMap_ to close existing connections. N.B.
@@ -75,7 +75,7 @@ UDP_Server::~UDP_Server() {
   }
 
   if (connId_) {
-    log::info("Stop listening on UDP", std::make_pair("connid", connId_));
+    log_info("Stop listening on UDP", std::make_pair("connid", connId_));
   }
 }
 
@@ -115,7 +115,7 @@ void UDP_Server::add(Connection *conn) {
   auto result = connMap_.insert({conn->remoteEndpoint(), conn});
   if (!result.second) {
     auto existing = connMap_[conn->remoteEndpoint()];
-    log::warning("UDP_Server::add: duplicate UDP connection ignored",
+    log_warning("UDP_Server::add: duplicate UDP connection ignored",
                  conn->remoteEndpoint(), existing->connectionId(),
                  std::make_pair("connid", conn->connectionId()));
   }
@@ -124,7 +124,7 @@ void UDP_Server::add(Connection *conn) {
 void UDP_Server::remove(Connection *conn) {
   auto iter = connMap_.find(conn->remoteEndpoint());
   if (iter == connMap_.end()) {
-    log::warning("UDP_Server::remove: cannot find remote endpoint",
+    log_warning("UDP_Server::remove: cannot find remote endpoint",
                  conn->remoteEndpoint(),
                  std::make_pair("connid", conn->connectionId()));
     return;
@@ -133,7 +133,7 @@ void UDP_Server::remove(Connection *conn) {
   if (iter->second == conn) {
     connMap_.erase(iter);
   } else {
-    log::warning("UDP_Server::remove: duplicate UDP connection ignored",
+    log_warning("UDP_Server::remove: duplicate UDP connection ignored",
                  conn->remoteEndpoint(),
                  std::make_pair("connid", conn->connectionId()));
   }
@@ -171,7 +171,7 @@ void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt,
     }
 
     // Log message using the new local endpoint, if one was assigned.
-    log::info("Start listening on UDP", localEndpoint(),
+    log_info("Start listening on UDP", localEndpoint(),
               std::make_pair("tlsid", securityId_),
               std::make_pair("connid", connId_));
 
@@ -179,7 +179,7 @@ void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt,
 
   } else {
     connId_ = 0;
-    log::error("Listen failed on UDP", localEndpt, error);
+    log_error("Listen failed on UDP", localEndpt, error);
   }
 }
 
@@ -193,7 +193,7 @@ void UDP_Server::listen(const IPv6Endpoint &localEndpt,
 
   if (error == asio::error::address_family_not_supported && addr.is_v6() &&
       addr.is_unspecified()) {
-    log::info("UDP_Server: IPv6 is not supported. Using IPv4.");
+    log_info("UDP_Server: IPv6 is not supported. Using IPv4.");
     endpt = udp::endpoint{udp::v4(), endpt.port()};
     if (socket_.open(endpt.protocol(), error))
       return;
@@ -215,7 +215,7 @@ void UDP_Server::asyncReceive() {
           return;
 
         if (err) {
-          log::error("Error receiving datagram",
+          log_error("Error receiving datagram",
                      std::make_pair("connid", connId_), err);
 
         } else {
@@ -241,14 +241,14 @@ void UDP_Server::asyncSend() {
       [this, self, &datagram](const asio::error_code &err,
                               size_t bytesTransferred) {
         if (err == asio::error::operation_aborted) {
-          log::warning("UDP_Server::asyncSend: operation_aborted");
+          log_warning("UDP_Server::asyncSend: operation_aborted");
           return;
         }
 
         assert(&datagram == &datagrams_.front());
 
         if (err) {
-          log::error("Error sending datagram to", datagram.destination(),
+          log_error("Error sending datagram to", datagram.destination(),
                      std::make_pair("connid", datagram.connectionId()), err);
         }
         datagrams_.pop_front();

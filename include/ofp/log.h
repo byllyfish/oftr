@@ -83,6 +83,21 @@ void trace_rpc_internal(const char *type, UInt64 id, const void *data,
 
 }  // namespace detail
 
+// N.B. Arguments of `log_` macros are only evaluated at the given log level.
+#define LOG_IF_LEVEL_(LVL_, ...) \
+    (void)(ofp::log::LVL_ >= ofp::log::detail::GLOBAL_OutputLevelFilter && (ofp::log::detail::write_(ofp::log::LVL_, __VA_ARGS__), true))
+
+#define log_error(...)    LOG_IF_LEVEL_(Level::Error, __VA_ARGS__)
+#define log_warning(...)  LOG_IF_LEVEL_(Level::Warning, __VA_ARGS__)
+#define log_info(...)     LOG_IF_LEVEL_(Level::Info, __VA_ARGS__)
+
+#if defined(NDEBUG)
+#define log_debug(...)    (void)0
+#else
+#define log_debug(...)    LOG_IF_LEVEL_(Level::Debug, __VA_ARGS__)
+#endif
+
+
 inline void trace_msg(const char *type, UInt64 id, const void *data,
                       size_t length) {
   if ((detail::GLOBAL_OutputTraceFilter &
@@ -98,6 +113,8 @@ inline void trace_rpc(const char *type, UInt64 id, const void *data,
     detail::trace_rpc_internal(type, id, data, length);
   }
 }
+
+namespace deprecated {
 
 template <class... Args>
 inline void info(Args &&... args) {
@@ -120,6 +137,8 @@ template <class... Args>
 inline void error(Args &&... args) {
   detail::write_(Level::Error, std::forward<Args>(args)...);
 }
+
+}  // namespace deprecated
 
 template <class... Args>
 [[noreturn]] inline void fatal(const char *msg, Args &&... args) {

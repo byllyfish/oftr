@@ -49,7 +49,7 @@ void Prerequisites::insertPreqMasked(OXMType preqTypeMasked, OXMIterator preq,
                                      OXMList *list) const {
   if (!checkPreqMasked(preqTypeMasked, preq, list->begin(), list->end())) {
     // We add the masked prereq with a signal.
-    log::info("MaskedPrereqSignal!!");
+    log_info("MaskedPrereqSignal!!");
     list->addSignal(kMaskedPrereqSignal);
     list->add(preq);
   }
@@ -113,7 +113,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
     // treated as an illegal combination.
 
     if (type.isIllegal()) {
-      log::info("Illegal oxm type ", log::hex(type));
+      log_info("Illegal oxm type ", log::hex(type));
       if (type == kValuePrereqSignal || type == kMaskedPrereqSignal) {
         *reason = kUnresolvedAmbiguity;
       } else if (type == kPoisonPrereqSignal) {
@@ -131,7 +131,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
     auto typeInfo = type.lookupInfo();
     if (typeInfo == nullptr) {
       // Unrecognized oxm type. No way to check prerequisites. Skip it.
-      log::info("Unknown oxm type ", log::hex(type));
+      log_info("Unknown oxm type ", log::hex(type));
       continue;
     }
 
@@ -140,7 +140,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
     if (type.hasMask()) {
       // The oxm type has a mask. Check if it's allowed to have one.
       if (!typeInfo->isMaskSupported) {
-        log::info("Invalid mask for ", log::hex(type));
+        log_info("Invalid mask for ", log::hex(type));
         *reason = kInvalidMaskPresent;
         goto FAILURE;
       }
@@ -152,7 +152,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
     if (typeInfo->prerequisites != nullptr) {
       Prerequisites preqs{typeInfo->prerequisites};
       if (!preqs.check(oxm.begin(), item.position())) {
-        log::info("Prerequisite check failed for type ", log::hex(type));
+        log_info("Prerequisite check failed for type ", log::hex(type));
         *reason = kMissingPrerequisite;
         goto FAILURE;
       }
@@ -162,7 +162,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
   return true;
 
 FAILURE:
-  log::info("Prerequisite check failed for ", oxm);
+  log_info("Prerequisite check failed for ", oxm);
   return false;
 }
 
@@ -378,7 +378,7 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
     if (escType == type) {
       // If type is already in the list. Check if value conflicts.
       if (!matchValueWithValue(len, value, iter)) {
-        log::info("Value conflict detected in substitute; insert poison.",
+        log_info("Value conflict detected in substitute; insert poison.",
                   type);
         list->insertSignal(iter, kPoisonPrereqSignal);
       }
@@ -440,7 +440,7 @@ void Prerequisites::poisonDuplicatesAfterSubstitution(OXMList *list,
   OXMIterator restEnd = list->end();
   while (rest != restEnd) {
     if (rest->type() == type) {
-      log::error("Duplicate item detected after substitution. Insert poison.");
+      log_error("Duplicate item detected after substitution. Insert poison.");
       list->insertSignal(rest, kPoisonPrereqSignal);
       break;
     }
@@ -461,7 +461,7 @@ bool Prerequisites::duplicateFieldsDetected(const OXMRange &oxm) {
   for (auto &item : oxm) {
     OXMType type = item.type();
     if (!typeSet.add(type)) {
-      log::info("Duplicate field detected: ", type);
+      log_info("Duplicate field detected: ", type);
       return true;
     }
   }

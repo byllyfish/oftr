@@ -371,7 +371,7 @@ struct MappingTraits<ofp::MultipartReply> {
       }
       default:
         // FIXME
-        log::info("MultiPartReply: MappingTraits not fully implemented.",
+        log_info("MultiPartReply: MappingTraits not fully implemented.",
                   static_cast<int>(type));
         break;
     }
@@ -535,7 +535,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       }
       default:
         // FIXME
-        log::info("MultiPartReplyBuilder: MappingTraits not fully implemented.",
+        log_info("MultiPartReplyBuilder: MappingTraits not fully implemented.",
                   static_cast<int>(type));
         break;
     }
@@ -554,7 +554,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       if (encoder && !encoder->recursive()) {
         msg.sendUsingReplyBody(encoder->memoryChannel(), data, length, offset);
       } else {
-        ofp::log::warning("Recursive multipart reply forbidden");
+        log_warning("Recursive multipart reply forbidden");
         io.setError("Recursive multipart reply forbidden");
       }
     }

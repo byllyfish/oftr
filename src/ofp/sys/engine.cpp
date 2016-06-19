@@ -12,13 +12,13 @@ using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
     : driver_{driver}, signals_{io_}, stopTimer_{io_}, idleTimer_{io_} {
-  log::debug("Engine ready");
+  log_debug("Engine ready");
 }
 
 Engine::~Engine() {
   // Shutdown all existing connections and servers.
   (void)close(0);
-  log::debug("Engine shutting down");
+  log_debug("Engine shutting down");
 }
 
 UInt64 Engine::listen(ChannelOptions options, UInt64 securityId,
@@ -127,7 +127,7 @@ size_t Engine::close(UInt64 connId) {
 
   } else {
     // Close all servers and connections.
-    log::info("Close all servers and connections");
+    log_info("Close all servers and connections");
 
     size_t result = serverList_.size() + connList_.size();
 
@@ -169,7 +169,7 @@ UInt64 Engine::addIdentity(const std::string &certData,
   assert(secId > 0);
   idPtr->setSecurityId(secId);
 
-  log::info("Add TLS identity:", idPtr->subjectName(),
+  log_info("Add TLS identity:", idPtr->subjectName(),
             std::make_pair("tlsid", secId));
 
   identities_.push_back(std::move(idPtr));
@@ -241,7 +241,7 @@ bool Engine::registerDatapath(Connection *channel) {
       // different, close it and replace it with the new one.
       auto item = pair.first;
       if (item->second != channel) {
-        log::warning(
+        log_warning(
             "registerDatapath: Conflict between main connections detected",
             dpid, std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
@@ -249,7 +249,7 @@ bool Engine::registerDatapath(Connection *channel) {
         old->shutdown();
 
       } else {
-        log::warning("registerDatapath: Datapath is already registered.", dpid,
+        log_warning("registerDatapath: Datapath is already registered.", dpid,
                      std::make_pair("conn_id", channel->connectionId()));
       }
     }
@@ -265,7 +265,7 @@ bool Engine::registerDatapath(Connection *channel) {
       if (parent->flags() & Connection::kPermitsAuxiliary) {
         channel->setMainConnection(parent, auxID);
       } else {
-        log::warning(
+        log_warning(
             "registerDatapath: Auxiliary connection not permitted for datapath",
             dpid, "aux", static_cast<int>(auxID),
             std::make_pair("conn_id", channel->connectionId()));
@@ -273,7 +273,7 @@ bool Engine::registerDatapath(Connection *channel) {
       }
 
     } else {
-      log::warning("registerDatapath: Main connection not found for datapath",
+      log_warning("registerDatapath: Main connection not found for datapath",
                    dpid, "aux", static_cast<int>(auxID),
                    std::make_pair("conn_id", channel->connectionId()));
       return false;
@@ -330,7 +330,7 @@ void Engine::releaseConnection(Connection *connection) {
 }
 
 void Engine::installSignalHandlers(std::function<void()> callback) {
-  log::debug("Install signal handlers");
+  log_debug("Install signal handlers");
 
   std::error_code ignore;
   signals_.cancel(ignore);
@@ -346,7 +346,7 @@ void Engine::installSignalHandlers(std::function<void()> callback) {
           const char *signame = (signum == SIGTERM)
                                     ? "SIGTERM"
                                     : (signum == SIGINT) ? "SIGINT" : "???";
-          log::info("Signal received:", signame);
+          log_info("Signal received:", signame);
 
           signals_.cancel();
           idleTimer_.cancel();
@@ -356,7 +356,7 @@ void Engine::installSignalHandlers(std::function<void()> callback) {
             callback();
 
         } else {
-          log::error("Signal error", signum, error);
+          log_error("Signal error", signum, error);
         }
       });
 

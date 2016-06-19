@@ -88,7 +88,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   int lineNum = 0;
 
   while (readMessage(input, text, lineNum)) {
-    ofp::log::debug("readMessage returned", text);
+    log_debug("readMessage returned", text);
 
     ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum,
                                ofp::UInt8_narrow_cast(ofversion_.getValue())};

@@ -89,12 +89,12 @@ TEST(outputjson, flowmod) {
 
 TEST(outputjson, scalarString) {
   auto testOne = [](llvm::StringRef s) {
-    // log::debug(s.str());
+    // log_debug(s.str());
     std::string result;
     llvm::raw_string_ostream rss{result};
     OutputJson out{rss};
     out.scalarString(s, false);
-    // log::debug("->", rss.str());
+    // log_debug("->", rss.str());
     return result;
   };
 

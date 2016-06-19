@@ -11,7 +11,7 @@ bool PortStatus::validateInput(Validation *context) const {
   size_t length = context->length();
 
   if (length < sizeof(PortStatus) + sizeof(Port)) {
-    log::debug("PortStatus too small", length);
+    log_debug("PortStatus too small", length);
     return false;
   }
 

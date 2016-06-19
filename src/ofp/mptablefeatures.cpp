@@ -25,7 +25,7 @@ bool MPTableFeatures::validateInput(Validation *context) const {
   }
 
   if ((len % 8) != 0) {
-    log::info("Unpadded length in MPTableFeatures", len);
+    log_info("Unpadded length in MPTableFeatures", len);
     len = PadLength(len);
   }
 

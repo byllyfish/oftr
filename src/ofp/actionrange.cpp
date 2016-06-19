@@ -122,7 +122,7 @@ unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
     case OFB_ICMPV4_CODE::type():
       return 8;
     default:
-      log::debug("ActionRange::writeSizeMinusSetFieldV1: Unexpected OXM type:",
+      log_debug("ActionRange::writeSizeMinusSetFieldV1: Unexpected OXM type:",
                  oxm->type());
       return 0;
   }
@@ -173,7 +173,7 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
       writeAction<AT_SET_TP_CODE_V1, OFB_TP_CODE>(iter, channel);
       break;
     default:
-      log::debug("ActionRange::writeSetFieldV1: Unknown field type: ",
+      log_debug("ActionRange::writeSetFieldV1: Unknown field type: ",
                  oxm->type());
       break;
   }

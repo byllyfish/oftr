@@ -117,7 +117,7 @@ SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
 void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
                                  SSL_SESSION *session) {
   if (!remoteEndpt.valid()) {
-    log::warning("Identity::saveClientSession: invalid endpoint detected");
+    log_warning("Identity::saveClientSession: invalid endpoint detected");
     return;
   }
 
@@ -158,7 +158,7 @@ void Identity::prepareOptions(SSL_CTX *ctx) {
   auto options = SSL_CTX_set_options(
       ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
 
-  log::debug("Identity::prepareContextOptions: options", log::hex(options));
+  log_debug("Identity::prepareContextOptions: options", log::hex(options));
 }
 
 void Identity::prepareSessions(SSL_CTX *ctx) {
@@ -243,7 +243,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
       EVP_PKEY_free};
 
   if (!privateKey) {
-    log::debug("loadPrivateKey: PEM_read_bio_PrivateKey failed");
+    log_debug("loadPrivateKey: PEM_read_bio_PrivateKey failed");
     return sslError(::ERR_get_error());
   }
 
@@ -252,7 +252,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
   }
 
   if (::SSL_CTX_check_private_key(ctx) != 1) {
-    log::warning("loadPrivateKey: private key does not match certificate");
+    log_warning("loadPrivateKey: private key does not match certificate");
   }
 
   return {};
@@ -288,7 +288,7 @@ void Identity::prepareVerifier(SSL_CTX *ctx) {
   // connection object should have its verify_callback set explicitly.
 
   auto verifyCallback = [](int preverify_ok, X509_STORE_CTX *storeCtx) -> int {
-    log::warning(
+    log_warning(
         "Context TLS verifier is rejecting all certificates - you need to "
         "override!");
     return 0;
@@ -349,7 +349,7 @@ void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
   const char *tlsVersion = MySSLVersionString(ssl);
 
   if (err) {
-    log::error(tlsVersion, "handshake failed",
+    log_error(tlsVersion, "handshake failed",
                std::make_pair("tlsid", securityId),
                std::make_pair("connid", connId), err);
     return;
@@ -368,7 +368,7 @@ void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
     sessionId = RawDataToHex(id, idlen);
   }
 
-  log::info(tlsVersion, "session", sessionStatus, tlsCipherSpec, sessionId,
+  log_info(tlsVersion, "session", sessionStatus, tlsCipherSpec, sessionId,
             std::make_pair("tlsid", securityId),
             std::make_pair("connid", connId));
 
@@ -389,7 +389,7 @@ void Identity::beforeClose<SSL>(Connection *conn, SSL *ssl) {
 
     const char *tlsVersion = MySSLVersionString(ssl);
 
-    log::warning(tlsVersion, "incomplete shutdown",
+    log_warning(tlsVersion, "incomplete shutdown",
                  std::make_pair("tlsid", securityId),
                  std::make_pair("connid", connId));
   }
@@ -429,11 +429,11 @@ int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   if (!preverified || (error != X509_V_OK)) {
     // We failed pre-verification or there is a verify error.
 
-    log::warning("Certificate verify failed:",
+    log_warning("Certificate verify failed:",
                  X509_verify_cert_error_string(error),
                  std::make_pair("connid", connId));
 
-    log::warning("Peer certificate", depth, subjectName,
+    log_warning("Peer certificate", depth, subjectName,
                  std::make_pair("tlsid", securityId),
                  std::make_pair("connid", connId), '\n', cert.toString());
     return 0;
@@ -445,13 +445,13 @@ int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   // intermediate certificate will have a depth greater than zero.
 
   if (depth > 0) {
-    log::debug("Verify peer chain:", depth, subjectName,
+    log_debug("Verify peer chain:", depth, subjectName,
                std::make_pair("tlsid", securityId),
                std::make_pair("connid", connId));
     return 1;
   }
 
-  log::info("Verify peer:", subjectName, std::make_pair("tlsid", securityId),
+  log_info("Verify peer:", subjectName, std::make_pair("tlsid", securityId),
             std::make_pair("connid", connId));
 
   return 1;
@@ -460,7 +460,7 @@ int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
 int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                             size_t *cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
-  log::debug("openssl_cookie_generate_callback",
+  log_debug("openssl_cookie_generate_callback",
              std::make_pair("connid", conn->connectionId()));
   memset(cookie, 0, 16);
   for (UInt8 i = 0; i < 16; ++i) {
@@ -473,7 +473,7 @@ int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
 int Identity::dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                           size_t cookie_len) {
   Connection *conn = GetConnectionPtr(ssl);
-  log::debug("openssl_cookie_verify_callback",
+  log_debug("openssl_cookie_verify_callback",
              std::make_pair("connid", conn->connectionId()));
   return 1;
 }

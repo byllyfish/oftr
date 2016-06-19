@@ -37,7 +37,7 @@ llvm::StringRef ofp::yaml::SetEnumError(
                  closestValue(name, vals) + "\"?");
     return "";
   }
-  log::warning("SetEnumError: unknown io object?");
+  log_warning("SetEnumError: unknown io object?");
   return "unknown enum value";
 }
 

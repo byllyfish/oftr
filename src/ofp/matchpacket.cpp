@@ -29,7 +29,7 @@ MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   assert(misalignment != 2 && misalignment < 8);
 
   if (warnMisaligned) {
-    log::warning("MatchPacket: Misaligned input: ", misalignment);
+    log_warning("MatchPacket: Misaligned input: ", misalignment);
   }
 
   // Make a copy of the packet that is appropriately aligned.
@@ -90,7 +90,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
       break;
 
     default:
-      log::warning("MatchPacket: Unknown ethernet type", eth->type);
+      log_warning("MatchPacket: Unknown ethernet type", eth->type);
       break;
   }
 }
@@ -103,7 +103,7 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
 
   if (std::memcmp(arp->prefix, "\x00\x01\x08\x00\x06\x04",
                   sizeof(arp->prefix)) != 0) {
-    log::warning("MatchPacket: Unexpected arp prefix", log::hex(arp->prefix));
+    log_warning("MatchPacket: Unexpected arp prefix", log::hex(arp->prefix));
     return;
   }
 
@@ -116,7 +116,7 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
   offset_ += sizeof(pkt::Arp);
 
   if (length > sizeof(pkt::Arp)) {
-    log::warning("MatchPacket: Ignoring extra data in arp message");
+    log_warning("MatchPacket: Ignoring extra data in arp message");
   }
 }
 
@@ -130,12 +130,12 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   UInt8 ihl = ip->ver & 0x0F;
 
   if (vers != pkt::kIPv4Version) {
-    log::warning("MatchPacket: Unexpected IPv4 version", vers);
+    log_warning("MatchPacket: Unexpected IPv4 version", vers);
     return;
   }
 
   if (ihl < 5) {
-    log::warning("MatchPacket: Unexpected IPv4 header length", ihl);
+    log_warning("MatchPacket: Unexpected IPv4 header length", ihl);
     return;
   }
 
@@ -158,7 +158,7 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
 
   unsigned hdrLen = ihl * 4;
   if (hdrLen > length) {
-    log::warning("MatchPacket: Extended IPv4 Header too long", hdrLen);
+    log_warning("MatchPacket: Extended IPv4 Header too long", hdrLen);
     return;
   }
 
@@ -185,7 +185,7 @@ void MatchPacket::decodeIPv4_NextHdr(const UInt8 *pkt, size_t length,
       break;
 
     default:
-      log::warning("MatchPacket: Unknown IPv4 protocol", nextHdr);
+      log_warning("MatchPacket: Unknown IPv4 protocol", nextHdr);
       break;
   }
 }
@@ -199,7 +199,7 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
   UInt32 verClassLabel = ip->verClassLabel;
   UInt8 vers = verClassLabel >> 28;
   if (vers != pkt::kIPv6Version) {
-    log::warning("MatchPacket: Unexpected IPv6 version", vers);
+    log_warning("MatchPacket: Unexpected IPv6 version", vers);
     return;
   }
 
@@ -321,13 +321,13 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
   while (length > 0) {
     auto lldp = pkt::LLDPTlv::cast(pkt, length);
     if (!lldp) {
-      log::warning("decodeLLDP: missing lldp end tlv");
+      log_warning("decodeLLDP: missing lldp end tlv");
       return;
     }
 
     auto jumpSize = lldp->length() + 2;
     if (jumpSize > length) {
-      log::warning("decodeLLDP: malformed lldp tlv");
+      log_warning("decodeLLDP: malformed lldp tlv");
       return;  // ignore the rest
     }
 
@@ -434,7 +434,7 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
       break;
 
     default:
-      log::warning("MatchPacket: Unrecognized IPv6 nextHeader", currHdr);
+      log_warning("MatchPacket: Unrecognized IPv6 nextHeader", currHdr);
       return pkt::IPv6Ext_NoNextHeader;
   }
 
@@ -446,7 +446,7 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
   }
 
   if (extHdrLen > length) {
-    log::warning("MatchPacket: IPv6 ext header extends past end of pkt");
+    log_warning("MatchPacket: IPv6 ext header extends past end of pkt");
     return pkt::IPv6Ext_NoNextHeader;
   }
 

@@ -42,7 +42,7 @@ TCP_Server::~TCP_Server() {
     // Dispose of UDP server first.
     shutdownUDP();
 
-    log::info("Stop listening on TCP", std::make_pair("tlsid", securityId_),
+    log_info("Stop listening on TCP", std::make_pair("tlsid", securityId_),
               std::make_pair("connid", connId_));
     engine_->releaseServer(this);
   }
@@ -64,7 +64,7 @@ void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt,
 
   if (!error) {
     connId_ = engine_->registerServer(this);
-    log::info("Start listening on TCP", localEndpt,
+    log_info("Start listening on TCP", localEndpt,
               std::make_pair("tlsid", securityId_),
               std::make_pair("connid", connId_));
     asyncAccept();
@@ -76,7 +76,7 @@ void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt,
 
   } else {
     connId_ = 0;
-    log::error("Listen failed on TCP", localEndpt, error);
+    log_error("Listen failed on TCP", localEndpt, error);
   }
 }
 
@@ -90,7 +90,7 @@ void TCP_Server::listen(const IPv6Endpoint &localEndpt,
   // Handle case where IPv6 is not supported on this system.
   if (error == asio::error::address_family_not_supported && addr.is_v6() &&
       addr.is_unspecified()) {
-    log::info("TCP_Server: IPv6 is not supported. Using IPv4.");
+    log_info("TCP_Server: IPv6 is not supported. Using IPv4.");
     endpt = tcp::endpoint{tcp::v4(), endpt.port()};
     if (acceptor_.open(endpt.protocol(), error))
       return;
@@ -129,7 +129,7 @@ void TCP_Server::asyncAccept() {
       }
 
     } else {
-      log::error("Error in TCP_Server.asyncAcept:", err);
+      log_error("Error in TCP_Server.asyncAcept:", err);
     }
 
     asyncAccept();

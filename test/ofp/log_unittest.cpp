@@ -15,38 +15,18 @@ static int never_call(int x) {
   ofp::log::fatal("never_call()", x);
 }
 
-#define LOG_NOOP_ (void)0
-
-// Arguments of the LOG_ macros are only evaluated at the given log level.
-
-#define LOG_IF_LEVEL_(lvl_, ...)                                              \
-  if (::ofp::log::Level::lvl_ < ::ofp::log::detail::GLOBAL_OutputLevelFilter) \
-    LOG_NOOP_;                                                                \
-  else                                                                        \
-  ::ofp::log::detail::write_(::ofp::log::Level::lvl_, __VA_ARGS__)
-
-#define LOG_ERROR(...) LOG_IF_LEVEL_(Error, __VA_ARGS__)
-// #define LOG_WARNING(...)  LOG_IF_LEVEL_(Warning, __VA_ARGS__)
-// #define LOG_INFO(...)     LOG_IF_LEVEL_(Info, __VA_ARGS__)
-
-#if defined(NDEBUG)
-#define LOG_DEBUG(...) LOG_NOOP_
-#else
-#define LOG_DEBUG(...) LOG_IF_LEVEL_(Debug, __VA_ARGS__)
-#endif
-
 TEST(log, test_debug) {
   auto savedFilter = ofp::log::detail::GLOBAL_OutputLevelFilter;
   ofp::log::setOutputLevelFilter(ofp::log::Level::Debug);
 
 #if defined(NDEBUG)
-  LOG_DEBUG("the answer is", never_call(11));
+  log_debug("the answer is", never_call(11));
 #else
-  LOG_DEBUG("the answer is", always_call(12));
+  log_debug("the answer is", always_call(12));
   EXPECT_EQ(12, always_signal);
 
   ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
-  LOG_DEBUG("the answer is", never_call(13));
+  log_debug("the answer is", never_call(13));
 #endif
 
   ofp::log::setOutputLevelFilter(savedFilter);
@@ -56,11 +36,58 @@ TEST(log, test_error) {
   auto savedFilter = ofp::log::detail::GLOBAL_OutputLevelFilter;
 
   ofp::log::setOutputLevelFilter(ofp::log::Level::Error);
-  LOG_ERROR("the answer is", always_call(101));
+  log_error("the answer is", always_call(101));
   EXPECT_EQ(101, always_signal);
 
   ofp::log::setOutputLevelFilter(ofp::log::Level::Fatal);
-  LOG_ERROR("the answer is", never_call(102));
+  log_error("the answer is", never_call(102));
 
   ofp::log::setOutputLevelFilter(savedFilter);
 }
+
+TEST(log, test_warning) {
+  auto savedFilter = ofp::log::detail::GLOBAL_OutputLevelFilter;
+
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Warning);
+  log_warning("the answer is", always_call(201));
+  EXPECT_EQ(201, always_signal);
+
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Fatal);
+  log_warning("the answer is", never_call(202));
+
+  ofp::log::setOutputLevelFilter(savedFilter);
+}
+
+TEST(log, test_info) {
+  auto savedFilter = ofp::log::detail::GLOBAL_OutputLevelFilter;
+
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Info);
+  log_info("the answer is", always_call(301));
+  EXPECT_EQ(301, always_signal);
+
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Fatal);
+  log_info("the answer is", never_call(302));
+
+  ofp::log::setOutputLevelFilter(savedFilter);
+}
+
+TEST(log, dangling_else) {
+  auto savedFilter = ofp::log::detail::GLOBAL_OutputLevelFilter;
+
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Error);
+
+  if (true)
+    log_error("the answer is", always_call(11));
+
+  EXPECT_EQ(11, always_signal);
+
+  ofp::log::setOutputLevelFilter(ofp::log::Level::Fatal);
+
+  if (true)
+    log_error("the answer is", never_call(13));
+  else
+    never_call(14);
+
+  ofp::log::setOutputLevelFilter(savedFilter);
+}
+

@@ -40,17 +40,17 @@ bool MPFlowMonitorReply::validateInput(Validation *context) const {
   }
 
   if (length < SizeWithoutMatchHeader) {
-    log::debug("MPFlowMonitorReply: Too short.");
+    log_debug("MPFlowMonitorReply: Too short.");
     return false;
   }
 
   if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
-    log::debug("MPFlowMonitorReply: Invalid match.");
+    log_debug("MPFlowMonitorReply: Invalid match.");
     return false;
   }
 
   if (length < SizeWithoutMatchHeader + matchHeader_.paddedLength()) {
-    log::debug("MPFlowMonitorReply: Invalid length.");
+    log_debug("MPFlowMonitorReply: Invalid length.");
     return false;
   }
 

@@ -39,11 +39,11 @@ void SimpleController::onPacketIn(Channel *channel, const PacketIn *msg) {
 }
 
 void SimpleController::onPortStatus(Channel *channel, const PortStatus *msg) {
-  log::debug("SimpleController - PortStatus from:", channel);
+  log_debug("SimpleController - PortStatus from:", channel);
 }
 
 void SimpleController::onError(Channel *channel, const Error *msg) {
-  log::debug("SimpleController:: - error");
+  log_debug("SimpleController:: - error");
 }
 
 bool SimpleController::lookupPort(const MacAddress &addr, UInt32 *port) const {
@@ -56,7 +56,7 @@ bool SimpleController::lookupPort(const MacAddress &addr, UInt32 *port) const {
 }
 
 void SimpleController::flood(Channel *channel, const PacketIn *msg) {
-  log::debug("flood");
+  log_debug("flood");
 
   ActionList actions;
   actions.add(AT_OUTPUT{OFPP_FLOOD});
@@ -70,7 +70,7 @@ void SimpleController::flood(Channel *channel, const PacketIn *msg) {
 
 void SimpleController::drop(Channel *channel, const PacketIn *msg,
                             const EnetFrame *frame, UInt16 timeout) {
-  log::debug("drop");
+  log_debug("drop");
 
   if (timeout > 0) {
     MatchBuilder match;

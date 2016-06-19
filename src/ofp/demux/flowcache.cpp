@@ -45,7 +45,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     // SYN or SYN-ACK packet must not contain any data.
     end = seq + 1;
     if (data.size() > 0) {
-      log::warning("FlowCache: TCP SYN has unexpected data", data.size(),
+      log_warning("FlowCache: TCP SYN has unexpected data", data.size(),
                    "bytes:", data);
       return FlowData{0};
     }
@@ -57,7 +57,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   // We drop plain empty ACK segments for example. Specify a session ID of 0,
   // since we're dropping the segment before looking up the session entry.
   if (data.empty() && (flags & kInterestingFlags) == 0) {
-    log::debug("TCP ignore empty", tcpFlagToString(flags), src, dst, end);
+    log_debug("TCP ignore empty", tcpFlagToString(flags), src, dst, end);
     return FlowData{0};
   }
 
@@ -78,7 +78,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     if ((flags & TCP_SYN) != 0 || entry.secondsSince(ts) >= kTwoMinuteTimeout) {
       entry.reset(ts, assignSessionID());
     } else {
-      log::warning("TCP late segment ignored", entry.sessionID,
+      log_warning("TCP late segment ignored", entry.sessionID,
                    tcpFlagToString(flags), src, dst, end);
       return FlowData{entry.sessionID};
     }
@@ -87,12 +87,12 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     // This is a SYN (but not SYN-ACK) for an *unfinished* entry. We open a new
     // session
     // if the connection has been idle for two minutes.
-    log::warning("TCP SYN for unfinished entry", entry.sessionID,
+    log_warning("TCP SYN for unfinished entry", entry.sessionID,
                  tcpFlagToString(flags), src, dst, end);
     entry.reset(ts, assignSessionID());
   }
 
-  log::debug("TCP segment", entry.sessionID, tcpFlagToString(flags), src, dst,
+  log_debug("TCP segment", entry.sessionID, tcpFlagToString(flags), src, dst,
              entry.secondsSince(ts));
 
   if (isX) {

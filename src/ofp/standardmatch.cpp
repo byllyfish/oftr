@@ -45,10 +45,11 @@ StandardMatch::StandardMatch(const OXMRange &range) {
         if (vlan == OFPVID_PRESENT && mask == OFPVID_PRESENT) {
           dl_vlan = v1::OFPVID_PRESENT;
         } else {
-          if (mask != 0xffff)
-            log::warning(
+          if (mask != 0xffff) {
+            log_warning(
                 "StandardMatch: VLAN mask not supported. Reverting to specific "
                 "match");
+          }
           dl_vlan = (vlan & ~OFPVID_PRESENT);
         }
         wc &= ~OFPFW_DL_VLAN;
@@ -147,7 +148,7 @@ StandardMatch::StandardMatch(const OXMRange &range) {
         nw_dst_mask = item.mask<OFB_ARP_TPA>();
         break;
       default:
-        log::debug("StandardMatch: Unexpected oxm type:", item.type());
+        log_debug("StandardMatch: Unexpected oxm type:", item.type());
         break;
     }
   }
@@ -190,9 +191,9 @@ StandardMatch::StandardMatch(const OriginalMatch &match) {
   metadata = 0;
   metadata_mask = 0;
 
-  // log::debug("Convert original match to standard match:");
-  // log::debug("origmatch:\n", match.toString());
-  // log::debug("stdmatch:\n", toString());
+  // log_debug("Convert original match to standard match:");
+  // log_debug("origmatch:\n", match.toString());
+  // log_debug("stdmatch:\n", toString());
 }
 
 OXMList StandardMatch::toOXMList() const {
@@ -271,7 +272,7 @@ OXMList StandardMatch::toOXMList() const {
 
   if (!(wc & OFPFW_TP_SRC)) {
     if (wc & OFPFW_NW_PROTO) {
-      log::warning(
+      log_warning(
           "StandardMatch::toOXMList: OFPFW_TP_SRC is missing OFPFW_NW_PROTO; "
           "default to TCP");
       list.add(OFB_TCP_SRC{tp_src});
@@ -290,7 +291,7 @@ OXMList StandardMatch::toOXMList() const {
           list.add(OFB_SCTP_SRC{tp_src});
           break;
         default:
-          log::warning(
+          log_warning(
               "StandardMatch::toOXMList: OFPFW_TP_SRC has unsupported "
               "OFPFW_NW_PROTO:",
               nw_proto);
@@ -302,7 +303,7 @@ OXMList StandardMatch::toOXMList() const {
 
   if (!(wc & OFPFW_TP_DST)) {
     if ((wc & OFPFW_NW_PROTO)) {
-      log::warning(
+      log_warning(
           "StandardMatch::toOXMList: OFPFW_TP_DST is missing OFPFW_NW_PROTO; "
           "default to TCP");
       list.add(OFB_TCP_DST{tp_dst});
@@ -321,7 +322,7 @@ OXMList StandardMatch::toOXMList() const {
           list.add(OFB_SCTP_DST{tp_dst});
           break;
         default:
-          log::warning(
+          log_warning(
               "StandardMatch::toOXMList: OFPFW_TP_DST has unsupported "
               "OFPFW_NW_PROTO:",
               nw_proto);

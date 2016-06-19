@@ -24,10 +24,10 @@ struct Castable {
     if (len < sizeof(Type)) {
       // Only warn if there is some data.
       if (len > 0) {
-        log::warning("pkt::Castable: Data too short, actualLen:", len,
+        log_warning("pkt::Castable: Data too short, actualLen:", len,
                      "minNeeded:", sizeof(Type));
       } else {
-        log::debug("pkt::Castable: No data. minNeeded:", sizeof(Type));
+        log_debug("pkt::Castable: No data. minNeeded:", sizeof(Type));
       }
       return nullptr;
     }

@@ -56,21 +56,21 @@ RpcServer::~RpcServer() {
 }
 
 void RpcServer::close() {
-  log::debug("RpcServer::close");
+  log_debug("RpcServer::close");
   if (oneConn_) {
     oneConn_->close();
   }
 }
 
 void RpcServer::onConnect(RpcConnection *conn) {
-  log::debug("RpcServer::onConnect");
+  log_debug("RpcServer::onConnect");
   assert(oneConn_ == nullptr);
 
   oneConn_ = conn;
 }
 
 void RpcServer::onDisconnect(RpcConnection *conn) {
-  log::debug("RpcServer::onDisconnect");
+  log_debug("RpcServer::onDisconnect");
   assert(oneConn_ == conn);
 
   // When the one API connection disconnects, shutdown the engine in 1.5 secs.
@@ -193,7 +193,7 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     if (!(params.flags() & OFP_NO_FLUSH)) {
       channel->flush();
     } else {
-      log::debug("onRpcSend: NO_FLUSH",
+      log_debug("onRpcSend: NO_FLUSH",
                  std::make_pair("connid", channel->connectionId()));
     }
 
@@ -206,7 +206,7 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     }
 
   } else {
-    log::warning("RpcServer:onRpcSend: no outgoing channel");
+    log_warning("RpcServer:onRpcSend: no outgoing channel");
   }
 }
 
@@ -353,7 +353,7 @@ ChannelOptions RpcServer::parseOptions(
     } else if (opt == "NO_VERSION_CHECK") {
       result = result | ChannelOptions::NO_VERSION_CHECK;
     } else {
-      log::warning("RpcServer: Unrecognized option skipped:", opt);
+      log_warning("RpcServer: Unrecognized option skipped:", opt);
     }
   }
 

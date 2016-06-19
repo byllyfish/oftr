@@ -48,7 +48,7 @@ bool PacketIn::validateInput(Validation *context) const {
 
   if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
     // FIXME(bfish)
-    log::info("PacketIn has invalid Match element.");
+    log_info("PacketIn has invalid Match element.");
     return false;
   }
 
@@ -81,7 +81,7 @@ bool PacketIn::validateInputV3(Validation *context) const {
   const MatchHeader *matchHdr = matchHeader();
 
   if (!matchHdr->validateInput(length - 16)) {
-    log::info("PacketIn has invalid Match element.");
+    log_info("PacketIn has invalid Match element.");
     return false;
   }
 
@@ -193,7 +193,7 @@ ByteRange PacketIn::enetFrame() const {
       assert(msgLen >= 18U);
       return ByteRange{BytePtr(this) + 18, msgLen - 18U};
     case OFP_VERSION_2:
-      log::info("PacketIn::enetFrame() not implemented.");
+      log_info("PacketIn::enetFrame() not implemented.");
       return ByteRange{};
     case OFP_VERSION_3: {
       const MatchHeader *matchHdr = matchHeader();
@@ -291,7 +291,7 @@ UInt32 PacketInBuilder::sendV2(Writable *channel) {
   UInt32 xid = channel->nextXid();
 
   // FIXME - Unimplemented
-  log::info("PacketInBuilder::sendV2 not implemented.");
+  log_info("PacketInBuilder::sendV2 not implemented.");
 
   return xid;
 }

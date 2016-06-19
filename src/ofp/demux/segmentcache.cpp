@@ -31,7 +31,7 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
     if (begin == seg.end()) {
       if (seg.final()) {
         if (!final || !data.empty()) {
-          log::warning("SegmentCache: can't append data to final segment:",
+          log_warning("SegmentCache: can't append data to final segment:",
                        data.size());
         }
       } else {
@@ -59,7 +59,7 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
     if (Segment::lessThan(begin, seg.end())) {
       // New segment overlaps with existing data.
-      log::error("SegmentCache:", SegmentToString(begin, end, final),
+      log_error("SegmentCache:", SegmentToString(begin, end, final),
                  "overlaps", seg.toString());
       // Include new part of overlapping data, if there is a new part.
       if (Segment::lessThan(begin, seg.begin())) {
@@ -77,13 +77,13 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
         seg.append(newData, final);
         update(i, final);
       }
-      log::error("SegmentCache: result is", toString());
+      log_error("SegmentCache: result is", toString());
       goto DONE;
     }
 
     if (seg.final()) {
       if (!final || !data.empty()) {
-        log::warning("SegmentCache: final segment seen already");
+        log_warning("SegmentCache: final segment seen already");
       }
       goto DONE;
     }
@@ -93,7 +93,7 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
 DONE:
   assert(checkInvariant());
-  log::debug("SegmentCache::store", data.size(), "bytes", toString());
+  log_debug("SegmentCache::store", data.size(), "bytes", toString());
 }
 
 const Segment *SegmentCache::current() const {
@@ -110,7 +110,7 @@ void SegmentCache::consume(size_t len) {
       seg.consume(len);
     }
   }
-  log::debug("SegmentCache::consume", len, "bytes", toString());
+  log_debug("SegmentCache::consume", len, "bytes", toString());
 }
 
 std::string SegmentCache::toString() const {
@@ -140,7 +140,7 @@ void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx,
 
   // If segment is final, clear out the remaining segments.
   if (final) {
-    log::error("SegmentCache: Final segment inserted before others:",
+    log_error("SegmentCache: Final segment inserted before others:",
                toString());
     assert(idx < segments_.size());
     segments_.erase(segments_.begin() + Signed_cast(idx) + 1, segments_.end());
@@ -165,7 +165,7 @@ void SegmentCache::update(size_t idx, bool final) {
       seg.append(next.data(), next.final());
       segments_.erase(segments_.begin() + Signed_cast(idx) + 1);
     } else if (Segment::lessThan(next.begin(), seg.end())) {
-      log::warning("SegmentCache: fixing up overlapping segments",
+      log_warning("SegmentCache: fixing up overlapping segments",
                    seg.toString(), next.toString());
       size_t overlap = seg.end() - next.begin();
       seg.append(next.data(overlap), next.final());
@@ -184,17 +184,17 @@ bool SegmentCache::checkInvariant() {
       // Verify that segments are in non-overlapping sorted order.
       if (seg->end() != next->begin() &&
           !Segment::lessThan(seg->end(), next->begin())) {
-        log::error("SegmentCache: segments out of order", toString());
+        log_error("SegmentCache: segments out of order", toString());
         return false;
       }
       // Verify that only the final segment is empty.
       if (seg->empty() && !seg->final()) {
-        log::error("SegmentCache: empty segment", toString());
+        log_error("SegmentCache: empty segment", toString());
         return false;
       }
       // Verify that only the last segment is marked final.
       if (seg->final()) {
-        log::error("SegmentCache: final segment isn't last", toString());
+        log_error("SegmentCache: final segment isn't last", toString());
         return false;
       }
 
@@ -232,7 +232,7 @@ void SegmentCache::addMissingData(UInt32 end, size_t maxMissingBytes) {
     if (gapSize <= maxMissingBytes) {
       seg.prepend({zeroBuf.data(), gapSize});
     } else {
-      log::warning("SegmentCache::addMissingData: gap too large", gapSize);
+      log_warning("SegmentCache::addMissingData: gap too large", gapSize);
     }
   }
 
@@ -249,7 +249,7 @@ void SegmentCache::addMissingData(UInt32 end, size_t maxMissingBytes) {
     if (Segment::lessThan(first.end(), second.begin())) {
       UInt32 gapSize = second.begin() - first.end();
       if (gapSize > maxMissingBytes) {
-        log::warning("SegmentCache::addMissingData: gap too large", gapSize);
+        log_warning("SegmentCache::addMissingData: gap too large", gapSize);
         break;
       }
       first.append({zeroBuf.data(), gapSize}, false);

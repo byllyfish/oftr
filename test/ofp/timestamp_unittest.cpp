@@ -96,9 +96,9 @@ TEST(timestamp, relational) {
 }
 
 TEST(timestamp, now) {
-  log::debug("Timestamp::now", Timestamp::now().toString());
-  log::debug("Timestamp::now", Timestamp::now().toString());
-  log::debug("Timestamp::now", Timestamp::now().toString());
+  log_debug("Timestamp::now", Timestamp::now().toString());
+  log_debug("Timestamp::now", Timestamp::now().toString());
+  log_debug("Timestamp::now", Timestamp::now().toString());
 }
 
 TEST(timestamp, secondsSince) {

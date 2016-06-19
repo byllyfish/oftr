@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   driver.run();
 
   if (err) {
-    log::error("Error running controller:", err);
+    log_error("Error running controller:", err);
     return 1;
   }
 

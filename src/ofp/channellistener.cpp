@@ -7,11 +7,11 @@
 using namespace ofp;
 
 void ChannelListener::onChannelUp(Channel *channel) {
-  log::debug("ChannelListener - onChannelUp ignored:", channel);
+  log_debug("ChannelListener - onChannelUp ignored:", channel);
 }
 
 void ChannelListener::onChannelDown(Channel *channel) {
-  log::debug("ChannelListener - onChannelDown ignored:", channel);
+  log_debug("ChannelListener - onChannelDown ignored:", channel);
 }
 
 void ChannelListener::dispose(ChannelListener *listener) {

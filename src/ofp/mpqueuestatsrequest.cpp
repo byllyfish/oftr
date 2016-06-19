@@ -17,7 +17,7 @@ const MPQueueStatsRequest *MPQueueStatsRequest::cast(
 bool MPQueueStatsRequest::validateInput(Validation *context) const {
   size_t length = context->lengthRemaining();
   if (length != sizeof(MPQueueStatsRequest)) {
-    log::debug("MPQueueStatsRequest: Validation failed.");
+    log_debug("MPQueueStatsRequest: Validation failed.");
     return false;
   }
 

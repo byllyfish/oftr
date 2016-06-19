@@ -9,7 +9,7 @@ using namespace ofp;
 class NullController : public ChannelListener {
  public:
   void onChannelUp(Channel *channel) override {
-    log::debug(__PRETTY_FUNCTION__);
+    log_debug(__PRETTY_FUNCTION__);
   }
 
   void onMessage(const Message *message) override {}

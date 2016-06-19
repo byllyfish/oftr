@@ -28,7 +28,7 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
 
   // Check alignment.
   if (!IsPtrAligned(this, 8)) {
-    log::debug("MatchHeader: Not aligned.");
+    log_debug("MatchHeader: Not aligned.");
     return false;
   }
 
@@ -38,7 +38,7 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
   // Special case for standard match; verify match length.
   if (matchType == OFPMT_STANDARD) {
     if (matchLength != deprecated::OFPMT_STANDARD_LENGTH) {
-      log::debug("MatchHeader: Invalid match length.");
+      log_debug("MatchHeader: Invalid match length.");
       return false;
     }
     return true;
@@ -46,20 +46,20 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
 
   // Check matchType.
   if (matchType != OFPMT_OXM) {
-    log::debug("MatchHeader: Invalid match type.", matchType);
+    log_debug("MatchHeader: Invalid match type.", matchType);
     return false;
   }
 
   // Check matchLength (which includes size of match header.)
   if (matchLength < sizeof(MatchHeader)) {
-    log::debug("MatchHeader: Invalid match length.");
+    log_debug("MatchHeader: Invalid match length.");
     return false;
   }
 
   // Check matchLength + padding against remaining length.
   size_t matchLengthPadded = PadLength(matchLength);
   if (matchLengthPadded > lengthRemaining) {
-    log::debug("MatchHeader: Invalid remaining length.");
+    log_debug("MatchHeader: Invalid remaining length.");
     return false;
   }
 
@@ -67,7 +67,7 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
   OXMRange oxm{BytePtr(this) + sizeof(MatchHeader),
                matchLength - sizeof(MatchHeader)};
   if (!oxm.validateInput()) {
-    log::debug("MatchHeader: Invalid oxm range.");
+    log_debug("MatchHeader: Invalid oxm range.");
     return false;
   }
 
@@ -75,7 +75,7 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
   if (matchLengthPadded > matchLength) {
     if (!IsMemFilled(BytePtr(this) + matchLength,
                      matchLengthPadded - matchLength, 0)) {
-      log::debug("MatchHeader: Invalid padding.");
+      log_debug("MatchHeader: Invalid padding.");
       return false;
     }
   }
