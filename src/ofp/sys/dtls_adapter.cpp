@@ -134,8 +134,7 @@ void DTLS_Adapter::datagramReceived(const void *datagram, size_t length) {
     receiveCallback_(inBuf, Unsigned_cast(rc), userData_);
 
   } else {
-    int err = SSL_get_error(ssl_, rc);
-    log_debug("datagramReceived: SSL_get_error returned", err, "state",
+    log_debug("datagramReceived: SSL_get_error returned", SSL_get_error(ssl_, rc), "state",
                SSL_state_string_long(ssl_), ERR_peek_last_error());
   }
 

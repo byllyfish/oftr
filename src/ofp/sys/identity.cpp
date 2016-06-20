@@ -158,7 +158,8 @@ void Identity::prepareOptions(SSL_CTX *ctx) {
   auto options = SSL_CTX_set_options(
       ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
 
-  log_debug("Identity::prepareContextOptions: options", log::hex(options));
+  if (options)
+    log_debug("Identity::prepareContextOptions: options", log::hex(options));
 }
 
 void Identity::prepareSessions(SSL_CTX *ctx) {
@@ -459,9 +460,8 @@ int Identity::tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
 
 int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                             size_t *cookie_len) {
-  Connection *conn = GetConnectionPtr(ssl);
   log_debug("openssl_cookie_generate_callback",
-             std::make_pair("connid", conn->connectionId()));
+             std::make_pair("connid", GetConnectionPtr(ssl)->connectionId()));
   memset(cookie, 0, 16);
   for (UInt8 i = 0; i < 16; ++i) {
     cookie[i] = i;
@@ -472,9 +472,8 @@ int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
 
 int Identity::dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                           size_t cookie_len) {
-  Connection *conn = GetConnectionPtr(ssl);
   log_debug("openssl_cookie_verify_callback",
-             std::make_pair("connid", conn->connectionId()));
+             std::make_pair("connid", GetConnectionPtr(ssl)->connectionId()));
   return 1;
 }
 
