@@ -51,7 +51,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
       // a warning if the segment is not final.
       if (!final) {
         log_warning("FlowState: drop late segment",
-                     SegmentToString(begin, end, final));
+                    SegmentToString(begin, end, final));
       }
       return FlowData{sessionID};
 
@@ -62,7 +62,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
         finished_ = true;
       }
       log_debug("FlowState: return flow data",
-                 SegmentToString(begin, end, final));
+                SegmentToString(begin, end, final));
       return FlowData{this, data, sessionID, false, final};
     }
   }
@@ -70,7 +70,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   // Check if segment's end <= our `end_` value.
   if (!Segment::lessThan(end_, end)) {
     log_warning("FlowState: drop unexpected segment",
-                 SegmentToString(begin, end, final), "end is", end_);
+                SegmentToString(begin, end, final), "end is", end_);
     return FlowData{sessionID};
   }
 
@@ -78,7 +78,7 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
   ByteRange newData;
   if (Segment::lessThan(begin, end_)) {
     log_warning("FlowState: overlapping segment detected",
-                 SegmentToString(begin, end, final), "end is", end_);
+                SegmentToString(begin, end, final), "end is", end_);
     newData = SafeByteRange(data.begin(), data.size(), end_ - begin);
   } else {
     newData = data;
@@ -100,7 +100,7 @@ FlowData FlowState::latestData(UInt64 sessionID) {
 
   if (seg && seg->begin() == end_) {
     log_debug("FlowState: return flow data",
-               SegmentToString(seg->begin(), seg->end(), seg->final()));
+              SegmentToString(seg->begin(), seg->end(), seg->final()));
     return FlowData{this, seg->data(), sessionID, true, seg->final()};
   }
 

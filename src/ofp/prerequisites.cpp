@@ -378,8 +378,7 @@ bool Prerequisites::substitute(OXMList *list, OXMType type, const void *value,
     if (escType == type) {
       // If type is already in the list. Check if value conflicts.
       if (!matchValueWithValue(len, value, iter)) {
-        log_info("Value conflict detected in substitute; insert poison.",
-                  type);
+        log_info("Value conflict detected in substitute; insert poison.", type);
         list->insertSignal(iter, kPoisonPrereqSignal);
       }
       return true;

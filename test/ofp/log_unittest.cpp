@@ -90,4 +90,3 @@ TEST(log, dangling_else) {
 
   ofp::log::setOutputLevelFilter(savedFilter);
 }
-

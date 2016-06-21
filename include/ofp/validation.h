@@ -53,7 +53,7 @@ class Validation {
   bool validateAlignedLength(size_t length, size_t minSize) {
     if (length < minSize) {
       log_debug("validateAlignedLength: length", length,
-                 " is smaller than minSize", minSize);
+                " is smaller than minSize", minSize);
     }
     return validateBool((length >= minSize) && ((length % 8) == 0),
                         "Length too small or not aligned");

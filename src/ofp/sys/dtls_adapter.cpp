@@ -68,7 +68,7 @@ void DTLS_Adapter::accept() {
 
 bool DTLS_Adapter::isHandshakeDone() const {
   log_debug("isHandshakeDone: state", SSL_state_string_long(ssl_),
-             ERR_peek_last_error());
+            ERR_peek_last_error());
   struct timeval tv = {0, 0};
   if (DTLSv1_get_timeout(ssl_, &tv) == 1) {
     log_debug("isHandshakeDone: timeout", tv.tv_sec, tv.tv_usec);
@@ -102,7 +102,7 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
       case SSL_ERROR_SYSCALL:
         log_warning("DTLS_Adapter::sendDatagram: SSL_ERROR_SYSCALL");
         log_debug("DTLS_Adapter::sendDatagram: state",
-                   SSL_state_string_long(ssl_), ERR_peek_last_error());
+                  SSL_state_string_long(ssl_), ERR_peek_last_error());
         break;
 
       default:
@@ -111,7 +111,7 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
     }
 
     log_debug("sendDatagram: SSL_get_error returned", err, "state",
-               SSL_state_string_long(ssl_));
+              SSL_state_string_long(ssl_));
   }
 
   writeOutput();
@@ -134,8 +134,9 @@ void DTLS_Adapter::datagramReceived(const void *datagram, size_t length) {
     receiveCallback_(inBuf, Unsigned_cast(rc), userData_);
 
   } else {
-    log_debug("datagramReceived: SSL_get_error returned", SSL_get_error(ssl_, rc), "state",
-               SSL_state_string_long(ssl_), ERR_peek_last_error());
+    log_debug("datagramReceived: SSL_get_error returned",
+              SSL_get_error(ssl_, rc), "state", SSL_state_string_long(ssl_),
+              ERR_peek_last_error());
   }
 
   writeOutput();

@@ -125,7 +125,7 @@ void Connection::postMessage(Message *message) {
 bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   if (auxiliaryId == 0 && IsChannelTransportUDP(transport())) {
     log_error("UDP connection not allowed to have auxiliary_id of 0",
-               std::make_pair("connid", connectionId()));
+              std::make_pair("connid", connectionId()));
     return false;
   }
 
@@ -137,8 +137,8 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
     result = engine()->registerDatapath(this);
     if (result) {
       log_info("Assign datapath", datapathId, "aux",
-                static_cast<int>(auxiliaryId),
-                std::make_pair("conn_id", connectionId()));
+               static_cast<int>(auxiliaryId),
+               std::make_pair("conn_id", connectionId()));
     }
   }
 

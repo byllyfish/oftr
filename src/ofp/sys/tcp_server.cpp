@@ -43,7 +43,7 @@ TCP_Server::~TCP_Server() {
     shutdownUDP();
 
     log_info("Stop listening on TCP", std::make_pair("tlsid", securityId_),
-              std::make_pair("connid", connId_));
+             std::make_pair("connid", connId_));
     engine_->releaseServer(this);
   }
 }
@@ -65,8 +65,8 @@ void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt,
   if (!error) {
     connId_ = engine_->registerServer(this);
     log_info("Start listening on TCP", localEndpt,
-              std::make_pair("tlsid", securityId_),
-              std::make_pair("connid", connId_));
+             std::make_pair("tlsid", securityId_),
+             std::make_pair("connid", connId_));
     asyncAccept();
 
     // Start listening on UDP, if requested.

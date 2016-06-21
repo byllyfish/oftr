@@ -32,7 +32,7 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
       if (seg.final()) {
         if (!final || !data.empty()) {
           log_warning("SegmentCache: can't append data to final segment:",
-                       data.size());
+                      data.size());
         }
       } else {
         seg.append(data, final);
@@ -59,8 +59,8 @@ void SegmentCache::store(UInt32 end, const ByteRange &data, bool final) {
 
     if (Segment::lessThan(begin, seg.end())) {
       // New segment overlaps with existing data.
-      log_debug("SegmentCache:", SegmentToString(begin, end, final),
-                 "overlaps", seg.toString());
+      log_debug("SegmentCache:", SegmentToString(begin, end, final), "overlaps",
+                seg.toString());
       // Include new part of overlapping data, if there is a new part.
       if (Segment::lessThan(begin, seg.begin())) {
         size_t offset = seg.begin() - begin;
@@ -141,7 +141,7 @@ void SegmentCache::insert(UInt32 end, const ByteRange &data, size_t idx,
   // If segment is final, clear out the remaining segments.
   if (final) {
     log_error("SegmentCache: Final segment inserted before others:",
-               toString());
+              toString());
     assert(idx < segments_.size());
     segments_.erase(segments_.begin() + Signed_cast(idx) + 1, segments_.end());
   }
@@ -166,7 +166,7 @@ void SegmentCache::update(size_t idx, bool final) {
       segments_.erase(segments_.begin() + Signed_cast(idx) + 1);
     } else if (Segment::lessThan(next.begin(), seg.end())) {
       log_warning("SegmentCache: fixing up overlapping segments",
-                   seg.toString(), next.toString());
+                  seg.toString(), next.toString());
       size_t overlap = seg.end() - next.begin();
       seg.append(next.data(overlap), next.final());
       segments_.erase(segments_.begin() + Signed_cast(idx) + 1);

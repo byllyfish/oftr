@@ -84,19 +84,19 @@ void trace_rpc_internal(const char *type, UInt64 id, const void *data,
 }  // namespace detail
 
 // N.B. Arguments of `log_` macros are only evaluated at the given log level.
-#define LOG_IF_LEVEL_(LVL_, ...) \
-    (void)(ofp::log::LVL_ >= ofp::log::detail::GLOBAL_OutputLevelFilter && (ofp::log::detail::write_(ofp::log::LVL_, __VA_ARGS__), true))
+#define LOG_IF_LEVEL_(LVL_, ...)                                         \
+  (void)(ofp::log::LVL_ >= ofp::log::detail::GLOBAL_OutputLevelFilter && \
+         (ofp::log::detail::write_(ofp::log::LVL_, __VA_ARGS__), true))
 
-#define log_error(...)    LOG_IF_LEVEL_(Level::Error, __VA_ARGS__)
-#define log_warning(...)  LOG_IF_LEVEL_(Level::Warning, __VA_ARGS__)
-#define log_info(...)     LOG_IF_LEVEL_(Level::Info, __VA_ARGS__)
+#define log_error(...) LOG_IF_LEVEL_(Level::Error, __VA_ARGS__)
+#define log_warning(...) LOG_IF_LEVEL_(Level::Warning, __VA_ARGS__)
+#define log_info(...) LOG_IF_LEVEL_(Level::Info, __VA_ARGS__)
 
 #if defined(NDEBUG)
-#define log_debug(...)    (void)0
+#define log_debug(...) (void)0
 #else
-#define log_debug(...)    LOG_IF_LEVEL_(Level::Debug, __VA_ARGS__)
+#define log_debug(...) LOG_IF_LEVEL_(Level::Debug, __VA_ARGS__)
 #endif
-
 
 inline void trace_msg(const char *type, UInt64 id, const void *data,
                       size_t length) {

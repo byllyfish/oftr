@@ -63,8 +63,7 @@ void NullAgent::onMessage(const Message *message) {
       break;
 
     default:
-      log_debug("Unknown message type",
-                      static_cast<int>(message->type()));
+      log_debug("Unknown message type", static_cast<int>(message->type()));
       sendError(ofp::OFPBRC_BAD_TYPE, message);
       break;
   }
@@ -87,8 +86,7 @@ void NullAgent::onFlowMod(const Message *message) {
     return;
   }
 
-  log_debug("FlowMod: ",
-                  ofp::RawDataToHex(message->data(), message->size()));
+  log_debug("FlowMod: ", ofp::RawDataToHex(message->data(), message->size()));
 }
 
 void NullAgent::onGetAsyncRequest(const Message *message) {

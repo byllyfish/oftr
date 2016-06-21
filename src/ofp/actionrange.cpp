@@ -123,7 +123,7 @@ unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
       return 8;
     default:
       log_debug("ActionRange::writeSizeMinusSetFieldV1: Unexpected OXM type:",
-                 oxm->type());
+                oxm->type());
       return 0;
   }
 }
@@ -174,7 +174,7 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
       break;
     default:
       log_debug("ActionRange::writeSetFieldV1: Unknown field type: ",
-                 oxm->type());
+                oxm->type());
       break;
   }
 }

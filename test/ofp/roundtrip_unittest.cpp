@@ -23,7 +23,7 @@ class TestController : public ChannelListener {
   void onChannelUp(Channel *channel) override {
     ++GLOBAL_controllerCount;
     log_debug("TestController::onChannelUp",
-               std::make_pair("connid", channel->connectionId()));
+              std::make_pair("connid", channel->connectionId()));
     channel_ = channel;
 
     DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};
@@ -41,12 +41,12 @@ class TestController : public ChannelListener {
   void onChannelDown(Channel *channel) override {
     --GLOBAL_controllerCount;
     log_debug("TestController::onChannelDown",
-               std::make_pair("connid", channel->connectionId()));
+              std::make_pair("connid", channel->connectionId()));
   }
 
   void onMessage(const Message *message) override {
     log_debug("TestController::onMessage",
-               std::make_pair("connid", message->source()->connectionId()));
+              std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REPLY, message->type());
   }
 
@@ -73,7 +73,7 @@ class TestAgent : public ChannelListener {
   void onChannelUp(Channel *channel) override {
     ++GLOBAL_agentCount;
     log_debug("TestAgent::onChannelUp",
-               std::make_pair("connid", channel->connectionId()));
+              std::make_pair("connid", channel->connectionId()));
 
     // When agent channel comes up, we expect the datapathId to be all zeros.
     DatapathID dpid;
@@ -86,12 +86,12 @@ class TestAgent : public ChannelListener {
   void onChannelDown(Channel *channel) override {
     --GLOBAL_agentCount;
     log_debug("TestAgent::onChannelDown",
-               std::make_pair("connid", channel->connectionId()));
+              std::make_pair("connid", channel->connectionId()));
   }
 
   void onMessage(const Message *message) override {
     log_debug("TestAgent::onMessage",
-               std::make_pair("connid", message->source()->connectionId()));
+              std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REQUEST, message->type());
 
     DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};

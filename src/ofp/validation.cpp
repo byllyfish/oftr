@@ -116,7 +116,7 @@ void Validation::setErrorCode(OFPErrorCode error) {
 
 void Validation::setErrorMessage(const char *errorMessage, size_t errorOffset) {
   log_info("Validation failed:", errorMessage,
-            std::make_pair("offset", errorOffset));
+           std::make_pair("offset", errorOffset));
 
   if (msg_) {
     if (MessageInfo *info = msg_->info()) {

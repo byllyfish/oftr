@@ -230,7 +230,7 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
     size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
     if (flow.final() && n != flow.size()) {
       log_debug("MessageSource: TCP done before full message received",
-                 flow.sessionID());
+                flow.sessionID());
       // Make sure we consume all of the remaining data.
       n = flow.size();
     }
@@ -262,7 +262,7 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
       remaining -= msgLen;
     } else if (msgLen < sizeof(Header)) {
       log_warning("submitPayload: msgLen smaller than 8 bytes:", msgLen,
-                   "(skip 8 bytes)");
+                  "(skip 8 bytes)");
       data += sizeof(Header);
       remaining -= sizeof(Header);
     } else {

@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/flowcache.h"
-#include <map>    // for stats
-#include <unordered_set> // for stats
-#include <iomanip>  // for stats
+#include <iomanip>        // for stats
+#include <map>            // for stats
+#include <unordered_set>  // for stats
 
 using namespace ofp;
 using namespace ofp::demux;
@@ -49,7 +49,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     end = seq + 1;
     if (data.size() > 0) {
       log_warning("FlowCache: TCP SYN has unexpected data", data.size(),
-                   "bytes:", data);
+                  "bytes:", data);
       return FlowData{0};
     }
   } else {
@@ -82,7 +82,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
       entry.reset(ts, assignSessionID());
     } else {
       log_warning("TCP late segment ignored", entry.sessionID,
-                   tcpFlagToString(flags), src, dst, end);
+                  tcpFlagToString(flags), src, dst, end);
       return FlowData{entry.sessionID};
     }
   } else if ((flags & TCP_SYNACK) == TCP_SYN &&
@@ -90,12 +90,12 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     // This is a SYN (but not SYN-ACK) for an *unfinished* entry. We open a new
     // session if the connection has been idle for two minutes.
     log_warning("TCP SYN for unfinished entry", entry.sessionID,
-                 tcpFlagToString(flags), src, dst, end);
+                tcpFlagToString(flags), src, dst, end);
     entry.reset(ts, assignSessionID());
   }
 
   log_debug("TCP segment", entry.sessionID, tcpFlagToString(flags), src, dst,
-             entry.secondsSince(ts));
+            entry.secondsSince(ts));
 
   if (isX) {
     return entry.x.receive(ts, end, data, entry.sessionID, final,
@@ -166,7 +166,10 @@ std::string FlowCache::toString() const {
 
 std::string FlowCache::stats() const {
   std::ostringstream oss;
-  oss << "FlowCache size=" << cache_.size() << " bucket_count=" << cache_.bucket_count() << " load_factor=" << cache_.load_factor() << " max_load_factor=" << cache_.max_load_factor() << '\n';
+  oss << "FlowCache size=" << cache_.size()
+      << " bucket_count=" << cache_.bucket_count()
+      << " load_factor=" << cache_.load_factor()
+      << " max_load_factor=" << cache_.max_load_factor() << '\n';
 
   // Make histogram of bucket sizes for the FlowCacheKey.
   std::map<UInt32, UInt32> histogram;
@@ -186,7 +189,10 @@ std::string FlowCache::stats() const {
     addrs.insert(iter.first.x.address());
     addrs.insert(iter.first.y.address());
   }
-  oss << "IPv6Address size=" << addrs.size() << " bucket_count=" << addrs.bucket_count() << " load_factor=" << addrs.load_factor() << " max_load_factor=" << addrs.max_load_factor() << '\n';
+  oss << "IPv6Address size=" << addrs.size()
+      << " bucket_count=" << addrs.bucket_count()
+      << " load_factor=" << addrs.load_factor()
+      << " max_load_factor=" << addrs.max_load_factor() << '\n';
 
   // Make histogram of bucket sizes for the address set.
   histogram.clear();
@@ -219,5 +225,3 @@ static std::string tcpFlagToString(UInt8 flags) {
   }
   return result;
 }
-
-

@@ -170,7 +170,7 @@ UInt64 Engine::addIdentity(const std::string &certData,
   idPtr->setSecurityId(secId);
 
   log_info("Add TLS identity:", idPtr->subjectName(),
-            std::make_pair("tlsid", secId));
+           std::make_pair("tlsid", secId));
 
   identities_.push_back(std::move(idPtr));
 
@@ -250,7 +250,7 @@ bool Engine::registerDatapath(Connection *channel) {
 
       } else {
         log_warning("registerDatapath: Datapath is already registered.", dpid,
-                     std::make_pair("conn_id", channel->connectionId()));
+                    std::make_pair("conn_id", channel->connectionId()));
       }
     }
 
@@ -274,8 +274,8 @@ bool Engine::registerDatapath(Connection *channel) {
 
     } else {
       log_warning("registerDatapath: Main connection not found for datapath",
-                   dpid, "aux", static_cast<int>(auxID),
-                   std::make_pair("conn_id", channel->connectionId()));
+                  dpid, "aux", static_cast<int>(auxID),
+                  std::make_pair("conn_id", channel->connectionId()));
       return false;
     }
   }

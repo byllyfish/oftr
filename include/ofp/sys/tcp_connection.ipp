@@ -89,11 +89,11 @@ ofp::IPv6Endpoint TCP_Connection<SocketType>::localEndpoint() const {
 template <class SocketType>
 void TCP_Connection<SocketType>::flush() {
   log_debug("TCP_Connection::flush started",
-             std::make_pair("connid", connectionId()));
+            std::make_pair("connid", connectionId()));
   auto self(this->shared_from_this());
   socket_.buf_flush(connectionId(), [this, self](const std::error_code &error) {
     log_debug("TCP_Connection::flush finished",
-               std::make_pair("connid", connectionId()), error);
+              std::make_pair("connid", connectionId()), error);
     if (error) {
       socket_.lowest_layer().close();
     }
@@ -108,15 +108,15 @@ void TCP_Connection<SocketType>::shutdown() {
       return;
     setFlags(flags() | Connection::kShutdownCalled);
     log_debug("TCP_Connection::shutdown started",
-               std::make_pair("connid", connectionId()));
+              std::make_pair("connid", connectionId()));
     auto self(this->shared_from_this());
     socket_.async_shutdown([this, self](const std::error_code &error) {
       setFlags(flags() | Connection::kShutdownDone);
       log_debug("TCP_Connection::shutdown handler called",
-                 std::make_pair("connid", connectionId()));
+                std::make_pair("connid", connectionId()));
       if (error && error != asio::error::eof) {
         log_error("TCP_Connection::shutdown result",
-                   std::make_pair("connid", connectionId()), error);
+                  std::make_pair("connid", connectionId()), error);
       }
       socket_.shutdownLowestLayer();
     });
@@ -131,7 +131,7 @@ void TCP_Connection<SocketType>::asyncConnect(
   tcp::endpoint endpt = convertEndpoint<tcp>(remoteEndpt);
 
   log_info("Initiate TCP connection to", remoteEndpt,
-            std::make_pair("connid", connectionId()));
+           std::make_pair("connid", connectionId()));
 
   OFP_BEGIN_IGNORE_PADDING
 
@@ -143,14 +143,14 @@ void TCP_Connection<SocketType>::asyncConnect(
           assert(socket_.lowest_layer().is_open());
 
           log_info("Establish TCP connection", localEndpoint(), "-->",
-                    remoteEndpoint(), std::make_pair("connid", connectionId()));
+                   remoteEndpoint(), std::make_pair("connid", connectionId()));
 
           disableNagleAlgorithm();
           asyncHandshake(true);
 
         } else {
           log_error("TCP connect failed",
-                     std::make_pair("connid", connectionId()), err);
+                    std::make_pair("connid", connectionId()), err);
         }
 
         resultHandler(this, err);
@@ -166,7 +166,7 @@ void TCP_Connection<SocketType>::asyncAccept() {
     return;
 
   log_info("Accept TCP connection", localEndpoint(), "<--", remoteEndpoint(),
-            std::make_pair("connid", connectionId()));
+           std::make_pair("connid", connectionId()));
 
   disableNagleAlgorithm();
   asyncHandshake(false);
@@ -177,7 +177,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
   // Do nothing if socket is not open.
   if (!socket_.is_open()) {
     log_debug("asyncReadHeader called with socket closed",
-               std::make_pair("connid", connectionId()));
+              std::make_pair("connid", connectionId()));
     return;
   }
 
@@ -190,7 +190,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
       make_custom_alloc_handler(
           allocator_, [this, self](const asio::error_code &err, size_t length) {
             log_debug("asyncReadHeader callback",
-                       std::make_pair("connid", connectionId()), err);
+                      std::make_pair("connid", connectionId()), err);
             if (!err) {
               assert(length == sizeof(Header));
               const Header *hdr = message_.header();
@@ -217,7 +217,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               } else {
                 // The header failed our rudimentary validation checks.
                 log_debug("asyncReadHeader header validation failed",
-                           std::make_pair("connid", connectionId()));
+                          std::make_pair("connid", connectionId()));
                 channelDown();
                 engine()->alert(this, "Invalid OpenFlow message header",
                                 {hdr, sizeof(*hdr)});
@@ -229,7 +229,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               if (err != asio::error::eof &&
                   err != asio::error::operation_aborted) {
                 log_error("asyncReadHeader error",
-                           std::make_pair("connid", connectionId()), err);
+                          std::make_pair("connid", connectionId()), err);
               }
 
               channelDown();
@@ -245,7 +245,7 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   // Do nothing if socket is not open.
   if (!socket_.is_open()) {
     log_debug("asyncReadMessage called with socket closed",
-               std::make_pair("connid", connectionId()));
+              std::make_pair("connid", connectionId()));
     return;
   }
 
@@ -259,7 +259,7 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
           allocator_,
           [this, self](const asio::error_code &err, size_t bytes_transferred) {
             log_debug("asyncReadMessage callback",
-                       std::make_pair("connid", connectionId()), err);
+                      std::make_pair("connid", connectionId()), err);
             if (!err) {
               assert(bytes_transferred == message_.size() - sizeof(Header));
 
@@ -274,7 +274,7 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
             } else {
               if (err != asio::error::eof) {
                 log_info("asyncReadMessage error",
-                          std::make_pair("connid", connectionId()), err);
+                         std::make_pair("connid", connectionId()), err);
               }
               channelDown();
             }

@@ -60,7 +60,7 @@ UDP_Server::~UDP_Server() {
     // By this point, all connections should have removed themselves. If any
     // exist, we need to shut them down.
     log_info(connMap_.size(), "UDP connections still exist!",
-              std::make_pair("connid", connId_));
+             std::make_pair("connid", connId_));
 
     // Safe way to iterate over connMap_ to close existing connections. N.B.
     // connections remove themselves from connMap_ (if they find themselves)
@@ -116,8 +116,8 @@ void UDP_Server::add(Connection *conn) {
   if (!result.second) {
     auto existing = connMap_[conn->remoteEndpoint()];
     log_warning("UDP_Server::add: duplicate UDP connection ignored",
-                 conn->remoteEndpoint(), existing->connectionId(),
-                 std::make_pair("connid", conn->connectionId()));
+                conn->remoteEndpoint(), existing->connectionId(),
+                std::make_pair("connid", conn->connectionId()));
   }
 }
 
@@ -125,8 +125,8 @@ void UDP_Server::remove(Connection *conn) {
   auto iter = connMap_.find(conn->remoteEndpoint());
   if (iter == connMap_.end()) {
     log_warning("UDP_Server::remove: cannot find remote endpoint",
-                 conn->remoteEndpoint(),
-                 std::make_pair("connid", conn->connectionId()));
+                conn->remoteEndpoint(),
+                std::make_pair("connid", conn->connectionId()));
     return;
   }
 
@@ -134,8 +134,8 @@ void UDP_Server::remove(Connection *conn) {
     connMap_.erase(iter);
   } else {
     log_warning("UDP_Server::remove: duplicate UDP connection ignored",
-                 conn->remoteEndpoint(),
-                 std::make_pair("connid", conn->connectionId()));
+                conn->remoteEndpoint(),
+                std::make_pair("connid", conn->connectionId()));
   }
 }
 
@@ -172,8 +172,8 @@ void UDP_Server::asyncListen(const IPv6Endpoint &localEndpt,
 
     // Log message using the new local endpoint, if one was assigned.
     log_info("Start listening on UDP", localEndpoint(),
-              std::make_pair("tlsid", securityId_),
-              std::make_pair("connid", connId_));
+             std::make_pair("tlsid", securityId_),
+             std::make_pair("connid", connId_));
 
     asyncReceive();
 
@@ -216,7 +216,7 @@ void UDP_Server::asyncReceive() {
 
         if (err) {
           log_error("Error receiving datagram",
-                     std::make_pair("connid", connId_), err);
+                    std::make_pair("connid", connId_), err);
 
         } else {
           buffer_.resize(bytes_recvd);
@@ -249,7 +249,7 @@ void UDP_Server::asyncSend() {
 
         if (err) {
           log_error("Error sending datagram to", datagram.destination(),
-                     std::make_pair("connid", datagram.connectionId()), err);
+                    std::make_pair("connid", datagram.connectionId()), err);
         }
         datagrams_.pop_front();
       });

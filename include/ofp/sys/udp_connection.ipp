@@ -64,8 +64,8 @@ void UDP_Connection<AdapterType>::connect(const udp::endpoint &remoteEndpt) {
   Identity::beforeHandshake(this, dtls_.native_handle(), true);
   dtls_.connect();
 
-  log_info("Establish UDP connection", localEndpoint(), "-->",
-            remoteEndpoint(), std::make_pair("connid", connectionId()));
+  log_info("Establish UDP connection", localEndpoint(), "-->", remoteEndpoint(),
+           std::make_pair("connid", connectionId()));
 
   if (!(flags() & Connection::kRequiresHandshake)) {
     channelUp();
@@ -81,7 +81,7 @@ void UDP_Connection<AdapterType>::accept(const udp::endpoint &remoteEndpt) {
   dtls_.accept();
 
   log_info("Accept UDP connection", localEndpoint(), "<--", remoteEndpoint(),
-            std::make_pair("connid", connectionId()));
+           std::make_pair("connid", connectionId()));
 
   if (!(flags() & Connection::kRequiresHandshake)) {
     channelUp();

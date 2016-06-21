@@ -372,7 +372,7 @@ struct MappingTraits<ofp::MultipartReply> {
       default:
         // FIXME
         log_info("MultiPartReply: MappingTraits not fully implemented.",
-                  static_cast<int>(type));
+                 static_cast<int>(type));
         break;
     }
   }
@@ -536,7 +536,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       default:
         // FIXME
         log_info("MultiPartReplyBuilder: MappingTraits not fully implemented.",
-                  static_cast<int>(type));
+                 static_cast<int>(type));
         break;
     }
   }

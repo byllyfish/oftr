@@ -128,7 +128,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       header_.setVersion(outputChannel_->version());
     } else if (header_.version() != outputChannel_->version()) {
       log_warning("Message version", header_.version(),
-                   "does not match channel version", outputChannel_->version());
+                  "does not match channel version", outputChannel_->version());
     }
 
   } else if (!header_.version()) {
@@ -382,7 +382,7 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
     }
     default:
       log_info("yaml::Encoder::encodeMsg: Unsupported message type:",
-                static_cast<int>(header_.type()));
+               static_cast<int>(header_.type()));
       break;
   }
 }

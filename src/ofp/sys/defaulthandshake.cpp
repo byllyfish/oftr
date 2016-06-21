@@ -38,7 +38,7 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
   log_warning("DefaultHandshake: Channel down before handshake could complete",
-               std::make_pair("connid", channel->connectionId()));
+              std::make_pair("connid", channel->connectionId()));
 }
 
 void DefaultHandshake::onMessage(const Message *message) {
@@ -57,7 +57,7 @@ void DefaultHandshake::onMessage(const Message *message) {
 
     default:
       log_warning("DefaultHandshake: Ignored message type", message->type(),
-                   std::make_pair("connid", message->source()->connectionId()));
+                  std::make_pair("connid", message->source()->connectionId()));
       break;
   }
 }
@@ -84,7 +84,7 @@ void DefaultHandshake::onHello(const Message *message) {
     auto explanation = sstr.str();
 
     log_warning(explanation,
-                 std::make_pair("connid", channel_->connectionId()));
+                std::make_pair("connid", channel_->connectionId()));
     channel_->engine()->alert(channel_, explanation, {header, sizeof(*header)});
 
     message->replyError(OFPHFC_INCOMPATIBLE, explanation);
@@ -97,8 +97,8 @@ void DefaultHandshake::onHello(const Message *message) {
   channel_->setVersion(version);
 
   log_info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:",
-            msg->protocolVersions().toString(),
-            std::make_pair("connid", channel_->connectionId()));
+           msg->protocolVersions().toString(),
+           std::make_pair("connid", channel_->connectionId()));
 
   if ((options_ & ChannelOptions::FEATURES_REQ) != 0) {
     channel_->setKeepAliveTimeout(kControllerKeepAliveTimeout);

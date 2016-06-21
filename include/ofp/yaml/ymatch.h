@@ -124,8 +124,8 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     if (id != ofp::OXMInternalID::UNKNOWN) {
       OXMDispatch(id, &reader);
     } else {
-      log_debug(
-          "MappingTraitss<OXMIterator::Item>: Unrecognized match field", type);
+      log_debug("MappingTraitss<OXMIterator::Item>: Unrecognized match field",
+                type);
       ofp::ByteRange data{item.unknownValuePtr(), item.unknownValueLength()};
       if (type.hasMask()) {
         // First half is value, second half is mask.
@@ -194,7 +194,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
 
     } else {
       log_debug("MappingTraits<MatchBuilderItem>: Unexpected match field",
-                      type);
+                type);
       ofp::ByteList data;
       io.mapRequired("value", data);
 
