@@ -2,6 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/flowcache.h"
+#include <map>    // for stats
+#include <unordered_set> // for stats
+#include <iomanip>  // for stats
 
 using namespace ofp;
 using namespace ofp::demux;
@@ -85,8 +88,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   } else if ((flags & TCP_SYNACK) == TCP_SYN &&
              entry.secondsSince(ts) >= kTwoMinuteTimeout) {
     // This is a SYN (but not SYN-ACK) for an *unfinished* entry. We open a new
-    // session
-    // if the connection has been idle for two minutes.
+    // session if the connection has been idle for two minutes.
     log_warning("TCP SYN for unfinished entry", entry.sessionID,
                  tcpFlagToString(flags), src, dst, end);
     entry.reset(ts, assignSessionID());
@@ -162,6 +164,44 @@ std::string FlowCache::toString() const {
   return oss.str();
 }
 
+std::string FlowCache::stats() const {
+  std::ostringstream oss;
+  oss << "FlowCache size=" << cache_.size() << " bucket_count=" << cache_.bucket_count() << " load_factor=" << cache_.load_factor() << " max_load_factor=" << cache_.max_load_factor() << '\n';
+
+  // Make histogram of bucket sizes for the FlowCacheKey.
+  std::map<UInt32, UInt32> histogram;
+  for (size_t i = 0; i < cache_.bucket_count(); ++i) {
+    UInt32 bktSize = UInt32_narrow_cast(cache_.bucket_size(i));
+    histogram[bktSize] += 1;
+  }
+
+  for (const auto &iter : histogram) {
+    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+  }
+
+  // Hash all the addresses into an unordered set.
+  std::unordered_set<IPv6Address> addrs;
+  addrs.max_load_factor(0.9f);
+  for (const auto &iter : cache_) {
+    addrs.insert(iter.first.x.address());
+    addrs.insert(iter.first.y.address());
+  }
+  oss << "IPv6Address size=" << addrs.size() << " bucket_count=" << addrs.bucket_count() << " load_factor=" << addrs.load_factor() << " max_load_factor=" << addrs.max_load_factor() << '\n';
+
+  // Make histogram of bucket sizes for the address set.
+  histogram.clear();
+  for (size_t i = 0; i < addrs.bucket_count(); ++i) {
+    UInt32 bktSize = UInt32_narrow_cast(addrs.bucket_size(i));
+    histogram[bktSize] += 1;
+  }
+
+  for (const auto &iter : histogram) {
+    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+  }
+
+  return oss.str();
+}
+
 static std::string tcpFlagToString(UInt8 flags) {
   std::string result;
 
@@ -179,3 +219,5 @@ static std::string tcpFlagToString(UInt8 flags) {
   }
   return result;
 }
+
+
