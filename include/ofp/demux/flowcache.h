@@ -28,6 +28,8 @@ struct FlowCacheKey {
   }
 };
 
+static_assert(sizeof(FlowCacheKey) == 36, "Unexpected size.");
+
 // Entry used in FlowCache.
 struct FlowCacheEntry {
   UInt64 sessionID = 0;
@@ -56,10 +58,7 @@ namespace std {
 template <>
 struct hash<ofp::demux::detail::FlowCacheKey> {
   size_t operator()(const ofp::demux::detail::FlowCacheKey &key) const {
-    size_t result = 0;
-    ofp::HashCombine(result, std::hash<ofp::IPv6Endpoint>{}(key.x));
-    ofp::HashCombine(result, std::hash<ofp::IPv6Endpoint>{}(key.y));
-    return result;
+    return ofp::hash::MurmurHash32(&key);
   }
 };
 

@@ -4,10 +4,9 @@
 #ifndef OFP_DATAPATHID_H_
 #define OFP_DATAPATHID_H_
 
-#include "ofp/array.h"
+#include <array>
 #include "ofp/byteorder.h"
 #include "ofp/macaddress.h"
-#include "ofp/types.h"
 
 namespace ofp {
 
@@ -61,8 +60,7 @@ namespace std {
 template <>
 struct hash<ofp::DatapathID> {
   size_t operator()(const ofp::DatapathID &addr) const {
-    std::hash<ofp::DatapathID::ArrayType> h;
-    return h(addr.toArray());
+    return ofp::hash::MurmurHash32(&addr);
   }
 };
 

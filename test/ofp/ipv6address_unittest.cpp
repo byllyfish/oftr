@@ -199,8 +199,8 @@ TEST(ipv6address, hash) {
   IPv6Address b{"2001::2"};
 
   std::hash<IPv6Address> hasher;
-  EXPECT_EQ(0xe191de1e, hasher(a) & 0xffffffff);
-  EXPECT_EQ(0xc323bbfd, hasher(b) & 0xffffffff);
+  EXPECT_EQ(0x94c21081, hasher(a) & 0xffffffff);
+  EXPECT_EQ(0xd47e6e19, hasher(b) & 0xffffffff);
 }
 
 TEST(ipv6address, parse_fails) {
