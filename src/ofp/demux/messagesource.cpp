@@ -254,7 +254,7 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
   size_t remaining = length;
 
   while (remaining >= sizeof(Header)) {
-    UInt16 msgLen = Big16_copy(data + 2);
+    UInt16 msgLen = Big16_unaligned(data + 2);
 
     if (msgLen >= sizeof(Header) && remaining >= msgLen) {
       deliverMessage(data, msgLen, sessionID);

@@ -217,3 +217,15 @@ TEST(byteorder, fromBytes) {
   auto c = Big32::fromBytes(BytePtr(&val64), 8);
   EXPECT_EQ(0x22222222, c);
 }
+
+TEST(byteorder, Big16_unaligned) {
+  Big32 x = 0x01020304;
+  const UInt8 *p = BytePtr(&x);
+  EXPECT_EQ(0x0203, Big16_unaligned(p + 1));
+}
+
+TEST(byteorder, Big32_unaligned) {
+  Big64 x = 0x0102030405060708;
+  const UInt8 *p = BytePtr(&x);
+  EXPECT_EQ(0x02030405, Big32_unaligned(p + 1));
+}

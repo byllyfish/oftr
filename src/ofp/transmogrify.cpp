@@ -784,7 +784,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
   ByteList newBuf;
   while (remaining > 16) {
     // Read 16-bit queue length from a potentially mis-aligned position.
-    UInt16 queueLen = Big16_copy(ptr + 8);
+    UInt16 queueLen = Big16_unaligned(ptr + 8);
     if (queueLen > remaining || queueLen < 16)
       return;
     // Copy queue header.
@@ -795,7 +795,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
     const UInt8 *prop = ptr + 16;
     size_t propLeft = queueLen - 16;
     while (propLeft > 4) {
-      UInt16 propSize = Big16_copy(prop + 2);
+      UInt16 propSize = Big16_unaligned(prop + 2);
       if (propSize > propLeft || propSize < 4)
         return;
       newBuf.add(prop, propSize);
