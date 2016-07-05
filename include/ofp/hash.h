@@ -1,11 +1,14 @@
-#ifndef OFP_HASH_
-#define OFP_HASH_
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
+#ifndef OFP_HASH_H_
+#define OFP_HASH_H_
 
 #include "ofp/types.h"
 
 // This file contains source code adapted from MurmurHash3:
 // https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
-// 
+//
 // "MurmurHash3 was written by Austin Appleby, and is placed in the public
 // domain. The author hereby disclaims copyright to this source code."
 
@@ -31,7 +34,7 @@ inline UInt32 FinalMix32(UInt32 x) {
 // MurmurHash32 is adapted from the C source code of `MurmurHash3_x86_32`:
 // https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
 
-template <class Type, unsigned Size=sizeof(Type)>
+template <class Type, unsigned Size = sizeof(Type)>
 size_t MurmurHash32(const Type *key) {
   const UInt32 seed = 29;
   const UInt32 c1 = 0xcc9e2d51;
@@ -81,4 +84,4 @@ void HashCombine(size_t &seed, const T &val) {
 }  // namespace hash
 }  // namespace ofp
 
-#endif  // OFP_HASH_
+#endif  // OFP_HASH_H_

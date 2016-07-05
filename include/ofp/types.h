@@ -6,17 +6,17 @@
 
 #include <cassert>  // for assert macro
 #include <chrono>
-#include <cstddef>       // for std::size_t, etc.
-#include <cstdint>       // for std::uint8_t, etc.
-#include <cstdlib>       // for std::malloc, etc.
-#include <cstring>       // for std::strlen, std::memcpy, etc.
-#include <memory>        // for std::unique_ptr<T>
-#include <ostream>       // for std::ostream (used for now) NOLINT
-#include <string>        // for std::string
-#include <system_error>  // for std::error_code
-#include <type_traits>   // for std::make_unsigned<T>, etc.
+#include <cstddef>               // for std::size_t, etc.
+#include <cstdint>               // for std::uint8_t, etc.
+#include <cstdlib>               // for std::malloc, etc.
+#include <cstring>               // for std::strlen, std::memcpy, etc.
+#include <memory>                // for std::unique_ptr<T>
+#include <ostream>               // for std::ostream (used for now) NOLINT
+#include <string>                // for std::string
+#include <system_error>          // for std::error_code
+#include <type_traits>           // for std::make_unsigned<T>, etc.
+#include "llvm/ADT/StringRef.h"  // for llvm::StringRef
 #include "ofp/config.h"
-#include "llvm/ADT/StringRef.h"   // for llvm::StringRef
 
 #if defined(__clang__)
 #define OFP_BEGIN_IGNORE_PADDING   \
