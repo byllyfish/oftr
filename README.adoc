@@ -130,7 +130,7 @@ On Ubuntu, use apt-get to install the dependencies.
 [source,console]
 ----
 $ sudo apt-get -yq update
-$ sudo apt-get install build-essential cmake git golang
+$ sudo apt-get install build-essential cmake git golang libpcap-dev
 ----
 
 On Mac OS X, you can obtain cmake from http://cmake.org/download/.

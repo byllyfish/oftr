@@ -29,7 +29,7 @@
 
 // These variables control libpcap capabilities.
 
-#cmakedefine01 HAVE_PCAP_PCAP_H
+#cmakedefine01 HAVE_LIBPCAP
 #cmakedefine01 HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
 #cmakedefine01 HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION
 

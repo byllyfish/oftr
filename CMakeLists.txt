@@ -359,9 +359,10 @@ include(CheckLibraryExists)
 check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)
 if(HAVE_LIBPCAP)
   set(CMAKE_REQUIRED_LIBRARIES pcap)
-  check_include_file(pcap/pcap.h HAVE_PCAP_PCAP_H)
   check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
   check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
+else()
+  message(FATAL_ERROR "libpcap is not available.")
 endif()
 
 #-------------------------------------------------------------------------------
@@ -380,8 +381,8 @@ endif()
 
 # Use pthreads.
 
+find_package(Threads)
 if(LIBOFP_ENABLE_JSONRPC)
-  find_package(Threads)
   set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
