@@ -354,11 +354,15 @@ endif()
 
 include(CheckIncludeFile)
 include(CheckSymbolExists)
-set(CMAKE_REQUIRED_LIBRARIES pcap)
+include(CheckLibraryExists)
 
-check_include_file(pcap/pcap.h HAVE_PCAP_PCAP_H)
-check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
-check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
+check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)
+if(HAVE_LIBPCAP)
+  set(CMAKE_REQUIRED_LIBRARIES pcap)
+  check_include_file(pcap/pcap.h HAVE_PCAP_PCAP_H)
+  check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
+  check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
+endif()
 
 #-------------------------------------------------------------------------------
 # Build Library
