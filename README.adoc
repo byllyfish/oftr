@@ -19,21 +19,11 @@ The *libofp* program translates binary https://www.opennetworking.org/sdn-resour
 ** auxiliary connections
 ** TLS and DTLS
 
-Libofp is a *tool* in the unix tradition. Use `netcat` in a pipe to feed OpenFlow messages to a switch or controller:
-
-[source,console]
-----
-$ libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
-----
-
-Parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
-messages, while retaining metadata such as timestamps:
+Decode the OpenFlow messages in a ".pcap" file while retaining metadata such as timestamps:
 
 [source,bash]
 ----
-#!/bin/bash
-tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
-libofp decode --use-findx "/tmp/flow_$$/*.findx"
+$ libofp decode "filename.pcap"
 ----
 
 Libofp includes a JSON-RPC microservice that can operate as an OpenFlow 
@@ -180,6 +170,14 @@ To decode a file of binary OpenFlow messages to YAML:
 [source,console]
 ----
 $ libofp decode input.bin
+----
+
+To decode a ".pcap" file containing OpenFlow messages, treating all TCP streams
+as potential OpenFlow connections:
+
+[source,console]
+----
+$ libofp decode --pcap-filter='' "input.pcap" 
 ----
 
 To decode a file of binary OpenFlow messages to compact single-line JSON objects:
