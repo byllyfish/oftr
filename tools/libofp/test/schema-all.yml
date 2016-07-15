@@ -1719,8 +1719,8 @@ Field/X_LLDP_TTL:
   field: X_LLDP_TTL
   value: UInt16
   
-Field/X_PKT_MARK: 
-  field: X_PKT_MARK
+Field/X_PKT_POS: 
+  field: X_PKT_POS
   value: UInt16
   
 Field/X_EXPERIMENTER_01: 

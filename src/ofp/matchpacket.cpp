@@ -50,9 +50,9 @@ void MatchPacket::decode(const UInt8 *pkt, size_t length) {
 
   decodeEthernet(pkt, length);
 
-  // If all the data is not accounted for, report offset using X_PKT_MARK.
+  // If all the data is not accounted for, report offset using X_PKT_POS.
   if (offset_ < length) {
-    match_.add(X_PKT_MARK{UInt16_narrow_cast(offset_)});
+    match_.add(X_PKT_POS{UInt16_narrow_cast(offset_)});
   }
 }
 

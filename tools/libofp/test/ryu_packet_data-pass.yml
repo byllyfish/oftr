@@ -33,7 +33,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
@@ -187,7 +187,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
@@ -1027,7 +1027,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
@@ -3840,7 +3840,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
