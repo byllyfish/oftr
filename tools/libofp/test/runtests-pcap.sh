@@ -72,10 +72,18 @@ verify_sha1 "$MSG_DIR/_tcp-18-172.16.133.84:58899-172.16.139.250:5440" "ec6139ba
 # Check illegal argument combinations to make sure they are rejected.
 
 # You cannot combine the --pcap-device option with any input arguments.
+echo "Run libofp decode combinging --pcap-device option with file arguments."
+echo "  Note: Expect to see \"Error: File list provided with live packet capture\""
 ! $LIBOFP_MEMCHECK $LIBOFP decode --pcap-device=en0 filename || {
     echo "Test Failed: Don't use --pcap-device with files. ($?)"
     exit 1
 }
+
+# Decode OpenFlow messages in `cap_single.pcap`.
+
+echo "Run libofp decode on $CURRENT_SOURCE_DIR/cap_single.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.out" 2>&1
+diff "$CURRENT_TEST_DIR/cap_single.pcap.out" "$CURRENT_SOURCE_DIR/cap_single.pcap.out"
 
 echo "Done."
 exit 0

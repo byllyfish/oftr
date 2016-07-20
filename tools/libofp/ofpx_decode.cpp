@@ -48,6 +48,12 @@ int Decode::run(int argc, const char *const *argv) {
     output_ = &outStream;
   }
 
+  // Put opening '[' only if format is json array.
+  if (!silent_ && jsonArray_) {
+    jsonArrayNeedComma_ = false;
+    *output_ << "[\n";
+  }
+
   // If --pcap-device option is specified, decode from packet capture device.
   // Otherwise, decode messages from pcap or binary files.
 
@@ -58,6 +64,11 @@ int Decode::run(int argc, const char *const *argv) {
     result = decodePcapFiles();
   } else {
     result = decodeFiles();
+  }
+
+  // Put closing ']' only if format is json array.
+  if (!silent_ && jsonArray_) {
+    *output_ << "]\n";
   }
 
   return static_cast<int>(result);
@@ -91,18 +102,16 @@ bool Decode::validateCommandLineArguments() {
     inputFiles_.push_back("-");
   }
 
+  // --json-array implies --json.
+  if (!silent_ && jsonArray_) {
+    json_ = true;
+  }
+
   return true;
 }
 
 ExitStatus Decode::decodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
-
-  if (!silent_ && jsonArray_) {
-    // -json-array implies -json.
-    json_ = true;
-    jsonNeedComma_ = false;
-    *output_ << "[\n";
-  }
 
   for (std::string filename : files) {
     // If filename ends in .findx when using --use-findx, strip the extension
@@ -116,10 +125,6 @@ ExitStatus Decode::decodeFiles() {
     if (result != ExitStatus::Success && !keepGoing_) {
       return result;
     }
-  }
-
-  if (!silent_ && jsonArray_) {
-    *output_ << "]\n";
   }
 
   return ExitStatus::Success;
@@ -454,13 +459,13 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   }
 
   if (!silent_) {
-    if (jsonArray_ && jsonNeedComma_) {
+    if (jsonArray_ && jsonArrayNeedComma_) {
       *output_ << ',';
     }
     *output_ << decoder.result();
     if (json_) {
       *output_ << '\n';
-      jsonNeedComma_ = true;
+      jsonArrayNeedComma_ = true;
     }
   }
 

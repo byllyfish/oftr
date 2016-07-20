@@ -81,7 +81,7 @@ class Decode : public Subprogram {
   std::string currentFilename_;
   std::ostream *output_ = nullptr;
   ofp::MessageInfo sessionInfo_;
-  bool jsonNeedComma_ = false;
+  bool jsonArrayNeedComma_ = false;
 
   using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
   std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
