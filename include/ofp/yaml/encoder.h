@@ -115,7 +115,6 @@ struct MappingTraits<ofp::yaml::Encoder> {
 
     std::string ignore;
     io.mapOptional("_file", ignore);
-    io.mapOptional("_session", ignore);
     io.mapOptional("_source", ignore);
     io.mapOptional("_dest", ignore);
     io.mapOptional("time", ignore);
