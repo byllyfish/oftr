@@ -36,6 +36,7 @@ $LIBOFP_MEMCHECK $LIBOFP decode --pcap-format=yes --pcap-output-dir=$MSG_DIR --p
 
 verify_sha1 "$CURRENT_SOURCE_DIR/tcp.pcap" "08cf1e8ab8b499cfa8d03398e74c09ad59d3a731"
 verify_sha1 "$CURRENT_SOURCE_DIR/flow58899.pcap" "69d160c2773defae44daf7d037c649df0f9a6bd0"
+verify_sha1 "$CURRENT_SOURCE_DIR/cap_single.pcap" "35da4a52e18203c70f67badb0eb53808a43014c2"
 
 verify_sha1 "$MSG_DIR/_tcp-1-127.0.0.1:61278-127.0.0.1:8888" "b0372f0c19e464a30bb2faa54510dd80e1496417"
 verify_sha1 "$MSG_DIR/_tcp-1-127.0.0.1:8888-127.0.0.1:61278" "759cca92810046305aab8fd1789ef38965ae81a0"
@@ -73,8 +74,7 @@ verify_sha1 "$MSG_DIR/_tcp-18-172.16.133.84:58899-172.16.139.250:5440" "ec6139ba
 
 # You cannot combine the --pcap-device option with any input arguments.
 echo "Run libofp decode combinging --pcap-device option with file arguments."
-echo "  Note: Expect to see \"Error: File list provided with live packet capture\""
-! $LIBOFP_MEMCHECK $LIBOFP decode --pcap-device=en0 filename || {
+! $LIBOFP_MEMCHECK $LIBOFP decode --pcap-device=en0 filename 2> /dev/null || {
     echo "Test Failed: Don't use --pcap-device with files. ($?)"
     exit 1
 }
