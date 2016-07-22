@@ -115,8 +115,8 @@ struct MappingTraits<ofp::yaml::Encoder> {
 
     std::string ignore;
     io.mapOptional("_file", ignore);
-    io.mapOptional("_source", ignore);
-    io.mapOptional("_dest", ignore);
+    io.mapOptional("_src", ignore);
+    io.mapOptional("_dst", ignore);
     io.mapOptional("time", ignore);
 
     if (header.type() != OFPT_UNSUPPORTED) {
