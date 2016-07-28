@@ -241,6 +241,7 @@ set(LIBOFP_SOURCES
   src/ofp/validation.cpp
   src/ofp/yaml/decoder.cpp
   src/ofp/yaml/encoder.cpp
+  src/ofp/yaml/getjson.cpp
   src/ofp/yaml/outputjson.cpp
   src/ofp/yaml/seterror.cpp
   src/ofp/yaml/yconstants.cpp

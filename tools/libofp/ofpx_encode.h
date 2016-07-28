@@ -5,6 +5,7 @@
 #define TOOLS_LIBOFP_OFPX_ENCODE_H_
 
 #include "./ofpx.h"
+#include "ofp/yaml/getjson.h"
 
 namespace ofpx {
 
@@ -53,6 +54,7 @@ class Encode : public Subprogram {
  public:
   enum class ExitStatus {
     Success = 0,
+    InvalidArguments = InvalidArgumentsExitStatus,
     FileOpenFailed = FileOpenFailedExitStatus,
     EncodeFailed = MinExitStatus,
     RoundtripFailed,
@@ -64,13 +66,13 @@ class Encode : public Subprogram {
  private:
   std::string currentFilename_;
   std::ostream *output_ = nullptr;
-  std::string lineBuf_;
   int lineNumber_ = 0;
+  ofp::yaml::GetMsgFunction readMessage_ = nullptr;
 
+  bool validateCommandLineArguments();
   ExitStatus encodeFiles();
   ExitStatus encodeFile(const std::string &filename);
   ExitStatus encodeMessages(std::istream &input);
-  bool readMessage(std::istream &input, std::string &msg, int &lineNum);
   void output(const void *data, size_t length);
 
   // --- Command-line Arguments ---

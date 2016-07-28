@@ -18,9 +18,8 @@ int Encode::run(int argc, const char *const *argv) {
       argc, argv,
       "Translate OpenFlow messages specified by YAML input files to binary\n");
 
-  // If there are no input files, add "-" to indicate stdin.
-  if (inputFiles_.empty()) {
-    inputFiles_.push_back("-");
+  if (!validateCommandLineArguments()) {
+    return static_cast<int>(ExitStatus::InvalidArguments);
   }
 
   // Set up output stream.
@@ -37,6 +36,22 @@ int Encode::run(int argc, const char *const *argv) {
   }
 
   return static_cast<int>(encodeFiles());
+}
+
+bool Encode::validateCommandLineArguments() {
+  // If there are no input files, add "-" to indicate stdin.
+  if (inputFiles_.empty()) {
+    inputFiles_.push_back("-");
+  }
+
+  // Set up `readMessage` function.
+  if (json_) {
+    readMessage_ = ofp::yaml::getline;
+  } else {
+    readMessage_ = ofp::yaml::getyaml;
+  }
+
+  return true;
 }
 
 ExitStatus Encode::encodeFiles() {
@@ -87,8 +102,8 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   std::string text;
   int lineNum = 0;
 
-  while (readMessage(input, text, lineNum)) {
-    log_debug("readMessage returned", text);
+  while (readMessage_(input, text, lineNum, lineNumber_)) {
+    log_debug("readMessage line", lineNum, ':', text);
 
     ofp::yaml::Encoder encoder{text, !uncheckedMatch_, lineNum,
                                ofp::UInt8_narrow_cast(ofversion_.getValue())};
@@ -144,59 +159,6 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
   }
 
   return ExitStatus::Success;
-}
-
-static bool isEmptyOrWhitespaceOnly(std::string &s) {
-  return std::find_if(s.begin(), s.end(),
-                      [](char ch) { return !isspace(ch); }) == s.end();
-}
-
-static void chomp(std::string &s) {
-  if (!s.empty() && s.back() == '\r') {
-    s.erase(s.size() - 1);
-  }
-}
-
-bool Encode::readMessage(std::istream &input, std::string &msg, int &lineNum) {
-  if (!input) {
-    return false;
-  }
-
-  msg.clear();
-
-  int msgLines = 0;
-  while (std::getline(input, lineBuf_)) {
-    chomp(lineBuf_);
-    ++lineNumber_;
-
-    if (json_) {
-      if (isEmptyOrWhitespaceOnly(lineBuf_)) {
-        // Don't return empty lines.
-        continue;
-      }
-      msg = lineBuf_;
-      return true;
-    }
-
-    assert(!json_);
-
-    if (lineBuf_ == "---" || lineBuf_ == "...") {
-      if (isEmptyOrWhitespaceOnly(msg)) {
-        // Don't return empty messages.
-        msgLines = 0;
-        continue;
-      }
-      lineNum = lineNumber_ - msgLines - 1;
-      return true;
-    }
-    msg += lineBuf_;
-    msg += '\n';
-    ++msgLines;
-  }
-
-  lineNum = lineNumber_ - msgLines - 1;
-
-  return !isEmptyOrWhitespaceOnly(msg);
 }
 
 void Encode::output(const void *data, size_t length) {

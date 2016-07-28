@@ -73,7 +73,7 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
     // Make sure error string is set. There won't be an error string if the
     // document is empty.
     if (error().empty()) {
-      errorStream_ << "YAML:" << (lineNumber_ + 1)
+      errorStream_ << "YAML:" << lineNumber_
                    << ":1: error: not a document";
     }
     channel_.clear();
@@ -82,7 +82,7 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
     // If the message isn't implemented, no output will be produced and there
     // will be no error.
     errorStream_
-        << "YAML:" << (lineNumber_ + 1)
+        << "YAML:" << lineNumber_
         << ":1: error: no output produced; check implementation status";
   }
 
@@ -96,7 +96,7 @@ void Encoder::diagnosticHandler(const llvm::SMDiagnostic &d, void *context) {
 
 void Encoder::addDiagnostic(const llvm::SMDiagnostic &d) {
   llvm::SMDiagnostic diag{*d.getSourceMgr(), d.getLoc(),
-                          d.getFilename(),   d.getLineNo() + lineNumber_,
+                          d.getFilename(),   d.getLineNo() + lineNumber_ - 1,
                           d.getColumnNo(),   d.getKind(),
                           d.getMessage(),    d.getLineContents(),
                           d.getRanges()};

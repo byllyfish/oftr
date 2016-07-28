@@ -39,6 +39,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/ipv4address_unittest.cpp
 	ofp/ipv6address_unittest.cpp
 	ofp/ipv6endpoint_unittest.cpp
+	ofp/getjson_unittest.cpp
 	ofp/matchbuilder_unittest.cpp
 	ofp/matchheader_unittest.cpp
 	ofp/matchpacket_unittest.cpp

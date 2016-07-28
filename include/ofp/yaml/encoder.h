@@ -27,7 +27,7 @@ class Encoder {
 
   explicit Encoder(ChannelFinder finder);
   Encoder(const std::string &input, bool matchPrereqsChecked = true,
-          int lineNumber = 0, UInt8 defaultVersion = 0,
+          int lineNumber = 1, UInt8 defaultVersion = 0,
           ChannelFinder finder = nullptr);
 
   const UInt8 *data() const { return channel_.data(); }
@@ -63,7 +63,7 @@ class Encoder {
   OFPMessageFlags flags_ = OFP_DEFAULT_MESSAGE_FLAGS;
   ChannelFinder finder_;
   Channel *outputChannel_ = nullptr;
-  int lineNumber_ = 0;
+  int lineNumber_ = 1;
   UInt8 auxiliaryId_ = 0;
   UInt8 defaultVersion_;
   bool matchPrereqsChecked_;
