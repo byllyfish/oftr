@@ -86,9 +86,9 @@ void print_version() {
   os << "  <" << LIBOFP_GITHUB_URL << ">\n";
 
   const char *bits = "? bit";
-  if (sizeof(void*) == 8) {
+  if (sizeof(void *) == 8) {
     bits = "64 bit";
-  } else if (sizeof(void*) == 4) {
+  } else if (sizeof(void *) == 4) {
     bits = "32 bit";
   }
 

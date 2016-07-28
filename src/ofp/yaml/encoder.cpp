@@ -73,8 +73,7 @@ Encoder::Encoder(const std::string &input, bool matchPrereqsChecked,
     // Make sure error string is set. There won't be an error string if the
     // document is empty.
     if (error().empty()) {
-      errorStream_ << "YAML:" << lineNumber_
-                   << ":1: error: not a document";
+      errorStream_ << "YAML:" << lineNumber_ << ":1: error: not a document";
     }
     channel_.clear();
 
