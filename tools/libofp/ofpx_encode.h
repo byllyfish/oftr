@@ -50,7 +50,7 @@ namespace ofpx {
 //
 // To translate a text file of JSON objects separated by any delimiter, or
 // contained in a JSON array:
-// 
+//
 //   libofp encode --json-array "filename"
 
 OFP_BEGIN_IGNORE_PADDING
@@ -93,7 +93,8 @@ class Encode : public Subprogram {
   cl::opt<bool> roundtrip_{
       "roundtrip", cl::desc("Roundtrip encoded binary message back to YAML")};
   cl::opt<bool> json_{"json", cl::desc("Json input is separated by linefeeds")};
-  cl::opt<bool> jsonArray_{"json-array", cl::desc("Json input is arbitrarily delimited objects")};
+  cl::opt<bool> jsonArray_{
+      "json-array", cl::desc("Json input is arbitrarily delimited objects")};
   cl::opt<unsigned> ofversion_{
       "ofversion", cl::desc("OpenFlow version to use when unspecified"),
       cl::ValueRequired};
