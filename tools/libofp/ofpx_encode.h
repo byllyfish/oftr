@@ -23,13 +23,14 @@ namespace ofpx {
 //
 //   --hex (-x)               Output hexadecimal rather than binary
 //   --silent (-s)            Quiet mode; suppress normal output
-//   --silent-error           Suppress error output for invalid messages.
+//   --silent-error           Suppress error output for invalid messages
 //   --keep-going (-k)        Continue processing messages after errors
 //   --unchecked-match (-M)   Do not check items in match fields
 //   --roundtrip (-R)         Roundtrip encoded binary message back to YAML
 //   --json (-j)              Json input is separated by linefeeds
+//   --json-array             Json input is arbitrarily delimited objects
 //   --ofversion=0            OpenFlow version to use when unspecified
-//   --output=<file> (-o)     Write output to specified file instead of stdout.
+//   --output=<file> (-o)     Write output to specified file instead of stdout
 //
 // Usage:
 //
@@ -47,6 +48,10 @@ namespace ofpx {
 //
 //   libofp encode --json "filename"
 //
+// To translate a text file of JSON objects separated by any delimiter, or
+// contained in a JSON array:
+// 
+//   libofp encode --json-array "filename"
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -88,6 +93,7 @@ class Encode : public Subprogram {
   cl::opt<bool> roundtrip_{
       "roundtrip", cl::desc("Roundtrip encoded binary message back to YAML")};
   cl::opt<bool> json_{"json", cl::desc("Json input is separated by linefeeds")};
+  cl::opt<bool> jsonArray_{"json-array", cl::desc("Json input is arbitrarily delimited objects")};
   cl::opt<unsigned> ofversion_{
       "ofversion", cl::desc("OpenFlow version to use when unspecified"),
       cl::ValueRequired};

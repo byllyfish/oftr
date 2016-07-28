@@ -45,7 +45,9 @@ bool Encode::validateCommandLineArguments() {
   }
 
   // Set up `readMessage` function.
-  if (json_) {
+  if (jsonArray_) {
+    readMessage_ = ofp::yaml::getjson;
+  } else if (json_) {
     readMessage_ = ofp::yaml::getline;
   } else {
     readMessage_ = ofp::yaml::getyaml;
