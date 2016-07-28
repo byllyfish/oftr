@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/yaml/getjson.h"
 
 static void scanDoubleQuotes(std::istream &input, std::string &json,

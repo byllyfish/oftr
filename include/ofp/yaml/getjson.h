@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_YAML_GETJSON_H_
 #define OFP_YAML_GETJSON_H_
 
@@ -6,6 +9,8 @@
 
 namespace ofp {
 namespace yaml {
+
+/// Common function pointer type for exported functions.
 
 using GetMsgFunction = bool (*)(std::istream &, std::string &, int &, int &);
 
@@ -19,9 +24,10 @@ using GetMsgFunction = bool (*)(std::istream &, std::string &, int &, int &);
 bool getjson(std::istream &input, std::string &json, int &lineNum,
              int &newlineCount);
 
-/// Read the next YAML message from the input stream. YAML messages are
-/// delimited by "---" or "..." on a line by themselves. If the input lines are
-/// delimited by CR-LF, the CR-LF is converted to LF.
+/// Read the next YAML message from the input stream.
+///
+/// YAML messages are delimited by "---" or "..." on a line by themselves. If
+/// the input lines are delimited by CR-LF, the CR-LF is converted to LF.
 
 bool getyaml(std::istream &input, std::string &yaml, int &lineNum,
              int &newlineCount);
