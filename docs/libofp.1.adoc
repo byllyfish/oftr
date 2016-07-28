@@ -134,6 +134,9 @@ OpenFlow version using the --ofversion option.
 *-j, --json*::
     Json input is separated by linefeeds.
 
+*--json-array*::
+    Json input is arbitrarily delimited objects.
+
 *-k, --keep-going*::
     Continue processing input after errors.
 
