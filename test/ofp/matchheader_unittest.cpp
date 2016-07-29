@@ -3,13 +3,15 @@
 
 #include "ofp/matchheader.h"
 #include "ofp/unittest.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 
 static bool isMatchHeaderValid(const char *hex) {
+  Validation context;
   ByteList s{HexToRawData(hex)};
   const MatchHeader *hdr = reinterpret_cast<const MatchHeader *>(s.data());
-  return hdr->validateInput(s.size());
+  return hdr->validateInput(s.size(), &context);
 }
 
 TEST(matchheader, test) {

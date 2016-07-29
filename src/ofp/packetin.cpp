@@ -46,7 +46,7 @@ bool PacketIn::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader, context)) {
     // FIXME(bfish)
     log_info("PacketIn has invalid Match element.");
     return false;
@@ -80,7 +80,7 @@ bool PacketIn::validateInputV3(Validation *context) const {
 
   const MatchHeader *matchHdr = matchHeader();
 
-  if (!matchHdr->validateInput(length - 16)) {
+  if (!matchHdr->validateInput(length - 16, context)) {
     log_info("PacketIn has invalid Match element.");
     return false;
   }

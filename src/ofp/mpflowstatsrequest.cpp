@@ -21,7 +21,7 @@ bool MPFlowStatsRequest::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader, context)) {
     log_debug("MPFlowStatsRequest: Invalid match.");
     return false;
   }

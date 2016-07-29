@@ -4,6 +4,7 @@
 #include "ofp/matchheader.h"
 #include "ofp/oxmrange.h"
 #include "ofp/padding.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 
@@ -20,15 +21,16 @@ const deprecated::StandardMatch *MatchHeader::stdMatch() const {
   return reinterpret_cast<const deprecated::StandardMatch *>(this);
 }
 
-bool MatchHeader::validateInput(size_t lengthRemaining) const {
+bool MatchHeader::validateInput(size_t lengthRemaining, Validation *context) const {
   // Make sure remaining length at least accomodates the match header.
   if (lengthRemaining < sizeof(MatchHeader)) {
+    context->matchIsInvalid("Insufficient bytes", BytePtr(this));
     return false;
   }
 
   // Check alignment.
   if (!IsPtrAligned(this, 8)) {
-    log_debug("MatchHeader: Not aligned.");
+    context->matchIsInvalid("Not aligned", BytePtr(this));
     return false;
   }
 
@@ -38,7 +40,7 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
   // Special case for standard match; verify match length.
   if (matchType == OFPMT_STANDARD) {
     if (matchLength != deprecated::OFPMT_STANDARD_LENGTH) {
-      log_debug("MatchHeader: Invalid match length.");
+      context->matchIsInvalid("Invalid match length", BytePtr(this));
       return false;
     }
     return true;
@@ -46,20 +48,20 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
 
   // Check matchType.
   if (matchType != OFPMT_OXM) {
-    log_debug("MatchHeader: Invalid match type.", matchType);
+    context->matchIsInvalid("Invalid match type", BytePtr(this));
     return false;
   }
 
   // Check matchLength (which includes size of match header.)
   if (matchLength < sizeof(MatchHeader)) {
-    log_debug("MatchHeader: Invalid match length.");
+    context->matchIsInvalid("Invalid match length", BytePtr(this));
     return false;
   }
 
   // Check matchLength + padding against remaining length.
   size_t matchLengthPadded = PadLength(matchLength);
   if (matchLengthPadded > lengthRemaining) {
-    log_debug("MatchHeader: Invalid remaining length.");
+    context->matchIsInvalid("Invalid remaining length", BytePtr(this));
     return false;
   }
 
@@ -67,7 +69,7 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
   OXMRange oxm{BytePtr(this) + sizeof(MatchHeader),
                matchLength - sizeof(MatchHeader)};
   if (!oxm.validateInput()) {
-    log_debug("MatchHeader: Invalid oxm range.");
+    context->matchIsInvalid("Invalid oxm range", BytePtr(this));
     return false;
   }
 
@@ -75,7 +77,7 @@ bool MatchHeader::validateInput(size_t lengthRemaining) const {
   if (matchLengthPadded > matchLength) {
     if (!IsMemFilled(BytePtr(this) + matchLength,
                      matchLengthPadded - matchLength, 0)) {
-      log_debug("MatchHeader: Invalid padding.");
+      context->matchIsInvalid("Invalid padding", BytePtr(this));
       return false;
     }
   }

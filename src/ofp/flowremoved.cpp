@@ -16,7 +16,7 @@ bool FlowRemoved::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader, context)) {
     log_debug("FlowRemoved: Invalid match.");
     return false;
   }

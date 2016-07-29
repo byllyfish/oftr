@@ -28,7 +28,7 @@ bool FlowMod::validateInput(Validation *context) const {
   }
 
   size_t remainingLength = length - SizeWithoutMatchHeader;
-  if (!matchHeader_.validateInput(remainingLength)) {
+  if (!matchHeader_.validateInput(remainingLength, context)) {
     log_info("FlowMod: invalid match");
     return false;
   }
