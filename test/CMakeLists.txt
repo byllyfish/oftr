@@ -2,6 +2,7 @@
 set(LIBOFP_TEST_SOURCES
 	ofp/actionlist_unittest.cpp
 	ofp/actions_unittest.cpp
+	ofp/actionrange_unittest.cpp
 	ofp/actiontype_unittest.cpp
 	ofp/bucketlist_unittest.cpp
 	ofp/bundleaddmessage_unittest.cpp
@@ -45,6 +46,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/matchpacket_unittest.cpp
 	ofp/message_unittest.cpp
 	ofp/multipartreply_unittest.cpp
+	ofp/nicira_unittest.cpp
 	ofp/originalmatch_unittest.cpp
 	ofp/outputjson_unittest.cpp
 	ofp/oxmfields_unittest.cpp
@@ -53,6 +55,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/oxmlist_unittest.cpp
 	ofp/oxmrange_unittest.cpp
 	ofp/oxmtype_unittest.cpp
+	ofp/oxmregister_unittest.cpp
 	ofp/oxmtypeset_unittest.cpp
 	ofp/oxmvalue_unittest.cpp
 	ofp/packetin_unittest.cpp

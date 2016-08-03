@@ -1,0 +1,23 @@
+#include "ofp/unittest.h"
+#include "ofp/actionrange.h"
+#include "ofp/actionlist.h"
+
+using namespace ofp;
+
+TEST(actionrange, validateInput_regMove) {
+    // nx::AT_REGMOVE(src, dst).
+    ByteList data{HexToRawData("FFFF00180000232000060020000000008000160480001804")};
+    ActionRange range{data};
+
+    Validation context;
+    EXPECT_TRUE(range.validateInput(&context));
+}
+
+TEST(actionrange, validateInput_regMove_fail) {
+    // nx::AT_REGMOVE(src, dst) (invalid; wrong size).
+    ByteList data{HexToRawData("FFFF002000002320000600200000000080001604800018040000000000000000")};
+    ActionRange range{data};
+
+    Validation context;
+    EXPECT_FALSE(range.validateInput(&context));
+}

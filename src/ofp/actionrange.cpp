@@ -5,6 +5,7 @@
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
 #include "ofp/oxmfields.h"
+#include "ofp/nicira.h"
 
 using namespace ofp;
 
@@ -18,10 +19,16 @@ bool ActionRange::validateInput(Validation *context) const {
 
   for (auto &item : *this) {
     switch (item.type().enumType()) {
-      case OFPAT_EXPERIMENTER:
-        if (!item.action<AT_EXPERIMENTER>()->validateInput(context))
+      case OFPAT_EXPERIMENTER: {
+        auto action = item.action<AT_EXPERIMENTER>();
+        if (!action->validateInput(context))
           return false;
+        if (action->experimenterid() == nx::NICIRA) {
+          if (!validateInput_NICIRA(action, context))
+            return false;
+        }
         break;
+      }
       default:
         break;
     }
@@ -177,4 +184,24 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
                 oxm->type());
       break;
   }
+}
+
+bool ActionRange::validateInput_NICIRA(const AT_EXPERIMENTER *action, Validation *context) {
+  assert(action->experimenterid() == nx::NICIRA);
+
+  size_t size = action->size();
+  if (size < AT_EXPERIMENTER::MinSizeWithSubtype) {
+    return context->validateBool(false, "Invalid Nicira action size");
+  }
+
+  log_debug("validateInput_NICIRA", size);
+
+  switch (action->subtype()) {
+    case nx::NXAST_REG_MOVE:
+      return context->validateBool(size == sizeof(nx::AT_REGMOVE), "Invalid NX_REG_MOVE size");
+    default:
+      break;
+  }
+
+  return true;
 }

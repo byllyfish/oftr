@@ -239,19 +239,24 @@ class AT_EXPERIMENTER {
   constexpr explicit AT_EXPERIMENTER(UInt32 experimenterid,
                                      const ByteRange &value)
       : type_{OFPAT_EXPERIMENTER,
-              UInt16_narrow_cast(PadLength(8 + value.size()))},
+              UInt16_narrow_cast(PadLength(FixedSize + value.size()))},
         experimenterid_{experimenterid},
         value_{value} {}
 
   UInt32 experimenterid() const { return experimenterid_; }
+  UInt16 size() const { return type_.length(); }
   ByteRange value() const {
-    return {BytePtr(&value_), type_.length() - FixedSize};
+    return SafeByteRange(this, type_.length(), FixedSize);
   }
 
   bool validateInput(Validation *context) const {
     return context->validateBool(type_.length() >= FixedSize,
                                  "Invalid EXPERIMENTER action");
   }
+
+  enum : size_t { MinSizeWithSubtype = 10 };
+
+  UInt16 subtype() const { return *Big16_cast(BytePtr(this) + FixedSize); }
 
  private:
   const ActionType type_;

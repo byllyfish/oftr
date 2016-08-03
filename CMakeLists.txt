@@ -203,6 +203,7 @@ set(LIBOFP_SOURCES
   src/ofp/originalmatch.cpp
   src/ofp/oxmfulltype.cpp
   src/ofp/oxmlist.cpp
+  src/ofp/oxmregister.cpp
   src/ofp/oxmtype.cpp
   src/ofp/oxmtypeset.cpp
   src/ofp/packetin.cpp

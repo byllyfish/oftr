@@ -211,6 +211,8 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         break;
       }
       default: {
+        // Variable length actions, known actions with the unexpected lengths, 
+        // and unknown actions.
         switch (type.enumType()) {
           case OFPAT_EXPERIMENTER: {
             const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();

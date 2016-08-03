@@ -19,7 +19,7 @@ class ActionList : public ProtocolList<ActionRange> {
 
   template <class Type>
   void add(const Type &action) {
-    // Make sure it's an action.
+    // Make sure it's a fixed size action.
     assert(Type::type() != 0);
     buf_.add(&action, sizeof(action));
   }
