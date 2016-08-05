@@ -17,9 +17,9 @@ struct ScalarTraits<ofp::ActionFullType> {
       // Format as:  `action`
       out << llvm::format("0x%04X", value.enumType());
     } else {
+      assert(value.enumType() == ofp::OFPAT_EXPERIMENTER);
       // Format as:  `action.experimenter`
-      out << llvm::format("0x%04X.0x%08X", value.enumType(),
-                          value.experimenter());
+      out << llvm::format("EXPERIMENTER.0x%08X", value.experimenter());
     }
   }
 
@@ -32,9 +32,9 @@ struct ScalarTraits<ofp::ActionFullType> {
     // Check for format `action.experimenter`
     auto pair = scalar.split('.');
     if (!pair.second.empty()) {
-      ofp::UInt16 action;
+      ofp::UInt16 action = ofp::OFPAT_EXPERIMENTER;
       ofp::UInt32 experimenter;
-      if (ofp::yaml::ParseUnsignedInteger(pair.first, &action) &&
+      if ((pair.first == "EXPERIMENTER" || ofp::yaml::ParseUnsignedInteger(pair.first, &action)) &&
           ofp::yaml::ParseUnsignedInteger(pair.second, &experimenter)) {
         value.setNative(action, experimenter);
         return "";

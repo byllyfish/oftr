@@ -180,8 +180,7 @@ msg:
   buffer_id:       0x00003424
   in_port:         0x000000CA
   actions:         
-    - action:          EXPERIMENTER
-      experimenter:    0x00010111
+    - action:          EXPERIMENTER.0x00010111
       data:            ''
   data:            ''
   _pkt_decode:     
@@ -261,8 +260,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00001.pass
@@ -344,8 +342,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00002.pass
@@ -1261,8 +1258,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/rep/rep_14_00002.pass
@@ -1314,8 +1310,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          EXPERIMENTER
-          experimenter:    0x00020077
+        - action:          EXPERIMENTER.0x00020077
           data:            ''
         - action:          ENQUEUE
           port:            0x00000000

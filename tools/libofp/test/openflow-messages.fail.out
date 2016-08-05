@@ -212,8 +212,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00001.fail
@@ -296,8 +295,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00002.fail
@@ -380,8 +378,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00003.fail

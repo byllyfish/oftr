@@ -131,6 +131,12 @@ experimenter: UInt32
 data: HexData
 )""";
 
+const char *const kNiciraRegMoveActionSchema = R"""({Action/NX_REG_MOVE}
+action: NX_REG_MOVE
+src: RegisterBits
+dst: RegisterBits
+)""";
+
 template <>
 struct MappingTraits<ofp::detail::ActionIteratorItem> {
   static void mapping(IO &io, ofp::detail::ActionIteratorItem &item) {
@@ -219,12 +225,10 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         switch (fullType.enumType()) {
           case OFPAT_EXPERIMENTER: {
             const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();
-            Hex32 experimenterid = action->experimenterid();
-            if (experimenterid == nx::NICIRA) {
+            if (fullType.experimenter() == nx::NICIRA) {
               handleNicira(io, action);
             } else {
               ByteRange value = action->value();
-              io.mapRequired("experimenter", experimenterid);
               io.mapRequired("data", value);
             }
             break;
@@ -397,7 +401,11 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         } else {
           UInt32 experimenterid;
           ByteList value;
-          io.mapRequired("experimenter", experimenterid);
+          if (fullType.experimenter() == 0) {
+            io.mapRequired("experimenter", experimenterid);
+          } else {
+            experimenterid = fullType.experimenter();
+          }
           io.mapRequired("data", value);
           AT_EXPERIMENTER action{experimenterid, value};
           list.add(action);

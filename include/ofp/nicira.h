@@ -26,7 +26,7 @@ class AT_REGMOVE {
   constexpr static UInt32 experimenter() { return NICIRA; }
   constexpr static UInt16 subtype() { return NXAST_REG_MOVE; }
 
-  constexpr AT_REGMOVE(const OXMRegister &src, const OXMRegister &dst)
+  AT_REGMOVE(const OXMRegister &src, const OXMRegister &dst)
       : type_{type()},
         experimenterid_{experimenter()}, subtype_{subtype()}, nBits_{src.nbits()}, srcOfs_{src.offset()}, dstOfs_{dst.offset()}, src_{src.type()}, dst_{dst.type()} {
         }
