@@ -3185,3 +3185,28 @@ msg:
   EXPECT_HEX("0102000E00000007AABBCCDDEEFF", encoder.data(), encoder.size());
   EXPECT_EQ(ofp::OFP_NO_FLUSH, encoder.flags());
 }
+
+TEST(encoder, nx_reg_move) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        table_id:        0x01
+        command:         ADD
+        match:           
+        instructions:
+          - instruction:    APPLY_ACTIONS
+            actions:
+               - action: NX_REG_MOVE
+                 src: 'ETH_DST[0:24]'
+                 dst: 'ETH_SRC[24:48]'
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x58, encoder.size());
+  EXPECT_HEX(
+      "040E005800000001000000000000000000000000000000000100000000000000FFFFFFFFFFFFFFFFFFFFFFFF0000000000010004000000000004002000000000FFFF00180000232000060018000000188000060680000806",
+      encoder.data(), encoder.size());
+}

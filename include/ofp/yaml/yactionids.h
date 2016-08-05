@@ -5,6 +5,7 @@
 #define OFP_YAML_YACTIONIDS_H_
 
 #include "ofp/actionidlist.h"
+#include "ofp/yaml/yactiontype.h"
 #include "ofp/yaml/yactions.h"
 
 namespace ofp {

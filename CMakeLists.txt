@@ -141,6 +141,7 @@ endif()
 set(LIBOFP_SOURCES
   src/ofp/actionrange.cpp
   src/ofp/actiontype.cpp
+  src/ofp/actionfulltype.cpp
   src/ofp/mpaggregatestatsreply.cpp
   src/ofp/bucket.cpp
   src/ofp/bucketlist.cpp

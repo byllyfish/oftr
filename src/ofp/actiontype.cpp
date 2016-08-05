@@ -7,24 +7,24 @@
 using namespace ofp;
 
 static const ActionTypeInfo sActionInfo[] = {
-    {AT_OUTPUT::type(), "OUTPUT"},
-    {AT_COPY_TTL_OUT::type(), "COPY_TTL_OUT"},
-    {AT_COPY_TTL_IN::type(), "COPY_TTL_IN"},
-    {AT_SET_MPLS_TTL::type(), "SET_MPLS_TTL"},
-    {AT_DEC_MPLS_TTL::type(), "DEC_MPLS_TTL"},
-    {AT_PUSH_VLAN::type(), "PUSH_VLAN"},
-    {AT_POP_VLAN::type(), "POP_VLAN"},
-    {AT_PUSH_MPLS::type(), "PUSH_MPLS"},
-    {AT_POP_MPLS::type(), "POP_MPLS"},
-    {AT_SET_QUEUE::type(), "SET_QUEUE"},
-    {AT_GROUP::type(), "GROUP"},
-    {AT_SET_NW_TTL::type(), "SET_NW_TTL"},
-    {AT_DEC_NW_TTL::type(), "DEC_NW_TTL"},
-    {AT_PUSH_PBB::type(), "PUSH_PBB"},
-    {AT_POP_PBB::type(), "POP_PBB"},
-    {deprecated::AT_ENQUEUE_V1::type(), "ENQUEUE"},
-    {ActionType{OFPAT_SET_FIELD, 0}, "SET_FIELD"},
-    {ActionType{OFPAT_EXPERIMENTER, 0}, "EXPERIMENTER"}};
+    {AT_OUTPUT::type(), "OUTPUT", 0, 0},
+    {AT_COPY_TTL_OUT::type(), "COPY_TTL_OUT", 0, 0},
+    {AT_COPY_TTL_IN::type(), "COPY_TTL_IN", 0, 0},
+    {AT_SET_MPLS_TTL::type(), "SET_MPLS_TTL", 0, 0},
+    {AT_DEC_MPLS_TTL::type(), "DEC_MPLS_TTL", 0, 0},
+    {AT_PUSH_VLAN::type(), "PUSH_VLAN", 0, 0},
+    {AT_POP_VLAN::type(), "POP_VLAN", 0, 0},
+    {AT_PUSH_MPLS::type(), "PUSH_MPLS", 0, 0},
+    {AT_POP_MPLS::type(), "POP_MPLS", 0, 0},
+    {AT_SET_QUEUE::type(), "SET_QUEUE", 0, 0},
+    {AT_GROUP::type(), "GROUP", 0, 0},
+    {AT_SET_NW_TTL::type(), "SET_NW_TTL", 0, 0},
+    {AT_DEC_NW_TTL::type(), "DEC_NW_TTL", 0, 0},
+    {AT_PUSH_PBB::type(), "PUSH_PBB", 0, 0},
+    {AT_POP_PBB::type(), "POP_PBB", 0, 0},
+    {deprecated::AT_ENQUEUE_V1::type(), "ENQUEUE", 0, 0},
+    {ActionType{OFPAT_SET_FIELD, 0}, "SET_FIELD", 0, 0},
+    {ActionType{OFPAT_EXPERIMENTER, 0}, "EXPERIMENTER", 0, 0}};
 
 bool ActionType::parse(const std::string &s) {
   for (unsigned i = 0; i < ArrayLength(sActionInfo); ++i) {
