@@ -3,8 +3,8 @@
 
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
-#include "ofp/unittest.h"
 #include "ofp/nicira.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
@@ -58,5 +58,6 @@ TEST(actionlist, NX_AT_REGMOVE) {
   ActionList list;
   list.add(nx::AT_REGMOVE{src, dst});
 
-  EXPECT_HEX("FFFF00180000232000060020000000008000160480001804", list.data(), list.size());
+  EXPECT_HEX("FFFF00180000232000060020000000008000160480001804", list.data(),
+             list.size());
 }

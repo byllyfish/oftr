@@ -4,8 +4,8 @@
 #include "ofp/actionrange.h"
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
-#include "ofp/oxmfields.h"
 #include "ofp/nicira.h"
+#include "ofp/oxmfields.h"
 
 using namespace ofp;
 
@@ -186,7 +186,8 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
   }
 }
 
-bool ActionRange::validateInput_NICIRA(const AT_EXPERIMENTER *action, Validation *context) {
+bool ActionRange::validateInput_NICIRA(const AT_EXPERIMENTER *action,
+                                       Validation *context) {
   assert(action->experimenterid() == nx::NICIRA);
 
   size_t size = action->size();
@@ -198,7 +199,8 @@ bool ActionRange::validateInput_NICIRA(const AT_EXPERIMENTER *action, Validation
 
   switch (action->subtype()) {
     case nx::NXAST_REG_MOVE:
-      return context->validateBool(size == sizeof(nx::AT_REGMOVE), "Invalid NX_REG_MOVE size");
+      return context->validateBool(size == sizeof(nx::AT_REGMOVE),
+                                   "Invalid NX_REG_MOVE size");
     default:
       break;
   }

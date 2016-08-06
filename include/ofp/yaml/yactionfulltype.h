@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_YAML_YACTIONFULLTYPE_H_
 #define OFP_YAML_YACTIONFULLTYPE_H_
 
@@ -34,7 +37,8 @@ struct ScalarTraits<ofp::ActionFullType> {
     if (!pair.second.empty()) {
       ofp::UInt16 action = ofp::OFPAT_EXPERIMENTER;
       ofp::UInt32 experimenter;
-      if ((pair.first == "EXPERIMENTER" || ofp::yaml::ParseUnsignedInteger(pair.first, &action)) &&
+      if ((pair.first == "EXPERIMENTER" ||
+           ofp::yaml::ParseUnsignedInteger(pair.first, &action)) &&
           ofp::yaml::ParseUnsignedInteger(pair.second, &experimenter)) {
         value.setNative(action, experimenter);
         return "";
@@ -57,4 +61,4 @@ struct ScalarTraits<ofp::ActionFullType> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YACTIONFULLTYPE_H_
+#endif  // OFP_YAML_YACTIONFULLTYPE_H_

@@ -1,9 +1,12 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_NICIRA_H_
 #define OFP_NICIRA_H_
 
+#include "ofp/actiontype.h"
 #include "ofp/oxmregister.h"
 #include "ofp/validation.h"
-#include "ofp/actiontype.h"
 
 namespace ofp {
 
@@ -16,28 +19,30 @@ enum NXActionSubtype : UInt16 {
   NXAST_REG_LOAD = 7,
 };
 
-
 const UInt32 NICIRA = 0x00002320;
 
 /// \brief Concrete type for NXAST_REG_MOVE action.
 class AT_REGMOVE {
  public:
-  constexpr static ActionType type() { return ActionType(OFPAT_EXPERIMENTER, 24); }
+  constexpr static ActionType type() {
+    return ActionType(OFPAT_EXPERIMENTER, 24);
+  }
   constexpr static UInt32 experimenter() { return NICIRA; }
   constexpr static UInt16 subtype() { return NXAST_REG_MOVE; }
 
   AT_REGMOVE(const OXMRegister &src, const OXMRegister &dst)
       : type_{type()},
-        experimenterid_{experimenter()}, subtype_{subtype()}, nBits_{src.nbits()}, srcOfs_{src.offset()}, dstOfs_{dst.offset()}, src_{src.type()}, dst_{dst.type()} {
-        }
+        experimenterid_{experimenter()},
+        subtype_{subtype()},
+        nBits_{src.nbits()},
+        srcOfs_{src.offset()},
+        dstOfs_{dst.offset()},
+        src_{src.type()},
+        dst_{dst.type()} {}
 
-  OXMRegister src() const {
-    return OXMRegister{src_, srcOfs_, nBits_};
-  }
+  OXMRegister src() const { return OXMRegister{src_, srcOfs_, nBits_}; }
 
-  OXMRegister dst() const {
-    return OXMRegister{dst_, dstOfs_, nBits_};
-  }
+  OXMRegister dst() const { return OXMRegister{dst_, dstOfs_, nBits_}; }
 
   bool validateInput(Validation *context) const {
     return context->validateBool(type_.length() == 24,
@@ -65,4 +70,4 @@ static_assert(IsStandardLayout<AT_REGMOVE>(), "Unexpected layout");
 }  // namespace nx
 }  // namespace ofp
 
-#endif // OFP_NICIRA_H_
+#endif  // OFP_NICIRA_H_

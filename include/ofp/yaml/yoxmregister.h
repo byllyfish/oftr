@@ -1,3 +1,6 @@
+// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_YAML_YOXMREGISTER_H_
 #define OFP_YAML_YOXMREGISTER_H_
 
@@ -27,4 +30,4 @@ struct ScalarTraits<ofp::OXMRegister> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YOXMREGISTER_H_
+#endif  // OFP_YAML_YOXMREGISTER_H_

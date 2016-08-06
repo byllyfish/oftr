@@ -21,7 +21,8 @@ const deprecated::StandardMatch *MatchHeader::stdMatch() const {
   return reinterpret_cast<const deprecated::StandardMatch *>(this);
 }
 
-bool MatchHeader::validateInput(size_t lengthRemaining, Validation *context) const {
+bool MatchHeader::validateInput(size_t lengthRemaining,
+                                Validation *context) const {
   // Make sure remaining length at least accomodates the match header.
   if (lengthRemaining < sizeof(MatchHeader)) {
     context->matchIsInvalid("Insufficient bytes", BytePtr(this));

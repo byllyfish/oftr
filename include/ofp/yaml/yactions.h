@@ -4,14 +4,14 @@
 #ifndef OFP_YAML_YACTIONS_H_
 #define OFP_YAML_YACTIONS_H_
 
+#include "ofp/actionfulltype.h"
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
-#include "ofp/actionfulltype.h"
+#include "ofp/nicira.h"
 #include "ofp/yaml/yactionfulltype.h"
 #include "ofp/yaml/ycontrollermaxlen.h"
 #include "ofp/yaml/ymatch.h"
 #include "ofp/yaml/yoxmregister.h"
-#include "ofp/nicira.h"
 
 namespace ofp {
 namespace detail {
@@ -220,7 +220,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         break;
       }
       default: {
-        // Variable length actions, known actions with the unexpected lengths, 
+        // Variable length actions, known actions with the unexpected lengths,
         // and unknown actions.
         switch (fullType.enumType()) {
           case OFPAT_EXPERIMENTER: {
@@ -259,7 +259,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
     }
   }
 
-private:
+ private:
   static void handleNicira(IO &io, const ofp::AT_EXPERIMENTER *action) {
     using namespace ofp;
     switch (action->subtype()) {
@@ -273,7 +273,7 @@ private:
       }
       default: {
         ByteRange value = action->value();
-        io.mapRequired("data", value);        
+        io.mapRequired("data", value);
       }
     }
   }
@@ -437,8 +437,10 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
     }
   }
-private:
-  static void addNicira(IO &io, ofp::ActionList &list, const ofp::ActionFullType &fullType) {
+
+ private:
+  static void addNicira(IO &io, ofp::ActionList &list,
+                        const ofp::ActionFullType &fullType) {
     using namespace ofp;
 
     switch (fullType.subtype()) {
@@ -455,7 +457,7 @@ private:
         ByteList value;
         io.mapRequired("data", value);
         AT_EXPERIMENTER action{nx::NICIRA, value};
-        list.add(action);        
+        list.add(action);
       }
     }
   }
