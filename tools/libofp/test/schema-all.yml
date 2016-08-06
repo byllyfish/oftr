@@ -1837,6 +1837,36 @@ Field/PKT_REG3:
   value: UInt64
   mask: !optout UInt64
   
+Field/NX_ETH_DST: 
+  field: NX_ETH_DST
+  value: MacAddress
+  mask: !optout MacAddress
+  
+Field/NX_ETH_SRC: 
+  field: NX_ETH_SRC
+  value: MacAddress
+  mask: !optout MacAddress
+  
+Field/NX_ARP_SPA: 
+  field: NX_ARP_SPA
+  value: IPv4Address
+  mask: !optout IPv4Address
+  
+Field/NX_ARP_TPA: 
+  field: NX_ARP_TPA
+  value: IPv4Address
+  mask: !optout IPv4Address
+  
+Field/NX_ARP_SHA: 
+  field: NX_ARP_SHA
+  value: MacAddress
+  mask: !optout MacAddress
+  
+Field/NX_ARP_THA: 
+  field: NX_ARP_THA
+  value: MacAddress
+  mask: !optout MacAddress
+  
 Field/NX_REG0: 
   field: NX_REG0
   value: UInt32
