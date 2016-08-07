@@ -271,6 +271,14 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         io.mapRequired("dst", dst);
         break;
       }
+      case nx::AT_REGLOAD::subtype(): {
+        const nx::AT_REGLOAD *regload = nx::AT_REGLOAD::cast(action);
+        OXMRegister dst = regload->dst();
+        Big64 value = regload->value();
+        io.mapRequired("dst", dst);
+        io.mapRequired("value", value);
+        break;
+      }
       default: {
         ByteRange value = action->value();
         io.mapRequired("data", value);
@@ -450,6 +458,15 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         io.mapRequired("src", src);
         io.mapRequired("dst", dst);
         nx::AT_REGMOVE action{src, dst};
+        list.add(action);
+        break;
+      }
+      case nx::AT_REGLOAD::subtype(): {
+        OXMRegister dst;
+        Big64 value;
+        io.mapRequired("dst", dst);
+        io.mapRequired("value", value);
+        nx::AT_REGLOAD action{value, dst};
         list.add(action);
         break;
       }

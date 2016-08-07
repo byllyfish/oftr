@@ -3186,7 +3186,7 @@ msg:
   EXPECT_EQ(ofp::OFP_NO_FLUSH, encoder.flags());
 }
 
-TEST(encoder, nx_reg_move) {
+TEST(encoder, nicira_actions) {
   const char *input = R"""(
       type:            FLOW_MOD
       version:         4
@@ -3201,14 +3201,15 @@ TEST(encoder, nx_reg_move) {
                - action: NX_REG_MOVE
                  src: 'ETH_DST[0:24]'
                  dst: 'ETH_SRC[24:48]'
+               - action: NX_REG_LOAD
+                 dst: 'ETH_TYPE[0:8]'
+                 value: 0x89
       )""";
 
   Encoder encoder{input};
   EXPECT_EQ("", encoder.error());
-  EXPECT_EQ(0x58, encoder.size());
+  EXPECT_EQ(0x70, encoder.size());
   EXPECT_HEX(
-      "040E005800000001000000000000000000000000000000000100000000000000FFFFFFFF"
-      "FFFFFFFFFFFFFFFF0000000000010004000000000004002000000000FFFF001800002320"
-      "00060018000000188000060680000806",
+      "040E007000000001000000000000000000000000000000000100000000000000FFFFFFFFFFFFFFFFFFFFFFFF0000000000010004000000000004003800000000FFFF00180000232000060018000000188000060680000806FFFF0018000023200007000780000A020000000000000089",
       encoder.data(), encoder.size());
 }

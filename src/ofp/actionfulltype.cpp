@@ -8,7 +8,10 @@ using namespace ofp;
 
 static const ActionTypeInfo sActionFullInfo[] = {
     {nx::AT_REGMOVE::type(), "NX_REG_MOVE", nx::AT_REGMOVE::experimenter(),
-     nx::AT_REGMOVE::subtype()}};
+     nx::AT_REGMOVE::subtype()},
+    {nx::AT_REGLOAD::type(), "NX_REG_LOAD", nx::AT_REGLOAD::experimenter(),
+     nx::AT_REGLOAD::subtype()},
+};
 
 bool ActionFullType::parse(const std::string &s) {
   // Try to parse action as a standard action.

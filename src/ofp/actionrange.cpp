@@ -195,12 +195,11 @@ bool ActionRange::validateInput_NICIRA(const AT_EXPERIMENTER *action,
     return context->validateBool(false, "Invalid Nicira action size");
   }
 
-  log_debug("validateInput_NICIRA", size);
-
   switch (action->subtype()) {
     case nx::NXAST_REG_MOVE:
-      return context->validateBool(size == sizeof(nx::AT_REGMOVE),
-                                   "Invalid NX_REG_MOVE size");
+      return nx::AT_REGMOVE::cast(action)->validateInput(context);
+    case nx::NXAST_REG_LOAD:
+      return nx::AT_REGLOAD::cast(action)->validateInput(context);
     default:
       break;
   }

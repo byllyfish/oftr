@@ -67,6 +67,50 @@ class AT_REGMOVE {
 static_assert(sizeof(AT_REGMOVE) == 24, "Unexpected size.");
 static_assert(IsStandardLayout<AT_REGMOVE>(), "Unexpected layout");
 
+/// \brief Concrete type for NXAST_REG_LOAD action.
+class AT_REGLOAD {
+public:
+  constexpr static ActionType type() {
+    return ActionType(OFPAT_EXPERIMENTER, 24);
+  }
+  constexpr static UInt32 experimenter() { return NICIRA; }
+  constexpr static UInt16 subtype() { return NXAST_REG_LOAD; }
+
+  AT_REGLOAD(UInt64 value, const OXMRegister &dst)
+      : type_{type()},
+        experimenterid_{experimenter()},
+        subtype_{subtype()},
+        ofsNbits_{UInt16_narrow_cast((dst.offset() << 6) | (dst.nbits() - 1))},
+        dst_{dst.type()},
+        value_{value} {}
+
+  Big64 value() const { return value_; }
+
+  OXMRegister dst() const { return OXMRegister{dst_, ofs(), nbits()}; }
+
+  bool validateInput(Validation *context) const {
+    return context->validateBool(type_.length() == 24,
+                                 "Invalid AT_NX_REGLOAD action");
+  }
+
+  static const AT_REGLOAD *cast(const AT_EXPERIMENTER *action) {
+    return reinterpret_cast<const AT_REGLOAD *>(action);
+  }
+private:
+  const ActionType type_;
+  const Big32 experimenterid_;
+  const Big16 subtype_;
+  Big16 ofsNbits_;
+  OXMType dst_;
+  Big64 value_;
+
+  UInt16 ofs() const { return ofsNbits_ >> 6; }
+  UInt16 nbits() const { return (ofsNbits_ & 0x03F) + 1; }
+};
+
+static_assert(sizeof(AT_REGLOAD) == 24, "Unexpected size.");
+static_assert(IsStandardLayout<AT_REGLOAD>(), "Unexpected layout");
+
 }  // namespace nx
 }  // namespace ofp
 
