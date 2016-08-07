@@ -1465,6 +1465,16 @@ Action/EXPERIMENTER:
   experimenter: UInt32
   data: HexData
   
+Action/NX_REG_MOVE: 
+  action: NX_REG_MOVE
+  src: RegisterBits
+  dst: RegisterBits
+  
+Action/NX_REG_LOAD: 
+  action: NX_REG_MOVE
+  dst: RegisterBits
+  value: UInt64
+  
 MeterBand/DROP: 
   type: DROP
   rate: UInt32
@@ -2003,4 +2013,6 @@ Builtin/FieldID: <builtin>
 Builtin/InstructionID: <builtin>
 
 Builtin/Timestamp: <builtin>
+
+Builtin/RegisterBits: <builtin>
 

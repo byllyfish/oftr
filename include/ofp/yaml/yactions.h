@@ -137,6 +137,12 @@ src: RegisterBits
 dst: RegisterBits
 )""";
 
+const char *const kNiciraRegLoadActionSchema = R"""({Action/NX_REG_LOAD}
+action: NX_REG_MOVE
+dst: RegisterBits
+value: UInt64
+)""";
+
 template <>
 struct MappingTraits<ofp::detail::ActionIteratorItem> {
   static void mapping(IO &io, ofp::detail::ActionIteratorItem &item) {
