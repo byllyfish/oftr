@@ -87,6 +87,18 @@ TEST(getjson, testPartial) {
   EXPECT_EQ(1, newlines);
 }
 
+TEST(getjson, mismatchedBraces) {
+  std::istringstream iss{" } { a }"};
+  int newlines = 0;
+  int lineNum = 0;
+  std::string msg;
+
+  EXPECT_TRUE(getjson(iss, msg, lineNum, newlines));
+  EXPECT_EQ("{ a }", msg);
+  EXPECT_EQ(1, lineNum);
+  EXPECT_EQ(0, newlines);
+}
+
 TEST(getjson, testStrings) {
   std::istringstream iss{" { \"}\n\" }, { \"\\\"}\" } "};
   int newlines = 0;

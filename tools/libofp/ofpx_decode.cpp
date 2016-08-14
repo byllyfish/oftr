@@ -11,6 +11,7 @@
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/ybytelist.h"
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -105,6 +106,12 @@ bool Decode::validateCommandLineArguments() {
   // --json-array implies --json.
   if (!silent_ && jsonArray_) {
     json_ = true;
+  }
+
+  if (jsonFlavor_ == kJsonFlavorMongoDB) {
+    // mongodb flavor also implies --json.
+    json_ = true;
+    ofp::GLOBAL_ARG_MongoDBCompatible = true;
   }
 
   return true;

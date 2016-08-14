@@ -8,8 +8,26 @@
 
 #include "ofp/bytelist.h"
 
+namespace ofp {
+
+// Set once at program startup to output MongoDB shell JSON syntax, e.g.:
+//     Binary data: `HexData("aabbcc")`
+extern bool GLOBAL_ARG_MongoDBCompatible;
+
+}  // namespace ofp
+
 namespace llvm {
 namespace yaml {
+
+// Make a new type equivalent to ofp::ByteRange so we can control the strict 
+// JSON output format. `JsonByteRange` is used as ByteRange's json_type.
+class JsonByteRange {
+public:
+  JsonByteRange(const ofp::ByteRange &r) : value{r} {}
+  ofp::ByteRange value;
+};
+
+std::string primitive_to_json(JsonByteRange r);
 
 template <>
 struct ScalarTraits<ofp::ByteRange> {
@@ -23,6 +41,8 @@ struct ScalarTraits<ofp::ByteRange> {
   }
 
   static bool mustQuote(StringRef) { return false; }
+
+  using json_type = JsonByteRange;
 };
 
 template <>
@@ -33,6 +53,7 @@ struct ScalarTraits<ofp::ByteList> {
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::ByteList &value) {
+    scalar = clean(scalar);
     value.resize(scalar.size() / 2 + 2);
     bool error = false;
     size_t actualSize =
@@ -44,6 +65,17 @@ struct ScalarTraits<ofp::ByteList> {
   }
 
   static bool mustQuote(StringRef) { return false; }
+
+private:
+  static StringRef clean(StringRef s) {
+    if (s.startswith_lower("hexdata(\"")) {
+      s = s.drop_front(9);
+      if (s.endswith("\")")) {
+        s = s.drop_back(2);
+      }
+    }
+    return s;
+  }
 };
 
 }  // namespace yaml

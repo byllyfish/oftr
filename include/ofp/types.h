@@ -18,6 +18,9 @@
 #include "llvm/ADT/StringRef.h"  // for llvm::StringRef
 #include "ofp/config.h"
 
+// Require C++11 -- std::string storage is guaranteed contiguous.
+static_assert(__cplusplus >= 201103L, "C++11 required");
+
 #if defined(__clang__)
 #define OFP_BEGIN_IGNORE_PADDING   \
   _Pragma("clang diagnostic push") \
@@ -253,6 +256,13 @@ std::string RawDataToHexDelimitedLowercase(
 /// \param  hex string containing hexadecimal characters
 /// \return string containing raw bytes
 std::string HexToRawData(const std::string &hex);
+
+/// Convert raw buffer to a base64.
+///
+/// \param  data pointer to input buffer
+/// \param  length size of input buffer
+/// \return base64 string
+std::string RawDataToBase64(const void *data, size_t length);
 
 /// Return true if memory block is filled with given byte value.
 ///

@@ -3,6 +3,7 @@
 
 #include "ofp/types.h"
 #include <array>
+#include <openssl/base64.h> // for EVP_EncodeBlock
 
 using namespace ofp;
 
@@ -143,6 +144,28 @@ std::string ofp::HexToRawData(const std::string &hex) {
       }
     }
   }
+
+  return result;
+}
+
+std::string ofp::RawDataToBase64(const void *data, size_t length) {
+  // EVP_EncodedLength includes space for a trailing zero byte.
+  size_t expectedLen = 0;
+  if (!EVP_EncodedLength(&expectedLen, length)) {
+    return "== base64 too big ==";
+  }
+  assert(expectedLen > 0);
+
+  std::string result;
+  result.resize(expectedLen);
+  size_t actualLen = EVP_EncodeBlock(MutableBytePtr(&result[0]), BytePtr(data), length);
+
+  // EVP_EncodeBlock returned length does not include zero byte, but the API
+  // still puts it there.
+  assert(!result.empty());
+  assert(result.back() == 0);
+  result.pop_back();
+  assert(result.size() == actualLen);
 
   return result;
 }

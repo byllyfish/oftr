@@ -246,6 +246,7 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/getjson.cpp
   src/ofp/yaml/outputjson.cpp
   src/ofp/yaml/seterror.cpp
+  src/ofp/yaml/ybytelist.cpp
   src/ofp/yaml/yconstants.cpp
   src/ofp/yaml/ycontext.cpp
   src/ofp/yaml/ygroupnumber.cpp
