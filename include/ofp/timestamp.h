@@ -25,8 +25,10 @@ class Timestamp {
 
   bool parse(const std::string &s);
   bool valid() const { return !(time_.first == 0 && time_.second == 0); }
-  std::string toString() const;
 
+  std::string toString() const;
+  std::string toStringUTC() const;
+  
   void clear() {
     time_.first = 0;
     time_.second = 0;

@@ -86,6 +86,23 @@ std::string Timestamp::toString() const {
   return strm.str();
 }
 
+std::string Timestamp::toStringUTC() const {
+  auto secs = seconds();
+  auto nsec = nanoseconds();
+
+  struct tm date;
+  localtime_r(&secs, &date);
+  date.tm_year += 1900;
+  date.tm_mon += 1;
+
+  char buf[32];
+  int rc = snprintf(buf, sizeof(buf), "%04d-%02d-%02dT%02d:%02d:%02d.%09dZ",
+                    date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
+                    date.tm_min, date.tm_sec, nsec);
+  assert(rc == 30);
+  return std::string{buf, 30};
+}
+
 Timestamp Timestamp::now() {
   using namespace std::chrono;
 
