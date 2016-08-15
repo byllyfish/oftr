@@ -9,32 +9,13 @@
 namespace ofp {
 namespace log {
 
-// Print the current timestamp into the given buffer. The format is exactly
-// 24 characters (including a trailing \0):
-//
-//   YYYYMMDD HHMMSS.ssssss \0
-//
-static size_t timestamp_now(char *buf, size_t buflen) {
-  using namespace std::chrono;
-
-  assert(buflen >= 24);
-
-  auto now = Timestamp::now();
-  auto secs = now.seconds();
-  auto usec = now.microseconds();
-
-  struct tm date;
-  localtime_r(&secs, &date);
-  date.tm_year += 1900;
-  date.tm_mon += 1;
-
-  int rc = snprintf(buf, buflen, "%04d%02d%02d %02d%02d%02d.%06d ",
-                    date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
-                    date.tm_min, date.tm_sec, usec);
-
-  assert(rc == 23);
-
-  return Unsigned_cast(rc);
+// Print the current timestamp into the given buffer. Add a trailing space.
+static size_t timestamp_now(char (&buf)[Timestamp::TS_BUFSIZE]) {
+  size_t len = Timestamp::now().toStringUTC(buf);
+  assert(len < Timestamp::TS_BUFSIZE - 1);
+  buf[len++] = ' ';
+  buf[len] = 0;
+  return len;
 }
 
 // Terminal Colors
@@ -129,8 +110,8 @@ static void streamOutputCallback(Level level, const char *line, size_t size,
 
   *os << levelPrefix(level);
 
-  char tbuf[32];
-  size_t tlen = timestamp_now(tbuf, sizeof(tbuf));
+  char tbuf[Timestamp::TS_BUFSIZE];
+  size_t tlen = timestamp_now(tbuf);
   os->write(tbuf, Signed_cast(tlen));
   os->write(line, Signed_cast(size));
 
@@ -144,8 +125,8 @@ static void rawStreamOutputCallback(Level level, const char *line, size_t size,
 
   *os << levelPrefix(level);
 
-  char tbuf[32];
-  size_t tlen = timestamp_now(tbuf, sizeof(tbuf));
+  char tbuf[Timestamp::TS_BUFSIZE];
+  size_t tlen = timestamp_now(tbuf);
   os->write(tbuf, tlen);
   os->write(line, size);
 
@@ -159,8 +140,8 @@ static void rawStreamColorOutputCallback(Level level, const char *line,
 
   *os << levelPrefixColor(level);
 
-  char tbuf[32];
-  size_t tlen = timestamp_now(tbuf, sizeof(tbuf));
+  char tbuf[Timestamp::TS_BUFSIZE];
+  size_t tlen = timestamp_now(tbuf);
   os->write(tbuf, tlen);
   os->write(line, size);
 

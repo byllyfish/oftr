@@ -127,8 +127,8 @@ TEST(timestamp, units) {
 
 TEST(timestamp, toStringUTC) {
   Timestamp a{123456789, 123456789};
-  EXPECT_EQ("1973-11-29T14:33:09.123456789Z", a.toStringUTC());
+  EXPECT_EQ("1973-11-29T21:33:09.123456789Z", a.toStringUTC());
 
-  Timestamp b{1, 1000000};
-  EXPECT_EQ("", b.toStringUTC());
+  Timestamp b{2, 1000000};
+  EXPECT_EQ("1970-01-01T00:00:02.001000000Z", b.toStringUTC());
 }

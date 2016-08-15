@@ -87,20 +87,28 @@ std::string Timestamp::toString() const {
 }
 
 std::string Timestamp::toStringUTC() const {
+  char buf[TS_BUFSIZE];
+  auto len = toStringUTC(buf);
+  return std::string{buf, len};
+}
+
+size_t Timestamp::toStringUTC(char (&buf)[TS_BUFSIZE]) const {
+  const int TIMESTAMP_LEN = 30;
+  static_assert(TIMESTAMP_LEN + 1 < sizeof(buf), "Buffer too small");
+
   auto secs = seconds();
   auto nsec = nanoseconds();
 
   struct tm date;
-  localtime_r(&secs, &date);
+  gmtime_r(&secs, &date);
   date.tm_year += 1900;
   date.tm_mon += 1;
 
-  char buf[32];
   int rc = snprintf(buf, sizeof(buf), "%04d-%02d-%02dT%02d:%02d:%02d.%09dZ",
                     date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
                     date.tm_min, date.tm_sec, nsec);
-  assert(rc == 30);
-  return std::string{buf, 30};
+  assert(rc == TIMESTAMP_LEN);
+  return (rc == TIMESTAMP_LEN) ? TIMESTAMP_LEN : 0;
 }
 
 Timestamp Timestamp::now() {
