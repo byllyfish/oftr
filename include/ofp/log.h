@@ -5,8 +5,7 @@
 #define OFP_LOG_H_
 
 #include <sstream>
-#include "llvm/ADT/StringRef.h"
-#include "ofp/loglevel.h"
+#include "ofp/logger.h"
 
 namespace llvm {
 
@@ -21,11 +20,6 @@ inline std::ostream &operator<<(std::ostream &os, const StringRef &s) {
 namespace ofp {
 namespace log {
 namespace detail {
-
-extern OutputCallback GLOBAL_OutputCallback;
-extern void *GLOBAL_OutputCallbackContext;
-extern Level GLOBAL_OutputLevelFilter;
-extern UInt32 GLOBAL_OutputTraceFilter;
 
 template <class T1, class T2>
 std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p) {
@@ -64,29 +58,23 @@ void write_(std::ostream &os, const char *value1, Args &&... args) {
 
 template <class... Args>
 void write_(Level level, Args &&... args) {
+  // Logging is disabled when building oxm helper tools.
 #if !defined(LIBOFP_LOGGING_DISABLED)
-  if (level >= detail::GLOBAL_OutputLevelFilter) {
-    std::ostringstream oss;
-    write_(oss, std::forward<Args>(args)...);
-    std::string buf = oss.str();
-    GLOBAL_OutputCallback(level, buf.data(), buf.size(),
-                          GLOBAL_OutputCallbackContext);
-  }
-#endif  // OFP_LOGGING_DISABLED
+  std::ostringstream oss;
+  write_(oss, std::forward<Args>(args)...);
+  std::string buf = oss.str();
+  GLOBAL_Logger.write(level, buf.data(), buf.size());
+#endif // !defined(LIBOFP_LOGGING_DISABLED)
 }
 
-void trace_msg_internal(const char *type, UInt64 id, const void *data,
-                        size_t length);
-
-void trace_rpc_internal(const char *type, UInt64 id, const void *data,
-                        size_t length);
+void trace_msg_(const char *type, UInt64 id, const void *data, size_t length);
+void trace_rpc_(const char *type, UInt64 id, const void *data, size_t length);
 
 }  // namespace detail
 
 // N.B. Arguments of `log_` macros are only evaluated at the given log level.
-#define LOG_IF_LEVEL_(LVL_, ...)                                         \
-  (void)(ofp::log::LVL_ >= ofp::log::detail::GLOBAL_OutputLevelFilter && \
-         (ofp::log::detail::write_(ofp::log::LVL_, __VA_ARGS__), true))
+#define LOG_IF_LEVEL_(LVL_, ...) \
+  (void)(ofp::log::GLOBAL_Logger.enabled(ofp::log::LVL_) && (ofp::log::detail::write_(ofp::log::LVL_, __VA_ARGS__), true))
 
 #define log_error(...) LOG_IF_LEVEL_(Level::Error, __VA_ARGS__)
 #define log_warning(...) LOG_IF_LEVEL_(Level::Warning, __VA_ARGS__)
@@ -100,45 +88,17 @@ void trace_rpc_internal(const char *type, UInt64 id, const void *data,
 
 inline void trace_msg(const char *type, UInt64 id, const void *data,
                       size_t length) {
-  if ((detail::GLOBAL_OutputTraceFilter &
-       (1U << static_cast<int>(Trace::Msg))) != 0) {
-    detail::trace_msg_internal(type, id, data, length);
+  if (GLOBAL_Logger.enabled(Trace::Msg)) {
+    detail::trace_msg_(type, id, data, length);
   }
 }
 
 inline void trace_rpc(const char *type, UInt64 id, const void *data,
                       size_t length) {
-  if ((detail::GLOBAL_OutputTraceFilter &
-       (1U << static_cast<int>(Trace::Rpc))) != 0) {
-    detail::trace_rpc_internal(type, id, data, length);
+  if (GLOBAL_Logger.enabled(Trace::Rpc)) {
+    detail::trace_rpc_(type, id, data, length);
   }
 }
-
-namespace deprecated {
-
-template <class... Args>
-inline void info(Args &&... args) {
-  detail::write_(Level::Info, std::forward<Args>(args)...);
-}
-
-template <class... Args>
-inline void debug(Args &&... args) {
-#ifndef NDEBUG
-  detail::write_(Level::Debug, std::forward<Args>(args)...);
-#endif
-}
-
-template <class... Args>
-inline void warning(Args &&... args) {
-  detail::write_(Level::Warning, std::forward<Args>(args)...);
-}
-
-template <class... Args>
-inline void error(Args &&... args) {
-  detail::write_(Level::Error, std::forward<Args>(args)...);
-}
-
-}  // namespace deprecated
 
 template <class... Args>
 [[noreturn]] inline void fatal(const char *msg, Args &&... args) {

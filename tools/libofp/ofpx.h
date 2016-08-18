@@ -63,10 +63,7 @@ class Subprogram {
     }
 
     logstream_->SetBufferSize(4096);
-    ofp::log::setOutputStream(logstream_.get());
-
-    ofp::log::setOutputLevelFilter(loglevel_);
-    ofp::log::setOutputTraceFilter(logtrace_.getBits());
+    ofp::log::configure(loglevel_, static_cast<ofp::log::Trace>(logtrace_.getBits()), logstream_.get());
   }
 
   // --- Command-line Arguments ---

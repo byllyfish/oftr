@@ -2,164 +2,12 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/log.h"
-#include <iomanip>
 #include "ofp/timestamp.h"
 #include "ofp/yaml/decoder.h"
 
 namespace ofp {
 namespace log {
-
-// Print the current timestamp into the given buffer. Add a trailing space.
-static size_t timestamp_now(char (&buf)[Timestamp::TS_BUFSIZE]) {
-  size_t len = Timestamp::now().toStringUTC(buf);
-  assert(len < Timestamp::TS_BUFSIZE - 1);
-  buf[len++] = ' ';
-  buf[len] = 0;
-  return len;
-}
-
-// Terminal Colors
-#define RED(s) "\033[31m" s
-#define YELLOW(s) "\033[33m" s
-#define GREEN(s) "\033[32m" s
-#define GRAY(s) "\033[90m" s
-#define BLUE(s) "\033[34m" s
-
-static char levelPrefix(Level level) {
-  switch (level) {
-    case Level::Debug:
-      return 'd';
-    case Level::Trace:
-      return 't';
-    case Level::Info:
-      return 'I';
-    case Level::Warning:
-      return 'W';
-    case Level::Error:
-      return 'E';
-    case Level::Fatal:
-      return 'F';
-    case Level::Silent:
-      return 's';
-  }
-  return '?';
-}
-
-static const char *levelPrefixColor(Level level) {
-  switch (level) {
-    case Level::Debug:
-      return GRAY("d");
-    case Level::Trace:
-      return BLUE("t");
-    case Level::Info:
-      return GREEN("I");
-    case Level::Warning:
-      return YELLOW("W");
-    case Level::Error:
-      return RED("E");
-    case Level::Fatal:
-      return RED("F");
-    case Level::Silent:
-      return "s";
-  }
-  return "?";
-}
-
-#ifndef NDEBUG
-const Level kDefaultLevel = Level::Debug;
-const UInt32 kDefaultTrace = 0xFF;
-#else
-const Level kDefaultLevel = Level::Info;
-const UInt32 kDefaultTrace = 0;
-#endif
-
 namespace detail {
-
-OutputCallback GLOBAL_OutputCallback = nullptr;
-void *GLOBAL_OutputCallbackContext = nullptr;
-Level GLOBAL_OutputLevelFilter = Level::Silent;
-UInt32 GLOBAL_OutputTraceFilter = 0;
-
-}  // namespace detail
-
-void setOutputCallback(OutputCallback callback, void *context) {
-  detail::GLOBAL_OutputCallback = callback;
-  detail::GLOBAL_OutputCallbackContext = context;
-  if (callback == nullptr) {
-    detail::GLOBAL_OutputLevelFilter = Level::Silent;
-    detail::GLOBAL_OutputTraceFilter = 0;
-  } else if (detail::GLOBAL_OutputLevelFilter == Level::Silent) {
-    detail::GLOBAL_OutputLevelFilter = kDefaultLevel;
-    detail::GLOBAL_OutputTraceFilter = kDefaultTrace;
-  }
-}
-
-void setOutputLevelFilter(Level level) {
-  if (detail::GLOBAL_OutputCallback != nullptr)
-    detail::GLOBAL_OutputLevelFilter = level;
-}
-
-void setOutputTraceFilter(UInt32 trace) {
-  if (detail::GLOBAL_OutputCallback != nullptr)
-    detail::GLOBAL_OutputTraceFilter = trace;
-}
-
-static void streamOutputCallback(Level level, const char *line, size_t size,
-                                 void *context) {
-  std::ostream *os = reinterpret_cast<std::ostream *>(context);
-
-  *os << levelPrefix(level);
-
-  char tbuf[Timestamp::TS_BUFSIZE];
-  size_t tlen = timestamp_now(tbuf);
-  os->write(tbuf, Signed_cast(tlen));
-  os->write(line, Signed_cast(size));
-
-  *os << '\n';
-  os->flush();
-}
-
-static void rawStreamOutputCallback(Level level, const char *line, size_t size,
-                                    void *context) {
-  llvm::raw_ostream *os = reinterpret_cast<llvm::raw_ostream *>(context);
-
-  *os << levelPrefix(level);
-
-  char tbuf[Timestamp::TS_BUFSIZE];
-  size_t tlen = timestamp_now(tbuf);
-  os->write(tbuf, tlen);
-  os->write(line, size);
-
-  *os << '\n';
-  os->flush();
-}
-
-static void rawStreamColorOutputCallback(Level level, const char *line,
-                                         size_t size, void *context) {
-  llvm::raw_ostream *os = reinterpret_cast<llvm::raw_ostream *>(context);
-
-  *os << levelPrefixColor(level);
-
-  char tbuf[Timestamp::TS_BUFSIZE];
-  size_t tlen = timestamp_now(tbuf);
-  os->write(tbuf, tlen);
-  os->write(line, size);
-
-  *os << "\n\033[0m";
-  os->flush();
-}
-
-void setOutputStream(std::ostream *outputStream) {
-  setOutputCallback(streamOutputCallback, outputStream);
-}
-
-void setOutputStream(llvm::raw_ostream *outputStream) {
-  if (true) {  // FIXME(bfish): use has_colors() when working...
-    setOutputCallback(rawStreamColorOutputCallback, outputStream);
-  } else {
-    setOutputCallback(rawStreamOutputCallback, outputStream);
-  }
-}
 
 static void trace1(const char *type, UInt64 id, const void *data,
                    size_t length) {
@@ -190,10 +38,7 @@ static void trace1(const char *type, UInt64 id, const void *data,
   }
 }
 
-namespace detail {
-
-void trace_msg_internal(const char *type, UInt64 id, const void *data,
-                        size_t length) {
+void trace_msg_(const char *type, UInt64 id, const void *data, size_t length) {
   // The memory buffer may contain multiple messages. We need to log each one
   // separately.
 
@@ -215,8 +60,7 @@ void trace_msg_internal(const char *type, UInt64 id, const void *data,
   }
 }
 
-void trace_rpc_internal(const char *type, UInt64 id, const void *data,
-                        size_t length) {
+void trace_rpc_(const char *type, UInt64 id, const void *data, size_t length) {
   const char *msg = static_cast<const char *>(data);
 
   // Remove trailing newline, if it exists.

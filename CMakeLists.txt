@@ -176,6 +176,7 @@ set(LIBOFP_SOURCES
   src/ofp/ipv6endpoint.cpp
   src/ofp/lldpvalue.cpp
   src/ofp/log.cpp
+  src/ofp/logger.cpp
   src/ofp/macaddress.cpp
   src/ofp/match.cpp
   src/ofp/matchheader.cpp

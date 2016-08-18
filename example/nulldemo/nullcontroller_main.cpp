@@ -18,14 +18,14 @@ class NullController : public ChannelListener {
 };
 
 int main(int argc, char **argv) {
+  log::configure(log::Level::Debug);
+
   std::vector<std::string> args{argv + 1, argv + argc};
 
-  IPv6Address addr{};
+  IPv6Address addr;
   if (!args.empty()) {
     addr = IPv6Address{args[0]};
   }
-
-  log::setOutputStream(&std::clog);
 
   Driver driver;
   driver.installSignalHandlers();
