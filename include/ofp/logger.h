@@ -45,10 +45,7 @@ public:
     Logger() = default;
 
     void configure(Level level, Trace trace, int fd);
-    void configure(Level level, Trace trace, llvm::raw_ostream *output);
-
-    bool enabled(Level level) const { return level >= levelFilter_; }
-    bool enabled(Trace trace) const { return (trace & traceFilter_) != Trace::None; }
+    void configure(Level level, Trace trace, std::unique_ptr<llvm::raw_ostream> &&output);
 
     Level levelFilter() const { return levelFilter_; }
     void setLevelFilter(Level level) { levelFilter_ = level; }
@@ -56,35 +53,26 @@ public:
     Trace traceFilter() const { return traceFilter_; }
     void setTraceFilter(Trace trace) { traceFilter_ = trace;}
 
-    void write(Level level, const char *data, size_t size) {
-        callback_(this, level, data, size);
-    }
+    bool enabled(Level level) const { return level >= levelFilter_; }
+    bool enabled(Trace trace) const { return (trace & traceFilter_) != Trace::None; }
+
+    void write(Level level, const char *data, size_t size);
 
 private:
-    using LoggerCallback = void(*)(Logger *,Level, const char *, size_t);
-
-    LoggerCallback callback_ = noop;
-    llvm::raw_ostream *output_ = nullptr;
+    std::unique_ptr<llvm::raw_ostream> output_;
     std::mutex outputMutex_;                      // protect `output_`
-    std::unique_ptr<llvm::raw_ostream> logstream_;
     Level levelFilter_ = Level::Silent;
     Trace traceFilter_ = Trace::None;
-
-    void setDestination(int fd);
-    void setDestination(llvm::raw_ostream *output);
-
-    static void noop(Logger *logger, Level level, const char *line, size_t size) {}
-    static void raw(Logger *logger, Level level, const char *line, size_t size);
 };
 
-extern Logger GLOBAL_Logger;
+extern Logger *const GLOBAL_Logger;
 
 inline void configure(Level level, Trace trace = Trace::None, int fd = STDERR) {
-  ofp::log::GLOBAL_Logger.configure(level, trace, fd);
+  GLOBAL_Logger->configure(level, trace, fd);
 }
 
-inline void configure(Level level, Trace trace, llvm::raw_ostream *output) {
-  ofp::log::GLOBAL_Logger.configure(level, trace, output);
+inline void configure(Level level, Trace trace, std::unique_ptr<llvm::raw_ostream> output) {
+  GLOBAL_Logger->configure(level, trace, std::move(output));
 }
 
 }  // namespace log

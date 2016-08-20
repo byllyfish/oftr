@@ -27,8 +27,6 @@ class Subprogram {
   static const int FileOpenFailedExitStatus = 9;
   static const int MinExitStatus = 10;
 
-  std::unique_ptr<llvm::raw_ostream> logstream_;
-
   void parseCommandLineOptions(int argc, const char *const *argv,
                                const char *overview) {
     cl::ParseCommandLineOptions(argc, argv, overview);
@@ -48,10 +46,11 @@ class Subprogram {
 
   void setupLogging() {
     using namespace llvm::sys;
+    std::unique_ptr<llvm::raw_ostream> logStream;
 
     if (!logfile_.empty()) {
       std::error_code err;
-      logstream_.reset(new llvm::raw_fd_ostream{
+      logStream.reset(new llvm::raw_fd_ostream{
           logfile_, err, fs::F_Append | fs::F_RW | fs::F_Text});
       if (err) {
         std::cerr << "libofp: Failed to open log file '" << logfile_ << "'\n";
@@ -59,11 +58,10 @@ class Subprogram {
       }
 
     } else {
-      logstream_.reset(new llvm::raw_fd_ostream{2, true});
+      logStream.reset(new llvm::raw_fd_ostream{2, true});
     }
 
-    logstream_->SetBufferSize(4096);
-    ofp::log::configure(loglevel_, static_cast<ofp::log::Trace>(logtrace_.getBits()), logstream_.get());
+    ofp::log::configure(loglevel_, static_cast<ofp::log::Trace>(logtrace_.getBits()), std::move(logStream));
   }
 
   // --- Command-line Arguments ---

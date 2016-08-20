@@ -4,8 +4,12 @@
 
 using namespace ofp::log;
 
-Logger ofp::log::GLOBAL_Logger;
- 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
+Logger *const ofp::log::GLOBAL_Logger = new Logger();
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+
 static const char LEVEL_INITIALS[] = "dIWEFst";
 
 inline char levelPrefix(Level level) {
@@ -15,45 +19,31 @@ inline char levelPrefix(Level level) {
 
 
 void Logger::configure(Level level, Trace trace, int fd) {
-    // `configure` may only be called once.
-    assert(callback_ == noop);
-
-    setDestination(fd);
     setLevelFilter(level);
     setTraceFilter(trace);
-}
 
-
-void Logger::configure(Level level, Trace trace, llvm::raw_ostream *output) {
-    // `configure` may only be called once.
-    assert(callback_ == noop);
-
-    setDestination(output);
-    setLevelFilter(level);
-    setTraceFilter(trace);
-}
-
-
-void Logger::setDestination(int fd) {
-    assert(fd >= 0);
-    logstream_.reset(new llvm::raw_fd_ostream{fd, true});
-    setDestination(logstream_.get());
-}
-
-void Logger::setDestination(llvm::raw_ostream *output) {
     std::lock_guard<std::mutex> lock{outputMutex_};
-    output_ = output;
-    callback_ = raw;
+    output_.reset(new llvm::raw_fd_ostream{fd, true});
+    output_->SetBufferSize(4096);
 }
 
 
-void Logger::raw(Logger *logger, Level level, const char *line, size_t size) {
+void Logger::configure(Level level, Trace trace, std::unique_ptr<llvm::raw_ostream> &&output) {
+    setLevelFilter(level);
+    setTraceFilter(trace);
+
+    std::lock_guard<std::mutex> lock{outputMutex_};
+    output_ = std::move(output);
+    output_->SetBufferSize(4096);
+}
+
+void Logger::write(Level level, const char *data, size_t size) {
   auto ts = Timestamp::now().toStringUTC();
-  auto out = logger->output_;
 
-  std::lock_guard<std::mutex> lock{logger->outputMutex_};
-  *out << levelPrefix(level) << ts << ' ';
-  out->write(line, size);
-  *out << '\n';
-  out->flush();
+  std::lock_guard<std::mutex> lock{outputMutex_};
+  *output_ << levelPrefix(level) << ts << ' ';
+  output_->write(data, size);
+  *output_ << '\n';
+  output_->flush();
 }
+
