@@ -10,8 +10,8 @@
 
 namespace ofp {
 
-// Set once at program startup to output MongoDB shell JSON syntax, e.g.:
-//     Binary data: `HexData("aabbcc")`
+// Set once at program startup to output MongoDB JSON syntax, e.g.:
+//     Binary data: `{"$binary":"<base64>","$type":"00"}`
 extern bool GLOBAL_ARG_MongoDBCompatible;
 
 }  // namespace ofp
@@ -24,6 +24,7 @@ namespace yaml {
 class JsonByteRange {
  public:
   /* implicit NOLINT */ JsonByteRange(const ofp::ByteRange &r) : value{r} {}
+  /* implicit NOLINT */ JsonByteRange(const ofp::ByteList &l) : value{l} {}
   ofp::ByteRange value;
 };
 
@@ -53,7 +54,6 @@ struct ScalarTraits<ofp::ByteList> {
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::ByteList &value) {
-    scalar = clean(scalar);
     value.resize(scalar.size() / 2 + 2);
     bool error = false;
     size_t actualSize =
@@ -66,16 +66,7 @@ struct ScalarTraits<ofp::ByteList> {
 
   static bool mustQuote(StringRef) { return false; }
 
- private:
-  static StringRef clean(StringRef s) {
-    if (s.startswith_lower("hexdata(\"")) {
-      s = s.drop_front(9);
-      if (s.endswith("\")")) {
-        s = s.drop_back(2);
-      }
-    }
-    return s;
-  }
+  using json_type = JsonByteRange;
 };
 
 }  // namespace yaml
