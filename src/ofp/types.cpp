@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/types.h"
+#include <openssl/base64.h>  // for EVP_EncodeBlock
 #include <array>
-#include <openssl/base64.h> // for EVP_EncodeBlock
 
 using namespace ofp;
 

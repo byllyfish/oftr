@@ -1,8 +1,11 @@
+// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_LOGGER_H_
 #define OFP_LOGGER_H_
 
-#include "ofp/types.h"
 #include <mutex>
+#include "ofp/types.h"
 
 namespace llvm {
 class raw_ostream;
@@ -33,36 +36,41 @@ enum FileDescriptor {
 };
 
 inline Trace operator&(Trace lhs, Trace rhs) {
-  return static_cast<Trace>(static_cast<unsigned>(lhs) & static_cast<unsigned>(rhs));
+  return static_cast<Trace>(static_cast<unsigned>(lhs) &
+                            static_cast<unsigned>(rhs));
 }
 
 inline Trace operator|(Trace lhs, Trace rhs) {
-  return static_cast<Trace>(static_cast<unsigned>(lhs) | static_cast<unsigned>(rhs));
+  return static_cast<Trace>(static_cast<unsigned>(lhs) |
+                            static_cast<unsigned>(rhs));
 }
 
 class Logger {
-public:
-    Logger() = default;
+ public:
+  Logger() = default;
 
-    void configure(Level level, Trace trace, int fd);
-    void configure(Level level, Trace trace, std::unique_ptr<llvm::raw_ostream> &&output);
+  void configure(Level level, Trace trace, int fd);
+  void configure(Level level, Trace trace,
+                 std::unique_ptr<llvm::raw_ostream> &&output);
 
-    Level levelFilter() const { return levelFilter_; }
-    void setLevelFilter(Level level) { levelFilter_ = level; }
+  Level levelFilter() const { return levelFilter_; }
+  void setLevelFilter(Level level) { levelFilter_ = level; }
 
-    Trace traceFilter() const { return traceFilter_; }
-    void setTraceFilter(Trace trace) { traceFilter_ = trace;}
+  Trace traceFilter() const { return traceFilter_; }
+  void setTraceFilter(Trace trace) { traceFilter_ = trace; }
 
-    bool enabled(Level level) const { return level >= levelFilter_; }
-    bool enabled(Trace trace) const { return (trace & traceFilter_) != Trace::None; }
+  bool enabled(Level level) const { return level >= levelFilter_; }
+  bool enabled(Trace trace) const {
+    return (trace & traceFilter_) != Trace::None;
+  }
 
-    void write(Level level, const char *data, size_t size);
+  void write(Level level, const char *data, size_t size);
 
-private:
-    std::unique_ptr<llvm::raw_ostream> output_;
-    std::mutex outputMutex_;                      // protect `output_`
-    Level levelFilter_ = Level::Silent;
-    Trace traceFilter_ = Trace::None;
+ private:
+  std::unique_ptr<llvm::raw_ostream> output_;
+  std::mutex outputMutex_;  // protect `output_`
+  Level levelFilter_ = Level::Silent;
+  Trace traceFilter_ = Trace::None;
 };
 
 extern Logger *const GLOBAL_Logger;
@@ -71,11 +79,12 @@ inline void configure(Level level, Trace trace = Trace::None, int fd = STDERR) {
   GLOBAL_Logger->configure(level, trace, fd);
 }
 
-inline void configure(Level level, Trace trace, std::unique_ptr<llvm::raw_ostream> output) {
+inline void configure(Level level, Trace trace,
+                      std::unique_ptr<llvm::raw_ostream> output) {
   GLOBAL_Logger->configure(level, trace, std::move(output));
 }
 
 }  // namespace log
 }  // namespace ofp
 
-#endif // OFP_LOGGER_H_
+#endif  // OFP_LOGGER_H_

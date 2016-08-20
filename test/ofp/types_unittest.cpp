@@ -126,7 +126,8 @@ TEST(types, RawDataToBase64) {
   EXPECT_EQ("YWI=", RawDataToBase64(s.data(), 2));
   EXPECT_EQ("YWJj", RawDataToBase64(s.data(), 3));
   EXPECT_EQ("YWJjZA==", RawDataToBase64(s.data(), 4));
-  EXPECT_EQ("YWJjZGVmNzg5MGFiY2RlZjc4OTBhYmNkZWY3ODkw", RawDataToBase64(s.data(), s.size()));
+  EXPECT_EQ("YWJjZGVmNzg5MGFiY2RlZjc4OTBhYmNkZWY3ODkw",
+            RawDataToBase64(s.data(), s.size()));
 }
 
 TEST(types, MemCopyMasked) {

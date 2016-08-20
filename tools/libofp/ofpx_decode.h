@@ -126,10 +126,12 @@ class Decode : public Subprogram {
                       cl::desc("Write compact JSON output instead of YAML")};
   cl::opt<bool> jsonArray_{"json-array",
                            cl::desc("Write output as a valid JSON array")};
-  cl::opt<JsonFlavor> jsonFlavor_{"json-flavor", cl::desc("Flavor of JSON output"), cl::values(clEnumValN(kJsonFlavorDefault, "default",
-                            "JSON (default)"),
-                 clEnumValN(kJsonFlavorMongoDB, "mongodb", "MongoDB JSON"), clEnumValEnd),
-                  cl::init(kJsonFlavorDefault)};
+  cl::opt<JsonFlavor> jsonFlavor_{
+      "json-flavor", cl::desc("Flavor of JSON output"),
+      cl::values(clEnumValN(kJsonFlavorDefault, "default", "JSON (default)"),
+                 clEnumValN(kJsonFlavorMongoDB, "mongodb", "MongoDB JSON"),
+                 clEnumValEnd),
+      cl::init(kJsonFlavorDefault)};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
   cl::opt<bool> silentError_{

@@ -69,7 +69,7 @@ static_assert(IsStandardLayout<AT_REGMOVE>(), "Unexpected layout");
 
 /// \brief Concrete type for NXAST_REG_LOAD action.
 class AT_REGLOAD {
-public:
+ public:
   constexpr static ActionType type() {
     return ActionType(OFPAT_EXPERIMENTER, 24);
   }
@@ -96,7 +96,8 @@ public:
   static const AT_REGLOAD *cast(const AT_EXPERIMENTER *action) {
     return reinterpret_cast<const AT_REGLOAD *>(action);
   }
-private:
+
+ private:
   const ActionType type_;
   const Big32 experimenterid_;
   const Big16 subtype_;

@@ -1898,6 +1898,20 @@ TEST(decoder, mpqueuedescreplyv5) {
 
 TEST(decoder, nicira_actions) {
   testDecodeEncode(
-      "040E007000000001000000000000000000000000000000000100000000000000FFFFFFFFFFFFFFFFFFFFFFFF0000000000010004000000000004003800000000FFFF00180000232000060018000000188000060680000806FFFF0018000023200007000780000A020000000000000089",
-      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  cookie:          0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:        0x01\n  command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n  match:           \n  instructions:    \n    - instruction:     APPLY_ACTIONS\n      actions:         \n        - action:          NX_REG_MOVE\n          src:             'ETH_DST[0:24]'\n          dst:             'ETH_SRC[24:48]'\n        - action:          NX_REG_LOAD\n          dst:             'ETH_TYPE[0:8]'\n          value:           0x0000000000000089\n...\n");
+      "040E007000000001000000000000000000000000000000000100000000000000FFFFFFFF"
+      "FFFFFFFFFFFFFFFF0000000000010004000000000004003800000000FFFF001800002320"
+      "00060018000000188000060680000806FFFF0018000023200007000780000A0200000000"
+      "00000089",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x01\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  "
+      "out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n "
+      " match:           \n  instructions:    \n    - instruction:     "
+      "APPLY_ACTIONS\n      actions:         \n        - action:          "
+      "NX_REG_MOVE\n          src:             'ETH_DST[0:24]'\n          dst: "
+      "            'ETH_SRC[24:48]'\n        - action:          NX_REG_LOAD\n  "
+      "        dst:             'ETH_TYPE[0:8]'\n          value:           "
+      "0x0000000000000089\n...\n");
 }

@@ -61,7 +61,9 @@ class Subprogram {
       logStream.reset(new llvm::raw_fd_ostream{2, true});
     }
 
-    ofp::log::configure(loglevel_, static_cast<ofp::log::Trace>(logtrace_.getBits()), std::move(logStream));
+    ofp::log::configure(loglevel_,
+                        static_cast<ofp::log::Trace>(logtrace_.getBits()),
+                        std::move(logStream));
   }
 
   // --- Command-line Arguments ---

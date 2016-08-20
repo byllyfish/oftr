@@ -58,13 +58,13 @@ void write_(std::ostream &os, const char *value1, const Args &... args) {
 
 template <class... Args>
 void write_(Level level, const Args &... args) {
-  // Logging is disabled when building oxm helper tools.
+// Logging is disabled when building oxm helper tools.
 #if !defined(LIBOFP_LOGGING_DISABLED)
   std::ostringstream oss;
   write_(oss, args...);
   std::string buf = oss.str();
   GLOBAL_Logger->write(level, buf.data(), buf.size());
-#endif // !defined(LIBOFP_LOGGING_DISABLED)
+#endif  // !defined(LIBOFP_LOGGING_DISABLED)
 }
 
 void trace_msg_(const char *type, UInt64 id, const void *data, size_t length);
@@ -73,8 +73,9 @@ void trace_rpc_(const char *type, UInt64 id, const void *data, size_t length);
 }  // namespace detail
 
 // N.B. Arguments of `log_` macros are only evaluated at the given log level.
-#define LOG_IF_LEVEL_(LVL_, ...) \
-  (void)(ofp::log::GLOBAL_Logger->enabled(ofp::log::LVL_) && (ofp::log::detail::write_(ofp::log::LVL_, __VA_ARGS__), true))
+#define LOG_IF_LEVEL_(LVL_, ...)                             \
+  (void)(ofp::log::GLOBAL_Logger->enabled(ofp::log::LVL_) && \
+         (ofp::log::detail::write_(ofp::log::LVL_, __VA_ARGS__), true))
 
 #define log_error(...) LOG_IF_LEVEL_(Level::Error, __VA_ARGS__)
 #define log_warning(...) LOG_IF_LEVEL_(Level::Warning, __VA_ARGS__)
@@ -108,15 +109,12 @@ template <class... Args>
 
 template <class Ptr, class... Args>
 inline Ptr fatal_if_null(Ptr value, const Args &... args) {
-  return (value == nullptr)
-         ? fatal("fatal_if_null", args...),
-         value : value;
+  return (value == nullptr) ? fatal("fatal_if_null", args...), value : value;
 }
 
 template <class... Args>
 inline bool fatal_if_false(bool value, const Args &... args) {
-  return !value ? fatal("fatal_if_false", args...),
-         value : value;
+  return !value ? fatal("fatal_if_false", args...), value : value;
 }
 
 // Use the LOG_LINE() macro to log source code file and line number.

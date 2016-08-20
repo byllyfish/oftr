@@ -111,8 +111,7 @@ static const char *const kActionSchemas[] = {
     llvm::yaml::kSetFieldSchema,
     llvm::yaml::kExperimenterActionSchema,
     llvm::yaml::kNiciraRegMoveActionSchema,
-    llvm::yaml::kNiciraRegLoadActionSchema
-};
+    llvm::yaml::kNiciraRegLoadActionSchema};
 
 static const char *const kMeterBandSchemas[] = {
     llvm::yaml::kMeterBandDropSchema, llvm::yaml::kMeterBandDscpRemarkSchema,
@@ -136,7 +135,7 @@ static const char *const kBuiltinTypes[] = {
     "Str256",      "HexData",     "DatapathID",   "MacAddress",
     "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID",
     "LLDPPortID",  "ActionID",    "FieldID",      "InstructionID",
-    "Timestamp", "RegisterBits"};
+    "Timestamp",   "RegisterBits"};
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 

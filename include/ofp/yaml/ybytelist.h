@@ -19,11 +19,11 @@ extern bool GLOBAL_ARG_MongoDBCompatible;
 namespace llvm {
 namespace yaml {
 
-// Make a new type equivalent to ofp::ByteRange so we can control the strict 
+// Make a new type equivalent to ofp::ByteRange so we can control the strict
 // JSON output format. `JsonByteRange` is used as ByteRange's json_type.
 class JsonByteRange {
-public:
-  JsonByteRange(const ofp::ByteRange &r) : value{r} {}
+ public:
+  /* implicit NOLINT */ JsonByteRange(const ofp::ByteRange &r) : value{r} {}
   ofp::ByteRange value;
 };
 
@@ -66,7 +66,7 @@ struct ScalarTraits<ofp::ByteList> {
 
   static bool mustQuote(StringRef) { return false; }
 
-private:
+ private:
   static StringRef clean(StringRef s) {
     if (s.startswith_lower("hexdata(\"")) {
       s = s.drop_front(9);
