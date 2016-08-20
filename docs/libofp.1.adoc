@@ -137,6 +137,11 @@ OpenFlow version using the --ofversion option.
 *--json-array*::
     Json input is arbitrarily delimited objects.
 
+*--json-flavor*='FLAVOR'::
+    Specifies the flavor of JSON output. The default is 'default'.
+    - *default* = Regular JSON output.
+    - *mongodb* = MongoDB JSON with binary data.
+
 *-k, --keep-going*::
     Continue processing input after errors.
 
