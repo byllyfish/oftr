@@ -1,5 +1,18 @@
 = Changelog
 
+== Version 0.20 (20 August 2016)
+
+- Add support for MongoDB binary data output.
+- Add support for Nicira NXAST_REG_LOAD and NXAST_REG_MOVE actions.
+- Encode subprogram now supports --json-array input.
+- Message YAML changes: Change _session -> conn_id, _source -> _src, _dest -> _dst.
+- Decode subprogram --json-array argument now works with .pcap files.
+- Rename X_PKT_MARK to X_PKT_POS.
+- Fix Raspberry PI build.
+- Fix assertion fail in SegmentCache.
+- Improve CMakeLists.txt check for libpcap.
+- Make logging API faster. Global logger is now thread-safe and uses UTC timestamps.
+
 == Version 0.19 (8 June 2016)
 
 - Add support for the --pkt-write-file command line option.
