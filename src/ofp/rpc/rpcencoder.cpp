@@ -166,7 +166,7 @@ void RpcEncoder::replyError() {
   }
 
   response.error.code = code;
-  log::warning("JSON-RPC error:", response.error.message);
+  log_warning("JSON-RPC error:", response.error.message);
 
   if (conn_) {
     // conn_ is set to null in one of the unit tests. Under normal conditions,

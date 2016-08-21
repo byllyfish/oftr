@@ -6,16 +6,20 @@
 
 #include <cassert>  // for assert macro
 #include <chrono>
-#include <cstddef>       // for std::size_t, etc.
-#include <cstdint>       // for std::uint8_t, etc.
-#include <cstdlib>       // for std::malloc, etc.
-#include <cstring>       // for std::strlen, std::memcpy, etc.
-#include <memory>        // for std::unique_ptr<T>
-#include <ostream>       // for std::ostream (used for now) NOLINT
-#include <string>        // for std::string
-#include <system_error>  // for std::error_code
-#include <type_traits>   // for std::make_unsigned<T>, etc.
+#include <cstddef>               // for std::size_t, etc.
+#include <cstdint>               // for std::uint8_t, etc.
+#include <cstdlib>               // for std::malloc, etc.
+#include <cstring>               // for std::strlen, std::memcpy, etc.
+#include <memory>                // for std::unique_ptr<T>
+#include <ostream>               // for std::ostream (used for now) NOLINT
+#include <string>                // for std::string
+#include <system_error>          // for std::error_code
+#include <type_traits>           // for std::make_unsigned<T>, etc.
+#include "llvm/ADT/StringRef.h"  // for llvm::StringRef
 #include "ofp/config.h"
+
+// Require C++11 -- std::string storage is guaranteed contiguous.
+static_assert(__cplusplus >= 201103L, "C++11 required");
 
 #if defined(__clang__)
 #define OFP_BEGIN_IGNORE_PADDING   \
@@ -130,6 +134,18 @@ constexpr UInt32 UInt32_narrow_cast(T value) {
   return static_cast<UInt32>(value);
 }
 
+inline UInt16 UInt16_unaligned(const void *ptr) {
+  UInt16 val;
+  std::memcpy(&val, ptr, sizeof(val));
+  return val;
+}
+
+inline UInt32 UInt32_unaligned(const void *ptr) {
+  UInt32 val;
+  std::memcpy(&val, ptr, sizeof(val));
+  return val;
+}
+
 /// \returns true if type is a literal type.
 template <class T>
 constexpr bool IsLiteralType() {
@@ -241,6 +257,13 @@ std::string RawDataToHexDelimitedLowercase(
 /// \return string containing raw bytes
 std::string HexToRawData(const std::string &hex);
 
+/// Convert raw buffer to a base64.
+///
+/// \param  data pointer to input buffer
+/// \param  length size of input buffer
+/// \return base64 string
+std::string RawDataToBase64(const void *data, size_t length);
+
 /// Return true if memory block is filled with given byte value.
 ///
 /// \param  data   pointer to memory block
@@ -302,13 +325,6 @@ inline const T *Interpret_cast(const void *ptr) {
   assert(IsPtrAligned(ptr, alignof(T)) && "ptr has unexpected alignment");
 #endif  // NDEBUG
   return reinterpret_cast<const T *>(ptr);
-}
-
-/// Utility function to combine hash values.
-/// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3876.pdf
-template <typename T>
-void HashCombine(size_t &seed, const T &val) {
-  seed ^= std::hash<T>{}(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
 }  // namespace ofp

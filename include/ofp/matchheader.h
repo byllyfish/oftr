@@ -11,6 +11,8 @@
 
 namespace ofp {
 
+class Validation;
+
 class MatchHeader {
  public:
   MatchHeader() = default;
@@ -25,7 +27,7 @@ class MatchHeader {
   OXMRange oxmRange() const;
   const deprecated::StandardMatch *stdMatch() const;
 
-  bool validateInput(size_t lengthRemaining) const;
+  bool validateInput(size_t lengthRemaining, Validation *context) const;
 
  private:
   Big16 type_ = OFPMT_OXM;

@@ -6,6 +6,7 @@
 
 #include "ofp/actionidlist.h"
 #include "ofp/yaml/yactions.h"
+#include "ofp/yaml/yactiontype.h"
 
 namespace ofp {
 namespace detail {

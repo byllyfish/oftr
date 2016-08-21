@@ -96,9 +96,9 @@ TEST(timestamp, relational) {
 }
 
 TEST(timestamp, now) {
-  log::debug("Timestamp::now", Timestamp::now().toString());
-  log::debug("Timestamp::now", Timestamp::now().toString());
-  log::debug("Timestamp::now", Timestamp::now().toString());
+  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
+  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
+  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
 }
 
 TEST(timestamp, secondsSince) {
@@ -123,4 +123,12 @@ TEST(timestamp, units) {
   EXPECT_EQ(1000000, a.nanoseconds());
   EXPECT_EQ(1000, a.microseconds());
   EXPECT_EQ(1, a.milliseconds());
+}
+
+TEST(timestamp, toStringUTC) {
+  Timestamp a{123456789, 123456789};
+  EXPECT_EQ("1973-11-29T21:33:09.123456789Z", a.toStringUTC());
+
+  Timestamp b{2, 1000000};
+  EXPECT_EQ("1970-01-01T00:00:02.001000000Z", b.toStringUTC());
 }

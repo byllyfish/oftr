@@ -85,11 +85,19 @@ void print_version() {
 
   os << "  <" << LIBOFP_GITHUB_URL << ">\n";
 
+  const char *bits = "? bit";
+  if (sizeof(void *) == 8) {
+    bits = "64 bit";
+  } else if (sizeof(void *) == 4) {
+    bits = "32 bit";
+  }
+
 #ifndef __OPTIMIZE__
-  os << "  DEBUG build";
+  os << "  DEBUG ";
 #else
-  os << "  Optimized build";
+  os << "  Optimized ";
 #endif
+  os << bits << " build";
 #ifndef NDEBUG
   os << " with assertions";
 #endif

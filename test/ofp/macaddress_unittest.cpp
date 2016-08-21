@@ -36,11 +36,11 @@ TEST(macaddress, hash) {
   MacAddress enet1{"01:02:03:04:05:06"};
 
   std::hash<MacAddress> hasher;
-  EXPECT_EQ(176514621, hasher(enet1));
+  EXPECT_EQ(0xf6fb78f6, hasher(enet1));
 
   MacAddress enet2{"01:02:03:04:05:07"};
 
-  EXPECT_EQ(205143772, hasher(enet2));
+  EXPECT_EQ(0xe5dfcd2d, hasher(enet2));
 }
 
 TEST(macaddress, canonical) {

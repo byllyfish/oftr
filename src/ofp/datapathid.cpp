@@ -2,11 +2,13 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/datapathid.h"
+#include "ofp/byteorder.h"
 
 using namespace ofp;
 
-DatapathID::DatapathID(Big16 implementerDefined, MacAddress macAddress) {
-  std::memcpy(dpid_.data(), &implementerDefined, sizeof(implementerDefined));
+DatapathID::DatapathID(UInt16 implementerDefined, MacAddress macAddress) {
+  Big16 impDef = implementerDefined;
+  std::memcpy(dpid_.data(), &impDef, sizeof(impDef));
   std::memcpy(dpid_.data() + 2, &macAddress, sizeof(macAddress));
 }
 
@@ -15,10 +17,8 @@ DatapathID::DatapathID(const std::string &dpid) {
     clear();
 }
 
-Big16 DatapathID::implementerDefined() const {
-  Big16 result;
-  std::memcpy(&result, dpid_.data(), sizeof(result));
-  return result;
+UInt16 DatapathID::implementerDefined() const {
+  return Big16_unaligned(dpid_.data());
 }
 
 MacAddress DatapathID::macAddress() const {

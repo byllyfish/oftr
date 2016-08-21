@@ -17,7 +17,7 @@ bool RequestForward::validateInput(Validation *context) const {
   const Header *reqHeader = reinterpret_cast<const Header *>(req.data());
 
   if (reqHeader->length() != req.size()) {
-    log::info("RequestForward inner request size is invalid");
+    log_info("RequestForward inner request size is invalid");
     return false;
   }
 

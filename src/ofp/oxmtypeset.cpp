@@ -41,7 +41,7 @@ bool OXMTypeSet::add(OXMType type) {
     classes_[classCount_].fields.set(oxmField);
     ++classCount_;
   } else {
-    log::info("Number of OXMTypeSet classes exceeded: ", MaxOXMClasses);
+    log_info("Number of OXMTypeSet classes exceeded: ", MaxOXMClasses);
   }
 
   return true;

@@ -2,6 +2,7 @@
 set(LIBOFP_TEST_SOURCES
 	ofp/actionlist_unittest.cpp
 	ofp/actions_unittest.cpp
+	ofp/actionrange_unittest.cpp
 	ofp/actiontype_unittest.cpp
 	ofp/bucketlist_unittest.cpp
 	ofp/bundleaddmessage_unittest.cpp
@@ -22,6 +23,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/featuresreply_unittest.cpp
 	ofp/flowmodbuilder_unittest.cpp
 	ofp/flowremovedbuilder_unittest.cpp
+	ofp/hash_unittest.cpp
 	ofp/lldpvalue_unittest.cpp
 	ofp/log_unittest.cpp
 	ofp/macaddress_unittest.cpp
@@ -38,11 +40,13 @@ set(LIBOFP_TEST_SOURCES
 	ofp/ipv4address_unittest.cpp
 	ofp/ipv6address_unittest.cpp
 	ofp/ipv6endpoint_unittest.cpp
+	ofp/getjson_unittest.cpp
 	ofp/matchbuilder_unittest.cpp
 	ofp/matchheader_unittest.cpp
 	ofp/matchpacket_unittest.cpp
 	ofp/message_unittest.cpp
 	ofp/multipartreply_unittest.cpp
+	ofp/nicira_unittest.cpp
 	ofp/originalmatch_unittest.cpp
 	ofp/outputjson_unittest.cpp
 	ofp/oxmfields_unittest.cpp
@@ -51,6 +55,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/oxmlist_unittest.cpp
 	ofp/oxmrange_unittest.cpp
 	ofp/oxmtype_unittest.cpp
+	ofp/oxmregister_unittest.cpp
 	ofp/oxmtypeset_unittest.cpp
 	ofp/oxmvalue_unittest.cpp
 	ofp/packetin_unittest.cpp
@@ -107,7 +112,7 @@ set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include -isystem ${gtest_SOURCE_DIR}")
 
 add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES} ${gtest_SOURCE_DIR}/src/gtest-all.cc)
-target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} -lpcap)
+target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} ${CMAKE_THREAD_LIBS_INIT} -lpcap)
 
 # Add tests here.
 

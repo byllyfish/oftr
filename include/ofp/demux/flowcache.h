@@ -28,6 +28,8 @@ struct FlowCacheKey {
   }
 };
 
+static_assert(sizeof(FlowCacheKey) == 36, "Unexpected size.");
+
 // Entry used in FlowCache.
 struct FlowCacheEntry {
   UInt64 sessionID = 0;
@@ -56,10 +58,7 @@ namespace std {
 template <>
 struct hash<ofp::demux::detail::FlowCacheKey> {
   size_t operator()(const ofp::demux::detail::FlowCacheKey &key) const {
-    size_t result = 0;
-    ofp::HashCombine(result, std::hash<ofp::IPv6Endpoint>{}(key.x));
-    ofp::HashCombine(result, std::hash<ofp::IPv6Endpoint>{}(key.y));
-    return result;
+    return ofp::hash::MurmurHash32(&key);
   }
 };
 
@@ -98,6 +97,11 @@ enum TCPControlBits : UInt8 {
 ///
 class FlowCache {
  public:
+  FlowCache() {
+    cache_.max_load_factor(0.9f);
+    cache_.reserve(100);
+  }
+
   // Submit data from a tcp segment to update the cache.
   FlowData receive(const Timestamp &ts, const IPv6Endpoint &src,
                    const IPv6Endpoint &dst, UInt32 seq, ByteRange data,
@@ -116,6 +120,7 @@ class FlowCache {
 
   // Describe the contents of the cache (for debugging).
   std::string toString() const;
+  std::string stats() const;
 
  private:
   detail::FlowMap cache_;

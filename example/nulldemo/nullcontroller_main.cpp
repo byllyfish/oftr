@@ -9,7 +9,7 @@ using namespace ofp;
 class NullController : public ChannelListener {
  public:
   void onChannelUp(Channel *channel) override {
-    log::debug(__PRETTY_FUNCTION__);
+    log_debug(__PRETTY_FUNCTION__);
   }
 
   void onMessage(const Message *message) override {}
@@ -18,14 +18,14 @@ class NullController : public ChannelListener {
 };
 
 int main(int argc, char **argv) {
+  log::configure(log::Level::Debug);
+
   std::vector<std::string> args{argv + 1, argv + argc};
 
-  IPv6Address addr{};
+  IPv6Address addr;
   if (!args.empty()) {
     addr = IPv6Address{args[0]};
   }
-
-  log::setOutputStream(&std::clog);
 
   Driver driver;
   driver.installSignalHandlers();

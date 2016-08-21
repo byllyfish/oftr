@@ -191,7 +191,7 @@ UInt32 HeaderOnlyBuilder<HeaderOnlyType>::send(Writable *channel) {
     header->setType(origType);
 
   } else {
-    log::info("Message not supported on this channel version.", origType);
+    log_info("Message not supported on this channel version.", origType);
   }
 
   return xid;

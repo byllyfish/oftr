@@ -4,10 +4,8 @@
 #ifndef OFP_DATAPATHID_H_
 #define OFP_DATAPATHID_H_
 
-#include "ofp/array.h"
-#include "ofp/byteorder.h"
+#include <array>
 #include "ofp/macaddress.h"
-#include "ofp/types.h"
 
 namespace ofp {
 
@@ -19,11 +17,11 @@ class DatapathID {
 
   DatapathID() : dpid_{} {}
   explicit DatapathID(const ArrayType dpid) { dpid_ = dpid; }
-  explicit DatapathID(Big16 implementerDefined, MacAddress macAddress);
+  explicit DatapathID(UInt16 implementerDefined, MacAddress macAddress);
   explicit DatapathID(const std::string &dpid);
 
   bool empty() const { return toUInt64() == 0; }
-  Big16 implementerDefined() const;
+  UInt16 implementerDefined() const;
   MacAddress macAddress() const;
   std::string toString() const;
   const ArrayType &toArray() const { return dpid_; }
@@ -61,8 +59,7 @@ namespace std {
 template <>
 struct hash<ofp::DatapathID> {
   size_t operator()(const ofp::DatapathID &addr) const {
-    std::hash<ofp::DatapathID::ArrayType> h;
-    return h(addr.toArray());
+    return ofp::hash::MurmurHash32(&addr);
   }
 };
 

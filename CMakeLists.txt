@@ -35,7 +35,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.19.0)
+set(Libofp_VERSION 0.20.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 
@@ -141,6 +141,7 @@ endif()
 set(LIBOFP_SOURCES
   src/ofp/actionrange.cpp
   src/ofp/actiontype.cpp
+  src/ofp/actionfulltype.cpp
   src/ofp/mpaggregatestatsreply.cpp
   src/ofp/bucket.cpp
   src/ofp/bucketlist.cpp
@@ -175,6 +176,7 @@ set(LIBOFP_SOURCES
   src/ofp/ipv6endpoint.cpp
   src/ofp/lldpvalue.cpp
   src/ofp/log.cpp
+  src/ofp/logger.cpp
   src/ofp/macaddress.cpp
   src/ofp/match.cpp
   src/ofp/matchheader.cpp
@@ -203,6 +205,7 @@ set(LIBOFP_SOURCES
   src/ofp/originalmatch.cpp
   src/ofp/oxmfulltype.cpp
   src/ofp/oxmlist.cpp
+  src/ofp/oxmregister.cpp
   src/ofp/oxmtype.cpp
   src/ofp/oxmtypeset.cpp
   src/ofp/packetin.cpp
@@ -241,8 +244,10 @@ set(LIBOFP_SOURCES
   src/ofp/validation.cpp
   src/ofp/yaml/decoder.cpp
   src/ofp/yaml/encoder.cpp
+  src/ofp/yaml/getjson.cpp
   src/ofp/yaml/outputjson.cpp
   src/ofp/yaml/seterror.cpp
+  src/ofp/yaml/ybytelist.cpp
   src/ofp/yaml/yconstants.cpp
   src/ofp/yaml/ycontext.cpp
   src/ofp/yaml/ygroupnumber.cpp
@@ -354,11 +359,16 @@ endif()
 
 include(CheckIncludeFile)
 include(CheckSymbolExists)
-set(CMAKE_REQUIRED_LIBRARIES pcap)
+include(CheckLibraryExists)
 
-check_include_file(pcap/pcap.h HAVE_PCAP_PCAP_H)
-check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
-check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
+check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)
+if(HAVE_LIBPCAP)
+  set(CMAKE_REQUIRED_LIBRARIES pcap)
+  check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
+  check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
+else()
+  message(FATAL_ERROR "libpcap is not available.")
+endif()
 
 #-------------------------------------------------------------------------------
 # Build Library
@@ -376,8 +386,8 @@ endif()
 
 # Use pthreads.
 
+find_package(Threads)
 if(LIBOFP_ENABLE_JSONRPC)
-  find_package(Threads)
   set(LIBOFP_LINKED_LIBS ${CMAKE_THREAD_LIBS_INIT})
 endif()
 

@@ -54,13 +54,13 @@ void SimpleChannelListener::trackReply(UInt32 xid, PtrMemFunc<MesgType> mbf) {
         (this->*mbf)(msg);
       }
     } else {
-      log::debug("Unexpected message type:", message->type());
+      log_debug("Unexpected message type:", message->type());
     }
   };
 
   auto item = tracker_.insert(std::make_pair(xid, handler));
   if (!item.second) {
-    log::debug("XID already in use?");
+    log_debug("XID already in use?");
   }
 }
 

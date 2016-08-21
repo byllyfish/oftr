@@ -33,7 +33,7 @@ class Segment {
   }
 
   void append(const ByteRange &data, bool final) {
-    assert(!final_);
+    assert(!final_ || final);
     data_.add(data.data(), data.size());
     end_ += data.size();
     final_ = final;

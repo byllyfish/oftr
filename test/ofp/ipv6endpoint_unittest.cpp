@@ -133,6 +133,6 @@ TEST(ipv6endpoint, hash) {
   IPv6Endpoint b{"[2001::01]:2"};
 
   std::hash<IPv6Endpoint> hasher;
-  EXPECT_EQ(0xab02dd7f, hasher(a) & 0xffffffff);
-  EXPECT_EQ(0xab02dcbe, hasher(b) & 0xffffffff);
+  EXPECT_EQ(0x23f3a759, hasher(a) & 0xffffffff);
+  EXPECT_EQ(0xfdaf2713, hasher(b) & 0xffffffff);
 }

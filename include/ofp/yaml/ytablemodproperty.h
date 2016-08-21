@@ -69,7 +69,7 @@ struct MappingTraits<ofp::detail::TableModPropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported TableMod Property");
+        log_debug("Unsupported TableMod Property");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

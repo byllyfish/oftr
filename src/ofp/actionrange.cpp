@@ -4,6 +4,7 @@
 #include "ofp/actionrange.h"
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
+#include "ofp/nicira.h"
 #include "ofp/oxmfields.h"
 
 using namespace ofp;
@@ -18,10 +19,16 @@ bool ActionRange::validateInput(Validation *context) const {
 
   for (auto &item : *this) {
     switch (item.type().enumType()) {
-      case OFPAT_EXPERIMENTER:
-        if (!item.action<AT_EXPERIMENTER>()->validateInput(context))
+      case OFPAT_EXPERIMENTER: {
+        auto action = item.action<AT_EXPERIMENTER>();
+        if (!action->validateInput(context))
           return false;
+        if (action->experimenterid() == nx::NICIRA) {
+          if (!validateInput_NICIRA(action, context))
+            return false;
+        }
         break;
+      }
       default:
         break;
     }
@@ -122,8 +129,8 @@ unsigned ActionRange::writeSizeMinusSetFieldV1(ActionIterator iter) {
     case OFB_ICMPV4_CODE::type():
       return 8;
     default:
-      log::debug("ActionRange::writeSizeMinusSetFieldV1: Unexpected OXM type:",
-                 oxm->type());
+      log_debug("ActionRange::writeSizeMinusSetFieldV1: Unexpected OXM type:",
+                oxm->type());
       return 0;
   }
 }
@@ -173,8 +180,29 @@ void ActionRange::writeSetFieldV1(ActionIterator iter, Writable *channel) {
       writeAction<AT_SET_TP_CODE_V1, OFB_TP_CODE>(iter, channel);
       break;
     default:
-      log::debug("ActionRange::writeSetFieldV1: Unknown field type: ",
-                 oxm->type());
+      log_debug("ActionRange::writeSetFieldV1: Unknown field type: ",
+                oxm->type());
       break;
   }
+}
+
+bool ActionRange::validateInput_NICIRA(const AT_EXPERIMENTER *action,
+                                       Validation *context) {
+  assert(action->experimenterid() == nx::NICIRA);
+
+  size_t size = action->size();
+  if (size < AT_EXPERIMENTER::MinSizeWithSubtype) {
+    return context->validateBool(false, "Invalid Nicira action size");
+  }
+
+  switch (action->subtype()) {
+    case nx::NXAST_REG_MOVE:
+      return nx::AT_REGMOVE::cast(action)->validateInput(context);
+    case nx::NXAST_REG_LOAD:
+      return nx::AT_REGLOAD::cast(action)->validateInput(context);
+    default:
+      break;
+  }
+
+  return true;
 }

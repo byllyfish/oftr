@@ -4,11 +4,14 @@
 #ifndef OFP_YAML_YACTIONS_H_
 #define OFP_YAML_YACTIONS_H_
 
+#include "ofp/actionfulltype.h"
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
-#include "ofp/yaml/yactiontype.h"
+#include "ofp/nicira.h"
+#include "ofp/yaml/yactionfulltype.h"
 #include "ofp/yaml/ycontrollermaxlen.h"
 #include "ofp/yaml/ymatch.h"
+#include "ofp/yaml/yoxmregister.h"
 
 namespace ofp {
 namespace detail {
@@ -128,15 +131,27 @@ experimenter: UInt32
 data: HexData
 )""";
 
+const char *const kNiciraRegMoveActionSchema = R"""({Action/NX_REG_MOVE}
+action: NX_REG_MOVE
+src: RegisterBits
+dst: RegisterBits
+)""";
+
+const char *const kNiciraRegLoadActionSchema = R"""({Action/NX_REG_LOAD}
+action: NX_REG_MOVE
+dst: RegisterBits
+value: UInt64
+)""";
+
 template <>
 struct MappingTraits<ofp::detail::ActionIteratorItem> {
   static void mapping(IO &io, ofp::detail::ActionIteratorItem &item) {
     using namespace ofp;
 
-    ActionType type = item.type();
-    io.mapRequired("action", type);
+    ActionFullType fullType{item.type(), item.experimenter(), item.subtype()};
+    io.mapRequired("action", fullType);
 
-    switch (type) {
+    switch (fullType.type()) {
       case AT_COPY_TTL_OUT::type():
       case AT_COPY_TTL_IN::type():
       case AT_DEC_MPLS_TTL::type():
@@ -211,13 +226,17 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         break;
       }
       default: {
-        switch (type.enumType()) {
+        // Variable length actions, known actions with the unexpected lengths,
+        // and unknown actions.
+        switch (fullType.enumType()) {
           case OFPAT_EXPERIMENTER: {
             const AT_EXPERIMENTER *action = item.action<AT_EXPERIMENTER>();
-            Hex32 experimenterid = action->experimenterid();
-            io.mapRequired("experimenter", experimenterid);
-            ByteRange value = action->value();
-            io.mapRequired("data", value);
+            if (fullType.experimenter() == nx::NICIRA) {
+              handleNicira(io, action);
+            } else {
+              ByteRange value = action->value();
+              io.mapRequired("data", value);
+            }
             break;
           }
           case OFPAT_SET_FIELD: {
@@ -245,6 +264,33 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       }
     }
   }
+
+ private:
+  static void handleNicira(IO &io, const ofp::AT_EXPERIMENTER *action) {
+    using namespace ofp;
+    switch (action->subtype()) {
+      case nx::AT_REGMOVE::subtype(): {
+        const nx::AT_REGMOVE *regmove = nx::AT_REGMOVE::cast(action);
+        OXMRegister src = regmove->src();
+        OXMRegister dst = regmove->dst();
+        io.mapRequired("src", src);
+        io.mapRequired("dst", dst);
+        break;
+      }
+      case nx::AT_REGLOAD::subtype(): {
+        const nx::AT_REGLOAD *regload = nx::AT_REGLOAD::cast(action);
+        OXMRegister dst = regload->dst();
+        Big64 value = regload->value();
+        io.mapRequired("dst", dst);
+        io.mapRequired("value", value);
+        break;
+      }
+      default: {
+        ByteRange value = action->value();
+        io.mapRequired("data", value);
+      }
+    }
+  }
 };
 
 template <>
@@ -254,10 +300,10 @@ struct MappingTraits<ofp::detail::ActionInserter> {
 
     ActionList &list = Ref_cast<ActionList>(builder);
 
-    ActionType type;
-    io.mapRequired("action", type);
+    ActionFullType fullType;
+    io.mapRequired("action", fullType);
 
-    if (type == deprecated::AT_ENQUEUE_V1::type()) {
+    if (fullType.type() == deprecated::AT_ENQUEUE_V1::type()) {
       PortNumber port;
       Hex32 queueId;
       io.mapRequired("port", port);
@@ -267,7 +313,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
       return;
     }
 
-    switch (type.enumType()) {
+    switch (fullType.enumType()) {
       case OFPAT_COPY_TTL_OUT: {
         AT_COPY_TTL_OUT action;
         list.add(action);
@@ -364,12 +410,20 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
       }
       case OFPAT_EXPERIMENTER: {
-        UInt32 experimenterid;
-        io.mapRequired("experimenter", experimenterid);
-        ByteList value;
-        io.mapRequired("data", value);
-        AT_EXPERIMENTER action{experimenterid, value};
-        list.add(action);
+        if (fullType.experimenter() == nx::NICIRA) {
+          addNicira(io, list, fullType);
+        } else {
+          UInt32 experimenterid;
+          ByteList value;
+          if (fullType.experimenter() == 0) {
+            io.mapRequired("experimenter", experimenterid);
+          } else {
+            experimenterid = fullType.experimenter();
+          }
+          io.mapRequired("data", value);
+          AT_EXPERIMENTER action{experimenterid, value};
+          list.add(action);
+        }
         break;
       }
       case OFPAT_SET_FIELD: {
@@ -392,9 +446,42 @@ struct MappingTraits<ofp::detail::ActionInserter> {
       default:
         ByteList data;
         io.mapRequired("data", data);
-        AT_UNKNOWN action{type, data};
+        AT_UNKNOWN action{fullType.type(), data};
         list.add(action);
         break;
+    }
+  }
+
+ private:
+  static void addNicira(IO &io, ofp::ActionList &list,
+                        const ofp::ActionFullType &fullType) {
+    using namespace ofp;
+
+    switch (fullType.subtype()) {
+      case nx::AT_REGMOVE::subtype(): {
+        OXMRegister src;
+        OXMRegister dst;
+        io.mapRequired("src", src);
+        io.mapRequired("dst", dst);
+        nx::AT_REGMOVE action{src, dst};
+        list.add(action);
+        break;
+      }
+      case nx::AT_REGLOAD::subtype(): {
+        OXMRegister dst;
+        Big64 value;
+        io.mapRequired("dst", dst);
+        io.mapRequired("value", value);
+        nx::AT_REGLOAD action{value, dst};
+        list.add(action);
+        break;
+      }
+      default: {
+        ByteList value;
+        io.mapRequired("data", value);
+        AT_EXPERIMENTER action{nx::NICIRA, value};
+        list.add(action);
+      }
     }
   }
 };

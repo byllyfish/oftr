@@ -54,7 +54,7 @@ struct MappingTraits<ofp::detail::TableFeaturePropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported TableFeaturePropertyItem");
+        log_debug("Unsupported TableFeaturePropertyItem");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

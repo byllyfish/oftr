@@ -14,7 +14,7 @@ PropertyRange Queue::properties() const {
 
 bool Queue::validateInput(Validation *context) const {
   if (len_ < sizeof(Queue)) {
-    log::info("Length of queue is too small", len_);
+    log_info("Length of queue is too small", len_);
     return false;
   }
 

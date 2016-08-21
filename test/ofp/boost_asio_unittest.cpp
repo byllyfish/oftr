@@ -11,7 +11,7 @@ using namespace ofp::sys;
 TEST(boost_asio, tcp) {
   auto endpt = makeEndpoint<tcp>(IPv6Address{"192.168.1.1"}, 80);
 
-  log::debug("endpt", endpt.address().to_string());
+  log_debug("endpt", endpt.address().to_string());
 
   IPv6Address addr = makeIPv6Address(endpt.address());
   UInt16 port = endpt.port();

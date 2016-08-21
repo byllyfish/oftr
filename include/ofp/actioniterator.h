@@ -17,6 +17,17 @@ class ActionIteratorItem : private NonCopyable {
 
   ActionType type() const { return type_; }
   UInt16 size() const { return type_.length(); }
+  UInt32 experimenter() const {
+    return isExperimenter()
+               ? Big32::fromBytes(BytePtr(this) + sizeof(ActionType))
+               : Big32{};
+  }
+  UInt16 subtype() const {
+    return isExperimenterSubtype()
+               ? Big16::fromBytes(BytePtr(this) + sizeof(ActionType) +
+                                  sizeof(Big32))
+               : Big16{};
+  }
 
   template <class Type>
   const Type *action() const {
@@ -33,6 +44,13 @@ class ActionIteratorItem : private NonCopyable {
 
  private:
   ActionType type_;
+
+  bool isExperimenter() const {
+    return type_.enumType() == OFPAT_EXPERIMENTER && size() >= 8;
+  }
+  bool isExperimenterSubtype() const {
+    return type_.enumType() == OFPAT_EXPERIMENTER && size() >= 10;
+  }
 };
 
 }  // namespace detail

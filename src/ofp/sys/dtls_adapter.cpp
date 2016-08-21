@@ -67,11 +67,11 @@ void DTLS_Adapter::accept() {
 }
 
 bool DTLS_Adapter::isHandshakeDone() const {
-  log::debug("isHandshakeDone: state", SSL_state_string_long(ssl_),
-             ERR_peek_last_error());
+  log_debug("isHandshakeDone: state", SSL_state_string_long(ssl_),
+            ERR_peek_last_error());
   struct timeval tv = {0, 0};
   if (DTLSv1_get_timeout(ssl_, &tv) == 1) {
-    log::debug("isHandshakeDone: timeout", tv.tv_sec, tv.tv_usec);
+    log_debug("isHandshakeDone: timeout", tv.tv_sec, tv.tv_usec);
   }
   return SSL_is_init_finished(ssl_);
 }
@@ -79,7 +79,7 @@ bool DTLS_Adapter::isHandshakeDone() const {
 void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
   // Write the datagram through the SSL bio.
   int rc = SSL_write(ssl_, datagram, static_cast<int>(length));
-  log::debug("sendDatagram: SSL_write returned", rc);
+  log_debug("sendDatagram: SSL_write returned", rc);
 
   if (rc <= 0) {
     int err = SSL_get_error(ssl_, rc);
@@ -96,22 +96,22 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
       case SSL_ERROR_WANT_WRITE:
         // This should not happen. SSL_write should be able to put
         // any necessary outgoing data into the memory bio.
-        log::warning("DTLS_Adapter::sendDatagram: SSL_ERROR_WANT_WRITE");
+        log_warning("DTLS_Adapter::sendDatagram: SSL_ERROR_WANT_WRITE");
         break;
 
       case SSL_ERROR_SYSCALL:
-        log::warning("DTLS_Adapter::sendDatagram: SSL_ERROR_SYSCALL");
-        log::debug("DTLS_Adapter::sendDatagram: state",
-                   SSL_state_string_long(ssl_), ERR_peek_last_error());
+        log_warning("DTLS_Adapter::sendDatagram: SSL_ERROR_SYSCALL");
+        log_debug("DTLS_Adapter::sendDatagram: state",
+                  SSL_state_string_long(ssl_), ERR_peek_last_error());
         break;
 
       default:
-        log::warning("DTLS_Adapter::sendDatagram: unexpected error", err);
+        log_warning("DTLS_Adapter::sendDatagram: unexpected error", err);
         break;
     }
 
-    log::debug("sendDatagram: SSL_get_error returned", err, "state",
-               SSL_state_string_long(ssl_));
+    log_debug("sendDatagram: SSL_get_error returned", err, "state",
+              SSL_state_string_long(ssl_));
   }
 
   writeOutput();
@@ -120,29 +120,29 @@ void DTLS_Adapter::sendDatagram(const void *datagram, size_t length) {
 void DTLS_Adapter::datagramReceived(const void *datagram, size_t length) {
   int rc;
 
-  log::debug("datagramReceived:", DTLS_PrintRecord(datagram, length));
+  log_debug("datagramReceived:", DTLS_PrintRecord(datagram, length));
 
   rc = BIO_write(bio_, datagram, static_cast<int>(length));
-  // log::debug("datagramReceived: BIO_write returned", rc,
+  // log_debug("datagramReceived: BIO_write returned", rc,
   //           ByteRange{datagram, length});
 
   UInt8 inBuf[4000];
   rc = SSL_read(ssl_, inBuf, sizeof(inBuf));
-  log::debug("datagramReceived: SSL_read returned", rc);
+  log_debug("datagramReceived: SSL_read returned", rc);
 
   if (rc > 0) {
     receiveCallback_(inBuf, Unsigned_cast(rc), userData_);
 
   } else {
-    int err = SSL_get_error(ssl_, rc);
-    log::debug("datagramReceived: SSL_get_error returned", err, "state",
-               SSL_state_string_long(ssl_), ERR_peek_last_error());
+    log_debug("datagramReceived: SSL_get_error returned",
+              SSL_get_error(ssl_, rc), "state", SSL_state_string_long(ssl_),
+              ERR_peek_last_error());
   }
 
   writeOutput();
 
   if (SSL_is_init_finished(ssl_) && !datagrams_.empty()) {
-    log::debug("SSL_is_init_finished");
+    log_debug("SSL_is_init_finished");
     flushDatagrams();
   }
 }
@@ -161,7 +161,7 @@ void DTLS_Adapter::writeOutput() {
     rc = BIO_read(bio_, &buf[13], static_cast<int>(recordLen));
     assert(Unsigned_cast(rc) == recordLen);
 
-    log::debug("DTLS_Adapter:", DTLS_PrintRecord(buf, recordLen + 13));
+    log_debug("DTLS_Adapter:", DTLS_PrintRecord(buf, recordLen + 13));
     sendCallback_(buf, recordLen + 13, userData_);
   }
 }
@@ -172,7 +172,7 @@ void DTLS_Adapter::enqueueDatagram(const void *data, size_t length) {
 }
 
 void DTLS_Adapter::flushDatagrams() {
-  log::debug("DTLS_Adapter::flushDatagrams");
+  log_debug("DTLS_Adapter::flushDatagrams");
   while (!datagrams_.empty()) {
     Datagram &datagram = datagrams_.front();
     sendDatagram(datagram.data(), datagram.size());
@@ -189,7 +189,7 @@ void DTLS_Adapter::logOutput(const UInt8 *p, size_t length) {
       break;
     }
 
-    log::debug("DTLS_Adapter:", DTLS_PrintRecord(p, recordLen));
+    log_debug("DTLS_Adapter:", DTLS_PrintRecord(p, recordLen));
 
     assert(recordLen <= length);
 

@@ -11,6 +11,7 @@
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/ybytelist.h"
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -48,6 +49,12 @@ int Decode::run(int argc, const char *const *argv) {
     output_ = &outStream;
   }
 
+  // Put opening '[' only if format is json array.
+  if (!silent_ && jsonArray_) {
+    jsonArrayNeedComma_ = false;
+    *output_ << "[\n";
+  }
+
   // If --pcap-device option is specified, decode from packet capture device.
   // Otherwise, decode messages from pcap or binary files.
 
@@ -58,6 +65,11 @@ int Decode::run(int argc, const char *const *argv) {
     result = decodePcapFiles();
   } else {
     result = decodeFiles();
+  }
+
+  // Put closing ']' only if format is json array.
+  if (!silent_ && jsonArray_) {
+    *output_ << "]\n";
   }
 
   return static_cast<int>(result);
@@ -91,18 +103,22 @@ bool Decode::validateCommandLineArguments() {
     inputFiles_.push_back("-");
   }
 
+  // --json-array implies --json.
+  if (!silent_ && jsonArray_) {
+    json_ = true;
+  }
+
+  if (jsonFlavor_ == kJsonFlavorMongoDB) {
+    // mongodb flavor also implies --json.
+    json_ = true;
+    ofp::GLOBAL_ARG_MongoDBCompatible = true;
+  }
+
   return true;
 }
 
 ExitStatus Decode::decodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
-
-  if (!silent_ && jsonArray_) {
-    // -json-array implies -json.
-    json_ = true;
-    jsonNeedComma_ = false;
-    *output_ << "[\n";
-  }
 
   for (std::string filename : files) {
     // If filename ends in .findx when using --use-findx, strip the extension
@@ -118,15 +134,11 @@ ExitStatus Decode::decodeFiles() {
     }
   }
 
-  if (!silent_ && jsonArray_) {
-    *output_ << "]\n";
-  }
-
   return ExitStatus::Success;
 }
 
 ExitStatus Decode::decodeFile(const std::string &filename) {
-  ofp::log::debug("decodeFile:", filename);
+  log_debug("decodeFile:", filename);
 
   std::istream *input = nullptr;
   std::ifstream file;
@@ -421,7 +433,7 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage) {
-  ofp::log::debug("decodeOneMessage (transmogrified):", *message);
+  log_debug("decodeOneMessage (transmogrified):", *message);
 
   ofp::yaml::Decoder decoder{message, json_, pktDecode_};
 
@@ -454,13 +466,13 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   }
 
   if (!silent_) {
-    if (jsonArray_ && jsonNeedComma_) {
+    if (jsonArray_ && jsonArrayNeedComma_) {
       *output_ << ',';
     }
     *output_ << decoder.result();
     if (json_) {
       *output_ << '\n';
-      jsonNeedComma_ = true;
+      jsonArrayNeedComma_ = true;
     }
   }
 
@@ -497,7 +509,7 @@ bool Decode::equalMessages(ofp::ByteRange origData,
                            ofp::ByteRange newData) const {
   ofp::ByteList buf;
   if (normalizeTableFeaturesMessage(origData, buf)) {
-    ofp::log::debug("equalMessage: normalized TableFeatures message");
+    log_debug("equalMessage: normalized TableFeatures message");
     origData = buf.toRange();
   }
 
@@ -661,7 +673,7 @@ void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
 
   ExitStatus result = decode->decodeOneMessage(message, &originalMessage);
   if (result != ExitStatus::Success) {
-    ofp::log::debug("pcapMessageCallback: Failed to decode message");
+    log_debug("pcapMessageCallback: Failed to decode message");
   }
 }
 

@@ -13,7 +13,7 @@ OFP_BEGIN_IGNORE_PADDING
 class TestSession : public RpcSession {
  public:
   void receive(const std::string &msg) override {
-    log::debug("TestSession::receive", msg);
+    log_debug("TestSession::receive", msg);
     didReceive = true;
     stop();
   }

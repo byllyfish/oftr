@@ -59,7 +59,7 @@ struct MappingTraits<ofp::detail::AsyncConfigPropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported AsyncConfigPropertyItem");
+        log_debug("Unsupported AsyncConfigPropertyItem");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

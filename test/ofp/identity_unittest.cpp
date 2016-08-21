@@ -69,7 +69,7 @@ TEST(identity, empty) {
   std::error_code err;
   sys::Identity identity{"", "", "", err};
 
-  log::debug("identity error", err);
+  log_debug("identity error", err);
   asio::error_code expected{ERR_LIB_PEM, asio::error::get_ssl_category()};
   EXPECT_EQ(expected, err);
 }
@@ -78,7 +78,7 @@ TEST(identity, invalid_pem) {
   std::error_code err;
   sys::Identity identity{"x", "", "", err};
 
-  log::debug("identity error", err);
+  log_debug("identity error", err);
   asio::error_code expected{ERR_LIB_PEM, asio::error::get_ssl_category()};
   EXPECT_EQ(expected, err);
 }
@@ -87,7 +87,7 @@ TEST(identity, cert_only_no_private_key) {
   std::error_code err;
   sys::Identity identity{kGarbageCertificate, "", "", err};
 
-  log::debug("identity error", err);
+  log_debug("identity error", err);
   asio::error_code expected{ERR_PACK(ERR_LIB_PEM, PEM_R_NO_START_LINE),
                             asio::error::get_ssl_category()};
   EXPECT_EQ(expected, err);
@@ -101,7 +101,7 @@ TEST(identity, cert_with_private_key_no_ca) {
   std::error_code err;
   sys::Identity identity{cert, "", "", err};
 
-  log::debug("identity error", err);
+  log_debug("identity error", err);
   asio::error_code expected{ERR_PACK(ERR_LIB_PEM, PEM_R_NO_START_LINE),
                             asio::error::get_ssl_category()};
   EXPECT_EQ(expected, err);
@@ -116,7 +116,7 @@ TEST(identity, cert_with_private_key) {
   std::error_code err;
   sys::Identity identity{cert, "", kGarbageCertificate, err};
 
-  log::debug("identity error", err);
+  log_debug("identity error", err);
   asio::error_code expected;
   EXPECT_EQ(expected, err);
 }
@@ -130,7 +130,7 @@ TEST(identity, cert_with_private_key2) {
   std::error_code err;
   sys::Identity identity{cert, "", kGarbageCertificate, err};
 
-  log::debug("identity error", err);
+  log_debug("identity error", err);
   asio::error_code expected;
   EXPECT_EQ(expected, err);
 }

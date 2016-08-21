@@ -76,8 +76,8 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     messageAlert.params.data = {message->data(), message->size()};
     rpcReply(&messageAlert);
 
-    log::warning("OpenFlow parse error:", decoder.error(),
-                 std::make_pair("connid", message->source()->connectionId()));
+    log_warning("OpenFlow parse error:", decoder.error(),
+                std::make_pair("connid", message->source()->connectionId()));
   }
 }
 

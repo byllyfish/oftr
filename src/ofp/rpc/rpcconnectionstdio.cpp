@@ -28,7 +28,7 @@ void RpcConnectionStdio::setInput(int input) {
   input_.assign(input, err);
 
   if (err) {
-    log::error("RpcConnectionStdio::setInput", input, err);
+    log_error("RpcConnectionStdio::setInput", input, err);
   }
 }
 
@@ -39,7 +39,7 @@ void RpcConnectionStdio::setOutput(int output) {
   output_.assign(output, err);
 
   if (err) {
-    log::error("RpcConnectionStdio::setOutput", output, err);
+    log_error("RpcConnectionStdio::setOutput", output, err);
   }
 }
 
@@ -74,12 +74,12 @@ void RpcConnectionStdio::asyncRead() {
           handleEvent(line);
           asyncRead();
         } else if (err == asio::error::not_found) {
-          log::error("RpcConnectionStdio::asyncRead: input too large",
-                     RPC_MAX_MESSAGE_SIZE, err);
+          log_error("RpcConnectionStdio::asyncRead: input too large",
+                    RPC_MAX_MESSAGE_SIZE, err);
           rpcRequestTooBig();
         } else if (err != asio::error::eof &&
                    err != asio::error::operation_aborted) {
-          log::error("RpcConnectionStdio::asyncRead error", err);
+          log_error("RpcConnectionStdio::asyncRead error", err);
         }
       });
 }

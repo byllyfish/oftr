@@ -10,7 +10,7 @@ void FlowData::consume(size_t len) {
   if (state_ == nullptr) {
     // Do nothing if there's no data to consume.
     if (len > 0) {
-      log::debug("FlowData::consume: empty - can't consume", len);
+      log_debug("FlowData::consume: empty - can't consume", len);
     }
     return;
   }
@@ -18,7 +18,7 @@ void FlowData::consume(size_t len) {
   assert(state_ != nullptr);
   assert(len <= data_.size());
 
-  log::debug("FlowData::consume", len, "bytes");
+  log_debug("FlowData::consume", len, "bytes");
 
   state_->end_ += len;
 
@@ -43,15 +43,15 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
     started_ = true;
   }
 
-  log::debug("FlowState: receive segment", SegmentToString(begin, end, final));
+  log_debug("FlowState: receive segment", SegmentToString(begin, end, final));
 
   if (cache_.empty()) {
     if (finished_) {
       // Drop packets that arrive after flow is officially finished. Only log
       // a warning if the segment is not final.
       if (!final) {
-        log::warning("FlowState: drop late segment",
-                     SegmentToString(begin, end, final));
+        log_warning("FlowState: drop late segment",
+                    SegmentToString(begin, end, final));
       }
       return FlowData{sessionID};
 
@@ -61,24 +61,24 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
       if (final) {
         finished_ = true;
       }
-      log::debug("FlowState: return flow data",
-                 SegmentToString(begin, end, final));
+      log_debug("FlowState: return flow data",
+                SegmentToString(begin, end, final));
       return FlowData{this, data, sessionID, false, final};
     }
   }
 
   // Check if segment's end <= our `end_` value.
   if (!Segment::lessThan(end_, end)) {
-    log::warning("FlowState: drop unexpected segment",
-                 SegmentToString(begin, end, final), "end is", end_);
+    log_warning("FlowState: drop unexpected segment",
+                SegmentToString(begin, end, final), "end is", end_);
     return FlowData{sessionID};
   }
 
   // Determine the data in the segment that is *new*.
   ByteRange newData;
   if (Segment::lessThan(begin, end_)) {
-    log::warning("FlowState: overlapping segment detected",
-                 SegmentToString(begin, end, final), "end is", end_);
+    log_warning("FlowState: overlapping segment detected",
+                SegmentToString(begin, end, final), "end is", end_);
     newData = SafeByteRange(data.begin(), data.size(), end_ - begin);
   } else {
     newData = data;
@@ -99,8 +99,8 @@ FlowData FlowState::latestData(UInt64 sessionID) {
   const Segment *seg = cache_.current();
 
   if (seg && seg->begin() == end_) {
-    log::debug("FlowState: return flow data",
-               SegmentToString(seg->begin(), seg->end(), seg->final()));
+    log_debug("FlowState: return flow data",
+              SegmentToString(seg->begin(), seg->end(), seg->final()));
     return FlowData{this, seg->data(), sessionID, true, seg->final()};
   }
 
@@ -116,7 +116,7 @@ void FlowState::clear() {
   started_ = false;
   finished_ = false;
   if (!cache_.empty()) {
-    log::warning("FlowState: clearing", cache_.cacheSize(), "bytes");
+    log_warning("FlowState: clearing", cache_.cacheSize(), "bytes");
   }
   cache_.clear();
 }

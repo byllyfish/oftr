@@ -78,26 +78,26 @@ bool Header::validateInput(UInt8 negotiatedVersion) const {
   // be smaller than 8 bytes.
 
   if (length_ < sizeof(Header)) {
-    log::warning("Message header length is too small:", length_);
+    log_warning("Message header length is too small:", length_);
     return false;
   }
 
   // Header version needs to be within range [1...MAX_ALLOWED].
   if (version_ == 0 || version_ > OFP_VERSION_MAX_ALLOWED) {
-    log::warning("Message header version is invalid:",
-                 static_cast<int>(version_));
+    log_warning("Message header version is invalid:",
+                static_cast<int>(version_));
     return false;
   }
 
   // Header version must match the negotiated version if there is one.
   if (negotiatedVersion != 0 && version_ != negotiatedVersion) {
-    log::warning("Wrong message header version:", static_cast<int>(version_));
+    log_warning("Wrong message header version:", static_cast<int>(version_));
     return false;
   }
 
   // Header type needs to be within range [0...MAX_ALLOWED]
   if (type_ > OFPT_MAX_ALLOWED) {
-    log::warning("Message header type is invalid:", static_cast<int>(type_));
+    log_warning("Message header type is invalid:", static_cast<int>(type_));
     return false;
   }
 

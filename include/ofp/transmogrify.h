@@ -119,8 +119,8 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
     return lengthChange;
 
   } else {
-    log::info("Transmogrify::normSetField: Unexpected value size.", valueLen);
-    log::info(" actiontype:", (*iter)->type());
+    log_info("Transmogrify::normSetField: Unexpected value size.", valueLen);
+    log_info(" actiontype:", (*iter)->type());
   }
 
   return 0;

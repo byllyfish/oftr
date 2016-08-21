@@ -23,18 +23,18 @@ bool FlowMod::validateInput(Validation *context) const {
   size_t length = context->length();
 
   if (length < UnpaddedSizeWithMatchHeader) {
-    log::debug("FlowMod too small", length);
+    log_debug("FlowMod too small", length);
     return false;
   }
 
   size_t remainingLength = length - SizeWithoutMatchHeader;
-  if (!matchHeader_.validateInput(remainingLength)) {
-    log::info("FlowMod: invalid match");
+  if (!matchHeader_.validateInput(remainingLength, context)) {
+    log_info("FlowMod: invalid match");
     return false;
   }
 
   if (!instructions().validateInput(context)) {
-    log::info("FlowMod: invalid instructions");
+    log_info("FlowMod: invalid instructions");
     return false;
   }
 
@@ -135,7 +135,7 @@ UInt32 FlowModBuilder::sendOriginal(Writable *channel) {
   hdr.setXid(xid);
 
   if (msg_.tableId_) {
-    log::info("FlowModBuilder: tableId not supported in version 1.");
+    log_info("FlowModBuilder: tableId not supported in version 1.");
     msg_.tableId_ = 0;
   }
 

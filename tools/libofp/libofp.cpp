@@ -62,7 +62,7 @@ int libofp_decode(libofp_buffer *result, const libofp_buffer *input,
     return -1;
   }
 
-  if (ofp::Big16_copy(ofp::BytePtr(input->data) + 2) != input->length) {
+  if (ofp::Big16_unaligned(ofp::BytePtr(input->data) + 2) != input->length) {
     buf_set(result, "Message length does not match buffer size");
     return -1;
   }

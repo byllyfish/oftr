@@ -100,7 +100,7 @@ struct MappingTraits<ofp::detail::PortPropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported PortPropertyItem");
+        log_debug("Unsupported PortPropertyItem");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

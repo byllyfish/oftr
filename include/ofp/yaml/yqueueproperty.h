@@ -42,7 +42,7 @@ struct MappingTraits<ofp::detail::QueuePropertyItem> {
       io.mapRequired("value", data);
 
     } else {
-      log::debug("Unsupported QueuePropertyItem");
+      log_debug("Unsupported QueuePropertyItem");
       UInt32 value = 0;
       io.mapRequired("UNKNOWN", value);
     }
