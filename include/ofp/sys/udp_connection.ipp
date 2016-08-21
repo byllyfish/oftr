@@ -51,7 +51,7 @@ template <class AdapterType>
 UDP_Connection<AdapterType>::~UDP_Connection() {
   if (connectionId()) {
     channelDown();
-    log::info("Close UDP connection", std::make_pair("connid", connectionId()));
+    log_info("Close UDP connection", std::make_pair("connid", connectionId()));
     server_->remove(this);
   }
 }
@@ -64,8 +64,8 @@ void UDP_Connection<AdapterType>::connect(const udp::endpoint &remoteEndpt) {
   Identity::beforeHandshake(this, dtls_.native_handle(), true);
   dtls_.connect();
 
-  log::info("Establish UDP connection", localEndpoint(), "-->",
-            remoteEndpoint(), std::make_pair("connid", connectionId()));
+  log_info("Establish UDP connection", localEndpoint(), "-->", remoteEndpoint(),
+           std::make_pair("connid", connectionId()));
 
   if (!(flags() & Connection::kRequiresHandshake)) {
     channelUp();
@@ -80,8 +80,8 @@ void UDP_Connection<AdapterType>::accept(const udp::endpoint &remoteEndpt) {
   Identity::beforeHandshake(this, dtls_.native_handle(), false);
   dtls_.accept();
 
-  log::info("Accept UDP connection", localEndpoint(), "<--", remoteEndpoint(),
-            std::make_pair("connid", connectionId()));
+  log_info("Accept UDP connection", localEndpoint(), "<--", remoteEndpoint(),
+           std::make_pair("connid", connectionId()));
 
   if (!(flags() & Connection::kRequiresHandshake)) {
     channelUp();
@@ -146,7 +146,7 @@ void UDP_Connection<AdapterType>::receivePlaintext(const void *data,
 template <class AdapterType>
 void UDP_Connection<AdapterType>::sendCallback(const void *data, size_t length,
                                                void *userData) {
-  // log::debug("sendCallback", ByteRange{data, length});
+  // log_debug("sendCallback", ByteRange{data, length});
   UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->sendCiphertext(data, length);
 }
@@ -155,7 +155,7 @@ template <class AdapterType>
 void UDP_Connection<AdapterType>::receiveCallback(const void *data,
                                                   size_t length,
                                                   void *userData) {
-  // log::debug("receiveCallback", ByteRange{data, length});
+  // log_debug("receiveCallback", ByteRange{data, length});
   UDP_Connection *conn = static_cast<UDP_Connection *>(userData);
   conn->receivePlaintext(data, length);
 }

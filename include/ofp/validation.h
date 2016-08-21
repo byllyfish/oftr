@@ -48,12 +48,14 @@ class Validation {
   void rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr,
                                            size_t elementSize);
 
+  void matchIsInvalid(const char *message, const UInt8 *ptr);
+
   // Used in validating multipart section lengths. Verifies that length is at
   // least `minSize` and is aligned.
   bool validateAlignedLength(size_t length, size_t minSize) {
     if (length < minSize) {
-      log::debug("validateAlignedLength: length", length,
-                 " is smaller than minSize", minSize);
+      log_debug("validateAlignedLength: length", length,
+                " is smaller than minSize", minSize);
     }
     return validateBool((length >= minSize) && ((length % 8) == 0),
                         "Length too small or not aligned");

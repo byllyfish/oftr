@@ -23,6 +23,7 @@ namespace ofpx {
 //
 //   --json (-j)           Write compact JSON output instead of YAML.
 //   --json-array          Write output as a valid JSON array.
+//   --json-flavor=default|mongodb Flavor of JSON output
 //   --silent (-s)         Quiet mode; suppress normal output.
 //   --silent-error        Suppress error output for invalid messages.
 //   --invert-check (-v)   Expect invalid messages only.
@@ -81,7 +82,7 @@ class Decode : public Subprogram {
   std::string currentFilename_;
   std::ostream *output_ = nullptr;
   ofp::MessageInfo sessionInfo_;
-  bool jsonNeedComma_ = false;
+  bool jsonArrayNeedComma_ = false;
 
   using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
   std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
@@ -118,12 +119,19 @@ class Decode : public Subprogram {
   void extractPacketDataToFile(const ofp::Message *message);
 
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
+  enum JsonFlavor { kJsonFlavorDefault, kJsonFlavorMongoDB };
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
                       cl::desc("Write compact JSON output instead of YAML")};
   cl::opt<bool> jsonArray_{"json-array",
                            cl::desc("Write output as a valid JSON array")};
+  cl::opt<JsonFlavor> jsonFlavor_{
+      "json-flavor", cl::desc("Flavor of JSON output"),
+      cl::values(clEnumValN(kJsonFlavorDefault, "default", "JSON (default)"),
+                 clEnumValN(kJsonFlavorMongoDB, "mongodb", "MongoDB JSON"),
+                 clEnumValEnd),
+      cl::init(kJsonFlavorDefault)};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
   cl::opt<bool> silentError_{

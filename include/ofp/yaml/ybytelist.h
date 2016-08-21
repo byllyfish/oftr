@@ -8,8 +8,27 @@
 
 #include "ofp/bytelist.h"
 
+namespace ofp {
+
+// Set once at program startup to output MongoDB JSON syntax, e.g.:
+//     Binary data: `{"$binary":"<base64>","$type":"00"}`
+extern bool GLOBAL_ARG_MongoDBCompatible;
+
+}  // namespace ofp
+
 namespace llvm {
 namespace yaml {
+
+// Make a new type equivalent to ofp::ByteRange so we can control the strict
+// JSON output format. `JsonByteRange` is used as ByteRange's json_type.
+class JsonByteRange {
+ public:
+  /* implicit NOLINT */ JsonByteRange(const ofp::ByteRange &r) : value{r} {}
+  /* implicit NOLINT */ JsonByteRange(const ofp::ByteList &l) : value{l} {}
+  ofp::ByteRange value;
+};
+
+std::string primitive_to_json(JsonByteRange r);
 
 template <>
 struct ScalarTraits<ofp::ByteRange> {
@@ -23,6 +42,8 @@ struct ScalarTraits<ofp::ByteRange> {
   }
 
   static bool mustQuote(StringRef) { return false; }
+
+  using json_type = JsonByteRange;
 };
 
 template <>
@@ -44,6 +65,8 @@ struct ScalarTraits<ofp::ByteList> {
   }
 
   static bool mustQuote(StringRef) { return false; }
+
+  using json_type = JsonByteRange;
 };
 
 }  // namespace yaml

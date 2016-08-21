@@ -12,6 +12,8 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Timestamp {
  public:
+  static const size_t TS_BUFSIZE = 40;
+
   explicit Timestamp(time_t seconds = 0, UInt32 nanos = 0)
       : time_{seconds, nanos} {}
 
@@ -25,7 +27,10 @@ class Timestamp {
 
   bool parse(const std::string &s);
   bool valid() const { return !(time_.first == 0 && time_.second == 0); }
+
   std::string toString() const;
+  std::string toStringUTC() const;
+  size_t toStringUTC(char (&buf)[TS_BUFSIZE]) const;
 
   void clear() {
     time_.first = 0;

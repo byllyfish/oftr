@@ -50,7 +50,7 @@ struct MappingTraits<ofp::detail::RoleStatusPropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported RoleStatus Property");
+        log_debug("Unsupported RoleStatus Property");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

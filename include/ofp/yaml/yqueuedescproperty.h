@@ -52,7 +52,7 @@ struct MappingTraits<ofp::detail::QueueDescPropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported QueueDesc Property");
+        log_debug("Unsupported QueueDesc Property");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

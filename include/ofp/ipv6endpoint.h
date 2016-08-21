@@ -55,6 +55,7 @@ class IPv6Endpoint {
 };
 
 static_assert(alignof(IPv6Endpoint) == 2, "Unexpected alignment");
+static_assert(sizeof(IPv6Endpoint) == 18, "Unexpected size");
 static_assert(IsStandardLayout<IPv6Endpoint>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv6Endpoint>(),
               "Expected trivially copyable.");
@@ -70,10 +71,7 @@ namespace std {
 template <>
 struct hash<ofp::IPv6Endpoint> {
   size_t operator()(const ofp::IPv6Endpoint &endpt) const {
-    size_t result = 0;
-    ofp::HashCombine(result, std::hash<unsigned>{}(endpt.port()));
-    ofp::HashCombine(result, std::hash<ofp::IPv6Address>{}(endpt.address()));
-    return result;
+    return ofp::hash::MurmurHash32(&endpt);
   }
 };
 

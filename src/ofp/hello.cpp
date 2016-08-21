@@ -18,7 +18,7 @@ ProtocolVersions detail::HelloElement::versionBitMap() const {
     return ProtocolVersions::fromBitmap(*Big32_cast(BytePtr(this) + 4));
   }
 
-  log::info("HelloElement::versionBitMap unexpected size", length_);
+  log_info("HelloElement::versionBitMap unexpected size", length_);
   return ProtocolVersions::fromBitmap(0);
 }
 

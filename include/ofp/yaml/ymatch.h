@@ -68,7 +68,7 @@ class MatchBuilderInserter {
         if (!ValueType::maskSupported()) {
           // TODO(bfish) better error message
           io_.setError("Mask is not supported.");
-          ofp::log::info("Match is not supported:", type_);
+          log_info("Match is not supported:", type_);
         } else {
           builder_.add(ValueType{value}, ValueType{*optMask});
         }
@@ -124,8 +124,8 @@ struct MappingTraits<ofp::OXMIterator::Item> {
     if (id != ofp::OXMInternalID::UNKNOWN) {
       OXMDispatch(id, &reader);
     } else {
-      ofp::log::debug(
-          "MappingTraitss<OXMIterator::Item>: Unrecognized match field", type);
+      log_debug("MappingTraitss<OXMIterator::Item>: Unrecognized match field",
+                type);
       ofp::ByteRange data{item.unknownValuePtr(), item.unknownValueLength()};
       if (type.hasMask()) {
         // First half is value, second half is mask.
@@ -193,8 +193,8 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
       OXMDispatch(id, &inserter);
 
     } else {
-      ofp::log::debug("MappingTraits<MatchBuilderItem>: Unexpected match field",
-                      type);
+      log_debug("MappingTraits<MatchBuilderItem>: Unexpected match field",
+                type);
       ofp::ByteList data;
       io.mapRequired("value", data);
 
@@ -203,7 +203,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
         if (len == type.length()) {
           builder.addUnchecked(type.type(), type.experimenter(), data);
         } else {
-          ofp::log::debug("Invalid data size:", type);
+          log_debug("Invalid data size:", type);
         }
       } else {
         // Handle mask in unknown OXM field value.
@@ -211,7 +211,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
         io.mapRequired("mask", mask);
 
         if (data.size() != mask.size()) {
-          ofp::log::debug("Mask size does not equal data size");
+          log_debug("Mask size does not equal data size");
           return;
         }
 
@@ -219,7 +219,7 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
         if (len == type.length()) {
           builder.addUnchecked(type.type(), type.experimenter(), data, mask);
         } else {
-          ofp::log::debug("Invalid data size:", type);
+          log_debug("Invalid data size:", type);
         }
       }
     }

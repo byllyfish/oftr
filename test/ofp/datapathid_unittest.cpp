@@ -67,8 +67,10 @@ TEST(datapathid, relational) {
 TEST(datapathid, hash) {
   DatapathID a{"00:01:02:03:04:00:00:01"};
   DatapathID b{"00:01:02:03:04:00:00:02"};
+  DatapathID c{"00:01:02:03:04:00:00:03"};
 
   std::hash<DatapathID> hasher;
-  EXPECT_EQ(0x681aefa1, hasher(a) & 0xffffffff);
-  EXPECT_EQ(0xcffc1c80, hasher(b) & 0xffffffff);
+  EXPECT_EQ(0xe90c4686, hasher(a) & 0xffffffff);
+  EXPECT_EQ(0x63511356, hasher(b) & 0xffffffff);
+  EXPECT_EQ(0xeff070c0, hasher(c) & 0xffffffff);
 }

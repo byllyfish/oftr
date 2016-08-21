@@ -49,9 +49,9 @@ void Transmogrify::normalize() {
   if ((type == MultipartReply::type() || type == MultipartRequest::type()) &&
       buf_.size() >= 16) {
     UInt16 multiType = *Big16_cast(buf_.data() + 8);
-    log::debug("normalize", type, static_cast<OFPMultipartType>(multiType));
+    log_debug("normalize", type, static_cast<OFPMultipartType>(multiType));
   } else {
-    log::debug("normalize", type);
+    log_debug("normalize", type);
   }
 #endif  // !defined(NDEBUG)
 
@@ -784,7 +784,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
   ByteList newBuf;
   while (remaining > 16) {
     // Read 16-bit queue length from a potentially mis-aligned position.
-    UInt16 queueLen = Big16_copy(ptr + 8);
+    UInt16 queueLen = Big16_unaligned(ptr + 8);
     if (queueLen > remaining || queueLen < 16)
       return;
     // Copy queue header.
@@ -795,7 +795,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
     const UInt8 *prop = ptr + 16;
     size_t propLeft = queueLen - 16;
     while (propLeft > 4) {
-      UInt16 propSize = Big16_copy(prop + 2);
+      UInt16 propSize = Big16_unaligned(prop + 2);
       if (propSize > propLeft || propSize < 4)
         return;
       newBuf.add(prop, propSize);
@@ -807,7 +807,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
     }
 
     if (propLeft != 0) {
-      log::debug("normalizeQueueGetConfigReplyV2: propLeft != 0");
+      log_debug("normalizeQueueGetConfigReplyV2: propLeft != 0");
       return;
     }
 
@@ -818,7 +818,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
   }
 
   if (remaining != 0) {
-    log::debug("normalizeQueueGetConfigReplyV2: remaining != 0");
+    log_debug("normalizeQueueGetConfigReplyV2: remaining != 0");
     return;
   }
 
@@ -1236,7 +1236,7 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
       } else if (ipProto == PROTOCOL_ICMP) {
         lengthChange += normSetField<OFB_ICMPV4_TYPE>(iter, iterEnd);
       } else {
-        log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
+        log_info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
       }
       break;
     case v2::OFPAT_SET_TP_DST:
@@ -1247,7 +1247,7 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
       } else if (ipProto == PROTOCOL_ICMP) {
         lengthChange += normSetField<OFB_ICMPV4_CODE>(iter, iterEnd);
       } else {
-        log::info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
+        log_info("OFPAT_SET_TP_DST: Unknown proto", ipProto);
       }
       break;
   }
@@ -1284,11 +1284,11 @@ int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
 }
 
 void Transmogrify::markInputTooBig(const char *msg) {
-  log::warning("Normalize:", msg);
+  log_warning("Normalize:", msg);
   header()->setVersion(Message::kTooBigErrorFlag | header()->version());
 }
 
 void Transmogrify::markInputInvalid(const char *msg) {
-  log::warning("Normalize:", msg);
+  log_warning("Normalize:", msg);
   header()->setVersion(Message::kInvalidErrorFlag | header()->version());
 }

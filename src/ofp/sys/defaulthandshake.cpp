@@ -37,8 +37,8 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 }
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
-  log::warning("DefaultHandshake: Channel down before handshake could complete",
-               std::make_pair("connid", channel->connectionId()));
+  log_warning("DefaultHandshake: Channel down before handshake could complete",
+              std::make_pair("connid", channel->connectionId()));
 }
 
 void DefaultHandshake::onMessage(const Message *message) {
@@ -56,8 +56,8 @@ void DefaultHandshake::onMessage(const Message *message) {
       break;
 
     default:
-      log::warning("DefaultHandshake: Ignored message type", message->type(),
-                   std::make_pair("connid", message->source()->connectionId()));
+      log_warning("DefaultHandshake: Ignored message type", message->type(),
+                  std::make_pair("connid", message->source()->connectionId()));
       break;
   }
 }
@@ -83,8 +83,8 @@ void DefaultHandshake::onHello(const Message *message) {
     sstr << " Supported versions: " << versions_.toString();
     auto explanation = sstr.str();
 
-    log::warning(explanation,
-                 std::make_pair("connid", channel_->connectionId()));
+    log_warning(explanation,
+                std::make_pair("connid", channel_->connectionId()));
     channel_->engine()->alert(channel_, explanation, {header, sizeof(*header)});
 
     message->replyError(OFPHFC_INCOMPATIBLE, explanation);
@@ -92,13 +92,13 @@ void DefaultHandshake::onHello(const Message *message) {
     return;
   }
 
-  log::debug("Negotiated version is", static_cast<int>(version));
+  log_debug("Negotiated version is", static_cast<int>(version));
 
   channel_->setVersion(version);
 
-  log::info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:",
-            msg->protocolVersions().toString(),
-            std::make_pair("connid", channel_->connectionId()));
+  log_info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:",
+           msg->protocolVersions().toString(),
+           std::make_pair("connid", channel_->connectionId()));
 
   if ((options_ & ChannelOptions::FEATURES_REQ) != 0) {
     channel_->setKeepAliveTimeout(kControllerKeepAliveTimeout);

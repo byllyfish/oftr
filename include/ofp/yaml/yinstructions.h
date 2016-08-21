@@ -118,7 +118,7 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
       case OFPIT_NONE:
       case OFPIT_STAT_TRIGGER:
       default:
-        log::warning("InstructionIterator: Unrecognized instructions");
+        log_warning("InstructionIterator: Unrecognized instructions");
         break;
     }
   }
@@ -181,7 +181,7 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
       case OFPIT_NONE:
       case OFPIT_STAT_TRIGGER:
       default:
-        log::warning("InstructionInserter: Unrecognized instructions");
+        log_warning("InstructionInserter: Unrecognized instructions");
         break;
     }
   }

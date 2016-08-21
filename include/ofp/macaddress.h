@@ -4,8 +4,8 @@
 #ifndef OFP_MACADDRESS_H_
 #define OFP_MACADDRESS_H_
 
-#include "ofp/array.h"
-#include "ofp/types.h"
+#include <array>
+#include "ofp/hash.h"
 
 namespace ofp {
 
@@ -61,9 +61,8 @@ namespace std {
 
 template <>
 struct hash<ofp::MacAddress> {
-  size_t operator()(const ofp::MacAddress &rhs) const {
-    std::hash<ofp::MacAddress::ArrayType> hasher;
-    return hasher(rhs.toArray());
+  size_t operator()(const ofp::MacAddress &addr) const {
+    return ofp::hash::MurmurHash32(&addr);
   }
 };
 

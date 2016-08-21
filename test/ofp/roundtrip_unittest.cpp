@@ -11,19 +11,19 @@ const UInt16 kTestingPort = 6666;
 class TestController : public ChannelListener {
  public:
   TestController() {
-    log::debug("TestController constructed");
+    log_debug("TestController constructed");
     ++GLOBAL_controllerCount;
   }
 
   ~TestController() {
-    log::debug("TestController destroyed");
+    log_debug("TestController destroyed");
     --GLOBAL_controllerCount;
   }
 
   void onChannelUp(Channel *channel) override {
     ++GLOBAL_controllerCount;
-    log::debug("TestController::onChannelUp",
-               std::make_pair("connid", channel->connectionId()));
+    log_debug("TestController::onChannelUp",
+              std::make_pair("connid", channel->connectionId()));
     channel_ = channel;
 
     DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};
@@ -40,13 +40,13 @@ class TestController : public ChannelListener {
 
   void onChannelDown(Channel *channel) override {
     --GLOBAL_controllerCount;
-    log::debug("TestController::onChannelDown",
-               std::make_pair("connid", channel->connectionId()));
+    log_debug("TestController::onChannelDown",
+              std::make_pair("connid", channel->connectionId()));
   }
 
   void onMessage(const Message *message) override {
-    log::debug("TestController::onMessage",
-               std::make_pair("connid", message->source()->connectionId()));
+    log_debug("TestController::onMessage",
+              std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REPLY, message->type());
   }
 
@@ -62,18 +62,18 @@ class TestAgent : public ChannelListener {
  public:
   TestAgent() {
     ++GLOBAL_agentCount;
-    log::debug("TestAgent constructed");
+    log_debug("TestAgent constructed");
   }
 
   ~TestAgent() {
     --GLOBAL_agentCount;
-    log::debug("TestAgent destroyed");
+    log_debug("TestAgent destroyed");
   }
 
   void onChannelUp(Channel *channel) override {
     ++GLOBAL_agentCount;
-    log::debug("TestAgent::onChannelUp",
-               std::make_pair("connid", channel->connectionId()));
+    log_debug("TestAgent::onChannelUp",
+              std::make_pair("connid", channel->connectionId()));
 
     // When agent channel comes up, we expect the datapathId to be all zeros.
     DatapathID dpid;
@@ -85,13 +85,13 @@ class TestAgent : public ChannelListener {
 
   void onChannelDown(Channel *channel) override {
     --GLOBAL_agentCount;
-    log::debug("TestAgent::onChannelDown",
-               std::make_pair("connid", channel->connectionId()));
+    log_debug("TestAgent::onChannelDown",
+              std::make_pair("connid", channel->connectionId()));
   }
 
   void onMessage(const Message *message) override {
-    log::debug("TestAgent::onMessage",
-               std::make_pair("connid", message->source()->connectionId()));
+    log_debug("TestAgent::onMessage",
+              std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REQUEST, message->type());
 
     DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};

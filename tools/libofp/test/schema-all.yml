@@ -105,6 +105,9 @@ Message/Hello:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: HELLO
   msg:
     versions: !opt [UInt8]
@@ -117,6 +120,9 @@ Message/Error:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: ERROR
   msg:
     type: ErrorType
@@ -132,6 +138,9 @@ Message/EchoRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: ECHO_REQUEST
   msg:
     data: HexData
@@ -144,6 +153,9 @@ Message/EchoReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: ECHO_REPLY
   msg:
     data: HexData
@@ -156,6 +168,9 @@ Message/FeaturesRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: FEATURES_REQUEST
   
 Message/FeaturesReply: 
@@ -166,6 +181,9 @@ Message/FeaturesReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: FEATURES_REPLY
   msg:
     datapath_id: DatapathID
@@ -184,6 +202,9 @@ Message/GetConfigRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: GET_CONFIG_REQUEST
   
 Message/GetConfigReply: 
@@ -194,6 +215,9 @@ Message/GetConfigReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: GET_CONFIG_REPLY
   msg:
     flags: [ConfigFlags]
@@ -207,6 +231,9 @@ Message/SetConfig:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: SET_CONFIG
   msg:
     flags: [ConfigFlags]
@@ -220,6 +247,9 @@ Message/PacketIn:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: PACKET_IN
   msg:
     buffer_id: BufferNumber
@@ -242,6 +272,9 @@ Message/FlowRemoved:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: FLOW_REMOVED
   msg:
     cookie: UInt64
@@ -264,6 +297,9 @@ Message/PortStatus:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: PORT_STATUS
   msg:
     reason: PortStatusReason
@@ -277,6 +313,9 @@ Message/PacketOut:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: PACKET_OUT
   msg:
     buffer_id: BufferNumber
@@ -293,6 +332,9 @@ Message/FlowMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: FLOW_MOD
   msg:
     cookie: !opt UInt64               # default=0
@@ -317,6 +359,9 @@ Message/GroupMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: GROUP_MOD
   msg:
     command: GroupModCommand
@@ -332,6 +377,9 @@ Message/PortMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: PORT_MOD
   msg:
     port_no: PortNumber
@@ -356,6 +404,9 @@ Message/TableMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: TABLE_MOD
   msg:
     table_id: TableNumber
@@ -376,6 +427,9 @@ Message/Request.Desc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.DESC
   
 Message/Request.Table: 
@@ -386,6 +440,9 @@ Message/Request.Table:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.TABLE
   
 Message/Request.PortDesc: 
@@ -396,6 +453,9 @@ Message/Request.PortDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.PORT_DESC
   
 Message/Request.GroupDesc: 
@@ -406,6 +466,9 @@ Message/Request.GroupDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.GROUP_DESC
   
 Message/Request.GroupFeatures: 
@@ -416,6 +479,9 @@ Message/Request.GroupFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.GROUP_FEATURES
   
 Message/Request.MeterFeatures: 
@@ -426,6 +492,9 @@ Message/Request.MeterFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.METER_FEATURES
   
 Message/Request.Flow: 
@@ -436,6 +505,9 @@ Message/Request.Flow:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.FLOW
   msg:
     table_id: TableNumber
@@ -453,6 +525,9 @@ Message/Request.Aggregate:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.AGGREGATE
   msg:
     table_id: TableNumber
@@ -470,6 +545,9 @@ Message/Request.PortStats:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.PORT_STATS
   msg:
     port_no: PortNumber
@@ -482,6 +560,9 @@ Message/Request.Queue:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.QUEUE
   msg:
     port_no: PortNumber
@@ -495,6 +576,9 @@ Message/Request.QueueDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.QUEUE_DESC
   msg:
     port_no: PortNumber
@@ -508,6 +592,9 @@ Message/Request.MeterConfig:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.METER_CONFIG
   msg:
     meter_id: MeterNumber
@@ -520,6 +607,9 @@ Message/Request.Meter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.METER
   msg:
     meter_id: MeterNumber
@@ -532,6 +622,9 @@ Message/Request.Group:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.GROUP
   msg:
     group_id: GroupNumber
@@ -544,6 +637,9 @@ Message/Request.TableFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.TABLE_FEATURES
   msg:
     - table_id: TableNumber
@@ -576,6 +672,9 @@ Message/Request.TableDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.TABLE_DESC
   
 Message/Request.FlowMonitor: 
@@ -586,6 +685,9 @@ Message/Request.FlowMonitor:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.FLOW_MONITOR
   msg:
     monitor_id: UInt32
@@ -604,6 +706,9 @@ Message/Request.Experimenter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUEST.EXPERIMENTER
   msg:
     experimenter: UInt32
@@ -618,6 +723,9 @@ Message/Reply.Desc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.DESC
   msg:
     mfr_desc: Str256
@@ -634,6 +742,9 @@ Message/Reply.Table:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.TABLE
   msg:
     - table_id: TableNumber
@@ -652,6 +763,9 @@ Message/Reply.PortDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.PORT_DESC
   msg: [Port]
   
@@ -663,6 +777,9 @@ Message/Reply.GroupDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.GROUP_DESC
   msg:
     - type: GroupType
@@ -677,6 +794,9 @@ Message/Reply.GroupFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.GROUP_FEATURES
   msg:
     types: GroupTypeFlags
@@ -698,6 +818,9 @@ Message/Reply.MeterFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.METER_FEATURES
   msg:
     max_meter: UInt32
@@ -714,6 +837,9 @@ Message/Reply.Flow:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.FLOW
   msg:
     - table_id: TableNumber
@@ -737,6 +863,9 @@ Message/Reply.Aggregate:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.AGGREGATE
   msg:
     packet_count: UInt64
@@ -751,6 +880,9 @@ Message/Reply.PortStats:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.PORT_STATS
   msg:
     - port_no: PortNumber
@@ -790,6 +922,9 @@ Message/Reply.Queue:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.QUEUE
   msg:
     - port_no: PortNumber
@@ -808,6 +943,9 @@ Message/Reply.QueueDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.QUEUE_DESC
   msg:
     - port_no: PortNumber
@@ -824,6 +962,9 @@ Message/Reply.MeterConfig:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.METER_CONFIG
   msg:
     - flags: UInt16
@@ -838,6 +979,9 @@ Message/Reply.Meter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.METER
   msg:
     - meter_id: MeterNumber
@@ -856,6 +1000,9 @@ Message/Reply.Group:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.GROUP
   msg:
     - group_id: GroupNumber
@@ -874,6 +1021,9 @@ Message/Reply.TableFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.TABLE_FEATURES
   msg:
     - table_id: TableNumber
@@ -906,6 +1056,9 @@ Message/Reply.TableDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.TABLE_DESC
   msg:
     - table_id: TableNumber
@@ -926,6 +1079,9 @@ Message/Reply.FlowMonitor:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.FLOW_MONITOR
   msg:
     - event: INITIAL | ADDED | REMOVED | MODIFIED
@@ -948,6 +1104,9 @@ Message/Reply.Experimenter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REPLY.EXPERIMENTER
   msg:
     experimenter: UInt32
@@ -962,6 +1121,9 @@ Message/BarrierRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: BARRIER_REQUEST
   
 Message/BarrierReply: 
@@ -972,6 +1134,9 @@ Message/BarrierReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: BARRIER_REPLY
   
 Message/QueueGetConfigRequest: 
@@ -982,6 +1147,9 @@ Message/QueueGetConfigRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: QUEUE_GET_CONFIG_REQUEST
   msg:
     port: PortNumber
@@ -994,6 +1162,9 @@ Message/QueueGetConfigReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: QUEUE_GET_CONFIG_REPLY
   msg:
     port: PortNumber
@@ -1007,6 +1178,9 @@ Message/RoleRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: ROLE_REQUEST
   msg:
     role: ControllerRole
@@ -1020,6 +1194,9 @@ Message/RoleReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: ROLE_REPLY
   msg:
     role: ControllerRole
@@ -1033,6 +1210,9 @@ Message/GetAsyncRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: GET_ASYNC_REQUEST
   
 Message/GetAsyncReply: 
@@ -1043,6 +1223,9 @@ Message/GetAsyncReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: GET_ASYNC_REPLY
   msg:
     packet_in_slave: !optout [PacketInFlags]
@@ -1067,6 +1250,9 @@ Message/SetAsync:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: SET_ASYNC
   msg:
     packet_in_slave: !optout [PacketInFlags]
@@ -1091,6 +1277,9 @@ Message/MeterMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: METER_MOD
   msg:
     command: MeterModCommand
@@ -1106,6 +1295,9 @@ Message/RoleStatus:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: ROLE_STATUS
   msg:
     role: ControllerRole
@@ -1121,6 +1313,9 @@ Message/TableStatus:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: TABLE_STATUS
   msg:
     reason: TableStatusReason
@@ -1134,6 +1329,9 @@ Message/RequestForward:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: REQUESTFORWARD
   msg: Message
   
@@ -1145,6 +1343,9 @@ Message/BundleControl:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: BUNDLE_CONTROL
   msg:
     bundle_id: UInt32
@@ -1160,6 +1361,9 @@ Message/BundleAddMessage:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
   type: BUNDLE_ADD_MESSAGE
   msg:
     bundle_id: UInt32
@@ -1260,6 +1464,16 @@ Action/EXPERIMENTER:
   action: EXPERIMENTER
   experimenter: UInt32
   data: HexData
+  
+Action/NX_REG_MOVE: 
+  action: NX_REG_MOVE
+  src: RegisterBits
+  dst: RegisterBits
+  
+Action/NX_REG_LOAD: 
+  action: NX_REG_MOVE
+  dst: RegisterBits
+  value: UInt64
   
 MeterBand/DROP: 
   type: DROP
@@ -1633,6 +1847,36 @@ Field/PKT_REG3:
   value: UInt64
   mask: !optout UInt64
   
+Field/NX_ETH_DST: 
+  field: NX_ETH_DST
+  value: MacAddress
+  mask: !optout MacAddress
+  
+Field/NX_ETH_SRC: 
+  field: NX_ETH_SRC
+  value: MacAddress
+  mask: !optout MacAddress
+  
+Field/NX_ARP_SPA: 
+  field: NX_ARP_SPA
+  value: IPv4Address
+  mask: !optout IPv4Address
+  
+Field/NX_ARP_TPA: 
+  field: NX_ARP_TPA
+  value: IPv4Address
+  mask: !optout IPv4Address
+  
+Field/NX_ARP_SHA: 
+  field: NX_ARP_SHA
+  value: MacAddress
+  mask: !optout MacAddress
+  
+Field/NX_ARP_THA: 
+  field: NX_ARP_THA
+  value: MacAddress
+  mask: !optout MacAddress
+  
 Field/NX_REG0: 
   field: NX_REG0
   value: UInt32
@@ -1719,8 +1963,8 @@ Field/X_LLDP_TTL:
   field: X_LLDP_TTL
   value: UInt16
   
-Field/X_PKT_MARK: 
-  field: X_PKT_MARK
+Field/X_PKT_POS: 
+  field: X_PKT_POS
   value: UInt16
   
 Field/X_EXPERIMENTER_01: 
@@ -1769,4 +2013,6 @@ Builtin/FieldID: <builtin>
 Builtin/InstructionID: <builtin>
 
 Builtin/Timestamp: <builtin>
+
+Builtin/RegisterBits: <builtin>
 

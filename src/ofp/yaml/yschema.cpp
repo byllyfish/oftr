@@ -14,6 +14,9 @@ const char *const kMessagePrefix = R"""(  version: !opt UInt8
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
 )""";
 
 const char *const kBriefMessagePrefix = "  datapath_id: !opt DatapathID\n";
@@ -248,7 +251,7 @@ static std::string unsignedTypeEnum(size_t size) {
 /// Return true if s begins with a capital letter, but is _not_ all caps.
 /// Ignores underscore and hyphen.
 static bool isTypeName(llvm::StringRef s) {
-  ofp::log::debug("isTypeName: ", s);
+  log_debug("isTypeName: ", s);
   if (s.empty() || !std::isalpha(s[0]) || !std::isupper(s[0]))
     return false;
 

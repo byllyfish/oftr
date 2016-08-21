@@ -119,6 +119,17 @@ TEST(types, HexToRawData3) {
   EXPECT_TRUE(error);
 }
 
+TEST(types, RawDataToBase64) {
+  std::string s{"abcdef7890abcdef7890abcdef7890"};
+  EXPECT_EQ("", RawDataToBase64(s.data(), 0));
+  EXPECT_EQ("YQ==", RawDataToBase64(s.data(), 1));
+  EXPECT_EQ("YWI=", RawDataToBase64(s.data(), 2));
+  EXPECT_EQ("YWJj", RawDataToBase64(s.data(), 3));
+  EXPECT_EQ("YWJjZA==", RawDataToBase64(s.data(), 4));
+  EXPECT_EQ("YWJjZGVmNzg5MGFiY2RlZjc4OTBhYmNkZWY3ODkw",
+            RawDataToBase64(s.data(), s.size()));
+}
+
 TEST(types, MemCopyMasked) {
   UInt32 a = 0x12345678;
   UInt32 b = 0xFFFF000F;

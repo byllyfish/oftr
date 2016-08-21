@@ -5,6 +5,7 @@
 #define OFP_ACTIONRANGE_H_
 
 #include "ofp/actioniterator.h"
+#include "ofp/actions.h"
 #include "ofp/byterange.h"
 #include "ofp/protocolrange.h"
 #include "ofp/writable.h"
@@ -35,6 +36,9 @@ class ActionRange : public ProtocolRange<ActionIterator> {
  private:
   static unsigned writeSizeMinusSetFieldV1(ActionIterator iter);
   static void writeSetFieldV1(ActionIterator iter, Writable *channel);
+
+  static bool validateInput_NICIRA(const AT_EXPERIMENTER *action,
+                                   Validation *context);
 };
 
 }  // namespace ofp

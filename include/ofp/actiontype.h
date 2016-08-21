@@ -72,6 +72,8 @@ OFP_BEGIN_IGNORE_PADDING
 struct ActionTypeInfo {
   ActionType type;
   const char *name;
+  UInt32 experimenter;
+  UInt16 subtype;
 };
 
 OFP_END_IGNORE_PADDING

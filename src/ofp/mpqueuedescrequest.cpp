@@ -9,14 +9,14 @@ using namespace ofp;
 
 const MPQueueDescRequest *MPQueueDescRequest::cast(
     const MultipartRequest *req) {
-  log::debug("cast to MPQueueDescRequest");
+  log_debug("cast to MPQueueDescRequest");
   return req->body_cast<MPQueueDescRequest>();
 }
 
 bool MPQueueDescRequest::validateInput(Validation *context) const {
   size_t length = context->lengthRemaining();
   if (length != sizeof(MPQueueDescRequest)) {
-    log::debug("MPQueueDescRequest: Validation failed.");
+    log_debug("MPQueueDescRequest: Validation failed.");
     return false;
   }
 

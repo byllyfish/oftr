@@ -102,6 +102,14 @@ void Validation::rangeSizeIsNotMultipleOfElementSize(const UInt8 *ptr,
   setErrorMessage("Range size is not multiple of element size", offset(ptr));
 }
 
+void Validation::matchIsInvalid(const char *message, const UInt8 *ptr) {
+  setErrorCode(OFPBRC_BAD_LEN);
+  std::string msg;
+  msg += "Match: ";
+  msg += message;
+  setErrorMessage(msg.c_str(), offset(ptr));
+}
+
 size_t Validation::offset(const UInt8 *ptr) const {
   if (!msg_ || ptr < msg_->data()) {
     return 0xFFFFFFFF;
@@ -115,8 +123,8 @@ void Validation::setErrorCode(OFPErrorCode error) {
 }
 
 void Validation::setErrorMessage(const char *errorMessage, size_t errorOffset) {
-  log::info("Validation failed:", errorMessage,
-            std::make_pair("offset", errorOffset));
+  log_info("Validation failed:", errorMessage,
+           std::make_pair("offset", errorOffset));
 
   if (msg_) {
     if (MessageInfo *info = msg_->info()) {

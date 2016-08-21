@@ -64,10 +64,11 @@ OriginalMatch::OriginalMatch(const OXMRange &range) {
           // 1.0 specification. Allow it anyway.
           dl_vlan = v1::OFPVID_PRESENT;
         } else {
-          if (mask != 0xffff)
-            log::warning(
+          if (mask != 0xffff) {
+            log_warning(
                 "OriginalMatch: VLAN mask not supported. Reverting to specific "
                 "match");
+          }
           dl_vlan = (vlan & ~OFPVID_PRESENT);
         }
         wc &= ~OFPFW_DL_VLAN;
@@ -126,7 +127,7 @@ OriginalMatch::OriginalMatch(const OXMRange &range) {
         wc &= ~OFPFW_TP_DST;
         break;
       default:
-        log::info("OriginalMatch: Unrecognized oxm type.", item.type());
+        log_info("OriginalMatch: Unrecognized oxm type.", item.type());
         break;
     }
   }

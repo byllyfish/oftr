@@ -14,6 +14,6 @@ Match::Match(const MatchHeader *matchHeader) {
     assert(matchHeader->length() == deprecated::OFPMT_STANDARD_LENGTH);
     oxm_ = matchHeader->stdMatch()->toOXMList();
   } else {
-    log::debug("Unknown matchType:", type);
+    log_debug("Unknown matchType:", type);
   }
 }

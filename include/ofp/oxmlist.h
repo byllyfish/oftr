@@ -85,7 +85,7 @@ class OXMList {
 
   void addExperimenter(OXMType type, Big32 experimenter, const void *data,
                        const void *mask, size_t len) {
-    log::debug("addExperimenter", type.length(), len);
+    log_debug("addExperimenter", type.length(), len);
     assert(type.length() == sizeof(experimenter) + 2 * len);
     buf_.add(&type, sizeof(type));
     buf_.add(&experimenter, sizeof(experimenter));

@@ -18,14 +18,14 @@ class NullAgent : public ofp::ChannelListener {
   static NullAgent *Factory() { return new NullAgent; }
 
   void onChannelUp(Channel *channel) override {
-    ofp::log::debug("NullAgent channel up.");
+    log_debug("NullAgent channel up.");
 
     // FIXME support binding of related connections.
     // channel->openAuxChannel(1, Channel::Transport::TCP);
   }
 
   void onChannelDown(Channel *channel) override {
-    ofp::log::debug("NullAgent channel down.");
+    log_debug("NullAgent channel down.");
   }
 
   void onMessage(const Message *message) override;
@@ -63,8 +63,7 @@ void NullAgent::onMessage(const Message *message) {
       break;
 
     default:
-      ofp::log::debug("Unknown message type",
-                      static_cast<int>(message->type()));
+      log_debug("Unknown message type", static_cast<int>(message->type()));
       sendError(ofp::OFPBRC_BAD_TYPE, message);
       break;
   }
@@ -77,7 +76,7 @@ void NullAgent::onSetConfig(const Message *message) {
     return;
   }
 
-  // ofp::log::debug(ofp::yaml::write(setConfig));
+  // log_debug(ofp::yaml::write(setConfig));
 }
 
 void NullAgent::onFlowMod(const Message *message) {
@@ -87,8 +86,7 @@ void NullAgent::onFlowMod(const Message *message) {
     return;
   }
 
-  ofp::log::debug("FlowMod: ",
-                  ofp::RawDataToHex(message->data(), message->size()));
+  log_debug("FlowMod: ", ofp::RawDataToHex(message->data(), message->size()));
 }
 
 void NullAgent::onGetAsyncRequest(const Message *message) {
@@ -98,7 +96,7 @@ void NullAgent::onGetAsyncRequest(const Message *message) {
     return;
   }
 
-  ofp::log::debug("GetAsyncRequest");
+  log_debug("GetAsyncRequest");
 }
 
 void NullAgent::onGetConfigRequest(const Message *message) {
@@ -108,11 +106,11 @@ void NullAgent::onGetConfigRequest(const Message *message) {
     return;
   }
 
-  ofp::log::debug("GetConfigRequest");
+  log_debug("GetConfigRequest");
 }
 
 void NullAgent::onBarrierRequest(const Message *message) {
-  ofp::log::debug("BarrierRequest");
+  log_debug("BarrierRequest");
 
   auto barrierReq = ofp::BarrierRequest::cast(message);
   if (!barrierReq) {

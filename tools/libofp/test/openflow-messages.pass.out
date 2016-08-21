@@ -180,8 +180,7 @@ msg:
   buffer_id:       0x00003424
   in_port:         0x000000CA
   actions:         
-    - action:          EXPERIMENTER
-      experimenter:    0x00010111
+    - action:          EXPERIMENTER.0x00010111
       data:            ''
   data:            ''
   _pkt_decode:     
@@ -261,8 +260,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00001.pass
@@ -344,8 +342,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/abs/abs_14_00002.pass
@@ -1037,7 +1034,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -1062,7 +1059,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -1261,8 +1258,7 @@ msg:
         - action:          ENQUEUE
           port:            0x00000004
           queue_id:        0x22B7B722
-        - action:          EXPERIMENTER
-          experimenter:    0x12345678
+        - action:          EXPERIMENTER.0x12345678
           data:            ''
 ...
 Filename: external/openflow-messages/v1_0/rep/rep_14_00002.pass
@@ -1314,8 +1310,7 @@ msg:
   instructions:    
     - instruction:     APPLY_ACTIONS
       actions:         
-        - action:          EXPERIMENTER
-          experimenter:    0x00020077
+        - action:          EXPERIMENTER.0x00020077
           data:            ''
         - action:          ENQUEUE
           port:            0x00000000
@@ -3030,7 +3025,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -15342,7 +15337,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -36164,7 +36159,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -36196,7 +36191,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -47019,7 +47014,7 @@ msg:
       value:           '00:00:88:cc:30:30'
     - field:           ETH_TYPE
       value:           0x3030
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 Filename: external/openflow-messages/v1_3/abs/abs_10_00001.pass
@@ -47050,7 +47045,7 @@ msg:
       value:           '00:00:88:cc:30:30'
     - field:           ETH_TYPE
       value:           0x3030
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 Filename: external/openflow-messages/v1_3/abs/abs_10_00002.pass
@@ -47948,7 +47943,7 @@ msg:
       value:           '01:80:c2:00:00:00'
     - field:           ETH_TYPE
       value:           0x88CC
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_10_00001.pass
@@ -48086,7 +48081,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -48118,7 +48113,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -60398,7 +60393,7 @@ msg:
       value:           '00:00:88:cc:30:30'
     - field:           ETH_TYPE
       value:           0x3030
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 Filename: external/openflow-messages/v1_3_1/abs/abs_10_00001.pass
@@ -60429,7 +60424,7 @@ msg:
       value:           '00:00:88:cc:30:30'
     - field:           ETH_TYPE
       value:           0x3030
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 Filename: external/openflow-messages/v1_3_1/abs/abs_10_00002.pass
@@ -61316,7 +61311,7 @@ msg:
       value:           '01:80:c2:00:00:00'
     - field:           ETH_TYPE
       value:           0x88CC
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_10_00001.pass
@@ -61454,7 +61449,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
@@ -61486,7 +61481,7 @@ msg:
       value:           '64:64:64:64:64:64'
     - field:           ETH_TYPE
       value:           0x6464
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x000E
 ...
 ---
