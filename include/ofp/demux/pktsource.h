@@ -22,7 +22,7 @@ namespace demux {
 ///     if (src.openDevice("en0", "tcp")) {
 ///         src.runLoop([](Timestamp ts, ByteRange data, unsigned len, void
 ///         *context) {
-///             log::debug("pkt", ts, len, data);
+///             log_debug("pkt", ts, len, data);
 ///         });
 ///     }
 ///
@@ -32,7 +32,7 @@ namespace demux {
 ///     if (src.openFile("data.pcap", "tcp")) {
 ///         src.runLoop([](Timestamp ts, ByteRange data, unsigned len, void
 ///         *context) {
-///             log::debug("pkt", ts, len, data);
+///             log_debug("pkt", ts, len, data);
 ///         });
 ///     }
 ///

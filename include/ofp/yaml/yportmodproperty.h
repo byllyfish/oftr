@@ -74,7 +74,7 @@ struct MappingTraits<ofp::detail::PortModPropertyItem> {
         break;
       }
       default: {
-        log::debug("Unsupported PortMod Property");
+        log_debug("Unsupported PortMod Property");
         ByteRange data = elem.value();
         io.mapRequired("data", data);
         break;

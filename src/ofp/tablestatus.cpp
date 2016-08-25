@@ -10,7 +10,7 @@ bool TableStatus::validateInput(Validation *context) const {
   size_t length = context->length();
 
   if (length < sizeof(TableStatus) + sizeof(TableDesc)) {
-    log::debug("TableStatus too small", length);
+    log_debug("TableStatus too small", length);
     return false;
   }
 

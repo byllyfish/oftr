@@ -8,7 +8,7 @@ using namespace controller;
 void SimpleChannelListener::onChannelUp(Channel *channel) {
   UInt32 xid;
 
-  log::debug("SimpleChannelListener UP");
+  log_debug("SimpleChannelListener UP");
 
   SetConfigBuilder config;
   config.setMissSendLen(14);  // ethernet header only
@@ -57,15 +57,15 @@ void SimpleChannelListener::onMessage(const Message *message) {
 }
 
 void SimpleChannelListener::onGetAsyncReply(const GetAsyncReply *msg) {
-  log::debug("GetAsyncReply");
+  log_debug("GetAsyncReply");
 }
 
 void SimpleChannelListener::onGetConfigReply(const GetConfigReply *msg) {
-  log::debug("GetConfigReply");
+  log_debug("GetConfigReply");
 }
 
 void SimpleChannelListener::onBarrierReply(const BarrierReply *msg) {
-  log::debug("BarrierReply");
+  log_debug("BarrierReply");
 }
 
 void SimpleChannelListener::onReply(const Message *message) {
@@ -76,6 +76,6 @@ void SimpleChannelListener::onReply(const Message *message) {
     callback(message);
     tracker_.erase(iter);
   } else {
-    log::debug("Untracked XID:", xid);
+    log_debug("Untracked XID:", xid);
   }
 }

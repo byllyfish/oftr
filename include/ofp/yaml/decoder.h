@@ -96,11 +96,14 @@ struct MappingTraits<ofp::yaml::Decoder> {
     if (info && info->available()) {
       UInt64 sessionId = info->sessionId();
       if (sessionId) {
+        // Export the sessionId in the the `conn_id` property. We do not
+        // expect this to conflict with the use by `source` above.
+        assert(source == nullptr);
         IPv6Endpoint src = info->source();
         IPv6Endpoint dst = info->dest();
-        io.mapRequired("_session", sessionId);
-        io.mapRequired("_source", src);
-        io.mapRequired("_dest", dst);
+        io.mapRequired("conn_id", sessionId);
+        io.mapRequired("_src", src);
+        io.mapRequired("_dst", dst);
       }
       if (!info->filename().empty()) {
         std::string filename = info->filename();

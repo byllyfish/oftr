@@ -30,7 +30,7 @@ class handler_allocator {
       set_in_use(true);
       return storage_;
     } else {
-      log::debug("handler_allocator::allocate: intrinsic block in use:", size);
+      log_debug("handler_allocator::allocate: intrinsic block in use:", size);
       return ::operator new(size);
     }
   }

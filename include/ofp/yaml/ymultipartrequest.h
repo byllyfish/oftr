@@ -241,7 +241,7 @@ struct MappingTraits<ofp::MultipartRequest> {
       }
       default:
         // FIXME - implement the rest.
-        log::debug("MultipartRequest MappingTraits not fully implemented.");
+        log_debug("MultipartRequest MappingTraits not fully implemented.");
         break;
     }
   }
@@ -360,7 +360,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
       }
       default:
         // FIXME - implement the rest.
-        log::debug(
+        log_debug(
             "MultipartRequestBuilder MappingTraits not fully implemented.");
         break;
     }
@@ -380,7 +380,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         msg.sendUsingRequestBody(encoder->memoryChannel(), data, length,
                                  offset);
       } else {
-        ofp::log::warning("Recursive multipart request forbidden");
+        log_warning("Recursive multipart request forbidden");
         io.setError("Recursive multipart request forbidden");
       }
     }

@@ -22,6 +22,6 @@ void MPTableStatsBuilder::write(Writable *channel) {
     channel->flush();
 
   } else {
-    log::debug("MPTableStatsBuilder not implemented for version:", version);
+    log_debug("MPTableStatsBuilder not implemented for version:", version);
   }
 }

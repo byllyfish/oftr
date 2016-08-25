@@ -33,7 +33,7 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
   const UInt32 frameSkip = info->frameSkip;
 
   if (frameSkip > hdr->caplen) {
-    log::debug("PktSource: caplen less than frameSkip!");
+    log_debug("PktSource: caplen less than frameSkip!");
     return;
   }
 
@@ -109,7 +109,7 @@ bool PktSource::openFile(const std::string &path, const std::string &filter) {
     return false;
   }
 
-  log::debug("PktSource::openFile", path, "filter", filter);
+  log_debug("PktSource::openFile", path, "filter", filter);
 
   return true;
 }
@@ -129,7 +129,7 @@ void PktSource::close() {
 bool PktSource::runLoop(PktCallback callback, void *context) {
   assert(pcap_);
 
-  log::debug("PktSource::runLoop entered");
+  log_debug("PktSource::runLoop entered");
 
   int kAllPackets = -1;
 
@@ -143,10 +143,10 @@ bool PktSource::runLoop(PktCallback callback, void *context) {
 
   int result = pcap_loop(pcap_, kAllPackets, sHandler, MutableBytePtr(&info));
   if (result != 0) {
-    log::debug("pcap_loop returned", result);
+    log_debug("pcap_loop returned", result);
   }
 
-  log::debug("PktSource::runLoop exited");
+  log_debug("PktSource::runLoop exited");
 
   return result == 0;
 }

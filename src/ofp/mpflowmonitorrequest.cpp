@@ -16,17 +16,17 @@ bool MPFlowMonitorRequest::validateInput(Validation *context) const {
   size_t length = context->lengthRemaining();
 
   if (length < SizeWithoutMatchHeader) {
-    log::debug("MPFlowMonitorRequest: Too short.");
+    log_debug("MPFlowMonitorRequest: Too short.");
     return false;
   }
 
-  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader)) {
-    log::debug("MPFlowMonitorRequest: Invalid match.");
+  if (!matchHeader_.validateInput(length - SizeWithoutMatchHeader, context)) {
+    log_debug("MPFlowMonitorRequest: Invalid match.");
     return false;
   }
 
   if (length != SizeWithoutMatchHeader + matchHeader_.paddedLength()) {
-    log::debug("MPFlowMonitorRequest: Invalid length.");
+    log_debug("MPFlowMonitorRequest: Invalid length.");
     return false;
   }
 

@@ -9,9 +9,11 @@
 using namespace ofp;
 
 int main(int argc, const char **argv) {
+  log::configure(log::Level::Debug);
+
   std::vector<std::string> args{argv + 1, argv + argc};
 
-  IPv6Address addr{};
+  IPv6Address addr;
   ProtocolVersions version{ProtocolVersions::All};
   if (!args.empty()) {
     addr = IPv6Address{args[0]};
@@ -20,8 +22,6 @@ int main(int argc, const char **argv) {
       version = ProtocolVersions{UInt8_narrow_cast(num)};
     }
   }
-
-  ofp::log::setOutputStream(&std::clog);
 
   Driver driver;
   driver.installSignalHandlers();

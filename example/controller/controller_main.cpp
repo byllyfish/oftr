@@ -1,14 +1,13 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include <iostream>
 #include "./simplechannellistener.h"
 #include "ofp/ofp.h"
 
 using namespace ofp;
 
 int main(int argc, char **argv) {
-  log::setOutputStream(&std::clog);
+  log::configure(log::Level::Debug);
 
   Driver driver;
   driver.installSignalHandlers();
@@ -22,7 +21,7 @@ int main(int argc, char **argv) {
   driver.run();
 
   if (err) {
-    log::error("Error running controller:", err);
+    log_error("Error running controller:", err);
     return 1;
   }
 

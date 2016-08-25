@@ -4,9 +4,8 @@
 #ifndef OFP_IPV6ADDRESS_H_
 #define OFP_IPV6ADDRESS_H_
 
-#include "ofp/array.h"
+#include <array>
 #include "ofp/ipv4address.h"
-#include "ofp/types.h"
 
 namespace ofp {
 
@@ -83,8 +82,7 @@ namespace std {
 template <>
 struct hash<ofp::IPv6Address> {
   size_t operator()(const ofp::IPv6Address &addr) const {
-    std::hash<ofp::IPv6Address::ArrayType> h;
-    return h(addr.toArray());
+    return ofp::hash::MurmurHash32(&addr);
   }
 };
 

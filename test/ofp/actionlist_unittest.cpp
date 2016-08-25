@@ -3,6 +3,7 @@
 
 #include "ofp/actionlist.h"
 #include "ofp/actions.h"
+#include "ofp/nicira.h"
 #include "ofp/unittest.h"
 
 using namespace ofp;
@@ -34,7 +35,7 @@ TEST(actionlist, two) {
 }
 
 TEST(actionlist, AT_SET_FIELD) {
-  ByteRange data{"\xAA\xBB", 2};
+  ByteRange data{"\x12\x34", 2};
   AT_SET_FIELD_CUSTOM act{X_EXPERIMENTER_01::type(),
                           X_EXPERIMENTER_01::experimenter(), data};
 
@@ -44,6 +45,19 @@ TEST(actionlist, AT_SET_FIELD) {
 
   // FIXME(bfish): The second action in this test is not correct (There's no
   // experimenter value.)
-  EXPECT_HEX("00190010FFFF060600FFFFFEAABB000000190010FFFF06061234000000000000",
+  // TODO(bfish): Add a template specialization for AT_SET_FIELD<TYPE> where
+  // TYPE has a experimenter() static field. Both actions should be identical.
+  EXPECT_HEX("00190010FFFF060600FFFFFE1234000000190010FFFF06061234000000000000",
              list.data(), list.size());
+}
+
+TEST(actionlist, NX_AT_REGMOVE) {
+  OXMRegister src{"IPV4_SRC[0:32]"};
+  OXMRegister dst{"IPV4_DST[0:32]"};
+
+  ActionList list;
+  list.add(nx::AT_REGMOVE{src, dst});
+
+  EXPECT_HEX("FFFF00180000232000060020000000008000160480001804", list.data(),
+             list.size());
 }

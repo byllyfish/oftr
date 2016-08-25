@@ -213,13 +213,12 @@ inline Big32 *Big32_cast(void *ptr) {
 
 // Copy Functions don't require the source to be aligned
 
-inline const Big16 Big16_copy(const void *ptr) {
-  Big16 result;
-  const UInt8 *in = BytePtr(ptr);
-  UInt8 *out = MutableBytePtr(&result);
-  *out++ = *in++;
-  *out = *in;
-  return result;
+inline const Big16 Big16_unaligned(const void *ptr) {
+  return Big16::fromBytes(BytePtr(ptr));
+}
+
+inline const Big32 Big32_unaligned(const void *ptr) {
+  return Big32::fromBytes(BytePtr(ptr));
 }
 
 }  // namespace ofp

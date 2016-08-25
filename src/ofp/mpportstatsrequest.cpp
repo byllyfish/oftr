@@ -17,7 +17,7 @@ const MPPortStatsRequest *MPPortStatsRequest::cast(
 bool MPPortStatsRequest::validateInput(Validation *context) const {
   size_t length = context->lengthRemaining();
   if (length != sizeof(MPPortStatsRequest)) {
-    log::debug("MPPortStatsRequest: Validation failed.");
+    log_debug("MPPortStatsRequest: Validation failed.");
     return false;
   }
 

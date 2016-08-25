@@ -51,7 +51,7 @@ Connection::~Connection() {
       if (iter != auxList.end()) {
         auxList.erase(iter);
       } else {
-        log::debug("~Connection: Missing pointer to auxiliary connection.");
+        log_debug("~Connection: Missing pointer to auxiliary connection.");
       }
     }
   }
@@ -69,7 +69,7 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
   assert(channel != this);
   assert(auxID != 0);
 
-  log::debug("setMainConnection");
+  log_debug("setMainConnection");
   mainConn_ = channel;
   datapathId_ = mainConn_->datapathId();
   auxiliaryId_ = auxID;
@@ -83,7 +83,7 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
       auxList.begin(), auxList.end(),
       [auxID](Connection *conn) { return conn->auxiliaryId() == auxID; });
   if (iter != auxList.end()) {
-    log::info("setMainConnection: Auxiliary connection found with same ID.");
+    log_info("setMainConnection: Auxiliary connection found with same ID.");
     (*iter)->shutdown();
   }
 
@@ -124,8 +124,8 @@ void Connection::postMessage(Message *message) {
 
 bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   if (auxiliaryId == 0 && IsChannelTransportUDP(transport())) {
-    log::error("UDP connection not allowed to have auxiliary_id of 0",
-               std::make_pair("connid", connectionId()));
+    log_error("UDP connection not allowed to have auxiliary_id of 0",
+              std::make_pair("connid", connectionId()));
     return false;
   }
 
@@ -136,9 +136,9 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
     auxiliaryId_ = auxiliaryId;
     result = engine()->registerDatapath(this);
     if (result) {
-      log::info("Assign datapath", datapathId, "aux",
-                static_cast<int>(auxiliaryId),
-                std::make_pair("conn_id", connectionId()));
+      log_info("Assign datapath", datapathId, "aux",
+               static_cast<int>(auxiliaryId),
+               std::make_pair("conn_id", connectionId()));
     }
   }
 
@@ -164,7 +164,7 @@ void Connection::poll() {
 
 void Connection::channelUp() {
   if (!(flags() & kChannelUp)) {
-    log::debug("channelUp", std::make_pair("connid", connectionId()));
+    log_debug("channelUp", std::make_pair("connid", connectionId()));
     setFlags(flags() | kChannelUp);
     auto delegate = channelListener();
     if (delegate) {
@@ -175,7 +175,7 @@ void Connection::channelUp() {
 
 void Connection::channelDown() {
   if (flags() & kChannelUp) {
-    log::debug("channelDown", std::make_pair("connid", connectionId()));
+    log_debug("channelDown", std::make_pair("connid", connectionId()));
     setFlags(flags() & ~kChannelUp);
     auto delegate = channelListener();
     if (delegate) {

@@ -26,12 +26,12 @@ void JsonRpc::setMaxOpenFiles() {
 
   if (::getrlimit(RLIMIT_NOFILE, &rlp) < 0) {
     std::error_code err{errno, std::generic_category()};
-    log::error("getrlimit failed for RLIMIT_NOFILE:", err);
+    log_error("getrlimit failed for RLIMIT_NOFILE:", err);
     return;
   }
 
-  log::debug("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max",
-             rlp.rlim_max);
+  log_debug("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max",
+            rlp.rlim_max);
 
 #ifdef __APPLE__
   // Set soft limit to lower of OPEN_MAX and rlim_max.
@@ -42,12 +42,11 @@ void JsonRpc::setMaxOpenFiles() {
 
   if (::setrlimit(RLIMIT_NOFILE, &rlp) < 0) {
     std::error_code err{errno, std::generic_category()};
-    log::error("setrlimit failed for RLIMIT_NOFILE:", rlp.rlim_cur, err);
+    log_error("setrlimit failed for RLIMIT_NOFILE:", rlp.rlim_cur, err);
     return;
   }
 
-  log::info("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max",
-            rlp.rlim_max);
+  log_info("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
 }
 
 void JsonRpc::runStdio() {

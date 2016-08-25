@@ -33,7 +33,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
@@ -187,7 +187,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
@@ -1027,7 +1027,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
@@ -3840,7 +3840,7 @@ msg:
       value:           0x08
     - field:           ICMPV4_CODE
       value:           0x00
-    - field:           X_PKT_MARK
+    - field:           X_PKT_POS
       value:           0x0026
 ...
 ---
@@ -4072,8 +4072,7 @@ msg:
         - action:          DEC_NW_TTL
         - action:          SET_NW_TTL
           ttl:             0x0A
-        - action:          EXPERIMENTER
-          experimenter:    0x00000065
+        - action:          EXPERIMENTER.0x00000065
           data:            0001020304050607
         - action:          SET_QUEUE
           queue:           0x00000003

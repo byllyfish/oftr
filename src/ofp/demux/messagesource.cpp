@@ -62,13 +62,13 @@ void MessageSource::submitIP(Timestamp ts, ByteRange capture) {
     } else if (vers == pkt::kIPv6Version) {
       submitIPv6(data, length);
     } else {
-      log::debug("MessageSource: Unknown IP version", vers);
+      log_debug("MessageSource: Unknown IP version", vers);
     }
   }
 }
 
 void MessageSource::finish() {
-  log::debug("MessageSource::finish\n", flows_.toString());
+  log_debug("MessageSource::finish\n", flows_.toString());
 
   if (hasOutputDir()) {
     flows_.finish(
@@ -78,13 +78,14 @@ void MessageSource::finish() {
         },
         maxMissingBytes_);
   }
+  log_error("MessageSource: ", flows_.stats());
   flows_.clear();
 }
 
 void MessageSource::submitEthernet(const UInt8 *data, size_t length) {
   auto eth = pkt::Ethernet::cast(data, length);
   if (!eth) {
-    log::warning("MessageSource: No ethernet header");
+    log_warning("MessageSource: No ethernet header");
     return;
   }
 
@@ -105,14 +106,14 @@ void MessageSource::submitEthernet(const UInt8 *data, size_t length) {
   } else if (ethType == DATALINK_IPV6) {
     submitIPv6(data, length);
   } else {
-    log::debug("MessageSource: Skip ethernet type", ethType);
+    log_debug("MessageSource: Skip ethernet type", ethType);
   }
 }
 
 void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
   auto ip = pkt::IPv4Hdr::cast(data, length);
   if (!ip) {
-    log::warning("MessageSource: No IPv4 header");
+    log_warning("MessageSource: No IPv4 header");
     return;
   }
 
@@ -120,12 +121,12 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
   UInt8 ihl = ip->ver & 0x0F;
 
   if (vers != pkt::kIPv4Version) {
-    log::warning("MessageSource: Unexpected IPv4 version", vers);
+    log_warning("MessageSource: Unexpected IPv4 version", vers);
     return;
   }
 
   if (ihl < 5) {
-    log::warning("MessageSource: Unexpected IPv4 header length", ihl);
+    log_warning("MessageSource: Unexpected IPv4 header length", ihl);
     return;
   }
 
@@ -137,14 +138,14 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
 
   UInt32 hdrLen = ihl * 4;
   if (hdrLen > length) {
-    log::warning("MessageSource: IPv4 Header too long", hdrLen);
+    log_warning("MessageSource: IPv4 Header too long", hdrLen);
     return;
   }
 
   // Check for fragmented IPv4 packet.
   UInt16 frag = ip->frag & (pkt::IPv4_MoreFragMask | pkt::IPv4_FragOffsetMask);
   if (frag) {
-    log::warning("MessageSource: IPv4 packet is fragment");
+    log_warning("MessageSource: IPv4 packet is fragment");
     return;
   }
 
@@ -161,21 +162,21 @@ void MessageSource::submitIPv4(const UInt8 *data, size_t length) {
   } else if (ip->proto == PROTOCOL_UDP) {
     submitUDP(data, length);
   } else {
-    log::debug("MessageSource: Ignored IPv4 proto", ip->proto);
+    log_debug("MessageSource: Ignored IPv4 proto", ip->proto);
   }
 }
 
 void MessageSource::submitIPv6(const UInt8 *data, size_t length) {
   auto ip = pkt::IPv6Hdr::cast(data, length);
   if (!ip) {
-    log::warning("MessageSource: No IPv6 header");
+    log_warning("MessageSource: No IPv6 header");
     return;
   }
 
   UInt32 verClassLabel = ip->verClassLabel;
   UInt8 vers = verClassLabel >> 28;
   if (vers != pkt::kIPv6Version) {
-    log::warning("MessageSource: Unexpected IPv6 version", vers);
+    log_warning("MessageSource: Unexpected IPv6 version", vers);
     return;
   }
 
@@ -196,14 +197,14 @@ void MessageSource::submitIPv6(const UInt8 *data, size_t length) {
   } else if (ip->nextHeader == PROTOCOL_UDP) {
     submitUDP(data, length);
   } else {
-    log::debug("MessageSource: Ignored IPv6 proto", ip->nextHeader);
+    log_debug("MessageSource: Ignored IPv6 proto", ip->nextHeader);
   }
 }
 
 void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   auto tcp = pkt::TCPHdr::cast(data, length);
   if (!tcp) {
-    log::warning("MessageSource: No TCP header");
+    log_warning("MessageSource: No TCP header");
     return;
   }
 
@@ -211,7 +212,7 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
 
   unsigned tcpHdrLen = (flags_ >> 12) * 4;
   if (tcpHdrLen < sizeof(pkt::TCPHdr) || tcpHdrLen > length) {
-    log::warning("MessageSource: TCP header invalid data offset");
+    log_warning("MessageSource: TCP header invalid data offset");
     return;
   }
 
@@ -228,8 +229,8 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   if (flow.size() > 0) {
     size_t n = submitPayload(flow.data(), flow.size(), flow.sessionID());
     if (flow.final() && n != flow.size()) {
-      log::debug("MessageSource: TCP done before full message received",
-                 flow.sessionID());
+      log_debug("MessageSource: TCP done before full message received",
+                flow.sessionID());
       // Make sure we consume all of the remaining data.
       n = flow.size();
     }
@@ -253,15 +254,15 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
   size_t remaining = length;
 
   while (remaining >= sizeof(Header)) {
-    UInt16 msgLen = Big16_copy(data + 2);
+    UInt16 msgLen = Big16_unaligned(data + 2);
 
     if (msgLen >= sizeof(Header) && remaining >= msgLen) {
       deliverMessage(data, msgLen, sessionID);
       data += msgLen;
       remaining -= msgLen;
     } else if (msgLen < sizeof(Header)) {
-      log::warning("submitPayload: msgLen smaller than 8 bytes:", msgLen,
-                   "(skip 8 bytes)");
+      log_warning("submitPayload: msgLen smaller than 8 bytes:", msgLen,
+                  "(skip 8 bytes)");
       data += sizeof(Header);
       remaining -= sizeof(Header);
     } else {
@@ -276,7 +277,7 @@ size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
 
 void MessageSource::deliverMessage(const UInt8 *data, size_t length,
                                    UInt64 sessionID) {
-  log::debug("deliverMessage:", sessionID, ByteRange(data, length));
+  log_debug("deliverMessage:", sessionID, ByteRange(data, length));
   assert(length >= sizeof(Header));
 
   MessageInfo info{sessionID, src_, dst_};
@@ -305,9 +306,9 @@ void MessageSource::outputWrite(const IPv6Endpoint &src,
   // Write flow to a file.
   std::ofstream out{filename, std::ios::out | std::ios::app | std::ios::binary};
   if (out) {
-    log::debug("outputWrite", filename, ByteRange{flow.data(), n});
+    log_debug("outputWrite", filename, ByteRange{flow.data(), n});
     out.write(reinterpret_cast<const char *>(flow.data()), Signed_cast(n));
   } else {
-    log::error("MessageSource: Unable to open output file", filename);
+    log_error("MessageSource: Unable to open output file", filename);
   }
 }

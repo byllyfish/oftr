@@ -108,7 +108,7 @@ UInt16 ofp::OFPErrorTypeToValue(UInt8 version, OFPErrorCode code) {
       if (type == sErrorTypesV1[i].type)
         return sErrorTypesV1[i].v1ErrType;
     }
-    log::warning("Unknown type enum in Error message:", static_cast<int>(type));
+    log_warning("Unknown type enum in Error message:", static_cast<int>(type));
   } else if (code == OFPFMFC_UNSUPPORTED) {
     return OFPET_BAD_ACTION;
   }

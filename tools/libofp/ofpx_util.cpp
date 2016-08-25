@@ -57,12 +57,12 @@ bool ofpx::normalizeTableFeaturesMessage(const ByteRange &data,
   size_t remainingLength = data.size() - 16;
   ptr += 16;
 
-  log::debug("normalizeTableFeaturesMessage");
+  log_debug("normalizeTableFeaturesMessage");
   results.add(data.data(), 16);
 
   while (remainingLength != 0) {
     if (!normalizeTableFeaturesEntry(ptr, remainingLength, results)) {
-      log::error("Failed to normalize TableFeatures message");
+      log_error("Failed to normalize TableFeatures message");
       return false;
     }
   }
@@ -77,7 +77,7 @@ bool ofpx::normalizeTableFeaturesMessage(const ByteRange &data,
 static bool normalizeTableFeaturesEntry(const UInt8 *&ptr,
                                         size_t &remainingLength,
                                         ByteList &results) {
-  log::debug("normalizeTableFeaturesEntry");
+  log_debug("normalizeTableFeaturesEntry");
 
   if (!IsPtrAligned(ptr, 8) || remainingLength < 64) {
     return false;
@@ -85,7 +85,7 @@ static bool normalizeTableFeaturesEntry(const UInt8 *&ptr,
 
   size_t entryLength = PadLength(*Big16_cast(ptr));
   if (entryLength < 64 || entryLength > remainingLength) {
-    log::debug("bad entry length", entryLength);
+    log_debug("bad entry length", entryLength);
     return false;
   }
 
@@ -97,7 +97,7 @@ static bool normalizeTableFeaturesEntry(const UInt8 *&ptr,
 
   while (left > 0) {
     if (left < 4) {
-      log::debug("bad left", left);
+      log_debug("bad left", left);
       return false;
     }
 
@@ -105,11 +105,11 @@ static bool normalizeTableFeaturesEntry(const UInt8 *&ptr,
     size_t offset = PadLength(p->length);
 
     if (offset < 4 || offset > left) {
-      log::debug("bad offset", offset);
+      log_debug("bad offset", offset);
       return false;
     }
 
-    log::debug("read property", left, ByteRange{p, offset});
+    log_debug("read property", left, ByteRange{p, offset});
 
     props.push_back(p);
 
@@ -142,11 +142,11 @@ static bool normalizeTableFeaturesEntry(const UInt8 *&ptr,
     if (prev && prev->length == next->length &&
         (prev->type & 0xFFFE) == (next->type & 0xFFFE) &&
         std::memcmp(&prev->length, &next->length, next->length - 2) == 0) {
-      log::debug("Skip property", len, ByteRange{next, len});
+      log_debug("Skip property", len, ByteRange{next, len});
       continue;
     }
 
-    log::debug("Add property", len, ByteRange{next, len});
+    log_debug("Add property", len, ByteRange{next, len});
     results.add(next, len);
     prev = next;
   }
