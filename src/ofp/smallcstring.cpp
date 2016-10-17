@@ -31,11 +31,11 @@ static const UInt8 *findIllegalUtf8(const UInt8 *begin, const UInt8 *end) {
       break;
     }
 
-    if (!isLegalUTF8Sequence(pos, end)) {
+    if (!llvm::isLegalUTF8Sequence(pos, end)) {
       return pos;
     }
 
-    pos += getNumBytesForUTF8(*pos);
+    pos += llvm::getNumBytesForUTF8(*pos);
   }
 
   return end;

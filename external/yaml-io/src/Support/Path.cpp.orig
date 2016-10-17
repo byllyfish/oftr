@@ -12,7 +12,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "llvm/Support/COFF.h"
-//#include "llvm/Support/MachO.h"
+#include "llvm/Support/MachO.h"
 #include "llvm/Support/Endian.h"
 #include "llvm/Support/Errc.h"
 #include "llvm/Support/ErrorHandling.h"
@@ -158,7 +158,6 @@ enum FSEntity {
   FS_Name
 };
 
-#if 0
 static std::error_code createUniqueEntity(const Twine &Model, int &ResultFD,
                                           SmallVectorImpl<char> &ResultPath,
                                           bool MakeAbsolute, unsigned Mode,
@@ -226,7 +225,6 @@ retry_random_path:
   }
   llvm_unreachable("Invalid Type");
 }
-#endif //0
 
 namespace llvm {
 namespace sys  {
@@ -748,7 +746,6 @@ std::error_code getUniqueID(const Twine Path, UniqueID &Result) {
   return std::error_code();
 }
 
-#if 0
 std::error_code createUniqueFile(const Twine &Model, int &ResultFd,
                                  SmallVectorImpl<char> &ResultPath,
                                  unsigned Mode) {
@@ -802,7 +799,6 @@ std::error_code createUniqueDirectory(const Twine &Prefix,
   return createUniqueEntity(Prefix + "-%%%%%%", Dummy, ResultPath,
                             true, 0, FS_Dir);
 }
-#endif //0
 
 static std::error_code make_absolute(const Twine &current_directory,
                                      SmallVectorImpl<char> &path,
@@ -981,7 +977,6 @@ void directory_entry::replace_filename(const Twine &filename, file_status st) {
   Status = st;
 }
 
-#if 0
 /// @brief Identify the magic in magic.
 file_magic identify_magic(StringRef Magic) {
   if (Magic.size() < 4)
@@ -1157,7 +1152,6 @@ std::error_code identify_magic(const Twine &Path, file_magic &Result) {
   Result = identify_magic(StringRef(Buffer, Length));
   return std::error_code();
 }
-#endif //0
 
 std::error_code directory_entry::status(file_status &result) const {
   return fs::status(Path, result);

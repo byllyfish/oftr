@@ -6,7 +6,7 @@ set(YAMLIO_SOURCES
 	src/Support/APInt.cpp
 	src/Support/Atomic.cpp
 	src/Support/CommandLine.cpp
-	src/Support/ConvertUTF.c
+	src/Support/ConvertUTF.cpp
 	src/Support/ConvertUTFWrapper.cpp
 	src/Support/Errno.cpp
 	src/Support/FoldingSet.cpp
@@ -17,6 +17,7 @@ set(YAMLIO_SOURCES
 	src/Support/Memory.cpp
 	src/Support/MemoryBuffer.cpp
 	src/Support/Mutex.cpp
+	src/Support/NativeFormatting.cpp
 	src/Support/Path.cpp
 	src/Support/Process.cpp
 	src/Support/Program.cpp

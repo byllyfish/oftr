@@ -129,8 +129,7 @@ class Decode : public Subprogram {
   cl::opt<JsonFlavor> jsonFlavor_{
       "json-flavor", cl::desc("Flavor of JSON output"),
       cl::values(clEnumValN(kJsonFlavorDefault, "default", "JSON (default)"),
-                 clEnumValN(kJsonFlavorMongoDB, "mongodb", "MongoDB JSON"),
-                 clEnumValEnd),
+                 clEnumValN(kJsonFlavorMongoDB, "mongodb", "MongoDB JSON")),
       cl::init(kJsonFlavorDefault)};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
@@ -167,7 +166,7 @@ class Decode : public Subprogram {
       cl::values(clEnumValN(kPcapFormatAuto, "auto",
                             "If any file name ends in .pcap (default)"),
                  clEnumValN(kPcapFormatYes, "yes", "Yes"),
-                 clEnumValN(kPcapFormatNo, "no", "No"), clEnumValEnd),
+                 clEnumValN(kPcapFormatNo, "no", "No")),
       cl::cat(pcapCategory_), cl::init(kPcapFormatAuto)};
   cl::opt<std::string> pcapOutputDir_{
       "pcap-output-dir",
