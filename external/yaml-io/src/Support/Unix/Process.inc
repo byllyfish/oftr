@@ -429,6 +429,7 @@ const char *Process::ResetColor() {
   return "\033[0m";
 }
 
+#if 0
 #if !HAVE_DECL_ARC4RANDOM
 static unsigned GetRandomNumberSeed() {
   // Attempt to get the initial seed from /dev/urandom, if possible.
@@ -463,3 +464,4 @@ unsigned llvm::sys::Process::GetRandomNumber() {
   return ::rand();
 #endif
 }
+#endif //0

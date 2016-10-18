@@ -1,6 +1,6 @@
---- ../../../llvm/unittests/Support/YAMLParserTest.cpp	2016-01-20 17:28:09.000000000 -0700
-+++ ./unittests/Support/YAMLParserTest.cpp	2016-02-10 13:39:55.000000000 -0700
-@@ -17,6 +17,11 @@
+--- /Users/bfish/code/llvm/unittests/Support/YAMLParserTest.cpp	2016-10-14 12:38:40.000000000 -0700
++++ ./unittests/Support/YAMLParserTest.cpp	2016-10-18 11:39:28.000000000 -0700
+@@ -16,6 +16,11 @@
  
  namespace llvm {
  

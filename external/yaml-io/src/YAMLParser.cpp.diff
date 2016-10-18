@@ -1,6 +1,6 @@
---- ../../../llvm/lib/Support/YAMLParser.cpp	2016-01-20 17:28:10.000000000 -0700
-+++ ./src/Support/YAMLParser.cpp	2016-02-10 13:43:41.000000000 -0700
-@@ -2314,7 +2314,7 @@
+--- /Users/bfish/code/llvm/lib/Support/YAMLParser.cpp	2016-10-14 12:38:41.000000000 -0700
++++ ./src/Support/YAMLParser.cpp	2016-10-18 11:39:28.000000000 -0700
+@@ -2279,7 +2279,7 @@
    case Token::TK_Anchor:
      if (AnchorInfo.Kind == Token::TK_Anchor) {
        setError("Already encountered an anchor for this node!", T);
@@ -9,7 +9,7 @@
      }
      AnchorInfo = getNext(); // Consume TK_Anchor.
      T = peekNext();
-@@ -2322,7 +2322,7 @@
+@@ -2287,7 +2287,7 @@
    case Token::TK_Tag:
      if (TagInfo.Kind == Token::TK_Tag) {
        setError("Already encountered a tag for this node!", T);
@@ -18,7 +18,7 @@
      }
      TagInfo = getNext(); // Consume TK_Tag.
      T = peekNext();
-@@ -2368,6 +2368,10 @@
+@@ -2333,6 +2333,10 @@
                   , AnchorInfo.Range.substr(1)
                   , TagInfo.Range
                   , MappingNode::MT_Flow);

@@ -1,5 +1,5 @@
---- ../../../llvm/lib/Support/YAMLTraits.cpp	2016-01-20 17:28:10.000000000 -0700
-+++ ./src/Support/YAMLTraits.cpp	2016-02-10 13:39:55.000000000 -0700
+--- /Users/bfish/code/llvm/lib/Support/YAMLTraits.cpp	2016-10-14 12:38:41.000000000 -0700
++++ ./src/Support/YAMLTraits.cpp	2016-10-18 11:39:28.000000000 -0700
 @@ -306,6 +306,45 @@
    }
  }
@@ -46,7 +46,7 @@
  void Input::scalarString(StringRef &S, bool) {
    if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
      S = SN->value();
-@@ -583,6 +622,23 @@
+@@ -604,6 +643,23 @@
    this->outputUpToEndOfLine(" ]");
  }
  
