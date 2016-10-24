@@ -3,10 +3,8 @@
 
 #include "ofp/rpc/rpcserver.h"
 #include "ofp/rpc/rpcchannellistener.h"
-#include "ofp/rpc/rpcconnectionsession.h"
 #include "ofp/rpc/rpcconnectionstdio.h"
 #include "ofp/rpc/rpcevents.h"
-#include "ofp/rpc/rpcsession.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_server.h"
@@ -34,19 +32,6 @@ RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
     conn->setOutput(outputFD);
   }
 
-  conn->asyncAccept();
-  engine_->setAlertCallback(alertCallback, this);
-}
-
-RpcServer::RpcServer(Driver *driver, RpcSession *session,
-                     Channel *defaultChannel)
-    : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
-  auto conn = std::make_shared<RpcConnectionSession>(this, session);
-
-  // Give the session a reference to the connection; otherwise, the connection
-  // will be deleted when it goes out of scope.
-
-  session->setConnection(conn);
   conn->asyncAccept();
   engine_->setAlertCallback(alertCallback, this);
 }

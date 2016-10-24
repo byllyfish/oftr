@@ -281,10 +281,8 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/sys/udp_server.cpp
     src/ofp/rpc/rpcchannellistener.cpp
     src/ofp/rpc/rpcconnection.cpp
-    src/ofp/rpc/rpcconnectionsession.cpp
     src/ofp/rpc/rpcconnectionstdio.cpp
     src/ofp/rpc/rpcserver.cpp
-    src/ofp/rpc/rpcsession.cpp
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp
   )
