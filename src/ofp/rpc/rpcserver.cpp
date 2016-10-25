@@ -17,20 +17,14 @@ using namespace ofp;
 RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
     : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
+  log::fatal_if_false(inputFD >= 0, "inputFD >= 0");
+  log::fatal_if_false(outputFD >= 0, "inputFD >= 0");
+
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
-
   auto conn = std::make_shared<RpcConnectionStdio>(
-      this, asio::posix::stream_descriptor{engine_->io()},
-      asio::posix::stream_descriptor{engine_->io()});
-
-  if (inputFD >= 0) {
-    conn->setInput(inputFD);
-  }
-
-  if (outputFD >= 0) {
-    conn->setOutput(outputFD);
-  }
+      this, asio::posix::stream_descriptor{engine_->io(), inputFD},
+      asio::posix::stream_descriptor{engine_->io(), outputFD});
 
   conn->asyncAccept();
   engine_->setAlertCallback(alertCallback, this);
