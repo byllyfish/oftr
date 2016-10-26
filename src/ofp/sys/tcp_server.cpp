@@ -92,17 +92,20 @@ void TCP_Server::listen(const IPv6Endpoint &localEndpt,
       addr.is_unspecified()) {
     log_info("TCP_Server: IPv6 is not supported. Using IPv4.");
     endpt = tcp::endpoint{tcp::v4(), endpt.port()};
-    if (acceptor_.open(endpt.protocol(), error))
+    acceptor_.open(endpt.protocol(), error);
+    if (error)
       return;
   }
 
-  if (acceptor_.set_option(asio::socket_base::reuse_address(true), error))
+  acceptor_.set_option(asio::socket_base::reuse_address(true), error);
+  if (error)
     return;
 
-  if (acceptor_.bind(endpt, error))
+  acceptor_.bind(endpt, error);
+  if (error)
     return;
 
-  acceptor_.listen(asio::socket_base::max_connections, error);
+  acceptor_.listen(asio::socket_base::max_listen_connections, error);
 }
 
 void TCP_Server::asyncAccept() {

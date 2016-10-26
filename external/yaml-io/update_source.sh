@@ -31,6 +31,7 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 
 # Include files to copy from llvm source tree.
 INCLUDES=(
+	include/llvm/ADT/AllocatorList.h
 	include/llvm/ADT/APInt.h
 	include/llvm/ADT/ArrayRef.h
 	include/llvm/ADT/DenseMap.h
@@ -40,13 +41,18 @@ INCLUDES=(
 	include/llvm/ADT/FoldingSet.h
 	include/llvm/ADT/Hashing.h
 	include/llvm/ADT/ilist.h
+	include/llvm/ADT/ilist_base.h
+	include/llvm/ADT/ilist_iterator.h
 	include/llvm/ADT/ilist_node.h
+	include/llvm/ADT/ilist_node_base.h
+	include/llvm/ADT/ilist_node_options.h
 	include/llvm/ADT/IntrusiveRefCntPtr.h
 	include/llvm/ADT/iterator.h
 	include/llvm/ADT/iterator_range.h
 	include/llvm/ADT/None.h
 	include/llvm/ADT/Optional.h
 	include/llvm/ADT/PointerIntPair.h
+	include/llvm/ADT/simple_ilist.h
 	include/llvm/ADT/SmallPtrSet.h
 	include/llvm/ADT/SmallString.h
 	include/llvm/ADT/SmallVector.h
@@ -85,6 +91,7 @@ INCLUDES=(
 	include/llvm/Support/MemoryBuffer.h
 	include/llvm/Support/Mutex.h
 	include/llvm/Support/MutexGuard.h
+	include/llvm/Support/NativeFormatting.h
 	include/llvm/Support/Path.h
 	include/llvm/Support/PointerLikeTypeTraits.h
 	include/llvm/Support/Process.h
@@ -96,6 +103,7 @@ INCLUDES=(
 	include/llvm/Support/StringSaver.h
 	include/llvm/Support/SwapByteOrder.h
 	include/llvm/Support/Threading.h
+	include/llvm/Support/thread.h
 	include/llvm/Support/TimeValue.h
 	include/llvm/Support/type_traits.h
 	include/llvm/Support/Valgrind.h
@@ -112,7 +120,7 @@ SOURCES=(
 	Support/APInt.cpp
 	Support/Atomic.cpp
 	Support/CommandLine.cpp
-	Support/ConvertUTF.c
+	Support/ConvertUTF.cpp
 	Support/ConvertUTFWrapper.cpp
 	Support/Errno.cpp
 	Support/FoldingSet.cpp
@@ -122,6 +130,7 @@ SOURCES=(
 	Support/Memory.cpp
 	Support/MemoryBuffer.cpp
 	Support/Mutex.cpp
+	Support/NativeFormatting.cpp
 	Support/Path.cpp
 	Support/Process.cpp
 	Support/Program.cpp
@@ -169,11 +178,11 @@ done
 
 # Apply patches.
 
+patch "${WORKING_DIR}/src/Support/Path.cpp" "$WORKING_DIR/src/Path.cpp.diff"
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
 patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
 patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
 patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
-patch "${WORKING_DIR}/src/Support/Path.cpp" "$WORKING_DIR/src/Path.cpp.diff"
 patch "${WORKING_DIR}/src/Support/Unix/Process.inc" "$WORKING_DIR/src/Process.inc.diff"
 patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
 

@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "./testagent.h"
 #include <iostream>
+#include "./testagent.h"
 
 using namespace testagent;
 

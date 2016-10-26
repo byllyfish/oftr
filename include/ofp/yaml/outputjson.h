@@ -78,12 +78,14 @@ OFP_END_IGNORE_PADDING
 // Define non-member operator<< so that OutputJson can stream out a map.
 // (Adapted from llvm::yaml.)
 template <typename T>
-inline typename std::enable_if<llvm::yaml::has_MappingTraits<T>::value,
-                               OutputJson &>::type
+inline typename std::enable_if<
+    llvm::yaml::has_MappingTraits<T, llvm::yaml::EmptyContext>::value,
+    OutputJson &>::type
 operator<<(OutputJson &yout, T &map) {
+  llvm::yaml::EmptyContext Ctx;
   yout.beginDocuments();
   if (yout.preflightDocument(0)) {
-    yamlize(yout, map, true);
+    yamlize(yout, map, true, Ctx);
     yout.postflightDocument();
   }
   yout.endDocuments();

@@ -169,6 +169,8 @@ void Process::PreventCoreFiles() {
   signal(SIGSEGV, _exit);
   signal(SIGBUS,  _exit);
 #endif
+
+  coreFilesPrevented = true;
 }
 
 Optional<std::string> Process::GetEnv(StringRef Name) {
@@ -428,7 +430,7 @@ const char *Process::ResetColor() {
 }
 
 #if 0
-#if !defined(HAVE_DECL_ARC4RANDOM) || !HAVE_DECL_ARC4RANDOM
+#if !HAVE_DECL_ARC4RANDOM
 static unsigned GetRandomNumberSeed() {
   // Attempt to get the initial seed from /dev/urandom, if possible.
   int urandomFD = open("/dev/urandom", O_RDONLY);
@@ -454,10 +456,10 @@ static unsigned GetRandomNumberSeed() {
 #endif
 
 unsigned llvm::sys::Process::GetRandomNumber() {
-#if defined(HAVE_DECL_ARC4RANDOM) && HAVE_DECL_ARC4RANDOM
+#if HAVE_DECL_ARC4RANDOM
   return arc4random();
 #else
-  static int x = (::srand(GetRandomNumberSeed()), 0);
+  static int x = (static_cast<void>(::srand(GetRandomNumberSeed())), 0);
   (void)x;
   return ::rand();
 #endif

@@ -24,6 +24,7 @@ template void throw_exception(const std::system_error &);
 template void throw_exception(const std::bad_cast &);
 template void throw_exception(const std::out_of_range &);
 template void throw_exception(const std::length_error &);
+template void throw_exception(const std::logic_error &);
 
 template void throw_exception(const asio::invalid_service_owner &);
 template void throw_exception(const asio::service_already_exists &);
