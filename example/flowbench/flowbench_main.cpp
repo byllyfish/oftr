@@ -10,35 +10,6 @@
 
 using namespace ofp;
 
-static uint64_t mallocCount = 0;
-static uint64_t mallocSize = 0;
-
-void *operator new(size_t size) {
-  ++mallocCount;
-  mallocSize += size;
-  return malloc(size);
-}
-
-//
-
-void *operator new[](size_t size) {
-  ++mallocCount;
-  mallocSize += size;
-  return malloc(size);
-}
-
-//
-void operator delete(void *p) noexcept {
-  free(p);
-}
-
-//
-void operator delete[](void *p) noexcept {
-  free(p);
-}
-
-//
-
 static void flowMod(Writable *channel, UInt32 inPort, UInt32 bufferId,
                     const MacAddress &dst, const MacAddress &src,
                     UInt32 outPort) {
@@ -82,41 +53,42 @@ static void logStats(const std::vector<int64_t> &data) {
 int main(int argc, char **argv) {
   UInt32 inPort = 1;
   UInt32 outPort = 2;
-  UInt32 bufferId = 249;
   MacAddress dst{"11-22-33-44-55-66"};
   MacAddress src{"11-77-88-99-AA-BB"};
 
   MemoryChannel channel{OFP_VERSION_4};
 
   using clock = std::chrono::high_resolution_clock;
-  using milliseconds = std::chrono::milliseconds;
+  using microseconds = std::chrono::microseconds;
 
-  const unsigned loops = 25000000;
+  const int kTrials = 5;
+  const unsigned kLoops = 1000000;
   std::vector<int64_t> results;
 
-  for (int trial = 0; trial <= 10; ++trial) {
-    mallocCount = 0;
-    mallocSize = 0;
+  std::cout << "Running FlowMod Benchmark: " << kTrials << " trials, " << kLoops << " loops each" << std::endl;
+
+  for (int trial = 0; trial <= kTrials; ++trial) {
     auto start = clock::now();
 
-    for (unsigned i = 0; i < loops; ++i) {
-      flowMod(&channel, inPort, bufferId, dst, src, outPort);
+    for (unsigned i = 0; i < kLoops; ++i) {
+      flowMod(&channel, inPort, i, dst, src, outPort);
       channel.clear();
     }
 
     auto end = clock::now();
 
-    // Ignore trial 0.
-    if (trial == 0)
-      continue;
-
-    milliseconds duration =
-        std::chrono::duration_cast<milliseconds>(end - start);
-    std::cout << "Loops=" << loops << " Trial " << std::setw(2) << trial
+    microseconds duration =
+        std::chrono::duration_cast<microseconds>(end - start);
+    std::cout << "Loops=" << kLoops << " Trial " << std::setw(2) << trial
               << " Time: " << duration.count()
-              << " ms  Malloc/Bytes: " << mallocCount << "/" << mallocSize
-              << " (" << static_cast<double>(mallocCount) / loops << "/"
-              << static_cast<double>(mallocSize) / loops << ")\n";
+              << " usec" << std::endl;
+
+    // Ignore trial 0.
+    if (trial == 0) {
+      std::cout << "Ignore trial 0..." << std::endl;
+      continue;
+    }
+
     results.push_back(duration.count());
   }
 
