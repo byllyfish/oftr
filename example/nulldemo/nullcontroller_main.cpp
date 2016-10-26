@@ -31,14 +31,13 @@ int main(int argc, char **argv) {
   driver.installSignalHandlers();
 
   if (addr.valid()) {
-    (void)driver.connect(ChannelOptions::DEFAULT_CONTROLLER, 0,
-                         IPv6Endpoint{addr, OFPGetDefaultPort()},
-                         ProtocolVersions::All, NullController::Factory,
-                         [](Channel *channel, std::error_code err) {
-                           std::cout
-                               << "Result: connId=" << channel->connectionId()
-                               << " err=" << err << '\n';
-                         });
+    (void)driver.connect(
+        ChannelOptions::DEFAULT_CONTROLLER, 0,
+        IPv6Endpoint{addr, OFPGetDefaultPort()}, ProtocolVersions::All,
+        NullController::Factory, [](Channel *channel, std::error_code err) {
+          std::cout << "Result: connId=" << channel->connectionId()
+                    << " err=" << err << '\n';
+        });
 
   } else {
     std::error_code err;

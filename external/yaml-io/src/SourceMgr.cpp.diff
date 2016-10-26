@@ -1,15 +1,15 @@
---- ../../../llvm/lib/Support/SourceMgr.cpp	2016-01-20 17:28:10.000000000 -0700
-+++ ./src/Support/SourceMgr.cpp	2016-02-10 13:39:55.000000000 -0700
-@@ -15,7 +15,7 @@
- 
+--- /Users/bfish/code/llvm/lib/Support/SourceMgr.cpp	2016-10-14 12:38:41.000000000 -0700
++++ ./src/Support/SourceMgr.cpp	2016-10-18 11:39:28.000000000 -0700
+@@ -16,7 +16,7 @@
  #include "llvm/Support/SourceMgr.h"
+ #include "llvm/ADT/STLExtras.h"
  #include "llvm/ADT/Twine.h"
 -#include "llvm/Support/Locale.h"
 +//#include "llvm/Support/Locale.h"
  #include "llvm/Support/MemoryBuffer.h"
  #include "llvm/Support/Path.h"
  #include "llvm/Support/raw_ostream.h"
-@@ -285,8 +285,10 @@
+@@ -286,8 +286,10 @@
      // FIXME: This assertion is intended to catch unintended use of multibyte
      // characters in fixits. If we decide to do this, we'll have to track
      // separate byte widths for the source and fixit lines.

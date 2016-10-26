@@ -17,9 +17,6 @@ class RpcConnectionStdio : public RpcConnection {
   RpcConnectionStdio(RpcServer *server, asio::posix::stream_descriptor input,
                      asio::posix::stream_descriptor output);
 
-  void setInput(int input);
-  void setOutput(int output);
-
   void asyncAccept() override;
   void close() override;
 

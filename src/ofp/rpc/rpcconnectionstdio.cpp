@@ -21,28 +21,6 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
       output_{std::move(output)},
       streambuf_{RPC_MAX_MESSAGE_SIZE} {}
 
-void RpcConnectionStdio::setInput(int input) {
-  assert(input >= 0);
-
-  std::error_code err;
-  input_.assign(input, err);
-
-  if (err) {
-    log_error("RpcConnectionStdio::setInput", input, err);
-  }
-}
-
-void RpcConnectionStdio::setOutput(int output) {
-  assert(output >= 0);
-
-  std::error_code err;
-  output_.assign(output, err);
-
-  if (err) {
-    log_error("RpcConnectionStdio::setOutput", output, err);
-  }
-}
-
 void RpcConnectionStdio::write(const std::string &msg) {
   outgoing_[outgoingIdx_].add(msg.data(), msg.length());
   if (!writing_) {

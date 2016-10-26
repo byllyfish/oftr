@@ -20,6 +20,13 @@ TEST(originalmatch, oxmrange) {
       "003020EECCCC0000000000000000000000000000000008000000000000000000C"
       "0A8010100000000",
       &match, sizeof(match));
+
+  EXPECT_EQ(
+      "in_port: 52428 \ndl_src: 00:00:00:00:00:00*\ndl_dst: "
+      "00:00:00:00:00:00*\ndl_vlan: 0*\ndl_vlan_pcp: 0*\ndl_type: 2048 "
+      "\nnw_tos: 0*\nnw_proto: 0*\nnw_src: 0.0.0.0/0.0.0.0\nnw_dst: "
+      "192.168.1.1/255.255.255.255\ntp_src: 0*\ntp_dst: 0*\n",
+      match.toString());
 }
 
 TEST(originalmatch, vlan_vid) {
@@ -80,4 +87,30 @@ TEST(originalmatch, vlan_vid) {
     OXMList oxm = stdMatch.toOXMList();
     EXPECT_EQ(match.toRange(), oxm.toRange());
   }
+}
+
+TEST(originalmatch, masks) {
+  IPv4Address dst{"192.168.1.1"};
+  IPv4Address src{"192.168.1.2"};
+  IPv4Address mask{"255.255.255.0"};
+
+  MatchBuilder oxmMatch;
+  oxmMatch.add(OFB_IN_PORT{0xCCCCCCCC});
+  oxmMatch.add(OFB_IPV4_DST{dst}, OFB_IPV4_DST{mask});
+  oxmMatch.add(OFB_IPV4_SRC{src}, OFB_IPV4_SRC{mask});
+  oxmMatch.add(OFB_UDP_SRC{80});
+  oxmMatch.add(OFB_UDP_DST{81});
+
+  OriginalMatch match{oxmMatch.toRange()};
+
+  EXPECT_HEX(
+      "0032080ECCCC00000000000000000000000000000000080000110000C0A80100C0A80100"
+      "00500051",
+      &match, sizeof(match));
+  EXPECT_EQ(
+      "in_port: 52428 \ndl_src: 00:00:00:00:00:00*\ndl_dst: "
+      "00:00:00:00:00:00*\ndl_vlan: 0*\ndl_vlan_pcp: 0*\ndl_type: 2048 "
+      "\nnw_tos: 0*\nnw_proto: 17 \nnw_src: 192.168.1.0/255.255.255.0\nnw_dst: "
+      "192.168.1.0/255.255.255.0\ntp_src: 80 \ntp_dst: 81 \n",
+      match.toString());
 }

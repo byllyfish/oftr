@@ -1,5 +1,5 @@
---- ../../../llvm/lib/Support/Path.cpp	2016-02-06 14:00:09.000000000 -0700
-+++ ./src/Support/Path.cpp	2016-02-10 13:39:55.000000000 -0700
+--- /Users/bfish/code/llvm/lib/Support/Path.cpp	2016-10-14 12:38:41.000000000 -0700
++++ ./src/Support/Path.cpp	2016-10-18 11:39:28.000000000 -0700
 @@ -12,7 +12,7 @@
  //===----------------------------------------------------------------------===//
  
@@ -25,7 +25,7 @@
  
  namespace llvm {
  namespace sys  {
-@@ -720,6 +722,7 @@
+@@ -746,6 +748,7 @@
    return std::error_code();
  }
  
@@ -33,7 +33,7 @@
  std::error_code createUniqueFile(const Twine &Model, int &ResultFd,
                                   SmallVectorImpl<char> &ResultPath,
                                   unsigned Mode) {
-@@ -773,6 +776,7 @@
+@@ -799,6 +802,7 @@
    return createUniqueEntity(Prefix + "-%%%%%%", Dummy, ResultPath,
                              true, 0, FS_Dir);
  }
@@ -41,7 +41,7 @@
  
  static std::error_code make_absolute(const Twine &current_directory,
                                       SmallVectorImpl<char> &path,
-@@ -951,6 +955,7 @@
+@@ -977,6 +981,7 @@
    Status = st;
  }
  
@@ -49,7 +49,7 @@
  /// @brief Identify the magic in magic.
  file_magic identify_magic(StringRef Magic) {
    if (Magic.size() < 4)
-@@ -1126,6 +1131,7 @@
+@@ -1152,6 +1157,7 @@
    Result = identify_magic(StringRef(Buffer, Length));
    return std::error_code();
  }

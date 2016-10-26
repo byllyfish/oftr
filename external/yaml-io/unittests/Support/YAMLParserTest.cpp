@@ -7,7 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/Twine.h"
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/MemoryBuffer.h"
@@ -60,6 +59,11 @@ TEST(YAMLParser, FailsIfNotClosingArray) {
   ExpectParseError("Not closing array", "  [x");
 }
 
+TEST(YAMLParser, FailsOnUnexpectedRightBracket) {
+  ExpectParseError("Unexpected token", "]");
+  ExpectParseError("Unexpected token", "  ]");
+}
+
 TEST(YAMLParser, ParsesEmptyArrayWithWhitespace) {
   ExpectParseSuccess("Array with spaces", "  [  ]  ");
   ExpectParseSuccess("All whitespaces", "\t\r\n[\t\n \t\r ]\t\r \n\n");
@@ -81,6 +85,11 @@ TEST(YAMLParser, ParsesMultipleKeyValuePairsInObject) {
 TEST(YAMLParser, FailsIfNotClosingObject) {
   ExpectParseError("Missing close on empty", "[{]");
   ExpectParseError("Missing close after pair", "[{\"a\":\"b\"]");
+}
+
+TEST(YAMLParser, FailsOnUnexpectedRightBrace) {
+  ExpectParseError("Unexpected token", "}");
+  ExpectParseError("Unexpected token", "  }");
 }
 
 TEST(YAMLParser, FailsIfMissingColon) {
@@ -135,6 +144,24 @@ TEST(YAMLParser, ParsesSpacesInBetweenTokens) {
       " \t \n\n \r \"b\"\t \n\n \r } \t \n\n \r,\t \n\n \r"
       " \t \n\n \r { \t \n\n \r\"a\"\t \n\n \r :"
       " \t \n\n \r \"b\"\t \n\n \r } \t \n\n \r]\t \n\n \r");
+}
+
+TEST(YAMLParser, ParsesExactlyOneTag) {
+  ExpectParseSuccess("Exactly one tag", "!opt test");
+}
+
+TEST(YAMLParser, FailsIfMultipleTags) {
+  ExpectParseError("Fails", "!opt !opt");
+  ExpectParseError("Fails", "!opt !opt test");
+}
+
+TEST(YAMLParser, ParsesExactlyOneAnchor) {
+  ExpectParseSuccess("Exactly one anchor", "&opt test");
+}
+
+TEST(YAMLParser, FailsIfMultipleAnchors) {
+  ExpectParseError("Fails", "&opt &opt");
+  ExpectParseError("Fails", "&opt &opt test");
 }
 
 TEST(YAMLParser, ParsesArrayOfArrays) {

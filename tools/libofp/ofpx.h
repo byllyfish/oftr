@@ -84,8 +84,7 @@ class Subprogram {
                  clEnumValN(ofp::log::Level::Error, "error",
                             "Log error messages and above"),
                  clEnumValN(ofp::log::Level::Fatal, "fatal",
-                            "Log fatal messages only - the default"),
-                 clEnumValEnd)};
+                            "Log fatal messages only - the default"))};
   cl::opt<std::string> logfile_{
       "logfile", cl::desc("Log messages to this file"), cl::ValueRequired,
       cl::Hidden, cl::cat(logCategory_)};
@@ -95,8 +94,7 @@ class Subprogram {
       cl::values(clEnumValN(ofp::log::Trace::Msg, "msg",
                             "Log all OpenFlow messages sent and received"),
                  clEnumValN(ofp::log::Trace::Rpc, "rpc",
-                            "Log all JSON-RPC events sent and received"),
-                 clEnumValEnd)};
+                            "Log all JSON-RPC events sent and received"))};
   cl::opt<unsigned> initialSleep_{"initial-sleep",
                                   cl::desc("Sleep immediately at startup"),
                                   cl::Hidden, cl::init(0)};

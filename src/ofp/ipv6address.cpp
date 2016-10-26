@@ -23,23 +23,25 @@ IPv6Address::IPv6Address(const std::string &s) {
 UInt32 IPv6Address::zone() const {
   if (!isLinkLocal())
     return 0;
-  const Big16 *lo = Big16_cast(&addr_[2]);
-  const Big16 *hi = Big16_cast(&addr_[4]);
-  UInt32 x = *hi;
-  return (x << 16) | *lo;
+  const Big16 lo = Big16_unaligned(&addr_[2]);
+  const Big16 hi = Big16_unaligned(&addr_[4]);
+  UInt32 x = hi;
+  return (x << 16) | lo;
 }
 
 void IPv6Address::setZone(UInt32 zone) {
   assert(isLinkLocal());
 
-  *Big16_cast(&addr_[2]) = UInt16_narrow_cast(zone);
-  *Big16_cast(&addr_[4]) = UInt16_narrow_cast(zone >> 16);
+  Big16 lo = UInt16_narrow_cast(zone);
+  Big16 hi = UInt16_narrow_cast(zone >> 16);
+  std::memcpy(&addr_[2], &lo, 2);
+  std::memcpy(&addr_[4], &hi, 2);
 }
 
 bool IPv6Address::parse(const std::string &s) {
   // Check for %zone option.
   auto pct = s.find('%');
-  if (pct != s.npos) {
+  if (pct != std::string::npos) {
     // If it's not an IPv6 address, the parse fails.
     if (!parseIPv6Address(s.substr(0, pct)))
       return false;

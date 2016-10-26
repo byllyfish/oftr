@@ -212,3 +212,25 @@ TEST(ipv6address, parse_fails) {
   EXPECT_FALSE(addr.parse("fe80::1122:33ff:fe44:5566%1x"));
   EXPECT_FALSE(addr.parse("fe80::1122:33ff:fe44:5566%4294967297"));
 }
+
+TEST(ipv6address, misaligned) {
+  // IPv6Address should be "packed" when placed in a struct.
+
+  struct TestBuf {
+    UInt8 ignore;
+    IPv6Address addr;
+  };
+
+  static_assert(sizeof(TestBuf) == 17, "Unexpected size");
+  static_assert(offsetof(TestBuf, addr) == 1, "Unexpected offset");
+
+  TestBuf buf;
+  EXPECT_FALSE(buf.addr.valid());
+  EXPECT_TRUE(buf.addr.parse("fe80::1122:33ff:fe44:5566%287454020"));
+  EXPECT_TRUE(buf.addr.isLinkLocal());
+  EXPECT_TRUE(buf.addr.valid());
+  EXPECT_EQ(287454020, buf.addr.zone());
+  EXPECT_HEX("FE80 3344 1122 0000 1122 33FF fe44 5566", &buf.addr,
+             sizeof(buf.addr));
+  EXPECT_EQ("fe80::1122:33ff:fe44:5566%287454020", buf.addr.toString());
+}

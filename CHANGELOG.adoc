@@ -1,5 +1,13 @@
 = Changelog
 
+== Version 0.21 (26 October 2016)
+
+- Pass dup'd descriptors to posix::stream_descriptor in RpcServer.
+- Update asio to latest from master.
+- Update yaml-io from llvm source tree (svn 284297).
+- Fix potential misaligned zone access in IPv4Address class.
+- Update boringssl and google-test submodules.
+
 == Version 0.20 (20 August 2016)
 
 - Add support for MongoDB binary data output.
