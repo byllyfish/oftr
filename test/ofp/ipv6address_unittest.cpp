@@ -230,6 +230,7 @@ TEST(ipv6address, misaligned) {
   EXPECT_TRUE(buf.addr.isLinkLocal());
   EXPECT_TRUE(buf.addr.valid());
   EXPECT_EQ(287454020, buf.addr.zone());
-  EXPECT_HEX("FE80 3344 1122 0000 1122 33FF fe44 5566", &buf.addr, sizeof(buf.addr));
+  EXPECT_HEX("FE80 3344 1122 0000 1122 33FF fe44 5566", &buf.addr,
+             sizeof(buf.addr));
   EXPECT_EQ("fe80::1122:33ff:fe44:5566%287454020", buf.addr.toString());
 }

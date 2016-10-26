@@ -3,7 +3,7 @@
 
 #include "./ofpx_jsonrpc.h"
 #include <sys/resource.h>  // for getrlimit, setrlimit
-#include <unistd.h>  // for STDIN_FILENO, STDOUT_FILENO
+#include <unistd.h>        // for STDIN_FILENO, STDOUT_FILENO
 #include "ofp/rpc/rpcserver.h"
 
 using namespace ofpx;

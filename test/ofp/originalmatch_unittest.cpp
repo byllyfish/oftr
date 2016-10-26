@@ -21,7 +21,12 @@ TEST(originalmatch, oxmrange) {
       "0A8010100000000",
       &match, sizeof(match));
 
-  EXPECT_EQ("in_port: 52428 \ndl_src: 00:00:00:00:00:00*\ndl_dst: 00:00:00:00:00:00*\ndl_vlan: 0*\ndl_vlan_pcp: 0*\ndl_type: 2048 \nnw_tos: 0*\nnw_proto: 0*\nnw_src: 0.0.0.0/0.0.0.0\nnw_dst: 192.168.1.1/255.255.255.255\ntp_src: 0*\ntp_dst: 0*\n", match.toString());
+  EXPECT_EQ(
+      "in_port: 52428 \ndl_src: 00:00:00:00:00:00*\ndl_dst: "
+      "00:00:00:00:00:00*\ndl_vlan: 0*\ndl_vlan_pcp: 0*\ndl_type: 2048 "
+      "\nnw_tos: 0*\nnw_proto: 0*\nnw_src: 0.0.0.0/0.0.0.0\nnw_dst: "
+      "192.168.1.1/255.255.255.255\ntp_src: 0*\ntp_dst: 0*\n",
+      match.toString());
 }
 
 TEST(originalmatch, vlan_vid) {
@@ -98,6 +103,14 @@ TEST(originalmatch, masks) {
 
   OriginalMatch match{oxmMatch.toRange()};
 
-  EXPECT_HEX("0032080ECCCC00000000000000000000000000000000080000110000C0A80100C0A8010000500051", &match, sizeof(match));
-  EXPECT_EQ("in_port: 52428 \ndl_src: 00:00:00:00:00:00*\ndl_dst: 00:00:00:00:00:00*\ndl_vlan: 0*\ndl_vlan_pcp: 0*\ndl_type: 2048 \nnw_tos: 0*\nnw_proto: 17 \nnw_src: 192.168.1.0/255.255.255.0\nnw_dst: 192.168.1.0/255.255.255.0\ntp_src: 80 \ntp_dst: 81 \n", match.toString());
+  EXPECT_HEX(
+      "0032080ECCCC00000000000000000000000000000000080000110000C0A80100C0A80100"
+      "00500051",
+      &match, sizeof(match));
+  EXPECT_EQ(
+      "in_port: 52428 \ndl_src: 00:00:00:00:00:00*\ndl_dst: "
+      "00:00:00:00:00:00*\ndl_vlan: 0*\ndl_vlan_pcp: 0*\ndl_type: 2048 "
+      "\nnw_tos: 0*\nnw_proto: 17 \nnw_src: 192.168.1.0/255.255.255.0\nnw_dst: "
+      "192.168.1.0/255.255.255.0\ntp_src: 80 \ntp_dst: 81 \n",
+      match.toString());
 }

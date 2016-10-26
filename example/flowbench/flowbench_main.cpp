@@ -65,7 +65,8 @@ int main(int argc, char **argv) {
   const unsigned kLoops = 1000000;
   std::vector<int64_t> results;
 
-  std::cout << "Running FlowMod Benchmark: " << kTrials << " trials, " << kLoops << " loops each" << std::endl;
+  std::cout << "Running FlowMod Benchmark: " << kTrials << " trials, " << kLoops
+            << " loops each" << std::endl;
 
   for (int trial = 0; trial <= kTrials; ++trial) {
     auto start = clock::now();
@@ -80,8 +81,7 @@ int main(int argc, char **argv) {
     microseconds duration =
         std::chrono::duration_cast<microseconds>(end - start);
     std::cout << "Loops=" << kLoops << " Trial " << std::setw(2) << trial
-              << " Time: " << duration.count()
-              << " usec" << std::endl;
+              << " Time: " << duration.count() << " usec" << std::endl;
 
     // Ignore trial 0.
     if (trial == 0) {
