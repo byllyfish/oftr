@@ -3,10 +3,8 @@
 
 #include "ofp/rpc/rpcserver.h"
 #include "ofp/rpc/rpcchannellistener.h"
-#include "ofp/rpc/rpcconnectionsession.h"
 #include "ofp/rpc/rpcconnectionstdio.h"
 #include "ofp/rpc/rpcevents.h"
-#include "ofp/rpc/rpcsession.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_server.h"
@@ -19,34 +17,15 @@ using namespace ofp;
 RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
     : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
+  log::fatal_if_false(inputFD >= 0, "inputFD >= 0");
+  log::fatal_if_false(outputFD >= 0, "inputFD >= 0");
+
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
-
   auto conn = std::make_shared<RpcConnectionStdio>(
-      this, asio::posix::stream_descriptor{engine_->io()},
-      asio::posix::stream_descriptor{engine_->io()});
+      this, asio::posix::stream_descriptor{engine_->io(), inputFD},
+      asio::posix::stream_descriptor{engine_->io(), outputFD});
 
-  if (inputFD >= 0) {
-    conn->setInput(inputFD);
-  }
-
-  if (outputFD >= 0) {
-    conn->setOutput(outputFD);
-  }
-
-  conn->asyncAccept();
-  engine_->setAlertCallback(alertCallback, this);
-}
-
-RpcServer::RpcServer(Driver *driver, RpcSession *session,
-                     Channel *defaultChannel)
-    : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
-  auto conn = std::make_shared<RpcConnectionSession>(this, session);
-
-  // Give the session a reference to the connection; otherwise, the connection
-  // will be deleted when it goes out of scope.
-
-  session->setConnection(conn);
   conn->asyncAccept();
   engine_->setAlertCallback(alertCallback, this);
 }

@@ -35,8 +35,6 @@ class RpcServer {
  public:
   RpcServer(Driver *driver, int inputFD, int outputFD,
             Channel *defaultChannel = nullptr);
-  RpcServer(Driver *driver, RpcSession *session,
-            Channel *defaultChannel = nullptr);
   ~RpcServer();
 
   /// Close the control connection.

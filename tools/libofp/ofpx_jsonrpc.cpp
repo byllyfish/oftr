@@ -3,15 +3,13 @@
 
 #include "./ofpx_jsonrpc.h"
 #include <sys/resource.h>  // for getrlimit, setrlimit
+#include <unistd.h>        // for STDIN_FILENO, STDOUT_FILENO
 #include "ofp/rpc/rpcserver.h"
 
 using namespace ofpx;
 using namespace ofp;
 
 using ExitStatus = JsonRpc::ExitStatus;
-
-const int STDIN = 0;
-const int STDOUT = 1;
 
 int JsonRpc::run(int argc, const char *const *argv) {
   parseCommandLineOptions(argc, argv, "Run a JSON-RPC server\n");
@@ -51,7 +49,7 @@ void JsonRpc::setMaxOpenFiles() {
 
 void JsonRpc::runStdio() {
   Driver driver;
-  rpc::RpcServer server{&driver, STDIN, STDOUT};
+  rpc::RpcServer server{&driver, ::dup(STDIN_FILENO), ::dup(STDOUT_FILENO)};
   driver.installSignalHandlers([&server]() { server.close(); });
   driver.run();
 }

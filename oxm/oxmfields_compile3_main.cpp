@@ -4,10 +4,10 @@
 /// \brief Program to sort OXM types by typeID and output C++ source file
 /// `oxmfieldsdata.cpp`.
 
-#include "ofp/oxmfields.h"
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include "ofp/oxmfields.h"
 
 using namespace ofp;
 

@@ -35,7 +35,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.20.0)
+set(Libofp_VERSION 0.21.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 
@@ -281,10 +281,8 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/sys/udp_server.cpp
     src/ofp/rpc/rpcchannellistener.cpp
     src/ofp/rpc/rpcconnection.cpp
-    src/ofp/rpc/rpcconnectionsession.cpp
     src/ofp/rpc/rpcconnectionstdio.cpp
     src/ofp/rpc/rpcserver.cpp
-    src/ofp/rpc/rpcsession.cpp
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp
   )

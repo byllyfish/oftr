@@ -195,7 +195,8 @@ void UDP_Server::listen(const IPv6Endpoint &localEndpt,
       addr.is_unspecified()) {
     log_info("UDP_Server: IPv6 is not supported. Using IPv4.");
     endpt = udp::endpoint{udp::v4(), endpt.port()};
-    if (socket_.open(endpt.protocol(), error))
+    socket_.open(endpt.protocol(), error);
+    if (error)
       return;
   }
 

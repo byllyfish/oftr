@@ -11,3 +11,5 @@ docs/html
 old/
 Build/
 GIT-VERSION.cmake
+*.orig
+*.rej

@@ -45,7 +45,7 @@ namespace yaml {
 // Support ScalarBitSetTraits for Big<Enum> types.
 template <typename T>
 typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
-    IO &io, ofp::Big<T> &Val, bool) {
+    IO &io, ofp::Big<T> &Val, bool, EmptyContext &Ctx) {
   bool DoClear;
   if (io.beginBitSetScalar(DoClear)) {
     T value = Val;
@@ -61,9 +61,9 @@ typename std::enable_if<has_ScalarBitSetTraits<T>::value, void>::type yamlize(
 template <typename T>
 typename std::enable_if<has_ScalarTraits<T>::value && std::is_enum<T>::value,
                         void>::type
-yamlize(IO &io, ofp::Big<T> &Val, bool ignore) {
+yamlize(IO &io, ofp::Big<T> &Val, bool ignore, EmptyContext &Ctx) {
   T value = Val;
-  yamlize(io, value, ignore);
+  yamlize(io, value, ignore, Ctx);
   Val = value;
 }
 
