@@ -347,6 +347,8 @@ endif()
 
 if(LIBOFP_ENABLE_CODE_COVERAGE)
   set(LIBOFP_COVERAGE "-fprofile-arcs -ftest-coverage")
+  # But, disable ctest coverage support. Coverage will run separately.
+  set(COVERAGE_COMMAND "")
 else()
   set(LIBOFP_COVERAGE "")
 endif()
