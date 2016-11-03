@@ -62,6 +62,9 @@ std::string PktSource::datalink() const {
 /// \returns true if source is ready to use
 bool PktSource::openDevice(const std::string &source,
                            const std::string &filter) {
+  if (!isPcapVersionSupported())
+    return false;
+
   if (pcap_)
     close();
 
@@ -90,6 +93,9 @@ bool PktSource::openDevice(const std::string &source,
 
 /// \brief Open capture file to read packets offline.
 bool PktSource::openFile(const std::string &path, const std::string &filter) {
+  if (!isPcapVersionSupported())
+    return false;
+
   if (pcap_)
     close();
 
@@ -332,4 +338,32 @@ PktSource::Encapsulation PktSource::lookupEncapsulation(int datalink,
     return iter->encap;
   }
   return ENCAP_UNSUPPORTED;
+}
+
+/// Return true if we support this version of libpcap (1.5 or newer). Set error_
+/// if not.
+bool PktSource::isPcapVersionSupported() {
+  const char *vers = pcap_lib_version();
+  log::fatal_if_null(vers, "pcap_lib_version");
+
+  const unsigned int LIB_MAJOR = 1;
+  const unsigned int LIB_MINOR = 5;
+
+  unsigned int major = 0;
+  unsigned int minor = 0;
+  unsigned int patch = 0;
+
+  if (std::sscanf(vers, "libpcap version %u.%u.%u", &major, &minor, &patch) < 2) {
+    setError("pcap_lib_version", "", vers);
+    return false;
+  }
+
+  if (major > LIB_MAJOR || (major == LIB_MAJOR && minor >= LIB_MINOR)) {
+    return true;
+  }
+
+  error_ = "Unsupported: ";
+  error_ += vers;
+
+  return false;
 }
