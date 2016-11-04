@@ -1,4 +1,5 @@
 sudo: false
+dist: trusty
 language: cpp
 script:
   - if [ $TRAVIS_OS_NAME == linux ]; then export CC="gcc-4.8" CXX="g++-4.8"; fi
