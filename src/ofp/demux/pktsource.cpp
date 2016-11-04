@@ -340,14 +340,14 @@ PktSource::Encapsulation PktSource::lookupEncapsulation(int datalink,
   return ENCAP_UNSUPPORTED;
 }
 
-/// Return true if we support this version of libpcap (1.5 or newer). Set error_
-/// if not.
+/// Return true if we support this version of libpcap (1.1 or newer). Set error_
+/// if not. We use version 1.1 for support for Ubuntu Precise.
 bool PktSource::isPcapVersionSupported() {
   const char *vers = pcap_lib_version();
   log::fatal_if_null(vers, "pcap_lib_version");
 
   const unsigned int LIB_MAJOR = 1;
-  const unsigned int LIB_MINOR = 5;
+  const unsigned int LIB_MINOR = 1;
 
   unsigned int major = 0;
   unsigned int minor = 0;
