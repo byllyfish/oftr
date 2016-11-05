@@ -20,7 +20,4 @@ $LIBOFP_MEMCHECK $LIBOFP encode --loglevel=info < /dev/null
 echo "Run libofp decode"
 $LIBOFP_MEMCHECK $LIBOFP decode --loglevel=info < /dev/null
 
-echo "Run libofp help"
-$LIBOFP_MEMCHECK $LIBOFP help --loglevel=info
-
 exit 0
