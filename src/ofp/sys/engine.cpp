@@ -127,9 +127,11 @@ size_t Engine::close(UInt64 connId) {
 
   } else {
     // Close all servers and connections.
-    log_info("Close all servers and connections");
+    size_t result = serverList_.size() + connList_.size() + (udpConnect_ ? 1 : 0);
+    if (result == 0)
+      return result;
 
-    size_t result = serverList_.size() + connList_.size();
+    log_info("Close all servers and connections");
 
     std::vector<TCP_Server *> servers;
     servers.swap(serverList_);
@@ -149,7 +151,6 @@ size_t Engine::close(UInt64 connId) {
     if (udpConnect_) {
       udpConnect_->shutdown();
       udpConnect_.reset();
-      ++result;
     }
 
     return result;
