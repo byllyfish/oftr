@@ -9,7 +9,10 @@ echo "Run libofp version"
 $LIBOFP_MEMCHECK $LIBOFP version --loglevel=info
 
 echo "Run libofp jsonrpc"
-$LIBOFP_MEMCHECK $LIBOFP jsonrpc --loglevel=info < /dev/null
+$LIBOFP_MEMCHECK $LIBOFP jsonrpc --loglevel=info << EOF
+{"method":"OFP.DESCRIPTION","id":1}
+{}
+EOF
 
 echo "Run libofp encode"
 $LIBOFP_MEMCHECK $LIBOFP encode --loglevel=info < /dev/null

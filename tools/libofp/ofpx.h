@@ -64,7 +64,6 @@ class Subprogram {
     ofp::log::configure(loglevel_,
                         static_cast<ofp::log::Trace>(logtrace_.getBits()),
                         std::move(logStream));
-    log_info("Log level", static_cast<int>(loglevel_.getValue()), "trace", logtrace_.getBits(), static_cast<unsigned>(ofp::log::GLOBAL_Logger->traceFilter()));
   }
 
   // --- Command-line Arguments ---
