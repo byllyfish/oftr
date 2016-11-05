@@ -64,6 +64,7 @@ class Subprogram {
     ofp::log::configure(loglevel_,
                         static_cast<ofp::log::Trace>(logtrace_.getBits()),
                         std::move(logStream));
+    log_info("Log level", static_cast<int>(loglevel_.getValue()), "trace", logtrace_.getBits());
   }
 
   // --- Command-line Arguments ---
@@ -91,9 +92,9 @@ class Subprogram {
   cl::bits<ofp::log::Trace> logtrace_{
       "trace", cl::desc("Trace flags (one or more separated by commas)"),
       cl::CommaSeparated, cl::Hidden, cl::cat(logCategory_),
-      cl::values(clEnumValN(ofp::log::Trace::Msg, "msg",
+      cl::values(clEnumValN(ofp::log::kTraceMsg, "msg",
                             "Log all OpenFlow messages sent and received"),
-                 clEnumValN(ofp::log::Trace::Rpc, "rpc",
+                 clEnumValN(ofp::log::kTraceRpc, "rpc",
                             "Log all JSON-RPC events sent and received"))};
   cl::opt<unsigned> initialSleep_{"initial-sleep",
                                   cl::desc("Sleep immediately at startup"),
