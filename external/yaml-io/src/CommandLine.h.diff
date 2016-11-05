@@ -1,0 +1,11 @@
+--- ../../../llvm/include/llvm/Support/CommandLine.h	2016-10-14 12:38:27.000000000 -0700
++++ ./include/llvm/Support/CommandLine.h	2016-11-05 13:45:14.000000000 -0700
+@@ -1541,6 +1541,8 @@
+   }
+ 
+ public:
++  bits_storage() : Bits(0) {}
++
+   template <class T> void addValue(const T &V) { Bits |= Bit(V); }
+ 
+   unsigned getBits() { return Bits; }
