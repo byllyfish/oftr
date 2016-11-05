@@ -37,3 +37,11 @@ if(LIBOFP_MEMCHECK)
   add_test(NAME memcheck_libofp-pcap COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-pcap.sh)
   set_tests_properties(memcheck_libofp-pcap PROPERTIES TIMEOUT 600 ENVIRONMENT "LIBOFP_MEMCHECK=${LIBOFP_MEMCHECK}")
 endif()
+
+add_test(NAME libofp-cmdline COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-cmdline.sh)
+set_tests_properties(libofp-cmdline PROPERTIES TIMEOUT 10)
+
+if(LIBOFP_MEMCHECK)
+  add_test(NAME memcheck_libofp-cmdline COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-cmdline.sh)
+  set_tests_properties(memcheck_libofp-cmdline PROPERTIES TIMEOUT 600 ENVIRONMENT "LIBOFP_MEMCHECK=${LIBOFP_MEMCHECK}")
+endif()
