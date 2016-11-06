@@ -127,7 +127,8 @@ size_t Engine::close(UInt64 connId) {
 
   } else {
     // Close all servers and connections.
-    size_t result = serverList_.size() + connList_.size() + (udpConnect_ ? 1 : 0);
+    size_t result =
+        serverList_.size() + connList_.size() + (udpConnect_ ? 1 : 0);
     if (result == 0)
       return result;
 

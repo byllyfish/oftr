@@ -353,7 +353,8 @@ bool PktSource::isPcapVersionSupported() {
   unsigned int minor = 0;
   unsigned int patch = 0;
 
-  if (std::sscanf(vers, "libpcap version %u.%u.%u", &major, &minor, &patch) < 2) {
+  if (std::sscanf(vers, "libpcap version %u.%u.%u", &major, &minor, &patch) <
+      2) {
     setError("pcap_lib_version", "", vers);
     return false;
   }

@@ -213,7 +213,7 @@ TEST(smallbuffer, reset) {
   EXPECT_EQ(10, buf.size());
   EXPECT_LE(10, buf.capacity());
   EXPECT_GT(500, buf.capacity());
-  
+
   buf.reset(500);
   EXPECT_EQ(500, buf.size());
   EXPECT_LE(500, buf.capacity());
@@ -223,7 +223,6 @@ TEST(smallbuffer, reset) {
   EXPECT_LE(10, buf.size());
   EXPECT_GT(500, buf.capacity());
 }
-
 
 TEST(smallbuffer, replaceUninitialized) {
   SmallBuffer buf;

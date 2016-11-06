@@ -24,10 +24,7 @@ enum class Level {
   Trace = 6
 };
 
-enum {
-  kTraceMsg = 0,
-  kTraceRpc = 1
-};
+enum { kTraceMsg = 0, kTraceRpc = 1 };
 
 enum class Trace {
   None = 0x00,

@@ -22,7 +22,7 @@ bool ActionFullType::parse(const std::string &s) {
   }
 
   // Try to parse action as an experimenter action.
-  for (const auto & i : sActionFullInfo) {
+  for (const auto &i : sActionFullInfo) {
     if (s == i.name) {
       type_ = i.type;
       experimenter_ = i.experimenter;
@@ -37,13 +37,12 @@ bool ActionFullType::parse(const std::string &s) {
 const ActionTypeInfo *ActionFullType::lookupInfo() const {
   if (experimenter_ == 0) {
     return type_.lookupInfo();
-}
+  }
 
   assert(type_.enumType() == OFPAT_EXPERIMENTER);
 
-  for (const auto & i : sActionFullInfo) {
-    if (type_ == i.type &&
-        subtype_ == i.subtype) {
+  for (const auto &i : sActionFullInfo) {
+    if (type_ == i.type && subtype_ == i.subtype) {
       return &i;
     }
   }
