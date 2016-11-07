@@ -134,7 +134,6 @@ std::string FlowState::toString() const {
       return "up";
     }
     return "INIT";
-  } else {
-    return cache_.toString();
   }
+  return cache_.toString();
 }

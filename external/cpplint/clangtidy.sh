@@ -15,7 +15,7 @@ set -e
 CLANGTIDY="${HOME}/code/llvm-build/bin/clang-tidy"
 
 #CHECKS="-checks=google-readability-braces-around-statements"
-CHECKS="-checks=*,-cppcoreguidelines-*,-llvm-include-order,-google-build-using-namespace,-readability-implicit-bool-cast,-google-runtime-references,-google-readability-braces-around-statements,-clang-analyzer-alpha*"
+CHECKS="-checks=*,-cppcoreguidelines-*,-llvm-include-order,-google-build-using-namespace,-readability-implicit-bool-cast,-google-runtime-references,-google-readability-braces-around-statements,-readability-braces-around-statements,-misc-unused-parameters,-clang-analyzer-alpha*"
 
 # Tell clang-tidy where the C++ system headers are located.
 SYSTEMCPP="-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"

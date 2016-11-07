@@ -316,7 +316,7 @@ ChannelOptions RpcServer::parseOptions(
     const std::vector<std::string> &options) {
   ChannelOptions result = ChannelOptions::NONE;
 
-  for (auto opt : options) {
+  for (const auto &opt : options) {
     if (opt == "FEATURES_REQ") {
       result = result | ChannelOptions::FEATURES_REQ;
     } else if (opt == "AUXILIARY") {

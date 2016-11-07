@@ -11,10 +11,7 @@ BucketRange GroupMod::buckets() const {
 }
 
 bool GroupMod::validateInput(Validation *context) const {
-  if (!buckets().validateInput(context)) {
-    return false;
-  }
-  return true;
+  return buckets().validateInput(context);
 }
 
 GroupModBuilder::GroupModBuilder(const GroupMod *msg)
