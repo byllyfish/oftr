@@ -13,10 +13,7 @@ Match FlowMod::match() const {
 
 InstructionRange FlowMod::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
-  assert(header_.length() >= offset);
-
-  return InstructionRange{
-      ByteRange{BytePtr(this) + offset, header_.length() - offset}};
+  return InstructionRange{SafeByteRange(this, header_.length(), offset)};
 }
 
 bool FlowMod::validateInput(Validation *context) const {

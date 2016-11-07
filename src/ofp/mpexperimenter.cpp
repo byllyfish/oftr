@@ -18,8 +18,7 @@ ByteRange MPExperimenter::expData() const {
   assert(req);
   assert(req->requestBodySize() >= sizeof(MPExperimenter));
 
-  return ByteRange{BytePtr(this) + sizeof(MPExperimenter),
-                   req->requestBodySize() - sizeof(MPExperimenter)};
+  return SafeByteRange(this, req->requestBodySize(), sizeof(MPExperimenter));
 }
 
 bool MPExperimenter::validateInput(Validation *context) const {

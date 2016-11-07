@@ -35,10 +35,7 @@ bool FeaturesReply::validateInput(Validation *context) const {
 }
 
 PortRange FeaturesReply::ports() const {
-  assert(header_.length() >= sizeof(FeaturesReply));
-
-  return ByteRange{BytePtr(this) + sizeof(FeaturesReply),
-                   header_.length() - sizeof(FeaturesReply)};
+  return SafeByteRange(this, header_.length(), sizeof(FeaturesReply));
 }
 
 FeaturesReplyBuilder::FeaturesReplyBuilder(const FeaturesReply *msg)
