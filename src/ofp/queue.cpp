@@ -51,7 +51,7 @@ deprecated::QueueV1Builder::QueueV1Builder(const Queue &queue)
     : properties_{queue.properties()} {
   queue_.queueId_ = queue.queueId();
 
-  if (properties_.size() > 0) {
+  if (!properties_.empty()) {
     queue_.len_ = UInt16_narrow_cast(sizeof(QueueV1) + properties_.size());
   } else {
     queue_.len_ = UInt16_narrow_cast(sizeof(QueueV1) + 8);
@@ -61,7 +61,7 @@ deprecated::QueueV1Builder::QueueV1Builder(const Queue &queue)
 void deprecated::QueueV1Builder::write(Writable *channel) {
   channel->write(&queue_, sizeof(queue_));
 
-  if (properties_.size() > 0) {
+  if (!properties_.empty()) {
     channel->write(properties_.data(), properties_.size());
   } else {
     struct {

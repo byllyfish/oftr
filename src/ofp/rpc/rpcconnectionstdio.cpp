@@ -84,7 +84,7 @@ void RpcConnectionStdio::asyncWrite() {
 
           writing_ = false;
           outgoing_[!outgoingIdx_].clear();
-          if (outgoing_[outgoingIdx_].size() > 0) {
+          if (!outgoing_[outgoingIdx_].empty()) {
             // Start another async write for the other output buffer.
             asyncWrite();
           }
