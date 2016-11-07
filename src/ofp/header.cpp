@@ -64,13 +64,13 @@ OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
 
   if (version == OFP_VERSION_4) {
     return translateTypeToVersion(type, newVersion);
-
-  } else if (newVersion == OFP_VERSION_4) {
-    return translateTypeFromVersion(type, version);
-
-  } else {
-    return OFPT_UNSUPPORTED;
   }
+  
+  if (newVersion == OFP_VERSION_4) {
+    return translateTypeFromVersion(type, version);
+  }
+
+  return OFPT_UNSUPPORTED;
 }
 
 bool Header::validateInput(UInt8 negotiatedVersion) const {

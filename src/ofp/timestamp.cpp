@@ -27,13 +27,13 @@ double Timestamp::secondsSince(const Timestamp &ts) const {
     return diff +
            static_cast<double>(nanoseconds() - ts.nanoseconds()) /
                kNanosecondsPerSec;
-  } else {
-    assert(diff > 0);
-    return (diff - 1) +
-           static_cast<double>(kNanosecondsPerSec - ts.nanoseconds() +
-                               nanoseconds()) /
-               kNanosecondsPerSec;
   }
+
+  assert(diff > 0);
+  return (diff - 1) +
+         static_cast<double>(kNanosecondsPerSec - ts.nanoseconds() +
+                             nanoseconds()) /
+             kNanosecondsPerSec;
 }
 
 static const UInt32 kPower10[10] = {

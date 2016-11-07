@@ -20,9 +20,8 @@ OFPMultipartType Message::subtype() const {
       buf_.size() >= 12) {
     UInt16 subtype = *Big16_cast(buf_.data() + 8);
     return static_cast<OFPMultipartType>(subtype);
-  } else {
-    return OFPMP_UNSUPPORTED;
   }
+  return OFPMP_UNSUPPORTED;
 }
 
 OFPMultipartFlags Message::flags() const {
@@ -31,9 +30,8 @@ OFPMultipartFlags Message::flags() const {
       buf_.size() >= 12) {
     UInt16 flags = *Big16_cast(buf_.data() + 10);
     return static_cast<OFPMultipartFlags>(flags);
-  } else {
-    return OFPMPF_NONE;
   }
+  return OFPMPF_NONE;
 }
 
 Channel *Message::source() const {

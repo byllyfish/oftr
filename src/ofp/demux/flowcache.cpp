@@ -100,10 +100,10 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   if (isX) {
     return entry.x.receive(ts, end, data, entry.sessionID, final,
                            &entry.lastSeen);
-  } else {
-    return entry.y.receive(ts, end, data, entry.sessionID, final,
-                           &entry.lastSeen);
   }
+
+  return entry.y.receive(ts, end, data, entry.sessionID, final,
+                         &entry.lastSeen);
 }
 
 FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {

@@ -124,38 +124,37 @@ size_t Engine::close(UInt64 connId) {
     }
 
     return 0;
-
-  } else {
-    // Close all servers and connections.
-    size_t result =
-        serverList_.size() + connList_.size() + (udpConnect_ ? 1 : 0);
-    if (result == 0)
-      return result;
-
-    log_info("Close all servers and connections");
-
-    std::vector<TCP_Server *> servers;
-    servers.swap(serverList_);
-    for (auto svr : servers) {
-      svr->shutdown();
-    }
-
-    std::vector<Connection *> conns;
-    conns.swap(connList_);
-    for (auto conn : conns) {
-      conn->shutdown();
-      if (conn->flags() & Connection::kManualDelete) {
-        delete conn;
-      }
-    }
-
-    if (udpConnect_) {
-      udpConnect_->shutdown();
-      udpConnect_.reset();
-    }
-
-    return result;
   }
+
+  // Close all servers and connections.
+  size_t result =
+      serverList_.size() + connList_.size() + (udpConnect_ ? 1 : 0);
+  if (result == 0)
+    return result;
+
+  log_info("Close all servers and connections");
+
+  std::vector<TCP_Server *> servers;
+  servers.swap(serverList_);
+  for (auto svr : servers) {
+    svr->shutdown();
+  }
+
+  std::vector<Connection *> conns;
+  conns.swap(connList_);
+  for (auto conn : conns) {
+    conn->shutdown();
+    if (conn->flags() & Connection::kManualDelete) {
+      delete conn;
+    }
+  }
+
+  if (udpConnect_) {
+    udpConnect_->shutdown();
+    udpConnect_.reset();
+  }
+
+  return result;
 }
 
 UInt64 Engine::addIdentity(const std::string &certData,
@@ -387,9 +386,8 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
       return item->second;
-    } else {
-      return nullptr;
     }
+    return nullptr;
   }
 
   // Otherwise use the connectionId, it it's non-zero.

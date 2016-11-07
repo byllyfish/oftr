@@ -63,8 +63,9 @@ bool ofp::yaml::getjson(std::istream &input, std::string &json, int &lineNum,
       lineNum = newlineCount + 1;
       scanObject(input, json, newlineCount);
       return true;
+    }
 
-    } else if (ch == '\n') {
+    if (ch == '\n') {
       ++newlineCount;
     }
   }

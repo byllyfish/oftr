@@ -49,9 +49,8 @@ std::string PktSource::datalink() const {
   if (datalink_ >= 0) {
     const char *name = pcap_datalink_val_to_name(datalink_);
     return !name ? "NULL" : name;
-  } else {
-    return "<not open>";
   }
+  return "<not open>";
 }
 
 /// \brief Open capture device to read live packets from the network.

@@ -11,7 +11,8 @@ using ofp::demux::SegmentCache;
 bool Segment::lessThan(UInt32 lhs, UInt32 rhs) {
   if (lhs < rhs) {
     return (rhs - lhs < 0x80000000);
-  } else if (lhs > rhs) {
+  }
+  if (lhs > rhs) {
     return (lhs - rhs > 0x80000000);
   }
   return false;

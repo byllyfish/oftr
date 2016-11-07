@@ -54,8 +54,9 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
                     SegmentToString(begin, end, final));
       }
       return FlowData{sessionID};
+    }
 
-    } else if (begin == end_) {
+    if (begin == end_) {
       // We have no data cached and this is the next data segment.
       *lastSeen = ts;
       if (final) {
@@ -128,11 +129,11 @@ std::string FlowState::toString() const {
   if (empty()) {
     if (finished_) {
       return "FIN";
-    } else if (started_) {
-      return "up";
-    } else {
-      return "INIT";
     }
+    if (started_) {
+      return "up";
+    }
+    return "INIT";
   } else {
     return cache_.toString();
   }

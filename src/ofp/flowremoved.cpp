@@ -36,7 +36,8 @@ UInt32 FlowRemovedBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   if (version == OFP_VERSION_1) {
     return sendOriginal(channel);
-  } else if (version == OFP_VERSION_2) {
+  }
+  if (version == OFP_VERSION_2) {
     return sendStandard(channel);
   }
 

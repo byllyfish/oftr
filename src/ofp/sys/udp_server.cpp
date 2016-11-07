@@ -93,12 +93,12 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
                                                  versions_, factory);
     conn->connect(endpt);
     return conn->connectionId();
-  } else {
-    auto conn = new UDP_Connection<Plaintext_Adapter>(
-        this, options_, securityId, versions_, factory);
-    conn->connect(endpt);
-    return conn->connectionId();
   }
+
+  auto conn = new UDP_Connection<Plaintext_Adapter>(
+      this, options_, securityId, versions_, factory);
+  conn->connect(endpt);
+  return conn->connectionId();
 }
 
 ofp::IPv6Endpoint UDP_Server::localEndpoint() const {

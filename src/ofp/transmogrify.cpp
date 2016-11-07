@@ -411,7 +411,9 @@ void Transmogrify::normalizePacketOutV1() {
   if ((actionLen % 8) != 0) {
     markInputInvalid("PacketOut action size is invalid");
     return;
-  } else if (16u + actionLen > buf_.size()) {
+  }
+  
+  if (16u + actionLen > buf_.size()) {
     markInputInvalid("PacketOut action size overruns end");
     return;
   }
