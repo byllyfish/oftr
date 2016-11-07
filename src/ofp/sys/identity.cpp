@@ -182,7 +182,7 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   ERR_clear_error();  // clear error stack for SSL_CTX_use_certificate()
 
   MemBio bio{certData};
-  MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), 0, 0, 0)};
+  MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), nullptr, nullptr, nullptr)};
 
   if (!mainCert) {
     return sslError(ERR_R_PEM_LIB);
@@ -197,7 +197,7 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   SSL_CTX_clear_chain_certs(ctx);
 
   while (true) {
-    MemX509 caCert{PEM_read_bio_X509(bio.get(), 0, 0, 0)};
+    MemX509 caCert{PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr)};
     if (!caCert)
       break;
 
@@ -239,7 +239,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
   };
 
   std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
-      ::PEM_read_bio_PrivateKey(bio.get(), 0, passwordCallback,
+      ::PEM_read_bio_PrivateKey(bio.get(), nullptr, passwordCallback,
                                 RemoveConst_cast(passphrase.c_str())),
       EVP_PKEY_free};
 

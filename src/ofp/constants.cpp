@@ -10,7 +10,7 @@ UInt16 ofp::OFPGetDefaultPort() {
   if (!portStr)
     return OFP_DEFAULT_PORT;
 
-  int portNum = static_cast<int>(std::strtol(portStr, NULL, 10));
+  int portNum = static_cast<int>(std::strtol(portStr, nullptr, 10));
   if (portNum > 0 && portNum < 0xffff) {
     return UInt16_narrow_cast(portNum);
   }
