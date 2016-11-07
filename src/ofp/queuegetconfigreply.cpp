@@ -7,16 +7,11 @@
 using namespace ofp;
 
 QueueRange QueueGetConfigReply::queues() const {
-  return ByteRange{BytePtr(this) + sizeof(QueueGetConfigReply),
-                   header_.length() - sizeof(QueueGetConfigReply)};
+  return SafeByteRange(this, header_.length(), sizeof(QueueGetConfigReply));
 }
 
 bool QueueGetConfigReply::validateInput(Validation *context) const {
-  if (!queues().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return queues().validateInput(context);
 }
 
 UInt32 QueueGetConfigReplyBuilder::send(Writable *channel) {

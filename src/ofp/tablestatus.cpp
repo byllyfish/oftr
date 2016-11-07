@@ -18,11 +18,7 @@ bool TableStatus::validateInput(Validation *context) const {
   context->setLengthRemaining(remainingLength);
 
   // FIXME: make sure there is only one table?
-  if (!table().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return table().validateInput(context);
 }
 
 UInt32 TableStatusBuilder::send(Writable *channel) {

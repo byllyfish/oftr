@@ -20,12 +20,8 @@ bool Port::validateInput(Validation *context) const {
   }
 
   size_t len = length_;
-  if (!context->validateBool(len <= remaining && len >= sizeof(Port),
-                             "Invalid length for Port")) {
-    return false;
-  }
-
-  return true;
+  return context->validateBool(len <= remaining && len >= sizeof(Port),
+                             "Invalid length for Port");
 }
 
 PortBuilder::PortBuilder(const deprecated::PortV1 &port) {

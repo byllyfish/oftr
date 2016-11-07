@@ -7,15 +7,11 @@
 using namespace ofp;
 
 bool MeterMod::validateInput(Validation *context) const {
-  if (!meterBands().validateInput(context)) {
-    return false;
-  }
-  return true;
+  return meterBands().validateInput(context);
 }
 
 MeterBandRange MeterMod::meterBands() const {
-  return ByteRange{BytePtr(this) + sizeof(MeterMod),
-                   header_.length() - sizeof(MeterMod)};
+  return SafeByteRange(this, header_.length(), sizeof(MeterMod));
 }
 
 UInt32 MeterModBuilder::send(Writable *channel) {
