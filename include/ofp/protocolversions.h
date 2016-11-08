@@ -50,7 +50,7 @@ class ProtocolVersions {
   UInt32 bitmap_;
 
   // N.B. You must call this constructor using (), not {}.
-  constexpr explicit ProtocolVersions(UInt32 bitmap) : bitmap_(bitmap) {}
+  constexpr explicit ProtocolVersions(UInt32 bitmap) noexcept : bitmap_(bitmap) {}
 
   enum {
     MinVersionSupported = OFP_VERSION_1,
