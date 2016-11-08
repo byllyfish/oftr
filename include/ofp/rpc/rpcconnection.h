@@ -45,7 +45,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   void onAlert(Channel *channel, const std::string &alert,
                const ByteRange &data);
 
-  void handleEvent(const std::string &event);
+  void handleEvent(const std::string &eventText);
 
  protected:
   virtual void write(const std::string &msg) = 0;

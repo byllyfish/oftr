@@ -226,7 +226,7 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
 /// Load private key from a PEM file.
 std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
                                          const std::string &keyData,
-                                         const std::string &passphrase) {
+                                         const std::string &keyPassphrase) {
   ::ERR_clear_error();
 
   MemBio bio{keyData};
@@ -240,7 +240,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
 
   std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
       ::PEM_read_bio_PrivateKey(bio.get(), nullptr, passwordCallback,
-                                RemoveConst_cast(passphrase.c_str())),
+                                RemoveConst_cast(keyPassphrase.c_str())),
       EVP_PKEY_free};
 
   if (!privateKey) {

@@ -55,11 +55,11 @@ std::string PktSource::datalink() const {
 
 /// \brief Open capture device to read live packets from the network.
 ///
-/// \param source name of capture interface/device
+/// \param device name of capture interface/device
 /// \param filter bpf-filter expression
 ///
-/// \returns true if source is ready to use
-bool PktSource::openDevice(const std::string &source,
+/// \returns true if device is ready to use
+bool PktSource::openDevice(const std::string &device,
                            const std::string &filter) {
   if (!isPcapVersionSupported())
     return false;
@@ -67,7 +67,7 @@ bool PktSource::openDevice(const std::string &source,
   if (pcap_)
     close();
 
-  if (!create(source)) {
+  if (!create(device)) {
     close();
     return false;
   }
@@ -91,14 +91,14 @@ bool PktSource::openDevice(const std::string &source,
 }
 
 /// \brief Open capture file to read packets offline.
-bool PktSource::openFile(const std::string &path, const std::string &filter) {
+bool PktSource::openFile(const std::string &file, const std::string &filter) {
   if (!isPcapVersionSupported())
     return false;
 
   if (pcap_)
     close();
 
-  if (!openOffline(path)) {
+  if (!openOffline(file)) {
     return false;
   }
 
@@ -114,7 +114,7 @@ bool PktSource::openFile(const std::string &path, const std::string &filter) {
     return false;
   }
 
-  log_debug("PktSource::openFile", path, "filter", filter);
+  log_debug("PktSource::openFile", file, "filter", filter);
 
   return true;
 }

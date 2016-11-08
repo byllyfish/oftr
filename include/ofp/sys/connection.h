@@ -52,7 +52,7 @@ class Connection : public Channel {
 
   void postMessage(Message *message);
   void postIdle();
-  bool postDatapath(const DatapathID &datapath, UInt8 auxiliaryId);
+  bool postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId);
 
   sys::Engine *engine() const { return engine_; }
 
