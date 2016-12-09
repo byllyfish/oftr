@@ -74,14 +74,5 @@ bool MatchHeader::validateInput(size_t lengthRemaining,
     return false;
   }
 
-  // Check that the padding bytes (if present) are all zeros.
-  if (matchLengthPadded > matchLength) {
-    if (!IsMemFilled(BytePtr(this) + matchLength,
-                     matchLengthPadded - matchLength, 0)) {
-      context->matchIsInvalid("Invalid padding", BytePtr(this));
-      return false;
-    }
-  }
-
   return true;
 }

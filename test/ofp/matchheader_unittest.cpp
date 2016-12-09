@@ -29,8 +29,8 @@ TEST(matchheader, test) {
   EXPECT_TRUE(isMatchHeaderValid("00010004 00000000"));
   EXPECT_TRUE(isMatchHeaderValid("00010008 80000000"));
 
-  // Padding must be zero.
-  EXPECT_FALSE(isMatchHeaderValid("00010004 FF000000"));
+  // Padding doesn't have to be zero.
+  EXPECT_TRUE(isMatchHeaderValid("00010004 FF000000"));
 
   EXPECT_TRUE(isMatchHeaderValid(
       "0001003480000408FFFFFFFFFFFFFFFF80000408FFFFFFFFFFFFFFFF80000203FFFFFFFF"
