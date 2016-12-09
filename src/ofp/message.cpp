@@ -65,15 +65,23 @@ void Message::transmogrify() {
 
 void Message::replyError(OFPErrorCode error,
                          const std::string &explanation) const {
+  if (!channel_)
+    return;
+
+  // Don't reply to error if connection is owned by a controller.
+  if (channel_->flags() & sys::Connection::kDefaultController)
+    return;
+  
   // Never reply to an Error message with an Error.
-  if (source() && type() != OFPT_ERROR) {
-    ErrorBuilder errorBuilder{xid()};
-    errorBuilder.setErrorCode(error);
-    if (!explanation.empty()) {
-      errorBuilder.setErrorData(explanation.data(), explanation.size());
-    } else {
-      errorBuilder.setErrorData(this);
-    }
-    errorBuilder.send(source());
+  if (type() == OFPT_ERROR)
+    return;
+
+  ErrorBuilder errorBuilder{xid()};
+  errorBuilder.setErrorCode(error);
+  if (!explanation.empty()) {
+    errorBuilder.setErrorData(explanation.data(), explanation.size());
+  } else {
+    errorBuilder.setErrorData(this);
   }
+  errorBuilder.send(channel_);
 }

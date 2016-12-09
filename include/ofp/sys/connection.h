@@ -90,7 +90,10 @@ class Connection : public Channel {
     kPermitsAuxiliary = 0x0080,
 
     /// Indicates permission for other versions after negotiating with HELLO.
-    kPermitsOtherVersions = 0x0100
+    kPermitsOtherVersions = 0x0100,
+
+    /// Indicates channel is associated with a controller.
+    kDefaultController = 0x0200
   };
 
   void poll() override;
