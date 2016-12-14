@@ -150,9 +150,11 @@ if __name__ == '__main__':
         
         if hasattr(event, 'error'):
             print >>sys.stderr, event
-        elif event.method == 'OFP.CHANNEL' and event.params.status == 'UP':
-            ofp.send(setConfig(event.params.datapath_id, 14))
-            ofp.send(clearFlows(event.params.datapath_id))
-            ofp.send(barrierRequest(event.params.datapath_id))
-        elif event.method == 'OFP.MESSAGE' and event.params.type == 'PACKET_IN':
-            handlePacketIn(ofp, event.params)
+        else:
+            assert event.method == 'OFP.MESSAGE'
+            if event.params.type == 'CHANNEL_UP':
+                ofp.send(setConfig(event.params.datapath_id, 14))
+                ofp.send(clearFlows(event.params.datapath_id))
+                ofp.send(barrierRequest(event.params.datapath_id))
+            elif event.params.type == 'PACKET_IN':
+                handlePacketIn(ofp, event.params)

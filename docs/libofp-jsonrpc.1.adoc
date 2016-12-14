@@ -36,13 +36,12 @@ A JSON-RPC message is a JSON mapping that begins with '{' and ends
 with '}'. Alternately, a JSON-RPC message may be enclosed in double quotes, and the contents
 of the JSON string will be treated as JSON-RPC input.
 
-The jsonrpc service is a JSON-RPC 2.0 server (http://www.jsonrpc.org/). Here are
-the deviations from the spec:
+The jsonrpc service is a JSON-RPC 2.0 server (http://www.jsonrpc.org/).
 
-- The 'id' member is a 64-bit unsigned integer. Null id's are not allowed. String id's must be in decimal or hexadecimal format (i.e. "0x1234"). Negative id's are not allowed.
+- The 'id' member is a 64-bit unsigned integer. Null or negative id's are not allowed.
 - The 'jsonrpc' member is never sent. If used by a client, its value must be exactly "2.0".
-- No result or error is ever sent in response to a message missing an 'id' member. 
-  However, a message delivery failure may elicit an outgoing notification (see OFP.ALERT).
+- No result or error is ever sent in response to a message without an 'id' member. 
+  However, message delivery failure may elicit a notification (see OFP.MESSAGE).
 - Replies may be returned in a different order than requests are submitted.
 - Batch requests are not supported.
 
@@ -58,11 +57,9 @@ There are seven core JSON-RPC requests with corresponding replies.
   - OFP.LIST_CONNECTIONS
   - OFP.ADD_IDENTITY
 
-There are three JSON-RPC notifications:
+There is one JSON-RPC notification:
 
-  - OFP.CHANNEL
   - OFP.MESSAGE
-  - OFP.ALERT
 
 
 == RPC Commands
@@ -71,14 +68,14 @@ There are three JSON-RPC notifications:
 
 Request information about the `libofp` implementation.
 
-=== Request
+==== Request
 
     id: UInt64
     method: OFP.DESCRIPTION
 
 *id*:: Request ID used to identify the reply (unsigned 64-bit integer).
 
-=== Reply
+==== Reply
 
     id: UInt64
     result:
@@ -95,7 +92,7 @@ Request information about the `libofp` implementation.
 
 *ofp_versions*:: List of supported OpenFlow versions.
 
-=== Discussion
+==== Discussion
 
 The reply contains the software version, API version, and supported OpenFlow 
 protocol versions. The OFP.DESCRIPTION result will never change at runtime.
@@ -366,48 +363,51 @@ certificate chain presented by the other end of the connection.
 
 == RPC Notifications
 
-=== OFP.CHANNEL
-
-  method: OFP.CHANNEL
-  params:
-    conn_id: UInt64
-    datapath_id: DatapathID      # Optional
-    endpoint: IPv6Endpoint
-    status: 'UP' | 'DOWN'
-    version: UInt8
-
-==== Discussion
-
-The `OFP.CHANNEL` event is sent when an OpenFlow channel goes up or down. If the
-`FEATURES_REQ` option is specified, the channel is not considered up until we know
-the datapath_id of the connection from the FEATURES_REPLY.
-
-If `FEATURES_REQ` is not specified, the channel up event is sent after the first
-HELLO messages are exchanged, and the datapath_id parameter is not included.
-
 === OFP.MESSAGE
 
   method: OFP.MESSAGE
-  params: Message
-
-==== Discussion
-
-The `OFP.MESSAGE` event is sent when an OpenFlow message is received.
-
-=== OFP.ALERT
-
-  method: 'OFP.ALERT'
   params:
-    conn_id: UInt64
-    datapath_id: DatapathID
-    xid: !optout UInt32
+    type: <OpenFlow Message Type>
     time: Timestamp
+    ...
+
+  method: OFP.MESSAGE
+  params:
+    type: CHANNEL_UP | CHANNEL_DOWN
+    time: Timestamp
+    conn_id: UInt64
+    datapath_id: DatapathID  # Optional
+    endpoint: IPv6Endpoint
+    version: UInt8
+
+  method: OFP.MESSAGE
+  params:
+    type: CHANNEL_ALERT
+    time: Timestamp
+    conn_id: UInt64
+    datapath_id: DatapathID  # Optional
+    xid: !optout UInt32
     alert: String
     data: HexString
 
 ==== Discussion
 
-The `OFP.ALERT` event is sent when something unusual or abnormal happens. The
+The `OFP.MESSAGE` event is sent when an OpenFlow message is received. There
+are also special 'CHANNEL_*' events sent when a channel goes up/down or needs 
+to indicate an event.
+
+The `type` attribute specifies the type of message. See _libofp-schema_ man page
+for attributes used in OpenFlow messages.
+
+The `CHANNEL_UP` message is sent when an OpenFlow channel comes up. If the
+`FEATURES_REQ` option is specified, the channel is not considered up until we know
+the datapath_id of the connection from the FEATURES_REPLY. If `FEATURES_REQ` is 
+not specified, the channel up message is sent after the first
+HELLO messages are exchanged, and the datapath_id parameter is not included.
+
+The `CHANNEL_DOWN` message is sent when an OpenFlow channel goes down.
+
+The `CHANNEL_ALERT` message is sent when something unusual or abnormal happens. The
 alert parameter contains the reason for the message. The contents of the data 
 parameter depend on the type of alert.
 

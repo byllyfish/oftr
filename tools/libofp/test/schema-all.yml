@@ -72,22 +72,24 @@ Rpc/OFP.MESSAGE:
   method: !notify OFP.MESSAGE
   params: !notify Message
   
-Rpc/OFP.CHANNEL: 
-  method: !notify OFP.CHANNEL
+Rpc/OFP.MESSAGE: 
+  method: !notify OFP.MESSAGE
   params: !notify
+    type: CHANNEL_UP | CHANNEL_DOWN
+    time: Timestamp
     conn_id: UInt64
-    datapath_id: DatapathID
-    endpoint: IPv6Endpoint
+    datapath_id: !optout DatapathID
     version: UInt8
-    status: UP | DOWN
+    endpoint: IPv6Endpoint
   
-Rpc/OFP.ALERT: 
-  method: !notify OFP.ALERT
+Rpc/OFP.MESSAGE: 
+  method: !notify OFP.MESSAGE
   params: !notify
+    type: CHANNEL_ALERT
+    time: Timestamp
     conn_id: UInt64
     datapath_id: DatapathID
     xid: UInt32
-    time: Timestamp
     alert: String
     data: HexData
   

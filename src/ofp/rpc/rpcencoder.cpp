@@ -119,14 +119,8 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       }
       break;
     }
-    case METHOD_CHANNEL:
-      io.setError("'OFP.CHANNEL' is for notifications only");
-      break;
     case METHOD_MESSAGE:
       io.setError("Use 'OFP.SEND'. 'OFP.MESSAGE' is for notifications only");
-      break;
-    case METHOD_ALERT:
-      io.setError("'OFP.ALERT' is for notifications only");
       break;
     case METHOD_DESCRIPTION: {
       RpcDescription desc{id_};

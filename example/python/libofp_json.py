@@ -35,7 +35,7 @@ class LibOFP(object):
 
         ofp = libofp.LibOFP()
         for event in ofp:
-            if event.type == 'PACKET_IN':
+            if event.method == 'OFP.MESSAGE' and event.params.type == 'PACKET_IN':
                 handlePacketIn(ofp, event)
 
 
