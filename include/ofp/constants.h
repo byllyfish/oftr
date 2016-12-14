@@ -25,6 +25,7 @@ enum : UInt16 {
   DATALINK_IPV4 = 0x0800,
   DATALINK_IPV6 = 0x86dd,
   DATALINK_LLDP = 0x88cc,
+  DATALINK_BDDP = 0x8942,
 };
 
 enum : size_t {
