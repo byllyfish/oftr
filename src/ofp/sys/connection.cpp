@@ -93,6 +93,9 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
 void Connection::postMessage(Message *message) {
   assert(message->source());
 
+  // Assign message timestamp here.
+  message->setTime(Timestamp::now());
+
   log::trace_msg("Read", message->source()->connectionId(), message->data(),
                  message->size());
 

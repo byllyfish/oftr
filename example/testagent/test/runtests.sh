@@ -16,8 +16,8 @@ for input in $CURRENT_SOURCE_DIR/*.in ; do
   name=`basename $input .in`
   output=$name.out
   echo "Run testagent to convert $input into $output"
-  #cat $input | $TESTAGENT "127.0.0.1:$LIBOFP_DEFAULT_PORT" | tee $output
-  $TESTAGENT "127.0.0.1:$LIBOFP_DEFAULT_PORT" < $input > $output
+  # Remove lines with timestamps from output.
+  $TESTAGENT "127.0.0.1:$LIBOFP_DEFAULT_PORT" < $input | grep -Ev "^time: +[1-9][0-9]*\.[0-9]+$" > $output
   echo "Compare $output and $CURRENT_SOURCE_DIR/$output"
   diff $output $CURRENT_SOURCE_DIR/$output 
 done
