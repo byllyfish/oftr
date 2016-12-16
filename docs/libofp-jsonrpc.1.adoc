@@ -132,8 +132,6 @@ Open an outgoing OpenFlow connection to the specified host and port.
 *options*:: List of additional options that control the connection.
     - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
     - *CONNECT_UDP* = Use UDP instead of TCP. (Not supported with FEATURES_REQ)
-    - *DEFAULT_CONTROLLER* = Alias for [FEATURES_REQ].
-    - *DEFAULT_AGENT* = Alias for [].
     - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
 
 ==== Reply
@@ -187,8 +185,6 @@ Listen for incoming OpenFlow connections on the specified interface and port.
     - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
     - *AUXILIARY* = Support auxiliary connections over TCP (requires FEATURES_REQ).
     - *LISTEN_UDP* = Support auxiliary connections over UDP also (requires AUXILIARY).
-    - *DEFAULT_CONTROLLER* = Alias for [FEATURES_REQ].
-    - *DEFAULT_AGENT* = Alias for [].
     - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
 
 ==== Reply

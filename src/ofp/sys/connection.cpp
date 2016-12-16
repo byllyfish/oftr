@@ -207,7 +207,7 @@ void Connection::setFlags(UInt64 securityId, ChannelOptions options) {
     newFlags |= kPermitsOtherVersions;
   }
 
-  if ((options & ChannelOptions::DEFAULT_CONTROLLER) != 0) {
+  if ((options & ChannelOptions::FEATURES_REQ) != 0) {
     newFlags |= kDefaultController;
   }
 
