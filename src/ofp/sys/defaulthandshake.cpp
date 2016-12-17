@@ -18,6 +18,8 @@ using sys::Connection;
 
 const Milliseconds kControllerKeepAliveTimeout = 10000_ms;
 const Milliseconds kRawKeepAliveTimeout = 6000_ms;
+const Milliseconds kHandshakeTimeout = 5000_ms;
+
 
 DefaultHandshake::DefaultHandshake(Connection *channel, ChannelOptions options,
                                    ProtocolVersions versions,
@@ -34,12 +36,28 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 
   HelloBuilder msg{versions_};
   msg.send(channel_);
+
+  timeStarted_ = TimeClock::now();
 }
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
   log_warning("DefaultHandshake: Channel down before handshake could complete",
               std::make_pair("connid", channel->connectionId()));
 }
+
+
+bool DefaultHandshake::onTickle(Channel *channel, TimePoint now) {
+  assert(channel == channel_);
+
+  auto age = now - timeStarted_;
+  if (age >= kHandshakeTimeout) {
+    log_warning("DefaultHandshake: Timed out", std::make_pair("connid", channel_->connectionId()));
+    channel_->shutdown();
+  }
+
+  return true;
+}
+
 
 void DefaultHandshake::onMessage(const Message *message) {
   switch (message->type()) {

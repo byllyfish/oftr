@@ -148,8 +148,13 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   return result;
 }
 
-void Connection::poll() {
-  auto age = std::chrono::steady_clock::now() - timeReadStarted_;
+void Connection::tickle(TimePoint now) {
+  // Give channel listener first dibs on the tickle.
+  if (listener_ && listener_->onTickle(this, now)) {
+    return;
+  }
+
+  auto age = now - timeReadStarted_;
   if (age < keepAliveTimeout_)
     return;
 
@@ -188,7 +193,7 @@ void Connection::channelDown() {
 }
 
 void Connection::updateTimeReadStarted() {
-  timeReadStarted_ = std::chrono::steady_clock::now();
+  timeReadStarted_ = TimeClock::now();
   setFlags(flags() & ~kChannelIdle);
 }
 

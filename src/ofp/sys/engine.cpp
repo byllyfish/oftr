@@ -408,7 +408,8 @@ void Engine::asyncIdle() {
   idleTimer_.expires_after(1000_ms, error);
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (!err) {
-      forEachConnection([this](Connection *conn) { conn->poll(); });
+      TimePoint now = TimeClock::now();
+      forEachConnection([this, &now](Connection *conn) { conn->tickle(now); });
       asyncIdle();
     }
   });

@@ -96,7 +96,7 @@ class Connection : public Channel {
     kDefaultController = 0x0200
   };
 
-  void poll() override;
+  void tickle(TimePoint now) override;
 
  protected:
   /// Invoked by subclasses to inform channel delegate that channel is up.
@@ -122,7 +122,7 @@ class Connection : public Channel {
   UInt16 flags_ = 0;
   UInt8 version_ = 0;
   UInt8 auxiliaryId_ = 0;
-  std::chrono::steady_clock::time_point timeReadStarted_;
+  TimePoint timeReadStarted_;
   Milliseconds keepAliveTimeout_;
 };
 
