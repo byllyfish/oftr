@@ -67,7 +67,7 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     write(",\"method\":\"OFP.MESSAGE\"}\n");
 
   } else {
-    // Send `OFP.ALERT` notification event.
+    // Send `CHANNEL_ALERT` notification event.
     RpcAlert messageAlert;
     messageAlert.params.type = "CHANNEL_ALERT";
     messageAlert.params.time = message->time();
@@ -84,8 +84,10 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
 
 void RpcConnection::onAlert(Channel *channel, const std::string &alert,
                             const ByteRange &data) {
-  // Send `OFP.ALERT` notification event.
+  // Send `CHANNEL_ALERT` notification event.
   RpcAlert messageAlert;
+  messageAlert.params.type = "CHANNEL_ALERT";
+  messageAlert.params.time = Timestamp::now();
   messageAlert.params.connId = channel->connectionId();
   messageAlert.params.datapathId = channel->datapathId();
   messageAlert.params.alert = alert;
