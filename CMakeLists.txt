@@ -223,6 +223,7 @@ set(LIBOFP_SOURCES
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/queueproperty.cpp
   src/ofp/queuerange.cpp
+  src/ofp/rawmessage.cpp
   src/ofp/requestforward.cpp
   src/ofp/rolerequest.cpp
   src/ofp/rolereply.cpp

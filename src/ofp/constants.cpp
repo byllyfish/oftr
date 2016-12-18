@@ -80,6 +80,7 @@ const char *toCString(OFPType type) {
     ENUMCASE(OFPT_REQUESTFORWARD);
     ENUMCASE(OFPT_MAX_ALLOWED);
     ENUMCASE(OFPT_UNSUPPORTED);
+    ENUMCASE(OFPT_RAW_MESSAGE);
   }
 
   return nullptr;

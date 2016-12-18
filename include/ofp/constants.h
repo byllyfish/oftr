@@ -109,6 +109,7 @@ enum OFPType : UInt8 {
   OFPT_LAST = OFPT_BUNDLE_ADD_MESSAGE,
   OFPT_MAX_ALLOWED = 64,
   OFPT_UNSUPPORTED = 0xF9,
+  OFPT_RAW_MESSAGE = 0xFA
 };
 
 std::ostream &operator<<(std::ostream &os, OFPType type);
