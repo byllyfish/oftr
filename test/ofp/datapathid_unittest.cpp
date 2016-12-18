@@ -31,9 +31,11 @@ TEST(datapathid, test) {
   EXPECT_HEX("ffff ff ff ff ff ff ff", &d, sizeof(d));
   EXPECT_EQ("ff:ff:ff:ff:ff:ff:ff:ff", d.toString());
 
+  // Parsing the empty string should yield an empty datapath.
   DatapathID e;
   EXPECT_TRUE(e.parse(""));
   EXPECT_EQ("", e.toString());
+  EXPECT_TRUE(e.empty());
 
   DatapathID f;
   // There must be enough data to fill 8 bytes...
