@@ -8,11 +8,10 @@
 namespace llvm {
 namespace yaml {
 
-const char *const kRawMessageSchema = R"""(\
-{Message/RawMessage}
+const char *const kRawMessageSchema = R"""({Message/RawMessage}
 type: _RAW_MESSAGE
 msg:
-  type: OFPType
+  type: String | Hex8
   data: HexData
 )""";
 

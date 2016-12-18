@@ -36,6 +36,7 @@
 #include "ofp/yaml/ysetconfig.h"
 #include "ofp/yaml/ytablemod.h"
 #include "ofp/yaml/ytablestatus.h"
+#include "ofp/yaml/yrawmessage.h"
 
 using namespace ofpx;
 
@@ -80,6 +81,7 @@ static const char *const kMessageSchemas[] = {
     llvm::yaml::kRequestForwardSchema,
     llvm::yaml::kBundleControlSchema,
     llvm::yaml::kBundleAddMessageSchema,
+    llvm::yaml::kRawMessageSchema,
 };
 
 static const char *const kInstructionSchemas[] = {

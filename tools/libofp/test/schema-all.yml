@@ -1373,6 +1373,22 @@ Message/BundleAddMessage:
     message: Message
     properties: [ExperimenterProperty]
   
+Message/RawMessage: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  _src: !optout IPv6Endpoint
+  _dst: !optout IPv6Endpoint
+  _file: !optout String
+  type: _RAW_MESSAGE
+  msg:
+    type: String | Hex8
+    data: HexData
+  
 Instruction/GotoTable: 
   instruction: GOTO_TABLE
   table_id: UInt8
