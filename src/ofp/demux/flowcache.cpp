@@ -132,7 +132,8 @@ detail::FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
   return nullptr;
 }
 
-void FlowCache::finish(const detail::FlowCallback &callback, size_t maxMissingBytes) {
+void FlowCache::finish(const detail::FlowCallback &callback,
+                       size_t maxMissingBytes) {
   for (auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;

@@ -27,7 +27,7 @@ static const ActionTypeInfo sActionInfo[] = {
     {ActionType{OFPAT_EXPERIMENTER, 0}, "EXPERIMENTER", 0, 0}};
 
 bool ActionType::parse(const std::string &s) {
-  for (const auto & i : sActionInfo) {
+  for (const auto &i : sActionInfo) {
     if (s == i.name) {
       value32_ = i.type.value32_;
       return true;
@@ -37,7 +37,7 @@ bool ActionType::parse(const std::string &s) {
 }
 
 const ActionTypeInfo *ActionType::lookupInfo() const {
-  for (const auto & i : sActionInfo) {
+  for (const auto &i : sActionInfo) {
     if (value32_ == i.type) {
       return &i;
     }
@@ -59,7 +59,7 @@ const ActionTypeInfo *ActionType::lookupInfo() const {
 const ActionTypeInfo *ActionType::lookupInfo_IgnoreLength() const {
   const UInt32 mask = BigEndianToNative(0xFFFF0000);
   UInt32 desiredValue = (value32_ & mask);
-  for (const auto & i : sActionInfo) {
+  for (const auto &i : sActionInfo) {
     if (desiredValue == (i.type & mask)) {
       return &i;
     }

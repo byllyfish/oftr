@@ -29,13 +29,4 @@ struct MappingTraits<ofp::RawMessageBuilder> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YRAWMESSAGE_H_
-
-
-
-
-
-
-
-
-
+#endif  // OFP_YAML_YRAWMESSAGE_H_

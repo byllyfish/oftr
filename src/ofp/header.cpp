@@ -65,7 +65,7 @@ OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
   if (version == OFP_VERSION_4) {
     return translateTypeToVersion(type, newVersion);
   }
-  
+
   if (newVersion == OFP_VERSION_4) {
     return translateTypeFromVersion(type, version);
   }

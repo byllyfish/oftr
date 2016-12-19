@@ -85,8 +85,7 @@ class PktSource {
   bool activate();
   bool checkDatalink();
   bool setFilter(const std::string &filter);
-  void setError(const char *func, const std::string &arg,
-                const char *result);
+  void setError(const char *func, const std::string &arg, const char *result);
 
   bool isPcapVersionSupported();
 

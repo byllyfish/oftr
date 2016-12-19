@@ -73,7 +73,8 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     messageAlert.params.time = message->time();
     messageAlert.params.connId = channel->connectionId();
     messageAlert.params.datapathId = channel->datapathId();
-    messageAlert.params.alert = std::string{"DECODE FAILED: "} + decoder.error();
+    messageAlert.params.alert =
+        std::string{"DECODE FAILED: "} + decoder.error();
     messageAlert.params.data = {message->data(), message->size()};
     rpcReply(&messageAlert);
 

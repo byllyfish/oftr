@@ -50,7 +50,6 @@ class ChannelListener {
   /// function also runs.
   virtual bool onTickle(Channel *channel, TimePoint now) { return false; }
 
-
  protected:
   // ChannelListeners must be allocated on the heap; never on the stack.
   // After detaching from a Channel, a ChannelListener may delete itself

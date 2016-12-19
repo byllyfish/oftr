@@ -71,7 +71,7 @@ void Message::replyError(OFPErrorCode error,
   // Don't reply to error if connection is owned by a controller.
   if (channel_->flags() & sys::Connection::kDefaultController)
     return;
-  
+
   // Never reply to an Error message with an Error.
   if (type() == OFPT_ERROR)
     return;

@@ -28,7 +28,7 @@ bool InstructionType::parse(const std::string &s) {
 
 const InstructionTypeInfo *InstructionType::lookupInfo() const {
   InstructionType desiredValue = *this;
-  for (const auto & i : sInstructionInfo) {
+  for (const auto &i : sInstructionInfo) {
     if (desiredValue == i.type) {
       return &i;
     }

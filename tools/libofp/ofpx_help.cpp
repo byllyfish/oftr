@@ -27,6 +27,7 @@
 #include "ofp/yaml/yportstatus.h"
 #include "ofp/yaml/yqueuegetconfigreply.h"
 #include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yrawmessage.h"
 #include "ofp/yaml/yrequestforward.h"
 #include "ofp/yaml/yrolereply.h"
 #include "ofp/yaml/yrolerequest.h"
@@ -36,7 +37,6 @@
 #include "ofp/yaml/ysetconfig.h"
 #include "ofp/yaml/ytablemod.h"
 #include "ofp/yaml/ytablestatus.h"
-#include "ofp/yaml/yrawmessage.h"
 
 using namespace ofpx;
 
