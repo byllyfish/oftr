@@ -2,12 +2,12 @@
 .\"     Title: libofp-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 10/26/2016
+.\"      Date: 12/19/2016
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-JSONRPC" "1" "10/26/2016" "\ \&" "\ \&"
+.TH "LIBOFP\-JSONRPC" "1" "12/19/2016" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -40,7 +40,7 @@ The control connection reads JSON messages from stdin, each one separated by a n
 .sp
 A JSON\-RPC message is a JSON mapping that begins with \fI{\fR and ends with \fI}\fR\&. Alternately, a JSON\-RPC message may be enclosed in double quotes, and the contents of the JSON string will be treated as JSON\-RPC input\&.
 .sp
-The jsonrpc service is a JSON\-RPC 2\&.0 server (http://www\&.jsonrpc\&.org/)\&. Here are the deviations from the spec:
+The jsonrpc service is a JSON\-RPC 2\&.0 server (http://www\&.jsonrpc\&.org/)\&.
 .sp
 .RS 4
 .ie n \{\
@@ -52,7 +52,7 @@ The jsonrpc service is a JSON\-RPC 2\&.0 server (http://www\&.jsonrpc\&.org/)\&.
 .\}
 The
 \fIid\fR
-member is a 64\-bit unsigned integer\&. Null id\(cqs are not allowed\&. String id\(cqs must be in decimal or hexadecimal format (i\&.e\&. "0x1234")\&. Negative id\(cqs are not allowed\&.
+member is a 64\-bit unsigned integer\&. Null or negative id\(cqs are not allowed\&.
 .RE
 .sp
 .RS 4
@@ -76,9 +76,9 @@ member is never sent\&. If used by a client, its value must be exactly "2\&.0"\&
 .sp -1
 .IP \(bu 2.3
 .\}
-No result or error is ever sent in response to a message missing an
+No result or error is ever sent in response to a message without an
 \fIid\fR
-member\&. However, a message delivery failure may elicit an outgoing notification (see OFP\&.ALERT)\&.
+member\&. However, message delivery failure may elicit a notification (see OFP\&.MESSAGE)\&.
 .RE
 .sp
 .RS 4
@@ -183,18 +183,7 @@ OFP\&.LIST_CONNECTIONS
 OFP\&.ADD_IDENTITY
 .RE
 .sp
-There are three JSON\-RPC notifications:
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-OFP\&.CHANNEL
-.RE
+There is one JSON\-RPC notification:
 .sp
 .RS 4
 .ie n \{\
@@ -206,22 +195,18 @@ OFP\&.CHANNEL
 .\}
 OFP\&.MESSAGE
 .RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-OFP\&.ALERT
-.RE
 .SH "RPC COMMANDS"
 .SS "OFP\&.DESCRIPTION"
 .sp
 Request information about the libofp implementation\&.
-.SS "Request"
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
 .sp
 .if n \{\
 .RS 4
@@ -238,7 +223,15 @@ method: OFP\&.DESCRIPTION
 .RS 4
 Request ID used to identify the reply (unsigned 64\-bit integer)\&.
 .RE
-.SS "Reply"
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
 .sp
 .if n \{\
 .RS 4
@@ -274,13 +267,22 @@ Software version\&.
 .RS 4
 List of supported OpenFlow versions\&.
 .RE
-.SS "Discussion"
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
 .sp
 The reply contains the software version, API version, and supported OpenFlow protocol versions\&. The OFP\&.DESCRIPTION result will never change at runtime\&.
 .sp
 The major API version is incremented when there are changes that are incompatible with previous versions of the API\&. The minor API version is incremented when the API changes are backward compatible\&.
 .sp
 The ofp_versions value is an array of OpenFlow wire versions (i\&.e\&. OpenFlow 1\&.3 is wire version 4\&.)
+.RE
 .SS "OFP\&.CONNECT"
 .sp
 Open an outgoing OpenFlow connection to the specified host and port\&.
@@ -363,30 +365,6 @@ List of additional options that control the connection\&.
 .\}
 \fBCONNECT_UDP\fR
 = Use UDP instead of TCP\&. (Not supported with FEATURES_REQ)
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-\fBDEFAULT_CONTROLLER\fR
-= Alias for [FEATURES_REQ]\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-\fBDEFAULT_AGENT\fR
-= Alias for []\&.
 .RE
 .sp
 .RS 4
@@ -526,30 +504,6 @@ List of additional options that control the connection\&.
 .\}
 \fBLISTEN_UDP\fR
 = Support auxiliary connections over UDP also (requires AUXILIARY)\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-\fBDEFAULT_CONTROLLER\fR
-= Alias for [FEATURES_REQ]\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-\fBDEFAULT_AGENT\fR
-= Alias for []\&.
 .RE
 .sp
 .RS 4
@@ -924,36 +878,6 @@ Use the OFP\&.ADD_IDENTITY command to add a SSL/TLS identity for use in encrypti
 The cert_auth parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&.
 .RE
 .SH "RPC NOTIFICATIONS"
-.SS "OFP\&.CHANNEL"
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-method: OFP\&.CHANNEL
-params:
-  conn_id: UInt64
-  datapath_id: DatapathID      # Optional
-  endpoint: IPv6Endpoint
-  status: \*(AqUP\*(Aq | \*(AqDOWN\*(Aq
-  version: UInt8
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-.it 1 an-trap
-.nr an-no-space-flag 1
-.nr an-break-flag 1
-.br
-.ps +1
-\fBDiscussion\fR
-.RS 4
-.sp
-The OFP\&.CHANNEL event is sent when an OpenFlow channel goes up or down\&. If the FEATURES_REQ option is specified, the channel is not considered up until we know the datapath_id of the connection from the FEATURES_REPLY\&.
-.sp
-If FEATURES_REQ is not specified, the channel up event is sent after the first HELLO messages are exchanged, and the datapath_id parameter is not included\&.
-.RE
 .SS "OFP\&.MESSAGE"
 .sp
 .if n \{\
@@ -961,34 +885,43 @@ If FEATURES_REQ is not specified, the channel up event is sent after the first H
 .\}
 .nf
 method: OFP\&.MESSAGE
-params: Message
+params:
+  type: <OpenFlow Message Type>
+  time: Timestamp
+  \&.\&.\&.
 .fi
 .if n \{\
 .RE
 .\}
 .sp
-.it 1 an-trap
-.nr an-no-space-flag 1
-.nr an-break-flag 1
-.br
-.ps +1
-\fBDiscussion\fR
+.if n \{\
 .RS 4
-.sp
-The OFP\&.MESSAGE event is sent when an OpenFlow message is received\&.
+.\}
+.nf
+method: OFP\&.MESSAGE
+params:
+  type: CHANNEL_UP | CHANNEL_DOWN
+  time: Timestamp
+  conn_id: UInt64
+  datapath_id: DatapathID  # Optional
+  endpoint: IPv6Endpoint
+  version: UInt8
+.fi
+.if n \{\
 .RE
-.SS "OFP\&.ALERT"
+.\}
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-method: \*(AqOFP\&.ALERT\*(Aq
+method: OFP\&.MESSAGE
 params:
-  conn_id: UInt64
-  datapath_id: DatapathID
-  xid: !optout UInt32
+  type: CHANNEL_ALERT
   time: Timestamp
+  conn_id: UInt64
+  datapath_id: DatapathID  # Optional
+  xid: !optout UInt32
   alert: String
   data: HexString
 .fi
@@ -1004,7 +937,15 @@ params:
 \fBDiscussion\fR
 .RS 4
 .sp
-The OFP\&.ALERT event is sent when something unusual or abnormal happens\&. The alert parameter contains the reason for the message\&. The contents of the data parameter depend on the type of alert\&.
+The OFP\&.MESSAGE event is sent when an OpenFlow message is received\&. There are also special \fICHANNEL_*\fR events sent when a channel goes up/down or needs to indicate an event\&.
+.sp
+The type attribute specifies the type of message\&. See \fIlibofp\-schema\fR man page for attributes used in OpenFlow messages\&.
+.sp
+The CHANNEL_UP message is sent when an OpenFlow channel comes up\&. If the FEATURES_REQ option is specified, the channel is not considered up until we know the datapath_id of the connection from the FEATURES_REPLY\&. If FEATURES_REQ is not specified, the channel up message is sent after the first HELLO messages are exchanged, and the datapath_id parameter is not included\&.
+.sp
+The CHANNEL_DOWN message is sent when an OpenFlow channel goes down\&.
+.sp
+The CHANNEL_ALERT message is sent when something unusual or abnormal happens\&. The alert parameter contains the reason for the message\&. The contents of the data parameter depend on the type of alert\&.
 .sp
 Here are some examples of why an alert message might be sent\&.
 .sp
