@@ -18,6 +18,7 @@ using sys::Connection;
 
 const Milliseconds kControllerKeepAliveTimeout = 10000_ms;
 const Milliseconds kRawKeepAliveTimeout = 6000_ms;
+const Milliseconds kHandshakeTimeout = 5000_ms;
 
 DefaultHandshake::DefaultHandshake(Connection *channel, ChannelOptions options,
                                    ProtocolVersions versions,
@@ -34,11 +35,26 @@ void DefaultHandshake::onChannelUp(Channel *channel) {
 
   HelloBuilder msg{versions_};
   msg.send(channel_);
+
+  timeStarted_ = TimeClock::now();
 }
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
   log_warning("DefaultHandshake: Channel down before handshake could complete",
               std::make_pair("connid", channel->connectionId()));
+}
+
+bool DefaultHandshake::onTickle(Channel *channel, TimePoint now) {
+  assert(channel == channel_);
+
+  auto age = now - timeStarted_;
+  if (age >= kHandshakeTimeout) {
+    log_warning("DefaultHandshake: Timed out",
+                std::make_pair("connid", channel_->connectionId()));
+    channel_->shutdown();
+  }
+
+  return true;
 }
 
 void DefaultHandshake::onMessage(const Message *message) {
@@ -64,8 +80,10 @@ void DefaultHandshake::onMessage(const Message *message) {
 
 void DefaultHandshake::onHello(const Message *message) {
   const Hello *msg = Hello::cast(message);
-  if (!msg)
+  if (!msg) {
+    log_warning("DefaultHandshake: Invalid Hello message");
     return;
+  }
 
   const Header *header = msg->msgHeader();
   UInt8 msgVersion = header->version();
@@ -118,12 +136,15 @@ void DefaultHandshake::onHello(const Message *message) {
 void DefaultHandshake::onFeaturesReply(const Message *message) {
   // Only a controller should be receiving a features reply message.
   if ((options_ & ChannelOptions::FEATURES_REQ) == 0) {
+    log_warning("DefaultHandshake: Unexpected FeaturesReply message");
     return;
   }
 
   const FeaturesReply *msg = FeaturesReply::cast(message);
-  if (!msg)
-    return;  // FIXME log
+  if (!msg) {
+    log_warning("DefaultHandshake: Invalid FeaturesReply message");
+    return;
+  }
 
   // Registering the connection allows us to attach auxiliary connections to
   // their main connections. A main connection (auxiliary_id == 0) cannot use
@@ -148,7 +169,7 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
 }
 
 void DefaultHandshake::onError(const Message *message) {
-  // FIXME log it
+  log_warning("DefaultHandshake: Received error message");
 }
 
 void DefaultHandshake::installNewChannelListener(const Message *message) {

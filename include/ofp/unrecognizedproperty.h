@@ -19,8 +19,7 @@ class UnrecognizedProperty : private NonCopyable {
 
   using ValueType = ByteRange;
   ValueType value() const {
-    return ByteRange{BytePtr(this) + FixedHeaderSize,
-                     length_ - FixedHeaderSize};
+    return SafeByteRange(this, length_, FixedHeaderSize);
   }
   static ValueType defaultValue() { return {}; }
 

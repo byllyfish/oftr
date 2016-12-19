@@ -47,11 +47,12 @@ void RpcConnection::onRpcDescription(RpcDescription *desc) {
 
 void RpcConnection::onChannel(Channel *channel, const char *status) {
   RpcChannel notification;
+  notification.params.type = std::string{"CHANNEL_"} + status;
+  notification.params.time = Timestamp::now();
   notification.params.connId = channel->connectionId();
   notification.params.datapathId = channel->datapathId();
   notification.params.endpoint = channel->remoteEndpoint();
   notification.params.version = channel->version();
-  notification.params.status = status;
   rpcReply(&notification);
 }
 
@@ -66,13 +67,14 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     write(",\"method\":\"OFP.MESSAGE\"}\n");
 
   } else {
-    // Send `OFP.ALERT` notification event.
+    // Send `CHANNEL_ALERT` notification event.
     RpcAlert messageAlert;
+    messageAlert.params.type = "CHANNEL_ALERT";
+    messageAlert.params.time = message->time();
     messageAlert.params.connId = channel->connectionId();
     messageAlert.params.datapathId = channel->datapathId();
-    messageAlert.params.time = message->time();
-    messageAlert.params.alert = "DECODE FAILED: ";
-    messageAlert.params.alert += decoder.error();
+    messageAlert.params.alert =
+        std::string{"DECODE FAILED: "} + decoder.error();
     messageAlert.params.data = {message->data(), message->size()};
     rpcReply(&messageAlert);
 
@@ -83,8 +85,10 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
 
 void RpcConnection::onAlert(Channel *channel, const std::string &alert,
                             const ByteRange &data) {
-  // Send `OFP.ALERT` notification event.
+  // Send `CHANNEL_ALERT` notification event.
   RpcAlert messageAlert;
+  messageAlert.params.type = "CHANNEL_ALERT";
+  messageAlert.params.time = Timestamp::now();
   messageAlert.params.connId = channel->connectionId();
   messageAlert.params.datapathId = channel->datapathId();
   messageAlert.params.alert = alert;

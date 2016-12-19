@@ -40,7 +40,7 @@ class DTLS_Adapter {
   std::deque<Datagram> datagrams_;
 
   void writeOutput();
-  void enqueueDatagram(const void *datagram, size_t length);
+  void enqueueDatagram(const void *data, size_t length);
   void flushDatagrams();
 
   void logOutput(const UInt8 *p, size_t length);

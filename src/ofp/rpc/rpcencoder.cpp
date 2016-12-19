@@ -119,14 +119,8 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       }
       break;
     }
-    case METHOD_CHANNEL:
-      io.setError("'OFP.CHANNEL' is for notifications only");
-      break;
     case METHOD_MESSAGE:
       io.setError("Use 'OFP.SEND'. 'OFP.MESSAGE' is for notifications only");
-      break;
-    case METHOD_ALERT:
-      io.setError("'OFP.ALERT' is for notifications only");
       break;
     case METHOD_DESCRIPTION: {
       RpcDescription desc{id_};
@@ -179,9 +173,9 @@ void RpcEncoder::replySendError(UInt32 xid) {
   if (!id_.is_missing()) {
     replyError();
   } else {
-    // Send OFP.ALERT to report failure to send message.
-
+    // Send CHANNEL_ALERT to report failure to send message.
     RpcAlert notification;
+    notification.params.type = "CHANNEL_ALERT";
     notification.params.time = Timestamp::now();
     notification.params.alert = llvm::StringRef{error()}.rtrim();
     notification.params.xid = xid;

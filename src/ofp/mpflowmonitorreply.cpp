@@ -20,7 +20,7 @@ InstructionRange MPFlowMonitorReply::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   assert(length_ >= offset);
 
-  return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
+  return InstructionRange{SafeByteRange(this, length_, offset)};
 }
 
 bool MPFlowMonitorReply::validateInput(Validation *context) const {

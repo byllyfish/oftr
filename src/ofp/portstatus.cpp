@@ -20,11 +20,7 @@ bool PortStatus::validateInput(Validation *context) const {
 
   // FIXME: make sure there is only one port?
 
-  if (!port().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return port().validateInput(context);
 }
 
 UInt32 PortStatusBuilder::send(Writable *channel) {

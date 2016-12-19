@@ -32,8 +32,7 @@ class TableFeatureProperty : private NonCopyable {
 
   using ValueType = RangeType;
   ValueType value() const {
-    return ByteRange{BytePtr(this) + FixedHeaderSize,
-                     length_ - FixedHeaderSize};
+    return SafeByteRange(this, length_, FixedHeaderSize);
   }
   static ValueType defaultValue() { return {}; }
 
@@ -67,8 +66,7 @@ class TableFeaturePropertyExperimenter : private NonCopyable {
   UInt32 experimenter() const { return experimenterId_; }
   UInt32 expType() const { return expType_; }
   ByteRange expData() const {
-    return ByteRange{BytePtr(this) + FixedHeaderSize,
-                     length_ - FixedHeaderSize};
+    return SafeByteRange(this, length_, FixedHeaderSize);
   }
 
   enum : size_t { FixedHeaderSize = 8U };

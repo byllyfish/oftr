@@ -83,6 +83,7 @@ echo "Run libofp decode combinging --pcap-device option with file arguments."
 
 echo "Run libofp decode on $CURRENT_SOURCE_DIR/cap_single.pcap"
 $LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.out" 2>&1
+echo "Compare $CURRENT_TEST_DIR/cap_single.pcap.out to $CURRENT_SOURCE_DIR/cap_single.pcap.out"
 diff "$CURRENT_TEST_DIR/cap_single.pcap.out" "$CURRENT_SOURCE_DIR/cap_single.pcap.out"
 
 echo "Done."

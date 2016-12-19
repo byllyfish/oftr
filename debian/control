@@ -8,7 +8,7 @@ Homepage: https://github.com/byllyfish/libofp
 
 Package: libofp
 Architecture: any
-Depends: libpcap
+Depends: libpcap0.8
 Description: OpenFlow to YAML Converter and Microservice
  The libofp program translates OpenFlow messages to YAML or JSON. libofp 
  provides a uniform text-based syntax for working with the OpenFlow protocol.

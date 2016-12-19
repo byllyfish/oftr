@@ -86,6 +86,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
       break;
 
     case DATALINK_LLDP:
+    case DATALINK_BDDP:
       decodeLLDP(pkt, length);
       break;
 

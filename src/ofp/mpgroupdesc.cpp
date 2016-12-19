@@ -7,10 +7,7 @@
 using namespace ofp;
 
 BucketRange MPGroupDesc::buckets() const {
-  assert(length_ >= sizeof(MPGroupDesc));
-
-  return ByteRange{BytePtr(this) + sizeof(MPGroupDesc),
-                   length_ - sizeof(MPGroupDesc)};
+  return SafeByteRange(this, length_, sizeof(MPGroupDesc));
 }
 
 bool MPGroupDesc::validateInput(Validation *context) const {

@@ -36,8 +36,7 @@ class ExperimenterProperty : private NonCopyable {
   UInt32 expType() const { return expType_; }
 
   ByteRange expData() const {
-    assert(len_ >= FixedHeaderSize);
-    return ByteRange{BytePtr(this) + FixedHeaderSize, size() - FixedHeaderSize};
+    return SafeByteRange(this, size(), FixedHeaderSize);
   }
 
   ByteRange valueRef() const { return data_; }

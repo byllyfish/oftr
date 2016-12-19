@@ -17,9 +17,9 @@ static const InstructionTypeInfo sInstructionInfo[] = {
 };
 
 bool InstructionType::parse(const std::string &s) {
-  for (unsigned i = 0; i < ArrayLength(sInstructionInfo); ++i) {
-    if (s == sInstructionInfo[i].name) {
-      type_ = sInstructionInfo[i].type.type_;
+  for (const auto &i : sInstructionInfo) {
+    if (s == i.name) {
+      type_ = i.type.type_;
       return true;
     }
   }
@@ -28,9 +28,9 @@ bool InstructionType::parse(const std::string &s) {
 
 const InstructionTypeInfo *InstructionType::lookupInfo() const {
   InstructionType desiredValue = *this;
-  for (unsigned i = 0; i < ArrayLength(sInstructionInfo); ++i) {
-    if (desiredValue == sInstructionInfo[i].type) {
-      return &sInstructionInfo[i];
+  for (const auto &i : sInstructionInfo) {
+    if (desiredValue == i.type) {
+      return &i;
     }
   }
 

@@ -7,9 +7,7 @@
 using namespace ofp;
 
 ByteRange RequestForward::request() const {
-  assert(header_.length() >= sizeof(RequestForward));
-  return ByteRange{BytePtr(this) + sizeof(RequestForward),
-                   header_.length() - sizeof(RequestForward)};
+  return SafeByteRange(this, header_.length(), sizeof(RequestForward));
 }
 
 bool RequestForward::validateInput(Validation *context) const {

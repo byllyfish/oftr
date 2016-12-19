@@ -8,8 +8,7 @@
 using namespace ofp;
 
 ByteRange EchoReply::echoData() const {
-  return ByteRange{BytePtr(this) + sizeof(Header),
-                   header_.length() - sizeof(Header)};
+  return SafeByteRange(this, header_.length(), sizeof(Header));
 }
 
 EchoReplyBuilder::EchoReplyBuilder(UInt32 xid) {

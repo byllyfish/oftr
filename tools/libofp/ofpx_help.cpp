@@ -27,6 +27,7 @@
 #include "ofp/yaml/yportstatus.h"
 #include "ofp/yaml/yqueuegetconfigreply.h"
 #include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yrawmessage.h"
 #include "ofp/yaml/yrequestforward.h"
 #include "ofp/yaml/yrolereply.h"
 #include "ofp/yaml/yrolerequest.h"
@@ -80,6 +81,7 @@ static const char *const kMessageSchemas[] = {
     llvm::yaml::kRequestForwardSchema,
     llvm::yaml::kBundleControlSchema,
     llvm::yaml::kBundleAddMessageSchema,
+    llvm::yaml::kRawMessageSchema,
 };
 
 static const char *const kInstructionSchemas[] = {

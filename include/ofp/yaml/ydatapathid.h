@@ -17,6 +17,11 @@ struct ScalarTraits<ofp::DatapathID> {
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::DatapathID &value) {
+    // Accept "null" as empty datapath.
+    if (scalar == "null") {
+      value.clear();
+      return "";
+    }
     if (!value.parse(scalar)) {
       return "Invalid DatapathID.";
     }

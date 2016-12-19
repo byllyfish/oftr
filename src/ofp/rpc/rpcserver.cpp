@@ -316,7 +316,7 @@ ChannelOptions RpcServer::parseOptions(
     const std::vector<std::string> &options) {
   ChannelOptions result = ChannelOptions::NONE;
 
-  for (auto opt : options) {
+  for (const auto &opt : options) {
     if (opt == "FEATURES_REQ") {
       result = result | ChannelOptions::FEATURES_REQ;
     } else if (opt == "AUXILIARY") {
@@ -325,10 +325,6 @@ ChannelOptions RpcServer::parseOptions(
       result = result | ChannelOptions::LISTEN_UDP;
     } else if (opt == "CONNECT_UDP") {
       result = result | ChannelOptions::CONNECT_UDP;
-    } else if (opt == "DEFAULT_CONTROLLER") {
-      result = result | ChannelOptions::DEFAULT_CONTROLLER;
-    } else if (opt == "DEFAULT_AGENT") {
-      result = result | ChannelOptions::DEFAULT_AGENT;
     } else if (opt == "NO_VERSION_CHECK") {
       result = result | ChannelOptions::NO_VERSION_CHECK;
     } else {

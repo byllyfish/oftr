@@ -241,7 +241,9 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   }
 }
 
-void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
+void MessageSource::submitUDP(const UInt8 *data, size_t length) {
+  // TODO(bfish): Finish UDP support.
+}
 
 size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
                                     UInt64 sessionID) {

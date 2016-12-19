@@ -28,16 +28,15 @@ int main(int argc, const char **argv) {
 
   if (addr.valid()) {
     (void)driver.connect(
-        ChannelOptions::DEFAULT_AGENT, 0,
-        IPv6Endpoint{addr, OFPGetDefaultPort()}, version, NullAgent::Factory,
-        [](Channel *channel, std::error_code err) {
+        ChannelOptions::NONE, 0, IPv6Endpoint{addr, OFPGetDefaultPort()},
+        version, NullAgent::Factory, [](Channel *channel, std::error_code err) {
           std::cout << "Result: connId=" << channel->connectionId() << ", "
                     << err << '\n';
         });
 
   } else {
     std::error_code err;
-    (void)driver.listen(ChannelOptions::DEFAULT_AGENT, 0,
+    (void)driver.listen(ChannelOptions::NONE, 0,
                         IPv6Endpoint{OFPGetDefaultPort()}, version,
                         NullAgent::Factory, err);
 

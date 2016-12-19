@@ -19,7 +19,7 @@ InstructionRange MPFlowStatsReply::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   assert(length_ >= offset);
 
-  return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
+  return InstructionRange{SafeByteRange(this, length_, offset)};
 }
 
 bool MPFlowStatsReply::validateInput(Validation *context) const {
@@ -35,11 +35,7 @@ bool MPFlowStatsReply::validateInput(Validation *context) const {
   context->setLengthRemaining(length - SizeWithoutMatchHeader -
                               matchHeader_.length());
 
-  if (!instructions().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return instructions().validateInput(context);
 }
 
 void MPFlowStatsReplyBuilder::write(Writable *channel) {

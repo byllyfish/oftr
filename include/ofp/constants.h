@@ -25,6 +25,7 @@ enum : UInt16 {
   DATALINK_IPV4 = 0x0800,
   DATALINK_IPV6 = 0x86dd,
   DATALINK_LLDP = 0x88cc,
+  DATALINK_BDDP = 0x8942,
 };
 
 enum : size_t {
@@ -108,6 +109,7 @@ enum OFPType : UInt8 {
   OFPT_LAST = OFPT_BUNDLE_ADD_MESSAGE,
   OFPT_MAX_ALLOWED = 64,
   OFPT_UNSUPPORTED = 0xF9,
+  OFPT_RAW_MESSAGE = 0xFA
 };
 
 std::ostream &operator<<(std::ostream &os, OFPType type);

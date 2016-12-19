@@ -47,7 +47,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     // If the SYN flag is included, `seq` is the initial seqeuence number. A
     // SYN or SYN-ACK packet must not contain any data.
     end = seq + 1;
-    if (data.size() > 0) {
+    if (!data.empty()) {
       log_warning("FlowCache: TCP SYN has unexpected data", data.size(),
                   "bytes:", data);
       return FlowData{0};
@@ -100,10 +100,10 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   if (isX) {
     return entry.x.receive(ts, end, data, entry.sessionID, final,
                            &entry.lastSeen);
-  } else {
-    return entry.y.receive(ts, end, data, entry.sessionID, final,
-                           &entry.lastSeen);
   }
+
+  return entry.y.receive(ts, end, data, entry.sessionID, final,
+                         &entry.lastSeen);
 }
 
 FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
@@ -132,7 +132,8 @@ detail::FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
   return nullptr;
 }
 
-void FlowCache::finish(detail::FlowCallback callback, size_t maxMissingBytes) {
+void FlowCache::finish(const detail::FlowCallback &callback,
+                       size_t maxMissingBytes) {
   for (auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;

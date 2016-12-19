@@ -8,9 +8,7 @@
 using namespace ofp;
 
 MeterBandRange MPMeterConfig::bands() const {
-  assert(length_ >= sizeof(MPMeterConfig));
-  return ByteRange{BytePtr(this) + sizeof(MPMeterConfig),
-                   length_ - sizeof(MPMeterConfig)};
+  return SafeByteRange(this, length_, sizeof(MPMeterConfig));
 }
 
 bool MPMeterConfig::validateInput(Validation *context) const {
@@ -18,11 +16,7 @@ bool MPMeterConfig::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!bands().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return bands().validateInput(context);
 }
 
 void MPMeterConfigBuilder::write(Writable *channel) {

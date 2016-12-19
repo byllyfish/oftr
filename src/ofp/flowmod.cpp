@@ -13,10 +13,7 @@ Match FlowMod::match() const {
 
 InstructionRange FlowMod::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
-  assert(header_.length() >= offset);
-
-  return InstructionRange{
-      ByteRange{BytePtr(this) + offset, header_.length() - offset}};
+  return InstructionRange{SafeByteRange(this, header_.length(), offset)};
 }
 
 bool FlowMod::validateInput(Validation *context) const {
@@ -50,7 +47,8 @@ UInt32 FlowModBuilder::send(Writable *channel) {
   UInt8 version = channel->version();
   if (version <= OFP_VERSION_1) {
     return sendOriginal(channel);
-  } else if (version == OFP_VERSION_2) {
+  }
+  if (version == OFP_VERSION_2) {
     return sendStandard(channel);
   }
 

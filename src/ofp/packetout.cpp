@@ -14,10 +14,7 @@ bool PacketOut::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!actions().validateInput(context))
-    return false;
-
-  return true;
+  return actions().validateInput(context);
 }
 
 ActionRange PacketOut::actions() const {
@@ -26,7 +23,7 @@ ActionRange PacketOut::actions() const {
 
 ByteRange PacketOut::enetFrame() const {
   size_t offset = sizeof(PacketOut) + actionsLen_;
-  return ByteRange{BytePtr(this) + offset, header_.length() - offset};
+  return SafeByteRange(this, header_.length(), offset);
 }
 
 PacketOutBuilder::PacketOutBuilder(const PacketOut *msg) : msg_{*msg} {

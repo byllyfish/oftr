@@ -3216,3 +3216,20 @@ TEST(encoder, nicira_actions) {
       "00000089",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, raw_message) {
+  const char *input = R"""(
+      type:            _RAW_MESSAGE
+      version:         4
+      xid:             1
+      msg:
+        type:  FEATURES_REPLY
+        data:  FF00FF00FF00FF00
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(16, encoder.size());
+  EXPECT_HEX("0406001000000001FF00FF00FF00FF00", encoder.data(),
+             encoder.size());
+}

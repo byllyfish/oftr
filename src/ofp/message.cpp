@@ -20,9 +20,8 @@ OFPMultipartType Message::subtype() const {
       buf_.size() >= 12) {
     UInt16 subtype = *Big16_cast(buf_.data() + 8);
     return static_cast<OFPMultipartType>(subtype);
-  } else {
-    return OFPMP_UNSUPPORTED;
   }
+  return OFPMP_UNSUPPORTED;
 }
 
 OFPMultipartFlags Message::flags() const {
@@ -31,9 +30,8 @@ OFPMultipartFlags Message::flags() const {
       buf_.size() >= 12) {
     UInt16 flags = *Big16_cast(buf_.data() + 10);
     return static_cast<OFPMultipartFlags>(flags);
-  } else {
-    return OFPMPF_NONE;
   }
+  return OFPMPF_NONE;
 }
 
 Channel *Message::source() const {
@@ -67,15 +65,23 @@ void Message::transmogrify() {
 
 void Message::replyError(OFPErrorCode error,
                          const std::string &explanation) const {
+  if (!channel_)
+    return;
+
+  // Don't reply to error if connection is owned by a controller.
+  if (channel_->flags() & sys::Connection::kDefaultController)
+    return;
+
   // Never reply to an Error message with an Error.
-  if (source() && type() != OFPT_ERROR) {
-    ErrorBuilder errorBuilder{xid()};
-    errorBuilder.setErrorCode(error);
-    if (!explanation.empty()) {
-      errorBuilder.setErrorData(explanation.data(), explanation.size());
-    } else {
-      errorBuilder.setErrorData(this);
-    }
-    errorBuilder.send(source());
+  if (type() == OFPT_ERROR)
+    return;
+
+  ErrorBuilder errorBuilder{xid()};
+  errorBuilder.setErrorCode(error);
+  if (!explanation.empty()) {
+    errorBuilder.setErrorData(explanation.data(), explanation.size());
+  } else {
+    errorBuilder.setErrorData(this);
   }
+  errorBuilder.send(channel_);
 }

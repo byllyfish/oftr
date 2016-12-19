@@ -187,6 +187,10 @@ struct ScalarTraits<ofp::yaml::MessageType> {
       return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(6), ctxt,
                                                         value.subtype);
 
+    } else if (scalar.equals_lower("_raw_message")) {
+      value.type = ofp::OFPT_RAW_MESSAGE;
+      return "";
+
     } else {
       value.subtype = ofp::OFPMP_UNSUPPORTED;
       return ScalarTraits<ofp::OFPType>::input(scalar, ctxt, value.type);

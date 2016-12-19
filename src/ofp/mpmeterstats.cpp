@@ -8,9 +8,7 @@
 using namespace ofp;
 
 PacketCounterRange MPMeterStats::bandStats() const {
-  assert(len_ >= sizeof(MPMeterStats));
-  return ByteRange{BytePtr(this) + sizeof(MPMeterStats),
-                   len_ - sizeof(MPMeterStats)};
+  return SafeByteRange(this, len_, sizeof(MPMeterStats));
 }
 
 bool MPMeterStats::validateInput(Validation *context) const {
@@ -18,11 +16,7 @@ bool MPMeterStats::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!bandStats().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return bandStats().validateInput(context);
 }
 
 void MPMeterStatsBuilder::write(Writable *channel) {

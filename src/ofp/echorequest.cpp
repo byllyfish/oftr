@@ -8,8 +8,7 @@
 using namespace ofp;
 
 ByteRange EchoRequest::echoData() const {
-  return ByteRange{BytePtr(this) + sizeof(Header),
-                   header_.length() - sizeof(Header)};
+  return SafeByteRange(this, header_.length(), sizeof(Header));
 }
 
 UInt32 EchoRequestBuilder::send(Writable *channel) {

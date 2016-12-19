@@ -40,5 +40,5 @@ bool DatapathID::parse(const std::string &s) {
     return true;
   }
 
-  return HexToRawData(s, dpid_.data(), sizeof(dpid_)) >= sizeof(dpid_);
+  return HexToRawData(s, dpid_.data(), dpid_.size()) >= dpid_.size();
 }

@@ -12,7 +12,7 @@ MacAddress::MacAddress(const std::string &s) {
 }
 
 bool MacAddress::parse(const std::string &s) {
-  return HexToRawData(s, addr_.data(), sizeof(addr_)) >= sizeof(addr_);
+  return HexToRawData(s, addr_.data(), addr_.size()) >= addr_.size();
 }
 
 std::string MacAddress::toString() const {

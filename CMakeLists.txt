@@ -35,7 +35,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.21.0)
+set(Libofp_VERSION 0.22.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 
@@ -223,6 +223,7 @@ set(LIBOFP_SOURCES
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/queueproperty.cpp
   src/ofp/queuerange.cpp
+  src/ofp/rawmessage.cpp
   src/ofp/requestforward.cpp
   src/ofp/rolerequest.cpp
   src/ofp/rolereply.cpp
@@ -549,3 +550,16 @@ add_custom_target(format-all
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMENT "Formatting all libofp code with clang-format" VERBATIM
 )
+
+#-------------------------------------------------------------------------------
+# Support for Running Clang-tidy
+#-------------------------------------------------------------------------------
+
+set(CLANGTIDY_PATH external/cpplint/clangtidy.sh)
+
+add_custom_target(clang-tidy
+  COMMAND find src -name "*.cpp" -print -exec ${CLANGTIDY_PATH} {} \;
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+  COMMENT "Checking all libofp code with clang-tidy" VERBATIM
+)
+

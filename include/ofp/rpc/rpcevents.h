@@ -27,9 +27,7 @@ enum RpcMethod : UInt32 {
   METHOD_CONNECT,       // OFP.CONNECT
   METHOD_CLOSE,         // OFP.CLOSE
   METHOD_SEND,          // OFP.SEND
-  METHOD_CHANNEL,       // OFP.CHANNEL
   METHOD_MESSAGE,       // OFP.MESSAGE
-  METHOD_ALERT,         // OFP.ALERT
   METHOD_LIST_CONNS,    // OFP.LIST_CONNECTIONS
   METHOD_ADD_IDENTITY,  // OFP.ADD_IDENTITY
   METHOD_DESCRIPTION,   // OFP.DESCRIPTION
@@ -271,14 +269,15 @@ struct RpcSendResponse {
   Result result;
 };
 
-/// Represents a RPC notification about a channel (METHOD_CHANNEL)
+/// Represents a RPC notification about a channel (METHOD_MESSAGE subtype)
 struct RpcChannel {
   std::string toJson();
 
   struct Params {
+    std::string type;
+    Timestamp time;
     UInt64 connId = 0;
     DatapathID datapathId;
-    std::string status;
     IPv6Endpoint endpoint;
     UInt8 version{};
   };
@@ -287,14 +286,15 @@ struct RpcChannel {
 };
 
 /// Represents a RPC notification about some alert (e.g. malformed message)
-/// (METHOD_ALERT).
+/// (METHOD_MESSAGE subtype).
 struct RpcAlert {
   std::string toJson();
 
   struct Params {
+    std::string type;
+    Timestamp time;
     UInt64 connId = 0;
     DatapathID datapathId;
-    Timestamp time;
     UInt32 xid = 0;
     std::string alert;
     ByteRange data;
@@ -388,22 +388,24 @@ result: !reply
 method: !notify OFP.MESSAGE
 params: !notify Message
 
-{Rpc/OFP.CHANNEL}
-method: !notify OFP.CHANNEL
+{Rpc/OFP.MESSAGE}
+method: !notify OFP.MESSAGE
 params: !notify
+  type: CHANNEL_UP | CHANNEL_DOWN
+  time: Timestamp
   conn_id: UInt64
-  datapath_id: DatapathID
-  endpoint: IPv6Endpoint
+  datapath_id: !optout DatapathID
   version: UInt8
-  status: UP | DOWN
+  endpoint: IPv6Endpoint
 
-{Rpc/OFP.ALERT}
-method: !notify OFP.ALERT
+{Rpc/OFP.MESSAGE}
+method: !notify OFP.MESSAGE
 params: !notify
+  type: CHANNEL_ALERT
+  time: Timestamp
   conn_id: UInt64
   datapath_id: DatapathID
   xid: UInt32
-  time: Timestamp
   alert: String
   data: HexData
 
@@ -641,7 +643,7 @@ struct MappingTraits<ofp::rpc::RpcErrorResponse::Error> {
 template <>
 struct MappingTraits<ofp::rpc::RpcChannel> {
   static void mapping(IO &io, ofp::rpc::RpcChannel &response) {
-    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_CHANNEL;
+    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_MESSAGE;
     io.mapRequired("method", method);
     io.mapRequired("params", response.params);
   }
@@ -650,18 +652,19 @@ struct MappingTraits<ofp::rpc::RpcChannel> {
 template <>
 struct MappingTraits<ofp::rpc::RpcChannel::Params> {
   static void mapping(IO &io, ofp::rpc::RpcChannel::Params &params) {
+    io.mapRequired("type", params.type);
+    io.mapRequired("time", params.time);
     io.mapRequired("conn_id", params.connId);
     io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
     io.mapRequired("endpoint", params.endpoint);
     io.mapRequired("version", params.version);
-    io.mapRequired("status", params.status);
   }
 };
 
 template <>
 struct MappingTraits<ofp::rpc::RpcAlert> {
   static void mapping(IO &io, ofp::rpc::RpcAlert &response) {
-    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_ALERT;
+    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_MESSAGE;
     io.mapRequired("method", method);
     io.mapRequired("params", response.params);
   }
@@ -670,10 +673,11 @@ struct MappingTraits<ofp::rpc::RpcAlert> {
 template <>
 struct MappingTraits<ofp::rpc::RpcAlert::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAlert::Params &params) {
+    io.mapRequired("type", params.type);
+    io.mapRequired("time", params.time);
     io.mapRequired("conn_id", params.connId);
     io.mapRequired("datapath_id", params.datapathId);
     io.mapRequired("xid", params.xid);
-    io.mapRequired("time", params.time);
     io.mapRequired("alert", params.alert);
     io.mapRequired("data", params.data);
   }

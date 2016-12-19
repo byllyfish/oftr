@@ -1915,3 +1915,34 @@ TEST(decoder, nicira_actions) {
       "        dst:             'ETH_TYPE[0:8]'\n          value:           "
       "0x0000000000000089\n...\n");
 }
+
+TEST(decoder, packet_in_nonzero_padding) {
+  // This packet_in has non-zero padding in the match. We don't expect this
+  // message to roundtrip successfully.
+  testDecodeOnly(
+      "040a0098000000000000015805ea00000000000000000000000100698000000400000001"
+      "80000a020800800014010680004c08000000000000000080001a02d3a780000408000000"
+      "000000000080001c021389800018040a000002800016040a00000180000606da1dfcec1d"
+      "9980001001008000080642e50bb51ff5800012010000da1dfcec1d990000da1dfcec1d99"
+      "42e50bb51ff50800",
+      "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
+      "       0x04\nmsg:             \n  buffer_id:       0x00000158\n  "
+      "total_len:       0x05EA\n  in_port:         0x00000001\n  in_phy_port:  "
+      "   0x00000001\n  metadata:        0x0000000000000000\n  reason:         "
+      " TABLE_MISS\n  table_id:        0x00\n  cookie:          "
+      "0x0000000000000000\n  match:           \n    - field:           "
+      "IN_PORT\n      value:           0x00000001\n    - field:           "
+      "ETH_TYPE\n      value:           0x0800\n    - field:           "
+      "IP_PROTO\n      value:           0x06\n    - field:           "
+      "TUNNEL_ID\n      value:           0x0000000000000000\n    - field:      "
+      "     TCP_SRC\n      value:           0xD3A7\n    - field:           "
+      "METADATA\n      value:           0x0000000000000000\n    - field:       "
+      "    TCP_DST\n      value:           0x1389\n    - field:           "
+      "IPV4_DST\n      value:           10.0.0.2\n    - field:           "
+      "IPV4_SRC\n      value:           10.0.0.1\n    - field:           "
+      "ETH_DST\n      value:           'da:1d:fc:ec:1d:99'\n    - field:       "
+      "    IP_DSCP\n      value:           0x00\n    - field:           "
+      "ETH_SRC\n      value:           '42:e5:0b:b5:1f:f5'\n    - field:       "
+      "    IP_ECN\n      value:           0x00\n  data:            "
+      "DA1DFCEC1D9942E50BB51FF50800\n...\n");
+}

@@ -52,7 +52,7 @@ class Connection : public Channel {
 
   void postMessage(Message *message);
   void postIdle();
-  bool postDatapath(const DatapathID &datapath, UInt8 auxiliaryId);
+  bool postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId);
 
   sys::Engine *engine() const { return engine_; }
 
@@ -90,10 +90,13 @@ class Connection : public Channel {
     kPermitsAuxiliary = 0x0080,
 
     /// Indicates permission for other versions after negotiating with HELLO.
-    kPermitsOtherVersions = 0x0100
+    kPermitsOtherVersions = 0x0100,
+
+    /// Indicates channel is associated with a controller.
+    kDefaultController = 0x0200
   };
 
-  void poll() override;
+  void tickle(TimePoint now) override;
 
  protected:
   /// Invoked by subclasses to inform channel delegate that channel is up.
@@ -119,7 +122,7 @@ class Connection : public Channel {
   UInt16 flags_ = 0;
   UInt8 version_ = 0;
   UInt8 auxiliaryId_ = 0;
-  std::chrono::steady_clock::time_point timeReadStarted_;
+  TimePoint timeReadStarted_;
   Milliseconds keepAliveTimeout_;
 };
 

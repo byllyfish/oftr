@@ -13,7 +13,7 @@ class ByteList;
 class ByteRange {
  public:
   constexpr ByteRange() : begin_{nullptr}, end_{nullptr} {}
-  constexpr ByteRange(const void *data, size_t length)
+  constexpr ByteRange(const void *data, size_t length) noexcept
       : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
   constexpr ByteRange(const void *data, const void *end)
       : begin_{BytePtr(data)}, end_{BytePtr(end)} {}

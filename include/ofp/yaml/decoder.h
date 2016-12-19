@@ -60,6 +60,11 @@ struct MappingTraits<ofp::yaml::Decoder> {
                                    decoder.msg_->subtype()};
     io.mapRequired("type", msgType);
 
+    Timestamp time = decoder.msg_->time();
+    if (time.valid()) {
+      io.mapRequired("time", time);
+    }
+
     if (msgType.type == OFPT_MULTIPART_REQUEST ||
         msgType.type == OFPT_MULTIPART_REPLY) {
       OFPMultipartFlags flags = decoder.msg_->flags();
@@ -68,11 +73,6 @@ struct MappingTraits<ofp::yaml::Decoder> {
 
     io.mapRequired("xid", header.xid_);
     io.mapRequired("version", header.version_);
-
-    Timestamp time = decoder.msg_->time();
-    if (time.valid()) {
-      io.mapRequired("time", time);
-    }
 
     Channel *source = decoder.msg_->source();
     if (source) {

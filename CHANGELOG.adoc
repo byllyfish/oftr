@@ -1,5 +1,22 @@
 = Changelog
 
+== Version 0.22 (19 December 2016)
+
+- Replace OFP.CHANNEL and OFP.ALERT top-level jsonrpc notifications with OFP.MESSAGE sub-messages.
+- Add _RAW_MESSAGE support for outgoing messages.
+- YAML "null" will indicate an empty datapath_id.
+- Implement overall timeout for OpenFlow handshake.
+- Remove "DEFAULT_CONTROLLER" and "DEFAULT_AGENT" alias options to listen/connect.
+- Include timestamps in message notifications.
+- Decode ethertype 0x8942 (BDDP) as LLDP.
+- Controller side of connection will never send Error messages.
+- Allow match fields to have non-zero padding.
+- Fix bug in command-line processing that led to excessive trace logging.
+- Fix libpcap version for Ubuntu packaging.
+- Require libpcap 1.5.0 or later.
+- Clang-tidy fixes.
+- Update boringssl and google-test submodules.
+
 == Version 0.21 (26 October 2016)
 
 - Pass dup'd descriptors to posix::stream_descriptor in RpcServer.

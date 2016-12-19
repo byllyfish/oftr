@@ -73,6 +73,8 @@ using UInt64 = std::uint64_t;
 using SignedInt32 = std::int32_t;
 
 using Milliseconds = std::chrono::milliseconds;
+using TimeClock = std::chrono::steady_clock;
+using TimePoint = TimeClock::time_point;
 
 // Literal type `ms` is not supported until C++14. Use _ms for now.
 
