@@ -13,7 +13,7 @@ struct PortModPropertyItem {};
 using PortModPropertyIterator = TypedPropertyIterator<PortModPropertyItem>;
 struct PortModPropertyRange {};
 struct PortModPropertyInserter {};
-struct PortModPropertyList {};
+struct PortModPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

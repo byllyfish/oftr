@@ -17,7 +17,7 @@ msg:
   hw_addr: MacAddress
   config: [PortConfigFlags]
   mask: [PortConfigFlags]
-  ethernet:
+  ethernet: !opt
     advertise: [PortFeaturesFlags]
   optical: !optout
     configure: [OpticalPortFeaturesFlags]
@@ -25,7 +25,7 @@ msg:
     fl_offset: SInt32
     grid_span: UInt32
     tx_pwr: UInt32
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -74,7 +74,7 @@ struct MappingTraits<ofp::PortModBuilder> {
     msg.setMask(mask);
 
     ofp::PortModPropertyEthernet eth;
-    io.mapRequired("ethernet", eth);  // FIXME(bfish) - make optional?
+    io.mapOptional("ethernet", eth);
 
     Optional<ofp::PortModPropertyOptical> opt;
     io.mapOptional("optical", opt);
@@ -85,7 +85,7 @@ struct MappingTraits<ofp::PortModBuilder> {
       props.add(*opt);
     }
 
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::PortModPropertyList>(props));
     msg.setProperties(props);
   }

@@ -27,6 +27,13 @@ class TypedPropertyIterator {
   PropertyIterator iter_;
 };
 
+struct OptionalPropertyList {
+  // Need begin/end so mapOptional("properties", ...) will compile.
+  // N.B. This code is never actually called.
+  constexpr int begin() const { return 0; }
+  constexpr int end() const { return 0; }
+};
+
 }  // namespace detail
 }  // namespace ofp
 

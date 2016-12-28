@@ -388,7 +388,7 @@ Message/PortMod:
     hw_addr: MacAddress
     config: [PortConfigFlags]
     mask: [PortConfigFlags]
-    ethernet:
+    ethernet: !opt
       advertise: [PortFeaturesFlags]
     optical: !optout
       configure: [OpticalPortFeaturesFlags]
@@ -396,7 +396,7 @@ Message/PortMod:
       fl_offset: SInt32
       grid_span: UInt32
       tx_pwr: UInt32
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/TableMod: 
   version: !opt UInt8

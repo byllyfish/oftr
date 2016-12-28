@@ -1752,6 +1752,34 @@ TEST(encoder, portmodv4) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, portmodv5_experimenter) {
+  const char *input = R"""(
+      version: 5
+      type: PORT_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port_no: 0x22222222
+        hw_addr: '333333333333'
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0x77777700
+            exp_type: 0x88888800
+            data: 99999900
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x38, encoder.size());
+  EXPECT_HEX(
+      "05100038111111112222222200000000333333333333000044444444555555550000000866666666FFFF0010777777008888880099999900",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, portmodv1) {
   const char *input = R"""(
       version: 1

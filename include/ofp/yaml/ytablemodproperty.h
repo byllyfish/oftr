@@ -15,11 +15,7 @@ struct TableModPropertyItem {};
 using TableModPropertyIterator = TypedPropertyIterator<TableModPropertyItem>;
 struct TableModPropertyRange {};
 struct TableModPropertyInserter {};
-struct TableModPropertyList {
-  // Need begin/end to allow mapOptional("properties", ...)
-  int begin() const { return 0; }
-  int end() const { return 0; }
-};
+struct TableModPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

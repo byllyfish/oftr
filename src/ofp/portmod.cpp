@@ -34,6 +34,13 @@ UInt32 PortModBuilder::send(Writable *channel) {
     return xid;
   }
 
+  // For OpenFlow version 1.3 and previous, only the Ethernet property
+  // should be the present.
+
+  if (properties_.size() != sizeof(PortModPropertyEthernet)) {
+    log_warning("PortModBuilder: Invalid properties for version", version);
+  }
+
   OFPPortFeaturesFlags advertise =
       properties_.toRange().value<PortModPropertyEthernet>();
 
