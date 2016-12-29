@@ -209,7 +209,7 @@ msg:
     write_set_field_miss: !optout [FieldID]
     apply_set_field: [FieldID]
     apply_set_field_miss: !optout [FieldID]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
 
 {Message/Reply.TableDesc}
 type: REPLY.TABLE_DESC
