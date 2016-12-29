@@ -16,7 +16,7 @@ using AsyncConfigPropertyIterator =
     TypedPropertyIterator<AsyncConfigPropertyItem>;
 struct AsyncConfigPropertyRange {};
 struct AsyncConfigPropertyInserter {};
-struct AsyncConfigPropertyList {};
+struct AsyncConfigPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

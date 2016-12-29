@@ -20,7 +20,7 @@ using TableFeaturePropertyIterator =
     TypedPropertyIterator<TableFeaturePropertyItem>;
 struct TableFeaturePropertyRange {};
 struct TableFeaturePropertyInserter {};
-struct TableFeaturePropertyList {};
+struct TableFeaturePropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

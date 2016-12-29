@@ -12,11 +12,7 @@ namespace detail {
 struct QueuePropertyItem {};
 using QueuePropertyIterator = TypedPropertyIterator<QueuePropertyItem>;
 struct QueuePropertyRange {};
-struct QueuePropertyList {
-  // Need begin/end to allow mapOptional("properties", qp).
-  int begin() const { return 0; }
-  int end() const { return 0; }
-};
+struct QueuePropertyList : public OptionalPropertyList {};
 struct QueuePropertyInserter {};
 
 }  // namespace detail

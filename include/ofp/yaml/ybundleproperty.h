@@ -15,7 +15,7 @@ struct BundlePropertyItem {};
 using BundlePropertyIterator = TypedPropertyIterator<BundlePropertyItem>;
 struct BundlePropertyRange {};
 struct BundlePropertyInserter {};
-struct BundlePropertyList {};
+struct BundlePropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

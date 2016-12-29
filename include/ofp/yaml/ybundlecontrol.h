@@ -16,7 +16,7 @@ msg:
   bundle_id: UInt32
   type: BundleCtrlType
   flags: [BundleFlags]
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -40,7 +40,7 @@ struct MappingTraits<ofp::BundleControlBuilder> {
     io.mapRequired("flags", msg.msg_.flags_);
 
     ofp::PropertyList props;
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::BundlePropertyList>(props));
     msg.setProperties(props);
   }

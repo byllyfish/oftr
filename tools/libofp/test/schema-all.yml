@@ -664,7 +664,7 @@ Message/Request.TableFeatures:
       write_set_field_miss: !optout [FieldID]
       apply_set_field: [FieldID]
       apply_set_field_miss: !optout [FieldID]
-      properties: [ExperimenterProperty]
+      properties: !opt [ExperimenterProperty]
   
 Message/Request.TableDesc: 
   version: !opt UInt8
@@ -1242,7 +1242,7 @@ Message/GetAsyncReply:
     table_status_master: !optout [TableStatusFlags]
     request_forward_slave: !optout [RequestForwardFlags]
     request_forward_master: !optout [RequestForwardFlags]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/SetAsync: 
   version: !opt UInt8
@@ -1269,7 +1269,7 @@ Message/SetAsync:
     table_status_master: !optout [TableStatusFlags]
     request_forward_slave: !optout [RequestForwardFlags]
     request_forward_master: !optout [RequestForwardFlags]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/MeterMod: 
   version: !opt UInt8
@@ -1305,7 +1305,7 @@ Message/RoleStatus:
     role: ControllerRole
     reason: RoleStatusReason
     generation_id: UInt64
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/TableStatus: 
   version: !opt UInt8
@@ -1353,7 +1353,7 @@ Message/BundleControl:
     bundle_id: UInt32
     type: BundleCtrlType
     flags: [BundleFlags]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/BundleAddMessage: 
   version: !opt UInt8
@@ -1371,7 +1371,7 @@ Message/BundleAddMessage:
     bundle_id: UInt32
     flags: [BundleFlags]
     message: Message
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/RawMessage: 
   version: !opt UInt8
@@ -1539,7 +1539,7 @@ Struct/Port:
     rx_grid_freq_lmda: UInt32
     tx_pwr_min: UInt16
     tx_pwr_max: UInt16
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
   
 Struct/Queue: 
   queue_id: QueueNumber

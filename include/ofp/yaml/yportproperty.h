@@ -15,7 +15,7 @@ struct PortPropertyItem {};
 using PortPropertyIterator = TypedPropertyIterator<PortPropertyItem>;
 struct PortPropertyRange {};
 struct PortPropertyInserter {};
-struct PortPropertyList {};
+struct PortPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

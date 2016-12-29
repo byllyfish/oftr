@@ -16,7 +16,7 @@ using RoleStatusPropertyIterator =
     TypedPropertyIterator<RoleStatusPropertyItem>;
 struct RoleStatusPropertyRange {};
 struct RoleStatusPropertyInserter {};
-struct RoleStatusPropertyList {};
+struct RoleStatusPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

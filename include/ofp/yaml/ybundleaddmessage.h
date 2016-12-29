@@ -16,7 +16,7 @@ msg:
   bundle_id: UInt32
   flags: [BundleFlags]
   message: Message
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -46,7 +46,7 @@ struct MappingTraits<ofp::BundleAddMessageBuilder> {
     ofp::yaml::EncodeRecursively(io, "message", msg.message_);
 
     ofp::PropertyList props;
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::BundlePropertyList>(props));
     msg.setProperties(props);
   }

@@ -166,7 +166,7 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
       props.add(TableFeaturePropertyApplySetFieldMiss{matchMiss->toRange()});
     }
 
-    io.mapRequired("properties", Ref_cast<TableFeaturePropertyList>(props));
+    io.mapOptional("properties", Ref_cast<TableFeaturePropertyList>(props));
 
     body.setProperties(props);
   }

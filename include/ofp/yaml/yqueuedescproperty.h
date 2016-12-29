@@ -14,11 +14,7 @@ struct QueueDescPropertyItem {};
 using QueueDescPropertyIterator = TypedPropertyIterator<QueueDescPropertyItem>;
 struct QueueDescPropertyRange {};
 struct QueueDescPropertyInserter {};
-struct QueueDescPropertyList {
-  // Need begin/end to allow mapOptional("properties", ...)
-  int begin() const { return 0; }
-  int end() const { return 0; }
-};
+struct QueueDescPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp
