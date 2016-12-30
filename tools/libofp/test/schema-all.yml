@@ -1511,9 +1511,9 @@ MeterBand/EXPERIMENTER:
   experimenter: UInt32
   
 Struct/Bucket: 
-  weight: UInt16
-  watch_port: PortNumber
-  watch_group: GroupNumber
+  weight: !opt UInt16             # default=0
+  watch_port: !opt PortNumber     # default=ANY
+  watch_group: !opt GroupNumber   # default=ANY
   actions: [Action]
   
 Struct/Port: 
