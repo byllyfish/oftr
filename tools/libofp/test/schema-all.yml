@@ -320,10 +320,10 @@ Message/PacketOut:
   _file: !optout String
   type: PACKET_OUT
   msg:
-    buffer_id: BufferNumber
-    in_port: PortNumber
-    actions: [Action]
-    data: HexData
+    buffer_id: !opt BufferNumber        # default=NO_BUFFER
+    in_port: !opt PortNumber            # default=CONTROLLER
+    actions: !opt [Action]              # default=[]
+    data: !opt HexData                  # default=''
     _pkt_decode: !optout [Field]
   
 Message/FlowMod: 
@@ -389,14 +389,14 @@ Message/PortMod:
     config: [PortConfigFlags]
     mask: [PortConfigFlags]
     ethernet: !opt
-      advertise: [PortFeaturesFlags]
-    optical: !optout
+      advertise: [PortFeaturesFlags]           # default=[]
+    optical: !optout                           # default=null
       configure: [OpticalPortFeaturesFlags]
       freq_lmda: UInt32
       fl_offset: SInt32
       grid_span: UInt32
       tx_pwr: UInt32
-    properties: !opt [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]    # default=[]
   
 Message/TableMod: 
   version: !opt UInt8

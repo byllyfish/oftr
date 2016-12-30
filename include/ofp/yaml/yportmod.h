@@ -18,14 +18,14 @@ msg:
   config: [PortConfigFlags]
   mask: [PortConfigFlags]
   ethernet: !opt
-    advertise: [PortFeaturesFlags]
-  optical: !optout
+    advertise: [PortFeaturesFlags]           # default=[]
+  optical: !optout                           # default=null
     configure: [OpticalPortFeaturesFlags]
     freq_lmda: UInt32
     fl_offset: SInt32
     grid_span: UInt32
     tx_pwr: UInt32
-  properties: !opt [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]    # default=[]
 )""";
 
 template <>
