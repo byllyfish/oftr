@@ -1448,6 +1448,32 @@ TEST(encoder, packetinv1) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, packetinv2) {
+  const char *input = R"""(
+      type:            PACKET_IN
+      version:         2
+      xid:             2
+      msg:             
+        buffer_id:       0x33333333
+        total_len:       0x4444
+        in_port:         0x55555555
+        in_phy_port:     0x66666666
+        metadata:        0x7777777777777777
+        reason:          APPLY_ACTION
+        table_id:        0x88
+        cookie:          0x9999999999999999
+        match:
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x042, encoder.size());
+  EXPECT_HEX(
+      "020A00420000000233333333555555556666666644440188FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, packetinv4) {
   const char *input = R"""(
       type:            PACKET_IN

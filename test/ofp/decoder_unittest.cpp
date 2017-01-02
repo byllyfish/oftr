@@ -840,6 +840,12 @@ TEST(decoder, packetinv1) {
       "00000A000002\n...\n");
 }
 
+TEST(decoder, packetinv2) {
+  testDecodeEncode(
+      "020A00420000000233333333555555556666666644440188FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002",
+      "---\ntype:            PACKET_IN\nxid:             0x00000002\nversion:         0x02\nmsg:             \n  buffer_id:       0x33333333\n  total_len:       0x4444\n  in_port:         0x55555555\n  in_phy_port:     0x66666666\n  metadata:        0x0000000000000000\n  reason:          APPLY_ACTION\n  table_id:        0x88\n  cookie:          0x0000000000000000\n  match:           \n  data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
+}
+
 TEST(decoder, packetoutv4) {
   testDecodeEncode(
       "040D00620000000133333333444444440020000000000000000000100000000500140000"
