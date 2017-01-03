@@ -101,7 +101,7 @@ bool Header::validateInput(UInt8 negotiatedVersion) const {
     return false;
   }
 
-  // N.B. The type field will be further checked by transmogrify.
+  // N.B. The type field will be further checked by normalize.
 
   return true;
 }

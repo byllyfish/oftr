@@ -221,12 +221,12 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
       return checkError(input, bodyLen, false);
     }
 
-    // Save a copy of the original message binary before we transmogrify it
+    // Save a copy of the original message binary before we normalize it
     // for parsing. After we decode the message, we'll re-encode it and
     // compare it to this original.
 
     originalMessage.assign(message);
-    message.transmogrify();
+    message.normalize();
 
     ExitStatus result = decodeOneMessage(&message, &originalMessage);
     if (result != ExitStatus::Success && !keepGoing_) {
@@ -333,10 +333,10 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
         return ExitStatus::DecodeFailed;
       }
 
-      // Save a copy of the original message binary before we transmogrify it
+      // Save a copy of the original message binary before we normalize it
       // for parsing.
       originalMessage.assign(message);
-      message.transmogrify();
+      message.normalize();
 
       ExitStatus result = decodeOneMessage(&message, &originalMessage);
       if (result != ExitStatus::Success && !keepGoing_) {
@@ -665,11 +665,11 @@ ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src,
 void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
   Decode *decode = reinterpret_cast<Decode *>(context);
 
-  // Save a copy of the original message binary before we transmogrify it
+  // Save a copy of the original message binary before we normalize it
   // for parsing.
   ofp::Message originalMessage{nullptr};
   originalMessage.assign(*message);
-  message->transmogrify();
+  message->normalize();
 
   ExitStatus result = decode->decodeOneMessage(message, &originalMessage);
   if (result != ExitStatus::Success) {

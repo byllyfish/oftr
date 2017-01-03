@@ -60,7 +60,7 @@ TEST(portstatus, v4) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const PortStatus *msg = PortStatus::cast(&message);
   EXPECT_TRUE(msg);
@@ -125,7 +125,7 @@ TEST(portstatus, v1) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const PortStatus *msg = PortStatus::cast(&message);
   EXPECT_TRUE(msg);

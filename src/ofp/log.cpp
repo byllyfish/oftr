@@ -23,7 +23,7 @@ static void trace1(const char *type, UInt64 id, const void *data,
   if (message.type() == OFPT_ECHO_REQUEST || message.type() == OFPT_ECHO_REPLY)
     return;
 
-  message.transmogrify();
+  message.normalize();
 
   yaml::Decoder decoder{&message};
 

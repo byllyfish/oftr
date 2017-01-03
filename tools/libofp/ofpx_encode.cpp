@@ -127,7 +127,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
     } else if (roundtrip_) {
       // Translate binary message back to text.
       ofp::Message message{encoder.data(), encoder.size()};
-      message.transmogrify();
+      message.normalize();
 
       ofp::yaml::Decoder decoder{&message, json_};
 

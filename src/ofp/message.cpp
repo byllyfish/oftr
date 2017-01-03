@@ -10,7 +10,7 @@
 #include "ofp/originalmatch.h"
 #include "ofp/portstatus.h"
 #include "ofp/sys/connection.h"
-#include "ofp/transmogrify.h"
+#include "ofp/normalize.h"
 
 using namespace ofp;
 
@@ -58,8 +58,8 @@ bool Message::isRequestType() const {
   return false;
 }
 
-void Message::transmogrify() {
-  Transmogrify tr{this};
+void Message::normalize() {
+  Normalize tr{this};
   tr.normalize();
 }
 

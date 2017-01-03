@@ -52,7 +52,7 @@ TEST(requestforward, test) {
       channel.data(), channel.size());
 
   Message message(channel.data(), channel.size());
-  message.transmogrify();
+  message.normalize();
 
   const RequestForward *m = RequestForward::cast(&message);
   EXPECT_TRUE(m);
@@ -65,7 +65,7 @@ TEST(requestforward, test) {
       req.data(), req.size());
 
   Message request{req.data(), req.size()};
-  request.transmogrify();
+  request.normalize();
 
   const GroupMod *gm = GroupMod::cast(&request);
   EXPECT_TRUE(gm);

@@ -30,7 +30,7 @@ TEST(rolestatus, builder) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const RoleStatus *m = RoleStatus::cast(&message);
   EXPECT_TRUE(m);

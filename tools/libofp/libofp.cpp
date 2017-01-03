@@ -68,7 +68,7 @@ int libofp_decode(libofp_buffer *result, const libofp_buffer *input,
   }
 
   ofp::Message message{input->data, input->length};
-  message.transmogrify();
+  message.normalize();
 
   ofp::yaml::Decoder decoder{&message, false, false};
 

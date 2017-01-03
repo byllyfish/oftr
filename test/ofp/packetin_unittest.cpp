@@ -33,7 +33,7 @@ TEST(packetin, version4) {
 
   {
     Message message{channel.data(), channel.size()};
-    message.transmogrify();
+    message.normalize();
 
     auto packetIn = PacketIn::cast(&message);
 

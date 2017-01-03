@@ -202,6 +202,7 @@ set(LIBOFP_SOURCES
   src/ofp/mptablestats.cpp
   src/ofp/multipartreply.cpp
   src/ofp/multipartrequest.cpp
+  src/ofp/normalize.cpp
   src/ofp/originalmatch.cpp
   src/ofp/oxmfulltype.cpp
   src/ofp/oxmlist.cpp
@@ -240,7 +241,6 @@ set(LIBOFP_SOURCES
   src/ofp/tablemodproperty.cpp
   src/ofp/tablestatus.cpp
   src/ofp/timestamp.cpp
-  src/ofp/transmogrify.cpp
   src/ofp/types.cpp
   src/ofp/validation.cpp
   src/ofp/yaml/decoder.cpp

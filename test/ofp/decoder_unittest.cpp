@@ -12,7 +12,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   {
     // YAML test
@@ -66,7 +66,7 @@ static void testDecodeOnly(const char *hex, const char *yaml) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   // YAML test
   Decoder decoder{&msg};
@@ -210,7 +210,7 @@ TEST(decoder, getasyncrequestv1) {
   auto s = HexToRawData("011A0008000000BF");
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   Decoder decoder{&msg};
 
@@ -752,7 +752,7 @@ TEST(decoder, flowmodv1) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
   EXPECT_EQ(0xA0, msg.size());
   EXPECT_HEX(
       "010E00A0000000011111111111111111FFFFFFFFFFFFFFFF00445555666677778"
@@ -888,7 +888,7 @@ TEST(decoder, packetoutv1) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
   EXPECT_HEX(
       "010D0062000000013333333300004444002000000000000000000010000000050"
       "0140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000"

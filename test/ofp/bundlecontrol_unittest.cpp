@@ -28,7 +28,7 @@ TEST(bundlecontrol, test) {
              channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const BundleControl *m = BundleControl::cast(&message);
   EXPECT_TRUE(m);

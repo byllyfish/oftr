@@ -68,7 +68,7 @@ TEST(featuresreply, v4) {
              channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
@@ -130,7 +130,7 @@ TEST(featuresreply, v3) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
@@ -213,7 +213,7 @@ TEST(featuresreply, v2) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
@@ -296,7 +296,7 @@ TEST(featuresreply, v1) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);

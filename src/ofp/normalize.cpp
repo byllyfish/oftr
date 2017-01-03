@@ -1,7 +1,7 @@
 // Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/transmogrify.h"
+#include "ofp/normalize.h"
 #include "ofp/actions.h"
 #include "ofp/experimenter.h"
 #include "ofp/featuresreply.h"
@@ -26,13 +26,13 @@ using namespace ofp;
 using deprecated::OriginalMatch;
 using deprecated::StandardMatch;
 
-// This is defined here instead of Transmogrify.h because of header
+// This is defined here instead of Normalize.h because of header
 // dependencies.
-Transmogrify::Transmogrify(Message *message) : buf_(message->buf_) {}
+Normalize::Normalize(Message *message) : buf_(message->buf_) {}
 
-void Transmogrify::normalize() {
+void Normalize::normalize() {
   if (buf_.size() < sizeof(Header)) {
-    log::fatal("Transmogrify::normalize called with invalid message");
+    log::fatal("Normalize::normalize called with invalid message");
   }
 
   Header *hdr = header();
@@ -138,7 +138,7 @@ void Transmogrify::normalize() {
   assert(buf_.size() == header()->length());
 }
 
-void Transmogrify::normalizeFeaturesReplyV1() {
+void Normalize::normalizeFeaturesReplyV1() {
   using deprecated::PortV1;
 
   Header *hdr = header();
@@ -181,7 +181,7 @@ void Transmogrify::normalizeFeaturesReplyV1() {
   std::memcpy(pkt + sizeof(FeaturesReply), ports.data(), ports.size());
 }
 
-void Transmogrify::normalizeFeaturesReplyV2() {
+void Normalize::normalizeFeaturesReplyV2() {
   using deprecated::PortV2;
 
   Header *hdr = header();
@@ -223,7 +223,7 @@ void Transmogrify::normalizeFeaturesReplyV2() {
   std::memcpy(pkt + sizeof(FeaturesReply), ports.data(), ports.size());
 }
 
-void Transmogrify::normalizeFlowModV1() {
+void Normalize::normalizeFlowModV1() {
   Header *hdr = header();
 
   if (hdr->length() < 72) {
@@ -319,7 +319,7 @@ void Transmogrify::normalizeFlowModV1() {
   }
 }
 
-void Transmogrify::normalizePortStatusV1() {
+void Normalize::normalizePortStatusV1() {
   using deprecated::PortV1;
   const size_t PortStatusSize = 16;
 
@@ -344,7 +344,7 @@ void Transmogrify::normalizePortStatusV1() {
   assert(buf_.size() == PortStatusSize + Port::DefaultSizeEthernet);
 }
 
-void Transmogrify::normalizePortStatusV2() {
+void Normalize::normalizePortStatusV2() {
   using deprecated::PortV2;
   const size_t PortStatusSize = 16;
 
@@ -369,7 +369,7 @@ void Transmogrify::normalizePortStatusV2() {
   assert(buf_.size() == PortStatusSize + Port::DefaultSizeEthernet);
 }
 
-void Transmogrify::normalizeExperimenterV1() {
+void Normalize::normalizeExperimenterV1() {
   Header *hdr = header();
 
   if (hdr->length() < 12) {
@@ -387,7 +387,7 @@ void Transmogrify::normalizeExperimenterV1() {
   buf_.insert(buf_.data() + 12, &pad, sizeof(pad));
 }
 
-void Transmogrify::normalizePacketOutV1() {
+void Normalize::normalizePacketOutV1() {
   Header *hdr = header();
 
   if (hdr->length() < 16) {
@@ -454,7 +454,7 @@ void Transmogrify::normalizePacketOutV1() {
   std::memcpy(pkt + 16, &bigLen, sizeof(bigLen));
 }
 
-void Transmogrify::normalizePortModV1() {
+void Normalize::normalizePortModV1() {
   Header *hdr = header();
 
   if (hdr->length() < 32) {
@@ -485,7 +485,7 @@ void Transmogrify::normalizePortModV1() {
   *Big32_cast(pkt + 36) = OFPPortFeaturesFlagsConvertFromV1(advertise);
 }
 
-void Transmogrify::normalizePortModV2() {
+void Normalize::normalizePortModV2() {
   Header *hdr = header();
 
   if (hdr->length() < 40) {
@@ -502,7 +502,7 @@ void Transmogrify::normalizePortModV2() {
   // No change in length.
 }
 
-void Transmogrify::normalizeFlowRemovedV1() {
+void Normalize::normalizeFlowRemovedV1() {
   Header *hdr = header();
 
   if (hdr->length() != 88) {
@@ -534,7 +534,7 @@ void Transmogrify::normalizeFlowRemovedV1() {
   std::memcpy(pkt + 48, &stdMatch, sizeof(stdMatch));
 }
 
-void Transmogrify::normalizeMultipartRequestV1() {
+void Normalize::normalizeMultipartRequestV1() {
   Header *hdr = header();
   if (hdr->length() < MultipartRequest::UnpaddedSizeVersion1) {
     markInputInvalid("MultipartRequest is too short");
@@ -560,7 +560,7 @@ void Transmogrify::normalizeMultipartRequestV1() {
   }
 }
 
-void Transmogrify::normalizeMultipartReplyV1() {
+void Normalize::normalizeMultipartReplyV1() {
   Header *hdr = header();
   if (hdr->length() < MultipartReply::UnpaddedSizeVersion1) {
     markInputInvalid("MultipartReply is too short");
@@ -595,7 +595,7 @@ void Transmogrify::normalizeMultipartReplyV1() {
   }
 }
 
-void Transmogrify::normalizeMultipartReplyV2() {
+void Normalize::normalizeMultipartReplyV2() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
     markInputInvalid("MultipartReply is too short");
@@ -617,7 +617,7 @@ void Transmogrify::normalizeMultipartReplyV2() {
   }
 }
 
-void Transmogrify::normalizeMultipartReplyV3() {
+void Normalize::normalizeMultipartReplyV3() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
     markInputInvalid("MultipartReply is too short");
@@ -643,7 +643,7 @@ void Transmogrify::normalizeMultipartReplyV3() {
   }
 }
 
-void Transmogrify::normalizeMultipartReplyV4() {
+void Normalize::normalizeMultipartReplyV4() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
     markInputInvalid("MultipartReply is too short");
@@ -669,7 +669,7 @@ void Transmogrify::normalizeMultipartReplyV4() {
   }
 }
 
-void Transmogrify::normalizeMultipartReplyV5() {
+void Normalize::normalizeMultipartReplyV5() {
   Header *hdr = header();
   if (hdr->length() < sizeof(MultipartReply)) {
     markInputInvalid("MultipartReply is too short");
@@ -689,7 +689,7 @@ void Transmogrify::normalizeMultipartReplyV5() {
   }
 }
 
-void Transmogrify::normalizeAsyncConfigV4() {
+void Normalize::normalizeAsyncConfigV4() {
   // Both GetAsyncReply and SetAsync have the same message layout.
   Header *hdr = header();
   if (hdr->length() != 32) {
@@ -723,7 +723,7 @@ void Transmogrify::normalizeAsyncConfigV4() {
   }
 }
 
-void Transmogrify::normalizeQueueGetConfigReplyV1() {
+void Normalize::normalizeQueueGetConfigReplyV1() {
   Header *hdr = header();
 
   size_t length = hdr->length();
@@ -766,7 +766,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV1() {
   buf_.replace(data.begin(), data.end(), newQueues.data(), newQueues.size());
 }
 
-void Transmogrify::normalizeQueueGetConfigReplyV2() {
+void Normalize::normalizeQueueGetConfigReplyV2() {
   // Pad all queues to a multiple of 8. You can only get a queue whose size is
   // not a multiple of 8 if it contains an experimenter property with an
   // unusual length.
@@ -834,7 +834,7 @@ void Transmogrify::normalizeQueueGetConfigReplyV2() {
   buf_.replace(data.begin(), data.end(), newBuf.data(), newBuf.size());
 }
 
-void Transmogrify::normalizeMPFlowRequestV1() {
+void Normalize::normalizeMPFlowRequestV1() {
   // Check length of packet.
   if (buf_.size() != sizeof(MultipartRequest) + 44) {
     markInputInvalid("MultipartRequest.Flow has invalid size");
@@ -865,7 +865,7 @@ void Transmogrify::normalizeMPFlowRequestV1() {
   assert(buf_.size() == sizeof(MultipartRequest) + 120);
 }
 
-void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
+void Normalize::normalizeMPFlowReplyV1(size_t *start) {
   // Normalize the FlowStatsReply (ptr, length)
   size_t offset = *start;
   UInt8 *ptr = buf_.mutableData() + offset;
@@ -928,7 +928,7 @@ void Transmogrify::normalizeMPFlowReplyV1(size_t *start) {
   *start = Unsigned_cast(Signed_cast(*start) + length + needed);
 }
 
-void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start) {
+void Normalize::normalizeMPTableStatsReplyV4(size_t *start) {
   // Normalize the TableStatsReply V4 to look like a V1 message.
   size_t offset = *start;
   UInt8 *ptr = buf_.mutableData() + offset;
@@ -945,7 +945,7 @@ void Transmogrify::normalizeMPTableStatsReplyV4(size_t *start) {
   *start += 64;
 }
 
-void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start,
+void Normalize::normalizeMPPortOrQueueStatsReplyV1(size_t *start,
                                                       size_t len) {
   // Normalize the PortStatsReply V1 to look like a V4+ message.
   size_t offset = *start;
@@ -967,7 +967,7 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV1(size_t *start,
   *start += len + 8;
 }
 
-void Transmogrify::normalizeMPPortStatsRequestV1() {
+void Normalize::normalizeMPPortStatsRequestV1() {
   // Check length of packet.
   if (buf_.size() != sizeof(MultipartRequest) + 8) {
     markInputInvalid("MultipartRequest.PortStats/Queue has invalid size");
@@ -981,7 +981,7 @@ void Transmogrify::normalizeMPPortStatsRequestV1() {
   *port = normPortNumberV1(ptr);
 }
 
-void Transmogrify::normalizeMPPortOrQueueStatsReplyV3(size_t *start,
+void Normalize::normalizeMPPortOrQueueStatsReplyV3(size_t *start,
                                                       size_t len) {
   // Normalize the PortStatsReply V3 to look like a V4+ message.
   size_t offset = *start;
@@ -999,7 +999,7 @@ void Transmogrify::normalizeMPPortOrQueueStatsReplyV3(size_t *start,
   *start += len + 8;
 }
 
-void Transmogrify::normalizeMPPortDescReplyV1() {
+void Normalize::normalizeMPPortDescReplyV1() {
   using deprecated::PortV1;
 
   // Verify size of port list.
@@ -1029,7 +1029,7 @@ void Transmogrify::normalizeMPPortDescReplyV1() {
   std::memcpy(pkt + sizeof(MultipartReply), ports.data(), ports.size());
 }
 
-void Transmogrify::normalizeMPPortDescReplyV4() {
+void Normalize::normalizeMPPortDescReplyV4() {
   using deprecated::PortV2;
 
   // Verify size of port list.
@@ -1059,7 +1059,7 @@ void Transmogrify::normalizeMPPortDescReplyV4() {
   std::memcpy(pkt + sizeof(MultipartReply), ports.data(), ports.size());
 }
 
-void Transmogrify::normalizeMPPortStatsReplyV1(size_t *start) {
+void Normalize::normalizeMPPortStatsReplyV1(size_t *start) {
   // Convert V1 port stats reply into V5 format.
 
   size_t offset = *start;
@@ -1082,7 +1082,7 @@ void Transmogrify::normalizeMPPortStatsReplyV1(size_t *start) {
   normalizeMPPortStatsReplyV4(start);
 }
 
-void Transmogrify::normalizeMPPortStatsReplyV2(size_t *start) {
+void Normalize::normalizeMPPortStatsReplyV2(size_t *start) {
   // Convert V2 port stats reply into V5 format.
 
   size_t offset = *start;
@@ -1102,7 +1102,7 @@ void Transmogrify::normalizeMPPortStatsReplyV2(size_t *start) {
   normalizeMPPortStatsReplyV4(start);
 }
 
-void Transmogrify::normalizeMPPortStatsReplyV4(size_t *start) {
+void Normalize::normalizeMPPortStatsReplyV4(size_t *start) {
   // Convert V4 port stats reply into V5 format.
 
   size_t offset = *start;
@@ -1141,7 +1141,7 @@ void Transmogrify::normalizeMPPortStatsReplyV4(size_t *start) {
   *start += 120;
 }
 
-UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {
+UInt32 Normalize::normPortNumberV1(const UInt8 *ptr) {
   const Big16 *port16 = reinterpret_cast<const Big16 *>(ptr);
 
   UInt32 port32 = *port16;
@@ -1153,13 +1153,13 @@ UInt32 Transmogrify::normPortNumberV1(const UInt8 *ptr) {
   return port32;
 }
 
-int Transmogrify::normInstructionsV1orV2(const InstructionRange &instr,
+int Normalize::normInstructionsV1orV2(const InstructionRange &instr,
                                          UInt8 ipProto) {
   // Return change in length of instructions list.
   return 0;
 }
 
-int Transmogrify::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto) {
+int Normalize::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto) {
   using namespace deprecated;
 
   // Return change in length of action list.
@@ -1183,7 +1183,7 @@ int Transmogrify::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto) {
   return lengthChange;
 }
 
-int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
+int Normalize::normActionV1orV2(UInt16 type, ActionIterator *iter,
                                    ActionIterator *iterEnd, UInt8 ipProto) {
   using namespace deprecated;
 
@@ -1257,7 +1257,7 @@ int Transmogrify::normActionV1orV2(UInt16 type, ActionIterator *iter,
   return lengthChange;
 }
 
-int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
+int Normalize::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
   if ((*iter)->type() != deprecated::AT_OUTPUT_V1::type())
     return 0;
 
@@ -1285,12 +1285,12 @@ int Transmogrify::normOutput(ActionIterator *iter, ActionIterator *iterEnd) {
   return 8;
 }
 
-void Transmogrify::markInputTooBig(const char *msg) {
+void Normalize::markInputTooBig(const char *msg) {
   log_warning("Normalize:", msg);
   header()->setVersion(Message::kTooBigErrorFlag | header()->version());
 }
 
-void Transmogrify::markInputInvalid(const char *msg) {
+void Normalize::markInputInvalid(const char *msg) {
   log_warning("Normalize:", msg);
   header()->setVersion(Message::kInvalidErrorFlag | header()->version());
 }

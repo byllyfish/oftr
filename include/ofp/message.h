@@ -79,7 +79,7 @@ class Message {
   bool isRequestType() const;
 
   bool isValidHeader();
-  void transmogrify();
+  void normalize();
 
   /// Send an error message back to the source of the message.
   void replyError(OFPErrorCode error,
@@ -101,7 +101,7 @@ class Message {
   MessageInfo *info_ = nullptr;
 
   friend std::ostream &operator<<(std::ostream &os, const Message &msg);
-  friend class Transmogrify;
+  friend class Normalize;
 };
 
 std::ostream &operator<<(std::ostream &os, const Message &msg);

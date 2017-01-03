@@ -43,7 +43,7 @@ TEST(tablestatus, test) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const TableStatus *msg = TableStatus::cast(&message);
   EXPECT_TRUE(msg);

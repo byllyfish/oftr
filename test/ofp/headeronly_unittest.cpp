@@ -16,7 +16,7 @@ TEST(headeronly, barrierrequestbuilder_v1) {
   EXPECT_HEX("0112000800000001", channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_EQ(BarrierRequest::type(), message.type());
 
   const BarrierRequest *req = BarrierRequest::cast(&message);
@@ -35,7 +35,7 @@ TEST(headeronly, barrierrequestbuilder_v4) {
   EXPECT_HEX("0414000800000001", channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_EQ(BarrierRequest::type(), message.type());
 
   const BarrierRequest *req = BarrierRequest::cast(&message);

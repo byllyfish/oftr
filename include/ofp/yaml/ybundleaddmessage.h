@@ -27,7 +27,7 @@ struct MappingTraits<ofp::BundleAddMessage> {
 
     auto data = msg.message();
     ofp::Message message{data.data(), data.size()};
-    message.transmogrify();
+    message.normalize();
 
     ofp::yaml::DecodeRecursively(io, "message", &message);
 

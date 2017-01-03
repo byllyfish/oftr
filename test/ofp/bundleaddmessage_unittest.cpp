@@ -56,7 +56,7 @@ TEST(bundleaddmessage, groupMod) {
       channel.data(), channel.size());
 
   Message message(channel.data(), channel.size());
-  message.transmogrify();
+  message.normalize();
 
   const BundleAddMessage *m = BundleAddMessage::cast(&message);
   EXPECT_TRUE(m);
@@ -102,7 +102,7 @@ TEST(bundleaddmessage, echoreq) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const BundleAddMessage *m = BundleAddMessage::cast(&message);
   EXPECT_TRUE(m);

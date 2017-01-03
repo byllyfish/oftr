@@ -120,7 +120,7 @@ void Connection::postMessage(Message *message) {
 
   ChannelListener *listener = mainConn_->listener_;
   if (listener) {
-    message->transmogrify();
+    message->normalize();
     listener->onMessage(message);
   }
 }

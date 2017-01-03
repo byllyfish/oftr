@@ -172,7 +172,7 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
 
   auto data = m->request();
   Message message(data.data(), data.size());
-  message.transmogrify();
+  message.normalize();
 
   DecodeRecursively(io, "msg", &message);
   return true;
