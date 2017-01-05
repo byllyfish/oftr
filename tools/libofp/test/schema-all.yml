@@ -283,8 +283,7 @@ Message/FlowRemoved:
     priority: UInt16
     reason: FlowRemovedReason
     table_id: TableNumber
-    duration_sec: UInt32
-    duration_nsec: UInt32
+    duration: DurationSec
     idle_timeout: UInt16
     hard_timeout: UInt16
     packet_count: UInt64
@@ -845,8 +844,7 @@ Message/Reply.Flow:
   type: REPLY.FLOW
   msg:
     - table_id: TableNumber
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       priority: UInt16
       idle_timeout: UInt16
       hard_timeout: UInt16
@@ -888,8 +886,7 @@ Message/Reply.PortStats:
   type: REPLY.PORT_STATS
   msg:
     - port_no: PortNumber
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       rx_packets: UInt64
       tx_packets: UInt64
       rx_bytes: UInt64
@@ -934,8 +931,7 @@ Message/Reply.Queue:
       tx_packets: UInt64
       tx_bytes: UInt64
       tx_errors: UInt64
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
   
 Message/Reply.QueueDesc: 
   version: !opt UInt8
@@ -990,8 +986,7 @@ Message/Reply.Meter:
       flow_count: UInt32
       packet_in_count: UInt64
       bytes_in_count: UInt64
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       bands: [PacketCounter]
   
 Message/Reply.Group: 
@@ -1011,8 +1006,7 @@ Message/Reply.Group:
       ref_count: UInt32
       packet_count: UInt64
       byte_count: UInt64
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       bucket_stats: [PacketCounter]
   
 Message/Reply.TableFeatures: 
@@ -2033,4 +2027,6 @@ Builtin/InstructionID: <builtin>
 Builtin/Timestamp: <builtin>
 
 Builtin/RegisterBits: <builtin>
+
+Builtin/DurationSec: <builtin>
 

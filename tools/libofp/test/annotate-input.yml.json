@@ -144,12 +144,11 @@
       "hard_timeout": 65535, 
       "byte_count": 18446744073709551615, 
       "reason": "IDLE_TIMEOUT", 
-      "duration_nsec": 4294967295, 
       "packet_count": 18446744073709551615, 
-      "duration_sec": 4294967295, 
-      "table_id": "ALL", 
-      "cookie": 18446744073709551615, 
       "idle_timeout": 65535, 
+      "table_id": "ALL", 
+      "duration": "4294967295.xffffffff", 
+      "cookie": 18446744073709551615, 
       "match": [
         {
           "field": "ETH_DST", 
@@ -375,14 +374,13 @@
         "priority": 65535, 
         "hard_timeout": 65535, 
         "byte_count": 18446744073709551615, 
-        "duration_sec": 4294967295, 
-        "duration_nsec": 4294967295, 
-        "packet_count": 18446744073709551615, 
-        "idle_timeout": 65535, 
-        "cookie": 18446744073709551615, 
         "flags": [
           "SEND_FLOW_REM"
         ], 
+        "packet_count": 18446744073709551615, 
+        "idle_timeout": 65535, 
+        "cookie": 18446744073709551615, 
+        "duration": "4294967295.xffffffff", 
         "table_id": "ALL", 
         "match": [
           {
@@ -484,8 +482,7 @@
         "rx_packets": 18446744073709551615, 
         "rx_bytes": 18446744073709551615, 
         "tx_errors": 18446744073709551615, 
-        "duration_nsec": 4294967295, 
-        "duration_sec": 4294967295, 
+        "duration": "4294967295.xffffffff", 
         "rx_errors": 18446744073709551615, 
         "tx_bytes": 18446744073709551615, 
         "ethernet": {
@@ -520,13 +517,12 @@
   {
     "msg": [
       {
-        "duration_sec": 4294967295, 
-        "tx_errors": 18446744073709551615, 
         "tx_bytes": 18446744073709551615, 
+        "tx_errors": 18446744073709551615, 
+        "duration": "4294967295.xffffffff", 
         "queue_id": "ALL", 
         "tx_packets": 18446744073709551615, 
-        "port_no": "CONTROLLER", 
-        "duration_nsec": 4294967295
+        "port_no": "CONTROLLER"
       }
     ], 
     "type": "REPLY.QUEUE", 
@@ -583,7 +579,7 @@
     "msg": [
       {
         "packet_count": 18446744073709551615, 
-        "duration_sec": 4294967295, 
+        "duration": "4294967295.xffffffff", 
         "bucket_stats": [
           {
             "packet_count": 18446744073709551615, 
@@ -592,8 +588,7 @@
         ], 
         "byte_count": 18446744073709551615, 
         "group_id": "ANY", 
-        "ref_count": 4294967295, 
-        "duration_nsec": 4294967295
+        "ref_count": 4294967295
       }
     ], 
     "type": "REPLY.GROUP", 
@@ -689,18 +684,17 @@
   {
     "msg": [
       {
-        "duration_sec": 4294967295, 
-        "byte_in_count": 18446744073709551615, 
         "meter_id": "ALL", 
         "flow_count": 4294967295, 
         "packet_in_count": 18446744073709551615, 
+        "duration": "4294967295.xffffffff", 
         "bands": [
           {
             "packet_count": 18446744073709551615, 
             "byte_count": 18446744073709551615
           }
         ], 
-        "duration_nsec": 4294967295
+        "byte_in_count": 18446744073709551615
       }
     ], 
     "type": "REPLY.METER", 

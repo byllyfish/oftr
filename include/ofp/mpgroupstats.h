@@ -6,6 +6,7 @@
 
 #include "ofp/groupnumber.h"
 #include "ofp/packetcounterlist.h"
+#include "ofp/durationsec.h"
 
 namespace ofp {
 
@@ -19,8 +20,7 @@ class MPGroupStats {
   UInt32 refCount() const { return refCount_; }
   UInt64 packetCount() const { return packetCount_; }
   UInt64 byteCount() const { return byteCount_; }
-  UInt32 durationSec() const { return durationSec_; }
-  UInt32 durationNSec() const { return durationNSec_; }
+  DurationSec duration() const { return duration_; }
 
   PacketCounterRange bucketStats() const;
 
@@ -34,8 +34,7 @@ class MPGroupStats {
   Padding<4> pad2_;
   Big64 packetCount_;
   Big64 byteCount_;
-  Big32 durationSec_;
-  Big32 durationNSec_;
+  DurationSec duration_;
 
   friend class MPGroupStatsBuilder;
   template <class T>

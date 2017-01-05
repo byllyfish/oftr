@@ -7,6 +7,7 @@
 #include "ofp/mpflowstatsreply.h"
 #include "ofp/yaml/yflowmod.h"
 #include "ofp/yaml/yinstructions.h"
+#include "ofp/yaml/ydurationsec.h"
 
 namespace llvm {
 namespace yaml {
@@ -17,8 +18,7 @@ struct MappingTraits<ofp::MPFlowStatsReply> {
     using namespace ofp;
 
     io.mapRequired("table_id", msg.tableId_);
-    io.mapRequired("duration_sec", msg.durationSec_);
-    io.mapRequired("duration_nsec", msg.durationNSec_);
+    io.mapRequired("duration", msg.duration_);
     io.mapRequired("priority", msg.priority_);
     io.mapRequired("idle_timeout", msg.idleTimeout_);
     io.mapRequired("hard_timeout", msg.hardTimeout_);
@@ -39,8 +39,7 @@ template <>
 struct MappingTraits<ofp::MPFlowStatsReplyBuilder> {
   static void mapping(IO &io, ofp::MPFlowStatsReplyBuilder &msg) {
     io.mapRequired("table_id", msg.msg_.tableId_);
-    io.mapRequired("duration_sec", msg.msg_.durationSec_);
-    io.mapRequired("duration_nsec", msg.msg_.durationNSec_);
+    io.mapRequired("duration", msg.msg_.duration_);
     io.mapRequired("priority", msg.msg_.priority_);
     io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
     io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);

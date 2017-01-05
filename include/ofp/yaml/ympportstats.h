@@ -14,8 +14,7 @@ template <>
 struct MappingTraits<ofp::MPPortStats> {
   static void mapping(IO &io, ofp::MPPortStats &body) {
     io.mapRequired("port_no", body.portNo_);
-    io.mapRequired("duration_sec", body.durationSec_);
-    io.mapRequired("duration_nsec", body.durationNSec_);
+    io.mapRequired("duration", body.duration_);
     io.mapRequired("rx_packets", body.rxPackets_);
     io.mapRequired("tx_packets", body.txPackets_);
     io.mapRequired("rx_bytes", body.rxBytes_);
@@ -43,13 +42,6 @@ struct MappingTraits<ofp::MPPortStats> {
 
     io.mapRequired("properties",
                    Ref_cast<ofp::detail::PortStatsPropertyRange>(props));
-
-    /*
-        io.mapRequired("rx_frame_err", body.rxFrameErr_);
-        io.mapRequired("rx_over_err", body.rxOverErr_);
-        io.mapRequired("rx_crc_err", body.rxCrcErr_);
-        io.mapRequired("collisions", body.collisions_);
-    */
   }
 };
 
@@ -59,8 +51,7 @@ struct MappingTraits<ofp::MPPortStatsBuilder> {
     using namespace ofp;
 
     io.mapRequired("port_no", msg.msg_.portNo_);
-    io.mapRequired("duration_sec", msg.msg_.durationSec_);
-    io.mapRequired("duration_nsec", msg.msg_.durationNSec_);
+    io.mapRequired("duration", msg.msg_.duration_);
     io.mapRequired("rx_packets", msg.msg_.rxPackets_);
     io.mapRequired("tx_packets", msg.msg_.txPackets_);
     io.mapRequired("rx_bytes", msg.msg_.rxBytes_);
@@ -85,13 +76,6 @@ struct MappingTraits<ofp::MPPortStatsBuilder> {
     io.mapRequired("properties",
                    Ref_cast<ofp::detail::PortStatsPropertyList>(props));
     msg.setProperties(props);
-
-    /*
-        io.mapRequired("rx_frame_err", msg.msg_.rxFrameErr_);
-        io.mapRequired("rx_over_err", msg.msg_.rxOverErr_);
-        io.mapRequired("rx_crc_err", msg.msg_.rxCrcErr_);
-        io.mapRequired("collisions", msg.msg_.collisions_);
-    */
   }
 };
 

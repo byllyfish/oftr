@@ -86,8 +86,7 @@ msg:
 type: REPLY.FLOW
 msg:
   - table_id: TableNumber
-    duration_sec: UInt32
-    duration_nsec: UInt32
+    duration: DurationSec
     priority: UInt16
     idle_timeout: UInt16
     hard_timeout: UInt16
@@ -109,8 +108,7 @@ msg:
 type: REPLY.PORT_STATS
 msg:
   - port_no: PortNumber
-    duration_sec: UInt32
-    duration_nsec: UInt32
+    duration: DurationSec
     rx_packets: UInt64
     tx_packets: UInt64
     rx_bytes: UInt64
@@ -145,8 +143,7 @@ msg:
     tx_packets: UInt64
     tx_bytes: UInt64
     tx_errors: UInt64
-    duration_sec: UInt32
-    duration_nsec: UInt32
+    duration: DurationSec
 
 {Message/Reply.QueueDesc}
 type: REPLY.QUEUE_DESC
@@ -171,8 +168,7 @@ msg:
     flow_count: UInt32
     packet_in_count: UInt64
     bytes_in_count: UInt64
-    duration_sec: UInt32
-    duration_nsec: UInt32
+    duration: DurationSec
     bands: [PacketCounter]
 
 {Message/Reply.Group}
@@ -182,8 +178,7 @@ msg:
     ref_count: UInt32
     packet_count: UInt64
     byte_count: UInt64
-    duration_sec: UInt32
-    duration_nsec: UInt32
+    duration: DurationSec
     bucket_stats: [PacketCounter]
 
 {Message/Reply.TableFeatures}

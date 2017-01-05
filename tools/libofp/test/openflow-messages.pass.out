@@ -41,8 +41,7 @@ msg:
   priority:        0x0140
   reason:          IDLE_TIMEOUT
   table_id:        0x00
-  duration_sec:    0x00000CAD
-  duration_nsec:   0x0000153C
+  duration:        3245.000005436
   idle_timeout:    0x0100
   hard_timeout:    0x0000
   packet_count:    0x000000000000379B
@@ -76,8 +75,7 @@ msg:
   priority:        0x0140
   reason:          DELETE
   table_id:        0x00
-  duration_sec:    0x00000CAD
-  duration_nsec:   0x0000153C
+  duration:        3245.000005436
   idle_timeout:    0x0100
   hard_timeout:    0x0000
   packet_count:    0x000000000000379B
@@ -450,8 +448,7 @@ msg:
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000539
     tx_errors:       0x000000000000000A
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
 ...
 ---
 type:            REPLY.EXPERIMENTER
@@ -1071,8 +1068,7 @@ msg:
   priority:        0x0140
   reason:          DELETE
   table_id:        0x00
-  duration_sec:    0x00000CAD
-  duration_nsec:   0x0000153C
+  duration:        3245.000005436
   idle_timeout:    0x0100
   hard_timeout:    0x0000
   packet_count:    0x000000000000379B
@@ -1474,8 +1470,7 @@ xid:             0x95C85A7A
 version:         0x01
 msg:             
   - table_id:        0x02
-    duration_sec:    0x0000001E
-    duration_nsec:   0x0000005A
+    duration:        30.000000090
     priority:        0x0001
     idle_timeout:    0x003C
     hard_timeout:    0x005A
@@ -1548,8 +1543,7 @@ xid:             0x1171F2A0
 version:         0x01
 msg:             
   - port_no:         0x0000000D
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x00000000000003E1
     tx_packets:      0x0000000000000407
     rx_bytes:        0x0000000000000064
@@ -1576,8 +1570,7 @@ msg:
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000539
     tx_errors:       0x000000000000000A
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
 ...
 Filename: external/openflow-messages/v1_0/rep/rep_17_00007.pass
 Error: Decode failed: Length remaining is invalid
@@ -1828,8 +1821,7 @@ msg:
   priority:        0x0001
   reason:          IDLE_TIMEOUT
   table_id:        0x02
-  duration_sec:    0x0000003C
-  duration_nsec:   0x00001770
+  duration:        60.000006000
   idle_timeout:    0x003C
   hard_timeout:    0x0000
   packet_count:    0x00000000000003E8
@@ -1861,8 +1853,7 @@ msg:
   priority:        0x0001
   reason:          GROUP_DELETE
   table_id:        0x02
-  duration_sec:    0x0000003C
-  duration_nsec:   0x00001770
+  duration:        60.000006000
   idle_timeout:    0x003C
   hard_timeout:    0x0000
   packet_count:    0x00000000000003E8
@@ -2444,8 +2435,7 @@ xid:             0x9D3ED7F7
 version:         0x02
 msg:             
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -2495,8 +2485,7 @@ xid:             0xD937B021
 version:         0x02
 msg:             
   - port_no:         0x6BFE3449
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x3E849C00D597FFB9
     tx_packets:      0x9673AB36C5DAF2F2
     rx_bytes:        0x05F293205E0CD0D7
@@ -2512,8 +2501,7 @@ msg:
       collisions:      0x65D4365E5C5F1461
     properties:      
   - port_no:         0x1E333CEB
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0xC82587AD60C208DC
     tx_packets:      0xA7FAECB0FA8E0D32
     rx_bytes:        0x9BC47294D7163E84
@@ -3039,8 +3027,7 @@ msg:
   priority:        0x0001
   reason:          IDLE_TIMEOUT
   table_id:        0x02
-  duration_sec:    0x0000003C
-  duration_nsec:   0x00001770
+  duration:        60.000006000
   idle_timeout:    0x003C
   hard_timeout:    0x0000
   packet_count:    0x00000000000003E8
@@ -33442,8 +33429,7 @@ xid:             0x9D3ED7F7
 version:         0x02
 msg:             
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -33477,8 +33463,7 @@ xid:             0x9D3ED7F7
 version:         0x02
 msg:             
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -33515,8 +33500,7 @@ xid:             0x9D3ED7F7
 version:         0x02
 msg:             
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -33555,8 +33539,7 @@ xid:             0x9D3ED7F7
 version:         0x02
 msg:             
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -33584,8 +33567,7 @@ msg:
           - action:          POP_MPLS
             ethertype:       0x0000
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -33637,8 +33619,7 @@ xid:             0xD937B021
 version:         0x02
 msg:             
   - port_no:         0x6BFE3449
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x3E849C00D597FFB9
     tx_packets:      0x9673AB36C5DAF2F2
     rx_bytes:        0x05F293205E0CD0D7
@@ -33654,8 +33635,7 @@ msg:
       collisions:      0x65D4365E5C5F1461
     properties:      
   - port_no:         0x1E333CEB
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0xC82587AD60C208DC
     tx_packets:      0xA7FAECB0FA8E0D32
     rx_bytes:        0x9BC47294D7163E84
@@ -34104,8 +34084,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -34121,8 +34100,7 @@ msg:
   priority:        0x0003
   reason:          GROUP_DELETE
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -34585,8 +34563,7 @@ xid:             0x9D3ED7F7
 version:         0x03
 msg:             
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -36147,8 +36124,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -36164,8 +36140,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -36183,8 +36158,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -46304,8 +46278,7 @@ xid:             0x00003039
 version:         0x03
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x00000000
+    duration:        7347.000000000
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -46323,8 +46296,7 @@ xid:             0x00003039
 version:         0x03
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -46357,8 +46329,7 @@ xid:             0x00003039
 version:         0x03
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -46380,8 +46351,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -46403,8 +46373,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -46426,8 +46395,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -46537,8 +46505,7 @@ xid:             0x00008707
 version:         0x03
 msg:             
   - port_no:         0x00000144
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -46554,8 +46521,7 @@ msg:
       collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -46571,8 +46537,7 @@ msg:
       collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -46606,22 +46571,19 @@ msg:
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
   - port_no:         0x0000007C
     queue_id:        0x00000C98
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
   - port_no:         0x0000007C
     queue_id:        0x00000C98
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
 ...
 ---
 type:            REPLY.GROUP
@@ -47147,8 +47109,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -47164,8 +47125,7 @@ msg:
   priority:        0x0003
   reason:          GROUP_DELETE
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -48069,8 +48029,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -48086,8 +48045,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -48105,8 +48063,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -59250,8 +59207,7 @@ xid:             0x00003039
 version:         0x04
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x00000000
+    duration:        7347.000000000
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -59269,8 +59225,7 @@ xid:             0x00003039
 version:         0x04
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -59303,8 +59258,7 @@ xid:             0x00003039
 version:         0x04
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -59326,8 +59280,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -59349,8 +59302,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -59372,8 +59324,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -59458,8 +59409,7 @@ xid:             0x00008707
 version:         0x04
 msg:             
   - port_no:         0x00000144
-    duration_sec:    0x0000094E
-    duration_nsec:   0x00000951
+    duration:        2382.000002385
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -59475,8 +59425,7 @@ msg:
       collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
-    duration_sec:    0x0000094E
-    duration_nsec:   0x00000951
+    duration:        2382.000002385
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -59492,8 +59441,7 @@ msg:
       collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
-    duration_sec:    0x0000094E
-    duration_nsec:   0x00000951
+    duration:        2382.000002385
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -59527,22 +59475,19 @@ msg:
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x000000EB
-    duration_nsec:   0x000004D3
+    duration:        235.000001235
   - port_no:         0x0000007C
     queue_id:        0x00000C98
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x000000EB
-    duration_nsec:   0x000004D3
+    duration:        235.000001235
   - port_no:         0x0000007C
     queue_id:        0x00000C98
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x000000EB
-    duration_nsec:   0x000004D3
+    duration:        235.000001235
 ...
 ---
 type:            REPLY.GROUP
@@ -59561,8 +59506,7 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
 ...
 ---
@@ -59575,8 +59519,7 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
       - packet_count:    0x000000000001F55A
         byte_count:      0x0000000000130C6C
@@ -59595,8 +59538,7 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
       - packet_count:    0x000000000001F55A
         byte_count:      0x0000000000130C6C
@@ -59608,15 +59550,13 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
   - group_id:        0x00000059
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
       - packet_count:    0x000000000001F55A
         byte_count:      0x0000000000130C6C
@@ -59779,8 +59719,7 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
 ...
 ---
@@ -59793,8 +59732,7 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
       - packet_count:    0x000000000000097F
         byte_count:      0x000000000000007C
@@ -59813,15 +59751,13 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
   - meter_id:        0x000004D0
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
       - packet_count:    0x000000000000097F
         byte_count:      0x000000000000007C
@@ -59833,8 +59769,7 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
       - packet_count:    0x000000000000097F
         byte_count:      0x000000000000007C
@@ -60526,8 +60461,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -60543,8 +60477,7 @@ msg:
   priority:        0x0003
   reason:          GROUP_DELETE
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -61437,8 +61370,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -61454,8 +61386,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -61473,8 +61404,7 @@ msg:
   priority:        0x0003
   reason:          IDLE_TIMEOUT
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -72618,8 +72548,7 @@ xid:             0x00003039
 version:         0x04
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x00000000
+    duration:        7347.000000000
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -72637,8 +72566,7 @@ xid:             0x00003039
 version:         0x04
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -72671,8 +72599,7 @@ xid:             0x00003039
 version:         0x04
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -72694,8 +72621,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -72717,8 +72643,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -72740,8 +72665,7 @@ msg:
             port:            0x00009823
             max_len:         0x0000
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -72826,8 +72750,7 @@ xid:             0x00008707
 version:         0x04
 msg:             
   - port_no:         0x00000144
-    duration_sec:    0x0000094E
-    duration_nsec:   0x00000951
+    duration:        2382.000002385
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -72843,8 +72766,7 @@ msg:
       collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
-    duration_sec:    0x0000094E
-    duration_nsec:   0x00000951
+    duration:        2382.000002385
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -72860,8 +72782,7 @@ msg:
       collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
-    duration_sec:    0x0000094E
-    duration_nsec:   0x00000951
+    duration:        2382.000002385
     rx_packets:      0x000000000000A570
     tx_packets:      0x000000000001E4ED
     rx_bytes:        0x0000000000BD6CCA
@@ -72895,22 +72816,19 @@ msg:
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x000000EB
-    duration_nsec:   0x000004D3
+    duration:        235.000001235
   - port_no:         0x0000007C
     queue_id:        0x00000C98
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x000000EB
-    duration_nsec:   0x000004D3
+    duration:        235.000001235
   - port_no:         0x0000007C
     queue_id:        0x00000C98
     tx_packets:      0x000000000000304C
     tx_bytes:        0x000000000000FA7B
     tx_errors:       0x000000000000FA7C
-    duration_sec:    0x000000EB
-    duration_nsec:   0x000004D3
+    duration:        235.000001235
 ...
 ---
 type:            REPLY.GROUP
@@ -72929,8 +72847,7 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
 ...
 ---
@@ -72943,8 +72860,7 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
       - packet_count:    0x000000000001F55A
         byte_count:      0x0000000000130C6C
@@ -72963,8 +72879,7 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
       - packet_count:    0x000000000001F55A
         byte_count:      0x0000000000130C6C
@@ -72976,15 +72891,13 @@ msg:
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
   - group_id:        0x00000059
     ref_count:       0x00000937
     packet_count:    0x000000000023F420
     byte_count:      0x000000000166F0C3
-    duration_sec:    0x000009E2
-    duration_nsec:   0x00000145
+    duration:        2530.000000325
     bucket_stats:    
       - packet_count:    0x000000000001F55A
         byte_count:      0x0000000000130C6C
@@ -73147,8 +73060,7 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
 ...
 ---
@@ -73161,8 +73073,7 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
       - packet_count:    0x000000000000097F
         byte_count:      0x000000000000007C
@@ -73181,15 +73092,13 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
   - meter_id:        0x000004D0
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
       - packet_count:    0x000000000000097F
         byte_count:      0x000000000000007C
@@ -73201,8 +73110,7 @@ msg:
     flow_count:      0x00003087
     packet_in_count: 0x00000000000F423F
     byte_in_count:   0x000000000012CA4A
-    duration_sec:    0x00000020
-    duration_nsec:   0x0000085D
+    duration:        32.000002141
     bands:           
       - packet_count:    0x000000000000097F
         byte_count:      0x000000000000007C

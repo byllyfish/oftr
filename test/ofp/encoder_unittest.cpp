@@ -498,8 +498,7 @@ TEST(encoder, ofmp_flowreply_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -535,8 +534,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -549,8 +547,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
                value: 0x12345678
            instructions:
          - table_id: 0x11
-           duration_sec: 0x22
-           duration_nsec: 0x33 
+           duration: 34.x33
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
@@ -587,8 +584,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -628,8 +624,7 @@ TEST(encoder, ofmp_flowreply_v1) {
       flags: [ 0x2222 ]
       body:
          - table_id: 0x33
-           duration_sec: 0x44444444
-           duration_nsec: 0x55555555
+           duration: 1145324612.x55555555
            priority: 0x6666
            idle_timeout: 0x7777
            hard_timeout: 0x8888
@@ -670,8 +665,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -689,8 +683,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
                     port: 0xEEEEEEEE
                     max_len: 0xFFFF
          - table_id: 0x11
-           duration_sec: 0x22
-           duration_nsec: 0x33 
+           duration: 34.x33
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
@@ -843,8 +836,7 @@ TEST(encoder, ofmp_portstats_v4) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -882,8 +874,7 @@ TEST(encoder, ofmp_portstats_v3) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -921,8 +912,7 @@ TEST(encoder, ofmp_portstats_v2) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -960,8 +950,7 @@ TEST(encoder, ofmp_portstats_v1) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -1003,8 +992,7 @@ TEST(encoder, ofmp_queuestats_v4) {
           tx_bytes:   0x5555555555555550
           tx_packets: 0x6666666666666660
           tx_errors:  0x7777777777777770
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
     )""";
 
   Encoder encoder{input};
@@ -1030,8 +1018,7 @@ TEST(encoder, ofmp_queuestats_v1) {
           tx_bytes:   0x5555555555555550
           tx_packets: 0x6666666666666660
           tx_errors:  0x7777777777777770
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
     )""";
 
   Encoder encoder{input};
@@ -2203,8 +2190,7 @@ TEST(encoder, flowremovedv4) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2234,8 +2220,7 @@ TEST(encoder, flowremovedv1) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2266,8 +2251,7 @@ TEST(encoder, flowremovedv2) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2300,8 +2284,7 @@ TEST(encoder, flowremovedv3) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -3193,8 +3176,7 @@ TEST(encoder, ofmp_portstats_v4_flags) {
     flags: [ 0x2222 ]
     msg:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660

@@ -96,8 +96,7 @@ msg:
   priority: 0xffff
   reason: IDLE_TIMEOUT
   table_id: ALL
-  duration_sec: 0xffffffff
-  duration_nsec: 0xffffffff
+  duration: 4294967295.xffffffff
   idle_timeout: 0xffff
   hard_timeout: 0xffff
   packet_count: 0xffffffffffffffff
@@ -243,8 +242,7 @@ type: REPLY.FLOW
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
-    duration_sec: 0xffffffff
-    duration_nsec: 0xffffffff
+    duration: 4294967295.xffffffff
     priority: 0xffff
     idle_timeout: 0xffff
     hard_timeout: 0xffff
@@ -310,8 +308,7 @@ type: REPLY.PORT_STATS
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
-    duration_sec: 0xffffffff
-    duration_nsec: 0xffffffff
+    duration: 4294967295.xffffffff
     rx_packets: 0xffffffffffffffff
     tx_packets: 0xffffffffffffffff
     rx_bytes: 0xffffffffffffffff
@@ -343,8 +340,7 @@ msg:
     tx_packets: 0xffffffffffffffff
     tx_bytes: 0xffffffffffffffff
     tx_errors: 0xffffffffffffffff
-    duration_sec: 0xffffffff
-    duration_nsec: 0xffffffff
+    duration: 4294967295.xffffffff
 ---
 version: 0x04
 type: REQUEST.QUEUE_DESC
@@ -381,8 +377,7 @@ msg:
     ref_count: 0xffffffff
     packet_count: 0xffffffffffffffff
     byte_count: 0xffffffffffffffff
-    duration_sec: 0xffffffff
-    duration_nsec: 0xffffffff
+    duration: 4294967295.xffffffff
     bucket_stats:
       - packet_count: 0xffffffffffffffff
         byte_count: 0xffffffffffffffff
@@ -441,8 +436,7 @@ msg:
     flow_count: 0xffffffff
     packet_in_count: 0xffffffffffffffff
     byte_in_count: 0xffffffffffffffff
-    duration_sec: 0xffffffff
-    duration_nsec: 0xffffffff
+    duration: 4294967295.xffffffff
     bands:
       - packet_count: 0xffffffffffffffff
         byte_count: 0xffffffffffffffff

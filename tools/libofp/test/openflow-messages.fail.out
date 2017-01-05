@@ -25,8 +25,7 @@ msg:
   priority:        0x0140
   reason:          GROUP_DELETE
   table_id:        0x00
-  duration_sec:    0x00000CAD
-  duration_nsec:   0x0000153C
+  duration:        3245.000005436
   idle_timeout:    0x0100
   hard_timeout:    0x0000
   packet_count:    0x000000000000379B
@@ -1573,8 +1572,7 @@ msg:
   priority:        0x0001
   reason:          METER_DELETE
   table_id:        0x02
-  duration_sec:    0x0000003C
-  duration_nsec:   0x00001770
+  duration:        60.000006000
   idle_timeout:    0x003C
   hard_timeout:    0x0000
   packet_count:    0x00000000000003E8
@@ -15536,8 +15534,7 @@ version:         0x02
 _file:           external/openflow-messages/v1_1/rep/rep_19_00008.fail
 msg:             
   - table_id:        0x01
-    duration_sec:    0x0000003C
-    duration_nsec:   0x0000005A
+    duration:        60.000000090
     priority:        0x0001
     idle_timeout:    0x0001
     hard_timeout:    0x000A
@@ -15565,7 +15562,7 @@ msg:
             data:            000000
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_19_00008.fail
-Error: Decode succeeded but encode failed: YAML:35:30: error: unknown key 'data'
+Error: Decode succeeded but encode failed: YAML:34:30: error: unknown key 'data'
             data:            000000
                              ^~~~~~
 
@@ -15848,8 +15845,7 @@ msg:
   priority:        0x0003
   reason:          METER_DELETE
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -17669,8 +17665,7 @@ version:         0x03
 _file:           external/openflow-messages/v1_2/rep/rep_19_00007.fail
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x00000000
+    duration:        7347.000000000
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -17713,8 +17708,7 @@ version:         0x03
 _file:           external/openflow-messages/v1_2/rep/rep_19_00016.fail
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -18172,8 +18166,7 @@ msg:
   priority:        0x0003
   reason:          METER_DELETE
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -20878,8 +20871,7 @@ version:         0x04
 _file:           external/openflow-messages/v1_3/rep/rep_19_00007.fail
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x00000000
+    duration:        7347.000000000
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -20922,8 +20914,7 @@ version:         0x04
 _file:           external/openflow-messages/v1_3/rep/rep_19_00016.fail
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -21628,8 +21619,7 @@ msg:
   priority:        0x0003
   reason:          METER_DELETE
   table_id:        0x50
-  duration_sec:    0x0000005A
-  duration_nsec:   0x00000384
+  duration:        90.000000900
   idle_timeout:    0x0000
   hard_timeout:    0x012C
   packet_count:    0x000000000000000C
@@ -24334,8 +24324,7 @@ version:         0x04
 _file:           external/openflow-messages/v1_3_1/rep/rep_19_00007.fail
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x00000000
+    duration:        7347.000000000
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328
@@ -24378,8 +24367,7 @@ version:         0x04
 _file:           external/openflow-messages/v1_3_1/rep/rep_19_00016.fail
 msg:             
   - table_id:        0x7B
-    duration_sec:    0x00001CB3
-    duration_nsec:   0x000037D9
+    duration:        7347.000014297
     priority:        0x0008
     idle_timeout:    0x0384
     hard_timeout:    0x2328

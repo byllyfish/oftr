@@ -137,7 +137,7 @@ static const char *const kBuiltinTypes[] = {
     "Str256",      "HexData",     "DatapathID",   "MacAddress",
     "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID",
     "LLDPPortID",  "ActionID",    "FieldID",      "InstructionID",
-    "Timestamp",   "RegisterBits"};
+    "Timestamp",   "RegisterBits", "DurationSec"};
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 

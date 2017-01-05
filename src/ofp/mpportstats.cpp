@@ -60,7 +60,7 @@ void MPPortStatsBuilder::write(Writable *channel) {
     }
 
     if (version == OFP_VERSION_4) {
-      channel->write(&msg_.durationSec_, 8);
+      channel->write(&msg_.duration_, 8);
     }
   }
 

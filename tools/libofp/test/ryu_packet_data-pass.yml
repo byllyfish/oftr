@@ -217,8 +217,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   - table_id:        0x00
-    duration_sec:    0x00000166
-    duration_nsec:   0x06DEFCC8
+    duration:        358.115277000
     priority:        0xFFFF
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -229,8 +228,7 @@ msg:
     match:           
     instructions:    
   - table_id:        0x00
-    duration_sec:    0x00000166
-    duration_nsec:   0x06DB9998
+    duration:        358.115055000
     priority:        0xFFFE
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -248,8 +246,7 @@ msg:
             port:            NORMAL
             max_len:         0x0000
   - table_id:        0x00
-    duration_sec:    0x0004D33C
-    duration_nsec:   0x1E7E1F30
+    duration:        316220.511582000
     priority:        0x007B
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -266,8 +263,7 @@ msg:
       - instruction:     GOTO_TABLE
         table_id:        0x01
   - table_id:        0x00
-    duration_sec:    0x0004C89B
-    duration_nsec:   0x3A775C88
+    duration:        313499.980901000
     priority:        0x0000
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -494,8 +490,7 @@ xid:             0x00000000
 version:         0x03
 msg:             
   - port_no:         0x00000007
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000000
     tx_packets:      0x0000000000000004
     rx_bytes:        0x0000000000000000
@@ -511,8 +506,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000006
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000004
     tx_packets:      0x0000000000000004
     rx_bytes:        0x0000000000000150
@@ -621,22 +615,19 @@ msg:
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
   - port_no:         0x00000006
     queue_id:        0x00000001
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
   - port_no:         0x00000007
     queue_id:        0x00000002
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
 ...
 ---
 type:            PORT_STATUS
@@ -719,8 +710,7 @@ msg:
   priority:        0xFFFF
   reason:          IDLE_TIMEOUT
   table_id:        0x00
-  duration_sec:    0x00000003
-  duration_nsec:   0x02E902A8
+  duration:        3.048825000
   idle_timeout:    0x0003
   hard_timeout:    0x0000
   packet_count:    0x0000000000000001
@@ -1057,8 +1047,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   - table_id:        0x00
-    duration_sec:    0x00000166
-    duration_nsec:   0x06DEFCC8
+    duration:        358.115277000
     priority:        0xFFFF
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -1069,8 +1058,7 @@ msg:
     match:           
     instructions:    
   - table_id:        0x00
-    duration_sec:    0x00000166
-    duration_nsec:   0x06DB9998
+    duration:        358.115055000
     priority:        0xFFFE
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -1088,8 +1076,7 @@ msg:
             port:            NORMAL
             max_len:         0x0000
   - table_id:        0x00
-    duration_sec:    0x0004D33C
-    duration_nsec:   0x1E7E1F30
+    duration:        316220.511582000
     priority:        0x007B
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -1106,8 +1093,7 @@ msg:
       - instruction:     GOTO_TABLE
         table_id:        0x01
   - table_id:        0x00
-    duration_sec:    0x0004C89B
-    duration_nsec:   0x3A775C88
+    duration:        313499.980901000
     priority:        0x0000
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -1420,8 +1406,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   - port_no:         0x00000007
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000000
     tx_packets:      0x0000000000000004
     rx_bytes:        0x0000000000000000
@@ -1437,8 +1422,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000006
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000004
     tx_packets:      0x0000000000000004
     rx_bytes:        0x0000000000000150
@@ -1547,22 +1531,19 @@ msg:
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
   - port_no:         0x00000006
     queue_id:        0x00000001
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
   - port_no:         0x00000007
     queue_id:        0x00000002
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
 ...
 ---
 type:            PORT_STATUS
@@ -1645,8 +1626,7 @@ msg:
   priority:        0xFFFF
   reason:          IDLE_TIMEOUT
   table_id:        0x00
-  duration_sec:    0x00000003
-  duration_nsec:   0x02E902A8
+  duration:        3.048825000
   idle_timeout:    0x0003
   hard_timeout:    0x0000
   packet_count:    0x0000000000000001
@@ -1790,8 +1770,7 @@ msg:
     flow_count:      0x00000000
     packet_in_count: 0x0000000000000000
     byte_in_count:   0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00075300
+    duration:        0.000480000
     bands:           
       - packet_count:    0x0000000000000000
         byte_count:      0x0000000000000000
@@ -3527,8 +3506,7 @@ msg:
     ref_count:       0x00000002
     packet_count:    0x000000000000007B
     byte_count:      0x0000000000003039
-    duration_sec:    0x00000009
-    duration_nsec:   0x244D26E0
+    duration:        9.609036000
     bucket_stats:    
       - packet_count:    0x00000000000000EA
         byte_count:      0x0000000000000929
@@ -3870,8 +3848,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   - table_id:        0x00
-    duration_sec:    0x00000166
-    duration_nsec:   0x06DEFCC8
+    duration:        358.115277000
     priority:        0xFFFF
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -3882,8 +3859,7 @@ msg:
     match:           
     instructions:    
   - table_id:        0x00
-    duration_sec:    0x00000166
-    duration_nsec:   0x06DB9998
+    duration:        358.115055000
     priority:        0xFFFE
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -3901,8 +3877,7 @@ msg:
             port:            NORMAL
             max_len:         0x0000
   - table_id:        0x00
-    duration_sec:    0x0004D33C
-    duration_nsec:   0x1E7E1F30
+    duration:        316220.511582000
     priority:        0x007B
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -3919,8 +3894,7 @@ msg:
       - instruction:     GOTO_TABLE
         table_id:        0x01
   - table_id:        0x00
-    duration_sec:    0x0004C89B
-    duration_nsec:   0x3A775C88
+    duration:        313499.980901000
     priority:        0x0000
     idle_timeout:    0x0000
     hard_timeout:    0x0000
@@ -4253,36 +4227,31 @@ msg:
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000700000001
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
   - port_no:         0x00000000
     queue_id:        0x00000000
     tx_packets:      0x0000000000000000
     tx_bytes:        0xFFFF000C00000065
     tx_errors:       0xFFFF001000000065
-    duration_sec:    0x00000001
-    duration_nsec:   0x00000001
+    duration:        1.000000001
   - port_no:         0xFFFF0014
     queue_id:        0x00000065
     tx_packets:      0x0000000200000000
     tx_bytes:        0x0000000200000001
     tx_errors:       0x0030000000000000
-    duration_sec:    0x00000006
-    duration_nsec:   0x00000001
+    duration:        6.000000001
   - port_no:         0x00000000
     queue_id:        0x00000000
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00300000
-    duration_nsec:   0x00000000
+    duration:        3145728.000000000
   - port_no:         0x00000007
     queue_id:        0x00000002
     tx_packets:      0x0000000000000000
     tx_bytes:        0x0000000000000000
     tx_errors:       0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
 ...
 ---
 type:            FLOW_REMOVED
@@ -4293,8 +4262,7 @@ msg:
   priority:        0xFFFF
   reason:          IDLE_TIMEOUT
   table_id:        0x00
-  duration_sec:    0x00000003
-  duration_nsec:   0x02E902A8
+  duration:        3.048825000
   idle_timeout:    0x0003
   hard_timeout:    0x0000
   packet_count:    0x0000000000000001
@@ -4457,8 +4425,7 @@ msg:
     flow_count:      0x00000000
     packet_in_count: 0x0000000000000000
     byte_in_count:   0x0000000000000000
-    duration_sec:    0x00000000
-    duration_nsec:   0x00075300
+    duration:        0.000480000
     bands:           
       - packet_count:    0x0000000000000000
         byte_count:      0x0000000000000000
@@ -6167,8 +6134,7 @@ msg:
     ref_count:       0x00000002
     packet_count:    0x000000000000007B
     byte_count:      0x0000000000003039
-    duration_sec:    0x00000009
-    duration_nsec:   0x244D26E0
+    duration:        9.609036000
     bucket_stats:    
       - packet_count:    0x00000000000000EA
         byte_count:      0x0000000000000929

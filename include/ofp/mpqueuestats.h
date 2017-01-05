@@ -7,6 +7,7 @@
 #include "ofp/byteorder.h"
 #include "ofp/portnumber.h"
 #include "ofp/queuenumber.h"
+#include "ofp/durationsec.h"
 
 namespace ofp {
 
@@ -25,8 +26,7 @@ class MPQueueStats {
   Big64 txBytes_;
   Big64 txPackets_;
   Big64 txErrors_;
-  Big32 durationSec_;
-  Big32 durationNSec_;
+  DurationSec duration_;
 
   friend class MPQueueStatsBuilder;
   template <class T>

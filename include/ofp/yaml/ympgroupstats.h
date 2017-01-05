@@ -16,8 +16,7 @@ struct MappingTraits<ofp::MPGroupStats> {
     io.mapRequired("ref_count", body.refCount_);
     io.mapRequired("packet_count", body.packetCount_);
     io.mapRequired("byte_count", body.byteCount_);
-    io.mapRequired("duration_sec", body.durationSec_);
-    io.mapRequired("duration_nsec", body.durationNSec_);
+    io.mapRequired("duration", body.duration_);
 
     ofp::PacketCounterRange range = body.bucketStats();
     io.mapRequired("bucket_stats", range);
@@ -31,8 +30,7 @@ struct MappingTraits<ofp::MPGroupStatsBuilder> {
     io.mapRequired("ref_count", body.msg_.refCount_);
     io.mapRequired("packet_count", body.msg_.packetCount_);
     io.mapRequired("byte_count", body.msg_.byteCount_);
-    io.mapRequired("duration_sec", body.msg_.durationSec_);
-    io.mapRequired("duration_nsec", body.msg_.durationNSec_);
+    io.mapRequired("duration", body.msg_.duration_);
 
     io.mapRequired("bucket_stats", body.bucketStats_);
   }

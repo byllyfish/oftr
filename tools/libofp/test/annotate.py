@@ -295,6 +295,13 @@ def convertYamlToJson(yamlFileName, jsonFileName):
         with open(jsonFileName, 'w') as jsonFile:
             json.dump(list(docs), jsonFile, indent=2)
 
+
+def _newer_file(lhs, rhs):
+    if not os.path.exists(rhs):
+        return True
+    return os.path.getmtime(lhs) > os.path.getmtime(rhs)
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print 'Usage: annotate.py <input-file>'
@@ -307,7 +314,7 @@ if __name__ == '__main__':
     inputFile = sys.argv[1]
     jsonFileName = inputFile + '.json'
 
-    if hasYaml and not os.path.exists(jsonFileName):
+    if hasYaml and _newer_file(inputFile, jsonFileName):
         convertYamlToJson(inputFile, jsonFileName)
 
     header=['version', 'type', 'keypath', 'syntax', 'required', 'default', 'missing', 'modify']

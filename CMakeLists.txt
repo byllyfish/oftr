@@ -153,6 +153,7 @@ set(LIBOFP_SOURCES
   src/ofp/constants.cpp
   src/ofp/constants_error.cpp
   src/ofp/datapathid.cpp
+  src/ofp/durationsec.cpp
   src/ofp/echoreply.cpp
   src/ofp/echorequest.cpp
   src/ofp/error.cpp

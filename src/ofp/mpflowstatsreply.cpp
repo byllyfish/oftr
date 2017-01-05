@@ -73,7 +73,7 @@ void MPFlowStatsReplyBuilder::writeV1(Writable *channel) {
 
   channel->write(&msg_, 4);
   channel->write(&origMatch, sizeof(origMatch));
-  channel->write(&msg_.durationSec_, 44);
+  channel->write(&msg_.duration_, 44);
   if (actions.size() > 0) {
     actions.write(channel);
   }

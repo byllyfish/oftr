@@ -17,8 +17,7 @@ struct MappingTraits<ofp::MPMeterStats> {
     io.mapRequired("flow_count", body.flowCount_);
     io.mapRequired("packet_in_count", body.packetInCount_);
     io.mapRequired("byte_in_count", body.byteInCount_);
-    io.mapRequired("duration_sec", body.durationSec_);
-    io.mapRequired("duration_nsec", body.durationNSec_);
+    io.mapRequired("duration", body.duration_);
 
     ofp::PacketCounterRange bands = body.bandStats();
     io.mapRequired("bands", bands);
@@ -32,8 +31,7 @@ struct MappingTraits<ofp::MPMeterStatsBuilder> {
     io.mapRequired("flow_count", body.msg_.flowCount_);
     io.mapRequired("packet_in_count", body.msg_.packetInCount_);
     io.mapRequired("byte_in_count", body.msg_.byteInCount_);
-    io.mapRequired("duration_sec", body.msg_.durationSec_);
-    io.mapRequired("duration_nsec", body.msg_.durationNSec_);
+    io.mapRequired("duration", body.msg_.duration_);
 
     io.mapRequired("bands", body.bandStats_);
   }
