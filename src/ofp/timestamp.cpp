@@ -125,7 +125,7 @@ Timestamp Timestamp::now() {
 namespace ofp {
 
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const Timestamp &value) {
-  return os << llvm::format("%llu.%09lu", value.time_.first, value.time_.second);
+  return os << llvm::format("%llu.%09u", value.time_.first, value.time_.second);
 }
 
 }  // namespace ofp
