@@ -98,7 +98,6 @@ TEST(timestamp, relational) {
 TEST(timestamp, now) {
   log_debug("Timestamp::now", Timestamp::now().toStringUTC());
   log_debug("Timestamp::now", Timestamp::now().toStringUTC());
-  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
 }
 
 TEST(timestamp, secondsSince) {
@@ -131,4 +130,13 @@ TEST(timestamp, toStringUTC) {
 
   Timestamp b{2, 1000000};
   EXPECT_EQ("1970-01-01T00:00:02.001000000Z", b.toStringUTC());
+}
+
+TEST(timestamp, stream) {
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+
+  Timestamp a{123456789101112, 123456789};
+  oss << a;
+  EXPECT_EQ("123456789101112.123456789", oss.str());
 }

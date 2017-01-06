@@ -12,7 +12,6 @@
 #include "./libofp.h"
 #include "./ofpx_help.h"
 #include "llvm/Support/Host.h"
-#include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
 

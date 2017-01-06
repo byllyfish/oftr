@@ -15,7 +15,8 @@
 #include <string>                // for std::string
 #include <system_error>          // for std::error_code
 #include <type_traits>           // for std::make_unsigned<T>, etc.
-#include "llvm/ADT/StringRef.h"  // for llvm::StringRef
+#include "llvm/ADT/StringRef.h"         // for llvm::StringRef
+#include "llvm/Support/raw_ostream.h"   // for llvm::raw_ostream
 #include "ofp/config.h"
 
 // Require C++11 -- std::string storage is guaranteed contiguous.
@@ -247,10 +248,10 @@ size_t HexToRawData(const std::string &hex, void *data, size_t length,
                     bool *error = nullptr);
 
 /// Convert a (small) fixed size array to hexadecimal using lower case and ':'
-/// as the delimiter. Defined for Length=6 and Length=8.
+/// as the delimiter. Defined for Length=6 and Length=8. Returns buf ptr.
 template <size_t Length>
-std::string RawDataToHexDelimitedLowercase(
-    const std::array<UInt8, Length> &data);
+char *RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, Length> &data, char (&buf)[Length*3]);
 
 /// Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
 /// odd final hex digit.

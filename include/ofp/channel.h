@@ -42,8 +42,6 @@ class Channel : public Writable {
   virtual void setStartingXid(UInt32 xid) = 0;
 };
 
-std::ostream &operator<<(std::ostream &os, Channel *channel);
-
 inline std::ostream &operator<<(std::ostream &os, Channel *channel) {
   return os << "[Channel to=" << channel->remoteEndpoint() << ']';
 }

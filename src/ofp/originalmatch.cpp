@@ -174,7 +174,8 @@ std::string OriginalMatch::toString() const {
     return wildcards & wc ? '*' : ' ';
   };
 
-  std::stringstream ss;
+  std::string buf;
+  llvm::raw_string_ostream ss{buf};
   ss << "in_port: " << in_port << wildcard(OFPFW_IN_PORT) << '\n';
   ss << "dl_src: " << dl_src << wildcard(OFPFW_DL_SRC) << '\n';
   ss << "dl_dst: " << dl_dst << wildcard(OFPFW_DL_DST) << '\n';

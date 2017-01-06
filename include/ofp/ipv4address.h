@@ -46,6 +46,8 @@ class IPv4Address {
 
  private:
   ArrayType addr_;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv4Address &value);
 };
 
 static_assert(sizeof(IPv4Address) == 4, "Unexpected size");
@@ -53,10 +55,6 @@ static_assert(alignof(IPv4Address) == 1, "Unexpected alignment");
 static_assert(IsStandardLayout<IPv4Address>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv4Address>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const IPv4Address &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

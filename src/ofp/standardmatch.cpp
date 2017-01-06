@@ -376,7 +376,8 @@ std::string StandardMatch::toString() const {
     return wildcards & wc ? '*' : ' ';
   };
 
-  std::stringstream ss;
+  std::string buf;
+  llvm::raw_string_ostream ss{buf};
   ss << "in_port: " << in_port << wildcard(OFPFW_IN_PORT) << '\n';
   ss << "dl_src: " << dl_src << '/' << dl_src_mask << '\n';
   ss << "dl_dst: " << dl_dst << '/' << dl_dst_mask << '\n';

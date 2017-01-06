@@ -31,7 +31,8 @@ std::string DatapathID::toString() const {
   if (empty()) {
     return {};
   }
-  return RawDataToHexDelimitedLowercase(dpid_);
+  char buf[sizeof(DatapathID) * 3];
+  return RawDataToHexDelimitedLowercase(dpid_, buf);
 }
 
 bool DatapathID::parse(const std::string &s) {
@@ -42,3 +43,13 @@ bool DatapathID::parse(const std::string &s) {
 
   return HexToRawData(s, dpid_.data(), dpid_.size()) >= dpid_.size();
 }
+
+
+namespace ofp {
+
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const DatapathID &value) {
+  char buf[sizeof(DatapathID) * 3];
+  return os << RawDataToHexDelimitedLowercase(value.dpid_, buf);
+}
+
+}  // namespace ofp

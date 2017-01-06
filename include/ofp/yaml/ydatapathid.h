@@ -13,7 +13,7 @@ template <>
 struct ScalarTraits<ofp::DatapathID> {
   static void output(const ofp::DatapathID &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::DatapathID &value) {

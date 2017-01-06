@@ -18,7 +18,7 @@ template <>
 struct ScalarTraits<ofp::IPv4Address> {
   static void output(const ofp::IPv4Address &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
@@ -41,7 +41,7 @@ template <>
 struct ScalarTraits<ofp::IPv6Address> {
   static void output(const ofp::IPv6Address &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
@@ -64,7 +64,7 @@ template <>
 struct ScalarTraits<ofp::MacAddress> {
   static void output(const ofp::MacAddress &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::MacAddress &value) {
@@ -86,7 +86,7 @@ template <>
 struct ScalarTraits<ofp::IPv6Endpoint> {
   static void output(const ofp::IPv6Endpoint &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,

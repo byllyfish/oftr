@@ -2,7 +2,6 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/logger.h"
-#include "llvm/Support/raw_ostream.h"
 #include "ofp/timestamp.h"
 
 using namespace ofp::log;

@@ -170,7 +170,8 @@ TEST(ipv6address, invalid2) {
 TEST(ipv6address, stream) {
   IPv6Address ip{"2000::1"};
 
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << ip;
   EXPECT_EQ("2000::1", oss.str());
 }

@@ -43,6 +43,8 @@ class MacAddress {
 
  private:
   ArrayType addr_;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const MacAddress &value);
 };
 
 static_assert(sizeof(MacAddress) == 6, "Unexpected size.");
@@ -50,10 +52,6 @@ static_assert(alignof(MacAddress) == 1, "Unexpected alignment.");
 static_assert(IsStandardLayout<MacAddress>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<MacAddress>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const MacAddress &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

@@ -52,6 +52,8 @@ class IPv6Endpoint {
  private:
   IPv6Address addr_;
   UInt16 port_ = 0;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Endpoint &value);
 };
 
 static_assert(alignof(IPv6Endpoint) == 2, "Unexpected alignment");
