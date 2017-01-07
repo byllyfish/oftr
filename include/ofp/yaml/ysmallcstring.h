@@ -13,7 +13,7 @@ template <size_t Size>
 struct ScalarTraits<ofp::SmallCString<Size>> {
   static void output(const ofp::SmallCString<Size> &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,

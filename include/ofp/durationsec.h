@@ -23,7 +23,9 @@ public:
     
 private:
     Big32 sec_;
-    Big32 nsec_;    
+    Big32 nsec_;
+
+    friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const DurationSec &value); 
 };
 
 static_assert(sizeof(DurationSec) == 8, "Unexpected size.");

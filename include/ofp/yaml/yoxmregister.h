@@ -13,7 +13,7 @@ template <>
 struct ScalarTraits<ofp::OXMRegister> {
   static void output(const ofp::OXMRegister &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,

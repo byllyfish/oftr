@@ -70,6 +70,10 @@ class LLDPValue {
     std::memcpy(mutableData(), data, len);
     resize(len);
   }
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const LLDPValue &value) {
+    return os << value.toString();
+  }
 };
 
 }  // namespace ofp

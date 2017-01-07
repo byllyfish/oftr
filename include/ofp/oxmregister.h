@@ -48,7 +48,14 @@ class OXMRegister {
   UInt16 nbits_ = 0;
 
   UInt16 maxBits() const { return type_.oxmSize() * 8; }
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const OXMRegister &value) {
+    return os << value.toString();
+  }
 };
+
+static_assert(sizeof(OXMRegister) == 8, "Unexpected size.");
+static_assert(alignof(OXMRegister) == 4, "Unexpected alignment.");
 
 }  // namespace ofp
 

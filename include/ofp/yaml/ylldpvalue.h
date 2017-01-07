@@ -13,7 +13,7 @@ template <ofp::LLDPType Type>
 struct ScalarTraits<ofp::LLDPValue<Type>> {
   static void output(const ofp::LLDPValue<Type> &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
