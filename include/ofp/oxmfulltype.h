@@ -47,7 +47,7 @@ class OXMFullType {
 
 OFP_END_IGNORE_PADDING
 
-inline std::ostream &operator<<(std::ostream &os, const OXMFullType &type) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const OXMFullType &type) {
   return os << "[OXMFullType " << type.type() << "," << type.experimenter()
             << "," << static_cast<int>(type.internalID()) << "]";
 }

@@ -23,10 +23,10 @@ static void buf_set(libofp_buffer *buf, const llvm::StringRef &val) {
 
 void libofp_version(libofp_buffer *result) {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
 
   oss << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7) << ")";
-
   oss << "  <" << LIBOFP_GITHUB_URL << ">";
 
   buf_set(result, oss.str());

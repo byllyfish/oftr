@@ -119,8 +119,10 @@ class ByteList {
 
 static_assert(IsConvertible<ByteRange, ByteList>(), "Expected conversion.");
 
-/// \brief Write buffer to stream in hexadecimal format.
-std::ostream &operator<<(std::ostream &os, const ByteList &value);
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const ByteList &value) {
+  return os << "[ByteList size=" << value.size()
+            << " data=" << RawDataToHex(value.data(), value.size()) << "]";
+}
 
 inline std::ostream &operator<<(std::ostream &os, const ByteList &value) {
   return os << "[ByteList size=" << value.size()

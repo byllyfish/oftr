@@ -112,7 +112,7 @@ enum OFPType : UInt8 {
   OFPT_RAW_MESSAGE = 0xFA
 };
 
-std::ostream &operator<<(std::ostream &os, OFPType type);
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, OFPType type);
 
 enum OFPBufferNo : UInt32 { OFP_NO_BUFFER = 0xFFFFFFFFUL };
 
@@ -289,7 +289,7 @@ enum OFPMultipartType : UInt16 {
   OFPMP_EXPERIMENTER = 0xffff
 };
 
-std::ostream &operator<<(std::ostream &os, OFPMultipartType type);
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, OFPMultipartType type);
 
 enum OFPInstructionType : UInt16 {
   OFPIT_NONE = 0,

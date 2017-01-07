@@ -100,15 +100,16 @@ class Message {
   // dest, filename, etc.) It is *not* owned by the message object.
   MessageInfo *info_ = nullptr;
 
-  friend std::ostream &operator<<(std::ostream &os, const Message &msg);
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const Message &msg) {
+    return os << msg.buf_;
+  }
+
+  friend std::ostream &operator<<(std::ostream &os, const Message &msg) {
+    return os << msg.buf_;
+  }
+
   friend class Normalize;
 };
-
-std::ostream &operator<<(std::ostream &os, const Message &msg);
-
-inline std::ostream &operator<<(std::ostream &os, const Message &msg) {
-  return os << msg.buf_;
-}
 
 // Provides convenient implementation of message cast.
 template <class MsgType>

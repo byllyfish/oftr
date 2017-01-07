@@ -4,7 +4,6 @@
 #ifndef OFP_LOG_H_
 #define OFP_LOG_H_
 
-#include <sstream>
 #include "ofp/logger.h"
 
 namespace llvm {
@@ -22,37 +21,49 @@ namespace log {
 namespace detail {
 
 template <class T1, class T2>
-std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p) {
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const std::pair<T1, T2> &p) {
   return os << '{' << p.first << ": " << p.second << '}';
 }
 
-inline std::ostream &operator<<(std::ostream &os, const std::error_code &e) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const std::error_code &e) {
   return os << "{msg: " << e.message() << ", err: " << e.value() << '}';
 }
 
 // Print out UInt8 as an integer, not the char value.
-inline std::ostream &operator<<(std::ostream &os, UInt8 n) {
-  return os << static_cast<int>(n);
-}
+//inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, UInt8 n) {
+//  return os << static_cast<int>(n);
+//}
 
 template <class Type>
-void write_(std::ostream &os, const Type &value1) {
+void write_(llvm::raw_ostream &os, const Type &value1) {
   os << value1;
 }
 
-inline void write_(std::ostream &os, const char *value1) {
+inline void write_(llvm::raw_ostream &os, const char *value1) {
   os << value1;
+}
+
+inline void write_(llvm::raw_ostream &os, UInt8 value1) {
+  // Print out UInt8 as an integer, not the char value.
+  os << static_cast<unsigned>(value1);
 }
 
 template <class Type, class... Args>
-void write_(std::ostream &os, const Type &value1, const Args &... args) {
+void write_(llvm::raw_ostream &os, const Type &value1, const Args &... args) {
   os << value1 << ' ';
   write_(os, args...);
 }
 
 template <class... Args>
-void write_(std::ostream &os, const char *value1, const Args &... args) {
+void write_(llvm::raw_ostream &os, const char *value1, const Args &... args) {
   os << value1 << ' ';
+  write_(os, args...);
+}
+
+template <class... Args>
+void write_(llvm::raw_ostream &os, UInt8 value1, const Args &... args) {
+  // Print out UInt8 as an integer, not the char value.
+  os << static_cast<int>(value1) << ' ';
   write_(os, args...);
 }
 
@@ -60,9 +71,10 @@ template <class... Args>
 void write_(Level level, const Args &... args) {
 // Logging is disabled when building oxm helper tools.
 #if !defined(LIBOFP_LOGGING_DISABLED)
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   write_(oss, args...);
-  std::string buf = oss.str();
+  oss.flush();
   GLOBAL_Logger->write(level, buf.data(), buf.size());
 #endif  // !defined(LIBOFP_LOGGING_DISABLED)
 }

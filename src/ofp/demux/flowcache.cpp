@@ -5,6 +5,7 @@
 #include <iomanip>        // for stats
 #include <map>            // for stats
 #include <unordered_set>  // for stats
+#include "llvm/Support/Format.h"
 
 using namespace ofp;
 using namespace ofp::demux;
@@ -154,7 +155,8 @@ UInt64 FlowCache::assignSessionID() {
 }
 
 std::string FlowCache::toString() const {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   for (const auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;
@@ -166,7 +168,8 @@ std::string FlowCache::toString() const {
 }
 
 std::string FlowCache::stats() const {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << "FlowCache size=" << cache_.size()
       << " bucket_count=" << cache_.bucket_count()
       << " load_factor=" << cache_.load_factor()
@@ -180,7 +183,7 @@ std::string FlowCache::stats() const {
   }
 
   for (const auto &iter : histogram) {
-    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+    oss << llvm::format_decimal(iter.first, 2) << ": " << iter.second << '\n';
   }
 
   // Hash all the addresses into an unordered set.
@@ -203,7 +206,7 @@ std::string FlowCache::stats() const {
   }
 
   for (const auto &iter : histogram) {
-    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+    oss << llvm::format_decimal(iter.first, 2) << ": " << iter.second << '\n';
   }
 
   return oss.str();

@@ -330,7 +330,8 @@ void Help::addFieldSchemas() {
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
 
-    std::ostringstream oss;
+    std::string buf;
+    llvm::raw_string_ostream oss{buf};
     oss << "{Field/" << info->name << "}\n";
     oss << "field: " << info->name << '\n';
     oss << "value: " << translateFieldType(info->type) << '\n';

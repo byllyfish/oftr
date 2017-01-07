@@ -21,7 +21,7 @@ UInt16 ofp::OFPGetDefaultPort() {
 static const char *toCString(OFPType type);
 static const char *toCString(OFPMultipartType type);
 
-std::ostream &ofp::operator<<(std::ostream &os, OFPType type) {
+llvm::raw_ostream &ofp::operator<<(llvm::raw_ostream &os, OFPType type) {
   const char *s = toCString(type);
   if (s) {
     return os << s;
@@ -29,7 +29,7 @@ std::ostream &ofp::operator<<(std::ostream &os, OFPType type) {
   return os << '[' << static_cast<int>(type) << ']';
 }
 
-std::ostream &ofp::operator<<(std::ostream &os, OFPMultipartType type) {
+llvm::raw_ostream &ofp::operator<<(llvm::raw_ostream &os, OFPMultipartType type) {
   const char *s = toCString(type);
   if (s) {
     return os << s;

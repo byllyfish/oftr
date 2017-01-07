@@ -15,7 +15,8 @@ namespace llvm {
 namespace yaml {
 
 std::string primitive_to_json(JsonByteRange r) {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   if (ofp::GLOBAL_ARG_MongoDBCompatible) {
     oss << "{\"$binary\":\""
         << ofp::RawDataToBase64(r.value.data(), r.value.size())

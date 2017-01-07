@@ -78,10 +78,8 @@ typename Value::NativeType OXMRange::get() const {
   return NativeType{};
 }
 
-std::ostream &operator<<(std::ostream &stream, const OXMRange &range);
-
-inline std::ostream &operator<<(std::ostream &stream, const OXMRange &range) {
-  return stream << "[OXMRange size=" << range.size()
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const OXMRange &range) {
+  return os << "[OXMRange size=" << range.size()
                 << " data=" << RawDataToHex(range.data(), range.size()) << ']';
 }
 

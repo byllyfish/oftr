@@ -301,7 +301,8 @@ void MessageSource::outputWrite(const IPv6Endpoint &src,
     return;
 
   // Construct filename "$outputDir/_tcp-$session-$src-$dst"
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << outputDir_ << "/_tcp-" << flow.sessionID() << '-' << src << '-' << dst;
   auto filename = oss.str();
 

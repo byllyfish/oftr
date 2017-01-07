@@ -40,7 +40,8 @@ std::string Error::errorText() const {
   if (data[0] <= OFP_VERSION_MAX_ALLOWED) {
     OFPType msgType = Header::translateType(data[0], data[1], OFP_VERSION_4);
     if (msgType != OFPT_UNSUPPORTED) {
-      std::stringstream ss;
+      std::string buf;
+      llvm::raw_string_ostream ss{buf};
       ss << "Type: " << msgType;
       if (msgType == OFPT_MULTIPART_REQUEST ||
           msgType == OFPT_MULTIPART_REPLY) {

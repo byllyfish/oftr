@@ -119,7 +119,8 @@ std::string SegmentCache::toString() const {
   //            "[segment1)...[segmentN)*=size"
   //            "[segment)*"
   // (empty)    ""
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   size_t sum = 0;
   for (const auto &seg : segments_) {
     oss << SegmentToString(seg.begin(), seg.end(), seg.final());
@@ -265,7 +266,8 @@ void SegmentCache::addMissingData(UInt32 end, size_t maxMissingBytes) {
 /// The asterisk indicates the final segment. Empty segments are described with
 /// a single number.
 std::string ofp::demux::SegmentToString(UInt32 begin, UInt32 end, bool final) {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   if (begin != end) {
     oss << "[" << begin << "," << end << ")";
   } else {
