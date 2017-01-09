@@ -76,3 +76,15 @@ TEST(datapathid, hash) {
   EXPECT_EQ(0x63511356, hasher(b) & 0xffffffff);
   EXPECT_EQ(0xeff070c0, hasher(c) & 0xffffffff);
 }
+
+TEST(datapathid, stream) {
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+
+  DatapathID a{"00:01:02:a3:04:00:00:f1"};
+  DatapathID b;
+
+  oss << a << ',' << b << '.';
+
+  EXPECT_EQ("00:01:02:a3:04:00:00:f1,00:00:00:00:00:00:00:00.", oss.str());
+}
