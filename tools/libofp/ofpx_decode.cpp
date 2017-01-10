@@ -37,16 +37,12 @@ int Decode::run(int argc, const char *const *argv) {
   }
 
   // Set up output stream.
-  std::ofstream outStream;
-  if (outputFile_.empty()) {
-    output_ = &std::cout;
-  } else {
-    outStream.open(outputFile_);
-    if (!outStream) {
-      std::cerr << "Error: opening file for output " << outputFile_ << '\n';
-      return static_cast<int>(ExitStatus::FileOpenFailed);
-    }
-    output_ = &outStream;
+  using namespace llvm::sys;
+  std::error_code err;
+  output_.reset(new llvm::raw_fd_ostream{outputFile_, err, fs::F_None});
+  if (err) {
+    llvm::errs() << "Error: opening file for output " << outputFile_ << '\n';
+    return static_cast<int>(ExitStatus::FileOpenFailed);
   }
 
   // Put opening '[' only if format is json array.
@@ -79,13 +75,13 @@ bool Decode::validateCommandLineArguments() {
   // It's an error to specify any input files in combination with live packet
   // capture.
   if (!pcapDevice_.empty() && !inputFiles_.empty()) {
-    std::cerr << "Error: File list provided with live packet capture\n";
+    llvm::errs() << "Error: File list provided with live packet capture\n";
     return false;
   }
 
   // If `pcapOutputDir_` is specified, it must exist.
   if (!pcapOutputDir_.empty() && !llvm::sys::fs::is_directory(pcapOutputDir_)) {
-    std::cerr << "Error: Directory " << pcapOutputDir_ << " does not exist\n";
+    llvm::errs() << "Error: Directory " << pcapOutputDir_ << " does not exist\n";
     return false;
   }
 
@@ -93,7 +89,7 @@ bool Decode::validateCommandLineArguments() {
   if (!pktWriteFile_.empty()) {
     pktSinkFile_ = ofp::MakeUniquePtr<ofp::demux::PktSink>();
     if (!pktSinkFile_->openFile(pktWriteFile_)) {
-      std::cerr << "Error: " << pktSinkFile_->error() << '\n';
+      llvm::errs() << "Error: " << pktSinkFile_->error() << '\n';
       return false;
     }
   }
@@ -101,6 +97,11 @@ bool Decode::validateCommandLineArguments() {
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {
     inputFiles_.push_back("-");
+  }
+
+  // If output file is empty, add "-" to indicate stdout.
+  if (outputFile_.empty()) {
+    outputFile_ = "-";
   }
 
   // --json-array implies --json.
@@ -145,7 +146,7 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
   if (filename != "-") {
     // Check if filename is a directory.
     if (llvm::sys::fs::is_directory(filename)) {
-      std::cerr << "Error: can't open directory: " << filename << '\n';
+      llvm::errs() << "Error: can't open directory: " << filename << '\n';
       return ExitStatus::FileOpenFailed;
     }
     file.open(filename, std::ifstream::binary);
@@ -155,7 +156,7 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
   }
 
   if (!*input) {
-    std::cerr << "Error: opening file " << filename << '\n';
+    llvm::errs() << "Error: opening file " << filename << '\n';
     return ExitStatus::FileOpenFailed;
   }
 
@@ -164,13 +165,13 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
   if (useFindx_) {
     // There is no .findx file for stdin.
     if (filename == "-") {
-      std::cerr << "Error: stdin has no index file";
+      llvm::errs() << "Error: stdin has no index file";
       return ExitStatus::FileOpenFailed;
     }
 
     std::ifstream index(filename + ".findx");
     if (!index) {
-      std::cerr << "Error: opening index file " << filename << ".findx\n";
+      llvm::errs() << "Error: opening index file " << filename << ".findx\n";
       return ExitStatus::FileOpenFailed;
     }
 
@@ -261,7 +262,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
     // Parse line to obtain position, timestamp and length.
     if (!parseIndexLine(line, &pos, &timestamp, &length)) {
-      std::cerr << "Error in parsing index: " << line
+      llvm::errs() << "Error in parsing index: " << line
                 << " file=" << currentFilename_ << '\n';
       return ExitStatus::IndexReadFailed;
     }
@@ -272,13 +273,13 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
       // N.B. Ignore the timestamp when we check for duplicate lines in the
       // .findx files; the timestamps are always slightly different.
       if (!(pos == previousPos && pos + length == expectedPos)) {
-        std::cerr << "Error in index; data offset is backwards: " << line
+        llvm::errs() << "Error in index; data offset is backwards: " << line
                   << " file=" << currentFilename_ << '\n';
       }
       continue;
 
     } else if (pos > expectedPos) {
-      std::cerr << "Gap in stream (" << pos - expectedPos
+      llvm::errs() << "Gap in stream (" << pos - expectedPos
                 << " bytes) file=" << currentFilename_ << '\n';
       auto jump = ofp::Signed_cast(pos - expectedPos);
       if (!input.ignore(jump)) {
@@ -290,7 +291,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
     if (timestamp >= lastTimestamp) {
       lastTimestamp = timestamp;
     } else {
-      std::cerr << "Error in index; timestamp smaller than last seen: " << line
+      llvm::errs() << "Error in index; timestamp smaller than last seen: " << line
                 << " file=" << currentFilename_ << '\n';
     }
 
@@ -310,10 +311,10 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
     // Log when messages do not align to packet 'boundaries'.
     if (buffer.size() < sizeof(ofp::Header)) {
-      std::cerr << "Header fragmented (" << buffer.size() << " bytes) "
+      llvm::errs() << "Header fragmented (" << buffer.size() << " bytes) "
                 << currentFilename_ << '\n';
     } else if (buffer.header()->length() > buffer.size()) {
-      std::cerr << "Message fragmented (" << length << " of "
+      llvm::errs() << "Message fragmented (" << length << " of "
                 << buffer.header()->length() << " bytes) in "
                 << currentFilename_ << '\n';
     }
@@ -327,8 +328,8 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
       if (message.size() < sizeof(ofp::Header)) {
         // If message size is less than 8 bytes, report an error.
-        std::cerr << "Filename: " << currentFilename_ << ": " << line << '\n';
-        std::cerr << "Error: Invalid message header length: " << message.size()
+        llvm::errs() << "Filename: " << currentFilename_ << ": " << line << '\n';
+        llvm::errs() << "Error: Invalid message header length: " << message.size()
                   << " bytes\n";
         return ExitStatus::DecodeFailed;
       }
@@ -347,7 +348,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 
   // Check that we reached end of index file without error.
   if (!index.eof()) {
-    std::cerr << "Error: Error reading from index file " << currentFilename_
+    llvm::errs() << "Error: Error reading from index file " << currentFilename_
               << ".findx\n";
     return ExitStatus::IndexReadFailed;
   }
@@ -356,7 +357,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
   // index file is not synced with the input file.
   char ch;
   if (input.get(ch)) {
-    std::cerr << "Error: Unexpected data in file " << currentFilename_ << '\n';
+    llvm::errs() << "Error: Unexpected data in file " << currentFilename_ << '\n';
     return ExitStatus::MessageReadFailed;
   }
 
@@ -369,7 +370,7 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
                                 pcapSkipPayload_, pcapMaxMissingBytes_};
 
   if (!pcap.openDevice(device.c_str(), pcapFilter_)) {
-    std::cerr << "Error: " << pcap.error() << '\n';
+    llvm::errs() << "Error: " << pcap.error() << '\n';
     return ExitStatus::FileOpenFailed;
   }
 
@@ -394,7 +395,7 @@ ExitStatus Decode::decodePcapFiles() {
   for (auto &filename : files) {
     // Try to read the file as a .pcap file.
     if (!pcap.openFile(filename, pcapFilter_)) {
-      std::cerr << "Error: " << filename << ": " << pcap.error() << '\n';
+      llvm::errs() << "Error: " << filename << ": " << pcap.error() << '\n';
       return ExitStatus::FileOpenFailed;
     }
 
@@ -414,15 +415,15 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
   if (!input.eof()) {
     // Premature I/O error; we're not at EOF.
     // FIXME: print out the error
-    std::cerr << "Filename: " << currentFilename_ << ":\n";
-    std::cerr << "Error: I/O error reading from file\n";
+    llvm::errs() << "Filename: " << currentFilename_ << ":\n";
+    llvm::errs() << "Error: I/O error reading from file\n";
     return ExitStatus::MessageReadFailed;
   } else if (input.gcount() != readLen && !(header && input.gcount() == 0)) {
     // EOF and insufficient input remaining. N.B. Zero bytes of header read at
     // EOF is a normal exit condition.
-    std::cerr << "Filename: " << currentFilename_ << ":\n";
+    llvm::errs() << "Filename: " << currentFilename_ << ":\n";
     const char *what = header ? "header" : "body";
-    std::cerr << "Error: Only " << input.gcount() << " bytes read of message "
+    llvm::errs() << "Error: Only " << input.gcount() << " bytes read of message "
               << what << ". Expected to read " << readLen << " bytes.\n";
     return ExitStatus::MessageReadFailed;
   } else {
@@ -446,9 +447,9 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     }
 
     if (!silentError_) {
-      std::cerr << "Filename: " << currentFilename_ << '\n';
-      std::cerr << "Error: Decode failed: " << decoder.error() << '\n';
-      std::cerr << *originalMessage << '\n';
+      llvm::errs() << "Filename: " << currentFilename_ << '\n';
+      llvm::errs() << "Error: Decode failed: " << decoder.error() << '\n';
+      llvm::errs() << *originalMessage << '\n';
     }
 
     return ExitStatus::DecodeFailed;
@@ -458,10 +459,10 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     // There was no problem decoding the message, but we are expecting the data
     // to be invalid (because we are fuzz testing). Report this as an error.
 
-    std::cerr << "Filename: " << currentFilename_ << '\n';
-    std::cerr
+    llvm::errs() << "Filename: " << currentFilename_ << '\n';
+    llvm::errs()
         << "Error: Decode succeeded when --invert-check flag is specified.\n";
-    std::cerr << *originalMessage << '\n';
+    llvm::errs() << *originalMessage << '\n';
     return ExitStatus::DecodeSucceeded;
   }
 
@@ -474,6 +475,7 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
       *output_ << '\n';
       jsonArrayNeedComma_ = true;
     }
+    output_->flush();
   }
 
   if (verifyOutput_) {
@@ -484,8 +486,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     ofp::yaml::Encoder encoder{decoder.result(), false};
 
     if (!encoder.error().empty()) {
-      std::cerr << "Filename: " << currentFilename_ << '\n';
-      std::cerr << "Error: Decode succeeded but encode failed: "
+      llvm::errs() << "Filename: " << currentFilename_ << '\n';
+      llvm::errs() << "Error: Decode succeeded but encode failed: "
                 << encoder.error() << '\n';
       return ExitStatus::VerifyOutputFailed;
     }
@@ -515,8 +517,8 @@ bool Decode::equalMessages(ofp::ByteRange origData,
 
   // First compare the size of the messages.
   if (origData.size() != newData.size()) {
-    std::cerr << "Filename: " << currentFilename_ << '\n';
-    std::cerr << "Error: Encode yielded different size data: " << newData.size()
+    llvm::errs() << "Filename: " << currentFilename_ << '\n';
+    llvm::errs() << "Error: Encode yielded different size data: " << newData.size()
               << " vs. " << origData.size() << '\n'
               << newData << '\n'
               << origData << '\n';
@@ -529,8 +531,8 @@ bool Decode::equalMessages(ofp::ByteRange origData,
   if (std::memcmp(origData.data(), newData.data(), newData.size()) != 0) {
     size_t diffOffset =
         findDiffOffset(origData.data(), newData.data(), newData.size());
-    std::cerr << "Filename: " << currentFilename_ << '\n';
-    std::cerr << "Error: Encode yielded different data at byte offset "
+    llvm::errs() << "Filename: " << currentFilename_ << '\n';
+    llvm::errs() << "Error: Encode yielded different data at byte offset "
               << diffOffset << ":\n"
               << newData << '\n'
               << origData << '\n';
@@ -614,7 +616,7 @@ bool Decode::parseFilename(const std::string &filename,
   // Split the remaining portion on the hyphen.
   auto pair = basename.split('-');
   if (pair.second.empty()) {
-    std::cerr << "parseFilename: Unexpected filename format `" << basename
+    llvm::errs() << "parseFilename: Unexpected filename format `" << basename
               << "`\n";
     return false;
   }
@@ -623,13 +625,13 @@ bool Decode::parseFilename(const std::string &filename,
   ofp::IPv6Endpoint dest;
 
   if (!source.parse(pair.first)) {
-    std::cerr << "parseFilename: Unable to parse source endpoint `"
+    llvm::errs() << "parseFilename: Unable to parse source endpoint `"
               << pair.first << "`\n";
     return false;
   }
 
   if (!dest.parse(pair.second)) {
-    std::cerr << "parseFilename: Unable to parse destination endpoint `"
+    llvm::errs() << "parseFilename: Unable to parse destination endpoint `"
               << pair.first << "`\n";
     return false;
   }

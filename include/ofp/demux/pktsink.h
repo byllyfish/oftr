@@ -22,7 +22,7 @@ namespace demux {
 ///     ByteRange data = {"abcdefabcdef14", 14};
 ///     sink.write(data, 1500);
 ///   } else {
-///     std::cerr << sink.error();
+///     llvm::errs() << sink.error();
 ///   }
 
 OFP_BEGIN_IGNORE_PADDING

@@ -8,7 +8,7 @@
 using namespace ofp;
 
 static void diagnosticHandler(const llvm::SMDiagnostic &diag, void *context) {
-  std::cerr << diag.getMessage().str() << '\n';
+  llvm::errs() << diag.getMessage().str() << '\n';
 }
 
 TEST(ymatch, decodeMatchYaml) {

@@ -23,16 +23,12 @@ int Encode::run(int argc, const char *const *argv) {
   }
 
   // Set up output stream.
-  std::ofstream outStream;
-  if (outputFile_.empty()) {
-    output_ = &std::cout;
-  } else {
-    outStream.open(outputFile_);
-    if (!outStream) {
-      std::cerr << "Error: opening file for output " << outputFile_ << '\n';
-      return static_cast<int>(ExitStatus::FileOpenFailed);
-    }
-    output_ = &outStream;
+  using namespace llvm::sys;
+  std::error_code err;
+  output_.reset(new llvm::raw_fd_ostream{outputFile_, err, fs::F_None});
+  if (err) {
+    llvm::errs() << "Error: opening file for output " << outputFile_ << '\n';
+    return static_cast<int>(ExitStatus::FileOpenFailed);
   }
 
   return static_cast<int>(encodeFiles());
@@ -42,6 +38,11 @@ bool Encode::validateCommandLineArguments() {
   // If there are no input files, add "-" to indicate stdin.
   if (inputFiles_.empty()) {
     inputFiles_.push_back("-");
+  }
+
+  // If output file is empty, use "-" to indicate stdout.
+  if (outputFile_.empty()) {
+    outputFile_ = "-";
   }
 
   // Set up `readMessage` function.
@@ -77,7 +78,7 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
   if (filename != "-") {
     // Check if filename is a directory.
     if (llvm::sys::fs::is_directory(filename)) {
-      std::cerr << "Error: can't open directory: " << filename << '\n';
+      llvm::errs() << "Error: can't open directory: " << filename << '\n';
       return ExitStatus::FileOpenFailed;
     }
     file.open(filename);
@@ -94,7 +95,7 @@ ExitStatus Encode::encodeFile(const std::string &filename) {
     currentFilename_ = "";
   } else {
     result = ExitStatus::FileOpenFailed;
-    std::cerr << "Error: opening file " << filename << '\n';
+    llvm::errs() << "Error: opening file " << filename << '\n';
   }
 
   return result;
@@ -118,7 +119,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
         *output_ << (json_ ? kNullJsonMessage : kNullYamlMessage);
       }
       if (!silentError_) {
-        std::cerr << err << '\n';
+        llvm::errs() << err << '\n';
       }
       if (!keepGoing_) {
         return ExitStatus::EncodeFailed;
@@ -138,7 +139,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
           *output_ << (json_ ? kNullJsonMessage : kNullYamlMessage);
         }
         if (!silentError_) {
-          std::cerr << err << '\n';
+          llvm::errs() << err << '\n';
         }
         if (!keepGoing_) {
           return ExitStatus::RoundtripFailed;
@@ -152,11 +153,13 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
     } else if (!silent_) {
       output(encoder.data(), encoder.size());
     }
+
+    output_->flush();
   }
 
   if (!input.eof()) {
     // Premature I/O error; we're not at EOF.
-    std::cerr << "Error: Error reading from file " << currentFilename_ << '\n';
+    llvm::errs() << "Error: Error reading from file " << currentFilename_ << '\n';
     return ExitStatus::MessageReadFailed;
   }
 
@@ -183,6 +186,6 @@ void Encode::output(const void *data, size_t length) {
 
   } else {
     // Write binary message to stdout.
-    output_->write(static_cast<const char *>(data), ofp::Signed_cast(length));
+    output_->write(static_cast<const char *>(data), length);
   }
 }

@@ -70,7 +70,7 @@ class Encode : public Subprogram {
 
  private:
   std::string currentFilename_;
-  std::ostream *output_ = nullptr;
+  std::unique_ptr<llvm::raw_ostream> output_;
   int lineNumber_ = 0;
   ofp::yaml::GetMsgFunction readMessage_ = nullptr;
 

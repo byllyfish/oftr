@@ -80,7 +80,7 @@ class Decode : public Subprogram {
 
  private:
   std::string currentFilename_;
-  std::ostream *output_ = nullptr;
+  std::unique_ptr<llvm::raw_ostream> output_;
   ofp::MessageInfo sessionInfo_;
   bool jsonArrayNeedComma_ = false;
 

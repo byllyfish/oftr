@@ -454,14 +454,14 @@ void Help::printSchema(const std::string &key) {
       if (depSchema) {
         depSchema->print(std::cout, brief_);
       } else {
-        std::cerr << "Unknown dependent schema '" << s << "'\n";
+        llvm::errs() << "Unknown dependent schema '" << s << "'\n";
       }
     }
 
   } else {
     schema = findNearestSchema(key);
     if (schema) {
-      std::cerr << "Unknown command line argument '" << key
+      llvm::errs() << "Unknown command line argument '" << key
                 << "'. Did you mean '" << schema->name() << "'?" << '\n';
     }
   }
@@ -483,14 +483,14 @@ void Help::dumpSchemaAll() {
 
     for (auto &s : schema->dependsOnSchemas()) {
       if (!findSchema(s)) {
-        std::cerr << "Unknown dependent schema '" << s << "'\n";
+        llvm::errs() << "Unknown dependent schema '" << s << "'\n";
         missingDependentSchemas = true;
       }
     }
   }
 
   if (missingDependentSchemas) {
-    std::cerr << "Some dependent schemas are missing.\n";
+    llvm::errs() << "Some dependent schemas are missing.\n";
     ::exit(static_cast<int>(ExitStatus::MissingDependentSchemas));
   }
 }
