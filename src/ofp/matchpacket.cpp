@@ -76,7 +76,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
   if (ethType == DATALINK_8021Q && length >= pkt::k8021QHeaderSize) {
     UInt16 tag = *Big16_cast(pkt);
     match_.add(OFB_VLAN_VID((tag & 0x0FFF) | OFPVID_PRESENT));
-    match_.add(OFB_VLAN_PCP(tag >> 12));
+    match_.add(OFB_VLAN_PCP(tag >> 13));
 
     ethType = *Big16_cast(pkt + 2);
 
