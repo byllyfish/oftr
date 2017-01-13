@@ -66,13 +66,28 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
 
   match_.add(OFB_ETH_DST(eth->dst));
   match_.add(OFB_ETH_SRC(eth->src));
-  match_.add(OFB_ETH_TYPE(eth->type));
 
   pkt += sizeof(pkt::Ethernet);
   length -= sizeof(pkt::Ethernet);
   offset_ += sizeof(pkt::Ethernet);
 
-  switch (eth->type) {
+  // Handle 802.1Q tag: ethType = 0x8100.
+  UInt16 ethType = eth->type;
+  if (ethType == DATALINK_8021Q && length >= pkt::k8021QHeaderSize) {
+    UInt16 tag = *Big16_cast(pkt);
+    match_.add(OFB_VLAN_VID((tag & 0x0FFF) | OFPVID_PRESENT));
+    match_.add(OFB_VLAN_PCP(tag >> 12));
+
+    ethType = *Big16_cast(pkt + 2);
+
+    pkt += pkt::k8021QHeaderSize;
+    length -= pkt::k8021QHeaderSize;
+    offset_ -= pkt::k8021QHeaderSize;
+  }
+
+  match_.add(OFB_ETH_TYPE(ethType));
+
+  switch (ethType) {
     case DATALINK_ARP:
       decodeARP(pkt, length);
       break;

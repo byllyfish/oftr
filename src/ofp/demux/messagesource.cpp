@@ -13,9 +13,6 @@
 using namespace ofp;
 using namespace ofp::demux;
 
-const UInt16 DATALINK_8021Q = 0x8100;
-const size_t k8021QHeaderSize = 4;
-
 static void sEthernetCallback(Timestamp ts, ByteRange data, unsigned len,
                               void *context) {
   MessageSource *src = reinterpret_cast<MessageSource *>(context);
@@ -95,10 +92,10 @@ void MessageSource::submitEthernet(const UInt8 *data, size_t length) {
   UInt16 ethType = eth->type;
 
   // Ignore 802.1Q header and vlan.
-  if (ethType == DATALINK_8021Q && length >= k8021QHeaderSize) {
+  if (ethType == DATALINK_8021Q && length >= pkt::k8021QHeaderSize) {
     ethType = *Big16_cast(data + 2);
-    data += k8021QHeaderSize;
-    length -= k8021QHeaderSize;
+    data += pkt::k8021QHeaderSize;
+    length -= pkt::k8021QHeaderSize;
   }
 
   if (ethType == DATALINK_IPV4) {
