@@ -604,8 +604,6 @@ msg:
       value:           10.0.0.1
     - field:           IPV4_DST
       value:           10.0.0.2
-    - field:           NX_IP_FRAG
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x40
     - field:           ICMPV4_TYPE

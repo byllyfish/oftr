@@ -82,7 +82,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
 
     pkt += pkt::k8021QHeaderSize;
     length -= pkt::k8021QHeaderSize;
-    offset_ -= pkt::k8021QHeaderSize;
+    offset_ += pkt::k8021QHeaderSize;
   }
 
   match_.add(OFB_ETH_TYPE(ethType));
@@ -164,8 +164,9 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   match_.add(OFB_IPV4_SRC{ip->src});
   match_.add(OFB_IPV4_DST{ip->dst});
 
-  if (ip->frag) {
-    match_.add(NXM_NX_IP_FRAG{pkt::nxmFragmentType(ip->frag)});
+  UInt16 frag = ip->frag & 0x3fff;  // ignore DF bit
+  if (frag) {
+    match_.add(NXM_NX_IP_FRAG{pkt::nxmFragmentType(frag)});
   }
 
   match_.add(NXM_NX_IP_TTL{ip->ttl});
