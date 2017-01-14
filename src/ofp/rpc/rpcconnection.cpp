@@ -64,7 +64,8 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     // Send `OFP.MESSAGE` notification event.
     write("{\"params\":");
     write(decoder.result());
-    write(",\"method\":\"OFP.MESSAGE\"}\n");
+    write(",\"method\":\"OFP.MESSAGE\"}");
+    write(std::string{RPC_EVENT_DELIMITER_CHAR});  // delimiter
 
   } else {
     // Send `CHANNEL_ALERT` notification event.

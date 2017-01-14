@@ -21,6 +21,9 @@ namespace rpc {
 /// The maximum RPC message size is 1MB.
 const size_t RPC_MAX_MESSAGE_SIZE = 1048576;
 
+/// RPC events are delimited by zero byte.
+const char RPC_EVENT_DELIMITER_CHAR = '\x00';
+
 /// RPC Methods
 enum RpcMethod : UInt32 {
   METHOD_LISTEN = 0,    // OFP.LISTEN

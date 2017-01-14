@@ -7,12 +7,6 @@
 
 using ofp::rpc::RpcConnectionStdio;
 
-// The Stdio Text API uses UTF-8 and has JSON events delimited by '\n'. White
-// space characters (SPACE, HT, VT, FF, CR) are permitted. All other control
-// characters are reserved.
-
-const char RPC_EVENT_DELIMITER_CHAR = '\n';
-
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
                                        asio::posix::stream_descriptor output)
