@@ -49,8 +49,13 @@ void RpcConnectionStdio::asyncRead() {
           log_error("RpcConnectionStdio::asyncRead: input too large",
                     RPC_MAX_MESSAGE_SIZE, err);
           rpcRequestTooBig();
-        } else if (err != asio::error::eof &&
-                   err != asio::error::operation_aborted) {
+        } else if (err == asio::error::eof) {
+          // Log warning if there are unread bytes in the buffer.
+          auto bytesUnread = streambuf_.size();
+          if (bytesUnread > 0) {
+            log_warning("RpcConnectionStdio::asyncRead: unread bytes at eof", bytesUnread);
+          }
+        } else if (err != asio::error::operation_aborted) {
           log_error("RpcConnectionStdio::asyncRead error", err);
         }
       });
