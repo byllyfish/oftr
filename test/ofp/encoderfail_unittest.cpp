@@ -523,7 +523,7 @@ TEST(encoderfail, xid_present) {
 }
 
 #if 0
-// TODO(bfish): This test should fail -- properties aren't supported until 
+// TODO(bfish): This test should fail -- properties aren't supported until
 // OpenFlow version 1.4.
 
 TEST(encoderfail, portmodv4_experimenter) {

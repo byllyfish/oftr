@@ -47,7 +47,7 @@ void RpcConnection::onRpcDescription(RpcDescription *desc) {
 
 void RpcConnection::onChannel(Channel *channel, const char *status) {
   RpcChannel notification;
-  notification.params.type = std::string{"CHANNEL_"} + status;
+  notification.params.type = std::string("CHANNEL_") + status;
   notification.params.time = Timestamp::now();
   notification.params.connId = channel->connectionId();
   notification.params.datapathId = channel->datapathId();
@@ -75,7 +75,7 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
     messageAlert.params.connId = channel->connectionId();
     messageAlert.params.datapathId = channel->datapathId();
     messageAlert.params.alert =
-        std::string{"DECODE FAILED: "} + decoder.error();
+        std::string("DECODE FAILED: ") + decoder.error();
     messageAlert.params.data = {message->data(), message->size()};
     rpcReply(&messageAlert);
 
