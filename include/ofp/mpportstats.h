@@ -5,10 +5,10 @@
 #define OFP_MPPORTSTATS_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/durationsec.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
 #include "ofp/propertylist.h"
-#include "ofp/durationsec.h"
 
 namespace ofp {
 

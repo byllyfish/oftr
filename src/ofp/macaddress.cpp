@@ -17,7 +17,7 @@ bool MacAddress::parse(const std::string &s) {
 
 std::string MacAddress::toString() const {
   char buf[sizeof(MacAddress) * 3];
-  return RawDataToHexDelimitedLowercase(addr_, buf); 
+  return RawDataToHexDelimitedLowercase(addr_, buf);
 }
 
 namespace ofp {

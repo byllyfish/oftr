@@ -28,8 +28,8 @@ inline char ToHexLowerCase(UInt8 value) {
 namespace ofp {
 
 template <size_t Length>
-char *RawDataToHexDelimitedLowercase(
-    const std::array<UInt8, Length> &data, char (&buf)[Length*3]) {
+char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
+                                     char (&buf)[Length * 3]) {
   // Output is lower-case hexadecimal and delimited by ':'.
   const UInt8 *e = data.data();
 

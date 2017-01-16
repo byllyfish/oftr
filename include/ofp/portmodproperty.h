@@ -10,7 +10,7 @@ namespace ofp {
 
 // PortModPropertyEthernet needs to be `Copyable` since it is used as an
 // optional property.
-// 
+//
 class PortModPropertyEthernet {
  public:
   constexpr static OFPPortModProperty type() { return OFPPMPT_ETHERNET; }

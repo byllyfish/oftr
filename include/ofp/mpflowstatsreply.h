@@ -5,13 +5,13 @@
 #define OFP_MPFLOWSTATSREPLY_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/durationsec.h"
 #include "ofp/instructionlist.h"
 #include "ofp/instructionrange.h"
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/padding.h"
 #include "ofp/tablenumber.h"
-#include "ofp/durationsec.h"
 
 namespace ofp {
 

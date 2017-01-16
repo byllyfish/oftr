@@ -159,7 +159,8 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
 
   if (!input.eof()) {
     // Premature I/O error; we're not at EOF.
-    llvm::errs() << "Error: Error reading from file " << currentFilename_ << '\n';
+    llvm::errs() << "Error: Error reading from file " << currentFilename_
+                 << '\n';
     return ExitStatus::MessageReadFailed;
   }
 

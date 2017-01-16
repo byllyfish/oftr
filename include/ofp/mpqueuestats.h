@@ -5,9 +5,9 @@
 #define OFP_MPQUEUESTATS_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/durationsec.h"
 #include "ofp/portnumber.h"
 #include "ofp/queuenumber.h"
-#include "ofp/durationsec.h"
 
 namespace ofp {
 

@@ -29,7 +29,8 @@ llvm::raw_ostream &ofp::operator<<(llvm::raw_ostream &os, OFPType type) {
   return os << '[' << static_cast<int>(type) << ']';
 }
 
-llvm::raw_ostream &ofp::operator<<(llvm::raw_ostream &os, OFPMultipartType type) {
+llvm::raw_ostream &ofp::operator<<(llvm::raw_ostream &os,
+                                   OFPMultipartType type) {
   const char *s = toCString(type);
   if (s) {
     return os << s;

@@ -78,7 +78,7 @@ bool IPv4Address::parse(const std::string &s) {
 }
 
 std::string IPv4Address::toString() const {
-  std::string buf;              // FIXME(bfish) - common code...
+  std::string buf;  // FIXME(bfish) - common code...
   llvm::raw_string_ostream oss{buf};
   oss << *this;
   return oss.str();

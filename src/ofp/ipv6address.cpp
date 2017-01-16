@@ -119,7 +119,7 @@ llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Address &value) {
   UInt32 zone = value.isLinkLocal() ? value.zone() : 0;
   if (zone) {
     temp.setZone(0);
-  } 
+  }
 
   char buf[INET6_ADDRSTRLEN];
   const UInt8 *data = temp.toArray().data();
@@ -133,4 +133,3 @@ llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Address &value) {
 }
 
 }  // namespace ofp
-

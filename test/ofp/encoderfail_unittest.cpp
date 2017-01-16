@@ -553,4 +553,4 @@ TEST(encoderfail, portmodv4_experimenter) {
       "",
       encoder.data(), encoder.size());
 }
-#endif //0
+#endif  // 0

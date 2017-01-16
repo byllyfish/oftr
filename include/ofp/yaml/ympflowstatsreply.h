@@ -5,9 +5,9 @@
 #define OFP_YAML_YMPFLOWSTATSREPLY_H_
 
 #include "ofp/mpflowstatsreply.h"
+#include "ofp/yaml/ydurationsec.h"
 #include "ofp/yaml/yflowmod.h"
 #include "ofp/yaml/yinstructions.h"
-#include "ofp/yaml/ydurationsec.h"
 
 namespace llvm {
 namespace yaml {

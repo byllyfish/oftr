@@ -47,7 +47,8 @@ class IPv4Address {
  private:
   ArrayType addr_;
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv4Address &value);
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const IPv4Address &value);
 };
 
 static_assert(sizeof(IPv4Address) == 4, "Unexpected size");

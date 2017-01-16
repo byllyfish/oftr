@@ -4,10 +4,10 @@
 #ifndef OFP_MPMETERSTATS_H_
 #define OFP_MPMETERSTATS_H_
 
+#include "ofp/durationsec.h"
 #include "ofp/meternumber.h"
 #include "ofp/packetcounterlist.h"
 #include "ofp/padding.h"
-#include "ofp/durationsec.h"
 
 namespace ofp {
 

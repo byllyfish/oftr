@@ -41,7 +41,8 @@ class DatapathID {
 
   UInt64 toUInt64() const { return *Interpret_cast<UInt64>(&dpid_); }
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const DatapathID &value);
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const DatapathID &value);
 };
 
 static_assert(sizeof(DatapathID) == 8, "Unexpected size.");

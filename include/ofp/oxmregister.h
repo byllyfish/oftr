@@ -49,7 +49,8 @@ class OXMRegister {
 
   UInt16 maxBits() const { return type_.oxmSize() * 8; }
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const OXMRegister &value) {
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const OXMRegister &value) {
     return os << value.toString();
   }
 };

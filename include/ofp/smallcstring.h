@@ -54,7 +54,8 @@ class SmallCString {
 
   const ArrayType &toArray() const { return str_; }
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const SmallCString &value) {
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const SmallCString &value) {
     return os << value.toString();
   }
 };

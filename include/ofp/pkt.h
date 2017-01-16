@@ -12,11 +12,7 @@
 namespace ofp {
 namespace pkt {
 
-enum {
-  kIPv4Version = 4,
-  kIPv6Version = 6,
-  k8021QHeaderSize = 4
-};
+enum { kIPv4Version = 4, kIPv6Version = 6, k8021QHeaderSize = 4 };
 
 template <class Type>
 struct Castable {

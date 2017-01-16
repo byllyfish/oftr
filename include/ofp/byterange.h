@@ -53,7 +53,8 @@ inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset) {
                             : ByteRange{};
 }
 
-inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const ByteRange &value) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const ByteRange &value) {
   return os << "[ByteRange size=" << value.size()
             << " data=" << RawDataToHex(value.data(), value.size()) << "]";
 }

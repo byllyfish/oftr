@@ -132,11 +132,11 @@ static const char *const kPropertySchemas[] = {
 };
 
 static const char *const kBuiltinTypes[] = {
-    "UInt8",       "UInt16",      "UInt32",       "UInt64",
-    "SInt32",      "String",      "Str16",        "Str32",
-    "Str256",      "HexData",     "DatapathID",   "MacAddress",
-    "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID",
-    "LLDPPortID",  "ActionID",    "FieldID",      "InstructionID",
+    "UInt8",       "UInt16",       "UInt32",       "UInt64",
+    "SInt32",      "String",       "Str16",        "Str32",
+    "Str256",      "HexData",      "DatapathID",   "MacAddress",
+    "IPv4Address", "IPv6Address",  "IPv6Endpoint", "LLDPChassisID",
+    "LLDPPortID",  "ActionID",     "FieldID",      "InstructionID",
     "Timestamp",   "RegisterBits", "DurationSec"};
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
@@ -462,7 +462,7 @@ void Help::printSchema(const std::string &key) {
     schema = findNearestSchema(key);
     if (schema) {
       llvm::errs() << "Unknown command line argument '" << key
-                << "'. Did you mean '" << schema->name() << "'?" << '\n';
+                   << "'. Did you mean '" << schema->name() << "'?" << '\n';
     }
   }
 }

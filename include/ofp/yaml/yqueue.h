@@ -65,7 +65,8 @@ struct MappingTraits<ofp::QueueBuilder> {
     if (maxRate != 0xffff)
       props.add(QueuePropertyMaxRate{maxRate});
 
-    io.mapOptional("properties", Ref_cast<ofp::detail::QueuePropertyList>(props));
+    io.mapOptional("properties",
+                   Ref_cast<ofp::detail::QueuePropertyList>(props));
     msg.setProperties(props.toRange());
   }
 };

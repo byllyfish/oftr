@@ -249,7 +249,8 @@ void UDP_Server::asyncSend() {
         assert(&datagram == &datagrams_.front());
 
         if (err) {
-          log_error("Error sending datagram to", convertEndpoint<udp>(datagram.destination()),
+          log_error("Error sending datagram to",
+                    convertEndpoint<udp>(datagram.destination()),
                     std::make_pair("connid", datagram.connectionId()), err);
         }
         datagrams_.pop_front();

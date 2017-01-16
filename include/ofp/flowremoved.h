@@ -4,11 +4,11 @@
 #ifndef OFP_FLOWREMOVED_H_
 #define OFP_FLOWREMOVED_H_
 
+#include "ofp/durationsec.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/padding.h"
 #include "ofp/protocolmsg.h"
 #include "ofp/tablenumber.h"
-#include "ofp/durationsec.h"
 
 namespace ofp {
 

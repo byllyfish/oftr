@@ -21,16 +21,18 @@ namespace log {
 namespace detail {
 
 template <class T1, class T2>
-llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const std::pair<T1, T2> &p) {
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                              const std::pair<T1, T2> &p) {
   return os << '{' << p.first << ": " << p.second << '}';
 }
 
-inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const std::error_code &e) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const std::error_code &e) {
   return os << "{msg: " << e.message() << ", err: " << e.value() << '}';
 }
 
 // Print out UInt8 as an integer, not the char value.
-//inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, UInt8 n) {
+// inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, UInt8 n) {
 //  return os << static_cast<int>(n);
 //}
 

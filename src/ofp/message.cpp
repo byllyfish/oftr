@@ -7,10 +7,10 @@
 #include "ofp/flowmod.h"
 #include "ofp/instructionrange.h"
 #include "ofp/instructions.h"
+#include "ofp/normalize.h"
 #include "ofp/originalmatch.h"
 #include "ofp/portstatus.h"
 #include "ofp/sys/connection.h"
-#include "ofp/normalize.h"
 
 using namespace ofp;
 

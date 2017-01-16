@@ -71,7 +71,8 @@ class LLDPValue {
     resize(len);
   }
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const LLDPValue &value) {
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const LLDPValue &value) {
     return os << value.toString();
   }
 };

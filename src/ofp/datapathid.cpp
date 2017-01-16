@@ -44,7 +44,6 @@ bool DatapathID::parse(const std::string &s) {
   return HexToRawData(s, dpid_.data(), dpid_.size()) >= dpid_.size();
 }
 
-
 namespace ofp {
 
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const DatapathID &value) {

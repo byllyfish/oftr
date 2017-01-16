@@ -44,7 +44,8 @@ class MacAddress {
  private:
   ArrayType addr_;
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const MacAddress &value);
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const MacAddress &value);
 };
 
 static_assert(sizeof(MacAddress) == 6, "Unexpected size.");

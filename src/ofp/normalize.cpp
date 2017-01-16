@@ -945,8 +945,7 @@ void Normalize::normalizeMPTableStatsReplyV4(size_t *start) {
   *start += 64;
 }
 
-void Normalize::normalizeMPPortOrQueueStatsReplyV1(size_t *start,
-                                                      size_t len) {
+void Normalize::normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len) {
   // Normalize the PortStatsReply V1 to look like a V4+ message.
   size_t offset = *start;
   size_t remaining = buf_.size() - offset;
@@ -981,8 +980,7 @@ void Normalize::normalizeMPPortStatsRequestV1() {
   *port = normPortNumberV1(ptr);
 }
 
-void Normalize::normalizeMPPortOrQueueStatsReplyV3(size_t *start,
-                                                      size_t len) {
+void Normalize::normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len) {
   // Normalize the PortStatsReply V3 to look like a V4+ message.
   size_t offset = *start;
   size_t remaining = buf_.size() - offset;
@@ -1154,7 +1152,7 @@ UInt32 Normalize::normPortNumberV1(const UInt8 *ptr) {
 }
 
 int Normalize::normInstructionsV1orV2(const InstructionRange &instr,
-                                         UInt8 ipProto) {
+                                      UInt8 ipProto) {
   // Return change in length of instructions list.
   return 0;
 }
@@ -1184,7 +1182,7 @@ int Normalize::normActionsV1orV2(const ActionRange &actions, UInt8 ipProto) {
 }
 
 int Normalize::normActionV1orV2(UInt16 type, ActionIterator *iter,
-                                   ActionIterator *iterEnd, UInt8 ipProto) {
+                                ActionIterator *iterEnd, UInt8 ipProto) {
   using namespace deprecated;
 
   UInt8 version = header()->version();

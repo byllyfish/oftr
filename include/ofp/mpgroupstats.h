@@ -4,9 +4,9 @@
 #ifndef OFP_MPGROUPSTATS_H_
 #define OFP_MPGROUPSTATS_H_
 
+#include "ofp/durationsec.h"
 #include "ofp/groupnumber.h"
 #include "ofp/packetcounterlist.h"
-#include "ofp/durationsec.h"
 
 namespace ofp {
 

@@ -49,7 +49,8 @@ class Timestamp {
  private:
   std::pair<time_t, UInt32> time_;
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const Timestamp &value);
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const Timestamp &value);
 };
 
 OFP_END_IGNORE_PADDING

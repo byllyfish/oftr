@@ -173,7 +173,8 @@ std::string FlowCache::stats() const {
   oss << "FlowCache size=" << cache_.size()
       << " bucket_count=" << cache_.bucket_count()
       << " load_factor=" << static_cast<double>(cache_.load_factor())
-      << " max_load_factor=" << static_cast<double>(cache_.max_load_factor()) << '\n';
+      << " max_load_factor=" << static_cast<double>(cache_.max_load_factor())
+      << '\n';
 
   // Make histogram of bucket sizes for the FlowCacheKey.
   std::map<UInt32, UInt32> histogram;
@@ -196,7 +197,8 @@ std::string FlowCache::stats() const {
   oss << "IPv6Address size=" << addrs.size()
       << " bucket_count=" << addrs.bucket_count()
       << " load_factor=" << static_cast<double>(addrs.load_factor())
-      << " max_load_factor=" << static_cast<double>(addrs.max_load_factor()) << '\n';
+      << " max_load_factor=" << static_cast<double>(addrs.max_load_factor())
+      << '\n';
 
   // Make histogram of bucket sizes for the address set.
   histogram.clear();

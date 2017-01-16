@@ -61,7 +61,7 @@ int main(int argc, const char *const *argv) {
   }
 
   llvm::errs() << "libofp: '" << name
-            << "' is not a libofp command. See 'libofp --help'.\n";
+               << "' is not a libofp command. See 'libofp --help'.\n";
 
   return 1;
 }

@@ -31,8 +31,8 @@ double Timestamp::secondsSince(const Timestamp &ts) const {
 
   assert(diff > 0);
   return (diff - 1) +
-         static_cast<double>(kNanoPerSec - ts.nanoseconds() +
-                             nanoseconds()) / kNanoPerSec;
+         static_cast<double>(kNanoPerSec - ts.nanoseconds() + nanoseconds()) /
+             kNanoPerSec;
 }
 
 static const UInt32 kPower10[10] = {
@@ -120,7 +120,6 @@ Timestamp Timestamp::now() {
   return Timestamp{static_cast<time_t>(nano / 1000000000),
                    UInt32_narrow_cast(nano % 1000000000)};
 }
-
 
 namespace ofp {
 

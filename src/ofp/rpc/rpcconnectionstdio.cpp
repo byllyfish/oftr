@@ -53,7 +53,8 @@ void RpcConnectionStdio::asyncRead() {
           // Log warning if there are unread bytes in the buffer.
           auto bytesUnread = streambuf_.size();
           if (bytesUnread > 0) {
-            log_warning("RpcConnectionStdio::asyncRead: unread bytes at eof", bytesUnread);
+            log_warning("RpcConnectionStdio::asyncRead: unread bytes at eof",
+                        bytesUnread);
           }
         } else if (err != asio::error::operation_aborted) {
           log_error("RpcConnectionStdio::asyncRead error", err);

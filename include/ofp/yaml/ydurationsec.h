@@ -15,9 +15,10 @@ struct ScalarTraits<ofp::DurationSec> {
     out << value;
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::DurationSec &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::DurationSec &value) {
     if (!value.parse(scalar)) {
-        return "Invalid duration value";
+      return "Invalid duration value";
     }
     return "";
   }
@@ -28,4 +29,4 @@ struct ScalarTraits<ofp::DurationSec> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YDURATIONSEC_H_
+#endif  // OFP_YAML_YDURATIONSEC_H_

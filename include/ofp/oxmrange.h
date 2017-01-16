@@ -78,9 +78,10 @@ typename Value::NativeType OXMRange::get() const {
   return NativeType{};
 }
 
-inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const OXMRange &range) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const OXMRange &range) {
   return os << "[OXMRange size=" << range.size()
-                << " data=" << RawDataToHex(range.data(), range.size()) << ']';
+            << " data=" << RawDataToHex(range.data(), range.size()) << ']';
 }
 
 }  // namespace ofp

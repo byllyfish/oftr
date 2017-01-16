@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   if (!args.empty()) {
     if (!remoteEndpoint.parse(args[0])) {
       llvm::errs() << "testagent: Argument 1 is not an endpoint: `" << args[0]
-                << "`\n";
+                   << "`\n";
       return 1;
     }
   }
@@ -29,8 +29,8 @@ int main(int argc, char **argv) {
         [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
           if (err) {
             llvm::errs() << "testagent: Error connecting to `" << remoteEndpoint
-                      << "`: connId=" << channel->connectionId()
-                      << " err=" << err.message() << '\n';
+                         << "`: connId=" << channel->connectionId()
+                         << " err=" << err.message() << '\n';
           }
           error = err;
         });
@@ -44,7 +44,8 @@ int main(int argc, char **argv) {
   driver.run();
 
   if (error) {
-    llvm::errs() << "testagent: Error starting agent: " << error.message() << '\n';
+    llvm::errs() << "testagent: Error starting agent: " << error.message()
+                 << '\n';
     return 1;
   }
 

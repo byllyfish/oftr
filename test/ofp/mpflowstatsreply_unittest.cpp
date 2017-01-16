@@ -13,7 +13,7 @@ TEST(mpflowstatsreply, test1_v4) {
   MPFlowStatsReplyBuilder reply;
 
   reply.setTableId(0x11);
-  reply.setDuration({0x22222222,0x33333333});
+  reply.setDuration({0x22222222, 0x33333333});
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);

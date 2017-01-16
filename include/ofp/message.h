@@ -100,7 +100,8 @@ class Message {
   // dest, filename, etc.) It is *not* owned by the message object.
   MessageInfo *info_ = nullptr;
 
-  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const Message &msg) {
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const Message &msg) {
     return os << msg.buf_;
   }
 

@@ -101,11 +101,12 @@ std::string IPv6Endpoint::toString() const {
 
 namespace ofp {
 
-llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Endpoint &value) {
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                              const IPv6Endpoint &value) {
   if (value.addr_.isV4Mapped()) {
     os << value.addr_ << ':';
   } else {
-    os << '[' << value.addr_ << "]:" ;
+    os << '[' << value.addr_ << "]:";
   }
   return os << value.port_;
 }
