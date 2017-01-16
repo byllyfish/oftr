@@ -428,5 +428,5 @@ GitHub: {github}
 
 == COPYING
 
-Copyright \(C) 2015-2016 William W. Fisher. Free use of this software is
+Copyright \(C) 2015-2017 William W. Fisher. Free use of this software is
 granted under the terms of the MIT License.
