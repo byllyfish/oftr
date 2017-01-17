@@ -1,5 +1,19 @@
 = Changelog
 
+== Version 0.23 (16 January 2016)
+
+- Change RPC end of message delimiter from '\n' to '\0'.
+- Remove support for JSON-quoted YAML RPC input.
+- Replace duration_sec and duration_nsec with a new DurationSec type.
+- Support the OF 1.1 packet_in message.
+- The weight, watch_port, and watch_group members in Buckets are now optional.
+- Specify input defaults for packet_out message.
+- The properties member is now optional in more message types.
+- MatchPacket decode now supports vlans.
+- Minor fix to MatchPacket handling of fragments.
+- Replace std::ostream with llvm::raw_ostream.
+- Update copyright year to 2017.
+
 == Version 0.22 (19 December 2016)
 
 - Replace OFP.CHANNEL and OFP.ALERT top-level jsonrpc notifications with OFP.MESSAGE sub-messages.
