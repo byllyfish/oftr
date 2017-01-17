@@ -283,8 +283,7 @@ Message/FlowRemoved:
     priority: UInt16
     reason: FlowRemovedReason
     table_id: TableNumber
-    duration_sec: UInt32
-    duration_nsec: UInt32
+    duration: DurationSec
     idle_timeout: UInt16
     hard_timeout: UInt16
     packet_count: UInt64
@@ -320,10 +319,10 @@ Message/PacketOut:
   _file: !optout String
   type: PACKET_OUT
   msg:
-    buffer_id: BufferNumber
-    in_port: PortNumber
-    actions: [Action]
-    data: HexData
+    buffer_id: !opt BufferNumber        # default=NO_BUFFER
+    in_port: !opt PortNumber            # default=CONTROLLER
+    actions: !opt [Action]              # default=[]
+    data: !opt HexData                  # default=''
     _pkt_decode: !optout [Field]
   
 Message/FlowMod: 
@@ -388,15 +387,15 @@ Message/PortMod:
     hw_addr: MacAddress
     config: [PortConfigFlags]
     mask: [PortConfigFlags]
-    ethernet:
-      advertise: [PortFeaturesFlags]
-    optical: !optout
+    ethernet: !opt
+      advertise: [PortFeaturesFlags]           # default=[]
+    optical: !optout                           # default=null
       configure: [OpticalPortFeaturesFlags]
       freq_lmda: UInt32
       fl_offset: SInt32
       grid_span: UInt32
       tx_pwr: UInt32
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]    # default=[]
   
 Message/TableMod: 
   version: !opt UInt8
@@ -664,7 +663,7 @@ Message/Request.TableFeatures:
       write_set_field_miss: !optout [FieldID]
       apply_set_field: [FieldID]
       apply_set_field_miss: !optout [FieldID]
-      properties: [ExperimenterProperty]
+      properties: !opt [ExperimenterProperty]
   
 Message/Request.TableDesc: 
   version: !opt UInt8
@@ -845,8 +844,7 @@ Message/Reply.Flow:
   type: REPLY.FLOW
   msg:
     - table_id: TableNumber
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       priority: UInt16
       idle_timeout: UInt16
       hard_timeout: UInt16
@@ -888,8 +886,7 @@ Message/Reply.PortStats:
   type: REPLY.PORT_STATS
   msg:
     - port_no: PortNumber
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       rx_packets: UInt64
       tx_packets: UInt64
       rx_bytes: UInt64
@@ -934,8 +931,7 @@ Message/Reply.Queue:
       tx_packets: UInt64
       tx_bytes: UInt64
       tx_errors: UInt64
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
   
 Message/Reply.QueueDesc: 
   version: !opt UInt8
@@ -990,8 +986,7 @@ Message/Reply.Meter:
       flow_count: UInt32
       packet_in_count: UInt64
       bytes_in_count: UInt64
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       bands: [PacketCounter]
   
 Message/Reply.Group: 
@@ -1011,8 +1006,7 @@ Message/Reply.Group:
       ref_count: UInt32
       packet_count: UInt64
       byte_count: UInt64
-      duration_sec: UInt32
-      duration_nsec: UInt32
+      duration: DurationSec
       bucket_stats: [PacketCounter]
   
 Message/Reply.TableFeatures: 
@@ -1048,7 +1042,7 @@ Message/Reply.TableFeatures:
       write_set_field_miss: !optout [FieldID]
       apply_set_field: [FieldID]
       apply_set_field_miss: !optout [FieldID]
-      properties: [ExperimenterProperty]
+      properties: !opt [ExperimenterProperty]
   
 Message/Reply.TableDesc: 
   version: !opt UInt8
@@ -1242,7 +1236,7 @@ Message/GetAsyncReply:
     table_status_master: !optout [TableStatusFlags]
     request_forward_slave: !optout [RequestForwardFlags]
     request_forward_master: !optout [RequestForwardFlags]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/SetAsync: 
   version: !opt UInt8
@@ -1269,7 +1263,7 @@ Message/SetAsync:
     table_status_master: !optout [TableStatusFlags]
     request_forward_slave: !optout [RequestForwardFlags]
     request_forward_master: !optout [RequestForwardFlags]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/MeterMod: 
   version: !opt UInt8
@@ -1305,7 +1299,7 @@ Message/RoleStatus:
     role: ControllerRole
     reason: RoleStatusReason
     generation_id: UInt64
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/TableStatus: 
   version: !opt UInt8
@@ -1353,7 +1347,7 @@ Message/BundleControl:
     bundle_id: UInt32
     type: BundleCtrlType
     flags: [BundleFlags]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/BundleAddMessage: 
   version: !opt UInt8
@@ -1371,7 +1365,7 @@ Message/BundleAddMessage:
     bundle_id: UInt32
     flags: [BundleFlags]
     message: Message
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
   
 Message/RawMessage: 
   version: !opt UInt8
@@ -1511,9 +1505,9 @@ MeterBand/EXPERIMENTER:
   experimenter: UInt32
   
 Struct/Bucket: 
-  weight: UInt16
-  watch_port: PortNumber
-  watch_group: GroupNumber
+  weight: !opt UInt16             # default=0
+  watch_port: !opt PortNumber     # default=ANY
+  watch_group: !opt GroupNumber   # default=ANY
   actions: [Action]
   
 Struct/Port: 
@@ -1539,7 +1533,7 @@ Struct/Port:
     rx_grid_freq_lmda: UInt32
     tx_pwr_min: UInt16
     tx_pwr_max: UInt16
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
   
 Struct/Queue: 
   queue_id: QueueNumber
@@ -2033,4 +2027,6 @@ Builtin/InstructionID: <builtin>
 Builtin/Timestamp: <builtin>
 
 Builtin/RegisterBits: <builtin>
+
+Builtin/DurationSec: <builtin>
 

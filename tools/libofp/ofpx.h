@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef TOOLS_LIBOFP_OFPX_H_
@@ -10,7 +10,6 @@
 #include <vector>
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/FileSystem.h"
-#include "llvm/Support/raw_ostream.h"
 #include "ofp/ofp.h"
 
 namespace ofpx {
@@ -53,7 +52,8 @@ class Subprogram {
       logStream.reset(new llvm::raw_fd_ostream{
           logfile_, err, fs::F_Append | fs::F_RW | fs::F_Text});
       if (err) {
-        std::cerr << "libofp: Failed to open log file '" << logfile_ << "'\n";
+        llvm::errs() << "libofp: Failed to open log file '" << logfile_
+                     << "'\n";
         std::exit(1);
       }
 

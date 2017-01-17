@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpflowstatsreply.h"
@@ -73,7 +73,7 @@ void MPFlowStatsReplyBuilder::writeV1(Writable *channel) {
 
   channel->write(&msg_, 4);
   channel->write(&origMatch, sizeof(origMatch));
-  channel->write(&msg_.durationSec_, 44);
+  channel->write(&msg_.duration_, 44);
   if (actions.size() > 0) {
     actions.write(channel);
   }

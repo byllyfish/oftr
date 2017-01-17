@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "./ofpx_decode.h"
@@ -12,7 +12,6 @@
 #include "./libofp.h"
 #include "./ofpx_help.h"
 #include "llvm/Support/Host.h"
-#include "llvm/Support/raw_ostream.h"
 
 using namespace llvm;
 
@@ -29,7 +28,7 @@ static const SubprogramEntry programs[] = {
 #endif  // LIBOFP_ENABLE_JSONRPC
     {"help", ofpx::Run<ofpx::Help>}};
 
-static void print_usage(std::ostream &out);
+static void print_usage(llvm::raw_ostream &out);
 static void print_version();
 static void force_link_api();
 
@@ -37,13 +36,13 @@ int main(int argc, const char *const *argv) {
   if (argc < 2) {
     if (argc == 0)
       force_link_api();
-    print_usage(std::cerr);
+    print_usage(llvm::errs());
     return 1;
   }
 
   std::string name = argv[1];
   if (name == "--help" || name == "-h") {
-    print_usage(std::cout);
+    print_usage(llvm::outs());
     return 0;
   }
 
@@ -61,13 +60,13 @@ int main(int argc, const char *const *argv) {
     }
   }
 
-  std::cerr << "libofp: '" << name
-            << "' is not a libofp command. See 'libofp --help'.\n";
+  llvm::errs() << "libofp: '" << name
+               << "' is not a libofp command. See 'libofp --help'.\n";
 
   return 1;
 }
 
-void print_usage(std::ostream &out) {
+void print_usage(llvm::raw_ostream &out) {
   out << "Usage: libofp <command> [ <options> ]\n\n";
   out << "Commands:\n";
   for (size_t i = 0; i < ofp::ArrayLength(programs); ++i) {
@@ -77,7 +76,7 @@ void print_usage(std::ostream &out) {
 }
 
 void print_version() {
-  raw_ostream &os = outs();
+  raw_ostream &os = llvm::outs();
 
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
   os << "libofp " << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7)

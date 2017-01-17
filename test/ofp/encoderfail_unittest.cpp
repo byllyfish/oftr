@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/unittest.h"
@@ -521,3 +521,36 @@ TEST(encoderfail, xid_present) {
   EXPECT_HEX("", encoder.data(), encoder.size());
   EXPECT_EQ(54321, encoder.xid());
 }
+
+#if 0
+// TODO(bfish): This test should fail -- properties aren't supported until
+// OpenFlow version 1.4.
+
+TEST(encoderfail, portmodv4_experimenter) {
+  const char *input = R"""(
+      version: 4
+      type: PORT_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port_no: 0x22222222
+        hw_addr: '333333333333'
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0x77777700
+            exp_type: 0x88888800
+            data: 99999900
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX(
+      "",
+      encoder.data(), encoder.size());
+}
+#endif  // 0

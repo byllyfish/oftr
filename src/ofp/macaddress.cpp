@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/macaddress.h"
@@ -16,19 +16,15 @@ bool MacAddress::parse(const std::string &s) {
 }
 
 std::string MacAddress::toString() const {
-  // Output is lower-case hexadecimal and delimited by ':'.
-  const char hex[] = "0123456789abcdef";
-  const UInt8 *e = addr_.data();
-  char buf[17];
-
-  char *p = buf;
-  *p++ = hex[*e >> 4];
-  *p++ = hex[*e++ & 0x0F];
-  for (int i = 0; i < 5; ++i) {
-    *p++ = ':';
-    *p++ = hex[*e >> 4];
-    *p++ = hex[*e++ & 0x0F];
-  }
-
-  return std::string(buf, 17);
+  char buf[sizeof(MacAddress) * 3];
+  return RawDataToHexDelimitedLowercase(addr_, buf);
 }
+
+namespace ofp {
+
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const MacAddress &value) {
+  char buf[sizeof(MacAddress) * 3];
+  return os << RawDataToHexDelimitedLowercase(value.addr_, buf);
+}
+
+}  // namespace ofp

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YMPQUEUESTATS_H_
@@ -17,8 +17,7 @@ struct MappingTraits<ofp::MPQueueStats> {
     io.mapRequired("tx_packets", body.txPackets_);
     io.mapRequired("tx_bytes", body.txBytes_);
     io.mapRequired("tx_errors", body.txErrors_);
-    io.mapRequired("duration_sec", body.durationSec_);
-    io.mapRequired("duration_nsec", body.durationNSec_);
+    io.mapRequired("duration", body.duration_);
   }
 };
 
@@ -30,8 +29,7 @@ struct MappingTraits<ofp::MPQueueStatsBuilder> {
     io.mapRequired("tx_packets", msg.msg_.txPackets_);
     io.mapRequired("tx_bytes", msg.msg_.txBytes_);
     io.mapRequired("tx_errors", msg.msg_.txErrors_);
-    io.mapRequired("duration_sec", msg.msg_.durationSec_);
-    io.mapRequired("duration_nsec", msg.msg_.durationNSec_);
+    io.mapRequired("duration", msg.msg_.duration_);
   }
 };
 

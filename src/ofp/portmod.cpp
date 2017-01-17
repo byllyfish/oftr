@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/portmod.h"
@@ -32,6 +32,13 @@ UInt32 PortModBuilder::send(Writable *channel) {
     channel->write(properties_.data(), properties_.size());
     channel->flush();
     return xid;
+  }
+
+  // For OpenFlow version 1.3 and previous, only the Ethernet property
+  // should be the present.
+
+  if (properties_.size() != sizeof(PortModPropertyEthernet)) {
+    log_warning("PortModBuilder: Invalid properties for version", version);
   }
 
   OFPPortFeaturesFlags advertise =

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_TIMESTAMP_H_
@@ -48,6 +48,9 @@ class Timestamp {
 
  private:
   std::pair<time_t, UInt32> time_;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const Timestamp &value);
 };
 
 OFP_END_IGNORE_PADDING

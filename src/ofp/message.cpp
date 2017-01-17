@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/message.h"
@@ -7,10 +7,10 @@
 #include "ofp/flowmod.h"
 #include "ofp/instructionrange.h"
 #include "ofp/instructions.h"
+#include "ofp/normalize.h"
 #include "ofp/originalmatch.h"
 #include "ofp/portstatus.h"
 #include "ofp/sys/connection.h"
-#include "ofp/transmogrify.h"
 
 using namespace ofp;
 
@@ -58,8 +58,8 @@ bool Message::isRequestType() const {
   return false;
 }
 
-void Message::transmogrify() {
-  Transmogrify tr{this};
+void Message::normalize() {
+  Normalize tr{this};
   tr.normalize();
 }
 

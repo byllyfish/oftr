@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YPORT_H_
@@ -43,7 +43,7 @@ optical: !optout
   rx_grid_freq_lmda: UInt32
   tx_pwr_min: UInt16
   tx_pwr_max: UInt16
-properties: [ExperimenterProperty]
+properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -92,7 +92,7 @@ struct MappingTraits<ofp::PortBuilder> {
     io.mapRequired("state", msg.msg_.state_);
 
     PortPropertyEthernet eth;
-    io.mapRequired("ethernet", eth);  // FIXME(bfish) - make optional...
+    io.mapRequired("ethernet", eth);
 
     Optional<PortPropertyOptical> opt;
     io.mapOptional("optical", opt);
@@ -103,7 +103,7 @@ struct MappingTraits<ofp::PortBuilder> {
       props.add(*opt);
     }
 
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::PortPropertyList>(props));
     msg.setProperties(props);
   }

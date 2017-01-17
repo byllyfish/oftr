@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/decoder.h"
@@ -172,7 +172,7 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
 
   auto data = m->request();
   Message message(data.data(), data.size());
-  message.transmogrify();
+  message.normalize();
 
   DecodeRecursively(io, "msg", &message);
   return true;

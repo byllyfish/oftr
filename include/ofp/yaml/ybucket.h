@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YBUCKET_H_
@@ -20,9 +20,9 @@ namespace llvm {
 namespace yaml {
 
 const char *const kBucketSchema = R"""({Struct/Bucket}
-weight: UInt16
-watch_port: PortNumber
-watch_group: GroupNumber
+weight: !opt UInt16             # default=0
+watch_port: !opt PortNumber     # default=ANY
+watch_group: !opt GroupNumber   # default=ANY
 actions: [Action]
 )""";
 
@@ -36,9 +36,9 @@ struct MappingTraits<ofp::detail::BucketInserter> {
     UInt16 weight;
     PortNumber watchPort;
     GroupNumber watchGroup;
-    io.mapRequired("weight", weight);
-    io.mapRequired("watch_port", watchPort);
-    io.mapRequired("watch_group", watchGroup);
+    io.mapOptional("weight", weight, 0);
+    io.mapOptional("watch_port", watchPort, OFPP_ANY);
+    io.mapOptional("watch_group", watchGroup, OFPG_ANY);
 
     ActionList actions;
     io.mapRequired("actions", actions);

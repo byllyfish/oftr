@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_IPV6ENDPOINT_H_
@@ -52,6 +52,9 @@ class IPv6Endpoint {
  private:
   IPv6Address addr_;
   UInt16 port_ = 0;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const IPv6Endpoint &value);
 };
 
 static_assert(alignof(IPv6Endpoint) == 2, "Unexpected alignment");

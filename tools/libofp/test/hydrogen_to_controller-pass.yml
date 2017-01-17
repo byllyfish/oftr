@@ -604,8 +604,6 @@ msg:
       value:           10.0.0.1
     - field:           IPV4_DST
       value:           10.0.0.2
-    - field:           NX_IP_FRAG
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x40
     - field:           ICMPV4_TYPE
@@ -656,8 +654,7 @@ xid:             0x3609080D
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000005
     tx_packets:      0x0000000000000008
     rx_bytes:        0x000000000000017A
@@ -673,8 +670,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000005
     tx_packets:      0x0000000000000009
     rx_bytes:        0x0000000000000142
@@ -690,8 +686,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000004
     tx_packets:      0x0000000000000001
     rx_bytes:        0x0000000000000148
@@ -2800,8 +2795,7 @@ xid:             0x36090819
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x000000000000000B
     tx_packets:      0x0000000000000013
     rx_bytes:        0x00000000000003AA
@@ -2817,8 +2811,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x000000000000000D
     tx_packets:      0x0000000000000012
     rx_bytes:        0x0000000000000426
@@ -2834,8 +2827,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000007
     tx_packets:      0x0000000000000001
     rx_bytes:        0x0000000000000242
@@ -3116,8 +3108,7 @@ xid:             0x36090822
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000011
     tx_packets:      0x0000000000000018
     rx_bytes:        0x00000000000005CA
@@ -3133,8 +3124,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000012
     tx_packets:      0x000000000000001A
     rx_bytes:        0x00000000000005BC
@@ -3150,8 +3140,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000008
     tx_packets:      0x0000000000000001
     rx_bytes:        0x0000000000000288
@@ -4966,8 +4955,7 @@ xid:             0x36090824
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000011
     tx_packets:      0x0000000000000018
     rx_bytes:        0x00000000000005CA
@@ -4983,8 +4971,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000012
     tx_packets:      0x000000000000001A
     rx_bytes:        0x00000000000005BC
@@ -5000,8 +4987,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000008
     tx_packets:      0x0000000000000001
     rx_bytes:        0x0000000000000288
@@ -5041,8 +5027,7 @@ xid:             0x36090826
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000011
     tx_packets:      0x0000000000000018
     rx_bytes:        0x00000000000005CA
@@ -5058,8 +5043,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000012
     tx_packets:      0x000000000000001A
     rx_bytes:        0x00000000000005BC
@@ -5075,8 +5059,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000008
     tx_packets:      0x0000000000000001
     rx_bytes:        0x0000000000000288
@@ -6891,8 +6874,7 @@ xid:             0x36090828
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000011
     tx_packets:      0x0000000000000018
     rx_bytes:        0x00000000000005CA
@@ -6908,8 +6890,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000012
     tx_packets:      0x000000000000001A
     rx_bytes:        0x00000000000005BC
@@ -6925,8 +6906,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000008
     tx_packets:      0x0000000000000001
     rx_bytes:        0x0000000000000288
@@ -6959,8 +6939,7 @@ xid:             0x3609082D
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000011
     tx_packets:      0x0000000000000019
     rx_bytes:        0x00000000000005CA
@@ -6976,8 +6955,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000012
     tx_packets:      0x000000000000001B
     rx_bytes:        0x00000000000005BC
@@ -6993,8 +6971,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000008
     tx_packets:      0x0000000000000002
     rx_bytes:        0x0000000000000288
@@ -8809,8 +8786,7 @@ xid:             0x3609082F
 version:         0x01
 msg:             
   - port_no:         0x00000001
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000011
     tx_packets:      0x0000000000000019
     rx_bytes:        0x00000000000005CA
@@ -8826,8 +8802,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000012
     tx_packets:      0x000000000000001B
     rx_bytes:        0x00000000000005BC
@@ -8843,8 +8818,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
-    duration_sec:    0x00000000
-    duration_nsec:   0x00000000
+    duration:        0
     rx_packets:      0x0000000000000008
     tx_packets:      0x0000000000000002
     rx_bytes:        0x0000000000000288

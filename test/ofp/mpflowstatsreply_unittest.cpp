@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpflowstatsreply.h"
@@ -13,8 +13,7 @@ TEST(mpflowstatsreply, test1_v4) {
   MPFlowStatsReplyBuilder reply;
 
   reply.setTableId(0x11);
-  reply.setDurationSec(0x22222222);
-  reply.setDurationNSec(0x33333333);
+  reply.setDuration({0x22222222, 0x33333333});
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);
@@ -37,8 +36,7 @@ TEST(mpflowstatsreply, test1_v1) {
   MPFlowStatsReplyBuilder reply;
 
   reply.setTableId(0x11);
-  reply.setDurationSec(0x22222222);
-  reply.setDurationNSec(0x33333333);
+  reply.setDuration({0x22222222, 0x33333333});
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);
@@ -70,8 +68,7 @@ TEST(mpflowstatsreply, test2_v4) {
 
   MPFlowStatsReplyBuilder reply;
   reply.setTableId(0x11);
-  reply.setDurationSec(0x22222222);
-  reply.setDurationNSec(0x33333333);
+  reply.setDuration({0x22222222, 0x33333333});
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);
@@ -106,8 +103,7 @@ TEST(mpflowstatsreply, test2_v1) {
 
   MPFlowStatsReplyBuilder reply;
   reply.setTableId(0x11);
-  reply.setDurationSec(0x22222222);
-  reply.setDurationNSec(0x33333333);
+  reply.setDuration({0x22222222, 0x33333333});
   reply.setPriority(0x4444);
   reply.setIdleTimeout(0x5555);
   reply.setHardTimeout(0x6666);

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "./ofpx_help.h"
@@ -132,12 +132,12 @@ static const char *const kPropertySchemas[] = {
 };
 
 static const char *const kBuiltinTypes[] = {
-    "UInt8",       "UInt16",      "UInt32",       "UInt64",
-    "SInt32",      "String",      "Str16",        "Str32",
-    "Str256",      "HexData",     "DatapathID",   "MacAddress",
-    "IPv4Address", "IPv6Address", "IPv6Endpoint", "LLDPChassisID",
-    "LLDPPortID",  "ActionID",    "FieldID",      "InstructionID",
-    "Timestamp",   "RegisterBits"};
+    "UInt8",       "UInt16",       "UInt32",       "UInt64",
+    "SInt32",      "String",       "Str16",        "Str32",
+    "Str256",      "HexData",      "DatapathID",   "MacAddress",
+    "IPv4Address", "IPv6Address",  "IPv6Endpoint", "LLDPChassisID",
+    "LLDPPortID",  "ActionID",     "FieldID",      "InstructionID",
+    "Timestamp",   "RegisterBits", "DurationSec"};
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
@@ -330,7 +330,8 @@ void Help::addFieldSchemas() {
   for (size_t i = 0; i < ofp::OXMTypeInfoArraySize; ++i) {
     const ofp::OXMTypeInfo *info = &ofp::OXMTypeInfoArray[i];
 
-    std::ostringstream oss;
+    std::string buf;
+    llvm::raw_string_ostream oss{buf};
     oss << "{Field/" << info->name << "}\n";
     oss << "field: " << info->name << '\n';
     oss << "value: " << translateFieldType(info->type) << '\n';
@@ -453,15 +454,15 @@ void Help::printSchema(const std::string &key) {
       if (depSchema) {
         depSchema->print(std::cout, brief_);
       } else {
-        std::cerr << "Unknown dependent schema '" << s << "'\n";
+        llvm::errs() << "Unknown dependent schema '" << s << "'\n";
       }
     }
 
   } else {
     schema = findNearestSchema(key);
     if (schema) {
-      std::cerr << "Unknown command line argument '" << key
-                << "'. Did you mean '" << schema->name() << "'?" << '\n';
+      llvm::errs() << "Unknown command line argument '" << key
+                   << "'. Did you mean '" << schema->name() << "'?" << '\n';
     }
   }
 }
@@ -482,14 +483,14 @@ void Help::dumpSchemaAll() {
 
     for (auto &s : schema->dependsOnSchemas()) {
       if (!findSchema(s)) {
-        std::cerr << "Unknown dependent schema '" << s << "'\n";
+        llvm::errs() << "Unknown dependent schema '" << s << "'\n";
         missingDependentSchemas = true;
       }
     }
   }
 
   if (missingDependentSchemas) {
-    std::cerr << "Some dependent schemas are missing.\n";
+    llvm::errs() << "Some dependent schemas are missing.\n";
     ::exit(static_cast<int>(ExitStatus::MissingDependentSchemas));
   }
 }

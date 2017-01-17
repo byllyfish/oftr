@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef TOOLS_LIBOFP_OFPX_ENCODE_H_
@@ -70,7 +70,7 @@ class Encode : public Subprogram {
 
  private:
   std::string currentFilename_;
-  std::ostream *output_ = nullptr;
+  std::unique_ptr<llvm::raw_ostream> output_;
   int lineNumber_ = 0;
   ofp::yaml::GetMsgFunction readMessage_ = nullptr;
 

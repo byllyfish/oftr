@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/messagesource.h"
@@ -12,9 +12,6 @@
 
 using namespace ofp;
 using namespace ofp::demux;
-
-const UInt16 DATALINK_8021Q = 0x8100;
-const size_t k8021QHeaderSize = 4;
 
 static void sEthernetCallback(Timestamp ts, ByteRange data, unsigned len,
                               void *context) {
@@ -95,10 +92,10 @@ void MessageSource::submitEthernet(const UInt8 *data, size_t length) {
   UInt16 ethType = eth->type;
 
   // Ignore 802.1Q header and vlan.
-  if (ethType == DATALINK_8021Q && length >= k8021QHeaderSize) {
+  if (ethType == DATALINK_8021Q && length >= pkt::k8021QHeaderSize) {
     ethType = *Big16_cast(data + 2);
-    data += k8021QHeaderSize;
-    length -= k8021QHeaderSize;
+    data += pkt::k8021QHeaderSize;
+    length -= pkt::k8021QHeaderSize;
   }
 
   if (ethType == DATALINK_IPV4) {
@@ -301,7 +298,8 @@ void MessageSource::outputWrite(const IPv6Endpoint &src,
     return;
 
   // Construct filename "$outputDir/_tcp-$session-$src-$dst"
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << outputDir_ << "/_tcp-" << flow.sessionID() << '-' << src << '-' << dst;
   auto filename = oss.str();
 

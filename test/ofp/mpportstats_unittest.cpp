@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpportstats.h"
@@ -13,8 +13,7 @@ TEST(mpportstats, builder) {
   statsBuilder.setPortNo(0x11111112);
   statsBuilder.setRxPackets(0xAAAAAAAAAAAAAAA1);
   statsBuilder.setTxPackets(0xBBBBBBBBBBBBBBB1);
-  statsBuilder.setDurationSec(0x22222221);
-  statsBuilder.setDurationNSec(0x33333331);
+  statsBuilder.setDuration({0x22222221, 0x33333331});
   statsBuilder.setRxErrors(0x4444444444444441);
   statsBuilder.setTxErrors(0x5555555555555551);
 

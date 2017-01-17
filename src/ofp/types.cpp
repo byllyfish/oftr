@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/types.h"
@@ -28,13 +28,11 @@ inline char ToHexLowerCase(UInt8 value) {
 namespace ofp {
 
 template <size_t Length>
-std::string RawDataToHexDelimitedLowercase(
-    const std::array<UInt8, Length> &data) {
+char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
+                                     char (&buf)[Length * 3]) {
   // Output is lower-case hexadecimal and delimited by ':'.
   const UInt8 *e = data.data();
-  const size_t kBufLen = 2 * Length + Length - 1;
 
-  char buf[kBufLen];
   char *p = buf;
   *p++ = ToHexLowerCase(*e >> 4);
   *p++ = ToHexLowerCase(*e++ & 0x0F);
@@ -43,14 +41,19 @@ std::string RawDataToHexDelimitedLowercase(
     *p++ = ToHexLowerCase(*e >> 4);
     *p++ = ToHexLowerCase(*e++ & 0x0F);
   }
+  *p = 0;
 
-  return std::string(buf, kBufLen);
+  return buf;
 }
 
 }  // namespace ofp
 
-template std::string ofp::RawDataToHexDelimitedLowercase(
-    const std::array<UInt8, 8U> &);
+// Instantiate functions for 6 and 8 byte arrays.
+template char *ofp::RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, 8U> &, char (&)[24]);
+
+template char *ofp::RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, 6U> &, char (&)[18]);
 
 std::string ofp::RawDataToHex(const void *data, size_t len) {
   std::string result;

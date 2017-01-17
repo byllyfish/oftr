@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_RPC_RPCEVENTS_H_
@@ -20,6 +20,9 @@ namespace rpc {
 
 /// The maximum RPC message size is 1MB.
 const size_t RPC_MAX_MESSAGE_SIZE = 1048576;
+
+/// RPC events are delimited by zero byte.
+const char RPC_EVENT_DELIMITER_CHAR = '\x00';
 
 /// RPC Methods
 enum RpcMethod : UInt32 {

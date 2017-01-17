@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/matchpacket.h"
@@ -217,4 +217,13 @@ TEST(matchpacket, ethernet_misaligned) {
   MatchPacket match{ByteRange{buf.data(), buf.size()}};
   EXPECT_HEX("80000606:FFFFFFFFFFFF 80000806:000000000001 80000A02:0806",
              match.data(), match.size());
+}
+
+TEST(matchpacket, vlan_tag) {
+  testPacket(
+      "FFFFFFFFFFFF422B0B87AE5B810003E808060001080006040001422B0B87AE5B0A000001"
+      "0000000000000A000002",
+      "80000606:FFFFFFFFFFFF 80000806:422B0B87AE5B 80000C02:13E8 80000E01:00 "
+      "80000A02:0806 80002A02:0001 80002C04:0A000001 80002E04:0A000002 "
+      "80003006:422B0B87AE5B 80003206:000000000000");
 }

@@ -35,7 +35,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.22.0)
+set(Libofp_VERSION 0.23.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 
@@ -153,6 +153,7 @@ set(LIBOFP_SOURCES
   src/ofp/constants.cpp
   src/ofp/constants_error.cpp
   src/ofp/datapathid.cpp
+  src/ofp/durationsec.cpp
   src/ofp/echoreply.cpp
   src/ofp/echorequest.cpp
   src/ofp/error.cpp
@@ -202,6 +203,7 @@ set(LIBOFP_SOURCES
   src/ofp/mptablestats.cpp
   src/ofp/multipartreply.cpp
   src/ofp/multipartrequest.cpp
+  src/ofp/normalize.cpp
   src/ofp/originalmatch.cpp
   src/ofp/oxmfulltype.cpp
   src/ofp/oxmlist.cpp
@@ -240,7 +242,6 @@ set(LIBOFP_SOURCES
   src/ofp/tablemodproperty.cpp
   src/ofp/tablestatus.cpp
   src/ofp/timestamp.cpp
-  src/ofp/transmogrify.cpp
   src/ofp/types.cpp
   src/ofp/validation.cpp
   src/ofp/yaml/decoder.cpp

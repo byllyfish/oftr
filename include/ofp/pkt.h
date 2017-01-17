@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_PKT_H_
@@ -12,10 +12,7 @@
 namespace ofp {
 namespace pkt {
 
-enum {
-  kIPv4Version = 4,
-  kIPv6Version = 6,
-};
+enum { kIPv4Version = 4, kIPv6Version = 6, k8021QHeaderSize = 4 };
 
 template <class Type>
 struct Castable {

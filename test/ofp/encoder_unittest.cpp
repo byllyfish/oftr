@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/encoder.h"
@@ -498,8 +498,7 @@ TEST(encoder, ofmp_flowreply_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -535,8 +534,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -549,8 +547,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
                value: 0x12345678
            instructions:
          - table_id: 0x11
-           duration_sec: 0x22
-           duration_nsec: 0x33 
+           duration: 34.x33
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
@@ -587,8 +584,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -628,8 +624,7 @@ TEST(encoder, ofmp_flowreply_v1) {
       flags: [ 0x2222 ]
       body:
          - table_id: 0x33
-           duration_sec: 0x44444444
-           duration_nsec: 0x55555555
+           duration: 1145324612.x55555555
            priority: 0x6666
            idle_timeout: 0x7777
            hard_timeout: 0x8888
@@ -670,8 +665,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -689,8 +683,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
                     port: 0xEEEEEEEE
                     max_len: 0xFFFF
          - table_id: 0x11
-           duration_sec: 0x22
-           duration_nsec: 0x33 
+           duration: 34.x33
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
@@ -843,8 +836,7 @@ TEST(encoder, ofmp_portstats_v4) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -882,8 +874,7 @@ TEST(encoder, ofmp_portstats_v3) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -921,8 +912,7 @@ TEST(encoder, ofmp_portstats_v2) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -960,8 +950,7 @@ TEST(encoder, ofmp_portstats_v1) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -1003,8 +992,7 @@ TEST(encoder, ofmp_queuestats_v4) {
           tx_bytes:   0x5555555555555550
           tx_packets: 0x6666666666666660
           tx_errors:  0x7777777777777770
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
     )""";
 
   Encoder encoder{input};
@@ -1030,8 +1018,7 @@ TEST(encoder, ofmp_queuestats_v1) {
           tx_bytes:   0x5555555555555550
           tx_packets: 0x6666666666666660
           tx_errors:  0x7777777777777770
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
     )""";
 
   Encoder encoder{input};
@@ -1448,6 +1435,33 @@ TEST(encoder, packetinv1) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, packetinv2) {
+  const char *input = R"""(
+      type:            PACKET_IN
+      version:         2
+      xid:             2
+      msg:             
+        buffer_id:       0x33333333
+        total_len:       0x4444
+        in_port:         0x55555555
+        in_phy_port:     0x66666666
+        metadata:        0x7777777777777777
+        reason:          APPLY_ACTION
+        table_id:        0x88
+        cookie:          0x9999999999999999
+        match:
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x042, encoder.size());
+  EXPECT_HEX(
+      "020A00420000000233333333555555556666666644440188FFFFFFFFFFFF000000000001"
+      "080600010800060400010000000000010A0000010000000000000A000002",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, packetinv4) {
   const char *input = R"""(
       type:            PACKET_IN
@@ -1749,6 +1763,35 @@ TEST(encoder, portmodv4) {
   EXPECT_HEX(
       "04100028111111112222222200000000333333333333000044444444555555556"
       "666666600000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, portmodv5_experimenter) {
+  const char *input = R"""(
+      version: 5
+      type: PORT_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port_no: 0x22222222
+        hw_addr: '333333333333'
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0x77777700
+            exp_type: 0x88888800
+            data: 99999900
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x38, encoder.size());
+  EXPECT_HEX(
+      "051000381111111122222222000000003333333333330000444444445555555500000008"
+      "66666666FFFF0010777777008888880099999900",
       encoder.data(), encoder.size());
 }
 
@@ -2149,8 +2192,7 @@ TEST(encoder, flowremovedv4) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2180,8 +2222,7 @@ TEST(encoder, flowremovedv1) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2212,8 +2253,7 @@ TEST(encoder, flowremovedv2) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2246,8 +2286,7 @@ TEST(encoder, flowremovedv3) {
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2433,6 +2472,60 @@ TEST(encoder, ofmp_desc_reply_v1) {
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_desc_reply_non_utf8) {
+  const char *input = R"""(
+      version: 4
+      type: MULTIPART_REPLY
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111112
+      msg:
+        type: DESC
+        flags: []
+        body:
+          mfr_desc: "\x01\n\xff\ud8fe\udcfe\x80\x7f"
+          hw_desc: "\x01\n\xff\xfe\x80\x7f"
+          sw_desc: '\x01\n\xff\xfe\x80\x7f'
+          serial_num: '\x01\n\xff\xfe\x80\x7f'
+          dp_desc: '\x01\n\xff\xfe\x80\x7f'
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(1072, encoder.size());
+  EXPECT_HEX(
+      "04130430111111120000000000000000010AC3BFEDA3BEEDB3BEC2807F00000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000010AC3BFC3BEC2807F00000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000005C7830315C6E5C7866665C78"
+      "66655C7838305C7837660000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000005C7830315C6E5C78"
+      "66665C7866655C7838305C783766000000000000000000005C7830315C6E5C7866665C78"
+      "66655C7838305C7837660000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000000000",
       encoder.data(), encoder.size());
 }
 
@@ -3139,8 +3232,7 @@ TEST(encoder, ofmp_portstats_v4_flags) {
     flags: [ 0x2222 ]
     msg:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660

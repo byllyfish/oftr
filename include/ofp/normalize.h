@@ -1,8 +1,8 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#ifndef OFP_TRANSMOGRIFY_H_
-#define OFP_TRANSMOGRIFY_H_
+#ifndef OFP_NORMALIZE_H_
+#define OFP_NORMALIZE_H_
 
 #include "ofp/actioniterator.h"
 #include "ofp/actionrange.h"
@@ -16,9 +16,9 @@ namespace ofp {
 class Message;
 class Header;
 
-class Transmogrify {
+class Normalize {
  public:
-  explicit Transmogrify(Message *message);
+  explicit Normalize(Message *message);
 
   void normalize();
   void normalizeFeaturesReplyV1();
@@ -75,7 +75,7 @@ class Transmogrify {
 };
 
 template <class Type>
-int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
+int Normalize::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
   // Size must be multiple of 8.
   if (((*iter)->size() % 8) != 0) {
     return 0;
@@ -119,7 +119,7 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
     return lengthChange;
 
   } else {
-    log_info("Transmogrify::normSetField: Unexpected value size.", valueLen);
+    log_info("Normalize::normSetField: Unexpected value size.", valueLen);
     log_info(" actiontype:", (*iter)->type());
   }
 
@@ -128,4 +128,4 @@ int Transmogrify::normSetField(ActionIterator *iter, ActionIterator *iterEnd) {
 
 }  // namespace ofp
 
-#endif  // OFP_TRANSMOGRIFY_H_
+#endif  // OFP_NORMALIZE_H_

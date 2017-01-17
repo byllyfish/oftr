@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv4address.h"
@@ -128,7 +128,8 @@ TEST(ipv4address, invalid2) {
 TEST(ipv4address, stream) {
   IPv4Address ip{"127.0.0.1"};
 
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << ip;
   EXPECT_EQ("127.0.0.1", oss.str());
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_CONSTANTS_H_
@@ -26,6 +26,7 @@ enum : UInt16 {
   DATALINK_IPV6 = 0x86dd,
   DATALINK_LLDP = 0x88cc,
   DATALINK_BDDP = 0x8942,
+  DATALINK_8021Q = 0x8100
 };
 
 enum : size_t {
@@ -112,7 +113,7 @@ enum OFPType : UInt8 {
   OFPT_RAW_MESSAGE = 0xFA
 };
 
-std::ostream &operator<<(std::ostream &os, OFPType type);
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, OFPType type);
 
 enum OFPBufferNo : UInt32 { OFP_NO_BUFFER = 0xFFFFFFFFUL };
 
@@ -289,7 +290,7 @@ enum OFPMultipartType : UInt16 {
   OFPMP_EXPERIMENTER = 0xffff
 };
 
-std::ostream &operator<<(std::ostream &os, OFPMultipartType type);
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, OFPMultipartType type);
 
 enum OFPInstructionType : UInt16 {
   OFPIT_NONE = 0,

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "./libofp.h"
@@ -23,10 +23,10 @@ static void buf_set(libofp_buffer *buf, const llvm::StringRef &val) {
 
 void libofp_version(libofp_buffer *result) {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
 
   oss << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7) << ")";
-
   oss << "  <" << LIBOFP_GITHUB_URL << ">";
 
   buf_set(result, oss.str());
@@ -68,7 +68,7 @@ int libofp_decode(libofp_buffer *result, const libofp_buffer *input,
   }
 
   ofp::Message message{input->data, input->length};
-  message.transmogrify();
+  message.normalize();
 
   ofp::yaml::Decoder decoder{&message, false, false};
 

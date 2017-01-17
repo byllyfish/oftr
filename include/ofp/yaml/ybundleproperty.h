@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YBUNDLEPROPERTY_H_
@@ -15,7 +15,7 @@ struct BundlePropertyItem {};
 using BundlePropertyIterator = TypedPropertyIterator<BundlePropertyItem>;
 struct BundlePropertyRange {};
 struct BundlePropertyInserter {};
-struct BundlePropertyList {};
+struct BundlePropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

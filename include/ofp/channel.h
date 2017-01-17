@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_CHANNEL_H_
@@ -41,8 +41,6 @@ class Channel : public Writable {
 
   virtual void setStartingXid(UInt32 xid) = 0;
 };
-
-std::ostream &operator<<(std::ostream &os, Channel *channel);
 
 inline std::ostream &operator<<(std::ostream &os, Channel *channel) {
   return os << "[Channel to=" << channel->remoteEndpoint() << ']';

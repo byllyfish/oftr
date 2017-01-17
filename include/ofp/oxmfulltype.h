@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_OXMFULLTYPE_H_
@@ -47,7 +47,8 @@ class OXMFullType {
 
 OFP_END_IGNORE_PADDING
 
-inline std::ostream &operator<<(std::ostream &os, const OXMFullType &type) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const OXMFullType &type) {
   return os << "[OXMFullType " << type.type() << "," << type.experimenter()
             << "," << static_cast<int>(type.internalID()) << "]";
 }

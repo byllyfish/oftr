@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/decoder.h"
@@ -12,7 +12,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   {
     // YAML test
@@ -66,7 +66,7 @@ static void testDecodeOnly(const char *hex, const char *yaml) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   // YAML test
   Decoder decoder{&msg};
@@ -210,7 +210,7 @@ TEST(decoder, getasyncrequestv1) {
   auto s = HexToRawData("011A0008000000BF");
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   Decoder decoder{&msg};
 
@@ -331,8 +331,8 @@ TEST(decoder, ofmp_flowreply_v4) {
       "00000000000A0001000C8000000412345678000000000001000801000000",
       "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
-      "     0x01\n    duration_sec:    0x00000002\n    duration_nsec:   "
-      "0x00000003\n    priority:        0x0004\n    idle_timeout:    0x0005\n  "
+      "     0x01\n    duration:        2.000000003\n    priority:        "
+      "0x0004\n    idle_timeout:    0x0005\n  "
       "  hard_timeout:    0x0006\n    flags:           [ SEND_FLOW_REM, "
       "CHECK_OVERLAP, RESET_COUNTS ]\n    cookie:          "
       "0x0000000000000008\n    packet_count:    0x0000000000000009\n    "
@@ -352,15 +352,15 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "040506080000606AABBCCDDEEFF0001000801000000",
       "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
-      "     0x01\n    duration_sec:    0x00000002\n    duration_nsec:   "
-      "0x00000003\n    priority:        0x0004\n    idle_timeout:    0x0005\n  "
+      "     0x01\n    duration:        2.000000003\n    priority:        "
+      "0x0004\n    idle_timeout:    0x0005\n  "
       "  hard_timeout:    0x0006\n    flags:           [ SEND_FLOW_REM, "
       "CHECK_OVERLAP, RESET_COUNTS ]\n    cookie:          "
       "0x0000000000000008\n    packet_count:    0x0000000000000009\n    "
       "byte_count:      0x000000000000000A\n    match:           \n      - "
       "field:           IN_PORT\n        value:           0x12345678\n    "
-      "instructions:    \n  - table_id:        0x11\n    duration_sec:    "
-      "0x00000022\n    duration_nsec:   0x00000033\n    priority:        "
+      "instructions:    \n  - table_id:        0x11\n    duration:        "
+      "34.000000051\n    priority:        "
       "0x0044\n    idle_timeout:    0x0055\n    hard_timeout:    0x0066\n    "
       "flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS, "
       "NO_BYT_COUNTS, '0x00000060' ]\n    cookie:          "
@@ -381,8 +381,8 @@ TEST(decoder, ofmp_flowreply_v1) {
       "F",
       "---\ntype:            REPLY.FLOW\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
-      "\n  - table_id:        0x33\n    duration_sec:    0x44444444\n    "
-      "duration_nsec:   0x55555555\n    priority:        0x6666\n    "
+      "\n  - table_id:        0x33\n    duration:        "
+      "1145324612.x55555555\n    priority:        0x6666\n    "
       "idle_timeout:    0x7777\n    hard_timeout:    0x8888\n    flags:        "
       "   [  ]\n    cookie:          0xAAAAAAAAAAAAAAAA\n    packet_count:    "
       "0xBBBBBBBBBBBBBBBB\n    byte_count:      0xCCCCCCCCCCCCCCCC\n    match: "
@@ -403,8 +403,8 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "9999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF",
       "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x01\nmsg:             \n  - table_id:   "
-      "     0x01\n    duration_sec:    0x00000002\n    duration_nsec:   "
-      "0x00000003\n    priority:        0x0004\n    idle_timeout:    0x0005\n  "
+      "     0x01\n    duration:        2.000000003\n    priority:        "
+      "0x0004\n    idle_timeout:    0x0005\n  "
       "  hard_timeout:    0x0006\n    flags:           [  ]\n    cookie:       "
       "   0x0000000000000008\n    packet_count:    0x0000000000000009\n    "
       "byte_count:      0x000000000000000A\n    match:           \n      - "
@@ -412,8 +412,8 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "instructions:    \n      - instruction:     APPLY_ACTIONS\n        "
       "actions:         \n          - action:          OUTPUT\n            "
       "port:            0x0000EEEE\n            max_len:         NO_BUFFER\n  "
-      "- table_id:        0x11\n    duration_sec:    0x00000022\n    "
-      "duration_nsec:   0x00000033\n    priority:        0x0044\n    "
+      "- table_id:        0x11\n    duration:        34.000000051\n    "
+      "priority:        0x0044\n    "
       "idle_timeout:    0x0055\n    hard_timeout:    0x0066\n    flags:        "
       "   [  ]\n    cookie:          0x0000000000000088\n    packet_count:    "
       "0x9999999999999999\n    byte_count:      0xAAAAAAAAAAAAAAAA\n    match: "
@@ -487,8 +487,8 @@ TEST(decoder, ofmp_portstats_v4) {
       "EEEEEEE0FFFFFFFFFFFFFFF01111111022222220",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x04\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration_sec:    0x11111110\n    "
-      "duration_nsec:   0x22222220\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x33333330\n    duration:        "
+      "286331152.572662304\n    rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -507,8 +507,8 @@ TEST(decoder, ofmp_portstats_v3) {
       "EEEEEEE0FFFFFFFFFFFFFFF0",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x03\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration_sec:    0x00000000\n    "
-      "duration_nsec:   0x00000000\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x33333330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -527,8 +527,8 @@ TEST(decoder, ofmp_portstats_v2) {
       "EEEEEEE0FFFFFFFFFFFFFFF0",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x02\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration_sec:    0x00000000\n    "
-      "duration_nsec:   0x00000000\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x33333330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -547,8 +547,8 @@ TEST(decoder, ofmp_portstats_v1) {
       "FFFFFFFFFFFFFFF0",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
-      "\n  - port_no:         0x00003330\n    duration_sec:    0x00000000\n    "
-      "duration_nsec:   0x00000000\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x00003330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -568,7 +568,7 @@ TEST(decoder, ofmp_queuestats_v4) {
       "\n  - port_no:         0x33333330\n    queue_id:        0x44444440\n    "
       "tx_packets:      0x6666666666666660\n    tx_bytes:        "
       "0x5555555555555550\n    tx_errors:       0x7777777777777770\n    "
-      "duration_sec:    0x11111110\n    duration_nsec:   0x22222220\n...\n");
+      "duration:        286331152.572662304\n...\n");
 }
 
 TEST(decoder, ofmp_queuestats_v1) {
@@ -580,7 +580,7 @@ TEST(decoder, ofmp_queuestats_v1) {
       "\n  - port_no:         0x00003330\n    queue_id:        0x44444440\n    "
       "tx_packets:      0x6666666666666660\n    tx_bytes:        "
       "0x5555555555555550\n    tx_errors:       0x7777777777777770\n    "
-      "duration_sec:    0x00000000\n    duration_nsec:   0x00000000\n...\n");
+      "duration:        0\n...\n");
 }
 
 TEST(decoder, flowmodv4) {
@@ -752,7 +752,7 @@ TEST(decoder, flowmodv1) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
   EXPECT_EQ(0xA0, msg.size());
   EXPECT_HEX(
       "010E00A0000000011111111111111111FFFFFFFFFFFFFFFF00445555666677778"
@@ -840,6 +840,20 @@ TEST(decoder, packetinv1) {
       "00000A000002\n...\n");
 }
 
+TEST(decoder, packetinv2) {
+  testDecodeEncode(
+      "020A00420000000233333333555555556666666644440188FFFFFFFFFFFF000000000001"
+      "080600010800060400010000000000010A0000010000000000000A000002",
+      "---\ntype:            PACKET_IN\nxid:             0x00000002\nversion:  "
+      "       0x02\nmsg:             \n  buffer_id:       0x33333333\n  "
+      "total_len:       0x4444\n  in_port:         0x55555555\n  in_phy_port:  "
+      "   0x66666666\n  metadata:        0x0000000000000000\n  reason:         "
+      " APPLY_ACTION\n  table_id:        0x88\n  cookie:          "
+      "0x0000000000000000\n  match:           \n  data:            "
+      "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
+      "00000A000002\n...\n");
+}
+
 TEST(decoder, packetoutv4) {
   testDecodeEncode(
       "040D00620000000133333333444444440020000000000000000000100000000500140000"
@@ -882,7 +896,7 @@ TEST(decoder, packetoutv1) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
   EXPECT_HEX(
       "010D0062000000013333333300004444002000000000000000000010000000050"
       "0140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000"
@@ -1235,9 +1249,8 @@ TEST(decoder, flowremovedv4) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x55\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
+      "table_id:        0x55\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x12345678\n...\n");
@@ -1253,9 +1266,8 @@ TEST(decoder, flowremovedv1) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x00\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
+      "table_id:        0x00\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x00005678\n...\n");
@@ -1272,9 +1284,8 @@ TEST(decoder, flowremovedv2) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x55\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
+      "table_id:        0x55\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x12345678\n...\n");
@@ -1289,9 +1300,8 @@ TEST(decoder, flowremovedv3) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x55\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
+      "table_id:        0x55\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x12345678\n...\n");

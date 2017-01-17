@@ -14,6 +14,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/constants_unittest.cpp
 	ofp/constants_error_unittest.cpp
 	ofp/datapathid_unittest.cpp
+	ofp/durationsec_unittest.cpp
 	ofp/decoder_unittest.cpp
 	ofp/encoder_unittest.cpp
 	ofp/encoderfail_unittest.cpp

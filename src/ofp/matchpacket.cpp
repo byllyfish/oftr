@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/matchpacket.h"
@@ -66,13 +66,28 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
 
   match_.add(OFB_ETH_DST(eth->dst));
   match_.add(OFB_ETH_SRC(eth->src));
-  match_.add(OFB_ETH_TYPE(eth->type));
 
   pkt += sizeof(pkt::Ethernet);
   length -= sizeof(pkt::Ethernet);
   offset_ += sizeof(pkt::Ethernet);
 
-  switch (eth->type) {
+  // Handle 802.1Q tag: ethType = 0x8100.
+  UInt16 ethType = eth->type;
+  if (ethType == DATALINK_8021Q && length >= pkt::k8021QHeaderSize) {
+    UInt16 tag = *Big16_cast(pkt);
+    match_.add(OFB_VLAN_VID((tag & 0x0FFF) | OFPVID_PRESENT));
+    match_.add(OFB_VLAN_PCP(tag >> 13));
+
+    ethType = *Big16_cast(pkt + 2);
+
+    pkt += pkt::k8021QHeaderSize;
+    length -= pkt::k8021QHeaderSize;
+    offset_ += pkt::k8021QHeaderSize;
+  }
+
+  match_.add(OFB_ETH_TYPE(ethType));
+
+  switch (ethType) {
     case DATALINK_ARP:
       decodeARP(pkt, length);
       break;
@@ -149,8 +164,9 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   match_.add(OFB_IPV4_SRC{ip->src});
   match_.add(OFB_IPV4_DST{ip->dst});
 
-  if (ip->frag) {
-    match_.add(NXM_NX_IP_FRAG{pkt::nxmFragmentType(ip->frag)});
+  UInt16 frag = ip->frag & 0x3fff;  // ignore DF bit
+  if (frag) {
+    match_.add(NXM_NX_IP_FRAG{pkt::nxmFragmentType(frag)});
   }
 
   match_.add(NXM_NX_IP_TTL{ip->ttl});

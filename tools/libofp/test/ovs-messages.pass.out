@@ -1920,8 +1920,7 @@ xid:             0x00001FA7
 version:         0x05
 msg:             
   - port_no:         LOCAL
-    duration_sec:    0x00001EB3
-    duration_nsec:   0x240F9140
+    duration:        7859.605000000
     rx_packets:      0x0000000000000000
     tx_packets:      0x0000000000000000
     rx_bytes:        0x0000000000000000
@@ -1937,8 +1936,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000001
-    duration_sec:    0x00001EB3
-    duration_nsec:   0x244C9A40
+    duration:        7859.609000000
     rx_packets:      0x000000000000000A
     tx_packets:      0x0000000000000000
     rx_bytes:        0x000000000000033C
@@ -1954,8 +1952,7 @@ msg:
       collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
-    duration_sec:    0x00001EB3
-    duration_nsec:   0x245BDC80
+    duration:        7859.610000000
     rx_packets:      0x0000000000000000
     tx_packets:      0x0000000000000000
     rx_bytes:        0x0000000000000000

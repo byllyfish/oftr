@@ -1,9 +1,10 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_MPGROUPSTATS_H_
 #define OFP_MPGROUPSTATS_H_
 
+#include "ofp/durationsec.h"
 #include "ofp/groupnumber.h"
 #include "ofp/packetcounterlist.h"
 
@@ -19,8 +20,7 @@ class MPGroupStats {
   UInt32 refCount() const { return refCount_; }
   UInt64 packetCount() const { return packetCount_; }
   UInt64 byteCount() const { return byteCount_; }
-  UInt32 durationSec() const { return durationSec_; }
-  UInt32 durationNSec() const { return durationNSec_; }
+  DurationSec duration() const { return duration_; }
 
   PacketCounterRange bucketStats() const;
 
@@ -34,8 +34,7 @@ class MPGroupStats {
   Padding<4> pad2_;
   Big64 packetCount_;
   Big64 byteCount_;
-  Big32 durationSec_;
-  Big32 durationNSec_;
+  DurationSec duration_;
 
   friend class MPGroupStatsBuilder;
   template <class T>

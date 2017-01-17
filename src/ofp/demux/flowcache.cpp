@@ -1,10 +1,11 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/flowcache.h"
 #include <iomanip>        // for stats
 #include <map>            // for stats
 #include <unordered_set>  // for stats
+#include "llvm/Support/Format.h"
 
 using namespace ofp;
 using namespace ofp::demux;
@@ -154,7 +155,8 @@ UInt64 FlowCache::assignSessionID() {
 }
 
 std::string FlowCache::toString() const {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   for (const auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;
@@ -166,11 +168,13 @@ std::string FlowCache::toString() const {
 }
 
 std::string FlowCache::stats() const {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << "FlowCache size=" << cache_.size()
       << " bucket_count=" << cache_.bucket_count()
-      << " load_factor=" << cache_.load_factor()
-      << " max_load_factor=" << cache_.max_load_factor() << '\n';
+      << " load_factor=" << static_cast<double>(cache_.load_factor())
+      << " max_load_factor=" << static_cast<double>(cache_.max_load_factor())
+      << '\n';
 
   // Make histogram of bucket sizes for the FlowCacheKey.
   std::map<UInt32, UInt32> histogram;
@@ -180,7 +184,7 @@ std::string FlowCache::stats() const {
   }
 
   for (const auto &iter : histogram) {
-    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+    oss << llvm::format_decimal(iter.first, 2) << ": " << iter.second << '\n';
   }
 
   // Hash all the addresses into an unordered set.
@@ -192,8 +196,9 @@ std::string FlowCache::stats() const {
   }
   oss << "IPv6Address size=" << addrs.size()
       << " bucket_count=" << addrs.bucket_count()
-      << " load_factor=" << addrs.load_factor()
-      << " max_load_factor=" << addrs.max_load_factor() << '\n';
+      << " load_factor=" << static_cast<double>(addrs.load_factor())
+      << " max_load_factor=" << static_cast<double>(addrs.max_load_factor())
+      << '\n';
 
   // Make histogram of bucket sizes for the address set.
   histogram.clear();
@@ -203,7 +208,7 @@ std::string FlowCache::stats() const {
   }
 
   for (const auto &iter : histogram) {
-    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+    oss << llvm::format_decimal(iter.first, 2) << ": " << iter.second << '\n';
   }
 
   return oss.str();

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_IPV6ADDRESS_H_
@@ -63,6 +63,9 @@ class IPv6Address {
 
   bool parseIPv6Address(const std::string &s);
   bool parseIPv4Address(const std::string &s);
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const IPv6Address &value);
 };
 
 static_assert(sizeof(IPv6Address) == 16, "Unexpected size.");
@@ -70,10 +73,6 @@ static_assert(alignof(IPv6Address) == 1, "Unexpected alignment.");
 static_assert(IsStandardLayout<IPv6Address>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv6Address>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const IPv6Address &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YQUEUE_H_
@@ -65,10 +65,8 @@ struct MappingTraits<ofp::QueueBuilder> {
     if (maxRate != 0xffff)
       props.add(QueuePropertyMaxRate{maxRate});
 
-    PropertyList &p = props;
-    ofp::detail::QueuePropertyList &qp =
-        Ref_cast<ofp::detail::QueuePropertyList>(p);
-    io.mapOptional("properties", qp);
+    io.mapOptional("properties",
+                   Ref_cast<ofp::detail::QueuePropertyList>(props));
     msg.setProperties(props.toRange());
   }
 };

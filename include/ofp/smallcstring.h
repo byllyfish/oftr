@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_SMALLCSTRING_H_
@@ -53,6 +53,11 @@ class SmallCString {
   ArrayType str_;
 
   const ArrayType &toArray() const { return str_; }
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const SmallCString &value) {
+    return os << value.toString();
+  }
 };
 
 /// Copies string and sets the remaining bytes to zero.

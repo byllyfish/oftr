@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnectionstdio.h"
@@ -6,12 +6,6 @@
 #include "ofp/sys/asio_utils.h"
 
 using ofp::rpc::RpcConnectionStdio;
-
-// The Stdio Text API uses UTF-8 and has JSON events delimited by '\n'. White
-// space characters (SPACE, HT, VT, FF, CR) are permitted. All other control
-// characters are reserved.
-
-const char RPC_EVENT_DELIMITER_CHAR = '\n';
 
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
@@ -55,8 +49,14 @@ void RpcConnectionStdio::asyncRead() {
           log_error("RpcConnectionStdio::asyncRead: input too large",
                     RPC_MAX_MESSAGE_SIZE, err);
           rpcRequestTooBig();
-        } else if (err != asio::error::eof &&
-                   err != asio::error::operation_aborted) {
+        } else if (err == asio::error::eof) {
+          // Log warning if there are unread bytes in the buffer.
+          auto bytesUnread = streambuf_.size();
+          if (bytesUnread > 0) {
+            log_warning("RpcConnectionStdio::asyncRead: unread bytes at eof",
+                        bytesUnread);
+          }
+        } else if (err != asio::error::operation_aborted) {
           log_error("RpcConnectionStdio::asyncRead error", err);
         }
       });

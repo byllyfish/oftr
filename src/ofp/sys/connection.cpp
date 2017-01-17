@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/connection.h"
@@ -120,7 +120,7 @@ void Connection::postMessage(Message *message) {
 
   ChannelListener *listener = mainConn_->listener_;
   if (listener) {
-    message->transmogrify();
+    message->normalize();
     listener->onMessage(message);
   }
 }

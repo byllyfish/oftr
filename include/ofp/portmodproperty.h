@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_PORTMODPROPERTY_H_
@@ -8,7 +8,10 @@
 
 namespace ofp {
 
-class PortModPropertyEthernet : private NonCopyable {
+// PortModPropertyEthernet needs to be `Copyable` since it is used as an
+// optional property.
+//
+class PortModPropertyEthernet {
  public:
   constexpr static OFPPortModProperty type() { return OFPPMPT_ETHERNET; }
 

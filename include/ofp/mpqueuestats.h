@@ -1,10 +1,11 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_MPQUEUESTATS_H_
 #define OFP_MPQUEUESTATS_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/durationsec.h"
 #include "ofp/portnumber.h"
 #include "ofp/queuenumber.h"
 
@@ -25,8 +26,7 @@ class MPQueueStats {
   Big64 txBytes_;
   Big64 txPackets_;
   Big64 txErrors_;
-  Big32 durationSec_;
-  Big32 durationNSec_;
+  DurationSec duration_;
 
   friend class MPQueueStatsBuilder;
   template <class T>

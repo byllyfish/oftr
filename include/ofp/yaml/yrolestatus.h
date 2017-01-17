@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YROLESTATUS_H_
@@ -16,7 +16,7 @@ msg:
   role: ControllerRole
   reason: RoleStatusReason
   generation_id: UInt64
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -43,7 +43,7 @@ struct MappingTraits<ofp::RoleStatusBuilder> {
     io.mapRequired("generation_id", msg.msg_.generationId_);
 
     ofp::PropertyList props;
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::RoleStatusPropertyList>(props));
     msg.setProperties(props);
   }

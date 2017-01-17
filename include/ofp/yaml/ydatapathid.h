@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YDATAPATHID_H_
@@ -13,7 +13,9 @@ template <>
 struct ScalarTraits<ofp::DatapathID> {
   static void output(const ofp::DatapathID &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    if (!value.empty()) {
+      out << value;
+    }
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::DatapathID &value) {

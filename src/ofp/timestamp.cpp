@@ -1,14 +1,15 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/timestamp.h"
 #include <chrono>
 #include <iomanip>
 #include <sstream>
+#include "llvm/Support/Format.h"
 
 using namespace ofp;
 
-const UInt32 kNanosecondsPerSec = 1000000000;
+const UInt32 kNanoPerSec = 1000000000;
 
 /// \brief Compute difference in seconds.
 ///
@@ -25,15 +26,13 @@ double Timestamp::secondsSince(const Timestamp &ts) const {
   UInt64 diff = Unsigned_cast(seconds() - ts.seconds());
   if (nanoseconds() >= ts.nanoseconds()) {
     return diff +
-           static_cast<double>(nanoseconds() - ts.nanoseconds()) /
-               kNanosecondsPerSec;
+           static_cast<double>(nanoseconds() - ts.nanoseconds()) / kNanoPerSec;
   }
 
   assert(diff > 0);
   return (diff - 1) +
-         static_cast<double>(kNanosecondsPerSec - ts.nanoseconds() +
-                             nanoseconds()) /
-             kNanosecondsPerSec;
+         static_cast<double>(kNanoPerSec - ts.nanoseconds() + nanoseconds()) /
+             kNanoPerSec;
 }
 
 static const UInt32 kPower10[10] = {
@@ -121,3 +120,11 @@ Timestamp Timestamp::now() {
   return Timestamp{static_cast<time_t>(nano / 1000000000),
                    UInt32_narrow_cast(nano % 1000000000)};
 }
+
+namespace ofp {
+
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const Timestamp &value) {
+  return os << llvm::format("%llu.%09u", value.time_.first, value.time_.second);
+}
+
+}  // namespace ofp

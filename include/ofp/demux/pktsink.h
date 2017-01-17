@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_DEMUX_PKTSINK_H_
@@ -22,7 +22,7 @@ namespace demux {
 ///     ByteRange data = {"abcdefabcdef14", 14};
 ///     sink.write(data, 1500);
 ///   } else {
-///     std::cerr << sink.error();
+///     llvm::errs() << sink.error();
 ///   }
 
 OFP_BEGIN_IGNORE_PADDING

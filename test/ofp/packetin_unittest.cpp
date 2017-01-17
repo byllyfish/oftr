@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/packetin.h"
@@ -33,7 +33,7 @@ TEST(packetin, version4) {
 
   {
     Message message{channel.data(), channel.size()};
-    message.transmogrify();
+    message.normalize();
 
     auto packetIn = PacketIn::cast(&message);
 

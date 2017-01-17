@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/udp_server.h"
@@ -249,7 +249,8 @@ void UDP_Server::asyncSend() {
         assert(&datagram == &datagrams_.front());
 
         if (err) {
-          log_error("Error sending datagram to", datagram.destination(),
+          log_error("Error sending datagram to",
+                    convertEndpoint<udp>(datagram.destination()),
                     std::make_pair("connid", datagram.connectionId()), err);
         }
         datagrams_.pop_front();

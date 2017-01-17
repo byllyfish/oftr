@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv6address.h"
@@ -107,3 +107,29 @@ std::string IPv6Address::toString() const {
       inet_ntop(AF_INET6, addr_.data(), ipv6str, sizeof(ipv6str));
   return result ? ipv6str : "<inet_ntop_error6>";
 }
+
+namespace ofp {
+
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Address &value) {
+  if (value.isV4Mapped()) {
+    return os << value.toV4();
+  }
+
+  IPv6Address temp{value};
+  UInt32 zone = value.isLinkLocal() ? value.zone() : 0;
+  if (zone) {
+    temp.setZone(0);
+  }
+
+  char buf[INET6_ADDRSTRLEN];
+  const UInt8 *data = temp.toArray().data();
+  const char *result = inet_ntop(AF_INET6, data, buf, sizeof(buf));
+
+  os << (result ? result : "<inet_ntop_error6>");
+  if (zone) {
+    os << '%' << zone;
+  }
+  return os;
+}
+
+}  // namespace ofp

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_BYTELIST_H_
@@ -119,8 +119,11 @@ class ByteList {
 
 static_assert(IsConvertible<ByteRange, ByteList>(), "Expected conversion.");
 
-/// \brief Write buffer to stream in hexadecimal format.
-std::ostream &operator<<(std::ostream &os, const ByteList &value);
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const ByteList &value) {
+  return os << "[ByteList size=" << value.size()
+            << " data=" << RawDataToHex(value.data(), value.size()) << "]";
+}
 
 inline std::ostream &operator<<(std::ostream &os, const ByteList &value) {
   return os << "[ByteList size=" << value.size()

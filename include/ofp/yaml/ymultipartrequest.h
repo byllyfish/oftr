@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YMULTIPARTREQUEST_H_
@@ -116,7 +116,7 @@ msg:
     write_set_field_miss: !optout [FieldID]
     apply_set_field: [FieldID]
     apply_set_field_miss: !optout [FieldID]
-    properties: [ExperimenterProperty]
+    properties: !opt [ExperimenterProperty]
 
 {Message/Request.TableDesc}
 type: REQUEST.TABLE_DESC

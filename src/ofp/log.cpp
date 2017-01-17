@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/log.h"
@@ -23,7 +23,7 @@ static void trace1(const char *type, UInt64 id, const void *data,
   if (message.type() == OFPT_ECHO_REQUEST || message.type() == OFPT_ECHO_REPLY)
     return;
 
-  message.transmogrify();
+  message.normalize();
 
   yaml::Decoder decoder{&message};
 

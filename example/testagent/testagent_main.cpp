@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include <iostream>
@@ -12,8 +12,8 @@ int main(int argc, char **argv) {
   IPv6Endpoint remoteEndpoint;
   if (!args.empty()) {
     if (!remoteEndpoint.parse(args[0])) {
-      std::cerr << "testagent: Argument 1 is not an endpoint: `" << args[0]
-                << "`\n";
+      llvm::errs() << "testagent: Argument 1 is not an endpoint: `" << args[0]
+                   << "`\n";
       return 1;
     }
   }
@@ -28,9 +28,9 @@ int main(int argc, char **argv) {
         TestAgent::Factory,
         [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
           if (err) {
-            std::cerr << "testagent: Error connecting to `" << remoteEndpoint
-                      << "`: connId=" << channel->connectionId()
-                      << " err=" << err.message() << '\n';
+            llvm::errs() << "testagent: Error connecting to `" << remoteEndpoint
+                         << "`: connId=" << channel->connectionId()
+                         << " err=" << err.message() << '\n';
           }
           error = err;
         });
@@ -44,7 +44,8 @@ int main(int argc, char **argv) {
   driver.run();
 
   if (error) {
-    std::cerr << "testagent: Error starting agent: " << error.message() << '\n';
+    llvm::errs() << "testagent: Error starting agent: " << error.message()
+                 << '\n';
     return 1;
   }
 

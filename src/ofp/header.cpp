@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/header.h"
@@ -101,7 +101,7 @@ bool Header::validateInput(UInt8 negotiatedVersion) const {
     return false;
   }
 
-  // N.B. The type field will be further checked by transmogrify.
+  // N.B. The type field will be further checked by normalize.
 
   return true;
 }
