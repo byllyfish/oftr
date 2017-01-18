@@ -26,7 +26,7 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
                      const u_char *data) {
   sHandlerInfo *info = reinterpret_cast<sHandlerInfo *>(user);
   ByteList &buf = info->buffer;
-  Timestamp ts(hdr->ts.tv_sec,
+  Timestamp ts(Unsigned_cast(hdr->ts.tv_sec),
                Unsigned_cast(hdr->ts.tv_usec) * info->nanosec_factor);
 
   const UInt32 alignPad = info->alignPad;

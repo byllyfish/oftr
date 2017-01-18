@@ -61,7 +61,7 @@ void PktSink::write(const Timestamp &ts, const ByteRange &captureData,
   const UInt32 usec = haveNanosec_ ? ts.nanoseconds() : ts.microseconds();
 
   struct pcap_pkthdr hdr;
-  hdr.ts.tv_sec = ts.seconds();
+  hdr.ts.tv_sec = ts.unix_time();
   hdr.ts.tv_usec = Signed_cast(usec);
   hdr.caplen = UInt32_narrow_cast(captureData.size());
   hdr.len = length;
