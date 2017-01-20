@@ -12,6 +12,7 @@
 #include "./libofp.h"
 #include "./ofpx_help.h"
 #include "llvm/Support/Host.h"
+#include <pcap/pcap.h>
 
 using namespace llvm;
 
@@ -119,6 +120,9 @@ void print_version() {
   os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
      << sslCommit.substr(0, 7) << ")\n";
 #endif  // LIBOFP_ENABLE_JSONRPC
+
+  // Print libpcap version.
+  os << "  Using: " << pcap_lib_version() << '\n';
 }
 
 void force_link_api() {
