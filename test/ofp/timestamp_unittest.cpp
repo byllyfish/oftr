@@ -159,6 +159,6 @@ TEST(timestamp, unix_time) {
   if (sizeof(time_t) > 4) {
     EXPECT_EQ(123456789101112, a.unix_time());
   } else {
-    EXPECT_EQ(123456789101112 & 0xffffffff, a.unix_time());
+    EXPECT_EQ(123456789101112 & 0xffffffff, Unsigned_cast(a.unix_time()));
   }
 }
