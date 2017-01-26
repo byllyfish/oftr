@@ -38,6 +38,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(Libofp_VERSION 0.23.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
+set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\1" Libofp_VERSION_MAJOR ${Libofp_VERSION})
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\2" Libofp_VERSION_MINOR ${Libofp_VERSION})
@@ -315,6 +316,7 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
+message(STATUS "Compiler is ${Libofp_COMPILER_SPEC}")
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")

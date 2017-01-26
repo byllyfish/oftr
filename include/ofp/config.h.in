@@ -9,6 +9,7 @@
 #define LIBOFP_VERSION_MINOR        @Libofp_VERSION_MINOR@
 #define LIBOFP_VERSION_PATCH        @Libofp_VERSION_PATCH@
 #define LIBOFP_GITHUB_URL           "@Libofp_GITHUB_URL@"
+#define LIBOFP_COMPILER_SPEC        "@Libofp_COMPILER_SPEC@"
 
 // These variables indicate the major and minor version numbers for the 
 // RPC API.

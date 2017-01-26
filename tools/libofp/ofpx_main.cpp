@@ -101,7 +101,7 @@ void print_version() {
 #ifndef NDEBUG
   os << " with assertions";
 #endif
-  os << '\n';
+  os << " (" << LIBOFP_COMPILER_SPEC << ")\n";
 
 #if LIBOFP_ENABLE_JSONRPC
   unsigned asioMajor = ASIO_VERSION / 100000;
