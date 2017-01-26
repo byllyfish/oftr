@@ -1441,11 +1441,11 @@ Action/SET_MPLS_TTL:
   
 Action/PUSH_VLAN: 
   action: PUSH_VLAN
-  vlan: UInt16
+  ethertype: UInt16
   
 Action/PUSH_MPLS: 
   action: PUSH_MPLS
-  mpls: UInt32
+  ethertype: UInt16
   
 Action/POP_MPLS: 
   action: POP_MPLS

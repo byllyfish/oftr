@@ -86,12 +86,12 @@ ttl: UInt16
 
 const char *const kPushVLANSchema = R"""({Action/PUSH_VLAN}
 action: PUSH_VLAN
-vlan: UInt16
+ethertype: UInt16
 )""";
 
 const char *const kPushMPLSSchema = R"""({Action/PUSH_MPLS}
 action: PUSH_MPLS
-mpls: UInt32
+ethertype: UInt16
 )""";
 
 const char *const kPopMPLSSchema = R"""({Action/POP_MPLS}
@@ -176,14 +176,14 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       }
       case AT_PUSH_VLAN::type(): {
         const AT_PUSH_VLAN *action = item.action<AT_PUSH_VLAN>();
-        Hex16 vlan = action->vlan();
-        io.mapRequired("vlan", vlan);
+        Hex16 ethertype = action->ethertype();
+        io.mapRequired("ethertype", ethertype);
         break;
       }
       case AT_PUSH_MPLS::type(): {
         const AT_PUSH_MPLS *action = item.action<AT_PUSH_MPLS>();
-        Hex32 mpls = action->mpls();
-        io.mapRequired("mpls", mpls);
+        Hex16 ethertype = action->ethertype();
+        io.mapRequired("ethertype", ethertype);
         break;
       }
       case AT_POP_MPLS::type(): {
@@ -361,16 +361,16 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
       }
       case OFPAT_PUSH_VLAN: {
-        UInt16 vlan;
-        io.mapRequired("vlan", vlan);
-        AT_PUSH_VLAN action{vlan};
+        UInt16 ethertype;
+        io.mapRequired("ethertype", ethertype);
+        AT_PUSH_VLAN action{ethertype};
         list.add(action);
         break;
       }
       case OFPAT_PUSH_MPLS: {
-        UInt32 mpls;
-        io.mapRequired("mpls", mpls);
-        AT_PUSH_MPLS action{mpls};
+        UInt16 ethertype;
+        io.mapRequired("ethertype", ethertype);
+        AT_PUSH_MPLS action{ethertype};
         list.add(action);
         break;
       }

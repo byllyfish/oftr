@@ -114,13 +114,13 @@ class AT_PUSH_VLAN {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_VLAN, 8); }
 
-  constexpr explicit AT_PUSH_VLAN(UInt16 vlan) : vlan_{vlan} {}
+  constexpr explicit AT_PUSH_VLAN(UInt16 ethertype) : ethertype_{ethertype} {}
 
-  UInt16 vlan() const { return vlan_; }
+  UInt16 ethertype() const { return ethertype_; }
 
  private:
   const ActionType type_ = type();
-  const Big16 vlan_;
+  const Big16 ethertype_;
   const Padding<2> pad_;
 };
 
@@ -132,13 +132,14 @@ class AT_PUSH_MPLS {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_MPLS, 8); }
 
-  constexpr explicit AT_PUSH_MPLS(UInt32 mpls) : mpls_{mpls} {}
+  constexpr explicit AT_PUSH_MPLS(UInt16 ethertype) : ethertype_{ethertype} {}
 
-  UInt32 mpls() const { return mpls_; }
+  UInt16 ethertype() const { return ethertype_; }
 
  private:
   const ActionType type_ = type();
-  const Big32 mpls_;
+  const Big16 ethertype_;
+  const Padding<2> pad_;
 };
 
 static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
@@ -161,6 +162,7 @@ class AT_POP_MPLS {
 
 static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
+
 /// \brief Concrete type for AT_SET_QUEUE action.
 class AT_SET_QUEUE {
  public:

@@ -1117,10 +1117,10 @@ msg:
           - action:          POP_MPLS
             ethertype:       0x9876
           - action:          PUSH_MPLS
-            mpls:            0x88470000
+            ethertype:       0x8847
           - action:          POP_VLAN
           - action:          PUSH_VLAN
-            vlan:            0x8100
+            ethertype:       0x8100
           - action:          DEC_MPLS_TTL
           - action:          SET_MPLS_TTL
             ttl:             0x0A00
@@ -1235,10 +1235,10 @@ msg:
         - action:          POP_MPLS
           ethertype:       0x9876
         - action:          PUSH_MPLS
-          mpls:            0x88470000
+          ethertype:       0x8847
         - action:          POP_VLAN
         - action:          PUSH_VLAN
-          vlan:            0x8100
+          ethertype:       0x8100
         - action:          DEC_MPLS_TTL
         - action:          SET_MPLS_TTL
           ttl:             0x0A00
@@ -3918,10 +3918,10 @@ msg:
           - action:          POP_MPLS
             ethertype:       0x9876
           - action:          PUSH_MPLS
-            mpls:            0x88470000
+            ethertype:       0x8847
           - action:          POP_VLAN
           - action:          PUSH_VLAN
-            vlan:            0x8100
+            ethertype:       0x8100
           - action:          DEC_MPLS_TTL
           - action:          SET_MPLS_TTL
             ttl:             0x0A00
@@ -4036,10 +4036,10 @@ msg:
         - action:          POP_MPLS
           ethertype:       0x9876
         - action:          PUSH_MPLS
-          mpls:            0x88470000
+          ethertype:       0x8847
         - action:          POP_VLAN
         - action:          PUSH_VLAN
-          vlan:            0x8100
+          ethertype:       0x8100
         - action:          DEC_MPLS_TTL
         - action:          SET_MPLS_TTL
           ttl:             0x0A00

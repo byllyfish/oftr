@@ -15736,10 +15736,10 @@ msg:
           ttl:             0x0000
         - action:          DEC_MPLS_TTL
         - action:          PUSH_VLAN
-          vlan:            0x0000
+          ethertype:       0x0000
         - action:          POP_VLAN
         - action:          PUSH_MPLS
-          mpls:            0x00000000
+          ethertype:       0x0000
         - action:          POP_MPLS
           ethertype:       0x0000
         - action:          SET_QUEUE
@@ -16496,7 +16496,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_VLAN
-          vlan:            0x0000
+          ethertype:       0x0000
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00038.pass
 Error: Encode yielded different data at byte offset 52:
@@ -16573,7 +16573,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_MPLS
-          mpls:            0x00000000
+          ethertype:       0x0000
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00040.pass
 Error: Encode yielded different data at byte offset 52:
@@ -44560,7 +44560,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_VLAN
-          vlan:            0x0000
+          ethertype:       0x0000
 ...
 ---
 type:            FLOW_MOD
@@ -44605,7 +44605,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_MPLS
-          mpls:            0x00000000
+          ethertype:       0x0000
 ...
 ---
 type:            FLOW_MOD
@@ -56465,7 +56465,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_VLAN
-          vlan:            0x0000
+          ethertype:       0x0000
 ...
 ---
 type:            FLOW_MOD
@@ -56510,7 +56510,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_MPLS
-          mpls:            0x00000000
+          ethertype:       0x0000
 ...
 ---
 type:            FLOW_MOD
@@ -69806,7 +69806,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_VLAN
-          vlan:            0x0000
+          ethertype:       0x0000
 ...
 ---
 type:            FLOW_MOD
@@ -69851,7 +69851,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          PUSH_MPLS
-          mpls:            0x00000000
+          ethertype:       0x0000
 ...
 ---
 type:            FLOW_MOD
