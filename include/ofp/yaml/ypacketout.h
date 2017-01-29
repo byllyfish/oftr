@@ -4,8 +4,8 @@
 #ifndef OFP_YAML_YPACKETOUT_H_
 #define OFP_YAML_YPACKETOUT_H_
 
-#include "ofp/packetout.h"
 #include "ofp/matchpacketbuilder.h"
+#include "ofp/packetout.h"
 
 namespace llvm {
 namespace yaml {

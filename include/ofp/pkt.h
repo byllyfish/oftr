@@ -6,9 +6,10 @@
 
 #include "ofp/byteorder.h"
 #include "ofp/constants.h"
+#include "ofp/ipv6address.h"
 #include "ofp/log.h"
 #include "ofp/macaddress.h"
-#include "ofp/ipv6address.h"
+#include "ofp/byterange.h"
 
 namespace ofp {
 namespace pkt {
@@ -43,8 +44,8 @@ static_assert(sizeof(Ethernet) == 14, "Unexpected size.");
 static_assert(alignof(Ethernet) == 2, "Unexpected alignment.");
 
 struct VlanHdr : public Castable<VlanHdr> {
-  Big16 tci;  // pcp=3-bits dei=1-bit vid=12-bits
-  Big16 ethType; // actual ethernet type 
+  Big16 tci;      // pcp=3-bits dei=1-bit vid=12-bits
+  Big16 ethType;  // actual ethernet type
 };
 
 static_assert(sizeof(VlanHdr) == 4, "Unexpected size.");
@@ -59,7 +60,7 @@ struct Arp : public Castable<Arp> {
   IPv4Address tpa;
 };
 
-#define OFP_ARP_PREFIX_STR   "\x00\x01\x08\x00\x06\x04"
+#define OFP_ARP_PREFIX_STR "\x00\x01\x08\x00\x06\x04"
 
 static_assert(sizeof(Arp) == 28, "Unexpected size.");
 static_assert(alignof(Arp) == 2, "Unexpected alignment.");
@@ -185,7 +186,8 @@ struct LLDPTlv : public Castable<LLDPTlv> {
 
   explicit LLDPTlv(UInt8 type, size_t length) {
     assert(length < 512);
-    taglen_[0] = UInt8_narrow_cast((UInt32_cast(type) << 1) | (length & 0x0100));
+    taglen_[0] =
+        UInt8_narrow_cast((UInt32_cast(type) << 1) | (length & 0x0100));
     taglen_[1] = (length & 0x00FF);
   }
   UInt8 type() const { return (taglen_[0] >> 1); }

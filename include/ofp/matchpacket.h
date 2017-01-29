@@ -19,7 +19,7 @@ class MatchPacket {
   size_t size() const { return match_.size(); }
 
   OXMRange toRange() const { return match_.toRange(); }
-  
+
  private:
   MatchBuilder match_;
   size_t offset_ = 0;

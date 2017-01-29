@@ -9,10 +9,10 @@
 #include <asio/version.hpp>
 #include "./ofpx_jsonrpc.h"
 #endif  // LIBOFP_ENABLE_JSONRPC
+#include <pcap/pcap.h>
 #include "./libofp.h"
 #include "./ofpx_help.h"
 #include "llvm/Support/Host.h"
-#include <pcap/pcap.h>
 
 using namespace llvm;
 

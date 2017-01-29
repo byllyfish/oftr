@@ -113,10 +113,10 @@ Timestamp Timestamp::now() {
 
   auto now = system_clock::now();
   auto duration = now.time_since_epoch();
-  UInt64 nano = Unsigned_cast(duration_cast<std::chrono::nanoseconds>(duration).count());
+  UInt64 nano =
+      Unsigned_cast(duration_cast<std::chrono::nanoseconds>(duration).count());
 
-  return Timestamp{nano / NANO_UNITS,
-                   UInt32_narrow_cast(nano % NANO_UNITS)};
+  return Timestamp{nano / NANO_UNITS, UInt32_narrow_cast(nano % NANO_UNITS)};
 }
 
 void Timestamp::addSeconds(int seconds) {

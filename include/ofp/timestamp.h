@@ -13,7 +13,9 @@ OFP_BEGIN_IGNORE_PADDING
 class Timestamp {
  public:
   explicit Timestamp(UInt64 seconds = 0, UInt32 nanos = 0)
-      : time_{seconds, nanos} { assert(nanos < NANO_UNITS); }
+      : time_{seconds, nanos} {
+    assert(nanos < NANO_UNITS);
+  }
 
   time_t unix_time() const { return static_cast<time_t>(seconds()); }
   UInt64 seconds() const { return time_.first; }
@@ -47,7 +49,7 @@ class Timestamp {
   static Timestamp now();
 
   void addSeconds(int seconds);
-  
+
  private:
   static const UInt32 NANO_UNITS = 1000000000;
 
