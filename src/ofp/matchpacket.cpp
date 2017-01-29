@@ -73,16 +73,20 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
 
   // Handle 802.1Q tag: ethType = 0x8100.
   UInt16 ethType = eth->type;
-  if (ethType == DATALINK_8021Q && length >= pkt::k8021QHeaderSize) {
-    UInt16 tag = *Big16_cast(pkt);
-    match_.add(OFB_VLAN_VID((tag & 0x0FFF) | OFPVID_PRESENT));
-    match_.add(OFB_VLAN_PCP(tag >> 13));
+  if (ethType == DATALINK_8021Q) {
+    auto vlan = pkt::VlanHdr::cast(pkt, length);
+    if (!vlan) {
+      return;
+    }
 
-    ethType = *Big16_cast(pkt + 2);
+    // N.B. Continue the OpenFlow tradition of setting the OFPVID_PRESENT bit.
+    match_.add(OFB_VLAN_VID((vlan->tci & 0x0FFF) | OFPVID_PRESENT));
+    match_.add(OFB_VLAN_PCP(vlan->tci >> 13));
+    ethType = vlan->ethType;
 
-    pkt += pkt::k8021QHeaderSize;
-    length -= pkt::k8021QHeaderSize;
-    offset_ += pkt::k8021QHeaderSize;
+    pkt += sizeof(pkt::VlanHdr);
+    length -= sizeof(pkt::VlanHdr);
+    offset_ += sizeof(pkt::VlanHdr);
   }
 
   match_.add(OFB_ETH_TYPE(ethType));
@@ -117,7 +121,7 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
     return;
   }
 
-  if (std::memcmp(arp->prefix, "\x00\x01\x08\x00\x06\x04",
+  if (std::memcmp(arp->prefix, OFP_ARP_PREFIX_STR,
                   sizeof(arp->prefix)) != 0) {
     log_warning("MatchPacket: Unexpected arp prefix", log::hex(arp->prefix));
     return;

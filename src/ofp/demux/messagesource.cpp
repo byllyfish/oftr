@@ -91,11 +91,17 @@ void MessageSource::submitEthernet(const UInt8 *data, size_t length) {
 
   UInt16 ethType = eth->type;
 
-  // Ignore 802.1Q header and vlan.
-  if (ethType == DATALINK_8021Q && length >= pkt::k8021QHeaderSize) {
-    ethType = *Big16_cast(data + 2);
-    data += pkt::k8021QHeaderSize;
-    length -= pkt::k8021QHeaderSize;
+  // Check for vlan header.
+  if (ethType == DATALINK_8021Q) {
+    auto vlan = pkt::VlanHdr::cast(data, length);
+    if (!vlan) {
+      log_warning("MessageSource: No vlan header");
+      return;
+    }
+    // Ignore the vlan pcp and vid. Update the actual ethType.
+    ethType = vlan->ethType;
+    data += sizeof(pkt::VlanHdr);
+    length -= sizeof(pkt::VlanHdr);
   }
 
   if (ethType == DATALINK_IPV4) {

@@ -5,6 +5,7 @@
 #define OFP_YAML_YPACKETOUT_H_
 
 #include "ofp/packetout.h"
+#include "ofp/matchpacketbuilder.h"
 
 namespace llvm {
 namespace yaml {
@@ -50,8 +51,12 @@ struct MappingTraits<ofp::PacketOutBuilder> {
     io.mapOptional("actions", msg.actions_);
     io.mapOptional("data", msg.enetFrame_);
 
-    MatchBuilder ignorePktDecode;  // FIXME(bfish) Add `mapIgnore` method?
-    io.mapOptional("_pkt_decode", ignorePktDecode);
+    MatchBuilder pktDecode;
+    io.mapOptional("_pkt_decode", pktDecode);
+    if (msg.enetFrame_.empty() && pktDecode.size() > 0) {
+      ofp::MatchPacketBuilder mp{pktDecode.toRange()};
+      mp.build(&msg.enetFrame_, {});
+    }
   }
 };
 

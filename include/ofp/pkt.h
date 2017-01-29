@@ -8,11 +8,12 @@
 #include "ofp/constants.h"
 #include "ofp/log.h"
 #include "ofp/macaddress.h"
+#include "ofp/ipv6address.h"
 
 namespace ofp {
 namespace pkt {
 
-enum { kIPv4Version = 4, kIPv6Version = 6, k8021QHeaderSize = 4 };
+enum { kIPv4Version = 4, kIPv6Version = 6 };
 
 template <class Type>
 struct Castable {
@@ -41,14 +42,24 @@ struct Ethernet : public Castable<Ethernet> {
 static_assert(sizeof(Ethernet) == 14, "Unexpected size.");
 static_assert(alignof(Ethernet) == 2, "Unexpected alignment.");
 
+struct VlanHdr : public Castable<VlanHdr> {
+  Big16 tci;  // pcp=3-bits dei=1-bit vid=12-bits
+  Big16 ethType; // actual ethernet type 
+};
+
+static_assert(sizeof(VlanHdr) == 4, "Unexpected size.");
+static_assert(alignof(VlanHdr) == 2, "Unexpected alignment.");
+
 struct Arp : public Castable<Arp> {
-  UInt8 prefix[6];  // fixed: ht, pt, hl, pl
+  UInt8 prefix[6];  // fixed: ht, pt, hl, pl (see OFP_ARP_PREFIX_STR)
   Big16 op;
   MacAddress sha;
   IPv4Address spa;
   MacAddress tha;
   IPv4Address tpa;
 };
+
+#define OFP_ARP_PREFIX_STR   "\x00\x01\x08\x00\x06\x04"
 
 static_assert(sizeof(Arp) == 28, "Unexpected size.");
 static_assert(alignof(Arp) == 2, "Unexpected alignment.");
@@ -170,11 +181,16 @@ static_assert(sizeof(UDPHdr) == 8, "Unexpected size.");
 static_assert(alignof(UDPHdr) == 2, "Unexpected alignment.");
 
 struct LLDPTlv : public Castable<LLDPTlv> {
-  Big8 _taglen[2];  // Combined tag:7, length:9
+  Big8 taglen_[2];  // Combined tag:7, length:9
 
-  UInt8 type() const { return (_taglen[0] >> 1); }
-  size_t length() const { return ((_taglen[0] & 0x01U) << 8U) | _taglen[1]; }
-  const UInt8 *data() const { return BytePtr(this) + sizeof(_taglen); }
+  explicit LLDPTlv(UInt8 type, size_t length) {
+    assert(length < 512);
+    taglen_[0] = UInt8_narrow_cast((UInt32_cast(type) << 1) | (length & 0x0100));
+    taglen_[1] = (length & 0x00FF);
+  }
+  UInt8 type() const { return (taglen_[0] >> 1); }
+  size_t length() const { return ((taglen_[0] & 0x01U) << 8U) | taglen_[1]; }
+  const UInt8 *data() const { return BytePtr(this) + sizeof(taglen_); }
 
   ByteRange value() const { return ByteRange{data(), length()}; }
   Big32 value32() const { return Big32::fromBytes(data(), length()); }

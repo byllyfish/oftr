@@ -183,6 +183,7 @@ set(LIBOFP_SOURCES
   src/ofp/match.cpp
   src/ofp/matchheader.cpp
   src/ofp/matchpacket.cpp
+  src/ofp/matchpacketbuilder.cpp
   src/ofp/message.cpp
   src/ofp/metermod.cpp
   src/ofp/mpdesc.cpp
