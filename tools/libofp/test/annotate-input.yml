@@ -110,20 +110,19 @@ version: 0x04
 type: PORT_STATUS
 msg:
   reason: ADD
-  port:
-    port_no: CONTROLLER
-    hw_addr: 'ff:ff:ff:ff:ff:ff'
-    name: '................'
-    config: [ 'PORT_DOWN' ]
-    state: [ 'LINK_DOWN' ]
-    ethernet:
-      curr: [ 'COPPER' ]
-      advertised: [ 'COPPER' ]
-      supported: [ 'COPPER' ]
-      peer: [ 'COPPER' ]
-      curr_speed: 0xffffffff
-      max_speed: 0xffffffff
-    properties:
+  port_no: CONTROLLER
+  hw_addr: 'ff:ff:ff:ff:ff:ff'
+  name: '................'
+  config: [ 'PORT_DOWN' ]
+  state: [ 'LINK_DOWN' ]
+  ethernet:
+    curr: [ 'COPPER' ]
+    advertised: [ 'COPPER' ]
+    supported: [ 'COPPER' ]
+    peer: [ 'COPPER' ]
+    curr_speed: 0xffffffff
+    max_speed: 0xffffffff
+  properties:
 ---
 version: 0x04
 type: PACKET_OUT

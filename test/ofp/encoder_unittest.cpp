@@ -1573,20 +1573,19 @@ TEST(encoder, portstatusv4) {
       xid: 0x11111111
       msg:
         reason: 0x22
-        port:
-          port_no: 0x33333333
-          hw_addr: 'aabbccddeeff'
-          name: 'Port 1'
-          config: [ 0x44444444 ]
-          state: [ 0x55555555 ]
-          ethernet:
-            curr: [ '0x66666666' ]
-            advertised: [ '0x77777777' ]
-            supported: [ '0x88888888' ]
-            peer: [ '0x99999999' ]
-            curr_speed: 0xAAAAAAAA
-            max_speed: 0xBBBBBBBB
-          properties:
+        port_no: 0x33333333
+        hw_addr: 'aabbccddeeff'
+        name: 'Port 1'
+        config: [ 0x44444444 ]
+        state: [ 0x55555555 ]
+        ethernet:
+          curr: [ '0x66666666' ]
+          advertised: [ '0x77777777' ]
+          supported: [ '0x88888888' ]
+          peer: [ '0x99999999' ]
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+        properties:
       )""";
 
   Encoder encoder{input};
@@ -1607,20 +1606,19 @@ TEST(encoder, portstatusv1) {
       xid: 0x11111111
       msg:
         reason: 0x22
-        port:
-          port_no: 0x33333333
-          hw_addr: 'aabbccddeeff'
-          name: 'Port 1'
-          config: [ 0x44444444 ]
-          state: [ 0x55555555 ]
-          ethernet:
-            curr: [ '0x66666666' ]
-            advertised: [ '0x77777777' ]
-            supported: [ '0x88888888' ]
-            peer: [ '0x99999999' ]
-            curr_speed: 0xAAAAAAAA
-            max_speed: 0xBBBBBBBB
-          properties:
+        port_no: 0x33333333
+        hw_addr: 'aabbccddeeff'
+        name: 'Port 1'
+        config: [ 0x44444444 ]
+        state: [ 0x55555555 ]
+        ethernet:
+          curr: [ '0x66666666' ]
+          advertised: [ '0x77777777' ]
+          supported: [ '0x88888888' ]
+          peer: [ '0x99999999' ]
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+        properties:
       )""";
 
   Encoder encoder{input};

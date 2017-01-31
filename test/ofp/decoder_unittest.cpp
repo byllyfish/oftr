@@ -929,40 +929,14 @@ TEST(decoder, portstatusv4) {
       "040C00501111111122000000000000003333333300000000AABBCCDDEEFF0000506F7274"
       "203100000000000000000000444444445555555566666666777777778888888899999999"
       "AAAAAAAABBBBBBBB",
-      "---\ntype:            PORT_STATUS\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  reason:         "
-      " 0x22\n  port:            \n    port_no:         0x33333333\n    "
-      "hw_addr:         'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    "
-      "config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:    "
-      "       [ LINK_DOWN, LIVE, '0x55555550' ]\n    ethernet:        \n      "
-      "curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, "
-      "AUTONEG, PAUSE, '0x66660000' ]\n      advertised:      [ 10MB_HD, "
-      "10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, "
-      "FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      supported:       [ "
-      "100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      peer:      "
-      "      [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, "
-      "PAUSE_ASYM, '0x99990000' ]\n      curr_speed:      0xAAAAAAAA\n      "
-      "max_speed:       0xBBBBBBBB\n    properties:      \n...\n");
+      "---\ntype:            PORT_STATUS\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  reason:          0x22\n  port_no:         0x33333333\n  hw_addr:         'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, LIVE, '0x55555550' ]\n  ethernet:        \n    curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n    curr_speed:      0xAAAAAAAA\n    max_speed:       0xBBBBBBBB\n  properties:      \n...\n");
 }
 
 TEST(decoder, portstatusv1) {
   testDecodeEncode(
       "010C00401111111122000000000000003333AABBCCDDEEFF506F72742031000000000000"
       "00000000444444445555555566660666777707778888088899990999",
-      "---\ntype:            PORT_STATUS\nxid:             "
-      "0x11111111\nversion:         0x01\nmsg:             \n  reason:         "
-      " 0x22\n  port:            \n    port_no:         0x00003333\n    "
-      "hw_addr:         'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    "
-      "config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:    "
-      "       [ LINK_DOWN, LIVE, STP_LEARN, '0x55555450' ]\n    ethernet:      "
-      "  \n      curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, "
-      "AUTONEG, PAUSE, '0x66660000' ]\n      advertised:      [ 10MB_HD, "
-      "10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, "
-      "'0x77770000' ]\n      supported:       [ 100MB_FD, COPPER, PAUSE_ASYM, "
-      "'0x88880000' ]\n      peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, "
-      "COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n      curr_speed:      "
-      "0x00000000\n      max_speed:       0x00000000\n    properties:      "
-      "\n...\n");
+      "---\ntype:            PORT_STATUS\nxid:             0x11111111\nversion:         0x01\nmsg:             \n  reason:          0x22\n  port_no:         0x00003333\n  hw_addr:         'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, LIVE, STP_LEARN, '0x55555450' ]\n  ethernet:        \n    curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n  properties:      \n...\n");
 }
 
 TEST(decoder, groupmodv4) {

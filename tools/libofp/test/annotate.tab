@@ -85,27 +85,26 @@ version	type	keypath	syntax	required	default	missing	modify
 1	FLOW_REMOVED.v1	msg.reason	IDLE_TIMEOUT	True			
 1	FLOW_REMOVED.v1	msg.table_id	ALL	True		msg.table_id=0	
 1	PORT_STATUS.v1	msg	object	True			
-1	PORT_STATUS.v1	msg.port	object	True			
-1	PORT_STATUS.v1	msg.port.config	array	True			
-1	PORT_STATUS.v1	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
-1	PORT_STATUS.v1	msg.port.ethernet	object	True			
-1	PORT_STATUS.v1	msg.port.ethernet.advertised	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
-1	PORT_STATUS.v1	msg.port.ethernet.curr	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
-1	PORT_STATUS.v1	msg.port.ethernet.curr_speed	uint32	True		msg.port.ethernet.curr_speed=0	
-1	PORT_STATUS.v1	msg.port.ethernet.max_speed	uint32	True		msg.port.ethernet.max_speed=0	
-1	PORT_STATUS.v1	msg.port.ethernet.peer	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.ethernet.peer.0=COPPER,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
-1	PORT_STATUS.v1	msg.port.ethernet.supported	array	True			
-1	PORT_STATUS.v1	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.ethernet.supported.0=COPPER,msg.port.properties=array,msg.port.state.1=STP_LISTEN		
-1	PORT_STATUS.v1	msg.port.hw_addr	macaddress	True			True
-1	PORT_STATUS.v1	msg.port.name	str16	True			
-1	PORT_STATUS.v1	msg.port.port_no	CONTROLLER	True			
-1	PORT_STATUS.v1	msg.port.properties	null	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.1=STP_LISTEN	msg.port.properties=array	
-1	PORT_STATUS.v1	msg.port.state	array	True			
-1	PORT_STATUS.v1	msg.port.state.0	LINK_DOWN	False	msg.port.ethernet.curr_speed=0,msg.port.ethernet.max_speed=0,msg.port.properties=array,msg.port.state.0=STP_LISTEN		
+1	PORT_STATUS.v1	msg.config	array	True			
+1	PORT_STATUS.v1	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array		
+1	PORT_STATUS.v1	msg.ethernet	object	True			
+1	PORT_STATUS.v1	msg.ethernet.advertised	array	True			
+1	PORT_STATUS.v1	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array		
+1	PORT_STATUS.v1	msg.ethernet.curr	array	True			
+1	PORT_STATUS.v1	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array		
+1	PORT_STATUS.v1	msg.ethernet.curr_speed	uint32	True		msg.ethernet.curr_speed=0	
+1	PORT_STATUS.v1	msg.ethernet.max_speed	uint32	True		msg.ethernet.max_speed=0	
+1	PORT_STATUS.v1	msg.ethernet.peer	array	True			
+1	PORT_STATUS.v1	msg.ethernet.peer.0	COPPER	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.ethernet.peer.0=COPPER,msg.properties=array		
+1	PORT_STATUS.v1	msg.ethernet.supported	array	True			
+1	PORT_STATUS.v1	msg.ethernet.supported.0	COPPER	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.ethernet.supported.0=COPPER,msg.properties=array		
+1	PORT_STATUS.v1	msg.hw_addr	macaddress	True			True
+1	PORT_STATUS.v1	msg.name	str16	True			
+1	PORT_STATUS.v1	msg.port_no	CONTROLLER	True			
+1	PORT_STATUS.v1	msg.properties	null	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array	msg.properties=array	
 1	PORT_STATUS.v1	msg.reason	ADD	True			
+1	PORT_STATUS.v1	msg.state	array	True			
+1	PORT_STATUS.v1	msg.state.0	LINK_DOWN	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array,msg.state.0=STP_LISTEN		
 1	PACKET_OUT.v1	msg	object	True			
 1	PACKET_OUT.v1	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
 1	PACKET_OUT.v1	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -729,27 +728,26 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FLOW_REMOVED.v2	msg.reason	IDLE_TIMEOUT	True			
 2	FLOW_REMOVED.v2	msg.table_id	ALL	True			
 2	PORT_STATUS.v2	msg	object	True			
-2	PORT_STATUS.v2	msg.port	object	True			
-2	PORT_STATUS.v2	msg.port.config	array	True			
-2	PORT_STATUS.v2	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
-2	PORT_STATUS.v2	msg.port.ethernet	object	True			
-2	PORT_STATUS.v2	msg.port.ethernet.advertised	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
-2	PORT_STATUS.v2	msg.port.ethernet.curr	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
-2	PORT_STATUS.v2	msg.port.ethernet.curr_speed	uint32	True			True
-2	PORT_STATUS.v2	msg.port.ethernet.max_speed	uint32	True			True
-2	PORT_STATUS.v2	msg.port.ethernet.peer	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
-2	PORT_STATUS.v2	msg.port.ethernet.supported	array	True			
-2	PORT_STATUS.v2	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
-2	PORT_STATUS.v2	msg.port.hw_addr	macaddress	True			True
-2	PORT_STATUS.v2	msg.port.name	str16	True			
-2	PORT_STATUS.v2	msg.port.port_no	CONTROLLER	True			
-2	PORT_STATUS.v2	msg.port.properties	null	False	msg.port.properties=array	msg.port.properties=array	
-2	PORT_STATUS.v2	msg.port.state	array	True			
-2	PORT_STATUS.v2	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+2	PORT_STATUS.v2	msg.config	array	True			
+2	PORT_STATUS.v2	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
+2	PORT_STATUS.v2	msg.ethernet	object	True			
+2	PORT_STATUS.v2	msg.ethernet.advertised	array	True			
+2	PORT_STATUS.v2	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
+2	PORT_STATUS.v2	msg.ethernet.curr	array	True			
+2	PORT_STATUS.v2	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
+2	PORT_STATUS.v2	msg.ethernet.curr_speed	uint32	True			True
+2	PORT_STATUS.v2	msg.ethernet.max_speed	uint32	True			True
+2	PORT_STATUS.v2	msg.ethernet.peer	array	True			
+2	PORT_STATUS.v2	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
+2	PORT_STATUS.v2	msg.ethernet.supported	array	True			
+2	PORT_STATUS.v2	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+2	PORT_STATUS.v2	msg.hw_addr	macaddress	True			True
+2	PORT_STATUS.v2	msg.name	str16	True			
+2	PORT_STATUS.v2	msg.port_no	CONTROLLER	True			
+2	PORT_STATUS.v2	msg.properties	null	False	msg.properties=array	msg.properties=array	
 2	PORT_STATUS.v2	msg.reason	ADD	True			
+2	PORT_STATUS.v2	msg.state	array	True			
+2	PORT_STATUS.v2	msg.state.0	LINK_DOWN	False	msg.properties=array		
 2	PACKET_OUT.v2	msg	object	True			
 2	PACKET_OUT.v2	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
 2	PACKET_OUT.v2	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -1373,27 +1371,26 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FLOW_REMOVED.v3	msg.reason	IDLE_TIMEOUT	True			
 3	FLOW_REMOVED.v3	msg.table_id	ALL	True			
 3	PORT_STATUS.v3	msg	object	True			
-3	PORT_STATUS.v3	msg.port	object	True			
-3	PORT_STATUS.v3	msg.port.config	array	True			
-3	PORT_STATUS.v3	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
-3	PORT_STATUS.v3	msg.port.ethernet	object	True			
-3	PORT_STATUS.v3	msg.port.ethernet.advertised	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
-3	PORT_STATUS.v3	msg.port.ethernet.curr	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
-3	PORT_STATUS.v3	msg.port.ethernet.curr_speed	uint32	True			True
-3	PORT_STATUS.v3	msg.port.ethernet.max_speed	uint32	True			True
-3	PORT_STATUS.v3	msg.port.ethernet.peer	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
-3	PORT_STATUS.v3	msg.port.ethernet.supported	array	True			
-3	PORT_STATUS.v3	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
-3	PORT_STATUS.v3	msg.port.hw_addr	macaddress	True			True
-3	PORT_STATUS.v3	msg.port.name	str16	True			
-3	PORT_STATUS.v3	msg.port.port_no	CONTROLLER	True			
-3	PORT_STATUS.v3	msg.port.properties	null	False	msg.port.properties=array	msg.port.properties=array	
-3	PORT_STATUS.v3	msg.port.state	array	True			
-3	PORT_STATUS.v3	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+3	PORT_STATUS.v3	msg.config	array	True			
+3	PORT_STATUS.v3	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
+3	PORT_STATUS.v3	msg.ethernet	object	True			
+3	PORT_STATUS.v3	msg.ethernet.advertised	array	True			
+3	PORT_STATUS.v3	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
+3	PORT_STATUS.v3	msg.ethernet.curr	array	True			
+3	PORT_STATUS.v3	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
+3	PORT_STATUS.v3	msg.ethernet.curr_speed	uint32	True			True
+3	PORT_STATUS.v3	msg.ethernet.max_speed	uint32	True			True
+3	PORT_STATUS.v3	msg.ethernet.peer	array	True			
+3	PORT_STATUS.v3	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
+3	PORT_STATUS.v3	msg.ethernet.supported	array	True			
+3	PORT_STATUS.v3	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+3	PORT_STATUS.v3	msg.hw_addr	macaddress	True			True
+3	PORT_STATUS.v3	msg.name	str16	True			
+3	PORT_STATUS.v3	msg.port_no	CONTROLLER	True			
+3	PORT_STATUS.v3	msg.properties	null	False	msg.properties=array	msg.properties=array	
 3	PORT_STATUS.v3	msg.reason	ADD	True			
+3	PORT_STATUS.v3	msg.state	array	True			
+3	PORT_STATUS.v3	msg.state.0	LINK_DOWN	False	msg.properties=array		
 3	PACKET_OUT.v3	msg	object	True			
 3	PACKET_OUT.v3	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
 3	PACKET_OUT.v3	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -2017,27 +2014,26 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FLOW_REMOVED.v4	msg.reason	IDLE_TIMEOUT	True			
 4	FLOW_REMOVED.v4	msg.table_id	ALL	True			
 4	PORT_STATUS.v4	msg	object	True			
-4	PORT_STATUS.v4	msg.port	object	True			
-4	PORT_STATUS.v4	msg.port.config	array	True			
-4	PORT_STATUS.v4	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
-4	PORT_STATUS.v4	msg.port.ethernet	object	True			
-4	PORT_STATUS.v4	msg.port.ethernet.advertised	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
-4	PORT_STATUS.v4	msg.port.ethernet.curr	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
-4	PORT_STATUS.v4	msg.port.ethernet.curr_speed	uint32	True			True
-4	PORT_STATUS.v4	msg.port.ethernet.max_speed	uint32	True			True
-4	PORT_STATUS.v4	msg.port.ethernet.peer	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
-4	PORT_STATUS.v4	msg.port.ethernet.supported	array	True			
-4	PORT_STATUS.v4	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
-4	PORT_STATUS.v4	msg.port.hw_addr	macaddress	True			True
-4	PORT_STATUS.v4	msg.port.name	str16	True			
-4	PORT_STATUS.v4	msg.port.port_no	CONTROLLER	True			
-4	PORT_STATUS.v4	msg.port.properties	null	False	msg.port.properties=array	msg.port.properties=array	
-4	PORT_STATUS.v4	msg.port.state	array	True			
-4	PORT_STATUS.v4	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+4	PORT_STATUS.v4	msg.config	array	True			
+4	PORT_STATUS.v4	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
+4	PORT_STATUS.v4	msg.ethernet	object	True			
+4	PORT_STATUS.v4	msg.ethernet.advertised	array	True			
+4	PORT_STATUS.v4	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
+4	PORT_STATUS.v4	msg.ethernet.curr	array	True			
+4	PORT_STATUS.v4	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
+4	PORT_STATUS.v4	msg.ethernet.curr_speed	uint32	True			True
+4	PORT_STATUS.v4	msg.ethernet.max_speed	uint32	True			True
+4	PORT_STATUS.v4	msg.ethernet.peer	array	True			
+4	PORT_STATUS.v4	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
+4	PORT_STATUS.v4	msg.ethernet.supported	array	True			
+4	PORT_STATUS.v4	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+4	PORT_STATUS.v4	msg.hw_addr	macaddress	True			True
+4	PORT_STATUS.v4	msg.name	str16	True			
+4	PORT_STATUS.v4	msg.port_no	CONTROLLER	True			
+4	PORT_STATUS.v4	msg.properties	null	False	msg.properties=array	msg.properties=array	
 4	PORT_STATUS.v4	msg.reason	ADD	True			
+4	PORT_STATUS.v4	msg.state	array	True			
+4	PORT_STATUS.v4	msg.state.0	LINK_DOWN	False	msg.properties=array		
 4	PACKET_OUT.v4	msg	object	True			
 4	PACKET_OUT.v4	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
 4	PACKET_OUT.v4	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
@@ -2661,27 +2657,26 @@ version	type	keypath	syntax	required	default	missing	modify
 5	FLOW_REMOVED.v5	msg.reason	IDLE_TIMEOUT	True			
 5	FLOW_REMOVED.v5	msg.table_id	ALL	True			
 5	PORT_STATUS.v5	msg	object	True			
-5	PORT_STATUS.v5	msg.port	object	True			
-5	PORT_STATUS.v5	msg.port.config	array	True			
-5	PORT_STATUS.v5	msg.port.config.0	PORT_DOWN	False	msg.port.config.0=PORT_DOWN,msg.port.properties=array		
-5	PORT_STATUS.v5	msg.port.ethernet	object	True			
-5	PORT_STATUS.v5	msg.port.ethernet.advertised	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.advertised.0	COPPER	False	msg.port.ethernet.advertised.0=COPPER,msg.port.properties=array		
-5	PORT_STATUS.v5	msg.port.ethernet.curr	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.curr.0	COPPER	False	msg.port.ethernet.curr.0=COPPER,msg.port.properties=array		
-5	PORT_STATUS.v5	msg.port.ethernet.curr_speed	uint32	True			True
-5	PORT_STATUS.v5	msg.port.ethernet.max_speed	uint32	True			True
-5	PORT_STATUS.v5	msg.port.ethernet.peer	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.peer.0	COPPER	False	msg.port.ethernet.peer.0=COPPER,msg.port.properties=array		
-5	PORT_STATUS.v5	msg.port.ethernet.supported	array	True			
-5	PORT_STATUS.v5	msg.port.ethernet.supported.0	COPPER	False	msg.port.ethernet.supported.0=COPPER,msg.port.properties=array		
-5	PORT_STATUS.v5	msg.port.hw_addr	macaddress	True			True
-5	PORT_STATUS.v5	msg.port.name	str16	True			
-5	PORT_STATUS.v5	msg.port.port_no	CONTROLLER	True			
-5	PORT_STATUS.v5	msg.port.properties	null	False	msg.port.properties=array	msg.port.properties=array	
-5	PORT_STATUS.v5	msg.port.state	array	True			
-5	PORT_STATUS.v5	msg.port.state.0	LINK_DOWN	False	msg.port.properties=array,msg.port.state.0=LINK_DOWN		
+5	PORT_STATUS.v5	msg.config	array	True			
+5	PORT_STATUS.v5	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
+5	PORT_STATUS.v5	msg.ethernet	object	True			
+5	PORT_STATUS.v5	msg.ethernet.advertised	array	True			
+5	PORT_STATUS.v5	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
+5	PORT_STATUS.v5	msg.ethernet.curr	array	True			
+5	PORT_STATUS.v5	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
+5	PORT_STATUS.v5	msg.ethernet.curr_speed	uint32	True			True
+5	PORT_STATUS.v5	msg.ethernet.max_speed	uint32	True			True
+5	PORT_STATUS.v5	msg.ethernet.peer	array	True			
+5	PORT_STATUS.v5	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
+5	PORT_STATUS.v5	msg.ethernet.supported	array	True			
+5	PORT_STATUS.v5	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+5	PORT_STATUS.v5	msg.hw_addr	macaddress	True			True
+5	PORT_STATUS.v5	msg.name	str16	True			
+5	PORT_STATUS.v5	msg.port_no	CONTROLLER	True			
+5	PORT_STATUS.v5	msg.properties	null	False	msg.properties=array	msg.properties=array	
 5	PORT_STATUS.v5	msg.reason	ADD	True			
+5	PORT_STATUS.v5	msg.state	array	True			
+5	PORT_STATUS.v5	msg.state.0	LINK_DOWN	False	msg.properties=array		
 5	PACKET_OUT.v5	msg	object	True			
 5	PACKET_OUT.v5	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		
 5	PACKET_OUT.v5	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port=CONTROLLER		

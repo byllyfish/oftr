@@ -162,35 +162,33 @@
   }, 
   {
     "msg": {
+      "hw_addr": "ff:ff:ff:ff:ff:ff", 
+      "name": "................", 
       "reason": "ADD", 
-      "port": {
-        "hw_addr": "ff:ff:ff:ff:ff:ff", 
-        "state": [
-          "LINK_DOWN"
+      "state": [
+        "LINK_DOWN"
+      ], 
+      "ethernet": {
+        "curr_speed": 4294967295, 
+        "max_speed": 4294967295, 
+        "curr": [
+          "COPPER"
         ], 
-        "name": "................", 
-        "ethernet": {
-          "curr_speed": 4294967295, 
-          "max_speed": 4294967295, 
-          "curr": [
-            "COPPER"
-          ], 
-          "advertised": [
-            "COPPER"
-          ], 
-          "peer": [
-            "COPPER"
-          ], 
-          "supported": [
-            "COPPER"
-          ]
-        }, 
-        "config": [
-          "PORT_DOWN"
+        "advertised": [
+          "COPPER"
         ], 
-        "properties": null, 
-        "port_no": "CONTROLLER"
-      }
+        "peer": [
+          "COPPER"
+        ], 
+        "supported": [
+          "COPPER"
+        ]
+      }, 
+      "config": [
+        "PORT_DOWN"
+      ], 
+      "properties": null, 
+      "port_no": "CONTROLLER"
     }, 
     "version": 4, 
     "type": "PORT_STATUS"

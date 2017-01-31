@@ -57,20 +57,19 @@ version:         0x01
 _file:           external/openflow-messages/v1_0/abs/abs_12_00001.fail
 msg:             
   reason:          0x03
-  port:            
-    port_no:         0x00009DEE
-    hw_addr:         'a5:52:ba:2c:44:81'
-    name:            OnbVAsbGyANGhMDl
-    config:          [ NO_RECV_STP ]
-    state:           [ STP_FORWARD ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
-      advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
-      supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
-      peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-      curr_speed:      0x00000000
-      max_speed:       0x00000000
-    properties:      
+  port_no:         0x00009DEE
+  hw_addr:         'a5:52:ba:2c:44:81'
+  name:            OnbVAsbGyANGhMDl
+  config:          [ NO_RECV_STP ]
+  state:           [ STP_FORWARD ]
+  ethernet:        
+    curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
+    advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
+    supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
+    peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+    curr_speed:      0x00000000
+    max_speed:       0x00000000
+  properties:      
 ...
 ---
 type:            PACKET_OUT
@@ -1602,20 +1601,19 @@ version:         0x02
 _file:           external/openflow-messages/v1_1/abs/abs_12_00001.fail
 msg:             
   reason:          0x03
-  port:            
-    port_no:         0x54B19FA3
-    hw_addr:         '2c:e7:a7:07:6d:86'
-    name:            tHPGszdBHTVmfHPO
-    config:          [ NO_RECV ]
-    state:           [ LINK_DOWN ]
-    ethernet:        
-      curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-      advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-      supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-      peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-      curr_speed:      0x00000A71
-      max_speed:       0x00000BEC
-    properties:      
+  port_no:         0x54B19FA3
+  hw_addr:         '2c:e7:a7:07:6d:86'
+  name:            tHPGszdBHTVmfHPO
+  config:          [ NO_RECV ]
+  state:           [ LINK_DOWN ]
+  ethernet:        
+    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+    curr_speed:      0x00000A71
+    max_speed:       0x00000BEC
+  properties:      
 ...
 ---
 type:            FLOW_MOD
@@ -15859,20 +15857,19 @@ version:         0x03
 _file:           external/openflow-messages/v1_2/abs/abs_12_00001.fail
 msg:             
   reason:          0x03
-  port:            
-    port_no:         0x54B19FA3
-    hw_addr:         '2c:e7:a7:07:6d:86'
-    name:            tHPGszdBHTVmfHPO
-    config:          [ NO_RECV ]
-    state:           [ LINK_DOWN ]
-    ethernet:        
-      curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-      advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-      supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-      peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-      curr_speed:      0x00000A71
-      max_speed:       0x00000BEC
-    properties:      
+  port_no:         0x54B19FA3
+  hw_addr:         '2c:e7:a7:07:6d:86'
+  name:            tHPGszdBHTVmfHPO
+  config:          [ NO_RECV ]
+  state:           [ LINK_DOWN ]
+  ethernet:        
+    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+    curr_speed:      0x00000A71
+    max_speed:       0x00000BEC
+  properties:      
 ...
 ---
 type:            FLOW_MOD
@@ -18180,20 +18177,19 @@ version:         0x04
 _file:           external/openflow-messages/v1_3/abs/abs_12_00001.fail
 msg:             
   reason:          0x03
-  port:            
-    port_no:         0x54B19FA3
-    hw_addr:         '2c:e7:a7:07:6d:86'
-    name:            tHPGszdBHTVmfHPO
-    config:          [ NO_RECV ]
-    state:           [ LINK_DOWN ]
-    ethernet:        
-      curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-      advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-      supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-      peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-      curr_speed:      0x00000A71
-      max_speed:       0x00000BEC
-    properties:      
+  port_no:         0x54B19FA3
+  hw_addr:         '2c:e7:a7:07:6d:86'
+  name:            tHPGszdBHTVmfHPO
+  config:          [ NO_RECV ]
+  state:           [ LINK_DOWN ]
+  ethernet:        
+    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+    curr_speed:      0x00000A71
+    max_speed:       0x00000BEC
+  properties:      
 ...
 ---
 type:            FLOW_MOD
@@ -21633,20 +21629,19 @@ version:         0x04
 _file:           external/openflow-messages/v1_3_1/abs/abs_12_00001.fail
 msg:             
   reason:          0x03
-  port:            
-    port_no:         0x54B19FA3
-    hw_addr:         '2c:e7:a7:07:6d:86'
-    name:            tHPGszdBHTVmfHPO
-    config:          [ NO_RECV ]
-    state:           [ LINK_DOWN ]
-    ethernet:        
-      curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-      advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-      supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-      peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-      curr_speed:      0x00000A71
-      max_speed:       0x00000BEC
-    properties:      
+  port_no:         0x54B19FA3
+  hw_addr:         '2c:e7:a7:07:6d:86'
+  name:            tHPGszdBHTVmfHPO
+  config:          [ NO_RECV ]
+  state:           [ LINK_DOWN ]
+  ethernet:        
+    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+    curr_speed:      0x00000A71
+    max_speed:       0x00000BEC
+  properties:      
 ...
 ---
 type:            FLOW_MOD
