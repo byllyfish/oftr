@@ -38,7 +38,7 @@ void IPv6Address::setZone(UInt32 zone) {
   std::memcpy(&addr_[4], &hi, 2);
 }
 
-bool IPv6Address::parse(const std::string &s) {
+bool IPv6Address::parse(const std::string &s, bool parseIPv4) {
   // Check for %zone option.
   auto pct = s.find('%');
   if (pct != std::string::npos) {
@@ -68,6 +68,9 @@ bool IPv6Address::parse(const std::string &s) {
 
   if (parseIPv6Address(s))
     return true;
+
+  if (!parseIPv4)
+    return false;
 
   return parseIPv4Address(s);
 }
@@ -108,16 +111,11 @@ std::string IPv6Address::toString() const {
   return result ? ipv6str : "<inet_ntop_error6>";
 }
 
-namespace ofp {
-
-llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Address &value) {
-  if (value.isV4Mapped()) {
-    return os << value.toV4();
-  }
-
-  IPv6Address temp{value};
-  UInt32 zone = value.isLinkLocal() ? value.zone() : 0;
-  if (zone) {
+/// Output IPv6Address to stream in V6 format.
+void IPv6Address::outputV6(llvm::raw_ostream &os) const {
+  IPv6Address temp{*this};
+  UInt32 my_zone = isLinkLocal() ? zone() : 0;
+  if (my_zone) {
     temp.setZone(0);
   }
 
@@ -126,9 +124,21 @@ llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Address &value) {
   const char *result = inet_ntop(AF_INET6, data, buf, sizeof(buf));
 
   os << (result ? result : "<inet_ntop_error6>");
-  if (zone) {
-    os << '%' << zone;
+  if (my_zone) {
+    os << '%' << my_zone;
   }
+}
+
+
+namespace ofp {
+
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Address &value) {
+  // Output mapped IPv4 address as dotted quad.
+  if (value.isV4Mapped()) {
+    return os << value.toV4();
+  }
+
+  value.outputV6(os);
   return os;
 }
 

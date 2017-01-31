@@ -41,7 +41,7 @@ template <>
 struct ScalarTraits<ofp::IPv6Address> {
   static void output(const ofp::IPv6Address &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value;
+    value.outputV6(out);
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
@@ -51,7 +51,7 @@ struct ScalarTraits<ofp::IPv6Address> {
       return "";
     }
 
-    if (!value.parse(scalar)) {
+    if (!value.parse(scalar, false)) {
       return "Invalid IPv6 address.";
     }
     return "";

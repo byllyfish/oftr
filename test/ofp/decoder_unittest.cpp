@@ -629,6 +629,10 @@ TEST(decoder, flowmodv4_2) {
       " IPV4_DST\n          value:           192.168.2.1\n...\n");
 }
 
+TEST(decoder, flowmodv4_ipv6) {
+  testDecodeEncode("040E0068000000011111111111111110222222222222222030405550666077708888888099999990AAAAAAA0BBB100000001003280000A0286DD8000341000000000000000000000FFFFC0A800018000361020000000000000000000000000000001000000000000", "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  cookie:          0x1111111111111110\n  cookie_mask:     0x2222222222222220\n  table_id:        0x30\n  command:         0x40\n  idle_timeout:    0x5550\n  hard_timeout:    0x6660\n  priority:        0x7770\n  buffer_id:       0x88888880\n  out_port:        0x99999990\n  out_group:       0xAAAAAAA0\n  flags:           [ SEND_FLOW_REM, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:           \n    - field:           ETH_TYPE\n      value:           0x86DD\n    - field:           IPV6_SRC\n      value:           '::ffff:192.168.0.1'\n    - field:           IPV6_DST\n      value:           '2000::1'\n  instructions:    \n...\n");
+}
+
 TEST(decoder, flowmodv4_experimenter_1) {
   testDecodeEncode(
       "040E00900000000100000000000000000000000000000000000000000000000000000000"

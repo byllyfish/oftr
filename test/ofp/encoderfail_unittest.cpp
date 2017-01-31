@@ -522,6 +522,29 @@ TEST(encoderfail, xid_present) {
   EXPECT_EQ(54321, encoder.xid());
 }
 
+TEST(encoderfail, ipv4_mapped) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111111
+        table_id:        0x33
+        command:         0x44
+        match:           
+          - field:           IPV6_SRC
+            value:           10.0.0.1
+        instructions:    [  ]
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ(
+      "YAML:11:30: error: Invalid IPv6 address.\n            value:           10.0.0.1\n                             ^~~~~~~~\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
 #if 0
 // TODO(bfish): This test should fail -- properties aren't supported until
 // OpenFlow version 1.4.
