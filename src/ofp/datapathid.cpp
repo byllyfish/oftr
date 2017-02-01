@@ -27,14 +27,6 @@ MacAddress DatapathID::macAddress() const {
   return result;
 }
 
-std::string DatapathID::toString() const {
-  if (empty()) {
-    return {};
-  }
-  char buf[sizeof(DatapathID) * 3];
-  return RawDataToHexDelimitedLowercase(dpid_, buf);
-}
-
 bool DatapathID::parse(const std::string &s) {
   if (s.empty()) {
     clear();

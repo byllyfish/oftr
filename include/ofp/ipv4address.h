@@ -33,7 +33,7 @@ class IPv4Address {
   bool parse(const std::string &s);
   void clear() { addr_.fill(0); }
 
-  std::string toString() const;
+  std::string toString() const { return detail::toString(*this); }
 
   const ArrayType &toArray() const { return addr_; }
 

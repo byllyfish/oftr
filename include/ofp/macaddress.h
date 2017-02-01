@@ -30,7 +30,7 @@ class MacAddress {
 
   void clear() { std::memset(addr_.data(), 0, sizeof(addr_)); }
 
-  std::string toString() const;
+  std::string toString() const { return detail::toString(*this); }
 
   const ArrayType &toArray() const { return addr_; }
 

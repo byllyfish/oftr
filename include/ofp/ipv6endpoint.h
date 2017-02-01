@@ -28,7 +28,7 @@ class IPv6Endpoint {
   void setAddress(const IPv6Address &addr) { addr_ = addr; }
   void setPort(UInt16 port) { port_ = port; }
 
-  std::string toString() const;
+  std::string toString() const { return detail::toString(*this); }
 
   bool operator==(const IPv6Endpoint &rhs) const {
     return addr_ == rhs.addr_ && port_ == rhs.port_;

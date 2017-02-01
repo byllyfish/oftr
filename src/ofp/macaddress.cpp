@@ -15,11 +15,6 @@ bool MacAddress::parse(const std::string &s) {
   return HexToRawData(s, addr_.data(), addr_.size()) >= addr_.size();
 }
 
-std::string MacAddress::toString() const {
-  char buf[sizeof(MacAddress) * 3];
-  return RawDataToHexDelimitedLowercase(addr_, buf);
-}
-
 namespace ofp {
 
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const MacAddress &value) {

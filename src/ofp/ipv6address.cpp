@@ -89,32 +89,10 @@ bool IPv6Address::parseIPv4Address(const std::string &s) {
   return false;
 }
 
-std::string IPv6Address::toString() const {
-  if (isV4Mapped()) {
-    IPv4Address v4 = toV4();
-    return v4.toString();
-  }
-
-  if (isLinkLocal()) {
-    // Check for embedded IPv6 zone in link-local address.
-    UInt32 z = zone();
-    if (z) {
-      IPv6Address addr{*this};
-      addr.setZone(0);
-      return addr.toString() + '%' + std::to_string(z);
-    }
-  }
-
-  char ipv6str[INET6_ADDRSTRLEN] = {};
-  const char *result =
-      inet_ntop(AF_INET6, addr_.data(), ipv6str, sizeof(ipv6str));
-  return result ? ipv6str : "<inet_ntop_error6>";
-}
-
 /// Output IPv6Address to stream in V6 format.
 void IPv6Address::outputV6(llvm::raw_ostream &os) const {
   IPv6Address temp{*this};
-  UInt32 my_zone = isLinkLocal() ? zone() : 0;
+  UInt32 my_zone = zone();
   if (my_zone) {
     temp.setZone(0);
   }

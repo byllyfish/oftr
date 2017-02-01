@@ -10,7 +10,7 @@ TEST(datapathid, test) {
   DatapathID a;
   EXPECT_HEX("0000 0000 0000 0000", &a, sizeof(a));
   EXPECT_EQ(0, a.implementerDefined());
-  EXPECT_EQ("", a.toString());
+  EXPECT_EQ("00:00:00:00:00:00:00:00", a.toString());
   EXPECT_TRUE(a.empty());
 
   DatapathID b{0x1234, MacAddress{"00-01-02-03-04-05"}};
@@ -34,7 +34,7 @@ TEST(datapathid, test) {
   // Parsing the empty string should yield an empty datapath.
   DatapathID e;
   EXPECT_TRUE(e.parse(""));
-  EXPECT_EQ("", e.toString());
+  EXPECT_EQ("00:00:00:00:00:00:00:00", e.toString());
   EXPECT_TRUE(e.empty());
 
   DatapathID f;

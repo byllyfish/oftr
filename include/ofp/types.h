@@ -330,6 +330,19 @@ inline const T *Interpret_cast(const void *ptr) {
   return reinterpret_cast<const T *>(ptr);
 }
 
+namespace detail {
+
+// Template function that can be used to implement `toString()` function in 
+// types that can output to a raw_ostream.
+template <class Type>
+std::string toString(const Type &value) {
+  std::string result;
+  llvm::raw_string_ostream oss{result};
+  oss << value;
+  return oss.str();
+}
+
+}  // namespace detail
 }  // namespace ofp
 
 // Place forward declarations of YAML classes here.

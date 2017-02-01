@@ -23,7 +23,7 @@ class DatapathID {
   bool empty() const { return toUInt64() == 0; }
   UInt16 implementerDefined() const;
   MacAddress macAddress() const;
-  std::string toString() const;
+  std::string toString() const { return detail::toString(*this); }
   const ArrayType &toArray() const { return dpid_; }
 
   bool parse(const std::string &s);

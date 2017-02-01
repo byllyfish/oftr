@@ -3,7 +3,6 @@
 
 #include "ofp/durationsec.h"
 #include <iomanip>
-#include <sstream>
 #include "llvm/Support/Format.h"
 
 using namespace ofp;
@@ -64,26 +63,6 @@ bool DurationSec::parse(llvm::StringRef s) {
   nsec_ = nsec;
 
   return true;
-}
-
-std::string DurationSec::toString() const {
-  // Output 0.0 seconds as just "0".
-  if (!sec_ && !nsec_) {
-    return "0";
-  }
-
-  std::stringstream strm;
-  strm << sec_ << '.';
-
-  if (nsec_ < 1000000000) {
-    // Legal nanoseconds values.
-    strm << std::setfill('0') << std::setw(9) << nsec_;
-  } else {
-    // Illegal nanoseconds value.
-    strm << 'x' << std::hex << nsec_;
-  }
-
-  return strm.str();
 }
 
 namespace ofp {
