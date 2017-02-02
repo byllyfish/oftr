@@ -109,7 +109,7 @@ struct ScalarTraits<ofp::IPv6Endpoint> {
     }
 
     if (!value.parse(scalar)) {
-      return "Invalid IPv6 endpoint.";
+      return "Invalid IP endpoint.";
     }
     return "";
   }

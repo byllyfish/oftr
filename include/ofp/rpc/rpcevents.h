@@ -330,7 +330,7 @@ result: !reply
 id: !opt UInt64
 method: !request OFP.LISTEN
 params: !request
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
   versions: !opt [UInt8]
   tls_id: !opt UInt64
   options: !opt [String]
@@ -341,7 +341,7 @@ result: !reply
 id: !opt UInt64
 method: !request OFP.CONNECT
 params: !request
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
   versions: !opt [UInt8]
   tls_id: !opt UInt64
   options: !opt [String]
@@ -370,8 +370,8 @@ params: !request
   conn_id: UInt64
 result: !reply
   stats:
-    - local_endpoint: IPv6Endpoint
-      remote_endpoint: IPv6Endpoint
+    - local_endpoint: IPEndpoint
+      remote_endpoint: IPEndpoint
       datapath_id: DatapathID
       conn_id: UInt64
       auxiliary_id: UInt8
@@ -399,7 +399,7 @@ params: !notify
   conn_id: UInt64
   datapath_id: !optout DatapathID
   version: UInt8
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
 
 {Rpc/OFP.MESSAGE}
 method: !notify OFP.MESSAGE

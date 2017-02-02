@@ -135,7 +135,7 @@ static const char *const kBuiltinTypes[] = {
     "UInt8",       "UInt16",       "UInt32",       "UInt64",
     "SInt32",      "String",       "Str16",        "Str32",
     "Str256",      "HexData",      "DatapathID",   "MacAddress",
-    "IPv4Address", "IPv6Address",  "IPv6Endpoint", "LLDPChassisID",
+    "IPv4Address", "IPv6Address",  "IPEndpoint",   "LLDPChassisID",
     "LLDPPortID",  "ActionID",     "FieldID",      "InstructionID",
     "Timestamp",   "RegisterBits", "DurationSec"};
 
