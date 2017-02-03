@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#ifndef TOOLS_LIBOFP_OFPX_ENCODE_H_
-#define TOOLS_LIBOFP_OFPX_ENCODE_H_
+#ifndef TOOLS_OFTR_OFTR_ENCODE_H_
+#define TOOLS_OFTR_OFTR_ENCODE_H_
 
 #include "./oftr.h"
 #include "ofp/yaml/getjson.h"
@@ -124,4 +124,4 @@ OFP_END_IGNORE_PADDING
 
 }  // namespace ofpx
 
-#endif  // TOOLS_LIBOFP_OFPX_ENCODE_H_
+#endif  // TOOLS_OFTR_OFTR_ENCODE_H_

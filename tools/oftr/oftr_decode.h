@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#ifndef TOOLS_LIBOFP_OFPX_DECODE_H_
-#define TOOLS_LIBOFP_OFPX_DECODE_H_
+#ifndef TOOLS_OFTR_OFTR_DECODE_H_
+#define TOOLS_OFTR_OFTR_DECODE_H_
 
 #include <map>
 #include "./oftr.h"
@@ -204,4 +204,4 @@ OFP_END_IGNORE_PADDING
 
 }  // namespace ofpx
 
-#endif  // TOOLS_LIBOFP_OFPX_DECODE_H_
+#endif  // TOOLS_OFTR_OFTR_DECODE_H_

@@ -26,8 +26,8 @@
 // call `libofp_buffer_free` to free the buffer when you are done -- even when
 // there is an error.
 
-#ifndef TOOLS_LIBOFP_LIBOFP_H_
-#define TOOLS_LIBOFP_LIBOFP_H_
+#ifndef TOOLS_OFTR_LIBOFP_H_
+#define TOOLS_OFTR_LIBOFP_H_
 
 #include <stddef.h>
 #include <stdint.h>
@@ -73,4 +73,4 @@ LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer);
 }  // extern C
 #endif
 
-#endif  // TOOLS_LIBOFP_LIBOFP_H_
+#endif  // TOOLS_OFTR_LIBOFP_H_

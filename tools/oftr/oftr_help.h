@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#ifndef TOOLS_LIBOFP_OFPX_HELP_H_
-#define TOOLS_LIBOFP_OFPX_HELP_H_
+#ifndef TOOLS_OFTR_OFTR_HELP_H_
+#define TOOLS_OFTR_OFTR_HELP_H_
 
 #include <set>
 #include "./oftr.h"
@@ -111,4 +111,4 @@ class Help : public Subprogram {
 
 }  // namespace ofpx
 
-#endif  // TOOLS_LIBOFP_OFPX_HELP_H_
+#endif  // TOOLS_OFTR_OFTR_HELP_H_

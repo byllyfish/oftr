@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#ifndef TOOLS_LIBOFP_OFPX_H_
-#define TOOLS_LIBOFP_OFPX_H_
+#ifndef TOOLS_OFTR_OFTR_H_
+#define TOOLS_OFTR_OFTR_H_
 
 #include <unistd.h>
 #include <iostream>
@@ -121,4 +121,4 @@ struct IPv6EndpointParser : public cl::parser<ofp::IPv6Endpoint> {
 
 }  // namespace ofpx
 
-#endif  // TOOLS_LIBOFP_OFPX_H_
+#endif  // TOOLS_OFTR_OFTR_H_
