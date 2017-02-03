@@ -1,7 +1,7 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "./ofpx_util.h"
+#include "./oftr_util.h"
 #include <vector>
 #include "ofp/byteorder.h"
 #include "ofp/constants.h"

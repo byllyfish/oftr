@@ -4,7 +4,7 @@
 #ifndef TOOLS_LIBOFP_OFPX_JSONRPC_H_
 #define TOOLS_LIBOFP_OFPX_JSONRPC_H_
 
-#include "./ofpx.h"
+#include "./oftr.h"
 
 namespace ofpx {
 

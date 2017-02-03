@@ -1,15 +1,15 @@
 
-set(OFPX_SOURCES
-  ofpx_main.cpp
-  ofpx_encode.cpp
-  ofpx_decode.cpp
-  ofpx_help.cpp
-  ofpx_util.cpp
+set(OFTR_SOURCES
+  oftr_main.cpp
+  oftr_encode.cpp
+  oftr_decode.cpp
+  oftr_help.cpp
+  oftr_util.cpp
   libofp.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
-  set(OFPX_SOURCES ${OFPX_SOURCES} ofpx_jsonrpc.cpp)
+  set(OFTR_SOURCES ${OFTR_SOURCES} oftr_jsonrpc.cpp)
 endif()
 
 if(APPLE)
@@ -19,7 +19,7 @@ if(APPLE)
   set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_LINK_EXECUTABLE} -Wl,-sectcreate,__TEXT,__info_plist,${CMAKE_CURRENT_BINARY_DIR}/Info.plist")
 endif()
 
-add_executable(oftr ${OFPX_SOURCES})
+add_executable(oftr ${OFTR_SOURCES})
 
 # Tip: Add "-framework CoreFoundation" here on Mac OS X for measuring with
 # Instruments.

@@ -5,7 +5,7 @@
 #define TOOLS_LIBOFP_OFPX_HELP_H_
 
 #include <set>
-#include "./ofpx.h"
+#include "./oftr.h"
 
 namespace ofp {
 namespace yaml {

@@ -4,7 +4,7 @@
 #ifndef TOOLS_LIBOFP_OFPX_ENCODE_H_
 #define TOOLS_LIBOFP_OFPX_ENCODE_H_
 
-#include "./ofpx.h"
+#include "./oftr.h"
 #include "ofp/yaml/getjson.h"
 
 namespace ofpx {

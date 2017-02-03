@@ -1,10 +1,10 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "./ofpx_decode.h"
+#include "./oftr_decode.h"
 #include <fstream>
 #include <iostream>
-#include "./ofpx_util.h"
+#include "./oftr_util.h"
 #include "llvm/Support/Path.h"
 #include "ofp/demux/messagesource.h"
 #include "ofp/demux/pktsource.h"

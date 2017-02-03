@@ -1,7 +1,7 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "./ofpx_encode.h"
+#include "./oftr_encode.h"
 #include <fstream>
 #include <iostream>
 #include "ofp/yaml/decoder.h"

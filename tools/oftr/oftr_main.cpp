@@ -1,17 +1,17 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "./ofpx_decode.h"
-#include "./ofpx_encode.h"
+#include "./oftr_decode.h"
+#include "./oftr_encode.h"
 #include "ofp/ofp.h"
 #if LIBOFP_ENABLE_JSONRPC
 #include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
 #include <asio/version.hpp>
-#include "./ofpx_jsonrpc.h"
+#include "./oftr_jsonrpc.h"
 #endif  // LIBOFP_ENABLE_JSONRPC
 #include <pcap/pcap.h>
 #include "./libofp.h"
-#include "./ofpx_help.h"
+#include "./oftr_help.h"
 #include "llvm/Support/Host.h"
 
 using namespace llvm;

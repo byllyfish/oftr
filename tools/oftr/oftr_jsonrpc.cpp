@@ -1,7 +1,7 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "./ofpx_jsonrpc.h"
+#include "./oftr_jsonrpc.h"
 #include <sys/resource.h>  // for getrlimit, setrlimit
 #include <unistd.h>        // for STDIN_FILENO, STDOUT_FILENO
 #include "ofp/rpc/rpcserver.h"
