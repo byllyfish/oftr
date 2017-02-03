@@ -1,13 +1,13 @@
 '\" t
-.\"     Title: libofp-jsonrpc
+.\"     Title: oftr-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/16/2017
+.\"      Date: 02/03/2017
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-JSONRPC" "1" "01/16/2017" "\ \&" "\ \&"
+.TH "OFTR\-JSONRPC" "1" "02/03/2017" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,13 +28,13 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-libofp-jsonrpc \- OpenFlow Microservice
+oftr-jsonrpc \- OpenFlow Microservice
 .SH "SYNOPSIS"
 .sp
-\fBlibofp jsonrpc\fR [\fIOPTIONS\fR]
+\fBoftr jsonrpc\fR [\fIOPTIONS\fR]
 .SH "DESCRIPTION"
 .sp
-The \fBlibofp jsonrpc\fR tool runs a JSON\-RPC service that enables programmatic control of the OpenFlow protocol\&. The control connection runs overs stdin/stdout\&. All text uses UTF\-8 encoding\&.
+The \fBoftr jsonrpc\fR tool runs a JSON\-RPC service that enables programmatic control of the OpenFlow protocol\&. The control connection runs overs stdin/stdout\&. All text uses UTF\-8 encoding\&.
 .sp
 The control connection reads JSON messages from stdin, each one separated by a NUL (0x00) character\&. The maximum length of a message, including the NUL, is 1 megabyte\&. The message must not contain any other NUL characters\&. The jsonrpc server accepts YAML 1\&.2 input, but always returns strict JSON\&.
 .sp
@@ -196,7 +196,7 @@ OFP\&.MESSAGE
 .SH "RPC COMMANDS"
 .SS "OFP\&.DESCRIPTION"
 .sp
-Request information about the libofp implementation\&.
+Request information about the oftr implementation\&.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
@@ -300,7 +300,7 @@ Open an outgoing OpenFlow connection to the specified host and port\&.
 id: UInt64
 method: OFP\&.CONNECT
 params:
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
   versions: !opt [UInt8]
   tls_id:  !opt UInt64
   options: !opt [String]
@@ -440,7 +440,7 @@ Listen for incoming OpenFlow connections on the specified interface and port\&.
 id: UInt64
 method: OFP\&.LISTEN
 params:
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
   versions: [UInt8]
   tls_id: UInt64
   options: [String]
@@ -767,8 +767,8 @@ Specify a connection\&. Use 0 to list all connections\&.
 id: UInt64
 result:
   stats:
-    \- local_endpoint: IPv6Endpoint
-      remote_endpoint: IPv6Endpoint
+    \- local_endpoint: IPEndpoint
+      remote_endpoint: IPEndpoint
       datapath_id: DatapathID
       conn_id: UInt64
       auxiliary_id: UInt8
@@ -902,7 +902,7 @@ params:
   time: Timestamp
   conn_id: UInt64
   datapath_id: DatapathID  # Optional
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
   version: UInt8
 .fi
 .if n \{\
@@ -937,7 +937,7 @@ params:
 .sp
 The OFP\&.MESSAGE event is sent when an OpenFlow message is received\&. There are also special \fICHANNEL_*\fR events sent when a channel goes up/down or needs to indicate an event\&.
 .sp
-The type attribute specifies the type of message\&. See \fIlibofp\-schema\fR man page for attributes used in OpenFlow messages\&.
+The type attribute specifies the type of message\&. See \fIoftr\-schema\fR man page for attributes used in OpenFlow messages\&.
 .sp
 The CHANNEL_UP message is sent when an OpenFlow channel comes up\&. If the FEATURES_REQ option is specified, the channel is not considered up until we know the datapath_id of the connection from the FEATURES_REPLY\&. If FEATURES_REQ is not specified, the channel up message is sent after the first HELLO messages are exchanged, and the datapath_id parameter is not included\&.
 .sp
@@ -982,7 +982,7 @@ An OpenFlow connection fails to negotiate a version\&.
 .RE
 .SH "SEE ALSO"
 .sp
-\fIlibofp\fR(1), \fIlibofp\-schema\fR(1)
+\fIoftr\fR(1), \fIoftr\-schema\fR(1)
 .SH "EXIT STATUS"
 .PP
 \fB0\fR
@@ -996,7 +996,7 @@ Failure: Syntax or usage error in command line arguments\&.
 .RE
 .SH "RESOURCES"
 .sp
-GitHub: https://github\&.com/byllyfish/libofp
+GitHub: https://github\&.com/byllyfish/oftr
 .SH "COPYING"
 .sp
 Copyright (C) 2015\-2017 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.

@@ -1,13 +1,13 @@
 '\" t
-.\"     Title: libofp
+.\"     Title: oftr
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/16/2017
+.\"      Date: 02/03/2017
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP" "1" "01/16/2017" "\ \&" "\ \&"
+.TH "OFTR" "1" "02/03/2017" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,29 +28,29 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-libofp \- YAML/JSON interface to the OpenFlow Protocol 1\&.0 \- 1\&.4
+oftr \- YAML/JSON interface to the OpenFlow Protocol 1\&.0 \- 1\&.4
 .SH "SYNOPSIS"
 .sp
-\fBlibofp encode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
+\fBoftr encode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
 .sp
-\fBlibofp decode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
+\fBoftr decode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
 .sp
-\fBlibofp jsonrpc\fR [\fIOPTIONS\fR]
+\fBoftr jsonrpc\fR [\fIOPTIONS\fR]
 .sp
-\fBlibofp help\fR [\fIOPTIONS\fR] [\fIARGS\fR, \&...]
+\fBoftr help\fR [\fIOPTIONS\fR] [\fIARGS\fR, \&...]
 .sp
-\fBlibofp [\-\-version|\-\-help]\fR
+\fBoftr [\-\-version|\-\-help]\fR
 .SH "DESCRIPTION"
 .sp
-The \fBlibofp\fR program translates binary OpenFlow messages to YAML\&. It also translates YAML messages to OpenFlow\&. This program expects that all YAML input is UTF\-8\&.
+The \fBoftr\fR program translates binary OpenFlow messages to YAML\&. It also translates YAML messages to OpenFlow\&. This program expects that all YAML input is UTF\-8\&.
 .sp
 If you translate an OpenFlow message to YAML, then back to binary, you will obtain the original sequence of bytes (modulo differences in property ordering)\&.
 .sp
 The YAML schema is based on OpenFlow 1\&.4\&.x\&. If your YAML message specifies an earlier OpenFlow version that does not support all message attributes, the current implementation ignores those attributes when constructing the binary OpenFlow message\&.
 .sp
-The libofp program includes a JSON\-RPC microservice that supports multiple OpenFlow connections\&. See the libofp\-jsonrpc man page for more details\&.
+The oftr program includes a JSON\-RPC microservice that supports multiple OpenFlow connections\&. See the oftr\-jsonrpc man page for more details\&.
 .sp
-The YAML schema used for OpenFlow messages is embedded in the tool itself\&. You can browse the schema using the libofp help command\&. See the libofp\-schema man page for more details about the conventions used\&.
+The YAML schema used for OpenFlow messages is embedded in the tool itself\&. You can browse the schema using the oftr help command\&. See the oftr\-schema man page for more details about the conventions used\&.
 .SH "EXAMPLES"
 .sp
 To translate a text file into binary OpenFlow messages:
@@ -59,7 +59,7 @@ To translate a text file into binary OpenFlow messages:
 .RS 4
 .\}
 .nf
-libofp encode \-o output\&.bin input\&.yml
+oftr encode \-o output\&.bin input\&.yml
 .fi
 .if n \{\
 .RE
@@ -71,7 +71,7 @@ To translate a text file into binary OpenFlow messages, while ignoring sets of m
 .RS 4
 .\}
 .nf
-libofp encode \-\-unchecked\-match \-o output\&.bin input\&.yml
+oftr encode \-\-unchecked\-match \-o output\&.bin input\&.yml
 .fi
 .if n \{\
 .RE
@@ -83,7 +83,7 @@ To translate a text file of compact, single line JSON objects separated by linef
 .RS 4
 .\}
 .nf
-libofp encode \-\-json input\&.json
+oftr encode \-\-json input\&.json
 .fi
 .if n \{\
 .RE
@@ -95,7 +95,7 @@ To decode a file of binary OpenFlow messages to YAML:
 .RS 4
 .\}
 .nf
-libofp decode input\&.bin
+oftr decode input\&.bin
 .fi
 .if n \{\
 .RE
@@ -107,7 +107,7 @@ To decode the OpenFlow messages in a "\&.pcap" file:
 .RS 4
 .\}
 .nf
-libofp decode "filename\&.pcap"
+oftr decode "filename\&.pcap"
 .fi
 .if n \{\
 .RE
@@ -119,7 +119,7 @@ To decode a file of binary OpenFlow messages to compact single\-line JSON object
 .RS 4
 .\}
 .nf
-libofp decode \-\-json "filename"
+oftr decode \-\-json "filename"
 .fi
 .if n \{\
 .RE
@@ -131,7 +131,7 @@ To decode binary OpenFlow messages to a valid JSON array of objects:
 .RS 4
 .\}
 .nf
-libofp decode \-\-json\-array "filename"
+oftr decode \-\-json\-array "filename"
 .fi
 .if n \{\
 .RE
@@ -143,7 +143,7 @@ To decode binary OpenFlow messages with the additional check that the resulting 
 .RS 4
 .\}
 .nf
-libofp decode \-\-verify\-output "filename"
+oftr decode \-\-verify\-output "filename"
 .fi
 .if n \{\
 .RE
@@ -155,7 +155,7 @@ You can use netcat in a UNIX pipe to feed OpenFlow messages to a switch or contr
 .RS 4
 .\}
 .nf
-libofp encode input\&.yml | nc \-w 3 10\&.0\&.0\&.1 6653 | libofp decode
+oftr encode input\&.yml | nc \-w 3 10\&.0\&.0\&.1 6653 | oftr decode
 .fi
 .if n \{\
 .RE
@@ -169,19 +169,19 @@ You can parse a \&.pcap file with tcpflow and then decode all the OpenFlow messa
 .nf
 #!/bin/bash
 tcpflow \-I \-r saved\&.pcap \-o "/tmp/flow_$$"
-libofp decode \-\-use\-findx "/tmp/flow_$$/*\&.findx"
+oftr decode \-\-use\-findx "/tmp/flow_$$/*\&.findx"
 .fi
 .if n \{\
 .RE
 .\}
 .sp
-The libofp help tool provides information about the schema used for reading/writing OpenFlow messages in YAML\&. To obtain information about the syntax for the \fIFLOW_MOD\fR message:
+The oftr help tool provides information about the schema used for reading/writing OpenFlow messages in YAML\&. To obtain information about the syntax for the \fIFLOW_MOD\fR message:
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-libofp help flow_mod
+oftr help flow_mod
 .fi
 .if n \{\
 .RE
@@ -193,14 +193,14 @@ To list all supported OXM fields:
 .RS 4
 .\}
 .nf
-libofp help \-\-fields
+oftr help \-\-fields
 .fi
 .if n \{\
 .RE
 .\}
 .SH "LIBOFP ENCODE"
 .sp
-\fBlibofp encode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
+\fBoftr encode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
 .sp
 Encode OpenFlow messages to binary as specified by YAML input files\&. If there is a syntax error in the YAML input, stop and report an error\&.
 .sp
@@ -297,7 +297,7 @@ Do not check items in match fields\&.
 .RE
 .SH "LIBOFP DECODE"
 .sp
-\fBlibofp decode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
+\fBoftr decode\fR [\fIOPTIONS\fR] [\fIINPUT_FILES\fR, \&...]
 .sp
 Decode binary OpenFlow messages in the input files and translate each message to human\-readable YAML output\&. If there is an invalid message, stop and report an error\&.
 .sp
@@ -409,7 +409,7 @@ Skip payload from TCP streams (for debugging)\&. This option makes sure that eve
 .RE
 .SH "LIBOFP JSONRPC"
 .sp
-\fBlibofp jsonrpc\fR [\fIOPTIONS\fR]
+\fBoftr jsonrpc\fR [\fIOPTIONS\fR]
 .sp
 Run a JSON\-RPC server\&. By default, the control connection comes from stdio\&.
 .SS "OPTIONS"
@@ -420,7 +420,7 @@ Print out usage information for the command\&.
 .RE
 .SH "LIBOFP HELP"
 .sp
-\fBlibofp help\fR [\fIOPTIONS\fR] [\fIARGS\fR, \&...]
+\fBoftr help\fR [\fIOPTIONS\fR] [\fIARGS\fR, \&...]
 .sp
 Access built\-in information about the YAML schema used to describe all OpenFlow messages\&.
 .sp
@@ -614,7 +614,7 @@ Specifies additional trace options\&. You can specify more than one\&.
 .RE
 .SH "SEE ALSO"
 .sp
-\fIlibofp\-jsonrpc\fR(1), \fIlibofp\-schema\fR(1)
+\fIoftr\-jsonrpc\fR(1), \fIoftr\-schema\fR(1)
 .SH "EXIT STATUS"
 .PP
 \fB0\fR
@@ -643,7 +643,7 @@ Failure: Uncommon failure\&.
 .RE
 .SH "RESOURCES"
 .sp
-GitHub: https://github\&.com/byllyfish/libofp
+GitHub: https://github\&.com/byllyfish/oftr
 .SH "COPYING"
 .sp
 Copyright (C) 2015\-2017 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.

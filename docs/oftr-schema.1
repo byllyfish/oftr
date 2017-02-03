@@ -1,13 +1,13 @@
 '\" t
-.\"     Title: libofp-schema
+.\"     Title: oftr-schema
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/16/2017
+.\"      Date: 02/03/2017
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "LIBOFP\-SCHEMA" "1" "01/16/2017" "\ \&" "\ \&"
+.TH "OFTR\-SCHEMA" "1" "02/03/2017" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,14 +28,14 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-libofp-schema \- OpenFlow Message Schema Conventions
+oftr-schema \- OpenFlow Message Schema Conventions
 .SH "DESCRIPTION"
 .sp
-This document defines the schema language used to document the OpenFlow messages, structures, and values in libofp\&.
+This document defines the schema language used to document the OpenFlow messages, structures, and values in oftr\&.
 .sp
-Typing \fBlibofp help \-schema\-all\fR will dump all message templates in this schema language\&.
+Typing \fBoftr help \-schema\-all\fR will dump all message templates in this schema language\&.
 .sp
-To look up any message, structure, or flag, type libofp help NAME\&.
+To look up any message, structure, or flag, type oftr help NAME\&.
 .SH "DESIGN"
 .sp
 The YAML message schema is parsable as YAML 1\&.2\&. A schema template can be converted into a message by replacement\&.
@@ -82,7 +82,7 @@ Builtin/UInt64: <builtin>
 .ps -1
 .br
 .sp
-To look up this schema, you would type libofp help rolerequest\&.
+To look up this schema, you would type oftr help rolerequest\&.
 .sp .5v
 .RE
 .sp
@@ -311,10 +311,10 @@ Here is a valid FlowMod message:
 .\}
 .SH "SEE ALSO"
 .sp
-\fIlibofp\fR(1), \fIlibofp\-jsonrpc\fR(1)
+\fIoftr\fR(1), \fIoftr\-jsonrpc\fR(1)
 .SH "RESOURCES"
 .sp
-GitHub: https://github\&.com/byllyfish/libofp
+GitHub: https://github\&.com/byllyfish/oftr
 .SH "COPYING"
 .sp
 Copyright (C) 2015\-2017 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.
