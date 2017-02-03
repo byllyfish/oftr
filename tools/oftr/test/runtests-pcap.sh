@@ -19,7 +19,7 @@ function verify_sha1 {
 
 CURRENT_SOURCE_DIR=`dirname "$0"`
 CURRENT_TEST_DIR=`pwd`
-MSG_DIR="$CURRENT_TEST_DIR/libofp.msgs"
+MSG_DIR="$CURRENT_TEST_DIR/oftr.msgs"
 
 echo "Working Directory: $CURRENT_TEST_DIR"
 
@@ -29,9 +29,9 @@ else
     mkdir $MSG_DIR
 fi
 
-LIBOFP=$CURRENT_TEST_DIR/../libofp
+LIBOFP=$CURRENT_TEST_DIR/../oftr
 
-echo "Run libofp decode on $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap"
+echo "Run oftr decode on $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap"
 $LIBOFP_MEMCHECK $LIBOFP decode --pcap-format=yes --pcap-output-dir=$MSG_DIR --pcap-max-missing-bytes=100000 --pcap-filter '' "$CURRENT_SOURCE_DIR/tcp.pcap" "$CURRENT_SOURCE_DIR/flow58899.pcap"
 
 verify_sha1 "$CURRENT_SOURCE_DIR/tcp.pcap" "08cf1e8ab8b499cfa8d03398e74c09ad59d3a731"
@@ -73,7 +73,7 @@ verify_sha1 "$MSG_DIR/_tcp-18-172.16.133.84:58899-172.16.139.250:5440" "ec6139ba
 # Check illegal argument combinations to make sure they are rejected.
 
 # You cannot combine the --pcap-device option with any input arguments.
-echo "Run libofp decode combinging --pcap-device option with file arguments."
+echo "Run oftr decode combinging --pcap-device option with file arguments."
 ! $LIBOFP_MEMCHECK $LIBOFP decode --pcap-device=en0 filename 2> /dev/null || {
     echo "Test Failed: Don't use --pcap-device with files. ($?)"
     exit 1
@@ -81,7 +81,7 @@ echo "Run libofp decode combinging --pcap-device option with file arguments."
 
 # Decode OpenFlow messages in `cap_single.pcap`.
 
-echo "Run libofp decode on $CURRENT_SOURCE_DIR/cap_single.pcap"
+echo "Run oftr decode on $CURRENT_SOURCE_DIR/cap_single.pcap"
 $LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.out" 2>&1
 echo "Compare $CURRENT_TEST_DIR/cap_single.pcap.out to $CURRENT_SOURCE_DIR/cap_single.pcap.out"
 diff "$CURRENT_TEST_DIR/cap_single.pcap.out" "$CURRENT_SOURCE_DIR/cap_single.pcap.out"

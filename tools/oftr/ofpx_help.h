@@ -19,7 +19,7 @@ namespace ofpx {
 
 using ofp::yaml::Schema;
 
-// libofp help [<options>] [<arguments>]
+// oftr help [<options>] [<arguments>]
 //
 // Access built-in information about the YAML schema used to describe all
 // OpenFlow messages.

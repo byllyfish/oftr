@@ -61,14 +61,14 @@ int main(int argc, const char *const *argv) {
     }
   }
 
-  llvm::errs() << "libofp: '" << name
-               << "' is not a libofp command. See 'libofp --help'.\n";
+  llvm::errs() << "oftr: '" << name
+               << "' is not a oftr command. See 'oftr --help'.\n";
 
   return 1;
 }
 
 void print_usage(llvm::raw_ostream &out) {
-  out << "Usage: libofp <command> [ <options> ]\n\n";
+  out << "Usage: oftr <command> [ <options> ]\n\n";
   out << "Commands:\n";
   for (size_t i = 0; i < ofp::ArrayLength(programs); ++i) {
     out << "  " << programs[i].name << '\n';
@@ -80,7 +80,7 @@ void print_version() {
   raw_ostream &os = llvm::outs();
 
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
-  os << "libofp " << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7)
+  os << "oftr " << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7)
      << ")";
 
   os << "  <" << LIBOFP_GITHUB_URL << ">\n";

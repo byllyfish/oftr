@@ -1,36 +1,36 @@
 // To make the manpage using asciidoc, use the following command:
 //
-//   a2x --doctype manpage --format manpage libofp.1.adoc
+//   a2x --doctype manpage --format manpage oftr.1.adoc
 // 
 // Use asciidoctor to produce the html version:
 // 
-//   asciidoctor libofp.1.adoc
+//   asciidoctor oftr.1.adoc
 
-= LIBOFP(1)
+= OFTR(1)
 William W. Fisher <william.w.fisher@gmail.com>
 :doctype: manpage
-:github: <https://github.com/byllyfish/libofp>
+:github: <https://github.com/byllyfish/oftr>
 
 == NAME
 
-libofp - YAML/JSON interface to the OpenFlow Protocol 1.0 - 1.4
+oftr - YAML/JSON interface to the OpenFlow Protocol 1.0 - 1.4
 
 == SYNOPSIS
 
-*libofp encode* [_OPTIONS_] [_INPUT_FILES_, ...]
+*oftr encode* [_OPTIONS_] [_INPUT_FILES_, ...]
 
-*libofp decode* [_OPTIONS_] [_INPUT_FILES_, ...]
+*oftr decode* [_OPTIONS_] [_INPUT_FILES_, ...]
 
-*libofp jsonrpc* [_OPTIONS_]
+*oftr jsonrpc* [_OPTIONS_]
 
-*libofp help* [_OPTIONS_] [_ARGS_, ...]
+*oftr help* [_OPTIONS_] [_ARGS_, ...]
 
-*libofp [--version|--help]*
+*oftr [--version|--help]*
 
 
 == DESCRIPTION
 
-The *libofp* program translates binary OpenFlow messages to YAML. It also 
+The *oftr* program translates binary OpenFlow messages to YAML. It also 
 translates YAML messages to OpenFlow. This program expects that all YAML input 
 is UTF-8.
 
@@ -42,11 +42,11 @@ earlier OpenFlow version that does not support all message attributes, the
 current implementation ignores those attributes when constructing the binary OpenFlow
 message.
 
-The libofp program includes a JSON-RPC microservice that supports multiple
-OpenFlow connections. See the `libofp-jsonrpc` man page for more details.
+The oftr program includes a JSON-RPC microservice that supports multiple
+OpenFlow connections. See the `oftr-jsonrpc` man page for more details.
 
 The YAML schema used for OpenFlow messages is embedded in the tool itself. You can
-browse the schema using the `libofp help` command. See the `libofp-schema` man page
+browse the schema using the `oftr help` command. See the `oftr-schema` man page
 for more details about the conventions used.
 
 
@@ -54,64 +54,64 @@ for more details about the conventions used.
 
 To translate a text file into binary OpenFlow messages:
 
-    libofp encode -o output.bin input.yml
+    oftr encode -o output.bin input.yml
 
 To translate a text file into binary OpenFlow messages, while ignoring
 sets of match fields with missing prerequisites:
 
-    libofp encode --unchecked-match -o output.bin input.yml
+    oftr encode --unchecked-match -o output.bin input.yml
 
 To translate a text file of compact, single line JSON objects separated by
 linefeeds:
 
-    libofp encode --json input.json
+    oftr encode --json input.json
 
 To decode a file of binary OpenFlow messages to YAML:
 
-    libofp decode input.bin
+    oftr decode input.bin
 
 To decode the OpenFlow messages in a ".pcap" file:
 
-    libofp decode "filename.pcap"
+    oftr decode "filename.pcap"
 
 To decode a file of binary OpenFlow messages to compact single-line JSON objects:
 
-    libofp decode --json "filename"
+    oftr decode --json "filename"
 
 To decode binary OpenFlow messages to a valid JSON array of objects:
 
-    libofp decode --json-array "filename"
+    oftr decode --json-array "filename"
 
 To decode binary OpenFlow messages with the additional check that the resulting
 YAML produces the same binary message when re-encoded:
 
-    libofp decode --verify-output "filename"
+    oftr decode --verify-output "filename"
 
 You can use `netcat` in a UNIX pipe to feed OpenFlow messages to a switch or controller:
 
-    libofp encode input.yml | nc -w 3 10.0.0.1 6653 | libofp decode
+    oftr encode input.yml | nc -w 3 10.0.0.1 6653 | oftr decode
 
 You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
 messages, while retaining metadata:
 
     #!/bin/bash
     tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
-    libofp decode --use-findx "/tmp/flow_$$/*.findx"
+    oftr decode --use-findx "/tmp/flow_$$/*.findx"
 
-The `libofp help` tool provides information about the schema used for reading/writing 
+The `oftr help` tool provides information about the schema used for reading/writing 
 OpenFlow messages in YAML. To obtain information about the syntax for the 
 'FLOW_MOD' message:
 
-    libofp help flow_mod
+    oftr help flow_mod
 
 To list all supported OXM fields:
 
-    libofp help --fields
+    oftr help --fields
 
 
 == LIBOFP ENCODE
 
-*libofp encode* [_OPTIONS_] [_INPUT_FILES_, ...]
+*oftr encode* [_OPTIONS_] [_INPUT_FILES_, ...]
 
 Encode OpenFlow messages to binary as specified by YAML input files. If there
 is a syntax error in the YAML input, stop and report an error.
@@ -169,7 +169,7 @@ OpenFlow version using the --ofversion option.
 
 == LIBOFP DECODE
 
-*libofp decode* [_OPTIONS_] [_INPUT_FILES_, ...]
+*oftr decode* [_OPTIONS_] [_INPUT_FILES_, ...]
 
 Decode binary OpenFlow messages in the input files and translate each
 message to human-readable YAML output. If there is an invalid message,
@@ -249,7 +249,7 @@ also represents stdin.
 
 == LIBOFP JSONRPC
 
-*libofp jsonrpc* [_OPTIONS_]
+*oftr jsonrpc* [_OPTIONS_]
 
 Run a JSON-RPC server. By default, the control connection comes from stdio.
 
@@ -261,7 +261,7 @@ Run a JSON-RPC server. By default, the control connection comes from stdio.
 
 == LIBOFP HELP
 
-*libofp help* [_OPTIONS_] [_ARGS_, ...]
+*oftr help* [_OPTIONS_] [_ARGS_, ...]
 
 Access built-in information about the YAML schema used to describe all OpenFlow
 messages.
@@ -338,7 +338,7 @@ All commands support options that control the verbosity of log messages.
 
 == SEE ALSO
 
-_libofp-jsonrpc_(1), _libofp-schema_(1)
+_oftr-jsonrpc_(1), _oftr-schema_(1)
 
 
 == EXIT STATUS

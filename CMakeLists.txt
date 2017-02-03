@@ -9,7 +9,7 @@
 #
 #    cmake -DCMAKE_BUILD_TYPE=debug
 #
-# To build libofp without the JSON-RPC server:
+# To build without the JSON-RPC server:
 #
 #    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
 #
@@ -49,7 +49,7 @@ string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" Libofp_VERSION_PATCH
 set(Libofp_RPC_API_MAJOR 0)
 set(Libofp_RPC_API_MINOR 1)
 
-# You can build libofp with or without the JSON-RPC server.
+# You can build oftr with or without the JSON-RPC server.
 
 set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
@@ -506,7 +506,7 @@ endif()
 # Build Tool
 #-------------------------------------------------------------------------------
 
-add_subdirectory(tools/libofp)
+add_subdirectory(tools/oftr)
 
 #-------------------------------------------------------------------------------
 # Test

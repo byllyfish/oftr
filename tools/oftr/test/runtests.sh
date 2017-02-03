@@ -14,18 +14,18 @@ for input in $CURRENT_SOURCE_DIR/*-pass.bin ; do
   output_json="$name.json"
   output_array="$name.jsonarray"
 
-  echo "  Run libofp decode to convert $input to $output_yml"
-  $LIBOFP_MEMCHECK ../libofp decode -V --pkt-decode $input > $output_yml
+  echo "  Run oftr decode to convert $input to $output_yml"
+  $LIBOFP_MEMCHECK ../oftr decode -V --pkt-decode $input > $output_yml
   echo "  Compare $output_yml to $CURRENT_SOURCE_DIR/$name.yml"
   diff $output_yml "$CURRENT_SOURCE_DIR/$name.yml"
 
-  echo "  Run libofp decode to convert $input to $output_json"
-  $LIBOFP_MEMCHECK ../libofp decode -V --json $input > $output_json
+  echo "  Run oftr decode to convert $input to $output_json"
+  $LIBOFP_MEMCHECK ../oftr decode -V --json $input > $output_json
   echo "  Compare $output_json to $CURRENT_SOURCE_DIR/$name.json"
   diff $output_json "$CURRENT_SOURCE_DIR/$name.json"
 
-  echo "  Run libofp decode to convert $input to $output_array"
-  $LIBOFP_MEMCHECK ../libofp decode -V --json-array $input > $output_array
+  echo "  Run oftr decode to convert $input to $output_array"
+  $LIBOFP_MEMCHECK ../oftr decode -V --json-array $input > $output_array
   echo "  Compare $output_array to $CURRENT_SOURCE_DIR/$name.jsonarray"
   diff $output_array "$CURRENT_SOURCE_DIR/$name.jsonarray"
 done
@@ -36,8 +36,8 @@ for input in $CURRENT_SOURCE_DIR/*-pass.yml ; do
   name=`basename "$input" .yml`
   output="$name.bin"
 
-  echo "  Run libofp encode to convert $input to $output"
-  $LIBOFP_MEMCHECK ../libofp encode -M $input > $output
+  echo "  Run oftr encode to convert $input to $output"
+  $LIBOFP_MEMCHECK ../oftr encode -M $input > $output
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.bin"
   diff $output "$CURRENT_SOURCE_DIR/$name.bin"
 done
@@ -48,8 +48,8 @@ for input in $CURRENT_SOURCE_DIR/*-pass.json ; do
   name=`basename "$input" .json`
   output="$name.bin"
 
-  echo "  Run libofp encode to convert $input to $output"
-  $LIBOFP_MEMCHECK ../libofp encode -Mj $input > $output
+  echo "  Run oftr encode to convert $input to $output"
+  $LIBOFP_MEMCHECK ../oftr encode -Mj $input > $output
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.bin"
   diff $output "$CURRENT_SOURCE_DIR/$name.bin"
 done
@@ -60,8 +60,8 @@ for input in $CURRENT_SOURCE_DIR/*-pass.jsonarray ; do
   name=`basename "$input" .jsonarray`
   output="$name.bin"
 
-  echo "  Run libofp encode to convert $input to $output"
-  $LIBOFP_MEMCHECK ../libofp encode -M --json-array $input > $output
+  echo "  Run oftr encode to convert $input to $output"
+  $LIBOFP_MEMCHECK ../oftr encode -M --json-array $input > $output
   echo "  Compare $output to $CURRENT_SOURCE_DIR/$name.bin"
   diff $output "$CURRENT_SOURCE_DIR/$name.bin"
 done

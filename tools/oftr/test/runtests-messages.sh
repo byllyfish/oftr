@@ -9,7 +9,7 @@ echo "Working Directory: $CURRENT_TEST_DIR"
 
 cd $CURRENT_SOURCE_DIR/../../..
 
-LIBOFP=$CURRENT_TEST_DIR/../libofp
+LIBOFP=$CURRENT_TEST_DIR/../oftr
 
 # Make sure `sort` does the same thing on all systems.
 export LC_ALL=C

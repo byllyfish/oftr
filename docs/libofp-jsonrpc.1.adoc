@@ -1,29 +1,29 @@
 // To make the manpage using asciidoc, use the following command:
 //
-//   a2x --doctype manpage --format manpage libofp-jsonrpc.1.adoc
+//   a2x --doctype manpage --format manpage oftr-jsonrpc.1.adoc
 // 
 // Use asciidoctor to produce the html version:
 // 
-//   asciidoctor libofp-jsonrpc.1.adoc
+//   asciidoctor oftr-jsonrpc.1.adoc
 
-= LIBOFP-JSONRPC(1)
+= OFTR-JSONRPC(1)
 William W. Fisher <william.w.fisher@gmail.com>
 :doctype: manpage
-:github: <https://github.com/byllyfish/libofp>
+:github: <https://github.com/byllyfish/oftr>
 
 == NAME
 
-libofp-jsonrpc - OpenFlow Microservice
+oftr-jsonrpc - OpenFlow Microservice
 
 
 == SYNOPSIS
 
-*libofp jsonrpc* [_OPTIONS_]
+*oftr jsonrpc* [_OPTIONS_]
 
 
 == DESCRIPTION
 
-The *libofp jsonrpc* tool runs a JSON-RPC service that enables programmatic 
+The *oftr jsonrpc* tool runs a JSON-RPC service that enables programmatic 
 control of the OpenFlow protocol. The control connection runs overs stdin/stdout. 
 All text uses UTF-8 encoding.
 
@@ -62,7 +62,7 @@ There is one JSON-RPC notification:
 
 === OFP.DESCRIPTION
 
-Request information about the `libofp` implementation.
+Request information about the `oftr` implementation.
 
 ==== Request
 
@@ -388,7 +388,7 @@ The `OFP.MESSAGE` event is sent when an OpenFlow message is received. There
 are also special 'CHANNEL_*' events sent when a channel goes up/down or needs 
 to indicate an event.
 
-The `type` attribute specifies the type of message. See _libofp-schema_ man page
+The `type` attribute specifies the type of message. See _oftr-schema_ man page
 for attributes used in OpenFlow messages.
 
 The `CHANNEL_UP` message is sent when an OpenFlow channel comes up. If the
@@ -411,7 +411,7 @@ Here are some examples of why an alert message might be sent.
 
 == SEE ALSO
 
-_libofp_(1), _libofp-schema_(1)
+_oftr_(1), _oftr-schema_(1)
 
 == EXIT STATUS
 

@@ -8,7 +8,7 @@
 
 namespace ofpx {
 
-// libofp jsonrpc [options]
+// oftr jsonrpc [options]
 //
 // Run a JSON-RPC server. By default, the control connection comes from stdio.
 //
@@ -16,7 +16,7 @@ namespace ofpx {
 //
 // To run JSON-RPC server over stdin and stdout:
 //
-//   libofp jsonrpc
+//   oftr jsonrpc
 //
 
 class JsonRpc : public Subprogram {

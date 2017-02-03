@@ -10,7 +10,7 @@ try:
 except ImportError:
     hasYaml = False
 
-LIBOFP = '../libofp'
+OFTR = '../oftr'
 MAX_VERSION = 5
 STR16 = '.' * 16
 STR32 = '.' * 32
@@ -308,7 +308,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     cmd = os.environ.get('LIBOFP_MEMCHECK', '').split()
-    cmd += [LIBOFP, 'encode', '-jkR', '--silent-error']
+    cmd += [OFTR, 'encode', '-jkR', '--silent-error']
     PROC = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
     inputFile = sys.argv[1]

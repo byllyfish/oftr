@@ -7,7 +7,7 @@ CURRENT_TEST_DIR=`pwd`
 
 echo "Working Directory: $CURRENT_TEST_DIR"
 
-LIBOFP=$CURRENT_TEST_DIR/../libofp
+LIBOFP=$CURRENT_TEST_DIR/../oftr
 
 echo "Generate schema-all"
 $LIBOFP_MEMCHECK $LIBOFP help -schema-all > schema-all.yml

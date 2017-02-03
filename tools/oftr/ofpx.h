@@ -52,7 +52,7 @@ class Subprogram {
       logStream.reset(new llvm::raw_fd_ostream{
           logfile_, err, fs::F_Append | fs::F_RW | fs::F_Text});
       if (err) {
-        llvm::errs() << "libofp: Failed to open log file '" << logfile_
+        llvm::errs() << "oftr: Failed to open log file '" << logfile_
                      << "'\n";
         std::exit(1);
       }

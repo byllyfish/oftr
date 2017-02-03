@@ -1,28 +1,28 @@
 // To make the manpage using asciidoc, use the following command:
 //
-//   a2x --doctype manpage --format manpage libofp-schema.1.adoc
+//   a2x --doctype manpage --format manpage oftr-schema.1.adoc
 // 
 // Use asciidoctor to produce the html version:
 // 
-//   asciidoctor libofp-schema.1.adoc
+//   asciidoctor oftr-schema.1.adoc
 
-= LIBOFP-SCHEMA(1)
+= OFTR-SCHEMA(1)
 William W. Fisher <william.w.fisher@gmail.com>
 :doctype: manpage
-:github: <https://github.com/byllyfish/libofp>
+:github: <https://github.com/byllyfish/oftr>
 
 == NAME
 
-libofp-schema - OpenFlow Message Schema Conventions
+oftr-schema - OpenFlow Message Schema Conventions
 
 == DESCRIPTION
 
 This document defines the schema language used to document the OpenFlow messages,
-structures, and values in libofp.
+structures, and values in oftr.
 
-Typing *libofp help -schema-all* will dump all message templates in this schema language.
+Typing *oftr help -schema-all* will dump all message templates in this schema language.
 
-To look up any message, structure, or flag, type `libofp help NAME`.
+To look up any message, structure, or flag, type `oftr help NAME`.
 
 == DESIGN 
 
@@ -51,7 +51,7 @@ Enum/ControllerRole: ROLE_NOCHANGE | ROLE_EQUAL | ROLE_MASTER | ROLE_SLAVE | Hex
 Builtin/UInt64: <builtin>
 ----
 
-TIP: To look up this schema, you would type `libofp help rolerequest`.
+TIP: To look up this schema, you would type `oftr help rolerequest`.
 
 To produce a message, copy the `Message/RoleRequest` contents, delete the !optout
 lines and any !opt values that you don't need. Then, replace the capitalized type names with appropriate values.
@@ -172,7 +172,7 @@ Here is a valid FlowMod message:
 
 == SEE ALSO
 
-_libofp_(1), _libofp-jsonrpc_(1)
+_oftr_(1), _oftr-jsonrpc_(1)
 
 
 == RESOURCES

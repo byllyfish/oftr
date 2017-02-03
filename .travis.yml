@@ -20,7 +20,7 @@ env:
 addons:
   coverity_scan:
     project:
-      name: "byllyfish/libofp"
+      name: "byllyfish/oftr"
       description: "Build submitted via Travis CI"
     notification_email: william.w.fisher@gmail.com
     # I only want to do a coverity_scan on the linux build
@@ -39,10 +39,10 @@ addons:
       - libpcap-dev
 
 before_deploy:
-  - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/libofp
-  - ZIPFILE=libofp-develop-${TRAVIS_OS_NAME}.zip
-  - if [ $TRAVIS_OS_NAME == linux ]; then strip --strip-debug ${TOOLDIR}/libofp; fi
-  - pushd ${TOOLDIR}; zip ${ZIPFILE} libofp; popd
+  - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/oftr
+  - ZIPFILE=oftr-develop-${TRAVIS_OS_NAME}.zip
+  - if [ $TRAVIS_OS_NAME == linux ]; then strip --strip-debug ${TOOLDIR}/oftr; fi
+  - pushd ${TOOLDIR}; zip ${ZIPFILE} oftr; popd
 
 deploy:
   provider: bintray

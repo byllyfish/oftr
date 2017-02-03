@@ -9,7 +9,7 @@
 
 namespace ofpx {
 
-// libofp encode [options] [<Input files>]
+// oftr encode [options] [<Input files>]
 //
 // Encode OpenFlow messages to binary as specified in YAML input files. If there
 // is a syntax error in the YAML input, stop and report an error.
@@ -36,22 +36,22 @@ namespace ofpx {
 //
 // To translate a text file into binary OpenFlow messages:
 //
-//   libofp encode "filename"
+//   oftr encode "filename"
 //
 // To translate a text file into binary OpenFlow messages, while ignoring
 // sets of match fields that violate prerequisites:
 //
-//   libofp encode --unchecked-match "filename"
+//   oftr encode --unchecked-match "filename"
 //
 // To translate a text file of compact, single line JSON objects separated by
 // linefeeds:
 //
-//   libofp encode --json "filename"
+//   oftr encode --json "filename"
 //
 // To translate a text file of JSON objects separated by any delimiter, or
 // contained in a JSON array:
 //
-//   libofp encode --json-array "filename"
+//   oftr encode --json-array "filename"
 
 OFP_BEGIN_IGNORE_PADDING
 

@@ -12,7 +12,7 @@
 
 namespace ofpx {
 
-// libofp decode [<options>] [<Input files>]
+// oftr decode [<options>] [<Input files>]
 //
 // Decode binary OpenFlow messages in the input files and translate each
 // message to human-readable YAML output. If there is an invalid message,
@@ -48,17 +48,17 @@ namespace ofpx {
 //
 // To decode a file of binary OpenFlow messages to YAML:
 //
-//     libofp decode "filename"
+//     oftr decode "filename"
 //
 // To decode a file of binary OpenFlow messages to JSON:
 //
-//     libofp decode --json "filename"
+//     oftr decode --json "filename"
 //
 // To process a file of invalid binary OpenFlow messages (e.g. fuzz test). This
 // will report an error if any message is structurally valid as an OpenFlow
 // message:
 //
-//     libofp decode --invert-check "filename"
+//     oftr decode --invert-check "filename"
 //
 
 OFP_BEGIN_IGNORE_PADDING

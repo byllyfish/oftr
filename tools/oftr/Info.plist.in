@@ -5,7 +5,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleIdentifier</key>
-	<string>byllyfish.libofp</string>
+	<string>byllyfish.oftr</string>
 	<key>CFBundleShortVersionString</key>
 	<string>@Libofp_VERSION_MAJOR@.@Libofp_VERSION_MINOR@.@Libofp_VERSION_PATCH@</string>
 </dict>
