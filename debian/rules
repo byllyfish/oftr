@@ -13,9 +13,9 @@ build-arch:
 	mkdir $(BUILDDIR)
 	cd $(BUILDDIR); cmake -DCMAKE_INSTALL_PREFIX=../debian/tmp/usr ..
 	# Log the CXX flags used in building the tool.
-	-cat $(BUILDDIR)/tools/libofp/CMakeFiles/libofp.dir/flags.make
+	-cat $(BUILDDIR)/tools/oftr/CMakeFiles/oftr.dir/flags.make
 	make -C $(BUILDDIR)
-	strip --strip-debug $(BUILDDIR)/tools/libofp/libofp
+	strip --strip-debug $(BUILDDIR)/tools/oftr/oftr
 	-make -C $(BUILDDIR) test ARGS="--output-on-failure"
 
 binary: binary-indep binary-arch
@@ -26,7 +26,7 @@ binary-indep:
 binary-arch:
 	cd $(BUILDDIR); cmake -P cmake_install.cmake
 	mkdir debian/tmp/DEBIAN
-	dpkg-gencontrol -plibofp
+	dpkg-gencontrol -poftr
 	dpkg --build debian/tmp ..
 
 clean:

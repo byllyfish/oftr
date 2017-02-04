@@ -5,10 +5,10 @@ ifdef::env-github[]
 :toc-placement: preamble
 endif::[]
 
-image:https://travis-ci.org/byllyfish/libofp.svg?branch=develop["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/libofp"]
+image:https://travis-ci.org/byllyfish/oftr.svg?branch=develop["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/oftr"]
 image:https://scan.coverity.com/projects/5587/badge.svg["Coverity Scan Build Status", link="https://scan.coverity.com/projects/5587"]
 
-== What is Libofp?
+== What is oftr?
 
 The *oftr* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML 1.2] and back again. It provides a uniform object syntax for working with the OpenFlow protocol programmatically.
 
@@ -26,7 +26,7 @@ Decode the OpenFlow messages in a ".pcap" file while retaining metadata such as 
 $ oftr decode "filename.pcap"
 ----
 
-Libofp includes a JSON-RPC microservice that can operate as an OpenFlow 
+oftr includes a JSON-RPC microservice that can operate as an OpenFlow 
 controller, agent, or both simultaneously. The JSON-RPC microservice can control
 the OpenFlow protocol over an IPC channel using asynchronous JSON events.
 
@@ -54,7 +54,7 @@ msg:
 ----
 
 The YAML syntax is based on OpenFlow 1.4, but the same input
-can generate earlier protocol version messages. Libofp is intelligent about
+can generate earlier protocol version messages. oftr is intelligent about
 translating between OpenFlows versions. For example,
 here's a FlowMod message specified using OpenFlow 1.4 syntax, but which will 
 output a "1.0" message because version 1 is explicitly specified.
@@ -129,16 +129,16 @@ To build the software:
 
 [source,console]
 ----
-$ git clone --recursive https://github.com/byllyfish/libofp.git
-$ mkdir libofp/Build
-$ cd libofp/Build
+$ git clone --recursive https://github.com/byllyfish/oftr.git
+$ mkdir oftr/Build
+$ cd oftr/Build
 $ cmake ..
 $ make
 $ make test
 $ make install
 ----
 
-On Ubuntu, you can also install the software from a https://launchpad.net/~byllyfish/+archive/ubuntu/libofp[Launchpad PPA].
+On Ubuntu, you can also install the software from a https://launchpad.net/~byllyfish/+archive/ubuntu/oftr[Launchpad PPA].
 
 == Examples
 

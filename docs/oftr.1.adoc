@@ -109,7 +109,7 @@ To list all supported OXM fields:
     oftr help --fields
 
 
-== LIBOFP ENCODE
+== OFTR ENCODE
 
 *oftr encode* [_OPTIONS_] [_INPUT_FILES_, ...]
 
@@ -167,7 +167,7 @@ OpenFlow version using the --ofversion option.
     Do not check items in match fields.
 
 
-== LIBOFP DECODE
+== OFTR DECODE
 
 *oftr decode* [_OPTIONS_] [_INPUT_FILES_, ...]
 
@@ -247,7 +247,7 @@ also represents stdin.
     Skip payload from TCP streams (for debugging). This option makes sure that
     every byte of data is consumed immediately.
 
-== LIBOFP JSONRPC
+== OFTR JSONRPC
 
 *oftr jsonrpc* [_OPTIONS_]
 
@@ -259,7 +259,7 @@ Run a JSON-RPC server. By default, the control connection comes from stdio.
     Print out usage information for the command.
 
 
-== LIBOFP HELP
+== OFTR HELP
 
 *oftr help* [_OPTIONS_] [_ARGS_, ...]
 
