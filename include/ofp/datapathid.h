@@ -26,7 +26,7 @@ class DatapathID {
   std::string toString() const { return detail::toString(*this); }
   const ArrayType &toArray() const { return dpid_; }
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
   void clear() { dpid_.fill(0); }
 
   bool operator==(const DatapathID &rhs) const { return dpid_ == rhs.dpid_; }

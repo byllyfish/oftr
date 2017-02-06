@@ -73,3 +73,14 @@ TEST(macaddress, relational) {
   EXPECT_FALSE(b == a);
   EXPECT_TRUE(b != a);
 }
+
+TEST(macaddress, integer) {
+  MacAddress a;
+
+  EXPECT_FALSE(a.parse("0x01"));
+  EXPECT_FALSE(a.parse("01"));
+  EXPECT_FALSE(a.parse("1"));
+
+  // FIXME(bfish): To be made invalid.
+  EXPECT_TRUE(a.parse("123456781234"));
+}

@@ -12,7 +12,7 @@ void TestAgent::onMessage(const Message *message) {
 
   if (message->type() == OFPT_FEATURES_REQUEST) {
     FeaturesReplyBuilder reply{message->xid()};
-    reply.setDatapathId(DatapathID{"12-34-56-78-9A-BC-CD-EF"});
+    reply.setDatapathId(DatapathID{"12:34:56:78:9A:BC:CD:EF"});
     reply.send(message->source());
     writeNow = true;
 

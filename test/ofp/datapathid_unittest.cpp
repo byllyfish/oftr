@@ -42,9 +42,8 @@ TEST(datapathid, test) {
   EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc:d"));
   EXPECT_TRUE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd"));
   EXPECT_HEX("aa:bb:cc:dd:aa:bb:cc:dd", &f, sizeof(f));
-  // It's okay to pass more data than necessary...
-  EXPECT_TRUE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd:ee"));
-  EXPECT_HEX("aa:bb:cc:dd:aa:bb:cc:dd", &f, sizeof(f));
+  // It's NOT okay to pass more data than necessary...
+  EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd:ee"));
 }
 
 TEST(datapathid, relational) {
@@ -87,4 +86,16 @@ TEST(datapathid, stream) {
   oss << a << ',' << b << '.';
 
   EXPECT_EQ("00:01:02:a3:04:00:00:f1,00:00:00:00:00:00:00:00.", oss.str());
+}
+
+TEST(datapathid, integer) {
+  DatapathID a;
+
+  EXPECT_TRUE(a.parse("0x201"));
+  EXPECT_EQ("00:00:00:00:00:00:02:01", a.toString());
+
+  EXPECT_FALSE(a.parse("01"));
+  EXPECT_FALSE(a.parse("1"));
+  EXPECT_FALSE(a.parse("1234567812345678"));
+  EXPECT_FALSE(a.parse("0x1FFFFFFFFFFFFFFFF"));
 }

@@ -209,7 +209,7 @@ T *RemoveConst_cast(const T *v) {
 }
 
 /// Convert raw buffer to a hexadecimal string (upper case). The resulting
-/// string contains only hexadecimal characters, no delimters.
+/// string contains only hexadecimal characters, no delimiters.
 ///
 /// \param  data pointer to input buffer
 /// \param  length size of input buffer
@@ -218,7 +218,7 @@ std::string RawDataToHex(const void *data, size_t length);
 
 /// Convert raw buffer to a hexadecimal string (upper case).
 ///
-/// The resulting string isformatted according to `delimiter` and `word`. The
+/// The resulting string is formatted according to `delimiter` and `word`. The
 /// delimiter specifies a character to insert between each run of hexadecimal
 /// chars. `word` specifies the number of bytes between delimiters.
 ///
@@ -252,6 +252,16 @@ size_t HexToRawData(const std::string &hex, void *data, size_t length,
 template <size_t Length>
 char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
                                      char (&buf)[Length * 3]);
+
+/// Convert a hexadecimal string with each hex-pair delimited by ':'.
+/// 
+/// There must be exactly 2 hex digits between each ':'.
+/// 
+/// \param  s string containing 'hh:hh:hh:...:hh'
+/// \param  data output buffer
+/// \param  length size of output buffer
+/// \return size of output or 0 if there is an error
+size_t HexDelimitedToRawData(llvm::StringRef s, void *data, size_t length);
 
 /// Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
 /// odd final hex digit.

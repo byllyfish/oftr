@@ -27,13 +27,22 @@ MacAddress DatapathID::macAddress() const {
   return result;
 }
 
-bool DatapathID::parse(const std::string &s) {
+bool DatapathID::parse(llvm::StringRef s) {
   if (s.empty()) {
     clear();
     return true;
   }
 
-  return HexToRawData(s, dpid_.data(), dpid_.size()) >= dpid_.size();
+  if (s.startswith("0x")) {
+    UInt64 n;
+    if (s.getAsInteger<UInt64>(0, n))
+      return false;
+    Big64 val = n;
+    std::memcpy(&dpid_, &val, sizeof(dpid_));
+    return true;
+  }
+
+  return HexDelimitedToRawData(s, dpid_.data(), dpid_.size()) == dpid_.size();
 }
 
 namespace ofp {

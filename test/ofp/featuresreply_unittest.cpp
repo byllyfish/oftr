@@ -50,7 +50,7 @@ TEST(featuresreply, v4) {
   ports.add(portBuilder);
 
   FeaturesReplyBuilder msg{1};
-  msg.setDatapathId(DatapathID("2222222222222222"));
+  msg.setDatapathId(DatapathID("0x2222222222222222"));
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
@@ -73,7 +73,7 @@ TEST(featuresreply, v4) {
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
 
-  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(DatapathID("0x2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
   EXPECT_EQ(0x44, reply->tableCount());
   EXPECT_EQ(0x55, reply->auxiliaryId());
@@ -108,7 +108,7 @@ TEST(featuresreply, v3) {
   ports.add(portBuilder);
 
   FeaturesReplyBuilder msg{1};
-  msg.setDatapathId(DatapathID("2222222222222222"));
+  msg.setDatapathId(DatapathID("0x2222222222222222"));
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
@@ -135,7 +135,7 @@ TEST(featuresreply, v3) {
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
 
-  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(DatapathID("0x2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
   EXPECT_EQ(0x44, reply->tableCount());
   EXPECT_EQ(0, reply->auxiliaryId());
@@ -191,7 +191,7 @@ TEST(featuresreply, v2) {
   ports.add(portBuilder);
 
   FeaturesReplyBuilder msg{1};
-  msg.setDatapathId(DatapathID("2222222222222222"));
+  msg.setDatapathId(DatapathID("0x2222222222222222"));
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
@@ -218,7 +218,7 @@ TEST(featuresreply, v2) {
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
 
-  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(DatapathID("0x2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
   EXPECT_EQ(0x44, reply->tableCount());
   EXPECT_EQ(0, reply->auxiliaryId());
@@ -274,7 +274,7 @@ TEST(featuresreply, v1) {
   ports.add(portBuilder);
 
   FeaturesReplyBuilder msg{1};
-  msg.setDatapathId(DatapathID("2222222222222222"));
+  msg.setDatapathId(DatapathID("0x2222222222222222"));
   msg.setBufferCount(0x33333333);
   msg.setTableCount(0x44);
   msg.setAuxiliaryId(0x55);
@@ -301,7 +301,7 @@ TEST(featuresreply, v1) {
   const FeaturesReply *reply = FeaturesReply::cast(&message);
   ASSERT_TRUE(reply);
 
-  EXPECT_EQ(DatapathID("2222222222222222"), reply->datapathId());
+  EXPECT_EQ(DatapathID("0x2222222222222222"), reply->datapathId());
   EXPECT_EQ(0x33333333, reply->bufferCount());
   EXPECT_EQ(0x44, reply->tableCount());
   EXPECT_EQ(0, reply->auxiliaryId());

@@ -305,7 +305,7 @@ TEST(encoder, featuresreplyv1) {
     version: 1
     xid: 0xBF
     msg:
-      datapath_id: '0000:0102:0304:0506'
+      datapath_id: '00:00:01:02:03:04:05:06'
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
@@ -325,7 +325,7 @@ TEST(encoder, featuresreplyv1ports) {
     version: 1
     xid: 0xBF
     msg:
-      datapath_id: '0000:0102:0304:0506'
+      datapath_id: '00:00:01:02:03:04:05:06'
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
@@ -374,7 +374,7 @@ TEST(encoder, featuresreplyv4) {
     version: 4
     xid: 0xBF
     msg:
-      datapath_id: '0000:0102:0304:0506'
+      datapath_id: '00:00:01:02:03:04:05:06'
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
@@ -1584,7 +1584,7 @@ TEST(encoder, setconfigv4) {
   const char *input = R"""(
       version: 4
       type: SET_CONFIG
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         flags: [ '0xAAAA' ]
@@ -1601,7 +1601,7 @@ TEST(encoder, portstatusv4) {
   const char *input = R"""(
       version: 4
       type: PORT_STATUS
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         reason: 0x22
@@ -1634,7 +1634,7 @@ TEST(encoder, portstatusv1) {
   const char *input = R"""(
       version: 1
       type: PORT_STATUS
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         reason: 0x22
@@ -1666,7 +1666,7 @@ TEST(encoder, groupmodv4) {
   const char *input = R"""(
       version: 4
       type: GROUP_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         command: 0x2222
@@ -1708,7 +1708,7 @@ TEST(encoder, groupmodv2) {
   const char *input = R"""(
       version: 2
       type: GROUP_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         command: 0x2222
@@ -1750,7 +1750,7 @@ TEST(encoder, portmodv5) {
   const char *input = R"""(
       version: 5
       type: PORT_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port_no: 0x22222222
@@ -1775,7 +1775,7 @@ TEST(encoder, portmodv4) {
   const char *input = R"""(
       version: 4
       type: PORT_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port_no: 0x22222222
@@ -1800,7 +1800,7 @@ TEST(encoder, portmodv5_experimenter) {
   const char *input = R"""(
       version: 5
       type: PORT_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port_no: 0x22222222
@@ -1829,7 +1829,7 @@ TEST(encoder, portmodv1) {
   const char *input = R"""(
       version: 1
       type: PORT_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port_no: 0x2222
@@ -1852,7 +1852,7 @@ TEST(encoder, tablemodv4) {
   const char *input = R"""(
       version: 4
       type: TABLE_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         table_id: 0x22
@@ -1870,7 +1870,7 @@ TEST(encoder, tablemodv2) {
   const char *input = R"""(
       version: 2
       type: TABLE_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         table_id: 0x22
@@ -1888,7 +1888,7 @@ TEST(encoder, rolerequestv4) {
   const char *input = R"""(
       version: 4
       type: ROLE_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         role: 0x22222222
@@ -1906,7 +1906,7 @@ TEST(encoder, rolereplyv4) {
   const char *input = R"""(
       version: 4
       type: ROLE_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         role: 0x22222222
@@ -1924,7 +1924,7 @@ TEST(encoder, getasyncreplyv4) {
   const char *input = R"""(
       version: 4
       type: GET_ASYNC_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222222]
@@ -1947,7 +1947,7 @@ TEST(encoder, getasyncreplyv5) {
   const char *input = R"""(
       version: 5
       type: GET_ASYNC_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222222]
@@ -1972,7 +1972,7 @@ TEST(encoder, queuegetconfigrequestv4) {
   const char *input = R"""(
       version: 4
       type: QUEUE_GET_CONFIG_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port: 0x22222222
@@ -1989,7 +1989,7 @@ TEST(encoder, queuegetconfigreplyv4) {
   const char *input = R"""(
     version: 4
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
       port: 0x22222222
@@ -2020,7 +2020,7 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
   const char *input = R"""(
     version: 4
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
       port: 0x22222222
@@ -2056,7 +2056,7 @@ TEST(encoder, queuegetconfigreplyv5_experimenter) {
   const char *input = R"""(
     version: 5
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
       port: 0x22222222
@@ -2092,7 +2092,7 @@ TEST(encoder, queuegetconfigreplyv1) {
   const char *input = R"""(
     version: 1
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111110
     msg:
       port: 0x22222221
@@ -2121,7 +2121,7 @@ TEST(encoder, queuegetconfigreplyv2) {
   const char *input = R"""(
     version: 2
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111110
     msg:
       port: 0x22222221
@@ -2150,7 +2150,7 @@ TEST(encoder, getconfigreplyv4) {
   const char *input = R"""(
       version: 4
       type: GET_CONFIG_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         flags: [ '0xAAAA' ]
@@ -2167,7 +2167,7 @@ TEST(encoder, setasyncv4) {
   const char *input = R"""(
       version: 4
       type: SET_ASYNC
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222222]
@@ -2190,7 +2190,7 @@ TEST(encoder, setasyncv5) {
   const char *input = R"""(
       version: 5
       type: SET_ASYNC
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222221]
@@ -2215,7 +2215,7 @@ TEST(encoder, flowremovedv4) {
   const char *input = R"""(
       version: 4
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
@@ -2245,7 +2245,7 @@ TEST(encoder, flowremovedv1) {
   const char *input = R"""(
       version: 1
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
@@ -2276,7 +2276,7 @@ TEST(encoder, flowremovedv2) {
   const char *input = R"""(
       version: 2
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
@@ -2309,7 +2309,7 @@ TEST(encoder, flowremovedv3) {
   const char *input = R"""(
       version: 3
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
@@ -2339,7 +2339,7 @@ TEST(encoder, ofmp_desc_request) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2357,7 +2357,7 @@ TEST(encoder, ofmp_desc_reply) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2411,7 +2411,7 @@ TEST(encoder, ofmp_desc_reply_error) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2438,7 +2438,7 @@ TEST(encoder, ofmp_desc_request_v1) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2455,7 +2455,7 @@ TEST(encoder, ofmp_desc_reply_v1) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2509,7 +2509,7 @@ TEST(encoder, ofmp_desc_reply_non_utf8) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111112
       msg:
         type: DESC
@@ -2563,7 +2563,7 @@ TEST(encoder, ofmp_portstats_v4_request) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: PORT_STATS
@@ -2583,7 +2583,7 @@ TEST(encoder, ofmp_portstats_v1_request) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: PORT_STATS
@@ -2603,7 +2603,7 @@ TEST(encoder, ofmp_queue_v4_request) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: QUEUE
@@ -2624,7 +2624,7 @@ TEST(encoder, ofmp_queue_v1_request) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: QUEUE
@@ -2645,7 +2645,7 @@ TEST(encoder, meter_mod_v4) {
   const char *input = R"""(
       version: 4
       type: METER_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         command: MODIFY
@@ -2674,7 +2674,7 @@ TEST(encoder, ofmp_groupfeatures_reply) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: GROUP_FEATURES
@@ -2705,7 +2705,7 @@ TEST(encoder, ofmp_flowmonitor_request) {
   const char *input = R"""(
       version: 5
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: FLOW_MONITOR
@@ -2735,7 +2735,7 @@ TEST(encoder, ofmp_flowmonitor_reply) {
   const char *input = R"""(
       version: 5
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: FLOW_MONITOR
@@ -2775,7 +2775,7 @@ TEST(encoder, rolestatusv5) {
   const char *input = R"""(
       version: 5
       type: ROLE_STATUS
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         role: 0x22222222
@@ -2801,7 +2801,7 @@ TEST(encoder, requestforwardv5) {
   const char *input = R"""(
       version: 5
       type: REQUESTFORWARD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: GROUP_MOD
@@ -2837,7 +2837,7 @@ TEST(encoder, bundlecontrolv5) {
   const char *input = R"""(
       version: 5
       type: BUNDLE_CONTROL
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         bundle_id: 0x22222222
@@ -2861,7 +2861,7 @@ TEST(encoder, bundleaddmessagev5) {
   const char *input = R"""(
       version: 5
       type: BUNDLE_ADD_MESSAGE
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         bundle_id: 0x22222222
