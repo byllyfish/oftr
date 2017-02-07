@@ -16,9 +16,9 @@ class MacAddress {
   using ArrayType = std::array<UInt8, Length>;
 
   MacAddress() : addr_{} {}
-  /* implicit NOLINT */ MacAddress(const std::string &s);
+  /* implicit NOLINT */ MacAddress(llvm::StringRef s);
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
 
   bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
 

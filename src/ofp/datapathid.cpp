@@ -12,7 +12,7 @@ DatapathID::DatapathID(UInt16 implementerDefined, MacAddress macAddress) {
   std::memcpy(dpid_.data() + 2, &macAddress, sizeof(macAddress));
 }
 
-DatapathID::DatapathID(const std::string &dpid) {
+DatapathID::DatapathID(llvm::StringRef dpid) {
   if (!parse(dpid))
     clear();
 }

@@ -13,9 +13,9 @@ TEST(datapathid, test) {
   EXPECT_EQ("00:00:00:00:00:00:00:00", a.toString());
   EXPECT_TRUE(a.empty());
 
-  DatapathID b{0x1234, MacAddress{"00-01-02-03-04-05"}};
+  DatapathID b{0x1234, MacAddress{"00:01:02:03:04:05"}};
   EXPECT_EQ(0x1234, b.implementerDefined());
-  EXPECT_EQ(MacAddress{"00-01-02-03-04-05"}, b.macAddress());
+  EXPECT_EQ(MacAddress{"00:01:02:03:04:05"}, b.macAddress());
   EXPECT_HEX("1234 00 01 02 03 04 05", &b, sizeof(b));
   EXPECT_EQ("12:34:00:01:02:03:04:05", b.toString());
 
@@ -27,7 +27,7 @@ TEST(datapathid, test) {
 
   DatapathID d{0xffff, MacAddress{"ff:ff:ff:ff:ff:ff"}};
   EXPECT_EQ(0xffff, d.implementerDefined());
-  EXPECT_EQ(MacAddress{"ff-ff-ff-ff-ff-ff"}, d.macAddress());
+  EXPECT_EQ(MacAddress{"ff:ff:ff:ff:ff:ff"}, d.macAddress());
   EXPECT_HEX("ffff ff ff ff ff ff ff", &d, sizeof(d));
   EXPECT_EQ("ff:ff:ff:ff:ff:ff:ff:ff", d.toString());
 

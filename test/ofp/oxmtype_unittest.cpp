@@ -103,7 +103,8 @@ TEST(OXMType, withMask_Experimenter) {
 TEST(oxmtype, stream) {
   OXMType a{0xFFFF, 2, 8};
 
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << a;
   EXPECT_EQ("FFFF0408", oss.str());
 }

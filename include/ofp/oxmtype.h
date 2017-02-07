@@ -105,7 +105,7 @@ static_assert(IsTriviallyCopyable<OXMType>(), "Expected trivially copyable.");
 #if !defined(LIBOFP_LOGGING_DISABLED)
 // Only used for logging. Disable when building oxm helpers.
 
-inline std::ostream &operator<<(std::ostream &os, const OXMType &value) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const OXMType &value) {
   return os << value.toString();
 }
 

@@ -204,7 +204,7 @@ TEST(actions, AT_SET_FIELD_32bit) {
 }
 
 TEST(actions, AT_SET_FIELD_48bit) {
-  MacAddress addr{"01-02-03-04-05-06"};
+  MacAddress addr{"01:02:03:04:05:06"};
   AT_SET_FIELD<OFB_ETH_DST> act{addr};
 
   EXPECT_EQ(addr, act.value());

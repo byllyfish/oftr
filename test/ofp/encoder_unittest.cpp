@@ -333,7 +333,7 @@ TEST(encoder, featuresreplyv1ports) {
       actions: []
       ports:
         - port_no: 0x1111
-          hw_addr: 22-22-22-22-22-22
+          hw_addr: 22:22:22:22:22:22
           name: Port 1
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
@@ -346,7 +346,7 @@ TEST(encoder, featuresreplyv1ports) {
             max_speed: 0xAAAAAAAA
           properties:
         - port_no: 0xBBBB
-          hw_addr: CC-CC-CC-CC-CC-CC
+          hw_addr: CC:CC:CC:CC:CC:CC
           name: Port 2
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
@@ -557,9 +557,9 @@ TEST(encoder, ofmp_flowreply2_v4) {
            byte_count:   0xAAAAAAAAAAAAAAAA
            match:
              - field: ETH_SRC
-               value: 10-20-30-40-50-60
+               value: 10:20:30:40:50:60
              - field: ETH_DST
-               value: aa-bb-cc-dd-ee-ff
+               value: aa:bb:cc:dd:ee:ff
            instructions:
              - instruction: GOTO_TABLE
                table_id: 1
@@ -693,9 +693,9 @@ TEST(encoder, ofmp_flowreply2_v1) {
            byte_count:   0xAAAAAAAAAAAAAAAA
            match:
              - field: ETH_SRC
-               value: 10-20-30-40-50-60
+               value: 10:20:30:40:50:60
              - field: ETH_DST
-               value: aa-bb-cc-dd-ee-ff
+               value: aa:bb:cc:dd:ee:ff
            instructions:
              - instruction: GOTO_TABLE
                table_id: 1
@@ -2893,7 +2893,7 @@ TEST(encoder, ofmp_portdesc_replyv1) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2906,7 +2906,7 @@ TEST(encoder, ofmp_portdesc_replyv1) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2938,7 +2938,7 @@ TEST(encoder, ofmp_portdesc_replyv2) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2951,7 +2951,7 @@ TEST(encoder, ofmp_portdesc_replyv2) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2984,7 +2984,7 @@ TEST(encoder, ofmp_portdesc_replyv4) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2997,7 +2997,7 @@ TEST(encoder, ofmp_portdesc_replyv4) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -3030,7 +3030,7 @@ TEST(encoder, ofmp_portdesc_replyv5) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -3043,7 +3043,7 @@ TEST(encoder, ofmp_portdesc_replyv5) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]

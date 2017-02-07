@@ -12,10 +12,10 @@ TEST(macaddress, valid) {
   EXPECT_TRUE(enet.valid());
   EXPECT_EQ("01:02:03:04:05:06", enet.toString());
 
-  MacAddress enet2{"01-02-03-04-05-06-07"};  // okay
+  MacAddress enet2{"01:02:03:04:05:06:07"};
 
-  EXPECT_TRUE(enet2.valid());
-  EXPECT_EQ("01:02:03:04:05:06", enet2.toString());
+  EXPECT_FALSE(enet2.valid());
+  EXPECT_EQ("00:00:00:00:00:00", enet2.toString());
 }
 
 TEST(macaddress, invalid) {
@@ -23,6 +23,8 @@ TEST(macaddress, invalid) {
 
   EXPECT_FALSE(enet.valid());
   EXPECT_EQ("00:00:00:00:00:00", enet.toString());
+
+  EXPECT_FALSE(enet.parse(""));
 }
 
 TEST(macaddress, invalid2) {
@@ -81,6 +83,14 @@ TEST(macaddress, integer) {
   EXPECT_FALSE(a.parse("01"));
   EXPECT_FALSE(a.parse("1"));
 
-  // FIXME(bfish): To be made invalid.
   EXPECT_TRUE(a.parse("123456781234"));
+  EXPECT_EQ("12:34:56:78:12:34", a.toString());
+
+  EXPECT_TRUE(a.parse("0000ffaabbcc"));
+  EXPECT_EQ("00:00:ff:aa:bb:cc", a.toString());
+
+  EXPECT_FALSE(a.parse("0000ffaabbc"));
+  EXPECT_FALSE(a.parse("0000ffaabbccd"));
+  EXPECT_FALSE(a.parse(" 12345678123"));
+  EXPECT_FALSE(a.parse("12345678123 "));
 }

@@ -18,7 +18,7 @@ class DatapathID {
   DatapathID() : dpid_{} {}
   explicit DatapathID(const ArrayType dpid) { dpid_ = dpid; }
   explicit DatapathID(UInt16 implementerDefined, MacAddress macAddress);
-  explicit DatapathID(const std::string &dpid);
+  explicit DatapathID(llvm::StringRef dpid);
 
   bool empty() const { return toUInt64() == 0; }
   UInt16 implementerDefined() const;
