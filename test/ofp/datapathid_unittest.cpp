@@ -31,9 +31,9 @@ TEST(datapathid, test) {
   EXPECT_HEX("ffff ff ff ff ff ff ff", &d, sizeof(d));
   EXPECT_EQ("ff:ff:ff:ff:ff:ff:ff:ff", d.toString());
 
-  // Parsing the empty string should yield an empty datapath.
+  // Parsing the empty string should fail.
   DatapathID e;
-  EXPECT_TRUE(e.parse(""));
+  EXPECT_FALSE(e.parse(""));
   EXPECT_EQ("00:00:00:00:00:00:00:00", e.toString());
   EXPECT_TRUE(e.empty());
 
@@ -91,8 +91,11 @@ TEST(datapathid, stream) {
 TEST(datapathid, integer) {
   DatapathID a;
 
-  EXPECT_TRUE(a.parse("0x201"));
-  EXPECT_EQ("00:00:00:00:00:00:02:01", a.toString());
+  EXPECT_TRUE(a.parse("0x20F"));
+  EXPECT_EQ("00:00:00:00:00:00:02:0f", a.toString());
+
+  EXPECT_FALSE(a.parse("0x20f "));
+  EXPECT_FALSE(a.parse(" 0x20f"));
 
   EXPECT_FALSE(a.parse("01"));
   EXPECT_FALSE(a.parse("1"));

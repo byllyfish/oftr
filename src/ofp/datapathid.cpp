@@ -28,14 +28,10 @@ MacAddress DatapathID::macAddress() const {
 }
 
 bool DatapathID::parse(llvm::StringRef s) {
-  if (s.empty()) {
-    clear();
-    return true;
-  }
-
-  if (s.startswith("0x")) {
+  // Check if string is a hexadecimal number: "0xHH".
+  if (s.consume_front("0x")) {
     UInt64 n;
-    if (s.getAsInteger<UInt64>(0, n))
+    if (s.getAsInteger<UInt64>(16, n))
       return false;
     Big64 val = n;
     std::memcpy(&dpid_, &val, sizeof(dpid_));
