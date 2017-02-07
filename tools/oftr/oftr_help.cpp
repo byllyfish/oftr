@@ -38,6 +38,10 @@
 #include "ofp/yaml/ytablemod.h"
 #include "ofp/yaml/ytablestatus.h"
 
+inline std::ostream &operator<<(std::ostream &os, llvm::StringRef s) {
+  return os.write(s.data(), ofp::Signed_cast(s.size()));
+}
+
 using namespace ofpx;
 
 // Declare separate constructor/destructor to compile `schemas_`.

@@ -3,7 +3,14 @@
 
 #include "ofp/yaml/yschema.h"
 #include <sstream>
-#include "ofp/log.h"
+
+namespace llvm {
+
+inline std::ostream &operator<<(std::ostream &os, StringRef s) {
+  return os.write(s.data(), ofp::Signed_cast(s.size()));
+}
+
+}  // namespace llvm
 
 using namespace ofp::yaml;
 
@@ -251,7 +258,6 @@ static std::string unsignedTypeEnum(size_t size) {
 /// Return true if s begins with a capital letter, but is _not_ all caps.
 /// Ignores underscore and hyphen.
 static bool isTypeName(llvm::StringRef s) {
-  log_debug("isTypeName: ", s);
   if (s.empty() || !std::isalpha(s[0]) || !std::isupper(s[0]))
     return false;
 

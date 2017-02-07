@@ -42,10 +42,6 @@ class Channel : public Writable {
   virtual void setStartingXid(UInt32 xid) = 0;
 };
 
-inline std::ostream &operator<<(std::ostream &os, Channel *channel) {
-  return os << "[Channel to=" << channel->remoteEndpoint() << ']';
-}
-
 }  // namespace ofp
 
 #endif  // OFP_CHANNEL_H_

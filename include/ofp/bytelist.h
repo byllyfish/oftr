@@ -125,11 +125,6 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
             << " data=" << RawDataToHex(value.data(), value.size()) << "]";
 }
 
-inline std::ostream &operator<<(std::ostream &os, const ByteList &value) {
-  return os << "[ByteList size=" << value.size()
-            << " data=" << RawDataToHex(value.data(), value.size()) << "]";
-}
-
 }  // namespace ofp
 
 #endif  // OFP_BYTELIST_H_

@@ -23,7 +23,7 @@ class DatapathID {
   bool empty() const { return toUInt64() == 0; }
   UInt16 implementerDefined() const;
   MacAddress macAddress() const;
-  std::string toString() const { return detail::toString(*this); }
+  std::string toString() const { return detail::ToString(*this); }
   const ArrayType &toArray() const { return dpid_; }
 
   bool parse(llvm::StringRef s);
@@ -50,10 +50,6 @@ static_assert(alignof(DatapathID) == 8, "Unexpected alignment.");
 static_assert(IsStandardLayout<DatapathID>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<DatapathID>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const DatapathID &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

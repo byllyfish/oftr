@@ -5,6 +5,11 @@
 #include <iostream>
 #include "ofp/yaml/decoder.h"
 
+inline std::ostream &operator<<(std::ostream &os, llvm::StringRef s) {
+  return os.write(s.data(), ofp::Signed_cast(s.size()));
+}
+
+
 using namespace testagent;
 
 void TestAgent::onMessage(const Message *message) {

@@ -6,16 +6,6 @@
 
 #include "ofp/logger.h"
 
-namespace llvm {
-
-// Allow llvm::StringRef to write to a std::ostream. Needs to be in llvm
-// namespace for ADL to work.
-inline std::ostream &operator<<(std::ostream &os, const StringRef &s) {
-  return os.write(s.data(), ofp::Signed_cast(s.size()));
-}
-
-}  // namespace llvm
-
 namespace ofp {
 namespace log {
 namespace detail {

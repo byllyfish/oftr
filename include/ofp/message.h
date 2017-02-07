@@ -105,10 +105,6 @@ class Message {
     return os << msg.buf_;
   }
 
-  friend std::ostream &operator<<(std::ostream &os, const Message &msg) {
-    return os << msg.buf_;
-  }
-
   friend class Normalize;
 };
 

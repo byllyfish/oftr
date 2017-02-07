@@ -61,10 +61,6 @@ class Timestamp {
 
 OFP_END_IGNORE_PADDING
 
-inline std::ostream &operator<<(std::ostream &os, const Timestamp &value) {
-  return os << value.toString();
-}
-
 }  // namespace ofp
 
 #endif  // OFP_TIMESTAMP_H_

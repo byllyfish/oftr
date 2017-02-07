@@ -11,7 +11,6 @@
 #include <cstdlib>                     // for std::malloc, etc.
 #include <cstring>                     // for std::strlen, std::memcpy, etc.
 #include <memory>                      // for std::unique_ptr<T>
-#include <ostream>                     // for std::ostream (used for now) NOLINT
 #include <string>                      // for std::string
 #include <system_error>                // for std::error_code
 #include <type_traits>                 // for std::make_unsigned<T>, etc.
@@ -345,7 +344,7 @@ namespace detail {
 // Template function that can be used to implement `toString()` function in 
 // types that can output to a raw_ostream.
 template <class Type>
-std::string toString(const Type &value) {
+std::string ToString(const Type &value) {
   std::string result;
   llvm::raw_string_ostream oss{result};
   oss << value;
