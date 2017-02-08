@@ -157,7 +157,7 @@ void MatchPacketBuilder::buildLldp(ByteList *msg) const {
 
 void MatchPacketBuilder::buildIPv4(ByteList *msg, const ByteRange &data) const {
     buildEthernet(msg);
-    
+
     pkt::IPv4Hdr ip;
     ip->ver = 0x45;
     ip->tos = 0;

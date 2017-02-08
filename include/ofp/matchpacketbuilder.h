@@ -15,7 +15,7 @@ OFP_BEGIN_IGNORE_PADDING
 
 class MatchPacketBuilder {
  public:
-  MatchPacketBuilder(const OXMRange &range);
+  explicit MatchPacketBuilder(const OXMRange &range);
 
   void build(ByteList *msg, const ByteRange &data) const;
 
