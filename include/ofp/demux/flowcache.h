@@ -107,8 +107,7 @@ class FlowCache {
 
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
-  FlowCacheEntry *findEntry(const IPv6Endpoint &src,
-                                    const IPv6Endpoint &dst);
+  FlowCacheEntry *findEntry(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
   // Call a function to process remaining data in the cache.
   void finish(const FlowCallback &callback, size_t maxMissingBytes = 0);

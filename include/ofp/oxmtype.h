@@ -118,8 +118,9 @@ struct OXMTypeInfo {
 OFP_END_IGNORE_PADDING
 
 #if !defined(LIBOFP_LOGGING_DISABLED)
-  // Only used for logging. Disable when building oxm helpers.
-inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const OXMType &value) {
+// Only used for logging. Disable when building oxm helpers.
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const OXMType &value) {
   auto info = value.lookupInfo();
   if (info) {
     return os << info->name;

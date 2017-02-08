@@ -59,7 +59,7 @@ TEST(oxmregister, stream) {
 
   OXMRegister reg;
   EXPECT_TRUE(reg.parse("ETH_DST[1:17]"));
-  
+
   os << reg;
   EXPECT_EQ("ETH_DST[1:17]", os.str());
 }

@@ -247,6 +247,6 @@ TEST(ipv6address, v4mapped_v6format) {
   llvm::raw_string_ostream rss{buf};
   rss << addr << ',';
   addr.outputV6(rss);
-  EXPECT_EQ("192.168.0.1,::ffff:192.168.0.1",rss.str());
+  EXPECT_EQ("192.168.0.1,::ffff:192.168.0.1", rss.str());
   EXPECT_EQ("192.168.0.1", addr.toString());
 }

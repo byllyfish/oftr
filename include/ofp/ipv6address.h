@@ -46,7 +46,7 @@ class IPv6Address {
   }
 
   std::string toString() const { return detail::ToString(*this); }
-  
+
   void outputV6(llvm::raw_ostream &os) const;
 
   const ArrayType &toArray() const { return addr_; }

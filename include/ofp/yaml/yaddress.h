@@ -59,9 +59,9 @@ struct ScalarTraits<ofp::IPv6Address> {
 
   // IPv6Address contains a ':'. If first char is in [1-9] (but not zero),
   // it may be parsed by a YAML 1.1 as a sexagesimal integer.
-  // 
+  //
   // e.g. YAML 1.1:  2001:0:0:0:0:59:9:59 ==> 5601519360212999
-  // 
+  //
   // Always quote the IPv6Address.
   static bool mustQuote(StringRef) { return true; }
 };
@@ -87,9 +87,9 @@ struct ScalarTraits<ofp::MacAddress> {
 
   // MacAddress contains a ':'. If first char is in [1-9] (but not zero), it
   // may be parsed by YAML 1.1 as a sexagesimal integer.
-  // 
+  //
   // e.g. 33:33:00:00:00:00 ==> 26088480000
-  // 
+  //
   // Always quote the MacAddress.
   static bool mustQuote(StringRef) { return true; }
 };

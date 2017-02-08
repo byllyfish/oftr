@@ -14,8 +14,8 @@ const double kTwoMinuteTimeout = 120.0;
 
 static std::string tcpFlagToString(UInt8 flags);
 
-FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
-                                   const IPv6Endpoint &dst, bool &srcIsX) {
+FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src, const IPv6Endpoint &dst,
+                           bool &srcIsX) {
   if (src <= dst) {
     x = src;
     y = dst;
@@ -121,7 +121,7 @@ FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
 }
 
 FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
-                                             const IPv6Endpoint &dst) {
+                                     const IPv6Endpoint &dst) {
   bool isX;
   FlowCacheKey key{src, dst, isX};
 
@@ -133,8 +133,7 @@ FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
   return nullptr;
 }
 
-void FlowCache::finish(const FlowCallback &callback,
-                       size_t maxMissingBytes) {
+void FlowCache::finish(const FlowCallback &callback, size_t maxMissingBytes) {
   for (auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;

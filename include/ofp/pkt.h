@@ -5,11 +5,11 @@
 #define OFP_PKT_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/byterange.h"
 #include "ofp/constants.h"
 #include "ofp/ipv6address.h"
 #include "ofp/log.h"
 #include "ofp/macaddress.h"
-#include "ofp/byterange.h"
 
 namespace ofp {
 namespace pkt {

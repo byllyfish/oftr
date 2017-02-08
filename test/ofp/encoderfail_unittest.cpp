@@ -539,7 +539,8 @@ TEST(encoderfail, ipv4_mapped) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:11:30: error: Invalid IPv6 address.\n            value:           10.0.0.1\n                             ^~~~~~~~\n",
+      "YAML:11:30: error: Invalid IPv6 address.\n            value:           "
+      "10.0.0.1\n                             ^~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());

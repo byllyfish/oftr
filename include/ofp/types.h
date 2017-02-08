@@ -253,9 +253,9 @@ char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
                                      char (&buf)[Length * 3]);
 
 /// Convert a hexadecimal string with each hex-pair delimited by ':'.
-/// 
+///
 /// There must be exactly 2 hex digits between each ':'.
-/// 
+///
 /// \param  s string containing 'hh:hh:hh:...:hh'
 /// \param  data output buffer
 /// \param  length size of output buffer
@@ -341,7 +341,7 @@ inline const T *Interpret_cast(const void *ptr) {
 
 namespace detail {
 
-// Template function that can be used to implement `toString()` function in 
+// Template function that can be used to implement `toString()` function in
 // types that can output to a raw_ostream.
 template <class Type>
 std::string ToString(const Type &value) {

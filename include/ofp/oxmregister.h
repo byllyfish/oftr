@@ -51,7 +51,8 @@ class OXMRegister {
 
   friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
                                        const OXMRegister &value) {
-    return os << value.type() << '[' << value.offset() << ':' << value.end() << ']';
+    return os << value.type() << '[' << value.offset() << ':' << value.end()
+              << ']';
   }
 };
 

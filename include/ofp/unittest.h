@@ -17,11 +17,11 @@ namespace ofp {
 
 // GoogleTest printer uses an ostream, but we support llvm::raw_ostream.
 inline void PrintTo(const ByteRange &value, std::ostream *os) {
-    *os << detail::ToString(value);
+  *os << detail::ToString(value);
 }
 
 inline void PrintTo(const ByteList &value, std::ostream *os) {
-    *os << detail::ToString(value);
+  *os << detail::ToString(value);
 }
 
 }  // namespace ofp

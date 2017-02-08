@@ -107,7 +107,6 @@ void IPv6Address::outputV6(llvm::raw_ostream &os) const {
   }
 }
 
-
 namespace ofp {
 
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv6Address &value) {

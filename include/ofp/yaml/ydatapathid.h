@@ -32,9 +32,9 @@ struct ScalarTraits<ofp::DatapathID> {
 
   // DatapathID contains a ':'. If first char is in [1-9] (but not zero), it
   // may be parsed by YAML 1.1 as a sexagesimal integer.
-  // 
+  //
   // e.g. 10:00:00:00:00:00:00:01 ==> 27993600000001
-  // 
+  //
   // Always quote the DatapathID.
   static bool mustQuote(StringRef) { return true; }
 };
