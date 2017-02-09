@@ -310,6 +310,9 @@ Arguments will print the desired schema and all of its dependencies.
 *--schema-all*::
     List complete schema.
 
+*--schema-lexicon*::
+    List schema lexicon.
+    
 *--schema-names*::
     List all schema names.
 

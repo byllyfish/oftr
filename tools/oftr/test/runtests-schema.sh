@@ -15,5 +15,11 @@ $LIBOFP_MEMCHECK $LIBOFP help -schema-all > schema-all.yml
 echo "Compare schema-all.yml to $CURRENT_SOURCE_DIR/schema-all.yml"
 diff "$CURRENT_TEST_DIR/schema-all.yml" "$CURRENT_SOURCE_DIR/schema-all.yml"
 
+echo "Generate schema-lexicon"
+$LIBOFP_MEMCHECK $LIBOFP help -schema-lexicon > schema-lexicon.txt
+
+echo "Compare schema-lexicon.txt to $CURRENT_SOURCE_DIR/schema-lexicon.txt"
+diff "$CURRENT_TEST_DIR/schema-lexicon.txt" "$CURRENT_SOURCE_DIR/schema-lexicon.txt"
+
 echo "Done."
 exit 0

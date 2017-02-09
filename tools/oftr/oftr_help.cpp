@@ -4,6 +4,7 @@
 #include "./oftr_help.h"
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include "ofp/oxmtype.h"
 #include "ofp/rpc/rpcevents.h"
 #include "ofp/yaml/ybundleaddmessage.h"
@@ -258,6 +259,8 @@ int Help::run(int argc, const char *const *argv) {
     dumpSchemaAll();
   } else if (schemaNames_) {
     dumpSchemaNames();
+  } else if (schemaLexicon_) {
+    dumpSchemaLexicon();
   } else if (!args_.empty()) {
     for (auto &arg : args_) {
       printSchema(arg);
@@ -496,6 +499,35 @@ void Help::dumpSchemaAll() {
   if (missingDependentSchemas) {
     llvm::errs() << "Some dependent schemas are missing.\n";
     ::exit(static_cast<int>(ExitStatus::MissingDependentSchemas));
+  }
+}
+
+
+void Help::dumpSchemaLexicon() {
+  std::set<std::string> lexicon;
+
+  for (auto &schema : schemas_) {
+    std::stringstream ss;
+    schema->print(ss, false);
+
+    std::string line;
+    while (std::getline(ss, line)) {
+      llvm::StringRef s{line};
+      s = s.trim();
+      if (s.empty())
+        continue;
+      char ch = s.front();
+      if ((ch == '_') || (ch >= 'a' && ch <= 'z')) {
+        auto p = s.split(':');
+        if (!p.second.empty()) {
+          lexicon.insert(p.first.str());
+        }
+      }
+    }
+  }
+
+  for (auto word : lexicon) {
+    std::cout << word << '\n';
   }
 }
 

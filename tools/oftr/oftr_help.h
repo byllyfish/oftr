@@ -39,6 +39,7 @@ using ofp::yaml::Schema;
 //   --mixed               List supported mixed types.
 //   --rpc (-r)            List supported RPC commands.
 //   --schema-all          List complete schema.
+//   --schema-lexicon      List schema lexicon.
 //   --schema-names        List all schema names.
 
 class Help : public Subprogram {
@@ -73,6 +74,7 @@ class Help : public Subprogram {
 
   void dumpSchemaNames();
   void dumpSchemaAll();
+  void dumpSchemaLexicon();
 
   static const char *translateFieldType(const char *type);
 
@@ -95,6 +97,7 @@ class Help : public Subprogram {
   cl::opt<bool> schemaAll_{"schema-all", cl::desc("List complete schema.")};
   cl::opt<bool> brief_{"brief",
                        cl::desc("Display abbreviated form of message schema")};
+  cl::opt<bool> schemaLexicon_{"schema-lexicon", cl::desc("List schema lexicon.")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
 
   // --- Argument Aliases ---
