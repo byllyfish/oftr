@@ -1716,7 +1716,7 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
   instructions:    
     - instruction:     METER
-      meter:           0x00000001
+      meter_id:        0x00000001
     - instruction:     WRITE_ACTIONS
       actions:         
         - action:          OUTPUT
@@ -4377,7 +4377,7 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
   instructions:    
     - instruction:     METER
-      meter:           0x00000001
+      meter_id:        0x00000001
     - instruction:     WRITE_ACTIONS
       actions:         
         - action:          OUTPUT

@@ -1427,7 +1427,7 @@ Instruction/ClearActions:
   
 Instruction/Meter: 
   instruction: METER
-  meter: UInt32
+  meter_id: MeterNumber
   
 Instruction/Experimenter: 
   instruction: EXPERIMENTER

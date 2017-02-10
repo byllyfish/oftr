@@ -94,7 +94,6 @@ message
 metadata
 metadata_match
 metadata_write
-meter
 meter_id
 method
 mfr_desc

@@ -47353,7 +47353,7 @@ msg:
       experimenter:    0x12345678
       data:            ''
     - instruction:     METER
-      meter:           0x12345678
+      meter_id:        0x12345678
 ...
 ---
 type:            FLOW_MOD
@@ -60698,7 +60698,7 @@ msg:
       experimenter:    0x12345678
       data:            ''
     - instruction:     METER
-      meter:           0x12345678
+      meter_id:        0x12345678
 ...
 ---
 type:            FLOW_MOD

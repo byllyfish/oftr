@@ -8,6 +8,7 @@
 #include "ofp/instructionrange.h"
 #include "ofp/yaml/yactions.h"
 #include "ofp/yaml/ybyteorder.h"
+#include "ofp/yaml/ymeternumber.h"
 
 namespace ofp {
 namespace detail {
@@ -47,7 +48,7 @@ instruction: CLEAR_ACTIONS
 
 const char *const kMeterSchema = R"""({Instruction/Meter}
 instruction: METER
-meter: UInt32
+meter_id: MeterNumber
 )""";
 
 const char *const kExperimenterInstructionSchema =
@@ -102,8 +103,8 @@ struct MappingTraits<ofp::InstructionIterator::Element> {
       }
       case IT_METER::type(): {
         IT_METER *instr = RemoveConst_cast(item.instruction<IT_METER>());
-        Hex32 meter = instr->meter();
-        io.mapRequired("meter", meter);
+        MeterNumber meter = instr->meter();
+        io.mapRequired("meter_id", meter);
         break;
       }
       case IT_EXPERIMENTER::type(): {
@@ -165,8 +166,8 @@ struct MappingTraits<ofp::detail::InstructionInserter> {
         break;
       }
       case IT_METER::type(): {
-        UInt32 meter;
-        io.mapRequired("meter", meter);
+        MeterNumber meter;
+        io.mapRequired("meter_id", meter);
         list.add(IT_METER{meter});
         break;
       }
