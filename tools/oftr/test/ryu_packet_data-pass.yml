@@ -7,7 +7,7 @@ msg:
   in_port:         CONTROLLER
   actions:         
     - action:          OUTPUT
-      port:            ALL
+      port_no:         ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
   _pkt_decode:     
@@ -59,7 +59,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          OUTPUT
-          port:            0x00000006
+          port_no:         0x00000006
           max_len:         NO_BUFFER
 ...
 ---
@@ -161,7 +161,7 @@ msg:
   in_port:         CONTROLLER
   actions:         
     - action:          OUTPUT
-      port:            ALL
+      port_no:         ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
   _pkt_decode:     
@@ -243,7 +243,7 @@ msg:
       - instruction:     APPLY_ACTIONS
         actions:         
           - action:          OUTPUT
-            port:            NORMAL
+            port_no:         NORMAL
             max_len:         0x0000
   - table_id:        0x00
     duration:        316220.511582000
@@ -276,7 +276,7 @@ msg:
       - instruction:     WRITE_ACTIONS
         actions:         
           - action:          OUTPUT
-            port:            CONTROLLER
+            port_no:         CONTROLLER
             max_len:         NO_BUFFER
 ...
 ---
@@ -358,7 +358,7 @@ msg:
           field:           VLAN_VID
           value:           0x0102
         - action:          OUTPUT
-          port:            0x00000006
+          port_no:         0x00000006
           max_len:         NO_BUFFER
     - instruction:     APPLY_ACTIONS
       actions:         
@@ -388,7 +388,7 @@ msg:
       watch_group:     0x00000001
       actions:         
         - action:          OUTPUT
-          port:            0x00000002
+          port_no:         0x00000002
           max_len:         NO_BUFFER
 ...
 ---
@@ -567,7 +567,7 @@ msg:
         watch_group:     0x00000001
         actions:         
           - action:          OUTPUT
-            port:            0x00000002
+            port_no:         0x00000002
             max_len:         NO_BUFFER
 ...
 ---
@@ -575,22 +575,22 @@ type:            QUEUE_GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x03
 msg:             
-  port:            ANY
+  port_no:         ANY
 ...
 ---
 type:            QUEUE_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x03
 msg:             
-  port:            ANY
+  port_no:         ANY
   queues:          
     - queue_id:        0x00000063
-      port:            0x0000004D
+      port_no:         0x0000004D
       min_rate:        0x000A
       max_rate:        0x0384
       properties:      
     - queue_id:        0x00000058
-      port:            0x0000004D
+      port_no:         0x0000004D
       min_rate:        0x0064
       max_rate:        0x00C8
       properties:      
@@ -990,7 +990,7 @@ msg:
   in_port:         CONTROLLER
   actions:         
     - action:          OUTPUT
-      port:            ALL
+      port_no:         ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
   _pkt_decode:     
@@ -1072,7 +1072,7 @@ msg:
       - instruction:     APPLY_ACTIONS
         actions:         
           - action:          OUTPUT
-            port:            NORMAL
+            port_no:         NORMAL
             max_len:         0x0000
   - table_id:        0x00
     duration:        316220.511582000
@@ -1131,7 +1131,7 @@ msg:
           - action:          GROUP
             group:           0x00000063
           - action:          OUTPUT
-            port:            0x00000006
+            port_no:         0x00000006
             max_len:         NO_BUFFER
       - instruction:     APPLY_ACTIONS
         actions:         
@@ -1144,7 +1144,7 @@ msg:
       - instruction:     WRITE_ACTIONS
         actions:         
           - action:          OUTPUT
-            port:            CONTROLLER
+            port_no:         CONTROLLER
             max_len:         NO_BUFFER
 ...
 ---
@@ -1249,7 +1249,7 @@ msg:
         - action:          GROUP
           group:           0x00000063
         - action:          OUTPUT
-          port:            0x00000006
+          port_no:         0x00000006
           max_len:         NO_BUFFER
     - instruction:     APPLY_ACTIONS
       actions:         
@@ -1282,7 +1282,7 @@ msg:
       watch_group:     0x00000001
       actions:         
         - action:          OUTPUT
-          port:            0x00000002
+          port_no:         0x00000002
           max_len:         NO_BUFFER
 ...
 ---
@@ -1482,7 +1482,7 @@ msg:
         watch_group:     0x00000001
         actions:         
           - action:          OUTPUT
-            port:            0x00000002
+            port_no:         0x00000002
             max_len:         NO_BUFFER
 ...
 ---
@@ -1490,22 +1490,22 @@ type:            QUEUE_GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x04
 msg:             
-  port:            ANY
+  port_no:         ANY
 ...
 ---
 type:            QUEUE_GET_CONFIG_REPLY
 xid:             0x00000000
 version:         0x04
 msg:             
-  port:            ANY
+  port_no:         ANY
   queues:          
     - queue_id:        0x00000063
-      port:            0x0000004D
+      port_no:         0x0000004D
       min_rate:        0x000A
       max_rate:        0x0384
       properties:      
     - queue_id:        0x00000058
-      port:            0x0000004D
+      port_no:         0x0000004D
       min_rate:        0x0064
       max_rate:        0x00C8
       properties:      
@@ -1720,7 +1720,7 @@ msg:
     - instruction:     WRITE_ACTIONS
       actions:         
         - action:          OUTPUT
-          port:            0x00000006
+          port_no:         0x00000006
           max_len:         NO_BUFFER
 ...
 ---
@@ -3790,7 +3790,7 @@ msg:
   in_port:         CONTROLLER
   actions:         
     - action:          OUTPUT
-      port:            ALL
+      port_no:         ALL
       max_len:         NO_BUFFER
   data:            F20BA4D03F70F20BA47DF8EA080045000054F81A0000FF01AF8B0A0000010A00000208000208F760000031D6020000000000AB8D2D3100000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F0000000000000000
   _pkt_decode:     
@@ -3872,7 +3872,7 @@ msg:
       - instruction:     APPLY_ACTIONS
         actions:         
           - action:          OUTPUT
-            port:            NORMAL
+            port_no:         NORMAL
             max_len:         0x0000
   - table_id:        0x00
     duration:        316220.511582000
@@ -3931,7 +3931,7 @@ msg:
           - action:          GROUP
             group:           0x00000063
           - action:          OUTPUT
-            port:            0x00000006
+            port_no:         0x00000006
             max_len:         NO_BUFFER
       - instruction:     APPLY_ACTIONS
         actions:         
@@ -3944,7 +3944,7 @@ msg:
       - instruction:     WRITE_ACTIONS
         actions:         
           - action:          OUTPUT
-            port:            CONTROLLER
+            port_no:         CONTROLLER
             max_len:         NO_BUFFER
 ...
 ---
@@ -4051,7 +4051,7 @@ msg:
         - action:          GROUP
           group:           0x00000063
         - action:          OUTPUT
-          port:            0x00000006
+          port_no:         0x00000006
           max_len:         NO_BUFFER
     - instruction:     APPLY_ACTIONS
       actions:         
@@ -4084,7 +4084,7 @@ msg:
       watch_group:     0x00000001
       actions:         
         - action:          OUTPUT
-          port:            0x00000002
+          port_no:         0x00000002
           max_len:         NO_BUFFER
 ...
 ---
@@ -4202,7 +4202,7 @@ msg:
         watch_group:     0x00000001
         actions:         
           - action:          OUTPUT
-            port:            0x00000002
+            port_no:         0x00000002
             max_len:         NO_BUFFER
 ...
 ---
@@ -4381,7 +4381,7 @@ msg:
     - instruction:     WRITE_ACTIONS
       actions:         
         - action:          OUTPUT
-          port:            0x00000006
+          port_no:         0x00000006
           max_len:         NO_BUFFER
 ...
 ---

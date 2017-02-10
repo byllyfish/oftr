@@ -115,6 +115,7 @@ static const char *const kActionSchemas[] = {
     llvm::yaml::kGroupSchema,
     llvm::yaml::kSetNwTTLSchema,
     llvm::yaml::kPushPBBSchema,
+    llvm::yaml::kEnqueueSchema,
     llvm::yaml::kSetFieldSchema,
     llvm::yaml::kExperimenterActionSchema,
     llvm::yaml::kNiciraRegMoveActionSchema,

@@ -75,7 +75,7 @@ action: POP_PBB
 
 const char *const kOutputSchema = R"""({Action/OUTPUT}
 action: OUTPUT
-port: PortNumber
+port_no: PortNumber
 max_len: ControllerMaxLen
 )""";
 
@@ -117,6 +117,12 @@ ttl: UInt8
 const char *const kPushPBBSchema = R"""({Action/PUSH_PBB}
 action: PUSH_PBB
 ethertype: UInt16
+)""";
+
+const char *const kEnqueueSchema = R"""({Action/ENQUEUE}
+action: ENQUEUE
+port_no: PortNumber
+queue_id: QueueNumber
 )""";
 
 const char *const kSetFieldSchema = R"""({Action/SET_FIELD}
@@ -164,7 +170,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         const AT_OUTPUT *action = item.action<AT_OUTPUT>();
         PortNumber port = action->port();
         ControllerMaxLen maxlen = action->maxlen();
-        io.mapRequired("port", port);
+        io.mapRequired("port_no", port);
         io.mapRequired("max_len", maxlen);
         break;
       }
@@ -221,7 +227,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
             item.action<deprecated::AT_ENQUEUE_V1>();
         PortNumber port = action->port();
         Hex32 queueId = action->queueId();
-        io.mapRequired("port", port);
+        io.mapRequired("port_no", port);
         io.mapRequired("queue_id", queueId);
         break;
       }
@@ -306,7 +312,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
     if (fullType.type() == deprecated::AT_ENQUEUE_V1::type()) {
       PortNumber port;
       Hex32 queueId;
-      io.mapRequired("port", port);
+      io.mapRequired("port_no", port);
       io.mapRequired("queue_id", queueId);
       deprecated::AT_ENQUEUE_V1 action{port, queueId};
       list.add(action);
@@ -347,7 +353,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
       case OFPAT_OUTPUT: {
         PortNumber port;
         ControllerMaxLen maxlen;
-        io.mapRequired("port", port);
+        io.mapRequired("port_no", port);
         io.mapRequired("max_len", maxlen);
         AT_OUTPUT action{port, maxlen};
         list.add(action);

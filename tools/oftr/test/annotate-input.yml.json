@@ -201,7 +201,7 @@
         {
           "action": "OUTPUT", 
           "max_len": "NO_BUFFER", 
-          "port": "CONTROLLER"
+          "port_no": "CONTROLLER"
         }
       ], 
       "buffer_id": "NO_BUFFER"
@@ -238,7 +238,7 @@
             {
               "action": "OUTPUT", 
               "max_len": "NO_BUFFER", 
-              "port": "CONTROLLER"
+              "port_no": "CONTROLLER"
             }
           ]
         }
@@ -258,7 +258,7 @@
             {
               "action": "OUTPUT", 
               "max_len": "NO_BUFFER", 
-              "port": "CONTROLLER"
+              "port_no": "CONTROLLER"
             }
           ], 
           "watch_port": "CONTROLLER"
@@ -394,7 +394,7 @@
               {
                 "action": "OUTPUT", 
                 "max_len": "NO_BUFFER", 
-                "port": "CONTROLLER"
+                "port_no": "CONTROLLER"
               }
             ]
           }
@@ -614,7 +614,7 @@
               {
                 "action": "OUTPUT", 
                 "max_len": "NO_BUFFER", 
-                "port": "CONTROLLER"
+                "port_no": "CONTROLLER"
               }
             ], 
             "watch_port": "CONTROLLER"
@@ -1015,7 +1015,7 @@
               {
                 "action": "OUTPUT", 
                 "max_len": "NO_BUFFER", 
-                "port": "CONTROLLER"
+                "port_no": "CONTROLLER"
               }
             ]
           }
@@ -1044,7 +1044,7 @@
   }, 
   {
     "msg": {
-      "port": "CONTROLLER"
+      "port_no": "CONTROLLER"
     }, 
     "version": 4, 
     "type": "QUEUE_GET_CONFIG_REQUEST"
@@ -1054,13 +1054,13 @@
       "queues": [
         {
           "min_rate": 65535, 
-          "queue_id": "ALL", 
           "max_rate": 65535, 
           "properties": [], 
-          "port": "CONTROLLER"
+          "port_no": "CONTROLLER", 
+          "queue_id": "ALL"
         }
       ], 
-      "port": "CONTROLLER"
+      "port_no": "CONTROLLER"
     }, 
     "version": 4, 
     "type": "QUEUE_GET_CONFIG_REPLY"

@@ -1170,7 +1170,7 @@ Message/QueueGetConfigRequest:
   _file: !optout String
   type: QUEUE_GET_CONFIG_REQUEST
   msg:
-    port: PortNumber
+    port_no: PortNumber
   
 Message/QueueGetConfigReply: 
   version: !opt UInt8
@@ -1185,7 +1185,7 @@ Message/QueueGetConfigReply:
   _file: !optout String
   type: QUEUE_GET_CONFIG_REPLY
   msg:
-    port: PortNumber
+    port_no: PortNumber
     queues: [Queue]
   
 Message/RoleRequest: 
@@ -1454,7 +1454,7 @@ Action/POP_PBB:
   
 Action/OUTPUT: 
   action: OUTPUT
-  port: PortNumber
+  port_no: PortNumber
   max_len: ControllerMaxLen
   
 Action/SET_MPLS_TTL: 
@@ -1488,6 +1488,11 @@ Action/SET_NW_TTL:
 Action/PUSH_PBB: 
   action: PUSH_PBB
   ethertype: UInt16
+  
+Action/ENQUEUE: 
+  action: ENQUEUE
+  port_no: PortNumber
+  queue_id: QueueNumber
   
 Action/SET_FIELD: 
   action: SET_FIELD
@@ -1559,7 +1564,7 @@ Struct/Port:
   
 Struct/Queue: 
   queue_id: QueueNumber
-  port: PortNumber
+  port_no: PortNumber
   min_rate: UInt16
   max_rate: UInt16
   properties: !opt [ExperimenterProperty]

@@ -597,7 +597,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 1
+                    port_no: 1
                     max_len: 0xFFFF
                   - action: SET_NW_TTL
                     ttl: 64
@@ -639,7 +639,7 @@ TEST(encoder, ofmp_flowreply_v1) {
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 0xEEEEEEEE
+                    port_no: 0xEEEEEEEE
                     max_len: 0xFFFF
     )""";
 
@@ -680,7 +680,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 0xEEEEEEEE
+                    port_no: 0xEEEEEEEE
                     max_len: 0xFFFF
          - table_id: 0x11
            duration: 34.x33
@@ -702,7 +702,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 0xEEEEEEEE
+                    port_no: 0xEEEEEEEE
                     max_len: 0xFFFF
     )""";
 
@@ -1535,7 +1535,7 @@ TEST(encoder, packetoutv1) {
         in_port:         0x44444444
         actions:
           - action: OUTPUT
-            port: 5
+            port_no: 5
             max_len: 20
           - action: SET_FIELD
             field:  IPV4_DST
@@ -1563,7 +1563,7 @@ TEST(encoder, packetoutv4) {
         in_port:         0x44444444
         actions:
           - action: OUTPUT
-            port: 5
+            port_no: 5
             max_len: 20
           - action: SET_FIELD
             field:  IPV4_DST
@@ -1680,7 +1680,7 @@ TEST(encoder, groupmodv4) {
             watch_group: 0x77777777
             actions:
               - action: OUTPUT
-                port: 5
+                port_no: 5
                 max_len: 20
               - action: SET_FIELD
                 field:  IPV4_DST
@@ -1722,7 +1722,7 @@ TEST(encoder, groupmodv2) {
             watch_group: 0x77777777
             actions:
               - action: OUTPUT
-                port: 5
+                port_no: 5
                 max_len: 20
               - action: SET_FIELD
                 field:  IPV4_DST
@@ -1977,7 +1977,7 @@ TEST(encoder, queuegetconfigrequestv4) {
       datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
-        port: 0x22222222
+        port_no: 0x22222222
       )""";
 
   Encoder encoder{input};
@@ -1994,14 +1994,14 @@ TEST(encoder, queuegetconfigreplyv4) {
     datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
-      port: 0x22222222
+      port_no: 0x22222222
       queues:
         - queue_id: 0x33333333
-          port: 0x44444444
+          port_no: 0x44444444
           min_rate: 0x5555
           max_rate: 0x6666
         - queue_id: 0x77777777
-          port: 0x88888888
+          port_no: 0x88888888
           min_rate: 0x9999
           max_rate: 0xAAAA
     )""";
@@ -2025,10 +2025,10 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
     datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
-      port: 0x22222222
+      port_no: 0x22222222
       queues:
         - queue_id: 0x33333333
-          port: 0x44444444
+          port_no: 0x44444444
           min_rate: 0x5555
           max_rate: 0x6666
           properties:
@@ -2037,7 +2037,7 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
             - experimenter: 0xFFFFFFFF
               value: abcdef
         - queue_id: 0x77777777
-          port: 0x88888888
+          port_no: 0x88888888
           min_rate: 0x9999
           max_rate: 0xAAAA
     )""";
@@ -2061,10 +2061,10 @@ TEST(encoder, queuegetconfigreplyv5_experimenter) {
     datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
-      port: 0x22222222
+      port_no: 0x22222222
       queues:
         - queue_id: 0x33333333
-          port: 0x44444444
+          port_no: 0x44444444
           min_rate: 0x5555
           max_rate: 0x6666
           properties:
@@ -2073,7 +2073,7 @@ TEST(encoder, queuegetconfigreplyv5_experimenter) {
             - experimenter: 0xFFFFFFFF
               value: abcdef
         - queue_id: 0x77777777
-          port: 0x88888888
+          port_no: 0x88888888
           min_rate: 0x9999
           max_rate: 0xAAAA
     )""";
@@ -2097,14 +2097,14 @@ TEST(encoder, queuegetconfigreplyv1) {
     datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111110
     msg:
-      port: 0x22222221
+      port_no: 0x22222221
       queues:
         - queue_id: 0x33333331
-          port: 0x44444441
+          port_no: 0x44444441
           min_rate: 0x5551
           max_rate: 0x6661
         - queue_id: 0x77777771
-          port: 0x88888881
+          port_no: 0x88888881
           min_rate: 0x9991
           max_rate: 0xAAA1
     )""";
@@ -2126,14 +2126,14 @@ TEST(encoder, queuegetconfigreplyv2) {
     datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111110
     msg:
-      port: 0x22222221
+      port_no: 0x22222221
       queues:
         - queue_id: 0x33333331
-          port: 0x44444441
+          port_no: 0x44444441
           min_rate: 0x5551
           max_rate: 0x6661
         - queue_id: 0x77777771
-          port: 0x88888881
+          port_no: 0x88888881
           min_rate: 0x9991
           max_rate: 0xAAA1
     )""";
@@ -2818,7 +2818,7 @@ TEST(encoder, requestforwardv5) {
               watch_group: 0x77777777
               actions:
                 - action: OUTPUT
-                  port: 5
+                  port_no: 5
                   max_len: 20
                 - action: SET_FIELD
                   field:  IPV4_DST

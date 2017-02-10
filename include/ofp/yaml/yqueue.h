@@ -20,7 +20,7 @@ namespace yaml {
 
 const char *const kQueueSchema = R"""({Struct/Queue}
 queue_id: QueueNumber
-port: PortNumber
+port_no: PortNumber
 min_rate: UInt16
 max_rate: UInt16
 properties: !opt [ExperimenterProperty]
@@ -32,7 +32,7 @@ struct MappingTraits<ofp::Queue> {
     using namespace ofp;
 
     io.mapRequired("queue_id", msg.queueId_);
-    io.mapRequired("port", msg.port_);
+    io.mapRequired("port_no", msg.port_);
 
     PropertyRange props = msg.properties();
 
@@ -52,7 +52,7 @@ struct MappingTraits<ofp::QueueBuilder> {
     using namespace ofp;
 
     io.mapRequired("queue_id", msg.queue_.queueId_);
-    io.mapRequired("port", msg.queue_.port_);
+    io.mapRequired("port_no", msg.queue_.port_);
 
     UInt16 minRate = 0;
     UInt16 maxRate = 0;

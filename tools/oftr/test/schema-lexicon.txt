@@ -119,7 +119,6 @@ packet_in_master
 packet_in_slave
 params
 peer
-port
 port_no
 port_status_master
 port_status_slave

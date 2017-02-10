@@ -131,7 +131,7 @@ msg:
   in_port: CONTROLLER
   actions:
     - action: OUTPUT
-      port: CONTROLLER
+      port_no: CONTROLLER
       max_len: NO_BUFFER
   data: 'ffffffff'
 ---
@@ -157,7 +157,7 @@ msg:
     - instruction: APPLY_ACTIONS
       actions:
         - action: OUTPUT
-          port: CONTROLLER
+          port_no: CONTROLLER
           max_len: NO_BUFFER
 ---
 version: 0x04
@@ -172,7 +172,7 @@ msg:
       watch_group: ANY
       actions:
         - action: OUTPUT
-          port: CONTROLLER
+          port_no: CONTROLLER
           max_len: NO_BUFFER
 ---
 version: 0x04
@@ -257,7 +257,7 @@ msg:
       - instruction: APPLY_ACTIONS
         actions:
           - action: OUTPUT
-            port: CONTROLLER
+            port_no: CONTROLLER
             max_len: NO_BUFFER
 ---
 version: 0x04
@@ -398,7 +398,7 @@ msg:
         watch_group: ANY
         actions:
           - action: OUTPUT
-            port: CONTROLLER
+            port_no: CONTROLLER
             max_len: NO_BUFFER
 ---
 version: 0x04
@@ -632,7 +632,7 @@ msg:
       - instruction: APPLY_ACTIONS
         actions:
           - action: OUTPUT
-            port: CONTROLLER
+            port_no: CONTROLLER
             max_len: NO_BUFFER
   - event: ABBREV
     xid: 0xffffffff
@@ -648,15 +648,15 @@ msg: {}
 version: 0x04
 type: QUEUE_GET_CONFIG_REQUEST
 msg:
-  port: CONTROLLER
+  port_no: CONTROLLER
 ---
 version: 0x04
 type: QUEUE_GET_CONFIG_REPLY
 msg:
-  port: CONTROLLER
+  port_no: CONTROLLER
   queues:
     - queue_id: ALL
-      port: CONTROLLER
+      port_no: CONTROLLER
       min_rate: 0xffff
       max_rate: 0xffff
       properties: []

@@ -53,7 +53,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            3333FFB499BA02693CBF394786DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FFB499BA87001E8D00000000FE80000000000000B4BC75FFFEB499BA
   _pkt_decode:     
@@ -93,7 +93,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020732060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
   _pkt_decode:     
@@ -119,7 +119,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            LOCAL
+      port_no:         LOCAL
       max_len:         0x0000
   data:            0180C200000E00000000000188CC0207040000000000010403072D32060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE240026E1004F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
   _pkt_decode:     
@@ -145,7 +145,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            3333FF00000200000000000286DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FF00000287007B2300000000FE80000000000000020000FFFE000002
   _pkt_decode:     
@@ -185,7 +185,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            3333FF00000100000000000186DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FF00000187007B2500000000FE80000000000000020000FFFE000001
   _pkt_decode:     
@@ -225,7 +225,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
   _pkt_decode:     
@@ -265,7 +265,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
   _pkt_decode:     
@@ -305,7 +305,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt_decode:     
@@ -345,7 +345,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt_decode:     
@@ -385,7 +385,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0072050000000102000000FF0200000000000000000001FF000002
   _pkt_decode:     
@@ -425,7 +425,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
   _pkt_decode:     
@@ -465,7 +465,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001
   _pkt_decode:     
@@ -505,7 +505,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
   _pkt_decode:     
@@ -545,7 +545,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020731060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C31404F467C30303A30303A30303A30303A30303A30303A30303A30310000
   _pkt_decode:     
@@ -571,7 +571,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
   _pkt_decode:     
@@ -601,7 +601,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            FFFFFFFFFFFF0A0027000000080600010800060400010A0027000000000000000000000000000A000002
   _pkt_decode:     
@@ -631,7 +631,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            FFFFFFFFFFFF0A0027000000080600010800060400010A0027000000000000000000000000000A000002
   _pkt_decode:     
@@ -661,7 +661,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            000000000001000000000002080600010800060400020000000000020A0000020000000000010A000001
   _pkt_decode:     
@@ -710,7 +710,7 @@ msg:
           field:           ETH_DST
           value:           '00:00:00:00:00:01'
         - action:          OUTPUT
-          port:            0x00000001
+          port_no:         0x00000001
           max_len:         NO_BUFFER
 ...
 ---
@@ -747,7 +747,7 @@ msg:
           field:           ETH_DST
           value:           '00:00:00:00:00:02'
         - action:          OUTPUT
-          port:            0x00000002
+          port_no:         0x00000002
           max_len:         NO_BUFFER
 ...
 ---
@@ -797,7 +797,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0072050000000102000000FF0200000000000000000001FF000002
   _pkt_decode:     
@@ -837,7 +837,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0070050000000104000000FF0200000000000000000001FF000002
   _pkt_decode:     
@@ -877,7 +877,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt_decode:     
@@ -917,7 +917,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt_decode:     
@@ -957,7 +957,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00136F0000000104000000FF0200000000000000000001FFB499BA
   _pkt_decode:     
@@ -997,7 +997,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00136F0000000104000000FF0200000000000000000001FFB499BA
   _pkt_decode:     
@@ -1037,7 +1037,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
   _pkt_decode:     
@@ -1077,7 +1077,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
   _pkt_decode:     
@@ -1117,7 +1117,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
   _pkt_decode:     
@@ -1157,7 +1157,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
   _pkt_decode:     
@@ -1205,7 +1205,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0070070000000104000000FF0200000000000000000001FF000001
   _pkt_decode:     
@@ -1245,7 +1245,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            000000000002000000000001080600010800060400020000000000010A0000010000000000020A000002
   _pkt_decode:     
@@ -1275,7 +1275,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt_decode:     
@@ -1315,7 +1315,7 @@ msg:
   in_port:         0x00000000
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt_decode:     
@@ -1355,7 +1355,7 @@ msg:
   in_port:         0x00000002
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
   _pkt_decode:     
@@ -1395,7 +1395,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
   _pkt_decode:     
@@ -1435,7 +1435,7 @@ msg:
   in_port:         0x00000001
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001
   _pkt_decode:     
@@ -1562,7 +1562,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000002
+      port_no:         0x00000002
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020732060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
   _pkt_decode:     
@@ -1588,7 +1588,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            LOCAL
+      port_no:         LOCAL
       max_len:         0x0000
   data:            0180C200000E00000000000188CC0207040000000000010403072D32060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE240026E1004F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A30310000
   _pkt_decode:     
@@ -1614,7 +1614,7 @@ msg:
   in_port:         ANY
   actions:         
     - action:          OUTPUT
-      port:            0x00000001
+      port_no:         0x00000001
       max_len:         0x0000
   data:            0180C200000E00000000000188CC02070400000000000104020731060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C31404F467C30303A30303A30303A30303A30303A30303A30303A30310000
   _pkt_decode:     
