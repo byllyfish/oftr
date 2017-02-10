@@ -17192,7 +17192,7 @@ msg:
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000051.fail
-Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'queue'
+Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'queue_id'
         - action:          0x0015
           ^
 
@@ -19442,7 +19442,7 @@ msg:
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000051.fail
-Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'queue'
+Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'queue_id'
         - action:          0x0015
           ^
 
@@ -22894,7 +22894,7 @@ msg:
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000051.fail
-Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'queue'
+Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'queue_id'
         - action:          0x0015
           ^
 

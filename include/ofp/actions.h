@@ -11,6 +11,7 @@
 #include "ofp/oxmtype.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
+#include "ofp/queuenumber.h"
 #include "ofp/validation.h"
 
 namespace ofp {
@@ -168,13 +169,13 @@ class AT_SET_QUEUE {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_SET_QUEUE, 8); }
 
-  constexpr explicit AT_SET_QUEUE(UInt32 queue) : queue_{queue} {}
+  constexpr explicit AT_SET_QUEUE(QueueNumber queue) : queue_{queue} {}
 
-  UInt32 queue() const { return queue_; }
+  QueueNumber queue() const { return queue_; }
 
  private:
   const ActionType type_ = type();
-  const Big32 queue_;
+  const QueueNumber queue_;
 };
 
 static_assert(sizeof(AT_SET_QUEUE) == 8, "Unexpected size.");

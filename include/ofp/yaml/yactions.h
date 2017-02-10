@@ -12,6 +12,7 @@
 #include "ofp/yaml/ycontrollermaxlen.h"
 #include "ofp/yaml/ymatch.h"
 #include "ofp/yaml/yoxmregister.h"
+#include "ofp/yaml/yqueuenumber.h"
 
 namespace ofp {
 namespace detail {
@@ -101,7 +102,7 @@ ethertype: UInt16
 
 const char *const kSetQueueSchema = R"""({Action/SET_QUEUE}
 action: SET_QUEUE
-queue: UInt32
+queue_id: QueueNumber
 )""";
 
 const char *const kGroupSchema = R"""({Action/GROUP}
@@ -200,8 +201,8 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       }
       case AT_SET_QUEUE::type(): {
         const AT_SET_QUEUE *action = item.action<AT_SET_QUEUE>();
-        Hex32 queue = action->queue();
-        io.mapRequired("queue", queue);
+        QueueNumber queue = action->queue();
+        io.mapRequired("queue_id", queue);
         break;
       }
       case AT_GROUP::type(): {
@@ -389,7 +390,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
       }
       case OFPAT_SET_QUEUE: {
         UInt32 queue;
-        io.mapRequired("queue", queue);
+        io.mapRequired("queue_id", queue);
         AT_SET_QUEUE action{queue};
         list.add(action);
         break;

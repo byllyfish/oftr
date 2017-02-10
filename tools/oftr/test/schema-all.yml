@@ -1475,7 +1475,7 @@ Action/POP_MPLS:
   
 Action/SET_QUEUE: 
   action: SET_QUEUE
-  queue: UInt32
+  queue_id: QueueNumber
   
 Action/GROUP: 
   action: GROUP

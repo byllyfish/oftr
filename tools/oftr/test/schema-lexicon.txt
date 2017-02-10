@@ -128,7 +128,6 @@ priority
 privkey_password
 properties
 property
-queue
 queue_id
 queues
 rate

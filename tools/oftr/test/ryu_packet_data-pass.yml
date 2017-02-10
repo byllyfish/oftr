@@ -1127,7 +1127,7 @@ msg:
           - action:          SET_NW_TTL
             ttl:             0x0A
           - action:          SET_QUEUE
-            queue:           0x00000003
+            queue_id:        0x00000003
           - action:          GROUP
             group:           0x00000063
           - action:          OUTPUT
@@ -1245,7 +1245,7 @@ msg:
         - action:          SET_NW_TTL
           ttl:             0x0A
         - action:          SET_QUEUE
-          queue:           0x00000003
+          queue_id:        0x00000003
         - action:          GROUP
           group:           0x00000063
         - action:          OUTPUT
@@ -3927,7 +3927,7 @@ msg:
           - action:          SET_NW_TTL
             ttl:             0x0A
           - action:          SET_QUEUE
-            queue:           0x00000003
+            queue_id:        0x00000003
           - action:          GROUP
             group:           0x00000063
           - action:          OUTPUT
@@ -4047,7 +4047,7 @@ msg:
         - action:          EXPERIMENTER.0x00000065
           data:            0001020304050607
         - action:          SET_QUEUE
-          queue:           0x00000003
+          queue_id:        0x00000003
         - action:          GROUP
           group:           0x00000063
         - action:          OUTPUT

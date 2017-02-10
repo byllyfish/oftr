@@ -15733,7 +15733,7 @@ msg:
         - action:          POP_MPLS
           ethertype:       0x0000
         - action:          SET_QUEUE
-          queue:           0x00000000
+          queue_id:        0x00000000
         - action:          GROUP
           group:           0x00000000
         - action:          SET_NW_TTL
@@ -16641,7 +16641,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_QUEUE
-          queue:           0xB1443AB0
+          queue_id:        0xB1443AB0
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00042.pass
 Error: Encode yielded different data at byte offset 52:
@@ -44634,7 +44634,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_QUEUE
-          queue:           0x00000000
+          queue_id:        0x00000000
 ...
 ---
 type:            FLOW_MOD
@@ -56532,7 +56532,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_QUEUE
-          queue:           0x00000000
+          queue_id:        0x00000000
 ...
 ---
 type:            FLOW_MOD
@@ -69866,7 +69866,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_QUEUE
-          queue:           0x00000000
+          queue_id:        0x00000000
 ...
 ---
 type:            FLOW_MOD
