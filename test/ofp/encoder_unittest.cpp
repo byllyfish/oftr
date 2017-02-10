@@ -3117,28 +3117,27 @@ TEST(encoder, tablestatusv5) {
     version:         0x05
     msg: 
       reason:        0x10 
-      table:            
-        table_id:        ALL
-        config:          [  ]
-        eviction:        
-          flags:           0x11223344
-        vacancy:         
-          vacancy_down:    0x11
-          vacancy_up:      0x22
-          vacancy:         0x33
-        properties:      
-          - property:        EXPERIMENTER
-            experimenter:    0x44444441
-            exp_type:        0x55555551
-            data:            ''
-          - property:        EXPERIMENTER
-            experimenter:    0x66666661
-            exp_type:        0x77777771
-            data:            88888888
-          - property:        EXPERIMENTER
-            experimenter:    0x99999991
-            exp_type:        0xAAAAAAA1
-            data:            0000000100000002
+      table_id:        ALL
+      config:          [  ]
+      eviction:        
+        flags:           0x11223344
+      vacancy:         
+        vacancy_down:    0x11
+        vacancy_up:      0x22
+        vacancy:         0x33
+      properties:      
+        - property:        EXPERIMENTER
+          experimenter:    0x44444441
+          exp_type:        0x55555551
+          data:            ''
+        - property:        EXPERIMENTER
+          experimenter:    0x66666661
+          exp_type:        0x77777771
+          data:            88888888
+        - property:        EXPERIMENTER
+          experimenter:    0x99999991
+          exp_type:        0xAAAAAAA1
+          data:            0000000100000002
     )""";
 
   Encoder encoder{input};

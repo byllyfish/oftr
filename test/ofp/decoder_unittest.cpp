@@ -1862,19 +1862,7 @@ TEST(decoder, tablestatusv5) {
       "051F00600000000010000000000000000050FF0000000000000200081122334400030008"
       "11223300FFFF000C444444415555555100000000FFFF0010666666617777777188888888"
       "FFFF001499999991AAAAAAA1000000010000000200000000",
-      "---\ntype:            TABLE_STATUS\nxid:             "
-      "0x00000000\nversion:         0x05\nmsg:             \n  reason:         "
-      " 0x10\n  table:           \n    table_id:        ALL\n    config:       "
-      "   [  ]\n    eviction:        \n      flags:           0x11223344\n    "
-      "vacancy:         \n      vacancy_down:    0x11\n      vacancy_up:      "
-      "0x22\n      vacancy:         0x33\n    properties:      \n      - "
-      "property:        EXPERIMENTER\n        experimenter:    0x44444441\n    "
-      "    exp_type:        0x55555551\n        data:            ''\n      - "
-      "property:        EXPERIMENTER\n        experimenter:    0x66666661\n    "
-      "    exp_type:        0x77777771\n        data:            88888888\n    "
-      "  - property:        EXPERIMENTER\n        experimenter:    "
-      "0x99999991\n        exp_type:        0xAAAAAAA1\n        data:          "
-      "  0000000100000002\n...\n");
+      "---\ntype:            TABLE_STATUS\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  reason:          0x10\n  table_id:        ALL\n  config:          [  ]\n  eviction:        \n    flags:           0x11223344\n  vacancy:         \n    vacancy_down:    0x11\n    vacancy_up:      0x22\n    vacancy:         0x33\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x44444441\n      exp_type:        0x55555551\n      data:            ''\n    - property:        EXPERIMENTER\n      experimenter:    0x66666661\n      exp_type:        0x77777771\n      data:            88888888\n    - property:        EXPERIMENTER\n      experimenter:    0x99999991\n      exp_type:        0xAAAAAAA1\n      data:            0000000100000002\n...\n");
 }
 
 TEST(decoder, mptabledescv5) {

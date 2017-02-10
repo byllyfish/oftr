@@ -600,23 +600,22 @@ version	type	keypath	syntax	required	default	missing	modify
 1	ROLE_STATUS.v1	msg.reason	MASTER_REQUEST	True			ERROR
 1	ROLE_STATUS.v1	msg.role	ROLE_MASTER	True			ERROR
 1	TABLE_STATUS.v1	msg	object	True			ERROR
+1	TABLE_STATUS.v1	msg.config	array	True			ERROR
+1	TABLE_STATUS.v1	msg.config.0	EVICTION	True			ERROR
+1	TABLE_STATUS.v1	msg.eviction	object	True			ERROR
+1	TABLE_STATUS.v1	msg.eviction.flags	uint32	True			ERROR
+1	TABLE_STATUS.v1	msg.properties	array	True			ERROR
+1	TABLE_STATUS.v1	msg.properties.0	object	True			ERROR
+1	TABLE_STATUS.v1	msg.properties.0.data	binary	True			ERROR
+1	TABLE_STATUS.v1	msg.properties.0.exp_type	uint32	True			ERROR
+1	TABLE_STATUS.v1	msg.properties.0.experimenter	uint32	True			ERROR
+1	TABLE_STATUS.v1	msg.properties.0.property	EXPERIMENTER	True			ERROR
 1	TABLE_STATUS.v1	msg.reason	VACANCY_DOWN	True			ERROR
-1	TABLE_STATUS.v1	msg.table	object	True			ERROR
-1	TABLE_STATUS.v1	msg.table.config	array	True			ERROR
-1	TABLE_STATUS.v1	msg.table.config.0	EVICTION	True			ERROR
-1	TABLE_STATUS.v1	msg.table.eviction	object	True			ERROR
-1	TABLE_STATUS.v1	msg.table.eviction.flags	uint32	True			ERROR
-1	TABLE_STATUS.v1	msg.table.properties	array	True			ERROR
-1	TABLE_STATUS.v1	msg.table.properties.0	object	True			ERROR
-1	TABLE_STATUS.v1	msg.table.properties.0.data	binary	True			ERROR
-1	TABLE_STATUS.v1	msg.table.properties.0.exp_type	uint32	True			ERROR
-1	TABLE_STATUS.v1	msg.table.properties.0.experimenter	uint32	True			ERROR
-1	TABLE_STATUS.v1	msg.table.properties.0.property	EXPERIMENTER	True			ERROR
-1	TABLE_STATUS.v1	msg.table.table_id	ALL	True			ERROR
-1	TABLE_STATUS.v1	msg.table.vacancy	object	True			ERROR
-1	TABLE_STATUS.v1	msg.table.vacancy.vacancy	uint8	True			ERROR
-1	TABLE_STATUS.v1	msg.table.vacancy.vacancy_down	uint8	True			ERROR
-1	TABLE_STATUS.v1	msg.table.vacancy.vacancy_up	uint8	True			ERROR
+1	TABLE_STATUS.v1	msg.table_id	ALL	True			ERROR
+1	TABLE_STATUS.v1	msg.vacancy	object	True			ERROR
+1	TABLE_STATUS.v1	msg.vacancy.vacancy	uint8	True			ERROR
+1	TABLE_STATUS.v1	msg.vacancy.vacancy_down	uint8	True			ERROR
+1	TABLE_STATUS.v1	msg.vacancy.vacancy_up	uint8	True			ERROR
 1	REQUESTFORWARD.v1	msg	object	True			ERROR
 1	REQUESTFORWARD.v1	msg.type	HELLO	True			ERROR
 1	BUNDLE_CONTROL.v1	msg	object	True			ERROR
@@ -1243,23 +1242,22 @@ version	type	keypath	syntax	required	default	missing	modify
 2	ROLE_STATUS.v2	msg.reason	MASTER_REQUEST	True			ERROR
 2	ROLE_STATUS.v2	msg.role	ROLE_MASTER	True			ERROR
 2	TABLE_STATUS.v2	msg	object	True			ERROR
+2	TABLE_STATUS.v2	msg.config	array	True			ERROR
+2	TABLE_STATUS.v2	msg.config.0	EVICTION	True			ERROR
+2	TABLE_STATUS.v2	msg.eviction	object	True			ERROR
+2	TABLE_STATUS.v2	msg.eviction.flags	uint32	True			ERROR
+2	TABLE_STATUS.v2	msg.properties	array	True			ERROR
+2	TABLE_STATUS.v2	msg.properties.0	object	True			ERROR
+2	TABLE_STATUS.v2	msg.properties.0.data	binary	True			ERROR
+2	TABLE_STATUS.v2	msg.properties.0.exp_type	uint32	True			ERROR
+2	TABLE_STATUS.v2	msg.properties.0.experimenter	uint32	True			ERROR
+2	TABLE_STATUS.v2	msg.properties.0.property	EXPERIMENTER	True			ERROR
 2	TABLE_STATUS.v2	msg.reason	VACANCY_DOWN	True			ERROR
-2	TABLE_STATUS.v2	msg.table	object	True			ERROR
-2	TABLE_STATUS.v2	msg.table.config	array	True			ERROR
-2	TABLE_STATUS.v2	msg.table.config.0	EVICTION	True			ERROR
-2	TABLE_STATUS.v2	msg.table.eviction	object	True			ERROR
-2	TABLE_STATUS.v2	msg.table.eviction.flags	uint32	True			ERROR
-2	TABLE_STATUS.v2	msg.table.properties	array	True			ERROR
-2	TABLE_STATUS.v2	msg.table.properties.0	object	True			ERROR
-2	TABLE_STATUS.v2	msg.table.properties.0.data	binary	True			ERROR
-2	TABLE_STATUS.v2	msg.table.properties.0.exp_type	uint32	True			ERROR
-2	TABLE_STATUS.v2	msg.table.properties.0.experimenter	uint32	True			ERROR
-2	TABLE_STATUS.v2	msg.table.properties.0.property	EXPERIMENTER	True			ERROR
-2	TABLE_STATUS.v2	msg.table.table_id	ALL	True			ERROR
-2	TABLE_STATUS.v2	msg.table.vacancy	object	True			ERROR
-2	TABLE_STATUS.v2	msg.table.vacancy.vacancy	uint8	True			ERROR
-2	TABLE_STATUS.v2	msg.table.vacancy.vacancy_down	uint8	True			ERROR
-2	TABLE_STATUS.v2	msg.table.vacancy.vacancy_up	uint8	True			ERROR
+2	TABLE_STATUS.v2	msg.table_id	ALL	True			ERROR
+2	TABLE_STATUS.v2	msg.vacancy	object	True			ERROR
+2	TABLE_STATUS.v2	msg.vacancy.vacancy	uint8	True			ERROR
+2	TABLE_STATUS.v2	msg.vacancy.vacancy_down	uint8	True			ERROR
+2	TABLE_STATUS.v2	msg.vacancy.vacancy_up	uint8	True			ERROR
 2	REQUESTFORWARD.v2	msg	object	True			ERROR
 2	REQUESTFORWARD.v2	msg.type	HELLO	True			ERROR
 2	BUNDLE_CONTROL.v2	msg	object	True			ERROR
@@ -1886,23 +1884,22 @@ version	type	keypath	syntax	required	default	missing	modify
 3	ROLE_STATUS.v3	msg.reason	MASTER_REQUEST	True			ERROR
 3	ROLE_STATUS.v3	msg.role	ROLE_MASTER	True			ERROR
 3	TABLE_STATUS.v3	msg	object	True			ERROR
+3	TABLE_STATUS.v3	msg.config	array	True			ERROR
+3	TABLE_STATUS.v3	msg.config.0	EVICTION	True			ERROR
+3	TABLE_STATUS.v3	msg.eviction	object	True			ERROR
+3	TABLE_STATUS.v3	msg.eviction.flags	uint32	True			ERROR
+3	TABLE_STATUS.v3	msg.properties	array	True			ERROR
+3	TABLE_STATUS.v3	msg.properties.0	object	True			ERROR
+3	TABLE_STATUS.v3	msg.properties.0.data	binary	True			ERROR
+3	TABLE_STATUS.v3	msg.properties.0.exp_type	uint32	True			ERROR
+3	TABLE_STATUS.v3	msg.properties.0.experimenter	uint32	True			ERROR
+3	TABLE_STATUS.v3	msg.properties.0.property	EXPERIMENTER	True			ERROR
 3	TABLE_STATUS.v3	msg.reason	VACANCY_DOWN	True			ERROR
-3	TABLE_STATUS.v3	msg.table	object	True			ERROR
-3	TABLE_STATUS.v3	msg.table.config	array	True			ERROR
-3	TABLE_STATUS.v3	msg.table.config.0	EVICTION	True			ERROR
-3	TABLE_STATUS.v3	msg.table.eviction	object	True			ERROR
-3	TABLE_STATUS.v3	msg.table.eviction.flags	uint32	True			ERROR
-3	TABLE_STATUS.v3	msg.table.properties	array	True			ERROR
-3	TABLE_STATUS.v3	msg.table.properties.0	object	True			ERROR
-3	TABLE_STATUS.v3	msg.table.properties.0.data	binary	True			ERROR
-3	TABLE_STATUS.v3	msg.table.properties.0.exp_type	uint32	True			ERROR
-3	TABLE_STATUS.v3	msg.table.properties.0.experimenter	uint32	True			ERROR
-3	TABLE_STATUS.v3	msg.table.properties.0.property	EXPERIMENTER	True			ERROR
-3	TABLE_STATUS.v3	msg.table.table_id	ALL	True			ERROR
-3	TABLE_STATUS.v3	msg.table.vacancy	object	True			ERROR
-3	TABLE_STATUS.v3	msg.table.vacancy.vacancy	uint8	True			ERROR
-3	TABLE_STATUS.v3	msg.table.vacancy.vacancy_down	uint8	True			ERROR
-3	TABLE_STATUS.v3	msg.table.vacancy.vacancy_up	uint8	True			ERROR
+3	TABLE_STATUS.v3	msg.table_id	ALL	True			ERROR
+3	TABLE_STATUS.v3	msg.vacancy	object	True			ERROR
+3	TABLE_STATUS.v3	msg.vacancy.vacancy	uint8	True			ERROR
+3	TABLE_STATUS.v3	msg.vacancy.vacancy_down	uint8	True			ERROR
+3	TABLE_STATUS.v3	msg.vacancy.vacancy_up	uint8	True			ERROR
 3	REQUESTFORWARD.v3	msg	object	True			ERROR
 3	REQUESTFORWARD.v3	msg.type	HELLO	True			ERROR
 3	BUNDLE_CONTROL.v3	msg	object	True			ERROR
@@ -2529,23 +2526,22 @@ version	type	keypath	syntax	required	default	missing	modify
 4	ROLE_STATUS.v4	msg.reason	MASTER_REQUEST	True			
 4	ROLE_STATUS.v4	msg.role	ROLE_MASTER	True			
 4	TABLE_STATUS.v4	msg	object	True			
+4	TABLE_STATUS.v4	msg.config	array	True			
+4	TABLE_STATUS.v4	msg.config.0	EVICTION	False	msg.config.0=EVICTION		
+4	TABLE_STATUS.v4	msg.eviction	object	False	msg.eviction=object,msg.eviction.flags=uint32		
+4	TABLE_STATUS.v4	msg.eviction.flags	uint32	True			True
+4	TABLE_STATUS.v4	msg.properties	array	False	msg.properties.0=object,msg.properties.0.data=binary,msg.properties.0.exp_type=uint32,msg.properties.0.experimenter=uint32,msg.properties.0.property=EXPERIMENTER		
+4	TABLE_STATUS.v4	msg.properties.0	object	False	msg.properties.0=object,msg.properties.0.data=binary,msg.properties.0.exp_type=uint32,msg.properties.0.experimenter=uint32,msg.properties.0.property=EXPERIMENTER		
+4	TABLE_STATUS.v4	msg.properties.0.data	binary	True			True
+4	TABLE_STATUS.v4	msg.properties.0.exp_type	uint32	True			True
+4	TABLE_STATUS.v4	msg.properties.0.experimenter	uint32	True			True
+4	TABLE_STATUS.v4	msg.properties.0.property	EXPERIMENTER	True			
 4	TABLE_STATUS.v4	msg.reason	VACANCY_DOWN	True			
-4	TABLE_STATUS.v4	msg.table	object	True			
-4	TABLE_STATUS.v4	msg.table.config	array	True			
-4	TABLE_STATUS.v4	msg.table.config.0	EVICTION	False	msg.table.config.0=EVICTION		
-4	TABLE_STATUS.v4	msg.table.eviction	object	False	msg.table.eviction=object,msg.table.eviction.flags=uint32		
-4	TABLE_STATUS.v4	msg.table.eviction.flags	uint32	True			True
-4	TABLE_STATUS.v4	msg.table.properties	array	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
-4	TABLE_STATUS.v4	msg.table.properties.0	object	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
-4	TABLE_STATUS.v4	msg.table.properties.0.data	binary	True			True
-4	TABLE_STATUS.v4	msg.table.properties.0.exp_type	uint32	True			True
-4	TABLE_STATUS.v4	msg.table.properties.0.experimenter	uint32	True			True
-4	TABLE_STATUS.v4	msg.table.properties.0.property	EXPERIMENTER	True			
-4	TABLE_STATUS.v4	msg.table.table_id	ALL	True			
-4	TABLE_STATUS.v4	msg.table.vacancy	object	False			
-4	TABLE_STATUS.v4	msg.table.vacancy.vacancy	uint8	True			True
-4	TABLE_STATUS.v4	msg.table.vacancy.vacancy_down	uint8	True			True
-4	TABLE_STATUS.v4	msg.table.vacancy.vacancy_up	uint8	True			True
+4	TABLE_STATUS.v4	msg.table_id	ALL	True			
+4	TABLE_STATUS.v4	msg.vacancy	object	False			
+4	TABLE_STATUS.v4	msg.vacancy.vacancy	uint8	True			True
+4	TABLE_STATUS.v4	msg.vacancy.vacancy_down	uint8	True			True
+4	TABLE_STATUS.v4	msg.vacancy.vacancy_up	uint8	True			True
 4	REQUESTFORWARD.v4	msg	object	True			
 4	REQUESTFORWARD.v4	msg.type	HELLO	True			
 4	BUNDLE_CONTROL.v4	msg	object	True			
@@ -3172,23 +3168,22 @@ version	type	keypath	syntax	required	default	missing	modify
 5	ROLE_STATUS.v5	msg.reason	MASTER_REQUEST	True			
 5	ROLE_STATUS.v5	msg.role	ROLE_MASTER	True			
 5	TABLE_STATUS.v5	msg	object	True			
+5	TABLE_STATUS.v5	msg.config	array	True			
+5	TABLE_STATUS.v5	msg.config.0	EVICTION	False	msg.config.0=EVICTION		
+5	TABLE_STATUS.v5	msg.eviction	object	False	msg.eviction=object,msg.eviction.flags=uint32		
+5	TABLE_STATUS.v5	msg.eviction.flags	uint32	True			True
+5	TABLE_STATUS.v5	msg.properties	array	False	msg.properties.0=object,msg.properties.0.data=binary,msg.properties.0.exp_type=uint32,msg.properties.0.experimenter=uint32,msg.properties.0.property=EXPERIMENTER		
+5	TABLE_STATUS.v5	msg.properties.0	object	False	msg.properties.0=object,msg.properties.0.data=binary,msg.properties.0.exp_type=uint32,msg.properties.0.experimenter=uint32,msg.properties.0.property=EXPERIMENTER		
+5	TABLE_STATUS.v5	msg.properties.0.data	binary	True			True
+5	TABLE_STATUS.v5	msg.properties.0.exp_type	uint32	True			True
+5	TABLE_STATUS.v5	msg.properties.0.experimenter	uint32	True			True
+5	TABLE_STATUS.v5	msg.properties.0.property	EXPERIMENTER	True			
 5	TABLE_STATUS.v5	msg.reason	VACANCY_DOWN	True			
-5	TABLE_STATUS.v5	msg.table	object	True			
-5	TABLE_STATUS.v5	msg.table.config	array	True			
-5	TABLE_STATUS.v5	msg.table.config.0	EVICTION	False	msg.table.config.0=EVICTION		
-5	TABLE_STATUS.v5	msg.table.eviction	object	False	msg.table.eviction=object,msg.table.eviction.flags=uint32		
-5	TABLE_STATUS.v5	msg.table.eviction.flags	uint32	True			True
-5	TABLE_STATUS.v5	msg.table.properties	array	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
-5	TABLE_STATUS.v5	msg.table.properties.0	object	False	msg.table.properties.0=object,msg.table.properties.0.data=binary,msg.table.properties.0.exp_type=uint32,msg.table.properties.0.experimenter=uint32,msg.table.properties.0.property=EXPERIMENTER		
-5	TABLE_STATUS.v5	msg.table.properties.0.data	binary	True			True
-5	TABLE_STATUS.v5	msg.table.properties.0.exp_type	uint32	True			True
-5	TABLE_STATUS.v5	msg.table.properties.0.experimenter	uint32	True			True
-5	TABLE_STATUS.v5	msg.table.properties.0.property	EXPERIMENTER	True			
-5	TABLE_STATUS.v5	msg.table.table_id	ALL	True			
-5	TABLE_STATUS.v5	msg.table.vacancy	object	False			
-5	TABLE_STATUS.v5	msg.table.vacancy.vacancy	uint8	True			True
-5	TABLE_STATUS.v5	msg.table.vacancy.vacancy_down	uint8	True			True
-5	TABLE_STATUS.v5	msg.table.vacancy.vacancy_up	uint8	True			True
+5	TABLE_STATUS.v5	msg.table_id	ALL	True			
+5	TABLE_STATUS.v5	msg.vacancy	object	False			
+5	TABLE_STATUS.v5	msg.vacancy.vacancy	uint8	True			True
+5	TABLE_STATUS.v5	msg.vacancy.vacancy_down	uint8	True			True
+5	TABLE_STATUS.v5	msg.vacancy.vacancy_up	uint8	True			True
 5	REQUESTFORWARD.v5	msg	object	True			
 5	REQUESTFORWARD.v5	msg.type	HELLO	True			
 5	BUNDLE_CONTROL.v5	msg	object	True			

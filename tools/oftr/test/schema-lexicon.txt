@@ -159,7 +159,6 @@ src
 state
 supported
 sw_desc
-table
 table_id
 table_status_master
 table_status_slave

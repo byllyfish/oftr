@@ -15,7 +15,15 @@ const char *const kTableStatusSchema = R"""({Message/TableStatus}
 type: TABLE_STATUS
 msg:
   reason: TableStatusReason
-  table: TableDesc
+  table_id: TableNumber
+  config: [TableConfigFlags]
+  eviction: !optout
+    flags: UInt32
+  vacancy: !optout
+    vacancy_down: UInt8
+    vacancy_up: UInt8
+    vacancy: UInt8
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -24,7 +32,7 @@ struct MappingTraits<ofp::TableStatus> {
     io.mapRequired("reason", msg.reason_);
 
     ofp::TableDesc &table = RemoveConst_cast(msg.table());
-    io.mapRequired("table", table);
+    MappingTraits<ofp::TableDesc>::mapping(io, table);
   }
 };
 
@@ -32,7 +40,7 @@ template <>
 struct MappingTraits<ofp::TableStatusBuilder> {
   static void mapping(IO &io, ofp::TableStatusBuilder &msg) {
     io.mapRequired("reason", msg.msg_.reason_);
-    io.mapRequired("table", msg.table_);
+    MappingTraits<ofp::TableDescBuilder>::mapping(io, msg.table_);
   }
 };
 

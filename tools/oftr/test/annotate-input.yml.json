@@ -1173,29 +1173,27 @@
   }, 
   {
     "msg": {
-      "table": {
-        "vacancy": {
-          "vacancy": 255, 
-          "vacancy_up": 255, 
-          "vacancy_down": 255
-        }, 
-        "table_id": "ALL", 
-        "eviction": {
-          "flags": 4294967295
-        }, 
-        "config": [
-          "EVICTION"
-        ], 
-        "properties": [
-          {
-            "exp_type": 4294967295, 
-            "experimenter": 4294967295, 
-            "property": "EXPERIMENTER", 
-            "data": "ffffffff"
-          }
-        ]
+      "vacancy": {
+        "vacancy": 255, 
+        "vacancy_up": 255, 
+        "vacancy_down": 255
       }, 
-      "reason": "VACANCY_DOWN"
+      "reason": "VACANCY_DOWN", 
+      "eviction": {
+        "flags": 4294967295
+      }, 
+      "table_id": "ALL", 
+      "config": [
+        "EVICTION"
+      ], 
+      "properties": [
+        {
+          "exp_type": 4294967295, 
+          "experimenter": 4294967295, 
+          "property": "EXPERIMENTER", 
+          "data": "ffffffff"
+        }
+      ]
     }, 
     "version": 5, 
     "type": "TABLE_STATUS"

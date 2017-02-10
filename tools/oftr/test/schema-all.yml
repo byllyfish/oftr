@@ -1337,7 +1337,15 @@ Message/TableStatus:
   type: TABLE_STATUS
   msg:
     reason: TableStatusReason
-    table: TableDesc
+    table_id: TableNumber
+    config: [TableConfigFlags]
+    eviction: !optout
+      flags: UInt32
+    vacancy: !optout
+      vacancy_down: UInt8
+      vacancy_up: UInt8
+      vacancy: UInt8
+    properties: !opt [ExperimenterProperty]
   
 Message/RequestForward: 
   version: !opt UInt8
