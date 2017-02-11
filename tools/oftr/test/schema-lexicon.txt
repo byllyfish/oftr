@@ -13,6 +13,7 @@ active_count
 advertise
 advertised
 alert
+api_version
 apply_actions
 apply_actions_miss
 apply_set_field
@@ -74,7 +75,6 @@ instruction
 instructions
 instructions_miss
 lookup_count
-major_version
 mask
 match
 matched_count
@@ -97,7 +97,6 @@ meter_id
 method
 mfr_desc
 min_rate
-minor_version
 miss_send_len
 monitor_id
 msg
@@ -106,7 +105,6 @@ n_tables
 name
 next_tables
 next_tables_miss
-ofp_versions
 optical
 options
 out_group
@@ -116,6 +114,7 @@ packet_in_count
 packet_in_master
 packet_in_slave
 params
+password
 peer
 port_no
 port_status_master
@@ -123,7 +122,6 @@ port_status_slave
 ports
 prec_level
 priority
-privkey_password
 properties
 property
 queue_id
@@ -153,7 +151,6 @@ rx_over_err
 rx_packets
 rx_pwr
 serial_num
-software_version
 src
 state
 supported

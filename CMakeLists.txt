@@ -46,8 +46,7 @@ string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" Libofp_VERSION_PATCH
 
 # Set version numbers for RPC API.
 
-set(Libofp_RPC_API_MAJOR 0)
-set(Libofp_RPC_API_MINOR 1)
+set(Libofp_RPC_API_VERSION "0.9")
 
 # You can build oftr with or without the JSON-RPC server.
 

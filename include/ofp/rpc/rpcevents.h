@@ -89,12 +89,11 @@ struct RpcDescriptionResponse {
 
   struct Result {
     /// Current API version.
-    UInt16 major_version;
-    UInt16 minor_version;
+    std::string api_version;
     /// Current version of this software.
-    std::string software_version;
+    std::string sw_desc;
     /// List of supported OpenFlow versions.
-    std::vector<UInt8> ofp_versions;
+    std::vector<UInt8> versions;
   };
 
   RpcID id;
@@ -229,7 +228,7 @@ struct RpcAddIdentity {
     /// PEM certificate for trusted CA to use for verifying a peer certificate.
     std::string cert_auth;
     /// Optional password for encrypted private key.
-    std::string privkey_password;
+    std::string password;
   };
 
   RpcID id;
@@ -321,10 +320,9 @@ const char *const kRpcSchema = R"""(
 id: UInt64
 method: !request OFP.DESCRIPTION
 result: !reply
-  major_version: UInt16
-  minor_version: UInt16
-  software_version: String
-  ofp_versions: [UInt8]
+  api_version: String
+  sw_desc: String
+  versions: [UInt8]
 
 {Rpc/OFP.LISTEN}
 id: !opt UInt64
@@ -383,7 +381,7 @@ method: !request OFP.ADD_IDENTITY
 params: !request
   cert: String
   cert_auth: String
-  privkey_password: !opt String
+  password: !opt String
 result: !reply
   tls_id: UInt64
 
@@ -501,7 +499,7 @@ struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAddIdentity::Params &params) {
     io.mapRequired("cert", params.cert);
     io.mapRequired("cert_auth", params.cert_auth);
-    io.mapOptional("privkey_password", params.privkey_password);
+    io.mapOptional("password", params.password);
   }
 };
 
@@ -517,10 +515,9 @@ template <>
 struct MappingTraits<ofp::rpc::RpcDescriptionResponse::Result> {
   static void mapping(IO &io,
                       ofp::rpc::RpcDescriptionResponse::Result &result) {
-    io.mapRequired("major_version", result.major_version);
-    io.mapRequired("minor_version", result.minor_version);
-    io.mapRequired("software_version", result.software_version);
-    io.mapRequired("ofp_versions", result.ofp_versions);
+    io.mapRequired("api_version", result.api_version);
+    io.mapRequired("sw_desc", result.sw_desc);
+    io.mapRequired("versions", result.versions);
   }
 };
 

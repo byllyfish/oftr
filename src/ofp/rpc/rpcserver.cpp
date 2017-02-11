@@ -18,7 +18,7 @@ RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
                      Channel *defaultChannel)
     : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
   log::fatal_if_false(inputFD >= 0, "inputFD >= 0");
-  log::fatal_if_false(outputFD >= 0, "inputFD >= 0");
+  log::fatal_if_false(outputFD >= 0, "outputFD >= 0");
 
   // If we're given an existing channel, connect the stdio-based connection
   // directly up to this connection.
@@ -242,7 +242,7 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
 void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
   std::error_code err;
   UInt64 securityId =
-      engine_->addIdentity(add->params.cert, add->params.privkey_password,
+      engine_->addIdentity(add->params.cert, add->params.password,
                            add->params.cert_auth, err);
 
   if (add->id.is_missing())
@@ -265,10 +265,9 @@ void RpcServer::onRpcDescription(RpcConnection *conn, RpcDescription *desc) {
     return;
 
   RpcDescriptionResponse response{desc->id};
-  response.result.major_version = LIBOFP_RPC_API_MAJOR;
-  response.result.minor_version = LIBOFP_RPC_API_MINOR;
-  response.result.software_version = softwareVersion();
-  response.result.ofp_versions = ProtocolVersions::All.versions();
+  response.result.api_version = LIBOFP_RPC_API_VERSION;
+  response.result.sw_desc = softwareVersion();
+  response.result.versions = ProtocolVersions::All.versions();
   conn->rpcReply(&response);
 }
 

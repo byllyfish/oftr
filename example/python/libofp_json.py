@@ -7,6 +7,7 @@ No external dependencies; uses builtin json module.
 import json
 import subprocess
 import os
+import sys
 
 def getDefaultPort():
     try:
@@ -63,6 +64,8 @@ class LibOFP(object):
         self._openDriver(driverPath)
         self._xid = 2
 
+        self._sendDescriptionRequest()
+
         if listen:
             self._sendListenRequest(openflowAddr)
 
@@ -110,6 +113,15 @@ class LibOFP(object):
 
     def _sendListenRequest(self, openflowAddr):
         self._call('OFP.LISTEN', endpoint='[%s]:%d' % openflowAddr, options=['FEATURES_REQ'])
+
+    def _sendDescriptionRequest(self):
+        self._call('OFP.DESCRIPTION', id=99999)
+        msg = self.next()
+        print >>sys.stderr, msg
+        assert msg.id == 99999
+        assert msg.result.api_version == '0.9'
+        assert len(msg.result.sw_desc) > 0
+        assert msg.result.versions == [1, 2, 3, 4, 5]
 
     def _write(self, msg):
         self._sockOutput.write(msg)

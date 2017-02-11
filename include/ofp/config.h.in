@@ -11,11 +11,9 @@
 #define LIBOFP_GITHUB_URL           "@Libofp_GITHUB_URL@"
 #define LIBOFP_COMPILER_SPEC        "@Libofp_COMPILER_SPEC@"
 
-// These variables indicate the major and minor version numbers for the 
-// RPC API.
+// These variables indicate the version of the RPC API.
 
-#define LIBOFP_RPC_API_MAJOR            @Libofp_RPC_API_MAJOR@
-#define LIBOFP_RPC_API_MINOR            @Libofp_RPC_API_MINOR@
+#define LIBOFP_RPC_API_VERSION      "@Libofp_RPC_API_VERSION@"
 
 // These variables indicate the git commits of libofp, asio, and boringssl 
 // used in this build.
