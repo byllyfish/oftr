@@ -62,7 +62,6 @@ flow_removed_slave
 freq_lmda
 generation_id
 grid_span
-group
 group_id
 hard_timeout
 hw_addr

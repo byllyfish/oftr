@@ -15241,7 +15241,7 @@ msg:
           data:            9A
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00087.fail
-Error: Decode succeeded but encode failed: YAML:34:11: error: missing required key 'group'
+Error: Decode succeeded but encode failed: YAML:34:11: error: missing required key 'group_id'
         - action:          0x0016
           ^
 
@@ -17226,7 +17226,7 @@ msg:
           data:            000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000054.fail
-Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'group'
+Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'group_id'
         - action:          0x0016
           ^
 
@@ -17547,7 +17547,7 @@ msg:
           data:            0000005900170009FF000000
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_15_00014.fail
-Error: Decode succeeded but encode failed: YAML:18:11: error: missing required key 'group'
+Error: Decode succeeded but encode failed: YAML:18:11: error: missing required key 'group_id'
         - action:          0x0016
           ^
 
@@ -19476,7 +19476,7 @@ msg:
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000054.fail
-Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'group'
+Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'group_id'
         - action:          0x0016
           ^
 
@@ -19797,7 +19797,7 @@ msg:
           data:            0000005900170009FF000000
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_15_00014.fail
-Error: Decode succeeded but encode failed: YAML:18:11: error: missing required key 'group'
+Error: Decode succeeded but encode failed: YAML:18:11: error: missing required key 'group_id'
         - action:          0x0016
           ^
 
@@ -22928,7 +22928,7 @@ msg:
           data:            000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000054.fail
-Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'group'
+Error: Decode succeeded but encode failed: YAML:22:11: error: missing required key 'group_id'
         - action:          0x0016
           ^
 
@@ -23249,7 +23249,7 @@ msg:
           data:            0000005900170009FF000000
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_15_00014.fail
-Error: Decode succeeded but encode failed: YAML:18:11: error: missing required key 'group'
+Error: Decode succeeded but encode failed: YAML:18:11: error: missing required key 'group_id'
         - action:          0x0016
           ^
 

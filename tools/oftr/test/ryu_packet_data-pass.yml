@@ -1129,7 +1129,7 @@ msg:
           - action:          SET_QUEUE
             queue_id:        0x00000003
           - action:          GROUP
-            group:           0x00000063
+            group_id:        0x00000063
           - action:          OUTPUT
             port_no:         0x00000006
             max_len:         NO_BUFFER
@@ -1247,7 +1247,7 @@ msg:
         - action:          SET_QUEUE
           queue_id:        0x00000003
         - action:          GROUP
-          group:           0x00000063
+          group_id:        0x00000063
         - action:          OUTPUT
           port_no:         0x00000006
           max_len:         NO_BUFFER
@@ -3929,7 +3929,7 @@ msg:
           - action:          SET_QUEUE
             queue_id:        0x00000003
           - action:          GROUP
-            group:           0x00000063
+            group_id:        0x00000063
           - action:          OUTPUT
             port_no:         0x00000006
             max_len:         NO_BUFFER
@@ -4049,7 +4049,7 @@ msg:
         - action:          SET_QUEUE
           queue_id:        0x00000003
         - action:          GROUP
-          group:           0x00000063
+          group_id:        0x00000063
         - action:          OUTPUT
           port_no:         0x00000006
           max_len:         NO_BUFFER

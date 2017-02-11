@@ -15735,7 +15735,7 @@ msg:
         - action:          SET_QUEUE
           queue_id:        0x00000000
         - action:          GROUP
-          group:           0x00000000
+          group_id:        0x00000000
         - action:          SET_NW_TTL
           ttl:             0x00
         - action:          DEC_NW_TTL
@@ -16680,7 +16680,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          GROUP
-          group:           0x9ABF217B
+          group_id:        0x9ABF217B
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00043.pass
 Error: Encode yielded different data at byte offset 52:
@@ -33204,7 +33204,7 @@ msg:
         - action:          DEC_NW_TTL
         - action:          DEC_MPLS_TTL
         - action:          GROUP
-          group:           0xDD3C57CC
+          group_id:        0xDD3C57CC
 ...
 ---
 type:            GROUP_MOD
@@ -44657,7 +44657,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          GROUP
-          group:           0x00000000
+          group_id:        0x00000000
 ...
 ---
 type:            FLOW_MOD
@@ -46003,7 +46003,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
 ...
@@ -46042,7 +46042,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
     - weight:          0x0EF5
@@ -46057,7 +46057,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
 ...
@@ -46640,7 +46640,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
       - weight:          0x0EF5
@@ -46651,7 +46651,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
       - weight:          0x0EF5
@@ -46662,7 +46662,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
   - type:            SELECT
@@ -56555,7 +56555,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          GROUP
-          group:           0x00000000
+          group_id:        0x00000000
 ...
 ---
 type:            FLOW_MOD
@@ -58054,7 +58054,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
 ...
@@ -58093,7 +58093,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
     - weight:          0x0EF5
@@ -58108,7 +58108,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
 ...
@@ -59597,7 +59597,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
       - weight:          0x0EF5
@@ -59608,7 +59608,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
       - weight:          0x0EF5
@@ -59619,7 +59619,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
   - type:            SELECT
@@ -69889,7 +69889,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          GROUP
-          group:           0x00000000
+          group_id:        0x00000000
 ...
 ---
 type:            FLOW_MOD
@@ -71388,7 +71388,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
 ...
@@ -71427,7 +71427,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
     - weight:          0x0EF5
@@ -71442,7 +71442,7 @@ msg:
           port_no:         0x00009823
           max_len:         0x0000
         - action:          GROUP
-          group:           0x00000059
+          group_id:        0x00000059
         - action:          SET_NW_TTL
           ttl:             0xFF
 ...
@@ -72931,7 +72931,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
       - weight:          0x0EF5
@@ -72942,7 +72942,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
       - weight:          0x0EF5
@@ -72953,7 +72953,7 @@ msg:
             port_no:         0x00009823
             max_len:         0x0000
           - action:          GROUP
-            group:           0x00000059
+            group_id:        0x00000059
           - action:          SET_NW_TTL
             ttl:             0xFF
   - type:            SELECT

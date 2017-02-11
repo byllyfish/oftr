@@ -12,6 +12,7 @@
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
 #include "ofp/queuenumber.h"
+#include "ofp/groupnumber.h"
 #include "ofp/validation.h"
 
 namespace ofp {
@@ -186,13 +187,13 @@ class AT_GROUP {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_GROUP, 8); }
 
-  constexpr explicit AT_GROUP(UInt32 group) : group_{group} {}
+  constexpr explicit AT_GROUP(GroupNumber group) : group_{group} {}
 
-  UInt32 group() const { return group_; }
+  GroupNumber group() const { return group_; }
 
  private:
   const ActionType type_ = type();
-  const Big32 group_;
+  const GroupNumber group_;
 };
 
 static_assert(sizeof(AT_GROUP) == 8, "Unexpected size.");

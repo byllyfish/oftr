@@ -1487,7 +1487,7 @@ Action/SET_QUEUE:
   
 Action/GROUP: 
   action: GROUP
-  group: UInt32
+  group_id: GroupNumber
   
 Action/SET_NW_TTL: 
   action: SET_NW_TTL

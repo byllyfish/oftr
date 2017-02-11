@@ -107,7 +107,7 @@ queue_id: QueueNumber
 
 const char *const kGroupSchema = R"""({Action/GROUP}
 action: GROUP
-group: UInt32
+group_id: GroupNumber
 )""";
 
 const char *const kSetNwTTLSchema = R"""({Action/SET_NW_TTL}
@@ -207,8 +207,8 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       }
       case AT_GROUP::type(): {
         const AT_GROUP *action = item.action<AT_GROUP>();
-        Hex32 group = action->group();
-        io.mapRequired("group", group);
+        GroupNumber group = action->group();
+        io.mapRequired("group_id", group);
         break;
       }
       case AT_SET_NW_TTL::type(): {
@@ -396,8 +396,8 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
       }
       case OFPAT_GROUP: {
-        UInt32 group;
-        io.mapRequired("group", group);
+        GroupNumber group;
+        io.mapRequired("group_id", group);
         AT_GROUP action{group};
         list.add(action);
         break;
