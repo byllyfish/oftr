@@ -1,7 +1,5 @@
-_dst
 _file
 _pkt_decode
-_src
 _text
 action
 actions

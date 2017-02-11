@@ -106,8 +106,8 @@ Message/Hello:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: HELLO
   msg:
@@ -121,8 +121,8 @@ Message/Error:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: ERROR
   msg:
@@ -139,8 +139,8 @@ Message/EchoRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: ECHO_REQUEST
   msg:
@@ -154,8 +154,8 @@ Message/EchoReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: ECHO_REPLY
   msg:
@@ -169,8 +169,8 @@ Message/FeaturesRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: FEATURES_REQUEST
   
@@ -182,8 +182,8 @@ Message/FeaturesReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: FEATURES_REPLY
   msg:
@@ -203,8 +203,8 @@ Message/GetConfigRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: GET_CONFIG_REQUEST
   
@@ -216,8 +216,8 @@ Message/GetConfigReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: GET_CONFIG_REPLY
   msg:
@@ -232,8 +232,8 @@ Message/SetConfig:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: SET_CONFIG
   msg:
@@ -248,8 +248,8 @@ Message/PacketIn:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: PACKET_IN
   msg:
@@ -273,8 +273,8 @@ Message/FlowRemoved:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: FLOW_REMOVED
   msg:
@@ -297,8 +297,8 @@ Message/PortStatus:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: PORT_STATUS
   msg:
@@ -335,8 +335,8 @@ Message/PacketOut:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: PACKET_OUT
   msg:
@@ -354,8 +354,8 @@ Message/FlowMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: FLOW_MOD
   msg:
@@ -381,8 +381,8 @@ Message/GroupMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: GROUP_MOD
   msg:
@@ -399,8 +399,8 @@ Message/PortMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: PORT_MOD
   msg:
@@ -426,8 +426,8 @@ Message/TableMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: TABLE_MOD
   msg:
@@ -449,8 +449,8 @@ Message/Request.Desc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.DESC
   
@@ -462,8 +462,8 @@ Message/Request.Table:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.TABLE
   
@@ -475,8 +475,8 @@ Message/Request.PortDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.PORT_DESC
   
@@ -488,8 +488,8 @@ Message/Request.GroupDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.GROUP_DESC
   
@@ -501,8 +501,8 @@ Message/Request.GroupFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.GROUP_FEATURES
   
@@ -514,8 +514,8 @@ Message/Request.MeterFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.METER_FEATURES
   
@@ -527,8 +527,8 @@ Message/Request.Flow:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.FLOW
   msg:
@@ -547,8 +547,8 @@ Message/Request.Aggregate:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.AGGREGATE
   msg:
@@ -567,8 +567,8 @@ Message/Request.PortStats:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.PORT_STATS
   msg:
@@ -582,8 +582,8 @@ Message/Request.Queue:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.QUEUE
   msg:
@@ -598,8 +598,8 @@ Message/Request.QueueDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.QUEUE_DESC
   msg:
@@ -614,8 +614,8 @@ Message/Request.MeterConfig:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.METER_CONFIG
   msg:
@@ -629,8 +629,8 @@ Message/Request.Meter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.METER
   msg:
@@ -644,8 +644,8 @@ Message/Request.Group:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.GROUP
   msg:
@@ -659,8 +659,8 @@ Message/Request.TableFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.TABLE_FEATURES
   msg:
@@ -694,8 +694,8 @@ Message/Request.TableDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.TABLE_DESC
   
@@ -707,8 +707,8 @@ Message/Request.FlowMonitor:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.FLOW_MONITOR
   msg:
@@ -728,8 +728,8 @@ Message/Request.Experimenter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUEST.EXPERIMENTER
   msg:
@@ -745,8 +745,8 @@ Message/Reply.Desc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.DESC
   msg:
@@ -764,8 +764,8 @@ Message/Reply.Table:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.TABLE
   msg:
@@ -785,8 +785,8 @@ Message/Reply.PortDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.PORT_DESC
   msg: [Port]
@@ -799,8 +799,8 @@ Message/Reply.GroupDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.GROUP_DESC
   msg:
@@ -816,8 +816,8 @@ Message/Reply.GroupFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.GROUP_FEATURES
   msg:
@@ -840,8 +840,8 @@ Message/Reply.MeterFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.METER_FEATURES
   msg:
@@ -859,8 +859,8 @@ Message/Reply.Flow:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.FLOW
   msg:
@@ -884,8 +884,8 @@ Message/Reply.Aggregate:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.AGGREGATE
   msg:
@@ -901,8 +901,8 @@ Message/Reply.PortStats:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.PORT_STATS
   msg:
@@ -942,8 +942,8 @@ Message/Reply.Queue:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.QUEUE
   msg:
@@ -962,8 +962,8 @@ Message/Reply.QueueDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.QUEUE_DESC
   msg:
@@ -981,8 +981,8 @@ Message/Reply.MeterConfig:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.METER_CONFIG
   msg:
@@ -998,8 +998,8 @@ Message/Reply.Meter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.METER
   msg:
@@ -1018,8 +1018,8 @@ Message/Reply.Group:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.GROUP
   msg:
@@ -1038,8 +1038,8 @@ Message/Reply.TableFeatures:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.TABLE_FEATURES
   msg:
@@ -1073,8 +1073,8 @@ Message/Reply.TableDesc:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.TABLE_DESC
   msg:
@@ -1096,8 +1096,8 @@ Message/Reply.FlowMonitor:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.FLOW_MONITOR
   msg:
@@ -1121,8 +1121,8 @@ Message/Reply.Experimenter:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REPLY.EXPERIMENTER
   msg:
@@ -1138,8 +1138,8 @@ Message/BarrierRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: BARRIER_REQUEST
   
@@ -1151,8 +1151,8 @@ Message/BarrierReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: BARRIER_REPLY
   
@@ -1164,8 +1164,8 @@ Message/QueueGetConfigRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: QUEUE_GET_CONFIG_REQUEST
   msg:
@@ -1179,8 +1179,8 @@ Message/QueueGetConfigReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: QUEUE_GET_CONFIG_REPLY
   msg:
@@ -1195,8 +1195,8 @@ Message/RoleRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: ROLE_REQUEST
   msg:
@@ -1211,8 +1211,8 @@ Message/RoleReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: ROLE_REPLY
   msg:
@@ -1227,8 +1227,8 @@ Message/GetAsyncRequest:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: GET_ASYNC_REQUEST
   
@@ -1240,8 +1240,8 @@ Message/GetAsyncReply:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: GET_ASYNC_REPLY
   msg:
@@ -1267,8 +1267,8 @@ Message/SetAsync:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: SET_ASYNC
   msg:
@@ -1294,8 +1294,8 @@ Message/MeterMod:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: METER_MOD
   msg:
@@ -1312,8 +1312,8 @@ Message/RoleStatus:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: ROLE_STATUS
   msg:
@@ -1330,8 +1330,8 @@ Message/TableStatus:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: TABLE_STATUS
   msg:
@@ -1354,8 +1354,8 @@ Message/RequestForward:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: REQUESTFORWARD
   msg: Message
@@ -1368,8 +1368,8 @@ Message/BundleControl:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: BUNDLE_CONTROL
   msg:
@@ -1386,8 +1386,8 @@ Message/BundleAddMessage:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: BUNDLE_ADD_MESSAGE
   msg:
@@ -1404,8 +1404,8 @@ Message/RawMessage:
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
   type: _RAW_MESSAGE
   msg:

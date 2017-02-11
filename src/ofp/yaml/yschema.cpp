@@ -21,8 +21,8 @@ const char *const kMessagePrefix = R"""(  version: !opt UInt8
   auxiliary_id: !opt UInt8
   flags: !optout [MultipartFlags]
   time: !optout Timestamp
-  _src: !optout IPEndpoint
-  _dst: !optout IPEndpoint
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
   _file: !optout String
 )""";
 

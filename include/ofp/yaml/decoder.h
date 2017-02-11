@@ -102,8 +102,8 @@ struct MappingTraits<ofp::yaml::Decoder> {
         IPv6Endpoint src = info->source();
         IPv6Endpoint dst = info->dest();
         io.mapRequired("conn_id", sessionId);
-        io.mapRequired("_src", src);
-        io.mapRequired("_dst", dst);
+        io.mapRequired("src", src);
+        io.mapRequired("dst", dst);
       }
       if (!info->filename().empty()) {
         std::string filename = info->filename();
