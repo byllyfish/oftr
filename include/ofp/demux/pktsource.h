@@ -82,7 +82,7 @@ class PktSource {
 
   bool create(const std::string &device);
   bool openOffline(const std::string &path);
-  bool activate();
+  bool activate(const std::string &device);
   bool checkDatalink();
   bool setFilter(const std::string &filter);
   void setError(const char *func, const std::string &arg, const char *result);
