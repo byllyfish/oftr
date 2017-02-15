@@ -82,7 +82,7 @@ echo "Run oftr decode combinging --pcap-device option with file arguments."
 # Decode OpenFlow messages in `cap_single.pcap`.
 
 echo "Run oftr decode on $CURRENT_SOURCE_DIR/cap_single.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.out" 2>&1
+$LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.out"
 echo "Compare $CURRENT_TEST_DIR/cap_single.pcap.out to $CURRENT_SOURCE_DIR/cap_single.pcap.out"
 diff "$CURRENT_TEST_DIR/cap_single.pcap.out" "$CURRENT_SOURCE_DIR/cap_single.pcap.out"
 

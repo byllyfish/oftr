@@ -377,6 +377,8 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
     return ExitStatus::FileOpenFailed;
   }
 
+  llvm::errs() << "Listening on " << device << ", link-type " << pcap.datalink() << ", filter \"" << pcapFilter_ << "\"\n";
+
   setCurrentFilename(std::string("pcap:") + device);
   msg.runLoop(&pcap);
   pcap.close();
@@ -401,6 +403,8 @@ ExitStatus Decode::decodePcapFiles() {
       llvm::errs() << "Error: " << filename << ": " << pcap.error() << '\n';
       return ExitStatus::FileOpenFailed;
     }
+
+    llvm::errs() << "Reading from \"" << filename << "\", link-type " << pcap.datalink() << ", filter \"" << pcapFilter_ << "\"\n";
 
     setCurrentFilename(filename);
     msg.runLoop(&pcap);

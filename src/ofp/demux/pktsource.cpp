@@ -46,11 +46,16 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
 }
 
 std::string PktSource::datalink() const {
-  if (datalink_ >= 0) {
-    const char *name = pcap_datalink_val_to_name(datalink_);
-    return !name ? "NULL" : name;
+  if (datalink_ < 0) {
+    return "<not open>";
   }
-  return "<not open>";
+
+  const char *name = pcap_datalink_val_to_name(datalink_);
+  if (name == nullptr) {
+    return "<null/error>";
+  }
+
+  return name;
 }
 
 /// \brief Open capture device to read live packets from the network.
