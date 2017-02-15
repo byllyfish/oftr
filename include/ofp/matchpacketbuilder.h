@@ -34,7 +34,6 @@ class MatchPacketBuilder {
   LLDPValue<LLDPType::ChassisID> lldpChassisId_;
   LLDPValue<LLDPType::PortID> lldpPortId_;
   UInt16 lldpTtl_ = 0;
-  UInt64 present_ = 0;
 
   void buildEthernet(ByteList *msg) const;
   void buildArp(ByteList *msg) const;
@@ -44,8 +43,6 @@ class MatchPacketBuilder {
     void buildIPv4(ByteList *msg, const ByteRange &data) const;
     void buildICMPv4(ByteList *msg, const ByteRange &data) const;
 #endif  // 0
-
-  void reportMissingFields() const;
 };
 
 OFP_END_IGNORE_PADDING

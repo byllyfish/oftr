@@ -578,3 +578,14 @@ TEST(encoderfail, portmodv4_experimenter) {
       encoder.data(), encoder.size());
 }
 #endif  // 0
+
+TEST(encoderfail, packetout_data) {
+  const char *input = R"""(
+{"version":4,"datapath_id":"0x1","msg":{"in_port":"CONTROLLER","data":"","_pkt_decode":[{"value":"10.10.10.1","field":"IPV4_SRC"},{"value":0,"field":"ICMPV4_CODE"},{"value":0,"field":"ICMPV4_TYPE"},{"value":"089400014bb3a05800000000fa350c0000000000101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f3031323334353637","field":"DATA"},{"value":"f2:f4:54:60:60:53","field":"ETH_DST"},{"value":2048,"field":"ETH_TYPE"},{"value":"0e:00:00:00:00:01","field":"ETH_SRC"},{"value":"10.0.0.1","field":"IPV4_DST"},{"value":1,"field":"IP_PROTO"}],"actions":[{"action":"OUTPUT","port_no":1,"max_len":0}],"buffer_id":"NO_BUFFER"},"xid":8254,"type":"PACKET_OUT","conn_id":4}
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("YAML:2:339: error: Invalid OXM type.\n{\"version\":4,\"datapath_id\":\"0x1\",\"msg\":{\"in_port\":\"CONTROLLER\",\"data\":\"\",\"_pkt_decode\":[{\"value\":\"10.10.10.1\",\"field\":\"IPV4_SRC\"},{\"value\":0,\"field\":\"ICMPV4_CODE\"},{\"value\":0,\"field\":\"ICMPV4_TYPE\"},{\"value\":\"089400014bb3a05800000000fa350c0000000000101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f3031323334353637\",\"field\":\"DATA\"},{\"value\":\"f2:f4:54:60:60:53\",\"field\":\"ETH_DST\"},{\"value\":2048,\"field\":\"ETH_TYPE\"},{\"value\":\"0e:00:00:00:00:01\",\"field\":\"ETH_SRC\"},{\"value\":\"10.0.0.1\",\"field\":\"IPV4_DST\"},{\"value\":1,\"field\":\"IP_PROTO\"}],\"actions\":[{\"action\":\"OUTPUT\",\"port_no\":1,\"max_len\":0}],\"buffer_id\":\"NO_BUFFER\"},\"xid\":8254,\"type\":\"PACKET_OUT\",\"conn_id\":4}\n                                                                                                                                                                                                                                                                                                                                                  ^~~~~~\n", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}

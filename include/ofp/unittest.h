@@ -8,6 +8,7 @@
 #include <cstdio>
 #include "ofp/memorychannel.h"
 #include "ofp/types.h"
+#include "ofp/oxmrange.h"
 
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wglobal-constructors"
@@ -21,6 +22,10 @@ inline void PrintTo(const ByteRange &value, std::ostream *os) {
 }
 
 inline void PrintTo(const ByteList &value, std::ostream *os) {
+  *os << detail::ToString(value);
+}
+
+inline void PrintTo(const OXMRange &value, std::ostream *os) {
   *os << detail::ToString(value);
 }
 

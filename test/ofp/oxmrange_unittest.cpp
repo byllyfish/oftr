@@ -66,3 +66,13 @@ TEST(oxmrange, validateInput_zeroField) {
   OXMRange range{buf.data(), buf.size()};
   EXPECT_TRUE(range.validateInput());
 }
+
+TEST(oxmrange, iteratate_zeroField) {
+  auto buf = HexToRawData("80000A020800800016040A0A0A0180001401018000280100800026010000000000");
+  OXMRange range{buf.data(), buf.size()};
+  EXPECT_TRUE(range.validateInput());
+
+  for (const auto &item : range) {
+    EXPECT_FALSE(item.type().isIllegal());
+  }
+}

@@ -7,24 +7,12 @@
 
 using namespace ofp;
 
-#define FieldBit(oxm_) (1UL << (oxm_::type().oxmField() - 1))
-
-const UInt64 kRequiredEthernet =
-    FieldBit(OFB_ETH_DST) | FieldBit(OFB_ETH_SRC) | FieldBit(OFB_ETH_TYPE);
-
-const UInt64 kRequiredArp = kRequiredEthernet | FieldBit(OFB_ARP_OP) |
-                            FieldBit(OFB_ARP_SHA) | FieldBit(OFB_ARP_SPA) |
-                            FieldBit(OFB_ARP_THA) | FieldBit(OFB_ARP_TPA);
-
-const UInt64 kRequiredLLDP = kRequiredEthernet | FieldBit(X_LLDP_CHASSIS_ID) |
-                             FieldBit(X_LLDP_PORT_ID) | FieldBit(X_LLDP_TTL);
 
 MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
+  assert(range.validateInput());
+
   for (const auto &item : range) {
     OXMType type = item.type();
-
-    // Track which fields are present, so we can detect missing fields.
-    present_ |= (1UL << (type.oxmField() - 1));
 
     switch (type) {
       case OFB_ETH_DST::type():
@@ -113,11 +101,6 @@ void MatchPacketBuilder::buildEthernet(ByteList *msg) const {
 }
 
 void MatchPacketBuilder::buildArp(ByteList *msg) const {
-  if ((present_ & kRequiredArp) != kRequiredArp) {
-    reportMissingFields();
-    return;
-  }
-
   buildEthernet(msg);
 
   pkt::Arp arp;
@@ -132,11 +115,6 @@ void MatchPacketBuilder::buildArp(ByteList *msg) const {
 }
 
 void MatchPacketBuilder::buildLldp(ByteList *msg) const {
-  if ((present_ & kRequiredLLDP) != kRequiredLLDP) {
-    reportMissingFields();
-    return;
-  }
-
   buildEthernet(msg);
 
   pkt::LLDPTlv tlv1{pkt::LLDPTlv::CHASSIS_ID, lldpChassisId_.size()};
@@ -192,7 +170,3 @@ void MatchPacketBuilder::buildICMPv4(ByteList *msg, const ByteRange &data) const
 
 #endif  // 0
 
-void MatchPacketBuilder::reportMissingFields() const {
-  log_info("MatchPacketBuilder: Missing Fields!", log::hex(present_),
-           log::hex(kRequiredArp));
-}
