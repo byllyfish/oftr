@@ -43,6 +43,7 @@ namespace ofpx {
 //   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
 //   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams
 //   (for debugging).
+//   --msg-exclude=<type>  Don't output this OpenFlow message type (glob).
 //
 // Usage:
 //
@@ -156,6 +157,7 @@ class Decode : public Subprogram {
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};
+  cl::opt<std::string> msgExclude_{"msg-exclude", cl::desc("Don't output this OpenFlow message type (glob)"), cl::ValueRequired};
   cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{
       "pcap-device",

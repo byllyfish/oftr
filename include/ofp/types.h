@@ -362,6 +362,9 @@ namespace yaml {
 template <class T>
 struct MappingTraits;
 
+template <class T>
+struct ScalarTraits;
+
 }  // namespace yaml
 }  // namespace llvm
 

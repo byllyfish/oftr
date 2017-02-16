@@ -4,6 +4,7 @@
 #include "./oftr_decode.h"
 #include <fstream>
 #include <iostream>
+#include <fnmatch.h>  // for fnmatch()
 #include "./oftr_util.h"
 #include "llvm/Support/Path.h"
 #include "ofp/demux/messagesource.h"
@@ -17,15 +18,9 @@ using namespace ofpx;
 using ofp::UInt8;
 using ExitStatus = Decode::ExitStatus;
 
-// Compare two buffers and return offset of the byte that differs. If buffers
-// are identical, return `size`.
-static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
-  for (size_t i = 0; i < size; ++i) {
-    if (lhs[i] != rhs[i])
-      return i;
-  }
-  return size;
-}
+static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size);
+static bool isMsgExcluded(const ofp::Message *msg, const std::string &pattern);
+
 
 int Decode::run(int argc, const char *const *argv) {
   parseCommandLineOptions(argc, argv,
@@ -442,6 +437,12 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage) {
+  if (!msgExclude_.empty() && isMsgExcluded(message, msgExclude_)) {
+    // Ignore message based on type.
+    log_debug("decodeOneMessage (message ignored)", message->type());
+    return ExitStatus::Success;
+  }
+
   log_debug("decodeOneMessage (transmogrified):", *message);
 
   ofp::yaml::Decoder decoder{message, json_, pktDecode_};
@@ -733,3 +734,23 @@ void Decode::extractPacketDataToFile(const ofp::Message *message) {
     }
   }
 }
+
+// Compare two buffers and return offset of the byte that differs. If buffers
+// are identical, return `size`.
+static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
+  for (size_t i = 0; i < size; ++i) {
+    if (lhs[i] != rhs[i])
+      return i;
+  }
+  return size;
+}
+
+static bool isMsgExcluded(const ofp::Message *msg, const std::string &pattern) {
+  std::string buf;
+  llvm::raw_string_ostream os{buf};
+  llvm::yaml::ScalarTraits<ofp::MessageType>::output(msg->msgType(), nullptr, os);
+  auto type = os.str();
+
+  return 0 == fnmatch(pattern.c_str(), type.c_str(), FNM_CASEFOLD);
+}
+

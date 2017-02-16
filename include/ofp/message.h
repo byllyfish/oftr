@@ -9,6 +9,7 @@
 #include "ofp/header.h"
 #include "ofp/timestamp.h"
 #include "ofp/validation.h"
+#include "ofp/messagetype.h"
 
 namespace ofp {
 
@@ -70,6 +71,7 @@ class Message {
 
   Timestamp time() const { return time_; }
   MessageInfo *info() const { return info_; }
+  MessageType msgType() const { return MessageType{type(), subtype()}; }
   OFPType type() const { return header()->type(); }
   OFPMultipartType subtype() const;
   OFPMultipartFlags flags() const;

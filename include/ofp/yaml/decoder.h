@@ -56,8 +56,7 @@ struct MappingTraits<ofp::yaml::Decoder> {
     Header header = *decoder.msg_->header();
     assert(header.length() == decoder.msg_->size());
 
-    ofp::yaml::MessageType msgType{decoder.msg_->type(),
-                                   decoder.msg_->subtype()};
+    ofp::MessageType msgType = decoder.msg_->msgType();
     io.mapRequired("type", msgType);
 
     Timestamp time = decoder.msg_->time();
@@ -65,8 +64,8 @@ struct MappingTraits<ofp::yaml::Decoder> {
       io.mapRequired("time", time);
     }
 
-    if (msgType.type == OFPT_MULTIPART_REQUEST ||
-        msgType.type == OFPT_MULTIPART_REPLY) {
+    if (msgType.type() == OFPT_MULTIPART_REQUEST ||
+        msgType.type() == OFPT_MULTIPART_REPLY) {
       OFPMultipartFlags flags = decoder.msg_->flags();
       io.mapRequired("flags", flags);
     }
