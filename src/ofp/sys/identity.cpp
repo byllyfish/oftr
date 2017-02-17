@@ -342,7 +342,7 @@ void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
 
   // Retrieve identity pointer from SSL_CTX object.
   Identity *identity = GetIdentityPtr(SSL_get_SSL_CTX(ssl));
-  bool isClient = !ssl->server;
+  bool isClient = !SSL_is_server(ssl);
 
   UInt64 securityId = identity->securityId();
   UInt64 connId = conn->connectionId();
