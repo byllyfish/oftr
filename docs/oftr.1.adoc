@@ -210,8 +210,8 @@ also represents stdin.
 *-V, -verify-output*::
     Verify output by translating it back to binary.
 
-*--include-filename*::
-    Include file name in all decodes.
+*--show-filename*::
+    Show the file name in all decodes.
 
 *--msg-include*='TYPES'::
     Output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.

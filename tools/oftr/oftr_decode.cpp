@@ -638,7 +638,7 @@ void Decode::setCurrentFilename(const std::string &filename) {
     // information about the session, so we can set up the `sessionInfo_`
     // structure with source and destination information.
     (void)parseFilename(filename, &sessionInfo_);
-  } else if (includeFilename_) {
+  } else if (showFilename_) {
     sessionInfo_ = ofp::MessageInfo{filename};
   } else {
     sessionInfo_ = ofp::MessageInfo{};

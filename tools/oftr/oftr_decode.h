@@ -33,7 +33,7 @@ namespace ofpx {
 //   --pkt-decode          Include _pkt_decode in PacketIn/PacketOut decodes.
 //   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to
 //   .pcap file.
-//   --include-filename    Include file name in all decodes.
+//   --show-filename       Show the file name in all decodes.
 //   --output=<file> (-o)  Write output to specified file instead of stdout.
 //   --pcap-device=<device> Reassemble OpenFlow messages from specified device.
 //   --pcap-filter=<filter>  Filter for packet capture.
@@ -157,8 +157,8 @@ class Decode : public Subprogram {
       "pkt-write-file",
       cl::desc("Write data from PacketIn/PacketOut messages to .pcap file"),
       cl::ValueRequired};
-  cl::opt<bool> includeFilename_{"include-filename",
-                                 cl::desc("Include file name in all decodes")};
+  cl::opt<bool> showFilename_{"show-filename",
+                                 cl::desc("Show the file name in all decodes")};
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};

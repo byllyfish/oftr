@@ -27,7 +27,7 @@ diff "$CURRENT_TEST_DIR/openflow-messages.pass.out" "$CURRENT_SOURCE_DIR/openflo
 # resulting error messages (and output) in the file openflow-messages.fail.out.
 
 echo "Test openflow-messages '*.fail'"
-find external/openflow-messages -name '*.fail' -print | sort | xargs $LIBOFP_MEMCHECK $LIBOFP decode -kV --include-filename > "$CURRENT_TEST_DIR/openflow-messages.fail.out" 2>&1
+find external/openflow-messages -name '*.fail' -print | sort | xargs $LIBOFP_MEMCHECK $LIBOFP decode -kV --show-filename > "$CURRENT_TEST_DIR/openflow-messages.fail.out" 2>&1
 
 echo "Compare openflow-messages.fail.out to $CURRENT_SOURCE_DIR/openflow-messages.fail.out"
 diff "$CURRENT_TEST_DIR/openflow-messages.fail.out" "$CURRENT_SOURCE_DIR/openflow-messages.fail.out"
