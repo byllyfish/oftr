@@ -19,7 +19,6 @@ using ofp::UInt8;
 using ExitStatus = Decode::ExitStatus;
 
 static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size);
-static bool isMsgExcluded(const ofp::Message *msg, const std::string &pattern);
 
 
 int Decode::run(int argc, const char *const *argv) {
@@ -110,6 +109,10 @@ bool Decode::validateCommandLineArguments() {
     json_ = true;
     ofp::GLOBAL_ARG_MongoDBCompatible = true;
   }
+
+  // Parse --msg-exclude and --msg-include filters.
+  parseMsgFilter(msgExclude_, &excludeFilter_);
+  parseMsgFilter(msgInclude_, &includeFilter_);
 
   return true;
 }
@@ -437,7 +440,7 @@ ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
 
 ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
                                     const ofp::Message *originalMessage) {
-  if (!msgExclude_.empty() && isMsgExcluded(message, msgExclude_)) {
+  if (!isMsgTypeAllowed(message)) {
     // Ignore message based on type.
     log_debug("decodeOneMessage (message ignored)", message->type());
     return ExitStatus::Success;
@@ -513,6 +516,47 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   }
 
   return ExitStatus::Success;
+}
+
+/// Parse msgType filter -- separate on commas.
+void Decode::parseMsgFilter(const std::string &input, std::vector<std::string> *filter) {
+  llvm::SmallVector<llvm::StringRef, 5> vals;
+  llvm::StringRef{input}.split(vals, ',', -1, false);
+
+  for (const auto &s : vals) {
+    filter->push_back(s.str());
+  }
+}
+
+/// Return true if we're allowed to output this message type.
+bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
+  // No filters?  Allow everything.
+  if (excludeFilter_.empty() && includeFilter_.empty())
+    return true;
+
+  // Get message type as a string, exactly as we would output it.
+  std::string buf;
+  llvm::raw_string_ostream os{buf};
+  llvm::yaml::ScalarTraits<ofp::MessageType>::output(message->msgType(), nullptr, os);
+  auto msgType = os.str();
+
+  // Check msgType against the exclude filter.
+  for (const auto &pattern : excludeFilter_) {
+    if (fnmatch(pattern.c_str(), msgType.c_str(), FNM_CASEFOLD) == 0)
+      return false;
+  }
+
+  // Empty include filter means allow everything that's not excluded.
+  if (includeFilter_.empty())
+    return true;
+
+  // Check msgType against the include filter.
+  for (const auto &pattern : includeFilter_) {
+    if (fnmatch(pattern.c_str(), msgType.c_str(), FNM_CASEFOLD) == 0)
+      return true;
+  }
+
+  return false;
 }
 
 /// Return true if the two messages are equal.
@@ -744,13 +788,3 @@ static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size) {
   }
   return size;
 }
-
-static bool isMsgExcluded(const ofp::Message *msg, const std::string &pattern) {
-  std::string buf;
-  llvm::raw_string_ostream os{buf};
-  llvm::yaml::ScalarTraits<ofp::MessageType>::output(msg->msgType(), nullptr, os);
-  auto type = os.str();
-
-  return 0 == fnmatch(pattern.c_str(), type.c_str(), FNM_CASEFOLD);
-}
-

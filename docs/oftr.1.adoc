@@ -213,6 +213,12 @@ also represents stdin.
 *--include-filename*::
     Include file name in all decodes.
 
+*--msg-include*='TYPES'::
+    Output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+
+*--msg-exclude*='TYPES'::
+    Don't output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+
 *--pkt-decode*::
     Include _pkt_decode in PacketIn/PacketOut decodes.
 

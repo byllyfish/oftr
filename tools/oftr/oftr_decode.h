@@ -43,7 +43,8 @@ namespace ofpx {
 //   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
 //   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams
 //   (for debugging).
-//   --msg-exclude=<type>  Don't output this OpenFlow message type (glob).
+//   --msg-include=<types> Output these OpenFlow message types (glob).
+//   --msg-exclude=<types> Don't output these OpenFlow message types (glob).
 //
 // Usage:
 //
@@ -90,6 +91,8 @@ class Decode : public Subprogram {
   ofp::UInt64 nextSessionId_ = 0;
 
   std::unique_ptr<ofp::demux::PktSink> pktSinkFile_;
+  std::vector<std::string> includeFilter_;
+  std::vector<std::string> excludeFilter_;
 
   bool validateCommandLineArguments();
 
@@ -104,6 +107,8 @@ class Decode : public Subprogram {
   ExitStatus decodeOneMessage(const ofp::Message *message,
                               const ofp::Message *originalMessage);
 
+  static void parseMsgFilter(const std::string &input, std::vector<std::string> *filter);
+  bool isMsgTypeAllowed(const ofp::Message *message) const;
   bool equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const;
 
   static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
@@ -157,7 +162,8 @@ class Decode : public Subprogram {
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};
-  cl::opt<std::string> msgExclude_{"msg-exclude", cl::desc("Don't output this OpenFlow message type (glob)"), cl::ValueRequired};
+  cl::opt<std::string> msgInclude_{"msg-include", cl::desc("Output these OpenFlow message types (glob)"), cl::ValueRequired};
+  cl::opt<std::string> msgExclude_{"msg-exclude", cl::desc("Don't output these OpenFlow message types (glob)"), cl::ValueRequired};
   cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{
       "pcap-device",
