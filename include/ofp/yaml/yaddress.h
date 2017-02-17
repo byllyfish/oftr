@@ -114,8 +114,8 @@ struct ScalarTraits<ofp::IPv6Endpoint> {
     return "";
   }
 
-  // IPv6Endpoint may begin with '['. We have to quote it.
-  static bool mustQuote(StringRef) { return true; }
+  // Quote IPv6Endpoint if it begins with '['.
+  static bool mustQuote(StringRef s) { return !s.empty() && s.front() == '['; }
 };
 
 }  // namespace yaml
