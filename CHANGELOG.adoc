@@ -1,6 +1,24 @@
 = Changelog
 
-== Version 0.23 (16 January 2016)
+== Version 0.24 (17 February 2017)
+
+- Changed name of tool to "oftr".
+- Don't put quotes around IPv4 endpoint in YAML output.
+- In decode tool arguments, rename -include-filename to -show-filename.
+- In decode tool, add support for -msg-include and -msg-exclude options.
+- When using pcap-based options, write a header line to stderr to show packet source and active filter.
+- Improve error reporting when activating a pcap capture source.
+- Various changes to simplify YAML schema.
+- Add -schema-lexicon option to help tool.
+- Transition code to llvm::raw_ostream from std::ostream.
+- Restrict MacAddress hex format to "hh:hh:hh:hh:hh:hh" or "hhhhhhhhhhhh".
+- Make datapath_id parser more strict. Don't parse "" as an empty datapath_id.
+- Add initial 'MatchPacketBuilder' support for ARP and LLDP. Can be used to generate packets.
+- Options to push_vlan and push_mpls should be called ethertype.
+- Fix Raspberry PI portability issue with time_t.
+- Update asio and boringssl from latest master branch.
+
+== Version 0.23 (16 January 2017)
 
 - Change RPC end of message delimiter from '\n' to '\0'.
 - Remove support for JSON-quoted YAML RPC input.
