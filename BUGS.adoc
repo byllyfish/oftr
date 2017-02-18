@@ -16,7 +16,6 @@
 ** OFPMP_TABLE multipart reply message
 ** OFPMP_GROUP multipart reply message
 ** OFPMP_QUEUE multipart reply message
-** PACKET_IN message is missing `validateInput`.
 
 * Version 1.2
 ** OFPMP_TABLE multipart reply message

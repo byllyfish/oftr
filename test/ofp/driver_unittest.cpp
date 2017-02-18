@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/driver.h"
@@ -25,7 +25,7 @@ TEST(driver, test) {
   std::error_code err;
 
   UInt64 connId = driver.listen(
-      ChannelOptions::DEFAULT_CONTROLLER, 0, IPv6Endpoint{OFPGetDefaultPort()},
+      ChannelOptions::FEATURES_REQ, 0, IPv6Endpoint{OFPGetDefaultPort()},
       ProtocolVersions::All, [] { return new MockChannelListener; }, err);
 
   EXPECT_NE(0, connId);

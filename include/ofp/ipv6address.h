@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_IPV6ADDRESS_H_
@@ -23,7 +23,7 @@ class IPv6Address {
   /// \returns zone_id for link-local address.
   UInt32 zone() const;
 
-  bool parse(const std::string &s);
+  bool parse(const std::string &s, bool parseIPv4 = true);
   void clear() { addr_.fill(0); }
 
   bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
@@ -45,7 +45,9 @@ class IPv6Address {
     return v4;
   }
 
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
+
+  void outputV6(llvm::raw_ostream &os) const;
 
   const ArrayType &toArray() const { return addr_; }
 
@@ -63,6 +65,9 @@ class IPv6Address {
 
   bool parseIPv6Address(const std::string &s);
   bool parseIPv4Address(const std::string &s);
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const IPv6Address &value);
 };
 
 static_assert(sizeof(IPv6Address) == 16, "Unexpected size.");
@@ -70,10 +75,6 @@ static_assert(alignof(IPv6Address) == 1, "Unexpected alignment.");
 static_assert(IsStandardLayout<IPv6Address>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv6Address>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const IPv6Address &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

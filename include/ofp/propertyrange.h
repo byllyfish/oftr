@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_PROPERTYRANGE_H_
@@ -25,7 +25,7 @@ class PropertyIteratorItem : private NonCopyable {
     return *Interpret_cast<Type>(this);
   }
 
-  ByteRange value() const { return ByteRange{BytePtr(this) + 4, len_ - 4U}; }
+  ByteRange value() const { return SafeByteRange(this, len_, 4); }
 
   bool validateInput(Validation *context) const { return true; }
 

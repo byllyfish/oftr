@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/matchpacket.h"
@@ -66,13 +66,32 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
 
   match_.add(OFB_ETH_DST(eth->dst));
   match_.add(OFB_ETH_SRC(eth->src));
-  match_.add(OFB_ETH_TYPE(eth->type));
 
   pkt += sizeof(pkt::Ethernet);
   length -= sizeof(pkt::Ethernet);
   offset_ += sizeof(pkt::Ethernet);
 
-  switch (eth->type) {
+  // Handle 802.1Q tag: ethType = 0x8100.
+  UInt16 ethType = eth->type;
+  if (ethType == DATALINK_8021Q) {
+    auto vlan = pkt::VlanHdr::cast(pkt, length);
+    if (!vlan) {
+      return;
+    }
+
+    // N.B. Continue the OpenFlow tradition of setting the OFPVID_PRESENT bit.
+    match_.add(OFB_VLAN_VID((vlan->tci & 0x0FFF) | OFPVID_PRESENT));
+    match_.add(OFB_VLAN_PCP(vlan->tci >> 13));
+    ethType = vlan->ethType;
+
+    pkt += sizeof(pkt::VlanHdr);
+    length -= sizeof(pkt::VlanHdr);
+    offset_ += sizeof(pkt::VlanHdr);
+  }
+
+  match_.add(OFB_ETH_TYPE(ethType));
+
+  switch (ethType) {
     case DATALINK_ARP:
       decodeARP(pkt, length);
       break;
@@ -86,6 +105,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
       break;
 
     case DATALINK_LLDP:
+    case DATALINK_BDDP:
       decodeLLDP(pkt, length);
       break;
 
@@ -101,8 +121,7 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
     return;
   }
 
-  if (std::memcmp(arp->prefix, "\x00\x01\x08\x00\x06\x04",
-                  sizeof(arp->prefix)) != 0) {
+  if (std::memcmp(arp->prefix, OFP_ARP_PREFIX_STR, sizeof(arp->prefix)) != 0) {
     log_warning("MatchPacket: Unexpected arp prefix", log::hex(arp->prefix));
     return;
   }
@@ -148,8 +167,9 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   match_.add(OFB_IPV4_SRC{ip->src});
   match_.add(OFB_IPV4_DST{ip->dst});
 
-  if (ip->frag) {
-    match_.add(NXM_NX_IP_FRAG{pkt::nxmFragmentType(ip->frag)});
+  UInt16 frag = ip->frag & 0x3fff;  // ignore DF bit
+  if (frag) {
+    match_.add(NXM_NX_IP_FRAG{pkt::nxmFragmentType(frag)});
   }
 
   match_.add(NXM_NX_IP_TTL{ip->ttl});

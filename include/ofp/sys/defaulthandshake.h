@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_SYS_DEFAULTHANDSHAKE_H_
@@ -24,6 +24,7 @@ class DefaultHandshake : public ChannelListener {
   void onChannelUp(Channel *channel) override;
   void onChannelDown(Channel *channel) override;
   void onMessage(const Message *message) override;
+  bool onTickle(Channel *channel, TimePoint now) override;
 
   ChannelOptions options() const { return options_; }
   ProtocolVersions versions() const { return versions_; }
@@ -37,6 +38,7 @@ class DefaultHandshake : public ChannelListener {
   Factory listenerFactory_;
   ChannelOptions options_;
   UInt32 startingXid_ = 0;
+  TimePoint timeStarted_;
 
   void onHello(const Message *message);
   void onFeaturesReply(const Message *message);

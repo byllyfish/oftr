@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/constants.h"
@@ -10,7 +10,7 @@ UInt16 ofp::OFPGetDefaultPort() {
   if (!portStr)
     return OFP_DEFAULT_PORT;
 
-  int portNum = static_cast<int>(std::strtol(portStr, NULL, 10));
+  int portNum = static_cast<int>(std::strtol(portStr, nullptr, 10));
   if (portNum > 0 && portNum < 0xffff) {
     return UInt16_narrow_cast(portNum);
   }
@@ -21,7 +21,7 @@ UInt16 ofp::OFPGetDefaultPort() {
 static const char *toCString(OFPType type);
 static const char *toCString(OFPMultipartType type);
 
-std::ostream &ofp::operator<<(std::ostream &os, OFPType type) {
+llvm::raw_ostream &ofp::operator<<(llvm::raw_ostream &os, OFPType type) {
   const char *s = toCString(type);
   if (s) {
     return os << s;
@@ -29,7 +29,8 @@ std::ostream &ofp::operator<<(std::ostream &os, OFPType type) {
   return os << '[' << static_cast<int>(type) << ']';
 }
 
-std::ostream &ofp::operator<<(std::ostream &os, OFPMultipartType type) {
+llvm::raw_ostream &ofp::operator<<(llvm::raw_ostream &os,
+                                   OFPMultipartType type) {
   const char *s = toCString(type);
   if (s) {
     return os << s;
@@ -80,6 +81,7 @@ const char *toCString(OFPType type) {
     ENUMCASE(OFPT_REQUESTFORWARD);
     ENUMCASE(OFPT_MAX_ALLOWED);
     ENUMCASE(OFPT_UNSUPPORTED);
+    ENUMCASE(OFPT_RAW_MESSAGE);
   }
 
   return nullptr;

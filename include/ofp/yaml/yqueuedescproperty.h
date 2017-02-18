@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YQUEUEDESCPROPERTY_H_
@@ -14,11 +14,7 @@ struct QueueDescPropertyItem {};
 using QueueDescPropertyIterator = TypedPropertyIterator<QueueDescPropertyItem>;
 struct QueueDescPropertyRange {};
 struct QueueDescPropertyInserter {};
-struct QueueDescPropertyList {
-  // Need begin/end to allow mapOptional("properties", ...)
-  int begin() const { return 0; }
-  int end() const { return 0; }
-};
+struct QueueDescPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YQUEUEGETCONFIGREPLY_H_
@@ -14,14 +14,14 @@ const char *const kQueueGetConfigReplySchema =
     R"""({Message/QueueGetConfigReply}
 type: QUEUE_GET_CONFIG_REPLY
 msg:
-  port: PortNumber
+  port_no: PortNumber
   queues: [Queue]
 )""";
 
 template <>
 struct MappingTraits<ofp::QueueGetConfigReply> {
   static void mapping(IO &io, ofp::QueueGetConfigReply &msg) {
-    io.mapRequired("port", msg.port_);
+    io.mapRequired("port_no", msg.port_);
     ofp::QueueRange queues = msg.queues();
     io.mapRequired("queues", queues);
   }
@@ -30,7 +30,7 @@ struct MappingTraits<ofp::QueueGetConfigReply> {
 template <>
 struct MappingTraits<ofp::QueueGetConfigReplyBuilder> {
   static void mapping(IO &io, ofp::QueueGetConfigReplyBuilder &msg) {
-    io.mapRequired("port", msg.msg_.port_);
+    io.mapRequired("port_no", msg.msg_.port_);
     io.mapRequired("queues", msg.queues_);
   }
 };

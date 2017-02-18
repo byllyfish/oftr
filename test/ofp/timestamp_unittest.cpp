@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/timestamp.h"
@@ -96,9 +96,8 @@ TEST(timestamp, relational) {
 }
 
 TEST(timestamp, now) {
-  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
-  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
-  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
+  log_info("Timestamp::now", Timestamp::now().toStringUTC());
+  log_info("Timestamp::now", Timestamp::now().toStringUTC());
 }
 
 TEST(timestamp, secondsSince) {
@@ -131,4 +130,35 @@ TEST(timestamp, toStringUTC) {
 
   Timestamp b{2, 1000000};
   EXPECT_EQ("1970-01-01T00:00:02.001000000Z", b.toStringUTC());
+}
+
+TEST(timestamp, stream) {
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+
+  Timestamp a{123456789101112, 3456789};
+  oss << a;
+  EXPECT_EQ("123456789101112.003456789", oss.str());
+}
+
+TEST(timestamp, addSeconds) {
+  Timestamp a{123456789, 123456789};
+
+  a.addSeconds(20);
+  EXPECT_EQ(123456789 + 20, a.seconds());
+  EXPECT_EQ(123456789, a.nanoseconds());
+
+  a.addSeconds(-40);
+  EXPECT_EQ(123456789 - 20, a.seconds());
+  EXPECT_EQ(123456789, a.nanoseconds());
+}
+
+TEST(timestamp, unix_time) {
+  Timestamp a{123456789101112, 3456789};
+
+  if (sizeof(time_t) > 4) {
+    EXPECT_EQ(123456789101112, a.unix_time());
+  } else {
+    EXPECT_EQ(123456789101112 & 0xffffffff, Unsigned_cast(a.unix_time()));
+  }
 }

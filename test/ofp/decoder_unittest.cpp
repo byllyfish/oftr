@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/decoder.h"
@@ -12,7 +12,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   {
     // YAML test
@@ -66,7 +66,7 @@ static void testDecodeOnly(const char *hex, const char *yaml) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   // YAML test
   Decoder decoder{&msg};
@@ -210,7 +210,7 @@ TEST(decoder, getasyncrequestv1) {
   auto s = HexToRawData("011A0008000000BF");
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
 
   Decoder decoder{&msg};
 
@@ -331,8 +331,8 @@ TEST(decoder, ofmp_flowreply_v4) {
       "00000000000A0001000C8000000412345678000000000001000801000000",
       "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
-      "     0x01\n    duration_sec:    0x00000002\n    duration_nsec:   "
-      "0x00000003\n    priority:        0x0004\n    idle_timeout:    0x0005\n  "
+      "     0x01\n    duration:        2.000000003\n    priority:        "
+      "0x0004\n    idle_timeout:    0x0005\n  "
       "  hard_timeout:    0x0006\n    flags:           [ SEND_FLOW_REM, "
       "CHECK_OVERLAP, RESET_COUNTS ]\n    cookie:          "
       "0x0000000000000008\n    packet_count:    0x0000000000000009\n    "
@@ -352,15 +352,15 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "040506080000606AABBCCDDEEFF0001000801000000",
       "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
-      "     0x01\n    duration_sec:    0x00000002\n    duration_nsec:   "
-      "0x00000003\n    priority:        0x0004\n    idle_timeout:    0x0005\n  "
+      "     0x01\n    duration:        2.000000003\n    priority:        "
+      "0x0004\n    idle_timeout:    0x0005\n  "
       "  hard_timeout:    0x0006\n    flags:           [ SEND_FLOW_REM, "
       "CHECK_OVERLAP, RESET_COUNTS ]\n    cookie:          "
       "0x0000000000000008\n    packet_count:    0x0000000000000009\n    "
       "byte_count:      0x000000000000000A\n    match:           \n      - "
       "field:           IN_PORT\n        value:           0x12345678\n    "
-      "instructions:    \n  - table_id:        0x11\n    duration_sec:    "
-      "0x00000022\n    duration_nsec:   0x00000033\n    priority:        "
+      "instructions:    \n  - table_id:        0x11\n    duration:        "
+      "34.000000051\n    priority:        "
       "0x0044\n    idle_timeout:    0x0055\n    hard_timeout:    0x0066\n    "
       "flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS, "
       "NO_BYT_COUNTS, '0x00000060' ]\n    cookie:          "
@@ -381,15 +381,15 @@ TEST(decoder, ofmp_flowreply_v1) {
       "F",
       "---\ntype:            REPLY.FLOW\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
-      "\n  - table_id:        0x33\n    duration_sec:    0x44444444\n    "
-      "duration_nsec:   0x55555555\n    priority:        0x6666\n    "
+      "\n  - table_id:        0x33\n    duration:        "
+      "1145324612.x55555555\n    priority:        0x6666\n    "
       "idle_timeout:    0x7777\n    hard_timeout:    0x8888\n    flags:        "
       "   [  ]\n    cookie:          0xAAAAAAAAAAAAAAAA\n    packet_count:    "
       "0xBBBBBBBBBBBBBBBB\n    byte_count:      0xCCCCCCCCCCCCCCCC\n    match: "
       "          \n      - field:           IN_PORT\n        value:           "
       "0x0000DDDD\n    instructions:    \n      - instruction:     "
       "APPLY_ACTIONS\n        actions:         \n          - action:          "
-      "OUTPUT\n            port:            0x0000EEEE\n            max_len:   "
+      "OUTPUT\n            port_no:         0x0000EEEE\n            max_len:   "
       "      NO_BUFFER\n...\n");
 }
 
@@ -403,17 +403,17 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "9999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF",
       "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x01\nmsg:             \n  - table_id:   "
-      "     0x01\n    duration_sec:    0x00000002\n    duration_nsec:   "
-      "0x00000003\n    priority:        0x0004\n    idle_timeout:    0x0005\n  "
+      "     0x01\n    duration:        2.000000003\n    priority:        "
+      "0x0004\n    idle_timeout:    0x0005\n  "
       "  hard_timeout:    0x0006\n    flags:           [  ]\n    cookie:       "
       "   0x0000000000000008\n    packet_count:    0x0000000000000009\n    "
       "byte_count:      0x000000000000000A\n    match:           \n      - "
       "field:           IN_PORT\n        value:           0x00005678\n    "
       "instructions:    \n      - instruction:     APPLY_ACTIONS\n        "
       "actions:         \n          - action:          OUTPUT\n            "
-      "port:            0x0000EEEE\n            max_len:         NO_BUFFER\n  "
-      "- table_id:        0x11\n    duration_sec:    0x00000022\n    "
-      "duration_nsec:   0x00000033\n    priority:        0x0044\n    "
+      "port_no:         0x0000EEEE\n            max_len:         NO_BUFFER\n  "
+      "- table_id:        0x11\n    duration:        34.000000051\n    "
+      "priority:        0x0044\n    "
       "idle_timeout:    0x0055\n    hard_timeout:    0x0066\n    flags:        "
       "   [  ]\n    cookie:          0x0000000000000088\n    packet_count:    "
       "0x9999999999999999\n    byte_count:      0xAAAAAAAAAAAAAAAA\n    match: "
@@ -422,7 +422,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "'10:20:30:40:50:60'\n      - field:           ETH_DST\n        value:   "
       "        'aa:bb:cc:dd:ee:ff'\n    instructions:    \n      - "
       "instruction:     APPLY_ACTIONS\n        actions:         \n          - "
-      "action:          OUTPUT\n            port:            0x0000EEEE\n      "
+      "action:          OUTPUT\n            port_no:         0x0000EEEE\n      "
       "      max_len:         NO_BUFFER\n...\n");
 }
 
@@ -487,8 +487,8 @@ TEST(decoder, ofmp_portstats_v4) {
       "EEEEEEE0FFFFFFFFFFFFFFF01111111022222220",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x04\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration_sec:    0x11111110\n    "
-      "duration_nsec:   0x22222220\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x33333330\n    duration:        "
+      "286331152.572662304\n    rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -507,8 +507,8 @@ TEST(decoder, ofmp_portstats_v3) {
       "EEEEEEE0FFFFFFFFFFFFFFF0",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x03\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration_sec:    0x00000000\n    "
-      "duration_nsec:   0x00000000\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x33333330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -527,8 +527,8 @@ TEST(decoder, ofmp_portstats_v2) {
       "EEEEEEE0FFFFFFFFFFFFFFF0",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x02\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration_sec:    0x00000000\n    "
-      "duration_nsec:   0x00000000\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x33333330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -547,8 +547,8 @@ TEST(decoder, ofmp_portstats_v1) {
       "FFFFFFFFFFFFFFF0",
       "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
-      "\n  - port_no:         0x00003330\n    duration_sec:    0x00000000\n    "
-      "duration_nsec:   0x00000000\n    rx_packets:      0x4444444444444440\n  "
+      "\n  - port_no:         0x00003330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n  "
       "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
       "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
       "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
@@ -568,7 +568,7 @@ TEST(decoder, ofmp_queuestats_v4) {
       "\n  - port_no:         0x33333330\n    queue_id:        0x44444440\n    "
       "tx_packets:      0x6666666666666660\n    tx_bytes:        "
       "0x5555555555555550\n    tx_errors:       0x7777777777777770\n    "
-      "duration_sec:    0x11111110\n    duration_nsec:   0x22222220\n...\n");
+      "duration:        286331152.572662304\n...\n");
 }
 
 TEST(decoder, ofmp_queuestats_v1) {
@@ -580,7 +580,7 @@ TEST(decoder, ofmp_queuestats_v1) {
       "\n  - port_no:         0x00003330\n    queue_id:        0x44444440\n    "
       "tx_packets:      0x6666666666666660\n    tx_bytes:        "
       "0x5555555555555550\n    tx_errors:       0x7777777777777770\n    "
-      "duration_sec:    0x00000000\n    duration_nsec:   0x00000000\n...\n");
+      "duration:        0\n...\n");
 }
 
 TEST(decoder, flowmodv4) {
@@ -627,6 +627,24 @@ TEST(decoder, flowmodv4_2) {
       " \n    - instruction:     APPLY_ACTIONS\n      actions:         "
       "\n        - action:          SET_FIELD\n          field:          "
       " IPV4_DST\n          value:           192.168.2.1\n...\n");
+}
+
+TEST(decoder, flowmodv4_ipv6) {
+  testDecodeEncode(
+      "040E00680000000111111111111111102222222222222220304055506660777088888880"
+      "99999990AAAAAAA0BBB100000001003280000A0286DD8000341000000000000000000000"
+      "FFFFC0A800018000361020000000000000000000000000000001000000000000",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x1111111111111110\n  "
+      "cookie_mask:     0x2222222222222220\n  table_id:        0x30\n  "
+      "command:         0x40\n  idle_timeout:    0x5550\n  hard_timeout:    "
+      "0x6660\n  priority:        0x7770\n  buffer_id:       0x88888880\n  "
+      "out_port:        0x99999990\n  out_group:       0xAAAAAAA0\n  flags:    "
+      "       [ SEND_FLOW_REM, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:         "
+      "  \n    - field:           ETH_TYPE\n      value:           0x86DD\n    "
+      "- field:           IPV6_SRC\n      value:           "
+      "'::ffff:192.168.0.1'\n    - field:           IPV6_DST\n      value:     "
+      "      '2000::1'\n  instructions:    \n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_1) {
@@ -752,7 +770,7 @@ TEST(decoder, flowmodv1) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
   EXPECT_EQ(0xA0, msg.size());
   EXPECT_HEX(
       "010E00A0000000011111111111111111FFFFFFFFFFFFFFFF00445555666677778"
@@ -840,6 +858,20 @@ TEST(decoder, packetinv1) {
       "00000A000002\n...\n");
 }
 
+TEST(decoder, packetinv2) {
+  testDecodeEncode(
+      "020A00420000000233333333555555556666666644440188FFFFFFFFFFFF000000000001"
+      "080600010800060400010000000000010A0000010000000000000A000002",
+      "---\ntype:            PACKET_IN\nxid:             0x00000002\nversion:  "
+      "       0x02\nmsg:             \n  buffer_id:       0x33333333\n  "
+      "total_len:       0x4444\n  in_port:         0x55555555\n  in_phy_port:  "
+      "   0x66666666\n  metadata:        0x0000000000000000\n  reason:         "
+      " APPLY_ACTION\n  table_id:        0x88\n  cookie:          "
+      "0x0000000000000000\n  match:           \n  data:            "
+      "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
+      "00000A000002\n...\n");
+}
+
 TEST(decoder, packetoutv4) {
   testDecodeEncode(
       "040D00620000000133333333444444440020000000000000000000100000000500140000"
@@ -849,7 +881,7 @@ TEST(decoder, packetoutv4) {
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:      "
       " "
       "0x33333333\n  in_port:         0x44444444\n  actions:         \n    - "
-      "action:          OUTPUT\n      port:            0x00000005\n      "
+      "action:          OUTPUT\n      port_no:         0x00000005\n      "
       "max_len: "
       "        0x0014\n    - action:          SET_FIELD\n      field:    "
       "    "
@@ -869,7 +901,7 @@ TEST(decoder, packetoutv1) {
       " "
       "0x33333333\n  in_port:         0x00004444\n  actions:         \n    - "
       "action: "
-      "         OUTPUT\n      port:            0x00000005\n      "
+      "         OUTPUT\n      port_no:         0x00000005\n      "
       "max_len:         "
       "0x0014\n    - action:          SET_FIELD\n      field:           "
       "IPV4_DST\n      value:           192.168.1.1\n  data:            "
@@ -882,7 +914,7 @@ TEST(decoder, packetoutv1) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
-  msg.transmogrify();
+  msg.normalize();
   EXPECT_HEX(
       "010D0062000000013333333300004444002000000000000000000010000000050"
       "0140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000"
@@ -917,18 +949,18 @@ TEST(decoder, portstatusv4) {
       "AAAAAAAABBBBBBBB",
       "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  reason:         "
-      " 0x22\n  port:            \n    port_no:         0x33333333\n    "
-      "hw_addr:         'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    "
-      "config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:    "
-      "       [ LINK_DOWN, LIVE, '0x55555550' ]\n    ethernet:        \n      "
-      "curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, "
-      "AUTONEG, PAUSE, '0x66660000' ]\n      advertised:      [ 10MB_HD, "
-      "10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, "
-      "FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      supported:       [ "
-      "100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      peer:      "
-      "      [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, "
-      "PAUSE_ASYM, '0x99990000' ]\n      curr_speed:      0xAAAAAAAA\n      "
-      "max_speed:       0xBBBBBBBB\n    properties:      \n...\n");
+      " 0x22\n  port_no:         0x33333333\n  hw_addr:         "
+      "'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ "
+      "NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, "
+      "LIVE, '0x55555550' ]\n  ethernet:        \n    curr:            [ "
+      "10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, "
+      "'0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, "
+      "1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, "
+      "PAUSE, '0x77770000' ]\n    supported:       [ 100MB_FD, 40GB_FD, "
+      "COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, "
+      "100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, PAUSE_ASYM, "
+      "'0x99990000' ]\n    curr_speed:      0xAAAAAAAA\n    max_speed:       "
+      "0xBBBBBBBB\n  properties:      \n...\n");
 }
 
 TEST(decoder, portstatusv1) {
@@ -937,18 +969,17 @@ TEST(decoder, portstatusv1) {
       "00000000444444445555555566660666777707778888088899990999",
       "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  reason:         "
-      " 0x22\n  port:            \n    port_no:         0x00003333\n    "
-      "hw_addr:         'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    "
-      "config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:    "
-      "       [ LINK_DOWN, LIVE, STP_LEARN, '0x55555450' ]\n    ethernet:      "
-      "  \n      curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, "
-      "AUTONEG, PAUSE, '0x66660000' ]\n      advertised:      [ 10MB_HD, "
-      "10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, "
-      "'0x77770000' ]\n      supported:       [ 100MB_FD, COPPER, PAUSE_ASYM, "
-      "'0x88880000' ]\n      peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, "
-      "COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n      curr_speed:      "
-      "0x00000000\n      max_speed:       0x00000000\n    properties:      "
-      "\n...\n");
+      " 0x22\n  port_no:         0x00003333\n  hw_addr:         "
+      "'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ "
+      "NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, "
+      "LIVE, STP_LEARN, '0x55555450' ]\n  ethernet:        \n    curr:         "
+      "   [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' "
+      "]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       [ "
+      "100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ "
+      "10MB_HD, 100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n  "
+      "  curr_speed:      0x00000000\n    max_speed:       0x00000000\n  "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, groupmodv4) {
@@ -963,7 +994,7 @@ TEST(decoder, groupmodv4) {
       "buckets:         \n    - weight:          0x5555\n      watch_port:     "
       " "
       "0x66666666\n      watch_group:     0x77777777\n      actions:         "
-      "\n        - action:          OUTPUT\n          port:            "
+      "\n        - action:          OUTPUT\n          port_no:         "
       "0x00000005\n          max_len:         0x0014\n        - action:        "
       "  "
       "SET_FIELD\n          field:           IPV4_DST\n          "
@@ -1091,7 +1122,7 @@ TEST(decoder, queuegetconfigrequestv4) {
       "04160010111111112222222200000000",
       "---\ntype:            QUEUE_GET_CONFIG_REQUEST\nxid:  "
       "           0x11111111\nversion:         0x04\nmsg:            "
-      " \n  port:            0x22222222\n...\n");
+      " \n  port_no:         0x22222222\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv4) {
@@ -1101,11 +1132,11 @@ TEST(decoder, queuegetconfigreplyv4) {
       "0030000000000000000100100000000099990000000000000002001000000000AAAA0000"
       "00000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
-      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n    - queue_id:       "
-      " 0x77777777\n      port:            0x88888888\n      min_rate:        "
+      " 0x77777777\n      port_no:         0x88888888\n      min_rate:        "
       "0x9999\n      max_rate:        0xAAAA\n      properties:      \n...\n");
 }
 
@@ -1117,13 +1148,13 @@ TEST(decoder, queuegetconfigreplyv4_experimenter) {
       "778888888800300000000000000001001000000000999900000000000000020010000000"
       "00AAAA000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
-      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n        - "
       "experimenter:    0xEEEEEEEE\n          value:           000102030405\n  "
       "      - experimenter:    0xFFFFFFFF\n          value:           "
-      "ABCDEF\n    - queue_id:        0x77777777\n      port:            "
+      "ABCDEF\n    - queue_id:        0x77777777\n      port_no:         "
       "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
       "0xAAAA\n      properties:      \n...\n");
 }
@@ -1136,13 +1167,13 @@ TEST(decoder, queuegetconfigreplyv5_experimenter) {
       "000000007777777788888888003000000000000000010010000000009999000000000000"
       "0002001000000000AAAA000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x05\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x05\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
-      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n        - "
       "experimenter:    0xEEEEEEEE\n          value:           000102030405\n  "
       "      - experimenter:    0xFFFFFFFF\n          value:           "
-      "ABCDEF\n    - queue_id:        0x77777777\n      port:            "
+      "ABCDEF\n    - queue_id:        0x77777777\n      port_no:         "
       "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
       "0xAAAA\n      properties:      \n...\n");
 }
@@ -1153,11 +1184,11 @@ TEST(decoder, queuegetconfigreplyv1) {
       "000000000002001000000000666100000000000077777771002800000001001000000000"
       "99910000000000000002001000000000AAA1000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111110\nversion:         0x01\nmsg:             \n  port:           "
+      "0x11111110\nversion:         0x01\nmsg:             \n  port_no:        "
       " 0x00002221\n  queues:          \n    - queue_id:        0x33333331\n   "
-      "   port:            0x00000000\n      min_rate:        0x5551\n      "
+      "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
       "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
-      " 0x77777771\n      port:            0x00000000\n      min_rate:        "
+      " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
       "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
 }
 
@@ -1167,11 +1198,11 @@ TEST(decoder, queuegetconfigreplyv2) {
       "000000000002001000000000666100000000000077777771002800000001001000000000"
       "99910000000000000002001000000000AAA1000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111110\nversion:         0x02\nmsg:             \n  port:           "
+      "0x11111110\nversion:         0x02\nmsg:             \n  port_no:        "
       " 0x22222221\n  queues:          \n    - queue_id:        0x33333331\n   "
-      "   port:            0x00000000\n      min_rate:        0x5551\n      "
+      "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
       "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
-      " 0x77777771\n      port:            0x00000000\n      min_rate:        "
+      " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
       "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
 }
 
@@ -1235,9 +1266,8 @@ TEST(decoder, flowremovedv4) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x55\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
+      "table_id:        0x55\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x12345678\n...\n");
@@ -1253,9 +1283,8 @@ TEST(decoder, flowremovedv1) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x00\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
+      "table_id:        0x00\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x00005678\n...\n");
@@ -1272,9 +1301,8 @@ TEST(decoder, flowremovedv2) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x55\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
+      "table_id:        0x55\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x0000\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x12345678\n...\n");
@@ -1289,9 +1317,8 @@ TEST(decoder, flowremovedv3) {
       " "
       "0x2222222222222222\n  priority:        0x3333\n  reason:          "
       "0x44\n  "
-      "table_id:        0x55\n  duration_sec:    0x66666666\n  duration_nsec:  "
-      " "
-      "0x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
+      "table_id:        0x55\n  duration:        1717986918.x77777777\n  "
+      "idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  "
       "packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x12345678\n...\n");
@@ -1528,7 +1555,7 @@ TEST(decoder, requestforwardv5) {
       "0x33\n    group_id:        0x44444444\n    buckets:         \n      - "
       "weight:          0x5555\n        watch_port:      0x66666666\n        "
       "watch_group:     0x77777777\n        actions:         \n          - "
-      "action:          OUTPUT\n            port:            0x00000005\n      "
+      "action:          OUTPUT\n            port_no:         0x00000005\n      "
       "      max_len:         0x0014\n          - action:          SET_FIELD\n "
       "           field:           IPV4_DST\n            value:           "
       "192.168.1.1\n...\n");
@@ -1783,9 +1810,9 @@ TEST(decoder, queue_get_config_replyv4_fix) {
       "646464646464646464646464646464646464646464646464646464646464646464646464"
       "6464646400000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0xBEC0D518\nversion:         0x04\nmsg:             \n  port:           "
+      "0xBEC0D518\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x0000000D\n  queues:          \n    - queue_id:        0x2FC87066\n   "
-      "   port:            0x0000000D\n      min_rate:        0xFFFF\n      "
+      "   port_no:         0x0000000D\n      min_rate:        0xFFFF\n      "
       "max_rate:        0xFFFF\n      properties:      \n        - "
       "experimenter:    0xC2E4427C\n          value:           "
       "646464646464646464646464646464646464646464646464646464646464646464646464"
@@ -1797,9 +1824,9 @@ TEST(decoder, queue_get_config_replyv1) {
   testDecodeEncode(
       "01150020C1C49F86000D00000000000000000012001000000000000800000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0xC1C49F86\nversion:         0x01\nmsg:             \n  port:           "
+      "0xC1C49F86\nversion:         0x01\nmsg:             \n  port_no:        "
       " 0x0000000D\n  queues:          \n    - queue_id:        0x00000012\n   "
-      "   port:            0x00000000\n      min_rate:        0xFFFF\n      "
+      "   port_no:         0x00000000\n      min_rate:        0xFFFF\n      "
       "max_rate:        0xFFFF\n      properties:      \n...\n");
 }
 
@@ -1837,17 +1864,16 @@ TEST(decoder, tablestatusv5) {
       "FFFF001499999991AAAAAAA1000000010000000200000000",
       "---\ntype:            TABLE_STATUS\nxid:             "
       "0x00000000\nversion:         0x05\nmsg:             \n  reason:         "
-      " 0x10\n  table:           \n    table_id:        ALL\n    config:       "
-      "   [  ]\n    eviction:        \n      flags:           0x11223344\n    "
-      "vacancy:         \n      vacancy_down:    0x11\n      vacancy_up:      "
-      "0x22\n      vacancy:         0x33\n    properties:      \n      - "
-      "property:        EXPERIMENTER\n        experimenter:    0x44444441\n    "
-      "    exp_type:        0x55555551\n        data:            ''\n      - "
-      "property:        EXPERIMENTER\n        experimenter:    0x66666661\n    "
-      "    exp_type:        0x77777771\n        data:            88888888\n    "
-      "  - property:        EXPERIMENTER\n        experimenter:    "
-      "0x99999991\n        exp_type:        0xAAAAAAA1\n        data:          "
-      "  0000000100000002\n...\n");
+      " 0x10\n  table_id:        ALL\n  config:          [  ]\n  eviction:     "
+      "   \n    flags:           0x11223344\n  vacancy:         \n    "
+      "vacancy_down:    0x11\n    vacancy_up:      0x22\n    vacancy:         "
+      "0x33\n  properties:      \n    - property:        EXPERIMENTER\n      "
+      "experimenter:    0x44444441\n      exp_type:        0x55555551\n      "
+      "data:            ''\n    - property:        EXPERIMENTER\n      "
+      "experimenter:    0x66666661\n      exp_type:        0x77777771\n      "
+      "data:            88888888\n    - property:        EXPERIMENTER\n      "
+      "experimenter:    0x99999991\n      exp_type:        0xAAAAAAA1\n      "
+      "data:            0000000100000002\n...\n");
 }
 
 TEST(decoder, mptabledescv5) {
@@ -1914,4 +1940,35 @@ TEST(decoder, nicira_actions) {
       "            'ETH_SRC[24:48]'\n        - action:          NX_REG_LOAD\n  "
       "        dst:             'ETH_TYPE[0:8]'\n          value:           "
       "0x0000000000000089\n...\n");
+}
+
+TEST(decoder, packet_in_nonzero_padding) {
+  // This packet_in has non-zero padding in the match. We don't expect this
+  // message to roundtrip successfully.
+  testDecodeOnly(
+      "040a0098000000000000015805ea00000000000000000000000100698000000400000001"
+      "80000a020800800014010680004c08000000000000000080001a02d3a780000408000000"
+      "000000000080001c021389800018040a000002800016040a00000180000606da1dfcec1d"
+      "9980001001008000080642e50bb51ff5800012010000da1dfcec1d990000da1dfcec1d99"
+      "42e50bb51ff50800",
+      "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
+      "       0x04\nmsg:             \n  buffer_id:       0x00000158\n  "
+      "total_len:       0x05EA\n  in_port:         0x00000001\n  in_phy_port:  "
+      "   0x00000001\n  metadata:        0x0000000000000000\n  reason:         "
+      " TABLE_MISS\n  table_id:        0x00\n  cookie:          "
+      "0x0000000000000000\n  match:           \n    - field:           "
+      "IN_PORT\n      value:           0x00000001\n    - field:           "
+      "ETH_TYPE\n      value:           0x0800\n    - field:           "
+      "IP_PROTO\n      value:           0x06\n    - field:           "
+      "TUNNEL_ID\n      value:           0x0000000000000000\n    - field:      "
+      "     TCP_SRC\n      value:           0xD3A7\n    - field:           "
+      "METADATA\n      value:           0x0000000000000000\n    - field:       "
+      "    TCP_DST\n      value:           0x1389\n    - field:           "
+      "IPV4_DST\n      value:           10.0.0.2\n    - field:           "
+      "IPV4_SRC\n      value:           10.0.0.1\n    - field:           "
+      "ETH_DST\n      value:           'da:1d:fc:ec:1d:99'\n    - field:       "
+      "    IP_DSCP\n      value:           0x00\n    - field:           "
+      "ETH_SRC\n      value:           '42:e5:0b:b5:1f:f5'\n    - field:       "
+      "    IP_ECN\n      value:           0x00\n  data:            "
+      "DA1DFCEC1D9942E50BB51FF50800\n...\n");
 }

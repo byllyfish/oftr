@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_LOGGER_H_
@@ -24,10 +24,12 @@ enum class Level {
   Trace = 6
 };
 
+enum { kTraceMsg = 0, kTraceRpc = 1 };
+
 enum class Trace {
   None = 0x00,
-  Msg = 0x01,
-  Rpc = 0x02,
+  Msg = 1 << kTraceMsg,
+  Rpc = 1 << kTraceRpc,
 };
 
 enum FileDescriptor {

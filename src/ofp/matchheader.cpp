@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/matchheader.h"
@@ -72,15 +72,6 @@ bool MatchHeader::validateInput(size_t lengthRemaining,
   if (!oxm.validateInput()) {
     context->matchIsInvalid("Invalid oxm range", BytePtr(this));
     return false;
-  }
-
-  // Check that the padding bytes (if present) are all zeros.
-  if (matchLengthPadded > matchLength) {
-    if (!IsMemFilled(BytePtr(this) + matchLength,
-                     matchLengthPadded - matchLength, 0)) {
-      context->matchIsInvalid("Invalid padding", BytePtr(this));
-      return false;
-    }
   }
 
   return true;

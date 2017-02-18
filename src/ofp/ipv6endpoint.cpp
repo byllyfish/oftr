@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv6endpoint.h"
@@ -92,19 +92,16 @@ void IPv6Endpoint::clear() {
   port_ = 0;
 }
 
-std::string IPv6Endpoint::toString() const {
-  std::string result;
+namespace ofp {
 
-  if (addr_.isV4Mapped()) {
-    result += addr_.toString();
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                              const IPv6Endpoint &value) {
+  if (value.addr_.isV4Mapped()) {
+    os << value.addr_ << ':';
   } else {
-    result += '[';
-    result += addr_.toString();
-    result += ']';
+    os << '[' << value.addr_ << "]:";
   }
-
-  result += ':';
-  result += std::to_string(port_);
-
-  return result;
+  return os << value.port_;
 }
+
+}  // namespace ofp

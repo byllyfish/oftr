@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/getjson.h"
@@ -63,8 +63,9 @@ bool ofp::yaml::getjson(std::istream &input, std::string &json, int &lineNum,
       lineNum = newlineCount + 1;
       scanObject(input, json, newlineCount);
       return true;
+    }
 
-    } else if (ch == '\n') {
+    if (ch == '\n') {
       ++newlineCount;
     }
   }

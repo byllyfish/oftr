@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/constants_error.h"
@@ -74,9 +74,9 @@ OFPErrorType ofp::OFPErrorTypeFromValue(UInt8 version, UInt16 type,
 
   if (version == OFP_VERSION_1) {
     // coverity[mixed_enums] (Coverity infers type is an OFPErrorType)
-    for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
-      if (type == sErrorTypesV1[i].v1ErrType)
-        return sErrorTypesV1[i].type;
+    for (const auto &i : sErrorTypesV1) {
+      if (type == i.v1ErrType)
+        return i.type;
     }
     type |= OFPET_UNKNOWN_FLAG;
 
@@ -104,9 +104,9 @@ UInt16 ofp::OFPErrorTypeToValue(UInt8 version, OFPErrorCode code) {
   }
 
   if (version == OFP_VERSION_1) {
-    for (size_t i = 0; i < ArrayLength(sErrorTypesV1); ++i) {
-      if (type == sErrorTypesV1[i].type)
-        return sErrorTypesV1[i].v1ErrType;
+    for (const auto &i : sErrorTypesV1) {
+      if (type == i.type)
+        return i.v1ErrType;
     }
     log_warning("Unknown type enum in Error message:", static_cast<int>(type));
   } else if (code == OFPFMFC_UNSUPPORTED) {
@@ -125,9 +125,9 @@ OFPErrorCode ofp::OFPErrorCodeFromValue(UInt8 version, UInt16 type,
   if (version == OFP_VERSION_1) {
     // coverity[mixed_enums] (Coverity infers type is an OFPErrorType)
     if (type == V1_OFPET_FLOW_MOD_FAILED) {
-      for (size_t i = 0; i < ArrayLength(sErrorFlowModFailedV1); ++i) {
-        if (code == sErrorFlowModFailedV1[i].v1ErrCode)
-          return sErrorFlowModFailedV1[i].code;
+      for (auto i : sErrorFlowModFailedV1) {
+        if (code == i.v1ErrCode)
+          return i.code;
       }
     }
 
@@ -140,9 +140,9 @@ OFPErrorCode ofp::OFPErrorCodeFromValue(UInt8 version, UInt16 type,
 
 UInt16 ofp::OFPErrorCodeToValue(UInt8 version, OFPErrorCode code) {
   if (version == OFP_VERSION_1) {
-    for (size_t i = 0; i < ArrayLength(sErrorFlowModFailedV1); ++i) {
-      if (code == sErrorFlowModFailedV1[i].code) {
-        return sErrorFlowModFailedV1[i].v1ErrCode;
+    for (auto i : sErrorFlowModFailedV1) {
+      if (code == i.code) {
+        return i.v1ErrCode;
       }
     }
   } else if (code == OFPFMFC_UNSUPPORTED) {

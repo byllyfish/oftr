@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_CHANNELOPTIONS_H_
@@ -20,10 +20,7 @@ enum class ChannelOptions : UInt8 {
   AUXILIARY = 1 << 1,
   LISTEN_UDP = 1 << 2,
   CONNECT_UDP = 1 << 3,
-  NO_VERSION_CHECK = 1 << 4,
-
-  DEFAULT_CONTROLLER = FEATURES_REQ,
-  DEFAULT_AGENT = NONE,
+  NO_VERSION_CHECK = 1 << 4
 };
 
 constexpr ChannelOptions operator&(ChannelOptions lhs, ChannelOptions rhs) {

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_IPV4ADDRESS_H_
@@ -33,7 +33,7 @@ class IPv4Address {
   bool parse(const std::string &s);
   void clear() { addr_.fill(0); }
 
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
 
   const ArrayType &toArray() const { return addr_; }
 
@@ -46,6 +46,9 @@ class IPv4Address {
 
  private:
   ArrayType addr_;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const IPv4Address &value);
 };
 
 static_assert(sizeof(IPv4Address) == 4, "Unexpected size");
@@ -53,10 +56,6 @@ static_assert(alignof(IPv4Address) == 1, "Unexpected alignment");
 static_assert(IsStandardLayout<IPv4Address>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv4Address>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const IPv4Address &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

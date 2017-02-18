@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/pktsink.h"
@@ -61,7 +61,7 @@ void PktSink::write(const Timestamp &ts, const ByteRange &captureData,
   const UInt32 usec = haveNanosec_ ? ts.nanoseconds() : ts.microseconds();
 
   struct pcap_pkthdr hdr;
-  hdr.ts.tv_sec = ts.seconds();
+  hdr.ts.tv_sec = ts.unix_time();
   hdr.ts.tv_usec = Signed_cast(usec);
   hdr.caplen = UInt32_narrow_cast(captureData.size());
   hdr.len = length;

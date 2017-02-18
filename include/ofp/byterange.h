@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_BYTERANGE_H_
@@ -13,7 +13,7 @@ class ByteList;
 class ByteRange {
  public:
   constexpr ByteRange() : begin_{nullptr}, end_{nullptr} {}
-  constexpr ByteRange(const void *data, size_t length)
+  constexpr ByteRange(const void *data, size_t length) noexcept
       : begin_{BytePtr(data)}, end_{BytePtr(data) + length} {}
   constexpr ByteRange(const void *data, const void *end)
       : begin_{BytePtr(data)}, end_{BytePtr(end)} {}
@@ -53,10 +53,8 @@ inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset) {
                             : ByteRange{};
 }
 
-/// \brief Write buffer to stream in hexadecimal format.
-std::ostream &operator<<(std::ostream &os, const ByteRange &value);
-
-inline std::ostream &operator<<(std::ostream &os, const ByteRange &value) {
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const ByteRange &value) {
   return os << "[ByteRange size=" << value.size()
             << " data=" << RawDataToHex(value.data(), value.size()) << "]";
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YTIMESTAMP_H_
@@ -15,7 +15,7 @@ template <>
 struct ScalarTraits<ofp::Timestamp> {
   static void output(const ofp::Timestamp &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::Timestamp &value) {

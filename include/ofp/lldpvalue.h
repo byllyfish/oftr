@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_LLDPVALUE_H_
@@ -69,6 +69,11 @@ class LLDPValue {
     std::memset(buf_, 0, sizeof(buf_));
     std::memcpy(mutableData(), data, len);
     resize(len);
+  }
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const LLDPValue &value) {
+    return os << value.toString();
   }
 };
 

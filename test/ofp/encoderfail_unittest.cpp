@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/unittest.h"
@@ -520,4 +520,91 @@ TEST(encoderfail, xid_present) {
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
   EXPECT_EQ(54321, encoder.xid());
+}
+
+TEST(encoderfail, ipv4_mapped) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111111
+        table_id:        0x33
+        command:         0x44
+        match:           
+          - field:           IPV6_SRC
+            value:           10.0.0.1
+        instructions:    [  ]
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ(
+      "YAML:11:30: error: Invalid IPv6 address.\n            value:           "
+      "10.0.0.1\n                             ^~~~~~~~\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
+#if 0
+// TODO(bfish): This test should fail -- properties aren't supported until
+// OpenFlow version 1.4.
+
+TEST(encoderfail, portmodv4_experimenter) {
+  const char *input = R"""(
+      version: 4
+      type: PORT_MOD
+      datapath_id: 0000-0000-0000-0001
+      xid: 0x11111111
+      msg:
+        port_no: 0x22222222
+        hw_addr: '333333333333'
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0x77777700
+            exp_type: 0x88888800
+            data: 99999900
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX(
+      "",
+      encoder.data(), encoder.size());
+}
+#endif  // 0
+
+TEST(encoderfail, packetout_data) {
+  const char *input = R"""(
+{"version":4,"datapath_id":"0x1","msg":{"in_port":"CONTROLLER","data":"","_pkt_decode":[{"value":"10.10.10.1","field":"IPV4_SRC"},{"value":0,"field":"ICMPV4_CODE"},{"value":0,"field":"ICMPV4_TYPE"},{"value":"089400014bb3a05800000000fa350c0000000000101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f3031323334353637","field":"DATA"},{"value":"f2:f4:54:60:60:53","field":"ETH_DST"},{"value":2048,"field":"ETH_TYPE"},{"value":"0e:00:00:00:00:01","field":"ETH_SRC"},{"value":"10.0.0.1","field":"IPV4_DST"},{"value":1,"field":"IP_PROTO"}],"actions":[{"action":"OUTPUT","port_no":1,"max_len":0}],"buffer_id":"NO_BUFFER"},"xid":8254,"type":"PACKET_OUT","conn_id":4}
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ(
+      "YAML:2:339: error: Invalid OXM "
+      "type.\n{\"version\":4,\"datapath_id\":\"0x1\",\"msg\":{\"in_port\":"
+      "\"CONTROLLER\",\"data\":\"\",\"_pkt_decode\":[{\"value\":\"10.10.10.1\","
+      "\"field\":\"IPV4_SRC\"},{\"value\":0,\"field\":\"ICMPV4_CODE\"},{"
+      "\"value\":0,\"field\":\"ICMPV4_TYPE\"},{\"value\":"
+      "\"089400014bb3a05800000000fa350c0000000000101112131415161718191a1b1c1d1e"
+      "1f202122232425262728292a2b2c2d2e2f3031323334353637\",\"field\":\"DATA\"}"
+      ",{\"value\":\"f2:f4:54:60:60:53\",\"field\":\"ETH_DST\"},{\"value\":"
+      "2048,\"field\":\"ETH_TYPE\"},{\"value\":\"0e:00:00:00:00:01\",\"field\":"
+      "\"ETH_SRC\"},{\"value\":\"10.0.0.1\",\"field\":\"IPV4_DST\"},{\"value\":"
+      "1,\"field\":\"IP_PROTO\"}],\"actions\":[{\"action\":\"OUTPUT\",\"port_"
+      "no\":1,\"max_len\":0}],\"buffer_id\":\"NO_BUFFER\"},\"xid\":8254,"
+      "\"type\":\"PACKET_OUT\",\"conn_id\":4}\n                                "
+      "                                                                        "
+      "                                                                        "
+      "                                                                        "
+      "                                                                        "
+      "                  ^~~~~~\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
 }

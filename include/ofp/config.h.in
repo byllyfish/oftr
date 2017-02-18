@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_CONFIG_H_  // NOLINT
@@ -9,12 +9,11 @@
 #define LIBOFP_VERSION_MINOR        @Libofp_VERSION_MINOR@
 #define LIBOFP_VERSION_PATCH        @Libofp_VERSION_PATCH@
 #define LIBOFP_GITHUB_URL           "@Libofp_GITHUB_URL@"
+#define LIBOFP_COMPILER_SPEC        "@Libofp_COMPILER_SPEC@"
 
-// These variables indicate the major and minor version numbers for the 
-// RPC API.
+// These variables indicate the version of the RPC API.
 
-#define LIBOFP_RPC_API_MAJOR            @Libofp_RPC_API_MAJOR@
-#define LIBOFP_RPC_API_MINOR            @Libofp_RPC_API_MINOR@
+#define LIBOFP_RPC_API_VERSION      "@Libofp_RPC_API_VERSION@"
 
 // These variables indicate the git commits of libofp, asio, and boringssl 
 // used in this build.

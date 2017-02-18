@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YTYPEDPROPERTYITERATOR_H_
@@ -25,6 +25,13 @@ class TypedPropertyIterator {
 
  private:
   PropertyIterator iter_;
+};
+
+struct OptionalPropertyList {
+  // Need begin/end so mapOptional("properties", ...) will compile.
+  // N.B. This code is never actually called.
+  constexpr int begin() const { return 0; }
+  constexpr int end() const { return 0; }
 };
 
 }  // namespace detail

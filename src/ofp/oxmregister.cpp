@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/oxmregister.h"
@@ -81,10 +81,4 @@ bool OXMRegister::parse(const std::string &s) {
   offset_ = UInt16_narrow_cast(offset);
 
   return true;
-}
-
-std::string OXMRegister::toString() const {
-  std::ostringstream oss;
-  oss << type_.toString() << '[' << offset() << ':' << end() << ']';
-  return oss.str();
 }

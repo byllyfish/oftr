@@ -1,9 +1,13 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "./testagent.h"
 #include <iostream>
 #include "ofp/yaml/decoder.h"
+
+inline std::ostream &operator<<(std::ostream &os, llvm::StringRef s) {
+  return os.write(s.data(), ofp::Signed_cast(s.size()));
+}
 
 using namespace testagent;
 
@@ -12,7 +16,7 @@ void TestAgent::onMessage(const Message *message) {
 
   if (message->type() == OFPT_FEATURES_REQUEST) {
     FeaturesReplyBuilder reply{message->xid()};
-    reply.setDatapathId(DatapathID{"12-34-56-78-9A-BC-CD-EF"});
+    reply.setDatapathId(DatapathID{"12:34:56:78:9A:BC:CD:EF"});
     reply.send(message->source());
     writeNow = true;
 

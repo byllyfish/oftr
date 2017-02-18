@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_CHANNEL_H_
@@ -27,7 +27,7 @@ class Channel : public Writable {
   virtual IPv6Endpoint remoteEndpoint() const = 0;
   virtual IPv6Endpoint localEndpoint() const = 0;
   virtual void shutdown() = 0;
-  virtual void poll() = 0;
+  virtual void tickle(TimePoint now) = 0;
 
   virtual Milliseconds keepAliveTimeout() const = 0;
   virtual void setKeepAliveTimeout(const Milliseconds &timeout) = 0;
@@ -41,12 +41,6 @@ class Channel : public Writable {
 
   virtual void setStartingXid(UInt32 xid) = 0;
 };
-
-std::ostream &operator<<(std::ostream &os, Channel *channel);
-
-inline std::ostream &operator<<(std::ostream &os, Channel *channel) {
-  return os << "[Channel to=" << channel->remoteEndpoint() << ']';
-}
 
 }  // namespace ofp
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_CHANNELLISTENER_H_
@@ -38,17 +38,17 @@ class ChannelListener {
   // When a controller identifies an incoming connection as an auxiliary
   // connection, the driver will transparently tie the auxiliary connection
   // to the main connection. onChannelUp() and onChannelDown() will _NOT_ be
-  // called for auxiliary connections that the controller did not initiate.
+  // called for auxiliary connections that the engine did not initiate.
   // The listener may receive messages from the auxiliary connection; replies
   // can just be sent to message->source().
   //
-  // If an agent actively opens an auxiliary channel (via openAuxChannel),
+  // If an agent actively opens an auxiliary channel (via connect),
   // onChannelUp() and onChannelDown() _WILL_ be called multiple times.
-  //
-  // A listener can determine the source channel of a message (main or
-  // auxiliary) by using Message::source(). A similar method exists for the
-  // Exception class. Exceptions on auxiliary connections will not shut down
-  // the main connection.
+
+  /// Called to periodically tickle the connection, so your handler can detect
+  /// timeouts. If this function returns false, the connection's default "poll"
+  /// function also runs.
+  virtual bool onTickle(Channel *channel, TimePoint now) { return false; }
 
  protected:
   // ChannelListeners must be allocated on the heap; never on the stack.

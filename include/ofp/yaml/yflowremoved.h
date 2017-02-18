@@ -1,10 +1,11 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YFLOWREMOVED_H_
 #define OFP_YAML_YFLOWREMOVED_H_
 
 #include "ofp/flowremoved.h"
+#include "ofp/yaml/ydurationsec.h"
 
 namespace llvm {
 namespace yaml {
@@ -16,8 +17,7 @@ msg:
   priority: UInt16
   reason: FlowRemovedReason
   table_id: TableNumber
-  duration_sec: UInt32
-  duration_nsec: UInt32
+  duration: DurationSec
   idle_timeout: UInt16
   hard_timeout: UInt16
   packet_count: UInt64
@@ -32,8 +32,7 @@ struct MappingTraits<ofp::FlowRemoved> {
     io.mapRequired("priority", msg.priority_);
     io.mapRequired("reason", msg.reason_);
     io.mapRequired("table_id", msg.tableId_);
-    io.mapRequired("duration_sec", msg.durationSec_);
-    io.mapRequired("duration_nsec", msg.durationNSec_);
+    io.mapRequired("duration", msg.duration_);
     io.mapRequired("idle_timeout", msg.idleTimeout_);
     io.mapRequired("hard_timeout", msg.hardTimeout_);
     io.mapRequired("packet_count", msg.packetCount_);
@@ -51,8 +50,7 @@ struct MappingTraits<ofp::FlowRemovedBuilder> {
     io.mapRequired("priority", msg.msg_.priority_);
     io.mapRequired("reason", msg.msg_.reason_);
     io.mapRequired("table_id", msg.msg_.tableId_);
-    io.mapRequired("duration_sec", msg.msg_.durationSec_);
-    io.mapRequired("duration_nsec", msg.msg_.durationNSec_);
+    io.mapRequired("duration", msg.msg_.duration_);
     io.mapRequired("idle_timeout", msg.msg_.idleTimeout_);
     io.mapRequired("hard_timeout", msg.msg_.hardTimeout_);
     io.mapRequired("packet_count", msg.msg_.packetCount_);

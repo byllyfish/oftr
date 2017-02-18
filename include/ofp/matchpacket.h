@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_MATCHPACKET_H_
@@ -17,6 +17,8 @@ class MatchPacket {
 
   const UInt8 *data() const { return match_.data(); }
   size_t size() const { return match_.size(); }
+
+  OXMRange toRange() const { return match_.toRange(); }
 
  private:
   MatchBuilder match_;

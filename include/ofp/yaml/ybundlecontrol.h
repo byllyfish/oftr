@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YBUNDLECONTROL_H_
@@ -16,7 +16,7 @@ msg:
   bundle_id: UInt32
   type: BundleCtrlType
   flags: [BundleFlags]
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -40,7 +40,7 @@ struct MappingTraits<ofp::BundleControlBuilder> {
     io.mapRequired("flags", msg.msg_.flags_);
 
     ofp::PropertyList props;
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::BundlePropertyList>(props));
     msg.setProperties(props);
   }

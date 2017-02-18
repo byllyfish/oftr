@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/flowstate.h"
@@ -54,8 +54,9 @@ FlowData FlowState::receive(const Timestamp &ts, UInt32 end,
                     SegmentToString(begin, end, final));
       }
       return FlowData{sessionID};
+    }
 
-    } else if (begin == end_) {
+    if (begin == end_) {
       // We have no data cached and this is the next data segment.
       *lastSeen = ts;
       if (final) {
@@ -128,12 +129,11 @@ std::string FlowState::toString() const {
   if (empty()) {
     if (finished_) {
       return "FIN";
-    } else if (started_) {
-      return "up";
-    } else {
-      return "INIT";
     }
-  } else {
-    return cache_.toString();
+    if (started_) {
+      return "up";
+    }
+    return "INIT";
   }
+  return cache_.toString();
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_OXMRANGE_H_
@@ -78,11 +78,10 @@ typename Value::NativeType OXMRange::get() const {
   return NativeType{};
 }
 
-std::ostream &operator<<(std::ostream &stream, const OXMRange &range);
-
-inline std::ostream &operator<<(std::ostream &stream, const OXMRange &range) {
-  return stream << "[OXMRange size=" << range.size()
-                << " data=" << RawDataToHex(range.data(), range.size()) << ']';
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const OXMRange &range) {
+  return os << "[OXMRange size=" << range.size()
+            << " data=" << RawDataToHex(range.data(), range.size()) << ']';
 }
 
 }  // namespace ofp

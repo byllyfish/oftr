@@ -1,9 +1,10 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YPACKETOUT_H_
 #define OFP_YAML_YPACKETOUT_H_
 
+#include "ofp/matchpacketbuilder.h"
 #include "ofp/packetout.h"
 
 namespace llvm {
@@ -12,10 +13,10 @@ namespace yaml {
 const char *const kPacketOutSchema = R"""({Message/PacketOut}
 type: PACKET_OUT
 msg:
-  buffer_id: BufferNumber
-  in_port: PortNumber
-  actions: [Action]
-  data: HexData
+  buffer_id: !opt BufferNumber        # default=NO_BUFFER
+  in_port: !opt PortNumber            # default=CONTROLLER
+  actions: !opt [Action]              # default=[]
+  data: !opt HexData                  # default=''
   _pkt_decode: !optout [Field]
 )""";
 
@@ -24,11 +25,8 @@ struct MappingTraits<ofp::PacketOut> {
   static void mapping(IO &io, ofp::PacketOut &msg) {
     using namespace ofp;
 
-    BufferNumber bufferId = msg.bufferId();
-    PortNumber inPort = msg.inPort();
-
-    io.mapRequired("buffer_id", bufferId);
-    io.mapRequired("in_port", inPort);
+    io.mapRequired("buffer_id", msg.bufferId_);
+    io.mapRequired("in_port", msg.inPort_);
 
     ActionRange actions = msg.actions();
     io.mapRequired("actions", actions);
@@ -48,17 +46,17 @@ struct MappingTraits<ofp::PacketOutBuilder> {
   static void mapping(IO &io, ofp::PacketOutBuilder &msg) {
     using namespace ofp;
 
-    BufferNumber bufferId;
-    io.mapRequired("buffer_id", bufferId);
-    msg.setBufferId(bufferId);
+    io.mapOptional("buffer_id", msg.msg_.bufferId_, OFP_NO_BUFFER);
+    io.mapOptional("in_port", msg.msg_.inPort_, OFPP_CONTROLLER);
+    io.mapOptional("actions", msg.actions_);
+    io.mapOptional("data", msg.enetFrame_);
 
-    io.mapRequired("in_port", msg.msg_.inPort_);
-
-    io.mapRequired("actions", msg.actions_);
-    io.mapRequired("data", msg.enetFrame_);
-
-    MatchBuilder ignorePktDecode;  // FIXME(bfish) Add `mapIgnore` method?
-    io.mapOptional("_pkt_decode", ignorePktDecode);
+    MatchBuilder pktDecode;
+    io.mapOptional("_pkt_decode", pktDecode);
+    if (msg.enetFrame_.empty() && pktDecode.size() > 0) {
+      ofp::MatchPacketBuilder mp{pktDecode.toRange()};
+      mp.build(&msg.enetFrame_, {});
+    }
   }
 };
 

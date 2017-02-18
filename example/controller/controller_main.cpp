@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "./simplechannellistener.h"
@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   driver.installSignalHandlers();
 
   std::error_code err;
-  (void)driver.listen(ChannelOptions::DEFAULT_CONTROLLER, 0,
+  (void)driver.listen(ChannelOptions::FEATURES_REQ, 0,
                       IPv6Endpoint{OFPGetDefaultPort()}, ProtocolVersions::All,
                       []() { return new controller::SimpleChannelListener; },
                       err);

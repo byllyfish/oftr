@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIdentifier</key>
+	<string>byllyfish.oftr</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@Libofp_VERSION_MAJOR@.@Libofp_VERSION_MINOR@.@Libofp_VERSION_PATCH@</string>
+</dict>
+</plist>

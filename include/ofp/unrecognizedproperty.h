@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_UNRECOGNIZEDPROPERTY_H_
@@ -19,8 +19,7 @@ class UnrecognizedProperty : private NonCopyable {
 
   using ValueType = ByteRange;
   ValueType value() const {
-    return ByteRange{BytePtr(this) + FixedHeaderSize,
-                     length_ - FixedHeaderSize};
+    return SafeByteRange(this, length_, FixedHeaderSize);
   }
   static ValueType defaultValue() { return {}; }
 

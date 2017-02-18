@@ -1,0 +1,186 @@
+// To make the manpage using asciidoc, use the following command:
+//
+//   a2x --doctype manpage --format manpage oftr-schema.1.adoc
+// 
+// Use asciidoctor to produce the html version:
+// 
+//   asciidoctor oftr-schema.1.adoc
+
+= OFTR-SCHEMA(1)
+William W. Fisher <william.w.fisher@gmail.com>
+:doctype: manpage
+:github: <https://github.com/byllyfish/oftr>
+
+== NAME
+
+oftr-schema - OpenFlow Message Schema Conventions
+
+== DESCRIPTION
+
+This document defines the schema language used to document the OpenFlow messages,
+structures, and values in oftr.
+
+Typing *oftr help -schema-all* will dump all message templates in this schema language.
+
+To look up any message, structure, or flag, type `oftr help NAME`.
+
+== DESIGN 
+
+The YAML message schema is parsable as YAML 1.2. A schema template can be converted into a message by replacement.
+
+For example, here is the schema for the RoleRequest message. 
+
+[source,yaml]
+.RoleRequest-Schema
+----
+Message/RoleRequest: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [ MultipartFlags ]
+  time: !optout Timestamp
+  type: ROLE_REQUEST
+  msg:
+    role: ControllerRole
+    generation_id: UInt64
+  
+Enum/ControllerRole: ROLE_NOCHANGE | ROLE_EQUAL | ROLE_MASTER | ROLE_SLAVE | Hex32
+
+Builtin/UInt64: <builtin>
+----
+
+TIP: To look up this schema, you would type `oftr help rolerequest`.
+
+To produce a message, copy the `Message/RoleRequest` contents, delete the !optout
+lines and any !opt values that you don't need. Then, replace the capitalized type names with appropriate values.
+
+Here is the resulting RoleRequest message:
+
+[source,yaml]
+.RoleRequest
+----
+  datapath_id: '00:00:00:00:00:00:00:01'
+  type: ROLE_REQUEST
+  msg:
+    role: ROLE_MASTER
+    generation_id: 1024
+----
+
+== CONVENTIONS 
+
+* Constants are all-caps, e.g. `PACKET_IN`, `OFP.LISTEN`.
+
+* Type names begin with a capital letter and use mixed case, e.g. `UInt8`, `Field`.
+
+* Sequences are presented as an array with one element, e.g. `[UInt8]`. If the array has more than one element, each element has a choice of types.
+
+* Enumerations and flags are strings with choices separated by |, e.g. `UInt32 | NO_BUFFER`
+
+* By default, a property is required unless it has the !opt or !optout tag.
+
+* !opt means the property may be omitted on input, but is always output in the canonical output.
+
+* !optout means the property may be omitted, even in the canonical output. Client software should test for it.
+
+* Types with multiple sub-choices are named at the top level with a '/'. For example, there are multiple 'Message', 'Instruction', 'Action' types.
+
+* RPC schemas include the result schema following the params section. To generate, a command, ignore this section.
+
+== Examples
+
+The FLOW_MOD message uses the following template:
+
+[source,yaml]
+.FlowMod-Schema
+----
+Message/FlowMod: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [ MultipartFlags ]
+  time: !optout Timestamp
+  type: FLOW_MOD
+  msg:
+    cookie: UInt64
+    cookie_mask: UInt64
+    table_id: UInt8
+    command: FlowModCommand
+    idle_timeout: UInt16
+    hard_timeout: UInt16
+    priority: UInt16
+    buffer_id: BufferNumber
+    out_port: PortNumber
+    out_group: GroupNumber
+    flags: [FlowModFlags]
+    match: [Field]
+    instructions: [Instruction]
+  
+Mixed/BufferNumber: UInt32 | NO_BUFFER
+
+Field/IN_PORT: 
+  field: IN_PORT
+  value: PortNumber
+  mask: !optout PortNumber
+  
+Enum/FlowModCommand: ADD | MODIFY | MODIFY_STRICT | DELETE | DELETE_STRICT | Hex8
+
+Flag/FlowModFlags: SEND_FLOW_REM | CHECK_OVERLAP | RESET_COUNTS | NO_PKT_COUNTS | NO_BYT_COUNTS | Hex16
+
+Mixed/GroupNumber: UInt32 | ALL | ANY
+
+Instruction/GotoTable: 
+  instruction: GOTO_TABLE
+  table_id: UInt8
+  
+Mixed/PortNumber: UInt32 | IN_PORT | TABLE | NORMAL | FLOOD | ALL | CONTROLLER | LOCAL | ANY | NONE
+----
+
+Here is a valid FlowMod message:
+
+[source,yaml]
+----
+  version: 4
+  datapath_id: '00:00:00:00:00:00:ff:ff'
+  xid: 258
+  type: FLOW_MOD
+  msg:
+    cookie: 0
+    cookie_mask: 0xffffffffffffffff
+    table_id: 0
+    command: ADD
+    idle_timeout: 30
+    hard_timeout: 30
+    priority: 0
+    buffer_id: NO_BUFFER
+    out_port: ANY
+    out_group: ANY
+    flags: [SEND_FLOW_REM, CHECK_OVERLAP]
+    match:
+      - field: IN_PORT
+        value: 1
+    instructions:
+      - instruction: APPLY_ACTIONS
+        actions:
+          - action: OUTPUT
+            port: CONTROLLER
+            max_len: NO_BUFFER
+----
+
+== SEE ALSO
+
+_oftr_(1), _oftr-jsonrpc_(1)
+
+
+== RESOURCES
+
+GitHub: {github}
+
+
+== COPYING
+
+Copyright \(C) 2015-2017 William W. Fisher. Free use of this software is
+granted under the terms of the MIT License.

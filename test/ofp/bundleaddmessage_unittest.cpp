@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/bundleaddmessage.h"
@@ -56,7 +56,7 @@ TEST(bundleaddmessage, groupMod) {
       channel.data(), channel.size());
 
   Message message(channel.data(), channel.size());
-  message.transmogrify();
+  message.normalize();
 
   const BundleAddMessage *m = BundleAddMessage::cast(&message);
   EXPECT_TRUE(m);
@@ -102,7 +102,7 @@ TEST(bundleaddmessage, echoreq) {
       channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
 
   const BundleAddMessage *m = BundleAddMessage::cast(&message);
   EXPECT_TRUE(m);

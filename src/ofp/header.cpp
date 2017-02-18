@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/header.h"
@@ -64,13 +64,13 @@ OFPType Header::translateType(UInt8 version, UInt8 type, UInt8 newVersion) {
 
   if (version == OFP_VERSION_4) {
     return translateTypeToVersion(type, newVersion);
-
-  } else if (newVersion == OFP_VERSION_4) {
-    return translateTypeFromVersion(type, version);
-
-  } else {
-    return OFPT_UNSUPPORTED;
   }
+
+  if (newVersion == OFP_VERSION_4) {
+    return translateTypeFromVersion(type, version);
+  }
+
+  return OFPT_UNSUPPORTED;
 }
 
 bool Header::validateInput(UInt8 negotiatedVersion) const {
@@ -101,7 +101,7 @@ bool Header::validateInput(UInt8 negotiatedVersion) const {
     return false;
   }
 
-  // N.B. The type field will be further checked by transmogrify.
+  // N.B. The type field will be further checked by normalize.
 
   return true;
 }

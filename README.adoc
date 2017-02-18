@@ -1,16 +1,16 @@
-= LIBOFP: OpenFlow to YAML Converter
+= OFTR: OpenFlow to YAML Translator
 :icons: font
 :toc:
 ifdef::env-github[]
 :toc-placement: preamble
 endif::[]
 
-image:https://travis-ci.org/byllyfish/libofp.svg?branch=master["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/libofp"]
+image:https://travis-ci.org/byllyfish/oftr.svg?branch=master["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/oftr"]
 image:https://scan.coverity.com/projects/5587/badge.svg["Coverity Scan Build Status", link="https://scan.coverity.com/projects/5587"]
 
-== What is Libofp?
+== What is oftr?
 
-The *libofp* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML 1.2] and back again. It provides a uniform object syntax for working with the OpenFlow protocol programmatically.
+The *oftr* program translates binary https://www.opennetworking.org/sdn-resources/openflow[OpenFlow] messages to http://www.yaml.org/spec/1.2/spec.html[YAML 1.2] and back again. It provides a uniform object syntax for working with the OpenFlow protocol programmatically.
 
 * Supports Linux and OS X
 * Supports OpenFlow versions 1.0, 1.1, 1.2, 1.3, 1.4
@@ -23,16 +23,16 @@ Decode the OpenFlow messages in a ".pcap" file while retaining metadata such as 
 
 [source,bash]
 ----
-$ libofp decode "filename.pcap"
+$ oftr decode "filename.pcap"
 ----
 
-Libofp includes a JSON-RPC microservice that can operate as an OpenFlow 
+oftr includes a JSON-RPC microservice that can operate as an OpenFlow 
 controller, agent, or both simultaneously. The JSON-RPC microservice can control
 the OpenFlow protocol over an IPC channel using asynchronous JSON events.
 
 [source,console]
 ----
-$ libofp jsonrpc
+$ oftr jsonrpc
 ----
 
 === YAML to OpenFlow
@@ -54,7 +54,7 @@ msg:
 ----
 
 The YAML syntax is based on OpenFlow 1.4, but the same input
-can generate earlier protocol version messages. Libofp is intelligent about
+can generate earlier protocol version messages. oftr is intelligent about
 translating between OpenFlows versions. For example,
 here's a FlowMod message specified using OpenFlow 1.4 syntax, but which will 
 output a "1.0" message because version 1 is explicitly specified.
@@ -90,7 +90,7 @@ output a "1.0" message because version 1 is explicitly specified.
 
 === OpenFlow to YAML
 
-Given a binary OpenFlow message, `libofp` can translate it back to a human-readable
+Given a binary OpenFlow message, `oftr` can translate it back to a human-readable
 YAML object. Here's the binary for an OpenFlow OFPT_ERROR message in hexadecimal:
 
 [source,hex]
@@ -129,16 +129,16 @@ To build the software:
 
 [source,console]
 ----
-$ git clone --recursive https://github.com/byllyfish/libofp.git
-$ mkdir libofp/Build
-$ cd libofp/Build
+$ git clone --recursive https://github.com/byllyfish/oftr.git
+$ mkdir oftr/Build
+$ cd oftr/Build
 $ cmake ..
 $ make
 $ make test
 $ make install
 ----
 
-On Ubuntu, you can also install the software from a https://launchpad.net/~byllyfish/+archive/ubuntu/libofp[Launchpad PPA].
+On Ubuntu, you can also install the software from a https://launchpad.net/~byllyfish/+archive/ubuntu/oftr[Launchpad PPA].
 
 == Examples
 
@@ -146,7 +146,7 @@ To translate a text file into binary OpenFlow messages:
 
 [source,console]
 ----
-$ libofp encode -o output.bin input.yml
+$ oftr encode -o output.bin input.yml
 ----
 
 To translate a text file into binary OpenFlow messages, while ignoring
@@ -154,7 +154,7 @@ sets of match fields with missing prerequisites:
 
 [source,console]
 ----
-$ libofp encode --unchecked-match -o output.bin input.yml
+$ oftr encode --unchecked-match -o output.bin input.yml
 ----
 
 To translate a text file of compact, single line JSON objects separated by
@@ -162,14 +162,14 @@ linefeeds:
 
 [source,console]
 ----
-$ libofp encode --json input.json
+$ oftr encode --json input.json
 ----
 
 To decode a file of binary OpenFlow messages to YAML:
 
 [source,console]
 ----
-$ libofp decode input.bin
+$ oftr decode input.bin
 ----
 
 To decode a ".pcap" file containing OpenFlow messages, treating all TCP streams
@@ -177,21 +177,21 @@ as potential OpenFlow connections:
 
 [source,console]
 ----
-$ libofp decode --pcap-filter='' "input.pcap" 
+$ oftr decode --pcap-filter='' "input.pcap" 
 ----
 
 To decode a file of binary OpenFlow messages to compact single-line JSON objects:
 
 [source,console]
 ----
-$ libofp decode --json "filename"
+$ oftr decode --json "filename"
 ----
 
 To decode binary OpenFlow messages to a valid JSON array of objects:
 
 [source,console]
 ----
-$ libofp decode --json-array "filename"
+$ oftr decode --json-array "filename"
 ----
 
 To decode binary OpenFlow messages with the additional check that the resulting
@@ -199,42 +199,42 @@ YAML produces the same binary message when re-encoded:
 
 [source,console]
 ----
-$ libofp decode --verify-output "filename"
+$ oftr decode --verify-output "filename"
 ----
 
-The `libofp help` tool provides information about the schema used for reading/writing 
+The `oftr help` tool provides information about the schema used for reading/writing 
 OpenFlow messages in YAML. To obtain information about the syntax for the 
 'FLOW_MOD' message:
 
 [source,console]
 ----
-$ libofp help flow_mod
+$ oftr help flow_mod
 ----
 
 To list all supported OXM fields:
 
 [source,console]
 ----
-$ libofp help --fields
+$ oftr help --fields
 ----
 
-See the three man pages for details:  https://github.com/byllyfish/libofp/blob/master/docs/libofp.1.adoc[libofp], https://github.com/byllyfish/libofp/blob/master/docs/libofp-jsonrpc.1.adoc[libofp-jsonrpc], https://github.com/byllyfish/libofp/blob/master/docs/libofp-schema.1.adoc[libofp-schema].
+See the three man pages for details:  https://github.com/byllyfish/oftr/blob/master/docs/oftr.1.adoc[oftr], https://github.com/byllyfish/oftr/blob/master/docs/oftr-jsonrpc.1.adoc[oftr-jsonrpc], https://github.com/byllyfish/oftr/blob/master/docs/oftr-schema.1.adoc[oftr-schema].
 
 == License
 
 This software is licensed under the terms of the *MIT License*.
 
-*libofp* relies on the following third-party source code (static linked):
+*oftr* relies on the following third-party source code (static linked):
 
 * http://llvm.org/docs/YamlIO.html[yamlio] from the http://llvm.org[llvm] project
 * https://github.com/byllyfish/asio.git[asio] (forked to support boringssl)
 * https://boringssl.googlesource.com/boringssl[boringssl]
 
-For unit tests, *libofp* uses googletest:
+For unit tests, *oftr* uses googletest:
 
 * https://github.com/google/googletest.git[googletest]
 
-For testing, *libofp* uses OpenFlow message samples from these projects:
+For testing, *oftr* uses OpenFlow message samples from these projects:
 
 * https://github.com/flowgrammable/openflow-messages[openflow-messages]
 * https://github.com/osrg/ryu[ryu]

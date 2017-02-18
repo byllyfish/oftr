@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YPORTPROPERTY_H_
@@ -15,7 +15,7 @@ struct PortPropertyItem {};
 using PortPropertyIterator = TypedPropertyIterator<PortPropertyItem>;
 struct PortPropertyRange {};
 struct PortPropertyInserter {};
-struct PortPropertyList {};
+struct PortPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

@@ -9,7 +9,7 @@
 #
 #    cmake -DCMAKE_BUILD_TYPE=debug
 #
-# To build libofp without the JSON-RPC server:
+# To build without the JSON-RPC server:
 #
 #    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
 #
@@ -35,9 +35,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.21.0)
-set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
+set(Libofp_VERSION 0.24.0)
+set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
+set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\1" Libofp_VERSION_MAJOR ${Libofp_VERSION})
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\2" Libofp_VERSION_MINOR ${Libofp_VERSION})
@@ -45,10 +46,9 @@ string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" Libofp_VERSION_PATCH
 
 # Set version numbers for RPC API.
 
-set(Libofp_RPC_API_MAJOR 0)
-set(Libofp_RPC_API_MINOR 1)
+set(Libofp_RPC_API_VERSION "0.9")
 
-# You can build libofp with or without the JSON-RPC server.
+# You can build oftr with or without the JSON-RPC server.
 
 set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
@@ -153,6 +153,7 @@ set(LIBOFP_SOURCES
   src/ofp/constants.cpp
   src/ofp/constants_error.cpp
   src/ofp/datapathid.cpp
+  src/ofp/durationsec.cpp
   src/ofp/echoreply.cpp
   src/ofp/echorequest.cpp
   src/ofp/error.cpp
@@ -181,6 +182,7 @@ set(LIBOFP_SOURCES
   src/ofp/match.cpp
   src/ofp/matchheader.cpp
   src/ofp/matchpacket.cpp
+  src/ofp/matchpacketbuilder.cpp
   src/ofp/message.cpp
   src/ofp/metermod.cpp
   src/ofp/mpdesc.cpp
@@ -202,6 +204,7 @@ set(LIBOFP_SOURCES
   src/ofp/mptablestats.cpp
   src/ofp/multipartreply.cpp
   src/ofp/multipartrequest.cpp
+  src/ofp/normalize.cpp
   src/ofp/originalmatch.cpp
   src/ofp/oxmfulltype.cpp
   src/ofp/oxmlist.cpp
@@ -223,6 +226,7 @@ set(LIBOFP_SOURCES
   src/ofp/queuegetconfigrequest.cpp
   src/ofp/queueproperty.cpp
   src/ofp/queuerange.cpp
+  src/ofp/rawmessage.cpp
   src/ofp/requestforward.cpp
   src/ofp/rolerequest.cpp
   src/ofp/rolereply.cpp
@@ -239,7 +243,6 @@ set(LIBOFP_SOURCES
   src/ofp/tablemodproperty.cpp
   src/ofp/tablestatus.cpp
   src/ofp/timestamp.cpp
-  src/ofp/transmogrify.cpp
   src/ofp/types.cpp
   src/ofp/validation.cpp
   src/ofp/yaml/decoder.cpp
@@ -313,6 +316,7 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
+message(STATUS "Compiler is ${Libofp_COMPILER_SPEC}")
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
@@ -501,7 +505,7 @@ endif()
 # Build Tool
 #-------------------------------------------------------------------------------
 
-add_subdirectory(tools/libofp)
+add_subdirectory(tools/oftr)
 
 #-------------------------------------------------------------------------------
 # Test
@@ -549,3 +553,16 @@ add_custom_target(format-all
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMENT "Formatting all libofp code with clang-format" VERBATIM
 )
+
+#-------------------------------------------------------------------------------
+# Support for Running Clang-tidy
+#-------------------------------------------------------------------------------
+
+set(CLANGTIDY_PATH external/cpplint/clangtidy.sh)
+
+add_custom_target(clang-tidy
+  COMMAND find src -name "*.cpp" -print -exec ${CLANGTIDY_PATH} {} \;
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+  COMMENT "Checking all libofp code with clang-tidy" VERBATIM
+)
+

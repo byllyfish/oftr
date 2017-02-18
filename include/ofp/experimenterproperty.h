@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_EXPERIMENTERPROPERTY_H_
@@ -36,8 +36,7 @@ class ExperimenterProperty : private NonCopyable {
   UInt32 expType() const { return expType_; }
 
   ByteRange expData() const {
-    assert(len_ >= FixedHeaderSize);
-    return ByteRange{BytePtr(this) + FixedHeaderSize, size() - FixedHeaderSize};
+    return SafeByteRange(this, size(), FixedHeaderSize);
   }
 
   ByteRange valueRef() const { return data_; }

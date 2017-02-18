@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YMPTABLEFEATURES_H_
@@ -166,7 +166,7 @@ struct MappingTraits<ofp::MPTableFeaturesBuilder> {
       props.add(TableFeaturePropertyApplySetFieldMiss{matchMiss->toRange()});
     }
 
-    io.mapRequired("properties", Ref_cast<TableFeaturePropertyList>(props));
+    io.mapOptional("properties", Ref_cast<TableFeaturePropertyList>(props));
 
     body.setProperties(props);
   }
