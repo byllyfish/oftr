@@ -14,8 +14,8 @@ const double kTwoMinuteTimeout = 120.0;
 
 static std::string tcpFlagToString(UInt8 flags);
 
-detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
-                                   const IPv6Endpoint &dst, bool &srcIsX) {
+FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src, const IPv6Endpoint &dst,
+                           bool &srcIsX) {
   if (src <= dst) {
     x = src;
     y = dst;
@@ -27,7 +27,7 @@ detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
   }
 }
 
-void detail::FlowCacheEntry::reset(const Timestamp &ts, UInt64 sessID) {
+void FlowCacheEntry::reset(const Timestamp &ts, UInt64 sessID) {
   x.clear();
   y.clear();
   lastSeen.clear();
@@ -69,8 +69,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   bool final = (flags & kFinalFlags) != 0;
 
   bool isX;
-  detail::FlowCacheKey key{src, dst, isX};
-  detail::FlowCacheEntry &entry = cache_[key];
+  FlowCacheKey key{src, dst, isX};
+  FlowCacheEntry &entry = cache_[key];
 
   if (entry.sessionID == 0) {
     // This is a new entry. Assign a new ID to the session.
@@ -109,7 +109,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
 
 FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
   bool isX;
-  detail::FlowCacheKey key{src, dst, isX};
+  FlowCacheKey key{src, dst, isX};
 
   auto iter = cache_.find(key);
   if (iter != cache_.end()) {
@@ -120,10 +120,10 @@ FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
   return nullptr;
 }
 
-detail::FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
-                                             const IPv6Endpoint &dst) {
+FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
+                                     const IPv6Endpoint &dst) {
   bool isX;
-  detail::FlowCacheKey key{src, dst, isX};
+  FlowCacheKey key{src, dst, isX};
 
   auto iter = cache_.find(key);
   if (iter != cache_.end()) {
@@ -133,8 +133,7 @@ detail::FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
   return nullptr;
 }
 
-void FlowCache::finish(const detail::FlowCallback &callback,
-                       size_t maxMissingBytes) {
+void FlowCache::finish(const FlowCallback &callback, size_t maxMissingBytes) {
   for (auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;

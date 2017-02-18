@@ -20,6 +20,9 @@ struct PortInserter {};
 namespace llvm {
 namespace yaml {
 
+// When you update the port schema, make the corresponding changes to
+// PortStatus message schema (yportstatus.h).
+
 const char *const kPortSchema = R"""({Struct/Port}
 port_no: PortNumber
 hw_addr: MacAddress

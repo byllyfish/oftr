@@ -7,6 +7,7 @@
 #include "ofp/bytelist.h"
 #include "ofp/datapathid.h"
 #include "ofp/header.h"
+#include "ofp/messagetype.h"
 #include "ofp/timestamp.h"
 #include "ofp/validation.h"
 
@@ -70,6 +71,7 @@ class Message {
 
   Timestamp time() const { return time_; }
   MessageInfo *info() const { return info_; }
+  MessageType msgType() const { return MessageType{type(), subtype()}; }
   OFPType type() const { return header()->type(); }
   OFPMultipartType subtype() const;
   OFPMultipartFlags flags() const;
@@ -102,10 +104,6 @@ class Message {
 
   friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
                                        const Message &msg) {
-    return os << msg.buf_;
-  }
-
-  friend std::ostream &operator<<(std::ostream &os, const Message &msg) {
     return os << msg.buf_;
   }
 

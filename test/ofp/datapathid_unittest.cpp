@@ -10,12 +10,12 @@ TEST(datapathid, test) {
   DatapathID a;
   EXPECT_HEX("0000 0000 0000 0000", &a, sizeof(a));
   EXPECT_EQ(0, a.implementerDefined());
-  EXPECT_EQ("", a.toString());
+  EXPECT_EQ("00:00:00:00:00:00:00:00", a.toString());
   EXPECT_TRUE(a.empty());
 
-  DatapathID b{0x1234, MacAddress{"00-01-02-03-04-05"}};
+  DatapathID b{0x1234, MacAddress{"00:01:02:03:04:05"}};
   EXPECT_EQ(0x1234, b.implementerDefined());
-  EXPECT_EQ(MacAddress{"00-01-02-03-04-05"}, b.macAddress());
+  EXPECT_EQ(MacAddress{"00:01:02:03:04:05"}, b.macAddress());
   EXPECT_HEX("1234 00 01 02 03 04 05", &b, sizeof(b));
   EXPECT_EQ("12:34:00:01:02:03:04:05", b.toString());
 
@@ -27,14 +27,14 @@ TEST(datapathid, test) {
 
   DatapathID d{0xffff, MacAddress{"ff:ff:ff:ff:ff:ff"}};
   EXPECT_EQ(0xffff, d.implementerDefined());
-  EXPECT_EQ(MacAddress{"ff-ff-ff-ff-ff-ff"}, d.macAddress());
+  EXPECT_EQ(MacAddress{"ff:ff:ff:ff:ff:ff"}, d.macAddress());
   EXPECT_HEX("ffff ff ff ff ff ff ff", &d, sizeof(d));
   EXPECT_EQ("ff:ff:ff:ff:ff:ff:ff:ff", d.toString());
 
-  // Parsing the empty string should yield an empty datapath.
+  // Parsing the empty string should fail.
   DatapathID e;
-  EXPECT_TRUE(e.parse(""));
-  EXPECT_EQ("", e.toString());
+  EXPECT_FALSE(e.parse(""));
+  EXPECT_EQ("00:00:00:00:00:00:00:00", e.toString());
   EXPECT_TRUE(e.empty());
 
   DatapathID f;
@@ -42,9 +42,8 @@ TEST(datapathid, test) {
   EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc:d"));
   EXPECT_TRUE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd"));
   EXPECT_HEX("aa:bb:cc:dd:aa:bb:cc:dd", &f, sizeof(f));
-  // It's okay to pass more data than necessary...
-  EXPECT_TRUE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd:ee"));
-  EXPECT_HEX("aa:bb:cc:dd:aa:bb:cc:dd", &f, sizeof(f));
+  // It's NOT okay to pass more data than necessary...
+  EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd:ee"));
 }
 
 TEST(datapathid, relational) {
@@ -87,4 +86,19 @@ TEST(datapathid, stream) {
   oss << a << ',' << b << '.';
 
   EXPECT_EQ("00:01:02:a3:04:00:00:f1,00:00:00:00:00:00:00:00.", oss.str());
+}
+
+TEST(datapathid, integer) {
+  DatapathID a;
+
+  EXPECT_TRUE(a.parse("0x20F"));
+  EXPECT_EQ("00:00:00:00:00:00:02:0f", a.toString());
+
+  EXPECT_FALSE(a.parse("0x20f "));
+  EXPECT_FALSE(a.parse(" 0x20f"));
+
+  EXPECT_FALSE(a.parse("01"));
+  EXPECT_FALSE(a.parse("1"));
+  EXPECT_FALSE(a.parse("1234567812345678"));
+  EXPECT_FALSE(a.parse("0x1FFFFFFFFFFFFFFFF"));
 }

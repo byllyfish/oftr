@@ -12,7 +12,7 @@ DatapathID::DatapathID(UInt16 implementerDefined, MacAddress macAddress) {
   std::memcpy(dpid_.data() + 2, &macAddress, sizeof(macAddress));
 }
 
-DatapathID::DatapathID(const std::string &dpid) {
+DatapathID::DatapathID(llvm::StringRef dpid) {
   if (!parse(dpid))
     clear();
 }
@@ -27,21 +27,18 @@ MacAddress DatapathID::macAddress() const {
   return result;
 }
 
-std::string DatapathID::toString() const {
-  if (empty()) {
-    return {};
-  }
-  char buf[sizeof(DatapathID) * 3];
-  return RawDataToHexDelimitedLowercase(dpid_, buf);
-}
-
-bool DatapathID::parse(const std::string &s) {
-  if (s.empty()) {
-    clear();
+bool DatapathID::parse(llvm::StringRef s) {
+  // Check if string is a hexadecimal number: "0xHH".
+  if (s.consume_front("0x")) {
+    UInt64 n;
+    if (s.getAsInteger<UInt64>(16, n))
+      return false;
+    Big64 val = n;
+    std::memcpy(&dpid_, &val, sizeof(dpid_));
     return true;
   }
 
-  return HexToRawData(s, dpid_.data(), dpid_.size()) >= dpid_.size();
+  return HexDelimitedToRawData(s, dpid_.data(), dpid_.size()) == dpid_.size();
 }
 
 namespace ofp {

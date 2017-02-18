@@ -77,13 +77,6 @@ bool IPv4Address::parse(const std::string &s) {
   return (result > 0);
 }
 
-std::string IPv4Address::toString() const {
-  std::string buf;  // FIXME(bfish) - common code...
-  llvm::raw_string_ostream oss{buf};
-  oss << *this;
-  return oss.str();
-}
-
 static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr) {
   using llvm::StringRef;
   size_t sp = 0;

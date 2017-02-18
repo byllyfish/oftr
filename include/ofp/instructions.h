@@ -6,6 +6,7 @@
 
 #include "ofp/actionlist.h"
 #include "ofp/instructiontype.h"
+#include "ofp/meternumber.h"
 #include "ofp/padding.h"
 
 namespace ofp {
@@ -139,14 +140,14 @@ class IT_METER {
     return InstructionType{OFPIT_METER};
   }
 
-  constexpr explicit IT_METER(UInt32 meter) : meter_{meter} {}
+  constexpr explicit IT_METER(MeterNumber meter) : meter_{meter} {}
 
-  constexpr UInt32 meter() const { return meter_; }
+  constexpr MeterNumber meter() const { return meter_; }
 
  private:
   InstructionType type_ = type();
   Big16 length_{8};
-  Big32 meter_;
+  MeterNumber meter_;
 
   friend struct llvm::yaml::MappingTraits<IT_METER>;
   friend struct llvm::yaml::MappingTraits<IT_METER *>;

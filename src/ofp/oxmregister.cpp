@@ -82,9 +82,3 @@ bool OXMRegister::parse(const std::string &s) {
 
   return true;
 }
-
-std::string OXMRegister::toString() const {
-  std::ostringstream oss;
-  oss << type_.toString() << '[' << offset() << ':' << end() << ']';
-  return oss.str();
-}

@@ -101,7 +101,7 @@ TEST(actions, AT_SET_MPLS_TTL) {
 
 TEST(actions, AT_PUSH_VLAN) {
   AT_PUSH_VLAN act{5};
-  EXPECT_EQ(5, act.vlan());
+  EXPECT_EQ(5, act.ethertype());
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_PUSH_VLAN::type().length());
 
@@ -111,11 +111,11 @@ TEST(actions, AT_PUSH_VLAN) {
 
 TEST(actions, AT_PUSH_MPLS) {
   AT_PUSH_MPLS act{5};
-  EXPECT_EQ(5, act.mpls());
+  EXPECT_EQ(5, act.ethertype());
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_PUSH_MPLS::type().length());
 
-  auto expected = HexToRawData("0013 0008 0000 0005");
+  auto expected = HexToRawData("0013 0008 0005 0000");
   EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
 }
 
@@ -204,7 +204,7 @@ TEST(actions, AT_SET_FIELD_32bit) {
 }
 
 TEST(actions, AT_SET_FIELD_48bit) {
-  MacAddress addr{"01-02-03-04-05-06"};
+  MacAddress addr{"01:02:03:04:05:06"};
   AT_SET_FIELD<OFB_ETH_DST> act{addr};
 
   EXPECT_EQ(addr, act.value());

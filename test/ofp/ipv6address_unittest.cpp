@@ -235,3 +235,18 @@ TEST(ipv6address, misaligned) {
              sizeof(buf.addr));
   EXPECT_EQ("fe80::1122:33ff:fe44:5566%287454020", buf.addr.toString());
 }
+
+TEST(ipv6address, v4mapped_v6format) {
+  IPv6Address addr;
+
+  EXPECT_FALSE(addr.parse("10.0.0.1", false));
+  EXPECT_TRUE(addr.parse("::ffff:c0a8:1"));
+  EXPECT_TRUE(addr.isV4Mapped());
+
+  std::string buf;
+  llvm::raw_string_ostream rss{buf};
+  rss << addr << ',';
+  addr.outputV6(rss);
+  EXPECT_EQ("192.168.0.1,::ffff:192.168.0.1", rss.str());
+  EXPECT_EQ("192.168.0.1", addr.toString());
+}

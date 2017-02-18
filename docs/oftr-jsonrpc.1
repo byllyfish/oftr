@@ -1,0 +1,1003 @@
+'\" t
+.\"     Title: oftr-jsonrpc
+.\"    Author: William W. Fisher <william.w.fisher@gmail.com>
+.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
+.\"      Date: 02/17/2017
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "OFTR\-JSONRPC" "1" "02/17/2017" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+oftr-jsonrpc \- OpenFlow Microservice
+.SH "SYNOPSIS"
+.sp
+\fBoftr jsonrpc\fR [\fIOPTIONS\fR]
+.SH "DESCRIPTION"
+.sp
+The \fBoftr jsonrpc\fR tool runs a JSON\-RPC service that enables programmatic control of the OpenFlow protocol\&. The control connection runs overs stdin/stdout\&. All text uses UTF\-8 encoding\&.
+.sp
+The control connection reads JSON messages from stdin, each one separated by a NUL (0x00) character\&. The maximum length of a message, including the NUL, is 1 megabyte\&. The message must not contain any other NUL characters\&. The jsonrpc server accepts YAML 1\&.2 input, but always returns strict JSON\&.
+.sp
+The jsonrpc service is a JSON\-RPC 2\&.0 server (http://www\&.jsonrpc\&.org/)\&.
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The
+\fIid\fR
+member is a 64\-bit unsigned integer\&. Null or negative id\(cqs are not allowed\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The
+\fIjsonrpc\fR
+member is never sent\&. If used by a client, its value must be exactly "2\&.0"\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+No result or error is ever sent in response to a message without an
+\fIid\fR
+member\&. However, message delivery failure may elicit a notification (see OFP\&.MESSAGE)\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Replies may be returned in a different order than requests are submitted\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Batch requests are not supported\&.
+.RE
+.SH "RPC OVERVIEW"
+.sp
+There are seven core JSON\-RPC requests with corresponding replies\&.
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.DESCRIPTION
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.LISTEN
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.CONNECT
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.SEND
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.CLOSE
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.LIST_CONNECTIONS
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.ADD_IDENTITY
+.RE
+.sp
+There is one JSON\-RPC notification:
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+OFP\&.MESSAGE
+.RE
+.SH "RPC COMMANDS"
+.SS "OFP\&.DESCRIPTION"
+.sp
+Request information about the oftr implementation\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.DESCRIPTION
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBid\fR
+.RS 4
+Request ID used to identify the reply (unsigned 64\-bit integer)\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+  api_version: String
+  sw_desc: String
+  ofp_versions: [UInt8]
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBapi_version\fR
+.RS 4
+API version in the form <major>\&.<minor>\&.
+.RE
+.PP
+\fBsw_desc\fR
+.RS 4
+oftr
+software version\&.
+.RE
+.PP
+\fBversions\fR
+.RS 4
+List of supported OpenFlow versions\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+The reply contains the software version, API version, and supported OpenFlow protocol versions\&. The OFP\&.DESCRIPTION result will never change at runtime\&.
+.sp
+The major API version is incremented when there are changes that are incompatible with previous versions of the API\&. The minor API version is incremented when the API changes are backward compatible\&.
+.sp
+The versions value is an array of OpenFlow wire versions (i\&.e\&. OpenFlow 1\&.3 is wire version 4\&.)
+.RE
+.SS "OFP\&.CONNECT"
+.sp
+Open an outgoing OpenFlow connection to the specified host and port\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.CONNECT
+params:
+  endpoint: IPEndpoint
+  versions: !opt [UInt8]
+  tls_id:  !opt UInt64
+  options: !opt [String]
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBid\fR
+.RS 4
+Request ID used to identify the reply (unsigned 64\-bit integer)\&.
+.RE
+.PP
+\fBmethod\fR
+.RS 4
+Must be "OFP\&.CONNECT"\&.
+.RE
+.PP
+\fBendpoint\fR
+.RS 4
+Destination to connect to\&. Must be a string that specifies an IPv4/IPv6 address and a TCP port number separated by a
+\fI:\fR
+or
+\fI\&.\fR\&. Formats include: "127\&.0\&.0\&.1:6653", "127\&.0\&.0\&.1\&.6653", "[::1]:6653", "::1\&.6653"\&.
+.RE
+.PP
+\fBversions\fR
+.RS 4
+List of OpenFlow versions to support\&. Defaults to all\&.
+.RE
+.PP
+\fBtls_id\fR
+.RS 4
+Identifier for TLS/DTLS identity to use\&. See OFP\&.ADD_IDENTITY\&.
+.RE
+.PP
+\fBoptions\fR
+.RS 4
+List of additional options that control the connection\&.
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBFEATURES_REQ\fR
+= Send a FEATURES_REQUEST to obtain datapath_id from other end\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBCONNECT_UDP\fR
+= Use UDP instead of TCP\&. (Not supported with FEATURES_REQ)
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBNO_VERSION_CHECK\fR
+= Permit messages with other versions after HELLO negotiation\&.
+.RE
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+    conn_id: UInt64
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBconn_id\fR
+.RS 4
+Unique, non\-zero identifier representing the new connection\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+The reply is sent when the connection is established\&. The reply contains the unique connection ID associated with the new connection\&.
+.sp
+If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. The channel will be reported up when this transaction completes, and the connection is assigned a datapath_id\&.
+.sp
+If CONNECT_UDP option is specified, make an auxiliary connection via UDP to the specified endpoint\&.
+.sp
+If NO_VERSION_CHECK option is specified, accept messages with different versions after the initial version negotiation using HELLO messages\&. The default is to close the connection when a message is received with an incorrect version\&.
+.RE
+.SS "OFP\&.LISTEN"
+.sp
+Listen for incoming OpenFlow connections on the specified interface and port\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.LISTEN
+params:
+  endpoint: IPEndpoint
+  versions: [UInt8]
+  tls_id: UInt64
+  options: [String]
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBendpoint\fR
+.RS 4
+Local IP address and port number to listen on, e\&.g\&. "127\&.0\&.0\&.1:8000"\&. If the IP address is omitted, listen on all interface addresses\&. The IP address and port number must be separated by a space or colon when both are present\&. When using a colon separator, use brackets around an IPv6 address\&.
+.RE
+.PP
+\fBversions\fR
+.RS 4
+List of OpenFlow versions to support\&. Defaults to all\&.
+.RE
+.PP
+\fBtls_id\fR
+.RS 4
+TLS identity to use for securing the connection\&. The default identity is 0 (normally plaintext)\&.
+.RE
+.PP
+\fBoptions\fR
+.RS 4
+List of additional options that control the connection\&.
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBFEATURES_REQ\fR
+= Send a FEATURES_REQUEST to obtain datapath_id from other end\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBAUXILIARY\fR
+= Support auxiliary connections over TCP (requires FEATURES_REQ)\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBLISTEN_UDP\fR
+= Support auxiliary connections over UDP also (requires AUXILIARY)\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBNO_VERSION_CHECK\fR
+= Permit messages with other versions after HELLO negotiation\&.
+.RE
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+    conn_id: UInt64
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBconn_id\fR
+.RS 4
+Unique, non\-zero identifier representing the listening connection\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+This command listens for incoming connections from OpenFlow switches\&. The reply contains a unique connection ID representing the listener\&.
+.sp
+If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. The channel will be reported up when this transaction completes, and the connection is assigned a datapath_id\&.
+.sp
+If AUXILIARY option is specified, support auxiliary OpenFlow connections\&.
+.sp
+If LISTEN_UDP option is specified, listen for auxiliary UDP connections in addition to TCP\&. The UDP listener will use the same conn_id as the TCP listener\&.
+.sp
+If NO_VERSION_CHECK option is specified, accept messages with different versions after the initial version negotiation using HELLO messages\&. The default is to close the connection when a message is received with an incorrect version\&.
+.RE
+.SS "OFP\&.SEND"
+.sp
+Send the specified OpenFlow message\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.SEND
+params: Message
+  datapath_id: !opt DatapathID
+  conn_id: !opt UInt64
+  xid: !opt UInt32
+  type: \&.\&.\&.
+  msg: \&.\&.\&.
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBdatapath_id\fR
+.RS 4
+Destination Datapath ID\&.
+.RE
+.PP
+\fBconn_id\fR
+.RS 4
+Destination connection ID\&. This is consulted only if the datapath_id member is not present\&.
+.RE
+.PP
+\fBxid\fR
+.RS 4
+Message ID to use in outgoing OpenFlow header\&.
+.RE
+.PP
+\fBtype, msg\fR
+.RS 4
+See the schema for Message\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+  data: HexData
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBdata\fR
+.RS 4
+Header of OpenFlow message sent\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+To send an OpenFlow message, use the OFP\&.SEND command\&. The destination of the message is determined from the datapath_id or conn_id members\&. datapath_id is consulted first\&. If the datapath_id is missing or the its value is not found, the conn_id is used\&.
+.sp
+Normally, you will omit the id member to prevent an RPC reply from being sent back\&. If you include the id member, the reply contains the OpenFlow header of the binary message sent\&.
+.sp
+The destination channel determines the OpenFlow version\&. The outgoing message uses the negotiated version\&.
+.sp
+The xid member controls the outgoing message id\&. If no xid is provided, the channel assigns an auto\-incrementing value\&.
+.RE
+.SS "OFP\&.CLOSE"
+.sp
+Close the specified connection\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.CLOSE
+params:
+  conn_id: UInt64
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBconn_id\fR
+.RS 4
+Specify the connection to close\&. Use 0 to close all connections\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+  count: UInt64
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBcount\fR
+.RS 4
+Number of connections closed\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+Use the OFP\&.CLOSE command to close a connection, or close all connections\&. The reply contains the number of matching connections that were closed\&.
+.RE
+.SS "OFP\&.LIST_CONNECTIONS"
+.sp
+List statistics for a connection\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.LIST_CONNECTIONS
+params:
+  conn_id: UInt64
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBconn_id\fR
+.RS 4
+Specify a connection\&. Use 0 to list all connections\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+  stats:
+    \- local_endpoint: IPEndpoint
+      remote_endpoint: IPEndpoint
+      datapath_id: DatapathID
+      conn_id: UInt64
+      auxiliary_id: UInt8
+      transport: \*(AqTCP\*(Aq | \*(AqUDP\*(Aq | \*(AqTLS\*(Aq | \*(AqDTLS\*(Aq | \*(AqNONE\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBstats\fR
+.RS 4
+List of connection stat objects\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+Use OFP\&.LIST_CONNECTIONS to retrieve a list of connections and their information\&.
+.RE
+.SS "OFP\&.ADD_IDENTITY"
+.sp
+Configure an identity for use in securing incoming or outgoing connections using Transport Layer Security (TLS)\&.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBRequest\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+method: OFP\&.ADD_IDENTITY
+params:
+  cert: String
+  cert_auth: String
+  privkey_password: String        # Optional
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBcert\fR
+.RS 4
+PEM certificate chain data with PEM private key appended\&. The PEM private key may be encrypted with a password\&.
+.RE
+.PP
+\fBcert_auth\fR
+.RS 4
+Trusted PEM root certificate\&. One certificate, not a list\&.
+.RE
+.PP
+\fBprivkey_password\fR
+.RS 4
+Password for PEM private key, if needed\&. (Optional)
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBReply\fR
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+id: UInt64
+result:
+  tls_id: UInt64
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fBtls_id\fR
+.RS 4
+Unique, non\-zero identifier representing the TLS identity\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+Use the OFP\&.ADD_IDENTITY command to add a SSL/TLS identity for use in encrypting connections\&. The reply contains the unique tls_id to pass to OFP\&.CONNECT and OFP\&.LISTEN commands\&.
+.sp
+The cert_auth parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&.
+.RE
+.SH "RPC NOTIFICATIONS"
+.SS "OFP\&.MESSAGE"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+method: OFP\&.MESSAGE
+params:
+  type: <OpenFlow Message Type>
+  time: Timestamp
+  \&.\&.\&.
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+method: OFP\&.MESSAGE
+params:
+  type: CHANNEL_UP | CHANNEL_DOWN
+  time: Timestamp
+  conn_id: UInt64
+  datapath_id: DatapathID  # Optional
+  endpoint: IPEndpoint
+  version: UInt8
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+method: OFP\&.MESSAGE
+params:
+  type: CHANNEL_ALERT
+  time: Timestamp
+  conn_id: UInt64
+  datapath_id: DatapathID  # Optional
+  xid: !optout UInt32
+  alert: String
+  data: HexString
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDiscussion\fR
+.RS 4
+.sp
+The OFP\&.MESSAGE event is sent when an OpenFlow message is received\&. There are also special \fICHANNEL_*\fR events sent when a channel goes up/down or needs to indicate an event\&.
+.sp
+The type attribute specifies the type of message\&. See \fIoftr\-schema\fR man page for attributes used in OpenFlow messages\&.
+.sp
+The CHANNEL_UP message is sent when an OpenFlow channel comes up\&. If the FEATURES_REQ option is specified, the channel is not considered up until we know the datapath_id of the connection from the FEATURES_REPLY\&. If FEATURES_REQ is not specified, the channel up message is sent after the first HELLO messages are exchanged, and the datapath_id parameter is not included\&.
+.sp
+The CHANNEL_DOWN message is sent when an OpenFlow channel goes down\&.
+.sp
+The CHANNEL_ALERT message is sent when something unusual or abnormal happens\&. The alert parameter contains the reason for the message\&. The contents of the data parameter depend on the type of alert\&.
+.sp
+Here are some examples of why an alert message might be sent\&.
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+An incoming OpenFlow message cannot be decoded\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+An outgoing OpenFlow message cannot be delivered (OFP\&.SEND failure)\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+An OpenFlow connection fails to negotiate a version\&.
+.RE
+.RE
+.SH "SEE ALSO"
+.sp
+\fIoftr\fR(1), \fIoftr\-schema\fR(1)
+.SH "EXIT STATUS"
+.PP
+\fB0\fR
+.RS 4
+Success
+.RE
+.PP
+\fB1\fR
+.RS 4
+Failure: Syntax or usage error in command line arguments\&.
+.RE
+.SH "RESOURCES"
+.sp
+GitHub: https://github\&.com/byllyfish/oftr
+.SH "COPYING"
+.sp
+Copyright (C) 2015\-2017 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.
+.SH "AUTHOR"
+.PP
+\fBWilliam W\&. Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>
+.RS 4
+Author.
+.RE

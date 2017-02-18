@@ -37,13 +37,8 @@ class InstructionType {
 };
 
 static_assert(IsLiteralType<InstructionType>(), "Literal type expected.");
-
-std::ostream &operator<<(std::ostream &os, const InstructionType &value);
-
-inline std::ostream &operator<<(std::ostream &os,
-                                const InstructionType &value) {
-  return os << static_cast<unsigned>(value.enumType());
-}
+static_assert(sizeof(InstructionType) == 2, "Unexpected size.");
+static_assert(alignof(InstructionType) == 2, "Unexpected alignment.");
 
 OFP_BEGIN_IGNORE_PADDING
 

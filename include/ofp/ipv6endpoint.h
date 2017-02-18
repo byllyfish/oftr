@@ -28,7 +28,7 @@ class IPv6Endpoint {
   void setAddress(const IPv6Address &addr) { addr_ = addr; }
   void setPort(UInt16 port) { port_ = port; }
 
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
 
   bool operator==(const IPv6Endpoint &rhs) const {
     return addr_ == rhs.addr_ && port_ == rhs.port_;
@@ -62,10 +62,6 @@ static_assert(sizeof(IPv6Endpoint) == 18, "Unexpected size");
 static_assert(IsStandardLayout<IPv6Endpoint>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv6Endpoint>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

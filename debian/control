@@ -1,14 +1,14 @@
-Source: libofp
+Source: oftr
 Section: devel
 Priority: optional
 Standards-Version: 3.9.5
 Maintainer: William W. Fisher <william.w.fisher@gmail.com>
 Build-Depends: cmake, python, golang, libpcap-dev
-Homepage: https://github.com/byllyfish/libofp
+Homepage: https://github.com/byllyfish/oftr
 
-Package: libofp
+Package: oftr
 Architecture: any
 Depends: libpcap0.8
 Description: OpenFlow to YAML Converter and Microservice
- The libofp program translates OpenFlow messages to YAML or JSON. libofp 
+ The oftr program translates OpenFlow messages to YAML or JSON. oftr 
  provides a uniform text-based syntax for working with the OpenFlow protocol.

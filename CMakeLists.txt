@@ -9,7 +9,7 @@
 #
 #    cmake -DCMAKE_BUILD_TYPE=debug
 #
-# To build libofp without the JSON-RPC server:
+# To build without the JSON-RPC server:
 #
 #    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
 #
@@ -36,8 +36,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Set the version number of the library (use semantic versioning).
 
 set(Libofp_VERSION 0.23.0)
-set(Libofp_GITHUB_URL "https://github.com/byllyfish/libofp")
+set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
+set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\1" Libofp_VERSION_MAJOR ${Libofp_VERSION})
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\2" Libofp_VERSION_MINOR ${Libofp_VERSION})
@@ -45,10 +46,9 @@ string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.([0-9]+)" "\\3" Libofp_VERSION_PATCH
 
 # Set version numbers for RPC API.
 
-set(Libofp_RPC_API_MAJOR 0)
-set(Libofp_RPC_API_MINOR 1)
+set(Libofp_RPC_API_VERSION "0.9")
 
-# You can build libofp with or without the JSON-RPC server.
+# You can build oftr with or without the JSON-RPC server.
 
 set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
@@ -182,6 +182,7 @@ set(LIBOFP_SOURCES
   src/ofp/match.cpp
   src/ofp/matchheader.cpp
   src/ofp/matchpacket.cpp
+  src/ofp/matchpacketbuilder.cpp
   src/ofp/message.cpp
   src/ofp/metermod.cpp
   src/ofp/mpdesc.cpp
@@ -315,6 +316,7 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
+message(STATUS "Compiler is ${Libofp_COMPILER_SPEC}")
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
@@ -503,7 +505,7 @@ endif()
 # Build Tool
 #-------------------------------------------------------------------------------
 
-add_subdirectory(tools/libofp)
+add_subdirectory(tools/oftr)
 
 #-------------------------------------------------------------------------------
 # Test

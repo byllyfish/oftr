@@ -23,7 +23,7 @@ class IPv6Address {
   /// \returns zone_id for link-local address.
   UInt32 zone() const;
 
-  bool parse(const std::string &s);
+  bool parse(const std::string &s, bool parseIPv4 = true);
   void clear() { addr_.fill(0); }
 
   bool valid() const { return !IsMemFilled(addr_.data(), sizeof(addr_), '\0'); }
@@ -45,7 +45,9 @@ class IPv6Address {
     return v4;
   }
 
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
+
+  void outputV6(llvm::raw_ostream &os) const;
 
   const ArrayType &toArray() const { return addr_; }
 

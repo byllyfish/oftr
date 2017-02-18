@@ -59,11 +59,6 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
             << " data=" << RawDataToHex(value.data(), value.size()) << "]";
 }
 
-inline std::ostream &operator<<(std::ostream &os, const ByteRange &value) {
-  return os << "[ByteRange size=" << value.size()
-            << " data=" << RawDataToHex(value.data(), value.size()) << "]";
-}
-
 }  // namespace ofp
 
 #endif  // OFP_BYTERANGE_H_

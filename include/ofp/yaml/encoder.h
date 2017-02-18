@@ -101,10 +101,10 @@ struct MappingTraits<ofp::yaml::Encoder> {
     io.mapOptional("xid", header.xid_);
     io.mapOptional("version", header.version_);
 
-    ofp::yaml::MessageType msgType;
+    ofp::MessageType msgType;
     io.mapRequired("type", msgType);
-    header.setType(msgType.type);
-    encoder.subtype_ = msgType.subtype;
+    header.setType(msgType.type());
+    encoder.subtype_ = msgType.subtype();
 
     io.mapOptional("conn_id", encoder.connId_, UInt64{});
     io.mapOptional("datapath_id", encoder.datapathId_, DatapathID{});
@@ -115,8 +115,8 @@ struct MappingTraits<ofp::yaml::Encoder> {
 
     std::string ignore;
     io.mapOptional("_file", ignore);
-    io.mapOptional("_src", ignore);
-    io.mapOptional("_dst", ignore);
+    io.mapOptional("src", ignore);
+    io.mapOptional("dst", ignore);
     io.mapOptional("time", ignore);
 
     if (header.type() != OFPT_UNSUPPORTED) {

@@ -9,8 +9,6 @@
 
 using namespace ofp;
 
-const UInt32 kNanoPerSec = 1000000000;
-
 /// \brief Compute difference in seconds.
 ///
 /// \returns elapsed seconds between `this` and `ts.
@@ -23,16 +21,16 @@ double Timestamp::secondsSince(const Timestamp &ts) const {
 
   assert(*this >= ts);
 
-  UInt64 diff = Unsigned_cast(seconds() - ts.seconds());
+  UInt64 diff = seconds() - ts.seconds();
   if (nanoseconds() >= ts.nanoseconds()) {
     return diff +
-           static_cast<double>(nanoseconds() - ts.nanoseconds()) / kNanoPerSec;
+           static_cast<double>(nanoseconds() - ts.nanoseconds()) / NANO_UNITS;
   }
 
   assert(diff > 0);
   return (diff - 1) +
-         static_cast<double>(kNanoPerSec - ts.nanoseconds() + nanoseconds()) /
-             kNanoPerSec;
+         static_cast<double>(NANO_UNITS - ts.nanoseconds() + nanoseconds()) /
+             NANO_UNITS;
 }
 
 static const UInt32 kPower10[10] = {
@@ -70,9 +68,9 @@ bool Timestamp::parse(const std::string &s) {
     return false;
 
   fracNum *= kPower10[9 - fracDigits];
-  assert(fracNum < 1000000000);
+  assert(fracNum < NANO_UNITS);
 
-  time_.first = static_cast<time_t>(wholeNum);
+  time_.first = wholeNum;
   time_.second = fracNum;
 
   return true;
@@ -95,7 +93,7 @@ size_t Timestamp::toStringUTC(char (&buf)[TS_BUFSIZE]) const {
   const int TIMESTAMP_LEN = 30;
   static_assert(TIMESTAMP_LEN + 1 < sizeof(buf), "Buffer too small");
 
-  auto secs = seconds();
+  time_t secs = unix_time();
   auto nsec = nanoseconds();
 
   struct tm date;
@@ -115,10 +113,18 @@ Timestamp Timestamp::now() {
 
   auto now = system_clock::now();
   auto duration = now.time_since_epoch();
-  auto nano = duration_cast<std::chrono::nanoseconds>(duration).count();
+  UInt64 nano =
+      Unsigned_cast(duration_cast<std::chrono::nanoseconds>(duration).count());
 
-  return Timestamp{static_cast<time_t>(nano / 1000000000),
-                   UInt32_narrow_cast(nano % 1000000000)};
+  return Timestamp{nano / NANO_UNITS, UInt32_narrow_cast(nano % NANO_UNITS)};
+}
+
+void Timestamp::addSeconds(int seconds) {
+  if (seconds >= 0) {
+    time_.first += Unsigned_cast(seconds);
+  } else {
+    time_.first -= Unsigned_cast(-seconds);
+  }
 }
 
 namespace ofp {

@@ -92,13 +92,6 @@ void IPv6Endpoint::clear() {
   port_ = 0;
 }
 
-std::string IPv6Endpoint::toString() const {
-  std::string buf;
-  llvm::raw_string_ostream oss{buf};
-  oss << *this;
-  return oss.str();
-}
-
 namespace ofp {
 
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os,

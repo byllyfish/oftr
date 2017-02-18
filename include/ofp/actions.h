@@ -7,10 +7,12 @@
 #include "ofp/actiontype.h"
 #include "ofp/constants.h"
 #include "ofp/controllermaxlen.h"
+#include "ofp/groupnumber.h"
 #include "ofp/oxmfields.h"
 #include "ofp/oxmtype.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
+#include "ofp/queuenumber.h"
 #include "ofp/validation.h"
 
 namespace ofp {
@@ -114,13 +116,13 @@ class AT_PUSH_VLAN {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_VLAN, 8); }
 
-  constexpr explicit AT_PUSH_VLAN(UInt16 vlan) : vlan_{vlan} {}
+  constexpr explicit AT_PUSH_VLAN(UInt16 ethertype) : ethertype_{ethertype} {}
 
-  UInt16 vlan() const { return vlan_; }
+  UInt16 ethertype() const { return ethertype_; }
 
  private:
   const ActionType type_ = type();
-  const Big16 vlan_;
+  const Big16 ethertype_;
   const Padding<2> pad_;
 };
 
@@ -132,13 +134,14 @@ class AT_PUSH_MPLS {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_PUSH_MPLS, 8); }
 
-  constexpr explicit AT_PUSH_MPLS(UInt32 mpls) : mpls_{mpls} {}
+  constexpr explicit AT_PUSH_MPLS(UInt16 ethertype) : ethertype_{ethertype} {}
 
-  UInt32 mpls() const { return mpls_; }
+  UInt16 ethertype() const { return ethertype_; }
 
  private:
   const ActionType type_ = type();
-  const Big32 mpls_;
+  const Big16 ethertype_;
+  const Padding<2> pad_;
 };
 
 static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
@@ -161,18 +164,19 @@ class AT_POP_MPLS {
 
 static_assert(sizeof(AT_PUSH_MPLS) == 8, "Unexpected size.");
 static_assert(IsStandardLayout<AT_PUSH_MPLS>(), "Unexpected layout");
+
 /// \brief Concrete type for AT_SET_QUEUE action.
 class AT_SET_QUEUE {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_SET_QUEUE, 8); }
 
-  constexpr explicit AT_SET_QUEUE(UInt32 queue) : queue_{queue} {}
+  constexpr explicit AT_SET_QUEUE(QueueNumber queue) : queue_{queue} {}
 
-  UInt32 queue() const { return queue_; }
+  QueueNumber queue() const { return queue_; }
 
  private:
   const ActionType type_ = type();
-  const Big32 queue_;
+  const QueueNumber queue_;
 };
 
 static_assert(sizeof(AT_SET_QUEUE) == 8, "Unexpected size.");
@@ -183,13 +187,13 @@ class AT_GROUP {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_GROUP, 8); }
 
-  constexpr explicit AT_GROUP(UInt32 group) : group_{group} {}
+  constexpr explicit AT_GROUP(GroupNumber group) : group_{group} {}
 
-  UInt32 group() const { return group_; }
+  GroupNumber group() const { return group_; }
 
  private:
   const ActionType type_ = type();
-  const Big32 group_;
+  const GroupNumber group_;
 };
 
 static_assert(sizeof(AT_GROUP) == 8, "Unexpected size.");

@@ -1,0 +1,429 @@
+// To make the manpage using asciidoc, use the following command:
+//
+//   a2x --doctype manpage --format manpage oftr-jsonrpc.1.adoc
+// 
+// Use asciidoctor to produce the html version:
+// 
+//   asciidoctor oftr-jsonrpc.1.adoc
+
+= OFTR-JSONRPC(1)
+William W. Fisher <william.w.fisher@gmail.com>
+:doctype: manpage
+:github: <https://github.com/byllyfish/oftr>
+
+== NAME
+
+oftr-jsonrpc - OpenFlow Microservice
+
+
+== SYNOPSIS
+
+*oftr jsonrpc* [_OPTIONS_]
+
+
+== DESCRIPTION
+
+The *oftr jsonrpc* tool runs a JSON-RPC service that enables programmatic 
+control of the OpenFlow protocol. The control connection runs overs stdin/stdout. 
+All text uses UTF-8 encoding.
+
+The control connection reads JSON messages from stdin, each one separated by a NUL (0x00)
+character. The maximum length of a message, including the NUL, is 1 megabyte. The message
+must not contain any other NUL characters. The jsonrpc server accepts YAML 1.2 input, but
+always returns strict JSON.
+
+The jsonrpc service is a JSON-RPC 2.0 server (http://www.jsonrpc.org/).
+
+- The 'id' member is a 64-bit unsigned integer. Null or negative id's are not allowed.
+- The 'jsonrpc' member is never sent. If used by a client, its value must be exactly "2.0".
+- No result or error is ever sent in response to a message without an 'id' member. 
+  However, message delivery failure may elicit a notification (see OFP.MESSAGE).
+- Replies may be returned in a different order than requests are submitted.
+- Batch requests are not supported.
+
+== RPC Overview
+
+There are seven core JSON-RPC requests with corresponding replies.
+
+  - OFP.DESCRIPTION
+  - OFP.LISTEN
+  - OFP.CONNECT
+  - OFP.SEND
+  - OFP.CLOSE
+  - OFP.LIST_CONNECTIONS
+  - OFP.ADD_IDENTITY
+
+There is one JSON-RPC notification:
+
+  - OFP.MESSAGE
+
+
+== RPC Commands
+
+=== OFP.DESCRIPTION
+
+Request information about the `oftr` implementation.
+
+==== Request
+
+    id: UInt64
+    method: OFP.DESCRIPTION
+
+*id*:: Request ID used to identify the reply (unsigned 64-bit integer).
+
+==== Reply
+
+    id: UInt64
+    result:
+      api_version: String
+      sw_desc: String
+      ofp_versions: [UInt8]
+
+*api_version*:: API version in the form <major>.<minor>.
+
+*sw_desc*:: `oftr` software version.
+
+*versions*:: List of supported OpenFlow versions.
+
+==== Discussion
+
+The reply contains the software version, API version, and supported OpenFlow 
+protocol versions. The OFP.DESCRIPTION result will never change at runtime.
+
+The major API version is incremented when there are changes that are incompatible
+with previous versions of the API. The minor API version is incremented when the
+API changes are backward compatible.
+
+The `versions` value is an array of OpenFlow wire versions (i.e. OpenFlow 1.3 is wire version 4.)
+
+=== OFP.CONNECT
+
+Open an outgoing OpenFlow connection to the specified host and port.
+
+==== Request
+
+    id: UInt64
+    method: OFP.CONNECT
+    params:
+      endpoint: IPEndpoint
+      versions: !opt [UInt8]
+      tls_id:  !opt UInt64
+      options: !opt [String]
+
+*id*:: Request ID used to identify the reply (unsigned 64-bit integer).
+
+*method*:: Must be "OFP.CONNECT".
+
+*endpoint*:: Destination to connect to. Must be a string that specifies an 
+    IPv4/IPv6 address and a TCP port number separated by a ':' or '.'. Formats 
+    include: "127.0.0.1:6653", "127.0.0.1.6653", "[::1]:6653", "::1.6653".
+
+*versions*:: List of OpenFlow versions to support. Defaults to all.
+
+*tls_id*:: Identifier for TLS/DTLS identity to use. See OFP.ADD_IDENTITY.
+
+*options*:: List of additional options that control the connection.
+    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
+    - *CONNECT_UDP* = Use UDP instead of TCP. (Not supported with FEATURES_REQ)
+    - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
+
+==== Reply
+
+    id: UInt64
+    result:
+        conn_id: UInt64
+
+*conn_id*:: Unique, non-zero identifier representing the new connection.
+
+==== Discussion
+
+The reply is sent when the connection is established. The reply contains the unique 
+connection ID associated with the new connection.
+
+If `FEATURES_REQ` option is specified, send a FEATURES_REQUEST message to obtain
+the datapath_id from the other end. The channel will be reported up when this 
+transaction completes, and the connection is assigned a datapath_id.
+
+If `CONNECT_UDP` option is specified, make an auxiliary connection via UDP to the
+specified endpoint.
+
+If `NO_VERSION_CHECK` option is specified, accept messages with different versions
+after the initial version negotiation using HELLO messages. The default is to close
+the connection when a message is received with an incorrect version.
+
+=== OFP.LISTEN
+
+Listen for incoming OpenFlow connections on the specified interface and port.
+
+==== Request 
+
+    id: UInt64
+    method: OFP.LISTEN
+    params:
+      endpoint: IPEndpoint
+      versions: [UInt8]
+      tls_id: UInt64
+      options: [String]
+
+*endpoint*:: Local IP address and port number to listen on, e.g. "127.0.0.1:8000".
+    If the IP address is omitted, listen on all interface addresses. The IP 
+    address and port number must be separated by a space or colon when both are 
+    present. When using a colon separator, use brackets around an IPv6 address.
+
+*versions*:: List of OpenFlow versions to support. Defaults to all.
+
+*tls_id*:: TLS identity to use for securing the connection. The default identity is 0 (normally plaintext).
+
+*options*:: List of additional options that control the connection.
+    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
+    - *AUXILIARY* = Support auxiliary connections over TCP (requires FEATURES_REQ).
+    - *LISTEN_UDP* = Support auxiliary connections over UDP also (requires AUXILIARY).
+    - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
+
+==== Reply
+
+    id: UInt64
+    result:
+        conn_id: UInt64
+
+*conn_id*:: Unique, non-zero identifier representing the listening connection.
+
+==== Discussion
+
+This command listens for incoming connections from OpenFlow switches. The reply contains
+a unique connection ID representing the listener.
+
+If `FEATURES_REQ` option is specified, send a FEATURES_REQUEST message to obtain
+the datapath_id from the other end. The channel will be reported up when this 
+transaction completes, and the connection is assigned a datapath_id.
+
+If `AUXILIARY` option is specified, support auxiliary OpenFlow connections.
+
+If `LISTEN_UDP` option is specified, listen for auxiliary UDP connections in addition to TCP.
+The UDP listener will use the same conn_id as the TCP listener.
+
+If `NO_VERSION_CHECK` option is specified, accept messages with different versions
+after the initial version negotiation using HELLO messages. The default is to close
+the connection when a message is received with an incorrect version.
+
+=== OFP.SEND
+
+Send the specified OpenFlow message.
+
+==== Request
+
+    id: UInt64
+    method: OFP.SEND
+    params: Message
+      datapath_id: !opt DatapathID
+      conn_id: !opt UInt64
+      xid: !opt UInt32
+      type: ...
+      msg: ...
+
+*datapath_id*:: Destination Datapath ID.
+
+*conn_id*:: Destination connection ID. This is consulted only if the datapath_id
+member is not present.
+
+*xid*:: Message ID to use in outgoing OpenFlow header.
+
+*type, msg*:: See the schema for Message.
+
+==== Reply
+
+    id: UInt64
+    result:
+      data: HexData
+
+*data*:: Header of OpenFlow message sent.
+
+==== Discussion
+
+To send an OpenFlow message, use the `OFP.SEND` command. The destination of the
+message is determined from the datapath_id or conn_id members. `datapath_id` is 
+consulted first. If the datapath_id is missing or the its value is not found,
+the conn_id is used.
+
+Normally, you will omit the `id` member to prevent an RPC reply from being sent back. If
+you include the `id` member, the reply contains the OpenFlow header of the binary
+message sent.
+
+The destination channel determines the OpenFlow version. The outgoing message uses the
+negotiated version. 
+
+The xid member controls the outgoing message id. If no xid is provided, the channel
+assigns an auto-incrementing value.
+
+=== OFP.CLOSE
+
+Close the specified connection.
+
+==== Request
+
+    id: UInt64
+    method: OFP.CLOSE
+    params:
+      conn_id: UInt64
+
+*conn_id*:: Specify the connection to close. Use 0 to close all connections.
+
+==== Reply
+
+    id: UInt64
+    result:
+      count: UInt64
+
+*count*:: Number of connections closed.
+
+==== Discussion
+
+Use the OFP.CLOSE command to close a connection, or close all connections. The reply
+contains the number of matching connections that were closed.
+
+=== OFP.LIST_CONNECTIONS
+
+List statistics for a connection.
+
+==== Request
+
+    id: UInt64
+    method: OFP.LIST_CONNECTIONS
+    params:
+      conn_id: UInt64
+
+*conn_id*:: Specify a connection. Use 0 to list all connections.
+
+==== Reply
+
+    id: UInt64
+    result:
+      stats:
+        - local_endpoint: IPEndpoint
+          remote_endpoint: IPEndpoint
+          datapath_id: DatapathID
+          conn_id: UInt64
+          auxiliary_id: UInt8
+          transport: 'TCP' | 'UDP' | 'TLS' | 'DTLS' | 'NONE'
+
+*stats*:: List of connection stat objects.
+
+==== Discussion
+
+Use `OFP.LIST_CONNECTIONS` to retrieve a list of connections and their information.
+
+=== OFP.ADD_IDENTITY
+
+Configure an identity for use in securing incoming or outgoing connections
+using Transport Layer Security (TLS).
+
+==== Request
+
+    id: UInt64
+    method: OFP.ADD_IDENTITY
+    params:
+      cert: String
+      cert_auth: String
+      privkey_password: String        # Optional
+
+*cert*:: PEM certificate chain data with PEM private key appended. The
+  PEM private key may be encrypted with a password.
+
+*cert_auth*:: Trusted PEM root certificate. One certificate, not a list.
+
+*privkey_password*:: Password for PEM private key, if needed. (Optional)
+
+==== Reply
+
+  id: UInt64
+  result:
+    tls_id: UInt64
+
+*tls_id*:: Unique, non-zero identifier representing the TLS identity.
+
+==== Discussion
+
+Use the `OFP.ADD_IDENTITY` command to add a SSL/TLS identity for use in encrypting
+connections. The reply contains the unique `tls_id` to pass to OFP.CONNECT and
+OFP.LISTEN commands.
+
+The `cert_auth` parameter contains the certificate authority used to authenticate the 
+certificate chain presented by the other end of the connection.
+
+== RPC Notifications
+
+=== OFP.MESSAGE
+
+  method: OFP.MESSAGE
+  params:
+    type: <OpenFlow Message Type>
+    time: Timestamp
+    ...
+
+  method: OFP.MESSAGE
+  params:
+    type: CHANNEL_UP | CHANNEL_DOWN
+    time: Timestamp
+    conn_id: UInt64
+    datapath_id: DatapathID  # Optional
+    endpoint: IPEndpoint
+    version: UInt8
+
+  method: OFP.MESSAGE
+  params:
+    type: CHANNEL_ALERT
+    time: Timestamp
+    conn_id: UInt64
+    datapath_id: DatapathID  # Optional
+    xid: !optout UInt32
+    alert: String
+    data: HexString
+
+==== Discussion
+
+The `OFP.MESSAGE` event is sent when an OpenFlow message is received. There
+are also special 'CHANNEL_*' events sent when a channel goes up/down or needs 
+to indicate an event.
+
+The `type` attribute specifies the type of message. See _oftr-schema_ man page
+for attributes used in OpenFlow messages.
+
+The `CHANNEL_UP` message is sent when an OpenFlow channel comes up. If the
+`FEATURES_REQ` option is specified, the channel is not considered up until we know
+the datapath_id of the connection from the FEATURES_REPLY. If `FEATURES_REQ` is 
+not specified, the channel up message is sent after the first
+HELLO messages are exchanged, and the datapath_id parameter is not included.
+
+The `CHANNEL_DOWN` message is sent when an OpenFlow channel goes down.
+
+The `CHANNEL_ALERT` message is sent when something unusual or abnormal happens. The
+alert parameter contains the reason for the message. The contents of the data 
+parameter depend on the type of alert.
+
+Here are some examples of why an alert message might be sent.
+
+- An incoming OpenFlow message cannot be decoded.
+- An outgoing OpenFlow message cannot be delivered (OFP.SEND failure).
+- An OpenFlow connection fails to negotiate a version.
+
+== SEE ALSO
+
+_oftr_(1), _oftr-schema_(1)
+
+== EXIT STATUS
+
+*0*::
+    Success
+
+*1*::
+    Failure: Syntax or usage error in command line arguments.
+
+
+== RESOURCES
+
+GitHub: {github}
+
+== COPYING
+
+Copyright \(C) 2015-2017 William W. Fisher. Free use of this software is
+granted under the terms of the MIT License.

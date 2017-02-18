@@ -68,7 +68,7 @@ class OXMType {
   OXMInternalID internalID_Experimenter(Big32 experimenter) const;
 
   bool parse(const std::string &s);
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
 
   constexpr OXMType zeroLength() const { return OXMType(value32_ & ~End8Bits); }
 
@@ -102,15 +102,6 @@ static_assert(IsLiteralType<OXMType>(), "Literal type expected.");
 static_assert(IsStandardLayout<OXMType>(), "Layout type expected.");
 static_assert(IsTriviallyCopyable<OXMType>(), "Expected trivially copyable.");
 
-#if !defined(LIBOFP_LOGGING_DISABLED)
-// Only used for logging. Disable when building oxm helpers.
-
-inline std::ostream &operator<<(std::ostream &os, const OXMType &value) {
-  return os << value.toString();
-}
-
-#endif  // !defined(LIBOFP_LOGGING_DISABLED)
-
 OFP_BEGIN_IGNORE_PADDING
 
 /// \brief Stores information about OXMTypes, such as prerequisites.
@@ -125,6 +116,18 @@ struct OXMTypeInfo {
 };
 
 OFP_END_IGNORE_PADDING
+
+#if !defined(LIBOFP_LOGGING_DISABLED)
+// Only used for logging. Disable when building oxm helpers.
+inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                     const OXMType &value) {
+  auto info = value.lookupInfo();
+  if (info) {
+    return os << info->name;
+  }
+  return os << RawDataToHex(&value, sizeof(value));
+}
+#endif  // !defined(LIBOFP_LOGGING_DISABLED)
 
 }  // namespace ofp
 

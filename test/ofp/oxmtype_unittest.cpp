@@ -102,8 +102,18 @@ TEST(OXMType, withMask_Experimenter) {
 
 TEST(oxmtype, stream) {
   OXMType a{0xFFFF, 2, 8};
+  OXMType b{0x8000, 0, 4};
 
-  std::ostringstream oss;
-  oss << a;
-  EXPECT_EQ("FFFF0408", oss.str());
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+  oss << a << ',' << b;
+  EXPECT_EQ("FFFF0408,IN_PORT", oss.str());
+}
+
+TEST(oxmtype, toString) {
+  OXMType a{0xFFFF, 2, 8};
+  OXMType b{0x8000, 0, 4};
+
+  EXPECT_EQ("FFFF0408", a.toString());
+  EXPECT_EQ("IN_PORT", b.toString());
 }

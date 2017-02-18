@@ -26,7 +26,7 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
                      const u_char *data) {
   sHandlerInfo *info = reinterpret_cast<sHandlerInfo *>(user);
   ByteList &buf = info->buffer;
-  Timestamp ts(hdr->ts.tv_sec,
+  Timestamp ts(Unsigned_cast(hdr->ts.tv_sec),
                Unsigned_cast(hdr->ts.tv_usec) * info->nanosec_factor);
 
   const UInt32 alignPad = info->alignPad;
@@ -46,11 +46,16 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
 }
 
 std::string PktSource::datalink() const {
-  if (datalink_ >= 0) {
-    const char *name = pcap_datalink_val_to_name(datalink_);
-    return !name ? "NULL" : name;
+  if (datalink_ < 0) {
+    return "<not open>";
   }
-  return "<not open>";
+
+  const char *name = pcap_datalink_val_to_name(datalink_);
+  if (name == nullptr) {
+    return "<null/error>";
+  }
+
+  return name;
 }
 
 /// \brief Open capture device to read live packets from the network.
@@ -72,7 +77,7 @@ bool PktSource::openDevice(const std::string &device,
     return false;
   }
 
-  if (!activate()) {
+  if (!activate(device)) {
     close();
     return false;
   }
@@ -275,33 +280,62 @@ bool PktSource::setFilter(const std::string &filter) {
   return (result == 0);
 }
 
-bool PktSource::activate() {
+bool PktSource::activate(const std::string &device) {
   int result = pcap_activate(pcap_);
   if (result == 0) {
     return true;
   }
 
-  // FIXME(bfish): Fill out the rest of this code.
+  const char *errMsg = "Unknown error";
+
   switch (result) {
+    // Warnings log a message and allow activate to continue.
     case PCAP_WARNING_PROMISC_NOTSUP:
+      log_warning("pcap_activate:", device,
+                  "does not support promiscuous mode --", pcap_geterr(pcap_));
+      return true;
 #if defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING_TSTAMP_TYPE_NOTSUP:
+      log_warning(
+          "pcap_activate: Capture source does not support timestamp type");
+      return true;
 #endif  // defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING:
-    case PCAP_ERROR_ACTIVATED:
+      log_warning("pcap_activate: PCAP_WARNING:", pcap_geterr(pcap_));
+      return true;
+
+    // Errors set the error message and return false. Log pcap_geterr to the
+    // log.
     case PCAP_ERROR_NO_SUCH_DEVICE:
+      errMsg = "No such device";
+      break;
+    case PCAP_ERROR_ACTIVATED:
+      errMsg = "Handle already activated";
+      break;
     case PCAP_ERROR_PERM_DENIED:
+      errMsg = "Permission denied to open capture source";
+      break;
 #if defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_PROMISC_PERM_DENIED:
+      errMsg = "Permission denied to put capture source into promiscuous mode";
+      break;
 #endif  // defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_RFMON_NOTSUP:
+      errMsg = "Capture source does not support monitor mode";
+      break;
     case PCAP_ERROR_IFACE_NOT_UP:
+      errMsg = "Capture source is not up";
+      break;
+    case PCAP_ERROR:
     default:
-      setError("pcap_activate", "", "");
+      errMsg = pcap_geterr(pcap_);
       break;
   }
 
-  return result > 0;
+  setError("pcap_activate", device, errMsg);
+  log_error("pcap_activate:", errMsg, "--", pcap_geterr(pcap_));
+
+  return false;
 }
 
 void PktSource::setError(const char *func, const std::string &arg,

@@ -40,7 +40,7 @@ class OXMRegister {
   bool valid() const;
 
   bool parse(const std::string &s);
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
 
  private:
   OXMType type_;
@@ -51,7 +51,8 @@ class OXMRegister {
 
   friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
                                        const OXMRegister &value) {
-    return os << value.toString();
+    return os << value.type() << '[' << value.offset() << ':' << value.end()
+              << ']';
   }
 };
 

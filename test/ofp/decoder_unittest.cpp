@@ -389,7 +389,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "          \n      - field:           IN_PORT\n        value:           "
       "0x0000DDDD\n    instructions:    \n      - instruction:     "
       "APPLY_ACTIONS\n        actions:         \n          - action:          "
-      "OUTPUT\n            port:            0x0000EEEE\n            max_len:   "
+      "OUTPUT\n            port_no:         0x0000EEEE\n            max_len:   "
       "      NO_BUFFER\n...\n");
 }
 
@@ -411,7 +411,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "field:           IN_PORT\n        value:           0x00005678\n    "
       "instructions:    \n      - instruction:     APPLY_ACTIONS\n        "
       "actions:         \n          - action:          OUTPUT\n            "
-      "port:            0x0000EEEE\n            max_len:         NO_BUFFER\n  "
+      "port_no:         0x0000EEEE\n            max_len:         NO_BUFFER\n  "
       "- table_id:        0x11\n    duration:        34.000000051\n    "
       "priority:        0x0044\n    "
       "idle_timeout:    0x0055\n    hard_timeout:    0x0066\n    flags:        "
@@ -422,7 +422,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "'10:20:30:40:50:60'\n      - field:           ETH_DST\n        value:   "
       "        'aa:bb:cc:dd:ee:ff'\n    instructions:    \n      - "
       "instruction:     APPLY_ACTIONS\n        actions:         \n          - "
-      "action:          OUTPUT\n            port:            0x0000EEEE\n      "
+      "action:          OUTPUT\n            port_no:         0x0000EEEE\n      "
       "      max_len:         NO_BUFFER\n...\n");
 }
 
@@ -627,6 +627,24 @@ TEST(decoder, flowmodv4_2) {
       " \n    - instruction:     APPLY_ACTIONS\n      actions:         "
       "\n        - action:          SET_FIELD\n          field:          "
       " IPV4_DST\n          value:           192.168.2.1\n...\n");
+}
+
+TEST(decoder, flowmodv4_ipv6) {
+  testDecodeEncode(
+      "040E00680000000111111111111111102222222222222220304055506660777088888880"
+      "99999990AAAAAAA0BBB100000001003280000A0286DD8000341000000000000000000000"
+      "FFFFC0A800018000361020000000000000000000000000000001000000000000",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x1111111111111110\n  "
+      "cookie_mask:     0x2222222222222220\n  table_id:        0x30\n  "
+      "command:         0x40\n  idle_timeout:    0x5550\n  hard_timeout:    "
+      "0x6660\n  priority:        0x7770\n  buffer_id:       0x88888880\n  "
+      "out_port:        0x99999990\n  out_group:       0xAAAAAAA0\n  flags:    "
+      "       [ SEND_FLOW_REM, NO_BYT_COUNTS, '0x0000BBA0' ]\n  match:         "
+      "  \n    - field:           ETH_TYPE\n      value:           0x86DD\n    "
+      "- field:           IPV6_SRC\n      value:           "
+      "'::ffff:192.168.0.1'\n    - field:           IPV6_DST\n      value:     "
+      "      '2000::1'\n  instructions:    \n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_1) {
@@ -863,7 +881,7 @@ TEST(decoder, packetoutv4) {
       "0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:      "
       " "
       "0x33333333\n  in_port:         0x44444444\n  actions:         \n    - "
-      "action:          OUTPUT\n      port:            0x00000005\n      "
+      "action:          OUTPUT\n      port_no:         0x00000005\n      "
       "max_len: "
       "        0x0014\n    - action:          SET_FIELD\n      field:    "
       "    "
@@ -883,7 +901,7 @@ TEST(decoder, packetoutv1) {
       " "
       "0x33333333\n  in_port:         0x00004444\n  actions:         \n    - "
       "action: "
-      "         OUTPUT\n      port:            0x00000005\n      "
+      "         OUTPUT\n      port_no:         0x00000005\n      "
       "max_len:         "
       "0x0014\n    - action:          SET_FIELD\n      field:           "
       "IPV4_DST\n      value:           192.168.1.1\n  data:            "
@@ -931,18 +949,18 @@ TEST(decoder, portstatusv4) {
       "AAAAAAAABBBBBBBB",
       "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x04\nmsg:             \n  reason:         "
-      " 0x22\n  port:            \n    port_no:         0x33333333\n    "
-      "hw_addr:         'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    "
-      "config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:    "
-      "       [ LINK_DOWN, LIVE, '0x55555550' ]\n    ethernet:        \n      "
-      "curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, "
-      "AUTONEG, PAUSE, '0x66660000' ]\n      advertised:      [ 10MB_HD, "
-      "10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, "
-      "FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      supported:       [ "
-      "100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      peer:      "
-      "      [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, "
-      "PAUSE_ASYM, '0x99990000' ]\n      curr_speed:      0xAAAAAAAA\n      "
-      "max_speed:       0xBBBBBBBB\n    properties:      \n...\n");
+      " 0x22\n  port_no:         0x33333333\n  hw_addr:         "
+      "'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ "
+      "NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, "
+      "LIVE, '0x55555550' ]\n  ethernet:        \n    curr:            [ "
+      "10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, "
+      "'0x66660000' ]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, "
+      "1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, "
+      "PAUSE, '0x77770000' ]\n    supported:       [ 100MB_FD, 40GB_FD, "
+      "COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ 10MB_HD, "
+      "100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, PAUSE_ASYM, "
+      "'0x99990000' ]\n    curr_speed:      0xAAAAAAAA\n    max_speed:       "
+      "0xBBBBBBBB\n  properties:      \n...\n");
 }
 
 TEST(decoder, portstatusv1) {
@@ -951,18 +969,17 @@ TEST(decoder, portstatusv1) {
       "00000000444444445555555566660666777707778888088899990999",
       "---\ntype:            PORT_STATUS\nxid:             "
       "0x11111111\nversion:         0x01\nmsg:             \n  reason:         "
-      " 0x22\n  port:            \n    port_no:         0x00003333\n    "
-      "hw_addr:         'aa:bb:cc:dd:ee:ff'\n    name:            Port 1\n    "
-      "config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n    state:    "
-      "       [ LINK_DOWN, LIVE, STP_LEARN, '0x55555450' ]\n    ethernet:      "
-      "  \n      curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, "
-      "AUTONEG, PAUSE, '0x66660000' ]\n      advertised:      [ 10MB_HD, "
-      "10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, "
-      "'0x77770000' ]\n      supported:       [ 100MB_FD, COPPER, PAUSE_ASYM, "
-      "'0x88880000' ]\n      peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, "
-      "COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n      curr_speed:      "
-      "0x00000000\n      max_speed:       0x00000000\n    properties:      "
-      "\n...\n");
+      " 0x22\n  port_no:         0x00003333\n  hw_addr:         "
+      "'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ "
+      "NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, "
+      "LIVE, STP_LEARN, '0x55555450' ]\n  ethernet:        \n    curr:         "
+      "   [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' "
+      "]\n    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    supported:       [ "
+      "100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    peer:            [ "
+      "10MB_HD, 100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n  "
+      "  curr_speed:      0x00000000\n    max_speed:       0x00000000\n  "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, groupmodv4) {
@@ -977,7 +994,7 @@ TEST(decoder, groupmodv4) {
       "buckets:         \n    - weight:          0x5555\n      watch_port:     "
       " "
       "0x66666666\n      watch_group:     0x77777777\n      actions:         "
-      "\n        - action:          OUTPUT\n          port:            "
+      "\n        - action:          OUTPUT\n          port_no:         "
       "0x00000005\n          max_len:         0x0014\n        - action:        "
       "  "
       "SET_FIELD\n          field:           IPV4_DST\n          "
@@ -1105,7 +1122,7 @@ TEST(decoder, queuegetconfigrequestv4) {
       "04160010111111112222222200000000",
       "---\ntype:            QUEUE_GET_CONFIG_REQUEST\nxid:  "
       "           0x11111111\nversion:         0x04\nmsg:            "
-      " \n  port:            0x22222222\n...\n");
+      " \n  port_no:         0x22222222\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv4) {
@@ -1115,11 +1132,11 @@ TEST(decoder, queuegetconfigreplyv4) {
       "0030000000000000000100100000000099990000000000000002001000000000AAAA0000"
       "00000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
-      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n    - queue_id:       "
-      " 0x77777777\n      port:            0x88888888\n      min_rate:        "
+      " 0x77777777\n      port_no:         0x88888888\n      min_rate:        "
       "0x9999\n      max_rate:        0xAAAA\n      properties:      \n...\n");
 }
 
@@ -1131,13 +1148,13 @@ TEST(decoder, queuegetconfigreplyv4_experimenter) {
       "778888888800300000000000000001001000000000999900000000000000020010000000"
       "00AAAA000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x04\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
-      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n        - "
       "experimenter:    0xEEEEEEEE\n          value:           000102030405\n  "
       "      - experimenter:    0xFFFFFFFF\n          value:           "
-      "ABCDEF\n    - queue_id:        0x77777777\n      port:            "
+      "ABCDEF\n    - queue_id:        0x77777777\n      port_no:         "
       "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
       "0xAAAA\n      properties:      \n...\n");
 }
@@ -1150,13 +1167,13 @@ TEST(decoder, queuegetconfigreplyv5_experimenter) {
       "000000007777777788888888003000000000000000010010000000009999000000000000"
       "0002001000000000AAAA000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111111\nversion:         0x05\nmsg:             \n  port:           "
+      "0x11111111\nversion:         0x05\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
-      "   port:            0x44444444\n      min_rate:        0x5555\n      "
+      "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
       "max_rate:        0x6666\n      properties:      \n        - "
       "experimenter:    0xEEEEEEEE\n          value:           000102030405\n  "
       "      - experimenter:    0xFFFFFFFF\n          value:           "
-      "ABCDEF\n    - queue_id:        0x77777777\n      port:            "
+      "ABCDEF\n    - queue_id:        0x77777777\n      port_no:         "
       "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
       "0xAAAA\n      properties:      \n...\n");
 }
@@ -1167,11 +1184,11 @@ TEST(decoder, queuegetconfigreplyv1) {
       "000000000002001000000000666100000000000077777771002800000001001000000000"
       "99910000000000000002001000000000AAA1000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111110\nversion:         0x01\nmsg:             \n  port:           "
+      "0x11111110\nversion:         0x01\nmsg:             \n  port_no:        "
       " 0x00002221\n  queues:          \n    - queue_id:        0x33333331\n   "
-      "   port:            0x00000000\n      min_rate:        0x5551\n      "
+      "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
       "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
-      " 0x77777771\n      port:            0x00000000\n      min_rate:        "
+      " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
       "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
 }
 
@@ -1181,11 +1198,11 @@ TEST(decoder, queuegetconfigreplyv2) {
       "000000000002001000000000666100000000000077777771002800000001001000000000"
       "99910000000000000002001000000000AAA1000000000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0x11111110\nversion:         0x02\nmsg:             \n  port:           "
+      "0x11111110\nversion:         0x02\nmsg:             \n  port_no:        "
       " 0x22222221\n  queues:          \n    - queue_id:        0x33333331\n   "
-      "   port:            0x00000000\n      min_rate:        0x5551\n      "
+      "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
       "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
-      " 0x77777771\n      port:            0x00000000\n      min_rate:        "
+      " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
       "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
 }
 
@@ -1538,7 +1555,7 @@ TEST(decoder, requestforwardv5) {
       "0x33\n    group_id:        0x44444444\n    buckets:         \n      - "
       "weight:          0x5555\n        watch_port:      0x66666666\n        "
       "watch_group:     0x77777777\n        actions:         \n          - "
-      "action:          OUTPUT\n            port:            0x00000005\n      "
+      "action:          OUTPUT\n            port_no:         0x00000005\n      "
       "      max_len:         0x0014\n          - action:          SET_FIELD\n "
       "           field:           IPV4_DST\n            value:           "
       "192.168.1.1\n...\n");
@@ -1793,9 +1810,9 @@ TEST(decoder, queue_get_config_replyv4_fix) {
       "646464646464646464646464646464646464646464646464646464646464646464646464"
       "6464646400000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0xBEC0D518\nversion:         0x04\nmsg:             \n  port:           "
+      "0xBEC0D518\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x0000000D\n  queues:          \n    - queue_id:        0x2FC87066\n   "
-      "   port:            0x0000000D\n      min_rate:        0xFFFF\n      "
+      "   port_no:         0x0000000D\n      min_rate:        0xFFFF\n      "
       "max_rate:        0xFFFF\n      properties:      \n        - "
       "experimenter:    0xC2E4427C\n          value:           "
       "646464646464646464646464646464646464646464646464646464646464646464646464"
@@ -1807,9 +1824,9 @@ TEST(decoder, queue_get_config_replyv1) {
   testDecodeEncode(
       "01150020C1C49F86000D00000000000000000012001000000000000800000000",
       "---\ntype:            QUEUE_GET_CONFIG_REPLY\nxid:             "
-      "0xC1C49F86\nversion:         0x01\nmsg:             \n  port:           "
+      "0xC1C49F86\nversion:         0x01\nmsg:             \n  port_no:        "
       " 0x0000000D\n  queues:          \n    - queue_id:        0x00000012\n   "
-      "   port:            0x00000000\n      min_rate:        0xFFFF\n      "
+      "   port_no:         0x00000000\n      min_rate:        0xFFFF\n      "
       "max_rate:        0xFFFF\n      properties:      \n...\n");
 }
 
@@ -1847,17 +1864,16 @@ TEST(decoder, tablestatusv5) {
       "FFFF001499999991AAAAAAA1000000010000000200000000",
       "---\ntype:            TABLE_STATUS\nxid:             "
       "0x00000000\nversion:         0x05\nmsg:             \n  reason:         "
-      " 0x10\n  table:           \n    table_id:        ALL\n    config:       "
-      "   [  ]\n    eviction:        \n      flags:           0x11223344\n    "
-      "vacancy:         \n      vacancy_down:    0x11\n      vacancy_up:      "
-      "0x22\n      vacancy:         0x33\n    properties:      \n      - "
-      "property:        EXPERIMENTER\n        experimenter:    0x44444441\n    "
-      "    exp_type:        0x55555551\n        data:            ''\n      - "
-      "property:        EXPERIMENTER\n        experimenter:    0x66666661\n    "
-      "    exp_type:        0x77777771\n        data:            88888888\n    "
-      "  - property:        EXPERIMENTER\n        experimenter:    "
-      "0x99999991\n        exp_type:        0xAAAAAAA1\n        data:          "
-      "  0000000100000002\n...\n");
+      " 0x10\n  table_id:        ALL\n  config:          [  ]\n  eviction:     "
+      "   \n    flags:           0x11223344\n  vacancy:         \n    "
+      "vacancy_down:    0x11\n    vacancy_up:      0x22\n    vacancy:         "
+      "0x33\n  properties:      \n    - property:        EXPERIMENTER\n      "
+      "experimenter:    0x44444441\n      exp_type:        0x55555551\n      "
+      "data:            ''\n    - property:        EXPERIMENTER\n      "
+      "experimenter:    0x66666661\n      exp_type:        0x77777771\n      "
+      "data:            88888888\n    - property:        EXPERIMENTER\n      "
+      "experimenter:    0x99999991\n      exp_type:        0xAAAAAAA1\n      "
+      "data:            0000000100000002\n...\n");
 }
 
 TEST(decoder, mptabledescv5) {

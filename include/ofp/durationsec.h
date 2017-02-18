@@ -22,7 +22,7 @@ class DurationSec {
   bool operator!=(const DurationSec &rhs) const { return !(*this == rhs); }
 
   bool parse(llvm::StringRef s);
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
 
  private:
   Big32 sec_;

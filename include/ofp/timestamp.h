@@ -12,24 +12,26 @@ OFP_BEGIN_IGNORE_PADDING
 
 class Timestamp {
  public:
-  static const size_t TS_BUFSIZE = 40;
+  explicit Timestamp(UInt64 seconds = 0, UInt32 nanos = 0)
+      : time_{seconds, nanos} {
+    assert(nanos < NANO_UNITS);
+  }
 
-  explicit Timestamp(time_t seconds = 0, UInt32 nanos = 0)
-      : time_{seconds, nanos} {}
-
-  time_t seconds() const { return time_.first; }
+  time_t unix_time() const { return static_cast<time_t>(seconds()); }
+  UInt64 seconds() const { return time_.first; }
   UInt32 nanoseconds() const { return time_.second; }
   UInt32 microseconds() const { return nanoseconds() / 1000; }
   UInt32 milliseconds() const { return nanoseconds() / 1000000; }
 
   double secondsSince(const Timestamp &ts) const;
-  void addSeconds(int seconds) { time_.first += seconds; }
 
   bool parse(const std::string &s);
   bool valid() const { return !(time_.first == 0 && time_.second == 0); }
 
   std::string toString() const;
   std::string toStringUTC() const;
+
+  static const size_t TS_BUFSIZE = 40;
   size_t toStringUTC(char (&buf)[TS_BUFSIZE]) const;
 
   void clear() {
@@ -46,18 +48,18 @@ class Timestamp {
 
   static Timestamp now();
 
+  void addSeconds(int seconds);
+
  private:
-  std::pair<time_t, UInt32> time_;
+  static const UInt32 NANO_UNITS = 1000000000;
+
+  std::pair<UInt64, UInt32> time_;
 
   friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
                                        const Timestamp &value);
 };
 
 OFP_END_IGNORE_PADDING
-
-inline std::ostream &operator<<(std::ostream &os, const Timestamp &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

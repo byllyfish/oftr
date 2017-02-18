@@ -5,25 +5,13 @@
 #define OFP_YAML_YCONSTANTS_H_
 
 #include "ofp/byteorder.h"
-#include "ofp/constants.h"
+#include "ofp/messagetype.h"
 #include "ofp/yaml/enumconverter.h"
 #include "ofp/yaml/seterror.h"
 #include "ofp/yaml/ycontext.h"
 
 namespace ofp {
 namespace yaml {
-
-OFP_BEGIN_IGNORE_PADDING
-
-struct MessageType {
-  OFPType type;
-  OFPMultipartType subtype;
-
-  MessageType() : type{OFPT_UNSUPPORTED}, subtype{OFPMP_UNSUPPORTED} {}
-  explicit MessageType(OFPType t, OFPMultipartType mt) : type{t}, subtype{mt} {}
-};
-
-OFP_END_IGNORE_PADDING
 
 template <class Type>
 std::string AllFlags() {
@@ -159,41 +147,41 @@ struct ScalarTraits<ofp::OFPErrorCode> {
 };
 
 template <>
-struct ScalarTraits<ofp::yaml::MessageType> {
-  static void output(const ofp::yaml::MessageType &value, void *ctxt,
+struct ScalarTraits<ofp::MessageType> {
+  static void output(const ofp::MessageType &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    if (value.type == ofp::OFPT_MULTIPART_REQUEST) {
+    if (value.type_ == ofp::OFPT_MULTIPART_REQUEST) {
       out << "REQUEST.";
-      ScalarTraits<ofp::OFPMultipartType>::output(value.subtype, ctxt, out);
+      ScalarTraits<ofp::OFPMultipartType>::output(value.subtype_, ctxt, out);
 
-    } else if (value.type == ofp::OFPT_MULTIPART_REPLY) {
+    } else if (value.type_ == ofp::OFPT_MULTIPART_REPLY) {
       out << "REPLY.";
-      ScalarTraits<ofp::OFPMultipartType>::output(value.subtype, ctxt, out);
+      ScalarTraits<ofp::OFPMultipartType>::output(value.subtype_, ctxt, out);
 
     } else {
-      ScalarTraits<ofp::OFPType>::output(value.type, ctxt, out);
+      ScalarTraits<ofp::OFPType>::output(value.type_, ctxt, out);
     }
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
-                         ofp::yaml::MessageType &value) {
+                         ofp::MessageType &value) {
     if (scalar.startswith_lower("request.")) {
-      value.type = ofp::OFPT_MULTIPART_REQUEST;
+      value.type_ = ofp::OFPT_MULTIPART_REQUEST;
       return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(8), ctxt,
-                                                        value.subtype);
+                                                        value.subtype_);
 
     } else if (scalar.startswith_lower("reply.")) {
-      value.type = ofp::OFPT_MULTIPART_REPLY;
+      value.type_ = ofp::OFPT_MULTIPART_REPLY;
       return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(6), ctxt,
-                                                        value.subtype);
+                                                        value.subtype_);
 
     } else if (scalar.equals_lower("_raw_message")) {
-      value.type = ofp::OFPT_RAW_MESSAGE;
+      value.type_ = ofp::OFPT_RAW_MESSAGE;
       return "";
 
     } else {
-      value.subtype = ofp::OFPMP_UNSUPPORTED;
-      return ScalarTraits<ofp::OFPType>::input(scalar, ctxt, value.type);
+      value.subtype_ = ofp::OFPMP_UNSUPPORTED;
+      return ScalarTraits<ofp::OFPType>::input(scalar, ctxt, value.type_);
     }
   }
 

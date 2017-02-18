@@ -52,3 +52,14 @@ TEST(oxmregister, parseInvalid) {
   EXPECT_FALSE(reg.parse("ETH_TYP[0:4]"));
   EXPECT_FALSE(reg.parse("ETH_SRC[36]"));
 }
+
+TEST(oxmregister, stream) {
+  std::string buf;
+  llvm::raw_string_ostream os{buf};
+
+  OXMRegister reg;
+  EXPECT_TRUE(reg.parse("ETH_DST[1:17]"));
+
+  os << reg;
+  EXPECT_EQ("ETH_DST[1:17]", os.str());
+}

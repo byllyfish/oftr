@@ -96,8 +96,8 @@ TEST(timestamp, relational) {
 }
 
 TEST(timestamp, now) {
-  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
-  log_debug("Timestamp::now", Timestamp::now().toStringUTC());
+  log_info("Timestamp::now", Timestamp::now().toStringUTC());
+  log_info("Timestamp::now", Timestamp::now().toStringUTC());
 }
 
 TEST(timestamp, secondsSince) {
@@ -136,7 +136,29 @@ TEST(timestamp, stream) {
   std::string buf;
   llvm::raw_string_ostream oss{buf};
 
-  Timestamp a{123456789101112, 123456789};
+  Timestamp a{123456789101112, 3456789};
   oss << a;
-  EXPECT_EQ("123456789101112.123456789", oss.str());
+  EXPECT_EQ("123456789101112.003456789", oss.str());
+}
+
+TEST(timestamp, addSeconds) {
+  Timestamp a{123456789, 123456789};
+
+  a.addSeconds(20);
+  EXPECT_EQ(123456789 + 20, a.seconds());
+  EXPECT_EQ(123456789, a.nanoseconds());
+
+  a.addSeconds(-40);
+  EXPECT_EQ(123456789 - 20, a.seconds());
+  EXPECT_EQ(123456789, a.nanoseconds());
+}
+
+TEST(timestamp, unix_time) {
+  Timestamp a{123456789101112, 3456789};
+
+  if (sizeof(time_t) > 4) {
+    EXPECT_EQ(123456789101112, a.unix_time());
+  } else {
+    EXPECT_EQ(123456789101112 & 0xffffffff, Unsigned_cast(a.unix_time()));
+  }
 }
