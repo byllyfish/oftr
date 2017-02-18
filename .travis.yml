@@ -25,7 +25,7 @@ addons:
       description: "Build submitted via Travis CI"
     notification_email: william.w.fisher@gmail.com
     # I only want to do a coverity_scan on the linux build
-    build_command_prepend: 'test $TRAVIS_OS_NAME == linux && export CC="gcc-4.8" CXX="g++-4.8" && cov-configure --comptype gcc --compiler gcc-4.8 && mkdir -p Build && cd Build && cmake .. && make clean'
+    build_command_prepend: 'test $TRAVIS_OS_NAME == linux && export CC="gcc-4.8" CXX="g++-4.8" && cov-configure --comptype gcc --compiler gcc-4.8 --template && mkdir -p Build && cd Build && cmake .. && make clean'
     build_command:   make
     branch_pattern: coverity_scan
   apt:
