@@ -503,7 +503,6 @@ void Help::dumpSchemaAll() {
   }
 }
 
-
 void Help::dumpSchemaLexicon() {
   std::set<std::string> lexicon;
 

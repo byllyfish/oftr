@@ -291,18 +291,20 @@ bool PktSource::activate(const std::string &device) {
   switch (result) {
     // Warnings log a message and allow activate to continue.
     case PCAP_WARNING_PROMISC_NOTSUP:
-      log_warning("pcap_activate:", device, "does not support promiscuous mode --", pcap_geterr(pcap_));
+      log_warning("pcap_activate:", device,
+                  "does not support promiscuous mode --", pcap_geterr(pcap_));
       return true;
 #if defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING_TSTAMP_TYPE_NOTSUP:
-      log_warning("pcap_activate: Capture source does not support timestamp type");
+      log_warning(
+          "pcap_activate: Capture source does not support timestamp type");
       return true;
 #endif  // defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING:
       log_warning("pcap_activate: PCAP_WARNING:", pcap_geterr(pcap_));
       return true;
 
-    // Errors set the error message and return false. Log pcap_geterr to the 
+    // Errors set the error message and return false. Log pcap_geterr to the
     // log.
     case PCAP_ERROR_NO_SUCH_DEVICE:
       errMsg = "No such device";

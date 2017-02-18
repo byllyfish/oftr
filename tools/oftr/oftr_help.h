@@ -97,7 +97,8 @@ class Help : public Subprogram {
   cl::opt<bool> schemaAll_{"schema-all", cl::desc("List complete schema.")};
   cl::opt<bool> brief_{"brief",
                        cl::desc("Display abbreviated form of message schema")};
-  cl::opt<bool> schemaLexicon_{"schema-lexicon", cl::desc("List schema lexicon.")};
+  cl::opt<bool> schemaLexicon_{"schema-lexicon",
+                               cl::desc("List schema lexicon.")};
   cl::list<std::string> args_{cl::Positional, cl::desc("<Args>")};
 
   // --- Argument Aliases ---

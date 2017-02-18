@@ -241,9 +241,8 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
 
 void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
   std::error_code err;
-  UInt64 securityId =
-      engine_->addIdentity(add->params.cert, add->params.password,
-                           add->params.cert_auth, err);
+  UInt64 securityId = engine_->addIdentity(
+      add->params.cert, add->params.password, add->params.cert_auth, err);
 
   if (add->id.is_missing())
     return;

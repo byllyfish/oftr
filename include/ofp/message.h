@@ -7,9 +7,9 @@
 #include "ofp/bytelist.h"
 #include "ofp/datapathid.h"
 #include "ofp/header.h"
+#include "ofp/messagetype.h"
 #include "ofp/timestamp.h"
 #include "ofp/validation.h"
-#include "ofp/messagetype.h"
 
 namespace ofp {
 

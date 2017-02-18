@@ -7,8 +7,8 @@
 #include <gtest/gtest.h>
 #include <cstdio>
 #include "ofp/memorychannel.h"
-#include "ofp/types.h"
 #include "ofp/oxmrange.h"
+#include "ofp/types.h"
 
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wglobal-constructors"

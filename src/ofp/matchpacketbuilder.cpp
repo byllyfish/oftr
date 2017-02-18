@@ -7,7 +7,6 @@
 
 using namespace ofp;
 
-
 MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
   assert(range.validateInput());
 
@@ -169,4 +168,3 @@ void MatchPacketBuilder::buildICMPv4(ByteList *msg, const ByteRange &data) const
 }
 
 #endif  // 0
-

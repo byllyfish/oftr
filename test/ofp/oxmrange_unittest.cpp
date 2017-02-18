@@ -68,7 +68,8 @@ TEST(oxmrange, validateInput_zeroField) {
 }
 
 TEST(oxmrange, iteratate_zeroField) {
-  auto buf = HexToRawData("80000A020800800016040A0A0A0180001401018000280100800026010000000000");
+  auto buf = HexToRawData(
+      "80000A020800800016040A0A0A0180001401018000280100800026010000000000");
   OXMRange range{buf.data(), buf.size()};
   EXPECT_TRUE(range.validateInput());
 

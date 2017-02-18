@@ -107,7 +107,8 @@ class Decode : public Subprogram {
   ExitStatus decodeOneMessage(const ofp::Message *message,
                               const ofp::Message *originalMessage);
 
-  static void parseMsgFilter(const std::string &input, std::vector<std::string> *filter);
+  static void parseMsgFilter(const std::string &input,
+                             std::vector<std::string> *filter);
   bool isMsgTypeAllowed(const ofp::Message *message) const;
   bool equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const;
 
@@ -158,12 +159,17 @@ class Decode : public Subprogram {
       cl::desc("Write data from PacketIn/PacketOut messages to .pcap file"),
       cl::ValueRequired};
   cl::opt<bool> showFilename_{"show-filename",
-                                 cl::desc("Show the file name in all decodes")};
+                              cl::desc("Show the file name in all decodes")};
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};
-  cl::opt<std::string> msgInclude_{"msg-include", cl::desc("Output these OpenFlow message types (glob)"), cl::ValueRequired};
-  cl::opt<std::string> msgExclude_{"msg-exclude", cl::desc("Don't output these OpenFlow message types (glob)"), cl::ValueRequired};
+  cl::opt<std::string> msgInclude_{
+      "msg-include", cl::desc("Output these OpenFlow message types (glob)"),
+      cl::ValueRequired};
+  cl::opt<std::string> msgExclude_{
+      "msg-exclude",
+      cl::desc("Don't output these OpenFlow message types (glob)"),
+      cl::ValueRequired};
   cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{
       "pcap-device",

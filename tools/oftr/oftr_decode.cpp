@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "./oftr_decode.h"
+#include <fnmatch.h>  // for fnmatch()
 #include <fstream>
 #include <iostream>
-#include <fnmatch.h>  // for fnmatch()
 #include "./oftr_util.h"
 #include "llvm/Support/Path.h"
 #include "ofp/demux/messagesource.h"
@@ -19,7 +19,6 @@ using ofp::UInt8;
 using ExitStatus = Decode::ExitStatus;
 
 static size_t findDiffOffset(const UInt8 *lhs, const UInt8 *rhs, size_t size);
-
 
 int Decode::run(int argc, const char *const *argv) {
   parseCommandLineOptions(argc, argv,
@@ -375,7 +374,8 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
     return ExitStatus::FileOpenFailed;
   }
 
-  llvm::errs() << "Listening on " << device << ", link-type " << pcap.datalink() << ", filter \"" << pcapFilter_ << "\"\n";
+  llvm::errs() << "Listening on " << device << ", link-type " << pcap.datalink()
+               << ", filter \"" << pcapFilter_ << "\"\n";
 
   setCurrentFilename(std::string("pcap:") + device);
   msg.runLoop(&pcap);
@@ -402,7 +402,8 @@ ExitStatus Decode::decodePcapFiles() {
       return ExitStatus::FileOpenFailed;
     }
 
-    llvm::errs() << "Reading from \"" << filename << "\", link-type " << pcap.datalink() << ", filter \"" << pcapFilter_ << "\"\n";
+    llvm::errs() << "Reading from \"" << filename << "\", link-type "
+                 << pcap.datalink() << ", filter \"" << pcapFilter_ << "\"\n";
 
     setCurrentFilename(filename);
     msg.runLoop(&pcap);
@@ -519,7 +520,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
 }
 
 /// Parse msgType filter -- separate on commas.
-void Decode::parseMsgFilter(const std::string &input, std::vector<std::string> *filter) {
+void Decode::parseMsgFilter(const std::string &input,
+                            std::vector<std::string> *filter) {
   llvm::SmallVector<llvm::StringRef, 5> vals;
   llvm::StringRef{input}.split(vals, ',', -1, false);
 
@@ -537,7 +539,8 @@ bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
   // Get message type as a string, exactly as we would output it.
   std::string buf;
   llvm::raw_string_ostream os{buf};
-  llvm::yaml::ScalarTraits<ofp::MessageType>::output(message->msgType(), nullptr, os);
+  llvm::yaml::ScalarTraits<ofp::MessageType>::output(message->msgType(),
+                                                     nullptr, os);
   auto msgType = os.str();
 
   // Check msgType against the exclude filter.
