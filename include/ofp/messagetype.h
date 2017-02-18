@@ -1,3 +1,6 @@
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_MESSAGETYPE_H_
 #define OFP_MESSAGETYPE_H_
 
