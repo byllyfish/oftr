@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv6address.h"
@@ -170,7 +170,8 @@ TEST(ipv6address, invalid2) {
 TEST(ipv6address, stream) {
   IPv6Address ip{"2000::1"};
 
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << ip;
   EXPECT_EQ("2000::1", oss.str());
 }
@@ -233,4 +234,19 @@ TEST(ipv6address, misaligned) {
   EXPECT_HEX("FE80 3344 1122 0000 1122 33FF fe44 5566", &buf.addr,
              sizeof(buf.addr));
   EXPECT_EQ("fe80::1122:33ff:fe44:5566%287454020", buf.addr.toString());
+}
+
+TEST(ipv6address, v4mapped_v6format) {
+  IPv6Address addr;
+
+  EXPECT_FALSE(addr.parse("10.0.0.1", false));
+  EXPECT_TRUE(addr.parse("::ffff:c0a8:1"));
+  EXPECT_TRUE(addr.isV4Mapped());
+
+  std::string buf;
+  llvm::raw_string_ostream rss{buf};
+  rss << addr << ',';
+  addr.outputV6(rss);
+  EXPECT_EQ("192.168.0.1,::ffff:192.168.0.1", rss.str());
+  EXPECT_EQ("192.168.0.1", addr.toString());
 }

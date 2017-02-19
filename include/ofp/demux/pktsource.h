@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_DEMUX_PKTSOURCE_H_
@@ -82,11 +82,12 @@ class PktSource {
 
   bool create(const std::string &device);
   bool openOffline(const std::string &path);
-  bool activate();
+  bool activate(const std::string &device);
   bool checkDatalink();
   bool setFilter(const std::string &filter);
-  void setError(const char *func, const std::string &device,
-                const char *result);
+  void setError(const char *func, const std::string &arg, const char *result);
+
+  bool isPcapVersionSupported();
 
   static Encapsulation lookupEncapsulation(int datalink, UInt32 *frameSkip);
 };

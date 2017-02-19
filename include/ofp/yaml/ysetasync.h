@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YSETASYNC_H_
@@ -25,7 +25,7 @@ msg:
   table_status_master: !optout [TableStatusFlags]
   request_forward_slave: !optout [RequestForwardFlags]
   request_forward_master: !optout [RequestForwardFlags]
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -163,7 +163,7 @@ struct MappingTraits<ofp::SetAsyncBuilder> {
     if (forwMaster)
       props.add(AsyncConfigPropertyRequestForwardMaster{*forwMaster});
 
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::AsyncConfigPropertyList>(props));
     msg.setProperties(props);
   }

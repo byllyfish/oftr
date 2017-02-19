@@ -1541,6 +1541,8 @@ template <class DataType> class bits_storage<DataType, bool> {
   }
 
 public:
+  bits_storage() : Bits(0) {}
+
   template <class T> void addValue(const T &V) { Bits |= Bit(V); }
 
   unsigned getBits() { return Bits; }

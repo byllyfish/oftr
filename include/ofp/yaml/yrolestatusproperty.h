@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YROLESTATUSPROPERTY_H_
@@ -16,7 +16,7 @@ using RoleStatusPropertyIterator =
     TypedPropertyIterator<RoleStatusPropertyItem>;
 struct RoleStatusPropertyRange {};
 struct RoleStatusPropertyInserter {};
-struct RoleStatusPropertyList {};
+struct RoleStatusPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

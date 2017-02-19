@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpflowstatsreply.h"
@@ -19,7 +19,7 @@ InstructionRange MPFlowStatsReply::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   assert(length_ >= offset);
 
-  return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
+  return InstructionRange{SafeByteRange(this, length_, offset)};
 }
 
 bool MPFlowStatsReply::validateInput(Validation *context) const {
@@ -35,11 +35,7 @@ bool MPFlowStatsReply::validateInput(Validation *context) const {
   context->setLengthRemaining(length - SizeWithoutMatchHeader -
                               matchHeader_.length());
 
-  if (!instructions().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return instructions().validateInput(context);
 }
 
 void MPFlowStatsReplyBuilder::write(Writable *channel) {
@@ -77,7 +73,7 @@ void MPFlowStatsReplyBuilder::writeV1(Writable *channel) {
 
   channel->write(&msg_, 4);
   channel->write(&origMatch, sizeof(origMatch));
-  channel->write(&msg_.durationSec_, 44);
+  channel->write(&msg_.duration_, 44);
   if (actions.size() > 0) {
     actions.write(channel);
   }

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpportstats.h"
@@ -60,7 +60,7 @@ void MPPortStatsBuilder::write(Writable *channel) {
     }
 
     if (version == OFP_VERSION_4) {
-      channel->write(&msg_.durationSec_, 8);
+      channel->write(&msg_.duration_, 8);
     }
   }
 

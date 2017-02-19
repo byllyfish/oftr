@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv6endpoint.h"
@@ -135,4 +135,15 @@ TEST(ipv6endpoint, hash) {
   std::hash<IPv6Endpoint> hasher;
   EXPECT_EQ(0x23f3a759, hasher(a) & 0xffffffff);
   EXPECT_EQ(0xfdaf2713, hasher(b) & 0xffffffff);
+}
+
+TEST(ipv6endpoint, stream) {
+  IPv6Endpoint a{"[2001::01]:1"};
+  IPv6Endpoint b{"200.1.2.200:2"};
+
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+
+  oss << a << ',' << b;
+  EXPECT_EQ("[2001::1]:1,200.1.2.200:2", oss.str());
 }

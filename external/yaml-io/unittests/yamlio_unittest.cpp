@@ -276,3 +276,166 @@ TEST(yamlio, test_various_input) {
   // If there are two or more anchors, it's an error.
   test_yaml_input_fail("  &opt &opt");
 }
+
+
+TEST(yamlio, test_unicode_escapes) {
+  const char *input = R"""(---
+a:               99
+b:               " \xff \u0f0f \U0010ffff "
+c:               false
+...
+)""";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.a, 99);
+  EXPECT_EQ(t.b, u8" \u00ff \u0f0f \U0010ffff ");
+  EXPECT_FALSE(t.c);
+
+  std::string result;
+  llvm::raw_string_ostream rss{result};
+  llvm::yaml::Output yout{rss};
+  yout << t;
+  EXPECT_EQ(rss.str(), u8"---\na:               99\nb:               ' \u00ff \u0f0f \U0010ffff '\nc:               false\n...\n");
+}
+
+TEST(yamlio, test_invalid_unicode_escapes) {
+  const char *input = R"""(---
+a:               99
+b:               " \u0fhh\U0010fffh \u0f"
+c:               false
+...
+)""";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.a, 99);
+  EXPECT_EQ(t.b, " \xEF\xBF\xBD\xEF\xBF\xBD 0f");  // FIXME: THIS IS '0xFFFD'
+  EXPECT_FALSE(t.c);
+}
+
+TEST(yamlio, test_low_surrogate_escaped) {
+  const char *input = R"""(---
+a:               99
+b:               " \udcfe "
+c:               false
+...
+)""";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.a, 99);
+  EXPECT_EQ(t.b, " \xED\xB3\xBE ");  // FIXME
+  EXPECT_FALSE(t.c);
+
+  std::string result;
+  llvm::raw_string_ostream rss{result};
+  llvm::yaml::Output yout{rss};
+  yout << t;
+  EXPECT_EQ(rss.str(), "---\na:               99\nb:               ' \xED\xB3\xBE '\nc:               false\n...\n");
+}
+
+TEST(yamlio, test_surrogate_pair_escaped) {
+  const char *input = R"""(---
+a:               99
+b:               " \ud800\udc00 "
+c:               false
+...
+)""";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.a, 99);
+  EXPECT_EQ(t.b, " \xED\xA0\x80\xED\xB0\x80 ");
+  EXPECT_FALSE(t.c);
+
+  std::string result;
+  llvm::raw_string_ostream rss{result};
+  llvm::yaml::Output yout{rss};
+  yout << t;
+  EXPECT_EQ(rss.str(), "---\na:               99\nb:               ' \xED\xA0\x80\xED\xB0\x80 '\nc:               false\n...\n");
+}
+
+TEST(yamlio, test_high_surrogate_escaped) {
+  const char *input = R"""(---
+a:               077
+b:               " \ud8ef "
+c:               false
+...
+)""";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.a, 63);
+  EXPECT_EQ(t.b, " \xED\xA3\xAF ");
+  EXPECT_FALSE(t.c);
+
+  std::string result;
+  llvm::raw_string_ostream rss{result};
+  llvm::yaml::Output yout{rss};
+  yout << t;
+  EXPECT_EQ(rss.str(), "---\na:               63\nb:               ' \xED\xA3\xAF '\nc:               false\n...\n");
+}
+
+TEST(yamlio, test_illegal_utf8_surrogate_pair) {
+  const char *input = u8"{ a: 0o76, b: \"\xD8\x01\xDC\x37\", c: false }";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.a, 62);
+  EXPECT_EQ(t.b, "\xD8\x01\xDC\x37");
+  EXPECT_FALSE(t.c);
+
+  std::string result;
+  llvm::raw_string_ostream rss{result};
+  llvm::yaml::Output yout{rss};
+  yout << t;
+  EXPECT_EQ(rss.str(), "---\na:               62\nb:               '\xD8\x01\xDC\x37'\nc:               false\n...\n");
+}
+
+TEST(yamlio, test_illegal_utf8_low_surrogate) {
+  const char *input = "{ a: 91, b: \"\xDC\xFE\", c: false }";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.a, 91);
+  EXPECT_EQ(t.b, "\xDC\xFE");
+  EXPECT_FALSE(t.c);
+
+  std::string result;
+  llvm::raw_string_ostream rss{result};
+  llvm::yaml::Output yout{rss};
+  yout << t;
+  EXPECT_EQ(rss.str(), "---\na:               91\nb:               '\xDC\xFE'\nc:               false\n...\n");
+}
+
+TEST(yamlio, test_invalid_octal) {
+  const char *input = u8"{ a: 099, b: \"\", c: false }";
+
+  TestStruct t;
+  llvm::yaml::Input yin(input);
+  yin >> t;
+
+  EXPECT_TRUE(yin.error());
+}

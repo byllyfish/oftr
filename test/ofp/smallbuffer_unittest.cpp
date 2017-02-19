@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/smallbuffer.h"
@@ -204,4 +204,33 @@ TEST(smallbuffer, moveAssignLarge) {
   EXPECT_EQ(64, buf2.capacity());
 
   EXPECT_EQ(original, buf1);
+}
+
+TEST(smallbuffer, reset) {
+  SmallBuffer buf;
+
+  buf.reset(10);
+  EXPECT_EQ(10, buf.size());
+  EXPECT_LE(10, buf.capacity());
+  EXPECT_GT(500, buf.capacity());
+
+  buf.reset(500);
+  EXPECT_EQ(500, buf.size());
+  EXPECT_LE(500, buf.capacity());
+
+  buf.reset(10);
+  EXPECT_EQ(10, buf.size());
+  EXPECT_LE(10, buf.size());
+  EXPECT_GT(500, buf.capacity());
+}
+
+TEST(smallbuffer, replaceUninitialized) {
+  SmallBuffer buf;
+
+  buf.add("0123456789", 10);
+  EXPECT_EQ(10, buf.size());
+
+  buf.replaceUninitialized(buf.begin(), buf.begin() + 1, 100);
+  EXPECT_EQ(109, buf.size());
+  EXPECT_HEX("313233343536373839", buf.begin() + 100, 9);
 }

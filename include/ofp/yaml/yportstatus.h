@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YPORTSTATUS_H_
@@ -14,7 +14,29 @@ const char *const kPortStatusSchema = R"""({Message/PortStatus}
 type: PORT_STATUS
 msg:
   reason: PortStatusReason
-  port: Port
+  port_no: PortNumber
+  hw_addr: MacAddress
+  name: Str16
+  config: [PortConfigFlags]
+  state: [PortStateFlags]
+  ethernet:
+    curr: [PortFeaturesFlags]
+    advertised: [PortFeaturesFlags]
+    supported: [PortFeaturesFlags]
+    peer: [PortFeaturesFlags]
+    curr_speed: UInt32
+    max_speed: UInt32
+  optical: !optout
+    supported: [OpticalPortFeaturesFlags]
+    tx_min_freq_lmda: UInt32
+    tx_max_freq_lmda: UInt32
+    tx_grid_freq_lmda: UInt32
+    rx_min_freq_lmda: UInt32
+    rx_max_freq_lmda: UInt32
+    rx_grid_freq_lmda: UInt32
+    tx_pwr_min: UInt16
+    tx_pwr_max: UInt16
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -23,7 +45,7 @@ struct MappingTraits<ofp::PortStatus> {
     io.mapRequired("reason", msg.reason_);
 
     ofp::Port &port = RemoveConst_cast(msg.port());
-    io.mapRequired("port", port);
+    MappingTraits<ofp::Port>::mapping(io, port);
   }
 };
 
@@ -31,7 +53,7 @@ template <>
 struct MappingTraits<ofp::PortStatusBuilder> {
   static void mapping(IO &io, ofp::PortStatusBuilder &msg) {
     io.mapRequired("reason", msg.msg_.reason_);
-    io.mapRequired("port", msg.port_);
+    MappingTraits<ofp::PortBuilder>::mapping(io, msg.port_);
   }
 };
 

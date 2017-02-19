@@ -5,10 +5,9 @@ No external dependencies; uses builtin json module.
 """
 
 import json
-import socket
 import subprocess
-import sys
 import os
+import sys
 
 def getDefaultPort():
     try:
@@ -18,7 +17,7 @@ def getDefaultPort():
 
 
 DEFAULT_OPENFLOW_PORT = getDefaultPort()
-EVENT_DELIMITER = '\n'
+EVENT_DELIMITER = '\x00'
 
 class _JsonObject:
     def __init__(self, d):
@@ -35,7 +34,7 @@ class LibOFP(object):
 
         ofp = libofp.LibOFP()
         for event in ofp:
-            if event.type == 'PACKET_IN':
+            if event.method == 'OFP.MESSAGE' and event.params.type == 'PACKET_IN':
                 handlePacketIn(ofp, event)
 
 
@@ -65,9 +64,10 @@ class LibOFP(object):
         self._openDriver(driverPath)
         self._xid = 2
 
+        self._sendDescriptionRequest()
+
         if listen:
             self._sendListenRequest(openflowAddr)
-        self._eventGenerator = self._makeEventGenerator()
 
     def _openDriver(self, driverPath):
         assert driverPath
@@ -94,7 +94,7 @@ class LibOFP(object):
         return self
 
     def next(self):
-        line = self._sockInput.readline()
+        line = _read_until(self._sockInput, EVENT_DELIMITER)
         if not line:
             raise StopIteration()
         return json.loads(line, object_hook=_JsonObject)
@@ -112,15 +112,28 @@ class LibOFP(object):
         self._write(json.dumps(rpc) + EVENT_DELIMITER)
 
     def _sendListenRequest(self, openflowAddr):
-        self._call('OFP.LISTEN', endpoint='[%s]:%d' % openflowAddr, options=['DEFAULT_CONTROLLER'])
+        self._call('OFP.LISTEN', endpoint='[%s]:%d' % openflowAddr, options=['FEATURES_REQ'])
 
-    def _makeEventGenerator(self):
-        # Simply using `for line in self._sockInput:` doesn't work for pipes in
-        # Python 2.7.2.
-        for line in iter(self._sockInput.readline, ''):
-            yield json.loads(line, object_hook=_JsonObject)
+    def _sendDescriptionRequest(self):
+        self._call('OFP.DESCRIPTION', id=99999)
+        msg = self.next()
+        print >>sys.stderr, msg
+        assert msg.id == 99999
+        assert msg.result.api_version == '0.9'
+        assert len(msg.result.sw_desc) > 0
+        assert msg.result.versions == [1, 2, 3, 4, 5]
 
     def _write(self, msg):
         self._sockOutput.write(msg)
 
 
+
+def _read_until(stream, delimiter):
+    """Read next line from stream.
+    """
+    buf = ''
+    while True:
+        ch = stream.read(1)
+        if not ch or ch == delimiter:
+            return buf
+        buf += ch

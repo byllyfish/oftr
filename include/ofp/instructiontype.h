@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_INSTRUCTIONTYPE_H_
@@ -37,13 +37,8 @@ class InstructionType {
 };
 
 static_assert(IsLiteralType<InstructionType>(), "Literal type expected.");
-
-std::ostream &operator<<(std::ostream &os, const InstructionType &value);
-
-inline std::ostream &operator<<(std::ostream &os,
-                                const InstructionType &value) {
-  return os << static_cast<unsigned>(value.enumType());
-}
+static_assert(sizeof(InstructionType) == 2, "Unexpected size.");
+static_assert(alignof(InstructionType) == 2, "Unexpected alignment.");
 
 OFP_BEGIN_IGNORE_PADDING
 

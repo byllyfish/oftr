@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/requestforward.h"
@@ -7,9 +7,7 @@
 using namespace ofp;
 
 ByteRange RequestForward::request() const {
-  assert(header_.length() >= sizeof(RequestForward));
-  return ByteRange{BytePtr(this) + sizeof(RequestForward),
-                   header_.length() - sizeof(RequestForward)};
+  return SafeByteRange(this, header_.length(), sizeof(RequestForward));
 }
 
 bool RequestForward::validateInput(Validation *context) const {

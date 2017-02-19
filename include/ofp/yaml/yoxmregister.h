@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YOXMREGISTER_H_
@@ -13,7 +13,7 @@ template <>
 struct ScalarTraits<ofp::OXMRegister> {
   static void output(const ofp::OXMRegister &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/identity.h"
@@ -182,7 +182,7 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   ERR_clear_error();  // clear error stack for SSL_CTX_use_certificate()
 
   MemBio bio{certData};
-  MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), 0, 0, 0)};
+  MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), nullptr, nullptr, nullptr)};
 
   if (!mainCert) {
     return sslError(ERR_R_PEM_LIB);
@@ -197,7 +197,7 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   SSL_CTX_clear_chain_certs(ctx);
 
   while (true) {
-    MemX509 caCert{PEM_read_bio_X509(bio.get(), 0, 0, 0)};
+    MemX509 caCert{PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr)};
     if (!caCert)
       break;
 
@@ -226,7 +226,7 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
 /// Load private key from a PEM file.
 std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
                                          const std::string &keyData,
-                                         const std::string &passphrase) {
+                                         const std::string &keyPassphrase) {
   ::ERR_clear_error();
 
   MemBio bio{keyData};
@@ -239,8 +239,8 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
   };
 
   std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
-      ::PEM_read_bio_PrivateKey(bio.get(), 0, passwordCallback,
-                                RemoveConst_cast(passphrase.c_str())),
+      ::PEM_read_bio_PrivateKey(bio.get(), nullptr, passwordCallback,
+                                RemoveConst_cast(keyPassphrase.c_str())),
       EVP_PKEY_free};
 
   if (!privateKey) {
@@ -342,7 +342,7 @@ void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
 
   // Retrieve identity pointer from SSL_CTX object.
   Identity *identity = GetIdentityPtr(SSL_get_SSL_CTX(ssl));
-  bool isClient = !ssl->server;
+  bool isClient = !SSL_is_server(ssl);
 
   UInt64 securityId = identity->securityId();
   UInt64 connId = conn->connectionId();

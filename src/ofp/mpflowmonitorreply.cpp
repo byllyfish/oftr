@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpflowmonitorreply.h"
@@ -20,7 +20,7 @@ InstructionRange MPFlowMonitorReply::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   assert(length_ >= offset);
 
-  return InstructionRange{ByteRange{BytePtr(this) + offset, length_ - offset}};
+  return InstructionRange{SafeByteRange(this, length_, offset)};
 }
 
 bool MPFlowMonitorReply::validateInput(Validation *context) const {

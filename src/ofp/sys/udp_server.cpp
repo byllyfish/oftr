@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/udp_server.h"
@@ -93,12 +93,12 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
                                                  versions_, factory);
     conn->connect(endpt);
     return conn->connectionId();
-  } else {
-    auto conn = new UDP_Connection<Plaintext_Adapter>(
-        this, options_, securityId, versions_, factory);
-    conn->connect(endpt);
-    return conn->connectionId();
   }
+
+  auto conn = new UDP_Connection<Plaintext_Adapter>(this, options_, securityId,
+                                                    versions_, factory);
+  conn->connect(endpt);
+  return conn->connectionId();
 }
 
 ofp::IPv6Endpoint UDP_Server::localEndpoint() const {
@@ -249,7 +249,8 @@ void UDP_Server::asyncSend() {
         assert(&datagram == &datagrams_.front());
 
         if (err) {
-          log_error("Error sending datagram to", datagram.destination(),
+          log_error("Error sending datagram to",
+                    convertEndpoint<udp>(datagram.destination()),
                     std::make_pair("connid", datagram.connectionId()), err);
         }
         datagrams_.pop_front();

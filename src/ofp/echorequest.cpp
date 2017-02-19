@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/echorequest.h"
@@ -8,8 +8,7 @@
 using namespace ofp;
 
 ByteRange EchoRequest::echoData() const {
-  return ByteRange{BytePtr(this) + sizeof(Header),
-                   header_.length() - sizeof(Header)};
+  return SafeByteRange(this, header_.length(), sizeof(Header));
 }
 
 UInt32 EchoRequestBuilder::send(Writable *channel) {

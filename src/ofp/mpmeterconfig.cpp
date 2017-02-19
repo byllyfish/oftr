@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpmeterconfig.h"
@@ -8,9 +8,7 @@
 using namespace ofp;
 
 MeterBandRange MPMeterConfig::bands() const {
-  assert(length_ >= sizeof(MPMeterConfig));
-  return ByteRange{BytePtr(this) + sizeof(MPMeterConfig),
-                   length_ - sizeof(MPMeterConfig)};
+  return SafeByteRange(this, length_, sizeof(MPMeterConfig));
 }
 
 bool MPMeterConfig::validateInput(Validation *context) const {
@@ -18,11 +16,7 @@ bool MPMeterConfig::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!bands().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return bands().validateInput(context);
 }
 
 void MPMeterConfigBuilder::write(Writable *channel) {

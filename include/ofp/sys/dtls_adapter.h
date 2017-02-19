@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_SYS_DTLS_ADAPTER_H_
@@ -40,7 +40,7 @@ class DTLS_Adapter {
   std::deque<Datagram> datagrams_;
 
   void writeOutput();
-  void enqueueDatagram(const void *datagram, size_t length);
+  void enqueueDatagram(const void *data, size_t length);
   void flushDatagrams();
 
   void logOutput(const UInt8 *p, size_t length);

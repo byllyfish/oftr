@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YTABLEFEATUREPROPERTY_H_
@@ -20,7 +20,7 @@ using TableFeaturePropertyIterator =
     TypedPropertyIterator<TableFeaturePropertyItem>;
 struct TableFeaturePropertyRange {};
 struct TableFeaturePropertyInserter {};
-struct TableFeaturePropertyList {};
+struct TableFeaturePropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcencoder.h"
@@ -17,27 +17,7 @@ static bool errorFound(llvm::yaml::IO &io) {
 RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,
                        yaml::Encoder::ChannelFinder finder)
     : conn_{conn}, errorStream_{error_}, finder_{finder} {
-  // Check if input string is possibly a JSON/YAML quoted string.
-  // FIXME: Checking for double-quote should ignore preceding white space.
-  std::string rawInput;
-  if (!input.empty() && input[0] == '"') {
-    llvm::yaml::Input ys{input, nullptr, RpcEncoder::diagnosticHandler, this};
-    if (!ys.error()) {
-      ys >> rawInput;
-    }
-    if (ys.error()) {
-      replyError();
-      return;
-    }
-  }
-
-  // If there's any rawInput, use that value. Otherwise decode the original
-  // input.
-
-  const std::string &inputText = rawInput.empty() ? input : rawInput;
-
-  llvm::yaml::Input yin{inputText, nullptr, RpcEncoder::diagnosticHandler,
-                        this};
+  llvm::yaml::Input yin{input, nullptr, RpcEncoder::diagnosticHandler, this};
   if (!yin.error()) {
     yin >> *this;
   }
@@ -119,14 +99,8 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       }
       break;
     }
-    case METHOD_CHANNEL:
-      io.setError("'OFP.CHANNEL' is for notifications only");
-      break;
     case METHOD_MESSAGE:
       io.setError("Use 'OFP.SEND'. 'OFP.MESSAGE' is for notifications only");
-      break;
-    case METHOD_ALERT:
-      io.setError("'OFP.ALERT' is for notifications only");
       break;
     case METHOD_DESCRIPTION: {
       RpcDescription desc{id_};
@@ -179,9 +153,9 @@ void RpcEncoder::replySendError(UInt32 xid) {
   if (!id_.is_missing()) {
     replyError();
   } else {
-    // Send OFP.ALERT to report failure to send message.
-
+    // Send CHANNEL_ALERT to report failure to send message.
     RpcAlert notification;
+    notification.params.type = "CHANNEL_ALERT";
     notification.params.time = Timestamp::now();
     notification.params.alert = llvm::StringRef{error()}.rtrim();
     notification.params.xid = xid;

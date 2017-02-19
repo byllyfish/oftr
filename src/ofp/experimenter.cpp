@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/experimenter.h"
@@ -9,8 +9,7 @@
 using namespace ofp;
 
 ByteRange Experimenter::expData() const {
-  return ByteRange{BytePtr(this) + sizeof(Experimenter),
-                   header_.length() - sizeof(Experimenter)};
+  return SafeByteRange(this, header_.length(), sizeof(Experimenter));
 }
 
 ExperimenterBuilder::ExperimenterBuilder(const Experimenter *msg) : msg_{*msg} {

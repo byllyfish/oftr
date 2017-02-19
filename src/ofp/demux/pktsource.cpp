@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/pktsource.h"
@@ -26,7 +26,7 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
                      const u_char *data) {
   sHandlerInfo *info = reinterpret_cast<sHandlerInfo *>(user);
   ByteList &buf = info->buffer;
-  Timestamp ts(hdr->ts.tv_sec,
+  Timestamp ts(Unsigned_cast(hdr->ts.tv_sec),
                Unsigned_cast(hdr->ts.tv_usec) * info->nanosec_factor);
 
   const UInt32 alignPad = info->alignPad;
@@ -46,31 +46,38 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
 }
 
 std::string PktSource::datalink() const {
-  if (datalink_ >= 0) {
-    const char *name = pcap_datalink_val_to_name(datalink_);
-    return !name ? "NULL" : name;
-  } else {
+  if (datalink_ < 0) {
     return "<not open>";
   }
+
+  const char *name = pcap_datalink_val_to_name(datalink_);
+  if (name == nullptr) {
+    return "<null/error>";
+  }
+
+  return name;
 }
 
 /// \brief Open capture device to read live packets from the network.
 ///
-/// \param source name of capture interface/device
+/// \param device name of capture interface/device
 /// \param filter bpf-filter expression
 ///
-/// \returns true if source is ready to use
-bool PktSource::openDevice(const std::string &source,
+/// \returns true if device is ready to use
+bool PktSource::openDevice(const std::string &device,
                            const std::string &filter) {
+  if (!isPcapVersionSupported())
+    return false;
+
   if (pcap_)
     close();
 
-  if (!create(source)) {
+  if (!create(device)) {
     close();
     return false;
   }
 
-  if (!activate()) {
+  if (!activate(device)) {
     close();
     return false;
   }
@@ -89,11 +96,14 @@ bool PktSource::openDevice(const std::string &source,
 }
 
 /// \brief Open capture file to read packets offline.
-bool PktSource::openFile(const std::string &path, const std::string &filter) {
+bool PktSource::openFile(const std::string &file, const std::string &filter) {
+  if (!isPcapVersionSupported())
+    return false;
+
   if (pcap_)
     close();
 
-  if (!openOffline(path)) {
+  if (!openOffline(file)) {
     return false;
   }
 
@@ -109,7 +119,7 @@ bool PktSource::openFile(const std::string &path, const std::string &filter) {
     return false;
   }
 
-  log_debug("PktSource::openFile", path, "filter", filter);
+  log_debug("PktSource::openFile", file, "filter", filter);
 
   return true;
 }
@@ -270,33 +280,62 @@ bool PktSource::setFilter(const std::string &filter) {
   return (result == 0);
 }
 
-bool PktSource::activate() {
+bool PktSource::activate(const std::string &device) {
   int result = pcap_activate(pcap_);
   if (result == 0) {
     return true;
   }
 
-  // FIXME(bfish): Fill out the rest of this code.
+  const char *errMsg = "Unknown error";
+
   switch (result) {
+    // Warnings log a message and allow activate to continue.
     case PCAP_WARNING_PROMISC_NOTSUP:
+      log_warning("pcap_activate:", device,
+                  "does not support promiscuous mode --", pcap_geterr(pcap_));
+      return true;
 #if defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING_TSTAMP_TYPE_NOTSUP:
+      log_warning(
+          "pcap_activate: Capture source does not support timestamp type");
+      return true;
 #endif  // defined(PCAP_WARNING_TSTAMP_TYPE_NOTSUP)
     case PCAP_WARNING:
-    case PCAP_ERROR_ACTIVATED:
+      log_warning("pcap_activate: PCAP_WARNING:", pcap_geterr(pcap_));
+      return true;
+
+    // Errors set the error message and return false. Log pcap_geterr to the
+    // log.
     case PCAP_ERROR_NO_SUCH_DEVICE:
+      errMsg = "No such device";
+      break;
+    case PCAP_ERROR_ACTIVATED:
+      errMsg = "Handle already activated";
+      break;
     case PCAP_ERROR_PERM_DENIED:
+      errMsg = "Permission denied to open capture source";
+      break;
 #if defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_PROMISC_PERM_DENIED:
+      errMsg = "Permission denied to put capture source into promiscuous mode";
+      break;
 #endif  // defined(PCAP_ERROR_PROMISC_PERM_DENIED)
     case PCAP_ERROR_RFMON_NOTSUP:
+      errMsg = "Capture source does not support monitor mode";
+      break;
     case PCAP_ERROR_IFACE_NOT_UP:
+      errMsg = "Capture source is not up";
+      break;
+    case PCAP_ERROR:
     default:
-      setError("pcap_activate", "", "");
+      errMsg = pcap_geterr(pcap_);
       break;
   }
 
-  return result > 0;
+  setError("pcap_activate", device, errMsg);
+  log_error("pcap_activate:", errMsg, "--", pcap_geterr(pcap_));
+
+  return false;
 }
 
 void PktSource::setError(const char *func, const std::string &arg,
@@ -332,4 +371,33 @@ PktSource::Encapsulation PktSource::lookupEncapsulation(int datalink,
     return iter->encap;
   }
   return ENCAP_UNSUPPORTED;
+}
+
+/// Return true if we support this version of libpcap (1.1 or newer). Set error_
+/// if not. We use version 1.1 for support for Ubuntu Precise.
+bool PktSource::isPcapVersionSupported() {
+  const char *vers = pcap_lib_version();
+  log::fatal_if_null(vers, "pcap_lib_version");
+
+  const unsigned int LIB_MAJOR = 1;
+  const unsigned int LIB_MINOR = 1;
+
+  unsigned int major = 0;
+  unsigned int minor = 0;
+  unsigned int patch = 0;
+
+  if (std::sscanf(vers, "libpcap version %u.%u.%u", &major, &minor, &patch) <
+      2) {
+    setError("pcap_lib_version", "", vers);
+    return false;
+  }
+
+  if (major > LIB_MAJOR || (major == LIB_MAJOR && minor >= LIB_MINOR)) {
+    return true;
+  }
+
+  error_ = "Unsupported: ";
+  error_ += vers;
+
+  return false;
 }

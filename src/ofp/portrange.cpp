@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/portrange.h"
@@ -14,13 +14,11 @@ PortRange::PortRange(const PortList &ports) : PortRange{ports.toRange()} {}
 size_t PortRange::writeSize(Writable *channel) {
   if (channel->version() >= OFP_VERSION_5) {
     return size();
-
-  } else if (channel->version() >= OFP_VERSION_2) {
-    return itemCount() * sizeof(deprecated::PortV2);
-
-  } else {
-    return itemCount() * sizeof(deprecated::PortV1);
   }
+  if (channel->version() >= OFP_VERSION_2) {
+    return itemCount() * sizeof(deprecated::PortV2);
+  }
+  return itemCount() * sizeof(deprecated::PortV1);
 }
 
 /// \brief Writes port list to the channel using the specified protocol

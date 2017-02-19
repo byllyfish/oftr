@@ -66,8 +66,8 @@ NXM_NX_TUN_IP4_SRC	0x0001	31	4	IPv4Address	true		(Nicira) Tunnel IPv4 Source Fie
 NXM_NX_TUN_IP4_DST	0x0001	32	4	IPv4Address	true		(Nicira) Tunnel IPv4 Destination Field
 NXM_NX_TUN_GBP_ID	0x0001	38	2	Big16	true		(Nicira) VXLAN Group Policy ID
 NXM_NX_TUN_GBP_FLAGS	0x0001	39	1	Big8	true		(Nicira) VXLAN Group Policy flags
-X_LLDP_CHASSIS_ID	0xFFFF	1.0x00FFFFFF	68	LLDPValue<LLDPType::ChassisID>	false		(libofp) LLDP Chassis ID
-X_LLDP_PORT_ID	0xFFFF	2.0x00FFFFFF	68	LLDPValue<LLDPType::PortID>	false		(libofp) LLDP Port ID
-X_LLDP_TTL	0xFFFF	3.0x00FFFFFF	6	Big16	false		(libofp) LLDP TTL
-X_PKT_POS	0xFFFF	4.0x00FFFFFF	6	Big16	false		(libofp) Last Position in Packet
-X_EXPERIMENTER_01	0xFFFF	3.0x00FFFFFE	6	Big16	true		(libofp) Experimental Test Field
+X_LLDP_CHASSIS_ID	0xFFFF	1.0x00FFFFFF	68	LLDPValue<LLDPType::ChassisID>	false		(Internal) LLDP Chassis ID
+X_LLDP_PORT_ID	0xFFFF	2.0x00FFFFFF	68	LLDPValue<LLDPType::PortID>	false		(Internal) LLDP Port ID
+X_LLDP_TTL	0xFFFF	3.0x00FFFFFF	6	Big16	false		(Internal) LLDP TTL
+X_PKT_POS	0xFFFF	4.0x00FFFFFF	6	Big16	false		(Internal) Last Position in Packet
+X_EXPERIMENTER_01	0xFFFF	3.0x00FFFFFE	6	Big16	true		(Internal) Experimental Test Field

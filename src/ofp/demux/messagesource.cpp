@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/messagesource.h"
@@ -12,9 +12,6 @@
 
 using namespace ofp;
 using namespace ofp::demux;
-
-const UInt16 DATALINK_8021Q = 0x8100;
-const size_t k8021QHeaderSize = 4;
 
 static void sEthernetCallback(Timestamp ts, ByteRange data, unsigned len,
                               void *context) {
@@ -94,11 +91,17 @@ void MessageSource::submitEthernet(const UInt8 *data, size_t length) {
 
   UInt16 ethType = eth->type;
 
-  // Ignore 802.1Q header and vlan.
-  if (ethType == DATALINK_8021Q && length >= k8021QHeaderSize) {
-    ethType = *Big16_cast(data + 2);
-    data += k8021QHeaderSize;
-    length -= k8021QHeaderSize;
+  // Check for vlan header.
+  if (ethType == DATALINK_8021Q) {
+    auto vlan = pkt::VlanHdr::cast(data, length);
+    if (!vlan) {
+      log_warning("MessageSource: No vlan header");
+      return;
+    }
+    // Ignore the vlan pcp and vid. Update the actual ethType.
+    ethType = vlan->ethType;
+    data += sizeof(pkt::VlanHdr);
+    length -= sizeof(pkt::VlanHdr);
   }
 
   if (ethType == DATALINK_IPV4) {
@@ -241,7 +244,9 @@ void MessageSource::submitTCP(const UInt8 *data, size_t length) {
   }
 }
 
-void MessageSource::submitUDP(const UInt8 *data, size_t length) {}
+void MessageSource::submitUDP(const UInt8 *data, size_t length) {
+  // TODO(bfish): Finish UDP support.
+}
 
 size_t MessageSource::submitPayload(const UInt8 *data, size_t length,
                                     UInt64 sessionID) {
@@ -299,7 +304,8 @@ void MessageSource::outputWrite(const IPv6Endpoint &src,
     return;
 
   // Construct filename "$outputDir/_tcp-$session-$src-$dst"
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << outputDir_ << "/_tcp-" << flow.sessionID() << '-' << src << '-' << dst;
   auto filename = oss.str();
 

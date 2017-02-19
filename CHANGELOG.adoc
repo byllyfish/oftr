@@ -1,5 +1,54 @@
 = Changelog
 
+== Version 0.24 (17 February 2017)
+
+- Changed name of tool to "oftr".
+- Don't put quotes around IPv4 endpoint in YAML output.
+- In decode tool arguments, rename -include-filename to -show-filename.
+- In decode tool, add support for -msg-include and -msg-exclude options.
+- When using pcap-based options, write a header line to stderr to show packet source and active filter.
+- Improve error reporting when activating a pcap capture source.
+- Various changes to simplify YAML schema.
+- Add -schema-lexicon option to help tool.
+- Transition code to llvm::raw_ostream from std::ostream.
+- Restrict MacAddress hex format to "hh:hh:hh:hh:hh:hh" or "hhhhhhhhhhhh".
+- Make datapath_id parser more strict. Don't parse "" as an empty datapath_id.
+- Add initial 'MatchPacketBuilder' support for ARP and LLDP. Can be used to generate packets.
+- Options to push_vlan and push_mpls should be called ethertype.
+- Fix Raspberry PI portability issue with time_t.
+- Update asio and boringssl from latest master branch.
+
+== Version 0.23 (16 January 2017)
+
+- Change RPC end of message delimiter from '\n' to '\0'.
+- Remove support for JSON-quoted YAML RPC input.
+- Replace duration_sec and duration_nsec with a new DurationSec type.
+- Support the OF 1.1 packet_in message.
+- The weight, watch_port, and watch_group members in Buckets are now optional.
+- Specify input defaults for packet_out message.
+- The properties member is now optional in more message types.
+- MatchPacket decode now supports vlans.
+- Minor fix to MatchPacket handling of fragments.
+- Replace std::ostream with llvm::raw_ostream.
+- Update copyright year to 2017.
+
+== Version 0.22 (19 December 2016)
+
+- Replace OFP.CHANNEL and OFP.ALERT top-level jsonrpc notifications with OFP.MESSAGE sub-messages.
+- Add _RAW_MESSAGE support for outgoing messages.
+- YAML "null" will indicate an empty datapath_id.
+- Implement overall timeout for OpenFlow handshake.
+- Remove "DEFAULT_CONTROLLER" and "DEFAULT_AGENT" alias options to listen/connect.
+- Include timestamps in message notifications.
+- Decode ethertype 0x8942 (BDDP) as LLDP.
+- Controller side of connection will never send Error messages.
+- Allow match fields to have non-zero padding.
+- Fix bug in command-line processing that led to excessive trace logging.
+- Fix libpcap version for Ubuntu packaging.
+- Require libpcap 1.5.0 or later.
+- Clang-tidy fixes.
+- Update boringssl and google-test submodules.
+
 == Version 0.21 (26 October 2016)
 
 - Pass dup'd descriptors to posix::stream_descriptor in RpcServer.

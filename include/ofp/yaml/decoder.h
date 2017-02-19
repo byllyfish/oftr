@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_DECODER_H_
@@ -56,23 +56,22 @@ struct MappingTraits<ofp::yaml::Decoder> {
     Header header = *decoder.msg_->header();
     assert(header.length() == decoder.msg_->size());
 
-    ofp::yaml::MessageType msgType{decoder.msg_->type(),
-                                   decoder.msg_->subtype()};
+    ofp::MessageType msgType = decoder.msg_->msgType();
     io.mapRequired("type", msgType);
 
-    if (msgType.type == OFPT_MULTIPART_REQUEST ||
-        msgType.type == OFPT_MULTIPART_REPLY) {
+    Timestamp time = decoder.msg_->time();
+    if (time.valid()) {
+      io.mapRequired("time", time);
+    }
+
+    if (msgType.type() == OFPT_MULTIPART_REQUEST ||
+        msgType.type() == OFPT_MULTIPART_REPLY) {
       OFPMultipartFlags flags = decoder.msg_->flags();
       io.mapRequired("flags", flags);
     }
 
     io.mapRequired("xid", header.xid_);
     io.mapRequired("version", header.version_);
-
-    Timestamp time = decoder.msg_->time();
-    if (time.valid()) {
-      io.mapRequired("time", time);
-    }
 
     Channel *source = decoder.msg_->source();
     if (source) {
@@ -102,8 +101,8 @@ struct MappingTraits<ofp::yaml::Decoder> {
         IPv6Endpoint src = info->source();
         IPv6Endpoint dst = info->dest();
         io.mapRequired("conn_id", sessionId);
-        io.mapRequired("_src", src);
-        io.mapRequired("_dst", dst);
+        io.mapRequired("src", src);
+        io.mapRequired("dst", dst);
       }
       if (!info->filename().empty()) {
         std::string filename = info->filename();

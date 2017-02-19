@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YADDRESS_H_
@@ -18,7 +18,7 @@ template <>
 struct ScalarTraits<ofp::IPv4Address> {
   static void output(const ofp::IPv4Address &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
@@ -41,7 +41,7 @@ template <>
 struct ScalarTraits<ofp::IPv6Address> {
   static void output(const ofp::IPv6Address &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    value.outputV6(out);
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
@@ -51,12 +51,18 @@ struct ScalarTraits<ofp::IPv6Address> {
       return "";
     }
 
-    if (!value.parse(scalar)) {
+    if (!value.parse(scalar, false)) {
       return "Invalid IPv6 address.";
     }
     return "";
   }
 
+  // IPv6Address contains a ':'. If first char is in [1-9] (but not zero),
+  // it may be parsed by a YAML 1.1 as a sexagesimal integer.
+  //
+  // e.g. YAML 1.1:  2001:0:0:0:0:59:9:59 ==> 5601519360212999
+  //
+  // Always quote the IPv6Address.
   static bool mustQuote(StringRef) { return true; }
 };
 
@@ -64,7 +70,7 @@ template <>
 struct ScalarTraits<ofp::MacAddress> {
   static void output(const ofp::MacAddress &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::MacAddress &value) {
@@ -79,6 +85,12 @@ struct ScalarTraits<ofp::MacAddress> {
     return "";
   }
 
+  // MacAddress contains a ':'. If first char is in [1-9] (but not zero), it
+  // may be parsed by YAML 1.1 as a sexagesimal integer.
+  //
+  // e.g. 33:33:00:00:00:00 ==> 26088480000
+  //
+  // Always quote the MacAddress.
   static bool mustQuote(StringRef) { return true; }
 };
 
@@ -86,7 +98,7 @@ template <>
 struct ScalarTraits<ofp::IPv6Endpoint> {
   static void output(const ofp::IPv6Endpoint &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << value.toString();
+    out << value;
   }
 
   static StringRef input(StringRef scalar, void *ctxt,
@@ -97,12 +109,13 @@ struct ScalarTraits<ofp::IPv6Endpoint> {
     }
 
     if (!value.parse(scalar)) {
-      return "Invalid IPv6 endpoint.";
+      return "Invalid IP endpoint.";
     }
     return "";
   }
 
-  static bool mustQuote(StringRef) { return true; }
+  // Quote IPv6Endpoint if it begins with '['.
+  static bool mustQuote(StringRef s) { return !s.empty() && s.front() == '['; }
 };
 
 }  // namespace yaml

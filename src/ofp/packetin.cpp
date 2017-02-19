@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/packetin.h"
@@ -66,9 +66,13 @@ bool PacketIn::validateInputV1(Validation *context) const {
 }
 
 bool PacketIn::validateInputV2(Validation *context) const {
-  // FIXME - Unimplemented
-  context->messageTypeIsNotImplemented();
-  return false;
+  size_t length = context->length();
+  if (length < 24) {
+    context->messageSizeIsInvalid();
+    return false;
+  }
+
+  return true;
 }
 
 bool PacketIn::validateInputV3(Validation *context) const {
@@ -190,26 +194,18 @@ ByteRange PacketIn::enetFrame() const {
 
   switch (version()) {
     case OFP_VERSION_1:
-      assert(msgLen >= 18U);
-      return ByteRange{BytePtr(this) + 18, msgLen - 18U};
+      return SafeByteRange(this, msgLen, 18);
     case OFP_VERSION_2:
-      log_info("PacketIn::enetFrame() not implemented.");
-      return ByteRange{};
+      return SafeByteRange(this, msgLen, 24);
     case OFP_VERSION_3: {
       const MatchHeader *matchHdr = matchHeader();
       offset =
           SizeWithoutMatchHeader - sizeof(Big64) + matchHdr->paddedLength() + 2;
-      if (offset >= msgLen) {
-        return ByteRange{};
-      }
-      return ByteRange{BytePtr(this) + offset, msgLen - offset};
+      return SafeByteRange(this, msgLen, offset);
     }
     default:
       offset = SizeWithoutMatchHeader + matchHeader_.paddedLength() + 2;
-      if (offset >= msgLen) {
-        return ByteRange{};
-      }
-      return ByteRange{BytePtr(this) + offset, msgLen - offset};
+      return SafeByteRange(this, msgLen, offset);
   }
 }
 
@@ -286,12 +282,34 @@ UInt32 PacketInBuilder::sendV1(Writable *channel) {
 }
 
 UInt32 PacketInBuilder::sendV2(Writable *channel) {
-  assert(channel->version() == OFP_VERSION_2);
+  UInt8 version = channel->version();
+  assert(version == OFP_VERSION_2);
+
+  // Calculate the total PacketIn message length.
+  size_t msgLen = 24 + enetFrame_.size();
 
   UInt32 xid = channel->nextXid();
+  Header &hdr = msg_.header_;
+  hdr.setVersion(version);
+  hdr.setType(PacketIn::type());
+  hdr.setLength(msgLen);
+  hdr.setXid(xid);
 
-  // FIXME - Unimplemented
-  log_info("PacketInBuilder::sendV2 not implemented.");
+  // Write out 8 byte header.
+  channel->write(&msg_, 8);
+
+  // Write out 4 byte buffer_id.
+  channel->write(&msg_.bufferId_, 4);
+
+  // Write out 8 bytes: in_port followed by in_phy_port.
+  channel->write(&inPort_, 8);
+
+  // Write out 4 bytes: total_len, reason, table_id.
+  channel->write(&msg_.totalLen_, 4);
+
+  // Write out enet frame.
+  channel->write(enetFrame_.data(), enetFrame_.size());
+  channel->flush();
 
   return xid;
 }

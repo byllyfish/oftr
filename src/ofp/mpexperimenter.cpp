@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpexperimenter.h"
@@ -18,8 +18,7 @@ ByteRange MPExperimenter::expData() const {
   assert(req);
   assert(req->requestBodySize() >= sizeof(MPExperimenter));
 
-  return ByteRange{BytePtr(this) + sizeof(MPExperimenter),
-                   req->requestBodySize() - sizeof(MPExperimenter)};
+  return SafeByteRange(this, req->requestBodySize(), sizeof(MPExperimenter));
 }
 
 bool MPExperimenter::validateInput(Validation *context) const {

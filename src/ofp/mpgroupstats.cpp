@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpgroupstats.h"
@@ -8,9 +8,7 @@
 using namespace ofp;
 
 PacketCounterRange MPGroupStats::bucketStats() const {
-  assert(length_ >= sizeof(MPGroupStats));
-  return ByteRange{BytePtr(this) + sizeof(MPGroupStats),
-                   length_ - sizeof(MPGroupStats)};
+  return SafeByteRange(this, length_, sizeof(MPGroupStats));
 }
 
 bool MPGroupStats::validateInput(Validation *context) const {
@@ -18,11 +16,7 @@ bool MPGroupStats::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!bucketStats().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return bucketStats().validateInput(context);
 }
 
 void MPGroupStatsBuilder::write(Writable *channel) {

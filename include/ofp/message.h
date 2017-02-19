@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_MESSAGE_H_
@@ -7,6 +7,7 @@
 #include "ofp/bytelist.h"
 #include "ofp/datapathid.h"
 #include "ofp/header.h"
+#include "ofp/messagetype.h"
 #include "ofp/timestamp.h"
 #include "ofp/validation.h"
 
@@ -70,6 +71,7 @@ class Message {
 
   Timestamp time() const { return time_; }
   MessageInfo *info() const { return info_; }
+  MessageType msgType() const { return MessageType{type(), subtype()}; }
   OFPType type() const { return header()->type(); }
   OFPMultipartType subtype() const;
   OFPMultipartFlags flags() const;
@@ -79,7 +81,7 @@ class Message {
   bool isRequestType() const;
 
   bool isValidHeader();
-  void transmogrify();
+  void normalize();
 
   /// Send an error message back to the source of the message.
   void replyError(OFPErrorCode error,
@@ -100,15 +102,13 @@ class Message {
   // dest, filename, etc.) It is *not* owned by the message object.
   MessageInfo *info_ = nullptr;
 
-  friend std::ostream &operator<<(std::ostream &os, const Message &msg);
-  friend class Transmogrify;
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const Message &msg) {
+    return os << msg.buf_;
+  }
+
+  friend class Normalize;
 };
-
-std::ostream &operator<<(std::ostream &os, const Message &msg);
-
-inline std::ostream &operator<<(std::ostream &os, const Message &msg) {
-  return os << msg.buf_;
-}
 
 // Provides convenient implementation of message cast.
 template <class MsgType>

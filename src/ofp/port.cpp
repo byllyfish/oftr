@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/port.h"
@@ -20,12 +20,8 @@ bool Port::validateInput(Validation *context) const {
   }
 
   size_t len = length_;
-  if (!context->validateBool(len <= remaining && len >= sizeof(Port),
-                             "Invalid length for Port")) {
-    return false;
-  }
-
-  return true;
+  return context->validateBool(len <= remaining && len >= sizeof(Port),
+                               "Invalid length for Port");
 }
 
 PortBuilder::PortBuilder(const deprecated::PortV1 &port) {

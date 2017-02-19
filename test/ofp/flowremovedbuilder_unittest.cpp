@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/flowremoved.h"
@@ -16,8 +16,7 @@ TEST(flowremovedbuilder, v1_3) {
   flowRemoved.setPriority(0x2222);
   flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
-  flowRemoved.setDurationSec(0x55555555);
-  flowRemoved.setDurationNSec(0x66666666);
+  flowRemoved.setDuration({0x55555555, 0x66666666});
   flowRemoved.setIdleTimeout(0x7777);
   flowRemoved.setHardTimeout(0x8888);
   flowRemoved.setPacketCount(0x9999999999999999);
@@ -47,8 +46,7 @@ TEST(flowremovedbuilder, v1_0) {
   flowRemoved.setPriority(0x2222);
   flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
-  flowRemoved.setDurationSec(0x55555555);
-  flowRemoved.setDurationNSec(0x66666666);
+  flowRemoved.setDuration({0x55555555, 0x66666666});
   flowRemoved.setIdleTimeout(0x7777);
   flowRemoved.setHardTimeout(0x8888);
   flowRemoved.setPacketCount(0x9999999999999999);
@@ -79,8 +77,7 @@ TEST(flowremovedbuilder, v1_1) {
   flowRemoved.setPriority(0x2222);
   flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
-  flowRemoved.setDurationSec(0x55555555);
-  flowRemoved.setDurationNSec(0x66666666);
+  flowRemoved.setDuration({0x55555555, 0x66666666});
   flowRemoved.setIdleTimeout(0x7777);
   flowRemoved.setHardTimeout(0x8888);
   flowRemoved.setPacketCount(0x9999999999999999);
@@ -111,8 +108,7 @@ TEST(flowremovedbuilder, v1_2) {
   flowRemoved.setPriority(0x2222);
   flowRemoved.setReason(static_cast<OFPFlowRemovedReason>(0x33));
   flowRemoved.setTableId(0x44);
-  flowRemoved.setDurationSec(0x55555555);
-  flowRemoved.setDurationNSec(0x66666666);
+  flowRemoved.setDuration({0x55555555, 0x66666666});
   flowRemoved.setIdleTimeout(0x7777);
   flowRemoved.setHardTimeout(0x8888);
   flowRemoved.setPacketCount(0x9999999999999999);

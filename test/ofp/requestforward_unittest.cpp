@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/requestforward.h"
@@ -52,7 +52,7 @@ TEST(requestforward, test) {
       channel.data(), channel.size());
 
   Message message(channel.data(), channel.size());
-  message.transmogrify();
+  message.normalize();
 
   const RequestForward *m = RequestForward::cast(&message);
   EXPECT_TRUE(m);
@@ -65,7 +65,7 @@ TEST(requestforward, test) {
       req.data(), req.size());
 
   Message request{req.data(), req.size()};
-  request.transmogrify();
+  request.normalize();
 
   const GroupMod *gm = GroupMod::cast(&request);
   EXPECT_TRUE(gm);

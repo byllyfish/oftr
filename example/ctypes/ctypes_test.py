@@ -81,7 +81,7 @@ def decode(data):
 if __name__ == '__main__':
     # Test version() function.
     vers = version()
-    version_regex = re.compile(r'^\d+\.\d+\.\d+ \([a-f0-9]+\)  \<https://github\.com/byllyfish/libofp\>$')
+    version_regex = re.compile(r'^\d+\.\d+\.\d+ \([a-f0-9]+\)  \<https://github\.com/byllyfish/oftr\>$')
     if not version_regex.match(vers):
         print('Unexpected version format: %s' % vers)
         sys.exit(1)

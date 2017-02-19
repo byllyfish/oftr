@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_RPC_RPCEVENTS_H_
@@ -21,15 +21,16 @@ namespace rpc {
 /// The maximum RPC message size is 1MB.
 const size_t RPC_MAX_MESSAGE_SIZE = 1048576;
 
+/// RPC events are delimited by zero byte.
+const char RPC_EVENT_DELIMITER_CHAR = '\x00';
+
 /// RPC Methods
 enum RpcMethod : UInt32 {
   METHOD_LISTEN = 0,    // OFP.LISTEN
   METHOD_CONNECT,       // OFP.CONNECT
   METHOD_CLOSE,         // OFP.CLOSE
   METHOD_SEND,          // OFP.SEND
-  METHOD_CHANNEL,       // OFP.CHANNEL
   METHOD_MESSAGE,       // OFP.MESSAGE
-  METHOD_ALERT,         // OFP.ALERT
   METHOD_LIST_CONNS,    // OFP.LIST_CONNECTIONS
   METHOD_ADD_IDENTITY,  // OFP.ADD_IDENTITY
   METHOD_DESCRIPTION,   // OFP.DESCRIPTION
@@ -88,12 +89,11 @@ struct RpcDescriptionResponse {
 
   struct Result {
     /// Current API version.
-    UInt16 major_version;
-    UInt16 minor_version;
+    std::string api_version;
     /// Current version of this software.
-    std::string software_version;
+    std::string sw_desc;
     /// List of supported OpenFlow versions.
-    std::vector<UInt8> ofp_versions;
+    std::vector<UInt8> versions;
   };
 
   RpcID id;
@@ -228,7 +228,7 @@ struct RpcAddIdentity {
     /// PEM certificate for trusted CA to use for verifying a peer certificate.
     std::string cert_auth;
     /// Optional password for encrypted private key.
-    std::string privkey_password;
+    std::string password;
   };
 
   RpcID id;
@@ -271,14 +271,15 @@ struct RpcSendResponse {
   Result result;
 };
 
-/// Represents a RPC notification about a channel (METHOD_CHANNEL)
+/// Represents a RPC notification about a channel (METHOD_MESSAGE subtype)
 struct RpcChannel {
   std::string toJson();
 
   struct Params {
+    std::string type;
+    Timestamp time;
     UInt64 connId = 0;
     DatapathID datapathId;
-    std::string status;
     IPv6Endpoint endpoint;
     UInt8 version{};
   };
@@ -287,14 +288,15 @@ struct RpcChannel {
 };
 
 /// Represents a RPC notification about some alert (e.g. malformed message)
-/// (METHOD_ALERT).
+/// (METHOD_MESSAGE subtype).
 struct RpcAlert {
   std::string toJson();
 
   struct Params {
+    std::string type;
+    Timestamp time;
     UInt64 connId = 0;
     DatapathID datapathId;
-    Timestamp time;
     UInt32 xid = 0;
     std::string alert;
     ByteRange data;
@@ -318,16 +320,15 @@ const char *const kRpcSchema = R"""(
 id: UInt64
 method: !request OFP.DESCRIPTION
 result: !reply
-  major_version: UInt16
-  minor_version: UInt16
-  software_version: String
-  ofp_versions: [UInt8]
+  api_version: String
+  sw_desc: String
+  versions: [UInt8]
 
 {Rpc/OFP.LISTEN}
 id: !opt UInt64
 method: !request OFP.LISTEN
 params: !request
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
   versions: !opt [UInt8]
   tls_id: !opt UInt64
   options: !opt [String]
@@ -338,7 +339,7 @@ result: !reply
 id: !opt UInt64
 method: !request OFP.CONNECT
 params: !request
-  endpoint: IPv6Endpoint
+  endpoint: IPEndpoint
   versions: !opt [UInt8]
   tls_id: !opt UInt64
   options: !opt [String]
@@ -367,8 +368,8 @@ params: !request
   conn_id: UInt64
 result: !reply
   stats:
-    - local_endpoint: IPv6Endpoint
-      remote_endpoint: IPv6Endpoint
+    - local_endpoint: IPEndpoint
+      remote_endpoint: IPEndpoint
       datapath_id: DatapathID
       conn_id: UInt64
       auxiliary_id: UInt8
@@ -380,7 +381,7 @@ method: !request OFP.ADD_IDENTITY
 params: !request
   cert: String
   cert_auth: String
-  privkey_password: !opt String
+  password: !opt String
 result: !reply
   tls_id: UInt64
 
@@ -388,22 +389,24 @@ result: !reply
 method: !notify OFP.MESSAGE
 params: !notify Message
 
-{Rpc/OFP.CHANNEL}
-method: !notify OFP.CHANNEL
+{Rpc/OFP.MESSAGE}
+method: !notify OFP.MESSAGE
 params: !notify
+  type: CHANNEL_UP | CHANNEL_DOWN
+  time: Timestamp
   conn_id: UInt64
-  datapath_id: DatapathID
-  endpoint: IPv6Endpoint
+  datapath_id: !optout DatapathID
   version: UInt8
-  status: UP | DOWN
+  endpoint: IPEndpoint
 
-{Rpc/OFP.ALERT}
-method: !notify OFP.ALERT
+{Rpc/OFP.MESSAGE}
+method: !notify OFP.MESSAGE
 params: !notify
+  type: CHANNEL_ALERT
+  time: Timestamp
   conn_id: UInt64
   datapath_id: DatapathID
   xid: UInt32
-  time: Timestamp
   alert: String
   data: HexData
 
@@ -496,7 +499,7 @@ struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAddIdentity::Params &params) {
     io.mapRequired("cert", params.cert);
     io.mapRequired("cert_auth", params.cert_auth);
-    io.mapOptional("privkey_password", params.privkey_password);
+    io.mapOptional("password", params.password);
   }
 };
 
@@ -512,10 +515,9 @@ template <>
 struct MappingTraits<ofp::rpc::RpcDescriptionResponse::Result> {
   static void mapping(IO &io,
                       ofp::rpc::RpcDescriptionResponse::Result &result) {
-    io.mapRequired("major_version", result.major_version);
-    io.mapRequired("minor_version", result.minor_version);
-    io.mapRequired("software_version", result.software_version);
-    io.mapRequired("ofp_versions", result.ofp_versions);
+    io.mapRequired("api_version", result.api_version);
+    io.mapRequired("sw_desc", result.sw_desc);
+    io.mapRequired("versions", result.versions);
   }
 };
 
@@ -641,7 +643,7 @@ struct MappingTraits<ofp::rpc::RpcErrorResponse::Error> {
 template <>
 struct MappingTraits<ofp::rpc::RpcChannel> {
   static void mapping(IO &io, ofp::rpc::RpcChannel &response) {
-    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_CHANNEL;
+    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_MESSAGE;
     io.mapRequired("method", method);
     io.mapRequired("params", response.params);
   }
@@ -650,18 +652,19 @@ struct MappingTraits<ofp::rpc::RpcChannel> {
 template <>
 struct MappingTraits<ofp::rpc::RpcChannel::Params> {
   static void mapping(IO &io, ofp::rpc::RpcChannel::Params &params) {
+    io.mapRequired("type", params.type);
+    io.mapRequired("time", params.time);
     io.mapRequired("conn_id", params.connId);
     io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
     io.mapRequired("endpoint", params.endpoint);
     io.mapRequired("version", params.version);
-    io.mapRequired("status", params.status);
   }
 };
 
 template <>
 struct MappingTraits<ofp::rpc::RpcAlert> {
   static void mapping(IO &io, ofp::rpc::RpcAlert &response) {
-    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_ALERT;
+    ofp::rpc::RpcMethod method = ofp::rpc::METHOD_MESSAGE;
     io.mapRequired("method", method);
     io.mapRequired("params", response.params);
   }
@@ -670,10 +673,11 @@ struct MappingTraits<ofp::rpc::RpcAlert> {
 template <>
 struct MappingTraits<ofp::rpc::RpcAlert::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAlert::Params &params) {
+    io.mapRequired("type", params.type);
+    io.mapRequired("time", params.time);
     io.mapRequired("conn_id", params.connId);
     io.mapRequired("datapath_id", params.datapathId);
     io.mapRequired("xid", params.xid);
-    io.mapRequired("time", params.time);
     io.mapRequired("alert", params.alert);
     io.mapRequired("data", params.data);
   }

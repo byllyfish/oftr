@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/matchbuilder.h"
@@ -263,7 +263,7 @@ TEST(matchbuilder, OFB_IN_PORT_alt1) {
 TEST(matchbuilder, OFB_ETH_SRC) {
   MatchBuilder match;
 
-  match.add(OFB_ETH_DST{MacAddress{"00-11-22-33-44-55"}});
+  match.add(OFB_ETH_DST{MacAddress{"00:11:22:33:44:55"}});
   EXPECT_HEX("80000606001122334455", match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }
@@ -271,8 +271,8 @@ TEST(matchbuilder, OFB_ETH_SRC) {
 TEST(matchbuilder, OFP_ETH_SRC_mask) {
   MatchBuilder match;
 
-  match.add(OFB_ETH_DST{MacAddress{"00-11-22-33-44-55"}},
-            OFB_ETH_DST{MacAddress{"ff-ff-ff-00-00-00"}});
+  match.add(OFB_ETH_DST{MacAddress{"00:11:22:33:44:55"}},
+            OFB_ETH_DST{MacAddress{"ff:ff:ff:00:00:00"}});
   EXPECT_HEX("8000070C001122000000FFFFFF000000", match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }

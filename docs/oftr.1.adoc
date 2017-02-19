@@ -1,0 +1,379 @@
+// To make the manpage using asciidoc, use the following command:
+//
+//   a2x --doctype manpage --format manpage oftr.1.adoc
+// 
+// Use asciidoctor to produce the html version:
+// 
+//   asciidoctor oftr.1.adoc
+
+= OFTR(1)
+William W. Fisher <william.w.fisher@gmail.com>
+:doctype: manpage
+:github: <https://github.com/byllyfish/oftr>
+
+== NAME
+
+oftr - YAML/JSON interface to the OpenFlow Protocol 1.0 - 1.4
+
+== SYNOPSIS
+
+*oftr encode* [_OPTIONS_] [_INPUT_FILES_, ...]
+
+*oftr decode* [_OPTIONS_] [_INPUT_FILES_, ...]
+
+*oftr jsonrpc* [_OPTIONS_]
+
+*oftr help* [_OPTIONS_] [_ARGS_, ...]
+
+*oftr [--version|--help]*
+
+
+== DESCRIPTION
+
+The *oftr* program translates binary OpenFlow messages to YAML. It also 
+translates YAML messages to OpenFlow. This program expects that all YAML input 
+is UTF-8.
+
+If you translate an OpenFlow message to YAML, then back to binary, you will 
+obtain the original sequence of bytes (modulo differences in property ordering).
+
+The YAML schema is based on OpenFlow 1.4.x. If your YAML message specifies an 
+earlier OpenFlow version that does not support all message attributes, the 
+current implementation ignores those attributes when constructing the binary OpenFlow
+message.
+
+The oftr program includes a JSON-RPC microservice that supports multiple
+OpenFlow connections. See the `oftr-jsonrpc` man page for more details.
+
+The YAML schema used for OpenFlow messages is embedded in the tool itself. You can
+browse the schema using the `oftr help` command. See the `oftr-schema` man page
+for more details about the conventions used.
+
+
+== EXAMPLES
+
+To translate a text file into binary OpenFlow messages:
+
+    oftr encode -o output.bin input.yml
+
+To translate a text file into binary OpenFlow messages, while ignoring
+sets of match fields with missing prerequisites:
+
+    oftr encode --unchecked-match -o output.bin input.yml
+
+To translate a text file of compact, single line JSON objects separated by
+linefeeds:
+
+    oftr encode --json input.json
+
+To decode a file of binary OpenFlow messages to YAML:
+
+    oftr decode input.bin
+
+To decode the OpenFlow messages in a ".pcap" file:
+
+    oftr decode "filename.pcap"
+
+To decode a file of binary OpenFlow messages to compact single-line JSON objects:
+
+    oftr decode --json "filename"
+
+To decode binary OpenFlow messages to a valid JSON array of objects:
+
+    oftr decode --json-array "filename"
+
+To decode binary OpenFlow messages with the additional check that the resulting
+YAML produces the same binary message when re-encoded:
+
+    oftr decode --verify-output "filename"
+
+You can use `netcat` in a UNIX pipe to feed OpenFlow messages to a switch or controller:
+
+    oftr encode input.yml | nc -w 3 10.0.0.1 6653 | oftr decode
+
+You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
+messages, while retaining metadata:
+
+    #!/bin/bash
+    tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
+    oftr decode --use-findx "/tmp/flow_$$/*.findx"
+
+The `oftr help` tool provides information about the schema used for reading/writing 
+OpenFlow messages in YAML. To obtain information about the syntax for the 
+'FLOW_MOD' message:
+
+    oftr help flow_mod
+
+To list all supported OXM fields:
+
+    oftr help --fields
+
+
+== OFTR ENCODE
+
+*oftr encode* [_OPTIONS_] [_INPUT_FILES_, ...]
+
+Encode OpenFlow messages to binary as specified by YAML input files. If there
+is a syntax error in the YAML input, stop and report an error.
+
+If no input files are specified, use standard input (stdin). A single hyphen
+also represents stdin.
+
+Each binary OpenFlow message will use the version specified by the textual
+object. It is an error if no version is specified. You can specify a default 
+OpenFlow version using the --ofversion option.
+
+=== OPTIONS
+
+*-h, --help*::
+    Print out usage information for the command.
+
+*-x, --hex*::
+    Output hexadecimal format rather than binary.
+
+*-j, --json*::
+    Json input is separated by linefeeds.
+
+*--json-array*::
+    Json input is arbitrarily delimited objects.
+
+*--json-flavor*='FLAVOR'::
+    Specifies the flavor of JSON output. The default is 'default'.
+    - *default* = Regular JSON output.
+    - *mongodb* = MongoDB JSON with binary data.
+
+*-k, --keep-going*::
+    Continue processing input after errors.
+
+*--ofversion*='VERSION'::
+    Specify OpenFlow version to use when it is unspecified by the input. The 
+    version is the 'wire' version, i.e. use 1 for 1.0, 4 for 1.3, 5 for 1.4, etc.
+
+*-o, --output*='FILE'::
+    Write output to specified file instead of stdout.
+
+*-R, --roundtrip*::
+    After translating the input to a binary message, translate it back to YAML.
+    If -j is specified, translate it back to JSON. This option is used to 
+    translate the YAML input into "canonical" form.
+
+*-s, --silent*::
+    Quiet mode; suppress normal output.
+
+*--silent-error*::
+    Suppress error output for invalid messages.
+
+*-M, --unchecked-match*::
+    Do not check items in match fields.
+
+
+== OFTR DECODE
+
+*oftr decode* [_OPTIONS_] [_INPUT_FILES_, ...]
+
+Decode binary OpenFlow messages in the input files and translate each
+message to human-readable YAML output. If there is an invalid message,
+stop and report an error.
+
+If no input files are specified, use standard input (stdin). A single hyphen
+also represents stdin.
+
+=== OPTIONS
+
+*-h, --help*::
+    Print out usage information for the command.
+
+*-v, --invert-check*::
+    Expect invalid messages only. This option is used for internal testing.
+
+*-j, --json*::
+    Write compact JSON output instead of YAML.
+
+*--json-array*::
+    Write output as a valid JSON array.
+
+*-k, --keep-going*::
+    Continue processing messages after errors.
+
+*-o, --output*='FILE'::
+    Write output to specified file instead of stdout.
+
+*-s, --silent*::
+    Quiet mode; suppress normal output.
+
+*--silent-error*::
+    Suppress error output for invalid messages.
+
+*--use-findx*::
+    Use metadata from tcpflow '.findx' files.
+
+*-V, -verify-output*::
+    Verify output by translating it back to binary.
+
+*--show-filename*::
+    Show the file name in all decodes.
+
+*--msg-include*='TYPES'::
+    Output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+
+*--msg-exclude*='TYPES'::
+    Don't output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+
+*--pkt-decode*::
+    Include _pkt_decode in PacketIn/PacketOut decodes.
+
+*--pkt-write-file*='FILE'::
+    Write data from PacketIn/PacketOut messages to .pcap file.
+
+=== Packet Capture Options
+
+*--pcap-device*='DEVICE'::
+    Specify interface where packets should be captured.
+
+*--pcap-filter*='FILTER'::
+    Specify the packet capture filter. The default filter is `tcp port 6653 or 6633`.
+    To capture all packets specify ''. A non-empty filter is augmented to ignore
+    exactly one vlan tag. The actual filter passed to libpcap is `FILTER or (vlan and FILTER)`.
+
+*--pcap-format*='auto|yes|no'::
+    Specify whether to treat all input files as .pcap format. `yes` causes the decoder
+    to open the file using libpcap. `no` causes the decoder to always treat the
+    file as binary. The default `auto` sets the --pcap-format to yes if there is at
+    least one file name that ends in ".pcap". It is an error if we fail to open 
+    a .pcap file.
+
+*--pcap-max-missing-bytes*=SIZE::
+    Add missing zero bytes to partial streams (for debugging).
+
+*--pcap-output-dir*=DIRECTORY::
+    Write reassembled TCP streams to this directory (for debugging). It is an error
+    if the directory does not exist.
+
+*--pcap-skip-payload*::
+    Skip payload from TCP streams (for debugging). This option makes sure that
+    every byte of data is consumed immediately.
+
+== OFTR JSONRPC
+
+*oftr jsonrpc* [_OPTIONS_]
+
+Run a JSON-RPC server. By default, the control connection comes from stdio.
+
+=== OPTIONS
+
+*-h, --help*::
+    Print out usage information for the command.
+
+
+== OFTR HELP
+
+*oftr help* [_OPTIONS_] [_ARGS_, ...]
+
+Access built-in information about the YAML schema used to describe all OpenFlow
+messages.
+
+Command-line options list one type of schema object or dump the entire schema. 
+Arguments will print the desired schema and all of its dependencies.
+
+=== OPTIONS
+
+*-h, --help*::
+    Print out usage information for the command.
+
+*-a, --actions*::
+    List supported actions.
+
+*-b, --brief*::
+    Display abbreviated form of message schema.
+
+*--builtins*::
+    List supported builtin types.
+
+*--enums*::
+    List supported enumerated types.
+
+*--field-table*::
+    List supported match fields in a table.
+
+*-f, --fields*::
+    List supported match fields.
+
+*--flags*::
+    List supported flag types.
+    
+*-i, --instructions*::
+    List supported instructions.
+
+*-m, --messages*::
+    List supported messages.
+
+*--mixed*::
+    List supported mixed types.
+
+*-r, --rpc*::
+    List supported RPC commands.
+
+*--schema-all*::
+    List complete schema.
+
+*--schema-lexicon*::
+    List schema lexicon.
+    
+*--schema-names*::
+    List all schema names.
+
+
+== LOGGING OPTIONS
+
+All commands support options that control the verbosity of log messages.
+
+*--logfile*='LOGFILE'::
+    Log messages to 'LOGFILE'.
+
+*--loglevel*='LEVEL'::
+    Specifies the verbosity of logging output. The default is 'fatal'.
+    - *none* = No log messages emitted.
+    - *debug* = Log debug messages and above.
+    - *info* = Log info messages and above.
+    - *warning* = Log warning messages and above.
+    - *error* = Log error messages and above.
+    - *fatal* = Log fatal messages only - the default.
+
+*--trace*='TRACE,...'::
+    Specifies additional trace options. You can specify more than one.
+    - *msg* = Log all OpenFlow messages sent and received.
+    - *rpc* = Log all JSON-RPC events send and received.
+
+
+== SEE ALSO
+
+_oftr-jsonrpc_(1), _oftr-schema_(1)
+
+
+== EXIT STATUS
+
+*0*::
+    Success
+
+*1*::
+    Failure: Syntax or usage error in command line arguments.
+
+*9*::
+    Failure: Failure occurred opening a file.
+
+*10*::
+    Failure: Encode failed or decode failed.
+
+*>= 11*::
+    Failure: Uncommon failure.
+
+
+== RESOURCES
+
+GitHub: {github}
+
+
+== COPYING
+
+Copyright \(C) 2015-2017 William W. Fisher. Free use of this software is
+granted under the terms of the MIT License.

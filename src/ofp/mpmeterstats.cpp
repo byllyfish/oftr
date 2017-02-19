@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/mpmeterstats.h"
@@ -8,9 +8,7 @@
 using namespace ofp;
 
 PacketCounterRange MPMeterStats::bandStats() const {
-  assert(len_ >= sizeof(MPMeterStats));
-  return ByteRange{BytePtr(this) + sizeof(MPMeterStats),
-                   len_ - sizeof(MPMeterStats)};
+  return SafeByteRange(this, len_, sizeof(MPMeterStats));
 }
 
 bool MPMeterStats::validateInput(Validation *context) const {
@@ -18,11 +16,7 @@ bool MPMeterStats::validateInput(Validation *context) const {
     return false;
   }
 
-  if (!bandStats().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return bandStats().validateInput(context);
 }
 
 void MPMeterStatsBuilder::write(Writable *channel) {

@@ -1,4 +1,4 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_DEMUX_FLOWCACHE_H_
@@ -10,7 +10,6 @@
 
 namespace ofp {
 namespace demux {
-namespace detail {
 
 // Key used in FlowCache. We use a "biflow" storage model (x, y) where
 // x < y.  For example, if src is "127.0.0.1:80" and dst is "127.0.0.1:79" then
@@ -49,15 +48,14 @@ using FlowMap = std::unordered_map<FlowCacheKey, FlowCacheEntry>;
 using FlowCallback = std::function<void(
     const IPv6Endpoint &, const IPv6Endpoint &dst, const FlowData &)>;
 
-}  // namespace detail
 }  // namespace demux
 }  // namespace ofp
 
 namespace std {
 
 template <>
-struct hash<ofp::demux::detail::FlowCacheKey> {
-  size_t operator()(const ofp::demux::detail::FlowCacheKey &key) const {
+struct hash<ofp::demux::FlowCacheKey> {
+  size_t operator()(const ofp::demux::FlowCacheKey &key) const {
     return ofp::hash::MurmurHash32(&key);
   }
 };
@@ -109,11 +107,10 @@ class FlowCache {
 
   size_t size() const { return cache_.size(); }
   FlowState *lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst);
-  detail::FlowCacheEntry *findEntry(const IPv6Endpoint &src,
-                                    const IPv6Endpoint &dst);
+  FlowCacheEntry *findEntry(const IPv6Endpoint &src, const IPv6Endpoint &dst);
 
   // Call a function to process remaining data in the cache.
-  void finish(detail::FlowCallback callback, size_t maxMissingBytes = 0);
+  void finish(const FlowCallback &callback, size_t maxMissingBytes = 0);
 
   // Erase all data from the cache.
   void clear() { cache_.clear(); }
@@ -123,7 +120,7 @@ class FlowCache {
   std::string stats() const;
 
  private:
-  detail::FlowMap cache_;
+  FlowMap cache_;
   UInt64 assignSessionID_ = 0;
 
   UInt64 assignSessionID();

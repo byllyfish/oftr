@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/portstatus.h"
@@ -20,11 +20,7 @@ bool PortStatus::validateInput(Validation *context) const {
 
   // FIXME: make sure there is only one port?
 
-  if (!port().validateInput(context)) {
-    return false;
-  }
-
-  return true;
+  return port().validateInput(context);
 }
 
 UInt32 PortStatusBuilder::send(Writable *channel) {

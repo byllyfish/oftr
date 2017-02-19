@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YBUNDLEADDMESSAGE_H_
@@ -16,7 +16,7 @@ msg:
   bundle_id: UInt32
   flags: [BundleFlags]
   message: Message
-  properties: [ExperimenterProperty]
+  properties: !opt [ExperimenterProperty]
 )""";
 
 template <>
@@ -27,7 +27,7 @@ struct MappingTraits<ofp::BundleAddMessage> {
 
     auto data = msg.message();
     ofp::Message message{data.data(), data.size()};
-    message.transmogrify();
+    message.normalize();
 
     ofp::yaml::DecodeRecursively(io, "message", &message);
 
@@ -46,7 +46,7 @@ struct MappingTraits<ofp::BundleAddMessageBuilder> {
     ofp::yaml::EncodeRecursively(io, "message", msg.message_);
 
     ofp::PropertyList props;
-    io.mapRequired("properties",
+    io.mapOptional("properties",
                    Ref_cast<ofp::detail::BundlePropertyList>(props));
     msg.setProperties(props);
   }

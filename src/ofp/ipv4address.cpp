@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv4address.h"
@@ -77,13 +77,6 @@ bool IPv4Address::parse(const std::string &s) {
   return (result > 0);
 }
 
-std::string IPv4Address::toString() const {
-  char ipv4str[INET_ADDRSTRLEN] = {};
-  const char *result =
-      inet_ntop(AF_INET, addr_.data(), ipv4str, sizeof(ipv4str));
-  return result ? ipv4str : "<inet_ntop_error4>";
-}
-
 static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr) {
   using llvm::StringRef;
   size_t sp = 0;
@@ -106,3 +99,13 @@ static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr) {
 
   return true;
 }
+
+namespace ofp {
+
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv4Address &value) {
+  char buf[INET_ADDRSTRLEN];
+  const char *result = inet_ntop(AF_INET, value.addr_.data(), buf, sizeof(buf));
+  return os << (result ? result : "<inet_ntop_error4>");
+}
+
+}  // namespace ofp

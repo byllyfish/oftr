@@ -27,7 +27,7 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 #diff -u "${LLVM_SOURCE_DIR}/lib/Support/Path.cpp" "${WORKING_DIR}/src/Support/Path.cpp" > "$WORKING_DIR/src/Path.cpp.diff" || true
 #diff -u "${LLVM_SOURCE_DIR}/lib/Support/Unix/Process.inc" "${WORKING_DIR}/src/Support/Unix/Process.inc" > "$WORKING_DIR/src/Process.inc.diff" || true
 #diff -u "${LLVM_SOURCE_DIR}/unittests/Support/YAMLParserTest.cpp" "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" > "$WORKING_DIR/src/YAMLParserTest.cpp.diff" || true
-
+#diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/CommandLine.h" "${WORKING_DIR}/include/llvm/Support/CommandLine.h" > "$WORKING_DIR/src/CommandLine.h.diff" || true
 
 # Include files to copy from llvm source tree.
 INCLUDES=(
@@ -185,5 +185,6 @@ patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.c
 patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 patch "${WORKING_DIR}/src/Support/Unix/Process.inc" "$WORKING_DIR/src/Process.inc.diff"
 patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
+patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
 
 exit 0

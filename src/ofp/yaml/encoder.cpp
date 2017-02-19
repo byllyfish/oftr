@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/encoder.h"
@@ -25,6 +25,7 @@
 #include "ofp/yaml/yportstatus.h"
 #include "ofp/yaml/yqueuegetconfigreply.h"
 #include "ofp/yaml/yqueuegetconfigrequest.h"
+#include "ofp/yaml/yrawmessage.h"
 #include "ofp/yaml/yrolereply.h"
 #include "ofp/yaml/yrolerequest.h"
 #include "ofp/yaml/yrolestatus.h"
@@ -377,6 +378,12 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       TableStatusBuilder tableStatus;
       io.mapRequired("msg", tableStatus);
       tableStatus.send(&channel_);
+      break;
+    }
+    case OFPT_RAW_MESSAGE: {
+      RawMessageBuilder rawMessage{header_.xid()};
+      io.mapRequired("msg", rawMessage);
+      rawMessage.send(&channel_);
       break;
     }
     default:

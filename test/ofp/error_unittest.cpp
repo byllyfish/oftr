@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/error.h"
@@ -14,7 +14,7 @@ TEST(error, experimenter) {
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_HEX("0101000C11111112FFFF0001", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
@@ -30,7 +30,7 @@ TEST(error, flowmod_failed_v1) {
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_HEX("0101000C1111111200030000", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
@@ -47,7 +47,7 @@ TEST(error, flowmod_failed_v4) {
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_HEX("0401000C1111111200050001", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
@@ -64,7 +64,7 @@ TEST(error, unsupported_order_v1) {
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_HEX("0101000C1111111200030005", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
@@ -82,7 +82,7 @@ TEST(error, unsupported_order_v4) {
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_HEX("0401000C111111120002000B", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
@@ -100,7 +100,7 @@ TEST(error, unsupported_action_order_v4) {
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_HEX("0401000C111111120002000B", message.data(), message.size());
 
   const Error *error = Error::cast(&message);
@@ -121,7 +121,7 @@ TEST(error, hello_failed_v1) {
   errorBuilder.send(&channel);
 
   Message message{channel.data(), channel.size()};
-  message.transmogrify();
+  message.normalize();
   EXPECT_HEX(
       "0101002C1234123400000000537570706F727465642056657273696F6E733A205B312C20"
       "322C20332C20345D",

@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YACTIONS_H_
@@ -12,6 +12,7 @@
 #include "ofp/yaml/ycontrollermaxlen.h"
 #include "ofp/yaml/ymatch.h"
 #include "ofp/yaml/yoxmregister.h"
+#include "ofp/yaml/yqueuenumber.h"
 
 namespace ofp {
 namespace detail {
@@ -75,7 +76,7 @@ action: POP_PBB
 
 const char *const kOutputSchema = R"""({Action/OUTPUT}
 action: OUTPUT
-port: PortNumber
+port_no: PortNumber
 max_len: ControllerMaxLen
 )""";
 
@@ -86,12 +87,12 @@ ttl: UInt16
 
 const char *const kPushVLANSchema = R"""({Action/PUSH_VLAN}
 action: PUSH_VLAN
-vlan: UInt16
+ethertype: UInt16
 )""";
 
 const char *const kPushMPLSSchema = R"""({Action/PUSH_MPLS}
 action: PUSH_MPLS
-mpls: UInt32
+ethertype: UInt16
 )""";
 
 const char *const kPopMPLSSchema = R"""({Action/POP_MPLS}
@@ -101,12 +102,12 @@ ethertype: UInt16
 
 const char *const kSetQueueSchema = R"""({Action/SET_QUEUE}
 action: SET_QUEUE
-queue: UInt32
+queue_id: QueueNumber
 )""";
 
 const char *const kGroupSchema = R"""({Action/GROUP}
 action: GROUP
-group: UInt32
+group_id: GroupNumber
 )""";
 
 const char *const kSetNwTTLSchema = R"""({Action/SET_NW_TTL}
@@ -117,6 +118,12 @@ ttl: UInt8
 const char *const kPushPBBSchema = R"""({Action/PUSH_PBB}
 action: PUSH_PBB
 ethertype: UInt16
+)""";
+
+const char *const kEnqueueSchema = R"""({Action/ENQUEUE}
+action: ENQUEUE
+port_no: PortNumber
+queue_id: QueueNumber
 )""";
 
 const char *const kSetFieldSchema = R"""({Action/SET_FIELD}
@@ -164,7 +171,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
         const AT_OUTPUT *action = item.action<AT_OUTPUT>();
         PortNumber port = action->port();
         ControllerMaxLen maxlen = action->maxlen();
-        io.mapRequired("port", port);
+        io.mapRequired("port_no", port);
         io.mapRequired("max_len", maxlen);
         break;
       }
@@ -176,14 +183,14 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       }
       case AT_PUSH_VLAN::type(): {
         const AT_PUSH_VLAN *action = item.action<AT_PUSH_VLAN>();
-        Hex16 vlan = action->vlan();
-        io.mapRequired("vlan", vlan);
+        Hex16 ethertype = action->ethertype();
+        io.mapRequired("ethertype", ethertype);
         break;
       }
       case AT_PUSH_MPLS::type(): {
         const AT_PUSH_MPLS *action = item.action<AT_PUSH_MPLS>();
-        Hex32 mpls = action->mpls();
-        io.mapRequired("mpls", mpls);
+        Hex16 ethertype = action->ethertype();
+        io.mapRequired("ethertype", ethertype);
         break;
       }
       case AT_POP_MPLS::type(): {
@@ -194,14 +201,14 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       }
       case AT_SET_QUEUE::type(): {
         const AT_SET_QUEUE *action = item.action<AT_SET_QUEUE>();
-        Hex32 queue = action->queue();
-        io.mapRequired("queue", queue);
+        QueueNumber queue = action->queue();
+        io.mapRequired("queue_id", queue);
         break;
       }
       case AT_GROUP::type(): {
         const AT_GROUP *action = item.action<AT_GROUP>();
-        Hex32 group = action->group();
-        io.mapRequired("group", group);
+        GroupNumber group = action->group();
+        io.mapRequired("group_id", group);
         break;
       }
       case AT_SET_NW_TTL::type(): {
@@ -221,7 +228,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
             item.action<deprecated::AT_ENQUEUE_V1>();
         PortNumber port = action->port();
         Hex32 queueId = action->queueId();
-        io.mapRequired("port", port);
+        io.mapRequired("port_no", port);
         io.mapRequired("queue_id", queueId);
         break;
       }
@@ -306,7 +313,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
     if (fullType.type() == deprecated::AT_ENQUEUE_V1::type()) {
       PortNumber port;
       Hex32 queueId;
-      io.mapRequired("port", port);
+      io.mapRequired("port_no", port);
       io.mapRequired("queue_id", queueId);
       deprecated::AT_ENQUEUE_V1 action{port, queueId};
       list.add(action);
@@ -347,7 +354,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
       case OFPAT_OUTPUT: {
         PortNumber port;
         ControllerMaxLen maxlen;
-        io.mapRequired("port", port);
+        io.mapRequired("port_no", port);
         io.mapRequired("max_len", maxlen);
         AT_OUTPUT action{port, maxlen};
         list.add(action);
@@ -361,16 +368,16 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
       }
       case OFPAT_PUSH_VLAN: {
-        UInt16 vlan;
-        io.mapRequired("vlan", vlan);
-        AT_PUSH_VLAN action{vlan};
+        UInt16 ethertype;
+        io.mapRequired("ethertype", ethertype);
+        AT_PUSH_VLAN action{ethertype};
         list.add(action);
         break;
       }
       case OFPAT_PUSH_MPLS: {
-        UInt32 mpls;
-        io.mapRequired("mpls", mpls);
-        AT_PUSH_MPLS action{mpls};
+        UInt16 ethertype;
+        io.mapRequired("ethertype", ethertype);
+        AT_PUSH_MPLS action{ethertype};
         list.add(action);
         break;
       }
@@ -383,14 +390,14 @@ struct MappingTraits<ofp::detail::ActionInserter> {
       }
       case OFPAT_SET_QUEUE: {
         UInt32 queue;
-        io.mapRequired("queue", queue);
+        io.mapRequired("queue_id", queue);
         AT_SET_QUEUE action{queue};
         list.add(action);
         break;
       }
       case OFPAT_GROUP: {
-        UInt32 group;
-        io.mapRequired("group", group);
+        GroupNumber group;
+        io.mapRequired("group_id", group);
         AT_GROUP action{group};
         list.add(action);
         break;

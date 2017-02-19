@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_IPV6ENDPOINT_H_
@@ -28,7 +28,7 @@ class IPv6Endpoint {
   void setAddress(const IPv6Address &addr) { addr_ = addr; }
   void setPort(UInt16 port) { port_ = port; }
 
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
 
   bool operator==(const IPv6Endpoint &rhs) const {
     return addr_ == rhs.addr_ && port_ == rhs.port_;
@@ -52,6 +52,9 @@ class IPv6Endpoint {
  private:
   IPv6Address addr_;
   UInt16 port_ = 0;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const IPv6Endpoint &value);
 };
 
 static_assert(alignof(IPv6Endpoint) == 2, "Unexpected alignment");
@@ -59,10 +62,6 @@ static_assert(sizeof(IPv6Endpoint) == 18, "Unexpected size");
 static_assert(IsStandardLayout<IPv6Endpoint>(), "Expected standard layout.");
 static_assert(IsTriviallyCopyable<IPv6Endpoint>(),
               "Expected trivially copyable.");
-
-inline std::ostream &operator<<(std::ostream &os, const IPv6Endpoint &value) {
-  return os << value.toString();
-}
 
 }  // namespace ofp
 

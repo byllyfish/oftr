@@ -1,10 +1,11 @@
-// Copyright (c) 2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/flowcache.h"
 #include <iomanip>        // for stats
 #include <map>            // for stats
 #include <unordered_set>  // for stats
+#include "llvm/Support/Format.h"
 
 using namespace ofp;
 using namespace ofp::demux;
@@ -13,8 +14,8 @@ const double kTwoMinuteTimeout = 120.0;
 
 static std::string tcpFlagToString(UInt8 flags);
 
-detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
-                                   const IPv6Endpoint &dst, bool &srcIsX) {
+FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src, const IPv6Endpoint &dst,
+                           bool &srcIsX) {
   if (src <= dst) {
     x = src;
     y = dst;
@@ -26,7 +27,7 @@ detail::FlowCacheKey::FlowCacheKey(const IPv6Endpoint &src,
   }
 }
 
-void detail::FlowCacheEntry::reset(const Timestamp &ts, UInt64 sessID) {
+void FlowCacheEntry::reset(const Timestamp &ts, UInt64 sessID) {
   x.clear();
   y.clear();
   lastSeen.clear();
@@ -47,7 +48,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     // If the SYN flag is included, `seq` is the initial seqeuence number. A
     // SYN or SYN-ACK packet must not contain any data.
     end = seq + 1;
-    if (data.size() > 0) {
+    if (!data.empty()) {
       log_warning("FlowCache: TCP SYN has unexpected data", data.size(),
                   "bytes:", data);
       return FlowData{0};
@@ -68,8 +69,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   bool final = (flags & kFinalFlags) != 0;
 
   bool isX;
-  detail::FlowCacheKey key{src, dst, isX};
-  detail::FlowCacheEntry &entry = cache_[key];
+  FlowCacheKey key{src, dst, isX};
+  FlowCacheEntry &entry = cache_[key];
 
   if (entry.sessionID == 0) {
     // This is a new entry. Assign a new ID to the session.
@@ -100,15 +101,15 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   if (isX) {
     return entry.x.receive(ts, end, data, entry.sessionID, final,
                            &entry.lastSeen);
-  } else {
-    return entry.y.receive(ts, end, data, entry.sessionID, final,
-                           &entry.lastSeen);
   }
+
+  return entry.y.receive(ts, end, data, entry.sessionID, final,
+                         &entry.lastSeen);
 }
 
 FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
   bool isX;
-  detail::FlowCacheKey key{src, dst, isX};
+  FlowCacheKey key{src, dst, isX};
 
   auto iter = cache_.find(key);
   if (iter != cache_.end()) {
@@ -119,10 +120,10 @@ FlowState *FlowCache::lookup(const IPv6Endpoint &src, const IPv6Endpoint &dst) {
   return nullptr;
 }
 
-detail::FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
-                                             const IPv6Endpoint &dst) {
+FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
+                                     const IPv6Endpoint &dst) {
   bool isX;
-  detail::FlowCacheKey key{src, dst, isX};
+  FlowCacheKey key{src, dst, isX};
 
   auto iter = cache_.find(key);
   if (iter != cache_.end()) {
@@ -132,7 +133,7 @@ detail::FlowCacheEntry *FlowCache::findEntry(const IPv6Endpoint &src,
   return nullptr;
 }
 
-void FlowCache::finish(detail::FlowCallback callback, size_t maxMissingBytes) {
+void FlowCache::finish(const FlowCallback &callback, size_t maxMissingBytes) {
   for (auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;
@@ -153,7 +154,8 @@ UInt64 FlowCache::assignSessionID() {
 }
 
 std::string FlowCache::toString() const {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   for (const auto &iter : cache_) {
     auto &key = iter.first;
     auto &entry = iter.second;
@@ -165,11 +167,13 @@ std::string FlowCache::toString() const {
 }
 
 std::string FlowCache::stats() const {
-  std::ostringstream oss;
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
   oss << "FlowCache size=" << cache_.size()
       << " bucket_count=" << cache_.bucket_count()
-      << " load_factor=" << cache_.load_factor()
-      << " max_load_factor=" << cache_.max_load_factor() << '\n';
+      << " load_factor=" << static_cast<double>(cache_.load_factor())
+      << " max_load_factor=" << static_cast<double>(cache_.max_load_factor())
+      << '\n';
 
   // Make histogram of bucket sizes for the FlowCacheKey.
   std::map<UInt32, UInt32> histogram;
@@ -179,7 +183,7 @@ std::string FlowCache::stats() const {
   }
 
   for (const auto &iter : histogram) {
-    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+    oss << llvm::format_decimal(iter.first, 2) << ": " << iter.second << '\n';
   }
 
   // Hash all the addresses into an unordered set.
@@ -191,8 +195,9 @@ std::string FlowCache::stats() const {
   }
   oss << "IPv6Address size=" << addrs.size()
       << " bucket_count=" << addrs.bucket_count()
-      << " load_factor=" << addrs.load_factor()
-      << " max_load_factor=" << addrs.max_load_factor() << '\n';
+      << " load_factor=" << static_cast<double>(addrs.load_factor())
+      << " max_load_factor=" << static_cast<double>(addrs.max_load_factor())
+      << '\n';
 
   // Make histogram of bucket sizes for the address set.
   histogram.clear();
@@ -202,7 +207,7 @@ std::string FlowCache::stats() const {
   }
 
   for (const auto &iter : histogram) {
-    oss << std::setw(2) << iter.first << ": " << iter.second << '\n';
+    oss << llvm::format_decimal(iter.first, 2) << ": " << iter.second << '\n';
   }
 
   return oss.str();

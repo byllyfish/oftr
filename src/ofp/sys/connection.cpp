@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/connection.h"
@@ -93,6 +93,9 @@ void Connection::setMainConnection(Connection *channel, UInt8 auxID) {
 void Connection::postMessage(Message *message) {
   assert(message->source());
 
+  // Assign message timestamp here.
+  message->setTime(Timestamp::now());
+
   log::trace_msg("Read", message->source()->connectionId(), message->data(),
                  message->size());
 
@@ -117,7 +120,7 @@ void Connection::postMessage(Message *message) {
 
   ChannelListener *listener = mainConn_->listener_;
   if (listener) {
-    message->transmogrify();
+    message->normalize();
     listener->onMessage(message);
   }
 }
@@ -145,8 +148,13 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
   return result;
 }
 
-void Connection::poll() {
-  auto age = std::chrono::steady_clock::now() - timeReadStarted_;
+void Connection::tickle(TimePoint now) {
+  // Give channel listener first dibs on the tickle.
+  if (listener_ && listener_->onTickle(this, now)) {
+    return;
+  }
+
+  auto age = now - timeReadStarted_;
   if (age < keepAliveTimeout_)
     return;
 
@@ -185,7 +193,7 @@ void Connection::channelDown() {
 }
 
 void Connection::updateTimeReadStarted() {
-  timeReadStarted_ = std::chrono::steady_clock::now();
+  timeReadStarted_ = TimeClock::now();
   setFlags(flags() & ~kChannelIdle);
 }
 
@@ -202,6 +210,10 @@ void Connection::setFlags(UInt64 securityId, ChannelOptions options) {
 
   if ((options & ChannelOptions::NO_VERSION_CHECK) != 0) {
     newFlags |= kPermitsOtherVersions;
+  }
+
+  if ((options & ChannelOptions::FEATURES_REQ) != 0) {
+    newFlags |= kDefaultController;
   }
 
   setFlags(newFlags);

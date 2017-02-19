@@ -1,10 +1,11 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_MPPORTSTATS_H_
 #define OFP_MPPORTSTATS_H_
 
 #include "ofp/byteorder.h"
+#include "ofp/durationsec.h"
 #include "ofp/padding.h"
 #include "ofp/portnumber.h"
 #include "ofp/propertylist.h"
@@ -21,8 +22,7 @@ class MPPortStats {
   MPPortStats() = default;
 
   PortNumber portNo() const { return portNo_; }
-  UInt32 durationSec() const { return durationSec_; }
-  UInt32 durationNSec() const { return durationNSec_; }
+  DurationSec duration() const { return duration_; }
   UInt64 rxPackets() const { return rxPackets_; }
   UInt64 txPackets() const { return txPackets_; }
 
@@ -34,8 +34,7 @@ class MPPortStats {
   Big16 length_;
   Padding<2> pad_;
   PortNumber portNo_;
-  Big32 durationSec_;
-  Big32 durationNSec_;
+  DurationSec duration_;
   Big64 rxPackets_;
   Big64 txPackets_;
   Big64 rxBytes_;
@@ -44,10 +43,6 @@ class MPPortStats {
   Big64 txDropped_;
   Big64 rxErrors_;
   Big64 txErrors_;
-
-  /*
-
-  */
 
   friend class MPPortStatsBuilder;
   template <class T>
@@ -62,18 +57,11 @@ class MPPortStatsBuilder {
   MPPortStatsBuilder() = default;
 
   void setPortNo(PortNumber portNo) { msg_.portNo_ = portNo; }
-  void setDurationSec(UInt32 durationSec) { msg_.durationSec_ = durationSec; }
-  void setDurationNSec(UInt32 durationNSec) {
-    msg_.durationNSec_ = durationNSec;
-  }
+  void setDuration(DurationSec duration) { msg_.duration_ = duration; }
   void setRxPackets(UInt64 rxPackets) { msg_.rxPackets_ = rxPackets; }
   void setTxPackets(UInt64 txPackets) { msg_.txPackets_ = txPackets; }
   void setRxErrors(UInt64 rxErrors) { msg_.rxErrors_ = rxErrors; }
   void setTxErrors(UInt64 txErrors) { msg_.txErrors_ = txErrors; }
-  // void setRxFrameErr(UInt64 rxFrameErr) { msg_.rxFrameErr_ = rxFrameErr; }
-  // void setRxOverErr(UInt64 rxOverErr) { msg_.rxOverErr_ = rxOverErr; }
-  // void setRxCrcErr(UInt64 rxCrcErr) { msg_.rxCrcErr_ = rxCrcErr; }
-  // void setCollisions(UInt64 collisions) { msg_.collisions_ = collisions; }
 
   void setProperties(const PropertyList &properties) {
     properties_ = properties;

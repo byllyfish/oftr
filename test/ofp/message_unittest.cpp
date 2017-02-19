@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/message.h"
@@ -12,7 +12,7 @@ TEST(message, constructor) {
   EXPECT_EQ(8, message.size());
 }
 
-TEST(message, transmogrify) {
+TEST(message, normalize) {
   const char *hexBefore =
       "010E 0048 0000 002C 0010 001F 0000 0000 0000 0000 0000 0000 0000 0000 "
       "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 "
@@ -25,7 +25,7 @@ TEST(message, transmogrify) {
   EXPECT_EQ(0x48, msg.size());
   EXPECT_HEX(hexBefore, msg.data(), msg.size());
 
-  msg.transmogrify();
+  msg.normalize();
 
   const char *hexAfter =
       "010E00880000002C0000000000000000FFFFFFFFFFFFFFFF0003000000008000FFFFFFFF"
@@ -49,7 +49,7 @@ TEST(message, transmogrify_flow_mod) {
   Message message{nullptr};
   std::memcpy(message.mutableData(s.length()), s.data(), s.length());
 
-  message.transmogrify();
+  message.normalize();
 
   const FlowMod *msg = FlowMod::cast(&message);
   EXPECT_TRUE(msg);

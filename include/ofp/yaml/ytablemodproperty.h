@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YTABLEMODPROPERTY_H_
@@ -15,11 +15,7 @@ struct TableModPropertyItem {};
 using TableModPropertyIterator = TypedPropertyIterator<TableModPropertyItem>;
 struct TableModPropertyRange {};
 struct TableModPropertyInserter {};
-struct TableModPropertyList {
-  // Need begin/end to allow mapOptional("properties", ...)
-  int begin() const { return 0; }
-  int end() const { return 0; }
-};
+struct TableModPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

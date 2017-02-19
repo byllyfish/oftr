@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/oxmtype.h"
@@ -96,12 +96,4 @@ bool OXMType::parse(const std::string &s) {
   }
 
   return false;
-}
-
-std::string OXMType::toString() const {
-  auto info = lookupInfo();
-  if (info) {
-    return info->name;
-  }
-  return RawDataToHex(&value32_, sizeof(value32_));
 }

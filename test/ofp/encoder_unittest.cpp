@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/encoder.h"
@@ -305,7 +305,7 @@ TEST(encoder, featuresreplyv1) {
     version: 1
     xid: 0xBF
     msg:
-      datapath_id: '0000:0102:0304:0506'
+      datapath_id: '00:00:01:02:03:04:05:06'
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
@@ -325,7 +325,7 @@ TEST(encoder, featuresreplyv1ports) {
     version: 1
     xid: 0xBF
     msg:
-      datapath_id: '0000:0102:0304:0506'
+      datapath_id: '00:00:01:02:03:04:05:06'
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
@@ -333,7 +333,7 @@ TEST(encoder, featuresreplyv1ports) {
       actions: []
       ports:
         - port_no: 0x1111
-          hw_addr: 22-22-22-22-22-22
+          hw_addr: 22:22:22:22:22:22
           name: Port 1
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
@@ -346,7 +346,7 @@ TEST(encoder, featuresreplyv1ports) {
             max_speed: 0xAAAAAAAA
           properties:
         - port_no: 0xBBBB
-          hw_addr: CC-CC-CC-CC-CC-CC
+          hw_addr: CC:CC:CC:CC:CC:CC
           name: Port 2
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
@@ -374,7 +374,7 @@ TEST(encoder, featuresreplyv4) {
     version: 4
     xid: 0xBF
     msg:
-      datapath_id: '0000:0102:0304:0506'
+      datapath_id: '00:00:01:02:03:04:05:06'
       n_buffers: 256
       n_tables: 255
       auxiliary_id: 0
@@ -498,8 +498,7 @@ TEST(encoder, ofmp_flowreply_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -535,8 +534,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -549,8 +547,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
                value: 0x12345678
            instructions:
          - table_id: 0x11
-           duration_sec: 0x22
-           duration_nsec: 0x33 
+           duration: 34.x33
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
@@ -560,9 +557,9 @@ TEST(encoder, ofmp_flowreply2_v4) {
            byte_count:   0xAAAAAAAAAAAAAAAA
            match:
              - field: ETH_SRC
-               value: 10-20-30-40-50-60
+               value: 10:20:30:40:50:60
              - field: ETH_DST
-               value: aa-bb-cc-dd-ee-ff
+               value: aa:bb:cc:dd:ee:ff
            instructions:
              - instruction: GOTO_TABLE
                table_id: 1
@@ -587,8 +584,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -601,7 +597,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 1
+                    port_no: 1
                     max_len: 0xFFFF
                   - action: SET_NW_TTL
                     ttl: 64
@@ -628,8 +624,7 @@ TEST(encoder, ofmp_flowreply_v1) {
       flags: [ 0x2222 ]
       body:
          - table_id: 0x33
-           duration_sec: 0x44444444
-           duration_nsec: 0x55555555
+           duration: 1145324612.x55555555
            priority: 0x6666
            idle_timeout: 0x7777
            hard_timeout: 0x8888
@@ -644,7 +639,7 @@ TEST(encoder, ofmp_flowreply_v1) {
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 0xEEEEEEEE
+                    port_no: 0xEEEEEEEE
                     max_len: 0xFFFF
     )""";
 
@@ -670,8 +665,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
       flags: []
       body:
          - table_id: 1
-           duration_sec: 2
-           duration_nsec: 3
+           duration: 2.000000003
            priority: 4
            idle_timeout: 5
            hard_timeout: 6
@@ -686,11 +680,10 @@ TEST(encoder, ofmp_flowreply2_v1) {
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 0xEEEEEEEE
+                    port_no: 0xEEEEEEEE
                     max_len: 0xFFFF
          - table_id: 0x11
-           duration_sec: 0x22
-           duration_nsec: 0x33 
+           duration: 34.x33
            priority: 0x44
            idle_timeout: 0x55
            hard_timeout: 0x66
@@ -700,16 +693,16 @@ TEST(encoder, ofmp_flowreply2_v1) {
            byte_count:   0xAAAAAAAAAAAAAAAA
            match:
              - field: ETH_SRC
-               value: 10-20-30-40-50-60
+               value: 10:20:30:40:50:60
              - field: ETH_DST
-               value: aa-bb-cc-dd-ee-ff
+               value: aa:bb:cc:dd:ee:ff
            instructions:
              - instruction: GOTO_TABLE
                table_id: 1
              - instruction: APPLY_ACTIONS
                actions:
                   - action: OUTPUT
-                    port: 0xEEEEEEEE
+                    port_no: 0xEEEEEEEE
                     max_len: 0xFFFF
     )""";
 
@@ -843,8 +836,7 @@ TEST(encoder, ofmp_portstats_v4) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -882,8 +874,7 @@ TEST(encoder, ofmp_portstats_v3) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -921,8 +912,7 @@ TEST(encoder, ofmp_portstats_v2) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -960,8 +950,7 @@ TEST(encoder, ofmp_portstats_v1) {
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -1003,8 +992,7 @@ TEST(encoder, ofmp_queuestats_v4) {
           tx_bytes:   0x5555555555555550
           tx_packets: 0x6666666666666660
           tx_errors:  0x7777777777777770
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
     )""";
 
   Encoder encoder{input};
@@ -1030,8 +1018,7 @@ TEST(encoder, ofmp_queuestats_v1) {
           tx_bytes:   0x5555555555555550
           tx_packets: 0x6666666666666660
           tx_errors:  0x7777777777777770
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
     )""";
 
   Encoder encoder{input};
@@ -1126,6 +1113,40 @@ TEST(encoder, flowmodv4_2) {
       "888888899999999AAAAAAAABBBB00000001001A80000004CCCCCCCC80000A0208"
       "0080001804C0A8010100000000000000040018000000000019001080001804C0A"
       "8020100000000",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, flowmodv4_ipv6) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111110
+        cookie_mask:     0x2222222222222220
+        table_id:        0x30
+        command:         0x40
+        idle_timeout:    0x5550
+        hard_timeout:    0x6660
+        priority:        0x7770
+        buffer_id:       0x88888880
+        out_port:        0x99999990
+        out_group:       0xAAAAAAA0
+        flags:           [ '0xBBB1' ]
+        match:           
+          - field:           IPV6_SRC
+            value:           ::ffff:C0A8:0001
+          - field:           IPV6_DST
+            value:           2000::1
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x068, encoder.size());
+  EXPECT_HEX(
+      "040E00680000000111111111111111102222222222222220304055506660777088888880"
+      "99999990AAAAAAA0BBB100000001003280000A0286DD8000341000000000000000000000"
+      "FFFFC0A800018000361020000000000000000000000000000001000000000000",
       encoder.data(), encoder.size());
 }
 
@@ -1448,6 +1469,33 @@ TEST(encoder, packetinv1) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, packetinv2) {
+  const char *input = R"""(
+      type:            PACKET_IN
+      version:         2
+      xid:             2
+      msg:             
+        buffer_id:       0x33333333
+        total_len:       0x4444
+        in_port:         0x55555555
+        in_phy_port:     0x66666666
+        metadata:        0x7777777777777777
+        reason:          APPLY_ACTION
+        table_id:        0x88
+        cookie:          0x9999999999999999
+        match:
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x042, encoder.size());
+  EXPECT_HEX(
+      "020A00420000000233333333555555556666666644440188FFFFFFFFFFFF000000000001"
+      "080600010800060400010000000000010A0000010000000000000A000002",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, packetinv4) {
   const char *input = R"""(
       type:            PACKET_IN
@@ -1487,7 +1535,7 @@ TEST(encoder, packetoutv1) {
         in_port:         0x44444444
         actions:
           - action: OUTPUT
-            port: 5
+            port_no: 5
             max_len: 20
           - action: SET_FIELD
             field:  IPV4_DST
@@ -1515,7 +1563,7 @@ TEST(encoder, packetoutv4) {
         in_port:         0x44444444
         actions:
           - action: OUTPUT
-            port: 5
+            port_no: 5
             max_len: 20
           - action: SET_FIELD
             field:  IPV4_DST
@@ -1538,7 +1586,7 @@ TEST(encoder, setconfigv4) {
   const char *input = R"""(
       version: 4
       type: SET_CONFIG
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         flags: [ '0xAAAA' ]
@@ -1555,24 +1603,23 @@ TEST(encoder, portstatusv4) {
   const char *input = R"""(
       version: 4
       type: PORT_STATUS
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         reason: 0x22
-        port:
-          port_no: 0x33333333
-          hw_addr: 'aabbccddeeff'
-          name: 'Port 1'
-          config: [ 0x44444444 ]
-          state: [ 0x55555555 ]
-          ethernet:
-            curr: [ '0x66666666' ]
-            advertised: [ '0x77777777' ]
-            supported: [ '0x88888888' ]
-            peer: [ '0x99999999' ]
-            curr_speed: 0xAAAAAAAA
-            max_speed: 0xBBBBBBBB
-          properties:
+        port_no: 0x33333333
+        hw_addr: 'aabbccddeeff'
+        name: 'Port 1'
+        config: [ 0x44444444 ]
+        state: [ 0x55555555 ]
+        ethernet:
+          curr: [ '0x66666666' ]
+          advertised: [ '0x77777777' ]
+          supported: [ '0x88888888' ]
+          peer: [ '0x99999999' ]
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+        properties:
       )""";
 
   Encoder encoder{input};
@@ -1589,24 +1636,23 @@ TEST(encoder, portstatusv1) {
   const char *input = R"""(
       version: 1
       type: PORT_STATUS
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         reason: 0x22
-        port:
-          port_no: 0x33333333
-          hw_addr: 'aabbccddeeff'
-          name: 'Port 1'
-          config: [ 0x44444444 ]
-          state: [ 0x55555555 ]
-          ethernet:
-            curr: [ '0x66666666' ]
-            advertised: [ '0x77777777' ]
-            supported: [ '0x88888888' ]
-            peer: [ '0x99999999' ]
-            curr_speed: 0xAAAAAAAA
-            max_speed: 0xBBBBBBBB
-          properties:
+        port_no: 0x33333333
+        hw_addr: 'aabbccddeeff'
+        name: 'Port 1'
+        config: [ 0x44444444 ]
+        state: [ 0x55555555 ]
+        ethernet:
+          curr: [ '0x66666666' ]
+          advertised: [ '0x77777777' ]
+          supported: [ '0x88888888' ]
+          peer: [ '0x99999999' ]
+          curr_speed: 0xAAAAAAAA
+          max_speed: 0xBBBBBBBB
+        properties:
       )""";
 
   Encoder encoder{input};
@@ -1622,7 +1668,7 @@ TEST(encoder, groupmodv4) {
   const char *input = R"""(
       version: 4
       type: GROUP_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         command: 0x2222
@@ -1634,7 +1680,7 @@ TEST(encoder, groupmodv4) {
             watch_group: 0x77777777
             actions:
               - action: OUTPUT
-                port: 5
+                port_no: 5
                 max_len: 20
               - action: SET_FIELD
                 field:  IPV4_DST
@@ -1664,7 +1710,7 @@ TEST(encoder, groupmodv2) {
   const char *input = R"""(
       version: 2
       type: GROUP_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         command: 0x2222
@@ -1676,7 +1722,7 @@ TEST(encoder, groupmodv2) {
             watch_group: 0x77777777
             actions:
               - action: OUTPUT
-                port: 5
+                port_no: 5
                 max_len: 20
               - action: SET_FIELD
                 field:  IPV4_DST
@@ -1706,7 +1752,7 @@ TEST(encoder, portmodv5) {
   const char *input = R"""(
       version: 5
       type: PORT_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port_no: 0x22222222
@@ -1731,7 +1777,7 @@ TEST(encoder, portmodv4) {
   const char *input = R"""(
       version: 4
       type: PORT_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port_no: 0x22222222
@@ -1752,11 +1798,40 @@ TEST(encoder, portmodv4) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, portmodv5_experimenter) {
+  const char *input = R"""(
+      version: 5
+      type: PORT_MOD
+      datapath_id: 00:00:00:00:00:00:00:01
+      xid: 0x11111111
+      msg:
+        port_no: 0x22222222
+        hw_addr: '333333333333'
+        config: [ 0x44444444 ]
+        mask: [ 0x55555555 ]
+        ethernet:
+          advertise: [ 0x66666666 ]
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0x77777700
+            exp_type: 0x88888800
+            data: 99999900
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x38, encoder.size());
+  EXPECT_HEX(
+      "051000381111111122222222000000003333333333330000444444445555555500000008"
+      "66666666FFFF0010777777008888880099999900",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, portmodv1) {
   const char *input = R"""(
       version: 1
       type: PORT_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         port_no: 0x2222
@@ -1779,7 +1854,7 @@ TEST(encoder, tablemodv4) {
   const char *input = R"""(
       version: 4
       type: TABLE_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         table_id: 0x22
@@ -1797,7 +1872,7 @@ TEST(encoder, tablemodv2) {
   const char *input = R"""(
       version: 2
       type: TABLE_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         table_id: 0x22
@@ -1815,7 +1890,7 @@ TEST(encoder, rolerequestv4) {
   const char *input = R"""(
       version: 4
       type: ROLE_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         role: 0x22222222
@@ -1833,7 +1908,7 @@ TEST(encoder, rolereplyv4) {
   const char *input = R"""(
       version: 4
       type: ROLE_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         role: 0x22222222
@@ -1851,7 +1926,7 @@ TEST(encoder, getasyncreplyv4) {
   const char *input = R"""(
       version: 4
       type: GET_ASYNC_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222222]
@@ -1874,7 +1949,7 @@ TEST(encoder, getasyncreplyv5) {
   const char *input = R"""(
       version: 5
       type: GET_ASYNC_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222222]
@@ -1899,10 +1974,10 @@ TEST(encoder, queuegetconfigrequestv4) {
   const char *input = R"""(
       version: 4
       type: QUEUE_GET_CONFIG_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
-        port: 0x22222222
+        port_no: 0x22222222
       )""";
 
   Encoder encoder{input};
@@ -1916,17 +1991,17 @@ TEST(encoder, queuegetconfigreplyv4) {
   const char *input = R"""(
     version: 4
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
-      port: 0x22222222
+      port_no: 0x22222222
       queues:
         - queue_id: 0x33333333
-          port: 0x44444444
+          port_no: 0x44444444
           min_rate: 0x5555
           max_rate: 0x6666
         - queue_id: 0x77777777
-          port: 0x88888888
+          port_no: 0x88888888
           min_rate: 0x9999
           max_rate: 0xAAAA
     )""";
@@ -1947,13 +2022,13 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
   const char *input = R"""(
     version: 4
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
-      port: 0x22222222
+      port_no: 0x22222222
       queues:
         - queue_id: 0x33333333
-          port: 0x44444444
+          port_no: 0x44444444
           min_rate: 0x5555
           max_rate: 0x6666
           properties:
@@ -1962,7 +2037,7 @@ TEST(encoder, queuegetconfigreplyv4_experimenter) {
             - experimenter: 0xFFFFFFFF
               value: abcdef
         - queue_id: 0x77777777
-          port: 0x88888888
+          port_no: 0x88888888
           min_rate: 0x9999
           max_rate: 0xAAAA
     )""";
@@ -1983,13 +2058,13 @@ TEST(encoder, queuegetconfigreplyv5_experimenter) {
   const char *input = R"""(
     version: 5
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111111
     msg:
-      port: 0x22222222
+      port_no: 0x22222222
       queues:
         - queue_id: 0x33333333
-          port: 0x44444444
+          port_no: 0x44444444
           min_rate: 0x5555
           max_rate: 0x6666
           properties:
@@ -1998,7 +2073,7 @@ TEST(encoder, queuegetconfigreplyv5_experimenter) {
             - experimenter: 0xFFFFFFFF
               value: abcdef
         - queue_id: 0x77777777
-          port: 0x88888888
+          port_no: 0x88888888
           min_rate: 0x9999
           max_rate: 0xAAAA
     )""";
@@ -2019,17 +2094,17 @@ TEST(encoder, queuegetconfigreplyv1) {
   const char *input = R"""(
     version: 1
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111110
     msg:
-      port: 0x22222221
+      port_no: 0x22222221
       queues:
         - queue_id: 0x33333331
-          port: 0x44444441
+          port_no: 0x44444441
           min_rate: 0x5551
           max_rate: 0x6661
         - queue_id: 0x77777771
-          port: 0x88888881
+          port_no: 0x88888881
           min_rate: 0x9991
           max_rate: 0xAAA1
     )""";
@@ -2048,17 +2123,17 @@ TEST(encoder, queuegetconfigreplyv2) {
   const char *input = R"""(
     version: 2
     type: QUEUE_GET_CONFIG_REPLY
-    datapath_id: 0000-0000-0000-0001
+    datapath_id: 00:00:00:00:00:00:00:01
     xid: 0x11111110
     msg:
-      port: 0x22222221
+      port_no: 0x22222221
       queues:
         - queue_id: 0x33333331
-          port: 0x44444441
+          port_no: 0x44444441
           min_rate: 0x5551
           max_rate: 0x6661
         - queue_id: 0x77777771
-          port: 0x88888881
+          port_no: 0x88888881
           min_rate: 0x9991
           max_rate: 0xAAA1
     )""";
@@ -2077,7 +2152,7 @@ TEST(encoder, getconfigreplyv4) {
   const char *input = R"""(
       version: 4
       type: GET_CONFIG_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         flags: [ '0xAAAA' ]
@@ -2094,7 +2169,7 @@ TEST(encoder, setasyncv4) {
   const char *input = R"""(
       version: 4
       type: SET_ASYNC
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222222]
@@ -2117,7 +2192,7 @@ TEST(encoder, setasyncv5) {
   const char *input = R"""(
       version: 5
       type: SET_ASYNC
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         packet_in_master: [0x22222221]
@@ -2142,15 +2217,14 @@ TEST(encoder, flowremovedv4) {
   const char *input = R"""(
       version: 4
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2173,15 +2247,14 @@ TEST(encoder, flowremovedv1) {
   const char *input = R"""(
       version: 1
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2205,15 +2278,14 @@ TEST(encoder, flowremovedv2) {
   const char *input = R"""(
       version: 2
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2239,15 +2311,14 @@ TEST(encoder, flowremovedv3) {
   const char *input = R"""(
       version: 3
       type: FLOW_REMOVED
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         cookie: 0x2222222222222222
         priority: 0x3333
         reason: 0x44
         table_id: 0x55
-        duration_sec: 0x66666666
-        duration_nsec: 0x77777777
+        duration: 1717986918.x77777777
         idle_timeout: 0x8888
         hard_timeout: 0x9999
         packet_count: 0xAAAAAAAAAAAAAAAA
@@ -2270,7 +2341,7 @@ TEST(encoder, ofmp_desc_request) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2288,7 +2359,7 @@ TEST(encoder, ofmp_desc_reply) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2342,7 +2413,7 @@ TEST(encoder, ofmp_desc_reply_error) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2369,7 +2440,7 @@ TEST(encoder, ofmp_desc_request_v1) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2386,7 +2457,7 @@ TEST(encoder, ofmp_desc_reply_v1) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: DESC
@@ -2436,11 +2507,65 @@ TEST(encoder, ofmp_desc_reply_v1) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, ofmp_desc_reply_non_utf8) {
+  const char *input = R"""(
+      version: 4
+      type: MULTIPART_REPLY
+      datapath_id: 00:00:00:00:00:00:00:01
+      xid: 0x11111112
+      msg:
+        type: DESC
+        flags: []
+        body:
+          mfr_desc: "\x01\n\xff\ud8fe\udcfe\x80\x7f"
+          hw_desc: "\x01\n\xff\xfe\x80\x7f"
+          sw_desc: '\x01\n\xff\xfe\x80\x7f'
+          serial_num: '\x01\n\xff\xfe\x80\x7f'
+          dp_desc: '\x01\n\xff\xfe\x80\x7f'
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(1072, encoder.size());
+  EXPECT_HEX(
+      "04130430111111120000000000000000010AC3BFEDA3BEEDB3BEC2807F00000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000010AC3BFC3BEC2807F00000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000005C7830315C6E5C7866665C78"
+      "66655C7838305C7837660000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000005C7830315C6E5C78"
+      "66665C7866655C7838305C783766000000000000000000005C7830315C6E5C7866665C78"
+      "66655C7838305C7837660000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000000000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, ofmp_portstats_v4_request) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: PORT_STATS
@@ -2460,7 +2585,7 @@ TEST(encoder, ofmp_portstats_v1_request) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: PORT_STATS
@@ -2480,7 +2605,7 @@ TEST(encoder, ofmp_queue_v4_request) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: QUEUE
@@ -2501,7 +2626,7 @@ TEST(encoder, ofmp_queue_v1_request) {
   const char *input = R"""(
       version: 1
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: QUEUE
@@ -2522,7 +2647,7 @@ TEST(encoder, meter_mod_v4) {
   const char *input = R"""(
       version: 4
       type: METER_MOD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         command: MODIFY
@@ -2551,7 +2676,7 @@ TEST(encoder, ofmp_groupfeatures_reply) {
   const char *input = R"""(
       version: 4
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: GROUP_FEATURES
@@ -2582,7 +2707,7 @@ TEST(encoder, ofmp_flowmonitor_request) {
   const char *input = R"""(
       version: 5
       type: MULTIPART_REQUEST
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: FLOW_MONITOR
@@ -2612,7 +2737,7 @@ TEST(encoder, ofmp_flowmonitor_reply) {
   const char *input = R"""(
       version: 5
       type: MULTIPART_REPLY
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: FLOW_MONITOR
@@ -2652,7 +2777,7 @@ TEST(encoder, rolestatusv5) {
   const char *input = R"""(
       version: 5
       type: ROLE_STATUS
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         role: 0x22222222
@@ -2678,7 +2803,7 @@ TEST(encoder, requestforwardv5) {
   const char *input = R"""(
       version: 5
       type: REQUESTFORWARD
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         type: GROUP_MOD
@@ -2693,7 +2818,7 @@ TEST(encoder, requestforwardv5) {
               watch_group: 0x77777777
               actions:
                 - action: OUTPUT
-                  port: 5
+                  port_no: 5
                   max_len: 20
                 - action: SET_FIELD
                   field:  IPV4_DST
@@ -2714,7 +2839,7 @@ TEST(encoder, bundlecontrolv5) {
   const char *input = R"""(
       version: 5
       type: BUNDLE_CONTROL
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         bundle_id: 0x22222222
@@ -2738,7 +2863,7 @@ TEST(encoder, bundleaddmessagev5) {
   const char *input = R"""(
       version: 5
       type: BUNDLE_ADD_MESSAGE
-      datapath_id: 0000-0000-0000-0001
+      datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
         bundle_id: 0x22222222
@@ -2770,7 +2895,7 @@ TEST(encoder, ofmp_portdesc_replyv1) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2783,7 +2908,7 @@ TEST(encoder, ofmp_portdesc_replyv1) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2815,7 +2940,7 @@ TEST(encoder, ofmp_portdesc_replyv2) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2828,7 +2953,7 @@ TEST(encoder, ofmp_portdesc_replyv2) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2861,7 +2986,7 @@ TEST(encoder, ofmp_portdesc_replyv4) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2874,7 +2999,7 @@ TEST(encoder, ofmp_portdesc_replyv4) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2907,7 +3032,7 @@ TEST(encoder, ofmp_portdesc_replyv5) {
     xid: 0x11111111
     msg:
       - port_no: 0x1111
-        hw_addr: 22-22-22-22-22-22
+        hw_addr: 22:22:22:22:22:22
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2920,7 +3045,7 @@ TEST(encoder, ofmp_portdesc_replyv5) {
           max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
-        hw_addr: CC-CC-CC-CC-CC-CC
+        hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
@@ -2992,28 +3117,27 @@ TEST(encoder, tablestatusv5) {
     version:         0x05
     msg: 
       reason:        0x10 
-      table:            
-        table_id:        ALL
-        config:          [  ]
-        eviction:        
-          flags:           0x11223344
-        vacancy:         
-          vacancy_down:    0x11
-          vacancy_up:      0x22
-          vacancy:         0x33
-        properties:      
-          - property:        EXPERIMENTER
-            experimenter:    0x44444441
-            exp_type:        0x55555551
-            data:            ''
-          - property:        EXPERIMENTER
-            experimenter:    0x66666661
-            exp_type:        0x77777771
-            data:            88888888
-          - property:        EXPERIMENTER
-            experimenter:    0x99999991
-            exp_type:        0xAAAAAAA1
-            data:            0000000100000002
+      table_id:        ALL
+      config:          [  ]
+      eviction:        
+        flags:           0x11223344
+      vacancy:         
+        vacancy_down:    0x11
+        vacancy_up:      0x22
+        vacancy:         0x33
+      properties:      
+        - property:        EXPERIMENTER
+          experimenter:    0x44444441
+          exp_type:        0x55555551
+          data:            ''
+        - property:        EXPERIMENTER
+          experimenter:    0x66666661
+          exp_type:        0x77777771
+          data:            88888888
+        - property:        EXPERIMENTER
+          experimenter:    0x99999991
+          exp_type:        0xAAAAAAA1
+          data:            0000000100000002
     )""";
 
   Encoder encoder{input};
@@ -3139,8 +3263,7 @@ TEST(encoder, ofmp_portstats_v4_flags) {
     flags: [ 0x2222 ]
     msg:
         - port_no: 0x33333330
-          duration_sec:   0x11111110
-          duration_nsec:  0x22222220
+          duration:   286331152.x22222220
           rx_packets: 0x4444444444444440
           tx_packets: 0x5555555555555550
           rx_bytes:   0x6666666666666660
@@ -3215,4 +3338,21 @@ TEST(encoder, nicira_actions) {
       "00060018000000188000060680000806FFFF0018000023200007000780000A0200000000"
       "00000089",
       encoder.data(), encoder.size());
+}
+
+TEST(encoder, raw_message) {
+  const char *input = R"""(
+      type:            _RAW_MESSAGE
+      version:         4
+      xid:             1
+      msg:
+        type:  FEATURES_REPLY
+        data:  FF00FF00FF00FF00
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(16, encoder.size());
+  EXPECT_HEX("0406001000000001FF00FF00FF00FF00", encoder.data(),
+             encoder.size());
 }

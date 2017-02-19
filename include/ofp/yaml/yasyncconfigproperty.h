@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_YAML_YASYNCCONFIGPROPERTY_H_
@@ -16,7 +16,7 @@ using AsyncConfigPropertyIterator =
     TypedPropertyIterator<AsyncConfigPropertyItem>;
 struct AsyncConfigPropertyRange {};
 struct AsyncConfigPropertyInserter {};
-struct AsyncConfigPropertyList {};
+struct AsyncConfigPropertyList : public OptionalPropertyList {};
 
 }  // namespace detail
 }  // namespace ofp

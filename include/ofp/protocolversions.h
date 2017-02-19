@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_PROTOCOLVERSIONS_H_
@@ -50,7 +50,8 @@ class ProtocolVersions {
   UInt32 bitmap_;
 
   // N.B. You must call this constructor using (), not {}.
-  constexpr explicit ProtocolVersions(UInt32 bitmap) : bitmap_(bitmap) {}
+  constexpr explicit ProtocolVersions(UInt32 bitmap) noexcept
+      : bitmap_(bitmap) {}
 
   enum {
     MinVersionSupported = OFP_VERSION_1,
