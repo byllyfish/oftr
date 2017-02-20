@@ -183,6 +183,4 @@ TEST(types, HexDelimitedToRawData) {
   EXPECT_EQ(0, HexDelimitedToRawData("ff:ff:ff", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData("ff:f ", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData(" ff:ff", buf, sizeof(buf)));
-
-  EXPECT_EQ(0, HexDelimitedToRawData("00", buf + sizeof(buf), 0));
 }
