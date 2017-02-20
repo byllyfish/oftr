@@ -76,6 +76,8 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
   if (ethType == DATALINK_8021Q) {
     auto vlan = pkt::VlanHdr::cast(pkt, length);
     if (!vlan) {
+      // Missing complete vlan header?
+      match_.add(OFB_ETH_TYPE(ethType));
       return;
     }
 
@@ -147,16 +149,36 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
 
   UInt8 vers = ip->ver >> 4;
   UInt8 ihl = ip->ver & 0x0F;
+  unsigned hdrLen = ihl * 4;
 
   if (vers != pkt::kIPv4Version) {
     log_warning("MatchPacket: Unexpected IPv4 version", vers);
     return;
   }
 
-  if (ihl < 5) {
-    log_warning("MatchPacket: Unexpected IPv4 header length", ihl);
+  if (hdrLen < sizeof(pkt::IPv4Hdr)) {
+    log_warning("MatchPacket: IPv4 header too short", hdrLen);
     return;
   }
+
+  if (hdrLen > length) {
+    log_warning("MatchPacket: IPv4 header too long", hdrLen);
+    return;
+  }
+
+  unsigned totalLen = ip->length;
+
+  if (totalLen < hdrLen) {
+    log_warning("MatchPacket: IPv4 total length < hdrLen", totalLen, hdrLen);
+    return;
+  }
+
+  if (totalLen < length) {
+    log_debug("MatchPacket: IPv4 total length < remaining length", totalLen, length);
+    length = totalLen;
+  }
+
+  assert(length <= totalLen);
 
   UInt8 dscp = ip->tos >> 2;
   UInt8 ecn = ip->tos & 0x03;
@@ -173,15 +195,7 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   }
 
   match_.add(NXM_NX_IP_TTL{ip->ttl});
-
-  assert(ihl <= 15);
-
-  unsigned hdrLen = ihl * 4;
-  if (hdrLen > length) {
-    log_warning("MatchPacket: Extended IPv4 Header too long", hdrLen);
-    return;
-  }
-
+  
   pkt += hdrLen;
   length -= hdrLen;
   offset_ += hdrLen;
