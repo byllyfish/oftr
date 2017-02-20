@@ -1972,3 +1972,11 @@ TEST(decoder, packet_in_nonzero_padding) {
       "    IP_ECN\n      value:           0x00\n  data:            "
       "DA1DFCEC1D9942E50BB51FF50800\n...\n");
 }
+
+TEST(decoder, ofmp_groupstats_v3) {
+  testDecodeEncode("03130040000000000006000000000000003000000000000100000002000000001000000000009999200000000000AAAA300000000000BBBB400000000000CCCC", "---\ntype:            REPLY.GROUP\nflags:           [  ]\nxid:             0x00000000\nversion:         0x03\nmsg:             \n  - group_id:        0x00000001\n    ref_count:       0x00000002\n    packet_count:    0x1000000000009999\n    byte_count:      0x200000000000AAAA\n    duration:        0\n    bucket_stats:    \n      - packet_count:    0x300000000000BBBB\n        byte_count:      0x400000000000CCCC\n...\n");
+}
+
+TEST(decoder, ofmp_groupstats_v3_2) {
+  testDecodeEncode("03130070000000000006000000000000003000000000000100000002000000001000000000009999200000000000AAAA300000000000BBBB400000000000CCCC003000000000000100000002000000001000000000009999200000000000AAAA300000000000BBBB400000000000CCCC", "---\ntype:            REPLY.GROUP\nflags:           [  ]\nxid:             0x00000000\nversion:         0x03\nmsg:             \n  - group_id:        0x00000001\n    ref_count:       0x00000002\n    packet_count:    0x1000000000009999\n    byte_count:      0x200000000000AAAA\n    duration:        0\n    bucket_stats:    \n      - packet_count:    0x300000000000BBBB\n        byte_count:      0x400000000000CCCC\n  - group_id:        0x00000001\n    ref_count:       0x00000002\n    packet_count:    0x1000000000009999\n    byte_count:      0x200000000000AAAA\n    duration:        0\n    bucket_stats:    \n      - packet_count:    0x300000000000BBBB\n        byte_count:      0x400000000000CCCC\n...\n");
+}

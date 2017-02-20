@@ -3356,3 +3356,57 @@ TEST(encoder, raw_message) {
   EXPECT_HEX("0406001000000001FF00FF00FF00FF00", encoder.data(),
              encoder.size());
 }
+
+TEST(encoder, ofmp_groupstats_v3) {
+  const char *input=R"""(
+      type:            REPLY.GROUP
+      xid:             0x00000000
+      version:         0x03
+      msg:             
+        - group_id:        0x00000001
+          ref_count:       0x00000002
+          packet_count:    0x1000000000009999
+          byte_count:      0x200000000000AAAA
+          duration:        0
+          bucket_stats:    
+            - packet_count:    0x300000000000BBBB
+              byte_count:      0x400000000000CCCC
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x40, encoder.size());
+  EXPECT_HEX("03130040000000000006000000000000003000000000000100000002000000001000000000009999200000000000AAAA300000000000BBBB400000000000CCCC", encoder.data(),
+             encoder.size());
+}
+
+TEST(encoder, ofmp_groupstats_v3_2) {
+  const char *input=R"""(
+      type:            REPLY.GROUP
+      xid:             0x00000000
+      version:         0x03
+      msg:             
+        - group_id:        0x00000001
+          ref_count:       0x00000002
+          packet_count:    0x1000000000009999
+          byte_count:      0x200000000000AAAA
+          duration:        0
+          bucket_stats:    
+            - packet_count:    0x300000000000BBBB
+              byte_count:      0x400000000000CCCC
+        - group_id:        0x00000001
+          ref_count:       0x00000002
+          packet_count:    0x1000000000009999
+          byte_count:      0x200000000000AAAA
+          duration:        0
+          bucket_stats:    
+            - packet_count:    0x300000000000BBBB
+              byte_count:      0x400000000000CCCC
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x70, encoder.size());
+  EXPECT_HEX("03130070000000000006000000000000003000000000000100000002000000001000000000009999200000000000AAAA300000000000BBBB400000000000CCCC003000000000000100000002000000001000000000009999200000000000AAAA300000000000BBBB400000000000CCCC", encoder.data(),
+             encoder.size());
+}

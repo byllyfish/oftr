@@ -36,10 +36,11 @@ void Normalize::normalize() {
   }
 
   Header *hdr = header();
+  const UInt8 version = hdr->version();
 
   // Translate type of message from earlier version into latest enum.
   OFPType type =
-      Header::translateType(hdr->version(), hdr->type(), OFP_VERSION_4);
+      Header::translateType(version, hdr->type(), OFP_VERSION_4);
   if (type == OFPT_UNSUPPORTED) {
     markInputInvalid("Unsupported type for protocol version");
   }
@@ -49,9 +50,9 @@ void Normalize::normalize() {
   if ((type == MultipartReply::type() || type == MultipartRequest::type()) &&
       buf_.size() >= 16) {
     UInt16 multiType = *Big16_cast(buf_.data() + 8);
-    log_debug("normalize", type, static_cast<OFPMultipartType>(multiType));
+    log_debug("normalize", type, static_cast<OFPMultipartType>(multiType), "version", version);
   } else {
-    log_debug("normalize", type);
+    log_debug("normalize", type, "version", version);
   }
 #endif  // !defined(NDEBUG)
 
@@ -62,7 +63,6 @@ void Normalize::normalize() {
     hdr->setLength(buf_.size());
   }
 
-  UInt8 version = hdr->version();
   if (version == OFP_VERSION_1) {
     if (type == FeaturesReply::type()) {
       normalizeFeaturesReplyV1();
@@ -638,6 +638,10 @@ void Normalize::normalizeMultipartReplyV3() {
     while (offset < buf_.size())
       normalizeMPPortOrQueueStatsReplyV3(&offset, 32);
     assert(offset == buf_.size());
+  } else if (replyType == OFPMP_GROUP) {
+    while (offset < buf_.size())
+      normalizeMPGroupStatsReplyV3(&offset, 32);
+    assert(offset == buf_.size());    
   } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyV4();
   }
@@ -995,6 +999,33 @@ void Normalize::normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len) {
   // Insert an additional 8-bytes for timestamp.
   buf_.insertZeros(ptr + len, 8);
   *start += len + 8;
+}
+
+void Normalize::normalizeMPGroupStatsReplyV3(size_t *start, size_t len) {
+  // Normalize the GroupStatsReply V3 to look like a V4+ message.
+  size_t offset = *start;
+  size_t remaining = buf_.size() - offset;
+
+  if (remaining < len) {
+    *start = buf_.size();
+    return;
+  }
+
+  UInt8 *ptr = buf_.mutableData() + offset;
+
+  // Get stat length.
+  UInt16 statLen = *Big16_cast(ptr);
+  if (remaining < statLen) {
+    *start = buf_.size();
+    return;
+  }
+
+  // Add 8 bytes to stat length.
+  *Big16_cast(ptr) = statLen + 8;
+
+  // Insert an additional 8-bytes for timestamp.
+  buf_.insertZeros(ptr + len, 8);
+  *start += statLen + 8;
 }
 
 void Normalize::normalizeMPPortDescReplyV1() {
