@@ -38,9 +38,16 @@ bool MultipartReply::validateInput(Validation *context) const {
     case OFPMP_AGGREGATE:
       return context->validate<MPAggregateStatsReply>(replyBody(),
                                                       OFP_VERSION_1);
-    case OFPMP_TABLE:
+    case OFPMP_TABLE: {
+      // We do NOT support OFPMP_TABLE_STATS for OF versions 1.1 and 1.2.
+      UInt8 vers = header_.version();
+      if (vers == OFP_VERSION_2 || vers == OFP_VERSION_3) {
+        context->multipartTypeIsNotSupportedForVersion();
+        return false;
+      }
       return context->validateArrayFixedSize<MPTableStats>(replyBody(),
                                                            OFP_VERSION_1);
+  }
     case OFPMP_PORT_STATS:
       return context->validateArrayVariableSize<MPPortStats>(replyBody(),
                                                              OFP_VERSION_1);
