@@ -213,6 +213,7 @@ set(LIBOFP_SOURCES
   src/ofp/oxmtypeset.cpp
   src/ofp/packetin.cpp
   src/ofp/packetout.cpp
+  src/ofp/packetoutv6.cpp
   src/ofp/port.cpp
   src/ofp/portmod.cpp
   src/ofp/portrange.cpp

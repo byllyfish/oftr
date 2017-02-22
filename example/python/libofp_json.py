@@ -121,7 +121,7 @@ class LibOFP(object):
         assert msg.id == 99999
         assert msg.result.api_version == '0.9'
         assert len(msg.result.sw_desc) > 0
-        assert msg.result.versions == [1, 2, 3, 4, 5]
+        assert msg.result.versions == [1, 2, 3, 4, 5, 6]
 
     def _write(self, msg):
         self._sockOutput.write(msg)
