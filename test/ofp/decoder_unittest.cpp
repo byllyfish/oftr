@@ -909,29 +909,10 @@ TEST(decoder, packetoutv1) {
       "00000A000002\n...\n";
 
   testDecodeEncode(hex, yaml);
+}
 
-#if 0
-  auto s = HexToRawData(hex);
-
-  Message msg{s.data(), s.size()};
-  msg.normalize();
-  EXPECT_HEX(
-      "010D0062000000013333333300004444002000000000000000000010000000050"
-      "0140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000"
-      "000001080600010800060400010000000000010A0000010000000000000A00000"
-      "2",
-      msg.data(), msg.size());
-
-  Decoder decoder{&msg};
-
-  EXPECT_EQ("", decoder.error());
-  EXPECT_EQ(yaml, decoder.result().str());
-
-  Encoder encoder{decoder.result()};
-
-  EXPECT_EQ("", encoder.error());
-  EXPECT_HEX(hex, encoder.data(), encoder.size());
-#endif  // 0
+TEST(decoder, packetoutv6) {
+  testDecodeEncode("060D007A0000000133333333002000000001001A80000A02080080001604C0A801028000000444444444000000000000000000100000000500140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002", "---\ntype:            PACKET_OUT\nxid:             0x00000001\nversion:         0x06\nmsg:             \n  buffer_id:       0x33333333\n  in_port:         0x44444444\n  match:           \n    - field:           ETH_TYPE\n      value:           0x0800\n    - field:           IPV4_SRC\n      value:           192.168.1.2\n    - field:           IN_PORT\n      value:           0x44444444\n  actions:         \n    - action:          OUTPUT\n      port_no:         0x00000005\n      max_len:         0x0014\n    - action:          SET_FIELD\n      field:           IPV4_DST\n      value:           192.168.1.1\n  data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
 }
 
 TEST(decoder, setconfigv4) {

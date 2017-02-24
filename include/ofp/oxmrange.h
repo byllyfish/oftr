@@ -30,6 +30,9 @@ class OXMRange {
   template <class Value>
   typename Value::NativeType get() const;
 
+  template <class Value>
+  bool exists() const;
+
   OXMIterator begin() const { return OXMIterator{begin_}; }
   OXMIterator end() const { return OXMIterator{end_}; }
 
@@ -76,6 +79,16 @@ typename Value::NativeType OXMRange::get() const {
   }
 
   return NativeType{};
+}
+
+template <class Value>
+bool OXMRange::exists() const {
+  for (auto &item : *this) {
+    if (item.type() == Value::type()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,

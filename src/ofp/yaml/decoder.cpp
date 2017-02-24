@@ -118,7 +118,11 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
     case PacketIn::type():
       return decode<PacketIn>(io, msg_);
     case PacketOut::type():
-      return decode<PacketOut>(io, msg_);
+      if (msg_->version() < OFP_VERSION_6) {
+        return decode<PacketOut>(io, msg_);
+      } else {
+        return decode<PacketOutV6>(io,msg_);
+      }
     case SetConfig::type():
       return decode<SetConfig>(io, msg_);
     case PortStatus::type():

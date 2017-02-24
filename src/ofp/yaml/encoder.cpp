@@ -265,9 +265,15 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       break;
     }
     case PacketOut::type(): {
-      PacketOutBuilder packetOut;
-      io.mapRequired("msg", packetOut);
-      packetOut.send(&channel_);
+      if (header_.version() < OFP_VERSION_6) {
+        PacketOutBuilder packetOut;
+        io.mapRequired("msg", packetOut);
+        packetOut.send(&channel_);
+      } else {
+        PacketOutV6Builder packetOutV6;
+        io.mapRequired("msg", packetOutV6);
+        packetOutV6.send(&channel_);
+      }
       break;
     }
     case SetConfig::type(): {

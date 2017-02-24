@@ -1582,6 +1582,34 @@ TEST(encoder, packetoutv4) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, packetoutv6) {
+  const char *input = R"""(
+      type:            PACKET_OUT
+      version:         6
+      xid:             1
+      msg:             
+        buffer_id:       0x33333333
+        in_port:         0x44444444
+        match:
+          - field: IPV4_SRC
+            value: 192.168.1.2
+        actions:
+          - action: OUTPUT
+            port_no: 5
+            max_len: 20
+          - action: SET_FIELD
+            field:  IPV4_DST
+            value:  192.168.1.1
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x07A, encoder.size());
+  EXPECT_HEX("060D007A0000000133333333002000000001001A80000A02080080001604C0A801028000000444444444000000000000000000100000000500140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, setconfigv4) {
   const char *input = R"""(
       version: 4

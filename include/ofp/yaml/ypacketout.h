@@ -7,6 +7,7 @@
 #include "ofp/matchpacketbuilder.h"
 #include "ofp/packetout.h"
 #include "ofp/packetoutv6.h"
+#include "ofp/oxmfields.h"
 
 namespace llvm {
 namespace yaml {
@@ -95,10 +96,18 @@ struct MappingTraits<ofp::PacketOutV6Builder> {
     using namespace ofp;
 
     io.mapOptional("buffer_id", msg.msg_.bufferId_, OFP_NO_BUFFER);
+
     PortNumber inPort;
     io.mapOptional("in_port", inPort, OFPP_CONTROLLER);
-
     io.mapRequired("match", msg.match_);
+
+    // If `match` does not contain entry for OFB_IN_PORT, we need to add it
+    // using the value from `in_port`.
+    MatchBuilder &match = msg.match();
+    if (!match.toRange().exists<OFB_IN_PORT>()) {
+      match.add(OFB_IN_PORT{inPort});
+    }
+
     io.mapOptional("actions", msg.actions_);
     io.mapOptional("data", msg.enetFrame_);
 

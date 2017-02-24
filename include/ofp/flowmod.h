@@ -31,7 +31,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   GroupNumber outGroup() const { return outGroup_; }
   OFPFlowModFlags flags() const { return flags_; }
 
-  Match match() const;
+  Match match() const { return Match{&matchHeader_}; }
   InstructionRange instructions() const;
 
   bool validateInput(Validation *context) const;

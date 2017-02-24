@@ -18,7 +18,7 @@ class PacketOutV6
  public:
   BufferNumber bufferId() const { return bufferId_; }
 
-  Match match() const;
+  Match match() const { return Match{&matchHeader_}; }
   ActionRange actions() const;
   ByteRange enetFrame() const;
 
@@ -53,6 +53,8 @@ class PacketOutV6Builder {
  public:
   PacketOutV6Builder() = default;
   explicit PacketOutV6Builder(const PacketOutV6 *msg);
+
+  MatchBuilder &match() { return match_; }
 
   void setBufferId(BufferNumber bufferId) { msg_.bufferId_ = bufferId; }
   void setMatch(const MatchBuilder &match) { match_ = match; }
