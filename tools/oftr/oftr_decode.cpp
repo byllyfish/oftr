@@ -447,7 +447,7 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     return ExitStatus::Success;
   }
 
-  log_debug("decodeOneMessage (transmogrified):", *message);
+  log_debug("decodeOneMessage (normalized):", *message);
 
   ofp::yaml::Decoder decoder{message, json_, pktDecode_};
 
