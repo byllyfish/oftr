@@ -26,7 +26,8 @@ class Decoder {
   const llvm::StringRef result() const { return result_; }
 
   const std::string &error() const { return error_; }
-
+  void setError(const std::string &error) { error_ = error; }
+  
  private:
   const Message *msg_;
   llvm::SmallString<1024> result_;

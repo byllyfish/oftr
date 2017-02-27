@@ -176,6 +176,7 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
 
   auto data = m->request();
   Message message(data.data(), data.size());
+  message.setInfo(msg->info());
   message.normalize();
 
   DecodeRecursively(io, "msg", &message);
@@ -184,6 +185,9 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
 
 void ofp::yaml::DecodeRecursively(llvm::yaml::IO &io, const char *key,
                                   const Message *msg) {
-  Decoder decoder{msg, GetDecoderFromContext(io)};
+  Decoder *outerDecoder = GetDecoderFromContext(io);
+  Decoder decoder{msg, outerDecoder};
   io.mapRequired(key, decoder);
+
+  outerDecoder->setError(decoder.error());
 }

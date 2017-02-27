@@ -74,3 +74,21 @@ TEST(requestforward, test) {
   EXPECT_EQ(0x22, gm->groupType());
   EXPECT_EQ(0x33333333, gm->groupId());
 }
+
+TEST(requestforward, invalid_message) {
+  ByteList data{HexToRawData("0620001000000000060F000800000000")};
+
+  Message message{data.data(), data.size()};
+  message.normalize();
+
+  const RequestForward *m = RequestForward::cast(&message);
+  ASSERT_TRUE(m);
+
+  // RequestForward does *not* validate the inner message contents, just its 
+  // length.
+
+  ByteRange req = m->request();
+  EXPECT_HEX(
+      "060F000800000000",
+      req.data(), req.size());
+}
