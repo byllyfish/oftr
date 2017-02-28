@@ -766,30 +766,6 @@ TEST(decoder, flowmodv1) {
       "IPV4_DST\n          value:           192.168.2.1\n...\n";
 
   testDecodeEncode(hex, yaml);
-#if 0
-  auto s = HexToRawData(hex);
-
-  Message msg{s.data(), s.size()};
-  msg.normalize();
-  EXPECT_EQ(0xA0, msg.size());
-  EXPECT_HEX(
-      "010E00A0000000011111111111111111FFFFFFFFFFFFFFFF00445555666677778"
-      "88888880000999900000000BBBB0000000000580000CCCC000003F60000000000"
-      "00000000000000000000000000000000000000000000000800000000000000000"
-      "00000C0A80101FFFFFFFF00000000000000000000000000000000000000000000"
-      "00000000000000040018000000000019001080001804C0A8020100000000",
-      msg.data(), msg.size());
-
-  Decoder decoder{&msg};
-
-  EXPECT_EQ("", decoder.error());
-  EXPECT_EQ(yaml, decoder.result());
-
-  Encoder encoder{decoder.result()};
-
-  EXPECT_EQ("", encoder.error());
-  EXPECT_HEX(hex, encoder.data(), encoder.size());
-#endif  // 0
 }
 
 TEST(decoder, flowmod1_2) {
@@ -819,6 +795,13 @@ TEST(decoder, flowmod1_2) {
       "ICMPV4_CODE\n          value:           0xEE\n        - action:     "
       " "
       "    COPY_TTL_OUT\n...\n");
+}
+
+TEST(decoder, flowmodv6) {
+  testDecodeEncode(
+    "060E00680000000111111111111111102222222222222220304055506660777088888880"
+      "99999990AAAAAAA0BBB1CCC10001003280000A0286DD8000341000000000000000000000"
+      "FFFFC0A800018000361020000000000000000000000000000001000000000000", "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:         0x06\nmsg:             \n  cookie:          0x1111111111111110\n  cookie_mask:     0x2222222222222220\n  table_id:        0x30\n  command:         0x40\n  idle_timeout:    0x5550\n  hard_timeout:    0x6660\n  priority:        0x7770\n  buffer_id:       0x88888880\n  out_port:        0x99999990\n  out_group:       0xAAAAAAA0\n  flags:           [ SEND_FLOW_REM, NO_BYT_COUNTS, '0x0000BBA0' ]\n  importance:      0xCCC1\n  match:           \n    - field:           ETH_TYPE\n      value:           0x86DD\n    - field:           IPV6_SRC\n      value:           '::ffff:192.168.0.1'\n    - field:           IPV6_DST\n      value:           '2000::1'\n  instructions:    \n...\n");  
 }
 
 TEST(decoder, packetinv4) {

@@ -1442,6 +1442,42 @@ TEST(encoder, flowmodv1_2) {
       encoder.data(), encoder.size());
 }
 
+
+TEST(encoder, flowmodv6) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         6
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111110
+        cookie_mask:     0x2222222222222220
+        table_id:        0x30
+        command:         0x40
+        idle_timeout:    0x5550
+        hard_timeout:    0x6660
+        priority:        0x7770
+        buffer_id:       0x88888880
+        out_port:        0x99999990
+        out_group:       0xAAAAAAA0
+        flags:           [ '0xBBB1' ]
+        importance:      0xCCC1
+        match:           
+          - field:           IPV6_SRC
+            value:           ::ffff:C0A8:0001
+          - field:           IPV6_DST
+            value:           2000::1
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x068, encoder.size());
+  EXPECT_HEX(
+      "060E00680000000111111111111111102222222222222220304055506660777088888880"
+      "99999990AAAAAAA0BBB1CCC10001003280000A0286DD8000341000000000000000000000"
+      "FFFFC0A800018000361020000000000000000000000000000001000000000000",
+      encoder.data(), encoder.size());  
+}
+
 TEST(encoder, packetinv1) {
   const char *input = R"""(
       type:            PACKET_IN
