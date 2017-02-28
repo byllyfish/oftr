@@ -39,8 +39,7 @@ void Normalize::normalize() {
   const UInt8 version = hdr->version();
 
   // Translate type of message from earlier version into latest enum.
-  OFPType type =
-      Header::translateType(version, hdr->type(), OFP_VERSION_4);
+  OFPType type = Header::translateType(version, hdr->type(), OFP_VERSION_4);
   if (type == OFPT_UNSUPPORTED) {
     markInputInvalid("Unsupported type for protocol version");
   }
@@ -50,7 +49,8 @@ void Normalize::normalize() {
   if ((type == MultipartReply::type() || type == MultipartRequest::type()) &&
       buf_.size() >= 16) {
     UInt16 multiType = *Big16_cast(buf_.data() + 8);
-    log_debug("normalize", type, static_cast<OFPMultipartType>(multiType), "version", version);
+    log_debug("normalize", type, static_cast<OFPMultipartType>(multiType),
+              "version", version);
   } else {
     log_debug("normalize", type, "version", version);
   }
@@ -641,7 +641,7 @@ void Normalize::normalizeMultipartReplyV3() {
   } else if (replyType == OFPMP_GROUP) {
     while (offset < buf_.size())
       normalizeMPGroupStatsReplyV3(&offset, 32);
-    assert(offset == buf_.size());    
+    assert(offset == buf_.size());
   } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyV4();
   }

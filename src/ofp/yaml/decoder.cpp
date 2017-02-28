@@ -121,7 +121,7 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
       if (msg_->version() < OFP_VERSION_6) {
         return decode<PacketOut>(io, msg_);
       } else {
-        return decode<PacketOutV6>(io,msg_);
+        return decode<PacketOutV6>(io, msg_);
       }
     case SetConfig::type():
       return decode<SetConfig>(io, msg_);

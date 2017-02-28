@@ -27,7 +27,6 @@ bool PacketOutV6::validateInput(Validation *context) const {
   if (remainingLength < actionsLen_) {
     log_info("PacketOutv6: invalid actionsLen");
     return false;
-
   }
   if (!actions().validateInput(context)) {
     log_info("PacketOutV6: invalid actions");
@@ -43,7 +42,8 @@ ActionRange PacketOutV6::actions() const {
 }
 
 ByteRange PacketOutV6::enetFrame() const {
-  size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength() + actionsLen_;
+  size_t offset =
+      SizeWithoutMatchHeader + matchHeader_.paddedLength() + actionsLen_;
   return SafeByteRange(this, header_.length(), offset);
 }
 
@@ -60,7 +60,6 @@ UInt32 PacketOutV6Builder::send(Writable *channel) {
   // pad it to a multiple of 8 bytes.
   size_t msgMatchLen = PacketOutV6::UnpaddedSizeWithMatchHeader + match_.size();
   size_t msgMatchLenPadded = PadLength(msgMatchLen);
-
 
   size_t actionSize = actions_.toRange().writeSize(channel);
   size_t msgLen = msgMatchLenPadded + actionSize + enetFrame_.size();

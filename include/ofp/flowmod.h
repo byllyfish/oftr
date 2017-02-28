@@ -89,7 +89,7 @@ class FlowModBuilder {
   void setOutGroup(GroupNumber outGroup) { msg_.outGroup_ = outGroup; }
   void setFlags(OFPFlowModFlags flags) { msg_.flags_ = flags; }
   void setImportance(UInt16 importance) { msg_.importance_ = importance; }
-  
+
   MatchBuilder &match() { return match_; }
 
   void setMatch(const MatchBuilder &match) { match_ = match; }

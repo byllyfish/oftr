@@ -174,7 +174,8 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   }
 
   if (totalLen < length) {
-    log_debug("MatchPacket: IPv4 total length < remaining length", totalLen, length);
+    log_debug("MatchPacket: IPv4 total length < remaining length", totalLen,
+              length);
     length = totalLen;
   }
 
@@ -195,7 +196,7 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   }
 
   match_.add(NXM_NX_IP_TTL{ip->ttl});
-  
+
   pkt += hdrLen;
   length -= hdrLen;
   offset_ += hdrLen;

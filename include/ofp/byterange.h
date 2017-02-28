@@ -56,10 +56,11 @@ inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset) {
 }
 
 /// Return bytes [offset:offset + size) from given byte range, or empty buffer.
-inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset, size_t size) {
+inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset,
+                               size_t size) {
   // assert(length >= offset + size);
   return (length >= offset + size) ? ByteRange{BytePtr(data) + offset, size}
-                                    : ByteRange{};
+                                   : ByteRange{};
 }
 
 inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,

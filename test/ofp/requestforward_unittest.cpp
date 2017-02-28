@@ -84,11 +84,9 @@ TEST(requestforward, invalid_message) {
   const RequestForward *m = RequestForward::cast(&message);
   ASSERT_TRUE(m);
 
-  // RequestForward does *not* validate the inner message contents, just its 
+  // RequestForward does *not* validate the inner message contents, just its
   // length.
 
   ByteRange req = m->request();
-  EXPECT_HEX(
-      "060F000800000000",
-      req.data(), req.size());
+  EXPECT_HEX("060F000800000000", req.data(), req.size());
 }

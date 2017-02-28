@@ -5,9 +5,9 @@
 #define OFP_YAML_YPACKETOUT_H_
 
 #include "ofp/matchpacketbuilder.h"
+#include "ofp/oxmfields.h"
 #include "ofp/packetout.h"
 #include "ofp/packetoutv6.h"
-#include "ofp/oxmfields.h"
 
 namespace llvm {
 namespace yaml {

@@ -47,7 +47,8 @@ class PacketOutV6
 
 static_assert(sizeof(PacketOutV6) == 24, "Unexpected size.");
 static_assert(IsStandardLayout<PacketOutV6>(), "Expected standard layout.");
-static_assert(IsTriviallyCopyable<PacketOutV6>(), "Expected trivially copyable.");
+static_assert(IsTriviallyCopyable<PacketOutV6>(),
+              "Expected trivially copyable.");
 
 class PacketOutV6Builder {
  public:
