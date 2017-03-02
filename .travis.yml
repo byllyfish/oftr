@@ -42,6 +42,7 @@ before_deploy:
   - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/oftr
   - ZIPFILE=oftr-master-${TRAVIS_OS_NAME}.zip
   - if [ $TRAVIS_OS_NAME == linux ]; then strip --strip-debug ${TOOLDIR}/oftr; fi
+  - openssl dgst -sha256 "${TOOLDIR}/oftr"
   - pushd ${TOOLDIR}; zip ${ZIPFILE} oftr; popd
 
 deploy:

@@ -20,9 +20,12 @@ bool MPGroupStats::validateInput(Validation *context) const {
 }
 
 void MPGroupStatsBuilder::write(Writable *channel) {
-  msg_.length_ = UInt16_narrow_cast(sizeof(msg_) + bucketStats_.size());
+  UInt8 version = channel->version();
+  size_t partLen = (version > OFP_VERSION_3) ? sizeof(msg_) : sizeof(msg_) - 8;
 
-  channel->write(&msg_, sizeof(msg_));
+  msg_.length_ = UInt16_narrow_cast(partLen + bucketStats_.size());
+
+  channel->write(&msg_, partLen);
   channel->write(bucketStats_.data(), bucketStats_.size());
   channel->flush();
 }

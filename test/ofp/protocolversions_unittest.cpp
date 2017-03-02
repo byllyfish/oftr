@@ -9,15 +9,15 @@ using namespace ofp;
 TEST(protocolversions, defaultConstructor) {
   ProtocolVersions versions{ProtocolVersions::All};
 
-  EXPECT_EQ(0x05, versions.highestVersion());
-  EXPECT_EQ(0x3E, versions.bitmap());
+  EXPECT_EQ(OFP_VERSION_6, versions.highestVersion());
+  EXPECT_EQ(0x7E, versions.bitmap());
 
-  std::vector<UInt8> v{1, 2, 3, 4, 5};
+  std::vector<UInt8> v{1, 2, 3, 4, 5, 6};
   EXPECT_EQ(v, versions.versions());
 
   EXPECT_FALSE(versions.empty());
 
-  EXPECT_EQ(0x3E, ProtocolVersions::VersionBitmapAll);
+  EXPECT_EQ(0x7E, ProtocolVersions::VersionBitmapAll);
   EXPECT_EQ(0x00, ProtocolVersions::VersionBitmapNone);
 }
 
@@ -48,14 +48,14 @@ TEST(protocolversions, fromBitmap) {
 TEST(protocolversions, fromBitmapAll) {
   ProtocolVersions versions = ProtocolVersions::All;
 
-  EXPECT_EQ(0x05, versions.highestVersion());
-  EXPECT_EQ(0x3E, versions.bitmap());
+  EXPECT_EQ(OFP_VERSION_6, versions.highestVersion());
+  EXPECT_EQ(0x7E, versions.bitmap());
   EXPECT_FALSE(versions.empty());
 
   ProtocolVersions other = ProtocolVersions::All;
 
   other = other.intersection(versions);
-  EXPECT_EQ(0x3E, other.bitmap());
+  EXPECT_EQ(0x7E, other.bitmap());
 }
 
 TEST(protocolversions, isOnlyOneVersionSupported) {

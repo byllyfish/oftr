@@ -15587,7 +15587,7 @@ Error: Only 1 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_19_00015.fail:
 Error: Only 31 bytes read of message body. Expected to read 32 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_19_00016.fail
-Error: Decode failed: Range size is not multiple of element size
+Error: Decode failed: Multipart type is not supported for this protocol version
 [ByteList size=191 data=021300BF6D602C42000300000000000015000000000000006D537651425969637443766F4561436C63697A46696846666D5A4D7564654F63386811B6B5CDAC67A44579B17DE33EE150959733720F0F995D7441BF0A2E99D27F3D7AD898B73A908E9A4408B0B938E95E000000000000006457547870654E71454A6765487161664D4476564D6355496C47745578576E41F795375D91E122FDED89172F82A4786448A2E86B7F37D75C9A40331001B6AA99BF9EB14AD8947B0EB62C9F6658A8AC]
 Filename: external/openflow-messages/v1_1/rep/rep_19_00016.fail:
 Error: Only 1 bytes read of message header. Expected to read 8 bytes.
@@ -17793,7 +17793,7 @@ Filename: external/openflow-messages/v1_2/rep/rep_19_00045.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=96 data=031300600000B26E000600010000000000600000000000590000093700000000000000000023F420000000000166F0C3000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C]
 Filename: external/openflow-messages/v1_2/rep/rep_19_00046.fail
-Error: Decode failed: Range size is not multiple of element size
+Error: Decode failed: Range element size is too small
 [ByteList size=96 data=031300600000B26E000600010000000000400000000000590000093700000000000000000023F420000000000166F0C3000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C000000000001F55A0000000000130C6C]
 Filename: external/openflow-messages/v1_2/rep/rep_19_00047.fail:
 Error: Only 200 bytes read of message body. Expected to read 216 bytes.

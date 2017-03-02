@@ -32,6 +32,7 @@ msg:
   out_port: !opt PortNumber         # default=ANY
   out_group: !opt GroupNumber       # default=ANY
   flags: !opt [FlowModFlags]        # default=[]
+  importance: !optout UInt16        # default=0, min_version=6
   match: !opt [Field]               # default=[]
   instructions: !opt [Instruction]  # default=[]
 )""";
@@ -50,6 +51,9 @@ struct MappingTraits<ofp::FlowMod> {
     io.mapRequired("out_port", msg.outPort_);
     io.mapRequired("out_group", msg.outGroup_);
     io.mapRequired("flags", msg.flags_);
+    if (msg.header_.version() >= ofp::OFP_VERSION_6) {
+      io.mapRequired("importance", msg.importance_);
+    }
 
     ofp::Match m = msg.match();
     io.mapRequired("match", m);
@@ -73,6 +77,7 @@ struct MappingTraits<ofp::FlowModBuilder> {
     io.mapOptional("out_port", msg.msg_.outPort_, ofp::OFPP_ANY);
     io.mapOptional("out_group", msg.msg_.outGroup_, ofp::OFPG_ANY);
     io.mapOptional("flags", msg.msg_.flags_);
+    io.mapOptional("importance", msg.msg_.importance_);
     io.mapOptional("match", msg.match_);
     io.mapOptional("instructions", msg.instructions_);
   }

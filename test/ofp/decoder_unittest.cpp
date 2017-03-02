@@ -766,30 +766,6 @@ TEST(decoder, flowmodv1) {
       "IPV4_DST\n          value:           192.168.2.1\n...\n";
 
   testDecodeEncode(hex, yaml);
-#if 0
-  auto s = HexToRawData(hex);
-
-  Message msg{s.data(), s.size()};
-  msg.normalize();
-  EXPECT_EQ(0xA0, msg.size());
-  EXPECT_HEX(
-      "010E00A0000000011111111111111111FFFFFFFFFFFFFFFF00445555666677778"
-      "88888880000999900000000BBBB0000000000580000CCCC000003F60000000000"
-      "00000000000000000000000000000000000000000000000800000000000000000"
-      "00000C0A80101FFFFFFFF00000000000000000000000000000000000000000000"
-      "00000000000000040018000000000019001080001804C0A8020100000000",
-      msg.data(), msg.size());
-
-  Decoder decoder{&msg};
-
-  EXPECT_EQ("", decoder.error());
-  EXPECT_EQ(yaml, decoder.result());
-
-  Encoder encoder{decoder.result()};
-
-  EXPECT_EQ("", encoder.error());
-  EXPECT_HEX(hex, encoder.data(), encoder.size());
-#endif  // 0
 }
 
 TEST(decoder, flowmod1_2) {
@@ -819,6 +795,24 @@ TEST(decoder, flowmod1_2) {
       "ICMPV4_CODE\n          value:           0xEE\n        - action:     "
       " "
       "    COPY_TTL_OUT\n...\n");
+}
+
+TEST(decoder, flowmodv6) {
+  testDecodeEncode(
+      "060E00680000000111111111111111102222222222222220304055506660777088888880"
+      "99999990AAAAAAA0BBB1CCC10001003280000A0286DD8000341000000000000000000000"
+      "FFFFC0A800018000361020000000000000000000000000000001000000000000",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x06\nmsg:             \n  cookie:          0x1111111111111110\n  "
+      "cookie_mask:     0x2222222222222220\n  table_id:        0x30\n  "
+      "command:         0x40\n  idle_timeout:    0x5550\n  hard_timeout:    "
+      "0x6660\n  priority:        0x7770\n  buffer_id:       0x88888880\n  "
+      "out_port:        0x99999990\n  out_group:       0xAAAAAAA0\n  flags:    "
+      "       [ SEND_FLOW_REM, NO_BYT_COUNTS, '0x0000BBA0' ]\n  importance:    "
+      "  0xCCC1\n  match:           \n    - field:           ETH_TYPE\n      "
+      "value:           0x86DD\n    - field:           IPV6_SRC\n      value:  "
+      "         '::ffff:192.168.0.1'\n    - field:           IPV6_DST\n      "
+      "value:           '2000::1'\n  instructions:    \n...\n");
 }
 
 TEST(decoder, packetinv4) {
@@ -909,29 +903,26 @@ TEST(decoder, packetoutv1) {
       "00000A000002\n...\n";
 
   testDecodeEncode(hex, yaml);
+}
 
-#if 0
-  auto s = HexToRawData(hex);
-
-  Message msg{s.data(), s.size()};
-  msg.normalize();
-  EXPECT_HEX(
-      "010D0062000000013333333300004444002000000000000000000010000000050"
-      "0140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000"
-      "000001080600010800060400010000000000010A0000010000000000000A00000"
-      "2",
-      msg.data(), msg.size());
-
-  Decoder decoder{&msg};
-
-  EXPECT_EQ("", decoder.error());
-  EXPECT_EQ(yaml, decoder.result().str());
-
-  Encoder encoder{decoder.result()};
-
-  EXPECT_EQ("", encoder.error());
-  EXPECT_HEX(hex, encoder.data(), encoder.size());
-#endif  // 0
+TEST(decoder, packetoutv6) {
+  testDecodeEncode(
+      "060D007A0000000133333333002000000001001A80000A02080080001604C0A801028000"
+      "000444444444000000000000000000100000000500140000000000000019001080001804"
+      "C0A8010100000000FFFFFFFFFFFF00000000000108060001080006040001000000000001"
+      "0A0000010000000000000A000002",
+      "---\ntype:            PACKET_OUT\nxid:             0x00000001\nversion: "
+      "        0x06\nmsg:             \n  buffer_id:       0x33333333\n  "
+      "in_port:         0x44444444\n  match:           \n    - field:          "
+      " ETH_TYPE\n      value:           0x0800\n    - field:           "
+      "IPV4_SRC\n      value:           192.168.1.2\n    - field:           "
+      "IN_PORT\n      value:           0x44444444\n  actions:         \n    - "
+      "action:          OUTPUT\n      port_no:         0x00000005\n      "
+      "max_len:         0x0014\n    - action:          SET_FIELD\n      field: "
+      "          IPV4_DST\n      value:           192.168.1.1\n  data:         "
+      "   "
+      "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
+      "00000A000002\n...\n");
 }
 
 TEST(decoder, setconfigv4) {
@@ -1971,4 +1962,35 @@ TEST(decoder, packet_in_nonzero_padding) {
       "ETH_SRC\n      value:           '42:e5:0b:b5:1f:f5'\n    - field:       "
       "    IP_ECN\n      value:           0x00\n  data:            "
       "DA1DFCEC1D9942E50BB51FF50800\n...\n");
+}
+
+TEST(decoder, ofmp_groupstats_v3) {
+  testDecodeEncode(
+      "031300400000000000060000000000000030000000000001000000020000000010000000"
+      "00009999200000000000AAAA300000000000BBBB400000000000CCCC",
+      "---\ntype:            REPLY.GROUP\nflags:           [  ]\nxid:          "
+      "   0x00000000\nversion:         0x03\nmsg:             \n  - group_id:  "
+      "      0x00000001\n    ref_count:       0x00000002\n    packet_count:    "
+      "0x1000000000009999\n    byte_count:      0x200000000000AAAA\n    "
+      "duration:        0\n    bucket_stats:    \n      - packet_count:    "
+      "0x300000000000BBBB\n        byte_count:      0x400000000000CCCC\n...\n");
+}
+
+TEST(decoder, ofmp_groupstats_v3_2) {
+  testDecodeEncode(
+      "031300700000000000060000000000000030000000000001000000020000000010000000"
+      "00009999200000000000AAAA300000000000BBBB400000000000CCCC0030000000000001"
+      "00000002000000001000000000009999200000000000AAAA300000000000BBBB40000000"
+      "0000CCCC",
+      "---\ntype:            REPLY.GROUP\nflags:           [  ]\nxid:          "
+      "   0x00000000\nversion:         0x03\nmsg:             \n  - group_id:  "
+      "      0x00000001\n    ref_count:       0x00000002\n    packet_count:    "
+      "0x1000000000009999\n    byte_count:      0x200000000000AAAA\n    "
+      "duration:        0\n    bucket_stats:    \n      - packet_count:    "
+      "0x300000000000BBBB\n        byte_count:      0x400000000000CCCC\n  - "
+      "group_id:        0x00000001\n    ref_count:       0x00000002\n    "
+      "packet_count:    0x1000000000009999\n    byte_count:      "
+      "0x200000000000AAAA\n    duration:        0\n    bucket_stats:    \n     "
+      " - packet_count:    0x300000000000BBBB\n        byte_count:      "
+      "0x400000000000CCCC\n...\n");
 }

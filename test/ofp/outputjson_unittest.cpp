@@ -51,7 +51,7 @@ TEST(outputjson, hello) {
 
   const char *expected =
       "{\"type\":\"HELLO\",\"xid\":1,\"version\":"
-      "5,\"msg\":{\"versions\":[1,2,3,4,5]}}";
+      "6,\"msg\":{\"versions\":[1,2,3,4,5,6]}}";
   EXPECT_EQ(expected, decode.result().str());
 }
 
@@ -68,7 +68,7 @@ TEST(outputjson, flowmod) {
   flowMod.setMatch(match);
   flowMod.setInstructions(instructions);
 
-  MemoryChannel channel;
+  MemoryChannel channel{OFP_VERSION_5};
   flowMod.send(&channel);
 
   Message msg{channel.data(), channel.size()};
