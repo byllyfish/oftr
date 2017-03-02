@@ -1,6 +1,6 @@
 = Changelog
 
-== Version 0.25 (28 February 2017)
+== Version 0.25 (2 March 2017)
 
 - Support OpenFlow 1.5 FlowMod and PacketOut messages.
 - Fix error reporting for RequestForward messages with malformed bodies.
