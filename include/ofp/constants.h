@@ -41,9 +41,10 @@ enum {
   OFP_VERSION_3 = 0x03,
   OFP_VERSION_4 = 0x04,
   OFP_VERSION_5 = 0x05,
+  OFP_VERSION_6 = 0x06,
 
   // The last supported version.
-  OFP_VERSION_LAST = OFP_VERSION_5,
+  OFP_VERSION_LAST = OFP_VERSION_6,
   OFP_VERSION_MAX_ALLOWED = 0x09
 };
 

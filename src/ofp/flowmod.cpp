@@ -7,10 +7,6 @@
 
 using namespace ofp;
 
-Match FlowMod::match() const {
-  return Match{&matchHeader_};
-}
-
 InstructionRange FlowMod::instructions() const {
   size_t offset = SizeWithoutMatchHeader + matchHeader_.paddedLength();
   return InstructionRange{SafeByteRange(this, header_.length(), offset)};

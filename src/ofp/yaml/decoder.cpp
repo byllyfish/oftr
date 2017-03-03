@@ -118,7 +118,11 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
     case PacketIn::type():
       return decode<PacketIn>(io, msg_);
     case PacketOut::type():
-      return decode<PacketOut>(io, msg_);
+      if (msg_->version() < OFP_VERSION_6) {
+        return decode<PacketOut>(io, msg_);
+      } else {
+        return decode<PacketOutV6>(io, msg_);
+      }
     case SetConfig::type():
       return decode<SetConfig>(io, msg_);
     case PortStatus::type():
@@ -172,6 +176,7 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
 
   auto data = m->request();
   Message message(data.data(), data.size());
+  message.setInfo(msg->info());
   message.normalize();
 
   DecodeRecursively(io, "msg", &message);
@@ -180,6 +185,9 @@ bool Decoder::decodeRequestForward(llvm::yaml::IO &io, const Message *msg) {
 
 void ofp::yaml::DecodeRecursively(llvm::yaml::IO &io, const char *key,
                                   const Message *msg) {
-  Decoder decoder{msg, GetDecoderFromContext(io)};
+  Decoder *outerDecoder = GetDecoderFromContext(io);
+  Decoder decoder{msg, outerDecoder};
   io.mapRequired(key, decoder);
+
+  outerDecoder->setError(decoder.error());
 }

@@ -370,6 +370,7 @@ Message/FlowMod:
     out_port: !opt PortNumber         # default=ANY
     out_group: !opt GroupNumber       # default=ANY
     flags: !opt [FlowModFlags]        # default=[]
+    importance: !optout UInt16        # default=0, min_version=6
     match: !opt [Field]               # default=[]
     instructions: !opt [Instruction]  # default=[]
   

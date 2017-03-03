@@ -37,7 +37,7 @@ TEST(message, normalize) {
   EXPECT_HEX(hexAfter, msg.data(), msg.size());
 }
 
-TEST(message, transmogrify_flow_mod) {
+TEST(message, normalize_flow_mod) {
   const char *hexBefore =
       "010E 0048 0000 0060 0010 001F 0000 0000 0000 0000 "
       "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 "

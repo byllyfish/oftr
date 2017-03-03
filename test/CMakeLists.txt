@@ -62,6 +62,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/oxmvalue_unittest.cpp
 	ofp/packetin_unittest.cpp
 	ofp/packetout_unittest.cpp
+	ofp/packetoutv6_unittest.cpp
 	ofp/padding_unittest.cpp
 	ofp/pkt_unittest.cpp
 	ofp/port_unittest.cpp

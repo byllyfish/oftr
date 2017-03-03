@@ -1442,6 +1442,41 @@ TEST(encoder, flowmodv1_2) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowmodv6) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         6
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111110
+        cookie_mask:     0x2222222222222220
+        table_id:        0x30
+        command:         0x40
+        idle_timeout:    0x5550
+        hard_timeout:    0x6660
+        priority:        0x7770
+        buffer_id:       0x88888880
+        out_port:        0x99999990
+        out_group:       0xAAAAAAA0
+        flags:           [ '0xBBB1' ]
+        importance:      0xCCC1
+        match:           
+          - field:           IPV6_SRC
+            value:           ::ffff:C0A8:0001
+          - field:           IPV6_DST
+            value:           2000::1
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x068, encoder.size());
+  EXPECT_HEX(
+      "060E00680000000111111111111111102222222222222220304055506660777088888880"
+      "99999990AAAAAAA0BBB1CCC10001003280000A0286DD8000341000000000000000000000"
+      "FFFFC0A800018000361020000000000000000000000000000001000000000000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, packetinv1) {
   const char *input = R"""(
       type:            PACKET_IN
@@ -1579,6 +1614,38 @@ TEST(encoder, packetoutv4) {
       "0140000000000000019001080001804C0A8010100000000FFFFFFFFFFFF000000"
       "000001080600010800060400010000000000010A0000010000000000000A00000"
       "2",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, packetoutv6) {
+  const char *input = R"""(
+      type:            PACKET_OUT
+      version:         6
+      xid:             1
+      msg:             
+        buffer_id:       0x33333333
+        in_port:         0x44444444
+        match:
+          - field: IPV4_SRC
+            value: 192.168.1.2
+        actions:
+          - action: OUTPUT
+            port_no: 5
+            max_len: 20
+          - action: SET_FIELD
+            field:  IPV4_DST
+            value:  192.168.1.1
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x07A, encoder.size());
+  EXPECT_HEX(
+      "060D007A0000000133333333002000000001001A80000A02080080001604C0A801028000"
+      "000444444444000000000000000000100000000500140000000000000019001080001804"
+      "C0A8010100000000FFFFFFFFFFFF00000000000108060001080006040001000000000001"
+      "0A0000010000000000000A000002",
       encoder.data(), encoder.size());
 }
 
@@ -3355,4 +3422,64 @@ TEST(encoder, raw_message) {
   EXPECT_EQ(16, encoder.size());
   EXPECT_HEX("0406001000000001FF00FF00FF00FF00", encoder.data(),
              encoder.size());
+}
+
+TEST(encoder, ofmp_groupstats_v3) {
+  const char *input = R"""(
+      type:            REPLY.GROUP
+      xid:             0x00000000
+      version:         0x03
+      msg:             
+        - group_id:        0x00000001
+          ref_count:       0x00000002
+          packet_count:    0x1000000000009999
+          byte_count:      0x200000000000AAAA
+          duration:        0
+          bucket_stats:    
+            - packet_count:    0x300000000000BBBB
+              byte_count:      0x400000000000CCCC
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x40, encoder.size());
+  EXPECT_HEX(
+      "031300400000000000060000000000000030000000000001000000020000000010000000"
+      "00009999200000000000AAAA300000000000BBBB400000000000CCCC",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_groupstats_v3_2) {
+  const char *input = R"""(
+      type:            REPLY.GROUP
+      xid:             0x00000000
+      version:         0x03
+      msg:             
+        - group_id:        0x00000001
+          ref_count:       0x00000002
+          packet_count:    0x1000000000009999
+          byte_count:      0x200000000000AAAA
+          duration:        0
+          bucket_stats:    
+            - packet_count:    0x300000000000BBBB
+              byte_count:      0x400000000000CCCC
+        - group_id:        0x00000001
+          ref_count:       0x00000002
+          packet_count:    0x1000000000009999
+          byte_count:      0x200000000000AAAA
+          duration:        0
+          bucket_stats:    
+            - packet_count:    0x300000000000BBBB
+              byte_count:      0x400000000000CCCC
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x70, encoder.size());
+  EXPECT_HEX(
+      "031300700000000000060000000000000030000000000001000000020000000010000000"
+      "00009999200000000000AAAA300000000000BBBB400000000000CCCC0030000000000001"
+      "00000002000000001000000000009999200000000000AAAA300000000000BBBB40000000"
+      "0000CCCC",
+      encoder.data(), encoder.size());
 }
