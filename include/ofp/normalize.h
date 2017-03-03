@@ -47,6 +47,7 @@ class Normalize {
   void normalizeMPPortOrQueueStatsReplyV1(size_t *start, size_t len);
   void normalizeMPPortStatsRequestV1();
   void normalizeMPPortOrQueueStatsReplyV3(size_t *start, size_t len);
+  void normalizeMPGroupStatsReplyV3(size_t *start, size_t len);
   void normalizeMPPortDescReplyV1();
   void normalizeMPPortDescReplyV4();
   void normalizeMPPortStatsReplyV1(size_t *start);

@@ -67,6 +67,7 @@ hw_addr
 hw_desc
 id
 idle_timeout
+importance
 in_phy_port
 in_port
 instruction

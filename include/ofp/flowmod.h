@@ -30,8 +30,9 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   PortNumber outPort() const { return outPort_; }
   GroupNumber outGroup() const { return outGroup_; }
   OFPFlowModFlags flags() const { return flags_; }
+  UInt16 importance() const { return importance_; }
 
-  Match match() const;
+  Match match() const { return Match{&matchHeader_}; }
   InstructionRange instructions() const;
 
   bool validateInput(Validation *context) const;
@@ -49,7 +50,7 @@ class FlowMod : public ProtocolMsg<FlowMod, OFPT_FLOW_MOD, 56, 65528> {
   PortNumber outPort_ = 0;
   GroupNumber outGroup_ = 0;
   Big<OFPFlowModFlags> flags_ = OFPFF_NONE;
-  Padding<2> pad_1;
+  Big16 importance_ = 0;
 
   MatchHeader matchHeader_;
   Padding<4> pad_2;
@@ -87,6 +88,7 @@ class FlowModBuilder {
   void setOutPort(PortNumber outPort) { msg_.outPort_ = outPort; }
   void setOutGroup(GroupNumber outGroup) { msg_.outGroup_ = outGroup; }
   void setFlags(OFPFlowModFlags flags) { msg_.flags_ = flags; }
+  void setImportance(UInt16 importance) { msg_.importance_ = importance; }
 
   MatchBuilder &match() { return match_; }
 

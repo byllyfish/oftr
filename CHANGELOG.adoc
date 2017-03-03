@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.25 (2 March 2017)
+
+- Support OpenFlow 1.5 FlowMod and PacketOut messages.
+- Fix error reporting for RequestForward messages with malformed bodies.
+- Support OpenFlow 1.2 Group multipart reply message.
+- Fix error message: Table Stats multipart message is not implemented for OpenFlow 1.1 or 1.2.
+
 == Version 0.24 (17 February 2017)
 
 - Changed name of tool to "oftr".

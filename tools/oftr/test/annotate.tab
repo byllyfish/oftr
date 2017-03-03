@@ -887,12 +887,12 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.AGGREGATE.v2	msg.flow_count	uint32	True			True
 2	REPLY.AGGREGATE.v2	msg.packet_count	uint64	True			True
 2	REQUEST.TABLE.v2	msg	object	False			
-2	REPLY.TABLE.v2	msg	array	True			
-2	REPLY.TABLE.v2	msg.0	object	False			
-2	REPLY.TABLE.v2	msg.0.active_count	uint32	True			
-2	REPLY.TABLE.v2	msg.0.lookup_count	uint64	True			
-2	REPLY.TABLE.v2	msg.0.matched_count	uint64	True			
-2	REPLY.TABLE.v2	msg.0.table_id	ALL	True			
+2	REPLY.TABLE.v2	msg	array	True			ERROR
+2	REPLY.TABLE.v2	msg.0	object	True			ERROR
+2	REPLY.TABLE.v2	msg.0.active_count	uint32	True			ERROR
+2	REPLY.TABLE.v2	msg.0.lookup_count	uint64	True			ERROR
+2	REPLY.TABLE.v2	msg.0.matched_count	uint64	True			ERROR
+2	REPLY.TABLE.v2	msg.0.table_id	ALL	True			ERROR
 2	REQUEST.PORT_STATS.v2	msg	object	True			
 2	REQUEST.PORT_STATS.v2	msg.port_no	CONTROLLER	True			
 2	REPLY.PORT_STATS.v2	msg	array	True			
@@ -941,17 +941,17 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.QUEUE_DESC.v2	msg.0.queue_id	ALL	True			ERROR
 2	REQUEST.GROUP.v2	msg	object	True			
 2	REQUEST.GROUP.v2	msg.group_id	ANY	True			
-2	REPLY.GROUP.v2	msg	array	True			
-2	REPLY.GROUP.v2	msg.0	object	False			
-2	REPLY.GROUP.v2	msg.0.bucket_stats	array	True			
-2	REPLY.GROUP.v2	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64		
-2	REPLY.GROUP.v2	msg.0.bucket_stats.0.byte_count	uint64	True			True
-2	REPLY.GROUP.v2	msg.0.bucket_stats.0.packet_count	uint64	True			True
-2	REPLY.GROUP.v2	msg.0.byte_count	uint64	True			True
-2	REPLY.GROUP.v2	msg.0.duration	4294967295.xffffffff	True			
-2	REPLY.GROUP.v2	msg.0.group_id	ANY	True			
-2	REPLY.GROUP.v2	msg.0.packet_count	uint64	True			True
-2	REPLY.GROUP.v2	msg.0.ref_count	uint32	True			True
+2	REPLY.GROUP.v2	msg	array	True			ERROR
+2	REPLY.GROUP.v2	msg.0	object	False			ERROR
+2	REPLY.GROUP.v2	msg.0.bucket_stats	array	True			ERROR
+2	REPLY.GROUP.v2	msg.0.bucket_stats.0	object	True			ERROR
+2	REPLY.GROUP.v2	msg.0.bucket_stats.0.byte_count	uint64	True			ERROR
+2	REPLY.GROUP.v2	msg.0.bucket_stats.0.packet_count	uint64	True			ERROR
+2	REPLY.GROUP.v2	msg.0.byte_count	uint64	True			ERROR
+2	REPLY.GROUP.v2	msg.0.duration	4294967295.xffffffff	True			ERROR
+2	REPLY.GROUP.v2	msg.0.group_id	ANY	True			ERROR
+2	REPLY.GROUP.v2	msg.0.packet_count	uint64	True			ERROR
+2	REPLY.GROUP.v2	msg.0.ref_count	uint32	True			ERROR
 2	REQUEST.GROUP_DESC.v2	msg	object	False			
 2	REPLY.GROUP_DESC.v2	msg	array	True			
 2	REPLY.GROUP_DESC.v2	msg.0	object	False			
@@ -1529,12 +1529,12 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.AGGREGATE.v3	msg.flow_count	uint32	True			True
 3	REPLY.AGGREGATE.v3	msg.packet_count	uint64	True			True
 3	REQUEST.TABLE.v3	msg	object	False			
-3	REPLY.TABLE.v3	msg	array	True			
-3	REPLY.TABLE.v3	msg.0	object	False			
-3	REPLY.TABLE.v3	msg.0.active_count	uint32	True			
-3	REPLY.TABLE.v3	msg.0.lookup_count	uint64	True			
-3	REPLY.TABLE.v3	msg.0.matched_count	uint64	True			
-3	REPLY.TABLE.v3	msg.0.table_id	ALL	True			
+3	REPLY.TABLE.v3	msg	array	True			ERROR
+3	REPLY.TABLE.v3	msg.0	object	True			ERROR
+3	REPLY.TABLE.v3	msg.0.active_count	uint32	True			ERROR
+3	REPLY.TABLE.v3	msg.0.lookup_count	uint64	True			ERROR
+3	REPLY.TABLE.v3	msg.0.matched_count	uint64	True			ERROR
+3	REPLY.TABLE.v3	msg.0.table_id	ALL	True			ERROR
 3	REQUEST.PORT_STATS.v3	msg	object	True			
 3	REQUEST.PORT_STATS.v3	msg.port_no	CONTROLLER	True			
 3	REPLY.PORT_STATS.v3	msg	array	True			
@@ -1586,11 +1586,11 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.GROUP.v3	msg	array	True			
 3	REPLY.GROUP.v3	msg.0	object	False			
 3	REPLY.GROUP.v3	msg.0.bucket_stats	array	True			
-3	REPLY.GROUP.v3	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64		
+3	REPLY.GROUP.v3	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64,msg.0.duration=0		
 3	REPLY.GROUP.v3	msg.0.bucket_stats.0.byte_count	uint64	True			True
 3	REPLY.GROUP.v3	msg.0.bucket_stats.0.packet_count	uint64	True			True
 3	REPLY.GROUP.v3	msg.0.byte_count	uint64	True			True
-3	REPLY.GROUP.v3	msg.0.duration	4294967295.xffffffff	True			
+3	REPLY.GROUP.v3	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
 3	REPLY.GROUP.v3	msg.0.group_id	ANY	True			
 3	REPLY.GROUP.v3	msg.0.packet_count	uint64	True			True
 3	REPLY.GROUP.v3	msg.0.ref_count	uint32	True			True
