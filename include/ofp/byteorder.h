@@ -89,7 +89,7 @@ class BigEndianAligned {
   using NativeType = Type;
 
   constexpr BigEndianAligned() : n_{static_cast<Type>(0)} {}
-  constexpr BigEndianAligned(Type n) : n_{HostSwapByteOrder(n)} {}
+  constexpr BigEndianAligned(Type n, bool bigEndian = false) : n_{bigEndian ? n : HostSwapByteOrder(n)} {}
   constexpr BigEndianAligned(const BigEndianAligned &n) = default;
 
   constexpr operator Type() const { return HostSwapByteOrder(n_); }

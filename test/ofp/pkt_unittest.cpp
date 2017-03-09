@@ -85,3 +85,61 @@ TEST(pkt, ipV6Hdr) {
   auto fail = pkt::IPv6Hdr::cast(buf.data(), buf.size() - 1);
   EXPECT_EQ(fail, nullptr);
 }
+
+TEST(pkt, checksum) {
+  ByteList buf{HexToRawData("00 01 02 03 04 05 00")};
+
+  // Even starting ptr. (first byte zero)
+  EXPECT_EQ(pkt::Checksum({buf.data(), 0UL}), 65535);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 1}), 65535);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 2}), 65534);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 3}), 65022);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 4}), 65019);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 5}), 63995);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 6}), 63990);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 7}), 63990);
+
+  // Odd starting ptr. (first byte zero)
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 0UL}), 65535);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 1}), 65279);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 2}), 65277);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 3}), 64509);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 4}), 64505);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 5}), 63225);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 6}), 63225);
+}
+
+TEST(pkt, checksum2) {
+  ByteList buf{HexToRawData("01 02 03 04 05 00")};
+
+  // Even starting ptr.
+  EXPECT_EQ(pkt::Checksum({buf.data(), 1}), 65279);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 2}), 65277);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 3}), 64509);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 4}), 64505);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 5}), 63225);
+  EXPECT_EQ(pkt::Checksum({buf.data(), 6}), 63225);
+
+  // Odd starting ptr.
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 1}), 65023);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 2}), 65020);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 3}), 63996);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 4}), 63991);
+  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 5}), 63991);
+}
+
+TEST(pkt, checksum_multi) {
+  ByteList buf{HexToRawData("00 01 02 03 04 05 06 07")};
+
+  UInt16 cksum1 = pkt::Checksum(buf.toRange());
+
+  for (unsigned i = 0; i <= buf.size(); ++i) {
+    EXPECT_EQ(pkt::Checksum({buf.data(), i}, {buf.data() + i, buf.size() - i}), cksum1);
+  }
+
+  UInt16 cksum2 = pkt::Checksum({buf.data() + 1, buf.size() - 1});
+
+  for (unsigned i = 0; i <= buf.size() - 1; ++i) {
+    EXPECT_EQ(pkt::Checksum({buf.data() + 1, i}, {buf.data() + 1 + i, buf.size() - 1 - i}), cksum2);
+  }
+}

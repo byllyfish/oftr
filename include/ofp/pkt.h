@@ -215,6 +215,10 @@ struct LLDPTlv : public Castable<LLDPTlv> {
 static_assert(sizeof(LLDPTlv) == 2, "Unexpected size.");
 static_assert(alignof(LLDPTlv) == 1, "Unexpected alignment.");
 
+/// Compute Internet checksum.
+Big16 Checksum(ByteRange d1);
+Big16 Checksum(ByteRange d1, ByteRange d2);
+
 }  // namespace pkt
 }  // namespace ofp
 

@@ -7,6 +7,7 @@
 
 using namespace ofp;
 
+
 MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
   assert(range.validateInput());
 
@@ -44,6 +45,21 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
       case OFB_ARP_TPA::type():
         arpTpa_ = item.value<OFB_ARP_TPA>();
         break;
+      case OFB_IPV4_SRC::type():
+        ipv4Src_ = item.value<OFB_IPV4_SRC>();
+        break;
+      case OFB_IPV4_DST::type():
+        ipv4Dst_ = item.value<OFB_IPV4_DST>();
+        break;
+      case OFB_IP_PROTO::type():
+        ipProto_ = item.value<OFB_IP_PROTO>();
+        break;
+      case OFB_ICMPV4_CODE::type():
+        icmpCode_ = item.value<OFB_ICMPV4_CODE>();
+        break;
+      case OFB_ICMPV4_TYPE::type():
+        icmpType_ = item.value<OFB_ICMPV4_TYPE>();
+        break;
       case X_LLDP_CHASSIS_ID::type():
         lldpChassisId_ = item.value<X_LLDP_CHASSIS_ID>();
         break;
@@ -71,15 +87,18 @@ void MatchPacketBuilder::build(ByteList *msg, const ByteRange &data) const {
     case DATALINK_LLDP:
       buildLldp(msg);
       break;
-#if 0
-        case DATALINK_IPv4:
-            buildIPv4(msg, data);
-            break;
-#endif  // 0
+        
+    case DATALINK_IPV4:
+      buildIPv4(msg, data);
+      break;
+
+    default:
+      log_error("MatchPacketBuilder: Unknown ethType:", ethType_);
+      break;
   }
 }
 
-void MatchPacketBuilder::buildEthernet(ByteList *msg) const {
+void MatchPacketBuilder::addEthernet(ByteList *msg) const {
   pkt::Ethernet eth;
   eth.dst = ethDst_;
   eth.src = ethSrc_;
@@ -99,8 +118,23 @@ void MatchPacketBuilder::buildEthernet(ByteList *msg) const {
   }
 }
 
+void MatchPacketBuilder::addIPv4(ByteList *msg, size_t length) const {
+    pkt::IPv4Hdr ip;
+
+    std::memset(&ip, 0, sizeof(ip));
+    ip.ver = 0x45;
+    ip.length = UInt16_narrow_cast(sizeof(pkt::IPv4Hdr) + length);
+    ip.ttl = 64;
+    ip.proto = ipProto_;
+    ip.src = ipv4Src_;
+    ip.dst = ipv4Dst_;
+    ip.cksum = pkt::Checksum({&ip, sizeof(ip)});
+
+    msg->add(&ip, sizeof(ip));
+}
+
 void MatchPacketBuilder::buildArp(ByteList *msg) const {
-  buildEthernet(msg);
+  addEthernet(msg);
 
   pkt::Arp arp;
   std::memcpy(&arp.prefix, OFP_ARP_PREFIX_STR, sizeof(arp.prefix));
@@ -114,7 +148,7 @@ void MatchPacketBuilder::buildArp(ByteList *msg) const {
 }
 
 void MatchPacketBuilder::buildLldp(ByteList *msg) const {
-  buildEthernet(msg);
+  addEthernet(msg);
 
   pkt::LLDPTlv tlv1{pkt::LLDPTlv::CHASSIS_ID, lldpChassisId_.size()};
   msg->add(&tlv1, sizeof(tlv1));
@@ -130,41 +164,29 @@ void MatchPacketBuilder::buildLldp(ByteList *msg) const {
   msg->add(&ttl, sizeof(ttl));
 }
 
-#if 0
-
 void MatchPacketBuilder::buildIPv4(ByteList *msg, const ByteRange &data) const {
-    buildEthernet(msg);
+  switch (ipProto_) {
+    case PROTOCOL_ICMP:
+      buildICMPv4(msg, data);
+      break;
 
-    pkt::IPv4Hdr ip;
-    ip->ver = 0x45;
-    ip->tos = 0;
-    ip->length = 0;
-    ip->ident = 0;
-    ip->frag = 0;
-    ip->ttl = 0;
-    ip->proto = ipProto_;
-    ip->cksum = 0;
-    ip->src = ipv4Src_;
-    ip->dst = ipv4Dst_;
-
-    switch (ipProto_) {
-        case IPPROTO_ICMPv4:
-            buildICMPv4(msg, data);
-            break;
-    }
+    default:
+      log_error("MatchPacketBuilder: Unknown IPv4 protocol:", ipProto_);
+      break;
+  }
 }
 
-
 void MatchPacketBuilder::buildICMPv4(ByteList *msg, const ByteRange &data) const {
-    buildEthernet(msg);
-    buildIPv4(msg);
+    addEthernet(msg);
+    addIPv4(msg, sizeof(pkt::ICMPHdr) + data.size());
 
     pkt::ICMPHdr icmp;
-    icmp.type = 0;
-    icmp.code = 0;
-    icmp.cksum = 0;
+    std::memset(&icmp, 0, sizeof(icmp));
+    icmp.type = icmpType_;
+    icmp.code = icmpCode_;
+    icmp.cksum = pkt::Checksum({&icmp, sizeof(icmp)}, data);
 
+    msg->add(&icmp, sizeof(icmp));
     msg->add(data.data(), data.size());
 }
 
-#endif  // 0
