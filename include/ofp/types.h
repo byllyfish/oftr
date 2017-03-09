@@ -20,7 +20,6 @@
 
 // Require C++11 -- std::string storage is guaranteed contiguous.
 static_assert(__cplusplus >= 201103L, "C++11 required");
-static_assert(CHAR_BIT == 8, "Expected 8-bit byte");
 static_assert(std::is_same<std::uint8_t, unsigned char>::value, "Expected std::uint8_t to be implemented using unsigned char");
 
 #if defined(__clang__)
