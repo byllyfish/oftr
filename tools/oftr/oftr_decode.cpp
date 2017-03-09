@@ -7,12 +7,14 @@
 #include <iostream>
 #include "./oftr_util.h"
 #include "llvm/Support/Path.h"
-#include "ofp/demux/messagesource.h"
-#include "ofp/demux/pktsource.h"
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
 #include "ofp/yaml/ybytelist.h"
+#if HAVE_LIBPCAP
+# include "ofp/demux/messagesource.h"
+# include "ofp/demux/pktsource.h"
+#endif 
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -81,11 +83,16 @@ bool Decode::validateCommandLineArguments() {
 
   // If `pktWriteFile_` is specified, open the `pktSinkFile_`.
   if (!pktWriteFile_.empty()) {
+#if HAVE_LIBPCAP
     pktSinkFile_ = ofp::MakeUniquePtr<ofp::demux::PktSink>();
     if (!pktSinkFile_->openFile(pktWriteFile_)) {
       llvm::errs() << "Error: " << pktSinkFile_->error() << '\n';
       return false;
     }
+#else 
+    llvm::errs() << "Error: libpcap not supported\n";
+    return false;
+#endif
   }
 
   // If there are no input files, add "-" to indicate stdin.
@@ -365,6 +372,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
 }
 
 ExitStatus Decode::decodePcapDevice(const std::string &device) {
+#if HAVE_LIBPCAP
   ofp::demux::PktSource pcap;
   ofp::demux::MessageSource msg{pcapMessageCallback, this, pcapOutputDir_,
                                 pcapSkipPayload_, pcapMaxMissingBytes_};
@@ -383,9 +391,14 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
   setCurrentFilename("");
 
   return ExitStatus::Success;
+#else
+  llvm::errs() << "Error: libpcap not supported\n";
+  return ExitStatus::UnsupportedFeature;
+#endif
 }
 
 ExitStatus Decode::decodePcapFiles() {
+#if HAVE_LIBPCAP
   const std::vector<std::string> &files = inputFiles_;
 
   // Use the same MessageSource object for all files, so we can stitch
@@ -412,6 +425,10 @@ ExitStatus Decode::decodePcapFiles() {
   }
 
   return ExitStatus::Success;
+#else
+  llvm::errs() << "Error: libpcap not supported\n";
+  return ExitStatus::UnsupportedFeature;
+#endif
 }
 
 ExitStatus Decode::checkError(std::istream &input, std::streamsize readLen,
@@ -759,6 +776,7 @@ bool Decode::pcapFormat() const {
 // file `pktSinkFile_`. Don't write the data from a PacketOut message if the
 // data is empty.
 void Decode::extractPacketDataToFile(const ofp::Message *message) {
+#if HAVE_LIBPCAP
   using namespace ofp;
 
   OFPErrorCode unused;
@@ -780,6 +798,7 @@ void Decode::extractPacketDataToFile(const ofp::Message *message) {
       }
     }
   }
+#endif 
 }
 
 // Compare two buffers and return offset of the byte that differs. If buffers

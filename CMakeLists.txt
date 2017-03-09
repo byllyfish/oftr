@@ -13,6 +13,10 @@
 #
 #    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
 #
+# To build without libpcap:
+#
+#    cmake -DLIBOFP_ENABLE_LIBPCAP=false ..
+#
 # To build without memcheck tests:
 #
 #    cmake -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
@@ -54,6 +58,14 @@ set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
 if(NOT LIBOFP_ENABLE_JSONRPC)
   message(STATUS "JSON-RPC server is disabled.")
+endif()
+
+# You can build oftr without libpcap.
+
+set(LIBOFP_ENABLE_LIBPCAP TRUE CACHE BOOL "Enable use of libpcap")
+
+if(NOT LIBOFP_ENABLE_LIBPCAP)
+  message(STATUS "libpcap is disabled.")
 endif()
 
 # You can disable the valgrind memcheck tests.
@@ -263,9 +275,6 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/ycontrollermaxlen.cpp
   src/ofp/yaml/ytablenumber.cpp
   src/ofp/yaml/yschema.cpp
-  src/ofp/demux/messagesource.cpp
-  src/ofp/demux/pktsink.cpp
-  src/ofp/demux/pktsource.cpp
   src/ofp/demux/segmentcache.cpp
   src/ofp/demux/flowcache.cpp
   src/ofp/demux/flowstate.cpp
@@ -290,6 +299,15 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/rpc/rpcserver.cpp
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp
+  )
+endif()
+
+if(HAVE_LIBPCAP)
+  set(LIBOFP_SOURCES
+    ${LIBOFP_SOURCES}
+    src/ofp/demux/messagesource.cpp
+    src/ofp/demux/pktsink.cpp
+    src/ofp/demux/pktsource.cpp
   )
 endif()
 
@@ -365,13 +383,17 @@ include(CheckIncludeFile)
 include(CheckSymbolExists)
 include(CheckLibraryExists)
 
-check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)
-if(HAVE_LIBPCAP)
-  set(CMAKE_REQUIRED_LIBRARIES pcap)
-  check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
-  check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
-else()
-  message(FATAL_ERROR "libpcap is not available.")
+if(LIBOFP_ENABLE_LIBPCAP)
+  # "oftr decode" optionally depends on libpcap for live/offline decoding of packet captures.
+  check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)
+  if(HAVE_LIBPCAP)
+    set(CMAKE_REQUIRED_LIBRARIES pcap)
+    set(LIBOFP_LINKED_LIBPCAP -lpcap)
+    check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
+    check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
+  else()
+    message(FATAL_ERROR "libpcap is not available.")
+  endif()
 endif()
 
 #-------------------------------------------------------------------------------

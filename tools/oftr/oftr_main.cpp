@@ -9,7 +9,9 @@
 #include <asio/version.hpp>
 #include "./oftr_jsonrpc.h"
 #endif  // LIBOFP_ENABLE_JSONRPC
+#if HAVE_LIBPCAP
 #include <pcap/pcap.h>
+#endif 
 #include "./libofp.h"
 #include "./oftr_help.h"
 #include "llvm/Support/Host.h"
@@ -121,8 +123,10 @@ void print_version() {
      << sslCommit.substr(0, 7) << ")\n";
 #endif  // LIBOFP_ENABLE_JSONRPC
 
+#if HAVE_LIBPCAP
   // Print libpcap version.
   os << "  Using: " << pcap_lib_version() << '\n';
+#endif  // HAVE_LIBPCAP
 }
 
 void force_link_api() {

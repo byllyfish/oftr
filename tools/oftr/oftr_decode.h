@@ -6,9 +6,18 @@
 
 #include <map>
 #include "./oftr.h"
-#include "ofp/demux/pktsink.h"
 #include "ofp/messageinfo.h"
 #include "ofp/timestamp.h"
+
+#if HAVE_LIBPCAP
+# include "ofp/demux/pktsink.h"
+#else
+  namespace ofp {
+  namespace demux {
+  class PktSink {};
+  }  // namespace demux
+  }  // namespace ofp
+#endif
 
 namespace ofpx {
 
@@ -69,6 +78,7 @@ class Decode : public Subprogram {
  public:
   enum class ExitStatus {
     Success = 0,
+    UnsupportedFeature = UnsupportedFeatureExitStatus,
     InvalidArguments = InvalidArgumentsExitStatus,
     FileOpenFailed = FileOpenFailedExitStatus,
     DecodeFailed = MinExitStatus,
