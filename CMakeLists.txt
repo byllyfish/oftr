@@ -308,13 +308,11 @@ set(LIBOFP_SOURCES_GENERATED
 # Determine flags from basename of CMAKE_BINARY_DIR. If directory name contains
 # '+debug', set the build type to 'debug'.
 
-if (CMAKE_BUILD_TYPE STREQUAL "")
-  string(TOLOWER "${CMAKE_BINARY_DIR}" binary_dir)
-  if(binary_dir MATCHES "/[^/]*\\+debug[^/]*$")
-    set(CMAKE_BUILD_TYPE Debug)
-  else()
-    set(CMAKE_BUILD_TYPE Release)
-  endif()
+string(TOLOWER "${CMAKE_BINARY_DIR}" binary_dir)
+if(binary_dir MATCHES "/[^/]*\\+debug[^/]*$")
+  set(CMAKE_BUILD_TYPE Debug)
+elseif(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 
