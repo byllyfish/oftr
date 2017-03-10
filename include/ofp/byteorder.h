@@ -4,12 +4,13 @@
 #ifndef OFP_BYTEORDER_H_
 #define OFP_BYTEORDER_H_
 
-#if defined(__linux__) || defined(__GNU__)
+#include "ofp/types.h"
+
+#if HAVE_ENDIAN_H
 #include <endian.h>
-#elif !defined(BYTE_ORDER) && !_WIN32
+#elif HAVE_MACHINE_ENDIAN_H && !defined(BYTE_ORDER)
 #include <machine/endian.h>
 #endif
-#include "ofp/types.h"
 
 namespace ofp {
 namespace detail {

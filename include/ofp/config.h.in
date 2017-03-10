@@ -26,6 +26,11 @@
 
 #cmakedefine01 LIBOFP_ENABLE_JSONRPC
 
+// These variables control header files.
+
+#cmakedefine01 HAVE_ENDIAN_H
+#cmakedefine01 HAVE_MACHINE_ENDIAN_H
+
 // These variables control libpcap capabilities.
 
 #cmakedefine01 HAVE_LIBPCAP

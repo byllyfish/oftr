@@ -387,6 +387,9 @@ include(CheckIncludeFile)
 include(CheckSymbolExists)
 include(CheckLibraryExists)
 
+check_include_file(endian.h HAVE_ENDIAN_H)
+check_include_file(machine/endian.h HAVE_MACHINE_ENDIAN_H)
+
 if(LIBOFP_ENABLE_LIBPCAP)
   # "oftr decode" optionally depends on libpcap for live/offline decoding of packet captures.
   check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)

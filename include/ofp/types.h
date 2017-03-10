@@ -18,8 +18,13 @@
 #include "llvm/Support/raw_ostream.h"  // for llvm::raw_ostream
 #include "ofp/config.h"
 
-// Require C++11 -- std::string storage is guaranteed contiguous.
-static_assert(__cplusplus >= 201103L || _MSC_VER >= 1910, "C++11 required (or VS 2017");
+// Require C++14 -- std::string storage is guaranteed contiguous.
+#if !defined(_MSC_VER)
+static_assert(__cplusplus >= 201402L, "C++14 required");
+#else
+// Ignore __cplusplus value for MS compiler.
+static_assert(_MSC_VER >= 1910, "VS 2017 required");
+#endif
 static_assert(std::is_same<std::uint8_t, unsigned char>::value, "Expected std::uint8_t to be implemented using unsigned char");
 
 #if defined(__clang__)
