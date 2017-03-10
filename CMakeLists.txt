@@ -109,16 +109,15 @@ set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 # Specify include directories for third party headers. We use -isystem instead
 # of -I because we don't want to receive compiler warnings from these headers.
 
-set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include")
-set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_BINARY_DIR}/external/yaml-io/include")
-set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
+set(LIBOFP_SYSTEM_INCLUDES
+  "${CMAKE_SOURCE_DIR}/external/asio/asio/include"
+  "${CMAKE_BINARY_DIR}/external/yaml-io/include"
+  "${CMAKE_SOURCE_DIR}/external/yaml-io/include"
+)
 if(LIBOFP_ENABLE_JSONRPC)
-  set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
-endif()
-
-if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-  # MSVC does not support -isystem; replace -isystem with -I
-  string(REPLACE -isystem -I LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES}")
+  set(LIBOFP_SYSTEM_INCLUDES 
+    ${LIBOFP_SYSTEM_INCLUDES}
+    "${CMAKE_SOURCE_DIR}/external/boringssl/include")
 endif()
 
 # Specify additional definitions.
@@ -302,7 +301,7 @@ if(LIBOFP_ENABLE_JSONRPC)
   )
 endif()
 
-if(HAVE_LIBPCAP)
+if(LIBOFP_ENABLE_LIBPCAP)
   set(LIBOFP_SOURCES
     ${LIBOFP_SOURCES}
     src/ofp/demux/messagesource.cpp
@@ -460,12 +459,16 @@ configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTes
 
 add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 
+# Add system includes.
+
+include_directories(SYSTEM ${LIBOFP_SYSTEM_INCLUDES})
+
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall -Wno-deprecated-declarations")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -Wall -Wno-deprecated-declarations")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} -Wall")
 
 # Add subdirectories of third party projects.
 
@@ -477,8 +480,8 @@ endif()
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE}")
 
 message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
