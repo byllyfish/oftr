@@ -134,8 +134,13 @@ endif()
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing -fvisibility=hidden")
-set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
+if(MSVC)
+  set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS}")
+  set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14")
+else()
+  set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing -fvisibility=hidden")
+  set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fno-rtti -fno-exceptions -std=c++14 -fvisibility=hidden")
+endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
@@ -350,7 +355,7 @@ endif()
 if(APPLE)
   # Apple makes it easy.
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-dead_strip")
-else()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   # Dead-strip the GCC build.
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fdata-sections -ffunction-sections")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fdata-sections -ffunction-sections")
@@ -467,7 +472,7 @@ include_directories(SYSTEM ${LIBOFP_SYSTEM_INCLUDES})
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -Wall -Wno-deprecated-declarations")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -Wall")
 set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} -Wall")
 
 # Add subdirectories of third party projects.

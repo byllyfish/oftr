@@ -6,7 +6,7 @@
 
 #if defined(__linux__) || defined(__GNU__)
 #include <endian.h>
-#elif !defined(BYTE_ORDER)
+#elif !defined(BYTE_ORDER) && !_WIN32
 #include <machine/endian.h>
 #endif
 #include "ofp/types.h"
