@@ -1,5 +1,7 @@
-#include "ofp/pkt.h"
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
 
+#include "ofp/pkt.h"
 
 using namespace ofp;
 
@@ -20,7 +22,7 @@ inline UInt16 to16(UInt8 b, unsigned offset) {
 
 /// Compute 16-bit ones complement sum.
 static UInt16 sum1c(UInt16 accum, const UInt8 *ptr, size_t size, bool odd) {
-  assert(size <= 2*65537);  // min size at which 32-bit overflow occurs
+  assert(size <= 2 * 65537);  // min size at which 32-bit overflow occurs
 
   UInt32 sum = 0;
 
@@ -49,11 +51,12 @@ static UInt16 sum1c(UInt16 accum, const UInt8 *ptr, size_t size, bool odd) {
   return accum == 0 ? result : fold(accum + result);
 }
 
-
 Big16 pkt::Checksum(ByteRange d1) {
   return Big16(~sum1c(0, d1.data(), d1.size(), false), true);
 }
 
 Big16 pkt::Checksum(ByteRange d1, ByteRange d2) {
-  return Big16(~sum1c(sum1c(0, d1.data(), d1.size(), false), d2.data(), d2.size(), (d1.size() % 2) != 0), true);
+  return Big16(~sum1c(sum1c(0, d1.data(), d1.size(), false), d2.data(),
+                      d2.size(), (d1.size() % 2) != 0),
+               true);
 }

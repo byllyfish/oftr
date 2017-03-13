@@ -11,7 +11,7 @@
 #endif  // LIBOFP_ENABLE_JSONRPC
 #if HAVE_LIBPCAP
 #include <pcap/pcap.h>
-#endif 
+#endif
 #include "./libofp.h"
 #include "./oftr_help.h"
 #include "llvm/Support/Host.h"

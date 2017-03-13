@@ -12,9 +12,9 @@
 #include "ofp/yaml/encoder.h"
 #include "ofp/yaml/ybytelist.h"
 #if HAVE_LIBPCAP
-# include "ofp/demux/messagesource.h"
-# include "ofp/demux/pktsource.h"
-#endif 
+#include "ofp/demux/messagesource.h"
+#include "ofp/demux/pktsource.h"
+#endif
 
 using namespace ofpx;
 using ofp::UInt8;
@@ -89,7 +89,7 @@ bool Decode::validateCommandLineArguments() {
       llvm::errs() << "Error: " << pktSinkFile_->error() << '\n';
       return false;
     }
-#else 
+#else
     llvm::errs() << "Error: libpcap not supported\n";
     return false;
 #endif
@@ -798,7 +798,7 @@ void Decode::extractPacketDataToFile(const ofp::Message *message) {
       }
     }
   }
-#endif 
+#endif
 }
 
 // Compare two buffers and return offset of the byte that differs. If buffers

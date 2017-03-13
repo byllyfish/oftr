@@ -5,8 +5,8 @@
 #include "ofp/matchpacket.h"  // for roundtrip testing
 #include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"
-#include "ofp/unittest.h"
 #include "ofp/pkt.h"  // for pkt::Checksum
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
@@ -170,20 +170,24 @@ TEST(matchpacketbuilder, icmpv4) {
   MatchPacketBuilder packet{oxm.toRange()};
   packet.build(&data, payload.toRange());
 
-  EXPECT_HEX("00000000000200000000000108004500001D000000004001F78CC0A80101C0A801020000F6F90102030405", data.data(), data.size());
-  
+  EXPECT_HEX(
+      "00000000000200000000000108004500001D000000004001F78CC0A80101C0A801020000"
+      "F6F90102030405",
+      data.data(), data.size());
+
   ByteRange icmp = SafeByteRange(data.data(), data.size(), 34);
   EXPECT_EQ(0, pkt::Checksum(icmp));
 
   MatchPacket decode{data};
   OXMRange range = decode.toRange();
   EXPECT_HEX(
-      "800006060000000000028000080600000000000180000A02080080001001008000120100800014010180001604C0A8010180001804C0A8010200013A014080002601008000280100FFFF080600FFFFFF0026",
+      "800006060000000000028000080600000000000180000A02080080001001008000120100"
+      "800014010180001604C0A8010180001804C0A8010200013A014080002601008000280100"
+      "FFFF080600FFFFFF0026",
       range.data(), range.size());
 }
 
-TEST(matchpacketbuilder, icmpv4_2) 
-{
+TEST(matchpacketbuilder, icmpv4_2) {
   MacAddress ethSrc{"00:00:00:00:00:01"};
   MacAddress ethDst{"00:00:00:00:00:02"};
   IPv4Address src{"192.168.0.3"};
@@ -206,10 +210,11 @@ TEST(matchpacketbuilder, icmpv4_2)
   packet.build(&data, payload.toRange());
 
   EXPECT_HEX(
-"0000 0000 0002 0000 0000 0001 0800 4500"
-"001d 0000 0000 4001 f98b c0a8 0003 c0a8"
-"0001 0800 7fcd 7832 0000 00", data.data(), data.size());
-  
+      "0000 0000 0002 0000 0000 0001 0800 4500"
+      "001d 0000 0000 4001 f98b c0a8 0003 c0a8"
+      "0001 0800 7fcd 7832 0000 00",
+      data.data(), data.size());
+
   ByteRange icmp = SafeByteRange(data.data(), data.size(), 34);
   EXPECT_EQ(0, pkt::Checksum(icmp));
 }

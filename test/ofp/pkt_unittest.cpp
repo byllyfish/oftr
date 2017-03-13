@@ -134,12 +134,15 @@ TEST(pkt, checksum_multi) {
   UInt16 cksum1 = pkt::Checksum(buf.toRange());
 
   for (unsigned i = 0; i <= buf.size(); ++i) {
-    EXPECT_EQ(pkt::Checksum({buf.data(), i}, {buf.data() + i, buf.size() - i}), cksum1);
+    EXPECT_EQ(pkt::Checksum({buf.data(), i}, {buf.data() + i, buf.size() - i}),
+              cksum1);
   }
 
   UInt16 cksum2 = pkt::Checksum({buf.data() + 1, buf.size() - 1});
 
   for (unsigned i = 0; i <= buf.size() - 1; ++i) {
-    EXPECT_EQ(pkt::Checksum({buf.data() + 1, i}, {buf.data() + 1 + i, buf.size() - 1 - i}), cksum2);
+    EXPECT_EQ(pkt::Checksum({buf.data() + 1, i},
+                            {buf.data() + 1 + i, buf.size() - 1 - i}),
+              cksum2);
   }
 }

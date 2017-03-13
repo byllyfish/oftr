@@ -25,7 +25,8 @@ static_assert(__cplusplus >= 201103L, "C++11 required");
 // Ignore __cplusplus value for MS compiler.
 static_assert(_MSC_VER >= 1910, "VS 2017 required");
 #endif
-static_assert(std::is_same<std::uint8_t, unsigned char>::value, "Expected std::uint8_t to be implemented using unsigned char");
+static_assert(std::is_same<std::uint8_t, unsigned char>::value,
+              "Expected std::uint8_t to be implemented using unsigned char");
 
 #if defined(__clang__)
 #define OFP_BEGIN_IGNORE_PADDING   \

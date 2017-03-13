@@ -10,13 +10,13 @@
 #include "ofp/timestamp.h"
 
 #if HAVE_LIBPCAP
-# include "ofp/demux/pktsink.h"
+#include "ofp/demux/pktsink.h"
 #else
-  namespace ofp {
-  namespace demux {
-  class PktSink {};
-  }  // namespace demux
-  }  // namespace ofp
+namespace ofp {
+namespace demux {
+class PktSink {};
+}  // namespace demux
+}  // namespace ofp
 #endif
 
 namespace ofpx {

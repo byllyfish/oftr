@@ -19,8 +19,8 @@ static bool isAlignedPacket(const UInt8 *ptr) {
   return (reinterpret_cast<uintptr_t>(ptr) & 0x07) == 2;
 }
 
-static const MacAddress *findLLOption(const UInt8 *ptr, size_t length, UInt8 option);
-
+static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
+                                      UInt8 option);
 
 MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   if (isAlignedPacket(data.data())) {
@@ -353,13 +353,16 @@ void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
   length -= sizeof(pkt::ICMPHdr);
   offset_ += sizeof(pkt::ICMPHdr);
 
-  if (icmp->code == 0 && (icmp->type == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmp->type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE)) {
+  if (icmp->code == 0 && (icmp->type == ICMPV6_TYPE_NEIGHBOR_SOLICIT ||
+                          icmp->type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE)) {
     decodeICMPv6_ND(pkt, length, icmp->type);
   }
 }
 
-void MatchPacket::decodeICMPv6_ND(const UInt8 *pkt, size_t length, UInt8 icmpv6Type) {
-  assert(icmpv6Type == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmpv6Type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE);
+void MatchPacket::decodeICMPv6_ND(const UInt8 *pkt, size_t length,
+                                  UInt8 icmpv6Type) {
+  assert(icmpv6Type == ICMPV6_TYPE_NEIGHBOR_SOLICIT ||
+         icmpv6Type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE);
 
   // RFC 2461: Neighbor Discovery (ND)
   // Format:
@@ -383,7 +386,7 @@ void MatchPacket::decodeICMPv6_ND(const UInt8 *pkt, size_t length, UInt8 icmpv6T
   length -= 20;
   offset_ += 20;
 
-  if (length == 0) {    // No options
+  if (length == 0) {  // No options
     return;
   }
 
@@ -557,10 +560,10 @@ void MatchPacket::countIPv6ExtHdr(UInt32 &flags, UInt32 hdr,
 const MacAddress *findLLOption(const UInt8 *ptr, size_t length, UInt8 option) {
   // Option format:
   //   [ 8 bits type | 8 bits length | Variable option data... ]
-  //   
+  //
   // The length is in units of 8-octets, and includes the option header.
   // A zero-length is not allowed.
-  // 
+  //
   while (length >= 8) {
     // Check for invalid option length.
     const unsigned optionLen = ptr[1] * 8;

@@ -7,7 +7,6 @@
 
 using namespace ofp;
 
-
 MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
   assert(range.validateInput());
 
@@ -87,7 +86,7 @@ void MatchPacketBuilder::build(ByteList *msg, const ByteRange &data) const {
     case DATALINK_LLDP:
       buildLldp(msg);
       break;
-        
+
     case DATALINK_IPV4:
       buildIPv4(msg, data);
       break;
@@ -119,18 +118,18 @@ void MatchPacketBuilder::addEthernet(ByteList *msg) const {
 }
 
 void MatchPacketBuilder::addIPv4(ByteList *msg, size_t length) const {
-    pkt::IPv4Hdr ip;
+  pkt::IPv4Hdr ip;
 
-    std::memset(&ip, 0, sizeof(ip));
-    ip.ver = 0x45;
-    ip.length = UInt16_narrow_cast(sizeof(pkt::IPv4Hdr) + length);
-    ip.ttl = 64;
-    ip.proto = ipProto_;
-    ip.src = ipv4Src_;
-    ip.dst = ipv4Dst_;
-    ip.cksum = pkt::Checksum({&ip, sizeof(ip)});
+  std::memset(&ip, 0, sizeof(ip));
+  ip.ver = 0x45;
+  ip.length = UInt16_narrow_cast(sizeof(pkt::IPv4Hdr) + length);
+  ip.ttl = 64;
+  ip.proto = ipProto_;
+  ip.src = ipv4Src_;
+  ip.dst = ipv4Dst_;
+  ip.cksum = pkt::Checksum({&ip, sizeof(ip)});
 
-    msg->add(&ip, sizeof(ip));
+  msg->add(&ip, sizeof(ip));
 }
 
 void MatchPacketBuilder::buildArp(ByteList *msg) const {
@@ -176,17 +175,17 @@ void MatchPacketBuilder::buildIPv4(ByteList *msg, const ByteRange &data) const {
   }
 }
 
-void MatchPacketBuilder::buildICMPv4(ByteList *msg, const ByteRange &data) const {
-    addEthernet(msg);
-    addIPv4(msg, sizeof(pkt::ICMPHdr) + data.size());
+void MatchPacketBuilder::buildICMPv4(ByteList *msg,
+                                     const ByteRange &data) const {
+  addEthernet(msg);
+  addIPv4(msg, sizeof(pkt::ICMPHdr) + data.size());
 
-    pkt::ICMPHdr icmp;
-    std::memset(&icmp, 0, sizeof(icmp));
-    icmp.type = icmpType_;
-    icmp.code = icmpCode_;
-    icmp.cksum = pkt::Checksum({&icmp, sizeof(icmp)}, data);
+  pkt::ICMPHdr icmp;
+  std::memset(&icmp, 0, sizeof(icmp));
+  icmp.type = icmpType_;
+  icmp.code = icmpCode_;
+  icmp.cksum = pkt::Checksum({&icmp, sizeof(icmp)}, data);
 
-    msg->add(&icmp, sizeof(icmp));
-    msg->add(data.data(), data.size());
+  msg->add(&icmp, sizeof(icmp));
+  msg->add(data.data(), data.size());
 }
-
