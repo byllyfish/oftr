@@ -107,6 +107,7 @@ INCLUDES=(
 	include/llvm/Support/TimeValue.h
 	include/llvm/Support/type_traits.h
 	include/llvm/Support/Valgrind.h
+	include/llvm/Support/WindowsError.h
 	include/llvm/Support/YAMLParser.h
 	include/llvm/Support/YAMLTraits.h
 	include/llvm-c/Core.h
