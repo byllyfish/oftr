@@ -118,7 +118,7 @@ endif()
 # CMakeLists.txt because it wants to install googletest.
 
 set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include -isystem ${gtest_SOURCE_DIR}")
+include_directories(SYSTEM "${gtest_SOURCE_DIR}/include" "${gtest_SOURCE_DIR}")
 
 add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES} ${gtest_SOURCE_DIR}/src/gtest-all.cc)
 target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} ${LIBOFP_LINKED_LIBPCAP})

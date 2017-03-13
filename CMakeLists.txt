@@ -114,6 +114,7 @@ set(LIBOFP_SYSTEM_INCLUDES
   "${CMAKE_BINARY_DIR}/external/yaml-io/include"
   "${CMAKE_SOURCE_DIR}/external/yaml-io/include"
 )
+
 if(LIBOFP_ENABLE_JSONRPC)
   set(LIBOFP_SYSTEM_INCLUDES 
     ${LIBOFP_SYSTEM_INCLUDES}
