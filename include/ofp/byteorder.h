@@ -214,11 +214,11 @@ inline Big32 *Big32_cast(void *ptr) {
 
 // Copy Functions don't require the source to be aligned
 
-inline const Big16 Big16_unaligned(const void *ptr) {
+inline Big16 Big16_unaligned(const void *ptr) {
   return Big16::fromBytes(BytePtr(ptr));
 }
 
-inline const Big32 Big32_unaligned(const void *ptr) {
+inline Big32 Big32_unaligned(const void *ptr) {
   return Big32::fromBytes(BytePtr(ptr));
 }
 

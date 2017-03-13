@@ -19,6 +19,9 @@ static bool isAlignedPacket(const UInt8 *ptr) {
   return (reinterpret_cast<uintptr_t>(ptr) & 0x07) == 2;
 }
 
+static const MacAddress *findLLOption(const UInt8 *ptr, size_t length, UInt8 option);
+
+
 MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   if (isAlignedPacket(data.data())) {
     decode(data.data(), data.size());
@@ -246,6 +249,7 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
 
   match_.add(OFB_IP_DSCP{dscp});
   match_.add(OFB_IP_ECN{ecn});
+  match_.add(NXM_NX_IP_TTL{ip->hopLimit});
   match_.add(OFB_IPV6_SRC{ip->src});
   match_.add(OFB_IPV6_DST{ip->dst});
   match_.add(OFB_IPV6_FLABEL{flowLabel});
@@ -345,9 +349,57 @@ void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
   match_.add(OFB_ICMPV6_TYPE{icmp->type});
   match_.add(OFB_ICMPV6_CODE{icmp->code});
 
+  pkt += sizeof(pkt::ICMPHdr);
+  length -= sizeof(pkt::ICMPHdr);
   offset_ += sizeof(pkt::ICMPHdr);
 
-  // TODO(bfish): neighbor discovery msgs.
+  if (icmp->code == 0 && (icmp->type == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmp->type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE)) {
+    decodeICMPv6_ND(pkt, length, icmp->type);
+  }
+}
+
+void MatchPacket::decodeICMPv6_ND(const UInt8 *pkt, size_t length, UInt8 icmpv6Type) {
+  assert(icmpv6Type == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmpv6Type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE);
+
+  // RFC 2461: Neighbor Discovery (ND)
+  // Format:
+  //    [ 32 bits reserved | 128 bits address | variable options... ]
+
+  if (length < 20) {
+    log_warning("decodeICMPv6_ND: data too short");
+    return;
+  }
+
+  if (icmpv6Type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) {
+    // The reserved bits are only meaningful in ND Advertise.
+    Big32 reserved = Big32_unaligned(pkt);
+    match_.add(X_IPV6_ND_RES{reserved});
+  }
+
+  const IPv6Address *addr = Interpret_cast<IPv6Address>(pkt + 4);
+  match_.add(OFB_IPV6_ND_TARGET{*addr});
+
+  pkt += 20;
+  length -= 20;
+  offset_ += 20;
+
+  if (length == 0) {    // No options
+    return;
+  }
+
+  if (icmpv6Type == ICMPV6_TYPE_NEIGHBOR_SOLICIT) {
+    const MacAddress *mac = findLLOption(pkt, length, ICMPV6_OPTION_SLL);
+    if (mac) {
+      match_.add(OFB_IPV6_ND_SLL{*mac});
+      offset_ += length;
+    }
+  } else if (icmpv6Type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) {
+    const MacAddress *mac = findLLOption(pkt, length, ICMPV6_OPTION_TLL);
+    if (mac) {
+      match_.add(OFB_IPV6_ND_TLL{*mac});
+      offset_ += length;
+    }
+  }
 }
 
 void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
@@ -408,7 +460,6 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
   // Destination Options header which should occur at most twice (once
   // before a Routing header and once before the upper-layer header).
 
-  assert(IsPtrAligned(pkt, 8));
   assert(currHdr != pkt::IPv6Ext_NoNextHeader);
 
   auto ext = pkt::IPv6ExtHdr::cast(pkt, length);
@@ -501,4 +552,32 @@ void MatchPacket::countIPv6ExtHdr(UInt32 &flags, UInt32 hdr,
     flags |= OFPIEH_UNREP;
   }
   flags |= hdr;
+}
+
+const MacAddress *findLLOption(const UInt8 *ptr, size_t length, UInt8 option) {
+  // Option format:
+  //   [ 8 bits type | 8 bits length | Variable option data... ]
+  //   
+  // The length is in units of 8-octets, and includes the option header.
+  // A zero-length is not allowed.
+  // 
+  while (length >= 8) {
+    // Check for invalid option length.
+    const unsigned optionLen = ptr[1] * 8;
+
+    if (optionLen == 0 || optionLen > length) {
+      log_warning("ICMPv6 ND Option: invalid length detected");
+      break;
+    }
+
+    // Is this the option we are looking for?
+    if (ptr[0] == option && optionLen == 8) {
+      return Interpret_cast<MacAddress>(ptr + 2);
+    }
+
+    ptr += optionLen;
+    length -= optionLen;
+  }
+
+  return nullptr;
 }

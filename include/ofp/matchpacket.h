@@ -35,6 +35,7 @@ class MatchPacket {
   void decodeUDP(const UInt8 *pkt, size_t length);
   void decodeICMPv4(const UInt8 *pkt, size_t length);
   void decodeICMPv6(const UInt8 *pkt, size_t length);
+  void decodeICMPv6_ND(const UInt8 *pkt, size_t length, UInt8 icmpv6Type);
   void decodeLLDP(const UInt8 *pkt, size_t length);
 
   UInt8 nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt, size_t &length,
