@@ -154,6 +154,12 @@ SOURCES=(
 	Support/Valgrind.cpp
 	Support/YAMLParser.cpp
 	Support/YAMLTraits.cpp
+	Support/Windows/Memory.inc
+	Support/Windows/Path.inc
+	Support/Windows/Process.inc
+	Support/Windows/Program.inc
+	Support/Windows/TimeValue.inc
+	Support/Windows/WindowsSupport.h
 )
 
 TESTS=(
