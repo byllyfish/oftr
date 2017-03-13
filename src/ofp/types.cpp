@@ -2,13 +2,14 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/types.h"
-#include <openssl/base64.h>  // for EVP_EncodeBlock
 #include <array>
 
-using namespace ofp;
+namespace ofp {
 
-constexpr char HexDigitsUpperCase[17] = "0123456789ABCDEF";
-constexpr char HexDigitsLowerCase[17] = "0123456789abcdef";
+static const size_t kTwoGigabytes = 0x80000000UL;
+
+static const char HexDigitsUpperCase[17] = "0123456789ABCDEF";
+static const char HexDigitsLowerCase[17] = "0123456789abcdef";
 
 inline unsigned FromHex(char hex) {
   assert(std::isxdigit(hex));
@@ -25,7 +26,13 @@ inline char ToHexLowerCase(UInt8 value) {
   return HexDigitsLowerCase[value];
 }
 
-namespace ofp {
+static const char Base64Digits[65] =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+inline char ToBase64(UInt32 value) {
+  assert(value < 64);
+  return Base64Digits[value];
+}
 
 template <size_t Length>
 char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
@@ -56,6 +63,10 @@ template char *ofp::RawDataToHexDelimitedLowercase(
     const std::array<UInt8, 6U> &, char (&)[18]);
 
 std::string ofp::RawDataToHex(const void *data, size_t len) {
+  if (len > kTwoGigabytes) {
+    return "== hex too big ==";
+  }
+
   std::string result;
   result.reserve(2 * len);
 
@@ -74,6 +85,10 @@ std::string ofp::RawDataToHex(const void *data, size_t len) {
 
 std::string ofp::RawDataToHex(const void *data, size_t len, char delimiter,
                               int word) {
+  if (len >= kTwoGigabytes) {
+    return "== hex too big ==";
+  }
+
   std::string result;
   result.reserve(2 * len);
 
@@ -190,22 +205,46 @@ std::string ofp::HexToRawData(const std::string &hex) {
 }
 
 std::string ofp::RawDataToBase64(const void *data, size_t length) {
-  // EVP_EncodedLength includes space for a trailing zero byte.
-  size_t expectedLen = 0;
-  if (!EVP_EncodedLength(&expectedLen, length)) {
+  // Prevent calculation overflow on 32 bit platforms.
+  if (length > kTwoGigabytes) {
     return "== base64 too big ==";
   }
-  assert(expectedLen > 0);
+
+  size_t len = (length + 2)/3*4;
 
   std::string result;
-  result.resize(expectedLen);
-  EVP_EncodeBlock(MutableBytePtr(&result[0]), BytePtr(data), length);
+  result.resize(len);
 
-  // EVP_EncodeBlock returned length does not include zero byte, but the API
-  // still puts it there.
-  assert(!result.empty());
-  assert(result.back() == 0);
-  result.pop_back();
+  const UInt8 *src = BytePtr(data);
+  size_t remaining = length;
+
+  char *dst = &result[0];
+  while (remaining >= 3) {
+    UInt32 block24 = (UInt32_cast(src[0]) << 16) | (UInt32_cast(src[1]) << 8) | UInt32_cast(src[2]);
+    *dst++ = ToBase64((block24 >> 18) & 0x03F);
+    *dst++ = ToBase64((block24 >> 12) & 0x03F);
+    *dst++ = ToBase64((block24 >> 6) & 0x03F);
+    *dst++ = ToBase64(block24 & 0x03F);
+    src += 3;
+    remaining -= 3;
+  }
+
+  if (remaining == 2) {
+    UInt32 block24 = UInt32_cast(src[0] << 16) | (UInt32_cast(src[1]) << 8);
+    *dst++ = ToBase64((block24 >> 18) & 0x03F);
+    *dst++ = ToBase64((block24 >> 12) & 0x03F);
+    *dst++ = ToBase64((block24 >> 6) & 0x03F);
+    *dst++ = '=';
+  } else if (remaining == 1) {
+    UInt32 block24 = UInt32_cast(src[0] << 16);
+    *dst++ = ToBase64((block24 >> 18) & 0x03F);
+    *dst++ = ToBase64((block24 >> 12) & 0x03F);
+    *dst++ = '=';
+    *dst++ = '=';
+  }
+
+  assert(result.size() == len);
+  assert(static_cast<size_t>(dst - &result[0]) == len);
 
   return result;
 }
