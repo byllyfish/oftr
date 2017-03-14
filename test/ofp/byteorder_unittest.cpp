@@ -229,3 +229,23 @@ TEST(byteorder, Big32_unaligned) {
   const UInt8 *p = BytePtr(&x);
   EXPECT_EQ(0x02030405, Big32_unaligned(p + 1));
 }
+
+
+// Test NativeTypeOf construct.
+
+static_assert(std::is_same<NativeTypeOf<Big64>::type, UInt64>::value, "Unexpected type");
+static_assert(std::is_same<NativeTypeOf<Big32>::type, UInt32>::value, "Unexpected type");
+static_assert(std::is_same<NativeTypeOf<Big16>::type, UInt16>::value, "Unexpected type");
+static_assert(std::is_same<NativeTypeOf<Big8>::type, UInt8>::value, "Unexpected type");
+static_assert(std::is_same<NativeTypeOf<Big24>::type, UInt32>::value, "Unexpected type");
+static_assert(std::is_same<NativeTypeOf<UInt32>::type, UInt32>::value, "Unexpected type");
+
+struct Foo {};
+
+static_assert(std::is_same<NativeTypeOf<Foo>::type, Foo>::value, "Unexpected type");
+
+struct Bar {
+ using NativeType = Foo;
+};
+
+static_assert(std::is_same<NativeTypeOf<Bar>::type, Foo>::value, "Unexpected type");
