@@ -2,12 +2,11 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv4address.h"
-#include <arpa/inet.h>
 #include "ofp/log.h"
 
-using namespace ofp;
+#include <asio/detail/socket_ops.hpp>  // for asio's inet_pton, inet_ntop
 
-static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr);
+using namespace ofp;
 
 IPv4Address::IPv4Address(const std::string &s) {
   if (!parse(s)) {
@@ -55,57 +54,21 @@ unsigned IPv4Address::prefix() const {
 }
 
 bool IPv4Address::parse(const std::string &s) {
-  int result = inet_pton(AF_INET, s.c_str(), addr_.data());
-
-#if !defined(NDEBUG) && defined(LIBOFP_TARGET_DARWIN)
-  // Force consistency testing of alternate_parse on Mac OS X.
-  ArrayType temp;
-  bool alt_result = alternateParse(s, temp);
-  assert((result > 0) == alt_result);
-  if (result > 0) {
-    assert(temp == addr_);
-  }
-#endif
-
-  if (result == 0) {
-    // inet_pton() on Linux does not accept zero-padded IPv4 addresses like
-    // "127.000.000.001", which is accepted by the BSD implementation. Padded
-    // IPv4 addresses are the default output format for tools like `tcpflow`.
-    return alternateParse(s, addr_);
-  }
-
+  std::error_code err;
+  int result = asio::detail::socket_ops::inet_pton(ASIO_OS_DEF(AF_INET), s.c_str(), addr_.data(), 0, err);
   return (result > 0);
-}
-
-static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr) {
-  using llvm::StringRef;
-  size_t sp = 0;
-
-  for (unsigned i = 0; i < 3; ++i) {
-    size_t ep = s.find_first_not_of("0123456789", sp);
-    if (ep == StringRef::npos || s[ep] != '.')
-      return false;
-    if (s.slice(sp, ep).getAsInteger(10, addr[i]))
-      return false;
-    sp = ep + 1;
-  }
-
-  if (sp == StringRef::npos ||
-      s.find_first_not_of("0123456789", sp) != StringRef::npos)
-    return false;
-
-  if (s.slice(sp, StringRef::npos).getAsInteger(10, addr[3]))
-    return false;
-
-  return true;
 }
 
 namespace ofp {
 
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv4Address &value) {
-  char buf[INET_ADDRSTRLEN];
-  const char *result = inet_ntop(AF_INET, value.addr_.data(), buf, sizeof(buf));
-  return os << (result ? result : "<inet_ntop_error4>");
+  std::error_code err;
+  char buf[asio::detail::max_addr_v4_str_len];
+  const char *result = asio::detail::socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET), value.addr_.data(), buf, sizeof(buf), 0, err);
+  if (!result) {
+    return os << "<inet_ntop_error4>";
+  }
+  return os << result;
 }
 
 }  // namespace ofp

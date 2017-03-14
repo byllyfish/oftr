@@ -2,9 +2,10 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv6address.h"
-#include <arpa/inet.h>
 #include "ofp/byteorder.h"
 #include "ofp/log.h"
+
+#include <asio/detail/socket_ops.hpp>  // for asio's inet_pton, inet_ntop
 
 using namespace ofp;
 
@@ -76,7 +77,8 @@ bool IPv6Address::parse(const std::string &s, bool parseIPv4) {
 }
 
 bool IPv6Address::parseIPv6Address(const std::string &s) {
-  int result = inet_pton(AF_INET6, s.c_str(), addr_.data());
+  std::error_code err;
+  int result = asio::detail::socket_ops::inet_pton(ASIO_OS_DEF(AF_INET6), s.c_str(), addr_.data(), 0, err);
   return result > 0;
 }
 
@@ -97,13 +99,18 @@ void IPv6Address::outputV6(llvm::raw_ostream &os) const {
     temp.setZone(0);
   }
 
-  char buf[INET6_ADDRSTRLEN];
+  std::error_code err;
+  char buf[asio::detail::max_addr_v6_str_len];
   const UInt8 *data = temp.toArray().data();
-  const char *result = inet_ntop(AF_INET6, data, buf, sizeof(buf));
+  const char *result = asio::detail::socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET6), data, buf, sizeof(buf), 0, err);
 
-  os << (result ? result : "<inet_ntop_error6>");
-  if (my_zone) {
-    os << '%' << my_zone;
+  if (result) {
+    os << result;
+    if (my_zone) {
+      os << '%' << my_zone;
+    }
+  } else {
+    os << "<inet_ntop_error6>";
   }
 }
 
