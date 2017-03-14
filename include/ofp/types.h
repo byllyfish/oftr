@@ -10,6 +10,7 @@
 #include <cstdint>                     // for std::uint8_t, etc.
 #include <cstdlib>                     // for std::malloc, etc.
 #include <cstring>                     // for std::strlen, std::memcpy, etc.
+#include <cctype>                      // for std::isxdigit, etc. 
 #include <memory>                      // for std::unique_ptr<T>
 #include <string>                      // for std::string
 #include <system_error>                // for std::error_code
