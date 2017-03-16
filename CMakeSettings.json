@@ -6,8 +6,8 @@
         "generator": "Visual Studio 15 2017",
         "configurationType": "Debug",
         "buildRoot": "${env.LOCALAPPDATA}\\CMakeBuild\\${workspaceHash}\\build\\${name}",
-        "cmakeCommandArgs": "-DLIBOFP_ENABLE_LIBPCAP=false -DLIBOFP_ENABLE_JSONRPC=false",
-        "buildCommandArgs": "-m -v:normal"
+        "cmakeCommandArgs": "-DLIBOFP_ENABLE_LIBPCAP=false -DLIBOFP_ENABLE_OPENSSL=false",
+        "buildCommandArgs": "-m -v:minimal"
       },
         {
         "name": "x86-Release",

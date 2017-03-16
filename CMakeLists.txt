@@ -364,13 +364,16 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
 message(STATUS "Compiler is ${Libofp_COMPILER_SPEC}")
+set(LIBOFP_SYSTEM_WARNINGS "-Wall")
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_WARNINGS "-Wpedantic -Wall -Wextra -Wformat=2 -Wstrict-aliasing=3 -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
-  set(LIBOFP_WARNINGS "-Wall")
+  # Turn off Warnings for MSVC for now (FIXME).
+  set(LIBOFP_WARNINGS "")
+  set(LIBOFP_SYSTEM_WARNINGS "")
 endif()
 
 # Tell linker to remove dead code.
@@ -498,8 +501,8 @@ include_directories(SYSTEM ${LIBOFP_SYSTEM_INCLUDES})
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -Wall")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 
 # Add subdirectories of third party projects.
 
