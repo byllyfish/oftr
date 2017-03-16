@@ -120,15 +120,9 @@ void TCP_Server::asyncAccept() {
 
     if (!err) {
       if (securityId_ > 0) {
-        auto conn = std::make_shared<TCP_Connection<EncryptedSocket>>(
-            engine_, std::move(socket_), options_, securityId_, versions_,
-            factory_);
-        conn->asyncAccept();
+        TCP_AsyncAccept<EncryptedSocket>(engine_, std::move(socket_), options_, securityId_, versions_, factory_);
       } else {
-        auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(
-            engine_, std::move(socket_), options_, securityId_, versions_,
-            factory_);
-        conn->asyncAccept();
+        TCP_AsyncAccept<PlaintextSocket>(engine_, std::move(socket_), options_, securityId_, versions_, factory_);
       }
 
     } else {

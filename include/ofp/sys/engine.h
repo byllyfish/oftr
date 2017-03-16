@@ -4,15 +4,18 @@
 #ifndef OFP_SYS_ENGINE_H_
 #define OFP_SYS_ENGINE_H_
 
-#include <map>
+#include <unordered_map>
+#include "ofp/byterange.h"
 #include "ofp/channel.h"
 #include "ofp/datapathid.h"
 #include "ofp/driver.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/sys/defaulthandshake.h"
-#include "ofp/sys/identity.h"
 #include "ofp/sys/saverestore.h"
 #include "ofp/sys/tcp_server.h"
+#if LIBOFP_ENABLE_OPENSSL
+#include "ofp/sys/identity.h"
+#endif 
 
 namespace ofp {
 namespace sys {
@@ -37,12 +40,6 @@ class Engine {
                  std::function<void(Channel *, std::error_code)> resultHandler);
 
   size_t close(UInt64 connId);
-
-  UInt64 addIdentity(const std::string &certData,
-                     const std::string &keyPassphrase,
-                     const std::string &verifier, std::error_code &error);
-
-  Identity *findIdentity(UInt64 securityId);
 
   void run();
   void stop(Milliseconds timeout = 0_ms);
@@ -98,29 +95,39 @@ class Engine {
   Connection *findDatapath(const DatapathID &dpid, UInt64 connId) const;
 
   UInt64 assignConnectionId();
-  UInt64 assignSecurityId();
+  
 
   using AlertCallback = void (*)(Channel *, const std::string &,
                                  const ByteRange &, void *);
   void setAlertCallback(AlertCallback callback, void *context);
   void alert(Channel *conn, const std::string &alert, const ByteRange &data);
 
+#if LIBOFP_ENABLE_OPENSSL
+  UInt64 addIdentity(const std::string &certData,
+                     const std::string &keyPassphrase,
+                     const std::string &verifier, std::error_code &error);
+
+  Identity *findIdentity(UInt64 securityId);
+  UInt64 assignSecurityId();
+#endif 
+
  private:
   // Pointer to driver object that owns engine.
   Driver *driver_;
+  UInt64 lastConnId_ = 0;
 
   // The identities_ vector must be the last object destroyed, since io_service
   // objects may depend on it.
-
+#if LIBOFP_ENABLE_OPENSSL
+  UInt64 lastSecurityId_ = 0;
   std::vector<std::unique_ptr<Identity>> identities_;
+#endif 
 
   std::vector<Connection *> connList_;
   std::vector<TCP_Server *> serverList_;
   std::unordered_map<DatapathID, Connection *> dpidMap_;
   std::shared_ptr<UDP_Server> udpConnect_;
-  UInt64 lastConnId_ = 0;
-  UInt64 lastSecurityId_ = 0;
-
+  
   // The io_context must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to update bookkeeping objects.
   asio::io_context io_{1};

@@ -17,6 +17,10 @@
 #
 #    cmake -DLIBOFP_ENABLE_LIBPCAP=false ..
 #
+# To build without openssl:
+#
+#    cmake -DLIBOFP_ENABLE_OPENSSL=false ..
+#
 # To build without memcheck tests:
 #
 #    cmake -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
@@ -68,6 +72,14 @@ if(NOT LIBOFP_ENABLE_LIBPCAP)
   message(STATUS "libpcap is disabled.")
 endif()
 
+# You can build oftr without openssl.
+
+set(LIBOFP_ENABLE_OPENSSL TRUE CACHE BOOL "Enable use of openssl")
+
+if(NOT LIBOFP_ENABLE_OPENSSL)
+  message(STATUS "openssl is disabled.")
+endif()
+
 # You can disable the valgrind memcheck tests.
 
 set(LIBOFP_ENABLE_MEMCHECK_TESTS TRUE CACHE BOOL "Enable additional valgrind memcheck tests")
@@ -115,7 +127,7 @@ set(LIBOFP_SYSTEM_INCLUDES
   "${CMAKE_SOURCE_DIR}/external/yaml-io/include"
 )
 
-if(LIBOFP_ENABLE_JSONRPC)
+if(LIBOFP_ENABLE_OPENSSL)
   set(LIBOFP_SYSTEM_INCLUDES 
     ${LIBOFP_SYSTEM_INCLUDES}
     "${CMAKE_SOURCE_DIR}/external/boringssl/include")
@@ -296,10 +308,7 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/sys/asio_utils.cpp
     src/ofp/sys/connection.cpp
     src/ofp/sys/defaulthandshake.cpp
-    src/ofp/sys/dtls_adapter.cpp
-    src/ofp/sys/dtls_utils.cpp
     src/ofp/sys/engine.cpp
-    src/ofp/sys/identity.cpp
     src/ofp/sys/tcp_server.cpp
     src/ofp/sys/udp_server.cpp
     src/ofp/rpc/rpcchannellistener.cpp
@@ -309,6 +318,15 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp
   )
+  if(LIBOFP_ENABLE_OPENSSL)
+    set(LIBOFP_SOURCES
+      ${LIBOFP_SOURCES}
+      src/ofp/sys/dtls_adapter.cpp
+      src/ofp/sys/dtls_utils.cpp
+      src/ofp/sys/identity.cpp
+      src/ofp/sys/securitycheck.cpp
+    )
+  endif()
 endif()
 
 if(LIBOFP_ENABLE_LIBPCAP)
@@ -486,7 +504,7 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} -Wall")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-if(LIBOFP_ENABLE_JSONRPC)
+if(LIBOFP_ENABLE_OPENSSL)
   add_subdirectory(external/boringssl)
 endif()
 
@@ -518,7 +536,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-if(LIBOFP_ENABLE_JSONRPC)
+if(LIBOFP_ENABLE_OPENSSL)
   target_link_libraries(ofp yamlio ssl crypto)
 else()
   target_link_libraries(ofp yamlio)
