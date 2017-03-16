@@ -4,7 +4,8 @@
 #include "ofp/rpc/rpcchannellistener.h"
 #include "ofp/rpc/rpcserver.h"
 
-using ofp::rpc::RpcChannelListener;
+using namespace ofp;
+using namespace ofp::rpc;
 
 void RpcChannelListener::onChannelUp(Channel *channel) {
   assert(channel_ == nullptr);
