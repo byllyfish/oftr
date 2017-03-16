@@ -53,9 +53,40 @@ unsigned IPv4Address::prefix() const {
   return result;
 }
 
+static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr) {
+  using llvm::StringRef;
+  size_t sp = 0;
+
+  for (unsigned i = 0; i < 3; ++i) {
+    size_t ep = s.find_first_not_of("0123456789", sp);
+    if (ep == StringRef::npos || s[ep] != '.')
+      return false;
+    if (s.slice(sp, ep).getAsInteger(10, addr[i]))
+      return false;
+    sp = ep + 1;
+  }
+
+  if (sp == StringRef::npos ||
+      s.find_first_not_of("0123456789", sp) != StringRef::npos)
+    return false;
+
+  if (s.slice(sp, StringRef::npos).getAsInteger(10, addr[3]))
+    return false;
+
+  return true;
+}
+
 bool IPv4Address::parse(const std::string &s) {
   std::error_code err;
   int result = asio::detail::socket_ops::inet_pton(ASIO_OS_DEF(AF_INET), s.c_str(), addr_.data(), 0, err);
+
+  if (result == 0) {
+    // inet_pton() on Linux does not accept zero-padded IPv4 addresses like
+    // "127.000.000.001", which is accepted by the BSD implementation. Padded
+    // IPv4 addresses are the default output format for tools like `tcpflow`.
+    return alternateParse(s, addr_);
+  }
+
   return (result > 0);
 }
 
