@@ -7,8 +7,8 @@
 #include "ofp/sys/tcp_server.h"
 #include "ofp/sys/udp_server.h"
 
+using namespace ofp;
 using namespace ofp::sys;
-using ofp::UInt64;
 
 Engine::Engine(Driver *driver)
     : driver_{driver}, signals_{io_}, stopTimer_{io_}, idleTimer_{io_} {

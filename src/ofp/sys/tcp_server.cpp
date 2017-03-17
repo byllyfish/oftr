@@ -7,6 +7,7 @@
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/udp_server.h"
 
+using namespace ofp;
 using namespace ofp::sys;
 
 std::shared_ptr<TCP_Server> TCP_Server::create(
