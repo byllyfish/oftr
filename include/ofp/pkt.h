@@ -10,6 +10,7 @@
 #include "ofp/ipv6address.h"
 #include "ofp/log.h"
 #include "ofp/macaddress.h"
+#include "ofp/padding.h"
 
 namespace ofp {
 namespace pkt {
@@ -148,6 +149,17 @@ struct IPv6ExtHdr : public Castable<IPv6ExtHdr> {
 static_assert(sizeof(IPv6ExtHdr) == 8, "Unexpected size.");
 static_assert(alignof(IPv6ExtHdr) == 1, "Unexpected alignment.");
 
+struct IPv6PseudoHdr : public Castable<IPv6PseudoHdr> {
+  IPv6Address src;
+  IPv6Address dst;
+  Big32 upperLength;
+  Padding<3> zero;
+  Big8 nextHeader;
+};
+
+static_assert(sizeof(IPv6PseudoHdr) == 40, "Unexpected size.");
+static_assert(alignof(IPv6PseudoHdr) == 4, "Unexpected alignment.");
+
 struct ICMPHdr : public Castable<ICMPHdr> {
   Big8 type;
   Big8 code;
@@ -218,6 +230,7 @@ static_assert(alignof(LLDPTlv) == 1, "Unexpected alignment.");
 /// Compute Internet checksum.
 Big16 Checksum(ByteRange d1);
 Big16 Checksum(ByteRange d1, ByteRange d2);
+Big16 Checksum(ByteRange d1, ByteRange d2, ByteRange d3);
 
 }  // namespace pkt
 }  // namespace ofp

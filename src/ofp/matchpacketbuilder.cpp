@@ -7,6 +7,10 @@
 
 using namespace ofp;
 
+const UInt8 kDefaultIPv4_TTL = 64;
+const UInt8 kDefaultIPv6_TTL = 64;
+
+
 MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
   assert(range.validateInput());
 
@@ -50,14 +54,38 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
       case OFB_IPV4_DST::type():
         ipv4Dst_ = item.value<OFB_IPV4_DST>();
         break;
+      case OFB_IPV6_SRC::type():
+        ipv6Src_ = item.value<OFB_IPV6_SRC>();
+        break;
+      case OFB_IPV6_DST::type():
+        ipv6Dst_ = item.value<OFB_IPV6_DST>();
+        break;
       case OFB_IP_PROTO::type():
         ipProto_ = item.value<OFB_IP_PROTO>();
+        break;
+      case NXM_NX_IP_TTL::type():
+        ipTtl_ = item.value<NXM_NX_IP_TTL>();
         break;
       case OFB_ICMPV4_CODE::type():
         icmpCode_ = item.value<OFB_ICMPV4_CODE>();
         break;
+      case OFB_ICMPV6_CODE::type():
+        icmpCode_ = item.value<OFB_ICMPV6_CODE>();
+        break;
       case OFB_ICMPV4_TYPE::type():
         icmpType_ = item.value<OFB_ICMPV4_TYPE>();
+        break;
+      case OFB_ICMPV6_TYPE::type():
+        icmpType_ = item.value<OFB_ICMPV6_TYPE>();
+        break;
+      case OFB_IPV6_ND_TARGET::type():
+        ndTarget_ = item.value<OFB_IPV6_ND_TARGET>();
+        break;
+      case OFB_IPV6_ND_SLL::type():
+        ndLl_ = item.value<OFB_IPV6_ND_SLL>();
+        break;
+      case OFB_IPV6_ND_TLL::type():
+        ndLl_ = item.value<OFB_IPV6_ND_TLL>();
         break;
       case X_LLDP_CHASSIS_ID::type():
         lldpChassisId_ = item.value<X_LLDP_CHASSIS_ID>();
@@ -67,6 +95,9 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
         break;
       case X_LLDP_TTL::type():
         lldpTtl_ = item.value<X_LLDP_TTL>();
+        break;
+      case X_IPV6_ND_RES::type():
+        ndRes_ = item.value<X_IPV6_ND_RES>();
         break;
       default:
         log_warning("MatchPacketBuilder: Unknown field", type);
@@ -89,6 +120,10 @@ void MatchPacketBuilder::build(ByteList *msg, const ByteRange &data) const {
 
     case DATALINK_IPV4:
       buildIPv4(msg, data);
+      break;
+
+    case DATALINK_IPV6:
+      buildIPv6(msg, data);
       break;
 
     default:
@@ -123,11 +158,25 @@ void MatchPacketBuilder::addIPv4(ByteList *msg, size_t length) const {
   std::memset(&ip, 0, sizeof(ip));
   ip.ver = 0x45;
   ip.length = UInt16_narrow_cast(sizeof(pkt::IPv4Hdr) + length);
-  ip.ttl = 64;
+  ip.ttl = ipTtl_ ? ipTtl_ : kDefaultIPv4_TTL;
   ip.proto = ipProto_;
   ip.src = ipv4Src_;
   ip.dst = ipv4Dst_;
   ip.cksum = pkt::Checksum({&ip, sizeof(ip)});
+
+  msg->add(&ip, sizeof(ip));
+}
+
+void MatchPacketBuilder::addIPv6(ByteList *msg, size_t length) const {
+  pkt::IPv6Hdr ip;
+
+  std::memset(&ip, 0, sizeof(ip));
+  ip.verClassLabel = 0x60000000;
+  ip.payloadLength = UInt16_narrow_cast(length);
+  ip.nextHeader = ipProto_;
+  ip.hopLimit = ipTtl_ ? ipTtl_ : kDefaultIPv6_TTL;
+  ip.src = ipv6Src_;
+  ip.dst = ipv6Dst_;
 
   msg->add(&ip, sizeof(ip));
 }
@@ -188,4 +237,59 @@ void MatchPacketBuilder::buildICMPv4(ByteList *msg,
 
   msg->add(&icmp, sizeof(icmp));
   msg->add(data.data(), data.size());
+}
+
+void MatchPacketBuilder::buildIPv6(ByteList *msg, const ByteRange &data) const {
+  switch (ipProto_) {
+    case PROTOCOL_ICMPV6:
+      if (icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) {
+        buildICMPv6_ND(msg);
+      } else {
+        buildICMPv6(msg, data);
+      }
+      break;
+
+    default:
+      log_error("MatchPacketBuilder: Unknown IPv6 protocol:", ipProto_);
+      break;
+  }
+}
+
+void MatchPacketBuilder::buildICMPv6(ByteList *msg, const ByteRange &data) const {
+  const size_t len = sizeof(pkt::ICMPHdr) + data.size();
+
+  addEthernet(msg);
+  addIPv6(msg, len);
+
+  pkt::IPv6PseudoHdr pseudoHdr;
+  pseudoHdr.src = ipv6Src_;
+  pseudoHdr.dst = ipv6Dst_;
+  pseudoHdr.upperLength = UInt32_narrow_cast(len);
+  pseudoHdr.nextHeader = ipProto_;
+
+  pkt::ICMPHdr icmp;
+  std::memset(&icmp, 0, sizeof(icmp));
+  icmp.type = icmpType_;
+  icmp.code = icmpCode_;
+  icmp.cksum = pkt::Checksum({&pseudoHdr, sizeof(pseudoHdr)}, {&icmp, sizeof(icmp)}, data);
+
+  msg->add(&icmp, sizeof(icmp));
+  msg->add(data.data(), data.size());
+}
+
+void MatchPacketBuilder::buildICMPv6_ND(ByteList *msg) const {
+  assert(icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE);
+
+  Big8 hdr[2];
+  hdr[0] = (icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT) ? ICMPV6_OPTION_SLL : ICMPV6_OPTION_TLL;
+  hdr[1] = 1;     // length in 8-octet units
+
+  ByteList buf;
+  Big32 ndRes = (icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) ? ndRes_ : 0;
+  buf.add(&ndRes, sizeof(ndRes));
+  buf.add(&ndTarget_, sizeof(ndTarget_));
+  buf.add(&hdr[0], sizeof(hdr));
+  buf.add(&ndLl_, sizeof(ndLl_));
+
+  buildICMPv6(msg, buf.toRange());
 }

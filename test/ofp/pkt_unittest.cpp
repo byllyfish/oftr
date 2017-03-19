@@ -128,7 +128,7 @@ TEST(pkt, checksum2) {
   EXPECT_EQ(pkt::Checksum({buf.data() + 1, 5}), 63991);
 }
 
-TEST(pkt, checksum_multi) {
+TEST(pkt, checksum_multi2) {
   ByteList buf{HexToRawData("00 01 02 03 04 05 06 07")};
 
   UInt16 cksum1 = pkt::Checksum(buf.toRange());
@@ -146,3 +146,32 @@ TEST(pkt, checksum_multi) {
               cksum2);
   }
 }
+
+TEST(pkt, checksum_multi3) {
+  ByteList buf{HexToRawData("00 01 02 03 04 05 06 07")};
+
+  UInt16 cksum1 = pkt::Checksum(buf.toRange());
+
+  for (unsigned i = 0; i <= buf.size(); ++i) {
+    for (unsigned j = i; j <= buf.size(); ++j) {
+      EXPECT_EQ(pkt::Checksum(
+        {buf.data(), i}, 
+        {buf.data() + i, j - i}, 
+        {buf.data() + j, buf.size() - j}),
+              cksum1);
+    }
+  }
+
+  UInt16 cksum2 = pkt::Checksum({buf.data() + 1, buf.size() - 1});
+
+  for (unsigned i = 0; i <= buf.size() - 1; ++i) {
+    for (unsigned j = i; j <= buf.size() - 1; ++j) {
+      EXPECT_EQ(pkt::Checksum(
+        {buf.data() + 1, i},
+        {buf.data() + 1 + i, j - i},
+        {buf.data() + 1 + j, buf.size() - 1 - j}),
+              cksum2);
+    }
+  }
+}
+

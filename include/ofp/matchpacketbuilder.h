@@ -5,6 +5,7 @@
 #define OFP_MATCHPACKETBUILDER_H_
 
 #include "ofp/ipv4address.h"
+#include "ofp/ipv6address.h"
 #include "ofp/lldpvalue.h"
 #include "ofp/macaddress.h"
 #include "ofp/oxmrange.h"
@@ -35,18 +36,28 @@ class MatchPacketBuilder {
   UInt8 icmpCode_ = 0;
   IPv4Address ipv4Src_;
   IPv4Address ipv4Dst_;
+  IPv6Address ipv6Src_;
+  IPv6Address ipv6Dst_;
   UInt8 ipProto_ = 0;
+  UInt8 ipTtl_ = 0;
+  IPv6Address ndTarget_;
+  MacAddress ndLl_;
+  UInt32 ndRes_ = 0;
   LLDPValue<LLDPType::ChassisID> lldpChassisId_;
   LLDPValue<LLDPType::PortID> lldpPortId_;
   UInt16 lldpTtl_ = 0;
 
   void addEthernet(ByteList *msg) const;
   void addIPv4(ByteList *msg, size_t length) const;
+  void addIPv6(ByteList *msg, size_t length) const;
 
   void buildArp(ByteList *msg) const;
   void buildLldp(ByteList *msg) const;
   void buildIPv4(ByteList *msg, const ByteRange &data) const;
   void buildICMPv4(ByteList *msg, const ByteRange &data) const;
+  void buildIPv6(ByteList *msg, const ByteRange &data) const;
+  void buildICMPv6(ByteList *msg, const ByteRange &data) const;
+  void buildICMPv6_ND(ByteList *msg) const;
 };
 
 OFP_END_IGNORE_PADDING
