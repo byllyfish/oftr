@@ -18,3 +18,12 @@ bool OXMFullType::parse(const std::string &s) {
 
   return false;
 }
+
+
+std::vector<llvm::StringRef> OXMFullType::listAll() {
+  std::vector<llvm::StringRef> result;
+  for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {
+    result.push_back(OXMTypeInfoArray[i].name);
+  }
+  return result;
+}

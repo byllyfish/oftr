@@ -6,6 +6,7 @@
 
 #include "ofp/oxmfields.h"
 #include "ofp/oxmtype.h"
+#include <vector>
 
 namespace ofp {
 
@@ -38,6 +39,8 @@ class OXMFullType {
   }
 
   bool parse(const std::string &s);
+
+  static std::vector<llvm::StringRef> listAll();
 
  private:
   OXMType type_;

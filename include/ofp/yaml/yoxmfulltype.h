@@ -51,7 +51,8 @@ struct ScalarTraits<ofp::OXMFullType> {
       return "";
     }
 
-    return "Invalid OXM type.";
+    // Report error with additional information.
+    return ofp::yaml::SetEnumError(ctxt, scalar, ofp::OXMFullType::listAll());
   }
 
   static bool mustQuote(StringRef) { return false; }
