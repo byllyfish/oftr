@@ -13,8 +13,8 @@ namespace detail {
 
 /// \returns smaller of string length or maxlen.
 inline size_t strlen(const char *s, size_t maxlen) {
-  auto p = std::find(s, s + maxlen, '\0');
-  return Unsigned_cast(p - s);
+  const char *p = static_cast<char *>(std::memchr(s, 0, maxlen));
+  return p == nullptr ? maxlen : Unsigned_cast(p - s);
 }
 
 std::string validUtf8String(const char *b, const char *e);
