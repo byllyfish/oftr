@@ -21,7 +21,7 @@ MAINTAINER William W. Fisher "william.w.fisher@gmail.com"
 
 # oftr needs libgcc and libstdc++. Include man as well.
 
-RUN apk add --no-cache libgcc libstdc++ man
+RUN apk add --no-cache libgcc libstdc++ man libpcap
 
 # Set up build dependencies, then build and install oftr. Clean up when we
 # are done.
@@ -38,6 +38,7 @@ RUN set -ex \
         python \
         linux-headers \
         bash \
+        libpcap-dev \
     && git clone -b develop --single-branch --recursive https://github.com/byllyfish/oftr.git \
     && mkdir oftr/Build \
     && cd oftr/Build \
