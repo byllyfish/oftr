@@ -9,7 +9,12 @@ function verify_sha1 {
         echo "verify_sha1 failed: file not found: $1"
         exit 1
     fi
-    sha1=`openssl sha1 "$1" | cut -d ' ' -f 2`
+    # On systems with sha1sum command, use it instead of openssl.
+    if command -v sha1sum; then
+        sha1=`sha1sum "$1" | cut -d ' ' -f 1`
+    else
+        sha1=`openssl sha1 "$1" | cut -d ' ' -f 2`
+    fi
     if [ "$2" != "$sha1" ]; then
         echo "verify_sha1 failed: $1: expected $2 but got $sha1"
         exit 1
