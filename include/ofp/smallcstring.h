@@ -13,7 +13,7 @@ namespace detail {
 
 /// \returns smaller of string length or maxlen.
 inline size_t strlen(const char *s, size_t maxlen) {
-  const char *p = static_cast<char *>(std::memchr(s, 0, maxlen));
+  const char *p = static_cast<const char *>(std::memchr(s, 0, maxlen));
   return p == nullptr ? maxlen : Unsigned_cast(p - s);
 }
 
