@@ -90,7 +90,7 @@ TEST(pkt, checksum) {
   ByteList buf{HexToRawData("00 01 02 03 04 05 00")};
 
   // Even starting ptr. (first byte zero)
-  EXPECT_EQ(pkt::Checksum({buf.data(), 0UL}), 65535);
+  EXPECT_EQ(pkt::Checksum({}), 65535);
   EXPECT_EQ(pkt::Checksum({buf.data(), 1}), 65535);
   EXPECT_EQ(pkt::Checksum({buf.data(), 2}), 65534);
   EXPECT_EQ(pkt::Checksum({buf.data(), 3}), 65022);
@@ -100,7 +100,7 @@ TEST(pkt, checksum) {
   EXPECT_EQ(pkt::Checksum({buf.data(), 7}), 63990);
 
   // Odd starting ptr. (first byte zero)
-  EXPECT_EQ(pkt::Checksum({buf.data() + 1, 0UL}), 65535);
+  EXPECT_EQ(pkt::Checksum({}), 65535);
   EXPECT_EQ(pkt::Checksum({buf.data() + 1, 1}), 65279);
   EXPECT_EQ(pkt::Checksum({buf.data() + 1, 2}), 65277);
   EXPECT_EQ(pkt::Checksum({buf.data() + 1, 3}), 64509);
