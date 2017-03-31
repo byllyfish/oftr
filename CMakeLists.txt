@@ -389,13 +389,33 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-  # -fsanitize=undefined doesn't seem to work with Clang 7.0.2, even with -frtti
-  # added back in.
-  set(LIBOFP_FSANITIZE "-fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  # (old note) -fsanitize=undefined doesn't seem to compile/link with Clang 
+  # 7.0.2, even with -frtti added back in. Here is the work-around I used:
+  # set(LIBOFP_FSANITIZE "-fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_FSANITIZE}")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_FSANITIZE}")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_FSANITIZE}")
 endif()
+
+# Enable Link Time Optimization in Release builds. After this step, these
+# external symbols must still be left in oftr executable (MacOS X):
+#
+#   $ nm -gU oftr
+#   0000000100000000 T __mh_execute_header
+#   0000000100020510 T _libofp_buffer_free
+#   00000001000201c0 T _libofp_decode
+#   000000010001ff60 T _libofp_encode
+#   000000010001fc80 T _libofp_version
+#
+# TODO(bfish): Enable this at some point... These symbols are still being
+# stripped on OSX.
+#
+#if(CMAKE_BUILD_TYPE MATCHES "Release")
+#  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -flto")
+#  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -flto")
+#  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto")
+#endif()
 
 # Compile with code coverage support.
 
