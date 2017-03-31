@@ -1,11 +1,10 @@
 // Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
+#include <asio/detail/socket_ops.hpp>  // for asio's inet_pton, inet_ntop
 #include "ofp/ipv6address.h"
 #include "ofp/byteorder.h"
 #include "ofp/log.h"
-
-#include <asio/detail/socket_ops.hpp>  // for asio's inet_pton, inet_ntop
 
 using namespace ofp;
 
@@ -100,8 +99,10 @@ void IPv6Address::outputV6(llvm::raw_ostream &os) const {
     temp.setZone(0);
   }
 
+  const size_t kMaxAddrStrLen = asio::detail::max_addr_v6_str_len;
+
   std::error_code err;
-  char buf[asio::detail::max_addr_v6_str_len];
+  char buf[kMaxAddrStrLen];
   const UInt8 *data = temp.toArray().data();
   const char *result = asio::detail::socket_ops::inet_ntop(
       ASIO_OS_DEF(AF_INET6), data, buf, sizeof(buf), 0, err);
