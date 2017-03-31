@@ -37,6 +37,6 @@ template void throw_exception(const asio::ip::bad_address_cast &);
 
 asio::ssl::context *ofp::sys::PlaintextContext() {
   static_assert(alignof(asio::ssl::context) <= 8, "Unexpected alignment");
-  static UInt64 buf[sizeof(asio::ssl::context)/8 + 1];
+  static UInt64 buf[sizeof(asio::ssl::context) / 8 + 1];
   return reinterpret_cast<asio::ssl::context *>(&buf[0]);
 }

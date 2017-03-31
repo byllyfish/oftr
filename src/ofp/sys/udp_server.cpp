@@ -92,11 +92,13 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
 
   if (securityId != 0) {
 #if LIBOFP_ENABLE_OPENSSL
-    return UDP_Connect<DTLS_Adapter>(this, options_, securityId, versions_, factory, endpt);
+    return UDP_Connect<DTLS_Adapter>(this, options_, securityId, versions_,
+                                     factory, endpt);
 #endif
   }
 
-  return UDP_Connect<Plaintext_Adapter>(this, options_, securityId, versions_, factory, endpt);
+  return UDP_Connect<Plaintext_Adapter>(this, options_, securityId, versions_,
+                                        factory, endpt);
 }
 
 ofp::IPv6Endpoint UDP_Server::localEndpoint() const {
@@ -266,10 +268,12 @@ void UDP_Server::datagramReceived() {
 
     if (securityId_ != 0) {
 #if LIBOFP_ENABLE_OPENSSL
-      conn = UDP_Accept<DTLS_Adapter>(this, options_, securityId_, versions_, sender_);
+      conn = UDP_Accept<DTLS_Adapter>(this, options_, securityId_, versions_,
+                                      sender_);
 #endif
     } else {
-      conn = UDP_Accept<Plaintext_Adapter>(this, options_, securityId_, versions_, sender_);
+      conn = UDP_Accept<Plaintext_Adapter>(this, options_, securityId_,
+                                           versions_, sender_);
     }
   }
 

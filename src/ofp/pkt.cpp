@@ -63,5 +63,8 @@ Big16 pkt::Checksum(ByteRange d1, ByteRange d2) {
 
 Big16 pkt::Checksum(ByteRange d1, ByteRange d2, ByteRange d3) {
   const size_t d12size = d1.size() + d2.size();
-  return Big16(~sum1c(sum1c(sum1c(0, d1.data(), d1.size(), false), d2.data(), d2.size(), (d1.size() % 2) != 0), d3.data(), d3.size(), (d12size % 2) != 0), true);
+  return Big16(~sum1c(sum1c(sum1c(0, d1.data(), d1.size(), false), d2.data(),
+                            d2.size(), (d1.size() % 2) != 0),
+                      d3.data(), d3.size(), (d12size % 2) != 0),
+               true);
 }

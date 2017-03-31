@@ -51,6 +51,6 @@ TEST(byterange, equal) {
 
   ByteRange empty1;
   ByteRange empty2;
-  
+
   EXPECT_EQ(empty1, empty2);
 }

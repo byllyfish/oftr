@@ -58,15 +58,22 @@ OFP_END_IGNORE_PADDING
 // Use these factory functions to create UDP_Connections.
 
 template <class AdapterType>
-UInt64 UDP_Connect(UDP_Server *server, ChannelOptions options, UInt64 securityId, ProtocolVersions versions, ChannelListener::Factory factory, const udp::endpoint &endpt) {
-  auto conn = new UDP_Connection<AdapterType>(server, options, securityId, versions, factory);
+UInt64 UDP_Connect(UDP_Server *server, ChannelOptions options,
+                   UInt64 securityId, ProtocolVersions versions,
+                   ChannelListener::Factory factory,
+                   const udp::endpoint &endpt) {
+  auto conn = new UDP_Connection<AdapterType>(server, options, securityId,
+                                              versions, factory);
   conn->connect(endpt);
   return conn->connectionId();
 }
 
 template <class AdapterType>
-Connection *UDP_Accept(UDP_Server *server, ChannelOptions options, UInt64 securityId, ProtocolVersions versions, const udp::endpoint &sender) {
-  auto udp = new UDP_Connection<AdapterType>(server, options, securityId, versions, nullptr);
+Connection *UDP_Accept(UDP_Server *server, ChannelOptions options,
+                       UInt64 securityId, ProtocolVersions versions,
+                       const udp::endpoint &sender) {
+  auto udp = new UDP_Connection<AdapterType>(server, options, securityId,
+                                             versions, nullptr);
   udp->accept(sender);
   return udp;
 }

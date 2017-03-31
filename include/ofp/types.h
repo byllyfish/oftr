@@ -5,12 +5,12 @@
 #define OFP_TYPES_H_
 
 #include <cassert>  // for assert macro
+#include <cctype>   // for std::isxdigit, etc.
 #include <chrono>
 #include <cstddef>                     // for std::size_t, etc.
 #include <cstdint>                     // for std::uint8_t, etc.
 #include <cstdlib>                     // for std::malloc, etc.
 #include <cstring>                     // for std::strlen, std::memcpy, etc.
-#include <cctype>                      // for std::isxdigit, etc. 
 #include <memory>                      // for std::unique_ptr<T>
 #include <string>                      // for std::string
 #include <system_error>                // for std::error_code

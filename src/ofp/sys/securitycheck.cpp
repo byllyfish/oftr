@@ -2,8 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/securitycheck.h"
-#include "ofp/sys/identity.h"
 #include "ofp/sys/connection.h"
+#include "ofp/sys/identity.h"
 #include "ofp/sys/memx509.h"
 
 using namespace ofp;
@@ -42,8 +42,9 @@ static bool IsDTLS(SSL *ssl) {
   }
 }
 
-template<>
-void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient) {
+template <>
+void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl,
+                                         bool isClient) {
   assert(conn->flags() & Connection::kRequiresHandshake);
   assert(conn->flags() & ~Connection::kHandshakeDone);
 
@@ -68,9 +69,9 @@ void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClie
   }
 }
 
-template<>
+template <>
 void SecurityCheck::afterHandshake<SSL>(Connection *conn, SSL *ssl,
-                                   std::error_code err) {
+                                        std::error_code err) {
   assert(conn->flags() & Connection::kRequiresHandshake);
   assert(conn->flags() & ~Connection::kHandshakeDone);
 
@@ -115,7 +116,7 @@ void SecurityCheck::afterHandshake<SSL>(Connection *conn, SSL *ssl,
   }
 }
 
-template<>
+template <>
 void SecurityCheck::beforeClose<SSL>(Connection *conn, SSL *ssl) {
   auto flags = conn->flags();
   if ((flags & Connection::kHandshakeDone) &&

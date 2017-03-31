@@ -10,7 +10,6 @@ using namespace ofp;
 const UInt8 kDefaultIPv4_TTL = 64;
 const UInt8 kDefaultIPv6_TTL = 64;
 
-
 MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
   assert(range.validateInput());
 
@@ -242,7 +241,8 @@ void MatchPacketBuilder::buildICMPv4(ByteList *msg,
 void MatchPacketBuilder::buildIPv6(ByteList *msg, const ByteRange &data) const {
   switch (ipProto_) {
     case PROTOCOL_ICMPV6:
-      if (icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) {
+      if (icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT ||
+          icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) {
         buildICMPv6_ND(msg);
       } else {
         buildICMPv6(msg, data);
@@ -255,7 +255,8 @@ void MatchPacketBuilder::buildIPv6(ByteList *msg, const ByteRange &data) const {
   }
 }
 
-void MatchPacketBuilder::buildICMPv6(ByteList *msg, const ByteRange &data) const {
+void MatchPacketBuilder::buildICMPv6(ByteList *msg,
+                                     const ByteRange &data) const {
   const size_t len = sizeof(pkt::ICMPHdr) + data.size();
 
   addEthernet(msg);
@@ -271,18 +272,21 @@ void MatchPacketBuilder::buildICMPv6(ByteList *msg, const ByteRange &data) const
   std::memset(&icmp, 0, sizeof(icmp));
   icmp.type = icmpType_;
   icmp.code = icmpCode_;
-  icmp.cksum = pkt::Checksum({&pseudoHdr, sizeof(pseudoHdr)}, {&icmp, sizeof(icmp)}, data);
+  icmp.cksum = pkt::Checksum({&pseudoHdr, sizeof(pseudoHdr)},
+                             {&icmp, sizeof(icmp)}, data);
 
   msg->add(&icmp, sizeof(icmp));
   msg->add(data.data(), data.size());
 }
 
 void MatchPacketBuilder::buildICMPv6_ND(ByteList *msg) const {
-  assert(icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT || icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE);
+  assert(icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT ||
+         icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE);
 
   Big8 hdr[2];
-  hdr[0] = (icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT) ? ICMPV6_OPTION_SLL : ICMPV6_OPTION_TLL;
-  hdr[1] = 1;     // length in 8-octet units
+  hdr[0] = (icmpType_ == ICMPV6_TYPE_NEIGHBOR_SOLICIT) ? ICMPV6_OPTION_SLL
+                                                       : ICMPV6_OPTION_TLL;
+  hdr[1] = 1;  // length in 8-octet units
 
   ByteList buf;
   Big32 ndRes = (icmpType_ == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) ? ndRes_ : 0;

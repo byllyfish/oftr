@@ -4,9 +4,9 @@
 #include "ofp/log.h"
 #include "ofp/sys/defaulthandshake.h"
 #include "ofp/sys/engine.h"
+#include "ofp/sys/securitycheck.h"
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/tcp_server.h"
-#include "ofp/sys/securitycheck.h"
 
 namespace ofp {
 namespace sys {
@@ -294,13 +294,14 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
 
   // Set up verify callback.
   SecurityCheck::beforeHandshake(this, socket_.next_layer().native_handle(),
-                            isClient);
+                                 isClient);
 
   OFP_BEGIN_IGNORE_PADDING
 
   auto self(this->shared_from_this());
   socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
-    SecurityCheck::afterHandshake(this, socket_.next_layer().native_handle(), err);
+    SecurityCheck::afterHandshake(this, socket_.next_layer().native_handle(),
+                                  err);
 
     if (!err) {
       channelUp();

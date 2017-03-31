@@ -7,12 +7,12 @@
 // This #include must be first.
 #include "ofp/config.h"
 #if LIBOFP_ENABLE_OPENSSL
-# include "ofp/sys/asio_openssl_init.h"
+#include "ofp/sys/asio_openssl_init.h"
 #endif
 
 #include <asio.hpp>
 #if LIBOFP_ENABLE_OPENSSL
-# include <asio/ssl.hpp>
+#include <asio/ssl.hpp>
 #else
 // Define asio::ssl::context and SSL_CTX placeholders to make porting easier.
 namespace asio {
@@ -21,7 +21,7 @@ class context {};
 }  // namespace ssl
 }  // namespace asio
 struct SSL_CTX {};
-#endif 
+#endif
 
 #include "ofp/channeltransport.h"
 #include "ofp/ipv6endpoint.h"
@@ -51,7 +51,7 @@ constexpr ChannelTransport ToChannelTransport<sys::EncryptedSocket>() {
 
 #else
 using EncryptedSocket = Plaintext<tcp::socket>;
-#endif // LIBOFP_ENABLE_OPENSSL
+#endif  // LIBOFP_ENABLE_OPENSSL
 
 /// Convert an asio::ip::address into an ofp::IPv6Address.
 inline IPv6Address makeIPv6Address(const asio::ip::address &addr) {

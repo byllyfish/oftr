@@ -12,7 +12,7 @@ namespace sys {
 class Connection;
 
 class SecurityCheck {
-public:
+ public:
   // SecurityCheck is a wrapper for related functions.
 
   template <class NativeSocketType>
@@ -30,17 +30,19 @@ public:
 #if LIBOFP_ENABLE_OPENSSL
 
 template <>
-void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient);
+void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl,
+                                         bool isClient);
 
 template <>
-void SecurityCheck::afterHandshake<SSL>(Connection *conn, SSL *ssl, std::error_code err);
+void SecurityCheck::afterHandshake<SSL>(Connection *conn, SSL *ssl,
+                                        std::error_code err);
 
 template <>
 void SecurityCheck::beforeClose<SSL>(Connection *conn, SSL *ssl);
 
-#endif // LIBOFP_ENABLE_OPENSSL
+#endif  // LIBOFP_ENABLE_OPENSSL
 
 }  // namespace sys
 }  // namespace ofp
 
-#endif // OFP_SYS_SECURITYCHECK_H_
+#endif  // OFP_SYS_SECURITYCHECK_H_

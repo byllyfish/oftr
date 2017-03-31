@@ -78,7 +78,8 @@ bool IPv6Address::parse(const std::string &s, bool parseIPv4) {
 
 bool IPv6Address::parseIPv6Address(const std::string &s) {
   std::error_code err;
-  int result = asio::detail::socket_ops::inet_pton(ASIO_OS_DEF(AF_INET6), s.c_str(), addr_.data(), 0, err);
+  int result = asio::detail::socket_ops::inet_pton(
+      ASIO_OS_DEF(AF_INET6), s.c_str(), addr_.data(), 0, err);
   return result > 0;
 }
 
@@ -102,7 +103,8 @@ void IPv6Address::outputV6(llvm::raw_ostream &os) const {
   std::error_code err;
   char buf[asio::detail::max_addr_v6_str_len];
   const UInt8 *data = temp.toArray().data();
-  const char *result = asio::detail::socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET6), data, buf, sizeof(buf), 0, err);
+  const char *result = asio::detail::socket_ops::inet_ntop(
+      ASIO_OS_DEF(AF_INET6), data, buf, sizeof(buf), 0, err);
 
   if (result) {
     os << result;

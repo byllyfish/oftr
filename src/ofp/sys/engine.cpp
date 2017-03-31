@@ -66,10 +66,14 @@ UInt64 Engine::connect(
   }
 
   if (securityId != 0) {
-    connId = TCP_AsyncConnect<EncryptedSocket>(this, options, securityId, versions, listenerFactory, remoteEndpoint, resultHandler);
+    connId = TCP_AsyncConnect<EncryptedSocket>(this, options, securityId,
+                                               versions, listenerFactory,
+                                               remoteEndpoint, resultHandler);
 
   } else {
-    connId = TCP_AsyncConnect<PlaintextSocket>(this, options, securityId, versions, listenerFactory, remoteEndpoint, resultHandler);
+    connId = TCP_AsyncConnect<PlaintextSocket>(this, options, securityId,
+                                               versions, listenerFactory,
+                                               remoteEndpoint, resultHandler);
   }
 
   return connId;
@@ -194,7 +198,7 @@ UInt64 Engine::assignSecurityId() {
   return lastSecurityId_;
 }
 
-#endif // LIBOFP_ENABLE_OPENSSL
+#endif  // LIBOFP_ENABLE_OPENSSL
 
 void Engine::run() {
   if (!isRunning_) {

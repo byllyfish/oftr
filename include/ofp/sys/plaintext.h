@@ -9,7 +9,7 @@
 #if !LIBOFP_ENABLE_OPENSSL
 // Use asio::ssl::stream_base for handshake_type enum.
 #include <asio/ssl/stream_base.hpp>
-#endif 
+#endif
 
 namespace ofp {
 namespace sys {

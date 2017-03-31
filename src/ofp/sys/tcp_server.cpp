@@ -121,9 +121,11 @@ void TCP_Server::asyncAccept() {
 
     if (!err) {
       if (securityId_ > 0) {
-        TCP_AsyncAccept<EncryptedSocket>(engine_, std::move(socket_), options_, securityId_, versions_, factory_);
+        TCP_AsyncAccept<EncryptedSocket>(engine_, std::move(socket_), options_,
+                                         securityId_, versions_, factory_);
       } else {
-        TCP_AsyncAccept<PlaintextSocket>(engine_, std::move(socket_), options_, securityId_, versions_, factory_);
+        TCP_AsyncAccept<PlaintextSocket>(engine_, std::move(socket_), options_,
+                                         securityId_, versions_, factory_);
       }
 
     } else {

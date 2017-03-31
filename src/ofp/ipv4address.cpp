@@ -78,7 +78,8 @@ static bool alternateParse(llvm::StringRef s, IPv4Address::ArrayType &addr) {
 
 bool IPv4Address::parse(const std::string &s) {
   std::error_code err;
-  int result = asio::detail::socket_ops::inet_pton(ASIO_OS_DEF(AF_INET), s.c_str(), addr_.data(), 0, err);
+  int result = asio::detail::socket_ops::inet_pton(
+      ASIO_OS_DEF(AF_INET), s.c_str(), addr_.data(), 0, err);
 
   if (result == 0) {
     // inet_pton() on Linux does not accept zero-padded IPv4 addresses like
@@ -95,7 +96,8 @@ namespace ofp {
 llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const IPv4Address &value) {
   std::error_code err;
   char buf[asio::detail::max_addr_v4_str_len];
-  const char *result = asio::detail::socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET), value.addr_.data(), buf, sizeof(buf), 0, err);
+  const char *result = asio::detail::socket_ops::inet_ntop(
+      ASIO_OS_DEF(AF_INET), value.addr_.data(), buf, sizeof(buf), 0, err);
   if (!result) {
     return os << "<inet_ntop_error4>";
   }

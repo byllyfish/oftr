@@ -15,7 +15,7 @@
 #include "ofp/sys/tcp_server.h"
 #if LIBOFP_ENABLE_OPENSSL
 #include "ofp/sys/identity.h"
-#endif 
+#endif
 
 namespace ofp {
 namespace sys {
@@ -95,7 +95,6 @@ class Engine {
   Connection *findDatapath(const DatapathID &dpid, UInt64 connId) const;
 
   UInt64 assignConnectionId();
-  
 
   using AlertCallback = void (*)(Channel *, const std::string &,
                                  const ByteRange &, void *);
@@ -109,25 +108,25 @@ class Engine {
 
   Identity *findIdentity(UInt64 securityId);
   UInt64 assignSecurityId();
-#endif 
+#endif
 
  private:
   // Pointer to driver object that owns engine.
   Driver *driver_;
   UInt64 lastConnId_ = 0;
 
-  // The identities_ vector must be the last object destroyed, since io_service
-  // objects may depend on it.
+// The identities_ vector must be the last object destroyed, since io_service
+// objects may depend on it.
 #if LIBOFP_ENABLE_OPENSSL
   UInt64 lastSecurityId_ = 0;
   std::vector<std::unique_ptr<Identity>> identities_;
-#endif 
+#endif
 
   std::vector<Connection *> connList_;
   std::vector<TCP_Server *> serverList_;
   std::unordered_map<DatapathID, Connection *> dpidMap_;
   std::shared_ptr<UDP_Server> udpConnect_;
-  
+
   // The io_context must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to update bookkeeping objects.
   asio::io_context io_{1};

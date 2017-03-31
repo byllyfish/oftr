@@ -6,7 +6,7 @@
 #include "ofp/ofp.h"
 #if LIBOFP_ENABLE_OPENSSL
 #include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
-#endif // LIBOFP_ENABLE_OPENSSL
+#endif                    // LIBOFP_ENABLE_OPENSSL
 #if LIBOFP_ENABLE_JSONRPC
 #include <asio/version.hpp>
 #include "./oftr_jsonrpc.h"
@@ -125,7 +125,7 @@ void print_version() {
 
   os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
      << sslCommit.substr(0, 7) << ")\n";
-#endif // LIBOFP_ENABLE_OPENSSL
+#endif  // LIBOFP_ENABLE_OPENSSL
 
 #if HAVE_LIBPCAP
   // Print libpcap version.

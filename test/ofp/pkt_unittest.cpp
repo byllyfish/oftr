@@ -154,11 +154,9 @@ TEST(pkt, checksum_multi3) {
 
   for (unsigned i = 0; i <= buf.size(); ++i) {
     for (unsigned j = i; j <= buf.size(); ++j) {
-      EXPECT_EQ(pkt::Checksum(
-        {buf.data(), i}, 
-        {buf.data() + i, j - i}, 
-        {buf.data() + j, buf.size() - j}),
-              cksum1);
+      EXPECT_EQ(pkt::Checksum({buf.data(), i}, {buf.data() + i, j - i},
+                              {buf.data() + j, buf.size() - j}),
+                cksum1);
     }
   }
 
@@ -166,12 +164,9 @@ TEST(pkt, checksum_multi3) {
 
   for (unsigned i = 0; i <= buf.size() - 1; ++i) {
     for (unsigned j = i; j <= buf.size() - 1; ++j) {
-      EXPECT_EQ(pkt::Checksum(
-        {buf.data() + 1, i},
-        {buf.data() + 1 + i, j - i},
-        {buf.data() + 1 + j, buf.size() - 1 - j}),
-              cksum2);
+      EXPECT_EQ(pkt::Checksum({buf.data() + 1, i}, {buf.data() + 1 + i, j - i},
+                              {buf.data() + 1 + j, buf.size() - 1 - j}),
+                cksum2);
     }
   }
 }
-

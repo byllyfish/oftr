@@ -210,7 +210,7 @@ std::string ofp::RawDataToBase64(const void *data, size_t length) {
     return "== base64 too big ==";
   }
 
-  size_t len = (length + 2)/3*4;
+  size_t len = (length + 2) / 3 * 4;
 
   std::string result;
   result.resize(len);
@@ -220,7 +220,8 @@ std::string ofp::RawDataToBase64(const void *data, size_t length) {
 
   char *dst = &result[0];
   while (remaining >= 3) {
-    UInt32 block24 = (UInt32_cast(src[0]) << 16) | (UInt32_cast(src[1]) << 8) | UInt32_cast(src[2]);
+    UInt32 block24 = (UInt32_cast(src[0]) << 16) | (UInt32_cast(src[1]) << 8) |
+                     UInt32_cast(src[2]);
     *dst++ = ToBase64((block24 >> 18) & 0x03F);
     *dst++ = ToBase64((block24 >> 12) & 0x03F);
     *dst++ = ToBase64((block24 >> 6) & 0x03F);

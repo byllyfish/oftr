@@ -5,9 +5,9 @@
 #include "ofp/sys/defaulthandshake.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/plaintext_adapter.h"
+#include "ofp/sys/securitycheck.h"
 #include "ofp/sys/udp_connection.h"
 #include "ofp/sys/udp_server.h"
-#include "ofp/sys/securitycheck.h"
 
 namespace ofp {
 namespace sys {
