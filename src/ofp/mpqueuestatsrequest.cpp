@@ -6,8 +6,7 @@
 #include "ofp/multipartrequest.h"
 #include "ofp/writable.h"
 
-using ofp::MPQueueStatsRequest;
-using ofp::MPQueueStatsRequestBuilder;
+using namespace ofp;
 
 const MPQueueStatsRequest *MPQueueStatsRequest::cast(
     const MultipartRequest *req) {

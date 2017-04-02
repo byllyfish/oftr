@@ -11,7 +11,7 @@
 
 namespace ofp {
 
-class Bucket : private NonCopyable {
+class Bucket {
  public:
   enum { ProtocolIteratorSizeOffset = 0, ProtocolIteratorAlignment = 8 };
 
@@ -54,7 +54,7 @@ class BucketBuilder {
   Bucket bkt_;
   ActionRange actions_;
 
-  enum { SizeWithoutActionRange = sizeof(bkt_) };
+  enum { SizeWithoutActionRange = sizeof(Bucket) };
 
   friend class BucketList;
 };

@@ -5,7 +5,9 @@
 #include "ofp/echoreply.h"
 #include "ofp/echorequest.h"
 #include "ofp/hello.h"
+#if LIBOFP_ENABLE_OPENSSL
 #include "ofp/sys/dtls_adapter.h"
+#endif
 #include "ofp/sys/engine.h"
 #include "ofp/sys/plaintext_adapter.h"
 #include "ofp/sys/udp_connection.h"
@@ -89,16 +91,14 @@ UInt64 UDP_Server::connect(const IPv6Endpoint &remoteEndpt, UInt64 securityId,
   }
 
   if (securityId != 0) {
-    auto conn = new UDP_Connection<DTLS_Adapter>(this, options_, securityId,
-                                                 versions_, factory);
-    conn->connect(endpt);
-    return conn->connectionId();
+#if LIBOFP_ENABLE_OPENSSL
+    return UDP_Connect<DTLS_Adapter>(this, options_, securityId, versions_,
+                                     factory, endpt);
+#endif
   }
 
-  auto conn = new UDP_Connection<Plaintext_Adapter>(this, options_, securityId,
-                                                    versions_, factory);
-  conn->connect(endpt);
-  return conn->connectionId();
+  return UDP_Connect<Plaintext_Adapter>(this, options_, securityId, versions_,
+                                        factory, endpt);
 }
 
 ofp::IPv6Endpoint UDP_Server::localEndpoint() const {
@@ -267,15 +267,13 @@ void UDP_Server::datagramReceived() {
     // TODO(bfish): check if this UDP server allows incoming UDP connections...
 
     if (securityId_ != 0) {
-      auto udp = new UDP_Connection<DTLS_Adapter>(this, options_, securityId_,
-                                                  versions_, nullptr);
-      udp->accept(sender_);
-      conn = udp;
+#if LIBOFP_ENABLE_OPENSSL
+      conn = UDP_Accept<DTLS_Adapter>(this, options_, securityId_, versions_,
+                                      sender_);
+#endif
     } else {
-      auto udp = new UDP_Connection<Plaintext_Adapter>(
-          this, options_, securityId_, versions_, nullptr);
-      udp->accept(sender_);
-      conn = udp;
+      conn = UDP_Accept<Plaintext_Adapter>(this, options_, securityId_,
+                                           versions_, sender_);
     }
   }
 

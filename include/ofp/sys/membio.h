@@ -4,6 +4,8 @@
 #ifndef OFP_SYS_MEMBIO_H_
 #define OFP_SYS_MEMBIO_H_
 
+#include "ofp/log.h"
+
 namespace ofp {
 namespace sys {
 

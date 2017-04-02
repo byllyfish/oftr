@@ -75,7 +75,7 @@ class MPPortStatsBuilder {
   MPPortStats msg_;
   PropertyList properties_;
 
-  enum { SizeWithoutProperties = sizeof(msg_) };
+  enum { SizeWithoutProperties = sizeof(MPPortStats) };
 
   void updateLen() {
     msg_.length_ =

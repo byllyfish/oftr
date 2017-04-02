@@ -14,6 +14,8 @@ enum class ChannelTransport {
   UDP_DTLS
 };
 
+namespace sys {
+
 // Specialize this function to return the channel transport for a specific
 // socket type.
 template <class SocketType>
@@ -26,6 +28,7 @@ constexpr bool IsChannelTransportUDP(ChannelTransport transport) {
          (transport == ChannelTransport::UDP_DTLS);
 }
 
+}  // namespace sys
 }  // namespace ofp
 
 #endif  // OFP_CHANNELTRANSPORT_H_

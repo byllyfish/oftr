@@ -1,5 +1,14 @@
 = Changelog
 
+== Version 0.26 (2 April 2017)
+
+- Fix builds on alpine linux.
+- Improve error reporting for unrecognized field names.
+- Support builds without libpcap or openssl.
+- Support generating ICMPv4 and ICMPv6 ND packets.
+- Remove trailing 0-byte from rpc string before writing it to log in trace_rpc.
+- Update boringssl submodule.
+
 == Version 0.25 (2 March 2017)
 
 - Support OpenFlow 1.5 FlowMod and PacketOut messages.

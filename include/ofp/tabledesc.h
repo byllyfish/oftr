@@ -11,7 +11,7 @@ namespace ofp {
 
 class Writable;
 
-class TableDesc : private NonCopyable {
+class TableDesc {
  public:
   enum { ProtocolIteratorSizeOffset = 0, ProtocolIteratorAlignment = 8 };
   enum { MPVariableSizeOffset = 0 };

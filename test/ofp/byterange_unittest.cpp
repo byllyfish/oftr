@@ -35,3 +35,22 @@ TEST(byterange, isPrintable) {
   ByteRange e{"\xA0", 1};
   EXPECT_FALSE(e.isPrintable());
 }
+
+TEST(byterange, equal) {
+  ByteRange a{"1234", 4};
+  ByteRange b{"1234", 4};
+  ByteRange c{"1235", 4};
+  ByteRange d{"123", 3};
+
+  EXPECT_EQ(a, b);
+  EXPECT_EQ(b, a);
+  EXPECT_NE(c, a);
+  EXPECT_NE(b, c);
+  EXPECT_NE(c, d);
+  EXPECT_NE(d, c);
+
+  ByteRange empty1;
+  ByteRange empty2;
+
+  EXPECT_EQ(empty1, empty2);
+}

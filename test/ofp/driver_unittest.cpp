@@ -23,9 +23,10 @@ TEST(driver, test) {
   driver.installSignalHandlers();
 
   std::error_code err;
+  UInt16 listenPort = UInt16_narrow_cast(OFPGetDefaultPort() + 10000);
 
   UInt64 connId = driver.listen(
-      ChannelOptions::FEATURES_REQ, 0, IPv6Endpoint{OFPGetDefaultPort()},
+      ChannelOptions::FEATURES_REQ, 0, {"127.0.0.1", listenPort},
       ProtocolVersions::All, [] { return new MockChannelListener; }, err);
 
   EXPECT_NE(0, connId);

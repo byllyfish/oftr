@@ -29,6 +29,13 @@ enum : UInt16 {
   DATALINK_8021Q = 0x8100
 };
 
+enum : UInt8 {
+  ICMPV6_TYPE_NEIGHBOR_SOLICIT = 135,
+  ICMPV6_TYPE_NEIGHBOR_ADVERTISE = 136,
+  ICMPV6_OPTION_SLL = 1,
+  ICMPV6_OPTION_TLL = 2,
+};
+
 enum : size_t {
   // Used by ProtocolIterator template class.
   PROTOCOL_ITERATOR_SIZE_FIXED = 0xffff,

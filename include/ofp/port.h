@@ -22,7 +22,7 @@ class PortV1;
 class PortV2;
 }  // namespace deprecated
 
-class Port : private NonCopyable {
+class Port {
  public:
   enum { ProtocolIteratorSizeOffset = 4, ProtocolIteratorAlignment = 8 };
 
@@ -100,7 +100,7 @@ class PortBuilder {
   Port msg_;
   PropertyList properties_;
 
-  enum { SizeWithoutProperties = sizeof(msg_) };
+  enum { SizeWithoutProperties = sizeof(Port) };
 
   void updateLen() {
     msg_.length_ =
