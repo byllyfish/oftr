@@ -7,6 +7,7 @@
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/udp_server.h"
 
+using namespace ofp;
 using namespace ofp::sys;
 
 std::shared_ptr<TCP_Server> TCP_Server::create(
@@ -120,15 +121,11 @@ void TCP_Server::asyncAccept() {
 
     if (!err) {
       if (securityId_ > 0) {
-        auto conn = std::make_shared<TCP_Connection<EncryptedSocket>>(
-            engine_, std::move(socket_), options_, securityId_, versions_,
-            factory_);
-        conn->asyncAccept();
+        TCP_AsyncAccept<EncryptedSocket>(engine_, std::move(socket_), options_,
+                                         securityId_, versions_, factory_);
       } else {
-        auto conn = std::make_shared<TCP_Connection<PlaintextSocket>>(
-            engine_, std::move(socket_), options_, securityId_, versions_,
-            factory_);
-        conn->asyncAccept();
+        TCP_AsyncAccept<PlaintextSocket>(engine_, std::move(socket_), options_,
+                                         securityId_, versions_, factory_);
       }
 
     } else {

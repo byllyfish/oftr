@@ -46,6 +46,11 @@ class DTLS_Adapter {
   void logOutput(const UInt8 *p, size_t length);
 };
 
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::DTLS_Adapter>() {
+  return ChannelTransport::UDP_DTLS;
+}
+
 }  // namespace sys
 }  // namespace ofp
 

@@ -4,8 +4,7 @@
 #include "ofp/instructionrange.h"
 #include "ofp/instructions.h"
 
-using ofp::InstructionRange;
-using ofp::ActionRange;
+using namespace ofp;
 
 /// \brief Retrieve action list from OFPIT_APPLY_ACTIONS instruction.
 ActionRange InstructionRange::outputActions() const {

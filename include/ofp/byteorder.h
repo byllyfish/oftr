@@ -4,12 +4,13 @@
 #ifndef OFP_BYTEORDER_H_
 #define OFP_BYTEORDER_H_
 
-#if defined(__linux__) || defined(__GNU__)
+#include "ofp/types.h"
+
+#if HAVE_ENDIAN_H
 #include <endian.h>
-#elif !defined(BYTE_ORDER)
+#elif HAVE_MACHINE_ENDIAN_H && !defined(BYTE_ORDER)
 #include <machine/endian.h>
 #endif
-#include "ofp/types.h"
 
 namespace ofp {
 namespace detail {
@@ -89,7 +90,8 @@ class BigEndianAligned {
   using NativeType = Type;
 
   constexpr BigEndianAligned() : n_{static_cast<Type>(0)} {}
-  constexpr BigEndianAligned(Type n) : n_{HostSwapByteOrder(n)} {}
+  constexpr BigEndianAligned(Type n, bool bigEndian = false)
+      : n_{bigEndian ? n : HostSwapByteOrder(n)} {}
   constexpr BigEndianAligned(const BigEndianAligned &n) = default;
 
   constexpr operator Type() const { return HostSwapByteOrder(n_); }
@@ -213,11 +215,11 @@ inline Big32 *Big32_cast(void *ptr) {
 
 // Copy Functions don't require the source to be aligned
 
-inline const Big16 Big16_unaligned(const void *ptr) {
+inline Big16 Big16_unaligned(const void *ptr) {
   return Big16::fromBytes(BytePtr(ptr));
 }
 
-inline const Big32 Big32_unaligned(const void *ptr) {
+inline Big32 Big32_unaligned(const void *ptr) {
   return Big32::fromBytes(BytePtr(ptr));
 }
 

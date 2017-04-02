@@ -11,17 +11,6 @@
 #include "ofp/sys/connection.h"
 
 namespace ofp {
-
-template <>
-constexpr ChannelTransport ToChannelTransport<sys::Plaintext_Adapter>() {
-  return ChannelTransport::UDP_Plaintext;
-}
-
-template <>
-constexpr ChannelTransport ToChannelTransport<sys::DTLS_Adapter>() {
-  return ChannelTransport::UDP_DTLS;
-}
-
 namespace sys {
 
 class UDP_Server;
@@ -65,6 +54,29 @@ class UDP_Connection : public Connection {
 };
 
 OFP_END_IGNORE_PADDING
+
+// Use these factory functions to create UDP_Connections.
+
+template <class AdapterType>
+UInt64 UDP_Connect(UDP_Server *server, ChannelOptions options,
+                   UInt64 securityId, ProtocolVersions versions,
+                   ChannelListener::Factory factory,
+                   const udp::endpoint &endpt) {
+  auto conn = new UDP_Connection<AdapterType>(server, options, securityId,
+                                              versions, factory);
+  conn->connect(endpt);
+  return conn->connectionId();
+}
+
+template <class AdapterType>
+Connection *UDP_Accept(UDP_Server *server, ChannelOptions options,
+                       UInt64 securityId, ProtocolVersions versions,
+                       const udp::endpoint &sender) {
+  auto udp = new UDP_Connection<AdapterType>(server, options, securityId,
+                                             versions, nullptr);
+  udp->accept(sender);
+  return udp;
+}
 
 }  // namespace sys
 }  // namespace ofp

@@ -2014,6 +2014,10 @@ Field/X_PKT_POS:
   field: X_PKT_POS
   value: UInt16
   
+Field/X_IPV6_ND_RES: 
+  field: X_IPV6_ND_RES
+  value: UInt32
+  
 Field/X_EXPERIMENTER_01: 
   field: X_EXPERIMENTER_01
   value: UInt16

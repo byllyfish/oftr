@@ -13,6 +13,14 @@
 #
 #    cmake -DLIBOFP_ENABLE_JSONRPC=false ..
 #
+# To build without libpcap:
+#
+#    cmake -DLIBOFP_ENABLE_LIBPCAP=false ..
+#
+# To build without openssl:
+#
+#    cmake -DLIBOFP_ENABLE_OPENSSL=false ..
+#
 # To build without memcheck tests:
 #
 #    cmake -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
@@ -35,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.25.0)
+set(Libofp_VERSION 0.26.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -54,6 +62,22 @@ set(LIBOFP_ENABLE_JSONRPC TRUE CACHE BOOL "Enable the JSON-RPC server")
 
 if(NOT LIBOFP_ENABLE_JSONRPC)
   message(STATUS "JSON-RPC server is disabled.")
+endif()
+
+# You can build oftr without libpcap.
+
+set(LIBOFP_ENABLE_LIBPCAP TRUE CACHE BOOL "Enable use of libpcap")
+
+if(NOT LIBOFP_ENABLE_LIBPCAP)
+  message(STATUS "libpcap is disabled.")
+endif()
+
+# You can build oftr without openssl.
+
+set(LIBOFP_ENABLE_OPENSSL TRUE CACHE BOOL "Enable use of openssl")
+
+if(NOT LIBOFP_ENABLE_OPENSSL)
+  message(STATUS "openssl is disabled.")
 endif()
 
 # You can disable the valgrind memcheck tests.
@@ -97,16 +121,16 @@ set(LIBOFP_WARNINGS_CXX11 "-Wno-c++98-compat -Wno-c++98-compat-pedantic")
 # Specify include directories for third party headers. We use -isystem instead
 # of -I because we don't want to receive compiler warnings from these headers.
 
-set(LIBOFP_EXTERNAL_INCLUDES "-isystem ${CMAKE_SOURCE_DIR}/external/asio/asio/include")
-set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_BINARY_DIR}/external/yaml-io/include")
-set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/yaml-io/include")
-if(LIBOFP_ENABLE_JSONRPC)
-  set(LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES} -isystem ${CMAKE_SOURCE_DIR}/external/boringssl/include")
-endif()
+set(LIBOFP_SYSTEM_INCLUDES
+  "${CMAKE_SOURCE_DIR}/external/asio/asio/include"
+  "${CMAKE_BINARY_DIR}/external/yaml-io/include"
+  "${CMAKE_SOURCE_DIR}/external/yaml-io/include"
+)
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-  # MSVC does not support -isystem; replace -isystem with -I
-  string(REPLACE -isystem -I LIBOFP_EXTERNAL_INCLUDES "${LIBOFP_EXTERNAL_INCLUDES}")
+if(LIBOFP_ENABLE_OPENSSL)
+  set(LIBOFP_SYSTEM_INCLUDES 
+    ${LIBOFP_SYSTEM_INCLUDES}
+    "${CMAKE_SOURCE_DIR}/external/boringssl/include")
 endif()
 
 # Specify additional definitions.
@@ -123,8 +147,17 @@ endif()
 # here. This set of flags controls compiler output. It is important that all
 # source code be compiled with the same flags.
 
-set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing -fvisibility=hidden")
-set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fno-rtti -fno-exceptions -std=c++11 -fvisibility=hidden")
+if(MSVC)
+  set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS}")
+  set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14")
+else()
+  set(LIBOFP_CPP_STD "-std=c++14")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.3)
+    set(LIBOFP_CPP_STD "-std=c++1y")
+  endif()
+  set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing -fvisibility=hidden")
+  set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fno-rtti -fno-exceptions ${LIBOFP_CPP_STD} -fvisibility=hidden")
+endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
@@ -214,6 +247,7 @@ set(LIBOFP_SOURCES
   src/ofp/packetin.cpp
   src/ofp/packetout.cpp
   src/ofp/packetoutv6.cpp
+  src/ofp/pkt.cpp
   src/ofp/port.cpp
   src/ofp/portmod.cpp
   src/ofp/portrange.cpp
@@ -262,9 +296,6 @@ set(LIBOFP_SOURCES
   src/ofp/yaml/ycontrollermaxlen.cpp
   src/ofp/yaml/ytablenumber.cpp
   src/ofp/yaml/yschema.cpp
-  src/ofp/demux/messagesource.cpp
-  src/ofp/demux/pktsink.cpp
-  src/ofp/demux/pktsource.cpp
   src/ofp/demux/segmentcache.cpp
   src/ofp/demux/flowcache.cpp
   src/ofp/demux/flowstate.cpp
@@ -277,10 +308,7 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/sys/asio_utils.cpp
     src/ofp/sys/connection.cpp
     src/ofp/sys/defaulthandshake.cpp
-    src/ofp/sys/dtls_adapter.cpp
-    src/ofp/sys/dtls_utils.cpp
     src/ofp/sys/engine.cpp
-    src/ofp/sys/identity.cpp
     src/ofp/sys/tcp_server.cpp
     src/ofp/sys/udp_server.cpp
     src/ofp/rpc/rpcchannellistener.cpp
@@ -289,6 +317,24 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/rpc/rpcserver.cpp
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp
+  )
+  if(LIBOFP_ENABLE_OPENSSL)
+    set(LIBOFP_SOURCES
+      ${LIBOFP_SOURCES}
+      src/ofp/sys/dtls_adapter.cpp
+      src/ofp/sys/dtls_utils.cpp
+      src/ofp/sys/identity.cpp
+      src/ofp/sys/securitycheck.cpp
+    )
+  endif()
+endif()
+
+if(LIBOFP_ENABLE_LIBPCAP)
+  set(LIBOFP_SOURCES
+    ${LIBOFP_SOURCES}
+    src/ofp/demux/messagesource.cpp
+    src/ofp/demux/pktsink.cpp
+    src/ofp/demux/pktsource.cpp
   )
 endif()
 
@@ -318,13 +364,16 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}.")
 # Specify our final warning set. Clang supports -Weverything, but GCC does not.
 
 message(STATUS "Compiler is ${Libofp_COMPILER_SPEC}")
+set(LIBOFP_SYSTEM_WARNINGS "-Wall")
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(LIBOFP_WARNINGS "-Weverything ${LIBOFP_WARNINGS_CXX11} ${LIBOFP_WARNINGS_DISABLED}")
   message(STATUS "All clang warnings enabled.")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set(LIBOFP_WARNINGS "-Wpedantic -Wall -Wextra -Wformat=2 -Wno-unused-parameter -Wno-missing-field-initializers")
+  set(LIBOFP_WARNINGS "-Wpedantic -Wall -Wextra -Wformat=2 -Wstrict-aliasing=3 -Wno-unused-parameter -Wno-missing-field-initializers")
 else()
-  set(LIBOFP_WARNINGS "-Wall")
+  # Turn off Warnings for MSVC for now (FIXME).
+  set(LIBOFP_WARNINGS "")
+  set(LIBOFP_SYSTEM_WARNINGS "")
 endif()
 
 # Tell linker to remove dead code.
@@ -332,7 +381,7 @@ endif()
 if(APPLE)
   # Apple makes it easy.
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-dead_strip")
-else()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   # Dead-strip the GCC build.
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -fdata-sections -ffunction-sections")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -fdata-sections -ffunction-sections")
@@ -340,13 +389,33 @@ else()
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-  # -fsanitize=undefined doesn't seem to work with Clang 7.0.2, even with -frtti
-  # added back in.
-  set(LIBOFP_FSANITIZE "-fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  # (old note) -fsanitize=undefined doesn't seem to compile/link with Clang 
+  # 7.0.2, even with -frtti added back in. Here is the work-around I used:
+  # set(LIBOFP_FSANITIZE "-fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
+  set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_FSANITIZE}")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_FSANITIZE}")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_FSANITIZE}")
 endif()
+
+# Enable Link Time Optimization in Release builds. After this step, these
+# external symbols must still be left in oftr executable (MacOS X):
+#
+#   $ nm -gU oftr
+#   0000000100000000 T __mh_execute_header
+#   0000000100020510 T _libofp_buffer_free
+#   00000001000201c0 T _libofp_decode
+#   000000010001ff60 T _libofp_encode
+#   000000010001fc80 T _libofp_version
+#
+# TODO(bfish): Enable this at some point... These symbols are still being
+# stripped on OSX.
+#
+#if(CMAKE_BUILD_TYPE MATCHES "Release")
+#  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -flto")
+#  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -flto")
+#  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto")
+#endif()
 
 # Compile with code coverage support.
 
@@ -364,13 +433,20 @@ include(CheckIncludeFile)
 include(CheckSymbolExists)
 include(CheckLibraryExists)
 
-check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)
-if(HAVE_LIBPCAP)
-  set(CMAKE_REQUIRED_LIBRARIES pcap)
-  check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
-  check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
-else()
-  message(FATAL_ERROR "libpcap is not available.")
+check_include_file(endian.h HAVE_ENDIAN_H)
+check_include_file(machine/endian.h HAVE_MACHINE_ENDIAN_H)
+
+if(LIBOFP_ENABLE_LIBPCAP)
+  # "oftr decode" optionally depends on libpcap for live/offline decoding of packet captures.
+  check_library_exists(pcap pcap_create "" HAVE_LIBPCAP)
+  if(HAVE_LIBPCAP)
+    set(CMAKE_REQUIRED_LIBRARIES pcap)
+    set(LIBOFP_LINKED_LIBPCAP -lpcap)
+    check_symbol_exists(pcap_open_offline_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION)
+    check_symbol_exists(pcap_open_dead_with_tstamp_precision pcap/pcap.h HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION)
+  else()
+    message(FATAL_ERROR "libpcap is not available.")
+  endif()
 endif()
 
 #-------------------------------------------------------------------------------
@@ -437,25 +513,29 @@ configure_file("${CMAKE_SOURCE_DIR}/CTestCustom.cmake" "${CMAKE_BINARY_DIR}/CTes
 
 add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 
+# Add system includes.
+
+include_directories(SYSTEM ${LIBOFP_SYSTEM_INCLUDES})
+
 # Set flags to use when compiling third party code. Basically, we just use our
 # project flags with `-Wall` warnings. If we apply a stricter set, we'll clutter
 # up the build log with warnings.
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall -Wno-deprecated-declarations")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} -Wall")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-if(LIBOFP_ENABLE_JSONRPC)
+if(LIBOFP_ENABLE_OPENSSL)
   add_subdirectory(external/boringssl)
 endif()
 
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_EXTERNAL_INCLUDES} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE}")
 
 message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
@@ -479,7 +559,7 @@ set_source_files_properties(${LIBOFP_SOURCES_GENERATED} PROPERTIES GENERATED 1)
 # Build libofp.a.
 
 add_library(ofp ${LIBOFP_SOURCES} ${LIBOFP_SOURCES_GENERATED})
-if(LIBOFP_ENABLE_JSONRPC)
+if(LIBOFP_ENABLE_OPENSSL)
   target_link_libraries(ofp yamlio ssl crypto)
 else()
   target_link_libraries(ofp yamlio)

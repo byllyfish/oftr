@@ -13,3 +13,4 @@ Build/
 GIT-VERSION.cmake
 *.orig
 *.rej
+.vs/

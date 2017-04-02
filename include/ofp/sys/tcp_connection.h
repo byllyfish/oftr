@@ -14,17 +14,6 @@
 #include "ofp/types.h"
 
 namespace ofp {
-
-template <>
-constexpr ChannelTransport ToChannelTransport<sys::PlaintextSocket>() {
-  return ChannelTransport::TCP_Plaintext;
-}
-
-template <>
-constexpr ChannelTransport ToChannelTransport<sys::EncryptedSocket>() {
-  return ChannelTransport::TCP_TLS;
-}
-
 namespace sys {
 
 OFP_BEGIN_IGNORE_PADDING
@@ -73,6 +62,30 @@ class TCP_Connection
 };
 
 OFP_END_IGNORE_PADDING
+
+// Use these factory functions to create TCP_Connection objects.
+
+template <class SocketType>
+inline void TCP_AsyncAccept(Engine *engine, tcp::socket socket,
+                            ChannelOptions options, UInt64 securityId,
+                            ProtocolVersions versions,
+                            ChannelListener::Factory factory) {
+  auto conn = std::make_shared<TCP_Connection<SocketType>>(
+      engine, std::move(socket), options, securityId, versions, factory);
+  conn->asyncAccept();
+}
+
+template <class SocketType>
+inline UInt64 TCP_AsyncConnect(
+    Engine *engine, ChannelOptions options, UInt64 securityId,
+    ProtocolVersions versions, ChannelListener::Factory factory,
+    const IPv6Endpoint &remoteEndpt,
+    std::function<void(Channel *, std::error_code)> resultHandler) {
+  auto connPtr = std::make_shared<TCP_Connection<SocketType>>(
+      engine, options, securityId, versions, factory);
+  connPtr->asyncConnect(remoteEndpt, resultHandler);
+  return connPtr->connectionId();
+}
 
 }  // namespace sys
 }  // namespace ofp

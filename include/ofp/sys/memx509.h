@@ -5,6 +5,7 @@
 #define OFP_SYS_MEMX509_H_
 
 #include <openssl/x509.h>
+#include "ofp/sys/membio.h"
 
 namespace ofp {
 namespace sys {

@@ -56,8 +56,10 @@ struct MappingTraits<ofp::PacketOutBuilder> {
     MatchBuilder pktDecode;
     io.mapOptional("_pkt_decode", pktDecode);
     if (msg.enetFrame_.empty() && pktDecode.size() > 0) {
+      ByteList pktData;
+      io.mapOptional("_pkt_data", pktData);
       ofp::MatchPacketBuilder mp{pktDecode.toRange()};
-      mp.build(&msg.enetFrame_, {});
+      mp.build(&msg.enetFrame_, pktData.toRange());
     }
   }
 };
@@ -114,8 +116,10 @@ struct MappingTraits<ofp::PacketOutV6Builder> {
     MatchBuilder pktDecode;
     io.mapOptional("_pkt_decode", pktDecode);
     if (msg.enetFrame_.empty() && pktDecode.size() > 0) {
+      ByteList pktData;
+      io.mapOptional("_pkt_data", pktData);
       ofp::MatchPacketBuilder mp{pktDecode.toRange()};
-      mp.build(&msg.enetFrame_, {});
+      mp.build(&msg.enetFrame_, pktData.toRange());
     }
   }
 };

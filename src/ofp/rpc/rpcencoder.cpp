@@ -4,7 +4,8 @@
 #include "ofp/rpc/rpcencoder.h"
 #include "ofp/rpc/rpcconnection.h"
 
-using ofp::rpc::RpcEncoder;
+using namespace ofp;
+using namespace ofp::rpc;
 
 static bool errorFound(llvm::yaml::IO &io) {
   // This is a kludge. We need to know if the io object encountered an error

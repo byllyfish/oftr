@@ -107,6 +107,7 @@ INCLUDES=(
 	include/llvm/Support/TimeValue.h
 	include/llvm/Support/type_traits.h
 	include/llvm/Support/Valgrind.h
+	include/llvm/Support/WindowsError.h
 	include/llvm/Support/YAMLParser.h
 	include/llvm/Support/YAMLTraits.h
 	include/llvm-c/Core.h
@@ -154,6 +155,12 @@ SOURCES=(
 	Support/Valgrind.cpp
 	Support/YAMLParser.cpp
 	Support/YAMLTraits.cpp
+	Support/Windows/Memory.inc
+	Support/Windows/Path.inc
+	Support/Windows/Process.inc
+	Support/Windows/Program.inc
+	Support/Windows/TimeValue.inc
+	Support/Windows/WindowsSupport.h
 )
 
 TESTS=(
