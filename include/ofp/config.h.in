@@ -22,9 +22,16 @@
 #define LIBOFP_GIT_COMMIT_ASIO      "@Libofp_GIT_COMMIT_ASIO@"
 #define LIBOFP_GIT_COMMIT_BORINGSSL "@Libofp_GIT_COMMIT_BORINGSSL@"
 
-// This variable controls whether we are building the JSON-RPC server.
+// These variables controls whether we are building the JSON-RPC server and
+// OpenSSL.
 
 #cmakedefine01 LIBOFP_ENABLE_JSONRPC
+#cmakedefine01 LIBOFP_ENABLE_OPENSSL
+
+// These variables control header files.
+
+#cmakedefine01 HAVE_ENDIAN_H
+#cmakedefine01 HAVE_MACHINE_ENDIAN_H
 
 // These variables control libpcap capabilities.
 

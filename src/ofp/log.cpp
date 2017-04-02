@@ -63,8 +63,8 @@ void trace_msg_(const char *type, UInt64 id, const void *data, size_t length) {
 void trace_rpc_(const char *type, UInt64 id, const void *data, size_t length) {
   const char *msg = static_cast<const char *>(data);
 
-  // Remove trailing newline, if it exists.
-  if (length > 0 && msg[length - 1] == '\n')
+  // Remove trailing zero, if it exists.
+  if (length > 0 && msg[length - 1] == '\0')
     --length;
 
   detail::write_(Level::Trace, type, length, "bytes",

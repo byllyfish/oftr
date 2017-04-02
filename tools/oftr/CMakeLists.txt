@@ -24,7 +24,7 @@ add_executable(oftr ${OFTR_SOURCES})
 # Tip: Add "-framework CoreFoundation" here on Mac OS X for measuring with
 # Instruments.
 
-target_link_libraries(oftr ofp ${LIBOFP_LINKED_LIBS} -lpcap)
+target_link_libraries(oftr ofp ${LIBOFP_LINKED_LIBS} ${LIBOFP_LINKED_LIBPCAP})
 
 add_subdirectory(test)
 

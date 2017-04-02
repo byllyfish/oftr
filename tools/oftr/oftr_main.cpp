@@ -4,12 +4,16 @@
 #include "./oftr_decode.h"
 #include "./oftr_encode.h"
 #include "ofp/ofp.h"
-#if LIBOFP_ENABLE_JSONRPC
+#if LIBOFP_ENABLE_OPENSSL
 #include <openssl/ssl.h>  // For OPENSSL_VERSION_NUMBER
+#endif                    // LIBOFP_ENABLE_OPENSSL
+#if LIBOFP_ENABLE_JSONRPC
 #include <asio/version.hpp>
 #include "./oftr_jsonrpc.h"
 #endif  // LIBOFP_ENABLE_JSONRPC
+#if HAVE_LIBPCAP
 #include <pcap/pcap.h>
+#endif
 #include "./libofp.h"
 #include "./oftr_help.h"
 #include "llvm/Support/Host.h"
@@ -111,7 +115,9 @@ void print_version() {
 
   os << "  ASIO " << asioMajor << '.' << asioMinor << '.' << asioPatch << " ("
      << asioCommit.substr(0, 7) << ")\n";
+#endif  // LIBOFP_ENABLE_JSONRPC
 
+#if LIBOFP_ENABLE_OPENSSL
   unsigned sslMajor = (OPENSSL_VERSION_NUMBER >> 28) & 0x0F;
   unsigned sslMinor = (OPENSSL_VERSION_NUMBER >> 20) & 0xFF;
   unsigned sslPatch = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
@@ -119,10 +125,12 @@ void print_version() {
 
   os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
      << sslCommit.substr(0, 7) << ")\n";
-#endif  // LIBOFP_ENABLE_JSONRPC
+#endif  // LIBOFP_ENABLE_OPENSSL
 
+#if HAVE_LIBPCAP
   // Print libpcap version.
   os << "  Using: " << pcap_lib_version() << '\n';
+#endif  // HAVE_LIBPCAP
 }
 
 void force_link_api() {

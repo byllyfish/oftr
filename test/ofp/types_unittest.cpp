@@ -43,6 +43,8 @@ TEST(types, RawDataToHex) {
   std::string s{"abcdef"};
   EXPECT_EQ("616263646566", RawDataToHex(s.data(), s.length()));
   EXPECT_EQ("", RawDataToHex(s.data(), 0));
+
+  EXPECT_EQ("== hex too big ==", RawDataToHex(s.data(), 0x80000001UL));
 }
 
 TEST(types, RawDataToHex2) {
@@ -54,6 +56,8 @@ TEST(types, RawDataToHex2) {
   EXPECT_EQ("616263 646566", RawDataToHex(s.data(), s.length(), ' ', 3));
   EXPECT_EQ("61626364 6566", RawDataToHex(s.data(), s.length(), ' ', 4));
   EXPECT_EQ(" 61 62 63 64 65 66", RawDataToHex(s.data(), s.length(), ' ', 0));
+
+  EXPECT_EQ("== hex too big ==", RawDataToHex(s.data(), 0x80000001UL, ' ', 1));
 }
 
 TEST(types, HexToRawData) {
@@ -131,6 +135,8 @@ TEST(types, RawDataToBase64) {
   EXPECT_EQ("YWJjZA==", RawDataToBase64(s.data(), 4));
   EXPECT_EQ("YWJjZGVmNzg5MGFiY2RlZjc4OTBhYmNkZWY3ODkw",
             RawDataToBase64(s.data(), s.size()));
+
+  EXPECT_EQ("== base64 too big ==", RawDataToBase64(s.data(), 0x80000001UL));
 }
 
 TEST(types, MemCopyMasked) {

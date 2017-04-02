@@ -367,3 +367,32 @@ TEST(matchbuilder, experimenter) {
       match.data(), match.size());
   EXPECT_TRUE(match.validate());
 }
+
+TEST(matchbuilder, randomOrder) {
+  // OpenFlow Spec 1.3.5:  7.2.3.6 Flow Match Field Prerequisite
+  // "An OXM TLV that has prerequisite restrictions must appear after the OXM
+  // TLVs for its prerequisites. Ordering of OXM TLVs within an OpenFlow match
+  // is not otherwise constrained."
+
+  // OpenFlow Spec 1.5.1:  7.2.3.6 Flow Match Field Prerequisite
+  // "An OXM TLV that has prerequisite restrictions must appear after the OXM
+  // TLVs for its prerequisites. Ordering of OXM TLVs within an OpenFlow match
+  // is not otherwise constrained (apart from the Packet Type Match Field)."
+
+  MatchBuilder match;
+
+  match.add(OFB_ICMPV4_TYPE{0});
+  match.add(OFB_ETH_DST{MacAddress{"0e:33:09:3b:f8:93"}});
+  match.add(OFB_IPV4_DST{IPv4Address{"10.0.0.2"}});
+  match.add(OFB_ICMPV4_CODE{0});
+  match.add(OFB_IPV4_SRC{IPv4Address{"10.10.10.1"}});
+  match.add(OFB_IP_PROTO{1});
+  match.add(OFB_ETH_SRC{MacAddress{"0e:00:00:00:00:01"}});
+  match.add(OFB_ETH_TYPE{2048});
+
+  EXPECT_HEX(
+      "80000A02:0800 80001401:01 80002601:00 80000606:0E33093BF893 "
+      "80001804:0A000002 80002801:00 80001604:0A0A0A01 80000806:0E0000000001",
+      match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+}

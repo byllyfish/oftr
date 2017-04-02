@@ -12,7 +12,7 @@ namespace ofp {
 
 class Writable;
 
-class QueueDesc : private NonCopyable {
+class QueueDesc {
  public:
   // Offset of len_ field.
   enum { ProtocolIteratorSizeOffset = 8, ProtocolIteratorAlignment = 8 };

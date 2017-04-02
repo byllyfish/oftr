@@ -5,11 +5,25 @@
 #define OFP_SYS_ASIO_UTILS_H_
 
 // This #include must be first.
+#include "ofp/config.h"
+#if LIBOFP_ENABLE_OPENSSL
 #include "ofp/sys/asio_openssl_init.h"
+#endif
 
 #include <asio.hpp>
+#if LIBOFP_ENABLE_OPENSSL
 #include <asio/ssl.hpp>
+#else
+// Define asio::ssl::context and SSL_CTX placeholders to make porting easier.
+namespace asio {
+namespace ssl {
+class context {};
+}  // namespace ssl
+}  // namespace asio
+struct SSL_CTX {};
+#endif
 
+#include "ofp/channeltransport.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/log.h"
 #include "ofp/sys/plaintext.h"
@@ -21,7 +35,23 @@ using tcp = asio::ip::tcp;
 using udp = asio::ip::udp;
 
 using PlaintextSocket = Plaintext<tcp::socket>;
+
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::PlaintextSocket>() {
+  return ChannelTransport::TCP_Plaintext;
+}
+
+#if LIBOFP_ENABLE_OPENSSL
 using EncryptedSocket = asio::ssl::stream<tcp::socket>;
+
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::EncryptedSocket>() {
+  return ChannelTransport::TCP_TLS;
+}
+
+#else
+using EncryptedSocket = Plaintext<tcp::socket>;
+#endif  // LIBOFP_ENABLE_OPENSSL
 
 /// Convert an asio::ip::address into an ofp::IPv6Address.
 inline IPv6Address makeIPv6Address(const asio::ip::address &addr) {
@@ -83,6 +113,8 @@ inline udp::endpoint convertDestinationEndpoint(const IPv6Endpoint &endpt,
 
   return udp::endpoint{};
 }
+
+asio::ssl::context *PlaintextContext();
 
 }  // namespace sys
 }  // namespace ofp

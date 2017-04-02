@@ -183,8 +183,9 @@ TEST(encoderfail, unknownOXM) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:18:30: error: Invalid OXM type.\n          - field:           "
-      "IN_DORT\n                             ^~~~~~~\n",
+      "YAML:18:30: error: unknown value \"IN_DORT\" Did you mean "
+      "\"IN_PORT\"?\n          - field:           IN_DORT\n                    "
+      "         ^~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
@@ -586,10 +587,10 @@ TEST(encoderfail, packetout_data) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:2:339: error: Invalid OXM "
-      "type.\n{\"version\":4,\"datapath_id\":\"0x1\",\"msg\":{\"in_port\":"
-      "\"CONTROLLER\",\"data\":\"\",\"_pkt_decode\":[{\"value\":\"10.10.10.1\","
-      "\"field\":\"IPV4_SRC\"},{\"value\":0,\"field\":\"ICMPV4_CODE\"},{"
+      "YAML:2:339: error: unknown value \"DATA\" Did you mean "
+      "\"METADATA\"?\n{\"version\":4,\"datapath_id\":\"0x1\",\"msg\":{\"in_"
+      "port\":\"CONTROLLER\",\"data\":\"\",\"_pkt_decode\":[{\"value\":\"10.10."
+      "10.1\",\"field\":\"IPV4_SRC\"},{\"value\":0,\"field\":\"ICMPV4_CODE\"},{"
       "\"value\":0,\"field\":\"ICMPV4_TYPE\"},{\"value\":"
       "\"089400014bb3a05800000000fa350c0000000000101112131415161718191a1b1c1d1e"
       "1f202122232425262728292a2b2c2d2e2f3031323334353637\",\"field\":\"DATA\"}"

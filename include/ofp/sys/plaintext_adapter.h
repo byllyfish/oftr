@@ -41,6 +41,11 @@ class Plaintext_Adapter {
   void *userData_;
 };
 
+template <>
+constexpr ChannelTransport ToChannelTransport<sys::Plaintext_Adapter>() {
+  return ChannelTransport::UDP_Plaintext;
+}
+
 }  // namespace sys
 }  // namespace ofp
 

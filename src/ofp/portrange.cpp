@@ -5,7 +5,7 @@
 #include "ofp/portlist.h"
 #include "ofp/writable.h"
 
-using ofp::PortRange;
+using namespace ofp;
 
 PortRange::PortRange(const PortList &ports) : PortRange{ports.toRange()} {}
 

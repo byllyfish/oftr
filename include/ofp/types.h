@@ -5,6 +5,7 @@
 #define OFP_TYPES_H_
 
 #include <cassert>  // for assert macro
+#include <cctype>   // for std::isxdigit, etc.
 #include <chrono>
 #include <cstddef>                     // for std::size_t, etc.
 #include <cstdint>                     // for std::uint8_t, etc.
@@ -19,7 +20,14 @@
 #include "ofp/config.h"
 
 // Require C++11 -- std::string storage is guaranteed contiguous.
+#if !defined(_MSC_VER)
 static_assert(__cplusplus >= 201103L, "C++11 required");
+#else
+// Ignore __cplusplus value for MS compiler.
+static_assert(_MSC_VER >= 1910, "VS 2017 required");
+#endif
+static_assert(std::is_same<std::uint8_t, unsigned char>::value,
+              "Expected std::uint8_t to be implemented using unsigned char");
 
 #if defined(__clang__)
 #define OFP_BEGIN_IGNORE_PADDING   \
@@ -37,7 +45,7 @@ static_assert(__cplusplus >= 201103L, "C++11 required");
 #define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 #endif
 
-#if defined(__clang__)
+#if defined(__clang__) || defined(_MSC_VER)
 #define OFP_ALIGNAS(x) alignas(x)
 #else
 #define OFP_ALIGNAS(x) __attribute__((aligned(x)))
@@ -163,7 +171,7 @@ constexpr bool IsStandardLayout() {
 /// \returns true if type is trivially copyable.
 template <class T>
 constexpr bool IsTriviallyCopyable() {
-#if defined(__clang__)
+#if defined(__clang__) || defined(_MSC_VER)
   return std::is_trivially_copyable<T>::value;
 #else
   // GCC 4.7.2 doesn't define std::is_trivially_copyable. We only use this
@@ -175,7 +183,13 @@ constexpr bool IsTriviallyCopyable() {
 /// \returns true if type `From` can be implicitly converted to type `To`.
 template <class From, class To>
 constexpr bool IsConvertible() {
+#if !defined(_MSC_VER)
   return std::is_convertible<From, To>::value;
+#else
+  // std::is_convertible doesn't seem to work in VS 2017. We only use this
+  // macro in static_asserts, so the easiest fix is to always return true.
+  return true;
+#endif
 }
 
 /// \returns number of elements in array.

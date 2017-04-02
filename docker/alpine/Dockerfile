@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM alpine:3.5
 
 # Usage:
 #
@@ -10,18 +10,14 @@ FROM alpine:3.3
 #
 #   docker run -it byllyfish/oftr oftr version
 #
-#   docker run -it byllyfish/oftr oftr decode < some_packet
-#
-# You can view man pages for oftr:
-#
-#   docker run -it byllyfish/oftr man oftr
+#   docker run -v msgs.pcap:/msgs.pcap byllyfish/oftr oftr decode /msgs.pcap
 #
 
 MAINTAINER William W. Fisher "william.w.fisher@gmail.com"
 
-# oftr needs libgcc and libstdc++. Include man as well.
+# oftr needs libgcc, libstdc++, and libpcap.
 
-RUN apk add --no-cache libgcc libstdc++ man
+RUN apk add --no-cache libgcc libstdc++ libpcap
 
 # Set up build dependencies, then build and install oftr. Clean up when we
 # are done.
@@ -38,13 +34,12 @@ RUN set -ex \
         python \
         linux-headers \
         bash \
-    && git clone -b develop --single-branch --recursive https://github.com/byllyfish/oftr.git \
+        libpcap-dev \
+    && git clone --depth=1 -b develop --single-branch --recursive https://github.com/byllyfish/oftr.git \
     && mkdir oftr/Build \
     && cd oftr/Build \
     && cmake .. \
-    && make \
-    && make test \
-    && make install/strip \
+    && CTEST_OUTPUT_ON_FAILURE=1 make all test install/strip \
     && apk del .build-deps \
     && rm -rf /oftr
 

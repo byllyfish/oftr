@@ -6,8 +6,7 @@
 #include "ofp/multipartrequest.h"
 #include "ofp/writable.h"
 
-using ofp::MPPortStatsRequest;
-using ofp::MPPortStatsRequestBuilder;
+using namespace ofp;
 
 const MPPortStatsRequest *MPPortStatsRequest::cast(
     const MultipartRequest *req) {

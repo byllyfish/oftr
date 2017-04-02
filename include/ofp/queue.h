@@ -17,7 +17,7 @@ namespace deprecated {
 class QueueV1;
 }  // namespace deprecated
 
-class Queue : private NonCopyable {
+class Queue {
  public:
   // Offset of len_ field.
   enum { ProtocolIteratorSizeOffset = 8, ProtocolIteratorAlignment = 8 };
@@ -67,7 +67,7 @@ class QueueBuilder {
   Queue queue_;
   PropertyList properties_;
 
-  enum { SizeWithoutProperties = sizeof(queue_) };
+  enum { SizeWithoutProperties = sizeof(Queue) };
 
   friend class QueueList;
 
@@ -77,7 +77,7 @@ class QueueBuilder {
 
 namespace deprecated {
 
-class QueueV1 : private NonCopyable {
+class QueueV1 {
  public:
   // Offset of len_ field.
   enum { ProtocolIteratorSizeOffset = 4, ProtocolIteratorAlignment = 8 };

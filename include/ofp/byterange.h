@@ -27,7 +27,7 @@ class ByteRange {
   constexpr bool empty() const { return begin_ == end_; }
 
   bool operator==(const ByteRange &rhs) const {
-    return size() == rhs.size() && std::equal(begin_, end_, rhs.data());
+    return size() == rhs.size() && std::memcmp(data(), rhs.data(), size()) == 0;
   }
   bool operator!=(const ByteRange &rhs) const { return !(*this == rhs); }
 

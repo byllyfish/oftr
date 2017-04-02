@@ -2,12 +2,25 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/timestamp.h"
-#include <chrono>
+#include <ctime>  // for gmtime_r, gmtime_s
 #include <iomanip>
 #include <sstream>
 #include "llvm/Support/Format.h"
+#include "ofp/log.h"
 
 using namespace ofp;
+
+inline struct tm *my_gmtime_r(const time_t *t, struct tm *result) {
+#if defined(_WIN32)
+  // N.B. Arguments reversed; returns errno_t.
+  if (gmtime_s(result, t) == 0) {
+    return result;
+  }
+  return nullptr;
+#else
+  return gmtime_r(t, result);
+#endif
+}
 
 /// \brief Compute difference in seconds.
 ///
@@ -97,7 +110,10 @@ size_t Timestamp::toStringUTC(char (&buf)[TS_BUFSIZE]) const {
   auto nsec = nanoseconds();
 
   struct tm date;
-  gmtime_r(&secs, &date);
+  if (!my_gmtime_r(&secs, &date)) {
+    ofp::log::fatal("Timestamp::gmtime_r failed", secs);
+  }
+
   date.tm_year += 1900;
   date.tm_mon += 1;
 

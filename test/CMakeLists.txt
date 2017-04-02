@@ -92,7 +92,6 @@ set(LIBOFP_TEST_SOURCES
 	ofp/demux/flowcache_unittest.cpp
 	ofp/demux/flowstate_unittest.cpp
 	ofp/demux/segmentcache_unittest.cpp
-	ofp/demux/pktsink_unittest.cpp
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
@@ -101,21 +100,33 @@ if(LIBOFP_ENABLE_JSONRPC)
 		ofp/asio_unittest.cpp
 		ofp/boost_asio_unittest.cpp
 		ofp/driver_unittest.cpp
-		ofp/dtls_utils_unittest.cpp
 		ofp/roundtrip_unittest.cpp
 		ofp/rpcencoder_unittest.cpp
-		ofp/identity_unittest.cpp
 	)
+	if(LIBOFP_ENABLE_OPENSSL)
+		set(LIBOFP_TEST_SOURCES
+			${LIBOFP_TEST_SOURCES}
+			ofp/dtls_utils_unittest.cpp
+        	ofp/identity_unittest.cpp
+        )
+	endif()
+endif()
+
+if(HAVE_LIBPCAP)
+    set(LIBOFP_TEST_SOURCES
+    	${LIBOFP_TEST_SOURCES}
+    	ofp/demux/pktsink_unittest.cpp
+    )
 endif()
 
 # Include 'gtest-all.cc' source file when building ofp_unittest. Avoid googletest's
 # CMakeLists.txt because it wants to install googletest.
 
 set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${gtest_SOURCE_DIR}/include -isystem ${gtest_SOURCE_DIR}")
+include_directories(SYSTEM "${gtest_SOURCE_DIR}/include" "${gtest_SOURCE_DIR}")
 
 add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES} ${gtest_SOURCE_DIR}/src/gtest-all.cc)
-target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} ${CMAKE_THREAD_LIBS_INIT} -lpcap)
+target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} ${LIBOFP_LINKED_LIBPCAP})
 
 # Add tests here.
 

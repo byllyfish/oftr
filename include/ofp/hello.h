@@ -11,7 +11,7 @@
 namespace ofp {
 namespace detail {
 
-class HelloElement : private NonCopyable {
+class HelloElement {
  public:
   enum { ProtocolIteratorSizeOffset = 2, ProtocolIteratorAlignment = 8 };
 

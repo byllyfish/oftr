@@ -4,6 +4,7 @@
 #include "ofp/log.h"
 #include "ofp/sys/defaulthandshake.h"
 #include "ofp/sys/engine.h"
+#include "ofp/sys/securitycheck.h"
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/tcp_server.h"
 
@@ -17,10 +18,14 @@ namespace detail {
 
 template <class SocketType>
 inline asio::ssl::context *tcpContext(Engine *engine, UInt64 securityId) {
+#if LIBOFP_ENABLE_OPENSSL
   assert(securityId != 0);
   Identity *identity = engine->findIdentity(securityId);
   log::fatal_if_null(identity, LOG_LINE());
   return identity->tlsContext();
+#else
+  return PlaintextContext();
+#endif
 }
 
 template <>
@@ -31,7 +36,7 @@ inline asio::ssl::context *tcpContext<PlaintextSocket>(Engine *engine,
   // returnd `nullptr` here but the undefined sanitizer complained. The
   // PlaintextSocket type does not use or access the asio::ssl::context passed
   // in; the ssl::context here is a placeholder.
-  return Identity::plaintextContext();
+  return PlaintextContext();
 }
 
 }  // namespace detail
@@ -69,7 +74,7 @@ TCP_Connection<SocketType>::~TCP_Connection() {
   channelDown();
 
   // Check that secure socket was shutdown correctly.
-  Identity::beforeClose(this, socket_.next_layer().native_handle());
+  SecurityCheck::beforeClose(this, socket_.next_layer().native_handle());
 
   log_info("Close TCP connection", std::make_pair("connid", connectionId()));
 }
@@ -288,14 +293,16 @@ void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
                        : asio::ssl::stream_base::server;
 
   // Set up verify callback.
-  Identity::beforeHandshake(this, socket_.next_layer().native_handle(),
-                            isClient);
+  SecurityCheck::beforeHandshake(this, socket_.next_layer().native_handle(),
+                                 isClient);
 
   OFP_BEGIN_IGNORE_PADDING
 
   auto self(this->shared_from_this());
   socket_.async_handshake(mode, [this, self](const asio::error_code &err) {
-    Identity::afterHandshake(this, socket_.next_layer().native_handle(), err);
+    SecurityCheck::afterHandshake(this, socket_.next_layer().native_handle(),
+                                  err);
+
     if (!err) {
       channelUp();
       asyncReadHeader();

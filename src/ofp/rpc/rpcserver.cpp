@@ -241,8 +241,14 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
 
 void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
   std::error_code err;
+
+#if LIBOFP_ENABLE_OPENSSL
   UInt64 securityId = engine_->addIdentity(
       add->params.cert, add->params.password, add->params.cert_auth, err);
+#else
+  UInt64 securityId = 0;
+  err = std::make_error_code(std::errc::function_not_supported);
+#endif
 
   if (add->id.is_missing())
     return;
@@ -339,9 +345,15 @@ bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
   std::string errMesg;
   RpcErrorCode errCode = ERROR_CODE_INVALID_REQUEST;
   if (!AreChannelOptionsValid(options)) {
-    errMesg += "Invalid combination of options";
-  } else if (securityId != 0 && engine_->findIdentity(securityId) == nullptr) {
-    errMesg += "Invalid tls_id: " + std::to_string(securityId);
+    errMesg = "Invalid combination of options";
+  } else if (securityId != 0) {
+#if LIBOFP_ENABLE_OPENSSL
+    if (engine_->findIdentity(securityId) == nullptr) {
+      errMesg = "Invalid tls_id: " + std::to_string(securityId);
+    }
+#else
+    errMesg = "TLS not supported (LIBOFP_ENABLE_OPENSSL=false)";
+#endif
   }
 
   if (!errMesg.empty()) {

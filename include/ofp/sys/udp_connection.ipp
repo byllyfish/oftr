@@ -5,6 +5,7 @@
 #include "ofp/sys/defaulthandshake.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/plaintext_adapter.h"
+#include "ofp/sys/securitycheck.h"
 #include "ofp/sys/udp_connection.h"
 #include "ofp/sys/udp_server.h"
 
@@ -15,10 +16,14 @@ namespace detail {
 
 template <class Adapter>
 inline SSL_CTX *udpContext(UDP_Server *server, UInt64 securityId) {
+#if LIBOFP_ENABLE_OPENSSL
   assert(securityId != 0);
   Identity *identity = server->engine()->findIdentity(securityId);
   log::fatal_if_null(identity, LOG_LINE());
   return identity->dtlsContext();
+#else
+  return nullptr;
+#endif
 }
 
 template <>
@@ -61,7 +66,8 @@ void UDP_Connection<AdapterType>::connect(const udp::endpoint &remoteEndpt) {
   remoteEndpt_ = remoteEndpt;
   server_->add(this);
 
-  Identity::beforeHandshake(this, dtls_.native_handle(), true);
+  SecurityCheck::beforeHandshake(this, dtls_.native_handle(), true);
+
   dtls_.connect();
 
   log_info("Establish UDP connection", localEndpoint(), "-->", remoteEndpoint(),
@@ -77,7 +83,8 @@ void UDP_Connection<AdapterType>::accept(const udp::endpoint &remoteEndpt) {
   remoteEndpt_ = remoteEndpt;
   server_->add(this);
 
-  Identity::beforeHandshake(this, dtls_.native_handle(), false);
+  SecurityCheck::beforeHandshake(this, dtls_.native_handle(), false);
+
   dtls_.accept();
 
   log_info("Accept UDP connection", localEndpoint(), "<--", remoteEndpoint(),
@@ -122,7 +129,8 @@ void UDP_Connection<AdapterType>::datagramReceived(const void *data,
 
   if (!(flags() & Connection::kHandshakeDone) && dtls_.isHandshakeDone()) {
     std::error_code err;
-    Identity::afterHandshake(this, dtls_.native_handle(), err);
+    SecurityCheck::afterHandshake(this, dtls_.native_handle(), err);
+
     if (!err) {
       channelUp();
     }

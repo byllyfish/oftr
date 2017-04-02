@@ -31,18 +31,11 @@ class Identity {
   SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
 
-  template <class SocketType>
-  static void beforeHandshake(Connection *conn, SocketType *ssl,
-                              bool isClient) {}
+  static Identity *GetIdentityPtr(SSL_CTX *ctx);
+  static void SetIdentityPtr(SSL_CTX *ctx, Identity *identity);
 
-  template <class SocketType>
-  static void afterHandshake(Connection *conn, SocketType *ssl,
-                             std::error_code err) {}
-
-  template <class SocketType>
-  static void beforeClose(Connection *conn, SocketType *ssl) {}
-
-  static asio::ssl::context *plaintextContext();
+  static Connection *GetConnectionPtr(SSL *ssl);
+  static void SetConnectionPtr(SSL *ssl, Connection *conn);
 
  private:
   /// Unique non-zero ID used to reference this Identity.
@@ -78,22 +71,11 @@ class Identity {
   static void prepareVerifier(SSL_CTX *ctx);
   static void prepareDTLSCookies(SSL_CTX *ctx);
 
-  static int tls_verify_callback(int preverified, X509_STORE_CTX *ctx);
   static int dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                            size_t *cookie_len);
   static int dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                          size_t cookie_len);
 };
-
-template <>
-void Identity::beforeHandshake<SSL>(Connection *conn, SSL *ssl, bool isClient);
-
-template <>
-void Identity::afterHandshake<SSL>(Connection *conn, SSL *ssl,
-                                   std::error_code err);
-
-template <>
-void Identity::beforeClose<SSL>(Connection *conn, SSL *ssl);
 
 }  // namespace sys
 }  // namespace ofp

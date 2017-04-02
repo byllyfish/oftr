@@ -7,7 +7,8 @@
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
 
-using ofp::rpc::RpcConnection;
+using namespace ofp;
+using namespace ofp::rpc;
 
 RpcConnection::RpcConnection(RpcServer *server) : server_{server} {
   server_->onConnect(this);
