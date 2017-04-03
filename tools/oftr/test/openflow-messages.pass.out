@@ -33266,7 +33266,7 @@ xid:             0xC70691D0
 version:         0x02
 msg:             
   table_id:        0x02
-  config:          [ TABLE_MISS_DROP, '0x00000002' ]
+  config:          [ TABLE_MISS_DROP ]
   properties:      
 ...
 ---
@@ -46053,7 +46053,7 @@ xid:             0xC70691D0
 version:         0x03
 msg:             
   table_id:        0x02
-  config:          [ TABLE_MISS_DROP, '0x00000002' ]
+  config:          [ TABLE_MISS_DROP ]
   properties:      
 ...
 ---
@@ -58110,13 +58110,9 @@ xid:             0xC70691D0
 version:         0x04
 msg:             
   table_id:        0x02
-  config:          [  ]
+  config:          [ '0x00000002' ]
   properties:      
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_17_00001.pass
-Error: Encode yielded different data at byte offset 15:
-[ByteRange size=16 data=04110010C70691D00200000000000000]
-[ByteRange size=16 data=04110010C70691D00200000000000002]
 ---
 type:            REQUEST.DESC
 flags:           [ MORE ]
@@ -71444,13 +71440,9 @@ xid:             0xC70691D0
 version:         0x04
 msg:             
   table_id:        0x02
-  config:          [  ]
+  config:          [ '0x00000002' ]
   properties:      
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_17_00001.pass
-Error: Encode yielded different data at byte offset 15:
-[ByteRange size=16 data=04110010C70691D00200000000000000]
-[ByteRange size=16 data=04110010C70691D00200000000000002]
 ---
 type:            REQUEST.DESC
 flags:           [ MORE ]

@@ -525,12 +525,17 @@ struct ScalarBitSetTraits<ofp::OFPTableConfigFlags> {
     OFP_YAML_BITCASE(OFPTC_, VACANCY_EVENTS);
 
     if (ofp::yaml::GetVersionFromContext(io) <= ofp::OFP_VERSION_3) {
-      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTROLLER,
-                             OFPTC_TABLE_MISS_MASK);
-      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTINUE,
-                             OFPTC_TABLE_MISS_MASK);
-      OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_DROP, OFPTC_TABLE_MISS_MASK);
-      io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2);
+      if ((value & ofp::OFPTC_TABLE_MISS_MASK) == ofp::OFPTC_TABLE_MISS_MASK) {
+        // Value 0x03 is unused. Make sure it is displayed correctly.
+        io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS_ALL);
+      } else {
+        OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTROLLER,
+                               OFPTC_TABLE_MISS_MASK);
+        OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_CONTINUE,
+                               OFPTC_TABLE_MISS_MASK);
+        OFP_YAML_MASKEDBITCASE(OFPTC_, TABLE_MISS_DROP, OFPTC_TABLE_MISS_MASK);
+        io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS_V2);
+      }
     } else {
       io.bitSetCaseOther(value, ofp::OFPTC_OTHER_TABLE_CONFIG_FLAGS);
     }
