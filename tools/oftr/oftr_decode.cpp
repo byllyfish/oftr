@@ -752,6 +752,23 @@ void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
   }
 }
 
+/// Return true if file has pcap magic header.
+static bool hasPcapMagicHeader(const std::string &fname) {
+  const ofp::UInt32 PCAP_MAGIC = 0xa1b2c3d4;
+  bool result = false;
+  FILE *file = std::fopen(fname.c_str(), "rb");
+  if (file) {
+    ofp::UInt32 magic = 0;
+    if (std::fread(&magic, 1, sizeof(magic), file) == sizeof(magic)) {
+      log_debug("hasPcapMagicHeader: magic", magic);
+      result = (magic == PCAP_MAGIC) || (ofp::detail::SwapByteOrder(magic) == PCAP_MAGIC);
+    }
+    std::fclose(file);
+  }
+  return result;
+}
+
+
 bool Decode::pcapFormat() const {
   if (pcapFormat_ == kPcapFormatNo)
     return false;
@@ -769,6 +786,13 @@ bool Decode::pcapFormat() const {
     }
   }
 
+  // Check for PCAP file signature (first 4 bytes) in the first file.
+  if (!inputFiles_.empty()) {
+    if (hasPcapMagicHeader(inputFiles_[0])) {
+      return true;
+    }
+  }
+  
   return false;
 }
 
