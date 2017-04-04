@@ -11,15 +11,15 @@ What is oftr?
 The *oftr* program translates binary OpenFlow_ messages to YAML_ and back again. It provides a uniform syntax for working with the OpenFlow protocol programmatically.
 
 - Supports Linux and OS X
-- Supports OpenFlow versions 1.0, 1.1, 1.2, 1.3, 1.4, 1.5.
-- Optional JSON RPC Microservice supports:
+- Supports OpenFlow versions 1.0, 1.1, 1.2, 1.3, 1.4, 1.5
+- Optional JSON RPC Microservice
     - multiple incoming or outgoing connections
     - auxiliary connections
     - TLS and DTLS
 
 Decode the OpenFlow messages in a ".pcap" file while retaining metadata such as timestamps:
 
-::
+.. code-block:: bash
 
     $ oftr decode "filename.pcap"
 
@@ -28,7 +28,7 @@ oftr includes a JSON-RPC microservice that can operate as an OpenFlow
 controller, agent, or both simultaneously. The JSON-RPC microservice can control
 the OpenFlow protocol over an IPC channel using asynchronous JSON events.
 
-::
+.. code-block:: bash
 
     $ oftr jsonrpc
 
@@ -39,7 +39,7 @@ YAML to OpenFlow
 
 The following YAML input will produce an OpenFlow 1.3 message:
 
-::
+.. code-block:: yaml
 
     type: PACKET_OUT
     version: 4    # OpenFlow 1.3
@@ -58,7 +58,7 @@ translating between OpenFlows versions. For example,
 here's a FlowMod message specified using OpenFlow 1.4 syntax, but which will 
 output a "1.0" message because version 1 is explicitly specified.
 
-::
+.. code-block:: yaml
 
     type: FLOW_MOD
     version: 1    # OpenFlow 1.0
@@ -93,13 +93,13 @@ OpenFlow to YAML
 Given a binary OpenFlow message, `oftr` can translate it back to a human-readable
 YAML object. Here's the binary for an OpenFlow OFPT_ERROR message in hexadecimal:
 
-::
+.. code-block:: hex
 
     01010013 00000062 00010001 FFFF1234 567890
 
 Decoding this binary OpenFlow message yields:
 
-::
+.. code-block:: yaml
 
   type:            ERROR
   xid:             0x00000062
@@ -119,7 +119,7 @@ Python, Perl and Go.
 
 On Ubuntu, use apt-get to install the dependencies.
 
-::
+.. code-block:: bash
 
     $ sudo apt-get -yq update
     $ sudo apt-get install build-essential cmake git golang libpcap-dev
@@ -128,7 +128,7 @@ On Mac OS X, you can obtain cmake from http://cmake.org/download/.
 
 To build the software:
 
-::
+.. code-block:: bash
 
     $ git clone --recursive https://github.com/byllyfish/oftr.git
     $ mkdir oftr/Build
@@ -146,7 +146,7 @@ Examples
 
 To translate a text file into binary OpenFlow messages:
 
-::
+.. code-block:: bash
 
     $ oftr encode -o output.bin input.yml
 
@@ -154,7 +154,7 @@ To translate a text file into binary OpenFlow messages:
 To translate a text file into binary OpenFlow messages, while ignoring
 sets of match fields with missing prerequisites:
 
-::
+.. code-block:: bash
 
     $ oftr encode --unchecked-match -o output.bin input.yml
 
@@ -162,14 +162,14 @@ sets of match fields with missing prerequisites:
 To translate a text file of compact, single line JSON objects separated by
 linefeeds:
 
-::
+.. code-block:: bash
 
     $ oftr encode --json input.json
 
 
 To decode a file of binary OpenFlow messages to YAML:
 
-::
+.. code-block:: bash
 
     $ oftr decode input.bin
 
@@ -177,21 +177,21 @@ To decode a file of binary OpenFlow messages to YAML:
 To decode a ".pcap" file containing OpenFlow messages, treating all TCP streams
 as potential OpenFlow connections:
 
-::
+.. code-block:: bash
 
     $ oftr decode --pcap-filter='' "input.pcap" 
 
 
 To decode a file of binary OpenFlow messages to compact single-line JSON objects:
 
-::
+.. code-block:: bash
 
     $ oftr decode --json "filename"
 
 
 To decode binary OpenFlow messages to a valid JSON array of objects:
 
-::
+.. code-block:: bash
 
     $ oftr decode --json-array "filename"
 
@@ -199,7 +199,7 @@ To decode binary OpenFlow messages to a valid JSON array of objects:
 To decode binary OpenFlow messages with the additional check that the resulting
 YAML produces the same binary message when re-encoded:
 
-::
+.. code-block:: bash
 
     $ oftr decode --verify-output "filename"
 
@@ -208,14 +208,14 @@ The `oftr help` tool provides information about the schema used for reading/writ
 OpenFlow messages in YAML. To obtain information about the syntax for the 
 'FLOW_MOD' message:
 
-::
+.. code-block:: bash
 
     $ oftr help flow_mod
 
 
 To list all supported OXM fields:
 
-::
+.. code-block:: bash
 
     $ oftr help --fields
 
@@ -257,7 +257,7 @@ For testing, *oftr* uses OpenFlow message samples from these projects:
    :alt: Code Coverage Status
    :target: https://codecov.io/gh/byllyfish/oftr/branch/codecov
 
-.. |LAUNCHPAD| image:: https://img.shields.io/badge/Launchpad-ppa-f7c426.svg
+.. |LAUNCHPAD| image:: https://img.shields.io/badge/Launchpad-ppa-blue.svg
     :alt: Launchpad Logo
     :target: Launchpad_
 
