@@ -56641,8 +56641,8 @@ msg:
   out_group:       0x00000003
   flags:           [  ]
   match:           
-    - field:           0x80004A03
-      value:           020000
+    - field:           PBB_ISID
+      value:           0x00020000
   instructions:    
 ...
 ---
@@ -56662,9 +56662,9 @@ msg:
   out_group:       0x00000003
   flags:           [  ]
   match:           
-    - field:           0x80004B06
-      value:           123456
-      mask:            123456
+    - field:           PBB_ISID
+      value:           0x00123456
+      mask:            0x00123456
   instructions:    
 ...
 ---
@@ -69971,8 +69971,8 @@ msg:
   out_group:       0x00000003
   flags:           [  ]
   match:           
-    - field:           0x80004A03
-      value:           020000
+    - field:           PBB_ISID
+      value:           0x00020000
   instructions:    
 ...
 ---
@@ -69992,9 +69992,9 @@ msg:
   out_group:       0x00000003
   flags:           [  ]
   match:           
-    - field:           0x80004B06
-      value:           123456
-      mask:            123456
+    - field:           PBB_ISID
+      value:           0x00123456
+      mask:            0x00123456
   instructions:    
 ...
 ---

@@ -1857,8 +1857,8 @@ Field/MPLS_BOS:
   
 Field/PBB_ISID: 
   field: PBB_ISID
-  value: UInt32
-  mask: !optout UInt32
+  value: UInt24
+  mask: !optout UInt24
   
 Field/TUNNEL_ID: 
   field: TUNNEL_ID
@@ -2030,6 +2030,8 @@ Builtin/UInt16: <builtin>
 Builtin/UInt32: <builtin>
 
 Builtin/UInt64: <builtin>
+
+Builtin/UInt24: <builtin>
 
 Builtin/SInt32: <builtin>
 

@@ -58,6 +58,32 @@ struct ScalarTraits<ofp::Big16> {
 };
 
 template <>
+struct ScalarTraits<ofp::Big24> {
+  static void output(const ofp::Big24 &value, void *ctxt,
+                     llvm::raw_ostream &out) {
+    // Output Big24 in hexadecimal.
+    uint32_t num = value;
+    ScalarTraits<Hex32>::output(num, ctxt, out);
+  }
+
+  static StringRef input(StringRef scalar, void *ctxt, ofp::Big24 &value) {
+    uint32_t num = 0;
+    auto err = ScalarTraits<uint32_t>::input(scalar, ctxt, num);
+    if (err.empty()) {
+      if (num > 0x00ffffff) {
+        return "out of range number";
+      }
+      value = num;
+    }
+    return err;
+  }
+
+  static bool mustQuote(StringRef) { return false; }
+
+  using json_type = uint32_t;
+};
+
+template <>
 struct ScalarTraits<ofp::Big32> {
   static void output(const ofp::Big32 &value, void *ctxt,
                      llvm::raw_ostream &out) {
