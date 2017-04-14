@@ -2404,6 +2404,36 @@ TEST(encoder, flowremovedv3) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowremovedv6) {
+  const char *input = R"""(
+      version: 6
+      type: FLOW_REMOVED
+      datapath_id: 00:00:00:00:00:00:00:01
+      xid: 0x11111111
+      msg:
+        cookie: 0x2222222222222222
+        priority: 0x3333
+        reason: 0x44
+        table_id: 0x55
+        duration: 1717986918.x77777777
+        idle_timeout: 0x8888
+        hard_timeout: 0x9999
+        packet_count: 0xAAAAAAAAAAAAAAAA
+        byte_count: 0xBBBBBBBBBBBBBBBB
+        match:
+            - field: IN_PORT
+              value: 0x12345678
+        stat:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x50, encoder.size());
+  EXPECT_HEX(
+      "060B005011111111554433338888999922222222222222220001000C8000000412345678000000000000002880020008666666667777777780020808AAAAAAAAAAAAAAAA80020A08BBBBBBBBBBBBBBBB",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, ofmp_desc_request) {
   const char *input = R"""(
       version: 4

@@ -266,6 +266,12 @@ template <size_t Length>
 char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
                                      char (&buf)[Length * 3]);
 
+extern template 
+char *RawDataToHexDelimitedLowercase(const std::array<UInt8, 8> &data, char (&buf)[24]);
+
+extern template 
+char *RawDataToHexDelimitedLowercase(const std::array<UInt8, 6> &data, char (&buf)[18]);
+
 /// Convert a hexadecimal string with each hex-pair delimited by ':'.
 ///
 /// There must be exactly 2 hex digits between each ':'.

@@ -196,6 +196,7 @@ static const char *HeaderFilePreamble =
 #include "ofp/oxmrange.h"
 #include "ofp/oxmvalue.h"
 #include "ofp/portnumber.h"
+#include "ofp/durationsec.h"
 
 )""";
 
