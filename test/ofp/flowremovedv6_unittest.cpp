@@ -9,9 +9,9 @@ TEST(flowremovedv6, test) {
   match.add(OFB_IN_PORT{27});
 
   StatBuilder stat;
-  stat.add(OXS_OF_DURATION{DurationSec{0x55555550, 0x66666660}});
-  stat.add(OXS_OF_PACKET_COUNT{0x9999999999999990});
-  stat.add(OXS_OF_BYTE_COUNT{0xAAAAAAAAAAAAAAA0});
+  stat.add(OXS_DURATION{DurationSec{0x55555550, 0x66666660}});
+  stat.add(OXS_PACKET_COUNT{0x9999999999999990});
+  stat.add(OXS_BYTE_COUNT{0xAAAAAAAAAAAAAAA0});
 
   FlowRemovedV6Builder msg;
   msg.setCookie(0x1111111111111110);

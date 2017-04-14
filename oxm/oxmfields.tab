@@ -75,8 +75,8 @@ X_EXPERIMENTER_01	0xFFFF	3.0x00FFFFFE	6	Big16	true		(Internal) Experimental Test
 # OXM Fields end here
 
 # OXS Fields are supported in OF 1.5. These are in a different namespace from the above fields.
-OXS_OF_DURATION	0x8002	0	8	DurationSec	false		(OXS) Time flow entry has been alive
-OXS_OF_IDLE_TIME	0x8002	1	8	DurationSec	false		(OXS) Time flow entry has been idle
-OXS_OF_FLOW_COUNT	0x8002	3	4	Big32	false		(OXS) Number of aggregated flow entries
-OXS_OF_PACKET_COUNT	0x8002	4	8	Big64	false		(OXS) Number of packets matched by flow entry
-OXS_OF_BYTE_COUNT	0x8002	5	8	Big64	false		(OXS) Number of bytes matched by flow entry
+OXS_DURATION	0x8002	0	8	DurationSec	false		(OXS) Time flow entry has been alive
+OXS_IDLE_TIME	0x8002	1	8	DurationSec	false		(OXS) Time flow entry has been idle
+OXS_FLOW_COUNT	0x8002	3	4	Big32	false		(OXS) Number of aggregated flow entries
+OXS_PACKET_COUNT	0x8002	4	8	Big64	false		(OXS) Number of packets matched by flow entry
+OXS_BYTE_COUNT	0x8002	5	8	Big64	false		(OXS) Number of bytes matched by flow entry

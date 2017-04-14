@@ -288,6 +288,7 @@ Message/FlowRemoved:
     packet_count: UInt64
     byte_count: UInt64
     match: [Field]
+    stat: [Field]
   
 Message/PortStatus: 
   version: !opt UInt8
@@ -2022,6 +2023,26 @@ Field/X_EXPERIMENTER_01:
   field: X_EXPERIMENTER_01
   value: UInt16
   mask: !optout UInt16
+  
+Field/DURATION: 
+  field: DURATION
+  value: DurationSec
+  
+Field/IDLE_TIME: 
+  field: IDLE_TIME
+  value: DurationSec
+  
+Field/FLOW_COUNT: 
+  field: FLOW_COUNT
+  value: UInt32
+  
+Field/PACKET_COUNT: 
+  field: PACKET_COUNT
+  value: UInt64
+  
+Field/BYTE_COUNT: 
+  field: BYTE_COUNT
+  value: UInt64
   
 Builtin/UInt8: <builtin>
 

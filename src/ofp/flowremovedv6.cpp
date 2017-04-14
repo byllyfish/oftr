@@ -39,15 +39,15 @@ bool FlowRemovedV6::validateInput(Validation *context) const {
 
 
 void FlowRemovedV6Builder::setPacketCount(UInt64 packetCount) {
-  stat_.add(OXS_OF_PACKET_COUNT{packetCount});
+  stat_.add(OXS_PACKET_COUNT{packetCount});
 }
 
 void FlowRemovedV6Builder::setByteCount(UInt64 byteCount) {
-  stat_.add(OXS_OF_BYTE_COUNT{byteCount});
+  stat_.add(OXS_BYTE_COUNT{byteCount});
 }
 
 void FlowRemovedV6Builder::setDuration(const DurationSec &duration) {
-  stat_.add(OXS_OF_DURATION{duration});
+  stat_.add(OXS_DURATION{duration});
 }
 
 

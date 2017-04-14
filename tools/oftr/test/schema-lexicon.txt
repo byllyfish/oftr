@@ -151,6 +151,7 @@ rx_packets
 rx_pwr
 serial_num
 src
+stat
 state
 supported
 sw_desc

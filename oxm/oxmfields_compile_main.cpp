@@ -285,6 +285,7 @@ static void WritePrereq(const char *name, const UInt8 *data, size_t len)
 
 static void WriteOXMTypeInfo(OXMType type, UInt32 experimenter, bool maskSupported, const char *nameStr, const char *prereqs, const char *typeStr, const char *descriptionStr) {
   if (std::strncmp("OFB_", nameStr, 4) == 0 ||
+      std::strncmp("OXS_", nameStr, 4) == 0 ||
       std::strncmp("NXM_", nameStr, 4) == 0 ||
       std::strncmp("ONF_", nameStr, 4) == 0) {
     nameStr += 4;
