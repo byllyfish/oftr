@@ -9,7 +9,7 @@ namespace ofp {
 class Stat {
  public:
   Stat() = default;
-  explicit Stat(const StatHeader *statHeader);
+  explicit Stat(const StatHeader *statHeader) { oxm_ = statHeader->oxmRange(); }
 
   OXMIterator begin() const { return oxm_.begin(); }
   OXMIterator end() const { return oxm_.end(); }

@@ -68,8 +68,8 @@ struct MappingTraits<ofp::FlowRemovedV6> {
   static void mapping(IO &io, ofp::FlowRemovedV6 &msg) {
     using namespace ofp;
     DurationSec duration = msg.duration();
-    UInt64 packetCount = msg.packetCount();
-    UInt64 byteCount = msg.byteCount();
+    Hex64 packetCount = msg.packetCount();
+    Hex64 byteCount = msg.byteCount();
 
     io.mapRequired("cookie", msg.cookie_);
     io.mapRequired("priority", msg.priority_);
@@ -85,7 +85,7 @@ struct MappingTraits<ofp::FlowRemovedV6> {
     io.mapRequired("match", m);
 
     Stat s = msg.stat();
-    io.mapRequired("stat", m);
+    io.mapRequired("stat", s);
   }
 };
 

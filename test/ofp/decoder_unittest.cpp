@@ -1315,6 +1315,12 @@ TEST(decoder, flowremovedv3) {
       "IN_PORT\n      value:           0x12345678\n...\n");
 }
 
+TEST(decoder, flowremovedv6) {
+  testDecodeEncode(
+      "060B005011111111554433338888999922222222222222220001000C8000000412345678000000000000002880020008666666667777777780020808AAAAAAAAAAAAAAAA80020A08BBBBBBBBBBBBBBBB",
+      "---\ntype:            FLOW_REMOVED\nxid:             0x11111111\nversion:         0x06\nmsg:             \n  cookie:          0x2222222222222222\n  priority:        0x3333\n  reason:          0x44\n  table_id:        0x55\n  duration:        1717986918.x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    0x9999\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           IN_PORT\n      value:           0x12345678\n  stat:            \n...\n");
+}
+
 TEST(decoder, ofmp_desc_request_v4) {
   testDecodeEncode("04120010111111110000000000000000",
                    "---\ntype:            REQUEST.DESC\nflags:           [  "

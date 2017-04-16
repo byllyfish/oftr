@@ -3,6 +3,12 @@
 
 using namespace ofp;
 
+OXMRange StatHeader::oxmRange() const {
+  assert(reserved_ == 0);
+  assert(length() >= sizeof(StatHeader));
+  return OXMRange{BytePtr(this) + sizeof(StatHeader),
+                  length() - sizeof(StatHeader)};
+}
 
 bool StatHeader::validateInput(size_t lengthRemaining, Validation *context) const {
   // Make sure remaining length at least accomodates the match header.

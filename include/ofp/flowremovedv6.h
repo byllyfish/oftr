@@ -45,6 +45,8 @@ class FlowRemovedV6
   // Only FlowRemovedV6Builder can create an instance.
   FlowRemovedV6() : header_{type()} {}
 
+  const StatHeader *statHeader() const;
+
   enum : size_t {
     UnpaddedSizeWithMatchHeader = 28,
     SizeWithoutMatchHeader = 24

@@ -4,6 +4,29 @@
 
 using namespace ofp;
 
+DurationSec FlowRemovedV6::duration() const {
+  return statHeader()->oxmRange().get<OXS_DURATION>();
+}
+
+UInt64 FlowRemovedV6::packetCount() const { 
+  return statHeader()->oxmRange().get<OXS_PACKET_COUNT>();
+}
+
+UInt64 FlowRemovedV6::byteCount() const {
+  return statHeader()->oxmRange().get<OXS_BYTE_COUNT>();
+}
+
+Match FlowRemovedV6::match() const {
+  return Match{&matchHeader_};
+}
+
+Stat FlowRemovedV6::stat() const {
+  return Stat{statHeader()};
+}
+
+const StatHeader *FlowRemovedV6::statHeader() const {
+  return Interpret_cast<StatHeader>(BytePtr(&matchHeader_) + matchHeader_.paddedLength());
+}
 
 bool FlowRemovedV6::validateInput(Validation *context) const {
   size_t length = context->length();
@@ -20,7 +43,11 @@ bool FlowRemovedV6::validateInput(Validation *context) const {
   }
 
   size_t paddedMatchLen = matchHeader_.paddedLength();
-  assert(remainingLength >= paddedMatchLen);
+  if (remainingLength < paddedMatchLen) {
+    log_error("FlowRemovedV6: invalid remaining length");
+    return false;
+  }
+
   remainingLength -= paddedMatchLen;
 
   const StatHeader *stat = Interpret_cast<StatHeader>(BytePtr(&matchHeader_) + paddedMatchLen);

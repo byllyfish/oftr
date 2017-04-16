@@ -38,6 +38,36 @@ namespace llvm {
 namespace yaml {
 
 template <>
+struct SequenceTraits<ofp::Stat> {
+  using iterator = ofp::OXMIterator;
+
+  static iterator begin(IO &io, ofp::Stat &stat) { 
+    auto it = stat.begin();
+    skip(it, end(io, stat));
+    return it;
+  }
+
+  static iterator end(IO &io, ofp::Stat &stat) { return stat.end(); }
+
+  static void next(iterator &iter, iterator iterEnd) { 
+    ++iter;
+    skip(iter, iterEnd);
+  }
+
+  static void skip(iterator &iter, iterator iterEnd) {
+    using namespace ofp;
+    for (; iter < iterEnd; ++iter) {
+      OXMType type = iter->type();
+      if (type != OXS_DURATION::type() &&
+          type != OXS_PACKET_COUNT::type() &&
+          type != OXS_BYTE_COUNT::type()) {
+        break;
+      }
+    }
+  }
+};
+
+template <>
 struct SequenceTraits<ofp::StatBuilder> {
   static size_t size(IO &io, ofp::StatBuilder &match) { return 0; }
 
