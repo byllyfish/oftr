@@ -77,3 +77,12 @@ TEST(oxmrange, iteratate_zeroField) {
     EXPECT_FALSE(item.type().isIllegal());
   }
 }
+
+TEST(oxmrange, find_in_invalid_range) {
+  auto buf = HexToRawData("800020240000000680000aa0080680000606ffffffffbfff80000806f20ba47df8ea80002a02000180002c140a00000180002e040a00000300003006f20ba47df8ea800032060000000084040000fffffffffffff20ba47d");
+
+  OXMRange range{buf.data(), buf.size()};
+  EXPECT_FALSE(range.validateInput());
+  EXPECT_EQ(0, range.get<OFB_InPort>());
+  EXPECT_FALSE(range.exists<OFB_InPort>());
+}

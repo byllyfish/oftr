@@ -7,6 +7,8 @@
 namespace ofp {
 namespace detail {
 
+OFP_BEGIN_IGNORE_PADDING
+
 class StatBuilderInserter {
  public:
   StatBuilderInserter(llvm::yaml::IO &io, StatBuilder &builder,
@@ -28,6 +30,8 @@ class StatBuilderInserter {
   StatBuilder &builder_;
   OXMFullType type_;
 };
+
+OFP_END_IGNORE_PADDING
 
 class StatBuilderItem;
 

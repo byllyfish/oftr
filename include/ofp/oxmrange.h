@@ -72,9 +72,9 @@ template <class Value>
 typename Value::NativeType OXMRange::get() const {
   using NativeType = typename Value::NativeType;
 
-  for (auto &item : *this) {
-    if (item.type() == Value::type()) {
-      return item.value<Value>();
+  for (auto iter = begin(), e = end(); iter < e; ++iter) {
+    if (iter->type() == Value::type()) {
+      return iter->value<Value>();
     }
   }
 
@@ -83,8 +83,8 @@ typename Value::NativeType OXMRange::get() const {
 
 template <class Value>
 bool OXMRange::exists() const {
-  for (auto &item : *this) {
-    if (item.type() == Value::type()) {
+  for (auto iter = begin(), e = end(); iter < e; ++iter) {
+    if (iter->type() == Value::type()) {
       return true;
     }
   }

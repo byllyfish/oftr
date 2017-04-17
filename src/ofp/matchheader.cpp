@@ -9,8 +9,9 @@
 using namespace ofp;
 
 OXMRange MatchHeader::oxmRange() const {
-  assert(type() == OFPMT_OXM);
   assert(length() >= sizeof(MatchHeader));
+  if (type() != OFPMT_OXM)
+    return {};
   return OXMRange{BytePtr(this) + sizeof(MatchHeader),
                   length() - sizeof(MatchHeader)};
 }
@@ -38,13 +39,15 @@ bool MatchHeader::validateInput(size_t lengthRemaining,
   UInt16 matchType = type_;
   size_t matchLength = length_;
 
-  // Special case for standard match; verify match length.
-  if (matchType == OFPMT_STANDARD) {
-    if (matchLength != deprecated::OFPMT_STANDARD_LENGTH) {
-      context->matchIsInvalid("Invalid match length", BytePtr(this));
-      return false;
+  if (context->version() < OFP_VERSION_4) {
+    // Special case for standard match; verify match length.
+    if (matchType == OFPMT_STANDARD) {
+      if (matchLength != deprecated::OFPMT_STANDARD_LENGTH) {
+        context->matchIsInvalid("Invalid match length", BytePtr(this));
+        return false;
+      }
+      return true;
     }
-    return true;
   }
 
   // Check matchType.
