@@ -160,7 +160,7 @@ class Decode : public Subprogram {
       "verify-output",
       cl::desc("Verify output by translating it back to binary")};
   cl::opt<bool> useFindx_{"use-findx",
-                          cl::desc("Use metadata from tcpflow '.findx' files")};
+                          cl::desc("Use metadata from tcpflow '.findx' files"), cl::Hidden};
   cl::opt<bool> pktDecode_{
       "pkt-decode",
       cl::desc("Include _pkt_decode in PacketIn/PacketOut decodes")};
