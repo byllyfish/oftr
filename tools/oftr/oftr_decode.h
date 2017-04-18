@@ -133,6 +133,7 @@ class Decode : public Subprogram {
   static void pcapMessageCallback(ofp::Message *message, void *context);
   bool pcapFormat() const;
 
+  bool verifyOutput(const std::string &input, const ofp::Message *originalMessage);
   void extractPacketDataToFile(const ofp::Message *message);
 
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };

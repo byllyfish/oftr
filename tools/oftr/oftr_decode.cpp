@@ -508,24 +508,9 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     output_->flush();
   }
 
-  if (verifyOutput_) {
-    // Double-check the result by re-encoding the YAML message. We should obtain
-    // the original message contents. If there is a difference, report the
-    // error.
-
-    ofp::yaml::Encoder encoder{decoder.result(), false};
-
-    if (!encoder.error().empty()) {
-      llvm::errs() << "Filename: " << currentFilename_ << '\n';
-      llvm::errs() << "Error: Decode succeeded but encode failed: "
-                   << encoder.error() << '\n';
-      return ExitStatus::VerifyOutputFailed;
-    }
-
-    if (!equalMessages({originalMessage->data(), originalMessage->size()},
-                       {encoder.data(), encoder.size()})) {
-      return ExitStatus::VerifyOutputFailed;
-    }
+  // Double-check the result by re-encoding the YAML message.
+  if (verifyOutput_ && !verifyOutput(decoder.result(), originalMessage)) {
+    return ExitStatus::VerifyOutputFailed;
   }
 
   // Optionally, write data from PacketIn or PacketOut messages.
@@ -794,6 +779,27 @@ bool Decode::pcapFormat() const {
   }
   
   return false;
+}
+
+// Double-check the result by re-encoding the YAML message. We should obtain
+// the original message contents. If there is a difference, report the
+// error.
+bool Decode::verifyOutput(const std::string &input, const ofp::Message *originalMessage) {
+  ofp::yaml::Encoder encoder{input, false};
+
+  if (!encoder.error().empty()) {
+    llvm::errs() << "Filename: " << currentFilename_ << '\n';
+    llvm::errs() << "Error: Decode succeeded but encode failed: "
+                 << encoder.error() << '\n';
+    return false;
+  }
+
+  if (!equalMessages({originalMessage->data(), originalMessage->size()},
+                     {encoder.data(), encoder.size()})) {
+    return false;
+  }
+
+  return true;
 }
 
 // If message is a PacketIn or PacketOut, write it's data payload to a .pcap
