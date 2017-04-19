@@ -16,23 +16,29 @@ ByteRange BundleAddMessage::message() const {
 
 PropertyRange BundleAddMessage::properties() const {
   assert(header_.length() >= sizeof(BundleAddMessage) + sizeof(Header));
-  const Header *msgHeader = reinterpret_cast<const Header *>(
+  const Header *msgHeader = Interpret_cast<Header>(
       BytePtr(this) + sizeof(BundleAddMessage));
   size_t offset = sizeof(BundleAddMessage) + PadLength(msgHeader->length());
-  assert(header_.length() >= offset);
   return SafeByteRange(this, header_.length(), offset);
 }
 
 bool BundleAddMessage::validateInput(Validation *context) const {
-  const Header *msgHeader = reinterpret_cast<const Header *>(
+  size_t hdrLen = header_.length();
+  if (hdrLen < sizeof(BundleAddMessage) + sizeof(Header))
+    return false;
+
+  const Header *msgHeader = Interpret_cast<Header>(
       BytePtr(this) + sizeof(BundleAddMessage));
   if (msgHeader->length() < sizeof(Header)) {
     return false;
   }
 
-  if (header_.length() < sizeof(BundleAddMessage) + msgHeader->length()) {
+  if (hdrLen < sizeof(BundleAddMessage) + msgHeader->length()) {
     return false;
   }
+
+  if (!properties().validateInput(context)) 
+    return false;
 
   return true;
 }

@@ -15,7 +15,7 @@ for input in $CURRENT_SOURCE_DIR/*-pass.bin ; do
   output_array="$name.jsonarray"
 
   echo "  Run oftr decode to convert $input to $output_yml"
-  $LIBOFP_MEMCHECK ../oftr decode -V --pkt-decode $input > $output_yml
+  $LIBOFP_MEMCHECK ../oftr decode -V --pkt-decode --fuzz-stress-test $input > $output_yml
   echo "  Compare $output_yml to $CURRENT_SOURCE_DIR/$name.yml"
   diff $output_yml "$CURRENT_SOURCE_DIR/$name.yml"
 

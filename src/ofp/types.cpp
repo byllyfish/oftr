@@ -2,7 +2,11 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/types.h"
+#include "ofp/log.h"
 #include <array>
+#include <unistd.h>  // for _exit
+#include <signal.h>   // for sigaction
+#include <sys/time.h>  // for setitimer
 
 namespace ofp {
 
@@ -268,3 +272,33 @@ void ofp::MemCopyMasked(void *dest, const void *data, const void *mask,
     *d++ = *s++ & *m++;
   }
 }
+
+[[noreturn]] static void watchdog_timer1(int signum) {
+  ::write(STDERR_FILENO, "watchdog_timer1\n", 16);
+  ::_exit(200);
+}
+
+void ofp::SetWatchdogTimer(unsigned secs) {
+  static bool installed = false;
+
+  if (!installed) {
+    installed = true;
+    struct sigaction act;
+    std::memset(&act, 0, sizeof(act));
+    act.sa_handler = watchdog_timer1;
+    act.sa_flags = SA_RESTART;
+
+    if (::sigaction(SIGPROF, &act, nullptr) < 0) {
+      log::fatal("SetWatchdogTimer: sigaction failed");
+    }
+  }
+
+  struct itimerval itv;
+  std::memset(&itv, 0, sizeof(itv));
+  itv.it_value.tv_sec = secs;
+
+  if (::setitimer(ITIMER_PROF, &itv, nullptr) < 0) {
+    log::fatal("SetWatchdogTimer: setitimer failed");
+  }
+}
+

@@ -325,6 +325,16 @@ inline bool IsPtrAligned(const void *ptr, size_t byteBoundary) {
   return (reinterpret_cast<uintptr_t>(ptr) & (byteBoundary - 1)) == 0;
 }
 
+/// Set a watchdog alarm to detect infinite loops.
+/// 
+/// Calling SetWatchdogTimer(secs) when there is already an alarm pushes back 
+/// the alarm.
+/// 
+/// To clear the alarm, call SetWatchdogTimer(0). 
+/// 
+/// \param secs  number of seconds until alarm
+void SetWatchdogTimer(unsigned secs);
+
 /// Return a constructed unique_ptr for the specified type by forwarding
 /// arguments to the constructor.
 ///

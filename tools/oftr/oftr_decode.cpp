@@ -204,7 +204,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   while (input) {
     // Read the message header.
     char *msg =
-        reinterpret_cast<char *>(message.mutableData(sizeof(ofp::Header)));
+        reinterpret_cast<char *>(message.mutableDataResized(sizeof(ofp::Header)));
 
     input.read(msg, sizeof(ofp::Header));
     if (!input) {
@@ -219,7 +219,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
     }
 
     // Read the message body.
-    msg = reinterpret_cast<char *>(message.mutableData(msgLen));
+    msg = reinterpret_cast<char *>(message.mutableDataResized(msgLen));
     std::streamsize bodyLen = ofp::Signed_cast(msgLen - sizeof(ofp::Header));
 
     input.read(msg + sizeof(ofp::Header), bodyLen);
@@ -305,7 +305,7 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
     previousPos = pos;
 
     size_t offset = buffer.size();
-    char *buf = reinterpret_cast<char *>(buffer.mutableData(offset + length));
+    char *buf = reinterpret_cast<char *>(buffer.mutableDataResized(offset + length));
     assert(buffer.size() == offset + length);
 
     // Read length bytes from input into buffer.
@@ -516,6 +516,12 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   // Optionally, write data from PacketIn or PacketOut messages.
   if (pktSinkFile_) {
     extractPacketDataToFile(message);
+  }
+
+  // Optionally run the original message through a basic fuzz test to stress
+  // test the decoder.
+  if (fuzzStressTest_) {
+    fuzzStressTest(originalMessage);
   }
 
   return ExitStatus::Success;
@@ -829,6 +835,55 @@ void Decode::extractPacketDataToFile(const ofp::Message *message) {
     }
   }
 #endif
+}
+
+// Run a simple fuzz test on the original message.
+// 
+// 1. Treat the message as a different type (2nd byte, OFPT_MAX_ALLOWED).
+// 2. Change one post-header byte at a time:
+//     a. Set byte to 0x00
+//     b. Set byte to 0xFF
+//
+void Decode::fuzzStressTest(const ofp::Message *originalMessage) {
+  using namespace ofp;
+  Message message{nullptr};
+  UInt64 count = 0;
+
+  for (UInt8 newType = 0; newType <= OFPT_MAX_ALLOWED; ++newType) {
+    if (newType != originalMessage->type()) {
+      message.assign(*originalMessage);
+      message.mutableHeader()->setType(static_cast<OFPType>(newType));
+      SetWatchdogTimer(2);
+      message.normalize();
+      yaml::Decoder decoder{&message, json_, pktDecode_};
+      if ((++count % 100) == 0) {
+        log_info("fuzz-stress-test:", count);
+      }
+    }
+  }
+
+  const UInt8 values[] = { 0x00, 0xFF };
+
+  // Only fuzz the first 1000 bytes.
+  const size_t kFuzzPrefix = 1000;
+  const size_t kMaxSize = std::min(originalMessage->size(), kFuzzPrefix + sizeof(Header));
+
+  for (size_t i = sizeof(Header); i < kMaxSize; ++i) {
+    for (UInt8 val: values) {
+      if (originalMessage->getByteAtIndex(i) != val) {
+        message.assign(*originalMessage);
+        message.setByteAtIndex(val, i);
+        SetWatchdogTimer(2);
+        message.normalize();
+        yaml::Decoder decoder{&message, json_, pktDecode_};
+        if ((++count % 100) == 0) {
+          log_info("fuzz-stress-test:", count);
+        }
+      }      
+    }
+  }
+
+  SetWatchdogTimer(0);
 }
 
 // Compare two buffers and return offset of the byte that differs. If buffers

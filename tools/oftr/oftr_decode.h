@@ -135,7 +135,8 @@ class Decode : public Subprogram {
 
   bool verifyOutput(const std::string &input, const ofp::Message *originalMessage);
   void extractPacketDataToFile(const ofp::Message *message);
-
+  void fuzzStressTest(const ofp::Message *originalMessage);
+  
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
   enum JsonFlavor { kJsonFlavorDefault, kJsonFlavorMongoDB };
 
@@ -160,6 +161,7 @@ class Decode : public Subprogram {
   cl::opt<bool> verifyOutput_{
       "verify-output",
       cl::desc("Verify output by translating it back to binary")};
+  cl::opt<bool> fuzzStressTest_{"fuzz-stress-test", cl::desc("Stress test the decoder by fuzzing the input"), cl::Hidden};
   cl::opt<bool> useFindx_{"use-findx",
                           cl::desc("Use metadata from tcpflow '.findx' files"), cl::Hidden};
   cl::opt<bool> pktDecode_{

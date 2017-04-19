@@ -190,3 +190,15 @@ TEST(types, HexDelimitedToRawData) {
   EXPECT_EQ(0, HexDelimitedToRawData("ff:f ", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData(" ff:ff", buf, sizeof(buf)));
 }
+
+static void watchdogtimer() {
+  SetWatchdogTimer(1);
+  volatile UInt64 counter = 0;
+  while (counter < 0xffffffffffff) {
+    ++counter;
+  }  
+}
+
+TEST(types_DeathTest, watchdogtimer) {
+  ASSERT_EXIT(watchdogtimer(), ::testing::ExitedWithCode(200), "watchdog_timer");
+}
