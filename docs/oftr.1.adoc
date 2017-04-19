@@ -91,13 +91,6 @@ You can use `netcat` in a UNIX pipe to feed OpenFlow messages to a switch or con
 
     oftr encode input.yml | nc -w 3 10.0.0.1 6653 | oftr decode
 
-You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
-messages, while retaining metadata:
-
-    #!/bin/bash
-    tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
-    oftr decode --use-findx "/tmp/flow_$$/*.findx"
-
 The `oftr help` tool provides information about the schema used for reading/writing 
 OpenFlow messages in YAML. To obtain information about the syntax for the 
 'FLOW_MOD' message:
@@ -203,9 +196,6 @@ also represents stdin.
 
 *--silent-error*::
     Suppress error output for invalid messages.
-
-*--use-findx*::
-    Use metadata from tcpflow '.findx' files.
 
 *-V, -verify-output*::
     Verify output by translating it back to binary.
