@@ -853,7 +853,7 @@ void Decode::fuzzStressTest(const ofp::Message *originalMessage) {
     if (newType != originalMessage->type()) {
       message.assign(*originalMessage);
       message.mutableHeader()->setType(static_cast<OFPType>(newType));
-      SetWatchdogTimer(2);
+      SetWatchdogTimer(3);
       message.normalize();
       yaml::Decoder decoder{&message, json_, pktDecode_};
       if ((++count % 100) == 0) {
@@ -864,8 +864,8 @@ void Decode::fuzzStressTest(const ofp::Message *originalMessage) {
 
   const UInt8 values[] = { 0x00, 0xFF };
 
-  // Only fuzz the first 1000 bytes.
-  const size_t kFuzzPrefix = 1000;
+  // Only fuzz the first 256 bytes.
+  const size_t kFuzzPrefix = 256;
   const size_t kMaxSize = std::min(originalMessage->size(), kFuzzPrefix + sizeof(Header));
 
   for (size_t i = sizeof(Header); i < kMaxSize; ++i) {
@@ -873,7 +873,7 @@ void Decode::fuzzStressTest(const ofp::Message *originalMessage) {
       if (originalMessage->getByteAtIndex(i) != val) {
         message.assign(*originalMessage);
         message.setByteAtIndex(val, i);
-        SetWatchdogTimer(2);
+        SetWatchdogTimer(3);
         message.normalize();
         yaml::Decoder decoder{&message, json_, pktDecode_};
         if ((++count % 100) == 0) {
