@@ -2028,3 +2028,9 @@ TEST(decoder, packet_in_fuzz1) {
 TEST(decoder, table_status_fuzz) {
   testDecodeFail("041f002000000000000000050000000180000007000081030000200f00000003");
 }
+
+TEST(decoder, flowmod_fuzz) {
+  testDecodeEncode("030e00800000000000000000000000000000000000000000010000000000007b0000ffffffffffffffffffff000000000001000e80000606f20ba47df8ea000000030028000000000019001080000c0201020000000000000000001000000006ffff000000000000000400180000000000190010800008060102030405060000", "---\ntype:            FLOW_MOD\nxid:             0x00000000\nversion:         0x03\nmsg:             \n  cookie:          0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:        0x01\n  command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    0x0000\n  priority:        0x007B\n  buffer_id:       0x0000FFFF\n  out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n  match:           \n    - field:           ETH_DST\n      value:           'f2:0b:a4:7d:f8:ea'\n  instructions:    \n    - instruction:     WRITE_ACTIONS\n      actions:         \n        - action:          SET_FIELD\n          field:           VLAN_VID\n          value:           0x0102\n        - action:          OUTPUT\n          port_no:         0x00000006\n          max_len:         NO_BUFFER\n    - instruction:     APPLY_ACTIONS\n      actions:         \n        - action:          SET_FIELD\n          field:           ETH_SRC\n          value:           '01:02:03:04:05:06'\n...\n");
+  // This should fail.
+  testDecodeFail("030e00800000000000000000000000000000000000000000010000000000007b0000ffffffffffffffffffff000000000001000e80000606f20ba47df8ea000000030028000000000019001080000cff01020000000000000000001000000006ffff000000000000000400180000000000190010800008060102030405060000");
+}

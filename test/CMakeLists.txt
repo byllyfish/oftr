@@ -26,6 +26,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/flowremovedbuilder_unittest.cpp
 	ofp/flowremovedv6_unittest.cpp
 	ofp/hash_unittest.cpp
+	ofp/instructionrange_unittest.cpp
 	ofp/lldpvalue_unittest.cpp
 	ofp/log_unittest.cpp
 	ofp/macaddress_unittest.cpp

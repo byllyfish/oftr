@@ -9,6 +9,25 @@
 
 using namespace ofp;
 
+static bool validateInput_SetField(const detail::ActionIteratorItem &item, Validation *context) {
+  size_t len = item.size();
+
+  // Check SetField action size.
+  if (len < 16) {
+    return false;
+  }
+
+  // Check oxm field.
+  OXMRange oxm = item.oxmRange();
+  if (!oxm.validateInput_paddedField()) {
+    log_error("SetField action has invalid oxm field");
+    return false;
+  }
+
+  return true;
+}
+
+
 // Delegating constructor.
 ActionRange::ActionRange(const ActionList &list)
     : ActionRange{list.toRange()} {}
@@ -19,6 +38,11 @@ bool ActionRange::validateInput(Validation *context) const {
 
   for (auto &item : *this) {
     switch (item.type().enumType()) {
+      case OFPAT_SET_FIELD: {
+        if (!validateInput_SetField(item, context))
+          return false;
+        break;
+      }
       case OFPAT_EXPERIMENTER: {
         auto action = item.action<AT_EXPERIMENTER>();
         if (!action->validateInput(context))

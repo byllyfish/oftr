@@ -86,3 +86,12 @@ TEST(oxmrange, find_in_invalid_range) {
   EXPECT_EQ(0, range.get<OFB_InPort>());
   EXPECT_FALSE(range.exists<OFB_InPort>());
 }
+
+
+TEST(oxmrange, validateInput_paddedField) {
+  auto buf1 = HexToRawData("80000A02 ffff 00000000000000");
+
+  OXMRange range{buf1.data(), buf1.size()};
+  EXPECT_TRUE(range.validateInput_paddedField());
+  EXPECT_FALSE(range.validateInput());
+}

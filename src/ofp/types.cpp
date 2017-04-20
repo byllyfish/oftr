@@ -274,7 +274,7 @@ void ofp::MemCopyMasked(void *dest, const void *data, const void *mask,
 }
 
 [[noreturn]] static void watchdog_timer1(int signum) {
-  ::write(STDERR_FILENO, "watchdog_timer1\n", 16);
+  (void)::write(STDERR_FILENO, "watchdog_timer1\n", 16);
   ::_exit(200);
 }
 

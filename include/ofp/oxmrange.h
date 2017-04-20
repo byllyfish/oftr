@@ -63,6 +63,22 @@ class OXMRange {
     return true;
   }
 
+  // Return true if oxm range contains one OXM field with zero padding (up to
+  // 7 bytes). This function is used to validate SetField actions.
+  bool validateInput_paddedField() const {
+    assert(begin_ <= end_);
+    const UInt8 *pos = begin_;
+    size_t left = static_cast<size_t>(end_ - begin_);
+    if (left < 4)
+      return false;
+    size_t len = sizeof(OXMType) + pos[3];
+    if (left < len)
+      return false;
+    pos += len;
+    left -= len;
+    return (left <= 7) && IsMemFilled(pos, left, 0);
+  }
+
  private:
   const UInt8 *begin_;
   const UInt8 *end_;

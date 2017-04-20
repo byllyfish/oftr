@@ -38,11 +38,17 @@ static_assert(std::is_same<std::uint8_t, unsigned char>::value,
   _Pragma("clang diagnostic push")          \
       _Pragma("clang diagnostic ignored \"-Wglobal-constructors\"")
 #define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR _Pragma("clang diagnostic pop")
+#define OFP_BEGIN_IGNORE_USED_BUT_UNUSED \
+  _Pragma("clang diagnostic push")       \
+      _Pragma("clang diagnostic ignored \"-Wused-but-marked-unused\"")
+#define OFP_END_IGNORE_USED_BUT_UNUSED _Pragma("clang diagnostic pop")
 #else
 #define OFP_BEGIN_IGNORE_PADDING
 #define OFP_END_IGNORE_PADDING
 #define OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 #define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+#define OFP_BEGIN_IGNORE_USED_BUT_UNUSED
+#define OFP_END_IGNORE_USED_BUT_UNUSED
 #endif
 
 #if defined(__clang__) || defined(_MSC_VER)
