@@ -17334,30 +17334,12 @@ type:            FLOW_MOD
 xid:             0x7F15BBEE
 version:         0x03
 _file:           external/openflow-messages/v1_2/rep/rep_14_000063.fail
-msg:             
-  cookie:          0xBA200DB47DD8DADA
-  cookie_mask:     0xA678C491DB334155
-  table_id:        0x01
-  command:         MODIFY
-  idle_timeout:    0x001E
-  hard_timeout:    0x003C
-  priority:        0x0000
-  buffer_id:       0x4A90FAF6
-  out_port:        0x00000003
-  out_group:       0x00000003
-  flags:           [  ]
-  match:           
-  instructions:    
-    - instruction:     APPLY_ACTIONS
-      actions:         
-        - action:          SET_FIELD
-          field:           IPV4_SRC
-          value:           192.168.3.92
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_14_000063.fail
-Error: Encode yielded different data at byte offset 67:
-[ByteRange size=80 data=030E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019001080001604C0A8035C00000000]
-[ByteRange size=80 data=030E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019000F80001604C0A8035C00000000]
+Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
+type:            FLOW_MOD
+^
+
 Filename: external/openflow-messages/v1_2/rep/rep_14_000064.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=80 data=030E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019001180001604C0A8035C00000000]
@@ -19584,30 +19566,12 @@ type:            FLOW_MOD
 xid:             0x7F15BBEE
 version:         0x04
 _file:           external/openflow-messages/v1_3/rep/rep_14_000063.fail
-msg:             
-  cookie:          0xBA200DB47DD8DADA
-  cookie_mask:     0xA678C491DB334155
-  table_id:        0x01
-  command:         MODIFY
-  idle_timeout:    0x001E
-  hard_timeout:    0x003C
-  priority:        0x0000
-  buffer_id:       0x4A90FAF6
-  out_port:        0x00000003
-  out_group:       0x00000003
-  flags:           [  ]
-  match:           
-  instructions:    
-    - instruction:     APPLY_ACTIONS
-      actions:         
-        - action:          SET_FIELD
-          field:           IPV4_SRC
-          value:           192.168.3.92
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_14_000063.fail
-Error: Encode yielded different data at byte offset 67:
-[ByteRange size=80 data=040E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019001080001604C0A8035C00000000]
-[ByteRange size=80 data=040E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019000F80001604C0A8035C00000000]
+Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
+type:            FLOW_MOD
+^
+
 Filename: external/openflow-messages/v1_3/rep/rep_14_000064.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=80 data=040E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019001180001604C0A8035C00000000]
@@ -23036,30 +23000,12 @@ type:            FLOW_MOD
 xid:             0x7F15BBEE
 version:         0x04
 _file:           external/openflow-messages/v1_3_1/rep/rep_14_000063.fail
-msg:             
-  cookie:          0xBA200DB47DD8DADA
-  cookie_mask:     0xA678C491DB334155
-  table_id:        0x01
-  command:         MODIFY
-  idle_timeout:    0x001E
-  hard_timeout:    0x003C
-  priority:        0x0000
-  buffer_id:       0x4A90FAF6
-  out_port:        0x00000003
-  out_group:       0x00000003
-  flags:           [  ]
-  match:           
-  instructions:    
-    - instruction:     APPLY_ACTIONS
-      actions:         
-        - action:          SET_FIELD
-          field:           IPV4_SRC
-          value:           192.168.3.92
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000063.fail
-Error: Encode yielded different data at byte offset 67:
-[ByteRange size=80 data=040E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019001080001604C0A8035C00000000]
-[ByteRange size=80 data=040E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019000F80001604C0A8035C00000000]
+Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
+type:            FLOW_MOD
+^
+
 Filename: external/openflow-messages/v1_3_1/rep/rep_14_000064.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=80 data=040E00507F15BBEEBA200DB47DD8DADAA678C491DB3341550101001E003C00004A90FAF6000000030000000300000000000100040000000000040018000000000019001180001604C0A8035C00000000]
