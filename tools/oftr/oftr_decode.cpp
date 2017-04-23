@@ -424,6 +424,13 @@ ExitStatus Decode::decodePcapFiles() {
     setCurrentFilename("");
   }
 
+  llvm::errs() << pcap.packetCount() << " packets processed from " << files.size() << " file(s).";
+  if (pcap.packetCount() == 0 && !pcapFilter_.empty()) {
+    llvm::errs() << " Use --pcap-filter='' to process all packets.\n";
+  } else {
+    llvm::errs() << '\n';
+  }
+
   return ExitStatus::Success;
 #else
   llvm::errs() << "Error: libpcap not supported\n";
@@ -772,7 +779,7 @@ bool Decode::pcapFormat() const {
   // Check if any of the input files have the .pcap file extension.
   for (const auto &filename : inputFiles_) {
     llvm::StringRef fname{filename};
-    if (fname.endswith(".pcap") || fname.endswith(".pcapng")) {
+    if (fname.endswith(".pcap") || fname.endswith(".pcapng") || fname.endswith(".cap")) {
       return true;
     }
   }

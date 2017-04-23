@@ -17,6 +17,7 @@ struct sHandlerInfo {
   UInt32 nanosec_factor;
   UInt32 alignPad;
   UInt32 frameSkip;
+  UInt32 packetCount;
   ByteList buffer;
 };
 
@@ -43,6 +44,7 @@ static void sHandler(u_char *user, const struct pcap_pkthdr *hdr,
   buf.replace(buf.data() + alignPad, buf.end(), cap, caplen);
   ByteRange pkt{buf.data() + alignPad, buf.size() - alignPad};
   info->callback(ts, pkt, hdr->len, info->context);
+  ++info->packetCount;
 }
 
 std::string PktSource::datalink() const {
@@ -149,12 +151,15 @@ bool PktSource::runLoop(PktCallback callback, void *context) {
   info.nanosec_factor = nanosec_factor_;
   info.alignPad = (encapsulation() == ENCAP_ETHERNET) ? 2 : 0;
   info.frameSkip = frameSkip_;
+  info.packetCount = packetCount_;
   info.buffer.addZeros(info.alignPad);
 
   int result = pcap_loop(pcap_, kAllPackets, sHandler, MutableBytePtr(&info));
   if (result != 0) {
     log_debug("pcap_loop returned", result);
   }
+
+  packetCount_ = info.packetCount;
 
   log_debug("PktSource::runLoop exited");
 

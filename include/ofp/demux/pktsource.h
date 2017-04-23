@@ -71,13 +71,15 @@ class PktSource {
   bool runLoop(PktCallback callback, void *context = nullptr);
 
   const std::string error() const { return error_; }
-
+  UInt32 packetCount() const { return packetCount_; }
+  
  private:
   pcap_t *pcap_ = nullptr;
   std::string error_;
   UInt32 nanosec_factor_ = 1000;
   Encapsulation encap_ = ENCAP_UNSUPPORTED;
   UInt32 frameSkip_ = 0;
+  UInt32 packetCount_ = 0;
   int datalink_ = -1;
 
   bool create(const std::string &device);
