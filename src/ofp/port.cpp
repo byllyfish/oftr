@@ -25,6 +25,10 @@ bool Port::validateInput(Validation *context) const {
     return false;
   }
 
+  if (!properties().validateInput(context)) {
+    return false;
+  }
+
   return true;
 }
 
