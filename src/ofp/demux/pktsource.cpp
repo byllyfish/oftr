@@ -406,3 +406,34 @@ bool PktSource::isPcapVersionSupported() {
 
   return false;
 }
+
+/// Get list of all devices available for packet capture.
+bool PktSource::getDeviceList(std::string *result) {
+  result->clear();
+
+  pcap_if_t *devs = nullptr;
+  char errbuf[PCAP_ERRBUF_SIZE];
+  
+  if (pcap_findalldevs(&devs, errbuf) < 0) {
+    assert(devs == nullptr);
+    error_ = errbuf;
+    return false;
+  }
+
+  // devs may still be null if empty.
+  if (devs) {
+    std::ostringstream oss;
+    for (pcap_if_t *dev = devs; dev; dev = dev->next) {
+      oss << "  " << dev->name;
+      if (dev->description) {
+        oss << " (" << dev->description << ')';
+      }
+      oss << '\n';
+    }
+    *result = oss.str();
+
+    pcap_freealldevs(devs);
+  }
+
+  return true;
+}

@@ -379,6 +379,14 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
 
   if (!pcap.openDevice(device.c_str(), pcapFilter_)) {
     llvm::errs() << "Error: " << pcap.error() << '\n';
+    // If device is not found, list all available devices.
+    if (llvm::StringRef{pcap.error()}.endswith("No such device")) {
+      std::string devices;
+      if (pcap.getDeviceList(&devices)) {
+        llvm::errs() << "Available devices:\n" << devices << '\n';
+      }
+    }
+
     return ExitStatus::FileOpenFailed;
   }
 
