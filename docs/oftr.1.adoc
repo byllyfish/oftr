@@ -204,10 +204,14 @@ also represents stdin.
     Show the file name in all decodes.
 
 *--msg-include*='TYPES'::
-    Output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+    Output these OpenFlow message types. Argument is a comma separated list of patterns. A pattern
+    is a 'glob' for the message type (e.g. 'FLOW_MOD', 'REQUEST.*'). If a pattern begins with "src:" 
+    or "dst:", it matches a source or destination port number. If a pattern begins with "conn_id:", 
+    it matches against the conn_id value. Any pattern prefixed by '!' is negated.
 
 *--msg-exclude*='TYPES'::
-    Don't output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+    Don't output these OpenFlow message types. Argument is a comma separated list of patterns as described
+    under the --msg-include option.
 
 *--pkt-decode*::
     Include _pkt_decode in PacketIn/PacketOut decodes.
@@ -226,11 +230,11 @@ also represents stdin.
     exactly one vlan tag. The actual filter passed to libpcap is `FILTER or (vlan and FILTER)`.
 
 *--pcap-format*='auto|yes|no'::
-    Specify whether to treat all input files as .pcap format. `yes` causes the decoder
-    to open the file using libpcap. `no` causes the decoder to always treat the
+    Specify whether to treat all input files as pcap format. `yes` causes the decoder
+    to open all files using libpcap. `no` causes the decoder to always treat the
     file as binary. The default `auto` sets the --pcap-format to yes if there is at
-    least one file name that ends in ".pcap". It is an error if we fail to open 
-    a .pcap file.
+    least one file with a pcap file extension, or the first file is pcap file. It is 
+    an error if we fail to open a pcap file.
 
 *--pcap-max-missing-bytes*=SIZE::
     Add missing zero bytes to partial streams (for debugging).

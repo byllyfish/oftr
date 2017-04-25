@@ -553,6 +553,66 @@ void Decode::parseMsgFilter(const std::string &input,
   }
 }
 
+/// Helper function to compare string pattern to endpoint. Currently, we only
+/// compare the port.
+static bool matchEndpoint(llvm::StringRef pattern, const ofp::IPv6Endpoint &endpt) {
+  ofp::UInt16 port = 0;
+  if (pattern.getAsInteger(0, port))
+    return false;
+  return port == endpt.port();
+}
+
+/// Helper function to compare string pattern to conn_id.
+static bool matchConnId(llvm::StringRef pattern, ofp::UInt64 connId) {
+  ofp::UInt64 conn = 0;
+  if (pattern.getAsInteger(0, conn))
+    return false;
+  return conn == connId;
+}
+
+/// Return true if pattern matches this message. 
+/// 
+/// `msgType` is passed in pre-computed. If pattern begins with '!', negate 
+/// the result.
+static bool matchMessage(const char *pattern, const ofp::Message *message, const char *msgType) {
+  assert(pattern);
+  assert(msgType);
+
+  bool negate = false;
+  if (*pattern == '!') {
+    negate = true;
+    ++pattern;
+  }
+
+  llvm::StringRef pat{pattern};
+  bool result = false;
+
+  if (pat.startswith("src:")) {
+    // "src:<port>" matches messages from <port>
+    ofp::MessageInfo *info = message->info();
+    if (!info)
+      return false;
+    result = matchEndpoint(pat.substr(4), info->source());
+  } else if (pat.startswith("dst:")) {
+    // "dst:<port>" matches messages to <port>
+    ofp::MessageInfo *info = message->info();
+    if (!info)
+      return false;
+    result = matchEndpoint(pat.substr(4), info->dest()); 
+  } else if (pat.startswith("conn_id:")) {
+    // "conn_id:<id>" matches message for conn_id <id>
+    ofp::MessageInfo *info = message->info();
+    if (!info)
+      return false;
+    result = matchConnId(pat.substr(8), info->sessionId());
+  } else {
+    // Test pattern as glob against message type.
+    result = (fnmatch(pattern, msgType, FNM_CASEFOLD) == 0);
+  }
+
+  return negate ? !result : result;
+}
+
 /// Return true if we're allowed to output this message type.
 bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
   // No filters?  Allow everything.
@@ -568,7 +628,7 @@ bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
 
   // Check msgType against the exclude filter.
   for (const auto &pattern : excludeFilter_) {
-    if (fnmatch(pattern.c_str(), msgType.c_str(), FNM_CASEFOLD) == 0)
+    if (matchMessage(pattern.c_str(), message, msgType.c_str()))
       return false;
   }
 
@@ -578,7 +638,7 @@ bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
 
   // Check msgType against the include filter.
   for (const auto &pattern : includeFilter_) {
-    if (fnmatch(pattern.c_str(), msgType.c_str(), FNM_CASEFOLD) == 0)
+    if (matchMessage(pattern.c_str(), message, msgType.c_str()))
       return true;
   }
 
