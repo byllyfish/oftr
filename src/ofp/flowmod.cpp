@@ -13,7 +13,7 @@ InstructionRange FlowMod::instructions() const {
 }
 
 bool FlowMod::validateInput(Validation *context) const {
-  size_t length = context->length();
+  size_t length = header_.length();
 
   if (length < UnpaddedSizeWithMatchHeader) {
     log_debug("FlowMod too small", length);

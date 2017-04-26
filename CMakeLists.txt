@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.26.0)
+set(Libofp_VERSION 0.27.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -194,6 +194,7 @@ set(LIBOFP_SOURCES
   src/ofp/featuresreply.cpp
   src/ofp/flowmod.cpp
   src/ofp/flowremoved.cpp
+  src/ofp/flowremovedv6.cpp
   src/ofp/mpflowstatsreply.cpp
   src/ofp/mpflowstatsrequest.cpp
   src/ofp/mpflowmonitorrequest.cpp
@@ -272,6 +273,7 @@ set(LIBOFP_SOURCES
   src/ofp/smallbuffer.cpp
   src/ofp/smallcstring.cpp
   src/ofp/standardmatch.cpp
+  src/ofp/statheader.cpp
   src/ofp/tabledesc.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp

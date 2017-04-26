@@ -1,5 +1,5 @@
 add_test(NAME oftr-test COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests.sh)
-set_tests_properties(oftr-test PROPERTIES TIMEOUT 360)
+set_tests_properties(oftr-test PROPERTIES TIMEOUT 600)
 
 if(LIBOFP_MEMCHECK)
   add_test(NAME memcheck_oftr-test COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests.sh)

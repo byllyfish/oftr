@@ -146,7 +146,11 @@ bool Decoder::decodeMsg(llvm::yaml::IO &io) {
     case QueueGetConfigReply::type():
       return decode<QueueGetConfigReply>(io, msg_);
     case FlowRemoved::type():
-      return decode<FlowRemoved>(io, msg_);
+      if (msg_->version() < OFP_VERSION_6) {
+        return decode<FlowRemoved>(io, msg_);
+      } else {
+        return decode<FlowRemovedV6>(io, msg_);
+      }
     case MeterMod::type():
       return decode<MeterMod>(io, msg_);
     case RoleStatus::type():

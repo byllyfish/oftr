@@ -91,13 +91,6 @@ You can use `netcat` in a UNIX pipe to feed OpenFlow messages to a switch or con
 
     oftr encode input.yml | nc -w 3 10.0.0.1 6653 | oftr decode
 
-You can parse a .pcap file with `tcpflow` and then decode all the OpenFlow 
-messages, while retaining metadata:
-
-    #!/bin/bash
-    tcpflow -I -r saved.pcap -o "/tmp/flow_$$" 
-    oftr decode --use-findx "/tmp/flow_$$/*.findx"
-
 The `oftr help` tool provides information about the schema used for reading/writing 
 OpenFlow messages in YAML. To obtain information about the syntax for the 
 'FLOW_MOD' message:
@@ -136,11 +129,6 @@ OpenFlow version using the --ofversion option.
 
 *--json-array*::
     Json input is arbitrarily delimited objects.
-
-*--json-flavor*='FLAVOR'::
-    Specifies the flavor of JSON output. The default is 'default'.
-    - *default* = Regular JSON output.
-    - *mongodb* = MongoDB JSON with binary data.
 
 *-k, --keep-going*::
     Continue processing input after errors.
@@ -192,6 +180,11 @@ also represents stdin.
 *--json-array*::
     Write output as a valid JSON array.
 
+*--json-flavor*='FLAVOR'::
+    Specifies the flavor of JSON output. The default is 'default'.
+    - *default* = Regular JSON output.
+    - *mongodb* = MongoDB JSON with binary data.
+
 *-k, --keep-going*::
     Continue processing messages after errors.
 
@@ -204,9 +197,6 @@ also represents stdin.
 *--silent-error*::
     Suppress error output for invalid messages.
 
-*--use-findx*::
-    Use metadata from tcpflow '.findx' files.
-
 *-V, -verify-output*::
     Verify output by translating it back to binary.
 
@@ -214,16 +204,25 @@ also represents stdin.
     Show the file name in all decodes.
 
 *--msg-include*='TYPES'::
-    Output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+    Output these OpenFlow message types. Argument is a comma separated list of patterns. A pattern
+    is a 'glob' for the message type (e.g. 'FLOW_MOD', 'REQUEST.*'). If a pattern begins with "src:" 
+    or "dst:", it matches a source or destination port number. If a pattern begins with "conn_id:", 
+    it matches against the conn_id value. Any pattern prefixed by '!' is negated.
 
 *--msg-exclude*='TYPES'::
-    Don't output these OpenFlow message types. Argument is a comma separated list of 'glob' patterns.
+    Don't output these OpenFlow message types. Argument is a comma separated list of patterns as described
+    under the --msg-include option.
 
 *--pkt-decode*::
     Include _pkt_decode in PacketIn/PacketOut decodes.
 
 *--pkt-write-file*='FILE'::
     Write data from PacketIn/PacketOut messages to .pcap file.
+
+*--timestamp*='FORMAT'
+    Specifies the timestamp output format.
+    - *none* = No timestamp
+    - *secs* = Seconds since January 1, 1970 UTC (nanosecond precision)
 
 === Packet Capture Options
 
@@ -236,11 +235,11 @@ also represents stdin.
     exactly one vlan tag. The actual filter passed to libpcap is `FILTER or (vlan and FILTER)`.
 
 *--pcap-format*='auto|yes|no'::
-    Specify whether to treat all input files as .pcap format. `yes` causes the decoder
-    to open the file using libpcap. `no` causes the decoder to always treat the
+    Specify whether to treat all input files as pcap format. `yes` causes the decoder
+    to open all files using libpcap. `no` causes the decoder to always treat the
     file as binary. The default `auto` sets the --pcap-format to yes if there is at
-    least one file name that ends in ".pcap". It is an error if we fail to open 
-    a .pcap file.
+    least one file with a pcap file extension, or the first file is pcap file. It is 
+    an error if we fail to open a pcap file.
 
 *--pcap-max-missing-bytes*=SIZE::
     Add missing zero bytes to partial streams (for debugging).

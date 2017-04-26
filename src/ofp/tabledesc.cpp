@@ -11,7 +11,12 @@ PropertyRange TableDesc::properties() const {
 }
 
 bool TableDesc::validateInput(Validation *context) const {
-  if (length_ < sizeof(TableDesc))
+  size_t remaining = context->lengthRemaining();
+  if (remaining < sizeof(TableDesc))
+    return false;
+
+  size_t len = length_;
+  if (len < sizeof(TableDesc) || len > remaining)
     return false;
 
   return properties().validateInput(context);

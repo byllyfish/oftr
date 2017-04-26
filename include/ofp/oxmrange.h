@@ -63,6 +63,22 @@ class OXMRange {
     return true;
   }
 
+  // Return true if oxm range contains one OXM field with zero padding (up to
+  // 7 bytes). This function is used to validate SetField actions.
+  bool validateInput_paddedField() const {
+    assert(begin_ <= end_);
+    const UInt8 *pos = begin_;
+    size_t left = static_cast<size_t>(end_ - begin_);
+    if (left < 4)
+      return false;
+    size_t len = sizeof(OXMType) + pos[3];
+    if (left < len)
+      return false;
+    pos += len;
+    left -= len;
+    return (left <= 7) && IsMemFilled(pos, left, 0);
+  }
+
  private:
   const UInt8 *begin_;
   const UInt8 *end_;
@@ -72,9 +88,9 @@ template <class Value>
 typename Value::NativeType OXMRange::get() const {
   using NativeType = typename Value::NativeType;
 
-  for (auto &item : *this) {
-    if (item.type() == Value::type()) {
-      return item.value<Value>();
+  for (auto iter = begin(), e = end(); iter < e; ++iter) {
+    if (iter->type() == Value::type()) {
+      return iter->value<Value>();
     }
   }
 
@@ -83,8 +99,8 @@ typename Value::NativeType OXMRange::get() const {
 
 template <class Value>
 bool OXMRange::exists() const {
-  for (auto &item : *this) {
-    if (item.type() == Value::type()) {
+  for (auto iter = begin(), e = end(); iter < e; ++iter) {
+    if (iter->type() == Value::type()) {
       return true;
     }
   }

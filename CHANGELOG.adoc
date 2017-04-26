@@ -1,5 +1,21 @@
 = Changelog
 
+== Version 0.27 (26 April 2017)
+
+- Support OF 1.5 FlowRemoved messages.
+- Support src:, dst: and conn_id: options in msg-include and msg-exclude patterns.
+- Support negation of msg-include and msg-exclude patterns.
+- Support timestamp command line option for oftr-decode.
+- Fix OFPTableConfigFlags to treat unknown bits correctly.
+- Check first file passed to oftr-decode for libpcap magic header.
+- PBB_ISID field is 24 bits, not 32 bits.
+- Add a simple fuzz stress testing option to oftr encode.
+- Fix "over-read" bugs found using builtin fuzz stress test.
+- Write number of packets handled by pcap library in oftr-decode.
+- Treat ".cap" file extension as ".pcap".
+- If a pcap device is not found, list all available pcap device names.
+- Update boringssl module.
+
 == Version 0.26 (2 April 2017)
 
 - Fix builds on alpine linux.

@@ -3,6 +3,7 @@
 
 #include "ofp/protocoliterator.h"
 #include "ofp/unittest.h"
+#include "ofp/validation.h"
 
 using namespace ofp;
 
@@ -29,4 +30,15 @@ TEST(protocoliterator, ProtocolRangeSplitOffset) {
   *Big16_cast(&buffer) = 8;
   ByteRange data8{&buffer, sizeof(buffer)};
   EXPECT_EQ(8, detail::ProtocolRangeSplitOffset(8, unused, data8, 0));
+}
+
+TEST(protocoliterator, IsProtocolRangeValid) {
+  ByteList buf{
+      HexToRawData("000000050000000180000007000081030000200f00000003")};
+
+  Validation context;
+  bool valid = detail::IsProtocolRangeValid(4, buf.toRange(), 2, 8, &context,
+                                            ProtocolIteratorType::Property);
+
+  EXPECT_FALSE(valid);
 }

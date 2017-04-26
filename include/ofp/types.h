@@ -38,11 +38,17 @@ static_assert(std::is_same<std::uint8_t, unsigned char>::value,
   _Pragma("clang diagnostic push")          \
       _Pragma("clang diagnostic ignored \"-Wglobal-constructors\"")
 #define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR _Pragma("clang diagnostic pop")
+#define OFP_BEGIN_IGNORE_USED_BUT_UNUSED \
+  _Pragma("clang diagnostic push")       \
+      _Pragma("clang diagnostic ignored \"-Wused-but-marked-unused\"")
+#define OFP_END_IGNORE_USED_BUT_UNUSED _Pragma("clang diagnostic pop")
 #else
 #define OFP_BEGIN_IGNORE_PADDING
 #define OFP_END_IGNORE_PADDING
 #define OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 #define OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+#define OFP_BEGIN_IGNORE_USED_BUT_UNUSED
+#define OFP_END_IGNORE_USED_BUT_UNUSED
 #endif
 
 #if defined(__clang__) || defined(_MSC_VER)
@@ -266,6 +272,12 @@ template <size_t Length>
 char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
                                      char (&buf)[Length * 3]);
 
+extern template char *RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, 8> &data, char (&buf)[24]);
+
+extern template char *RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, 6> &data, char (&buf)[18]);
+
 /// Convert a hexadecimal string with each hex-pair delimited by ':'.
 ///
 /// There must be exactly 2 hex digits between each ':'.
@@ -318,6 +330,16 @@ void MemCopyMasked(void *dest, const void *data, const void *mask,
 inline bool IsPtrAligned(const void *ptr, size_t byteBoundary) {
   return (reinterpret_cast<uintptr_t>(ptr) & (byteBoundary - 1)) == 0;
 }
+
+/// Set a watchdog alarm to detect infinite loops.
+///
+/// Calling SetWatchdogTimer(secs) when there is already an alarm pushes back
+/// the alarm.
+///
+/// To clear the alarm, call SetWatchdogTimer(0).
+///
+/// \param secs  number of seconds until alarm
+void SetWatchdogTimer(unsigned secs);
 
 /// Return a constructed unique_ptr for the specified type by forwarding
 /// arguments to the constructor.
