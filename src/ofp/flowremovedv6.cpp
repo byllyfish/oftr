@@ -1,3 +1,6 @@
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/flowremovedv6.h"
 #include "ofp/statheader.h"
 #include "ofp/writable.h"

@@ -1,3 +1,6 @@
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #ifndef OFP_STATBUILDER_H_
 #define OFP_STATBUILDER_H_
 
